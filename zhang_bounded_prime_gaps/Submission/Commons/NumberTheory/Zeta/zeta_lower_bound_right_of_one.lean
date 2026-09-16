@@ -107,7 +107,7 @@ private lemma pt_le (s : ℂ) (hs : (1 : ℝ) < s.re) (n : ℕ) :
         = ∏ p ∈ n.primesBelow, (‖(1 - ((p : ℕ) : ℂ) ^ (-(s.re : ℂ)))⁻¹‖)⁻¹ := by
             exact (Finset.prod_inv_distrib (fun p : ℕ => ‖(1 - ((p : ℕ) : ℂ) ^ (-(s.re : ℂ)))⁻¹‖)).symm
     _ ≤ ∏ p ∈ n.primesBelow, ‖(1 - ((p : ℕ) : ℂ) ^ (-s))⁻¹‖ := by
-      refine Finset.prod_le_prod ?h0 ?h1
+      refine Finset.prod_le_prod₀ ?h0 ?h1
       · intro p hp
         exact inv_nonneg.mpr (norm_nonneg ((1 - ((p : ℕ) : ℂ) ^ (-(s.re : ℂ)))⁻¹))
       · intro p hp

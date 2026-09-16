@@ -5840,9 +5840,7 @@ lemma hatPDer_integral {N : ℕ} (hN : 1 ≤ N) (f : ℝ → ℝ)
   · exact hatPhase_continuousOn f hF ν
   · intro x hx
     convert hasDerivAt_E_phase f ν (hasDerivAt_f_interior f hF hx) using 1
-    · ext y
-      rfl
-    · rfl
+    all_goals first | rfl | (funext y; rfl)
   · exact hatPDer_intervalIntegrable h0ltN f hF ν
 
 /-- at the natural-number endpoint `N`, `E(νN) = 1` makes the phase simplify. -/

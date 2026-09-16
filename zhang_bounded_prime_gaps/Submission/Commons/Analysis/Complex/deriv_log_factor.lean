@@ -106,7 +106,7 @@ private theorem deriv_log_factor_R {a : ℂ} {R : ℝ} (hR : 0 < R) {f g : ℂ �
       logDeriv P a = logDeriv (fun z : ℂ => ∏ u ∈ S, (z - u) ^ (d u)) a := by
           rw [hP_fun]
       _ = ∑ u ∈ S, logDeriv (fun z : ℂ => (z - u) ^ (d u)) a := by
-          exact logDeriv_prod hfac0 hdiff
+          exact logDeriv_fun_prod hfac0 hdiff
       _ = ∑ u ∈ S, (d u : ℂ) * (1 / (a - u)) := by
           apply Finset.sum_congr rfl
           intro u hu
@@ -120,7 +120,7 @@ private theorem deriv_log_factor_R {a : ℂ} {R : ℝ} (hR : 0 < R) {f g : ℂ �
                     rw [deriv_sub_const u]
                     simp
   have hL3 : logDeriv (fun z : ℂ => P z * g z) a = logDeriv P a + logDeriv g a := by
-    exact logDeriv_mul a hP0 hg0 hdiffP hg
+    exact logDeriv_fun_mul a hP0 hg0 hdiffP hg
   have hmain : (deriv f a / f a).re = (deriv g a / g a).re + (logDeriv P a).re := by
     calc
       (deriv f a / f a).re = (logDeriv f a).re := by rw [← logDeriv_apply f a]

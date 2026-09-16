@@ -108,7 +108,7 @@ private lemma logDeriv_decompose_subBall {f g : ℂ → ℂ} {c : ℂ} {R : ℝ}
       logDeriv P s = logDeriv (fun z : ℂ => ∏ u ∈ S, (z - u) ^ (d u)) s := by
         rw [hP_fun]
       _ = ∑ u ∈ S, logDeriv (fun z : ℂ => (z - u) ^ (d u)) s := by
-        exact logDeriv_prod hfac0 hdiff
+        exact logDeriv_fun_prod hfac0 hdiff
       _ = ∑ u ∈ S, (d u : ℂ) * (1 / (s - u)) := by
         apply Finset.sum_congr rfl
         intro u hu
@@ -121,7 +121,7 @@ private lemma logDeriv_decompose_subBall {f g : ℂ → ℂ} {c : ℂ} {R : ℝ}
             rw [deriv_sub_const u]
             simp
   have hL3 : logDeriv (fun z : ℂ => P z * g z) s = logDeriv P s + logDeriv g s := by
-    exact logDeriv_mul s hP0 hg0 hdiffP hgdiff
+    exact logDeriv_fun_mul s hP0 hg0 hdiffP hgdiff
   have hfin_sum : (∑ᶠ u : ℂ, (((d u : ℤ) : ℂ) * (1 / (s - u)))) =
       ∑ u ∈ S, (((d u : ℤ) : ℂ) * (1 / (s - u))) := by
     rw [finsum_eq_sum_of_support_subset (fun u : ℂ => (((d u : ℤ) : ℂ) * (1 / (s - u)))) (s := S) ?_]

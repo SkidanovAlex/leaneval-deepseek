@@ -241,7 +241,7 @@ theorem norm_pairKernelPhasePhi_le {k : ℕ} (F G : Fin k → ℝ → ℝ) (q R 
           ‖divisorPhase R (x j).1 (p j).1‖ * ‖divisorPhase R (x j).2 (p j).2‖) := by
       rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
     rw [hthree]
-    exact mul_le_mul_of_nonneg_right (Finset.prod_le_prod
+    exact mul_le_mul_of_nonneg_right (Finset.prod_le_prod₀
       (fun j _ => by positivity) (fun j _ => hper j))
       (Finset.prod_nonneg (fun j _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)))
   · rw [if_neg hg, norm_zero]

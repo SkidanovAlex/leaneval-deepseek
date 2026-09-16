@@ -62,7 +62,7 @@ lemma prod_one_add_norm_le_exp {q : ℕ} {z : ℕ → ℂ} {C : ℝ} (hC : 0 ≤
     ‖∏ p ∈ Sfilter q n, (1 + z p)‖ ≤ Real.exp C := by
   have h1 : ‖∏ p ∈ Sfilter q n, (1 + z p)‖ ≤ ∏ p ∈ Sfilter q n, (1 + ‖z p‖) := by
     rw [Complex.norm_prod]
-    refine Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => norm_nonneg _) (fun i _ => ?_)
     simpa using norm_add_le (1 : ℂ) (z i)
   have h2 : ∏ p ∈ Sfilter q n, (1 + ‖z p‖) ≤ Real.exp (∑ p ∈ Sfilter q n, ‖z p‖) :=
     prod_one_add_le_exp _ _ (fun i _ => norm_nonneg _)

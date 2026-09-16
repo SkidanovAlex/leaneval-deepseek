@@ -86,7 +86,7 @@ lemma logDeriv_Gammaℝ_formula (s : ℂ) (hs : 0 < s.re) :
   have hldG : logDeriv Complex.Gammaℝ s =
       logDeriv (fun z : ℂ => (Real.pi : ℂ) ^ (-z / 2) * Gamma (z / 2)) s := by
     exact congrArg (fun F : ℂ → ℂ => logDeriv F s) hfun
-  have hmul := logDeriv_mul (x := s) (f := f) (g := g) (cpow_pow_ne_zero s)
+  have hmul := logDeriv_fun_mul (x := s) (f := f) (g := g) (cpow_pow_ne_zero s)
     (Gamma_half_ne_zero s hs) (by
       have hinner : DifferentiableAt ℂ (fun z : ℂ => -z / 2) s := by fun_prop
       exact hinner.const_cpow (Or.inl (ofReal_ne_zero.mpr Real.pi_ne_zero))) (by
@@ -281,7 +281,7 @@ lemma logDeriv_completedLFunction_eq_add {N : ℕ} [NeZero N] (χ : DirichletCha
   have hdL : DifferentiableAt ℂ (DirichletCharacter.LFunction χ) s :=
     differentiableAt_LFunction χ s (Or.inr hχ)
   have hdG : DifferentiableAt ℂ (gammaFactor χ) s := differentiableAt_gammaFactor χ s hs
-  have hmul := logDeriv_mul (x := s) (f := DirichletCharacter.LFunction χ) (g := gammaFactor χ)
+  have hmul := logDeriv_fun_mul (x := s) (f := DirichletCharacter.LFunction χ) (g := gammaFactor χ)
     hLs hg0 hdL hdG
   calc
     logDeriv (DirichletCharacter.completedLFunction χ) s
@@ -304,7 +304,7 @@ Method: `completedLFunction χ = gammaFactor χ · LFunction χ` away from the p
 factor, in the sense of `LFunction_eq_completed_div_gammaFactor` (valid here since
 `Re (2+iT) = 2 > 0`); `gammaFactor χ (2+iT) ≠ 0`.  Take the logarithmic derivative:
 `logDeriv Λ = logDeriv (gammaFactor χ) + logDeriv (LFunction χ)` at `2+iT` (use a
-`logDeriv_mul`-type lemma).  Then:
+`logDeriv_fun_mul`-type lemma).  Then:
 - `logDeriv (LFunction χ) (2+iT)` is bounded by 8:
   `Commons.NumberTheory.DirichletCharacter.logDeriv_L_two_le`.
 - `logDeriv (gammaFactor χ) (2+iT)` = `logDeriv (Gammaℝ) (2+iT)` if `χ.Even`, and

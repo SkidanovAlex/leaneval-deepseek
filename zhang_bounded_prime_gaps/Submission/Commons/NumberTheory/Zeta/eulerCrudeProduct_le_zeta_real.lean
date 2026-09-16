@@ -149,7 +149,7 @@ lemma partialEulerReal_le_absZeta (ε : ℝ) (hε : 0 < ε) (n : ℕ) :
   have hmono : ∀ {m k : ℕ}, m ≤ k → a m ≤ a k := by
     intro m k hmk
     dsimp [a]
-    exact Finset.prod_le_prod_of_subset_of_one_le
+    exact Finset.prod_le_prod_of_subset_of_one_le₀
       (by intro p hp; rw [Nat.mem_primesBelow] at hp ⊢; exact ⟨lt_of_lt_of_le hp.1 hmk, hp.2⟩)
       (fun p hp => le_of_lt (hf_pos m p hp))
       (fun p hp _ => by
@@ -213,7 +213,7 @@ theorem eulerCrudeProduct_le_zeta_real (q : ℕ) (ε : ℝ) (hε : 0 < ε) (n : 
     calc
       (∏ p ∈ S, ((1 + 2 * (p : ℝ) ^ (-(1 + ε)) + (p : ℝ) ^ (-(1 + 2 * ε)))))
           ≤ ∏ p ∈ S, (f p) ^ 3 := by
-              refine Finset.prod_le_prod ?h0 ?h1
+              refine Finset.prod_le_prod₀ ?h0 ?h1
               · intro p hp
                 have hp2 : 2 ≤ p := Nat.Prime.two_le (hprime p (hTsub hp))
                 exact crudeFactor_nonneg p hp2 hε
@@ -225,7 +225,7 @@ theorem eulerCrudeProduct_le_zeta_real (q : ℕ) (ε : ℝ) (hε : 0 < ε) (n : 
   have hSprod_le : (∏ p ∈ S, f p) ≤ ‖riemannZeta ((1 + ε : ℝ) : ℂ)‖ := by
     calc
       (∏ p ∈ S, f p) ≤ (∏ p ∈ T, f p) := by
-            refine Finset.prod_le_prod_of_subset_of_one_le hTsub ?hf0 ?hf1
+            refine Finset.prod_le_prod_of_subset_of_one_le₀ hTsub ?hf0 ?hf1
             · intro p hp
               have hp2 : 2 ≤ p := Nat.Prime.two_le (hprime p (hTsub hp))
               dsimp [f]

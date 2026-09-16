@@ -56,7 +56,7 @@ lemma lmono_abs_le {α : List ℕ} (hα : ∀ x ∈ α, 1 ≤ x) (k : ℕ) (t : 
     Commons.Analysis.TensorApprox.sum_univ_pi_prod (fun i (j : Fin k) => (t j) ^ (α.get i))
   have hstep3 : ∏ i : Fin α.length, ∑ j : Fin k, (t j) ^ (α.get i)
       ≤ ∏ i : Fin α.length, (∑ j : Fin k, t j) ^ (α.get i) := by
-    refine Finset.prod_le_prod (fun i _ => Finset.sum_nonneg fun j _ => pow_nonneg (ht j) _)
+    refine Finset.prod_le_prod₀ (fun i _ => Finset.sum_nonneg fun j _ => pow_nonneg (ht j) _)
       (fun i _ => ?_)
     have hi : 1 ≤ α.get i := by
       rw [List.get_eq_getElem]; exact hα _ (List.getElem_mem _)

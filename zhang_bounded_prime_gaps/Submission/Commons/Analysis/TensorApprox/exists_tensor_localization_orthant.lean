@@ -249,7 +249,7 @@ theorem exists_tensor_localization_orthant {k : ℕ} {g : (Fin k → ℝ) → �
           (fun (i : Fin k) (n : Fin N) => cut s x (n : ℕ) (t i))
       have hfac_le : ∑ j : Fin k → Fin N, w j ≤ 1 := by
         rw [hfac]
-        refine Finset.prod_le_one (fun i _ => ?_) (fun i _ => ?_)
+        refine Finset.prod_le_one₀ (fun i _ => ?_) (fun i _ => ?_)
         · exact Finset.sum_nonneg (fun n _ => cut_nonneg hspos (hxmono (n : ℕ)) (t i))
         · have hrange : (∑ n : Fin N, cut s x (n : ℕ) (t i))
               = ∑ n ∈ range N, cut s x n (t i) :=

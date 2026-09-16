@@ -57,7 +57,7 @@ theorem smoothCut_le_one {k : ℕ} {c γ : ℝ} (hγ : 0 < γ) (t : Fin k → �
     smoothCut k c γ t ≤ 1 := by
   unfold smoothCut
   have h1 : (∏ i : Fin k, Real.smoothTransition (t i / γ)) ≤ 1 := by
-    have h := Finset.prod_le_one (s := Finset.univ)
+    have h := Finset.prod_le_one₀ (s := Finset.univ)
       (f := fun i : Fin k => Real.smoothTransition (t i / γ))
       (fun i _ => Real.smoothTransition.nonneg _) (fun i _ => Real.smoothTransition.le_one _)
     simpa using h

@@ -259,7 +259,7 @@ lemma prod_locR_norm_ge (k : ℕ) (p : ℕ) (hp2 : 2 ≤ p) (a b : Fin k → ℂ
   calc (1 / 6 : ℝ) ^ k = ∏ _j : Fin k, (1 / 6 : ℝ) := by
         rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
     _ ≤ ∏ j : Fin k, ‖locR p (a j) (b j)‖ :=
-        Finset.prod_le_prod (fun j _ => by norm_num) (fun j _ => locR_norm_ge_sixth (a j) (b j) hp2 (ha j) (hb j))
+        Finset.prod_le_prod₀ (fun j _ => by norm_num) (fun j _ => locR_norm_ge_sixth (a j) (b j) hp2 (ha j) (hb j))
 
 /-- **Difference of the `φ`-local factor and the plain local factor**:
 `K^φ_p − K_p = −(Σ_j (p^{−a_j} + p^{−b_j} − p^{−a_j−b_j}))/(p(p−1))`. -/

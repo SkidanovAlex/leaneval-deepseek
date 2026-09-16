@@ -86,7 +86,7 @@ lemma norm_prod_exp_le_of {k : ℕ} {A : ℝ} {a : Fin k → ℂ}
   rw [h]
   have h1 : ‖∏ j : Fin k, (1 + (a j - 1))‖ ≤ ∏ j : Fin k, (1 + ‖a j - 1‖) := by
     rw [Complex.norm_prod]
-    refine Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => norm_nonneg _) (fun i _ => ?_)
     simpa using norm_add_le (1 : ℂ) (a i - 1)
   have h2 : ∏ j : Fin k, (1 + ‖a j - 1‖) ≤ Real.exp (∑ j : Fin k, ‖a j - 1‖) :=
     prod_one_add_le_exp _ _ (fun i _ => by positivity)

@@ -126,7 +126,7 @@ nontrivial `χ`.
 
 Method (tighten `Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_le`, whose
 constant was 20): `logDeriv Λ = logDeriv (gammaFactor χ) + logDeriv (LFunction χ)` at `2+iT`
-(`LFunction_eq_completed_div_gammaFactor` + `logDeriv_mul`-style; gamma factor nonzero there).
+(`LFunction_eq_completed_div_gammaFactor` + `logDeriv_fun_mul`-style; gamma factor nonzero there).
 - `‖logDeriv (LFunction χ) (2+iT)‖ ≤ 3` by
   `Commons.NumberTheory.DirichletCharacter.logDeriv_L_two_le_small`.
 - `logDeriv (gammaFactor χ) (2+iT)` is `logDeriv (Gammaℝ) (2+iT)` (even) or

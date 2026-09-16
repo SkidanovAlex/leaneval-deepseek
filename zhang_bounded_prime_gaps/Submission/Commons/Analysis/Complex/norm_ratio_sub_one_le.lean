@@ -123,7 +123,7 @@ private lemma core (k : ℕ) (x y z : Fin k → ℂ) (ρ : ℝ)
     rw [norm_prod]
     calc (1 / 6 : ℝ)^k = ∏ j : Fin k, (1 / 6 : ℝ) := by
           rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-      _ ≤ ∏ j : Fin k, ‖f j‖ := Finset.prod_le_prod (fun j _ => by norm_num) (fun j _ => hfj j)
+      _ ≤ ∏ j : Fin k, ‖f j‖ := Finset.prod_le_prod₀ (fun j _ => by norm_num) (fun j _ => hfj j)
   -- numerator bound
   have hP_eq : ∏ j : Fin k, f j = ∏ j : Fin k, (1 + g j) := by
     apply Finset.prod_congr rfl

@@ -191,7 +191,7 @@ lemma norm_pairPhase_eq {k : ℕ} (F G : Fin k → ℝ → ℝ) (p : Fin k → �
 lemma pairPhaseNorm_le_pairDom {k : ℕ} (F G : Fin k → ℝ → ℝ) (p : Fin k → ℝ × ℝ) :
     pairPhaseNorm F G p ≤ pairDom F G p := by
   rw [pairPhaseNorm, pairDom]
-  refine Finset.prod_le_prod (fun j _ => mul_nonneg (norm_nonneg _) (norm_nonneg _))
+  refine Finset.prod_le_prod₀ (fun j _ => mul_nonneg (norm_nonneg _) (norm_nonneg _))
     (fun j _ => ?_)
   rw [pairDomCoord]
   have h1 : (1 : ℝ) ≤ pairW (p j).1 := one_le_pairW _
@@ -270,7 +270,7 @@ lemma norm_pairPoleP_le {k : ℕ} (W N : ℕ → ℕ) (hW : ∀ x, W x ≠ 0) (h
   calc ∏ j : Fin k, ‖(poleFactor (W x) (N x) (-(2 * Real.pi * (p j).1))
         (-(2 * Real.pi * (p j).2)) x)⁻¹‖
       ≤ ∏ j : Fin k, (prefactor W N x * (pairW (p j).1 * pairW (p j).2)) :=
-        Finset.prod_le_prod (fun j _ => norm_nonneg _) (fun j _ => hper j)
+        Finset.prod_le_prod₀ (fun j _ => norm_nonneg _) (fun j _ => hper j)
     _ = (prefactor W N x) ^ k *
         ∏ j : Fin k, (pairW (p j).1 * pairW (p j).2) := by
         rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
@@ -327,7 +327,7 @@ theorem pairCube_integral_le {k : ℕ} (hk : 1 ≤ k) (F G : Fin k → ℝ → �
           pairDom F G p := by
         rw [pairPhaseNorm, pairDom]
         rw [← Finset.prod_mul_distrib]
-        refine Finset.prod_le_prod (fun j _ => mul_nonneg (mul_nonneg (pairW_nonneg _)
+        refine Finset.prod_le_prod₀ (fun j _ => mul_nonneg (mul_nonneg (pairW_nonneg _)
           (pairW_nonneg _)) (mul_nonneg (norm_nonneg _) (norm_nonneg _))) (fun j _ => ?_)
         rw [pairDomCoord]
         have : (pairW (p j).1 * pairW (p j).2) *
@@ -668,7 +668,7 @@ theorem pairOffCube_le {k : ℕ} (hk : 1 ≤ k) (F G : Fin k → ℝ → ℝ)
     have hInt : ∀ i : Fin k, (∫ q : ℝ × ℝ, pairDomCoord F G i q) =
         pairCF (F i) * pairCF (G i) := fun i => integral_pairDomCoord F G i
     simp only [hInt]
-    refine Finset.prod_le_prod (fun i _ => mul_nonneg (pairCF_nonneg F i) (pairCF_nonneg G i))
+    refine Finset.prod_le_prod₀ (fun i _ => mul_nonneg (pairCF_nonneg F i) (pairCF_nonneg G i))
       (fun i _ => ?_)
     have h1 := pairCF_nonneg F i
     have h2 := pairCF_nonneg G i
@@ -885,7 +885,7 @@ theorem pairOffCube_pairDom_le {k : ℕ} (F G : Fin k → ℝ → ℝ)
     have hInt : ∀ i : Fin k, (∫ q : ℝ × ℝ, pairDomCoord F G i q) =
         pairCF (F i) * pairCF (G i) := fun i => integral_pairDomCoord F G i
     simp only [hInt]
-    refine Finset.prod_le_prod (fun i _ => mul_nonneg (pairCF_nonneg F i) (pairCF_nonneg G i))
+    refine Finset.prod_le_prod₀ (fun i _ => mul_nonneg (pairCF_nonneg F i) (pairCF_nonneg G i))
       (fun i _ => ?_)
     have h1 := pairCF_nonneg F i
     have h2 := pairCF_nonneg G i

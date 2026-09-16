@@ -114,7 +114,7 @@ theorem totient_mul_card_divisors_ge (q : ℕ) : q ≤ q.totient * q.divisors.ca
   rw [hcard, htot]
   conv_lhs => rw [hqprod]
   rw [← Finset.prod_mul_distrib]
-  apply Finset.prod_le_prod
+  apply Finset.prod_le_prod₀
   · intro p hp
     exact Nat.zero_le _
   · intro p hp
@@ -735,7 +735,7 @@ lemma summand_le {k : ℕ} (hk : 1 ≤ k) (F G : Fin k → ℝ → ℝ)
         rw [coefProd, Finset.abs_prod]
         calc ∏ i : Fin k, |lamDivWeight (F i) x (d i : ℕ) * lamDivWeight (G i) x (e i : ℕ)|
             ≤ ∏ _i : Fin k, BF * BG := by
-              apply Finset.prod_le_prod
+              apply Finset.prod_le_prod₀
               · intro i _; positivity
               · intro i _; rw [abs_mul]
                 exact mul_le_mul (abs_lamDivWeight_le hBF (hFbd i) x _)

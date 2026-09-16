@@ -221,7 +221,7 @@ private lemma norm_W_le_one (n : ℕ) (a : ℕ) (b : Fin (n+1) → ℕ) :
   have h2 : 1 - ∑ i, p i ≤ 1 := by linarith
   have hpa : (1 - ∑ i, p i)^a ≤ 1 := pow_le_one₀ h1 h2
   have hpb : ∏ i, (p i)^(b i) ≤ 1 := by
-    apply Finset.prod_le_one
+    apply Finset.prod_le_one₀
     · intro i _; exact pow_nonneg (h0 i) _
     · intro i _; exact pow_le_one₀ (h0 i) (hp1 i)
   have hprod : 0 ≤ ∏ i, (p i)^(b i) := Finset.prod_nonneg (fun i _ => pow_nonneg (h0 i) _)

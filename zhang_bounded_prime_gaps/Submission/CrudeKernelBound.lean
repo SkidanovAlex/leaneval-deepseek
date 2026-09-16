@@ -220,7 +220,7 @@ lemma crudeFactors_product_le (S : Finset ℕ) (hS : ∀ p ∈ S, 2 ≤ p) (ε :
   classical
   have h1 : (∏ p ∈ S, (1 + 2 * (p : ℝ) ^ (-(1 + ε)) + (p : ℝ) ^ (-(1 + 2 * ε)))) ≤
       ∏ p ∈ S, (((1 - (p : ℝ) ^ (-(1 + ε)))⁻¹) ^ 3) := by
-    refine Finset.prod_le_prod ?_ ?_
+    refine Finset.prod_le_prod₀ ?_ ?_
     · intro p hp
       positivity
     · intro p hp

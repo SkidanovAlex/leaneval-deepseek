@@ -25,10 +25,8 @@ private lemma phi_hasDerivAt (a : ℝ) : HasDerivAt phi (2 * Real.arctan a) a :=
     simpa [div_eq_mul_inv] using (hi.log (by positivity : 1 + a ^ 2 ≠ 0))
   unfold phi
   convert (hP.sub h2) using 1
-  · rfl
-  · rfl
-  · funext a; rfl
-  · ring
+  all_goals try (first | rfl | (funext a; rfl))
+  all_goals ring
 
 private lemma phi_nonneg (a : ℝ) (ha : 0 ≤ a) : 0 ≤ phi a := by
   have hcont : ContinuousOn phi (Set.Icc (0 : ℝ) a) := by
@@ -122,32 +120,23 @@ private lemma modSq_hasDerivAt (t : ℝ) (y : ℝ) (hy0 : 0 < y) :
       ((y * Real.log (y ^ 2 + t ^ 2)) / (y ^ 2 + t ^ 2)) y := by
     have hp := hg1.pow 2
     convert hp using 1
-    · rfl
-    · rfl
-    · funext u; rfl
-    · field_simp [hLne]
-      ring
+    all_goals try (first | rfl | (funext u; rfl))
+    all_goals (field_simp [hLne]; ring)
   have hconst : HasDerivAt (fun u : ℝ => t) 0 y := hasDerivAt_const y t
   have hid : HasDerivAt (fun u : ℝ => u) 1 y := hasDerivAt_id y
   have hdiv : HasDerivAt (fun u : ℝ => t / u) (-t / y ^ 2) y := by
     have hd := hconst.div hid hy
     convert hd using 1
-    · rfl
-    · rfl
-    · funext u; rfl
-    · field_simp [hy]
-      ring
+    all_goals try (first | rfl | (funext u; rfl))
+    all_goals (field_simp [hy]; ring)
   have harct : HasDerivAt (fun u : ℝ => Real.arctan (t / u))
       (1 / (1 + (t / y) ^ 2) * (-t / y ^ 2)) y := hdiv.arctan
   have hB : HasDerivAt (fun u : ℝ => (Real.arctan (t / u)) ^ 2)
       (-2 * t * Real.arctan (t / y) / (y ^ 2 + t ^ 2)) y := by
     have hp := harct.pow 2
     convert hp using 1
-    · rfl
-    · rfl
-    · funext u; rfl
-    · field_simp [hy]
-      ring
+    all_goals try (first | rfl | (funext u; rfl))
+    all_goals (field_simp [hy]; ring)
   have hsum : HasDerivAt (fun u : ℝ => (((1 : ℝ) / 2) * Real.log (u ^ 2 + t ^ 2)) ^ 2 +
       (Real.arctan (t / u)) ^ 2)
       ((y * Real.log (y ^ 2 + t ^ 2)) / (y ^ 2 + t ^ 2) +

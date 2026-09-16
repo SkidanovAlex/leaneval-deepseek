@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 import Mathlib.Data.Nat.ChineseRemainder
+import Mathlib.Algebra.Order.Ring.Nat
 import Submission.Commons.NumberTheory.CongruenceWindows.modEq_prod_iff_forall
 
 namespace Commons.NumberTheory.CongruenceWindows

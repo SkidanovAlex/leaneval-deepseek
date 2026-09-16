@@ -835,7 +835,7 @@ private lemma zeta1_logDeriv_sub_deriv (s : ℂ) (hs : s ≠ 1) (hz1 : riemannZe
     dsimp [P]
     exact logDeriv_inv_shift (1 : ℂ) s hs
   have hL2 : logDeriv (fun w : ℂ => P w * riemannZeta₁ w) s = logDeriv P s + logDeriv riemannZeta₁ s := by
-    exact logDeriv_mul s hPne hz1 hdP hz1diff
+    exact logDeriv_fun_mul s hPne hz1 hdP hz1diff
   have hlog1 : logDeriv riemannZeta s = logDeriv (fun w : ℂ => P w * riemannZeta₁ w) s := by
     have hc : logDeriv riemannZeta =ᶠ[𝓝 s] logDeriv (fun w : ℂ => P w * riemannZeta₁ w) :=
       (logDeriv_congr_nhds hfac)

@@ -133,7 +133,7 @@ lemma logDeriv_GammaSeq_eq (s : ℂ) (n : ℕ) (hs : 0 < s.re) (hn : n ≠ 0) :
     calc logDeriv B s
         = ∑ k ∈ Finset.range (n + 1), logDeriv (fun z : ℂ => z + (k : ℂ)) s := by
             dsimp [B]
-            rw [logDeriv_prod (x := s) (f := fun (k : ℕ) (z : ℂ) => z + (k : ℂ))]
+            rw [logDeriv_fun_prod (x := s) (f := fun (k : ℕ) (z : ℂ) => z + (k : ℂ))]
             · intro k hk
               exact hBfac k hk
             · intro k hk
@@ -146,7 +146,7 @@ lemma logDeriv_GammaSeq_eq (s : ℂ) (n : ℕ) (hs : 0 < s.re) (hn : n ≠ 0) :
     logDeriv (fun z : ℂ => Complex.GammaSeq z n) s
         = logDeriv (fun z => A z / B z) s := by rw [hdef]
     _ = logDeriv A s - logDeriv B s := by
-        exact logDeriv_div s hA0 hB0 hdA hdB
+        exact logDeriv_fun_div s hA0 hB0 hdA hdB
     _ = logDeriv (fun z : ℂ => (n : ℂ) ^ z) s - logDeriv B s := by
         congr 1
         dsimp [A]

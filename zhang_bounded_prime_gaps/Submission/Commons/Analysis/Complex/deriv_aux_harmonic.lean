@@ -109,9 +109,7 @@ theorem deriv_aux_harmonic {a : ℂ} {R : ℝ} (hR : 0 < R) {g : ℂ → ℂ} {M
     funext t
     simp
   convert h1.add hS using 1
-  · rfl
-  · rfl
-  · funext t
-    simp
+  all_goals try (first | rfl | (funext t; rfl))
+  all_goals (funext t; simp)
 
 end Commons.Analysis.Complex

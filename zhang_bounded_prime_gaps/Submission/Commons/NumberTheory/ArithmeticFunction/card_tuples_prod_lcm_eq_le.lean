@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.NumberTheory.Divisors
+import Mathlib.Tactic.Ring
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

@@ -77,7 +77,7 @@ private lemma totient_ge_mul_logb (n : ℕ) (hn : n ≠ 0) :
   have hcardle : (n.primeFactors.card : ℝ) ≤ Real.logb 2 (n : ℝ) := by
     have h2le : (2 : ℕ) ^ (n.primeFactors.card) ≤ ∏ p ∈ n.primeFactors, p := by
       rw [← Finset.prod_const]
-      exact Finset.prod_le_prod (fun p _ => Nat.zero_le 2) (fun p hp => hS2 p hp)
+      exact Finset.prod_le_prod₀ (fun p _ => Nat.zero_le 2) (fun p hp => hS2 p hp)
     have h2n : (2 : ℕ) ^ (n.primeFactors.card) ≤ n :=
       le_trans h2le (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hrad_dvd)
     have h2nR : (2 : ℝ) ^ ((n.primeFactors.card : ℕ) : ℝ) ≤ (n : ℝ) := by

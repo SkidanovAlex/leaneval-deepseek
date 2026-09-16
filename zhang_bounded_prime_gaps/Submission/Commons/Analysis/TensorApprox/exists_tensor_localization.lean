@@ -35,7 +35,7 @@ lemma tensor_box_le_one {ψ : ℤ → ℝ → ℝ} {k : ℕ}
       ∏ i, ψ (m i) (t i)) ≤ 1 := by
   rw [Finset.sum_prod_piFinset (Finset.Icc (-(n : ℤ)) (n : ℤ))
     (fun (i : Fin k) (j : ℤ) => ψ j (t i))]
-  exact Finset.prod_le_one (fun i _ => Finset.sum_nonneg (fun j _ => hnn j (t i)))
+  exact Finset.prod_le_one₀ (fun i _ => Finset.sum_nonneg (fun j _ => hnn j (t i)))
     (fun i _ => sum_Icc_partition_le_one hsum hnn n (t i))
 
 /-- The `k`-fold tensor box sum of a rescaled one-dimensional partition of unity equals

@@ -23,7 +23,7 @@ private lemma zeta1_logDeriv_eq_aux (s : ℂ) (hs1 : s ≠ 1) (hζs : riemannZet
   have hval : logDeriv riemannZeta₁ s = logDeriv (fun z => (z - 1) * riemannZeta z) s :=
     hcong.self_of_nhds
   rw [hval]
-  have hmul := logDeriv_mul (x := s) (f := fun z => z - 1) (g := riemannZeta)
+  have hmul := logDeriv_fun_mul (x := s) (f := fun z => z - 1) (g := riemannZeta)
       (sub_ne_zero.mpr hs1) hζs (by fun_prop) (differentiableAt_riemannZeta hs1)
   rw [hmul]
   have hld_id : logDeriv (fun z : ℂ => z - 1) s = (s - 1)⁻¹ := by

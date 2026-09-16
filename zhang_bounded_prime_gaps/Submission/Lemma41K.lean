@@ -189,7 +189,7 @@ lemma norm_finset_prod_le_pow {ι : Type*} (t : Finset ι) (b : ι → ℂ) (A :
     (hb : ∀ j ∈ t, ‖b j‖ ≤ A) : ‖∏ j ∈ t, b j‖ ≤ A ^ t.card := by
   rw [norm_prod]
   calc ∏ j ∈ t, ‖b j‖ ≤ ∏ _j ∈ t, A :=
-        Finset.prod_le_prod (fun j _ => norm_nonneg _) (fun j hj => hb j hj)
+        Finset.prod_le_prod₀ (fun j _ => norm_nonneg _) (fun j hj => hb j hj)
     _ = A ^ t.card := Finset.prod_const _
 
 /-- **Telescoping bound for products**: `‖∏ a_j − ∏ b_j‖` is at most the sum

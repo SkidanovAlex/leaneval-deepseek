@@ -152,7 +152,7 @@ lemma integrable_prod_indicator_Ici {ι : Type*} [Fintype ι] (H : ι → ℝ �
     calc ‖∏ i, (Set.Ici (0:ℝ)).indicator (fun s => H i s) (t i)‖
         = ∏ i, ‖(Set.Ici (0:ℝ)).indicator (fun s => H i s) (t i)‖ := norm_prod _ _
       _ ≤ ∏ i, C i := by
-          refine Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_
+          refine Finset.prod_le_prod₀ (fun i _ => norm_nonneg _) fun i _ => ?_
           by_cases h : t i ∈ Set.Ici (0:ℝ)
           · rw [Set.indicator_of_mem h, Real.norm_eq_abs]; exact hCbd i (t i)
           · rw [Set.indicator_of_notMem h, norm_zero]; exact hC0 i
@@ -165,7 +165,7 @@ lemma orthInd_nonneg {ι : Type*} [Fintype ι] (x : ι → ℝ) : 0 ≤ orthInd 
   Finset.prod_nonneg fun i _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _
 
 lemma orthInd_le_one {ι : Type*} [Fintype ι] (x : ι → ℝ) : orthInd x ≤ 1 := by
-  refine Finset.prod_le_one (fun i _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _)
+  refine Finset.prod_le_one₀ (fun i _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _)
     (fun i _ => ?_)
   by_cases h : x i ∈ Set.Ici (0:ℝ)
   · simp [Set.indicator_of_mem h]

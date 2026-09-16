@@ -168,7 +168,7 @@ private lemma prod_primes_le_two (N : ℕ) :
     exact ⟨⟨h1, hle⟩, hpp⟩
   have hf1 : (∏ p ∈ A.filter (fun p => p ≤ 101), (1 + x p))
       ≤ ∏ p ∈ (Finset.Icc 1 101).filter Nat.Prime, (1 + x p) := by
-    apply Finset.prod_le_prod_of_subset_of_one_le hsub1
+    apply Finset.prod_le_prod_of_subset_of_one_le₀ hsub1
     · intro p hp
       exact one_add_x_nonneg_of_prime (by
         simp only [Finset.mem_filter, hA, Finset.mem_Icc] at hp

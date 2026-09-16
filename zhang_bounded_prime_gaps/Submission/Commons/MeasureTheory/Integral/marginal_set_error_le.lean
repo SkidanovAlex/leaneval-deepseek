@@ -29,7 +29,7 @@ private lemma marginalOrthInd_nonneg {ι : Type*} [Fintype ι] (x : ι → ℝ) 
 
 private lemma marginalOrthInd_le_one {ι : Type*} [Fintype ι] (x : ι → ℝ) :
     marginalOrthInd x ≤ 1 := by
-  refine Finset.prod_le_one (fun i _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _)
+  refine Finset.prod_le_one₀ (fun i _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _)
     (fun i _ => ?_)
   by_cases h : x i ∈ Set.Ici (0:ℝ)
   · simp [Set.indicator_of_mem h]

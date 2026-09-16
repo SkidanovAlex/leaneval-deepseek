@@ -489,15 +489,15 @@ lemma lcm_prod_le_of_coefProd_ne_zero {k D : ℕ} (F G : Fin k → ℝ → ℝ) 
   calc ((∏ i : Fin k, Nat.lcm (d i : ℕ) (e i : ℕ) : ℕ) : ℝ)
       = ∏ i : Fin k, ((Nat.lcm (d i : ℕ) (e i : ℕ) : ℕ) : ℝ) := Nat.cast_prod _ _
     _ ≤ ∏ i : Fin k, (((d i : ℕ) : ℝ) * ((e i : ℕ) : ℝ)) := by
-        refine Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => ?_)
+        refine Finset.prod_le_prod₀ (fun i _ => by positivity) (fun i _ => ?_)
         exact_mod_cast Nat.lcm_le_mul (Nat.pos_of_ne_zero (hne0 i).1) (Nat.pos_of_ne_zero (hne0 i).2)
     _ = (∏ i : Fin k, ((d i : ℕ) : ℝ)) * ∏ i : Fin k, ((e i : ℕ) : ℝ) :=
         Finset.prod_mul_distrib
     _ ≤ (∏ i : Fin k, (N : ℝ) ^ (Mf i)) * ∏ i : Fin k, (N : ℝ) ^ (Mg i) := by
         have h1 : (∏ i : Fin k, ((d i : ℕ) : ℝ)) ≤ ∏ i : Fin k, (N : ℝ) ^ (Mf i) :=
-          Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => (hcoord i).1)
+          Finset.prod_le_prod₀ (fun i _ => by positivity) (fun i _ => (hcoord i).1)
         have h2 : (∏ i : Fin k, ((e i : ℕ) : ℝ)) ≤ ∏ i : Fin k, (N : ℝ) ^ (Mg i) :=
-          Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => (hcoord i).2)
+          Finset.prod_le_prod₀ (fun i _ => by positivity) (fun i _ => (hcoord i).2)
         have h3 : (0 : ℝ) ≤ ∏ i : Fin k, ((e i : ℕ) : ℝ) := by positivity
         have h4 : (0 : ℝ) ≤ ∏ i : Fin k, (N : ℝ) ^ (Mf i) :=
           Finset.prod_nonneg fun i _ => Real.rpow_nonneg hNpos.le _
@@ -554,7 +554,7 @@ lemma abs_phiPairWeight_le {k D : ℕ} (F G : Fin k → ℝ → ℝ) (N W : ℕ)
       (((Nat.lcm (d i : ℕ) (e i : ℕ)).totient : ℕ) : ℝ))| ≤
       ∏ i : Fin k, (BF * BG * (1 / (((Nat.lcm (d i : ℕ) (e i : ℕ)).totient : ℕ) : ℝ))) := by
     rw [Finset.abs_prod]
-    exact Finset.prod_le_prod (fun i _ => abs_nonneg _) (fun i _ => hterm i)
+    exact Finset.prod_le_prod₀ (fun i _ => abs_nonneg _) (fun i _ => hterm i)
   have hnn : 0 ≤ ∏ i : Fin k, (BF * BG * (1 / (((Nat.lcm (d i : ℕ) (e i : ℕ)).totient : ℕ) : ℝ))) :=
     Finset.prod_nonneg fun i _ => mul_nonneg (mul_nonneg hBF hBG) (by positivity)
   rw [phiPairWeight, abs_mul]

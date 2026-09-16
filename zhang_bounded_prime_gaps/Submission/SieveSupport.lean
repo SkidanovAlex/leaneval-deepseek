@@ -168,13 +168,13 @@ theorem abs_coefProd_sum_le {k D R : ℕ} {F G : Fin k → ℝ → ℝ}
       (α := fun i d => lamDivWeight (F i) R d) (β := fun i d => lamDivWeight (G i) R d)
   have hA : (∏ i : Fin k, ∑ y : Fin (D + 1), |lamDivWeight (F i) R (y : ℕ)|)
       ≤ (∏ i : Fin k, 2 * ((R : ℝ) ^ MF i + 1) * BF i) := by
-    refine Finset.prod_le_prod (fun i _ => ?_) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => ?_) (fun i _ => ?_)
     · exact Finset.sum_nonneg (fun y _ => abs_nonneg _)
     · rw [Fin.sum_univ_eq_sum_range (α := ℝ) (fun d : ℕ => |lamDivWeight (F i) R d|) (D + 1)]
       exact sum_abs_lamDivWeight_le (D := D) hR (hBF i) (hF i) (hsuppF i)
   have hB : (∏ i : Fin k, ∑ y : Fin (D + 1), |lamDivWeight (G i) R (y : ℕ)|)
       ≤ (∏ i : Fin k, 2 * ((R : ℝ) ^ MG i + 1) * BG i) := by
-    refine Finset.prod_le_prod (fun i _ => ?_) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => ?_) (fun i _ => ?_)
     · exact Finset.sum_nonneg (fun y _ => abs_nonneg _)
     · rw [Fin.sum_univ_eq_sum_range (α := ℝ) (fun d : ℕ => |lamDivWeight (G i) R d|) (D + 1)]
       exact sum_abs_lamDivWeight_le (D := D) hR (hBG i) (hG i) (hsuppG i)
@@ -236,7 +236,7 @@ theorem goodErrSum_le_rpow {k D N W b R : ℕ} {H : Fin k → ℕ} {F G : Fin k 
   -- factor-wise bound
   have hfacF : (∏ i, 2 * ((R : ℝ) ^ MF i + 1) * BF i)
       ≤ (∏ i, 4 * (R : ℝ) ^ MF i * BF i) := by
-    refine Finset.prod_le_prod (fun i _ => ?_) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => ?_) (fun i _ => ?_)
     · have : (0:ℝ) ≤ (R : ℝ) ^ MF i := Real.rpow_nonneg hRnn _
       have : (0:ℝ) ≤ 2 * ((R : ℝ) ^ MF i + 1) := by positivity
       exact mul_nonneg this (hBF i)
@@ -245,7 +245,7 @@ theorem goodErrSum_le_rpow {k D N W b R : ℕ} {H : Fin k → ℕ} {F G : Fin k 
       nlinarith [h1, h2, hBF i, hMF i]
   have hfacG : (∏ i, 2 * ((R : ℝ) ^ MG i + 1) * BG i)
       ≤ (∏ i, 4 * (R : ℝ) ^ MG i * BG i) := by
-    refine Finset.prod_le_prod (fun i _ => ?_) (fun i _ => ?_)
+    refine Finset.prod_le_prod₀ (fun i _ => ?_) (fun i _ => ?_)
     · have : (0:ℝ) ≤ (R : ℝ) ^ MG i := Real.rpow_nonneg hRnn _
       have : (0:ℝ) ≤ 2 * ((R : ℝ) ^ MG i + 1) := by positivity
       exact mul_nonneg this (hBG i)

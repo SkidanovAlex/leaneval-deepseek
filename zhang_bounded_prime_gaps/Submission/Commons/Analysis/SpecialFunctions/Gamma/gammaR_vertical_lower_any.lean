@@ -365,7 +365,7 @@ theorem grvla_gamma_vertical_lower_any_helper (σ : ℝ) (hσ : 0 < σ) :
   have hPle : P ≤ ∏ j ∈ Finset.range k,
       ‖(((σ0 + (j : ℝ)) : ℝ) : ℂ) + I * (t : ℂ)‖ := by
     dsimp [P]
-    exact Finset.prod_le_prod hfac0 hfac
+    exact Finset.prod_le_prod₀ hfac0 hfac
   have hshift := grvla_gamma_nat_shift_norm σ0 hσ0pos t k
   have hArg : (((σ0 + (k : ℕ) : ℝ) : ℂ) + I * (t : ℂ)) = (σ : ℂ) + I * (t : ℂ) := by
     have h' : (((σ0 + (k : ℕ) : ℝ) : ℂ)) = (σ : ℂ) := by

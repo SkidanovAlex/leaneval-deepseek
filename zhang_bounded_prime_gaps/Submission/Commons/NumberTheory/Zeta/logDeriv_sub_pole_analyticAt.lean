@@ -54,7 +54,7 @@ theorem logDeriv_sub_pole_analyticAt {f g : ℂ → ℂ} {ρ : ℂ} {m : ℕ}
         logDeriv P s = logDeriv (fun s => (s - ρ) ^ m) s + logDeriv g s := by
       filter_upwards [hg_nz, hg_an] with s hgne hga hsne
       unfold P
-      rw [logDeriv_mul (f := fun s => (s - ρ) ^ m) (g := g) s
+      rw [logDeriv_fun_mul (f := fun s => (s - ρ) ^ m) (g := g) s
         (pow_ne_zero m (sub_ne_zero.mpr hsne)) hgne (hdf1 s) hga.differentiableAt]
     have hP_pow : ∀ᶠ s in 𝓝 ρ, s ≠ ρ →
         logDeriv (fun s => (s - ρ) ^ m) s = m / (s - ρ) := by

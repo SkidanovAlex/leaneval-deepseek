@@ -56,7 +56,7 @@ private lemma integrableOn_simplex_monomial {k : ℕ} {c : ℝ} (hc : 0 ≤ c) (
     calc (c - ∑ i, t i)^a * ∏ i, (t i)^(b i)
         ≤ c^a * ∏ i, c^(b i) :=
           mul_le_mul (pow_le_pow_left₀ hca hcs a)
-            (Finset.prod_le_prod (fun i _ => pow_nonneg (h0 i) _)
+            (Finset.prod_le_prod₀ (fun i _ => pow_nonneg (h0 i) _)
               (fun i _ => pow_le_pow_left₀ (h0 i) (hti i) _))
             hprod_nonneg (pow_nonneg hc a)
       _ = c^a * c^(∑ i, b i) := by rw [Finset.prod_pow_eq_pow_sum]

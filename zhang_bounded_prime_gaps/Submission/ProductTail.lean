@@ -163,7 +163,7 @@ lemma prod_one_add_le_exp {ι : Type*} (s : Finset ι) (x : ι → ℝ)
   classical
   calc
     (∏ i ∈ s, (1 + x i)) ≤ ∏ i ∈ s, Real.exp (x i) := by
-            refine Finset.prod_le_prod ?_ ?_
+            refine Finset.prod_le_prod₀ ?_ ?_
             · intro i hi
               exact add_nonneg zero_le_one (hx i hi)
             · intro i hi
@@ -183,7 +183,7 @@ lemma abs_prod_one_add_sub_one_le {ι : Type*} (s : Finset ι) (x : ι → ℝ) 
         calc
           |∏ i ∈ s, (1 + x i)| = ∏ i ∈ s, |1 + x i| := by rw [Finset.abs_prod]
           _ ≤ ∏ i ∈ s, (1 + |x i|) := by
-                  refine Finset.prod_le_prod ?_ ?_
+                  refine Finset.prod_le_prod₀ ?_ ?_
                   · intro i hi
                     exact abs_nonneg (1 + x i)
                   · intro i hi
@@ -342,7 +342,7 @@ theorem coordTailProduct_abs_sub_one_le (C : ℝ) (w : ℕ) (S : Finset ℕ)
     linarith [hη p hp]
   have hprod : (∏ p ∈ S, (1 + |∏ j : Fin k, (1 + e j p) - 1|)) ≤
       ∏ p ∈ S, Real.exp ((k : ℝ) * C / (p : ℝ) ^ 2) := by
-    refine Finset.prod_le_prod ?_ ?_
+    refine Finset.prod_le_prod₀ ?_ ?_
     · intro p hp
       positivity
     · intro p hp

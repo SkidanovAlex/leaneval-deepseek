@@ -113,7 +113,7 @@ lemma logDeriv_head (s : ℂ) (hs0 : s ≠ 0) (hs1 : s - 1 ≠ 0) :
       simp
     rw [hder]
   have hpar : logDeriv (fun z : ℂ => z * (z - 1)) s = 1 / s + 1 / (s - 1) := by
-    have hm := logDeriv_mul (x := s) (f := fun z : ℂ => z) (g := fun z : ℂ => z - 1)
+    have hm := logDeriv_fun_mul (x := s) (f := fun z : ℂ => z) (g := fun z : ℂ => z - 1)
       hs0 hs1 (by fun_prop) (by fun_prop)
     simpa [h₂] using hm
   calc
@@ -172,9 +172,9 @@ theorem xi_logDeriv_eq (s : ℂ) (hs : (1 : ℝ) < s.re) :
     have hlg : logDeriv xi =ᶠ[𝓝 s] logDeriv (fun z : ℂ =>
         ((1 / 2 : ℂ) * z * (z - 1)) * (riemannZeta z * z.Gammaℝ)) := (logDeriv_congr_nhds hxie)
     exact hlg.eq_of_nhds
-  have hζΓ := logDeriv_mul (x := s) (f := fun z : ℂ => riemannZeta z) (g := fun z : ℂ => z.Gammaℝ)
+  have hζΓ := logDeriv_fun_mul (x := s) (f := fun z : ℂ => riemannZeta z) (g := fun z : ℂ => z.Gammaℝ)
     hz hG hdz hdΓ
-  have hprod := logDeriv_mul (x := s)
+  have hprod := logDeriv_fun_mul (x := s)
     (f := fun z : ℂ => (1 / 2 : ℂ) * z * (z - 1)) (g := fun z : ℂ => riemannZeta z * z.Gammaℝ)
     hhead0 (mul_ne_zero hz hG) hdhead (hdz.mul hdΓ)
   have hhead := logDeriv_head s hs0 hs1

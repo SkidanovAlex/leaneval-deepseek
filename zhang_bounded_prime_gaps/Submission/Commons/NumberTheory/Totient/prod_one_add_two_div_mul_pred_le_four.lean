@@ -108,7 +108,7 @@ theorem prod_one_add_two_div_mul_pred_le_four (P : ℕ) :
       linarith
     have hstep : ∏ p ∈ A.filter (fun p => p < 17), phi p
         ≤ ∏ p ∈ ({2, 3, 5, 7, 11, 13} : Finset ℕ), phi p :=
-      Finset.prod_le_prod_of_subset_of_one_le hsubset_small hf0 (fun i hi _ => hone i hi)
+      Finset.prod_le_prod_of_subset_of_one_le₀ hsubset_small hf0 (fun i hi _ => hone i hi)
     have hexpl : ∏ p ∈ ({2, 3, 5, 7, 11, 13} : Finset ℕ), phi p ≤ 7 / 2 := by
       norm_num [phi, Finset.prod_insert]
     linarith

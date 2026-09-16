@@ -85,7 +85,7 @@ private lemma prodPrimeRatio_mono {x y : ℝ} (hxy : x ≤ y) :
     prodPrimeRatio x ≤ prodPrimeRatio y := by
   have hf : ⌊x⌋₊ ≤ ⌊y⌋₊ := Nat.floor_mono hxy
   unfold prodPrimeRatio
-  refine Finset.prod_le_prod_of_subset_of_one_le ?h ?hf0 ?hf1
+  refine Finset.prod_le_prod_of_subset_of_one_le₀ ?h ?hf0 ?hf1
   · intro p hp
     exact Nat.mem_primesLE.mpr
       ⟨le_trans (Nat.mem_primesLE.mp hp).1 hf, (Nat.mem_primesLE.mp hp).2⟩
@@ -224,7 +224,7 @@ is bounded by the product over all primes `≤ q`. -/
 private lemma prod_primeFactors_le_prod_primesLE (q : ℕ) :
     (∏ p ∈ q.primeFactors, ((p : ℝ) / ((p : ℝ) - 1))) ≤
       ∏ p ∈ q.primesLE, ((p : ℝ) / ((p : ℝ) - 1)) := by
-  refine Finset.prod_le_prod_of_subset_of_one_le ?h ?hf0 ?hf1
+  refine Finset.prod_le_prod_of_subset_of_one_le₀ ?h ?hf0 ?hf1
   · intro p hp
     rcases (Nat.mem_primeFactors.mp hp) with ⟨hpp, hpdvd, hq0⟩
     exact Nat.mem_primesLE.mpr ⟨Nat.le_of_dvd (Nat.pos_of_ne_zero hq0) hpdvd, hpp⟩

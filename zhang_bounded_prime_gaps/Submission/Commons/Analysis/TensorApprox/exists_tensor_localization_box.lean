@@ -185,7 +185,7 @@ theorem exists_tensor_localization_box {k : ℕ} {g : (Fin k → ℝ) → ℝ} (
             rw [hB, Finset.sum_prod_piFinset (Finset.Icc (-(1 : ℤ)) (N : ℤ))
               (g := fun (i : Fin k) (j : ℤ) => ψ₀ j (t i / σ))]
         _ ≤ ∏ i, (1 : ℝ) := by
-            refine Finset.prod_le_prod (fun i _ => Finset.sum_nonneg (fun m _ => hψnn _ _))
+            refine Finset.prod_le_prod₀ (fun i _ => Finset.sum_nonneg (fun m _ => hψnn _ _))
               (fun i _ => ?_)
             have hsub2 : Finset.Icc (-(1 : ℤ)) (N : ℤ) ⊆ Finset.Icc (-(N : ℤ)) (N : ℤ) := by
               intro m hm

@@ -941,9 +941,9 @@ lemma logDeriv_LFunction_re_lower_of_ne_one :
       logDeriv (LFunction χ.primitiveCharacter) (σ : ℂ) +
         ∑ p ∈ N.primeFactors, logDeriv (fun s : ℂ =>
           1 - ((χ.primitiveCharacter (p : ZMod χ.conductor) : ℂ)) * (p : ℂ) ^ (-s)) (σ : ℂ) := by
-    rw [hfun, logDeriv_mul _ hψ_ne hprod_ne hdiffψ hdiffprod]
+    rw [hfun, logDeriv_fun_mul _ hψ_ne hprod_ne hdiffψ hdiffprod]
     congr 1
-    rw [logDeriv_prod]
+    rw [logDeriv_fun_prod]
     · intro p hp
       exact hfactor_ne p hp
     · intro p hp

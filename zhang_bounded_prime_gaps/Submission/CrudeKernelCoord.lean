@@ -173,7 +173,7 @@ theorem coordProduct_norm_le (q n : ℕ) {k : ℕ} {L : ℝ} (hL : 0 < L)
       (∏ p ∈ (n.primesBelow).filter (fun p => ¬ p ∣ q),
         (1 + 2 * (p : ℝ) ^ (-(1 + 1 / L)) + (p : ℝ) ^ (-(1 + 2 * (1 / L))))) ^ k := by
   rw [Complex.norm_prod, ← Finset.prod_pow]
-  refine Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i hi => ?_)
+  refine Finset.prod_le_prod₀ (fun i _ => norm_nonneg _) (fun i hi => ?_)
   exact coordLocalK_norm_le (two_le_of_mem_primesBelow (Finset.mem_of_mem_filter i hi)) hL a b ha hb
 
 /-- **Crude kernel bound (P8 p. 19).**  There is `C > 0` such that for all large

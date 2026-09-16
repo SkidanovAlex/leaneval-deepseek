@@ -323,7 +323,7 @@ theorem divisor_subBall_factor {f : ℂ → ℂ} {c : ℂ} {R A : ℝ} (hR : 0 <
     have hφc_pos : 0 < ‖φ c‖ := norm_pos_iff.mpr hφc_ne
     have hfactor_le : ‖φ c‖ ≤ ‖φ w‖ := by
       rw [hnormφ c, hnormφ w]
-      apply Finset.prod_le_prod
+      apply Finset.prod_le_prod₀
       · intro u hu
         exact zpow_nonneg (norm_nonneg _) (d u)
       · intro u hu

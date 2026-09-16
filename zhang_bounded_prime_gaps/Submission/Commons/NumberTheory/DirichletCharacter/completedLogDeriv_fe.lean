@@ -60,7 +60,7 @@ whenever both completed L-values in question are nonzero.
 Derivation: differentiate
 `completedLFunction χ s = (N:ℂ)^(1/2 - s) * χ.rootNumber * completedLFunction χ⁻¹ (1 - s)`
 (`Commons.NumberTheory.DirichletCharacter.completedLFunction_eq`), using
-`logDeriv_mul`, the log-derivative `-log N` of the cpow factor, and the chain rule for the
+`logDeriv_fun_mul`, the log-derivative `-log N` of the cpow factor, and the chain rule for the
 composition `s ↦ 1 - s` (its log-derivative contribution is
 `-logDeriv (completedLFunction χ⁻¹) (1 - s)` since `deriv (1 - s) = -1`). -/
 theorem completedLogDeriv_fe {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
@@ -199,7 +199,7 @@ theorem completedLogDeriv_fe {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       simpa [mul_comm] using hld
     have hmain : logDeriv (fun z : ℂ => A z * C (1 - z)) s =
         -log (N : ℂ) - logDeriv C (1 - s) := by
-      have hmul := logDeriv_mul (x := s) (f := A) (g := fun z : ℂ => C (1 - z))
+      have hmul := logDeriv_fun_mul (x := s) (f := A) (g := fun z : ℂ => C (1 - z))
         hAs0 hCs0 hdA hdcomp
       rw [hlogA, hlogcomp, hlogf1] at hmul
       simpa [sub_eq_add_neg] using hmul

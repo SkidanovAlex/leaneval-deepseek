@@ -29,13 +29,11 @@ private lemma beta_interval_aux (a b : ℕ) :
         ((-((↑(a + 1) : ℝ) * (1 - x) ^ a)) * x ^ (b + 1) +
           (1 - x) ^ (a + 1) * ((↑(b + 1) : ℝ) * x ^ b)) x := by
       convert h1.mul h2 using 1
-      · ext y; simp
       all_goals try rfl
     have h4 : HasDerivAt (fun y : ℝ => -((1 - y) ^ (a + 1) * y ^ (b + 1)))
         (-((-((↑(a + 1) : ℝ) * (1 - x) ^ a)) * x ^ (b + 1) +
           (1 - x) ^ (a + 1) * ((↑(b + 1) : ℝ) * x ^ b))) x := by
       convert h3.neg using 1
-      · ext y; simp
       all_goals try rfl
     have hval : -((-((↑(a + 1) : ℝ) * (1 - x) ^ a)) * x ^ (b + 1) +
         (1 - x) ^ (a + 1) * ((↑(b + 1) : ℝ) * x ^ b)) =

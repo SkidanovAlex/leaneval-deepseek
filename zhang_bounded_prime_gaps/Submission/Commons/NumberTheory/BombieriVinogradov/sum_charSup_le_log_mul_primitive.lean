@@ -174,7 +174,7 @@ lemma primeFactors_card_le_log (q : ℕ) (hq : 1 ≤ q) :
   have h2log : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hprod : (2 : ℕ) ^ q.primeFactors.card ≤ ∏ p ∈ q.primeFactors, p := by
     rw [(Finset.prod_const (s := q.primeFactors) (2 : ℕ)).symm]
-    exact Finset.prod_le_prod (fun p _ => by norm_num)
+    exact Finset.prod_le_prod₀ (fun p _ => by norm_num)
       (fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le)
   have hdvd : (∏ p ∈ q.primeFactors, p) ∣ q := Nat.prod_primeFactors_dvd q
   have hprodle : (∏ p ∈ q.primeFactors, p) ≤ q :=

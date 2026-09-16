@@ -213,7 +213,7 @@ private lemma coprime_recip_bound (d N : ℕ) :
       · apply Finset.prod_nonneg
         intro p _
         by_cases h : p ∣ d <;> simp [h]
-      · apply Finset.prod_le_one
+      · apply Finset.prod_le_one₀
         · intro p _; by_cases h : p ∣ d <;> simp [h]
         · intro p _; by_cases h : p ∣ d <;> simp [h]
     have hnonneg : 0 ≤ ∑ k ∈ Finset.Icc 1 N,
@@ -248,7 +248,7 @@ theorem coprime_recip_moebius_sum_bound (d N : ℕ) :
   have hprod : (1 : ℝ) ≤ ∏ p ∈ d.primeFactors, (p : ℝ) / ((p : ℝ) - 1) := by
     have h1 : (∏ p ∈ d.primeFactors, (1 : ℝ))
         ≤ ∏ p ∈ d.primeFactors, (p : ℝ) / ((p : ℝ) - 1) := by
-      apply Finset.prod_le_prod
+      apply Finset.prod_le_prod₀
       · intro p _; norm_num
       · intro p hp
         have hp2 : (2 : ℝ) ≤ (p : ℝ) := by

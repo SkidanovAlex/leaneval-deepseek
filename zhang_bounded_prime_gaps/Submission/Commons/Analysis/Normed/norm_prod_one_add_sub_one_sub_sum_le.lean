@@ -21,7 +21,7 @@ theorem norm_prod_one_add_sub_one_le_pow {ι : Type*} (s : Finset ι) (f : ι �
       calc
         ‖∏ i ∈ t, (1 + f i)‖ ≤ ∏ i ∈ t, ‖1 + f i‖ := Finset.norm_prod_le t _
         _ ≤ ∏ i ∈ t, (1 + B) := by
-              apply Finset.prod_le_prod
+              apply Finset.prod_le_prod₀
               · intro i hi; positivity
               · intro i hi
                 calc ‖1 + f i‖ ≤ ‖(1 : ℂ)‖ + ‖f i‖ := norm_add_le 1 (f i)

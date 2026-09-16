@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 namespace Commons.MeasureTheory.Integral
 

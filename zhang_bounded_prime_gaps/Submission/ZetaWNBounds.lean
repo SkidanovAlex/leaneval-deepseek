@@ -153,7 +153,7 @@ lemma perPrime_norm_le (p : ℕ) (hp2 : 2 ≤ p) (hs : 1 < s.re) :
 /-- A finite product of reals `≥ 1` is `≥ 1`. -/
 lemma one_le_prod_of_forall_one_le (t : Finset ℕ) (f : ℕ → ℝ)
     (hf : ∀ p ∈ t, 1 ≤ f p) : 1 ≤ ∏ p ∈ t, f p := by
-  have h := Finset.prod_le_prod (s := t) (f := fun _ : ℕ => (1 : ℝ)) (g := f)
+  have h := Finset.prod_le_prod₀ (s := t) (f := fun _ : ℕ => (1 : ℝ)) (g := f)
     (fun i _ => by norm_num) (fun i hi => hf i hi)
   simpa using h
 
@@ -197,7 +197,7 @@ lemma partialProduct_norm_le (q n : ℕ) (hs : 1 < s.re) :
     ‖∏ p ∈ (n.primesBelow).filter (fun p => ¬ p ∣ q), (1 - (p : ℂ) ^ (-s))⁻¹‖ ≤
       ‖∏ p ∈ n.primesBelow, (1 - (p : ℂ) ^ (-(s.re : ℂ)))⁻¹‖ := by
   rw [Complex.norm_prod, Complex.norm_prod]
-  refine (Finset.prod_le_prod (s := (n.primesBelow).filter (fun p : ℕ => ¬ p ∣ q))
+  refine (Finset.prod_le_prod₀ (s := (n.primesBelow).filter (fun p : ℕ => ¬ p ∣ q))
     (f := fun p : ℕ => ‖(1 - (p : ℂ) ^ (-s))⁻¹‖)
     (g := fun p : ℕ => ‖(1 - (p : ℂ) ^ (-(s.re : ℂ)))⁻¹‖)
     (fun i _ => norm_nonneg _) (fun i hi => ?_)).trans ?_
@@ -211,7 +211,7 @@ lemma partialInvProduct_norm_le (q n : ℕ) (hs : 1 < s.re) :
     ‖∏ p ∈ (n.primesBelow).filter (fun p => ¬ p ∣ q), (1 - (p : ℂ) ^ (-s))‖ ≤
       ‖∏ p ∈ n.primesBelow, (1 - (p : ℂ) ^ (-(s.re : ℂ)))⁻¹‖ := by
   rw [Complex.norm_prod, Complex.norm_prod]
-  refine (Finset.prod_le_prod (s := (n.primesBelow).filter (fun p : ℕ => ¬ p ∣ q))
+  refine (Finset.prod_le_prod₀ (s := (n.primesBelow).filter (fun p : ℕ => ¬ p ∣ q))
     (f := fun p : ℕ => ‖1 - (p : ℂ) ^ (-s)‖)
     (g := fun p : ℕ => ‖(1 - (p : ℂ) ^ (-(s.re : ℂ)))⁻¹‖)
     (fun i _ => norm_nonneg _) (fun i hi => ?_)).trans ?_
