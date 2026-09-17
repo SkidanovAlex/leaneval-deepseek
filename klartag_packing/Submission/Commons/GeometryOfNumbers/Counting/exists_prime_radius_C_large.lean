@@ -1,0 +1,119 @@
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+
+namespace Commons.GeometryOfNumbers.Counting
+
+open Filter
+
+/-- For `d ≥ 2`, `0 < ω ≤ 1` and `C ≥ 4` there is a prime `q` and a radius `R` with
+`0 < R`, `2R < q`, `C ω R^d = q`, `(R + √d/2)^d ω ≤ q/3`, and `d^{3/2} ≤ R`.
+
+The construction is the same as for `exists_prime_radius_C`: pick a prime `q` beyond a
+threshold dictated by the geometric inequality, and set `R = (q/(C ω))^{1/d}`.  The extra
+conjunct `d^{3/2} ≤ R` is obtained by taking the threshold to dominate `d^{3/2}`. -/
+theorem exists_prime_radius_C_large {d : ℕ} (hd : 2 ≤ d) {ω : ℝ} (hω : 0 < ω) (hω1 : ω ≤ 1)
+    {C : ℝ} (hC : 4 ≤ C) :
+    ∃ q : ℕ, q.Prime ∧ ∃ R : ℝ, 0 < R ∧ 2 * R < (q : ℝ) ∧ C * ω * R ^ d = (q : ℝ) ∧
+      (R + Real.sqrt (d : ℝ) / 2) ^ d * ω ≤ (q : ℝ) / 3 ∧ (d : ℝ) ^ (3 / 2 : ℝ) ≤ R := by
+  have hdne : d ≠ 0 := by omega
+  have hCpos : 0 < C := by linarith
+  have hCωpos : 0 < C * ω := mul_pos hCpos hω
+  have hC3 : (4 : ℝ) / 3 ≤ C / 3 := by linarith
+  -- Step 1: a radius threshold beyond which the geometric inequality holds.
+  have htend : Tendsto (fun R : ℝ => (1 + (Real.sqrt (d : ℝ) / 2) / R) ^ d) atTop (nhds 1) := by
+    have h1 : Tendsto (fun R : ℝ => (Real.sqrt (d : ℝ) / 2) / R) atTop (nhds 0) := by
+      simpa [div_eq_mul_inv] using tendsto_inv_atTop_zero.const_mul (Real.sqrt (d : ℝ) / 2)
+    have h2 : Tendsto (fun R : ℝ => 1 + (Real.sqrt (d : ℝ) / 2) / R) atTop (nhds (1 + 0)) :=
+      tendsto_const_nhds.add h1
+    have h3 : Tendsto (fun R : ℝ => (1 + (Real.sqrt (d : ℝ) / 2) / R) ^ d) atTop
+        (nhds (1 : ℝ)) := by
+      simpa using h2.pow d
+    exact h3
+  have hev : ∀ᶠ R in atTop, (1 + (Real.sqrt (d : ℝ) / 2) / R) ^ d < 4 / 3 :=
+    htend.eventually (isOpen_Iio.mem_nhds (by norm_num : (1 : ℝ) < 4 / 3))
+  obtain ⟨R1a, hR1a⟩ := eventually_atTop.1 hev
+  -- Step 2: choose the threshold, also forcing `d^{3/2} ≤ R` and `2R < q`.
+  set R1 : ℝ := max (max R1a (1 / (2 * ω) + 1)) ((d : ℝ) ^ (3 / 2 : ℝ)) with hR1def
+  have hR1_ge_R1a : R1a ≤ R1 := by
+    rw [hR1def]; exact le_trans (le_max_left _ _) (le_max_left _ _)
+  have hR1_ge_inv : 1 / (2 * ω) + 1 ≤ R1 := by
+    rw [hR1def]; exact le_trans (le_max_right _ _) (le_max_left _ _)
+  have hR1_ge_T : (d : ℝ) ^ (3 / 2 : ℝ) ≤ R1 := by
+    rw [hR1def]; exact le_max_right _ _
+  have hR1pos : 0 < R1 := lt_of_lt_of_le (by positivity) hR1_ge_inv
+  have hR1_ge1 : 1 ≤ R1 := by
+    have : (0 : ℝ) < 1 / (2 * ω) := by positivity
+    linarith [hR1_ge_inv, this]
+  -- Step 3: choose a large enough prime.
+  obtain ⟨n, hn⟩ := exists_nat_ge (C * ω * R1 ^ d)
+  obtain ⟨q, hqn, hqprime⟩ := Nat.exists_infinite_primes n
+  have hqT : C * ω * R1 ^ d ≤ (q : ℝ) := le_trans hn (by exact_mod_cast hqn)
+  have hqpos : 0 < (q : ℝ) := by exact_mod_cast hqprime.pos
+  -- Step 4: define the radius R and show it dominates R1.
+  set R : ℝ := ((q : ℝ) / (C * ω)) ^ ((d : ℝ)⁻¹) with hRdef
+  have hxpos : 0 < (q : ℝ) / (C * ω) := by positivity
+  have hRpos : 0 < R := by rw [hRdef]; exact Real.rpow_pos_of_pos hxpos _
+  have hRpow : R ^ d = (q : ℝ) / (C * ω) := by
+    rw [hRdef]
+    exact Real.rpow_inv_natCast_pow (le_of_lt hxpos) hdne
+  have hR1d_le : R1 ^ d ≤ (q : ℝ) / (C * ω) := by
+    rw [le_div_iff₀ hCωpos, mul_comm]
+    exact hqT
+  have hR_ge_R1 : R1 ≤ R := by
+    rw [hRdef]
+    have h := Real.rpow_le_rpow (pow_nonneg (le_of_lt hR1pos) d) hR1d_le
+      (by positivity : (0 : ℝ) ≤ (d : ℝ)⁻¹)
+    rwa [Real.pow_rpow_inv_natCast (le_of_lt hR1pos) hdne] at h
+  have hR_ge_R1a : R1a ≤ R := le_trans hR1_ge_R1a hR_ge_R1
+  have hR_ge_T : (d : ℝ) ^ (3 / 2 : ℝ) ≤ R := le_trans hR1_ge_T hR_ge_R1
+  -- Step 5: `2R < q`.
+  have hR_gt_inv : 1 / (2 * ω) < R := by
+    have hle : 1 / (2 * ω) + 1 ≤ R := le_trans hR1_ge_inv hR_ge_R1
+    linarith
+  have hR_ge1 : 1 ≤ R := le_trans hR1_ge1 hR_ge_R1
+  have hdecomp : R ^ d = R ^ (d - 1) * R := by
+    conv_lhs => rw [show d = (d - 1) + 1 by omega]
+    rw [pow_succ]
+  have hRd1_ge_R : R ≤ R ^ (d - 1) := by
+    have h := pow_le_pow_right₀ hR_ge1 (by omega : 1 ≤ d - 1)
+    simpa using h
+  have h4ωR_gt2 : 2 < 4 * ω * R := by
+    have h1 : 1 < R * (2 * ω) := (div_lt_iff₀ (by positivity : (0 : ℝ) < 2 * ω)).mp hR_gt_inv
+    nlinarith
+  have hlt2 : 2 < C * ω * R ^ (d - 1) := by
+    have h4C : 4 * ω ≤ C * ω := mul_le_mul_of_nonneg_right hC (le_of_lt hω)
+    have h4R : 4 * ω * R ≤ 4 * ω * R ^ (d - 1) :=
+      mul_le_mul_of_nonneg_left hRd1_ge_R (by positivity : (0 : ℝ) ≤ 4 * ω)
+    have hCR : 4 * ω * R ^ (d - 1) ≤ C * ω * R ^ (d - 1) :=
+      mul_le_mul_of_nonneg_right h4C (by positivity : (0 : ℝ) ≤ R ^ (d - 1))
+    linarith [h4ωR_gt2, h4R, hCR]
+  have h2R_lt : 2 * R < C * ω * R ^ d := by
+    have h := mul_lt_mul_of_pos_right hlt2 hRpos
+    have heq : (C * ω * R ^ (d - 1)) * R = C * ω * R ^ d := by rw [hdecomp]; ring
+    linarith [h, heq]
+  have hqd : C * ω * R ^ d = (q : ℝ) := by
+    rw [hRpow]; field_simp
+  have h2Rq : 2 * R < (q : ℝ) := by rw [← hqd]; exact h2R_lt
+  -- Step 6: the geometric inequality.
+  have hgeom : (1 + (Real.sqrt (d : ℝ) / 2) / R) ^ d < 4 / 3 := hR1a R hR_ge_R1a
+  have hratio : (R + Real.sqrt (d : ℝ) / 2) ^ d / R ^ d < 4 / 3 := by
+    have hfac : (1 + (Real.sqrt (d : ℝ) / 2) / R) = (R + Real.sqrt (d : ℝ) / 2) / R := by
+      field_simp
+    rw [hfac, div_pow] at hgeom
+    exact hgeom
+  have h3 : 3 * (R + Real.sqrt (d : ℝ) / 2) ^ d < 4 * R ^ d := by
+    have h := (div_lt_div_iff₀ (pow_pos hRpos d) (by norm_num : (0 : ℝ) < 3)).mp hratio
+    linarith
+  have hineq : (R + Real.sqrt (d : ℝ) / 2) ^ d * ω ≤ (q : ℝ) / 3 := by
+    have hRdn : (0 : ℝ) ≤ R ^ d := pow_nonneg (le_of_lt hRpos) d
+    have h6 : (R + Real.sqrt (d : ℝ) / 2) ^ d ≤ (4 / 3) * R ^ d := by linarith [h3]
+    have h7 : (4 / 3) * R ^ d ≤ (C / 3) * R ^ d := mul_le_mul_of_nonneg_right hC3 hRdn
+    have h8 : (R + Real.sqrt (d : ℝ) / 2) ^ d ≤ (C / 3) * R ^ d := le_trans h6 h7
+    have h9 : (R + Real.sqrt (d : ℝ) / 2) ^ d * ω ≤ ((C / 3) * R ^ d) * ω :=
+      mul_le_mul_of_nonneg_right h8 (le_of_lt hω)
+    have heq2 : ((C / 3) * R ^ d) * ω = (q : ℝ) / 3 := by rw [← hqd]; ring
+    rw [heq2] at h9
+    exact h9
+  exact ⟨q, hqprime, R, hRpos, h2Rq, hqd, hineq, hR_ge_T⟩
+
+end Commons.GeometryOfNumbers.Counting
