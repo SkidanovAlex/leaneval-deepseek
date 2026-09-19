@@ -16,6 +16,7 @@ import Submission.CertSsum49Row14
 import Submission.CertSsum49Row15
 import Submission.CertSsum49Row16
 import Submission.CertSsumAll
+import Submission.CertIArith
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

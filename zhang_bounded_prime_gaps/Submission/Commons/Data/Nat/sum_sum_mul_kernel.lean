@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Module.BigOperators
+import Submission.Commons.Data.Nat.packed_sparse_block_zero
 
 namespace Commons.Data.Nat
 

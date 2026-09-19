@@ -2,6 +2,7 @@ import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_fe
 import Submission.Commons.NumberTheory.DirichletCharacter.zerosInStrip
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_tight
+import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_neg_one_re_tight
 
 open Complex DirichletCharacter
 open scoped Real

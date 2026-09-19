@@ -3,6 +3,7 @@ import Submission.KernelTail
 import Submission.ZetaWNBounds
 import Submission.ZetaRatio
 import Submission.ZetaRatioPole
+import Submission.CrudeKernelCoord
 
 open scoped BigOperators Topology
 open Filter

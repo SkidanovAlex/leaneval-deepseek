@@ -1,4 +1,5 @@
 import Mathlib
+import Submission.SlabDP
 
 /-!
 # The combinatorial core of the variational (numerics) computation

@@ -1,5 +1,6 @@
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Submission.Commons.NumberTheory.DirichletCharacter.zerosInStrip
+import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_neg_one_tight
 
 noncomputable section
 

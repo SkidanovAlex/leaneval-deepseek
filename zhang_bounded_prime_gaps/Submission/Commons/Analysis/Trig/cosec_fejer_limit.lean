@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Cotangent
+import Submission.Commons.Analysis.TensorApprox.sum_univ_pi_prod
 
 namespace Commons.Analysis.Trig
 

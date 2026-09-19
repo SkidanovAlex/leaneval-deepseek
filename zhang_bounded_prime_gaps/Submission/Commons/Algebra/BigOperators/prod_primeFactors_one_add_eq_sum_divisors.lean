@@ -1,5 +1,6 @@
 import Mathlib.Data.Nat.GCD.BigOperators
 import Mathlib.Data.Nat.Squarefree
+import Submission.CertJTabs
 
 open scoped BigOperators
 open Finset

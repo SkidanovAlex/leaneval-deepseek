@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.LSeries.Dirichlet
+import Submission.Commons.NumberTheory.Zeta.logDeriv_sub_pole_analyticAt
 
 noncomputable section
 

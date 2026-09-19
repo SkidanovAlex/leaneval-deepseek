@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Deligne
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.norm_Gamma_le_norm_Gamma_re
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_vertical_lower_any
 
 open Complex
 set_option autoImplicit false

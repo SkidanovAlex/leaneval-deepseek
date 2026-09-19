@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_vertical_poly_lower
 
 namespace Commons.Analysis.SpecialFunctions.Log
 

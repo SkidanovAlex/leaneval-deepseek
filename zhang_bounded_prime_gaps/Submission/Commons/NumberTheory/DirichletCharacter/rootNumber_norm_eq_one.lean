@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
 import Submission.Commons.NumberTheory.DirichletCharacter.gaussSum_norm_sq_of_isPrimitive
+import Submission.Commons.NumberTheory.DirichletCharacter.re_completedLogDeriv_two_tight
 
 open Complex DirichletCharacter
 open scoped Real

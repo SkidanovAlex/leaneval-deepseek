@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.NumberTheory.SumPrimeReciprocals
 import Submission.Commons.Analysis.ExpLog.log_one_sub_le
+import Submission.Commons.NumberTheory.Mertens.first_mertens_bounded
 
 namespace Commons.NumberTheory.Mertens
 

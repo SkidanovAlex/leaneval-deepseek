@@ -2,6 +2,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
+import Submission.Commons.Analysis.SpecialFunctions.Frullani.complex_log
 
 noncomputable section
 

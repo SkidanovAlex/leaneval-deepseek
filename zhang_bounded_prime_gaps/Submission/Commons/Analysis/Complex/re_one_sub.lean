@@ -1,4 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
+import Submission.Commons.Analysis.Complex.partialX_log_norm
 
 namespace Commons.Analysis.Complex
 

@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Submission.Commons.Analysis.Asymptotics.log_rpow_le_const_mul_rpow
 
 open Filter
 open scoped Topology

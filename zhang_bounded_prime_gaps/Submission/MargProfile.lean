@@ -2,6 +2,7 @@ import Mathlib
 import Submission.CertAnalytic
 import Submission.M4Cert
 import Submission.Commons.Combinatorics.Embedding.sum_preimage_expOf_smul
+import Submission.CertSmoothJ
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

@@ -3,6 +3,7 @@ import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_kernel_le_t_div_12
 
 /-!
 # The nonnegativity kernel of the digamma log-remainder integral

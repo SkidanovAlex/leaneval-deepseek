@@ -1,6 +1,7 @@
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.Analysis.PSeries
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Commons.NumberTheory.Zeta.zeta_ne_zero_of_rh_gt_half
 
 open Complex Filter Set
 open scoped Topology BigOperators

@@ -4,6 +4,7 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Data.Int.Star
 import Mathlib.Data.Int.SuccPred
+import Submission.Commons.Analysis.ExponentialSums.sum_inv_sq_le_separated
 
 open Complex
 open scoped ComplexConjugate BigOperators

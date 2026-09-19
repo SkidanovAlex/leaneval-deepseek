@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.Trigonometric
+import Submission.Commons.Analysis.SpecialFunctions.Trigonometric.cosh_add_abs_sinh
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

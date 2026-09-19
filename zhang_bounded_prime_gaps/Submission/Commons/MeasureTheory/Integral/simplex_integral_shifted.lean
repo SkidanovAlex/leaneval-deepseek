@@ -1,5 +1,6 @@
 import Mathlib
 import Submission.Commons.MeasureTheory.Integral.simplex_integral_scaled
+import Submission.Commons.Analysis.Integral.volume_orthant_slab_card
 
 open MeasureTheory Set
 open scoped BigOperators ENNReal

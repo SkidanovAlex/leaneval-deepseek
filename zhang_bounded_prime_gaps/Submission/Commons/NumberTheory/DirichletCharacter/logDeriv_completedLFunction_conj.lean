@@ -1,5 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_conj
+import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_tight
 
 open Complex DirichletCharacter
 open scoped Real Topology

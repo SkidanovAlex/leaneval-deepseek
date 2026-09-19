@@ -1,6 +1,7 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Data.Nat.ChineseRemainder
 import Mathlib.Order.Interval.Finset.Nat
+import Submission.Commons.NumberTheory.CongruenceWindows.card_window_modEq_bounds
 
 namespace Commons.NumberTheory.CongruenceWindows
 

@@ -1,5 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.CauchyIntegral
+import Submission.Commons.Analysis.Complex.Harmonic.annulus_strong_max
 
 /-!
 # The cosine average of the real part of an analytic function

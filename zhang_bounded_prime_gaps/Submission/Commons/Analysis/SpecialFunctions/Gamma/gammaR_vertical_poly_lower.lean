@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_vertical_exp_decay_lower
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.norm_gammaR_le_norm_gammaR_re
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_real_growth
 
 open Complex
 open scoped Real

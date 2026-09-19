@@ -1,6 +1,7 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.NumberTheory.DirichletCharacter.Bounds
 import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Commons.NumberTheory.DirichletCharacter.char_eq_moebius_sum
 
 open scoped BigOperators
 set_option autoImplicit false

@@ -3,6 +3,7 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.TotallySplit
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.hasDerivAt_log_norm_Gamma_vertical
 
 /-!
 # An elementary explicit upper bound for the real log-Gamma function

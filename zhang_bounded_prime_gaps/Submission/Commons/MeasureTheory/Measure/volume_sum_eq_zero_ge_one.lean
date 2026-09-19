@@ -1,4 +1,5 @@
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+import Submission.Commons.MeasureTheory.Measure.volume_coord_eq_zero
 
 namespace Commons.MeasureTheory.Measure
 

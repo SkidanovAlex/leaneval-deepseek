@@ -1,6 +1,7 @@
 import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Submission.Commons.Algebra.Sum.sum_fiber_range_list
 
 open scoped Real BigOperators Interval
 set_option autoImplicit false

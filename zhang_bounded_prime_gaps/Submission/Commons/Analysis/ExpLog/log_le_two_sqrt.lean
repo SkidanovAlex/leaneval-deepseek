@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Submission.Commons.Analysis.ExpLog.log_le_rpow_div
 
 namespace Commons.Analysis.ExpLog
 

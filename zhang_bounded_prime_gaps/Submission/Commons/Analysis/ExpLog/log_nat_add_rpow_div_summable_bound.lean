@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SumIntegralComparisons
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Submission.Commons.Analysis.ExpLog.log_le_two_sqrt
 
 open scoped BigOperators
 

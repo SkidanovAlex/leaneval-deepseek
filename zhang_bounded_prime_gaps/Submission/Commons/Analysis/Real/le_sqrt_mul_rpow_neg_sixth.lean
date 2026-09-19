@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Commons.Analysis.Real.combinedBound_domination_full
 
 namespace Commons.Analysis.Real
 

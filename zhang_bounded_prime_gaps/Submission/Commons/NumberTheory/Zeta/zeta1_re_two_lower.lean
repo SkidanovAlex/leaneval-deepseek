@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.NumberTheory.Harmonic.ZetaAsymp
+import Submission.Commons.NumberTheory.Zeta.zeta1_logDeriv_pole_removal
 
 noncomputable section
 open Complex Filter Finset

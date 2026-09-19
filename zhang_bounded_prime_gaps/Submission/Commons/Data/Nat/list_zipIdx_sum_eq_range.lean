@@ -1,5 +1,6 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.Ring.Nat
+import Submission.Commons.Data.Nat.card_multiples_window_bound
 
 namespace Commons.Data.Nat
 

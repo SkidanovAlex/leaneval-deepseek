@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Mertens.mertens_lower
 import Submission.Commons.NumberTheory.Mertens.first_mertens_bounded
+import Submission.Commons.NumberTheory.Mertens.primeZeta_pole
 
 open Finset Real Filter MeasureTheory
 open scoped BigOperators Topology

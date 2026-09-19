@@ -2,6 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Exp
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_vertical_bound
 
 open scoped Real
 set_option autoImplicit false

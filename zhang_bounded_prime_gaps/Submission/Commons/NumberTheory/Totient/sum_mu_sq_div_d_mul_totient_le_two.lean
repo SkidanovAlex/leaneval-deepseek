@@ -5,6 +5,7 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
 import Mathlib.Tactic.NormNum.BigOperators
 import Submission.Commons.Algebra.BigOperators.prod_primeFactors_one_add_eq_sum_divisors
+import Submission.Commons.NumberTheory.Totient.sum_divisors_mu_sq_div_totient
 
 open scoped BigOperators
 open Finset

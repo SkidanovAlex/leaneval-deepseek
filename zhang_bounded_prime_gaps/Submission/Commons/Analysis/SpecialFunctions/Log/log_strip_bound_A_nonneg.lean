@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
+import Submission.Commons.Analysis.SpecialFunctions.Log.log_one_sub_le6
 
 namespace Commons.Analysis.SpecialFunctions.Log
 

@@ -1,4 +1,5 @@
 import Submission.CertJTabsSpec2
+import Submission.CertJTabsSpecP3
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

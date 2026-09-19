@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
+import Submission.Commons.Analysis.Fourier.dirichlet_integral
 
 open MeasureTheory Real Complex
 open scoped FourierTransform

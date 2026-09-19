@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
+import Submission.Commons.NumberTheory.BombieriVinogradov.lam4_cover_dyadic
 
 namespace Commons.NumberTheory.BombieriVinogradov
 

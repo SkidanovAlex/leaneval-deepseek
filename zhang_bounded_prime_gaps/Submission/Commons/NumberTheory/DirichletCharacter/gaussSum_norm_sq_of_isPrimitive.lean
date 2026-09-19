@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Fourier.ZMod
+import Submission.Commons.NumberTheory.DirichletCharacter.conductor_lift_primitive
 
 open Complex DirichletCharacter
 open scoped Real

@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_conj
 
 open scoped LSeries.notation
 

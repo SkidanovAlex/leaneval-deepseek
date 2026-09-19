@@ -1,5 +1,6 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_uniform_poly_strip
 
 namespace Commons.NumberTheory.DirichletCharacter
 

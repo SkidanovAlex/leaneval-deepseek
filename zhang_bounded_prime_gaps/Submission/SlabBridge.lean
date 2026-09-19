@@ -5,6 +5,7 @@ import Submission.Commons.NumberTheory.KroneckerSums.sum_fin12_ite_count_eq_sum_
 import Submission.Commons.NumberTheory.KroneckerSums.sum_prod_dedup_eq_sum_fin12_fin12
 import Submission.Commons.NumberTheory.KroneckerSums.sum_product_cons_zero
 import Submission.Commons.Data.List.dedup_count_pos_iff
+import Submission.SimplexMarginal
 
 set_option linter.unnecessarySeqFocus false
 

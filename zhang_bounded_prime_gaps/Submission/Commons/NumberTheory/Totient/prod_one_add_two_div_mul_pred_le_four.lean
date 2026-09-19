@@ -4,6 +4,7 @@ import Mathlib.Data.Nat.PrimeFin
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Tactic.NormNum.BigOperators
 import Mathlib.Tactic.NormNum.Prime
+import Submission.Commons.NumberTheory.SieveWindows.weighted_divisorSumProduct_window_eq_k
 
 namespace Commons.NumberTheory.Totient
 

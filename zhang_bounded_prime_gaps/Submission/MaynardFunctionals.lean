@@ -1,4 +1,5 @@
 import Mathlib
+import Submission.LocalFactorComparison
 
 open scoped BigOperators
 open MeasureTheory

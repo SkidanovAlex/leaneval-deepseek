@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_logDeriv_eq_neg_LSeries_vonMangoldt
 
 /-!
 # The Dirichlet series of `ζ(s) L(s,χ) L(s,ψ) L(s,χψ)` for quadratic `χ`, `ψ`

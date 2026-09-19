@@ -2,6 +2,7 @@ import Mathlib
 import Submission.BoundedGaps
 import Submission.Commons.NumberTheory.CongruenceWindows.exists_residue_class_prod
 import Submission.Commons.NumberTheory.Chebyshev.theta_le_log3_mul
+import Submission.Rescale
 
 open Finset Filter
 open scoped BigOperators Topology

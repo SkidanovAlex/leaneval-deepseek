@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
 import Submission.Commons.NumberTheory.BombieriVinogradov.indicator_char
+import Submission.Commons.NumberTheory.BombieriVinogradov.mean_value_small_modulus_bound
 
 open scoped BigOperators
 

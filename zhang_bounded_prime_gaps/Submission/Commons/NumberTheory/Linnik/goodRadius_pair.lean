@@ -1,5 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Linnik.completedL_zeroCount
+import Submission.Commons.NumberTheory.Linnik.ell_pow_div_self_tendsto_zero
 
 open Complex DirichletCharacter Metric Set Function
 open scoped Real ENNReal Topology

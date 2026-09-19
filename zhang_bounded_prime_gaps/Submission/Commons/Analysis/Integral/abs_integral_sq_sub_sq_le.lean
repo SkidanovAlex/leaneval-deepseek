@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Submission.Commons.Analysis.Integral.abs_integral_Ioi_le_thin
 
 open MeasureTheory
 

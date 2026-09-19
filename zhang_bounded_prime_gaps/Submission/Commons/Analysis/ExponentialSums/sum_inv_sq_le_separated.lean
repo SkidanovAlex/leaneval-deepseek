@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.NumberTheory.ZetaValues
+import Submission.Commons.Analysis.ExponentialSums.second_derivative_test
 
 namespace Commons.Analysis.ExponentialSums
 

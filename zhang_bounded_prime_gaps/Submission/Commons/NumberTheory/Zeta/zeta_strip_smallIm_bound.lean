@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Zeta.zeta_eq_emN
 import Submission.Commons.NumberTheory.Zeta.emTerm_tsum_le
+import Submission.Commons.NumberTheory.Zeta.zeta_strip_growth
 
 open Complex Filter Set
 open scoped Topology BigOperators

@@ -1,4 +1,5 @@
 import Mathlib.MeasureTheory.Integral.Prod
+import Submission.Commons.MeasureTheory.Integral.integral_fintype_prod_indicator_Ioi
 
 namespace Commons.MeasureTheory.Integral
 

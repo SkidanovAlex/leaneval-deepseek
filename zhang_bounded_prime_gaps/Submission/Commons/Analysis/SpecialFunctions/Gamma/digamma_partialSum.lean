@@ -1,5 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_eq_lim_log_sub_sum_inv
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_kernel_exp_integrable
 
 noncomputable section
 

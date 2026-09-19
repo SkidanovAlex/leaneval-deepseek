@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_tight
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_le
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_deriv_bound_near_one_uniform
 
 open Complex DirichletCharacter
 open scoped Real Topology

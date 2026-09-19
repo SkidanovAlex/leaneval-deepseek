@@ -2,6 +2,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Tactic.NormNum.RealSqrt
+import Submission.Commons.Analysis.Perron.bilinear_perron_bound
 
 open Real
 open scoped Real

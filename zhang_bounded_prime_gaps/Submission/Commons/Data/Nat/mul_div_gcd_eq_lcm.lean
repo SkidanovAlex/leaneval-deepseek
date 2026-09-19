@@ -1,4 +1,5 @@
 import Mathlib.Algebra.GroupWithZero.Nat
+import Submission.Commons.Data.Nat.list_zipIdx_sum_eq_range
 
 namespace Commons.Data.Nat
 

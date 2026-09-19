@@ -1,6 +1,7 @@
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Submission.Commons.Data.Nat.sum_digits_decomp
+import Submission.Commons.Data.Nat.packed_mul3_block_le
 
 namespace Commons.Data.Nat
 

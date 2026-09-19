@@ -5,6 +5,7 @@ import Submission.PoleBound
 import Submission.ZFourier
 import Submission.Commons.Analysis.Schwartz.integral_norm_compl_abs_le
 import Submission.Commons.Analysis.Schwartz.integral_norm_compl_mul_rpow_le
+import Submission.KernelSum
 
 open scoped BigOperators Topology FourierTransform SchwartzMap
 open Filter MeasureTheory

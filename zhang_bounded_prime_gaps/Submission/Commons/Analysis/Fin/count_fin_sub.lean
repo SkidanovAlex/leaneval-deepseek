@@ -4,6 +4,7 @@ import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.Data.Int.Interval
+import Submission.Commons.Analysis.ExponentialSums.vdc_second_moment
 
 namespace Commons.Analysis.Fin
 

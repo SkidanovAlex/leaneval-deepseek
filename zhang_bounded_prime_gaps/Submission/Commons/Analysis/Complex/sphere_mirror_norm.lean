@@ -1,4 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
+import Submission.Commons.Analysis.Complex.sphere_mirror_log
 
 namespace Commons.Analysis.Complex
 

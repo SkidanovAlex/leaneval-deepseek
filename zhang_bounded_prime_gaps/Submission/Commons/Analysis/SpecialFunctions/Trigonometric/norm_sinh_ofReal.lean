@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.Trigonometric
+import Submission.Commons.Analysis.SpecialFunctions.Trigonometric.norm_cosh_ofReal
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

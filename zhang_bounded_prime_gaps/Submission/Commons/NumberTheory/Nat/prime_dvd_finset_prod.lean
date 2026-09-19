@@ -1,5 +1,6 @@
 import Mathlib.Algebra.BigOperators.Associated
 import Mathlib.Data.Nat.Prime.Defs
+import Submission.Commons.NumberTheory.Nat.coprime_iff_forall_primeFactors_not_dvd
 
 namespace Commons.NumberTheory.Nat
 

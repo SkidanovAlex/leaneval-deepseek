@@ -24,6 +24,7 @@ import Mathlib.NumberTheory.ArithmeticFunction.Liouville
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.DirichletCharacter.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
+import Submission.Commons.NumberTheory.Mertens.exp_primeZetaLog_eq_riemannZeta_re
 
 open Finset Real Filter Asymptotics MeasureTheory
 open scoped ComplexConjugate Chebyshev Topology

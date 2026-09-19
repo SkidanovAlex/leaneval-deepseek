@@ -3,6 +3,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.Complex.LocallyUniformLimit
 import Mathlib.Analysis.PSeries
+import Submission.Commons.NumberTheory.Zeta.cpow_shift_tendsto_zero
 
 open Complex Filter Set intervalIntegral MeasureTheory
 open scoped Topology BigOperators

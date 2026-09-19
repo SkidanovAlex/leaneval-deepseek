@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
+import Submission.Commons.NumberTheory.ArithmeticFunction.vaughan_coefficient_bound
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
+import Submission.Commons.NumberTheory.Mertens.corr_partial_sums_tendsto_tsum
 
 namespace Commons.NumberTheory.Mertens
 

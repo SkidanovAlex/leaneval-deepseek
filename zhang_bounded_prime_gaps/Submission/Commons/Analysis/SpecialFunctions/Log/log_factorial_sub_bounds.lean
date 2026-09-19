@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SumIntegralComparisons
+import Submission.Commons.Analysis.SpecialFunctions.Log.half_curve_log_le
 
 namespace Commons.Analysis.SpecialFunctions.Log
 

@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Submission.Commons.Analysis.Trig.cosec_fejer_limit
 
 namespace Commons.Analysis.TrigIntegrals
 

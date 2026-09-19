@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.zeroFactor_g
 import Submission.Commons.NumberTheory.Linnik.completedL_zeroCount
+import Submission.Commons.NumberTheory.Linnik.goodRadius_geometric
 
 open Complex Filter Function Metric MeromorphicOn Set Topology
 open scoped Real Topology BigOperators

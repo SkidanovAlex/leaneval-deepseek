@@ -1,5 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Submission.Commons.Analysis.Series.summable_log_div_sq_and_tsum_le_one
 
 open scoped Real BigOperators Topology
 open MeasureTheory Set Filter

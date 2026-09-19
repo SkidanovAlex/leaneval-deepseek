@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Submission.Commons.Analysis.Integral.exp_neg_mul_rpow_integrableOn_Ioi
 
 namespace Commons.Analysis.Integral
 

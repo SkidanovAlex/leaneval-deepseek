@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_log_norm_sub_le
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Submission.Commons.Analysis.Integral.abs_integral_sq_sub_sq_le
 
 namespace Commons.Analysis.Integral
 

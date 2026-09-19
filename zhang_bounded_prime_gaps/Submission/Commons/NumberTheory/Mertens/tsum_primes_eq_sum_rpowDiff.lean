@@ -3,6 +3,7 @@ import Mathlib.Analysis.PSeries
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Topology.GDelta.MetrizableSpace
 import Mathlib.Topology.Separation.CompletelyRegular
+import Submission.Commons.NumberTheory.Mertens.second_mertens_converges
 
 open scoped BigOperators Topology
 open Filter

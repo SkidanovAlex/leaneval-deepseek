@@ -1,4 +1,5 @@
 import Mathlib
+import Submission.Commons.Analysis.TensorApprox.exists_tensor_localization_box
 
 namespace Commons.Analysis.TensorApprox
 

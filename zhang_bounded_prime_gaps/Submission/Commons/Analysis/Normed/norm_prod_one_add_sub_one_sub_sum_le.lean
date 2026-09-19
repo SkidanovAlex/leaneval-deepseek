@@ -1,4 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
+import Submission.Commons.Analysis.Integral.inv_sqrt_sq_sum_integral_le
 
 namespace Commons.Analysis.Normed
 

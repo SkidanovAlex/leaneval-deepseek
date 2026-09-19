@@ -1,4 +1,5 @@
 import Submission.CertRowFn49
+import Submission.CertSsum49Row12
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

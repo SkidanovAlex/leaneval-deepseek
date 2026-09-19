@@ -3,6 +3,7 @@ import Mathlib.Algebra.EuclideanDomain.Field
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Submission.Commons.NumberTheory.BombieriVinogradov.indicator_char
 
 namespace Commons.NumberTheory.BombieriVinogradov
 

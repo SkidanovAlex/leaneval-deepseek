@@ -4,6 +4,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Int.CardIntervalMod
 import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.Data.Int.Star
+import Submission.Commons.Data.List.map_range_getD
 
 /-!
 # Cardinality of multiples in a window

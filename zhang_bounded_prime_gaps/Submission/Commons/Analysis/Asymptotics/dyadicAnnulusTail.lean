@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Submission.Commons.Analysis.Asymptotics.abel_tail_numeric_absorb
 
 /-!
 # Tail estimate for a dyadic annulus

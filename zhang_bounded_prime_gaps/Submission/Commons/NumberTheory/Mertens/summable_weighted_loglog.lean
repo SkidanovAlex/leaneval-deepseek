@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Submission.Commons.NumberTheory.Mertens.tsum_primes_eq_sum_rpowDiff
 import Submission.Commons.Analysis.ExpLog.log_le_rpow_div
+import Submission.Commons.NumberTheory.Mertens.summable_weighted_error
 
 open Filter Finset
 open scoped BigOperators Topology

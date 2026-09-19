@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Submission.Commons.Analysis.Asymptotics.tendsto_mul_rpow_mul_log_pow_zero
 
 namespace Commons.Analysis.Calculus
 

@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.NormNum.RealSqrt
+import Submission.Commons.Analysis.Asymptotics.poly_mul_exp_neg_sqrtLog_le
 
 open scoped Real BigOperators
 set_option autoImplicit false

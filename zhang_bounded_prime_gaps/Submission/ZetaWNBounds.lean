@@ -3,6 +3,7 @@ import Submission.ZetaWN
 import Submission.ZetaRatio
 import Submission.CrudeKernelBound
 import Submission.Commons.NumberTheory.Zeta.riemannZeta_norm_antitone_re
+import Submission.ZetaRatioPoleFamily
 
 open scoped BigOperators Topology
 open Filter

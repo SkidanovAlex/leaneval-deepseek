@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Submission.Commons.Data.Nat.sum_digits_decomp
+import Submission.Commons.Data.Nat.packed_sparse_block
 
 namespace Commons.Data.Nat
 

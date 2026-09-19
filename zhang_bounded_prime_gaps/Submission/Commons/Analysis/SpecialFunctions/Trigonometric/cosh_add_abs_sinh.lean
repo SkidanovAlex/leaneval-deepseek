@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_log_norm_sub_le_im
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

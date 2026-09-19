@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_S_integrable
 
 open Real Set MeasureTheory Filter
 open scoped Real Topology

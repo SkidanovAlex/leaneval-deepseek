@@ -1,4 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
+import Submission.Commons.Data.Finset.sum_Icc_eq_sum_log2_blocks
 
 namespace Commons.Data.Int.Finset
 

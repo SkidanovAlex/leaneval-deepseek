@@ -6,6 +6,7 @@ import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
 import Submission.Commons.NumberTheory.DirichletCharacter.norm_completedLFunction_vertical
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_real_growth
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.norm_gammaR_le_norm_gammaR_re
+import Submission.Commons.NumberTheory.KroneckerSums.sum_product_cons_zero
 
 open Complex DirichletCharacter
 open scoped Real

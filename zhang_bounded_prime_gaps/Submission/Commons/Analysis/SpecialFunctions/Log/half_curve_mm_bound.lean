@@ -4,6 +4,7 @@ import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Commons.Analysis.SpecialFunctions.Log.convex_combo_log_le
 
 /-!
 # Half-curve "mm" bound (Heath-Brown's Linnik exponent 5.5 development)

@@ -1,5 +1,6 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
+import Submission.Commons.NumberTheory.CongruenceWindows.filter_shift_system_class
 
 namespace Commons.NumberTheory.DirichletCharacter
 

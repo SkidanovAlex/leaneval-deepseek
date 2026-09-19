@@ -4,6 +4,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.TotallySplit
+import Submission.Commons.NumberTheory.Zeta.exists_norm_coordK_div_prod_locR_sub_one_le
 
 namespace Commons.NumberTheory.Zeta
 

@@ -2,6 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
+import Submission.Commons.Analysis.Fourier.cos_inv_one_add_sq_Ioi
 
 /-!
 # Dirichlet integral

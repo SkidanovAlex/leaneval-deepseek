@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.Totient
+import Submission.Commons.NumberTheory.Totient.totient_finset_prod
 
 namespace Commons.NumberTheory.Totient
 

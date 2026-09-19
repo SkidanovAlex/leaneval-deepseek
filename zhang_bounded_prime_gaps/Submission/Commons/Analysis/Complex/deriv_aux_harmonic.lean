@@ -1,6 +1,7 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import Submission.Commons.Analysis.Complex.cosAvg_harmonic
 
 open Complex
 open scoped BigOperators RealInnerProductSpace

@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Submission.Commons.Analysis.SpecialFunctions.Log.log_strip_bound_A_nonneg
 
 namespace Commons.Analysis.SpecialFunctions.Log
 

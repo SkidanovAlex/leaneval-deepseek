@@ -3,6 +3,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.Data.Int.Star
 import Mathlib.NumberTheory.ArithmeticFunction.Misc
+import Submission.Commons.NumberTheory.FriedlanderIwaniec.tau3_le_three_mul_sum
 
 namespace Commons.NumberTheory.FriedlanderIwaniec
 
