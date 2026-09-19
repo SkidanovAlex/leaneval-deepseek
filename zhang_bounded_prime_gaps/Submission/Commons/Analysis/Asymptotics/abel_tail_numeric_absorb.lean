@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Commons.Analysis.Asymptotics.abel_tail_bound_finite
 
 namespace Commons.Analysis.Asymptotics
 

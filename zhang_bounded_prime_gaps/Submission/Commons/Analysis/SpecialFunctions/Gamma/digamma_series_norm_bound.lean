@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.NumberTheory.Harmonic.Bounds
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_le
 
 open Complex
 open scoped Real BigOperators

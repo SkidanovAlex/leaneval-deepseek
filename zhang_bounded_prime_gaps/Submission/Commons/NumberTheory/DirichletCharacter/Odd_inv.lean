@@ -1,6 +1,5 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
-import Submission.Commons.NumberTheory.DirichletCharacter.L_lower_re_two_explicit
 
 namespace Commons.NumberTheory.DirichletCharacter
 

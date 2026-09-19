@@ -1,7 +1,6 @@
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
 import Mathlib.NumberTheory.ZetaValues
-import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_quadratic_triple_LSeries_coeffs_mixed
 
 open Complex DirichletCharacter
 open scoped BigOperators LSeries.notation ArithmeticFunction.Moebius

@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.polya_vinogradov
-import Submission.Commons.NumberTheory.BombieriVinogradov.vaughan_type1_lambda2_estimate
 
 open scoped BigOperators
 

@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Commons.NumberTheory.BombieriVinogradov.cleanBV_of_parts
 
 open Filter Finset intervalIntegral
 open scoped Real Topology BigOperators Interval

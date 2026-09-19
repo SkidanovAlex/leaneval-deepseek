@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.CertJLookup
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

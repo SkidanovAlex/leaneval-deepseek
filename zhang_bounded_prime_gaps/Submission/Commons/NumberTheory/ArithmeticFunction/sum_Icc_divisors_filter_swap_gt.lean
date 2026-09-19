@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.Divisors
-import Submission.Commons.NumberTheory.ArithmeticFunction.sum_Icc_divisors_filter_swap
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

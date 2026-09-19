@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.CategoryTheory.Countable
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Submission.Commons.MeasureTheory.Integral.integral_prod_indicator_cube_compl_le
 
 open MeasureTheory
 

@@ -1,7 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Commons.Analysis.Complex.re_one_sub_mirror
 
 open Complex MeasureTheory intervalIntegral
 open scoped Real Interval Topology ComplexConjugate

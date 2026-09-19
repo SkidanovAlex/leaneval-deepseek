@@ -1,7 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.SumIntegralComparisons
 import Submission.Commons.Analysis.ExpLog.log_le_two_sqrt
-import Submission.Commons.Analysis.ExpLog.sum_inv_Icc_le_log
 
 open scoped BigOperators
 open Finset MeasureTheory intervalIntegral

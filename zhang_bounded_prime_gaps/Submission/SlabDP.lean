@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.S2Reduction
 
 open scoped BigOperators
 open Finset

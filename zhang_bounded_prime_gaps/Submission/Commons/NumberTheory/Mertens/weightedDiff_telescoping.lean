@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Mertens.tsum_primes_eq_sum_rpowDiff
-import Submission.Commons.NumberTheory.Mertens.summable_weighted_loglog
 
 open scoped BigOperators Topology
 open Filter

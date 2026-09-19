@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.Nonvanishing
-import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_realZero_siegel_uniform
 
 noncomputable section
 open Complex Filter

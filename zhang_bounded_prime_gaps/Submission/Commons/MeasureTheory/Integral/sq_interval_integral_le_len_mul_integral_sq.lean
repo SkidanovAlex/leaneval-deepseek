@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Commons.MeasureTheory.Integral.marginal_simplex_integral
 
 open MeasureTheory
 open scoped Interval

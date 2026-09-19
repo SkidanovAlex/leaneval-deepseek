@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Theorem36i
 import Submission.SieveSupport
 import Submission.Commons.Analysis.Asymptotics.tendsto_mul_rpow_mul_log_pow_zero
-import Submission.TensorConvergence
 
 open scoped BigOperators Topology
 open Filter MeasureTheory

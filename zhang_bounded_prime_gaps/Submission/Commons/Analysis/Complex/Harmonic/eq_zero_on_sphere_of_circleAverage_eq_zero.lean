@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.MeasureTheory.Integral.CircleAverage
-import Submission.Commons.Analysis.Complex.Harmonic.annulus_preconnected
 
 open Complex MeasureTheory Metric Real Set Filter Topology
 open scoped Real Interval

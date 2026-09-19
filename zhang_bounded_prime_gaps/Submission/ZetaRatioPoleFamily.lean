@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.ZetaRatioPole
 import Submission.ZetaResidueUniform
-import Submission.PoleBound
 
 open scoped BigOperators Topology
 open Filter

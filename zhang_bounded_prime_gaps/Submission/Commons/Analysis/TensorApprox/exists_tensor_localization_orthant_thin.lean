@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Commons.Analysis.TensorApprox.exists_tensor_localization_orthant
 
 namespace Commons.Analysis.TensorApprox
 

@@ -1,7 +1,6 @@
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Data.Fintype.Fin
 import Mathlib.Data.Fintype.Perm
-import Submission.Commons.Analysis.Complex.jensenCarleman
 
 open Finset
 open scoped BigOperators

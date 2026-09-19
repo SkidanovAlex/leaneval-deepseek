@@ -3,7 +3,6 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Commons.Analysis.SpecialFunctions.Log.log_factorial_sub_bounds
 
 open scoped Topology
 

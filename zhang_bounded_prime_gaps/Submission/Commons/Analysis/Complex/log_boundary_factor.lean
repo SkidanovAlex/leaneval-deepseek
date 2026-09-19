@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.sphere_mirror_log
 import Submission.Commons.Analysis.Complex.zeroFactor_g
-import Submission.Commons.Analysis.Complex.logDeriv_sub_divisor_le
 
 noncomputable section
 

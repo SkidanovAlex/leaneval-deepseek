@@ -3,7 +3,6 @@ import Mathlib.Analysis.Complex.CauchyIntegral
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.Separation.CompletelyRegular
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_real_growth
 
 /-! # Vertical exponential decay of the Gamma function (Stirling-type bound)
 

@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.Divisors
-import Submission.Commons.NumberTheory.DivisorBound.pair_lcm_count_bound
 
 namespace Commons.NumberTheory.Divisors
 

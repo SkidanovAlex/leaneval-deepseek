@@ -6,7 +6,6 @@ import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.Analysis.Calculus.Deriv.Inv
-import Submission.Commons.Analysis.Fin.count_fin_sub
 
 noncomputable section
 

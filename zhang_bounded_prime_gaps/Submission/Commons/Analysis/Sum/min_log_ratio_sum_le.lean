@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.ExponentialBounds
-import Submission.Commons.Analysis.InfiniteSum.rpowDiff_loglog_add_log_tendsto
 
 open Finset
 open scoped BigOperators

@@ -1,7 +1,6 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
 import Mathlib.RingTheory.SimpleRing.Principal
-import Submission.Commons.NumberTheory.DirichletCharacter.norm_completedLFunction_vertical
 
 open scoped BigOperators
 set_option autoImplicit false

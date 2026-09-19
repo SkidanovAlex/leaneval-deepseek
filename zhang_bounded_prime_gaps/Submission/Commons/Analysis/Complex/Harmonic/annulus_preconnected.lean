@@ -2,7 +2,6 @@ import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.Convex
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Submission.Commons.Analysis.Calculus.hasDerivAt_integral_Ioi_of_continuous
 
 namespace Commons.Analysis.Complex.Harmonic
 

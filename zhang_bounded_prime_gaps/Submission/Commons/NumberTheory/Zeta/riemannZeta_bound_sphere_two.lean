@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.RiemannZeta
-import Submission.Commons.NumberTheory.Zeta.removedFactors_ratio_error
 
 namespace Commons.NumberTheory.Zeta
 

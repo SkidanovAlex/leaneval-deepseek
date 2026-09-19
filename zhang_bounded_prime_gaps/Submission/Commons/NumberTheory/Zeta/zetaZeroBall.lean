@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.ZetaZeros
-import Submission.Commons.NumberTheory.Zeta.zeta1_re_two_lower
 
 /-!
 # Zeros of the entire completion `riemannZeta₁` form a finite set in every closed ball

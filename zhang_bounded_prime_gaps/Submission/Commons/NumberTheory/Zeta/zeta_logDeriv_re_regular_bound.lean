@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_le
 import Submission.Commons.NumberTheory.Zeta.xi_logDeriv_re_lower
-import Submission.Commons.NumberTheory.Zeta.zeta1_growth_ball
 
 noncomputable section
 open Complex Filter

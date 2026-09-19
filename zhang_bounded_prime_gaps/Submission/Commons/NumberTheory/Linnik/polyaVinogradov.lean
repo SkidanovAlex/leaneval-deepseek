@@ -6,7 +6,6 @@ import Mathlib.NumberTheory.DirichletCharacter.Bounds
 import Mathlib.NumberTheory.Harmonic.Bounds
 import Submission.Commons.NumberTheory.DirichletCharacter.gaussSum_norm_sq_of_isPrimitive
 import Submission.Commons.NumberTheory.DirichletCharacter.interval_sum_bound
-import Submission.Commons.NumberTheory.DirichletCharacter.finsum_divisor_re_inv_sub_le
 
 open scoped BigOperators ComplexConjugate
 open Complex

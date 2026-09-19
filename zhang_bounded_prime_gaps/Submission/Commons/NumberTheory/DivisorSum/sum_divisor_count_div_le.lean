@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.NumberTheory.Harmonic.Bounds
-import Submission.Commons.NumberTheory.DivisorSum.sum_Icc_mul_fiber_regroup
 
 open scoped BigOperators
 open Finset

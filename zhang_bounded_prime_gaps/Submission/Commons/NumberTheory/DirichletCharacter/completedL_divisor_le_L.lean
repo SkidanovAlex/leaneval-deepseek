@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Meromorphic.NormalForm
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
-import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
 
 open Complex DirichletCharacter
 open scoped Real Topology

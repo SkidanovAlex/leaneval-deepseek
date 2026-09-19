@@ -3,7 +3,6 @@ import Submission.KernelLimit
 import Submission.CrudeKernelCoord
 import Submission.RealExpBounds
 import Submission.Commons.NumberTheory.Zeta.exists_norm_coordK_div_prod_locR_sub_one_le
-import Submission.KernelFun
 
 open scoped BigOperators Topology
 open Filter

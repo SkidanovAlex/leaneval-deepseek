@@ -1,6 +1,5 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
-import Submission.Commons.NumberTheory.DirichletCharacter.sum_characters_eq_sum_primitive_lifts
 
 namespace Commons.NumberTheory.DirichletCharacter
 

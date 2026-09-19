@@ -2,7 +2,6 @@ import Mathlib
 import Submission.PhiLemma41
 import Submission.MainSumPairwise
 import Submission.SieveSupport
-import Submission.GoodMainSumAsymptotic
 
 open scoped BigOperators Topology FourierTransform SchwartzMap
 open Filter MeasureTheory

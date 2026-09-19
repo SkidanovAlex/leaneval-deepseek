@@ -1,7 +1,6 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Data.Nat.GCD.BigOperators
 import Mathlib.Data.Nat.ModEq
-import Submission.Commons.NumberTheory.CongruenceWindows.exists_mem_Icc_mod_shift
 
 namespace Commons.NumberTheory.CongruenceWindows
 

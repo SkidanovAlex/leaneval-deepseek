@@ -12,7 +12,6 @@ import Mathlib.Data.Int.Star
 import Mathlib.MeasureTheory.Function.Floor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.ContDiff
 import Mathlib.Order.CompletePartialOrder
-import Submission.Commons.Analysis.ExpLog.tendsto_log_mul_sub_one_rpow
 
 set_option autoImplicit false
 set_option maxHeartbeats 0

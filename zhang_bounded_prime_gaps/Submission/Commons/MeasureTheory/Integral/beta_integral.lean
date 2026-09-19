@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Group.Ext
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Commons.Analysis.ExponentialSums.arithmetic_large_sieve
 
 open _root_.MeasureTheory intervalIntegral Set
 

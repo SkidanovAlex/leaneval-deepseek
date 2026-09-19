@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Commons.Analysis.Asymptotics.sum_range_neg_half_le
 
 namespace Commons.Analysis.Asymptotics
 

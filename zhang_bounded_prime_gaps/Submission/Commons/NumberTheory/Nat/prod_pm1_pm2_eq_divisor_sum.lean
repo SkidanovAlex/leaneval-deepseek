@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Commons.NumberTheory.Nat.prime_dvd_finset_prod
 
 namespace Commons.NumberTheory.Nat
 

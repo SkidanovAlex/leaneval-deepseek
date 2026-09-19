@@ -1,7 +1,6 @@
 import Mathlib.Data.FunLike.Fintype
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
 import Submission.Commons.NumberTheory.DirichletCharacter.rootNumber_norm_eq_one
-import Submission.Commons.NumberTheory.DirichletCharacter.completedL_order_eq_one_sub
 
 open Complex DirichletCharacter Filter
 open scoped Real Topology

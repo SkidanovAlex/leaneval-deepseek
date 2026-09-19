@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.Schwarz
-import Submission.Commons.Analysis.Complex.rectIntegral_sub_inv_outside
 
 noncomputable section
 

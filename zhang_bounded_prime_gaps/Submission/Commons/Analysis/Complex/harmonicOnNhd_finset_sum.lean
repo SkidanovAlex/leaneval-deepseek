@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.Harmonic.Analytic
-import Submission.Commons.Analysis.Complex.deriv_aux_harmonic
 
 open scoped BigOperators Topology
 

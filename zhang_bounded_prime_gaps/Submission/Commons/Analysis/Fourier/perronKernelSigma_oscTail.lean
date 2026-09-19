@@ -4,7 +4,6 @@ import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Commons.Analysis.Fourier.fourier_pole_identity
 
 noncomputable section
 

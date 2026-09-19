@@ -1,5 +1,4 @@
 import Mathlib.Data.Nat.ModEq
-import Submission.Commons.NumberTheory.Chebyshev.theta_le_log3_mul
 
 namespace Commons.NumberTheory.CongruenceWindows
 

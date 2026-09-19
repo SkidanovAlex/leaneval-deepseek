@@ -2,7 +2,6 @@ import Mathlib
 import Submission.S2Expansion
 import Submission.SieveExpansion
 import Submission.Commons.NumberTheory.CongruenceWindows.filter_shift_system_class
-import Submission.LamDivSum
 
 open scoped BigOperators Topology
 open Finset Filter

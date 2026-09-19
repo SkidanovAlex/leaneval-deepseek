@@ -4,7 +4,6 @@ import Submission.RealExpBounds
 import Submission.Commons.NumberTheory.Zeta.riemannZeta_residue_uniform_bound
 import Submission.Commons.NumberTheory.Zeta.removedFactors_ratio_error
 import Submission.Commons.NumberTheory.Zeta.primeFactors_log_over_prime_sum_le
-import Submission.XiTruncation
 
 open scoped BigOperators Topology
 open Filter

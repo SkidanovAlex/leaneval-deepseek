@@ -1,7 +1,6 @@
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Order.CompletePartialOrder
-import Submission.Commons.Analysis.Real.verticalLogWeight_integral_le
 
 namespace Commons.Analysis.Schwartz
 

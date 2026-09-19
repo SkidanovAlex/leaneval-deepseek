@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Submission.Commons.Analysis.ExpLog.tendsto_integral_log_exp_neg_Ioi
 
 namespace Commons.Analysis.ExpLog
 

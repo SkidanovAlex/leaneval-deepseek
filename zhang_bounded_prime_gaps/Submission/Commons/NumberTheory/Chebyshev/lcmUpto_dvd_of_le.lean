@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.Chebyshev
-import Submission.Commons.NumberTheory.Chebyshev.charSum_lamPrime_diff_bound
 
 namespace Commons.NumberTheory.Chebyshev
 

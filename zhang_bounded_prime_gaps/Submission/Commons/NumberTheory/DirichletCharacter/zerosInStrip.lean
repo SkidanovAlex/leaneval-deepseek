@@ -1,7 +1,6 @@
 import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
 import Submission.Commons.NumberTheory.DirichletCharacter.rootNumber_norm_eq_one
-import Submission.Commons.NumberTheory.DirichletCharacter.sum_filter_dvd_char_range
 
 open Complex
 set_option autoImplicit false

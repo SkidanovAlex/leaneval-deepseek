@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Commons.Analysis.Real.le_sqrt_mul_rpow_neg_sixth
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.Harmonic.ZetaAsymp
-import Submission.Commons.NumberTheory.Zeta.riemannZeta_norm_antitone_re
 
 open Complex Filter Metric Asymptotics
 open scoped Topology

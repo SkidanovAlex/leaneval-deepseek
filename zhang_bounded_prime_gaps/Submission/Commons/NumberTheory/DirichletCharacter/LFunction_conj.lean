@@ -1,6 +1,5 @@
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
-import Submission.Commons.NumberTheory.DirichletCharacter.Even_inv
 
 /-!
 # Conjugation of Dirichlet L-functions

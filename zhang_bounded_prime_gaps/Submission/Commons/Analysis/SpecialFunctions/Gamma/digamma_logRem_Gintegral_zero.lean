@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_F_integrable
 
 open scoped Real Topology BigOperators
 open Filter MeasureTheory Set Complex

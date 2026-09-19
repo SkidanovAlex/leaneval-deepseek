@@ -2,7 +2,6 @@ import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Commons.Analysis.Complex.norm_mirror
 
 namespace Commons.Analysis.Complex
 

@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
-import Submission.Commons.NumberTheory.Mertens.sum_log_prime_ratio_real_tendsto
 
 namespace Commons.NumberTheory.Moebius
 

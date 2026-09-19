@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
-import Submission.Commons.NumberTheory.Zeta.emTerm_tsum_le
 
 open scoped BigOperators Topology
 open Filter Finset

@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Submission.Commons.Analysis.ExpLog.log_nat_add_rpow_div_summable_bound
 
 namespace Commons.Analysis.ExpLog
 

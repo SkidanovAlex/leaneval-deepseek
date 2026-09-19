@@ -1,5 +1,4 @@
 import Mathlib.Algebra.BigOperators.Ring.Finset
-import Submission.Commons.Combinatorics.Embedding.sum_preimage_expOf_smul
 
 namespace Commons.Combinatorics.Finset
 

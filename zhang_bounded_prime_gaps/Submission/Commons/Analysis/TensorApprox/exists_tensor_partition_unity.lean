@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.Analysis.Calculus.exists_contDiff_partition_unity
-import Submission.Commons.Analysis.TensorApprox.exists_tensor_localization_orthant_thin_marg_explicit
 
 namespace Commons.Analysis.TensorApprox
 

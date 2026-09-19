@@ -1,7 +1,6 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Tactic.NormNum.Ineq
-import Submission.Commons.NumberTheory.BombieriVinogradov.lam4_block_bilinear
 
 namespace Commons.NumberTheory.KroneckerSums
 

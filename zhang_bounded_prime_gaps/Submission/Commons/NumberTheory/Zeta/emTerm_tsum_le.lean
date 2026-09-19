@@ -3,7 +3,6 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Submission.Commons.NumberTheory.Zeta.emTerm_tsum_analyticOn
 
 noncomputable section
 open Filter Set

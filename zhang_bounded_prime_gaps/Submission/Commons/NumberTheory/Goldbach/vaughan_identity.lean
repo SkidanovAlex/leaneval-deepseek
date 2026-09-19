@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.ArithmeticFunction.vonMangoldt_eq_vaughan_sum
-import Submission.Commons.NumberTheory.Goldbach.sum_vonMangoldt_not_coprime
 
 namespace Commons.NumberTheory.Goldbach
 

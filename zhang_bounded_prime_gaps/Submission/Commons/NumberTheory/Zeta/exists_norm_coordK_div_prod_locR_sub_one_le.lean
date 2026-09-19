@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.norm_ratio_sub_one_le
-import Submission.Commons.NumberTheory.Zeta.eulerCrudeProduct_le_zeta_real
 
 open scoped BigOperators
 

@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Variational
 import Submission.SimplexMono
 import Submission.Commons.Combinatorics.Embedding.sum_preimage_expOf
-import Submission.CertSsum49Data
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Meromorphic.Divisor
-import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 
 namespace Commons.NumberTheory.Linnik
 

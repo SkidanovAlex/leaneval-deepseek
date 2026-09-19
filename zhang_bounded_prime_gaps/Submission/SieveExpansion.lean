@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Commons.NumberTheory.SieveWindows.divisorSumProduct_window_eq_k
 import Submission.SieveSFunction
 import Submission.Commons.Algebra.BigOperators.sum_pi_prod_abs
-import Submission.S2Expansion
 
 open scoped BigOperators
 

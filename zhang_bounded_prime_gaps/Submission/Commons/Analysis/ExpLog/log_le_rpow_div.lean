@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Commons.Analysis.ExpLog.integrableOn_log_exp_neg_Ioi
 
 open scoped Real
 set_option autoImplicit false

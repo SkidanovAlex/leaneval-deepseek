@@ -2,7 +2,6 @@ import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Orthogonality
 import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 import Mathlib.RingTheory.SimpleRing.Principal
-import Submission.Commons.NumberTheory.BombieriVinogradov.bilinear_error_sum_bound
 
 open scoped BigOperators
 

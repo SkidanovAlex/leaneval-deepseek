@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.PSeries
 import Mathlib.NumberTheory.PrimeCounting
-import Submission.Commons.NumberTheory.BombieriVinogradov.vaughan_type1_lambda3_estimate
 
 open Filter Finset
 open scoped BigOperators Topology

@@ -2,7 +2,6 @@ import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 import Mathlib.Order.CompletePartialOrder
 import Submission.Commons.MeasureTheory.Integral.beta_integral
-import Submission.Commons.MeasureTheory.Integral.marginal_set_error_le
 
 open MeasureTheory Set intervalIntegral
 open scoped BigOperators ENNReal Pointwise

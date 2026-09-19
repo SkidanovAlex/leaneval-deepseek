@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.SieveExpansion
-import Submission.FinalCompetitor
 
 open scoped BigOperators
 open scoped FourierTransform RealInnerProductSpace SchwartzMap Topology

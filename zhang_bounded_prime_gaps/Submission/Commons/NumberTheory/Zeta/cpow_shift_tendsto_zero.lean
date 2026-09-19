@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Submission.Commons.NumberTheory.Zeta.cpow_shift_sub_summable
 
 open Filter
 

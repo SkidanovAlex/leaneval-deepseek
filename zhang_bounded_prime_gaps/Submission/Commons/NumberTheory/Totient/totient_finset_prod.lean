@@ -1,6 +1,5 @@
 import Mathlib.Data.Nat.GCD.BigOperators
 import Mathlib.Data.Nat.Totient
-import Submission.Commons.NumberTheory.BombieriVinogradov.basic_mean_value_theorem
 
 namespace Commons.NumberTheory.Totient
 

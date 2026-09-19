@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.NumberTheory.Divisors
-import Submission.Commons.NumberTheory.ArithmeticFunction.sum_Icc_divisors_filter_swap_gt
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

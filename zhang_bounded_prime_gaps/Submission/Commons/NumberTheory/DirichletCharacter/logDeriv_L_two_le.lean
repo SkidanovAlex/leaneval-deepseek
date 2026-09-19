@@ -1,6 +1,5 @@
 import Mathlib.Tactic.NormNum.RealSqrt
 import Submission.Commons.NumberTheory.DirichletCharacter.L_lower_re_two_explicit
-import Submission.Commons.NumberTheory.BombieriVinogradov.bmvt_tail_bound
 
 open Complex DirichletCharacter
 open scoped Real BigOperators

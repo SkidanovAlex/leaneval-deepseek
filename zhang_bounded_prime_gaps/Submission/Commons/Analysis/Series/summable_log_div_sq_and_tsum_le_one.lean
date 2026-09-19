@@ -3,7 +3,6 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.SpecialFunctions.Log.Monotone
 import Mathlib.Analysis.SumIntegralComparisons
-import Submission.Commons.Analysis.Schwartz.integral_norm_compl_mul_rpow_le
 
 open Set MeasureTheory intervalIntegral Filter
 open scoped Topology

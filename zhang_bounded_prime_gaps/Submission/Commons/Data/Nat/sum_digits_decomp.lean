@@ -1,6 +1,5 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Nat.Digits.Defs
-import Submission.Commons.Data.Nat.multinomial_factor_rec
 
 namespace Commons.Data.Nat
 

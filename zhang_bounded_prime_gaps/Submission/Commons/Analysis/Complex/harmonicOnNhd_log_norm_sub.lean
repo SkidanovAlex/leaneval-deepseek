@@ -1,7 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.InnerProductSpace.Harmonic.Constructions
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
-import Submission.Commons.Analysis.Complex.harmonicOnNhd_finset_sum
 
 namespace Commons.Analysis.Complex
 

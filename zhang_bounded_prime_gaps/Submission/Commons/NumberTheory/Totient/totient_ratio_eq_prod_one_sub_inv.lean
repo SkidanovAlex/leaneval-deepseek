@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Normed.Field.Lemmas
 import Mathlib.Data.Nat.Totient
-import Submission.Commons.NumberTheory.ArithmeticFunction.sum_card_divisors_pow_div_totient_le_uniform
 
 open scoped BigOperators
 

@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Complex.CauchyIntegral
 import Submission.Commons.Analysis.Complex.zeroFactor_g
-import Submission.Commons.Analysis.Complex.log_boundary_factor
 
 open Complex MeasureTheory intervalIntegral MeromorphicOn
 open scoped Real Interval Topology

@@ -1,5 +1,4 @@
 import Mathlib.Data.Nat.Choose.Multinomial
-import Submission.Commons.Data.Nat.mul_div_gcd_eq_lcm
 
 namespace Commons.Data.Nat
 

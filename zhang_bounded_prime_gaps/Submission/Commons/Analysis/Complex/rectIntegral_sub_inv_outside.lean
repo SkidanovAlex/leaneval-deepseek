@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Commons.Analysis.Complex.rectIntegral_sub_inv_inside
 
 open Complex MeasureTheory intervalIntegral MeromorphicOn
 open scoped Real Interval Topology

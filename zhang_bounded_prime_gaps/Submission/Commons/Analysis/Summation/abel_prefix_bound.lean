@@ -1,5 +1,4 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
-import Submission.Commons.Analysis.Sum.min_log_ratio_sum_le
 
 namespace Commons.Analysis.Summation
 

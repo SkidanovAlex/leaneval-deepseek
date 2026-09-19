@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Commons.NumberTheory.Divisors.card_divisors_le_two_mul_sqrt
 
 set_option linter.unusedVariables false
 

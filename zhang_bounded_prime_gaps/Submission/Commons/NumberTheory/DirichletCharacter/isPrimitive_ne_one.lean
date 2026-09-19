@@ -1,6 +1,5 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
-import Submission.Commons.NumberTheory.DirichletCharacter.isPrimitive_inv
 
 open DirichletCharacter
 

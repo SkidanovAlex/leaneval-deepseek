@@ -1,6 +1,5 @@
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Commons.Analysis.InfiniteSum.tsum_prod_mul_of_nonneg
 
 namespace Commons.Analysis.Integral
 

@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Commons.Analysis.Summation.sum_Icc_one_eq_range
 
 namespace Commons.Analysis.TensorApprox
 

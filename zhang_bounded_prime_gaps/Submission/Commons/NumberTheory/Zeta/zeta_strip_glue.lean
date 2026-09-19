@@ -2,7 +2,6 @@ import Mathlib.Analysis.SumIntegralComparisons
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.NumberTheory.Harmonic.Bounds
-import Submission.Commons.NumberTheory.Zeta.zeta_norm_le_const_of_three_le_re
 
 open scoped BigOperators
 

@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Commons.NumberTheory.Zeta.chebyshevPsi_truncatedPerron
 
 open scoped BigOperators
 

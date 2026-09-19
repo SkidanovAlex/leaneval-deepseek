@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Submission.Commons.MeasureTheory.Integral.sum_integral_prod_eq_integral_mul
 
 namespace Commons.MeasureTheory.Integral
 

@@ -1,7 +1,6 @@
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.GroupWithZero.Action
 import Submission.Commons.Combinatorics.Embedding.card_preimage_expOf
-import Submission.Commons.Combinatorics.Embedding.sum_preimage_expOf
 
 namespace Commons.Combinatorics.Embedding
 

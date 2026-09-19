@@ -1,5 +1,4 @@
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Commons.MeasureTheory.Integral.tendsto_integral_sq_of_dominated
 
 namespace Commons.MeasureTheory.Measure
 

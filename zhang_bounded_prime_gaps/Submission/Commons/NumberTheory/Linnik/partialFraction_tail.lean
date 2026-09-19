@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Linnik.completedL_zeroCount
 import Submission.Commons.Analysis.Asymptotics.dyadicAnnulusTail
-import Submission.Commons.NumberTheory.Linnik.logDeriv_circle_residue
 
 open Complex DirichletCharacter Metric
 open scoped Real BigOperators

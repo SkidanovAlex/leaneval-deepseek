@@ -3,7 +3,6 @@ import Submission.Commons.NumberTheory.Zeta.zeta_ne_zero_of_rh_gt_half
 import Submission.Commons.NumberTheory.Zeta.zeta1_re_two_lower
 import Submission.Commons.NumberTheory.Zeta.zeta1_growth_ball
 import Submission.Commons.Analysis.Complex.logDeriv_zeroFree_ball_bound
-import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_re_upper
 
 open Complex Filter Metric Set
 open scoped Topology Real BigOperators

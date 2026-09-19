@@ -2,7 +2,6 @@ import Mathlib
 import Submission.PairwiseFourier
 import Submission.Truncation
 import Submission.Commons.MeasureTheory.Integral.integral_prod_indicator_cube_compl_le
-import Submission.PairwiseMainTerm
 
 open scoped BigOperators Topology FourierTransform SchwartzMap
 open Filter MeasureTheory

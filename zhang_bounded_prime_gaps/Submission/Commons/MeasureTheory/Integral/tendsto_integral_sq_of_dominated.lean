@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Submission.Commons.MeasureTheory.Integral.tendsto_integral_sq_iterated_of_dominated_sf
 
 namespace Commons.MeasureTheory.Integral
 

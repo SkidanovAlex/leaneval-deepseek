@@ -2,7 +2,6 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.Interval.Finset.Basic
 import Mathlib.Algebra.Order.Star.Basic
 import Mathlib.Order.Interval.Finset.Nat
-import Submission.Commons.Combinatorics.Finset.prod_ite_eq_add_sum_ite
 
 namespace Commons.Data.Finset
 

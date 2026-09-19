@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Complex.AbsMax
 import Mathlib.Data.Int.Star
 import Submission.Commons.Analysis.Complex.zeroFactor_g
-import Submission.Commons.Analysis.Complex.deriv_log_factor
 
 noncomputable section
 

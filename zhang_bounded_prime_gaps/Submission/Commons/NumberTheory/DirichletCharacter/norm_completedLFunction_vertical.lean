@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
-import Submission.Commons.NumberTheory.BombieriVinogradov.bilinear_char_perron_bound
 
 open Complex DirichletCharacter
 set_option autoImplicit false

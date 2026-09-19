@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Submission.Commons.Analysis.Asymptotics.eventual_exp_neg_sqrt_log_div_log_modulus_le
 
 open Filter Asymptotics Set MeasureTheory
 

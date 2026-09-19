@@ -4,7 +4,6 @@ import Submission.Commons.MeasureTheory.Integral.simplex_integral_shifted
 import Submission.Commons.MeasureTheory.Integral.marginal_simplex_integral
 import Submission.Commons.MeasureTheory.Integral.beta_integral_scaled
 import Submission.SimplexMono
-import Submission.M4Cert
 
 /-!
 # The `J`-functional's Gram matrix on labelled monomials

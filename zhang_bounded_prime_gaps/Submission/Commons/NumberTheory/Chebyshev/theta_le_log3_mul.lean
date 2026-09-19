@@ -1,6 +1,5 @@
 import Mathlib.NumberTheory.Chebyshev
 import Submission.Commons.NumberTheory.Chebyshev.lcmUpto_le_three_pow
-import Submission.Commons.NumberTheory.Chebyshev.sum_Icc_prime_log_eq_theta_sub
 
 namespace Commons.NumberTheory.Chebyshev
 

@@ -2,7 +2,6 @@ import Mathlib
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Submission.Commons.Analysis.Asymptotics.abel_tail_bound_finite
 import Submission.Commons.NumberTheory.DirichletCharacter.interval_sum_bound
-import Submission.Commons.NumberTheory.DirichletCharacter.logDeriv_completedLFunction_conj
 
 open Complex DirichletCharacter Filter
 open scoped Real BigOperators Topology

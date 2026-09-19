@@ -2,7 +2,6 @@ import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Nat.Totient
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
 import Submission.Commons.Algebra.BigOperators.prod_primeFactors_one_add_eq_sum_divisors
-import Submission.Commons.NumberTheory.Totient.prod_one_add_two_div_mul_pred_le_four
 
 open scoped BigOperators
 open Finset

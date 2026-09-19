@@ -1,7 +1,6 @@
 import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Nat.Factorization.Basic
-import Submission.Commons.NumberTheory.Zeta.perronOne_bound
 
 namespace Commons.NumberTheory.Zeta
 

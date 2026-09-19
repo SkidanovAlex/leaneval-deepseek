@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Submission.Commons.Analysis.Asymptotics.eventually_log_rpow_le_mul
 
 namespace Commons.Analysis.Asymptotics
 

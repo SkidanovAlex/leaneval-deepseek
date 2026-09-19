@@ -1,5 +1,4 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Commons.Analysis.Integral.integral_inv_sqrt_quarter_add_sq_le
 
 namespace Commons.Analysis.Integral
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.LevelOfDistribution
 import Submission.Commons.NumberTheory.SieveWindows.weighted_divisorSumProduct_window_eq_k
-import Submission.BVFinal
 
 open scoped BigOperators Topology
 open Finset Filter

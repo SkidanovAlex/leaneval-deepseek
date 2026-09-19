@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Commons.Analysis.SpecialFunctions.Log.log_one_sub_ge6
 
 set_option linter.unusedTactic false
 set_option linter.unreachableTactic false

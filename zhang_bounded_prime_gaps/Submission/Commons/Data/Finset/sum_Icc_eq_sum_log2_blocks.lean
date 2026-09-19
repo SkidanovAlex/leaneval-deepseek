@@ -2,7 +2,6 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 import Mathlib.Data.Nat.Log
 import Mathlib.Order.Interval.Finset.Nat
-import Submission.Commons.Data.Finset.sum_Icc_comp_add
 
 namespace Commons.Data.Finset
 

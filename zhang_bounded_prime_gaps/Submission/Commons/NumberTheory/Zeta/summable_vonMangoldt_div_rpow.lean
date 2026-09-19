@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.Dirichlet
-import Submission.Commons.NumberTheory.Zeta.riemannZeta_residue_uniform_bound
 
 namespace Commons.NumberTheory.Zeta
 

@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
-import Submission.Commons.Analysis.SpecialFunctions.Log.log_two_ge_two_thirds
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

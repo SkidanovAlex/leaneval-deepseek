@@ -1,7 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Data.Finset.NatDivisors
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
-import Submission.Commons.NumberTheory.Moebius.moebius_abs_le_one
 
 namespace Commons.NumberTheory.Moebius
 

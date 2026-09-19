@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.Analysis.SpecialFunctions.Frullani.complex_log
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_eq_lim_log_sub_sum_inv
 
 open MeasureTheory Set
 

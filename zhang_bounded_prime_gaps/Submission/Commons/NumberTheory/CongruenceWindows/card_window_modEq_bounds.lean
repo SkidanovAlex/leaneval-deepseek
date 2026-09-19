@@ -1,6 +1,5 @@
 import Mathlib.Data.ZMod.Basic
 import Submission.Commons.Data.Nat.card_multiples_window_bound
-import Submission.Commons.NumberTheory.CongruenceWindows.add_mod_eq_zero_iff_neg_residue
 
 namespace Commons.NumberTheory.CongruenceWindows
 

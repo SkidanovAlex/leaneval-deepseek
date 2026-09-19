@@ -1,5 +1,4 @@
 import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Submission.Commons.Analysis.Complex.exists_perron_formula_bound
 
 namespace Commons.Analysis.InfiniteSum
 

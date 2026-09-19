@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.Chebyshev
-import Submission.Commons.NumberTheory.Chebyshev.lcmUpto_le_three_pow
 
 open Finset
 open scoped BigOperators

@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.Analysis.Fourier.perron_kernel_bound
-import Submission.Commons.Analysis.Fourier.perronKernelSigma_regionBound
 noncomputable section
 
 open Real Set Complex Filter intervalIntegral MeasureTheory

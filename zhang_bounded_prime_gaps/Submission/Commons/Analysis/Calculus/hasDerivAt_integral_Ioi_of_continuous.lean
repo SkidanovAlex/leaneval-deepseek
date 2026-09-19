@@ -1,5 +1,4 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Commons.Analysis.Calculus.exists_contDiff_step
 
 namespace Commons.Analysis.Calculus
 

@@ -6,7 +6,6 @@ import Mathlib.NumberTheory.DirichletCharacter.Bounds
 import Mathlib.NumberTheory.DirichletCharacter.Orthogonality
 import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 import Mathlib.RingTheory.SimpleRing.Principal
-import Submission.Commons.NumberTheory.BombieriVinogradov.lam4_dyadic_sum_bound
 
 namespace Commons.NumberTheory.BombieriVinogradov
 

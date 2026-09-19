@@ -1,5 +1,4 @@
 import Mathlib.MeasureTheory.Integral.Pi
-import Submission.Commons.MeasureTheory.Integral.beta_integral_scaled
 
 namespace Commons.MeasureTheory.Integral
 

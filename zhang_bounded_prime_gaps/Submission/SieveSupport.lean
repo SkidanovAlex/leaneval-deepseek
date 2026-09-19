@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.SieveExpansion
 import Submission.Lemma41K
-import Submission.PhiLemma41
 
 open scoped BigOperators
 

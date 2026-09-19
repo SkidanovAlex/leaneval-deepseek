@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
-import Submission.Commons.Analysis.SpecialFunctions.Trigonometric.arctan_ge3
 
 namespace Commons.Analysis.SpecialFunctions.Trigonometric
 

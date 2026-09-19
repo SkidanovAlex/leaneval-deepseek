@@ -1,7 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.PSeries
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
-import Submission.Commons.Analysis.Complex.norm_ratio_sub_one_le
 
 namespace Commons.Analysis.Normed
 

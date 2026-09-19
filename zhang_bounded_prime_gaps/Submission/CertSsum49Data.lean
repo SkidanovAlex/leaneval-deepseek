@@ -1,5 +1,4 @@
 import Submission.CertRowL
-import Submission.CertPsiTab
 
 /-!
 # The `Ssum`-at-`49` table of the certificate (data file)

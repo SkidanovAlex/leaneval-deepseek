@@ -1,6 +1,5 @@
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Order.Interval.Finset.Nat
-import Submission.Commons.NumberTheory.CongruenceWindows.congruence_system_window_card_eq
 
 namespace Commons.NumberTheory.CongruenceWindows
 

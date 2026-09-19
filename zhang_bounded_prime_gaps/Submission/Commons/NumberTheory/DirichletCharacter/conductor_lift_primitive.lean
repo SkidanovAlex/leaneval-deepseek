@@ -1,6 +1,5 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.NumberTheory.DirichletCharacter.Basic
-import Submission.Commons.NumberTheory.DirichletCharacter.completedL_divisor_le_L
 
 namespace Commons.NumberTheory.DirichletCharacter
 

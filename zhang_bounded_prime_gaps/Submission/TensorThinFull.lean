@@ -1,5 +1,4 @@
 import Submission.TensorThin
-import Submission.SieveCertificate
 
 set_option maxHeartbeats 2000000
 

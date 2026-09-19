@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
-import Submission.Commons.NumberTheory.DirichletCharacter.norm_LFunction_le_re_ge_one
 
 open Complex DirichletCharacter
 set_option autoImplicit false

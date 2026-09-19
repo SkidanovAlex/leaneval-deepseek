@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Zeta.eulerCrudeProduct_le_zeta_real
-import Submission.Commons.NumberTheory.PrimeNumberTheorem.theta_window_shift_powLog_largeN
 
 open scoped BigOperators Topology
 open Filter Asymptotics

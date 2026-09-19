@@ -4,7 +4,6 @@ import Submission.Commons.MeasureTheory.Integral.tendsto_integral_sq_of_dominate
 import Submission.Commons.MeasureTheory.Integral.tendsto_integral_sq_iterated_of_dominated_sf
 import Submission.Commons.MeasureTheory.Measure.volume_coord_eq_zero
 import Submission.Commons.MeasureTheory.Measure.volume_sum_eq_zero_ge_one
-import Submission.CertPolyBound
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 1000000

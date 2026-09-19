@@ -1,5 +1,4 @@
 import Mathlib.NumberTheory.LSeries.DirichletContinuation
-import Submission.Commons.NumberTheory.DirichletCharacter.changeLevel_stable_nat
 
 open Complex DirichletCharacter
 set_option autoImplicit false

@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Commons.Analysis.Complex.circleBallTheta_integral_inv_le
 
 namespace Commons.Analysis.Integral
 

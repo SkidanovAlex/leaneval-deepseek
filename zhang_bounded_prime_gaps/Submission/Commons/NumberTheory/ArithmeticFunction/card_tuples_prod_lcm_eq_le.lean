@@ -2,7 +2,6 @@ import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Tactic.Ring
-import Submission.Commons.NumberTheory.ArithmeticFunction.card_lcm_prod_eq_le_of_ne_zero
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

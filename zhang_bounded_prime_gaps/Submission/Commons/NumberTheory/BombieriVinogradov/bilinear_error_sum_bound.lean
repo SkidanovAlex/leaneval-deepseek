@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Submission.Commons.Analysis.Sum.min_log_ratio_sum_le
-import Submission.Commons.NumberTheory.BombieriVinogradov.abel_tail_sum_le
 
 namespace Commons.NumberTheory.BombieriVinogradov
 

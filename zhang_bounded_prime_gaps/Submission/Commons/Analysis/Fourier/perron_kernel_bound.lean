@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.Fourier.cos_inv_one_add_sq_Ioi
 import Submission.Commons.Analysis.Fourier.dirichlet_integral
-import Submission.Commons.Analysis.Fourier.perronKernelSigma_oscTail
 
 /-!
 # Truncated Perron-kernel deviation (commons)

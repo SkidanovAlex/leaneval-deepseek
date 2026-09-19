@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
-import Submission.Commons.NumberTheory.BombieriVinogradov.lam4_block_real_bound
 
 namespace Commons.NumberTheory.BombieriVinogradov
 

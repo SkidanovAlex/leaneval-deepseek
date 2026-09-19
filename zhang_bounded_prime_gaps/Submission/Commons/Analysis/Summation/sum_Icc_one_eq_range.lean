@@ -1,6 +1,5 @@
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Data.Real.Basic
-import Submission.Commons.Analysis.Summation.abel_prefix_bound
 
 namespace Commons.Analysis.Summation
 

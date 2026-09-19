@@ -1,6 +1,5 @@
 import Mathlib.MeasureTheory.Integral.Pi
 import Submission.Commons.MeasureTheory.Integral.integral_fintype_prod_indicator_Ioi
-import Submission.Commons.MeasureTheory.Integral.sq_interval_integral_le_len_mul_integral_sq
 
 open scoped BigOperators
 open MeasureTheory

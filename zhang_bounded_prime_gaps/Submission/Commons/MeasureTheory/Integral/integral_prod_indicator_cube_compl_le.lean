@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Pi
 import Mathlib.MeasureTheory.Order.Group.Lattice
-import Submission.Commons.MeasureTheory.Integral.integral_piFinSuccAbove_of_integrable
 
 namespace Commons.MeasureTheory.Integral
 

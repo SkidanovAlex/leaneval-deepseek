@@ -5,7 +5,6 @@ import Submission.Commons.NumberTheory.Totient.sum_divisors_mu_sq_div_totient
 import Submission.Commons.NumberTheory.Totient.sum_mu_sq_div_d_mul_totient_le_two
 import Submission.Commons.NumberTheory.FriedlanderIwaniec.tau_le_nine_sum_divisors_cube
 import Submission.Commons.NumberTheory.DivisorSum.sum_divisor_count_div_le
-import Submission.Commons.NumberTheory.ArithmeticFunction.sum_card_divisors_pow_div_totient_le
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

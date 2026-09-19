@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Zeta.zeta_strip_polyGrowth
 import Submission.Commons.NumberTheory.Zeta.zeta_norm_le_const_of_three_le_re
-import Submission.Commons.NumberTheory.Zeta.xi_logDeriv_re_lower
 
 open Complex Filter Metric Set
 open scoped Topology BigOperators

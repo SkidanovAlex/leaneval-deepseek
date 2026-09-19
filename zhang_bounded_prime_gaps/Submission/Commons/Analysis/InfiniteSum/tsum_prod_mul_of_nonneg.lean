@@ -1,6 +1,5 @@
 import Mathlib.Topology.GDelta.MetrizableSpace
 import Mathlib.Topology.Separation.CompletelyRegular
-import Submission.Commons.Analysis.InfiniteSum.summable_prod_mul
 
 namespace Commons.Analysis.InfiniteSum
 

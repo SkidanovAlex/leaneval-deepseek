@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.NumberTheory.Harmonic.GammaDeriv
-import Submission.Commons.Analysis.Complex.Gamma_vertical_norm_bounds
 
 /-!
 # Euler's integral for the Euler--Mascheroni constant

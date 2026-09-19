@@ -1,6 +1,5 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
-import Submission.Commons.NumberTheory.ArithmeticFunction.sum_vonMangoldt_sq_le
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

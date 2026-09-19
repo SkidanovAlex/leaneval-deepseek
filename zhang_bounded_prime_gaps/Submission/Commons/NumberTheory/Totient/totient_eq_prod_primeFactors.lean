@@ -1,5 +1,4 @@
 import Mathlib.Data.Nat.Totient
-import Submission.Commons.NumberTheory.Totient.sum_mu_sq_div_d_mul_totient_le_two
 
 namespace Commons.NumberTheory.Totient
 

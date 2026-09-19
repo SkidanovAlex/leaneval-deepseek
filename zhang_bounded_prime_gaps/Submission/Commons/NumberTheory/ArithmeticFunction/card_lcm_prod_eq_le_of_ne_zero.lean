@@ -1,6 +1,5 @@
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.NumberTheory.Divisors
-import Submission.Commons.NumberTheory.ArithmeticFunction.card_Omega_eq_le
 
 namespace Commons.NumberTheory.ArithmeticFunction
 

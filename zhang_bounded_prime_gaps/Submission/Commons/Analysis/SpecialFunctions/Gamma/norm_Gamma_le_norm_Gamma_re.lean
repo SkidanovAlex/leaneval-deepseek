@@ -1,5 +1,4 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.log_Gamma_le
 
 open Filter Set Real MeasureTheory Asymptotics
 open scoped Nat Topology ComplexConjugate
