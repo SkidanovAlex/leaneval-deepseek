@@ -1,6 +1,0 @@
-import Submission.NK.BauerGeneral.hasDirichletDensity_of_symmDiff_finite
-import Submission.Work.CFTLib.splitSetOf_density
-import Submission.Work.Tower.Unramified.SplitsCompletelyIn_descent
-import Submission.Work.Tower.Unramified.splitsCompletelyIn_of_NF
-import Submission.Work.Tower.Unramified.splitsCompletelyInNF_of_ramification_inertia
-import Submission.Work.CFTLib.splitsCompletelySet
