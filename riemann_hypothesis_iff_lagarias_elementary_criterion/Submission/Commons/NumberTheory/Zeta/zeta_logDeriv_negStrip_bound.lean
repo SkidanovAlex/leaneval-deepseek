@@ -1,0 +1,423 @@
+import Mathlib
+import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_fe_expanded
+import Submission.Commons.NumberTheory.Zeta.summable_vonMangoldt_div_rpow
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.digamma_mid_strip_le
+import Submission.Commons.Analysis.SpecialFunctions.Trigonometric.tan_norm_le_of_abs_im_ge
+
+open Complex Filter Metric Set
+open scoped Real Topology BigOperators
+noncomputable section
+set_option maxHeartbeats 1000000
+
+namespace Commons.NumberTheory.Zeta
+
+/-!
+# Bounding `logDeriv ζ₁` on the negative strip `−3/2 ≤ Re s ≤ −1/2`
+
+For `s = σ + i t` with `−3/2 ≤ σ ≤ −1/2` and `|t| ≥ 2`, its reflection `1 − s` has
+real part `1 − σ ∈ [3/2, 5/2]`, deep inside the half-plane of absolute convergence
+`Re w > 1`.  The functional equation in logarithmic-derivative form
+(`zeta_logDeriv_fe_expanded`)
+
+    ζ'/ζ (s) = log(2π) − ψ(1−s) + (π/2)·tan(π(1−s)/2) − ζ'/ζ (1−s)
+
+then bounds `ζ'/ζ (s)` by
+
+* a constant `M` for the reflected term `ζ'/ζ (1−s)` (`logDeriv_zeta_const_bound`,
+  from the absolutely convergent von-Mangoldt Dirichlet series `−ζ'/ζ = ∑ Λ(n) n^{-w}`
+  valid for `Re w > 1`; here moreover `Re (1−s) ≥ 3/2`),
+* the digamma bound `‖ψ(1−s)‖ ≤ 3 L³` (`digamma_mid_strip_le`), and
+* the tangent bound `‖(π/2)·tan(π(1−s)/2)‖ ≤ 2π L³` (`tan_norm_le_of_abs_im_ge`, using
+  `|Im (π(1−s)/2)| = (π/2)|t| ≥ π ≥ 1`),
+
+with `L = log(|t|+3)+1 ≥ 1`.  Finally `logDeriv ζ₁ = ζ'/ζ + 1/(s−1)` with `1/‖s−1‖ ≤ 1`.
+
+The Riemann hypothesis only enters through the nonvanishing of `ζ` on the strip (a zero
+there would have real part `1/2`); the analytic bounds themselves are unconditional.
+-/
+
+/-- A constant bound for `‖ζ'/ζ‖` in the half-plane `Re ≥ 3/2`, coming from the absolutely
+convergent von-Mangoldt Dirichlet series `−ζ'/ζ(w) = ∑ Λ(n) n^{-w}`. -/
+theorem logDeriv_zeta_const_bound :
+    ∃ M : ℝ, 0 < M ∧ ∀ w : ℂ, (3 / 2 : ℝ) ≤ w.re →
+      ‖deriv riemannZeta w / riemannZeta w‖ ≤ M := by
+  set F : ℕ → ℂ := fun n => ((ArithmeticFunction.vonMangoldt n : ℝ) : ℂ) with hFdef
+  have hsum : Summable (fun n : ℕ => (ArithmeticFunction.vonMangoldt n : ℝ) /
+      (n : ℝ) ^ ((3 : ℝ) / 2)) :=
+    summable_vonMangoldt_div_rpow (by norm_num)
+  refine ⟨(∑' n, (ArithmeticFunction.vonMangoldt n : ℝ) / (n : ℝ) ^ ((3 : ℝ) / 2)) + 1,
+    by positivity, ?_⟩
+  intro w hw
+  have hw1 : (1 : ℝ) < w.re := by linarith
+  have hL := ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div (s := w) hw1
+  have hsumm : Summable (LSeries.term F w) := by
+    have h := ArithmeticFunction.LSeriesSummable_vonMangoldt (s := w) hw1
+    rw [LSeriesSummable] at h
+    simpa [F] using h
+  have hnormsum : Summable (fun n => ‖LSeries.term F w n‖) := summable_norm_iff.mpr hsumm
+  have h1 : ‖deriv riemannZeta w / riemannZeta w‖ ≤ ∑' n, ‖LSeries.term F w n‖ := by
+    rw [show deriv riemannZeta w / riemannZeta w = - LSeries F w by rw [hL]; ring]
+    rw [norm_neg, LSeries]
+    exact norm_tsum_le_tsum_norm hnormsum
+  have h2 : (∑' n, ‖LSeries.term F w n‖) ≤
+      ∑' n, (ArithmeticFunction.vonMangoldt n : ℝ) / (n : ℝ) ^ ((3 : ℝ) / 2) := by
+    apply Summable.tsum_le_tsum ?_ hnormsum hsum
+    intro n
+    rw [LSeries.norm_term_eq]
+    by_cases hn : n = 0
+    · subst hn
+      simp
+    · rw [if_neg hn]
+      have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn
+      have hΛ : (0 : ℝ) ≤ ArithmeticFunction.vonMangoldt n :=
+        ArithmeticFunction.vonMangoldt_nonneg
+      have hnormF : ‖F n‖ = (ArithmeticFunction.vonMangoldt n : ℝ) := by
+        simp [F, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hΛ]
+      rw [hnormF]
+      apply div_le_div_of_nonneg_left hΛ (by positivity)
+      exact Real.rpow_le_rpow_of_exponent_le hn1 hw
+  linarith
+
+/-- Under RH, `ζ` has no zero on the strip `−3/2 ≤ Re s ≤ −1/2`: a zero there is not a trivial
+zero (`−2, −4, …` all have real part `≤ −2`), so the Riemann hypothesis forces real part `1/2`. -/
+private lemma zeta_ne_zero_of_rh_neg_strip (h : RiemannHypothesis) {s : ℂ}
+    (hlo : -(3 / 2 : ℝ) ≤ s.re) (hhi : s.re ≤ -(1 / 2 : ℝ)) (hs1 : s ≠ 1) :
+    riemannZeta s ≠ 0 := by
+  intro hz
+  have htriv : ¬∃ n : ℕ, s = -2 * (n + 1) := by
+    rintro ⟨n, hn⟩
+    have hre := congrArg Complex.re hn
+    have hren : ((-2 : ℂ) * ((n : ℂ) + 1)).re = -2 * ((n : ℝ) + 1) := by norm_num
+    rw [hren] at hre
+    have hn0 : (0 : ℝ) ≤ (n : ℝ) + 1 := by positivity
+    linarith
+  have hhalf : s.re = 1 / 2 := h s hz htriv hs1
+  linarith
+
+/-- If `0 < re w` then `w` avoids the non-positive integers. -/
+private lemma ne_neg_nat_of_re_pos {w : ℂ} (hw : (0 : ℝ) < w.re) : ∀ n : ℕ, w ≠ -(n : ℂ) := by
+  intro n hn
+  have hre := congrArg Complex.re hn
+  have hren : (-(n : ℂ)).re = -((n : ℝ)) := by simp
+  rw [hren] at hre
+  have hn0 : (0 : ℝ) ≤ n := by exact_mod_cast (Nat.zero_le n)
+  have hnn : -((n : ℝ)) ≤ 0 := by linarith
+  linarith
+
+/-- The cosine factor `cos (π(1−s)/2)` of the functional equation is nonzero whenever
+`im s ≠ 0`, because it vanishes only at real points `s = −2k`. -/
+private lemma cos_pi_one_sub_two_ne_zero_of_im_ne_zero {s : ℂ} (ht : s.im ≠ 0) :
+    Complex.cos (↑Real.pi * (1 - s) / 2) ≠ 0 := by
+  intro hz
+  rcases Complex.cos_eq_zero_iff.mp hz with ⟨k, hk⟩
+  have hz_im0 : (↑Real.pi * (1 - s) / 2).im = 0 := by
+    rw [hk]
+    simp
+  have hzi_ne : (↑Real.pi * (1 - s) / 2).im ≠ 0 := by
+    have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+    have hne : (Real.pi / 2) ≠ 0 := div_ne_zero hpi (by norm_num)
+    have : -(Real.pi / 2) * s.im ≠ 0 := mul_ne_zero (neg_ne_zero.mpr hne) ht
+    simpa [Complex.mul_im] using this
+  exact hzi_ne hz_im0
+
+/-- `ζ₁ = (s−1)·ζ` in logarithmic-derivative form (for `s ≠ 1` with `ζ s ≠ 0`). -/
+private lemma zeta1_logDeriv_eq (s : ℂ) (hs1 : s ≠ 1) (hζs : riemannZeta s ≠ 0) :
+    logDeriv riemannZeta₁ s = deriv riemannZeta s / riemannZeta s + (s - 1)⁻¹ := by
+  have hEq : riemannZeta₁ =ᶠ[𝓝 s] (fun z => (z - 1) * riemannZeta z) := by
+    filter_upwards [eventually_ne_nhds hs1] with z hzne
+    have hz := riemannZeta_eq_inv_sub_mul hzne
+    calc
+      riemannZeta₁ z = (z - 1) * ((z - 1)⁻¹ * riemannZeta₁ z) := by
+        rw [← mul_assoc, mul_inv_cancel₀ (sub_ne_zero.mpr hzne)]
+        simp
+      _ = (z - 1) * riemannZeta z := by rw [hz]
+  have hcong := logDeriv_congr_nhds hEq
+  have hval : logDeriv riemannZeta₁ s = logDeriv (fun z => (z - 1) * riemannZeta z) s :=
+    hcong.self_of_nhds
+  rw [hval]
+  have hmul := logDeriv_mul (x := s) (f := fun z => z - 1) (g := riemannZeta)
+      (sub_ne_zero.mpr hs1) hζs (by fun_prop) (differentiableAt_riemannZeta hs1)
+  simp only [Pi.mul_def] at hmul
+  rw [hmul]
+  have hld_id : logDeriv (fun z : ℂ => z - 1) s = (s - 1)⁻¹ := by
+    rw [logDeriv_apply]
+    have hd : deriv (fun z : ℂ => z - 1) s = 1 := by
+      simpa using ((hasDerivAt_id s).sub_const (1 : ℂ)).deriv
+    rw [hd]
+    simp
+  rw [hld_id, logDeriv_apply]
+  ring
+
+/-- `‖logDeriv ζ₁ s‖ ≤ ‖ζ'/ζ (s)‖ + 1/‖s−1‖` for `s ≠ 1` with `ζ s ≠ 0`. -/
+private lemma norm_zeta1_logDeriv_le (s : ℂ) (hs1 : s ≠ 1) (hζs : riemannZeta s ≠ 0) :
+    ‖logDeriv riemannZeta₁ s‖ ≤ ‖deriv riemannZeta s / riemannZeta s‖ + ‖(s - 1)⁻¹‖ := by
+  rw [zeta1_logDeriv_eq s hs1 hζs]
+  exact norm_add_le _ _
+
+/-- The logarithmic factor `L(t) := log (|t| + 3) + 1`. -/
+private def L (t : ℝ) : ℝ := Real.log (|t| + 3) + 1
+
+private lemma L_ge_one (t : ℝ) (ht : (2 : ℝ) ≤ |t|) : (1 : ℝ) ≤ L t := by
+  dsimp [L]
+  have h : 0 ≤ Real.log (|t| + 3) := by
+    apply Real.log_nonneg
+    linarith [abs_nonneg t]
+  linarith
+
+private lemma L_pow3_ge_one (t : ℝ) (ht : (2 : ℝ) ≤ |t|) : (1 : ℝ) ≤ (L t) ^ 3 := by
+  have h := pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 1) (L_ge_one t ht) 3
+  simpa using h
+
+/-- Norm of the constant `log(2π)` equals `log (2π)`. -/
+private lemma norm_log_two_pi : ‖Complex.log ((2 * Real.pi : ℝ) : ℂ)‖ = Real.log (2 * Real.pi) := by
+  have h0le : (0 : ℝ) ≤ 2 * Real.pi := by positivity
+  have hclog : Complex.log ((2 * Real.pi : ℝ) : ℂ) = ((Real.log (2 * Real.pi) : ℝ) : ℂ) :=
+    (Complex.ofReal_log h0le).symm
+  rw [hclog]
+  have hnon : 0 ≤ Real.log (2 * Real.pi) := by
+    apply Real.log_nonneg
+    nlinarith [Real.two_le_pi]
+  exact Complex.norm_of_nonneg hnon
+
+/-- `log (2π) · L(t)³` absorbs the constant `log(2π)`. -/
+private lemma log_two_pi_mul_L3_le (t : ℝ) (ht : (2 : ℝ) ≤ |t|) :
+    Real.log (2 * Real.pi) ≤ Real.log (2 * Real.pi) * (L t) ^ 3 := by
+  have hnon : 0 ≤ Real.log (2 * Real.pi) := by
+    apply Real.log_nonneg
+    nlinarith [Real.two_le_pi]
+  calc
+    Real.log (2 * Real.pi) = Real.log (2 * Real.pi) * 1 := by ring
+    _ ≤ Real.log (2 * Real.pi) * (L t) ^ 3 := by
+      exact mul_le_mul_of_nonneg_left (L_pow3_ge_one t ht) hnon
+
+/-- Digamma bound on the reflected point `1 − s = (1−σ) − i t`: `‖ψ‖ ≤ log(2 + |t|) + 2`. -/
+private lemma digamma_bound {σ t : ℝ} (hlo : -(3 / 2 : ℝ) ≤ σ) (hhi : σ ≤ -(1 / 2 : ℝ)) :
+    ‖Complex.digamma (1 - ((σ : ℂ) + Complex.I * (t : ℂ)))‖ ≤ Real.log (2 + |t|) + 2 := by
+  let s : ℂ := (σ : ℂ) + Complex.I * (t : ℂ)
+  have hx1 : (1 / 2 : ℝ) ≤ 1 - σ := by linarith
+  have hx2 : 1 - σ ≤ 8 := by linarith
+  have hmid := Commons.Analysis.SpecialFunctions.Gamma.digamma_mid_strip_le (1 - σ) (-t) hx1 hx2
+  have harg : ((1 - σ : ℝ) : ℂ) + ((-t : ℝ) : ℂ) * Complex.I = 1 - s := by
+    dsimp [s]
+    apply Complex.ext <;> simp <;> ring
+  rw [← harg]
+  simpa using hmid
+
+/-- Polynomial-in-`log` digamma bound: `‖ψ (1−s)‖ ≤ 3 L(t)³`. -/
+private lemma digamma_poly_bound {σ t : ℝ} (hlo : -(3 / 2 : ℝ) ≤ σ) (hhi : σ ≤ -(1 / 2 : ℝ))
+    (ht : (2 : ℝ) ≤ |t|) :
+    ‖Complex.digamma (1 - ((σ : ℂ) + Complex.I * (t : ℂ)))‖ ≤ 3 * (L t) ^ 3 := by
+  change ‖Complex.digamma (1 - ((σ : ℂ) + Complex.I * (t : ℂ)))‖ ≤
+    3 * (Real.log (|t| + 3) + 1) ^ 3
+  have hb := digamma_bound (σ := σ) (t := t) hlo hhi
+  have hlelog : Real.log (2 + |t|) ≤ Real.log (|t| + 3) := by
+    apply Real.log_le_log
+    · positivity
+    · linarith [abs_nonneg t]
+  have hX1 : (1 : ℝ) ≤ Real.log (|t| + 3) + 1 := by
+    have h : 0 ≤ Real.log (|t| + 3) := Real.log_nonneg (by linarith [abs_nonneg t])
+    linarith
+  have hX : Real.log (|t| + 3) + 1 ≤ (Real.log (|t| + 3) + 1) ^ 3 := by
+    have hp := pow_le_pow_right₀ hX1 (by norm_num : (1 : ℕ) ≤ 3)
+    simpa using hp
+  calc
+    ‖Complex.digamma (1 - ((σ : ℂ) + Complex.I * (t : ℂ)))‖ ≤ Real.log (2 + |t|) + 2 := hb
+    _ ≤ Real.log (|t| + 3) + 2 := by linarith
+    _ ≤ 3 * (Real.log (|t| + 3) + 1) := by
+      have h : 0 ≤ Real.log (|t| + 3) := Real.log_nonneg (by linarith [abs_nonneg t])
+      linarith
+    _ ≤ 3 * (Real.log (|t| + 3) + 1) ^ 3 := by
+      exact mul_le_mul_of_nonneg_left hX (by norm_num : (0 : ℝ) ≤ 3)
+
+/-- Imaginary part of the tangent argument `π (1−s)/2`. -/
+private lemma tan_arg_im {σ t : ℝ} (s : ℂ) (hsim : s.im = t) :
+    (↑Real.pi * (1 - s) / 2).im = -(Real.pi / 2) * t := by
+  calc
+    (↑Real.pi * (1 - s) / 2).im = -(Real.pi / 2) * s.im := by
+      simp [Complex.mul_im]
+      ring
+    _ = -(Real.pi / 2) * t := by rw [hsim]
+
+/-- `|Im (π(1−s)/2)| = (π/2)·|t|`, and in particular is `≥ 1` for `|t| ≥ 2`. -/
+private lemma tan_arg_abs (σ t : ℝ) (ht : (2 : ℝ) ≤ |t|) :
+    (1 : ℝ) ≤ |(↑Real.pi * (1 - ((σ : ℂ) + Complex.I * (t : ℂ))) / 2).im| := by
+  let s : ℂ := (σ : ℂ) + Complex.I * (t : ℂ)
+  have hsim : s.im = t := by simp [s]
+  have hE : |(↑Real.pi * (1 - s) / 2).im| = (Real.pi / 2) * |t| := by
+    rw [tan_arg_im (σ := σ) (t := t) s hsim]
+    have hpi : 0 < Real.pi / 2 := by positivity
+    rw [abs_mul, abs_neg]
+    rw [abs_of_pos hpi]
+  rw [hE]
+  nlinarith [Real.two_le_pi, ht]
+
+/-- Polynomial-in-`log` bound for the tangent term `(π/2)·tan u` with `|Im u| ≥ 1`:
+`≤ 2π · L(t)³`. -/
+private lemma tan_term_poly_bound (u : ℂ) (hu : (1 : ℝ) ≤ |u.im|) {t : ℝ}
+    (ht : (2 : ℝ) ≤ |t|) :
+    ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan u‖ ≤ 2 * Real.pi * (L t) ^ 3 := by
+  have htan : ‖Complex.tan u‖ ≤ 4 :=
+    Commons.Analysis.SpecialFunctions.Trigonometric.tan_norm_le_of_abs_im_ge u hu
+  calc
+    ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan u‖
+        = ‖((Real.pi / 2 : ℝ) : ℂ)‖ * ‖Complex.tan u‖ := by rw [norm_mul]
+    _ = (Real.pi / 2) * ‖Complex.tan u‖ := by
+            congr 1
+            exact Complex.norm_of_nonneg (by positivity : (0 : ℝ) ≤ Real.pi / 2)
+    _ ≤ (Real.pi / 2) * 4 := by
+            exact mul_le_mul_of_nonneg_left htan (by positivity : (0 : ℝ) ≤ Real.pi / 2)
+    _ = 2 * Real.pi := by ring
+    _ ≤ 2 * Real.pi * (L t) ^ 3 := by
+            simpa using mul_le_mul_of_nonneg_left (L_pow3_ge_one t ht)
+              (by positivity : (0 : ℝ) ≤ 2 * Real.pi)
+
+/-- `1/‖s−1‖ ≤ 1` on the strip `|t| ≥ 2`. -/
+private lemma inv_sub_one_le_one (σ t : ℝ) (ht : (2 : ℝ) ≤ |t|) :
+    ‖((σ : ℂ) + Complex.I * (t : ℂ) - 1)⁻¹‖ ≤ 1 := by
+  let s : ℂ := (σ : ℂ) + Complex.I * (t : ℂ)
+  have hsim : s.im = t := by simp [s]
+  have hs1n : (1 : ℝ) ≤ ‖s - 1‖ := by
+    calc
+      (1 : ℝ) ≤ |t| / 2 := by linarith
+      _ ≤ |t| := by
+        have ht0 : 0 ≤ |t| := abs_nonneg t
+        linarith
+      _ = |(s - 1).im| := by simp [hsim]
+      _ ≤ ‖s - 1‖ := abs_im_le_norm (s - 1)
+  have hpos : 0 < ‖s - 1‖ := by linarith
+  rw [norm_inv]
+  exact (inv_le_one₀ hpos).mpr hs1n
+
+/-- The assembled constant is positive. -/
+private lemma negstrip_const_pos {M : ℝ} (hM : 0 < M) :
+    0 < M + Real.log (2 * Real.pi) + 2 * Real.pi + 4 := by
+  have hlog : 0 < Real.log (2 * Real.pi) := Real.log_pos (by nlinarith [Real.two_le_pi])
+  linarith [Real.pi_pos]
+
+/-- The requested bound for the logarithmic derivative of the entire function `ζ₁`
+on the strip `−3/2 ≤ σ ≤ −1/2`, `|t| ≥ 2`, assuming the Riemann hypothesis. -/
+theorem zeta_logDeriv_negStrip_bound (h : RiemannHypothesis) :
+    ∃ C : ℝ, 0 < C ∧ ∀ σ t : ℝ, -(3 / 2 : ℝ) ≤ σ → σ ≤ -(1 / 2 : ℝ) → 2 ≤ |t| →
+      ‖logDeriv riemannZeta₁ ((σ : ℂ) + Complex.I * (t : ℂ))‖ ≤
+        C * (Real.log (|t| + 3) + 1) ^ 3 := by
+  rcases logDeriv_zeta_const_bound with ⟨M, hMpos, hMb⟩
+  let C : ℝ := M + Real.log (2 * Real.pi) + 2 * Real.pi + 4
+  have hCpos : 0 < C := negstrip_const_pos hMpos
+  refine ⟨C, hCpos, ?_⟩
+  intro σ t hσlo hσhi ht
+  let s : ℂ := (σ : ℂ) + Complex.I * (t : ℂ)
+  let Lv : ℝ := L t
+  have hsre : s.re = σ := by simp [s]
+  have hsim : s.im = t := by simp [s]
+  have ht_ne : t ≠ 0 := by
+    intro ht0
+    rw [ht0] at ht
+    norm_num at ht
+  have hs0 : s ≠ 0 := by
+    intro hs0'
+    have h : s.im = 0 := by rw [hs0']; simp
+    rw [hsim] at h
+    exact ht_ne h
+  have hs1 : s ≠ 1 := by
+    intro hs1'
+    have h : s.re = (1 : ℂ).re := congrArg Complex.re hs1'
+    rw [hsre] at h
+    norm_num at h
+    linarith
+  have hζs : riemannZeta s ≠ 0 := zeta_ne_zero_of_rh_neg_strip h (by rw [hsre]; exact hσlo)
+    (by rw [hsre]; exact hσhi) hs1
+  have hre_w : (3 / 2 : ℝ) ≤ (1 - s).re := by
+    have hsub : (1 - s).re = 1 - σ := by rw [Complex.sub_re, hsre]; norm_num
+    rw [hsub]; linarith
+  have hζw : riemannZeta (1 - s) ≠ 0 := riemannZeta_ne_zero_of_one_le_re (by linarith)
+  have hre_w0 : (0 : ℝ) < (1 - s).re := by linarith
+  have hΓ : ∀ n : ℕ, 1 - s ≠ -(n : ℂ) := ne_neg_nat_of_re_pos hre_w0
+  have hcos : Complex.cos (↑Real.pi * (1 - s) / 2) ≠ 0 := by
+    apply cos_pi_one_sub_two_ne_zero_of_im_ne_zero
+    rw [hsim]
+    exact ht_ne
+  have hFE := zeta_logDeriv_fe_expanded hζs hζw hs0 hs1 hΓ hcos
+  have hFE' : deriv riemannZeta s / riemannZeta s =
+      Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s) +
+        ((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2) -
+          deriv riemannZeta (1 - s) / riemannZeta (1 - s) := by
+    simpa using hFE
+  have hL3 : (1 : ℝ) ≤ Lv ^ 3 := by dsimp [Lv]; exact L_pow3_ge_one t ht
+  -- the constant term
+  have hbnd_log : ‖Complex.log ((2 * Real.pi : ℝ) : ℂ)‖ ≤ Real.log (2 * Real.pi) * Lv ^ 3 := by
+    rw [norm_log_two_pi]
+    dsimp [Lv]
+    exact log_two_pi_mul_L3_le t ht
+  -- the digamma term
+  have hbnd_dg : ‖Complex.digamma (1 - s)‖ ≤ 3 * Lv ^ 3 := by
+    have h' := digamma_poly_bound (σ := σ) (t := t) hσlo hσhi ht
+    simpa [s, Lv] using h'
+  -- the tangent term
+  have hbnd_T : ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ ≤
+      2 * Real.pi * Lv ^ 3 := by
+    have hu : (1 : ℝ) ≤ |(↑Real.pi * (1 - s) / 2).im| := by
+      simpa [s] using (tan_arg_abs σ t ht)
+    have h' := tan_term_poly_bound (↑Real.pi * (1 - s) / 2) hu ht
+    simpa [Lv] using h'
+  -- the reflected ζ'/ζ term: constant bound, absorbed into Lv³
+  have hbnd_R : ‖deriv riemannZeta (1 - s) / riemannZeta (1 - s)‖ ≤ M * Lv ^ 3 := by
+    have hM := hMb (1 - s) hre_w
+    have hML : M ≤ M * Lv ^ 3 := le_mul_of_one_le_right (le_of_lt hMpos) hL3
+    linarith
+  -- assemble ζ'/ζ
+  have hnorm_main : ‖deriv riemannZeta s / riemannZeta s‖ ≤
+      (M + Real.log (2 * Real.pi) + 3 + 2 * Real.pi) * Lv ^ 3 := by
+    have htri : ‖deriv riemannZeta s / riemannZeta s‖ ≤
+        ‖Complex.log ((2 * Real.pi : ℝ) : ℂ)‖ + ‖Complex.digamma (1 - s)‖ +
+        ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ +
+          ‖deriv riemannZeta (1 - s) / riemannZeta (1 - s)‖ := by
+      rw [hFE']
+      have h1 : ‖Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s) +
+            ((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2) -
+              deriv riemannZeta (1 - s) / riemannZeta (1 - s)‖ ≤
+          ‖Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s) +
+              ((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ +
+            ‖deriv riemannZeta (1 - s) / riemannZeta (1 - s)‖ := by
+        simpa [sub_eq_add_neg] using
+          (norm_add_le (Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s) +
+              ((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2))
+            (-(deriv riemannZeta (1 - s) / riemannZeta (1 - s))))
+      have h2 : ‖Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s) +
+            ((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ ≤
+          ‖Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s)‖ +
+            ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ :=
+        norm_add_le _ _
+      have h3 : ‖Complex.log ((2 * Real.pi : ℝ) : ℂ) - Complex.digamma (1 - s)‖ ≤
+          ‖Complex.log ((2 * Real.pi : ℝ) : ℂ)‖ + ‖Complex.digamma (1 - s)‖ := by
+        simpa [sub_eq_add_neg] using
+          (norm_add_le (Complex.log ((2 * Real.pi : ℝ) : ℂ)) (-Complex.digamma (1 - s)))
+      linarith
+    calc
+      ‖deriv riemannZeta s / riemannZeta s‖
+          ≤ ‖Complex.log ((2 * Real.pi : ℝ) : ℂ)‖ + ‖Complex.digamma (1 - s)‖ +
+            ‖((Real.pi / 2 : ℝ) : ℂ) * Complex.tan (↑Real.pi * (1 - s) / 2)‖ +
+              ‖deriv riemannZeta (1 - s) / riemannZeta (1 - s)‖ := htri
+      _ ≤ Real.log (2 * Real.pi) * Lv ^ 3 + 3 * Lv ^ 3 + 2 * Real.pi * Lv ^ 3 +
+            M * Lv ^ 3 :=
+          add_le_add (add_le_add (add_le_add hbnd_log hbnd_dg) hbnd_T) hbnd_R
+      _ = (M + Real.log (2 * Real.pi) + 3 + 2 * Real.pi) * Lv ^ 3 := by ring
+  -- lift to ζ₁
+  have hζ1main : ‖logDeriv riemannZeta₁ s‖ ≤ C * Lv ^ 3 := by
+    have hle1 := norm_zeta1_logDeriv_le s hs1 hζs
+    have hinv : ‖(s - 1)⁻¹‖ ≤ 1 := by simpa [s] using (inv_sub_one_le_one σ t ht)
+    have hpre : ‖deriv riemannZeta s / riemannZeta s‖ + ‖(s - 1)⁻¹‖ ≤
+        (M + Real.log (2 * Real.pi) + 3 + 2 * Real.pi) * Lv ^ 3 + 1 :=
+      add_le_add hnorm_main hinv
+    calc
+      ‖logDeriv riemannZeta₁ s‖ ≤ ‖deriv riemannZeta s / riemannZeta s‖ + ‖(s - 1)⁻¹‖ := hle1
+      _ ≤ (M + Real.log (2 * Real.pi) + 3 + 2 * Real.pi) * Lv ^ 3 + 1 := hpre
+      _ ≤ C * Lv ^ 3 := by
+        dsimp [C]
+        nlinarith only [hL3]
+  have hgoal : ‖logDeriv riemannZeta₁ (((σ : ℂ) + Complex.I * (t : ℂ)) : ℂ)‖ ≤
+      C * (Real.log (|t| + 3) + 1) ^ 3 := by
+    change ‖logDeriv riemannZeta₁ s‖ ≤ C * Lv ^ 3
+    exact hζ1main
+  exact hgoal
+
+end Commons.NumberTheory.Zeta
