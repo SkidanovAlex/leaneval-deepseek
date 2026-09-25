@@ -1,0 +1,15 @@
+import Mathlib
+import Submission.NK.LocalReciprocity.NormGroup
+import Submission.NK.LocalReciprocity.MaxAbelianSetup
+import Submission.NK.LocalReciprocity.commutator_gal_maxAbelianSubext
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Submission.Commons.RingTheory.Henselian.kummer_root_lift
+import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
+import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.card_residueField_adicCompletionIntegers_eq_pow_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionIntegers_iInf_maximalIdeal_pow_eq_bot
+import Submission.NK.Ramification.exists_adicRamificationSubgroup_eq_bot
+import Submission.NK.Ramification.ramificationSubgroup_succ_eq_of_uniformizer
+import Submission.NK.Ramification.smul_sub_mem_maximalIdeal_pow
+
+/-! Common imports for the `Tame` lemmas of `Submission/Work/Summary/NUV2/Tame/`. -/
