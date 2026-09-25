@@ -1,0 +1,453 @@
+import Mathlib
+import Submission.Work.ShafarevichKoch.VTwoUnramified
+import Submission.Work.ShafarevichKoch.GeneratorRankKc
+
+/-!
+# `Work.ShafarevichKoch.card_VTwoUnramified_mod_squares_Kc`
+
+**The cardinality of the *unramified* Kummer radical modulo the squares of `Kcˣ`.**
+
+```lean
+Nat.card (VTwoUnramified Kc M ⧸ (Kcˣ)²) = 32 = 2 ^ rank₂ Cl(Kc).
+```
+
+For `M : MaximalUnramifiedProP Kc 2` (`Kc = ℚ(√-30030)`) and `V^{unr} = VTwoUnramified Kc M` the
+subgroup of those `x ∈ Kcˣ` with `√x ∈ M.K` (i.e. for which `Kc(√x)/Kc` is unramified), the
+quotient of `V^{unr}` by the subgroup of the squares of `Kcˣ` is the Kummer dual of the
+unramified quadratic extensions of `Kc`; its cardinality is `2 ^ d(G_∅) = 2 ^ rank₂ Cl(Kc) = 32`
+(`Work.ShafarevichKoch.card_quadraticLevel_Kc_eq_thirtyone`).
+
+## Proof
+
+Two maps, each elementary (no class field theory beyond the already established genus-theoretic
+count `#QuadraticLevel Kc M = 31`).
+
+* *Upper bound* `#(V^{unr}/Kc^{×2}) ≤ 32`: the Kummer two-descent `x ↦ [√(x)]` restricted to
+  `V^{unr}` is a homomorphism `V^{unr} → Cl(Kc)` whose image is `2`-torsion.  Its kernel is the
+  square subgroup: if `vClass x = 1` then `x = u · y²` with `u` a unit of `𝓞 Kc`
+  (`vClass_eq_one_iff`), every unit of `𝓞 Kc` is `±` a square (`Kc_unit_eq_or_eq_neg`), and the
+  negative case is excluded by `-1 ∉ V^{unr}`.  Hence `V^{unr}/Kc^{×2} ↪ Cl(Kc)[2]`
+  (`unrClassTwoTor_injective`), a group of order `32`.
+* *Lower bound*: the map `x ↦` (the level `Kc⟮√x⟯`, or `none` if `x` is a square) descends to
+  `V^{unr}/Kc^{×2}` (`unresLevel_eq_of_mem`) and the Kummer lifting of a quadratic level
+  (`degreeTwo_sqrt_gen`) provides a section `levelSection` of it
+  (`unresLevelLift_levelSection`); the target `Option (QuadraticLevel Kc M)` has `31 + 1 = 32`
+  elements.  Hence `32 ≤ #(V^{unr}/Kc^{×2})`.
+
+The two bounds are combined in the final theorem.
+-/
+
+set_option linter.style.haveILetI false
+set_option linter.unusedVariables false
+set_option linter.unusedSectionVars false
+set_option maxHeartbeats 800000
+
+open scoped Classical
+open scoped NumberField
+open NumberField
+
+noncomputable section
+
+namespace Work.ShafarevichKoch
+
+open Work.ClassFieldTower
+
+variable (M : MaximalUnramifiedProP.{0} Kc 2)
+
+/-- The subgroup of squares of `Kcˣ`, as the image of the squaring endomorphism. -/
+abbrev KcSquares : Subgroup Kcˣ := Subgroup.map (powMonoidHom (2 : ℕ) : Kcˣ →* Kcˣ) ⊤
+
+/-- The subgroup of the unramified radical cut out by the squares of `Kcˣ`. -/
+abbrev KcN : Subgroup ↥(VTwoUnramified Kc M) :=
+  (KcSquares).comap (VTwoUnramified Kc M).subtype
+
+/-- The chosen square root in `Kc_∅` of an element of the unramified radical. -/
+def unrRoot (x : ↥(VTwoUnramified Kc M)) : M.K := Classical.choose x.2
+
+theorem unrRoot_ne_zero (x : ↥(VTwoUnramified Kc M)) : unrRoot M x ≠ 0 :=
+  (Classical.choose_spec x.2).1
+
+theorem unrRoot_sq (x : ↥(VTwoUnramified Kc M)) :
+    unrRoot M x * unrRoot M x = algebraMap Kc M.K ((x : Kcˣ) : Kc) :=
+  (Classical.choose_spec x.2).2
+
+/-- Adjoining `-b` or `b` gives the same field. -/
+theorem adjoin_neg_eq (b : M.K) :
+    IntermediateField.adjoin Kc ({-b} : Set M.K)
+      = IntermediateField.adjoin Kc ({b} : Set M.K) := by
+  refine le_antisymm ?_ ?_
+  · rw [IntermediateField.adjoin_le_iff]
+    rintro t ht
+    rw [Set.mem_singleton_iff] at ht
+    rw [ht]
+    exact neg_mem (IntermediateField.mem_adjoin_simple_self Kc b)
+  · rw [IntermediateField.adjoin_le_iff]
+    rintro t ht
+    rw [Set.mem_singleton_iff] at ht
+    rw [ht]
+    simpa using neg_mem (IntermediateField.mem_adjoin_simple_self Kc (-b))
+
+/-- Adjoining `c * b` (`c` a unit of `Kc`) or `b` gives the same field. -/
+theorem adjoin_mul_eq (c : Kcˣ) (b : M.K) :
+    IntermediateField.adjoin Kc ({algebraMap Kc M.K (c : Kc) * b} : Set M.K)
+      = IntermediateField.adjoin Kc ({b} : Set M.K) := by
+  refine le_antisymm ?_ ?_
+  · rw [IntermediateField.adjoin_le_iff]
+    rintro t ht
+    rw [Set.mem_singleton_iff] at ht
+    rw [ht]
+    exact mul_mem (IntermediateField.algebraMap_mem _ (c : Kc))
+      (IntermediateField.mem_adjoin_simple_self Kc b)
+  · rw [IntermediateField.adjoin_le_iff]
+    rintro t ht
+    rw [Set.mem_singleton_iff] at ht
+    rw [ht]
+    have hb : b ∈ IntermediateField.adjoin Kc
+        ({algebraMap Kc M.K (c : Kc) * b} : Set M.K) := by
+      have hgen : algebraMap Kc M.K (c : Kc) * b ∈
+          IntermediateField.adjoin Kc ({algebraMap Kc M.K (c : Kc) * b} : Set M.K) :=
+        IntermediateField.mem_adjoin_simple_self Kc _
+      have hcinv : algebraMap Kc M.K ((c⁻¹ : Kcˣ) : Kc) ∈
+          IntermediateField.adjoin Kc ({algebraMap Kc M.K (c : Kc) * b} : Set M.K) :=
+        IntermediateField.algebraMap_mem _ _
+      have hcalc : algebraMap Kc M.K ((c⁻¹ : Kcˣ) : Kc)
+          * (algebraMap Kc M.K (c : Kc) * b) = b := by
+        rw [← mul_assoc, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one,
+          one_mul]
+      have hmem := mul_mem hcinv hgen
+      rwa [hcalc] at hmem
+    exact hb
+
+/-- The field generated by the (chosen) square root of a non-square element of the unramified
+radical is quadratic over `Kc`. -/
+theorem finrank_adjoin_unrRoot (x : ↥(VTwoUnramified Kc M))
+    (h : ¬ ∃ y : Kcˣ, (x : Kcˣ) = y ^ 2) :
+    Module.finrank Kc (IntermediateField.adjoin Kc ({unrRoot M x} : Set M.K)) = 2 := by
+  set L : IntermediateField Kc M.K := IntermediateField.adjoin Kc ({unrRoot M x} : Set M.K)
+    with hL
+  have hint : IsIntegral Kc (unrRoot M x) := by
+    refine ⟨Polynomial.X ^ 2 - Polynomial.C ((x : Kcˣ) : Kc),
+      Polynomial.monic_X_pow_sub_C _ (n := 2) (by norm_num), ?_⟩
+    rw [Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C,
+      pow_two, unrRoot_sq, sub_self]
+  haveI hfd : FiniteDimensional Kc ↥L := by
+    rw [hL]
+    exact IntermediateField.adjoin.finiteDimensional hint
+  have hle : Module.finrank Kc ↥L ≤ 2 := by
+    rw [hL, IntermediateField.adjoin.finrank hint]
+    have hdvd : minpoly Kc (unrRoot M x) ∣
+        (Polynomial.X ^ 2 - Polynomial.C ((x : Kcˣ) : Kc) : Polynomial Kc) := by
+      apply minpoly.dvd
+      simp only [map_sub, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, pow_two, unrRoot_sq,
+        sub_self]
+    have hq : (Polynomial.X ^ 2 - Polynomial.C ((x : Kcˣ) : Kc) : Polynomial Kc) ≠ 0 := by
+      intro hh
+      have h2 := Polynomial.natDegree_X_pow_sub_C (n := 2) (r := ((x : Kcˣ) : Kc))
+      rw [hh] at h2
+      simp at h2
+    calc (minpoly Kc (unrRoot M x)).natDegree
+        ≤ (Polynomial.X ^ 2 - Polynomial.C ((x : Kcˣ) : Kc) : Polynomial Kc).natDegree :=
+          Polynomial.natDegree_le_of_dvd hdvd hq
+      _ = 2 := Polynomial.natDegree_X_pow_sub_C
+  have hne : Module.finrank Kc ↥L ≠ 1 := by
+    intro h1
+    have hbot : L = ⊥ := IntermediateField.finrank_eq_one_iff.mp h1
+    have hmem : unrRoot M x ∈ (⊥ : IntermediateField Kc M.K) := by
+      rw [← hbot]
+      exact IntermediateField.mem_adjoin_simple_self Kc (unrRoot M x)
+    obtain ⟨c, hc⟩ := IntermediateField.mem_bot.mp hmem
+    have hc0 : c ≠ 0 := by
+      intro h0
+      exact unrRoot_ne_zero M x (by rw [← hc, h0, map_zero])
+    have hcc : c * c = ((x : Kcˣ) : Kc) := by
+      have h2 : algebraMap Kc M.K (c * c) = algebraMap Kc M.K ((x : Kcˣ) : Kc) := by
+        rw [map_mul, hc, unrRoot_sq]
+      exact (algebraMap Kc M.K).injective h2
+    refine h ⟨Units.mk0 c hc0, Units.ext ?_⟩
+    rw [Units.val_pow_eq_pow_val, Units.val_mk0, pow_two, hcc]
+  have hpos : 0 < Module.finrank Kc ↥L := Module.finrank_pos
+  omega
+
+/-- The unramified quadratic level cut out by an element of the radical, or `none` if the element
+is a square in `Kcˣ`. -/
+def unresLevel (x : ↥(VTwoUnramified Kc M)) : Option (QuadraticLevel Kc M) :=
+  if h : ∃ y : Kcˣ, (x : Kcˣ) = y ^ 2 then none
+  else some ⟨IntermediateField.adjoin Kc ({unrRoot M x} : Set M.K),
+    finrank_adjoin_unrRoot M x h⟩
+
+/-- **The level map is constant on the cosets of the squares.**  If `x x' : V^{unr}` generate the
+same class in `V^{unr}/Kc^{×2}` then the fields `Kc⟮√x⟯` and `Kc⟮√x'⟯` coincide. -/
+theorem unresLevel_eq_of_mem (x x' : ↥(VTwoUnramified Kc M)) (h : x⁻¹ * x' ∈ KcN M) :
+    unresLevel M x = unresLevel M x' := by
+  obtain ⟨y, hy⟩ : ∃ y : Kcˣ, (x : Kcˣ) = (x' : Kcˣ) * y ^ 2 := by
+    have hmem : ((x⁻¹ * x' : ↥(VTwoUnramified Kc M)) : Kcˣ) ∈ KcSquares := h
+    rw [KcSquares, Subgroup.map_top, MonoidHom.mem_range] at hmem
+    obtain ⟨y, hy⟩ := hmem
+    rw [powMonoidHom_apply] at hy
+    have hcoe : ((x⁻¹ * x' : ↥(VTwoUnramified Kc M)) : Kcˣ) = (x : Kcˣ)⁻¹ * (x' : Kcˣ) := by
+      rw [Subgroup.coe_mul, Subgroup.coe_inv]
+    rw [hcoe] at hy
+    exact ⟨y⁻¹, by rw [inv_pow, hy]; group⟩
+  have hsq : (∃ z : Kcˣ, (x : Kcˣ) = z ^ 2) ↔ (∃ z : Kcˣ, (x' : Kcˣ) = z ^ 2) := by
+    constructor
+    · rintro ⟨z, hz⟩
+      refine ⟨z * y⁻¹, ?_⟩
+      have hx' : (x' : Kcˣ) = (x : Kcˣ) * (y ^ 2)⁻¹ := by
+        rw [hy, mul_assoc, mul_inv_cancel, mul_one]
+      rw [hx', hz, mul_pow, inv_pow]
+    · rintro ⟨z, hz⟩
+      exact ⟨z * y, by rw [hy, hz, mul_pow]⟩
+  by_cases h1 : ∃ z : Kcˣ, (x : Kcˣ) = z ^ 2
+  · rw [unresLevel, unresLevel, dite_eq_left h1, dite_eq_left (hsq.mp h1)]
+  · rw [unresLevel, unresLevel, dite_eq_right h1, dite_eq_right (fun hc => h1 (hsq.mpr hc))]
+    have hcast : ((x : Kcˣ) : Kc) = ((x' : Kcˣ) : Kc) * (y : Kc) ^ 2 := by
+      have h2 := congrArg (fun u : Kcˣ => (u : Kc)) hy
+      simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using h2
+    have hroot : unrRoot M x * unrRoot M x
+        = (algebraMap Kc M.K (y : Kc) * unrRoot M x')
+          * (algebraMap Kc M.K (y : Kc) * unrRoot M x') := by
+      calc unrRoot M x * unrRoot M x = algebraMap Kc M.K ((x : Kcˣ) : Kc) := unrRoot_sq M x
+        _ = algebraMap Kc M.K (((x' : Kcˣ) : Kc) * (y : Kc) ^ 2) := by rw [hcast]
+        _ = algebraMap Kc M.K ((x' : Kcˣ) : Kc) * algebraMap Kc M.K (y : Kc) ^ 2 := by
+              rw [map_mul, map_pow]
+        _ = (unrRoot M x' * unrRoot M x') * algebraMap Kc M.K (y : Kc) ^ 2 := by
+              rw [unrRoot_sq M x']
+        _ = (algebraMap Kc M.K (y : Kc) * unrRoot M x')
+              * (algebraMap Kc M.K (y : Kc) * unrRoot M x') := by ring
+    have hlevel : IntermediateField.adjoin Kc ({unrRoot M x} : Set M.K)
+        = IntermediateField.adjoin Kc ({unrRoot M x'} : Set M.K) := by
+      rcases mul_self_eq_mul_self_iff.mp hroot with hc | hc
+      · rw [hc, adjoin_mul_eq M y (unrRoot M x')]
+      · rw [hc, adjoin_neg_eq M (algebraMap Kc M.K (y : Kc) * unrRoot M x'),
+          adjoin_mul_eq M y (unrRoot M x')]
+    exact congrArg some (Subtype.ext hlevel)
+
+/-- The level map, descended to the quotient `V^{unr}/Kc^{×2}`. -/
+def unresLevelLift (q : ↥(VTwoUnramified Kc M) ⧸ KcN M) : Option (QuadraticLevel Kc M) :=
+  Quotient.liftOn' q (unresLevel M)
+    (fun a b hab => unresLevel_eq_of_mem M a b ((QuotientGroup.leftRel_apply).mp hab))
+
+/-- The value of the descended class map on a representative. -/
+theorem unresLevelLift_mk (x : ↥(VTwoUnramified Kc M)) :
+    unresLevelLift M (QuotientGroup.mk x) = unresLevel M x :=
+  Quotient.liftOn'_mk x (unresLevel M) _
+
+/-- The class of the trivial element is sent to `none`: the trivial element is a square. -/
+theorem unresLevelLift_one : unresLevelLift M (1 : ↥(VTwoUnramified Kc M) ⧸ KcN M) = none := by
+  rw [← QuotientGroup.mk_one (KcN M), unresLevelLift_mk]
+  exact dite_eq_left ⟨1, by simp⟩
+
+/-- **Every unramified quadratic level is generated over `Kc` by a square root of an element of
+the unramified radical.** -/
+theorem exists_levelElement (L : QuadraticLevel Kc M) :
+    ∃ (x : ↥(VTwoUnramified Kc M)) (b : M.K), b ≠ 0 ∧
+      b * b = algebraMap Kc M.K ((x : Kcˣ) : Kc) ∧
+      IntermediateField.adjoin Kc ({b} : Set M.K) = (L : IntermediateField Kc M.K) := by
+  obtain ⟨a, b, _hbmem, hbsq, hbgen⟩ := degreeTwo_sqrt_gen (K := Kc) (L := M.K) (by norm_num)
+    (L : IntermediateField Kc M.K) L.2
+  have hb0 : b ≠ 0 := by
+    intro h0
+    have h1 : algebraMap Kc M.K (a : Kc) = 0 := by rw [← hbsq, h0, mul_zero]
+    exact a.ne_zero ((algebraMap Kc M.K).injective (by rw [h1, map_zero]))
+  exact ⟨⟨a, ⟨b, hb0, hbsq⟩⟩, b, hb0, hbsq, hbgen⟩
+
+/-- A chosen Kummer generator of an unramified quadratic level. -/
+def levelElement (L : QuadraticLevel Kc M) : ↥(VTwoUnramified Kc M) :=
+  Classical.choose (exists_levelElement M L)
+
+/-- The defining property of the chosen Kummer generator of a quadratic level. -/
+theorem levelElement_spec (L : QuadraticLevel Kc M) :
+    ∃ b : M.K, b ≠ 0 ∧ b * b = algebraMap Kc M.K ((levelElement M L : Kcˣ) : Kc) ∧
+      IntermediateField.adjoin Kc ({b} : Set M.K) = (L : IntermediateField Kc M.K) :=
+  Classical.choose_spec (exists_levelElement M L)
+
+/-- A section of the level map: the quadratic level `L` is sent to the class of its chosen Kummer
+generator, and `none` to the trivial class. -/
+def levelSection : Option (QuadraticLevel Kc M) → ↥(VTwoUnramified Kc M) ⧸ KcN M
+  | none => 1
+  | some L => QuotientGroup.mk (levelElement M L)
+
+/-- **The descended level map is a retraction of the section**: the level of the square-root class
+of a quadratic level `L` is `L` itself. -/
+theorem unresLevelLift_levelSection (o : Option (QuadraticLevel Kc M)) :
+    unresLevelLift M (levelSection M o) = o := by
+  cases o with
+  | none =>
+      show unresLevelLift M (1 : ↥(VTwoUnramified Kc M) ⧸ KcN M) = none
+      exact unresLevelLift_one M
+  | some L =>
+      show unresLevelLift M (QuotientGroup.mk (levelElement M L)) = some L
+      rw [unresLevelLift_mk]
+      obtain ⟨b, hb0, hbsq, hbgen⟩ := levelElement_spec M L
+      have hnonsq : ¬ ∃ z : Kcˣ, (levelElement M L : Kcˣ) = z ^ 2 := by
+        rintro ⟨z, hz⟩
+        have hbb : b * b = algebraMap Kc M.K (z * z) := by
+          rw [hbsq, hz]
+          congr 1
+          simp only [Units.val_mul, pow_two]
+        rw [map_mul] at hbb
+        have hb_bot : b ∈ (⊥ : IntermediateField Kc M.K) := by
+          rw [IntermediateField.mem_bot]
+          rcases mul_self_eq_mul_self_iff.mp hbb with h | h
+          · exact ⟨z, h.symm⟩
+          · exact ⟨-z, by rw [map_neg]; exact h.symm⟩
+        have hbot : IntermediateField.adjoin Kc ({b} : Set M.K) = ⊥ := by
+          refine le_antisymm ?_ bot_le
+          rw [IntermediateField.adjoin_le_iff]
+          rintro t ht
+          rw [Set.mem_singleton_iff] at ht
+          rw [ht]
+          exact hb_bot
+        have h2 : Module.finrank Kc (L : IntermediateField Kc M.K) = 1 := by
+          rw [← hbgen, hbot, IntermediateField.finrank_bot]
+        rw [L.2] at h2
+        norm_num at h2
+      unfold unresLevel
+      rw [dite_eq_right hnonsq]
+      refine congrArg some (Subtype.ext ?_)
+      change IntermediateField.adjoin Kc ({unrRoot M (levelElement M L)} : Set M.K)
+        = (L : IntermediateField Kc M.K)
+      have hroot2 : unrRoot M (levelElement M L) * unrRoot M (levelElement M L) = b * b := by
+        rw [unrRoot_sq, hbsq]
+      rcases mul_self_eq_mul_self_iff.mp hroot2 with h | h
+      · rw [h, hbgen]
+      · rw [h, adjoin_neg_eq M b, hbgen]
+
+/-- The Kummer two-descent `V_∅ → Cl(Kc)` as a monoid homomorphism. -/
+def vClassMonoidHom (F : Type*) [Field F] [NumberField F] : ↥(VTwo F) →* ClassGroup (𝓞 F) where
+  toFun := vClass F
+  map_one' := by
+    have hcoe : (((1 : ↥(VTwo F))) : Fˣ) = 1 := rfl
+    have h1 : (1 : IdealUnit F) * 1 = FracIdealOf F (((1 : ↥(VTwo F))) : Fˣ) := by
+      rw [hcoe, FracIdealOf_one, mul_one]
+    rw [vClass_eq_mk F (x := 1) (J := 1) h1]
+    exact map_one (ClassGroup.mk F)
+  map_mul' := vClass_mul F
+
+/-- The Kummer two-descent restricted to the unramified radical. -/
+def unrClassHom : ↥(VTwoUnramified Kc M) →* ClassGroup (𝓞 Kc) :=
+  (vClassMonoidHom Kc).comp (Subgroup.inclusion (VTwoUnramified_le_VTwo Kc M))
+
+/-- Membership in the square subgroup, unfolded. -/
+theorem mem_KcSquares_iff (z : Kcˣ) : z ∈ KcSquares ↔ ∃ y : Kcˣ, z = y ^ 2 := by
+  rw [KcSquares, Subgroup.map_top, MonoidHom.mem_range]
+  constructor
+  · rintro ⟨y, hy⟩
+    rw [powMonoidHom_apply] at hy
+    exact ⟨y, hy.symm⟩
+  · rintro ⟨y, hy⟩
+    refine ⟨y, ?_⟩
+    rw [powMonoidHom_apply]
+    exact hy.symm
+
+/-- The `2`-torsion of the class group of `Kc`. -/
+abbrev KcTwoTorsion : Type _ := {c : ClassGroup (𝓞 Kc) // c ^ 2 = 1}
+
+theorem card_KcTwoTorsion : Nat.card KcTwoTorsion = 32 := by
+  rw [← card_quotient_squareSubgroup_eq_card_twoTorsion (ClassGroup (𝓞 Kc)),
+    ← two_pow_classGroupTwoRank Kc, classGroupTwoRank_Kc]
+  norm_num
+
+/-- **The kernel of the restricted two-descent is the subgroup of squares of `Kcˣ`.**
+
+`vClass x = 1` means `x = u · y²` with `u` a unit of `𝓞 Kc`; since every unit of `𝓞 Kc` is `±` a
+square and `-1 ∉ V^{unr}`, this forces `x` to be a square of `Kcˣ`.  Conversely a square has
+trivial descent class. -/
+theorem unrClassHom_eq_one_iff (x : ↥(VTwoUnramified Kc M)) :
+    unrClassHom M x = 1 ↔ (x : Kcˣ) ∈ KcSquares := by
+  constructor
+  · intro hx
+    obtain ⟨u, y, hy⟩ := (vClass_eq_one_iff Kc _).mp hx
+    have hcoe : ((Subgroup.inclusion (VTwoUnramified_le_VTwo Kc M) x : ↥(VTwo Kc)) : Kcˣ)
+        = (x : Kcˣ) := rfl
+    rw [hcoe] at hy
+    rw [mem_KcSquares_iff]
+    rcases Kc_unit_eq_or_eq_neg u with ⟨z, hz | hz⟩
+    · exact ⟨z * y, by rw [hy, hz, mul_pow]⟩
+    · exfalso
+      have heq : (x : Kcˣ) * ((z * y) ^ 2)⁻¹ = -1 := by
+        have hxneg : (x : Kcˣ) = -((z * y) ^ 2) := by
+          rw [hy, hz, mul_pow, neg_mul]
+        rw [hxneg, neg_mul, mul_inv_cancel]
+      have hmem : (x : Kcˣ) * ((z * y) ^ 2)⁻¹ ∈ VTwoUnramified Kc M :=
+        mul_mem x.2 (inv_mem (sq_mem_VTwoUnramified Kc M (z * y)))
+      exact neg_one_not_mem_VTwoUnramified_Kc M (heq ▸ hmem)
+  · intro hx
+    rw [mem_KcSquares_iff] at hx
+    obtain ⟨y, hy⟩ := hx
+    have hcoe : ((Subgroup.inclusion (VTwoUnramified_le_VTwo Kc M) x : ↥(VTwo Kc)) : Kcˣ)
+        = y ^ 2 := hy
+    have hJ : FracIdealOf Kc y * FracIdealOf Kc y
+        = FracIdealOf Kc ((Subgroup.inclusion (VTwoUnramified_le_VTwo Kc M) x :
+            ↥(VTwo Kc)) : Kcˣ) := by
+      rw [← FracIdealOf_mul, hcoe, pow_two]
+    rw [show unrClassHom M x
+        = vClass Kc (Subgroup.inclusion (VTwoUnramified_le_VTwo Kc M) x) from rfl,
+      vClass_eq_mk Kc hJ, classGroup_mk_fracIdealOf_eq_one]
+
+/-- The inclusion of the square subgroup in the kernel of the restricted two-descent. -/
+theorem KcN_le_ker : KcN M ≤ (unrClassHom M).ker :=
+  fun x hx => (unrClassHom_eq_one_iff M x).mpr hx
+
+/-- The restricted two-descent, descended to `V^{unr}/Kc^{×2}`. -/
+def unrClassLift : ↥(VTwoUnramified Kc M) ⧸ KcN M →* ClassGroup (𝓞 Kc) :=
+  QuotientGroup.lift (KcN M) (unrClassHom M) (KcN_le_ker M)
+
+theorem unrClassLift_mk (x : ↥(VTwoUnramified Kc M)) :
+    unrClassLift M (QuotientGroup.mk x) = unrClassHom M x :=
+  QuotientGroup.lift_mk' (KcN M) (KcN_le_ker M) x
+
+theorem unrClassLift_sq (q : ↥(VTwoUnramified Kc M) ⧸ KcN M) :
+    (unrClassLift M q) ^ 2 = 1 := by
+  obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective q
+  rw [unrClassLift_mk]
+  exact vClass_sq_eq_one Kc _
+
+theorem unrClassLift_eq_one_iff (q : ↥(VTwoUnramified Kc M) ⧸ KcN M) :
+    unrClassLift M q = 1 ↔ q = 1 := by
+  constructor
+  · intro h
+    obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective q
+    rw [unrClassLift_mk] at h
+    exact (QuotientGroup.eq_one_iff (N := KcN M) x).mpr ((unrClassHom_eq_one_iff M x).mp h)
+  · rintro rfl
+    exact map_one _
+
+/-- The descended two-descent class lands in the `2`-torsion of the class group. -/
+def unrClassTwoTor : ↥(VTwoUnramified Kc M) ⧸ KcN M → KcTwoTorsion :=
+  fun q => ⟨unrClassLift M q, unrClassLift_sq M q⟩
+
+/-- **The descended two-descent class is injective.** -/
+theorem unrClassTwoTor_injective : Function.Injective (unrClassTwoTor M) := by
+  intro q q' h
+  have h1 : unrClassLift M q = unrClassLift M q' := congrArg Subtype.val h
+  have h2 : unrClassLift M (q * q'⁻¹) = 1 := by
+    rw [map_mul, map_inv, h1, mul_inv_cancel]
+  exact mul_inv_eq_one.mp ((unrClassLift_eq_one_iff M _).mp h2)
+
+theorem card_VTwoUnramified_mod_squares_Kc
+    (M : Work.ClassFieldTower.MaximalUnramifiedProP.{0} Work.ClassFieldTower.Kc 2) :
+    Nat.card (Work.ShafarevichKoch.VTwoUnramified Work.ClassFieldTower.Kc M ⧸
+      (Subgroup.map (powMonoidHom (2 : ℕ) : Work.ClassFieldTower.Kcˣ →* Work.ClassFieldTower.Kcˣ) ⊤).comap
+        (Work.ShafarevichKoch.VTwoUnramified Work.ClassFieldTower.Kc M).subtype) = 32 := by
+  change Nat.card (↥(VTwoUnramified Kc M) ⧸ KcN M) = 32
+  haveI hfin : Finite (↥(VTwoUnramified Kc M) ⧸ KcN M) :=
+    Finite.of_injective (unrClassTwoTor M) (unrClassTwoTor_injective M)
+  -- upper bound: the descended two-descent embeds the quotient into `Cl(Kc)[2]`
+  have hle : Nat.card (↥(VTwoUnramified Kc M) ⧸ KcN M) ≤ Nat.card KcTwoTorsion :=
+    Nat.card_le_card_of_injective (unrClassTwoTor M) (unrClassTwoTor_injective M)
+  rw [card_KcTwoTorsion] at hle
+  -- lower bound: the level map is a surjection onto the quadratic levels plus the trivial one
+  haveI : Finite (QuadraticLevel Kc M) := finite_quadraticLevel_Kc M
+  haveI : Fintype (QuadraticLevel Kc M) := Fintype.ofFinite _
+  have hopt : Nat.card (Option (QuadraticLevel Kc M)) = 32 := by
+    rw [Nat.card_eq_fintype_card (α := Option (QuadraticLevel Kc M)), Fintype.card_option,
+      ← Nat.card_eq_fintype_card (α := QuadraticLevel Kc M),
+      card_quadraticLevel_Kc_eq_thirtyone M]
+  have hge : Nat.card (Option (QuadraticLevel Kc M)) ≤ Nat.card (↥(VTwoUnramified Kc M) ⧸ KcN M) :=
+    Nat.card_le_card_of_surjective (unresLevelLift M)
+      (fun o => ⟨levelSection M o, unresLevelLift_levelSection M o⟩)
+  rw [hopt] at hge
+  omega
+
+end Work.ShafarevichKoch

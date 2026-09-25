@@ -1,0 +1,175 @@
+import Mathlib
+import Submission.Work.HopfGaschutz.Defs
+
+/-!
+# `Work.HopfGaschutz.Counterexample` -- the naive engine is *false*, machine-checked
+
+**Namespace** `Work.HopfGaschutz`; module `Submission.Work.HopfGaschutz.Counterexample`.
+
+The classical relation-rank dictionary is proved in the *pro-`p`* setting: there `K` is a closed
+normal subgroup of a free pro-`p` group, hence `K` is pro-`p`, and the implication
+
+> `K = ⟨S⟩^F · K^p[K,F]`  ⟹  `K = ⟨S⟩^F`
+
+is Nakayama's lemma for the compact `𝔽_p[[F/K]]`-module `K ⧸ Φ(K)`.  **The implication is not
+available in the discrete setting without an extra hypothesis**: the defect `M := K ⧸ ⟨S⟩^F`
+satisfies `M = M^p[M,F/K]`, which in the pro-`p` world forces `M = 1`, but in the discrete world
+admits nontrivial examples (`M = ℤ/3`, `p = 2`, is one) because a f.g. group with no nontrivial
+finite `p`-quotients and `M = M^p[M,G]` need not be trivial.
+
+This file records the smallest possible instance of the failure, in the free group of rank one
+`F = Multiplicative ℤ`:
+
+* `Ktwo = ⟪x₁²⟫ ⊴ F` (the kernel of `F ↠ ℤ/2`),
+* `Ssix = {x₁⁶}`, a finite subset of `Ktwo` whose image spans the `𝔽₂`-vector space
+  `Ktwo ⧸ Ktwo²[Ktwo,F] = ℤ/2` (i.e. `Ktwo = ⟨Ssix⟩^F · Ktwo^2[Ktwo,F]`, proved below),
+
+and yet `⟨Ssix⟩^F = ⟪x₁⁶⟫ ≠ Ktwo`: the naive criterion fails, while the *minimal* number of normal
+generators of `Ktwo` is nevertheless `1 = dim Ktwo ⧸ Ktwo^p[Ktwo,F]` (the good choice being `x₁²`).
+
+What this means for the chapter: the upward direction of the dictionary (a bound on `dim H²`
+produces a presentation) may be invoked only
+
+* in the pro-`p` setting (where the defect is pro-`p`, so Nakayama applies), or
+* with an *a priori* hypothesis that the defect `K ⧸ ⟨S⟩^F` is a `p`-group
+  (`le_normalClosure_of_le_sup_relFrattini` is the finite case of this);
+
+it cannot be proved by the naive "spans ⟹ normally generates" argument.
+
+**Even finitely generated + a `p`-group is not enough.**  Let `T` be a Tarski monster (an infinite
+finitely generated simple group of exponent `p`, Ol'shanskii), `F = K = T`, `S = ∅`.  Then
+`K^p[K,F] = 1 · [T,T] = T`, so `K = ⟨S⟩^F · K^p[K,F]` holds *vacuously*, `K ⧸ ⟨S⟩^F = T` is a
+`p`-group, and `F ⧸ K = 1` -- while `⟨S⟩^F = 1 ≠ K`.  (Here `Φ(T) = 1` because `T` is simple, so the
+Frattini/Nakayama step has no finite quotient to act on.)  The engine therefore genuinely needs the
+defect to be **finite** (the finite `p`-group case, `le_normalClosure_of_le_sup_relFrattini`) or
+pro-`p` (compact, where the completed group algebra is local). -/
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option linter.style.haveILetI false
+set_option linter.unusedSectionVars false
+
+namespace Work.HopfGaschutz
+
+open scoped commutatorElement
+
+/-- The free group of rank one, written multiplicatively (`ℤ` additively). -/
+abbrev FreeRankOne : Type := Multiplicative ℤ
+
+/-- The generator of the free group of rank one. -/
+def x₁ : FreeRankOne := Multiplicative.ofAdd 1
+
+/-- The normal subgroup `Ktwo = ⟪x₁²⟫` -- the kernel of the reduction `ℤ ↠ ℤ/2`. -/
+def Ktwo : Subgroup FreeRankOne := Subgroup.closure ({x₁ ^ 2} : Set FreeRankOne)
+
+/-- The finite spanning set `Ssix = {x₁⁶} ⊆ Ktwo`. -/
+def Ssix : Finset FreeRankOne := {x₁ ^ 6}
+
+theorem Ktwo_eq_zpowers : Ktwo = Subgroup.zpowers (x₁ ^ 2) :=
+  (Subgroup.zpowers_eq_closure (x₁ ^ 2)).symm
+
+/-- In a commutative group the normal closure is the closure. -/
+theorem normalClosure_eq_closure_of_comm (s : Set FreeRankOne) :
+    Subgroup.normalClosure s = Subgroup.closure s := by
+  haveI : (Subgroup.closure s).Normal := ⟨fun n hn g => by
+    have hc : g * n * g⁻¹ = n := by rw [mul_comm g n, mul_assoc, mul_inv_cancel, mul_one]
+    rw [hc]; exact hn⟩
+  exact le_antisymm (Subgroup.normalClosure_le_normal (fun y hy => Subgroup.subset_closure hy))
+    Subgroup.closure_le_normalClosure
+
+theorem x₁_sq_mem_Ktwo : x₁ ^ 2 ∈ Ktwo := by
+  rw [Ktwo]
+  exact Subgroup.subset_closure (by simp)
+
+theorem Ssix_subset_Ktwo : (Ssix : Set FreeRankOne) ⊆ Ktwo := by
+  intro y hy
+  have hy6 : y = x₁ ^ 6 := by simpa [Ssix] using hy
+  rw [hy6]
+  have h : (x₁ ^ 2) ^ 3 ∈ Ktwo := Ktwo.pow_mem x₁_sq_mem_Ktwo 3
+  have h' : (x₁ ^ 2) ^ 3 = x₁ ^ 6 := by rw [← pow_mul]
+  rwa [h'] at h
+
+/-- The `ℤ/3`-valued character separating `x₁²` from `⟪x₁⁶⟫`. -/
+def chiThree : FreeRankOne →* Multiplicative (ZMod 3) :=
+  (Int.castAddHom (ZMod 3)).toMultiplicative
+
+theorem chiThree_x₁ : chiThree x₁ = Multiplicative.ofAdd (1 : ZMod 3) := rfl
+
+theorem chiThree_pow_six : chiThree (x₁ ^ 6) = 1 := by
+  rw [map_pow, chiThree_x₁, ← ofAdd_nsmul,
+    show (6 : ℕ) • (1 : ZMod 3) = 0 by decide, ofAdd_zero]
+
+theorem chiThree_pow_two_ne_one : chiThree (x₁ ^ 2) ≠ 1 := by
+  rw [map_pow, chiThree_x₁, ← ofAdd_nsmul]
+  intro h
+  have h2 : (2 : ℕ) • (1 : ZMod 3) = 0 := ofAdd_eq_one.mp h
+  rw [show (2 : ℕ) • (1 : ZMod 3) = (2 : ZMod 3) by decide] at h2
+  exact absurd h2 (by decide)
+
+/-- `x₁²` is **not** in the subgroup generated by `x₁⁶`. -/
+theorem x₁_sq_not_mem_closure_six : x₁ ^ 2 ∉ Subgroup.closure ({x₁ ^ 6} : Set FreeRankOne) := by
+  intro hx
+  have h2 : Subgroup.closure ({x₁ ^ 6} : Set FreeRankOne) ≤ Subgroup.comap chiThree ⊥ := by
+    rw [Subgroup.closure_le]
+    intro y hy
+    rw [Set.mem_singleton_iff] at hy
+    subst hy
+    exact Subgroup.mem_comap.mpr (by rw [chiThree_pow_six]; exact Subgroup.mem_bot.mpr rfl)
+  have h3 : chiThree (x₁ ^ 2) = 1 := by
+    have := h2 hx
+    rwa [Subgroup.mem_comap, Subgroup.mem_bot] at this
+  exact chiThree_pow_two_ne_one h3
+
+/-- **The positive half of the counterexample**: the image of `Ssix` generates
+`Ktwo ⧸ Ktwo^p[Ktwo,F]`, i.e. `Ktwo = ⟨Ssix⟩^F · Ktwo^p[Ktwo,F]`. -/
+theorem Ktwo_le_normalClosure_six_sup_relFrattini :
+    Ktwo ≤ Subgroup.normalClosure (Ssix : Set FreeRankOne) ⊔ relFrattini 2 Ktwo := by
+  have hx2 : x₁ ^ 2 ∈ Subgroup.normalClosure (Ssix : Set FreeRankOne) ⊔ relFrattini 2 Ktwo := by
+    have h6 : x₁ ^ 6 ∈ Subgroup.normalClosure (Ssix : Set FreeRankOne) :=
+      Subgroup.subset_normalClosure (by simp [Ssix])
+    have h4 : x₁ ^ 4 ∈ relFrattini 2 Ktwo := by
+      apply Subgroup.mem_sup_left
+      refine Subgroup.subset_closure ⟨x₁ ^ 2, ?_, ?_⟩
+      · exact Subgroup.subset_closure (by simp)
+      · rw [← pow_mul]
+    have h : x₁ ^ 6 * (x₁ ^ 4)⁻¹ ∈
+        (Subgroup.normalClosure (Ssix : Set FreeRankOne) ⊔ relFrattini 2 Ktwo : Subgroup _) :=
+      Subgroup.mul_mem _ (Subgroup.mem_sup_left h6)
+        (Subgroup.inv_mem _ (Subgroup.mem_sup_right h4))
+    have hid : x₁ ^ 2 = x₁ ^ 6 * (x₁ ^ 4)⁻¹ := by group
+    rw [hid]
+    exact h
+  refine (Subgroup.closure_le _).mpr ?_
+  intro y hy
+  rw [Set.mem_singleton_iff] at hy
+  rw [hy]
+  exact hx2
+
+/-- **THE COUNTEREXAMPLE**: `Ssix` spans `Ktwo ⧸ Ktwo^p[Ktwo,F]` but does not normally generate
+`Ktwo`. -/
+theorem naive_engine_fails :
+    Ktwo ≤ Subgroup.normalClosure (Ssix : Set FreeRankOne) ⊔ relFrattini 2 Ktwo ∧
+      ¬ NormalGenerates Ktwo Ssix := by
+  refine ⟨Ktwo_le_normalClosure_six_sup_relFrattini, ?_⟩
+  intro hgen
+  have hmem : x₁ ^ 2 ∈ Subgroup.normalClosure (Ssix : Set FreeRankOne) := by
+    rw [hgen]
+    exact Subgroup.subset_closure (by simp)
+  have hbad : x₁ ^ 2 ∉ Subgroup.normalClosure (Ssix : Set FreeRankOne) := by
+    rw [normalClosure_eq_closure_of_comm]
+    simpa [Ssix] using x₁_sq_not_mem_closure_six
+  exact hbad hmem
+
+/-- The *minimal* number of normal generators of `Ktwo` is at most `1` (the good choice being
+`x₁²`), which equals `dim_{𝔽₂} Ktwo ⧸ Ktwo²[Ktwo,F] = 1`: the failure above is a failure of the
+naive *criterion*, not of the *number*. -/
+theorem normalClosure_sq_eq_Ktwo :
+    Subgroup.normalClosure (({x₁ ^ 2} : Finset FreeRankOne) : Set FreeRankOne) = Ktwo := by
+  rw [normalClosure_eq_closure_of_comm ((({x₁ ^ 2} : Finset FreeRankOne) : Set FreeRankOne)),
+    Finset.coe_singleton]
+  rfl
+
+theorem normalGeneratorNumber_Ktwo_le_one : normalGeneratorNumber Ktwo ≤ 1 :=
+  normalGeneratorNumber_le normalClosure_sq_eq_Ktwo
+
+end Work.HopfGaschutz
