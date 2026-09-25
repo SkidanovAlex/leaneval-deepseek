@@ -147,15 +147,25 @@ theorem gTab_spec (i : ℕ) (hi : i < 272) :
   obtain ⟨c, m, hc, hm, hikm⟩ : ∃ c m, c < 8 ∧ m < 34 ∧ i = 34 * c + m :=
     ⟨i / 34, i % 34, by omega, by omega, by omega⟩
   subst hikm
+  have key : ∀ off : ℕ, off = 34 * c →
+      (gPosL.getD (off + m) [] = accPos (wWin off) (off + m)
+        ∧ gNegL.getD (off + m) [] = accNeg (wWin off) (off + m)) →
+      gPosL.getD (34 * c + m) [] = accPos wTab (34 * c + m)
+        ∧ gNegL.getD (34 * c + m) [] = accNeg wTab (34 * c + m) := by
+    intro off hoff h
+    subst hoff
+    rw [wTab_eq, ← accPos_wWin (34 * c) (34 * c + m) (by omega) (by omega),
+      ← accNeg_wWin (34 * c) (34 * c + m) (by omega) (by omega)]
+    exact h
   interval_cases c
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_0 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_1 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_2 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_3 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_4 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_5 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_6 m (List.mem_range.mpr hm))
-  · exact of_decide_eq_true (List.all_eq_true.mp gTab_spec_7 m (List.mem_range.mpr hm))
+  · exact key 0 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_0 m (List.mem_range.mpr hm)))
+  · exact key 34 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_1 m (List.mem_range.mpr hm)))
+  · exact key 68 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_2 m (List.mem_range.mpr hm)))
+  · exact key 102 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_3 m (List.mem_range.mpr hm)))
+  · exact key 136 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_4 m (List.mem_range.mpr hm)))
+  · exact key 170 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_5 m (List.mem_range.mpr hm)))
+  · exact key 204 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_6 m (List.mem_range.mpr hm)))
+  · exact key 238 rfl (of_decide_eq_true (List.all_eq_true.mp gTab_spec_7 m (List.mem_range.mpr hm)))
 
 theorem gPosL_getD (i : ℕ) (hi : i < 272) : gPosL.getD i [] = accPos wTab i := (gTab_spec i hi).1
 

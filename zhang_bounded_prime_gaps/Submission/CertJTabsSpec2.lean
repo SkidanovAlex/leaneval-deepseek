@@ -36,9 +36,38 @@ def accPos (T : List (ℕ × ℕ × ℤ)) (i : ℕ) : List (ℕ × ℕ) :=
 def accNeg (T : List (ℕ × ℕ × ℤ)) (i : ℕ) : List (ℕ × ℕ) :=
   ((accSigned T i).filter (fun q => decide (q.2 < 0))).map (fun q => (q.1, q.2.natAbs))
 
-theorem gPosL_length : gPosL.length = 272 := by decide
+/-- Pre-filtering by a predicate implied by the position test does not change the fiber. -/
+theorem filter_filter_of_imp {α : Type*} (T : List α) (P Q : α → Bool)
+    (h : ∀ t ∈ T, Q t = true → P t = true) : (T.filter P).filter Q = T.filter Q := by
+  rw [List.filter_filter]
+  apply List.filter_congr
+  intro t ht
+  by_cases hq : Q t = true
+  · simp [hq, h t ht hq]
+  · simp [hq]
 
-theorem gNegL_length : gNegL.length = 272 := by decide
+/-- The accumulation at a position of the window `[off, off + 34)` only sees the window. -/
+theorem accPos_wWin (off i : ℕ) (h1 : off ≤ i) (h2 : i < off + 34) :
+    accPos (wWin off) i = accPos wTabP i := by
+  unfold accPos accSigned wWin
+  rw [filter_filter_of_imp]
+  intro t _ ht
+  simp only [decide_eq_true_eq] at ht
+  simp only [Bool.and_eq_true, decide_eq_true_eq]
+  omega
+
+theorem accNeg_wWin (off i : ℕ) (h1 : off ≤ i) (h2 : i < off + 34) :
+    accNeg (wWin off) i = accNeg wTabP i := by
+  unfold accNeg accSigned wWin
+  rw [filter_filter_of_imp]
+  intro t _ ht
+  simp only [decide_eq_true_eq] at ht
+  simp only [Bool.and_eq_true, decide_eq_true_eq]
+  omega
+
+theorem gPosL_length : gPosL.length = 272 := by decide +kernel
+
+theorem gNegL_length : gNegL.length = 272 := by decide +kernel
 
 /-- **`mcL` is `mc 49 (mult β)` of the certificate's signatures.** -/
 theorem mcL_spec : mcL = certGroupSigs.map (fun β => mc 49 (mult β)) := by decide

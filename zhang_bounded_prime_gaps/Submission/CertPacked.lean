@@ -40,10 +40,11 @@ next step (see the roadmap, SESSION 46 §5).
 namespace Commons.NumberTheory.MaynardSieve
 
 
-/-- Block size (bits) of the packed representation.  Large enough that the crude bound
-`xslots L m ≤ ∏_{s ∈ L} cap s` is `< 2^B` for every slot list of length `≤ 50` that occurs
-(`capA^50` and, sharper, `capA^38 * capH^12` are both `< 2^5664`). -/
-def BB : ℕ := 5664
+/-- Block size (bits) of the packed representation.  Every coefficient of the certificate's slot
+lists at a certificate state is `< 2^248` (`Submission/CertSlotBound.lean`), so `256` bits suffice.
+(The crude capacity bound `xslots L m ≤ ∏_{s ∈ L} cap s` below would need `5664`; the true
+maximum is below `2^204`.) -/
+def BB : ℕ := 256
 
 /-- The "capacity" of a slot: the sum of its coefficients (`1 + Σ_v (2(v+1))!` for an `A`-slot,
 `(2(w+1))! + Σ_v (2(v+1)+2(w+1))!` for an `H w`-slot). -/
@@ -136,12 +137,8 @@ theorem capH_le (w : Fin 12) : cap (CertSlot.H w) ≤ capHmax := by
   refine Nat.add_le_add (Nat.factorial_le hw) (Finset.sum_le_sum (fun v _ => ?_))
   exact Nat.factorial_le (by omega)
 
-/-- **The block size is large enough.**  For every slot list of length `≤ 50` arising in the
-certificate computation (`A^a` followed by `≤ 12` `H`-slots) and every state `m`, the coefficient
-`xslots L m` is `< 2^BB`. -/
-theorem capA_pow_lt : cap CertSlot.A ^ 50 < 2 ^ BB := by decide
-
-theorem capA_capH_lt : cap CertSlot.A ^ 38 * capHmax ^ 12 < 2 ^ BB := by decide
+/-! The block size `BB` is justified in `Submission/CertSlotBound.lean`: at every certificate
+state, the coefficients of the certificate's slot lists are below `2^248 < 2^BB`. -/
 
 /-! ## The packed operations -/
 

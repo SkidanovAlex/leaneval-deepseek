@@ -1,4 +1,6 @@
 import Submission.CertPsiTab
+-- Build-order chain only: at most 3 `psiTab` slice modules build at once.
+import Submission.CertPsiChunk2
 import Submission.CertArith
 
 set_option maxRecDepth 1000000
@@ -12,10 +14,11 @@ open Finset
 
 namespace Commons.NumberTheory.MaynardSieve
 
-theorem psiTabSpec_5 :
-    (List.range 3).all (fun d => (List.range 51).all (fun L =>
-      decide (psiTab.getD ((15 + d) * 51 + L) 0
-        = ∑ jj ∈ Finset.range ((15 + d) + 1), certJPsiTermN (15 + d) L jj))) = true := by
-  decide
+/-- Entries `153·5 … 153·5+152` of `psiTab` (`N ∈ [15, 18)`, all `L ≤ 50`), checked as one
+slice so that the literal is walked once. -/
+theorem psiTabSlice_5 : (psiTab.drop (153 * 5)).take 153
+    = (List.range 153).map (fun t => ∑ jj ∈ Finset.range ((3 * 5 + t / 51) + 1),
+        certJPsiTermN (3 * 5 + t / 51) (t % 51) jj) := by
+  decide +kernel
 
 end Commons.NumberTheory.MaynardSieve

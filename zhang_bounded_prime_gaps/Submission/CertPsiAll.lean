@@ -33,6 +33,24 @@ open Finset
 
 namespace Commons.NumberTheory.MaynardSieve
 
+/-- An entry of `psiTab` from the slice check of its chunk. -/
+theorem psiTab_entry_of_slice (i d L : ℕ) (hd : d < 3) (hL : L < 51)
+    (h : (psiTab.drop (153 * i)).take 153
+      = (List.range 153).map (fun t => ∑ jj ∈ Finset.range ((3 * i + t / 51) + 1),
+          certJPsiTermN (3 * i + t / 51) (t % 51) jj)) :
+    psiTab.getD ((3 * i + d) * 51 + L) 0
+      = ∑ jj ∈ Finset.range ((3 * i + d) + 1), certJPsiTermN (3 * i + d) L jj := by
+  have ht : 51 * d + L < 153 := by omega
+  have hidx : (3 * i + d) * 51 + L = 153 * i + (51 * d + L) := by ring
+  have hdiv : (51 * d + L) / 51 = d := by omega
+  have hmod : (51 * d + L) % 51 = L := by omega
+  have key := congrArg (fun l : List ℕ => l.getD (51 * d + L) 0) h
+  simp only [List.getD_eq_getElem?_getD, List.getElem?_take, List.getElem?_drop,
+    List.getElem?_map, List.getElem?_range ht, Option.map_some, Option.getD_some, ht,
+    if_true, hdiv, hmod] at key
+  rw [hidx, List.getD_eq_getElem?_getD]
+  exact key
+
 theorem certJPsiN_eq_psiTab (j : Fin 1780) (v : ℕ) (hv : v ∈ (0 :: (certSig j).dedup).toFinset)
     (j' : Fin 1780) (v' : ℕ) (hv' : v' ∈ (0 :: (certSig j').dedup).toFinset) :
     certJPsiN j v j' v'
@@ -46,23 +64,23 @@ theorem certJPsiN_eq_psiTab (j : Fin 1780) (v : ℕ) (hv : v ∈ (0 :: (certSig 
   generalize hLdef : certJLM j v j' v' = L at hL ⊢
   have hL51 : L < 51 := by omega
   interval_cases i
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_0 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_1 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_2 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_3 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_4 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_5 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_6 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_7 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_8 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_9 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_10 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_11 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_12 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_13 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_14 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_15 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_16 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
-  · exact (of_decide_eq_true (List.all_eq_true.mp (List.all_eq_true.mp psiTabSpec_17 d (List.mem_range.mpr hd)) L (List.mem_range.mpr hL51))).symm
+  · exact (psiTab_entry_of_slice 0 d L hd hL51 psiTabSlice_0).symm
+  · exact (psiTab_entry_of_slice 1 d L hd hL51 psiTabSlice_1).symm
+  · exact (psiTab_entry_of_slice 2 d L hd hL51 psiTabSlice_2).symm
+  · exact (psiTab_entry_of_slice 3 d L hd hL51 psiTabSlice_3).symm
+  · exact (psiTab_entry_of_slice 4 d L hd hL51 psiTabSlice_4).symm
+  · exact (psiTab_entry_of_slice 5 d L hd hL51 psiTabSlice_5).symm
+  · exact (psiTab_entry_of_slice 6 d L hd hL51 psiTabSlice_6).symm
+  · exact (psiTab_entry_of_slice 7 d L hd hL51 psiTabSlice_7).symm
+  · exact (psiTab_entry_of_slice 8 d L hd hL51 psiTabSlice_8).symm
+  · exact (psiTab_entry_of_slice 9 d L hd hL51 psiTabSlice_9).symm
+  · exact (psiTab_entry_of_slice 10 d L hd hL51 psiTabSlice_10).symm
+  · exact (psiTab_entry_of_slice 11 d L hd hL51 psiTabSlice_11).symm
+  · exact (psiTab_entry_of_slice 12 d L hd hL51 psiTabSlice_12).symm
+  · exact (psiTab_entry_of_slice 13 d L hd hL51 psiTabSlice_13).symm
+  · exact (psiTab_entry_of_slice 14 d L hd hL51 psiTabSlice_14).symm
+  · exact (psiTab_entry_of_slice 15 d L hd hL51 psiTabSlice_15).symm
+  · exact (psiTab_entry_of_slice 16 d L hd hL51 psiTabSlice_16).symm
+  · exact (psiTab_entry_of_slice 17 d L hd hL51 psiTabSlice_17).symm
 
 end Commons.NumberTheory.MaynardSieve

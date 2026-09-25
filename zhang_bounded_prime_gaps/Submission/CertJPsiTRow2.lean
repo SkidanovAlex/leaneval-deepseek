@@ -13,7 +13,9 @@ open Finset
 
 namespace Commons.NumberTheory.MaynardSieve
 
-theorem psiTabTN_row_2 : ∀ L < 12, nthDl psiTabTN L [] =
-    (List.range 54).map (fun N => ∑ jj ∈ Finset.range (N + 1), certJPsiTermN N L jj) := by decide
+/-- Rows `8 … 11` of the transposed table (each module checks only its own rows). -/
+theorem psiTabTN_row_2 : ∀ l < 4, nthDl psiTabTN (8 + l) [] =
+    (List.range 54).map (fun N => ∑ jj ∈ Finset.range (N + 1), certJPsiTermN N (8 + l) jj) := by
+  decide +kernel
 
 end Commons.NumberTheory.MaynardSieve

@@ -1,4 +1,5 @@
 import Submission.CertPackLem
+import Submission.CertSlotBound
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
@@ -12,8 +13,8 @@ open Finset
 
 `Submission/CertPackLem.lean` proves the extraction lemma (F1) and the correctness of the packed
 operations (F2).  Here we
-* derive the numeric bound that makes the extraction applicable to the slot lists of the
-  certificate (`xslots_slotList_lt`), and
+* use the numeric bound of `Submission/CertSlotBound.lean` (`xslots_state_lt_50`), which makes
+  the extraction applicable to the slot lists of the certificate, and
 * prove (F3) `unpack (packedRow n) m = xslots (slotList 50 n) m`, hence (F4) the table
   `Ssum β β' 50 = mc 50 (mult β') · unpack (packedRow (mult β')) (mult β)`.
 -/
@@ -54,35 +55,6 @@ theorem capA_le_capHmax : cap CertSlot.A ≤ capHmax := by
     (Finset.sum_le_sum (f := fun v : Fin 12 => Nat.factorial (2 * ((v : ℕ) + 1)))
       (g := fun v : Fin 12 => Nat.factorial (2 * ((v : ℕ) + 1) + 24))
       (fun v _ => Nat.factorial_le (by omega)))
-
-theorem slotList_prod_le (n : MV) (hn : ∑ i, n i ≤ 12) :
-    ((slotList 50 n).map cap).prod ≤ cap CertSlot.A ^ 38 * capHmax ^ 12 := by
-  have hsplit : slotList 50 n
-      = List.replicate (50 - ∑ i, n i) CertSlot.A ++ hpartL (List.finRange 12) n := by
-    rw [slotList_def, Hpart_eq_hpartL]
-  rw [hsplit, List.map_append, List.prod_append, List.map_replicate, List.prod_replicate]
-  have h1 : ((hpartL (List.finRange 12) n).map cap).prod ≤ capHmax ^ (∑ i, n i) := by
-    have hlen : (hpartL (List.finRange 12) n).length = ∑ i, n i := by
-      rw [hpartL_length, sum_map_finRange]
-    calc ((hpartL (List.finRange 12) n).map cap).prod
-        ≤ capHmax ^ ((hpartL (List.finRange 12) n).map cap).length :=
-          List.prod_le_pow_card _ _ (fun x hx => by
-            obtain ⟨s, hs, rfl⟩ := List.mem_map.mp hx
-            obtain ⟨i, rfl⟩ := mem_hpartL hs
-            exact capH_le i)
-      _ = capHmax ^ (∑ i, n i) := by rw [List.length_map, hlen]
-  have h2 : cap CertSlot.A ^ (50 - ∑ i, n i)
-      ≤ cap CertSlot.A ^ 38 * capHmax ^ (12 - ∑ i, n i) := by
-    rw [show 50 - ∑ i, n i = 38 + (12 - ∑ i, n i) from by omega, pow_add]
-    exact Nat.mul_le_mul_left _ (Nat.pow_le_pow_left capA_le_capHmax _)
-  refine le_trans (Nat.mul_le_mul_left _ h1) ?_
-  refine le_trans (Nat.mul_le_mul_right _ h2) ?_
-  rw [mul_assoc, ← pow_add, Nat.sub_add_cancel hn]
-
-/-- The certificate's slot lists have kernel coefficients below the block size. -/
-theorem xslots_slotList_lt (n : MV) (hn : ∑ i, n i ≤ 12) (m : MV) :
-    xslots (slotList 50 n) m < 2 ^ BB :=
-  lt_of_le_of_lt (le_trans (xslots_le_cap _ _) (slotList_prod_le n hn)) capA_capH_lt
 
 /-! ## The state-side facts about `mult` -/
 
@@ -249,10 +221,10 @@ theorem packedRow_eq_pack (n : MV) :
     exact List.perm_append_comm.symm
   rw [hx]
 
-theorem unpack_packedRow (n : MV) (hn : ∑ i, n i ≤ 12) (m : MV) (hm : m ∈ certStates) :
+theorem unpack_packedRow (n : MV) (hn : n ∈ certStates) (m : MV) (hm : m ∈ certStates) :
     unpack (packedRow n) m = xslots (slotList 50 n) m := by
   rw [packedRow_eq_pack]
-  exact unpack_pack (xslots (slotList 50 n)) (xslots_slotList_lt n hn) m hm
+  exact unpack_pack (xslots (slotList 50 n)) (xslots_state_lt_50 n hn) m hm
 
 /-! ## (F4) the `Ssum` table -/
 
@@ -266,9 +238,8 @@ theorem Ssum_50_eq (β β' : List ℕ)
     (hβ' : ∀ a ∈ β', ∃ i : Fin 12, a = 2 * ((i : ℕ) + 1))
     (hdeg : β.sum ≤ 24) (hdeg' : β'.sum ≤ 24) :
     Ssum β β' 50 = mc 50 (mult β') * unpack (packedRow (mult β')) (mult β) := by
-  have hn : ∑ i : Fin 12, mult β' i ≤ 12 := by
-    rw [sum_mult_of_support β' hβ']
-    exact length_le_of_support β' hβ' hdeg'
+  have hn : mult β' ∈ certStates :=
+    mem_certStates_of_deg _ (by rw [degV_mult_of_support β' hβ']; exact hdeg')
   have hm : mult β ∈ certStates :=
     mem_certStates_of_deg _ (by rw [degV_mult_of_support β hβ]; exact hdeg)
   rw [Ssum_eq_xcoe β β' 50 hβ hβ', xcoe_eq, unpack_packedRow (mult β') hn (mult β) hm]

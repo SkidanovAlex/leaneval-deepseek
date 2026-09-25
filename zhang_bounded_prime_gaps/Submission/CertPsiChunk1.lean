@@ -12,10 +12,11 @@ open Finset
 
 namespace Commons.NumberTheory.MaynardSieve
 
-theorem psiTabSpec_1 :
-    (List.range 3).all (fun d => (List.range 51).all (fun L =>
-      decide (psiTab.getD ((3 + d) * 51 + L) 0
-        = ∑ jj ∈ Finset.range ((3 + d) + 1), certJPsiTermN (3 + d) L jj))) = true := by
-  decide
+/-- Entries `153·1 … 153·1+152` of `psiTab` (`N ∈ [3, 6)`, all `L ≤ 50`), checked as one
+slice so that the literal is walked once. -/
+theorem psiTabSlice_1 : (psiTab.drop (153 * 1)).take 153
+    = (List.range 153).map (fun t => ∑ jj ∈ Finset.range ((3 * 1 + t / 51) + 1),
+        certJPsiTermN (3 * 1 + t / 51) (t % 51) jj) := by
+  decide +kernel
 
 end Commons.NumberTheory.MaynardSieve

@@ -1,4 +1,6 @@
 import Submission.CertJEval
+-- Build-order chain only: at most 3 `J` chunks build at once.
+import Submission.CertJChunk42
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

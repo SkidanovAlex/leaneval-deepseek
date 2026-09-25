@@ -1,4 +1,6 @@
 import Submission.CertRowFn
+-- Build-order chain only: one `Ssum` row module builds at a time.
+import Submission.CertSsumRow15
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0

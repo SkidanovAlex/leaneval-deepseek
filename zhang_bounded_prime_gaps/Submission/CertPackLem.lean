@@ -141,7 +141,8 @@ theorem fin_getElem_inj_of_nodup_map {α β : Type*} {l : List α} {f : α → �
 
 /-- **(F1)** The packed word `pack F` reads back the coefficient function `F` at every state,
 provided all values of `F` are smaller than the block size `2^BB`. -/
-theorem unpack_pack (F : MV → ℕ) (hF : ∀ m, F m < 2 ^ BB) (m : MV) (hm : m ∈ certStates) :
+theorem unpack_pack (F : MV → ℕ) (hF : ∀ m ∈ certStates, F m < 2 ^ BB) (m : MV)
+    (hm : m ∈ certStates) :
     unpack (pack F) m = F m := by
   have hdeg := degV_le_of_mem_certStates m hm
   have hjeven : 2 * (degV m / 2) = degV m := degV_even m
@@ -167,7 +168,8 @@ theorem unpack_pack (F : MV → ℕ) (hF : ∀ m, F m < 2 ^ BB) (m : MV) (hm : m
     intro a b hab
     exact fin_getElem_inj_of_nodup_map (mu_inj_class _ hjlt) a b hab
   have hx : ∀ i : Fin (classJ (degV m / 2)).length,
-      F ((classJ (degV m / 2))[(i : ℕ)]) < 2 ^ BB := fun i => hF _
+      F ((classJ (degV m / 2))[(i : ℕ)]) < 2 ^ BB := fun i =>
+    hF _ (mem_classJ_iff.mp (List.getElem_mem _)).1
   have hkey := Commons.Data.Nat.packed_sparse_block (B := 2 ^ BB) hB
     (fun i : Fin (classJ (degV m / 2)).length => muVal ((classJ (degV m / 2))[(i : ℕ)]))
     hinj (fun i => F ((classJ (degV m / 2))[(i : ℕ)])) hx

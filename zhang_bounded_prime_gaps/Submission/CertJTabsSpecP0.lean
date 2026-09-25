@@ -11,8 +11,9 @@ open Finset
 
 namespace Commons.NumberTheory.MaynardSieve
 
+/-- Positions `0 … 33`, checked on the window `wWin 0` (see `accPos_wWin`). -/
 theorem gTab_spec_0 : (List.range 34).all (fun k => decide
-    ((gPosL.getD (0 + k) [] = accPos wTab (0 + k)) ∧
-     (gNegL.getD (0 + k) [] = accNeg wTab (0 + k)))) = true := by decide
+    ((gPosL.getD (0 + k) [] = accPos (wWin 0) (0 + k)) ∧
+     (gNegL.getD (0 + k) [] = accNeg (wWin 0) (0 + k)))) = true := by decide +kernel
 
 end Commons.NumberTheory.MaynardSieve
