@@ -87,30 +87,6 @@ variable {K₁ K₂ K₁' K₂' : Type*} [Field K₁] [Field K₂] [Field K₁']
   [NumberField K₁] [NumberField K₂] [Algebra K₁ K₁'] [Algebra K₂ K₂']
   [IsSepClosure K₁ K₁'] [IsSepClosure K₂ K₂']
 
-/-- **Existence** (the heart of Neukirch–Uchida): every homeomorphic
-isomorphism of the absolute Galois groups is induced by a base-field-mapping
-field isomorphism between the separable closures.  (CoNF XII Thm 12.2.1;
-the proof occupies §12.1–§12.2 of Chapter XII.)
-
-This is the *only* remaining gap of the whole development.  Its precise reduction to named
-classical inputs is proved in `Submission/NeukirchUchida/Reduction.lean`:
-
-* `exists_sigma_of_inputs_homeomorph` (with the inputs of CoNF (12.1.9)-if, the reconstruction of
-  §12.2 and the anabelian rigidity of the decomposition groups) implies the statement below;
-* `Submission/NeukirchUchida/Detection.lean` shows that is suffices to check the conjugation on the
-  decomposition subgroups (`conjugates_of_eq_on_decompositionGroup'`);
-* the "only if" half of (12.1.9) — a decomposition group is non-trivial, self-normalising and
-  isomorphic to the absolute Galois group of a p-adic field — is
-  `PlaceSystem.normalizer_decompositionGroup` together with the local/global bridge
-  `NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_localGalois`.
-
-What is missing is the local structure theory of `G_κ` (CoNF (12.1.10) and the Demushkin theory of
-pro-`p` groups of local fields), the canonical local Artin map, global class field theory and
-Čebotarev; those are being built in `Submission/Work/{ProfiniteP,LocalAnabelian,LocalReciprocity,
-GlobalCFT,Chebotarev}`. -/
-theorem exists_sigma (ϕ : Gal(K₁'/K₁) ≃* Gal(K₂'/K₂)) (he : IsHomeomorph ϕ) :
-    ∃ σ : K₂' ≃+* K₁', Conjugates σ ϕ := by
-  sorry
 
 /-- **Uniqueness** of the inducing field isomorphism.  Reduces (via
 `Uniqueness.lean`) to `centralizer_trivial`, i.e. to triviality of the centre of
@@ -121,11 +97,5 @@ theorem unique_sigma (ϕ : Gal(K₁'/K₁) ≃* Gal(K₂'/K₂)) (he : IsHomeomo
   unique_sigma_of_centralizer_trivial
     (fun c hpres hcomm => centralizer_trivial c hpres hcomm) ϕ h₁ h₂
 
-/-- The Neukirch–Uchida theorem (CoNF XII Thm 12.2.1), stated for the
-challenge's types: unique existence of the inducing field isomorphism. -/
-theorem neukirch_uchida_core (ϕ : Gal(K₁'/K₁) ≃* Gal(K₂'/K₂)) (he : IsHomeomorph ϕ) :
-    ∃! σ : K₂' ≃+* K₁', Conjugates σ ϕ := by
-  rcases exists_sigma ϕ he with ⟨σ, hσ⟩
-  exact ⟨σ, hσ, fun y hy => unique_sigma ϕ he hy hσ⟩
 
 end Submission.NeukirchUchida

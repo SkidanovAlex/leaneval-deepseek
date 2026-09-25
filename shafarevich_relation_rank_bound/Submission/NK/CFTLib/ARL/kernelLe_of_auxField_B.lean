@@ -521,53 +521,6 @@ theorem isMulCommutative_LImage {K L : Type} [Field K] [NumberField K] [Field L]
     rw [map_mul, map_mul]
     exact IsMulCommutative.is_comm.comm _ _)
 
-/-- **The transfer of Lang X §2, Theorem 2**: the auxiliary-field hypothesis of Artin's lemma
-implies the kernel containment `ker ψ ∩ I(m) ⊆ P(m)·𝔑(m)`. -/
-theorem kernelLe_of_auxField_B (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
-    [Algebra K L] [FiniteDimensional K L] [IsGalois K L] [IsCyclic (L ≃ₐ[K] L)]
-    [IsMulCommutative (Gal(L/K))]
-    (m : ℕ) (hm : 0 < m) (haux : NK.CFTLib.ARL.AuxFieldHyp K L m)
-    (hram : ∀ p : NK.Chebotarev.PrimeIdeal K,
-      ¬ NK.CFTLib.ArtinReciprocityIdeal.IsUnramified (K := K) (L := L) p →
-      (m : NumberField.RingOfIntegers K) ∈ p.asIdeal) :
-    ∀ A : NK.CFTLib.ArtinReciprocityIdeal.Frac K,
-      NK.CFTLib.ArtinReciprocityIdeal.FracCoprime m A →
-      NK.CFTLib.Arl.artinSym (K := K) (L := L)
-        (fun a b : Gal(L/K) => IsMulCommutative.is_comm.comm a b) A = 1 →
-      A ∈ NK.CFTLib.ArtinReciprocityIdeal.principalRay K m ⊔
-          NK.CFTLib.ArtinReciprocityIdeal.normRay K L m := by
-  classical
-  intro A hcop hsym
-  have hcomm : ∀ a b : Gal(L/K), a * b = b * a := fun a b => IsMulCommutative.is_comm.comm a b
-  -- ## The factorisation of `A` over its support
-  set s : Finset (NK.Chebotarev.PrimeIdeal K) :=
-    (Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors (K := K)
-      (A : FractionalIdeal (𝓞 K)⁰ K))).toFinset with hsdef
-  set e : NK.Chebotarev.PrimeIdeal K → ℤ := fun 𝔭 =>
-    FractionalIdeal.count K 𝔭 (A : FractionalIdeal (𝓞 K)⁰ K) with hedef
-  have hsmem : ∀ 𝔭, 𝔭 ∈ s ↔ e 𝔭 ≠ 0 := fun 𝔭 => Set.Finite.mem_toFinset _
-  have hsupp : Function.mulSupport (fun 𝔭 : NK.Chebotarev.PrimeIdeal K =>
-      ((𝔭.asIdeal : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ^ e 𝔭) ⊆ ↑s := by
-    intro 𝔭 h𝔭
-    exact (hsmem 𝔭).mpr fun h0 => h𝔭 (by simp only [h0, zpow_zero])
-  have hfac : (∏ 𝔭 ∈ s, (NK.CFTLib.ARL.primeUnit 𝔭) ^ (e 𝔭)) = A := by
-    apply Units.ext
-    rw [Units.coe_prod]
-    simp only [NK.CFTLib.ARL.primeUnit_val, Units.val_zpow_eq_zpow_val]
-    rw [← finprod_eq_prod_of_mulSupport_subset _ hsupp]
-    exact FractionalIdeal.finprod_heightOneSpectrum_factorization' K A.ne_zero
-  have hs : ∀ 𝔭 ∈ s, (m : 𝓞 K) ∉ 𝔭.asIdeal := by
-    intro 𝔭 h𝔭
-    intro hmem
-    exact (hsmem 𝔭).mp h𝔭 (hcop 𝔭 hmem)
-  -- ## Artin's lemma
-  obtain ⟨M, hMne, hMcop, _hSvoid, hNormavoid, hdisjLz, E, hEdisj, hElt⟩ :=
-    haux s hs ∅ (by simp)
-  -- ## The trivial case `s = ∅`
-  rcases s.eq_empty_or_nonempty with hsempty | ⟨𝔭₀, h𝔭₀⟩
-  · rw [← hfac, hsempty, Finset.prod_empty]
-    exact Subgroup.one_mem _
-  · sorry
 
 /-! ## The transfer: Galois-theoretic foundations
 
