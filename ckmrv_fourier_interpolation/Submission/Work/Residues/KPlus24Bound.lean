@@ -1,0 +1,517 @@
+import Mathlib
+import Submission.Work.Residues.KPlusAux
+
+noncomputable section
+open UpperHalfPlane ModularForm ModularGroup Matrix
+open scoped MatrixGroups ModularForm Modular Manifold Bundle
+
+namespace Work.Residues
+open Work.Kernels
+open Work.Residues.KPlusAux
+
+set_option maxHeartbeats 8000000
+
+/-! ## The grouped `d = 24` kernel -/
+
+/-- The `φ₀`-group of the `d = 24` kernel. -/
+def g24P0 (z τ : ℍ) : ℂ :=
+  phitVec z 0 * E4Fun z * ((τ:ℂ) * N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + (-3*Complex.I/(Real.pi:ℂ)) * M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+
+/-- The `φ₁`-group of the `d = 24` kernel. -/
+def g24P1 (z τ : ℍ) : ℂ :=
+  phitVec z 1 * (E14Fun z / DeltaFun z)
+      * ((-(2:ℂ)/1728) * (Qf (E4Fun τ) (E6Fun τ)) ^ 2 * (kph τ z)
+        * ((τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)))
+
+/-- The `φ₂`-group of the `d = 24` kernel. -/
+def g24P2 (z τ : ℍ) : ℂ :=
+  phitVec z 2 * ((τ:ℂ) * N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + (-3*Complex.I/(Real.pi:ℂ)) * M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+
+/-- The `d = 24` kernel with the leading `τ`-linear terms grouped. -/
+def G24 (τ z : ℍ) : ℂ := g24P0 z τ + g24P1 z τ + g24P2 z τ
+
+/-- **The `d = 24` kernel, grouped for the asymptotics.** -/
+lemma KPlus_twentyfour_eq (τ z : ℍ) (hJ : kpJ τ z ≠ 0) :
+    KPlus 24 τ z = (Real.pi : ℂ)^2/(36 * 1728 * Complex.I * DeltaFun z) * G24 τ z := by
+  have hD : DeltaFun τ ≠ 0 := delta_ne_zero τ
+  have hz : DeltaFun z ≠ 0 := delta_ne_zero z
+  have hp : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
+  have hQ : (1728 : ℂ) * DeltaFun τ = Qf (E4Fun τ) (E6Fun τ) := by
+    rw [Qf]; exact DeltaFun_eq_E4_cube_sub_E6_sq τ
+  have hJcl : E4Fun τ ^ 3 * DeltaFun z - E4Fun z ^ 3 * DeltaFun τ ≠ 0 := by
+    intro h
+    apply hJ
+    simp only [kpJ, jInvariantFun]
+    rw [sub_eq_zero, div_eq_div_iff hD hz]
+    linear_combination h
+  simp only [KPlus, UpsilonPlus, ite_true, ite_false,
+    show ((24:ℕ) = 8) = False from by norm_num,
+    PiMat_14_12_10 τ, PiMat_4_2_0 z, Fin.sum_univ_three,
+    Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul,
+    Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons, c1728,
+    phiVec, phiNeg2, phi0, phi2, phitVec, E8Fun, E10Fun, E14Fun,
+    _root_.zpow_neg, _root_.zpow_ofNat, G24, g24P0, g24P1, g24P2, N0f, N2f, M0f, M2f, Qf]
+  have hJinv : (jInvariantFun τ - jInvariantFun z)⁻¹ = DeltaFun τ * kph τ z := by
+    rw [kph]
+    exact inv_eq_mul_inv_of_ne_zero hD
+  rw [hJinv]
+  have hKJ : DeltaFun τ * kpJ τ z ≠ 0 := mul_ne_zero hD hJ
+  rw [← DeltaFun_eq_E4_cube_sub_E6_sq τ]
+  field_simp
+  ring
+
+/-! ## Elementary norm facts -/
+
+lemma norm_threeI_div_pi_le_one : ‖(3:ℂ) * Complex.I / (Real.pi : ℂ)‖ ≤ 1 := by
+  have hpi : ‖(Real.pi : ℂ)‖ = Real.pi := by
+    rw [Complex.norm_real]; exact abs_of_nonneg Real.pi_pos.le
+  rw [norm_div, norm_mul, Complex.norm_ofNat, Complex.norm_I, mul_one, hpi,
+    div_le_one (by positivity : (0:ℝ) < Real.pi)]
+  exact Real.pi_gt_three.le
+
+lemma norm_negThreeI_div_pi_le_one : ‖(-3:ℂ) * Complex.I / (Real.pi : ℂ)‖ ≤ 1 := by
+  rw [show (-3:ℂ) * Complex.I / (Real.pi:ℂ) = -((3:ℂ) * Complex.I / (Real.pi:ℂ)) from by ring,
+    norm_neg]
+  exact norm_threeI_div_pi_le_one
+
+/-! ## Bounds for the three groups of `G24` -/
+
+/-- Bound for the `φ₀` group of `G24`. -/
+private lemma kp24_P0_bound (z τ : ℍ) (KC K1 m : ℝ)
+    (h700 : 0 ≤ KC / K1 ^ 2 + 700)
+    (ht1 : 1 ≤ ‖(τ:ℂ)‖)
+    (hN0 : ‖N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2)
+    (hM0 : ‖M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1 ^ 2 + 700) * m ^ 2) :
+    ‖g24P0 z τ‖
+      ≤ (‖phitVec z 0‖ * ‖E4Fun z‖ * (801 + (KC / K1 ^ 2 + 700))) * (‖(τ:ℂ)‖ * m ^ 2) := by
+  rw [g24P0]
+  have hc : ‖(-3:ℂ) * Complex.I / (Real.pi:ℂ)‖ ≤ 1 := norm_negThreeI_div_pi_le_one
+  have hm2le : m ^ 2 ≤ ‖(τ:ℂ)‖ * m ^ 2 := by
+    have h := mul_le_mul_of_nonneg_right ht1 (sq_nonneg m)
+    rwa [one_mul] at h
+  have hsum : ‖(τ:ℂ) * N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+        + (-3*Complex.I/(Real.pi:ℂ)) * M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+      ≤ ‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 700) * m ^ 2 := by
+    have h1 : ‖(τ:ℂ) * N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+        ≤ ‖(τ:ℂ)‖ * (800 * m ^ 2) := norm_mul_le_mul le_rfl hN0 (norm_nonneg _)
+    have h2 : ‖(-3*Complex.I/(Real.pi:ℂ)) * M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+        ≤ (KC / K1 ^ 2 + 700) * m ^ 2 := by
+      have h := norm_mul_le_mul hc hM0 (by norm_num : (0:ℝ) ≤ 1)
+      linarith [h]
+    have h := norm_add_le ((τ:ℂ) * N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+      ((-3*Complex.I/(Real.pi:ℂ)) * M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+    linarith [h, h1, h2]
+  have hkey : ‖(phitVec z 0 * E4Fun z) * ((τ:ℂ) * N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + (-3*Complex.I/(Real.pi:ℂ)) * M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))‖
+      ≤ (‖phitVec z 0‖ * ‖E4Fun z‖)
+        * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 700) * m ^ 2) :=
+    norm_mul_le_mul (norm_mul_le_mul (le_refl _) (le_refl _)
+      (norm_nonneg (phitVec z 0))) hsum
+      (mul_nonneg (norm_nonneg (phitVec z 0)) (norm_nonneg (E4Fun z)))
+  have hbracket : (‖phitVec z 0‖ * ‖E4Fun z‖)
+        * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 700) * m ^ 2)
+      ≤ (‖phitVec z 0‖ * ‖E4Fun z‖ * (801 + (KC / K1 ^ 2 + 700))) * (‖(τ:ℂ)‖ * m ^ 2) := by
+    have hX : 0 ≤ ‖(τ:ℂ)‖ * m ^ 2 := mul_nonneg (norm_nonneg _) (sq_nonneg m)
+    have hA : (KC / K1 ^ 2 + 700) * m ^ 2 ≤ (KC / K1 ^ 2 + 700) * (‖(τ:ℂ)‖ * m ^ 2) :=
+      mul_le_mul_of_nonneg_left hm2le h700
+    have hB : ‖(τ:ℂ)‖ * (800 * m ^ 2) ≤ 800 * (‖(τ:ℂ)‖ * m ^ 2) := le_of_eq (by ring)
+    have hC : (800 + (KC / K1 ^ 2 + 700)) * (‖(τ:ℂ)‖ * m ^ 2)
+        ≤ (801 + (KC / K1 ^ 2 + 700)) * (‖(τ:ℂ)‖ * m ^ 2) :=
+      mul_le_mul_of_nonneg_right (by linarith) hX
+    have hsum2 : ‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 700) * m ^ 2
+        ≤ (801 + (KC / K1 ^ 2 + 700)) * (‖(τ:ℂ)‖ * m ^ 2) := by linarith [hA, hB, hC]
+    calc (‖phitVec z 0‖ * ‖E4Fun z‖)
+          * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 700) * m ^ 2)
+        ≤ (‖phitVec z 0‖ * ‖E4Fun z‖) * ((801 + (KC / K1 ^ 2 + 700)) * (‖(τ:ℂ)‖ * m ^ 2)) :=
+          mul_le_mul_of_nonneg_left hsum2 (by positivity)
+      _ = (‖phitVec z 0‖ * ‖E4Fun z‖ * (801 + (KC / K1 ^ 2 + 700))) * (‖(τ:ℂ)‖ * m ^ 2) := by
+          ring
+  exact le_trans hkey hbracket
+
+/-- Bound for the `φ₂` group of `G24`. -/
+private lemma kp24_P2_bound (z τ : ℍ) (KC K1 m : ℝ)
+    (h200 : 0 ≤ KC / K1 ^ 2 + 200)
+    (ht1 : 1 ≤ ‖(τ:ℂ)‖)
+    (hN2 : ‖N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2)
+    (hM2 : ‖M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1 ^ 2 + 200) * m ^ 2) :
+    ‖g24P2 z τ‖
+      ≤ (‖phitVec z 2‖ * (801 + (KC / K1 ^ 2 + 200))) * (‖(τ:ℂ)‖ * m ^ 2) := by
+  rw [g24P2]
+  have hc : ‖(-3:ℂ) * Complex.I / (Real.pi:ℂ)‖ ≤ 1 := norm_negThreeI_div_pi_le_one
+  have hm2le : m ^ 2 ≤ ‖(τ:ℂ)‖ * m ^ 2 := by
+    have h := mul_le_mul_of_nonneg_right ht1 (sq_nonneg m)
+    rwa [one_mul] at h
+  have hsum : ‖(τ:ℂ) * N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+        + (-3*Complex.I/(Real.pi:ℂ)) * M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+      ≤ ‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 200) * m ^ 2 := by
+    have h1 : ‖(τ:ℂ) * N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+        ≤ ‖(τ:ℂ)‖ * (800 * m ^ 2) := norm_mul_le_mul le_rfl hN2 (norm_nonneg _)
+    have h2 : ‖(-3*Complex.I/(Real.pi:ℂ)) * M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖
+        ≤ (KC / K1 ^ 2 + 200) * m ^ 2 := by
+      have h := norm_mul_le_mul hc hM2 (by norm_num : (0:ℝ) ≤ 1)
+      linarith [h]
+    have h := norm_add_le ((τ:ℂ) * N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+      ((-3*Complex.I/(Real.pi:ℂ)) * M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))
+    linarith [h, h1, h2]
+  have hkey : ‖phitVec z 2 * ((τ:ℂ) * N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + (-3*Complex.I/(Real.pi:ℂ)) * M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z))‖
+      ≤ ‖phitVec z 2‖ * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 200) * m ^ 2) :=
+    norm_mul_le_mul (le_refl _) hsum (norm_nonneg (phitVec z 2))
+  have hbracket : ‖phitVec z 2‖ * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 200) * m ^ 2)
+      ≤ (‖phitVec z 2‖ * (801 + (KC / K1 ^ 2 + 200))) * (‖(τ:ℂ)‖ * m ^ 2) := by
+    have hX : 0 ≤ ‖(τ:ℂ)‖ * m ^ 2 := mul_nonneg (norm_nonneg _) (sq_nonneg m)
+    have hA : (KC / K1 ^ 2 + 200) * m ^ 2 ≤ (KC / K1 ^ 2 + 200) * (‖(τ:ℂ)‖ * m ^ 2) :=
+      mul_le_mul_of_nonneg_left hm2le h200
+    have hB : ‖(τ:ℂ)‖ * (800 * m ^ 2) ≤ 800 * (‖(τ:ℂ)‖ * m ^ 2) := le_of_eq (by ring)
+    have hC : (800 + (KC / K1 ^ 2 + 200)) * (‖(τ:ℂ)‖ * m ^ 2)
+        ≤ (801 + (KC / K1 ^ 2 + 200)) * (‖(τ:ℂ)‖ * m ^ 2) :=
+      mul_le_mul_of_nonneg_right (by linarith) hX
+    have hsum2 : ‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 200) * m ^ 2
+        ≤ (801 + (KC / K1 ^ 2 + 200)) * (‖(τ:ℂ)‖ * m ^ 2) := by linarith [hA, hB, hC]
+    calc ‖phitVec z 2‖ * (‖(τ:ℂ)‖ * (800 * m ^ 2) + (KC / K1 ^ 2 + 200) * m ^ 2)
+        ≤ ‖phitVec z 2‖ * ((801 + (KC / K1 ^ 2 + 200)) * (‖(τ:ℂ)‖ * m ^ 2)) :=
+          mul_le_mul_of_nonneg_left hsum2 (by positivity)
+      _ = (‖phitVec z 2‖ * (801 + (KC / K1 ^ 2 + 200))) * (‖(τ:ℂ)‖ * m ^ 2) := by ring
+  exact le_trans hkey hbracket
+
+/-- Bound for the `φ₁` group of `G24`. -/
+private lemma kp24_P1_bound (z τ : ℍ) (m : ℝ)
+    (ht1 : 1 ≤ ‖(τ:ℂ)‖)
+    (hQ2m : ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ ≤ 100 * m ^ 2)
+    (hkph2 : ‖kph τ z‖ ≤ 2)
+    (htau : ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖ ≤ ‖(τ:ℂ)‖ * 2 + 1) :
+    ‖g24P1 z τ‖
+      ≤ (‖phitVec z 1‖ * (‖E14Fun z‖ / ‖DeltaFun z‖) * ((2/1728) * 600))
+        * (‖(τ:ℂ)‖ * m ^ 2) := by
+  rw [g24P1]
+  have hm2le : m ^ 2 ≤ ‖(τ:ℂ)‖ * m ^ 2 := by
+    have h := mul_le_mul_of_nonneg_right ht1 (sq_nonneg m)
+    rwa [one_mul] at h
+  have hmid : ‖(-(2:ℂ)/1728) * (Qf (E4Fun τ) (E6Fun τ)) ^ 2 * (kph τ z)
+        * ((τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ))‖
+      ≤ (2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1) := by
+    have hc : ‖(-(2:ℂ)/1728)‖ = 2/1728 := by
+      rw [norm_div, norm_neg, Complex.norm_ofNat]; norm_num
+    have h1 : ‖(-(2:ℂ)/1728)‖ * ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖
+        ≤ (2/1728) * (100 * m ^ 2) := by
+      rw [hc]
+      exact mul_le_mul_of_nonneg_left hQ2m (by norm_num)
+    have h2 : ‖(-(2:ℂ)/1728)‖ * ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ * ‖kph τ z‖
+        ≤ (2/1728) * (100 * m ^ 2) * 2 :=
+      mul_le_mul h1 hkph2 (norm_nonneg _) (by positivity)
+    have h3 : ‖(-(2:ℂ)/1728)‖ * ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ * ‖kph τ z‖
+          * ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖
+        ≤ (2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1) :=
+      mul_le_mul h2 htau (norm_nonneg _) (by positivity)
+    calc ‖(-(2:ℂ)/1728) * (Qf (E4Fun τ) (E6Fun τ)) ^ 2 * (kph τ z)
+          * ((τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ))‖
+        = ‖(-(2:ℂ)/1728)‖ * ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ * ‖kph τ z‖
+          * ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖ := by
+            rw [norm_mul, norm_mul, norm_mul]
+      _ ≤ (2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1) := h3
+  have hkey : ‖(phitVec z 1 * (E14Fun z / DeltaFun z))
+      * ((-(2:ℂ)/1728) * (Qf (E4Fun τ) (E6Fun τ)) ^ 2 * (kph τ z)
+        * ((τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)))‖
+      ≤ (‖phitVec z 1‖ * ‖E14Fun z / DeltaFun z‖)
+        * ((2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1)) :=
+    norm_mul_le_mul (norm_mul_le_mul (le_refl _) (le_refl _)
+      (norm_nonneg (phitVec z 1))) hmid
+      (mul_nonneg (norm_nonneg (phitVec z 1)) (norm_nonneg (E14Fun z / DeltaFun z)))
+  have hE14 : ‖E14Fun z / DeltaFun z‖ = ‖E14Fun z‖ / ‖DeltaFun z‖ := norm_div _ _
+  have hbracket : (‖phitVec z 1‖ * ‖E14Fun z / DeltaFun z‖)
+        * ((2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1))
+      ≤ (‖phitVec z 1‖ * (‖E14Fun z‖ / ‖DeltaFun z‖) * ((2/1728) * 600))
+        * (‖(τ:ℂ)‖ * m ^ 2) := by
+    rw [hE14]
+    have hA : (2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1)
+        ≤ (2/1728) * 600 * (‖(τ:ℂ)‖ * m ^ 2) := by
+      nlinarith [hm2le, sq_nonneg m, norm_nonneg (τ:ℂ), ht1]
+    calc (‖phitVec z 1‖ * (‖E14Fun z‖ / ‖DeltaFun z‖))
+          * ((2/1728) * (100 * m ^ 2) * 2 * (‖(τ:ℂ)‖ * 2 + 1))
+        ≤ (‖phitVec z 1‖ * (‖E14Fun z‖ / ‖DeltaFun z‖))
+          * ((2/1728) * 600 * (‖(τ:ℂ)‖ * m ^ 2)) :=
+          mul_le_mul_of_nonneg_left hA (by positivity)
+      _ = (‖phitVec z 1‖ * (‖E14Fun z‖ / ‖DeltaFun z‖) * ((2/1728) * 600))
+          * (‖(τ:ℂ)‖ * m ^ 2) := by ring
+  exact le_trans hkey hbracket
+
+/-- Bound for `G24` from the individual group bounds. -/
+private lemma kp24_G24_bound (z τ : ℍ) (KC K1 m : ℝ)
+    (h700 : 0 ≤ KC / K1 ^ 2 + 700) (h200 : 0 ≤ KC / K1 ^ 2 + 200)
+    (ht1 : 1 ≤ ‖(τ:ℂ)‖)
+    (hN0 : ‖N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2)
+    (hN2 : ‖N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2)
+    (hM0 : ‖M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1 ^ 2 + 700) * m ^ 2)
+    (hM2 : ‖M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1 ^ 2 + 200) * m ^ 2)
+    (hQ2m : ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ ≤ 100 * m ^ 2)
+    (hkph2 : ‖kph τ z‖ ≤ 2)
+    (htau : ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖ ≤ ‖(τ:ℂ)‖ * 2 + 1) :
+    ‖G24 τ z‖ ≤ Czf z KC K1 * (‖(τ:ℂ)‖ * m ^ 2) := by
+  have hb1 := kp24_P0_bound z τ KC K1 m h700 ht1 hN0 hM0
+  have hb2 := kp24_P1_bound z τ m ht1 hQ2m hkph2 htau
+  have hb3 := kp24_P2_bound z τ KC K1 m h200 ht1 hN2 hM2
+  have hX : 0 ≤ ‖(τ:ℂ)‖ * m ^ 2 := mul_nonneg (norm_nonneg _) (sq_nonneg m)
+  rw [G24]
+  have htri : ‖g24P0 z τ + g24P1 z τ + g24P2 z τ‖
+      ≤ ‖g24P0 z τ‖ + ‖g24P1 z τ‖ + ‖g24P2 z τ‖ := by
+    calc ‖g24P0 z τ + g24P1 z τ + g24P2 z τ‖
+        ≤ ‖g24P0 z τ + g24P1 z τ‖ + ‖g24P2 z τ‖ := norm_add_le _ _
+      _ ≤ (‖g24P0 z τ‖ + ‖g24P1 z τ‖) + ‖g24P2 z τ‖ := by
+          linarith [norm_add_le (g24P0 z τ) (g24P1 z τ)]
+  refine le_trans htri ?_
+  rw [Czf, c0f, c1f, c2f]
+  nlinarith [hb1, hb2, hb3, hX]
+
+/-! ## The `d = 24` cusp bound -/
+
+theorem kplus_twentyfour_bound (z : ℍ) :
+    ∃ H C : ℝ, 0 < C ∧ ∀ τ : ℍ, H ≤ τ.im →
+      ‖KPlus 24 τ z‖ ≤ C * ‖(τ:ℂ)‖ * (eps τ)^2 := by
+  obtain ⟨H2, K2, hK2, hb2⟩ := E2_decay_bound
+  obtain ⟨H4, K4, hK4, hb4⟩ := E4_decay_bound
+  obtain ⟨H6, K6, hK6, hb6⟩ := E6_decay_bound
+  obtain ⟨HD, KD, hKD, hbD⟩ := Delta_decay_bound
+  obtain ⟨HC, KC, hKC, hbC⟩ := Work.Asymptotics.E2E4E6_combo_decay
+  have hzpos : 0 < ‖DeltaFun z‖ := norm_pos_iff.mpr (delta_ne_zero z)
+  set K0 : ℝ := K2 + K4 + K6 + KD + 1 with hK0
+  have hK2' : K2 ≤ K0 := by rw [hK0]; linarith
+  have hK4' : K4 ≤ K0 := by rw [hK0]; linarith
+  have hK6' : K6 ≤ K0 := by rw [hK0]; linarith
+  have hKD' : KD ≤ K0 := by rw [hK0]; linarith
+  have hK1' : 1 ≤ K0 := by rw [hK0]; linarith
+  have hK0pos : 0 < K0 := lt_of_lt_of_le zero_lt_one hK1'
+  set Kz : ℝ := 7 + ‖jInvariantFun z‖ + 1 with hKz
+  have hKz1 : 1 ≤ Kz := by rw [hKz]; linarith [norm_nonneg (jInvariantFun z)]
+  have hKz0 : 0 ≤ Kz := le_trans zero_le_one hKz1
+  set K1 : ℝ := K0 + 2 * Kz * K0 + 1 with hK1
+  have hK10 : 0 < K1 := by rw [hK1]; nlinarith [hK0pos, hKz1]
+  have hK0le : K0 ≤ K1 := by rw [hK1]; nlinarith [hK0pos, hKz1]
+  have hKzle : 2 * Kz * K0 ≤ K1 := by rw [hK1]; linarith
+  have hK1ge1 : 1 ≤ K1 := le_trans hK1' hK0le
+  set Hbig : ℝ := Real.log (100 * K1) / (2 * Real.pi) with hHbig
+  set Hz : ℝ := max HC (max Hbig (max H2 (max H4 (max H6 (max HD 1))))) with hHz
+  refine ⟨Hz, (Real.pi^2/(36 * 1728 * ‖DeltaFun z‖)) * Czf z KC K1 * K1^2 + 1, ?_,
+    fun τ hτ => ?_⟩
+  · have hCzpos' : 0 < Czf z KC K1 := by rw [Czf, c0f, c1f, c2f]; positivity
+    positivity
+  have hyC : HC ≤ τ.im := by rw [hHz] at hτ; exact le_trans (le_max_left _ _) hτ
+  have hybig : Hbig ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_max_left _ _) (le_trans (le_max_right _ _) hτ)
+  have hy2 : H2 ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hτ))
+  have hy4 : H4 ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _)
+      (le_trans (le_max_right _ _) hτ)))
+  have hy6 : H6 ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _)
+      (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hτ))))
+  have hyD : HD ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _)
+      (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hτ)))))
+  have hy1 : 1 ≤ τ.im := by
+    rw [hHz] at hτ
+    exact le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _)
+      (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))))) hτ
+  have hlog : Real.log (100 * K1) ≤ 2 * Real.pi * τ.im := by
+    have h : (2 * Real.pi) * Hbig ≤ (2 * Real.pi) * τ.im :=
+      mul_le_mul_of_nonneg_left hybig (by positivity)
+    have h2 : (2 * Real.pi) * Hbig = Real.log (100 * K1) := by
+      rw [hHbig]; field_simp
+    linarith [h, h2]
+  have heps : eps τ ≤ (100 * K1)⁻¹ := by
+    rw [eps]
+    calc Real.exp (-(2 * Real.pi * τ.im)) ≤ Real.exp (-(Real.log (100 * K1))) :=
+          Real.exp_le_exp.mpr (by linarith)
+      _ = (100 * K1)⁻¹ := by rw [Real.exp_neg, Real.exp_log (by positivity)]
+  have hm100 : K1 * eps τ ≤ 1/100 := by
+    have h := mul_le_mul_of_nonneg_left heps hK10.le
+    have h2 : K1 * (100 * K1)⁻¹ = 1/100 := by field_simp
+    rwa [h2] at h
+  set m : ℝ := K1 * eps τ with hm
+  have hm0 : 0 ≤ m := by rw [hm]; exact mul_nonneg hK10.le (eps_pos τ).le
+  have hm1 : m ≤ 1 := by rw [hm]; linarith [hm100, hK1ge1]
+  have h20 : ‖E2Fun τ - 1‖ ≤ K0 * eps τ := by
+    have h := hb2 τ hy2
+    have h' : K2 * eps τ ≤ K0 * eps τ := mul_le_mul_of_nonneg_right hK2' (eps_pos τ).le
+    linarith
+  have h40 : ‖E4Fun τ - 1‖ ≤ K0 * eps τ := by
+    have h := hb4 τ hy4
+    have h' : K4 * eps τ ≤ K0 * eps τ := mul_le_mul_of_nonneg_right hK4' (eps_pos τ).le
+    linarith
+  have h60 : ‖E6Fun τ - 1‖ ≤ K0 * eps τ := by
+    have h := hb6 τ hy6
+    have h' : K6 * eps τ ≤ K0 * eps τ := mul_le_mul_of_nonneg_right hK6' (eps_pos τ).le
+    linarith
+  have hD0 : ‖DeltaFun τ‖ ≤ K0 * eps τ := by
+    have h := hbD τ hyD
+    have h' : KD * eps τ ≤ K0 * eps τ := mul_le_mul_of_nonneg_right hKD' (eps_pos τ).le
+    linarith
+  have hK0e0 : 0 ≤ K0 * eps τ := mul_nonneg hK0pos.le (eps_pos τ).le
+  have hm2 : ‖E2Fun τ - 1‖ ≤ m := by
+    have h' : K0 * eps τ ≤ K1 * eps τ := mul_le_mul_of_nonneg_right hK0le (eps_pos τ).le
+    rw [hm]; linarith
+  have hm4 : ‖E4Fun τ - 1‖ ≤ m := by
+    have h' : K0 * eps τ ≤ K1 * eps τ := mul_le_mul_of_nonneg_right hK0le (eps_pos τ).le
+    rw [hm]; linarith
+  have hm6 : ‖E6Fun τ - 1‖ ≤ m := by
+    have h' : K0 * eps τ ≤ K1 * eps τ := mul_le_mul_of_nonneg_right hK0le (eps_pos τ).le
+    rw [hm]; linarith
+  have hmD : ‖DeltaFun τ‖ ≤ m := by
+    have h' : K0 * eps τ ≤ K1 * eps τ := mul_le_mul_of_nonneg_right hK0le (eps_pos τ).le
+    rw [hm]; linarith
+  have hmE4cube : ‖E4Fun τ ^ 3 - 1‖ ≤ 7 * (K0 * eps τ) := by
+    have hE : E4Fun τ ^ 3 - 1 = (E4Fun τ - 1) * (E4Fun τ ^ 2 + E4Fun τ + 1) := by ring
+    rw [hE]
+    have h2' : ‖E4Fun τ‖ ≤ 2 := norm_le_two h40 (by nlinarith [hK0e0, hm100, hK0le, eps_pos τ])
+    have hb : ‖E4Fun τ ^ 2 + E4Fun τ + 1‖ ≤ 7 := by
+      rw [show E4Fun τ ^ 2 + E4Fun τ + 1 = (E4Fun τ ^ 2 + E4Fun τ) + 1 from by ring]
+      have h := norm_add_le (E4Fun τ ^ 2 + E4Fun τ) (1:ℂ)
+      rw [norm_one] at h
+      have h' := norm_add_le (E4Fun τ ^ 2) (E4Fun τ)
+      rw [norm_pow] at h'
+      nlinarith [norm_nonneg (E4Fun τ), norm_nonneg (E4Fun τ ^ 2), h, h', h2']
+    have h := norm_mul_le_mul h40 hb hK0e0
+    linarith [h]
+  -- the `h`-factor
+  set v : ℂ := E4Fun τ ^ 3 - DeltaFun τ * jInvariantFun z with hv
+  have hv1 : ‖v - 1‖ ≤ Kz * (K0 * eps τ) := by
+    have hE : v - 1 = (E4Fun τ ^ 3 - 1) + (-(DeltaFun τ * jInvariantFun z)) := by rw [hv]; ring
+    rw [hE]
+    have h := norm_add_le (E4Fun τ ^ 3 - 1) (-(DeltaFun τ * jInvariantFun z))
+    rw [norm_neg] at h
+    have hD2 : ‖DeltaFun τ * jInvariantFun z‖ ≤ (K0 * eps τ) * ‖jInvariantFun z‖ :=
+      norm_mul_le_mul hD0 le_rfl hK0e0
+    have hKz' : 7 + ‖jInvariantFun z‖ ≤ Kz := by rw [hKz]; linarith
+    nlinarith [h, hmE4cube, hD2, hKz', norm_nonneg (jInvariantFun z), eps_pos τ, hK0pos]
+  have hveps : Kz * (K0 * eps τ) ≤ 1/2 := by
+    have h2 : Kz * (K0 * (100 * K1)⁻¹) ≤ 1/2 := by
+      have h1 : Kz * (K0 * (100 * K1)⁻¹) = Kz * K0 / (100 * K1) := by rw [div_eq_mul_inv, mul_assoc]
+      rw [h1, div_le_iff₀ (by positivity)]
+      nlinarith [hKzle, hKz1, hK0pos, hK10]
+    calc Kz * (K0 * eps τ) ≤ Kz * (K0 * (100 * K1)⁻¹) := by
+          apply mul_le_mul_of_nonneg_left _ hKz0
+          exact mul_le_mul_of_nonneg_left heps hK0pos.le
+      _ ≤ 1/2 := h2
+  have hv0 : 0 ≤ Kz * (K0 * eps τ) := mul_nonneg hKz0 hK0e0
+  have hkph_eq : kph τ z = v⁻¹ := by
+    have h : DeltaFun τ * kpJ τ z = v := by
+      have h1 : DeltaFun τ * kpJ τ z
+          = DeltaFun τ * jInvariantFun τ - DeltaFun τ * jInvariantFun z := by
+        rw [kpJ]; ring
+      rw [h1, hv, delta_mul_j]
+    rw [kph, h]
+  have hmh : ‖kph τ z - 1‖ ≤ m := by
+    rw [hkph_eq]
+    have h := norm_sub_one_inv_le hv0 hveps hv1
+    have hm2' : 2 * (Kz * (K0 * eps τ)) ≤ m := by
+      rw [hm, hK1]
+      nlinarith [eps_pos τ, hK0pos, hKz1]
+    linarith [h, hm2']
+  have hkph2 : ‖kph τ z‖ ≤ 2 := by
+    have h := norm_add_le (kph τ z - 1) (1:ℂ)
+    rw [sub_add_cancel, norm_one] at h
+    linarith [h, hmh, hm1]
+  have hJnz : kpJ τ z ≠ 0 := by
+    intro hJ0
+    have h1 : kph τ z = 0 := by rw [kph, hJ0, mul_zero, _root_.inv_zero]
+    have h2 : ‖kph τ z - 1‖ ≤ m := hmh
+    rw [h1] at h2
+    norm_num at h2
+    rw [hm] at h2
+    linarith [h2, hm100]
+  -- the polynomial bounds
+  have hN0 : ‖N0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2 :=
+    norm_N0f_le hm1 hm2 hm4 hm6 hmh
+  have hN2 : ‖N2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ 800 * m ^ 2 :=
+    norm_N2f_le hm1 hm2 hm4 hm6 hmh
+  have hM0r : ‖M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      - Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)‖ ≤ 700 * m ^ 2 :=
+    norm_M0f_rest_le hm1 hm2 hm4 hm6 hmh
+  have hM2r : ‖M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)‖ ≤ 200 * m ^ 2 :=
+    norm_M2f_rest_le hm1 hm2 hm4 hm6
+  have hLin : ‖Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)‖ ≤ (KC / K1^2) * m^2 := by
+    have h := hbC τ hyC
+    have hres : m^2 = K1^2 * (eps τ)^2 := by rw [hm]; ring
+    rw [hres]
+    have h2 : (KC / K1^2) * (K1^2 * (eps τ)^2) = KC * (eps τ)^2 := by field_simp
+    rw [h2]; exact h
+  have hM0 : ‖M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1^2 + 700) * m^2 := by
+    have h := norm_add_le (M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      - Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)) (Linf (E2Fun τ) (E4Fun τ) (E6Fun τ))
+    have hE : M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+        = (M0f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z) - Linf (E2Fun τ) (E4Fun τ) (E6Fun τ))
+          + Linf (E2Fun τ) (E4Fun τ) (E6Fun τ) := by ring
+    rw [hE]
+    nlinarith [h, hM0r, hLin, hm0]
+  have hM2 : ‖M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)‖ ≤ (KC / K1^2 + 200) * m^2 := by
+    have h := norm_add_le (M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+      + Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)) (-(Linf (E2Fun τ) (E4Fun τ) (E6Fun τ)))
+    rw [norm_neg] at h
+    have hE : M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z)
+        = (M2f (E2Fun τ) (E4Fun τ) (E6Fun τ) (kph τ z) + Linf (E2Fun τ) (E4Fun τ) (E6Fun τ))
+          + (-(Linf (E2Fun τ) (E4Fun τ) (E6Fun τ))) := by ring
+    rw [hE]
+    nlinarith [h, hM2r, hLin, hm0]
+  have hQ2m : ‖(Qf (E4Fun τ) (E6Fun τ)) ^ 2‖ ≤ 100 * m^2 := by
+    have hQ := norm_Qf_le hm1 hm4 hm6
+    rw [norm_pow]
+    calc ‖Qf (E4Fun τ) (E6Fun τ)‖ ^ 2 ≤ (10 * m) ^ 2 :=
+          pow_le_pow_left₀ (norm_nonneg _) hQ 2
+      _ = 100 * m^2 := by ring
+  -- auxiliary norms
+  have ht1 : 1 ≤ ‖(τ:ℂ)‖ := by
+    have h : τ.im ≤ ‖(τ:ℂ)‖ := by
+      have := Complex.abs_im_le_norm (τ : ℂ)
+      rwa [UpperHalfPlane.coe_im, abs_of_pos τ.im_pos] at this
+    linarith
+  have he2 : ‖E2Fun τ‖ ≤ 2 := norm_le_two hm2 hm1
+  have htau : ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖ ≤ ‖(τ:ℂ)‖ * 2 + 1 := by
+    have h1 : ‖(τ:ℂ) * E2Fun τ - 3*Complex.I/(Real.pi:ℂ)‖
+        ≤ ‖(τ:ℂ) * E2Fun τ‖ + ‖3*Complex.I/(Real.pi:ℂ)‖ := norm_sub_le _ _
+    have h2 : ‖(τ:ℂ) * E2Fun τ‖ ≤ ‖(τ:ℂ)‖ * 2 := norm_mul_le_mul le_rfl he2 (norm_nonneg _)
+    have h3 : ‖3*Complex.I/(Real.pi:ℂ)‖ ≤ 1 := norm_threeI_div_pi_le_one
+    linarith [h1, h2, h3]
+  have h700 : 0 ≤ KC / K1 ^ 2 + 700 := by positivity
+  have h200 : 0 ≤ KC / K1 ^ 2 + 200 := by positivity
+  have hG24 : ‖G24 τ z‖ ≤ Czf z KC K1 * (‖(τ:ℂ)‖ * m ^ 2) :=
+    kp24_G24_bound z τ KC K1 m h700 h200 ht1 hN0 hN2 hM0 hM2 hQ2m hkph2 htau
+  -- final assembly
+  have hpi : ‖(Real.pi : ℂ)^2/(36 * 1728 * Complex.I * DeltaFun z)‖
+      = Real.pi^2/(36 * 1728 * ‖DeltaFun z‖) := by
+    have h1 : ‖((Real.pi:ℂ)^2)‖ = Real.pi^2 := by
+      rw [norm_pow]
+      have h : ‖(Real.pi:ℂ)‖ = Real.pi := by
+        rw [Complex.norm_real]; exact abs_of_nonneg Real.pi_pos.le
+      rw [h]
+    have h2 : ‖(36:ℂ) * 1728 * Complex.I * DeltaFun z‖ = 36 * 1728 * ‖DeltaFun z‖ := by
+      rw [norm_mul, norm_mul, norm_mul, Complex.norm_ofNat, Complex.norm_ofNat,
+        Complex.norm_I, mul_one]
+    rw [norm_div, h1, h2]
+  have hK : KPlus 24 τ z = (Real.pi : ℂ)^2/(36 * 1728 * Complex.I * DeltaFun z) * G24 τ z :=
+    KPlus_twentyfour_eq τ z hJnz
+  have hm2' : m^2 = K1^2 * (eps τ)^2 := by rw [hm]; ring
+  have hCz0 : 0 ≤ Czf z KC K1 := by rw [Czf, c0f, c1f, c2f]; positivity
+  have hA0 : 0 ≤ Real.pi^2/(36 * 1728 * ‖DeltaFun z‖) := by positivity
+  have hAK : 0 ≤ Real.pi^2/(36 * 1728 * ‖DeltaFun z‖) * Czf z KC K1 * K1^2 :=
+    mul_nonneg (mul_nonneg hA0 hCz0) (sq_nonneg K1)
+  have hX0 : 0 ≤ ‖(τ:ℂ)‖ * (eps τ)^2 := mul_nonneg (norm_nonneg _) (sq_nonneg (eps τ))
+  calc ‖KPlus 24 τ z‖
+      = ‖(Real.pi : ℂ)^2/(36 * 1728 * Complex.I * DeltaFun z) * G24 τ z‖ := by rw [hK]
+    _ = Real.pi^2/(36 * 1728 * ‖DeltaFun z‖) * ‖G24 τ z‖ := by rw [norm_mul, hpi]
+    _ ≤ Real.pi^2/(36 * 1728 * ‖DeltaFun z‖) * (Czf z KC K1 * (‖(τ:ℂ)‖ * m^2)) :=
+        mul_le_mul_of_nonneg_left hG24 hA0
+    _ ≤ ((Real.pi^2/(36 * 1728 * ‖DeltaFun z‖)) * Czf z KC K1 * K1^2 + 1)
+          * ‖(τ:ℂ)‖ * (eps τ)^2 := by
+        rw [hm2']
+        nlinarith [mul_nonneg hAK hX0]
+
+end Work.Residues

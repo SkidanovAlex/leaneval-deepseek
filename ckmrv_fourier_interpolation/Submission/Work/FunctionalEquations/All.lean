@@ -1,0 +1,110 @@
+import Submission.Work.FunctionalEquations.Basic
+import Submission.Work.FunctionalEquations.BasisCoeffsDelta
+import Submission.Work.FunctionalEquations.BasisCoeffsDeltaAux
+import Submission.Work.FunctionalEquations.Bridge
+import Submission.Work.FunctionalEquations.CoeffOneZeroOfDecay
+import Submission.Work.FunctionalEquations.CoefficientValuePattern
+import Submission.Work.FunctionalEquations.Coefficients
+import Submission.Work.FunctionalEquations.CoeffsSeminormDecay
+import Submission.Work.FunctionalEquations.CoeffsSeminormDecayFamily
+import Submission.Work.FunctionalEquations.Corollaries
+import Submission.Work.FunctionalEquations.CorollariesGen
+import Submission.Work.FunctionalEquations.DecayExpansionDifference
+import Submission.Work.FunctionalEquations.DeltaGen
+import Submission.Work.FunctionalEquations.DensityOfGaussians
+import Submission.Work.FunctionalEquations.DifferenceExpansionF
+import Submission.Work.FunctionalEquations.DifferenceExpansionFtilde
+import Submission.Work.FunctionalEquations.DirichletCoeffOneNormLe
+import Submission.Work.FunctionalEquations.DirichletExpansion
+import Submission.Work.FunctionalEquations.EqZeroOfTsumExp
+import Submission.Work.FunctionalEquations.EqZeroOfTsumExpGen
+import Submission.Work.FunctionalEquations.ExpansionData
+import Submission.Work.FunctionalEquations.ExpansionDataShiftTwo
+import Submission.Work.FunctionalEquations.ExpansionDataTwoOfDecay
+import Submission.Work.FunctionalEquations.ExpansionFromFunctionalEquations
+import Submission.Work.FunctionalEquations.FourierDataExtraction
+import Submission.Work.FunctionalEquations.FourierExpansion
+import Submission.Work.FunctionalEquations.FourierExpansionFunctionalEquation
+import Submission.Work.FunctionalEquations.FourierExpansionSatisfiesFE
+import Submission.Work.FunctionalEquations.FourierGaussian
+import Submission.Work.FunctionalEquations.FourierInversionRadial
+import Submission.Work.FunctionalEquations.FourierLineDeriv
+import Submission.Work.FunctionalEquations.FourierSeriesHelpers
+import Submission.Work.FunctionalEquations.FourierTransformExpansionGen
+import Submission.Work.FunctionalEquations.FunctionCoefficients
+import Submission.Work.FunctionalEquations.FunctionDerivExpansion
+import Submission.Work.FunctionalEquations.FunctionExpansion
+import Submission.Work.FunctionalEquations.Gap
+import Submission.Work.FunctionalEquations.GaussianRadialDeriv
+import Submission.Work.FunctionalEquations.GaussiansDense
+import Submission.Work.FunctionalEquations.Gen
+import Submission.Work.FunctionalEquations.GenEqZeroOfTsumExp
+import Submission.Work.FunctionalEquations.GenSummableMulExpNeg
+import Submission.Work.FunctionalEquations.HasDerivAtParametricIntegral
+import Submission.Work.FunctionalEquations.HolomorphicFourierExpansion
+import Submission.Work.FunctionalEquations.IciSplitOneTwo
+import Submission.Work.FunctionalEquations.InterpolationFormulaSummable
+import Submission.Work.FunctionalEquations.KernelSampleDerivValues
+import Submission.Work.FunctionalEquations.KernelSampleValues
+import Submission.Work.FunctionalEquations.Main
+import Submission.Work.FunctionalEquations.MainGen
+import Submission.Work.FunctionalEquations.ParametricDerivBounds
+import Submission.Work.FunctionalEquations.PeriodicAddSmul
+import Submission.Work.FunctionalEquations.PeriodicIntTranslate
+import Submission.Work.FunctionalEquations.ReconstructionCLM
+import Submission.Work.FunctionalEquations.ReconstructionCLMGen
+import Submission.Work.FunctionalEquations.ReconstructionGaussian
+import Submission.Work.FunctionalEquations.ReconstructionGaussianGen
+import Submission.Work.FunctionalEquations.Reduction
+import Submission.Work.FunctionalEquations.Rigidity
+import Submission.Work.FunctionalEquations.SchwartzExpansionIsFourier
+import Submission.Work.FunctionalEquations.Section8FourierDataOfRigidity
+import Submission.Work.FunctionalEquations.Section8ValueDataOfRigidity
+import Submission.Work.FunctionalEquations.SeminormCompare
+import Submission.Work.FunctionalEquations.SeminormCompareAux
+import Submission.Work.FunctionalEquations.SeminormCompareB1
+import Submission.Work.FunctionalEquations.SeminormCompareMulti
+import Submission.Work.FunctionalEquations.SeminormCompareOneD
+import Submission.Work.FunctionalEquations.SeminormFourierGrowth
+import Submission.Work.FunctionalEquations.SeminormGrowthOfRadialGrowth
+import Submission.Work.FunctionalEquations.SeminormLeOfRadialBounds
+import Submission.Work.FunctionalEquations.SlashFactorMul
+import Submission.Work.FunctionalEquations.SummableExpansionTerms
+import Submission.Work.FunctionalEquations.SummableExpansionTermsGen
+import Submission.Work.FunctionalEquations.SummableMulExpNeg
+import Submission.Work.FunctionalEquations.SummableNormExpTail
+import Submission.Work.FunctionalEquations.SummableSchwartzBasisSmul
+import Submission.Work.FunctionalEquations.TauDiffCoeffBound
+import Submission.Work.FunctionalEquations.TauDiffMBound
+import Submission.Work.FunctionalEquations.TauDiffPhiBound
+import Submission.Work.FunctionalEquations.TauDiffSetup
+import Submission.Work.FunctionalEquations.TauDifferenceExpansionF
+import Submission.Work.FunctionalEquations.TauDifferenceExpansionFtilde
+import Submission.Work.FunctionalEquations.Thm31Adapter
+import Submission.Work.FunctionalEquations.ValuePatternGen
+import Submission.Work.FunctionalEquations.KernelSchwartz.Defs
+import Submission.Work.FunctionalEquations.KernelSchwartz.growth_combination
+import Submission.Work.FunctionalEquations.KernelSchwartz.kernel_isSchwartz
+import Submission.Work.FunctionalEquations.KernelSchwartz.psi_deriv_bound
+import Submission.Work.FunctionalEquations.KernelSchwartz.psi_smooth
+import Submission.Work.FunctionalEquations.DensityAux.AssemblyDev
+import Submission.Work.FunctionalEquations.DensityAux.aliasing
+import Submission.Work.FunctionalEquations.DensityAux.approx_onesided_smooth
+import Submission.Work.FunctionalEquations.DensityAux.composite_seminorm_smooth
+import Submission.Work.FunctionalEquations.DensityAux.gaussianSeminormGrowth
+import Submission.Work.FunctionalEquations.DensityAux.kills_compactProfile
+import Submission.Work.FunctionalEquations.DensityAux.shiftSumTendsto
+import Submission.Work.FunctionalEquations.DensityAux.shiftedProfileSeminorm
+import Submission.Work.FunctionalEquations.DensityAux.summableIntGaussian
+
+/-!
+# The CKMRV section 3.1 chapter, gathered
+
+Convenience module importing the whole `Work.FE` area: the definitions, the assembled
+interpolation-basis theorems (all `k₀`, including the Leech case `k₀ = 2`), Steps 1--2 of
+the proof of Theorem 3.1 from hypotheses (i)--(v) alone, the reduction of the whole of
+Section 8 to the paper's uniqueness input `Work.FE.HomogeneousRigidity`, the interface to
+the modular-forms construction of `Submission/Work/Kernels`, the supporting lemmas, and
+the statement of the remaining gap.
+`lake build Submission.Work.FunctionalEquations.All` rebuilds and type-checks everything.
+-/
