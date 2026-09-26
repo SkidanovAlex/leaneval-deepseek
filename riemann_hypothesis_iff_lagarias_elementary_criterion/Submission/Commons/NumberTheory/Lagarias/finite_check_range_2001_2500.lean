@@ -2,6 +2,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Rat.Star
 import Mathlib.NumberTheory.ArithmeticFunction.Misc
 import Mathlib.NumberTheory.Harmonic.Bounds
+import Submission.Commons.NumberTheory.SigmaCheck
 
 open scoped ArithmeticFunction.sigma
 
@@ -176,30 +177,315 @@ private lemma check_branch (n : ℕ) (q : ℚ) (C : ℕ) (hq1 : 1 < q)
   have hrhs := rhs_ge_q n q (le_of_lt hq1) hq_harm
   linarith
 
+private theorem sigma_le_6944_2001_2100_chk_2001 :
+    (List.range' 2001 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2011 :
+    (List.range' 2011 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2021 :
+    (List.range' 2021 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2031 :
+    (List.range' 2031 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2041 :
+    (List.range' 2041 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2051 :
+    (List.range' 2051 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2061 :
+    (List.range' 2061 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2071 :
+    (List.range' 2071 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2081 :
+    (List.range' 2081 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
+private theorem sigma_le_6944_2001_2100_chk_2091 :
+    (List.range' 2091 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 6944) = true := by
+  decide +kernel
+
 private lemma sigma_le_6944_2001_2100 (n : ℕ) (ha : 2001 ≤ n) (hb : n ≤ 2100) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 6944 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 2011 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2001 n (by omega) h
+  else
+    if h : n < 2021 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2011 n (by omega) h
+    else
+      if h : n < 2031 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2021 n (by omega) h
+      else
+        if h : n < 2041 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2031 n (by omega) h
+        else
+          if h : n < 2051 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2041 n (by omega) h
+          else
+            if h : n < 2061 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2051 n (by omega) h
+            else
+              if h : n < 2071 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2061 n (by omega) h
+              else
+                if h : n < 2081 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2071 n (by omega) h
+                else
+                  if h : n < 2091 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2081 n (by omega) h
+                  else
+                    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_6944_2001_2100_chk_2091 n (by omega) (by omega)
+
+private theorem sigma_le_7440_2101_2200_chk_2101 :
+    (List.range' 2101 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2111 :
+    (List.range' 2111 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2121 :
+    (List.range' 2121 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2131 :
+    (List.range' 2131 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2141 :
+    (List.range' 2141 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2151 :
+    (List.range' 2151 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2161 :
+    (List.range' 2161 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2171 :
+    (List.range' 2171 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2181 :
+    (List.range' 2181 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
+
+private theorem sigma_le_7440_2101_2200_chk_2191 :
+    (List.range' 2191 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7440) = true := by
+  decide +kernel
 
 private lemma sigma_le_7440_2101_2200 (n : ℕ) (ha : 2101 ≤ n) (hb : n ≤ 2200) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 7440 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 2111 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2101 n (by omega) h
+  else
+    if h : n < 2121 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2111 n (by omega) h
+    else
+      if h : n < 2131 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2121 n (by omega) h
+      else
+        if h : n < 2141 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2131 n (by omega) h
+        else
+          if h : n < 2151 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2141 n (by omega) h
+          else
+            if h : n < 2161 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2151 n (by omega) h
+            else
+              if h : n < 2171 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2161 n (by omega) h
+              else
+                if h : n < 2181 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2171 n (by omega) h
+                else
+                  if h : n < 2191 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2181 n (by omega) h
+                  else
+                    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7440_2101_2200_chk_2191 n (by omega) (by omega)
+
+private theorem sigma_le_7200_2201_2300_chk_2201 :
+    (List.range' 2201 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2211 :
+    (List.range' 2211 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2221 :
+    (List.range' 2221 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2231 :
+    (List.range' 2231 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2241 :
+    (List.range' 2241 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2251 :
+    (List.range' 2251 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2261 :
+    (List.range' 2261 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2271 :
+    (List.range' 2271 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2281 :
+    (List.range' 2281 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
+
+private theorem sigma_le_7200_2201_2300_chk_2291 :
+    (List.range' 2291 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7200) = true := by
+  decide +kernel
 
 private lemma sigma_le_7200_2201_2300 (n : ℕ) (ha : 2201 ≤ n) (hb : n ≤ 2300) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 7200 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 2211 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2201 n (by omega) h
+  else
+    if h : n < 2221 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2211 n (by omega) h
+    else
+      if h : n < 2231 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2221 n (by omega) h
+      else
+        if h : n < 2241 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2231 n (by omega) h
+        else
+          if h : n < 2251 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2241 n (by omega) h
+          else
+            if h : n < 2261 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2251 n (by omega) h
+            else
+              if h : n < 2271 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2261 n (by omega) h
+              else
+                if h : n < 2281 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2271 n (by omega) h
+                else
+                  if h : n < 2291 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2281 n (by omega) h
+                  else
+                    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7200_2201_2300_chk_2291 n (by omega) (by omega)
+
+private theorem sigma_le_7812_2301_2400_chk_2301 :
+    (List.range' 2301 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2311 :
+    (List.range' 2311 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2321 :
+    (List.range' 2321 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2331 :
+    (List.range' 2331 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2341 :
+    (List.range' 2341 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2351 :
+    (List.range' 2351 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2361 :
+    (List.range' 2361 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2371 :
+    (List.range' 2371 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2381 :
+    (List.range' 2381 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
+
+private theorem sigma_le_7812_2301_2400_chk_2391 :
+    (List.range' 2391 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7812) = true := by
+  decide +kernel
 
 private lemma sigma_le_7812_2301_2400 (n : ℕ) (ha : 2301 ≤ n) (hb : n ≤ 2400) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 7812 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 2311 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2301 n (by omega) h
+  else
+    if h : n < 2321 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2311 n (by omega) h
+    else
+      if h : n < 2331 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2321 n (by omega) h
+      else
+        if h : n < 2341 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2331 n (by omega) h
+        else
+          if h : n < 2351 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2341 n (by omega) h
+          else
+            if h : n < 2361 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2351 n (by omega) h
+            else
+              if h : n < 2371 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2361 n (by omega) h
+              else
+                if h : n < 2381 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2371 n (by omega) h
+                else
+                  if h : n < 2391 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2381 n (by omega) h
+                  else
+                    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7812_2301_2400_chk_2391 n (by omega) (by omega)
+
+private theorem sigma_le_7254_2401_2500_chk_2401 :
+    (List.range' 2401 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2411 :
+    (List.range' 2411 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2421 :
+    (List.range' 2421 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2431 :
+    (List.range' 2431 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2441 :
+    (List.range' 2441 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2451 :
+    (List.range' 2451 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2461 :
+    (List.range' 2461 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2471 :
+    (List.range' 2471 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2481 :
+    (List.range' 2481 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
+
+private theorem sigma_le_7254_2401_2500_chk_2491 :
+    (List.range' 2491 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 7254) = true := by
+  decide +kernel
 
 private lemma sigma_le_7254_2401_2500 (n : ℕ) (ha : 2401 ≤ n) (hb : n ≤ 2500) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 7254 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 2411 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2401 n (by omega) h
+  else
+    if h : n < 2421 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2411 n (by omega) h
+    else
+      if h : n < 2431 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2421 n (by omega) h
+      else
+        if h : n < 2441 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2431 n (by omega) h
+        else
+          if h : n < 2451 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2441 n (by omega) h
+          else
+            if h : n < 2461 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2451 n (by omega) h
+            else
+              if h : n < 2471 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2461 n (by omega) h
+              else
+                if h : n < 2481 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2471 n (by omega) h
+                else
+                  if h : n < 2491 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2481 n (by omega) h
+                  else
+                    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_7254_2401_2500_chk_2491 n (by omega) (by omega)
 private lemma hq_harm_2001 (n : ℕ) (hL : 2001 ≤ n) :
     ((163/20 : ℚ) : ℝ) ≤ (harmonic n : ℝ) := by
   have hmono := harmonic_mono_real hL

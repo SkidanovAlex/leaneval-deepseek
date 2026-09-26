@@ -2,6 +2,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Rat.Star
 import Mathlib.NumberTheory.ArithmeticFunction.Misc
 import Mathlib.NumberTheory.Harmonic.Bounds
+import Submission.Commons.NumberTheory.SigmaCheck
 
 open scoped ArithmeticFunction.sigma
 
@@ -176,10 +177,31 @@ private lemma check_branch (n : ℕ) (q : ℚ) (C : ℕ) (hq1 : 1 < q)
   have hrhs := rhs_ge_q n q (le_of_lt hq1) hq_harm
   linarith
 
+private theorem sigma_le_19344_range_5001_5040_chk_5001 :
+    (List.range' 5001 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 19344) = true := by
+  decide +kernel
+
+private theorem sigma_le_19344_range_5001_5040_chk_5011 :
+    (List.range' 5011 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 19344) = true := by
+  decide +kernel
+
+private theorem sigma_le_19344_range_5001_5040_chk_5021 :
+    (List.range' 5021 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 19344) = true := by
+  decide +kernel
+
+private theorem sigma_le_19344_range_5001_5040_chk_5031 :
+    (List.range' 5031 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 19344) = true := by
+  decide +kernel
+
 private lemma sigma_le_19344_range_5001_5040 (n : ℕ) (ha : 5001 ≤ n) (hb : n ≤ 5040) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 19344 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 5011 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_19344_range_5001_5040_chk_5001 n (by omega) h
+  else
+    if h : n < 5021 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_19344_range_5001_5040_chk_5011 n (by omega) h
+    else
+      if h : n < 5031 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_19344_range_5001_5040_chk_5021 n (by omega) h
+      else
+        exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_19344_range_5001_5040_chk_5031 n (by omega) (by omega)
 
 private lemma hq_harm_5001 (n : ℕ) (hL : 5001 ≤ n) :
     ((909/100 : ℚ) : ℝ) ≤ (harmonic n : ℝ) := by

@@ -2,6 +2,7 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Rat.Star
 import Mathlib.NumberTheory.ArithmeticFunction.Misc
 import Mathlib.NumberTheory.Harmonic.Bounds
+import Submission.Commons.NumberTheory.SigmaCheck
 
 open scoped ArithmeticFunction.sigma
 
@@ -176,130 +177,355 @@ private lemma check_branch (n : ℕ) (q : ℚ) (C : ℕ) (hq1 : 1 < q)
   have hrhs := rhs_ge_q n q (le_of_lt hq1) hq_harm
   linarith
 
+private theorem sigma_le_16380_4501_4520_chk_4501 :
+    (List.range' 4501 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4501_4520_chk_4511 :
+    (List.range' 4511 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
 private lemma sigma_le_16380_4501_4520 (n : ℕ) (ha : 4501 ≤ n) (hb : n ≤ 4520) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4511 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4501_4520_chk_4501 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4501_4520_chk_4511 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4521_4540_chk_4521 :
+    (List.range' 4521 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4521_4540_chk_4531 :
+    (List.range' 4531 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4521_4540 (n : ℕ) (ha : 4521 ≤ n) (hb : n ≤ 4540) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4531 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4521_4540_chk_4521 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4521_4540_chk_4531 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4541_4560_chk_4541 :
+    (List.range' 4541 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4541_4560_chk_4551 :
+    (List.range' 4551 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4541_4560 (n : ℕ) (ha : 4541 ≤ n) (hb : n ≤ 4560) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4551 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4541_4560_chk_4541 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4541_4560_chk_4551 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4561_4580_chk_4561 :
+    (List.range' 4561 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4561_4580_chk_4571 :
+    (List.range' 4571 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4561_4580 (n : ℕ) (ha : 4561 ≤ n) (hb : n ≤ 4580) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4571 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4561_4580_chk_4561 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4561_4580_chk_4571 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4581_4600_chk_4581 :
+    (List.range' 4581 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4581_4600_chk_4591 :
+    (List.range' 4591 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4581_4600 (n : ℕ) (ha : 4581 ≤ n) (hb : n ≤ 4600) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4591 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4581_4600_chk_4581 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4581_4600_chk_4591 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4601_4620_chk_4601 :
+    (List.range' 4601 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4601_4620_chk_4611 :
+    (List.range' 4611 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4601_4620 (n : ℕ) (ha : 4601 ≤ n) (hb : n ≤ 4620) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4611 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4601_4620_chk_4601 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4601_4620_chk_4611 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4621_4640_chk_4621 :
+    (List.range' 4621 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4621_4640_chk_4631 :
+    (List.range' 4631 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4621_4640 (n : ℕ) (ha : 4621 ≤ n) (hb : n ≤ 4640) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4631 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4621_4640_chk_4621 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4621_4640_chk_4631 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4641_4660_chk_4641 :
+    (List.range' 4641 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4641_4660_chk_4651 :
+    (List.range' 4651 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4641_4660 (n : ℕ) (ha : 4641 ≤ n) (hb : n ≤ 4660) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4651 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4641_4660_chk_4641 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4641_4660_chk_4651 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4661_4680_chk_4661 :
+    (List.range' 4661 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4661_4680_chk_4671 :
+    (List.range' 4671 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4661_4680 (n : ℕ) (ha : 4661 ≤ n) (hb : n ≤ 4680) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4671 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4661_4680_chk_4661 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4661_4680_chk_4671 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4681_4700_chk_4681 :
+    (List.range' 4681 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4681_4700_chk_4691 :
+    (List.range' 4691 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4681_4700 (n : ℕ) (ha : 4681 ≤ n) (hb : n ≤ 4700) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4691 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4681_4700_chk_4681 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4681_4700_chk_4691 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4701_4720_chk_4701 :
+    (List.range' 4701 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4701_4720_chk_4711 :
+    (List.range' 4711 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4701_4720 (n : ℕ) (ha : 4701 ≤ n) (hb : n ≤ 4720) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4711 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4701_4720_chk_4701 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4701_4720_chk_4711 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4721_4740_chk_4721 :
+    (List.range' 4721 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4721_4740_chk_4731 :
+    (List.range' 4731 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4721_4740 (n : ℕ) (ha : 4721 ≤ n) (hb : n ≤ 4740) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4731 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4721_4740_chk_4721 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4721_4740_chk_4731 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4741_4760_chk_4741 :
+    (List.range' 4741 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4741_4760_chk_4751 :
+    (List.range' 4751 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4741_4760 (n : ℕ) (ha : 4741 ≤ n) (hb : n ≤ 4760) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4751 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4741_4760_chk_4741 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4741_4760_chk_4751 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4761_4780_chk_4761 :
+    (List.range' 4761 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4761_4780_chk_4771 :
+    (List.range' 4771 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4761_4780 (n : ℕ) (ha : 4761 ≤ n) (hb : n ≤ 4780) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4771 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4761_4780_chk_4761 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4761_4780_chk_4771 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4781_4800_chk_4781 :
+    (List.range' 4781 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4781_4800_chk_4791 :
+    (List.range' 4791 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4781_4800 (n : ℕ) (ha : 4781 ≤ n) (hb : n ≤ 4800) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4791 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4781_4800_chk_4781 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4781_4800_chk_4791 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4801_4820_chk_4801 :
+    (List.range' 4801 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4801_4820_chk_4811 :
+    (List.range' 4811 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4801_4820 (n : ℕ) (ha : 4801 ≤ n) (hb : n ≤ 4820) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4811 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4801_4820_chk_4801 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4801_4820_chk_4811 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4821_4840_chk_4821 :
+    (List.range' 4821 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4821_4840_chk_4831 :
+    (List.range' 4831 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4821_4840 (n : ℕ) (ha : 4821 ≤ n) (hb : n ≤ 4840) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4831 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4821_4840_chk_4821 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4821_4840_chk_4831 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4841_4860_chk_4841 :
+    (List.range' 4841 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4841_4860_chk_4851 :
+    (List.range' 4851 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4841_4860 (n : ℕ) (ha : 4841 ≤ n) (hb : n ≤ 4860) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4851 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4841_4860_chk_4841 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4841_4860_chk_4851 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4861_4880_chk_4861 :
+    (List.range' 4861 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4861_4880_chk_4871 :
+    (List.range' 4871 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4861_4880 (n : ℕ) (ha : 4861 ≤ n) (hb : n ≤ 4880) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4871 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4861_4880_chk_4861 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4861_4880_chk_4871 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4881_4900_chk_4881 :
+    (List.range' 4881 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4881_4900_chk_4891 :
+    (List.range' 4891 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4881_4900 (n : ℕ) (ha : 4881 ≤ n) (hb : n ≤ 4900) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4891 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4881_4900_chk_4881 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4881_4900_chk_4891 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4901_4920_chk_4901 :
+    (List.range' 4901 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4901_4920_chk_4911 :
+    (List.range' 4911 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4901_4920 (n : ℕ) (ha : 4901 ≤ n) (hb : n ≤ 4920) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4911 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4901_4920_chk_4901 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4901_4920_chk_4911 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4921_4940_chk_4921 :
+    (List.range' 4921 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4921_4940_chk_4931 :
+    (List.range' 4931 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4921_4940 (n : ℕ) (ha : 4921 ≤ n) (hb : n ≤ 4940) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4931 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4921_4940_chk_4921 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4921_4940_chk_4931 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4941_4960_chk_4941 :
+    (List.range' 4941 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4941_4960_chk_4951 :
+    (List.range' 4951 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4941_4960 (n : ℕ) (ha : 4941 ≤ n) (hb : n ≤ 4960) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4951 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4941_4960_chk_4941 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4941_4960_chk_4951 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4961_4980_chk_4961 :
+    (List.range' 4961 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4961_4980_chk_4971 :
+    (List.range' 4971 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4961_4980 (n : ℕ) (ha : 4961 ≤ n) (hb : n ≤ 4980) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4971 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4961_4980_chk_4961 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4961_4980_chk_4971 n (by omega) (by omega)
+
+private theorem sigma_le_16380_4981_5000_chk_4981 :
+    (List.range' 4981 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
+
+private theorem sigma_le_16380_4981_5000_chk_4991 :
+    (List.range' 4991 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 16380) = true := by
+  decide +kernel
 
 private lemma sigma_le_16380_4981_5000 (n : ℕ) (ha : 4981 ≤ n) (hb : n ≤ 5000) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> decide
+  if h : n < 4991 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4981_5000_chk_4981 n (by omega) h
+  else
+    exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_16380_4981_5000_chk_4991 n (by omega) (by omega)
 
 private lemma sigma_le_16380_range_4501_5000 (n : ℕ) (hL : 4501 ≤ n) (hU : n ≤ 5000) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 16380 := by

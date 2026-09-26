@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.NumberTheory.ArithmeticFunction.Misc
 import Mathlib.Tactic.IntervalCases
+import Submission.Commons.NumberTheory.SigmaCheck
 
 namespace Commons.NumberTheory.Lagarias
 
@@ -33,9 +34,48 @@ private lemma sigma_eq_sigmaFast (n : ℕ) : (ArithmeticFunction.sigma 1 n : ℕ
   unfold sigmaFast
   rfl
 
+private theorem sigma_le_4914_range_1440_1500_chk_1440 :
+    (List.range' 1440 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1450 :
+    (List.range' 1450 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1460 :
+    (List.range' 1460 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1470 :
+    (List.range' 1470 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1480 :
+    (List.range' 1480 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1490 :
+    (List.range' 1490 10).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
+private theorem sigma_le_4914_range_1440_1500_chk_1500 :
+    (List.range' 1500 1).all (Commons.NumberTheory.SigmaCheck.sigmaChk 4914) = true := by
+  decide +kernel
+
 theorem sigma_le_4914_range_1440_1500 (n : ℕ) (hL : 1440 ≤ n) (hU : n ≤ 1500) :
     (ArithmeticFunction.sigma 1 n : ℕ) ≤ 4914 := by
-  rw [sigma_eq_sigmaFast]
-  interval_cases n <;> norm_num [sigmaFast, sigmaFastAux]
+  if h : n < 1450 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1440 n (by omega) h
+  else
+    if h : n < 1460 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1450 n (by omega) h
+    else
+      if h : n < 1470 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1460 n (by omega) h
+      else
+        if h : n < 1480 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1470 n (by omega) h
+        else
+          if h : n < 1490 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1480 n (by omega) h
+          else
+            if h : n < 1500 then exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1490 n (by omega) h
+            else
+              exact Commons.NumberTheory.SigmaCheck.sigma_le_of_check sigma_le_4914_range_1440_1500_chk_1500 n (by omega) (by omega)
 
 end Commons.NumberTheory.Lagarias
