@@ -31,26 +31,5 @@ noncomputable def sweepLoopChamferDeriv (r : ℝ → Space) {d : BandArcData} (D
       else
         (2 / lam) • (sweepArc' r D s lam - sweepChord' r D s lam))
 
-/-- For a smooth knot `r` with an `O`-avoiding non-separating band arc `(d, D)`, on any compact
-sweep-parameter window `[ε, σ₀] ⊂ (0,1)` and for all sufficiently small rounding/smoothing
-parameters `lam, δ₁, δ₂`, every slice of the smoothed chamfered sweep is a knot: injective on one
-period, with nonvanishing velocity.  (`sweepFam` is the doubly smoothed chamfered sweep of
-`Submission/Work/Drive/chordSweepSmooth.lean`; `sweepLoopChamfer` chamfers the two corners of the
-raw sweep loop `sweepArc ∪ sweepChord` at the parameter fraction `lam`.) -/
-theorem sweepWindowKnots {r : ℝ → LeanEval.KnotTheory.Quadrisecant.Space}
-    (hr : LeanEval.KnotTheory.Quadrisecant.IsSmoothKnot r)
-    {d : LeanEval.KnotTheory.Quadrisecant.BandArcData} (D : Work.Drive.SweepData d)
-    (havoid : ∀ s : Set.Icc (0 : ℝ) 1, ∀ (hs0 : (s : ℝ) ≠ 0) (hs1 : (s : ℝ) ≠ 1),
-      LeanEval.KnotTheory.Quadrisecant.mobiusCover
-        ⟨(d.a s, d.b s), d.offdiag s hs0 hs1⟩ ∉
-        LeanEval.KnotTheory.Quadrisecant.trisecantSet r)
-    {ε σ₀ : ℝ} (hε : 0 < ε) (hεσ : ε < σ₀) (hσ : σ₀ < 1) :
-    ∃ L : ℝ, 0 < L ∧
-      ∀ (lam δ₁ δ₂ : ℝ), 0 < lam → lam ≤ L → 0 < δ₁ → δ₁ ≤ L → 0 < δ₂ → δ₂ ≤ L →
-        ∀ σ : ℝ, ε ≤ σ → σ ≤ σ₀ →
-          Set.InjOn (fun t : ℝ => Work.Drive.sweepFam r D lam δ₁ δ₂ σ t)
-            (Set.Ico 0 LeanEval.KnotTheory.Quadrisecant.period) ∧
-          (∀ t : ℝ, LeanEval.KnotTheory.Quadrisecant.velocity
-            (fun t : ℝ => Work.Drive.sweepFam r D lam δ₁ δ₂ σ t) t ≠ 0) := by sorry
 
 end Work.Drive
