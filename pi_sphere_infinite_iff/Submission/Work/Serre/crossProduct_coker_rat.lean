@@ -9,6 +9,14 @@ import Submission.Work.Serre.cyclesTorsionOfHomologyTorsion
 import Submission.Work.Serre.homologySubsingletonOfCycleTorsion
 import Submission.Work.ThomBordism.PontryaginThom.Torsion
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The cross product with a generator of the rational homology of `D`
 
@@ -527,7 +535,8 @@ theorem crossTOnCycles_apply (C D : ChainComplex (ModuleCat ℤ) ℕ) (r : ℕ)
       = u ⊗ₜ[ℤ] z :=
     TensorProduct.comm_tmul ℤ ↥(D.cycles (r + 1)) ↥(C.cycles m) z u
   simp only [crossTOnCycles, LinearMap.comp_apply]
-  rw [h1, h2, h3]
+  refine congrArg _ (congrArg _ ?_)
+  erw [LinearMap.comp_apply, LinearMap.comp_apply, h1, h2, h3]
 
 /-- `crossTOnCycles` kills the boundaries: a boundary cycle of `C` is sent to zero. -/
 theorem crossTOnCycles_homBnd (C D : ChainComplex (ModuleCat ℤ) ℕ) (r : ℕ)

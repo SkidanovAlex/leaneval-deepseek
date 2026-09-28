@@ -1,6 +1,14 @@
 import Mathlib
 import Submission.Work.SSS.serreE1Transport
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # Basic API for the fibre transport of a Serre fibration
 
@@ -43,7 +51,7 @@ theorem HZHomeoIso_trans {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y
       TopCat.ofHom (↑e₁ : C(X, Y)) ≫ TopCat.ofHom (↑e₂ : C(Y, Z))
     rfl
   simp only [HZHomeoIso, h1, CategoryTheory.Functor.mapIso_trans]
-  rfl
+  try rfl
 
 theorem HZHomeoIso_symm {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y)
     (j : ℕ) : (HZHomeoIso e j).symm = HZHomeoIso e.symm j := by
@@ -54,7 +62,7 @@ theorem HZHomeoIso_symm {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (
     show TopCat.ofHom (↑(e.symm) : C(Y, X)) = TopCat.ofHom (↑(e.symm) : C(Y, X))
     rfl
   simp only [HZHomeoIso, h1, CategoryTheory.Functor.mapIso_symm]
-  rfl
+  try rfl
 
 /-- The forward map of `HZHomeoIso` is the homology map of the underlying continuous map. -/
 theorem HZHomeoIso_hom {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y)

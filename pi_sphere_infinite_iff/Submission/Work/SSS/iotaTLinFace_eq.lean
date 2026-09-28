@@ -11,6 +11,8 @@ open scoped MonoidalCategory Simplicial
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **The `i`-th face term of `iotaTLin` in terms of the full lifted shuffle chain.**
 

@@ -22,6 +22,8 @@ identity in `R` between the spanning singleton maps `R →ₗ[R] R`, transported
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Limits
 open scoped Simplicial

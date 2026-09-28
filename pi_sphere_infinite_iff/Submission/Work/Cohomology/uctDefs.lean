@@ -9,6 +9,8 @@ proof of the dual universal coefficient theorem `Work.Cohomology.uctDual` needs.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 -- The module structure on a submodule (resp. a quotient by a submodule) of a `ℤ`-module is the one
 -- induced from the ambient module, rather than the one coming from `AddCommGroup.toIntModule`:

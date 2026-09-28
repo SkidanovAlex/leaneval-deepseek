@@ -9,6 +9,8 @@ namespace Work.Cohomology
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 theorem pi0Proj_sgen_of_not_mem (T : TopCat) (c : SSet.π₀ (TopCat.toSSet.obj T))
     (s : (TopCat.toSSet.obj T).obj (Opposite.op (SimplexCategory.mk 0)))

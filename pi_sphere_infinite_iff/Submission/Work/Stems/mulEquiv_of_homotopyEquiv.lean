@@ -19,6 +19,8 @@ homotopic to a constant, so both groups are subsingletons.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped Topology Topology.Homotopy unitInterval
 open ContinuousMap

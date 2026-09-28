@@ -20,6 +20,8 @@ open scoped MonoidalCategory Simplicial Topology
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option synthInstance.maxHeartbeats 800000
 
 /-- **The defining property of the trivialisation `Work.SSS.triv`.**  For every path `γ : b → b'`,

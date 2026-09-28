@@ -16,6 +16,8 @@ projection `C_n(X) ⟶ C_n(X,A)` vanishes.  Together with the chain identity
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial CategoryTheory.Limits
 open scoped Simplicial

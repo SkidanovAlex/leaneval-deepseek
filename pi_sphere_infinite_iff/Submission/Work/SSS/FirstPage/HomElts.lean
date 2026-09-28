@@ -18,6 +18,8 @@ Several of these lemmas are adapted from `Submission/Work/Cohomology/relCapHHom.
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 attribute [-instance] AddCommGroup.toIntModule
 
 open CategoryTheory CategoryTheory.Limits

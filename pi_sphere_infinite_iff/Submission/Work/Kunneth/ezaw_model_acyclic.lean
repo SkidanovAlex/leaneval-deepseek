@@ -20,6 +20,8 @@ tensor product.  In positive degree `P ⊗ Q = 0`, so `z = d (H z)`.
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex
 open scoped MonoidalCategory TensorProduct

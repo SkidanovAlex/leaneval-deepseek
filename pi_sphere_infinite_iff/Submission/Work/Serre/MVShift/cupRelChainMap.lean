@@ -6,6 +6,8 @@ import Submission.Work.Serre.MVShift.relMapLM_mixedRelStar
 namespace Work.Serre.MVShift
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 theorem cupRelChainMap {X₁ X₂ : TopCat} (A₁ : Set X₁) (A₂ : Set X₂) (f : X₁ ⟶ X₂)

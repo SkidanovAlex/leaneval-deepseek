@@ -29,6 +29,8 @@ and `cylMove q` (the push-up homotopy of the cylinder) preserves `U` and `U₁` 
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 set_option maxHeartbeats 1000000
 

@@ -3,6 +3,8 @@ import Submission.Work.Cohomology.SingBridge
 import Submission.Work.Stems.PerSimplex.prismChainDefs
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 2000000
 
 open CategoryTheory Limits AlgebraicTopology Simplicial

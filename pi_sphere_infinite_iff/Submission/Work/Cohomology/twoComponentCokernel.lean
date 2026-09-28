@@ -46,6 +46,8 @@ namespace Work.Cohomology
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-! ## Constancy of `0`-cocycles on path components -/
 

@@ -32,6 +32,8 @@ is proved by the triangle inequality for convex combinations and holds in any no
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial

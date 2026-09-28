@@ -1,5 +1,13 @@
 import Mathlib
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # A cycle whose homology class vanishes is a boundary
 
@@ -29,7 +37,7 @@ lemma pd_shortComplex_exists_toCycles {R : Type} [CommRing R]
     rw [show (CokernelCofork.ofπ S.homologyπ S.toCycles_comp_homologyπ).ι.app
         WalkingParallelPair.one = S.homologyπ from rfl]
     simp only [ConcreteCategory.comp_apply]
-    rw [h, map_zero]
+    erw [h, map_zero]
   have h3 : ((ModuleCat.Hom.hom S.toCycles).range.mkQ) z = 0 := h2
   rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h3
   obtain ⟨y, hy⟩ := LinearMap.mem_range.mp h3

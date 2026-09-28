@@ -5,6 +5,8 @@ import Submission.Work.RatHurewicz.Bridge.H_faces
 import Submission.Work.RatHurewicz.Bridge.SimLemmas
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The comparison `σ ↦ σ ∘ H n` is a chain map modulo degenerate cubes

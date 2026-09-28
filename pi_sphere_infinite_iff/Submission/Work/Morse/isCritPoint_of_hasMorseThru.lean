@@ -64,6 +64,8 @@ theorem mfderiv_eq_zero_of_eventuallyEq_quadraticForm {n : ℕ} {M : Type*} [Top
         = mfderiv (𝓡 n) 𝓘(ℝ,ℝ) (fun y : EuclideanSpace ℝ (Fin n) => f x + A y y) 0 :=
       Filter.EventuallyEq.mfderiv_eq (𝕜 := ℝ) (I := 𝓡 n) (I' := 𝓘(ℝ,ℝ)) hev
     rw [hkey, mfderiv_eq_fderiv, fderiv_const_add, hquad.fderiv]
+    -- Lean v4.35 / Mathlib 5e0c4e5: `mfderiv_eq_fderiv` now leaves explicit `fromTangentSpace` casts
+    all_goals first | rfl | simp
   -- `f` is differentiable at `x`, by reading differentiability in the chart `e`
   have hfmd : MDifferentiableAt (𝓡 n) 𝓘(ℝ,ℝ) f x := by
     rw [← mdifferentiableWithinAt_univ]

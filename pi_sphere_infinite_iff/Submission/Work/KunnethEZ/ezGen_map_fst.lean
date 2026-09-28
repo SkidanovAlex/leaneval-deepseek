@@ -4,6 +4,8 @@ import Submission.Work.SSS.serreE1Defs
 import Submission.Work.Cohomology.Crux33.EzGen
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.KunnethEZ
 

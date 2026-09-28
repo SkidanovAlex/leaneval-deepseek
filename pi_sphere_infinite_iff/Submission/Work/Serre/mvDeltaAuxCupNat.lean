@@ -21,6 +21,8 @@ restriction of `t` to the overlap (through `U` or through `V`, from `mvFU_comp_m
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 set_option linter.unusedVariables false
 set_option linter.unusedSimpArgs false

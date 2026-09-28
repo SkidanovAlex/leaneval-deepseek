@@ -24,6 +24,8 @@ namespace Work.Stems.Engine
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **The relative coefficient transfer.**  Vanishing of the integral relative homology in a degree
 implies vanishing of the rational one. -/

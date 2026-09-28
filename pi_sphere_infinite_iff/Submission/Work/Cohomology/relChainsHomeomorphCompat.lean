@@ -15,6 +15,8 @@ If `e : X ≃ₜ Y` carries the subset `A ⊆ X` onto `B ⊆ Y`, then it induces
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

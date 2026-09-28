@@ -239,6 +239,13 @@ instance (k : ℤ) : ChartedSpace (ModelProd (EuclideanSpace ℝ (Fin 4)) (Eucli
     (Mk k) :=
   Submission.Glue.Data.instChartedSpace (clutchData k)
 
+/-- The same charted structure, stated over the plain product model `ℝ⁴ × ℝ³` (definitionally the
+`ModelProd` one above): on Lean v4.35 / Mathlib `5e0c4e5` instance search no longer sees through
+`ModelProd` here. -/
+instance instChartedSpaceMkProd (k : ℤ) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 3)) (Mk k) :=
+  Submission.Glue.Data.instChartedSpace (clutchData k)
+
 instance (k : ℤ) : IsManifold ((𝓡 4).prod (𝓡 3)) ∞ (Mk k) :=
   Work.Glue.glued_isManifold (clutchData k)
 

@@ -3,6 +3,8 @@ import Submission.Work.SSS.pbTransportDefs
 import Submission.Work.SSS.transportTransAux
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The fibre transport along a path, as the source inclusion followed by the post factor

@@ -26,6 +26,8 @@ The three squares are `Fsquare`, `Gsquare` (naturality of the cup, from
 
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false
 

@@ -47,6 +47,8 @@ the present file (they use the definitions below), so that importing them back w
 
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

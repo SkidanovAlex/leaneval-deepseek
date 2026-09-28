@@ -3,6 +3,8 @@ import Submission.Work.Bordism.interForm_pullback
 import Submission.Work.SignatureBordism.Rationalisation
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.ThomBordism
 

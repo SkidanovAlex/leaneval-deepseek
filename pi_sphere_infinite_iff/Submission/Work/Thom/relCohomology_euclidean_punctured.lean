@@ -33,6 +33,8 @@ The strategy is the long exact sequence of the pair `(X, A)` with `X = ℝⁿ` a
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 noncomputable section

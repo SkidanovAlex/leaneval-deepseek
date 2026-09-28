@@ -21,6 +21,8 @@ of `Hₙ`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 attribute [local instance 5000] Submodule.module
 attribute [local instance 5000] Submodule.Quotient.module

@@ -19,6 +19,8 @@ Together with the pointwise identity `awKey` (`awU = awV`) these give the chain-
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 3200000
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex

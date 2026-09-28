@@ -19,6 +19,8 @@ is short exact (`tripleShortR_shortExact`); here the first term is the "subspace
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 open CategoryTheory CategoryTheory.Limits

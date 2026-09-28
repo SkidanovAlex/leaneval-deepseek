@@ -43,6 +43,8 @@ open CategoryTheory CategoryTheory.Limits
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **Cancellation of a bijective factor on the left.** -/
 theorem bijective_of_comp_left {α β γ : Type*} {g : β → γ} {f : α → β}

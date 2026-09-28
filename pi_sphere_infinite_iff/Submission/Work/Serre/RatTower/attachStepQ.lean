@@ -14,6 +14,8 @@ import Submission.Work.RatHurewicz.attachIncl_isOpenMap_range
 import Submission.Work.RatHurewicz.AttachRange.AttachInclInj
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 set_option linter.style.haveILetI false
 set_option linter.unusedVariables false

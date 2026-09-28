@@ -14,6 +14,8 @@ the same statements and proofs over an arbitrary commutative ring `R`.  This is 
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 2000000
 set_option linter.style.haveILetI false
 

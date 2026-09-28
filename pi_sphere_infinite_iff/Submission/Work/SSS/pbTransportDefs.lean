@@ -13,6 +13,8 @@ inclusions of the pullback of a Serre fibration along a path, their homology iso
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.SSS
 

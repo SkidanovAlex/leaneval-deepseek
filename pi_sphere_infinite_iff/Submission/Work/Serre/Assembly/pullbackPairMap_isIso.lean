@@ -25,6 +25,8 @@ noncomputable section
 
 set_option maxHeartbeats 2000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-! ## The range form of the five lemma for a map of pairs -/
 

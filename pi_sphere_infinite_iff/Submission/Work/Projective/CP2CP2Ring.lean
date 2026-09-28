@@ -37,6 +37,8 @@ product is assumed, which is why `int_a2b2` and `int_b2a2` are both recorded.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 namespace Work.Projective

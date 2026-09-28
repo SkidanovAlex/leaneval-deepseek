@@ -2,6 +2,8 @@ import Mathlib
 import Submission.Work.Stems.HurewiczSphere
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # Homology bookkeeping for the simplicial/cubical bridge

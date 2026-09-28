@@ -1,6 +1,14 @@
 import Mathlib
 import Submission.Work.Kunneth.Chapter
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The Koszul differential of the tensor product, in components
 
@@ -103,7 +111,7 @@ theorem tpD_tpLof_snd (C K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (rs : t
         = 0 := by
       rw [LinearMap.comp_apply]
       exact lof_apply_eq_zero (M := fun rs => tpSummand C K rs.1.1 rs.1.2) hneA _
-    rw [hA, hBkey, zero_add]
+    erw [hA, hBkey, zero_add]
   · exfalso; omega
   · rw [DirectSum.add_apply, smul_lmap_apply, LinearMap.zero_apply,
       DFinsupp.zero_apply, zero_add]
@@ -137,7 +145,7 @@ theorem tpD_tpLof_fst (C K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (rs : t
             (ModuleCat.Hom.hom (K.d (rs.1.2) (rs.1.2 - 1))))) z)) rs = 0 := by
       rw [zsmul_ds_apply, LinearMap.comp_apply,
         lof_apply_eq_zero (M := fun rs => tpSummand C K rs.1.1 rs.1.2) hne, zsmul_zero]
-    rw [hA, hB, add_zero]
+    erw [hA, hB, add_zero]
   · rw [DirectSum.add_apply, LinearMap.comp_apply, LinearMap.zero_apply,
       DFinsupp.zero_apply, add_zero]
     exact DirectSum.lof_apply ℤ (ι := tpIdx n) (M := fun rs => tpSummand C K rs.1.1 rs.1.2) rs
@@ -188,7 +196,7 @@ theorem tpD_tpLof_eq_zero (C K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (rs
           omega
       rw [zsmul_ds_apply, LinearMap.comp_apply,
         lof_apply_eq_zero (M := fun rs => tpSummand C K rs.1.1 rs.1.2) hneB, zsmul_zero]
-    rw [hA, hB, add_zero]
+    erw [hA, hB, add_zero]
   · rw [DirectSum.add_apply, LinearMap.comp_apply, LinearMap.zero_apply,
       DFinsupp.zero_apply, add_zero]
     have hA : (((tpLof C K n (⟨(pq.1.1 - 1, pq.1.2), by omega⟩ : tpIdx n)) ∘ₗ

@@ -30,6 +30,8 @@ This is the degree-`0` companion of `Work.RatHurewicz.Cofibre.isIso_beta_of_cont
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory CategoryTheory.Limits

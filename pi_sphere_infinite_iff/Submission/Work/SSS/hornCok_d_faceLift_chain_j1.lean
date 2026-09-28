@@ -7,6 +7,8 @@ namespace Work.SSS
 open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory
 open scoped MonoidalCategory Simplicial Topology
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 /-- **The `hpeel` input of `Work.SSS.pieceIso_peel` for an arbitrary CHAIN.**

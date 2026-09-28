@@ -25,6 +25,8 @@ Since a zero object is characterised up to isomorphism, `Hₙ(X) = 0` for `n > 0
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory

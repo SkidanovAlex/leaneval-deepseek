@@ -6,6 +6,8 @@ import Submission.Work.Cohomology.CupRing
 import Submission.Work.Cohomology.RelCupTransfer
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Thom
 

@@ -16,6 +16,8 @@ second-order terms in the cycle condition becomes a direct application of `phiSu
 set_option autoImplicit false
 set_option maxHeartbeats 3200000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex AlgebraicTopology
 open scoped MonoidalCategory TensorProduct Simplicial

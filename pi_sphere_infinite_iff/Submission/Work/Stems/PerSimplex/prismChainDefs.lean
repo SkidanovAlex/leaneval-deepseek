@@ -2,6 +2,8 @@ import Mathlib
 import Submission.Work.Stems.hurewiczMapN_surjective
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The prism chain of a homotopy of simplices

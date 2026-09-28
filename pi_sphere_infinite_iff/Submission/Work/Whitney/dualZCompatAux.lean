@@ -20,6 +20,8 @@ restated against `dualZCompat`, so that the development can be carried out on th
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 8000000
 
 open CategoryTheory AlgebraicTopology

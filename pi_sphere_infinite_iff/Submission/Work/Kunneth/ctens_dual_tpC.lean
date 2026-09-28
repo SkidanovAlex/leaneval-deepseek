@@ -29,6 +29,8 @@ noncomputable section
 attribute [-instance] AddCommGroup.toIntModule
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 theorem ctens_dual_tpC (C : ChainComplex (ModuleCat ℤ) ℕ) (M : ℕ → ModuleCat ℤ)
     (hM : ∀ q, Module.Free ℤ ↥(M q)) (hMf : ∀ q, Module.Finite ℤ ↥(M q)) :

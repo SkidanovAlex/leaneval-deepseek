@@ -2,6 +2,13 @@ import Mathlib
 import Submission.Work.SSS.ExpTens
 import Submission.Work.StemsB.sphRatHomology
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 (see the port commit message)
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+set_option synthInstance.maxHeartbeats 400000
+
+
 namespace Work.SSS
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex
@@ -27,7 +34,7 @@ lemma normCoeff_map_cofan_inj {C : Type*} [Category* C] [Preadditive C]
   show (sc.map F).ι (Opposite.unop A.fst).len ≫ F.map (Xc.map A.e.op) =
     F.map (sc.ι (Opposite.unop A.fst).len ≫ Xc.map A.e.op)
   rw [F.map_comp, SimplicialObject.Splitting.map_ι]
-  rfl
+  try rfl
 
 open SimplicialObject.Splitting in
 /-- The projections of the mapped splitting are the `F`-images of the original ones. -/

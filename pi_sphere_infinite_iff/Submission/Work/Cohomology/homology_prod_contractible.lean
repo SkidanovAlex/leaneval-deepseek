@@ -3,6 +3,8 @@ import Submission.Work.Cohomology.cohomology_prod_contractible
 import Submission.Work.Cohomology.homologyContractible
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology

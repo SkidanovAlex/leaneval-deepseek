@@ -4,6 +4,8 @@ import Submission.Work.Thom.Cohomology
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The Thom pair of a real vector bundle, and the Euler class

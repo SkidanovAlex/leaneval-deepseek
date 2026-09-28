@@ -31,6 +31,8 @@ satisfying `LeibnizRule`; the relative statement is then the instantiation `K = 
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 

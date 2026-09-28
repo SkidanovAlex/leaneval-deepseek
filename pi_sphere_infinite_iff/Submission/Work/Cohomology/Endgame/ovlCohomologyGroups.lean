@@ -7,6 +7,8 @@ import Submission.Work.Cohomology.uctDual_evaluation
 import Submission.Work.Cohomology.Crux.ovlPairModelDefs
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 set_option linter.style.haveILetI false
 

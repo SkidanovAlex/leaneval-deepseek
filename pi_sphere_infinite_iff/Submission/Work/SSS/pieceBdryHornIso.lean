@@ -8,6 +8,14 @@ import Submission.Work.SSS.hornSimp_preimage_delta_last
 import Submission.Work.SSS.range_eq_preimage_range_of_isPullback
 import Submission.Work.SSS.image_preimage_eq_inf_range
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 800000
 
@@ -62,7 +70,7 @@ theorem range_lastFaceMap {X Y : SSet.{0}} (f : X ⟶ Y) (t : ℕ)
     SSet.Subcomplex.range (lastFaceMap f t σ) = pieceLastFace f σ := by
   rw [range_eq_preimage_range_of_isPullback (lastFaceMap_isPullback f t σ), pieceLastFace,
     lastFaceSimp, ← SSet.stdSimplex.range_δ]
-  rfl
+  try rfl
 
 /-- The preimage of the horn under the last-face pasting map is the boundary of the last face. -/
 theorem preimage_lastFaceMap {X Y : SSet.{0}} (f : X ⟶ Y) (t : ℕ)

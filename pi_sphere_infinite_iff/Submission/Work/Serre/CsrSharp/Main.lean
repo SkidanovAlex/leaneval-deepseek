@@ -29,6 +29,8 @@ Everything is transported by `Work.Serre.CsrSharp.Tools.isIso_of_sq_left/right` 
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped Topology unitInterval
 open CategoryTheory CategoryTheory.Limits

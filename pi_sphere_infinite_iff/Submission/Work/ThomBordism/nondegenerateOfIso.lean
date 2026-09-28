@@ -24,6 +24,8 @@ pieces along the homeomorphism `W.bdry : ∂W ≃ₜ Σ i, (F i).pt`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 open scoped TensorProduct

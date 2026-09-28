@@ -22,6 +22,8 @@ The pinned spellings `prObj`, `prFst`, `prSnd`, `prPullFst`, `prPullSnd` are loc
 set_option maxRecDepth 100000
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits MonoidalCategory
 open scoped Simplicial

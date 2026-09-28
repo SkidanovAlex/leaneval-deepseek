@@ -26,6 +26,8 @@ is a monomorphism, so the short complex `0 ⟶ C_*(A) ⟶ C_*(X) ⟶ cokernel �
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 

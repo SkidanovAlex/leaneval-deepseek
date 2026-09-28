@@ -8,6 +8,8 @@ namespace Work.Thom
 open Work.TangentClasses CategoryTheory CategoryTheory.Limits
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 variable {B : Type} [TopologicalSpace B] {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]

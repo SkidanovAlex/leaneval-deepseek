@@ -6,6 +6,8 @@ import Submission.Work.Thom.SSetChainHomotopyNaturality
 import Submission.Work.Thom.ToSSetHomotopyRestriction
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 8000000
 open scoped unitInterval
 open CategoryTheory MonoidalCategory Simplicial SimplicialObject Opposite

@@ -37,6 +37,8 @@ The main statement is `free_and_vanishing_ball_compl`.
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false
 

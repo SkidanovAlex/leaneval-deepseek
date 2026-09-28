@@ -32,6 +32,8 @@ the numbers themselves: `PTFamilyRep.pair1_eq_zero`, `PTFamilyRep.pair2_eq_zero`
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 namespace Work.ThomBordism.PontryaginThom

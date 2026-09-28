@@ -12,6 +12,8 @@ chain-level consequences: `chainOf (concat p q h) - chainOf p - chainOf q` is a 
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 attribute [local implicit_reducible] AlgebraicTopology.singularChainComplexFunctor
 

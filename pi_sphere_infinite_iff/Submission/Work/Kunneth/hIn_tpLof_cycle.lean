@@ -13,6 +13,8 @@ generator `iCycles u ⊗ m` (`u` a cycle of `C`, `m ∈ M q`) is a cycle: since 
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1000000
 set_option linter.unusedSimpArgs false
 

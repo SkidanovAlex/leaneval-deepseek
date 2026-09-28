@@ -28,6 +28,8 @@ coproduct is an initial object and the target of the transpose is a subsingleton
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits

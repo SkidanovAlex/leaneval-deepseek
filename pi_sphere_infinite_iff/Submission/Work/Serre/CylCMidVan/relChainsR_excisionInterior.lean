@@ -29,6 +29,8 @@ Accordingly this file reproduces the excision argument with the weaker hypothesi
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.style.haveILetI false
 set_option linter.unusedVariables false

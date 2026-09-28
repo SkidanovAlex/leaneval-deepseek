@@ -19,6 +19,8 @@ bordism `W₁` from `M` to `N` and a bordism `W₂` from `N` to `P` along the co
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 open scoped Simplicial

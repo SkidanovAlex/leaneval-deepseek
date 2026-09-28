@@ -10,6 +10,8 @@ open scoped MonoidalCategory Simplicial Topology
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **The vertex underlying a simplex, read off at degree zero.**
 

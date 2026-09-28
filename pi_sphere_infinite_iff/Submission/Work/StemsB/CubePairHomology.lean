@@ -24,6 +24,8 @@ the vanishing of the middle term, through `ShortComplex.ShortExact.exactAt_X₃`
 
 set_option maxHeartbeats 2000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedSectionVars false
 set_option linter.style.haveILetI false
 

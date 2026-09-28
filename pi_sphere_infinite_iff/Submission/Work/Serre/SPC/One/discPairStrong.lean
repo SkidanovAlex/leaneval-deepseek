@@ -22,6 +22,8 @@ affine homeomorphism `I¹ ≅ D¹`, `x ↦ 2 x₀ - 1`, exactly as
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 open scoped Topology unitInterval

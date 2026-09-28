@@ -34,6 +34,8 @@ open CategoryTheory CategoryTheory.Limits Classical
 open scoped Topology Topology.Homotopy unitInterval
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.StemsB
 

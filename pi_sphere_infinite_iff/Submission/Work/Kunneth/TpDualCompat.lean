@@ -24,6 +24,8 @@ noncomputable section
 attribute [-instance] AddCommGroup.toIntModule
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 variable (C : ChainComplex (ModuleCat ℤ) ℕ) (M : ℕ → ModuleCat ℤ)
 variable [∀ q, Module.Free ℤ ↥(M q)] [∀ q, Module.Finite ℤ ↥(M q)]

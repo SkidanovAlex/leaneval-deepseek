@@ -5,6 +5,8 @@ import Submission.Work.Thom.Basic
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The closed disc bundle `D(E)` is a deformation retract of the total space `E`

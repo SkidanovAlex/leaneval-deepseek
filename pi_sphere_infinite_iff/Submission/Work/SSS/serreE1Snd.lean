@@ -23,6 +23,8 @@ compared with the term for the nondegenerate face `d_iσ` of `Work.SSS.nIndex`.
 set_option autoImplicit false
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.SSS
 

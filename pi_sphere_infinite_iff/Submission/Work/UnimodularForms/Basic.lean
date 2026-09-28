@@ -37,6 +37,8 @@ matrix model (`gramBilin`, `ℍ`, `⟨1⟩`, `E₈`) in `Work.UnimodularForms.Ma
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedSimpArgs false
 
 -- Make the product module structure resolve to `Prod.instModule` (rather than

@@ -24,6 +24,8 @@ because the dual of a short exact sequence of modules is exact in the middle
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
 

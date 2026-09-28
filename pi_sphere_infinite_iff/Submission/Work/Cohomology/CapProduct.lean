@@ -33,6 +33,8 @@ hence induces `H_{n+m}(X) ⟶ H_m(X)`.  (Specialised check: for `n = 0` this is
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial

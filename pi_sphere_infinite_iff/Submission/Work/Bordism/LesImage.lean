@@ -34,6 +34,8 @@ Both statements are the `range = ker` form of the exactness of the long exact se
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 

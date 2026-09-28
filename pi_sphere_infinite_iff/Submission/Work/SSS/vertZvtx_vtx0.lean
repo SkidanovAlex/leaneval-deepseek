@@ -7,6 +7,8 @@ open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory
 open scoped MonoidalCategory Simplicial Topology
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **The vertex restriction of the prism map at the vertex `0` of `Δ[1]` is the source
 inclusion of the fibre.**

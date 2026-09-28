@@ -26,6 +26,8 @@ into its double is an isomorphism on local homology at an *interior* point (see
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

@@ -1,6 +1,14 @@
 import Mathlib
 import Submission.Work.Kunneth.TensorDefs
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The Koszul differential of the tensor product vanishes on a summand
 
@@ -61,7 +69,7 @@ theorem tpDpq_comp (C D : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (pq : Work
   apply TensorProduct.ext'
   intro x y
   simp only [LinearMap.comp_apply, LinearMap.zero_apply]
-  rw [tpDpq_tmul]
+  erw [tpDpq_tmul]
   simp only [Subtype.coe_mk]
   rw [LinearMap.map_add]
   rw [apply_dite (tpD C D n) (1 ≤ p), apply_dite (tpD C D n) (1 ≤ q)]
@@ -75,7 +83,7 @@ theorem tpDpq_comp (C D : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (pq : Work
     simp only [LinearMap.add_apply]
     split_ifs <;> try simp only [LinearMap.comp_apply, LinearMap.zero_apply]
     all_goals first | (exfalso; omega) | skip
-    all_goals repeat (first | rw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
+    all_goals repeat (first | erw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
     all_goals repeat (first | rw [zsmul_add] | rw [zsmul_zero] | rw [zero_add] | rw [add_zero])
     all_goals try rw [← add_zsmul]
     all_goals try rw [neg_one_pow_pred_add p hp]
@@ -87,7 +95,7 @@ theorem tpDpq_comp (C D : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (pq : Work
     simp only [LinearMap.add_apply]
     split_ifs <;> try simp only [LinearMap.comp_apply, LinearMap.zero_apply]
     all_goals first | (exfalso; omega) | skip
-    all_goals repeat (first | rw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
+    all_goals repeat (first | erw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
     all_goals repeat (first | rw [zsmul_add] | rw [zsmul_zero] | rw [zero_add] | rw [add_zero])
     all_goals try rw [← add_zsmul]
     all_goals try rw [neg_one_pow_pred_add p hp]
@@ -99,7 +107,7 @@ theorem tpDpq_comp (C D : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) (pq : Work
     simp only [LinearMap.add_apply]
     split_ifs <;> try simp only [LinearMap.comp_apply, LinearMap.zero_apply]
     all_goals first | (exfalso; omega) | skip
-    all_goals repeat (first | rw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
+    all_goals repeat (first | erw [TensorProduct.map_tmul] | rw [smul_lmap_apply] | rw [LinearMap.comp_apply] | rw [LinearMap.id_apply] | rw [LinearMap.zero_apply] | rw [d_d_apply] | rw [TensorProduct.zero_tmul] | rw [TensorProduct.tmul_zero] | rw [map_zero])
     all_goals repeat (first | rw [zsmul_add] | rw [zsmul_zero] | rw [zero_add] | rw [add_zero])
     all_goals try rw [← add_zsmul]
     all_goals try rw [neg_one_pow_pred_add p hp]

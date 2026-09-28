@@ -15,6 +15,8 @@ inside `C(T_σ)`: the generator of `z ∈ Λ` is in the image of `C(Λ) ⟶ C(T_
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 set_option linter.style.haveILetI false
 

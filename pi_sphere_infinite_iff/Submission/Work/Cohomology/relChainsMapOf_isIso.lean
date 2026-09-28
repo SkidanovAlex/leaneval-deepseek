@@ -2,6 +2,8 @@ import Mathlib
 import Submission.Work.Cohomology.localHomology
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 

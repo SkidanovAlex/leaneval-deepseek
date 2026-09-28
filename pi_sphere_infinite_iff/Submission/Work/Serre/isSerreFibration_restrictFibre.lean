@@ -22,6 +22,8 @@ namespace Work.Serre
 
 set_option maxHeartbeats 1000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 theorem isSerreFibration_restrictFibre {X : Type} [TopologicalSpace X] {Γ : Type}
     [TopologicalSpace Γ] (q : C(X, Γ)) (hq : Work.StemsB.IsSerreFibration q) (S : Set Γ) :

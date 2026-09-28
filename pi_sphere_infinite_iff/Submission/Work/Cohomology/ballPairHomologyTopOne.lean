@@ -27,6 +27,8 @@ unit ball replaced by the open ball `B(y,r)` and the unit sphere by the two poin
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

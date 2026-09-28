@@ -10,6 +10,8 @@ open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory
 open scoped MonoidalCategory Simplicial
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 noncomputable section

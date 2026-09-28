@@ -20,6 +20,8 @@ Note the two dictionary entries needed for the A+B sequence with `A = pdRelSub W
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option linter.unusedSimpArgs false
 

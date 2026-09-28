@@ -26,6 +26,8 @@ open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 namespace Work.Cohomology

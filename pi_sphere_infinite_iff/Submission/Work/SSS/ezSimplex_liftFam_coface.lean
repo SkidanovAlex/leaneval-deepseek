@@ -10,6 +10,8 @@ open scoped MonoidalCategory Simplicial
 -- structure of `SSet`, and the default transparency of the unifier is not enough to see that
 -- `CosimplicialObject SSet` is `SimplexCategory ⥤ SSet` while matching the rewriting patterns.
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **The lift of the pullback is natural under the cofaces `δ i` with `i ≠ 0`.**
 

@@ -7,6 +7,8 @@ import Submission.Work.Cohomology.PairSequence
 
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Projective
 

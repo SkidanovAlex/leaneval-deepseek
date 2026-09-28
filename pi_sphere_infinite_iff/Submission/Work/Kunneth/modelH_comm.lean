@@ -1,6 +1,14 @@
 import Mathlib
 import Submission.Work.Kunneth.ModelContr
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The contraction identity for the Koszul tensor product
 
@@ -61,8 +69,8 @@ lemma modelH_comm_gen (C D : ChainComplex (ModuleCat ℤ) ℕ) (cC : ModelContr 
       split_ifs with h1 h2 h3 h4 h5 h6 <;> try (exfalso; omega)
       repeat (first | rw [map_add] | rw [map_zsmul] | rw [modelH_tmul] | rw [zsmul_add])
       simp only [tpIdxL, tpIdxR]
-      rw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
-      repeat (first | rw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
+      erw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
+      repeat (first | erw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
       by_cases hA : rs.1 = (0, Q+1)
       · have hrsA : rs = ⟨(0,Q+1), hpq⟩ := Subtype.ext hA
         rw [hrsA]
@@ -101,8 +109,8 @@ lemma modelH_comm_gen (C D : ChainComplex (ModuleCat ℤ) ℕ) (cC : ModelContr 
       split_ifs with h1 h2 h3 h4 h5 h6 <;> try (exfalso; omega)
       repeat (first | rw [map_add] | rw [map_zsmul] | rw [modelH_tmul] | rw [zsmul_add])
       simp only [tpIdxL, tpIdxR]
-      rw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
-      repeat (first | rw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
+      erw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
+      repeat (first | erw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
       by_cases hA : rs.1 = (P+1, 0)
       · have hrsA : rs = ⟨(P+1,0), hpq⟩ := Subtype.ext hA
         rw [hrsA]
@@ -143,8 +151,8 @@ lemma modelH_comm_gen (C D : ChainComplex (ModuleCat ℤ) ℕ) (cC : ModelContr 
       rw [dif_pos (show (1:ℕ) ≤ P+1 by omega), dif_pos (show (1:ℕ) ≤ Q+1 by omega)]
       repeat (first | rw [map_add] | rw [map_zsmul] | rw [modelH_tmul] | rw [zsmul_add])
       simp only [tpIdxL, tpIdxR]
-      rw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
-      repeat (first | rw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
+      erw [DirectSum.component, DFinsupp.lapply_apply, DirectSum.lof_eq_of, DirectSum.of_apply]
+      repeat (first | erw [DFinsupp.lapply_apply] | rw [DirectSum.lof_eq_of] | rw [DirectSum.of_apply])
       by_cases hA : rs.1 = (P+1,Q+1)
       · have hrsA : rs = ⟨(P+1,Q+1), hpq⟩ := Subtype.ext hA
         rw [hrsA]
@@ -208,8 +216,10 @@ theorem modelH_comm (C D : ChainComplex (ModuleCat ℤ) ℕ) (cC : ModelContr C)
     apply TensorProduct.ext'
     intro x y
     have h := modelH_comm_gen C D cC cD m pq x y
-    simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply,
-      LinearMap.id_apply] using h
+    first
+      | exact h
+      | simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply,
+          LinearMap.id_apply] using h
   have hz := congrArg (fun (f : tpX C D (m+1) →ₗ[ℤ] tpX C D (m+1)) => f z) hlin
   simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply,
     LinearMap.id_apply] using hz

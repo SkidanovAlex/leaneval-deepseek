@@ -25,6 +25,8 @@ open CategoryTheory CategoryTheory.Limits
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- Scalar multiplication commutes with a degree transport (local copy of
 `Work.StemsB.Rat.relCoh_cast_smulQ` for the `RelCoh` abbreviation). -/

@@ -3,6 +3,14 @@ import Submission.Work.Kunneth.kunneth_cohomology_cpn
 import Submission.Work.Kunneth.kunneth_h4_cp2cp2
 import Submission.Work.Projective.cpn_cohomology
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # `H^n(X × ℂP^m)` is free over `H^*(X)` on `1, ζ, …, ζ^m`
 

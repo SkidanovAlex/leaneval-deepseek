@@ -24,6 +24,8 @@ Everything here is sorry-free; the heavy lifting is in the companion files.
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

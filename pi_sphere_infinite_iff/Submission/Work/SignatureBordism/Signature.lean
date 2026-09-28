@@ -36,6 +36,8 @@ def signature (Q : QuadraticForm 𝕜 V) : ℤ := (sigPos Q : ℤ) - (sigNeg Q :
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.SignatureBordism
 

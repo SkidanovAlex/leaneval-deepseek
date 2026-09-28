@@ -5,6 +5,8 @@ import Submission.Work.StemsB.SphLoopTools
 import Submission.Work.RatHurewicz.Bridge.chainBoundary
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory CategoryTheory.Limits AlgebraicTopology Simplicial
 open scoped Simplicial

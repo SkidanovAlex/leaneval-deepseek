@@ -3,6 +3,8 @@ import Submission.Work.Thom.Coh_zero_cover_injective
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option linter.dupNamespace false
 

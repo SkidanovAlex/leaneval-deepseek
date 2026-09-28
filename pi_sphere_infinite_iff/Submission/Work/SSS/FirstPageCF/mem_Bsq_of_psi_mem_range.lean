@@ -7,6 +7,8 @@ import Submission.Work.SSS.FirstPageCF.mem_Bsq_of_sub_mem_range
 import Submission.Work.SSS.FirstPageCF.sub_mem_range_of_jF_homologypi
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.SSS.FirstPageCF
 

@@ -31,6 +31,8 @@ gives a bijection `sIdxSum` on `n`-simplices, hence an isomorphism
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedSectionVars false
 set_option maxHeartbeats 1600000
 

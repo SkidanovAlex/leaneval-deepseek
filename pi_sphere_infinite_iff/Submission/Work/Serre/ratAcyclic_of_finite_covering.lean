@@ -3,6 +3,14 @@ import Submission.Work.Cohomology.SingBridge
 import Submission.Work.Serre.Models
 import Submission.Work.Serre.serreRangeEMVanAll
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # A finite covering of a rationally acyclic space is rationally acyclic
 
@@ -294,7 +302,7 @@ theorem homologyMap_smul_id (c : ℚ) (K : ChainComplex (ModuleCat ℚ) ℕ) (n 
     HomologicalComplex.homologyMap (c • 𝟙 K) n = c • 𝟙 (K.homology n) := by
   rw [← HomologicalComplex.homologyFunctor_map (ModuleCat ℚ) (ComplexShape.down ℕ) n (c • 𝟙 K),
     Functor.map_smul, HomologicalComplex.homologyFunctor_map, HomologicalComplex.homologyMap_id]
-  rfl
+  try rfl
 
 noncomputable def transferChain :
     Work.Serre.ratChains (TopCat.of X) ⟶ Work.Serre.ratChains (TopCat.of E) :=

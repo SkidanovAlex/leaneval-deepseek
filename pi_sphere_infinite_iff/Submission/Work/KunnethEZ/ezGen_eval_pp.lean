@@ -37,6 +37,8 @@ This is the general-`p` form of the `(3,3)` statement `Work.Cohomology.Kunneth.e
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits MonoidalCategory
 open scoped Simplicial

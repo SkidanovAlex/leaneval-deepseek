@@ -7,6 +7,8 @@ import Submission.Work.Sph3Disc.pairDelta_mixedCup_general
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 set_option maxHeartbeats 1600000
 

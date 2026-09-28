@@ -28,6 +28,8 @@ compatible with the cycle-level pairing `relCapZ`.  The two descent steps are:
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 2000000
 

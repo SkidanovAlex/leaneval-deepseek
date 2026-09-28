@@ -40,6 +40,8 @@ and then the long exact (co)homology sequence of the pair.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 set_option maxHeartbeats 1600000
 

@@ -6,6 +6,8 @@ import Submission.Work.Cohomology.free_of_chain_retractions
 import Submission.Work.Cohomology.uctDual_evaluation
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 attribute [local instance 5000] Submodule.module

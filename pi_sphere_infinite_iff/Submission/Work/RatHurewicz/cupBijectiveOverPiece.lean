@@ -18,6 +18,8 @@ noncomputable section
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The local cup isomorphism over a weakly contractible piece of the base

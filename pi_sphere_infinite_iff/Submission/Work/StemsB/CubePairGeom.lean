@@ -34,6 +34,8 @@ intersection is `{1/4 < last < 3/4}`.  The key geometric facts established here 
 
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedSectionVars false
 
 open CategoryTheory CategoryTheory.Limits

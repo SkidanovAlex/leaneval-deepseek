@@ -27,6 +27,8 @@ whose proof cancels the epimorphism `cokernel.π` and uses the universal propert
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 2000000
 
 open CategoryTheory CategoryTheory.Limits AlgebraicTopology

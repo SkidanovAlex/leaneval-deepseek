@@ -3,6 +3,14 @@ import Submission.Work.Kunneth.TensorDefs
 import Submission.Work.Kunneth.Basic
 import Submission.Work.Cohomology.DualComplex
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The "cohomological" tensor product of a cochain complex with a family of modules
 
@@ -80,8 +88,9 @@ theorem ctensD_lof_tmul (A : CochainComplex (ModuleCat ℤ) ℕ) (T : ℕ → Mo
     ctensD A T n (ctensLof A T n pq (x ⊗ₜ[ℤ] t))
       = ctensLof A T (n + 1) ⟨(pq.1.1 + 1, pq.1.2), by omega⟩
           (((A.d pq.1.1 (pq.1.1 + 1)).hom x) ⊗ₜ[ℤ] t) := by
-  rw [ctensD, DirectSum.toModule_lof, ctensDpq, LinearMap.comp_apply, TensorProduct.map_tmul,
-    LinearMap.id_apply]
+  rw [ctensD, DirectSum.toModule_lof, ctensDpq, LinearMap.comp_apply]
+  erw [TensorProduct.map_tmul]
+  rw [LinearMap.id_apply]
 
 /-- The differential of `ctens` squares to zero. -/
 theorem ctensD_comp_ctensD (A : CochainComplex (ModuleCat ℤ) ℕ) (T : ℕ → ModuleCat ℤ) (n : ℕ) :
@@ -101,8 +110,9 @@ theorem ctensD_comp_ctensD (A : CochainComplex (ModuleCat ℤ) ℕ) (T : ℕ →
   induction w using TensorProduct.induction_on with
   | zero => simp
   | tmul a t =>
-      rw [LinearMap.comp_apply, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply,
-        ctensD_lof_tmul]
+      rw [LinearMap.comp_apply, LinearMap.comp_apply]
+      erw [TensorProduct.map_tmul]
+      rw [LinearMap.id_apply, ctensD_lof_tmul]
       have hd : (A.d (pq.1.1 + 1) (pq.1.1 + 1 + 1)).hom ((A.d pq.1.1 (pq.1.1 + 1)).hom a) = 0 := by
         have h2 := congrArg ModuleCat.Hom.hom
           (HomologicalComplex.d_comp_d A pq.1.1 (pq.1.1 + 1) (pq.1.1 + 1 + 1))

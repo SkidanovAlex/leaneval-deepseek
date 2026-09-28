@@ -5,6 +5,8 @@ import Submission.Work.Cohomology.SmallChainsIsoAux
 namespace Work.Cohomology
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial

@@ -4,6 +4,8 @@ import Submission.Work.Thom.transgressionNaturalDefs
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial CategoryTheory.Limits
 open scoped Simplicial

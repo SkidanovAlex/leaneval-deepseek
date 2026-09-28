@@ -5,6 +5,14 @@ import Submission.Work.Serre.serreE0Range
 import Submission.Work.Serre.Csr.Base
 import Submission.Work.RatHurewicz.Cofibre.isIso_beta_of_contractible_subspace
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 namespace Work.Serre.DiscPair
 
 open CategoryTheory CategoryTheory.Limits
@@ -41,6 +49,7 @@ isomorphism `β_k : H_k(X;ℤ) ≅ H_k(X,{b};ℤ)` because `{b}` is contractible
 This is the rational-coefficient counterpart of `Work.Serre.DiscPair.isZero_relChainsR_point_zero`;
 it is stated here (rather than imported from `Work.Serre.DiscPair.isZero_conePairRelCoh`, whose
 import graph is currently cyclic) so that this file builds on acycle-free imports. -/
+
 theorem isZero_relChainsR_point_rat {X : Type} [TopologicalSpace X] [PathConnectedSpace X]
     (b : X) (k : ℕ) (hk : k ≠ 0) (h : IsZero (Work.Serre.ratH (TopCat.of X) k)) :
     IsZero ((Work.StemsB.relChainsR ℚ (TopCat.of X) ({b} : Set X)).homology k) := by

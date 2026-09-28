@@ -33,6 +33,8 @@ and each of the three pieces induces an isomorphism on relative cohomology:
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 700000
 
 namespace Work.Cohomology

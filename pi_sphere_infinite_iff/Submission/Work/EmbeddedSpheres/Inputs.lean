@@ -45,6 +45,8 @@ The `n = 8`, `k ≤ 3` case of the theorem is what Step 1 of the dimension-`8` s
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
 

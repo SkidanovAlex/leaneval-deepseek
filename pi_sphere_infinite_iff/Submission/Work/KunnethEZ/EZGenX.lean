@@ -1,6 +1,14 @@
 import Mathlib
 import Submission.Work.KunnethEZ.EZComb
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The general Eilenberg–Zilber chain-map identity for the shuffle chain
 
@@ -320,7 +328,7 @@ lemma aFace_SX (i : Fin (p - 1 + 2)) (T : Sh23 p q) :
   refine Fin.ext ?_
   show ((SimplexCategory.δ (jfX i T) ≫ @aHom (P + 1) (Q + 1) (SX i T).1 (SX i T).2) k).val
       = ((aMap23 p q T ≫ SimplexCategory.δ i) k).val
-  rw [comp_val, comp_val, aHom_val, pA_eq_ANat, delta_jfX_val, delta_val, aMap23_apply]
+  erw [comp_val, comp_val, aHom_val, pA_eq_ANat, delta_jfX_val, delta_val, aMap23_apply]
   exact ANat_SX_delV i T k
 
 lemma bFace_SX (i : Fin (p - 1 + 2)) (T : Sh23 p q) :
@@ -331,7 +339,7 @@ lemma bFace_SX (i : Fin (p - 1 + 2)) (T : Sh23 p q) :
   refine Fin.ext ?_
   show ((SimplexCategory.δ (jfX i T) ≫ @bHom (P + 1) (Q + 1) (SX i T).1 (SX i T).2) k).val
       = ((bMap23 p q T) k).val
-  rw [comp_val, bHom_val, pB_eq_BNat, delta_jfX_val, bMap23_apply]
+  erw [comp_val, bHom_val, pB_eq_BNat, delta_jfX_val, bMap23_apply]
   exact BNat_SX_delV i T k
 
 /-! ## The sign of the `X`-side insertion -/
@@ -771,7 +779,7 @@ lemma aFace_SY (j : Fin (q - 1 + 2)) (U : Sh32 p q) :
   refine Fin.ext ?_
   show ((SimplexCategory.δ (jfY j U) ≫ @aHom (P + 1) (Q + 1) (SY j U).1 (SY j U).2) k).val
       = ((aMap32 p q U) k).val
-  rw [comp_val, aHom_val, pA_eq_ANat, delta_jfY_val, aMap32_apply]
+  erw [comp_val, aHom_val, pA_eq_ANat, delta_jfY_val, aMap32_apply]
   exact ANat_SY_delV j U k
 
 lemma bFace_SY (j : Fin (q - 1 + 2)) (U : Sh32 p q) :
@@ -783,7 +791,7 @@ lemma bFace_SY (j : Fin (q - 1 + 2)) (U : Sh32 p q) :
   refine Fin.ext ?_
   show ((SimplexCategory.δ (jfY j U) ≫ @bHom (P + 1) (Q + 1) (SY j U).1 (SY j U).2) k).val
       = ((bMap32 p q U ≫ SimplexCategory.δ j) k).val
-  rw [comp_val, comp_val, bHom_val, pB_eq_BNat, delta_jfY_val, delta_val, bMap32_apply]
+  erw [comp_val, comp_val, bHom_val, pB_eq_BNat, delta_jfY_val, delta_val, bMap32_apply]
   exact BNat_SY_delV j U k
 
 lemma ANat_posY_add_jY (j : Fin (q - 1 + 2)) (U : Sh32 p q) :
@@ -1176,7 +1184,7 @@ theorem ezGen_isCycle_aux (X Y : SSet) (σ : X _⦋p⦌) (τ : Y _⦋q⦌)
     rw [← mul_smul]
     congr 1
     simp only [lhsT]
-    rw [map_delta, map_delta]
+    erw [map_delta, map_delta]
   rw [hL, ← Fintype.sum_prod_type (f := lhsT X Y σ τ)]
   have hpt : ∀ x : PShuffle p q × Fin ((p + q - 1) + 2), lhsT X Y σ τ x
       = (if IsBX x.1.1 x.2 then lhsT X Y σ τ x else 0)
@@ -1225,7 +1233,7 @@ theorem ezGen_isCycle_aux (X Y : SSet) (σ : X _⦋p⦌) (τ : Y _⦋q⦌)
         show ((SimplexCategory.δ x.2 ≫ @aHom (P + 1) (Q + 1) (flipP x.1 x.2 hxI).1
             (flipP x.1 x.2 hxI).2) k).val
           = ((SimplexCategory.δ x.2 ≫ @aHom (P + 1) (Q + 1) x.1.1 x.1.2) k).val
-        rw [comp_val, comp_val, aHom_val, aHom_val, pA_eq_ANat, pA_eq_ANat, delta_val]
+        erw [comp_val, comp_val, aHom_val, aHom_val, pA_eq_ANat, pA_eq_ANat, delta_val]
         exact Work.KunnethEZ.ANat_flipS x.1.1 x.2 hxI (delV_ne (j := x.2.val) (k := k.val))
       have hmapb : SimplexCategory.δ x.2 ≫ @bHom (P + 1) (Q + 1) (flipP x.1 x.2 hxI).1
             (flipP x.1 x.2 hxI).2
@@ -1237,7 +1245,7 @@ theorem ezGen_isCycle_aux (X Y : SSet) (σ : X _⦋p⦌) (τ : Y _⦋q⦌)
         show ((SimplexCategory.δ x.2 ≫ @bHom (P + 1) (Q + 1) (flipP x.1 x.2 hxI).1
             (flipP x.1 x.2 hxI).2) k).val
           = ((SimplexCategory.δ x.2 ≫ @bHom (P + 1) (Q + 1) x.1.1 x.1.2) k).val
-        rw [comp_val, comp_val, bHom_val, bHom_val, pB_eq_BNat, pB_eq_BNat, delta_val]
+        erw [comp_val, comp_val, bHom_val, bHom_val, pB_eq_BNat, pB_eq_BNat, delta_val]
         exact Work.KunnethEZ.BNat_flipS x.1.1 x.2 hxI (delV_ne (j := x.2.val) (k := k.val))
       have hgoal : lhsT X Y σ τ (flipP x.1 x.2 hxI, x.2) = - lhsT X Y σ τ x := by
         simp only [lhsT]
@@ -1272,7 +1280,7 @@ theorem ezGen_isCycle_aux (X Y : SSet) (σ : X _⦋p⦌) (τ : Y _⦋q⦌)
     · intro y _
       obtain ⟨T, i⟩ := y
       simp only [gX23, lhsT, phiX]
-      rw [aFace_SX i T, map_op_comp (aMap23 p q T) (SimplexCategory.δ i) σ, bFace_SX i T,
+      erw [aFace_SX i T, map_op_comp (aMap23 p q T) (SimplexCategory.δ i) σ, bFace_SX i T,
         shufSign_SX i T, mul_comm (shufSignN T.1) ((-1 : ℤ) ^ (i : ℕ))]
       rfl
   rw [← hBX]
@@ -1290,7 +1298,7 @@ theorem ezGen_isCycle_aux (X Y : SSet) (σ : X _⦋p⦌) (τ : Y _⦋q⦌)
     · intro y _
       obtain ⟨U, j⟩ := y
       simp only [gY32, lhsT, phiY]
-      rw [aFace_SY j U, bFace_SY j U, map_op_comp (bMap32 p q U) (SimplexCategory.δ j) τ,
+      erw [aFace_SY j U, bFace_SY j U, map_op_comp (bMap32 p q U) (SimplexCategory.δ j) τ,
         shufSign_SY j U, mul_comm (shufSignN U.1) ((-1 : ℤ) ^ (j : ℕ))]
       rfl
   rw [← hBY]

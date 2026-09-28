@@ -38,6 +38,8 @@ zeroth homology of `A`, which is a two point space: `relH1OfPairAux` performs th
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

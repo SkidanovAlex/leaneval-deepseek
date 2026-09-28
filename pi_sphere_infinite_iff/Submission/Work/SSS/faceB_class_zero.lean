@@ -9,6 +9,8 @@ open HomologicalComplex
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 variable {E B : Type} [TopologicalSpace E] [TopologicalSpace B]
 

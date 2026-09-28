@@ -3,6 +3,14 @@ import Submission.Work.PiS.Interfaces
 import Submission.Work.Stems.hurewiczMapN_surjective
 import Submission.Work.RatHurewicz.SphereConnectivity
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-! Guidance from the project lead (the requester):
 
 AREA DEGREE (lead's guidance). π_n(Sⁿ) is infinite for n ≥ 2 because the Hurewicz map

@@ -174,6 +174,8 @@ lemma genEval_smul {k : ℕ} (c : R) (f : (X.chainComplex (ModuleCat.of R R)).X 
 
 section
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- Linear functionals on the `k`-chains which agree on all generators are equal. -/
 lemma genEval_ext {k : ℕ} {f g : (X.chainComplex (ModuleCat.of R R)).X k →ₗ[R] R}

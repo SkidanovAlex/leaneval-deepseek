@@ -14,6 +14,8 @@ Together with `Bridge.sim_chainMap` these are the two properties of the comparis
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 open scoped Simplicial

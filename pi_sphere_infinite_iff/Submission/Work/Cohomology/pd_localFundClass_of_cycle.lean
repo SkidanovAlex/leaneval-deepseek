@@ -20,6 +20,8 @@ is then turned around using that the excision map is an isomorphism and the defi
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.style.haveILetI false
 

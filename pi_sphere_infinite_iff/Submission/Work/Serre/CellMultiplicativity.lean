@@ -21,6 +21,8 @@ works over `ℚ`, and every consumer of the naturality there needs the `ℚ` cas
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1000000
 
 namespace Work.Serre

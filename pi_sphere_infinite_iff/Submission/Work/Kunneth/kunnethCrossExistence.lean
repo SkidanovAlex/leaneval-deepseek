@@ -7,6 +7,14 @@ import Submission.Work.Kunneth.CrossGen
 import Submission.Work.Kunneth.homology_tpC_homSum
 import Submission.Work.Kunneth.tpMap_homotopy
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The Künneth isomorphism in its cross-product form
 
@@ -144,7 +152,7 @@ theorem kunnethCrossExistence (C D : ChainComplex (ModuleCat ℤ) ℕ)
       = tpLof C D n ⟨(p,q),hpq⟩
           ((C.iCycles p).hom u ⊗ₜ[ℤ] ((D.iCycles q).hom v - (ι.f q).hom m)) := by
     rw [hZ₁, hZ₂, TensorProduct.tmul_sub, map_sub]
-    rfl
+    try rfl
   -- `iCycles v` and `ι [v]` differ by a boundary, by the splitting homotopy
   obtain ⟨w, hw⟩ : ∃ w : ↥(D.X (q+1)),
       (D.d (q+1) q).hom w = (D.iCycles q).hom v - (ι.f q).hom m := by

@@ -4,6 +4,14 @@ import Submission.Work.Kunneth.ssetNaturality
 import Submission.Work.Kunneth.TopCat
 import Submission.Work.Cohomology.cupNaturalH
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The Künneth ring of the *space* `ℂP² × ℂP²`
 
@@ -300,7 +308,7 @@ noncomputable def cp2cp2ModelCpp : Work.Projective.CP2CP2Model cppSSet where
       + (Work.Thom.CohMap cpProj2 ℤ 4).hom (Work.Gen.uSq 2))
       = (3 : ℤ) • (Work.Projective.kSq cppSSet cppA + Work.Projective.kSq cppSSet cppB) by
     rw [cpp_kSq_fst, cpp_kSq_snd]
-    rfl
+    try rfl
   p₂_eq := show (9 : ℤ) • Work.Cohomology.cupH' ℤ cppSSet 4 4
       ((Work.Thom.CohMap cpProj1 ℤ 4).hom (Work.Gen.uSq 2))
       ((Work.Thom.CohMap cpProj2 ℤ 4).hom (Work.Gen.uSq 2))

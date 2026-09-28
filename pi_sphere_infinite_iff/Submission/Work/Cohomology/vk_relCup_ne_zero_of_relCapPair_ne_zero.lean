@@ -43,6 +43,8 @@ cap-product class `u ⌢ c ∈ H₄(X)` equals the evaluation of `u ⌣ u` on `�
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

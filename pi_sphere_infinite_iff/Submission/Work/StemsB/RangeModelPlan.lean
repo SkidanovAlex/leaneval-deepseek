@@ -5,6 +5,14 @@ import Submission.Work.RatHurewicz.S3Inputs
 import Submission.Work.RatHurewicz.AttachPush.CellInterior
 import Submission.Work.AttachPush.exists_homotopy_avoids_cellOrigins
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # Route to `Work.RatHurewicz.RangeModelRatAcyclic` (SERRE blueprint ADDENDUM 3 (A))
 

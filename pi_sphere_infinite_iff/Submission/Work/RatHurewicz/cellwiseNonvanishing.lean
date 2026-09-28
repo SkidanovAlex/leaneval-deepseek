@@ -11,6 +11,8 @@ noncomputable section
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- The subtype inclusion `(cylRetract q)⁻¹{b} ↪ (cylRetract q)⁻¹V` for `b ∈ V`, inside the
 mapping cylinder of `q`. -/

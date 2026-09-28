@@ -26,6 +26,8 @@ difference of the two cycles is in the image of `toCycles` and `toCycles ≫ hom
 set_option autoImplicit false
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedSimpArgs false
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex

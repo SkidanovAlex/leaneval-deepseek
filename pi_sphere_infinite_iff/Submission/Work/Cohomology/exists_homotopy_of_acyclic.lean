@@ -24,6 +24,8 @@ namespace Work.Cohomology
 
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- **Acyclic chain complexes of vector spaces are contractible.**
 If a chain complex `C` of modules over a field `k` has vanishing homology in every degree, then

@@ -34,6 +34,8 @@ namespace Work.Cohomology
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 /-- Evaluation of `nullHomotopicMap' (tRel X)` in degree zero, where the homotopy condition "falls

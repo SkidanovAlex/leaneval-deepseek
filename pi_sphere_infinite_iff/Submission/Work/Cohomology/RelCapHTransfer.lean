@@ -14,6 +14,8 @@ cycle-level partner `relCapPairZ`) and records its computation rules, in the sty
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 400000
 

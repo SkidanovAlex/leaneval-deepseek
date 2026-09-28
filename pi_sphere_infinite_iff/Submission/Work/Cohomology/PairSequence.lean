@@ -25,6 +25,8 @@ that it is short exact, which by the homology sequence gives the long exact sequ
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 

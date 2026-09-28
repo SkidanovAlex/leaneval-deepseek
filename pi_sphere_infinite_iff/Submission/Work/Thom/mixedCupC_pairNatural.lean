@@ -5,6 +5,8 @@ import Submission.Work.Cohomology.relCupHNatural
 import Submission.Work.Cohomology.sph3DiscMixedDefs
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1000000
 
 namespace Work.Thom

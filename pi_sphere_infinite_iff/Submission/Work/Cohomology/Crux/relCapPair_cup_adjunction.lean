@@ -38,6 +38,8 @@ transferring it to the relative pair `(Vk(-2), Mk(-2))`; see `Submission/NOTES.m
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 1000000
 

@@ -24,6 +24,8 @@ Combining the two gives the statement needed by subproject SERRE, that `H^n(P,Q;
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Serre
 

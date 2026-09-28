@@ -39,6 +39,8 @@ namespace Work.Cohomology
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- The `0`-chain associated with a `0`-simplex: the generator of the degree-zero chains. -/
 noncomputable def h0Gen (X : SSet) (s : X _⦋0⦌) : (X.chainComplex (ModuleCat.of ℤ ℤ)).X 0 :=

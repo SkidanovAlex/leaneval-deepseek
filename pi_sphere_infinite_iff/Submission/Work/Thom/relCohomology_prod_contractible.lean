@@ -20,6 +20,8 @@ open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 
 /-- **The five lemma for the relative cochain complex of a pair.**  If a map of pairs

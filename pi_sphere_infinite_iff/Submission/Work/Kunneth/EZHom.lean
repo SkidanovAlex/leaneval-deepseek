@@ -13,6 +13,8 @@ Acyclic-models proof that `awMap : C_*(X ⊗ Y) ⟶ C_*(X) ⊗ C_*(Y)` followed 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex AlgebraicTopology
 open scoped MonoidalCategory Simplicial TensorProduct

@@ -27,6 +27,8 @@ The proof is the five lemma for the long exact sequences of the two pairs
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 2000000
 set_option linter.style.haveILetI false
 

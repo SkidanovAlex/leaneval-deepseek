@@ -21,6 +21,8 @@ is (canonically, via `relZIso`) the `ℤ`-dual of the relative chain complex (`r
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Cohomology
 

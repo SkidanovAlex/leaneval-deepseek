@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicTopology Limits Simplicial
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+set_option synthInstance.maxHeartbeats 400000
 
 /-- An isomorphism of `R`-modules, regarded as a linear equivalence of the underlying modules. -/
 def moduleIsoToLinearEquiv {R : Type} [Ring R] {M N : ModuleCat R} (e : M ≅ N) :

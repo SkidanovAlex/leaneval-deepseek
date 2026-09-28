@@ -12,6 +12,8 @@ open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory
 open scoped MonoidalCategory Simplicial Topology
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 /-- The `castElem` transport of a chain complex is the `eqToHom` transport, in `ModuleCat.Hom.hom`

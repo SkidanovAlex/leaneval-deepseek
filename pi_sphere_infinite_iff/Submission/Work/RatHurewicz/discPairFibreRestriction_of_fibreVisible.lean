@@ -52,6 +52,8 @@ This is the precise sense in which the whole content of the CW-model Thom case l
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 1000000
 

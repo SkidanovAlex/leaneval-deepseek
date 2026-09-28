@@ -10,6 +10,14 @@ import Submission.Work.Rat.RankOneC1.exists_killedModel_based
 import Submission.Work.Rat.RankOneC1.fgSubgroup_rank_le_one_of
 import Submission.Work.Rat.RankOneC1.hurewiczKerTorsion_one_abelian
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # `Work.Rat.RankOneC1Ab` — the rank-one `K(A,1)` vanishing
 
@@ -151,7 +159,7 @@ theorem rankOneC1Ab_of
       intro a b hab
       apply hψinj
       rw [← hF a, ← hF b, hab]
-    haveI : Group.FG ↥F.range := Group.fg_range F
+    haveI : Group.FG ↥F.range := Group.fg_of_surjective F.rangeRestrict_surjective
     obtain ⟨r, Ff, instFf, hFinFf, hr1, heH⟩ := hRank (ψ w₀) hcomm hgen F.range
     letI : AddCommGroup Ff := instFf
     haveI : Finite Ff := hFinFf

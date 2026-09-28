@@ -31,6 +31,8 @@ simplicial set *by definition*, but the equality is not visible at the transpare
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 open CategoryTheory AlgebraicTopology

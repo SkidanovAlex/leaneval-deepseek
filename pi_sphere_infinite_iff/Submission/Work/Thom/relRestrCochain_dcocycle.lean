@@ -8,6 +8,8 @@ import Submission.Work.Thom.cupDeltaInfra
 import Submission.Work.Cohomology.pd_split_kc
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option autoImplicit false
 
 namespace Work.Thom

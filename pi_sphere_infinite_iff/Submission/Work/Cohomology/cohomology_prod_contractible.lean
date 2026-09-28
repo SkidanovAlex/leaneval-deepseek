@@ -4,6 +4,8 @@ import Submission.Work.Cohomology.homotopyEquiv
 import Submission.Work.Cohomology.homotopyEquiv_prod_fst
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 

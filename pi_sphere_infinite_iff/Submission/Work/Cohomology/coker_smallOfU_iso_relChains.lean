@@ -13,6 +13,8 @@ import Submission.Work.Cohomology.inclChains_comp_smallOfV
 import Submission.Work.Cohomology.mem_range_incl_of_smallOfV_eq
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.style.haveILetI false
 

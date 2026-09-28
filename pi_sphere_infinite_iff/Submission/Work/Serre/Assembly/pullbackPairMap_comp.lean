@@ -4,6 +4,8 @@ import Submission.Work.StemsB.SerreExact
 import Submission.Work.Cohomology.relChainsMapOf_comp
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped Topology
 open CategoryTheory CategoryTheory.Limits

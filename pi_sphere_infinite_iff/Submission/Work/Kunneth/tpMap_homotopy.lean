@@ -2,6 +2,14 @@ import Mathlib
 import Submission.Work.Kunneth.EZAWTensor
 import Submission.Work.Kunneth.Algebra
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # Homotopy invariance of the Koszul tensor product `tpMap`
 
@@ -130,10 +138,10 @@ theorem left_succ (A A' B B' : ChainComplex (ModuleCat ℤ) ℕ) (f f' : A ⟶ A
   apply TensorProduct.ext'
   intro x y
   simp only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.add_apply]
-  rw [tpMapLin_tmul, tpMapLin_tmul]
-  rw [tpMapHomLLin_tmul]
-  rw [tpD_lof_tmul]
-  rw [tpD_lof_tmul]
+  erw [tpMapLin_tmul, tpMapLin_tmul]
+  erw [tpMapHomLLin_tmul]
+  erw [tpD_lof_tmul]
+  erw [tpD_lof_tmul]
   obtain ⟨⟨p, q⟩, hpq⟩ := pq
   simp only [Subtype.coe_mk, tpIdx₁]
   simp only [LinearMap.map_add]
@@ -201,9 +209,9 @@ theorem left_zero (A A' B B' : ChainComplex (ModuleCat ℤ) ℕ) (f f' : A ⟶ A
   subst hp
   subst hq
   simp only [LinearMap.sub_apply, LinearMap.comp_apply]
-  rw [tpMapLin_tmul, tpMapLin_tmul]
-  rw [tpMapHomLLin_tmul]
-  rw [tpD_lof_tmul]
+  erw [tpMapLin_tmul, tpMapLin_tmul]
+  erw [tpMapHomLLin_tmul]
+  erw [tpD_lof_tmul]
   show _ = (if hp : 1 ≤ (0 + 1) then _ else 0) + (if hq : 1 ≤ (0 : ℕ) then _ else 0)
   rw [dif_pos (by decide : 1 ≤ (0 + 1)), dif_neg (by decide : ¬ 1 ≤ (0 : ℕ)), add_zero]
   simp only [Subtype.coe_mk]
@@ -235,11 +243,11 @@ theorem right_succ (A A' B B' : ChainComplex (ModuleCat ℤ) ℕ) (f' : A ⟶ A'
   apply TensorProduct.ext'
   intro x y
   simp only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.add_apply]
-  rw [tpMapLin_tmul, tpMapLin_tmul]
-  rw [tpMapHomRLin_tmul]
+  erw [tpMapLin_tmul, tpMapLin_tmul]
+  erw [tpMapHomRLin_tmul]
   rw [map_zsmul]
   rw [tpD_lof_tmul]
-  rw [tpD_lof_tmul]
+  erw [tpD_lof_tmul]
   obtain ⟨⟨p, q⟩, hpq⟩ := pq
   simp only [Subtype.coe_mk, tpIdx₂]
   simp only [zsmul_add]
@@ -313,8 +321,8 @@ theorem right_zero (A A' B B' : ChainComplex (ModuleCat ℤ) ℕ) (f' : A ⟶ A'
   subst hp
   subst hq
   simp only [LinearMap.sub_apply, LinearMap.comp_apply]
-  rw [tpMapLin_tmul, tpMapLin_tmul]
-  rw [tpMapHomRLin_tmul]
+  erw [tpMapLin_tmul, tpMapLin_tmul]
+  erw [tpMapHomRLin_tmul]
   rw [map_zsmul]
   rw [tpD_lof_tmul]
   rw [zsmul_add]

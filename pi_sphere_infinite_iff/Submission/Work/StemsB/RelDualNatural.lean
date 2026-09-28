@@ -45,6 +45,8 @@ noncomputable section
 variable {R : Type} [CommRing R]
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- The relative chain map induced by a map of pairs is compatible with the quotient projections. -/
 theorem rdRProj_relChainsRMapOf {X Y : TopCat} (A : Set X) (B : Set Y)

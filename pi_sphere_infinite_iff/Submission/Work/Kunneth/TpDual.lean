@@ -32,6 +32,8 @@ noncomputable section
 attribute [-instance] AddCommGroup.toIntModule
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- The component of the inverse of `DirectSum.linearEquivFunOnFintype`. -/
 theorem linearEquivFunOnFintype_symm_apply {ι : Type*} [Fintype ι] (X : ι → Type*)

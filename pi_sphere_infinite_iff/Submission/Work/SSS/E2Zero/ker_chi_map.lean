@@ -4,6 +4,14 @@ import Submission.Work.SSS.E2Zero.homologypi_eq_zero_iff
 import Submission.Work.SSS.E2Zero.Cincl_mem_V_one_iff
 import Submission.Work.SSS.E2Zero.ker_chi_eq_ker_homologyMap
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 namespace Work.SSS.E2Zero
 
 attribute [-instance] AddCommGroup.toIntModule

@@ -37,6 +37,8 @@ for modules, together with the isomorphism `H⁰ ≅ ker d⁰` described above.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 open scoped Simplicial

@@ -30,6 +30,8 @@ variable {E B : Type} [TopologicalSpace E] [TopologicalSpace B]
 
 set_option maxHeartbeats 4000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 attribute [local instance] Classical.propDecidable
 
 /-- The pointwise evaluation of a `ℤ`-multiple of a morphism of `ℤ`-modules. -/

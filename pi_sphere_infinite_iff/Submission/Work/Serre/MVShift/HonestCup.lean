@@ -19,6 +19,8 @@ These are the chain-level cup maps that the Mayer–Vietoris `δ`-derivation
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 
 open CategoryTheory CategoryTheory.Limits

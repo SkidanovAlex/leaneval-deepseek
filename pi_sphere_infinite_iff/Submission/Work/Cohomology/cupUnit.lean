@@ -2,6 +2,14 @@ import Mathlib
 import Submission.Work.Cohomology.AlexanderWhitney
 import Submission.Work.Cohomology.cupLeibniz
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 /-!
 # The unit for the Alexander–Whitney cup product
 
@@ -35,7 +43,8 @@ variable (R : Type) [CommRing R]
 lemma frontIncl_self (n : ℕ) (h : n ≤ n + 0) : frontIncl n (n + 0) h = 𝟙 ⦋n⦌ := by
   refine ConcreteCategory.hom_ext _ _ (fun k => ?_)
   apply Fin.ext
-  simp only [hom_frontIncl_val, CategoryTheory.id_apply]
+  -- v4.35: `simp` no longer fires `hom_frontIncl_val` (index type is `Fin (⦋n⦌.len + 1)`); it is `rfl`
+  first | rfl | exact hom_frontIncl_val n (n + 0) h k
 
 /-- The front `n`-face of an `(n+0)`-simplex is the simplex itself. -/
 lemma frontFace_self (X : SSet) (n : ℕ) (h : n ≤ n + 0) (σ : X _⦋n + 0⦌) :

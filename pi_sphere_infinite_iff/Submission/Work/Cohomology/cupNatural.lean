@@ -20,6 +20,8 @@ that a linear functional on `n`-chains is determined by its values on the genera
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial

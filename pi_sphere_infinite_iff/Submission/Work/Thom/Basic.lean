@@ -4,6 +4,8 @@ import Submission.Work.TangentClasses.Tangent
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The disc bundle, the sphere bundle and the Thom space of a real vector bundle

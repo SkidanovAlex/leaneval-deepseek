@@ -4,6 +4,8 @@ import Submission.Work.Thom.tsqHonest
 set_option autoImplicit false
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # Auxiliary definitions for the naturality of the Mayer–Vietoris transgression

@@ -24,6 +24,8 @@ The degree `0` case of the vanishing needs the identification of `H₀` of a pai
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 
 open CategoryTheory CategoryTheory.Limits

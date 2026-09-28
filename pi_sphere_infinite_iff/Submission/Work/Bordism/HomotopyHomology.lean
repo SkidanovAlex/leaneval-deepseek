@@ -13,6 +13,8 @@ the boundary relation of `Work.Bordism.Bordism`, and because it is the homology 
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology
 

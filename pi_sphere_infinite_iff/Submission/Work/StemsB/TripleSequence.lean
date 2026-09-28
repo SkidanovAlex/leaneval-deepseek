@@ -22,6 +22,8 @@ induced by the inclusion `C ⊆ A` (the workspace's `Work.Cohomology.relChainsSu
 open CategoryTheory CategoryTheory.Limits
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 namespace Work.StemsB

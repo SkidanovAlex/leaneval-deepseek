@@ -25,6 +25,8 @@ boundary piece is an *open embedding*, so that it induces an isomorphism on loca
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false
@@ -217,8 +219,9 @@ theorem boundaryLocalGenerator {ι : Type} [Fintype ι] {F : ι → Work.ThomBor
       (TopCat.of (Work.ThomBordism.bdrySet W.W)) 8
       (Work.Cohomology.hPairδ (TopCat.of W.W) (Work.ThomBordism.bdrySet W.W) 8 W.w) := by
   intro p
-  show Submodule.span ℤ {localClassAt (TopCat.of (bdrySet W.W)) 8
-      (Cohomology.hPairδ (TopCat.of W.W) (bdrySet W.W) 8 W.w) p} = ⊤
+  -- v4.35: the parser now reads this multi-line `{a}` as extended-binder notation; spell the singleton out
+  show Submodule.span ℤ (singleton (localClassAt (TopCat.of (bdrySet W.W)) 8
+      (Cohomology.hPairδ (TopCat.of W.W) (bdrySet W.W) 8 W.w) p)) = ⊤
   generalize hq : W.bdry p = q
   obtain ⟨i₀, y₀⟩ := q
   let push : (i : ι) → (F i).X ⟶ TopCat.of (bdrySet W.W) :=
@@ -254,10 +257,10 @@ theorem boundaryLocalGenerator {ι : Type} [Fintype ι] {F : ι → Work.ThomBor
     simpa using h1
   have hemb : Topology.IsOpenEmbedding (fun z : (F i₀).pt => push i₀ z) :=
     (W.bdry.symm.isOpenEmbedding).comp (Topology.IsOpenEmbedding.sigmaMk)
-  have hgen : Submodule.span ℤ {localClassAt (TopCat.of (bdrySet W.W)) 8
+  have hgen : Submodule.span ℤ (singleton (localClassAt (TopCat.of (bdrySet W.W)) 8
         (HomologicalComplex.homologyMap (Cohomology.chainMap ℤ (F i₀).X
-          (TopCat.of (bdrySet W.W)) (push i₀)) 8 (F i₀).c) p} = ⊤ := by
-    have hfund : Submodule.span ℤ {localClassAt (F i₀).X 8 (F i₀).c y₀} = ⊤ :=
+          (TopCat.of (bdrySet W.W)) (push i₀)) 8 (F i₀).c) p)) = ⊤ := by
+    have hfund : Submodule.span ℤ (singleton (localClassAt (F i₀).X 8 (F i₀).c y₀)) = ⊤ :=
       (F i₀).c_fund y₀
     haveI : IsIso (HomologicalComplex.homologyMap (openEmbPairMap (push i₀) y₀ p hinj hfy) 8) :=
       isIso_openEmbPairMap_of_isOpenEmbedding (f := push i₀) (x := y₀) (y := p) hinj hfy hemb 8

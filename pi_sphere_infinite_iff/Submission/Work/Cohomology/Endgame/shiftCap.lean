@@ -36,6 +36,8 @@ for `k ≥ 1` (the only obstruction is the truncation of `ComplexShape.down ℕ`
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits

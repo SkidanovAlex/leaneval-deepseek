@@ -24,6 +24,8 @@ middle produces a chain `c` in `C_{m+1}(U ∩ V)` with `∂c = ∂zU`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 set_option linter.unusedSimpArgs false
 set_option maxHeartbeats 1600000

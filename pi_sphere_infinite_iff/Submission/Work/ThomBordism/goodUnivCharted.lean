@@ -26,6 +26,8 @@ island: the gluing step is the clash-free `Port/Glue.lean`, not `Work.Cohomology
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits

@@ -10,6 +10,8 @@ noncomputable section
 
 set_option maxHeartbeats 1600000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory in
 /-- The chain-map property of the abstract σ-piece map `iotaFGen`, at an ARBITRARY first degree

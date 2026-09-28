@@ -15,6 +15,8 @@ a `0`-chain `c` has the extra term `-(∑ coefficient) • (cone point)`, which 
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Cohomology
 

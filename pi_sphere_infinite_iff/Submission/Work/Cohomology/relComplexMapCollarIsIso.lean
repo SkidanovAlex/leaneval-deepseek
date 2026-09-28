@@ -25,6 +25,8 @@ isomorphism in every degree, which is the statement `relComplexMapCollarIsIso`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Cohomology
 

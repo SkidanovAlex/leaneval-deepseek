@@ -17,6 +17,8 @@ open CategoryTheory CategoryTheory.Limits
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1000000
 
 /-- Bounded form of the Euler-class extraction from the relative (Thom) form of the Gysin theorem:

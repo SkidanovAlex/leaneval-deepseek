@@ -55,6 +55,8 @@ form defined here *is* the usual intersection form on `H^k(X;ℚ)`.  For callers
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 open TensorProduct

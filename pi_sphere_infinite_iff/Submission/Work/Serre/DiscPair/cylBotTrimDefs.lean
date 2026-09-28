@@ -28,6 +28,8 @@ a pair of subtypes `{x : ↥P | (x : Y) ∈ R}` does not change when the subtype
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1000000
 
 open scoped Topology unitInterval

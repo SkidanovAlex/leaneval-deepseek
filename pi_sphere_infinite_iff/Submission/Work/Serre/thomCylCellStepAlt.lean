@@ -12,6 +12,14 @@ import Submission.Work.Serre.TripleCohDefs
 import Submission.Work.Serre.cellStepAssembly
 import Submission.Work.RatHurewicz.cellStepShell
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 namespace Work.Serre
 
 
@@ -116,6 +124,7 @@ module) — a cycle.  That import was redundant (the two lemmas it used,
 `isZero_coh_of_ratAcyclic` and `isZero_ratCoh_of_isZero_ratH`, are declared upstream in
 `Work.Serre.EulerFibreRoot`), and it has been redirected there, which is what allows this module to
 import the proof.
+
 
 -/
 theorem thomCylCellStepAlt (r N : ℕ) (hr : 1 ≤ r) (D : ℕ) (hD : 2 ≤ D)

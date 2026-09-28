@@ -7,6 +7,8 @@ import Submission.Work.Cohomology.Sd_comm
 import Submission.Work.Cohomology.toChain_boundaryLC
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits
 open scoped Simplicial

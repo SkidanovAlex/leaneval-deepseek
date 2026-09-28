@@ -10,6 +10,8 @@ import Submission.Work.StemsB.collarSqCrux2
 import Submission.Work.StemsB.collarSqEmpty
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.unusedVariables false
 

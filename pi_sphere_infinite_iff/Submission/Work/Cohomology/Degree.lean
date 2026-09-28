@@ -26,6 +26,8 @@ invariance are the next facts to prove about this definition; see `Submission/NO
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.Cohomology
 

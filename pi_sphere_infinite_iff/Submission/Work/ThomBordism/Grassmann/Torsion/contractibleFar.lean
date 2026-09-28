@@ -4,6 +4,8 @@ import Submission.Work.ThomBordism.Grassmann.Torsion.ModelGeom
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-!
 # The "far" part of the Thom space is contractible

@@ -29,6 +29,8 @@ namespace Work.Cohomology
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-- The **component projection** onto a component `c ∈ π₀ T`: the morphism `C₀(T) ⟶ ℤ` which is
 `1` on the free generators in `c` and `0` on the others.  It is well defined because the first

@@ -36,6 +36,8 @@ piece by Serre's `E2(d)` computation over the cube (`perCellSharpOne`, from `one
 
 set_option maxHeartbeats 4000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false
 

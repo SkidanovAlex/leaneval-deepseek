@@ -26,6 +26,8 @@ induction) and hence by the cover-based route to the Thom injectivity.
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.unusedVariables false
 
 open CategoryTheory CategoryTheory.Limits

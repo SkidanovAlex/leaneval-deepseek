@@ -28,6 +28,8 @@ Since `p_•` is a chain map, the identification is compatible with the differen
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory AlgebraicTopology CategoryTheory.Limits
 

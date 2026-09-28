@@ -61,6 +61,8 @@ middle dimension (`k = 4`), and is recorded in `README.md` and in `Submission/Wo
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped Manifold Topology ContDiff
 open CategoryTheory CategoryTheory.Limits

@@ -20,6 +20,8 @@ namespace Work.Serre
 noncomputable section
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 theorem exists_smul_oneH_rat (X : TopCat) [PathConnectedSpace ↥X]
     (x : ↑(Work.Cohomology.singularCohomology ℚ 0 X)) :

@@ -50,6 +50,8 @@ This file **formalises exactly that reduction**, with the geometric input isolat
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 
 namespace Work.SignatureBordism

@@ -25,6 +25,8 @@ The proof is a verbatim port of the integral statement (`Work.Tubular.relKronH_n
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 
 namespace Work.Serre.B1Rel

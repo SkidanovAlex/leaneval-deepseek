@@ -4,6 +4,8 @@ import Submission.Work.StemsB.AToolsR
 import Submission.Work.RatHurewicz.isZero_relCoh_of_isEmpty
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false

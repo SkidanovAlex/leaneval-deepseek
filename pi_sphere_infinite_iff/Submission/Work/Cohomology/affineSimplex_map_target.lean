@@ -16,6 +16,8 @@ This is the target-side counterpart of the source-side functoriality
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped BigOperators
 

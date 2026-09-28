@@ -6,6 +6,8 @@ import Submission.Work.Cohomology.cup1Faces
 import Submission.Work.Cohomology.cup1Cast
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 4000000
 
 open CategoryTheory AlgebraicTopology Simplicial Limits

@@ -40,6 +40,8 @@ The proof follows the pattern of `Work.Cohomology.diskPairHomologyZero` for the 
 
 set_option maxHeartbeats 800000
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory CategoryTheory.Limits AlgebraicTopology Metric

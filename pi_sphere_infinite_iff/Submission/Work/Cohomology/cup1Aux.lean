@@ -20,6 +20,8 @@ in the three regimes `k ≤ s`, `s < k ≤ s+n`, `s+n < k`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 
 open CategoryTheory AlgebraicTopology Simplicial Limits

@@ -18,6 +18,8 @@ empty space are stated for `ℤ` in the workspace), and records the result in th
 
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open CategoryTheory Limits Work.Cohomology
 open scoped Simplicial

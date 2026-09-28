@@ -31,6 +31,8 @@ predicates that `Work.Surgery.Family8.GeometricSurgicalReduction` asks for.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 open scoped Manifold Topology ContDiff
 open CategoryTheory CategoryTheory.Limits

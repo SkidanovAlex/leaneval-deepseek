@@ -18,6 +18,8 @@ situation `W = U ∪ V` of an open cover of a subspace of an ambient space `M`:
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 1600000
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false

@@ -344,6 +344,8 @@ theorem eA_apply {X Y : SSet.{0}} (f : X ⟶ Y) (t m : ℕ) (hm : 1 ≤ m)
   congr 1
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 
 /-! ## The last-face isomorphism on a class -/
 

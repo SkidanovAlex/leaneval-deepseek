@@ -12,6 +12,8 @@ import Submission.Work.Cohomology.CompatTrans.proj1B1_injective
 import Submission.Work.Cohomology.CompatTrans.homologyMap_eq_zero_of_avoiding_sphN
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false

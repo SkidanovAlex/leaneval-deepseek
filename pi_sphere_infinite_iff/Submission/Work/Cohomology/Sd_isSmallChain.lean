@@ -38,6 +38,8 @@ simplicial set: on a generator — a small simplex `σ'` — it evaluates to
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option linter.style.haveILetI false
 
 open CategoryTheory AlgebraicTopology Simplicial Limits

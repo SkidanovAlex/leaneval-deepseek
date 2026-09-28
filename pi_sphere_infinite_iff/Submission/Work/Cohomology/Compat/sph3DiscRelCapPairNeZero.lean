@@ -54,6 +54,8 @@ because `u = 0` would force `u ⌢ c = 0`.
 -/
 
 set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
 set_option maxHeartbeats 3200000
 
 attribute [local instance 5000] Submodule.module

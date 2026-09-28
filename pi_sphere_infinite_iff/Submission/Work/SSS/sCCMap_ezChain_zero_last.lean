@@ -2,6 +2,14 @@ import Mathlib
 import Submission.Work.SSS.vertRestrEZDefs
 import Submission.Work.KunnethEZ.ez23_eq_ezGen
 
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
 namespace Work.SSS
 
 open CategoryTheory CategoryTheory.Limits Simplicial Opposite MonoidalCategory
@@ -51,6 +59,7 @@ lemma ezZeroLast_map_bHom (Y : SSet.{0}) (t : ℕ) (ν : Y _⦋0⦌) :
     Y.map (Work.Cohomology.Crux33.bHom (Work.KunnethEZ.zSh0 t).1 (Work.KunnethEZ.zSh0 t).2).op ν
       = Y.map (SimplexCategory.const ⦋t⦌ ⦋0⦌ 0).op ν := by
   rw [ezZeroLast_bHom_zSh0_eq_const t]
+  try rfl
 
 /-- **The element formula for the vertex insertion `y ↦ (y, ν)`.** -/
 lemma ezZeroLast_lift_id_const_app (Y : SSet.{0}) (t : ℕ)
