@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.CDT.CintegralAssembled
+import Submission.CDT.CintegralCore
 import Submission.CDT.AintegralAssembled
 import Submission.CDT.AintegralUntransformed
 import Submission.CDT.SympExplicitodeFinal

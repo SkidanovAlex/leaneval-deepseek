@@ -2,7 +2,7 @@ import Mathlib
 import Submission.CDT.Aintegral
 import Submission.CDT.AintegralAssembled
 import Submission.CDT.EichlerInput
-import Submission.CDT.CintegralAssembled
+import Submission.CDT.CintegralCore
 import Submission.Commons.RingTheory.PowerSeries.coeff_mobiusTransformInv
 import Submission.Commons.Analysis.Integral.doubleIntegral_Bkernel_binom
 import Submission.Commons.Analysis.Integral.doubleIntegral_Bkernel_bound

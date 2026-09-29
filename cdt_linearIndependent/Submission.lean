@@ -47,7 +47,7 @@ import Submission.CDT.LogHadamard
 import Submission.CDT.LogUnlikelyG
 import Submission.CDT.LogMIdentities
 import Submission.CDT.CintegralOne
-import Submission.CDT.CintegralAssembled
+import Submission.CDT.CintegralCore
 import Submission.CDT.CintegralGeneral
 import Submission.CDT.Aintegral
 import Submission.CDT.AintegralAssembled
@@ -133,6 +133,15 @@ import Submission.Work.ZagBI.zagier_b_integrality
 import Submission.Work.ZagC.zagier_c_integrality
 
 /-!
+**STATUS (2026-09-29): `cdt_linearIndependent` is PROVED, with no `sorry` and axioms
+`[propext, Classical.choice, Quot.sound]` only.**  The two deep leaves described below
+(`cdt_theoremA_leaf_gap`, `cdt_theoremC_li`) are closed by the paper's arithmetic-holonomy method in
+`Submission/Work/*`: holonomy bound with `l ≤ 2` and Lang's zero estimate, D-closedness and
+`[1..n]²`-denominators of the Zagier series, the 14/17-function independence, pullbacks along explicit
+slit/lune conformal maps, and certified numerics (for Theorem A an integer ball-arithmetic certificate
+checked by `decide +kernel`, `Submission/Work/Cert`).  Historical notes below that speak of open
+leaves or remaining `sorry`s predate this and are kept only as a record.
+
 # `Submission.cdt_linearIndependent`
 
 Theorems **A** and **C** of Calegari–Dimitrov–Tang,
@@ -162,7 +171,8 @@ prerequisites exist in the pinned Mathlib (in particular Mathlib at this
 revision contains only the analytic part of Lindemann–Weierstrass, and no
 transcendence or irrationality results for `L(2,χ₋₃)` or for products of
 logarithms of rationals).  After full leaf-decomposition and assembly,
-exactly **two** deep leaves remain open; everything else is PROVED:
+exactly **two** deep leaves remained; **both are now PROVED** (see the status note at the top of
+this docstring), so `cdt_linearIndependent` is proved in full.  The two former leaves were:
 
 ```lean
 -- Theorem A is ASSEMBLED in full below (`cdt_theoremA`, no `sorry`) modulo
@@ -199,9 +209,9 @@ meaning of `ZMod.LFunction χ 2` as the classical series `Σ χ(n)/n²`,
 `riemannZeta 2 = π²/6`, the component form of the independence assertions,
 and the elementary `ℤ`-arithmetic of the hypothesis) is recorded and proved
 in `Submission.Helpers`.  **No axiom, `sorry`, or other unsound step is
-used anywhere in this repository**; the two `sorry`s below
-(`cdt_theoremA_leaf_gap`, `cdt_theoremC_li`) mark exactly the two genuine
-open gaps.
+used anywhere in this repository**; the two former leaves
+(`cdt_theoremA_leaf_gap`, `cdt_theoremC_li`) are proved below: Theorem A by
+`Work.AAsm.a_leaf`, Theorem C by `Work.CRed.c_li_of_pos`.
 -/
 
 namespace Submission
@@ -209,7 +219,7 @@ namespace Submission
 open Complex
 open scoped BigOperators
 
-/-- **The single isolated obstruction of Theorem A** (CDT `mainA`,
+/-- **The former isolated obstruction of Theorem A — now PROVED** (CDT `mainA`,
 arXiv:2408.15403): the *atomic leaf* `theoremA_leaf` of
 `Submission.CDT.TheoremA_leaf` — the claim that `L(2,χ₋₃)` is not a
 rational linear combination of `1` and `ζ(2)`:
@@ -1051,7 +1061,7 @@ lemma cdt_theoremC_irr_self (m : ℤ) (hm : m ≠ -1) (hm0 : m ≠ 0) :
     Irrational (Real.log (1 + 1 / (m : ℝ)) * Real.log (1 + 1 / (m : ℝ))) := by
   simpa [pow_two] using (Submission.Transcendence.irrational_log_one_add_inv_sq m hm hm0)
 
-/-- **The isolated obstruction of Theorem C, `m ≠ n`** (CDT `logsmain`,
+/-- **The former isolated obstruction of Theorem C, `m ≠ n` — now PROVED** (CDT `logsmain`,
 part 2; arXiv:2408.15403 §"Products of two logarithms"): under
 `m, n ∈ ℤ \{-1, 0\}`, `10⁶·|m−n| < |n|` and `m ≠ n`, the four numbers
 `1, log(1+1/m), log(1+1/n), log(1+1/m)·log(1+1/n)` are linearly

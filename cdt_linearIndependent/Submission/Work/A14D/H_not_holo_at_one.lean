@@ -1,6 +1,6 @@
 import Mathlib
 import Submission.Work.A14.defs
-import Submission.CDT.CintegralAssembled
+import Submission.CDT.CintegralCore
 import Submission.Work.C17g.pringsheim
 
 namespace Work.A14D
