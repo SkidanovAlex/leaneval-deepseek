@@ -43,9 +43,73 @@ private def Xk (k : ℕ) : Iv :=
 private def sideOK (k : ℕ) : Bool :=
   decide ((0 : ℤ) ≤ (Xk k).lo) && decide ((Xk k).hi.toNat * SC.toNat < 2 ^ 70)
 
-set_option maxHeartbeats 8000000 in
 set_option maxRecDepth 1000000 in
-private lemma sideOK_all : (List.range 245).all sideOK = true := by decide
+private lemma sideOK_p0 : ∀ k < 16, 0 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p1 : ∀ k < 32, 16 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p2 : ∀ k < 48, 32 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p3 : ∀ k < 64, 48 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p4 : ∀ k < 80, 64 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p5 : ∀ k < 96, 80 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p6 : ∀ k < 112, 96 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p7 : ∀ k < 128, 112 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p8 : ∀ k < 144, 128 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p9 : ∀ k < 160, 144 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p10 : ∀ k < 176, 160 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p11 : ∀ k < 192, 176 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p12 : ∀ k < 208, 192 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p13 : ∀ k < 224, 208 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p14 : ∀ k < 240, 224 ≤ k → sideOK k = true := by decide +kernel
+set_option maxRecDepth 1000000 in
+private lemma sideOK_p15 : ∀ k < 245, 240 ≤ k → sideOK k = true := by decide +kernel
+private lemma sideOK_all : (List.range 245).all sideOK = true := by
+  rw [List.all_eq_true]
+  intro k hk
+  have hk' := List.mem_range.mp hk
+  by_cases h0 : k < 16
+  · exact sideOK_p0 k h0 (by omega)
+  by_cases h1 : k < 32
+  · exact sideOK_p1 k h1 (by omega)
+  by_cases h2 : k < 48
+  · exact sideOK_p2 k h2 (by omega)
+  by_cases h3 : k < 64
+  · exact sideOK_p3 k h3 (by omega)
+  by_cases h4 : k < 80
+  · exact sideOK_p4 k h4 (by omega)
+  by_cases h5 : k < 96
+  · exact sideOK_p5 k h5 (by omega)
+  by_cases h6 : k < 112
+  · exact sideOK_p6 k h6 (by omega)
+  by_cases h7 : k < 128
+  · exact sideOK_p7 k h7 (by omega)
+  by_cases h8 : k < 144
+  · exact sideOK_p8 k h8 (by omega)
+  by_cases h9 : k < 160
+  · exact sideOK_p9 k h9 (by omega)
+  by_cases h10 : k < 176
+  · exact sideOK_p10 k h10 (by omega)
+  by_cases h11 : k < 192
+  · exact sideOK_p11 k h11 (by omega)
+  by_cases h12 : k < 208
+  · exact sideOK_p12 k h12 (by omega)
+  by_cases h13 : k < 224
+  · exact sideOK_p13 k h13 (by omega)
+  by_cases h14 : k < 240
+  · exact sideOK_p14 k h14 (by omega)
+  exact sideOK_p15 k hk' (by omega)
 
 /-! ## Algebraic reductions -/
 
