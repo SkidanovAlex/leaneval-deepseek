@@ -52,9 +52,18 @@ def ssPar (n : ℕ) : List ℕ :=
 /-- A round bound `≥ 2^{70 000 000} > Qall`. -/
 def KB : ℕ := 2 ^ (2 ^ 40)
 
-/-- The threshold of the area: `n ≥ n₁ = 2^(2^40 · 8d)`.  Written as a single power (rather than
-`KB ^ (8d)`) so that the kernel never has to *evaluate* a tower of exponentials. -/
-def n1 : ℕ := 2 ^ (2 ^ 40 * 8 * D)
+/-- The value of `n₁` sealed behind an `opaque` subtype.  A closed power `2 ^ (2^40 · 8d)` must never be
+compared with anything by delta-unfolding: Lean's kernel then *refuses* to evaluate `Nat.pow` (exponent ≥ 2^32),
+and the external checker nanoda *does* evaluate it (a `2^(1.5·10^16)`-bit number; this aborted the LeanEval
+comparator with a 256 GiB allocation).  Through the opaque, `n1` unfolds only to `n1Sealed.1`, and the value is
+available as the propositional equation `n1_eq`. -/
+opaque n1Sealed : {x : ℕ // x = 2 ^ (2 ^ 40 * 8 * D)} := ⟨_, rfl⟩
+
+/-- The threshold of the area: `n ≥ n₁ = 2^(2^40 · 8d)` (see `n1_eq`). -/
+def n1 : ℕ := n1Sealed.1
+
+/-- `n₁ = 2^(2^40 · 8d)`, as an equation (never by `rfl`). -/
+theorem n1_eq : n1 = 2 ^ (2 ^ 40 * 8 * D) := n1Sealed.2
 
 /-- A bound for the *sizes* (not values) of every constant met in the program:
 `2 ^ (2^41) + 16` dominates `KB ^ 2 = 2 ^ (2^41)` and all its factors. -/
