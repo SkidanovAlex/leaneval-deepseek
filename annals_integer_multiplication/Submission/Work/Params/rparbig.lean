@@ -24,10 +24,11 @@ concrete).  Since `n₁ = 2^(2^40·8·d)` has such an exponent, all the argument
   (where `E` is related to `n₁` by the hypothesis `n₁ = 2^E`);
 * `krpar_ge_aux` converts that into `2^27 ≤ krpar n`.
 
-The only place where a concrete huge exponent has to be touched is the definitional identity
-`n₁ = 2^(2^40·8·d)`.  In the main proof it is stated as `n1 = 2^E` where `E` is a *local* `let`
-for `2^40·8·d`: from the kernel's point of view the exponent is then a variable, so the kernel
-never has to evaluate a concrete `Nat.pow` with a huge exponent (which it refuses to do).
+The only place where a concrete huge exponent has to be touched is the identity
+`n₁ = 2^(2^40·8·d)`.  It is the *propositional* equation `n1_eq` (`n1` is sealed behind an opaque,
+see `defs`); the main proof generalises the exponent to a variable `E` with `n1 = 2^E`, so no
+kernel ever compares `n1` with a closed power by unfolding (Lean's kernel refuses to evaluate such a
+`Nat.pow`, and nanoda would evaluate it).
 -/
 
 set_option autoImplicit false
@@ -311,9 +312,8 @@ theorem rparbig (n : ℕ) (hn : Work.Params.n1 ≤ n) :
     8 * HvdH.D * (Work.Params.Ffac * Work.Params.Qall + Work.Params.Ffac * HvdH.D + 1) ≤ HvdH.rpar n ∧
     4 * HvdH.D * (1 + 2 * Work.Params.Ffac * Work.Params.Qall + 2 * Work.Params.Ffac * HvdH.D) ≤ HvdH.rpar n ∧
     1 ≤ Work.Params.krpar n ∧ 1 ≤ HvdH.kTpar n ∧ Work.Params.dpar n ≤ HvdH.D := by
-  have h_exp : 2 * (2 ^ 38 - 3) + 2 ≤ 2 ^ 40 * 8 * D := by norm_num [HvdH.D]
-  let E : ℕ := 2 ^ 40 * 8 * D
-  have hE : n1 = 2 ^ E := rfl
+  obtain ⟨E, hE, hEdef⟩ : ∃ E : ℕ, n1 = 2 ^ E ∧ E = 2 ^ 40 * 8 * D := ⟨_, n1_eq, rfl⟩
+  have h_exp : 2 * (2 ^ 38 - 3) + 2 ≤ E := by rw [hEdef]; norm_num [HvdH.D]
   have hkT : 2 ^ 38 - 2 ≤ HvdH.kTpar n := kT_ge_aux E (2 ^ 38 - 3) hE n hn h_exp
   have hkr : 2 ^ 27 ≤ krpar n := krpar_ge_aux n hkT
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
