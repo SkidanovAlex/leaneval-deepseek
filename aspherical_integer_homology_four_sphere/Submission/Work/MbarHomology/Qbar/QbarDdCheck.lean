@@ -62,11 +62,311 @@ theorem facetComplete_all : ∀ e : Fin 865, (Flist e).toFinset = qFacet e := by
   · exact facetComplete_all_c2 e (by omega) h2
   exact facetComplete_all_c3 e (by omega)
 
-theorem coefChk_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
-theorem coefChk_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
-theorem coefChk_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
-theorem coefChk_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
-theorem coefChk_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
+theorem coefChk_chunk_0_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefChk_chunk_0_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefChk_chunk_0_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefChk_chunk_0_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefChk_chunk_0_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefChk_chunk_0_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefChk_chunk_0_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefChk_chunk_0_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefChk_chunk_0_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefChk_chunk_0_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefChk_chunk_0_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefChk_chunk_0_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefChk_chunk_0_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefChk_chunk_0_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefChk_chunk_0_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefChk_chunk_0_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefChk_chunk_0_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefChk_chunk_0_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefChk_chunk_0_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefChk_chunk_0_c18 e (by omega) h18
+  exact coefChk_chunk_0_c19 e (by omega)
+theorem coefChk_chunk_1_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefChk_chunk_1_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefChk_chunk_1_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefChk_chunk_1_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefChk_chunk_1_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefChk_chunk_1_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefChk_chunk_1_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefChk_chunk_1_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefChk_chunk_1_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefChk_chunk_1_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefChk_chunk_1_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefChk_chunk_1_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefChk_chunk_1_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefChk_chunk_1_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefChk_chunk_1_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefChk_chunk_1_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefChk_chunk_1_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefChk_chunk_1_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefChk_chunk_1_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefChk_chunk_1_c18 e (by omega) h18
+  exact coefChk_chunk_1_c19 e (by omega)
+theorem coefChk_chunk_2_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefChk_chunk_2_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefChk_chunk_2_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefChk_chunk_2_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefChk_chunk_2_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefChk_chunk_2_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefChk_chunk_2_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefChk_chunk_2_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefChk_chunk_2_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefChk_chunk_2_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefChk_chunk_2_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefChk_chunk_2_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefChk_chunk_2_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefChk_chunk_2_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefChk_chunk_2_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefChk_chunk_2_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefChk_chunk_2_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefChk_chunk_2_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefChk_chunk_2_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefChk_chunk_2_c18 e (by omega) h18
+  exact coefChk_chunk_2_c19 e (by omega)
+theorem coefChk_chunk_3_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefChk_chunk_3_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefChk_chunk_3_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefChk_chunk_3_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefChk_chunk_3_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefChk_chunk_3_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefChk_chunk_3_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefChk_chunk_3_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefChk_chunk_3_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefChk_chunk_3_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefChk_chunk_3_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefChk_chunk_3_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefChk_chunk_3_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefChk_chunk_3_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefChk_chunk_3_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefChk_chunk_3_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefChk_chunk_3_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefChk_chunk_3_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefChk_chunk_3_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefChk_chunk_3_c18 e (by omega) h18
+  exact coefChk_chunk_3_c19 e (by omega)
+theorem coefChk_chunk_4_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true) := by decide +kernel
+theorem coefChk_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefChk_chunk_4_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefChk_chunk_4_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefChk_chunk_4_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefChk_chunk_4_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefChk_chunk_4_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefChk_chunk_4_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefChk_chunk_4_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefChk_chunk_4_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefChk_chunk_4_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefChk_chunk_4_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefChk_chunk_4_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefChk_chunk_4_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefChk_chunk_4_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefChk_chunk_4_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefChk_chunk_4_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefChk_chunk_4_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefChk_chunk_4_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefChk_chunk_4_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefChk_chunk_4_c18 e (by omega) h18
+  exact coefChk_chunk_4_c19 e (by omega)
 
 theorem coefChk_all : ∀ e : Fin 865, (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
   intro e
@@ -84,11 +384,311 @@ theorem coefChk_all : ∀ e : Fin 865, (Slist e).all (fun g => decide (ddTab e g
         ·
           exact coefChk_chunk_4 e e.2 k4
 
-theorem coefComplete_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide +kernel
-theorem coefComplete_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide +kernel
-theorem coefComplete_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e := by decide +kernel
-theorem coefComplete_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e := by decide +kernel
-theorem coefComplete_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e := by decide +kernel
+theorem coefComplete_chunk_0_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefComplete_chunk_0_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefComplete_chunk_0_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefComplete_chunk_0_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefComplete_chunk_0_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefComplete_chunk_0_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefComplete_chunk_0_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefComplete_chunk_0_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefComplete_chunk_0_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefComplete_chunk_0_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefComplete_chunk_0_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefComplete_chunk_0_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefComplete_chunk_0_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefComplete_chunk_0_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefComplete_chunk_0_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefComplete_chunk_0_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefComplete_chunk_0_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefComplete_chunk_0_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefComplete_chunk_0_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefComplete_chunk_0_c18 e (by omega) h18
+  exact coefComplete_chunk_0_c19 e (by omega)
+theorem coefComplete_chunk_1_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefComplete_chunk_1_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefComplete_chunk_1_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefComplete_chunk_1_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefComplete_chunk_1_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefComplete_chunk_1_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefComplete_chunk_1_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefComplete_chunk_1_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefComplete_chunk_1_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefComplete_chunk_1_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefComplete_chunk_1_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefComplete_chunk_1_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefComplete_chunk_1_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefComplete_chunk_1_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefComplete_chunk_1_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefComplete_chunk_1_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefComplete_chunk_1_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefComplete_chunk_1_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefComplete_chunk_1_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefComplete_chunk_1_c18 e (by omega) h18
+  exact coefComplete_chunk_1_c19 e (by omega)
+theorem coefComplete_chunk_2_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefComplete_chunk_2_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefComplete_chunk_2_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefComplete_chunk_2_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefComplete_chunk_2_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefComplete_chunk_2_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefComplete_chunk_2_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefComplete_chunk_2_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefComplete_chunk_2_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefComplete_chunk_2_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefComplete_chunk_2_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefComplete_chunk_2_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefComplete_chunk_2_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefComplete_chunk_2_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefComplete_chunk_2_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefComplete_chunk_2_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefComplete_chunk_2_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefComplete_chunk_2_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefComplete_chunk_2_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefComplete_chunk_2_c18 e (by omega) h18
+  exact coefComplete_chunk_2_c19 e (by omega)
+theorem coefComplete_chunk_3_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefComplete_chunk_3_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefComplete_chunk_3_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefComplete_chunk_3_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefComplete_chunk_3_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefComplete_chunk_3_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefComplete_chunk_3_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefComplete_chunk_3_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefComplete_chunk_3_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefComplete_chunk_3_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefComplete_chunk_3_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefComplete_chunk_3_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefComplete_chunk_3_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefComplete_chunk_3_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefComplete_chunk_3_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefComplete_chunk_3_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefComplete_chunk_3_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefComplete_chunk_3_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefComplete_chunk_3_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefComplete_chunk_3_c18 e (by omega) h18
+  exact coefComplete_chunk_3_c19 e (by omega)
+theorem coefComplete_chunk_4_c0 : ∀ (e : Fin 865), 0 ≤ e.val → e.val < 45 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c1 : ∀ (e : Fin 865), 45 ≤ e.val → e.val < 90 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c2 : ∀ (e : Fin 865), 90 ≤ e.val → e.val < 135 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c3 : ∀ (e : Fin 865), 135 ≤ e.val → e.val < 180 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c4 : ∀ (e : Fin 865), 180 ≤ e.val → e.val < 225 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c5 : ∀ (e : Fin 865), 225 ≤ e.val → e.val < 270 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c6 : ∀ (e : Fin 865), 270 ≤ e.val → e.val < 315 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c7 : ∀ (e : Fin 865), 315 ≤ e.val → e.val < 360 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c8 : ∀ (e : Fin 865), 360 ≤ e.val → e.val < 405 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c9 : ∀ (e : Fin 865), 405 ≤ e.val → e.val < 450 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c10 : ∀ (e : Fin 865), 450 ≤ e.val → e.val < 495 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c11 : ∀ (e : Fin 865), 495 ≤ e.val → e.val < 540 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c12 : ∀ (e : Fin 865), 540 ≤ e.val → e.val < 585 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c13 : ∀ (e : Fin 865), 585 ≤ e.val → e.val < 630 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c14 : ∀ (e : Fin 865), 630 ≤ e.val → e.val < 675 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c15 : ∀ (e : Fin 865), 675 ≤ e.val → e.val < 720 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c16 : ∀ (e : Fin 865), 720 ≤ e.val → e.val < 765 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c17 : ∀ (e : Fin 865), 765 ≤ e.val → e.val < 810 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c18 : ∀ (e : Fin 865), 810 ≤ e.val → e.val < 855 → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4_c19 : ∀ (e : Fin 865), 855 ≤ e.val → ((e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e) := by decide +kernel
+theorem coefComplete_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e := by
+  intro e
+  by_cases h0 : e.val < 45
+  · exact coefComplete_chunk_4_c0 e (by omega) h0
+  by_cases h1 : e.val < 90
+  · exact coefComplete_chunk_4_c1 e (by omega) h1
+  by_cases h2 : e.val < 135
+  · exact coefComplete_chunk_4_c2 e (by omega) h2
+  by_cases h3 : e.val < 180
+  · exact coefComplete_chunk_4_c3 e (by omega) h3
+  by_cases h4 : e.val < 225
+  · exact coefComplete_chunk_4_c4 e (by omega) h4
+  by_cases h5 : e.val < 270
+  · exact coefComplete_chunk_4_c5 e (by omega) h5
+  by_cases h6 : e.val < 315
+  · exact coefComplete_chunk_4_c6 e (by omega) h6
+  by_cases h7 : e.val < 360
+  · exact coefComplete_chunk_4_c7 e (by omega) h7
+  by_cases h8 : e.val < 405
+  · exact coefComplete_chunk_4_c8 e (by omega) h8
+  by_cases h9 : e.val < 450
+  · exact coefComplete_chunk_4_c9 e (by omega) h9
+  by_cases h10 : e.val < 495
+  · exact coefComplete_chunk_4_c10 e (by omega) h10
+  by_cases h11 : e.val < 540
+  · exact coefComplete_chunk_4_c11 e (by omega) h11
+  by_cases h12 : e.val < 585
+  · exact coefComplete_chunk_4_c12 e (by omega) h12
+  by_cases h13 : e.val < 630
+  · exact coefComplete_chunk_4_c13 e (by omega) h13
+  by_cases h14 : e.val < 675
+  · exact coefComplete_chunk_4_c14 e (by omega) h14
+  by_cases h15 : e.val < 720
+  · exact coefComplete_chunk_4_c15 e (by omega) h15
+  by_cases h16 : e.val < 765
+  · exact coefComplete_chunk_4_c16 e (by omega) h16
+  by_cases h17 : e.val < 810
+  · exact coefComplete_chunk_4_c17 e (by omega) h17
+  by_cases h18 : e.val < 855
+  · exact coefComplete_chunk_4_c18 e (by omega) h18
+  exact coefComplete_chunk_4_c19 e (by omega)
 
 theorem coefComplete_all : ∀ e : Fin 865, (Slist e).toFinset = Sset e := by
   intro e
