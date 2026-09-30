@@ -61,14 +61,163 @@ lemma boxSideChk_sound : ∀ (a n : ℕ), boxSideChk a n = true →
       subst this
       exact boxSideOKb_sound h1'
 
-/-- Chunk `0 … 255`. -/
-lemma boxSideChk_0 : boxSideChk 0 256 = true := by decide +kernel
-/-- Chunk `256 … 511`. -/
-lemma boxSideChk_1 : boxSideChk 256 256 = true := by decide +kernel
-/-- Chunk `512 … 767`. -/
-lemma boxSideChk_2 : boxSideChk 512 256 = true := by decide +kernel
-/-- Chunk `768 … 1024`. -/
-lemma boxSideChk_3 : boxSideChk 768 257 = true := by decide +kernel
+/-- splitting a `boxSideChk` range (nanoda memory: each piece is its own small kernel check). -/
+lemma boxSideChk_add (a m : ℕ) : ∀ n, boxSideChk a (m + n) = (boxSideChk (a + m) n && boxSideChk a m)
+  | 0 => by simp [boxSideChk]
+  | n + 1 => by
+      show boxSideChk a ((m + n) + 1) = (boxSideChk (a + m) (n + 1) && boxSideChk a m)
+      simp only [boxSideChk, boxSideChk_add a m n, Nat.add_assoc, Bool.and_assoc]
+
+lemma boxSideChk_blocks (a : ℕ) : ∀ q, (∀ i < q, boxSideChk (a + 16 * i) 16 = true) → boxSideChk a (16 * q) = true
+  | 0, _ => rfl
+  | q + 1, h => by
+      rw [show 16 * (q + 1) = 16 * q + 16 by ring, boxSideChk_add, h q (by omega),
+        boxSideChk_blocks a q (fun i hi => h i (by omega))]
+      rfl
+
+lemma boxSideChk_0p0 : boxSideChk 0 16 = true := by decide +kernel
+lemma boxSideChk_0p1 : boxSideChk 16 16 = true := by decide +kernel
+lemma boxSideChk_0p2 : boxSideChk 32 16 = true := by decide +kernel
+lemma boxSideChk_0p3 : boxSideChk 48 16 = true := by decide +kernel
+lemma boxSideChk_0p4 : boxSideChk 64 16 = true := by decide +kernel
+lemma boxSideChk_0p5 : boxSideChk 80 16 = true := by decide +kernel
+lemma boxSideChk_0p6 : boxSideChk 96 16 = true := by decide +kernel
+lemma boxSideChk_0p7 : boxSideChk 112 16 = true := by decide +kernel
+lemma boxSideChk_0p8 : boxSideChk 128 16 = true := by decide +kernel
+lemma boxSideChk_0p9 : boxSideChk 144 16 = true := by decide +kernel
+lemma boxSideChk_0p10 : boxSideChk 160 16 = true := by decide +kernel
+lemma boxSideChk_0p11 : boxSideChk 176 16 = true := by decide +kernel
+lemma boxSideChk_0p12 : boxSideChk 192 16 = true := by decide +kernel
+lemma boxSideChk_0p13 : boxSideChk 208 16 = true := by decide +kernel
+lemma boxSideChk_0p14 : boxSideChk 224 16 = true := by decide +kernel
+lemma boxSideChk_0p15 : boxSideChk 240 16 = true := by decide +kernel
+lemma boxSideChk_0 : boxSideChk 0 256 = true :=
+  boxSideChk_blocks 0 16 (fun i hi => match i, hi with
+    | 0, _ => boxSideChk_0p0
+    | 1, _ => boxSideChk_0p1
+    | 2, _ => boxSideChk_0p2
+    | 3, _ => boxSideChk_0p3
+    | 4, _ => boxSideChk_0p4
+    | 5, _ => boxSideChk_0p5
+    | 6, _ => boxSideChk_0p6
+    | 7, _ => boxSideChk_0p7
+    | 8, _ => boxSideChk_0p8
+    | 9, _ => boxSideChk_0p9
+    | 10, _ => boxSideChk_0p10
+    | 11, _ => boxSideChk_0p11
+    | 12, _ => boxSideChk_0p12
+    | 13, _ => boxSideChk_0p13
+    | 14, _ => boxSideChk_0p14
+    | 15, _ => boxSideChk_0p15
+    | _ + 16, h => absurd h (by omega))
+lemma boxSideChk_1p0 : boxSideChk 256 16 = true := by decide +kernel
+lemma boxSideChk_1p1 : boxSideChk 272 16 = true := by decide +kernel
+lemma boxSideChk_1p2 : boxSideChk 288 16 = true := by decide +kernel
+lemma boxSideChk_1p3 : boxSideChk 304 16 = true := by decide +kernel
+lemma boxSideChk_1p4 : boxSideChk 320 16 = true := by decide +kernel
+lemma boxSideChk_1p5 : boxSideChk 336 16 = true := by decide +kernel
+lemma boxSideChk_1p6 : boxSideChk 352 16 = true := by decide +kernel
+lemma boxSideChk_1p7 : boxSideChk 368 16 = true := by decide +kernel
+lemma boxSideChk_1p8 : boxSideChk 384 16 = true := by decide +kernel
+lemma boxSideChk_1p9 : boxSideChk 400 16 = true := by decide +kernel
+lemma boxSideChk_1p10 : boxSideChk 416 16 = true := by decide +kernel
+lemma boxSideChk_1p11 : boxSideChk 432 16 = true := by decide +kernel
+lemma boxSideChk_1p12 : boxSideChk 448 16 = true := by decide +kernel
+lemma boxSideChk_1p13 : boxSideChk 464 16 = true := by decide +kernel
+lemma boxSideChk_1p14 : boxSideChk 480 16 = true := by decide +kernel
+lemma boxSideChk_1p15 : boxSideChk 496 16 = true := by decide +kernel
+lemma boxSideChk_1 : boxSideChk 256 256 = true :=
+  boxSideChk_blocks 256 16 (fun i hi => match i, hi with
+    | 0, _ => boxSideChk_1p0
+    | 1, _ => boxSideChk_1p1
+    | 2, _ => boxSideChk_1p2
+    | 3, _ => boxSideChk_1p3
+    | 4, _ => boxSideChk_1p4
+    | 5, _ => boxSideChk_1p5
+    | 6, _ => boxSideChk_1p6
+    | 7, _ => boxSideChk_1p7
+    | 8, _ => boxSideChk_1p8
+    | 9, _ => boxSideChk_1p9
+    | 10, _ => boxSideChk_1p10
+    | 11, _ => boxSideChk_1p11
+    | 12, _ => boxSideChk_1p12
+    | 13, _ => boxSideChk_1p13
+    | 14, _ => boxSideChk_1p14
+    | 15, _ => boxSideChk_1p15
+    | _ + 16, h => absurd h (by omega))
+lemma boxSideChk_2p0 : boxSideChk 512 16 = true := by decide +kernel
+lemma boxSideChk_2p1 : boxSideChk 528 16 = true := by decide +kernel
+lemma boxSideChk_2p2 : boxSideChk 544 16 = true := by decide +kernel
+lemma boxSideChk_2p3 : boxSideChk 560 16 = true := by decide +kernel
+lemma boxSideChk_2p4 : boxSideChk 576 16 = true := by decide +kernel
+lemma boxSideChk_2p5 : boxSideChk 592 16 = true := by decide +kernel
+lemma boxSideChk_2p6 : boxSideChk 608 16 = true := by decide +kernel
+lemma boxSideChk_2p7 : boxSideChk 624 16 = true := by decide +kernel
+lemma boxSideChk_2p8 : boxSideChk 640 16 = true := by decide +kernel
+lemma boxSideChk_2p9 : boxSideChk 656 16 = true := by decide +kernel
+lemma boxSideChk_2p10 : boxSideChk 672 16 = true := by decide +kernel
+lemma boxSideChk_2p11 : boxSideChk 688 16 = true := by decide +kernel
+lemma boxSideChk_2p12 : boxSideChk 704 16 = true := by decide +kernel
+lemma boxSideChk_2p13 : boxSideChk 720 16 = true := by decide +kernel
+lemma boxSideChk_2p14 : boxSideChk 736 16 = true := by decide +kernel
+lemma boxSideChk_2p15 : boxSideChk 752 16 = true := by decide +kernel
+lemma boxSideChk_2 : boxSideChk 512 256 = true :=
+  boxSideChk_blocks 512 16 (fun i hi => match i, hi with
+    | 0, _ => boxSideChk_2p0
+    | 1, _ => boxSideChk_2p1
+    | 2, _ => boxSideChk_2p2
+    | 3, _ => boxSideChk_2p3
+    | 4, _ => boxSideChk_2p4
+    | 5, _ => boxSideChk_2p5
+    | 6, _ => boxSideChk_2p6
+    | 7, _ => boxSideChk_2p7
+    | 8, _ => boxSideChk_2p8
+    | 9, _ => boxSideChk_2p9
+    | 10, _ => boxSideChk_2p10
+    | 11, _ => boxSideChk_2p11
+    | 12, _ => boxSideChk_2p12
+    | 13, _ => boxSideChk_2p13
+    | 14, _ => boxSideChk_2p14
+    | 15, _ => boxSideChk_2p15
+    | _ + 16, h => absurd h (by omega))
+lemma boxSideChk_3p0 : boxSideChk 768 16 = true := by decide +kernel
+lemma boxSideChk_3p1 : boxSideChk 784 16 = true := by decide +kernel
+lemma boxSideChk_3p2 : boxSideChk 800 16 = true := by decide +kernel
+lemma boxSideChk_3p3 : boxSideChk 816 16 = true := by decide +kernel
+lemma boxSideChk_3p4 : boxSideChk 832 16 = true := by decide +kernel
+lemma boxSideChk_3p5 : boxSideChk 848 16 = true := by decide +kernel
+lemma boxSideChk_3p6 : boxSideChk 864 16 = true := by decide +kernel
+lemma boxSideChk_3p7 : boxSideChk 880 16 = true := by decide +kernel
+lemma boxSideChk_3p8 : boxSideChk 896 16 = true := by decide +kernel
+lemma boxSideChk_3p9 : boxSideChk 912 16 = true := by decide +kernel
+lemma boxSideChk_3p10 : boxSideChk 928 16 = true := by decide +kernel
+lemma boxSideChk_3p11 : boxSideChk 944 16 = true := by decide +kernel
+lemma boxSideChk_3p12 : boxSideChk 960 16 = true := by decide +kernel
+lemma boxSideChk_3p13 : boxSideChk 976 16 = true := by decide +kernel
+lemma boxSideChk_3p14 : boxSideChk 992 16 = true := by decide +kernel
+lemma boxSideChk_3p15 : boxSideChk 1008 16 = true := by decide +kernel
+lemma boxSideChk_3last : boxSideChk 1024 1 = true := by decide +kernel
+lemma boxSideChk_3 : boxSideChk 768 257 = true := by
+  rw [show (257 : ℕ) = 256 + 1 from rfl, boxSideChk_add, boxSideChk_3last,
+    (boxSideChk_blocks 768 16 (fun i hi => match i, hi with
+    | 0, _ => boxSideChk_3p0
+    | 1, _ => boxSideChk_3p1
+    | 2, _ => boxSideChk_3p2
+    | 3, _ => boxSideChk_3p3
+    | 4, _ => boxSideChk_3p4
+    | 5, _ => boxSideChk_3p5
+    | 6, _ => boxSideChk_3p6
+    | 7, _ => boxSideChk_3p7
+    | 8, _ => boxSideChk_3p8
+    | 9, _ => boxSideChk_3p9
+    | 10, _ => boxSideChk_3p10
+    | 11, _ => boxSideChk_3p11
+    | 12, _ => boxSideChk_3p12
+    | 13, _ => boxSideChk_3p13
+    | 14, _ => boxSideChk_3p14
+    | 15, _ => boxSideChk_3p15
+    | _ + 16, h => absurd h (by omega)) : boxSideChk 768 (16 * 16) = true)]
+  rfl
 
 lemma boxSide_ptOf (j : ℕ) (hj : j ≤ 1024) : BoxOK (ptOf j) := by
   rcases le_or_gt j 255 with h | h

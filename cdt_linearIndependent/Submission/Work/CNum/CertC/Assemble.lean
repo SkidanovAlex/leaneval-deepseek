@@ -17,7 +17,7 @@ set_option maxRecDepth 1000000
 
 
 /-- `Gv` agrees with the tabulated values. -/
-theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
+theorem Gv_eq_lit_p0 (k : ℕ) (h1 : 0 ≤ k) (h2 : k < 128) : Gv k = gvLitTab k := by
   interval_cases k
   · exact (bnd_0).1
   · exact (bnd_1).1
@@ -147,6 +147,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_125).1
   · exact (bnd_126).1
   · exact (bnd_127).1
+theorem Gv_eq_lit_p1 (k : ℕ) (h1 : 128 ≤ k) (h2 : k < 256) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_128).1
   · exact (bnd_129).1
   · exact (bnd_130).1
@@ -275,6 +277,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_253).1
   · exact (bnd_254).1
   · exact (bnd_255).1
+theorem Gv_eq_lit_p2 (k : ℕ) (h1 : 256 ≤ k) (h2 : k < 384) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_256).1
   · exact (bnd_257).1
   · exact (bnd_258).1
@@ -403,6 +407,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_381).1
   · exact (bnd_382).1
   · exact (bnd_383).1
+theorem Gv_eq_lit_p3 (k : ℕ) (h1 : 384 ≤ k) (h2 : k < 512) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_384).1
   · exact (bnd_385).1
   · exact (bnd_386).1
@@ -531,6 +537,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_509).1
   · exact (bnd_510).1
   · exact (bnd_511).1
+theorem Gv_eq_lit_p4 (k : ℕ) (h1 : 512 ≤ k) (h2 : k < 640) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_512).1
   · exact (bnd_513).1
   · exact (bnd_514).1
@@ -659,6 +667,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_637).1
   · exact (bnd_638).1
   · exact (bnd_639).1
+theorem Gv_eq_lit_p5 (k : ℕ) (h1 : 640 ≤ k) (h2 : k < 768) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_640).1
   · exact (bnd_641).1
   · exact (bnd_642).1
@@ -787,6 +797,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_765).1
   · exact (bnd_766).1
   · exact (bnd_767).1
+theorem Gv_eq_lit_p6 (k : ℕ) (h1 : 768 ≤ k) (h2 : k < 896) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_768).1
   · exact (bnd_769).1
   · exact (bnd_770).1
@@ -915,6 +927,8 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_893).1
   · exact (bnd_894).1
   · exact (bnd_895).1
+theorem Gv_eq_lit_p7 (k : ℕ) (h1 : 896 ≤ k) (h2 : k < 1024) : Gv k = gvLitTab k := by
+  interval_cases k
   · exact (bnd_896).1
   · exact (bnd_897).1
   · exact (bnd_898).1
@@ -1043,6 +1057,22 @@ theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
   · exact (bnd_1021).1
   · exact (bnd_1022).1
   · exact (bnd_1023).1
+theorem Gv_eq_lit (k : ℕ) (hk : k < 1024) : Gv k = gvLitTab k := by
+  by_cases h0 : k < 128
+  · exact Gv_eq_lit_p0 k (by omega) h0
+  by_cases h1 : k < 256
+  · exact Gv_eq_lit_p1 k (by omega) h1
+  by_cases h2 : k < 384
+  · exact Gv_eq_lit_p2 k (by omega) h2
+  by_cases h3 : k < 512
+  · exact Gv_eq_lit_p3 k (by omega) h3
+  by_cases h4 : k < 640
+  · exact Gv_eq_lit_p4 k (by omega) h4
+  by_cases h5 : k < 768
+  · exact Gv_eq_lit_p5 k (by omega) h5
+  by_cases h6 : k < 896
+  · exact Gv_eq_lit_p6 k (by omega) h6
+  exact Gv_eq_lit_p7 k (by omega) hk
 
 /-- The certified lower bound for `gv`. -/
 theorem gv_lb (k : ℕ) (hk : k < 1024) : LOG1E13LB ≤ gv k := by

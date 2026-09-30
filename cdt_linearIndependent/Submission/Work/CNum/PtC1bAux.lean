@@ -51,14 +51,156 @@ theorem W1b_eq (k : ℕ) : W1 k (-1) = W1b k := rfl
 
 theorem ptC1b_eq (k : ℕ) : ptC1b k = Cpx.mulr (W1b k) (ratIv 3 4) := rfl
 
-set_option maxHeartbeats 0 in
 set_option maxRecDepth 100000 in
-theorem X1b_lo_nonneg_all : ∀ k ∈ Finset.Icc 780 1024, 0 ≤ (X1b k).lo := by decide
+theorem X1b_lo_nonneg_all_p0 : ∀ k ∈ Finset.Icc 780 795, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p1 : ∀ k ∈ Finset.Icc 796 811, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p2 : ∀ k ∈ Finset.Icc 812 827, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p3 : ∀ k ∈ Finset.Icc 828 843, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p4 : ∀ k ∈ Finset.Icc 844 859, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p5 : ∀ k ∈ Finset.Icc 860 875, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p6 : ∀ k ∈ Finset.Icc 876 891, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p7 : ∀ k ∈ Finset.Icc 892 907, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p8 : ∀ k ∈ Finset.Icc 908 923, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p9 : ∀ k ∈ Finset.Icc 924 939, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p10 : ∀ k ∈ Finset.Icc 940 955, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p11 : ∀ k ∈ Finset.Icc 956 971, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p12 : ∀ k ∈ Finset.Icc 972 987, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p13 : ∀ k ∈ Finset.Icc 988 1003, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p14 : ∀ k ∈ Finset.Icc 1004 1019, 0 ≤ (X1b k).lo := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_lo_nonneg_all_p15 : ∀ k ∈ Finset.Icc 1020 1024, 0 ≤ (X1b k).lo := by decide +kernel
+theorem X1b_lo_nonneg_all : ∀ k ∈ Finset.Icc 780 1024, 0 ≤ (X1b k).lo := by
+  intro k hk
+  have hk' := Finset.mem_Icc.mp hk
+  by_cases h0 : k ≤ 795
+  · exact X1b_lo_nonneg_all_p0 k (Finset.mem_Icc.mpr ⟨by omega, h0⟩)
+  by_cases h1 : k ≤ 811
+  · exact X1b_lo_nonneg_all_p1 k (Finset.mem_Icc.mpr ⟨by omega, h1⟩)
+  by_cases h2 : k ≤ 827
+  · exact X1b_lo_nonneg_all_p2 k (Finset.mem_Icc.mpr ⟨by omega, h2⟩)
+  by_cases h3 : k ≤ 843
+  · exact X1b_lo_nonneg_all_p3 k (Finset.mem_Icc.mpr ⟨by omega, h3⟩)
+  by_cases h4 : k ≤ 859
+  · exact X1b_lo_nonneg_all_p4 k (Finset.mem_Icc.mpr ⟨by omega, h4⟩)
+  by_cases h5 : k ≤ 875
+  · exact X1b_lo_nonneg_all_p5 k (Finset.mem_Icc.mpr ⟨by omega, h5⟩)
+  by_cases h6 : k ≤ 891
+  · exact X1b_lo_nonneg_all_p6 k (Finset.mem_Icc.mpr ⟨by omega, h6⟩)
+  by_cases h7 : k ≤ 907
+  · exact X1b_lo_nonneg_all_p7 k (Finset.mem_Icc.mpr ⟨by omega, h7⟩)
+  by_cases h8 : k ≤ 923
+  · exact X1b_lo_nonneg_all_p8 k (Finset.mem_Icc.mpr ⟨by omega, h8⟩)
+  by_cases h9 : k ≤ 939
+  · exact X1b_lo_nonneg_all_p9 k (Finset.mem_Icc.mpr ⟨by omega, h9⟩)
+  by_cases h10 : k ≤ 955
+  · exact X1b_lo_nonneg_all_p10 k (Finset.mem_Icc.mpr ⟨by omega, h10⟩)
+  by_cases h11 : k ≤ 971
+  · exact X1b_lo_nonneg_all_p11 k (Finset.mem_Icc.mpr ⟨by omega, h11⟩)
+  by_cases h12 : k ≤ 987
+  · exact X1b_lo_nonneg_all_p12 k (Finset.mem_Icc.mpr ⟨by omega, h12⟩)
+  by_cases h13 : k ≤ 1003
+  · exact X1b_lo_nonneg_all_p13 k (Finset.mem_Icc.mpr ⟨by omega, h13⟩)
+  by_cases h14 : k ≤ 1019
+  · exact X1b_lo_nonneg_all_p14 k (Finset.mem_Icc.mpr ⟨by omega, h14⟩)
+  exact X1b_lo_nonneg_all_p15 k (Finset.mem_Icc.mpr ⟨by omega, hk'.2⟩)
 
-set_option maxHeartbeats 0 in
 set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p0 : ∀ k ∈ Finset.Icc 780 795,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p1 : ∀ k ∈ Finset.Icc 796 811,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p2 : ∀ k ∈ Finset.Icc 812 827,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p3 : ∀ k ∈ Finset.Icc 828 843,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p4 : ∀ k ∈ Finset.Icc 844 859,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p5 : ∀ k ∈ Finset.Icc 860 875,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p6 : ∀ k ∈ Finset.Icc 876 891,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p7 : ∀ k ∈ Finset.Icc 892 907,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p8 : ∀ k ∈ Finset.Icc 908 923,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p9 : ∀ k ∈ Finset.Icc 924 939,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p10 : ∀ k ∈ Finset.Icc 940 955,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p11 : ∀ k ∈ Finset.Icc 956 971,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p12 : ∀ k ∈ Finset.Icc 972 987,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p13 : ∀ k ∈ Finset.Icc 988 1003,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p14 : ∀ k ∈ Finset.Icc 1004 1019,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
+set_option maxRecDepth 100000 in
+theorem X1b_hi_all_p15 : ∀ k ∈ Finset.Icc 1020 1024,
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide +kernel
 theorem X1b_hi_all : ∀ k ∈ Finset.Icc 780 1024,
-    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by decide
+    (X1b k).hi.toNat * SC.toNat < 2 ^ 70 := by
+  intro k hk
+  have hk' := Finset.mem_Icc.mp hk
+  by_cases h0 : k ≤ 795
+  · exact X1b_hi_all_p0 k (Finset.mem_Icc.mpr ⟨by omega, h0⟩)
+  by_cases h1 : k ≤ 811
+  · exact X1b_hi_all_p1 k (Finset.mem_Icc.mpr ⟨by omega, h1⟩)
+  by_cases h2 : k ≤ 827
+  · exact X1b_hi_all_p2 k (Finset.mem_Icc.mpr ⟨by omega, h2⟩)
+  by_cases h3 : k ≤ 843
+  · exact X1b_hi_all_p3 k (Finset.mem_Icc.mpr ⟨by omega, h3⟩)
+  by_cases h4 : k ≤ 859
+  · exact X1b_hi_all_p4 k (Finset.mem_Icc.mpr ⟨by omega, h4⟩)
+  by_cases h5 : k ≤ 875
+  · exact X1b_hi_all_p5 k (Finset.mem_Icc.mpr ⟨by omega, h5⟩)
+  by_cases h6 : k ≤ 891
+  · exact X1b_hi_all_p6 k (Finset.mem_Icc.mpr ⟨by omega, h6⟩)
+  by_cases h7 : k ≤ 907
+  · exact X1b_hi_all_p7 k (Finset.mem_Icc.mpr ⟨by omega, h7⟩)
+  by_cases h8 : k ≤ 923
+  · exact X1b_hi_all_p8 k (Finset.mem_Icc.mpr ⟨by omega, h8⟩)
+  by_cases h9 : k ≤ 939
+  · exact X1b_hi_all_p9 k (Finset.mem_Icc.mpr ⟨by omega, h9⟩)
+  by_cases h10 : k ≤ 955
+  · exact X1b_hi_all_p10 k (Finset.mem_Icc.mpr ⟨by omega, h10⟩)
+  by_cases h11 : k ≤ 971
+  · exact X1b_hi_all_p11 k (Finset.mem_Icc.mpr ⟨by omega, h11⟩)
+  by_cases h12 : k ≤ 987
+  · exact X1b_hi_all_p12 k (Finset.mem_Icc.mpr ⟨by omega, h12⟩)
+  by_cases h13 : k ≤ 1003
+  · exact X1b_hi_all_p13 k (Finset.mem_Icc.mpr ⟨by omega, h13⟩)
+  by_cases h14 : k ≤ 1019
+  · exact X1b_hi_all_p14 k (Finset.mem_Icc.mpr ⟨by omega, h14⟩)
+  exact X1b_hi_all_p15 k (Finset.mem_Icc.mpr ⟨by omega, hk'.2⟩)
 
 /-- The radicand interval is nonnegative on the fourth arc. -/
 theorem X1b_lo_nonneg {k : ℕ} (h1 : 780 ≤ k) (h2 : k ≤ 1024) : 0 ≤ (X1b k).lo :=
