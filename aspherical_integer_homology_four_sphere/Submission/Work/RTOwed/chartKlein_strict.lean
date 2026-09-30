@@ -371,10 +371,34 @@ theorem ckBnd_le_ten (a : Fin 48) (k : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox 
 /-! ### The finite certificates at `σ = 1` -/
 
 /-- **Certificate**: the lower bound is non-negative. -/
-theorem ckBnd_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd a k := by decide +kernel
+theorem ckBnd_nonneg_c0 : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ a.val → a.val < 12 → (0 ≤ ckBnd a k) := by decide +kernel
+theorem ckBnd_nonneg_c1 : ∀ (a : Fin 48) (k : Fin 48), 12 ≤ a.val → a.val < 24 → (0 ≤ ckBnd a k) := by decide +kernel
+theorem ckBnd_nonneg_c2 : ∀ (a : Fin 48) (k : Fin 48), 24 ≤ a.val → a.val < 36 → (0 ≤ ckBnd a k) := by decide +kernel
+theorem ckBnd_nonneg_c3 : ∀ (a : Fin 48) (k : Fin 48), 36 ≤ a.val → (0 ≤ ckBnd a k) := by decide +kernel
+theorem ckBnd_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd a k := by
+  intro a k
+  by_cases h0 : a.val < 12
+  · exact ckBnd_nonneg_c0 a k (by omega) h0
+  by_cases h1 : a.val < 24
+  · exact ckBnd_nonneg_c1 a k (by omega) h1
+  by_cases h2 : a.val < 36
+  · exact ckBnd_nonneg_c2 a k (by omega) h2
+  exact ckBnd_nonneg_c3 a k (by omega)
 
 /-- **Certificate**: when the quadratic coefficient does not vanish, the lower bound is positive. -/
-theorem ckBnd_pos : ∀ (a : Fin 48) (k : Fin 48), ckQ0 a k ≠ 0 → 0 < ckBnd a k := by decide +kernel
+theorem ckBnd_pos_c0 : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ a.val → a.val < 12 → (ckQ0 a k ≠ 0 → 0 < ckBnd a k) := by decide +kernel
+theorem ckBnd_pos_c1 : ∀ (a : Fin 48) (k : Fin 48), 12 ≤ a.val → a.val < 24 → (ckQ0 a k ≠ 0 → 0 < ckBnd a k) := by decide +kernel
+theorem ckBnd_pos_c2 : ∀ (a : Fin 48) (k : Fin 48), 24 ≤ a.val → a.val < 36 → (ckQ0 a k ≠ 0 → 0 < ckBnd a k) := by decide +kernel
+theorem ckBnd_pos_c3 : ∀ (a : Fin 48) (k : Fin 48), 36 ≤ a.val → (ckQ0 a k ≠ 0 → 0 < ckBnd a k) := by decide +kernel
+theorem ckBnd_pos : ∀ (a : Fin 48) (k : Fin 48), ckQ0 a k ≠ 0 → 0 < ckBnd a k := by
+  intro a k
+  by_cases h0 : a.val < 12
+  · exact ckBnd_pos_c0 a k (by omega) h0
+  by_cases h1 : a.val < 24
+  · exact ckBnd_pos_c1 a k (by omega) h1
+  by_cases h2 : a.val < 36
+  · exact ckBnd_pos_c2 a k (by omega) h2
+  exact ckBnd_pos_c3 a k (by omega)
 
 /-- **Certificate**: when the quadratic coefficient vanishes (the walls), some linear coefficient
 does not. -/
@@ -447,7 +471,19 @@ def ckBnd2 (a : Fin 48) (k : Fin 48) : ℤ :=
   ckK2 a k + ∑ j : Fin 3, min (ckE2 a k j) 0
 
 /-- **Certificate**: the affine lower bound at the ceiling is non-negative. -/
-theorem ckBnd2_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd2 a k := by decide +kernel
+theorem ckBnd2_nonneg_c0 : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ a.val → a.val < 12 → (0 ≤ ckBnd2 a k) := by decide +kernel
+theorem ckBnd2_nonneg_c1 : ∀ (a : Fin 48) (k : Fin 48), 12 ≤ a.val → a.val < 24 → (0 ≤ ckBnd2 a k) := by decide +kernel
+theorem ckBnd2_nonneg_c2 : ∀ (a : Fin 48) (k : Fin 48), 24 ≤ a.val → a.val < 36 → (0 ≤ ckBnd2 a k) := by decide +kernel
+theorem ckBnd2_nonneg_c3 : ∀ (a : Fin 48) (k : Fin 48), 36 ≤ a.val → (0 ≤ ckBnd2 a k) := by decide +kernel
+theorem ckBnd2_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd2 a k := by
+  intro a k
+  by_cases h0 : a.val < 12
+  · exact ckBnd2_nonneg_c0 a k (by omega) h0
+  by_cases h1 : a.val < 24
+  · exact ckBnd2_nonneg_c1 a k (by omega) h1
+  by_cases h2 : a.val < 36
+  · exact ckBnd2_nonneg_c2 a k (by omega) h2
+  exact ckBnd2_nonneg_c3 a k (by omega)
 
 /-- **Non-negativity of the numerator at the ceiling.** -/
 theorem ckK_two_nonneg (a : Fin 48) (k : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox a) :
