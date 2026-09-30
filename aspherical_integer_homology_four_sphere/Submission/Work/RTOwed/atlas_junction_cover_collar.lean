@@ -36,7 +36,19 @@ layer is `jCollar_cover_fin`, which uses the uncut box.)
 -/
 import Mathlib
 import Submission.Work.RTOwed.FillAtlas
-import Submission.Work.RTOwed.jCollar_cover_fin
+import Submission.Work.RTOwed.FillBigDefs
+import Submission.Work.RTOwed.jCollarAux
+import Submission.Work.Cusp.radial_bounds
+import Submission.Work.Cusp.radial_half
+import Submission.Work.Cusp.u_mem
+import Submission.Work.Cusp.cuspInvOuter_ThetaOuter_half
+import Submission.Work.Cusp.cuspInvInner_ThetaPolar
+import Submission.Work.RTOwed.jRadial_window
+import Submission.Work.RTOwed.jW_cover
+import Submission.Work.RTOwed.jKx_cover
+import Submission.Work.RTOwed.jPin_cover
+import Submission.Work.RTOwed.jCoordM_inner
+import Submission.Work.RTOwed.jCoordM_collar
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

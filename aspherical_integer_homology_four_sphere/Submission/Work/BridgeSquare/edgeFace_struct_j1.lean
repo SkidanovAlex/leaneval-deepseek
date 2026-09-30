@@ -26,6 +26,6 @@ theorem edgeFace_struct_j1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.Bridge
     ∧ Work.BridgeSquare.edgeSign v 1 k * Work.MbarHomology.qInc (Work.BridgeSquare.edgeFace v 1 k)
           (Work.BridgeSquare.edgeW0Face v 1 k) = (if (v : ℕ) = 4 then -1 else 1) := by
   revert hk
-  fin_cases v <;> fin_cases k <;> decide
+  fin_cases v <;> fin_cases k <;> decide +kernel
 
 end Work.BridgeSquare

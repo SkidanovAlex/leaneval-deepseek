@@ -28,7 +28,6 @@ The two factors are treated separately.
 -/
 import Mathlib
 import Submission.Work.FoldInst.Voronoi
-import Submission.Work.FoldInst.mobiusKlein_image_ball
 import Submission.Work.FoldInst.foldTheta_injOn
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

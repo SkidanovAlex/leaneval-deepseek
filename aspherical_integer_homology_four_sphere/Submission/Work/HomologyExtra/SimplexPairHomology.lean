@@ -3,7 +3,8 @@ import ChallengeDeps
 import Submission.Work.HomologyExtra.Basic
 import Submission.Work.HomologyExtra.SimplexClass
 import Submission.Work.HomologyExtra.GeneratorReduction
-import Submission.Work.HomologyExtra.simplexBoundary_homology
+import Submission.Work.HomologyExtra.simplexNorthCap_contractible
+import Submission.Work.HomologyExtra.simplexSouthCap_contractible
 import Submission.Work.HomologyExtra.relHomology_simplexPair
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

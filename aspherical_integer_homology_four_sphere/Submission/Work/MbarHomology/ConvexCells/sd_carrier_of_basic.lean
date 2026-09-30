@@ -1,7 +1,10 @@
 import Mathlib
 import Submission.Work.ConvexCells.Basic
 import Submission.Work.ConvexCells.tightAt_flagPt
-import Submission.Work.ConvexCells.Main
+import Submission.Work.ConvexCells.FlagPt_mem
+import Submission.Work.ConvexCells.exists_exit
+import Submission.Work.ConvexCells.exists_flagPt
+import Submission.Work.ConvexCells.flagPt_unique
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

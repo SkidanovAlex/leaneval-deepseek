@@ -1,7 +1,12 @@
 
 import Submission.Work.RiemLib.IntrinsicVariation
 import Submission.Work.RiemLib.IndexIntrinsic3
-import Submission.Work.RiemLib.EnergyBound
+import Submission.Work.RiemLib.GlobalBM
+import Submission.Work.RiemLib.Commons.Analysis.Calculus.exists_lt_of_deriv_eq_zero_of_hasDerivAt_deriv_neg
+import Submission.Work.RiemLib.Commons.Analysis.Calculus.exists_lt_of_hasDerivAt_deriv_neg
+import Submission.Work.RiemLib.Minimal
+import Submission.Work.RiemLib.GeodesicSpeed
+import Submission.Work.RiemLib.Length
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

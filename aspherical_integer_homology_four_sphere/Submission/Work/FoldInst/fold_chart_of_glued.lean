@@ -1,6 +1,7 @@
 import Mathlib
 import Submission.Work.FoldInst.Basic
-import Submission.Work.Fold.FoldChart
+import Submission.Work.Fold.GlueDefs
+import Submission.Work.Fold.invFun_continuousOn
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

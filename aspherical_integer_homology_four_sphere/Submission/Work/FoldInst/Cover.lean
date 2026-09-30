@@ -66,10 +66,10 @@ theorem cover_source (x : Xbar) (hx : x ∉ Xtrunc) :
   rcases zmod2_eq_zero_or_one x.1 with hx0 | hx1
   · rcases zmod2_eq_zero_or_one (foldCr i r) with h0 | h0
     · exact ⟨i, r, key i r (by rw [h0, hx0]) hr⟩
-    · have hc' : foldCr (flipCopyI i (foldRepOf i r)) r' = x.1 := by rw [hcopy, h0, hx0]; decide
+    · have hc' : foldCr (flipCopyI i (foldRepOf i r)) r' = x.1 := by rw [hcopy, h0, hx0]; decide +kernel
       exact ⟨_, r', key _ r' hc' (fun S => (hr S).trans (hwalls S).symm)⟩
   · rcases zmod2_eq_zero_or_one (foldCr i r) with h0 | h0
-    · have hc' : foldCr (flipCopyI i (foldRepOf i r)) r' = x.1 := by rw [hcopy, h0, hx1]; decide
+    · have hc' : foldCr (flipCopyI i (foldRepOf i r)) r' = x.1 := by rw [hcopy, h0, hx1]; decide +kernel
       exact ⟨_, r', key _ r' hc' (fun S => (hr S).trans (hwalls S).symm)⟩
     · exact ⟨i, r, key i r (by rw [h0, hx1]) hr⟩
 

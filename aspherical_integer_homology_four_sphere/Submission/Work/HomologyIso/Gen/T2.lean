@@ -80,7 +80,8 @@ theorem t2BdCheck_two : FinChainCx.bdCheckDeg t2Dim t2Bd 2 = true := by decide
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem t2BdCheck (k : ℕ) (hk : k < 3) :
     FinChainCx.bdCheckDeg t2Dim t2Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [t2BdCheck_zero, t2BdCheck_one, t2BdCheck_two]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def t2Cx : FinChainCx where
@@ -196,28 +197,32 @@ theorem t2SDR_checkZ_one : t2SDR.checkZ 1 = true := by decide
 theorem t2SDR_checkZ_two : t2SDR.checkZ 2 = true := by decide
 
 theorem t2SDR_checkZ (k : ℕ) (hk : k < 3) : t2SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [t2SDR_checkZ_zero, t2SDR_checkZ_one, t2SDR_checkZ_two]
 
 theorem t2SDR_checkRho_zero : t2SDR.checkRho 0 = true := by decide
 theorem t2SDR_checkRho_one : t2SDR.checkRho 1 = true := by decide
 theorem t2SDR_checkRho_two : t2SDR.checkRho 2 = true := by decide
 
 theorem t2SDR_checkRho (k : ℕ) (hk : k < 3) : t2SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [t2SDR_checkRho_zero, t2SDR_checkRho_one, t2SDR_checkRho_two]
 
 theorem t2SDR_checkRhoZ_zero : t2SDR.checkRhoZ 0 = true := by decide
 theorem t2SDR_checkRhoZ_one : t2SDR.checkRhoZ 1 = true := by decide
 theorem t2SDR_checkRhoZ_two : t2SDR.checkRhoZ 2 = true := by decide
 
 theorem t2SDR_checkRhoZ (k : ℕ) (hk : k < 3) : t2SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [t2SDR_checkRhoZ_zero, t2SDR_checkRhoZ_one, t2SDR_checkRhoZ_two]
 
 theorem t2SDR_checkHom_zero : t2SDR.checkHom 0 = true := by decide
 theorem t2SDR_checkHom_one : t2SDR.checkHom 1 = true := by decide
 theorem t2SDR_checkHom_two : t2SDR.checkHom 2 = true := by decide
 
 theorem t2SDR_checkHom (k : ℕ) (hk : k < 3) : t2SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [t2SDR_checkHom_zero, t2SDR_checkHom_one, t2SDR_checkHom_two]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem t2SDR_check : t2SDR.check = true :=

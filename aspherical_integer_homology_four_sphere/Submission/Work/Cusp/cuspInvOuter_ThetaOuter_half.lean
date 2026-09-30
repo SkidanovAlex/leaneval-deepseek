@@ -14,7 +14,6 @@ parameter is `‖p‖∞` because `log` of the height is affine in the layer par
 denominator (here `β x ≤ 3/2 < s_J`), and `nrm p • bnd p = p` — are unchanged.
 -/
 import Mathlib
-import Submission.Work.Cusp.cuspInvOuter_ThetaOuter
 import Submission.Work.Cusp.Basic
 import Submission.Work.Cusp.bndOfU_u
 import Submission.Work.Cusp.smul_bnd

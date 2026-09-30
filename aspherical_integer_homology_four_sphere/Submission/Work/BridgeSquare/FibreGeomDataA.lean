@@ -11,9 +11,10 @@ are exactly the facets of the ridge.
 -/
 import Mathlib
 import Submission.Work.BridgeSquare.FibreData
-import Submission.Work.BridgeSquare.kleinPt_corner
-import Submission.Work.BridgeSquare.ChartAlgA
 import Submission.Work.Cusp.Data
+import Submission.Work.FoldInst.Basic
+import Submission.Work.RTOwed.cuspDev
+import Submission.Work.BridgeSquare.ChartAlgA
 import Submission.Work.MbarHomology.Mbar.mbarReal_exists
 
 set_option autoImplicit false
@@ -81,7 +82,7 @@ theorem posR_W0 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
   intro i
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
+      | (exfalso; revert hk; decide +kernel)
       | (fin_cases i <;>
           simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
             Work.RTOwed.kleinPt, Work.Cusp.cubeXToKlein, Work.Cusp.cubeXToKleinb,
@@ -102,7 +103,7 @@ theorem posR_W1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
   intro i
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
+      | (exfalso; revert hk; decide +kernel)
       | (fin_cases i <;>
           simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
             Work.RTOwed.kleinPt, Work.Cusp.cubeXToKlein, Work.Cusp.cubeXToKleinb,
@@ -122,7 +123,7 @@ theorem posR_mid (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
   intro i
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
+      | (exfalso; revert hk; decide +kernel)
       | (fin_cases i <;>
           simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
             Work.MbarHomology.qPos, Work.MbarHomology.QbarPD, Work.BridgeSquare.edgeFace,
@@ -136,8 +137,8 @@ theorem dim_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     Work.Subdivision.PolyCW.dim Work.MbarHomology.QbarCW (⟨edgeFace v 0 k⟩ : QbarCell) = 1 := by
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
-      | decide
+      | (exfalso; revert hk; decide +kernel)
+      | decide +kernel
 
 /-- The two vertices are exactly the facets of the ridge. -/
 theorem facets_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
@@ -145,16 +146,16 @@ theorem facets_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) 
       = {(⟨edgeW0Face v 0 k⟩ : QbarCell), (⟨edgeW1Face v 0 k⟩ : QbarCell)} := by
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
-      | decide
+      | (exfalso; revert hk; decide +kernel)
+      | decide +kernel
 
 /-- The incidence numbers of the two vertices of the ridge are opposite. -/
 theorem qInc_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     qInc (edgeFace v 0 k) (edgeW0Face v 0 k) = -qInc (edgeFace v 0 k) (edgeW1Face v 0 k) := by
   fin_cases v <;> fin_cases k <;>
     first
-      | (exfalso; revert hk; decide)
-      | decide
+      | (exfalso; revert hk; decide +kernel)
+      | decide +kernel
 
 end
 

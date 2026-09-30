@@ -50,7 +50,7 @@ theorem posR_facts_j1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.BridgeSquar
   · intro i
     fin_cases v <;> fin_cases k <;>
       first
-        | (exfalso; revert hk; decide)
+        | (exfalso; revert hk; decide +kernel)
         | (fin_cases i <;>
             simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
               Work.RTOwed.kleinPt, Work.Cusp.cubeXToKlein, Work.Cusp.cubeXToKleinb,
@@ -62,7 +62,7 @@ theorem posR_facts_j1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.BridgeSquar
   · intro i
     fin_cases v <;> fin_cases k <;>
       first
-        | (exfalso; revert hk; decide)
+        | (exfalso; revert hk; decide +kernel)
         | (fin_cases i <;>
             simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
               Work.RTOwed.kleinPt, Work.Cusp.cubeXToKlein, Work.Cusp.cubeXToKleinb,
@@ -76,7 +76,7 @@ theorem posR_facts_j1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.BridgeSquar
     intro i
     fin_cases v <;> fin_cases k <;>
       first
-        | (exfalso; revert hk; decide)
+        | (exfalso; revert hk; decide +kernel)
         | (fin_cases i <;>
             simp only [Work.ConvexCells.PolytopeData.posR, Work.ConvexCells.toE,
               Work.MbarHomology.qPos, Work.MbarHomology.QbarPD, Work.BridgeSquare.edgeFace,

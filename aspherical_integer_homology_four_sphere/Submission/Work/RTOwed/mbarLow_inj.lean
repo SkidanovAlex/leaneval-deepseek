@@ -2,7 +2,9 @@ import Mathlib
 import Submission.Work.RTOwed.cuspChartBeta
 import Submission.Work.RTOwed.cuspChartRegion
 import Submission.Work.RTOwed.chartKlein_strict
-import Submission.Work.RTOwed.mk_injOn_interior
+import Submission.Work.FoldInst.Quotient
+import Submission.Work.FoldInst.Atlas
+import Submission.Work.FoldInst.Polytope
 import Submission.Work.RTOwed.cuspCert.mbarPt_inj
 import Submission.Work.RTOwed.cuspCert.CuspSupport
 import Submission.Work.RTOwed.cuspCert.lattice_bridge

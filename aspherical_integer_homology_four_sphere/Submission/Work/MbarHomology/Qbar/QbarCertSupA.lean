@@ -29,16 +29,16 @@ abbrev HsupFace (f : Fin 865) : Prop :=
       ({empC1 f i, empC2 f i} : Finset (Fin 48)) ⊆ qTight f ∪ {i}
 
 theorem hsupChunk_0 : ∀ f : Fin 865, 0 ≤ (f : ℕ) → (f : ℕ) < 30 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_1 : ∀ f : Fin 865, 30 ≤ (f : ℕ) → (f : ℕ) < 60 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_2 : ∀ f : Fin 865, 60 ≤ (f : ℕ) → (f : ℕ) < 90 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_3 : ∀ f : Fin 865, 90 ≤ (f : ℕ) → (f : ℕ) < 120 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupUpto_30 : ∀ f : Fin 865, (f : ℕ) < 30 → HsupFace f :=
   fun f hf => hsupChunk_0 f (Nat.zero_le _) hf

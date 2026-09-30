@@ -51,7 +51,6 @@ open Submission.ChartConnection
 open Submission.ChartCurv
 open Submission.JacobiTensor
 open Submission.Rauch
-open Submission.RauchUpper
 open Submission.SecondVariation
 open Submission.SecondVar2
 open Submission.FlowJacobi

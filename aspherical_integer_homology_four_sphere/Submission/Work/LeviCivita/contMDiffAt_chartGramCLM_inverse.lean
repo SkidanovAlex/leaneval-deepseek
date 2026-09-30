@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LeviCivita.ChartMetric
 import Submission.Work.LeviCivita.contDiffAt_chartGramCLM
-import Submission.Work.LeviCivita.contDiffAt_inverse_of_posDef
 import Submission.Work.LeviCivita.isInvertible_of_posDef
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

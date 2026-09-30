@@ -39,8 +39,15 @@ import Submission.Work.Cusp.isOpenEmbedding_cuspTopF
 import Submission.Work.Cusp.isOpenMap_cuspTopUp
 import Submission.Work.Cusp.cuspCoordMTop_continuous
 import Submission.Work.Cusp.cuspCoordMTop_injective
-import Submission.Work.Cusp.isOpenEmbedding_cuspCoordM
 import Submission.Work.Cusp.CuspChartAux
+import Submission.Work.Cusp.cuspCoordM_continuous
+import Submission.Work.Cusp.cuspCoordM_injective
+import Submission.Work.Cusp.isOpenMap_fillProj
+import Submission.Work.Cusp.isOpenEmbedding_layerPtSq
+import Submission.Work.Cusp.CuspCollarAux
+import Submission.Work.Cusp.continuous_cuspCollarInv
+import Submission.Work.Cusp.collarHeight_half
+import Submission.Work.Space.Assembly
 import Submission.Work.Cusp.cuspTopUp_eq
 import Submission.Work.Cusp.cuspInvOuter_nrm_eq_one_ceilingTop
 

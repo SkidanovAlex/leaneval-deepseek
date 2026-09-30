@@ -2,7 +2,10 @@ import Mathlib
 import Submission.Work.DeltaHomology.CellClassMap
 import Submission.Work.DeltaHomology.cellClassMapCell_isIso
 import Submission.Work.DeltaHomology.relHomology_cell_splitting
-import Submission.Work.DeltaHomology.relHomology_skel_succ_goodPair
+import Submission.Work.DeltaHomology.CellData
+import Submission.Work.DeltaHomology.isIso_relHomologyMap_of_deformationRetract
+import Submission.Work.DeltaHomology.exists_deformationRetract_punctSkel
+import Submission.Work.Homology.Basic
 import Submission.Work.DeltaHomology.simplexGenMap_isIso
 import Submission.Work.HomologyExtra.Main
 import Submission.Work.DeltaHomology.relHomology_punctSkel_succ_iso

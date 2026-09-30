@@ -371,15 +371,15 @@ theorem ckBnd_le_ten (a : Fin 48) (k : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox 
 /-! ### The finite certificates at `σ = 1` -/
 
 /-- **Certificate**: the lower bound is non-negative. -/
-theorem ckBnd_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd a k := by decide
+theorem ckBnd_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd a k := by decide +kernel
 
 /-- **Certificate**: when the quadratic coefficient does not vanish, the lower bound is positive. -/
-theorem ckBnd_pos : ∀ (a : Fin 48) (k : Fin 48), ckQ0 a k ≠ 0 → 0 < ckBnd a k := by decide
+theorem ckBnd_pos : ∀ (a : Fin 48) (k : Fin 48), ckQ0 a k ≠ 0 → 0 < ckBnd a k := by decide +kernel
 
 /-- **Certificate**: when the quadratic coefficient vanishes (the walls), some linear coefficient
 does not. -/
 theorem ckL0_ne : ∀ (a : Fin 48) (k : Fin 48), ckQ0 a k = 0 → ∃ j : Fin 3, ckL0 a k j ≠ 0 := by
-  decide
+  decide +kernel
 
 /-- **Strict positivity of the numerator at `σ = 1`**, for `x` in the open cube. -/
 theorem ckK_one_pos (a : Fin 48) (k : Fin 48) {x : CuspE3}
@@ -447,7 +447,7 @@ def ckBnd2 (a : Fin 48) (k : Fin 48) : ℤ :=
   ckK2 a k + ∑ j : Fin 3, min (ckE2 a k j) 0
 
 /-- **Certificate**: the affine lower bound at the ceiling is non-negative. -/
-theorem ckBnd2_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd2 a k := by decide
+theorem ckBnd2_nonneg : ∀ (a : Fin 48) (k : Fin 48), 0 ≤ ckBnd2 a k := by decide +kernel
 
 /-- **Non-negativity of the numerator at the ceiling.** -/
 theorem ckK_two_nonneg (a : Fin 48) (k : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox a) :
@@ -515,10 +515,10 @@ def ckBnd4 (a : Fin 48) : ℤ :=
   ckM4 a + ∑ j : Fin 3, ckIntMin (ckQ4 a) (ckL4 a j)
 
 /-- **Certificate**: `Q₄` is positive at `σ = 1`. -/
-theorem ckBnd4_pos : ∀ (a : Fin 48), 0 < ckBnd4 a := by decide
+theorem ckBnd4_pos : ∀ (a : Fin 48), 0 < ckBnd4 a := by decide +kernel
 
 /-- **Certificate**: the coefficient of `σ` in `Q₄` is positive. -/
-theorem ckQ4_pos : ∀ (a : Fin 48), 0 < ckQ4 a := by decide
+theorem ckQ4_pos : ∀ (a : Fin 48), 0 < ckQ4 a := by decide +kernel
 
 /-- **`Q₄` is positive at `σ = 1`.** -/
 theorem ckQ_one_pos (a : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox a) : 0 < (ckQ a x 1) 4 := by

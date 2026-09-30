@@ -1,7 +1,8 @@
 import Mathlib
 import Submission.Work.Cusp.TopBox
 import Submission.Work.Cusp.TopLayer
-import Submission.Work.Cusp.mem_range_cuspCollarF
+import Submission.Work.Cusp.CuspCollarAux
+import Submission.Work.Cusp.collarHeight_half
 import Submission.Work.Cusp.cuspInvOuter_mem_SqTop
 import Submission.Work.Cusp.collarHeight_inv
 import Submission.Work.Cusp.outerU_cuspX

@@ -3,10 +3,11 @@ import Submission.Work.RTOwed.cuspChartBeta
 import Submission.Work.RTOwed.cuspChartRegion
 import Submission.Work.RTOwed.chartKlein_strict
 import Submission.Work.RTOwed.chartKlein_mem
-import Submission.Work.RTOwed.mk_injOn_interior
+import Submission.Work.FoldInst.Quotient
+import Submission.Work.FoldInst.Atlas
+import Submission.Work.FoldInst.Polytope
 import Submission.Work.RTOwed.chartKlein_wall
 import Submission.Work.RTOwed.cuspCertWalls
-import Submission.Work.FoldInst.Quotient
 import Submission.Work.RTOwed.cuspCert.mbarPt_continuous
 import Submission.Work.Cusp.Assembly
 import Submission.Work.Cusp.TopBox

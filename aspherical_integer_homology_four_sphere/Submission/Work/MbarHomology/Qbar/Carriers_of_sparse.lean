@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.ConvexCells.Carriers_of_Ok
 import Submission.Work.ConvexCells.Basic
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

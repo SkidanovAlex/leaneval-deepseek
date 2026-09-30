@@ -6,7 +6,10 @@ import Submission.Work.Cusp.continuous_cuspTopInv
 import Submission.Work.Cusp.continuous_cuspTopF
 import Submission.Work.Cusp.mem_range_cuspTopF
 import Submission.Work.Cusp.cuspTopInv_apply_cuspTopF
-import Submission.Work.Cusp.isOpenEmbedding_cuspCollarF
+import Submission.Work.Cusp.CuspChartAux
+import Submission.Work.Cusp.CuspCollarAux
+import Submission.Work.Cusp.continuous_cuspCollarInv
+import Submission.Work.Cusp.collarHeight_half
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

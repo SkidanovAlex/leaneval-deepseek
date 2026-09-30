@@ -17,7 +17,9 @@ import Mathlib
 import Submission.Work.BridgeSquare.FibreData
 import Submission.Work.BridgeSquare.subtorusBoundaries_of_fibreIdent
 import Submission.Work.BridgeSquare.PsiM_truncCell_mem_range
-import Submission.Work.BridgeSquare.kleinPt_corner
+import Submission.Work.Cusp.Data
+import Submission.Work.FoldInst.Basic
+import Submission.Work.RTOwed.cuspDev
 import Submission.Work.BridgeSquare.Fn_apply
 import Submission.Work.BridgeSquare.affineChain
 import Submission.Work.BridgeSquare.ChartAlgA

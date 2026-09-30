@@ -3,8 +3,14 @@ import Submission.Work.DeltaHomology.CellClassMap
 import Submission.Work.DeltaHomology.cellClassMapCell_isIso
 import Submission.Work.DeltaHomology.skelQuotient_shortExact
 import Submission.Work.DeltaHomology.skelQuotient_X_isZero
-import Submission.Work.DeltaHomology.skelQuotient_X_iso
-import Submission.Work.DeltaHomology.relHomology_skel_succ_goodPair
+import Submission.Work.DeltaHomology.Chain
+import Submission.Work.DeltaHomology.Skeleton
+import Submission.Work.DeltaHomology.SkeletonMap
+import Submission.Work.DeltaHomology.isZero_chainX_of_dim_lt
+import Submission.Work.DeltaHomology.CellData
+import Submission.Work.DeltaHomology.isIso_relHomologyMap_of_deformationRetract
+import Submission.Work.DeltaHomology.exists_deformationRetract_punctSkel
+import Submission.Work.Homology.Basic
 import Submission.Work.DeltaHomology.relHomology_cell_splitting
 import Submission.Work.DeltaHomology.cell_relHomology_iso
 import Submission.Work.DeltaHomology.SkelChain
@@ -14,7 +20,6 @@ import Submission.Work.DeltaHomology.relHomology_punctSkel_succ_iso
 import Submission.Work.DeltaHomology.isIso_fold_cellClassMap
 import Submission.Work.DeltaHomology.isIso_homologyMap_skelQuotient_desc
 import Submission.Work.DeltaHomology.quasiOso_deltaChainMapSkel_zero
-import Submission.Work.Subdivision.quasiIso_tau2
 import Submission.Work.Subdivision.quasiIso_tau2_poly
 import Submission.Work.HomologyExtra.Main
 

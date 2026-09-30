@@ -62,12 +62,34 @@ def qFacetL (x : Fin 865) : List (Fin 865) :=
   (qFacetLRows.getD (x.val / 32) []).getD (x.val % 32) []
 
 /-- **Soundness of the list of facets**: `qFacetL x` enumerates exactly `qFacet x`. -/
+theorem qFacetL_toFinset_fun_c0 : ∀ x : Fin 865, 0 ≤ x.val → x.val < 220 →  (qFacetL x).toFinset = qFacet x := by decide +kernel
+theorem qFacetL_toFinset_fun_c1 : ∀ x : Fin 865, 220 ≤ x.val → x.val < 440 →  (qFacetL x).toFinset = qFacet x := by decide +kernel
+theorem qFacetL_toFinset_fun_c2 : ∀ x : Fin 865, 440 ≤ x.val → x.val < 660 →  (qFacetL x).toFinset = qFacet x := by decide +kernel
+theorem qFacetL_toFinset_fun_c3 : ∀ x : Fin 865, 660 ≤ x.val →  (qFacetL x).toFinset = qFacet x := by decide +kernel
 theorem qFacetL_toFinset_fun : ∀ x : Fin 865, (qFacetL x).toFinset = qFacet x := by
-  decide
+  intro x
+  by_cases h0 : x.val < 220
+  · exact qFacetL_toFinset_fun_c0 x (by omega) h0
+  by_cases h1 : x.val < 440
+  · exact qFacetL_toFinset_fun_c1 x (by omega) h1
+  by_cases h2 : x.val < 660
+  · exact qFacetL_toFinset_fun_c2 x (by omega) h2
+  exact qFacetL_toFinset_fun_c3 x (by omega)
 
 /-- The facet list has no repeated element. -/
+theorem qFacetL_nodup_fun_c0 : ∀ x : Fin 865, 0 ≤ x.val → x.val < 220 →  (qFacetL x).Nodup := by decide +kernel
+theorem qFacetL_nodup_fun_c1 : ∀ x : Fin 865, 220 ≤ x.val → x.val < 440 →  (qFacetL x).Nodup := by decide +kernel
+theorem qFacetL_nodup_fun_c2 : ∀ x : Fin 865, 440 ≤ x.val → x.val < 660 →  (qFacetL x).Nodup := by decide +kernel
+theorem qFacetL_nodup_fun_c3 : ∀ x : Fin 865, 660 ≤ x.val →  (qFacetL x).Nodup := by decide +kernel
 theorem qFacetL_nodup_fun : ∀ x : Fin 865, (qFacetL x).Nodup := by
-  decide
+  intro x
+  by_cases h0 : x.val < 220
+  · exact qFacetL_nodup_fun_c0 x (by omega) h0
+  by_cases h1 : x.val < 440
+  · exact qFacetL_nodup_fun_c1 x (by omega) h1
+  by_cases h2 : x.val < 660
+  · exact qFacetL_nodup_fun_c2 x (by omega) h2
+  exact qFacetL_nodup_fun_c3 x (by omega)
 
 theorem qFacetL_toFinset (x : Fin 865) : (qFacetL x).toFinset = qFacet x :=
   qFacetL_toFinset_fun x

@@ -1,5 +1,6 @@
 import Submission.Work.RiemLib.FirstVariation
-import Submission.Work.RiemLib.JetGapSq
+import Submission.Work.RiemLib.JetGap
+import Submission.Work.RiemLib.GapEstimate
 import Submission.Work.RiemLib.JetGapLin
 import Submission.Work.RiemLib.GSField
 
@@ -48,7 +49,6 @@ open Submission.GSField
 open Submission.Distance
 open Submission.Gauss
 open Submission.FirstVariation
-open Submission.JetGapSq
 open Submission.JetGapLin
 open Submission.Length
 

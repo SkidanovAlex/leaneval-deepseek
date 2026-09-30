@@ -22,6 +22,6 @@ theorem wallGam_sideType (a : Fin 48) (j : Fin 3) :
     (Work.RTOwed.wallGamK a j 1, Work.RTOwed.wallGamFlip a j 1)
         = Work.FoldInst.sideType (Work.RTOwed.wallHi a j) := by
   revert a j
-  decide
+  decide +kernel
 
 end Work.RTOwed

@@ -39,8 +39,29 @@ is proved here.
 * `Work.HomologyIso.eM`, `Work.HomologyIso.eN`, `Work.HomologyIso.hsq` — the three fields;
 * `Work.HomologyIso.Fields` — the three packaged as a structure, for a single-line instantiation.
 -/
-import Submission.Work.Final.All
-import Submission.Work.HomologyMV.All
+import Submission.Work.Final.Framework
+import Submission.Work.Final.Basic
+import Submission.Work.Final.Mhat
+import Submission.Work.Final.Homology
+import Submission.Work.Final.Cover
+import Submission.Work.Final.MhatCover
+import Submission.Work.Final.Main
+import Submission.Work.Final.mvRightX_zero_surjective
+import Submission.Work.Final.secNonpos_of_chartModels
+import Submission.Work.Final.curvLe_of_models
+import Submission.Work.Final.CurvField
+import Submission.Work.HomologyMV.Basic
+import Submission.Work.HomologyMV.Model
+import Submission.Work.HomologyMV.LinAlg
+import Submission.Work.HomologyMV.Data
+import Submission.Work.HomologyMV.Concrete
+import Submission.Work.HomologyMV.ker_toLin_iso_int_of_normalForm
+import Submission.Work.HomologyMV.Interface
+import Submission.Work.HomologyMV.kerModel_succ_iso_Sol
+import Submission.Work.HomologyMV.wConcrete_surj
+import Submission.Work.HomologyMV.wConcrete_ker
+import Submission.Work.HomologyMV.Step
+import Submission.Work.HomologyMV.Main
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

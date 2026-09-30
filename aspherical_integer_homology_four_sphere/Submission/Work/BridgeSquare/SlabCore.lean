@@ -20,7 +20,9 @@ import Submission.Work.BridgeSquare.PsiM
 import Submission.Work.BridgeSquare.PsiM_truncCell_mem_range
 import Submission.Work.BridgeSquare.FibreData
 import Submission.Work.BridgeSquare.ChartAlgA
-import Submission.Work.BridgeSquare.kleinPt_corner
+import Submission.Work.Cusp.Data
+import Submission.Work.FoldInst.Basic
+import Submission.Work.RTOwed.cuspDev
 import Submission.Work.BridgeSquare.PlaneAff
 import Submission.Work.RTOwed.cubeOf_halfopen
 import Submission.Work.RTOwed.cuspCert.cube_quad

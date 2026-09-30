@@ -5,7 +5,7 @@ import Submission.Work.Certificates.SDR.section_chainMap
 import Submission.Work.Certificates.SDR.retract_chainMap
 import Submission.Work.Certificates.FinChainCx.zeroDiff_homology
 import Submission.Work.Certificates.exists_iso_of_subsingleton
-import Submission.Work.Certificates.FinChainCx.subsingleton_homology_of_dim_zero
+import Submission.Work.Certificates.ChainCx
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

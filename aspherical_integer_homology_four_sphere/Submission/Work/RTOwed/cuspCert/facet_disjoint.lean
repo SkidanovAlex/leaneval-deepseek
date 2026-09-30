@@ -62,33 +62,33 @@ lemma facet_sum_abs_le {y : E4} (hy : y ∈ Qbar) {r0 : Fin 4} {S : Finset (Fin 
       have h := Finset.sum_erase_add (s := (Finset.univ : Finset (Fin 4))) (f := fun r => |y r|)
         (a := (0 : Fin 4)) (Finset.mem_univ _)
       rw [Fin.sum_univ_four] at h
-      have h12 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 2 by decide)
-      have h13 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 3 by decide)
-      have h23 := abs_add_le_one y hy (show (2 : Fin 4) ≠ 3 by decide)
+      have h12 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 2 by decide +kernel)
+      have h13 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 3 by decide +kernel)
+      have h23 := abs_add_le_one y hy (show (2 : Fin 4) ≠ 3 by decide +kernel)
       linarith
     · show ∑ r ∈ Finset.univ.erase (1 : Fin 4), |y r| ≤ 3 / 2
       have h := Finset.sum_erase_add (s := (Finset.univ : Finset (Fin 4))) (f := fun r => |y r|)
         (a := (1 : Fin 4)) (Finset.mem_univ _)
       rw [Fin.sum_univ_four] at h
-      have h02 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 2 by decide)
-      have h03 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 3 by decide)
-      have h23 := abs_add_le_one y hy (show (2 : Fin 4) ≠ 3 by decide)
+      have h02 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 2 by decide +kernel)
+      have h03 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 3 by decide +kernel)
+      have h23 := abs_add_le_one y hy (show (2 : Fin 4) ≠ 3 by decide +kernel)
       linarith
     · show ∑ r ∈ Finset.univ.erase (2 : Fin 4), |y r| ≤ 3 / 2
       have h := Finset.sum_erase_add (s := (Finset.univ : Finset (Fin 4))) (f := fun r => |y r|)
         (a := (2 : Fin 4)) (Finset.mem_univ _)
       rw [Fin.sum_univ_four] at h
-      have h01 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 1 by decide)
-      have h03 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 3 by decide)
-      have h13 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 3 by decide)
+      have h01 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 1 by decide +kernel)
+      have h03 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 3 by decide +kernel)
+      have h13 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 3 by decide +kernel)
       linarith
     · show ∑ r ∈ Finset.univ.erase (3 : Fin 4), |y r| ≤ 3 / 2
       have h := Finset.sum_erase_add (s := (Finset.univ : Finset (Fin 4))) (f := fun r => |y r|)
         (a := (3 : Fin 4)) (Finset.mem_univ _)
       rw [Fin.sum_univ_four] at h
-      have h01 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 1 by decide)
-      have h02 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 2 by decide)
-      have h12 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 2 by decide)
+      have h01 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 1 by decide +kernel)
+      have h02 := abs_add_le_one y hy (show (0 : Fin 4) ≠ 2 by decide +kernel)
+      have h12 := abs_add_le_one y hy (show (1 : Fin 4) ≠ 2 by decide +kernel)
       linarith
   refine le_trans (Finset.sum_le_sum_of_subset_of_nonneg ?_ ?_) hmain
   · intro r hr

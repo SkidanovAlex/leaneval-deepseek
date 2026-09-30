@@ -30,17 +30,17 @@ namespace Work.FoldInst
 /-- The sign change `g` carries the side `S` to `sidePerm g S`. -/
 theorem sideNormal_sidePerm (g : Fin 4 → ZMod 2) (S : Fin 24) (i : Fin 4) :
     sideNormal (sidePerm g S) i = signVec g i * sideNormal S i := by
-  revert g S i; decide
+  revert g S i; decide +kernel
 
 /-- The sign change `g` carries the ideal vertex `w` to `truncPerm g w`. -/
 theorem truncNormal2_truncPerm (g : Fin 4 → ZMod 2) (w : Fin 24) (i : Fin 4) :
     truncNormal2 (truncPerm g w) i = signVec g i * truncNormal2 w i := by
-  revert g w i; decide
+  revert g w i; decide +kernel
 
 /-- The type of a side is invariant under sign changes. -/
 theorem sideTypeIdx_sidePerm (g : Fin 4 → ZMod 2) (S : Fin 24) :
     sideTypeIdx (sidePerm g S) = sideTypeIdx S := by
-  revert g S; decide
+  revert g S; decide +kernel
 
 /-- All the structural facts about the tables of the fold classes. -/
 theorem cert_fold_tables :
@@ -66,7 +66,7 @@ theorem cert_fold_tables :
     (∀ (i : Fin 98) (j : Fin 3), foldN2 i (f3to5 j) 4 = 2) ∧
     (∀ (i : Fin 98) (j : Fin 8) (t : Fin 4), foldRepK i j t = 1 ∨ foldRepK i j t = -1) ∧
     (∀ (i : Fin 98) (j : Fin 8) (t : Fin 3), foldRepEps i j t = 1 ∨ foldRepEps i j t = -1) := by
-  decide
+  decide +kernel
 
 theorem sideNormal_injective : Function.Injective sideNormal := cert_fold_tables.1
 theorem truncNormal2_injective : Function.Injective truncNormal2 := cert_fold_tables.2.1
@@ -106,7 +106,7 @@ theorem foldRepEps_pm (i : Fin 98) (j : Fin 8) (t : Fin 3) :
 
 /-- The normalisations are Lorentz up to the factor `4` of the integral form. -/
 theorem foldN2_lorentz (i : Fin 98) : ((foldN2 i)ᵀ * J5 * foldN2 i) = 4 * J5 := by
-  revert i; decide
+  revert i; decide +kernel
 
 /-- The stored sign vector of the representative of a sign index is the pattern of that index. -/
 theorem foldRepEps_pattern (i : Fin 98) (r : Fin (foldCodim i) → Bool) :

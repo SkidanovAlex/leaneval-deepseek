@@ -60,10 +60,29 @@ i.e. an honest facet of `x`.
 
 This is stated in the cheap `Finset.filter = ∅` form so that the kernel only inspects the few
 indices that are actually listed in `qFacet x`. -/
+theorem qFacet_facet_data_c0 : ∀ x : Fin 865, 0 ≤ x.val → x.val < 220 →  (qFacet x).filter
+    (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+      QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ := by decide +kernel
+theorem qFacet_facet_data_c1 : ∀ x : Fin 865, 220 ≤ x.val → x.val < 440 →  (qFacet x).filter
+    (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+      QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ := by decide +kernel
+theorem qFacet_facet_data_c2 : ∀ x : Fin 865, 440 ≤ x.val → x.val < 660 →  (qFacet x).filter
+    (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+      QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ := by decide +kernel
+theorem qFacet_facet_data_c3 : ∀ x : Fin 865, 660 ≤ x.val →  (qFacet x).filter
+    (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+      QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ := by decide +kernel
 theorem qFacet_facet_data : ∀ x : Fin 865, (qFacet x).filter
     (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
       QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ := by
-  decide
+  intro x
+  by_cases h0 : x.val < 220
+  · exact qFacet_facet_data_c0 x (by omega) h0
+  by_cases h1 : x.val < 440
+  · exact qFacet_facet_data_c1 x (by omega) h1
+  by_cases h2 : x.val < 660
+  · exact qFacet_facet_data_c2 x (by omega) h2
+  exact qFacet_facet_data_c3 x (by omega)
 
 /-- The `j`-th column of `bdData e k` represents the function `i ↦ bdEntry e k i j`, hence the
 `(i,j)`-entry of the abstract boundary matrix is `bdEntry e k i j`. -/

@@ -32,7 +32,7 @@ private theorem chk_14 :
       qPos (faceActT 14 f) 0 = signVecT 14 0 * qPos f 0 ∧
       qPos (faceActT 14 f) 1 = signVecT 14 1 * qPos f 1 ∧
       qPos (faceActT 14 f) 2 = signVecT 14 2 * qPos f 2 ∧
-      qPos (faceActT 14 f) 3 = signVecT 14 3 * qPos f 3)) = true := by decide
+      qPos (faceActT 14 f) 3 = signVecT 14 3 * qPos f 3)) = true := by decide +kernel
 
 theorem qPos_faceActT_14 (f : Fin 865) (i : Fin 4) :
     qPos (faceActT 14 f) i = signVecT 14 i * qPos f i := by
@@ -48,7 +48,7 @@ private theorem chk_15 :
       qPos (faceActT 15 f) 0 = signVecT 15 0 * qPos f 0 ∧
       qPos (faceActT 15 f) 1 = signVecT 15 1 * qPos f 1 ∧
       qPos (faceActT 15 f) 2 = signVecT 15 2 * qPos f 2 ∧
-      qPos (faceActT 15 f) 3 = signVecT 15 3 * qPos f 3)) = true := by decide
+      qPos (faceActT 15 f) 3 = signVecT 15 3 * qPos f 3)) = true := by decide +kernel
 
 theorem qPos_faceActT_15 (f : Fin 865) (i : Fin 4) :
     qPos (faceActT 15 f) i = signVecT 15 i * qPos f i := by

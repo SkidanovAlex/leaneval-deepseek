@@ -17,7 +17,7 @@ import Submission.Work.Cusp.cuspInvInner_add_int_mul_two_pi
 import Submission.Work.Cusp.cuspInvCore_mem_coreStratum
 import Submission.Work.Cusp.cuspInvCore_ThetaCore
 import Submission.Work.Cusp.ThetaCore_cuspInvCore
-import Submission.Work.Cusp.ThetaCore_eq_polar
+import Submission.Work.Cusp.Basic
 import Submission.Work.Cusp.cuspInvInner_nrm
 import Submission.Work.Cusp.wOf_invY
 

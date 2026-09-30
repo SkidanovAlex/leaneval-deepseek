@@ -55,20 +55,75 @@ def dimList : ℕ → List (Fin 865)
 
 theorem dimList_nil5 (k : ℕ) : dimList (k+5) = [] := rfl
 
+theorem mem_dimList0_c0 : ∀ i : Fin 865, 0 ≤ i.val → i.val < 220 → (i ∈ dimList 0 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 0) := by decide +kernel
+theorem mem_dimList0_c1 : ∀ i : Fin 865, 220 ≤ i.val → i.val < 440 → (i ∈ dimList 0 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 0) := by decide +kernel
+theorem mem_dimList0_c2 : ∀ i : Fin 865, 440 ≤ i.val → i.val < 660 → (i ∈ dimList 0 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 0) := by decide +kernel
+theorem mem_dimList0_c3 : ∀ i : Fin 865, 660 ≤ i.val → (i ∈ dimList 0 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 0) := by decide +kernel
 theorem mem_dimList0 : ∀ i : Fin 865, i ∈ dimList 0 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 0 := by
-  decide
+  intro i
+  by_cases h0 : i.val < 220
+  · exact mem_dimList0_c0 i (by omega) h0
+  by_cases h1 : i.val < 440
+  · exact mem_dimList0_c1 i (by omega) h1
+  by_cases h2 : i.val < 660
+  · exact mem_dimList0_c2 i (by omega) h2
+  exact mem_dimList0_c3 i (by omega)
 
+theorem mem_dimList1_c0 : ∀ i : Fin 865, 0 ≤ i.val → i.val < 220 → (i ∈ dimList 1 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 1) := by decide +kernel
+theorem mem_dimList1_c1 : ∀ i : Fin 865, 220 ≤ i.val → i.val < 440 → (i ∈ dimList 1 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 1) := by decide +kernel
+theorem mem_dimList1_c2 : ∀ i : Fin 865, 440 ≤ i.val → i.val < 660 → (i ∈ dimList 1 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 1) := by decide +kernel
+theorem mem_dimList1_c3 : ∀ i : Fin 865, 660 ≤ i.val → (i ∈ dimList 1 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 1) := by decide +kernel
 theorem mem_dimList1 : ∀ i : Fin 865, i ∈ dimList 1 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 1 := by
-  decide
+  intro i
+  by_cases h0 : i.val < 220
+  · exact mem_dimList1_c0 i (by omega) h0
+  by_cases h1 : i.val < 440
+  · exact mem_dimList1_c1 i (by omega) h1
+  by_cases h2 : i.val < 660
+  · exact mem_dimList1_c2 i (by omega) h2
+  exact mem_dimList1_c3 i (by omega)
 
+theorem mem_dimList2_c0 : ∀ i : Fin 865, 0 ≤ i.val → i.val < 220 → (i ∈ dimList 2 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 2) := by decide +kernel
+theorem mem_dimList2_c1 : ∀ i : Fin 865, 220 ≤ i.val → i.val < 440 → (i ∈ dimList 2 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 2) := by decide +kernel
+theorem mem_dimList2_c2 : ∀ i : Fin 865, 440 ≤ i.val → i.val < 660 → (i ∈ dimList 2 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 2) := by decide +kernel
+theorem mem_dimList2_c3 : ∀ i : Fin 865, 660 ≤ i.val → (i ∈ dimList 2 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 2) := by decide +kernel
 theorem mem_dimList2 : ∀ i : Fin 865, i ∈ dimList 2 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 2 := by
-  decide
+  intro i
+  by_cases h0 : i.val < 220
+  · exact mem_dimList2_c0 i (by omega) h0
+  by_cases h1 : i.val < 440
+  · exact mem_dimList2_c1 i (by omega) h1
+  by_cases h2 : i.val < 660
+  · exact mem_dimList2_c2 i (by omega) h2
+  exact mem_dimList2_c3 i (by omega)
 
+theorem mem_dimList3_c0 : ∀ i : Fin 865, 0 ≤ i.val → i.val < 220 → (i ∈ dimList 3 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 3) := by decide +kernel
+theorem mem_dimList3_c1 : ∀ i : Fin 865, 220 ≤ i.val → i.val < 440 → (i ∈ dimList 3 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 3) := by decide +kernel
+theorem mem_dimList3_c2 : ∀ i : Fin 865, 440 ≤ i.val → i.val < 660 → (i ∈ dimList 3 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 3) := by decide +kernel
+theorem mem_dimList3_c3 : ∀ i : Fin 865, 660 ≤ i.val → (i ∈ dimList 3 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 3) := by decide +kernel
 theorem mem_dimList3 : ∀ i : Fin 865, i ∈ dimList 3 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 3 := by
-  decide
+  intro i
+  by_cases h0 : i.val < 220
+  · exact mem_dimList3_c0 i (by omega) h0
+  by_cases h1 : i.val < 440
+  · exact mem_dimList3_c1 i (by omega) h1
+  by_cases h2 : i.val < 660
+  · exact mem_dimList3_c2 i (by omega) h2
+  exact mem_dimList3_c3 i (by omega)
 
+theorem mem_dimList4_c0 : ∀ i : Fin 865, 0 ≤ i.val → i.val < 220 → (i ∈ dimList 4 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 4) := by decide +kernel
+theorem mem_dimList4_c1 : ∀ i : Fin 865, 220 ≤ i.val → i.val < 440 → (i ∈ dimList 4 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 4) := by decide +kernel
+theorem mem_dimList4_c2 : ∀ i : Fin 865, 440 ≤ i.val → i.val < 660 → (i ∈ dimList 4 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 4) := by decide +kernel
+theorem mem_dimList4_c3 : ∀ i : Fin 865, 660 ≤ i.val → (i ∈ dimList 4 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 4) := by decide +kernel
 theorem mem_dimList4 : ∀ i : Fin 865, i ∈ dimList 4 ↔ QbarCW.dim (⟨i⟩ : QbarCell) = 4 := by
-  decide
+  intro i
+  by_cases h0 : i.val < 220
+  · exact mem_dimList4_c0 i (by omega) h0
+  by_cases h1 : i.val < 440
+  · exact mem_dimList4_c1 i (by omega) h1
+  by_cases h2 : i.val < 660
+  · exact mem_dimList4_c2 i (by omega) h2
+  exact mem_dimList4_c3 i (by omega)
 
 theorem mem_dimList {k : ℕ} {i : Fin 865} :
     i ∈ dimList k ↔ QbarCW.dim (⟨i⟩ : QbarCell) = k := by
@@ -88,11 +143,11 @@ theorem mem_dimList {k : ℕ} {i : Fin 865} :
 
 theorem dimList_nodup (k : ℕ) : (dimList k).Nodup := by
   match k with
-  | 0 => decide
-  | 1 => decide
-  | 2 => decide
-  | 3 => decide
-  | 4 => decide
+  | 0 => decide +kernel
+  | 1 => decide +kernel
+  | 2 => decide +kernel
+  | 3 => decide +kernel
+  | 4 => decide +kernel
   | k+5 => rw [dimList_nil5]; exact List.nodup_nil
 
 /-- There are no faces of `Q̄` above dimension four. -/

@@ -18,6 +18,6 @@ theorem cubeLookup :
       Work.RTOwed.cuspCert.covB a e) ∧
     (∀ (w : Fin 24) (c : ZMod 2), ∃ a : Fin 48,
       Work.RTOwed.cubeVert a = w ∧ Work.RTOwed.cubeBit a = c) := by
-  refine ⟨?_, ?_, ?_⟩ <;> decide
+  refine ⟨?_, ?_, ?_⟩ <;> decide +kernel
 
 end Work.RTOwed.cuspCert

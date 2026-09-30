@@ -124,7 +124,7 @@ theorem facets_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) 
 /-- The root face of the cell of the `k`-th unit edge is the image of the ridge under the sign
 change. -/
 theorem eRootI_eq_faceAct_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    faceAct (esig v k) (edgeFace v 1 k) = eRootI v k := by decide
+    faceAct (esig v k) (edgeFace v 1 k) = eRootI v k := by decide +kernel
 
 theorem eRootI_eq_faceAct (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     faceAct (esig v k) (edgeFace v 1 k) = eRootI v k :=
@@ -133,7 +133,7 @@ theorem eRootI_eq_faceAct (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1
 /-- The node `(ebit v k, edgeFace v 1 k)` is the root node of the cell `edgeCell v 1 k`. -/
 theorem moCell_ebit_edgeFace_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
     Mbar.moCell (ebit v k) (edgeFace v 1 k) = Mbar.moCid (1 : Fin 5) (edgeCell v 1 k) := by
-  decide
+  decide +kernel
 
 theorem moCell_ebit_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     Mbar.moCell (ebit v k) (edgeFace v 1 k) = Mbar.moCid (1 : Fin 5) (edgeCell v 1 k) :=
@@ -141,7 +141,7 @@ theorem moCell_ebit_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen 
 
 /-- The two facets of the root face are `eU0` and `eU1`. -/
 theorem facets_eRoot_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    QbarCW.facets (eRoot v k) = {eU0 v k, eU1 v k} := by decide
+    QbarCW.facets (eRoot v k) = {eU0 v k, eU1 v k} := by decide +kernel
 
 theorem facets_eRoot (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     QbarCW.facets (eRoot v k) = {eU0 v k, eU1 v k} :=
@@ -159,14 +159,14 @@ theorem eU1_lt_eRoot (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
 
 /-- The two facets of the root face are distinct. -/
 theorem eU0_ne_eU1_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    eU0 v k ≠ eU1 v k := by decide
+    eU0 v k ≠ eU1 v k := by decide +kernel
 
 theorem eU0_ne_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     eU0 v k ≠ eU1 v k := eU0_ne_eU1_aux v k hk
 
 /-- The two incidences at the root face are opposite. -/
 theorem qInc_eU1_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    qInc (eRootI v k) (eU1 v k).idx = -qInc (eRootI v k) (eU0 v k).idx := by decide
+    qInc (eRootI v k) (eU1 v k).idx = -qInc (eRootI v k) (eU0 v k).idx := by decide +kernel
 
 theorem qInc_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     qInc (eRootI v k) (eU1 v k).idx = -qInc (eRootI v k) (eU0 v k).idx :=
@@ -174,14 +174,14 @@ theorem qInc_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
 
 /-- The root face of the cell of the `k`-th unit edge is a `1`-cell. -/
 theorem dim_eRoot_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    QbarCW.dim (eRoot v k) = 1 := by decide
+    QbarCW.dim (eRoot v k) = 1 := by decide +kernel
 
 theorem dim_eRoot (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 1) :
     QbarCW.dim (eRoot v k) = 1 := dim_eRoot_aux v k hk
 
 /-- **The coefficient of the identity**: `eBeta` is the fibre-loop sign times the cusp sign. -/
 theorem eBeta_eq : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 1 →
-    eBeta v k = edgeSign v 1 k * cpsi v := by decide
+    eBeta v k = edgeSign v 1 k * cpsi v := by decide +kernel
 
 /-- The coefficient of `rootCoeff` of the subdivision chain of the root face. -/
 theorem rootCoeff_eq (v : Fin 5) (k : Fin 4) (s : Work.Subdivision.Simplex QbarCW.Cell 1) :

@@ -125,11 +125,11 @@ private theorem perm5_injective (i : Fin 98) : Function.Injective (perm5 i) := b
 /-- `perm5 i` fixes the height coordinate `4` (as it fixes `3`). -/
 theorem perm5_four (i : Fin 98) : perm5 i 4 = 4 := by
   simp only [perm5]
-  rw [dite_eq_right (show ¬ ((4 : Fin 5) : ℕ) < 3 from by decide)]
+  rw [dite_eq_right (show ¬ ((4 : Fin 5) : ℕ) < 3 from by decide +kernel)]
 
 theorem perm5_three (i : Fin 98) : perm5 i 3 = 3 := by
   simp only [perm5]
-  rw [dite_eq_right (show ¬ ((3 : Fin 5) : ℕ) < 3 from by decide)]
+  rw [dite_eq_right (show ¬ ((3 : Fin 5) : ℕ) < 3 from by decide +kernel)]
 
 /-! ### The requested statement -/
 

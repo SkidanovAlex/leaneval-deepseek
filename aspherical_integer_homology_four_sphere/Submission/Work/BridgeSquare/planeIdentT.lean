@@ -88,7 +88,11 @@ Remaining (the target `planeIdentT` is still open), in the order of the plan abo
 
 -/
 import Mathlib
-import Submission.Work.BridgeSquare.PlaneFrame
+import Submission.Work.BridgeSquare.FibreData
+import Submission.Work.BridgeSquare.subtorusBoundaries_of_fibreIdent
+import Submission.Work.BridgeSquare.PsiM_truncCell_mem_range
+import Submission.Work.BridgeSquare.Fn_apply
+import Submission.Work.RTOwed.cuspCert.lattice_bridge
 import Submission.Work.BridgeSquare.PlaneSlabBot
 import Submission.Work.BridgeSquare.slabWall_exists
 

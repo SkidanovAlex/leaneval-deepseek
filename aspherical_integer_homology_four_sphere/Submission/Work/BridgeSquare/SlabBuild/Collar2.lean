@@ -196,9 +196,15 @@ def D52 : Fin Nat2 → ℤ := fun l =>
 abbrev X2 : Fin Nat2 → AffC 1 := fun l => Finsupp.single (B2 l) (1 : ℤ)
 
 set_option maxHeartbeats 0 in
+theorem hcoef2_c0 : ∀ l : Fin Nat2, 0 ≤ l.val → l.val < 60 → D12 l - D22 l = D32 l - (D42 l - D52 l) := by decide +kernel
+set_option maxHeartbeats 0 in
+theorem hcoef2_c1 : ∀ l : Fin Nat2, 60 ≤ l.val → D12 l - D22 l = D32 l - (D42 l - D52 l) := by decide +kernel
 /-- The pointwise coefficient identity of the collar of cusp `2`. -/
 theorem hcoef2 : ∀ l : Fin Nat2, D12 l - D22 l = D32 l - (D42 l - D52 l) := by
-  decide
+  intro l
+  by_cases h0 : l.val < 60
+  · exact hcoef2_c0 l (by omega) h0
+  exact hcoef2_c1 l (by omega)
 
 /-- The atoms of the first edge family of the collar. -/
 theorem brC2 : ∀ p : Fin 24 × Fin 3, B2 (aC2 p) = vface (k := 1) p.2 (colTri2 p.1) := by

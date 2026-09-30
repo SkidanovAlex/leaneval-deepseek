@@ -53,7 +53,9 @@ import Submission.Work.Cusp.wOf_invY
 import Submission.Work.Cusp.cuspInvCore_continuousOn
 import Submission.Work.Cusp.ThetaCore_continuous
 import Submission.Work.Cusp.isOpen_coreBox
-import Submission.Work.Cusp.isOpen_nrm_lt
+import Submission.Work.Cusp.Basic
+import Submission.Work.Cusp.Charts
+import Submission.Work.Cusp.nrm_continuous
 import Submission.Work.Space.Split
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

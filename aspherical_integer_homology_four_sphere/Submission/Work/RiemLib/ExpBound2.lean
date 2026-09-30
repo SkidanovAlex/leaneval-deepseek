@@ -60,7 +60,6 @@ open Submission.IndexForm
 open Submission.ConjPoint
 open Submission.SecondVar2
 open Submission.FlowJacobi
-open Submission.RauchUpper
 open Submission.RauchGen
 
 variable

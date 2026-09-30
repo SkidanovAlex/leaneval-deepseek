@@ -109,7 +109,7 @@ theorem fold_state_step_all :
       ∃ r' : Fin (foldCodim i) → Bool,
         ((toG (foldKr i r') : Fin 4 → ZMod 2), foldCr i r') =
           foldGen i t + ((toG (foldKr i r) : Fin 4 → ZMod 2), foldCr i r)) := by
-  decide
+  decide +kernel
 
 /-- The finite certificate of the fold pieces in usable form. -/
 theorem fold_state_step (i : Fin 98) (t : Fin (foldCodim i)) (r : Fin (foldCodim i) → Bool) :

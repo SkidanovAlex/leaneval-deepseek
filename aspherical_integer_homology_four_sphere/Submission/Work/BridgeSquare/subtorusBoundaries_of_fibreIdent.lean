@@ -86,19 +86,19 @@ def mulM2 : Matrix (Fin 192) (Fin 5) ℤ := ((mbarBd 2).mul Gen.planeWit).toMatr
 
 theorem fibreLoopVec_eq_colT (v : Fin 5) (j : Fin 2) :
     fibreLoopVec v j = fun i => Gen.fibreLoop.toMatrix i (fidx v j) := by
-  fin_cases v <;> fin_cases j <;> decide
+  fin_cases v <;> fin_cases j <;> decide +kernel
 
 theorem fibreWitVec_eq_colT (v : Fin 5) (j : Fin 2) :
     fibreWitVec v j = fun i => Gen.fibreWit.toMatrix i (fidx v j) := by
-  fin_cases v <;> fin_cases j <;> decide
+  fin_cases v <;> fin_cases j <;> decide +kernel
 
 theorem planeCycleVec_eq_colT (v : Fin 5) (j : Fin 2) :
     planeCycleVec v j = fun i => Gen.planeCycle.toMatrix i (pidx v) := by
-  fin_cases v <;> fin_cases j <;> decide
+  fin_cases v <;> fin_cases j <;> decide +kernel
 
 theorem planeWitVec_eq_colT (v : Fin 5) (j : Fin 2) :
     planeWitVec v j = fun i => Gen.planeWit.toMatrix i (pidx v) := by
-  fin_cases v <;> fin_cases j <;> decide
+  fin_cases v <;> fin_cases j <;> decide +kernel
 
 /-! ## §4  The cellular null-homologies in the numeral presentation -/
 

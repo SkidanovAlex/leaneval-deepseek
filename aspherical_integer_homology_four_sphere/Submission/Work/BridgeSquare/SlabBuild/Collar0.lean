@@ -196,9 +196,15 @@ def D50 : Fin Nat0 → ℤ := fun l =>
 abbrev X0 : Fin Nat0 → AffC 1 := fun l => Finsupp.single (B0 l) (1 : ℤ)
 
 set_option maxHeartbeats 0 in
+theorem hcoef0_c0 : ∀ l : Fin Nat0, 0 ≤ l.val → l.val < 60 → D10 l - D20 l = D30 l - (D40 l - D50 l) := by decide +kernel
+set_option maxHeartbeats 0 in
+theorem hcoef0_c1 : ∀ l : Fin Nat0, 60 ≤ l.val → D10 l - D20 l = D30 l - (D40 l - D50 l) := by decide +kernel
 /-- The pointwise coefficient identity of the collar of cusp `0`. -/
 theorem hcoef0 : ∀ l : Fin Nat0, D10 l - D20 l = D30 l - (D40 l - D50 l) := by
-  decide
+  intro l
+  by_cases h0 : l.val < 60
+  · exact hcoef0_c0 l (by omega) h0
+  exact hcoef0_c1 l (by omega)
 
 /-- The atoms of the first edge family of the collar. -/
 theorem brC0 : ∀ p : Fin 24 × Fin 3, B0 (aC0 p) = vface (k := 1) p.2 (colTri0 p.1) := by

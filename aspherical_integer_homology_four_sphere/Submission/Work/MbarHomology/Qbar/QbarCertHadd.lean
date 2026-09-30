@@ -29,31 +29,31 @@ abbrev HaddFace (f : Fin 865) : Prop :=
   ∀ i : Fin 48, empSelB f i = false → qTight (empAddIdx f i) = qTight f ∪ {i}
 
 theorem haddChunk_0 : ∀ f : Fin 865, 0 ≤ (f : ℕ) → (f : ℕ) < 100 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_1 : ∀ f : Fin 865, 100 ≤ (f : ℕ) → (f : ℕ) < 200 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_2 : ∀ f : Fin 865, 200 ≤ (f : ℕ) → (f : ℕ) < 300 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_3 : ∀ f : Fin 865, 300 ≤ (f : ℕ) → (f : ℕ) < 400 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_4 : ∀ f : Fin 865, 400 ≤ (f : ℕ) → (f : ℕ) < 500 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_5 : ∀ f : Fin 865, 500 ≤ (f : ℕ) → (f : ℕ) < 600 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_6 : ∀ f : Fin 865, 600 ≤ (f : ℕ) → (f : ℕ) < 700 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_7 : ∀ f : Fin 865, 700 ≤ (f : ℕ) → (f : ℕ) < 800 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddChunk_8 : ∀ f : Fin 865, 800 ≤ (f : ℕ) → (f : ℕ) < 900 → HaddFace f := by
-  decide
+  decide +kernel
 
 theorem haddUpto_100 : ∀ f : Fin 865, (f : ℕ) < 100 → HaddFace f :=
   fun f hf => haddChunk_0 f (Nat.zero_le _) hf

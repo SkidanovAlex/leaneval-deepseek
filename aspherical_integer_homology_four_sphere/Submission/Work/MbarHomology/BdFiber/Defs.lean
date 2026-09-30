@@ -18,7 +18,9 @@ The bridges from the `Finset.sum` of the target statement to `SVec.toFun` are ge
 import Mathlib
 import Submission.Work.MbarHomology.BdFiber.QbarFacetList
 import Submission.Work.Certificates.SVec.eqb_sound
-import Submission.Work.Certificates.SVec.toFun_norm
+import Submission.Work.Certificates.Sparse
+import Submission.Work.Certificates.SVec.toFun_append
+import Submission.Work.Certificates.SVec.toFun_insert
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

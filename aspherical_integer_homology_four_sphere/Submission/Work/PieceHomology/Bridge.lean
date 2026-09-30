@@ -40,7 +40,7 @@ The two chain complexes `SingInter`, `SingUnion` below are the ones *of the cove
 `Work.HomologyIso.HI` and that of `SingUnion` the second slot `Work.HomologyIso.HB`; the two maps
 `eMtf`, `eNtf` are the transport of the geometric identifications of the models along `q₁` and `q₂`.
 -/
-import Submission.Work.PieceHomology.Data
+import Submission.Work.PieceHomology.Basic
 import Submission.Work.HomologyIso.hsq_of_chainLevel
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

@@ -80,18 +80,18 @@ def lamWall (a : Fin 48) (i : Fin 3) : ℤ :=
 
 /-- The constant `λ` of an upper wall is `-1` or `-2` (finite check over the 48 cubes). -/
 theorem lamWall_eq : ∀ (a : Fin 48) (i : Fin 3), lamWall a i = -1 ∨ lamWall a i = -2 := by
-  decide
+  decide +kernel
 
 /-- The quadratic coefficient of the numerator of the upper wall vanishes. -/
-theorem Qs_wallHi : ∀ (a : Fin 48) (i : Fin 3), Qs a (wallHi a i) = 0 := by decide
+theorem Qs_wallHi : ∀ (a : Fin 48) (i : Fin 3), Qs a (wallHi a i) = 0 := by decide +kernel
 
 /-- The linear coefficients of the numerator of the upper wall are `2λ e_i`. -/
 theorem Ls_wallHi : ∀ (a : Fin 48) (i : Fin 3) (j : Fin 3),
-    Ls a (wallHi a i) j = 2 * lamWall a i * (if j = i then 1 else 0) := by decide
+    Ls a (wallHi a i) j = 2 * lamWall a i * (if j = i then 1 else 0) := by decide +kernel
 
 /-- The constant of the numerator of the upper wall is `-2λ (cubeCorner a i + 1)`. -/
 theorem Ks_wallHi : ∀ (a : Fin 48) (i : Fin 3),
-    Ks a (wallHi a i) = -(2 * lamWall a i) * ((Work.Cusp.cubeCorner a i : ℤ) + 1) := by decide
+    Ks a (wallHi a i) = -(2 * lamWall a i) * ((Work.Cusp.cubeCorner a i : ℤ) + 1) := by decide +kernel
 
 /-! ## The fourth chart coordinate and the numerator -/
 

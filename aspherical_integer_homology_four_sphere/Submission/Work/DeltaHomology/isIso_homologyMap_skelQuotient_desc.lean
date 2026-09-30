@@ -1,7 +1,10 @@
 import Mathlib
 import Submission.Work.DeltaHomology.SkelInclDefs
 import Submission.Work.DeltaHomology.skelQuotient_X_isZero
-import Submission.Work.DeltaHomology.skelQuotient_X_iso
+import Submission.Work.DeltaHomology.Chain
+import Submission.Work.DeltaHomology.Skeleton
+import Submission.Work.DeltaHomology.SkeletonMap
+import Submission.Work.DeltaHomology.isZero_chainX_of_dim_lt
 import Submission.Work.DeltaHomology.CellClassMap
 import Submission.Work.DeltaHomology.cellClassMapCell_isIso
 import Submission.Work.DeltaHomology.isIso_fold_cellClassMap

@@ -121,48 +121,48 @@ theorem psi_empty : psi (∅ : Finset (Fin 24)) = 1 := by
 theorem flipDr_chunk_0_17 :
     (∀ (i : Fin 98), i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `17 ≤ i.val < 37`. -/
 theorem flipDr_chunk_17_37 :
     (∀ (i : Fin 98), 17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `37 ≤ i.val < 57`. -/
 theorem flipDr_chunk_37_57 :
     (∀ (i : Fin 98), 37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `57 ≤ i.val < 67`. -/
 theorem flipDr_chunk_57_67 :
     (∀ (i : Fin 98), 57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `67 ≤ i.val < 77`. -/
 theorem flipDr_chunk_67_77 :
     (∀ (i : Fin 98), 67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `77 ≤ i.val < 87`. -/
 theorem flipDr_chunk_77_87 :
     (∀ (i : Fin 98), 77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- The single flip identity, checked on the fold classes with `87 ≤ i.val`. -/
 theorem flipDr_chunk_87_98 :
     (∀ (i : Fin 98), 87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide
+  decide +kernel
 
 /-- **The single flip identity.**  Flipping the sign index at the `t`-th wall multiplies the
 developing matrix on the right by the side pairing matrix of that wall.  (Finite check on the
@@ -259,7 +259,7 @@ def sideInv : Fin 24 → Fin 24 := fun
 
 /-- The side pairing matrices are involutions (finite check). -/
 theorem pairMat_mul_sideInv (S : Fin 24) : pairMat S * pairMat (sideInv S) = 1 := by
-  fin_cases S <;> decide
+  fin_cases S <;> decide +kernel
 
 /-- The determinant of a side pairing matrix is a unit. -/
 theorem isUnit_det_pairMat (S : Fin 24) : IsUnit (pairMat S).det :=

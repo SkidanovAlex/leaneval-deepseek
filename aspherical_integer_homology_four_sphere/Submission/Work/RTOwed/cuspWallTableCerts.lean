@@ -45,16 +45,16 @@ theorem cuspWallTableCerts :
     := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · -- the group element of a wall is the type of its near side
-    decide
+    decide +kernel
   · -- the copy bit of the far cube
-    decide
+    decide +kernel
   · -- the normal coordinate across the wall
     intro a i side
     have h : Work.Cusp.cubeCorner (wallNb a i side) i + wallLam a i side i
         + (if side = 0 then (1 : ℤ) else 0)
         = Work.Cusp.cubeCorner a i + (if side = 0 then (0 : ℤ) else 1) := by
       revert a i side
-      decide
+      decide +kernel
     simp only [wallLamV, PiLp.toLp_apply]
     exact_mod_cast h
   · -- the tangential coordinates along the wall
@@ -62,7 +62,7 @@ theorem cuspWallTableCerts :
     have h : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (j : Fin 3), j ≠ i →
         Work.Cusp.cubeCorner (wallNb a i side) j + wallLam a i side j
           = Work.Cusp.cubeCorner a j := by
-      decide
+      decide +kernel
     simp only [wallLamV, PiLp.toLp_apply]
     exact_mod_cast h a i side j hj
   · -- the wall types of the far cube agree with those of the near cube
@@ -72,7 +72,7 @@ theorem cuspWallTableCerts :
            else (if sj = 0 then wallLo (wallNb a i side) j else wallHi (wallNb a i side) j))
         = Work.FoldInst.sideTypeIdx (if sj = 0 then wallLo a j else wallHi a j) := by
       revert a i side j sj
-      decide
+      decide +kernel
     exact congrArg Work.FoldInst.typeGen h
   · -- the lattice vector of a wall lies in the cusp lattice
     intro a i side
@@ -82,7 +82,7 @@ theorem cuspWallTableCerts :
     simp only [wallLamV, cuspCert.lamV, cuspCert.lamK, PiLp.toLp_apply]
     have h : (Work.Cusp.latMod (Work.Cusp.cubeCusp a) j : ℤ) ∣ wallLam a i side j := by
       revert a i side j
-      decide
+      decide +kernel
     rw [Int.mul_ediv_cancel' h]
 
 end Work.RTOwed

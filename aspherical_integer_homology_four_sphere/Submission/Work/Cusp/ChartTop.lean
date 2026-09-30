@@ -28,7 +28,25 @@ import Submission.Work.Cusp.TopBox
 import Submission.Work.Cusp.TopLayer
 import Submission.Work.Cusp.isOpen_cuspBoxTop
 import Submission.Work.Cusp.isOpenEmbedding_cuspCoordMTop
-import Submission.Work.Cusp.ChartMhat
+import Submission.Work.Cusp.exists_coreChartM
+import Submission.Work.Cusp.MChartAux
+import Submission.Work.Cusp.ThetaPolarS_cuspInvInner
+import Submission.Work.Cusp.exists_polarChartS
+import Submission.Work.Cusp.isOpen_polarBox
+import Submission.Work.Cusp.isOpenEmbedding_incW_interior
+import Submission.Work.Cusp.isOpenMap_fillProj
+import Submission.Work.Cusp.isOpen_polarTargetS
+import Submission.Work.Cusp.nrm_bndOfU
+import Submission.Work.Cusp.nrm_smul
+import Submission.Work.Cusp.isOpen_cuspChartBox
+import Submission.Work.Cusp.CuspChartAux
+import Submission.Work.Cusp.cuspCoordM_continuous
+import Submission.Work.Cusp.cuspCoordM_injective
+import Submission.Work.Cusp.isOpenEmbedding_layerPtSq
+import Submission.Work.Cusp.CuspCollarAux
+import Submission.Work.Cusp.continuous_cuspCollarInv
+import Submission.Work.Cusp.collarHeight_half
+import Submission.Work.Space.Assembly
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

@@ -3,10 +3,11 @@ import Submission.Work.RTOwed.cuspChartBeta
 import Submission.Work.RTOwed.cuspChartRegion
 import Submission.Work.RTOwed.chartKlein_strict
 import Submission.Work.RTOwed.chartKlein_self_facet
-import Submission.Work.RTOwed.mk_injOn_interior
+import Submission.Work.FoldInst.Quotient
+import Submission.Work.FoldInst.Atlas
+import Submission.Work.FoldInst.Polytope
 import Submission.Work.RTOwed.chartKlein_wall
 import Submission.Work.RTOwed.cuspCertWalls
-import Submission.Work.FoldInst.Quotient
 import Submission.Work.Cusp.Assembly
 import Submission.Work.Cusp.TopBox
 
@@ -47,13 +48,13 @@ Both are finite verifications over `Fin 48 × Fin 24` by `decide` (integer arith
 /-- **Certificate at `σ = 1` for the truncation constraints**: the lower bound is positive on the
 closed cube. -/
 theorem ckBnd_trunc_pos : ∀ (a : Fin 48) (w : Fin 24), 0 < ckBnd a (ckOfTrunc w) := by
-  decide
+  decide +kernel
 
 /-- **Certificate at the ceiling for the truncation constraints**: for every constraint other than
 the cube's own ideal vertex the affine lower bound at `σ = (ceilH a x)²` is positive. -/
 theorem ckBnd2_trunc_pos :
     ∀ (a : Fin 48) (w : Fin 24), w ≠ cubeVert a → 0 < ckBnd2 a (ckOfTrunc w) := by
-  decide
+  decide +kernel
 
 /-! ## Strict positivity of the truncation numerators -/
 

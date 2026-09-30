@@ -24,7 +24,24 @@ only place where the topology of `M̂` is used: they reduce the two slots to a *
 union of cusp pieces, which `Work.HomologyIso.intHomology_sigma` splits off.
 -/
 import Submission.Work.HomologyIso.Main
-import Submission.Work.Homology.All
+import Submission.Work.Homology.Basic
+import Submission.Work.Homology.Pairs
+import Submission.Work.Homology.Point
+import Submission.Work.Homology.RelChainMap
+import Submission.Work.Homology.Corollaries
+import Submission.Work.Homology.SingHomologyHomeomorph
+import Submission.Work.Homology.HomologyBiprod
+import Submission.Work.Homology.SingHomologyClopen
+import Submission.Work.Homology.ContractibleHomology
+import Submission.Work.Homology.BallHomology
+import Submission.Work.Homology.StdSimplexHomology
+import Submission.Work.Homology.HomotopyEquivHomology
+import Submission.Work.Homology.DeformationRetractHomology
+import Submission.Work.Homology.SimplexShim
+import Submission.Work.Cohomology.Chains
+import Submission.Work.Cohomology.HomologyPairSequence
+import Submission.Work.Homology.Spheres
+import Submission.Work.Homology.MayerVietoris
 import Submission.Work.Cohomology.localHomology
 import Submission.Work.Space.Split.retrAB_homotopyEquiv
 import Submission.Work.Space.Split.retrB_homotopyEquiv

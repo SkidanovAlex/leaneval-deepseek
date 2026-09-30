@@ -322,16 +322,16 @@ def certT (a : Fin 48) (w : Fin 24) : ℤ :=
 def cert4 (a : Fin 48) : ℤ := certPos (Cq a 4) (Ck a 4) (Cl a 4)
 
 /-- The fourth chart coordinate is strictly positive: its certificate is. -/
-theorem cert4_pos : ∀ a : Fin 48, 0 < cert4 a := by decide
+theorem cert4_pos : ∀ a : Fin 48, 0 < cert4 a := by decide +kernel
 
 /-- The quadratic coefficient of the fourth chart coordinate is positive. -/
-theorem Cq4_pos : ∀ a : Fin 48, 0 < Cq a 4 := by decide
+theorem Cq4_pos : ∀ a : Fin 48, 0 < Cq a 4 := by decide +kernel
 
 /-- Every side certificate is nonnegative. -/
-theorem certS_nonneg : ∀ (a : Fin 48) (S : Fin 24), 0 ≤ certS a S := by decide
+theorem certS_nonneg : ∀ (a : Fin 48) (S : Fin 24), 0 ≤ certS a S := by decide +kernel
 
 /-- Every truncation certificate is nonnegative. -/
-theorem certT_nonneg : ∀ (a : Fin 48) (w : Fin 24), 0 ≤ certT a w := by decide
+theorem certT_nonneg : ∀ (a : Fin 48) (w : Fin 24), 0 ≤ certT a w := by decide +kernel
 
 /-! ## The bounds -/
 

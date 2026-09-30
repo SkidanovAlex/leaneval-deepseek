@@ -25,19 +25,19 @@ namespace Work.MbarHomology.BdFiber
 
 /-- The `168` columns in degree `1`. -/
 theorem colOk_zero : ∀ e : Fin (Work.HomologyIso.Gen.mbarDim 1), colOk 0 e = true := by
-  decide
+  decide +kernel
 
 /-- The `192` columns in degree `2`. -/
 theorem colOk_one : ∀ e : Fin (Work.HomologyIso.Gen.mbarDim 2), colOk 1 e = true := by
-  decide
+  decide +kernel
 
 /-- The `72` columns in degree `3`. -/
 theorem colOk_two : ∀ e : Fin (Work.HomologyIso.Gen.mbarDim 3), colOk 2 e = true := by
-  decide
+  decide +kernel
 
 /-- The `2` columns in degree `4`. -/
 theorem colOk_three : ∀ e : Fin (Work.HomologyIso.Gen.mbarDim 4), colOk 3 e = true := by
-  decide
+  decide +kernel
 
 /-- **All the column checks** of the boundary compatibility. -/
 theorem colOk_all (n : ℕ) (hn : n + 1 < 5)

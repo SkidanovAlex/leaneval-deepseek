@@ -1,7 +1,51 @@
 import Mathlib
 import Submission.Work.RTOwed.mbarLow_foldLocal_helpers
 import Submission.Work.RTOwed.cuspWall_step
-import Submission.Work.RTOwed.mbarLow_wall_step
+import Submission.Work.RTOwed.mbarLow_eq_mbBranch_pos
+import Submission.Work.RTOwed.cuspChartWallReflect
+import Submission.Work.FoldInst.Basic
+import Submission.Work.FoldInst.Data
+import Submission.Work.FoldInst.Cert
+import Submission.Work.FoldInst.CertFold
+import Submission.Work.FoldInst.Polytope
+import Submission.Work.FoldInst.Qbar_geometry
+import Submission.Work.FoldInst.Action
+import Submission.Work.FoldInst.Continuous
+import Submission.Work.FoldInst.Atlas
+import Submission.Work.FoldInst.Quotient
+import Submission.Work.FoldInst.Connected
+import Submission.Work.FoldInst.FoldPiece
+import Submission.Work.FoldInst.copies_meet
+import Submission.Work.FoldInst.fold_theta_coord
+import Submission.Work.FoldInst.fold_theta_orthant
+import Submission.Work.FoldInst.fold_cover_sides
+import Submission.Work.FoldInst.Voronoi
+import Submission.Work.FoldInst.CertFlip
+import Submission.Work.FoldInst.fold_state_flipSet
+import Submission.Work.FoldInst.Dvor_disjoint
+import Submission.Work.FoldInst.Ksub_eq_wallSum
+import Submission.Work.FoldInst.actX_image_Dvor
+import Submission.Work.FoldInst.foldTheta_flip
+import Submission.Work.FoldInst.foldTheta_injOn
+import Submission.Work.FoldInst.fold_chart_of_glued
+import Submission.Work.FoldInst.foldPsi_eq
+import Submission.Work.FoldInst.foldPsi_hagree
+import Submission.Work.FoldInst.foldPsi_hcross
+import Submission.Work.FoldInst.foldPsi_continuousOn
+import Submission.Work.FoldInst.isOpen_foldTheta_image
+import Submission.Work.FoldInst.htarget_open
+import Submission.Work.FoldInst.foldPhi_mk
+import Submission.Work.FoldInst.foldPhi_continuousOn
+import Submission.Work.FoldInst.exists_foldChart
+import Submission.Work.FoldInst.CoverData
+import Submission.Work.FoldInst.Cover
+import Submission.Work.FoldInst.Qbar_of_mem_VoronoiOpen_root
+import Submission.Work.FoldInst.foldPsi_image_reflVec
+import Submission.Work.FoldInst.FoldInvDefs
+import Submission.Work.FoldInst.foldInv_foldTheta
+import Submission.Work.FoldInst.continuousOn_foldInv
+import Submission.Work.FoldInst.exists_pos_le_foldTheta_height
+import Submission.Work.FoldInst.FoldChart
 import Submission.Work.RTOwed.cuspWallTableCerts
 import Submission.Work.RTOwed.mobius_reflWall_high
 import Submission.Work.RTOwed.cubeOf_halfopen
@@ -27,7 +71,7 @@ noncomputable section
 set_option maxHeartbeats 4000000
 
 /-- The cusp lattice divisors are positive. -/
-theorem latMod_posZ : ∀ (v : Fin 5) (i : Fin 3), 0 < (Work.Cusp.latMod v i : ℤ) := by decide
+theorem latMod_posZ : ∀ (v : Fin 5) (i : Fin 3), 0 < (Work.Cusp.latMod v i : ℤ) := by decide +kernel
 
 /-! ## The near-region evaluation of the fold chart
 
@@ -87,13 +131,13 @@ theorem cubeOfMod_sub_one (a : Fin 48) (ε : Fin 3 → Fin 2) (m : Fin 3) :
         (fun j => Work.Cusp.cubeCorner a j - (ε j : ℤ) - (if j = m then 1 else 0))
       = wallNb (Work.Cusp.cubeOfMod (Work.Cusp.cubeCusp a)
           (fun j => Work.Cusp.cubeCorner a j - (ε j : ℤ))) m 0 := by
-  revert a ε m; decide
+  revert a ε m; decide +kernel
 
 /-- The floor shift by `-e_m` selects the far cube. -/
 theorem cubeOfMod_corner_sub_one (a : Fin 48) (m : Fin 3) :
     Work.Cusp.cubeOfMod (Work.Cusp.cubeCusp a)
         (fun j => Work.Cusp.cubeCorner a j - (if j = m then 1 else 0)) = wallNb a m 0 := by
-  revert a m; decide
+  revert a m; decide +kernel
 
 /-- The pinned coordinates of `q`: the reduced coordinate sits on the corresponding wall. -/
 def wallPinSet (v : Fin 5) (a : Fin 48) (k : Fin 3 → ℤ) (q : CuspE4) : Finset (Fin 3) :=

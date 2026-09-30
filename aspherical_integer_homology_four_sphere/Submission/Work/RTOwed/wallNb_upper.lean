@@ -23,6 +23,6 @@ theorem wallNb_upper (a : Fin 48) (j : Fin 3) :
         = Work.Cusp.cubeCorner a i - Work.Cusp.cubeCorner (Work.RTOwed.wallNb a j 1) i
           + (if i = j then 1 else 0)) := by
   revert a j
-  decide
+  decide +kernel
 
 end Work.RTOwed

@@ -1,7 +1,10 @@
 import Mathlib
 import Submission.Work.ConvexCells.Basic
 import Submission.Work.ConvexCells.FlagPt_mem
-import Submission.Work.ConvexCells.Main
+import Submission.Work.ConvexCells.tightAt_flagPt
+import Submission.Work.ConvexCells.exists_exit
+import Submission.Work.ConvexCells.exists_flagPt
+import Submission.Work.ConvexCells.flagPt_unique
 import Submission.Work.MbarHomology.ConvexCells.sd_carrier_of_basic
 import Submission.Work.MbarHomology.ConvexCells.exists_exit_basic
 import Submission.Work.MbarHomology.ConvexCells.flagPt_unique_basic

@@ -45,17 +45,17 @@ open Work.RTOwed.chartKleinMem
 /-! ### The finite coefficient check for the wall sides -/
 
 /-- **The quadratic coefficient of the wall-side numerator vanishes.** -/
-theorem wallLo_Qs_all : ∀ (a : Fin 48) (i : Fin 3), Qs a (wallLo a i) = 0 := by decide
+theorem wallLo_Qs_all : ∀ (a : Fin 48) (i : Fin 3), Qs a (wallLo a i) = 0 := by decide +kernel
 
 /-- **The linear coefficients of the wall-side numerator off the `i`-th coordinate vanish.** -/
-theorem wallLo_Ls_all : ∀ (a : Fin 48) (i j : Fin 3), j ≠ i → Ls a (wallLo a i) j = 0 := by decide
+theorem wallLo_Ls_all : ∀ (a : Fin 48) (i j : Fin 3), j ≠ i → Ls a (wallLo a i) j = 0 := by decide +kernel
 
 /-- **The constant term of the wall-side numerator.** -/
 theorem wallLo_Ks_all : ∀ (a : Fin 48) (i : Fin 3),
-    Ks a (wallLo a i) + Ls a (wallLo a i) i * Work.Cusp.cubeCorner a i = 0 := by decide
+    Ks a (wallLo a i) + Ls a (wallLo a i) i * Work.Cusp.cubeCorner a i = 0 := by decide +kernel
 
 /-- **The remaining linear coefficient is strictly positive.** -/
-theorem wallLo_Ls_pos_all : ∀ (a : Fin 48) (i : Fin 3), 0 < Ls a (wallLo a i) i := by decide
+theorem wallLo_Ls_pos_all : ∀ (a : Fin 48) (i : Fin 3), 0 < Ls a (wallLo a i) i := by decide +kernel
 
 /-- **The wall-side numerator is `L · (u i - cubeCorner a i)`.** -/
 theorem wallLo_Nside (a : Fin 48) (i : Fin 3) (x : CuspE3) (s : ℝ) :

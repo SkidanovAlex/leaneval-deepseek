@@ -77,80 +77,163 @@ abbrev conG (v : Fin 5) (a b : Fin 48) (k : Fin 3 → ℤ) (r : Fin 4) : ℤ :=
 
 /-! ## The finite certificate of the gluing -/
 
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 400000000 in
-/-- The certificate of the gluing, for the cusp `0`. -/
-theorem glue_cert_0 : ∀ (a b : Fin 48) (u : Fin 3 → Fin 3),
-    Work.Cusp.cubeCusp a = (0 : Fin 5) → Work.Cusp.cubeCusp b = (0 : Fin 5) →
-    ovl 0 a b (kfun u) →
-    ((glueGam 0 a b (kfun u)).2 + cubeBit a = cubeBit b ∧
-      (∀ j : Fin 3, loB 0 a b (kfun u) j ≠ hiB 0 a b (kfun u) j →
-        ∀ r : Fin 4, linG 0 a b (kfun u) r j = 0) ∧
-      (∀ r : Fin 4, linG 0 a b (kfun u) r 0 * loB 0 a b (kfun u) 0
-        + linG 0 a b (kfun u) r 1 * loB 0 a b (kfun u) 1
-        + linG 0 a b (kfun u) r 2 * loB 0 a b (kfun u) 2
-        + conG 0 a b (kfun u) r = 0)) := by
-  decide
+/-- The certificate of the gluing for the first cube `a` (its cusp is `Work.Cusp.cubeCusp a`):
+checked one cube at a time, each a small kernel `decide`. -/
+abbrev glueRow (a : Fin 48) : Prop :=
+  ∀ (b : Fin 48) (u : Fin 3 → Fin 3),
+    Work.Cusp.cubeCusp b = (Work.Cusp.cubeCusp a) → ovl (Work.Cusp.cubeCusp a) a b (kfun u) →
+    ((glueGam (Work.Cusp.cubeCusp a) a b (kfun u)).2 + cubeBit a = cubeBit b ∧
+      (∀ j : Fin 3, loB (Work.Cusp.cubeCusp a) a b (kfun u) j ≠ hiB (Work.Cusp.cubeCusp a) a b (kfun u) j →
+        ∀ r : Fin 4, linG (Work.Cusp.cubeCusp a) a b (kfun u) r j = 0) ∧
+      (∀ r : Fin 4, linG (Work.Cusp.cubeCusp a) a b (kfun u) r 0 * loB (Work.Cusp.cubeCusp a) a b (kfun u) 0
+        + linG (Work.Cusp.cubeCusp a) a b (kfun u) r 1 * loB (Work.Cusp.cubeCusp a) a b (kfun u) 1
+        + linG (Work.Cusp.cubeCusp a) a b (kfun u) r 2 * loB (Work.Cusp.cubeCusp a) a b (kfun u) 2
+        + conG (Work.Cusp.cubeCusp a) a b (kfun u) r = 0))
 
 set_option maxRecDepth 100000 in
-set_option maxHeartbeats 400000000 in
-/-- The certificate of the gluing, for the cusp `1`. -/
-theorem glue_cert_1 : ∀ (a b : Fin 48) (u : Fin 3 → Fin 3),
-    Work.Cusp.cubeCusp a = (1 : Fin 5) → Work.Cusp.cubeCusp b = (1 : Fin 5) →
-    ovl 1 a b (kfun u) →
-    ((glueGam 1 a b (kfun u)).2 + cubeBit a = cubeBit b ∧
-      (∀ j : Fin 3, loB 1 a b (kfun u) j ≠ hiB 1 a b (kfun u) j →
-        ∀ r : Fin 4, linG 1 a b (kfun u) r j = 0) ∧
-      (∀ r : Fin 4, linG 1 a b (kfun u) r 0 * loB 1 a b (kfun u) 0
-        + linG 1 a b (kfun u) r 1 * loB 1 a b (kfun u) 1
-        + linG 1 a b (kfun u) r 2 * loB 1 a b (kfun u) 2
-        + conG 1 a b (kfun u) r = 0)) := by
-  decide
-
+set_option maxHeartbeats 0 in
+theorem glueRow_0 : glueRow 0 := by decide +kernel
 set_option maxRecDepth 100000 in
-set_option maxHeartbeats 400000000 in
-/-- The certificate of the gluing, for the cusp `2`. -/
-theorem glue_cert_2 : ∀ (a b : Fin 48) (u : Fin 3 → Fin 3),
-    Work.Cusp.cubeCusp a = (2 : Fin 5) → Work.Cusp.cubeCusp b = (2 : Fin 5) →
-    ovl 2 a b (kfun u) →
-    ((glueGam 2 a b (kfun u)).2 + cubeBit a = cubeBit b ∧
-      (∀ j : Fin 3, loB 2 a b (kfun u) j ≠ hiB 2 a b (kfun u) j →
-        ∀ r : Fin 4, linG 2 a b (kfun u) r j = 0) ∧
-      (∀ r : Fin 4, linG 2 a b (kfun u) r 0 * loB 2 a b (kfun u) 0
-        + linG 2 a b (kfun u) r 1 * loB 2 a b (kfun u) 1
-        + linG 2 a b (kfun u) r 2 * loB 2 a b (kfun u) 2
-        + conG 2 a b (kfun u) r = 0)) := by
-  decide
-
+set_option maxHeartbeats 0 in
+theorem glueRow_1 : glueRow 1 := by decide +kernel
 set_option maxRecDepth 100000 in
-set_option maxHeartbeats 400000000 in
-/-- The certificate of the gluing, for the cusp `3`. -/
-theorem glue_cert_3 : ∀ (a b : Fin 48) (u : Fin 3 → Fin 3),
-    Work.Cusp.cubeCusp a = (3 : Fin 5) → Work.Cusp.cubeCusp b = (3 : Fin 5) →
-    ovl 3 a b (kfun u) →
-    ((glueGam 3 a b (kfun u)).2 + cubeBit a = cubeBit b ∧
-      (∀ j : Fin 3, loB 3 a b (kfun u) j ≠ hiB 3 a b (kfun u) j →
-        ∀ r : Fin 4, linG 3 a b (kfun u) r j = 0) ∧
-      (∀ r : Fin 4, linG 3 a b (kfun u) r 0 * loB 3 a b (kfun u) 0
-        + linG 3 a b (kfun u) r 1 * loB 3 a b (kfun u) 1
-        + linG 3 a b (kfun u) r 2 * loB 3 a b (kfun u) 2
-        + conG 3 a b (kfun u) r = 0)) := by
-  decide
-
+set_option maxHeartbeats 0 in
+theorem glueRow_2 : glueRow 2 := by decide +kernel
 set_option maxRecDepth 100000 in
-set_option maxHeartbeats 400000000 in
-/-- The certificate of the gluing, for the cusp `4`. -/
-theorem glue_cert_4 : ∀ (a b : Fin 48) (u : Fin 3 → Fin 3),
-    Work.Cusp.cubeCusp a = (4 : Fin 5) → Work.Cusp.cubeCusp b = (4 : Fin 5) →
-    ovl 4 a b (kfun u) →
-    ((glueGam 4 a b (kfun u)).2 + cubeBit a = cubeBit b ∧
-      (∀ j : Fin 3, loB 4 a b (kfun u) j ≠ hiB 4 a b (kfun u) j →
-        ∀ r : Fin 4, linG 4 a b (kfun u) r j = 0) ∧
-      (∀ r : Fin 4, linG 4 a b (kfun u) r 0 * loB 4 a b (kfun u) 0
-        + linG 4 a b (kfun u) r 1 * loB 4 a b (kfun u) 1
-        + linG 4 a b (kfun u) r 2 * loB 4 a b (kfun u) 2
-        + conG 4 a b (kfun u) r = 0)) := by
-  decide
+set_option maxHeartbeats 0 in
+theorem glueRow_3 : glueRow 3 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_4 : glueRow 4 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_5 : glueRow 5 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_6 : glueRow 6 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_7 : glueRow 7 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_8 : glueRow 8 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_9 : glueRow 9 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_10 : glueRow 10 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_11 : glueRow 11 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_12 : glueRow 12 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_13 : glueRow 13 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_14 : glueRow 14 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_15 : glueRow 15 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_16 : glueRow 16 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_17 : glueRow 17 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_18 : glueRow 18 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_19 : glueRow 19 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_20 : glueRow 20 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_21 : glueRow 21 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_22 : glueRow 22 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_23 : glueRow 23 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_24 : glueRow 24 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_25 : glueRow 25 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_26 : glueRow 26 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_27 : glueRow 27 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_28 : glueRow 28 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_29 : glueRow 29 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_30 : glueRow 30 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_31 : glueRow 31 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_32 : glueRow 32 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_33 : glueRow 33 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_34 : glueRow 34 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_35 : glueRow 35 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_36 : glueRow 36 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_37 : glueRow 37 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_38 : glueRow 38 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_39 : glueRow 39 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_40 : glueRow 40 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_41 : glueRow 41 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_42 : glueRow 42 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_43 : glueRow 43 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_44 : glueRow 44 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_45 : glueRow 45 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_46 : glueRow 46 := by decide +kernel
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem glueRow_47 : glueRow 47 := by decide +kernel
 
 /-- **The finite certificate of the gluing.**  For every cusp `v`, every pair of cubes `a`, `b` of
 that cusp and every offset with entries in `{-1,0,1}` whose cells overlap, the group element
@@ -166,12 +249,11 @@ theorem glue_cert : ∀ (v : Fin 5) (a b : Fin 48) (u : Fin 3 → Fin 3),
         + linG v a b (kfun u) r 2 * loB v a b (kfun u) 2
         + conG v a b (kfun u) r = 0)) := by
   intro v a b u hca hcb hov
-  fin_cases v
-  · exact glue_cert_0 a b u hca hcb hov
-  · exact glue_cert_1 a b u hca hcb hov
-  · exact glue_cert_2 a b u hca hcb hov
-  · exact glue_cert_3 a b u hca hcb hov
-  · exact glue_cert_4 a b u hca hcb hov
+  subst hca
+  have h : glueRow a := by
+    fin_cases a
+    exacts [glueRow_0, glueRow_1, glueRow_2, glueRow_3, glueRow_4, glueRow_5, glueRow_6, glueRow_7, glueRow_8, glueRow_9, glueRow_10, glueRow_11, glueRow_12, glueRow_13, glueRow_14, glueRow_15, glueRow_16, glueRow_17, glueRow_18, glueRow_19, glueRow_20, glueRow_21, glueRow_22, glueRow_23, glueRow_24, glueRow_25, glueRow_26, glueRow_27, glueRow_28, glueRow_29, glueRow_30, glueRow_31, glueRow_32, glueRow_33, glueRow_34, glueRow_35, glueRow_36, glueRow_37, glueRow_38, glueRow_39, glueRow_40, glueRow_41, glueRow_42, glueRow_43, glueRow_44, glueRow_45, glueRow_46, glueRow_47]
+  exact h b u hcb hov
 
 
 /-! ## Decoding an offset with entries in `{-1,0,1}` -/
@@ -192,20 +274,20 @@ theorem exists_kfun (k : Fin 3 → ℤ) (h : ∀ i, k i = -1 ∨ k i = 0 ∨ k i
 
 /-! ## The bound on the offset of two overlapping cells -/
 
-theorem latMod_pos : ∀ (v : Fin 5) (i : Fin 3), 0 < (Work.Cusp.latMod v i : ℤ) := by decide
+theorem latMod_pos : ∀ (v : Fin 5) (i : Fin 3), 0 < (Work.Cusp.latMod v i : ℤ) := by decide +kernel
 
 /-- The signed gap of the corners along `i` is smaller than twice the lattice spacing. -/
 theorem corner_bound_hi : ∀ (v : Fin 5) (a b : Fin 48) (i : Fin 3),
     Work.Cusp.cubeCusp a = v → Work.Cusp.cubeCusp b = v →
     Work.Cusp.cubeCorner a i + 1 - Work.Cusp.cubeCorner b i
       < 2 * (Work.Cusp.latMod v i : ℤ) := by
-  decide
+  decide +kernel
 
 theorem corner_bound_lo : ∀ (v : Fin 5) (a b : Fin 48) (i : Fin 3),
     Work.Cusp.cubeCusp a = v → Work.Cusp.cubeCusp b = v →
     Work.Cusp.cubeCorner b i + 1 - Work.Cusp.cubeCorner a i
       < 2 * (Work.Cusp.latMod v i : ℤ) := by
-  decide
+  decide +kernel
 
 /-- **The offset of two overlapping cells has entries in `{-1,0,1}`.** -/
 theorem k_bound (v : Fin 5) (a b : Fin 48) (i : Fin 3)
@@ -608,7 +690,7 @@ theorem floorV_dvd (v : Fin 5) (x : Work.RTOwed.CuspE3) (i : Fin 3) :
   simpa only [Work.RTOwed.cubeOf] using cubeOfMod_corner_dvd v (Work.RTOwed.floorV x) i
 
 theorem corner_abs_le : ∀ (a : Fin 48) (i : Fin 3), |Work.Cusp.cubeCorner a i| ≤ 3 := by
-  decide
+  decide +kernel
 
 theorem exists_cell (v : Fin 5) (x : Work.RTOwed.CuspE3) :
     ∃ (a : Fin 48) (k : Fin 3 → ℤ), Work.Cusp.cubeCusp a = v ∧ x ∈ cell v a k := by

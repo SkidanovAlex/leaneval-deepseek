@@ -27,7 +27,7 @@ namespace Work.FoldInst
 
 /-- Every element of `ZMod 2` is `0` or `1`. -/
 theorem zmod2_eq_zero_or_one (c : ZMod 2) : c = 0 ∨ c = 1 := by
-  revert c; decide
+  revert c; decide +kernel
 
 /-- The quotient map is continuous. -/
 theorem continuous_mk : Continuous (mk : Xbar → Mbar) := continuous_quotient_mk'

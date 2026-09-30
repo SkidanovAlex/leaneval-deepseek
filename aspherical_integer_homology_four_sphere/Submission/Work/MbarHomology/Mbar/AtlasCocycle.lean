@@ -69,12 +69,78 @@ def cocycleOk (c : ZMod 2) (F : Fin 865) : Bool :=
     (fun A => ¬ (Enode (nodeAct (sideTypeSum A) (c, F)).1 (nodeAct (sideTypeSum A) (c, F)).2
                  = Enode c F + sideTypeSum A))).card = 0)
 
+theorem cocycleOk_c0 : ∀ c : ZMod 2, ∀ F : Fin 865, 0 ≤ F.val → F.val < 55 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c1 : ∀ c : ZMod 2, ∀ F : Fin 865, 55 ≤ F.val → F.val < 110 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c2 : ∀ c : ZMod 2, ∀ F : Fin 865, 110 ≤ F.val → F.val < 165 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c3 : ∀ c : ZMod 2, ∀ F : Fin 865, 165 ≤ F.val → F.val < 220 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c4 : ∀ c : ZMod 2, ∀ F : Fin 865, 220 ≤ F.val → F.val < 275 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c5 : ∀ c : ZMod 2, ∀ F : Fin 865, 275 ≤ F.val → F.val < 330 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c6 : ∀ c : ZMod 2, ∀ F : Fin 865, 330 ≤ F.val → F.val < 385 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c7 : ∀ c : ZMod 2, ∀ F : Fin 865, 385 ≤ F.val → F.val < 440 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c8 : ∀ c : ZMod 2, ∀ F : Fin 865, 440 ≤ F.val → F.val < 495 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c9 : ∀ c : ZMod 2, ∀ F : Fin 865, 495 ≤ F.val → F.val < 550 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c10 : ∀ c : ZMod 2, ∀ F : Fin 865, 550 ≤ F.val → F.val < 605 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c11 : ∀ c : ZMod 2, ∀ F : Fin 865, 605 ≤ F.val → F.val < 660 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c12 : ∀ c : ZMod 2, ∀ F : Fin 865, 660 ≤ F.val → F.val < 715 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c13 : ∀ c : ZMod 2, ∀ F : Fin 865, 715 ≤ F.val → F.val < 770 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c14 : ∀ c : ZMod 2, ∀ F : Fin 865, 770 ≤ F.val → F.val < 825 → cocycleOk c F = true := by
+  decide +kernel
+theorem cocycleOk_c15 : ∀ c : ZMod 2, ∀ F : Fin 865, 825 ≤ F.val → cocycleOk c F = true := by
+  decide +kernel
+/-- `cocycleOk` holds everywhere (checked in blocks of faces). -/
+theorem cocycleOk_all (c : ZMod 2) (F : Fin 865) : cocycleOk c F = true := by
+  by_cases h0 : F.val < 55
+  · exact cocycleOk_c0 c F (by omega) h0
+  by_cases h1 : F.val < 110
+  · exact cocycleOk_c1 c F (by omega) h1
+  by_cases h2 : F.val < 165
+  · exact cocycleOk_c2 c F (by omega) h2
+  by_cases h3 : F.val < 220
+  · exact cocycleOk_c3 c F (by omega) h3
+  by_cases h4 : F.val < 275
+  · exact cocycleOk_c4 c F (by omega) h4
+  by_cases h5 : F.val < 330
+  · exact cocycleOk_c5 c F (by omega) h5
+  by_cases h6 : F.val < 385
+  · exact cocycleOk_c6 c F (by omega) h6
+  by_cases h7 : F.val < 440
+  · exact cocycleOk_c7 c F (by omega) h7
+  by_cases h8 : F.val < 495
+  · exact cocycleOk_c8 c F (by omega) h8
+  by_cases h9 : F.val < 550
+  · exact cocycleOk_c9 c F (by omega) h9
+  by_cases h10 : F.val < 605
+  · exact cocycleOk_c10 c F (by omega) h10
+  by_cases h11 : F.val < 660
+  · exact cocycleOk_c11 c F (by omega) h11
+  by_cases h12 : F.val < 715
+  · exact cocycleOk_c12 c F (by omega) h12
+  by_cases h13 : F.val < 770
+  · exact cocycleOk_c13 c F (by omega) h13
+  by_cases h14 : F.val < 825
+  · exact cocycleOk_c14 c F (by omega) h14
+  exact cocycleOk_c15 c F (by omega)
+
 /-- **The cocycle identity, checked on subset sums.** -/
 theorem cocycle_filter (c : ZMod 2) (F : Fin 865) :
     ((tightSidesIdx F).powerset.filter
       (fun A => Enode (nodeAct (sideTypeSum A) (c, F)).1 (nodeAct (sideTypeSum A) (c, F)).2
                  ≠ Enode c F + sideTypeSum A)) = ∅ := by
-  have h : cocycleOk c F = true := by decide +revert
+  have h : cocycleOk c F = true := cocycleOk_all c F
   have h2 : ((tightSidesIdx F).powerset.filter
       (fun A => ¬ (Enode (nodeAct (sideTypeSum A) (c, F)).1 (nodeAct (sideTypeSum A) (c, F)).2
                  = Enode c F + sideTypeSum A))).card = 0 := by

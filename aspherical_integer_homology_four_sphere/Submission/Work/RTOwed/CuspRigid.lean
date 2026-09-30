@@ -32,7 +32,7 @@ import Mathlib
 import Submission.Work.RTOwed.Defs
 import Submission.Work.RTOwed.cuspGlueData
 import Submission.Work.RTOwed.cuspChartWallReflect
-import Submission.Work.RTOwed.cuspChartFacetRow
+import Submission.Work.RTOwed.chartKlein_self_facet
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

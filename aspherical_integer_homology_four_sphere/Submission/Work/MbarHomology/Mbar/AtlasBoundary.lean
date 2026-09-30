@@ -304,7 +304,7 @@ theorem pushNode_subdivCell_facet (c : ZMod 2) (n : ℕ) (hn : n < 5) (G : QbarC
 /-! ## 7. The cell of a facet as a total function -/
 
 theorem mbarDim_pos {n : ℕ} (hn : n < 5) : 0 < Work.HomologyIso.Gen.mbarDim n := by
-  interval_cases n <;> decide
+  interval_cases n <;> decide +kernel
 
 /-- The cell of the facet node `(c,G)`, as a total function of `G : Fin 865`. -/
 def phiFacet (c : ZMod 2) (n : ℕ) (hn : n < 5) (G : Fin 865) :

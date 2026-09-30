@@ -1,5 +1,6 @@
 import Submission.Work.RiemLib.Jacobi
-import Submission.Work.RiemLib.JacobiOrth
+import Submission.Work.RiemLib.ChartBounds
+import Submission.Work.RiemLib.Commons.LinearAlgebra.exists_ne_zero_orthogonal_of_finrank_two_le
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

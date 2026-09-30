@@ -29,27 +29,91 @@ namespace Work.MbarHomology.Qbar
 open Work.MbarHomology
 
 /-- The `pos` identity at `e = 0`. -/
+theorem qAct_pos_00_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 220 → 
+    qPos (Work.MbarHomology.faceActT 0 f) = fun i => Work.MbarHomology.signVecT 0 i * qPos f i := by decide +kernel
+theorem qAct_pos_00_c1 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 440 → 
+    qPos (Work.MbarHomology.faceActT 0 f) = fun i => Work.MbarHomology.signVecT 0 i * qPos f i := by decide +kernel
+theorem qAct_pos_00_c2 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 660 → 
+    qPos (Work.MbarHomology.faceActT 0 f) = fun i => Work.MbarHomology.signVecT 0 i * qPos f i := by decide +kernel
+theorem qAct_pos_00_c3 : ∀ f : Fin 865, 660 ≤ f.val → 
+    qPos (Work.MbarHomology.faceActT 0 f) = fun i => Work.MbarHomology.signVecT 0 i * qPos f i := by decide +kernel
 theorem qAct_pos_00 : ∀ f : Fin 865,
     qPos (Work.MbarHomology.faceActT 0 f) = fun i => Work.MbarHomology.signVecT 0 i * qPos f i := by
-  decide
+  intro f
+  by_cases h0 : f.val < 220
+  · exact qAct_pos_00_c0 f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact qAct_pos_00_c1 f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact qAct_pos_00_c2 f (by omega) h2
+  exact qAct_pos_00_c3 f (by omega)
 
 /-- The `tight` identity at `e = 0`. -/
+theorem qAct_tight_00_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 220 → 
+    qTight (Work.MbarHomology.faceActT 0 f) = (qTight f).image (Work.MbarHomology.consActT 0) := by decide +kernel
+theorem qAct_tight_00_c1 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 440 → 
+    qTight (Work.MbarHomology.faceActT 0 f) = (qTight f).image (Work.MbarHomology.consActT 0) := by decide +kernel
+theorem qAct_tight_00_c2 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 660 → 
+    qTight (Work.MbarHomology.faceActT 0 f) = (qTight f).image (Work.MbarHomology.consActT 0) := by decide +kernel
+theorem qAct_tight_00_c3 : ∀ f : Fin 865, 660 ≤ f.val → 
+    qTight (Work.MbarHomology.faceActT 0 f) = (qTight f).image (Work.MbarHomology.consActT 0) := by decide +kernel
 theorem qAct_tight_00 : ∀ f : Fin 865,
     qTight (Work.MbarHomology.faceActT 0 f) = (qTight f).image (Work.MbarHomology.consActT 0) := by
-  decide
+  intro f
+  by_cases h0 : f.val < 220
+  · exact qAct_tight_00_c0 f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact qAct_tight_00_c1 f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact qAct_tight_00_c2 f (by omega) h2
+  exact qAct_tight_00_c3 f (by omega)
 
 /-- The `facet` identity at `e = 0`. -/
+theorem qAct_facet_00_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 220 → 
+    qFacet (Work.MbarHomology.faceActT 0 f) = (qFacet f).image (Work.MbarHomology.faceActT 0) := by decide +kernel
+theorem qAct_facet_00_c1 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 440 → 
+    qFacet (Work.MbarHomology.faceActT 0 f) = (qFacet f).image (Work.MbarHomology.faceActT 0) := by decide +kernel
+theorem qAct_facet_00_c2 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 660 → 
+    qFacet (Work.MbarHomology.faceActT 0 f) = (qFacet f).image (Work.MbarHomology.faceActT 0) := by decide +kernel
+theorem qAct_facet_00_c3 : ∀ f : Fin 865, 660 ≤ f.val → 
+    qFacet (Work.MbarHomology.faceActT 0 f) = (qFacet f).image (Work.MbarHomology.faceActT 0) := by decide +kernel
 theorem qAct_facet_00 : ∀ f : Fin 865,
     qFacet (Work.MbarHomology.faceActT 0 f) = (qFacet f).image (Work.MbarHomology.faceActT 0) := by
-  decide
+  intro f
+  by_cases h0 : f.val < 220
+  · exact qAct_facet_00_c0 f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact qAct_facet_00_c1 f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact qAct_facet_00_c2 f (by omega) h2
+  exact qAct_facet_00_c3 f (by omega)
 
 /-- The incidence identity at `e = 0`, in the computable `filter = ∅` form: no facet `f'` of a
 face `f` violates the orientation-sign relation.  (`Finset.toList` is noncomputable and
 `∀ f' : Fin 865, f' ∈ qFacet f → …` makes the kernel rebuild the `Fintype` instance for the
 inner quantifier `865` times.) -/
+theorem qAct_inc_00_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 220 →  (qFacet f).filter (fun f' =>
+    qInc (Work.MbarHomology.faceActT 0 f) (Work.MbarHomology.faceActT 0 f')
+      ≠ Work.MbarHomology.oST 0 f * Work.MbarHomology.oST 0 f' * qInc f f') = ∅ := by decide +kernel
+theorem qAct_inc_00_c1 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 440 →  (qFacet f).filter (fun f' =>
+    qInc (Work.MbarHomology.faceActT 0 f) (Work.MbarHomology.faceActT 0 f')
+      ≠ Work.MbarHomology.oST 0 f * Work.MbarHomology.oST 0 f' * qInc f f') = ∅ := by decide +kernel
+theorem qAct_inc_00_c2 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 660 →  (qFacet f).filter (fun f' =>
+    qInc (Work.MbarHomology.faceActT 0 f) (Work.MbarHomology.faceActT 0 f')
+      ≠ Work.MbarHomology.oST 0 f * Work.MbarHomology.oST 0 f' * qInc f f') = ∅ := by decide +kernel
+theorem qAct_inc_00_c3 : ∀ f : Fin 865, 660 ≤ f.val →  (qFacet f).filter (fun f' =>
+    qInc (Work.MbarHomology.faceActT 0 f) (Work.MbarHomology.faceActT 0 f')
+      ≠ Work.MbarHomology.oST 0 f * Work.MbarHomology.oST 0 f' * qInc f f') = ∅ := by decide +kernel
 theorem qAct_inc_00 : ∀ f : Fin 865, (qFacet f).filter (fun f' =>
     qInc (Work.MbarHomology.faceActT 0 f) (Work.MbarHomology.faceActT 0 f')
       ≠ Work.MbarHomology.oST 0 f * Work.MbarHomology.oST 0 f' * qInc f f') = ∅ := by
-  decide
+  intro f
+  by_cases h0 : f.val < 220
+  · exact qAct_inc_00_c0 f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact qAct_inc_00_c1 f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact qAct_inc_00_c2 f (by omega) h2
+  exact qAct_inc_00_c3 f (by omega)
 
 end Work.MbarHomology.Qbar

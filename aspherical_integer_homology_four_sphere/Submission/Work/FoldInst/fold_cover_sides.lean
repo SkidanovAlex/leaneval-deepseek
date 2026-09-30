@@ -182,7 +182,7 @@ def wEmptyI : Fin 98 := 0
 
 /-- **The empty shape.**  The codimension zero class has no walls. -/
 theorem checkEmpty : ∀ S : Fin 24, ¬ (∃ t : Fin (foldCodim wEmptyI), foldWalls wEmptyI (rOf wEmptyI 0) t = S) := by
-  decide
+  decide +kernel
 
 /-- **The single-pair shape.** -/
 theorem checkOne (p : Fin 6) (g : Fin 4 → ZMod 2) :

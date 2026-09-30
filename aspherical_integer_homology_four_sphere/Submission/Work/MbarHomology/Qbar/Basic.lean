@@ -92,7 +92,31 @@ def qRhs : Fin 48 → ℤ := fun i => if (i : ℕ) < 24 then 1 else 8
   rw [if_neg (by simp)]
 
 /-- The inverse code table inverts `qCode` on the tight sets of the faces of `Q̄`. -/
-theorem qOfCode_qCode : ∀ f : Fin 865, qOfCode (qCode (qTight f)) = f := by decide
+theorem qOfCode_qCode_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 110 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c1 : ∀ f : Fin 865, 110 ≤ f.val → f.val < 220 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c2 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 330 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c3 : ∀ f : Fin 865, 330 ≤ f.val → f.val < 440 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c4 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 550 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c5 : ∀ f : Fin 865, 550 ≤ f.val → f.val < 660 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c6 : ∀ f : Fin 865, 660 ≤ f.val → f.val < 770 →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode_c7 : ∀ f : Fin 865, 770 ≤ f.val →  qOfCode (qCode (qTight f)) = f := by decide +kernel
+theorem qOfCode_qCode : ∀ f : Fin 865, qOfCode (qCode (qTight f)) = f := by
+  intro f
+  by_cases h0 : f.val < 110
+  · exact qOfCode_qCode_c0 f (by omega) h0
+  by_cases h1 : f.val < 220
+  · exact qOfCode_qCode_c1 f (by omega) h1
+  by_cases h2 : f.val < 330
+  · exact qOfCode_qCode_c2 f (by omega) h2
+  by_cases h3 : f.val < 440
+  · exact qOfCode_qCode_c3 f (by omega) h3
+  by_cases h4 : f.val < 550
+  · exact qOfCode_qCode_c4 f (by omega) h4
+  by_cases h5 : f.val < 660
+  · exact qOfCode_qCode_c5 f (by omega) h5
+  by_cases h6 : f.val < 770
+  · exact qOfCode_qCode_c6 f (by omega) h6
+  exact qOfCode_qCode_c7 f (by omega)
 
 theorem qTight_inj {a b : Fin 865} (h : qTight a = qTight b) : a = b := by
   have h2 : qCode (qTight a) = qCode (qTight b) := congrArg qCode h
@@ -212,16 +236,111 @@ through the code table `qOfCode`); the `pos` points realise the tight sets (one 
 `1`, `0`); and the boundedness certificate.
 -/
 
-theorem qTight_top : qTight (0 : Fin 865) = ∅ := by decide
+theorem qTight_top : qTight (0 : Fin 865) = ∅ := by decide +kernel
 
 theorem qTight_injective : ∀ f g : Fin 865, qTight f = qTight g → f = g :=
   fun _ _ h => qTight_inj h
 
 set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 55 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c1 : ∀ f : Fin 865, 55 ≤ f.val → f.val < 110 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c2 : ∀ f : Fin 865, 110 ≤ f.val → f.val < 165 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c3 : ∀ f : Fin 865, 165 ≤ f.val → f.val < 220 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c4 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 275 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c5 : ∀ f : Fin 865, 275 ≤ f.val → f.val < 330 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c6 : ∀ f : Fin 865, 330 ≤ f.val → f.val < 385 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c7 : ∀ f : Fin 865, 385 ≤ f.val → f.val < 440 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c8 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 495 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c9 : ∀ f : Fin 865, 495 ≤ f.val → f.val < 550 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c10 : ∀ f : Fin 865, 550 ≤ f.val → f.val < 605 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c11 : ∀ f : Fin 865, 605 ≤ f.val → f.val < 660 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c12 : ∀ f : Fin 865, 660 ≤ f.val → f.val < 715 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c13 : ∀ f : Fin 865, 715 ≤ f.val → f.val < 770 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c14 : ∀ f : Fin 865, 770 ≤ f.val → f.val < 825 → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
+theorem qPos_spec_c15 : ∀ f : Fin 865, 825 ≤ f.val → 
+    (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
+      (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by decide +kernel
+set_option maxHeartbeats 10000000 in
 theorem qPos_spec : ∀ f : Fin 865,
     (∀ i ∈ qTight f, ∑ j, qNrm i j * qPos f j = (1920 : ℤ) * qRhs i) ∧
       (∀ i, i ∉ qTight f → ∑ j, qNrm i j * qPos f j < (1920 : ℤ) * qRhs i) := by
-  decide
+  intro f
+  by_cases h0 : f.val < 55
+  · exact qPos_spec_c0 f (by omega) h0
+  by_cases h1 : f.val < 110
+  · exact qPos_spec_c1 f (by omega) h1
+  by_cases h2 : f.val < 165
+  · exact qPos_spec_c2 f (by omega) h2
+  by_cases h3 : f.val < 220
+  · exact qPos_spec_c3 f (by omega) h3
+  by_cases h4 : f.val < 275
+  · exact qPos_spec_c4 f (by omega) h4
+  by_cases h5 : f.val < 330
+  · exact qPos_spec_c5 f (by omega) h5
+  by_cases h6 : f.val < 385
+  · exact qPos_spec_c6 f (by omega) h6
+  by_cases h7 : f.val < 440
+  · exact qPos_spec_c7 f (by omega) h7
+  by_cases h8 : f.val < 495
+  · exact qPos_spec_c8 f (by omega) h8
+  by_cases h9 : f.val < 550
+  · exact qPos_spec_c9 f (by omega) h9
+  by_cases h10 : f.val < 605
+  · exact qPos_spec_c10 f (by omega) h10
+  by_cases h11 : f.val < 660
+  · exact qPos_spec_c11 f (by omega) h11
+  by_cases h12 : f.val < 715
+  · exact qPos_spec_c12 f (by omega) h12
+  by_cases h13 : f.val < 770
+  · exact qPos_spec_c13 f (by omega) h13
+  by_cases h14 : f.val < 825
+  · exact qPos_spec_c14 f (by omega) h14
+  exact qPos_spec_c15 f (by omega)
 
 set_option maxHeartbeats 1000000 in
 theorem qFarkas_spec : (0 : ℤ) < 1 ∧ ∀ i : Fin 48,
@@ -229,14 +348,14 @@ theorem qFarkas_spec : (0 : ℤ) < 1 ∧ ∀ i : Fin 48,
       (∀ k : Fin 48, 0 ≤ (0 : ℤ)) ∧
       (∀ j', 1 * qNrm i j' - ∑ k, (0 : ℤ) * qNrm k j' = 1 * qNrm j j') ∧
       (1 * qRhs j ≤ 1 * qRhs i - ∑ k, (0 : ℤ) * qRhs k) := by
-  decide
+  decide +kernel
 
 set_option maxHeartbeats 1000000 in
 theorem qBound_spec :
     (∀ j k, 0 ≤ qBndPos j k) ∧ (∀ j k, 0 ≤ qBndNeg j k) ∧
     (∀ j j', ∑ k, qBndPos j k * qNrm k j' = (1920 : ℤ) * (if j = j' then 1 else 0)) ∧
     (∀ j j', ∑ k, qBndNeg j k * qNrm k j' = (1920 : ℤ) * (if j = j' then -1 else 0)) := by
-  decide
+  decide +kernel
 
 theorem QbarPD_okBasic : QbarPD.OkBasic :=
   ⟨by norm_num, qTight_top, qTight_injective, qPos_spec, qFarkas_spec, qBound_spec⟩
