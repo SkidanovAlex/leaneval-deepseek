@@ -1,8 +1,0 @@
-import Submission.ZagierHoffmanProof.PrimeZeta
-import Submission.ZagierHoffmanProof.PrimeVal
-import Submission.ZagierHoffmanProof.PrimeGreedy
-import Submission.ZagierHoffmanProof.PrimeGidx
-import Submission.ZagierHoffmanProof.PrimeJMin
-import Submission.ZagierHoffmanProof.PrimeRed
-import Submission.ZagierHoffmanProof.PrimeDominates
-import Submission.ZagierHoffmanProof.PrimeJMinDom
