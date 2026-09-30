@@ -89,13 +89,33 @@ noncomputable section
 /-! ### Elementary facts about the orientation signs -/
 
 /-- The orientation sign of a sign change on a face is `±1`. -/
+theorem oST_mul_self_c0 : ∀ (e : Fin 16) (f : Fin 865), 0 ≤ f.val → f.val < 220 → (oST e f * oST e f = 1) := by decide +kernel
+theorem oST_mul_self_c1 : ∀ (e : Fin 16) (f : Fin 865), 220 ≤ f.val → f.val < 440 → (oST e f * oST e f = 1) := by decide +kernel
+theorem oST_mul_self_c2 : ∀ (e : Fin 16) (f : Fin 865), 440 ≤ f.val → f.val < 660 → (oST e f * oST e f = 1) := by decide +kernel
+theorem oST_mul_self_c3 : ∀ (e : Fin 16) (f : Fin 865), 660 ≤ f.val → (oST e f * oST e f = 1) := by decide +kernel
 theorem oST_mul_self (e : Fin 16) (f : Fin 865) : oST e f * oST e f = 1 := by
-  decide +revert
+  by_cases h0 : f.val < 220
+  · exact oST_mul_self_c0 e f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact oST_mul_self_c1 e f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact oST_mul_self_c2 e f (by omega) h2
+  exact oST_mul_self_c3 e f (by omega)
 
 /-- The orientation sign of a sign change on a `0`-dimensional face is `1`. -/
+theorem oST_eq_one_of_card_c0 : ∀ (e : Fin 16) (f : Fin 865) (h : (qTight f).card = 4), 0 ≤ f.val → f.val < 220 → (oST e f = 1) := by decide +kernel
+theorem oST_eq_one_of_card_c1 : ∀ (e : Fin 16) (f : Fin 865) (h : (qTight f).card = 4), 220 ≤ f.val → f.val < 440 → (oST e f = 1) := by decide +kernel
+theorem oST_eq_one_of_card_c2 : ∀ (e : Fin 16) (f : Fin 865) (h : (qTight f).card = 4), 440 ≤ f.val → f.val < 660 → (oST e f = 1) := by decide +kernel
+theorem oST_eq_one_of_card_c3 : ∀ (e : Fin 16) (f : Fin 865) (h : (qTight f).card = 4), 660 ≤ f.val → (oST e f = 1) := by decide +kernel
 theorem oST_eq_one_of_card (e : Fin 16) (f : Fin 865) (h : (qTight f).card = 4) :
     oST e f = 1 := by
-  decide +revert
+  by_cases h0 : f.val < 220
+  · exact oST_eq_one_of_card_c0 e f h (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact oST_eq_one_of_card_c1 e f h (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact oST_eq_one_of_card_c2 e f h (by omega) h2
+  exact oST_eq_one_of_card_c3 e f h (by omega)
 
 theorem oS_mul_self (g : Fin 4 → ZMod 2) (f : Fin 865) : oS g f * oS g f = 1 :=
   oST_mul_self (Work.FoldInst.enc g) f

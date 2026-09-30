@@ -279,11 +279,40 @@ def cwA2 (a : Fin 48) (i : Fin 3) (side : Fin 2) : Matrix (Fin 5) (Fin 5) ℤ :=
 
 /-- **The finite verification**: the wall relation of the chart matrices, with a rank-one
 correction whose rows are multiples of the correction functional `cwFv`. -/
+theorem cwWallMat_pt_c0 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 0 ≤ a.val → a.val < 8 → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
+theorem cwWallMat_pt_c1 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 8 ≤ a.val → a.val < 16 → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
+theorem cwWallMat_pt_c2 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 16 ≤ a.val → a.val < 24 → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
+theorem cwWallMat_pt_c3 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 24 ≤ a.val → a.val < 32 → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
+theorem cwWallMat_pt_c4 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 32 ≤ a.val → a.val < 40 → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
+theorem cwWallMat_pt_c5 : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5), 40 ≤ a.val → ((chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
+      = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
+        + cwA2 a i side k (cwI5 i) * cwFv a i side j) := by decide +kernel
 theorem cwWallMat_pt : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5),
     (chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
       = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
         + cwA2 a i side k (cwI5 i) * cwFv a i side j := by
-  decide +kernel
+  intro a i side k j
+  by_cases h0 : a.val < 8
+  · exact cwWallMat_pt_c0 a i side k j (by omega) h0
+  by_cases h1 : a.val < 16
+  · exact cwWallMat_pt_c1 a i side k j (by omega) h1
+  by_cases h2 : a.val < 24
+  · exact cwWallMat_pt_c2 a i side k j (by omega) h2
+  by_cases h3 : a.val < 32
+  · exact cwWallMat_pt_c3 a i side k j (by omega) h3
+  by_cases h4 : a.val < 40
+  · exact cwWallMat_pt_c4 a i side k j (by omega) h4
+  exact cwWallMat_pt_c5 a i side k j (by omega)
 
 /-- The real form of the finite verification. -/
 lemma cwWallR (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5) :
