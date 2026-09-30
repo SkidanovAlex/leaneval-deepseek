@@ -118,51 +118,1133 @@ theorem psi_empty : psi (∅ : Finset (Fin 24)) = 1 := by
 /-! ### The single flip identity (finite check on the tables) -/
 
 /-- The single flip identity, checked on the fold classes `i` with `i.val < 17` (`codim ≤ 1`). -/
+theorem flipDr_chunk_0_17_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_0_17_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_0_17 :
     (∀ (i : Fin 98), i.val < 17 → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_0_17_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_0_17_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_0_17_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_0_17_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_0_17_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_0_17_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_0_17_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_0_17_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_0_17_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_0_17_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_0_17_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_0_17_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_0_17_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_0_17_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_0_17_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_0_17_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_0_17_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_0_17_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_0_17_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_0_17_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_0_17_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_0_17_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_0_17_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_0_17_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_0_17_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_0_17_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_0_17_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_0_17_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_0_17_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_0_17_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_0_17_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_0_17_c31 i (by omega) h31
+  exact flipDr_chunk_0_17_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `17 ≤ i.val < 37`. -/
+theorem flipDr_chunk_17_37_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_17_37_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_17_37 :
     (∀ (i : Fin 98), 17 ≤ i.val → i.val < 37 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_17_37_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_17_37_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_17_37_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_17_37_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_17_37_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_17_37_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_17_37_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_17_37_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_17_37_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_17_37_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_17_37_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_17_37_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_17_37_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_17_37_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_17_37_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_17_37_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_17_37_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_17_37_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_17_37_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_17_37_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_17_37_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_17_37_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_17_37_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_17_37_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_17_37_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_17_37_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_17_37_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_17_37_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_17_37_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_17_37_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_17_37_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_17_37_c31 i (by omega) h31
+  exact flipDr_chunk_17_37_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `37 ≤ i.val < 57`. -/
+theorem flipDr_chunk_37_57_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_37_57_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_37_57 :
     (∀ (i : Fin 98), 37 ≤ i.val → i.val < 57 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_37_57_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_37_57_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_37_57_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_37_57_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_37_57_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_37_57_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_37_57_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_37_57_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_37_57_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_37_57_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_37_57_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_37_57_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_37_57_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_37_57_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_37_57_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_37_57_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_37_57_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_37_57_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_37_57_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_37_57_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_37_57_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_37_57_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_37_57_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_37_57_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_37_57_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_37_57_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_37_57_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_37_57_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_37_57_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_37_57_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_37_57_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_37_57_c31 i (by omega) h31
+  exact flipDr_chunk_37_57_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `57 ≤ i.val < 67`. -/
+theorem flipDr_chunk_57_67_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_57_67_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_57_67 :
     (∀ (i : Fin 98), 57 ≤ i.val → i.val < 67 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_57_67_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_57_67_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_57_67_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_57_67_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_57_67_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_57_67_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_57_67_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_57_67_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_57_67_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_57_67_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_57_67_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_57_67_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_57_67_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_57_67_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_57_67_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_57_67_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_57_67_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_57_67_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_57_67_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_57_67_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_57_67_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_57_67_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_57_67_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_57_67_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_57_67_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_57_67_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_57_67_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_57_67_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_57_67_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_57_67_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_57_67_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_57_67_c31 i (by omega) h31
+  exact flipDr_chunk_57_67_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `67 ≤ i.val < 77`. -/
+theorem flipDr_chunk_67_77_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_67_77_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_67_77 :
     (∀ (i : Fin 98), 67 ≤ i.val → i.val < 77 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_67_77_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_67_77_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_67_77_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_67_77_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_67_77_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_67_77_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_67_77_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_67_77_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_67_77_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_67_77_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_67_77_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_67_77_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_67_77_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_67_77_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_67_77_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_67_77_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_67_77_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_67_77_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_67_77_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_67_77_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_67_77_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_67_77_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_67_77_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_67_77_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_67_77_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_67_77_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_67_77_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_67_77_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_67_77_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_67_77_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_67_77_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_67_77_c31 i (by omega) h31
+  exact flipDr_chunk_67_77_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `77 ≤ i.val < 87`. -/
+theorem flipDr_chunk_77_87_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_77_87_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
+      (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_77_87 :
     (∀ (i : Fin 98), 77 ≤ i.val → i.val < 87 → ∀ (r : Fin (foldCodim i) → Bool)
       (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_77_87_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_77_87_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_77_87_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_77_87_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_77_87_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_77_87_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_77_87_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_77_87_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_77_87_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_77_87_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_77_87_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_77_87_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_77_87_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_77_87_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_77_87_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_77_87_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_77_87_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_77_87_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_77_87_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_77_87_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_77_87_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_77_87_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_77_87_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_77_87_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_77_87_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_77_87_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_77_87_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_77_87_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_77_87_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_77_87_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_77_87_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_77_87_c31 i (by omega) h31
+  exact flipDr_chunk_77_87_c32 i (by omega)
 
 /-- The single flip identity, checked on the fold classes with `87 ≤ i.val`. -/
+theorem flipDr_chunk_87_98_c0 : ∀ (i : Fin 98), 0 ≤ i.val → i.val < 3 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c1 : ∀ (i : Fin 98), 3 ≤ i.val → i.val < 6 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c2 : ∀ (i : Fin 98), 6 ≤ i.val → i.val < 9 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c3 : ∀ (i : Fin 98), 9 ≤ i.val → i.val < 12 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c4 : ∀ (i : Fin 98), 12 ≤ i.val → i.val < 15 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c5 : ∀ (i : Fin 98), 15 ≤ i.val → i.val < 18 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c6 : ∀ (i : Fin 98), 18 ≤ i.val → i.val < 21 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c7 : ∀ (i : Fin 98), 21 ≤ i.val → i.val < 24 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c8 : ∀ (i : Fin 98), 24 ≤ i.val → i.val < 27 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c9 : ∀ (i : Fin 98), 27 ≤ i.val → i.val < 30 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c10 : ∀ (i : Fin 98), 30 ≤ i.val → i.val < 33 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c11 : ∀ (i : Fin 98), 33 ≤ i.val → i.val < 36 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c12 : ∀ (i : Fin 98), 36 ≤ i.val → i.val < 39 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c13 : ∀ (i : Fin 98), 39 ≤ i.val → i.val < 42 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c14 : ∀ (i : Fin 98), 42 ≤ i.val → i.val < 45 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c15 : ∀ (i : Fin 98), 45 ≤ i.val → i.val < 48 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c16 : ∀ (i : Fin 98), 48 ≤ i.val → i.val < 51 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c17 : ∀ (i : Fin 98), 51 ≤ i.val → i.val < 54 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c18 : ∀ (i : Fin 98), 54 ≤ i.val → i.val < 57 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c19 : ∀ (i : Fin 98), 57 ≤ i.val → i.val < 60 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c20 : ∀ (i : Fin 98), 60 ≤ i.val → i.val < 63 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c21 : ∀ (i : Fin 98), 63 ≤ i.val → i.val < 66 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c22 : ∀ (i : Fin 98), 66 ≤ i.val → i.val < 69 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c23 : ∀ (i : Fin 98), 69 ≤ i.val → i.val < 72 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c24 : ∀ (i : Fin 98), 72 ≤ i.val → i.val < 75 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c25 : ∀ (i : Fin 98), 75 ≤ i.val → i.val < 78 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c26 : ∀ (i : Fin 98), 78 ≤ i.val → i.val < 81 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c27 : ∀ (i : Fin 98), 81 ≤ i.val → i.val < 84 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c28 : ∀ (i : Fin 98), 84 ≤ i.val → i.val < 87 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c29 : ∀ (i : Fin 98), 87 ≤ i.val → i.val < 90 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c30 : ∀ (i : Fin 98), 90 ≤ i.val → i.val < 93 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c31 : ∀ (i : Fin 98), 93 ≤ i.val → i.val < 96 → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
+theorem flipDr_chunk_87_98_c32 : ∀ (i : Fin 98), 96 ≤ i.val → (87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
+      foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by decide +kernel
 theorem flipDr_chunk_87_98 :
     (∀ (i : Fin 98), 87 ≤ i.val → ∀ (r : Fin (foldCodim i) → Bool) (t : Fin (foldCodim i)),
       foldDr i (flipSet r {t}) = foldDr i r * pairMat (foldWalls i r t)) := by
-  decide +kernel
+  intro i
+  by_cases h0 : i.val < 3
+  · exact flipDr_chunk_87_98_c0 i (by omega) h0
+  by_cases h1 : i.val < 6
+  · exact flipDr_chunk_87_98_c1 i (by omega) h1
+  by_cases h2 : i.val < 9
+  · exact flipDr_chunk_87_98_c2 i (by omega) h2
+  by_cases h3 : i.val < 12
+  · exact flipDr_chunk_87_98_c3 i (by omega) h3
+  by_cases h4 : i.val < 15
+  · exact flipDr_chunk_87_98_c4 i (by omega) h4
+  by_cases h5 : i.val < 18
+  · exact flipDr_chunk_87_98_c5 i (by omega) h5
+  by_cases h6 : i.val < 21
+  · exact flipDr_chunk_87_98_c6 i (by omega) h6
+  by_cases h7 : i.val < 24
+  · exact flipDr_chunk_87_98_c7 i (by omega) h7
+  by_cases h8 : i.val < 27
+  · exact flipDr_chunk_87_98_c8 i (by omega) h8
+  by_cases h9 : i.val < 30
+  · exact flipDr_chunk_87_98_c9 i (by omega) h9
+  by_cases h10 : i.val < 33
+  · exact flipDr_chunk_87_98_c10 i (by omega) h10
+  by_cases h11 : i.val < 36
+  · exact flipDr_chunk_87_98_c11 i (by omega) h11
+  by_cases h12 : i.val < 39
+  · exact flipDr_chunk_87_98_c12 i (by omega) h12
+  by_cases h13 : i.val < 42
+  · exact flipDr_chunk_87_98_c13 i (by omega) h13
+  by_cases h14 : i.val < 45
+  · exact flipDr_chunk_87_98_c14 i (by omega) h14
+  by_cases h15 : i.val < 48
+  · exact flipDr_chunk_87_98_c15 i (by omega) h15
+  by_cases h16 : i.val < 51
+  · exact flipDr_chunk_87_98_c16 i (by omega) h16
+  by_cases h17 : i.val < 54
+  · exact flipDr_chunk_87_98_c17 i (by omega) h17
+  by_cases h18 : i.val < 57
+  · exact flipDr_chunk_87_98_c18 i (by omega) h18
+  by_cases h19 : i.val < 60
+  · exact flipDr_chunk_87_98_c19 i (by omega) h19
+  by_cases h20 : i.val < 63
+  · exact flipDr_chunk_87_98_c20 i (by omega) h20
+  by_cases h21 : i.val < 66
+  · exact flipDr_chunk_87_98_c21 i (by omega) h21
+  by_cases h22 : i.val < 69
+  · exact flipDr_chunk_87_98_c22 i (by omega) h22
+  by_cases h23 : i.val < 72
+  · exact flipDr_chunk_87_98_c23 i (by omega) h23
+  by_cases h24 : i.val < 75
+  · exact flipDr_chunk_87_98_c24 i (by omega) h24
+  by_cases h25 : i.val < 78
+  · exact flipDr_chunk_87_98_c25 i (by omega) h25
+  by_cases h26 : i.val < 81
+  · exact flipDr_chunk_87_98_c26 i (by omega) h26
+  by_cases h27 : i.val < 84
+  · exact flipDr_chunk_87_98_c27 i (by omega) h27
+  by_cases h28 : i.val < 87
+  · exact flipDr_chunk_87_98_c28 i (by omega) h28
+  by_cases h29 : i.val < 90
+  · exact flipDr_chunk_87_98_c29 i (by omega) h29
+  by_cases h30 : i.val < 93
+  · exact flipDr_chunk_87_98_c30 i (by omega) h30
+  by_cases h31 : i.val < 96
+  · exact flipDr_chunk_87_98_c31 i (by omega) h31
+  exact flipDr_chunk_87_98_c32 i (by omega)
 
 /-- **The single flip identity.**  Flipping the sign index at the `t`-th wall multiplies the
 developing matrix on the right by the side pairing matrix of that wall.  (Finite check on the
@@ -258,8 +1340,30 @@ def sideInv : Fin 24 → Fin 24 := fun
   | _ => 0
 
 /-- The side pairing matrices are involutions (finite check). -/
+theorem pairMat_mul_sideInv_c0 : ∀ (S : Fin 24), 0 ≤ S.val → S.val < 3 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c1 : ∀ (S : Fin 24), 3 ≤ S.val → S.val < 6 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c2 : ∀ (S : Fin 24), 6 ≤ S.val → S.val < 9 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c3 : ∀ (S : Fin 24), 9 ≤ S.val → S.val < 12 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c4 : ∀ (S : Fin 24), 12 ≤ S.val → S.val < 15 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c5 : ∀ (S : Fin 24), 15 ≤ S.val → S.val < 18 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c6 : ∀ (S : Fin 24), 18 ≤ S.val → S.val < 21 → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
+theorem pairMat_mul_sideInv_c7 : ∀ (S : Fin 24), 21 ≤ S.val → (pairMat S * pairMat (sideInv S) = 1) := by decide +kernel
 theorem pairMat_mul_sideInv (S : Fin 24) : pairMat S * pairMat (sideInv S) = 1 := by
-  fin_cases S <;> decide +kernel
+  by_cases h0 : S.val < 3
+  · exact pairMat_mul_sideInv_c0 S (by omega) h0
+  by_cases h1 : S.val < 6
+  · exact pairMat_mul_sideInv_c1 S (by omega) h1
+  by_cases h2 : S.val < 9
+  · exact pairMat_mul_sideInv_c2 S (by omega) h2
+  by_cases h3 : S.val < 12
+  · exact pairMat_mul_sideInv_c3 S (by omega) h3
+  by_cases h4 : S.val < 15
+  · exact pairMat_mul_sideInv_c4 S (by omega) h4
+  by_cases h5 : S.val < 18
+  · exact pairMat_mul_sideInv_c5 S (by omega) h5
+  by_cases h6 : S.val < 21
+  · exact pairMat_mul_sideInv_c6 S (by omega) h6
+  exact pairMat_mul_sideInv_c7 S (by omega)
 
 /-- The determinant of a side pairing matrix is a unit. -/
 theorem isUnit_det_pairMat (S : Fin 24) : IsUnit (pairMat S).det :=

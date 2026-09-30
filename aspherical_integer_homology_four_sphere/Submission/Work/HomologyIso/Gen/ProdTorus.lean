@@ -60,46 +60,46 @@ theorem prodTorusDim_eq_zero (k : ℕ) (hk : 4 ≤ k) : prodTorusDim k = 0 := by
 `FinChainCx`: the images of the `12` generators of `C_1` -/
 def prodTorusBdzero : SOp 4 12 :=
   SOp.ofList [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [(0, -1), (1, 1)],
-    [(1, -1), (2, 1)],
-    [(2, -1), (3, 1)],
-    [(0, 1), (3, -1)],
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([(0, -1), (1, 1)] : List (Fin 4 × ℤ)),
+    ([(1, -1), (2, 1)] : List (Fin 4 × ℤ)),
+    ([(2, -1), (3, 1)] : List (Fin 4 × ℤ)),
+    ([(0, 1), (3, -1)] : List (Fin 4 × ℤ)),
   ]
 
 /-- `∂_2 : C_2 → C_1`, the boundary of the complex in the indexing of
 `FinChainCx`: the images of the `12` generators of `C_2` -/
 def prodTorusBdone : SOp 12 12 :=
   SOp.ofList [
-    [],
-    [],
-    [],
-    [],
-    [(0, -1), (2, 1)],
-    [(1, -1), (3, 1)],
-    [(2, -1), (4, 1)],
-    [(3, -1), (5, 1)],
-    [(4, -1), (6, 1)],
-    [(5, -1), (7, 1)],
-    [(0, 1), (6, -1)],
-    [(1, 1), (7, -1)],
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([(0, -1), (2, 1)] : List (Fin 12 × ℤ)),
+    ([(1, -1), (3, 1)] : List (Fin 12 × ℤ)),
+    ([(2, -1), (4, 1)] : List (Fin 12 × ℤ)),
+    ([(3, -1), (5, 1)] : List (Fin 12 × ℤ)),
+    ([(4, -1), (6, 1)] : List (Fin 12 × ℤ)),
+    ([(5, -1), (7, 1)] : List (Fin 12 × ℤ)),
+    ([(0, 1), (6, -1)] : List (Fin 12 × ℤ)),
+    ([(1, 1), (7, -1)] : List (Fin 12 × ℤ)),
   ]
 
 /-- `∂_3 : C_3 → C_2`, the boundary of the complex in the indexing of
 `FinChainCx`: the images of the `4` generators of `C_3` -/
 def prodTorusBdtwo : SOp 12 4 :=
   SOp.ofList [
-    [(0, -1), (1, 1)],
-    [(1, -1), (2, 1)],
-    [(2, -1), (3, 1)],
-    [(0, 1), (3, -1)],
+    ([(0, -1), (1, 1)] : List (Fin 12 × ℤ)),
+    ([(1, -1), (2, 1)] : List (Fin 12 × ℤ)),
+    ([(2, -1), (3, 1)] : List (Fin 12 × ℤ)),
+    ([(0, 1), (3, -1)] : List (Fin 12 × ℤ)),
   ]
 
 /-- The boundary of the complex, in the indexing of `FinChainCx`
@@ -144,133 +144,133 @@ theorem prodTorusB_eq_zero (k : ℕ) (hk : 4 ≤ k) : prodTorusB k = 0 := by
 /-- `Z_0 : ℤ^{1} → C_0` (the section: the generators map to cycles) -/
 def prodTorusZzero : SOp 4 1 :=
   SOp.ofList [
-    [(3, 1)],
+    ([(3, 1)] : List (Fin 4 × ℤ)),
   ]
 
 /-- `Z_1 : ℤ^{3} → C_1` (the section: the generators map to cycles) -/
 def prodTorusZone : SOp 12 3 :=
   SOp.ofList [
-    [(1, 1)],
-    [(2, 1)],
-    [(8, 1), (9, 1), (10, 1), (11, 1)],
+    ([(1, 1)] : List (Fin 12 × ℤ)),
+    ([(2, 1)] : List (Fin 12 × ℤ)),
+    ([(8, 1), (9, 1), (10, 1), (11, 1)] : List (Fin 12 × ℤ)),
   ]
 
 /-- `Z_2 : ℤ^{3} → C_2` (the section: the generators map to cycles) -/
 def prodTorusZtwo : SOp 12 3 :=
   SOp.ofList [
-    [(1, 1)],
-    [(4, 1), (6, 1), (8, 1), (10, 1)],
-    [(5, 1), (7, 1), (9, 1), (11, 1)],
+    ([(1, 1)] : List (Fin 12 × ℤ)),
+    ([(4, 1), (6, 1), (8, 1), (10, 1)] : List (Fin 12 × ℤ)),
+    ([(5, 1), (7, 1), (9, 1), (11, 1)] : List (Fin 12 × ℤ)),
   ]
 
 /-- `Z_3 : ℤ^{1} → C_3` (the section: the generators map to cycles) -/
 def prodTorusZthree : SOp 4 1 :=
   SOp.ofList [
-    [(0, 1), (1, 1), (2, 1), (3, 1)],
+    ([(0, 1), (1, 1), (2, 1), (3, 1)] : List (Fin 4 × ℤ)),
   ]
 
 /-- `ρ_0 : C_0 → ℤ^{1}` (the retraction) -/
 def prodTorusRhozero : SOp 1 4 :=
   SOp.ofList [
-    [(0, 1)],
-    [(0, 1)],
-    [(0, 1)],
-    [(0, 1)],
+    ([(0, 1)] : List (Fin 1 × ℤ)),
+    ([(0, 1)] : List (Fin 1 × ℤ)),
+    ([(0, 1)] : List (Fin 1 × ℤ)),
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `ρ_1 : C_1 → ℤ^{3}` (the retraction) -/
 def prodTorusRhoone : SOp 3 12 :=
   SOp.ofList [
-    [(1, 1)],
-    [(0, 1)],
-    [(1, 1)],
-    [(0, 1)],
-    [(1, 1)],
-    [(0, 1)],
-    [(1, 1)],
-    [(0, 1)],
-    [],
-    [],
-    [],
-    [(2, 1)],
+    ([(1, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(1, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(1, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(1, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([(2, 1)] : List (Fin 3 × ℤ)),
   ]
 
 /-- `ρ_2 : C_2 → ℤ^{3}` (the retraction) -/
 def prodTorusRhotwo : SOp 3 12 :=
   SOp.ofList [
-    [(0, 1)],
-    [(0, 1)],
-    [(0, 1)],
-    [(0, 1)],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [(1, 1)],
-    [(2, 1)],
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([(0, 1)] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([] : List (Fin 3 × ℤ)),
+    ([(1, 1)] : List (Fin 3 × ℤ)),
+    ([(2, 1)] : List (Fin 3 × ℤ)),
   ]
 
 /-- `ρ_3 : C_3 → ℤ^{1}` (the retraction) -/
 def prodTorusRhothree : SOp 1 4 :=
   SOp.ofList [
-    [],
-    [],
-    [],
-    [(0, 1)],
+    ([] : List (Fin 1 × ℤ)),
+    ([] : List (Fin 1 × ℤ)),
+    ([] : List (Fin 1 × ℤ)),
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `h_0 : C_0 → C_{1}` (the homotopy) -/
 def prodTorusHzero : SOp 12 4 :=
   SOp.ofList [
-    [(8, -1), (9, -1), (10, -1)],
-    [(9, -1), (10, -1)],
-    [(10, -1)],
-    [],
+    ([(8, -1), (9, -1), (10, -1)] : List (Fin 12 × ℤ)),
+    ([(9, -1), (10, -1)] : List (Fin 12 × ℤ)),
+    ([(10, -1)] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
   ]
 
 /-- `h_1 : C_1 → C_{2}` (the homotopy) -/
 def prodTorusHone : SOp 12 12 :=
   SOp.ofList [
-    [(4, -1)],
-    [],
-    [],
-    [(5, 1)],
-    [(6, 1)],
-    [(5, 1), (7, 1)],
-    [(6, 1), (8, 1)],
-    [(5, 1), (7, 1), (9, 1)],
-    [],
-    [],
-    [],
-    [],
+    ([(4, -1)] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([(5, 1)] : List (Fin 12 × ℤ)),
+    ([(6, 1)] : List (Fin 12 × ℤ)),
+    ([(5, 1), (7, 1)] : List (Fin 12 × ℤ)),
+    ([(6, 1), (8, 1)] : List (Fin 12 × ℤ)),
+    ([(5, 1), (7, 1), (9, 1)] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
+    ([] : List (Fin 12 × ℤ)),
   ]
 
 /-- `h_2 : C_2 → C_{3}` (the homotopy) -/
 def prodTorusHtwo : SOp 4 12 :=
   SOp.ofList [
-    [(0, -1)],
-    [],
-    [(1, 1)],
-    [(1, 1), (2, 1)],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    ([(0, -1)] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([(1, 1)] : List (Fin 4 × ℤ)),
+    ([(1, 1), (2, 1)] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
+    ([] : List (Fin 4 × ℤ)),
   ]
 
 /-- `h_3 : C_3 → C_{4}` (the homotopy) -/
 def prodTorusHthree : SOp 0 4 :=
   SOp.ofList [
-    [],
-    [],
-    [],
-    [],
+    ([] : List (Fin 0 × ℤ)),
+    ([] : List (Fin 0 × ℤ)),
+    ([] : List (Fin 0 × ℤ)),
+    ([] : List (Fin 0 × ℤ)),
   ]
 
 /-- The section in every degree. -/

@@ -55,15 +55,15 @@ theorem t2Dim_eq_zero (k : ℕ) (hk : 3 ≤ k) : t2Dim k = 0 := by
 `FinChainCx`: the images of the `2` generators of `C_1` -/
 def t2Bdzero : SOp 1 2 :=
   SOp.ofList [
-    [],
-    [],
+    ([] : List (Fin 1 × ℤ)),
+    ([] : List (Fin 1 × ℤ)),
   ]
 
 /-- `∂_2 : C_2 → C_1`, the boundary of the complex in the indexing of
 `FinChainCx`: the images of the `1` generators of `C_2` -/
 def t2Bdone : SOp 2 1 :=
   SOp.ofList [
-    [],
+    ([] : List (Fin 2 × ℤ)),
   ]
 
 /-- The boundary of the complex, in the indexing of `FinChainCx`
@@ -105,58 +105,58 @@ theorem t2B_eq_zero (k : ℕ) (hk : 3 ≤ k) : t2B k = 0 := by
 /-- `Z_0 : ℤ^{1} → C_0` (the section: the generators map to cycles) -/
 def t2Zzero : SOp 1 1 :=
   SOp.ofList [
-    [(0, 1)],
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `Z_1 : ℤ^{2} → C_1` (the section: the generators map to cycles) -/
 def t2Zone : SOp 2 2 :=
   SOp.ofList [
-    [(0, 1)],
-    [(1, 1)],
+    ([(0, 1)] : List (Fin 2 × ℤ)),
+    ([(1, 1)] : List (Fin 2 × ℤ)),
   ]
 
 /-- `Z_2 : ℤ^{1} → C_2` (the section: the generators map to cycles) -/
 def t2Ztwo : SOp 1 1 :=
   SOp.ofList [
-    [(0, 1)],
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `ρ_0 : C_0 → ℤ^{1}` (the retraction) -/
 def t2Rhozero : SOp 1 1 :=
   SOp.ofList [
-    [(0, 1)],
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `ρ_1 : C_1 → ℤ^{2}` (the retraction) -/
 def t2Rhoone : SOp 2 2 :=
   SOp.ofList [
-    [(0, 1)],
-    [(1, 1)],
+    ([(0, 1)] : List (Fin 2 × ℤ)),
+    ([(1, 1)] : List (Fin 2 × ℤ)),
   ]
 
 /-- `ρ_2 : C_2 → ℤ^{1}` (the retraction) -/
 def t2Rhotwo : SOp 1 1 :=
   SOp.ofList [
-    [(0, 1)],
+    ([(0, 1)] : List (Fin 1 × ℤ)),
   ]
 
 /-- `h_0 : C_0 → C_{1}` (the homotopy) -/
 def t2Hzero : SOp 2 1 :=
   SOp.ofList [
-    [],
+    ([] : List (Fin 2 × ℤ)),
   ]
 
 /-- `h_1 : C_1 → C_{2}` (the homotopy) -/
 def t2Hone : SOp 1 2 :=
   SOp.ofList [
-    [],
-    [],
+    ([] : List (Fin 1 × ℤ)),
+    ([] : List (Fin 1 × ℤ)),
   ]
 
 /-- `h_2 : C_2 → C_{3}` (the homotopy) -/
 def t2Htwo : SOp 0 1 :=
   SOp.ofList [
-    [],
+    ([] : List (Fin 0 × ℤ)),
   ]
 
 /-- The section in every degree. -/
