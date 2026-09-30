@@ -1,6 +1,5 @@
 import Submission.Work.RiemLib.JacobiCoords
 import Submission.Work.RiemLib.JacobiCoordsEq
-import Submission.Work.RiemLib.Commons.Topology.Order.exists_partition_refine_of_mem
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

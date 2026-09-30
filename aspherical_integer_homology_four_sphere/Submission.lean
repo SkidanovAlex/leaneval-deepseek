@@ -1,6 +1,16 @@
 import ChallengeDeps
 import Submission.Helpers
-import Submission.Work.Final.All
+import Submission.Work.Final.Framework
+import Submission.Work.Final.Basic
+import Submission.Work.Final.Mhat
+import Submission.Work.Final.Homology
+import Submission.Work.Final.Cover
+import Submission.Work.Final.MhatCover
+import Submission.Work.Final.Main
+import Submission.Work.Final.mvRightX_zero_surjective
+import Submission.Work.Final.secNonpos_of_chartModels
+import Submission.Work.Final.curvLe_of_models
+import Submission.Work.Final.CurvField
 import Submission.Work.BridgeSquare.Final
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

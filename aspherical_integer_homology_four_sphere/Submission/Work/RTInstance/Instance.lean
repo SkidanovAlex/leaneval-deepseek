@@ -39,7 +39,11 @@ import Submission.Work.RTInstance.PreAtlas
 import Submission.Work.RTInstance.LayerPos
 import Submission.Work.RTInstance.exists_chartOfMbar
 import Submission.Work.RTInstance.model_smooth
-import Submission.Work.RTInstance.ChartLayer_model_pos
+import Submission.Work.RTInstance.Models
+import Submission.Work.RTInstance.uhsModel_pos
+import Submission.Work.RTInstance.warpedModelA_pos
+import Submission.Work.RTInstance.flatModel_pos
+import Submission.Work.RTInstance.posExt_pos
 import Submission.Work.RTInstance.CurvDatum
 import Submission.Work.FoldInst.Quotient
 import Submission.Work.FoldInst.Connected

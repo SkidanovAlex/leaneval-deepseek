@@ -4,7 +4,7 @@ import Submission.Work.Certificates.SOp.eqb_sound
 import Submission.Work.Certificates.SOp.toMatrix_mul
 import Submission.Work.Certificates.SOp.toMatrix_add
 import Submission.Work.Certificates.SOp.toMatrix_sub
-import Submission.Work.Certificates.SOp.toMatrix_neg
+import Submission.Work.Certificates.Sparse
 import Submission.Work.Certificates.SOp.toMatrix_id
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

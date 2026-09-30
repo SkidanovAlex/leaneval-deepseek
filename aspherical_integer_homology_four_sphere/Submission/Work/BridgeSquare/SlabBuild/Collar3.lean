@@ -196,9 +196,15 @@ def D53 : Fin Nat3 → ℤ := fun l =>
 abbrev X3 : Fin Nat3 → AffC 1 := fun l => Finsupp.single (B3 l) (1 : ℤ)
 
 set_option maxHeartbeats 0 in
+theorem hcoef3_c0 : ∀ l : Fin Nat3, 0 ≤ l.val → l.val < 60 → D13 l - D23 l = D33 l - (D43 l - D53 l) := by decide +kernel
+set_option maxHeartbeats 0 in
+theorem hcoef3_c1 : ∀ l : Fin Nat3, 60 ≤ l.val → D13 l - D23 l = D33 l - (D43 l - D53 l) := by decide +kernel
 /-- The pointwise coefficient identity of the collar of cusp `3`. -/
 theorem hcoef3 : ∀ l : Fin Nat3, D13 l - D23 l = D33 l - (D43 l - D53 l) := by
-  decide
+  intro l
+  by_cases h0 : l.val < 60
+  · exact hcoef3_c0 l (by omega) h0
+  exact hcoef3_c1 l (by omega)
 
 /-- The atoms of the first edge family of the collar. -/
 theorem brC3 : ∀ p : Fin 24 × Fin 3, B3 (aC3 p) = vface (k := 1) p.2 (colTri3 p.1) := by

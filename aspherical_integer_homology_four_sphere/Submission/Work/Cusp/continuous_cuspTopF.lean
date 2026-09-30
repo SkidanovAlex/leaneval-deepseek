@@ -1,7 +1,7 @@
 import Mathlib
 import Submission.Work.Cusp.TopBox
 import Submission.Work.Cusp.TopLayer
-import Submission.Work.Cusp.continuous_cuspCollarF
+import Submission.Work.Cusp.CuspCollarAux
 import Submission.Work.Cusp.cuspInvOuter_continuousOn
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

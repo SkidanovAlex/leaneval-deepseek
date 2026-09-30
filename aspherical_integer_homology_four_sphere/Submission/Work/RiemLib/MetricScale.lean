@@ -1,6 +1,5 @@
 import Submission.Work.RiemLib.PinchUniform
 import Submission.Work.RiemLib.Commons.Geometry.Manifold.Riemannian.exists_scaleMetric
-import Submission.Work.RiemLib.Commons.Geometry.Manifold.Riemannian.contMDiff_inner_scaleMetric
 import Submission.Work.RiemLib.Commons.Geometry.Manifold.Riemannian.metricCompatible_scaleMetric
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

@@ -69,46 +69,46 @@ def axisIdx (w : Fin 24) : Fin 4 := ⟨((w : ℕ) - 16) / 2, by omega⟩
 def axisSign (w : Fin 24) : ℤ := if (w : ℕ) % 2 = 0 then 1 else -1
 
 lemma cuspOfVert_eq_four_iff (w : Fin 24) : cuspOfVert w = 4 ↔ (w : ℕ) < 16 := by
-  fin_cases w <;> decide
+  fin_cases w <;> decide +kernel
 
 lemma axisSign_pm (w : Fin 24) : axisSign w = 1 ∨ axisSign w = -1 := by
   unfold axisSign; split <;> simp
 
 lemma axis_n2_form (w : Fin 24) (h : 16 ≤ (w : ℕ)) :
     Work.FoldInst.truncNormal2 w = fun r => if r = axisIdx w then 2 * axisSign w else 0 := by
-  revert h; fin_cases w <;> decide
+  revert h; fin_cases w <;> decide +kernel
 
 lemma cuspOfVert_axis (w : Fin 24) (h : 16 ≤ (w : ℕ)) : cuspOfVert w = (axisIdx w).castSucc := by
-  revert h; fin_cases w <;> decide
+  revert h; fin_cases w <;> decide +kernel
 
 lemma half_entry_z (w : Fin 24) (h : (w : ℕ) < 16) : ∀ r : Fin 4,
     Work.FoldInst.truncNormal2 w r = 1 ∨ Work.FoldInst.truncNormal2 w r = -1 := by
-  revert h; fin_cases w <;> decide
+  revert h; fin_cases w <;> decide +kernel
 
 /-- The cusp of a cube is the cusp of its ideal vertex. -/
 theorem cubeCusp_cuspOfVert (a : Fin 48) :
     Work.Cusp.cubeCusp a = cuspOfVert (cubeVert a) := by
-  revert a; decide
+  revert a; decide +kernel
 
 /-- **The cusp of an ideal vertex is invariant under the sign-change group.** -/
 theorem cuspOfVert_truncPerm (g : Fin 4 → ZMod 2) (w : Fin 24) :
     cuspOfVert (Work.FoldInst.truncPerm g w) = cuspOfVert w := by
-  revert g w; decide
+  revert g w; decide +kernel
 
 set_option maxHeartbeats 4000000 in
 /-- The cube of a residue class, with the residues given as `Fin 4` values. -/
 theorem cubeCusp_cubeOfMod_aux (v : Fin 5) (p : Fin 3 → Fin 4) :
     Work.Cusp.cubeCusp (Work.Cusp.cubeOfMod v (fun i => (p i : ℤ))) = v := by
   revert p
-  fin_cases v <;> decide
+  fin_cases v <;> decide +kernel
 
 /-- **The cube of a residue class is a cube of that cusp.** -/
 theorem cubeCusp_cubeOfMod (v : Fin 5) (p : Fin 3 → ℤ) :
     Work.Cusp.cubeCusp (Work.Cusp.cubeOfMod v p) = v := by
   have hb : ∀ i : Fin 3, 0 < (Work.Cusp.latMod v i : ℤ) := by
-    intro i; fin_cases v <;> fin_cases i <;> decide
+    intro i; fin_cases v <;> fin_cases i <;> decide +kernel
   have hm : ∀ i : Fin 3, (Work.Cusp.latMod v i : ℤ) ≤ 4 := by
-    intro i; fin_cases v <;> fin_cases i <;> decide
+    intro i; fin_cases v <;> fin_cases i <;> decide +kernel
   have hp : Work.Cusp.cubeOfMod v p
       = Work.Cusp.cubeOfMod v (fun i => p i % (Work.Cusp.latMod v i : ℤ)) := by
     have h : p = (fun i => p i % (Work.Cusp.latMod v i : ℤ)) +
@@ -164,7 +164,7 @@ lemma exists_side (i k : Fin 4) (h : i ≠ k) (s t : ℤ) (hs : s = 1 ∨ s = -1
 /-- The coordinate vertex of `Q` with truncation normal `2 s e_i`. -/
 lemma exists_axis (i : Fin 4) (s : ℤ) (hs : s = 1 ∨ s = -1) :
     ∃ w : Fin 24, Work.FoldInst.truncNormal2 w = fun r => if r = i then 2 * s else 0 := by
-  rcases hs with rfl | rfl <;> fin_cases i <;> decide
+  rcases hs with rfl | rfl <;> fin_cases i <;> decide +kernel
 
 /-- **The side constraints of `Q̄`**: `s·y_i + t·y_k ≤ 1` for every choice of signs. -/
 lemma pair_le (y : Work.FoldInst.E4) (hy : y ∈ Work.FoldInst.Qbar) (i k : Fin 4) (h : i ≠ k)

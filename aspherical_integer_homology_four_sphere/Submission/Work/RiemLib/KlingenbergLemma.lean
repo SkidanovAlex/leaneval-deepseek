@@ -1,6 +1,10 @@
 import Submission.Work.RiemLib.CutStep3
 import Submission.Work.RiemLib.InjRadius
-import Submission.Work.RiemLib.InjRadiusCut
+import Submission.Work.RiemLib.CutTime
+import Submission.Work.RiemLib.LensSync
+import Submission.Work.RiemLib.GExpTwoSided
+import Submission.Work.RiemLib.GExpRayIdent
+import Submission.Work.RiemLib.GExpVelocity
 import Submission.Work.RiemLib.LensLoop
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

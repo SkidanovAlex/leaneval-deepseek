@@ -196,9 +196,15 @@ def D51 : Fin Nat1 → ℤ := fun l =>
 abbrev X1 : Fin Nat1 → AffC 1 := fun l => Finsupp.single (B1 l) (1 : ℤ)
 
 set_option maxHeartbeats 0 in
+theorem hcoef1_c0 : ∀ l : Fin Nat1, 0 ≤ l.val → l.val < 60 → D11 l - D21 l = D31 l - (D41 l - D51 l) := by decide +kernel
+set_option maxHeartbeats 0 in
+theorem hcoef1_c1 : ∀ l : Fin Nat1, 60 ≤ l.val → D11 l - D21 l = D31 l - (D41 l - D51 l) := by decide +kernel
 /-- The pointwise coefficient identity of the collar of cusp `1`. -/
 theorem hcoef1 : ∀ l : Fin Nat1, D11 l - D21 l = D31 l - (D41 l - D51 l) := by
-  decide
+  intro l
+  by_cases h0 : l.val < 60
+  · exact hcoef1_c0 l (by omega) h0
+  exact hcoef1_c1 l (by omega)
 
 /-- The atoms of the first edge family of the collar. -/
 theorem brC1 : ∀ p : Fin 24 × Fin 3, B1 (aC1 p) = vface (k := 1) p.2 (colTri1 p.1) := by

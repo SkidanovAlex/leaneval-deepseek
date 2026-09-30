@@ -2157,7 +2157,7 @@ theorem hb10 : ∀ (a : Fin 48) (i : Fin 4),
 end Eval
 
 /-- `cl` is the table `cubeCorner`. -/
-theorem hclZ : ∀ (a : Fin 48) (j : Fin 3), cl a j = Work.Cusp.cubeCorner a j := by decide
+theorem hclZ : ∀ (a : Fin 48) (j : Fin 3), cl a j = Work.Cusp.cubeCorner a j := by decide +kernel
 
 /-- `cl` is the table `cubeCorner`, in `ℝ`. -/
 theorem hclR : ∀ (a : Fin 48) (j : Fin 3),
@@ -2221,10 +2221,10 @@ The 24 side and 24 truncation constraints of `Q̄` on the 48 cubes: 2304 integer
 decided by the kernel. -/
 
 /-- **The side constraints hold on every cube.** -/
-theorem minSideZ_nonneg : ∀ (a : Fin 48) (S : Fin 24), 0 ≤ minSideZ a S := by decide
+theorem minSideZ_nonneg : ∀ (a : Fin 48) (S : Fin 24), 0 ≤ minSideZ a S := by decide +kernel
 
 /-- **The truncation constraints hold on every cube.** -/
-theorem minTruncZ_nonneg : ∀ (a : Fin 48) (w : Fin 24), 0 ≤ minTruncZ a w := by decide
+theorem minTruncZ_nonneg : ∀ (a : Fin 48) (w : Fin 24), 0 ≤ minTruncZ a w := by decide +kernel
 
 /-! ## The cast lemmas -/
 
@@ -2350,10 +2350,10 @@ theorem twenty_truncSlack_x (a : Fin 48) (w : Fin 24) (x : CuspE3) :
   ring
 
 /-- The constant term vanishes on the truncation facet of the cube's own ideal vertex. -/
-theorem KVg_vert_zero : ∀ (a : Fin 48), KVg a (Work.RTOwed.cubeVert a) = 0 := by decide
+theorem KVg_vert_zero : ∀ (a : Fin 48), KVg a (Work.RTOwed.cubeVert a) = 0 := by decide +kernel
 
 /-- All the coefficients vanish on the truncation facet of the cube's own ideal vertex. -/
-theorem EVg_vert_zero : ∀ (a : Fin 48) (j : Fin 3), EVg a (Work.RTOwed.cubeVert a) j = 0 := by decide
+theorem EVg_vert_zero : ∀ (a : Fin 48) (j : Fin 3), EVg a (Work.RTOwed.cubeVert a) j = 0 := by decide +kernel
 
 /-- **The cube lies on the truncation facet of its own ideal vertex.** -/
 theorem twenty_truncSlack_vert (a : Fin 48) (x : CuspE3) :

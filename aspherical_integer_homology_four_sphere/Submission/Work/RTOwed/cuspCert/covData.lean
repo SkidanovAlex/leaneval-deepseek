@@ -28,19 +28,19 @@ exceeds the default recursion depth; hence the raised `maxRecDepth` below. -/
 /-- The cusp of the neighbour cube is the cusp of the cube. -/
 theorem covData_cusp (a : Fin 48) (e : Fin 8) :
     Work.Cusp.cubeCusp (covB a e) = Work.Cusp.cubeCusp a := by
-  revert a e; decide
+  revert a e; decide +kernel
 
 /-- The corner of the neighbour cube: the shift of the corner by the saturation pattern minus the
 lattice offset. -/
 theorem covData_corner (a : Fin 48) (e : Fin 8) (i : Fin 3) :
     Work.Cusp.cubeCorner (covB a e) i =
       Work.Cusp.cubeCorner a i + satOf e i - latOf a e i := by
-  revert a e i; decide
+  revert a e i; decide +kernel
 
 /-- The copy bit of the neighbour cube: the copy bit of `a` flipped by `covF`. -/
 theorem covData_bit (a : Fin 48) (e : Fin 8) :
     Work.RTOwed.cubeBit (covB a e) + covF a e = Work.RTOwed.cubeBit a := by
-  revert a e; decide
+  revert a e; decide +kernel
 
 /-- The gluing element `covGam a e` is the sum of the type generators of the walls of the
 neighbour cube `covB a e` at the saturated coordinates. -/
@@ -49,7 +49,7 @@ theorem covData_gam (a : Fin 48) (e : Fin 8) :
       ∑ i : Fin 3, if satOf e i = 1 then
         Work.FoldInst.typeGen (Work.FoldInst.sideTypeIdx
           (Work.RTOwed.wallLo (covB a e) i)) else 0 := by
-  revert a e; decide
+  revert a e; decide +kernel
 
 theorem covData :
     (∀ (a : Fin 48) (e : Fin 8), Work.Cusp.cubeCusp (Work.RTOwed.cuspCert.covB a e) = Work.Cusp.cubeCusp a) ∧

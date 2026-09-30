@@ -3,7 +3,7 @@ import Submission.Work.DeltaHomology.CellData
 import Submission.Work.DeltaHomology.eq_of_cls_eq_of_pos
 import Submission.Work.DeltaHomology.mem_skelSet_iff
 import Submission.Work.DeltaHomology.PunctSkelBasic
-import Submission.Work.DeltaHomology.exists_homeo_intCell
+import Submission.Work.Homology.Basic
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

@@ -121,7 +121,7 @@ theorem cwWallMat_refl_pt : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : F
     (chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
       = ((2 : ℤ) •
           (cwDiagZ (wallGamK a i side) * chartMat a * cwRefl i (cwC a i side))) k j := by
-  decide
+  decide +kernel
 
 /-- The real form of the finite verification, entrywise. -/
 lemma cwWallR_refl (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5) :

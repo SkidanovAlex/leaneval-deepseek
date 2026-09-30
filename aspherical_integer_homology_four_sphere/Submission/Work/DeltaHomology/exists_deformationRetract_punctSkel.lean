@@ -7,7 +7,7 @@ import Submission.Work.DeltaHomology.RealizationDefs
 import Submission.Work.DeltaHomology.SkelSet
 import Submission.Work.DeltaHomology.mem_skelSet_iff
 import Submission.Work.DeltaHomology.barycenter_not_mem_skelSet_of_lt
-import Submission.Work.DeltaHomology.exists_collar_deformationRetract
+import Submission.Work.DeltaHomology.ChainDefs
 import Submission.Work.Homology.Basic
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

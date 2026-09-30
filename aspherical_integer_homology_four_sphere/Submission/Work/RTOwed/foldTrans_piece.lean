@@ -23,9 +23,7 @@ The proof is the algebraic chain described in `Defs.lean`:
 import Mathlib
 import Submission.Work.RTOwed.Defs
 import Submission.Work.RTOwed.coordPerm_eq_mobius
-import Submission.Work.RTOwed.coordPermInv_eq_mobius
 import Submission.Work.RTOwed.mobiusKlein_eq_mobius
-import Submission.Work.RTOwed.mobius_height_pos
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

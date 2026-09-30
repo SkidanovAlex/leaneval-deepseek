@@ -23,7 +23,9 @@ import Mathlib
 import Submission.Work.BridgeSquare.FibreData
 import Submission.Work.BridgeSquare.subtorusBoundaries_of_fibreIdent
 import Submission.Work.BridgeSquare.PsiM_truncCell_mem_range
-import Submission.Work.BridgeSquare.kleinPt_corner
+import Submission.Work.Cusp.Data
+import Submission.Work.FoldInst.Basic
+import Submission.Work.RTOwed.cuspDev
 import Submission.Work.BridgeSquare.Fn_apply
 import Submission.Work.BridgeSquare.affineChain
 import Submission.Work.BridgeSquare.ChartAlgA
@@ -70,7 +72,7 @@ theorem fibreLoop_expandB_point (v : Fin 5) (i : Fin 168) :
     fibreLoopVec v 1 i
       = (∑ k : Fin (fibreLen v 1), edgeSign v 1 (eIdx v k) •
           (Pi.single (edgeCell v 1 (eIdx v k)) (1 : ℤ) : Fin (mbarDim 1) → ℤ)) i := by
-  fin_cases v <;> fin_cases i <;> decide
+  fin_cases v <;> fin_cases i <;> decide +kernel
 
 theorem fibreLoop_expandB (v : Fin 5) :
     fibreLoopVec v 1 = ∑ k : Fin (fibreLen v 1), edgeSign v 1 (eIdx v k) • evecB v k := by

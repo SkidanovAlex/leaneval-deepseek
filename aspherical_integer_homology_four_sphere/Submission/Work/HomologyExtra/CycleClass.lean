@@ -1,6 +1,23 @@
 import Mathlib
 import ChallengeDeps
-import Submission.Work.Homology.All
+import Submission.Work.Homology.Basic
+import Submission.Work.Homology.Pairs
+import Submission.Work.Homology.Point
+import Submission.Work.Homology.RelChainMap
+import Submission.Work.Homology.Corollaries
+import Submission.Work.Homology.SingHomologyHomeomorph
+import Submission.Work.Homology.HomologyBiprod
+import Submission.Work.Homology.SingHomologyClopen
+import Submission.Work.Homology.ContractibleHomology
+import Submission.Work.Homology.BallHomology
+import Submission.Work.Homology.StdSimplexHomology
+import Submission.Work.Homology.HomotopyEquivHomology
+import Submission.Work.Homology.DeformationRetractHomology
+import Submission.Work.Homology.SimplexShim
+import Submission.Work.Cohomology.Chains
+import Submission.Work.Cohomology.HomologyPairSequence
+import Submission.Work.Homology.Spheres
+import Submission.Work.Homology.MayerVietoris
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

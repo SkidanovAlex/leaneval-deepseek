@@ -119,7 +119,7 @@ theorem PsiM_edge1_expand (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.BridgeS
       s ∈ ({Psi1.eFlag0 v k hk, Psi1.eFlag1 v k hk} : Finset (Simplex QbarCW.Cell 1)) := by
     intro s hs
     have hlt : s 0 < Mbar.rootCx 1 (edgeCell v 1 k) := by
-      rw [← hs]; exact s.strictMono (by decide)
+      rw [← hs]; exact s.strictMono (by decide +kernel)
     have hdim : QbarCW.dim (s 0) = 0 := by
       have h := QbarCW.dim_lt' hlt
       rw [Mbar.rootCx_dim 1 (edgeCell v 1 k)] at h

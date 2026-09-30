@@ -36,7 +36,7 @@ namespace Work.FoldInst
 
 theorem cert_fold_root :
     (∀ i : Fin 98, foldKr i (fun _ => false) = 1 ∧ foldDr i (fun _ => false) = 1) := by
-  decide
+  decide +kernel
 
 /-- **The representative of the root sign index** (`r = fun _ => false`, the "positive orthant"
 piece) is the root representative of the class: the identity developing matrix and the trivial
@@ -49,7 +49,7 @@ theorem fold_root (i : Fin 98) :
 
 theorem cert_foldWallAt_injective :
     (∀ i : Fin 98, Function.Injective (foldWallAt i)) := by
-  decide
+  decide +kernel
 
 /-- **The `c` walls of a representative are pairwise distinct.** -/
 theorem foldWallAt_injective (i : Fin 98) : Function.Injective (foldWallAt i) :=
@@ -70,7 +70,7 @@ theorem cert_foldWalls_inj :
     (∀ (i : Fin 98) (r s : Fin (foldCodim i) → Bool), foldCr i r = foldCr i s →
       (∀ t : Fin (foldCodim i), ∃ u : Fin (foldCodim i), foldWalls i s u = foldWalls i r t) →
       r = s) := by
-  decide
+  decide +kernel
 
 /-- **If two representatives lie in the same copy and every wall of the first is a wall of the
 second, then they are the same sign index.** -/
@@ -86,7 +86,7 @@ theorem cert_fold_state_flip :
     (∀ (i : Fin 98) (t : Fin (foldCodim i)) (r : Fin (foldCodim i) → Bool),
       ((toG (foldKr i (flipSet r {t})), foldCr i (flipSet r {t})) : Gg) =
         foldGen i t + ((toG (foldKr i r), foldCr i r) : Gg)) := by
-  decide
+  decide +kernel
 
 /-- **The flip step.**  Flipping the sign index at the `t`-th wall translates the state
 `(toG (foldKr i ·), foldCr i ·)` by the group element `foldGen i t` of that wall. -/
@@ -101,23 +101,23 @@ theorem cert_wallPos_spec :
     (∀ (i : Fin 98) (t : Fin (foldCodim i)),
       foldPosIsWall i (foldWallPosAt i t) = 1 ∧
         (foldPosToWall i (foldWallPosAt i t) : ℕ) < foldCodim i) := by
-  decide
+  decide +kernel
 
 theorem cert_wallPos_toWall :
     (∀ (i : Fin 98) (t : Fin (foldCodim i)),
       (foldPosToWall i (foldWallPosAt i t)).val = t.val) := by
-  decide
+  decide +kernel
 
 theorem cert_wallPos_exists :
     (∀ (i : Fin 98) (j : Fin 3), foldPosIsWall i j = 1 →
       (foldPosToWall i j : ℕ) < foldCodim i →
       ∃ t : Fin (foldCodim i), foldWallPosAt i t = j) := by
-  decide
+  decide +kernel
 
 theorem cert_foldPattern_pm :
     (∀ (i : Fin 98) (r : Fin (foldCodim i) → Bool) (j : Fin 3),
       foldPattern i r j = 1 ∨ foldPattern i r j = -1) := by
-  decide
+  decide +kernel
 
 /-! ### The sign pattern and sign vector of the flipped index -/
 
@@ -126,7 +126,7 @@ theorem cert_foldEr_flipSet_wall :
       (Δ : Finset (Fin (foldCodim i))),
       foldEr i (flipSet r Δ) (foldWallPosAt i t) * foldEr i r (foldWallPosAt i t) =
         (if t ∈ Δ then -1 else 1)) := by
-  decide
+  decide +kernel
 
 /-- The factor by which the sign vector of the flipped representative differs from the original
 one, at the position of a wall: `-1` exactly at the walls in `Δ`. -/
@@ -140,7 +140,7 @@ theorem cert_foldEr_flipSet_off :
     (∀ (i : Fin 98) (r : Fin (foldCodim i) → Bool) (Δ : Finset (Fin (foldCodim i))) (j : Fin 3),
       (∀ t : Fin (foldCodim i), foldWallPosAt i t ≠ j) →
       foldEr i (flipSet r Δ) j * foldEr i r j = 1) := by
-  decide
+  decide +kernel
 
 /-- The factor by which the sign vector of the flipped representative differs from the original
 one, away from the positions of the walls: `+1`. -/

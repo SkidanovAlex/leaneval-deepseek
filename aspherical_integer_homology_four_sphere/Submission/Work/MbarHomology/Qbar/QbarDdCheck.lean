@@ -34,15 +34,39 @@ namespace Work.MbarHomology.Qbar
 open scoped BigOperators
 open Work.MbarHomology
 
-theorem facetCond_all : ∀ e : Fin 865, (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by decide
+theorem facetCond_all_c0 : ∀ e : Fin 865, 0 ≤ e.val → e.val < 220 →  (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by decide +kernel
+theorem facetCond_all_c1 : ∀ e : Fin 865, 220 ≤ e.val → e.val < 440 →  (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by decide +kernel
+theorem facetCond_all_c2 : ∀ e : Fin 865, 440 ≤ e.val → e.val < 660 →  (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by decide +kernel
+theorem facetCond_all_c3 : ∀ e : Fin 865, 660 ≤ e.val →  (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by decide +kernel
+theorem facetCond_all : ∀ e : Fin 865, (Flist e).all (fun f => decide (qTight e ⊆ qTight f ∧ (qTight f).card = (qTight e).card + 1)) = true := by
+  intro e
+  by_cases h0 : e.val < 220
+  · exact facetCond_all_c0 e (by omega) h0
+  by_cases h1 : e.val < 440
+  · exact facetCond_all_c1 e (by omega) h1
+  by_cases h2 : e.val < 660
+  · exact facetCond_all_c2 e (by omega) h2
+  exact facetCond_all_c3 e (by omega)
 
-theorem facetComplete_all : ∀ e : Fin 865, (Flist e).toFinset = qFacet e := by decide
+theorem facetComplete_all_c0 : ∀ e : Fin 865, 0 ≤ e.val → e.val < 220 →  (Flist e).toFinset = qFacet e := by decide +kernel
+theorem facetComplete_all_c1 : ∀ e : Fin 865, 220 ≤ e.val → e.val < 440 →  (Flist e).toFinset = qFacet e := by decide +kernel
+theorem facetComplete_all_c2 : ∀ e : Fin 865, 440 ≤ e.val → e.val < 660 →  (Flist e).toFinset = qFacet e := by decide +kernel
+theorem facetComplete_all_c3 : ∀ e : Fin 865, 660 ≤ e.val →  (Flist e).toFinset = qFacet e := by decide +kernel
+theorem facetComplete_all : ∀ e : Fin 865, (Flist e).toFinset = qFacet e := by
+  intro e
+  by_cases h0 : e.val < 220
+  · exact facetComplete_all_c0 e (by omega) h0
+  by_cases h1 : e.val < 440
+  · exact facetComplete_all_c1 e (by omega) h1
+  by_cases h2 : e.val < 660
+  · exact facetComplete_all_c2 e (by omega) h2
+  exact facetComplete_all_c3 e (by omega)
 
-theorem coefChk_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide
-theorem coefChk_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide
-theorem coefChk_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide
-theorem coefChk_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide
-theorem coefChk_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide
+theorem coefChk_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
+theorem coefChk_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
+theorem coefChk_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
+theorem coefChk_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
+theorem coefChk_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by decide +kernel
 
 theorem coefChk_all : ∀ e : Fin 865, (Slist e).all (fun g => decide (ddTab e g = 0)) = true := by
   intro e
@@ -60,11 +84,11 @@ theorem coefChk_all : ∀ e : Fin 865, (Slist e).all (fun g => decide (ddTab e g
         ·
           exact coefChk_chunk_4 e e.2 k4
 
-theorem coefComplete_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide
-theorem coefComplete_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide
-theorem coefComplete_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e := by decide
-theorem coefComplete_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e := by decide
-theorem coefComplete_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e := by decide
+theorem coefComplete_chunk_0 : ∀ e : Fin 865, (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide +kernel
+theorem coefComplete_chunk_1 : ∀ e : Fin 865, (e : ℕ) < 360 → ¬ (e : ℕ) < 180 → (Slist e).toFinset = Sset e := by decide +kernel
+theorem coefComplete_chunk_2 : ∀ e : Fin 865, (e : ℕ) < 540 → ¬ (e : ℕ) < 360 → (Slist e).toFinset = Sset e := by decide +kernel
+theorem coefComplete_chunk_3 : ∀ e : Fin 865, (e : ℕ) < 720 → ¬ (e : ℕ) < 540 → (Slist e).toFinset = Sset e := by decide +kernel
+theorem coefComplete_chunk_4 : ∀ e : Fin 865, (e : ℕ) < 865 → ¬ (e : ℕ) < 720 → (Slist e).toFinset = Sset e := by decide +kernel
 
 theorem coefComplete_all : ∀ e : Fin 865, (Slist e).toFinset = Sset e := by
   intro e

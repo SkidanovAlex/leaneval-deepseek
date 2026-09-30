@@ -1,4 +1,7 @@
-import Submission.Work.Homology.Bridge
+import Submission.Work.Homology.Basic
+import Submission.Work.Homology.Pairs
+import Submission.Work.Cohomology.Chains
+import Submission.Work.Cohomology.HomologyPairSequence
 import Submission.Work.Cohomology.MVSequence
 import Submission.Work.Cohomology.smallChains_homology_iso
 

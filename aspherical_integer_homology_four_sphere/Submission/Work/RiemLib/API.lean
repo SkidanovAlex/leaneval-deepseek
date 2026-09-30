@@ -183,12 +183,35 @@ import Submission.Work.RiemLib.RauchK
 import Submission.Work.RiemLib.HopfRinow2
 import Submission.Work.RiemLib.InjRadius
 import Submission.Work.RiemLib.Work.OddBound.longHomotopy.exists_lift_of_short
-import Submission.Work.RiemLib.Work.OddBound.longHomotopy.lift_family_of_short
-import Submission.Work.RiemLib.Work.OddBound.longHomotopy.continuousOn_lift_family_of_short
+import Submission.Work.RiemLib.Geodesic
+import Submission.Work.RiemLib.GeodesicSpeed
+import Submission.Work.RiemLib.Distance
+import Submission.Work.RiemLib.InjBall
+import Submission.Work.RiemLib.SegmentDomain
+import Submission.Work.RiemLib.XuMain
+import Submission.Work.RiemLib.EDist
+import Submission.Work.RiemLib.GExpRay2
+import Submission.Work.RiemLib.GExpJoint
+import Submission.Work.RiemLib.GExpFlow
+import Submission.Work.RiemLib.Commons.Geometry.Manifold.exists_finite_cover_isCompact_subset_chartAt
+import Submission.Work.RiemLib.GeodesicGlobal
+import Submission.Work.RiemLib.CutStep2
+import Submission.Work.RiemLib.ChartPieces
+import Submission.Work.RiemLib.ChartIndep
+import Submission.Work.RiemLib.CoeffSmooth2
+import Submission.Work.RiemLib.JacobiGlobal
+import Submission.Work.RiemLib.Commons.Analysis.ODE.exists_linearODE_solution_Icc
+import Submission.Work.RiemLib.IndexCorner2
+import Submission.Work.RiemLib.InjHalf
+import Submission.Work.RiemLib.LensLoop
+import Submission.Work.RiemLib.UniformInj
+import Submission.Work.RiemLib.ConjRadius
+import Submission.Work.RiemLib.Gauss
+import Submission.Work.RiemLib.ExpBound2
+import Submission.Work.RiemLib.JacobiGauss
+import Submission.Work.RiemLib.Minimal
 import Submission.Work.RiemLib.Work.OddBound.longHomotopy.exists_tendsto_of_lift
-import Submission.Work.RiemLib.Work.OddBound.longHomotopy.lift_family_continuity_core
 import Submission.Work.RiemLib.Work.OddBound.longHomotopy.gauss_pairing_fibre
-import Submission.Work.RiemLib.Work.OddBound.longHomotopy.continuousOn_curveLength_family
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
@@ -235,10 +258,6 @@ open Bundle CovariantDerivative
 #check @Submission.Length.curveLength
 #check @Submission.Length.curveSpeed
 #check @Work.OddBound.longHomotopy.exists_lift_of_short
-#check @Work.OddBound.longHomotopy.exists_lift_of_short_bis
-#check @Work.OddBound.longHomotopy.lift_family_of_short
-#check @Work.OddBound.longHomotopy.continuousOn_lift_family_of_short
-#check @Work.OddBound.longHomotopy.lift_family_continuity_core
 #check @Work.OddBound.longHomotopy.exists_tendsto_of_lift
 #check @Work.OddBound.longHomotopy.gauss_pairing_fibre
 

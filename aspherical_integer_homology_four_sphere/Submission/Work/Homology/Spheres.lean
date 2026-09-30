@@ -1,7 +1,9 @@
 import Submission.Work.Homology.Basic
 import Submission.Work.Homology.Point
 import Submission.Work.Homology.Corollaries
-import Submission.Work.Homology.Bridge
+import Submission.Work.Homology.Pairs
+import Submission.Work.Cohomology.Chains
+import Submission.Work.Cohomology.HomologyPairSequence
 import Submission.Work.Cohomology.sphereHomologyTop
 import Submission.Work.Cohomology.sphereHomologyZero
 import Submission.Work.Cohomology.diskPairHomologyTop

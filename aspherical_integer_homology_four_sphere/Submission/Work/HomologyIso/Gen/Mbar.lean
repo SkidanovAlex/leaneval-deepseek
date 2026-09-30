@@ -520,16 +520,17 @@ def mbarBd : ∀ k, SOp (mbarDim k) (mbarDim (k+1))
   | 3 => mbarBdthree
   | _ => SOp.zero _ _
 
-theorem mbarBdCheck_zero : FinChainCx.bdCheckDeg mbarDim mbarBd 0 = true := by decide
-theorem mbarBdCheck_one : FinChainCx.bdCheckDeg mbarDim mbarBd 1 = true := by decide
-theorem mbarBdCheck_two : FinChainCx.bdCheckDeg mbarDim mbarBd 2 = true := by decide
-theorem mbarBdCheck_three : FinChainCx.bdCheckDeg mbarDim mbarBd 3 = true := by decide
-theorem mbarBdCheck_four : FinChainCx.bdCheckDeg mbarDim mbarBd 4 = true := by decide
+theorem mbarBdCheck_zero : FinChainCx.bdCheckDeg mbarDim mbarBd 0 = true := by decide +kernel
+theorem mbarBdCheck_one : FinChainCx.bdCheckDeg mbarDim mbarBd 1 = true := by decide +kernel
+theorem mbarBdCheck_two : FinChainCx.bdCheckDeg mbarDim mbarBd 2 = true := by decide +kernel
+theorem mbarBdCheck_three : FinChainCx.bdCheckDeg mbarDim mbarBd 3 = true := by decide +kernel
+theorem mbarBdCheck_four : FinChainCx.bdCheckDeg mbarDim mbarBd 4 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem mbarBdCheck (k : ℕ) (hk : k < 5) :
     FinChainCx.bdCheckDeg mbarDim mbarBd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [mbarBdCheck_zero, mbarBdCheck_one, mbarBdCheck_two, mbarBdCheck_three, mbarBdCheck_four]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def mbarCx : FinChainCx where
@@ -1648,43 +1649,47 @@ def mbarSDR : SDR mbarCx where
   dim_zero := fun k hk => mbarDim_eq_zero k hk
   b_zero := fun k hk => mbarB_eq_zero k hk
 
-theorem mbarSDR_checkHomZero : mbarSDR.checkHomZero = true := by decide
+theorem mbarSDR_checkHomZero : mbarSDR.checkHomZero = true := by decide +kernel
 
-theorem mbarSDR_checkZ_zero : mbarSDR.checkZ 0 = true := by decide
-theorem mbarSDR_checkZ_one : mbarSDR.checkZ 1 = true := by decide
-theorem mbarSDR_checkZ_two : mbarSDR.checkZ 2 = true := by decide
-theorem mbarSDR_checkZ_three : mbarSDR.checkZ 3 = true := by decide
-theorem mbarSDR_checkZ_four : mbarSDR.checkZ 4 = true := by decide
+theorem mbarSDR_checkZ_zero : mbarSDR.checkZ 0 = true := by decide +kernel
+theorem mbarSDR_checkZ_one : mbarSDR.checkZ 1 = true := by decide +kernel
+theorem mbarSDR_checkZ_two : mbarSDR.checkZ 2 = true := by decide +kernel
+theorem mbarSDR_checkZ_three : mbarSDR.checkZ 3 = true := by decide +kernel
+theorem mbarSDR_checkZ_four : mbarSDR.checkZ 4 = true := by decide +kernel
 
 theorem mbarSDR_checkZ (k : ℕ) (hk : k < 5) : mbarSDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [mbarSDR_checkZ_zero, mbarSDR_checkZ_one, mbarSDR_checkZ_two, mbarSDR_checkZ_three, mbarSDR_checkZ_four]
 
-theorem mbarSDR_checkRho_zero : mbarSDR.checkRho 0 = true := by decide
-theorem mbarSDR_checkRho_one : mbarSDR.checkRho 1 = true := by decide
-theorem mbarSDR_checkRho_two : mbarSDR.checkRho 2 = true := by decide
-theorem mbarSDR_checkRho_three : mbarSDR.checkRho 3 = true := by decide
-theorem mbarSDR_checkRho_four : mbarSDR.checkRho 4 = true := by decide
+theorem mbarSDR_checkRho_zero : mbarSDR.checkRho 0 = true := by decide +kernel
+theorem mbarSDR_checkRho_one : mbarSDR.checkRho 1 = true := by decide +kernel
+theorem mbarSDR_checkRho_two : mbarSDR.checkRho 2 = true := by decide +kernel
+theorem mbarSDR_checkRho_three : mbarSDR.checkRho 3 = true := by decide +kernel
+theorem mbarSDR_checkRho_four : mbarSDR.checkRho 4 = true := by decide +kernel
 
 theorem mbarSDR_checkRho (k : ℕ) (hk : k < 5) : mbarSDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [mbarSDR_checkRho_zero, mbarSDR_checkRho_one, mbarSDR_checkRho_two, mbarSDR_checkRho_three, mbarSDR_checkRho_four]
 
-theorem mbarSDR_checkRhoZ_zero : mbarSDR.checkRhoZ 0 = true := by decide
-theorem mbarSDR_checkRhoZ_one : mbarSDR.checkRhoZ 1 = true := by decide
-theorem mbarSDR_checkRhoZ_two : mbarSDR.checkRhoZ 2 = true := by decide
-theorem mbarSDR_checkRhoZ_three : mbarSDR.checkRhoZ 3 = true := by decide
-theorem mbarSDR_checkRhoZ_four : mbarSDR.checkRhoZ 4 = true := by decide
+theorem mbarSDR_checkRhoZ_zero : mbarSDR.checkRhoZ 0 = true := by decide +kernel
+theorem mbarSDR_checkRhoZ_one : mbarSDR.checkRhoZ 1 = true := by decide +kernel
+theorem mbarSDR_checkRhoZ_two : mbarSDR.checkRhoZ 2 = true := by decide +kernel
+theorem mbarSDR_checkRhoZ_three : mbarSDR.checkRhoZ 3 = true := by decide +kernel
+theorem mbarSDR_checkRhoZ_four : mbarSDR.checkRhoZ 4 = true := by decide +kernel
 
 theorem mbarSDR_checkRhoZ (k : ℕ) (hk : k < 5) : mbarSDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [mbarSDR_checkRhoZ_zero, mbarSDR_checkRhoZ_one, mbarSDR_checkRhoZ_two, mbarSDR_checkRhoZ_three, mbarSDR_checkRhoZ_four]
 
-theorem mbarSDR_checkHom_zero : mbarSDR.checkHom 0 = true := by decide
-theorem mbarSDR_checkHom_one : mbarSDR.checkHom 1 = true := by decide
-theorem mbarSDR_checkHom_two : mbarSDR.checkHom 2 = true := by decide
-theorem mbarSDR_checkHom_three : mbarSDR.checkHom 3 = true := by decide
-theorem mbarSDR_checkHom_four : mbarSDR.checkHom 4 = true := by decide
+theorem mbarSDR_checkHom_zero : mbarSDR.checkHom 0 = true := by decide +kernel
+theorem mbarSDR_checkHom_one : mbarSDR.checkHom 1 = true := by decide +kernel
+theorem mbarSDR_checkHom_two : mbarSDR.checkHom 2 = true := by decide +kernel
+theorem mbarSDR_checkHom_three : mbarSDR.checkHom 3 = true := by decide +kernel
+theorem mbarSDR_checkHom_four : mbarSDR.checkHom 4 = true := by decide +kernel
 
 theorem mbarSDR_checkHom (k : ℕ) (hk : k < 5) : mbarSDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [mbarSDR_checkHom_zero, mbarSDR_checkHom_one, mbarSDR_checkHom_two, mbarSDR_checkHom_three, mbarSDR_checkHom_four]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem mbarSDR_check : mbarSDR.check = true :=

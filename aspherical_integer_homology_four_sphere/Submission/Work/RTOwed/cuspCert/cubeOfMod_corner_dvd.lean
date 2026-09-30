@@ -49,7 +49,7 @@ theorem cubeOfMod_corner_dvd_aux (v : Fin 5) (q : Fin 3 → Fin 4) (i : Fin 3) :
     (Work.Cusp.latMod v i : ℤ) ∣
       ((q i : ℤ) - Work.Cusp.cubeCorner (Work.Cusp.cubeOfMod v (fun j => (q j : ℤ))) i) := by
   revert q i
-  fin_cases v <;> decide
+  fin_cases v <;> decide +kernel
 
 /-- Divisibility of `p - c` follows from divisibility of `p % d - c`, because
 `p = d * (p / d) + p % d`. -/
@@ -63,9 +63,9 @@ theorem dvd_sub_of_dvd_emod {d p c : ℤ} (h : d ∣ p % d - c) : d ∣ p - c :=
 theorem cubeOfMod_corner_dvd (v : Fin 5) (p : Fin 3 → ℤ) (i : Fin 3) :
     (Work.Cusp.latMod v i : ℤ) ∣ (p i - Work.Cusp.cubeCorner (Work.Cusp.cubeOfMod v p) i) := by
   have hb : ∀ i : Fin 3, 0 < (Work.Cusp.latMod v i : ℤ) := by
-    intro i; fin_cases v <;> fin_cases i <;> decide
+    intro i; fin_cases v <;> fin_cases i <;> decide +kernel
   have hm : ∀ i : Fin 3, (Work.Cusp.latMod v i : ℤ) ≤ 4 := by
-    intro i; fin_cases v <;> fin_cases i <;> decide
+    intro i; fin_cases v <;> fin_cases i <;> decide +kernel
   -- the cube index depends only on the residues of `p` modulo `latMod v`
   have hp : Work.Cusp.cubeOfMod v p
       = Work.Cusp.cubeOfMod v (fun i => p i % (Work.Cusp.latMod v i : ℤ)) := by

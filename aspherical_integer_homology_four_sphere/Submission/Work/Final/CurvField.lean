@@ -6,7 +6,10 @@ model curvature datum (a chart model agreeing with the chart metric near each po
 non-positive sectional curvature there); that lemma composes the pointwise curvature bridge
 `Work.Final.secNonpos_of_chartModels` with `Work.CartanHadamard.curvLe_all`.
 -/
-import Submission.Work.Final.Discharge
+import Submission.Work.Final.Basic
+import Submission.Work.Final.MhatCover
+import Submission.Work.Final.mvRightX_zero_surjective
+import Submission.Work.Final.secNonpos_of_chartModels
 import Submission.Work.Final.curvLe_of_models
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

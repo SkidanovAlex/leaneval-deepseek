@@ -1,6 +1,9 @@
 import Mathlib
 import Submission.Work.DeltaHomology.SkelChain
-import Submission.Work.DeltaHomology.skelQuotient_X_iso
+import Submission.Work.DeltaHomology.Chain
+import Submission.Work.DeltaHomology.Skeleton
+import Submission.Work.DeltaHomology.SkeletonMap
+import Submission.Work.DeltaHomology.isZero_chainX_of_dim_lt
 import Submission.Work.DeltaHomology.SkelChainDefs
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

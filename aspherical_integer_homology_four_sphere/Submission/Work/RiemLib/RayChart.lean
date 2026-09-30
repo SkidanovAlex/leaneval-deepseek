@@ -1,4 +1,4 @@
-import Submission.Work.RiemLib.JacobiLinear
+import Submission.Work.RiemLib.VariationJacobi
 import Submission.Work.RiemLib.LensLoop
 import Submission.Work.RiemLib.GExpRayZero
 import Submission.Work.RiemLib.GExpVelocity

@@ -54,18 +54,18 @@ theorem E457_len4 : (E457 4).length = 0 := rfl
 
 theorem E457_nil5 (k : ℕ) : E457 (k+5) = [] := rfl
 
-theorem E457_dimtop : QbarCW.dim (⟨(457 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E457_dimtop : QbarCW.dim (⟨(457 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E457_nil3 : E457 3 = [] := rfl
 theorem E457_nil4 : E457 4 = [] := rfl
 
-theorem E457_hE0 : E457 0 = dimListLe 457 0 := by decide
-theorem E457_hE1 : E457 1 = dimListLe 457 1 := by decide
-theorem E457_hE2 : E457 2 = dimListLe 457 2 := by decide
+theorem E457_hE0 : E457 0 = dimListLe 457 0 := by decide +kernel
+theorem E457_hE1 : E457 1 = dimListLe 457 1 := by decide +kernel
+theorem E457_hE2 : E457 2 = dimListLe 457 2 := by decide +kernel
 theorem E457_hE3 : E457 3 = dimListLe 457 3 := by
-  rw [E457_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E457_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E457_hE4 : E457 4 = dimListLe 457 4 := by
-  rw [E457_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E457_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E457_hE (k : ℕ) : E457 k = dimListLe 457 k := by
   match k with
@@ -165,11 +165,11 @@ def Cx457_bd : ∀ k, Work.Certificates.SOp ((E457 k).length) ((E457 (k+1)).leng
   | 3 => Cx457_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx457_bdEq0 : (Cx457_bd 0).eqb (bdOfEnum E457 0) = true := by decide
-theorem Cx457_bdEq1 : (Cx457_bd 1).eqb (bdOfEnum E457 1) = true := by decide
-theorem Cx457_bdEq2 : (Cx457_bd 2).eqb (bdOfEnum E457 2) = true := by decide
-theorem Cx457_bdEq3 : (Cx457_bd 3).eqb (bdOfEnum E457 3) = true := by decide
-theorem Cx457_bdEq4 : (Cx457_bd 4).eqb (bdOfEnum E457 4) = true := by decide
+theorem Cx457_bdEq0 : (Cx457_bd 0).eqb (bdOfEnum E457 0) = true := by decide +kernel
+theorem Cx457_bdEq1 : (Cx457_bd 1).eqb (bdOfEnum E457 1) = true := by decide +kernel
+theorem Cx457_bdEq2 : (Cx457_bd 2).eqb (bdOfEnum E457 2) = true := by decide +kernel
+theorem Cx457_bdEq3 : (Cx457_bd 3).eqb (bdOfEnum E457 3) = true := by decide +kernel
+theorem Cx457_bdEq4 : (Cx457_bd 4).eqb (bdOfEnum E457 4) = true := by decide +kernel
 
 theorem Cx457_bdEq (k : ℕ) (hk : k < 5) : (Cx457_bd k).eqb (bdOfEnum E457 k) = true := by
   interval_cases k
@@ -179,11 +179,11 @@ theorem Cx457_bdEq (k : ℕ) (hk : k < 5) : (Cx457_bd k).eqb (bdOfEnum E457 k) =
   · exact Cx457_bdEq3
   · exact Cx457_bdEq4
 
-theorem Cx457_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 0 = true := by decide
-theorem Cx457_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 1 = true := by decide
-theorem Cx457_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 2 = true := by decide
-theorem Cx457_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 3 = true := by decide
-theorem Cx457_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 4 = true := by decide
+theorem Cx457_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 0 = true := by decide +kernel
+theorem Cx457_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 1 = true := by decide +kernel
+theorem Cx457_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 2 = true := by decide +kernel
+theorem Cx457_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 3 = true := by decide +kernel
+theorem Cx457_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E457 k).length) Cx457_bd 4 = true := by decide +kernel
 
 def Cx457 : Work.Certificates.FinChainCx where
   dim := fun k => (E457 k).length
@@ -247,12 +247,12 @@ def Cx457_sdr : Work.Certificates.SDR Cx457 where
   dim_zero := fun k hk => E457_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx457_checkHomZero : Cx457_sdr.checkHomZero = true := by decide
-theorem Cx457_checkDeg0 : Cx457_sdr.checkDeg 0 = true := by decide
-theorem Cx457_checkDeg1 : Cx457_sdr.checkDeg 1 = true := by decide
-theorem Cx457_checkDeg2 : Cx457_sdr.checkDeg 2 = true := by decide
-theorem Cx457_checkDeg3 : Cx457_sdr.checkDeg 3 = true := by decide
-theorem Cx457_checkDeg4 : Cx457_sdr.checkDeg 4 = true := by decide
+theorem Cx457_checkHomZero : Cx457_sdr.checkHomZero = true := by decide +kernel
+theorem Cx457_checkDeg0 : Cx457_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx457_checkDeg1 : Cx457_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx457_checkDeg2 : Cx457_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx457_checkDeg3 : Cx457_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx457_checkDeg4 : Cx457_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx457_sdr_check : Cx457_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx457_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -293,20 +293,20 @@ theorem E458_len4 : (E458 4).length = 0 := rfl
 
 theorem E458_nil5 (k : ℕ) : E458 (k+5) = [] := rfl
 
-theorem E458_dimtop : QbarCW.dim (⟨(458 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E458_dimtop : QbarCW.dim (⟨(458 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E458_nil2 : E458 2 = [] := rfl
 theorem E458_nil3 : E458 3 = [] := rfl
 theorem E458_nil4 : E458 4 = [] := rfl
 
-theorem E458_hE0 : E458 0 = dimListLe 458 0 := by decide
-theorem E458_hE1 : E458 1 = dimListLe 458 1 := by decide
+theorem E458_hE0 : E458 0 = dimListLe 458 0 := by decide +kernel
+theorem E458_hE1 : E458 1 = dimListLe 458 1 := by decide +kernel
 theorem E458_hE2 : E458 2 = dimListLe 458 2 := by
-  rw [E458_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E458_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E458_hE3 : E458 3 = dimListLe 458 3 := by
-  rw [E458_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E458_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E458_hE4 : E458 4 = dimListLe 458 4 := by
-  rw [E458_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E458_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E458_hE (k : ℕ) : E458 k = dimListLe 458 k := by
   match k with
@@ -400,11 +400,11 @@ def Cx458_bd : ∀ k, Work.Certificates.SOp ((E458 k).length) ((E458 (k+1)).leng
   | 3 => Cx458_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx458_bdEq0 : (Cx458_bd 0).eqb (bdOfEnum E458 0) = true := by decide
-theorem Cx458_bdEq1 : (Cx458_bd 1).eqb (bdOfEnum E458 1) = true := by decide
-theorem Cx458_bdEq2 : (Cx458_bd 2).eqb (bdOfEnum E458 2) = true := by decide
-theorem Cx458_bdEq3 : (Cx458_bd 3).eqb (bdOfEnum E458 3) = true := by decide
-theorem Cx458_bdEq4 : (Cx458_bd 4).eqb (bdOfEnum E458 4) = true := by decide
+theorem Cx458_bdEq0 : (Cx458_bd 0).eqb (bdOfEnum E458 0) = true := by decide +kernel
+theorem Cx458_bdEq1 : (Cx458_bd 1).eqb (bdOfEnum E458 1) = true := by decide +kernel
+theorem Cx458_bdEq2 : (Cx458_bd 2).eqb (bdOfEnum E458 2) = true := by decide +kernel
+theorem Cx458_bdEq3 : (Cx458_bd 3).eqb (bdOfEnum E458 3) = true := by decide +kernel
+theorem Cx458_bdEq4 : (Cx458_bd 4).eqb (bdOfEnum E458 4) = true := by decide +kernel
 
 theorem Cx458_bdEq (k : ℕ) (hk : k < 5) : (Cx458_bd k).eqb (bdOfEnum E458 k) = true := by
   interval_cases k
@@ -414,11 +414,11 @@ theorem Cx458_bdEq (k : ℕ) (hk : k < 5) : (Cx458_bd k).eqb (bdOfEnum E458 k) =
   · exact Cx458_bdEq3
   · exact Cx458_bdEq4
 
-theorem Cx458_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 0 = true := by decide
-theorem Cx458_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 1 = true := by decide
-theorem Cx458_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 2 = true := by decide
-theorem Cx458_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 3 = true := by decide
-theorem Cx458_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 4 = true := by decide
+theorem Cx458_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 0 = true := by decide +kernel
+theorem Cx458_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 1 = true := by decide +kernel
+theorem Cx458_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 2 = true := by decide +kernel
+theorem Cx458_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 3 = true := by decide +kernel
+theorem Cx458_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E458 k).length) Cx458_bd 4 = true := by decide +kernel
 
 def Cx458 : Work.Certificates.FinChainCx where
   dim := fun k => (E458 k).length
@@ -472,12 +472,12 @@ def Cx458_sdr : Work.Certificates.SDR Cx458 where
   dim_zero := fun k hk => E458_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx458_checkHomZero : Cx458_sdr.checkHomZero = true := by decide
-theorem Cx458_checkDeg0 : Cx458_sdr.checkDeg 0 = true := by decide
-theorem Cx458_checkDeg1 : Cx458_sdr.checkDeg 1 = true := by decide
-theorem Cx458_checkDeg2 : Cx458_sdr.checkDeg 2 = true := by decide
-theorem Cx458_checkDeg3 : Cx458_sdr.checkDeg 3 = true := by decide
-theorem Cx458_checkDeg4 : Cx458_sdr.checkDeg 4 = true := by decide
+theorem Cx458_checkHomZero : Cx458_sdr.checkHomZero = true := by decide +kernel
+theorem Cx458_checkDeg0 : Cx458_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx458_checkDeg1 : Cx458_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx458_checkDeg2 : Cx458_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx458_checkDeg3 : Cx458_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx458_checkDeg4 : Cx458_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx458_sdr_check : Cx458_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx458_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -518,20 +518,20 @@ theorem E459_len4 : (E459 4).length = 0 := rfl
 
 theorem E459_nil5 (k : ℕ) : E459 (k+5) = [] := rfl
 
-theorem E459_dimtop : QbarCW.dim (⟨(459 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E459_dimtop : QbarCW.dim (⟨(459 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E459_nil2 : E459 2 = [] := rfl
 theorem E459_nil3 : E459 3 = [] := rfl
 theorem E459_nil4 : E459 4 = [] := rfl
 
-theorem E459_hE0 : E459 0 = dimListLe 459 0 := by decide
-theorem E459_hE1 : E459 1 = dimListLe 459 1 := by decide
+theorem E459_hE0 : E459 0 = dimListLe 459 0 := by decide +kernel
+theorem E459_hE1 : E459 1 = dimListLe 459 1 := by decide +kernel
 theorem E459_hE2 : E459 2 = dimListLe 459 2 := by
-  rw [E459_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E459_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E459_hE3 : E459 3 = dimListLe 459 3 := by
-  rw [E459_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E459_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E459_hE4 : E459 4 = dimListLe 459 4 := by
-  rw [E459_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E459_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E459_hE (k : ℕ) : E459 k = dimListLe 459 k := by
   match k with
@@ -625,11 +625,11 @@ def Cx459_bd : ∀ k, Work.Certificates.SOp ((E459 k).length) ((E459 (k+1)).leng
   | 3 => Cx459_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx459_bdEq0 : (Cx459_bd 0).eqb (bdOfEnum E459 0) = true := by decide
-theorem Cx459_bdEq1 : (Cx459_bd 1).eqb (bdOfEnum E459 1) = true := by decide
-theorem Cx459_bdEq2 : (Cx459_bd 2).eqb (bdOfEnum E459 2) = true := by decide
-theorem Cx459_bdEq3 : (Cx459_bd 3).eqb (bdOfEnum E459 3) = true := by decide
-theorem Cx459_bdEq4 : (Cx459_bd 4).eqb (bdOfEnum E459 4) = true := by decide
+theorem Cx459_bdEq0 : (Cx459_bd 0).eqb (bdOfEnum E459 0) = true := by decide +kernel
+theorem Cx459_bdEq1 : (Cx459_bd 1).eqb (bdOfEnum E459 1) = true := by decide +kernel
+theorem Cx459_bdEq2 : (Cx459_bd 2).eqb (bdOfEnum E459 2) = true := by decide +kernel
+theorem Cx459_bdEq3 : (Cx459_bd 3).eqb (bdOfEnum E459 3) = true := by decide +kernel
+theorem Cx459_bdEq4 : (Cx459_bd 4).eqb (bdOfEnum E459 4) = true := by decide +kernel
 
 theorem Cx459_bdEq (k : ℕ) (hk : k < 5) : (Cx459_bd k).eqb (bdOfEnum E459 k) = true := by
   interval_cases k
@@ -639,11 +639,11 @@ theorem Cx459_bdEq (k : ℕ) (hk : k < 5) : (Cx459_bd k).eqb (bdOfEnum E459 k) =
   · exact Cx459_bdEq3
   · exact Cx459_bdEq4
 
-theorem Cx459_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 0 = true := by decide
-theorem Cx459_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 1 = true := by decide
-theorem Cx459_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 2 = true := by decide
-theorem Cx459_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 3 = true := by decide
-theorem Cx459_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 4 = true := by decide
+theorem Cx459_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 0 = true := by decide +kernel
+theorem Cx459_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 1 = true := by decide +kernel
+theorem Cx459_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 2 = true := by decide +kernel
+theorem Cx459_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 3 = true := by decide +kernel
+theorem Cx459_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E459 k).length) Cx459_bd 4 = true := by decide +kernel
 
 def Cx459 : Work.Certificates.FinChainCx where
   dim := fun k => (E459 k).length
@@ -697,12 +697,12 @@ def Cx459_sdr : Work.Certificates.SDR Cx459 where
   dim_zero := fun k hk => E459_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx459_checkHomZero : Cx459_sdr.checkHomZero = true := by decide
-theorem Cx459_checkDeg0 : Cx459_sdr.checkDeg 0 = true := by decide
-theorem Cx459_checkDeg1 : Cx459_sdr.checkDeg 1 = true := by decide
-theorem Cx459_checkDeg2 : Cx459_sdr.checkDeg 2 = true := by decide
-theorem Cx459_checkDeg3 : Cx459_sdr.checkDeg 3 = true := by decide
-theorem Cx459_checkDeg4 : Cx459_sdr.checkDeg 4 = true := by decide
+theorem Cx459_checkHomZero : Cx459_sdr.checkHomZero = true := by decide +kernel
+theorem Cx459_checkDeg0 : Cx459_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx459_checkDeg1 : Cx459_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx459_checkDeg2 : Cx459_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx459_checkDeg3 : Cx459_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx459_checkDeg4 : Cx459_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx459_sdr_check : Cx459_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx459_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -743,20 +743,20 @@ theorem E460_len4 : (E460 4).length = 0 := rfl
 
 theorem E460_nil5 (k : ℕ) : E460 (k+5) = [] := rfl
 
-theorem E460_dimtop : QbarCW.dim (⟨(460 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E460_dimtop : QbarCW.dim (⟨(460 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E460_nil2 : E460 2 = [] := rfl
 theorem E460_nil3 : E460 3 = [] := rfl
 theorem E460_nil4 : E460 4 = [] := rfl
 
-theorem E460_hE0 : E460 0 = dimListLe 460 0 := by decide
-theorem E460_hE1 : E460 1 = dimListLe 460 1 := by decide
+theorem E460_hE0 : E460 0 = dimListLe 460 0 := by decide +kernel
+theorem E460_hE1 : E460 1 = dimListLe 460 1 := by decide +kernel
 theorem E460_hE2 : E460 2 = dimListLe 460 2 := by
-  rw [E460_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E460_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E460_hE3 : E460 3 = dimListLe 460 3 := by
-  rw [E460_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E460_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E460_hE4 : E460 4 = dimListLe 460 4 := by
-  rw [E460_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E460_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E460_hE (k : ℕ) : E460 k = dimListLe 460 k := by
   match k with
@@ -850,11 +850,11 @@ def Cx460_bd : ∀ k, Work.Certificates.SOp ((E460 k).length) ((E460 (k+1)).leng
   | 3 => Cx460_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx460_bdEq0 : (Cx460_bd 0).eqb (bdOfEnum E460 0) = true := by decide
-theorem Cx460_bdEq1 : (Cx460_bd 1).eqb (bdOfEnum E460 1) = true := by decide
-theorem Cx460_bdEq2 : (Cx460_bd 2).eqb (bdOfEnum E460 2) = true := by decide
-theorem Cx460_bdEq3 : (Cx460_bd 3).eqb (bdOfEnum E460 3) = true := by decide
-theorem Cx460_bdEq4 : (Cx460_bd 4).eqb (bdOfEnum E460 4) = true := by decide
+theorem Cx460_bdEq0 : (Cx460_bd 0).eqb (bdOfEnum E460 0) = true := by decide +kernel
+theorem Cx460_bdEq1 : (Cx460_bd 1).eqb (bdOfEnum E460 1) = true := by decide +kernel
+theorem Cx460_bdEq2 : (Cx460_bd 2).eqb (bdOfEnum E460 2) = true := by decide +kernel
+theorem Cx460_bdEq3 : (Cx460_bd 3).eqb (bdOfEnum E460 3) = true := by decide +kernel
+theorem Cx460_bdEq4 : (Cx460_bd 4).eqb (bdOfEnum E460 4) = true := by decide +kernel
 
 theorem Cx460_bdEq (k : ℕ) (hk : k < 5) : (Cx460_bd k).eqb (bdOfEnum E460 k) = true := by
   interval_cases k
@@ -864,11 +864,11 @@ theorem Cx460_bdEq (k : ℕ) (hk : k < 5) : (Cx460_bd k).eqb (bdOfEnum E460 k) =
   · exact Cx460_bdEq3
   · exact Cx460_bdEq4
 
-theorem Cx460_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 0 = true := by decide
-theorem Cx460_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 1 = true := by decide
-theorem Cx460_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 2 = true := by decide
-theorem Cx460_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 3 = true := by decide
-theorem Cx460_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 4 = true := by decide
+theorem Cx460_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 0 = true := by decide +kernel
+theorem Cx460_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 1 = true := by decide +kernel
+theorem Cx460_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 2 = true := by decide +kernel
+theorem Cx460_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 3 = true := by decide +kernel
+theorem Cx460_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E460 k).length) Cx460_bd 4 = true := by decide +kernel
 
 def Cx460 : Work.Certificates.FinChainCx where
   dim := fun k => (E460 k).length
@@ -922,12 +922,12 @@ def Cx460_sdr : Work.Certificates.SDR Cx460 where
   dim_zero := fun k hk => E460_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx460_checkHomZero : Cx460_sdr.checkHomZero = true := by decide
-theorem Cx460_checkDeg0 : Cx460_sdr.checkDeg 0 = true := by decide
-theorem Cx460_checkDeg1 : Cx460_sdr.checkDeg 1 = true := by decide
-theorem Cx460_checkDeg2 : Cx460_sdr.checkDeg 2 = true := by decide
-theorem Cx460_checkDeg3 : Cx460_sdr.checkDeg 3 = true := by decide
-theorem Cx460_checkDeg4 : Cx460_sdr.checkDeg 4 = true := by decide
+theorem Cx460_checkHomZero : Cx460_sdr.checkHomZero = true := by decide +kernel
+theorem Cx460_checkDeg0 : Cx460_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx460_checkDeg1 : Cx460_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx460_checkDeg2 : Cx460_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx460_checkDeg3 : Cx460_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx460_checkDeg4 : Cx460_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx460_sdr_check : Cx460_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx460_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -968,18 +968,18 @@ theorem E461_len4 : (E461 4).length = 0 := rfl
 
 theorem E461_nil5 (k : ℕ) : E461 (k+5) = [] := rfl
 
-theorem E461_dimtop : QbarCW.dim (⟨(461 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E461_dimtop : QbarCW.dim (⟨(461 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E461_nil3 : E461 3 = [] := rfl
 theorem E461_nil4 : E461 4 = [] := rfl
 
-theorem E461_hE0 : E461 0 = dimListLe 461 0 := by decide
-theorem E461_hE1 : E461 1 = dimListLe 461 1 := by decide
-theorem E461_hE2 : E461 2 = dimListLe 461 2 := by decide
+theorem E461_hE0 : E461 0 = dimListLe 461 0 := by decide +kernel
+theorem E461_hE1 : E461 1 = dimListLe 461 1 := by decide +kernel
+theorem E461_hE2 : E461 2 = dimListLe 461 2 := by decide +kernel
 theorem E461_hE3 : E461 3 = dimListLe 461 3 := by
-  rw [E461_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E461_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E461_hE4 : E461 4 = dimListLe 461 4 := by
-  rw [E461_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E461_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E461_hE (k : ℕ) : E461 k = dimListLe 461 k := by
   match k with
@@ -1079,11 +1079,11 @@ def Cx461_bd : ∀ k, Work.Certificates.SOp ((E461 k).length) ((E461 (k+1)).leng
   | 3 => Cx461_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx461_bdEq0 : (Cx461_bd 0).eqb (bdOfEnum E461 0) = true := by decide
-theorem Cx461_bdEq1 : (Cx461_bd 1).eqb (bdOfEnum E461 1) = true := by decide
-theorem Cx461_bdEq2 : (Cx461_bd 2).eqb (bdOfEnum E461 2) = true := by decide
-theorem Cx461_bdEq3 : (Cx461_bd 3).eqb (bdOfEnum E461 3) = true := by decide
-theorem Cx461_bdEq4 : (Cx461_bd 4).eqb (bdOfEnum E461 4) = true := by decide
+theorem Cx461_bdEq0 : (Cx461_bd 0).eqb (bdOfEnum E461 0) = true := by decide +kernel
+theorem Cx461_bdEq1 : (Cx461_bd 1).eqb (bdOfEnum E461 1) = true := by decide +kernel
+theorem Cx461_bdEq2 : (Cx461_bd 2).eqb (bdOfEnum E461 2) = true := by decide +kernel
+theorem Cx461_bdEq3 : (Cx461_bd 3).eqb (bdOfEnum E461 3) = true := by decide +kernel
+theorem Cx461_bdEq4 : (Cx461_bd 4).eqb (bdOfEnum E461 4) = true := by decide +kernel
 
 theorem Cx461_bdEq (k : ℕ) (hk : k < 5) : (Cx461_bd k).eqb (bdOfEnum E461 k) = true := by
   interval_cases k
@@ -1093,11 +1093,11 @@ theorem Cx461_bdEq (k : ℕ) (hk : k < 5) : (Cx461_bd k).eqb (bdOfEnum E461 k) =
   · exact Cx461_bdEq3
   · exact Cx461_bdEq4
 
-theorem Cx461_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 0 = true := by decide
-theorem Cx461_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 1 = true := by decide
-theorem Cx461_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 2 = true := by decide
-theorem Cx461_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 3 = true := by decide
-theorem Cx461_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 4 = true := by decide
+theorem Cx461_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 0 = true := by decide +kernel
+theorem Cx461_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 1 = true := by decide +kernel
+theorem Cx461_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 2 = true := by decide +kernel
+theorem Cx461_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 3 = true := by decide +kernel
+theorem Cx461_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E461 k).length) Cx461_bd 4 = true := by decide +kernel
 
 def Cx461 : Work.Certificates.FinChainCx where
   dim := fun k => (E461 k).length
@@ -1161,12 +1161,12 @@ def Cx461_sdr : Work.Certificates.SDR Cx461 where
   dim_zero := fun k hk => E461_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx461_checkHomZero : Cx461_sdr.checkHomZero = true := by decide
-theorem Cx461_checkDeg0 : Cx461_sdr.checkDeg 0 = true := by decide
-theorem Cx461_checkDeg1 : Cx461_sdr.checkDeg 1 = true := by decide
-theorem Cx461_checkDeg2 : Cx461_sdr.checkDeg 2 = true := by decide
-theorem Cx461_checkDeg3 : Cx461_sdr.checkDeg 3 = true := by decide
-theorem Cx461_checkDeg4 : Cx461_sdr.checkDeg 4 = true := by decide
+theorem Cx461_checkHomZero : Cx461_sdr.checkHomZero = true := by decide +kernel
+theorem Cx461_checkDeg0 : Cx461_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx461_checkDeg1 : Cx461_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx461_checkDeg2 : Cx461_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx461_checkDeg3 : Cx461_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx461_checkDeg4 : Cx461_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx461_sdr_check : Cx461_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx461_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -1207,20 +1207,20 @@ theorem E462_len4 : (E462 4).length = 0 := rfl
 
 theorem E462_nil5 (k : ℕ) : E462 (k+5) = [] := rfl
 
-theorem E462_dimtop : QbarCW.dim (⟨(462 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E462_dimtop : QbarCW.dim (⟨(462 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E462_nil2 : E462 2 = [] := rfl
 theorem E462_nil3 : E462 3 = [] := rfl
 theorem E462_nil4 : E462 4 = [] := rfl
 
-theorem E462_hE0 : E462 0 = dimListLe 462 0 := by decide
-theorem E462_hE1 : E462 1 = dimListLe 462 1 := by decide
+theorem E462_hE0 : E462 0 = dimListLe 462 0 := by decide +kernel
+theorem E462_hE1 : E462 1 = dimListLe 462 1 := by decide +kernel
 theorem E462_hE2 : E462 2 = dimListLe 462 2 := by
-  rw [E462_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E462_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E462_hE3 : E462 3 = dimListLe 462 3 := by
-  rw [E462_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E462_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E462_hE4 : E462 4 = dimListLe 462 4 := by
-  rw [E462_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E462_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E462_hE (k : ℕ) : E462 k = dimListLe 462 k := by
   match k with
@@ -1314,11 +1314,11 @@ def Cx462_bd : ∀ k, Work.Certificates.SOp ((E462 k).length) ((E462 (k+1)).leng
   | 3 => Cx462_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx462_bdEq0 : (Cx462_bd 0).eqb (bdOfEnum E462 0) = true := by decide
-theorem Cx462_bdEq1 : (Cx462_bd 1).eqb (bdOfEnum E462 1) = true := by decide
-theorem Cx462_bdEq2 : (Cx462_bd 2).eqb (bdOfEnum E462 2) = true := by decide
-theorem Cx462_bdEq3 : (Cx462_bd 3).eqb (bdOfEnum E462 3) = true := by decide
-theorem Cx462_bdEq4 : (Cx462_bd 4).eqb (bdOfEnum E462 4) = true := by decide
+theorem Cx462_bdEq0 : (Cx462_bd 0).eqb (bdOfEnum E462 0) = true := by decide +kernel
+theorem Cx462_bdEq1 : (Cx462_bd 1).eqb (bdOfEnum E462 1) = true := by decide +kernel
+theorem Cx462_bdEq2 : (Cx462_bd 2).eqb (bdOfEnum E462 2) = true := by decide +kernel
+theorem Cx462_bdEq3 : (Cx462_bd 3).eqb (bdOfEnum E462 3) = true := by decide +kernel
+theorem Cx462_bdEq4 : (Cx462_bd 4).eqb (bdOfEnum E462 4) = true := by decide +kernel
 
 theorem Cx462_bdEq (k : ℕ) (hk : k < 5) : (Cx462_bd k).eqb (bdOfEnum E462 k) = true := by
   interval_cases k
@@ -1328,11 +1328,11 @@ theorem Cx462_bdEq (k : ℕ) (hk : k < 5) : (Cx462_bd k).eqb (bdOfEnum E462 k) =
   · exact Cx462_bdEq3
   · exact Cx462_bdEq4
 
-theorem Cx462_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 0 = true := by decide
-theorem Cx462_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 1 = true := by decide
-theorem Cx462_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 2 = true := by decide
-theorem Cx462_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 3 = true := by decide
-theorem Cx462_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 4 = true := by decide
+theorem Cx462_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 0 = true := by decide +kernel
+theorem Cx462_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 1 = true := by decide +kernel
+theorem Cx462_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 2 = true := by decide +kernel
+theorem Cx462_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 3 = true := by decide +kernel
+theorem Cx462_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E462 k).length) Cx462_bd 4 = true := by decide +kernel
 
 def Cx462 : Work.Certificates.FinChainCx where
   dim := fun k => (E462 k).length
@@ -1386,12 +1386,12 @@ def Cx462_sdr : Work.Certificates.SDR Cx462 where
   dim_zero := fun k hk => E462_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx462_checkHomZero : Cx462_sdr.checkHomZero = true := by decide
-theorem Cx462_checkDeg0 : Cx462_sdr.checkDeg 0 = true := by decide
-theorem Cx462_checkDeg1 : Cx462_sdr.checkDeg 1 = true := by decide
-theorem Cx462_checkDeg2 : Cx462_sdr.checkDeg 2 = true := by decide
-theorem Cx462_checkDeg3 : Cx462_sdr.checkDeg 3 = true := by decide
-theorem Cx462_checkDeg4 : Cx462_sdr.checkDeg 4 = true := by decide
+theorem Cx462_checkHomZero : Cx462_sdr.checkHomZero = true := by decide +kernel
+theorem Cx462_checkDeg0 : Cx462_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx462_checkDeg1 : Cx462_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx462_checkDeg2 : Cx462_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx462_checkDeg3 : Cx462_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx462_checkDeg4 : Cx462_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx462_sdr_check : Cx462_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx462_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -1432,20 +1432,20 @@ theorem E463_len4 : (E463 4).length = 0 := rfl
 
 theorem E463_nil5 (k : ℕ) : E463 (k+5) = [] := rfl
 
-theorem E463_dimtop : QbarCW.dim (⟨(463 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E463_dimtop : QbarCW.dim (⟨(463 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E463_nil2 : E463 2 = [] := rfl
 theorem E463_nil3 : E463 3 = [] := rfl
 theorem E463_nil4 : E463 4 = [] := rfl
 
-theorem E463_hE0 : E463 0 = dimListLe 463 0 := by decide
-theorem E463_hE1 : E463 1 = dimListLe 463 1 := by decide
+theorem E463_hE0 : E463 0 = dimListLe 463 0 := by decide +kernel
+theorem E463_hE1 : E463 1 = dimListLe 463 1 := by decide +kernel
 theorem E463_hE2 : E463 2 = dimListLe 463 2 := by
-  rw [E463_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E463_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E463_hE3 : E463 3 = dimListLe 463 3 := by
-  rw [E463_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E463_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E463_hE4 : E463 4 = dimListLe 463 4 := by
-  rw [E463_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E463_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E463_hE (k : ℕ) : E463 k = dimListLe 463 k := by
   match k with
@@ -1539,11 +1539,11 @@ def Cx463_bd : ∀ k, Work.Certificates.SOp ((E463 k).length) ((E463 (k+1)).leng
   | 3 => Cx463_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx463_bdEq0 : (Cx463_bd 0).eqb (bdOfEnum E463 0) = true := by decide
-theorem Cx463_bdEq1 : (Cx463_bd 1).eqb (bdOfEnum E463 1) = true := by decide
-theorem Cx463_bdEq2 : (Cx463_bd 2).eqb (bdOfEnum E463 2) = true := by decide
-theorem Cx463_bdEq3 : (Cx463_bd 3).eqb (bdOfEnum E463 3) = true := by decide
-theorem Cx463_bdEq4 : (Cx463_bd 4).eqb (bdOfEnum E463 4) = true := by decide
+theorem Cx463_bdEq0 : (Cx463_bd 0).eqb (bdOfEnum E463 0) = true := by decide +kernel
+theorem Cx463_bdEq1 : (Cx463_bd 1).eqb (bdOfEnum E463 1) = true := by decide +kernel
+theorem Cx463_bdEq2 : (Cx463_bd 2).eqb (bdOfEnum E463 2) = true := by decide +kernel
+theorem Cx463_bdEq3 : (Cx463_bd 3).eqb (bdOfEnum E463 3) = true := by decide +kernel
+theorem Cx463_bdEq4 : (Cx463_bd 4).eqb (bdOfEnum E463 4) = true := by decide +kernel
 
 theorem Cx463_bdEq (k : ℕ) (hk : k < 5) : (Cx463_bd k).eqb (bdOfEnum E463 k) = true := by
   interval_cases k
@@ -1553,11 +1553,11 @@ theorem Cx463_bdEq (k : ℕ) (hk : k < 5) : (Cx463_bd k).eqb (bdOfEnum E463 k) =
   · exact Cx463_bdEq3
   · exact Cx463_bdEq4
 
-theorem Cx463_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 0 = true := by decide
-theorem Cx463_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 1 = true := by decide
-theorem Cx463_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 2 = true := by decide
-theorem Cx463_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 3 = true := by decide
-theorem Cx463_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 4 = true := by decide
+theorem Cx463_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 0 = true := by decide +kernel
+theorem Cx463_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 1 = true := by decide +kernel
+theorem Cx463_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 2 = true := by decide +kernel
+theorem Cx463_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 3 = true := by decide +kernel
+theorem Cx463_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E463 k).length) Cx463_bd 4 = true := by decide +kernel
 
 def Cx463 : Work.Certificates.FinChainCx where
   dim := fun k => (E463 k).length
@@ -1611,12 +1611,12 @@ def Cx463_sdr : Work.Certificates.SDR Cx463 where
   dim_zero := fun k hk => E463_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx463_checkHomZero : Cx463_sdr.checkHomZero = true := by decide
-theorem Cx463_checkDeg0 : Cx463_sdr.checkDeg 0 = true := by decide
-theorem Cx463_checkDeg1 : Cx463_sdr.checkDeg 1 = true := by decide
-theorem Cx463_checkDeg2 : Cx463_sdr.checkDeg 2 = true := by decide
-theorem Cx463_checkDeg3 : Cx463_sdr.checkDeg 3 = true := by decide
-theorem Cx463_checkDeg4 : Cx463_sdr.checkDeg 4 = true := by decide
+theorem Cx463_checkHomZero : Cx463_sdr.checkHomZero = true := by decide +kernel
+theorem Cx463_checkDeg0 : Cx463_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx463_checkDeg1 : Cx463_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx463_checkDeg2 : Cx463_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx463_checkDeg3 : Cx463_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx463_checkDeg4 : Cx463_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx463_sdr_check : Cx463_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx463_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -1657,20 +1657,20 @@ theorem E464_len4 : (E464 4).length = 0 := rfl
 
 theorem E464_nil5 (k : ℕ) : E464 (k+5) = [] := rfl
 
-theorem E464_dimtop : QbarCW.dim (⟨(464 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E464_dimtop : QbarCW.dim (⟨(464 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E464_nil2 : E464 2 = [] := rfl
 theorem E464_nil3 : E464 3 = [] := rfl
 theorem E464_nil4 : E464 4 = [] := rfl
 
-theorem E464_hE0 : E464 0 = dimListLe 464 0 := by decide
-theorem E464_hE1 : E464 1 = dimListLe 464 1 := by decide
+theorem E464_hE0 : E464 0 = dimListLe 464 0 := by decide +kernel
+theorem E464_hE1 : E464 1 = dimListLe 464 1 := by decide +kernel
 theorem E464_hE2 : E464 2 = dimListLe 464 2 := by
-  rw [E464_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E464_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E464_hE3 : E464 3 = dimListLe 464 3 := by
-  rw [E464_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E464_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E464_hE4 : E464 4 = dimListLe 464 4 := by
-  rw [E464_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E464_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E464_hE (k : ℕ) : E464 k = dimListLe 464 k := by
   match k with
@@ -1764,11 +1764,11 @@ def Cx464_bd : ∀ k, Work.Certificates.SOp ((E464 k).length) ((E464 (k+1)).leng
   | 3 => Cx464_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx464_bdEq0 : (Cx464_bd 0).eqb (bdOfEnum E464 0) = true := by decide
-theorem Cx464_bdEq1 : (Cx464_bd 1).eqb (bdOfEnum E464 1) = true := by decide
-theorem Cx464_bdEq2 : (Cx464_bd 2).eqb (bdOfEnum E464 2) = true := by decide
-theorem Cx464_bdEq3 : (Cx464_bd 3).eqb (bdOfEnum E464 3) = true := by decide
-theorem Cx464_bdEq4 : (Cx464_bd 4).eqb (bdOfEnum E464 4) = true := by decide
+theorem Cx464_bdEq0 : (Cx464_bd 0).eqb (bdOfEnum E464 0) = true := by decide +kernel
+theorem Cx464_bdEq1 : (Cx464_bd 1).eqb (bdOfEnum E464 1) = true := by decide +kernel
+theorem Cx464_bdEq2 : (Cx464_bd 2).eqb (bdOfEnum E464 2) = true := by decide +kernel
+theorem Cx464_bdEq3 : (Cx464_bd 3).eqb (bdOfEnum E464 3) = true := by decide +kernel
+theorem Cx464_bdEq4 : (Cx464_bd 4).eqb (bdOfEnum E464 4) = true := by decide +kernel
 
 theorem Cx464_bdEq (k : ℕ) (hk : k < 5) : (Cx464_bd k).eqb (bdOfEnum E464 k) = true := by
   interval_cases k
@@ -1778,11 +1778,11 @@ theorem Cx464_bdEq (k : ℕ) (hk : k < 5) : (Cx464_bd k).eqb (bdOfEnum E464 k) =
   · exact Cx464_bdEq3
   · exact Cx464_bdEq4
 
-theorem Cx464_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 0 = true := by decide
-theorem Cx464_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 1 = true := by decide
-theorem Cx464_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 2 = true := by decide
-theorem Cx464_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 3 = true := by decide
-theorem Cx464_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 4 = true := by decide
+theorem Cx464_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 0 = true := by decide +kernel
+theorem Cx464_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 1 = true := by decide +kernel
+theorem Cx464_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 2 = true := by decide +kernel
+theorem Cx464_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 3 = true := by decide +kernel
+theorem Cx464_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E464 k).length) Cx464_bd 4 = true := by decide +kernel
 
 def Cx464 : Work.Certificates.FinChainCx where
   dim := fun k => (E464 k).length
@@ -1836,12 +1836,12 @@ def Cx464_sdr : Work.Certificates.SDR Cx464 where
   dim_zero := fun k hk => E464_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx464_checkHomZero : Cx464_sdr.checkHomZero = true := by decide
-theorem Cx464_checkDeg0 : Cx464_sdr.checkDeg 0 = true := by decide
-theorem Cx464_checkDeg1 : Cx464_sdr.checkDeg 1 = true := by decide
-theorem Cx464_checkDeg2 : Cx464_sdr.checkDeg 2 = true := by decide
-theorem Cx464_checkDeg3 : Cx464_sdr.checkDeg 3 = true := by decide
-theorem Cx464_checkDeg4 : Cx464_sdr.checkDeg 4 = true := by decide
+theorem Cx464_checkHomZero : Cx464_sdr.checkHomZero = true := by decide +kernel
+theorem Cx464_checkDeg0 : Cx464_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx464_checkDeg1 : Cx464_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx464_checkDeg2 : Cx464_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx464_checkDeg3 : Cx464_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx464_checkDeg4 : Cx464_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx464_sdr_check : Cx464_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx464_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -1882,18 +1882,18 @@ theorem E465_len4 : (E465 4).length = 0 := rfl
 
 theorem E465_nil5 (k : ℕ) : E465 (k+5) = [] := rfl
 
-theorem E465_dimtop : QbarCW.dim (⟨(465 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E465_dimtop : QbarCW.dim (⟨(465 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E465_nil3 : E465 3 = [] := rfl
 theorem E465_nil4 : E465 4 = [] := rfl
 
-theorem E465_hE0 : E465 0 = dimListLe 465 0 := by decide
-theorem E465_hE1 : E465 1 = dimListLe 465 1 := by decide
-theorem E465_hE2 : E465 2 = dimListLe 465 2 := by decide
+theorem E465_hE0 : E465 0 = dimListLe 465 0 := by decide +kernel
+theorem E465_hE1 : E465 1 = dimListLe 465 1 := by decide +kernel
+theorem E465_hE2 : E465 2 = dimListLe 465 2 := by decide +kernel
 theorem E465_hE3 : E465 3 = dimListLe 465 3 := by
-  rw [E465_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E465_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E465_hE4 : E465 4 = dimListLe 465 4 := by
-  rw [E465_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E465_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E465_hE (k : ℕ) : E465 k = dimListLe 465 k := by
   match k with
@@ -1993,11 +1993,11 @@ def Cx465_bd : ∀ k, Work.Certificates.SOp ((E465 k).length) ((E465 (k+1)).leng
   | 3 => Cx465_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx465_bdEq0 : (Cx465_bd 0).eqb (bdOfEnum E465 0) = true := by decide
-theorem Cx465_bdEq1 : (Cx465_bd 1).eqb (bdOfEnum E465 1) = true := by decide
-theorem Cx465_bdEq2 : (Cx465_bd 2).eqb (bdOfEnum E465 2) = true := by decide
-theorem Cx465_bdEq3 : (Cx465_bd 3).eqb (bdOfEnum E465 3) = true := by decide
-theorem Cx465_bdEq4 : (Cx465_bd 4).eqb (bdOfEnum E465 4) = true := by decide
+theorem Cx465_bdEq0 : (Cx465_bd 0).eqb (bdOfEnum E465 0) = true := by decide +kernel
+theorem Cx465_bdEq1 : (Cx465_bd 1).eqb (bdOfEnum E465 1) = true := by decide +kernel
+theorem Cx465_bdEq2 : (Cx465_bd 2).eqb (bdOfEnum E465 2) = true := by decide +kernel
+theorem Cx465_bdEq3 : (Cx465_bd 3).eqb (bdOfEnum E465 3) = true := by decide +kernel
+theorem Cx465_bdEq4 : (Cx465_bd 4).eqb (bdOfEnum E465 4) = true := by decide +kernel
 
 theorem Cx465_bdEq (k : ℕ) (hk : k < 5) : (Cx465_bd k).eqb (bdOfEnum E465 k) = true := by
   interval_cases k
@@ -2007,11 +2007,11 @@ theorem Cx465_bdEq (k : ℕ) (hk : k < 5) : (Cx465_bd k).eqb (bdOfEnum E465 k) =
   · exact Cx465_bdEq3
   · exact Cx465_bdEq4
 
-theorem Cx465_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 0 = true := by decide
-theorem Cx465_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 1 = true := by decide
-theorem Cx465_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 2 = true := by decide
-theorem Cx465_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 3 = true := by decide
-theorem Cx465_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 4 = true := by decide
+theorem Cx465_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 0 = true := by decide +kernel
+theorem Cx465_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 1 = true := by decide +kernel
+theorem Cx465_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 2 = true := by decide +kernel
+theorem Cx465_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 3 = true := by decide +kernel
+theorem Cx465_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E465 k).length) Cx465_bd 4 = true := by decide +kernel
 
 def Cx465 : Work.Certificates.FinChainCx where
   dim := fun k => (E465 k).length
@@ -2075,12 +2075,12 @@ def Cx465_sdr : Work.Certificates.SDR Cx465 where
   dim_zero := fun k hk => E465_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx465_checkHomZero : Cx465_sdr.checkHomZero = true := by decide
-theorem Cx465_checkDeg0 : Cx465_sdr.checkDeg 0 = true := by decide
-theorem Cx465_checkDeg1 : Cx465_sdr.checkDeg 1 = true := by decide
-theorem Cx465_checkDeg2 : Cx465_sdr.checkDeg 2 = true := by decide
-theorem Cx465_checkDeg3 : Cx465_sdr.checkDeg 3 = true := by decide
-theorem Cx465_checkDeg4 : Cx465_sdr.checkDeg 4 = true := by decide
+theorem Cx465_checkHomZero : Cx465_sdr.checkHomZero = true := by decide +kernel
+theorem Cx465_checkDeg0 : Cx465_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx465_checkDeg1 : Cx465_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx465_checkDeg2 : Cx465_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx465_checkDeg3 : Cx465_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx465_checkDeg4 : Cx465_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx465_sdr_check : Cx465_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx465_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -2121,20 +2121,20 @@ theorem E466_len4 : (E466 4).length = 0 := rfl
 
 theorem E466_nil5 (k : ℕ) : E466 (k+5) = [] := rfl
 
-theorem E466_dimtop : QbarCW.dim (⟨(466 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E466_dimtop : QbarCW.dim (⟨(466 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E466_nil2 : E466 2 = [] := rfl
 theorem E466_nil3 : E466 3 = [] := rfl
 theorem E466_nil4 : E466 4 = [] := rfl
 
-theorem E466_hE0 : E466 0 = dimListLe 466 0 := by decide
-theorem E466_hE1 : E466 1 = dimListLe 466 1 := by decide
+theorem E466_hE0 : E466 0 = dimListLe 466 0 := by decide +kernel
+theorem E466_hE1 : E466 1 = dimListLe 466 1 := by decide +kernel
 theorem E466_hE2 : E466 2 = dimListLe 466 2 := by
-  rw [E466_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E466_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E466_hE3 : E466 3 = dimListLe 466 3 := by
-  rw [E466_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E466_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E466_hE4 : E466 4 = dimListLe 466 4 := by
-  rw [E466_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E466_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E466_hE (k : ℕ) : E466 k = dimListLe 466 k := by
   match k with
@@ -2228,11 +2228,11 @@ def Cx466_bd : ∀ k, Work.Certificates.SOp ((E466 k).length) ((E466 (k+1)).leng
   | 3 => Cx466_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx466_bdEq0 : (Cx466_bd 0).eqb (bdOfEnum E466 0) = true := by decide
-theorem Cx466_bdEq1 : (Cx466_bd 1).eqb (bdOfEnum E466 1) = true := by decide
-theorem Cx466_bdEq2 : (Cx466_bd 2).eqb (bdOfEnum E466 2) = true := by decide
-theorem Cx466_bdEq3 : (Cx466_bd 3).eqb (bdOfEnum E466 3) = true := by decide
-theorem Cx466_bdEq4 : (Cx466_bd 4).eqb (bdOfEnum E466 4) = true := by decide
+theorem Cx466_bdEq0 : (Cx466_bd 0).eqb (bdOfEnum E466 0) = true := by decide +kernel
+theorem Cx466_bdEq1 : (Cx466_bd 1).eqb (bdOfEnum E466 1) = true := by decide +kernel
+theorem Cx466_bdEq2 : (Cx466_bd 2).eqb (bdOfEnum E466 2) = true := by decide +kernel
+theorem Cx466_bdEq3 : (Cx466_bd 3).eqb (bdOfEnum E466 3) = true := by decide +kernel
+theorem Cx466_bdEq4 : (Cx466_bd 4).eqb (bdOfEnum E466 4) = true := by decide +kernel
 
 theorem Cx466_bdEq (k : ℕ) (hk : k < 5) : (Cx466_bd k).eqb (bdOfEnum E466 k) = true := by
   interval_cases k
@@ -2242,11 +2242,11 @@ theorem Cx466_bdEq (k : ℕ) (hk : k < 5) : (Cx466_bd k).eqb (bdOfEnum E466 k) =
   · exact Cx466_bdEq3
   · exact Cx466_bdEq4
 
-theorem Cx466_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 0 = true := by decide
-theorem Cx466_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 1 = true := by decide
-theorem Cx466_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 2 = true := by decide
-theorem Cx466_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 3 = true := by decide
-theorem Cx466_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 4 = true := by decide
+theorem Cx466_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 0 = true := by decide +kernel
+theorem Cx466_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 1 = true := by decide +kernel
+theorem Cx466_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 2 = true := by decide +kernel
+theorem Cx466_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 3 = true := by decide +kernel
+theorem Cx466_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E466 k).length) Cx466_bd 4 = true := by decide +kernel
 
 def Cx466 : Work.Certificates.FinChainCx where
   dim := fun k => (E466 k).length
@@ -2300,12 +2300,12 @@ def Cx466_sdr : Work.Certificates.SDR Cx466 where
   dim_zero := fun k hk => E466_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx466_checkHomZero : Cx466_sdr.checkHomZero = true := by decide
-theorem Cx466_checkDeg0 : Cx466_sdr.checkDeg 0 = true := by decide
-theorem Cx466_checkDeg1 : Cx466_sdr.checkDeg 1 = true := by decide
-theorem Cx466_checkDeg2 : Cx466_sdr.checkDeg 2 = true := by decide
-theorem Cx466_checkDeg3 : Cx466_sdr.checkDeg 3 = true := by decide
-theorem Cx466_checkDeg4 : Cx466_sdr.checkDeg 4 = true := by decide
+theorem Cx466_checkHomZero : Cx466_sdr.checkHomZero = true := by decide +kernel
+theorem Cx466_checkDeg0 : Cx466_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx466_checkDeg1 : Cx466_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx466_checkDeg2 : Cx466_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx466_checkDeg3 : Cx466_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx466_checkDeg4 : Cx466_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx466_sdr_check : Cx466_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx466_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -2346,20 +2346,20 @@ theorem E467_len4 : (E467 4).length = 0 := rfl
 
 theorem E467_nil5 (k : ℕ) : E467 (k+5) = [] := rfl
 
-theorem E467_dimtop : QbarCW.dim (⟨(467 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E467_dimtop : QbarCW.dim (⟨(467 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E467_nil2 : E467 2 = [] := rfl
 theorem E467_nil3 : E467 3 = [] := rfl
 theorem E467_nil4 : E467 4 = [] := rfl
 
-theorem E467_hE0 : E467 0 = dimListLe 467 0 := by decide
-theorem E467_hE1 : E467 1 = dimListLe 467 1 := by decide
+theorem E467_hE0 : E467 0 = dimListLe 467 0 := by decide +kernel
+theorem E467_hE1 : E467 1 = dimListLe 467 1 := by decide +kernel
 theorem E467_hE2 : E467 2 = dimListLe 467 2 := by
-  rw [E467_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E467_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E467_hE3 : E467 3 = dimListLe 467 3 := by
-  rw [E467_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E467_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E467_hE4 : E467 4 = dimListLe 467 4 := by
-  rw [E467_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E467_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E467_hE (k : ℕ) : E467 k = dimListLe 467 k := by
   match k with
@@ -2453,11 +2453,11 @@ def Cx467_bd : ∀ k, Work.Certificates.SOp ((E467 k).length) ((E467 (k+1)).leng
   | 3 => Cx467_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx467_bdEq0 : (Cx467_bd 0).eqb (bdOfEnum E467 0) = true := by decide
-theorem Cx467_bdEq1 : (Cx467_bd 1).eqb (bdOfEnum E467 1) = true := by decide
-theorem Cx467_bdEq2 : (Cx467_bd 2).eqb (bdOfEnum E467 2) = true := by decide
-theorem Cx467_bdEq3 : (Cx467_bd 3).eqb (bdOfEnum E467 3) = true := by decide
-theorem Cx467_bdEq4 : (Cx467_bd 4).eqb (bdOfEnum E467 4) = true := by decide
+theorem Cx467_bdEq0 : (Cx467_bd 0).eqb (bdOfEnum E467 0) = true := by decide +kernel
+theorem Cx467_bdEq1 : (Cx467_bd 1).eqb (bdOfEnum E467 1) = true := by decide +kernel
+theorem Cx467_bdEq2 : (Cx467_bd 2).eqb (bdOfEnum E467 2) = true := by decide +kernel
+theorem Cx467_bdEq3 : (Cx467_bd 3).eqb (bdOfEnum E467 3) = true := by decide +kernel
+theorem Cx467_bdEq4 : (Cx467_bd 4).eqb (bdOfEnum E467 4) = true := by decide +kernel
 
 theorem Cx467_bdEq (k : ℕ) (hk : k < 5) : (Cx467_bd k).eqb (bdOfEnum E467 k) = true := by
   interval_cases k
@@ -2467,11 +2467,11 @@ theorem Cx467_bdEq (k : ℕ) (hk : k < 5) : (Cx467_bd k).eqb (bdOfEnum E467 k) =
   · exact Cx467_bdEq3
   · exact Cx467_bdEq4
 
-theorem Cx467_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 0 = true := by decide
-theorem Cx467_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 1 = true := by decide
-theorem Cx467_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 2 = true := by decide
-theorem Cx467_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 3 = true := by decide
-theorem Cx467_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 4 = true := by decide
+theorem Cx467_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 0 = true := by decide +kernel
+theorem Cx467_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 1 = true := by decide +kernel
+theorem Cx467_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 2 = true := by decide +kernel
+theorem Cx467_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 3 = true := by decide +kernel
+theorem Cx467_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E467 k).length) Cx467_bd 4 = true := by decide +kernel
 
 def Cx467 : Work.Certificates.FinChainCx where
   dim := fun k => (E467 k).length
@@ -2525,12 +2525,12 @@ def Cx467_sdr : Work.Certificates.SDR Cx467 where
   dim_zero := fun k hk => E467_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx467_checkHomZero : Cx467_sdr.checkHomZero = true := by decide
-theorem Cx467_checkDeg0 : Cx467_sdr.checkDeg 0 = true := by decide
-theorem Cx467_checkDeg1 : Cx467_sdr.checkDeg 1 = true := by decide
-theorem Cx467_checkDeg2 : Cx467_sdr.checkDeg 2 = true := by decide
-theorem Cx467_checkDeg3 : Cx467_sdr.checkDeg 3 = true := by decide
-theorem Cx467_checkDeg4 : Cx467_sdr.checkDeg 4 = true := by decide
+theorem Cx467_checkHomZero : Cx467_sdr.checkHomZero = true := by decide +kernel
+theorem Cx467_checkDeg0 : Cx467_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx467_checkDeg1 : Cx467_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx467_checkDeg2 : Cx467_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx467_checkDeg3 : Cx467_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx467_checkDeg4 : Cx467_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx467_sdr_check : Cx467_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx467_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -2571,20 +2571,20 @@ theorem E468_len4 : (E468 4).length = 0 := rfl
 
 theorem E468_nil5 (k : ℕ) : E468 (k+5) = [] := rfl
 
-theorem E468_dimtop : QbarCW.dim (⟨(468 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E468_dimtop : QbarCW.dim (⟨(468 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E468_nil2 : E468 2 = [] := rfl
 theorem E468_nil3 : E468 3 = [] := rfl
 theorem E468_nil4 : E468 4 = [] := rfl
 
-theorem E468_hE0 : E468 0 = dimListLe 468 0 := by decide
-theorem E468_hE1 : E468 1 = dimListLe 468 1 := by decide
+theorem E468_hE0 : E468 0 = dimListLe 468 0 := by decide +kernel
+theorem E468_hE1 : E468 1 = dimListLe 468 1 := by decide +kernel
 theorem E468_hE2 : E468 2 = dimListLe 468 2 := by
-  rw [E468_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E468_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E468_hE3 : E468 3 = dimListLe 468 3 := by
-  rw [E468_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E468_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E468_hE4 : E468 4 = dimListLe 468 4 := by
-  rw [E468_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E468_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E468_hE (k : ℕ) : E468 k = dimListLe 468 k := by
   match k with
@@ -2678,11 +2678,11 @@ def Cx468_bd : ∀ k, Work.Certificates.SOp ((E468 k).length) ((E468 (k+1)).leng
   | 3 => Cx468_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx468_bdEq0 : (Cx468_bd 0).eqb (bdOfEnum E468 0) = true := by decide
-theorem Cx468_bdEq1 : (Cx468_bd 1).eqb (bdOfEnum E468 1) = true := by decide
-theorem Cx468_bdEq2 : (Cx468_bd 2).eqb (bdOfEnum E468 2) = true := by decide
-theorem Cx468_bdEq3 : (Cx468_bd 3).eqb (bdOfEnum E468 3) = true := by decide
-theorem Cx468_bdEq4 : (Cx468_bd 4).eqb (bdOfEnum E468 4) = true := by decide
+theorem Cx468_bdEq0 : (Cx468_bd 0).eqb (bdOfEnum E468 0) = true := by decide +kernel
+theorem Cx468_bdEq1 : (Cx468_bd 1).eqb (bdOfEnum E468 1) = true := by decide +kernel
+theorem Cx468_bdEq2 : (Cx468_bd 2).eqb (bdOfEnum E468 2) = true := by decide +kernel
+theorem Cx468_bdEq3 : (Cx468_bd 3).eqb (bdOfEnum E468 3) = true := by decide +kernel
+theorem Cx468_bdEq4 : (Cx468_bd 4).eqb (bdOfEnum E468 4) = true := by decide +kernel
 
 theorem Cx468_bdEq (k : ℕ) (hk : k < 5) : (Cx468_bd k).eqb (bdOfEnum E468 k) = true := by
   interval_cases k
@@ -2692,11 +2692,11 @@ theorem Cx468_bdEq (k : ℕ) (hk : k < 5) : (Cx468_bd k).eqb (bdOfEnum E468 k) =
   · exact Cx468_bdEq3
   · exact Cx468_bdEq4
 
-theorem Cx468_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 0 = true := by decide
-theorem Cx468_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 1 = true := by decide
-theorem Cx468_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 2 = true := by decide
-theorem Cx468_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 3 = true := by decide
-theorem Cx468_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 4 = true := by decide
+theorem Cx468_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 0 = true := by decide +kernel
+theorem Cx468_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 1 = true := by decide +kernel
+theorem Cx468_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 2 = true := by decide +kernel
+theorem Cx468_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 3 = true := by decide +kernel
+theorem Cx468_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E468 k).length) Cx468_bd 4 = true := by decide +kernel
 
 def Cx468 : Work.Certificates.FinChainCx where
   dim := fun k => (E468 k).length
@@ -2750,12 +2750,12 @@ def Cx468_sdr : Work.Certificates.SDR Cx468 where
   dim_zero := fun k hk => E468_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx468_checkHomZero : Cx468_sdr.checkHomZero = true := by decide
-theorem Cx468_checkDeg0 : Cx468_sdr.checkDeg 0 = true := by decide
-theorem Cx468_checkDeg1 : Cx468_sdr.checkDeg 1 = true := by decide
-theorem Cx468_checkDeg2 : Cx468_sdr.checkDeg 2 = true := by decide
-theorem Cx468_checkDeg3 : Cx468_sdr.checkDeg 3 = true := by decide
-theorem Cx468_checkDeg4 : Cx468_sdr.checkDeg 4 = true := by decide
+theorem Cx468_checkHomZero : Cx468_sdr.checkHomZero = true := by decide +kernel
+theorem Cx468_checkDeg0 : Cx468_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx468_checkDeg1 : Cx468_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx468_checkDeg2 : Cx468_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx468_checkDeg3 : Cx468_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx468_checkDeg4 : Cx468_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx468_sdr_check : Cx468_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx468_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -2796,18 +2796,18 @@ theorem E469_len4 : (E469 4).length = 0 := rfl
 
 theorem E469_nil5 (k : ℕ) : E469 (k+5) = [] := rfl
 
-theorem E469_dimtop : QbarCW.dim (⟨(469 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E469_dimtop : QbarCW.dim (⟨(469 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E469_nil3 : E469 3 = [] := rfl
 theorem E469_nil4 : E469 4 = [] := rfl
 
-theorem E469_hE0 : E469 0 = dimListLe 469 0 := by decide
-theorem E469_hE1 : E469 1 = dimListLe 469 1 := by decide
-theorem E469_hE2 : E469 2 = dimListLe 469 2 := by decide
+theorem E469_hE0 : E469 0 = dimListLe 469 0 := by decide +kernel
+theorem E469_hE1 : E469 1 = dimListLe 469 1 := by decide +kernel
+theorem E469_hE2 : E469 2 = dimListLe 469 2 := by decide +kernel
 theorem E469_hE3 : E469 3 = dimListLe 469 3 := by
-  rw [E469_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E469_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E469_hE4 : E469 4 = dimListLe 469 4 := by
-  rw [E469_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E469_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E469_hE (k : ℕ) : E469 k = dimListLe 469 k := by
   match k with
@@ -2907,11 +2907,11 @@ def Cx469_bd : ∀ k, Work.Certificates.SOp ((E469 k).length) ((E469 (k+1)).leng
   | 3 => Cx469_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx469_bdEq0 : (Cx469_bd 0).eqb (bdOfEnum E469 0) = true := by decide
-theorem Cx469_bdEq1 : (Cx469_bd 1).eqb (bdOfEnum E469 1) = true := by decide
-theorem Cx469_bdEq2 : (Cx469_bd 2).eqb (bdOfEnum E469 2) = true := by decide
-theorem Cx469_bdEq3 : (Cx469_bd 3).eqb (bdOfEnum E469 3) = true := by decide
-theorem Cx469_bdEq4 : (Cx469_bd 4).eqb (bdOfEnum E469 4) = true := by decide
+theorem Cx469_bdEq0 : (Cx469_bd 0).eqb (bdOfEnum E469 0) = true := by decide +kernel
+theorem Cx469_bdEq1 : (Cx469_bd 1).eqb (bdOfEnum E469 1) = true := by decide +kernel
+theorem Cx469_bdEq2 : (Cx469_bd 2).eqb (bdOfEnum E469 2) = true := by decide +kernel
+theorem Cx469_bdEq3 : (Cx469_bd 3).eqb (bdOfEnum E469 3) = true := by decide +kernel
+theorem Cx469_bdEq4 : (Cx469_bd 4).eqb (bdOfEnum E469 4) = true := by decide +kernel
 
 theorem Cx469_bdEq (k : ℕ) (hk : k < 5) : (Cx469_bd k).eqb (bdOfEnum E469 k) = true := by
   interval_cases k
@@ -2921,11 +2921,11 @@ theorem Cx469_bdEq (k : ℕ) (hk : k < 5) : (Cx469_bd k).eqb (bdOfEnum E469 k) =
   · exact Cx469_bdEq3
   · exact Cx469_bdEq4
 
-theorem Cx469_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 0 = true := by decide
-theorem Cx469_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 1 = true := by decide
-theorem Cx469_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 2 = true := by decide
-theorem Cx469_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 3 = true := by decide
-theorem Cx469_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 4 = true := by decide
+theorem Cx469_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 0 = true := by decide +kernel
+theorem Cx469_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 1 = true := by decide +kernel
+theorem Cx469_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 2 = true := by decide +kernel
+theorem Cx469_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 3 = true := by decide +kernel
+theorem Cx469_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E469 k).length) Cx469_bd 4 = true := by decide +kernel
 
 def Cx469 : Work.Certificates.FinChainCx where
   dim := fun k => (E469 k).length
@@ -2989,12 +2989,12 @@ def Cx469_sdr : Work.Certificates.SDR Cx469 where
   dim_zero := fun k hk => E469_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx469_checkHomZero : Cx469_sdr.checkHomZero = true := by decide
-theorem Cx469_checkDeg0 : Cx469_sdr.checkDeg 0 = true := by decide
-theorem Cx469_checkDeg1 : Cx469_sdr.checkDeg 1 = true := by decide
-theorem Cx469_checkDeg2 : Cx469_sdr.checkDeg 2 = true := by decide
-theorem Cx469_checkDeg3 : Cx469_sdr.checkDeg 3 = true := by decide
-theorem Cx469_checkDeg4 : Cx469_sdr.checkDeg 4 = true := by decide
+theorem Cx469_checkHomZero : Cx469_sdr.checkHomZero = true := by decide +kernel
+theorem Cx469_checkDeg0 : Cx469_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx469_checkDeg1 : Cx469_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx469_checkDeg2 : Cx469_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx469_checkDeg3 : Cx469_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx469_checkDeg4 : Cx469_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx469_sdr_check : Cx469_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx469_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -3035,20 +3035,20 @@ theorem E470_len4 : (E470 4).length = 0 := rfl
 
 theorem E470_nil5 (k : ℕ) : E470 (k+5) = [] := rfl
 
-theorem E470_dimtop : QbarCW.dim (⟨(470 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E470_dimtop : QbarCW.dim (⟨(470 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E470_nil2 : E470 2 = [] := rfl
 theorem E470_nil3 : E470 3 = [] := rfl
 theorem E470_nil4 : E470 4 = [] := rfl
 
-theorem E470_hE0 : E470 0 = dimListLe 470 0 := by decide
-theorem E470_hE1 : E470 1 = dimListLe 470 1 := by decide
+theorem E470_hE0 : E470 0 = dimListLe 470 0 := by decide +kernel
+theorem E470_hE1 : E470 1 = dimListLe 470 1 := by decide +kernel
 theorem E470_hE2 : E470 2 = dimListLe 470 2 := by
-  rw [E470_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E470_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E470_hE3 : E470 3 = dimListLe 470 3 := by
-  rw [E470_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E470_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E470_hE4 : E470 4 = dimListLe 470 4 := by
-  rw [E470_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E470_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E470_hE (k : ℕ) : E470 k = dimListLe 470 k := by
   match k with
@@ -3142,11 +3142,11 @@ def Cx470_bd : ∀ k, Work.Certificates.SOp ((E470 k).length) ((E470 (k+1)).leng
   | 3 => Cx470_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx470_bdEq0 : (Cx470_bd 0).eqb (bdOfEnum E470 0) = true := by decide
-theorem Cx470_bdEq1 : (Cx470_bd 1).eqb (bdOfEnum E470 1) = true := by decide
-theorem Cx470_bdEq2 : (Cx470_bd 2).eqb (bdOfEnum E470 2) = true := by decide
-theorem Cx470_bdEq3 : (Cx470_bd 3).eqb (bdOfEnum E470 3) = true := by decide
-theorem Cx470_bdEq4 : (Cx470_bd 4).eqb (bdOfEnum E470 4) = true := by decide
+theorem Cx470_bdEq0 : (Cx470_bd 0).eqb (bdOfEnum E470 0) = true := by decide +kernel
+theorem Cx470_bdEq1 : (Cx470_bd 1).eqb (bdOfEnum E470 1) = true := by decide +kernel
+theorem Cx470_bdEq2 : (Cx470_bd 2).eqb (bdOfEnum E470 2) = true := by decide +kernel
+theorem Cx470_bdEq3 : (Cx470_bd 3).eqb (bdOfEnum E470 3) = true := by decide +kernel
+theorem Cx470_bdEq4 : (Cx470_bd 4).eqb (bdOfEnum E470 4) = true := by decide +kernel
 
 theorem Cx470_bdEq (k : ℕ) (hk : k < 5) : (Cx470_bd k).eqb (bdOfEnum E470 k) = true := by
   interval_cases k
@@ -3156,11 +3156,11 @@ theorem Cx470_bdEq (k : ℕ) (hk : k < 5) : (Cx470_bd k).eqb (bdOfEnum E470 k) =
   · exact Cx470_bdEq3
   · exact Cx470_bdEq4
 
-theorem Cx470_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 0 = true := by decide
-theorem Cx470_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 1 = true := by decide
-theorem Cx470_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 2 = true := by decide
-theorem Cx470_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 3 = true := by decide
-theorem Cx470_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 4 = true := by decide
+theorem Cx470_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 0 = true := by decide +kernel
+theorem Cx470_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 1 = true := by decide +kernel
+theorem Cx470_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 2 = true := by decide +kernel
+theorem Cx470_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 3 = true := by decide +kernel
+theorem Cx470_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E470 k).length) Cx470_bd 4 = true := by decide +kernel
 
 def Cx470 : Work.Certificates.FinChainCx where
   dim := fun k => (E470 k).length
@@ -3214,12 +3214,12 @@ def Cx470_sdr : Work.Certificates.SDR Cx470 where
   dim_zero := fun k hk => E470_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx470_checkHomZero : Cx470_sdr.checkHomZero = true := by decide
-theorem Cx470_checkDeg0 : Cx470_sdr.checkDeg 0 = true := by decide
-theorem Cx470_checkDeg1 : Cx470_sdr.checkDeg 1 = true := by decide
-theorem Cx470_checkDeg2 : Cx470_sdr.checkDeg 2 = true := by decide
-theorem Cx470_checkDeg3 : Cx470_sdr.checkDeg 3 = true := by decide
-theorem Cx470_checkDeg4 : Cx470_sdr.checkDeg 4 = true := by decide
+theorem Cx470_checkHomZero : Cx470_sdr.checkHomZero = true := by decide +kernel
+theorem Cx470_checkDeg0 : Cx470_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx470_checkDeg1 : Cx470_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx470_checkDeg2 : Cx470_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx470_checkDeg3 : Cx470_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx470_checkDeg4 : Cx470_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx470_sdr_check : Cx470_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx470_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -3260,20 +3260,20 @@ theorem E471_len4 : (E471 4).length = 0 := rfl
 
 theorem E471_nil5 (k : ℕ) : E471 (k+5) = [] := rfl
 
-theorem E471_dimtop : QbarCW.dim (⟨(471 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E471_dimtop : QbarCW.dim (⟨(471 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E471_nil2 : E471 2 = [] := rfl
 theorem E471_nil3 : E471 3 = [] := rfl
 theorem E471_nil4 : E471 4 = [] := rfl
 
-theorem E471_hE0 : E471 0 = dimListLe 471 0 := by decide
-theorem E471_hE1 : E471 1 = dimListLe 471 1 := by decide
+theorem E471_hE0 : E471 0 = dimListLe 471 0 := by decide +kernel
+theorem E471_hE1 : E471 1 = dimListLe 471 1 := by decide +kernel
 theorem E471_hE2 : E471 2 = dimListLe 471 2 := by
-  rw [E471_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E471_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E471_hE3 : E471 3 = dimListLe 471 3 := by
-  rw [E471_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E471_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E471_hE4 : E471 4 = dimListLe 471 4 := by
-  rw [E471_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E471_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E471_hE (k : ℕ) : E471 k = dimListLe 471 k := by
   match k with
@@ -3367,11 +3367,11 @@ def Cx471_bd : ∀ k, Work.Certificates.SOp ((E471 k).length) ((E471 (k+1)).leng
   | 3 => Cx471_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx471_bdEq0 : (Cx471_bd 0).eqb (bdOfEnum E471 0) = true := by decide
-theorem Cx471_bdEq1 : (Cx471_bd 1).eqb (bdOfEnum E471 1) = true := by decide
-theorem Cx471_bdEq2 : (Cx471_bd 2).eqb (bdOfEnum E471 2) = true := by decide
-theorem Cx471_bdEq3 : (Cx471_bd 3).eqb (bdOfEnum E471 3) = true := by decide
-theorem Cx471_bdEq4 : (Cx471_bd 4).eqb (bdOfEnum E471 4) = true := by decide
+theorem Cx471_bdEq0 : (Cx471_bd 0).eqb (bdOfEnum E471 0) = true := by decide +kernel
+theorem Cx471_bdEq1 : (Cx471_bd 1).eqb (bdOfEnum E471 1) = true := by decide +kernel
+theorem Cx471_bdEq2 : (Cx471_bd 2).eqb (bdOfEnum E471 2) = true := by decide +kernel
+theorem Cx471_bdEq3 : (Cx471_bd 3).eqb (bdOfEnum E471 3) = true := by decide +kernel
+theorem Cx471_bdEq4 : (Cx471_bd 4).eqb (bdOfEnum E471 4) = true := by decide +kernel
 
 theorem Cx471_bdEq (k : ℕ) (hk : k < 5) : (Cx471_bd k).eqb (bdOfEnum E471 k) = true := by
   interval_cases k
@@ -3381,11 +3381,11 @@ theorem Cx471_bdEq (k : ℕ) (hk : k < 5) : (Cx471_bd k).eqb (bdOfEnum E471 k) =
   · exact Cx471_bdEq3
   · exact Cx471_bdEq4
 
-theorem Cx471_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 0 = true := by decide
-theorem Cx471_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 1 = true := by decide
-theorem Cx471_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 2 = true := by decide
-theorem Cx471_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 3 = true := by decide
-theorem Cx471_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 4 = true := by decide
+theorem Cx471_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 0 = true := by decide +kernel
+theorem Cx471_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 1 = true := by decide +kernel
+theorem Cx471_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 2 = true := by decide +kernel
+theorem Cx471_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 3 = true := by decide +kernel
+theorem Cx471_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E471 k).length) Cx471_bd 4 = true := by decide +kernel
 
 def Cx471 : Work.Certificates.FinChainCx where
   dim := fun k => (E471 k).length
@@ -3439,12 +3439,12 @@ def Cx471_sdr : Work.Certificates.SDR Cx471 where
   dim_zero := fun k hk => E471_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx471_checkHomZero : Cx471_sdr.checkHomZero = true := by decide
-theorem Cx471_checkDeg0 : Cx471_sdr.checkDeg 0 = true := by decide
-theorem Cx471_checkDeg1 : Cx471_sdr.checkDeg 1 = true := by decide
-theorem Cx471_checkDeg2 : Cx471_sdr.checkDeg 2 = true := by decide
-theorem Cx471_checkDeg3 : Cx471_sdr.checkDeg 3 = true := by decide
-theorem Cx471_checkDeg4 : Cx471_sdr.checkDeg 4 = true := by decide
+theorem Cx471_checkHomZero : Cx471_sdr.checkHomZero = true := by decide +kernel
+theorem Cx471_checkDeg0 : Cx471_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx471_checkDeg1 : Cx471_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx471_checkDeg2 : Cx471_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx471_checkDeg3 : Cx471_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx471_checkDeg4 : Cx471_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx471_sdr_check : Cx471_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx471_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -3485,20 +3485,20 @@ theorem E472_len4 : (E472 4).length = 0 := rfl
 
 theorem E472_nil5 (k : ℕ) : E472 (k+5) = [] := rfl
 
-theorem E472_dimtop : QbarCW.dim (⟨(472 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E472_dimtop : QbarCW.dim (⟨(472 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E472_nil2 : E472 2 = [] := rfl
 theorem E472_nil3 : E472 3 = [] := rfl
 theorem E472_nil4 : E472 4 = [] := rfl
 
-theorem E472_hE0 : E472 0 = dimListLe 472 0 := by decide
-theorem E472_hE1 : E472 1 = dimListLe 472 1 := by decide
+theorem E472_hE0 : E472 0 = dimListLe 472 0 := by decide +kernel
+theorem E472_hE1 : E472 1 = dimListLe 472 1 := by decide +kernel
 theorem E472_hE2 : E472 2 = dimListLe 472 2 := by
-  rw [E472_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E472_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E472_hE3 : E472 3 = dimListLe 472 3 := by
-  rw [E472_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E472_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E472_hE4 : E472 4 = dimListLe 472 4 := by
-  rw [E472_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E472_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E472_hE (k : ℕ) : E472 k = dimListLe 472 k := by
   match k with
@@ -3592,11 +3592,11 @@ def Cx472_bd : ∀ k, Work.Certificates.SOp ((E472 k).length) ((E472 (k+1)).leng
   | 3 => Cx472_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx472_bdEq0 : (Cx472_bd 0).eqb (bdOfEnum E472 0) = true := by decide
-theorem Cx472_bdEq1 : (Cx472_bd 1).eqb (bdOfEnum E472 1) = true := by decide
-theorem Cx472_bdEq2 : (Cx472_bd 2).eqb (bdOfEnum E472 2) = true := by decide
-theorem Cx472_bdEq3 : (Cx472_bd 3).eqb (bdOfEnum E472 3) = true := by decide
-theorem Cx472_bdEq4 : (Cx472_bd 4).eqb (bdOfEnum E472 4) = true := by decide
+theorem Cx472_bdEq0 : (Cx472_bd 0).eqb (bdOfEnum E472 0) = true := by decide +kernel
+theorem Cx472_bdEq1 : (Cx472_bd 1).eqb (bdOfEnum E472 1) = true := by decide +kernel
+theorem Cx472_bdEq2 : (Cx472_bd 2).eqb (bdOfEnum E472 2) = true := by decide +kernel
+theorem Cx472_bdEq3 : (Cx472_bd 3).eqb (bdOfEnum E472 3) = true := by decide +kernel
+theorem Cx472_bdEq4 : (Cx472_bd 4).eqb (bdOfEnum E472 4) = true := by decide +kernel
 
 theorem Cx472_bdEq (k : ℕ) (hk : k < 5) : (Cx472_bd k).eqb (bdOfEnum E472 k) = true := by
   interval_cases k
@@ -3606,11 +3606,11 @@ theorem Cx472_bdEq (k : ℕ) (hk : k < 5) : (Cx472_bd k).eqb (bdOfEnum E472 k) =
   · exact Cx472_bdEq3
   · exact Cx472_bdEq4
 
-theorem Cx472_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 0 = true := by decide
-theorem Cx472_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 1 = true := by decide
-theorem Cx472_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 2 = true := by decide
-theorem Cx472_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 3 = true := by decide
-theorem Cx472_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 4 = true := by decide
+theorem Cx472_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 0 = true := by decide +kernel
+theorem Cx472_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 1 = true := by decide +kernel
+theorem Cx472_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 2 = true := by decide +kernel
+theorem Cx472_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 3 = true := by decide +kernel
+theorem Cx472_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E472 k).length) Cx472_bd 4 = true := by decide +kernel
 
 def Cx472 : Work.Certificates.FinChainCx where
   dim := fun k => (E472 k).length
@@ -3664,12 +3664,12 @@ def Cx472_sdr : Work.Certificates.SDR Cx472 where
   dim_zero := fun k hk => E472_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx472_checkHomZero : Cx472_sdr.checkHomZero = true := by decide
-theorem Cx472_checkDeg0 : Cx472_sdr.checkDeg 0 = true := by decide
-theorem Cx472_checkDeg1 : Cx472_sdr.checkDeg 1 = true := by decide
-theorem Cx472_checkDeg2 : Cx472_sdr.checkDeg 2 = true := by decide
-theorem Cx472_checkDeg3 : Cx472_sdr.checkDeg 3 = true := by decide
-theorem Cx472_checkDeg4 : Cx472_sdr.checkDeg 4 = true := by decide
+theorem Cx472_checkHomZero : Cx472_sdr.checkHomZero = true := by decide +kernel
+theorem Cx472_checkDeg0 : Cx472_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx472_checkDeg1 : Cx472_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx472_checkDeg2 : Cx472_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx472_checkDeg3 : Cx472_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx472_checkDeg4 : Cx472_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx472_sdr_check : Cx472_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx472_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -3710,18 +3710,18 @@ theorem E473_len4 : (E473 4).length = 0 := rfl
 
 theorem E473_nil5 (k : ℕ) : E473 (k+5) = [] := rfl
 
-theorem E473_dimtop : QbarCW.dim (⟨(473 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E473_dimtop : QbarCW.dim (⟨(473 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E473_nil3 : E473 3 = [] := rfl
 theorem E473_nil4 : E473 4 = [] := rfl
 
-theorem E473_hE0 : E473 0 = dimListLe 473 0 := by decide
-theorem E473_hE1 : E473 1 = dimListLe 473 1 := by decide
-theorem E473_hE2 : E473 2 = dimListLe 473 2 := by decide
+theorem E473_hE0 : E473 0 = dimListLe 473 0 := by decide +kernel
+theorem E473_hE1 : E473 1 = dimListLe 473 1 := by decide +kernel
+theorem E473_hE2 : E473 2 = dimListLe 473 2 := by decide +kernel
 theorem E473_hE3 : E473 3 = dimListLe 473 3 := by
-  rw [E473_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E473_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E473_hE4 : E473 4 = dimListLe 473 4 := by
-  rw [E473_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E473_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E473_hE (k : ℕ) : E473 k = dimListLe 473 k := by
   match k with
@@ -3821,11 +3821,11 @@ def Cx473_bd : ∀ k, Work.Certificates.SOp ((E473 k).length) ((E473 (k+1)).leng
   | 3 => Cx473_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx473_bdEq0 : (Cx473_bd 0).eqb (bdOfEnum E473 0) = true := by decide
-theorem Cx473_bdEq1 : (Cx473_bd 1).eqb (bdOfEnum E473 1) = true := by decide
-theorem Cx473_bdEq2 : (Cx473_bd 2).eqb (bdOfEnum E473 2) = true := by decide
-theorem Cx473_bdEq3 : (Cx473_bd 3).eqb (bdOfEnum E473 3) = true := by decide
-theorem Cx473_bdEq4 : (Cx473_bd 4).eqb (bdOfEnum E473 4) = true := by decide
+theorem Cx473_bdEq0 : (Cx473_bd 0).eqb (bdOfEnum E473 0) = true := by decide +kernel
+theorem Cx473_bdEq1 : (Cx473_bd 1).eqb (bdOfEnum E473 1) = true := by decide +kernel
+theorem Cx473_bdEq2 : (Cx473_bd 2).eqb (bdOfEnum E473 2) = true := by decide +kernel
+theorem Cx473_bdEq3 : (Cx473_bd 3).eqb (bdOfEnum E473 3) = true := by decide +kernel
+theorem Cx473_bdEq4 : (Cx473_bd 4).eqb (bdOfEnum E473 4) = true := by decide +kernel
 
 theorem Cx473_bdEq (k : ℕ) (hk : k < 5) : (Cx473_bd k).eqb (bdOfEnum E473 k) = true := by
   interval_cases k
@@ -3835,11 +3835,11 @@ theorem Cx473_bdEq (k : ℕ) (hk : k < 5) : (Cx473_bd k).eqb (bdOfEnum E473 k) =
   · exact Cx473_bdEq3
   · exact Cx473_bdEq4
 
-theorem Cx473_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 0 = true := by decide
-theorem Cx473_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 1 = true := by decide
-theorem Cx473_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 2 = true := by decide
-theorem Cx473_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 3 = true := by decide
-theorem Cx473_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 4 = true := by decide
+theorem Cx473_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 0 = true := by decide +kernel
+theorem Cx473_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 1 = true := by decide +kernel
+theorem Cx473_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 2 = true := by decide +kernel
+theorem Cx473_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 3 = true := by decide +kernel
+theorem Cx473_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E473 k).length) Cx473_bd 4 = true := by decide +kernel
 
 def Cx473 : Work.Certificates.FinChainCx where
   dim := fun k => (E473 k).length
@@ -3903,12 +3903,12 @@ def Cx473_sdr : Work.Certificates.SDR Cx473 where
   dim_zero := fun k hk => E473_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx473_checkHomZero : Cx473_sdr.checkHomZero = true := by decide
-theorem Cx473_checkDeg0 : Cx473_sdr.checkDeg 0 = true := by decide
-theorem Cx473_checkDeg1 : Cx473_sdr.checkDeg 1 = true := by decide
-theorem Cx473_checkDeg2 : Cx473_sdr.checkDeg 2 = true := by decide
-theorem Cx473_checkDeg3 : Cx473_sdr.checkDeg 3 = true := by decide
-theorem Cx473_checkDeg4 : Cx473_sdr.checkDeg 4 = true := by decide
+theorem Cx473_checkHomZero : Cx473_sdr.checkHomZero = true := by decide +kernel
+theorem Cx473_checkDeg0 : Cx473_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx473_checkDeg1 : Cx473_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx473_checkDeg2 : Cx473_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx473_checkDeg3 : Cx473_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx473_checkDeg4 : Cx473_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx473_sdr_check : Cx473_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx473_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -3949,20 +3949,20 @@ theorem E474_len4 : (E474 4).length = 0 := rfl
 
 theorem E474_nil5 (k : ℕ) : E474 (k+5) = [] := rfl
 
-theorem E474_dimtop : QbarCW.dim (⟨(474 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E474_dimtop : QbarCW.dim (⟨(474 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E474_nil2 : E474 2 = [] := rfl
 theorem E474_nil3 : E474 3 = [] := rfl
 theorem E474_nil4 : E474 4 = [] := rfl
 
-theorem E474_hE0 : E474 0 = dimListLe 474 0 := by decide
-theorem E474_hE1 : E474 1 = dimListLe 474 1 := by decide
+theorem E474_hE0 : E474 0 = dimListLe 474 0 := by decide +kernel
+theorem E474_hE1 : E474 1 = dimListLe 474 1 := by decide +kernel
 theorem E474_hE2 : E474 2 = dimListLe 474 2 := by
-  rw [E474_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E474_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E474_hE3 : E474 3 = dimListLe 474 3 := by
-  rw [E474_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E474_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E474_hE4 : E474 4 = dimListLe 474 4 := by
-  rw [E474_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E474_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E474_hE (k : ℕ) : E474 k = dimListLe 474 k := by
   match k with
@@ -4056,11 +4056,11 @@ def Cx474_bd : ∀ k, Work.Certificates.SOp ((E474 k).length) ((E474 (k+1)).leng
   | 3 => Cx474_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx474_bdEq0 : (Cx474_bd 0).eqb (bdOfEnum E474 0) = true := by decide
-theorem Cx474_bdEq1 : (Cx474_bd 1).eqb (bdOfEnum E474 1) = true := by decide
-theorem Cx474_bdEq2 : (Cx474_bd 2).eqb (bdOfEnum E474 2) = true := by decide
-theorem Cx474_bdEq3 : (Cx474_bd 3).eqb (bdOfEnum E474 3) = true := by decide
-theorem Cx474_bdEq4 : (Cx474_bd 4).eqb (bdOfEnum E474 4) = true := by decide
+theorem Cx474_bdEq0 : (Cx474_bd 0).eqb (bdOfEnum E474 0) = true := by decide +kernel
+theorem Cx474_bdEq1 : (Cx474_bd 1).eqb (bdOfEnum E474 1) = true := by decide +kernel
+theorem Cx474_bdEq2 : (Cx474_bd 2).eqb (bdOfEnum E474 2) = true := by decide +kernel
+theorem Cx474_bdEq3 : (Cx474_bd 3).eqb (bdOfEnum E474 3) = true := by decide +kernel
+theorem Cx474_bdEq4 : (Cx474_bd 4).eqb (bdOfEnum E474 4) = true := by decide +kernel
 
 theorem Cx474_bdEq (k : ℕ) (hk : k < 5) : (Cx474_bd k).eqb (bdOfEnum E474 k) = true := by
   interval_cases k
@@ -4070,11 +4070,11 @@ theorem Cx474_bdEq (k : ℕ) (hk : k < 5) : (Cx474_bd k).eqb (bdOfEnum E474 k) =
   · exact Cx474_bdEq3
   · exact Cx474_bdEq4
 
-theorem Cx474_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 0 = true := by decide
-theorem Cx474_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 1 = true := by decide
-theorem Cx474_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 2 = true := by decide
-theorem Cx474_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 3 = true := by decide
-theorem Cx474_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 4 = true := by decide
+theorem Cx474_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 0 = true := by decide +kernel
+theorem Cx474_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 1 = true := by decide +kernel
+theorem Cx474_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 2 = true := by decide +kernel
+theorem Cx474_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 3 = true := by decide +kernel
+theorem Cx474_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E474 k).length) Cx474_bd 4 = true := by decide +kernel
 
 def Cx474 : Work.Certificates.FinChainCx where
   dim := fun k => (E474 k).length
@@ -4128,12 +4128,12 @@ def Cx474_sdr : Work.Certificates.SDR Cx474 where
   dim_zero := fun k hk => E474_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx474_checkHomZero : Cx474_sdr.checkHomZero = true := by decide
-theorem Cx474_checkDeg0 : Cx474_sdr.checkDeg 0 = true := by decide
-theorem Cx474_checkDeg1 : Cx474_sdr.checkDeg 1 = true := by decide
-theorem Cx474_checkDeg2 : Cx474_sdr.checkDeg 2 = true := by decide
-theorem Cx474_checkDeg3 : Cx474_sdr.checkDeg 3 = true := by decide
-theorem Cx474_checkDeg4 : Cx474_sdr.checkDeg 4 = true := by decide
+theorem Cx474_checkHomZero : Cx474_sdr.checkHomZero = true := by decide +kernel
+theorem Cx474_checkDeg0 : Cx474_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx474_checkDeg1 : Cx474_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx474_checkDeg2 : Cx474_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx474_checkDeg3 : Cx474_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx474_checkDeg4 : Cx474_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx474_sdr_check : Cx474_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx474_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -4174,20 +4174,20 @@ theorem E475_len4 : (E475 4).length = 0 := rfl
 
 theorem E475_nil5 (k : ℕ) : E475 (k+5) = [] := rfl
 
-theorem E475_dimtop : QbarCW.dim (⟨(475 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E475_dimtop : QbarCW.dim (⟨(475 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E475_nil2 : E475 2 = [] := rfl
 theorem E475_nil3 : E475 3 = [] := rfl
 theorem E475_nil4 : E475 4 = [] := rfl
 
-theorem E475_hE0 : E475 0 = dimListLe 475 0 := by decide
-theorem E475_hE1 : E475 1 = dimListLe 475 1 := by decide
+theorem E475_hE0 : E475 0 = dimListLe 475 0 := by decide +kernel
+theorem E475_hE1 : E475 1 = dimListLe 475 1 := by decide +kernel
 theorem E475_hE2 : E475 2 = dimListLe 475 2 := by
-  rw [E475_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E475_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E475_hE3 : E475 3 = dimListLe 475 3 := by
-  rw [E475_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E475_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E475_hE4 : E475 4 = dimListLe 475 4 := by
-  rw [E475_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E475_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E475_hE (k : ℕ) : E475 k = dimListLe 475 k := by
   match k with
@@ -4281,11 +4281,11 @@ def Cx475_bd : ∀ k, Work.Certificates.SOp ((E475 k).length) ((E475 (k+1)).leng
   | 3 => Cx475_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx475_bdEq0 : (Cx475_bd 0).eqb (bdOfEnum E475 0) = true := by decide
-theorem Cx475_bdEq1 : (Cx475_bd 1).eqb (bdOfEnum E475 1) = true := by decide
-theorem Cx475_bdEq2 : (Cx475_bd 2).eqb (bdOfEnum E475 2) = true := by decide
-theorem Cx475_bdEq3 : (Cx475_bd 3).eqb (bdOfEnum E475 3) = true := by decide
-theorem Cx475_bdEq4 : (Cx475_bd 4).eqb (bdOfEnum E475 4) = true := by decide
+theorem Cx475_bdEq0 : (Cx475_bd 0).eqb (bdOfEnum E475 0) = true := by decide +kernel
+theorem Cx475_bdEq1 : (Cx475_bd 1).eqb (bdOfEnum E475 1) = true := by decide +kernel
+theorem Cx475_bdEq2 : (Cx475_bd 2).eqb (bdOfEnum E475 2) = true := by decide +kernel
+theorem Cx475_bdEq3 : (Cx475_bd 3).eqb (bdOfEnum E475 3) = true := by decide +kernel
+theorem Cx475_bdEq4 : (Cx475_bd 4).eqb (bdOfEnum E475 4) = true := by decide +kernel
 
 theorem Cx475_bdEq (k : ℕ) (hk : k < 5) : (Cx475_bd k).eqb (bdOfEnum E475 k) = true := by
   interval_cases k
@@ -4295,11 +4295,11 @@ theorem Cx475_bdEq (k : ℕ) (hk : k < 5) : (Cx475_bd k).eqb (bdOfEnum E475 k) =
   · exact Cx475_bdEq3
   · exact Cx475_bdEq4
 
-theorem Cx475_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 0 = true := by decide
-theorem Cx475_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 1 = true := by decide
-theorem Cx475_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 2 = true := by decide
-theorem Cx475_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 3 = true := by decide
-theorem Cx475_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 4 = true := by decide
+theorem Cx475_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 0 = true := by decide +kernel
+theorem Cx475_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 1 = true := by decide +kernel
+theorem Cx475_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 2 = true := by decide +kernel
+theorem Cx475_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 3 = true := by decide +kernel
+theorem Cx475_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E475 k).length) Cx475_bd 4 = true := by decide +kernel
 
 def Cx475 : Work.Certificates.FinChainCx where
   dim := fun k => (E475 k).length
@@ -4353,12 +4353,12 @@ def Cx475_sdr : Work.Certificates.SDR Cx475 where
   dim_zero := fun k hk => E475_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx475_checkHomZero : Cx475_sdr.checkHomZero = true := by decide
-theorem Cx475_checkDeg0 : Cx475_sdr.checkDeg 0 = true := by decide
-theorem Cx475_checkDeg1 : Cx475_sdr.checkDeg 1 = true := by decide
-theorem Cx475_checkDeg2 : Cx475_sdr.checkDeg 2 = true := by decide
-theorem Cx475_checkDeg3 : Cx475_sdr.checkDeg 3 = true := by decide
-theorem Cx475_checkDeg4 : Cx475_sdr.checkDeg 4 = true := by decide
+theorem Cx475_checkHomZero : Cx475_sdr.checkHomZero = true := by decide +kernel
+theorem Cx475_checkDeg0 : Cx475_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx475_checkDeg1 : Cx475_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx475_checkDeg2 : Cx475_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx475_checkDeg3 : Cx475_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx475_checkDeg4 : Cx475_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx475_sdr_check : Cx475_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx475_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -4399,20 +4399,20 @@ theorem E476_len4 : (E476 4).length = 0 := rfl
 
 theorem E476_nil5 (k : ℕ) : E476 (k+5) = [] := rfl
 
-theorem E476_dimtop : QbarCW.dim (⟨(476 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E476_dimtop : QbarCW.dim (⟨(476 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E476_nil2 : E476 2 = [] := rfl
 theorem E476_nil3 : E476 3 = [] := rfl
 theorem E476_nil4 : E476 4 = [] := rfl
 
-theorem E476_hE0 : E476 0 = dimListLe 476 0 := by decide
-theorem E476_hE1 : E476 1 = dimListLe 476 1 := by decide
+theorem E476_hE0 : E476 0 = dimListLe 476 0 := by decide +kernel
+theorem E476_hE1 : E476 1 = dimListLe 476 1 := by decide +kernel
 theorem E476_hE2 : E476 2 = dimListLe 476 2 := by
-  rw [E476_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E476_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E476_hE3 : E476 3 = dimListLe 476 3 := by
-  rw [E476_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E476_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E476_hE4 : E476 4 = dimListLe 476 4 := by
-  rw [E476_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E476_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E476_hE (k : ℕ) : E476 k = dimListLe 476 k := by
   match k with
@@ -4506,11 +4506,11 @@ def Cx476_bd : ∀ k, Work.Certificates.SOp ((E476 k).length) ((E476 (k+1)).leng
   | 3 => Cx476_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx476_bdEq0 : (Cx476_bd 0).eqb (bdOfEnum E476 0) = true := by decide
-theorem Cx476_bdEq1 : (Cx476_bd 1).eqb (bdOfEnum E476 1) = true := by decide
-theorem Cx476_bdEq2 : (Cx476_bd 2).eqb (bdOfEnum E476 2) = true := by decide
-theorem Cx476_bdEq3 : (Cx476_bd 3).eqb (bdOfEnum E476 3) = true := by decide
-theorem Cx476_bdEq4 : (Cx476_bd 4).eqb (bdOfEnum E476 4) = true := by decide
+theorem Cx476_bdEq0 : (Cx476_bd 0).eqb (bdOfEnum E476 0) = true := by decide +kernel
+theorem Cx476_bdEq1 : (Cx476_bd 1).eqb (bdOfEnum E476 1) = true := by decide +kernel
+theorem Cx476_bdEq2 : (Cx476_bd 2).eqb (bdOfEnum E476 2) = true := by decide +kernel
+theorem Cx476_bdEq3 : (Cx476_bd 3).eqb (bdOfEnum E476 3) = true := by decide +kernel
+theorem Cx476_bdEq4 : (Cx476_bd 4).eqb (bdOfEnum E476 4) = true := by decide +kernel
 
 theorem Cx476_bdEq (k : ℕ) (hk : k < 5) : (Cx476_bd k).eqb (bdOfEnum E476 k) = true := by
   interval_cases k
@@ -4520,11 +4520,11 @@ theorem Cx476_bdEq (k : ℕ) (hk : k < 5) : (Cx476_bd k).eqb (bdOfEnum E476 k) =
   · exact Cx476_bdEq3
   · exact Cx476_bdEq4
 
-theorem Cx476_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 0 = true := by decide
-theorem Cx476_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 1 = true := by decide
-theorem Cx476_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 2 = true := by decide
-theorem Cx476_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 3 = true := by decide
-theorem Cx476_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 4 = true := by decide
+theorem Cx476_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 0 = true := by decide +kernel
+theorem Cx476_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 1 = true := by decide +kernel
+theorem Cx476_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 2 = true := by decide +kernel
+theorem Cx476_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 3 = true := by decide +kernel
+theorem Cx476_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E476 k).length) Cx476_bd 4 = true := by decide +kernel
 
 def Cx476 : Work.Certificates.FinChainCx where
   dim := fun k => (E476 k).length
@@ -4578,12 +4578,12 @@ def Cx476_sdr : Work.Certificates.SDR Cx476 where
   dim_zero := fun k hk => E476_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx476_checkHomZero : Cx476_sdr.checkHomZero = true := by decide
-theorem Cx476_checkDeg0 : Cx476_sdr.checkDeg 0 = true := by decide
-theorem Cx476_checkDeg1 : Cx476_sdr.checkDeg 1 = true := by decide
-theorem Cx476_checkDeg2 : Cx476_sdr.checkDeg 2 = true := by decide
-theorem Cx476_checkDeg3 : Cx476_sdr.checkDeg 3 = true := by decide
-theorem Cx476_checkDeg4 : Cx476_sdr.checkDeg 4 = true := by decide
+theorem Cx476_checkHomZero : Cx476_sdr.checkHomZero = true := by decide +kernel
+theorem Cx476_checkDeg0 : Cx476_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx476_checkDeg1 : Cx476_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx476_checkDeg2 : Cx476_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx476_checkDeg3 : Cx476_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx476_checkDeg4 : Cx476_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx476_sdr_check : Cx476_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx476_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -4624,18 +4624,18 @@ theorem E477_len4 : (E477 4).length = 0 := rfl
 
 theorem E477_nil5 (k : ℕ) : E477 (k+5) = [] := rfl
 
-theorem E477_dimtop : QbarCW.dim (⟨(477 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide
+theorem E477_dimtop : QbarCW.dim (⟨(477 : Fin 865)⟩ : QbarCell) ≤ 2 := by decide +kernel
 
 theorem E477_nil3 : E477 3 = [] := rfl
 theorem E477_nil4 : E477 4 = [] := rfl
 
-theorem E477_hE0 : E477 0 = dimListLe 477 0 := by decide
-theorem E477_hE1 : E477 1 = dimListLe 477 1 := by decide
-theorem E477_hE2 : E477 2 = dimListLe 477 2 := by decide
+theorem E477_hE0 : E477 0 = dimListLe 477 0 := by decide +kernel
+theorem E477_hE1 : E477 1 = dimListLe 477 1 := by decide +kernel
+theorem E477_hE2 : E477 2 = dimListLe 477 2 := by decide +kernel
 theorem E477_hE3 : E477 3 = dimListLe 477 3 := by
-  rw [E477_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E477_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E477_hE4 : E477 4 = dimListLe 477 4 := by
-  rw [E477_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E477_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E477_hE (k : ℕ) : E477 k = dimListLe 477 k := by
   match k with
@@ -4735,11 +4735,11 @@ def Cx477_bd : ∀ k, Work.Certificates.SOp ((E477 k).length) ((E477 (k+1)).leng
   | 3 => Cx477_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx477_bdEq0 : (Cx477_bd 0).eqb (bdOfEnum E477 0) = true := by decide
-theorem Cx477_bdEq1 : (Cx477_bd 1).eqb (bdOfEnum E477 1) = true := by decide
-theorem Cx477_bdEq2 : (Cx477_bd 2).eqb (bdOfEnum E477 2) = true := by decide
-theorem Cx477_bdEq3 : (Cx477_bd 3).eqb (bdOfEnum E477 3) = true := by decide
-theorem Cx477_bdEq4 : (Cx477_bd 4).eqb (bdOfEnum E477 4) = true := by decide
+theorem Cx477_bdEq0 : (Cx477_bd 0).eqb (bdOfEnum E477 0) = true := by decide +kernel
+theorem Cx477_bdEq1 : (Cx477_bd 1).eqb (bdOfEnum E477 1) = true := by decide +kernel
+theorem Cx477_bdEq2 : (Cx477_bd 2).eqb (bdOfEnum E477 2) = true := by decide +kernel
+theorem Cx477_bdEq3 : (Cx477_bd 3).eqb (bdOfEnum E477 3) = true := by decide +kernel
+theorem Cx477_bdEq4 : (Cx477_bd 4).eqb (bdOfEnum E477 4) = true := by decide +kernel
 
 theorem Cx477_bdEq (k : ℕ) (hk : k < 5) : (Cx477_bd k).eqb (bdOfEnum E477 k) = true := by
   interval_cases k
@@ -4749,11 +4749,11 @@ theorem Cx477_bdEq (k : ℕ) (hk : k < 5) : (Cx477_bd k).eqb (bdOfEnum E477 k) =
   · exact Cx477_bdEq3
   · exact Cx477_bdEq4
 
-theorem Cx477_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 0 = true := by decide
-theorem Cx477_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 1 = true := by decide
-theorem Cx477_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 2 = true := by decide
-theorem Cx477_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 3 = true := by decide
-theorem Cx477_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 4 = true := by decide
+theorem Cx477_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 0 = true := by decide +kernel
+theorem Cx477_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 1 = true := by decide +kernel
+theorem Cx477_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 2 = true := by decide +kernel
+theorem Cx477_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 3 = true := by decide +kernel
+theorem Cx477_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E477 k).length) Cx477_bd 4 = true := by decide +kernel
 
 def Cx477 : Work.Certificates.FinChainCx where
   dim := fun k => (E477 k).length
@@ -4817,12 +4817,12 @@ def Cx477_sdr : Work.Certificates.SDR Cx477 where
   dim_zero := fun k hk => E477_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx477_checkHomZero : Cx477_sdr.checkHomZero = true := by decide
-theorem Cx477_checkDeg0 : Cx477_sdr.checkDeg 0 = true := by decide
-theorem Cx477_checkDeg1 : Cx477_sdr.checkDeg 1 = true := by decide
-theorem Cx477_checkDeg2 : Cx477_sdr.checkDeg 2 = true := by decide
-theorem Cx477_checkDeg3 : Cx477_sdr.checkDeg 3 = true := by decide
-theorem Cx477_checkDeg4 : Cx477_sdr.checkDeg 4 = true := by decide
+theorem Cx477_checkHomZero : Cx477_sdr.checkHomZero = true := by decide +kernel
+theorem Cx477_checkDeg0 : Cx477_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx477_checkDeg1 : Cx477_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx477_checkDeg2 : Cx477_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx477_checkDeg3 : Cx477_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx477_checkDeg4 : Cx477_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx477_sdr_check : Cx477_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx477_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -4863,20 +4863,20 @@ theorem E478_len4 : (E478 4).length = 0 := rfl
 
 theorem E478_nil5 (k : ℕ) : E478 (k+5) = [] := rfl
 
-theorem E478_dimtop : QbarCW.dim (⟨(478 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E478_dimtop : QbarCW.dim (⟨(478 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E478_nil2 : E478 2 = [] := rfl
 theorem E478_nil3 : E478 3 = [] := rfl
 theorem E478_nil4 : E478 4 = [] := rfl
 
-theorem E478_hE0 : E478 0 = dimListLe 478 0 := by decide
-theorem E478_hE1 : E478 1 = dimListLe 478 1 := by decide
+theorem E478_hE0 : E478 0 = dimListLe 478 0 := by decide +kernel
+theorem E478_hE1 : E478 1 = dimListLe 478 1 := by decide +kernel
 theorem E478_hE2 : E478 2 = dimListLe 478 2 := by
-  rw [E478_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E478_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E478_hE3 : E478 3 = dimListLe 478 3 := by
-  rw [E478_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E478_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E478_hE4 : E478 4 = dimListLe 478 4 := by
-  rw [E478_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E478_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E478_hE (k : ℕ) : E478 k = dimListLe 478 k := by
   match k with
@@ -4970,11 +4970,11 @@ def Cx478_bd : ∀ k, Work.Certificates.SOp ((E478 k).length) ((E478 (k+1)).leng
   | 3 => Cx478_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx478_bdEq0 : (Cx478_bd 0).eqb (bdOfEnum E478 0) = true := by decide
-theorem Cx478_bdEq1 : (Cx478_bd 1).eqb (bdOfEnum E478 1) = true := by decide
-theorem Cx478_bdEq2 : (Cx478_bd 2).eqb (bdOfEnum E478 2) = true := by decide
-theorem Cx478_bdEq3 : (Cx478_bd 3).eqb (bdOfEnum E478 3) = true := by decide
-theorem Cx478_bdEq4 : (Cx478_bd 4).eqb (bdOfEnum E478 4) = true := by decide
+theorem Cx478_bdEq0 : (Cx478_bd 0).eqb (bdOfEnum E478 0) = true := by decide +kernel
+theorem Cx478_bdEq1 : (Cx478_bd 1).eqb (bdOfEnum E478 1) = true := by decide +kernel
+theorem Cx478_bdEq2 : (Cx478_bd 2).eqb (bdOfEnum E478 2) = true := by decide +kernel
+theorem Cx478_bdEq3 : (Cx478_bd 3).eqb (bdOfEnum E478 3) = true := by decide +kernel
+theorem Cx478_bdEq4 : (Cx478_bd 4).eqb (bdOfEnum E478 4) = true := by decide +kernel
 
 theorem Cx478_bdEq (k : ℕ) (hk : k < 5) : (Cx478_bd k).eqb (bdOfEnum E478 k) = true := by
   interval_cases k
@@ -4984,11 +4984,11 @@ theorem Cx478_bdEq (k : ℕ) (hk : k < 5) : (Cx478_bd k).eqb (bdOfEnum E478 k) =
   · exact Cx478_bdEq3
   · exact Cx478_bdEq4
 
-theorem Cx478_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 0 = true := by decide
-theorem Cx478_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 1 = true := by decide
-theorem Cx478_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 2 = true := by decide
-theorem Cx478_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 3 = true := by decide
-theorem Cx478_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 4 = true := by decide
+theorem Cx478_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 0 = true := by decide +kernel
+theorem Cx478_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 1 = true := by decide +kernel
+theorem Cx478_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 2 = true := by decide +kernel
+theorem Cx478_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 3 = true := by decide +kernel
+theorem Cx478_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E478 k).length) Cx478_bd 4 = true := by decide +kernel
 
 def Cx478 : Work.Certificates.FinChainCx where
   dim := fun k => (E478 k).length
@@ -5042,12 +5042,12 @@ def Cx478_sdr : Work.Certificates.SDR Cx478 where
   dim_zero := fun k hk => E478_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx478_checkHomZero : Cx478_sdr.checkHomZero = true := by decide
-theorem Cx478_checkDeg0 : Cx478_sdr.checkDeg 0 = true := by decide
-theorem Cx478_checkDeg1 : Cx478_sdr.checkDeg 1 = true := by decide
-theorem Cx478_checkDeg2 : Cx478_sdr.checkDeg 2 = true := by decide
-theorem Cx478_checkDeg3 : Cx478_sdr.checkDeg 3 = true := by decide
-theorem Cx478_checkDeg4 : Cx478_sdr.checkDeg 4 = true := by decide
+theorem Cx478_checkHomZero : Cx478_sdr.checkHomZero = true := by decide +kernel
+theorem Cx478_checkDeg0 : Cx478_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx478_checkDeg1 : Cx478_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx478_checkDeg2 : Cx478_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx478_checkDeg3 : Cx478_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx478_checkDeg4 : Cx478_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx478_sdr_check : Cx478_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx478_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -5088,20 +5088,20 @@ theorem E479_len4 : (E479 4).length = 0 := rfl
 
 theorem E479_nil5 (k : ℕ) : E479 (k+5) = [] := rfl
 
-theorem E479_dimtop : QbarCW.dim (⟨(479 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E479_dimtop : QbarCW.dim (⟨(479 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E479_nil2 : E479 2 = [] := rfl
 theorem E479_nil3 : E479 3 = [] := rfl
 theorem E479_nil4 : E479 4 = [] := rfl
 
-theorem E479_hE0 : E479 0 = dimListLe 479 0 := by decide
-theorem E479_hE1 : E479 1 = dimListLe 479 1 := by decide
+theorem E479_hE0 : E479 0 = dimListLe 479 0 := by decide +kernel
+theorem E479_hE1 : E479 1 = dimListLe 479 1 := by decide +kernel
 theorem E479_hE2 : E479 2 = dimListLe 479 2 := by
-  rw [E479_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E479_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E479_hE3 : E479 3 = dimListLe 479 3 := by
-  rw [E479_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E479_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E479_hE4 : E479 4 = dimListLe 479 4 := by
-  rw [E479_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E479_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E479_hE (k : ℕ) : E479 k = dimListLe 479 k := by
   match k with
@@ -5195,11 +5195,11 @@ def Cx479_bd : ∀ k, Work.Certificates.SOp ((E479 k).length) ((E479 (k+1)).leng
   | 3 => Cx479_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx479_bdEq0 : (Cx479_bd 0).eqb (bdOfEnum E479 0) = true := by decide
-theorem Cx479_bdEq1 : (Cx479_bd 1).eqb (bdOfEnum E479 1) = true := by decide
-theorem Cx479_bdEq2 : (Cx479_bd 2).eqb (bdOfEnum E479 2) = true := by decide
-theorem Cx479_bdEq3 : (Cx479_bd 3).eqb (bdOfEnum E479 3) = true := by decide
-theorem Cx479_bdEq4 : (Cx479_bd 4).eqb (bdOfEnum E479 4) = true := by decide
+theorem Cx479_bdEq0 : (Cx479_bd 0).eqb (bdOfEnum E479 0) = true := by decide +kernel
+theorem Cx479_bdEq1 : (Cx479_bd 1).eqb (bdOfEnum E479 1) = true := by decide +kernel
+theorem Cx479_bdEq2 : (Cx479_bd 2).eqb (bdOfEnum E479 2) = true := by decide +kernel
+theorem Cx479_bdEq3 : (Cx479_bd 3).eqb (bdOfEnum E479 3) = true := by decide +kernel
+theorem Cx479_bdEq4 : (Cx479_bd 4).eqb (bdOfEnum E479 4) = true := by decide +kernel
 
 theorem Cx479_bdEq (k : ℕ) (hk : k < 5) : (Cx479_bd k).eqb (bdOfEnum E479 k) = true := by
   interval_cases k
@@ -5209,11 +5209,11 @@ theorem Cx479_bdEq (k : ℕ) (hk : k < 5) : (Cx479_bd k).eqb (bdOfEnum E479 k) =
   · exact Cx479_bdEq3
   · exact Cx479_bdEq4
 
-theorem Cx479_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 0 = true := by decide
-theorem Cx479_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 1 = true := by decide
-theorem Cx479_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 2 = true := by decide
-theorem Cx479_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 3 = true := by decide
-theorem Cx479_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 4 = true := by decide
+theorem Cx479_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 0 = true := by decide +kernel
+theorem Cx479_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 1 = true := by decide +kernel
+theorem Cx479_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 2 = true := by decide +kernel
+theorem Cx479_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 3 = true := by decide +kernel
+theorem Cx479_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E479 k).length) Cx479_bd 4 = true := by decide +kernel
 
 def Cx479 : Work.Certificates.FinChainCx where
   dim := fun k => (E479 k).length
@@ -5267,12 +5267,12 @@ def Cx479_sdr : Work.Certificates.SDR Cx479 where
   dim_zero := fun k hk => E479_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx479_checkHomZero : Cx479_sdr.checkHomZero = true := by decide
-theorem Cx479_checkDeg0 : Cx479_sdr.checkDeg 0 = true := by decide
-theorem Cx479_checkDeg1 : Cx479_sdr.checkDeg 1 = true := by decide
-theorem Cx479_checkDeg2 : Cx479_sdr.checkDeg 2 = true := by decide
-theorem Cx479_checkDeg3 : Cx479_sdr.checkDeg 3 = true := by decide
-theorem Cx479_checkDeg4 : Cx479_sdr.checkDeg 4 = true := by decide
+theorem Cx479_checkHomZero : Cx479_sdr.checkHomZero = true := by decide +kernel
+theorem Cx479_checkDeg0 : Cx479_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx479_checkDeg1 : Cx479_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx479_checkDeg2 : Cx479_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx479_checkDeg3 : Cx479_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx479_checkDeg4 : Cx479_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx479_sdr_check : Cx479_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx479_checkHomZero, Bool.true_and, List.all_eq_true]
@@ -5313,20 +5313,20 @@ theorem E480_len4 : (E480 4).length = 0 := rfl
 
 theorem E480_nil5 (k : ℕ) : E480 (k+5) = [] := rfl
 
-theorem E480_dimtop : QbarCW.dim (⟨(480 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide
+theorem E480_dimtop : QbarCW.dim (⟨(480 : Fin 865)⟩ : QbarCell) ≤ 1 := by decide +kernel
 
 theorem E480_nil2 : E480 2 = [] := rfl
 theorem E480_nil3 : E480 3 = [] := rfl
 theorem E480_nil4 : E480 4 = [] := rfl
 
-theorem E480_hE0 : E480 0 = dimListLe 480 0 := by decide
-theorem E480_hE1 : E480 1 = dimListLe 480 1 := by decide
+theorem E480_hE0 : E480 0 = dimListLe 480 0 := by decide +kernel
+theorem E480_hE1 : E480 1 = dimListLe 480 1 := by decide +kernel
 theorem E480_hE2 : E480 2 = dimListLe 480 2 := by
-  rw [E480_nil2, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E480_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E480_hE3 : E480 3 = dimListLe 480 3 := by
-  rw [E480_nil3, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E480_nil3, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E480_hE4 : E480 4 = dimListLe 480 4 := by
-  rw [E480_nil4, dimListLe_eq_nil_of_dim_lt (by decide)]
+  rw [E480_nil4, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 
 theorem E480_hE (k : ℕ) : E480 k = dimListLe 480 k := by
   match k with
@@ -5420,11 +5420,11 @@ def Cx480_bd : ∀ k, Work.Certificates.SOp ((E480 k).length) ((E480 (k+1)).leng
   | 3 => Cx480_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx480_bdEq0 : (Cx480_bd 0).eqb (bdOfEnum E480 0) = true := by decide
-theorem Cx480_bdEq1 : (Cx480_bd 1).eqb (bdOfEnum E480 1) = true := by decide
-theorem Cx480_bdEq2 : (Cx480_bd 2).eqb (bdOfEnum E480 2) = true := by decide
-theorem Cx480_bdEq3 : (Cx480_bd 3).eqb (bdOfEnum E480 3) = true := by decide
-theorem Cx480_bdEq4 : (Cx480_bd 4).eqb (bdOfEnum E480 4) = true := by decide
+theorem Cx480_bdEq0 : (Cx480_bd 0).eqb (bdOfEnum E480 0) = true := by decide +kernel
+theorem Cx480_bdEq1 : (Cx480_bd 1).eqb (bdOfEnum E480 1) = true := by decide +kernel
+theorem Cx480_bdEq2 : (Cx480_bd 2).eqb (bdOfEnum E480 2) = true := by decide +kernel
+theorem Cx480_bdEq3 : (Cx480_bd 3).eqb (bdOfEnum E480 3) = true := by decide +kernel
+theorem Cx480_bdEq4 : (Cx480_bd 4).eqb (bdOfEnum E480 4) = true := by decide +kernel
 
 theorem Cx480_bdEq (k : ℕ) (hk : k < 5) : (Cx480_bd k).eqb (bdOfEnum E480 k) = true := by
   interval_cases k
@@ -5434,11 +5434,11 @@ theorem Cx480_bdEq (k : ℕ) (hk : k < 5) : (Cx480_bd k).eqb (bdOfEnum E480 k) =
   · exact Cx480_bdEq3
   · exact Cx480_bdEq4
 
-theorem Cx480_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 0 = true := by decide
-theorem Cx480_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 1 = true := by decide
-theorem Cx480_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 2 = true := by decide
-theorem Cx480_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 3 = true := by decide
-theorem Cx480_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 4 = true := by decide
+theorem Cx480_bdcomp0 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 0 = true := by decide +kernel
+theorem Cx480_bdcomp1 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 1 = true := by decide +kernel
+theorem Cx480_bdcomp2 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 2 = true := by decide +kernel
+theorem Cx480_bdcomp3 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 3 = true := by decide +kernel
+theorem Cx480_bdcomp4 : Work.Certificates.FinChainCx.bdCheckDeg (fun k => (E480 k).length) Cx480_bd 4 = true := by decide +kernel
 
 def Cx480 : Work.Certificates.FinChainCx where
   dim := fun k => (E480 k).length
@@ -5492,12 +5492,12 @@ def Cx480_sdr : Work.Certificates.SDR Cx480 where
   dim_zero := fun k hk => E480_len_zero hk
   b_zero := fun k hk => by simp [bModel]; omega
 
-theorem Cx480_checkHomZero : Cx480_sdr.checkHomZero = true := by decide
-theorem Cx480_checkDeg0 : Cx480_sdr.checkDeg 0 = true := by decide
-theorem Cx480_checkDeg1 : Cx480_sdr.checkDeg 1 = true := by decide
-theorem Cx480_checkDeg2 : Cx480_sdr.checkDeg 2 = true := by decide
-theorem Cx480_checkDeg3 : Cx480_sdr.checkDeg 3 = true := by decide
-theorem Cx480_checkDeg4 : Cx480_sdr.checkDeg 4 = true := by decide
+theorem Cx480_checkHomZero : Cx480_sdr.checkHomZero = true := by decide +kernel
+theorem Cx480_checkDeg0 : Cx480_sdr.checkDeg 0 = true := by decide +kernel
+theorem Cx480_checkDeg1 : Cx480_sdr.checkDeg 1 = true := by decide +kernel
+theorem Cx480_checkDeg2 : Cx480_sdr.checkDeg 2 = true := by decide +kernel
+theorem Cx480_checkDeg3 : Cx480_sdr.checkDeg 3 = true := by decide +kernel
+theorem Cx480_checkDeg4 : Cx480_sdr.checkDeg 4 = true := by decide +kernel
 
 theorem Cx480_sdr_check : Cx480_sdr.check = true := by
   rw [Work.Certificates.SDR.check_eq, Cx480_checkHomZero, Bool.true_and, List.all_eq_true]

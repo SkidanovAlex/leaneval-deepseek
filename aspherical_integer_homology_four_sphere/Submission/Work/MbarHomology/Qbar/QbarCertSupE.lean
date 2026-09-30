@@ -23,16 +23,16 @@ namespace Work.MbarHomology
 
 open scoped BigOperators
 theorem hsupChunk_16 : ∀ f : Fin 865, 480 ≤ (f : ℕ) → (f : ℕ) < 510 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_17 : ∀ f : Fin 865, 510 ≤ (f : ℕ) → (f : ℕ) < 540 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_18 : ∀ f : Fin 865, 540 ≤ (f : ℕ) → (f : ℕ) < 570 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupChunk_19 : ∀ f : Fin 865, 570 ≤ (f : ℕ) → (f : ℕ) < 600 → HsupFace f := by
-  decide
+  decide +kernel
 
 theorem hsupUpto_510 : ∀ f : Fin 865, (f : ℕ) < 510 → HsupFace f := by
   intro f hf

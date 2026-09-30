@@ -40,7 +40,7 @@ bounds `affine_nonneg`/`ceiling_nonneg` likewise (`affine_pos_of_pos`, `ceiling_
 theorem certS_pos_of_not_wall :
     ∀ (a : Fin 48) (S : Fin 24),
       (∀ i : Fin 3, S ≠ wallLo a i ∧ S ≠ wallHi a i) → 0 < certS a S := by
-  decide
+  decide +kernel
 
 /-- A positive `certZero` is the strict form of the `c = 0` certificate. -/
 theorem certZero_bound_pos {e : ℤ} {l lc : Fin 3 → ℤ} (h : 0 < certZero e l lc) :

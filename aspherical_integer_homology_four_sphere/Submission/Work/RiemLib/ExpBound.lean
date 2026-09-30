@@ -1,5 +1,14 @@
 import Submission.Work.RiemLib.FlowJacobi
-import Submission.Work.RiemLib.RauchUpper
+import Submission.Work.RiemLib.JacobiTensor
+import Submission.Work.RiemLib.CurvatureSym
+import Submission.Work.RiemLib.IndexForm
+import Submission.Work.RiemLib.ConjPoint
+import Submission.Work.RiemLib.RauchCompare
+import Submission.Work.RiemLib.Commons.Analysis.Calculus.le_of_deriv_mul_le_of_tendsto_div
+import Submission.Work.RiemLib.Commons.Analysis.Calculus.tendsto_inv_smul_of_tendsto_deriv
+import Submission.Work.RiemLib.Commons.Analysis.Normed.Operator.tendsto_inverse_of_tendsto_one
+import Submission.Work.RiemLib.Commons.Analysis.ODE.riccati_le_cot
+import Submission.Work.RiemLib.Commons.Analysis.Calculus.tendsto_cot_asymptotic_of_mul_tendsto_one
 import Submission.Work.RiemLib.BonnetMyers2
 import Submission.Work.RiemLib.GeodesicGlobal2
 
@@ -38,7 +47,6 @@ open Submission.ChartConnection
 open Submission.ChartCurv
 open Submission.JacobiTensor
 open Submission.Rauch
-open Submission.RauchUpper
 open Submission.FlowJacobi
 open Submission.Distance
 

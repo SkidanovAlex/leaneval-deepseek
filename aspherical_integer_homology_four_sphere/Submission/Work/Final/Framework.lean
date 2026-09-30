@@ -23,7 +23,14 @@ without any scoped notation.
 -/
 import Mathlib
 import ChallengeDeps
-import Submission.Work.Space.All
+import Submission.Work.Space.Main
+import Submission.Work.Space.Split
+import Submission.Work.Space.Split.retrB_homotopyEquiv
+import Submission.Work.Space.Split.retrA_homotopyEquiv
+import Submission.Work.Space.Split.retrAB_homotopyEquiv
+import Submission.Work.Space.Split.retrAB_compat
+import Submission.Work.Space.Split.retrA_compat
+import Submission.Work.Space.Data.slope_norm_ge
 import Submission.Work.Curvature.Main
 import Submission.Work.Curvature.Bridge
 import Submission.Work.RiemLib.ChartCurv

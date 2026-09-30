@@ -1,6 +1,4 @@
 import Submission.Work.RiemLib.ModelBound
-import Submission.Work.RiemLib.Commons.Analysis.InnerProductSpace.great_circle_norm
-import Submission.Work.RiemLib.Commons.Analysis.InnerProductSpace.great_circle_orth_norm
 import Submission.Work.RiemLib.Commons.Analysis.InnerProductSpace.norm_sq_polar_decomp
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
@@ -44,7 +42,6 @@ open Submission.ChartConnection
 open Submission.ChartBounds
 open Submission.Gauss
 open Submission.Minimal
-open Submission.SphereCoord
 
 namespace Submission.ModelPath
 

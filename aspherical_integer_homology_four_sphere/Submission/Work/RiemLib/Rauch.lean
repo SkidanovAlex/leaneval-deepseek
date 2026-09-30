@@ -1,4 +1,4 @@
-import Submission.Work.RiemLib.PinchUpper
+import Submission.Work.RiemLib.Pinch
 import Submission.Work.RiemLib.ChartCurv
 import Submission.Work.RiemLib.CurvatureVec
 import Submission.Work.RiemLib.Jacobi

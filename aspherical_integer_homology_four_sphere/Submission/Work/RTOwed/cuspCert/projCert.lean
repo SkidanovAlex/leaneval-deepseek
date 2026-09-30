@@ -99,12 +99,12 @@ theorem projV_coef : ∀ (a : Fin 48) (i l : Fin 4),
     (∑ j : Fin 3, A10 a i j * C16 a j l)
       + 10 * projVZ a i * Work.FoldInst.truncNormal2 (Work.RTOwed.cubeVert a) l
       = 160 * (if i = l then 1 else 0) := by
-  decide
+  decide +kernel
 
 /-- The constant identity: `π_a 0 = (4/5) • projV a`, i.e. `OffZ a i = 16 * projVZ a i`. -/
 theorem projV_const : ∀ (a : Fin 48) (i : Fin 4),
     (∑ j : Fin 3, A10 a i j * c16 a j) + 16 * b10 a i = 16 * projVZ a i := by
-  decide
+  decide +kernel
 
 /-! ## The certificate -/
 

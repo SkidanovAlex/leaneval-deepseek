@@ -21,7 +21,6 @@ import Submission.Work.Cusp.Basic
 import Submission.Work.Cusp.ThetaPolarS_continuousOn
 import Submission.Work.Cusp.isOpen_wedgeS
 import Submission.Work.Cusp.nrm_continuous
-import Submission.Work.Cusp.isOpen_nrm_gt
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

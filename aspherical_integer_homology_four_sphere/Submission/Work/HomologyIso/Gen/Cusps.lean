@@ -109,15 +109,16 @@ def cusp1Bd : ∀ k, SOp (cusp1Dim k) (cusp1Dim (k+1))
   | 2 => cusp1Bdtwo
   | _ => SOp.zero _ _
 
-theorem cusp1BdCheck_zero : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 0 = true := by decide
-theorem cusp1BdCheck_one : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 1 = true := by decide
-theorem cusp1BdCheck_two : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 2 = true := by decide
-theorem cusp1BdCheck_three : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 3 = true := by decide
+theorem cusp1BdCheck_zero : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 0 = true := by decide +kernel
+theorem cusp1BdCheck_one : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 1 = true := by decide +kernel
+theorem cusp1BdCheck_two : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 2 = true := by decide +kernel
+theorem cusp1BdCheck_three : FinChainCx.bdCheckDeg cusp1Dim cusp1Bd 3 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem cusp1BdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg cusp1Dim cusp1Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp1BdCheck_zero, cusp1BdCheck_one, cusp1BdCheck_two, cusp1BdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def cusp1Cx : FinChainCx where
@@ -305,39 +306,43 @@ def cusp1SDR : SDR cusp1Cx where
   dim_zero := fun k hk => cusp1Dim_eq_zero k hk
   b_zero := fun k hk => cusp1B_eq_zero k hk
 
-theorem cusp1SDR_checkHomZero : cusp1SDR.checkHomZero = true := by decide
+theorem cusp1SDR_checkHomZero : cusp1SDR.checkHomZero = true := by decide +kernel
 
-theorem cusp1SDR_checkZ_zero : cusp1SDR.checkZ 0 = true := by decide
-theorem cusp1SDR_checkZ_one : cusp1SDR.checkZ 1 = true := by decide
-theorem cusp1SDR_checkZ_two : cusp1SDR.checkZ 2 = true := by decide
-theorem cusp1SDR_checkZ_three : cusp1SDR.checkZ 3 = true := by decide
+theorem cusp1SDR_checkZ_zero : cusp1SDR.checkZ 0 = true := by decide +kernel
+theorem cusp1SDR_checkZ_one : cusp1SDR.checkZ 1 = true := by decide +kernel
+theorem cusp1SDR_checkZ_two : cusp1SDR.checkZ 2 = true := by decide +kernel
+theorem cusp1SDR_checkZ_three : cusp1SDR.checkZ 3 = true := by decide +kernel
 
 theorem cusp1SDR_checkZ (k : ℕ) (hk : k < 4) : cusp1SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp1SDR_checkZ_zero, cusp1SDR_checkZ_one, cusp1SDR_checkZ_two, cusp1SDR_checkZ_three]
 
-theorem cusp1SDR_checkRho_zero : cusp1SDR.checkRho 0 = true := by decide
-theorem cusp1SDR_checkRho_one : cusp1SDR.checkRho 1 = true := by decide
-theorem cusp1SDR_checkRho_two : cusp1SDR.checkRho 2 = true := by decide
-theorem cusp1SDR_checkRho_three : cusp1SDR.checkRho 3 = true := by decide
+theorem cusp1SDR_checkRho_zero : cusp1SDR.checkRho 0 = true := by decide +kernel
+theorem cusp1SDR_checkRho_one : cusp1SDR.checkRho 1 = true := by decide +kernel
+theorem cusp1SDR_checkRho_two : cusp1SDR.checkRho 2 = true := by decide +kernel
+theorem cusp1SDR_checkRho_three : cusp1SDR.checkRho 3 = true := by decide +kernel
 
 theorem cusp1SDR_checkRho (k : ℕ) (hk : k < 4) : cusp1SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp1SDR_checkRho_zero, cusp1SDR_checkRho_one, cusp1SDR_checkRho_two, cusp1SDR_checkRho_three]
 
-theorem cusp1SDR_checkRhoZ_zero : cusp1SDR.checkRhoZ 0 = true := by decide
-theorem cusp1SDR_checkRhoZ_one : cusp1SDR.checkRhoZ 1 = true := by decide
-theorem cusp1SDR_checkRhoZ_two : cusp1SDR.checkRhoZ 2 = true := by decide
-theorem cusp1SDR_checkRhoZ_three : cusp1SDR.checkRhoZ 3 = true := by decide
+theorem cusp1SDR_checkRhoZ_zero : cusp1SDR.checkRhoZ 0 = true := by decide +kernel
+theorem cusp1SDR_checkRhoZ_one : cusp1SDR.checkRhoZ 1 = true := by decide +kernel
+theorem cusp1SDR_checkRhoZ_two : cusp1SDR.checkRhoZ 2 = true := by decide +kernel
+theorem cusp1SDR_checkRhoZ_three : cusp1SDR.checkRhoZ 3 = true := by decide +kernel
 
 theorem cusp1SDR_checkRhoZ (k : ℕ) (hk : k < 4) : cusp1SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp1SDR_checkRhoZ_zero, cusp1SDR_checkRhoZ_one, cusp1SDR_checkRhoZ_two, cusp1SDR_checkRhoZ_three]
 
-theorem cusp1SDR_checkHom_zero : cusp1SDR.checkHom 0 = true := by decide
-theorem cusp1SDR_checkHom_one : cusp1SDR.checkHom 1 = true := by decide
-theorem cusp1SDR_checkHom_two : cusp1SDR.checkHom 2 = true := by decide
-theorem cusp1SDR_checkHom_three : cusp1SDR.checkHom 3 = true := by decide
+theorem cusp1SDR_checkHom_zero : cusp1SDR.checkHom 0 = true := by decide +kernel
+theorem cusp1SDR_checkHom_one : cusp1SDR.checkHom 1 = true := by decide +kernel
+theorem cusp1SDR_checkHom_two : cusp1SDR.checkHom 2 = true := by decide +kernel
+theorem cusp1SDR_checkHom_three : cusp1SDR.checkHom 3 = true := by decide +kernel
 
 theorem cusp1SDR_checkHom (k : ℕ) (hk : k < 4) : cusp1SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp1SDR_checkHom_zero, cusp1SDR_checkHom_one, cusp1SDR_checkHom_two, cusp1SDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem cusp1SDR_check : cusp1SDR.check = true :=
@@ -423,15 +428,16 @@ def cusp2Bd : ∀ k, SOp (cusp2Dim k) (cusp2Dim (k+1))
   | 2 => cusp2Bdtwo
   | _ => SOp.zero _ _
 
-theorem cusp2BdCheck_zero : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 0 = true := by decide
-theorem cusp2BdCheck_one : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 1 = true := by decide
-theorem cusp2BdCheck_two : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 2 = true := by decide
-theorem cusp2BdCheck_three : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 3 = true := by decide
+theorem cusp2BdCheck_zero : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 0 = true := by decide +kernel
+theorem cusp2BdCheck_one : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 1 = true := by decide +kernel
+theorem cusp2BdCheck_two : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 2 = true := by decide +kernel
+theorem cusp2BdCheck_three : FinChainCx.bdCheckDeg cusp2Dim cusp2Bd 3 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem cusp2BdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg cusp2Dim cusp2Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp2BdCheck_zero, cusp2BdCheck_one, cusp2BdCheck_two, cusp2BdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def cusp2Cx : FinChainCx where
@@ -619,39 +625,43 @@ def cusp2SDR : SDR cusp2Cx where
   dim_zero := fun k hk => cusp2Dim_eq_zero k hk
   b_zero := fun k hk => cusp2B_eq_zero k hk
 
-theorem cusp2SDR_checkHomZero : cusp2SDR.checkHomZero = true := by decide
+theorem cusp2SDR_checkHomZero : cusp2SDR.checkHomZero = true := by decide +kernel
 
-theorem cusp2SDR_checkZ_zero : cusp2SDR.checkZ 0 = true := by decide
-theorem cusp2SDR_checkZ_one : cusp2SDR.checkZ 1 = true := by decide
-theorem cusp2SDR_checkZ_two : cusp2SDR.checkZ 2 = true := by decide
-theorem cusp2SDR_checkZ_three : cusp2SDR.checkZ 3 = true := by decide
+theorem cusp2SDR_checkZ_zero : cusp2SDR.checkZ 0 = true := by decide +kernel
+theorem cusp2SDR_checkZ_one : cusp2SDR.checkZ 1 = true := by decide +kernel
+theorem cusp2SDR_checkZ_two : cusp2SDR.checkZ 2 = true := by decide +kernel
+theorem cusp2SDR_checkZ_three : cusp2SDR.checkZ 3 = true := by decide +kernel
 
 theorem cusp2SDR_checkZ (k : ℕ) (hk : k < 4) : cusp2SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp2SDR_checkZ_zero, cusp2SDR_checkZ_one, cusp2SDR_checkZ_two, cusp2SDR_checkZ_three]
 
-theorem cusp2SDR_checkRho_zero : cusp2SDR.checkRho 0 = true := by decide
-theorem cusp2SDR_checkRho_one : cusp2SDR.checkRho 1 = true := by decide
-theorem cusp2SDR_checkRho_two : cusp2SDR.checkRho 2 = true := by decide
-theorem cusp2SDR_checkRho_three : cusp2SDR.checkRho 3 = true := by decide
+theorem cusp2SDR_checkRho_zero : cusp2SDR.checkRho 0 = true := by decide +kernel
+theorem cusp2SDR_checkRho_one : cusp2SDR.checkRho 1 = true := by decide +kernel
+theorem cusp2SDR_checkRho_two : cusp2SDR.checkRho 2 = true := by decide +kernel
+theorem cusp2SDR_checkRho_three : cusp2SDR.checkRho 3 = true := by decide +kernel
 
 theorem cusp2SDR_checkRho (k : ℕ) (hk : k < 4) : cusp2SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp2SDR_checkRho_zero, cusp2SDR_checkRho_one, cusp2SDR_checkRho_two, cusp2SDR_checkRho_three]
 
-theorem cusp2SDR_checkRhoZ_zero : cusp2SDR.checkRhoZ 0 = true := by decide
-theorem cusp2SDR_checkRhoZ_one : cusp2SDR.checkRhoZ 1 = true := by decide
-theorem cusp2SDR_checkRhoZ_two : cusp2SDR.checkRhoZ 2 = true := by decide
-theorem cusp2SDR_checkRhoZ_three : cusp2SDR.checkRhoZ 3 = true := by decide
+theorem cusp2SDR_checkRhoZ_zero : cusp2SDR.checkRhoZ 0 = true := by decide +kernel
+theorem cusp2SDR_checkRhoZ_one : cusp2SDR.checkRhoZ 1 = true := by decide +kernel
+theorem cusp2SDR_checkRhoZ_two : cusp2SDR.checkRhoZ 2 = true := by decide +kernel
+theorem cusp2SDR_checkRhoZ_three : cusp2SDR.checkRhoZ 3 = true := by decide +kernel
 
 theorem cusp2SDR_checkRhoZ (k : ℕ) (hk : k < 4) : cusp2SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp2SDR_checkRhoZ_zero, cusp2SDR_checkRhoZ_one, cusp2SDR_checkRhoZ_two, cusp2SDR_checkRhoZ_three]
 
-theorem cusp2SDR_checkHom_zero : cusp2SDR.checkHom 0 = true := by decide
-theorem cusp2SDR_checkHom_one : cusp2SDR.checkHom 1 = true := by decide
-theorem cusp2SDR_checkHom_two : cusp2SDR.checkHom 2 = true := by decide
-theorem cusp2SDR_checkHom_three : cusp2SDR.checkHom 3 = true := by decide
+theorem cusp2SDR_checkHom_zero : cusp2SDR.checkHom 0 = true := by decide +kernel
+theorem cusp2SDR_checkHom_one : cusp2SDR.checkHom 1 = true := by decide +kernel
+theorem cusp2SDR_checkHom_two : cusp2SDR.checkHom 2 = true := by decide +kernel
+theorem cusp2SDR_checkHom_three : cusp2SDR.checkHom 3 = true := by decide +kernel
 
 theorem cusp2SDR_checkHom (k : ℕ) (hk : k < 4) : cusp2SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp2SDR_checkHom_zero, cusp2SDR_checkHom_one, cusp2SDR_checkHom_two, cusp2SDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem cusp2SDR_check : cusp2SDR.check = true :=
@@ -736,15 +746,16 @@ def cusp3Bd : ∀ k, SOp (cusp3Dim k) (cusp3Dim (k+1))
   | 2 => cusp3Bdtwo
   | _ => SOp.zero _ _
 
-theorem cusp3BdCheck_zero : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 0 = true := by decide
-theorem cusp3BdCheck_one : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 1 = true := by decide
-theorem cusp3BdCheck_two : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 2 = true := by decide
-theorem cusp3BdCheck_three : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 3 = true := by decide
+theorem cusp3BdCheck_zero : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 0 = true := by decide +kernel
+theorem cusp3BdCheck_one : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 1 = true := by decide +kernel
+theorem cusp3BdCheck_two : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 2 = true := by decide +kernel
+theorem cusp3BdCheck_three : FinChainCx.bdCheckDeg cusp3Dim cusp3Bd 3 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem cusp3BdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg cusp3Dim cusp3Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp3BdCheck_zero, cusp3BdCheck_one, cusp3BdCheck_two, cusp3BdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def cusp3Cx : FinChainCx where
@@ -932,39 +943,43 @@ def cusp3SDR : SDR cusp3Cx where
   dim_zero := fun k hk => cusp3Dim_eq_zero k hk
   b_zero := fun k hk => cusp3B_eq_zero k hk
 
-theorem cusp3SDR_checkHomZero : cusp3SDR.checkHomZero = true := by decide
+theorem cusp3SDR_checkHomZero : cusp3SDR.checkHomZero = true := by decide +kernel
 
-theorem cusp3SDR_checkZ_zero : cusp3SDR.checkZ 0 = true := by decide
-theorem cusp3SDR_checkZ_one : cusp3SDR.checkZ 1 = true := by decide
-theorem cusp3SDR_checkZ_two : cusp3SDR.checkZ 2 = true := by decide
-theorem cusp3SDR_checkZ_three : cusp3SDR.checkZ 3 = true := by decide
+theorem cusp3SDR_checkZ_zero : cusp3SDR.checkZ 0 = true := by decide +kernel
+theorem cusp3SDR_checkZ_one : cusp3SDR.checkZ 1 = true := by decide +kernel
+theorem cusp3SDR_checkZ_two : cusp3SDR.checkZ 2 = true := by decide +kernel
+theorem cusp3SDR_checkZ_three : cusp3SDR.checkZ 3 = true := by decide +kernel
 
 theorem cusp3SDR_checkZ (k : ℕ) (hk : k < 4) : cusp3SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp3SDR_checkZ_zero, cusp3SDR_checkZ_one, cusp3SDR_checkZ_two, cusp3SDR_checkZ_three]
 
-theorem cusp3SDR_checkRho_zero : cusp3SDR.checkRho 0 = true := by decide
-theorem cusp3SDR_checkRho_one : cusp3SDR.checkRho 1 = true := by decide
-theorem cusp3SDR_checkRho_two : cusp3SDR.checkRho 2 = true := by decide
-theorem cusp3SDR_checkRho_three : cusp3SDR.checkRho 3 = true := by decide
+theorem cusp3SDR_checkRho_zero : cusp3SDR.checkRho 0 = true := by decide +kernel
+theorem cusp3SDR_checkRho_one : cusp3SDR.checkRho 1 = true := by decide +kernel
+theorem cusp3SDR_checkRho_two : cusp3SDR.checkRho 2 = true := by decide +kernel
+theorem cusp3SDR_checkRho_three : cusp3SDR.checkRho 3 = true := by decide +kernel
 
 theorem cusp3SDR_checkRho (k : ℕ) (hk : k < 4) : cusp3SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp3SDR_checkRho_zero, cusp3SDR_checkRho_one, cusp3SDR_checkRho_two, cusp3SDR_checkRho_three]
 
-theorem cusp3SDR_checkRhoZ_zero : cusp3SDR.checkRhoZ 0 = true := by decide
-theorem cusp3SDR_checkRhoZ_one : cusp3SDR.checkRhoZ 1 = true := by decide
-theorem cusp3SDR_checkRhoZ_two : cusp3SDR.checkRhoZ 2 = true := by decide
-theorem cusp3SDR_checkRhoZ_three : cusp3SDR.checkRhoZ 3 = true := by decide
+theorem cusp3SDR_checkRhoZ_zero : cusp3SDR.checkRhoZ 0 = true := by decide +kernel
+theorem cusp3SDR_checkRhoZ_one : cusp3SDR.checkRhoZ 1 = true := by decide +kernel
+theorem cusp3SDR_checkRhoZ_two : cusp3SDR.checkRhoZ 2 = true := by decide +kernel
+theorem cusp3SDR_checkRhoZ_three : cusp3SDR.checkRhoZ 3 = true := by decide +kernel
 
 theorem cusp3SDR_checkRhoZ (k : ℕ) (hk : k < 4) : cusp3SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp3SDR_checkRhoZ_zero, cusp3SDR_checkRhoZ_one, cusp3SDR_checkRhoZ_two, cusp3SDR_checkRhoZ_three]
 
-theorem cusp3SDR_checkHom_zero : cusp3SDR.checkHom 0 = true := by decide
-theorem cusp3SDR_checkHom_one : cusp3SDR.checkHom 1 = true := by decide
-theorem cusp3SDR_checkHom_two : cusp3SDR.checkHom 2 = true := by decide
-theorem cusp3SDR_checkHom_three : cusp3SDR.checkHom 3 = true := by decide
+theorem cusp3SDR_checkHom_zero : cusp3SDR.checkHom 0 = true := by decide +kernel
+theorem cusp3SDR_checkHom_one : cusp3SDR.checkHom 1 = true := by decide +kernel
+theorem cusp3SDR_checkHom_two : cusp3SDR.checkHom 2 = true := by decide +kernel
+theorem cusp3SDR_checkHom_three : cusp3SDR.checkHom 3 = true := by decide +kernel
 
 theorem cusp3SDR_checkHom (k : ℕ) (hk : k < 4) : cusp3SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp3SDR_checkHom_zero, cusp3SDR_checkHom_one, cusp3SDR_checkHom_two, cusp3SDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem cusp3SDR_check : cusp3SDR.check = true :=
@@ -1049,15 +1064,16 @@ def cusp4Bd : ∀ k, SOp (cusp4Dim k) (cusp4Dim (k+1))
   | 2 => cusp4Bdtwo
   | _ => SOp.zero _ _
 
-theorem cusp4BdCheck_zero : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 0 = true := by decide
-theorem cusp4BdCheck_one : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 1 = true := by decide
-theorem cusp4BdCheck_two : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 2 = true := by decide
-theorem cusp4BdCheck_three : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 3 = true := by decide
+theorem cusp4BdCheck_zero : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 0 = true := by decide +kernel
+theorem cusp4BdCheck_one : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 1 = true := by decide +kernel
+theorem cusp4BdCheck_two : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 2 = true := by decide +kernel
+theorem cusp4BdCheck_three : FinChainCx.bdCheckDeg cusp4Dim cusp4Bd 3 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem cusp4BdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg cusp4Dim cusp4Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp4BdCheck_zero, cusp4BdCheck_one, cusp4BdCheck_two, cusp4BdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def cusp4Cx : FinChainCx where
@@ -1245,39 +1261,43 @@ def cusp4SDR : SDR cusp4Cx where
   dim_zero := fun k hk => cusp4Dim_eq_zero k hk
   b_zero := fun k hk => cusp4B_eq_zero k hk
 
-theorem cusp4SDR_checkHomZero : cusp4SDR.checkHomZero = true := by decide
+theorem cusp4SDR_checkHomZero : cusp4SDR.checkHomZero = true := by decide +kernel
 
-theorem cusp4SDR_checkZ_zero : cusp4SDR.checkZ 0 = true := by decide
-theorem cusp4SDR_checkZ_one : cusp4SDR.checkZ 1 = true := by decide
-theorem cusp4SDR_checkZ_two : cusp4SDR.checkZ 2 = true := by decide
-theorem cusp4SDR_checkZ_three : cusp4SDR.checkZ 3 = true := by decide
+theorem cusp4SDR_checkZ_zero : cusp4SDR.checkZ 0 = true := by decide +kernel
+theorem cusp4SDR_checkZ_one : cusp4SDR.checkZ 1 = true := by decide +kernel
+theorem cusp4SDR_checkZ_two : cusp4SDR.checkZ 2 = true := by decide +kernel
+theorem cusp4SDR_checkZ_three : cusp4SDR.checkZ 3 = true := by decide +kernel
 
 theorem cusp4SDR_checkZ (k : ℕ) (hk : k < 4) : cusp4SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp4SDR_checkZ_zero, cusp4SDR_checkZ_one, cusp4SDR_checkZ_two, cusp4SDR_checkZ_three]
 
-theorem cusp4SDR_checkRho_zero : cusp4SDR.checkRho 0 = true := by decide
-theorem cusp4SDR_checkRho_one : cusp4SDR.checkRho 1 = true := by decide
-theorem cusp4SDR_checkRho_two : cusp4SDR.checkRho 2 = true := by decide
-theorem cusp4SDR_checkRho_three : cusp4SDR.checkRho 3 = true := by decide
+theorem cusp4SDR_checkRho_zero : cusp4SDR.checkRho 0 = true := by decide +kernel
+theorem cusp4SDR_checkRho_one : cusp4SDR.checkRho 1 = true := by decide +kernel
+theorem cusp4SDR_checkRho_two : cusp4SDR.checkRho 2 = true := by decide +kernel
+theorem cusp4SDR_checkRho_three : cusp4SDR.checkRho 3 = true := by decide +kernel
 
 theorem cusp4SDR_checkRho (k : ℕ) (hk : k < 4) : cusp4SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp4SDR_checkRho_zero, cusp4SDR_checkRho_one, cusp4SDR_checkRho_two, cusp4SDR_checkRho_three]
 
-theorem cusp4SDR_checkRhoZ_zero : cusp4SDR.checkRhoZ 0 = true := by decide
-theorem cusp4SDR_checkRhoZ_one : cusp4SDR.checkRhoZ 1 = true := by decide
-theorem cusp4SDR_checkRhoZ_two : cusp4SDR.checkRhoZ 2 = true := by decide
-theorem cusp4SDR_checkRhoZ_three : cusp4SDR.checkRhoZ 3 = true := by decide
+theorem cusp4SDR_checkRhoZ_zero : cusp4SDR.checkRhoZ 0 = true := by decide +kernel
+theorem cusp4SDR_checkRhoZ_one : cusp4SDR.checkRhoZ 1 = true := by decide +kernel
+theorem cusp4SDR_checkRhoZ_two : cusp4SDR.checkRhoZ 2 = true := by decide +kernel
+theorem cusp4SDR_checkRhoZ_three : cusp4SDR.checkRhoZ 3 = true := by decide +kernel
 
 theorem cusp4SDR_checkRhoZ (k : ℕ) (hk : k < 4) : cusp4SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp4SDR_checkRhoZ_zero, cusp4SDR_checkRhoZ_one, cusp4SDR_checkRhoZ_two, cusp4SDR_checkRhoZ_three]
 
-theorem cusp4SDR_checkHom_zero : cusp4SDR.checkHom 0 = true := by decide
-theorem cusp4SDR_checkHom_one : cusp4SDR.checkHom 1 = true := by decide
-theorem cusp4SDR_checkHom_two : cusp4SDR.checkHom 2 = true := by decide
-theorem cusp4SDR_checkHom_three : cusp4SDR.checkHom 3 = true := by decide
+theorem cusp4SDR_checkHom_zero : cusp4SDR.checkHom 0 = true := by decide +kernel
+theorem cusp4SDR_checkHom_one : cusp4SDR.checkHom 1 = true := by decide +kernel
+theorem cusp4SDR_checkHom_two : cusp4SDR.checkHom 2 = true := by decide +kernel
+theorem cusp4SDR_checkHom_three : cusp4SDR.checkHom 3 = true := by decide +kernel
 
 theorem cusp4SDR_checkHom (k : ℕ) (hk : k < 4) : cusp4SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp4SDR_checkHom_zero, cusp4SDR_checkHom_one, cusp4SDR_checkHom_two, cusp4SDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem cusp4SDR_check : cusp4SDR.check = true :=
@@ -1558,15 +1578,16 @@ def cusp5Bd : ∀ k, SOp (cusp5Dim k) (cusp5Dim (k+1))
   | 2 => cusp5Bdtwo
   | _ => SOp.zero _ _
 
-theorem cusp5BdCheck_zero : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 0 = true := by decide
-theorem cusp5BdCheck_one : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 1 = true := by decide
-theorem cusp5BdCheck_two : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 2 = true := by decide
-theorem cusp5BdCheck_three : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 3 = true := by decide
+theorem cusp5BdCheck_zero : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 0 = true := by decide +kernel
+theorem cusp5BdCheck_one : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 1 = true := by decide +kernel
+theorem cusp5BdCheck_two : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 2 = true := by decide +kernel
+theorem cusp5BdCheck_three : FinChainCx.bdCheckDeg cusp5Dim cusp5Bd 3 = true := by decide +kernel
 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem cusp5BdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg cusp5Dim cusp5Bd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp5BdCheck_zero, cusp5BdCheck_one, cusp5BdCheck_two, cusp5BdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def cusp5Cx : FinChainCx where
@@ -2202,39 +2223,43 @@ def cusp5SDR : SDR cusp5Cx where
   dim_zero := fun k hk => cusp5Dim_eq_zero k hk
   b_zero := fun k hk => cusp5B_eq_zero k hk
 
-theorem cusp5SDR_checkHomZero : cusp5SDR.checkHomZero = true := by decide
+theorem cusp5SDR_checkHomZero : cusp5SDR.checkHomZero = true := by decide +kernel
 
-theorem cusp5SDR_checkZ_zero : cusp5SDR.checkZ 0 = true := by decide
-theorem cusp5SDR_checkZ_one : cusp5SDR.checkZ 1 = true := by decide
-theorem cusp5SDR_checkZ_two : cusp5SDR.checkZ 2 = true := by decide
-theorem cusp5SDR_checkZ_three : cusp5SDR.checkZ 3 = true := by decide
+theorem cusp5SDR_checkZ_zero : cusp5SDR.checkZ 0 = true := by decide +kernel
+theorem cusp5SDR_checkZ_one : cusp5SDR.checkZ 1 = true := by decide +kernel
+theorem cusp5SDR_checkZ_two : cusp5SDR.checkZ 2 = true := by decide +kernel
+theorem cusp5SDR_checkZ_three : cusp5SDR.checkZ 3 = true := by decide +kernel
 
 theorem cusp5SDR_checkZ (k : ℕ) (hk : k < 4) : cusp5SDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp5SDR_checkZ_zero, cusp5SDR_checkZ_one, cusp5SDR_checkZ_two, cusp5SDR_checkZ_three]
 
-theorem cusp5SDR_checkRho_zero : cusp5SDR.checkRho 0 = true := by decide
-theorem cusp5SDR_checkRho_one : cusp5SDR.checkRho 1 = true := by decide
-theorem cusp5SDR_checkRho_two : cusp5SDR.checkRho 2 = true := by decide
-theorem cusp5SDR_checkRho_three : cusp5SDR.checkRho 3 = true := by decide
+theorem cusp5SDR_checkRho_zero : cusp5SDR.checkRho 0 = true := by decide +kernel
+theorem cusp5SDR_checkRho_one : cusp5SDR.checkRho 1 = true := by decide +kernel
+theorem cusp5SDR_checkRho_two : cusp5SDR.checkRho 2 = true := by decide +kernel
+theorem cusp5SDR_checkRho_three : cusp5SDR.checkRho 3 = true := by decide +kernel
 
 theorem cusp5SDR_checkRho (k : ℕ) (hk : k < 4) : cusp5SDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp5SDR_checkRho_zero, cusp5SDR_checkRho_one, cusp5SDR_checkRho_two, cusp5SDR_checkRho_three]
 
-theorem cusp5SDR_checkRhoZ_zero : cusp5SDR.checkRhoZ 0 = true := by decide
-theorem cusp5SDR_checkRhoZ_one : cusp5SDR.checkRhoZ 1 = true := by decide
-theorem cusp5SDR_checkRhoZ_two : cusp5SDR.checkRhoZ 2 = true := by decide
-theorem cusp5SDR_checkRhoZ_three : cusp5SDR.checkRhoZ 3 = true := by decide
+theorem cusp5SDR_checkRhoZ_zero : cusp5SDR.checkRhoZ 0 = true := by decide +kernel
+theorem cusp5SDR_checkRhoZ_one : cusp5SDR.checkRhoZ 1 = true := by decide +kernel
+theorem cusp5SDR_checkRhoZ_two : cusp5SDR.checkRhoZ 2 = true := by decide +kernel
+theorem cusp5SDR_checkRhoZ_three : cusp5SDR.checkRhoZ 3 = true := by decide +kernel
 
 theorem cusp5SDR_checkRhoZ (k : ℕ) (hk : k < 4) : cusp5SDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp5SDR_checkRhoZ_zero, cusp5SDR_checkRhoZ_one, cusp5SDR_checkRhoZ_two, cusp5SDR_checkRhoZ_three]
 
-theorem cusp5SDR_checkHom_zero : cusp5SDR.checkHom 0 = true := by decide
-theorem cusp5SDR_checkHom_one : cusp5SDR.checkHom 1 = true := by decide
-theorem cusp5SDR_checkHom_two : cusp5SDR.checkHom 2 = true := by decide
-theorem cusp5SDR_checkHom_three : cusp5SDR.checkHom 3 = true := by decide
+theorem cusp5SDR_checkHom_zero : cusp5SDR.checkHom 0 = true := by decide +kernel
+theorem cusp5SDR_checkHom_one : cusp5SDR.checkHom 1 = true := by decide +kernel
+theorem cusp5SDR_checkHom_two : cusp5SDR.checkHom 2 = true := by decide +kernel
+theorem cusp5SDR_checkHom_three : cusp5SDR.checkHom 3 = true := by decide +kernel
 
 theorem cusp5SDR_checkHom (k : ℕ) (hk : k < 4) : cusp5SDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [cusp5SDR_checkHom_zero, cusp5SDR_checkHom_one, cusp5SDR_checkHom_two, cusp5SDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem cusp5SDR_check : cusp5SDR.check = true :=

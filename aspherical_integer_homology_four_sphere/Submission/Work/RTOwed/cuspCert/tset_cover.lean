@@ -65,13 +65,13 @@ theorem signVec_covGam (a : Fin 48) (e : Fin 8) :
     Work.FoldInst.signVec (covGam a e).1 = covS a e := by
   have h : ∀ i : Fin 4, covS a e i = (1 : ℤ) ∨ covS a e i = (-1 : ℤ) := by
     intro i
-    fin_cases a <;> fin_cases e <;> fin_cases i <;> decide
+    fin_cases a <;> fin_cases e <;> fin_cases i <;> decide +kernel
   exact signVec_toG_of (covS a e) h
 
 /-- The square of the entries of `covS a e` is `1`. -/
 theorem covS_sq (a : Fin 48) (e : Fin 8) (r : Fin 4) : (covS a e r : ℝ) ^ 2 = 1 := by
   have h : covS a e r = (1 : ℤ) ∨ covS a e r = (-1 : ℤ) := by
-    fin_cases a <;> fin_cases e <;> fin_cases r <;> decide
+    fin_cases a <;> fin_cases e <;> fin_cases r <;> decide +kernel
   rcases h with h | h <;> rw [h] <;> norm_num
 
 /-- `satOf` reads back the bits of the encoding `⟨a0 + 2 a1 + 4 a2, _⟩` of a `0/1` pattern. -/

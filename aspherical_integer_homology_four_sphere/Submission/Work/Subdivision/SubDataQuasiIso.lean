@@ -4,7 +4,6 @@ Released under Apache 2.0 license.
 -/
 import Mathlib
 import Submission.Work.Subdivision.SubDataSES
-import Submission.Work.Subdivision.quasiIso_tau2
 import Submission.Work.Subdivision.quasiIso_tau2_poly
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

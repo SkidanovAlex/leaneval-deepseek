@@ -118,7 +118,7 @@ theorem subdivCell_one_snoc (P : PolyCW) (e : P.Cell) (hd : P.dim e = 1)
 /-- A `1`-simplex is the cone of its first vertex with its last vertex. -/
 theorem snoc_vertex_self {α : Type*} [Preorder α] (s : Simplex α 1) :
     s = Simplex.snoc (Simplex.vertex (s 0)) (s (Fin.last 1))
-      (fun i => by rw [Simplex.vertex_apply]; exact s.strictMono (by decide)) := by
+      (fun i => by rw [Simplex.vertex_apply]; exact s.strictMono (by decide +kernel)) := by
   apply Simplex.ext
   intro i
   rcases Fin.eq_castSucc_or_eq_last i with ⟨j, rfl⟩ | rfl
@@ -237,7 +237,7 @@ theorem PsiM_edgeCell_expand (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < Work.Brid
       s ∈ ({eFlag0 v k hk, eFlag1 v k hk} : Finset (Simplex QbarCW.Cell 1)) := by
     intro s hs
     have hlt : s 0 < Mbar.rootCx 1 (edgeCell v 0 k) := by
-      rw [← hs]; exact s.strictMono (by decide)
+      rw [← hs]; exact s.strictMono (by decide +kernel)
     have hdim : QbarCW.dim (s 0) = 0 := by
       have h := QbarCW.dim_lt' hlt
       rw [Mbar.rootCx_dim 1 (edgeCell v 0 k)] at h

@@ -1,5 +1,4 @@
 import Submission.Work.RiemLib.EnergyRay
-import Submission.Work.RiemLib.Commons.Analysis.Calculus.eventually_differentiableAt_integral_of_contDiffOn
 import Submission.Work.RiemLib.Commons.Analysis.Calculus.eventually_differentiableAt_integral_of_continuousOn
 import Submission.Work.RiemLib.SmoothFieldCover
 import Submission.Work.RiemLib.GExpPieceData

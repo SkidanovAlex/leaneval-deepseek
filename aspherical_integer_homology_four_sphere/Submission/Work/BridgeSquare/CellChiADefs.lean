@@ -117,7 +117,7 @@ theorem topIdx_eNice1_aux : ∀ (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreL
 change. -/
 theorem eRootI_eq_faceAct_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     faceAct (esig v k) (edgeFace v 0 k) = eRootI v k := by
-  decide
+  decide +kernel
 
 theorem eRootI_eq_faceAct (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     faceAct (esig v k) (edgeFace v 0 k) = eRootI v k :=
@@ -126,7 +126,7 @@ theorem eRootI_eq_faceAct (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0
 /-- The node `(ebit v k, edgeFace v 0 k)` is the root node of the cell `edgeCell v 0 k`. -/
 theorem moCell_ebit_edgeFace_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     Mbar.moCell (ebit v k) (edgeFace v 0 k) = Mbar.moCid 1 (edgeCell v 0 k) := by
-  decide
+  decide +kernel
 
 theorem moCell_ebit_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     Mbar.moCell (ebit v k) (edgeFace v 0 k) = Mbar.moCid 1 (edgeCell v 0 k) :=
@@ -135,7 +135,7 @@ theorem moCell_ebit_edgeFace (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen 
 /-- The two facets of the root face are `eU0` and `eU1`. -/
 theorem facets_eRoot_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     QbarCW.facets (eRoot v k) = {eU0 v k, eU1 v k} := by
-  decide
+  decide +kernel
 
 theorem facets_eRoot (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     QbarCW.facets (eRoot v k) = {eU0 v k, eU1 v k} :=
@@ -152,7 +152,7 @@ theorem eU1_lt_eRoot (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
 /-- The two facets of the root face are distinct. -/
 theorem eU0_ne_eU1_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     eU0 v k ≠ eU1 v k := by
-  decide
+  decide +kernel
 
 theorem eU0_ne_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     eU0 v k ≠ eU1 v k := eU0_ne_eU1_aux v k hk
@@ -160,7 +160,7 @@ theorem eU0_ne_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
 /-- The two incidences at the root face are opposite. -/
 theorem qInc_eU1_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     qInc (eRootI v k) (eU1 v k).idx = -qInc (eRootI v k) (eU0 v k).idx := by
-  decide
+  decide +kernel
 
 theorem qInc_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     qInc (eRootI v k) (eU1 v k).idx = -qInc (eRootI v k) (eU0 v k).idx :=
@@ -169,7 +169,7 @@ theorem qInc_eU1 (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
 /-- The coefficient times the fibre-loop sign is the constant sign of the case. -/
 theorem eBeta_edgeSign_aux : ∀ (v : Fin 5) (k : Fin 4), (k : ℕ) < fibreLen v 0 →
     eBeta v k * edgeSign v 0 k = (if (v : ℕ) = 0 ∨ (v : ℕ) = 2 then (1 : ℤ) else -1) := by
-  decide
+  decide +kernel
 
 theorem eBeta_edgeSign (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
     eBeta v k * edgeSign v 0 k = (if (v : ℕ) = 0 ∨ (v : ℕ) = 2 then (1 : ℤ) else -1) :=
@@ -178,7 +178,7 @@ theorem eBeta_edgeSign (v : Fin 5) (k : Fin 4) (hk : (k : ℕ) < fibreLen v 0) :
 /-- The sign vanishes on the dummy edges. -/
 theorem edgeSign_zero_aux : ∀ (v : Fin 5) (k : Fin 4), ¬ (k : ℕ) < fibreLen v 0 →
     edgeSign v 0 k = 0 := by
-  decide
+  decide +kernel
 
 theorem edgeSign_zero (v : Fin 5) (k : Fin 4) (hk : ¬ (k : ℕ) < fibreLen v 0) :
     edgeSign v 0 k = 0 :=

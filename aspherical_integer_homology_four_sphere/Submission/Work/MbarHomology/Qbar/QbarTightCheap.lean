@@ -52,7 +52,7 @@ def qTightC (x : Fin 865) : Finset (Fin 48) := qTightDigits (qTightPack x)
 /-- The packed table computes the tight set of `Data/QbarFace.lean`. -/
 theorem qTightC_eq_all :
     ((List.finRange 865).all (fun x => decide (qTightC x = qTight x))) = true := by
-  decide
+  decide +kernel
 
 theorem qTightC_eq (x : Fin 865) : qTightC x = qTight x :=
   of_decide_eq_true (List.all_eq_true.mp qTightC_eq_all x (List.mem_finRange x))

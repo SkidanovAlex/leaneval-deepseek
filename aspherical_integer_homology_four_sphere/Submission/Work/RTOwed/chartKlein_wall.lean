@@ -283,7 +283,7 @@ theorem cwWallMat_pt : ∀ (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5)
     (chartMat (wallNb a i side) * cwT2 (wallLam a i side)) k j
       = ((2 : ℤ) • (cwDiagZ (wallGamK a i side) * chartMat a)) k j
         + cwA2 a i side k (cwI5 i) * cwFv a i side j := by
-  decide
+  decide +kernel
 
 /-- The real form of the finite verification. -/
 lemma cwWallR (a : Fin 48) (i : Fin 3) (side : Fin 2) (k j : Fin 5) :

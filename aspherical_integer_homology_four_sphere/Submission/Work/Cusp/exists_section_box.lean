@@ -1,9 +1,17 @@
 import Mathlib
 import Submission.Work.Cusp.Basic
 import Submission.Work.Cusp.wOf_add
-import Submission.Work.Cusp.wDet_ne_zero
-import Submission.Work.Cusp.ThetaPolar_injOn
+import Submission.Work.Cusp.Charts
 import Submission.Work.Cusp.invY_wOf
+import Submission.Work.Cusp.nrm_u_injOn
+import Submission.Work.Cusp.radial_eq_inner
+import Submission.Work.Cusp.radial_collar
+import Submission.Work.Cusp.collarHeight_half
+import Submission.Work.Cusp.collarHeight_pos
+import Submission.Work.Cusp.collarHeight_strictAntiOn
+import Submission.Work.Cusp.beta_pos
+import Submission.Work.Cusp.beta_le_max
+import Submission.Work.Cusp.betaMax_lt_sJ
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

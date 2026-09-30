@@ -22,7 +22,21 @@ The intended inhabitant, for the concrete `M̄` of the area `FoldInst`:
 -/
 import Mathlib
 import Submission.Work.FoldInst.Quotient
-import Submission.Work.Cusp.exists_tauHomeoMbar
+import Submission.Work.Cusp.Assembly
+import Submission.Work.Cusp.slope_lattice
+import Submission.Work.Cusp.mbarPt_periodic
+import Submission.Work.Cusp.TopBox
+import Submission.Work.Cusp.TopWindow
+import Submission.Work.Cusp.CuspCollarAux
+import Submission.Work.Cusp.beta_continuous
+import Submission.Work.Cusp.beta_pos
+import Submission.Work.Cusp.beta_le_max
+import Submission.Work.Cusp.beta_min_le
+import Submission.Work.Cusp.s1_lt_betaMin
+import Submission.Work.Cusp.mbarPt_eq_iff
+import Submission.Work.Cusp.cuspCoordM_continuous
+import Submission.Work.Cusp.TopLayer
+import Submission.Work.Cusp.cuspInvOuter_mem_SqTop
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

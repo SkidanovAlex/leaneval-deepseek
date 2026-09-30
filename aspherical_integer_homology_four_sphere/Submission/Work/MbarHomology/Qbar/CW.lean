@@ -39,7 +39,19 @@ open Work.Subdivision
 noncomputable section
 
 /-- Every face of `Q̄` is tight at most four of the `48` constraints. -/
-theorem qCard_le : ∀ f : Fin 865, (qTight f).card ≤ 4 := by decide
+theorem qCard_le_c0 : ∀ f : Fin 865, 0 ≤ f.val → f.val < 220 →  (qTight f).card ≤ 4 := by decide +kernel
+theorem qCard_le_c1 : ∀ f : Fin 865, 220 ≤ f.val → f.val < 440 →  (qTight f).card ≤ 4 := by decide +kernel
+theorem qCard_le_c2 : ∀ f : Fin 865, 440 ≤ f.val → f.val < 660 →  (qTight f).card ≤ 4 := by decide +kernel
+theorem qCard_le_c3 : ∀ f : Fin 865, 660 ≤ f.val →  (qTight f).card ≤ 4 := by decide +kernel
+theorem qCard_le : ∀ f : Fin 865, (qTight f).card ≤ 4 := by
+  intro f
+  by_cases h0 : f.val < 220
+  · exact qCard_le_c0 f (by omega) h0
+  by_cases h1 : f.val < 440
+  · exact qCard_le_c1 f (by omega) h1
+  by_cases h2 : f.val < 660
+  · exact qCard_le_c2 f (by omega) h2
+  exact qCard_le_c3 f (by omega)
 
 theorem qCard_le' (f : QbarCell) : (qTight f.idx).card ≤ 4 := qCard_le f.idx
 

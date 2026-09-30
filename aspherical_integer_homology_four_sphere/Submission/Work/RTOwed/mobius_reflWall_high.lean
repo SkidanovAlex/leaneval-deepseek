@@ -1,5 +1,34 @@
 import Mathlib
-import Submission.Work.HypModel.Main
+import Submission.Work.HypModel.Basic
+import Submission.Work.HypModel.Lorentz
+import Submission.Work.HypModel.lorentz_dHypOfUHS
+import Submission.Work.HypModel.hypOfUHS_four_pos
+import Submission.Work.HypModel.lorentz_hypOfUHS_self
+import Submission.Work.HypModel.four_pos_of_lorentz_pair_neg
+import Submission.Work.HypModel.hasFDerivAt_hypOfUHS
+import Submission.Work.HypModel.hasFDerivAt_uhsOfHyp
+import Submission.Work.HypModel.hypOfKlein_mem_upperSheet
+import Submission.Work.HypModel.hypOfKlein_injOn
+import Submission.Work.HypModel.hypOfKlein_kleinOfHyp
+import Submission.Work.HypModel.hypOfKlein_diagonal
+import Submission.Work.HypModel.hypOfKlein_segment_pos_combo
+import Submission.Work.HypModel.hypOfUHS_injOn
+import Submission.Work.HypModel.hypOfUHS_uhsOfHyp
+import Submission.Work.HypModel.uhsOfHyp_three_pos
+import Submission.Work.HypModel.isLorentzMat_uhsTranslation
+import Submission.Work.HypModel.kleinOfHyp_hypOfKlein
+import Submission.Work.HypModel.kleinOfHyp_mem_ball
+import Submission.Work.HypModel.mobiusKlein_isometry
+import Submission.Work.HypModel.mobiusKlein_mem
+import Submission.Work.HypModel.mobiusKlein_mul
+import Submission.Work.HypModel.mobius_contDiffOn
+import Submission.Work.HypModel.uhsOfHyp_hypOfUHS
+import Submission.Work.HypModel.mobius_isometry
+import Submission.Work.HypModel.mobius_mul
+import Submission.Work.HypModel.mobius_one
+import Submission.Work.HypModel.mobius_uhsTranslation
+import Submission.Work.HypModel.polarToUHS_isometry
+import Submission.Work.HypModel.tangent_hypOfUHS
 import Submission.Work.RTOwed.CuspRigid
 import Submission.Work.RTOwed.mobius_reflWall
 
@@ -161,8 +190,8 @@ lemma high_row_structure {A : Matrix (Fin 5) (Fin 5) ℝ} (k t : Fin 3) (c : ℝ
         A (f3to5 t) 3 = c * A (f3to5 t) (f3to5 k) :=
     fun i hi => high_rels k t c hW i hi
   fin_cases k
-  · have r1 := rel 1 (by decide)
-    have r2 := rel 2 (by decide)
+  · have r1 := rel 1 (by decide +kernel)
+    have r2 := rel 2 (by decide +kernel)
     have h1 : A (f3to5 t) 1 = 0 := by simpa using r1.1
     have h2 : A (f3to5 t) 2 = 0 := by simpa using r2.1
     have h34 : A (f3to5 t) 3 + A (f3to5 t) 4 = 0 := r1.2.1
@@ -171,8 +200,8 @@ lemma high_row_structure {A : Matrix (Fin 5) (Fin 5) ℝ} (k t : Fin 3) (c : ℝ
       intro j
       fin_cases j <;> simp [wallDual] <;> linarith
     simpa using key j
-  · have r1 := rel 0 (by decide)
-    have r2 := rel 2 (by decide)
+  · have r1 := rel 0 (by decide +kernel)
+    have r2 := rel 2 (by decide +kernel)
     have h0 : A (f3to5 t) 0 = 0 := by simpa using r1.1
     have h2 : A (f3to5 t) 2 = 0 := by simpa using r2.1
     have h34 : A (f3to5 t) 3 + A (f3to5 t) 4 = 0 := r1.2.1
@@ -181,8 +210,8 @@ lemma high_row_structure {A : Matrix (Fin 5) (Fin 5) ℝ} (k t : Fin 3) (c : ℝ
       intro j
       fin_cases j <;> simp [wallDual] <;> linarith
     simpa using key j
-  · have r1 := rel 0 (by decide)
-    have r2 := rel 1 (by decide)
+  · have r1 := rel 0 (by decide +kernel)
+    have r2 := rel 1 (by decide +kernel)
     have h0 : A (f3to5 t) 0 = 0 := by simpa using r1.1
     have h1 : A (f3to5 t) 1 = 0 := by simpa using r2.1
     have h34 : A (f3to5 t) 3 + A (f3to5 t) 4 = 0 := r1.2.1

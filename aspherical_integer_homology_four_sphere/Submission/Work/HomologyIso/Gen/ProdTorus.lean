@@ -118,7 +118,8 @@ theorem prodTorusBdCheck_three : FinChainCx.bdCheckDeg prodTorusDim prodTorusBd 
 /-- `∂ ∘ ∂ = 0`, checked one degree at a time. -/
 theorem prodTorusBdCheck (k : ℕ) (hk : k < 4) :
     FinChainCx.bdCheckDeg prodTorusDim prodTorusBd k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [prodTorusBdCheck_zero, prodTorusBdCheck_one, prodTorusBdCheck_two, prodTorusBdCheck_three]
 
 /-- **The cell complex** (a finite free `ℤ`-chain complex). -/
 def prodTorusCx : FinChainCx where
@@ -314,7 +315,8 @@ theorem prodTorusSDR_checkZ_two : prodTorusSDR.checkZ 2 = true := by decide
 theorem prodTorusSDR_checkZ_three : prodTorusSDR.checkZ 3 = true := by decide
 
 theorem prodTorusSDR_checkZ (k : ℕ) (hk : k < 4) : prodTorusSDR.checkZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [prodTorusSDR_checkZ_zero, prodTorusSDR_checkZ_one, prodTorusSDR_checkZ_two, prodTorusSDR_checkZ_three]
 
 theorem prodTorusSDR_checkRho_zero : prodTorusSDR.checkRho 0 = true := by decide
 theorem prodTorusSDR_checkRho_one : prodTorusSDR.checkRho 1 = true := by decide
@@ -322,7 +324,8 @@ theorem prodTorusSDR_checkRho_two : prodTorusSDR.checkRho 2 = true := by decide
 theorem prodTorusSDR_checkRho_three : prodTorusSDR.checkRho 3 = true := by decide
 
 theorem prodTorusSDR_checkRho (k : ℕ) (hk : k < 4) : prodTorusSDR.checkRho k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [prodTorusSDR_checkRho_zero, prodTorusSDR_checkRho_one, prodTorusSDR_checkRho_two, prodTorusSDR_checkRho_three]
 
 theorem prodTorusSDR_checkRhoZ_zero : prodTorusSDR.checkRhoZ 0 = true := by decide
 theorem prodTorusSDR_checkRhoZ_one : prodTorusSDR.checkRhoZ 1 = true := by decide
@@ -330,7 +333,8 @@ theorem prodTorusSDR_checkRhoZ_two : prodTorusSDR.checkRhoZ 2 = true := by decid
 theorem prodTorusSDR_checkRhoZ_three : prodTorusSDR.checkRhoZ 3 = true := by decide
 
 theorem prodTorusSDR_checkRhoZ (k : ℕ) (hk : k < 4) : prodTorusSDR.checkRhoZ k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [prodTorusSDR_checkRhoZ_zero, prodTorusSDR_checkRhoZ_one, prodTorusSDR_checkRhoZ_two, prodTorusSDR_checkRhoZ_three]
 
 theorem prodTorusSDR_checkHom_zero : prodTorusSDR.checkHom 0 = true := by decide
 theorem prodTorusSDR_checkHom_one : prodTorusSDR.checkHom 1 = true := by decide
@@ -338,7 +342,8 @@ theorem prodTorusSDR_checkHom_two : prodTorusSDR.checkHom 2 = true := by decide
 theorem prodTorusSDR_checkHom_three : prodTorusSDR.checkHom 3 = true := by decide
 
 theorem prodTorusSDR_checkHom (k : ℕ) (hk : k < 4) : prodTorusSDR.checkHom k = true := by
-  interval_cases k <;> (first | rfl | decide)
+  interval_cases k
+  exacts [prodTorusSDR_checkHom_zero, prodTorusSDR_checkHom_one, prodTorusSDR_checkHom_two, prodTorusSDR_checkHom_three]
 
 /-- **The certificate passes**: `∂Z = 0`, `ρ∂ = 0`, `ρZ = 1` and `1 - Zρ = ∂h + h∂`. -/
 theorem prodTorusSDR_check : prodTorusSDR.check = true :=

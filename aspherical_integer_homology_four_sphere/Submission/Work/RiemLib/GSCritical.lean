@@ -1,7 +1,7 @@
-import Submission.Work.RiemLib.GSBall
+import Submission.Work.RiemLib.HingeClosed
+import Submission.Work.RiemLib.Commons.Geometry.Sphere.modelDist_trig_le_pi_div_two
 import Submission.Work.RiemLib.GSConcave
 import Submission.Work.RiemLib.Commons.Geometry.Sphere.modelDist_cos
-import Submission.Work.RiemLib.Commons.Geometry.Sphere.modelDist_trig_le_pi_div_two
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

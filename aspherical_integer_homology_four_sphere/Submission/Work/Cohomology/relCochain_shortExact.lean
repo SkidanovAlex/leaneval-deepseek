@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.Cohomology.CupRing
 import Submission.Work.Cohomology.Pullback
 import Submission.Work.Cohomology.Singular
 import Submission.Work.Homology.SimplexShim

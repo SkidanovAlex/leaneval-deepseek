@@ -37,7 +37,6 @@ inputs left are the identifications of the specific faces (`bot` below, the wall
 import Mathlib
 import Submission.Work.BridgeSquare.PlaneAff
 import Submission.Work.BridgeSquare.ChartAlgA
-import Submission.Work.BridgeSquare.planeToSingD
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

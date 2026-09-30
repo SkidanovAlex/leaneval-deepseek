@@ -67,8 +67,29 @@ Everything here is axiom-clean (see `Submission/Work/LCSmooth/Axioms.lean`): the
 and *registers* the regularity of `lcConn` proved in `LeviCivita/`, and composes it with the
 delivered final chain.
 -/
-import Submission.Work.Final.All
-import Submission.Work.LeviCivita.All
+import Submission.Work.Final.Framework
+import Submission.Work.Final.Basic
+import Submission.Work.Final.Mhat
+import Submission.Work.Final.Homology
+import Submission.Work.Final.Cover
+import Submission.Work.Final.MhatCover
+import Submission.Work.Final.Main
+import Submission.Work.Final.mvRightX_zero_surjective
+import Submission.Work.Final.secNonpos_of_chartModels
+import Submission.Work.Final.curvLe_of_models
+import Submission.Work.Final.CurvField
+import Submission.Work.LeviCivita.Main
+import Submission.Work.LeviCivita.ChartMetric
+import Submission.Work.LeviCivita.FrameField
+import Submission.Work.LeviCivita.Koszul
+import Submission.Work.LeviCivita.Smooth
+import Submission.Work.LeviCivita.isInvertible_of_posDef
+import Submission.Work.LeviCivita.contDiffAt_chartGramCLM
+import Submission.Work.RiemLib.Commons.Geometry.Manifold.VectorField.mvfderiv_apply_contMDiff
+import Submission.Work.LeviCivita.contMDiffAt_chartGramCLM_inverse
+import Submission.Work.LeviCivita.contMDiffAt_lcConn_pairing
+import Submission.Work.LeviCivita.chartDg_eq_chartGram_chrB
+import Submission.Work.LeviCivita.chartLCcoords_eventuallyEq
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which

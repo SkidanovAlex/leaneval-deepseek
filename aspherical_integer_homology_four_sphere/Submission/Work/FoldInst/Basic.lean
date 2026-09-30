@@ -31,7 +31,36 @@ double cover, the quotient `M̄`, and the fold-chart data attached to the 98 fac
 * `FoldPiece.lean`, `FoldChart.lean`, `Cover.lean`: the fold charts of the blueprint's FOLD area.
 -/
 import Mathlib
-import Submission.Work.HypModel.Main
+import Submission.Work.HypModel.Basic
+import Submission.Work.HypModel.Lorentz
+import Submission.Work.HypModel.lorentz_dHypOfUHS
+import Submission.Work.HypModel.hypOfUHS_four_pos
+import Submission.Work.HypModel.lorentz_hypOfUHS_self
+import Submission.Work.HypModel.four_pos_of_lorentz_pair_neg
+import Submission.Work.HypModel.hasFDerivAt_hypOfUHS
+import Submission.Work.HypModel.hasFDerivAt_uhsOfHyp
+import Submission.Work.HypModel.hypOfKlein_mem_upperSheet
+import Submission.Work.HypModel.hypOfKlein_injOn
+import Submission.Work.HypModel.hypOfKlein_kleinOfHyp
+import Submission.Work.HypModel.hypOfKlein_diagonal
+import Submission.Work.HypModel.hypOfKlein_segment_pos_combo
+import Submission.Work.HypModel.hypOfUHS_injOn
+import Submission.Work.HypModel.hypOfUHS_uhsOfHyp
+import Submission.Work.HypModel.uhsOfHyp_three_pos
+import Submission.Work.HypModel.isLorentzMat_uhsTranslation
+import Submission.Work.HypModel.kleinOfHyp_hypOfKlein
+import Submission.Work.HypModel.kleinOfHyp_mem_ball
+import Submission.Work.HypModel.mobiusKlein_isometry
+import Submission.Work.HypModel.mobiusKlein_mem
+import Submission.Work.HypModel.mobiusKlein_mul
+import Submission.Work.HypModel.mobius_contDiffOn
+import Submission.Work.HypModel.uhsOfHyp_hypOfUHS
+import Submission.Work.HypModel.mobius_isometry
+import Submission.Work.HypModel.mobius_mul
+import Submission.Work.HypModel.mobius_one
+import Submission.Work.HypModel.mobius_uhsTranslation
+import Submission.Work.HypModel.polarToUHS_isometry
+import Submission.Work.HypModel.tangent_hypOfUHS
 import Submission.Work.FoldInst.Data
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

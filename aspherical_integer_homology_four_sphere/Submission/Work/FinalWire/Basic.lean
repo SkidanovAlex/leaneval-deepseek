@@ -41,12 +41,25 @@ Everything else — the per-cusp computations `eTorus` (`H_k(∂[-1,1]² × T²_
 the areas `PieceHomology` and `HomologyIso` and is *used* here, not restated.
 -/
 import Mathlib
-import Submission.Work.Final.All
-import Submission.Work.LCSmooth.All
+import Submission.Work.Final.Framework
+import Submission.Work.Final.Basic
+import Submission.Work.Final.Mhat
+import Submission.Work.Final.Homology
+import Submission.Work.Final.Cover
+import Submission.Work.Final.MhatCover
+import Submission.Work.Final.Main
+import Submission.Work.Final.mvRightX_zero_surjective
+import Submission.Work.Final.secNonpos_of_chartModels
+import Submission.Work.Final.curvLe_of_models
+import Submission.Work.Final.CurvField
+import Submission.Work.LCSmooth.Defs
+import Submission.Work.LCSmooth.Mhat
+import Submission.Work.RiemLib.ChartCurvCont
+import Submission.Work.RiemLib.CoeffSmooth2
 import Submission.Work.CurvModels.FinalBridge
 import Submission.Work.RTOwed.FinalInstance
 import Submission.Work.HomologyIso.Final
-import Submission.Work.PieceHomology.Main
+import Submission.Work.PieceHomology.Bridge
 import Submission.Work.PieceHomology.Concrete
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,

@@ -70,18 +70,45 @@ For every `x : Fin 865` with `(qTight x).card = 3` (that is, `x` is the index of
 
 The single `decide` runs over the `865` indices; for the `481` indices which are not
 edges the hypothesis is false and the kernel stops at the cardinality check. -/
+theorem qEdge_facet_data_c0 : ∀ x : Fin 865, 0 ≤ x.val → x.val < 220 →  (qTight x).card = 3 →
+    (qFacet x).card = 2 ∧
+    (qFacet x).filter (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+        QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ ∧
+    (∑ y ∈ qFacet x, qIncRow x y) = 0 := by decide +kernel
+theorem qEdge_facet_data_c1 : ∀ x : Fin 865, 220 ≤ x.val → x.val < 440 →  (qTight x).card = 3 →
+    (qFacet x).card = 2 ∧
+    (qFacet x).filter (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+        QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ ∧
+    (∑ y ∈ qFacet x, qIncRow x y) = 0 := by decide +kernel
+theorem qEdge_facet_data_c2 : ∀ x : Fin 865, 440 ≤ x.val → x.val < 660 →  (qTight x).card = 3 →
+    (qFacet x).card = 2 ∧
+    (qFacet x).filter (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+        QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ ∧
+    (∑ y ∈ qFacet x, qIncRow x y) = 0 := by decide +kernel
+theorem qEdge_facet_data_c3 : ∀ x : Fin 865, 660 ≤ x.val →  (qTight x).card = 3 →
+    (qFacet x).card = 2 ∧
+    (qFacet x).filter (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
+        QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ ∧
+    (∑ y ∈ qFacet x, qIncRow x y) = 0 := by decide +kernel
 theorem qEdge_facet_data : ∀ x : Fin 865, (qTight x).card = 3 →
     (qFacet x).card = 2 ∧
     (qFacet x).filter (fun y => ¬ ((⟨y⟩ : QbarCell) < (⟨x⟩ : QbarCell) ∧
         QbarCW.dim (⟨x⟩ : QbarCell) = QbarCW.dim (⟨y⟩ : QbarCell) + 1)) = ∅ ∧
     (∑ y ∈ qFacet x, qIncRow x y) = 0 := by
-  decide
+  intro x
+  by_cases h0 : x.val < 220
+  · exact qEdge_facet_data_c0 x (by omega) h0
+  by_cases h1 : x.val < 440
+  · exact qEdge_facet_data_c1 x (by omega) h1
+  by_cases h2 : x.val < 660
+  · exact qEdge_facet_data_c2 x (by omega) h2
+  exact qEdge_facet_data_c3 x (by omega)
 
 /-- Non-vacuity of the statement: `Q̄` has `384` edges (`1`-cells), and every edge has exactly
 two facets with opposite incidence numbers (`qEdge_facet_data`). -/
 theorem card_dim_one_cells :
     ((Finset.univ : Finset QbarCell).filter (fun e => QbarCW.dim e = 1)).card = 384 := by
-  decide
+  decide +kernel
 
 /-- For an edge `x` of `Q̄`, the sum of the incidence numbers over *all* facets of `x`
 equals the sum of the entries of the facet row `qFacet x` in the table `qIncRow`.

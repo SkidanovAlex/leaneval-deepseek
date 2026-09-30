@@ -266,10 +266,10 @@ def certPos (c e : ℤ) (l : Fin 3 → ℤ) : ℤ := 121 * c ^ 2 + 100 * c * e -
 def cert4 (a : Fin 48) : ℤ := certPos (Cq a 4) (Ck a 4) (Cl a 4)
 
 /-- The fourth chart coordinate is strictly positive: its certificate is. -/
-theorem cert4_pos : ∀ a : Fin 48, 0 < cert4 a := by decide
+theorem cert4_pos : ∀ a : Fin 48, 0 < cert4 a := by decide +kernel
 
 /-- The quadratic coefficient of the fourth chart coordinate is positive. -/
-theorem Cq4_pos : ∀ a : Fin 48, 0 < Cq a 4 := by decide
+theorem Cq4_pos : ∀ a : Fin 48, 0 < Cq a 4 := by decide +kernel
 
 /-! ## The bounds -/
 /-- The vertex bound of a one-variable quadratic with positive leading coefficient. -/
@@ -346,19 +346,19 @@ theorem chartVec4_pos (a : Fin 48) {x : CuspE3} (hx : x ∈ cubeBox a) {s : ℝ}
 
 /-- **The quadratic coefficient is negative** at the cube's own ideal vertex. -/
 theorem qtVert_neg : ∀ a : Fin 48, Qt a (cubeVert a) < 0 := by
-  decide
+  decide +kernel
 
 /-- **The linear coefficients vanish against the centre of the cube**: `l_j + c (2 lc_j + 1) = 0`. -/
 theorem ltVert_eq : ∀ (a : Fin 48) (j : Fin 3),
     Lt a (cubeVert a) j + Qt a (cubeVert a) * (2 * Work.Cusp.cubeCorner a j + 1) = 0 := by
-  decide
+  decide +kernel
 
 /-- **The constant coefficient is that of the hemisphere** (cleared of denominators):
 `4 e + 9 c - c ∑_j (2 lc_j + 1)² = 0`. -/
 theorem ktVert_eq : ∀ a : Fin 48,
     4 * Kt a (cubeVert a) + 9 * Qt a (cubeVert a)
       - Qt a (cubeVert a) * (∑ j : Fin 3, (2 * Work.Cusp.cubeCorner a j + 1) ^ 2) = 0 := by
-  decide
+  decide +kernel
 
 /-! ## The factorisation through the ceiling -/
 

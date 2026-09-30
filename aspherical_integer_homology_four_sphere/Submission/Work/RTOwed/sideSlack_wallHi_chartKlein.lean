@@ -47,7 +47,7 @@ theorem Nside_wallHi_cert : ∀ (a : Fin 48) (i : Fin 3),
     Qs a (wallHi a i) = 0
       ∧ (∀ j : Fin 3, j ≠ i → Ls a (wallHi a i) j = 0)
       ∧ Ls a (wallHi a i) i * ((Work.Cusp.cubeCorner a i : ℤ) + 1) + Ks a (wallHi a i) = 0 := by
-  decide
+  decide +kernel
 
 /-- **The side numerator on the high wall is affine in the single coordinate `x i`.** -/
 theorem Nside_wallHi_eq (a : Fin 48) (i : Fin 3) (x : CuspE3) (s : ℝ) :

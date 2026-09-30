@@ -340,16 +340,16 @@ theorem cert_flipCopy_copy :
     (∀ (i : Fin 98) (j : Fin 8),
       ((foldRepCopy (flipCopyI i j) (flipCopyJ i j) : ℤ) : ZMod 2) =
         ((foldRepCopy i j : ℤ) : ZMod 2) + 1) := by
-  decide
+  decide +kernel
 
 theorem cert_flipCopy_isReal :
     (∀ (i : Fin 98) (j : Fin 8), isReal (flipCopyI i j) (flipCopyJ i j) = true) := by
-  decide
+  decide +kernel
 
 theorem cert_flipCopy_mask :
     (∀ (i : Fin 98) (j : Fin 8), isReal i j = true →
       wallMask (flipCopyI i j) (flipCopyJ i j) = wallMask i j) := by
-  decide
+  decide +kernel
 
 /-- The bit mask of a representative's wall set is faithful: bit `S` is set exactly for the sides
 `S` that are walls of the representative. -/
