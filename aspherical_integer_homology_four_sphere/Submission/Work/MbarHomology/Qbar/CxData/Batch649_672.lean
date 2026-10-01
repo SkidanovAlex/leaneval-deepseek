@@ -19,6 +19,8 @@ import Submission.Work.Certificates.FinChainCx.bdCheck_of_pieces
 import Submission.Work.MbarHomology.Qbar.QbarCxCert
 import Submission.Work.MbarHomology.Qbar.cellLe_iso_finChainCx
 import Submission.Work.MbarHomology.Qbar.cellOf_surjective
+import Submission.Work.MbarHomology.Qbar.QbarTightMask
+import Submission.Work.MbarHomology.Qbar.bdOfEnumFast
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
@@ -60,8 +62,8 @@ theorem E649_nil2 : E649 2 = [] := rfl
 theorem E649_nil3 : E649 3 = [] := rfl
 theorem E649_nil4 : E649 4 = [] := rfl
 
-theorem E649_hE0 : E649 0 = dimListLe 649 0 := by decide +kernel
-theorem E649_hE1 : E649 1 = dimListLe 649 1 := by decide +kernel
+theorem E649_hE0 : E649 0 = dimListLe 649 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E649_hE1 : E649 1 = dimListLe 649 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E649_hE2 : E649 2 = dimListLe 649 2 := by
   rw [E649_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E649_hE3 : E649 3 = dimListLe 649 3 := by
@@ -161,11 +163,11 @@ def Cx649_bd : ∀ k, Work.Certificates.SOp ((E649 k).length) ((E649 (k+1)).leng
   | 3 => Cx649_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx649_bdEq0 : (Cx649_bd 0).eqb (bdOfEnum E649 0) = true := by decide +kernel
-theorem Cx649_bdEq1 : (Cx649_bd 1).eqb (bdOfEnum E649 1) = true := by decide +kernel
-theorem Cx649_bdEq2 : (Cx649_bd 2).eqb (bdOfEnum E649 2) = true := by decide +kernel
-theorem Cx649_bdEq3 : (Cx649_bd 3).eqb (bdOfEnum E649 3) = true := by decide +kernel
-theorem Cx649_bdEq4 : (Cx649_bd 4).eqb (bdOfEnum E649 4) = true := by decide +kernel
+theorem Cx649_bdEq0 : (Cx649_bd 0).eqb (bdOfEnum E649 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx649_bdEq1 : (Cx649_bd 1).eqb (bdOfEnum E649 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx649_bdEq2 : (Cx649_bd 2).eqb (bdOfEnum E649 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx649_bdEq3 : (Cx649_bd 3).eqb (bdOfEnum E649 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx649_bdEq4 : (Cx649_bd 4).eqb (bdOfEnum E649 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx649_bdEq (k : ℕ) (hk : k < 5) : (Cx649_bd k).eqb (bdOfEnum E649 k) = true := by
   interval_cases k
@@ -286,7 +288,7 @@ theorem E650_nil2 : E650 2 = [] := rfl
 theorem E650_nil3 : E650 3 = [] := rfl
 theorem E650_nil4 : E650 4 = [] := rfl
 
-theorem E650_hE0 : E650 0 = dimListLe 650 0 := by decide +kernel
+theorem E650_hE0 : E650 0 = dimListLe 650 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E650_hE1 : E650 1 = dimListLe 650 1 := by
   rw [E650_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E650_hE2 : E650 2 = dimListLe 650 2 := by
@@ -387,11 +389,11 @@ def Cx650_bd : ∀ k, Work.Certificates.SOp ((E650 k).length) ((E650 (k+1)).leng
   | 3 => Cx650_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx650_bdEq0 : (Cx650_bd 0).eqb (bdOfEnum E650 0) = true := by decide +kernel
-theorem Cx650_bdEq1 : (Cx650_bd 1).eqb (bdOfEnum E650 1) = true := by decide +kernel
-theorem Cx650_bdEq2 : (Cx650_bd 2).eqb (bdOfEnum E650 2) = true := by decide +kernel
-theorem Cx650_bdEq3 : (Cx650_bd 3).eqb (bdOfEnum E650 3) = true := by decide +kernel
-theorem Cx650_bdEq4 : (Cx650_bd 4).eqb (bdOfEnum E650 4) = true := by decide +kernel
+theorem Cx650_bdEq0 : (Cx650_bd 0).eqb (bdOfEnum E650 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx650_bdEq1 : (Cx650_bd 1).eqb (bdOfEnum E650 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx650_bdEq2 : (Cx650_bd 2).eqb (bdOfEnum E650 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx650_bdEq3 : (Cx650_bd 3).eqb (bdOfEnum E650 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx650_bdEq4 : (Cx650_bd 4).eqb (bdOfEnum E650 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx650_bdEq (k : ℕ) (hk : k < 5) : (Cx650_bd k).eqb (bdOfEnum E650 k) = true := by
   interval_cases k
@@ -510,7 +512,7 @@ theorem E651_nil2 : E651 2 = [] := rfl
 theorem E651_nil3 : E651 3 = [] := rfl
 theorem E651_nil4 : E651 4 = [] := rfl
 
-theorem E651_hE0 : E651 0 = dimListLe 651 0 := by decide +kernel
+theorem E651_hE0 : E651 0 = dimListLe 651 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E651_hE1 : E651 1 = dimListLe 651 1 := by
   rw [E651_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E651_hE2 : E651 2 = dimListLe 651 2 := by
@@ -611,11 +613,11 @@ def Cx651_bd : ∀ k, Work.Certificates.SOp ((E651 k).length) ((E651 (k+1)).leng
   | 3 => Cx651_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx651_bdEq0 : (Cx651_bd 0).eqb (bdOfEnum E651 0) = true := by decide +kernel
-theorem Cx651_bdEq1 : (Cx651_bd 1).eqb (bdOfEnum E651 1) = true := by decide +kernel
-theorem Cx651_bdEq2 : (Cx651_bd 2).eqb (bdOfEnum E651 2) = true := by decide +kernel
-theorem Cx651_bdEq3 : (Cx651_bd 3).eqb (bdOfEnum E651 3) = true := by decide +kernel
-theorem Cx651_bdEq4 : (Cx651_bd 4).eqb (bdOfEnum E651 4) = true := by decide +kernel
+theorem Cx651_bdEq0 : (Cx651_bd 0).eqb (bdOfEnum E651 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx651_bdEq1 : (Cx651_bd 1).eqb (bdOfEnum E651 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx651_bdEq2 : (Cx651_bd 2).eqb (bdOfEnum E651 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx651_bdEq3 : (Cx651_bd 3).eqb (bdOfEnum E651 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx651_bdEq4 : (Cx651_bd 4).eqb (bdOfEnum E651 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx651_bdEq (k : ℕ) (hk : k < 5) : (Cx651_bd k).eqb (bdOfEnum E651 k) = true := by
   interval_cases k
@@ -733,8 +735,8 @@ theorem E652_nil2 : E652 2 = [] := rfl
 theorem E652_nil3 : E652 3 = [] := rfl
 theorem E652_nil4 : E652 4 = [] := rfl
 
-theorem E652_hE0 : E652 0 = dimListLe 652 0 := by decide +kernel
-theorem E652_hE1 : E652 1 = dimListLe 652 1 := by decide +kernel
+theorem E652_hE0 : E652 0 = dimListLe 652 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E652_hE1 : E652 1 = dimListLe 652 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E652_hE2 : E652 2 = dimListLe 652 2 := by
   rw [E652_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E652_hE3 : E652 3 = dimListLe 652 3 := by
@@ -834,11 +836,11 @@ def Cx652_bd : ∀ k, Work.Certificates.SOp ((E652 k).length) ((E652 (k+1)).leng
   | 3 => Cx652_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx652_bdEq0 : (Cx652_bd 0).eqb (bdOfEnum E652 0) = true := by decide +kernel
-theorem Cx652_bdEq1 : (Cx652_bd 1).eqb (bdOfEnum E652 1) = true := by decide +kernel
-theorem Cx652_bdEq2 : (Cx652_bd 2).eqb (bdOfEnum E652 2) = true := by decide +kernel
-theorem Cx652_bdEq3 : (Cx652_bd 3).eqb (bdOfEnum E652 3) = true := by decide +kernel
-theorem Cx652_bdEq4 : (Cx652_bd 4).eqb (bdOfEnum E652 4) = true := by decide +kernel
+theorem Cx652_bdEq0 : (Cx652_bd 0).eqb (bdOfEnum E652 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx652_bdEq1 : (Cx652_bd 1).eqb (bdOfEnum E652 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx652_bdEq2 : (Cx652_bd 2).eqb (bdOfEnum E652 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx652_bdEq3 : (Cx652_bd 3).eqb (bdOfEnum E652 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx652_bdEq4 : (Cx652_bd 4).eqb (bdOfEnum E652 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx652_bdEq (k : ℕ) (hk : k < 5) : (Cx652_bd k).eqb (bdOfEnum E652 k) = true := by
   interval_cases k
@@ -959,7 +961,7 @@ theorem E653_nil2 : E653 2 = [] := rfl
 theorem E653_nil3 : E653 3 = [] := rfl
 theorem E653_nil4 : E653 4 = [] := rfl
 
-theorem E653_hE0 : E653 0 = dimListLe 653 0 := by decide +kernel
+theorem E653_hE0 : E653 0 = dimListLe 653 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E653_hE1 : E653 1 = dimListLe 653 1 := by
   rw [E653_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E653_hE2 : E653 2 = dimListLe 653 2 := by
@@ -1060,11 +1062,11 @@ def Cx653_bd : ∀ k, Work.Certificates.SOp ((E653 k).length) ((E653 (k+1)).leng
   | 3 => Cx653_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx653_bdEq0 : (Cx653_bd 0).eqb (bdOfEnum E653 0) = true := by decide +kernel
-theorem Cx653_bdEq1 : (Cx653_bd 1).eqb (bdOfEnum E653 1) = true := by decide +kernel
-theorem Cx653_bdEq2 : (Cx653_bd 2).eqb (bdOfEnum E653 2) = true := by decide +kernel
-theorem Cx653_bdEq3 : (Cx653_bd 3).eqb (bdOfEnum E653 3) = true := by decide +kernel
-theorem Cx653_bdEq4 : (Cx653_bd 4).eqb (bdOfEnum E653 4) = true := by decide +kernel
+theorem Cx653_bdEq0 : (Cx653_bd 0).eqb (bdOfEnum E653 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx653_bdEq1 : (Cx653_bd 1).eqb (bdOfEnum E653 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx653_bdEq2 : (Cx653_bd 2).eqb (bdOfEnum E653 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx653_bdEq3 : (Cx653_bd 3).eqb (bdOfEnum E653 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx653_bdEq4 : (Cx653_bd 4).eqb (bdOfEnum E653 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx653_bdEq (k : ℕ) (hk : k < 5) : (Cx653_bd k).eqb (bdOfEnum E653 k) = true := by
   interval_cases k
@@ -1183,7 +1185,7 @@ theorem E654_nil2 : E654 2 = [] := rfl
 theorem E654_nil3 : E654 3 = [] := rfl
 theorem E654_nil4 : E654 4 = [] := rfl
 
-theorem E654_hE0 : E654 0 = dimListLe 654 0 := by decide +kernel
+theorem E654_hE0 : E654 0 = dimListLe 654 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E654_hE1 : E654 1 = dimListLe 654 1 := by
   rw [E654_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E654_hE2 : E654 2 = dimListLe 654 2 := by
@@ -1284,11 +1286,11 @@ def Cx654_bd : ∀ k, Work.Certificates.SOp ((E654 k).length) ((E654 (k+1)).leng
   | 3 => Cx654_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx654_bdEq0 : (Cx654_bd 0).eqb (bdOfEnum E654 0) = true := by decide +kernel
-theorem Cx654_bdEq1 : (Cx654_bd 1).eqb (bdOfEnum E654 1) = true := by decide +kernel
-theorem Cx654_bdEq2 : (Cx654_bd 2).eqb (bdOfEnum E654 2) = true := by decide +kernel
-theorem Cx654_bdEq3 : (Cx654_bd 3).eqb (bdOfEnum E654 3) = true := by decide +kernel
-theorem Cx654_bdEq4 : (Cx654_bd 4).eqb (bdOfEnum E654 4) = true := by decide +kernel
+theorem Cx654_bdEq0 : (Cx654_bd 0).eqb (bdOfEnum E654 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx654_bdEq1 : (Cx654_bd 1).eqb (bdOfEnum E654 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx654_bdEq2 : (Cx654_bd 2).eqb (bdOfEnum E654 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx654_bdEq3 : (Cx654_bd 3).eqb (bdOfEnum E654 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx654_bdEq4 : (Cx654_bd 4).eqb (bdOfEnum E654 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx654_bdEq (k : ℕ) (hk : k < 5) : (Cx654_bd k).eqb (bdOfEnum E654 k) = true := by
   interval_cases k
@@ -1406,8 +1408,8 @@ theorem E655_nil2 : E655 2 = [] := rfl
 theorem E655_nil3 : E655 3 = [] := rfl
 theorem E655_nil4 : E655 4 = [] := rfl
 
-theorem E655_hE0 : E655 0 = dimListLe 655 0 := by decide +kernel
-theorem E655_hE1 : E655 1 = dimListLe 655 1 := by decide +kernel
+theorem E655_hE0 : E655 0 = dimListLe 655 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E655_hE1 : E655 1 = dimListLe 655 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E655_hE2 : E655 2 = dimListLe 655 2 := by
   rw [E655_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E655_hE3 : E655 3 = dimListLe 655 3 := by
@@ -1507,11 +1509,11 @@ def Cx655_bd : ∀ k, Work.Certificates.SOp ((E655 k).length) ((E655 (k+1)).leng
   | 3 => Cx655_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx655_bdEq0 : (Cx655_bd 0).eqb (bdOfEnum E655 0) = true := by decide +kernel
-theorem Cx655_bdEq1 : (Cx655_bd 1).eqb (bdOfEnum E655 1) = true := by decide +kernel
-theorem Cx655_bdEq2 : (Cx655_bd 2).eqb (bdOfEnum E655 2) = true := by decide +kernel
-theorem Cx655_bdEq3 : (Cx655_bd 3).eqb (bdOfEnum E655 3) = true := by decide +kernel
-theorem Cx655_bdEq4 : (Cx655_bd 4).eqb (bdOfEnum E655 4) = true := by decide +kernel
+theorem Cx655_bdEq0 : (Cx655_bd 0).eqb (bdOfEnum E655 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx655_bdEq1 : (Cx655_bd 1).eqb (bdOfEnum E655 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx655_bdEq2 : (Cx655_bd 2).eqb (bdOfEnum E655 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx655_bdEq3 : (Cx655_bd 3).eqb (bdOfEnum E655 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx655_bdEq4 : (Cx655_bd 4).eqb (bdOfEnum E655 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx655_bdEq (k : ℕ) (hk : k < 5) : (Cx655_bd k).eqb (bdOfEnum E655 k) = true := by
   interval_cases k
@@ -1632,7 +1634,7 @@ theorem E656_nil2 : E656 2 = [] := rfl
 theorem E656_nil3 : E656 3 = [] := rfl
 theorem E656_nil4 : E656 4 = [] := rfl
 
-theorem E656_hE0 : E656 0 = dimListLe 656 0 := by decide +kernel
+theorem E656_hE0 : E656 0 = dimListLe 656 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E656_hE1 : E656 1 = dimListLe 656 1 := by
   rw [E656_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E656_hE2 : E656 2 = dimListLe 656 2 := by
@@ -1733,11 +1735,11 @@ def Cx656_bd : ∀ k, Work.Certificates.SOp ((E656 k).length) ((E656 (k+1)).leng
   | 3 => Cx656_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx656_bdEq0 : (Cx656_bd 0).eqb (bdOfEnum E656 0) = true := by decide +kernel
-theorem Cx656_bdEq1 : (Cx656_bd 1).eqb (bdOfEnum E656 1) = true := by decide +kernel
-theorem Cx656_bdEq2 : (Cx656_bd 2).eqb (bdOfEnum E656 2) = true := by decide +kernel
-theorem Cx656_bdEq3 : (Cx656_bd 3).eqb (bdOfEnum E656 3) = true := by decide +kernel
-theorem Cx656_bdEq4 : (Cx656_bd 4).eqb (bdOfEnum E656 4) = true := by decide +kernel
+theorem Cx656_bdEq0 : (Cx656_bd 0).eqb (bdOfEnum E656 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx656_bdEq1 : (Cx656_bd 1).eqb (bdOfEnum E656 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx656_bdEq2 : (Cx656_bd 2).eqb (bdOfEnum E656 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx656_bdEq3 : (Cx656_bd 3).eqb (bdOfEnum E656 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx656_bdEq4 : (Cx656_bd 4).eqb (bdOfEnum E656 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx656_bdEq (k : ℕ) (hk : k < 5) : (Cx656_bd k).eqb (bdOfEnum E656 k) = true := by
   interval_cases k
@@ -1856,7 +1858,7 @@ theorem E657_nil2 : E657 2 = [] := rfl
 theorem E657_nil3 : E657 3 = [] := rfl
 theorem E657_nil4 : E657 4 = [] := rfl
 
-theorem E657_hE0 : E657 0 = dimListLe 657 0 := by decide +kernel
+theorem E657_hE0 : E657 0 = dimListLe 657 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E657_hE1 : E657 1 = dimListLe 657 1 := by
   rw [E657_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E657_hE2 : E657 2 = dimListLe 657 2 := by
@@ -1957,11 +1959,11 @@ def Cx657_bd : ∀ k, Work.Certificates.SOp ((E657 k).length) ((E657 (k+1)).leng
   | 3 => Cx657_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx657_bdEq0 : (Cx657_bd 0).eqb (bdOfEnum E657 0) = true := by decide +kernel
-theorem Cx657_bdEq1 : (Cx657_bd 1).eqb (bdOfEnum E657 1) = true := by decide +kernel
-theorem Cx657_bdEq2 : (Cx657_bd 2).eqb (bdOfEnum E657 2) = true := by decide +kernel
-theorem Cx657_bdEq3 : (Cx657_bd 3).eqb (bdOfEnum E657 3) = true := by decide +kernel
-theorem Cx657_bdEq4 : (Cx657_bd 4).eqb (bdOfEnum E657 4) = true := by decide +kernel
+theorem Cx657_bdEq0 : (Cx657_bd 0).eqb (bdOfEnum E657 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx657_bdEq1 : (Cx657_bd 1).eqb (bdOfEnum E657 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx657_bdEq2 : (Cx657_bd 2).eqb (bdOfEnum E657 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx657_bdEq3 : (Cx657_bd 3).eqb (bdOfEnum E657 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx657_bdEq4 : (Cx657_bd 4).eqb (bdOfEnum E657 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx657_bdEq (k : ℕ) (hk : k < 5) : (Cx657_bd k).eqb (bdOfEnum E657 k) = true := by
   interval_cases k
@@ -2079,8 +2081,8 @@ theorem E658_nil2 : E658 2 = [] := rfl
 theorem E658_nil3 : E658 3 = [] := rfl
 theorem E658_nil4 : E658 4 = [] := rfl
 
-theorem E658_hE0 : E658 0 = dimListLe 658 0 := by decide +kernel
-theorem E658_hE1 : E658 1 = dimListLe 658 1 := by decide +kernel
+theorem E658_hE0 : E658 0 = dimListLe 658 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E658_hE1 : E658 1 = dimListLe 658 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E658_hE2 : E658 2 = dimListLe 658 2 := by
   rw [E658_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E658_hE3 : E658 3 = dimListLe 658 3 := by
@@ -2180,11 +2182,11 @@ def Cx658_bd : ∀ k, Work.Certificates.SOp ((E658 k).length) ((E658 (k+1)).leng
   | 3 => Cx658_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx658_bdEq0 : (Cx658_bd 0).eqb (bdOfEnum E658 0) = true := by decide +kernel
-theorem Cx658_bdEq1 : (Cx658_bd 1).eqb (bdOfEnum E658 1) = true := by decide +kernel
-theorem Cx658_bdEq2 : (Cx658_bd 2).eqb (bdOfEnum E658 2) = true := by decide +kernel
-theorem Cx658_bdEq3 : (Cx658_bd 3).eqb (bdOfEnum E658 3) = true := by decide +kernel
-theorem Cx658_bdEq4 : (Cx658_bd 4).eqb (bdOfEnum E658 4) = true := by decide +kernel
+theorem Cx658_bdEq0 : (Cx658_bd 0).eqb (bdOfEnum E658 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx658_bdEq1 : (Cx658_bd 1).eqb (bdOfEnum E658 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx658_bdEq2 : (Cx658_bd 2).eqb (bdOfEnum E658 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx658_bdEq3 : (Cx658_bd 3).eqb (bdOfEnum E658 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx658_bdEq4 : (Cx658_bd 4).eqb (bdOfEnum E658 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx658_bdEq (k : ℕ) (hk : k < 5) : (Cx658_bd k).eqb (bdOfEnum E658 k) = true := by
   interval_cases k
@@ -2305,7 +2307,7 @@ theorem E659_nil2 : E659 2 = [] := rfl
 theorem E659_nil3 : E659 3 = [] := rfl
 theorem E659_nil4 : E659 4 = [] := rfl
 
-theorem E659_hE0 : E659 0 = dimListLe 659 0 := by decide +kernel
+theorem E659_hE0 : E659 0 = dimListLe 659 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E659_hE1 : E659 1 = dimListLe 659 1 := by
   rw [E659_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E659_hE2 : E659 2 = dimListLe 659 2 := by
@@ -2406,11 +2408,11 @@ def Cx659_bd : ∀ k, Work.Certificates.SOp ((E659 k).length) ((E659 (k+1)).leng
   | 3 => Cx659_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx659_bdEq0 : (Cx659_bd 0).eqb (bdOfEnum E659 0) = true := by decide +kernel
-theorem Cx659_bdEq1 : (Cx659_bd 1).eqb (bdOfEnum E659 1) = true := by decide +kernel
-theorem Cx659_bdEq2 : (Cx659_bd 2).eqb (bdOfEnum E659 2) = true := by decide +kernel
-theorem Cx659_bdEq3 : (Cx659_bd 3).eqb (bdOfEnum E659 3) = true := by decide +kernel
-theorem Cx659_bdEq4 : (Cx659_bd 4).eqb (bdOfEnum E659 4) = true := by decide +kernel
+theorem Cx659_bdEq0 : (Cx659_bd 0).eqb (bdOfEnum E659 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx659_bdEq1 : (Cx659_bd 1).eqb (bdOfEnum E659 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx659_bdEq2 : (Cx659_bd 2).eqb (bdOfEnum E659 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx659_bdEq3 : (Cx659_bd 3).eqb (bdOfEnum E659 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx659_bdEq4 : (Cx659_bd 4).eqb (bdOfEnum E659 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx659_bdEq (k : ℕ) (hk : k < 5) : (Cx659_bd k).eqb (bdOfEnum E659 k) = true := by
   interval_cases k
@@ -2529,7 +2531,7 @@ theorem E660_nil2 : E660 2 = [] := rfl
 theorem E660_nil3 : E660 3 = [] := rfl
 theorem E660_nil4 : E660 4 = [] := rfl
 
-theorem E660_hE0 : E660 0 = dimListLe 660 0 := by decide +kernel
+theorem E660_hE0 : E660 0 = dimListLe 660 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E660_hE1 : E660 1 = dimListLe 660 1 := by
   rw [E660_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E660_hE2 : E660 2 = dimListLe 660 2 := by
@@ -2630,11 +2632,11 @@ def Cx660_bd : ∀ k, Work.Certificates.SOp ((E660 k).length) ((E660 (k+1)).leng
   | 3 => Cx660_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx660_bdEq0 : (Cx660_bd 0).eqb (bdOfEnum E660 0) = true := by decide +kernel
-theorem Cx660_bdEq1 : (Cx660_bd 1).eqb (bdOfEnum E660 1) = true := by decide +kernel
-theorem Cx660_bdEq2 : (Cx660_bd 2).eqb (bdOfEnum E660 2) = true := by decide +kernel
-theorem Cx660_bdEq3 : (Cx660_bd 3).eqb (bdOfEnum E660 3) = true := by decide +kernel
-theorem Cx660_bdEq4 : (Cx660_bd 4).eqb (bdOfEnum E660 4) = true := by decide +kernel
+theorem Cx660_bdEq0 : (Cx660_bd 0).eqb (bdOfEnum E660 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx660_bdEq1 : (Cx660_bd 1).eqb (bdOfEnum E660 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx660_bdEq2 : (Cx660_bd 2).eqb (bdOfEnum E660 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx660_bdEq3 : (Cx660_bd 3).eqb (bdOfEnum E660 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx660_bdEq4 : (Cx660_bd 4).eqb (bdOfEnum E660 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx660_bdEq (k : ℕ) (hk : k < 5) : (Cx660_bd k).eqb (bdOfEnum E660 k) = true := by
   interval_cases k
@@ -2752,8 +2754,8 @@ theorem E661_nil2 : E661 2 = [] := rfl
 theorem E661_nil3 : E661 3 = [] := rfl
 theorem E661_nil4 : E661 4 = [] := rfl
 
-theorem E661_hE0 : E661 0 = dimListLe 661 0 := by decide +kernel
-theorem E661_hE1 : E661 1 = dimListLe 661 1 := by decide +kernel
+theorem E661_hE0 : E661 0 = dimListLe 661 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E661_hE1 : E661 1 = dimListLe 661 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E661_hE2 : E661 2 = dimListLe 661 2 := by
   rw [E661_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E661_hE3 : E661 3 = dimListLe 661 3 := by
@@ -2853,11 +2855,11 @@ def Cx661_bd : ∀ k, Work.Certificates.SOp ((E661 k).length) ((E661 (k+1)).leng
   | 3 => Cx661_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx661_bdEq0 : (Cx661_bd 0).eqb (bdOfEnum E661 0) = true := by decide +kernel
-theorem Cx661_bdEq1 : (Cx661_bd 1).eqb (bdOfEnum E661 1) = true := by decide +kernel
-theorem Cx661_bdEq2 : (Cx661_bd 2).eqb (bdOfEnum E661 2) = true := by decide +kernel
-theorem Cx661_bdEq3 : (Cx661_bd 3).eqb (bdOfEnum E661 3) = true := by decide +kernel
-theorem Cx661_bdEq4 : (Cx661_bd 4).eqb (bdOfEnum E661 4) = true := by decide +kernel
+theorem Cx661_bdEq0 : (Cx661_bd 0).eqb (bdOfEnum E661 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx661_bdEq1 : (Cx661_bd 1).eqb (bdOfEnum E661 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx661_bdEq2 : (Cx661_bd 2).eqb (bdOfEnum E661 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx661_bdEq3 : (Cx661_bd 3).eqb (bdOfEnum E661 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx661_bdEq4 : (Cx661_bd 4).eqb (bdOfEnum E661 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx661_bdEq (k : ℕ) (hk : k < 5) : (Cx661_bd k).eqb (bdOfEnum E661 k) = true := by
   interval_cases k
@@ -2978,7 +2980,7 @@ theorem E662_nil2 : E662 2 = [] := rfl
 theorem E662_nil3 : E662 3 = [] := rfl
 theorem E662_nil4 : E662 4 = [] := rfl
 
-theorem E662_hE0 : E662 0 = dimListLe 662 0 := by decide +kernel
+theorem E662_hE0 : E662 0 = dimListLe 662 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E662_hE1 : E662 1 = dimListLe 662 1 := by
   rw [E662_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E662_hE2 : E662 2 = dimListLe 662 2 := by
@@ -3079,11 +3081,11 @@ def Cx662_bd : ∀ k, Work.Certificates.SOp ((E662 k).length) ((E662 (k+1)).leng
   | 3 => Cx662_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx662_bdEq0 : (Cx662_bd 0).eqb (bdOfEnum E662 0) = true := by decide +kernel
-theorem Cx662_bdEq1 : (Cx662_bd 1).eqb (bdOfEnum E662 1) = true := by decide +kernel
-theorem Cx662_bdEq2 : (Cx662_bd 2).eqb (bdOfEnum E662 2) = true := by decide +kernel
-theorem Cx662_bdEq3 : (Cx662_bd 3).eqb (bdOfEnum E662 3) = true := by decide +kernel
-theorem Cx662_bdEq4 : (Cx662_bd 4).eqb (bdOfEnum E662 4) = true := by decide +kernel
+theorem Cx662_bdEq0 : (Cx662_bd 0).eqb (bdOfEnum E662 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx662_bdEq1 : (Cx662_bd 1).eqb (bdOfEnum E662 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx662_bdEq2 : (Cx662_bd 2).eqb (bdOfEnum E662 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx662_bdEq3 : (Cx662_bd 3).eqb (bdOfEnum E662 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx662_bdEq4 : (Cx662_bd 4).eqb (bdOfEnum E662 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx662_bdEq (k : ℕ) (hk : k < 5) : (Cx662_bd k).eqb (bdOfEnum E662 k) = true := by
   interval_cases k
@@ -3202,7 +3204,7 @@ theorem E663_nil2 : E663 2 = [] := rfl
 theorem E663_nil3 : E663 3 = [] := rfl
 theorem E663_nil4 : E663 4 = [] := rfl
 
-theorem E663_hE0 : E663 0 = dimListLe 663 0 := by decide +kernel
+theorem E663_hE0 : E663 0 = dimListLe 663 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E663_hE1 : E663 1 = dimListLe 663 1 := by
   rw [E663_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E663_hE2 : E663 2 = dimListLe 663 2 := by
@@ -3303,11 +3305,11 @@ def Cx663_bd : ∀ k, Work.Certificates.SOp ((E663 k).length) ((E663 (k+1)).leng
   | 3 => Cx663_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx663_bdEq0 : (Cx663_bd 0).eqb (bdOfEnum E663 0) = true := by decide +kernel
-theorem Cx663_bdEq1 : (Cx663_bd 1).eqb (bdOfEnum E663 1) = true := by decide +kernel
-theorem Cx663_bdEq2 : (Cx663_bd 2).eqb (bdOfEnum E663 2) = true := by decide +kernel
-theorem Cx663_bdEq3 : (Cx663_bd 3).eqb (bdOfEnum E663 3) = true := by decide +kernel
-theorem Cx663_bdEq4 : (Cx663_bd 4).eqb (bdOfEnum E663 4) = true := by decide +kernel
+theorem Cx663_bdEq0 : (Cx663_bd 0).eqb (bdOfEnum E663 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx663_bdEq1 : (Cx663_bd 1).eqb (bdOfEnum E663 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx663_bdEq2 : (Cx663_bd 2).eqb (bdOfEnum E663 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx663_bdEq3 : (Cx663_bd 3).eqb (bdOfEnum E663 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx663_bdEq4 : (Cx663_bd 4).eqb (bdOfEnum E663 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx663_bdEq (k : ℕ) (hk : k < 5) : (Cx663_bd k).eqb (bdOfEnum E663 k) = true := by
   interval_cases k
@@ -3425,8 +3427,8 @@ theorem E664_nil2 : E664 2 = [] := rfl
 theorem E664_nil3 : E664 3 = [] := rfl
 theorem E664_nil4 : E664 4 = [] := rfl
 
-theorem E664_hE0 : E664 0 = dimListLe 664 0 := by decide +kernel
-theorem E664_hE1 : E664 1 = dimListLe 664 1 := by decide +kernel
+theorem E664_hE0 : E664 0 = dimListLe 664 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E664_hE1 : E664 1 = dimListLe 664 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E664_hE2 : E664 2 = dimListLe 664 2 := by
   rw [E664_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E664_hE3 : E664 3 = dimListLe 664 3 := by
@@ -3526,11 +3528,11 @@ def Cx664_bd : ∀ k, Work.Certificates.SOp ((E664 k).length) ((E664 (k+1)).leng
   | 3 => Cx664_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx664_bdEq0 : (Cx664_bd 0).eqb (bdOfEnum E664 0) = true := by decide +kernel
-theorem Cx664_bdEq1 : (Cx664_bd 1).eqb (bdOfEnum E664 1) = true := by decide +kernel
-theorem Cx664_bdEq2 : (Cx664_bd 2).eqb (bdOfEnum E664 2) = true := by decide +kernel
-theorem Cx664_bdEq3 : (Cx664_bd 3).eqb (bdOfEnum E664 3) = true := by decide +kernel
-theorem Cx664_bdEq4 : (Cx664_bd 4).eqb (bdOfEnum E664 4) = true := by decide +kernel
+theorem Cx664_bdEq0 : (Cx664_bd 0).eqb (bdOfEnum E664 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx664_bdEq1 : (Cx664_bd 1).eqb (bdOfEnum E664 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx664_bdEq2 : (Cx664_bd 2).eqb (bdOfEnum E664 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx664_bdEq3 : (Cx664_bd 3).eqb (bdOfEnum E664 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx664_bdEq4 : (Cx664_bd 4).eqb (bdOfEnum E664 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx664_bdEq (k : ℕ) (hk : k < 5) : (Cx664_bd k).eqb (bdOfEnum E664 k) = true := by
   interval_cases k
@@ -3651,7 +3653,7 @@ theorem E665_nil2 : E665 2 = [] := rfl
 theorem E665_nil3 : E665 3 = [] := rfl
 theorem E665_nil4 : E665 4 = [] := rfl
 
-theorem E665_hE0 : E665 0 = dimListLe 665 0 := by decide +kernel
+theorem E665_hE0 : E665 0 = dimListLe 665 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E665_hE1 : E665 1 = dimListLe 665 1 := by
   rw [E665_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E665_hE2 : E665 2 = dimListLe 665 2 := by
@@ -3752,11 +3754,11 @@ def Cx665_bd : ∀ k, Work.Certificates.SOp ((E665 k).length) ((E665 (k+1)).leng
   | 3 => Cx665_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx665_bdEq0 : (Cx665_bd 0).eqb (bdOfEnum E665 0) = true := by decide +kernel
-theorem Cx665_bdEq1 : (Cx665_bd 1).eqb (bdOfEnum E665 1) = true := by decide +kernel
-theorem Cx665_bdEq2 : (Cx665_bd 2).eqb (bdOfEnum E665 2) = true := by decide +kernel
-theorem Cx665_bdEq3 : (Cx665_bd 3).eqb (bdOfEnum E665 3) = true := by decide +kernel
-theorem Cx665_bdEq4 : (Cx665_bd 4).eqb (bdOfEnum E665 4) = true := by decide +kernel
+theorem Cx665_bdEq0 : (Cx665_bd 0).eqb (bdOfEnum E665 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx665_bdEq1 : (Cx665_bd 1).eqb (bdOfEnum E665 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx665_bdEq2 : (Cx665_bd 2).eqb (bdOfEnum E665 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx665_bdEq3 : (Cx665_bd 3).eqb (bdOfEnum E665 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx665_bdEq4 : (Cx665_bd 4).eqb (bdOfEnum E665 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx665_bdEq (k : ℕ) (hk : k < 5) : (Cx665_bd k).eqb (bdOfEnum E665 k) = true := by
   interval_cases k
@@ -3875,7 +3877,7 @@ theorem E666_nil2 : E666 2 = [] := rfl
 theorem E666_nil3 : E666 3 = [] := rfl
 theorem E666_nil4 : E666 4 = [] := rfl
 
-theorem E666_hE0 : E666 0 = dimListLe 666 0 := by decide +kernel
+theorem E666_hE0 : E666 0 = dimListLe 666 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E666_hE1 : E666 1 = dimListLe 666 1 := by
   rw [E666_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E666_hE2 : E666 2 = dimListLe 666 2 := by
@@ -3976,11 +3978,11 @@ def Cx666_bd : ∀ k, Work.Certificates.SOp ((E666 k).length) ((E666 (k+1)).leng
   | 3 => Cx666_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx666_bdEq0 : (Cx666_bd 0).eqb (bdOfEnum E666 0) = true := by decide +kernel
-theorem Cx666_bdEq1 : (Cx666_bd 1).eqb (bdOfEnum E666 1) = true := by decide +kernel
-theorem Cx666_bdEq2 : (Cx666_bd 2).eqb (bdOfEnum E666 2) = true := by decide +kernel
-theorem Cx666_bdEq3 : (Cx666_bd 3).eqb (bdOfEnum E666 3) = true := by decide +kernel
-theorem Cx666_bdEq4 : (Cx666_bd 4).eqb (bdOfEnum E666 4) = true := by decide +kernel
+theorem Cx666_bdEq0 : (Cx666_bd 0).eqb (bdOfEnum E666 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx666_bdEq1 : (Cx666_bd 1).eqb (bdOfEnum E666 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx666_bdEq2 : (Cx666_bd 2).eqb (bdOfEnum E666 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx666_bdEq3 : (Cx666_bd 3).eqb (bdOfEnum E666 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx666_bdEq4 : (Cx666_bd 4).eqb (bdOfEnum E666 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx666_bdEq (k : ℕ) (hk : k < 5) : (Cx666_bd k).eqb (bdOfEnum E666 k) = true := by
   interval_cases k
@@ -4098,8 +4100,8 @@ theorem E667_nil2 : E667 2 = [] := rfl
 theorem E667_nil3 : E667 3 = [] := rfl
 theorem E667_nil4 : E667 4 = [] := rfl
 
-theorem E667_hE0 : E667 0 = dimListLe 667 0 := by decide +kernel
-theorem E667_hE1 : E667 1 = dimListLe 667 1 := by decide +kernel
+theorem E667_hE0 : E667 0 = dimListLe 667 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E667_hE1 : E667 1 = dimListLe 667 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E667_hE2 : E667 2 = dimListLe 667 2 := by
   rw [E667_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E667_hE3 : E667 3 = dimListLe 667 3 := by
@@ -4199,11 +4201,11 @@ def Cx667_bd : ∀ k, Work.Certificates.SOp ((E667 k).length) ((E667 (k+1)).leng
   | 3 => Cx667_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx667_bdEq0 : (Cx667_bd 0).eqb (bdOfEnum E667 0) = true := by decide +kernel
-theorem Cx667_bdEq1 : (Cx667_bd 1).eqb (bdOfEnum E667 1) = true := by decide +kernel
-theorem Cx667_bdEq2 : (Cx667_bd 2).eqb (bdOfEnum E667 2) = true := by decide +kernel
-theorem Cx667_bdEq3 : (Cx667_bd 3).eqb (bdOfEnum E667 3) = true := by decide +kernel
-theorem Cx667_bdEq4 : (Cx667_bd 4).eqb (bdOfEnum E667 4) = true := by decide +kernel
+theorem Cx667_bdEq0 : (Cx667_bd 0).eqb (bdOfEnum E667 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx667_bdEq1 : (Cx667_bd 1).eqb (bdOfEnum E667 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx667_bdEq2 : (Cx667_bd 2).eqb (bdOfEnum E667 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx667_bdEq3 : (Cx667_bd 3).eqb (bdOfEnum E667 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx667_bdEq4 : (Cx667_bd 4).eqb (bdOfEnum E667 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx667_bdEq (k : ℕ) (hk : k < 5) : (Cx667_bd k).eqb (bdOfEnum E667 k) = true := by
   interval_cases k
@@ -4324,7 +4326,7 @@ theorem E668_nil2 : E668 2 = [] := rfl
 theorem E668_nil3 : E668 3 = [] := rfl
 theorem E668_nil4 : E668 4 = [] := rfl
 
-theorem E668_hE0 : E668 0 = dimListLe 668 0 := by decide +kernel
+theorem E668_hE0 : E668 0 = dimListLe 668 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E668_hE1 : E668 1 = dimListLe 668 1 := by
   rw [E668_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E668_hE2 : E668 2 = dimListLe 668 2 := by
@@ -4425,11 +4427,11 @@ def Cx668_bd : ∀ k, Work.Certificates.SOp ((E668 k).length) ((E668 (k+1)).leng
   | 3 => Cx668_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx668_bdEq0 : (Cx668_bd 0).eqb (bdOfEnum E668 0) = true := by decide +kernel
-theorem Cx668_bdEq1 : (Cx668_bd 1).eqb (bdOfEnum E668 1) = true := by decide +kernel
-theorem Cx668_bdEq2 : (Cx668_bd 2).eqb (bdOfEnum E668 2) = true := by decide +kernel
-theorem Cx668_bdEq3 : (Cx668_bd 3).eqb (bdOfEnum E668 3) = true := by decide +kernel
-theorem Cx668_bdEq4 : (Cx668_bd 4).eqb (bdOfEnum E668 4) = true := by decide +kernel
+theorem Cx668_bdEq0 : (Cx668_bd 0).eqb (bdOfEnum E668 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx668_bdEq1 : (Cx668_bd 1).eqb (bdOfEnum E668 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx668_bdEq2 : (Cx668_bd 2).eqb (bdOfEnum E668 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx668_bdEq3 : (Cx668_bd 3).eqb (bdOfEnum E668 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx668_bdEq4 : (Cx668_bd 4).eqb (bdOfEnum E668 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx668_bdEq (k : ℕ) (hk : k < 5) : (Cx668_bd k).eqb (bdOfEnum E668 k) = true := by
   interval_cases k
@@ -4548,7 +4550,7 @@ theorem E669_nil2 : E669 2 = [] := rfl
 theorem E669_nil3 : E669 3 = [] := rfl
 theorem E669_nil4 : E669 4 = [] := rfl
 
-theorem E669_hE0 : E669 0 = dimListLe 669 0 := by decide +kernel
+theorem E669_hE0 : E669 0 = dimListLe 669 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E669_hE1 : E669 1 = dimListLe 669 1 := by
   rw [E669_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E669_hE2 : E669 2 = dimListLe 669 2 := by
@@ -4649,11 +4651,11 @@ def Cx669_bd : ∀ k, Work.Certificates.SOp ((E669 k).length) ((E669 (k+1)).leng
   | 3 => Cx669_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx669_bdEq0 : (Cx669_bd 0).eqb (bdOfEnum E669 0) = true := by decide +kernel
-theorem Cx669_bdEq1 : (Cx669_bd 1).eqb (bdOfEnum E669 1) = true := by decide +kernel
-theorem Cx669_bdEq2 : (Cx669_bd 2).eqb (bdOfEnum E669 2) = true := by decide +kernel
-theorem Cx669_bdEq3 : (Cx669_bd 3).eqb (bdOfEnum E669 3) = true := by decide +kernel
-theorem Cx669_bdEq4 : (Cx669_bd 4).eqb (bdOfEnum E669 4) = true := by decide +kernel
+theorem Cx669_bdEq0 : (Cx669_bd 0).eqb (bdOfEnum E669 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx669_bdEq1 : (Cx669_bd 1).eqb (bdOfEnum E669 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx669_bdEq2 : (Cx669_bd 2).eqb (bdOfEnum E669 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx669_bdEq3 : (Cx669_bd 3).eqb (bdOfEnum E669 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx669_bdEq4 : (Cx669_bd 4).eqb (bdOfEnum E669 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx669_bdEq (k : ℕ) (hk : k < 5) : (Cx669_bd k).eqb (bdOfEnum E669 k) = true := by
   interval_cases k
@@ -4771,8 +4773,8 @@ theorem E670_nil2 : E670 2 = [] := rfl
 theorem E670_nil3 : E670 3 = [] := rfl
 theorem E670_nil4 : E670 4 = [] := rfl
 
-theorem E670_hE0 : E670 0 = dimListLe 670 0 := by decide +kernel
-theorem E670_hE1 : E670 1 = dimListLe 670 1 := by decide +kernel
+theorem E670_hE0 : E670 0 = dimListLe 670 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E670_hE1 : E670 1 = dimListLe 670 1 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E670_hE2 : E670 2 = dimListLe 670 2 := by
   rw [E670_nil2, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E670_hE3 : E670 3 = dimListLe 670 3 := by
@@ -4872,11 +4874,11 @@ def Cx670_bd : ∀ k, Work.Certificates.SOp ((E670 k).length) ((E670 (k+1)).leng
   | 3 => Cx670_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx670_bdEq0 : (Cx670_bd 0).eqb (bdOfEnum E670 0) = true := by decide +kernel
-theorem Cx670_bdEq1 : (Cx670_bd 1).eqb (bdOfEnum E670 1) = true := by decide +kernel
-theorem Cx670_bdEq2 : (Cx670_bd 2).eqb (bdOfEnum E670 2) = true := by decide +kernel
-theorem Cx670_bdEq3 : (Cx670_bd 3).eqb (bdOfEnum E670 3) = true := by decide +kernel
-theorem Cx670_bdEq4 : (Cx670_bd 4).eqb (bdOfEnum E670 4) = true := by decide +kernel
+theorem Cx670_bdEq0 : (Cx670_bd 0).eqb (bdOfEnum E670 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx670_bdEq1 : (Cx670_bd 1).eqb (bdOfEnum E670 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx670_bdEq2 : (Cx670_bd 2).eqb (bdOfEnum E670 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx670_bdEq3 : (Cx670_bd 3).eqb (bdOfEnum E670 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx670_bdEq4 : (Cx670_bd 4).eqb (bdOfEnum E670 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx670_bdEq (k : ℕ) (hk : k < 5) : (Cx670_bd k).eqb (bdOfEnum E670 k) = true := by
   interval_cases k
@@ -4997,7 +4999,7 @@ theorem E671_nil2 : E671 2 = [] := rfl
 theorem E671_nil3 : E671 3 = [] := rfl
 theorem E671_nil4 : E671 4 = [] := rfl
 
-theorem E671_hE0 : E671 0 = dimListLe 671 0 := by decide +kernel
+theorem E671_hE0 : E671 0 = dimListLe 671 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E671_hE1 : E671 1 = dimListLe 671 1 := by
   rw [E671_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E671_hE2 : E671 2 = dimListLe 671 2 := by
@@ -5098,11 +5100,11 @@ def Cx671_bd : ∀ k, Work.Certificates.SOp ((E671 k).length) ((E671 (k+1)).leng
   | 3 => Cx671_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx671_bdEq0 : (Cx671_bd 0).eqb (bdOfEnum E671 0) = true := by decide +kernel
-theorem Cx671_bdEq1 : (Cx671_bd 1).eqb (bdOfEnum E671 1) = true := by decide +kernel
-theorem Cx671_bdEq2 : (Cx671_bd 2).eqb (bdOfEnum E671 2) = true := by decide +kernel
-theorem Cx671_bdEq3 : (Cx671_bd 3).eqb (bdOfEnum E671 3) = true := by decide +kernel
-theorem Cx671_bdEq4 : (Cx671_bd 4).eqb (bdOfEnum E671 4) = true := by decide +kernel
+theorem Cx671_bdEq0 : (Cx671_bd 0).eqb (bdOfEnum E671 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx671_bdEq1 : (Cx671_bd 1).eqb (bdOfEnum E671 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx671_bdEq2 : (Cx671_bd 2).eqb (bdOfEnum E671 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx671_bdEq3 : (Cx671_bd 3).eqb (bdOfEnum E671 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx671_bdEq4 : (Cx671_bd 4).eqb (bdOfEnum E671 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx671_bdEq (k : ℕ) (hk : k < 5) : (Cx671_bd k).eqb (bdOfEnum E671 k) = true := by
   interval_cases k
@@ -5221,7 +5223,7 @@ theorem E672_nil2 : E672 2 = [] := rfl
 theorem E672_nil3 : E672 3 = [] := rfl
 theorem E672_nil4 : E672 4 = [] := rfl
 
-theorem E672_hE0 : E672 0 = dimListLe 672 0 := by decide +kernel
+theorem E672_hE0 : E672 0 = dimListLe 672 0 := by rw [dimListLe_eq_mask]; decide +kernel
 theorem E672_hE1 : E672 1 = dimListLe 672 1 := by
   rw [E672_nil1, dimListLe_eq_nil_of_dim_lt (by decide +kernel)]
 theorem E672_hE2 : E672 2 = dimListLe 672 2 := by
@@ -5322,11 +5324,11 @@ def Cx672_bd : ∀ k, Work.Certificates.SOp ((E672 k).length) ((E672 (k+1)).leng
   | 3 => Cx672_bdLit3
   | _ => Work.Certificates.SOp.zero _ _
 
-theorem Cx672_bdEq0 : (Cx672_bd 0).eqb (bdOfEnum E672 0) = true := by decide +kernel
-theorem Cx672_bdEq1 : (Cx672_bd 1).eqb (bdOfEnum E672 1) = true := by decide +kernel
-theorem Cx672_bdEq2 : (Cx672_bd 2).eqb (bdOfEnum E672 2) = true := by decide +kernel
-theorem Cx672_bdEq3 : (Cx672_bd 3).eqb (bdOfEnum E672 3) = true := by decide +kernel
-theorem Cx672_bdEq4 : (Cx672_bd 4).eqb (bdOfEnum E672 4) = true := by decide +kernel
+theorem Cx672_bdEq0 : (Cx672_bd 0).eqb (bdOfEnum E672 0) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx672_bdEq1 : (Cx672_bd 1).eqb (bdOfEnum E672 1) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx672_bdEq2 : (Cx672_bd 2).eqb (bdOfEnum E672 2) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx672_bdEq3 : (Cx672_bd 3).eqb (bdOfEnum E672 3) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx672_bdEq4 : (Cx672_bd 4).eqb (bdOfEnum E672 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx672_bdEq (k : ℕ) (hk : k < 5) : (Cx672_bd k).eqb (bdOfEnum E672 k) = true := by
   interval_cases k

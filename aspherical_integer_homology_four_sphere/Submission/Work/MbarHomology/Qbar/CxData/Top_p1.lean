@@ -20,6 +20,7 @@ import Submission.Work.Certificates.FinChainCx.bdCheck_of_pieces
 import Submission.Work.MbarHomology.Qbar.QbarCxCert
 import Submission.Work.MbarHomology.Qbar.cellLe_iso_finChainCx
 import Submission.Work.MbarHomology.Qbar.cellOf_surjective
+import Submission.Work.MbarHomology.Qbar.QbarTightMask
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
@@ -58,11 +59,11 @@ theorem E0_nil5 (k : ℕ) : E0 (k+5) = [] := rfl
 theorem E0_dimtop : QbarCW.dim (⟨(0 : Fin 865)⟩ : QbarCell) ≤ 4 := by decide +kernel
 
 
-theorem E0_hE0 : E0 0 = dimListLe 0 0 := by decide +kernel
-theorem E0_hE1 : E0 1 = dimListLe 0 1 := by decide +kernel
-theorem E0_hE2 : E0 2 = dimListLe 0 2 := by decide +kernel
-theorem E0_hE3 : E0 3 = dimListLe 0 3 := by decide +kernel
-theorem E0_hE4 : E0 4 = dimListLe 0 4 := by decide +kernel
+theorem E0_hE0 : E0 0 = dimListLe 0 0 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E0_hE1 : E0 1 = dimListLe 0 1 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E0_hE2 : E0 2 = dimListLe 0 2 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E0_hE3 : E0 3 = dimListLe 0 3 := by rw [dimListLe_eq_mask]; decide +kernel
+theorem E0_hE4 : E0 4 = dimListLe 0 4 := by rw [dimListLe_eq_mask]; decide +kernel
 
 theorem E0_hE (k : ℕ) : E0 k = dimListLe 0 k := by
   match k with
