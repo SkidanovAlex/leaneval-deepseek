@@ -21,6 +21,7 @@ import Submission.Work.MbarHomology.Qbar.QbarCxCert
 import Submission.Work.MbarHomology.Qbar.cellLe_iso_finChainCx
 import Submission.Work.MbarHomology.Qbar.cellOf_surjective
 import Submission.Work.MbarHomology.Qbar.CxData.Top_p1
+import Submission.Work.MbarHomology.Qbar.bdOfEnumFast
 
 -- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
 -- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
@@ -38,18 +39,18 @@ namespace Work.MbarHomology
 
 namespace QbarCxData
 
-theorem Cx0_bdEq0_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 0 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 32 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c2 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 64 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c3 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 96 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c4 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 128 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c5 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 160 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c6 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 192 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c7 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 224 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c8 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 256 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c9 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 288 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c10 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 320 32 = true := by decide +kernel
-theorem Cx0_bdEq0_c11 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 352 32 = true := by decide +kernel
+theorem Cx0_bdEq0_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 0 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 32 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c2 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 64 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c3 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 96 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c4 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 128 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c5 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 160 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c6 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 192 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c7 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 224 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c8 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 256 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c9 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 288 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c10 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 320 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq0_c11 : Work.Certificates.SOp.eqbCols (Cx0_bd 0) (bdOfEnum E0 0) 352 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 theorem Cx0_bdEq0 : (Cx0_bd 0).eqb (bdOfEnum E0 0) = true := by
   refine Work.Certificates.SOp.eqb_of_img fun j => ?_
   by_cases h0 : j.val < 32
@@ -75,14 +76,14 @@ theorem Cx0_bdEq0 : (Cx0_bd 0).eqb (bdOfEnum E0 0) = true := by
   by_cases h10 : j.val < 352
   · exact Work.Certificates.SOp.img_eqb_of_eqbCols Cx0_bdEq0_c10 j (by omega) (by omega)
   exact Work.Certificates.SOp.img_eqb_of_eqbCols_last Cx0_bdEq0_c11 (by decide +kernel) j (by omega)
-theorem Cx0_bdEq1_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 0 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 32 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c2 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 64 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c3 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 96 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c4 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 128 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c5 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 160 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c6 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 192 32 = true := by decide +kernel
-theorem Cx0_bdEq1_c7 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 224 16 = true := by decide +kernel
+theorem Cx0_bdEq1_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 0 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 32 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c2 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 64 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c3 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 96 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c4 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 128 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c5 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 160 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c6 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 192 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq1_c7 : Work.Certificates.SOp.eqbCols (Cx0_bd 1) (bdOfEnum E0 1) 224 16 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 theorem Cx0_bdEq1 : (Cx0_bd 1).eqb (bdOfEnum E0 1) = true := by
   refine Work.Certificates.SOp.eqb_of_img fun j => ?_
   by_cases h0 : j.val < 32
@@ -100,18 +101,18 @@ theorem Cx0_bdEq1 : (Cx0_bd 1).eqb (bdOfEnum E0 1) = true := by
   by_cases h6 : j.val < 224
   · exact Work.Certificates.SOp.img_eqb_of_eqbCols Cx0_bdEq1_c6 j (by omega) (by omega)
   exact Work.Certificates.SOp.img_eqb_of_eqbCols_last Cx0_bdEq1_c7 (by decide +kernel) j (by omega)
-theorem Cx0_bdEq2_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 2) (bdOfEnum E0 2) 0 32 = true := by decide +kernel
-theorem Cx0_bdEq2_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 2) (bdOfEnum E0 2) 32 16 = true := by decide +kernel
+theorem Cx0_bdEq2_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 2) (bdOfEnum E0 2) 0 32 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
+theorem Cx0_bdEq2_c1 : Work.Certificates.SOp.eqbCols (Cx0_bd 2) (bdOfEnum E0 2) 32 16 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 theorem Cx0_bdEq2 : (Cx0_bd 2).eqb (bdOfEnum E0 2) = true := by
   refine Work.Certificates.SOp.eqb_of_img fun j => ?_
   by_cases h0 : j.val < 32
   · exact Work.Certificates.SOp.img_eqb_of_eqbCols Cx0_bdEq2_c0 j (by omega) (by omega)
   exact Work.Certificates.SOp.img_eqb_of_eqbCols_last Cx0_bdEq2_c1 (by decide +kernel) j (by omega)
-theorem Cx0_bdEq3_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 3) (bdOfEnum E0 3) 0 1 = true := by decide +kernel
+theorem Cx0_bdEq3_c0 : Work.Certificates.SOp.eqbCols (Cx0_bd 3) (bdOfEnum E0 3) 0 1 = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 theorem Cx0_bdEq3 : (Cx0_bd 3).eqb (bdOfEnum E0 3) = true := by
   refine Work.Certificates.SOp.eqb_of_img fun j => ?_
   exact Work.Certificates.SOp.img_eqb_of_eqbCols_last Cx0_bdEq3_c0 (by decide +kernel) j (by omega)
-theorem Cx0_bdEq4 : (Cx0_bd 4).eqb (bdOfEnum E0 4) = true := by decide +kernel
+theorem Cx0_bdEq4 : (Cx0_bd 4).eqb (bdOfEnum E0 4) = true := by rw [bdOfEnum_eq_fast]; decide +kernel
 
 theorem Cx0_bdEq (k : ℕ) (hk : k < 5) : (Cx0_bd k).eqb (bdOfEnum E0 k) = true := by
   interval_cases k

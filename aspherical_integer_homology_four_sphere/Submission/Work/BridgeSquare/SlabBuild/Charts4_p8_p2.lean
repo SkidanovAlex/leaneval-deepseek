@@ -1,0 +1,438 @@
+import Mathlib
+import Submission.Work.BridgeSquare.SlabCore
+import Submission.Work.BridgeSquare.denseSimplex3
+import Submission.Work.BridgeSquare.Psi1Defs
+import Submission.Work.BridgeSquare.SlabBuild.Charts4_p1
+import Submission.Work.BridgeSquare.SlabBuild.Charts4_p2
+
+-- Lean v4.35.0-rc3 / Mathlib 5e0c4e5 made `isDefEq` respect transparency when unifying instances; with it,
+-- `ZMod.instField` and `ZMod.commRing` (and `Neg (ZMod p)` via `SubtractionMonoid`) no longer unify, which
+-- breaks `ring`/`rw`/module-instance search on `ZMod p`. Restore the v4.34 behaviour for this file.
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+
+
+set_option maxHeartbeats 0
+set_option maxRecDepth 1000000
+set_option autoImplicit false
+set_option linter.unusedSimpArgs false
+set_option linter.unusedVariables false
+
+namespace Work.BridgeSquare.SlabBuild
+
+open Convexity
+open Work.Subdivision
+open Work.MbarHomology
+
+noncomputable section
+
+/-- The chart identity of the flag `(728,347,83)` of the square `40` of cusp `4`. -/
+theorem ch_4_40_728_347 :
+    cChain 4 (slabV 4 ![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ])
+      = singGen (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+          (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+          (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_347))) := by
+  rw [cChain]
+  have hbox : ∀ i : Fin 3,
+      slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH ∈ Work.RTOwed.cubeBox 40 := by
+    intro i
+    intro j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Work.RTOwed.cubeBox, Work.BridgeSquare.slabL, slabPt,
+        Work.Cusp.lam2, Work.Cusp.lam3, Work.Cusp.kv, Work.Cusp.kappa,
+        Work.Cusp.latMod, Work.RTOwed.cuspH, Work.BridgeSquare.cuspHm,
+        Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa, Fin.isValue,
+        Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hfar : ∀ j : Fin 3,
+      (slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] 2) + Work.RTOwed.cuspH) j
+        < (Work.Cusp.cubeCorner 40 j : ℝ) + 1 := by
+    intro j
+    fin_cases j <;>
+      simp only [Work.BridgeSquare.slabL, slabPt, Work.Cusp.lam2, Work.Cusp.lam3,
+        Work.Cusp.kv, Work.Cusp.kappa, Work.Cusp.latMod, Work.RTOwed.cuspH,
+        Work.BridgeSquare.cuspHm, Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa,
+        Fin.isValue, Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hpos : ∀ i : Fin 3,
+      Work.RTOwed.kleinPt 40 (slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH)
+        = QbarPD.posR (Mbar.flagIdx fl_4_40_728_347 i) := by
+    intro i
+    fin_cases i
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (5/8) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (728 : Fin 865)
+      exact leaf_4_40_728
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (5/8) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (347 : Fin 865)
+      exact leaf_4_40_347
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (83 : Fin 865)
+      exact leaf_4_40_83
+  have hchart := cSimp_eq_chiRep 4 (a := 40) rfl
+    ![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] fl_4_40_728_347 (1 : ZMod 2) 2 (denseSimplex3 2) hbox hfar hpos rfl
+  rw [show singGen (cSimp 4 (slabV 4 ![ slabPt (5/8) (-1/8) 1, slabPt (5/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ]))
+      = singGen (⟨fun w => Mbar.chiRep ((1 : ZMod 2), fl_4_40_728_347) w,
+          Mbar.continuous_chiRep _⟩) from congrArg singGen hchart]
+  congr 1
+  apply ContinuousMap.ext
+  intro w
+  have hmo : Mbar.moCell (1 : ZMod 2) (83 : Fin 865)
+      = Mbar.moCid (2 : Fin 5) (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2)) := by
+    decide +kernel
+  have hfr : Work.MbarHomology.flagRel ((1 : ZMod 2), fl_4_40_728_347)
+      (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_347) := by
+    have h := Mbar.flagRel_act_facet (1 : ZMod 2) 2 (⟨83⟩ : QbarCW.Cell) fl_4_40_728_347
+      (fun i => by
+        fin_cases i
+        · exact le_of_lt (show (⟨728⟩ : QbarCell) < (⟨83⟩ : QbarCell) from lt_trans (show (⟨728⟩ : QbarCell) < (⟨347⟩ : QbarCell) from by decide +kernel) (show (⟨347⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel))
+        · exact le_of_lt (show (⟨347⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel)
+        · exact le_rfl)
+    rw [hmo] at h
+    exact h
+  have hkey : (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_347))) w
+      = Mbar.chiRep (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_347) w :=
+    Psi1.chi_rootSimplex_apply 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_347) w
+  rw [hkey]
+  exact Mbar.chiRep_eq hfr w
+
+/-- The chart identity of the flag `(719,418,83)` of the square `40` of cusp `4`. -/
+theorem ch_4_40_719_418 :
+    cChain 4 (slabV 4 ![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ])
+      = singGen (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+          (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+          (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_418))) := by
+  rw [cChain]
+  have hbox : ∀ i : Fin 3,
+      slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH ∈ Work.RTOwed.cubeBox 40 := by
+    intro i
+    intro j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Work.RTOwed.cubeBox, Work.BridgeSquare.slabL, slabPt,
+        Work.Cusp.lam2, Work.Cusp.lam3, Work.Cusp.kv, Work.Cusp.kappa,
+        Work.Cusp.latMod, Work.RTOwed.cuspH, Work.BridgeSquare.cuspHm,
+        Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa, Fin.isValue,
+        Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hfar : ∀ j : Fin 3,
+      (slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] 2) + Work.RTOwed.cuspH) j
+        < (Work.Cusp.cubeCorner 40 j : ℝ) + 1 := by
+    intro j
+    fin_cases j <;>
+      simp only [Work.BridgeSquare.slabL, slabPt, Work.Cusp.lam2, Work.Cusp.lam3,
+        Work.Cusp.kv, Work.Cusp.kappa, Work.Cusp.latMod, Work.RTOwed.cuspH,
+        Work.BridgeSquare.cuspHm, Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa,
+        Fin.isValue, Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hpos : ∀ i : Fin 3,
+      Work.RTOwed.kleinPt 40 (slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH)
+        = QbarPD.posR (Mbar.flagIdx fl_4_40_719_418 i) := by
+    intro i
+    fin_cases i
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (3/8) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (719 : Fin 865)
+      exact leaf_4_40_719
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (3/8) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (418 : Fin 865)
+      exact leaf_4_40_418
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (83 : Fin 865)
+      exact leaf_4_40_83
+  have hchart := cSimp_eq_chiRep 4 (a := 40) rfl
+    ![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] fl_4_40_719_418 (1 : ZMod 2) 2 (denseSimplex3 2) hbox hfar hpos rfl
+  rw [show singGen (cSimp 4 (slabV 4 ![ slabPt (3/8) (-1/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ]))
+      = singGen (⟨fun w => Mbar.chiRep ((1 : ZMod 2), fl_4_40_719_418) w,
+          Mbar.continuous_chiRep _⟩) from congrArg singGen hchart]
+  congr 1
+  apply ContinuousMap.ext
+  intro w
+  have hmo : Mbar.moCell (1 : ZMod 2) (83 : Fin 865)
+      = Mbar.moCid (2 : Fin 5) (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2)) := by
+    decide +kernel
+  have hfr : Work.MbarHomology.flagRel ((1 : ZMod 2), fl_4_40_719_418)
+      (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_418) := by
+    have h := Mbar.flagRel_act_facet (1 : ZMod 2) 2 (⟨83⟩ : QbarCW.Cell) fl_4_40_719_418
+      (fun i => by
+        fin_cases i
+        · exact le_of_lt (show (⟨719⟩ : QbarCell) < (⟨83⟩ : QbarCell) from lt_trans (show (⟨719⟩ : QbarCell) < (⟨418⟩ : QbarCell) from by decide +kernel) (show (⟨418⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel))
+        · exact le_of_lt (show (⟨418⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel)
+        · exact le_rfl)
+    rw [hmo] at h
+    exact h
+  have hkey : (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_418))) w
+      = Mbar.chiRep (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_418) w :=
+    Psi1.chi_rootSimplex_apply 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_418) w
+  rw [hkey]
+  exact Mbar.chiRep_eq hfr w
+
+/-- The chart identity of the flag `(725,418,83)` of the square `40` of cusp `4`. -/
+theorem ch_4_40_725_418 :
+    cChain 4 (slabV 4 ![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ])
+      = singGen (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+          (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+          (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_725_418))) := by
+  rw [cChain]
+  have hbox : ∀ i : Fin 3,
+      slabL 4 (![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH ∈ Work.RTOwed.cubeBox 40 := by
+    intro i
+    intro j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Work.RTOwed.cubeBox, Work.BridgeSquare.slabL, slabPt,
+        Work.Cusp.lam2, Work.Cusp.lam3, Work.Cusp.kv, Work.Cusp.kappa,
+        Work.Cusp.latMod, Work.RTOwed.cuspH, Work.BridgeSquare.cuspHm,
+        Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa, Fin.isValue,
+        Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hfar : ∀ j : Fin 3,
+      (slabL 4 (![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] 2) + Work.RTOwed.cuspH) j
+        < (Work.Cusp.cubeCorner 40 j : ℝ) + 1 := by
+    intro j
+    fin_cases j <;>
+      simp only [Work.BridgeSquare.slabL, slabPt, Work.Cusp.lam2, Work.Cusp.lam3,
+        Work.Cusp.kv, Work.Cusp.kappa, Work.Cusp.latMod, Work.RTOwed.cuspH,
+        Work.BridgeSquare.cuspHm, Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa,
+        Fin.isValue, Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hpos : ∀ i : Fin 3,
+      Work.RTOwed.kleinPt 40 (slabL 4 (![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH)
+        = QbarPD.posR (Mbar.flagIdx fl_4_40_725_418 i) := by
+    intro i
+    fin_cases i
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (3/8) (-3/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (725 : Fin 865)
+      exact leaf_4_40_725
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (3/8) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (418 : Fin 865)
+      exact leaf_4_40_418
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (83 : Fin 865)
+      exact leaf_4_40_83
+  have hchart := cSimp_eq_chiRep 4 (a := 40) rfl
+    ![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ] fl_4_40_725_418 (1 : ZMod 2) 2 (denseSimplex3 2) hbox hfar hpos rfl
+  rw [show singGen (cSimp 4 (slabV 4 ![ slabPt (3/8) (-3/8) 1, slabPt (3/8) (-1/4) 1, slabPt (1/2) (-1/4) 1 ]))
+      = singGen (⟨fun w => Mbar.chiRep ((1 : ZMod 2), fl_4_40_725_418) w,
+          Mbar.continuous_chiRep _⟩) from congrArg singGen hchart]
+  congr 1
+  apply ContinuousMap.ext
+  intro w
+  have hmo : Mbar.moCell (1 : ZMod 2) (83 : Fin 865)
+      = Mbar.moCid (2 : Fin 5) (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2)) := by
+    decide +kernel
+  have hfr : Work.MbarHomology.flagRel ((1 : ZMod 2), fl_4_40_725_418)
+      (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_725_418) := by
+    have h := Mbar.flagRel_act_facet (1 : ZMod 2) 2 (⟨83⟩ : QbarCW.Cell) fl_4_40_725_418
+      (fun i => by
+        fin_cases i
+        · exact le_of_lt (show (⟨725⟩ : QbarCell) < (⟨83⟩ : QbarCell) from lt_trans (show (⟨725⟩ : QbarCell) < (⟨418⟩ : QbarCell) from by decide +kernel) (show (⟨418⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel))
+        · exact le_of_lt (show (⟨418⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel)
+        · exact le_rfl)
+    rw [hmo] at h
+    exact h
+  have hkey : (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_725_418))) w
+      = Mbar.chiRep (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_725_418) w :=
+    Psi1.chi_rootSimplex_apply 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_725_418) w
+  rw [hkey]
+  exact Mbar.chiRep_eq hfr w
+
+/-- The chart identity of the flag `(719,426,83)` of the square `40` of cusp `4`. -/
+theorem ch_4_40_719_426 :
+    cChain 4 (slabV 4 ![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ])
+      = singGen (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+          (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+          (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_426))) := by
+  rw [cChain]
+  have hbox : ∀ i : Fin 3,
+      slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH ∈ Work.RTOwed.cubeBox 40 := by
+    intro i
+    intro j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Work.RTOwed.cubeBox, Work.BridgeSquare.slabL, slabPt,
+        Work.Cusp.lam2, Work.Cusp.lam3, Work.Cusp.kv, Work.Cusp.kappa,
+        Work.Cusp.latMod, Work.RTOwed.cuspH, Work.BridgeSquare.cuspHm,
+        Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa, Fin.isValue,
+        Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hfar : ∀ j : Fin 3,
+      (slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] 2) + Work.RTOwed.cuspH) j
+        < (Work.Cusp.cubeCorner 40 j : ℝ) + 1 := by
+    intro j
+    fin_cases j <;>
+      simp only [Work.BridgeSquare.slabL, slabPt, Work.Cusp.lam2, Work.Cusp.lam3,
+        Work.Cusp.kv, Work.Cusp.kappa, Work.Cusp.latMod, Work.RTOwed.cuspH,
+        Work.BridgeSquare.cuspHm, Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa,
+        Fin.isValue, Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hpos : ∀ i : Fin 3,
+      Work.RTOwed.kleinPt 40 (slabL 4 (![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH)
+        = QbarPD.posR (Mbar.flagIdx fl_4_40_719_426 i) := by
+    intro i
+    fin_cases i
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (3/8) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (719 : Fin 865)
+      exact leaf_4_40_719
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (426 : Fin 865)
+      exact leaf_4_40_426
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (83 : Fin 865)
+      exact leaf_4_40_83
+  have hchart := cSimp_eq_chiRep 4 (a := 40) rfl
+    ![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] fl_4_40_719_426 (1 : ZMod 2) 2 (denseSimplex3 2) hbox hfar hpos rfl
+  rw [show singGen (cSimp 4 (slabV 4 ![ slabPt (3/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ]))
+      = singGen (⟨fun w => Mbar.chiRep ((1 : ZMod 2), fl_4_40_719_426) w,
+          Mbar.continuous_chiRep _⟩) from congrArg singGen hchart]
+  congr 1
+  apply ContinuousMap.ext
+  intro w
+  have hmo : Mbar.moCell (1 : ZMod 2) (83 : Fin 865)
+      = Mbar.moCid (2 : Fin 5) (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2)) := by
+    decide +kernel
+  have hfr : Work.MbarHomology.flagRel ((1 : ZMod 2), fl_4_40_719_426)
+      (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_426) := by
+    have h := Mbar.flagRel_act_facet (1 : ZMod 2) 2 (⟨83⟩ : QbarCW.Cell) fl_4_40_719_426
+      (fun i => by
+        fin_cases i
+        · exact le_of_lt (show (⟨719⟩ : QbarCell) < (⟨83⟩ : QbarCell) from lt_trans (show (⟨719⟩ : QbarCell) < (⟨426⟩ : QbarCell) from by decide +kernel) (show (⟨426⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel))
+        · exact le_of_lt (show (⟨426⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel)
+        · exact le_rfl)
+    rw [hmo] at h
+    exact h
+  have hkey : (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_426))) w
+      = Mbar.chiRep (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_426) w :=
+    Psi1.chi_rootSimplex_apply 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_719_426) w
+  rw [hkey]
+  exact Mbar.chiRep_eq hfr w
+
+/-- The chart identity of the flag `(728,426,83)` of the square `40` of cusp `4`. -/
+theorem ch_4_40_728_426 :
+    cChain 4 (slabV 4 ![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ])
+      = singGen (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+          (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+          (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_426))) := by
+  rw [cChain]
+  have hbox : ∀ i : Fin 3,
+      slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH ∈ Work.RTOwed.cubeBox 40 := by
+    intro i
+    intro j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Work.RTOwed.cubeBox, Work.BridgeSquare.slabL, slabPt,
+        Work.Cusp.lam2, Work.Cusp.lam3, Work.Cusp.kv, Work.Cusp.kappa,
+        Work.Cusp.latMod, Work.RTOwed.cuspH, Work.BridgeSquare.cuspHm,
+        Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa, Fin.isValue,
+        Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hfar : ∀ j : Fin 3,
+      (slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] 2) + Work.RTOwed.cuspH) j
+        < (Work.Cusp.cubeCorner 40 j : ℝ) + 1 := by
+    intro j
+    fin_cases j <;>
+      simp only [Work.BridgeSquare.slabL, slabPt, Work.Cusp.lam2, Work.Cusp.lam3,
+        Work.Cusp.kv, Work.Cusp.kappa, Work.Cusp.latMod, Work.RTOwed.cuspH,
+        Work.BridgeSquare.cuspHm, Work.Cusp.cubeCorner, Work.BridgeSquare.dirKappa,
+        Fin.isValue, Fin.reduceFinMk, ↓reduceIte, PiLp.add_apply, PiLp.sub_apply,
+        PiLp.smul_apply, WithLp.ofLp_toLp, WithLp.ofLp_add, PiLp.neg_apply,
+        WithLp.ofLp_smul, WithLp.ofLp_neg, WithLp.ofLp_sub] <;>
+      norm_num
+  have hpos : ∀ i : Fin 3,
+      Work.RTOwed.kleinPt 40 (slabL 4 (![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] i) + Work.RTOwed.cuspH)
+        = QbarPD.posR (Mbar.flagIdx fl_4_40_728_426 i) := by
+    intro i
+    fin_cases i
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (5/8) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (728 : Fin 865)
+      exact leaf_4_40_728
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/8) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (426 : Fin 865)
+      exact leaf_4_40_426
+    · show Work.RTOwed.kleinPt 40 (slabL 4 (slabPt (1/2) (-1/4) 1) + Work.RTOwed.cuspH)
+        = QbarPD.posR (83 : Fin 865)
+      exact leaf_4_40_83
+  have hchart := cSimp_eq_chiRep 4 (a := 40) rfl
+    ![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ] fl_4_40_728_426 (1 : ZMod 2) 2 (denseSimplex3 2) hbox hfar hpos rfl
+  rw [show singGen (cSimp 4 (slabV 4 ![ slabPt (5/8) (-1/8) 1, slabPt (1/2) (-1/8) 1, slabPt (1/2) (-1/4) 1 ]))
+      = singGen (⟨fun w => Mbar.chiRep ((1 : ZMod 2), fl_4_40_728_426) w,
+          Mbar.continuous_chiRep _⟩) from congrArg singGen hchart]
+  congr 1
+  apply ContinuousMap.ext
+  intro w
+  have hmo : Mbar.moCell (1 : ZMod 2) (83 : Fin 865)
+      = Mbar.moCid (2 : Fin 5) (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2)) := by
+    decide +kernel
+  have hfr : Work.MbarHomology.flagRel ((1 : ZMod 2), fl_4_40_728_426)
+      (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_426) := by
+    have h := Mbar.flagRel_act_facet (1 : ZMod 2) 2 (⟨83⟩ : QbarCW.Cell) fl_4_40_728_426
+      (fun i => by
+        fin_cases i
+        · exact le_of_lt (show (⟨728⟩ : QbarCell) < (⟨83⟩ : QbarCell) from lt_trans (show (⟨728⟩ : QbarCell) < (⟨426⟩ : QbarCell) from by decide +kernel) (show (⟨426⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel))
+        · exact le_of_lt (show (⟨426⟩ : QbarCell) < (⟨83⟩ : QbarCell) from by decide +kernel)
+        · exact le_rfl)
+    rw [hmo] at h
+    exact h
+  have hkey : (Mbar.chi 2 (Mbar.rootSimplex 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_426))) w
+      = Mbar.chiRep (Mbar.moRootC (Mbar.moCid (2 : Fin 5)
+        (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))),
+        Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_426) w :=
+    Psi1.chi_rootSimplex_apply 2 (by norm_num)
+      (⟨44, by decide +kernel⟩ : Fin (Work.HomologyIso.Gen.mbarDim 2))
+      (Mbar.flagAct (Mbar.sigVec (1 : ZMod 2) (83 : Fin 865)) fl_4_40_728_426) w
+  rw [hkey]
+  exact Mbar.chiRep_eq hfr w
+
+
+end
+
+end Work.BridgeSquare.SlabBuild
