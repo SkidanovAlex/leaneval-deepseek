@@ -22,7 +22,7 @@ private lemma log_thirty_le {q : ℕ} (hq : 30 ≤ q) : (3 : ℝ) ≤ Real.log (
     calc Real.exp 3 = (Real.exp 1) ^ 3 := by rw [← Real.exp_nat_mul]; norm_num
       _ ≤ 3 ^ 3 := pow_le_pow_left₀ (Real.exp_pos 1).le (le_of_lt Real.exp_one_lt_three) 3
       _ ≤ 30 := by norm_num
-  have hqpos : (0 : ℝ) < (q : ℝ) := by linarith
+  have hqpos : (0 : ℝ) < (q : ℝ) := by linarith only [hq']
   rw [Real.le_log_iff_exp_le hqpos]
   exact le_trans hexp3 hq'
 
@@ -54,7 +54,7 @@ private theorem maximalityAux {q : ℕ} [NeZero q] (χ₀ : DirichletCharacter �
       exact hne (Prod.mk.inj h).1
     have h := hmin ψ u hψ hzm him hneq
     rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at h
-    nlinarith [h, hlogq]
+    nlinarith only [h, hlogq]
 
 theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     (χ₀ : DirichletCharacter ℂ q) (ρ₀ : ℂ) (χ₂ : DirichletCharacter ℂ q) (ρ₂ : ℂ),
@@ -112,7 +112,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
   have hq2 : 2 ≤ q := by omega
   have hq1 : 1 < q := by omega
   have hlogq3 : (3 : ℝ) ≤ Real.log (q : ℝ) := log_thirty_le hq30
-  have hlogqpos : 0 < Real.log (q : ℝ) := by linarith
+  have hlogqpos : 0 < Real.log (q : ℝ) := by linarith only [hlogq3]
   -- conductor instances
   letI : NeZero χ₀.conductor := ⟨χ₀.conductor_ne_zero⟩
   letI : NeZero χ₂.conductor := ⟨χ₂.conductor_ne_zero⟩
@@ -193,7 +193,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
           exact hueq (Prod.mk.inj h).2
         have h := hminimal χ₀ u hχ₀ne1 hzm him hne
         rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at h
-        nlinarith [h, hlogqpos]
+        nlinarith only [h, hlogqpos, hlogq3]
   -- zeros of the (level-`q`) `L`-functions
   have hρ₀eq : (ρ₀.re : ℂ) = ρ₀ := by
     apply Complex.ext <;> simp [him0]
@@ -207,7 +207,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
   have hmemC : ρ₀ ∈ Metric.closedBall (0:ℂ) (|ρ₂.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, ← hρ₀eq, Complex.norm_real, Real.norm_eq_abs,
       abs_of_pos hρ₀re]
-    linarith [abs_nonneg ρ₂.im]
+    linarith only [abs_nonneg ρ₂.im, hlam0, hρ₀re1, hlam₀pos]
   have hdivC : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₀.primitiveCharacter)
       (Metric.closedBall (0:ℂ) (|ρ₂.im| + 2))) (ρ₀.re : ℂ) ≠ 0 := by
     rw [hρ₀eq]
@@ -216,7 +216,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     rw [Metric.mem_closedBall, dist_zero_right]
     refine le_trans (Complex.norm_le_abs_re_add_abs_im ρ₂) ?_
     rw [abs_of_pos hρ₂re]
-    linarith [abs_nonneg ρ₂.im, le_of_lt hρ₂re1]
+    linarith only [abs_nonneg ρ₂.im, le_of_lt hρ₂re1, hlam0, hlam₀pos, hρ₂re1]
   have hdivD : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₂.primitiveCharacter)
       (Metric.closedBall (0:ℂ) (|ρ₂.im| + 2))) ((ρ₂.re : ℂ) + (ρ₂.im : ℂ) * Complex.I) ≠ 0 := by
     rw [Complex.re_add_im]
@@ -239,45 +239,45 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     have h := hlam0
     rw [Work.LinnikContract.lamOf] at h
     rw [le_div_iff₀ hlogqpos]
-    nlinarith [h]
+    linarith only [h]
   have hlam₂div : 1 - ρ₂.re ≤ (1/25) / Real.log (q : ℝ) := by
     have h := hcon
     rw [Work.LinnikContract.lamOf] at h
     rw [le_div_iff₀ hlogqpos]
-    nlinarith [h]
+    linarith only [h]
   have hsqrt1 : (1 : ℝ) ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := by
     have hloglog1 : (1 : ℝ) ≤ Real.log (Real.log (q : ℝ)) := by
       rw [Real.le_log_iff_exp_le hlogqpos]
       calc Real.exp 1 ≤ 3 := Real.exp_one_lt_three.le
         _ ≤ Real.log (q : ℝ) := hlogq3
-    rw [Real.le_sqrt (by norm_num) (by linarith)]
+    rw [Real.le_sqrt (by norm_num) (by linarith only [hlam0, hlam₀pos, hloglog1])]
     simpa using hloglog1
   have hβ₁ : |1 - ρ₀.re| ≤ (1/2 : ℝ) := by
-    rw [abs_of_pos (by linarith : (0:ℝ) < 1 - ρ₀.re)]
+    rw [abs_of_pos (by linarith only [hρ₀re1] : (0:ℝ) < 1 - ρ₀.re)]
     have h2 : (1/100) / Real.log (q : ℝ) ≤ 1/2 := by
-      rw [div_le_iff₀ hlogqpos]; linarith
-    linarith [hlam₀div, h2]
+      rw [div_le_iff₀ hlogqpos]; linarith only [hlam0, hlogq3, hlam₀pos]
+    linarith only [hlam₀div, h2]
   have hβ₂ : |1 - ρ₂.re| ≤ (1/2 : ℝ) := by
-    rw [abs_of_pos (by linarith : (0:ℝ) < 1 - ρ₂.re)]
+    rw [abs_of_pos (by linarith only [hρ₂re1] : (0:ℝ) < 1 - ρ₂.re)]
     have h2 : (1/25) / Real.log (q : ℝ) ≤ 1/2 := by
-      rw [div_le_iff₀ hlogqpos]; linarith
-    linarith [hlam₂div, h2]
+      rw [div_le_iff₀ hlogqpos]; linarith only [hlam0, hlogq3, hlam₀pos]
+    linarith only [hlam₂div, h2]
   have hβ₂β₁ : ρ₂.re ≤ ρ₀.re := by
     have h := hle20
     rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at h
-    nlinarith [h, hlogqpos]
+    nlinarith only [h, hlogqpos, hlogq3]
   have hpt₁ : |1 - ρ₀.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
-    rw [abs_of_pos (by linarith : (0:ℝ) < 1 - ρ₀.re)]
+    rw [abs_of_pos (by linarith only [hρ₀re1] : (0:ℝ) < 1 - ρ₀.re)]
     have h2 : (1/100) / Real.log (q : ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) :=
       div_le_div_of_nonneg_right (le_trans (by norm_num) hsqrt1) hlogqpos.le
-    linarith [hlam₀div, h2]
+    linarith only [hlam₀div, h2]
   have hpt₂ : |1 - ρ₂.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
-    rw [abs_of_pos (by linarith : (0:ℝ) < 1 - ρ₂.re)]
+    rw [abs_of_pos (by linarith only [hρ₂re1] : (0:ℝ) < 1 - ρ₂.re)]
     have h2 : (1/25) / Real.log (q : ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) :=
       div_le_div_of_nonneg_right (le_trans (by norm_num) hsqrt1) hlogqpos.le
-    linarith [hlam₂div, h2]
+    linarith only [hlam₂div, h2]
   -- Heath-Brown Lemma 8.5 for our data
   have hfive := hT (q := q) hqqT χ₀ χ₂ hχ₀ne1 hχ₂ne1 hχ₂neχ₀ hχ₁χ₂ hχ₁χ₂'
     (β₁ := ρ₀.re) (β₂ := ρ₂.re) (γ₂ := ρ₂.im) hβ₁ hβ₂ hβ₂β₁ hgamma hpt₁ hpt₂
@@ -299,7 +299,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
       fun_prop
     · intro t ht
       have hexp : 1 ≤ Real.exp ((Work.LinnikContract.lamOf q ρ₂ - Work.LinnikContract.lamOf q ρ₀) * t) :=
-        Real.one_le_exp (mul_nonneg (by linarith [hle20]) ht.1)
+        Real.one_le_exp (mul_nonneg (by linarith only [hle20]) ht.1)
       calc f t = 1 * f t := by ring
         _ ≤ Real.exp ((Work.LinnikContract.lamOf q ρ₂ - Work.LinnikContract.lamOf q ρ₀) * t) * f t :=
             mul_le_mul_of_nonneg_right hexp (hfnnX t)
@@ -312,7 +312,7 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
       fun_prop
     · intro t ht
       have hexp : Real.exp ((Work.LinnikContract.lamOf q ρ₂) * t) ≤ Real.exp ((1/25) * t) :=
-        Real.exp_le_exp.mpr (by nlinarith [ht.1, hle25])
+        Real.exp_le_exp.mpr (by nlinarith only [ht.1, hle25, hlam0, hlam₀pos, hcon, ht])
       exact mul_le_mul_of_nonneg_right hexp (hfnnX t)
   have hident : (∫ t in (0:ℝ)..x₀, Real.exp ((1/25) * t) * f t)
       - 2 * (∫ t in (0:ℝ)..x₀, f t) = -(1/(1/25)) * f 0 * Real.cos θ ^ 2 :=
@@ -324,11 +324,11 @@ theorem dhApply85 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
         - (∫ t in (0:ℝ)..x₀, f t) + f 0 * (3 * 2 + 4 * (1/64))
         ≤ (∫ t in (0:ℝ)..x₀, Real.exp ((1/25) * t) * f t)
           - 2 * (∫ t in (0:ℝ)..x₀, f t) + f 0 * (3 * 2 + 4 * (1/64)) := by
-      linarith [hHge, hGle]
+      linarith only [hHge, hGle]
     rw [hident] at h2
-    linarith [hfive, h2]
+    linarith only [hfive, h2, hHge, hGle, hident]
   have hc2 : (49/200 : ℝ) < Real.cos θ ^ 2 := hcosgt
-  have h25 : (49/8 : ℝ) < 25 * Real.cos θ ^ 2 := by nlinarith [hc2]
-  nlinarith [hkey, h25, hf0X]
+  have h25 : (49/8 : ℝ) < 25 * Real.cos θ ^ 2 := by linarith only [hc2, hcosgt]
+  nlinarith only [hkey, h25, hf0X, hfive, hHge, hGle, hident, hcosgt]
 
 end Work.LinnikAreas.OtherCharRepel

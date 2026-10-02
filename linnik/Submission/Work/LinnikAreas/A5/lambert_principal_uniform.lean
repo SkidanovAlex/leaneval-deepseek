@@ -55,11 +55,11 @@ private lemma continuousOn_wgt {x₀ L σ B : ℝ} (hL : 0 < L) {f : ℝ → ℝ
     refine ⟨div_nonneg (Real.log_nonneg ht1) hL.le, ?_⟩
     rw [div_le_iff₀ hL]
     have hlog : Real.log t ≤ Real.log B := Real.log_le_log htpos ht.2
-    nlinarith [hlog, hBx]
+    linarith only [hlog, hBx]
   have hcomp : ContinuousOn (fun t : ℝ => f (Real.log t / L)) (Set.Icc (1:ℝ) B) :=
     hf.comp hlogc (hmap.mono_right Set.Icc_subset_Ici_self)
   have hrp : ContinuousOn (fun t : ℝ => t ^ (-σ)) (Set.Icc (1:ℝ) B) :=
-    ContinuousOn.rpow continuousOn_id continuousOn_const (fun x hx => Or.inl (by linarith [hx.1]))
+    ContinuousOn.rpow continuousOn_id continuousOn_const (fun x hx => Or.inl (by linarith only [hx.1, hx]))
   exact hrp.mul hcomp
 
 /-- Interval integrability of the weight on `[1,B]`. -/
@@ -79,7 +79,7 @@ private lemma hasDerivAt_wgt {x₀ L σ : ℝ} (hL : 0 < L) {f : ℝ → ℝ}
     (hf : DifferentiableOn ℝ f (Set.Ioo (0:ℝ) x₀)) {t : ℝ} (ht : 1 < t)
     (hu : Real.log t / L ∈ Set.Ioo (0:ℝ) x₀) :
     HasDerivAt (wgt L σ f) (wgtD L σ f t) t := by
-  have htpos : 0 < t := by linarith
+  have htpos : 0 < t := by linarith only [ht]
   have h1 : HasDerivAt (fun t : ℝ => t ^ (-σ)) (-σ * t ^ (-σ - 1)) t :=
     Real.hasDerivAt_rpow_const (Or.inl (ne_of_gt htpos))
   have h2 : HasDerivAt (fun t : ℝ => Real.log t / L) (t⁻¹ / L) t :=
@@ -127,7 +127,7 @@ private lemma rpow_neg_sub_one_le_one {σ t : ℝ} (hσ : 0 ≤ σ) (ht : 1 ≤ 
   have h1 : t ^ (-σ - 1) = (t ^ (σ + 1))⁻¹ := by
     rw [show -σ - 1 = -(σ + 1) by ring, Real.rpow_neg htpos.le]
   rw [h1, inv_le_one₀ (Real.rpow_pos_of_pos htpos _)]
-  exact Real.one_le_rpow ht (by linarith)
+  exact Real.one_le_rpow ht (by linarith only [hσ])
 
 private lemma rpow_neg_le_one {σ t : ℝ} (hσ : 0 ≤ σ) (ht : 1 ≤ t) : t ^ (-σ) ≤ 1 := by
   have htpos : 0 < t := lt_of_lt_of_le zero_lt_one ht
@@ -148,7 +148,7 @@ private lemma integrableOn_deriv_wgt {x₀ L σ A B : ℝ} {N : ℕ}
   have hA0 : 0 ≤ A := le_trans (abs_nonneg _) (by
     have h := hfA 0; rwa [Real.norm_eq_abs] at h)
   have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (by
-    have h := hfB (x₀/2) ⟨by linarith, by linarith⟩
+    have h := hfB (x₀/2) ⟨by linarith only [hx₀], by linarith only [hx₀]⟩
     rwa [Real.norm_eq_abs] at h)
   have hC0 : 0 ≤ σ * A + B / L := by positivity
   refine IntegrableOn.of_bound hfin (measurable_deriv (wgt L σ f)).aestronglyMeasurable
@@ -165,12 +165,12 @@ private lemma integrableOn_deriv_wgt {x₀ L σ A B : ℝ} {N : ℕ}
     have hxu : Real.log x / L ∈ Set.Ioo (0:ℝ) x₀ := by
       refine ⟨div_pos (Real.log_pos hx1) hL, ?_⟩
       rw [div_lt_iff₀ hL]
-      have h1 : Real.log x < Real.log (N:ℝ) := Real.log_lt_log (by linarith) hxNlt
+      have h1 : Real.log x < Real.log (N:ℝ) := Real.log_lt_log (by linarith only [hx]) hxNlt
       have h2 : Real.log (N:ℝ) ≤ L * x₀ := by
         have h3 : Real.log (N:ℝ) ≤ Real.log (Real.exp (L * x₀)) :=
           Real.log_le_log (by exact_mod_cast (by omega : 0 < N)) hNe
         rwa [Real.log_exp] at h3
-      linarith
+      linarith only [h1, h2]
     have hd := deriv_wgt (σ := σ) hL hf hx1 hxu
     have hb := abs_wgtD_le hL hσ hfA hfB (le_of_lt hx1) ⟨le_of_lt hxu.1, le_of_lt hxu.2⟩
     have hle1 : x ^ (-σ - 1) ≤ 1 := rpow_neg_sub_one_le_one hσ (le_of_lt hx1)
@@ -209,7 +209,7 @@ private lemma intervalIntegrable_psi_deriv_wgt {x₀ L σ A B : ℝ} {N : ℕ}
     rw [Set.uIoc_of_le hN1, Set.mem_Ioc] at ht
     have ht1 : (1:ℝ) ≤ t := le_of_lt ht.1
     have h1 : Chebyshev.psi t ≤ (Real.log 4 + 4) * t :=
-      Chebyshev.psi_le_const_mul_self (by linarith)
+      Chebyshev.psi_le_const_mul_self (by linarith only [ht])
     have h2 : 0 ≤ Chebyshev.psi t := Chebyshev.psi_nonneg t
     rw [Real.norm_eq_abs, abs_of_nonneg h2]
     exact le_trans h1 (mul_le_mul_of_nonneg_left ht.2 (by positivity))
@@ -227,7 +227,7 @@ private lemma continuousOn_decay (c L a b : ℝ) (ha : (0:ℝ) < a) (hab : a ≤
   have hmem : ∀ x ∈ Set.uIcc a b, (0:ℝ) < x := by
     intro x hx
     rw [Set.uIcc_of_le hab] at hx
-    linarith [hx.1]
+    linarith only [hx.1, ha, hx]
   have hlog : ContinuousOn (fun t : ℝ => Real.log t) (Set.uIcc a b) :=
     Real.continuousOn_log.mono (fun x hx => by
       simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
@@ -262,12 +262,12 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
         ((⌈Real.exp (max 1 (max R (1 / x₀)))⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((⌈Real.exp (max 1 (max R (1 / x₀)))⌉₊ : ℕ) : ℝ) ≤ (q : ℝ) := by
       exact_mod_cast hq
-    linarith
+    linarith only [h1, h2]
   have hqpos : (0 : ℝ) < (q : ℝ) := lt_of_lt_of_le (Real.exp_pos _) hexp_le
   have hq1 : (1 : ℝ) < (q : ℝ) := by
     have h1 : (1 : ℝ) < Real.exp (max 1 (max R (1 / x₀))) :=
       Real.one_lt_exp_iff.mpr (by positivity)
-    linarith
+    linarith only [hexp_le, h1]
   let L : ℝ := Real.log q
   have hLval : L = Real.log q := rfl
   have hLpos : 0 < L := by rw [hLval]; exact Real.log_pos hq1
@@ -283,22 +283,22 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
       (le_trans (le_max_right (1:ℝ) (max R (1 / x₀))) hmax)
   have hLx : 1 ≤ L * x₀ := by
     have h := (div_le_iff₀ hx₀).mp h1x
-    linarith
+    linarith only [h]
   let σ : ℝ := 1 - lam / L
   have hσval : σ = 1 - lam / L := rfl
   have hσ0 : 0 ≤ σ := by
     have h1 : lam / L ≤ 1 := (div_le_one hLpos).mpr (le_trans hlamR hLR)
-    rw [hσval]; linarith
+    rw [hσval]; linarith only [h1]
   have hσ1 : σ ≤ 1 := by
     have h1 : 0 ≤ lam / L := div_nonneg hlam.le hLpos.le
-    rw [hσval]; linarith
+    rw [hσval]; linarith only [h1]
   set N : ℕ := ⌊(q : ℝ) ^ x₀⌋₊ with hNdef
   have hqpow : (q : ℝ) ^ x₀ = Real.exp (L * x₀) := by
     rw [Real.rpow_def_of_pos hqpos, hLval]
   have hqpow1 : (1 : ℝ) ≤ (q : ℝ) ^ x₀ := by
     rw [hqpow]
     calc (1 : ℝ) = Real.exp 0 := by rw [Real.exp_zero]
-      _ ≤ Real.exp (L * x₀) := Real.exp_le_exp.mpr (by linarith)
+      _ ≤ Real.exp (L * x₀) := Real.exp_le_exp.mpr (by linarith only [hLx])
   have hN1 : 1 ≤ N := by
     have h2 : 1 ≤ ⌊(q : ℝ) ^ x₀⌋₊ := Nat.le_floor (by simpa using hqpow1)
     rwa [hNdef]
@@ -308,13 +308,13 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
     rwa [hqpow] at h1
   have hNq : (N : ℝ) ≤ (q : ℝ) ^ x₀ := by rw [hqpow]; exact hNle
   have hN1' : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN1
-  have hNpos : (0 : ℝ) < (N : ℝ) := by linarith
+  have hNpos : (0 : ℝ) < (N : ℝ) := by linarith only [hN1']
   have hlogN : Real.log (N : ℝ) / L ≤ x₀ := by
     rw [div_le_iff₀ hLpos]
     have h1 : Real.log (N : ℝ) ≤ Real.log (Real.exp (L * x₀)) :=
       Real.log_le_log hNpos hNle
     rw [Real.log_exp] at h1
-    linarith [h1]
+    linarith only [h1]
   have hlogNle : Real.log (N : ℝ) ≤ x₀ * L := (div_le_iff₀ hLpos).mp hlogN
   have hfdiff : DifferentiableOn ℝ f (Set.Ioo (0 : ℝ) x₀) :=
     hfcd.differentiableOn (by norm_num)
@@ -340,14 +340,14 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
           rw [hNdef]; exact Nat.lt_floor_add_one _
         have h2 : ((N : ℕ) : ℝ) + 1 ≤ (b : ℝ) := by
           exact_mod_cast (by omega : N + 1 ≤ b)
-        linarith
+        linarith only [h1, h2]
       have hlog : x₀ ≤ Real.log b / L := by
         rw [le_div_iff₀ hLpos]
         have h3 : Real.log ((q : ℝ) ^ x₀) < Real.log b :=
           Real.log_lt_log (by positivity) hbq
         rw [Real.log_rpow hqpos] at h3
         rw [hLval]
-        linarith
+        linarith only [h3]
       rw [hfsupp (Real.log b / L) hlog]
       simp
   -- ### Abel summation and integration by parts
@@ -361,8 +361,8 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
     have hu : Real.log t / L ∈ Set.Ioo (0:ℝ) x₀ := by
       refine ⟨div_pos (Real.log_pos ht.1) hLpos, ?_⟩
       rw [div_lt_iff₀ hLpos]
-      have h1 : Real.log t < Real.log (N:ℝ) := Real.log_lt_log (by linarith [ht.1]) ht.2
-      linarith
+      have h1 : Real.log t < Real.log (N:ℝ) := Real.log_lt_log (by linarith only [ht.1, ht]) ht.2
+      linarith only [hlogNle, h1]
     exact (hasDerivAt_wgt hLpos hfdiff ht.1 hu).differentiableAt
   have hIdG : IntervalIntegrable (deriv (wgt L σ f)) volume (1:ℝ) (N:ℝ) :=
     intervalIntegrable_deriv_wgt hx₀ hLpos hσ0 hN1 hNle hfdiff hfA hfB
@@ -451,8 +451,8 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
     have h2 : (q:ℝ)^x₀ - (N:ℝ) ≤ 1 := by
       have h3 : (q:ℝ)^x₀ < ((N : ℕ) : ℝ) + 1 := by
         rw [hNdef]; exact Nat.lt_floor_add_one _
-      linarith
-    have h4 : (0:ℝ) ≤ (q:ℝ)^x₀ - (N:ℝ) := by linarith
+      linarith only [h3]
+    have h4 : (0:ℝ) ≤ (q:ℝ)^x₀ - (N:ℝ) := by linarith only [hqpow, hNle]
     rw [Real.norm_eq_abs] at h1
     calc |∫ t in (N:ℝ)..((q:ℝ)^x₀), wgt L σ f t| ≤ M * |(q:ℝ)^x₀ - (N:ℝ)| := h1
       _ = M * ((q:ℝ)^x₀ - (N:ℝ)) := by rw [abs_of_nonneg h4]
@@ -461,9 +461,9 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
   have hmain : (∫ t in (1:ℝ)..(N:ℝ), wgt L σ f t) ≤ L * I + M := by
     have h : (∫ t in (1:ℝ)..(N:ℝ), wgt L σ f t)
         = (∫ t in (1:ℝ)..((q:ℝ)^x₀), wgt L σ f t)
-          - ∫ t in (N:ℝ)..((q:ℝ)^x₀), wgt L σ f t := by linarith [hadj]
+          - ∫ t in (N:ℝ)..((q:ℝ)^x₀), wgt L σ f t := by linarith only [hadj]
     rw [h, hsubst]
-    linarith [neg_le_abs (∫ t in (N:ℝ)..((q:ℝ)^x₀), wgt L σ f t), htail]
+    linarith only [neg_le_abs (∫ t in (N:ℝ)..((q:ℝ)^x₀), wgt L σ f t), htail]
   -- ### boundary terms
   have hg1m : wgt L σ f 1 ≤ M := by
     have h : wgt L σ f 1 = f 0 := by
@@ -490,12 +490,12 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
       calc Real.log (N:ℝ) * (lam / L) ≤ (x₀ * L) * (lam / L) :=
             mul_le_mul_of_nonneg_right hlogNle hlamL
         _ = lam * x₀ := by field_simp
-        _ ≤ R * x₀ := by nlinarith [hlamR, hx₀]
+        _ ≤ R * x₀ := by nlinarith only [hlamR, hx₀]
     have hneg : Real.exp (-c * Real.sqrt (Real.log (N:ℝ))) ≤ 1 := by
       rw [← Real.exp_zero]
       refine Real.exp_le_exp.mpr ?_
       have h1 : 0 ≤ Real.sqrt (Real.log (N:ℝ)) := Real.sqrt_nonneg _
-      nlinarith [hcpos, h1]
+      nlinarith only [hcpos, h1]
     have hkey : (N:ℝ) * (N:ℝ) ^ (-σ) = (N:ℝ) ^ (1 - σ) := by
       nth_rewrite 1 [show (N:ℝ) = (N:ℝ) ^ (1:ℝ) from (Real.rpow_one _).symm]
       rw [← Real.rpow_add hNpos]
@@ -537,13 +537,13 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
       refine hne.mono (fun t hte ht => ?_)
       rw [Set.mem_Ioc] at ht
       have ht1 : (1:ℝ) < t := ht.1
-      have htpos : 0 < t := by linarith
+      have htpos : 0 < t := by linarith only [ht]
       have hu : Real.log t / L ∈ Set.Ioo (0:ℝ) x₀ := by
         refine ⟨div_pos (Real.log_pos ht1) hLpos, ?_⟩
         rw [div_lt_iff₀ hLpos]
         have h1 : Real.log t < Real.log (N:ℝ) :=
           Real.log_lt_log htpos (lt_of_le_of_ne ht.2 hte)
-        linarith
+        linarith only [hlogNle, h1]
       have hd := deriv_wgt (σ := σ) hLpos hfdiff ht1 hu
       have hb := abs_wgtD_le hLpos hσ0 hfA hfB (le_of_lt ht1) ⟨le_of_lt hu.1, le_of_lt hu.2⟩
       have hp := hpsi t (le_of_lt ht1)
@@ -580,7 +580,7 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
         refine intervalIntegral.integral_mono_interval le_rfl hN1' hNq ?_ ?_
         · filter_upwards [self_mem_ae_restrict measurableSet_Ioc] with x hx
           rw [Set.mem_Ioc] at hx
-          exact mul_nonneg (Real.exp_nonneg _) (Real.rpow_nonneg (by linarith [hx.1]) _)
+          exact mul_nonneg (Real.exp_nonneg _) (Real.rpow_nonneg (by linarith only [hx.1, hx]) _)
         · exact (continuousOn_decay c σ (1:ℝ) ((q:ℝ)^x₀) zero_lt_one hB1).intervalIntegrable
       have hd := integral_exp_neg_sqrt_log_rpow_le x₀ R lam c hx₀ hcpos hlam hlamR
         (q := (q:ℝ)) hq1
@@ -595,8 +595,8 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
           _ = M := one_mul M
       have h2 : M' / L ≤ M' := by
         rw [div_le_iff₀ hLpos]
-        nlinarith [hM', hL1]
-      linarith
+        nlinarith only [hM', hL1]
+      linarith only [h1, h2]
     have hcoef2 : 0 ≤ K * (σ * M + M' / L) := by positivity
     have h4 : K * (σ * M + M' / L) *
           (∫ t in (1:ℝ)..(N:ℝ), Real.exp (-c * Real.sqrt (Real.log t)) * t ^ (-σ))
@@ -620,17 +620,17 @@ theorem lambert_principal_uniform (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R)
     have h1 : Ssum ≤ K * Real.exp (R * x₀) * M + M + (L * I + M)
         + 2 * K * Real.exp (R * x₀) / c ^ 2 * (M + M') := by
       rw [hS]
-      linarith [hRNm, hg1m, hmain, hErrm]
+      linarith only [hRNm, hg1m, hmain, hErrm]
     have hCval : C₀ = 2 + K * Real.exp (R * x₀) + 2 * K * Real.exp (R * x₀) / c ^ 2 := rfl
     have hEpos : 0 < Real.exp (R * x₀) := Real.exp_pos _
     have hcoef : 0 ≤ K * Real.exp (R * x₀) + 2 := by positivity
-    have hMsum : M ≤ M + M' := by linarith
+    have hMsum : M ≤ M + M' := by linarith only [hM']
     have hkey : K * Real.exp (R * x₀) * M + M + (L * I + M)
         + 2 * K * Real.exp (R * x₀) / c ^ 2 * (M + M')
         ≤ L * I + C₀ * (M + M') := by
       rw [hCval]
-      nlinarith [hMsum, mul_le_mul_of_nonneg_left hMsum hcoef, hM, hM', hKnn, hEpos.le, hc2.le]
-    linarith [h1, hkey]
+      linarith only [hMsum, mul_le_mul_of_nonneg_left hMsum hcoef, hM, hM', hKnn, hEpos.le, hc2.le, hcoef]
+    linarith only [h1, hkey, habel', hibp, hsplit, hmain, hg1m, hRNm, hErrm]
   -- ### conclusion
   rw [htsum]
   have hstep1 : (Real.log q)⁻¹ * Ssum ≤ (Real.log q)⁻¹ * (L * I + C₀ * (M + M')) :=

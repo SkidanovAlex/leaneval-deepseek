@@ -226,9 +226,9 @@ theorem exists_log_mul_ge (c δ : ℝ) (hδ : 0 < δ) :
   have hexp : Real.exp (max c 0 / δ) ≤ (q : ℝ) := by
     have h1 : Real.exp (max c 0 / δ) ≤ (⌈Real.exp (max c 0 / δ)⌉₊ : ℝ) := Nat.le_ceil _
     have h2 : (⌈Real.exp (max c 0 / δ)⌉₊ : ℝ) ≤ ((⌈Real.exp (max c 0 / δ)⌉₊ + 2 : ℕ) : ℝ) := by
-      push_cast; linarith
+      push_cast; linarith only []
     have h3 : ((⌈Real.exp (max c 0 / δ)⌉₊ + 2 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hlog : max c 0 / δ ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp (max c 0 / δ)]
     exact Real.log_le_log (Real.exp_pos _) hexp
@@ -237,7 +237,7 @@ theorem exists_log_mul_ge (c δ : ℝ) (hδ : 0 < δ) :
     exact le_max_left _ _
   have h2 : δ * (max c 0 / δ) ≤ δ * Real.log (q : ℝ) :=
     mul_le_mul_of_nonneg_left hlog hδ.le
-  linarith
+  linarith only [h1, h2]
 
 /-- For any `c`: `c ≤ √(log log q)` for all large `q`. -/
 theorem exists_sqrt_loglog_ge (c : ℝ) :
@@ -248,10 +248,10 @@ theorem exists_sqrt_loglog_ge (c : ℝ) :
     have ha : Real.exp (Real.exp (max c 0 ^ 2)) ≤ (⌈Real.exp (Real.exp (max c 0 ^ 2))⌉₊ : ℝ) :=
       Nat.le_ceil _
     have hb : (⌈Real.exp (Real.exp (max c 0 ^ 2))⌉₊ : ℝ)
-        ≤ ((⌈Real.exp (Real.exp (max c 0 ^ 2))⌉₊ + 2 : ℕ) : ℝ) := by push_cast; linarith
+        ≤ ((⌈Real.exp (Real.exp (max c 0 ^ 2))⌉₊ + 2 : ℕ) : ℝ) := by push_cast; linarith only []
     have hc : ((⌈Real.exp (Real.exp (max c 0 ^ 2))⌉₊ + 2 : ℕ) : ℝ) ≤ (q : ℝ) := by
       exact_mod_cast hq
-    linarith
+    linarith only [ha, hb, hc]
   have h2 : Real.exp (max c 0 ^ 2) ≤ Real.log (q : ℝ) := by
     have := Real.log_le_log (Real.exp_pos _) h1
     rwa [Real.log_exp] at this
@@ -263,7 +263,7 @@ theorem exists_sqrt_loglog_ge (c : ℝ) :
   have h5 : Real.sqrt (max c 0 ^ 2) ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) :=
     Real.sqrt_le_sqrt h3
   have h6 : c ≤ max c 0 := le_max_left _ _
-  linarith
+  linarith only [h4, h5, h6]
 
 /-- **Uniform threshold over a finite list**: if every element of `l` has a threshold, then one
 threshold serves all of them (monotone in the threshold). -/
@@ -321,7 +321,7 @@ theorem LFunction_eq_zero_of_zeroMult_complex {q : ℕ} [NeZero q] (χ : Dirichl
     intro p hp
     have hpp := Nat.prime_of_mem_primeFactors hp
     have hp1 : (1 : ℝ) < p := by exact_mod_cast hpp.one_lt
-    have hpos : (0 : ℝ) < p := by linarith
+    have hpos : (0 : ℝ) < p := by linarith only [hre0, hre1, hp1]
     have hnorm : ‖χ.primitiveCharacter (p : ZMod χ.conductor) * (p : ℂ) ^ (-u)‖ < 1 := by
       have h1 : ‖(p : ℂ) ^ (-u)‖ = (p : ℝ) ^ (-u.re) := by
         have := Complex.norm_cpow_eq_rpow_re_of_pos hpos (-u)
@@ -385,7 +385,7 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
   have hchi1strip := Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq2 hmin.1.1.1 hmin.1.1.2.1
   -- the second pair (HB's §6 numbering at stage 2)
   obtain ⟨χ₂, ρ₂, hchi2ne1, hchi2chi1, hchi2inv, hzm2, hlam2rho, hgamma2, hball⟩ :=
-    hsp q hqsp χ₁ ρ₁ χ ρ 3 hmin hsq him hlam1 hZ hχne hχneInv (by linarith) (by norm_num)
+    hsp q hqsp χ₁ ρ₁ χ ρ 3 hmin hsq him hlam1 hZ hχne hχneInv (by linarith only [hcon, hp2le3]) (by norm_num)
   have hlam2c : Work.LinnikContract.lamOf q ρ₂ ≤ p.2 := le_trans hlam2rho (le_of_lt hcon)
   have hlam2le3 : Work.LinnikContract.lamOf q ρ₂ ≤ 3 := le_trans hlam2c hp2le3
   have hchi2strip := Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq2 hchi2ne1 hzm2
@@ -406,7 +406,7 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
     · exact Or.inl huρ
     refine Or.inr ?_
     by_cases h0 : u.re ≤ 0
-    · linarith [hchi2strip.1]
+    · linarith only [hchi2strip.1, hchi2strip, h0]
     push_neg at h0
     by_cases h1 : u.re < 1
     · have hzm : Work.LinnikContract.zeroMult χ₁ u ≠ 0 :=
@@ -436,12 +436,12 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
     rw [Metric.mem_closedBall, dist_zero_right, hptrho2]
     have h2 : ‖ρ₂‖ ^ 2 = ρ₂.re ^ 2 + ρ₂.im ^ 2 := by
       rw [Complex.sq_norm, Complex.normSq_apply]; ring
-    have h3 : |ρ₂.re| ≤ 1 := by rw [abs_of_pos hchi2strip.1]; linarith [hchi2strip.2.1]
+    have h3 : |ρ₂.re| ≤ 1 := by rw [abs_of_pos hchi2strip.1]; linarith only [hchi2strip.2.1, hchi2strip]
     have h9 : ρ₂.re ^ 2 + ρ₂.im ^ 2 ≤ (|ρ₂.im| + 2) ^ 2 := by
-      have h10 : ρ₂.re ^ 2 ≤ 1 := by nlinarith [h3, abs_nonneg ρ₂.re, sq_abs ρ₂.re]
+      have h10 : ρ₂.re ^ 2 ≤ 1 := by nlinarith only [h3, abs_nonneg ρ₂.re, sq_abs ρ₂.re, hchi2strip, hchi1strip]
       have h12 : (|ρ₂.im| + 2) ^ 2 = |ρ₂.im| ^ 2 + (4 * |ρ₂.im| + 4) := by ring
       rw [h12, sq_abs ρ₂.im]
-      nlinarith [h10, abs_nonneg ρ₂.im]
+      linarith only [h10, abs_nonneg ρ₂.im, hchi1strip]
     have h8 : ‖ρ₂‖ ≤ |ρ₂.im| + 2 := by
       rw [← Real.sqrt_sq (norm_nonneg ρ₂), ← Real.sqrt_sq (show (0:ℝ) ≤ |ρ₂.im| + 2 by positivity)]
       apply Real.sqrt_le_sqrt
@@ -456,14 +456,14 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
     rw [Metric.mem_closedBall, dist_zero_right, hptrho1]
     have h2 : ‖ρ₁‖ ^ 2 = ρ₁.re ^ 2 + ρ₁.im ^ 2 := by
       rw [Complex.sq_norm, Complex.normSq_apply]; ring
-    have h3 : |ρ₁.re| ≤ 1 := by rw [abs_of_pos hchi1strip.1]; linarith [hchi1strip.2.1]
+    have h3 : |ρ₁.re| ≤ 1 := by rw [abs_of_pos hchi1strip.1]; linarith only [hchi1strip.2.1, hchi1strip]
     have h9 : ρ₁.re ^ 2 + ρ₁.im ^ 2 ≤ (|ρ₂.im| + 2) ^ 2 := by
-      have h10 : ρ₁.re ^ 2 ≤ 1 := by nlinarith [h3, abs_nonneg ρ₁.re, sq_abs ρ₁.re]
+      have h10 : ρ₁.re ^ 2 ≤ 1 := by nlinarith only [h3, abs_nonneg ρ₁.re, sq_abs ρ₁.re, hchi1strip]
       have h10' : ρ₁.im ^ 2 ≤ 1 := by
-        nlinarith [hmin.1.1.2.2, abs_nonneg ρ₁.im, sq_abs ρ₁.im]
+        nlinarith only [hmin.1.1.2.2, abs_nonneg ρ₁.im, sq_abs ρ₁.im, hchi1strip, him]
       have h12 : (|ρ₂.im| + 2) ^ 2 = |ρ₂.im| ^ 2 + (4 * |ρ₂.im| + 4) := by ring
       rw [h12, sq_abs ρ₂.im]
-      nlinarith [h10, h10', abs_nonneg ρ₂.im]
+      nlinarith only [h10, h10', abs_nonneg ρ₂.im, hchi1strip]
     have h8 : ‖ρ₁‖ ≤ |ρ₂.im| + 2 := by
       rw [← Real.sqrt_sq (norm_nonneg ρ₁), ← Real.sqrt_sq (show (0:ℝ) ≤ |ρ₂.im| + 2 by positivity)]
       apply Real.sqrt_le_sqrt
@@ -474,37 +474,37 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
   have hδA₁ : |1 - ρ₁.re| ≤ D.δA := by
     have h : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi1strip.2.1] : (0:ℝ) ≤ 1 - ρ₁.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi1strip.2.1, hchi1strip] : (0:ℝ) ≤ 1 - ρ₁.re), h]
     rw [div_le_iff₀ hlogq]
-    linarith [harith1, hlam1]
+    linarith only [harith1, hlam1, hchi1strip, harith2]
   have hδA₂ : |1 - ρ₂.re| ≤ D.δA := by
     have h : 1 - ρ₂.re = Work.LinnikContract.lamOf q ρ₂ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi2strip.2.1] : (0:ℝ) ≤ 1 - ρ₂.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi2strip.2.1, hchi2strip] : (0:ℝ) ≤ 1 - ρ₂.re), h]
     rw [div_le_iff₀ hlogq]
-    linarith [harith2, hlam2le3]
+    linarith only [harith2, hlam2le3, hcon, hp2le3, hlam2rho]
   have hδB₁ : |1 - ρ₁.re| ≤ D.δB := by
     have h : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi1strip.2.1] : (0:ℝ) ≤ 1 - ρ₁.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi1strip.2.1, hchi1strip] : (0:ℝ) ≤ 1 - ρ₁.re), h]
     rw [div_le_iff₀ hlogq]
-    linarith [harith3, hlam1]
+    linarith only [harith3, hlam1, hchi1strip]
   have hδB₂ : |1 - ρ₂.re| ≤ D.δB := by
     have h : 1 - ρ₂.re = Work.LinnikContract.lamOf q ρ₂ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi2strip.2.1] : (0:ℝ) ≤ 1 - ρ₂.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi2strip.2.1, hchi2strip] : (0:ℝ) ≤ 1 - ρ₂.re), h]
     rw [div_le_iff₀ hlogq]
-    linarith [harith3, hlam2le3]
+    linarith only [harith3, hlam2le3, hcon, hp2le3, hlam2rho]
   have hβreg : |1 - ρ₂.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
     have h : 1 - ρ₂.re = Work.LinnikContract.lamOf q ρ₂ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi2strip.2.1] : (0:ℝ) ≤ 1 - ρ₂.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi2strip.2.1, hchi2strip] : (0:ℝ) ≤ 1 - ρ₂.re), h]
     rw [div_le_div_iff_of_pos_right hlogq]
     exact le_trans hlam2le3 harith4
   have hrho1reg : |1 - ρ₁.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
     have h : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
-    rw [abs_of_nonneg (by linarith [hchi1strip.2.1] : (0:ℝ) ≤ 1 - ρ₁.re), h]
+    rw [abs_of_nonneg (by linarith only [hchi1strip.2.1, hchi1strip] : (0:ℝ) ≤ 1 - ρ₁.re), h]
     rw [div_le_div_iff_of_pos_right hlogq]
     exact le_trans (le_of_lt hlam1) (le_trans (by norm_num) harith4)
   -- the case split on `χ₂`
@@ -514,7 +514,7 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
     have hchi24 : χ₂ ^ 4 = 1 := by
       rw [show (4:ℕ) = 2*2 by norm_num, pow_mul, hcase']; simp
     exact D.hcoreB q hQEB χ₁ ρ₁ ρ₂ χ₂ hmin hsq' him hchi2ne1 hchi2chi1 hchi2inv hchi24 hzm2
-      hlep hlam2c (by linarith [abs_nonneg ρ₂.im, hgamma2]) hball hzero₁ hzero₂ hδB₁ hδB₂
+      hlep hlam2c (by linarith only [abs_nonneg ρ₂.im, hgamma2]) hball hzero₁ hzero₂ hδB₁ hδB₂
       hrho1reg hβreg hdivE hdivB hmaxE
   · rcases eq_or_ne (χ₁ * (χ₂ * χ₂)) 1 with hcase2 | hcase2
     · -- `χ₁χ₂² = 1`: again `χ₂⁴ = 1`
@@ -525,7 +525,7 @@ theorem HBTable7_of_count (hcount : OtherLamCountBounded) (hlam0 : Lam0Table7)
           rw [pow_two, h, inv_eq_of_mul_eq_one_left hsq']
         rw [show (4:ℕ) = 2*2 by norm_num, pow_mul, h2eq, pow_two, hsq']
       exact D.hcoreB q hQEB χ₁ ρ₁ ρ₂ χ₂ hmin hsq' him hchi2ne1 hchi2chi1 hchi2inv hchi24 hzm2
-        hlep hlam2c (by linarith [abs_nonneg ρ₂.im, hgamma2]) hball hzero₁ hzero₂ hδB₁ hδB₂
+        hlep hlam2c (by linarith only [abs_nonneg ρ₂.im, hgamma2]) hball hzero₁ hzero₂ hδB₁ hδB₂
         hrho1reg hβreg hdivE hdivB hmaxE
     · -- the third method
       exact D.hcoreA q hQEA χ₁ ρ₁ ρ₂ χ₂ hmin hsq' him hchi2ne1 hchi2chi1 hchi2inv hcase

@@ -67,7 +67,7 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
   set ff : ℝ → ℝ := fT th lam with hff
   have hx0 : 0 < x0 := by
     rw [hx0def]
-    have h := gammaT_pos hθ1 hθ2 hlam; linarith
+    have h := gammaT_pos hθ1 hθ2 hlam; linarith only [h]
   obtain ⟨hcontT, hf0T, hf2T, B, hBnn, hBndT⟩ := fTregular (θ := th) (lam := lam) hθ1 hθ2 hlam
   have hnnT : ∀ t, 0 ≤ ff t := by
     intro t; rw [hff]; exact fT_nonneg th lam hθ1 hθ2 hlam t
@@ -91,7 +91,7 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
     have h := hside.2
     have h2 : ff 0 * ((1:ℝ)/6) = fT (theta13 lam lam1) lam 0 / 6 := by rw [hff, hth]; ring
     rw [h2]
-    linarith [h, mul_comm (fT (theta13 lam lam1) lam 0 / 6) (FT (theta13 lam lam1) lam (-lam1))]
+    linarith only [h, mul_comm (fT (theta13 lam lam1) lam 0 / 6) (FT (theta13 lam lam1) lam (-lam1))]
   have hbnd0 : FT (theta13 lam lam1) lam (-lam1)
         * (FT (theta13 lam lam1) lam (-lam1) - fT (theta13 lam lam1) lam 0 / 6)
         / ((FT (theta13 lam lam1) lam (lam - lam1) - fT (theta13 lam lam1) lam 0 / 6)^2
@@ -132,15 +132,15 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
       have h1 : Real.exp 1 ≤ (q:ℝ) := by
         have h2 : Real.exp 1 ≤ (3:ℝ) := le_of_lt Real.exp_one_lt_three
         have h3 : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
-        linarith
-      linarith [h1])
+        linarith only [h2, h3]
+      linarith only [h1])
   have hL₀le : L₀ ≤ Real.log (q:ℝ) := by
     have h1 : Real.exp L₀ ≤ (q:ℝ) := by
       have h2 : Real.exp L₀ ≤ (Nat.ceil (Real.exp L₀) : ℝ) := Nat.le_ceil _
       have h3 : (Nat.ceil (Real.exp L₀) : ℝ) ≤ (q:ℝ) := by
         have : Nat.ceil (Real.exp L₀) ≤ q := by omega
         exact_mod_cast this
-      linarith
+      linarith only [h2, h3]
     calc L₀ = Real.log (Real.exp L₀) := (Real.log_exp L₀).symm
       _ ≤ Real.log (q:ℝ) := Real.log_le_log (Real.exp_pos L₀) h1
   have hlamMax : lam ≤ Work.LinnikContract2.lamMax q := hQ1 q hQ1'
@@ -167,7 +167,7 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
       intro j
       have h := hqK q hqK' (chi j) (rho j) (Work.LinnikContract2.isZ_ne_one (hrhoZ j)) (hrhoZ j)
         (le_trans (hrhole j) hlamMax)
-        (fun chi' rho' h1' h2' h3' => hzero chi' rho' ⟨h1', h2', by linarith⟩)
+        (fun chi' rho' h1' h2' h3' => hzero chi' rho' ⟨h1', h2', by linarith only [hδ0, hδ1, h3']⟩)
       rw [neg_mul] at h
       exact h
     have hK2 : Kgen q (Real.log q) (1 - lam1 / Real.log q) 0 ff 1
@@ -221,7 +221,7 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
               rw [sub_eq_add_neg]
           _ ≤ |(rho j).im| + |-((rho k).im)| := abs_add_le _ _
           _ = |(rho j).im| + |(rho k).im| := by rw [abs_neg]
-          _ ≤ 2 := by linarith
+          _ ≤ 2 := by linarith only [h6, h7]
       have hH : Commons.NumberTheory.Linnik.L52Hyp (chi j * (chi k)⁻¹) (1/6) eps δ := by
         intro s' hs1 hs2 hs3
         have h := h31 (N := (chi j * (chi k)⁻¹).conductor) hcon
@@ -262,23 +262,23 @@ theorem d2_row (h1 : Work.LinnikContract2.Area1) (hKb : KboundGenShape)
             calc |u.im| = |s.im + (u.im - s.im)| := by rw [add_sub_cancel]
               _ ≤ |s.im| + |u.im - s.im| := abs_add_le _ _
               _ = |s.im| + |s.im - u.im| := by rw [abs_sub_comm]
-          linarith [h3, hsim2, h1, hδ1]
-        have hu := hzero _ u ⟨hχne, hzu, by linarith⟩
+          linarith only [h3, hsim2, h1, hδ1]
+        have hu := hzero _ u ⟨hχne, hzu, by linarith only [hδ0, hδ1, huim]⟩
         rw [Work.LinnikContract2.lamOf] at hu
         rw [hsre]
-        have h2 : lam1 / Real.log (q:ℝ) ≤ 1 - u.re := by rw [div_le_iff₀ hLpos]; linarith
-        linarith
+        have h2 : lam1 / Real.log (q:ℝ) ≤ 1 - u.re := by rw [div_le_iff₀ hLpos]; linarith only [hu]
+        linarith only [h2]
       have h := hqS (q := q) hqS' (chi j * (chi k)⁻¹) hχne (s := s)
         (by
           rw [hsre, show (1 - lam1 / Real.log (q:ℝ)) - 1 = -(lam1 / Real.log (q:ℝ)) by ring,
             abs_neg, abs_div, abs_of_pos hLpos, abs_of_nonneg hlam1]
           exact div_le_div_of_nonneg_right hsqrt hLpos.le)
-        (by nlinarith [hsim2, hL1])
+        (by linarith only [hsim2, hL1, hδ0, hδ1])
         (by
           rw [hsre]
           have h2 : lam1 / Real.log (q:ℝ) ≤ Real.sqrt (Real.log (Real.log (q:ℝ)))
               / Real.log (q:ℝ) := div_le_div_of_nonneg_right hsqrt hLpos.le
-          linarith)
+          linarith only [h2])
         hH hzw
       exact h
     -- ### Cauchy–Schwarz

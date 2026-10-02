@@ -53,12 +53,12 @@ theorem invSqSum_wide_scale :
   have hlog2 : Real.log (2 + ‖s‖) ≤ 10 * L + 3 := by
     have hpos : (0 : ℝ) < 2 + ‖s‖ := by positivity
     calc Real.log (2 + ‖s‖) ≤ (2 + ‖s‖) - 1 := Real.log_le_sub_one_of_pos hpos
-      _ ≤ (10 * L + 4) - 1 := by linarith
+      _ ≤ (10 * L + 4) - 1 := by linarith only [hnorm]
       _ = 10 * L + 3 := by ring
   calc Work.ZeroFreeTables.P9.invSqSum N χ s
       ≤ C * (Real.log (N : ℝ) + Real.log (2 + ‖s‖) + 2) := h1
-    _ ≤ C * (L + (10 * L + 3) + 2) := mul_le_mul_of_nonneg_left (by linarith) hCpos.le
-    _ ≤ 11 * C * (L + 2) := by nlinarith [hCpos, hL1]
+    _ ≤ C * (L + (10 * L + 3) + 2) := mul_le_mul_of_nonneg_left (by linarith only [hlogN, hlog2]) hCpos.le
+    _ ≤ 11 * C * (L + 2) := by linarith only [hCpos, hL1]
 
 /-! ## Absorbing the two error terms into `α·e` -/
 
@@ -74,22 +74,22 @@ theorem err_absorb_wide {A Amax k2 k3 C Ct J L e : ℝ}
     (A / L) ^ 2 * (k2 * J + Ct) + (2 / 3) * (A / L) ^ 3 * (k3 * J + Ct) ≤ A * e := by
   have hB2 : k2 * J + Ct ≤ (k2 * C + Ct) * (L + 2) := by
     have h1 : k2 * J ≤ k2 * (C * (L + 2)) := mul_le_mul_of_nonneg_left hJ hk2
-    have h2 : Ct ≤ Ct * (L + 2) := le_mul_of_one_le_right hCt (by linarith)
+    have h2 : Ct ≤ Ct * (L + 2) := le_mul_of_one_le_right hCt (by linarith only [hL2])
     have heq : (k2 * C + Ct) * (L + 2) = k2 * (C * (L + 2)) + Ct * (L + 2) := by ring
-    linarith [h1, h2, heq.le]
+    linarith only [h1, h2, heq.le]
   have hB3 : k3 * J + Ct ≤ (k3 * C + Ct) * (L + 2) := by
     have h1 : k3 * J ≤ k3 * (C * (L + 2)) := mul_le_mul_of_nonneg_left hJ hk3
-    have h2 : Ct ≤ Ct * (L + 2) := le_mul_of_one_le_right hCt (by linarith)
+    have h2 : Ct ≤ Ct * (L + 2) := le_mul_of_one_le_right hCt (by linarith only [hL2])
     have heq : (k3 * C + Ct) * (L + 2) = k3 * (C * (L + 2)) + Ct * (L + 2) := by ring
-    linarith [h1, h2, heq.le]
+    linarith only [h1, h2, heq.le]
   have h2n : 0 ≤ k2 * C := mul_nonneg hk2 hC
   have h3n : 0 ≤ k3 * C := mul_nonneg hk3 hC
-  have hP2 : 0 ≤ (k2 * C + Ct) * (L + 2) := mul_nonneg (by linarith) (by linarith)
-  have hP3 : 0 ≤ (k3 * C + Ct) * (L + 2) := mul_nonneg (by linarith) (by linarith)
+  have hP2 : 0 ≤ (k2 * C + Ct) * (L + 2) := mul_nonneg (by linarith only [hCt, h2n]) (by linarith only [hL2])
+  have hP3 : 0 ≤ (k3 * C + Ct) * (L + 2) := mul_nonneg (by linarith only [hCt, h3n]) (by linarith only [hL2])
   have hL2' : (L + 2) / L ^ 2 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith [hL2]
+    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith only [hL2]
   have hL3' : (L + 2) / L ^ 3 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith [hL2, sq_nonneg L]
+    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith only [hL2, sq_nonneg L]
   have hnum2 : A ^ 2 ≤ Amax ^ 2 := pow_le_pow_left₀ hA hAle 2
   have hnum3 : A ^ 3 ≤ Amax ^ 3 := pow_le_pow_left₀ hA hAle 3
   have hA2eq : (A / L) ^ 2 = A ^ 2 / L ^ 2 := by rw [div_pow]
@@ -105,7 +105,7 @@ theorem err_absorb_wide {A Amax k2 k3 C Ct J L e : ℝ}
           exact div_le_div_of_nonneg_right hnum2 (pow_pos hLpos 2).le
       _ = Amax ^ 2 * (k2 * C + Ct) * ((L + 2) / L ^ 2) := by ring
       _ ≤ Amax ^ 2 * (k2 * C + Ct) * (2 / L) :=
-          mul_le_mul_of_nonneg_left hL2' (mul_nonneg (pow_nonneg hAmax 2) (by linarith))
+          mul_le_mul_of_nonneg_left hL2' (mul_nonneg (pow_nonneg hAmax 2) (by linarith only [hCt, h2n]))
   have herr3 : (2 / 3) * (A / L) ^ 3 * (k3 * J + Ct)
       ≤ (2 / 3) * Amax ^ 3 * (k3 * C + Ct) * (2 / L) := by
     rw [hA3eq]
@@ -119,14 +119,14 @@ theorem err_absorb_wide {A Amax k2 k3 C Ct J L e : ℝ}
       _ = (2 / 3) * Amax ^ 3 * (k3 * C + Ct) * ((L + 2) / L ^ 3) := by ring
       _ ≤ (2 / 3) * Amax ^ 3 * (k3 * C + Ct) * (2 / L) :=
           mul_le_mul_of_nonneg_left hL3'
-            (mul_nonneg (mul_nonneg (by norm_num) (pow_nonneg hAmax 3)) (by linarith))
+            (mul_nonneg (mul_nonneg (by norm_num) (pow_nonneg hAmax 3)) (by linarith only [hCt, h3n]))
   have hsum : Amax ^ 2 * (k2 * C + Ct) * (2 / L)
         + (2 / 3) * Amax ^ 3 * (k3 * C + Ct) * (2 / L)
       = (2 * Amax ^ 2 * (k2 * C + Ct) + (4 / 3) * Amax ^ 3 * (k3 * C + Ct)) / L := by ring
   have hKL : (2 * Amax ^ 2 * (k2 * C + Ct) + (4 / 3) * Amax ^ 3 * (k3 * C + Ct)) / L
       ≤ A * e := by
-    rw [div_le_iff₀ hLpos]; linarith [hK]
-  linarith [herr2, herr3, hsum, hKL]
+    rw [div_le_iff₀ hLpos]; linarith only [hK]
+  linarith only [herr2, herr3, hsum, hKL]
 
 /-! ## The master bound -/
 
@@ -153,17 +153,17 @@ theorem RectRepMaster {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ
   have hZ : max (Real.exp (max a a⁻¹) + 4) (K / (a * e)) ≤ L :=
     le_trans (le_max_right (2 * a / δ) _) hY
   have hLge4 : 4 ≤ L := le_trans (le_max_left 4 _) hL
-  have hLge2 : 2 ≤ L := by linarith
-  have hLpos : 0 < L := by linarith
-  have hLge1 : 1 ≤ L := by linarith
+  have hLge2 : 2 ≤ L := by linarith only [hδ0, hδ1, hLge4]
+  have hLpos : 0 < L := by linarith only [hδ0, hδ1, hLge4]
+  have hLge1 : 1 ≤ L := by linarith only [hδ0, hδ1, hLge4]
   have ha2 : a + 2 ≤ L := le_trans (le_max_left (a + 2) _) hX
-  have haL : a ≤ L := by linarith
+  have haL : a ≤ L := by linarith only [hδ0, hδ1, ha2]
   have h2aδ : 2 * a ≤ δ * L := by
     have h := le_trans (le_max_left (2 * a / δ) _) hY
     rw [div_le_iff₀ hδ0] at h
-    linarith
+    linarith only [h]
   have hlogL_ge : max a a⁻¹ ≤ Real.log L := by
-    have hexp : Real.exp (max a a⁻¹) ≤ L := by linarith [le_trans (le_max_left _ _) hZ]
+    have hexp : Real.exp (max a a⁻¹) ≤ L := by linarith only [le_trans (le_max_left _ _) hZ, hδ0, hδ1, hZ]
     have h := Real.log_le_log (Real.exp_pos (max a a⁻¹)) hexp
     rwa [Real.log_exp] at h
   have hmpos : 0 < max a a⁻¹ := lt_of_lt_of_le ha (le_max_left a a⁻¹)
@@ -181,15 +181,15 @@ theorem RectRepMaster {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ
       rwa [mul_inv_cancel₀ (ne_of_gt ha)] at h
     have h2 : 1 / (L * Real.log L) ≤ a / L := by
       rw [div_le_div_iff₀ (by positivity : 0 < L * Real.log L) hLpos]
-      nlinarith [h1, hLpos]
-    linarith
+      nlinarith only [h1, hLpos, hδ0, hδ1, hLge4]
+    linarith only [h2]
   have hs2 : s.re ≤ 1 + Real.log L / L := by
     rw [hsre]
     have h2 : a ≤ Real.log L := le_trans (le_max_left a a⁻¹) hlogL_ge
     have h3 : a / L ≤ Real.log L / L := by
       rw [div_le_div_iff₀ hLpos hLpos]
-      nlinarith [h2, hLpos]
-    linarith
+      nlinarith only [h2, hLpos, hδ0, hδ1, hLge4]
+    linarith only [h3]
   -- ## the log-derivative slot, in the `nearInvSum` form required by the engine
   have hlog : (-logDeriv (DirichletCharacter.LFunction χ) s).re
       + Work.ZeroFreeTables.P9.nearInvSum N χ s δ ≤ c * L := by
@@ -208,7 +208,7 @@ theorem RectRepMaster {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ
     · rw [hpar1 hO]
   have hs_gt : 1 < s.re := by
     have : 0 < a / L := div_pos ha hLpos
-    rw [hsre]; linarith
+    rw [hsre]; linarith only [this]
   obtain ⟨hS2, hS3⟩ := hCt par hpar_le s hs_gt
   -- ## the pointwise engine
   have hpe := Work.ZeroFreeTables.OffAxis.pointEngine_prim_gen χ hχ hprim ha hlam₁ hδ0 hδ1
@@ -222,22 +222,22 @@ theorem RectRepMaster {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ
     have h := Complex.norm_le_abs_re_add_abs_im s
     have hre_nonneg : 0 ≤ s.re := by
       have : (0 : ℝ) ≤ a / L := div_nonneg ha.le hLpos.le
-      rw [hsre]; linarith
+      rw [hsre]; linarith only [hδ0, hδ1, hsre, hs_gt]
     have habs : |s.re| = s.re := abs_of_nonneg hre_nonneg
     have hdiv : a / L ≤ 1 := (div_le_one hLpos).mpr haL
     calc ‖s‖ ≤ |s.re| + |s.im| := h
       _ = s.re + |s.im| := by rw [habs]
       _ = 1 + a / L + |s.im| := by rw [hsre]
-      _ ≤ 1 + 1 + 10 * L := by linarith
+      _ ≤ 1 + 1 + 10 * L := by linarith only [hsim, hdiv]
       _ = 10 * L + 2 := by ring
   have hJ := hCJ (s := s) (L := L) χ hχ hprim hLge1 hlogN hnorm
   -- ## absorbing the error
-  have hA0 : 0 ≤ a + lam₁ := by linarith
-  have hAmax : 0 ≤ a + M := by linarith
-  have hAle : a + lam₁ ≤ a + M := by linarith
+  have hA0 : 0 ≤ a + lam₁ := by linarith only [ha, hlam₁]
+  have hAmax : 0 ≤ a + M := by linarith only [ha, hlam₁, hM]
+  have hAle : a + lam₁ ≤ a + M := by linarith only [hM]
   have hk2 : (0 : ℝ) ≤ 1 + 4 / δ ^ 2 := by
     have : (0 : ℝ) ≤ 4 / δ ^ 2 := div_nonneg (by norm_num) (sq_nonneg δ)
-    linarith
+    linarith only [hδ0, hδ1, this]
   have hk3 : (0 : ℝ) ≤ (2 / δ) * (1 + 4 / δ ^ 2) := by positivity
   have hKbig : K ≤ (a + lam₁) * e * L := by
     have h1 : a ≤ a + lam₁ := le_add_of_nonneg_right hlam₁

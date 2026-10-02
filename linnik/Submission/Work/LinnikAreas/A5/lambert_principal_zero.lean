@@ -92,7 +92,7 @@ lemma intervalIntegrable_psi_mul_deriv_lamWeight {x₀ q lam M M' : ℝ} {f : �
   have htp : 0 < t := lt_trans zero_lt_one htmem.1
   have hpsib : ‖Chebyshev.psi t‖ ≤ (Real.log 4 + 4) * t := by
     rw [Real.norm_eq_abs, abs_of_nonneg (Chebyshev.psi_nonneg t)]
-    exact Chebyshev.psi_le_const_mul_self (by linarith)
+    exact Chebyshev.psi_le_const_mul_self (by linarith only [htp])
   have hrpow : t * t ^ (-(1 - lam / Real.log q) - 1) = t ^ (-(1 - lam / Real.log q)) := by
     calc t * t ^ (-(1 - lam / Real.log q) - 1)
         = t ^ (1:ℝ) * t ^ (-(1 - lam / Real.log q) - 1) := by rw [Real.rpow_one]
@@ -143,20 +143,20 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
   have hL1 : 1 ≤ Real.log (q:ℝ) := by
     rw [Real.le_log_iff_exp_le hq0]
     have h3 : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
-    linarith [Real.exp_one_lt_three]
+    linarith only [Real.exp_one_lt_three, h3]
   have hL2R : 2 * R ≤ Real.log (q:ℝ) := by
     rw [Real.le_log_iff_exp_le hq0]
     have h3 : (⌊Real.exp (2 * R)⌋₊ : ℝ) + 3 ≤ (q:ℝ) := by
       exact_mod_cast (le_trans (le_max_right 3 (⌊Real.exp (2*R)⌋₊ + 3)) hq :
         ⌊Real.exp (2 * R)⌋₊ + 3 ≤ q)
-    linarith [Nat.lt_floor_add_one (Real.exp (2 * R))]
+    linarith only [Nat.lt_floor_add_one (Real.exp (2 * R)), h3]
   have hσ0 : 0 ≤ 1 - lam / Real.log (q:ℝ) := by
     rw [sub_nonneg, div_le_one hLpos]
-    linarith
+    linarith only [hR, hlamR, hL2R]
   have hσhalf : (1:ℝ)/2 ≤ 1 - lam / Real.log (q:ℝ) := by
     have h : lam / Real.log (q:ℝ) ≤ 1/2 := by
-      rw [div_le_iff₀ hLpos]; linarith
-    linarith
+      rw [div_le_iff₀ hLpos]; linarith only [hlamR, hL2R]
+    linarith only [h]
   -- ## the cutoff `N` and the weight `G`
   set N : ℕ := ⌊(q:ℝ) ^ x₀⌋₊ with hNdef
   have hT1 : (1:ℝ) ≤ (q:ℝ) ^ x₀ := Real.one_le_rpow hq1.le hx₀.le
@@ -169,7 +169,7 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
     rw [hNdef]; exact Nat.floor_le hTpos.le
   have hTN : (q:ℝ) ^ x₀ - (N:ℝ) ≤ 1 := by
     have h := Nat.lt_floor_add_one ((q:ℝ) ^ x₀)
-    rw [← hNdef] at h; linarith
+    rw [← hNdef] at h; linarith only [h]
   set G : ℝ → ℝ := lamWeight (q:ℝ) lam f with hGdef
   have hGcontT : ContinuousOn G (Set.Icc (1:ℝ) ((q:ℝ)^x₀)) := by
     rw [hGdef]
@@ -279,11 +279,11 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
           mul_le_mul_of_nonneg_left hlogN hlam0
         have hb : lam * (x₀ * Real.log (q:ℝ)) ≤ R * (x₀ * Real.log (q:ℝ)) :=
           mul_le_mul_of_nonneg_right hlamR (by positivity)
-        nlinarith [ha, hb]
-      linarith
+        linarith only [ha, hb]
+      linarith only [h1]
     have hexp1 : Real.exp (-c * Real.sqrt (Real.log (N:ℝ))) ≤ 1 := by
       rw [Real.exp_le_one_iff]
-      nlinarith [hcpos, Real.sqrt_nonneg (Real.log (N:ℝ))]
+      nlinarith only [hcpos, Real.sqrt_nonneg (Real.log (N:ℝ))]
     calc |(Chebyshev.psi (N:ℝ) - (N:ℝ)) * G (N:ℝ)|
         = |Chebyshev.psi (N:ℝ) - (N:ℝ)| * |G (N:ℝ)| := abs_mul _ _
       _ ≤ (K * (N:ℝ) * Real.exp (-c * Real.sqrt (Real.log (N:ℝ)))) *
@@ -336,10 +336,10 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
             refine ContinuousOn.rpow_const continuous_id.continuousOn (fun t ht => Or.inl ?_)
             exact ne_of_gt (lt_of_lt_of_le hNpos (Set.mem_Icc.mp ht).1)
           · intro t ht
-            exact Real.rpow_le_rpow_of_nonpos hNpos (Set.mem_Icc.mp ht).1 (by linarith)
+            exact Real.rpow_le_rpow_of_nonpos hNpos (Set.mem_Icc.mp ht).1 (by linarith only [hσhalf])
         rw [intervalIntegral.integral_const, smul_eq_mul] at hmono
         have h3 : (N:ℝ) ^ (-(1 - lam / Real.log (q:ℝ))) ≤ 1 :=
-          Real.rpow_le_one_of_one_le_of_nonpos hN1' (by linarith)
+          Real.rpow_le_one_of_one_le_of_nonpos hN1' (by linarith only [hσhalf])
         calc (∫ t in (N:ℝ)..((q:ℝ)^x₀), t ^ (-(1 - lam / Real.log (q:ℝ))))
             ≤ ((q:ℝ)^x₀ - (N:ℝ)) * (N:ℝ) ^ (-(1 - lam / Real.log (q:ℝ))) := hmono
           _ ≤ 1 * 1 := mul_le_mul hTN h3 (by positivity) (by norm_num)
@@ -350,7 +350,7 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
         _ ≤ M * 1 := mul_le_mul_of_nonneg_left hInt2 hM0
         _ = M := by ring
     rw [eq_sub_iff_add_eq.mpr hadj]
-    linarith [abs_le.mp htail]
+    linarith only [abs_le.mp htail, htail]
   have hIntR : |(∫ t in (1:ℝ)..(N:ℝ), (Chebyshev.psi t - t) * deriv G t)|
       ≤ K * (2 * Real.exp (R * x₀) / c ^ 2) *
         ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ)) := by
@@ -433,7 +433,7 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
         rw [hfI]
         exact integral_exp_neg_sqrt_rpow_le (x₀ := x₀) (R := R) (lam := lam) (c := c)
           hx₀ hcpos hlam0 hlamR hq1
-      linarith [hadj, hnonneg, hbound]
+      linarith only [hadj, hnonneg, hbound]
 
     calc K * ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ)) *
           (∫ t in (1:ℝ)..(N:ℝ),
@@ -444,7 +444,7 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
             have h1 : 0 ≤ (1 - lam / Real.log (q:ℝ)) * M := mul_nonneg hσ0 hM0
             have h2 : 0 ≤ M' / Real.log (q:ℝ) := div_nonneg hM'0 hLpos.le
             have : 0 ≤ K := hKpos.le
-            nlinarith)
+            nlinarith only [hKpos, h1, h2])
       _ = K * (2 * Real.exp (R * x₀) / c ^ 2) *
             ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ)) := by ring
   -- ## rewrite the `tsum` as a finite sum
@@ -466,11 +466,11 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
         ((n : ℝ) ^ (-(1 - lam / Real.log (q:ℝ))) * f (Real.log n / Real.log (q:ℝ)))
     ring
   -- ## the main estimate
-  have hσle : (1 - lam / Real.log (q:ℝ)) ≤ 1 := by linarith [div_nonneg hlam0 hLpos.le]
+  have hσle : (1 - lam / Real.log (q:ℝ)) ≤ 1 := by linarith only [div_nonneg hlam0 hLpos.le, hlam0, hLpos]
   have hML : M' / Real.log (q:ℝ) ≤ M' := by
-    rw [div_le_iff₀ hLpos]; nlinarith [hL1, hM'0]
+    rw [div_le_iff₀ hLpos]; nlinarith only [hL1, hM'0]
   have hmain_le : (1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ) ≤ M + M' := by
-    nlinarith [mul_le_mul_of_nonneg_right hσle hM0, hML]
+    linarith only [mul_le_mul_of_nonneg_right hσle hM0, hML, hσle, hM0]
   have hMain : (∑ n ∈ Finset.Icc 1 N, (ArithmeticFunction.vonMangoldt n : ℝ) * G (n:ℝ))
       ≤ Real.log (q:ℝ) * (∫ u in (0:ℝ)..x₀, Real.exp (lam * u) * f u) + C₀ * (M + M') := by
     rw [hkey]
@@ -480,7 +480,7 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
         ≤ G 1 + (∫ t in (1:ℝ)..(N:ℝ), G t)
           + |(Chebyshev.psi (N:ℝ) - (N:ℝ)) * G (N:ℝ)|
           + |(∫ t in (1:ℝ)..(N:ℝ), (Chebyshev.psi t - t) * deriv G t)| := by
-      linarith [neg_le_abs (∫ t in (1:ℝ)..(N:ℝ), (Chebyshev.psi t - t) * deriv G t),
+      linarith only [neg_le_abs (∫ t in (1:ℝ)..(N:ℝ), (Chebyshev.psi t - t) * deriv G t),
         le_abs_self ((Chebyshev.psi (N:ℝ) - (N:ℝ)) * G (N:ℝ))]
     refine le_trans h1 ?_
     have h2 : G 1 + (∫ t in (1:ℝ)..(N:ℝ), G t)
@@ -490,37 +490,37 @@ theorem lambert_principal_zero (x₀ R : ℝ) (hx₀ : 0 < x₀) (hR : 0 < R) :
           + K * Real.exp (R * x₀) * M
           + K * (2 * Real.exp (R * x₀) / c ^ 2) *
               ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ)) := by
-      linarith [hG1, hIntG, hNterm, hIntR]
+      linarith only [hG1, hIntG, hNterm, hIntR]
     refine le_trans h2 ?_
     rw [hC₀def]
     have hKe : 0 ≤ K * Real.exp (R * x₀) := mul_nonneg hKpos.le (Real.exp_pos _).le
     have hK2 : 0 ≤ K * (2 * Real.exp (R * x₀) / c ^ 2) := by
       have h : 0 < 2 * Real.exp (R * x₀) / c ^ 2 := by positivity
       exact mul_nonneg hKpos.le h.le
-    have hMM : 0 ≤ M + M' := by linarith
+    have hMM : 0 ≤ M + M' := by linarith only [hM0, hM'0]
     -- core arithmetic: the four error terms are dominated by `(2 + Ke + 2K2) * (M + M')`
     have hcore : 2 * M + K * Real.exp (R * x₀) * M +
           K * (2 * Real.exp (R * x₀) / c ^ 2) * ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ))
         ≤ (2 + K * Real.exp (R * x₀) + 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2))) * (M + M') := by
-      have h1 : 2 * M ≤ 2 * (M + M') := by linarith
+      have h1 : 2 * M ≤ 2 * (M + M') := by linarith only [hM'0]
       have h2 : K * Real.exp (R * x₀) * M ≤ K * Real.exp (R * x₀) * (M + M') :=
-        mul_le_mul_of_nonneg_left (by linarith) hKe
+        mul_le_mul_of_nonneg_left (by linarith only [hM'0]) hKe
       have h3 : K * (2 * Real.exp (R * x₀) / c ^ 2) *
             ((1 - lam / Real.log (q:ℝ)) * M + M' / Real.log (q:ℝ))
           ≤ 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2)) * (M + M') := by
         have hA := mul_le_mul_of_nonneg_left hmain_le hK2
         have hX : 0 ≤ K * (2 * Real.exp (R * x₀) / c ^ 2) * (M + M') :=
           mul_nonneg hK2 hMM
-        linarith
+        linarith only [hA, hX]
       have h4 : (2 + K * Real.exp (R * x₀) + 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2))) * (M + M')
           = 2 * (M + M') + K * Real.exp (R * x₀) * (M + M')
             + 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2) * (M + M')) := by ring
-      linarith [h1, h2, h3, h4]
+      linarith only [h1, h2, h3, h4, hM'0]
     have hCge : 2 + K * Real.exp (R * x₀) + 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2)) ≤ C₀ := by
-      rw [hC₀def]; linarith
+      rw [hC₀def]; linarith only []
     have hprod : (2 + K * Real.exp (R * x₀) + 2 * (K * (2 * Real.exp (R * x₀) / c ^ 2))) * (M + M')
         ≤ C₀ * (M + M') := mul_le_mul_of_nonneg_right hCge hMM
-    linarith [hcore, hprod]
+    linarith only [hcore, hprod]
   -- ## finish
   have hinv : 0 ≤ (Real.log (q:ℝ))⁻¹ := inv_nonneg.mpr hLpos.le
   calc (Real.log (q:ℝ))⁻¹ * (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *

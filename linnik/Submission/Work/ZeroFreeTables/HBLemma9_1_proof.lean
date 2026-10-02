@@ -583,6 +583,1768 @@ theorem le_E_of_le_zeta {E E2z E3z Fc Corr C0c E2c E3c Corrc : ℝ}
   rw [hE]
   linarith [he, hcE2, hcE3, hcCorr]
 
+private theorem h91_case0
+  (a : ℝ)
+  (K : ℝ)
+  (ε : ℝ)
+  (ha : (0 : ℝ) < a)
+  (hK : (0 : ℝ) < K)
+  (hε : (0 : ℝ) < ε)
+  (ε₁ : ℝ)
+  (hε₁pos : (0 : ℝ) < ε₁)
+  (hε₁bud : ε₁ * (K ^ (2 : ℕ) + (3 : ℝ) * K + (3 / 2 : ℝ)) ≤ ε / (4 : ℝ))
+  (Ct : ℝ)
+  (hCtpos : (0 : ℝ) < Ct)
+  (C₀ : ℝ)
+  (hC₀pos : (0 : ℝ) < C₀)
+  (Cc : ℝ)
+  (hCcpos : (0 : ℝ) < Cc)
+  (Cp : ℝ)
+  (hCpnn : (0 : ℝ) ≤ Cp)
+  (Cn : ℝ)
+  (hCnpos : (0 : ℝ) < Cn)
+  (Cz : ℝ)
+  (hCzpos : (0 : ℝ) < Cz)
+  (δ : ℝ)
+  (hδpos : (0 : ℝ) < δ)
+  (hδlt1 : δ < (1 : ℝ))
+  (aup : ℝ)
+  (hauppos : (0 : ℝ) < aup)
+  (qabs : ℕ)
+  (habs : ∀ (q : ℕ),
+      qabs ≤ q →
+        (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) *
+            (aup / Real.log (↑q : ℝ) * C₀ +
+                    aup ^ (2 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) *
+                      (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                  (2 / 3 : ℝ) * (aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (3 : ℕ)) *
+                    ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                Cc / Real.log (↑q : ℝ) *
+                  (aup * Cp * Real.log (Real.log (↑q : ℝ)) ^ (2 : ℕ) +
+                      aup ^ (2 : ℕ) / Real.log (↑q : ℝ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (3 : ℕ) +
+                    aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (4 : ℕ)) +
+              (64 : ℝ) * aup / (δ * Real.log (↑q : ℝ))) ≤
+          a * ε / (2 : ℝ))
+  (q : ℕ)
+  [hqne : NeZero q]
+  (χ₁ : DirichletCharacter ℂ q)
+  (ρ₁ : ℂ)
+  (ρ₀ : ℂ)
+  (hnotreal : ¬(χ₁ ^ (2 : ℕ) = (1 : DirichletCharacter ℂ q) ∧ ρ₁.im = (0 : ℝ)))
+  (hZ1 : LinnikContract.IsZ χ₁ ρ₁)
+  (hZ0 : LinnikContract.IsZ χ₁ ρ₀)
+  (hne : ρ₁ ≠ ρ₀)
+  (hconj : χ₁ ^ (2 : ℕ) = (1 : DirichletCharacter ℂ q) → ρ₀ ≠ (starRingEnd ℂ : ℂ → ℂ) ρ₁)
+  (hcond : cond913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K)
+  (L : ℝ)
+  (hLdef : L = Real.log (↑q : ℝ))
+  (haL : a ≤ L)
+  (hLt : (1 : ℝ) < L)
+  (hLpos : (0 : ℝ) < L)
+  (hLne : L ≠ (0 : ℝ))
+  (hL1 : (1 : ℝ) ≤ L)
+  (hlogLnn : (0 : ℝ) ≤ Real.log L)
+  (h1aL : (1 : ℝ) ≤ a * Real.log L)
+  (haδL : (2 : ℝ) * a ≤ δ * L)
+  (Cj : ℝ)
+  (hCjnn : (0 : ℝ) ≤ Cj)
+  (Corr : ℝ)
+  (hlam₁nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₁)
+  (hlam₀nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₀)
+  (hlam₁lam₀ : LinnikContract.lamOf q ρ₁ ≤ LinnikContract.lamOf q ρ₀)
+  (hχ₁ne : χ₁ ≠ (1 : DirichletCharacter ℂ q))
+  (hα0 : (0 : ℝ) ≤ a + LinnikContract.lamOf q ρ₁)
+  (hαaup : a + LinnikContract.lamOf q ρ₁ ≤ aup)
+  (hlamOf_eq : ∀ (u : ℂ), LinnikContract.lamOf q u = ((1 : ℝ) - u.re) * L)
+  (hminPrim : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) →
+            φ.IsPrimitive →
+              ∀ (u : ℂ),
+                LinnikContract.zeroMult φ u ≠ (0 : ℕ) →
+                  |u.im| ≤ (10 : ℝ) → LinnikContract.lamOf q ρ₁ ≤ ((1 : ℝ) - u.re) * L)
+  (hSpr : ∀ par ≤ (2 : ℕ),
+      ∀ (t : ℝ),
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+          |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hSzeta : ∀ (t : ℝ),
+      |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hCzZeta : ∀ (s : ℂ),
+      ‖s‖ ≤ (5 : ℝ) →
+        ∑' (u : ℂ), (↑(analyticOrderNatAt completedRiemannZeta u) : ℝ) * ((1 : ℝ) / ((1 : ℝ) + ‖s - u‖ ^ (2 : ℕ))) ≤ Cz)
+  (hC0b' : ∀ (s : ℂ),
+      (1 : ℝ) < s.re →
+        s.re ≤ (2 : ℝ) → |s.im| ≤ (4 : ℝ) → (-logDeriv riemannZeta s).re ≤ ((1 : ℂ) / (s - (1 : ℂ))).re + C₀)
+  (hnzδ : ∀ (t : ℝ), |t| ≤ (3 : ℝ) → ∀ (u : ℂ), riemannZeta u = (0 : ℂ) → δ < ‖(1 : ℂ) + (↑t : ℂ) * I - u‖)
+  (hJOf : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) → φ.IsPrimitive → ∀ (s : ℂ), ‖s‖ ≤ (5 : ℝ) → P9.invSqSum N φ s ≤ Cj)
+  (hCcOf : ∀ {N : ℕ} [inst : NeZero N] (hNq : N ∣ q) (φ : DirichletCharacter ℂ N) (t : ℝ),
+      |SigmaP3L q L ((changeLevel hNq : DirichletCharacter ℂ N → DirichletCharacter ℂ q) φ) (sPt a L t) a
+              (LinnikContract.lamOf q ρ₁) -
+            SigmaP3L N L φ (sPt a L t) a (LinnikContract.lamOf q ρ₁)| ≤
+        Corr)
+  (hk1Of : ∀ {N : ℕ} [inst : NeZero N] (φ : DirichletCharacter ℂ N),
+      φ ≠ (1 : DirichletCharacter ℂ N) →
+        φ.IsPrimitive →
+          (3 : ℕ) ≤ N →
+            Real.log (↑N : ℝ) ≤ L →
+              ∀ (t : ℝ),
+                |t| ≤ (3 : ℝ) →
+                  (-logDeriv (LFunction φ) (sPt a L t)).re + P9.nearInvSum N φ (sPt a L t) δ ≤ ((1 / 6 : ℝ) + ε₁) * L)
+  (hN3 : (3 : ℕ) ≤ χ₁.conductor)
+  (Δ : ℝ)
+  (hΔdef : Δ = (ρ₁.im - ρ₀.im) * L)
+  (β : ℝ)
+  (hβdef : β = (ρ₁.im + ρ₀.im) * L)
+  (γ : ℝ)
+  (hγdef : γ = (2 : ℝ) * ρ₁.im * L)
+  (E2 : ℝ)
+  (hE2def : E2 = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E3 : ℝ)
+  (hE3def : E3 =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E2z : ℝ)
+  (hE2zdef : E2z = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (E3z : ℝ)
+  (hE3zdef : E3z =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (C0c : ℝ)
+  (hC0cdef : C0c = aup / L * C₀)
+  (Fc : ℝ)
+  (hFcdef : Fc = (64 : ℝ) * aup / (δ * L))
+  (E : ℝ)
+  (hEbound : (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) * E ≤ a * ε / (2 : ℝ))
+  (hcFar : ∀ k ≤ (4 : ℕ), (↑k : ℝ) * ((8 : ℝ) * (a + LinnikContract.lamOf q ρ₁) / (δ * L)) ≤ Fc)
+  (heE : ∀ e ≤ E2 + E3 + Fc + Corr + C0c, e ≤ E)
+  (heEz : ∀ e ≤ E2z + E3z + Fc + Corr + C0c, e ≤ E)
+  (hlogNOf : ∀ {N : ℕ}, N ∣ q → N ≠ (0 : ℕ) → Real.log (↑N : ℝ) ≤ L)
+  (hC : χ₁ ^ (2 : ℕ) = (1 : DirichletCharacter ℂ q)) :
+  ineq913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K ε := by
+  haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
+  have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
+    intro hh
+    exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
+      DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
+  have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
+    DirichletCharacter.primitiveCharacter_isPrimitive χ₁
+  have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
+    hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
+  have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
+      = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
+    intro u
+    have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
+      χ₁.primitiveCharacter u
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
+    exact h
+  obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
+  have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
+  have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
+      (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
+      ≤ (1 / 6 + ε₁) * L := fun t ht =>
+    hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
+  have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
+    fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
+  have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
+        χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
+      - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
+    fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
+  have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by rw [hlamOf_eq ρ₁]; field_simp; ring
+  have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by rw [hlamOf_eq ρ₀]; field_simp; ring
+  have hρc₁re : ((starRingEnd ℂ) ρ₁).re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
+    rw [Complex.conj_re]; exact hρ₁re
+  have hρc₀re : ((starRingEnd ℂ) ρ₀).re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
+    rw [Complex.conj_re]; exact hρ₀re
+  have hγ₁ne : ρ₁.im ≠ 0 := fun h => hnotreal ⟨hC, h⟩
+  have hc₁ne : ρ₁ ≠ (starRingEnd ℂ) ρ₁ := by
+    intro h
+    have hh := congrArg Complex.im h
+    simp only [Complex.conj_im] at hh
+    exact hγ₁ne (by linarith only [hh])
+  have hc₀ρ₁ : ρ₀ ≠ (starRingEnd ℂ) ρ₁ := hconj hC
+  have hc₀ρ₁' : ρ₁ ≠ (starRingEnd ℂ) ρ₀ := fun h =>
+    hc₀ρ₁ (by
+      have hh : (starRingEnd ℂ) ρ₁ = ρ₀ := by
+        have := congrArg (starRingEnd ℂ) h
+        simpa using this
+      exact hh.symm)
+  have hγ₀ne_of : ρ₀ ≠ (starRingEnd ℂ) ρ₀ → ρ₀.im ≠ 0 := by
+    intro h h0
+    refine h (Complex.ext ?_ ?_)
+    · simp only [Complex.conj_re]
+    · simp only [Complex.conj_im, h0, neg_zero]
+  have hγ₀ne_iff : ρ₀.im ≠ 0 → ρ₀ ≠ (starRingEnd ℂ) ρ₀ := by
+    intro h hc
+    have hh := congrArg Complex.im hc
+    simp only [Complex.conj_im] at hh
+    exact h (by linarith only [hh])
+  have h01 : ρ₀ ≠ ρ₁ := fun h => hne h.symm
+  have h10 : ρ₁ ≠ ρ₀ := hne
+  have hc₁₁ : (starRingEnd ℂ) ρ₁ ≠ ρ₁ := fun h => hc₁ne h.symm
+  have hc₀c₁ : (starRingEnd ℂ) ρ₀ ≠ (starRingEnd ℂ) ρ₁ := fun h =>
+    h01 (by have := congrArg (starRingEnd ℂ) h; simpa using this)
+  have hzmc₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ((starRingEnd ℂ) ρ₁) ≠ 0 := by
+    rw [← hzm1 ((starRingEnd ℂ) ρ₁), Work.A7.zeroMult_conj_sq_one χ₁ hC ρ₁]
+    exact hZ1.2.1
+  have hzmc₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ((starRingEnd ℂ) ρ₀) ≠ 0 := by
+    rw [← hzm1 ((starRingEnd ℂ) ρ₀), Work.A7.zeroMult_conj_sq_one χ₁ hC ρ₀]
+    exact hZ0.2.1
+  have h3eq : χ₁ ^ 3 = χ₁ := by
+    have h : χ₁ ^ 3 = χ₁ ^ 2 * χ₁ := by
+      rw [show (3 : ℕ) = 2 + 1 by norm_num, pow_succ]
+    rw [h, hC, one_mul]
+  have hzc₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+    rw [← hzm1 ρ₁]; exact hZ1.2.1
+  have hzc₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+    rw [← hzm1 ρ₀]; exact hZ0.2.1
+  have himc₁ : |((starRingEnd ℂ) ρ₁).im| ≤ 10 := by
+    rw [Complex.conj_im, abs_neg]; linarith only [hZ1.2.2]
+  have himc₀ : |((starRingEnd ℂ) ρ₀).im| ≤ 10 := by
+    rw [Complex.conj_im, abs_neg]; linarith only [hZ0.2.2]
+  have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
+  have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
+  have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; exact ⟨by linarith only [h1.1, h0.2], by linarith only [h1.2, h0.1]⟩
+  have hm3b : |ρ₁.im + ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; exact ⟨by linarith only [h1.1, h0.1], by linarith only [h1.2, h0.2]⟩
+  have hm3c : |2 * ρ₁.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2
+    rw [abs_le]; exact ⟨by linarith only [h1.1], by linarith only [h1.2]⟩
+  have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; exact ⟨by linarith only [h1.1, h0.2], by linarith only [h1.2, h0.1]⟩
+  have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; exact ⟨by linarith only [h1.1, h0.1], by linarith only [h1.2, h0.2]⟩
+  -- ### error budgets
+  set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
+  set e2 : ℝ := E2 + E3 + 3 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
+  set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
+  set e4 : ℝ := E2 + E3 + 4 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
+  set e4z : ℝ := E2 + E3 + 3 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4zdef
+  set e5 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he5def
+  set e6 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he6def
+  set e7 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he7def
+  set e8 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he8def
+  -- ### the eight points
+  set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
+  set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
+  set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
+  set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
+  set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
+  set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
+  set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
+  set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+  clear_value S1 S2 S3 S4 S5 S6 S7 S8
+  -- ### point 1 (principal at σ)
+  have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
+    have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
+      (hSzeta 0).1 (hSzeta 0).2 hcc0
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
+      rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
+      rw [zero_mul, PhiG_zero]
+    rw [hpole] at hb
+    linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
+  -- ### point 2 (χ₁ at σ+iγ₀, kept {ρ₀,ρ₁,ρ̄₁})
+  have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+      - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
+    have hT : ∀ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hzc₀
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; exact hzc₁
+        · rw [Finset.mem_singleton.mp h']; exact hzmc₁
+    have hTim : ∀ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ0.2.2]
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; linarith only [hZ1.2.2]
+        · rw [Finset.mem_singleton.mp h']; exact himc₁
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
+      (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
+      (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
+      hminP1 ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
+    have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
+      rw [sub_self, zero_mul, PhiG_zero]
+    have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
+    have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+          / ((sPt a L ρ₀.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - -ρ₁.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
+        (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₀.im) (ρ := (starRingEnd ℂ) ρ₁)
+        hLne hρc₁re rfl
+    have hsum : (∑ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L)
+          + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - -ρ₁.im) * L) := by
+      rw [Finset.sum_insert (by
+            simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+            exact ⟨h01, hc₀ρ₁⟩),
+          Finset.sum_insert (by
+            simp only [Finset.mem_singleton]; exact hc₁ne),
+          Finset.sum_singleton, ht1, ht2, ht3]
+      ring
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    have hcard : ((({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ) = 3 := by
+      rw [Finset.card_insert_of_notMem (by
+            simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+            exact ⟨h01, hc₀ρ₁⟩),
+          Finset.card_insert_of_notMem (by
+            simp only [Finset.mem_singleton]; exact hc₁ne),
+          Finset.card_singleton]
+      norm_num
+    rw [hcard, hsum] at hb
+    rw [show (ρ₀.im - -ρ₁.im) * L = β by rw [hβdef]; ring] at hb
+    rw [show P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L)
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ from by
+        rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring, PhiG_neg']] at hb
+    linarith only [hb, hS2', he2def, hE2def, hE3def]
+  -- ### point 3 (principal at σ+i(γ₁-γ₀))
+  have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
+    have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3a)
+      (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((ρ₁.im - ρ₀.im) * L) :=
+      P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
+    linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
+  -- ### point 5 (χ₁² = 1, principal at σ+i(γ₁+γ₀))
+  have hS5 : S5 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a β + e5 := by
+    have hcc5 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im + ρ₀.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc5
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im + ρ₀.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3b)
+      (hSzeta (ρ₁.im + ρ₀.im)).1 (hSzeta (ρ₁.im + ρ₀.im)).2 hcc5
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im + ρ₀.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((ρ₁.im + ρ₀.im) * L) :=
+      P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im + ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    rw [show (ρ₁.im + ρ₀.im) * L = β by rw [hβdef]] at hb
+    rw [hS5', hC]
+    linarith only [hb, he5def, hE2zdef, hE3zdef]
+  -- ### point 6 (χ₁ at σ+i(2γ₁-γ₀), kept {ρ₁,ρ̄₀})
+  have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
+    have hT : ∀ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hzc₁
+      · rw [Finset.mem_singleton.mp h]; exact hzmc₀
+    have hTim : ∀ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ1.2.2]
+      · rw [Finset.mem_singleton.mp h]; exact himc₀
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
+      (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
+      (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
+      hminP1 ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
+    have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+          / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im - ρ₀.im - ρ₁.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
+    have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+          / ((sPt a L (2 * ρ₁.im - ρ₀.im) - (starRingEnd ℂ) ρ₀) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀))
+        (gam := ((starRingEnd ℂ) ρ₀).im) (t := 2 * ρ₁.im - ρ₀.im) (ρ := (starRingEnd ℂ) ρ₀)
+        hLne hρc₀re rfl
+    have hsum : (∑ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im - ρ₀.im - ρ₁.im) * L)
+          + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L) := by
+      rw [Finset.sum_insert (by simp only [Finset.mem_singleton]; exact hc₀ρ₁'),
+        Finset.sum_singleton, ht2, ht1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    have hcard6 : ((({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ)).card : ℝ) = 2 := by
+      rw [Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact hc₀ρ₁'),
+        Finset.card_singleton]
+      norm_num
+    rw [hcard6, hsum, neg_add] at hb
+    rw [show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring] at hb
+    rw [show (2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L = γ by rw [hγdef]; ring] at hb
+    linarith only [hb, hS6', he6def, hE2def, hE3def]
+  -- ### point 7 (χ₁² = 1, principal at σ+2iγ₁)
+  have hS7 : S7 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ + e7 := by
+    have hcc7 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (2 * ρ₁.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc7
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (2 * ρ₁.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3c)
+      (hSzeta (2 * ρ₁.im)).1 (hSzeta (2 * ρ₁.im)).2 hcc7
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im) * L) :=
+      P3_arg_eq_pole_split (a := a) (L := L) (t := 2 * ρ₁.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    rw [show (2 * ρ₁.im) * L = γ by rw [hγdef]] at hb
+    rw [hS7', hC]
+    linarith only [hb, he7def, hE2zdef, hE3zdef]
+  -- ### point 8 (χ₁ at σ+i(2γ₁+γ₀), kept {ρ₁,ρ₀})
+  have hS8 : S8 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e8 := by
+    have hT : ∀ u ∈ ({ρ₁, ρ₀} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hzc₁
+      · rw [Finset.mem_singleton.mp h]; exact hzc₀
+    have hTim : ∀ u ∈ ({ρ₁, ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ1.2.2]
+      · rw [Finset.mem_singleton.mp h]; linarith only [hZ0.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3e)
+      (hk1P1 (2 * ρ₁.im + ρ₀.im) hm3e) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (2 * ρ₁.im + ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im + ρ₀.im)).2
+      (hJ1 (sPt a L (2 * ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3e))
+      hminP1 ({ρ₁, ρ₀} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im + ρ₀.im))
+    have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+          / ((sPt a L (2 * ρ₁.im + ρ₀.im) - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im - ρ₁.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := 2 * ρ₁.im + ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
+    have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+          / ((sPt a L (2 * ρ₁.im + ρ₀.im) - ρ₀) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im - ρ₀.im) * L) :=
+      P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := 2 * ρ₁.im + ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl
+    have hsum : (∑ u ∈ ({ρ₁, ρ₀} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im - ρ₁.im) * L)
+          + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im - ρ₀.im) * L) := by
+      rw [Finset.sum_insert (by simp only [Finset.mem_singleton]; exact h10),
+        Finset.sum_singleton, ht2, ht1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    have hcard : ((({ρ₁, ρ₀} : Finset ℂ)).card : ℝ) = 2 := by
+      rw [Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact h10),
+        Finset.card_singleton]
+      norm_num
+    rw [hcard, hsum, neg_add] at hb
+    rw [show (2 * ρ₁.im + ρ₀.im - ρ₁.im) * L = β by rw [hβdef]; ring] at hb
+    rw [show (2 * ρ₁.im + ρ₀.im - ρ₀.im) * L = γ by rw [hγdef]; ring] at hb
+    rw [hS8', h3eq]
+    linarith only [hb, he8def, hE2def, hE3def]
+  -- ### the assembly
+  have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
+  have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
+  have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
+    rw [hC0cdef]
+    exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
+  have hE1 : e1 ≤ E := by rw [he1def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hE2 : e2 ≤ E := by
+    rw [he2def]
+    exact heE _ (by have h := hcFar 3 (by norm_num); linarith only [h, h1C0, hC0cnn])
+  have hE3 : e3 ≤ E := by rw [he3def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hE5 : e5 ≤ E := by rw [he5def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hE6 : e6 ≤ E := by
+    rw [he6def]
+    exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
+  have hE7 : e7 ≤ E := by rw [he7def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hE8 : e8 ≤ E := by
+    rw [he8def]
+    exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
+  have hExprNon : 0 ≤
+      (K ^ 2 + 3 / 4) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+        + K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ - K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ
+      + ((K ^ 2 + 3 / 4) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β
+        + K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a β)
+      + (2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
+        + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ) := by
+    have h1 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ ha hlam₁nn hlam₁lam₀ hK
+      (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
+    have h2 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K β ha hlam₁nn hlam₁lam₀ hK
+      (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
+    have h3 : (0 : ℝ) ≤ 2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
+        + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
+        - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ := by
+      have h := P3.CaseC_D (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (t := γ)
+        ha hK.le hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.2
+      have h' : (2 * K * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) + (γ : ℂ) * Complex.I))
+          + (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₀) : ℂ)) + (γ : ℂ) * Complex.I))
+          - (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((a : ℂ) + (γ : ℂ) * Complex.I))).re
+        = 2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
+          + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
+          - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ := by
+        simp only [P9.PhiG, Complex.add_re, Complex.sub_re]
+        simp [Complex.mul_re]
+      rw [h'] at h
+      exact h
+    linarith only [h1, h2, h3]
+  by_cases hγ₀ : ρ₀.im = 0
+  · -- ## sub-case γ₀ = 0
+    have hβΔ : β = Δ := by rw [hβdef, hΔdef, hγ₀]; ring
+    have hT4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hzc₁
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; exact hzc₀
+        · rw [Finset.mem_singleton.mp h']; exact hzmc₁
+    have hTim4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ1.2.2]
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; linarith only [hZ0.2.2]
+        · rw [Finset.mem_singleton.mp h']; exact himc₁
+    have hS4 : S4 ≤ -P3R 1 - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
+        - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
+        + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4z := by
+      have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+        (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+        (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
+        (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
+        (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
+        (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
+        hminP1 ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT4 hTim4 (hCc1 ρ₁.im)
+      have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re
+          = P3R 1 := by
+        rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+          (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
+        rw [sub_self, zero_mul, PhiG_zero]
+        rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
+          rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
+      have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L) :=
+        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+          (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl
+      have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+            / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) :=
+        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
+          (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₁)
+          hLne hρc₁re rfl
+      have hsum : (∑ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+          (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
+          = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L)
+            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) := by
+        rw [Finset.sum_insert (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨h10, hc₁ne⟩),
+            Finset.sum_insert (by
+              simp only [Finset.mem_singleton]; exact hc₀ρ₁),
+            Finset.sum_singleton, ht1, ht2, ht3]
+        ring
+      rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+      have hcard : ((({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ) = 3 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨h10, hc₁ne⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hc₀ρ₁),
+            Finset.card_singleton]
+        norm_num
+      rw [hcard, hsum] at hb
+      rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
+      rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
+      rw [hβΔ]
+      linarith only [hb, hS4', he4zdef, hE2def, hE3def]
+    have hE4z : e4z ≤ E := by
+      rw [he4zdef]
+      exact heE _ (by have h := hcFar 3 (by norm_num); linarith only [h, h1C0, hC0cnn])
+    have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
+        + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
+      have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
+        hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
+      rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
+      push_cast at h0
+      simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
+        zero_mul, add_zero]
+      push_cast
+      exact h0
+    have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4z + e5)
+        + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+        ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+      have hsum := sumErr_le hK.le hE1 hE2 hE3 hE4z hE5 hE6 hE7 hE8
+      have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
+      have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+      have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+        have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
+        have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
+        linarith only [hae, hle]
+      have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
+        have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
+        calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+            = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 2 * K + 1)) := by ring
+          _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) :=
+              mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hcoef hε₁pos.le) hα0
+          _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := hε
+      linarith only [hsum, hmain, hbud2, hfin]
+    exact caseC_zero_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε)
+      (ε₁ := ε₁) (Δ := Δ) (β := β) (γ := γ)
+      (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6) (S7 := S7) (S8 := S8)
+      (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4z) (e5 := e5) (e6 := e6) (e7 := e7) (e8 := e8)
+      (corr := 0) hK.le hα0 hβΔ.symm hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
+      (by linarith only [hExprNon]) habs
+  · -- ## sub-case γ₀ ≠ 0
+    have hγ₀' : ρ₀.im ≠ 0 := hγ₀
+    have hd₀ : ρ₀ ≠ (starRingEnd ℂ) ρ₀ := hγ₀ne_iff hγ₀'
+    have hT4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hzc₁
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; exact hzc₀
+        · rcases Finset.mem_insert.mp h' with h'' | h''
+          · rw [h'']; exact hzmc₀
+          · rw [Finset.mem_singleton.mp h'']; exact hzmc₁
+    have hTim4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+        |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ1.2.2]
+      · rcases Finset.mem_insert.mp h with h' | h'
+        · rw [h']; linarith only [hZ0.2.2]
+        · rcases Finset.mem_insert.mp h' with h'' | h''
+          · rw [h'']; exact himc₀
+          · rw [Finset.mem_singleton.mp h'']; exact himc₁
+    have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
+        - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
+        + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
+      have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+        (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+        (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
+        (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
+        (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
+        (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
+        hminP1 ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT4 hTim4
+        (hCc1 ρ₁.im)
+      have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re
+          = P3R 1 := by
+        rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+          (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
+        rw [sub_self, zero_mul, PhiG_zero]
+        rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
+          rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
+      have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L) :=
+        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+          (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl
+      have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+            / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₀) * (L : ℂ)))).re
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - -ρ₀.im) * L) :=
+        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀))
+          (gam := ((starRingEnd ℂ) ρ₀).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₀)
+          hLne hρc₀re rfl
+      have ht4 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
+            / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
+          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) :=
+        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
+          (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₁)
+          hLne hρc₁re rfl
+      have hsum : (∑ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
+          (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
+          = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L)
+            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - -ρ₀.im) * L)
+            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) := by
+        rw [Finset.sum_insert (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨h10, hc₀ρ₁', hc₁ne⟩),
+            Finset.sum_insert (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hd₀, hc₀ρ₁⟩),
+            Finset.sum_insert (by
+              simp only [Finset.mem_singleton]; exact hc₀c₁),
+            Finset.sum_singleton, ht1, ht2, ht3, ht4]
+        ring
+      rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+      have hcard : ((({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ)
+          = 4 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨h10, hc₀ρ₁', hc₁ne⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hd₀, hc₀ρ₁⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hc₀c₁),
+            Finset.card_singleton]
+        norm_num
+      rw [hcard, hsum, neg_add, neg_add, neg_add] at hb
+      rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
+      rw [show (ρ₁.im - -ρ₀.im) * L = β by rw [hβdef]; ring] at hb
+      rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
+      linarith only [hb, hS4', he4def, hE2def, hE3def]
+    have hE4 : e4 ≤ E := by
+      rw [he4def]
+      exact heE _ (by have h := hcFar 4 (by norm_num); linarith only [h, h1C0, hC0cnn])
+    have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
+        + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
+      have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
+        hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
+      rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
+      push_cast at h0
+      simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
+        zero_mul, add_zero]
+      push_cast
+      exact h0
+    have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
+        + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+        ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+      have hsum := sumErr_le hK.le hE1 hE2 hE3 hE4 hE5 hE6 hE7 hE8
+      have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
+      have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+      have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+        have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
+        have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
+        linarith only [hae, hle]
+      have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
+        have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
+        calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
+            = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 2 * K + 1)) := by ring
+          _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) :=
+              mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hcoef hε₁pos.le) hα0
+          _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := hε
+      linarith only [hsum, hmain, hbud2, hfin]
+    exact caseC_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε)
+      (ε₁ := ε₁) (Δ := Δ) (β := β) (γ := γ)
+      (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6) (S7 := S7) (S8 := S8)
+      (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5) (e6 := e6) (e7 := e7) (e8 := e8)
+      (corr := 0) hK.le hα0 hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
+      (by
+        have h4 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := Δ)
+          (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
+        have h5 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := β)
+          (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
+        linarith only [hExprNon, mul_nonneg hK.le h4, mul_nonneg hK.le h5])
+      habs
+
+private theorem h91_case1
+  (a : ℝ)
+  (K : ℝ)
+  (ε : ℝ)
+  (ha : (0 : ℝ) < a)
+  (hK : (0 : ℝ) < K)
+  (hε : (0 : ℝ) < ε)
+  (ε₁ : ℝ)
+  (hε₁pos : (0 : ℝ) < ε₁)
+  (hε₁bud : ε₁ * (K ^ (2 : ℕ) + (3 : ℝ) * K + (3 / 2 : ℝ)) ≤ ε / (4 : ℝ))
+  (Ct : ℝ)
+  (hCtpos : (0 : ℝ) < Ct)
+  (C₀ : ℝ)
+  (hC₀pos : (0 : ℝ) < C₀)
+  (Cc : ℝ)
+  (hCcpos : (0 : ℝ) < Cc)
+  (Cp : ℝ)
+  (hCpnn : (0 : ℝ) ≤ Cp)
+  (Cn : ℝ)
+  (hCnpos : (0 : ℝ) < Cn)
+  (Cz : ℝ)
+  (hCzpos : (0 : ℝ) < Cz)
+  (δ : ℝ)
+  (hδpos : (0 : ℝ) < δ)
+  (hδlt1 : δ < (1 : ℝ))
+  (aup : ℝ)
+  (hauppos : (0 : ℝ) < aup)
+  (qabs : ℕ)
+  (habs : ∀ (q : ℕ),
+      qabs ≤ q →
+        (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) *
+            (aup / Real.log (↑q : ℝ) * C₀ +
+                    aup ^ (2 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) *
+                      (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                  (2 / 3 : ℝ) * (aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (3 : ℕ)) *
+                    ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                Cc / Real.log (↑q : ℝ) *
+                  (aup * Cp * Real.log (Real.log (↑q : ℝ)) ^ (2 : ℕ) +
+                      aup ^ (2 : ℕ) / Real.log (↑q : ℝ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (3 : ℕ) +
+                    aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (4 : ℕ)) +
+              (64 : ℝ) * aup / (δ * Real.log (↑q : ℝ))) ≤
+          a * ε / (2 : ℝ))
+  (q : ℕ)
+  [hqne : NeZero q]
+  (χ₁ : DirichletCharacter ℂ q)
+  (ρ₁ : ℂ)
+  (ρ₀ : ℂ)
+  (hZ1 : LinnikContract.IsZ χ₁ ρ₁)
+  (hZ0 : LinnikContract.IsZ χ₁ ρ₀)
+  (hne : ρ₁ ≠ ρ₀)
+  (hcond : cond913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K)
+  (L : ℝ)
+  (hLdef : L = Real.log (↑q : ℝ))
+  (haL : a ≤ L)
+  (hLt : (1 : ℝ) < L)
+  (hLpos : (0 : ℝ) < L)
+  (hLne : L ≠ (0 : ℝ))
+  (hL1 : (1 : ℝ) ≤ L)
+  (hlogLnn : (0 : ℝ) ≤ Real.log L)
+  (h1aL : (1 : ℝ) ≤ a * Real.log L)
+  (haδL : (2 : ℝ) * a ≤ δ * L)
+  (Cj : ℝ)
+  (hCjnn : (0 : ℝ) ≤ Cj)
+  (Corr : ℝ)
+  (hlam₁nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₁)
+  (hlam₀nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₀)
+  (hlam₁lam₀ : LinnikContract.lamOf q ρ₁ ≤ LinnikContract.lamOf q ρ₀)
+  (hχ₁ne : χ₁ ≠ (1 : DirichletCharacter ℂ q))
+  (hα0 : (0 : ℝ) ≤ a + LinnikContract.lamOf q ρ₁)
+  (hαaup : a + LinnikContract.lamOf q ρ₁ ≤ aup)
+  (hlamOf_eq : ∀ (u : ℂ), LinnikContract.lamOf q u = ((1 : ℝ) - u.re) * L)
+  (hminPrim : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) →
+            φ.IsPrimitive →
+              ∀ (u : ℂ),
+                LinnikContract.zeroMult φ u ≠ (0 : ℕ) →
+                  |u.im| ≤ (10 : ℝ) → LinnikContract.lamOf q ρ₁ ≤ ((1 : ℝ) - u.re) * L)
+  (hSpr : ∀ par ≤ (2 : ℕ),
+      ∀ (t : ℝ),
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+          |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hSzeta : ∀ (t : ℝ),
+      |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hCzZeta : ∀ (s : ℂ),
+      ‖s‖ ≤ (5 : ℝ) →
+        ∑' (u : ℂ), (↑(analyticOrderNatAt completedRiemannZeta u) : ℝ) * ((1 : ℝ) / ((1 : ℝ) + ‖s - u‖ ^ (2 : ℕ))) ≤ Cz)
+  (hC0b' : ∀ (s : ℂ),
+      (1 : ℝ) < s.re →
+        s.re ≤ (2 : ℝ) → |s.im| ≤ (4 : ℝ) → (-logDeriv riemannZeta s).re ≤ ((1 : ℂ) / (s - (1 : ℂ))).re + C₀)
+  (hnzδ : ∀ (t : ℝ), |t| ≤ (3 : ℝ) → ∀ (u : ℂ), riemannZeta u = (0 : ℂ) → δ < ‖(1 : ℂ) + (↑t : ℂ) * I - u‖)
+  (hJOf : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) → φ.IsPrimitive → ∀ (s : ℂ), ‖s‖ ≤ (5 : ℝ) → P9.invSqSum N φ s ≤ Cj)
+  (hCcOf : ∀ {N : ℕ} [inst : NeZero N] (hNq : N ∣ q) (φ : DirichletCharacter ℂ N) (t : ℝ),
+      |SigmaP3L q L ((changeLevel hNq : DirichletCharacter ℂ N → DirichletCharacter ℂ q) φ) (sPt a L t) a
+              (LinnikContract.lamOf q ρ₁) -
+            SigmaP3L N L φ (sPt a L t) a (LinnikContract.lamOf q ρ₁)| ≤
+        Corr)
+  (hk1Of : ∀ {N : ℕ} [inst : NeZero N] (φ : DirichletCharacter ℂ N),
+      φ ≠ (1 : DirichletCharacter ℂ N) →
+        φ.IsPrimitive →
+          (3 : ℕ) ≤ N →
+            Real.log (↑N : ℝ) ≤ L →
+              ∀ (t : ℝ),
+                |t| ≤ (3 : ℝ) →
+                  (-logDeriv (LFunction φ) (sPt a L t)).re + P9.nearInvSum N φ (sPt a L t) δ ≤ ((1 / 6 : ℝ) + ε₁) * L)
+  (hN3 : (3 : ℕ) ≤ χ₁.conductor)
+  (Δ : ℝ)
+  (hΔdef : Δ = (ρ₁.im - ρ₀.im) * L)
+  (E2 : ℝ)
+  (hE2def : E2 = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E3 : ℝ)
+  (hE3def : E3 =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E2z : ℝ)
+  (hE2zdef : E2z = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (E3z : ℝ)
+  (hE3zdef : E3z =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (C0c : ℝ)
+  (hC0cdef : C0c = aup / L * C₀)
+  (Fc : ℝ)
+  (hFcdef : Fc = (64 : ℝ) * aup / (δ * L))
+  (E : ℝ)
+  (hEbound : (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) * E ≤ a * ε / (2 : ℝ))
+  (hcFar : ∀ k ≤ (4 : ℕ), (↑k : ℝ) * ((8 : ℝ) * (a + LinnikContract.lamOf q ρ₁) / (δ * L)) ≤ Fc)
+  (heE : ∀ e ≤ E2 + E3 + Fc + Corr + C0c, e ≤ E)
+  (heEz : ∀ e ≤ E2z + E3z + Fc + Corr + C0c, e ≤ E)
+  (hlogNOf : ∀ {N : ℕ}, N ∣ q → N ≠ (0 : ℕ) → Real.log (↑N : ℝ) ≤ L)
+  (hC : ¬χ₁ ^ (2 : ℕ) = (1 : DirichletCharacter ℂ q))
+  (hB : χ₁ ^ (3 : ℕ) = (1 : DirichletCharacter ℂ q)) :
+  ineq913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K ε := by
+  have hχ2 : χ₁ ^ 2 ≠ 1 := hC
+  haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
+  have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
+    intro hh
+    exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
+      DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
+  have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
+    DirichletCharacter.primitiveCharacter_isPrimitive χ₁
+  have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
+    hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
+  have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
+      = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
+    intro u
+    have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
+      χ₁.primitiveCharacter u
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
+    exact h
+  obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
+  have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
+  have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
+      (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
+      ≤ (1 / 6 + ε₁) * L := fun t ht =>
+    hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
+  have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
+    fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
+  have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
+        χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
+      - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
+    fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
+  have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
+    rw [hlamOf_eq ρ₁]; field_simp; ring
+  have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
+    rw [hlamOf_eq ρ₀]; field_simp; ring
+  have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
+  have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
+  have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3f : |-(ρ₁.im + ρ₀.im)| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3g : |-(2 * ρ₁.im)| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2]
+  have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  -- ### error budgets
+  set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
+  set e2 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
+  set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
+  set e4 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
+  set e5 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he5def
+  set e6 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he6def
+  set e7 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he7def
+  set e8 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he8def
+  -- ### the eight points
+  set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
+  set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
+  set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
+  set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
+  set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
+  set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
+  set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
+  set S8 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+  clear_value S1 S2 S3 S4 S5 S6 S7 S8
+  -- ### point 1
+  have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
+    have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
+      (hSzeta 0).1 (hSzeta 0).2 hcc0
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
+      rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
+      rw [zero_mul, PhiG_zero]
+    rw [hpole] at hb
+    linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
+  -- ### point 2 (χ₁ at σ+iγ₀, kept {ρ₀,ρ₁})
+  have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+      rw [← hzm1 ρ₀]; exact hZ0.2.1
+    have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hz₀
+      · rw [Finset.mem_singleton.mp h]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ0.2.2]
+      · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
+      (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
+      (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
+      hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
+      rw [sub_self, zero_mul, PhiG_zero]
+    have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring]
+      rw [PhiG_neg']
+    have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [Finset.sum_pair (Ne.symm hne), t1, t2]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
+    rw [neg_add] at hb
+    linarith only [hb, hS2', he2def, hE2def, hE3def]
+  -- ### point 3
+  have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
+    have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3a)
+      (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
+      hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
+  -- ### point 4 (χ₁ at σ+iγ₁, kept {ρ₀,ρ₁})
+  have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+      rw [← hzm1 ρ₀]; exact hZ0.2.1
+    have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hz₀
+      · rw [Finset.mem_singleton.mp h]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ0.2.2]
+      · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
+      (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
+      (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
+      hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₁.im)
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re = P3R 1 := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [sub_self, zero_mul, PhiG_zero]
+      rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
+        rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
+    have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
+    have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
+        = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
+      rw [Finset.sum_pair (Ne.symm hne), t2, t1]
+      ring
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
+    rw [neg_add] at hb
+    linarith only [hb, hS4', he4def, hE2def, hE3def]
+  -- ### point 5 (χ₁² via conjugation, kept {ρ₁})
+  have hconj5 : SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁)
+      = SigmaP3L q L χ₁ (sPt a L (-(ρ₁.im + ρ₀.im))) a (Work.LinnikContract.lamOf q ρ₁) := by
+    rw [P9.SigmaP3L_conj_eq (χ₁ ^ 2) L (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁)]
+    have hinv : (χ₁ ^ 2)⁻¹ = χ₁ := by
+      refine inv_eq_of_mul_eq_one_right ?_
+      rw [← pow_succ]
+      exact hB
+    rw [hinv]
+    congr 1
+    apply Complex.ext <;> simp [sPt, Complex.conj_re, Complex.conj_im]
+  have hS5 : S5 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L)
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e5 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (-(ρ₁.im + ρ₀.im))) (by simp [sPt]) (by simpa [sPt] using hm3f)
+      (hk1P1 (-(ρ₁.im + ρ₀.im)) hm3f) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (-(ρ₁.im + ρ₀.im))).1 (hSpr par₁ hpar₁2 (-(ρ₁.im + ρ₀.im))).2
+      (hJ1 (sPt a L (-(ρ₁.im + ρ₀.im))) (norm_sPt_le_five ha haL hLpos hm3f))
+      hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (-(ρ₁.im + ρ₀.im)))
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(ρ₁.im + ρ₀.im)) - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L) := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := -(ρ₁.im + ρ₀.im)) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [show (-(ρ₁.im + ρ₀.im) - ρ₁.im) * L = -((2 * ρ₁.im + ρ₀.im) * L) by ring]
+      rw [PhiG_neg']
+    have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(ρ₁.im + ρ₀.im)) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L) := by
+      rw [Finset.sum_singleton, t1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
+    rw [← hconj5] at hb
+    linarith only [hb, hS5', he5def, hE2def, hE3def]
+  -- ### point 6 (χ₁ at σ+i(2γ₁-γ₀), kept {ρ₁})
+  have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
+      (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
+      (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
+      hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl,
+        show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring]
+    have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [Finset.sum_singleton, t1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
+    linarith only [hb, hS6', he6def, hE2def, hE3def]
+  -- ### point 7 (χ₁² via conjugation, kept {ρ₀})
+  have hconj7 : SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁)
+      = SigmaP3L q L χ₁ (sPt a L (-(2 * ρ₁.im))) a (Work.LinnikContract.lamOf q ρ₁) := by
+    rw [P9.SigmaP3L_conj_eq (χ₁ ^ 2) L (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁)]
+    have hinv : (χ₁ ^ 2)⁻¹ = χ₁ := by
+      refine inv_eq_of_mul_eq_one_right ?_
+      rw [← pow_succ]
+      exact hB
+    rw [hinv]
+    congr 1
+    apply Complex.ext <;> simp [sPt, Complex.conj_re, Complex.conj_im]
+  have hS7 : S7 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L)
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e7 := by
+    have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+      rw [← hzm1 ρ₀]; exact hZ0.2.1
+    have hT : ∀ u ∈ ({ρ₀} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₀
+    have hTim : ∀ u ∈ ({ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ0.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (-(2 * ρ₁.im))) (by simp [sPt]) (by simpa [sPt] using hm3g)
+      (hk1P1 (-(2 * ρ₁.im)) hm3g) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (-(2 * ρ₁.im))).1 (hSpr par₁ hpar₁2 (-(2 * ρ₁.im))).2
+      (hJ1 (sPt a L (-(2 * ρ₁.im))) (norm_sPt_le_five ha haL hLpos hm3g))
+      hminP1 ({ρ₀} : Finset ℂ) hT hTim (hCc1 (-(2 * ρ₁.im)))
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(2 * ρ₁.im)) - ρ₀) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L) := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := -(2 * ρ₁.im)) (ρ := ρ₀) hLne hρ₀re rfl]
+      rw [show (-(2 * ρ₁.im) - ρ₀.im) * L = -((2 * ρ₁.im + ρ₀.im) * L) by ring]
+      rw [PhiG_neg']
+    have hsum : (∑ u ∈ ({ρ₀} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(2 * ρ₁.im)) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L) := by
+      rw [Finset.sum_singleton, t1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
+    rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
+    rw [← hconj7] at hb
+    linarith only [hb, hS7', he7def, hE2def, hE3def]
+  -- ### point 8 (χ₁³ = 1, principal at σ+i(2γ₁+γ₀))
+  have hS8 : S8 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im + ρ₀.im) * L) + e8 := by
+    have hcc8 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (2 * ρ₁.im + ρ₀.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc8
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (2 * ρ₁.im + ρ₀.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3e)
+      (hSzeta (2 * ρ₁.im + ρ₀.im)).1 (hSzeta (2 * ρ₁.im + ρ₀.im)).2 hcc8
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im + ρ₀.im) * L) :=
+      P3_arg_eq_pole_split (a := a) (L := L) (t := 2 * ρ₁.im + ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    linarith only [hb, hS8', he8def, hE2zdef, hE3zdef]
+  -- ### the assembly
+  have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
+  have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
+  have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
+    rw [hC0cdef]
+    exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
+  have hE1 : e1 ≤ E := by rw [he1def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hE2 : e2 ≤ E := by rw [he2def]; exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
+  have hE4 : e4 ≤ E := by rw [he4def]; exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
+  have hE5 : e5 ≤ E := by rw [he5def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
+  have hE6 : e6 ≤ E := by rw [he6def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
+  have hE7 : e7 ≤ E := by rw [he7def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
+  have hE8 : e8 ≤ E := by rw [he8def]; exact heEz _ (by linarith only [h1C0, hFcnn])
+  have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
+      + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
+    have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
+      hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
+    rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef, hB] at h0
+    push_cast at h0
+    simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
+      zero_mul, add_zero]
+    push_cast
+    exact h0
+  have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
+      + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
+      ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+    have hsum := sumErr_le hK.le hE1 hE2 hE1 hE4 hE5 hE6 hE7 hE8
+    have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
+    have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+    have h54 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
+        ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
+      have h1 : (K ^ 2 + 3 * K + 5 / 4 : ℝ) ≤ K ^ 2 + 3 * K + 3 / 2 := by norm_num
+      have h2 : 0 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ := by positivity
+      calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
+          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 3 / 2) :=
+            mul_le_mul_of_nonneg_left h1 h2
+        _ = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) := by ring
+        _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) :=
+            mul_le_mul_of_nonneg_left hε₁bud hα0
+    have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4)
+        ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+      linarith only [mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›), mul_pos ha ‹0 < ε›]
+    linarith only [hsum, hmain, hε, hfin, h54]
+  exact caseB_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁))
+    (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε) (ε₁ := ε₁)
+    (Δ := Δ) (tB := (2 * ρ₁.im + ρ₀.im) * L)
+    (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6)
+    (S7 := S7) (S8 := S8) (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5)
+    (e6 := e6) (e7 := e7) (e8 := e8) (corr := 0)
+    hK.le hα0 hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
+    (P3.P3Bounds.2 a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ
+      ha hK hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).1)
+    ((P9.rescale_variants.2.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K
+      ((2 * ρ₁.im + ρ₀.im) * L) ha hlam₁nn hlam₁lam₀ hK
+      (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).2.1)
+    habs
+
+private theorem h91_case2
+  (a : ℝ)
+  (K : ℝ)
+  (ε : ℝ)
+  (ha : (0 : ℝ) < a)
+  (hK : (0 : ℝ) < K)
+  (hε : (0 : ℝ) < ε)
+  (ε₁ : ℝ)
+  (hε₁pos : (0 : ℝ) < ε₁)
+  (hε₁bud : ε₁ * (K ^ (2 : ℕ) + (3 : ℝ) * K + (3 / 2 : ℝ)) ≤ ε / (4 : ℝ))
+  (Ct : ℝ)
+  (hCtpos : (0 : ℝ) < Ct)
+  (C₀ : ℝ)
+  (hC₀pos : (0 : ℝ) < C₀)
+  (Cc : ℝ)
+  (hCcpos : (0 : ℝ) < Cc)
+  (Cp : ℝ)
+  (hCpnn : (0 : ℝ) ≤ Cp)
+  (Cn : ℝ)
+  (hCnpos : (0 : ℝ) < Cn)
+  (Cz : ℝ)
+  (hCzpos : (0 : ℝ) < Cz)
+  (δ : ℝ)
+  (hδpos : (0 : ℝ) < δ)
+  (hδlt1 : δ < (1 : ℝ))
+  (aup : ℝ)
+  (hauppos : (0 : ℝ) < aup)
+  (qabs : ℕ)
+  (habs : ∀ (q : ℕ),
+      qabs ≤ q →
+        (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) *
+            (aup / Real.log (↑q : ℝ) * C₀ +
+                    aup ^ (2 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) *
+                      (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                  (2 / 3 : ℝ) * (aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (3 : ℕ)) *
+                    ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * (Cn * (Real.log (↑q : ℝ) + (6 : ℝ)) + Cz) + Ct) +
+                Cc / Real.log (↑q : ℝ) *
+                  (aup * Cp * Real.log (Real.log (↑q : ℝ)) ^ (2 : ℕ) +
+                      aup ^ (2 : ℕ) / Real.log (↑q : ℝ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (3 : ℕ) +
+                    aup ^ (3 : ℕ) / Real.log (↑q : ℝ) ^ (2 : ℕ) * Cp * Real.log (Real.log (↑q : ℝ)) ^ (4 : ℕ)) +
+              (64 : ℝ) * aup / (δ * Real.log (↑q : ℝ))) ≤
+          a * ε / (2 : ℝ))
+  (q : ℕ)
+  [hqne : NeZero q]
+  (χ₁ : DirichletCharacter ℂ q)
+  (ρ₁ : ℂ)
+  (ρ₀ : ℂ)
+  (hZ1 : LinnikContract.IsZ χ₁ ρ₁)
+  (hZ0 : LinnikContract.IsZ χ₁ ρ₀)
+  (hne : ρ₁ ≠ ρ₀)
+  (hcond : cond913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K)
+  (L : ℝ)
+  (hLdef : L = Real.log (↑q : ℝ))
+  (haL : a ≤ L)
+  (hLt : (1 : ℝ) < L)
+  (hLpos : (0 : ℝ) < L)
+  (hLne : L ≠ (0 : ℝ))
+  (hL1 : (1 : ℝ) ≤ L)
+  (hlogLnn : (0 : ℝ) ≤ Real.log L)
+  (h1aL : (1 : ℝ) ≤ a * Real.log L)
+  (haδL : (2 : ℝ) * a ≤ δ * L)
+  (Cj : ℝ)
+  (hCjnn : (0 : ℝ) ≤ Cj)
+  (Corr : ℝ)
+  (hlam₁nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₁)
+  (hlam₀nn : (0 : ℝ) ≤ LinnikContract.lamOf q ρ₀)
+  (hlam₁lam₀ : LinnikContract.lamOf q ρ₁ ≤ LinnikContract.lamOf q ρ₀)
+  (hχ₁ne : χ₁ ≠ (1 : DirichletCharacter ℂ q))
+  (hα0 : (0 : ℝ) ≤ a + LinnikContract.lamOf q ρ₁)
+  (hαaup : a + LinnikContract.lamOf q ρ₁ ≤ aup)
+  (hlamOf_eq : ∀ (u : ℂ), LinnikContract.lamOf q u = ((1 : ℝ) - u.re) * L)
+  (hminPrim : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) →
+            φ.IsPrimitive →
+              ∀ (u : ℂ),
+                LinnikContract.zeroMult φ u ≠ (0 : ℕ) →
+                  |u.im| ≤ (10 : ℝ) → LinnikContract.lamOf q ρ₁ ≤ ((1 : ℝ) - u.re) * L)
+  (hSpr : ∀ par ≤ (2 : ℕ),
+      ∀ (t : ℝ),
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+          |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑(par + (2 : ℕ) * n) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hSzeta : ∀ (t : ℝ),
+      |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (2 : ℕ)).re| ≤ Ct ∧
+        |∑' (n : ℕ), (((1 : ℂ) / (sPt a L t + (↑((2 : ℕ) * (n + (1 : ℕ))) : ℂ))) ^ (3 : ℕ)).re| ≤ Ct)
+  (hCzZeta : ∀ (s : ℂ),
+      ‖s‖ ≤ (5 : ℝ) →
+        ∑' (u : ℂ), (↑(analyticOrderNatAt completedRiemannZeta u) : ℝ) * ((1 : ℝ) / ((1 : ℝ) + ‖s - u‖ ^ (2 : ℕ))) ≤ Cz)
+  (hC0b' : ∀ (s : ℂ),
+      (1 : ℝ) < s.re →
+        s.re ≤ (2 : ℝ) → |s.im| ≤ (4 : ℝ) → (-logDeriv riemannZeta s).re ≤ ((1 : ℂ) / (s - (1 : ℂ))).re + C₀)
+  (hnzδ : ∀ (t : ℝ), |t| ≤ (3 : ℝ) → ∀ (u : ℂ), riemannZeta u = (0 : ℂ) → δ < ‖(1 : ℂ) + (↑t : ℂ) * I - u‖)
+  (hJOf : ∀ {N : ℕ} [inst : NeZero N],
+      N ∣ q →
+        ∀ (φ : DirichletCharacter ℂ N),
+          φ ≠ (1 : DirichletCharacter ℂ N) → φ.IsPrimitive → ∀ (s : ℂ), ‖s‖ ≤ (5 : ℝ) → P9.invSqSum N φ s ≤ Cj)
+  (hCcOf : ∀ {N : ℕ} [inst : NeZero N] (hNq : N ∣ q) (φ : DirichletCharacter ℂ N) (t : ℝ),
+      |SigmaP3L q L ((changeLevel hNq : DirichletCharacter ℂ N → DirichletCharacter ℂ q) φ) (sPt a L t) a
+              (LinnikContract.lamOf q ρ₁) -
+            SigmaP3L N L φ (sPt a L t) a (LinnikContract.lamOf q ρ₁)| ≤
+        Corr)
+  (hk1Of : ∀ {N : ℕ} [inst : NeZero N] (φ : DirichletCharacter ℂ N),
+      φ ≠ (1 : DirichletCharacter ℂ N) →
+        φ.IsPrimitive →
+          (3 : ℕ) ≤ N →
+            Real.log (↑N : ℝ) ≤ L →
+              ∀ (t : ℝ),
+                |t| ≤ (3 : ℝ) →
+                  (-logDeriv (LFunction φ) (sPt a L t)).re + P9.nearInvSum N φ (sPt a L t) δ ≤ ((1 / 6 : ℝ) + ε₁) * L)
+  (hN3 : (3 : ℕ) ≤ χ₁.conductor)
+  (Δ : ℝ)
+  (hΔdef : Δ = (ρ₁.im - ρ₀.im) * L)
+  (E2 : ℝ)
+  (hE2def : E2 = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E3 : ℝ)
+  (hE3def : E3 =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cj + Ct))
+  (E2z : ℝ)
+  (hE2zdef : E2z = (a + LinnikContract.lamOf q ρ₁) ^ (2 : ℕ) / L ^ (2 : ℕ) * (((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (E3z : ℝ)
+  (hE3zdef : E3z =
+      (2 / 3 : ℝ) * ((a + LinnikContract.lamOf q ρ₁) ^ (3 : ℕ) / L ^ (3 : ℕ)) *
+        ((2 : ℝ) / δ * ((1 : ℝ) + (4 : ℝ) / δ ^ (2 : ℕ)) * Cz + Ct))
+  (C0c : ℝ)
+  (hC0cdef : C0c = aup / L * C₀)
+  (Fc : ℝ)
+  (hFcdef : Fc = (64 : ℝ) * aup / (δ * L))
+  (E : ℝ)
+  (hEbound : (2 : ℝ) * (K + (1 : ℝ)) ^ (2 : ℕ) * E ≤ a * ε / (2 : ℝ))
+  (hcFar : ∀ k ≤ (4 : ℕ), (↑k : ℝ) * ((8 : ℝ) * (a + LinnikContract.lamOf q ρ₁) / (δ * L)) ≤ Fc)
+  (heE : ∀ e ≤ E2 + E3 + Fc + Corr + C0c, e ≤ E)
+  (heEz : ∀ e ≤ E2z + E3z + Fc + Corr + C0c, e ≤ E)
+  (hlogNOf : ∀ {N : ℕ}, N ∣ q → N ≠ (0 : ℕ) → Real.log (↑N : ℝ) ≤ L)
+  (hC : ¬χ₁ ^ (2 : ℕ) = (1 : DirichletCharacter ℂ q))
+  (hB : ¬χ₁ ^ (3 : ℕ) = (1 : DirichletCharacter ℂ q)) :
+  ineq913 (LinnikContract.lamOf q ρ₁) (LinnikContract.lamOf q ρ₀) a K ε := by
+  have hχ2 : χ₁ ^ 2 ≠ 1 := hC
+  have hχ3 : χ₁ ^ 3 ≠ 1 := hB
+  haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
+  have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
+    intro hh
+    exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
+      DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
+  have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
+    DirichletCharacter.primitiveCharacter_isPrimitive χ₁
+  have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
+    hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
+  have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
+      = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
+    intro u
+    have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
+      χ₁.primitiveCharacter u
+    rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
+    exact h
+  obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
+  have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
+  have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
+      (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
+      ≤ (1 / 6 + ε₁) * L := fun t ht =>
+    hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
+  have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
+    fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
+  have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
+        χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
+      - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
+    fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
+  have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
+    rw [hlamOf_eq ρ₁]; field_simp; ring
+  have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
+    rw [hlamOf_eq ρ₀]; field_simp; ring
+  have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
+  have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
+  have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3b : |ρ₁.im + ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3c : |2 * ρ₁.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2]
+  have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
+    have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
+    rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
+  have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
+  rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
+  -- ### error budgets
+  set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
+  set e2 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
+  set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
+  set e4 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
+  set e5 : ℝ := E2 + E3 + Corr with he5def
+  set e6 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he6def
+  set e7 : ℝ := E2 + E3 + Corr with he7def
+  set e8 : ℝ := E2 + E3 + Corr with he8def
+  -- ### the eight points
+  set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
+  set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
+  set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
+  set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
+  set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
+  set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
+  set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
+  set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+  clear_value S1 S2 S3 S4 S5 S6 S7 S8
+  -- ### point 1: the principal character at σ
+  have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
+      (hSzeta 0).1 (hSzeta 0).2 (by rw [hS1'] at hcc0; exact hcc0)
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
+      rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
+      rw [zero_mul, PhiG_zero]
+    rw [hpole] at hb
+    linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
+  -- ### point 2: χ₁ at σ + iγ₀, kept {ρ₀, ρ₁}
+  have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+      rw [← hzm1 ρ₀]; exact hZ0.2.1
+    have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hz₀
+      · rw [Finset.mem_singleton.mp h]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ0.2.2]
+      · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
+      (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
+      (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
+      hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
+      rw [sub_self, zero_mul, PhiG_zero]
+    have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring]
+      rw [PhiG_neg']
+    have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
+        = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [Finset.sum_pair (Ne.symm hne), t1, t2]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS2'] at hb
+    rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
+    rw [neg_add] at hb
+    linarith only [hb, hS2', he2def, hE2def, hE3def]
+  -- ### point 3: the principal character at σ + i(γ₁-γ₀)
+  have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
+    have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
+    rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
+    have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
+      (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
+      hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
+      (by simp [sPt]) (by simpa [sPt] using hm3a)
+      (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
+    have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
+      hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im)
+        (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+    rw [hpole] at hb
+    linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
+  -- ### point 4: χ₁ at σ + iγ₁, kept {ρ₀, ρ₁}
+  have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
+      rw [← hzm1 ρ₀]; exact hZ0.2.1
+    have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; exact hz₀
+      · rw [Finset.mem_singleton.mp h]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with h | h
+      · rw [h]; linarith only [hZ0.2.2]
+      · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
+      (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
+      (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
+      hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₁.im)
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re = P3R 1 := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [sub_self, zero_mul, PhiG_zero]
+      rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
+        rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
+    have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
+        (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
+    have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
+        = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
+      rw [Finset.sum_pair (Ne.symm hne), t2, t1]
+      ring
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS4'] at hb
+    rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
+    rw [neg_add] at hb
+    linarith only [hb, hS4', he4def, hE2def, hE3def]
+  -- ### point 5: χ₁² at σ + i(γ₁+γ₀), nothing kept
+  haveI hN2 : NeZero (χ₁ ^ 2).conductor := ⟨(χ₁ ^ 2).conductor_ne_zero⟩
+  have hφ₂ne : (χ₁ ^ 2).primitiveCharacter ≠ 1 := by
+    intro hh
+    exact hχ2 (by rw [← DirichletCharacter.changeLevel_primitiveCharacter (χ₁ ^ 2), hh,
+      DirichletCharacter.changeLevel_one (χ₁ ^ 2).conductor_dvd_level])
+  have hφ₂prim : (χ₁ ^ 2).primitiveCharacter.IsPrimitive :=
+    DirichletCharacter.primitiveCharacter_isPrimitive (χ₁ ^ 2)
+  have hlogN2 : Real.log (((χ₁ ^ 2).conductor : ℕ) : ℝ) ≤ L :=
+    hlogNOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).conductor_ne_zero
+  have hN2_3 : 3 ≤ (χ₁ ^ 2).conductor :=
+    Work.LinnikAreas2.three_le_conductor (χ₁ ^ 2) hχ2
+  have hS5 : S5 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e5 := by
+    obtain ⟨par₂, hpar₂2, hpar₂0, hpar₂1⟩ := exists_par (χ₁ ^ 2).primitiveCharacter
+    have hb := point_bound_q (q := q) (N := (χ₁ ^ 2).conductor)
+      (hNq := (χ₁ ^ 2).conductor_dvd_level) (φ := (χ₁ ^ 2).primitiveCharacter) hφ₂ne
+      hφ₂prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3b)
+      (hk1Of (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim hN2_3 hlogN2 (ρ₁.im + ρ₀.im) hm3b)
+      par₂ hpar₂0 hpar₂1
+      (hSpr par₂ hpar₂2 (ρ₁.im + ρ₀.im)).1 (hSpr par₂ hpar₂2 (ρ₁.im + ρ₀.im)).2
+      (hJOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim
+        (sPt a L (ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3b))
+      (hminPrim (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim)
+      (∅ : Finset ℂ) (by simp) (by simp)
+      (hCcOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter (ρ₁.im + ρ₀.im))
+    have hsum : (∑ u ∈ (∅ : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re) = 0 :=
+      Finset.sum_empty
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS5'] at hb
+    rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
+    linarith only [hb, hS5', he5def, hE2def, hE3def]
+  -- ### point 6: χ₁ at σ + i(2γ₁-γ₀), kept {ρ₁}
+  have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
+      + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
+    have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
+      rw [← hzm1 ρ₁]; exact hZ1.2.1
+    have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
+        Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
+    have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
+      intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
+    have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
+      (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
+      (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
+      (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
+      (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
+      hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
+    have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
+        (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
+      rw [show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring]
+    have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
+        = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
+      rw [Finset.sum_singleton, t1]
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS6'] at hb
+    rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
+    linarith only [hb, hS6', he6def, hE2def, hE3def]
+  -- ### point 7: χ₁² at σ + 2iγ₁, nothing kept
+  have hS7 : S7 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e7 := by
+    obtain ⟨par₂, hpar₂2, hpar₂0, hpar₂1⟩ := exists_par (χ₁ ^ 2).primitiveCharacter
+    have hb := point_bound_q (q := q) (N := (χ₁ ^ 2).conductor)
+      (hNq := (χ₁ ^ 2).conductor_dvd_level) (φ := (χ₁ ^ 2).primitiveCharacter) hφ₂ne
+      hφ₂prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im)) (by simp [sPt]) (by simpa [sPt] using hm3c)
+      (hk1Of (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim hN2_3 hlogN2 (2 * ρ₁.im) hm3c)
+      par₂ hpar₂0 hpar₂1
+      (hSpr par₂ hpar₂2 (2 * ρ₁.im)).1 (hSpr par₂ hpar₂2 (2 * ρ₁.im)).2
+      (hJOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim
+        (sPt a L (2 * ρ₁.im)) (norm_sPt_le_five ha haL hLpos hm3c))
+      (hminPrim (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim)
+      (∅ : Finset ℂ) (by simp) (by simp)
+      (hCcOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter (2 * ρ₁.im))
+    have hsum : (∑ u ∈ (∅ : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im) - u) * (L : ℂ)))).re) = 0 :=
+      Finset.sum_empty
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS7'] at hb
+    rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
+    linarith only [hb, hS7', he7def, hE2def, hE3def]
+  -- ### point 8: χ₁³ at σ + i(2γ₁+γ₀), nothing kept
+  haveI hN3' : NeZero (χ₁ ^ 3).conductor := ⟨(χ₁ ^ 3).conductor_ne_zero⟩
+  have hφ₃ne : (χ₁ ^ 3).primitiveCharacter ≠ 1 := by
+    intro hh
+    exact hχ3 (by rw [← DirichletCharacter.changeLevel_primitiveCharacter (χ₁ ^ 3), hh,
+      DirichletCharacter.changeLevel_one (χ₁ ^ 3).conductor_dvd_level])
+  have hφ₃prim : (χ₁ ^ 3).primitiveCharacter.IsPrimitive :=
+    DirichletCharacter.primitiveCharacter_isPrimitive (χ₁ ^ 3)
+  have hlogN3 : Real.log (((χ₁ ^ 3).conductor : ℕ) : ℝ) ≤ L :=
+    hlogNOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).conductor_ne_zero
+  have hN3_3 : 3 ≤ (χ₁ ^ 3).conductor :=
+    Work.LinnikAreas2.three_le_conductor (χ₁ ^ 3) hχ3
+  have hS8 : S8 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e8 := by
+    obtain ⟨par₃, hpar₃2, hpar₃0, hpar₃1⟩ := exists_par (χ₁ ^ 3).primitiveCharacter
+    have hb := point_bound_q (q := q) (N := (χ₁ ^ 3).conductor)
+      (hNq := (χ₁ ^ 3).conductor_dvd_level) (φ := (χ₁ ^ 3).primitiveCharacter) hφ₃ne
+      hφ₃prim ha hlam₁nn hδpos hδlt1 hLt haδL
+      (s := sPt a L (2 * ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3e)
+      (hk1Of (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim hN3_3 hlogN3 (2 * ρ₁.im + ρ₀.im) hm3e)
+      par₃ hpar₃0 hpar₃1
+      (hSpr par₃ hpar₃2 (2 * ρ₁.im + ρ₀.im)).1 (hSpr par₃ hpar₃2 (2 * ρ₁.im + ρ₀.im)).2
+      (hJOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim
+        (sPt a L (2 * ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3e))
+      (hminPrim (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim)
+      (∅ : Finset ℂ) (by simp) (by simp)
+      (hCcOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter (2 * ρ₁.im + ρ₀.im))
+    have hsum : (∑ u ∈ (∅ : Finset ℂ),
+        (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re) = 0 :=
+      Finset.sum_empty
+    rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS8'] at hb
+    rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
+    linarith only [hb, hS8', he8def, hE2def, hE3def]
+  -- ### the assembly
+  have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
+  have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
+  have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
+    rw [hC0cdef]
+    exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
+  have hE1 : e1 ≤ E := by
+    exact heEz _ (by linarith only [he1def, h1C0, hFcnn])
+  have hE2 : e2 ≤ E := by
+    exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, he2def, hC0cnn])
+  have hE4 : e4 ≤ E := by
+    exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, he4def, hC0cnn])
+  have hE5 : e5 ≤ E := by
+    exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he5def, hC0cnn, hFcnn])
+  have hE6 : e6 ≤ E := by
+    exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, he6def, hC0cnn])
+  have hE7 : e7 ≤ E := by
+    exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he7def, hC0cnn, hFcnn])
+  have hE8 : e8 ≤ E := by
+    exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he8def, hC0cnn, hFcnn])
+  have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
+      + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
+    have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
+      hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
+    rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
+    push_cast at h0
+    simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
+      zero_mul, add_zero]
+    push_cast
+    exact h0
+  have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
+      + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 3 / 2)
+      ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+    have hsum := sumErr_le hK.le hE1 hE2 hE1 hE4 hE5 hE6 hE7 hE8
+    have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
+    have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+    have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
+      linarith only [mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›), mul_pos ha ‹0 < ε›]
+    linarith only [hsum, hmain, hε, hfin]
+  exact caseA_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε) (ε₁ := ε₁)
+    (Δ := Δ) (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6)
+    (S7 := S7) (S8 := S8) (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5)
+    (e6 := e6) (e7 := e7) (e8 := e8) (corr := 0)
+    hK.le hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
+    (P3.P3Bounds.2 a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ ha hK hlam₁nn hlam₁lam₀
+      (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).1) habs
+
+
 /-- **HB Lemma 9.1 / (9.13).** -/
 theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
   intro a K ε ha hK hε
@@ -679,15 +2441,15 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
   set Sp3 : ℝ := ∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 3 / (p : ℝ) with hSp3def
   set Corr : ℝ := (Cc / L) * ((a + Work.LinnikContract.lamOf q ρ₁) * Sp1 + ((a + Work.LinnikContract.lamOf q ρ₁) ^ 2 / L) * Sp2
     + ((a + Work.LinnikContract.lamOf q ρ₁) ^ 3 / L ^ 2) * Sp3) with hCorrdef
-  set E : ℝ := (aup / L) * C₀ + (aup ^ 2 / L ^ 2) * ((1 + 4 / δ ^ 2) * Cj + Ct)
+  set E0 : ℝ := (aup / L) * C₀ + (aup ^ 2 / L ^ 2) * ((1 + 4 / δ ^ 2) * Cj + Ct)
     + (2 / 3) * (aup ^ 3 / L ^ 3) * ((2 / δ) * (1 + 4 / δ ^ 2) * Cj + Ct)
     + (Cc / L) * (aup * Cp * (Real.log L) ^ 2 + (aup ^ 2 / L) * Cp * (Real.log L) ^ 3
         + (aup ^ 3 / L ^ 2) * Cp * (Real.log L) ^ 4)
-    + 64 * aup / (δ * L) with hEdef
-  have hEbound : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := by
+    + 64 * aup / (δ * L) with hE0def
+  have hEbound : 2 * (K + 1) ^ 2 * E0 ≤ a * ε / 2 := by
     have h := habs q (by have hh := hq; simp only [max_le_iff] at hh; omega)
     rw [show Real.log q = L from hLdef.symm] at h
-    rw [hEdef, hCjdef]
+    rw [hE0def, hCjdef]
     exact h
   -- ## basic bounds
   have hlam₁nn : 0 ≤ Work.LinnikContract.lamOf q ρ₁ := P9.lamOf_nonneg hZ1
@@ -886,6 +2648,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
   set Fc : ℝ := 64 * aup / (δ * L) with hFcdef
   set E : ℝ := C0c + E2c + E3c + Corrc + Fc with hEdef
   replace hEbound : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+  clear hE0def E0
   clear_value E Fc C0c Corrc E3c E2c E3z E2z E3 E2 γ β Δ Corr Sp3 Sp2 Sp1 Cj L Λ aup δ Cz Cn Cp ε₁
   have hcE2 : E2 ≤ E2c := by
     rw [hE2def, hE2cdef]
@@ -980,1347 +2743,10 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
   -- ## the case distinction
   by_cases hC : χ₁ ^ 2 = 1
   · -- ### case C (χ₁² = 1)
-    haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
-    have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
-      intro hh
-      exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
-        DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
-    have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
-      DirichletCharacter.primitiveCharacter_isPrimitive χ₁
-    have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
-      hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
-    have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
-        = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
-      intro u
-      have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
-        χ₁.primitiveCharacter u
-      rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
-      exact h
-    obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
-    have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
-    have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
-        (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
-        ≤ (1 / 6 + ε₁) * L := fun t ht =>
-      hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
-    have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
-      fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
-    have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
-          χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
-        - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
-      fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
-    have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by rw [hlamOf_eq ρ₁]; field_simp; ring
-    have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by rw [hlamOf_eq ρ₀]; field_simp; ring
-    have hρc₁re : ((starRingEnd ℂ) ρ₁).re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
-      rw [Complex.conj_re]; exact hρ₁re
-    have hρc₀re : ((starRingEnd ℂ) ρ₀).re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
-      rw [Complex.conj_re]; exact hρ₀re
-    have hγ₁ne : ρ₁.im ≠ 0 := fun h => hnotreal ⟨hC, h⟩
-    have hc₁ne : ρ₁ ≠ (starRingEnd ℂ) ρ₁ := by
-      intro h
-      have hh := congrArg Complex.im h
-      simp only [Complex.conj_im] at hh
-      exact hγ₁ne (by linarith only [hh])
-    have hc₀ρ₁ : ρ₀ ≠ (starRingEnd ℂ) ρ₁ := hconj hC
-    have hc₀ρ₁' : ρ₁ ≠ (starRingEnd ℂ) ρ₀ := fun h =>
-      hc₀ρ₁ (by
-        have hh : (starRingEnd ℂ) ρ₁ = ρ₀ := by
-          have := congrArg (starRingEnd ℂ) h
-          simpa using this
-        exact hh.symm)
-    have hγ₀ne_of : ρ₀ ≠ (starRingEnd ℂ) ρ₀ → ρ₀.im ≠ 0 := by
-      intro h h0
-      refine h (Complex.ext ?_ ?_)
-      · simp only [Complex.conj_re]
-      · simp only [Complex.conj_im, h0, neg_zero]
-    have hγ₀ne_iff : ρ₀.im ≠ 0 → ρ₀ ≠ (starRingEnd ℂ) ρ₀ := by
-      intro h hc
-      have hh := congrArg Complex.im hc
-      simp only [Complex.conj_im] at hh
-      exact h (by linarith only [hh])
-    have h01 : ρ₀ ≠ ρ₁ := fun h => hne h.symm
-    have h10 : ρ₁ ≠ ρ₀ := hne
-    have hc₁₁ : (starRingEnd ℂ) ρ₁ ≠ ρ₁ := fun h => hc₁ne h.symm
-    have hc₀c₁ : (starRingEnd ℂ) ρ₀ ≠ (starRingEnd ℂ) ρ₁ := fun h =>
-      h01 (by have := congrArg (starRingEnd ℂ) h; simpa using this)
-    have hzmc₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ((starRingEnd ℂ) ρ₁) ≠ 0 := by
-      rw [← hzm1 ((starRingEnd ℂ) ρ₁), Work.A7.zeroMult_conj_sq_one χ₁ hC ρ₁]
-      exact hZ1.2.1
-    have hzmc₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ((starRingEnd ℂ) ρ₀) ≠ 0 := by
-      rw [← hzm1 ((starRingEnd ℂ) ρ₀), Work.A7.zeroMult_conj_sq_one χ₁ hC ρ₀]
-      exact hZ0.2.1
-    have h3eq : χ₁ ^ 3 = χ₁ := by
-      have h : χ₁ ^ 3 = χ₁ ^ 2 * χ₁ := by
-        rw [show (3 : ℕ) = 2 + 1 by norm_num, pow_succ]
-      rw [h, hC, one_mul]
-    have hzc₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-      rw [← hzm1 ρ₁]; exact hZ1.2.1
-    have hzc₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-      rw [← hzm1 ρ₀]; exact hZ0.2.1
-    have himc₁ : |((starRingEnd ℂ) ρ₁).im| ≤ 10 := by
-      rw [Complex.conj_im, abs_neg]; linarith only [hZ1.2.2]
-    have himc₀ : |((starRingEnd ℂ) ρ₀).im| ≤ 10 := by
-      rw [Complex.conj_im, abs_neg]; linarith only [hZ0.2.2]
-    have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
-    have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
-    have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
-      have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-      rw [abs_le]; exact ⟨by linarith only [h1.1, h0.2], by linarith only [h1.2, h0.1]⟩
-    have hm3b : |ρ₁.im + ρ₀.im| ≤ 3 := by
-      have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-      rw [abs_le]; exact ⟨by linarith only [h1.1, h0.1], by linarith only [h1.2, h0.2]⟩
-    have hm3c : |2 * ρ₁.im| ≤ 3 := by
-      have h1 := abs_le.mp hZ1.2.2
-      rw [abs_le]; exact ⟨by linarith only [h1.1], by linarith only [h1.2]⟩
-    have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
-      have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-      rw [abs_le]; exact ⟨by linarith only [h1.1, h0.2], by linarith only [h1.2, h0.1]⟩
-    have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
-      have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-      rw [abs_le]; exact ⟨by linarith only [h1.1, h0.1], by linarith only [h1.2, h0.2]⟩
-    -- ### error budgets
-    set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
-    set e2 : ℝ := E2 + E3 + 3 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
-    set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
-    set e4 : ℝ := E2 + E3 + 4 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
-    set e4z : ℝ := E2 + E3 + 3 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4zdef
-    set e5 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he5def
-    set e6 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he6def
-    set e7 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he7def
-    set e8 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he8def
-    -- ### the eight points
-    set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
-    set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
-    set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
-    set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
-    set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
-    set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
-    set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
-    set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
-    clear_value S1 S2 S3 S4 S5 S6 S7 S8
-    -- ### point 1 (principal at σ)
-    have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
-      have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
-      rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
-      have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-        (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-        hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
-        (hSzeta 0).1 (hSzeta 0).2 hcc0
-      have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
-          = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
-        rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
-        rw [zero_mul, PhiG_zero]
-      rw [hpole] at hb
-      linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
-    -- ### point 2 (χ₁ at σ+iγ₀, kept {ρ₀,ρ₁,ρ̄₁})
-    have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-        - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
-      have hT : ∀ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-          Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; exact hzc₀
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; exact hzc₁
-          · rw [Finset.mem_singleton.mp h']; exact hzmc₁
-      have hTim : ∀ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; linarith only [hZ0.2.2]
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; linarith only [hZ1.2.2]
-          · rw [Finset.mem_singleton.mp h']; exact himc₁
-      have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-        (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-        (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
-        (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
-        (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
-        (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
-        hminP1 ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
-      have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
-          = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
-        rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-          (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
-        rw [sub_self, zero_mul, PhiG_zero]
-      have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-          (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
-      have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-            / ((sPt a L ρ₀.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - -ρ₁.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
-          (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₀.im) (ρ := (starRingEnd ℂ) ρ₁)
-          hLne hρc₁re rfl
-      have hsum : (∑ u ∈ ({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-          (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
-          = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L)
-            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - -ρ₁.im) * L) := by
-        rw [Finset.sum_insert (by
-              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-              exact ⟨h01, hc₀ρ₁⟩),
-            Finset.sum_insert (by
-              simp only [Finset.mem_singleton]; exact hc₁ne),
-            Finset.sum_singleton, ht1, ht2, ht3]
-        ring
-      rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-      have hcard : ((({ρ₀, ρ₁, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ) = 3 := by
-        rw [Finset.card_insert_of_notMem (by
-              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-              exact ⟨h01, hc₀ρ₁⟩),
-            Finset.card_insert_of_notMem (by
-              simp only [Finset.mem_singleton]; exact hc₁ne),
-            Finset.card_singleton]
-        norm_num
-      rw [hcard, hsum] at hb
-      rw [show (ρ₀.im - -ρ₁.im) * L = β by rw [hβdef]; ring] at hb
-      rw [show P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L)
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ from by
-          rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring, PhiG_neg']] at hb
-      linarith only [hb, hS2', he2def, hE2def, hE3def]
-    -- ### point 3 (principal at σ+i(γ₁-γ₀))
-    have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
-      have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
-      rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
-      have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-        (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-        hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
-        (by simp [sPt]) (by simpa [sPt] using hm3a)
-        (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
-      have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((ρ₁.im - ρ₀.im) * L) :=
-        P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-      rw [hpole] at hb
-      rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
-      linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
-    -- ### point 5 (χ₁² = 1, principal at σ+i(γ₁+γ₀))
-    have hS5 : S5 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a β + e5 := by
-      have hcc5 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im + ρ₀.im)
-      rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc5
-      have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-        (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-        hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im + ρ₀.im))
-        (by simp [sPt]) (by simpa [sPt] using hm3b)
-        (hSzeta (ρ₁.im + ρ₀.im)).1 (hSzeta (ρ₁.im + ρ₀.im)).2 hcc5
-      have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im + ρ₀.im) - 1) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((ρ₁.im + ρ₀.im) * L) :=
-        P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im + ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-      rw [hpole] at hb
-      rw [show (ρ₁.im + ρ₀.im) * L = β by rw [hβdef]] at hb
-      rw [hS5', hC]
-      linarith only [hb, he5def, hE2zdef, hE3zdef]
-    -- ### point 6 (χ₁ at σ+i(2γ₁-γ₀), kept {ρ₁,ρ̄₀})
-    have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
-        + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
-      have hT : ∀ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ),
-          Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; exact hzc₁
-        · rw [Finset.mem_singleton.mp h]; exact hzmc₀
-      have hTim : ∀ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; linarith only [hZ1.2.2]
-        · rw [Finset.mem_singleton.mp h]; exact himc₀
-      have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-        (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-        (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
-        (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
-        (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
-        (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
-        hminP1 ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
-      have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-            / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im - ρ₀.im - ρ₁.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-          (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
-      have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-            / ((sPt a L (2 * ρ₁.im - ρ₀.im) - (starRingEnd ℂ) ρ₀) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀))
-          (gam := ((starRingEnd ℂ) ρ₀).im) (t := 2 * ρ₁.im - ρ₀.im) (ρ := (starRingEnd ℂ) ρ₀)
-          hLne hρc₀re rfl
-      have hsum : (∑ u ∈ ({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ),
-          (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im - ρ₀.im - ρ₁.im) * L)
-            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L) := by
-        rw [Finset.sum_insert (by simp only [Finset.mem_singleton]; exact hc₀ρ₁'),
-          Finset.sum_singleton, ht2, ht1]
-      rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-      have hcard6 : ((({ρ₁, (starRingEnd ℂ) ρ₀} : Finset ℂ)).card : ℝ) = 2 := by
-        rw [Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact hc₀ρ₁'),
-          Finset.card_singleton]
-        norm_num
-      rw [hcard6, hsum, neg_add] at hb
-      rw [show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring] at hb
-      rw [show (2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L = γ by rw [hγdef]; ring] at hb
-      linarith only [hb, hS6', he6def, hE2def, hE3def]
-    -- ### point 7 (χ₁² = 1, principal at σ+2iγ₁)
-    have hS7 : S7 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ + e7 := by
-      have hcc7 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (2 * ρ₁.im)
-      rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc7
-      have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-        (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-        hCzZeta hC0b' hnzδ (s := sPt a L (2 * ρ₁.im))
-        (by simp [sPt]) (by simpa [sPt] using hm3c)
-        (hSzeta (2 * ρ₁.im)).1 (hSzeta (2 * ρ₁.im)).2 hcc7
-      have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im) - 1) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im) * L) :=
-        P3_arg_eq_pole_split (a := a) (L := L) (t := 2 * ρ₁.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-      rw [hpole] at hb
-      rw [show (2 * ρ₁.im) * L = γ by rw [hγdef]] at hb
-      rw [hS7', hC]
-      linarith only [hb, he7def, hE2zdef, hE3zdef]
-    -- ### point 8 (χ₁ at σ+i(2γ₁+γ₀), kept {ρ₁,ρ₀})
-    have hS8 : S8 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
-        + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e8 := by
-      have hT : ∀ u ∈ ({ρ₁, ρ₀} : Finset ℂ),
-          Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; exact hzc₁
-        · rw [Finset.mem_singleton.mp h]; exact hzc₀
-      have hTim : ∀ u ∈ ({ρ₁, ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; linarith only [hZ1.2.2]
-        · rw [Finset.mem_singleton.mp h]; linarith only [hZ0.2.2]
-      have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-        (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-        (s := sPt a L (2 * ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3e)
-        (hk1P1 (2 * ρ₁.im + ρ₀.im) hm3e) par₁ hpar₁0 hpar₁1
-        (hSpr par₁ hpar₁2 (2 * ρ₁.im + ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im + ρ₀.im)).2
-        (hJ1 (sPt a L (2 * ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3e))
-        hminP1 ({ρ₁, ρ₀} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im + ρ₀.im))
-      have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-            / ((sPt a L (2 * ρ₁.im + ρ₀.im) - ρ₁) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im - ρ₁.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-          (t := 2 * ρ₁.im + ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl
-      have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-            / ((sPt a L (2 * ρ₁.im + ρ₀.im) - ρ₀) * (L : ℂ)))).re
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im - ρ₀.im) * L) :=
-        P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-          (t := 2 * ρ₁.im + ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl
-      have hsum : (∑ u ∈ ({ρ₁, ρ₀} : Finset ℂ),
-          (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re)
-          = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im - ρ₁.im) * L)
-            + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im - ρ₀.im) * L) := by
-        rw [Finset.sum_insert (by simp only [Finset.mem_singleton]; exact h10),
-          Finset.sum_singleton, ht2, ht1]
-      rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-      have hcard : ((({ρ₁, ρ₀} : Finset ℂ)).card : ℝ) = 2 := by
-        rw [Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact h10),
-          Finset.card_singleton]
-        norm_num
-      rw [hcard, hsum, neg_add] at hb
-      rw [show (2 * ρ₁.im + ρ₀.im - ρ₁.im) * L = β by rw [hβdef]; ring] at hb
-      rw [show (2 * ρ₁.im + ρ₀.im - ρ₀.im) * L = γ by rw [hγdef]; ring] at hb
-      rw [hS8', h3eq]
-      linarith only [hb, he8def, hE2def, hE3def]
-    -- ### the assembly
-    have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
-    have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
-    have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
-      rw [hC0cdef]
-      exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
-    have hE1 : e1 ≤ E := by rw [he1def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-    have hE2 : e2 ≤ E := by
-      rw [he2def]
-      exact heE _ (by have h := hcFar 3 (by norm_num); linarith only [h, h1C0, hC0cnn])
-    have hE3 : e3 ≤ E := by rw [he3def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-    have hE5 : e5 ≤ E := by rw [he5def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-    have hE6 : e6 ≤ E := by
-      rw [he6def]
-      exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
-    have hE7 : e7 ≤ E := by rw [he7def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-    have hE8 : e8 ≤ E := by
-      rw [he8def]
-      exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
-    have hExprNon : 0 ≤
-        (K ^ 2 + 3 / 4) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-          + K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ - K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ
-        + ((K ^ 2 + 3 / 4) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β
-          + K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a β)
-        + (2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
-          + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ) := by
-      have h1 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ ha hlam₁nn hlam₁lam₀ hK
-        (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
-      have h2 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K β ha hlam₁nn hlam₁lam₀ hK
-        (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
-      have h3 : (0 : ℝ) ≤ 2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
-          + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
-          - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ := by
-        have h := P3.CaseC_D (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (t := γ)
-          ha hK.le hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.2
-        have h' : (2 * K * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) + (γ : ℂ) * Complex.I))
-            + (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₀) : ℂ)) + (γ : ℂ) * Complex.I))
-            - (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((a : ℂ) + (γ : ℂ) * Complex.I))).re
-          = 2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
-            + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
-            - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ := by
-          simp only [P9.PhiG, Complex.add_re, Complex.sub_re]
-          simp [Complex.mul_re]
-        rw [h'] at h
-        exact h
-      linarith only [h1, h2, h3]
-    by_cases hγ₀ : ρ₀.im = 0
-    · -- ## sub-case γ₀ = 0
-      have hβΔ : β = Δ := by rw [hβdef, hΔdef, hγ₀]; ring
-      have hT4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-          Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; exact hzc₁
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; exact hzc₀
-          · rw [Finset.mem_singleton.mp h']; exact hzmc₁
-      have hTim4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; linarith only [hZ1.2.2]
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; linarith only [hZ0.2.2]
-          · rw [Finset.mem_singleton.mp h']; exact himc₁
-      have hS4 : S4 ≤ -P3R 1 - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
-          - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4z := by
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
-          (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
-          (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
-          hminP1 ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT4 hTim4 (hCc1 ρ₁.im)
-        have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re
-            = P3R 1 := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-          rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
-            rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
-        have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L) :=
-          P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl
-        have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-              / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) :=
-          P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
-            (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₁)
-            hLne hρc₁re rfl
-        have hsum : (∑ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
-            = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L)
-              + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) := by
-          rw [Finset.sum_insert (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨h10, hc₁ne⟩),
-              Finset.sum_insert (by
-                simp only [Finset.mem_singleton]; exact hc₀ρ₁),
-              Finset.sum_singleton, ht1, ht2, ht3]
-          ring
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        have hcard : ((({ρ₁, ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ) = 3 := by
-          rw [Finset.card_insert_of_notMem (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨h10, hc₁ne⟩),
-              Finset.card_insert_of_notMem (by
-                simp only [Finset.mem_singleton]; exact hc₀ρ₁),
-              Finset.card_singleton]
-          norm_num
-        rw [hcard, hsum] at hb
-        rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
-        rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
-        rw [hβΔ]
-        linarith only [hb, hS4', he4zdef, hE2def, hE3def]
-      have hE4z : e4z ≤ E := by
-        rw [he4zdef]
-        exact heE _ (by have h := hcFar 3 (by norm_num); linarith only [h, h1C0, hC0cnn])
-      have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
-          + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
-        have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
-        rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
-        push_cast at h0
-        simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
-          zero_mul, add_zero]
-        push_cast
-        exact h0
-      have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4z + e5)
-          + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-        have hsum := sumErr_le hK.le hE1 hE2 hE3 hE4z hE5 hE6 hE7 hE8
-        have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
-        have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
-        have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-          have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
-          have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
-          linarith only [hae, hle]
-        have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-            ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
-          have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
-          calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-              = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 2 * K + 1)) := by ring
-            _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) :=
-                mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hcoef hε₁pos.le) hα0
-            _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := hε
-        linarith only [hsum, hmain, hbud2, hfin]
-      exact caseC_zero_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε)
-        (ε₁ := ε₁) (Δ := Δ) (β := β) (γ := γ)
-        (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6) (S7 := S7) (S8 := S8)
-        (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4z) (e5 := e5) (e6 := e6) (e7 := e7) (e8 := e8)
-        (corr := 0) hK.le hα0 hβΔ.symm hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
-        (by linarith only [hExprNon]) habs
-    · -- ## sub-case γ₀ ≠ 0
-      have hγ₀' : ρ₀.im ≠ 0 := hγ₀
-      have hd₀ : ρ₀ ≠ (starRingEnd ℂ) ρ₀ := hγ₀ne_iff hγ₀'
-      have hT4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-          Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; exact hzc₁
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; exact hzc₀
-          · rcases Finset.mem_insert.mp h' with h'' | h''
-            · rw [h'']; exact hzmc₀
-            · rw [Finset.mem_singleton.mp h'']; exact hzmc₁
-      have hTim4 : ∀ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-          |u.im| ≤ 10 := by
-        intro u hu
-        rcases Finset.mem_insert.mp hu with h | h
-        · rw [h]; linarith only [hZ1.2.2]
-        · rcases Finset.mem_insert.mp h with h' | h'
-          · rw [h']; linarith only [hZ0.2.2]
-          · rcases Finset.mem_insert.mp h' with h'' | h''
-            · rw [h'']; exact himc₀
-            · rw [Finset.mem_singleton.mp h'']; exact himc₁
-      have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
-          - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) β - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
-          (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
-          (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
-          hminP1 ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ) hT4 hTim4
-          (hCc1 ρ₁.im)
-        have ht1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re
-            = P3R 1 := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-          rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
-            rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
-        have ht2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L) :=
-          P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl
-        have ht3 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-              / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - -ρ₀.im) * L) :=
-          P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀))
-            (gam := ((starRingEnd ℂ) ρ₀).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₀)
-            hLne hρc₀re rfl
-        have ht4 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ))
-              / ((sPt a L ρ₁.im - (starRingEnd ℂ) ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) :=
-          P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁))
-            (gam := ((starRingEnd ℂ) ρ₁).im) (t := ρ₁.im) (ρ := (starRingEnd ℂ) ρ₁)
-            hLne hρc₁re rfl
-        have hsum : (∑ u ∈ ({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
-            = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - ρ₀.im) * L)
-              + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((ρ₁.im - -ρ₀.im) * L)
-              + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₁.im - -ρ₁.im) * L) := by
-          rw [Finset.sum_insert (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨h10, hc₀ρ₁', hc₁ne⟩),
-              Finset.sum_insert (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨hd₀, hc₀ρ₁⟩),
-              Finset.sum_insert (by
-                simp only [Finset.mem_singleton]; exact hc₀c₁),
-              Finset.sum_singleton, ht1, ht2, ht3, ht4]
-          ring
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        have hcard : ((({ρ₁, ρ₀, (starRingEnd ℂ) ρ₀, (starRingEnd ℂ) ρ₁} : Finset ℂ)).card : ℝ)
-            = 4 := by
-          rw [Finset.card_insert_of_notMem (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨h10, hc₀ρ₁', hc₁ne⟩),
-              Finset.card_insert_of_notMem (by
-                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
-                exact ⟨hd₀, hc₀ρ₁⟩),
-              Finset.card_insert_of_notMem (by
-                simp only [Finset.mem_singleton]; exact hc₀c₁),
-              Finset.card_singleton]
-          norm_num
-        rw [hcard, hsum, neg_add, neg_add, neg_add] at hb
-        rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
-        rw [show (ρ₁.im - -ρ₀.im) * L = β by rw [hβdef]; ring] at hb
-        rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
-        linarith only [hb, hS4', he4def, hE2def, hE3def]
-      have hE4 : e4 ≤ E := by
-        rw [he4def]
-        exact heE _ (by have h := hcFar 4 (by norm_num); linarith only [h, h1C0, hC0cnn])
-      have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
-          + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
-        have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
-        rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
-        push_cast at h0
-        simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
-          zero_mul, add_zero]
-        push_cast
-        exact h0
-      have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
-          + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-        have hsum := sumErr_le hK.le hE1 hE2 hE3 hE4 hE5 hE6 hE7 hE8
-        have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
-        have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
-        have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-          have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
-          have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
-          linarith only [hae, hle]
-        have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-            ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
-          have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
-          calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
-              = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 2 * K + 1)) := by ring
-            _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) :=
-                mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hcoef hε₁pos.le) hα0
-            _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := hε
-        linarith only [hsum, hmain, hbud2, hfin]
-      exact caseC_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε)
-        (ε₁ := ε₁) (Δ := Δ) (β := β) (γ := γ)
-        (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6) (S7 := S7) (S8 := S8)
-        (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5) (e6 := e6) (e7 := e7) (e8 := e8)
-        (corr := 0) hK.le hα0 hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
-        (by
-          have h4 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := Δ)
-            (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
-          have h5 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := β)
-            (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
-          linarith only [hExprNon, mul_nonneg hK.le h4, mul_nonneg hK.le h5])
-        habs
+    exact h91_case0 a K ε ha hK hε ε₁ hε₁pos hε₁bud Ct hCtpos C₀ hC₀pos Cc hCcpos Cp hCpnn Cn hCnpos Cz hCzpos δ hδpos hδlt1 aup hauppos qabs habs q χ₁ ρ₁ ρ₀ hnotreal hZ1 hZ0 hne hconj hcond L hLdef haL hLt hLpos hLne hL1 hlogLnn h1aL haδL Cj hCjnn Corr hlam₁nn hlam₀nn hlam₁lam₀ hχ₁ne hα0 hαaup hlamOf_eq hminPrim hSpr hSzeta hCzZeta hC0b' hnzδ hJOf hCcOf hk1Of hN3 Δ hΔdef β hβdef γ hγdef E2 hE2def E3 hE3def E2z hE2zdef E3z hE3zdef C0c hC0cdef Fc hFcdef E hEbound hcFar heE heEz hlogNOf hC
   · by_cases hB : χ₁ ^ 3 = 1
     · -- ### case B (χ₁³ = 1, χ₁² ≠ 1)
-      have hχ2 : χ₁ ^ 2 ≠ 1 := hC
-      haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
-      have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
-        intro hh
-        exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
-          DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
-      have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
-        DirichletCharacter.primitiveCharacter_isPrimitive χ₁
-      have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
-        hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
-      have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
-          = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
-        intro u
-        have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
-          χ₁.primitiveCharacter u
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
-        exact h
-      obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
-      have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
-      have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
-          (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
-          ≤ (1 / 6 + ε₁) * L := fun t ht =>
-        hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
-      have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
-        fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
-      have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
-            χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
-          - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
-        fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
-      have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
-        rw [hlamOf_eq ρ₁]; field_simp; ring
-      have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
-        rw [hlamOf_eq ρ₀]; field_simp; ring
-      have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
-      have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
-      have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3f : |-(ρ₁.im + ρ₀.im)| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3g : |-(2 * ρ₁.im)| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2]
-      have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      -- ### error budgets
-      set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
-      set e2 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
-      set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
-      set e4 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
-      set e5 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he5def
-      set e6 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he6def
-      set e7 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he7def
-      set e8 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he8def
-      -- ### the eight points
-      set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
-      set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
-      set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
-      set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
-      set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
-      set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
-      set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
-      set S8 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
-      clear_value S1 S2 S3 S4 S5 S6 S7 S8
-      -- ### point 1
-      have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
-        have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
-        rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
-        have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-          (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-          hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
-          (hSzeta 0).1 (hSzeta 0).2 hcc0
-        have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
-          rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
-          rw [zero_mul, PhiG_zero]
-        rw [hpole] at hb
-        linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
-      -- ### point 2 (χ₁ at σ+iγ₀, kept {ρ₀,ρ₁})
-      have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-          rw [← hzm1 ρ₀]; exact hZ0.2.1
-        have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; exact hz₀
-          · rw [Finset.mem_singleton.mp h]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; linarith only [hZ0.2.2]
-          · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
-          (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
-          (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
-          hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-        have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring]
-          rw [PhiG_neg']
-        have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [Finset.sum_pair (Ne.symm hne), t1, t2]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
-        rw [neg_add] at hb
-        linarith only [hb, hS2', he2def, hE2def, hE3def]
-      -- ### point 3
-      have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
-        have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
-        rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
-        have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-          (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-          hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
-          (by simp [sPt]) (by simpa [sPt] using hm3a)
-          (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
-        have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
-          hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-        rw [hpole] at hb
-        linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
-      -- ### point 4 (χ₁ at σ+iγ₁, kept {ρ₀,ρ₁})
-      have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-          rw [← hzm1 ρ₀]; exact hZ0.2.1
-        have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; exact hz₀
-          · rw [Finset.mem_singleton.mp h]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; linarith only [hZ0.2.2]
-          · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
-          (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
-          (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
-          hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₁.im)
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re = P3R 1 := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-          rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
-            rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
-        have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
-        have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
-            = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
-          rw [Finset.sum_pair (Ne.symm hne), t2, t1]
-          ring
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
-        rw [neg_add] at hb
-        linarith only [hb, hS4', he4def, hE2def, hE3def]
-      -- ### point 5 (χ₁² via conjugation, kept {ρ₁})
-      have hconj5 : SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁)
-          = SigmaP3L q L χ₁ (sPt a L (-(ρ₁.im + ρ₀.im))) a (Work.LinnikContract.lamOf q ρ₁) := by
-        rw [P9.SigmaP3L_conj_eq (χ₁ ^ 2) L (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁)]
-        have hinv : (χ₁ ^ 2)⁻¹ = χ₁ := by
-          refine inv_eq_of_mul_eq_one_right ?_
-          rw [← pow_succ]
-          exact hB
-        rw [hinv]
-        congr 1
-        apply Complex.ext <;> simp [sPt, Complex.conj_re, Complex.conj_im]
-      have hS5 : S5 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L)
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e5 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (-(ρ₁.im + ρ₀.im))) (by simp [sPt]) (by simpa [sPt] using hm3f)
-          (hk1P1 (-(ρ₁.im + ρ₀.im)) hm3f) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 (-(ρ₁.im + ρ₀.im))).1 (hSpr par₁ hpar₁2 (-(ρ₁.im + ρ₀.im))).2
-          (hJ1 (sPt a L (-(ρ₁.im + ρ₀.im))) (norm_sPt_le_five ha haL hLpos hm3f))
-          hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (-(ρ₁.im + ρ₀.im)))
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(ρ₁.im + ρ₀.im)) - ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L) := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := -(ρ₁.im + ρ₀.im)) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [show (-(ρ₁.im + ρ₀.im) - ρ₁.im) * L = -((2 * ρ₁.im + ρ₀.im) * L) by ring]
-          rw [PhiG_neg']
-        have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(ρ₁.im + ρ₀.im)) - u) * (L : ℂ)))).re)
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((2 * ρ₁.im + ρ₀.im) * L) := by
-          rw [Finset.sum_singleton, t1]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
-        rw [← hconj5] at hb
-        linarith only [hb, hS5', he5def, hE2def, hE3def]
-      -- ### point 6 (χ₁ at σ+i(2γ₁-γ₀), kept {ρ₁})
-      have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
-          (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
-          (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
-          hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl,
-            show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring]
-        have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [Finset.sum_singleton, t1]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
-        linarith only [hb, hS6', he6def, hE2def, hE3def]
-      -- ### point 7 (χ₁² via conjugation, kept {ρ₀})
-      have hconj7 : SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁)
-          = SigmaP3L q L χ₁ (sPt a L (-(2 * ρ₁.im))) a (Work.LinnikContract.lamOf q ρ₁) := by
-        rw [P9.SigmaP3L_conj_eq (χ₁ ^ 2) L (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁)]
-        have hinv : (χ₁ ^ 2)⁻¹ = χ₁ := by
-          refine inv_eq_of_mul_eq_one_right ?_
-          rw [← pow_succ]
-          exact hB
-        rw [hinv]
-        congr 1
-        apply Complex.ext <;> simp [sPt, Complex.conj_re, Complex.conj_im]
-      have hS7 : S7 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L)
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e7 := by
-        have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-          rw [← hzm1 ρ₀]; exact hZ0.2.1
-        have hT : ∀ u ∈ ({ρ₀} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₀
-        have hTim : ∀ u ∈ ({ρ₀} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ0.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (-(2 * ρ₁.im))) (by simp [sPt]) (by simpa [sPt] using hm3g)
-          (hk1P1 (-(2 * ρ₁.im)) hm3g) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 (-(2 * ρ₁.im))).1 (hSpr par₁ hpar₁2 (-(2 * ρ₁.im))).2
-          (hJ1 (sPt a L (-(2 * ρ₁.im))) (norm_sPt_le_five ha haL hLpos hm3g))
-          hminP1 ({ρ₀} : Finset ℂ) hT hTim (hCc1 (-(2 * ρ₁.im)))
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(2 * ρ₁.im)) - ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L) := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := -(2 * ρ₁.im)) (ρ := ρ₀) hLne hρ₀re rfl]
-          rw [show (-(2 * ρ₁.im) - ρ₀.im) * L = -((2 * ρ₁.im + ρ₀.im) * L) by ring]
-          rw [PhiG_neg']
-        have hsum : (∑ u ∈ ({ρ₀} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (-(2 * ρ₁.im)) - u) * (L : ℂ)))).re)
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) ((2 * ρ₁.im + ρ₀.im) * L) := by
-          rw [Finset.sum_singleton, t1]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at hb
-        rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
-        rw [← hconj7] at hb
-        linarith only [hb, hS7', he7def, hE2def, hE3def]
-      -- ### point 8 (χ₁³ = 1, principal at σ+i(2γ₁+γ₀))
-      have hS8 : S8 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im + ρ₀.im) * L) + e8 := by
-        have hcc8 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (2 * ρ₁.im + ρ₀.im)
-        rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc8
-        have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-          (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-          hCzZeta hC0b' hnzδ (s := sPt a L (2 * ρ₁.im + ρ₀.im))
-          (by simp [sPt]) (by simpa [sPt] using hm3e)
-          (hSzeta (2 * ρ₁.im + ρ₀.im)).1 (hSzeta (2 * ρ₁.im + ρ₀.im)).2 hcc8
-        have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - 1) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a ((2 * ρ₁.im + ρ₀.im) * L) :=
-          P3_arg_eq_pole_split (a := a) (L := L) (t := 2 * ρ₁.im + ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-        rw [hpole] at hb
-        linarith only [hb, hS8', he8def, hE2zdef, hE3zdef]
-      -- ### the assembly
-      have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
-      have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
-      have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
-        rw [hC0cdef]
-        exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
-      have hE1 : e1 ≤ E := by rw [he1def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-      have hE2 : e2 ≤ E := by rw [he2def]; exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
-      have hE4 : e4 ≤ E := by rw [he4def]; exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, h1C0, hC0cnn])
-      have hE5 : e5 ≤ E := by rw [he5def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
-      have hE6 : e6 ≤ E := by rw [he6def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
-      have hE7 : e7 ≤ E := by rw [he7def]; exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, hC0cnn])
-      have hE8 : e8 ≤ E := by rw [he8def]; exact heEz _ (by linarith only [h1C0, hFcnn])
-      have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
-          + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
-        have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
-        rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef, hB] at h0
-        push_cast at h0
-        simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
-          zero_mul, add_zero]
-        push_cast
-        exact h0
-      have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
-          + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
-          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-        have hsum := sumErr_le hK.le hE1 hE2 hE1 hE4 hE5 hE6 hE7 hE8
-        have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
-        have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
-        have h54 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
-            ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
-          have h1 : (K ^ 2 + 3 * K + 5 / 4 : ℝ) ≤ K ^ 2 + 3 * K + 3 / 2 := by norm_num
-          have h2 : 0 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ := by positivity
-          calc (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 5 / 4)
-              ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 3 / 2) :=
-                mul_le_mul_of_nonneg_left h1 h2
-            _ = (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε₁ * (K ^ 2 + 3 * K + 3 / 2)) := by ring
-            _ ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) :=
-                mul_le_mul_of_nonneg_left hε₁bud hα0
-        have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4)
-            ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-          linarith only [mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›), mul_pos ha ‹0 < ε›]
-        linarith only [hsum, hmain, hε, hfin, h54]
-      exact caseB_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁))
-        (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε) (ε₁ := ε₁)
-        (Δ := Δ) (tB := (2 * ρ₁.im + ρ₀.im) * L)
-        (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6)
-        (S7 := S7) (S8 := S8) (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5)
-        (e6 := e6) (e7 := e7) (e8 := e8) (corr := 0)
-        hK.le hα0 hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
-        (P3.P3Bounds.2 a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ
-          ha hK hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).1)
-        ((P9.rescale_variants.2.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K
-          ((2 * ρ₁.im + ρ₀.im) * L) ha hlam₁nn hlam₁lam₀ hK
-          (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).2.1)
-        habs
+      exact h91_case1 a K ε ha hK hε ε₁ hε₁pos hε₁bud Ct hCtpos C₀ hC₀pos Cc hCcpos Cp hCpnn Cn hCnpos Cz hCzpos δ hδpos hδlt1 aup hauppos qabs habs q χ₁ ρ₁ ρ₀ hZ1 hZ0 hne hcond L hLdef haL hLt hLpos hLne hL1 hlogLnn h1aL haδL Cj hCjnn Corr hlam₁nn hlam₀nn hlam₁lam₀ hχ₁ne hα0 hαaup hlamOf_eq hminPrim hSpr hSzeta hCzZeta hC0b' hnzδ hJOf hCcOf hk1Of hN3 Δ hΔdef E2 hE2def E3 hE3def E2z hE2zdef E3z hE3zdef C0c hC0cdef Fc hFcdef E hEbound hcFar heE heEz hlogNOf hC hB
     · -- ### case A (χ₁ of order neither 2 nor 3)
-      have hχ2 : χ₁ ^ 2 ≠ 1 := hC
-      have hχ3 : χ₁ ^ 3 ≠ 1 := hB
-      haveI hN1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
-      have hφ₁ne : χ₁.primitiveCharacter ≠ 1 := by
-        intro hh
-        exact hχ₁ne (by rw [← DirichletCharacter.changeLevel_primitiveCharacter χ₁, hh,
-          DirichletCharacter.changeLevel_one χ₁.conductor_dvd_level])
-      have hφ₁prim : χ₁.primitiveCharacter.IsPrimitive :=
-        DirichletCharacter.primitiveCharacter_isPrimitive χ₁
-      have hlogN1 : Real.log ((χ₁.conductor : ℕ) : ℝ) ≤ L :=
-        hlogNOf χ₁.conductor_dvd_level χ₁.conductor_ne_zero
-      have hzm1 : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₁ u
-          = Work.LinnikContract.zeroMult χ₁.primitiveCharacter u := by
-        intro u
-        have h := Work.ZeroFreeTables.Table4.zeroMult_changeLevel χ₁.conductor_dvd_level
-          χ₁.primitiveCharacter u
-        rw [DirichletCharacter.changeLevel_primitiveCharacter] at h
-        exact h
-      obtain ⟨par₁, hpar₁2, hpar₁0, hpar₁1⟩ := exists_par χ₁.primitiveCharacter
-      have hminP1 := hminPrim χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim
-      have hk1P1 : ∀ t : ℝ, |t| ≤ 3 → (-logDeriv (DirichletCharacter.LFunction χ₁.primitiveCharacter)
-          (sPt a L t)).re + P9.nearInvSum χ₁.conductor χ₁.primitiveCharacter (sPt a L t) δ
-          ≤ (1 / 6 + ε₁) * L := fun t ht =>
-        hk1Of χ₁.primitiveCharacter hφ₁ne hφ₁prim hN3 hlogN1 t ht
-      have hJ1 : ∀ s : ℂ, ‖s‖ ≤ 5 → P9.invSqSum χ₁.conductor χ₁.primitiveCharacter s ≤ Cj :=
-        fun s hs => hJOf χ₁.conductor_dvd_level χ₁.primitiveCharacter hφ₁ne hφ₁prim s hs
-      have hCc1 : ∀ t : ℝ, |SigmaP3L q L (DirichletCharacter.changeLevel χ₁.conductor_dvd_level
-            χ₁.primitiveCharacter) (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)
-          - SigmaP3L χ₁.conductor L χ₁.primitiveCharacter (sPt a L t) a (Work.LinnikContract.lamOf q ρ₁)| ≤ Corr :=
-        fun t => hCcOf χ₁.conductor_dvd_level χ₁.primitiveCharacter t
-      have hρ₁re : ρ₁.re = 1 - (Work.LinnikContract.lamOf q ρ₁) / L := by
-        rw [hlamOf_eq ρ₁]; field_simp; ring
-      have hρ₀re : ρ₀.re = 1 - (Work.LinnikContract.lamOf q ρ₀) / L := by
-        rw [hlamOf_eq ρ₀]; field_simp; ring
-      have hm3₁ : |ρ₁.im| ≤ 3 := by linarith only [hZ1.2.2]
-      have hm3₀ : |ρ₀.im| ≤ 3 := by linarith only [hZ0.2.2]
-      have hm3a : |ρ₁.im - ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3b : |ρ₁.im + ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3c : |2 * ρ₁.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2]
-      have hm3d : |2 * ρ₁.im - ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hm3e : |2 * ρ₁.im + ρ₀.im| ≤ 3 := by
-        have h1 := abs_le.mp hZ1.2.2; have h0 := abs_le.mp hZ0.2.2
-        rw [abs_le]; constructor <;> linarith only [h1.1, h1.2, h0.1, h0.2]
-      have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
-      rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc0
-      -- ### error budgets
-      set e1 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he1def
-      set e2 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he2def
-      set e3 : ℝ := ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ + E2z + E3z + Corr with he3def
-      set e4 : ℝ := E2 + E3 + 2 * (8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L)) + Corr with he4def
-      set e5 : ℝ := E2 + E3 + Corr with he5def
-      set e6 : ℝ := E2 + E3 + 8 * (a + (Work.LinnikContract.lamOf q ρ₁)) / (δ * L) + Corr with he6def
-      set e7 : ℝ := E2 + E3 + Corr with he7def
-      set e8 : ℝ := E2 + E3 + Corr with he8def
-      -- ### the eight points
-      set S1 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L 0) a (Work.LinnikContract.lamOf q ρ₁) with hS1'
-      set S2 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₀.im) a (Work.LinnikContract.lamOf q ρ₁) with hS2'
-      set S3 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS3'
-      set S4 : ℝ := SigmaP3L q L χ₁ (sPt a L ρ₁.im) a (Work.LinnikContract.lamOf q ρ₁) with hS4'
-      set S5 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS5'
-      set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
-      set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
-      set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
-      clear_value S1 S2 S3 S4 S5 S6 S7 S8
-      -- ### point 1: the principal character at σ
-      have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
-        have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-          (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-          hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
-          (hSzeta 0).1 (hSzeta 0).2 (by rw [hS1'] at hcc0; exact hcc0)
-        have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
-          rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
-          rw [zero_mul, PhiG_zero]
-        rw [hpole] at hb
-        linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
-      -- ### point 2: χ₁ at σ + iγ₀, kept {ρ₀, ρ₁}
-      have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-          rw [← hzm1 ρ₀]; exact hZ0.2.1
-        have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; exact hz₀
-          · rw [Finset.mem_singleton.mp h]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; linarith only [hZ0.2.2]
-          · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₀.im) (by simp [sPt]) (by simpa [sPt] using hm3₀)
-          (hk1P1 ρ₀.im hm3₀) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₀.im).1 (hSpr par₁ hpar₁2 ρ₀.im).2
-          (hJ1 (sPt a L ρ₀.im) (norm_sPt_le_five ha haL hLpos hm3₀))
-          hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₀.im)
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₀) * (L : ℂ)))).re
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₀.im) (ρ := ρ₀) hLne hρ₀re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-        have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring]
-          rw [PhiG_neg']
-        have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₀.im - u) * (L : ℂ)))).re)
-            = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [Finset.sum_pair (Ne.symm hne), t1, t2]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS2'] at hb
-        rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
-        rw [neg_add] at hb
-        linarith only [hb, hS2', he2def, hE2def, hE3def]
-      -- ### point 3: the principal character at σ + i(γ₁-γ₀)
-      have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
-        have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
-        rw [DirichletCharacter.changeLevel_one (one_dvd q)] at hcc3
-        have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
-          (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
-          hCzZeta hC0b' hnzδ (s := sPt a L (ρ₁.im - ρ₀.im))
-          (by simp [sPt]) (by simpa [sPt] using hm3a)
-          (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
-        have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
-          hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im)
-            (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
-        rw [hpole] at hb
-        linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
-      -- ### point 4: χ₁ at σ + iγ₁, kept {ρ₀, ρ₁}
-      have hS4 : S4 ≤ -P3R 1 - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e4 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hz₀ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₀ ≠ 0 := by
-          rw [← hzm1 ρ₀]; exact hZ0.2.1
-        have hT : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; exact hz₀
-          · rw [Finset.mem_singleton.mp h]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₀, ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu
-          rcases Finset.mem_insert.mp hu with h | h
-          · rw [h]; linarith only [hZ0.2.2]
-          · rw [Finset.mem_singleton.mp h]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L ρ₁.im) (by simp [sPt]) (by simpa [sPt] using hm3₁)
-          (hk1P1 ρ₁.im hm3₁) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 ρ₁.im).1 (hSpr par₁ hpar₁2 ρ₁.im).2
-          (hJ1 (sPt a L ρ₁.im) (norm_sPt_le_five ha haL hLpos hm3₁))
-          hminP1 ({ρ₀, ρ₁} : Finset ℂ) hT hTim (hCc1 ρ₁.im)
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₁) * (L : ℂ)))).re = P3R 1 := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := ρ₁.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [sub_self, zero_mul, PhiG_zero]
-          rw [show (a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₁)) = 1 by
-            rw [div_self (ne_of_gt (lt_of_lt_of_le ha (le_add_of_nonneg_right hlam₁nn)))]]
-        have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
-        have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
-            = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
-          rw [Finset.sum_pair (Ne.symm hne), t2, t1]
-          ring
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS4'] at hb
-        rw [Finset.card_pair (Ne.symm hne), Nat.cast_ofNat, hsum] at hb
-        rw [neg_add] at hb
-        linarith only [hb, hS4', he4def, hE2def, hE3def]
-      -- ### point 5: χ₁² at σ + i(γ₁+γ₀), nothing kept
-      haveI hN2 : NeZero (χ₁ ^ 2).conductor := ⟨(χ₁ ^ 2).conductor_ne_zero⟩
-      have hφ₂ne : (χ₁ ^ 2).primitiveCharacter ≠ 1 := by
-        intro hh
-        exact hχ2 (by rw [← DirichletCharacter.changeLevel_primitiveCharacter (χ₁ ^ 2), hh,
-          DirichletCharacter.changeLevel_one (χ₁ ^ 2).conductor_dvd_level])
-      have hφ₂prim : (χ₁ ^ 2).primitiveCharacter.IsPrimitive :=
-        DirichletCharacter.primitiveCharacter_isPrimitive (χ₁ ^ 2)
-      have hlogN2 : Real.log (((χ₁ ^ 2).conductor : ℕ) : ℝ) ≤ L :=
-        hlogNOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).conductor_ne_zero
-      have hN2_3 : 3 ≤ (χ₁ ^ 2).conductor :=
-        Work.LinnikAreas2.three_le_conductor (χ₁ ^ 2) hχ2
-      have hS5 : S5 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e5 := by
-        obtain ⟨par₂, hpar₂2, hpar₂0, hpar₂1⟩ := exists_par (χ₁ ^ 2).primitiveCharacter
-        have hb := point_bound_q (q := q) (N := (χ₁ ^ 2).conductor)
-          (hNq := (χ₁ ^ 2).conductor_dvd_level) (φ := (χ₁ ^ 2).primitiveCharacter) hφ₂ne
-          hφ₂prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3b)
-          (hk1Of (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim hN2_3 hlogN2 (ρ₁.im + ρ₀.im) hm3b)
-          par₂ hpar₂0 hpar₂1
-          (hSpr par₂ hpar₂2 (ρ₁.im + ρ₀.im)).1 (hSpr par₂ hpar₂2 (ρ₁.im + ρ₀.im)).2
-          (hJOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim
-            (sPt a L (ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3b))
-          (hminPrim (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim)
-          (∅ : Finset ℂ) (by simp) (by simp)
-          (hCcOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter (ρ₁.im + ρ₀.im))
-        have hsum : (∑ u ∈ (∅ : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re) = 0 :=
-          Finset.sum_empty
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS5'] at hb
-        rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
-        linarith only [hb, hS5', he5def, hE2def, hE3def]
-      -- ### point 6: χ₁ at σ + i(2γ₁-γ₀), kept {ρ₁}
-      have hS6 : S6 ≤ -P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
-          + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e6 := by
-        have hz₁ : Work.LinnikContract.zeroMult χ₁.primitiveCharacter ρ₁ ≠ 0 := by
-          rw [← hzm1 ρ₁]; exact hZ1.2.1
-        have hT : ∀ u ∈ ({ρ₁} : Finset ℂ),
-            Work.LinnikContract.zeroMult χ₁.primitiveCharacter u ≠ 0 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; exact hz₁
-        have hTim : ∀ u ∈ ({ρ₁} : Finset ℂ), |u.im| ≤ 10 := by
-          intro u hu; rw [Finset.mem_singleton.mp hu]; linarith only [hZ1.2.2]
-        have hb := point_bound_q (q := q) (N := χ₁.conductor) (hNq := χ₁.conductor_dvd_level)
-          (φ := χ₁.primitiveCharacter) hφ₁ne hφ₁prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (2 * ρ₁.im - ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3d)
-          (hk1P1 (2 * ρ₁.im - ρ₀.im) hm3d) par₁ hpar₁0 hpar₁1
-          (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).1 (hSpr par₁ hpar₁2 (2 * ρ₁.im - ρ₀.im)).2
-          (hJ1 (sPt a L (2 * ρ₁.im - ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3d))
-          hminP1 ({ρ₁} : Finset ℂ) hT hTim (hCc1 (2 * ρ₁.im - ρ₀.im))
-        have t1 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - ρ₁) * (L : ℂ)))).re
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₁)) (gam := ρ₁.im)
-            (t := 2 * ρ₁.im - ρ₀.im) (ρ := ρ₁) hLne hρ₁re rfl]
-          rw [show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring]
-        have hsum : (∑ u ∈ ({ρ₁} : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im - ρ₀.im) - u) * (L : ℂ)))).re)
-            = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ := by
-          rw [Finset.sum_singleton, t1]
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS6'] at hb
-        rw [Finset.card_singleton, Nat.cast_one, one_mul, hsum] at hb
-        linarith only [hb, hS6', he6def, hE2def, hE3def]
-      -- ### point 7: χ₁² at σ + 2iγ₁, nothing kept
-      have hS7 : S7 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e7 := by
-        obtain ⟨par₂, hpar₂2, hpar₂0, hpar₂1⟩ := exists_par (χ₁ ^ 2).primitiveCharacter
-        have hb := point_bound_q (q := q) (N := (χ₁ ^ 2).conductor)
-          (hNq := (χ₁ ^ 2).conductor_dvd_level) (φ := (χ₁ ^ 2).primitiveCharacter) hφ₂ne
-          hφ₂prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (2 * ρ₁.im)) (by simp [sPt]) (by simpa [sPt] using hm3c)
-          (hk1Of (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim hN2_3 hlogN2 (2 * ρ₁.im) hm3c)
-          par₂ hpar₂0 hpar₂1
-          (hSpr par₂ hpar₂2 (2 * ρ₁.im)).1 (hSpr par₂ hpar₂2 (2 * ρ₁.im)).2
-          (hJOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim
-            (sPt a L (2 * ρ₁.im)) (norm_sPt_le_five ha haL hLpos hm3c))
-          (hminPrim (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter hφ₂ne hφ₂prim)
-          (∅ : Finset ℂ) (by simp) (by simp)
-          (hCcOf (χ₁ ^ 2).conductor_dvd_level (χ₁ ^ 2).primitiveCharacter (2 * ρ₁.im))
-        have hsum : (∑ u ∈ (∅ : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im) - u) * (L : ℂ)))).re) = 0 :=
-          Finset.sum_empty
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS7'] at hb
-        rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
-        linarith only [hb, hS7', he7def, hE2def, hE3def]
-      -- ### point 8: χ₁³ at σ + i(2γ₁+γ₀), nothing kept
-      haveI hN3' : NeZero (χ₁ ^ 3).conductor := ⟨(χ₁ ^ 3).conductor_ne_zero⟩
-      have hφ₃ne : (χ₁ ^ 3).primitiveCharacter ≠ 1 := by
-        intro hh
-        exact hχ3 (by rw [← DirichletCharacter.changeLevel_primitiveCharacter (χ₁ ^ 3), hh,
-          DirichletCharacter.changeLevel_one (χ₁ ^ 3).conductor_dvd_level])
-      have hφ₃prim : (χ₁ ^ 3).primitiveCharacter.IsPrimitive :=
-        DirichletCharacter.primitiveCharacter_isPrimitive (χ₁ ^ 3)
-      have hlogN3 : Real.log (((χ₁ ^ 3).conductor : ℕ) : ℝ) ≤ L :=
-        hlogNOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).conductor_ne_zero
-      have hN3_3 : 3 ≤ (χ₁ ^ 3).conductor :=
-        Work.LinnikAreas2.three_le_conductor (χ₁ ^ 3) hχ3
-      have hS8 : S8 ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e8 := by
-        obtain ⟨par₃, hpar₃2, hpar₃0, hpar₃1⟩ := exists_par (χ₁ ^ 3).primitiveCharacter
-        have hb := point_bound_q (q := q) (N := (χ₁ ^ 3).conductor)
-          (hNq := (χ₁ ^ 3).conductor_dvd_level) (φ := (χ₁ ^ 3).primitiveCharacter) hφ₃ne
-          hφ₃prim ha hlam₁nn hδpos hδlt1 hLt haδL
-          (s := sPt a L (2 * ρ₁.im + ρ₀.im)) (by simp [sPt]) (by simpa [sPt] using hm3e)
-          (hk1Of (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim hN3_3 hlogN3 (2 * ρ₁.im + ρ₀.im) hm3e)
-          par₃ hpar₃0 hpar₃1
-          (hSpr par₃ hpar₃2 (2 * ρ₁.im + ρ₀.im)).1 (hSpr par₃ hpar₃2 (2 * ρ₁.im + ρ₀.im)).2
-          (hJOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim
-            (sPt a L (2 * ρ₁.im + ρ₀.im)) (norm_sPt_le_five ha haL hLpos hm3e))
-          (hminPrim (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter hφ₃ne hφ₃prim)
-          (∅ : Finset ℂ) (by simp) (by simp)
-          (hCcOf (χ₁ ^ 3).conductor_dvd_level (χ₁ ^ 3).primitiveCharacter (2 * ρ₁.im + ρ₀.im))
-        have hsum : (∑ u ∈ (∅ : Finset ℂ),
-            (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (2 * ρ₁.im + ρ₀.im) - u) * (L : ℂ)))).re) = 0 :=
-          Finset.sum_empty
-        rw [DirichletCharacter.changeLevel_primitiveCharacter, ← hS8'] at hb
-        rw [hsum, Finset.card_empty, Nat.cast_zero, zero_mul, neg_zero, zero_add, add_zero] at hb
-        linarith only [hb, hS8', he8def, hE2def, hE3def]
-      -- ### the assembly
-      have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
-      have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
-      have h1C0 : ((a + (Work.LinnikContract.lamOf q ρ₁)) / L) * C₀ ≤ C0c := by
-        rw [hC0cdef]
-        exact mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hαaup hLpos.le) hC₀pos.le
-      have hE1 : e1 ≤ E := by
-        exact heEz _ (by linarith only [he1def, h1C0, hFcnn])
-      have hE2 : e2 ≤ E := by
-        exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, he2def, hC0cnn])
-      have hE4 : e4 ≤ E := by
-        exact heE _ (by have h := hcFar 2 (by norm_num); linarith only [h, he4def, hC0cnn])
-      have hE5 : e5 ≤ E := by
-        exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he5def, hC0cnn, hFcnn])
-      have hE6 : e6 ≤ E := by
-        exact heE _ (by have h := hcFar 1 (by norm_num); linarith only [h, he6def, hC0cnn])
-      have hE7 : e7 ≤ E := by
-        exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he7def, hC0cnn, hFcnn])
-      have hE8 : e8 ≤ E := by
-        exact heE _ (by have h := hcFar 0 (by norm_num); linarith only [h, he8def, hC0cnn, hFcnn])
-      have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
-          + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
-        have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
-        rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
-        push_cast at h0
-        simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
-          zero_mul, add_zero]
-        push_cast
-        exact h0
-      have habs : (K ^ 2 + 1 / 2) * (e1 + e2) + K * (e3 + 2 * e4 + e5)
-          + (1 / 4) * (e6 + 2 * e7 + e8) + 0 + (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 3 * K + 3 / 2)
-          ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-        have hsum := sumErr_le hK.le hE1 hE2 hE1 hE4 hE5 hE6 hE7 hE8
-        have hε := mul_le_mul_of_nonneg_left hε₁bud hα0
-        have hmain : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
-        have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
-          linarith only [mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›), mul_pos ha ‹0 < ε›]
-        linarith only [hsum, hmain, hε, hfin]
-      exact caseA_bridge (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (ε := ε) (ε₁ := ε₁)
-        (Δ := Δ) (S1 := S1) (S2 := S2) (S3 := S3) (S4 := S4) (S5 := S5) (S6 := S6)
-        (S7 := S7) (S8 := S8) (e1 := e1) (e2 := e2) (e3 := e3) (e4 := e4) (e5 := e5)
-        (e6 := e6) (e7 := e7) (e8 := e8) (corr := 0)
-        hK.le hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
-        (P3.P3Bounds.2 a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ ha hK hlam₁nn hlam₁lam₀
-          (side913 ha hK (by linarith only [ha, hlam₁nn]) (by linarith only [ha, hlam₀nn]) hcond).1) habs
-
+      exact h91_case2 a K ε ha hK hε ε₁ hε₁pos hε₁bud Ct hCtpos C₀ hC₀pos Cc hCcpos Cp hCpnn Cn hCnpos Cz hCzpos δ hδpos hδlt1 aup hauppos qabs habs q χ₁ ρ₁ ρ₀ hZ1 hZ0 hne hcond L hLdef haL hLt hLpos hLne hL1 hlogLnn h1aL haδL Cj hCjnn Corr hlam₁nn hlam₀nn hlam₁lam₀ hχ₁ne hα0 hαaup hlamOf_eq hminPrim hSpr hSzeta hCzZeta hC0b' hnzδ hJOf hCcOf hk1Of hN3 Δ hΔdef E2 hE2def E3 hE3def E2z hE2zdef E3z hE3zdef C0c hC0cdef Fc hFcdef E hEbound hcFar heE heEz hlogNOf hC hB
 end Work.ZeroFreeTables

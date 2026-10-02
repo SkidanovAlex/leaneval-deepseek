@@ -338,10 +338,10 @@ theorem HB88_main_of
           Real.log_le_sub_one_of_pos (by positivity : (0 : ℝ) < 1 / lamOf q ρ₁)
         have h2 : 1 / lamOf q ρ₁ ≤ 1000 / 696 := by
           rw [div_le_div_iff₀ hlam1pos (by norm_num)]
-          nlinarith
+          linarith only [hbig]
         have h3 : (12 / 11 - ε') * Real.log (1 / lamOf q ρ₁) ≤ (12 / 11) * (1000 / 696 - 1) := by
           have h4 : Real.log (1 / lamOf q ρ₁) ≤ 1000 / 696 - 1 := by linarith
-          nlinarith [hLnn, h4, hε'0]
+          nlinarith only [hLnn, h4, hε'0]
         linarith
       exact absurd (le_trans htarget (le_trans hbig hlam1_le)) (not_le.mpr hcon)
   · have hmid : lamOf q ρ₁ < 696 / 1000 := not_le.mp hbig
@@ -369,9 +369,9 @@ theorem HB88_main_of
         apply Real.log_le_log (by positivity)
         exact one_div_le_one_div_of_le hlamS' hlam1S
       have hlamρlt : lamOf q ρ < (12 / 11) * Real.log (1 / lamOf q ρ₁) := by
-        nlinarith [hcon, hLnn, hε'0]
+        nlinarith only [hcon, hLnn, hε'0]
       have hlamρltK : lamOf q ρ < (12 / 11) * Real.log (1 / lamS') + 2 := by
-        nlinarith [hlamρlt, hLleΛ]
+        nlinarith only [hlamρlt, hLleΛ]
       have hlam1lt696 : lamOf q ρ₁ < 696 / 1000 := by linarith
       have hlamρltKv : lamOf q ρ < Kv := by rw [hKvdef]; linarith
       obtain ⟨χ₂, ρ₂, hχ₂ne1, hχ₂χ₁, hχ₂inv, hzm2, hl2ρ, hγ₂, hball⟩ :=
@@ -468,9 +468,9 @@ theorem HB88_main_of
         rw [Metric.mem_closedBall, dist_zero_right]
         have h2 : ‖ρ₁‖ ^ 2 = ρ₁.re ^ 2 := by
           rw [Complex.sq_norm, Complex.normSq_apply]; simp [him]; ring
-        have h3 : ρ₁.re ^ 2 ≤ 1 := by nlinarith [hstrip1.1, hstrip1.2.1]
+        have h3 : ρ₁.re ^ 2 ≤ 1 := by nlinarith only [hstrip1.1, hstrip1.2.1]
         have h4 : ‖ρ₁‖ ^ 2 ≤ (|ρ₂.im| + 2) ^ 2 := by
-          have h5 : (1 : ℝ) ≤ (|ρ₂.im| + 2) ^ 2 := by nlinarith [abs_nonneg ρ₂.im]
+          have h5 : (1 : ℝ) ≤ (|ρ₂.im| + 2) ^ 2 := by nlinarith only [abs_nonneg ρ₂.im]
           linarith [h2, h3, h5]
         rw [← Real.sqrt_sq (norm_nonneg ρ₁), ← Real.sqrt_sq (by positivity : (0 : ℝ) ≤ |ρ₂.im| + 2)]
         exact Real.sqrt_le_sqrt h4
@@ -481,11 +481,11 @@ theorem HB88_main_of
         rw [Metric.mem_closedBall, dist_zero_right]
         have h2 : ‖ρ₂‖ ^ 2 = ρ₂.re ^ 2 + ρ₂.im ^ 2 := by
           rw [Complex.sq_norm, Complex.normSq_apply]; ring
-        have h3 : ρ₂.re ^ 2 ≤ 1 := by nlinarith [hstrip2.1, hstrip2.2.1]
+        have h3 : ρ₂.re ^ 2 ≤ 1 := by nlinarith only [hstrip2.1, hstrip2.2.1]
         have h4 : ‖ρ₂‖ ^ 2 ≤ (|ρ₂.im| + 2) ^ 2 := by
           have h5 : ρ₂.im ^ 2 = |ρ₂.im| ^ 2 := by rw [sq_abs]
           have h6 : (|ρ₂.im| + 2) ^ 2 = |ρ₂.im| ^ 2 + (4 * |ρ₂.im| + 4) := by ring
-          nlinarith [abs_nonneg ρ₂.im, h2, h3, h5, h6]
+          nlinarith only [abs_nonneg ρ₂.im, h2, h3, h5, h6]
         rw [← Real.sqrt_sq (norm_nonneg ρ₂), ← Real.sqrt_sq (by positivity : (0 : ℝ) ≤ |ρ₂.im| + 2)]
         exact Real.sqrt_le_sqrt h4
       have hχ₁χ₂ne1 : χ₁ * χ₂ ≠ 1 := by
@@ -542,7 +542,7 @@ theorem HB88_main_of
       by_cases hsmall2 : lamOf q ρ₂ ≤ 15344 / 1000
       · -- the tent row table
         have hcover := TentRowCover (lamOf q ρ₁) (lamOf q ρ₂) hlam1pos (le_of_lt hsmall)
-          (by nlinarith [hcon, hLnn, hε'0]) hsmall2
+          (by first | nlinarith only [hl2lt', hLnn, hε'0] | nlinarith [hcon, hLnn, hε'0]) hsmall2
         obtain ⟨p, hp, hl1p, hl2p⟩ := hcover
         obtain ⟨hWmem, hXpos, hb0, hc0, hA2'⟩ := hRows p hp
         have hA2 : A < p.1 / 2 := lt_of_le_of_lt hA0 hA2'
@@ -553,7 +553,7 @@ theorem HB88_main_of
           have hle : p.1 * (p.1 / 2 - A₀) * p.2.2 ^ 3 ≤ p.1 * (p.1 / 2 - A) * p.2.2 ^ 3 := by
             have h1 : p.1 / 2 - A₀ ≤ p.1 / 2 - A := by linarith [hA0]
             have h2 : 0 ≤ p.1 * p.2.2 ^ 3 := by positivity
-            nlinarith [h1, h2, hXpos, h3]
+            nlinarith only [h1, h2, hXpos, h3]
           exact (TentExtract p.1 A hXpos hA2).2.2.1 p.2.1 p.2.2 hb0 hc0 (lt_of_lt_of_le hsh hle)
         have heng := fiveConfigUnbundle (q := q) p.1 A εe δ hlogq (hRowBody p.1 hWmem) χ₁ ρ₁ hmin hsq_mul
           him χ₂ ρ₂ hχ₂ne1 hχ₂χ₁ hχ₂inv hzm2 hβ₂pos hball hγ hzero₁ hzero₂ hdivC hdivD hd₁ hd₂

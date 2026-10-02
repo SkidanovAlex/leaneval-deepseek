@@ -25,7 +25,7 @@ lemma mul_inv_ne_one {q : ℕ} {χ χ' : DirichletCharacter ℂ q} (h : χ ≠ �
 lemma exists_log_sq_le_rpow {u : ℝ} (hu : 0 < u) :
     ∃ D₀ : ℝ, 1 ≤ D₀ ∧ ∀ x : ℝ, D₀ ≤ x → (Real.log x) ^ 2 ≤ x ^ u := by
   set δ : ℝ := u / 3 with hδdef
-  have hδpos : 0 < δ := by rw [hδdef]; linarith
+  have hδpos : 0 < δ := by rw [hδdef]; linarith only [hu]
   have h3δ : 3 * δ = u := by rw [hδdef]; ring
   refine ⟨max 1 ((1 / δ ^ 2) ^ (1 / δ)), le_max_left _ _, ?_⟩
   intro x hx
@@ -43,7 +43,7 @@ lemma exists_log_sq_le_rpow {u : ℝ} (hu : 0 < u) :
   have hlog0 : 0 ≤ Real.log x := Real.log_nonneg hx1
   have hsq : (Real.log x) ^ 2 ≤ (x ^ δ / δ) ^ 2 := by
     have hdiv : 0 ≤ x ^ δ / δ := div_nonneg (Real.rpow_nonneg hx0.le _) hδpos.le
-    nlinarith [hlog, hlog0, hdiv]
+    nlinarith only [hlog, hlog0, hdiv]
   have hsq' : (x ^ δ / δ) ^ 2 = x ^ (2 * δ) / δ ^ 2 := by
     rw [div_pow, ← Real.rpow_natCast (x ^ δ) 2, ← Real.rpow_mul hx0.le]
     ring_nf
@@ -59,12 +59,12 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
     Work.ZeroDensity.LogFree.GramCross p := by
   intro c₀ hc₀
   obtain ⟨CL, hCLpos, hCL⟩ := cross_Lbd p.η p.hη
-  have hδ₁ : 0 < (2 * p.σ₀ - 1) / 2 := by linarith [p.hσ₀]
-  have hδ₂ : (2 * p.σ₀ - 1) / 2 < 1 := by linarith [p.hσ₀1]
+  have hδ₁ : 0 < (2 * p.σ₀ - 1) / 2 := by linarith only [p.hσ₀]
+  have hδ₂ : (2 * p.σ₀ - 1) / 2 < 1 := by linarith only [p.hσ₀1]
   obtain ⟨CG, hCGpos, hCG⟩ := gamma_integral_shifted_cross ((1 : ℝ) / 2 + p.η) ((2 * p.σ₀ - 1) / 2)
-    (by linarith [p.hη]) hδ₁ hδ₂
-  obtain ⟨Dlog, hDlog1, hDlog⟩ := exists_log_sq_le_rpow (by linarith [p.hw, p.hwu] : (0:ℝ) < p.u)
-  have hxu : 0 < p.x - p.u := by linarith [p.hw, p.hwu, p.huv, p.hvx]
+    (by linarith only [p.hη]) hδ₁ hδ₂
+  obtain ⟨Dlog, hDlog1, hDlog⟩ := exists_log_sq_le_rpow (by linarith only [p.hw, p.hwu] : (0:ℝ) < p.u)
+  have hxu : 0 < p.x - p.u := by linarith only [p.hw, p.hwu, p.huv, p.hvx]
   obtain ⟨Dlog2, hDlog2_1, hDlog2⟩ := exists_log_sq_le_rpow hxu
   set D₀ : ℝ := max 1 (max (Real.exp 1) (max Dlog Dlog2)) with hD₀def
   have hD₀pos : 0 < D₀ := by rw [hD₀def]; positivity
@@ -78,8 +78,8 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
   have hLeq : L = Real.log 𝓓 := by rw [hLdef, h𝓓def, Lscale]
   have hq2 : (2 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
   have hT1 : (1 : ℝ) ≤ T := hT
-  have h𝓓2 : (2 : ℝ) ≤ 𝓓 := by rw [h𝓓def, scale]; nlinarith
-  have h𝓓1 : (1 : ℝ) ≤ 𝓓 := by linarith
+  have h𝓓2 : (2 : ℝ) ≤ 𝓓 := by rw [h𝓓def, scale]; nlinarith only [hδ₁, hre1, hlt1, hq2, hT]
+  have h𝓓1 : (1 : ℝ) ≤ 𝓓 := by linarith only [hδ₁, hre1, hlt1, h𝓓2]
   have h𝓓pos : 0 < 𝓓 := lt_of_lt_of_le one_pos h𝓓1
   have hD₀le : D₀ ≤ 𝓓 := by
     rw [hD₀def] at hDq ⊢
@@ -110,11 +110,11 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
   have hU𝓓 : U = 𝓓 ^ p.u := by rw [hUdef, Dpow, ← h𝓓def]
   have hW1 : 1 < W := by
     rw [hW𝓓]
-    exact Real.one_lt_rpow (by linarith) p.hw
+    exact Real.one_lt_rpow (by linarith only [hδ₁, hre1, hlt1, h𝓓2]) p.hw
   have hXpos : 0 < X := by rw [hX𝓓]; exact Real.rpow_pos_of_pos h𝓓pos _
   have hX1 : 1 ≤ X := by
     rw [hX𝓓]
-    exact Real.one_le_rpow h𝓓1 (by linarith [p.hw, p.hwu] : (0 : ℝ) ≤ p.x)
+    exact Real.one_le_rpow h𝓓1 (by linarith only [p.hw, p.hwu, hxu] : (0 : ℝ) ≤ p.x)
   have hUpos : 0 < U := by rw [hU𝓓]; exact Real.rpow_pos_of_pos h𝓓pos _
   have hU'pos : 0 < U' := by rw [hU'def]; positivity
   have hU'1 : 1 ≤ U' := by
@@ -125,10 +125,10 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
     have hUL : U ≤ X := by
       rw [hU𝓓, hX𝓓]
       exact Real.rpow_le_rpow_of_exponent_le h𝓓1 (le_trans p.huv.le p.hvx.le)
-    have hL2 : 1 ≤ L ^ 2 := by nlinarith
+    have hL2 : 1 ≤ L ^ 2 := by nlinarith only [hc₀, hL1, hlt1, hnc1]
     have hUL2 : U / L ^ 2 ≤ U := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < L ^ 2)]
-      nlinarith [hUpos.le, hL2]
+      nlinarith only [hUpos.le, hL2, hδ₁, hre1, hlt1, hUpos]
     exact le_trans hUL2 hUL
   -- the character and the zero-sum
   set ψ : DirichletCharacter ℂ q := χ * χ'⁻¹ with hψdef
@@ -136,17 +136,17 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
   set σ : ℂ := ρ + (starRingEnd ℂ) ρ' - 1 with hσdef
   have hσre : σ.re = ρ.re + ρ'.re - 1 := by simp [hσdef]
   have hδpos : 0 < (2 * p.σ₀ - 1) / 2 := hδ₁
-  have hσ0 : 0 < σ.re := by rw [hσre]; linarith
-  have hσ1 : σ.re < 1 := by rw [hσre]; linarith
-  have hσδ : (2 * p.σ₀ - 1) / 2 ≤ σ.re := by rw [hσre]; linarith [p.hσ₀]
+  have hσ0 : 0 < σ.re := by rw [hσre]; linarith only [hδ₁, hre1, hre2]
+  have hσ1 : σ.re < 1 := by rw [hσre]; linarith only [hlt1, hlt2]
+  have hσδ : (2 * p.σ₀ - 1) / 2 ≤ σ.re := by rw [hσre]; linarith only [p.hσ₀, hδ₁, hre1, hre2]
   have hσim : |σ.im| ≤ 2 * T := by
     have h : σ.im = ρ.im - ρ'.im := by simp [hσdef]; ring
     rw [h]
     calc |ρ.im - ρ'.im| ≤ |ρ.im| + |ρ'.im| := abs_sub _ _
-      _ ≤ T + T := by linarith
+      _ ≤ T + T := by linarith only [him1, him2]
       _ = 2 * T := by ring
   have hcdef : (-σ.re) = 1 - (ρ.re + ρ'.re) := by rw [hσre]; ring
-  have hcm2σ : -σ.re ≤ 1 - 2 * p.σ₀ := by rw [hcdef]; linarith
+  have hcm2σ : -σ.re ≤ 1 - 2 * p.σ₀ := by rw [hcdef]; linarith only [hre1, hre2]
   -- the pointwise L-bound on the shifted line
   have hLbd : ∀ t : ℝ, ‖DirichletCharacter.LFunction ψ
       (σ + (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I))‖
@@ -160,19 +160,19 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
       (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)) :=
     integrable_Ptw_cross_shifted q hW1 hXpos hU'pos
       (mul_pos hCLpos (Real.rpow_pos_of_pos h𝓓pos _))
-      (by linarith [p.hη] : (0:ℝ) ≤ 1 / 2 + p.η) hδpos ψ hψ σ hσ0 hσ1 hσδ hLbd
+      (by linarith only [p.hη, hδ₁, hre1, hlt1] : (0:ℝ) ≤ 1 / 2 + p.η) hδpos ψ hψ σ hσ0 hσ1 hσδ hLbd
   obtain ⟨htop, hbot⟩ := crossGram_edge_tendsto q hq hW1 hXpos hU'pos ψ hψ σ hσ0 hσ1
   have hshift := crossGram_eq_Ptw_line_shifted q hq hW1 hXpos hU'pos ψ hψ σ hσ0 hσ1 hInt htop hbot
   rw [gramEntry_eq_crossGram q hW1 hXpos hU'pos χ χ' ρ ρ', hshift]
   -- the shifted-line pointwise bound and the integral bound
   have hbd := norm_Ptw_cross_line q hW1 hXpos hU'pos
     (mul_pos hCLpos (Real.rpow_pos_of_pos h𝓓pos _))
-    (by linarith [p.hη] : (0:ℝ) ≤ 1 / 2 + p.η) hσ0 hLbd
+    (by linarith only [p.hη, hδ₁, hre1, hlt1] : (0:ℝ) ≤ 1 / 2 + p.η) hσ0 hLbd
   have hΓint : Integrable (fun t : ℝ =>
       ‖Complex.Gamma (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
         * (2 + |t|) ^ ((1 : ℝ) / 2 + p.η)) :=
-    integrable_gamma_shifted ((1 : ℝ) / 2 + p.η) (by linarith [p.hη]) hδpos (-σ.re)
-      (by linarith [hσ1]) (by linarith [hσδ])
+    integrable_gamma_shifted ((1 : ℝ) / 2 + p.η) (by linarith only [p.hη, hδ₁, hre1, hlt1]) hδpos (-σ.re)
+      (by linarith only [hσ1, hlt1, hlt2, hσre]) (by linarith only [hσδ, hδ₁, hre1, hre2, hσre])
   have hmaj : Integrable (fun t : ℝ =>
       ((CL * 𝓓 ^ ((1 : ℝ) / 2 + p.η)) * (X ^ (-σ.re) + U' ^ (-σ.re)) * (2 * W) ^ 2)
         * (‖Complex.Gamma (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
@@ -188,22 +188,22 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
     rwa [integral_const_mul] at h
   have hΓle : ∫ t : ℝ, ‖Complex.Gamma (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
         * (2 + |t|) ^ ((1 : ℝ) / 2 + p.η) ≤ CG * L / (2 * c₀) := by
-    have h := hCG (-σ.re) (by linarith) (by linarith)
+    have h := hCG (-σ.re) (by linarith only [hlt1, hlt2, hσre]) (by linarith only [hδ₁, hre1, hre2, hσre])
     refine h.trans ?_
     have h1c : 1 + (-σ.re) = 2 - ρ.re - ρ'.re := by rw [hcdef]; ring
-    have hspos : 0 < 2 - ρ.re - ρ'.re := by rw [← h1c]; linarith
-    have h2c₀ : 0 < 2 * c₀ := by linarith
+    have hspos : 0 < 2 - ρ.re - ρ'.re := by rw [← h1c]; linarith only [hlt1, hlt2, hσre]
+    have h2c₀ : 0 < 2 * c₀ := by linarith only [hc₀]
     have hkey : c₀ ≤ (1 - ρ.re) * L := by
       have := hnc1; rw [hLeq] at this; exact this
     have hkey' : c₀ ≤ (1 - ρ'.re) * L := by
       have := hnc2; rw [hLeq] at this; exact this
     have hbound : 2 * c₀ ≤ L * (1 + (-σ.re)) := by
       rw [h1c]
-      nlinarith [hkey, hkey', hnc1, hnc2]
+      linarith only [hkey, hkey', hnc1, hnc2]
     have hdiv : 1 / (1 + (-σ.re)) ≤ L / (2 * c₀) := by
-      rw [div_le_iff₀ (by linarith : (0:ℝ) < 1 + (-σ.re))]
+      rw [div_le_iff₀ (by linarith only [hlt1, hlt2, hσre] : (0:ℝ) < 1 + (-σ.re))]
       rw [div_mul_eq_mul_div, le_div_iff₀ h2c₀]
-      linarith
+      linarith only [hbound]
     calc CG / (1 + (-σ.re)) = CG * (1 / (1 + (-σ.re))) := by ring
       _ ≤ CG * (L / (2 * c₀)) := mul_le_mul_of_nonneg_left hdiv hCGpos.le
       _ = CG * L / (2 * c₀) := by ring
@@ -215,7 +215,7 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
     calc U' ^ (1 - 2 * p.σ₀)
         = (𝓓 ^ p.u / L ^ 2) ^ (1 - 2 * p.σ₀) := by rw [hbase]
       _ = (𝓓 ^ p.u) ^ (1 - 2 * p.σ₀) / (L ^ 2) ^ (1 - 2 * p.σ₀) :=
-            Real.div_rpow (Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ 𝓓) _) (by positivity)
+            Real.div_rpow (Real.rpow_nonneg (by linarith only [hδ₁, hre1, hlt1, h𝓓2] : (0 : ℝ) ≤ 𝓓) _) (by positivity)
               (1 - 2 * p.σ₀)
       _ = 𝓓 ^ (p.u * (1 - 2 * p.σ₀)) / (L ^ 2) ^ (1 - 2 * p.σ₀) := by
             rw [← Real.rpow_mul h𝓓pos.le]
@@ -229,10 +229,10 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
   -- the bound `X^c + U'^c ≤ 2 U'^{1-2σ₀}`
   have hB : X ^ (-σ.re) + U' ^ (-σ.re) ≤ 2 * U' ^ (1 - 2 * p.σ₀) := by
     have hXc : X ^ (-σ.re) ≤ U' ^ (-σ.re) :=
-      Real.rpow_le_rpow_of_nonpos hU'pos hU'X (by linarith : -σ.re ≤ 0)
+      Real.rpow_le_rpow_of_nonpos hU'pos hU'X (by linarith only [hδ₁, hre1, hre2, hσre] : -σ.re ≤ 0)
     have hU'c : U' ^ (-σ.re) ≤ U' ^ (1 - 2 * p.σ₀) :=
       Real.rpow_le_rpow_of_exponent_le hU'1 hcm2σ
-    linarith
+    linarith only [hXc, hU'c]
   -- the final arithmetic
   have hmain : (1 / (2 * Real.pi)) * ‖∫ t : ℝ, Work.LinnikAreas2.Ptw q 1 W W X U' ψ σ
         (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
@@ -242,7 +242,7 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
     have h2π : 0 < 1 / (2 * Real.pi) := by positivity
     have h2πle : (1 : ℝ) / (2 * Real.pi) ≤ 1 := by
       rw [div_le_one (by positivity)]
-      linarith [Real.pi_gt_three]
+      linarith only [Real.pi_gt_three, hδ₁, hre1, hlt1]
     -- step 1: the pointwise/integral bound
     have hstep1 : (1 / (2 * Real.pi)) * ‖∫ t : ℝ, Work.LinnikAreas2.Ptw q 1 W W X U' ψ σ
           (((-σ.re : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
@@ -250,7 +250,7 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
             * (X ^ (-σ.re) + U' ^ (-σ.re)) * (2 * W) ^ 2) * (CG * L / (2 * c₀))) := by
       refine mul_le_mul_of_nonneg_left ?_ h2π.le
       refine hnormint.trans (mul_le_mul_of_nonneg_left hΓle ?_)
-      exact mul_nonneg (mul_nonneg (mul_nonneg hCLpos.le (Real.rpow_nonneg (by linarith) _))
+      exact mul_nonneg (mul_nonneg (mul_nonneg hCLpos.le (Real.rpow_nonneg (by linarith only [hδ₁, hre1, hlt1, h𝓓2]) _))
         (add_nonneg (Real.rpow_nonneg hXpos.le _) (Real.rpow_nonneg hU'pos.le _)))
         (by positivity)
     -- step 2: replace the two factors by their upper bounds
@@ -294,11 +294,11 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
         ≤ ((1 / (2 * Real.pi)) * CL * 8 * CG * (1 / (2 * c₀)) + 1)
             * L ^ (1 + 2 * (2 * p.σ₀ - 1)) * 𝓓 ^ (-p.η) := by
       have hexp : (1 : ℝ) / 2 + p.η + 2 * p.w - p.u * (2 * p.σ₀ - 1) ≤ -p.η := by
-        nlinarith [p.P2]
+        linarith only [p.P2]
       have h𝓓e : 𝓓 ^ (1 / 2 + p.η + 2 * p.w - p.u * (2 * p.σ₀ - 1)) ≤ 𝓓 ^ (-p.η) :=
         Real.rpow_le_rpow_of_exponent_le h𝓓1 hexp
       have h0 : 0 ≤ (1 / (2 * Real.pi)) * CL * 8 * CG * (1 / (2 * c₀)) := by positivity
-      have hLp : 0 ≤ L ^ (1 + 2 * (2 * p.σ₀ - 1)) := Real.rpow_nonneg (by linarith) _
+      have hLp : 0 ≤ L ^ (1 + 2 * (2 * p.σ₀ - 1)) := Real.rpow_nonneg (by linarith only [hδ₁, hre1, hlt1, hL1]) _
       have h1 : 0 ≤ (1 / (2 * Real.pi)) * CL * 8 * CG * (1 / (2 * c₀))
           * L ^ (1 + 2 * (2 * p.σ₀ - 1)) := by positivity
       calc (1 / (2 * Real.pi)) * CL * 8 * CG * (1 / (2 * c₀))
@@ -310,7 +310,7 @@ theorem gramCross (p : Work.ZeroDensity.LogFree.Params) :
               * L ^ (1 + 2 * (2 * p.σ₀ - 1)) * 𝓓 ^ (-p.η) := by
             have h2 : 0 ≤ L ^ (1 + 2 * (2 * p.σ₀ - 1)) := hLp
             have h3 : 0 ≤ 𝓓 ^ (-p.η) := Real.rpow_nonneg h𝓓pos.le _
-            nlinarith [h0, h2, h3]
+            nlinarith only [h0, h2, h3, hδ₁, hre1, hlt1, hLp]
     exact le_trans hstep1 (le_trans hstep2 (hstep3 ▸ hstep4))
   have hnorm2 : ‖(1 : ℂ) / (2 * (Real.pi : ℂ))‖ = 1 / (2 * Real.pi) := by
     rw [norm_div, norm_one, norm_mul]

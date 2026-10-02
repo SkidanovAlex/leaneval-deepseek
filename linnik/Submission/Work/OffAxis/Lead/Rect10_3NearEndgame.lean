@@ -52,7 +52,7 @@ private noncomputable def tau72 : ℝ := (7/6) * Real.log 2
 
 private lemma tau72_nonneg : 0 ≤ tau72 := by
   have h : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-  rw [tau72]; linarith
+  rw [tau72]; linarith only [h]
 
 /-- On `[0, τ]` the kernel `tf72fK` is non-positive. -/
 private lemma tf72fK_nonpos_of_le_tau (t : ℝ) (ht : t ≤ tau72) : tf72fK t ≤ 0 := by
@@ -67,10 +67,10 @@ private lemma tf72fK_nonpos_of_le_tau (t : ℝ) (ht : t ≤ tau72) : tf72fK t �
     have hle : Real.exp (-(6/7) * t) * Real.exp ((6/7) * t)
         ≤ Real.exp (-(6/7) * t) * 2 :=
       mul_le_mul_of_nonneg_left hexp1 (Real.exp_pos _).le
-    linarith
+    linarith only [hmul, hle]
   have hf : 0 ≤ tf72f (6/7) t := tf72f_nonneg (6/7) (by norm_num) t
   unfold tf72fK
-  nlinarith [hone, hf]
+  nlinarith only [hone, hf]
 
 /-- On `[τ, ∞)` the kernel `tf72fK` is non-negative. -/
 private lemma tf72fK_nonneg_of_tau_le (t : ℝ) (ht : tau72 ≤ t) : 0 ≤ tf72fK t := by
@@ -85,10 +85,10 @@ private lemma tf72fK_nonneg_of_tau_le (t : ℝ) (ht : tau72 ≤ t) : 0 ≤ tf72f
     have hle : Real.exp (-(6/7) * t) * 2
         ≤ Real.exp (-(6/7) * t) * Real.exp ((6/7) * t) :=
       mul_le_mul_of_nonneg_left hexp1 (Real.exp_pos _).le
-    linarith
+    linarith only [hmul, hle]
   have hf : 0 ≤ tf72f (6/7) t := tf72f_nonneg (6/7) (by norm_num) t
   unfold tf72fK
-  nlinarith [hone, hf]
+  nlinarith only [hone, hf]
 
 /-- `tf72fK` is continuous on the support `[0, 7/3]`. -/
 private lemma tf72fK_continuousOn_Icc : ContinuousOn tf72fK (Set.Icc (0:ℝ) (7/3)) := by
@@ -150,7 +150,7 @@ private lemma tf72fPhi_deriv_lower (x : ℝ) (hx : 0 ≤ x) :
   have hκ : 0 ≤ ∫ t in (0:ℝ)..(7/3), t * tf72fK t := tf72fK_t_moment_nonneg
   calc (∫ t in (0:ℝ)..(7/3), t * tf72fK t)
       ≤ Real.exp (x * tau72) * (∫ t in (0:ℝ)..(7/3), t * tf72fK t) := by
-        nlinarith [hexp_ge_one, hκ]
+        nlinarith only [hexp_ge_one, hκ]
     _ ≤ _ := hmono
 
 /-! ## 3.  The first moment of the kernel is at least `104/66825` -/
@@ -190,7 +190,7 @@ private lemma tf72fK_t_moment_lower :
   have hval : (∫ t in (0:ℝ)..(7/3), (((-1:ℝ) * t^1 + (12/7) * t^2 + (-(36/49)) * t^3
       + (72/343) * t^4 + (-(108/2401)) * t^5) * tf72f (6/7) t)) = 104/66825 :=
     tf72fK_moment_lincomb
-  linarith [hle, hval]
+  linarith only [hle, hval]
 
 /-! ## 4.  The quantitative gap -/
 
@@ -215,10 +215,10 @@ theorem tf72fPhi_gap_quant : ∀ lam : ℝ, 0 ≤ lam → lam ≤ 6/7 →
     have hx0 : 0 ≤ x := Set.mem_Ici.mp (interior_subset hx)
     have h1' := tf72fPhi_deriv_lower x hx0
     have h2' := tf72fK_t_moment_lower
-    linarith)
+    linarith only [h1', h2'])
   have hmem := hmono (show lam ∈ Set.Ici (0:ℝ) from h0)
     (show (6/7 : ℝ) ∈ Set.Ici (0:ℝ) by norm_num) h1
-  linarith
+  linarith only [hmem]
 
 /-! ## 5.  The endgame -/
 
@@ -234,8 +234,8 @@ theorem Rect10_3NearEndgame : ∀ ε' : ℝ, 0 < ε' → ε' ≤ 1/1000 → ∀ 
   set T : TestFn := tf72T ((6:ℝ)/7) (by norm_num) with hT
   have hanti := TestFn_F_antitone T
   have h16 : lam₁ ≤ 6/7 := le_trans (le_trans hl12 hl23) hl36
-  have hb : lam₂ - lam₁ ≤ 6/7 - lam₁ := by linarith
-  have hc : lam₃ - lam₁ ≤ 6/7 - lam₁ := by linarith
+  have hb : lam₂ - lam₁ ≤ 6/7 - lam₁ := by linarith only [hl23, hl36]
+  have hc : lam₃ - lam₁ ≤ 6/7 - lam₁ := by linarith only [hl36]
   have e1 : T.F (6/7 - lam₁) ≤ T.F (lam₂ - lam₁) := hanti hb
   have e2 : T.F (6/7 - lam₁) ≤ T.F (lam₃ - lam₁) := hanti hc
   have hf0 : T.f 0 = 32/35 := by
@@ -269,18 +269,18 @@ theorem Rect10_3NearEndgame : ∀ ε' : ℝ, 0 < ε' → ε' ≤ 1/1000 → ∀ 
   have hElin : T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁)
       + 16/15 + (256/35) * ε' ≥ 0 := by
     rw [hf0] at hE
-    linarith [hE]
+    linarith only [hE]
   have key : 0 ≤ tf72fPhi lam₁ - tf72fPhi (6/7) + (256/35) * ε' := by
-    linarith [hElin, e1, e2, hphi lam₁, hphi67, hF0, hF6]
+    linarith only [hElin, e1, e2, hphi lam₁, hphi67, hF0, hF6, hphi]
   have h1 : (104/66825 : ℝ) * (6/7 - lam₁) ≤ (256/35) * ε' := by
     have := tf72fPhi_gap_quant lam₁ h0 h16
-    linarith
+    linarith only [key, this]
   have h13 : lam₁ ≤ lam₃ := le_trans hl12 hl23
   have h2 : (104/66825 : ℝ) * (6/7 - lam₃) ≤ (256/35) * ε' := by
-    nlinarith [h1, h13]
+    linarith only [h1, h13, hl12, hl23]
   have hK : (66825:ℝ) * 256 / (104*35) ≤ 100000 := by norm_num
   have h3 : 6/7 - lam₃ ≤ 100000 * ε' := by
-    nlinarith [h2, hε', hK, le_of_lt hε']
-  linarith
+    linarith only [h2, hε', hK, le_of_lt hε', hl12, hl23, h1]
+  linarith only [hε', hl12, hl23, h1]
 
 end Work.OffAxis.Lead

@@ -52,18 +52,18 @@ theorem log_ge_ten {q : ℕ} (hq : 10^6 ≤ q) : 10 ≤ Real.log (q:ℝ) := by
   have hlog10 : (2:ℝ) ≤ Real.log 10 := by
     rw [Real.le_log_iff_exp_le (by norm_num)]
     have h2 : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-    nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+    nlinarith only [Real.exp_one_lt_three, Real.exp_pos 1, h2]
   have h2 : Real.log ((10:ℝ)^6) = 6 * Real.log 10 := by
     rw [Real.log_pow]; norm_num
   rw [h2] at h1
-  linarith
+  linarith only [h1, hlog10]
 
 /-- `1 ≤ log (log q)` for `q ≥ 10^6`. -/
 theorem loglog_ge_one {q : ℕ} (hq : 10^6 ≤ q) : 1 ≤ Real.log (Real.log (q:ℝ)) := by
   have hL10 : 10 ≤ Real.log (q:ℝ) := log_ge_ten hq
-  have hLpos : 0 < Real.log (q:ℝ) := by linarith
+  have hLpos : 0 < Real.log (q:ℝ) := by linarith only [hL10]
   rw [Real.le_log_iff_exp_le hLpos]
-  linarith [Real.exp_one_lt_three]
+  linarith only [Real.exp_one_lt_three, hL10]
 
 /-- **Principal-character `K`-sum at the real point `β₁ = 1 - λ₁/L`**: from HB Lemma 5.3
 (`Ksum_principal_le`) in the shape used by the `Nebenfall` (the loss is `f(0)·ε·L`). -/
@@ -82,11 +82,11 @@ theorem nebenfall_principal_real (ε : ℝ) (hε : 0 < ε) :
   have hq1 : (1:ℝ) < q := by exact_mod_cast (by omega : 1 < q)
   have hLpos : 0 < Real.log (q:ℝ) := Real.log_pos hq1
   have hL10 : 10 ≤ Real.log (q:ℝ) := log_ge_ten hqbig
-  have hL1 : 1 ≤ Real.log (q:ℝ) := by linarith
+  have hL1 : 1 ≤ Real.log (q:ℝ) := by linarith only [hL10]
   have hloglog1 : 1 ≤ Real.log (Real.log (q:ℝ)) := loglog_ge_one hqbig
   have hsqrtlog : 1 ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := by
-    rw [Real.le_sqrt (by norm_num) (by linarith)]
-    nlinarith
+    rw [Real.le_sqrt (by norm_num) (by linarith only [hloglog1])]
+    linarith only [hloglog1]
   have hreg : |(1 - lam₁ / Real.log (q:ℝ)) - 1| ≤
       Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) := by
     have h1 : (1 - lam₁ / Real.log (q:ℝ)) - 1 = -(lam₁ / Real.log (q:ℝ)) := by ring
@@ -103,7 +103,7 @@ theorem nebenfall_principal_real (ε : ℝ) (hε : 0 < ε) :
     rw [xyF, TestFn_F_eq_integral]
     exact intervalIntegral.integral_congr (fun u _ => by ring_nf)
   rw [hint] at h
-  linarith [h]
+  linarith only [h]
 
 /-- **Principal-character `K`-sum at the complex point `β₁ + iη`**: from HB Lemma 5.3 in the
 complex-height form (`XY.KsumPrincipalComplex`). -/
@@ -124,11 +124,11 @@ theorem nebenfall_principal_complex (ε : ℝ) (hε : 0 < ε) :
   have hq1 : (1:ℝ) < q := by exact_mod_cast (by omega : 1 < q)
   have hLpos : 0 < Real.log (q:ℝ) := Real.log_pos hq1
   have hL10 : 10 ≤ Real.log (q:ℝ) := log_ge_ten hqbig
-  have hL1 : 1 ≤ Real.log (q:ℝ) := by linarith
+  have hL1 : 1 ≤ Real.log (q:ℝ) := by linarith only [hL10]
   have hloglog1 : 1 ≤ Real.log (Real.log (q:ℝ)) := loglog_ge_one hqbig
   have hsqrtlog : 1 ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := by
-    rw [Real.le_sqrt (by norm_num) (by linarith)]
-    nlinarith
+    rw [Real.le_sqrt (by norm_num) (by linarith only [hloglog1])]
+    linarith only [hloglog1]
   have hreg : |(1 - lam₁ / Real.log (q:ℝ)) - 1| ≤
       Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) := by
     have h1 : (1 - lam₁ / Real.log (q:ℝ)) - 1 = -(lam₁ / Real.log (q:ℝ)) := by ring
@@ -150,7 +150,7 @@ theorem nebenfall_principal_complex (ε : ℝ) (hε : 0 < ε) :
       field_simp; ring
     rw [hexp]
   rw [hint] at h
-  linarith [h]
+  linarith only [h]
 
 
 /-! ## The four `χ₁`-terms of the `Nebenfall`
@@ -209,26 +209,26 @@ theorem nebenfall_chi :
   have hq1 : (1:ℝ) < q := by exact_mod_cast (by omega : 1 < q)
   have hLpos : 0 < L := by rw [hLdef]; exact Real.log_pos hq1
   have hL10 : 10 ≤ L := by rw [hLdef]; exact log_ge_ten hqbig
-  have hL1 : 1 ≤ L := by linarith
+  have hL1 : 1 ≤ L := by linarith only [hδ0, hδ1, hL10]
   have hloglog1 : 1 ≤ Real.log L := by rw [hLdef]; exact loglog_ge_one hqbig
   have hsqrtlog : 1 ≤ Real.sqrt (Real.log L) := by
-    rw [Real.le_sqrt (by norm_num) (by linarith)]; nlinarith
+    rw [Real.le_sqrt (by norm_num) (by linarith only [hδ0, hδ1, hloglog1])]; linarith only [hloglog1]
   have hδL : 1 / δ ≤ L := by
     have hexp1 : 0 < Real.exp (1/δ) := Real.exp_pos _
     have h1 : Real.exp (1/δ) ≤ (q:ℝ) := by
       have h2 : (Nat.ceil (Real.exp (1/δ)) : ℝ) ≤ (q:ℝ) := by
         exact_mod_cast (by omega : Nat.ceil (Real.exp (1/δ)) ≤ q)
-      linarith [Nat.le_ceil (Real.exp (1/δ)), h2]
+      linarith only [Nat.le_ceil (Real.exp (1/δ)), h2]
     have h3 : 1/δ ≤ Real.log (q:ℝ) := by
       have h4 := Real.log_le_log hexp1 h1
       rwa [Real.log_exp] at h4
     exact h3
   have hlamEq : ∀ w : ℂ, lamOf q w = (1 - w.re) * L := by intro w; rw [lamOf, ← hLdef]
-  have hlam1u : lamOf q ρ₁ ≤ lamOf q u := hmin u hzu (by linarith [huim])
+  have hlam1u : lamOf q ρ₁ ≤ lamOf q u := hmin u hzu (by linarith only [huim, hδ0, hδ1])
   have hure_le : u.re ≤ β := by
     have h1 : lamOf q ρ₁ ≤ (1 - u.re) * L := by rw [← hlamEq u]; exact hlam1u
-    have h2 : lamOf q ρ₁ / L ≤ 1 - u.re := by rw [div_le_iff₀ hLpos]; linarith
-    rw [hbetaDef]; linarith
+    have h2 : lamOf q ρ₁ / L ≤ 1 - u.re := by rw [div_le_iff₀ hLpos]; linarith only [h1]
+    rw [hbetaDef]; linarith only [h2]
   have hρre : ρ₁.re = β := by
     rw [hbetaDef, hlamEq ρ₁]; field_simp; ring
   have hcρre : ((starRingEnd ℂ) ρ₁).re = β := by rw [Complex.conj_re]; exact hρre
@@ -245,7 +245,7 @@ theorem nebenfall_chi :
     have hm2 : 2 ≤ zeroMult χ₁ ρ₁ := by omega
     have hnr : ¬ (χ₁ ^ 2 = 1 ∧ ρ₁.im = 0) := fun h => him h.2
     have hgt := hR q hqR χ₁ ρ₁ hmw hnr hm2
-    linarith
+    linarith only [hδ0, hδ1, hlam628, hgt]
   have hsimplec : zeroMult χ₁ ((starRingEnd ℂ) ρ₁) = 1 := by
     rw [Work.A7.zeroMult_conj_sq_one χ₁ hsq ρ₁]; exact hsimple
   have hcρzm : zeroMult χ₁ ((starRingEnd ℂ) ρ₁) ≠ 0 := by rw [hsimplec]; norm_num
@@ -262,26 +262,26 @@ theorem nebenfall_chi :
   -- norms of the three zeros (they lie well inside every admissible ball)
   have hnorm_ρ : ‖ρ₁‖ ≤ 2 := by
     have hre1 : ρ₁.re ≤ 1 := by
-      have h := hlam0; rw [hlamEq ρ₁] at h; nlinarith [hLpos, h]
+      have h := hlam0; rw [hlamEq ρ₁] at h; nlinarith only [hLpos, h]
     have hre0 : 0 ≤ ρ₁.re := by
       have h : lamOf q ρ₁ ≤ 1 := le_trans hlam628 (by norm_num)
-      rw [hlamEq ρ₁] at h; nlinarith [hLpos, h]
+      rw [hlamEq ρ₁] at h; nlinarith only [hLpos, h, hL10, hδ0, hδ1]
     have h2 : ‖ρ₁‖ ^ 2 ≤ 4 := by
       rw [Complex.sq_norm, Complex.normSq_apply]
       have hb := abs_le.mp hg1
-      nlinarith [sq_abs ρ₁.re, sq_abs ρ₁.im, sq_nonneg ρ₁.re, sq_nonneg ρ₁.im]
-    nlinarith [norm_nonneg ρ₁]
+      nlinarith only [sq_abs ρ₁.re, sq_abs ρ₁.im, sq_nonneg ρ₁.re, sq_nonneg ρ₁.im, hre1, hδ0, hδ1, hre0, hb]
+    nlinarith only [norm_nonneg ρ₁, h2, hδ0, hδ1]
   have hnorm_cρ : ‖(starRingEnd ℂ) ρ₁‖ ≤ 2 := by simpa using hnorm_ρ
   have hnorm_u : ‖u‖ ≤ |γ| + 2 := by
     have hre1 : u.re ≤ 1 := by
-      rw [hlamEq u] at hlamu0; nlinarith [hLpos, hlamu0]
+      rw [hlamEq u] at hlamu0; nlinarith only [hLpos, hlamu0]
     have hre0 : 0 ≤ u.re := by
-      rw [hlamEq u] at hlamu; nlinarith [hLpos]
-    have h1 : |u.re| ≤ 1 := abs_le.mpr ⟨by linarith, hre1⟩
+      rw [hlamEq u] at hlamu; nlinarith only [hLpos, hlamu, hL10, hδ0, hδ1]
+    have h1 : |u.re| ≤ 1 := abs_le.mpr ⟨by linarith only [hδ0, hδ1, hre0], hre1⟩
     calc ‖u‖ ≤ |u.re| + |u.im| := Complex.norm_le_abs_re_add_abs_im u
-      _ ≤ 1 + |γ| := by rw [hgammaDef]; linarith
+      _ ≤ 1 + |γ| := by rw [hgammaDef]; linarith only [h1]
       _ = |γ| + 2 - 1 := by ring
-      _ ≤ |γ| + 2 := by linarith
+      _ ≤ |γ| + 2 := by linarith only [hδ0, hδ1]
   -- ===== generic tools =====
   have hsre : ∀ h : ℝ, (((β:ℂ) + (h:ℂ) * Complex.I)).re = β := by
     intro h; simp [Complex.add_re, Complex.mul_re]
@@ -290,14 +290,14 @@ theorem nebenfall_chi :
   have hreg1 : |β - 1| ≤ Real.sqrt (Real.log L) / L := by
     have h1 : β - 1 = -(lamOf q ρ₁ / L) := by rw [hbetaDef]; ring
     rw [h1, abs_neg, abs_of_nonneg (by positivity)]
-    calc lamOf q ρ₁ / L ≤ 1 / L := div_le_div_of_nonneg_right (by linarith) hLpos.le
+    calc lamOf q ρ₁ / L ≤ 1 / L := div_le_div_of_nonneg_right (by linarith only [hδ0, hδ1, hlam628]) hLpos.le
       _ ≤ Real.sqrt (Real.log L) / L := div_le_div_of_nonneg_right hsqrtlog hLpos.le
   have hreg2 : 1 - Real.sqrt (Real.log L) / L ≤ β := by
     have h3 : 1 / L ≤ Real.sqrt (Real.log L) / L :=
       div_le_div_of_nonneg_right hsqrtlog hLpos.le
     have h4 : lamOf q ρ₁ / L ≤ 1 / L :=
-      div_le_div_of_nonneg_right (by linarith) hLpos.le
-    rw [hbetaDef]; linarith
+      div_le_div_of_nonneg_right (by linarith only [hδ0, hδ1, hlam628]) hLpos.le
+    rw [hbetaDef]; linarith only [h3, h4]
   have hH : Commons.NumberTheory.Linnik.L52Hyp χ₁ (1/8) (1/2000) δ :=
     hL52 q hqL χ₁ hchi1ne hsq' (1/2000) (by norm_num) (by norm_num)
   have hdivc : ∀ (R : ℝ) (w : ℂ), zeroMult χ₁ w ≠ 0 → ‖w‖ ≤ R →
@@ -315,7 +315,7 @@ theorem nebenfall_chi :
         (Metric.closedBall 0 R)) ρ₁ = 1 := by
     intro R hR
     have hmem : ρ₁ ∈ Metric.closedBall 0 R := by
-      rw [Metric.mem_closedBall, dist_zero_right]; linarith
+      rw [Metric.mem_closedBall, dist_zero_right]; linarith only [hnorm_ρ, hR]
     rw [Commons.Analysis.Complex.divisor_eq_analyticOrderNatAt_cast (hanal R) hmem]
     have h1 : analyticOrderNatAt (DirichletCharacter.completedLFunction χ₁.primitiveCharacter) ρ₁ = 1 := by
       simpa only [Work.LinnikContract.zeroMult] using hsimple
@@ -367,15 +367,15 @@ theorem nebenfall_chi :
       have h4 : |w.im| ≤ |h| + |h - w.im| := by
         calc |w.im| = |h - (h - w.im)| := by ring_nf
           _ ≤ |h| + |h - w.im| := abs_sub _ _
-      linarith [hδ1]
+      linarith only [hδ1, hh, h1, h4]
     have hminw : lamOf q ρ₁ ≤ lamOf q w := hmin w hzw hwim
     rw [hlamEq] at hminw
     have h2 : w.re ≤ ρ₁.re := by
       have h4 : (1 - ρ₁.re) * L ≤ (1 - w.re) * L := hminw
       have h5 : (1 - ρ₁.re) ≤ (1 - w.re) := le_of_mul_le_mul_right h4 hLpos
-      linarith
+      linarith only [hρre, hlt, h5]
     rw [hρre] at h2
-    linarith
+    linarith only [hlt, h2]
   have hScard : ({u, ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ).card ≤ 10 := by
     have h2 : ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ).card ≤ 2 :=
       le_trans (Finset.card_insert_le ρ₁ ({starRingEnd ℂ ρ₁} : Finset ℂ)) (by simp)
@@ -389,7 +389,7 @@ theorem nebenfall_chi :
       have h2 := congrArg Complex.im h
       rw [Complex.conj_im] at h2
       exact h2
-    have h3 : ρ₁.im = 0 := by linarith
+    have h3 : ρ₁.im = 0 := by linarith only [h1]
     exact him h3
   -- ===== the generic point bound =====
   have hstep : ∀ (h : ℝ) (A : Finset ℂ), |h| ≤ 9 →
@@ -414,8 +414,8 @@ theorem nebenfall_chi :
       rw [hsre h, ← hLdef]; exact hreg1
     have himh : |(((β:ℂ) + (h:ℂ) * Complex.I)).im| ≤ 10 * Real.log (q:ℝ) := by
       rw [hsim h, ← hLdef]
-      have : |h| ≤ 10 * L := by nlinarith [hL10]
-      linarith
+      have : |h| ≤ 10 * L := by linarith only [hL10, hδ0, hδ1, hh]
+      linarith only [hδ0, hδ1, hL10, hh]
     have hs1 : 1 - Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) ≤
         (((β:ℂ) + (h:ℂ) * Complex.I)).re := by
       rw [hsre h, ← hLdef]; exact hreg2
@@ -458,7 +458,7 @@ theorem nebenfall_chi :
     rw [Kxy_eq_tsum]
     exact hmain
   -- ===== point 1: `s = β + iγ`, retaining `{u, ρ₁, ρ̄₁}` =====
-  have hγ9 : |γ| ≤ 9 := by rw [hgammaDef]; linarith [huim]
+  have hγ9 : |γ| ≤ 9 := by rw [hgammaDef]; linarith only [huim, hδ0, hδ1]
   have hu_win : ‖(1:ℂ) + (γ:ℂ) * Complex.I - u‖ ≤ δ := by
     have h1 : (1:ℂ) + (γ:ℂ) * Complex.I - u = ((1 - u.re : ℝ) : ℂ) := by
       apply Complex.ext <;> simp [Complex.sub_re, Complex.sub_im, Complex.add_re, Complex.add_im,
@@ -466,7 +466,7 @@ theorem nebenfall_chi :
     rw [h1, Complex.norm_def, Complex.normSq_ofReal,
       show (1 - u.re) * (1 - u.re) = (1 - u.re)^2 by ring, Real.sqrt_sq_eq_abs]
     have h2 : 0 ≤ 1 - u.re := by
-      rw [hlamEq u] at hlamu0; nlinarith [hLpos]
+      rw [hlamEq u] at hlamu0; nlinarith only [hLpos, hlamu0]
     rw [abs_of_nonneg h2]
     have h3 : 1 - u.re = lamOf q u / L := by rw [hlamEq u]; field_simp
     rw [h3]
@@ -474,7 +474,7 @@ theorem nebenfall_chi :
       _ ≤ δ := by
         rw [div_le_iff₀ hLpos]
         have h4 : (1:ℝ) ≤ L * δ := (div_le_iff₀ hδ0).mp hδL
-        linarith
+        linarith only [h4]
   have hA1ord : ∀ w ∈ ({u, ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ),
       ¬ (‖(1:ℂ) + (γ:ℂ) * Complex.I - w‖ ≤ δ) →
       ((MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
@@ -484,9 +484,9 @@ theorem nebenfall_chi :
     rcases hw with h' | h' | h'
     · exact absurd (h' ▸ hu_win) hnw
     · rw [h'] at *
-      rw [hdiv1 (|γ| + 2) (by linarith [abs_nonneg γ])]; norm_num
+      rw [hdiv1 (|γ| + 2) (by linarith only [abs_nonneg γ])]; norm_num
     · rw [h'] at *
-      rw [hdiv1c (|γ| + 2) (by linarith [abs_nonneg γ])]; norm_num
+      rw [hdiv1c (|γ| + 2) (by linarith only [abs_nonneg γ])]; norm_num
   have hA1div : ∀ w ∈ ({u, ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ),
       (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
         (Metric.closedBall 0 (|γ| + 2))) w ≠ 0 := by
@@ -496,10 +496,10 @@ theorem nebenfall_chi :
     · rw [h'] at *
       exact hdivc (|γ| + 2) u hzu hnorm_u
     · rw [h'] at *
-      exact hdivc (|γ| + 2) ρ₁ hzm1 (le_trans hnorm_ρ (by linarith [abs_nonneg γ]))
+      exact hdivc (|γ| + 2) ρ₁ hzm1 (le_trans hnorm_ρ (by linarith only [abs_nonneg γ]))
     · rw [h'] at *
       exact hdivc (|γ| + 2) ((starRingEnd ℂ) ρ₁) hcρzm
-        (le_trans hnorm_cρ (by linarith [abs_nonneg γ]))
+        (le_trans hnorm_cρ (by linarith only [abs_nonneg γ]))
   have hA1re : ∀ w ∈ ({u, ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ), w.re ≤ β := by
     intro w hw
     simp only [Finset.mem_insert, Finset.mem_singleton] at hw
@@ -519,7 +519,7 @@ theorem nebenfall_chi :
       rw [fmo2_mul_re, hsre γ]
       have h2 : (β - u.re) * L = lamOf q u - lamOf q ρ₁ := hurs
       rw [h2, abs_le]
-      constructor <;> linarith
+      constructor <;> linarith only [hδ0, hδ1, hlam1u, hlam0, hlamu]
     · rw [h'] at *
       rw [fmo2_mul_re, hsre γ, hρre]; ring_nf
       rw [abs_zero]; norm_num
@@ -572,8 +572,8 @@ theorem nebenfall_chi :
     exact_mod_cast h1
   have hFnn : 0 ≤ xyF (lamOf q u - lamOf q ρ₁) := Work.ZeroFreeTables.TestFn_F_nonneg xyT _
   rw [Finset.sum_insert (by simp [hu1, hu2]), Finset.sum_insert (by simp [hρcne]),
-    Finset.sum_singleton, hk1, hk2, hk3, hdiv1 (|γ| + 2) (by linarith [abs_nonneg γ]),
-    hdiv1c (|γ| + 2) (by linarith [abs_nonneg γ])] at h1
+    Finset.sum_singleton, hk1, hk2, hk3, hdiv1 (|γ| + 2) (by linarith only [abs_nonneg γ]),
+    hdiv1c (|γ| + 2) (by linarith only [abs_nonneg γ])] at h1
   have h1' : Kxy xyT.f L β γ χ₁ ≤
       -(L) * (xyF (lamOf q u - lamOf q ρ₁) + xyRe 0 ((γ - ρ₁.im) * L) + xyRe 0 ((γ + ρ₁.im) * L))
       + xyT.f 0 * (1/8 + 1/1000) * L := by
@@ -582,7 +582,7 @@ theorem nebenfall_chi :
         ≤ (((MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
             (Metric.closedBall 0 (|γ| + 2))) u : ℤ) : ℝ) * xyF (lamOf q u - lamOf q ρ₁)
           + 1 * xyRe 0 ((γ - ρ₁.im) * L) + 1 * xyRe 0 ((γ + ρ₁.im) * L) := by
-      nlinarith [hord1, hFnn]
+      nlinarith only [hord1, hFnn, this, hδ0, hδ1]
     nlinarith [this, hLpos]
   -- ===== point 2: `s = β + iρ₁.im`, retaining `{ρ₁, ρ̄₁}` =====
   have hA2ord : ∀ w ∈ ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ),
@@ -593,9 +593,9 @@ theorem nebenfall_chi :
     simp only [Finset.mem_insert, Finset.mem_singleton] at hw
     rcases hw with h' | h'
     · rw [h'] at *
-      rw [hdiv1 (|ρ₁.im| + 2) (by linarith [abs_nonneg ρ₁.im])]; norm_num
+      rw [hdiv1 (|ρ₁.im| + 2) (by linarith only [abs_nonneg ρ₁.im])]; norm_num
     · rw [h'] at *
-      rw [hdiv1c (|ρ₁.im| + 2) (by linarith [abs_nonneg ρ₁.im])]; norm_num
+      rw [hdiv1c (|ρ₁.im| + 2) (by linarith only [abs_nonneg ρ₁.im])]; norm_num
   have hA2div : ∀ w ∈ ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ),
       (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
         (Metric.closedBall 0 (|ρ₁.im| + 2))) w ≠ 0 := by
@@ -603,10 +603,10 @@ theorem nebenfall_chi :
     simp only [Finset.mem_insert, Finset.mem_singleton] at hw
     rcases hw with h' | h'
     · rw [h'] at *
-      exact hdivc (|ρ₁.im| + 2) ρ₁ hzm1 (le_trans hnorm_ρ (by linarith [abs_nonneg ρ₁.im]))
+      exact hdivc (|ρ₁.im| + 2) ρ₁ hzm1 (le_trans hnorm_ρ (by linarith only [abs_nonneg ρ₁.im]))
     · rw [h'] at *
       exact hdivc (|ρ₁.im| + 2) ((starRingEnd ℂ) ρ₁) hcρzm
-        (le_trans hnorm_cρ (by linarith [abs_nonneg ρ₁.im]))
+        (le_trans hnorm_cρ (by linarith only [abs_nonneg ρ₁.im]))
   have hA2re : ∀ w ∈ ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ), w.re ≤ β := by
     intro w hw
     simp only [Finset.mem_insert, Finset.mem_singleton] at hw
@@ -624,7 +624,7 @@ theorem nebenfall_chi :
       rw [fmo2_mul_re, hsre ρ₁.im, hρre]; ring_nf; rw [abs_zero]; norm_num
     · rw [h'] at *
       rw [fmo2_mul_re, hsre ρ₁.im, hcρre]; ring_nf; rw [abs_zero]; norm_num
-  have h2 := hstep ρ₁.im ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ) (by linarith [abs_le.mp hg1])
+  have h2 := hstep ρ₁.im ({ρ₁, starRingEnd ℂ ρ₁} : Finset ℂ) (by linarith only [abs_le.mp hg1, hδ0, hδ1, hg1])
     (by intro w hw; simp only [Finset.mem_insert, Finset.mem_singleton] at hw
         rcases hw with h' | h' <;> [exact Or.inr (Or.inl h'); exact Or.inr (Or.inr h')])
     hA2div hA2re hA2ri hA2ord
@@ -648,20 +648,20 @@ theorem nebenfall_chi :
       rw [fmo2_mul_im, hsim ρ₁.im, hcρim]; ring
     rw [hre, him]
   rw [Finset.sum_insert (by simp [hρcne]), Finset.sum_singleton, hk4, hk5,
-    hdiv1 (|ρ₁.im| + 2) (by linarith [abs_nonneg ρ₁.im]),
-    hdiv1c (|ρ₁.im| + 2) (by linarith [abs_nonneg ρ₁.im])] at h2
+    hdiv1 (|ρ₁.im| + 2) (by linarith only [abs_nonneg ρ₁.im]),
+    hdiv1c (|ρ₁.im| + 2) (by linarith only [abs_nonneg ρ₁.im])] at h2
   -- ===== points 3 and 4: `s = β + i(2ρ₁.im ∓ u.im)`, retaining `{ρ₁}` =====
   have h3 : Kxy xyT.f L β (2 * ρ₁.im - u.im) χ₁ ≤
       -(L) * (xyRe 0 ((ρ₁.im - u.im) * L)) + xyT.f 0 * (1/8 + 1/1000) * L := by
     have hstep3 := hstep (2 * ρ₁.im - u.im) ({ρ₁} : Finset ℂ)
       (by have h1 := abs_le.mp hg1; have h2 := abs_le.mp huim
-          rw [abs_le]; constructor <;> linarith)
+          rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, h1, h2])
       (by intro w hw; simp only [Finset.mem_singleton] at hw; exact Or.inr (Or.inl hw))
       (by intro w hw
           simp only [Finset.mem_singleton] at hw
           rw [hw] at *
           exact hdivc (|2 * ρ₁.im - u.im| + 2) ρ₁ hzm1
-            (le_trans hnorm_ρ (by linarith [abs_nonneg (2 * ρ₁.im - u.im)])))
+            (le_trans hnorm_ρ (by linarith only [abs_nonneg (2 * ρ₁.im - u.im)])))
       (by intro w hw; simp only [Finset.mem_singleton] at hw; rw [hw] at *; exact le_of_eq hρre)
       (by intro w hw
           simp only [Finset.mem_singleton] at hw
@@ -671,7 +671,7 @@ theorem nebenfall_chi :
       (by intro w hw hnw
           simp only [Finset.mem_singleton] at hw
           rw [hw] at *
-          rw [hdiv1 (|2 * ρ₁.im - u.im| + 2) (by linarith [abs_nonneg (2 * ρ₁.im - u.im)])]
+          rw [hdiv1 (|2 * ρ₁.im - u.im| + 2) (by linarith only [abs_nonneg (2 * ρ₁.im - u.im)])]
           norm_num)
     have hk6 : (∫ t in (0:ℝ)..xyT.x₀,
         Complex.exp (-((((β:ℂ) + (((2 * ρ₁.im - u.im) : ℝ) : ℂ) * Complex.I) - ρ₁) * ((L:ℝ):ℂ) * (t:ℂ))) *
@@ -684,19 +684,19 @@ theorem nebenfall_chi :
         rw [fmo2_mul_im, hsim (2 * ρ₁.im - u.im)]; ring
       rw [hre, him]
     rw [Finset.sum_singleton, hk6, hdiv1 (|2 * ρ₁.im - u.im| + 2)
-      (by linarith [abs_nonneg (2 * ρ₁.im - u.im)])] at hstep3
+      (by linarith only [abs_nonneg (2 * ρ₁.im - u.im)])] at hstep3
     simpa using hstep3
   have h4 : Kxy xyT.f L β (2 * ρ₁.im + u.im) χ₁ ≤
       -(L) * (xyRe 0 ((ρ₁.im + u.im) * L)) + xyT.f 0 * (1/8 + 1/1000) * L := by
     have hstep4 := hstep (2 * ρ₁.im + u.im) ({ρ₁} : Finset ℂ)
       (by have h1 := abs_le.mp hg1; have h2 := abs_le.mp huim
-          rw [abs_le]; constructor <;> linarith)
+          rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, h1, h2])
       (by intro w hw; simp only [Finset.mem_singleton] at hw; exact Or.inr (Or.inl hw))
       (by intro w hw
           simp only [Finset.mem_singleton] at hw
           rw [hw] at *
           exact hdivc (|2 * ρ₁.im + u.im| + 2) ρ₁ hzm1
-            (le_trans hnorm_ρ (by linarith [abs_nonneg (2 * ρ₁.im + u.im)])))
+            (le_trans hnorm_ρ (by linarith only [abs_nonneg (2 * ρ₁.im + u.im)])))
       (by intro w hw; simp only [Finset.mem_singleton] at hw; rw [hw] at *; exact le_of_eq hρre)
       (by intro w hw
           simp only [Finset.mem_singleton] at hw
@@ -706,7 +706,7 @@ theorem nebenfall_chi :
       (by intro w hw hnw
           simp only [Finset.mem_singleton] at hw
           rw [hw] at *
-          rw [hdiv1 (|2 * ρ₁.im + u.im| + 2) (by linarith [abs_nonneg (2 * ρ₁.im + u.im)])]
+          rw [hdiv1 (|2 * ρ₁.im + u.im| + 2) (by linarith only [abs_nonneg (2 * ρ₁.im + u.im)])]
           norm_num)
     have hk7 : (∫ t in (0:ℝ)..xyT.x₀,
         Complex.exp (-((((β:ℂ) + (((2 * ρ₁.im + u.im) : ℝ) : ℂ) * Complex.I) - ρ₁) * ((L:ℝ):ℂ) * (t:ℂ))) *
@@ -719,7 +719,7 @@ theorem nebenfall_chi :
         rw [fmo2_mul_im, hsim (2 * ρ₁.im + u.im)]; ring
       rw [hre, him]
     rw [Finset.sum_singleton, hk7, hdiv1 (|2 * ρ₁.im + u.im| + 2)
-      (by linarith [abs_nonneg (2 * ρ₁.im + u.im)])] at hstep4
+      (by linarith only [abs_nonneg (2 * ρ₁.im + u.im)])] at hstep4
     simpa using hstep4
   -- rewrite all four in terms of `Real.log q` and reassemble
   have h2' : Kxy xyT.f L β ρ₁.im χ₁ ≤
@@ -764,25 +764,25 @@ theorem NebenfallOrd2V :
   rw [← hLdef, ← hbetaDef] at h8
   -- the four principal terms
   have b0 : Kxy0 q xyT.f L β 0 ≤ L * xyF (-(lamOf q ρ₁)) + xyT.f 0 * (1/1000) * L := by
-    have h := hP q hqP (lamOf q ρ₁) hlam0 (by linarith)
+    have h := hP q hqP (lamOf q ρ₁) hlam0 (by linarith only [hlam628])
     rw [← hLdef, ← hbetaDef] at h
     exact h
   have b2 : Kxy0 q xyT.f L β (ρ₁.im - u.im) ≤
       L * xyRe (-(lamOf q ρ₁)) ((ρ₁.im - u.im) * L) + xyT.f 0 * (1/1000) * L := by
-    have h := hC q hqC (lamOf q ρ₁) (ρ₁.im - u.im) hlam0 (by linarith)
-      (by rw [abs_le]; constructor <;> linarith [abs_le.mp huim, abs_le.mp hg1])
+    have h := hC q hqC (lamOf q ρ₁) (ρ₁.im - u.im) hlam0 (by linarith only [hlam628])
+      (by rw [abs_le]; constructor <;> linarith only [abs_le.mp huim, abs_le.mp hg1, huim, hg1])
     rw [← hLdef, ← hbetaDef] at h
     exact h
   have b4 : Kxy0 q xyT.f L β (ρ₁.im + u.im) ≤
       L * xyRe (-(lamOf q ρ₁)) ((ρ₁.im + u.im) * L) + xyT.f 0 * (1/1000) * L := by
-    have h := hC q hqC (lamOf q ρ₁) (ρ₁.im + u.im) hlam0 (by linarith)
-      (by rw [abs_le]; constructor <;> linarith [abs_le.mp huim, abs_le.mp hg1])
+    have h := hC q hqC (lamOf q ρ₁) (ρ₁.im + u.im) hlam0 (by linarith only [hlam628])
+      (by rw [abs_le]; constructor <;> linarith only [abs_le.mp huim, abs_le.mp hg1, huim, hg1])
     rw [← hLdef, ← hbetaDef] at h
     exact h
   have b6 : Kxy0 q xyT.f L β (2 * ρ₁.im) ≤
       L * xyRe (-(lamOf q ρ₁)) (2 * ρ₁.im * L) + xyT.f 0 * (1/1000) * L := by
-    have h := hC q hqC (lamOf q ρ₁) (2 * ρ₁.im) hlam0 (by linarith)
-      (by rw [abs_le]; constructor <;> linarith [abs_le.mp hg1])
+    have h := hC q hqC (lamOf q ρ₁) (2 * ρ₁.im) hlam0 (by linarith only [hlam628])
+      (by rw [abs_le]; constructor <;> linarith only [abs_le.mp hg1, hg1])
     rw [← hLdef, ← hbetaDef] at h
     exact h
   -- the four `χ₁` terms
@@ -832,7 +832,7 @@ theorem NebenfallOrd2V :
       + (1/4) * (-(L * xyRe 0 ((ρ₁.im - u.im) * L)) + xyT.f 0 * (1/8 + 1/1000) * L)
       + (1/2) * (L * xyRe (-(lamOf q ρ₁)) (2 * ρ₁.im * L) + xyT.f 0 * (1/1000) * L)
       + (1/4) * (-(L * xyRe 0 ((ρ₁.im + u.im) * L)) + xyT.f 0 * (1/8 + 1/1000) * L) := by
-    linarith [h8, w0, w1, w2, w3, w4, w5, w6, w7]
+    linarith only [h8, w0, w1, w2, w3, w4, w5, w6, w7, this, b0, b2, b4, b6, b1, b3, b5, b7]
   have hdiv : 0 ≤ ((3/2) * (L * xyF (-(lamOf q ρ₁)) + xyT.f 0 * (1/1000) * L)
       + (3/2) * (-(L * (xyF (lamOf q u - lamOf q ρ₁) + xyRe 0 ((ρ₁.im - u.im) * L)
             + xyRe 0 ((ρ₁.im + u.im) * L))) + xyT.f 0 * (1/8 + 1/1000) * L)
@@ -874,15 +874,15 @@ theorem NebenfallOrd2V :
   have hH : Hfun 1 (lamOf q ρ₁) (2 * ρ₁.im * L) ≤ SH := le_csSup hSHbd ⟨_, rfl⟩
   have hG1' : xyRe (-(lamOf q ρ₁)) ((ρ₁.im - u.im) * L)
       - (7/4) * xyRe 0 ((ρ₁.im - u.im) * L) ≤ SG := by
-    have h := hG1; rw [Gfun] at h; linarith
+    have h := hG1; rw [Gfun] at h; linarith only [h]
   have hG2' : xyRe (-(lamOf q ρ₁)) ((ρ₁.im + u.im) * L)
       - (7/4) * xyRe 0 ((ρ₁.im + u.im) * L) ≤ SG := by
-    have h := hG2; rw [Gfun] at h; linarith
+    have h := hG2; rw [Gfun] at h; linarith only [h]
   have hH' : (1/2) * xyRe (-(lamOf q ρ₁)) (2 * ρ₁.im * L)
       - 2 * xyRe 0 (2 * ρ₁.im * L) ≤ SH := by
-    have h := hH; rw [Hfun] at h; linarith
+    have h := hH; rw [Hfun] at h; linarith only [h]
   have herr : 8 * (xyT.f 0 * (1/1000)) ≤ 1/4 := by
     rw [xyT_f_zero]; norm_num
-  linarith [hdiv, hG1', hG2', hH', herr]
+  linarith only [hdiv, hG1', hG2', hH', herr]
 
 end Work.ZeroFreeTables.XY

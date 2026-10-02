@@ -55,36 +55,36 @@ private lemma guardReal_aux (δ : ℝ) (hδ : 0 < δ) :
       ≤ max ((2 : ℝ) / 5 / δ + 1) (Real.exp (Real.exp 4)) := le_max_left _ _
   have hge0 : Real.exp (Real.exp 4)
       ≤ max ((2 : ℝ) / 5 / δ + 1) (Real.exp (Real.exp 4)) := le_max_right _ _
-  have hA : (2 : ℝ) / 5 / δ ≤ Real.log (q : ℝ) := by linarith [le_trans hA0 hM]
+  have hA : (2 : ℝ) / 5 / δ ≤ Real.log (q : ℝ) := by linarith only [le_trans hA0 hM, hM, hA0]
   have hge : Real.exp (Real.exp 4) ≤ Real.log (q : ℝ) := le_trans hge0 hM
   have h425 : (2 : ℝ) / 5 ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := by
     have hexp : (4 : ℝ) / 25 ≤ Real.log (Real.log (q : ℝ)) := by
       have h1 : (4 : ℝ) / 25 ≤ Real.exp 4 := by
-        have h := Real.one_le_exp (show (0 : ℝ) ≤ 4 by norm_num); linarith
+        have h := Real.one_le_exp (show (0 : ℝ) ≤ 4 by norm_num); linarith only [h]
       have h2 := Real.log_le_log (Real.exp_pos (Real.exp 4)) hge
       rw [Real.log_exp] at h2
-      linarith
+      linarith only [h1, h2]
     have h3 := Real.sqrt_le_sqrt hexp
     rwa [show Real.sqrt ((4 : ℝ) / 25) = (2 : ℝ) / 5 by
       rw [show ((4 : ℝ) / 25) = ((2 : ℝ) / 5) ^ 2 by norm_num,
         Real.sqrt_sq (by norm_num)]] at h3
   have hkey : (2 : ℝ) / 5 ≤ Real.log (q : ℝ) * δ := by
     have h := (div_le_iff₀ hδ).mp hA
-    linarith
+    linarith only [h]
   have h1 : 1 - β ≤ δ := by
     have ha : 1 - β ≤ (2 : ℝ) / 5 / Real.log (q : ℝ) := by
       rw [le_div_iff₀ hlogq]; exact hlam
     have hb : (2 : ℝ) / 5 / Real.log (q : ℝ) ≤ δ := by
-      rw [div_le_iff₀ hlogq]; linarith
-    linarith
+      rw [div_le_iff₀ hlogq]; linarith only [hkey]
+    linarith only [ha, hb]
   have h2 : 1 - β ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
     have ha : 1 - β ≤ (2 : ℝ) / 5 / Real.log (q : ℝ) := by
       rw [le_div_iff₀ hlogq]; exact hlam
     have hb : (2 : ℝ) / 5 / Real.log (q : ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) :=
       div_le_div_of_nonneg_right h425 hlogq.le
-    linarith
-  refine ⟨?_, ?_⟩ <;> rw [abs_of_pos (by linarith : (0 : ℝ) < 1 - β)] <;> assumption
+    linarith only [ha, hb]
+  refine ⟨?_, ?_⟩ <;> rw [abs_of_pos (by linarith only [hβ] : (0 : ℝ) < 1 - β)] <;> assumption
 
 /-- **The test-zero guard.**  For every large enough `q`: `log q > 0`, `√(log log q) ≥ 2/5`,
 `(1/3) log log log q ≤ √(log log q)` and `log log log q / 3 ≥ 2/5` (used at the near-line zero
@@ -112,8 +112,8 @@ private lemma logGuard_aux :
   have hsqrt : (2 : ℝ) / 5 ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := by
     have hexp : (4 : ℝ) / 25 ≤ Real.log (Real.log (q : ℝ)) := by
       have h1 : (4 : ℝ) / 25 ≤ Real.exp 4 := by
-        have h := Real.one_le_exp (show (0 : ℝ) ≤ 4 by norm_num); linarith
-      linarith
+        have h := Real.one_le_exp (show (0 : ℝ) ≤ 4 by norm_num); linarith only [h]
+      linarith only [hLL4, h1]
     have h3 := Real.sqrt_le_sqrt hexp
     rwa [show Real.sqrt ((4 : ℝ) / 25) = (2 : ℝ) / 5 by
       rw [show ((4 : ℝ) / 25) = ((2 : ℝ) / 5) ^ 2 by norm_num,
@@ -127,9 +127,9 @@ private lemma logGuard_aux :
       rw [Real.sqrt_eq_rpow, div_eq_mul_inv, show ((1 : ℝ) / 2)⁻¹ = 2 by norm_num, mul_comm]
     have h3 : Real.log (Real.log (Real.log (q : ℝ)))
         ≤ 2 * Real.sqrt (Real.log (Real.log (q : ℝ))) := by
-      linarith [h, h2.le]
-    linarith [Real.sqrt_nonneg (Real.log (Real.log (q : ℝ)))]
-  exact ⟨hlogq, hsqrt, hsq, by linarith⟩
+      linarith only [h, h2.le, h2]
+    linarith only [Real.sqrt_nonneg (Real.log (Real.log (q : ℝ))), hLLL4, h, h2]
+  exact ⟨hlogq, hsqrt, hsq, by linarith only [hLLL4]⟩
 
 /-! ## The glue -/
 
@@ -138,7 +138,7 @@ theorem t23glue : Work.ZeroFreeTables.GlueH63 := by
   intro δ hδ0 hδ1
   obtain ⟨qA, hqA⟩ := guardReal_aux δ hδ0
   obtain ⟨qL, hqL⟩ := logGuard_aux
-  have hδ1' : δ < 1 := by linarith
+  have hδ1' : δ < 1 := by linarith only [hδ0, hδ1]
   let Q : ℝ → ℕ := fun lam => if h : 0 < lam then
       (HB63_TestFn (tf72T lam h) (1 / 1000) (by norm_num) δ hδ0 hδ1'
         (1 / 8 + 1 / 1000000)).choose
@@ -164,31 +164,31 @@ theorem t23glue : Work.ZeroFreeTables.GlueH63 := by
     have hlam : (1 - ρ₁.re) * Real.log (q : ℝ) ≤ 2 / 5 := by
       have h := hlam1
       rwa [lamOf] at h
-    exact (hqA q hqA' ρ₁.re (by linarith) hlam).1
+    exact (hqA q hqA' ρ₁.re (by linarith only [hstrip₁1]) hlam).1
   have hβ₁pt : |1 - ρ₁.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
     have hlam : (1 - ρ₁.re) * Real.log (q : ℝ) ≤ 2 / 5 := by
       have h := hlam1
       rwa [lamOf] at h
-    exact (hqA q hqA' ρ₁.re (by linarith) hlam).2
+    exact (hqA q hqA' ρ₁.re (by linarith only [hstrip₁1]) hlam).2
   have hβ' : |1 - ρ'.re| ≤ δ := by
     have h1 : 1 - ρ'.re = lamOf q ρ' / Real.log (q : ℝ) := by rw [lamOf]; field_simp
-    have hpos : 0 < lamOf q ρ' / Real.log (q : ℝ) := by rw [← h1]; linarith
+    have hpos : 0 < lamOf q ρ' / Real.log (q : ℝ) := by rw [← h1]; linarith only [hstrip'1]
     have h2 : lamOf q ρ' / Real.log (q : ℝ) ≤ δ := by
       rw [div_le_iff₀ hlogq]; exact hδ2
     rw [abs_le, h1]
-    exact ⟨by linarith [hδ0, hpos], h2⟩
+    exact ⟨by linarith only [hδ0, hpos, hstrip'1, h1], h2⟩
   have hρ'pt : |1 - ρ'.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
     have h1 : 1 - ρ'.re = lamOf q ρ' / Real.log (q : ℝ) := by rw [lamOf]; field_simp
-    have hpos : 0 < lamOf q ρ' / Real.log (q : ℝ) := by rw [← h1]; linarith
+    have hpos : 0 < lamOf q ρ' / Real.log (q : ℝ) := by rw [← h1]; linarith only [hstrip'1]
     have h2 : lamOf q ρ' / Real.log (q : ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) :=
       div_le_div_of_nonneg_right (le_trans hcap' hL3sqrt) hlogq.le
     rw [abs_le, h1]
-    exact ⟨by linarith [hδ0, hpos], h2⟩
+    exact ⟨by linarith only [hδ0, hpos, hstrip'1, h1, h2], h2⟩
   -- the rectangle condition at the exceptional zero
   have hcap₁ : lamOf q ((ρ₁.re : ℝ) : ℂ) ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 := by
     rw [← hρ₁eq]
-    linarith
+    linarith only [hlam1, hcapbig]
   -- divisor facts
   have hprim : χ₁.primitiveCharacter ≠ 1 :=
     Work.LinnikAreas.OtherCharRepel.primitiveCharacter_ne_one χ₁ hχ1
@@ -199,7 +199,7 @@ theorem t23glue : Work.ZeroFreeTables.GlueH63 := by
   have hmem₁ : ρ₁ ∈ Metric.closedBall (0 : ℂ) (|ρ'.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right]
     have h1 : |ρ₁.re| ≤ 1 := by
-      rw [abs_le]; exact ⟨by linarith [hstrip₁0], by linarith [hstrip₁1]⟩
+      rw [abs_le]; exact ⟨by linarith [hstrip₁0], by linarith only [hstrip₁1]⟩
     calc ‖ρ₁‖ ≤ |ρ₁.re| + |ρ₁.im| := Complex.norm_le_abs_re_add_abs_im ρ₁
       _ = |ρ₁.re| := by rw [him0]; simp
       _ ≤ |ρ'.im| + 2 := by linarith [abs_nonneg ρ'.im]
@@ -208,7 +208,7 @@ theorem t23glue : Work.ZeroFreeTables.GlueH63 := by
     refine le_trans (Complex.norm_le_abs_re_add_abs_im ρ') ?_
     have h2 : |ρ'.re| ≤ 2 := by
       rw [abs_le]; exact ⟨by linarith [hstrip'0], by linarith [hstrip'1]⟩
-    linarith [abs_nonneg ρ'.im]
+    linarith only [abs_nonneg ρ'.im, h2]
   have htr := Work.LinnikAreas.OtherCharRepel.zeroMultTransfer χ₁ hχ1
   have hdiv₁ : (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)

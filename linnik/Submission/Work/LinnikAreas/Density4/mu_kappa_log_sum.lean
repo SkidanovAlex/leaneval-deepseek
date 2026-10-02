@@ -128,8 +128,8 @@ lemma prodKappa_eq (d : ℕ) (hd : Squarefree d) :
   refine Finset.prod_congr rfl (fun p hp => ?_)
   have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
   have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-  have hp0 : (p:ℝ) ≠ 0 := by linarith
-  have hp1 : ((p:ℝ)+1) ≠ 0 := by linarith
+  have hp0 : (p:ℝ) ≠ 0 := by linarith only [hp2]
+  have hp1 : ((p:ℝ)+1) ≠ 0 := by linarith only [hp2]
   field_simp
 
 /-- `μ (a*b) = μ a * μ b` whenever `(a,b) = 1`, as a real number. -/
@@ -367,11 +367,11 @@ lemma main_term_d (d t : ℕ) (hd : 1 ≤ d) (ht : 1 ≤ t) (hcop : Nat.Coprime 
     refine Finset.prod_congr rfl (fun p hp => ?_)
     have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
     have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-    have hp0 : (p:ℝ) ≠ 0 := by linarith
-    have hp1 : ((p:ℝ) - 1) ≠ 0 := by linarith
-    have hpp1 : ((p:ℝ) + 1) ≠ 0 := by linarith
-    have hp21 : (-1 + (p:ℝ)^2) ≠ 0 := by nlinarith
-    have hp21' : (p:ℝ)^2 - 1 ≠ 0 := by nlinarith
+    have hp0 : (p:ℝ) ≠ 0 := by linarith only [hp2]
+    have hp1 : ((p:ℝ) - 1) ≠ 0 := by linarith only [hp2]
+    have hpp1 : ((p:ℝ) + 1) ≠ 0 := by linarith only [hp2]
+    have hp21 : (-1 + (p:ℝ)^2) ≠ 0 := by nlinarith only [hp2]
+    have hp21' : (p:ℝ)^2 - 1 ≠ 0 := by nlinarith only [hp2]
     field_simp
     ring
   rw [h1]
@@ -388,33 +388,33 @@ lemma totient_ratio_le_two_sHalf (t : ℕ) (ht : 1 ≤ t) :
     have hpR : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp2
     have hspos : 0 < Real.sqrt ((p:ℕ):ℝ) := by
       apply Real.sqrt_pos.mpr
-      linarith
-    have hppos : 0 < (p:ℝ) - 1 := by linarith
+      linarith only [hpR]
+    have hppos : 0 < (p:ℝ) - 1 := by linarith only [hpR]
     rcases eq_or_lt_of_le hp2 with h | h
     · subst h
       rw [if_pos rfl]
       have hval : (((2:ℕ):ℝ))/(((2:ℕ):ℝ)-1) = 2 := by norm_num
       rw [hval]
       have hnn : (0:ℝ) ≤ 1/Real.sqrt ((2:ℕ):ℝ) := by positivity
-      linarith
+      linarith only [hnn]
     · have hp3 : 3 ≤ p := h
       have hp3R : (3:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp3
       rw [if_neg (by omega : p ≠ 2), one_mul]
       have hsqrtle : Real.sqrt ((p:ℕ):ℝ) ≤ (p:ℝ) - 1 := by
         rw [Real.sqrt_le_left (le_of_lt hppos)]
-        nlinarith
+        nlinarith only [hp3R]
       have hle : 1/((p:ℝ)-1) ≤ 1/Real.sqrt ((p:ℕ):ℝ) :=
         one_div_le_one_div_of_le hspos hsqrtle
       have hsplit : (p:ℝ)/((p:ℝ)-1) = 1 + 1/((p:ℝ)-1) := by
         field_simp
         ring
       rw [hsplit]
-      linarith
+      linarith only [hle]
   have hnonneg : ∀ p ∈ t.primeFactors, (0:ℝ) ≤ (p:ℝ)/((p:ℝ)-1) := by
     intro p hp
     have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
     have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-    exact div_nonneg (by linarith) (by linarith)
+    exact div_nonneg (by linarith only [hp2]) (by linarith only [hp2])
   have hprod := Finset.prod_le_prod₀ hnonneg hfac
   rw [Finset.prod_mul_distrib] at hprod
   have htwo : (∏ p ∈ t.primeFactors, (if p = 2 then (2:ℝ) else 1)) ≤ 2 := by
@@ -460,8 +460,8 @@ lemma main_const (t : ℕ) (ht : 1 ≤ t) :
     refine Finset.prod_congr rfl (fun p hp => ?_)
     have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
     have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-    have hp0 : (p:ℝ) ≠ 0 := by linarith
-    have hp1 : ((p:ℝ) - 1) ≠ 0 := by linarith
+    have hp0 : (p:ℝ) ≠ 0 := by linarith only [hp2]
+    have hp1 : ((p:ℝ) - 1) ≠ 0 := by linarith only [hp2]
     field_simp
     ring
   calc (∏ p ∈ t.primeFactors, (p:ℝ)/((p:ℝ)-1))
@@ -480,7 +480,7 @@ lemma prodKappa_le_inv_sq (d : ℕ) (hd : Squarefree d) : prodKappa d ≤ 1/((d:
         have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
         have hp0 : (0:ℝ) < (p:ℝ) := by exact_mod_cast hpp.pos
         rw [div_le_div_iff₀ (by positivity) (by positivity)]
-        nlinarith
+        linarith only [hp0]
     _ = 1/((d:ℝ)^2) := by
         rw [Finset.prod_div_distrib, Finset.prod_const_one, Finset.prod_pow,
           ← Nat.cast_prod, hprod]
@@ -492,7 +492,7 @@ lemma sHalf_le_card (d : ℕ) : sHalf d ≤ ((Nat.divisors d).card : ℝ) := by
         refine Finset.sum_le_sum (fun e he => ?_)
         have he1 : 1 ≤ e := Nat.pos_of_mem_divisors he
         have heR : (1:ℝ) ≤ (e:ℝ) := by exact_mod_cast he1
-        rw [div_le_one (Real.sqrt_pos.mpr (by linarith))]
+        rw [div_le_one (Real.sqrt_pos.mpr (by linarith only [heR]))]
         exact Real.one_le_sqrt.mpr heR
     _ = ((Nat.divisors d).card : ℝ) := by
         rw [Finset.sum_const, nsmul_eq_mul, mul_one]
@@ -518,14 +518,14 @@ lemma prodKappa_mul_sHalf_le (d : ℕ) (hd : Squarefree d) :
       ≤ ((Nat.divisors d).card : ℝ)/(d:ℝ)^2 := prodKappa_mul_sHalf_le_sq d hd
     _ ≤ ((Nat.divisors d).card : ℝ)/(d:ℝ)^(3/2 : ℝ) :=
         div_le_div_of_nonneg_left (by positivity)
-          (Real.rpow_pos_of_pos (by linarith) _) hpow
+          (Real.rpow_pos_of_pos (by linarith only [hdR1]) _) hpow
 
 /-- For `1 ≤ d` with `d² ≤ Q` and `Q ≥ 2`: `(log(2+Q/d))^{-3} ≤ 8·(log Q)^{-3}`. -/
 lemma log_factor_le_halves {Q d : ℕ} (hQ : 2 ≤ Q) (hd1 : 1 ≤ d) (hd2 : d*d ≤ Q) :
     (Real.log (2 + (Q:ℝ)/(d:ℝ)))^(-3:ℤ) ≤ 8 * (Real.log (Q:ℝ))^(-3:ℤ) := by
   have hQR : (0:ℝ) < (Q:ℝ) := by
     have : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast (by omega : 1 ≤ Q)
-    linarith
+    linarith only [this]
   have hdR : (0:ℝ) < (d:ℝ) := by exact_mod_cast (by omega : 0 < d)
   have hd2R : ((d:ℝ))^2 ≤ (Q:ℝ) := by
     have : ((d*d : ℕ):ℝ) ≤ (Q:ℝ) := by exact_mod_cast hd2
@@ -533,19 +533,19 @@ lemma log_factor_le_halves {Q d : ℕ} (hQ : 2 ≤ Q) (hd1 : 1 ≤ d) (hd2 : d*d
   have hsqrt : Real.sqrt (Q:ℝ) ≤ (Q:ℝ)/(d:ℝ) := by
     rw [Real.sqrt_le_left (le_of_lt (div_pos hQR hdR))]
     rw [div_pow, le_div_iff₀ (by positivity)]
-    nlinarith [hd2R]
+    nlinarith only [hd2R]
   have hQlog : 0 < Real.log (Q:ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < Q))
   have hlogmono : Real.log (Real.sqrt (Q:ℝ)) ≤ Real.log (2 + (Q:ℝ)/(d:ℝ)) :=
-    Real.log_le_log (Real.sqrt_pos.mpr hQR) (by linarith)
+    Real.log_le_log (Real.sqrt_pos.mpr hQR) (by linarith only [hsqrt])
   have hval : Real.log (Real.sqrt (Q:ℝ)) = (1/2) * Real.log (Q:ℝ) := by
     rw [Real.log_sqrt hQR.le]; ring
   have h3 : (1/2) * Real.log (Q:ℝ) ≤ Real.log (2 + (Q:ℝ)/(d:ℝ)) := by
     rw [← hval]; exact hlogmono
-  have h2 : (0:ℝ) < (1/2) * Real.log (Q:ℝ) := by linarith
+  have h2 : (0:ℝ) < (1/2) * Real.log (Q:ℝ) := by linarith only [hQlog]
   have h4 : ((1/2) * Real.log (Q:ℝ))^3 ≤ (Real.log (2 + (Q:ℝ)/(d:ℝ)))^3 :=
     pow_le_pow_left₀ (le_of_lt h2) h3 3
   have h5 : (0:ℝ) < ((1/2) * Real.log (Q:ℝ))^3 := by positivity
-  have h6 : (0:ℝ) < Real.log (2 + (Q:ℝ)/(d:ℝ)) := by linarith [h2, h3]
+  have h6 : (0:ℝ) < Real.log (2 + (Q:ℝ)/(d:ℝ)) := by linarith only [h2, h3, hQlog, hlogmono, hval]
   rw [zpow_neg, zpow_neg, zpow_ofNat, zpow_ofNat]
   calc ((Real.log (2 + (Q:ℝ)/(d:ℝ)))^3)⁻¹ ≤ (((1/2) * Real.log (Q:ℝ))^3)⁻¹ :=
         (inv_le_inv₀ (pow_pos h6 3) h5).mpr h4
@@ -561,13 +561,13 @@ lemma log_factor_le_one {Q d : ℕ} (hQ : 2 ≤ Q) (hd1 : 1 ≤ d) (hdQ : d ≤ 
     have h1 : (1:ℝ) ≤ (Q:ℝ)/(d:ℝ) := by
       rw [one_le_div hdR]
       exact_mod_cast hdQ
-    linarith
+    linarith only [h1]
   have hlog : (1:ℝ) ≤ Real.log (2 + (Q:ℝ)/(d:ℝ)) := by
     have h := Real.log_le_log (by norm_num : (0:ℝ) < 3) hge
     have h3 : (1:ℝ) ≤ Real.log 3 := by
       rw [Real.le_log_iff_exp_le (by norm_num)]
       exact le_of_lt Real.exp_one_lt_three
-    linarith
+    linarith only [h, h3]
   rw [zpow_neg, zpow_ofNat]
   rw [inv_le_one₀ (by positivity)]
   exact one_le_pow₀ hlog
@@ -579,8 +579,8 @@ lemma log_two_ge_half : (1/2:ℝ) ≤ Real.log 2 := by
     rw [sq, ← Real.exp_add]; norm_num
   have h3 : Real.exp (1:ℝ) < 3 := Real.exp_one_lt_three
   have h4 : Real.exp (1/2:ℝ) < 2 := by
-    nlinarith [Real.exp_pos (1/2:ℝ), h, h3]
-  linarith
+    nlinarith only [Real.exp_pos (1/2:ℝ), h, h3]
+  linarith only [h4]
 
 /-- `(log Q)^{-3} ≤ 2·(log Q)^{-2}` for `Q ≥ 2`. -/
 lemma zpow_neg_three_le (Q : ℕ) (hQ : 2 ≤ Q) :
@@ -590,13 +590,13 @@ lemma zpow_neg_three_le (Q : ℕ) (hQ : 2 ≤ Q) :
     Real.log_le_log (by norm_num) (by exact_mod_cast hQ)
   have h2 : (1:ℝ)/Real.log (Q:ℝ) ≤ 2 := by
     rw [div_le_iff₀ hlogQ]
-    linarith [log_two_ge_half, hle]
+    linarith only [log_two_ge_half, hle]
   have hhalf : (1:ℝ)/2 ≤ Real.log (Q:ℝ) := by
     have := (div_le_iff₀ hlogQ).mp h2
-    linarith
+    linarith only [this]
   have h3 : (Real.log (Q:ℝ))^2 / 2 ≤ (Real.log (Q:ℝ))^3 := by
     rw [div_le_iff₀ (by norm_num : (0:ℝ) < 2)]
-    nlinarith [hhalf, hlogQ]
+    nlinarith only [hhalf, hlogQ]
   rw [zpow_neg, zpow_neg, zpow_ofNat, zpow_ofNat]
   calc ((Real.log (Q:ℝ))^3)⁻¹ ≤ ((Real.log (Q:ℝ))^2 / 2)⁻¹ :=
         (inv_le_inv₀ (by positivity) (by positivity)).mpr h3
@@ -609,7 +609,7 @@ lemma inv_quarter_le (Q : ℕ) (hQ : 2 ≤ Q) :
     (1:ℝ)/(Q:ℝ)^((1:ℝ)/4) ≤ 64 * (Real.log (Q:ℝ))^(-2:ℤ) := by
   have hQpos : (0:ℝ) < (Q:ℝ) := by
     have : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast (by omega : 1 ≤ Q)
-    linarith
+    linarith only [this]
   have hQ1 : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast (by omega : 1 ≤ Q)
   have hlogQ : 0 < Real.log (Q:ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < Q))
   have hlog : Real.log (Q:ℝ) ≤ (Q:ℝ)^((1:ℝ)/8) / (1/8) :=
@@ -622,7 +622,7 @@ lemma inv_quarter_le (Q : ℕ) (hQ : 2 ≤ Q) :
         ← Real.rpow_mul hQpos.le]
       norm_num
       ring
-    linarith [h1, h2]
+    linarith only [h1, h2]
   rw [zpow_neg, zpow_ofNat, ← div_eq_mul_inv, le_div_iff₀ (pow_pos hlogQ 2)]
   rw [div_mul_eq_mul_div, div_le_iff₀ (Real.rpow_pos_of_pos hQpos _)]
   simpa using hsq
@@ -728,7 +728,7 @@ theorem kappa_error_sum_self (Q t : ℕ) (hQ : 2 ≤ Q) (ht : 1 ≤ t) :
         apply zpow_nonneg
         apply Real.log_nonneg
         have h0 : (0:ℝ) ≤ (Q:ℝ)/(d:ℝ) := by positivity
-        linarith
+        linarith only [h0]
       calc prodKappa d * sHalf d * (Real.log (2 + (Q:ℝ)/(d:ℝ)))^(-3:ℤ)
           ≤ ((Nat.divisors d).card : ℝ)/(d:ℝ)^2 * (Real.log (2 + (Q:ℝ)/(d:ℝ)))^(-3:ℤ) :=
             mul_le_mul_of_nonneg_right h1 hLnn
@@ -752,14 +752,14 @@ theorem kappa_error_sum_self (Q t : ℕ) (hQ : 2 ≤ Q) (ht : 1 ≤ t) :
         have hcon : ¬ ((d*d : ℕ):ℝ) ≤ (Q:ℝ) := by
           intro hcc; exact hd2 (by exact_mod_cast hcc)
         push_cast at hcon
-        linarith
+        linarith only [hcon]
       have hsqrt : Real.sqrt (Q:ℝ) < (d:ℝ) := by
         rw [Real.sqrt_lt' (by positivity)]
         exact hd2R
       have hquarter : (1:ℝ)/Real.sqrt (d:ℝ) ≤ 1/(Q:ℝ)^((1:ℝ)/4) := by
         have hQpos : (0:ℝ) < (Q:ℝ) := by
           have : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast (by omega : 1 ≤ Q)
-          linarith
+          linarith only [this]
         have hqle : (Q:ℝ)^((1:ℝ)/4) ≤ Real.sqrt (d:ℝ) := by
           have heq : (Q:ℝ)^((1:ℝ)/4) = Real.sqrt (Real.sqrt (Q:ℝ)) := by
             rw [Real.sqrt_eq_rpow, Real.sqrt_eq_rpow, ← Real.rpow_mul hQpos.le]
@@ -814,7 +814,7 @@ theorem kappa_error_sum_self (Q t : ℕ) (hQ : 2 ≤ Q) (ht : 1 ≤ t) :
             mul_le_mul_of_nonneg_left (inv_quarter_le Q hQ) (by norm_num)
         _ = 1024 * (Real.log (Q:ℝ))^(-2:ℤ) := by ring
     have hx : (0:ℝ) ≤ (Real.log (Q:ℝ))^(-2:ℤ) := zpow_nonneg hlogQ.le _
-    linarith [h1, h2, hx]
+    linarith only [h1, h2, hx]
   refine (mul_le_mul_of_nonneg_left hA (sHalf_nonneg t)).trans ?_
   exact (mul_le_mul_of_nonneg_left hbound (sHalf_nonneg t)).trans (le_of_eq (by ring))
 
@@ -842,7 +842,7 @@ theorem kappa_assembly (C1 C2 : ℝ) (hC1 : 0 < C1) (hC2 : 0 < C2)
   have hQ1 : 1 ≤ Q := by omega
   have hQpos : (0:ℝ) < (Q:ℝ) := by
     have : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast hQ1
-    linarith
+    linarith only [this]
   have hlogQ : 0 < Real.log (Q:ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < Q))
   rw [kappa_log_sum_reduction Q t hQ1]
   set D : Finset ℕ := (Finset.Icc 1 Q).filter (fun d => Squarefree d ∧ Nat.Coprime d t) with hD
@@ -918,7 +918,7 @@ theorem kappa_assembly (C1 C2 : ℝ) (hC1 : 0 < C1) (hC2 : 0 < C2)
     have h2 : C2 / Real.sqrt ((Q:ℝ)) ≤ C2 * 16 / (Real.log (Q:ℝ))^2 := by
       have hlog2 : (Real.log (Q:ℝ))^2 ≤ 16 * Real.sqrt ((Q:ℝ)) := log_sq_le_sixteen_sqrt Q hQ1
       rw [div_le_div_iff₀ (Real.sqrt_pos.mpr hQpos) (pow_pos hlogQ 2)]
-      nlinarith [hlog2, hC2]
+      nlinarith only [hlog2, hC2]
     have hSD := hmain Q t hQ1 ht
     have hSD' : |(∑ d ∈ D, ∏ p ∈ d.primeFactors, (1:ℝ)/((p:ℝ)^2-1))
         - (Real.pi^2/6) * ∏ p ∈ t.primeFactors, (1 - (1:ℝ)/(p:ℝ)^2)| ≤ C2/Real.sqrt (Q:ℝ) := by
@@ -927,9 +927,9 @@ theorem kappa_assembly (C1 C2 : ℝ) (hC1 : 0 < C1) (hC2 : 0 < C2)
     calc ((t:ℝ)/(Nat.totient t:ℝ)) * |(∑ d ∈ D, ∏ p ∈ d.primeFactors, (1:ℝ)/((p:ℝ)^2-1))
             - (Real.pi^2/6) * ∏ p ∈ t.primeFactors, (1 - (1:ℝ)/(p:ℝ)^2)|
         ≤ (2 * sHalf t) * (C2 / Real.sqrt ((Q:ℝ))) :=
-          mul_le_mul h1 hSD' (abs_nonneg _) (by have := sHalf_nonneg t; linarith)
+          mul_le_mul h1 hSD' (abs_nonneg _) (by have := sHalf_nonneg t; linarith only [this])
       _ ≤ (2 * sHalf t) * (C2 * 16 / (Real.log (Q:ℝ))^2) :=
-          mul_le_mul_of_nonneg_left h2' (by have := sHalf_nonneg t; linarith)
+          mul_le_mul_of_nonneg_left h2' (by have := sHalf_nonneg t; linarith only [this])
       _ = 2 * C2 * 16 * sHalf t / (Real.log (Q:ℝ))^2 := by ring
   -- ### combination
   have hfin : |M + E - (Real.pi^2/6) * ∏ p ∈ t.primeFactors, ((p:ℝ)+1)/(p:ℝ)|
@@ -946,7 +946,7 @@ theorem kappa_assembly (C1 C2 : ℝ) (hC1 : 0 < C1) (hC2 : 0 < C2)
     ring
   refine hfin.trans ?_
   apply div_le_div_of_nonneg_right _ (pow_pos hlogQ 2).le
-  exact mul_le_mul_of_nonneg_right (by linarith) (sHalf_nonneg t)
+  exact mul_le_mul_of_nonneg_right (by linarith only []) (sHalf_nonneg t)
 
 open Finset BigOperators
 open scoped BigOperators
@@ -1016,7 +1016,7 @@ lemma coprSq_mul (t : ℕ) {a b : ℕ} (hab : Nat.Coprime a b) :
 lemma one_div_sq_sub_one_nonneg {p : ℕ} (hp : p.Prime) :
     (0:ℝ) ≤ (1:ℝ)/((p:ℝ)^2 - 1) := by
   have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp.two_le
-  exact div_nonneg zero_le_one (by nlinarith)
+  exact div_nonneg zero_le_one (by nlinarith only [hp2])
 
 lemma summable_inv_sq : Summable (fun n : ℕ => (1:ℝ)/((n:ℝ)^2)) := by
   have hbase : Summable (fun n : ℕ => (n:ℝ)^(-(2:ℝ))) := by
@@ -1047,10 +1047,10 @@ lemma norm_sqfreeProd_le {C : ℝ} (hCpos : 0 < C)
           one_div_sq_sub_one_nonneg (Nat.prime_of_mem_primeFactors hp)) (fun p hp => ?_)
         have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
         have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-        have h1 : (0:ℝ) < (p:ℝ)^2 - 1 := by nlinarith
+        have h1 : (0:ℝ) < (p:ℝ)^2 - 1 := by nlinarith only [hp2]
         have h2 : (0:ℝ) < (p:ℝ)^2 := by positivity
         rw [div_le_div_iff₀ h1 h2]
-        nlinarith
+        nlinarith only [hp2, h1]
       have hval : ∏ p ∈ n.primeFactors, 2/(p:ℝ)^2
           = (2:ℝ)^(n.primeFactors.card)/ (∏ p ∈ n.primeFactors, (p:ℝ))^2 := by
         rw [Finset.prod_div_distrib, Finset.prod_const, Finset.prod_pow]
@@ -1094,7 +1094,7 @@ lemma one_div_sq_le_one (n : ℕ) : (1:ℝ)/((n:ℝ)^2) ≤ 1 := by
   · subst h; norm_num
   · have h1 : (1:ℝ) ≤ (n:ℝ) := by exact_mod_cast h
     rw [div_le_one (by positivity)]
-    nlinarith
+    nlinarith only [h1]
 
 lemma summable_norm_coprSq (t : ℕ) : Summable (fun n : ℕ => ‖coprSq t n‖) := by
   refine Summable.of_nonneg_of_le (f := fun n : ℕ => (1:ℝ)/((n:ℝ)^2))
@@ -1148,7 +1148,7 @@ lemma sum_divisors_moebius_div_sq_eq_prod (t : ℕ) (ht : 1 ≤ t) :
   have hpp : Nat.Prime p := Nat.prime_of_mem_primeFactors hp
   rw [ArithmeticFunction.moebius_apply_prime hpp]
   have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hpp.two_le
-  have hp0 : (p:ℝ) ≠ 0 := by linarith
+  have hp0 : (p:ℝ) ≠ 0 := by linarith only [hp2]
   have hpne : (p:ℝ)^2 ≠ 0 := pow_ne_zero _ hp0
   field_simp
   ring
@@ -1243,7 +1243,7 @@ lemma local_sqfreeProd {t p : ℕ} (hp : p.Prime) :
   by_cases hpt : p ∣ t
   · rw [if_pos hpt, if_pos hpt]; norm_num
   · rw [if_neg hpt, if_neg hpt]
-    have hne : ((p:ℝ)^2 - 1) ≠ 0 := by nlinarith
+    have hne : ((p:ℝ)^2 - 1) ≠ 0 := by nlinarith only [hp2]
     field_simp
     ring
 
@@ -1263,7 +1263,7 @@ lemma local_coprSq {t p : ℕ} (hp : p.Prime) :
     have hp2 : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp.two_le
     have hnorm : ‖(1:ℝ)/((p:ℝ)^2)‖ < 1 := by
       rw [Real.norm_eq_abs, abs_of_nonneg (by positivity), div_lt_one (by positivity)]
-      nlinarith
+      nlinarith only [hp2]
     have hgeosum : (∑' e : ℕ, ((1:ℝ)/((p:ℝ)^2))^e) = (1 - (1:ℝ)/(p:ℝ)^2)⁻¹ :=
       tsum_geometric_of_norm_lt_one hnorm
     rw [← hgeosum]
@@ -1290,9 +1290,9 @@ lemma tsum_sqfreeProd_eq (t : ℕ) :
     have hne : (1:ℝ) - 1/(((p:ℕ)):ℝ)^2 ≠ 0 := by
       rw [sub_ne_zero]
       have hlt : (1:ℝ)/(((p:ℕ)):ℝ)^2 < 1 := by
-        rw [div_lt_one (by positivity)]; nlinarith
+        rw [div_lt_one (by positivity)]; nlinarith only [hp2]
       exact (ne_of_lt hlt).symm
-    have hne2 : (((p:ℕ)):ℝ)^2 - 1 ≠ 0 := by nlinarith
+    have hne2 : (((p:ℕ)):ℝ)^2 - 1 ≠ 0 := by nlinarith only [hp2]
     field_simp
 
 
@@ -1310,7 +1310,7 @@ theorem sqfree_coprime_recip_pm1_finite_self :
   intro Q t hQ ht
   have hQpos : (0:ℝ) < (Q:ℝ) := by
     have : (1:ℝ) ≤ (Q:ℝ) := by exact_mod_cast hQ
-    linarith
+    linarith only [this]
   have hsqrtpos : 0 < Real.sqrt (Q:ℝ) := Real.sqrt_pos.mpr hQpos
   have hmain : (Real.pi^2/6) * ∏ p ∈ t.primeFactors, (1 - (1:ℝ)/(p:ℝ)^2)
       = ∑' n : ℕ, sqfreeProd t n := by
@@ -1385,12 +1385,12 @@ theorem sqfree_coprime_recip_pm1_finite_self :
           apply div_le_div_of_nonneg_right _ hsqrtpos.le
           have h2 : (2 * Real.sqrt 2) ≤ 8 := by
             have h4 : Real.sqrt 2 < 4 := (Real.sqrt_lt' (by norm_num : (0:ℝ) < 4)).mpr (by norm_num)
-            linarith
-          nlinarith [hCpos]
+            linarith only [h4]
+          nlinarith only [hCpos, h2]
   rw [Real.norm_eq_abs] at htail
   exact htail.trans (by
     apply div_le_div_of_nonneg_right _ hsqrtpos.le
-    nlinarith [hCpos])
+    linarith only [hCpos])
 
 /-- **Linnik's theorem, density-4 `κ`-sum.** -/
 theorem mu_kappa_log_sum :

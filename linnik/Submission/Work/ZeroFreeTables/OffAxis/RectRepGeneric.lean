@@ -51,7 +51,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
   set M : ℝ := a * (Kond K + 1) with hMdef
   have hMnn : 0 ≤ M := by
     rw [hMdef]
-    exact mul_nonneg (le_of_lt ha) (by linarith [Work.ZeroFreeTables.Rep9.Kond_pos hK])
+    exact mul_nonneg (le_of_lt ha) (by linarith only [Work.ZeroFreeTables.Rep9.Kond_pos hK, hK])
   obtain ⟨q₀b, δ, hδ0, hδ1, hpb⟩ :=
     pointBoundWide (a := a) (e := 1/200) (M := M) (H := H) ha (by norm_num) hMnn hH1
   obtain ⟨L₀p, hprinc⟩ :=
@@ -83,7 +83,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
   have hMlt : M ≤ δ * L := by
     have h' : M/δ ≤ L := hMδ
     rw [div_le_iff₀ hδ0] at h'
-    linarith [h']
+    linarith only [h']
   have h10 : (10:ℝ) ≤ L := by
     rw [hLdef]
     calc (10:ℝ) ≤ max (M/δ) 10 := le_max_right _ _
@@ -101,7 +101,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
   have hcube : ((a + lamOf q ρ₁)/a)^3 ≤ Kond K + 1 :=
     Work.ZeroFreeTables.Rep9.cond913_cube_le ha hlam0 hcond
   set al : ℝ := a + lamOf q ρ₁ with hal
-  have halpos : 0 < al := by rw [hal]; linarith
+  have halpos : 0 < al := by rw [hal]; linarith only [ha, hlam0]
   set σ : ℂ := ((1 + a / L : ℝ) : ℂ) with hσ
   -- (0) the principal character at `σ`
   have hS0 : SigmaP3L q L (1 : DirichletCharacter ℂ q) σ a (lamOf q ρ₁)
@@ -135,7 +135,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
       simp only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
         Complex.I_re, Complex.I_im, mul_zero, mul_one, sub_zero, add_zero, Complex.add_im,
         Complex.ofReal_im, Complex.mul_im, zero_add]
-      linarith [hγ]
+      linarith only [hγ, hH1, hδ0, hδ1]
     have h1 := hpb q hqb χ₁ hχ1ne hlam0 hlamM hHlog _ hsre hsim
     have h3 : (2:ℝ) * P3R 1 ≤ P3NearSumL q L χ₁
         (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
@@ -145,7 +145,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
           = σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- (2) `χ₁²` at `σ + 2iγ`
   have hS2 : SigmaP3L q L (χ₁^2) (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
       ≤ al * (1/6 + 1/200) := by
@@ -153,7 +153,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
     have hsim : |(σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 3 * H := by
       have him : (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).im = 2 * ρ₁.im := by rw [hσ]; simp
       rw [him, abs_mul, show |(2:ℝ)| = 2 by norm_num]
-      linarith [hγ, hH1]
+      linarith only [hγ, hH1, hδ0, hδ1]
     have h1 := hpb q hqb (χ₁^2) (fun hcon => hχ2 hcon) hlam0 hlamM hHlog _ hsre hsim
     have h3 : (0:ℝ) ≤ P3NearSumL q L (χ₁^2)
         (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
@@ -163,7 +163,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
           = σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- (3) `χ₁³` at `σ + 3iγ`
   have hS3 : SigmaP3L q L (χ₁^3) (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
       ≤ al * (1/6 + 1/200) := by
@@ -171,7 +171,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
     have hsim : |(σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 3 * H := by
       have him : (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).im = 3 * ρ₁.im := by rw [hσ]; simp
       rw [him, abs_mul, show |(3:ℝ)| = 3 by norm_num]
-      linarith [hγ, hH1]
+      linarith only [hγ, hH1]
     have h1 := hpb q hqb (χ₁^3) (fun hcon => hχ3 hcon) hlam0 hlamM hHlog _ hsre hsim
     have h3 : (0:ℝ) ≤ P3NearSumL q L (χ₁^3)
         (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
@@ -181,7 +181,7 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
           = σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- the endgame
   set c : ℝ := 1/6 + (K^2 + K + 1 - K * Kond K) / (12*K) with hcdef
   have hc : c ≤ 1/6 + (K^2 + K + 1 - K * Kond K) / (12*K) := le_rfl
@@ -203,8 +203,8 @@ theorem rectRepGeneric {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
       have h2 : (K + 1/4) * (K^2 + 3*K + 3/2)
           ≤ (K^2 + K + 1 - K * Kond K) * (K^2 + 3*K + 3/2) :=
         mul_le_mul_of_nonneg_right hsl hSnn
-      nlinarith [h2, sq_nonneg K, hK.le]
-    linarith [hkey]
+      nlinarith only [h2, sq_nonneg K, hK.le, hK, hδ0, hδ1]
+    linarith only [hkey]
   exact RectRepDiag χ₁ ρ₁ hq2 ha hK hε hχ1ne hγ hlam0 hcond hc hS0 hS1 hS2 hS3 he
 
 end Work.ZeroFreeTables.OffAxis

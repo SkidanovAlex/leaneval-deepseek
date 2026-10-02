@@ -74,15 +74,15 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
   have heta_le_c0 : eta ≤ c0 := min_le_left _ _
   have heta_le_one : eta ≤ 1 := min_le_right _ _
   set cf : ℝ := eta / 2 with hcf_def
-  have hcf_pos : 0 < cf := by rw [hcf_def]; linarith
-  have hcf_le_half : cf ≤ c0 / 2 := by rw [hcf_def]; linarith
-  have hcfle1 : cf ≤ 1 := by rw [hcf_def]; linarith
+  have hcf_pos : 0 < cf := by rw [hcf_def]; linarith only [heta_pos]
+  have hcf_le_half : cf ≤ c0 / 2 := by rw [hcf_def]; linarith only [heta_le_c0]
+  have hcfle1 : cf ≤ 1 := by rw [hcf_def]; linarith only [heta_le_one]
   have hCfin_pos : 0 < max 100 (max (8 * C0 + 2) (30 / czEps cf 2)) :=
     lt_of_lt_of_le (by norm_num : (0 : ℝ) < 100) (le_max_left _ _)
   refine ⟨max 100 (max (8 * C0 + 2) (30 / czEps cf 2)), cf, hCfin_pos, hcf_pos, ?_⟩
   intro w y N q t hw1 hwy hyN hNwy hq1 hqQ ht hsq
-  have hw : 0 < w := by linarith
-  have hy : 0 < y := by linarith
+  have hw : 0 < w := by linarith only [hw1]
+  have hy : 0 < y := by linarith only [hw1, hwy]
   have hy1 : (1 : ℝ) ≤ y := le_trans hw1 hwy
   have ht1 : 1 ≤ t := (Finset.mem_Icc.mp ht).1
   have htT : (t : ℝ) ≤ ((czT y N q : ℕ) : ℝ) := by exact_mod_cast (Finset.mem_Icc.mp ht).2
@@ -135,7 +135,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
       have hr1one : r1 = 1 := le_antisymm hsmall hr1pos
       have hYle2 : czY w y t ≤ 2 := by
         have h2 : ((r1 : ℕ) : ℝ) ≤ 1 := by rw [hr1one]; norm_num
-        linarith [hr1ge, h2]
+        linarith only [hr1ge, h2]
       have hmain1 : rowMain w y t r1 = (⌊y⌋₊ : ℝ) * czFI w y 1 t := by
         rw [hr1one]; exact rowMain_one w y t
       have hFI : |czFI w y 1 t| ≤ 5 * (Real.log 2 + 1) := by
@@ -147,13 +147,13 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
         have h3 : |Real.log (czY w y t)| ≤ Real.log 2 := by
           rw [abs_of_nonneg (Real.log_nonneg hY1)]
           exact Real.log_le_log hYpos hYle2
-        linarith [h1]
+        linarith only [h1, h3]
       have hrowMain : |rowMain w y t r1| ≤ y * (5 * (Real.log 2 + 1)) := by
         rw [hmain1, abs_mul, abs_of_nonneg (Nat.cast_nonneg (⌊y⌋₊ : ℕ))]
         have h1 : (⌊y⌋₊ : ℝ) ≤ y := Nat.floor_le hy.le
         have h3 : 0 ≤ 5 * (Real.log 2 + 1) := by
           have h4 : (0 : ℝ) ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-          linarith
+          linarith only [h4]
         exact mul_le_mul h1 hFI (abs_nonneg _) hy.le
       have hbracket_small :
           |rowMain w y t r1 + y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))|
@@ -175,7 +175,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
           positivity
         have h5 : 0 ≤ 5 * (Real.log 2 + 1) := by
           have h4 : (0 : ℝ) ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-          linarith
+          linarith only [h4]
         have hyj : 0 ≤ y * (Real.pi ^ 2 / 6) := by positivity
         have h3 : y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))
             ≤ y * czSig t * (Real.pi ^ 2 / 6) := by
@@ -187,16 +187,16 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
           calc y * (5 * (Real.log 2 + 1)) = (y * 1) * (5 * (Real.log 2 + 1)) := by ring
             _ ≤ (y * czSig t) * (5 * (Real.log 2 + 1)) := mul_le_mul_of_nonneg_right h6 h5
             _ = y * czSig t * (5 * (Real.log 2 + 1)) := by ring
-        linarith [h1, h2, hrowMain, h3, h4, hsig0, hYpos.le, hpi0, h5]
+        linarith only [h1, h2, hrowMain, h3, h4, hsig0, hYpos.le, hpi0, h5]
       have hC1 : 5 * (Real.log 2 + 1) + Real.pi ^ 2 / 6 ≤ 12 := by
         have h1 : Real.log 2 ≤ 1 := by
           have h := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-          linarith
+          linarith only [h]
         have h2 : Real.pi ^ 2 / 6 ≤ 2 := by
           have hp := Real.pi_lt_d2
           have hp0 := Real.pi_pos
-          nlinarith [hp, hp0]
-        linarith
+          nlinarith only [hp, hp0, hcf_def, heta_le_one, hcf_pos]
+        linarith only [h1, h2]
       have hepsmin : czEps cf 2 ≤ czEps cf (czY w y t) := czEps_antitone hcf_pos.le hYpos hYle2
       have hbr2 : y * czSig t * (5 * (Real.log 2 + 1) + Real.pi ^ 2 / 6)
           ≤ (30 / czEps cf 2) * (y * czSig t * czEps cf (czY w y t) + czY w y t) := by
@@ -205,7 +205,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
         have hε : 0 < czEps cf (czY w y t) := czEps_pos cf _
         have hratio : 1 ≤ czEps cf (czY w y t) / czEps cf 2 := by
           rw [le_div_iff₀ hεmin]
-          linarith [hepsmin]
+          linarith only [hepsmin]
         have hnn : 0 ≤ y * czSig t := by positivity
         have hA : y * czSig t * (5 * (Real.log 2 + 1) + Real.pi ^ 2 / 6)
             ≤ 12 * (y * czSig t) := by
@@ -216,7 +216,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
           mul_le_mul_of_nonneg_right (by norm_num) hnn
         have hCc : 30 * (y * czSig t) ≤ 30 * ((y * czSig t) * (czEps cf (czY w y t) / czEps cf 2)) := by
           have h6 := mul_le_mul_of_nonneg_left hratio hnn
-          linarith [h6]
+          linarith only [h6]
         have hD : 30 * ((y * czSig t) * (czEps cf (czY w y t) / czEps cf 2))
             = (30 / czEps cf 2) * (y * czSig t * czEps cf (czY w y t)) := by
           field_simp
@@ -224,8 +224,8 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
             ≤ (30 / czEps cf 2) * (y * czSig t * czEps cf (czY w y t) + czY w y t) := by
           have h1 : 0 ≤ 30 / czEps cf 2 := by positivity
           have h2 : 0 ≤ czY w y t := hYpos.le
-          exact mul_le_mul_of_nonneg_left (by linarith) h1
-        linarith [hA, hB, hCc, hD, hE]
+          exact mul_le_mul_of_nonneg_left (by linarith only [hY1]) h1
+        linarith only [hA, hB, hCc, hD, hE, hnn]
       have hCfge : (30 / czEps cf 2) ≤ max 100 (max (8 * C0 + 2) (30 / czEps cf 2)) :=
         le_trans (le_max_right (8 * C0 + 2) (30 / czEps cf 2)) (le_max_right 100 _)
       calc |rowMain w y t r1 + y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))|
@@ -242,7 +242,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
       have hA1 : |rowS1 t r1 (2 * czY w y t) - (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))
             - Real.log (2 * czY w y t / (r1 : ℝ)) * rowS0 t r1|
           ≤ C0 * czSig t * czEps c0 r1 := by
-        have h := hcl1 t r1 (2 * czY w y t) hsq hr1ge2 (by linarith [hr1le])
+        have h := hcl1 t r1 (2 * czY w y t) hsq hr1ge2 (by linarith only [hr1le])
         simpa only [rowS1, rowS0, rowCoef, czSig, czEps] using h
       have hA2 : |rowS0 t r1| ≤ C0 * czSig t * czEps c0 r1 := by
         have h := hcl2 t r1 hsq hr1ge2
@@ -261,7 +261,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
         refine Finset.sum_congr rfl (fun r hr => ?_)
         have hr1' : 1 ≤ r := (Finset.mem_Icc.mp hr).1
         have hr0 : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (by omega : 0 < r)
-        have h2Y : (0 : ℝ) < 2 * czY w y t := by linarith
+        have h2Y : (0 : ℝ) < 2 * czY w y t := by linarith only [hY1]
         rw [Real.log_div h2Y.ne' hr0.ne', Real.log_div hYpos.ne' hr0.ne',
           Real.log_mul (by norm_num) hYpos.ne']
         ring
@@ -294,12 +294,12 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
         have h1 : |1 - Real.log (czY w y t / (r1 : ℝ))| ≤ 3 := by
           have h2 := abs_add_le (1 : ℝ) (-(Real.log (czY w y t / (r1 : ℝ))))
           rw [← sub_eq_add_neg, abs_neg, abs_one] at h2
-          linarith
+          linarith only [hLbd, h2]
         have h3 : 0 ≤ C0 * czSig t * czEps c0 r1 := by
           have h4 : 0 ≤ czSig t := czSig_nonneg t
           have h5 : 0 ≤ czEps c0 r1 := (czEps_pos c0 r1).le
           positivity
-        nlinarith [h1, hA2, abs_nonneg (rowS0 t r1), h3]
+        nlinarith only [h1, hA2, abs_nonneg (rowS0 t r1), h3, heta_le_one, hcf_def, hcf_pos]
       have hb3 : |y * rowT2 y (czY w y t) t r1| ≤ 2 * 10 * czY w y t :=
         rowT2_bound hw hy ht1 hry' hS (by norm_num)
       have hb4 : |y * rowT3 y t r1| ≤ 20 * czY w y t := rowT3_bound hy hry' hYy hr1le
@@ -312,25 +312,25 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
       have hbig : |rowMain w y t r1 + y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))|
           ≤ 4 * C0 * y * czSig t * czEps c0 r1 + 90 * czY w y t := by
         rw [hmain]
-        linarith [htri, hb1, hb2, hb3, hb4, hb5]
+        linarith only [htri, hb1, hb2, hb3, hb4, hb5]
       have hepsc : czEps c0 r1 ≤ 2 * czEps cf (czY w y t) := by
         have h1 := czEps_compare (c := eta) (Y := czY w y t) heta_pos heta_le_one hY1 hr1pos
-          (by linarith [hr1ge])
+          (by linarith only [hr1ge])
         have h2 : czEps c0 r1 ≤ czEps eta r1 := czEps_le_of_le_rate heta_le_c0
         have h3 : czEps (eta / 2) (czY w y t) = czEps cf (czY w y t) := by rw [hcf_def]
-        linarith [h1, h2, h3]
+        linarith only [h1, h2, h3]
       have hσ0 : 0 ≤ czSig t := czSig_nonneg t
       have hfin1 : |rowMain w y t r1 + y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ))|
           ≤ 8 * C0 * y * czSig t * czEps cf (czY w y t) + 90 * czY w y t := by
         have hcoe : 0 ≤ 4 * C0 * y * czSig t := by positivity
         have h1 := mul_le_mul_of_nonneg_left hepsc hcoe
-        linarith [hbig, h1]
+        linarith only [hbig, h1]
       have h8 : 8 * C0 ≤ max 100 (max (8 * C0 + 2) (30 / czEps cf 2)) := by
-        have h1 : 8 * C0 ≤ 8 * C0 + 2 := by linarith
+        have h1 : 8 * C0 ≤ 8 * C0 + 2 := by linarith only []
         have h2 : 8 * C0 + 2 ≤ max (8 * C0 + 2) (30 / czEps cf 2) := le_max_left _ _
         have h3 : max (8 * C0 + 2) (30 / czEps cf 2)
             ≤ max 100 (max (8 * C0 + 2) (30 / czEps cf 2)) := le_max_right _ _
-        linarith
+        linarith only [heta_le_one, hcf_def, hcf_pos, h2, h3]
       have h90 : 90 ≤ max 100 (max (8 * C0 + 2) (30 / czEps cf 2)) :=
         le_trans (by norm_num) (le_max_left _ _)
       have hYe : 0 ≤ czY w y t := hYpos.le
@@ -346,7 +346,7 @@ theorem CzRowBoundHere (h : Work.ZeroDensity.Jutila.KappaMertensInput) :
             have hA := mul_le_mul_of_nonneg_right h8 hx
             have hB := mul_le_mul_of_nonneg_right h90 hYe
             rw [mul_add]
-            linarith [hA, hB]
+            linarith only [hA, hB]
   calc |czRowSum w y N q t + y * (Real.pi ^ 2 / 6) * ((ArithmeticFunction.moebius t : ℤ) : ℝ)|
       = |((t : ℝ) / kap t) * ((ArithmeticFunction.moebius t : ℤ) : ℝ)
           * (rowMain w y t r1 + y * (Real.pi ^ 2 / 6) * (kap t / (t : ℝ)))| := by rw [hkey]
