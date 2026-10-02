@@ -1,5 +1,7 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
+import Submission.Work.LinnikContract.Defs
+import Submission.Work.LinnikAreas.DhK.Defs
+import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 
 /-!
 # `Work.LinnikAreas.DhK.Reduction`

@@ -139,7 +139,7 @@ lemma norm_riemannZeta_le_ten_of_mem_sphere {z : ℂ} (hz : z ∈ Metric.sphere 
     have h2 : ((‖z‖ / z.re) * (((1:ℕ):ℝ) ^ (-z.re))) = ‖z‖ / z.re := by norm_num
     rw [h2]
     rw [div_le_iff₀ hre_pos]
-    nlinarith [hnormz, hre_ge]
+    linarith only [hnormz, hre_ge]
   have hbound_pole : ‖((((1:ℕ):ℂ) ^ (1 - z)) / (z - 1))‖ ≤ 2 := by
     have hcast : (((1:ℕ):ℂ)) = 1 := by norm_num
     rw [hcast, one_cpow, one_div, norm_inv]
@@ -232,7 +232,7 @@ lemma Wpow_le (M σ : ℝ) (hM : 1 ≤ M) (hσ : 19/20 ≤ σ) (hσ1 : σ < 1) :
       rw [div_le_iff₀ hlog107pos]
       have h3 : 1 ≤ 3 * Real.log (10/7) := three_mul_log_ten_sevenths_ge_one
       have hsig : 0 ≤ 1 - σ := by linarith
-      nlinarith [hlogW2, h3, hsig]
+      nlinarith only [hlogW2, mul_le_mul_of_nonneg_left h3 hsig]
     have hMpart : M ^ (Real.log W / Real.log (10/7)) ≤ M ^ (3*(1-σ)) :=
       Real.rpow_le_rpow_of_exponent_le hM hexp_le
     exact mul_le_mul h80 hMpart (Real.rpow_nonneg hMpos.le _) (by norm_num)
@@ -585,7 +585,7 @@ theorem estermann_positivity
   -- tail bound
   have htail_sum : ∑' i, (bb (i+(K0+1)) - ρ) * W^(i+(K0+1)) ≥ -(1/2:ℝ) := by
     have hsumm_t : Summable (fun i => (bb (i+(K0+1)) - ρ) * W^(i+(K0+1))) :=
-      (summable_nat_add_iff (K0+1)).mpr hsummable
+      (summable_nat_add_iff (f := fun k => (bb k - ρ) * W^k) (K0+1)).mpr hsummable
     have hterm_le : ∀ i, |(bb (i+(K0+1)) - ρ) * W^(i+(K0+1))|
         ≤ 12*M * ((2/3)*W)^(i+(K0+1)) := by
       intro i
@@ -612,9 +612,9 @@ theorem estermann_positivity
             rw [mul_pow]; ring
     have hsumm_rhs : Summable (fun i => 12*M * ((2/3)*W)^(i+(K0+1))) := by
       apply Summable.mul_left
-      exact (summable_nat_add_iff (K0+1)).mpr (summable_geometric_of_norm_lt_one (by
+      exact (summable_nat_add_iff (f := fun i => ((2/3)*W)^i) (K0+1)).mpr (summable_geometric_of_norm_lt_one (by
         rw [Real.norm_eq_abs, abs_of_nonneg (by positivity : (0:ℝ) ≤ (2:ℝ)/3 * W)]
-        nlinarith [hWle', hWpos]))
+        linarith only [hWle']))
     have hle1 : ∑' i, |(bb (i+(K0+1)) - ρ) * W^(i+(K0+1))|
         ≤ ∑' i, 12*M * ((2/3)*W)^(i+(K0+1)) :=
       Summable.tsum_le_tsum hterm_le hsumm_t.norm hsumm_rhs
@@ -628,13 +628,13 @@ theorem estermann_positivity
       have hgeo : ∑' i : ℕ, ((2/3)*W)^(i+(K0+1)) = ((2/3)*W)^(K0+1) * (1 - (2/3)*W)⁻¹ := by
         have hξ : ‖(2/3)*W‖ < 1 := by
           rw [Real.norm_eq_abs, abs_of_nonneg (by positivity : (0:ℝ) ≤ (2:ℝ)/3 * W)]
-          nlinarith [hWle', hWpos]
+          linarith only [hWle']
         rw [show (fun i : ℕ => ((2/3)*W)^(i+(K0+1))) = (fun i => ((2/3)*W)^i * ((2/3)*W)^(K0+1)) from
           funext (fun i => by rw [pow_add])]
         rw [tsum_mul_right, tsum_geometric_of_norm_lt_one hξ]
         ring
       rw [hgeo]
-      have hxi : (2/3)*W ≤ 7/10 := by nlinarith [hWle']
+      have hxi : (2/3)*W ≤ 7/10 := by linarith only [hWle']
       have hx0 : (0:ℝ) ≤ (2/3)*W := by positivity
       have hx1 : ((2/3)*W)^(K0+1) ≤ (7/10)^(K0+1) :=
         pow_le_pow_left₀ hx0 hxi _

@@ -50,8 +50,8 @@ private lemma thick_re (z : ℂ) (hz : z ∈ Metric.closedBall (2 : ℂ) (3 / 2)
   have h : -(z - 2).re ≤ ‖z - 2‖ := by
     have := Complex.abs_re_le_norm (z - 2)
     rw [abs_le] at this
-    linarith [this.1]
-  linarith
+    linarith only [this.1, this]
+  linarith only [hz, h2, h]
 
 private lemma thick_norm (z : ℂ) (hz : z ∈ Metric.closedBall (2 : ℂ) (3 / 2)) :
     ‖z‖ ≤ 7 / 2 := by
@@ -60,20 +60,20 @@ private lemma thick_norm (z : ℂ) (hz : z ∈ Metric.closedBall (2 : ℂ) (3 / 
   rw [h]
   calc ‖(z - 2) + 2‖ ≤ ‖z - 2‖ + ‖(2 : ℂ)‖ := norm_add_le _ _
     _ = ‖z - 2‖ + 2 := by rw [Complex.norm_two]
-    _ ≤ 3 / 2 + 2 := by linarith
+    _ ≤ 3 / 2 + 2 := by linarith only [hz]
     _ = 7 / 2 := by norm_num
 
 private lemma norm_LFunction_disc {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (hχ : χ ≠ 1) {z : ℂ} (hz : z ∈ Metric.closedBall (2 : ℂ) (3 / 2)) :
     ‖LFunction χ z‖ ≤ 14 * (N : ℝ) := by
   have hre := thick_re z hz
-  have hrepos : 0 < z.re := by linarith
+  have hrepos : 0 < z.re := by linarith only [hre]
   have hnorm := thick_norm z hz
   have hb := LFunction_norm_half_plane χ hχ hrepos
   have hN : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
   have h1 : 2 * (N : ℝ) * ‖z‖ / z.re ≤ 14 * (N : ℝ) := by
     rw [div_le_iff₀ hrepos]
-    nlinarith [hnorm, hN, hre]
+    nlinarith only [hnorm, hN, hre]
   linarith
 
 /-- A non-trivial character forces its level to be at least `2`. -/
@@ -130,7 +130,7 @@ private lemma L_one_lower_of_aux {M : ℕ} [NeZero M] (χ₁ : DirichletCharacte
   have hNM2r : (2 : ℝ) ≤ (N : ℝ) * (M : ℝ) := by
     have : ((2:ℕ) : ℝ) ≤ ((N*M : ℕ) : ℝ) := by exact_mod_cast hNM2
     simpa using this
-  have hβ₁half : (1 : ℝ) / 2 < β₁ := by linarith
+  have hβ₁half : (1 : ℝ) / 2 < β₁ := by linarith only [hβ₁lo, hβ₁hi, hδ20]
   -- ### the triple product and its Estermann input
   set χc : DirichletCharacter ℂ (N * M) :=
     (χ.changeLevel (Nat.dvd_mul_right N M)) *
@@ -152,7 +152,7 @@ private lemma L_one_lower_of_aux {M : ℕ} [NeZero M] (χ₁ : DirichletCharacte
   have hMb1 : 1 ≤ Mbound := by
     rw [hMb]
     have hNM1 : (1 : ℝ) ≤ (N : ℝ) * (M : ℝ) := one_le_mul_of_one_le_of_one_le hN1 hM1
-    nlinarith [hNM1]
+    nlinarith only [hNM1, hβ₁lo, hδ20, hNM2r, hβ₁hi]
   have hfb : ∀ z ∈ Metric.closedBall (2 : ℂ) (3 / 2), ‖f z‖ ≤ Mbound := by
     intro z hz
     have h1 := norm_LFunction_disc χ hχne hz
@@ -188,48 +188,48 @@ private lemma L_one_lower_of_aux {M : ℕ} [NeZero M] (χ₁ : DirichletCharacte
     simp only [hf]
     rw [hβ₁z]
     simp
-  have hE := estermann_positivity hKpos hMb1 (by linarith : (19:ℝ)/20 ≤ β₁) hβ₁hi
+  have hE := estermann_positivity hKpos hMb1 (by linarith only [hβ₁lo, hδ20] : (19:ℝ)/20 ≤ β₁) hβ₁hi
     hfa hfb hK ⟨c0, hc0neg, hc0eq⟩ hr hr1 habsc hF hfσ
   -- ### bounds for the two remaining factors
   have hlogMpos : 0 < Real.log (2 * (M : ℝ)) := by
-    apply Real.log_pos; linarith
+    apply Real.log_pos; linarith only [hβ₁lo, hβ₁hi, hδ20, hM2r]
   have hlogNMpos : 0 < Real.log (2 * ((N * M : ℕ) : ℝ)) := by
     apply Real.log_pos
     have : (2:ℝ) ≤ ((N*M:ℕ) : ℝ) := by exact_mod_cast hNM2
-    linarith
+    linarith only [hβ₁lo, hβ₁hi, hδ20, this]
   have hNMlog : (2:ℝ) * ((N * M : ℕ) : ℝ) = (2:ℝ) * (N : ℝ) * (M : ℝ) := by
     push_cast; ring
   have hB1 : ‖LFunction χ₁ 1‖ ≤ 144 * Real.log (2 * (M : ℝ)) := by
     have h5 : 0 < 5 / (4 * Real.log (2 * (M:ℝ))) :=
       div_pos (by norm_num) (mul_pos (by norm_num) hlogMpos)
     have h := LFunction_norm_le_log_near_one χ₁ hχ₁ne (z := 1)
-      (by rw [Complex.one_re]; linarith) (by norm_num)
+      (by rw [Complex.one_re]; linarith only [h5]) (by norm_num)
     simpa using h
   have hB2 : ‖LFunction χc 1‖ ≤ 144 * Real.log (2 * ((N * M : ℕ) : ℝ)) := by
     have h5 : 0 < 5 / (4 * Real.log (2 * ((N*M:ℕ):ℝ))) :=
       div_pos (by norm_num) (mul_pos (by norm_num) hlogNMpos)
     have h := LFunction_norm_le_log_near_one χc hχcne (z := 1)
-      (by rw [Complex.one_re]; linarith) (by norm_num)
+      (by rw [Complex.one_re]; linarith only [h5]) (by norm_num)
     simpa using h
   have hB1log : 144 * Real.log (2 * (M : ℝ)) ≤ 144 * (M : ℝ) ^ (2 * lam) / lam := by
     have hlog : Real.log (2 * (M:ℝ)) ≤ (2 * (M:ℝ)) ^ lam / lam :=
       Real.log_le_rpow_div (by positivity) hlampos
     have h2M : ((2:ℝ) * (M:ℝ)) ^ lam ≤ ((M:ℝ)^2) ^ lam :=
-      Real.rpow_le_rpow (by positivity) (by nlinarith [hM2r]) hlampos.le
+      Real.rpow_le_rpow (by positivity) (by nlinarith only [hM2r]) hlampos.le
     have hM2lam : ((M:ℝ)^2) ^ lam = (M:ℝ) ^ (2 * lam) := by
       rw [natPow_rpow (M:ℝ) hMpos.le 2 lam]; norm_num
     have hfin : Real.log (2 * (M:ℝ)) ≤ (M:ℝ) ^ (2 * lam) / lam := by
       refine le_trans hlog ?_
       rw [div_le_div_iff_of_pos_right hlampos]
       exact le_trans h2M (le_of_eq hM2lam)
-    calc 144 * Real.log (2 * (M:ℝ)) ≤ 144 * ((M:ℝ)^(2*lam) / lam) := by linarith
+    calc 144 * Real.log (2 * (M:ℝ)) ≤ 144 * ((M:ℝ)^(2*lam) / lam) := by linarith only [hfin]
       _ = 144 * (M : ℝ) ^ (2 * lam) / lam := by ring
   have hB2log : 144 * Real.log (2 * ((N * M : ℕ) : ℝ)) ≤
       144 * (N:ℝ) ^ (2 * lam) * (M:ℝ) ^ (2 * lam) / lam := by
     have hlog : Real.log (2 * ((N*M:ℕ):ℝ)) ≤ (2 * ((N*M:ℕ):ℝ)) ^ lam / lam :=
       Real.log_le_rpow_div (by positivity) hlampos
     have h2NM : ((2:ℝ) * (N:ℝ) * (M:ℝ)) ≤ ((N:ℝ) * (M:ℝ))^2 := by
-      nlinarith [hNM2r]
+      nlinarith only [hNM2r]
     have hstep : ((2:ℝ) * (N:ℝ) * (M:ℝ)) ^ lam ≤ ((N:ℝ) * (M:ℝ)) ^ (2 * lam) := by
       calc ((2:ℝ) * (N:ℝ) * (M:ℝ)) ^ lam ≤ (((N:ℝ) * (M:ℝ))^2) ^ lam :=
             Real.rpow_le_rpow (by positivity) h2NM hlampos.le
@@ -245,7 +245,7 @@ private lemma L_one_lower_of_aux {M : ℕ} [NeZero M] (χ₁ : DirichletCharacte
       rw [div_le_div_iff_of_pos_right hlampos]
       exact le_trans hstep (le_of_eq hsplit)
     calc 144 * Real.log (2 * ((N*M:ℕ):ℝ))
-        ≤ 144 * ((N:ℝ)^(2*lam) * (M:ℝ)^(2*lam) / lam) := by linarith
+        ≤ 144 * ((N:ℝ)^(2*lam) * (M:ℝ)^(2*lam) / lam) := by linarith only [hfin]
       _ = 144 * (N:ℝ) ^ (2*lam) * (M:ℝ) ^ (2*lam) / lam := by ring
   -- ### the exponent bookkeeping
   have hM4 : ((M:ℝ) ^ (2 * lam)) ^ 2 = (M:ℝ) ^ (4 * lam) := by
@@ -292,11 +292,11 @@ private lemma L_one_lower_of_aux {M : ℕ} [NeZero M] (χ₁ : DirichletCharacte
       Real.mul_rpow hNpos.le hMpos.le
     rw [h3]
     have h4 : (14:ℝ) ^ (-(9*δ)) ≤ (14:ℝ) ^ (-(9*(1-β₁))) :=
-      Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
+      Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith only [hβ₁lo])
     have h5 : (N:ℝ) ^ (-(6*δ)) ≤ (N:ℝ) ^ (-(6*(1-β₁))) :=
-      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith)
+      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith only [hβ₁lo])
     have h6 : (M:ℝ) ^ (-(6*δ)) ≤ (M:ℝ) ^ (-(6*(1-β₁))) :=
-      Real.rpow_le_rpow_of_exponent_le hM1 (by linarith)
+      Real.rpow_le_rpow_of_exponent_le hM1 (by linarith only [hβ₁lo])
     calc (14:ℝ) ^ (-(9*δ)) * (N:ℝ) ^ (-(6*δ)) * (M:ℝ) ^ (-(6*δ))
         ≤ (14:ℝ) ^ (-(9*(1-β₁))) * (N:ℝ) ^ (-(6*(1-β₁))) * (M:ℝ) ^ (-(6*(1-β₁))) := by
           apply mul_le_mul (mul_le_mul h4 h5 (by positivity) (by positivity)) h6 (by positivity)
@@ -367,7 +367,7 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
   have hNpos : (0 : ℝ) < (N : ℝ) := lt_of_lt_of_le zero_lt_one hN1r
   set ℓ : ℝ := Real.log (2 * (N : ℝ)) with hℓ
   have h2Npos : (0 : ℝ) < 2 * (N : ℝ) := by positivity
-  have hℓpos : 0 < ℓ := by rw [hℓ]; exact Real.log_pos (by linarith)
+  have hℓpos : 0 < ℓ := by rw [hℓ]; exact Real.log_pos (by linarith only [hβ0, hβ1, hN1r])
   have hlogε : ℓ ≤ 2 ^ ε * (N : ℝ) ^ ε / ε := by
     have h := Real.log_le_rpow_div (le_of_lt h2Npos) hε
     rw [hℓ]
@@ -386,12 +386,12 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
     have hC : 1 / (2 ^ (ε + 1) * (N : ℝ) ^ ε / ε) ≤ 1 / (2 * ℓ) := by
       apply one_div_le_one_div_of_le
       · positivity
-      · have h1 : 2 * ℓ ≤ 2 * (2 ^ ε * (N : ℝ) ^ ε / ε) := by linarith [hlogε]
+      · have h1 : 2 * ℓ ≤ 2 * (2 ^ ε * (N : ℝ) ^ ε / ε) := by linarith only [hlogε]
         have h2 : (2 : ℝ) * (2 ^ ε * (N : ℝ) ^ ε / ε) =
             2 ^ (ε + 1) * (N : ℝ) ^ ε / ε := by
           rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2) ε 1, Real.rpow_one]
           ring
-        linarith [h1, h2]
+        linarith only [h1, h2, hlogε]
     refine le_trans (mul_le_mul_of_nonneg_right (min_le_left _ _)
       (Real.rpow_nonneg (Nat.cast_nonneg N) _)) ?_
     rw [hA, hB]
@@ -403,8 +403,8 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
         have hpos : 0 < 1 / ℓ := one_div_pos.mpr hℓpos
         have heq : 1 / (2 * ℓ) = (1 / 2) * (1 / ℓ) := by ring
         rw [heq]
-        nlinarith [hpos]
-      linarith
+        linarith only [hpos, hβ1, hcase, heq]
+      linarith only [hcase, hlt]
     have hmvt : ‖LFunction χ 1 - LFunction χ (β : ℂ)‖ ≤
         Cder * ℓ ^ 2 * ‖(1 : ℂ) - (β : ℂ)‖ := by
       have hconv : Convex ℝ (segment ℝ (β : ℂ) (1 : ℂ)) := convex_segment _ _
@@ -425,8 +425,8 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
           apply Complex.ext
           · simpa using hzre
           · simpa using hzim
-        have h1 : 1 - 1 / ℓ ≤ τ := by rw [hτ]; nlinarith [hθ.1, hβlow, hβ1]
-        have h2 : τ ≤ 1 := by rw [hτ]; nlinarith [hθ.2, hβ1]
+        have h1 : 1 - 1 / ℓ ≤ τ := by rw [hτ]; nlinarith only [hθ.1, hβlow, hβ1, hβ0, hθ]
+        have h2 : τ ≤ 1 := by rw [hτ]; nlinarith only [hθ.2, hβ1, hβ0, hθ]
         simpa only [hzeq] using hCder χ hχ hχprim τ h1 h2
       have h := Convex.norm_image_sub_le_of_norm_deriv_le hdiff hbdd hconv
         (left_mem_segment ℝ (β : ℂ) (1 : ℂ)) (right_mem_segment ℝ (β : ℂ) (1 : ℂ))
@@ -434,7 +434,7 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
     simp only [hz, sub_zero] at hmvt
     have hcast : (1 : ℂ) - (β : ℂ) = ((1 - β : ℝ) : ℂ) := by push_cast; ring
     have hnorm1 : ‖(1 : ℂ) - (β : ℂ)‖ = 1 - β := by
-      rw [hcast, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]
+      rw [hcast, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith only [hβ1])]
     simp only [hnorm1] at hmvt
     have hCpos : 0 < Cder * ℓ ^ 2 := by positivity
     have h1 : c * (N : ℝ) ^ (-η) / (Cder * ℓ ^ 2) ≤ 1 - β := by
@@ -472,7 +472,7 @@ private lemma zero_bound_of_L_one {Cder : ℝ} (hCderpos : 0 < Cder)
         rw [mul_div_cancel₀ _ (by positivity : (ε:ℝ)^2 ≠ 0)] at h4
         exact h4
       have h5 : (N:ℝ) ^ (ε/4) ≤ (N:ℝ) ^ (ε - η) :=
-        Real.rpow_le_rpow_of_exponent_le hN1r (by linarith)
+        Real.rpow_le_rpow_of_exponent_le hN1r (by linarith only [hη, hη2])
       calc ε ^ 2 * ℓ ^ 2 * (N:ℝ) ^ (-ε)
           ≤ (64 * 2 ^ (ε/4) * (N:ℝ)^(ε-η)) * (N:ℝ)^(-ε) := by
             apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg (Nat.cast_nonneg N) _)
@@ -500,13 +500,13 @@ private theorem siegel_small {ε : ℝ} (hε : 0 < ε) (hε5 : ε ≤ 1 / 5) :
       DirichletCharacter.LFunction χ (β : ℂ) = 0 → C * (N : ℝ) ^ (-ε) ≤ 1 - β := by
   set δ : ℝ := ε / 100 with hδdef
   have hδpos : 0 < δ := by rw [hδdef]; positivity
-  have hδ20 : δ ≤ 1 / 20 := by rw [hδdef]; linarith
+  have hδ20 : δ ≤ 1 / 20 := by rw [hδdef]; linarith only [hε5]
   set η : ℝ := ε / 2 with hηdef
   have hηpos : 0 < η := by rw [hηdef]; positivity
-  have hη2 : 2 * η ≤ ε := by rw [hηdef]; linarith
+  have hη2 : 2 * η ≤ ε := by rw [hηdef]; linarith only []
   set lam : ℝ := ε / 8 with hlamdef
   have hlampos : 0 < lam := by rw [hlamdef]; positivity
-  have h6δ2lam : 6 * δ + 2 * lam ≤ η := by rw [hδdef, hlamdef, hηdef]; linarith
+  have h6δ2lam : 6 * δ + 2 * lam ≤ η := by rw [hδdef, hlamdef, hηdef]; linarith only [hε]
   obtain ⟨Cder, hCderpos, hCder⟩ := LFunction_deriv_bound_near_one_uniform
   by_cases hS : ∃ (M : ℕ) (_ : NeZero M) (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ),
       χ₁ * χ₁ = 1 ∧ χ₁.IsPrimitive ∧ χ₁ ≠ 1 ∧ 1 - δ ≤ β₁ ∧ β₁ < 1 ∧
@@ -583,7 +583,7 @@ private theorem siegel_small {ε : ℝ} (hε : 0 < ε) (hε5 : ε ≤ 1 / 5) :
         rw [hcE]
         refine le_trans ?_ hbound
         apply mul_le_mul_of_nonneg_left _ (by positivity)
-        exact Real.rpow_le_rpow_of_exponent_le hN1r (by linarith)
+        exact Real.rpow_le_rpow_of_exponent_le hN1r (by linarith only [hδdef, hδpos, hηdef, hlamdef])
       have hle : min cE cF * (N : ℝ) ^ (-η) ≤ cE * (N : ℝ) ^ (-η) :=
         mul_le_mul_of_nonneg_right (min_le_left _ _)
           (Real.rpow_nonneg (Nat.cast_nonneg N) _)
@@ -596,11 +596,11 @@ private theorem siegel_small {ε : ℝ} (hε : 0 < ε) (hε5 : ε ≤ 1 / 5) :
     · calc δ * (N : ℝ) ^ (-ε) ≤ δ * 1 := by
             apply mul_le_mul_of_nonneg_left _ hδpos.le
             exact Real.rpow_le_one_of_one_le_of_nonpos
-              (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)) (by linarith)
+              (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)) (by linarith only [hε])
         _ = δ := mul_one δ
         _ ≤ 1 - β := hcase
     · push Not at hcase
-      exact (hS ⟨N, hN, χ, β, hχsq, hχprim, hχne, by linarith, hβ1, hz⟩).elim
+      exact (hS ⟨N, hN, χ, β, hχsq, hχprim, hχne, by linarith only [hcase], hβ1, hz⟩).elim
 
 /-! ## The main theorem -/
 
@@ -620,7 +620,7 @@ theorem LFunction_realZero_siegel_uniform :
   refine le_trans ?_ (hC N χ hχprim hχne hχsq β hβ0 hβ1 hz)
   apply mul_le_mul_of_nonneg_left _ hCpos.le
   exact Real.rpow_le_rpow_of_exponent_le
-    (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)) (by linarith)
+    (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)) (by linarith only [hε'le])
 
 end
 

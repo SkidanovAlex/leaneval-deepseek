@@ -17,8 +17,6 @@ Equivalently: for a unimodal `f` with finite `∫|f'|` one has `Σ'_n f(n) ≤ �
 and `∫|f'| = 2f(x₀) − f(0⁺) − f(∞) ≤ 2f(x₀)`.
 -/
 import Mathlib
-import Submission.Work.ZeroDensity.Ingham.sum_range_ceil_le_integral_add
-import Submission.Work.ZeroDensity.Ingham.sum_Ico_ceil_le_integral_add
 
 open MeasureTheory Set
 

@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
+import Submission.Commons.Analysis.Complex.Gamma_vertical_norm_bounds
+import Submission.Commons.NumberTheory.Zeta.zeta_norm_le_const_of_three_le_re
 
 namespace Work.LinnikAreas.Zeta1Aux
 

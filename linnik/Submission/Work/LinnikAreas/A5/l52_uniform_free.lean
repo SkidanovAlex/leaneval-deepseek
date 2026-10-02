@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Commons.NumberTheory.Linnik.explicitFormula_chi_gen_wide
 import Submission.Commons.NumberTheory.Linnik.lemma5_2_sigma_ge_one
 import Submission.Commons.NumberTheory.DirichletCharacter.far_zero_invSq_sum_uniform_delta
 import Submission.Commons.NumberTheory.Linnik.smoothed_vonMangoldt_tsum_re
@@ -32,7 +31,7 @@ private lemma near_mem_closedBall {t : ℝ} {u : ℂ} {δ : ℝ} (hδ1 : δ ≤ 
     calc ‖(1 : ℂ) + (t : ℂ) * Complex.I‖ ≤ ‖(1 : ℂ)‖ + ‖(t : ℂ) * Complex.I‖ := norm_add_le _ _
       _ = 1 + |t| := by
           rw [norm_one, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]
-  linarith
+  linarith only [hδ1, h, h1, h2]
 
 /-- The univ-divisor of the completed L-function vanishes only at zeros, which lie in the strip. -/
 private lemma div_univ_strip {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
@@ -126,7 +125,7 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
   refine ⟨100000, by norm_num, ?_⟩
   intro B hB N _ χ hχ hχprim f hcont hsupp hf2 hBnd L hL
   intro s hsre hLs
-  have hLpos : (0:ℝ) < L := by linarith
+  have hLpos : (0:ℝ) < L := by linarith only [hL]
   have hlogL : 0 < Real.log L := Real.log_pos hL
   have hlogLnn : (0:ℝ) ≤ Real.log L := hlogL.le
   -- The exponent range
@@ -134,27 +133,27 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
   have hδnn : 0 ≤ δ := by rw [hδdef]; positivity
   have hlogLt : Real.log L < L^2/4 := by
     rcases eq_or_ne L 2 with h2 | h2
-    · rw [h2]; nlinarith [Real.log_two_lt_d9]
-    · have h1 : Real.log L < L - 1 := Real.log_lt_sub_one_of_pos hLpos (by linarith)
+    · rw [h2]; linarith only [Real.log_two_lt_d9]
+    · have h1 : Real.log L < L - 1 := Real.log_lt_sub_one_of_pos hLpos (by linarith only [hL])
       have h3 : L - 1 < L^2/4 := by
         have h4 : (0:ℝ) < (L-2)^2 := by positivity
-        nlinarith
-      linarith
+        linarith only [h4]
+      linarith only [h1, h3]
   have hδpos : 0 < δ := by rw [hδdef]; positivity
   have hδhalf : δ < 1/2 := by
     rw [hδdef, div_lt_iff₀ hLpos]
     have hsq : Real.sqrt (Real.log L) < L/2 := by
-      rw [Real.sqrt_lt' (by linarith : (0:ℝ) < L/2)]
-      nlinarith [hlogLt]
-    linarith
+      rw [Real.sqrt_lt' (by linarith only [hL] : (0:ℝ) < L/2)]
+      linarith only [hlogLt]
+    linarith only [hsq]
   set α : ℝ := 1 + 2*δ with hαdef
-  have hα1 : 1 < α := by rw [hαdef]; linarith
-  have hα2 : α < 2 := by rw [hαdef]; linarith
+  have hα1 : 1 < α := by rw [hαdef]; linarith only [hδpos]
+  have hα2 : α < 2 := by rw [hαdef]; linarith only [hδhalf]
   have hsr : s.re - 1 ≤ δ := (abs_le.mp hsre).2
   have hsrg : -(δ) ≤ s.re - 1 := (abs_le.mp hsre).1
-  have hασ : s.re < α := by rw [hαdef]; linarith
-  have hsrepos : 0 < s.re := by linarith
-  have hsre_half : (1:ℝ)/2 ≤ s.re := by linarith
+  have hασ : s.re < α := by rw [hαdef]; linarith only [hδpos, hsr]
+  have hsrepos : 0 < s.re := by linarith only [hδpos, hδhalf, hsrg]
+  have hsre_half : (1:ℝ)/2 ≤ s.re := by linarith only [hδhalf, hsrg]
   have hnorm_half : (1:ℝ)/2 ≤ ‖s‖ := le_trans hsre_half (Complex.re_le_norm s)
   -- abbreviations
   set lg : ℝ := Real.log (2 + ‖s‖) with hlgdef
@@ -162,12 +161,12 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
     rw [hlgdef]
     apply Real.log_pos
     have : (0:ℝ) ≤ ‖s‖ := norm_nonneg s
-    linarith
+    linarith only [hδpos, hδhalf, hnorm_half]
   have hlg2 : Real.log 2 ≤ lg := by
     rw [hlgdef]
     apply Real.log_le_log (by norm_num)
     have : (0:ℝ) ≤ ‖s‖ := norm_nonneg s
-    linarith
+    linarith only [hδpos, hδhalf, hnorm_half]
   set A : ℝ := 3 * B * x₀ + 2 * ‖f 0‖ / x₀ with hAdef
   have hAnn : 0 ≤ A := by rw [hAdef]; positivity
   -- the three ingredients
@@ -177,10 +176,10 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
   have hshift :=
     Commons.NumberTheory.DirichletCharacter.regularized_divisor_contour_shift_gen
       (x₀ := x₀) (B := B) hx₀ hB hcont hf2 hBnd hsupp χ hχ hχprim hL hα1 hα2 hασ
-      (by linarith : -(1/2:ℝ) < s.re) hLs
+      (by linarith only [hδpos, hδhalf, hsrg] : -(1/2:ℝ) < s.re) hLs
   have hleft :=
     Commons.Analysis.Complex.regularized_leftEdge_bound_alt
-      (x₀ := x₀) (B := B) hx₀ hB hcont hf2 hBnd hsupp χ hχ hχprim hL (by linarith : (0:ℝ) < s.re + 1/2)
+      (x₀ := x₀) (B := B) hx₀ hB hcont hf2 hBnd hsupp χ hχ hχprim hL (by linarith only [hδpos, hδhalf, hsrg] : (0:ℝ) < s.re + 1/2)
   -- name the three integrals
   set Ia : ℂ := ∫ τ : ℝ, logDeriv (DirichletCharacter.LFunction χ) ((α : ℂ) + (τ : ℂ) * Complex.I) *
       ((∫ t in (0:ℝ)..x₀,
@@ -244,13 +243,13 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
   -- the bound
   have hlog2 : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
   have hlg_half : (1:ℝ)/2 ≤ lg := by
-    have h := Real.log_le_log (by norm_num : (0:ℝ) < 2) (by have := norm_nonneg s; linarith : (2:ℝ) ≤ 2 + ‖s‖)
+    have h := Real.log_le_log (by norm_num : (0:ℝ) < 2) (by have := norm_nonneg s; linarith only [hδpos, hδhalf, hnorm_half] : (2:ℝ) ≤ 2 + ‖s‖)
     rw [hlgdef]
-    linarith [Real.log_two_gt_d9]
+    linarith only [Real.log_two_gt_d9, hδpos, hδhalf, hlg2]
   have h1s : 1 / ‖s‖^2 ≤ 4 := by
-    have h2 : (1:ℝ)/4 ≤ ‖s‖^2 := by nlinarith [hnorm_half, norm_nonneg s]
+    have h2 : (1:ℝ)/4 ≤ ‖s‖^2 := by nlinarith only [hnorm_half, norm_nonneg s]
     rw [div_le_iff₀ (by positivity : (0:ℝ) < ‖s‖^2)]
-    nlinarith
+    linarith only [h2]
   have hALnn : (0:ℝ) ≤ A / L := by positivity
   have heq1 : (L / (2 * Real.pi)) * (A / L^2 * 2000 * (lg + 1))
       = (A / L) * (1000 / Real.pi) * (lg + 1) := by
@@ -264,7 +263,7 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
       rw [Real.sqrt_le_iff]
       refine ⟨hLpos.le, ?_⟩
       have := Real.log_le_sub_one_of_pos hLpos
-      nlinarith [hLpos, sq_nonneg (L - 1)]
+      linarith only [hLpos, sq_nonneg (L - 1), hlogL, hlogLt]
     have hspos : 0 < Real.sqrt (Real.log L) := Real.sqrt_pos.mpr hlogL
     have h1 : (Real.log L) ^ (-(1/2 : ℝ)) = (Real.sqrt (Real.log L))⁻¹ := by
       rw [Real.rpow_neg hlogLnn, Real.sqrt_eq_rpow]
@@ -308,27 +307,27 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
     have h1 : (0:ℝ) ≤ ‖f 0‖ / x₀ := by positivity
     have h2 : (2:ℝ) * ‖f 0‖ / x₀ = 2 * (‖f 0‖ / x₀) := by ring
     rw [h2]
-    linarith
+    linarith only [hδpos, hδhalf, h1]
   have hALbound : A / L ≤ 3 * Q * M := by
     have h1 : A / L ≤ 3 * Q / L := by
-      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith [hA3]
+      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith only [hA3, hL]
     have h2 : 3 * Q / L ≤ 3 * Q * M := by
       rw [div_eq_mul_inv, hMdef]
       exact mul_le_mul_of_nonneg_left hinvL (by positivity)
-    linarith
+    linarith only [h1, h2]
   have hstep1 : (L / (2 * Real.pi)) * (A / L^2 * 2000 * (lg + 1)) + L * (A / (L^2 * ‖s‖^2))
       ≤ (A / L) * P * lg := by
     rw [heq1, heq2]
     have h1 : (A / L) * (1000 / Real.pi) * (lg + 1) ≤ (A / L) * (1000 / Real.pi) * (3 * lg) := by
       have hc : (0:ℝ) ≤ (A / L) * (1000 / Real.pi) := by positivity
-      have h5 : lg + 1 ≤ 3 * lg := by linarith
+      have h5 : lg + 1 ≤ 3 * lg := by linarith only [hlg_half]
       exact mul_le_mul_of_nonneg_left h5 hc
     have h2 : (A / L) * (1 / ‖s‖^2) ≤ (A / L) * (12 * lg) := by
-      have h4 : 1 / ‖s‖^2 ≤ 12 * lg := by linarith
+      have h4 : 1 / ‖s‖^2 ≤ 12 * lg := by linarith only [hδpos, hδhalf, hlg_half, h1s]
       exact mul_le_mul_of_nonneg_left h4 hALnn
     have h3 : (A / L) * (1000 / Real.pi) * (3 * lg) + (A / L) * (12 * lg) = (A / L) * P * lg := by
       rw [hPdef]; ring
-    linarith [h1, h2, h3.le, h3.ge]
+    linarith only [h1, h2, h3.le, h3.ge, h3]
   have hstep2 : (A / L) * P * lg ≤ 3 * P * Q * M * lg := by
     have hc : (0:ℝ) ≤ P * lg := by rw [hPdef]; positivity
     have h := mul_le_mul_of_nonneg_right hALbound hc
@@ -340,9 +339,9 @@ private theorem crux_wide_uniform (x₀ : ℝ) (hx₀ : 0 < x₀) :
     have h1 : 3 * P ≤ 100000 := by
       rw [hPdef]
       have h2 : 3000 / Real.pi < 1000 := by
-        rw [div_lt_iff₀ (by linarith : (0:ℝ) < Real.pi)]
-        nlinarith
-      linarith
+        rw [div_lt_iff₀ (by linarith only [hδpos, hδhalf, hpi] : (0:ℝ) < Real.pi)]
+        linarith only [hpi]
+      linarith only [hδpos, hδhalf, h2]
     have hc : (0:ℝ) ≤ Q * M * lg := by positivity
     have h := mul_le_mul_of_nonneg_right h1 hc
     calc 3 * P * Q * M * lg = (3 * P) * (Q * M * lg) := by ring
@@ -432,19 +431,19 @@ private lemma numeric_core_wide {x₀ B f0 ε L α spn Bg Ag Cef cF D0 D2 Kc Pc 
     (Ag / L) * (cF * (L + Real.log (2 + spn) + 2))
       + Cef * (Bg * x₀ + |f0| / x₀ + 1) * (Real.log L) ^ (-(1/2 : ℝ)) * Real.log (2 + spn)
       ≤ f0 * (ε / 2) * L := by
-  have hLpos : 0 < L := by linarith
-  have hL1 : 1 ≤ L := by linarith
-  have hlogLnn : 0 ≤ Real.log L := Real.log_nonneg (by linarith)
+  have hLpos : 0 < L := by linarith only [hL5]
+  have hL1 : 1 ≤ L := by linarith only [hL5]
+  have hlogLnn : 0 ≤ Real.log L := Real.log_nonneg (by linarith only [hL5])
   have hlogL1 : 1 ≤ Real.log L := by
-    have hexp1 : Real.exp 1 < 5 := by linarith [Real.exp_one_lt_three]
+    have hexp1 : Real.exp 1 < 5 := by linarith only [Real.exp_one_lt_three]
     have h5 : (1:ℝ) ≤ Real.log 5 := by
       have h := Real.log_le_log (Real.exp_pos 1) hexp1.le
       rwa [Real.log_exp] at h
     have h := Real.log_le_log (by norm_num : (0:ℝ) < 5) hL5
-    linarith
-  have hlogLpos : 0 < Real.log L := by linarith
-  have hu0 : (0:ℝ) ≤ 1 + Real.log L := by linarith
-  have hu1 : (1:ℝ) ≤ 1 + Real.log L := by linarith
+    linarith only [h5, h]
+  have hlogLpos : 0 < Real.log L := by linarith only [hlogL1]
+  have hu0 : (0:ℝ) ≤ 1 + Real.log L := by linarith only [hlogL1]
+  have hu1 : (1:ℝ) ≤ 1 + Real.log L := by linarith only [hlogL1]
   have hlog3gt1 : (1:ℝ) < Real.log 3 := by
     calc (1:ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
       _ < Real.log 3 := Real.log_lt_log (Real.exp_pos 1) Real.exp_one_lt_three
@@ -470,12 +469,12 @@ private lemma numeric_core_wide {x₀ B f0 ε L α spn Bg Ag Cef cF D0 D2 Kc Pc 
   have hD0ge1 : 1 ≤ D0 := by rw [hD0']; linarith only [hB, hY0, hZ0]
   have hD0nn : 0 ≤ D0 := by linarith only [hD0ge1]
   have hD2nn : 0 ≤ D2 := by rw [hD2]; positivity
-  have hlogspn0 : 0 ≤ Real.log (2 + spn) := Real.log_nonneg (by linarith)
+  have hlogspn0 : 0 ≤ Real.log (2 + spn) := Real.log_nonneg (by linarith only [hspn0])
   have hlogsp : Real.log (2 + spn) ≤ 3 * (1 + Real.log L) := by
     have h1 : 2 + spn ≤ 4 + 10 * L := by linarith only [hspn]
     have hB15 : (15:ℝ) ≤ L ^ 2 - 10 := by nlinarith only [hL5]
     have hC75 : (75:ℝ) ≤ L * (L ^ 2 - 10) := by
-      have h := mul_le_mul hL5 hB15 (by norm_num : (0:ℝ) ≤ 15) (by linarith : (0:ℝ) ≤ L)
+      have h := mul_le_mul hL5 hB15 (by norm_num : (0:ℝ) ≤ 15) (by linarith only [hL5] : (0:ℝ) ≤ L)
       norm_num at h
       exact h
     have hD75 : L * (L ^ 2 - 10) = L ^ 3 - 10 * L := by ring
@@ -495,7 +494,7 @@ private lemma numeric_core_wide {x₀ B f0 ε L α spn Bg Ag Cef cF D0 D2 Kc Pc 
     have hs2 : (Real.sqrt (Real.log L)) ^ 2 = Real.log L := Real.sq_sqrt hlogLnn
     have h2s : 2 * Real.sqrt (Real.log L) ≤ 2 * Real.log L := by linarith only [hsle]
     have h2 : (Real.sqrt (Real.log L) + 1) ^ 2 ≤ 4 * (1 + Real.log L) := by
-      nlinarith only [hs2, h2s, hlogLnn]
+      linarith only [hs2, h2s, hlogLnn]
     calc |α| ^ 2 ≤ (Real.sqrt (Real.log L) + 1) ^ 2 := pow_le_pow_left₀ (abs_nonneg _) ha 2
       _ ≤ 4 * (1 + Real.log L) := h2
   have hfac : W ≤ 4 * (1 + Real.log L) * (B + 2 * Y + Z + 1) := by
@@ -520,7 +519,7 @@ private lemma numeric_core_wide {x₀ B f0 ε L α spn Bg Ag Cef cF D0 D2 Kc Pc 
   have hfac2 : 1 ≤ 4 * Q * (1 + Real.log L) * D0 := by
     have h3 : 1 ≤ Q * (1 + Real.log L) * D0 :=
       one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hQ1 hu1) hD0ge1
-    nlinarith only [h3]
+    linarith only [h3]
   have hBg_le : Bg ≤ 4 * Q * (1 + Real.log L) * D0 := by
     rw [hBg', hD0']
     have hstep : Real.exp (|α| * x₀) * W ≤ Q * (4 * (1 + Real.log L) * (B + 2 * Y + Z + 1)) :=
@@ -687,7 +686,7 @@ theorem l52_uniform_free (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     have h1 : 0 ≤ B * x₀ := mul_nonneg hB hx₀.le
     have h2 : 0 ≤ B * x₀ ^ 2 := mul_nonneg hB (sq_nonneg x₀)
     have h3 : 0 ≤ 1 / x₀ := by positivity
-    linarith
+    linarith only [hB, hδ0, hδ1, h1, h2, h3]
   set D2 : ℝ := 3 * x₀ + 2 / x₀ with hD2def
   have hD2nn : 0 ≤ D2 := by rw [hD2def]; positivity
   have hlog3gt1 : (1:ℝ) < Real.log 3 := by
@@ -721,7 +720,7 @@ theorem l52_uniform_free (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
   have hLpos : 0 < L := by linarith only [hL5]
   have hlogL1 : 1 ≤ Real.log L := by
     have h5 : (1:ℝ) ≤ Real.log 5 := by
-      have h := Real.log_le_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_three] : Real.exp 1 ≤ 5)
+      have h := Real.log_le_log (Real.exp_pos 1) (by linarith only [Real.exp_one_lt_three, hδ0, hδ1] : Real.exp 1 ≤ 5)
       rwa [Real.log_exp] at h
     have h := Real.log_le_log (by norm_num : (0:ℝ) < 5) hL5
     linarith only [h5, h]
@@ -839,7 +838,7 @@ theorem l52_uniform_free (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
         = Tg.re + L * Sz.re + g 0 * (logDeriv (DirichletCharacter.LFunction χ) sp).re := by
       simp only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero,
         zero_mul, sub_zero]
-    linarith [h1, h2.le]
+    linarith only [h1, h2.le, _inst, h2]
   have hTg_eq : Tg.re
       = ∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) * ((χ (n : ZMod N) / (n : ℂ) ^ s).re) * f (Real.log n / L) := by
     rw [hTgdef]
@@ -1128,7 +1127,7 @@ theorem l52_uniform_free (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     rw [tsum_mul_left] at h2
     have h4 : (0:ℝ) ≤ Ag / L ^ 2 := div_nonneg hAgnn (by positivity)
     have h5 := mul_le_mul_of_nonneg_left hfarw_bd h4
-    linarith [h1, h2, h5]
+    linarith only [h1, h2, h5]
   -- ===== the numeric absorption =====
   set E0 : ℝ := Real.exp (x₀ * Real.sqrt (Real.log L)) * (1 + Real.log L) * D0 with hE0def
   have hnum : (Ag / L) * (cF' * (L + Real.log (2 + ‖sp‖) + 2)) + Eef ≤ f 0 * (ε / 2) * L := by

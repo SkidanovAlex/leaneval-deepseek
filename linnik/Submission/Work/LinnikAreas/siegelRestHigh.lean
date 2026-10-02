@@ -24,7 +24,7 @@ theorem zeroMult_re_pos {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {ρ
     push_neg at hc
     have hΛ' : completedRiemannZeta (1 - ρ) = 0 := by
       rw [completedRiemannZeta_one_sub ρ]; exact hΛ
-    have hs1 : 1 ≤ (1 - ρ).re := by simp; linarith
+    have hs1 : 1 ≤ (1 - ρ).re := by simp; linarith only [hc]
     have hs0 : (1 - ρ) ≠ 0 := by
       intro h0
       have h1 : ρ = 1 := by linear_combination -h0
@@ -49,7 +49,7 @@ lemma high_kernel_le {q : ℕ} [NeZero q] (hq : 1 < q) (z : DirichletCharacter �
       ≤ 4 * ((zeroMult z.1 z.2 : ℝ) * Real.exp (-(49 / 10) * lamOf q z.2))
           / (|z.2.im| * Real.log q) ^ 2 := by
   have hlog : 0 < Real.log q := Real.log_pos (by exact_mod_cast hq)
-  have himpos : 0 < |z.2.im| := by linarith
+  have himpos : 0 < |z.2.im| := by linarith only [hhigh]
   have hTpos : 0 < |z.2.im| * Real.log q := mul_pos himpos hlog
   have hρ : z.2.re < 1 := boxMaxZeroAux.zeroMult_re_lt_one z.1 hzm
   have hbound := Siegel.Hk_norm_le_invSq_lamOf (q := q) (L := 11 / 2) (K := 3 / 10)
@@ -103,15 +103,15 @@ lemma abel_lam {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharacter ℂ
   have hcs0 : 0 ≤ cs := le_max_right _ _
   have hcslt : cs < 49 / 10 := max_lt hc (by norm_num)
   have hr0 : 0 ≤ Real.exp (cs - 49 / 10) := Real.exp_nonneg _
-  have hr1 : Real.exp (cs - 49 / 10) < 1 := Real.exp_lt_one_iff.mpr (by linarith)
+  have hr1 : Real.exp (cs - 49 / 10) < 1 := Real.exp_lt_one_iff.mpr (by linarith only [hcslt])
   set K : ℕ := Nat.ceil (Real.log q) + 1 with hKdef
   have hlam0 : ∀ z ∈ S, 0 < lamOf q z.2 := fun z hz => by
     have h1 : z.2.re < 1 := boxMaxZeroAux.zeroMult_re_lt_one z.1 (hzm z hz)
-    rw [lamOf]; exact mul_pos (by linarith) hlog
+    rw [lamOf]; exact mul_pos (by linarith only [h1]) hlog
   have hlamlt : ∀ z ∈ S, lamOf q z.2 < Real.log q := fun z hz => by
     have h1 : 0 < z.2.re := zeroMult_re_pos z.1 (hzm z hz)
     rw [lamOf]
-    have h2 : 1 - z.2.re < 1 := by linarith
+    have h2 : 1 - z.2.re < 1 := by linarith only [h1]
     calc (1 - z.2.re) * Real.log q < 1 * Real.log q :=
           mul_lt_mul_of_pos_right h2 hlog
       _ = Real.log q := by ring
@@ -123,7 +123,7 @@ lemma abel_lam {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharacter ℂ
     have h2 : (Nat.floor (lamOf q z.2) : ℝ) < (Nat.ceil (Real.log q) : ℝ) := by
       have h3 : lamOf q z.2 < (Nat.ceil (Real.log q) : ℝ) :=
         lt_of_lt_of_le (hlamlt z hz) (Nat.le_ceil _)
-      linarith
+      linarith only [h1, h3]
     have h4 : Nat.floor (lamOf q z.2) < Nat.ceil (Real.log q) := Nat.cast_lt.mp h2
     rw [hKdef]; omega
   rw [← Finset.sum_fiberwise_of_maps_to hgmem
@@ -148,7 +148,7 @@ lemma abel_lam {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharacter ℂ
       have hkl : (k : ℝ) ≤ lamOf q z.2 := by
         rw [← hgk]; exact Nat.floor_le (le_of_lt (hlam0 z hzf))
       have hexp : Real.exp (-(49 / 10) * lamOf q z.2) ≤ Real.exp (-(49 / 10) * k) := by
-        rw [Real.exp_le_exp]; nlinarith
+        rw [Real.exp_le_exp]; linarith only [hkl]
       calc (zeroMult z.1 z.2 : ℝ) * Real.exp (-(49 / 10) * lamOf q z.2)
           ≤ (zeroMult z.1 z.2 : ℝ) * Real.exp (-(49 / 10) * k) :=
             mul_le_mul_of_nonneg_left hexp (Nat.cast_nonneg _)
@@ -163,7 +163,7 @@ lemma abel_lam {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharacter ℂ
         have hgk := (Finset.mem_filter.mp hz).2
         have h1 : lamOf q z.2 < (k : ℝ) + 1 := by
           have hh := Nat.lt_floor_add_one (lamOf q z.2)
-          rw [hgk] at hh; push_cast at hh ⊢; linarith
+          rw [hgk] at hh; push_cast at hh ⊢; linarith only [hh]
         exact le_min h1.le (le_of_lt (hlamlt z hzf))
       · intro z hz; exact him z (Finset.mem_filter.mp hz).1
       · intro z hz; exact hexc z (Finset.mem_filter.mp hz).1
@@ -198,7 +198,7 @@ lemma abel_lam {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharacter ℂ
         = Real.exp (cs + ((k : ℝ) * (cs - 49 / 10))) := by
       rw [← Real.exp_nat_mul, ← Real.exp_add]
     rw [hpow, ← Real.exp_add, Real.exp_le_exp]
-    nlinarith [hkey]
+    linarith only [hkey]
   have hsum : (∑ k ∈ Finset.range K, Real.exp (-(49 / 10) * k)
         * Real.exp (c * min ((k : ℝ) + 1) (Real.log q)))
       ≤ Real.exp cs * (1 - Real.exp (cs - 49 / 10))⁻¹ := by
@@ -265,9 +265,9 @@ lemma high_finset_bound {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
   have hlogq1 : 1 ≤ 2 * Real.log q := by
     have h1 : Real.log 2 ≤ Real.log q := Real.log_le_log (by norm_num) (by exact_mod_cast hq)
     have h2 : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
-    linarith
+    linarith only [hlog, h1, h2]
   have hrm : (2 : ℝ) ^ (c' - 2) < 1 := by
-    have h1 : 1 < (2 : ℝ) ^ (2 - c') := Real.one_lt_rpow (by norm_num) (by linarith)
+    have h1 : 1 < (2 : ℝ) ^ (2 - c') := Real.one_lt_rpow (by norm_num) (by linarith only [hc'])
     rw [show c' - 2 = -(2 - c') by ring, Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)]
     exact inv_lt_one_of_one_lt₀ h1
   have hrm0 : 0 ≤ (2 : ℝ) ^ (c' - 2) := Real.rpow_nonneg (by norm_num) _
@@ -275,7 +275,7 @@ lemma high_finset_bound {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
   have hD0 : 0 ≤ D := by
     rw [hDdef]
     have h1 : Real.exp (max c 0 - 49 / 10) < 1 := Real.exp_lt_one_iff.mpr (by
-      have := max_lt hc (by norm_num : (0 : ℝ) < 49 / 10); linarith)
+      have := max_lt hc (by norm_num : (0 : ℝ) < 49 / 10); linarith only [this])
     positivity
   -- step 1: kernel bound
   have hker : (∑ z ∈ S, (zeroMult z.1 z.2 : ℝ)
@@ -304,7 +304,7 @@ lemma high_finset_bound {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
           push_cast at h2
           simpa [jj] using h2
         have h3 : (Nat.floor |z.2.im| : ℝ) ≤ |z.2.im| := Nat.floor_le (abs_nonneg _)
-        linarith
+        linarith only [h1, h3]
       have h3 : (4 : ℝ) ^ (jj z) = ((2 : ℝ) ^ (jj z)) ^ 2 := by
         rw [show (4 : ℝ) = (2 : ℝ) ^ 2 by norm_num]
         exact (pow_mul (2 : ℝ) 2 (jj z)).symm.trans (pow_mul' (2 : ℝ) 2 (jj z))
@@ -351,7 +351,7 @@ lemma high_finset_bound {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
       have h2 : (2 : ℝ) ≤ (2 : ℝ) ^ (j + 1) := by
         calc (2 : ℝ) = (2 : ℝ) ^ 1 := by ring
           _ ≤ (2 : ℝ) ^ (j + 1) := pow_le_pow_right₀ (by norm_num) (by omega)
-      nlinarith [hlogq1, h2, hlog]
+      nlinarith only [hlogq1, h2, hlog]
     have him : ∀ z ∈ S.filter (fun z => jj z = j),
         |z.2.im| * Real.log q ≤ (2 : ℝ) ^ (j + 1) * Real.log q := by
       intro z hz
@@ -367,7 +367,7 @@ lemma high_finset_bound {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
           have h3 : Nat.floor |z.2.im| + 1 ≤ 2 ^ (j + 1) := h1
           exact_mod_cast h3
         have h4 : |z.2.im| < (Nat.floor |z.2.im| : ℝ) + 1 := Nat.lt_floor_add_one _
-        linarith
+        linarith only [h2, h4]
       exact mul_le_mul_of_nonneg_right hlt.le hlog.le
     have habel := abel_lam hq χ₁ β₁ hC hlam1 hc hcnt hT0
       (S.filter (fun z => jj z = j))
@@ -420,13 +420,13 @@ theorem siegelRestHigh (hden : Work.LinnikAreas.Siegel.PairDensityHeightInput) :
         ≤ C * Work.LinnikContract.lamOf q (β₁ : ℂ) * (Real.log q) ^ e := by
   obtain ⟨Ch, hChpos, c, hc, c', hc', q₀h, hcnt⟩ := hden
   have hstep : Real.exp (max c 0 - 49 / 10) < 1 := Real.exp_lt_one_iff.mpr (by
-    have := max_lt hc (by norm_num : (0 : ℝ) < 49 / 10); linarith)
+    have := max_lt hc (by norm_num : (0 : ℝ) < 49 / 10); linarith only [this])
   have hr1 : (2 : ℝ) ^ (c' - 2) < 1 := by
-    have h1 : 1 < (2 : ℝ) ^ (2 - c') := Real.one_lt_rpow (by norm_num) (by linarith)
+    have h1 : 1 < (2 : ℝ) ^ (2 - c') := Real.one_lt_rpow (by norm_num) (by linarith only [hc'])
     rw [show c' - 2 = -(2 - c') by ring, Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)]
     exact inv_lt_one_of_one_lt₀ h1
   refine ⟨4 * Ch * (Real.exp (max c 0) * (1 - Real.exp (max c 0 - 49 / 10))⁻¹)
-      * ((2 : ℝ) ^ c' * (1 - (2 : ℝ) ^ (c' - 2))⁻¹), ?_, c' - 2, by linarith, max q₀h 2, ?_⟩
+      * ((2 : ℝ) ^ c' * (1 - (2 : ℝ) ^ (c' - 2))⁻¹), ?_, c' - 2, by linarith only [hc'], max q₀h 2, ?_⟩
   · have h1 : 0 < Real.exp (max c 0) * (1 - Real.exp (max c 0 - 49 / 10))⁻¹ := by positivity
     have h2 : 0 < (2 : ℝ) ^ c' * (1 - (2 : ℝ) ^ (c' - 2))⁻¹ := by positivity
     positivity
@@ -436,7 +436,7 @@ theorem siegelRestHigh (hden : Work.LinnikAreas.Siegel.PairDensityHeightInput) :
     have hlog : 0 < Real.log q := Real.log_pos (by exact_mod_cast hq2)
     have hb0 : 0 < β₁ := Siegel.re_mem_Ioo hχ hβ hz
     have hlam1 : 0 < lamOf q (β₁ : ℂ) := by
-      rw [lamOf, Complex.ofReal_re]; exact mul_pos (by linarith) hlog
+      rw [lamOf, Complex.ofReal_re]; exact mul_pos (by linarith only [hβ]) hlog
     have hcnt' : ∀ t T : ℝ, 0 < t → t ≤ Real.log q → 1 ≤ T →
         Siegel.pairCountHeight χ₁ (β₁ : ℂ) t T
           ≤ Ch * lamOf q (β₁ : ℂ) * Real.exp (c * t) * T ^ c' :=

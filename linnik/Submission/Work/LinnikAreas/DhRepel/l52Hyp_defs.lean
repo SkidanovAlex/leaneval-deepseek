@@ -14,7 +14,6 @@ This file fixes the two divisor sums used by the proof of
   identity based at `s` and at `1 - conj s`, combined with the functional equation).
 -/
 import Mathlib
-import Submission.Work.LinnikAreas.DhRepel.Defs
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi
 import Submission.Commons.NumberTheory.DirichletCharacter.logDeriv_completedLFunction_conj
 

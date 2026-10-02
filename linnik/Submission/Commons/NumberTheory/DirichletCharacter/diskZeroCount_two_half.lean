@@ -201,7 +201,7 @@ private lemma absorb_ratio {N : ℕ} [NeZero N] {T₀ σ im Lv B : ℝ} (hσ : �
     Real.log_mul (by norm_num) Real.pi_ne_zero
   have hP : circleP N T₀ = Real.log (N:ℝ) + Real.log ((|T₀|+9)/2) + 2 - Real.log Real.pi := rfl
   rw [hP, h2pi]
-  nlinarith [hkey, hLv]
+  linarith only [hkey, hLv]
 
 /-- A piecewise explicit upper bound for `log ‖L(χ,·)‖` on the disk `|z - (2+iT₀)| ≤ 5`,
 depending only on `Re z`. -/
@@ -237,9 +237,9 @@ theorem LFunction_log_le_circUB {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     Real.log ‖LFunction χ z‖ ≤ circUB N T₀ z.re := by
   have hN1 : (1:ℝ) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   have hlog7 : Real.log (2 + |z.im|) ≤ Real.log (|T₀| + 7) :=
-    Real.log_le_log (by linarith [abs_nonneg z.im]) (by linarith)
+    Real.log_le_log (by linarith only [abs_nonneg z.im]) (by linarith)
   have hlog17 : Real.log (1 + |z.im|) ≤ Real.log (|T₀| + 7) :=
-    Real.log_le_log (by linarith [abs_nonneg z.im]) (by linarith)
+    Real.log_le_log (by linarith only [abs_nonneg z.im]) (by linarith)
   have hboundh : 2 + |z.im/2| ≤ (|T₀| + 9)/2 := by
     rw [abs_div]
     have : |z.im|/2 ≤ (|T₀|+5)/2 := by linarith
@@ -248,7 +248,7 @@ theorem LFunction_log_le_circUB {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     unfold circleA
     apply Real.log_le_log
     · have h1' : 0 ≤ Real.log (N:ℝ) := Real.log_nonneg hN1
-      have h2' : 0 ≤ Real.log (2 + |z.im|) := Real.log_nonneg (by linarith [abs_nonneg z.im])
+      have h2' : 0 ≤ Real.log (2 + |z.im|) := Real.log_nonneg (by linarith only [abs_nonneg z.im])
       linarith
     · linarith
   unfold circUB
@@ -399,9 +399,9 @@ lemma circUB_eq_D2 {N : ℕ} (T₀ σ : ℝ) (h1 : ¬ 2 ≤ σ) (h2 : ¬ 1 ≤ �
 /-! ## Numerical bounds for the arc decomposition -/
 
 private lemma cos_eight_sevenths_ge : (2:ℝ)/5 ≤ Real.cos (8/7) := by
-  have h1 : 0 ≤ Real.pi/2 - 8/7 := by linarith [Real.pi_gt_d4]
-  have h2 : Real.pi/2 - 8/7 ≤ 0.428 := by linarith [Real.pi_lt_d4]
-  have h3 : (0.4278:ℝ) ≤ Real.pi/2 - 8/7 := by linarith [Real.pi_gt_d4]
+  have h1 : 0 ≤ Real.pi/2 - 8/7 := by linarith only [Real.pi_gt_d4]
+  have h2 : Real.pi/2 - 8/7 ≤ 0.428 := by linarith only [Real.pi_lt_d4]
+  have h3 : (0.4278:ℝ) ≤ Real.pi/2 - 8/7 := by linarith only [Real.pi_gt_d4]
   have hcos : Real.cos (8/7) = Real.sin (Real.pi/2 - 8/7) := by
     have h : Real.cos (8/7) = Real.cos (Real.pi/2 - (Real.pi/2 - 8/7)) := by
       congr 1; ring
@@ -410,13 +410,13 @@ private lemma cos_eight_sevenths_ge : (2:ℝ)/5 ≤ Real.cos (8/7) := by
   have hsin := Real.sin_ge_sub_cube h1
   have hx3 : (Real.pi/2 - 8/7)^3 ≤ (0.428:ℝ)^3 := pow_le_pow_left₀ h1 h2 3
   have h4a : Real.pi/2 - 8/7 - (Real.pi/2 - 8/7)^3/6 ≥ (0.4278:ℝ) - (0.428:ℝ)^3/6 := by
-    linarith [h3, hx3]
+    linarith only [h3, hx3]
   have hnum : (2:ℝ)/5 ≤ (0.4278:ℝ) - (0.428:ℝ)^3/6 := by norm_num
-  linarith [hsin, h4a, hnum]
+  linarith only [hsin, h4a, hnum]
 
 private lemma arccos_two_fifths_ge : (8:ℝ)/7 ≤ Real.arccos ((2:ℝ)/5) := by
   have h := Real.arccos_le_arccos cos_eight_sevenths_ge
-  rwa [Real.arccos_cos (x := 8/7) (by norm_num) (by linarith [Real.pi_gt_three])] at h
+  rwa [Real.arccos_cos (x := 8/7) (by norm_num) (by linarith only [Real.pi_gt_three])] at h
 
 private lemma sqrt21_le : Real.sqrt 21 ≤ 4.5826 := by
   have h : Real.sqrt 21 < 4.5826 :=
@@ -427,7 +427,7 @@ private lemma inv_sqrt24_le : (1:ℝ) / Real.sqrt 24 ≤ 21/100 := by
   rw [div_le_iff₀ (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 24))]
   have h : (100:ℝ)/21 ≤ Real.sqrt 24 :=
     (Real.le_sqrt (by norm_num) (by norm_num)).mpr (by norm_num)
-  nlinarith [h]
+  linarith only [h]
 
 private lemma arccos_three_fifths_le_one : Real.arccos ((3:ℝ)/5) ≤ 1 := by
   have hcos1 : Real.cos 1 ≤ (3:ℝ)/5 := by
@@ -435,10 +435,10 @@ private lemma arccos_three_fifths_le_one : Real.arccos ((3:ℝ)/5) ≤ 1 := by
       have h' : Real.cos 1 = Real.cos (Real.pi/2 - (Real.pi/2 - 1)) := by congr 1; ring
       rw [h', Real.cos_pi_div_two_sub]
     rw [h]
-    calc Real.sin (Real.pi/2 - 1) ≤ Real.pi/2 - 1 := Real.sin_le (by linarith [Real.pi_gt_d4])
-      _ ≤ 3/5 := by linarith [Real.pi_lt_d4]
+    calc Real.sin (Real.pi/2 - 1) ≤ Real.pi/2 - 1 := Real.sin_le (by linarith only [Real.pi_gt_d4])
+      _ ≤ 3/5 := by linarith only [Real.pi_lt_d4]
   have h1 : Real.arccos ((3:ℝ)/5) ≤ Real.arccos (Real.cos 1) := Real.arccos_le_arccos hcos1
-  rwa [Real.arccos_cos (x := 1) (by norm_num) (by linarith [Real.pi_gt_three])] at h1
+  rwa [Real.arccos_cos (x := 1) (by norm_num) (by linarith only [Real.pi_gt_three])] at h1
 
 /-! ## The integral bound -/
 
@@ -502,7 +502,7 @@ lemma integral_circUB_le {N : ℕ} [NeZero N] (T₀ : ℝ) :
     · apply intervalIntegral.integral_congr_ae
       filter_upwards with θ hθ
       rw [Set.uIoc_of_le hpi2A, Set.mem_Ioc] at hθ
-      have hθ0 : 0 ≤ θ := le_of_lt (lt_trans (by linarith [Real.pi_pos] : (0:ℝ) < Real.pi/2) hθ.1)
+      have hθ0 : 0 ≤ θ := le_of_lt (lt_trans (by linarith only [Real.pi_pos] : (0:ℝ) < Real.pi/2) hθ.1)
       have hθπ : θ ≤ Real.pi := le_trans hθ.2 hpA
       have hlt : Real.cos θ < 0 := by
         have hc := Real.cos_lt_cos_of_nonneg_of_le_pi hpi2nn hθπ hθ.1
@@ -604,7 +604,7 @@ lemma integral_circUB_le {N : ℕ} [NeZero N] (T₀ : ℝ) :
   have hδ2 : Real.pi - θE ≤ 1 := by
     rw [hθE, show Real.arccos ((-3:ℝ)/5) = Real.pi - Real.arccos ((3:ℝ)/5) by
       rw [show ((-3:ℝ)/5) = -(3/5) by ring]; exact Real.arccos_neg (3/5)]
-    linarith [arccos_three_fifths_le_one]
+    linarith only [arccos_three_fifths_le_one]
   have hpi2le : Real.pi/2 ≤ 15708/10000 := by
     have := Real.pi_lt_d4
     linarith
@@ -665,7 +665,7 @@ lemma integral_circUB_le {N : ℕ} [NeZero N] (T₀ : ℝ) :
     have h5 := mul_le_mul_of_nonneg_right h3 hB
     have h6 := mul_le_mul_of_nonneg_right h4 hC
     linarith
-  linarith [hsplit1, hrest, h56]
+  linarith only [hsplit1, hrest, h56]
 
 /-! ## The circle average of `circUB` -/
 
@@ -707,7 +707,7 @@ private lemma log_twenty_sevenths_le : Real.log (20/7) ≤ 1.06 := by
 
 private lemma one_div_pi_le : 1/Real.pi ≤ 31833/100000 := by
   rw [div_le_iff₀ Real.pi_pos]
-  nlinarith [Real.pi_gt_d4]
+  linarith only [Real.pi_gt_d4]
 
 private lemma final_arith {X Y A B C P : ℝ} (hX0 : 0 ≤ X) (hY0 : 0 ≤ Y)
     (hA0 : 0 ≤ A) (hB0 : 0 ≤ B) (hC0 : 0 ≤ C)
@@ -730,12 +730,12 @@ private lemma final_arith {X Y A B C P : ℝ} (hX0 : 0 ≤ X) (hY0 : 0 ≤ Y)
       15708/10000*0.6932 + (21/100)*((X+Y)/20+2.4) + (21/200)*(X+Y+12/5)
         + (11/100)*(3*X/2+2*Y+67/5) + (287/100)*(X+Y+9/8)
         + (1/4)*(0.6932 + ((X+Y)/20+2.4)) + (0.6932+0.6932) := by
-    nlinarith [hA, hB, hC, hP, hlog2, hlog0, hA0, hB0, hC0, hP0]
+    linarith only [hA, hB, hC, hP, hlog2, hlog0, hA0, hB0, hC0, hP0]
   have hkey : (31833/100000) * (15708/10000*0.6932 + (21/100)*((X+Y)/20+2.4)
       + (21/200)*(X+Y+12/5) + (11/100)*(3*X/2+2*Y+67/5) + (287/100)*(X+Y+9/8)
       + (1/4)*(0.6932+((X+Y)/20+2.4)) + (0.6932+0.6932)) + 1.06
       ≤ 0.6931*(3/2*(X+Y)+6) := by
-    nlinarith [hX0, hY0]
+    linarith only [hX0, hY0]
   have hstep : (1/Real.pi) * ((15708/10000)*Real.log 2 + (21/100)*A + (21/200)*B
         + (11/100)*C + (287/100)*P + (1/4)*(Real.log 2 + A) + (Real.log 2 + Real.log 2))
       ≤ (31833/100000) * (15708/10000*0.6932 + (21/100)*((X+Y)/20+2.4)
@@ -743,8 +743,8 @@ private lemma final_arith {X Y A B C P : ℝ} (hX0 : 0 ≤ X) (hY0 : 0 ≤ Y)
         + (1/4)*(0.6932+((X+Y)/20+2.4)) + (0.6932+0.6932)) :=
     mul_le_mul hpi hS hS0 (by norm_num)
   have htarget : 0.6931*(3/2*(X+Y)+6) ≤ Real.log 2 * (3/2*(X+Y)+6) :=
-    mul_le_mul_of_nonneg_right hlog1 (by nlinarith [hX0, hY0])
-  linarith [hstep, hkey, htarget]
+    mul_le_mul_of_nonneg_right hlog1 (by linarith only [hX0, hY0])
+  linarith only [hstep, hkey, htarget]
 
 private lemma log_twenty_le_three : Real.log 20 ≤ 3 := by
   rw [Real.log_le_iff_le_exp (by norm_num)]
@@ -766,7 +766,7 @@ theorem diskZeroCount_two_half {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
   set Y := Real.log (|T₀| + 4) with hYdef
   have hX0 : 0 ≤ X := by
     rw [hXdef]; exact Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N))
-  have hY0 : 0 ≤ Y := by rw [hYdef]; exact Real.log_nonneg (by linarith [abs_nonneg T₀])
+  have hY0 : 0 ≤ Y := by rw [hYdef]; exact Real.log_nonneg (by linarith only [abs_nonneg T₀])
   -- bounds on the constants
   have hBbound : circleB N T₀ ≤ X + Y + 12/5 := by
     have h := circleB_le N T₀
@@ -783,11 +783,11 @@ theorem diskZeroCount_two_half {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
       unfold circleA
       apply Real.log_le_log
       · have h1' : 0 ≤ Real.log (N:ℝ) := hX0
-        have h2' : 0 ≤ Real.log (|T₀| + 7) := Real.log_nonneg (by linarith [abs_nonneg T₀])
+        have h2' : 0 ≤ Real.log (|T₀| + 7) := Real.log_nonneg (by linarith only [abs_nonneg T₀])
         linarith
       · rw [hXdef, hYdef]
         linarith
-    have hpos : 0 < (X + Y + 7)/20 := by linarith [hX0, hY0]
+    have hpos : 0 < (X + Y + 7)/20 := by linarith only [hX0, hY0]
     have hsplit : Real.log (X + Y + 7) = Real.log ((X + Y + 7)/20) + Real.log 20 := by
       rw [← Real.log_mul (by positivity) (by norm_num : (20:ℝ) ≠ 0)]
       congr 1; ring
@@ -840,14 +840,14 @@ theorem diskZeroCount_two_half {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
     intro h0
     have hz := zerosInStrip χ hχ hχprim c h0
     rw [hcre] at hz
-    linarith [hz.2]
+    linarith only [hz.2]
   -- Jensen
   have hjen := Commons.Analysis.Complex.sum_divisor_le_circleAvg (c := c) (r := (5:ℝ)/2) (R := (5:ℝ))
       (A := Real.circleAverage (fun z : ℂ => Real.log ‖LFunction χ z‖) c 5
         - Real.log ‖LFunction χ c‖ + Real.log ‖completedLFunction χ c‖)
       (f := DirichletCharacter.completedLFunction χ) (by norm_num) (by norm_num)
       (fun z _ => (differentiable_completedLFunction hχ).analyticAt z) hΛc
-      (by linarith [hexcess])
+      (by linarith only [hexcess])
   have hjen' : (((∑ᶠ u : ℂ, MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ)
         (Metric.closedBall c (5/2)) u : ℤ)) : ℝ)
       ≤ (Real.circleAverage (fun z : ℂ => Real.log ‖LFunction χ z‖) c 5
@@ -870,7 +870,7 @@ theorem diskZeroCount_two_half {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
       exact Real.log_le_log (by norm_num) h
     have h1 : Real.log ((7:ℝ)/20) = -Real.log (20/7) := by
       rw [show (7:ℝ)/20 = ((20:ℝ)/7)⁻¹ by norm_num, Real.log_inv]
-    linarith [hlog, log_twenty_sevenths_le, h1]
+    linarith only [hlog, log_twenty_sevenths_le, h1]
   -- final numerical bound
   have hfinal : (Real.circleAverage (fun z : ℂ => Real.log ‖LFunction χ z‖) c 5
         - Real.log ‖LFunction χ c‖) / Real.log 2 ≤ (3/2)*(X+Y) + 6 := by
@@ -885,7 +885,7 @@ theorem diskZeroCount_two_half {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
       (C := circleC N T₀) (P := circleP N T₀) hX0 hY0 (circleA_nonneg N T₀)
       (circleB_nonneg N T₀) (circleC_nonneg N T₀) (circleP_nonneg N T₀)
       hAbound hBbound hCbound hPbound
-    linarith [hLavg, hcost, hIle, harith]
+    linarith only [hLavg, hcost, hIle, harith]
   -- assemble
   have hconv : (∑ᶠ u : ℂ, (((MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ)
         (Metric.closedBall c (5/2))) u : ℤ) : ℝ))

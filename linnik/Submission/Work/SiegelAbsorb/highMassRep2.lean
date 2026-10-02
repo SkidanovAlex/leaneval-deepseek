@@ -1,10 +1,8 @@
 import Mathlib
 import Submission.Work.SiegelAbsorb.windowInterface
 import Submission.Work.SiegelAbsorb.windowMassRegion
-import Submission.Work.SiegelAbsorb.windowMassFloor2
-import Submission.Work.SiegelAbsorb.windowMassFree2
 import Submission.Work.LinnikAreas.pairCountHeight_le_famCount
-import Submission.Work.LinnikAreas.BGTZ.RestHighBGTZGenC
+import Submission.Work.LinnikAreas.BGTZ.AuxC
 
 namespace Work.SiegelAbsorb
 
@@ -76,7 +74,7 @@ private lemma fiberHigh {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChar
     intro z hz
     have h1 : 0 < z.2.re := Work.LinnikAreas.zeroMult_re_pos z.1 (hzmF z hz)
     rw [Work.LinnikContract.lamOf]
-    nlinarith [hlog]
+    nlinarith only [hlog, h1]
   have hmass := Work.SiegelAbsorb.windowMassRegion (q := q) hq χ₁ β₁
     (C := C₃) (H := (2:ℝ)^(j+1)) (a₀ := 49/10) (c := 9/2)
     (Λ := (7/100) * Real.log (q:ℝ)) (L := Real.log (q:ℝ))
@@ -138,7 +136,7 @@ lemma highMassRep2High {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChara
     have h : (2:ℝ)^(-(1/2):ℝ) < 1 := by
       rw [Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2)]
       exact inv_lt_one_of_one_lt₀ (Real.one_lt_rpow (by norm_num) (by norm_num))
-    linarith
+    linarith only [h]
   -- dyadic layer index
   have him_lt_of : ∀ (j : ℕ) (z : DirichletCharacter ℂ q × ℂ),
       Work.LinnikAreas.BGTZ.jjC z = j → |z.2.im| < (2:ℝ)^(j+1) := by
@@ -148,7 +146,7 @@ lemma highMassRep2High {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChara
     rw [show Nat.log 2 (Nat.floor |z.2.im|) = j from hjj] at h1
     have h2 : (Nat.floor |z.2.im| : ℝ) + 1 ≤ (2:ℝ)^(j+1) := by exact_mod_cast h1
     have h3 : |z.2.im| < (Nat.floor |z.2.im| : ℝ) + 1 := Nat.lt_floor_add_one _
-    linarith
+    linarith only [h2, h3]
   -- per-fibre bound
   have hper : ∀ j ∈ S.image Work.LinnikAreas.BGTZ.jjC,
       (∑ z ∈ S.filter (fun z => Work.LinnikAreas.BGTZ.jjC z = j),
@@ -196,7 +194,7 @@ lemma highMassRep2High {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChara
       rw [hKsdef]; ring
     rw [hX]
     have hZnn : 0 ≤ Ks * (1 - (2:ℝ)^(-(1/2):ℝ))⁻¹ := mul_nonneg hKsnn hinvnn
-    linarith [hZnn]
+    linarith only [hZnn]
   calc ∑ j ∈ S.image Work.LinnikAreas.BGTZ.jjC,
         ∑ z ∈ S.filter (fun z => Work.LinnikAreas.BGTZ.jjC z = j),
           (Work.LinnikContract.zeroMult z.1 z.2 : ℝ)
@@ -213,7 +211,7 @@ lemma highMassRep2High {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletChara
           * (1 - (2:ℝ)^(-(1/2):ℝ))⁻¹ := by
         refine mul_le_mul_of_nonneg_left (geom_le ?_ ?_ _) ?_
         · positivity
-        · linarith [hden]
+        · linarith only [hden]
         · positivity
     _ = Ks * (Real.log (q:ℝ))^(-2:ℝ) * (1 - (2:ℝ)^(-(1/2):ℝ))⁻¹
           * Real.exp (-(7/250) * Real.log (q:ℝ)) := by ring
@@ -253,13 +251,13 @@ private lemma fiberLowFree {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletC
     simp only [Finset.sum_empty]
     have hd : 0 < 1 - Real.exp (-(12/5)) := by
       have h : Real.exp (-(12/5)) < 1 := Real.exp_lt_one_iff.mpr (by norm_num)
-      linarith
+      linarith only [h]
     positivity
   · have hpos : ∀ z ∈ F, 0 < Work.LinnikContract.lamOf q z.2 := by
       intro z hz
       have h1 : z.2.re < 1 := Work.LinnikAreas.boxMaxZeroAux.zeroMult_re_lt_one z.1 (hzmF z hz)
       rw [Work.LinnikContract.lamOf]
-      exact mul_pos (by linarith) hlog
+      exact mul_pos (by linarith only [h1]) hlog
     set Λ : ℝ := F.inf' hne (fun z => Work.LinnikContract.lamOf q z.2) with hΛdef
     have hΛpos : 0 < Λ := by
       obtain ⟨z, hz, heq⟩ := Finset.exists_mem_eq_inf' hne (fun z => Work.LinnikContract.lamOf q z.2)
@@ -275,9 +273,9 @@ private lemma fiberLowFree {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletC
     rw [show (5/2:ℝ) - 49/10 = -(12/5) by norm_num] at hmass
     have hden' : 0 < 1 - Real.exp (-(12/5)) := by
       have h : Real.exp (-(12/5)) < 1 := Real.exp_lt_one_iff.mpr (by norm_num)
-      linarith
+      linarith only [h]
     have hdrop : Real.exp (-(12/5) * Λ) ≤ 1 := by
-      rw [Real.exp_le_one_iff]; nlinarith [hΛpos]
+      rw [Real.exp_le_one_iff]; nlinarith only [hΛpos]
     have hmass' : (∑ z ∈ F, (Work.LinnikContract.zeroMult z.1 z.2 : ℝ)
         * Real.exp (-(49/10) * Work.LinnikContract.lamOf q z.2))
         ≤ C₂ * ((2:ℝ)^(j+1)) ^ (3/2:ℝ) * Real.exp (5/2) * 1 / (1 - Real.exp (-(12/5))) := by
@@ -366,7 +364,7 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     Nat.ceil_lt_add_one (by positivity)
   have hJge : 2 * Real.log (q : ℝ) / Real.log 2 ≤ (J : ℝ) := Nat.le_ceil _
   have h2J : (2 : ℝ) ^ (J + 1) ≤ 4 * (q : ℝ) ^ 2 := by
-    have h7 : (J : ℝ) + 1 < 2 * Real.log (q : ℝ) / Real.log 2 + 2 := by linarith [hJlt]
+    have h7 : (J : ℝ) + 1 < 2 * Real.log (q : ℝ) / Real.log 2 + 2 := by linarith only [hJlt]
     have h8 : (2 : ℝ) ^ (J + 1) ≤ (2 : ℝ) ^ (2 * Real.log (q : ℝ) / Real.log 2 + 2) := by
       rw [← Real.rpow_natCast (2 : ℝ) (J + 1)]
       push_cast
@@ -394,18 +392,18 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     refine div_nonneg ?_ hlog.le
     refine Real.log_nonneg ?_
     have : (0 : ℝ) ≤ (2 : ℝ) ^ (j + 1) := by positivity
-    linarith
+    linarith only [hlam1pos, hlam1lt, this]
   have hUpos : ∀ j, 0 < U j := by
-    intro j; rw [hUdef]; have := hξnn j; nlinarith
+    intro j; rw [hUdef]; have := hξnn j; nlinarith only [hlam1pos, hlam1lt, this]
   have hUge : ∀ j, (4 / 3 + 1 / 100 : ℝ) ≤ U j := by
-    intro j; rw [hUdef]; have := hξnn j; nlinarith
+    intro j; rw [hUdef]; have := hξnn j; nlinarith only [hlam1pos, hlam1lt, this]
   have hU6 : ∀ j, j ≤ J → U j ≤ 6 := by
     intro j hj
     have h2j : (2 : ℝ) ^ (j + 1) ≤ (2 : ℝ) ^ (J + 1) :=
       pow_le_pow_right₀ (by norm_num) (by omega)
     have hp : 5 + (2 : ℝ) ^ (j + 1) ≤ 20 * (q : ℝ) ^ 2 := by
-      have h2 : 5 + 4 * (q : ℝ) ^ 2 ≤ 20 * (q : ℝ) ^ 2 := by nlinarith [hq1]
-      linarith
+      have h2 : 5 + 4 * (q : ℝ) ^ 2 ≤ 20 * (q : ℝ) ^ 2 := by nlinarith only [hq1, hlam1pos, hlam1lt]
+      linarith only [h2J, h2j, h2]
     have hlogp : Real.log (5 + (2 : ℝ) ^ (j + 1)) ≤ Real.log 20 + 2 * Real.log (q : ℝ) := by
       calc Real.log (5 + (2 : ℝ) ^ (j + 1)) ≤ Real.log (20 * (q : ℝ) ^ 2) :=
             Real.log_le_log (by positivity) hp
@@ -415,20 +413,20 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     have hξ6 : Real.log (5 + (2 : ℝ) ^ (j + 1)) / Real.log (q : ℝ) ≤ 2.95 := by
       rw [div_le_iff₀ hlog]
       have h1 : Real.log 20 ≤ 19 := by
-        have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 20); linarith
-      nlinarith [hlogp, h1, h𝓛big]
+        have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 20); linarith only [this]
+      nlinarith only [hlogp, h1, h𝓛big]
     rw [hUdef]
-    nlinarith [hξ6]
+    nlinarith only [hξ6, hlam1pos, hlam1lt]
   have hCU_J : ∀ j, j ≤ J → C₀ * U j < Real.exp α := by
     intro j hj
-    have h1 : C₀ * U j ≤ 6 * C₀ := by nlinarith [hU6 j hj, hC₀]
+    have h1 : C₀ * U j ≤ 6 * C₀ := by nlinarith only [hU6 j hj, hC₀, hU6, hj]
     have h3 : Real.exp α = 1 / lam1 := by rw [hαdef, Real.exp_log (by positivity)]
     have h2 : 6 * C₀ < Real.exp α := by
       rw [h3, lt_div_iff₀ hlam1pos']
       have hs : lam1 < 1 / (6 * C₀) := by rw [hlam1def]; exact hsmall
       rw [lt_div_iff₀ (by positivity : (0 : ℝ) < 6 * C₀)] at hs
-      linarith [hs]
-    linarith
+      linarith only [hs]
+    linarith only [h1, h2]
   have hLpos : ∀ j, j ≤ J → 0 < Lf j := by
     intro j hj
     rw [hLdef]
@@ -440,7 +438,7 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
   have hfloorpos_J : ∀ j, j ≤ J → C₀ * U j ≤ 1 / lam1 := by
     intro j hj
     have h3 : Real.exp α = 1 / lam1 := by rw [hαdef, Real.exp_log (by positivity)]
-    rw [← h3]; linarith [hCU_J j hj]
+    rw [← h3]; linarith only [hCU_J j hj, hCU_J, hj]
   have him_lt_of : ∀ (j : ℕ) (z : DirichletCharacter ℂ q × ℂ),
       Work.LinnikAreas.BGTZ.jjC z = j → |z.2.im| < (2:ℝ)^(j+1) := by
     intro j z hjj
@@ -449,7 +447,7 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     rw [show Nat.log 2 (Nat.floor |z.2.im|) = j from hjj] at h1
     have h2 : (Nat.floor |z.2.im| : ℝ) + 1 ≤ (2:ℝ)^(j+1) := by exact_mod_cast h1
     have h3 : |z.2.im| < (Nat.floor |z.2.im| : ℝ) + 1 := Nat.lt_floor_add_one _
-    linarith
+    linarith only [h2, h3]
   set Gs : ℕ → ℝ := fun j => ∑ z ∈ S.filter (fun z => Work.LinnikAreas.BGTZ.jjC z = j),
       (Work.LinnikContract.zeroMult z.1 z.2 : ℝ)
         * ‖Work.LinnikContract.Hk (11/2) (3/10) ((1 - z.2) * (Real.log (q:ℝ) : ℂ))‖ with hGsdef
@@ -482,11 +480,11 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
         have h2j : (2:ℝ)^(j+1) ≤ (2:ℝ)^(J+1) := pow_le_pow_right₀ (by norm_num) (by omega)
         have hzlt : |z.2.im| < (2:ℝ)^(J+1) :=
           lt_of_lt_of_le (him_lt_of j z (Finset.mem_filter.mp hz).2) h2j
-        linarith [h2J]
+        linarith only [h2J, hs, hzlt]
       have hrep_apply := Work.LinnikAreas.BGTZ.repulsionFloorHiC (u := 11/5) (v := 11/10)
         (H := (2:ℝ)^(j+1)) χ₁ β₁ (C₀ := C₀) hC₀ (by norm_num) (by norm_num)
         (by exact one_le_pow₀ (by norm_num : (1:ℝ) ≤ 2))
-        (by have := hξnn j; nlinarith)
+        (by have := hξnn j; nlinarith only [hlam1pos, hlam1lt, this])
         (hrep := hrepq)
         (hfloor0 := by have h := hfloorpos_J j hjJ; rw [hUdef] at h; exact h)
         hq (hzmF z hz) (himle z hz) (hexcF z hz) (hge)
@@ -580,10 +578,10 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     have h1 : α ≤ ((J : ℝ) / 2) * Real.log 2 := by
       have h2 : 2 * Real.log (q : ℝ) / Real.log 2 * Real.log 2 = 2 * Real.log (q : ℝ) := by
         field_simp
-      nlinarith [hJge, hlog2pos, hαle, hlog]
+      nlinarith only [hJge, hlog2pos, hαle, hlog, h𝓛big, hlam1pos, hlam1lt, hαhalf, h2]
     have h4 : (2 : ℝ) ^ ((-(1 / 2) : ℝ) * (J : ℝ)) ≤ Real.exp (-α) := by
       rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2), Real.exp_le_exp]
-      nlinarith [hlog2pos, h1]
+      nlinarith only [hlog2pos, h1]
     rw [← Real.rpow_natCast ((2 : ℝ) ^ (-(1 / 2) : ℝ)) J,
       ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
     rw [← hexp_neg]
@@ -638,7 +636,7 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
             calc ((2:ℝ)^(-(1/2):ℝ))^J * (2:ℝ)^(-(1/2):ℝ) ≤ lam1 * 1 :=
                   mul_le_mul hJtail hrm1.le (by positivity) hlam1pos'.le
               _ = lam1 := by ring
-          · linarith
+          · linarith only [hrm1]
           · positivity
       _ = Ks * (Real.log (q:ℝ))^(-2:ℝ) * (1 - (2:ℝ)^(-(1/2):ℝ))⁻¹ * lam1 := by ring
   have hKc : Ks * (Real.exp (12 * C₀ / 5) * (2:ℝ)^(5/4:ℝ) * (1 - (2:ℝ)^(-(1/4):ℝ))⁻¹
@@ -656,12 +654,12 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
       have h : (2:ℝ)^(-(1/4):ℝ) < 1 := by
         rw [Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2)]
         exact inv_lt_one_of_one_lt₀ (Real.one_lt_rpow (by norm_num) (by norm_num))
-      linarith
+      linarith only [h]
     have hB1 : 0 < 1 - (2:ℝ)^(-(1/2):ℝ) := by
       have h : (2:ℝ)^(-(1/2):ℝ) < 1 := by
         rw [Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2)]
         exact inv_lt_one_of_one_lt₀ (Real.one_lt_rpow (by norm_num) (by norm_num))
-      linarith
+      linarith only [h]
     have h1 : 0 ≤ Real.exp (12 * C₀ / 5) := (Real.exp_pos _).le
     have h2 : 0 ≤ (2:ℝ)^(5/4:ℝ) := Real.rpow_nonneg (by norm_num) _
     have h3 : 0 ≤ (1 - (2:ℝ)^(-(1/4):ℝ))⁻¹ := inv_nonneg.mpr hA1.le
@@ -669,7 +667,7 @@ lemma highMassRep2Low {q : ℕ} [NeZero q] (hq : 1 < q) (χ₁ : DirichletCharac
     have hZnn : 0 ≤ Ks * (Real.exp (12*C₀/5) * (2:ℝ)^(5/4:ℝ) * (1 - (2:ℝ)^(-(1/4):ℝ))⁻¹
         + (1 - (2:ℝ)^(-(1/2):ℝ))⁻¹) :=
       mul_nonneg hKsnn (add_nonneg (mul_nonneg (mul_nonneg h1 h2) h3) h4)
-    linarith [hZnn]
+    linarith only [hZnn]
   rw [hGeq]
   rw [← Finset.sum_filter_add_sum_filter_not (S.image Work.LinnikAreas.BGTZ.jjC)
         (fun j => j ≤ J) Gs]
@@ -697,10 +695,10 @@ theorem highMassRep2 (C₂ C₃ C₀ : ℝ) (hC₂ : 0 < C₂) (hC₃ : 0 < C₃
     intro H hH t ht htL
     have hσ1 : 0 ≤ 1 - t / Real.log (q : ℝ) := by
       have h1 : t / Real.log (q : ℝ) ≤ 1 := (div_le_one hlog).mpr htL
-      linarith
+      linarith only [h1]
     have hσ2 : 1 - t / Real.log (q : ℝ) ≤ 1 := by
       have h1 : 0 ≤ t / Real.log (q : ℝ) := div_nonneg ht.le hlog.le
-      linarith
+      linarith only [h1]
     calc Work.LinnikAreas.Siegel.pairCountHeight χ₁ (β₁ : ℂ) t (H * Real.log (q : ℝ))
         ≤ Work.ZeroDensity.famCount q (1 - t / Real.log (q : ℝ))
             ((H * Real.log (q : ℝ)) / Real.log (q : ℝ)) :=
@@ -717,11 +715,11 @@ theorem highMassRep2 (C₂ C₃ C₀ : ℝ) (hC₂ : 0 < C₂) (hC₃ : 0 < C₃
         ≤ C₂ * Real.exp ((5 / 2) * t) * H ^ (3 / 2 : ℝ) := by
     intro H hH t ht htL
     have hσ1 : 93 / 100 ≤ 1 - t / Real.log (q : ℝ) := by
-      have h1 : t / Real.log (q : ℝ) ≤ 7 / 100 := (div_le_iff₀ hlog).mpr (by linarith [htL])
-      linarith
+      have h1 : t / Real.log (q : ℝ) ≤ 7 / 100 := (div_le_iff₀ hlog).mpr (by linarith only [htL])
+      linarith only [h1]
     have hσ2 : 1 - t / Real.log (q : ℝ) ≤ 1 := by
       have h1 : 0 ≤ t / Real.log (q : ℝ) := div_nonneg ht.le hlog.le
-      linarith
+      linarith only [h1]
     calc Work.LinnikAreas.Siegel.pairCountHeight χ₁ (β₁ : ℂ) t (H * Real.log (q : ℝ))
         ≤ Work.ZeroDensity.famCount q (1 - t / Real.log (q : ℝ))
             ((H * Real.log (q : ℝ)) / Real.log (q : ℝ)) :=

@@ -31,7 +31,7 @@ theorem lamOf_nonneg_of_minWideAt {q : ℕ} [NeZero q] {H W : ℝ}
   have hlog : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by
     have := NeZero.ne q
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr this)
-  nlinarith [hstrip.2]
+  nlinarith only [hstrip.2, hstrip, hlog]
 
 /-- **The Heath-Brown numbering argument of Lemma 9.2 at height `H`.**  From the Lemma 9.2
 inequality (`hcore`, available for every admissible pair) and the numerical contradiction at
@@ -93,8 +93,8 @@ theorem rectRow (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (θ lam k a c slack : ℝ)
       (χ₁ : DirichletCharacter ℂ q) (ρ₁ : ℂ),
       IsRectMin L χ₁ ρ₁ → χ₁ ^ 2 ≠ 1 → lamOf q ρ₁ ≤ a → Lam3BoundH L χ₁ c := by
   obtain ⟨δ, hδ0, hδ1, qA, hA⟩ := hsup
-  have hH0 : 0 ≤ L := by linarith
-  have hHW : 3 * L + δ ≤ 10 * L := by linarith
+  have hH0 : 0 ≤ L := by linarith only [hL, hδ0, hδ1]
+  have hHW : 3 * L + δ ≤ 10 * L := by linarith only [hL, hδ0, hδ1]
   obtain ⟨qE, hqE⟩ := hbLemma9_2_engine_H (tf71T θ lam hθ0 hθ1 hlam) k
     (1 / 6 + 1 / 1000000) (1 / 1000000000000) δ L (10 * L) hk (by norm_num) hδ0 hδ1 hH0 hHW
   refine ⟨max (max Q qA) (max qE (max Qsq (Nat.ceil (Real.exp L) + 1))), ?_, ?_⟩
@@ -129,7 +129,7 @@ theorem rectRow (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (θ lam k a c slack : ℝ)
     have hexp : Real.exp L ≤ (q : ℝ) := by
       have h1 : Real.exp L ≤ ((Nat.ceil (Real.exp L) : ℕ) : ℝ) := Nat.le_ceil _
       have h2 : ((Nat.ceil (Real.exp L) : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by exact_mod_cast hqL
-      linarith
+      linarith only [hδ0, hδ1, h1, h2]
     have := Real.log_le_log (Real.exp_pos L) hexp
     rwa [Real.log_exp] at this
   have hmin : IsMinWideAt L (10 * L) χ₁ ρ₁ := isMinWideAt_of_isRectMin hR
@@ -138,13 +138,13 @@ theorem rectRow (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (θ lam k a c slack : ℝ)
   have hE := hqE q hqE' χ₁ χj ρ₁ ρj
     (fun χ _ hχ => hA q hqA χ hχ (1 / 1000000000000) (by norm_num))
     hHL hmin hZj.2.1 hZj.1 hZj.2.2 h1 h2 hcplx h3 h4
-    (by linarith) (by linarith) hsq
+    (by linarith only [ha2, hlam1]) (by linarith only [hc2, hlaj]) hsq
   rw [tf71T_F_eq_La θ lam hθ0 hθ1 hlam (-(lamOf q ρ₁)),
       tf71T_F_eq_La θ lam hθ0 hθ1 hlam (lamOf q ρj - lamOf q ρ₁),
       tf71T_F_eq_La θ lam hθ0 hθ1 hlam 0] at hE
   simp only [neg_neg, neg_sub, neg_zero, tf71T] at hE
   have hf0 : 0 ≤ tf71f θ lam 0 := tf71f_nonneg θ lam hθ0 hθ1 hlam 0
-  linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+  linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0, hsl]
 
 /-! ## The twenty rows -/
 
@@ -161,9 +161,9 @@ theorem rectRow_034_1283 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_034_1283 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((34/100:ℚ):ℝ) = (17/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1283/1000:ℚ):ℝ) = (1283/1000:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 36/100 ⟹ λ_j ≥ 1230/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_036_123 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -178,9 +178,9 @@ theorem rectRow_036_123 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_036_123 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((36/100:ℚ):ℝ) = (9/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1230/1000:ℚ):ℝ) = (123/100:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 38/100 ⟹ λ_j ≥ 1181/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_038_1181 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -195,9 +195,9 @@ theorem rectRow_038_1181 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_038_1181 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((38/100:ℚ):ℝ) = (19/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1181/1000:ℚ):ℝ) = (1181/1000:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 40/100 ⟹ λ_j ≥ 1135/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_04_1135 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -212,9 +212,9 @@ theorem rectRow_04_1135 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_04_1135 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((40/100:ℚ):ℝ) = (2/5:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1135/1000:ℚ):ℝ) = (227/200:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 42/100 ⟹ λ_j ≥ 1094/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_042_1094 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -229,9 +229,9 @@ theorem rectRow_042_1094 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_042_1094 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((42/100:ℚ):ℝ) = (21/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1094/1000:ℚ):ℝ) = (547/500:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 44/100 ⟹ λ_j ≥ 1055/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_044_1055 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -246,9 +246,9 @@ theorem rectRow_044_1055 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_044_1055 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((44/100:ℚ):ℝ) = (11/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1055/1000:ℚ):ℝ) = (211/200:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 46/100 ⟹ λ_j ≥ 1018/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_046_1018 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -263,9 +263,9 @@ theorem rectRow_046_1018 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_046_1018 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((46/100:ℚ):ℝ) = (23/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((1018/1000:ℚ):ℝ) = (509/500:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 48/100 ⟹ λ_j ≥ 984/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_048_0984 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -280,9 +280,9 @@ theorem rectRow_048_0984 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_048_0984 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((48/100:ℚ):ℝ) = (12/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((984/1000:ℚ):ℝ) = (123/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 50/100 ⟹ λ_j ≥ 952/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_05_0952 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -297,9 +297,9 @@ theorem rectRow_05_0952 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_05_0952 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((50/100:ℚ):ℝ) = (1/2:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((952/1000:ℚ):ℝ) = (119/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 52/100 ⟹ λ_j ≥ 922/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_052_0922 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -314,9 +314,9 @@ theorem rectRow_052_0922 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_052_0922 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((52/100:ℚ):ℝ) = (13/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((922/1000:ℚ):ℝ) = (461/500:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 54/100 ⟹ λ_j ≥ 893/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_054_0893 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -331,9 +331,9 @@ theorem rectRow_054_0893 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_054_0893 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((54/100:ℚ):ℝ) = (27/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((893/1000:ℚ):ℝ) = (893/1000:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 56/100 ⟹ λ_j ≥ 866/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_056_0866 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -348,9 +348,9 @@ theorem rectRow_056_0866 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_056_0866 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((56/100:ℚ):ℝ) = (14/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((866/1000:ℚ):ℝ) = (433/500:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 58/100 ⟹ λ_j ≥ 840/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_058_084 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -365,9 +365,9 @@ theorem rectRow_058_084 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_058_084 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((58/100:ℚ):ℝ) = (29/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((840/1000:ℚ):ℝ) = (21/25:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 60/100 ⟹ λ_j ≥ 816/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_06_0816 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -382,9 +382,9 @@ theorem rectRow_06_0816 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_06_0816 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((60/100:ℚ):ℝ) = (3/5:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((816/1000:ℚ):ℝ) = (102/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 62/100 ⟹ λ_j ≥ 792/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_062_0792 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -399,9 +399,9 @@ theorem rectRow_062_0792 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_062_0792 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((62/100:ℚ):ℝ) = (31/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((792/1000:ℚ):ℝ) = (99/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 64/100 ⟹ λ_j ≥ 770/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_064_077 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -416,9 +416,9 @@ theorem rectRow_064_077 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_064_077 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((64/100:ℚ):ℝ) = (16/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((770/1000:ℚ):ℝ) = (77/100:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 66/100 ⟹ λ_j ≥ 748/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_066_0748 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -433,9 +433,9 @@ theorem rectRow_066_0748 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_066_0748 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((66/100:ℚ):ℝ) = (33/50:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((748/1000:ℚ):ℝ) = (187/250:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 68/100 ⟹ λ_j ≥ 728/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_068_0728 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -450,9 +450,9 @@ theorem rectRow_068_0728 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_068_0728 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((68/100:ℚ):ℝ) = (17/25:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((728/1000:ℚ):ℝ) = (91/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 70/100 ⟹ λ_j ≥ 708/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_07_0708 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -467,9 +467,9 @@ theorem rectRow_07_0708 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_07_0708 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((70/100:ℚ):ℝ) = (7/10:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((708/1000:ℚ):ℝ) = (177/250:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- Row `λ₁ ≤ 704/1000 ⟹ λ_j ≥ 704/1000` of HB Table 9 at rectangle height `L`. -/
 theorem rectRow_0704_0704 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) :
@@ -484,9 +484,9 @@ theorem rectRow_0704_0704 (L : ℝ) (hL : 1 ≤ L) (Q : ℕ) (hsup : L52Supply) 
   intro la1 laj h0 h1 h2 hineq
   refine rowcontra_0704_0704 hlo hhi (by rw [Real.tan_arctan]; norm_num) h0 ?_ ?_ hineq
   · have h' : ((704/1000:ℚ):ℝ) = (88/125:ℝ) := by norm_num
-    linarith
+    linarith only [h1]
   · have h' : ((704/1000:ℚ):ℝ) = (88/125:ℝ) := by norm_num
-    linarith
+    linarith only [h2]
 
 /-- **`RectT9H`**: HB Table 9 (Lemma 9.2) at rectangle height `L`. -/
 theorem RectT9H : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]

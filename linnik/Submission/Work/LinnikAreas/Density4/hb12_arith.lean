@@ -23,14 +23,14 @@ lemma hb12_arith {N : ℕ} (hN : 0 < N) {L A B C S1 S2 : ℝ} (hL : 0 < L)
   have hn : (0:ℝ) < (N:ℝ) := by exact_mod_cast hN
   -- `S2 ≥ 0` combined with the upper bound for `S2` and `S1 ≤ L·B`.
   have h1 : (0:ℝ) ≤ (N:ℝ) * S1 + ((N:ℝ)^2 - (N:ℝ)) * C * L := le_trans hS2 hS2ub
-  have h2 : (N:ℝ) * S1 ≤ (N:ℝ) * L * B := by nlinarith [hS1ub, hn]
-  have h3 : (0:ℝ) ≤ (N:ℝ)*L*B + ((N:ℝ)^2-(N:ℝ))*C*L := by linarith [h1, h2]
-  have h4 : (0:ℝ) ≤ L * (B + ((N:ℝ)-1)*C) := by nlinarith [h3, hn]
+  have h2 : (N:ℝ) * S1 ≤ (N:ℝ) * L * B := by nlinarith only [hS1ub, hn]
+  have h3 : (0:ℝ) ≤ (N:ℝ)*L*B + ((N:ℝ)^2-(N:ℝ))*C*L := by linarith only [h1, h2, hS2, hS2ub]
+  have h4 : (0:ℝ) ≤ L * (B + ((N:ℝ)-1)*C) := by nlinarith only [h3, hn, hS2, hS2ub, h2]
   have hBn : (0:ℝ) ≤ B + ((N:ℝ) - 1) * C := (mul_nonneg_iff_of_pos_left hL).mp h4
   -- The bracket in the key identity is non-negative.
-  have hLB : (0:ℝ) ≤ L * B - S1 := by linarith [hS1ub]
+  have hLB : (0:ℝ) ≤ L * B - S1 := by linarith only [hS1ub]
   have hbr : (0:ℝ) ≤ L * B + S1 + ((N:ℝ) - 1) * C * L := by
-    nlinarith [hBn, hL, hS1]
+    linarith only [hBn, hL, hS1, h4]
   have hprod : (0:ℝ) ≤ (N:ℝ)*(L*B - S1)*(L*B + S1 + ((N:ℝ)-1)*C*L) :=
     mul_nonneg (mul_nonneg (le_of_lt hn) hLB) hbr
   -- Factorisation `f(L·B) - f(S1)`.
@@ -39,7 +39,7 @@ lemma hb12_arith {N : ℕ} (hN : 0 < N) {L A B C S1 S2 : ℝ} (hL : 0 < L)
       = (N:ℝ)*(L*B - S1)*(L*B + S1 + ((N:ℝ)-1)*C*L) := by ring
   have hA3 : S1*((N:ℝ)*S1 + ((N:ℝ)^2-(N:ℝ))*C*L)
       ≤ (N:ℝ)*L^2*B^2 + ((N:ℝ)^2-(N:ℝ))*C*L^2*B := by
-    linarith [hfac, hprod]
+    linarith only [hfac, hprod]
   have hstep : S1 * S2 ≤ S1 * ((N:ℝ) * S1 + ((N:ℝ)^2 - (N:ℝ)) * C * L) :=
     mul_le_mul_of_nonneg_left hS2ub hS1
   have hchain : ((N:ℝ) * L * A)^2 ≤ (N:ℝ)*L^2*B^2 + ((N:ℝ)^2-(N:ℝ))*C*L^2*B :=
@@ -52,8 +52,8 @@ lemma hb12_arith {N : ℕ} (hN : 0 < N) {L A B C S1 S2 : ℝ} (hL : 0 < L)
   have hx : (N:ℝ)*L^2 * ((N:ℝ)*A^2) ≤ (N:ℝ)*L^2*(B^2 + ((N:ℝ)-1)*C*B) := by
     rw [← hlhs, ← hfac2]; exact hchain
   have hdiv : (N:ℝ)*A^2 ≤ B^2 + ((N:ℝ)-1)*C*B := le_of_mul_le_mul_left hx hnL2
-  have hfinal : (N:ℝ)*(A^2 - B*C) ≤ B*(B-C) := by nlinarith [hdiv]
-  have hdenpos : (0:ℝ) < A^2 - B*C := by linarith [hden]
+  have hfinal : (N:ℝ)*(A^2 - B*C) ≤ B*(B-C) := by linarith only [hdiv]
+  have hdenpos : (0:ℝ) < A^2 - B*C := by linarith only [hden]
   rw [le_div_iff₀ hdenpos]
   exact hfinal
 

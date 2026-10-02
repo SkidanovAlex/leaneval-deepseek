@@ -16,13 +16,29 @@ The per-row data of Heath-Brown's Table 7: for each of the seventeen rows this f
 -/
 import Mathlib
 import Submission.Work.ZeroFreeTables.HBTable7_of_count
-import Submission.Work.ZeroFreeTables.table7_rows_cert
 import Submission.Work.ZeroFreeTables.HBTable7_cert85
 import Submission.Work.ZeroFreeTables.tfF_eq_laplace_pi4
 import Submission.Work.ZeroFreeTables.L52HypBoth
 import Submission.Work.ZeroFreeTables.L52Hyp_eighth_le4
 import Submission.Work.ZeroFreeTables.HBTable7RowCoreAThr
 import Submission.Work.ZeroFreeTables.HBTable7RowCoreBThr
+import Submission.Work.ZeroFreeTables.T7Row17
+import Submission.Work.ZeroFreeTables.T7Row14
+import Submission.Work.ZeroFreeTables.T7Row01
+import Submission.Work.ZeroFreeTables.T7Row09
+import Submission.Work.ZeroFreeTables.T7Row11
+import Submission.Work.ZeroFreeTables.T7Row06
+import Submission.Work.ZeroFreeTables.T7Row03
+import Submission.Work.ZeroFreeTables.T7Row08
+import Submission.Work.ZeroFreeTables.T7Row13
+import Submission.Work.ZeroFreeTables.T7Row05
+import Submission.Work.ZeroFreeTables.T7Row12
+import Submission.Work.ZeroFreeTables.T7Row10
+import Submission.Work.ZeroFreeTables.T7Row02
+import Submission.Work.ZeroFreeTables.T7Row15
+import Submission.Work.ZeroFreeTables.T7Row16
+import Submission.Work.ZeroFreeTables.T7Row07
+import Submission.Work.ZeroFreeTables.T7Row04
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

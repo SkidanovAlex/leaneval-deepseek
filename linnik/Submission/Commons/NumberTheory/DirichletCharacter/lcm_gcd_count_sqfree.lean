@@ -854,7 +854,7 @@ lemma prod_factor_low (P : Finset ℕ) (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
       have hle1 := sqrt_mul_inv_pow_le p hp1 a ha
       have hle2 := sqrt_mul_inv_pow_le p hp1 b hb
       have hz : (0:ℝ) ≤ (p:ℝ)^(-(1/2:ℝ)) := by positivity
-      nlinarith [hle1, hle2, hz]
+      linarith only [hle1, hle2, hz]
   rw [Finset.prod_mul_distrib, Finset.prod_const] at h1
   exact h1
 
@@ -875,7 +875,7 @@ lemma prod_factor_high (P : Finset ℕ) (a b : ℕ) (h : a = 0 ∨ b = 0)
       have hpa : 0 ≤ Real.sqrt p * ((p:ℝ)⁻¹)^a := by positivity
       have hpb : 0 ≤ Real.sqrt p * ((p:ℝ)⁻¹)^b := by positivity
       have hs0 : 0 ≤ Real.sqrt p := Real.sqrt_nonneg p
-      nlinarith [hsq, hinva, hinvb, hpa, hpb, hs0]
+      nlinarith only [mul_le_mul_of_nonneg_left hinva hs0, mul_le_mul_of_nonneg_left hinvb hs0, hsq]
   have h2 : ∏ p ∈ P, (4 * Real.sqrt p) = (4:ℝ)^P.card * Real.sqrt (∏ p ∈ P, (p:ℝ)) := by
     rw [Finset.prod_mul_distrib, Finset.prod_const, ← Real.sqrt_prod]
     intro p hp; positivity
@@ -1044,11 +1044,11 @@ theorem lcm_gcd_count_sqfree {ε : ℝ} (hε : 0 < ε) :
         mul_nonneg
           (Finset.prod_nonneg (fun p hp => by
             have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hPge1 p (Finset.mem_powerset.mp hA hp)
-            have := Real.one_le_sqrt.mpr hp1; linarith))
+            have := Real.one_le_sqrt.mpr hp1; linarith only [this]))
           (Finset.prod_nonneg (fun p hp => by
             have hp1 : (1:ℝ) ≤ (p:ℝ) := by
               exact_mod_cast hPge1 p (Finset.mem_sdiff.mp (Finset.mem_powerset.mp hB hp)).1
-            have := Real.one_le_sqrt.mpr hp1; linarith))
+            have := Real.one_le_sqrt.mpr hp1; linarith only [this]))
       apply mul_le_mul_of_nonneg_left _ hwAnn
       exact count_XY_le H A B hdisj hprime
 
@@ -1088,14 +1088,14 @@ theorem lcm_gcd_count_sqfree {ε : ℝ} (hε : 0 < ε) :
         apply Finset.prod_le_prod₀
         · intro p hp
           have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hPge1 p (hAP hp)
-          have := Real.one_le_sqrt.mpr hp1; linarith
-        · intro p hp; linarith [Real.sqrt_nonneg (p:ℝ)]
+          have := Real.one_le_sqrt.mpr hp1; linarith only [this]
+        · intro p hp; linarith only [Real.sqrt_nonneg (p:ℝ)]
       have hwB : (∏ p ∈ B, (Real.sqrt p - 1)) ≤ ∏ p ∈ B, Real.sqrt p := by
         apply Finset.prod_le_prod₀
         · intro p hp
           have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hPge1 p (hBP hp)
-          have := Real.one_le_sqrt.mpr hp1; linarith
-        · intro p hp; linarith [Real.sqrt_nonneg (p:ℝ)]
+          have := Real.one_le_sqrt.mpr hp1; linarith only [this]
+        · intro p hp; linarith only [Real.sqrt_nonneg (p:ℝ)]
       have h2B : (2:ℝ)^B.card = ∏ p ∈ B, 2 := (Finset.prod_const (2:ℝ)).symm
       have hQ : (H:ℝ) * ((H:ℝ)/U + 1) * ((H:ℝ)/V + 1) * ((H:ℝ)/(U*V) + 1)
           = (H:ℝ)^4 * (U⁻¹)^2 * (V⁻¹)^2 + (H:ℝ)^3 * (U⁻¹)^1 * (V⁻¹)^1
@@ -1127,11 +1127,11 @@ theorem lcm_gcd_count_sqfree {ε : ℝ} (hε : 0 < ε) :
         have t6 : (0:ℝ) ≤ (H:ℝ)^2 * V⁻¹ := mul_nonneg (by positivity) hv
         have t7 : (0:ℝ) ≤ (H:ℝ)^2 * U⁻¹ * V⁻¹ :=
           mul_nonneg (mul_nonneg (by positivity) hu) hv
-        linarith [t1, t2, t3, t4, t5, t6, t7, hH0]
+        linarith only [t1, t2, t3, t4, t5, t6, t7, hH0]
       have hwBnn0 : (0:ℝ) ≤ ∏ p ∈ B, (Real.sqrt p - 1) :=
         Finset.prod_nonneg (fun p hp => by
           have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hPge1 p (hBP hp)
-          have := Real.one_le_sqrt.mpr hp1; linarith)
+          have := Real.one_le_sqrt.mpr hp1; linarith only [this])
       have hAB : (∏ p ∈ A, (Real.sqrt p - 1)) * (∏ p ∈ B, (Real.sqrt p - 1))
           ≤ (∏ p ∈ A, Real.sqrt p) * (∏ p ∈ B, Real.sqrt p) :=
         mul_le_mul hwA hwB hwBnn0 hwAnn
@@ -1236,7 +1236,7 @@ theorem lcm_gcd_count_sqfree {ε : ℝ} (hε : 0 < ε) :
         have h01 := mul_le_mul_of_nonneg_left (s01.trans hhigh) (by positivity : (0:ℝ) ≤ (H:ℝ)^2)
         have h00 := mul_le_mul_of_nonneg_left (s00.trans hhigh) (by positivity : (0:ℝ) ≤ (H:ℝ))
         have h11' := mul_le_mul_of_nonneg_left (s11.trans hlow) (by positivity : (0:ℝ) ≤ (H:ℝ)^2)
-        linarith [h22, h11, h21, h10, h12, h01, h00, h11']
+        linarith only [h22, h11, h21, h10, h12, h01, h00, h11']
       have hE2 : (H:ℝ)^4 * (C1 * C2^2 * (q:ℝ)^(3*δ))
             + (H:ℝ)^3 * (C1 * C2^2 * (q:ℝ)^(3*δ))
             + (H:ℝ)^3 * (C1 * C2^2 * (q:ℝ)^(3*δ))
@@ -1248,12 +1248,14 @@ theorem lcm_gcd_count_sqfree {ε : ℝ} (hε : 0 < ε) :
           ≤ 5 * C1 * C2^2 * (q:ℝ)^(3*δ) * ((H:ℝ)^4 + (H:ℝ)^2 * Real.sqrt (q:ℝ)) := by
         have h0 : (0:ℝ) ≤ C1 * C2^2 * (q:ℝ)^(3*δ) := by positivity
         have hs0 : (0:ℝ) ≤ Real.sqrt (q:ℝ) := Real.sqrt_nonneg _
-        have hH2 : (1:ℝ) ≤ (H:ℝ)^2 := by nlinarith [hH1]
-        have hH3 : (H:ℝ)^3 ≤ (H:ℝ)^4 := by nlinarith [hH1]
-        have hHs : (H:ℝ) ≤ (H:ℝ)^2 := by nlinarith [hH1]
-        have hH4 : (H:ℝ)^2 ≤ (H:ℝ)^4 := by nlinarith [hH2, sq_nonneg ((H:ℝ)^2 - 1)]
-        have hHs2 : (H:ℝ) * Real.sqrt (q:ℝ) ≤ (H:ℝ)^2 * Real.sqrt (q:ℝ) := by nlinarith [hs0, hHs]
-        nlinarith [h0, hs0, hH1, hH2, hH3, hH4, hHs, hHs2]
+        have hH3 : (H:ℝ)^3 ≤ (H:ℝ)^4 := pow_le_pow_right₀ hH1 (by norm_num)
+        have hHs : (H:ℝ) ≤ (H:ℝ)^2 := by nlinarith only [hH1]
+        have hH4 : (H:ℝ)^2 ≤ (H:ℝ)^4 := pow_le_pow_right₀ hH1 (by norm_num)
+        have hHs2 : (H:ℝ) * Real.sqrt (q:ℝ) ≤ (H:ℝ)^2 * Real.sqrt (q:ℝ) :=
+          mul_le_mul_of_nonneg_right hHs hs0
+        nlinarith only [mul_le_mul_of_nonneg_left hH3 h0, mul_le_mul_of_nonneg_left hH4 h0,
+          mul_le_mul_of_nonneg_left hHs2 h0,
+          mul_nonneg h0 (mul_nonneg (pow_nonneg (Nat.cast_nonneg H) 2) hs0)]
       exact h1.trans (hE1.trans hE2)
     exact hW1.trans (hW2.trans hDsplit)
 

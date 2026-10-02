@@ -1323,7 +1323,7 @@ theorem count_upper {n : ℕ} (hn : 1 ≤ n) (hq : Fintype.card F = p ^ n)
       rwa [Nat.sub_add_cancel hf1] at this
     have hp3df : p ≤ p ^ 3 * f.natDegree := by
       have h1 : p ≤ p ^ 3 := by
-        have h2 : 1 ≤ p ^ 2 := by nlinarith [hp1]
+        have h2 : 1 ≤ p ^ 2 := Nat.one_le_pow _ _ hp0
         calc p = p * 1 := by ring
           _ ≤ p * p ^ 2 := Nat.mul_le_mul_left p h2
           _ = p ^ 3 := by ring
@@ -1355,7 +1355,8 @@ theorem count_upper {n : ℕ} (hn : 1 ≤ n) (hq : Fintype.card F = p ^ n)
       have h := Nat.lt_succ_sqrt' (Fintype.card F)
       rw [← hs] at h
       simpa [Nat.succ_eq_add_one, pow_two] using h
-    nlinarith [h1, hs1]
+    have hss : s ≤ s * s := Nat.le_mul_of_pos_left s (by omega)
+    linarith only [h1, hss]
   have hmain : p * (A₀ + Fintype.card F * B + (p - 1) * (p ^ (n - 1) * f.natDegree))
       ≤ (Fintype.card F + (100 * (d + 1) * (p + 1)) * p * s) * s := by
     have hA2 : p * A₀ ≤ 2 * (s * s) := by
@@ -1364,7 +1365,7 @@ theorem count_upper {n : ℕ} (hn : 1 ≤ n) (hq : Fintype.card F = p ^ n)
         rw [Nat.le_div_iff_mul_le (by omega : 0 < 2)]
         calc p * (s * s / (2 * p)) * 2 = (2 * p) * (s * s / (2 * p)) := by ring
           _ ≤ s * s := Nat.mul_div_le _ _
-      have h2 : p ≤ s * s := by nlinarith [hs2, hp1]
+      have h2 : p ≤ s * s := le_trans (by omega : p ≤ s) (Nat.le_mul_of_pos_left s (by omega))
       calc p * (s * s / (2 * p) + 1) = p * (s * s / (2 * p)) + p := by ring
         _ ≤ s * s / 2 + s * s := add_le_add h1 h2
         _ ≤ 2 * (s * s) := by omega
@@ -1412,7 +1413,7 @@ theorem count_upper {n : ℕ} (hn : 1 ≤ n) (hq : Fintype.card F = p ^ n)
           = (100 * (d + 1) * (p + 1) * p) * (s * s) := by ring
       rw [hL, hR]
       refine Nat.mul_le_mul_right _ ?_
-      have h1 : 2 ≤ 2 * d * p := by nlinarith [hd, hp1]
+      have h1 : 2 ≤ 2 * d * p := by linarith only [Nat.mul_le_mul hd hp1]
       have h2 : 9 * p ≤ 9 * d * p := by
         calc 9 * p = 9 * 1 * p := by ring
           _ ≤ 9 * d * p := Nat.mul_le_mul_right p (Nat.mul_le_mul_left 9 hd)
@@ -1438,7 +1439,7 @@ theorem count_upper {n : ℕ} (hn : 1 ≤ n) (hq : Fintype.card F = p ^ n)
                 + 3 * (p * Fintype.card F)) + p * Fintype.card F * f.natDegree :=
           add_le_add (add_le_add hA2 hB2) hC2
       _ ≤ (Fintype.card F + (100 * (d + 1) * (p + 1)) * p * s) * s := by
-          nlinarith [h5, h6, key]
+          linarith only [h5, h6, key]
   have hN0 : (({x : F | Polynomial.eval x (Tf p n f) = 0} : Set F).ncard)
       ≤ Fintype.card F / p + 100 * (d + 1) * (p + 1) * s := by
     have h1 : (({x : F | Polynomial.eval x (Tf p n f) = 0} : Set F).ncard) * p * s
@@ -1658,7 +1659,7 @@ theorem point_count (p : ℕ) [Fact p.Prime] (d : ℕ) (hd : 1 ≤ d) :
         have h2 : ((Nat.sqrt (Fintype.card E) : ℕ) : ℝ) ≤ R := Real.nat_sqrt_le_real_sqrt
         rw [Nat.cast_add, Nat.cast_mul, h1]
         have h3 : (0 : ℝ) ≤ (K : ℝ) := by positivity
-        nlinarith [mul_le_mul_of_nonneg_left h2 h3, hR]
+        linarith only [mul_le_mul_of_nonneg_left h2 h3]
       have hex : ∀ c : ZMod p, ∃ a : E, psiMap (p:=p) n a = algebraMap (ZMod p) E c :=
         fun c => psiMap_surj (p:=p) (E:=E) hn1 hq (y := algebraMap (ZMod p) E c) ⟨c, rfl⟩
       choose ac hac using hex
@@ -1754,14 +1755,14 @@ theorem point_count (p : ℕ) [Fact p.Prime] (d : ℕ) (hd : 1 ≤ d) :
         rw [hSScast]
         have h1 : (N0 : ℝ) ≤ Q / p + (K : ℝ) * R := by
           have h2 : (N0 : ℝ) ≤ (Y : ℝ) := by exact_mod_cast hYub
-          linarith [hYr]
+          linarith only [hYr, h2]
         calc (p : ℝ) * (N0 : ℝ) ≤ (p : ℝ) * (Q / p + (K : ℝ) * R) :=
               mul_le_mul_of_nonneg_left h1 (by positivity)
           _ = Q + (p : ℝ) * (K : ℝ) * R := by rw [mul_add, hQp]; ring
       have hlb : Q - (p : ℝ) * ((p : ℝ) - 1) * (K : ℝ) * R ≤ (SS : ℝ) := by
         rw [hSScast]
         have h2 : Q - ((p : ℝ) - 1) * (Q / p + (K : ℝ) * R) ≤ (N0 : ℝ) := by
-          linarith [hN0ge, hYr2]
+          linarith only [hN0ge, hYr2]
         calc Q - (p : ℝ) * ((p : ℝ) - 1) * (K : ℝ) * R
             = (Q - ((p : ℝ) - 1) * (Q / p + (K : ℝ) * R)) * (p : ℝ) := by
               field_simp
@@ -1780,13 +1781,15 @@ theorem point_count (p : ℕ) [Fact p.Prime] (d : ℕ) (hd : 1 ≤ d) :
       have hPKle : (p : ℝ) * (K : ℝ) * R ≤ (p : ℝ) * ((p : ℝ) - 1) * (K : ℝ) * R := by
         have h1 : (1 : ℝ) ≤ (p : ℝ) - 1 := by linarith
         have h2 : (0 : ℝ) ≤ (p : ℝ) * (K : ℝ) := by positivity
-        nlinarith [h1, h2, hR0]
+        have h3 : (p : ℝ) * (K : ℝ) * R * 1 ≤ (p : ℝ) * (K : ℝ) * R * ((p : ℝ) - 1) :=
+          mul_le_mul_of_nonneg_left h1 (mul_nonneg h2 hR0)
+        linarith only [h3]
       have hub2 : (SS : ℝ) - Q
           ≤ ((p : ℝ) * ((p : ℝ) - 1) * (K : ℝ) + ((p : ℝ) - 1) * (P : ℝ) ^ 2 + 1) * R := by
-        linarith [hub, hPKle, hCgeR]
+        linarith only [hub, hPKle, hCgeR]
       have hlb2 : -(((p : ℝ) * ((p : ℝ) - 1) * (K : ℝ) + ((p : ℝ) - 1) * (P : ℝ) ^ 2 + 1) * R)
           ≤ (SS : ℝ) - Q := by
-        linarith [hlb, hCgeR]
+        linarith only [hlb, hCgeR]
       rw [abs_le]
       exact ⟨hlb2, hub2⟩
     · -- ============ small q ============
@@ -1827,12 +1830,11 @@ theorem point_count (p : ℕ) [Fact p.Prime] (d : ℕ) (hd : 1 ≤ d) :
           have : (0 : ℝ) ≤ (SS : ℝ) := by positivity
           linarith
         have h2 : Q ≤ ((p : ℝ) - 1) * Q := by
-          have : (1 : ℝ) ≤ (p : ℝ) - 1 := hp1m
-          nlinarith
-        linarith [h1, h2, h4, hC]
-      · have h1 : (SS : ℝ) - Q ≤ (p : ℝ) * Q - Q := by linarith [hSSle]
+          exact le_mul_of_one_le_left (Nat.cast_nonneg (Fintype.card E)) hp1m
+        linarith only [h1, h2, h4, hC]
+      · have h1 : (SS : ℝ) - Q ≤ (p : ℝ) * Q - Q := by linarith only [hSSle]
         have h2 : (p : ℝ) * Q - Q = ((p : ℝ) - 1) * Q := by ring
-        linarith [h1, h2, h4, hC]
+        linarith only [h1, h2, h4, hC]
 
 end PointCount
 

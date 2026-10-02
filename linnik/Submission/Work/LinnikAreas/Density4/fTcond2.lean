@@ -29,7 +29,7 @@ theorem fT_laplace_decay {θ lam : ℝ} (hθ1 : Real.pi / 2 < θ) (hθ2 : θ < R
   intro ε hε
   have hεne : ε ≠ 0 := ne_of_gt hε
   obtain ⟨hcont, hcd, B, hBnn, hBnd⟩ := fT_laplace_regularity (θ := θ) (lam := lam) hθ1 hθ2 hlam
-  have h2γ : 0 < 2 * gammaT θ lam := by have h := gammaT_pos hθ1 hθ2 hlam; linarith
+  have h2γ : 0 < 2 * gammaT θ lam := by have h := gammaT_pos hθ1 hθ2 hlam; linarith only [h]
   set G : ℝ → ℂ := fun t => ((fT θ lam t : ℝ) : ℂ) with hGdef
   have hcontG : ContinuousOn G (Set.Icc 0 (2 * gammaT θ lam)) := by simpa [hGdef] using hcont
   have hcdG : ContDiffOn ℝ 2 G (Set.Ioo 0 (2 * gammaT θ lam)) := by simpa [hGdef] using hcd
@@ -78,13 +78,13 @@ theorem fT_laplace_decay {θ lam : ℝ} (hθ1 : Real.pi / 2 < θ) (hθ2 : θ < R
           integral_exp_neg_zero_T z.re (2 * gammaT θ lam) (ne_of_gt hz)]
     rw [hI]
     have hone : (1 - Real.exp (-(z.re * (2 * gammaT θ lam)))) ≤ 1 := by
-      linarith [Real.exp_pos (-(z.re * (2 * gammaT θ lam)))]
+      linarith only [Real.exp_pos (-(z.re * (2 * gammaT θ lam)))]
     calc M * ((1 - Real.exp (-(z.re * (2 * gammaT θ lam)))) / z.re)
         ≤ M * (1 / z.re) :=
           mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_right hone hz.le) hMnn
       _ = M / z.re := by ring
   set σ₁ : ℝ := M / ε + 1 with hσ₁def
-  have hσ₁pos : 0 < σ₁ := by rw [hσ₁def]; have : 0 ≤ M / ε := div_nonneg hMnn hε.le; linarith
+  have hσ₁pos : 0 < σ₁ := by rw [hσ₁def]; have : 0 ≤ M / ε := div_nonneg hMnn hε.le; linarith only [this]
   set K : ℝ := Real.exp ((2 * gammaT θ lam) * σ₁) with hKdef
   have hKpos : 0 < K := by rw [hKdef]; exact Real.exp_pos _
   set C : ℝ := ‖G 0‖ + D * K with hCdef
@@ -96,18 +96,18 @@ theorem fT_laplace_decay {θ lam : ℝ} (hθ1 : Real.pi / 2 < θ) (hθ2 : θ < R
     have hb := hb1 z hzpos
     have hMdiv : M / z.re ≤ M / σ₁ := div_le_div_of_nonneg_left hMnn hσ₁pos h1
     have hlt : M / σ₁ < ε := by
-      rw [hσ₁def, div_lt_iff₀ (by have : 0 ≤ M / ε := div_nonneg hMnn hε.le; linarith)]
+      rw [hσ₁def, div_lt_iff₀ (by have : 0 ≤ M / ε := div_nonneg hMnn hε.le; linarith only [hσ₁pos])]
       have hsplit : ε * (M / ε + 1) = M + ε := by
         rw [mul_add, mul_one, mul_comm ε (M / ε), div_mul_cancel₀ M hεne]
-      rw [hsplit]; linarith
+      rw [hsplit]; linarith only [hε]
     exact lt_of_le_of_lt (hMdiv.trans' hb) hlt
   · have hRpos : 0 < max σ₁ (C / ε + 1) := lt_of_lt_of_le hσ₁pos (le_max_left _ _)
     have hznorm_pos : 0 < ‖z‖ := lt_of_lt_of_le hRpos hRz
     have hz0 : z ≠ 0 := norm_pos_iff.mp hznorm_pos
     have hRge : C / ε + 1 ≤ ‖z‖ := le_trans (le_max_right _ _) hRz
     have hnorm_ge_one : 1 ≤ ‖z‖ := by
-      have h2 : (1:ℝ) ≤ C / ε + 1 := by have : 0 ≤ C / ε := div_nonneg hCnn hε.le; linarith
-      linarith
+      have h2 : (1:ℝ) ≤ C / ε + 1 := by have : 0 ≤ C / ε := div_nonneg hCnn hε.le; linarith only [this]
+      linarith only [hRge, h2]
     have hb := hb2 z hz0
     have hσabs : |z.re| = z.re := abs_of_nonneg hz
     have hexp : Real.exp ((2 * gammaT θ lam) * |z.re|) ≤ K := by
@@ -119,26 +119,26 @@ theorem fT_laplace_decay {θ lam : ℝ} (hθ1 : Real.pi / 2 < θ) (hθ2 : θ < R
         div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left hexp hDnn) (by positivity)
       have h3' : D * K / ‖z‖ ^ 2 ≤ D * K / ‖z‖ := by
         refine div_le_div_of_nonneg_left (by positivity) hznorm_pos ?_
-        nlinarith [hnorm_ge_one]
+        nlinarith only [hnorm_ge_one, hRz, hRpos]
       have h4' : ‖G 0‖ / ‖z‖ + D * K / ‖z‖ = C / ‖z‖ := by rw [hCdef]; ring
-      linarith
+      linarith only [hb, h2', h3', h4']
     have hfinal : C / ‖z‖ < ε := by
-      have hden : 0 < C / ε + 1 := by have : 0 ≤ C / ε := div_nonneg hCnn hε.le; linarith
+      have hden : 0 < C / ε + 1 := by have : 0 ≤ C / ε := div_nonneg hCnn hε.le; linarith only [this]
       have hle : C / ‖z‖ ≤ C / (C / ε + 1) := div_le_div_of_nonneg_left hCnn hden hRge
       have hlt : C / (C / ε + 1) < ε := by
         rw [div_lt_iff₀ hden]
         have hsplit : ε * (C / ε + 1) = C + ε := by
           rw [mul_add, mul_one, mul_comm ε (C / ε), div_mul_cancel₀ C hεne]
-        rw [hsplit]; linarith
-      linarith
-    linarith [hstep, hfinal]
+        rw [hsplit]; linarith only [hε]
+      linarith only [hle, hlt]
+    linarith only [hstep, hfinal]
 
 theorem fTcond2 {θ lam : ℝ} (hθ1 : Real.pi / 2 < θ) (hθ2 : θ < Real.pi) (hlam : 0 < lam) :
     ∀ z : ℂ, 0 ≤ z.re →
       0 ≤ (∫ t in (0:ℝ)..(2 * gammaT θ lam),
             Complex.exp (-(z * (t : ℂ))) * ((fT θ lam t : ℝ) : ℂ)).re := by
   intro z hz
-  have h2γ : 0 < 2 * gammaT θ lam := by have h := gammaT_pos hθ1 hθ2 hlam; linarith
+  have h2γ : 0 < 2 * gammaT θ lam := by have h := gammaT_pos hθ1 hθ2 hlam; linarith only [h]
   set L : ℂ → ℂ := fun w => ∫ t in (0:ℝ)..(2 * gammaT θ lam),
       Complex.exp (-(w * (t : ℂ))) * ((fT θ lam t : ℝ) : ℂ) with hLdef
   have hgc : ContinuousOn (fun t : ℝ => ((fT θ lam t : ℝ) : ℂ)) (Set.uIcc 0 (2 * gammaT θ lam)) := by

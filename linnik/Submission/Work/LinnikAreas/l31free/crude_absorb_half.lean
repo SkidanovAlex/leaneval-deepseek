@@ -26,7 +26,7 @@ lemma crude_absorb_half {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   rcases eq_or_lt_of_le hq1 with hq | hq
   · subst hq
     simp only [Nat.cast_one, Real.log_one, Real.one_rpow, mul_one]
-    nlinarith [hClpos]
+    linarith only [hClpos]
   have hqR1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast (le_of_lt hq)
   have hqRpos : (0:ℝ) < (q:ℝ) := by exact_mod_cast (by omega : 0 < q)
   have hlogq0 : (0:ℝ) ≤ Real.log (q:ℝ) := Real.log_nonneg hqR1
@@ -37,28 +37,28 @@ lemma crude_absorb_half {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   have hee : (1+1/(k:ℝ))/2 = e := by rw [hedef]; ring
   have hsq : (1 + Real.log (q:ℝ))^3 ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := by
     have h1 : (Real.log (q:ℝ))^3 ≤ Cl * (q:ℝ)^ε := hCl (q:ℝ) hqR1
-    have h2 : (1:ℝ) ≤ 1 + Real.log (q:ℝ) := by linarith
+    have h2 : (1:ℝ) ≤ 1 + Real.log (q:ℝ) := by linarith only [hlogqpos]
     have h3 : (1 + Real.log (q:ℝ))^3
         = 1 + 3*Real.log (q:ℝ) + 3*(Real.log (q:ℝ))^2 + (Real.log (q:ℝ))^3 := by ring
     have h4 : 3*Real.log (q:ℝ) + 3*(Real.log (q:ℝ))^2 ≤ 3 + 6*(Real.log (q:ℝ))^2 := by
-      nlinarith [hlogq0, h2, pow_nonneg hlogq0 2, sq_nonneg (Real.log (q:ℝ) - 1)]
-    nlinarith [h1, h4, hlogq0, hqe1, hClpos, Real.rpow_nonneg (by positivity) ε,
+      linarith only [hlogq0, h2, pow_nonneg hlogq0 2, sq_nonneg (Real.log (q:ℝ) - 1), hlogqpos]
+    nlinarith only [h1, h4, hlogq0, hqe1, hClpos, Real.rpow_nonneg (by positivity) ε,
       pow_nonneg hlogq0 2]
   have hloge : (Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^(2:ℕ) := by
     have h1 : (Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^e :=
-      Real.rpow_le_rpow hlogq0 (by linarith) (le_of_lt hepos)
+      Real.rpow_le_rpow hlogq0 (by linarith only []) (le_of_lt hepos)
     have h2 : e ≤ 2 := by
       rw [hedef]
       have h : 1/(2*(k:ℝ)) ≤ 1/6 :=
-        one_div_le_one_div_of_le (by norm_num : (0:ℝ) < 6) (by linarith)
-      linarith
+        one_div_le_one_div_of_le (by norm_num : (0:ℝ) < 6) (by linarith only [hk3])
+      linarith only [h]
     have h3 : (1 + Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^((2:ℕ):ℝ) :=
       Real.rpow_le_rpow_of_exponent_le (le_add_of_nonneg_right (Real.log_nonneg hqR1)) h2
     exact h1.trans (by simpa only [Real.rpow_natCast] using h3)
   have hprod : (1 + Real.log (q:ℝ)) * (Real.log (q:ℝ))^e ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := by
     calc (1 + Real.log (q:ℝ)) * (Real.log (q:ℝ))^e
         ≤ (1 + Real.log (q:ℝ)) * (1 + Real.log (q:ℝ))^2 :=
-          mul_le_mul_of_nonneg_left hloge (by linarith)
+          mul_le_mul_of_nonneg_left hloge (by linarith only [hlogqpos])
       _ = (1 + Real.log (q:ℝ))^3 := by ring
       _ ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := hsq
   set L : ℝ := Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) with hLdef
@@ -73,10 +73,10 @@ lemma crude_absorb_half {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   have hqe : (q:ℝ)^ε ≤ (q:ℝ)^(((1:ℝ)/2)*(1-σ)*(1+1/(k:ℝ)) + ε) * (Real.log (q:ℝ))^e := by
     rw [← hlogeq, ← Real.rpow_add hqRpos]
     apply Real.rpow_le_rpow_of_exponent_le hqR1
-    have h1 : (1:ℝ) - σ + Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) ≥ 0 := by linarith [hσle]
+    have h1 : (1:ℝ) - σ + Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) ≥ 0 := by linarith only [hσle]
     have h2 := mul_le_mul_of_nonneg_left h1 (show (0:ℝ) ≤ 1+1/(k:ℝ) by positivity)
     rw [← hee]
-    nlinarith [h2]
+    linarith only [h2]
   have hloge_pos : 0 < (Real.log (q:ℝ))^e := Real.rpow_pos_of_pos hlogqpos e
   have hfinal : (1 + Real.log (q:ℝ))
       ≤ (8*(1+Cl)+8) * (q:ℝ)^(((1:ℝ)/2)*(1-σ)*(1+1/(k:ℝ)) + ε) := by

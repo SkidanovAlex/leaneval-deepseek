@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.P3RectTuranOther.Work_LinnikAreas_DhExplicit_kMultInvSqSummable
 import Submission.Work.LinnikAreas.TuranOther.xiTermKernelDecay
 

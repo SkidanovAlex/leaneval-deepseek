@@ -6,7 +6,6 @@ import Submission.Commons.NumberTheory.DirichletCharacter.leftEdge_logDeriv_boun
 import Submission.Commons.NumberTheory.DirichletCharacter.chebyshevPsiChi_explicit_formula_mult
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_ne_zero_of_one_lt_re
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
-import Submission.Commons.Analysis.Complex.rectInt_tendsto_vertical_gen
 import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
 
 open Complex MeasureTheory intervalIntegral Filter

@@ -303,7 +303,7 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
   have hδmhalf : (6 : ℝ) / 7 / L ≤ δm / 2 := by
     rw [div_le_iff₀ hlogq]
     have h := (div_le_iff₀ (by positivity : (0:ℝ) < 7 * δm)).mp h18δ
-    nlinarith [h]
+    linarith only [h]
   set lam₁ : ℝ := Work.LinnikContract.lamOf q ρ₁ with hlam₁
   set lam₂ : ℝ := Work.LinnikContract.lamOf q ρ₂ with hlam₂
   set lam₃ : ℝ := Work.LinnikContract.lamOf q ρ₃ with hlam₃
@@ -588,25 +588,26 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
       simp only [Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im,
         Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, mul_zero, mul_one,
         sub_zero, add_zero]
-      nlinarith [h]
-    nlinarith [norm_nonneg (((a : ℝ) : ℂ) + ((b : ℝ) : ℂ) * Complex.I), hz2, hc]
+      linarith only [h]
+    nlinarith only [norm_nonneg (((a : ℝ) : ℂ) + ((b : ℝ) : ℂ) * Complex.I), hz2, hc]
   have hwinb : ∀ (l b : ℝ), 0 ≤ l → l ≤ 6/7 → |b| ≤ δm / 2 →
       ‖((l / L : ℝ) : ℂ) + ((b : ℝ) : ℂ) * Complex.I‖ ≤ δm := by
     intro l b hl0 hl67 hb
     have hlL : l / L ≤ δm / 2 := le_trans (div_le_div_of_nonneg_right hl67 hlogq.le) hδmhalf
-    have h1 : (l / L)^2 ≤ (δm / 2)^2 := by
-      nlinarith [hlL, div_nonneg hl0 hlogq.le, hδm0]
-    have h2 : b^2 ≤ (δm / 2)^2 := by nlinarith [abs_le.mp hb, hδm0]
-    refine hnorm_le _ _ _ ?_ (by linarith [hδm0])
-    nlinarith [h1, h2, hδm0]
+    have h1 : (l / L)^2 ≤ (δm / 2)^2 := pow_le_pow_left₀ (div_nonneg hl0 hlogq.le) hlL 2
+    have h2 : b^2 ≤ (δm / 2)^2 := by
+      rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg b) hb 2
+    refine hnorm_le _ _ _ ?_ (by linarith only [hδm0])
+    have hd : (δm / 2) ^ 2 = δm ^ 2 / 4 := by ring
+    linarith only [h1, h2, hd, sq_nonneg δm]
   have h9L : (9/7 : ℝ) / L ≤ δm / 2 := by
     rw [div_le_iff₀ hlogq]
     have h := (div_le_iff₀ (by positivity : (0:ℝ) < 7 * δm)).mp h18δ
-    nlinarith [h]
+    linarith only [h]
   have h200L : (200:ℝ) / L ≤ δm / 2 := by
     rw [div_le_iff₀ hlogq]
     have h := (div_le_iff₀ (by positivity : (0:ℝ) < δm)).mp h400δ
-    nlinarith [h]
+    linarith only [h]
   -- the vector identity `1 + gi - ρ = (l/L) + (g - ρ.im)i`
   have hvecid : ∀ (g l : ℝ) (ρ : ℂ), ρ.re = 1 - l / L →
       (1:ℂ) + (g : ℂ) * Complex.I - ρ
@@ -806,7 +807,7 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
   have hdiv67 : ∀ (l : ℝ), l ≤ 6/7 → l / L ≤ 6/7 := by
     intro l hl
     rw [div_le_iff₀ hlogq]
-    nlinarith [hl, hL1]
+    linarith only [hl, hL1]
   have hw4 : |(γ₂ + γ₃) * L| ≤ 9/7 →
       ‖(1:ℂ) + (((γ₂ : ℝ)) : ℂ) * Complex.I - (starRingEnd ℂ) ρ₃‖ ≤ δ := by
     intro hμ
@@ -941,7 +942,7 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
       set B1 : ℝ := (T.Fc (((0:ℝ) : ℂ) + (((γ₂ + γ₃) * L : ℝ) : ℂ) * Complex.I)).re with hB1
       have hLt : (L/2) * A1 - L * A3 - L * A2 - (L/2) * B1 ≤ (7/48) * (T.f 0 * L) := by
         have e0 : (L/2) * (T.f 0 * (7/4)) - L * (3 * T.f 0 / 8) - L * (3 * T.f 0 / 8) - (L/2) * 0
-            ≤ (7/48) * (T.f 0 * L) := by nlinarith [T.f0_pos, hlogq]
+            ≤ (7/48) * (T.f 0 * L) := by linarith only [mul_pos T.f0_pos hlogq]
         have eA : (L/2) * A1 ≤ (L/2) * (T.f 0 * (7/4)) := mul_le_mul_of_nonneg_left hA (by linarith)
         have e2 : L * (3 * T.f 0 / 8) ≤ L * A2 := mul_le_mul_of_nonneg_left hC2 (by linarith)
         have e3 : L * (3 * T.f 0 / 8) ≤ L * A3 := mul_le_mul_of_nonneg_left hC3 (by linarith)
@@ -964,7 +965,7 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
           have e : (L/2) * (A1 - B1) ≤ (L/2) * (7 * T.f 0 / 24) :=
             mul_le_mul_of_nonneg_left hsub'' (by linarith)
           have e0 : (L/2) * (7 * T.f 0 / 24) ≤ (7/48) * (T.f 0 * L) := by
-            nlinarith [T.f0_pos, hlogq]
+            linarith only [mul_pos T.f0_pos hlogq]
           linarith [e, e0]
         have hg4 : Work.ZeroFreeTables.Ksum q T.f L ((β : ℂ) + ((γ₂ : ℝ) : ℂ) * Complex.I) (χ₁ * χ₂)
             ≤ T.f 0 * (1/6 + ε') * L := hself6 (χ₁ * χ₂) hp12 γ₂ (by linarith [hγ2L, hH1])
@@ -989,7 +990,7 @@ theorem rect103OneRealH (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 <
         have hA' : A1 ≤ T.f 0 / 6 := by simpa [hA1] using hA
         have hLt : (L/2) * A1 ≤ (7/48) * (T.f 0 * L) := by
           have e : (L/2) * A1 ≤ (L/2) * (T.f 0 / 6) := mul_le_mul_of_nonneg_left hA' (by linarith)
-          have e0 : (L/2) * (T.f 0 / 6) ≤ (7/48) * (T.f 0 * L) := by nlinarith [T.f0_pos, hlogq]
+          have e0 : (L/2) * (T.f 0 / 6) ≤ (7/48) * (T.f 0 * L) := by linarith only [mul_pos T.f0_pos hlogq]
           linarith [e, e0]
         have hg4 : Work.ZeroFreeTables.Ksum q T.f L ((β : ℂ) + ((γ₂ : ℝ) : ℂ) * Complex.I) (χ₁ * χ₂)
             ≤ T.f 0 * (1/6 + ε') * L := hself6 (χ₁ * χ₂) hp12 γ₂ (by linarith [hγ2L, hH1])
@@ -1207,11 +1208,11 @@ theorem Rect10_3OneReal : ∀ ε : ℝ, 0 < ε → ∀ L : ℝ, 1 ≤ L → ∃ 
   have hse : 8 * ε' * T.f 0 ≤ ε / 10000 := by
     rw [hTf0]
     have h1 : ε' * 8 * (32/35) ≤ (ε / 1000000) * 8 * (32/35) := by
-      nlinarith [hε'1, hε]
-    nlinarith [hε'1, hε, hε']
+      linarith only [hε'1, hε]
+    linarith only [hε'1, hε, hε']
   have hs83 : 8 * ε' * T.f 0 < 83/9000 := by
     rw [hTf0]
-    nlinarith [hε'2, hε']
+    linarith only [hε'2, hε']
   have hmom : ∀ l : ℝ, 0 ≤ l → l < 6/7 →
       T.F (-(6/7)) - T.F (-l) ≤ 2 * (T.F 0 - T.F (6/7 - l)) + 8 * ε' * T.f 0 →
         l ≤ 792/1000 ∨ 6/7 - ε/2 ≤ l := by

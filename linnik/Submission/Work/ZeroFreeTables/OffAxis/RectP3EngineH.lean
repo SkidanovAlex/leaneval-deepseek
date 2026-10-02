@@ -839,6 +839,7 @@ theorem RectP3EngineH : ∀ (a K ε : ℝ), 0 < a → 0 < K → 0 < ε →
     have h : Ee = E := by
       rw [hEedef, hEdef, hC0cdef, hE2cdef, hE3cdef, hCorrcdef, hFcdef]
     rw [h]; exact hEbound
+  clear_value Ee Fc C0c Corrc E3c E2c E3z E2z E3 E2 E Corr Sp3 Sp2 Sp1 Cj L Λ aup δ Cn Cz Cp ε₁
 
   have hFcnn : 0 ≤ Fc := by rw [hFcdef]; positivity
   have hC0cnn : 0 ≤ C0c := by rw [hC0cdef]; positivity
@@ -950,6 +951,7 @@ theorem RectP3EngineH : ∀ (a K ε : ℝ), 0 < a → 0 < K → 0 < ε →
     set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
     set S7 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
     set S8 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+    clear_value S1 S2 S3 S4 S5 S6 S7 S8
     -- ### point 1: the principal character at `σ`
     have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
       have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
@@ -1554,6 +1556,7 @@ theorem RectP3EngineH : ∀ (a K ε : ℝ), 0 < a → 0 < K → 0 < ε →
       set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
       set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
       set S8 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+      clear_value S1 S2 S3 S4 S5 S6 S7 S8
       -- ### point 1
       have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
         have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
@@ -1926,12 +1929,13 @@ theorem RectP3EngineH : ∀ (a K ε : ℝ), 0 < a → 0 < K → 0 < ε →
       set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
       set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
       set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+      clear_value S1 S2 S3 S4 S5 S6 S7 S8
       -- ### point 1: the principal character at σ
       have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
         have hb := P3H.pointBoundPrincipalH (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
           (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
           hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by rw [show (sPt a L 0).im = 0 by simp [sPt], abs_zero]; exact hRnn)
-          (hSzeta 0).1 (hSzeta 0).2 hcc0
+          (hSzeta 0).1 (hSzeta 0).2 (by rw [hS1'] at hcc0; exact hcc0)
         have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
             = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
           rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]

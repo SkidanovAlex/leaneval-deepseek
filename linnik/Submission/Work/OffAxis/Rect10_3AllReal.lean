@@ -24,7 +24,6 @@ import Submission.Work.ZeroFreeTables.OffAxis.RepHMisc
 import Submission.Work.ZeroFreeTables.OffAxis.RepHMaster
 import Submission.Work.ZeroFreeTables.OffAxis.RectRepPrincipal
 import Submission.Work.ZeroFreeTables.OffAxis.nearP3sum_ge_kept_R
-import Submission.Work.ZeroFreeTables.OffAxis.masterP3Wide3H
 
 namespace Work.OffAxis
 
@@ -334,7 +333,7 @@ theorem Rect10_3AllReal_engine (ε' : ℝ) (hε' : 0 < ε') :
     have h' : 48 ≤ Real.log (q : ℝ) * (δ * (ε' / 10)) :=
       (div_le_iff₀ (by positivity : (0 : ℝ) < δ * (ε' / 10))).mp hD
     rw [div_le_iff₀ (mul_pos hδ0 hLpos)]
-    nlinarith [h']
+    linarith only [h']
   -- ### the setting: the three `λ`'s
   set lam1 : ℝ := Work.LinnikContract.lamOf q ρ₁ with hlam1def
   set lam2 : ℝ := Work.LinnikContract.lamOf q ρ₂ with hlam2def
@@ -649,31 +648,31 @@ theorem Rect10_3AllReal_engine (ε' : ℝ) (hε' : 0 < ε') :
       ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 + 1 / ((18 / 7 : ℝ) + lam2) ^ 3
         + 1 / ((18 / 7 : ℝ) + lam3) ^ 3 := by
     have ht1 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam1 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam1 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam1 := by linarith only [hlam10]
+      have h4 : (18 / 7 : ℝ) + lam1 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam167]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have ht2 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam2) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam2 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith only [hlam20]
+      have h4 : (18 / 7 : ℝ) + lam2 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam267]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam2) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have ht3 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam3) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam3 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith only [hlam30]
+      have h4 : (18 / 7 : ℝ) + lam3 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam367]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam3) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have hkey : 1 / (18 / 7 : ℝ) ^ 3 ≤ (27 / 64) / (18 / 7 : ℝ) ^ 3 * 3 := by norm_num
-    linarith [ht1, ht2, ht3, hkey]
+    linarith only [ht1, ht2, ht3, hkey]
   -- ### the ten-term collapse
   set eS : ℝ := 24 / (δ * Real.log (q : ℝ)) + 3 * e1 + 4 * e1 with heSdef
   have hPstar := Work.P10.Pstar_collapse χ₁ χ₂ χ₃ ρ₁ ρ₂ ρ₃
@@ -730,16 +729,16 @@ theorem Rect10_3AllReal_engine (ε' : ℝ) (hε' : 0 < ε') :
   · positivity
   · field_simp
     ring
-  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith
+  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith only [hlam20]
     rw [le_div_iff₀ hpos, div_mul_eq_mul_div, div_le_iff₀ (by norm_num : (0 : ℝ) < 4)]
     have hδ : lam1 / (6 / 7) = 7 * lam1 / 6 := by ring
     rw [hδ]
-    nlinarith [hlam10, hlam20, hlam267]
-  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith
+    nlinarith only [mul_nonneg hlam10 (sub_nonneg.mpr hlam267), hlam267, hlam10]
+  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith only [hlam30]
     rw [le_div_iff₀ hpos, div_mul_eq_mul_div, div_le_iff₀ (by norm_num : (0 : ℝ) < 4)]
     have hδ : lam1 / (6 / 7) = 7 * lam1 / 6 := by ring
     rw [hδ]
-    nlinarith [hlam10, hlam30, hlam367]
+    nlinarith only [mul_nonneg hlam10 (sub_nonneg.mpr hlam367), hlam367, hlam10]
   · exact le_of_lt hε'
   · rw [he1def]
     linarith [hbud, hε']

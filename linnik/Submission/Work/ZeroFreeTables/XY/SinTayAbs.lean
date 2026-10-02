@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.ZeroFreeTables.XY.SupGridDefs
 
 namespace Work.ZeroFreeTables.XY
 

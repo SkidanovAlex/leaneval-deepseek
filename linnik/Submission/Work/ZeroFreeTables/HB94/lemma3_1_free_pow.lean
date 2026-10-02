@@ -571,7 +571,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
     have h4 : Cb₀ * (N:ℝ) ^ (φ * (1 - σ) * (1 + 1/(k:ℝ)) + ε') * (1 + |t|)
         ≤ Cb * (N:ℝ) ^ (φ * (1 - σ) * (1 + 1/(k:ℝ)) + ε') * (1 + |t|) := by
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hle (by positivity)) (by positivity)
-    linarith [h, h4]
+    linarith only [h, h4]
   obtain ⟨c0, hc0pos, hc0⟩ := exists_LFunction_disc_zeroCount_aux
   -- constants
   set η : ℝ := min (1/(8*(k:ℝ)))
@@ -607,7 +607,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
   have hd0pos : 0 < Real.log (Real.log 3) := by
     apply Real.log_pos
     rw [← Real.log_exp 1]
-    exact Real.log_lt_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_three])
+    exact Real.log_lt_log (Real.exp_pos 1) (by linarith only [Real.exp_one_lt_three])
   set C₀ : ℝ := Real.log (1 + 1 / Real.log (Real.log 3)) with hC₀def
   have hC₀nn : 0 ≤ C₀ := by
     rw [hC₀def]
@@ -622,7 +622,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
   have hδ_R : δ ≤ R/4 := by rw [hδdef]; exact min_le_left _ _
   have hδ_ε : δ ≤ ε/(256*c0*(k:ℝ)^2) := by rw [hδdef]; exact min_le_right _ _
   have hδ_lt1 : δ < 1 := by
-    have h1 : R/4 < 1 := by linarith [hRle]
+    have h1 : R/4 < 1 := by linarith only [hRle]
     linarith
   refine ⟨L₀, δ, hδpos, hδ_lt1, ?_⟩
   intro N hNe hN3 χ hχ hχprim hχ2 L hL₀le hNL s hs1 hs2 hs3
@@ -647,7 +647,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
   have hNpos : (0:ℝ) < (N:ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
   have hlog3gt1 : (1:ℝ) < Real.log 3 := by
     rw [← Real.log_exp 1]
-    exact Real.log_lt_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_three])
+    exact Real.log_lt_log (Real.exp_pos 1) (by linarith only [Real.exp_one_lt_three])
   have hlogN1 : 1 < Real.log (N:ℝ) := by
     have h1 : Real.log 3 ≤ Real.log (N:ℝ) :=
       Real.log_le_log (by norm_num) (by exact_mod_cast hN3)
@@ -667,7 +667,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
     have hMge3 : Real.log 3 ≤ Real.log (N:ℝ) :=
       Real.log_le_log (by norm_num) (by exact_mod_cast hN3)
     have hlogMge : Real.log (Real.log 3) ≤ Real.log (Real.log (N:ℝ)) :=
-      Real.log_le_log (by linarith [hlog3gt1]) hMge3
+      Real.log_le_log (by linarith only [hlog3gt1]) hMge3
     have hM1 : 1 ≤ Real.log (N:ℝ) := le_of_lt hlogN1
     have h1 : 1 + 1 / cN ≤ 1 + Real.log (N:ℝ) / Real.log (Real.log 3) := by
       rw [hcNdef]
@@ -681,47 +681,47 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       have hdiv : 1 / (Real.log (Real.log (N:ℝ)) / Real.log (N:ℝ))
           = Real.log (N:ℝ) / Real.log (Real.log (N:ℝ)) := by rw [one_div_div]
       rw [hdiv, heq1.symm, heq2.symm] at *
-      linarith [hmul]
+      linarith only [hmul]
     have h2 : 1 + Real.log (N:ℝ) / Real.log (Real.log 3)
         ≤ (1 + 1 / Real.log (Real.log 3)) * Real.log (N:ℝ) := by
       have h3 : (1 + 1 / Real.log (Real.log 3)) * Real.log (N:ℝ)
           = Real.log (N:ℝ) + Real.log (N:ℝ) / Real.log (Real.log 3) := by ring
-      rw [h3]; linarith [hM1]
+      rw [h3]; linarith only [hM1]
     have h4 : Real.log (1 + 1 / cN)
         ≤ Real.log ((1 + 1 / Real.log (Real.log 3)) * Real.log (N:ℝ)) :=
-      Real.log_le_log (by positivity) (by linarith [h1, h2])
+      Real.log_le_log (by positivity) (by linarith only [h1, h2])
     have h5 : Real.log ((1 + 1 / Real.log (Real.log 3)) * Real.log (N:ℝ))
         = Real.log (1 + 1 / Real.log (Real.log 3)) + Real.log (Real.log (N:ℝ)) :=
       Real.log_mul (by positivity) (ne_of_gt (by linarith : (0:ℝ) < Real.log (N:ℝ)))
     have h6 : Real.log (Real.log (N:ℝ)) ≤ Real.log L :=
       Real.log_le_log (by linarith : (0:ℝ) < Real.log (N:ℝ)) hNL
     rw [hK₀def, hC₀def]
-    linarith [h4, h5, h6]
+    linarith only [h4, h5, h6]
   set σ : ℝ := s.re with hσdef
   set t : ℝ := s.im with htdef
   have hσ1 : 1 < σ := by
     have hden : 0 < L * Real.log L := mul_pos hLpos hlog3
     have hpos : 0 < 1 / (L * Real.log L) := by positivity
-    linarith [hs1]
+    linarith only [hs1, hpos]
   have hσle : σ ≤ 1 + Real.log L / L := hs2
   have htabs : |t| ≤ 10 * L := hs3
   -- good radius and Carleman's formula
   obtain ⟨R', hR'ge, hR'le, hR'good⟩ := exists_good_radius χ hχ s hRpos
   have hR'pos : 0 < R' := lt_of_lt_of_le (by positivity : (0:ℝ) < R/2) hR'ge
   have hR'le1 : R' ≤ 1 := by
-    have h1 : R ≤ 1 := by linarith
-    linarith
+    have h1 : R ≤ 1 := by linarith only [hRle]
+    linarith only [hR'le, h1]
   have hR'few : (R')⁻¹ ≤ 2 * R⁻¹ := by
     have hR2 : 0 < R / 2 := by positivity
-    have h1 : (R')⁻¹ ≤ (R / 2)⁻¹ := (inv_le_inv₀ hR'pos hR2).mpr (by linarith [hR'ge])
+    have h1 : (R')⁻¹ ≤ (R / 2)⁻¹ := (inv_le_inv₀ hR'pos hR2).mpr (by linarith only [hR'ge])
     have h2 : (R / 2)⁻¹ = 2 * R⁻¹ := by rw [inv_div]; ring
-    linarith [h1, h2.symm ▸ le_refl (2 * R⁻¹)]
+    linarith only [h1, h2]
   have hfan : AnalyticOnNhd ℂ (DirichletCharacter.LFunction χ) (Metric.closedBall s |R'|) :=
     fun z _ => (differentiable_LFunction hχ).analyticAt z
   have hsne : s ≠ 1 := by
     intro h
     have h1 : σ = 1 := by rw [hσdef, h]; simp
-    linarith [hσ1]
+    linarith only [hσ1, h1]
   have hfs : DirichletCharacter.LFunction χ s ≠ 0 :=
     LFunction_ne_zero_of_one_le_re χ (Or.inr hsne) hσ1.le
   have hJC := Commons.Analysis.Complex.jensenCarleman (a := s) (R := R') hR'pos hfan hfs hR'good
@@ -774,7 +774,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
   set Pc : ℝ := Real.log Cb + φ * (1 + 1/(k:ℝ)) * (1 - σ) * L + ε' * L + Real.log (10 * L + 2) with hPcdef
   set Qc : ℝ := φ * (1 + 1/(k:ℝ)) * R' * L with hQcdef
   have hLlog_pos : 0 < L * Real.log L := mul_pos hLpos hlog3
-  have hsig1 : 1 / (L * Real.log L) ≤ σ - 1 := by linarith [hs1]
+  have hsig1 : 1 / (L * Real.log L) ≤ σ - 1 := by linarith only [hs1]
   set Pstar : ℝ := max Pc K₀ with hPstardef
   have hInt : (∫ θ in (0:ℝ)..(2*Real.pi), Real.cos θ * Real.log ‖DirichletCharacter.LFunction χ (s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ)))‖)
       ≥ -(2*V) - 2*Pstar - (Real.pi/2)*Qc := by
@@ -786,30 +786,30 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       exact (Real.continuous_cos.mul (hcont.norm.log (fun θ => norm_ne_zero_iff.mpr (hnz θ)))).intervalIntegrable _ _
     · intro θ hcos
       have hre1 : 1 < (s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ))).re := by
-        rw [hcirc_re θ]; nlinarith [hσ1, mul_nonneg hR'pos.le hcos]
+        rw [hcirc_re θ]; linarith only [hσ1, mul_nonneg hR'pos.le hcos]
       have hre2 : (s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ))).re ≤ 2 := by
         rw [hcirc_re θ]
-        have h1 : R' * Real.cos θ ≤ R' := by nlinarith [hR'pos.le, hcos, Real.cos_le_one θ]
-        have h2 : R' ≤ 1/(k:ℝ) := by linarith [hR'le, hRdef]
+        have h1 : R' * Real.cos θ ≤ R' := mul_le_of_le_one_right hR'pos.le (Real.cos_le_one θ)
+        have h2 : R' ≤ 1/(k:ℝ) := by linarith only [hR'le, hRdef]
         have h3 : (1:ℝ)/(8*(k:ℝ)) + 1/(k:ℝ) ≤ 1 := by
           rw [show (1:ℝ)/(8*(k:ℝ)) + 1/(k:ℝ) = 9/(8*(k:ℝ)) by field_simp; ring]
           rw [div_le_one (by positivity)]
-          linarith [hkR3]
-        linarith [hσle, hlogLdiv, h1, h2, h3]
+          linarith only [hkR3]
+        linarith only [hσle, hlogLdiv, h1, h2, h3]
       have hlow := LFunction_norm_ge_near_one_aux χ hre1 hre2
       have hmid : (1:ℝ) / (2 * L * Real.log L) ≤ ((s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ))).re - 1) / 2 := by
         rw [hcirc_re θ]
-        have h1 : σ - 1 ≤ σ + R' * Real.cos θ - 1 := by nlinarith [mul_nonneg hR'pos.le hcos]
+        have h1 : σ - 1 ≤ σ + R' * Real.cos θ - 1 := by linarith only [mul_nonneg hR'pos.le hcos]
         have h2 : 1 / (2 * (L * Real.log L)) ≤ (σ - 1) / 2 := by
           rw [div_le_div_iff₀ (by positivity) (by norm_num)]
           have h4 : 1 ≤ (σ - 1) * (L * Real.log L) := by
             have h5 := hsig1
             rw [div_le_iff₀ hLlog_pos] at h5
-            linarith [h5]
-          nlinarith [h4, hLlog_pos]
+            linarith only [h5]
+          nlinarith only [h4, hLlog_pos]
         have h3 : (1:ℝ) / (2 * L * Real.log L) = 1 / (2 * (L * Real.log L)) := by ring
         rw [h3]
-        linarith
+        linarith only [h1, h2]
       have hlog1 : Real.log (1 / (2 * L * Real.log L)) = -V := by
         rw [hVdef, one_div, Real.log_inv]
       calc -V = Real.log (1 / (2 * L * Real.log L)) := hlog1.symm
@@ -822,9 +822,9 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       · -- Region I: the Burgess bound applies
         have hσ1' : 1 - 1/(k:ℝ) ≤ σ + R' * Real.cos θ := by
           have h1 : -1 ≤ Real.cos θ := Real.neg_one_le_cos θ
-          have h2 : -R' ≤ R' * Real.cos θ := by nlinarith [hR'le, h1, hR'pos.le]
+          have h2 : -R' ≤ R' * Real.cos θ := by nlinarith only [h1, hR'pos.le]
           have h3 : R = 1/(k:ℝ) := hRdef
-          linarith [hR'le, h3, hσ1, h2]
+          linarith only [hR'le, h3, hσ1, h2]
         have hσ2' : σ + R' * Real.cos θ ≤ 1 + Real.log (Real.log (N:ℝ)) / Real.log (N:ℝ) := by
           rw [hcNdef] at hreg; exact hreg
         have hb := hCbb χ hχ hχ2 (σ + R' * Real.cos θ) (t + R' * Real.sin θ) hσ1' hσ2'
@@ -837,9 +837,9 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
               = φ * (1 + R) * (1 - (σ + R' * Real.cos θ)) + ε' by ring]
           have h5 : -(Real.log L / L) ≤ 1 - (σ + R' * Real.cos θ) := by
             have h2 : 1 - (σ + R' * Real.cos θ) = (1 - σ) + -(R' * Real.cos θ) := by ring
-            have h3 : 0 ≤ -(R' * Real.cos θ) := by nlinarith [hR'pos.le, hcos]
-            have h4 : -(Real.log L / L) ≤ 1 - σ := by linarith [hσle]
-            linarith [h2, h3, h4]
+            have h3 : 0 ≤ -(R' * Real.cos θ) := neg_nonneg.mpr (mul_nonpos_of_nonneg_of_nonpos hR'pos.le hcos)
+            have h4 : -(Real.log L / L) ≤ 1 - σ := by linarith only [hσle]
+            linarith only [h2, h3, h4]
           have h5b : φ * (1 + R) * (-(Real.log L / L))
               ≤ φ * (1 + R) * (1 - (σ + R' * Real.cos θ)) :=
             mul_le_mul_of_nonneg_left h5 (by positivity)
@@ -851,7 +851,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
               _ = ε' := by field_simp
           have h7 : φ * (1 + R) * (-(Real.log L / L))
               = -(φ * (1 + R) * (Real.log L / L)) := by ring
-          linarith [h5b, h6, h7]
+          linarith only [h5b, h6, h7]
         have hlogineq : Real.log ‖DirichletCharacter.LFunction χ (s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ)))‖ ≤
             Real.log Cb + (φ * (1 - (σ + R' * Real.cos θ)) * (1 + R) + ε') * L + Real.log (10 * L + 2) := by
           have h := Real.log_le_log (norm_pos_iff.mpr (hR'good _ (hcirc_norm θ))) hb
@@ -864,19 +864,19 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
             mul_le_mul_of_nonneg_left hNL he_nn
           have hlogt' : Real.log (1 + |t + R' * Real.sin θ|) ≤ Real.log (10 * L + 2) := by
             apply Real.log_le_log (by positivity)
-            have h1 : R' * Real.sin θ ≤ R' := by nlinarith [hR'pos.le, hR'le, Real.sin_le_one θ]
+            have h1 : R' * Real.sin θ ≤ R' := mul_le_of_le_one_right hR'pos.le (Real.sin_le_one θ)
             have h2 : -R' ≤ R' * Real.sin θ := by
-              nlinarith [hR'pos.le, hR'le, Real.neg_one_le_sin θ]
+              nlinarith only [hR'pos.le, Real.neg_one_le_sin θ]
             have h3 : |t + R' * Real.sin θ| ≤ 10 * L + 1 := by
               have ht1 : t ≤ 10 * L := (abs_le.mp htabs).2
               have ht2 : -(10 * L) ≤ t := (abs_le.mp htabs).1
               have hR'1 : R' ≤ 1 := hR'le1
               rw [abs_le]
               constructor
-              · linarith [ht1, h1, hR'1]
-              · linarith [ht2, h2, hR'1]
-            linarith
-          linarith [h, hMle, hlogt']
+              · linarith only [ht1, ht2, h1, h2, hR'1]
+              · linarith only [ht1, ht2, h1, h2, hR'1]
+            linarith only [h3]
+          linarith only [h, hMle, hlogt']
         have hexpand : (φ * (1 - (σ + R' * Real.cos θ)) * (1 + R) + ε') * L
             = φ * (1 + R) * (1 - σ) * L + ε' * L - Qc * Real.cos θ := by
           rw [hQcdef]; ring
@@ -886,11 +886,11 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
           rw [hPcdef, hRdef]; ring
         have hPclt : Pc - Qc * Real.cos θ ≤ Pstar - Qc * Real.cos θ := by
           have h1 : Pc ≤ Pstar := by rw [hPstardef]; exact le_max_left _ _
-          linarith
-        linarith [hlogineq, hPceq, hPclt]
+          linarith only [h1]
+        linarith only [hlogineq, hPceq, hPclt]
       · -- Region II: the Euler product / zeta upper bound
         push Not at hreg
-        have hσ'1 : 1 < σ + R' * Real.cos θ := by linarith [hreg, hcNpos]
+        have hσ'1 : 1 < σ + R' * Real.cos θ := by linarith only [hreg, hcNpos]
         have hζ := Commons.NumberTheory.DirichletCharacter.LFunction_norm_le_inv_sub_one χ (σ := σ + R' * Real.cos θ)
           (T := t + R' * Real.sin θ) hσ'1
         have hceq : s + (R':ℂ) * Complex.exp (Complex.I * (θ:ℂ))
@@ -908,16 +908,16 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
           have h2 : Real.log (1 + 1 / (σ + R' * Real.cos θ - 1)) ≤ Real.log (1 + 1 / cN) := by
             apply Real.log_le_log (by positivity)
             have h3 : 1 / (σ + R' * Real.cos θ - 1) ≤ 1 / cN :=
-              one_div_le_one_div_of_le hcNpos (by linarith [hreg])
-            linarith
-          rw [hK₀def]; linarith [h1, h2]
+              one_div_le_one_div_of_le hcNpos (by linarith only [hreg])
+            linarith only [h3]
+          rw [hK₀def]; linarith only [h1, h2]
         have hPstarge : K₀ ≤ Pstar - Qc * Real.cos θ := by
           have h1 : K₀ ≤ Pstar := by rw [hPstardef]; exact le_max_right _ _
           have h2 : 0 ≤ -Qc * Real.cos θ := by
             have h3 : 0 ≤ Qc := by rw [hQcdef]; positivity
-            nlinarith [h3, hcos]
-          linarith
-        linarith [hlogζ, hPstarge]
+            nlinarith only [h3, hcos]
+          linarith only [h1, h2]
+        linarith only [hlogζ, hPstarge]
 
   -- ================= divisor sums =================
   rw [abs_of_pos hR'pos] at hJC
@@ -996,7 +996,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
         - (1/(Real.pi * R')) * Intg := by
     have h := hJC'
     simp only [logDeriv, Pi.div_apply, Complex.neg_re] at h ⊢
-    linarith [h]
+    linarith only [h]
   -- pointwise facts about the divisor
   have hDnn : ∀ u : ℂ, 0 ≤ D u := by
     intro u
@@ -1064,22 +1064,22 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
         rw [Complex.sub_re]
         have : s.re = σ := hσdef.symm
         rw [this]
-        linarith
+        linarith only [hlt, hσ1]
       have hne : u - s ≠ 0 := by
         intro h
         have h' : u.re = σ := by rw [sub_eq_zero.mp h, hσdef]
-        linarith
+        linarith only [h', hlt, hσ1]
       have h1 : ‖u - s‖ ≤ R' := by
         rw [Metric.mem_closedBall, dist_eq_norm] at hmem
         exact hmem
       have h2 : 0 < ‖u - s‖ ^ 2 := by
         have := norm_pos_iff.mpr hne
         positivity
-      have h3 : ‖u - s‖ ^ 2 ≤ (R')^2 := by nlinarith [norm_nonneg (u - s)]
+      have h3 : ‖u - s‖ ^ 2 ≤ (R')^2 := pow_le_pow_left₀ (norm_nonneg _) h1 2
       have h4 : 0 < (R')^2 := by positivity
       have h5 : ((R')^2)⁻¹ ≤ (‖u - s‖ ^ 2)⁻¹ := (inv_le_inv₀ h4 h2).mpr h3
       have h6 : (R')⁻¹ * (R')⁻¹ = ((R')^2)⁻¹ := by rw [← mul_inv]; ring
-      have hfac : 0 ≤ (‖u - s‖ ^ 2)⁻¹ - (R')⁻¹ * (R')⁻¹ := by rw [h6]; linarith
+      have hfac : 0 ≤ (‖u - s‖ ^ 2)⁻¹ - (R')⁻¹ * (R')⁻¹ := by rw [h6]; linarith only [h5]
       have hprod : D u * (u - s).re ≤ 0 := mul_nonpos_of_nonneg_of_nonpos (hDnn u) hre.le
       exact mul_nonpos_of_nonpos_of_nonneg hprod hfac
   -- dropping the far zeros
@@ -1104,7 +1104,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
     have h2 : |1 - u.re| ≤ ‖(1:ℂ) + (t:ℂ) * Complex.I - u‖ := by
       rw [← h1]; exact Complex.abs_re_le_norm _
     rw [abs_le] at h2
-    linarith [h2.2, hu, hδ_lt1]
+    linarith only [h2.2, hu, hδ_lt1]
   have hnear_mem : ∀ u : ℂ, ‖(1:ℂ) + (t:ℂ) * Complex.I - u‖ ≤ δ → u ∈ Metric.closedBall s R' := by
     intro u hu
     have h1 : ‖s - u‖ ≤ ‖s - ((1:ℂ) + (t:ℂ) * Complex.I)‖ + ‖((1:ℂ) + (t:ℂ) * Complex.I) - u‖ := by
@@ -1118,19 +1118,19 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
           simp [Complex.sub_re, Complex.sub_im, Complex.add_re, Complex.add_im, Complex.mul_re,
             Complex.mul_im, hσdef.symm, htdef.symm]
       rw [heq, show ‖((σ - 1 : ℝ) : ℂ)‖ = |σ - 1| from RCLike.norm_ofReal _,
-        abs_of_nonneg (by linarith [hσ1])]
+        abs_of_nonneg (by linarith only [hσ1])]
     have h3 : σ - 1 + δ ≤ R' := by
       have h5 : δ ≤ R / 4 := hδ_R
       have h6 : Real.log L / L ≤ R / 4 := by
         have h6a : (1:ℝ)/(8*(k:ℝ)) ≤ R / 4 := by
           have hR4 : R / 4 = 1 / (4 * (k:ℝ)) := by rw [hRdef]; ring
           rw [hR4]
-          exact one_div_le_one_div_of_le (by positivity) (by linarith)
-        linarith [hlogLdiv, h6a]
-      linarith [hσle, h5, h6, hR'ge]
+          exact one_div_le_one_div_of_le (by positivity) (by linarith only [hkRpos])
+        linarith only [hlogLdiv, h6a]
+      linarith only [hσle, h5, h6, hR'ge]
     rw [Metric.mem_closedBall, dist_eq_norm, norm_sub_rev]
     rw [h2] at h1
-    linarith [h1, hu, h3]
+    linarith only [h1, hu, h3]
   have hnear_big : ∀ u : ℂ, ‖(1:ℂ) + (t:ℂ) * Complex.I - u‖ ≤ δ →
       u ∈ Metric.closedBall 0 (|t| + 2) := by
     intro u hu
@@ -1149,13 +1149,13 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       rw [h6]
       have h7 : Real.sqrt (1 + t^2) ≤ Real.sqrt ((|t| + 1)^2) := by
         apply Real.sqrt_le_sqrt
-        nlinarith [sq_abs t, abs_nonneg t, sq_nonneg (|t| + 1)]
+        nlinarith only [sq_abs t, abs_nonneg t]
       rwa [Real.sqrt_sq (by positivity : (0:ℝ) ≤ |t| + 1)] at h7
     rw [Metric.mem_closedBall, dist_eq_norm]
     have h8 : ‖u - (0:ℂ)‖ = ‖u‖ := by rw [sub_zero]
     rw [h8]
-    have h9 : ‖u‖ ≤ δ + (|t| + 1) := by linarith [h1, h2, h3]
-    linarith [h9, hδ_lt1]
+    have h9 : ‖u‖ ≤ δ + (|t| + 1) := by linarith only [h1, h2, h3]
+    linarith only [h9, hδ_lt1]
   -- ================= the corrective sum =================
   set SA : ℝ := ∑ᶠ u : ℂ, ((MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ) (Metric.closedBall 0 (|t| + 2))) u : ℤ) *
       (if ‖(1:ℂ) + (t:ℂ) * Complex.I - u‖ ≤ δ then ((1/(s-u)).re) else 0) with hSAdef
@@ -1207,7 +1207,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
             rw [one_div, Complex.inv_re, Complex.normSq_eq_norm_sq, Complex.sub_re, hσdef]
           rw [h1]
           apply div_nonneg
-          · linarith [hσ1, hlt]
+          · linarith only [hσ1, hlt]
           · positivity
         exact mul_le_mul_of_nonneg_right hDAle hre_nn
     · have h1 : ind u = 0 := by rw [hindun u]; simp [hc]
@@ -1217,12 +1217,12 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
 
   -- ================= the correction term =================
   have hcount : (∑ᶠ u : ℂ, D u) ≤ 4 * c0 * L := by
-    have h1 := hc0 χ hχ hχprim s R' hR'pos (by linarith [hR'le, hRle]) (by linarith [hσ1])
+    have h1 := hc0 χ hχ hχprim s R' hR'pos (by linarith only [hR'le, hRle]) (by linarith only [hσ1])
       (by
         have h8 : 1/(8*(k:ℝ)) ≤ 1 := by
           rw [div_le_one (by positivity)]
-          linarith [hkR3]
-        linarith [hσle, hlogLdiv, h8])
+          linarith only [hkR3]
+        linarith only [hσle, hlogLdiv, h8])
     have h2 : (∑ᶠ u : ℂ, D u)
         = ∑ᶠ u : ℂ, ((MeromorphicOn.divisor (DirichletCharacter.LFunction χ) (Metric.closedBall s R') u : ℤ) : ℝ) := by
       apply finsum_congr
@@ -1231,35 +1231,35 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
     rw [h2]
     have h4 : ‖s‖ ≤ 10 * L + 2 := by
       have h5 : ‖s‖ ≤ |s.re| + |s.im| := Complex.norm_le_abs_re_add_abs_im s
-      have h5a : |s.re| = σ := by rw [← hσdef]; exact abs_of_pos (by linarith [hσ1])
+      have h5a : |s.re| = σ := by rw [← hσdef]; exact abs_of_pos (by linarith only [hσ1])
       have h5b : |s.im| = |t| := by rw [← htdef]
       rw [h5a, h5b] at h5
       have h6 : σ ≤ 2 := by
         have h7 : Real.log L / L ≤ 1/(8*(k:ℝ)) := hlogLdiv
         have h8 : 1/(8*(k:ℝ)) ≤ 1 := by
           rw [div_le_one (by positivity)]
-          linarith [hkR3]
-        linarith [hσle, h7, h8]
-      linarith [h5, htabs, h6]
+          linarith only [hkR3]
+        linarith only [hσle, h7, h8]
+      linarith only [h5, htabs, h6]
     have h3 : Real.log (‖s‖ + 3) ≤ 2 * L := by
-      have h7 : ‖s‖ + 3 ≤ L ^ 2 := by nlinarith [h4, hL11]
+      have h7 : ‖s‖ + 3 ≤ L ^ 2 := by nlinarith only [h4, hL11]
       have h8 : Real.log (‖s‖ + 3) ≤ Real.log (L ^ 2) := Real.log_le_log (by positivity) h7
       have h8b : Real.log (L ^ 2) = 2 * Real.log L := by rw [Real.log_pow]; norm_num
       rw [h8b] at h8
-      have h19 : η * L ≤ L := by nlinarith [hη_1, hLpos]
-      linarith [h8, hlogL, h19]
+      have h19 : η * L ≤ L := mul_le_of_le_one_left hLpos.le hη_1
+      linarith only [h8, hlogL, h19]
     have h12 : c0 * (Real.log (‖s‖ + 3) + Real.log (N:ℝ) + 2) ≤ 4 * c0 * L := by
       have h13 : Real.log (‖s‖ + 3) + Real.log (N:ℝ) + 2 ≤ 4 * L := by
-        linarith [h3, hNL, hL3]
+        linarith only [h3, hNL, hL3]
       calc c0 * (Real.log (‖s‖ + 3) + Real.log (N:ℝ) + 2) ≤ c0 * (4 * L) :=
             mul_le_mul_of_nonneg_left h13 hc0pos.le
         _ = 4 * c0 * L := by ring
-    linarith [h1, h12]
+    linarith only [h1, h12]
   have hcorr : (∑ᶠ u : ℂ, ind u * D u * ((σ - u.re) * ((R')^2)⁻¹))
       ≤ (Real.log L / L + δ) * ((R')^2)⁻¹ * (4 * c0 * L) := by
     have h1 : 0 ≤ Real.log L / L + δ := by
-      have h2 : 0 ≤ Real.log L / L := div_nonneg (Real.log_nonneg (by linarith)) hLpos.le
-      linarith [hδpos]
+      have h2 : 0 ≤ Real.log L / L := div_nonneg (Real.log_nonneg (by linarith only [hL1])) hLpos.le
+      linarith only [h2, hδpos]
     have hfinG : Function.HasFiniteSupport
         (fun u : ℂ => ((Real.log L / L + δ) * ((R')^2)⁻¹) * D u) :=
       hfinD.subset (by
@@ -1287,8 +1287,8 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
                   have h5 : |1 - u.re| ≤ ‖(1:ℂ) + (t:ℂ) * Complex.I - u‖ := by
                     rw [← h4]; exact Complex.abs_re_le_norm _
                   rw [abs_le] at h5
-                  linarith [h5.2]
-                linarith [hσle]
+                  linarith only [h5.2, hc]
+                linarith only [hσle, h3]
               have h6 : 0 < ((R')^2)⁻¹ := by positivity
               have h7 : 0 ≤ D u := hDnn u
               have h8 : D u * (σ - u.re) ≤ D u * (Real.log L / L + δ) :=
@@ -1316,22 +1316,22 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
     have h1 : (2:ℝ) * (k:ℝ) * (R/2) ≤ 2 * (k:ℝ) * R' :=
       mul_le_mul_of_nonneg_left hR'ge (by positivity)
     have h2 : (2:ℝ) * (k:ℝ) * (R/2) = 1 := by rw [hRdef]; field_simp
-    linarith [h1, h2]
+    linarith only [h1, h2]
   have hPcb : Pc ≤ Real.log Cb + ε' * L + 2 * η * L := by
     rw [hPcdef]
     have h1 : φ * (1 + R) * (1 - σ) * L ≤ 0 := by
-      have h2 : (1 - σ) ≤ 0 := by linarith [hσ1]
+      have h2 : (1 - σ) ≤ 0 := by linarith only [hσ1]
       have h3 : 0 ≤ φ * (1 + R) * L := by positivity
       have h4 : φ * (1 + R) * (1 - σ) * L = (φ * (1 + R) * L) * (1 - σ) := by ring
       rw [h4]
       exact mul_nonpos_of_nonneg_of_nonpos h3 h2
     have h4 : Real.log (10 * L + 2) ≤ 2 * η * L := by
       have h5 : Real.log (10 * L + 2) ≤ Real.log (L ^ 2) :=
-        Real.log_le_log (by positivity) (by nlinarith [hL11])
+        Real.log_le_log (by positivity) (by nlinarith only [hL11])
       have h6 : Real.log (L ^ 2) = 2 * Real.log L := by rw [Real.log_pow]; norm_num
       rw [h6] at h5
-      linarith [h5, hlogL]
-    linarith [h1, h4]
+      linarith only [h5, hlogL]
+    linarith only [h1, h4]
   have hVnn : 0 ≤ V := by
     rw [hVdef]
     apply Real.log_nonneg
@@ -1339,23 +1339,23 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       have h1 : Real.log 3 ≤ Real.log L := Real.log_le_log (by norm_num) hL3
       have h2 : (1:ℝ) < Real.log 3 := by
         rw [← Real.log_exp 1]
-        exact Real.log_lt_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_three])
-      linarith
-    nlinarith [hL3, hlogL1]
+        exact Real.log_lt_log (Real.exp_pos 1) (by linarith only [Real.exp_one_lt_three])
+      linarith only [h1, h2]
+    nlinarith only [hL3, hlogL1]
   have hlogCbnn : 0 ≤ Real.log Cb := Real.log_nonneg hCb1
-  have hlogLnn : 0 ≤ Real.log L / L := div_nonneg (Real.log_nonneg (by linarith)) hLpos.le
+  have hlogLnn : 0 ≤ Real.log L / L := div_nonneg (Real.log_nonneg (by linarith only [hL1])) hLpos.le
   have hLL : Real.log (Real.log L) ≤ η * L := by
     have h1 : Real.log (Real.log L) ≤ Real.log (η * L) := Real.log_le_log hlog3 hlogL
     have h2 : Real.log (η * L) ≤ η * L := by
       have h3 := Real.log_le_sub_one_of_pos (show (0:ℝ) < η * L by positivity)
-      linarith
-    linarith [h1, h2]
+      linarith only [h3]
+    linarith only [h1, h2]
   have hVb : V ≤ 3 * η * L := by
     have h1 : Real.log (2 * L * Real.log L) = Real.log 2 + Real.log L + Real.log (Real.log L) := by
       rw [Real.log_mul (by positivity) (by positivity),
         Real.log_mul (by norm_num) (ne_of_gt hLpos)]
     rw [hVdef, h1]
-    linarith [hlog2, hlogL, hLL]
+    linarith only [hlog2, hlogL, hLL]
   have hInvR' : 1/(Real.pi * R') ≤ 2 * (k:ℝ) / Real.pi := by
     rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul]
     have h2 : 2 * (k:ℝ) * (Real.pi * R') = Real.pi * (2*(k:ℝ)*R') := by ring
@@ -1367,12 +1367,12 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
           apply mul_le_mul_of_nonneg_left hInvR' (by positivity)
       _ = (4*(k:ℝ)/Real.pi)*V := by ring
   have hPterm : 2*Pc/(Real.pi * R') ≤ (4*(k:ℝ)/Real.pi)*(Real.log Cb + ε'*L + 2*η*L) := by
-    have h1 : 2*Pc ≤ 2*(Real.log Cb + ε'*L + 2*η*L) := by linarith [hPcb]
+    have h1 : 2*Pc ≤ 2*(Real.log Cb + ε'*L + 2*η*L) := by linarith only [hPcb]
     calc 2*Pc/(Real.pi * R') = (2*Pc) * (1/(Real.pi*R')) := by ring
       _ ≤ (2*(Real.log Cb + ε'*L + 2*η*L)) * (2*(k:ℝ)/Real.pi) := by
           have hb2 : 0 ≤ ε'*L := by positivity
           have hb3 : 0 ≤ 2*η*L := by positivity
-          apply mul_le_mul h1 hInvR' (by positivity) (by linarith)
+          apply mul_le_mul h1 hInvR' (by positivity) (by linarith only [hlogCbnn, hb2, hb3])
       _ = (4*(k:ℝ)/Real.pi)*(Real.log Cb + ε'*L + 2*η*L) := by ring
   have hQterm : (Real.pi/2)*Qc/(Real.pi*R') = Qc/(2*R') := by
     field_simp
@@ -1392,9 +1392,9 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
             apply div_le_div_of_nonneg_right _ Real.pi_pos.le
             exact mul_le_mul_of_nonneg_left hη_b (by positivity)
         _ = 12*ε/4096 := h4
-        _ ≤ ε/8 := by linarith [hε]
+        _ ≤ ε/8 := by linarith only [hε]
     have h5 : (12*(k:ℝ)*η/Real.pi)*L ≤ (ε/8)*L := mul_le_mul_of_nonneg_right h3 hLpos.le
-    linarith [hVterm, h1, h5]
+    linarith only [hVterm, h1, h5]
   have hPfin_c : 2*Pc/(Real.pi * R') ≤ ε*L/16 + ε*L/8 + ε*L/8 := by
     have h3 : (4*(k:ℝ)/Real.pi)*(Real.log Cb + ε'*L + 2*η*L)
         = (4*(k:ℝ)/Real.pi)*Real.log Cb + (4*(k:ℝ)/Real.pi)*ε'*L + (8*(k:ℝ)/Real.pi)*η*L := by
@@ -1409,30 +1409,30 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
             apply div_le_div_of_nonneg_right _ Real.pi_pos.le
             exact mul_le_mul_of_nonneg_left hη_b (by positivity)
         _ = 4*ε/4096 := h7
-        _ ≤ ε/16 := by linarith [hε]
+        _ ≤ ε/16 := by linarith only [hε]
     have h8 : 8*(k:ℝ)*η/Real.pi ≤ ε/8 := by
       have h9 : 8*(k:ℝ)*(Real.pi*ε/(4096*(k:ℝ)))/Real.pi = 8*ε/4096 := by field_simp
       calc 8*(k:ℝ)*η/Real.pi ≤ 8*(k:ℝ)*(Real.pi*ε/(4096*(k:ℝ)))/Real.pi := by
             apply div_le_div_of_nonneg_right _ Real.pi_pos.le
             exact mul_le_mul_of_nonneg_left hη_b (by positivity)
         _ = 8*ε/4096 := h9
-        _ ≤ ε/8 := by linarith [hε]
+        _ ≤ ε/8 := by linarith only [hε]
     have h10 : (4*(k:ℝ)/Real.pi)*ε'*L = ε*L/(16*Real.pi) := by
       rw [hε'def]; field_simp; ring
     have h11 : ε*L/(16*Real.pi) ≤ ε*L/8 := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
-      have h11a : (8:ℝ) ≤ 16*Real.pi := by linarith [Real.pi_gt_three]
+      have h11a : (8:ℝ) ≤ 16*Real.pi := by linarith only [Real.pi_gt_three]
       exact mul_le_mul_of_nonneg_left h11a (by positivity)
     calc 2*Pc/(Real.pi * R') ≤ (4*(k:ℝ)/Real.pi)*(Real.log Cb + ε'*L + 2*η*L) := hPterm
       _ = (4*(k:ℝ)/Real.pi)*Real.log Cb + (4*(k:ℝ)/Real.pi)*ε'*L + (8*(k:ℝ)/Real.pi)*η*L := h3
       _ ≤ (4*(k:ℝ)*η/Real.pi)*L + ε*L/(16*Real.pi) + (8*(k:ℝ)*η/Real.pi)*L := by
           have h12 : (4*(k:ℝ)/Real.pi)*(η*L) = (4*(k:ℝ)*η/Real.pi)*L := h5
           have h13 : (8*(k:ℝ)/Real.pi)*η*L = (8*(k:ℝ)*η/Real.pi)*L := by ring
-          linarith [h4, h12, h13, h10]
+          linarith only [h4, h12, h13, h10]
       _ ≤ ε*L/16 + ε*L/8 + ε*L/8 := by
           have h14 : (4*(k:ℝ)*η/Real.pi)*L ≤ (ε/16)*L := mul_le_mul_of_nonneg_right h6 hLpos.le
           have h15 : (8*(k:ℝ)*η/Real.pi)*L ≤ (ε/8)*L := mul_le_mul_of_nonneg_right h8 hLpos.le
-          linarith [h11, h14, h15]
+          linarith only [h11, h14, h15]
   have hPfinal : 2*Pstar/(Real.pi * R') ≤ ε*L/16 + ε*L/8 + ε*L/8 + ε*L/32 := by
     have hA : 2 * Pstar / (Real.pi * R')
         = max (2 * Pc / (Real.pi * R')) (2 * K₀ / (Real.pi * R')) := by
@@ -1441,12 +1441,12 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       · have h1 : max Pc K₀ = K₀ := max_eq_right h
         have h2 : max (2 * Pc / (Real.pi * R')) (2 * K₀ / (Real.pi * R'))
             = 2 * K₀ / (Real.pi * R') :=
-          max_eq_right (div_le_div_of_nonneg_right (by linarith) (by positivity))
+          max_eq_right (div_le_div_of_nonneg_right (by linarith only [h]) (by positivity))
         rw [h1, h2]
       · have h1 : max Pc K₀ = Pc := max_eq_left h
         have h2 : max (2 * Pc / (Real.pi * R')) (2 * K₀ / (Real.pi * R'))
             = 2 * Pc / (Real.pi * R') :=
-          max_eq_left (div_le_div_of_nonneg_right (by linarith) (by positivity))
+          max_eq_left (div_le_div_of_nonneg_right (by linarith only [h]) (by positivity))
         rw [h1, h2]
     have hC : 2 * K₀ / (Real.pi * R') ≤ ε*L/32 := by
       have h1 : 2 * K₀ / (Real.pi * R') ≤ (4 * (k:ℝ) / Real.pi) * K₀ := by
@@ -1455,10 +1455,10 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
         have h3 : (2 * K₀) * (1/(Real.pi*R')) ≤ (2 * K₀) * (2*(k:ℝ)/Real.pi) :=
           mul_le_mul_of_nonneg_left hInvR' (by positivity)
         have h4 : (2 * K₀) * (2*(k:ℝ)/Real.pi) = (4*(k:ℝ)/Real.pi) * K₀ := by ring
-        linarith [h3, h4]
+        linarith only [h3, h4]
       have h5 : (4*(k:ℝ)/Real.pi) * K₀ ≤ (4*(k:ℝ)/Real.pi) * (2 * η * L) := by
         apply mul_le_mul_of_nonneg_left _ (by positivity)
-        linarith [hK₀bound, hC₀le, hlogL]
+        linarith only [hK₀bound, hC₀le, hlogL]
       have h6 : (4*(k:ℝ)/Real.pi) * (2 * η * L) = (8*(k:ℝ)*η/Real.pi) * L := by ring
       have h7 : 8*(k:ℝ)*η/Real.pi ≤ ε/32 := by
         have h8 : 8*(k:ℝ)*(Real.pi*ε/(4096*(k:ℝ)))/Real.pi = 8*ε/4096 := by field_simp
@@ -1467,18 +1467,18 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
               apply div_le_div_of_nonneg_right _ Real.pi_pos.le
               exact mul_le_mul_of_nonneg_left hη_b (by positivity)
           _ = 8*ε/4096 := h8
-          _ ≤ ε/32 := by linarith [hε]
+          _ ≤ ε/32 := by linarith only [hε]
       have h9 : (8*(k:ℝ)*η/Real.pi) * L ≤ (ε/32)*L :=
         mul_le_mul_of_nonneg_right h7 hLpos.le
-      linarith [h1, h5, h6, h9]
+      linarith only [h1, h5, h6, h9]
     rw [hA]
     apply max_le
     · refine le_trans hPfin_c ?_
       have : (0:ℝ) ≤ ε*L/32 := by positivity
-      linarith
+      linarith only [this]
     · refine le_trans hC ?_
       have : (0:ℝ) ≤ ε*L/16 + ε*L/8 + ε*L/8 := by positivity
-      linarith
+      linarith only [this]
   have hQfinal : (Real.pi/2)*Qc/(Real.pi*R') ≤ φ*L/2 + ε*L/8 := by
     rw [hQterm, hQterm2]
     have h1 : φ*(1+1/(k:ℝ))*L/2 = φ*L/2 + φ*L/(2*(k:ℝ)) := by
@@ -1489,12 +1489,12 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       have h3 : 4*φ ≤ ε*(k:ℝ) := by
         have h4 := hk
         rw [div_le_iff₀ hε] at h4
-        linarith [h4]
-      nlinarith [h3]
+        linarith only [h4]
+      linarith only [h3]
     have h5 : φ*L/(2*(k:ℝ)) = (φ/(2*(k:ℝ)))*L := by ring
     rw [h5]
     have h6 : (φ/(2*(k:ℝ)))*L ≤ (ε/8)*L := mul_le_mul_of_nonneg_right h2 hLpos.le
-    linarith [h6]
+    linarith only [h6]
   have hCfinal : (∑ᶠ u : ℂ, ind u * D u * ((σ - u.re) * ((R')^2)⁻¹)) ≤ ε*L/4 := by
     have hR'2k : (R'^2)⁻¹ ≤ 4*(k:ℝ)^2 := by
       have h2 : 1/(2*(k:ℝ)) ≤ R' := by
@@ -1505,7 +1505,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
         _ = 4*(k:ℝ)^2 := by field_simp; ring
     have h1 : (∑ᶠ u : ℂ, ind u * D u * ((σ - u.re) * ((R')^2)⁻¹))
         ≤ (Real.log L / L + δ) * (4*(k:ℝ)^2) * (4*c0*L) := by
-      have h2 : 0 ≤ Real.log L / L + δ := by linarith [hlogLnn, hδpos]
+      have h2 : 0 ≤ Real.log L / L + δ := by linarith only [hlogLnn, hδpos]
       have h3 : 0 ≤ 4*c0*L := by positivity
       calc (∑ᶠ u : ℂ, ind u * D u * ((σ - u.re) * ((R')^2)⁻¹))
           ≤ (Real.log L / L + δ) * (R'^2)⁻¹ * (4*c0*L) := hcorr
@@ -1520,7 +1520,8 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       have h5 : 16*c0*(k:ℝ)^2*(ε/(1024*(c0+1)*((k:ℝ)+1)^2)) ≤ ε/8 := by
         rw [mul_div_assoc', div_le_iff₀ (by positivity : (0:ℝ) < 1024*(c0+1)*((k:ℝ)+1)^2)]
         have hkey : 16*c0*(k:ℝ)^2 ≤ 128*(c0+1)*((k:ℝ)+1)^2 := by
-          nlinarith [hc0pos, sq_nonneg ((k:ℝ)+1), sq_nonneg (c0+1)]
+          linarith only [mul_nonneg hc0pos.le (sq_nonneg (k:ℝ)), mul_nonneg hc0pos.le hkRpos.le, hc0pos, hkRpos,
+            sq_nonneg (k:ℝ)]
         calc 16*c0*(k:ℝ)^2*ε ≤ 128*(c0+1)*((k:ℝ)+1)^2*ε :=
               mul_le_mul_of_nonneg_right hkey hε.le
           _ = ε/8 * (1024*(c0+1)*((k:ℝ)+1)^2) := by ring
@@ -1533,18 +1534,18 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       calc 16*c0*(k:ℝ)^2*δ ≤ 16*c0*(k:ℝ)^2*(ε/(256*c0*(k:ℝ)^2)) :=
             mul_le_mul_of_nonneg_left hδ_ε (by positivity)
         _ = ε/16 := h5
-        _ ≤ ε/8 := by linarith [hε]
+        _ ≤ ε/8 := by linarith only [hε]
     have h6 : 16*c0*(k:ℝ)^2*Real.log L ≤ ε*L/8 := by
       have h6a : 16*c0*(k:ℝ)^2*Real.log L ≤ 16*c0*(k:ℝ)^2*(η*L) :=
         mul_le_mul_of_nonneg_left hlogL (by positivity)
       have h6b : 16*c0*(k:ℝ)^2*(η*L) = (16*c0*(k:ℝ)^2*η)*L := by ring
       have h6c : (16*c0*(k:ℝ)^2*η)*L ≤ (ε/8)*L := mul_le_mul_of_nonneg_right hA hLpos.le
-      linarith [h6a, h6b, h6c]
+      linarith only [h6a, h6b, h6c]
     have h7 : 16*c0*(k:ℝ)^2*(δ*L) ≤ ε*L/8 := by
       have h7a : 16*c0*(k:ℝ)^2*(δ*L) = (16*c0*(k:ℝ)^2*δ)*L := by ring
       have h7c : (16*c0*(k:ℝ)^2*δ)*L ≤ (ε/8)*L := mul_le_mul_of_nonneg_right hB hLpos.le
-      linarith [h7a, h7c]
-    linarith [h1, h6, h7]
+      linarith only [h7a, h7c]
+    linarith only [h1, h6, h7]
   have hsplit : (2*V + 2*Pstar + (Real.pi/2)*Qc)/(Real.pi*R')
       = 2*V/(Real.pi*R') + 2*Pstar/(Real.pi*R') + (Real.pi/2)*Qc/(Real.pi*R') := by
     field_simp
@@ -1562,7 +1563,7 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
             = ind u * D u * ((σ - u.re) * ((R')^2)⁻¹) - ind u * D u * ((1/(s-u)).re)
           rw [hTf_eq u]; ring
         rw [h2a, finsum_sub_distrib hfinCorr hfinNear]
-      linarith [hnegld, hTf_le_ind, e3, hSA_le]
+      linarith only [hnegld, hTf_le_ind, e3, hSA_le]
     have hstep2 : -(1/(Real.pi * R')) * Intg
         ≤ (2*V + 2*Pstar + (Real.pi/2)*Qc) / (Real.pi * R') := by
       have h := hInt
@@ -1572,10 +1573,10 @@ theorem lemma3_1_free_pow (h : ℕ) {φ : ℝ} (hφ : 0 < φ) {ε : ℝ} (hε : 
       calc -(1/(Real.pi * R')) * Intg = (1/(Real.pi * R')) * (-Intg) := by ring
         _ ≤ (1/(Real.pi * R')) * (2*V + 2*Pstar + (Real.pi/2)*Qc) := by
             apply mul_le_mul_of_nonneg_left _ h3.le
-            linarith [h]
+            linarith only [h]
         _ = (2*V + 2*Pstar + (Real.pi/2)*Qc) / (Real.pi * R') := by ring
     rw [hsplit] at hstep2
-    nlinarith [hstep1, hstep2, hVfinal, hPfinal, hQfinal, hCfinal, hε, hLpos]
+    linarith only [hstep1, hstep2, hVfinal, hPfinal, hQfinal, hCfinal, mul_pos hε hLpos]
   exact hmain
 
 end Work.ZeroFreeTables.HB94

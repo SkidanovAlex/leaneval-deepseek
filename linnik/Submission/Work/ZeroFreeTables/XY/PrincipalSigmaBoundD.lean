@@ -74,10 +74,10 @@ lemma errorBracket_le {M₀ C A ε α L S₁ S₂ S₃ : ℝ}
     (α / L) * M₀ + (α / L) ^ 2 * M₀ + (1 / 3) * (α / L) ^ 3 * M₀
       + (α / L) * (2 * S₁) + (α / L) ^ 2 * (4 * S₂) + (1 / 3) * (α / L) ^ 3 * (16 * S₃)
         ≤ α * ε := by
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL]
   have hlog2 : 0 ≤ Real.log L + 2 := by
     have := Real.log_nonneg hL
-    linarith
+    linarith only [this]
   have hM0 : 0 ≤ M₀ := hM₀
   have t1 : (α / L) * M₀ ≤ α * (M₀ / L) := le_of_eq (by ring)
   have t2 : (α / L) ^ 2 * M₀ ≤ α * (A * M₀ / L ^ 2) := by
@@ -101,7 +101,7 @@ lemma errorBracket_le {M₀ C A ε α L S₁ S₂ S₃ : ℝ}
     rw [e]
     refine mul_le_mul_of_nonneg_left ?_ hα0
     calc (2 * S₁) / L ≤ (2 * (C * (Real.log L + 2) ^ 2)) / L :=
-          div_le_div_of_nonneg_right (by linarith [hS₁]) (le_of_lt hLpos)
+          div_le_div_of_nonneg_right (by linarith only [hS₁]) (le_of_lt hLpos)
       _ = 2 * C * (Real.log L + 2) ^ 2 / L := by ring
   have t5 : (α / L) ^ 2 * (4 * S₂) ≤ α * (4 * A * C * (Real.log L + 2) ^ 3 / L ^ 2) := by
     have e : (α / L) ^ 2 * (4 * S₂) = α * ((4 * α * S₂) / L ^ 2) := by ring
@@ -110,7 +110,7 @@ lemma errorBracket_le {M₀ C A ε α L S₁ S₂ S₃ : ℝ}
     have hn : 4 * α * S₂ ≤ 4 * (A * (C * (Real.log L + 2) ^ 3)) := by
       have h1 : α * S₂ ≤ A * (C * (Real.log L + 2) ^ 3) :=
         mul_le_mul hαA hS₂ hS₂0 (le_trans hα0 hαA)
-      linarith [h1]
+      linarith only [h1]
     calc (4 * α * S₂) / L ^ 2 ≤ (4 * (A * (C * (Real.log L + 2) ^ 3))) / L ^ 2 :=
           div_le_div_of_nonneg_right hn (by positivity)
       _ = 4 * A * C * (Real.log L + 2) ^ 3 / L ^ 2 := by ring
@@ -131,7 +131,7 @@ lemma errorBracket_le {M₀ C A ε α L S₁ S₂ S₃ : ℝ}
         + α * (2 * C * (Real.log L + 2) ^ 2 / L)
         + α * (4 * A * C * (Real.log L + 2) ^ 3 / L ^ 2)
         + α * ((16 / 3) * A ^ 2 * C * (Real.log L + 2) ^ 4 / L ^ 3) := by
-    linarith [t1, t2, t3, t4, t5, t6]
+    linarith only [t1, t2, t3, t4, t5, t6]
   have hBeq : α * (M₀ / L) + α * (A * M₀ / L ^ 2) + α * ((1 / 3) * A ^ 2 * M₀ / L ^ 3)
         + α * (2 * C * (Real.log L + 2) ^ 2 / L)
         + α * (4 * A * C * (Real.log L + 2) ^ 3 / L ^ 2)
@@ -140,7 +140,7 @@ lemma errorBracket_le {M₀ C A ε α L S₁ S₂ S₃ : ℝ}
         + 4 * A * C * (Real.log L + 2) ^ 3 / L ^ 2
         + (16 / 3) * A ^ 2 * C * (Real.log L + 2) ^ 4 / L ^ 3) := by ring
   have hfin := mul_le_mul_of_nonneg_left ht hα0
-  linarith [hsum, hBeq, hfin]
+  linarith only [hsum, hBeq, hfin, t1, t2, t3, t4, t5, t6]
 
 
 
@@ -208,15 +208,15 @@ theorem principalSigmaMasterD {q : ℕ} [NeZero q] {s : ℂ} {a lam₁ L M S1 S2
   have hS10 : 0 ≤ S1 := by
     have h := norm_nonneg (∑ p ∈ q.primeFactors,
       (Real.log (p : ℝ) : ℂ) / ((p : ℂ) ^ s - 1))
-    linarith
+    linarith only [hF0, h]
   have hS20 : 0 ≤ S2 := by
     have h := norm_nonneg (iteratedDeriv 1 (fun z : ℂ => ∑ p ∈ q.primeFactors,
       (Real.log (p : ℝ) : ℂ) / ((p : ℂ) ^ z - 1)) s)
-    linarith
+    linarith only [hF1, h]
   have hS30 : 0 ≤ S3 := by
     have h := norm_nonneg (iteratedDeriv 2 (fun z : ℂ => ∑ p ∈ q.primeFactors,
       (Real.log (p : ℝ) : ℂ) / ((p : ℂ) ^ z - 1)) s)
-    linarith
+    linarith only [hF2, h]
   have hsq : ((1 / (s - 1)) : ℂ) ^ 2 = 1 / (s - 1) ^ 2 := by rw [div_pow, one_pow]
   have hcu : ((1 / (s - 1)) : ℂ) ^ 3 = 1 / (s - 1) ^ 3 := by rw [div_pow, one_pow]
   have hG1' : |(iteratedDeriv 1 (logDeriv riemannZeta) s
@@ -250,27 +250,27 @@ theorem principalSigmaMasterD {q : ℕ} [NeZero q] {s : ℂ} {a lam₁ L M S1 S2
   have e1 : -c * (A0 + Br) ≤ c * M := by
     have h : -(A0 + Br) ≤ M := le_trans (neg_le_abs (A0 + Br)) hg0
     have h2 := mul_le_mul_of_nonneg_left h hc0
-    linarith [h2]
+    linarith only [h2]
   have e2 : c ^ 2 * (A1 - B2) ≤ c ^ 2 * M := by
     have h : A1 - B2 ≤ M := le_trans (le_abs_self (A1 - B2)) hg1
     have h2 := mul_le_mul_of_nonneg_left h (sq_nonneg c)
-    linarith [h2]
+    linarith only [h2]
   have e3 : -(1 / 3) * c ^ 3 * (A2 + 2 * B3) ≤ (1 / 3) * c ^ 3 * M := by
     have h : -(A2 + 2 * B3) ≤ M := le_trans (neg_le_abs (A2 + 2 * B3)) hg2
     have h2 := mul_le_mul_of_nonneg_left h h3c
-    linarith [h2]
+    linarith only [h2]
   have e4 : -c * F0 ≤ c * (2 * S1) := by
     have h : -F0 ≤ 2 * S1 := le_trans (neg_le_abs F0) (le_trans hFr0 hF0)
     have h2 := mul_le_mul_of_nonneg_left h hc0
-    linarith [h2]
+    linarith only [h2]
   have e5 : c ^ 2 * F1 ≤ c ^ 2 * (4 * S2) := by
     have h : F1 ≤ 4 * S2 := le_trans (le_abs_self F1) (le_trans hFr1 hF1)
     have h2 := mul_le_mul_of_nonneg_left h (sq_nonneg c)
-    linarith [h2]
+    linarith only [h2]
   have e6 : -(1 / 3) * c ^ 3 * F2 ≤ (1 / 3) * c ^ 3 * (16 * S3) := by
     have h : -F2 ≤ 16 * S3 := le_trans (neg_le_abs F2) (le_trans hFr2 hF2)
     have h2 := mul_le_mul_of_nonneg_left h h3c
-    linarith [h2]
+    linarith only [h2]
   have hkey : -(c) * (A0 + F0) + c ^ 2 * (A1 + F1) - (1 / 3) * c ^ 3 * (A2 + F2)
       = (c * Br + c ^ 2 * B2 + (2 / 3) * c ^ 3 * B3)
         + (-c * (A0 + Br) + c ^ 2 * (A1 - B2) - (1 / 3) * c ^ 3 * (A2 + 2 * B3))
@@ -281,11 +281,11 @@ theorem principalSigmaMasterD {q : ℕ} [NeZero q] {s : ℂ} {a lam₁ L M S1 S2
     rw [Work.ZeroFreeTables.P9.P3_arg_eq a lam₁ L s 1, Work.ZeroFreeTables.P9.P3_re_mul_inv]
   rw [hP3W]
   have hG : -c * (A0 + Br) + c ^ 2 * (A1 - B2) - (1 / 3) * c ^ 3 * (A2 + 2 * B3)
-      ≤ c * M + c ^ 2 * M + (1 / 3) * c ^ 3 * M := by linarith [e1, e2, e3]
+      ≤ c * M + c ^ 2 * M + (1 / 3) * c ^ 3 * M := by linarith only [e1, e2, e3]
   have hF : -c * F0 + c ^ 2 * F1 - (1 / 3) * c ^ 3 * F2
       ≤ c * (2 * S1) + c ^ 2 * (4 * S2) + (1 / 3) * c ^ 3 * (16 * S3) := by
-    linarith [e4, e5, e6]
-  linarith [hG, hF]
+    linarith only [e4, e5, e6]
+  linarith only [hG, hF, e1, e2, e3, e4, e5, e6]
 
 theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q] (lam₁ : ℝ) (s : ℂ),
@@ -302,7 +302,7 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
   have hC₁le : C₁ ≤ C := le_max_left _ _
   have hC₂le : C₂ ≤ C := le_trans (le_max_left _ _) (le_max_right _ _)
   have hC₃le : C₃ ≤ C := le_trans (le_max_right _ _) (le_max_right _ _)
-  have hA0 : (0 : ℝ) ≤ 17 / 5 + M := by linarith
+  have hA0 : (0 : ℝ) ≤ 17 / 5 + M := by linarith only [hM]
   obtain ⟨L₀, hL₀1, hL₀bd⟩ :=
     Work.ZeroFreeTables.Table4.principalArith M₀ C (17 / 5 + M) ε hM₀pos hCpos hA0 hε
   refine ⟨max 3 (⌈Real.exp (max L₀ 2)⌉₊ + 1), fun q hq hNe lam₁ s hlam0 hlamM hre him => ?_⟩
@@ -313,7 +313,7 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
     have h2 : Real.exp (max L₀ 2) ≤ ((⌈Real.exp (max L₀ 2)⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     have h3 : (((⌈Real.exp (max L₀ 2)⌉₊ + 1 : ℕ)) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hqexp
     push_cast at h3
-    linarith
+    linarith only [h2, h3]
   set L : ℝ := Real.log (q : ℝ) with hLdef
   have hLge' : max L₀ 2 ≤ L := by
     rw [hLdef]
@@ -322,19 +322,19 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
   have hLge : L₀ ≤ L := le_trans (le_max_left _ _) hLge'
   have hL2 : (2 : ℝ) ≤ L := le_trans (le_max_right _ _) hLge'
   have hL1 : 1 ≤ L := le_trans hL₀1 hLge
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL2]
   have hlogL0 : 0 ≤ Real.log L := Real.log_nonneg hL1
   have hsre1 : 1 < s.re := by
     rw [hre]
     have h : 0 < (17 : ℝ) / 5 / L := div_pos (by norm_num) hLpos
-    linarith
+    linarith only [h]
   have hsre4 : s.re ≤ 4 := by
     rw [hre]
     have h : (17 : ℝ) / 5 / L ≤ 3 := by
       rw [div_le_iff₀ hLpos]
-      linarith
-    linarith
-  have him5 : |s.im| ≤ 5 := by linarith [him]
+      linarith only [hL2]
+    linarith only [h]
+  have him5 : |s.im| ≤ 5 := by linarith only [him]
   obtain ⟨hz0, hz1, hz2⟩ := hzB s hsre1 hsre4 him5
   obtain ⟨hE0, hE1, hE2⟩ := PrincipalSigma.EulerFactorBounds q (le_of_lt hsre1)
   have hd0 := PrincipalSigma.LogDerivPrincipalDecomp q 0 (by norm_num) hsre1
@@ -354,12 +354,12 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
       simpa only [pow_one, ← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 2 ≤ (Real.log L + 2) ^ 2 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 2
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 2
     have h2 : C₁ * (Real.log L) ^ 2 ≤ C₁ * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₁pos)
     have h3 : C₁ * (Real.log L + 2) ^ 2 ≤ C * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_right hC₁le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₂bd : S₂ ≤ C * (Real.log L + 2) ^ 3 := by
     have h := hC₂ q hq3
     have h' : S₂ ≤ C₂ * (Real.log L) ^ 3 := by
@@ -367,12 +367,12 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
       simpa only [← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 3 ≤ (Real.log L + 2) ^ 3 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 3
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 3
     have h2 : C₂ * (Real.log L) ^ 3 ≤ C₂ * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₂pos)
     have h3 : C₂ * (Real.log L + 2) ^ 3 ≤ C * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_right hC₂le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₃bd : S₃ ≤ C * (Real.log L + 2) ^ 4 := by
     have h := hC₃ q hq3
     have h' : S₃ ≤ C₃ * (Real.log L) ^ 4 := by
@@ -380,12 +380,12 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
       simpa only [← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 4 ≤ (Real.log L + 2) ^ 4 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 4
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 4
     have h2 : C₃ * (Real.log L) ^ 4 ≤ C₃ * (Real.log L + 2) ^ 4 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₃pos)
     have h3 : C₃ * (Real.log L + 2) ^ 4 ≤ C * (Real.log L + 2) ^ 4 :=
       mul_le_mul_of_nonneg_right hC₃le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₁0 : 0 ≤ S₁ := by
     rw [hS₁def]
     refine Finset.sum_nonneg fun p hp => div_nonneg ?_ (Nat.cast_nonneg p)
@@ -427,13 +427,13 @@ theorem PrincipalSigmaBoundD {M ε : ℝ} (hM : 0 ≤ M) (hε : 0 < ε) :
       + ((17 : ℝ) / 5 + lam₁) / L * (2 * S₁) + (((17 : ℝ) / 5 + lam₁) / L) ^ 2 * (4 * S₂)
       + (1 / 3) * (((17 : ℝ) / 5 + lam₁) / L) ^ 3 * (16 * S₃) ≤ ((17 : ℝ) / 5 + lam₁) * ε :=
     errorBracket_le (M₀ := M₀) (C := C) (A := 17 / 5 + M) (ε := ε) (α := (17 : ℝ) / 5 + lam₁)
-      (S₁ := S₁) (S₂ := S₂) (S₃ := S₃) hL1 (by linarith) (by linarith) hA0 (le_of_lt hM₀pos)
+      (S₁ := S₁) (S₂ := S₂) (S₃ := S₃) hL1 (by linarith only [hlam0]) (by linarith only [hlamM]) hA0 (le_of_lt hM₀pos)
       (le_of_lt hCpos) hS₁bd hS₂bd hS₃bd hS₁0 hS₂0 hS₃0 (hL₀bd L hLge)
   have hfin : Work.ZeroFreeTables.SigmaP3L q L (1 : DirichletCharacter ℂ q) s (17 / 5) lam₁
       ≤ (Work.ZeroFreeTables.P3 (((((17 : ℝ) / 5) + lam₁) : ℂ)
             / ((s - 1) * ((L : ℝ) : ℂ)))).re + (17 / 5 + lam₁) * ε := by
     refine le_trans hm ?_
-    linarith [hbr]
+    linarith only [hbr]
   simpa only [hLdef] using hfin
 
 

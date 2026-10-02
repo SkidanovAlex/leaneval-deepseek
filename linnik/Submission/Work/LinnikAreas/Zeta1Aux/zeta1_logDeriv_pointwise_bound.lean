@@ -1,9 +1,10 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_exists_goodR_segment
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_growth_disk6
 import Submission.Work.LinnikAreas.Zeta1Aux.log_one_add_mul_pow_le
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_divisor_sum_bound
+import Submission.Commons.NumberTheory.Zeta.zeta1_re_two_lower
+import Submission.Commons.Analysis.Complex.logDeriv_sub_divisor_le
 
 namespace Work.LinnikAreas.Zeta1Aux
 

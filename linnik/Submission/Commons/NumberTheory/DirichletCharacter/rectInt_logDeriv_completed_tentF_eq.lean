@@ -1,6 +1,7 @@
 import Mathlib
-import Submission.Commons.NumberTheory.DirichletCharacter.rectInt_logDeriv_completed_cpow_eq
-import Submission.Commons.NumberTheory.Linnik.tentWeight_laplace
+import Submission.Commons.NumberTheory.Linnik.partialFraction_conv
+import Submission.Commons.NumberTheory.Linnik.completedL_zeroCount
+import Submission.Commons.NumberTheory.DirichletCharacter.chebyshevPsiChi_explicit_formula_mult
 
 open Complex MeasureTheory intervalIntegral Filter
 open scoped Real Topology BigOperators

@@ -22,7 +22,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
   set C₁ : ℝ := (2 * C₀ + 2 * B * x₀) * Real.exp (x₀ * 1) with hC₁def
   have hC₁nn : 0 ≤ C₁ := by rw [hC₁def]; positivity
   set D : ℝ := δ / 2 with hDdef
-  have hDpos : 0 < D := by rw [hDdef]; linarith
+  have hDpos : 0 < D := by rw [hDdef]; linarith only [hδ0]
   set N : ℝ := max (max (80 / (D * ε)) (Real.sqrt (80 * C₁ / (f 0 * ε)) / D))
       (max (16 / δ ^ 2) (max 16 (4 / δ))) with hNdef
   have hN1 : 80 / (D * ε) ≤ N := le_trans (le_max_left _ _) (le_max_left _ _)
@@ -44,7 +44,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h2 : (⌈Real.exp N⌉₊ : ℝ) ≤ (q : ℝ) := by
       have h3 : ⌈Real.exp N⌉₊ ≤ q := by omega
       exact_mod_cast h3
-    linarith
+    linarith only [h1, h2]
   have hLN : N ≤ L := by
     rw [hLdef]
     calc N = Real.log (Real.exp N) := (Real.log_exp N).symm
@@ -70,7 +70,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
           add_le_add hu2 hu1
       _ = (Real.sqrt (Real.log (Real.log (q : ℝ))) + 1) / L := by ring
   -- ## the geometric bound `√(log log q) + 1 ≤ (δ/2) L`
-  have hδ4pos : 0 < δ / 4 := by linarith
+  have hδ4pos : 0 < δ / 4 := by linarith only [hδ0]
   have hsq : (4 / δ) ^ 2 ≤ L := by
     have h : (4 / δ) ^ 2 = 16 / δ ^ 2 := by ring
     rw [h]; exact le_trans hN3 hLN
@@ -81,7 +81,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h1 : (1:ℝ) ≤ δ / 4 * Real.sqrt L := by
       have h2 := mul_le_mul_of_nonneg_left h4 hδ4pos.le
       have h3 : δ / 4 * (4 / δ) = 1 := by field_simp
-      linarith [h2, h3]
+      linarith only [h2, h3]
     calc Real.sqrt L = 1 * Real.sqrt L := by ring
       _ ≤ (δ / 4 * Real.sqrt L) * Real.sqrt L :=
           mul_le_mul_of_nonneg_right h1 (Real.sqrt_nonneg L)
@@ -89,12 +89,12 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
   have hone_le : (1:ℝ) ≤ δ / 4 * L := by
     have h2 := mul_le_mul_of_nonneg_left (le_trans hN5 hLN) hδ4pos.le
     have h3 : δ / 4 * (4 / δ) = 1 := by field_simp
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hu4 : (Real.sqrt (Real.log (Real.log (q : ℝ))) + 1) / L ≤ D := by
     rw [div_le_iff₀ hLpos, hDdef]
     have hsq2 : Real.sqrt (Real.log L) ≤ Real.sqrt L :=
-      Real.sqrt_le_sqrt (by have := Real.log_le_sub_one_of_pos hLpos; linarith)
-    linarith [hsq2, hsqrtL_le, hone_le]
+      Real.sqrt_le_sqrt (by have := Real.log_le_sub_one_of_pos hLpos; linarith only [this])
+    linarith only [hsq2, hsqrtL_le, hone_le]
   have hwu : |1 - u.re| ≤ D := le_trans hu3 hu4
   -- ## the imaginary part at the window centre
   have hwre : ((1:ℂ) + (s.im : ℂ) * Complex.I - u).re = 1 - u.re := by
@@ -105,13 +105,13 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have htri := Complex.norm_le_abs_re_add_abs_im ((1:ℂ) + (s.im : ℂ) * Complex.I - u)
     rw [hwre, hwim] at htri
     rw [hDdef] at *
-    linarith [htri, hwin]
+    linarith only [htri, hwin, hu3, hu4]
   have hsub_im : ((s - u) * ((L : ℝ) : ℂ)).im = (s.im - u.im) * L := by
     simp [Complex.mul_im, Complex.sub_im]
   have hη : δ / 2 * L ≤ |((s - u) * ((L : ℝ) : ℂ)).im| := by
     rw [hsub_im, abs_mul, abs_of_pos hLpos]
     have h2 : δ / 2 < |s.im - u.im| := by rw [← hDdef]; exact hIm_gt
-    nlinarith [h2, hLpos]
+    nlinarith only [h2, hLpos, hDdef, hIm_gt, hN4, hLN]
   have ha : |((s - u) * ((L : ℝ) : ℂ)).re| ≤ 1 := by
     rw [hsub_re]; exact hreL
   -- ## the analytic decay bound
@@ -124,9 +124,9 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h1 : 80 / ε ≤ D * N := by
       have h2 := mul_le_mul_of_nonneg_left hN1 hDpos.le
       have h3 : D * (80 / (D * ε)) = 80 / ε := by field_simp
-      linarith [h2, h3]
+      linarith only [h2, h3]
     have h4 : D * N ≤ D * L := mul_le_mul_of_nonneg_left hLN hDpos.le
-    linarith
+    linarith only [h1, h4]
   have hA : ‖f 0‖ / (δ / 2 * L) ≤ f 0 * ε / 80 := by
     have hf0norm : ‖f 0‖ = f 0 := by rw [Real.norm_eq_abs, abs_of_pos hf0]
     rw [hf0norm, ← hDdef]
@@ -139,7 +139,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       have h2 := mul_le_mul_of_nonneg_left hN2 hDpos.le
       have h3 : D * (Real.sqrt (80 * C₁ / (f 0 * ε)) / D) = Real.sqrt (80 * C₁ / (f 0 * ε)) := by
         field_simp
-      linarith [h2, h3]
+      linarith only [h2, h3]
     have h4 : D * N ≤ D * L := mul_le_mul_of_nonneg_left hLN hDpos.le
     have h5 : Real.sqrt (80 * C₁ / (f 0 * ε)) ≤ D * L := le_trans h1 h4
     calc 80 * C₁ / (f 0 * ε) = Real.sqrt (80 * C₁ / (f 0 * ε)) ^ 2 := by
@@ -153,7 +153,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h2 : f 0 * ε * (80 * C₁ / (f 0 * ε)) = 80 * C₁ := by
       field_simp
     rw [h2] at h1
-    linarith [h1]
+    linarith only [h1]
   -- ## conclude
   have h1 : (∫ t in (0:ℝ)..x₀,
       Complex.exp (-(((s - u) * ((L : ℝ) : ℂ)) * (t:ℂ))) * ((f t : ℝ) : ℂ)).re
@@ -163,7 +163,7 @@ theorem FarZeroSmall (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
   have h2 : ‖∫ t in (0:ℝ)..x₀,
       Complex.exp (-(((s - u) * ((L : ℝ) : ℂ)) * (t:ℂ))) * ((f t : ℝ) : ℂ)‖ ≤ f 0 * ε / 40 := by
     refine le_trans hmain ?_
-    linarith [hA, hB2]
-  linarith [h1, h2]
+    linarith only [hA, hB2]
+  linarith only [h1, h2, hmain, hA, hB2]
 
 end Work.ZeroFreeTables.XY

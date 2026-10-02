@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Setup
-import Submission.Work.ZeroDensity.Zeta.ZetaZeroDefs
 import Submission.Work.ZeroDensity.Basic
 import Submission.Work.LinnikAreas.PrincipalZeroCount
 

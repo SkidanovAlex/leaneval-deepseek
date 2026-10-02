@@ -7,7 +7,6 @@ import Submission.Work.LinnikAreas2.PsiDefs2
 import Submission.Work.LinnikAreas.Density4.zeroDetAux
 import Submission.Work.LinnikAreas.Density4.det_split
 import Submission.Work.LinnikAreas.Density4.zero_detector
-import Submission.Work.LinnikAreas.Density4.theta_diag_eval
 import Submission.Work.LinnikAreas.Density4.duality_principle
 
 namespace Work.LinnikAreas2

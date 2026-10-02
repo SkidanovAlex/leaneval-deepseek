@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.A7.CommonsDeps
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_conj
 
 /-!
 # Vanishing order of a `conj`-symmetric function

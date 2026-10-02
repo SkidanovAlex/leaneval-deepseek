@@ -93,17 +93,17 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
   have hn0 : ‖princCorr q s‖ ≤ Cz + 2 * S1 := by
     rw [hid0]
     calc ‖zetaCorr s - eulFac q s‖ ≤ ‖zetaCorr s‖ + ‖eulFac q s‖ := norm_sub_le _ _
-      _ ≤ Cz + 2 * S1 := by linarith [hz0, he0]
+      _ ≤ Cz + 2 * S1 := by linarith only [hz0, he0]
   have hn1 : ‖iteratedDeriv 1 (princCorr q) s‖ ≤ Cz + 4 * S2 := by
     rw [hid1]
     calc ‖iteratedDeriv 1 zetaCorr s - iteratedDeriv 1 (eulFac q) s‖
           ≤ ‖iteratedDeriv 1 zetaCorr s‖ + ‖iteratedDeriv 1 (eulFac q) s‖ := norm_sub_le _ _
-      _ ≤ Cz + 4 * S2 := by linarith [hz1, he1]
+      _ ≤ Cz + 4 * S2 := by linarith only [hz1, he1]
   have hn2 : ‖iteratedDeriv 2 (princCorr q) s‖ ≤ Cz + 16 * S3 := by
     rw [hid2]
     calc ‖iteratedDeriv 2 zetaCorr s - iteratedDeriv 2 (eulFac q) s‖
           ≤ ‖iteratedDeriv 2 zetaCorr s‖ + ‖iteratedDeriv 2 (eulFac q) s‖ := norm_sub_le _ _
-      _ ≤ Cz + 16 * S3 := by linarith [hz2, he2]
+      _ ≤ Cz + 16 * S3 := by linarith only [hz2, he2]
   set c : ℝ := (a + lam₁) / L with hc
   have hc0 : 0 ≤ c := by rw [hc]; exact div_nonneg hα0 (le_of_lt hLpos)
   have hc2a : c ≤ 2 * a := by
@@ -111,7 +111,7 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
     have h1 : (a + lam₁) / L ≤ 2 * a / L :=
       div_le_div_of_nonneg_right hα2a (le_of_lt hLpos)
     have h2 : 2 * a / L ≤ 2 * a := by
-      rw [div_le_iff₀ hLpos]; nlinarith [hL1, ha]
+      rw [div_le_iff₀ hLpos]; exact le_mul_of_one_le_right (by linarith only [ha]) hL1
     linarith
   have ht0 : (0 : ℝ) ≤ (Real.log L) ^ 4 := by positivity
   have hD1'0 : 0 < max D1 1 := lt_of_lt_of_le one_pos (le_max_right D1 1)
@@ -120,9 +120,15 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
   set K1 : ℝ := Cz + 2 * (max D1 1 * (1 + (Real.log L) ^ 4)) with hK1def
   set K2 : ℝ := Cz + 4 * (max D2 1 * (1 + (Real.log L) ^ 4)) with hK2def
   set K3 : ℝ := Cz + 16 * (max D3 1 * (1 + (Real.log L) ^ 4)) with hK3def
-  have hK10 : (0 : ℝ) ≤ K1 := by rw [hK1def]; nlinarith [hCzpos, hD1'0, ht0]
-  have hK20 : (0 : ℝ) ≤ K2 := by rw [hK2def]; nlinarith [hCzpos, hD2'0, ht0]
-  have hK30 : (0 : ℝ) ≤ K3 := by rw [hK3def]; nlinarith [hCzpos, hD3'0, ht0]
+  have hK10 : (0 : ℝ) ≤ K1 := by
+    rw [hK1def]
+    exact add_nonneg hCzpos.le (mul_nonneg (by norm_num) (mul_nonneg hD1'0.le (by positivity)))
+  have hK20 : (0 : ℝ) ≤ K2 := by
+    rw [hK2def]
+    exact add_nonneg hCzpos.le (mul_nonneg (by norm_num) (mul_nonneg hD2'0.le (by positivity)))
+  have hK30 : (0 : ℝ) ≤ K3 := by
+    rw [hK3def]
+    exact add_nonneg hCzpos.le (mul_nonneg (by norm_num) (mul_nonneg hD3'0.le (by positivity)))
   have hcorr : c * (princCorr q s).re - c ^ 2 * (iteratedDeriv 1 (princCorr q) s).re
       + (1 / 3) * c ^ 3 * (iteratedDeriv 2 (princCorr q) s).re ≤ (a + lam₁) * e := by
     have tA : c * (princCorr q s).re - c ^ 2 * (iteratedDeriv 1 (princCorr q) s).re
@@ -133,13 +139,14 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
       have h2 : -c ^ 2 * (iteratedDeriv 1 (princCorr q) s).re ≤ c ^ 2 * (Cz + 4 * S2) := by
         have hh : -(iteratedDeriv 1 (princCorr q) s).re ≤ Cz + 4 * S2 :=
           le_trans (neg_le_abs _) (le_trans (abs_re_le_norm _) hn1)
-        nlinarith [hh, sq_nonneg c]
+        have := mul_le_mul_of_nonneg_left hh (sq_nonneg c)
+        linarith only [this]
       have h3 : (1 / 3) * c ^ 3 * (iteratedDeriv 2 (princCorr q) s).re
           ≤ (1 / 3) * c ^ 3 * (Cz + 16 * S3) :=
         mul_le_mul_of_nonneg_left
           (le_trans (Complex.re_le_norm (iteratedDeriv 2 (princCorr q) s)) hn2)
           (mul_nonneg (by norm_num) (pow_nonneg hc0 3))
-      linarith [h1, h2, h3]
+      linarith only [h1, h2, h3]
     have tB : c * (Cz + 2 * S1) + c ^ 2 * (Cz + 4 * S2) + (1 / 3) * c ^ 3 * (Cz + 16 * S3)
         ≤ c * (K1 + 2 * a * K2 + (4 * a ^ 2 / 3) * K3) := by
       have e1 : Cz + 2 * S1 ≤ K1 := by rw [hK1def]; linarith
@@ -147,19 +154,22 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
       have e3 : Cz + 16 * S3 ≤ K3 := by rw [hK3def]; linarith
       have g1 : c * (Cz + 2 * S1) ≤ c * K1 := mul_le_mul_of_nonneg_left e1 hc0
       have g2 : c ^ 2 * (Cz + 4 * S2) ≤ c * (2 * a * K2) := by
-        have hle : c ^ 2 ≤ c * (2 * a) := by nlinarith [hc0, hc2a]
+        have hle : c ^ 2 ≤ c * (2 * a) := by rw [sq]; exact mul_le_mul_of_nonneg_left hc2a hc0
         calc c ^ 2 * (Cz + 4 * S2) ≤ c ^ 2 * K2 := mul_le_mul_of_nonneg_left e2 (sq_nonneg c)
           _ ≤ c * (2 * a) * K2 := mul_le_mul_of_nonneg_right hle hK20
           _ = c * (2 * a * K2) := by ring
       have g3 : (1 / 3) * c ^ 3 * (Cz + 16 * S3) ≤ c * ((4 * a ^ 2 / 3) * K3) := by
         have hle : c ^ 3 ≤ c * (2 * a) ^ 2 := by
           have hsq : c ^ 2 ≤ (2 * a) ^ 2 := pow_le_pow_left₀ hc0 hc2a 2
-          nlinarith [hc0, hsq]
+          have := mul_le_mul_of_nonneg_left hsq hc0
+          linarith only [this]
         calc (1 / 3) * c ^ 3 * (Cz + 16 * S3) ≤ (1 / 3) * c ^ 3 * K3 :=
               mul_le_mul_of_nonneg_left e3 (mul_nonneg (by norm_num) (pow_nonneg hc0 3))
-          _ ≤ (1 / 3) * (c * (2 * a) ^ 2) * K3 := by nlinarith [hle, hK30]
+          _ ≤ (1 / 3) * (c * (2 * a) ^ 2) * K3 := by
+            have := mul_le_mul_of_nonneg_right hle hK30
+            linarith only [this]
           _ = c * ((4 * a ^ 2 / 3) * K3) := by ring
-      linarith [g1, g2, g3]
+      linarith only [g1, g2, g3]
     have hCbound : K1 + 2 * a * K2 + (4 * a ^ 2 / 3) * K3 ≤ e * L := by
       have h := hL₀b hL₀L
       rw [hK1def, hK2def, hK3def]
@@ -168,7 +178,7 @@ theorem principalBound4_fm {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
       mul_le_mul_of_nonneg_left hCbound hc0
     have hce : c * (e * L) = (a + lam₁) * e := by
       rw [hc]; field_simp
-    linarith [tA, tB, hfinal, hce.le, hce.ge]
+    linarith only [tA, tB, hfinal, hce.le, hce.ge]
   have hpole := sigP3PoleExtraction q (L := L) (a := a) (lam₁ := lam₁) (s := s) hsr
   rw [hpole]
   linarith [hcorr]

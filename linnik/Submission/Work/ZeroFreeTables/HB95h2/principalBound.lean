@@ -40,7 +40,7 @@ private theorem primeSums_bound :
     le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _))
   have hbase2 : (0 : ℝ) ≤ Real.log L + 2 := by
     have : 0 ≤ Real.log L := Real.log_nonneg hL1
-    linarith
+    linarith only [this]
   rcases lt_or_ge q 3 with hq3 | hq3
   · -- `q ≤ 2`: only the prime `2` can occur
     have hsub : q.primeFactors ⊆ ({2} : Finset ℕ) := by
@@ -66,11 +66,11 @@ private theorem primeSums_bound :
           _ = (Real.log 2) ^ j / 2 := by simp
       have hlog2nn : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
       have hlog2le1 : Real.log 2 ≤ 1 := by
-        have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith
+        have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith only [this]
       have hnum : (Real.log 2) ^ j ≤ 1 := pow_le_one₀ hlog2nn hlog2le1
-      have hhalf : (Real.log 2) ^ j / 2 ≤ 1 := by linarith
+      have hhalf : (Real.log 2) ^ j / 2 ≤ 1 := by linarith only [hnum]
       have hpow1 : (1 : ℝ) ≤ (Real.log L + 2) ^ (j + 1) :=
-        one_le_pow₀ (by have := Real.log_nonneg hL1; linarith)
+        one_le_pow₀ (by have := Real.log_nonneg hL1; linarith only [this])
       have hCge1' : (0 : ℝ) ≤ max 1 (max C1 (max C2 C3)) := le_trans zero_le_one hCge1
       calc (∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ j / (p : ℝ))
           ≤ (Real.log 2) ^ j / 2 := hsumle
@@ -89,7 +89,7 @@ private theorem primeSums_bound :
     have hllq_nn : 0 ≤ Real.log (Real.log (q : ℝ)) := Real.log_nonneg hlogq1.le
     have hllq_le : Real.log (Real.log (q : ℝ)) ≤ Real.log L + 2 := by
       have h := Real.log_le_log hlogqpos hlog
-      linarith
+      linarith only [h]
     refine ⟨?_, ?_, ?_⟩
     · have h : (∑ p ∈ q.primeFactors, Real.log (p : ℝ) / (p : ℝ))
           ≤ C1 * (Real.log (Real.log (q : ℝ))) ^ (1 + 1) := by
@@ -132,29 +132,29 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
   rcases lt_or_ge M 0 with hMneg | hMge
   · refine ⟨0, ?_⟩
     intro q hqne L lam₁ hL0 hlog hlam0 hlamM s hsre him
-    exact absurd (by linarith : lam₁ < 0) (not_lt.mpr hlam0)
+    exact absurd (by linarith only [hMneg, hlam0, hlamM] : lam₁ < 0) (not_lt.mpr hlam0)
   obtain ⟨M0, hM0pos, hzB⟩ := Work.ZeroFreeTables.Table4.zetaSmoothBound
   obtain ⟨C0, hC0pos, hC0⟩ := primeSums_bound
   obtain ⟨L0, hL01, hL0arith⟩ :=
-    Work.ZeroFreeTables.Table4.principalArith M0 C0 (a + M) e hM0pos hC0pos (by linarith) he
+    Work.ZeroFreeTables.Table4.principalArith M0 C0 (a + M) e hM0pos hC0pos (by linarith only [ha, hMge]) he
   refine ⟨max (max L0 2) (3 * a), ?_⟩
   intro q hqne L lam₁ hL0' hlog hlam0 hlamM s hsre him
   haveI : NeZero q := hqne
   have hL0le : L0 ≤ L := le_trans (le_trans (le_max_left L0 2) (le_max_left _ _)) hL0'
   have hL2 : (2 : ℝ) ≤ L := le_trans (le_trans (le_max_right L0 2) (le_max_left _ _)) hL0'
   have hL3a : 3 * a ≤ L := le_trans (le_max_right _ _) hL0'
-  have hLpos : (0 : ℝ) < L := by linarith
-  have hL1 : (1 : ℝ) ≤ L := by linarith
+  have hLpos : (0 : ℝ) < L := by linarith only [ha, hL3a]
+  have hL1 : (1 : ℝ) ≤ L := by linarith only [ha, hL2, hL3a]
   have hq1 : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   have hsre1 : 1 < s.re := by
     rw [hsre]
     have : 0 < a / L := div_pos ha hLpos
-    linarith
+    linarith only [this]
   have hsre4 : s.re ≤ 4 := by
     rw [hsre]
-    have h1 : a / L ≤ 1 / 3 := by rw [div_le_iff₀ hLpos]; linarith
-    linarith
-  have him5 : |s.im| ≤ 5 := by linarith
+    have h1 : a / L ≤ 1 / 3 := by rw [div_le_iff₀ hLpos]; linarith only [hL3a]
+    linarith only [h1]
+  have him5 : |s.im| ≤ 5 := by linarith only [him]
   obtain ⟨hz0, hz1, hz2⟩ := hzB s hsre1 hsre4 him5
   obtain ⟨hE0, hE1, hE2⟩ := Work.ZeroFreeTables.Table4.eulerFactorBound q (le_of_lt hsre1)
   obtain ⟨hS1raw, hS2raw, hS3raw⟩ := hC0 q L hq1 hL1 hlog
@@ -217,10 +217,10 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
     rw [h1]
     have hr : |(Rf s).re| ≤ 2 * S1 := by
       have := Complex.abs_re_le_norm (Rf s)
-      linarith [hES1]
+      linarith only [hES1, hE0, hE0sum, this]
     calc |(logDeriv riemannZeta s + 1 / (s - 1)).re + (Rf s).re|
         ≤ |(logDeriv riemannZeta s + 1 / (s - 1)).re| + |(Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 2 * S1 := by linarith [hz0, hr]
+      _ ≤ M0 + 2 * S1 := by linarith only [hz0, hr]
   have hA2 : |A2| ≤ M0 + 4 * S2 := by
     have h1 : A2 = (iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re
         + (iteratedDeriv 1 Rf s).re := by
@@ -230,12 +230,12 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
     rw [h1]
     have hr : |(iteratedDeriv 1 Rf s).re| ≤ 4 * S2 := by
       have := Complex.abs_re_le_norm (iteratedDeriv 1 Rf s)
-      linarith [hES2]
+      linarith only [hES2, hE1, hE1sum, this]
     calc |(iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re
             + (iteratedDeriv 1 Rf s).re|
         ≤ |(iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re|
             + |(iteratedDeriv 1 Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 4 * S2 := by linarith [hz1', hr]
+      _ ≤ M0 + 4 * S2 := by linarith only [hz1', hr]
   have e2c : ((2 : ℂ) * (1 / (s - 1)) ^ 3).re = 2 * ((1 / (s - 1)) ^ 3).re := by
     rw [Complex.mul_re]; simp
   have hA3 : |A3| ≤ M0 + 16 * S3 := by
@@ -248,12 +248,12 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
     rw [h1]
     have hr : |(iteratedDeriv 2 Rf s).re| ≤ 16 * S3 := by
       have := Complex.abs_re_le_norm (iteratedDeriv 2 Rf s)
-      linarith [hES3]
+      linarith only [hES3, hE2, hE2sum, this]
     calc |(iteratedDeriv 2 (logDeriv riemannZeta) s + 2 * (1 / (s - 1)) ^ 3).re
             + (iteratedDeriv 2 Rf s).re|
         ≤ |(iteratedDeriv 2 (logDeriv riemannZeta) s + 2 * (1 / (s - 1)) ^ 3).re|
             + |(iteratedDeriv 2 Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 16 * S3 := by linarith [hz2', hr]
+      _ ≤ M0 + 16 * S3 := by linarith only [hz2', hr]
   have hsig := Work.ZeroFreeTables.P9.SigmaP3L_eq_logDeriv_derivs
     (1 : DirichletCharacter ℂ q) hsre1 a lam₁ L
   have hP3 : (Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - 1) * (L : ℂ)))).re
@@ -269,7 +269,7 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
     ring
   have hfin : -((a + lam₁) / L) * A1 + ((a + lam₁) / L) ^ 2 * A2
       - (1 / 3) * ((a + lam₁) / L) ^ 3 * A3 ≤ (a + lam₁) * e := by
-    have hc0 : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith) (le_of_lt hLpos)
+    have hc0 : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith only [ha, hlam0]) (le_of_lt hLpos)
     have h1 : -((a + lam₁) / L) * A1 ≤ ((a + lam₁) / L) * |A1| := by
       have h := mul_le_mul_of_nonneg_left (neg_le_abs A1) hc0
       rw [show -((a + lam₁) / L) * A1 = ((a + lam₁) / L) * (-A1) from by ring]
@@ -295,10 +295,10 @@ theorem principalBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) :
         + (1 / 3) * ((a + lam₁) / L) ^ 3 * (M0 + 16 * S3) ≤ (a + lam₁) * e :=
       Work.ZeroFreeTables.Table4.final_arith (L := L) (α := a + lam₁) (Amax := a + M)
         (M0 := M0) (C := C0) (ε := e) (S1 := S1) (S2 := S2) (S3 := S3)
-        hL1 (by linarith) (by linarith) hS1b hS2b hS3b (le_of_lt hM0pos) (le_of_lt hC0pos)
+        hL1 (by linarith only [ha, hlam0]) (by linarith only [hlamM]) hS1b hS2b hS3b (le_of_lt hM0pos) (le_of_lt hC0pos)
         (hL0arith L hL0le)
-    linarith [h1, h2, h3, h4, h5, h6, hkey]
+    linarith only [h1, h2, h3, h4, h5, h6, hkey, this]
   rw [hsigA]
-  linarith [hfin]
+  linarith only [hfin, this]
 
 end Work.ZeroFreeTables.HB95h2

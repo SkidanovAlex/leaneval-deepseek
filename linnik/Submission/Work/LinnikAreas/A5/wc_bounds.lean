@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.A5.Weights
-import Submission.Work.LinnikAreas.A5.f1_data
 import Submission.Work.LinnikAreas.A5.Basic
 
 namespace Work.LinnikAreas.A5

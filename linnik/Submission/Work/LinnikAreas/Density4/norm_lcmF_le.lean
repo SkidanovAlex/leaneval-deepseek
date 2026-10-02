@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.SsmSetup
-import Submission.Work.LinnikAreas.Density4.sum_Icc_rpow_neg_le
 import Submission.Work.LinnikAreas.Density4.sum_tau_mul_rpow_neg_le
 import Submission.Work.LinnikAreas.Density4.sum_filter_dvd_rpow_neg_le
 import Submission.Work.LinnikAreas.Density4.lcmF_eq_sum_floor
@@ -93,7 +92,7 @@ lemma sum_lcm_inner_le {B d : ℕ} (hd : 1 ≤ d) (hB : 1 ≤ B) {σ : ℝ} (hσ
   have hB0 : (0 : ℝ) < B := by exact_mod_cast (by omega : 0 < B)
   have hlogB : 0 ≤ 1 + Real.log (B : ℝ) := by
     have : 0 ≤ Real.log (B : ℝ) := Real.log_nonneg (by exact_mod_cast hB)
-    linarith
+    linarith only [this]
   have hXnn : 0 ≤ (B : ℝ) ^ (1 - σ) * (1 + Real.log (B : ℝ)) :=
     mul_nonneg (Real.rpow_nonneg hB0.le _) hlogB
   have hkey : ∑ e ∈ Finset.Icc 1 B, (d : ℝ) ^ (-σ) * (e : ℝ) ^ (-σ)
@@ -153,7 +152,7 @@ lemma sum_lcm_inner_le {B d : ℕ} (hd : 1 ≤ d) (hB : 1 ≤ B) {σ : ℝ} (hσ
             rw [div_eq_mul_inv, ← Real.rpow_neg_one, ← Real.rpow_add hh0,
               show σ + (-1) = σ - 1 by ring]
           have hle1' : (h : ℝ) ^ (σ - 1) ≤ 1 :=
-            Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hh1) (by linarith)
+            Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hh1) (by linarith only [hσ1])
           calc (h : ℝ) ^ σ * (((B : ℝ) ^ (1 - σ) * (1 + Real.log (B : ℝ))) / (h : ℝ))
               = ((B : ℝ) ^ (1 - σ) * (1 + Real.log (B : ℝ))) * ((h : ℝ) ^ σ / (h : ℝ)) := by
                 ring
@@ -184,7 +183,7 @@ lemma sum_lcm_rpow_neg_le {A B : ℕ} (hA : 1 ≤ A) (hB : 1 ≤ B) {σ : ℝ} (
   have hB0 : (0 : ℝ) < B := by exact_mod_cast (by omega : 0 < B)
   have hlogB : 0 ≤ 1 + Real.log (B : ℝ) := by
     have : 0 ≤ Real.log (B : ℝ) := Real.log_nonneg (by exact_mod_cast hB)
-    linarith
+    linarith only [this]
   have hXnn : 0 ≤ (B : ℝ) ^ (1 - σ) * (1 + Real.log (B : ℝ)) :=
     mul_nonneg (Real.rpow_nonneg hB0.le _) hlogB
   calc ∑ d ∈ Finset.Icc 1 A, ∑ e ∈ Finset.Icc 1 B, ((Nat.lcm d e : ℕ) : ℝ) ^ (-σ)
@@ -216,13 +215,13 @@ theorem norm_lcmF_le (q : ℕ) [NeZero q] {U V W : ℝ} (hU : 0 < U) (hUV : U �
   set σ : ℝ := 1 - (k : ℝ)⁻¹ with hσdef
   have hA1 : 1 ≤ A := by rw [hAdef]; exact Nat.le_floor (by exact_mod_cast hV)
   have hB1 : 1 ≤ B := by rw [hBdef]; exact Nat.le_floor (by exact_mod_cast hW)
-  have hAV : (A:ℝ) ≤ V := by rw [hAdef]; exact Nat.floor_le (by linarith)
-  have hBW : (B:ℝ) ≤ W := by rw [hBdef]; exact Nat.floor_le (by linarith)
+  have hAV : (A:ℝ) ≤ V := by rw [hAdef]; exact Nat.floor_le (by linarith only [hU, hUV])
+  have hBW : (B:ℝ) ≤ W := by rw [hBdef]; exact Nat.floor_le (by linarith only [hW])
   have hkpos : (0:ℝ) < (k:ℝ) := by exact_mod_cast (by omega : 0 < k)
   have hkinv1 : (k:ℝ)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by exact_mod_cast hk)
   have hkinv0 : 0 ≤ (k:ℝ)⁻¹ := inv_nonneg.mpr hkpos.le
-  have hσ0 : 0 ≤ σ := by rw [hσdef]; linarith
-  have hσ1 : σ ≤ 1 := by rw [hσdef]; linarith
+  have hσ0 : 0 ≤ σ := by rw [hσdef]; linarith only [hkinv1]
+  have hσ1 : σ ≤ 1 := by rw [hσdef]; linarith only [hkinv0]
   have hsre : s.re = σ := by rw [hs, hσdef]
   have hV0 : (0:ℝ) < V := lt_of_lt_of_le one_pos hV
   have hW0 : (0:ℝ) < W := lt_of_lt_of_le one_pos hW
@@ -243,23 +242,23 @@ theorem norm_lcmF_le (q : ℕ) [NeZero q] {U V W : ℝ} (hU : 0 < U) (hUV : U �
   have hsum := sum_lcm_rpow_neg_le hA1 hB1 hσ0 hσ1
   refine hnorm.trans (hsum.trans ?_)
   have hAle : (A:ℝ) ^ (1 - σ) ≤ V ^ (1 - σ) :=
-    Real.rpow_le_rpow (by positivity) hAV (by linarith)
+    Real.rpow_le_rpow (by positivity) hAV (by linarith only [hkinv0])
   have hBle : (B:ℝ) ^ (1 - σ) ≤ W ^ (1 - σ) :=
-    Real.rpow_le_rpow (by positivity) hBW (by linarith)
+    Real.rpow_le_rpow (by positivity) hBW (by linarith only [hkinv0])
   have hlogA : 1 + Real.log (A:ℝ) ≤ 1 + Real.log (V * W) := by
     have h1 : Real.log (A:ℝ) ≤ Real.log (V * W) :=
-      Real.log_le_log (by positivity) (by nlinarith [hAV, hW0.le, hV0.le])
-    linarith
+      Real.log_le_log (by positivity) (by nlinarith only [hAV, hW0.le, hV0.le, hU, hW, hUV])
+    linarith only [h1]
   have hlogB : 1 + Real.log (B:ℝ) ≤ 1 + Real.log (V * W) := by
     have h1 : Real.log (B:ℝ) ≤ Real.log (V * W) :=
-      Real.log_le_log (by positivity) (by nlinarith [hBW, hV0.le, hW0.le])
-    linarith
+      Real.log_le_log (by positivity) (by nlinarith only [hBW, hV0.le, hW0.le, hV, hU, hUV])
+    linarith only [h1]
   have hlogA0 : 0 ≤ 1 + Real.log (A:ℝ) := by
     have : (1:ℝ) ≤ (A:ℝ) := by exact_mod_cast hA1
-    linarith [Real.log_nonneg this]
+    linarith only [Real.log_nonneg this, this]
   have hlogB0 : 0 ≤ 1 + Real.log (B:ℝ) := by
     have : (1:ℝ) ≤ (B:ℝ) := by exact_mod_cast hB1
-    linarith [Real.log_nonneg this]
+    linarith only [Real.log_nonneg this, this]
   have hlogle : (1 + Real.log (A:ℝ)) ^ 2 * (1 + Real.log (B:ℝ))
       ≤ (1 + Real.log (V * W)) ^ 3 := by
     have h2 : (1 + Real.log (A:ℝ)) ^ 2 ≤ (1 + Real.log (V * W)) ^ 2 :=

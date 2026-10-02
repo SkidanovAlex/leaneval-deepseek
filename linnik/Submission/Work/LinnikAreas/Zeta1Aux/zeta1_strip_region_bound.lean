@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
+import Submission.Commons.NumberTheory.Zeta.zeta_strip_polyGrowth
+import Submission.Commons.NumberTheory.Zeta.zeta_strip_polyGrowth_neg
 
 namespace Work.LinnikAreas.Zeta1Aux
 

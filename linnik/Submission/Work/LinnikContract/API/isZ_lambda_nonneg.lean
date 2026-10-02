@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikContract.Pre
+import Submission.Work.LinnikContract.Defs
+import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 
 namespace Work.LinnikContract.API
 

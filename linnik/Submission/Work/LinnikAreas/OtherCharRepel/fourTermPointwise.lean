@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.OtherCharRepel.Prelude
 import Submission.Work.OtherCharRepel.LFunctionShiftedReEqTsum
 import Submission.Work.LinnikAreas.repelOtherAux.twistedNonneg
 

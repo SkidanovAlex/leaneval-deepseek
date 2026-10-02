@@ -168,7 +168,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
     have h9 : (2:ℝ) ≤ Real.log 10 := by
       rw [Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 10)]
       have he : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-      nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      nlinarith only [Real.exp_one_lt_three, Real.exp_pos 1, he]
     rw [h8] at h7; linarith
   have hLlog : L ≤ Real.log (q:ℝ) := by
     have h1 : Real.exp L ≤ (q:ℝ) := by
@@ -355,12 +355,12 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
           rw [abs_mul, abs_of_nonneg (by positivity)]
           have hk2' : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
           have hγabs : |γ| = |ρ₁.im| := by rw [hγdef]
-          nlinarith [hγabs, him1, hk2']
+          nlinarith only [hγabs, him1, hk2', abs_nonneg γ]
         have hτ10 : |(k:ℝ)*γ| ≤ 10 * (Real.log (q:ℝ)) := by
           rw [abs_mul, abs_of_nonneg (by positivity)]
           have hk4' : (k:ℝ) ≤ 4 := by exact_mod_cast hk4
           have hγabs : |γ| ≤ L := by rw [hγdef]; exact hγL
-          nlinarith [hk4', hγabs, hLlog, hlogq]
+          nlinarith only [mul_le_mul hk4' hγabs (abs_nonneg γ) (by norm_num : (0:ℝ) ≤ 4), hLlog, hlogq]
         have h := hKPh (q := q) hqPh (β := β) (τ := (k:ℝ)*γ)
           (by rw [hβdef]; exact hβre) hτ1 hτ10
         have hpt : ((β:ℂ) + ((k:ℝ)*γ : ℂ)*Complex.I)
@@ -378,7 +378,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
             rw [hptI k, abs_mul, abs_of_nonneg (by positivity)]
             have hk4' : (k:ℝ) ≤ 4 := by exact_mod_cast hk4
             have hγabs : |γ| ≤ L := by rw [hγdef]; exact hγL
-            nlinarith [hk4', hγabs, hLlog, hlogq])
+            nlinarith only [mul_le_mul hk4' hγabs (abs_nonneg γ) (by norm_num : (0:ℝ) ≤ 4), hLlog, hlogq])
           (by rw [hptL k]; rw [hβdef]; exact hslo)
           (hL8_at k (by omega) hk4 hk)
           (by
@@ -388,7 +388,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
                 rw [hptI k, abs_mul, abs_of_nonneg (by positivity)]
                 have hk4' : (k:ℝ) ≤ 4 := by exact_mod_cast hk4
                 have hγabs : |γ| ≤ L := by rw [hγdef]; exact hγL
-                nlinarith [hk4', hγabs, hL]) u hdiv hwin)
+                nlinarith only [mul_le_mul hk4' hγabs (abs_nonneg γ) (by norm_num : (0:ℝ) ≤ 4), hL]) u hdiv hwin)
         rw [← HB94.Ksum_def_aux] at h
         linarith only [h]
     -- the (9.15) combination
@@ -425,7 +425,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
         + 6000 * (f 0 * ((1:ℝ)/8 + 1/1000000))
         + 1250 * (f 0 * ((1:ℝ)/8 + 1/1000000)) < 0 := by
       rw [hf0val]
-      nlinarith [hA_le]
+      linarith only [hA_le]
     exact contrab5 hlogq hcomb hb0 hb1 (hb_self_or_princ 2 (by norm_num) (by norm_num))
       (hb_self_or_princ 3 (by norm_num) (by norm_num))
       (hb_self_or_princ 4 (by norm_num) (by norm_num)) hbr
@@ -571,7 +571,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
       have h5 : (Real.log (q:ℝ)) * (∫ t in (0:ℝ)..(8:ℝ)/3, Real.exp (ls * t) * f t)
             + f 0 * (1/1000000) * Real.log (q:ℝ)
           ≤ (Real.log (q:ℝ)) * ((1710:ℝ)/1000 + f 0 * (1/1000000)) := by
-        nlinarith [hA, hlogq]
+        nlinarith only [mul_le_mul_of_nonneg_left hA hlogq.le]
       linarith only [h, h5]
     have hb1 : Work.ZeroFreeTables.Ksum q f (Real.log (q:ℝ))
           ((β:ℂ) + ((1:ℝ)*γ : ℂ)*Complex.I) χ₁
@@ -643,7 +643,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
             rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ (k:ℝ) by positivity)]
             have hk4' : (k:ℝ) ≤ 4 := by exact_mod_cast hk4
             have hγabs : |γ| ≤ L := by rw [hγdef]; exact hγL
-            nlinarith [hk4', hγabs, hLlog, hlogq]
+            nlinarith only [mul_le_mul hk4' hγabs (abs_nonneg γ) (by norm_num : (0:ℝ) ≤ 4), hLlog, hlogq]
           linarith [h3, hLlog, hlogq])
         (by rw [hptL k]; exact hβslo)
         (h16raw q hq16 (χ₁^k) (hpow_ne k hk2 hk4))
@@ -670,7 +670,7 @@ theorem RectC_HB95 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ 
               rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ (k:ℝ) by positivity)]
               have hk4' : (k:ℝ) ≤ 4 := by exact_mod_cast hk4
               have hγabs : |γ| ≤ L := by rw [hγdef]; exact hγL
-              nlinarith [hk4', hγabs, hLlog, hlogq]
+              nlinarith only [mul_le_mul hk4' hγabs (abs_nonneg γ) (by norm_num : (0:ℝ) ≤ 4), hLlog, hlogq]
             linarith [h2, h3, hδ16lt1, hL]
           have hlamu := hsecond q hqsec χ₁ ρ₁ hR hsmall him1 (χ₁^k) u (hpow_ne k hk2 hk4) hzm
             (hpow_ne_self k hk2 hk4) (hpow_ne_inv k hk2 hk4) huim

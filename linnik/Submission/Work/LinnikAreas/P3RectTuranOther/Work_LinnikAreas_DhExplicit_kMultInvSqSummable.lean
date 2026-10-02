@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
 import Submission.Commons.NumberTheory.Linnik.zeroSum_invSq_bound
 import Submission.Work.LinnikAreas.xiC_ballCount_order
 import Submission.Work.LinnikAreas.xiCZeroInvSqTailBound

@@ -102,7 +102,7 @@ theorem combination_diag {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q)
   have hlogq_pos : 0 < Real.log q := Real.log_pos (by exact_mod_cast (show 1 < q by omega))
   have hσ : 1 < (1 + a / Real.log q : ℝ) := by
     have : 0 < a / Real.log q := div_pos ha hlogq_pos
-    linarith
+    linarith only [this]
   have hlogq_inv : 0 ≤ (Real.log q)⁻¹ := le_of_lt (inv_pos.mpr hlogq_pos)
   have key :
       (K^2 + K + 1/2) * Work.ZeroFreeTables.SigmaP3L q (Real.log q) 1
@@ -140,7 +140,7 @@ absorb.  The three lemmas below supply exactly that: a growth bound for `Re P₃
 private lemma cnorm_ofReal (r : ℝ) : ‖(r : ℂ)‖ = |r| := by
   have h : ‖(r : ℂ)‖ ^ 2 = r ^ 2 := by
     rw [← Complex.normSq_eq_norm_sq, Complex.normSq_ofReal]; ring
-  nlinarith [norm_nonneg (r : ℂ), abs_nonneg r, sq_abs r]
+  nlinarith only [norm_nonneg (r : ℂ), abs_nonneg r, sq_abs r, h]
 
 /-- `Re P₃(w) ≤ P₃^ℝ(‖w‖)`: the real part of HB's `P₃` is dominated by the polynomial
 `P₃^ℝ` of the modulus (all coefficients are non-negative). -/
@@ -154,26 +154,26 @@ theorem P3_re_le_P3R_norm (w : ℂ) : (P3 w).re ≤ P3R ‖w‖ := by
       rw [norm_mul, norm_pow, show ‖(2/3 : ℂ)‖ = (2/3 : ℝ) by norm_num]
     rw [hC] at hA
     rw [norm_pow] at hB
-    linarith
+    linarith only [hA, hB]
   simp only [P3R]
-  linarith
+  linarith only [h0, h2]
 
 /-- The §9 slack is at least a quarter of `Kond K + 1`:
 `(Kond K + 1)/4 ≤ K²+K+1 − K·Kond K`. -/
 theorem slack_ge_quarter {K : ℝ} (hK : 0 < K) :
     (Kond K + 1)/4 ≤ K^2 + K + 1 - K * Kond K := by
   have hle' : Kond K ≤ 4*K := min_le_right _ _
-  have h4 : (Kond K + 1)/4 ≤ K + 1/4 := by linarith
+  have h4 : (Kond K + 1)/4 ≤ K + 1/4 := by linarith only [hle']
   by_cases h : (1/2 : ℝ) ≤ K
   · have hle : Kond K ≤ K + 3/(4*K) := min_le_left _ _
     have hm : K * Kond K ≤ K * (K + 3/(4*K)) :=
       mul_le_mul_of_nonneg_left hle (le_of_lt hK)
     have h2 : K * (K + 3/(4*K)) = K^2 + 3/4 := by field_simp
-    linarith [h4, hm, h2]
+    linarith only [h4, hm, h2, hle']
   · have hlt : K < 1/2 := lt_of_not_ge h
     have hm : K * Kond K ≤ K * (4*K) :=
       mul_le_mul_of_nonneg_left hle' (le_of_lt hK)
-    nlinarith [h4, hm, hlt, hK]
+    nlinarith only [h4, hm, hlt, hK, hle', h]
 
 /-- **The principal-character contribution at the diagonal points is absorbed by the slack.**
 With `((a+λ)/a)³ ≤ Kond K+1`, the pole term at any of the points `s = 1 + a/L + iθ` satisfies
@@ -183,7 +183,7 @@ theorem principal_term_le_slack {a lam K θ : ℝ} (ha : 0 < a) (hlam : 0 ≤ la
     (1/4 : ℝ) * (P3 (((a+lam) : ℂ) / ((a : ℂ) + (θ : ℂ) * Complex.I))).re
       ≤ (8/3) * (K^2 + K + 1 - K * Kond K) := by
   set x : ℝ := (a + lam)/a with hx
-  have hx1 : 1 ≤ x := by rw [hx]; rw [le_div_iff₀ ha]; linarith
+  have hx1 : 1 ≤ x := by rw [hx]; rw [le_div_iff₀ ha]; linarith only [hlam]
   set z : ℂ := ((a+lam) : ℂ) / ((a : ℂ) + (θ : ℂ) * Complex.I) with hz
   have hden : (a : ℝ) ≤ ‖((a : ℂ) + (θ : ℂ) * Complex.I)‖ := by
     have h := Complex.abs_re_le_norm (((a : ℂ) + (θ : ℂ) * Complex.I))
@@ -192,14 +192,14 @@ theorem principal_term_le_slack {a lam K θ : ℝ} (ha : 0 < a) (hlam : 0 ≤ la
     exact le_trans (le_abs_self a) h
   have hznorm : ‖z‖ ≤ x := by
     rw [hz, Complex.norm_div, ← Complex.ofReal_add, cnorm_ofReal, hx]
-    rw [abs_of_nonneg (by linarith : (0:ℝ) ≤ a + lam)]
-    exact div_le_div_of_nonneg_left (by linarith) ha hden
+    rw [abs_of_nonneg (by linarith only [ha, hlam] : (0:ℝ) ≤ a + lam)]
+    exact div_le_div_of_nonneg_left (by linarith only [ha, hlam]) ha hden
   have h1 : (P3 z).re ≤ P3R ‖z‖ := P3_re_le_P3R_norm z
   have h2 : P3R ‖z‖ ≤ P3R x := P3R_mono (norm_nonneg _) hznorm
   have h3 : P3R x ≤ (8/3) * x^3 := P3R_le_cube hx1
   have h4 : x^3 ≤ Kond K + 1 := by rw [hx]; exact hx3
   have h5 := slack_ge_quarter hK
-  linarith [h1, h2, h3, h4, h5]
+  linarith only [h1, h2, h3, h4, h5, hx3]
 
 
 /-- **The diagonal assembly (generic case).**  From the pointwise diagonal inequality
@@ -246,7 +246,7 @@ theorem ineq913_diag_of_pointwise
   have hγ : |ρ₁.im| ≤ 1 := Work.ZeroFreeTables.isZ_im_le_one hZ
   have hlam : 0 ≤ lam := by
     rw [hlamdef]; exact Work.LinnikContract.API.isZ_lambda_nonneg hq hZ
-  have hα : 0 < a + lam := by linarith
+  have hα : 0 < a + lam := by linarith only [ha, hlam]
   have hcomb : 0 ≤ (K^2 + K + 1/2) * S0 + (K^2 + 2*K + 3/4) * S1
       + (K + 1/2) * S2 + (1/4) * S3 := by
     rw [hS0def, hS1def, hS2def, hS3def]
@@ -258,20 +258,20 @@ theorem ineq913_diag_of_pointwise
       ≤ (K^2 + 2*K + 3/4) * (-(2 * P3R 1) + (a + lam) * e₁) :=
     mul_le_mul_of_nonneg_left hS1 (by positivity)
   have h3 : (K + 1/2) * S2 ≤ (K + 1/2) * ((a + lam) * e₂) :=
-    mul_le_mul_of_nonneg_left hS2 (by linarith)
+    mul_le_mul_of_nonneg_left hS2 (by linarith only [hK])
   have h4 : (1/4 : ℝ) * S3 ≤ (1/4 : ℝ) * ((a + lam) * e₃) :=
     mul_le_mul_of_nonneg_left hS3 (by norm_num)
   have hkey : 0 ≤ (K^2 + K + 1/2) * (P3R ((a + lam)/a) + (a + lam) * e₀)
       + (K^2 + 2*K + 3/4) * (-(2 * P3R 1) + (a + lam) * e₁)
       + (K + 1/2) * ((a + lam) * e₂) + (1/4 : ℝ) * ((a + lam) * e₃) := by
-    linarith [hcomb, h1, h2, h3, h4]
+    linarith only [hcomb, h1, h2, h3, h4, hS3]
   have heα : (a + lam) * ((K^2 + K + 1/2) * e₀ + (K^2 + 2*K + 3/4) * e₁
         + (K + 1/2) * e₂ + (1/4) * e₃)
       ≤ (a + lam) * (c * (K^2 + 3*K + 3/2)) :=
     mul_le_mul_of_nonneg_left he hα.le
   have hD : 0 ≤ (K^2 + K + 1/2) * P3R ((a + lam)/a) - (2*K^2 + 4*K + 3/2) * P3R 1
       + (a + lam) * c * (K^2 + 3*K + 3/2) := by
-    nlinarith [hkey, heα]
+    linarith only [hkey, heα, hS3, hcomb, h1, h2, h3]
   have hx3 : ((a + lam)/a)^3 ≤ Kond K + 1 := by
     rw [hlamdef]; exact cond913_cube_le ha hlam hcond
   exact ineq913_diag_of_derived ha hK hε hlam hx3 hc hD

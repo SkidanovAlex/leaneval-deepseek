@@ -48,8 +48,8 @@ private lemma integral_norm_cpow_sub (k : ℕ) (hk : 1 ≤ k) (s : ℂ) (hs : 0 
         intro hx
         have hx' : (0 : ℝ) ∈ Set.Icc (k : ℝ) ((k + 1 : ℕ) : ℝ) := by
           simpa [Set.uIcc_of_le hkle] using hx
-        linarith [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k)]
-      have hne : -s.re - 1 ≠ (-1 : ℝ) := by linarith
+        linarith only [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k), hx', hk]
+      have hne : -s.re - 1 ≠ (-1 : ℝ) := by linarith only [hs]
       have hint := integral_rpow (r := -s.re - 1) (a := (k : ℝ)) (b := ((k + 1 : ℕ) : ℝ))
         (Or.inr ⟨hne, hnot0⟩)
       rw [hint]
@@ -68,7 +68,7 @@ private lemma cpow_sub_eq_smul_integral (k : ℕ) (hk : 1 ≤ k) (s : ℂ) (hs :
     intro hx
     have hx' : (0 : ℝ) ∈ Set.Icc (k : ℝ) ((k + 1 : ℕ) : ℝ) := by
       simpa [Set.uIcc_of_le hkle] using hx
-    linarith [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k)]
+    linarith only [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k), hx', hk]
   have hne : -s - 1 ≠ (-1 : ℂ) := by
     intro h
     apply ne_of_gt hs
@@ -146,20 +146,20 @@ private lemma range_eq_insert_Ico (X : ℕ) (hX : 1 ≤ X) :
 private lemma sum_rpow_neg_le (X : ℕ) (hX : 1 ≤ X) {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) :
     (∑ n ∈ Finset.Icc 1 X, (n : ℝ) ^ (-σ)) ≤ (1 + (1 - σ)⁻¹) * (X : ℝ) ^ (1 - σ) := by
   let f : ℝ → ℝ := fun x => x ^ (-σ)
-  have hanti0 : AntitoneOn f (Set.Ioi (0 : ℝ)) := antitoneOn_rpow_neg (by linarith : -σ ≤ 0)
+  have hanti0 : AntitoneOn f (Set.Ioi (0 : ℝ)) := antitoneOn_rpow_neg (by linarith only [hσ0] : -σ ≤ 0)
   have hanti : AntitoneOn f (Set.Icc ((1 : ℕ) : ℝ) (X : ℝ)) := hanti0.mono (by
     intro x hx
     have h1 : (1 : ℝ) ≤ x := by exact_mod_cast (Set.mem_Icc.mp hx).1
     exact Set.mem_Ioi.mpr (lt_of_lt_of_le zero_lt_one h1))
   have hXle : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX
   have h_int : (∫ x : ℝ in (((1 : ℕ) : ℝ))..(X : ℝ), x ^ (-σ)) = ((X : ℝ) ^ (1 - σ) - 1) / (1 - σ) := by
-    have hne : -σ ≠ (-1 : ℝ) := by linarith
+    have hne : -σ ≠ (-1 : ℝ) := by linarith only [hσ1]
     have hnot0 : 0 ∉ Set.uIcc (((1 : ℕ) : ℝ)) (X : ℝ) := by
       intro hx
       have hx' : (0 : ℝ) ∈ Set.Icc (1 : ℝ) (X : ℝ) := by
         simpa [Set.uIcc_of_le hXle] using hx
       have h01 : (1 : ℝ) ≤ (0 : ℝ) := (Set.mem_Icc.mp hx').1
-      linarith
+      linarith only [hσ0, hσ1, h01]
     have hint := integral_rpow (r := -σ) (a := (((1 : ℕ) : ℝ))) (b := (X : ℝ)) (Or.inr ⟨hne, hnot0⟩)
     rw [hint]
     have hD : -σ + 1 = 1 - σ := by ring
@@ -170,13 +170,13 @@ private lemma sum_rpow_neg_le (X : ℕ) (hX : 1 ≤ X) {σ : ℝ} (hσ0 : 0 < σ
     have hpos : 0 < 1 - σ := sub_pos.mpr hσ1
     calc
       ((X : ℝ) ^ (1 - σ) - 1) / (1 - σ) ≤ (X : ℝ) ^ (1 - σ) / (1 - σ) := by
-        exact div_le_div_of_nonneg_right (by linarith) (le_of_lt hpos)
+        exact div_le_div_of_nonneg_right (by linarith only [hσ0, hσ1]) (le_of_lt hpos)
       _ = (1 - σ)⁻¹ * (X : ℝ) ^ (1 - σ) := by
             field_simp [ne_of_gt hpos]
   have hint_b : (∑ i ∈ Finset.Ico 1 X, f ((i + 1 : ℕ) : ℝ)) ≤ ∫ x : ℝ in (((1 : ℕ) : ℝ))..(X : ℝ), f x := by
     exact AntitoneOn.sum_le_integral_Ico (f := f) (a := 1) (b := X) hX hanti
   have hge1 : (1 : ℝ) ≤ (X : ℝ) ^ (1 - σ) := by
-    exact Real.one_le_rpow hXle (by linarith : 0 ≤ 1 - σ)
+    exact Real.one_le_rpow hXle (by linarith only [hσ1] : 0 ≤ 1 - σ)
   calc
     (∑ n ∈ Finset.Icc 1 X, (n : ℝ) ^ (-σ))
         = ∑ m ∈ Finset.range X, f ((m + 1 : ℕ) : ℝ) := by
@@ -194,7 +194,7 @@ private lemma sum_rpow_neg_le (X : ℕ) (hX : 1 ≤ X) {σ : ℝ} (hσ0 : 0 < σ
               dsimp [f]
               simp
             rw [hf1]
-            linarith
+            linarith only [hge1]
 
 /-- Partial sums `∑_{1 ≤ m ≤ k} χ(m)`. -/
 private noncomputable def partSum (χ : DirichletCharacter ℂ N) : ℕ → ℂ :=
@@ -247,7 +247,7 @@ private lemma hasSum_telescope_rpow (X : ℕ) (hX : 1 ≤ X) {β : ℝ} (hβ : 0
     have hbase1 : (0 : ℝ) < ((X + m : ℕ) : ℝ) := by exact_mod_cast (by omega)
     have hle : ((X + m : ℕ) : ℝ) ≤ ((X + m + 1 : ℕ) : ℝ) := by exact_mod_cast (by omega)
     have hpow : (((X + m + 1 : ℕ) : ℝ) ^ (-β)) ≤ (((X + m : ℕ) : ℝ) ^ (-β)) := by
-      exact Real.rpow_le_rpow_of_nonpos hbase1 hle (by linarith : -β ≤ 0)
+      exact Real.rpow_le_rpow_of_nonpos hbase1 hle (by linarith only [hβ] : -β ≤ 0)
     exact sub_nonneg.mpr hpow
   have hto : Tendsto (fun N : ℕ => ((X + N : ℕ) : ℝ)) atTop atTop := by
     exact tendsto_atTop_mono (f := fun N : ℕ => (N : ℝ)) (g := fun N : ℕ => ((X + N : ℕ) : ℝ))
@@ -256,7 +256,7 @@ private lemma hasSum_telescope_rpow (X : ℕ) (hX : 1 ≤ X) {β : ℝ} (hβ : 0
     have hmain : Tendsto (fun t : ℝ => (t ^ β)⁻¹) atTop (𝓝 0) := tendsto_inv_atTop_zero.comp (tendsto_rpow_atTop hβ)
     refine hmain.congr' ?_
     filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
-    rw [Real.rpow_neg (by linarith : 0 ≤ t) β]
+    rw [Real.rpow_neg (by linarith only [ht] : 0 ≤ t) β]
   have hN0 : Tendsto (fun N : ℕ => ((X + N : ℕ) : ℝ) ^ (-β)) atTop (𝓝 0) := hdec.comp hto
   have hmain_t : Tendsto (fun N : ℕ => (X : ℝ) ^ (-β) - ((X + N : ℕ) : ℝ) ^ (-β)) atTop (𝓝 ((X : ℝ) ^ (-β))) := by
     simpa using (tendsto_const_nhds.sub hN0 : Tendsto (fun N : ℕ => (X : ℝ) ^ (-β) - ((X + N : ℕ) : ℝ) ^ (-β)) atTop (𝓝 ((X : ℝ) ^ (-β) - 0)))
@@ -453,46 +453,46 @@ private lemma abelCont_bound (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (s
   have hsp : (0 : ℝ) ≤ ‖s‖ := norm_nonneg s
   have h1 : (1 : ℝ) ≤ 1 + ‖s‖ / σ := by
     have hdiv : 0 ≤ ‖s‖ / σ := div_nonneg hsp (le_of_lt hσ0)
-    linarith
+    linarith only [hdiv]
   have h2 : (2 : ℝ) ≤ A := by
     dsimp [A]
-    have hN2 : 2 ≤ 2 * (N : ℝ) := by nlinarith
+    have hN2 : 2 ≤ 2 * (N : ℝ) := by linarith only [hN1]
     calc
-      (2 : ℝ) ≤ 2 * (N : ℝ) * 1 := by nlinarith
+      (2 : ℝ) ≤ 2 * (N : ℝ) * 1 := by linarith only [hN1]
       _ ≤ 2 * (N : ℝ) * (1 + ‖s‖ / σ) := mul_le_mul_of_nonneg_left h1 (by positivity)
-  have hA1 : 1 ≤ A := by linarith
+  have hA1 : 1 ≤ A := by linarith only [hs, hs1, h2]
   have hAX : A ≤ (X : ℝ) := by
     dsimp [X]
     exact Nat.le_ceil A
   have hX1 : 1 ≤ X := by
     dsimp [X]
-    have : (1 : ℝ) ≤ (X : ℝ) := by linarith
+    have : (1 : ℝ) ≤ (X : ℝ) := by linarith only [hs, hs1, h2, hAX]
     exact_mod_cast this
   have hXle : (X : ℝ) ≤ 2 * A := by
     dsimp [X]
-    have hceil : (Nat.ceil A : ℝ) < A + 1 := Nat.ceil_lt_add_one (by linarith : 0 ≤ A)
-    linarith
+    have hceil : (Nat.ceil A : ℝ) < A + 1 := Nat.ceil_lt_add_one (by linarith only [hs, hs1, h2] : 0 ≤ A)
+    linarith only [hs, hs1, h2, hceil]
   have hrel : 1 + ‖s‖ / σ ≤ (1 + ‖s‖) * (2 / σ) := by
     have h12 : 1 + 1 / σ ≤ 2 / σ := by
       have hmain : (1 + 1 / σ) * σ ≤ (2 / σ) * σ := by
         field_simp [hσne]
         have hσm : σ ≤ 1 := le_of_lt hσ1
-        nlinarith
+        linarith only [hs1]
       have hσp : 0 < σ := hσ0
       exact (le_of_mul_le_mul_right hmain hσp)
     have hstep1 : 1 + ‖s‖ / σ ≤ (1 + ‖s‖) * (1 + 1 / σ) := by
       have hmain : (1 + ‖s‖ / σ) * σ ≤ (1 + ‖s‖) * (1 + 1 / σ) * σ := by
         field_simp [hσne]
-        nlinarith [hsp]
+        nlinarith only [hsp, hs1, hs]
       exact (le_of_mul_le_mul_right hmain hσ0)
     calc
       1 + ‖s‖ / σ ≤ (1 + ‖s‖) * (1 + 1 / σ) := hstep1
-      _ ≤ (1 + ‖s‖) * (2 / σ) := mul_le_mul_of_nonneg_left h12 (by linarith [hsp])
+      _ ≤ (1 + ‖s‖) * (2 / σ) := mul_le_mul_of_nonneg_left h12 (by linarith only [hsp, hs, hs1])
   have hA2 : 2 * A ≤ 8 * (N : ℝ) * (1 + ‖s‖) / σ := by
     dsimp [A]
     have hmain' : 2 * (2 * (N : ℝ) * (1 + ‖s‖ / σ)) * σ ≤ (8 * (N : ℝ) * (1 + ‖s‖) / σ) * σ := by
       field_simp [hσne]
-      nlinarith [hσ1, hsp]
+      linarith only [hσ1, hsp, hs, hs1]
     exact (le_of_mul_le_mul_right hmain' hσ0)
   have hX2 : (X : ℝ) ≤ 8 * (N : ℝ) * (1 + ‖s‖) / σ := le_trans hXle hA2
   have hpow_apply : ((8 * (N : ℝ) * (1 + ‖s‖)) / σ) ^ (1 - σ)
@@ -512,21 +512,21 @@ private lemma abelCont_bound (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (s
               have h1σ : 1 ≤ 1 / σ := by
                 have hm : (1 : ℝ) * σ ≤ (1 / σ) * σ := by
                   field_simp [hσne]
-                  linarith
+                  linarith only [hs1]
                 exact (le_of_mul_le_mul_right hm hσ0)
               have h8d : 8 / σ = 8 * (1 / σ) := by field_simp [hσne]
               rw [h8d]
               have hposinv : 0 ≤ 1 / σ := by positivity
-              nlinarith
+              linarith only [hs, hs1, h1σ]
             gcongr
-            exact Real.rpow_le_self_of_one_le hge (by linarith : 1 - σ ≤ 1)
+            exact Real.rpow_le_self_of_one_le hge (by linarith only [hs] : 1 - σ ≤ 1)
       _ = (8 / σ) * (N : ℝ) ^ (1 - σ) * (1 + ‖s‖) ^ (1 - σ) := rfl
   have hXpow : (X : ℝ) ^ (1 - σ) ≤ (8 / σ) * (N : ℝ) ^ (1 - σ) * (1 + ‖s‖) ^ (1 - σ) := by
     have hmain : (X : ℝ) ^ (1 - σ) ≤ ((8 * (N : ℝ) * (1 + ‖s‖)) / σ) ^ (1 - σ) := by
       have hX0 : 0 ≤ (X : ℝ) := by positivity
       have hBase : (X : ℝ) ≤ (8 * (N : ℝ) * (1 + ‖s‖)) / σ := by
         simpa [div_eq_mul_inv, mul_assoc] using hX2
-      exact Real.rpow_le_rpow hX0 hBase (by linarith : 0 ≤ 1 - σ)
+      exact Real.rpow_le_rpow hX0 hBase (by linarith only [hs1] : 0 ≤ 1 - σ)
     exact hmain.trans hpow_apply
   have hhead := abelTerm_head_norm_bound χ hχ s hs hs1 X hX1
   have htail := abelTerm_tail_bound χ hχ s hs X hX1
@@ -545,8 +545,8 @@ private lemma abelCont_bound (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (s
                 dsimp [A]
                 have hN : 0 ≤ 2 * (N : ℝ) := by positivity
                 have hA : 1 + ‖s‖ / σ ≤ 1 + ‖s‖ / σ := le_rfl
-                nlinarith
-              linarith
+                linarith only []
+              linarith only [hAX]
             have hXpos : (0 : ℝ) < (X : ℝ) := by exact_mod_cast (by omega : 0 < X)
             have hcanc : (((1 + (1 - σ)⁻¹) * (X : ℝ) ^ (1 - σ)) + 2 * (N : ℝ) * (X : ℝ) ^ (-σ))
                   + (2 * (N : ℝ)) * (‖s‖ / σ) * (X : ℝ) ^ (-σ)
@@ -566,7 +566,7 @@ private lemma abelCont_bound (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (s
                         rw [Real.rpow_one]
                       rw [h]
                 _ ≤ (1 : ℝ) * (X : ℝ) ^ (1 - σ) := by rw [one_mul]
-            linarith
+            linarith only [htailb]
   calc
     ‖abelCont χ s‖ ≤ (2 + (1 - σ)⁻¹) * (X : ℝ) ^ (1 - σ) := hcomb
     _ ≤ (2 + (1 - σ)⁻¹) * ((8 / σ) * (N : ℝ) ^ (1 - σ) * (1 + ‖s‖) ^ (1 - σ)) := by
@@ -609,8 +609,8 @@ private lemma integral_real_rpow_sub (k : ℕ) (hk : 1 ≤ k) (σ : ℝ) (hσ : 
     intro hx
     have hx' : (0 : ℝ) ∈ Set.Icc (k : ℝ) ((k + 1 : ℕ) : ℝ) := by
       simpa [Set.uIcc_of_le hkle] using hx
-    linarith [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k)]
-  have hne : -σ - 1 ≠ (-1 : ℝ) := by linarith
+    linarith only [hx'.1, show (0 : ℝ) < (k : ℝ) by exact_mod_cast (by omega : 0 < k), hx', hk]
+  have hne : -σ - 1 ≠ (-1 : ℝ) := by linarith only [hσ]
   have hint := integral_rpow (r := -σ - 1) (a := (k : ℝ)) (b := ((k + 1 : ℕ) : ℝ))
     (Or.inr ⟨hne, hnot0⟩)
   rw [hint]
@@ -627,7 +627,7 @@ private lemma interval_rpow_bound (k : ℕ) (hk : 1 ≤ k) (σ : ℝ) (hσ : 0 <
   have hkle : (k : ℝ) ≤ ((k + 1 : ℕ) : ℝ) := by exact_mod_cast (by omega)
   have hanti0 : AntitoneOn f (Set.Ioi (0 : ℝ)) := by
     dsimp [f]
-    exact Real.antitoneOn_rpow_Ioi_of_exponent_nonpos (r := -σ - 1) (by linarith)
+    exact Real.antitoneOn_rpow_Ioi_of_exponent_nonpos (r := -σ - 1) (by linarith only [hσ])
   have hanti : AntitoneOn f (Set.uIcc (k : ℝ) ((k + 1 : ℕ) : ℝ)) := by
     rw [Set.uIcc_of_le hkle]
     exact hanti0.mono (by
@@ -638,7 +638,7 @@ private lemma interval_rpow_bound (k : ℕ) (hk : 1 ≤ k) (σ : ℝ) (hσ : 0 <
     intro x hx
     dsimp [f]
     have hkx : (k : ℝ) ≤ x := (Set.mem_Icc.mp hx).1
-    exact Real.rpow_le_rpow_of_nonpos hk0 hkx (by linarith : -σ - 1 ≤ 0)
+    exact Real.rpow_le_rpow_of_nonpos hk0 hkx (by linarith only [hσ] : -σ - 1 ≤ 0)
   let g : ℝ → ℝ := fun _ => f (k : ℝ)
   have hintg : IntervalIntegrable g volume (k : ℝ) ((k + 1 : ℕ) : ℝ) := by
     dsimp [g]
@@ -693,16 +693,16 @@ private lemma abelTerm_bound_on_ball (χ : DirichletCharacter ℂ N) (hχ : χ �
       exact (abs_le.mp h).1
     have h3 : (z - z0).re = z.re - z0.re := by simp
     rw [h3] at hre
-    have hlow : z0.re - ‖z - z0‖ ≤ z.re := by linarith
+    have hlow : z0.re - ‖z - z0‖ ≤ z.re := by linarith only [hre]
     calc
-      ρ ≤ z0.re - ρ := by linarith
-      _ ≤ z0.re - ‖z - z0‖ := by linarith
+      ρ ≤ z0.re - ρ := by linarith only [hρ2]
+      _ ≤ z0.re - ‖z - z0‖ := by linarith only [hdz]
       _ ≤ z.re := hlow
   have hznorm : ‖z‖ ≤ ‖z0‖ + ρ := by
     calc
       ‖z‖ = ‖z0 + (z - z0)‖ := congrArg norm (by ring)
       _ ≤ ‖z0‖ + ‖z - z0‖ := norm_add_le _ _
-      _ ≤ ‖z0‖ + ρ := by linarith
+      _ ≤ ‖z0‖ + ρ := by linarith only [hdz]
   by_cases hk : k = 0
   · subst k
     rw [abelTerm_zero]
@@ -713,7 +713,7 @@ private lemma abelTerm_bound_on_ball (χ : DirichletCharacter ℂ N) (hχ : χ �
     have hk0 : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (by omega : 0 < k)
     have hkbase : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk1
     have hpowle : (k : ℝ) ^ (-z.re - 1) ≤ (k : ℝ) ^ (-ρ - 1) := by
-      have hexp : -z.re - 1 ≤ -ρ - 1 := by linarith
+      have hexp : -z.re - 1 ≤ -ρ - 1 := by linarith only [hzre]
       exact Real.rpow_le_rpow_of_exponent_le hkbase hexp
     have hzpos : 0 < z.re := lt_of_lt_of_le hρ0 hzre
     have hb := norm_cpow_sub_le_pow k hk1 z hzpos
@@ -751,9 +751,9 @@ private lemma abelCont_differentiableOn_ball (χ : DirichletCharacter ℂ N) (h�
       funext k
       simp [u]
     rw [hfun]
-    have hp : -ρ - 1 < -1 := by linarith
+    have hp : -ρ - 1 < -1 := by linarith only [hρ0]
     have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-ρ - 1)) := (Real.summable_nat_rpow).mpr hp
-    have hshift : Summable (fun k : ℕ => ((k + 1 : ℕ) : ℝ) ^ (-ρ - 1)) := (summable_nat_add_iff 1).2 hbase
+    have hshift : Summable (fun k : ℕ => ((k + 1 : ℕ) : ℝ) ^ (-ρ - 1)) := (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-ρ - 1)) 1).2 hbase
     exact hshift.mul_left ((2 * (N : ℝ)) * (‖z0‖ + ρ))
   have hu : Summable u := (summable_nat_add_iff 1).1 hu_add
   refine differentiableOn_tsum_of_summable_norm hu ?_ ?_ ?_
@@ -796,11 +796,11 @@ private lemma abelCont_analyticOn_re_pos (χ : DirichletCharacter ℂ N) (hχ : 
 private lemma LFunction_eq_abelCont_of_one_lt_re (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) {s : ℂ}
     (hs : 1 < s.re) : LFunction χ s = abelCont χ s := by
   let f : ℕ → ℂ := fun n => (χ (n : ZMod N) : ℂ)
-  have hs0 : 0 < s.re := by linarith
+  have hs0 : 0 < s.re := by linarith only [hs]
   have hterm_sum : Summable (fun n : ℕ => LSeries.term f s n) := by
     refine Summable.of_norm_bounded_eventually (f := fun n : ℕ => LSeries.term f s n)
       (g := fun n : ℕ => (n : ℝ) ^ (-s.re)) ?_ ?_
-    · have hp : -s.re < -1 := by linarith
+    · have hp : -s.re < -1 := by linarith only [hs]
       exact (Real.summable_nat_rpow).mpr hp
     · filter_upwards [eventually_cofinite_ne (0 : ℕ)] with n hn
       rw [LSeries.norm_term_eq]
@@ -828,10 +828,10 @@ private lemma LFunction_eq_abelCont_of_one_lt_re (χ : DirichletCharacter ℂ N)
   have hNpow0 : Tendsto (fun M : ℕ => ((M : ℕ) : ℝ) ^ (-s.re)) atTop (𝓝 0) := by
     have hto : Tendsto (fun M : ℕ => ((M : ℕ) : ℝ)) atTop atTop := tendsto_natCast_atTop_atTop
     have hdec : Tendsto (fun t : ℝ => t ^ (-s.re)) atTop (𝓝 0) := by
-      have hmain : Tendsto (fun t : ℝ => (t ^ s.re)⁻¹) atTop (𝓝 0) := tendsto_inv_atTop_zero.comp (tendsto_rpow_atTop (by linarith : 0 < s.re))
+      have hmain : Tendsto (fun t : ℝ => (t ^ s.re)⁻¹) atTop (𝓝 0) := tendsto_inv_atTop_zero.comp (tendsto_rpow_atTop (by linarith only [hs] : 0 < s.re))
       refine hmain.congr' ?_
       filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
-      rw [Real.rpow_neg (by linarith : 0 ≤ t) s.re]
+      rw [Real.rpow_neg (by linarith only [ht] : 0 ≤ t) s.re]
     exact hdec.comp hto
   have hc_bound : ∀ M : ℕ, ‖partSum χ M * (M : ℂ) ^ (-s)‖ ≤ (2 * (N : ℝ)) * ((M : ℕ) : ℝ) ^ (-s.re) := by
     intro M
@@ -948,13 +948,13 @@ private lemma LFunction_eq_abelCont_on_re_pos (χ : DirichletCharacter ℂ N) (h
     change 0 < (a • x + b • y).re
     rw [hre]
     by_cases ha0 : a = 0
-    · have hb1 : b = 1 := by linarith
+    · have hb1 : b = 1 := by linarith only [hab, ha0, ha]
       rw [ha0, hb1]
       simpa using hy0
     · have hb1 : 0 < a := lt_of_le_of_ne ha (by intro h; exact ha0 h.symm)
       have h : 0 ≤ b * y.re := mul_nonneg hb (le_of_lt hy0)
       have h2 : 0 < a * x.re := mul_pos hb1 hx0
-      linarith
+      linarith only [h, h2]
   have hz2 : (2 : ℂ) ∈ U := by dsimp [U]; norm_num
   refine AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq hL hA hpc hz2 ?_
   filter_upwards [(show {z : ℂ | 1 < z.re} ∈ 𝓝 (2 : ℂ) from

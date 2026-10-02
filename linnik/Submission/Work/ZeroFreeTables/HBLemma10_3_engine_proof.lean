@@ -423,19 +423,19 @@ open Work.LinnikContract
 /-- `p1014` is monotone in `ε` (for `δ ≥ -3`, so that `3 + δ ≥ 0`). -/
 theorem p1014_mono_eps {δ : ℝ} (hδ : -3 ≤ δ) {ε ε' : ℝ} (hε : ε ≤ ε') :
     p1014 δ ε ≤ p1014 δ ε' := by
-  have h3 : (0:ℝ) ≤ 3 + δ := by linarith
+  have h3 : (0:ℝ) ≤ 3 + δ := by linarith only [hδ]
   unfold p1014
-  linarith [mul_le_mul_of_nonneg_left hε h3]
+  linarith only [mul_le_mul_of_nonneg_left hε h3, hε, h3]
 
 /-- **The certificate, monotone form**: `p1014 δ ε < 0` for `δ ∈ [0,1]` and `ε ≤ 1/1000`. -/
 theorem p1014_neg_of_le_cert {δ ε : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) (hε : ε ≤ 1/1000) :
     p1014 δ ε < 0 :=
-  lt_of_le_of_lt (p1014_mono_eps (by linarith) hε) (Lemma10_3Cert δ hδ0 hδ1)
+  lt_of_le_of_lt (p1014_mono_eps (by linarith only [hδ0]) hε) (Lemma10_3Cert δ hδ0 hδ1)
 
 /-- The same at `ε = 0` (from `Lemma10_3CertZero`). -/
 theorem p1014_neg_of_nonpos {δ ε : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) (hε : ε ≤ 0) :
     p1014 δ ε < 0 :=
-  lt_of_le_of_lt (p1014_mono_eps (by linarith) hε) (Lemma10_3CertZero δ hδ0 hδ1)
+  lt_of_le_of_lt (p1014_mono_eps (by linarith only [hδ0]) hε) (Lemma10_3CertZero δ hδ0 hδ1)
 
 /-! ## 2. Elementary consequences of the setting -/
 
@@ -449,7 +449,7 @@ theorem lamOf_ρ₁_le_ρ₃ {q : ℕ} [NeZero q] {χ₁ χ₃ : DirichletCharac
 theorem lamOf_nonneg_of_re_le_one {q : ℕ} {ρ : ℂ} (hre : ρ.re ≤ 1) :
     0 ≤ lamOf q ρ := by
   unfold lamOf
-  have : (0:ℝ) ≤ 1 - ρ.re := by linarith
+  have : (0:ℝ) ≤ 1 - ρ.re := by linarith only [hre]
   exact mul_nonneg this (Real.log_natCast_nonneg q)
 
 /-! ## 3. HB (10.1)–(10.3): the three-character combination
@@ -475,15 +475,15 @@ theorem three_char_nonneg (z₁ z₂ z₃ : ℂ) (h₁ : ‖z₁‖ ≤ 1) (h₂
   have e₁ : 0 ≤ 1 + z₁.re := by
     have h := Complex.abs_re_le_norm z₁
     rw [abs_le] at h
-    linarith [h.1, h₁]
+    linarith only [h.1, h₁, h]
   have e₂ : 0 ≤ 1 + z₂.re := by
     have h := Complex.abs_re_le_norm z₂
     rw [abs_le] at h
-    linarith [h.1, h₂]
+    linarith only [h.1, h₂, h]
   have e₃ : 0 ≤ 1 + z₃.re := by
     have h := Complex.abs_re_le_norm z₃
     rw [abs_le] at h
-    linarith [h.1, h₃]
+    linarith only [h.1, h₃, h]
   exact mul_nonneg (mul_nonneg e₁ e₂) e₃
 
 /-! ## 4. The case-3 collapse (character algebra)
@@ -605,7 +605,7 @@ theorem kept_le_near_sum {N : ℕ} [NeZero N] (chi : DirichletCharacter ℂ N) (
   have hsum : a + lam ≠ 0 := by positivity
   have hsre : (P10sPt a L ρ.im).re = 1 + a / L := by simp [P10sPt]
   have hsim : |(P10sPt a L ρ.im).im| ≤ 3 := by simpa [P10sPt] using him
-  have h10 : |ρ.im| ≤ 10 := by linarith [abs_nonneg ρ.im, him]
+  have h10 : |ρ.im| ≤ 10 := by linarith only [abs_nonneg ρ.im, him, hδ, hδ1]
   have h := Work.ZeroFreeTables.P9.nearP3sum_ge_kept chi hchi hL ha hlam1 hδ hδ1 haδ
     hsre hsim hmin ({ ρ } : Finset ℂ)
     (by intro u hu
@@ -642,12 +642,12 @@ theorem near_sum_ge_kept {N : ℕ} [NeZero N] (chi : DirichletCharacter ℂ N) (
 
 /-- `P₃` is monotone on `[0,∞)` (`P₃(X) = X + X² + (2/3)X³`). -/
 theorem P3R_mono_103 {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) : P3R x ≤ P3R y := by
-  have h0 : 0 ≤ y - x := by linarith
+  have h0 : 0 ≤ y - x := by linarith only [hxy]
   have hkey : P3R y - P3R x = (y - x) * (1 + (x + y) + (2/3) * (x^2 + x*y + y^2)) := by
     unfold P3R; ring
   have hfac : 0 ≤ 1 + (x + y) + (2/3) * (x^2 + x*y + y^2) := by
-    nlinarith [sq_nonneg (x + y), sq_nonneg x, sq_nonneg y, hx, hxy]
-  nlinarith [hkey, h0, hfac]
+    linarith only [sq_nonneg (x + y), sq_nonneg x, sq_nonneg y, hx, hxy]
+  nlinarith only [hkey, h0, hfac, hxy]
 
 -- The principal-character terms sit at the *shifted* points `sigma + i*tau` (the four
 -- triple characters of case 3 are principal); their domination by the unshifted
@@ -688,18 +688,18 @@ theorem P3_shifted_le {α a t : ℝ} (ha : 0 < a) (hα : 0 < α) :
   have hu0 : 0 ≤ w.re := by rw [hre]; positivity
   have hle : w.re ≤ α / a := by
     rw [hre, div_le_div_iff₀ hden ha]
-    nlinarith [sq_nonneg t, le_of_lt ha, le_of_lt hα]
+    nlinarith only [sq_nonneg t, le_of_lt ha, le_of_lt hα, hα]
   have hsquare : w.re ^ 2 ≤ Complex.normSq w := by
     rw [Complex.normSq_apply]
-    nlinarith [sq_nonneg w.im]
-  have h1 : 0 ≤ 1 + 2 * w.re := by linarith
+    linarith only [sq_nonneg w.im]
+  have h1 : 0 ≤ 1 + 2 * w.re := by linarith only [hu0]
   have hper : P3R w.re = (8 / 3) * w.re ^ 3 + (1 + 2 * w.re) * (w.re - w.re ^ 2) := by
     unfold P3R
     ring
   have hmain : (P3 w).re ≤ P3R w.re := by
     rw [P3_re_eq, hper]
-    have hkey : w.re - Complex.normSq w ≤ w.re - w.re ^ 2 := by linarith
-    nlinarith [mul_le_mul_of_nonneg_left hkey h1]
+    have hkey : w.re - Complex.normSq w ≤ w.re - w.re ^ 2 := by linarith only [hsquare]
+    linarith only [mul_le_mul_of_nonneg_left hkey h1, hkey, h1]
   exact le_trans hmain (P3R_mono_103 hu0 hle)
 
 /-! ## 10. The pole term at a shifted point, in `zetaEngine_principal_proof`'s form
@@ -776,7 +776,7 @@ theorem pair_point_bound {N : ℕ} [NeZero N] (psi : DirichletCharacter ℂ N) (
     (hm : Work.ZeroFreeTables.SigmaP3L N L psi s a lam1
       ≤ -Work.ZeroFreeTables.P3NearSumL N L psi s a lam1 δ + (a + lam1) * (c + e)) :
     Work.ZeroFreeTables.SigmaP3L N L psi s a lam1 ≤ (a + lam1) * (c + e) := by
-  have hα : 0 < a + lam1 := by linarith
+  have hα : 0 < a + lam1 := by linarith only [ha, hlam1]
   have hnn : 0 ≤ Work.ZeroFreeTables.P3NearSumL N L psi s a lam1 δ := by
     rw [Work.ZeroFreeTables.P9.P3NearSumL_eq_nearP3sum psi hpsi hprim hδ (le_of_lt hδ1) a lam1 L,
       Work.ZeroFreeTables.P9.nearP3sum_eq_tsum]
@@ -799,10 +799,10 @@ theorem extraction_of_weighted_sum {a lam1 lam2 lam3 ε C : ℝ}
       ≤ P3R ((a + lam1) / a) + (a + lam1) * (3 / 4 + ε) := by
   have hpos : a + lam1 ≠ 0 := by positivity
   rw [div_self hpos] at h
-  have hnn : 0 ≤ a + lam1 := by linarith
+  have hnn : 0 ≤ a + lam1 := by linarith only [ha, hlam1]
   have hmul : (a + lam1) * C ≤ (a + lam1) * (3 / 4 + ε) :=
     mul_le_mul_of_nonneg_left hC hnn
-  linarith [h, hmul]
+  linarith only [h, hmul]
 
 /-- **HB (10.14) from the extraction bound of the `P₃` derivation.**
 
@@ -815,18 +815,18 @@ theorem p1014_of_extractions {δ ε C X₁ X₂ X₃ : ℝ} (hδ0 : 0 ≤ δ) (h
     (hX₂ : (3 + δ) / 4 ≤ X₂) (hX₃ : (3 + δ) / 4 ≤ X₃)
     (h : P3R 1 + P3R X₂ + P3R X₃ ≤ P3R X₁ + (6/7) * ((3 + δ) * C)) :
     0 ≤ p1014 δ ε := by
-  have hY : 0 ≤ (3 + δ) / 4 := by linarith
+  have hY : 0 ≤ (3 + δ) / 4 := by linarith only [hδ0]
   have hm₂ : P3R ((3 + δ) / 4) ≤ P3R X₂ := P3R_mono_103 hY hX₂
   have hm₃ : P3R ((3 + δ) / 4) ≤ P3R X₃ := P3R_mono_103 hY hX₃
-  have hpos : (0:ℝ) < 3 + δ := by linarith
+  have hpos : (0:ℝ) < 3 + δ := by linarith only [hδ0]
   have hbudget : (6/7) * ((3 + δ) * C) ≤ (3 + δ) * (9/14) := by
-    nlinarith [hC, le_of_lt hpos]
+    nlinarith only [hC, le_of_lt hpos, hδ0]
   have hmain : P3R 1 + 2 * P3R ((3 + δ) / 4) ≤ P3R ((3 + δ) / 3) + (3 + δ) * (9/14) := by
     rw [hX₁] at h
-    linarith [h, hm₂, hm₃, hbudget]
+    linarith only [h, hm₂, hm₃, hbudget]
   have hε' : 0 ≤ (3 + δ) * ε := mul_nonneg (le_of_lt hpos) hε
   unfold p1014
-  linarith [hmain, hε']
+  linarith only [hmain, hε']
 
 /-! ## 15. The target
 
@@ -846,17 +846,17 @@ theorem p1014_of_bridge_eps {X₁ X₂ X₃ δ eps ε : ℝ} (hδ0 : 0 ≤ δ) (
     (h : P3R 1 + P3R X₂ + P3R X₃
       ≤ P3R X₁ + ((18/7 : ℝ) + (6/7) * δ) * (3/4 + eps)) :
     0 ≤ p1014 δ ε := by
-  have hY : 0 ≤ (3 + δ) / 4 := by linarith
+  have hY : 0 ≤ (3 + δ) / 4 := by linarith only [hδ0]
   have hm₂ : P3R ((3 + δ) / 4) ≤ P3R X₂ := P3R_mono_103 hY hX₂
   have hm₃ : P3R ((3 + δ) / 4) ≤ P3R X₃ := P3R_mono_103 hY hX₃
-  have h3δ : (0:ℝ) ≤ 3 + δ := by linarith
+  have h3δ : (0:ℝ) ≤ 3 + δ := by linarith only [hδ0]
   have hrew : ((18/7 : ℝ) + (6/7) * δ) * (3/4 + eps) = (6/7) * ((3 + δ) * (3/4 + eps)) := by ring
   rw [hrew] at h
   have hkey : (3 + δ) * ((6/7) * eps) ≤ (3 + δ) * ε :=
-    mul_le_mul_of_nonneg_left (by linarith) h3δ
+    mul_le_mul_of_nonneg_left (by linarith only [heps]) h3δ
   unfold p1014
   rw [← hX₁]
-  nlinarith [h, hm₂, hm₃, hkey, h3δ, mul_nonneg h3δ hε0]
+  linarith only [h, hm₂, hm₃, hkey, h3δ, mul_nonneg h3δ hε0]
 
 /-! ## 14c. The `λ`-facts of the setting (used by the final assembly)
 
@@ -974,7 +974,7 @@ theorem SigmaP3L_extract_at {a δ e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : 
     have hsimp : (1 - (1 - lamχ / Real.log (q : ℝ))) * Real.log (q : ℝ) = lamχ := by
       rw [sub_sub_cancel, div_mul_cancel₀ _ hlogqne]
     rw [hre] at h
-    linarith [h, hsimp]
+    linarith only [h, hsimp]
   have hlamχnn : 0 ≤ lamχ := le_trans hlam1 hρle
   have hρim10 : |ρ.im| ≤ 10 := le_trans hρim (by norm_num)
   have hzero' : Work.LinnikContract.zeroMult χ.primitiveCharacter ρ ≠ 0 := by
@@ -993,7 +993,7 @@ theorem SigmaP3L_extract_at {a δ e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : 
       hLm hlogN hlam1 hlam1le hLD s hsre (le_trans hsim (by norm_num))
     have heq : (a + lam1) * ((1 / 8 + e / 3) + e / 3) = (a + lam1) * (1 / 8 + e / 3 + e / 3) := by
       ring
-    linarith [h, heq]
+    linarith only [h, heq, this]
   have hext := Work.ZeroFreeTables.P10.shifted_extract_of_point_bound (N := χ.conductor)
     χ.primitiveCharacter hχ'ne hprim' (a := a) (δ := δ) (c := 1 / 8 + e / 3) (e := e / 3)
     (lam1 := lam1) (lam := lamχ) (L := Real.log (q : ℝ)) (τ := τ)
@@ -1002,7 +1002,7 @@ theorem SigmaP3L_extract_at {a δ e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : 
     hLi le_rfl hlam1 hlam1le s hsre hsim
   have hring : (a + lam1) * (1 / 8 + e / 3 + e / 3) + (a + lam1) * (e / 3)
       = (a + lam1) * (1 / 8 + e) := by ring
-  linarith [himp, hext, hring]
+  linarith only [himp, hext, hring, _inst, this]
 
 /-- **Extraction of a zero at its own point**, in the `P₃ℝ` form the weighted
 combination consumes. -/
@@ -1156,10 +1156,10 @@ theorem case3_weighted_combination_engine {N : ℕ} [NeZero N]
       ≤ (a + lam1) * (3 / 8 + eS)) :
     P3R 1 + P3R ((a + lam1) / (a + lam2)) + P3R ((a + lam1) / (a + lam3))
       ≤ P3R ((a + lam1) / a) + (a + lam1) * (3 / 4 + eps) := by
-  have hα : (0:ℝ) < a + lam1 := by linarith
+  have hα : (0:ℝ) < a + lam1 := by linarith only [ha, hlam1]
   have hσ : (1:ℝ) < 1 + a / L := by
     have : 0 < a / L := div_pos ha hL
-    linarith
+    linarith only [this]
   have hpos : 0 ≤ S14 N chi1 chi2 chi3 L (1 + a / L) rho1.im rho2.im rho3.im a lam1 :=
     S14_nonneg_engine chi1 chi2 chi3 L (1 + a / L) rho1.im rho2.im rho3.im a lam1 hL hσ hpos0
   set P : ℝ := SigmaP3L N L 1 ((1 + a / L : ℝ) : ℂ) a lam1 with hPdef
@@ -1177,12 +1177,12 @@ theorem case3_weighted_combination_engine {N : ℕ} [NeZero N]
   rw [← hC1def] at hpos
   rw [← hC2def] at hpos
   rw [← hC3def] at hpos
-  have h1 : P3R 1 ≤ -C1 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e1) := by linarith
+  have h1 : P3R 1 ≤ -C1 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e1) := by linarith only [hb1]
   have h2 : P3R ((a + lam1) / (a + lam2))
-      ≤ -C2 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e2) := by linarith
+      ≤ -C2 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e2) := by linarith only [hb2]
   have h3 : P3R ((a + lam1) / (a + lam3))
-      ≤ -C3 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e3) := by linarith
-  have h4 : -P3R ((a + lam1) / a) ≤ -P + (a + lam1) * (0 + eP) := by linarith
+      ≤ -C3 + 8 * (a + lam1) / (δ * L) + (a + lam1) * (1 / 8 + e3) := by linarith only [hb3]
+  have h4 : -P3R ((a + lam1) / a) ≤ -P + (a + lam1) * (0 + eP) := by linarith only [hpole]
   have hAB : P3R 1 + P3R ((a + lam1) / (a + lam2)) + P3R ((a + lam1) / (a + lam3))
       - P3R ((a + lam1) / a)
       ≤ (a + lam1) * (3 / 8 + eS) + 3 * (8 * (a + lam1) / (δ * L))
@@ -1190,7 +1190,7 @@ theorem case3_weighted_combination_engine {N : ℕ} [NeZero N]
             + (a + lam1) * (0 + eP)) := by
     linarith [hpos, hPstar, h1, h2, h3, h4]
   have hX : (3:ℝ) / 8 + eS + (24 / (δ * L) + (3 / 8 + e1 + e2 + e3 + eP)) ≤ 3 / 4 + eps := by
-    linarith
+    linarith only [hsum]
   have hfin : P3R 1 + P3R ((a + lam1) / (a + lam2)) + P3R ((a + lam1) / (a + lam3))
       - P3R ((a + lam1) / a) ≤ (a + lam1) * (3 / 4 + eps) := by
     calc P3R 1 + P3R ((a + lam1) / (a + lam2)) + P3R ((a + lam1) / (a + lam3))
@@ -1200,7 +1200,7 @@ theorem case3_weighted_combination_engine {N : ℕ} [NeZero N]
               + (a + lam1) * (1 / 8 + e3) + (a + lam1) * (0 + eP)) := hAB
       _ = (a + lam1) * ((3 / 8 + eS) + (24 / (δ * L) + (3 / 8 + e1 + e2 + e3 + eP))) := by ring
       _ ≤ (a + lam1) * (3 / 4 + eps) := mul_le_mul_of_nonneg_left hX hα.le
-  linarith
+  linarith only [hfin]
 
 set_option maxHeartbeats 4000000 in
 theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
@@ -1208,8 +1208,8 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   intro ε hε
   -- the two budgets
   set e1 : ℝ := ε / 100 with he1def
-  have he1pos : 0 < e1 := by rw [he1def]; linarith
-  have he13pos : 0 < e1 / 3 := by linarith
+  have he1pos : 0 < e1 := by rw [he1def]; linarith only [hε]
+  have he13pos : 0 < e1 / 3 := by linarith only [he1pos]
   -- HB Lemma 3.1 at `φ = 1/4` with `e = e1/3` (so `1/8 + e = 1/8 + e1` after the
   -- three internal losses of the extraction)
   obtain ⟨L0, δ, hδ0, hδ1, hfeed0⟩ :=
@@ -1239,7 +1239,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
       have h2 : ((Nat.ceil (Real.exp Lthr) : ℕ) : ℝ) ≤ (q : ℝ) := by
         have h3 : Nat.ceil (Real.exp Lthr) ≤ q := by omega
         exact_mod_cast h3
-      linarith
+      linarith only [h1, h2]
     have h := Real.log_le_log (Real.exp_pos Lthr) hexp
     rwa [Real.log_exp] at h
   have hcopy := hLthrle
@@ -1278,7 +1278,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     have h' : 48 ≤ Real.log (q : ℝ) * (δ * (ε / 10)) :=
       (div_le_iff₀ (by positivity : (0 : ℝ) < δ * (ε / 10))).mp hD
     rw [div_le_iff₀ (mul_pos hδ0 hLpos)]
-    nlinarith [h']
+    linarith only [h']
   -- ### the setting: the three `λ`'s
   set lam1 : ℝ := lamOf q ρ₁ with hlam1def
   set lam2 : ℝ := lamOf q ρ₂ with hlam2def
@@ -1355,7 +1355,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   -- ### the six pair extractions
   have hτa : |ρ₁.im + ρ₂.im| ≤ 3 := by
     have h := abs_add_le ρ₁.im ρ₂.im
-    linarith [h, hz₁.2.2, hz₂.2.2]
+    linarith only [h, hz₁.2.2, hz₂.2.2, hδ0, hδ1, _inst, hz₁, hz₂]
   have hp1 : SigmaP3L q (Real.log (q : ℝ)) (χ₁ * χ₂)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im + ρ₂.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1374,7 +1374,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   have hτb : |ρ₁.im - ρ₂.im| ≤ 3 := by
     have h1 := abs_le.mp hz₁.2.2
     have h2 := abs_le.mp hz₂.2.2
-    rw [abs_le]; constructor <;> linarith
+    rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, hρ₁im, h2]
   have hp2 : SigmaP3L q (Real.log (q : ℝ)) (χ₁ * χ₂⁻¹)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im - ρ₂.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1395,7 +1395,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     exact h
   have hτc : |ρ₁.im + ρ₃.im| ≤ 3 := by
     have h := abs_add_le ρ₁.im ρ₃.im
-    linarith [h, hz₁.2.2, hz₃.2.2]
+    linarith only [h, hz₁.2.2, hz₃.2.2, hδ0, hδ1, _inst, hz₁, hz₃]
   have hp3 : SigmaP3L q (Real.log (q : ℝ)) (χ₁ * χ₃)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im + ρ₃.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1414,7 +1414,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   have hτd : |ρ₁.im - ρ₃.im| ≤ 3 := by
     have h1 := abs_le.mp hz₁.2.2
     have h2 := abs_le.mp hz₃.2.2
-    rw [abs_le]; constructor <;> linarith
+    rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, hρ₁im, h2]
   have hp4 : SigmaP3L q (Real.log (q : ℝ)) (χ₁ * χ₃⁻¹)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im - ρ₃.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1435,7 +1435,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     exact h
   have hτe : |ρ₂.im + ρ₃.im| ≤ 3 := by
     have h := abs_add_le ρ₂.im ρ₃.im
-    linarith [h, hz₂.2.2, hz₃.2.2]
+    linarith only [h, hz₂.2.2, hz₃.2.2, hδ0, hδ1, _inst, hz₂, hz₃]
   have hp5 : SigmaP3L q (Real.log (q : ℝ)) (χ₂ * χ₃)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₂.im + ρ₃.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1454,7 +1454,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   have hτf : |ρ₂.im - ρ₃.im| ≤ 3 := by
     have h1 := abs_le.mp hz₂.2.2
     have h2 := abs_le.mp hz₃.2.2
-    rw [abs_le]; constructor <;> linarith
+    rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, h1, h2]
   have hp6 : SigmaP3L q (Real.log (q : ℝ)) (χ₂ * χ₃⁻¹)
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₂.im - ρ₃.im : ℝ) : ℂ) * Complex.I)
       (18 / 7) lam1
@@ -1518,7 +1518,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     rw [hpt]
     have hτ : |ρ₂.im + ρ₃.im| ≤ 4 := by
       have h := abs_add_le ρ₂.im ρ₃.im
-      linarith [h, hz₂.2.2, hz₃.2.2]
+      linarith only [h, hz₂.2.2, hz₃.2.2, hδ0, hδ1, hτe]
     simpa [zero_add] using hprinc (ρ₂.im + ρ₃.im) hτ
   have hq2' : SigmaP3L q (Real.log (q : ℝ)) 1
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im + ρ₂.im - ρ₃.im : ℝ) : ℂ) * Complex.I)
@@ -1533,7 +1533,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     have hτ : |ρ₂.im - ρ₃.im| ≤ 4 := by
       have h1 := abs_le.mp hz₂.2.2
       have h2 := abs_le.mp hz₃.2.2
-      rw [abs_le]; constructor <;> linarith
+      rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, h1, h2]
     simpa [zero_add] using hprinc (ρ₂.im - ρ₃.im) hτ
   have hq3' : SigmaP3L q (Real.log (q : ℝ)) 1
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((ρ₁.im - ρ₂.im + ρ₃.im : ℝ) : ℂ) * Complex.I)
@@ -1548,7 +1548,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     have hτ : |ρ₃.im - ρ₂.im| ≤ 4 := by
       have h1 := abs_le.mp hz₂.2.2
       have h2 := abs_le.mp hz₃.2.2
-      rw [abs_le]; constructor <;> linarith
+      rw [abs_le]; constructor <;> linarith only [hδ0, hδ1, h1, h2]
     simpa [zero_add] using hprinc (ρ₃.im - ρ₂.im) hτ
   have hq4' : SigmaP3L q (Real.log (q : ℝ)) 1
       (((1 + (18 / 7) / Real.log (q : ℝ) : ℝ) : ℂ) + ((-ρ₁.im + ρ₂.im + ρ₃.im : ℝ) : ℂ) * Complex.I)
@@ -1562,38 +1562,38 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     rw [hpt]
     have hτ : |ρ₂.im + ρ₃.im| ≤ 4 := by
       have h := abs_add_le ρ₂.im ρ₃.im
-      linarith [h, hz₂.2.2, hz₃.2.2]
+      linarith only [h, hz₂.2.2, hz₃.2.2, hδ0, hδ1, hτe]
     simpa [zero_add] using hprinc (ρ₂.im + ρ₃.im) hτ
   -- ### the side condition of `P₃*`
   have hside : 1 / (18 / 7 : ℝ) ^ 3
       ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 + 1 / ((18 / 7 : ℝ) + lam2) ^ 3
         + 1 / ((18 / 7 : ℝ) + lam3) ^ 3 := by
     have ht1 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam1 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam1 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam1 := by linarith only [hδ0, hδ1, hlam10]
+      have h4 : (18 / 7 : ℝ) + lam1 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam3le, hlam2le3, hlam12]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam1) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have ht2 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam2) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam2 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith only [hδ0, hδ1, hlam20]
+      have h4 : (18 / 7 : ℝ) + lam2 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam3le, hlam2le3]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam2) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have ht3 : (27 / 64) / (18 / 7 : ℝ) ^ 3 ≤ 1 / ((18 / 7 : ℝ) + lam3) ^ 3 := by
-      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith
-      have h4 : (18 / 7 : ℝ) + lam3 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith
+      have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith only [hδ0, hδ1, hlam3pos]
+      have h4 : (18 / 7 : ℝ) + lam3 ≤ (4 / 3) * (18 / 7 : ℝ) := by linarith only [hlam3le]
       have h1 : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) ≤ 1 / ((18 / 7 : ℝ) + lam3) ^ 3 :=
         one_div_le_one_div_of_le (pow_pos hpos 3) (pow_le_pow_left₀ (le_of_lt hpos) h4 3)
       have heq : 1 / (((4 / 3) * (18 / 7 : ℝ)) ^ 3) = (27 / 64) / (18 / 7 : ℝ) ^ 3 := by
         norm_num
-      linarith [h1, heq]
+      linarith only [h1, heq]
     have hkey : 1 / (18 / 7 : ℝ) ^ 3 ≤ (27 / 64) / (18 / 7 : ℝ) ^ 3 * 3 := by norm_num
-    linarith [ht1, ht2, ht3, hkey]
+    linarith only [ht1, ht2, ht3, hkey, hδ0, hδ1]
   -- ### the ten-term collapse
   set eS : ℝ := 24 / (δ * Real.log (q : ℝ)) + 3 * e1 + 4 * e1 with heSdef
   have hPstar := Work.P10.Pstar_collapse χ₁ χ₂ χ₃ ρ₁ ρ₂ ρ₃
@@ -1602,7 +1602,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     (e7 := e1) (e8 := e1) (e9 := e1) (e10 := e1) (eS := eS)
     (by norm_num) hδ0 hLpos hlam10 hlam12 hlam23 hρ₁im hsq1 hsq2 hsq3 hprod hside
     (le_of_lt he1pos) (le_of_lt he1pos) (le_of_lt he1pos) (le_of_lt he1pos)
-    (by rw [heSdef]; ring_nf; linarith)
+    (by rw [heSdef]; ring_nf; linarith only [])
     (by simpa only [Complex.ofReal_add, Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_neg] using hp1)
     (by simpa only [Complex.ofReal_add, Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_neg] using hp2)
     (by simpa only [Complex.ofReal_add, Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_neg] using hp3)
@@ -1627,7 +1627,7 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
     (L := Real.log (q : ℝ)) (e1 := e1) (e2 := e1) (e3 := e1) (eP := e1) (eS := eS)
     (eps := 6 * e1 + 5 * e1 + 48 / (δ * Real.log (q : ℝ)))
     (by norm_num) hδ0 hδ1 hLpos hlam10 hlam12 hlam13 (le_of_lt he1pos) (by rw [heSdef]; positivity)
-    (by rw [heSdef]; ring_nf; linarith)
+    (by rw [heSdef]; ring_nf; linarith only [])
     hsq1 hsq2 hsq3 hprod hb1 hb2 hb3 hpole
     (by simpa only [Complex.ofReal_add, Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_neg] using hPstar)
   -- ### HB (10.14)
@@ -1639,19 +1639,19 @@ theorem HBLemma10_3_engine_proof : Work.ZeroFreeTables.HBLemma10_3_engine := by
   · positivity
   · field_simp
     ring
-  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith
+  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam2 := by linarith only [hδ0, hδ1, hlam20]
     rw [le_div_iff₀ hpos, div_mul_eq_mul_div, div_le_iff₀ (by norm_num : (0 : ℝ) < 4)]
     have hδ : lam1 / (6 / 7) = 7 * lam1 / 6 := by ring
     rw [hδ]
-    nlinarith [hlam10, hlam20, hlam267]
-  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith
+    nlinarith only [hlam10, hlam20, hlam267, hlam3le, hlam2le3, hδ0, hδ1]
+  · have hpos : (0 : ℝ) < (18 / 7 : ℝ) + lam3 := by linarith only [hδ0, hδ1, hlam3pos]
     rw [le_div_iff₀ hpos, div_mul_eq_mul_div, div_le_iff₀ (by norm_num : (0 : ℝ) < 4)]
     have hδ : lam1 / (6 / 7) = 7 * lam1 / 6 := by ring
     rw [hδ]
-    nlinarith [hlam10, hlam30, hlam367]
+    nlinarith only [hlam10, hlam30, hlam367, hlam3le, hδ0, hδ1]
   · exact le_of_lt hε
   · rw [he1def]
-    linarith [hbud, hε]
+    linarith only [hbud, hε]
   · have h6 : (6 / 7 : ℝ) * (lam1 / (6 / 7)) = lam1 := by ring_nf
     rw [h6]
     exact hcomb

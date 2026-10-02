@@ -1,5 +1,9 @@
 import Mathlib
-import Submission.Work.ZeroDensity.LogFree.ZFImports
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_zeroFree_uniform_realAxis
+import Submission.Work.ZeroDensity.LogFree.Defs
+import Submission.Work.LinnikContract.Defs
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_zeroFree_offAxis_uniform
+import Submission.Work.A7.exists_isMin1
 
 /-!
 # `Work.ZeroDensity.LogFree.excZeroReal` — exceptional zeros are real zeros of real characters

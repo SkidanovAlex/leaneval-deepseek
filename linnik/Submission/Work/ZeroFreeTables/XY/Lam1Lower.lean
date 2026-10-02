@@ -326,17 +326,17 @@ theorem main_assembly
   have hlam0 : 0 ≤ lam := by
     rw [hlamdef, Work.LinnikContract.lamOf]
     have hq1r : (1:ℝ) ≤ q := by exact_mod_cast (by omega : 1 ≤ q)
-    nlinarith [hρlt1, Real.log_nonneg hq1r]
+    nlinarith only [hρlt1, Real.log_nonneg hq1r]
   have hαpos : 0 < α := by rw [hαdef]; linarith
   have hαapos : 0 < a + lam := by rw [← hαdef]; exact hαpos
   have hσ1 : 1 < σ := by
     rw [hσdef]; have : 0 < a/L := div_pos hapos hLpos'; linarith
   have hLsmall : lam / L ≤ δ / 2 := by
     have h1 : lam / L ≤ (518/1000) / L := by
-      rw [div_le_div_iff₀ hLpos' hLpos']; nlinarith [hlamle]
+      rw [div_le_div_iff₀ hLpos' hLpos']; nlinarith only [hlamle, hLpos']
     have h2 : (518/1000) / L ≤ (518/1000) / (10000/δ) := by
       rw [div_le_div_iff₀ hLpos' (by positivity : (0:ℝ) < 10000/δ)]
-      nlinarith [hLbig']
+      nlinarith only [hLbig']
     have h3 : (518/1000) / (10000/δ) ≤ δ / 2 := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < 10000/δ)]
       have h5 : (δ/2) * (10000/δ) = 5000 := by field_simp; ring
@@ -449,20 +449,20 @@ theorem main_assembly
     have h := hCmp α a (2*γ*L) hαpos hapos (by rw [hαdef]; linarith)
     have h32 : (α/a)^3 ≤ 30480/14900 := by
       have h4 : α/a ≤ 3918/3400 := by
-        rw [div_le_div_iff₀ hapos (by norm_num : (0:ℝ) < 3400), hadef]; nlinarith [hαle]
+        rw [div_le_div_iff₀ hapos (by norm_num : (0:ℝ) < 3400), hadef]; nlinarith only [hαle]
       have h5 : 0 ≤ α/a := by positivity
-      nlinarith [h4, h5, sq_nonneg (α/a), pow_le_pow_left₀ h5 h4 3]
+      nlinarith only [h4, h5, sq_nonneg (α/a), pow_le_pow_left₀ h5 h4 3]
     rw [hZ2def, hW2def]
-    nlinarith [h, h32, hW2nn]
+    nlinarith only [h, h32, hW2nn]
   have hZ4cmp : 1250 * Z4 ≤ 6000 * W4 := by
     have h := hCmp α a (4*γ*L) hαpos hapos (by rw [hαdef]; linarith)
     have h32 : (α/a)^3 ≤ 6000/1250 := by
       have h4 : α/a ≤ 3918/3400 := by
-        rw [div_le_div_iff₀ hapos (by norm_num : (0:ℝ) < 3400), hadef]; nlinarith [hαle]
+        rw [div_le_div_iff₀ hapos (by norm_num : (0:ℝ) < 3400), hadef]; nlinarith only [hαle]
       have h5 : 0 ≤ α/a := by positivity
-      nlinarith [h4, h5, sq_nonneg (α/a), pow_le_pow_left₀ h5 h4 3]
+      nlinarith only [h4, h5, sq_nonneg (α/a), pow_le_pow_left₀ h5 h4 3]
     rw [hZ4def, hW4def]
-    nlinarith [h, h32, hW4nn]
+    nlinarith only [h, h32, hW4nn]
   -- the near norms
   obtain ⟨hn1, hn2, hn3, hn4⟩ :=
     hNorm (L := L) (lam := lam) (γ := γ) (δ := δ) hδpos (ρ := ρ₁) hρre hρim
@@ -517,11 +517,11 @@ theorem main_assembly
   have hbA : (lam / L) ^ 2 ≤ δ ^ 2 := by
     have h1 : 0 ≤ lam / L := div_nonneg hlam0 (le_of_lt hLpos')
     have h2 : lam / L ≤ δ / 2 := hLsmall
-    nlinarith [h1, h2, hδpos]
+    nlinarith only [h1, h2, hδpos]
   have hL2 : (lam / L) ^ 2 ≤ δ ^ 2 / 4 := by
     have h1 : 0 ≤ lam / L := div_nonneg hlam0 (le_of_lt hLpos')
     have h2 : lam / L ≤ δ / 2 := hLsmall
-    nlinarith [h1, h2, hδpos]
+    nlinarith only [h1, h2, hδpos]
   have hnear1ρ : ‖(1 : ℂ) + (((σ : ℂ) + (γ : ℂ) * Complex.I).im : ℂ) * Complex.I - ρ₁‖ ≤ δ := by
     simpa using hn1.mpr hbA
   have hz1 : (1 : ℝ) ≤ (Work.LinnikContract.zeroMult χ₁ ρ₁ : ℝ) := by
@@ -603,7 +603,7 @@ theorem main_assembly
           + 30480 * α * (1 / 8 + 1 / 100000) + 30529 * (1 / 100000) := by
         linarith [hpoint, hb0', hb1', hb2', hb3', hb4', hPW1, hW2W4, hZ2cmp, hZ4cmp]
       have hkey : -7 / 2 ≤ 14379 * P3R (α / a) - 24480 * P3R 1 + 3810 * α := by
-        nlinarith [hstep, hαle]
+        nlinarith only [hstep, hαle]
       exact hfinish _ hkey hfp
     · -- ## Case `A ∧ ¬B`
       have hnear1ρc : ‖(1 : ℂ) + (((σ : ℂ) + (γ : ℂ) * Complex.I).im : ℂ) * Complex.I
@@ -640,7 +640,7 @@ theorem main_assembly
         have hgt : δ ^ 2 < (lam / L) ^ 2 + (4 * γ) ^ 2 := not_le.mp hB
         have hsq : (δ / 5) ^ 2 ≤ |γ| ^ 2 := by
           rw [sq_abs γ]
-          nlinarith [hL2, hgt, hδpos]
+          nlinarith only [hL2, hgt, hδpos]
         have h3nn : 0 ≤ δ / 5 := by positivity
         have h4 : |δ / 5| ≤ |γ| := by simpa using sq_le_sq.mp hsq
         simpa [abs_of_nonneg h3nn] using h4
@@ -649,14 +649,14 @@ theorem main_assembly
           + 30480 * α * (1 / 8 + 1 / 100000) + 30529 * (1 / 100000) + 1 := by
         linarith [hpoint, hb0', hb1', hb2', hb3', hb4', hPW1, hW2leN3, hZ2cmp, hZ4sm, hW2nn]
       have hkey : -7 / 2 ≤ 14379 * P3R (α / a) - 24480 * P3R 1 + 3810 * α := by
-        nlinarith [hstep, hαle]
+        nlinarith only [hstep, hαle]
       exact hfinish _ hkey hfp
   · -- ## Case `¬A`
     have hγ3 : δ / 3 ≤ |γ| := by
       have hgt : δ ^ 2 < (lam / L) ^ 2 + (2 * γ) ^ 2 := not_le.mp hA
       have hsq : (δ / 3) ^ 2 ≤ |γ| ^ 2 := by
         rw [sq_abs γ]
-        nlinarith [hL2, hgt, hδpos]
+        nlinarith only [hL2, hgt, hδpos]
       have h3nn : 0 ≤ δ / 3 := by positivity
       have h4 : |δ / 3| ≤ |γ| := by simpa using sq_le_sq.mp hsq
       simpa [abs_of_nonneg h3nn] using h4
@@ -669,7 +669,7 @@ theorem main_assembly
         + 30480 * α * (1 / 8 + 1 / 100000) + 30529 * (1 / 100000) + 2 := by
       linarith [hpoint, hb0', hb1', hb2', hb3', hb4', hP1leN1, hN3nn, hZ2sm, hZ4sm]
     have hkey : -7 / 2 ≤ 14379 * P3R (α / a) - 24480 * P3R 1 + 3810 * α := by
-      nlinarith [hstep, hαle]
+      nlinarith only [hstep, hαle]
     exact hfinish _ hkey hfp
 
 /-- The required statement: the `h = 2` case of Heath-Brown's Lemma 9.5.  Obtained from

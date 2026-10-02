@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.lapX_sub_inv_bound
 import Submission.Commons.Analysis.Complex.twisted_inversion_regularized
-import Submission.Commons.Analysis.Complex.regularized_vertical_integral_eq_zero
 import Submission.Commons.Analysis.Complex.regularized_leftEdge_bound_alt
 import Submission.Commons.Analysis.Complex.regularized_kernel_bound_negRe
 import Submission.Commons.NumberTheory.DirichletCharacter.regularized_divisor_contour_shift_gen
@@ -114,18 +113,18 @@ theorem explicitFormula_chi_gen_crux (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
   have hδnn : 0 ≤ δ := by rw [hδdef]; positivity
   have hlogLt : Real.log L < L^2/4 := by
     rcases eq_or_ne L 2 with h2 | h2
-    · rw [h2]; nlinarith [Real.log_two_lt_d9]
+    · rw [h2]; linarith only [Real.log_two_lt_d9]
     · have h1 : Real.log L < L - 1 := Real.log_lt_sub_one_of_pos hLpos (by linarith)
       have h3 : L - 1 < L^2/4 := by
         have h4 : (0:ℝ) < (L-2)^2 := by positivity
-        nlinarith
+        linarith
       linarith
   have hδpos : 0 < δ := by rw [hδdef]; positivity
   have hδhalf : δ < 1/2 := by
     rw [hδdef, div_lt_iff₀ hLpos]
     have hsq : Real.sqrt (Real.log L) < L/2 := by
       rw [Real.sqrt_lt' (by linarith : (0:ℝ) < L/2)]
-      nlinarith [hlogLt]
+      linarith only [hlogLt]
     linarith
   set α : ℝ := 1 + 2*δ with hαdef
   have hα1 : 1 < α := by rw [hαdef]; linarith
@@ -228,9 +227,9 @@ theorem explicitFormula_chi_gen_crux (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
     rw [hlgdef]
     linarith [Real.log_two_gt_d9]
   have h1s : 1 / ‖s‖^2 ≤ 4 := by
-    have h2 : (1:ℝ)/4 ≤ ‖s‖^2 := by nlinarith [hnorm_half, norm_nonneg s]
+    have h2 : (1:ℝ)/4 ≤ ‖s‖^2 := by nlinarith only [hnorm_half, norm_nonneg s]
     rw [div_le_iff₀ (by positivity : (0:ℝ) < ‖s‖^2)]
-    nlinarith
+    linarith only [h2]
   have hALnn : (0:ℝ) ≤ A / L := by positivity
   have heq1 : (L / (2 * Real.pi)) * (A / L^2 * 2000 * (lg + 1))
       = (A / L) * (1000 / Real.pi) * (lg + 1) := by
@@ -244,7 +243,7 @@ theorem explicitFormula_chi_gen_crux (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
       rw [Real.sqrt_le_iff]
       refine ⟨hLpos.le, ?_⟩
       have := Real.log_le_sub_one_of_pos hLpos
-      nlinarith [hLpos, sq_nonneg (L - 1)]
+      nlinarith only [this, hLpos, sq_nonneg (L - 1)]
     have hspos : 0 < Real.sqrt (Real.log L) := Real.sqrt_pos.mpr hlogL
     have h1 : (Real.log L) ^ (-(1/2 : ℝ)) = (Real.sqrt (Real.log L))⁻¹ := by
       rw [Real.rpow_neg hlogLnn, Real.sqrt_eq_rpow]
@@ -288,27 +287,27 @@ theorem explicitFormula_chi_gen_crux (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
     have h1 : (0:ℝ) ≤ ‖f 0‖ / x₀ := by positivity
     have h2 : (2:ℝ) * ‖f 0‖ / x₀ = 2 * (‖f 0‖ / x₀) := by ring
     rw [h2]
-    linarith
+    linarith only [h1]
   have hALbound : A / L ≤ 3 * Q * M := by
     have h1 : A / L ≤ 3 * Q / L := by
-      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith [hA3]
+      exact div_le_div_of_nonneg_right hA3 hLpos.le
     have h2 : 3 * Q / L ≤ 3 * Q * M := by
       rw [div_eq_mul_inv, hMdef]
       exact mul_le_mul_of_nonneg_left hinvL (by positivity)
-    linarith
+    linarith only [h1, h2]
   have hstep1 : (L / (2 * Real.pi)) * (A / L^2 * 2000 * (lg + 1)) + L * (A / (L^2 * ‖s‖^2))
       ≤ (A / L) * P * lg := by
     rw [heq1, heq2]
     have h1 : (A / L) * (1000 / Real.pi) * (lg + 1) ≤ (A / L) * (1000 / Real.pi) * (3 * lg) := by
       have hc : (0:ℝ) ≤ (A / L) * (1000 / Real.pi) := by positivity
-      have h5 : lg + 1 ≤ 3 * lg := by linarith
+      have h5 : lg + 1 ≤ 3 * lg := by linarith only [hlg_half]
       exact mul_le_mul_of_nonneg_left h5 hc
     have h2 : (A / L) * (1 / ‖s‖^2) ≤ (A / L) * (12 * lg) := by
-      have h4 : 1 / ‖s‖^2 ≤ 12 * lg := by linarith
+      have h4 : 1 / ‖s‖^2 ≤ 12 * lg := by linarith only [h1s, hlg_half]
       exact mul_le_mul_of_nonneg_left h4 hALnn
     have h3 : (A / L) * (1000 / Real.pi) * (3 * lg) + (A / L) * (12 * lg) = (A / L) * P * lg := by
       rw [hPdef]; ring
-    linarith [h1, h2, h3.le, h3.ge]
+    linarith only [h1, h2, h3.le, h3.ge]
   have hstep2 : (A / L) * P * lg ≤ 3 * P * Q * M * lg := by
     have hc : (0:ℝ) ≤ P * lg := by rw [hPdef]; positivity
     have h := mul_le_mul_of_nonneg_right hALbound hc
@@ -320,9 +319,9 @@ theorem explicitFormula_chi_gen_crux (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
     have h1 : 3 * P ≤ 100000 := by
       rw [hPdef]
       have h2 : 3000 / Real.pi < 1000 := by
-        rw [div_lt_iff₀ (by linarith : (0:ℝ) < Real.pi)]
-        nlinarith
-      linarith
+        rw [div_lt_iff₀ (by linarith only [hpi] : (0:ℝ) < Real.pi)]
+        linarith only [hpi]
+      linarith only [h2]
     have hc : (0:ℝ) ≤ Q * M * lg := by positivity
     have h := mul_le_mul_of_nonneg_right h1 hc
     calc 3 * P * Q * M * lg = (3 * P) * (Q * M * lg) := by ring

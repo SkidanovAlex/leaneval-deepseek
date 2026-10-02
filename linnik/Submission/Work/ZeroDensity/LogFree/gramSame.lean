@@ -220,13 +220,13 @@ lemma norm_gramPhi_strip_decay_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0
   have hA0 : 0 < A := by rw [hA]; positivity
   have hB1 : 1 ≤ B := by
     rw [hB]
-    exact one_le_pow₀ (by linarith [abs_nonneg s.im])
+    exact one_le_pow₀ (by linarith only [abs_nonneg s.im])
   refine ⟨C₁ * A * (C₂ * B) * ((Nat.ceil W : ℝ) ^ 2) + 1, by positivity, 16, ?_⟩
   intro z hzre1 hzre2 hzim
   have hzre_ge2 : (2:ℝ) ≤ |z.im| := by
-    have : (2:ℝ) ≤ 2 * (1 + |s.im|) := by nlinarith [abs_nonneg s.im]
-    linarith
-  have hzre_ge1 : (1:ℝ) ≤ |z.im| := by linarith
+    have : (2:ℝ) ≤ 2 * (1 + |s.im|) := by linarith only [abs_nonneg s.im]
+    linarith only [this, hzim]
+  have hzre_ge1 : (1:ℝ) ≤ |z.im| := by linarith only [hzre_ge2]
   have hzne : z ≠ 0 := by
     intro h
     have him := congrArg Complex.im h
@@ -279,7 +279,7 @@ lemma norm_gramPhi_strip_decay_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0
     have hstep : |(z - s).im| + 3 ≤ (1 + |z.im|) * (3 + |s.im|) := by
       have h0 : (0:ℝ) ≤ |z.im| := abs_nonneg _
       have h1 : (0:ℝ) ≤ |s.im| := abs_nonneg _
-      nlinarith
+      nlinarith only [himb, h0, h1]
     have h4 : (|(z - s).im| + 3) ^ 4 ≤ ((1 + |z.im|) * (3 + |s.im|)) ^ 4 :=
       pow_le_pow_left₀ (by linarith) hstep 4
     calc C₂ * (|(z - s).im| + 3) ^ 4 ≤ C₂ * ((1 + |z.im|) * (3 + |s.im|)) ^ 4 :=
@@ -290,7 +290,7 @@ lemma norm_gramPhi_strip_decay_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0
   -- assemble
   set L : ℝ := 1 + |z.im| with hL
   set E : ℝ := Real.exp (-(Real.pi / 2) * |z.im|) with hE
-  have hL1 : (1:ℝ) ≤ L := by rw [hL]; linarith [abs_nonneg z.im]
+  have hL1 : (1:ℝ) ≤ L := by rw [hL]; linarith only [abs_nonneg z.im]
   have hEpos : 0 < E := by rw [hE]; positivity
   have hKpos : 0 < C₁ * A * (C₂ * B) * ((Nat.ceil W : ℝ) ^ 2) := by
     have h2 : (0:ℝ) < (Nat.ceil W : ℝ) ^ 2 := by positivity
@@ -380,7 +380,7 @@ lemma dslope_gramPsi_horiz_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0 < X
   set B₂ : ℝ := Bc + 1 with hB₂
   have hB₁1 : C * (3 + ‖s‖) ≤ B₁ := by
     rw [hB₁]; nlinarith [hCpos, norm_nonneg s]
-  have hB₂1 : Bc ≤ B₂ := by rw [hB₂]; linarith [hBc0]
+  have hB₂1 : Bc ≤ B₂ := by rw [hB₂]; linarith only [hBc0]
   have hLpos : (0:ℝ) < 2 - s.re := by linarith
   obtain ⟨N₀, hN₀⟩ : ∃ N₀ : ℝ, 1 ≤ N₀ ∧ 2 * (1 + |s.im|) ≤ N₀ ∧ 2 * ‖s + 1‖ ≤ N₀ := by
     refine ⟨max 1 (max (2 * (1 + |s.im|)) (2 * ‖s + 1‖)), ?_, ?_, ?_⟩
@@ -454,12 +454,12 @@ lemma dslope_gramPsi_horiz_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0 < X
               norm_add_le _ _
           _ = |x| + |r| := by simp
           _ ≤ 2 + |r| := by
-              have hxabs : |x| ≤ 2 := by rw [abs_le]; exact ⟨by linarith [hs1, hx1], hx2⟩
-              linarith
+              have hxabs : |x| ≤ 2 := by rw [abs_le]; exact ⟨by linarith only [hs1, hx1], hx2⟩
+              linarith only [hxabs]
       have h3 : ‖s + 1‖ ≤ ‖s‖ + 1 := by
         calc ‖s + 1‖ ≤ ‖s‖ + ‖(1:ℂ)‖ := norm_add_le _ _
           _ = ‖s‖ + 1 := by simp
-      nlinarith [hrabs1, norm_nonneg s, norm_nonneg (s + 1)]
+      nlinarith only [h1, h2, h3, hrabs1, norm_nonneg s, abs_nonneg r]
     have hpsi_bd : ‖gramPsi W X U' s z‖ ≤ C * (3 + ‖s‖) * (1 + |r|) ^ (n + 1)
         * Real.exp (-(Real.pi / 2) * |r|) := by
       rw [hpsi, norm_mul]
@@ -477,7 +477,7 @@ lemma dslope_gramPsi_horiz_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0 < X
             rw [hBc]; linarith
     have hnumNN : (0:ℝ) ≤ C * (3 + ‖s‖) * (1 + |r|) ^ (n + 1)
         * Real.exp (-(Real.pi / 2) * |r|) + Bc := by
-      have h5 : (0:ℝ) ≤ (1 + |r|) ^ (n + 1) := pow_nonneg (by linarith [abs_nonneg r]) _
+      have h5 : (0:ℝ) ≤ (1 + |r|) ^ (n + 1) := pow_nonneg (by linarith only [abs_nonneg r]) _
       have h6 : (0:ℝ) ≤ Real.exp (-(Real.pi / 2) * |r|) := (Real.exp_pos _).le
       have h7 : (0:ℝ) ≤ C * (3 + ‖s‖) := le_of_lt (mul_pos hCpos (by positivity))
       have h8 : (0:ℝ) ≤ C * (3 + ‖s‖) * (1 + |r|) ^ (n + 1) := mul_nonneg h7 h5
@@ -636,7 +636,7 @@ lemma integrable_gramPhi_shift_aux (W X U' : ℝ) (s : ℂ) (hW : 1 < W) (hX : 0
   have hIntΓ := integrable_gamma_shifted (1 : ℝ) (by norm_num) (δ := -s.re / 2) hδpos s.re hs1
     (by linarith)
   have hK0 : 0 ≤ C * (2 + |s.im|) * (X ^ (s.re) + U' ^ (s.re)) * (2 * W) ^ 2 := by
-    have h1 : (0:ℝ) ≤ 2 + |s.im| := by linarith [abs_nonneg s.im]
+    have h1 : (0:ℝ) ≤ 2 + |s.im| := by linarith only [abs_nonneg s.im]
     have h2 : (0:ℝ) ≤ X ^ (s.re) + U' ^ (s.re) :=
       add_nonneg (Real.rpow_nonneg hX.le _) (Real.rpow_nonneg hU'.le _)
     have h3 : (0:ℝ) ≤ (2 * W) ^ 2 := by positivity
@@ -838,12 +838,12 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
         ≤ C * (Lscale q T) ^ E * Dpow q T (-p.η) := by
   obtain ⟨C₀, hC₀pos, hC₀⟩ := norm_gramPhi_shift p.η p.hη
   have hδpos : 0 < min (2 * p.σ₀ - 1) (1 / 2) :=
-    lt_min (by linarith [p.hσ₀]) (by norm_num)
+    lt_min (by linarith only [p.hσ₀]) (by norm_num)
   have hδlt : min (2 * p.σ₀ - 1) (1 / 2) < 1 := by
     have h := min_le_right (2 * p.σ₀ - 1) (1 / 2 : ℝ); linarith
   obtain ⟨CΓ, hCΓpos, hCΓ⟩ :=
     gamma_integral_shifted_cross ((1 : ℝ) / 2 + p.η) (min (2 * p.σ₀ - 1) (1 / 2))
-      (by linarith [p.hη]) hδpos hδlt
+      (by linarith only [p.hη]) hδpos hδlt
   refine ⟨max 1 (C₀ * 8 * 4 ^ ((1 : ℝ) / 2 + p.η) * CΓ * (1 / (2 * c₀))
     * (1 / (2 * Real.pi)) + 1), by positivity, 3, ?_⟩
   intro q hq _ T hT hD6 ρ ρ' hρσ hρ1 hρ'σ hρ'1 him him' hlam hlam'
@@ -871,9 +871,9 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     simp only [Complex.sub_re, Complex.one_re, Complex.add_re, Complex.conj_re]
     ring
   have hsre_gt : -1 < (1 - ρ - (starRingEnd ℂ) ρ').re := by
-    rw [hsre]; linarith [hρ1, hρ'1, hμ]
+    rw [hsre]; linarith only [hρ1, hρ'1, hμ]
   have hsre_lt : (1 - ρ - (starRingEnd ℂ) ρ').re < 0 := by
-    rw [hsre]; linarith [hμge, p.hσ₀]
+    rw [hsre]; linarith only [hμge, p.hσ₀]
   have h1μ : 2 * c₀ ≤ (1 - μ) * Lscale q T := by
     have h2 : (1 - ρ.re) * Lscale q T + (1 - ρ'.re) * Lscale q T
         = (2 - ρ.re - ρ'.re) * Lscale q T := by ring
@@ -881,12 +881,12 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
       rw [← h2]; linarith
     have h4 : 2 - ρ.re - ρ'.re = 1 - μ := by rw [hμ]; ring
     rwa [h4] at h3
-  have h1μpos : 0 < 1 - μ := by nlinarith [h1μ, hc₀, hLpos]
+  have h1μpos : 0 < 1 - μ := by nlinarith only [h1μ, hc₀, hLpos]
   have hμδ : min (2 * p.σ₀ - 1) (1 / 2) ≤ -((1 - ρ - (starRingEnd ℂ) ρ').re) := by
-    rw [hsre]; linarith [hμge, min_le_left (2 * p.σ₀ - 1) (1 / 2 : ℝ)]
+    rw [hsre]; linarith only [hμge, min_le_left (2 * p.σ₀ - 1) (1 / 2 : ℝ)]
   set sg : ℂ := 1 - ρ - (starRingEnd ℂ) ρ' with hsg
   have hsg_re : sg.re = -μ := by rw [hsg]; exact hsre
-  have hΓint := integrable_gamma_shifted ((1 : ℝ) / 2 + p.η) (by linarith [p.hη]) hδpos
+  have hΓint := integrable_gamma_shifted ((1 : ℝ) / 2 + p.η) (by linarith only [p.hη]) hδpos
     sg.re (by rw [hsg_re]; linarith [p.hσ₀])
     (by rw [hsg_re]; linarith [hμge, hμδ])
   have hΓbd : ∫ t : ℝ, ‖Complex.Gamma ((sg.re : ℂ) + (t : ℂ) * Complex.I)‖
@@ -906,14 +906,14 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     rw [h]
     calc |-ρ.im + ρ'.im| ≤ |-ρ.im| + |ρ'.im| := abs_add_le _ _
       _ = |ρ.im| + |ρ'.im| := by rw [abs_neg]
-      _ ≤ 2 * T := by linarith [him, him']
+      _ ≤ 2 * T := by linarith only [him, him']
   set A : ℝ := C₀ * (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η)
       * ((Dpow q T p.x) ^ (sg.re) + (Dpow q T p.u / (Lscale q T) ^ 2) ^ (sg.re))
       * (2 * Dpow q T p.w) ^ 2 with hA
   have hA0 : 0 ≤ A := by
     rw [hA]
     have h1 : (0:ℝ) ≤ (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η) :=
-      Real.rpow_nonneg (by linarith [abs_nonneg sg.im]) _
+      Real.rpow_nonneg (by linarith only [abs_nonneg sg.im]) _
     have h2 : (0:ℝ) ≤ (Dpow q T p.x) ^ (sg.re) + (Dpow q T p.u / (Lscale q T) ^ 2) ^ (sg.re) :=
       add_nonneg (Real.rpow_nonneg (le_of_lt hXpos) _) (Real.rpow_nonneg (le_of_lt hU'pos) _)
     positivity
@@ -926,8 +926,8 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     have h2 : (2 + |sg.im| + |t|) ^ ((1 : ℝ) / 2 + p.η)
         ≤ (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η) * (2 + |t|) ^ ((1 : ℝ) / 2 + p.η) := by
       rw [← Real.mul_rpow (by positivity) (by positivity)]
-      refine Real.rpow_le_rpow (by positivity) ?_ (by linarith [p.hη])
-      nlinarith [abs_nonneg sg.im, abs_nonneg t]
+      refine Real.rpow_le_rpow (by positivity) ?_ (by linarith only [p.hη])
+      nlinarith only [abs_nonneg sg.im, abs_nonneg t]
     rw [hA]
     have h3 : C₀ * (2 + |sg.im| + |t|) ^ ((1:ℝ)/2 + p.η)
         ≤ C₀ * ((2 + |sg.im|) ^ ((1:ℝ)/2 + p.η) * (2 + |t|) ^ ((1:ℝ)/2 + p.η)) :=
@@ -937,7 +937,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
       add_nonneg (Real.rpow_nonneg (le_of_lt hXpos) _) (Real.rpow_nonneg (le_of_lt hU'pos) _)
     have h6 : (0:ℝ) ≤ (2 * Dpow q T p.w) ^ 2 := by positivity
     have h7 : (0:ℝ) ≤ (2 + |t|) ^ ((1:ℝ)/2 + p.η) :=
-      Real.rpow_nonneg (by linarith [abs_nonneg t]) _
+      Real.rpow_nonneg (by linarith only [abs_nonneg t]) _
     calc ‖gramPhi (Dpow q T p.w) (Dpow q T p.x) (Dpow q T p.u / (Lscale q T) ^ 2) sg
             ((sg.re : ℝ) + (t : ℂ) * Complex.I)‖
         ≤ C₀ * (2 + |sg.im| + |t|) ^ ((1 : ℝ) / 2 + p.η)
@@ -989,13 +989,13 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     rw [h1]
     have hLc : (1:ℝ) / (1 - μ) ≤ Lscale q T / (2 * c₀) := by
       rw [div_le_div_iff₀ h1μpos (by positivity : (0:ℝ) < 2 * c₀)]
-      nlinarith [h1μ]
+      linarith only [h1μ]
     calc CΓ / (1 - μ) = CΓ * (1 / (1 - μ)) := by rw [div_eq_mul_one_div]
       _ ≤ CΓ * (Lscale q T / (2 * c₀)) := mul_le_mul_of_nonneg_left hLc hCΓpos.le
   -- the bound for the constant `A`
   -- ============ the numerical assembly ============
   have hq2 : (2 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-  have hμ0 : 0 ≤ μ := by linarith [hμge, p.hσ₀]
+  have hμ0 : 0 ≤ μ := by linarith only [hμge, p.hσ₀]
   have h2μ0 : 0 ≤ 2 * μ := by linarith
   -- `(2W)^2 ≤ 4 D^{2w}`
   have hWsq' : (2 * Dpow q T p.w) ^ (2 : ℕ) ≤ 4 * Dpow q T (2 * p.w) := by
@@ -1012,7 +1012,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     rw [hsg_re, Dpow, Dpow, ← Real.rpow_mul hDpos.le]
     refine Real.rpow_le_rpow_of_exponent_le hDge1 ?_
     have hx1 : p.u < p.x := lt_trans p.huv p.hvx
-    nlinarith [hx1, hμ0]
+    linarith only [mul_le_mul_of_nonneg_right hx1.le hμ0]
   -- `U'^σ = D^{-u μ} L^{2 μ}`
   have hUle : (Dpow q T p.u / (Lscale q T) ^ 2) ^ (sg.re)
       = Dpow q T (-(p.u * μ)) * (Lscale q T) ^ (2 * μ) := by
@@ -1042,17 +1042,17 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
   -- `(2+|Im s|)^r ≤ 4^r D^r`
   have hsgim' : (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η)
       ≤ 4 ^ ((1 : ℝ) / 2 + p.η) * Dpow q T ((1 : ℝ) / 2 + p.η) := by
-    have h1 : 2 + |sg.im| ≤ 2 + 2 * T := by linarith [hsgim]
+    have h1 : 2 + |sg.im| ≤ 2 + 2 * T := by linarith only [hsgim]
     have h2 : 2 + 2 * T ≤ 4 * T := by linarith
     have h3 : (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η) ≤ (4 * T) ^ ((1 : ℝ) / 2 + p.η) :=
-      Real.rpow_le_rpow (by linarith [abs_nonneg sg.im]) (le_trans h1 h2) (by linarith [p.hη])
+      Real.rpow_le_rpow (by linarith only [abs_nonneg sg.im]) (le_trans h1 h2) (by linarith only [p.hη])
     have h4 : (4 * T) ^ ((1 : ℝ) / 2 + p.η)
         = 4 ^ ((1 : ℝ) / 2 + p.η) * T ^ ((1 : ℝ) / 2 + p.η) :=
       Real.mul_rpow (by norm_num) (by linarith)
     have h5 : T ^ ((1 : ℝ) / 2 + p.η) ≤ Dpow q T ((1 : ℝ) / 2 + p.η) := by
       rw [Dpow]
-      refine Real.rpow_le_rpow (by linarith) ?_ (by linarith [p.hη])
-      rw [scale]; nlinarith [hq2, hT]
+      refine Real.rpow_le_rpow (by linarith) ?_ (by linarith only [p.hη])
+      rw [scale]; nlinarith only [hq2, hT]
     rw [h4] at h3
     calc (2 + |sg.im|) ^ ((1 : ℝ) / 2 + p.η)
         ≤ 4 ^ ((1 : ℝ) / 2 + p.η) * T ^ ((1 : ℝ) / 2 + p.η) := h3
@@ -1068,7 +1068,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     have hDun : 0 ≤ Dpow q T (-(p.u * μ)) := Real.rpow_nonneg hDpos.le _
     have h3 : Dpow q T (-(p.u * μ)) ≤ Dpow q T (-(p.u * μ)) * (Lscale q T) ^ (2 * μ) :=
       le_mul_of_one_le_right hDun hL2μ1
-    linarith [hXle, h3]
+    linarith only [hXle, h3]
   -- the bound for `A`
   have hA_bound : A ≤ C₀ * (4 ^ ((1 : ℝ) / 2 + p.η) * Dpow q T ((1 : ℝ) / 2 + p.η))
       * (2 * (Dpow q T (-(p.u * μ)) * (Lscale q T) ^ (2 * μ))) * (4 * Dpow q T (2 * p.w)) := by
@@ -1095,7 +1095,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     rw [h1]
     have hLc : (1:ℝ) / (1 - μ) ≤ Lscale q T / (2 * c₀) := by
       rw [div_le_div_iff₀ h1μpos (by positivity : (0:ℝ) < 2 * c₀)]
-      nlinarith [h1μ]
+      linarith only [h1μ]
     calc CΓ / (1 - μ) = CΓ * (1 / (1 - μ)) := by rw [div_eq_mul_one_div]
       _ ≤ CΓ * (Lscale q T / (2 * c₀)) := mul_le_mul_of_nonneg_left hLc hCΓpos.le
   -- the `D`-exponent
@@ -1104,7 +1104,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
     have hexp : (1 : ℝ) / 2 + p.η - p.u * μ + 2 * p.w ≤ -p.η := by
       have hP2 := p.P2
       have hu0 : 0 < p.u := lt_trans p.hw p.hwu
-      nlinarith [hP2, hμge, hu0]
+      nlinarith only [hP2, hμge, hu0, mul_le_mul_of_nonneg_left hμge hu0.le]
     have e1 : Dpow q T ((1 : ℝ) / 2 + p.η) * Dpow q T (-(p.u * μ))
         = Dpow q T ((1 : ℝ) / 2 + p.η + -(p.u * μ)) := by
       rw [Dpow, Dpow, Dpow, ← Real.rpow_add hDpos]
@@ -1113,10 +1113,10 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
       rw [Dpow, Dpow, Dpow, ← Real.rpow_add hDpos]
     rw [e1, e2, Dpow, Dpow]
     refine Real.rpow_le_rpow_of_exponent_le hDge1 ?_
-    linarith [hexp]
+    linarith only [hexp]
   -- the `L`-exponent
   have hLexp : (Lscale q T) ^ (2 * μ) * Lscale q T ≤ (Lscale q T) ^ (3 : ℝ) := by
-    have hμle : μ ≤ 1 := by rw [hμ]; linarith [hρ1, hρ'1]
+    have hμle : μ ≤ 1 := by rw [hμ]; linarith only [hρ1, hρ'1]
     have h1 : (Lscale q T) ^ (2 * μ + 1) ≤ (Lscale q T) ^ (3 : ℝ) :=
       Real.rpow_le_rpow_of_exponent_le hLge1 (by linarith)
     have h2 : (Lscale q T) ^ (2 * μ + 1) = (Lscale q T) ^ (2 * μ) * Lscale q T := by
@@ -1136,7 +1136,7 @@ theorem gramPhi_shift_integral_bound_aux (p : Params) (c₀ : ℝ) (hc₀ : 0 < 
             * (2 * (Dpow q T (-(p.u * μ)) * (Lscale q T) ^ (2 * μ)))
             * (4 * Dpow q T (2 * p.w)) * (CΓ * (Lscale q T / (2 * c₀)))) := by
     refine mul_le_mul_of_nonneg_left ?_ (by positivity)
-    exact mul_le_mul hA_bound hΓ' (div_nonneg hCΓpos.le (by linarith [hsre_gt]))
+    exact mul_le_mul hA_bound hΓ' (div_nonneg hCΓpos.le (by linarith only [hsre_gt]))
       (le_trans hA0 hA_bound)
   have heq : (1 / (2 * Real.pi))
         * ((C₀ * (4 ^ ((1 : ℝ) / 2 + p.η) * Dpow q T ((1 : ℝ) / 2 + p.η)))
@@ -1209,7 +1209,7 @@ theorem gramSame (p : Work.ZeroDensity.LogFree.Params) :
     rw [Dpow]; exact div_pos (Real.rpow_pos_of_pos hDpos _) (pow_pos hLpos 2)
   have hs0 : (1 - ρ - (starRingEnd ℂ) ρ').re < 0 := by
     simp only [Complex.sub_re, Complex.one_re, Complex.conj_re]
-    linarith [hρσ, hρ'σ, p.hσ₀]
+    linarith only [hρσ, hρ'σ, p.hσ₀]
   rw [gramEntryFree_eq_pole_add_aux (Dpow q T p.w) (Dpow q T p.x)
     (Dpow q T p.u / (Lscale q T) ^ 2) ρ ρ' hW1 hXpos hU'pos hρ1 hρ'1 hs0]
   rw [add_sub_cancel_left]

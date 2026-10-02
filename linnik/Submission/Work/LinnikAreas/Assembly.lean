@@ -82,7 +82,7 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
     Work.LinnikContract.Area2 := by
   intro ε hε
   obtain ⟨C, hCpos, hidC⟩ := hid
-  have hε4 : 0 < ε / 4 := by linarith
+  have hε4 : 0 < ε / 4 := by linarith only [hε]
   obtain ⟨R, hRpos, q₁, hq₁⟩ := hfar (ε / 4) hε4
   have hlogtop : Filter.Tendsto (fun q : ℕ => Real.log (q : ℝ)) Filter.atTop Filter.atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
@@ -125,9 +125,9 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
   have hsmall1 : C / Real.log (q : ℝ) ≤ ε / 4 := by
     have h4 : 4 * C ≤ ε * Real.log (q : ℝ) := by
       have := (div_le_iff₀ hε).mp (hN₁ q hN₁')
-      linarith
+      linarith only [this]
     rw [div_le_div_iff₀ hlogq (by norm_num : (0 : ℝ) < 4)]
-    linarith
+    linarith only [h4]
   set Y : ℝ := C * (q.totient : ℝ) * (q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ) with hY
   have hsmall2 : Y ≤ ε / 4 := by
     have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast (by omega : 0 < q)
@@ -147,7 +147,7 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
     have hbound : C * (q.totient : ℝ) * (q : ℝ) ^ (-((49 : ℝ) / 20))
         ≤ C * (q : ℝ) ^ (-((29 : ℝ) / 20)) := by
       have hrp : 0 ≤ (q : ℝ) ^ (-((49 : ℝ) / 20)) := le_of_lt (Real.rpow_pos_of_pos hqpos _)
-      have hφle' : C * (q.totient : ℝ) ≤ C * (q : ℝ) := by nlinarith [hφle, hCpos]
+      have hφle' : C * (q.totient : ℝ) ≤ C * (q : ℝ) := by nlinarith only [hφle, hCpos]
       calc C * (q.totient : ℝ) * (q : ℝ) ^ (-((49 : ℝ) / 20))
           = (C * (q.totient : ℝ)) * (q : ℝ) ^ (-((49 : ℝ) / 20)) := rfl
         _ ≤ (C * (q : ℝ)) * (q : ℝ) ^ (-((49 : ℝ) / 20)) :=
@@ -157,16 +157,16 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
     have hlogbig : 1 ≤ ε * Real.log (q : ℝ) := by
       have h := hN₂ q hN₂'
       have he := (div_le_iff₀ hε).mp h
-      linarith
+      linarith only [he]
     have hstep1 : Y ≤ (1 / 4) / Real.log (q : ℝ) := by
       rw [hY, div_le_div_iff₀ hlogq hlogq]
-      have hY2 : C * (q : ℝ) ^ (-((29 : ℝ) / 20)) < 1 / 4 := by nlinarith [hqinv]
+      have hY2 : C * (q : ℝ) ^ (-((29 : ℝ) / 20)) < 1 / 4 := by linarith only [hqinv]
       have hY1 : C * (q.totient : ℝ) * (q : ℝ) ^ (-((49 : ℝ) / 20)) < 1 / 4 :=
         lt_of_le_of_lt hbound hY2
-      nlinarith [hY1, hlogq]
+      nlinarith only [hY1, hlogq, hqinv, hbound]
     have hstep2 : (1 / 4) / Real.log (q : ℝ) ≤ ε / 4 := by
       rw [div_le_div_iff₀ hlogq (by norm_num : (0 : ℝ) < 4)]
-      nlinarith [hlogbig]
+      linarith only [hlogbig]
     exact le_trans hstep1 hstep2
   set X : ℕ := Nat.ceil ((q : ℝ) ^ ((11 : ℝ) / 2)) with hXdef
   have hXq : (q : ℝ) ^ ((11 : ℝ) / 2) ≤ (X : ℝ) := by
@@ -194,7 +194,7 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
   have hneg : -‖Z‖ ≤ Z.re := by
     have h := Complex.re_le_norm (-Z)
     simp only [Complex.neg_re, norm_neg] at h
-    linarith
+    linarith only [h]
   have hZre : Z.re = (Real.log (q : ℝ))⁻¹ * primeSum q X a
       - ((3 / 10 : ℝ) ^ 2) / (q.totient : ℝ) + (q.totient : ℝ)⁻¹ * boxSigned q R a := by
     have hl : ((Real.log (q : ℝ) : ℂ))⁻¹ = (((Real.log (q : ℝ))⁻¹ : ℝ) : ℂ) := by
@@ -214,7 +214,7 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
             + C * (q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by
     have h := hneg
     rw [hZre] at h
-    linarith
+    linarith only [hqne, hidq, hneg, hZre]
   have hφne : (q.totient : ℝ) ≠ 0 := ne_of_gt hφpos
   have hlogqne : Real.log (q : ℝ) ≠ 0 := ne_of_gt hlogq
   set W : ℝ := (q.totient : ℝ) * ((Real.log (q : ℝ))⁻¹ * primeSum q X a) with hW
@@ -233,13 +233,13 @@ theorem area2_of_classIdentity (hid : ClassIdentityHyp) (hfar : FarBoundHyp) :
     rw [e] at hm
     exact hm
   have hposPS : 0 < primeSum q X a := by
-    have hcore : ((3 / 10 : ℝ) ^ 2) - boxSigned q R a > ε := by linarith [hB]
-    have h1 : C / Real.log (q : ℝ) + farTotalMass q R + Y ≤ 3 * (ε / 4) := by linarith
-    have hbig : 0 < W := by linarith [key2, hcore, h1, hε]
+    have hcore : ((3 / 10 : ℝ) ^ 2) - boxSigned q R a > ε := by linarith only [hB, hqne]
+    have h1 : C / Real.log (q : ℝ) + farTotalMass q R + Y ≤ 3 * (ε / 4) := by linarith only [hqne, hfarq, hsmall1, hsmall2]
+    have hbig : 0 < W := by linarith only [key2, hcore, h1, hε, hqne, hB, hfarq, hsmall1, hsmall2]
     have h2 : 0 < (Real.log (q : ℝ))⁻¹ * primeSum q X a := by
       by_contra hc
       have hc' : (Real.log (q : ℝ))⁻¹ * primeSum q X a ≤ 0 := le_of_not_gt hc
-      nlinarith [hbig, hc', hφpos, hW]
+      nlinarith only [hbig, hc', hφpos, hW, hc]
     have h3 : 0 < Real.log (q : ℝ) * ((Real.log (q : ℝ))⁻¹ * primeSum q X a) :=
       mul_pos hlogq h2
     rwa [← mul_assoc, mul_inv_cancel₀ hlogqne, one_mul] at h3

@@ -42,22 +42,22 @@ private lemma chain_core {N : ℕ} {s δ c C Lmax : ℝ} (hN : 2 ≤ N)
     rw [hddef]
     have hle : 1 / (N : ℝ) ≤ 1 / 2 :=
       one_div_le_one_div_of_le (by norm_num) (by exact_mod_cast hN)
-    linarith
+    linarith only [hle]
   have hinvN : 1 / (N : ℝ) ≤ δ := by
-    rw [div_le_iff₀ hNpos]; linarith [hNδ]
+    rw [div_le_iff₀ hNpos]; linarith only [hNδ]
   have h1 : (1 + u / w) * w = w + u := by
     rw [add_mul, one_mul, div_mul_cancel₀ _ (ne_of_gt hwpos)]
   have hlcw : d * (w + u) ≤ c * u * w := by
     have h := mul_le_mul_of_nonneg_right hlc hwpos.le
     have hid : d * (1 + u / w) * w = d * (w + u) := by rw [mul_assoc, h1]
-    nlinarith [h, hid]
-  have hdiv : d * w ≤ u * (c * w - d) := by nlinarith [hlcw]
+    linarith only [h, hid]
+  have hdiv : d * w ≤ u * (c * w - d) := by linarith only [hlcw]
   have hcw : 0 < c * w - d := by
     have hdw : 0 < d * w := mul_pos hdpos hwpos
     by_contra hle
     rw [not_lt] at hle
-    have h0 : u * (c * w - d) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hupos.le (by linarith)
-    nlinarith
+    have h0 : u * (c * w - d) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hupos.le (by linarith only [hle])
+    linarith only [hlcw, hdw, h0]
   have hu_ge : d * w / (c * w - d) ≤ u := by
     rw [div_le_iff₀ hcw]
     exact hdiv
@@ -72,20 +72,20 @@ private lemma chain_core {N : ℕ} {s δ c C Lmax : ℝ} (hN : 2 ≤ N)
       rw [this, Real.exp_zero]
     have h2 : w - 1 = w * (1 - Real.exp (-(δ * L))) := by
       have hwr : w * Real.exp (-(δ * L)) = 1 := by rw [mul_comm]; exact hwe
-      nlinarith [hwr]
+      linarith only [hwr, hwe]
     rw [h2]
-    have := mul_le_mul_of_nonneg_left (by linarith [hxe] : 1 - Real.exp (-(δ*L)) ≤ δ*L) hwpos.le
-    linarith
+    have := mul_le_mul_of_nonneg_left (by linarith only [hxe] : 1 - Real.exp (-(δ*L)) ≤ δ*L) hwpos.le
+    linarith only [this]
   have hden : c * w - d ≤ δ * w * (1.001 / s + L + 104.001) := by
     have hkey : c * w - d = (c - 1) * w + (w - 1) + 1 / (N : ℝ) := by rw [hddef]; ring
     rw [hkey]
     have hA : (c - 1) * w ≤ δ * (1.001 / s + 103.001) * w := by
       apply mul_le_mul_of_nonneg_right _ hwpos.le
-      linarith [hc]
+      linarith only [hc]
     have hB : 1 / (N : ℝ) ≤ δ * w := by
-      have : δ ≤ δ * w := by nlinarith [hδ.le, hw1]
-      linarith [hinvN]
-    nlinarith [hA, hwsub, hB, hwpos]
+      have : δ ≤ δ * w := by nlinarith only [hδ.le, hw1, hδ]
+      linarith only [hinvN, this]
+    linarith only [hA, hwsub, hB, hwpos]
   have hKpos : 0 < 1.001 / s + L + 104.001 := by positivity
   have hgoal : d / (δ * (1.001 / s + L + 104.001)) ≤ u := by
     have hEq : d / (δ * (1.001 / s + L + 104.001))
@@ -96,7 +96,7 @@ private lemma chain_core {N : ℕ} {s δ c C Lmax : ℝ} (hN : 2 ≤ N)
   have hlogd : -Real.log 2 ≤ Real.log d := by
     have h1 : Real.log (1/2) ≤ Real.log d := Real.log_le_log (by norm_num) hdge
     have h2 : Real.log (1/2) = -Real.log 2 := by rw [one_div, Real.log_inv]
-    linarith
+    linarith only [h1, h2]
   have hlogu : Real.log u = s * Real.log N := by
     rw [hudef, Real.log_rpow hNpos]
   have hloggoal : Real.log (d / (δ * (1.001/s + L + 104.001))) ≤ Real.log u :=
@@ -109,7 +109,7 @@ private lemma chain_core {N : ℕ} {s δ c C Lmax : ℝ} (hN : 2 ≤ N)
   have hCpos : 0 < C := lt_of_lt_of_le (by positivity : (0:ℝ) < 1/s) hC
   have hK'pos : 0 < 1.01 * C + Lmax + 106 := by
     have : 0 < 1.01 * C := mul_pos (by norm_num) hCpos
-    linarith [hLmax, hLpos]
+    linarith only [hLmax, hLpos, hlogN, hCpos]
   have hLK : Real.log (1.001/s + L + 104.001) ≤ Real.log (1.01 * C + Lmax + 106) := by
     apply Real.log_le_log hKpos
     have hC' : 1.001 / s ≤ 1.01 * C := by
@@ -117,15 +117,15 @@ private lemma chain_core {N : ℕ} {s δ c C Lmax : ℝ} (hN : 2 ≤ N)
       have hb : 1.01 / s ≤ 1.01 * C := by
         have hC0 : 1.01 * (1/s) ≤ 1.01 * C := mul_le_mul_of_nonneg_left hC (by norm_num)
         have heq : 1.01 * (1/s) = 1.01 / s := by ring
-        linarith
-      linarith
-    linarith [hC', hLmax]
+        linarith only [hC, heq]
+      linarith only [ha, hb]
+    linarith only [hC', hLmax]
   have hlog2 : Real.log 2 ≤ 1 := by
-    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith
+    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith only [this]
   have h1d : Real.log (1/δ) = -Real.log δ := by rw [one_div, Real.log_inv]
   rw [hlogval] at hloggoal
   rw [hlogu] at hloggoal
-  linarith [hloggoal, hlogd, hLK, hlog2, h1d]
+  linarith only [hloggoal, hlogd, hLK, hlog2, h1d]
 
 /-- **The constant bound of the detector chain.**  From `δ = 1 - β₁ ≤ 1/(10 log q) ≤ 1/10000`,
 `σ ≥ 1/2 + 1/100` and `σ < 1`, the quantity `δ·A_ρ + δ·A_β` (where `A_ρ`, `A_β` are the two
@@ -135,20 +135,20 @@ private lemma const_bound {β₁ σ : ℝ} (hσlo : 1 / 2 + 1 / 100 ≤ σ) (hσ
     (1 - β₁) * ((2 - β₁) / (1 - σ) + 1 / (σ - 1 / 2))
       + (1 - β₁) * ((2 - β₁) / (1 - β₁) + 1 / (β₁ - 1 / 2))
       ≤ 1 + (1 - β₁) * (1.001 / (1 - σ) + 103.001) := by
-  have hs : 0 < 1 - σ := by linarith
-  have hβ1m : 0 < β₁ - 1 / 2 := by linarith
-  have hσm : 0 < σ - 1 / 2 := by linarith
-  have h2b : 2 - β₁ ≤ 1.001 := by linarith
+  have hs : 0 < 1 - σ := by linarith only [hσlt]
+  have hβ1m : 0 < β₁ - 1 / 2 := by linarith only [hδpos, hδle]
+  have hσm : 0 < σ - 1 / 2 := by linarith only [hσlo, hδpos, hδle]
+  have h2b : 2 - β₁ ≤ 1.001 := by linarith only [hδpos, hδle]
   have hT1 : (1 - β₁) * ((2 - β₁) / (1 - σ)) ≤ (1 - β₁) * (1.001 / (1 - σ)) :=
     mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_right h2b hs.le) hδpos.le
   have hσinv : 1 / (σ - 1 / 2) ≤ 100 := by
-    rw [div_le_iff₀ hσm]; nlinarith
+    rw [div_le_iff₀ hσm]; linarith only [hσlo]
   have hT2 : (1 - β₁) * (1 / (σ - 1 / 2)) ≤ (1 - β₁) * 100 :=
     mul_le_mul_of_nonneg_left hσinv hδpos.le
   have hT3 : (1 - β₁) * ((2 - β₁) / (1 - β₁)) = 1 + (1 - β₁) := by
     field_simp; ring
   have hβinv : 1 / (β₁ - 1 / 2) ≤ 2.001 := by
-    rw [div_le_iff₀ hβ1m]; nlinarith
+    rw [div_le_iff₀ hβ1m]; linarith only [hδpos, hδle]
   have hT4 : (1 - β₁) * (1 / (β₁ - 1 / 2)) ≤ (1 - β₁) * 2.001 :=
     mul_le_mul_of_nonneg_left hβinv hδpos.le
   have e1 : (1 - β₁) * ((2 - β₁) / (1 - σ) + 1 / (σ - 1 / 2))
@@ -158,7 +158,7 @@ private lemma const_bound {β₁ σ : ℝ} (hσlo : 1 / 2 + 1 / 100 ≤ σ) (hσ
   have hfin : (1 - β₁) * (1.001 / (1 - σ) + 100) + (1 + (1 - β₁) + (1 - β₁) * 2.001)
       = 1 + (1 - β₁) * (1.001 / (1 - σ) + 103.001) := by ring
   rw [e1, e2]
-  linarith [hT1, hT2, hT3, hT4, hfin]
+  linarith only [hT1, hT2, hT3, hT4, hfin]
 
 /-- **The BGTZ detector chain, isolated.**  With the two Proposition-5.1 bounds for the detector at
 `ρ` (resp. at the exceptional zero `β₁`, with the principal character), the zero-free region
@@ -190,22 +190,22 @@ theorem DetectorChain {q : ℕ} [NeZero q] {χ₁ χ : DirichletCharacter ℂ q}
   have hNpos : (0 : ℝ) < (N : ℝ) := by
     have h : (0 : ℕ) < N := by omega
     exact_mod_cast h
-  have hs : 0 < 1 - ρ.re := by linarith
-  have hlogq : 0 < Real.log q := by linarith
-  have hδsmall : 1 - β₁ < 1 / (10 * Real.log q) := by linarith [hβ₁big]
+  have hs : 0 < 1 - ρ.re := by linarith only [hβ₁lt, hrele]
+  have hlogq : 0 < Real.log q := by linarith only [hβ₁lt, hLbig, hrele, hrege]
+  have hδsmall : 1 - β₁ < 1 / (10 * Real.log q) := by linarith only [hβ₁big]
   have hδle : 1 - β₁ ≤ 1 / 10000 := by
-    have hden : (10000 : ℝ) ≤ 10 * Real.log q := by linarith
+    have hden : (10000 : ℝ) ≤ 10 * Real.log q := by linarith only [hLbig]
     have h : 1 / (10 * Real.log q) ≤ 1 / 10000 :=
       one_div_le_one_div_of_le (by norm_num) hden
-    linarith [hδsmall.le, h]
+    linarith only [hδsmall.le, h, hβ₁big]
   set X : ℝ := Real.log ((q : ℝ) * max 4 |ρ.im|) with hXdef
-  have hXpos : 0 < X := by rw [hXdef]; linarith [hX1]
+  have hXpos : 0 < X := by rw [hXdef]; linarith only [hX1, hβ₁lt, hδle]
   set C : ℝ := X / cZ with hCdef
   have hC : 1 / (1 - ρ.re) ≤ C := by
     rw [hCdef, div_le_div_iff₀ hs hcZ]
     have h := hZFR
     rw [div_le_iff₀ hXpos] at h
-    linarith [h]
+    linarith only [h]
   have hlow := detector_lower_bound χ₁ χ N θw ρ β₁ hsq hθ1 hN2 hrele
   set d : ℝ := 1 - 1 / (N : ℝ) with hddef
   set Aρ : ℝ := (2 - β₁) / (1 - ρ.re) + 1 / (ρ.re - 1 / 2) with hAρdef
@@ -214,7 +214,7 @@ theorem DetectorChain {q : ℕ} [NeZero q] {χ₁ χ : DirichletCharacter ℂ q}
   set D : ℝ := (detector χ₁ 1 N θw (β₁ : ℂ)).re with hDdef
   have hlow2 : d - (N : ℝ) ^ (β₁ - ρ.re) * (D - d) ≤ Aρ * (1 - β₁) * ((N : ℝ) ^ (1 - ρ.re)) :=
     le_trans hlow hupρ
-  have hD : D - d ≤ Aβ * (1 - β₁) * ((N : ℝ) ^ (1 - β₁)) - d := by linarith [hupβ]
+  have hD : D - d ≤ Aβ * (1 - β₁) * ((N : ℝ) ^ (1 - β₁)) - d := by linarith only [hupβ]
   have hNexpnn : 0 ≤ (N : ℝ) ^ (β₁ - ρ.re) := Real.rpow_nonneg hNpos.le _
   have hstep : d + (N : ℝ) ^ (β₁ - ρ.re) * d
       ≤ Aρ * (1 - β₁) * ((N : ℝ) ^ (1 - ρ.re))
@@ -224,7 +224,7 @@ theorem DetectorChain {q : ℕ} [NeZero q] {χ₁ χ : DirichletCharacter ℂ q}
         = (N : ℝ) ^ (β₁ - ρ.re) * (Aβ * (1 - β₁) * ((N : ℝ) ^ (1 - β₁)))
           - (N : ℝ) ^ (β₁ - ρ.re) * d := by ring
     rw [h3] at hm
-    linarith [hlow2, hm]
+    linarith only [hlow2, hm, hupρ, hlow]
   have hNM : (N : ℝ) ^ (β₁ - ρ.re) * (N : ℝ) ^ (1 - β₁) = (N : ℝ) ^ (1 - ρ.re) := by
     rw [← Real.rpow_add hNpos]
     congr 1; ring
@@ -237,10 +237,10 @@ theorem DetectorChain {q : ℕ} [NeZero q] {χ₁ χ : DirichletCharacter ℂ q}
           = Aβ * (1 - β₁) * ((N : ℝ) ^ (1 - ρ.re)) := by
         rw [← hNM]; ring
       rw [h1]; ring
-    nlinarith [hstep, hR]
+    linarith only [hstep, hR]
   have hc : c ≤ 1 + (1 - β₁) * (1.001 / (1 - ρ.re) + 103.001) := by
     rw [hcdef, hAρdef, hAβdef]
-    exact const_bound hrege (by linarith) h1β₁ hδle
+    exact const_bound hrege (by linarith only [hβ₁lt, hrele]) h1β₁ hδle
   have hlc' : (1 - 1 / (N : ℝ)) * (1 + (N : ℝ) ^ ((1 - ρ.re) - (1 - β₁)))
       ≤ c * (N : ℝ) ^ (1 - ρ.re) := by
     have he : (1 - ρ.re) - (1 - β₁) = β₁ - ρ.re := by ring

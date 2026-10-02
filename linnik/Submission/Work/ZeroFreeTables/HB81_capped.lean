@@ -28,14 +28,14 @@ lemma hb81_sub_one_le_two_log (s : ℝ) (h1 : 1 ≤ s) (h2 : s ≤ 2) :
       rw [inv_eq_one_div]
       field_simp <;> ring
     rw [he] at h
-    linarith
+    linarith only [h]
   have h3 : (s - 1) ≤ 2 * ((s - 1) / s) := by
-    have hle : (1:ℝ) ≤ 2 / s := by rw [le_div_iff₀ hs]; linarith
-    have h4 : (s - 1) * 1 ≤ (s - 1) * (2 / s) := mul_le_mul_of_nonneg_left hle (by linarith)
+    have hle : (1:ℝ) ≤ 2 / s := by rw [le_div_iff₀ hs]; linarith only [h2]
+    have h4 : (s - 1) * 1 ≤ (s - 1) * (2 / s) := mul_le_mul_of_nonneg_left hle (by linarith only [h1])
     have he : (s - 1) * (2 / s) = 2 * ((s - 1) / s) := by ring
     rw [mul_one, he] at h4
     exact h4
-  linarith
+  linarith only [hlog, h3]
 
 /-! ## Covering `[4e, ∞)` by dyadic cells -/
 
@@ -64,21 +64,21 @@ theorem HB81_cell_arith (ε₀ ec : ℝ) (hε₀ : 0 < ε₀) (hε₀2 : ε₀ �
     (2 - ε₀) * Real.log (1 / lam₁) ≤ lam₀ := by
   have hXpos : 0 < X := lt_of_lt_of_le (by positivity) hX
   have hlam0pos : 0 < lam₀ := lt_of_lt_of_le hXpos hXle
-  have hτ0 : 0 ≤ 2 - ε₀ := by linarith
+  have hτ0 : 0 ≤ 2 - ε₀ := by linarith only [hε₀2]
   by_cases hL : Real.log (1 / lam₁) ≤ 0
   · exact le_trans (mul_nonpos_of_nonneg_of_nonpos hτ0 hL) hlam0pos.le
   · push_neg at hL
-    have hτec : 2 * (2 - ε₀) * ec - ε₀ / 2 ≤ 0 := by linarith [hsmall]
-    have hs1 : 1 ≤ lam₀ / X := by rw [le_div_iff₀ hXpos]; linarith
-    have hs2 : lam₀ / X ≤ 2 := by rw [div_le_iff₀ hXpos]; linarith
+    have hτec : 2 * (2 - ε₀) * ec - ε₀ / 2 ≤ 0 := by linarith only [hsmall]
+    have hs1 : 1 ≤ lam₀ / X := by rw [le_div_iff₀ hXpos]; linarith only [hXle]
+    have hs2 : lam₀ / X ≤ 2 := by rw [div_le_iff₀ hXpos]; linarith only [h2X]
     have hlog4div : Real.log (4 / X) ≤ -1 := by
       have h4X : 4 / X ≤ 1 / Real.exp 1 := by
         rw [div_le_iff₀ hXpos, show (1:ℝ) / Real.exp 1 * X = X / Real.exp 1 by ring,
           le_div_iff₀ (Real.exp_pos 1)]
-        linarith [hX]
+        linarith only [hX]
       have h := Real.log_le_log (by positivity : (0:ℝ) < 4 / X) h4X
       rw [one_div, Real.log_inv, Real.log_exp] at h
-      linarith
+      linarith only [h]
     have hlogAX : Real.log (4 * X / lam₀ ^ 2) = Real.log (4 / X) - 2 * Real.log (lam₀ / X) := by
       rw [show 4 * X / lam₀ ^ 2 = (4 / X) / (lam₀ / X) ^ 2 by field_simp <;> ring]
       rw [Real.log_div (by positivity) (by positivity), Real.log_pow]
@@ -88,15 +88,15 @@ theorem HB81_cell_arith (ε₀ ec : ℝ) (hε₀ : 0 < ε₀) (hε₀2 : ε₀ �
           + (lam₀ / X - 2 * Real.log (lam₀ / X)) := by
       rw [hlogAX]; ring
     have hb1 : lam₀ / X - 2 * Real.log (lam₀ / X) ≤ 1 := by
-      have := hb81_sub_one_le_two_log (lam₀ / X) hs1 hs2; linarith
+      have := hb81_sub_one_le_two_log (lam₀ / X) hs1 hs2; linarith only [this]
     have hkey2 : (1 / 2 + 1 / X + 2 * ec) * lam₀ + Real.log (4 * X / lam₀ ^ 2)
         ≤ lam₀ / 2 + 2 * ec * lam₀ := by
-      rw [hid]; linarith [hb1, hlog4div]
+      rw [hid]; linarith only [hb1, hlog4div]
     have hfinal : (2 - ε₀) * (lam₀ / 2 + 2 * ec * lam₀) ≤ lam₀ := by
       have he : (2 - ε₀) * (lam₀ / 2 + 2 * ec * lam₀)
           = lam₀ * (1 - ε₀ / 2 + 2 * (2 - ε₀) * ec) := by ring
       rw [he]
-      exact mul_le_of_le_one_right hlam0pos.le (by linarith [hτec])
+      exact mul_le_of_le_one_right hlam0pos.le (by linarith only [hτec, hsmall])
     have hkey : (2 - ε₀) * ((1 / 2 + 1 / X + 2 * ec) * lam₀ + Real.log (4 * X / lam₀ ^ 2)) ≤ lam₀ :=
       le_trans (mul_le_mul_of_nonneg_left hkey2 hτ0) hfinal
     exact le_trans (mul_le_mul_of_nonneg_left hb hτ0) hkey
@@ -111,7 +111,7 @@ theorem HB81_tail_arith (ε₀ ec : ℝ) (hε₀ : 0 < ε₀) (hε₀2 : ε₀ �
     (2 - ε₀) * Real.log (1 / lam₁) ≤ lam₀ := by
   have hXpos : 0 < X := lt_of_lt_of_le (by positivity) hX
   have hlam0pos : 0 < lam₀ := lt_of_lt_of_le hXpos hXle
-  have hτ0 : 0 ≤ 2 - ε₀ := by linarith
+  have hτ0 : 0 ≤ 2 - ε₀ := by linarith only [hε₀2]
   by_cases hL : Real.log (1 / lam₁) ≤ 0
   · exact le_trans (mul_nonpos_of_nonneg_of_nonpos hτ0 hL) hlam0pos.le
   · push_neg at hL
@@ -120,26 +120,26 @@ theorem HB81_tail_arith (ε₀ ec : ℝ) (hε₀ : 0 < ε₀) (hε₀2 : ε₀ �
         rw [div_le_iff₀ hXpos]
         have h := mul_le_mul_of_nonneg_left hXbig (by positivity : (0:ℝ) ≤ ε₀ / 4)
         have he : ε₀ / 4 * (4 * (2 - ε₀) / ε₀) = 2 - ε₀ := by field_simp <;> ring
-        rw [he] at h; linarith [h]
-      have h4 : 2 * (2 - ε₀) * ec ≤ ε₀ / 4 := by linarith [hsmall]
+        rw [he] at h; linarith only [h]
+      have h4 : 2 * (2 - ε₀) * ec ≤ ε₀ / 4 := by linarith only [hsmall]
       have hthis : (2 - ε₀) * (1 / 2 + 1 / X + 2 * ec)
           = (2 - ε₀) / 2 + (2 - ε₀) / X + 2 * (2 - ε₀) * ec := by ring
       have h2 : (2 - ε₀) / 2 = 1 - ε₀ / 2 := by ring
-      rw [hthis, h2]; linarith [h1, h4]
+      rw [hthis, h2]; linarith only [h1, h4, hsmall]
     have hexp1 : (1:ℝ) ≤ Real.exp 1 := by
       rw [← Real.exp_zero]; exact Real.exp_le_exp.mpr (by norm_num)
-    have h4' : (4:ℝ) ≤ lam₀ := by nlinarith [hX, hXle, hexp1]
+    have h4' : (4:ℝ) ≤ lam₀ := by linarith only [hX, hXle, hexp1]
     have hlogle : Real.log (4 * X / lam₀ ^ 2) ≤ 0 := by
       apply Real.log_nonpos (by positivity)
       rw [div_le_one (by positivity)]
-      nlinarith [h4', hXle, hXpos]
+      nlinarith only [h4', hXle, hXpos, hX, hexp1]
     have hkey : (2 - ε₀) * ((1 / 2 + 1 / X + 2 * ec) * lam₀ + Real.log (4 * X / lam₀ ^ 2)) ≤ lam₀ := by
       have h1 : (2 - ε₀) * ((1 / 2 + 1 / X + 2 * ec) * lam₀) ≤ lam₀ := by
         have h := mul_le_mul_of_nonneg_right hcoef hlam0pos.le
-        linarith [h]
+        linarith only [h]
       have h2 : (2 - ε₀) * Real.log (4 * X / lam₀ ^ 2) ≤ 0 :=
         mul_nonpos_of_nonneg_of_nonpos hτ0 hlogle
-      nlinarith [h1, h2]
+      linarith only [h1, h2]
     exact le_trans (mul_le_mul_of_nonneg_left hb hτ0) hkey
 
 /-! ## The `L52Hyp` provider with tunable slack -/
@@ -183,9 +183,9 @@ theorem HB81_l52_shift (εs : ℝ) (hεs : 0 < εs) (εL : ℝ) (hεL : 0 < εL)
   intro s hs1 hs2 hs3
   have hexp_le : Real.exp L₀ ≤ (q : ℝ) := by
     have h1 : Real.exp L₀ ≤ (⌈Real.exp L₀⌉₊ : ℝ) := Nat.le_ceil _
-    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith
+    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith only [hδ0, hδ1]
     have h3 : ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hL₀le : L₀ ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp L₀]
     exact Real.log_le_log (Real.exp_pos L₀) hexp_le
@@ -251,7 +251,7 @@ private theorem hb81_max_of_min {q : ℕ} [NeZero q] (hq2 : 2 ≤ q)
   · exact Or.inl hu1
   · refine Or.inr ?_
     by_cases hre : u.re ≤ 0
-    · linarith
+    · linarith only [hρ0re, hre]
     · push_neg at hre
       have hγ : χ₁.primitiveCharacter.gammaFactor u ≠ 0 :=
         Work.LinnikAreas.OtherCharRepel.gammaFactor_ne_zero_of_re_pos χ₁.primitiveCharacter hre
@@ -267,7 +267,7 @@ private theorem hb81_max_of_min {q : ℕ} [NeZero q] (hq2 : 2 ≤ q)
       rcases hmax u hzmu him with h | h
       · exact absurd (h.trans hρ1eq) hu1
       · rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at h
-        nlinarith [h, hlogq]
+        nlinarith only [h, hlogq]
 
 /-- **HB's `§8.1` triangle inequality** in the vocabulary of the frozen contract: for every width
 `x`, slack `εL`, window radius `δ`, constant `c` and **box height `Hb`** there is a threshold
@@ -328,12 +328,12 @@ theorem HB81_triangle_local (x : ℝ) (hx : 0 < x) (εL : ℝ) (hεL : 0 < εL)
       (by rw [← hρ1eq]; exact hzm1) (by rw [← hρ1eq]; exact h100)
   have hmem1 : ((ρ₁.re : ℝ) : ℂ) ∈ Metric.closedBall (0:ℂ) (|ρ₀.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_le]
-    constructor <;> linarith [abs_nonneg ρ₀.im, hρ1re0, hρ1re1]
+    constructor <;> linarith only [abs_nonneg ρ₀.im, hρ1re0, hρ1re1, hδ0, hδ1]
   have hmem0 : ρ₀ ∈ Metric.closedBall (0:ℂ) (|ρ₀.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right]
     refine le_trans (Complex.norm_le_abs_re_add_abs_im ρ₀) ?_
-    have hre : |ρ₀.re| ≤ 1 := by rw [abs_le]; constructor <;> linarith [hρ0re0, hρ0re1]
-    linarith [abs_nonneg ρ₀.im, hre]
+    have hre : |ρ₀.re| ≤ 1 := by rw [abs_le]; constructor <;> linarith only [hρ0re0, hρ0re1, hδ0, hδ1]
+    linarith only [abs_nonneg ρ₀.im, hre, hδ0, hδ1]
   have hdiv1 : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
       (Metric.closedBall 0 (|ρ₀.im| + 2))) ((ρ₁.re : ℝ) : ℂ) ≠ 0 := by
     rw [hb81_divisor_eq_zeroMult χ₁ hχ1 hmem1, hSie]; norm_num
@@ -362,32 +362,32 @@ theorem HB81_triangle_local (x : ℝ) (hx : 0 < x) (εL : ℝ) (hεL : 0 < εL)
         _ ≤ 100 := by norm_num
     have hd : (1:ℝ) ≤ Real.log 4 := by
       rw [Real.le_log_iff_exp_le (by norm_num)]
-      linarith [Real.exp_one_lt_three]
+      linarith only [Real.exp_one_lt_three, hδ0, hδ1]
     have ha : Real.log 100 ≤ Real.log (Real.log (q:ℝ)) := Real.log_le_log (by norm_num) hlogq100
     have hc : Real.log 4 ≤ Real.log (Real.log (Real.log (q:ℝ))) :=
       Real.log_le_log (by norm_num) (by linarith only [ha, hb])
     have h1 : (1/100:ℝ) ≤ Work.LinnikContract.lamMax q := by
       rw [Work.LinnikContract.lamMax]; linarith only [hc, hd]
-    linarith [h100, h1]
+    linarith only [h100, h1]
   have hβ1 : |1 - ρ₁.re| ≤ δ := by
-    have hlt : 0 < 1 - ρ₁.re := by linarith [hρ1re1]
+    have hlt : 0 < 1 - ρ₁.re := by linarith only [hρ1re1]
     rw [abs_of_pos hlt]
     have heq : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
     rw [heq, div_le_iff₀ hlogq]
     have h2 : 1 ≤ Real.log (q:ℝ) * (100 * δ) := by
-      rw [div_le_iff₀ (by positivity : (0:ℝ) < 100 * δ)] at hlogqδ; linarith [hlogqδ]
-    nlinarith [h100, h2]
+      rw [div_le_iff₀ (by positivity : (0:ℝ) < 100 * δ)] at hlogqδ; linarith only [hlogqδ]
+    linarith only [h100, h2]
   have hLLL : Real.log (Real.log (Real.log (q:ℝ))) ≤ 2 * Real.sqrt (Real.log (Real.log (q:ℝ))) := by
     have hz0 : (0:ℝ) ≤ Real.log (Real.log (q:ℝ)) := by
-      apply Real.log_nonneg; linarith [hlogq100]
+      apply Real.log_nonneg; linarith only [hlogq100, hδ0, hδ1]
     have h := Real.log_le_rpow_div hz0 (show (0:ℝ) < (1:ℝ)/2 by norm_num)
     have h2 : (Real.log (Real.log (q:ℝ)))^((1:ℝ)/2) / ((1:ℝ)/2)
         = 2 * Real.sqrt (Real.log (Real.log (q:ℝ))) := by
       rw [Real.sqrt_eq_rpow, div_eq_mul_inv, show ((1:ℝ)/2)⁻¹ = (2:ℝ) by norm_num, mul_comm]
-    linarith [h, h2.le, h2.ge]
+    linarith only [h, h2.le, h2.ge, h2]
   have hβ0 : |1 - ρ₀.re| ≤ δ := by
-    have hlt : 0 < 1 - ρ₀.re := by linarith [hρ0re1]
+    have hlt : 0 < 1 - ρ₀.re := by linarith only [hρ0re1]
     rw [abs_of_pos hlt]
     have heq : 1 - ρ₀.re = Work.LinnikContract.lamOf q ρ₀ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
@@ -405,21 +405,21 @@ theorem HB81_triangle_local (x : ℝ) (hx : 0 < x) (εL : ℝ) (hεL : 0 < εL)
       have hkey : 2 ≤ 3 * δ * Real.sqrt (Real.log (q:ℝ)) := by
         have hmul := mul_le_mul_of_nonneg_right hs (by positivity : (0:ℝ) ≤ 3 * δ)
         have he : 2 / (3 * δ) * (3 * δ) = 2 := div_mul_cancel₀ 2 (by positivity : (3:ℝ) * δ ≠ 0)
-        nlinarith [hmul, he]
-      nlinarith [hkey, hsnn, hs2]
+        linarith only [hmul, he]
+      nlinarith only [hkey, hsnn, hs2, hδ0, hδ1]
     have hlamMax : Work.LinnikContract.lamMax q ≤ δ * Real.log (q:ℝ) := by
-      rw [Work.LinnikContract.lamMax]; linarith [hLLL, h2, h3]
-    linarith [hcap, hlamMax]
+      rw [Work.LinnikContract.lamMax]; linarith only [hLLL, h2, h3]
+    linarith only [hcap, hlamMax]
   have hy1 : (1:ℝ) ≤ Real.log (Real.log (q:ℝ)) := by
     have h1 : Real.log 100 ≤ Real.log (Real.log (q:ℝ)) := Real.log_le_log (by norm_num) hlogq100
     have h2 : (1:ℝ) ≤ Real.log 100 := by
-      rw [Real.le_log_iff_exp_le (by norm_num)]; linarith [Real.exp_one_lt_three]
-    linarith [h1, h2]
+      rw [Real.le_log_iff_exp_le (by norm_num)]; linarith only [Real.exp_one_lt_three, hδ0, hδ1]
+    linarith only [h1, h2]
   have hs1 : (1/100:ℝ) ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := by
     have h : (1:ℝ) ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := Real.one_le_sqrt.mpr hy1
-    linarith [h]
+    linarith only [h, hδ0, hδ1]
   have hβ1pt : |1 - ρ₁.re| ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) := by
-    have hlt : 0 < 1 - ρ₁.re := by linarith [hρ1re1]
+    have hlt : 0 < 1 - ρ₁.re := by linarith only [hρ1re1]
     rw [abs_of_pos hlt]
     have heq : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
@@ -429,23 +429,23 @@ theorem HB81_triangle_local (x : ℝ) (hx : 0 < x) (εL : ℝ) (hεL : 0 < εL)
     have h2 : (1/100:ℝ) / Real.log (q:ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) :=
       div_le_div_of_nonneg_right hs1 hlogq.le
-    linarith [h1, h2]
+    linarith only [h1, h2]
   have hρ'pt : |1 - ρ₀.re| ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) := by
-    have hlt : 0 < 1 - ρ₀.re := by linarith [hρ0re1]
+    have hlt : 0 < 1 - ρ₀.re := by linarith only [hρ0re1]
     rw [abs_of_pos hlt]
     have heq : 1 - ρ₀.re = Work.LinnikContract.lamOf q ρ₀ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
     rw [heq]
     have hsqn : (0:ℝ) ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := Real.sqrt_nonneg _
     have h2 : Work.LinnikContract.lamMax q ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) := by
-      rw [Work.LinnikContract.lamMax]; linarith [hLLL, hsqn]
+      rw [Work.LinnikContract.lamMax]; linarith only [hLLL, hsqn, hδ0, hδ1, hs1]
     have h1 : Work.LinnikContract.lamOf q ρ₀ / Real.log (q:ℝ)
         ≤ Work.LinnikContract.lamMax q / Real.log (q:ℝ) :=
       div_le_div_of_nonneg_right hcap hlogq.le
     have h3 : Work.LinnikContract.lamMax q / Real.log (q:ℝ)
         ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) :=
       div_le_div_of_nonneg_right h2 hlogq.le
-    linarith [h1, h3]
+    linarith only [h1, h3]
   have hres := hT q hqT χ₁ hχ1 hsq (β₁ := ρ₁.re) (ρ' := ρ₀) hβ1 hβ0 hHb hγ10 hβ1pt hρ'pt
     hdiv1 hdiv0 hne' hmult1 hmaxL hrect1 hcap H
   rwa [← hρ1eq] at hres
@@ -478,12 +478,12 @@ theorem HB81_capped_wide (Hb : ℝ) :
     have hχ1 : χ₁ ≠ 1 := hmin.1.1.1
     have hzm1 : Work.LinnikContract.zeroMult χ₁ ρ₁ ≠ 0 := hmin.1.1.2.1
     obtain ⟨-, -, hlam1pos⟩ := Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq hχ1 hzm1
-    have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith [h4e, Real.exp_pos 1]
+    have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith only [h4e, Real.exp_pos 1]
     have hLpos : 0 < Real.log (1 / Work.LinnikContract.lamOf q ρ₁) := by
       apply Real.log_pos
       rw [one_div, one_lt_inv₀ hlam1pos]
-      linarith [h15]
-    exact le_trans (mul_nonpos_of_nonpos_of_nonneg (by linarith) hLpos.le) hlam0pos.le
+      linarith only [h15, hlam1pos]
+    exact le_trans (mul_nonpos_of_nonpos_of_nonneg (by linarith only [hε2]) hLpos.le) hlam0pos.le
   · push_neg at hε2
     set εs : ℝ := ε / 256 with hεsdef
     set εL : ℝ := ε / 256 with hεLdef
@@ -492,8 +492,8 @@ theorem HB81_capped_wide (Hb : ℝ) :
     have hεL : 0 < εL := by rw [hεLdef]; positivity
     have hec0 : 0 ≤ ec := by rw [hecdef]; positivity
     have hsmall : 8 * (2 - ε) * ec ≤ ε := by
-      rw [hecdef, hεsdef, hεLdef]; nlinarith [hε, hε2.le]
-    have hsmall4 : 4 * (2 - ε) * ec ≤ ε := by linarith [hsmall]
+      rw [hecdef, hεsdef, hεLdef]; nlinarith only [hε, hε2.le]
+    have hsmall4 : 4 * (2 - ε) * ec ≤ ε := by linarith only [hsmall, hε]
     obtain ⟨δ, hδ0, hδ1, qL52, hL52⟩ := HB81_l52_shift εs hεs εL hεL
     obtain ⟨N, hN⟩ := exists_nat_ge (8 / ε)
     set K : ℕ := N + 1 with hKdef
@@ -505,13 +505,13 @@ theorem HB81_capped_wide (Hb : ℝ) :
       have hmono : (2:ℝ)^N ≤ (2:ℝ)^(N+1) :=
         calc (2:ℝ)^N ≤ (2:ℝ)^N * 2 := le_mul_of_one_le_right (by positivity) (by norm_num)
           _ = (2:ℝ)^(N+1) := by ring
-      have h8 : 8 / ε ≤ (2:ℝ)^(N+1) := by linarith [hN, h2, hmono]
+      have h8 : 8 / ε ≤ (2:ℝ)^(N+1) := by linarith only [hN, h2, hmono]
       have h4' : 4 * (2 - ε) / ε ≤ 8 / ε := by
         apply div_le_div_of_nonneg_right _ hε.le
-        nlinarith [hε2.le]
+        linarith only [hε2.le, hε]
       have hpos : (0:ℝ) < 2 ^ (N + 1) := by positivity
-      have hle : 8 / ε ≤ 4 * Real.exp 1 * 2 ^ (N + 1) := by nlinarith [h8, hexp1, hpos]
-      linarith [h4', hle]
+      have hle : 8 / ε ≤ 4 * Real.exp 1 * 2 ^ (N + 1) := by nlinarith only [h8, hexp1, hpos, hN, h2, hmono, hεLdef, hε2, hεs]
+      linarith only [h4', hle]
     let xOf : ℕ → ℝ := fun k => 1 / 2 + 1 / (4 * Real.exp 1 * 2 ^ k) + 2 * ec
     have hxOf : ∀ k, 0 < xOf k := fun k => by simp only [xOf]; positivity
     have hTgen : ∀ k : ℕ, ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q →
@@ -535,7 +535,7 @@ theorem HB81_capped_wide (Hb : ℝ) :
     haveI : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
     have hχ1 : χ₁ ≠ 1 := hmin.1.1.1
     have hzm1 : Work.LinnikContract.zeroMult χ₁ ρ₁ ≠ 0 := hmin.1.1.2.1
-    have hHb : |ρ₀.im| + δ ≤ Hb := by linarith [hHb1, hδ1]
+    have hHb : |ρ₀.im| + δ ≤ Hb := by linarith only [hHb1, hδ1]
     have hq2 : 2 ≤ q := by
       have h' : max qL52 2 ≤ q := le_trans (le_max_right _ _) hq
       omega
@@ -543,7 +543,7 @@ theorem HB81_capped_wide (Hb : ℝ) :
     have hH : Commons.NumberTheory.Linnik.L52Hyp χ₁ (1 / 8 + εs - εL / 4) εL δ :=
       hL52 q (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) hq)) χ₁ hχ1 hsq
     by_cases h100 : Work.LinnikContract.lamOf q ρ₁ < 1 / 100
-    · have hLam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith [h4e, Real.exp_pos 1]
+    · have hLam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith only [h4e, Real.exp_pos 1, hε2, hεLdef, hεs, hexp1]
       rcases HB81_cover (Work.LinnikContract.lamOf q ρ₀) h4e K with ⟨k, hkK, hk1, hk2⟩ | hKle
       · have hkk : k < K + 1 := by omega
         have hqk : qT k ≤ q := le_trans (Finset.le_sup (Finset.mem_range.mpr hkk))
@@ -556,10 +556,10 @@ theorem HB81_capped_wide (Hb : ℝ) :
         have hk2' : Work.LinnikContract.lamOf q ρ₀ ≤ 2 * (4 * Real.exp 1 * 2 ^ k) := by
           have heq : (4:ℝ) * Real.exp 1 * 2 ^ (k + 1) = 2 * (4 * Real.exp 1 * 2 ^ k) := by
             rw [pow_succ]; ring
-          linarith [hk2, heq]
+          linarith only [hk2, heq]
         exact HB81_cell_arith ε ec hε hε2.le hec0 hsmall4 (4 * Real.exp 1 * 2 ^ k)
           (by have hk' : (1:ℝ) ≤ (2:ℝ)^k := by exact_mod_cast (Nat.one_le_two_pow (n := k))
-              nlinarith [hk', Real.exp_pos 1])
+              nlinarith only [hk', Real.exp_pos 1, hexp1])
           (Work.LinnikContract.lamOf q ρ₀) (Work.LinnikContract.lamOf q ρ₁)
           hk1 hk2' hlam1pos (by simpa only [xOf] using hbk)
       · have hkk : K < K + 1 := by omega
@@ -572,16 +572,16 @@ theorem HB81_capped_wide (Hb : ℝ) :
           (by rw [hecdef]; ring) le_rfl h6
         exact HB81_tail_arith ε ec hε hε2.le hec0 hsmall (4 * Real.exp 1 * 2 ^ K)
           (by have hk' : (1:ℝ) ≤ (2:ℝ)^K := by exact_mod_cast (Nat.one_le_two_pow (n := K))
-              nlinarith [hk', Real.exp_pos 1])
+              nlinarith only [hk', Real.exp_pos 1, hexp1])
           hXK (Work.LinnikContract.lamOf q ρ₀) (Work.LinnikContract.lamOf q ρ₁)
           hKle hlam1pos (by simpa only [xOf] using hbk)
     · push_neg at h100
       have hLle : Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ Real.log 100 := by
         apply Real.log_le_log (by positivity)
-        rw [div_le_iff₀ hlam1pos]; linarith [h100]
+        rw [div_le_iff₀ hlam1pos]; linarith only [h100]
       have hLnn : 0 ≤ Real.log (1 / Work.LinnikContract.lamOf q ρ₁) := by
         apply Real.log_nonneg
-        rw [one_div, one_le_inv₀ hlam1pos]; linarith [h15]
+        rw [one_div, one_le_inv₀ hlam1pos]; linarith only [h15]
       have h5 : Real.log 100 ≤ 5 := by
         rw [Real.log_le_iff_le_exp (by norm_num)]
         have he5 : Real.exp 5 = (Real.exp 1) ^ 5 := by
@@ -589,15 +589,15 @@ theorem HB81_capped_wide (Hb : ℝ) :
         rw [he5]
         calc (100:ℝ) ≤ (2.7182818283)^5 := by norm_num
           _ ≤ (Real.exp 1)^5 := pow_le_pow_left₀ (by norm_num) (le_of_lt Real.exp_one_gt_d9) 5
-      have h10 : (10:ℝ) ≤ 4 * Real.exp 1 := by nlinarith [Real.exp_one_gt_d9]
+      have h10 : (10:ℝ) ≤ 4 * Real.exp 1 := by linarith only [Real.exp_one_gt_d9, hε2, hεLdef, hεs]
       have h1 : (2 - ε) * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ 2 * Real.log 100 := by
         have h2 : (2 - ε) * Real.log (1 / Work.LinnikContract.lamOf q ρ₁)
             ≤ 2 * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) :=
-          mul_le_mul_of_nonneg_right (by linarith [hε]) hLnn
+          mul_le_mul_of_nonneg_right (by linarith only [hε, hεLdef, hεs]) hLnn
         have h3 : 2 * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ 2 * Real.log 100 :=
           mul_le_mul_of_nonneg_left hLle (by norm_num)
-        linarith [h2, h3]
-      linarith [h1, h5, h10, h4e]
+        linarith only [h2, h3, hLle]
+      linarith only [h1, h5, h10, h4e]
 
 /-- **The box-`2` case of the triangle engine** (the form used before the strip-provision route):
 a zero `ρ₀ ∈ IsZ` of `χ₁`, `λ`-minimal in the box `|Im| ≤ 2`, with `λ₁ ≤ 1/5` and
@@ -624,8 +624,8 @@ theorem HB81_capped : ∀ ε : ℝ, 0 < ε → ∃ q₀ : ℕ, ∀ q : ℕ, q₀
   have hlog3 : (3:ℝ) ≤ Real.log (q:ℝ) :=
     le_trans (le_max_left (3:ℝ) (1/10)) (hL q hqL')
   exact hq₀ q hq₀' χ₁ ρ₁ ρ₀ hmin hsq him hZ.2.1 hne hmax0
-    (by linarith [hZ.2.2])
-    (by linarith [hZ.2.2, hlog3]) h15 h4e hcap
+    (by linarith only [hZ.2.2, _inst, hZ])
+    (by linarith only [hZ.2.2, hlog3, _inst, hZ]) h15 h4e hcap
 
 end
 

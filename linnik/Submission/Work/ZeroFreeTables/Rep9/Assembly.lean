@@ -48,10 +48,10 @@ theorem P3_ofReal_re (r : ℝ) : (P3 ((r : ℝ) : ℂ)).re = P3R r := by
 theorem cube_le_cube {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (h : x^3 ≤ y^3) : x ≤ y := by
   by_contra hlt
   push_neg at hlt
-  have h1 : 0 < x - y := by linarith
-  have h2 : 0 < x^2 + x*y + y^2 := by nlinarith [sq_nonneg (x + y/2), sq_nonneg y, hx, hy, h1]
+  have h1 : 0 < x - y := by linarith only [hlt]
+  have h2 : 0 < x^2 + x*y + y^2 := by nlinarith only [sq_nonneg (x + y/2), sq_nonneg y, hx, hy, h1, hlt]
   have h3 : (x - y) * (x^2 + x*y + y^2) = x^3 - y^3 := by ring
-  nlinarith [mul_pos h1 h2, h3, h]
+  linarith only [mul_pos h1 h2, h3, h, h1, h2]
 
 /-- `Kond K > 0` for `K > 0`. -/
 theorem Kond_pos {K : ℝ} (hK : 0 < K) : 0 < Kond K :=
@@ -61,46 +61,46 @@ theorem Kond_pos {K : ℝ} (hK : 0 < K) : 0 < Kond K :=
 theorem lam_le_of_cond913 {a K lam : ℝ} (ha : 0 < a) (hK : 0 < K) (hlam : 0 ≤ lam)
     (h : cond913 lam lam a K) : lam ≤ a * (Kond K + 1) := by
   have hcube := cond913_cube_le (a := a) (K := K) (lam := lam) ha hlam h
-  have hK1 : 1 ≤ Kond K + 1 := by have := Kond_pos hK; linarith
+  have hK1 : 1 ≤ Kond K + 1 := by have := Kond_pos hK; linarith only [this]
   have hx0 : 0 ≤ (a + lam)/a := by positivity
-  have hC0 : 0 ≤ (Kond K + 1) := by linarith
+  have hC0 : 0 ≤ (Kond K + 1) := by linarith only [hK1]
   have hstep : (a+lam)/a ≤ Kond K + 1 := by
     apply cube_le_cube hx0 hC0
     have hCC : Kond K + 1 ≤ (Kond K + 1)^3 := by
       simpa using pow_le_pow_right₀ hK1 (by norm_num : (1:ℕ) ≤ 3)
-    linarith [hcube, hCC]
+    linarith only [hcube, hCC]
   have h2 : a + lam ≤ a * (Kond K + 1) := by
-    rw [div_le_iff₀ ha] at hstep; linarith [hstep]
-  linarith
+    rw [div_le_iff₀ ha] at hstep; linarith only [hstep]
+  linarith only [ha, h2]
 
 /-- `Kond K = 4K` when `K ≤ 1/2`, `= K + 3/(4K)` when `K ≥ 1/2`. -/
 theorem Kond_eq_of_le_half {K : ℝ} (hK : 0 < K) (h : K ≤ 1/2) : Kond K = 4*K := by
-  have h4K : 0 < 4*K := by linarith
+  have h4K : 0 < 4*K := by linarith only [hK]
   rw [Kond, min_eq_right]
   have h1 : 3*K ≤ 3/(4*K) := by
     rw [le_div_iff₀ h4K]
-    nlinarith [pow_le_pow_left₀ hK.le h 2]
-  linarith
+    linarith only [pow_le_pow_left₀ hK.le h 2, hK, h]
+  linarith only [h1]
 
 /-- `Kond K = K + 3/(4K)` when `K ≥ 1/2`. -/
 theorem Kond_eq_of_half_le {K : ℝ} (hK : 0 < K) (h : 1/2 ≤ K) : Kond K = K + 3/(4*K) := by
-  have h4K : 0 < 4*K := by linarith
+  have h4K : 0 < 4*K := by linarith only [hK]
   rw [Kond, min_eq_left]
   have h1 : 3/(4*K) ≤ 3*K := by
     rw [div_le_iff₀ h4K]
-    nlinarith [pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 1/2) h 2]
-  linarith
+    linarith only [pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 1/2) h 2, h]
+  linarith only [h1]
 
 /-- `K + 1/4 ≤ K² + K + 1 − K·Kond K`. -/
 theorem slack_ge_Kquarter {K : ℝ} (hK : 0 < K) :
     K + 1/4 ≤ K^2 + K + 1 - K * Kond K := by
   by_cases h : K ≤ 1/2
   · rw [Kond_eq_of_le_half hK h]
-    nlinarith [pow_le_pow_left₀ hK.le h 2]
+    linarith only [pow_le_pow_left₀ hK.le h 2, hK, h]
   · push_neg at h
     rw [Kond_eq_of_half_le hK h.le]
     have h2 : K * (3/(4*K)) = 3/4 := by field_simp
-    linarith [h2.le, h2.ge]
+    linarith only [h2.le, h2.ge, h2]
 
 /-- `1/4 + 1/(48K) ≤ 1/6 + (K²+K+1−K·Kond K)/(12K)` for `K > 0`. -/
 theorem quarter_plus_le_side {K : ℝ} (hK : 0 < K) :
@@ -110,7 +110,7 @@ theorem quarter_plus_le_side {K : ℝ} (hK : 0 < K) :
     div_le_div_of_nonneg_right hS0 (by positivity)
   have h4 : 1/6 + (K + 1/4)/(12*K) = 1/4 + 1/(48*K) := by
     first | (field_simp; ring) | field_simp
-  linarith
+  linarith only [h3, h4]
 
 /-- **The algebraic endgame, in polynomial form.**  If `C = c·(K²+3K+3/2)` satisfies the
 side condition in the cleared form `C·48K ≤ (12K+1)(K²+3K+3/2)` and the derived inequality
@@ -138,7 +138,7 @@ theorem ineq913_diag_of_derived_poly {a K C ε lam : ℝ} (ha : 0 < a) (hK : 0 <
       + (a+lam)*(C/Sp)*Sp := by
     have h : (a+lam)*(C/Sp)*Sp = (a+lam)*C := by
       rw [mul_assoc, div_mul_cancel₀ C (ne_of_gt hSppos)]
-    linarith [hD, h.le, h.ge]
+    linarith only [hD, h.le, h.ge, h]
   exact ineq913_diag_of_derived (a := a) (K := K) (c := C/Sp) (ε := ε) (lam := lam)
     ha hK hε hlam hx3 hc' hD'
 
@@ -147,7 +147,7 @@ theorem A2_mul_Kond_le {K : ℝ} (hK : 0 < K) :
     (K + 1/2) * (Kond K + 1) ≤ 2 * (K^2 + 2*K + 3/4) := by
   by_cases h : K ≤ 1/2
   · rw [Kond_eq_of_le_half hK h]
-    nlinarith [pow_le_pow_left₀ hK.le h 2]
+    linarith only [pow_le_pow_left₀ hK.le h 2, hK, h]
   · push_neg at h
     rw [Kond_eq_of_half_le hK h.le]
     have hexp : (K + 1/2) * (K + 3/(4*K) + 1)
@@ -156,10 +156,10 @@ theorem A2_mul_Kond_le {K : ℝ} (hK : 0 < K) :
     have h2 : (K + 1/2) * (K+1) = K^2 + 3*K/2 + 1/2 := by ring
     have h3 : 3/(8*K) ≤ 3/4 := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < 8*K)]
-      nlinarith
+      linarith only [h]
     have h4 : (1/2:ℝ)^2 ≤ K^2 := pow_le_pow_left₀ (by norm_num) h.le 2
     rw [hexp, h1, h2]
-    linarith [h3, h4, h]
+    linarith only [h3, h4, h, hK]
 
 
 /-! ## The assembly
@@ -241,7 +241,7 @@ theorem pointBound {a e M : ℝ} (ha : 0 < a) (he : 0 < e) (hM : 0 ≤ M) :
   have hi := himp χ hχ hLi (le_of_eq hLdef.symm) hlam0 hlamM s hsre hsim
   have hn := nearSum_primitive_le hq2 χ hχ L s a lam₁ δ hδ0.le hδ1
   have hkey : (a + lam₁) * ((1/4 + e/3) + e/3) = (a + lam₁) * (1/4 + 2*e/3) := by ring
-  linarith [hm, hi, hn, hkey]
+  linarith only [hm, hi, hn, hkey, inst, this]
 
 /-- **Generic case**, primitive `χ₁` with `χ₁² ≠ 1`, `χ₁³ ≠ 1`. -/
 theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε) :
@@ -255,7 +255,7 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
   set e0 : ℝ := e * (K^2+3*K+3/2) / (2*(K^2+K+1/2)) with he0
   have he0pos : 0 < e0 := by rw [he0]; positivity
   set M : ℝ := a * (Kond K + 1) with hMdef
-  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith [Kond_pos hK])
+  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith only [Kond_pos hK, hK])
   obtain ⟨q₀b, δ, hδ0, hδ1, hpb⟩ := pointBound (a := a) (e := e) (M := M) ha hepos hMnn
   obtain ⟨L₀p, hprinc⟩ := principalBoundAmended (a := a) (e := e0) (M := M) ha he0pos
   refine ⟨max (max q₀b (Nat.ceil (Real.exp L₀p)))
@@ -284,7 +284,7 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
   have hMlt : M ≤ δ * L := by
     have h' : M/δ ≤ L := hMδ
     rw [div_le_iff₀ hδ0] at h'
-    linarith [h']
+    linarith only [h']
   have h10 : (10:ℝ) ≤ L := by
     rw [hLdef]
     calc (10:ℝ) ≤ max (M/δ) 10 := le_max_right _ _
@@ -300,7 +300,7 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
   have hχ1ne : χ₁ ≠ 1 := hZ.1
   have hcube := cond913_cube_le (a := a) (K := K) (lam := lamOf q ρ₁) ha hlam0 hcond
   set al : ℝ := a + lamOf q ρ₁ with hal
-  have halpos : 0 < al := by rw [hal]; linarith
+  have halpos : 0 < al := by rw [hal]; linarith only [ha, hlam0]
   set σ : ℂ := ((1 + a / L : ℝ) : ℂ) with hσ
   -- the four per-point bounds
   have hcomb := combination_diag (q := q) χ₁ (a := a) (lam₁ := lamOf q ρ₁) (γ := ρ₁.im) (K := K)
@@ -337,7 +337,7 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
     have hsre : (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hδ0, hδ1]
     have h1 := hpb q hqb χ₁ hχ1ne hlam0 hlamM _ hsre hsim
     have h3 : (2:ℝ) * P3R 1 ≤ P3NearSumL q L χ₁
         (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
@@ -348,58 +348,58 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
         rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- (2) χ₁² at σ + 2iγ and (3) χ₁³ at σ + 3iγ
   have hb2 : SigmaP3L q L (χ₁^2) (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
       ≤ 0 + al*(1/4 + e) := by
     have hsre : (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hδ0, hδ1]
     have h1 := hpb q hqb (χ₁^2) (fun hcon => hχ2 hcon) hlam0 hlamM _ hsre hsim
     have h3 : (0:ℝ) ≤ P3NearSumL q L (χ₁^2)
         (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
       have h := (nearSum_bounds (q := q) (χ₁ := χ₁) (ρ₁ := ρ₁) (a := a) (δ := δ)
         (γ' := 2 * ρ₁.im) hq2 hmin hZ hmult ha hδ0 hδ1 hδlam).2 (χ₁^2) (fun hcon => hχ2 hcon)
-        (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 2 by norm_num)]; linarith [hγ1])
+        (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 2 by norm_num)]; linarith only [hγ1, hδ0, hδ1])
       have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((2*ρ₁.im : ℝ)) : ℂ) * Complex.I)
           = σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I := by
         rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   have hb3 : SigmaP3L q L (χ₁^3) (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
       ≤ 0 + al*(1/4 + e) := by
     have hsre : (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hδ0, hδ1]
     have h1 := hpb q hqb (χ₁^3) (fun hcon => hχ3 hcon) hlam0 hlamM _ hsre hsim
     have h3 : (0:ℝ) ≤ P3NearSumL q L (χ₁^3)
         (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
       have h := (nearSum_bounds (q := q) (χ₁ := χ₁) (ρ₁ := ρ₁) (a := a) (δ := δ)
         (γ' := 3 * ρ₁.im) hq2 hmin hZ hmult ha hδ0 hδ1 hδlam).2 (χ₁^3)
         (fun hcon => hχ3 hcon)
-        (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 3 by norm_num)]; linarith [hγ1])
+        (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 3 by norm_num)]; linarith only [hγ1, hδ0, hδ1])
       have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((3*ρ₁.im : ℝ)) : ℂ) * Complex.I)
           = σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I := by
         rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- assemble (D)
   have hD : 0 ≤ (K^2 + K + 1/2) * P3R (al/a) - (2*K^2 + 4*K + 3/2) * P3R 1
       + al * (1/4 + 3*e/2) * (K^2 + 3*K + 3/2) := by
     have hK2 : (0:ℝ) < K^2 + K + 1/2 := by positivity
     have hK3 : (0:ℝ) < K^2 + 2*K + 3/4 := by positivity
-    have hK5 : (0:ℝ) < K + 1/2 := by linarith
+    have hK5 : (0:ℝ) < K + 1/2 := by linarith only [hK, hδ0, hδ1]
     have he0v : (K^2+K+1/2)*e0 = e/2 * (K^2+3*K+3/2) := by
       first | (rw [he0]; field_simp; ring) | (rw [he0]; field_simp)
     have i0 := mul_le_mul_of_nonneg_left hb0 hK2.le
     have i1 := mul_le_mul_of_nonneg_left hb1 hK3.le
-    have i2 := mul_le_mul_of_nonneg_left hb2 (show (0:ℝ) ≤ K + 1/2 by linarith)
+    have i2 := mul_le_mul_of_nonneg_left hb2 (show (0:ℝ) ≤ K + 1/2 by linarith only [hK, hδ0, hδ1])
     have i3 := mul_le_mul_of_nonneg_left hb3 (show (0:ℝ) ≤ 1/4 by norm_num)
-    nlinarith [hcomb', i0, i1, i2, i3, he0v, mul_nonneg (le_of_lt halpos) hε.le]
+    nlinarith only [hcomb', i0, i1, i2, i3, he0v, mul_nonneg (le_of_lt halpos) hε.le, inst, hcomb, hb3, ha, hδ0, hδ1, hlam0]
   -- the endgame
   have hc : (1/4 + 3*e/2) ≤ 1/6 + (K^2 + K + 1 - K * Kond K)/(12*K) := by
     have h1 := slack_ge_Kquarter hK
@@ -412,9 +412,9 @@ theorem generic_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε
       have h7 : (3/2)*(1/(768*K)) = 1/(512*K) := by ring
       have h8 : 1/(512*K) ≤ 1/(48*K) := by
         rw [div_le_div_iff₀ (by positivity : (0:ℝ) < 512*K) (by positivity : (0:ℝ) < 48*K)]
-        linarith
-      linarith [h6, h7.le, h7.ge, h8]
-    linarith
+        linarith only [hK]
+      linarith only [h6, h7.le, h7.ge, h8, h7]
+    linarith only [h3, h4, h5]
   exact ineq913_diag_of_derived (a := a) (K := K) (c := 1/4 + 3*e/2) (ε := ε)
     (lam := lamOf q ρ₁) ha hK hε hlam0 hcube hc hD
 
@@ -441,31 +441,31 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
   have he0pos : 0 < e0 := by rw [he0def]; positivity
   have he0le : e0 ≤ 3*e/2 := by
     rw [he0def, div_le_iff₀ (by positivity : (0:ℝ) < 2*(K^2+K+1/2))]
-    have h1 : K^2 + 3*K + 3/2 ≤ 3*(K^2+K+1/2) := by nlinarith [sq_nonneg K, hK]
+    have h1 : K^2 + 3*K + 3/2 ≤ 3*(K^2+K+1/2) := by linarith only [sq_nonneg K, hK]
     have h2 : e * (K^2 + 3*K + 3/2) ≤ e * (3*(K^2+K+1/2)) :=
       mul_le_mul_of_nonneg_left h1 hepos.le
     have h3 : (3*e/2) * (2*(K^2+K+1/2)) = e * (3*(K^2+K+1/2)) := by ring
     rw [hSdef]
-    linarith [h2, h3.le, h3.ge]
-  have he0quarter : e0 ≤ 1/4 + e := by linarith [he0le, he12]
+    linarith only [h2, h3.le, h3.ge]
+  have he0quarter : e0 ≤ 1/4 + e := by linarith only [he0le, he12, hepos]
   -- polynomial forms of the size conditions on `e`, `e0`
   have he1' : 768*K*e ≤ 1 := by
     have h := mul_le_mul_of_nonneg_left he1 (by positivity : (0:ℝ) ≤ 768*K)
     have h2 : (768*K)*(1/(768*K)) = 1 := by
       field_simp
-    linarith [h, h2.le, h2.ge]
+    linarith only [h, h2.le, h2.ge, h2]
   have h768 : 768*K*e*S ≤ S := by
     have h := mul_le_mul_of_nonneg_right he1' hSpos.le
     simpa using h
   have he0v : (K^2+K+1/2)*e0 = e*S/2 := by
     first | (rw [he0def]; field_simp; ring) | (rw [he0def]; field_simp)
   have he0les : e0 ≤ e*S := by
-    have hA0 : (1:ℝ)/2 ≤ K^2+K+1/2 := by nlinarith [sq_nonneg K, hK]
+    have hA0 : (1:ℝ)/2 ≤ K^2+K+1/2 := by linarith only [sq_nonneg K, hK]
     have hnn : 0 ≤ e*S := mul_nonneg hepos.le hSpos.le
     have h1 : (e*S)*1 ≤ (e*S)*(2*(K^2+K+1/2)) :=
-      mul_le_mul_of_nonneg_left (by linarith : (1:ℝ) ≤ 2*(K^2+K+1/2)) hnn
+      mul_le_mul_of_nonneg_left (by linarith only [hA0] : (1:ℝ) ≤ 2*(K^2+K+1/2)) hnn
     rw [he0def, div_le_iff₀ (by positivity : (0:ℝ) < 2*(K^2+K+1/2))]
-    linarith [h1]
+    linarith only [h1]
   have h84 : 84*K*e*S ≤ S/2 := by
     have h1 : 84*K*e*S = (84/768)*(768*K*e*S) := by ring
     have h2 : (84/768)*(768*K*e*S) ≤ (84/768)*S :=
@@ -473,24 +473,24 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have h3 : (84/768)*S ≤ (1/2:ℝ)*S :=
       mul_le_mul_of_nonneg_right (by norm_num) hSpos.le
     have h4 : (1/2:ℝ)*S = S/2 := by ring
-    linarith [h1.le, h1.ge, h2, h3, h4.le, h4.ge]
-  have hSge : (3:ℝ)/2 ≤ S := by rw [hSdef]; nlinarith only [sq_nonneg K, hK.le]
+    linarith only [h1.le, h1.ge, h2, h3, h4.le, h4.ge, hSpos, h768]
+  have hSge : (3:ℝ)/2 ≤ S := by rw [hSdef]; linarith only [sq_nonneg K, hK.le]
   set ex : ℝ := e/(4*a*S) with hexdef
   have hexle : ex ≤ 1/(96*K) := by
     have h := div_le_div_of_nonneg_right he3 (by positivity : (0:ℝ) ≤ 4*a*S)
     have h3 : (a*S/(24*K))/(4*a*S) = 1/(96*K) := by
       first | (field_simp; ring) | field_simp
-    linarith [h, h3.le, h3.ge]
+    linarith only [h, h3.le, h3.ge, h3]
   have hexSp : 48*K*(ex*S) ≤ S/2 := by
     have h := mul_le_mul_of_nonneg_right hexle hSpos.le
     have h4 : 48*K*(ex*S) ≤ 48*K*((1/(96*K))*S) :=
       mul_le_mul_of_nonneg_left h (by positivity)
     have h2 : 48*K*((1/(96*K))*S) = S/2 := by
       first | (field_simp; ring) | field_simp
-    linarith [h4, h2.le, h2.ge]
+    linarith only [h4, h2.le, h2.ge, h2]
   set CN : ℝ := (K^2+K+1/2)*e0 + (S - 1/4)*(1/4+e) + (1/4)*e0 with hCNdef
   set M : ℝ := a * (Kond K + 1) with hMdef
-  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith [Kond_pos hK])
+  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith only [Kond_pos hK, hepos, he12, hK])
   obtain ⟨q₀b, δ, hδ0, hδ1, hpb⟩ := pointBound (a := a) (e := e) (M := M) ha hepos hMnn
   obtain ⟨L₀p, hprinc⟩ := principalBoundAmended (a := a) (e := e0) (M := M) ha he0pos
   obtain ⟨q₀x, hextra⟩ := order3_extraM (a := a) (δ := δ) (e := e) (M := M)
@@ -522,7 +522,7 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
   have hMlt : M ≤ δ * L := by
     have h' : M/δ ≤ L := hMδ
     rw [div_le_iff₀ hδ0] at h'
-    linarith [h']
+    linarith only [h']
   have hlam0 : 0 ≤ lamOf q ρ₁ := Work.ZeroFreeTables.P9.lamOf_nonneg hZ
   have hlamM : lamOf q ρ₁ ≤ M := by
     rw [hMdef]; exact lam_le_of_cond913 ha hK hlam0 hcond
@@ -532,8 +532,8 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
   have hχ1ne : χ₁ ≠ 1 := hZ.1
   have hcube := cond913_cube_le (a := a) (K := K) (lam := lamOf q ρ₁) ha hlam0 hcond
   set al : ℝ := a + lamOf q ρ₁ with hal
-  have halpos : 0 < al := by rw [hal]; linarith
-  have hale : a ≤ al := by rw [hal]; linarith
+  have halpos : 0 < al := by rw [hal]; linarith only [ha, hlam0]
+  have hale : a ≤ al := by rw [hal]; linarith only [hlam0]
   set σ : ℂ := ((1 + a / L : ℝ) : ℂ) with hσ
   set μ : ℝ := 3 * ρ₁.im * L with hμ
   set P0 : ℝ := P3R (al/a) with hP0def
@@ -575,7 +575,7 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hsre : (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h1 := hpb q hqb χ₁ hχ1ne hlam0 hlamM _ hsre hsim
     have h3 : (2:ℝ) * P3R 1 ≤ P3NearSumL q L χ₁
         (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁) δ := by
@@ -585,14 +585,14 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
           = σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
       rw [hs] at h
       exact h
-    linarith [h1, h3]
+    linarith only [h1, h3, inst]
   -- (2) χ₁² at σ + 2iγ  (the near sum `W`)
   have hb2 : SigmaP3L q L (χ₁^2) (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
       ≤ -W + al*(1/4 + e) := by
     have hsre : (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h1 := hpb q hqb (χ₁^2) (fun hcon => hχ2 hcon) hlam0 hlamM _ hsre hsim
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((2*ρ₁.im : ℝ)) : ℂ) * Complex.I)
         = σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
@@ -602,7 +602,7 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have h := (nearSum_bounds (q := q) (χ₁ := χ₁) (ρ₁ := ρ₁) (a := a) (δ := δ)
       (γ' := 2 * ρ₁.im) hq2 hmin hZ hmult ha hδ0 hδ1 hδlam).2 (χ₁^2)
       (fun hcon => hχ2 hcon)
-      (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 2 by norm_num)]; linarith [hγ1])
+      (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 2 by norm_num)]; linarith only [hγ1, hepos, he12])
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((2*ρ₁.im : ℝ)) : ℂ) * Complex.I)
         = σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
     rw [hs] at h
@@ -613,7 +613,7 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hsre : (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h := hprinc (L := L) (lam₁ := lamOf q ρ₁) hLp (le_of_eq hLdef.symm) hlam0 hlamM
       (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) hsre hsim
     have hz : (a + lamOf q ρ₁) / (((σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) - 1) * (L : ℂ))
@@ -649,20 +649,20 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hΦale : Φa ≤ (al/a)^3 * Φ2 := by simpa [hΦadef, hΦ2def] using hdiv
     have hpair : (1/4) * Φa ≤ (K + 1/2) * W := by
       have hKd : Kond K ≤ 4*K := min_le_right _ _
-      have h4 : (1/4)*(al/a)^3 ≤ 2*(K+1/2) := by nlinarith [hcube, hKd, hK]
+      have h4 : (1/4)*(al/a)^3 ≤ 2*(K+1/2) := by linarith only [hcube, hKd, hK, hepos, he12]
       have h2 : (1/4) * Φa ≤ (1/4) * ((al/a)^3 * Φ2) :=
         mul_le_mul_of_nonneg_left hΦale (by norm_num)
       have h3 : (1/4) * ((al/a)^3 * Φ2) = ((1/4)*(al/a)^3) * Φ2 := by ring
       have h5 : ((1/4)*(al/a)^3) * Φ2 ≤ (2*(K+1/2)) * Φ2 :=
         mul_le_mul_of_nonneg_right h4 hΦ2nn
       have h7 : (K+1/2)*(2*Φ2) ≤ (K+1/2)*W :=
-        mul_le_mul_of_nonneg_left hxk' (by linarith)
+        mul_le_mul_of_nonneg_left hxk' (by linarith only [hK, hepos, he12])
       have h8 : (2*(K+1/2))*Φ2 = (K+1/2)*(2*Φ2) := by ring
-      linarith [h2, h3, h5, h7, h8]
+      linarith only [h2, h3, h5, h7, h8, hdiv]
     have hD : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*CN := by
       have hA0 : (0:ℝ) ≤ K^2+K+1/2 := by positivity
       have hA1 : (0:ℝ) ≤ K^2+2*K+3/4 := by positivity
-      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith
+      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith only [hK, hepos, he12]
       have hA3 : (0:ℝ) ≤ 1/4 := by norm_num
       have i0 := mul_le_mul_of_nonneg_left hb0 hA0
       have i1 := mul_le_mul_of_nonneg_left hb1 hA1
@@ -675,8 +675,8 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
         rw [hCNdef]; ring
       have hlow : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*CN
           + ((1/4)*Φa - (K+1/2)*W) := by
-        linarith [hcomb', i0, i1, i2, i3, hsum.le, hsum.ge]
-      linarith [hlow, hpair]
+        linarith only [hcomb', i0, i1, i2, i3, hsum.le, hsum.ge, inst, hcomb, hb3, hsum]
+      linarith only [hlow, hpair, inst, hcomb, hb3, i0, i1, i2, hsum]
     have hcp : CN*(48*K) ≤ 12*K*S + S/2 := by
       have h1 : CN*(48*K) = 48*K*(K^2+K+1/2)*e0 + 48*K*((S-1/4)*(1/4+e))
           + 12*K*e0 := by rw [hCNdef]; ring
@@ -685,13 +685,13 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h3 : 12*K*e0 ≤ 12*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0les (show (0:ℝ) ≤ 12*K by positivity)
         have h' : (12:ℝ)*K*(e*S) = 12*K*e*S := by ring
-        linarith [h, h'.le, h'.ge]
+        linarith only [h, h'.le, h'.ge]
       have h4 : 48*K*((S-1/4)*(1/4+e)) = 12*K*S + 48*K*e*S - 3*K - 12*K*e := by ring
       have h5 : (0:ℝ) ≤ 3*K + 12*K*e := by positivity
       have h6 : 24*K*e*S + (12*K*S + 48*K*e*S - 3*K - 12*K*e) + 12*K*e*S
-          ≤ 12*K*S + 84*K*e*S := by linarith [h5]
-      have h7 : 12*K*S + 84*K*e*S ≤ 12*K*S + S/2 := by linarith [h84]
-      linarith [h1.le, h1.ge, h2.le, h2.ge, h3, h4.le, h4.ge, h6, h7]
+          ≤ 12*K*S + 84*K*e*S := by linarith only [h5]
+      have h7 : 12*K*S + 84*K*e*S ≤ 12*K*S + S/2 := by linarith only [h84, hepos, he12, h768, hSge]
+      linarith only [h1.le, h1.ge, h2.le, h2.ge, h3, h4.le, h4.ge, h6, h7, hepos, he12, h768, hSge, h1, h2, h5]
     have hcp' : CN*(48*K) ≤ (12*K+1)*S := by
       have h8 : (12*K+1)*S = 12*K*S + S := by ring
       linarith only [hcp, h8.le, h8.ge, hSpos.le]
@@ -720,7 +720,7 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hD : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*(CN + ex*S) := by
       have hA0 : (0:ℝ) ≤ K^2+K+1/2 := by positivity
       have hA1 : (0:ℝ) ≤ K^2+2*K+3/4 := by positivity
-      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith
+      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith only [hK, hepos, he12]
       have hA3 : (0:ℝ) ≤ 1/4 := by norm_num
       have i0 := mul_le_mul_of_nonneg_left hb0 hA0
       have i1 := mul_le_mul_of_nonneg_left hb1 hA1
@@ -733,13 +733,13 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
         rw [hCNdef]; ring
       have hlow : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*CN
           + ((1/4)*Φa - (K+1/2)*W) := by
-        linarith [hcomb', i0, i1, i2, i3, hsum.le, hsum.ge]
+        linarith only [hcomb', i0, i1, i2, i3, hsum.le, hsum.ge, inst, hcomb, hb3, hsum]
       have hdrop : (1/4)*Φa - (K+1/2)*W ≤ (1/4)*e := by
-        have hW2 : (0:ℝ) ≤ (K+1/2)*W := mul_nonneg (by linarith) hWnn
-        linarith [hfar', hW2]
+        have hW2 : (0:ℝ) ≤ (K+1/2)*W := mul_nonneg (by linarith only [hK, hepos, he12]) hWnn
+        linarith only [hfar', hW2]
       have hsum2 : al*(CN + ex*S) = al*CN + al*(ex*S) := by ring
       rw [hsum2]
-      linarith [hlow, hdrop, hexb]
+      linarith only [hlow, hdrop, hexb, inst, hcomb, hb3, i0, i1, i2, hsum]
     have hcp : CN*(48*K) ≤ 12*K*S + S/2 := by
       have h1 : CN*(48*K) = 48*K*(K^2+K+1/2)*e0 + 48*K*((S-1/4)*(1/4+e))
           + 12*K*e0 := by rw [hCNdef]; ring
@@ -748,13 +748,13 @@ theorem order3_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h3 : 12*K*e0 ≤ 12*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0les (show (0:ℝ) ≤ 12*K by positivity)
         have h' : (12:ℝ)*K*(e*S) = 12*K*e*S := by ring
-        linarith [h, h'.le, h'.ge]
+        linarith only [h, h'.le, h'.ge]
       have h4 : 48*K*((S-1/4)*(1/4+e)) = 12*K*S + 48*K*e*S - 3*K - 12*K*e := by ring
       have h5 : (0:ℝ) ≤ 3*K + 12*K*e := by positivity
       have h6 : 24*K*e*S + (12*K*S + 48*K*e*S - 3*K - 12*K*e) + 12*K*e*S
-          ≤ 12*K*S + 84*K*e*S := by linarith [h5]
-      have h7 : 12*K*S + 84*K*e*S ≤ 12*K*S + S/2 := by linarith [h84]
-      linarith [h1.le, h1.ge, h2.le, h2.ge, h3, h4.le, h4.ge, h6, h7]
+          ≤ 12*K*S + 84*K*e*S := by linarith only [h5]
+      have h7 : 12*K*S + 84*K*e*S ≤ 12*K*S + S/2 := by linarith only [h84, hepos, he12, h768, hSge]
+      linarith only [h1.le, h1.ge, h2.le, h2.ge, h3, h4.le, h4.ge, h6, h7, hepos, he12, h768, hSge, h1, h2, h5]
     have hcf : (CN + ex*S)*(48*K) ≤ (12*K+1)*S := by
       have h1 : (CN + ex*S)*(48*K) = CN*(48*K) + 48*K*(ex*S) := by ring
       have h2 : (12*K+1)*S = 12*K*S + S := by ring
@@ -787,19 +787,19 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
   have he0pos : 0 < e0 := by rw [he0def]; positivity
   have he0le : e0 ≤ 3*e/2 := by
     rw [he0def, div_le_iff₀ (by positivity : (0:ℝ) < 2*(K^2+K+1/2))]
-    have h1 : K^2 + 3*K + 3/2 ≤ 3*(K^2+K+1/2) := by nlinarith [sq_nonneg K, hK]
+    have h1 : K^2 + 3*K + 3/2 ≤ 3*(K^2+K+1/2) := by linarith only [sq_nonneg K, hK]
     have h2 : e * (K^2 + 3*K + 3/2) ≤ e * (3*(K^2+K+1/2)) :=
       mul_le_mul_of_nonneg_left h1 hepos.le
     have h3 : (3*e/2) * (2*(K^2+K+1/2)) = e * (3*(K^2+K+1/2)) := by ring
     rw [hSdef]
-    linarith [h2, h3.le, h3.ge]
-  have he0quarter : e0 ≤ 1/4 + e := by linarith [he0le, he12]
+    linarith only [h2, h3.le, h3.ge]
+  have he0quarter : e0 ≤ 1/4 + e := by linarith only [he0le, he12, hepos]
   -- polynomial forms of the size conditions
   have he1' : 768*K*e ≤ 1 := by
     have h := mul_le_mul_of_nonneg_left he1 (by positivity : (0:ℝ) ≤ 768*K)
     have h2 : (768*K)*(1/(768*K)) = 1 := by
       field_simp
-    linarith [h, h2.le, h2.ge]
+    linarith only [h, h2.le, h2.ge, h2]
   have h768 : 768*K*e*S ≤ S := by
     have h := mul_le_mul_of_nonneg_right he1' hSpos.le
     simpa using h
@@ -808,51 +808,51 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have h2 : (24/768)*(768*K*e*S) ≤ (24/768)*S :=
       mul_le_mul_of_nonneg_left h768 (by norm_num)
     have h3 : (24/768)*S = S/32 := by ring
-    linarith [h1.le, h1.ge, h2, h3.le, h3.ge]
+    linarith only [h1.le, h1.ge, h2, h3.le, h3.ge, h768]
   have h48 : 48*K*e*S ≤ S/16 := by
     have h1 : 48*K*e*S = (48/768)*(768*K*e*S) := by ring
     have h2 : (48/768)*(768*K*e*S) ≤ (48/768)*S :=
       mul_le_mul_of_nonneg_left h768 (by norm_num)
     have h3 : (48/768)*S = S/16 := by ring
-    linarith [h1.le, h1.ge, h2, h3.le, h3.ge]
+    linarith only [h1.le, h1.ge, h2, h3.le, h3.ge, h768]
   have he0v : (K^2+K+1/2)*e0 = e*S/2 := by
     first | (rw [he0def]; field_simp; ring) | (rw [he0def]; field_simp)
   have hA2e0 : (K+1/2)*e0 ≤ e*S := by
-    have hK1 : K + 1/2 ≤ 2*(K^2+K+1/2) := by nlinarith [sq_nonneg K, hK]
+    have hK1 : K + 1/2 ≤ 2*(K^2+K+1/2) := by linarith only [sq_nonneg K, hK, hepos, he12]
     have h1 : (K+1/2)*e0 ≤ (2*(K^2+K+1/2))*e0 :=
       mul_le_mul_of_nonneg_right hK1 he0pos.le
-    have h2 : (2*(K^2+K+1/2))*e0 = e*S := by linarith [he0v]
-    linarith [h1, h2.le, h2.ge]
+    have h2 : (2*(K^2+K+1/2))*e0 = e*S := by linarith only [he0v]
+    linarith only [h1, h2.le, h2.ge, he0v]
   have hA1e : 48*K*((K^2+2*K+3/4)*e) ≤ (K^2+2*K+3/4)/16 := by
     have h := mul_le_mul_of_nonneg_left he1' (by positivity : (0:ℝ) ≤ K^2+2*K+3/4)
     have h2 : 48*K*((K^2+2*K+3/4)*e) = ((K^2+2*K+3/4)*(768*K*e))/16 := by ring
-    linarith [h, h2.le, h2.ge]
+    linarith only [h, h2.le, h2.ge]
   have h12e : 12*K*e ≤ 1/64 := by
     have h1 : 12*K*e = (12/768)*(768*K*e) := by ring
     have h2 : (12/768)*(768*K*e) ≤ (12/768)*1 :=
       mul_le_mul_of_nonneg_left he1' (by norm_num)
     have h3 : (12/768)*1 = 1/64 := by norm_num
-    linarith [h1.le, h1.ge, h2, h3.le, h3.ge]
-  have hSge : (3:ℝ)/2 ≤ S := by rw [hSdef]; nlinarith only [sq_nonneg K, hK.le]
+    linarith only [h1.le, h1.ge, h2, h3.le, h3.ge, he1']
+  have hSge : (3:ℝ)/2 ≤ S := by rw [hSdef]; linarith only [sq_nonneg K, hK.le]
   set ex : ℝ := (K+1/2)*e/(a*S) with hexdef
   have hexle : ex ≤ 1/(96*K) := by
     rw [hexdef, div_le_iff₀ (by positivity : (0:ℝ) < a*S)]
     have h1 : (K+1/2)*e ≤ (K+1/2)*(a*S/(96*K*(K+1/2))) :=
-      mul_le_mul_of_nonneg_left he4 (by linarith)
+      mul_le_mul_of_nonneg_left he4 (by linarith only [hK, hepos, he12])
     have h2 : (K+1/2)*(a*S/(96*K*(K+1/2))) = (1/(96*K))*(a*S) := by
       first | (field_simp; ring) | field_simp
-    linarith [h1, h2.le, h2.ge]
+    linarith only [h1, h2.le, h2.ge, h2]
   have hexSp : 48*K*(ex*S) ≤ S/2 := by
     have h := mul_le_mul_of_nonneg_right hexle hSpos.le
     have h4 : 48*K*(ex*S) ≤ 48*K*((1/(96*K))*S) :=
       mul_le_mul_of_nonneg_left h (by positivity)
     have h2 : 48*K*((1/(96*K))*S) = S/2 := by
       first | (field_simp; ring) | field_simp
-    linarith [h4, h2.le, h2.ge]
+    linarith only [h4, h2.le, h2.ge, h2]
   set C2 : ℝ := (K^2+K+1/2)*e0 + (K^2+2*K+3/4)*(1/4+e) + (K+1/2)*e0
       + (1/4)*(1/4+e) with hC2def
   set M : ℝ := a * (Kond K + 1) with hMdef
-  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith [Kond_pos hK])
+  have hMnn : 0 ≤ M := by rw [hMdef]; exact mul_nonneg (le_of_lt ha) (by linarith only [Kond_pos hK, hepos, he12, hK])
   obtain ⟨q₀b, δ, hδ0, hδ1, hpb⟩ := pointBound (a := a) (e := e) (M := M) ha hepos hMnn
   obtain ⟨L₀p, hprinc⟩ := principalBoundAmended (a := a) (e := e0) (M := M) ha he0pos
   obtain ⟨q₀c, hnearC⟩ := caseC_near (a := a) (δ := δ) ha hδ0 hδ1
@@ -885,7 +885,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
   have hMlt : M ≤ δ * L := by
     have h' : M/δ ≤ L := hMδ
     rw [div_le_iff₀ hδ0] at h'
-    linarith [h']
+    linarith only [h']
   have hlam0 : 0 ≤ lamOf q ρ₁ := Work.ZeroFreeTables.P9.lamOf_nonneg hZ
   have hlamM : lamOf q ρ₁ ≤ M := by
     rw [hMdef]; exact lam_le_of_cond913 ha hK hlam0 hcond
@@ -902,8 +902,8 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       rw [h2, hsq, one_mul] at hcon
       exact hcon)
   set al : ℝ := a + lamOf q ρ₁ with hal
-  have halpos : 0 < al := by rw [hal]; linarith
-  have hale : a ≤ al := by rw [hal]; linarith
+  have halpos : 0 < al := by rw [hal]; linarith only [ha, hlam0]
+  have hale : a ≤ al := by rw [hal]; linarith only [hlam0]
   set σ : ℂ := ((1 + a / L : ℝ) : ℂ) with hσ
   set μ : ℝ := 2 * ρ₁.im * L with hμ
   set P0 : ℝ := P3R (al/a) with hP0def
@@ -947,7 +947,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hsre : (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h1 := hpb q hqb χ₁ hχ1ne hlam0 hlamM _ hsre hsim
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)
         = σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
@@ -962,11 +962,11 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
           = σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
       rw [hs] at h
       simpa [hW1def] using h
-    linarith [hb1w, h3]
+    linarith only [hb1w, h3, inst]
   have hW1nn : 0 ≤ W1 := by
     have h := (nearSum_bounds (q := q) (χ₁ := χ₁) (ρ₁ := ρ₁) (a := a) (δ := δ)
       (γ' := ρ₁.im) hq2 hmin hZ hmult ha hδ0 hδ1 hδlam).2 χ₁ hχ1ne
-      (by linarith [hγ1])
+      (by linarith only [hγ1, hepos, he12])
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)
         = σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
     rw [hs] at h
@@ -978,7 +978,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hsre : (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h := hprinc (L := L) (lam₁ := lamOf q ρ₁) hLp (le_of_eq hLdef.symm) hlam0 hlamM
       (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) hsre hsim
     have hz : (a + lamOf q ρ₁) / (((σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) - 1) * (L : ℂ))
@@ -1000,7 +1000,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hsre : (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).re = 1 + a/L := by
       rw [hσ]; simp
     have hsim : |(σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I).im| ≤ 4 := by
-      simp [hσ, Complex.add_im, Complex.mul_im]; linarith [hγ1]
+      simp [hσ, Complex.add_im, Complex.mul_im]; linarith only [hγ1, hepos, he12]
     have h1 := hpb q hqb (χ₁^3) (fun hcon => hχ3ne hcon) hlam0 hlamM _ hsre hsim
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((3*ρ₁.im : ℝ)) : ℂ) * Complex.I)
         = σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
@@ -1010,7 +1010,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have h := (nearSum_bounds (q := q) (χ₁ := χ₁) (ρ₁ := ρ₁) (a := a) (δ := δ)
       (γ' := 3 * ρ₁.im) hq2 hmin hZ hmult ha hδ0 hδ1 hδlam).2 (χ₁^3)
       (fun hcon => hχ3ne hcon)
-      (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 3 by norm_num)]; linarith [hγ1])
+      (by rw [abs_mul, abs_of_nonneg (show (0:ℝ) ≤ 3 by norm_num)]; linarith only [hγ1, hepos, he12])
     have hs : ((((1 + a / Real.log (q:ℝ) : ℝ)) : ℂ) + (((3*ρ₁.im : ℝ)) : ℂ) * Complex.I)
         = σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I := by rw [hσ, hLdef]
     rw [hs] at h
@@ -1029,7 +1029,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       rw [hxs, hxz] at hnc
       simpa [hW1def, hΦ2def] using hnc
     have hb1' : SigmaP3L q L χ₁ (σ + ((ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
-        ≤ -(2 * P3R 1) - 2 * Φ2 + al*(1/4 + e) := by linarith [hb1w, hnc']
+        ≤ -(2 * P3R 1) - 2 * Φ2 + al*(1/4 + e) := by linarith only [hb1w, hnc', inst]
     have hΦ2nn : 0 ≤ Φ2 := by
       rw [hΦ2def]
       exact P9.PhiG_nonneg (x := al) (y := al) (t := μ) halpos le_rfl
@@ -1038,16 +1038,16 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hpair : (K+1/2)*Ψ ≤ 2*(K^2+2*K+3/4)*Φ2 := by
       have hKd : (K+1/2)*(Kond K+1) ≤ 2*(K^2+2*K+3/4) := A2_mul_Kond_le hK
       have h1 : (K+1/2)*((al/a)^3) ≤ (K+1/2)*(Kond K+1) :=
-        mul_le_mul_of_nonneg_left hcube (by linarith)
+        mul_le_mul_of_nonneg_left hcube (by linarith only [hK, hepos, he12])
       calc (K+1/2)*Ψ ≤ (K+1/2)*((al/a)^3 * Φ2) :=
-            mul_le_mul_of_nonneg_left hΨle (by linarith)
+            mul_le_mul_of_nonneg_left hΨle (by linarith only [hK, hepos, he12])
         _ = ((K+1/2)*((al/a)^3)) * Φ2 := by ring
         _ ≤ ((K+1/2)*(Kond K+1)) * Φ2 := mul_le_mul_of_nonneg_right h1 hΦ2nn
         _ ≤ (2*(K^2+2*K+3/4)) * Φ2 := mul_le_mul_of_nonneg_right hKd hΦ2nn
     have hD : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*C2 := by
       have hA0 : (0:ℝ) ≤ K^2+K+1/2 := by positivity
       have hA1 : (0:ℝ) ≤ K^2+2*K+3/4 := by positivity
-      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith
+      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith only [hK, hepos, he12]
       have hA3 : (0:ℝ) ≤ 1/4 := by norm_num
       have i0 := mul_le_mul_of_nonneg_left hb0 hA0
       have i1 := mul_le_mul_of_nonneg_left hb1' hA1
@@ -1069,7 +1069,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h2 : 48*K*((K^2+K+1/2)*e0) = 24*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0v.le (show (0:ℝ) ≤ 48*K by positivity)
         have h' := mul_le_mul_of_nonneg_left he0v.ge (show (0:ℝ) ≤ 48*K by positivity)
-        linarith [h, h']
+        linarith only [h, h']
       have h3 : 48*K*((K^2+2*K+3/4)*(1/4+e))
           = 12*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e) := by ring
       have h4 : 48*K*((K+1/2)*e0) ≤ 48*K*(e*S) :=
@@ -1079,7 +1079,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h7 : 24*K*e*S + (12*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e))
           + 48*K*(e*S) + (3*K + 12*K*e) ≤ 12*K*S + S/2 := by
         have hA : 12*K*(K+3/4) + 13*S/32 ≥ (K^2+2*K+3/4)/16 + 3*K + 1/64 := by
-          rw [hSdef]; nlinarith only [sq_nonneg K, hK]
+          rw [hSdef]; linarith only [sq_nonneg K, hK]
         have h32 : S/2 - 3*S/32 = 13*S/32 := by ring
         linarith only [hA, h32.le, h32.ge, h6, h24, h48, hA1e, h12e]
       linarith only [h1.le, h1.ge, h2.le, h2.ge, h3.le, h3.ge, h4, h5.le, h5.ge, h7]
@@ -1099,17 +1099,17 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       rw [hxz] at hfar
       simpa [hΨdef] using hfar
     have hb2' : SigmaP3L q L (χ₁^2) (σ + ((2*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
-        ≤ e + al*e0 := by linarith [hb2, hfar']
+        ≤ e + al*e0 := by linarith only [hb2, hfar', inst]
     have hb3' : SigmaP3L q L (χ₁^3) (σ + ((3*ρ₁.im : ℝ) : ℂ) * Complex.I) a (lamOf q ρ₁)
-        ≤ 0 + al*(1/4 + e) := by linarith [hb3, hW3nn]
+        ≤ 0 + al*(1/4 + e) := by linarith only [hb3, hW3nn, inst]
     have hexb : (K+1/2)*e ≤ al*(ex*S) := by
       have h1 : al*(ex*S) = al*(K+1/2)*e/a := by
         rw [hexdef]
         first | (field_simp; ring) | field_simp | ring_nf
       have h3a : a*(K+1/2)*e ≤ al*(K+1/2)*e := by
-        have h := mul_le_mul_of_nonneg_right hale (show (0:ℝ) ≤ K+1/2 by linarith)
+        have h := mul_le_mul_of_nonneg_right hale (show (0:ℝ) ≤ K+1/2 by linarith only [hK, hepos, he12])
         have h' := mul_le_mul_of_nonneg_right h hepos.le
-        linarith [h']
+        linarith only [h']
       have h3 : a*(K+1/2)*e/a ≤ al*(K+1/2)*e/a :=
         div_le_div_of_nonneg_right h3a ha.le
       have h2 : a*(K+1/2)*e/a = (K+1/2)*e := by
@@ -1119,7 +1119,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
     have hD : 0 ≤ (K^2+K+1/2)*P0 - (2*K^2+4*K+3/2)*P3R 1 + al*(C2 + ex*S) := by
       have hA0 : (0:ℝ) ≤ K^2+K+1/2 := by positivity
       have hA1 : (0:ℝ) ≤ K^2+2*K+3/4 := by positivity
-      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith
+      have hA2 : (0:ℝ) ≤ K+1/2 := by linarith only [hK, hepos, he12]
       have hA3 : (0:ℝ) ≤ 1/4 := by norm_num
       have i0 := mul_le_mul_of_nonneg_left hb0 hA0
       have i1 := mul_le_mul_of_nonneg_left hb1 hA1
@@ -1140,7 +1140,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h2 : 48*K*((K^2+K+1/2)*e0) = 24*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0v.le (show (0:ℝ) ≤ 48*K by positivity)
         have h' := mul_le_mul_of_nonneg_left he0v.ge (show (0:ℝ) ≤ 48*K by positivity)
-        linarith [h, h']
+        linarith only [h, h']
       have h3 : 48*K*((K^2+2*K+3/4)*(1/4+e))
           = 12*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e) := by ring
       have h4 : 48*K*((K+1/2)*e0) ≤ 48*K*(e*S) :=
@@ -1150,7 +1150,7 @@ theorem order2_case_prim {a K ε : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < ε)
       have h7 : 24*K*e*S + (12*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e))
           + 48*K*(e*S) + (3*K + 12*K*e) ≤ 12*K*S + S/2 := by
         have hA : 12*K*(K+3/4) + 13*S/32 ≥ (K^2+2*K+3/4)/16 + 3*K + 1/64 := by
-          rw [hSdef]; nlinarith only [sq_nonneg K, hK]
+          rw [hSdef]; linarith only [sq_nonneg K, hK]
         have h32 : S/2 - 3*S/32 = 13*S/32 := by ring
         linarith only [hA, h32.le, h32.ge, h6, h24, h48, hA1e, h12e]
       linarith only [h1.le, h1.ge, h2.le, h2.ge, h3.le, h3.ge, h4, h5.le, h5.ge, h7]

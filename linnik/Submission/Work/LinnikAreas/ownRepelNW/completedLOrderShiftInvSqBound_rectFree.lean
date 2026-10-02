@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ownRepelNW.RectFreeImports
 import Submission.Work.LinnikAreas.A5.LFunction_disc_zeroCount
 import Submission.Work.LinnikAreas.ownRepelNW.orderSum_invSq_bound_of_count
 

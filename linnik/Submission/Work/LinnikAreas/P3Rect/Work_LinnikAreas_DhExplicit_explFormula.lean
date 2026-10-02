@@ -1,16 +1,13 @@
 import Mathlib
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_Inputs
-import Submission.Work.LinnikAreas.DhExplicit.gammaTrivialIdentity
-import Submission.Work.LinnikAreas.DhExplicit.trivialPartBound
-import Submission.Work.LinnikAreas.DhExplicit.trivialPartBoundOdd
-import Submission.Work.LinnikAreas.DhExplicit.diffEstimate
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_XiStrip
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_xiDerivPFBall
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_ZSBase
 import Submission.Work.LinnikAreas.FarRepel.arithKthDeriv
 import Submission.Work.LinnikAreas.tendsto_finsum_divisor_closedBall_mero
 import Submission.Work.LinnikAreas.PrincipalZeroCount
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_FarRepel_dhDiffInequality
+import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_FarRepel_dhKey
+import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
+import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_FarRepel_dhBasic
 
 /-!
 # The differentiated explicit formula (KNW (2.5)--(2.6))

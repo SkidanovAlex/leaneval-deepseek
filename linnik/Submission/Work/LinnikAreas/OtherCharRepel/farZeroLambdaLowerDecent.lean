@@ -3,7 +3,6 @@ import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikAreas.OtherCharRepel.farZeroArith
 import Submission.Work.LinnikAreas.OtherCharRepel.fourTermPointwise
 import Submission.Work.LinnikAreas.OtherCharRepel.sharpPrimitiveOffAxis
-import Submission.Work.LinnikAreas.OtherCharRepel.cosPolyDecent
 import Submission.Work.LinnikAreas.OtherCharRepel.zetaLogDerivRegularSharp
 import Submission.Work.LinnikAreas.OtherCharRepel.changeLevelSharpCorrection
 import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_re_axis_bound
@@ -126,13 +125,13 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
     intro q _inst χ hχ σ τ hσ1 hσ2 hτ
     haveI hN : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
     have hψne : χ.primitiveCharacter ≠ 1 := prim_ne_one_of_ne_one hχ
-    have hs : (1 : ℝ) < (((σ : ℂ) + (τ : ℂ) * Complex.I)).re := by simp; linarith
+    have hs : (1 : ℝ) < (((σ : ℂ) + (τ : ℂ) * Complex.I)).re := by simp; linarith only [hσ1]
     have hp := (hprim χ.conductor χ.primitiveCharacter hψne
       (DirichletCharacter.primitiveCharacter_isPrimitive χ)).1 σ τ hσ1 hσ2 hτ
     have hcl := changeLevelSharpCorrection (hdvd := χ.conductor_dvd_level) χ.primitiveCharacter
       ((σ : ℂ) + (τ : ℂ) * Complex.I) hs
     rw [DirichletCharacter.changeLevel_primitiveCharacter] at hcl
-    linarith
+    linarith only [_inst, hN, hp, hcl]
   have key0 : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 →
       ∀ u : ℂ, Work.LinnikContract.zeroMult χ u ≠ 0 →
       ∀ σ : ℝ, 1 < σ → σ ≤ 5 / 4 → |u.im| ≤ 12 →
@@ -141,7 +140,7 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
     intro q _inst χ hχ u hz σ hσ1 hσ2 huim
     haveI hN : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
     have hψne : χ.primitiveCharacter ≠ 1 := prim_ne_one_of_ne_one hχ
-    have hs : (1 : ℝ) < (((σ : ℂ) + (u.im : ℂ) * Complex.I)).re := by simp; linarith
+    have hs : (1 : ℝ) < (((σ : ℂ) + (u.im : ℂ) * Complex.I)).re := by simp; linarith only [hσ1]
     have hu : DirichletCharacter.LFunction χ.primitiveCharacter u = 0 :=
       LFunction_prim_eq_zero_of_zeroMult χ hχ hz
     have hp := (hprim χ.conductor χ.primitiveCharacter hψne
@@ -149,13 +148,13 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
     have hcl := changeLevelSharpCorrection (hdvd := χ.conductor_dvd_level) χ.primitiveCharacter
       ((σ : ℂ) + (u.im : ℂ) * Complex.I) hs
     rw [DirichletCharacter.changeLevel_primitiveCharacter] at hcl
-    linarith
+    linarith only [_inst, hN, hp, hcl]
   have key1 : ∀ (q : ℕ) [NeZero q] (σ τ : ℝ), 1 < σ → σ ≤ 5 / 4 → 1 ≤ |τ| → |τ| ≤ 12 →
       (-logDeriv (DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q))
         ((σ : ℂ) + (τ : ℂ) * Complex.I)).re ≤
         (1 / 2) * Real.log (q : ℝ) + ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) := by
     intro q _inst σ τ hσ1 hσ2 hτ1 hτ2
-    have hs : (1 : ℝ) < (((σ : ℂ) + (τ : ℂ) * Complex.I)).re := by simp; linarith
+    have hs : (1 : ℝ) < (((σ : ℂ) + (τ : ℂ) * Complex.I)).re := by simp; linarith only [hσ1]
     have hcl := changeLevelSharpCorrection (hdvd := Nat.one_dvd q) (1 : DirichletCharacter ℂ 1)
       ((σ : ℂ) + (τ : ℂ) * Complex.I) hs
     rw [DirichletCharacter.changeLevel_one] at hcl
@@ -172,24 +171,24 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
         rw [logDeriv_apply, ← neg_div, hX]
       rw [hld]
       have hτsq : (1 : ℝ) ≤ τ ^ 2 := by
-        have h := sq_abs τ; nlinarith [hτ1]
+        have h := sq_abs τ; nlinarith only [hτ1, h]
       have h1 : (σ - 1) / ((σ - 1) ^ 2 + τ ^ 2) ≤ 1 / 4 := by
-        have hden : 0 < (σ - 1) ^ 2 + τ ^ 2 := by nlinarith [hτsq]
+        have hden : 0 < (σ - 1) ^ 2 + τ ^ 2 := by nlinarith only [hτsq, hσ1, hσ2]
         rw [div_le_iff₀ hden]
-        have hnum : σ - 1 ≤ 1 / 4 := by linarith
-        nlinarith [hnum, hden, hτsq]
+        have hnum : σ - 1 ≤ 1 / 4 := by linarith only [hσ2]
+        nlinarith only [hnum, hden, hτsq, hσ2]
       have h2 : (1 / 2) * Real.log (2 + |τ|) ≤ (1 / 2) * Real.log 14 := by
-        have hle : 2 + |τ| ≤ 14 := by linarith [abs_nonneg τ, hτ2]
+        have hle : 2 + |τ| ≤ 14 := by linarith only [abs_nonneg τ, hτ2]
         have := Real.log_le_log (by positivity) hle
-        linarith
-      linarith [hz, h1, h2]
-    linarith [hcl, hzeta]
+        linarith only [this]
+      linarith only [hz, h1, h2]
+    linarith only [hcl, hzeta, _inst]
   refine ⟨3, max (Cprim + Real.log 2)
       ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) + 1, ?_, ?_⟩
   · have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
     have hge : Cprim + Real.log 2 ≤ max (Cprim + Real.log 2)
         ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) := le_max_left _ _
-    linarith
+    linarith only [hCprimpos, hlog2pos, hge]
   · intro q hq hqne χ
     haveI : NeZero q := hqne
     have hq3 : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
@@ -200,13 +199,13 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
           exact le_of_lt Real.exp_one_lt_three
         exact le_trans h1 (Real.log_le_log (by norm_num) hq3)
       exact Real.log_nonneg h3
-    have hfac : (1 : ℝ) ≤ 1 + Real.log (Real.log (q : ℝ)) := by linarith
+    have hfac : (1 : ℝ) ≤ 1 + Real.log (Real.log (q : ℝ)) := by linarith only [hloglog]
     have hCnonneg : 0 ≤ max (Cprim + Real.log 2)
         ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) + 1 := by
       have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
       have hge := le_max_left (Cprim + Real.log 2)
         ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2)
-      linarith
+      linarith only [hCprimpos, hlog2pos, hge]
     have hfinal : ∀ K : ℝ, K ≤ max (Cprim + Real.log 2)
         ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) → ∀ A : ℝ,
         A + K ≤ A +
@@ -214,13 +213,13 @@ private theorem sharpLevelOffAxisLevel : ∃ q₀ : ℕ, ∃ C : ℝ, 0 < C ∧ 
             (1 + Real.log (Real.log (q : ℝ))) := by
       intro K hK A
       have h1 : K ≤ max (Cprim + Real.log 2)
-          ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) + 1 := by linarith
+          ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) + 1 := by linarith only [hK]
       have h2 : K ≤ (max (Cprim + Real.log 2)
           ((1 / 4 + (1 / 2) * Real.log 14 + Czr) + Real.log 2) + 1) *
             (1 + Real.log (Real.log (q : ℝ))) := by
         have hmul := mul_le_mul_of_nonneg_left hfac hCnonneg
-        linarith
-      linarith
+        linarith only [hK, hmul]
+      linarith only [h2]
     refine ⟨?_, ?_, ?_⟩
     · intro hχ σ τ hσ1 hσ2 hτ
       exact le_trans (key q χ hχ σ τ hσ1 hσ2 hτ) (hfinal _ (le_max_left _ _) _)
@@ -260,20 +259,20 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
     have h2 : 0 ≤ 256 * C := by positivity
     have h3 : Real.sqrt ((256 * C) ^ 2) ≤ Real.sqrt (Real.log (q : ℝ)) := Real.sqrt_le_sqrt h1
     rw [Real.sqrt_sq h2] at h3
-    linarith
+    linarith only [h3]
   have hloglog_le : Real.log (Real.log (q : ℝ)) ≤ 2 * Real.sqrt (Real.log (q : ℝ)) := by
     have h := Real.log_le_rpow_div (le_of_lt hlogpos) (show (0 : ℝ) < 1 / 2 by norm_num)
     have hrw : Real.log (q : ℝ) ^ (1 / 2 : ℝ) = Real.sqrt (Real.log (q : ℝ)) := by
       rw [Real.sqrt_eq_rpow]
     rw [hrw, div_eq_mul_inv] at h
-    linarith [h]
+    linarith only [h]
   have hCorr : C * (1 + Real.log (Real.log (q : ℝ))) ≤ Real.log (q : ℝ) / 64 := by
     have hsq : Real.sqrt (Real.log (q : ℝ)) ^ 2 = Real.log (q : ℝ) :=
       Real.sq_sqrt (le_of_lt hlogpos)
     have hsqrt1 : 1 ≤ Real.sqrt (Real.log (q : ℝ)) := by
       rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt hlogq1
     have h1 : 1 + Real.log (Real.log (q : ℝ)) ≤ 3 * Real.sqrt (Real.log (q : ℝ)) := by
-      linarith
+      linarith only [hloglog_le, hsqrt1]
     have h2 : C * (1 + Real.log (Real.log (q : ℝ)))
         ≤ C * (3 * Real.sqrt (Real.log (q : ℝ))) :=
       mul_le_mul_of_nonneg_left h1 hCpos.le
@@ -282,20 +281,20 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
       mul_le_mul_of_nonneg_right hCle (by positivity)
     have h4 : (Real.sqrt (Real.log (q : ℝ)) / 256) * (3 * Real.sqrt (Real.log (q : ℝ)))
         = 3 * Real.log (q : ℝ) / 256 := by
-      nlinarith [hsq]
-    have h5 : 3 * Real.log (q : ℝ) / 256 ≤ Real.log (q : ℝ) / 64 := by linarith
-    linarith [h2, h3, h4, h5]
+      nlinarith only [hsq]
+    have h5 : 3 * Real.log (q : ℝ) / 256 ≤ Real.log (q : ℝ) / 64 := by linarith only [hx₀1, hlogx]
+    linarith only [h2, h3, h4, h5, hx₀1, hlogx, hsq]
   have hCζle : Cζ ≤ Real.log (q : ℝ) / 160 := by
     have h1 : 160 * Cζ ≤ Real.log (q : ℝ) :=
       le_trans (le_max_left _ _) (le_trans (le_max_right _ _) hlogx)
-    linarith
+    linarith only [h1]
   -- the zero and the parameters
   have hstrip : 0 < u.re ∧ u.re < 1 := zeroMult_strip χ hχ hz
   set γ : ℝ := u.im with hγdef
   set ε : ℝ := 1 - u.re with hεdef
-  have hεpos : 0 < ε := by rw [hεdef]; linarith [hstrip.2]
+  have hεpos : 0 < ε := by rw [hεdef]; linarith only [hstrip.2, hstrip]
   obtain ⟨hs5, hvpos, hsval⟩ := sqrtData
-  have hγle : |γ| ≤ 12 := by rw [hγdef]; linarith [abs_nonneg u.im, him4]
+  have hγle : |γ| ≤ 12 := by rw [hγdef]; linarith only [abs_nonneg u.im, him4, hstrip]
   have hγ4 : |γ| ≤ 4 := by rw [hγdef]; exact him4
   have hγge : 1 ≤ |γ| := by rw [hγdef]; exact him1
   by_contra hcon
@@ -304,7 +303,7 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
     rw [Work.LinnikContract.lamOf] at hcon
     rw [← hεdef] at hcon
     exact hcon
-  have hεsmall : ε < 1 / 25 := by nlinarith [hlam, hεpos, hlogq1]
+  have hεsmall : ε < 1 / 25 := by nlinarith only [hlam, hεpos, hlogq1, hx₀1, hstrip, hlogx]
   set δ : ℝ := Real.sqrt (5 / 4) * ε / (Real.sqrt 2 - Real.sqrt (5 / 4)) with hδdef
   have hδpos : 0 < δ := div_pos (mul_pos (Real.sqrt_pos.mpr (by norm_num)) hεpos) hvpos
   have hδle : δ ≤ 1 / 4 := by
@@ -317,14 +316,14 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
       have h : (7 / 5 : ℝ) ^ 2 ≤ 2 := by norm_num
       calc (7 / 5 : ℝ) = Real.sqrt ((7 / 5) ^ 2) := (Real.sqrt_sq (by norm_num)).symm
         _ ≤ Real.sqrt 2 := Real.sqrt_le_sqrt h
-    have hvge : 1 / 4 ≤ Real.sqrt 2 - Real.sqrt (5 / 4) := by linarith
-    calc Real.sqrt (5 / 4) * ε ≤ (23 / 20) * (1 / 25) := by nlinarith [hs5le, hεsmall, hεpos]
+    have hvge : 1 / 4 ≤ Real.sqrt 2 - Real.sqrt (5 / 4) := by linarith only [hs5le, hs2ge]
+    calc Real.sqrt (5 / 4) * ε ≤ (23 / 20) * (1 / 25) := by nlinarith only [hs5le, hεsmall, hεpos, hx₀1, hstrip, hlogx, hlam]
       _ ≤ (1 / 4) * (1 / 4) := by norm_num
       _ ≤ (1 / 4) * (Real.sqrt 2 - Real.sqrt (5 / 4)) :=
           mul_le_mul_of_nonneg_left hvge (by norm_num)
-  have hσ1 : (1 : ℝ) < 1 + δ := by linarith
-  have hσ2 : (1 : ℝ) + δ ≤ 5 / 4 := by linarith
-  have hσ2' : (1 : ℝ) + δ ≤ 2 := by linarith
+  have hσ1 : (1 : ℝ) < 1 + δ := by linarith only [hδpos]
+  have hσ2 : (1 : ℝ) + δ ≤ 5 / 4 := by linarith only [hδle]
+  have hσ2' : (1 : ℝ) + δ ≤ 2 := by linarith only [hstrip, hεsmall, hδle]
   have hfour := fourTermPointwise (q := q) χ (σ := 1 + δ) (γ := γ) hσ1
   have hAq := hA0 q hqA χ
   have hb1 : (-deriv riemannZeta (((1 + δ : ℝ) : ℂ)) / riemannZeta (((1 + δ : ℝ) : ℂ))).re
@@ -347,32 +346,32 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
     have hAq2 := hA0 q hqA (χ ^ 2)
     have h := hAq2.2.1 (1 + δ) (2 * γ) hσ1 hσ2 ?_ ?_
     · exact h
-    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 2)]; linarith
-    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 2)]; linarith
+    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 2)]; linarith only [hstrip, him1, hεsmall]
+    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 2)]; linarith only [hstrip, him4, hεsmall]
   have hb4 : (-logDeriv (DirichletCharacter.LFunction (χ ^ 3))
         (((1 + δ : ℝ) : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).re
       ≤ (1 / 2) * Real.log (q : ℝ) + C * (1 + Real.log (Real.log (q : ℝ))) := by
     have hAq3 := hA0 q hqA (χ ^ 3)
     have h := hAq3.2.1 (1 + δ) (3 * γ) hσ1 hσ2 ?_ ?_
     · exact h
-    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 3)]; linarith
-    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 3)]; linarith
+    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 3)]; linarith only [hstrip, him1, hεsmall]
+    · rw [abs_mul, abs_of_pos (by norm_num : (0 : ℝ) < 3)]; linarith only [him4]
   have hmain : 2 / (δ + ε) ≤ (5 / 4) / δ + (13 / 8) * Real.log (q : ℝ)
       + (13 / 4) * (C * (1 + Real.log (Real.log (q : ℝ)))) + (5 / 4) * Cζ := by
     have e1 : (5 / 4 : ℝ) * (-deriv riemannZeta (((1 + δ : ℝ) : ℂ)) / riemannZeta (((1 + δ : ℝ) : ℂ))).re
-        ≤ (5 / 4) * (1 / δ + Cζ) := by linarith [hb1]
+        ≤ (5 / 4) * (1 / δ + Cζ) := by linarith only [hb1]
     have e2 : 2 * (-logDeriv (DirichletCharacter.LFunction χ)
           (((1 + δ : ℝ) : ℂ) + (γ : ℂ) * Complex.I)).re
         ≤ 2 * (-1 / (δ + ε) + (1 / 2) * Real.log (q : ℝ)
-            + C * (1 + Real.log (Real.log (q : ℝ)))) := by linarith [hb2]
+            + C * (1 + Real.log (Real.log (q : ℝ)))) := by linarith only [hb2, this]
     have e3 : 1 * (-logDeriv (DirichletCharacter.LFunction (χ ^ 2))
           (((1 + δ : ℝ) : ℂ) + ((2 * γ : ℝ) : ℂ) * Complex.I)).re
         ≤ 1 * ((1 / 2) * Real.log (q : ℝ) + C * (1 + Real.log (Real.log (q : ℝ)))) := by
-      linarith [hb3]
+      linarith only [hb3, this]
     have e4 : (1 / 4 : ℝ) * (-logDeriv (DirichletCharacter.LFunction (χ ^ 3))
           (((1 + δ : ℝ) : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).re
         ≤ (1 / 4) * ((1 / 2) * Real.log (q : ℝ) + C * (1 + Real.log (Real.log (q : ℝ)))) := by
-      linarith [hb4]
+      linarith only [hb4, this]
     have e5 : (5 / 4 : ℝ) * (1 / δ + Cζ)
         + 2 * (-1 / (δ + ε) + (1 / 2) * Real.log (q : ℝ)
             + C * (1 + Real.log (Real.log (q : ℝ))))
@@ -381,7 +380,7 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
         = (5 / 4) / δ + (13 / 8) * Real.log (q : ℝ)
             + (13 / 4) * (C * (1 + Real.log (Real.log (q : ℝ)))) + (5 / 4) * Cζ
             - 2 / (δ + ε) := by ring
-    linarith [hfour, e1, e2, e3, e4, e5]
+    linarith only [hfour, e1, e2, e3, e4, e5, this, hb1, hb2, hb3, hb4]
   have hKbound : (13 / 4) * (C * (1 + Real.log (Real.log (q : ℝ)))) + (5 / 4) * Cζ
       ≤ (13 / 128) * Real.log (q : ℝ) := by
     have h1 : (13 / 4) * (C * (1 + Real.log (Real.log (q : ℝ))))
@@ -389,7 +388,7 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
       mul_le_mul_of_nonneg_left hCorr (by norm_num)
     have h2 : (5 / 4) * Cζ ≤ (5 / 4) * (Real.log (q : ℝ) / 160) :=
       mul_le_mul_of_nonneg_left hCζle (by norm_num)
-    linarith [h1, h2]
+    linarith only [h1, h2, hCζpos, hCorr, hCζle]
   have hker := keyArith (ε := ε) (s := Real.sqrt (5 / 4)) (v := Real.sqrt 2 - Real.sqrt (5 / 4))
     hεpos hvpos (Real.sqrt_pos.mpr (by norm_num))
     (by
@@ -400,7 +399,7 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
     rw [hδdef]; exact hker
   have hkey : (Real.sqrt 2 - Real.sqrt (5 / 4)) ^ 2 / ε
       ≤ (13 / 8) * Real.log (q : ℝ) * (17 / 16) := by
-    nlinarith [hmain, hKbound, hsub, hlogpos]
+    nlinarith only [hmain, hKbound, hsub, hlogpos, hCζpos, hCorr, hCζle]
   have hpos2 : (0 : ℝ) < (Real.sqrt 2 - Real.sqrt (5 / 4)) ^ 2 := by positivity
   have hfinal : (1 / 25 : ℝ) ≤ ε * Real.log (q : ℝ) := by
     have hmul : (Real.sqrt 2 - Real.sqrt (5 / 4)) ^ 2 ≤ (13 / 8) * Real.log (q : ℝ) * (17 / 16) * ε := by
@@ -409,9 +408,9 @@ theorem farZeroLambdaLowerDecent : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → �
       exact h
     have hnum : (13 / 4 - Real.sqrt 10) * 128 / 221 ≤ ε * Real.log (q : ℝ) := by
       have hcoef : (Real.sqrt 2 - Real.sqrt (5 / 4)) ^ 2 = 13 / 4 - Real.sqrt 10 := hsval
-      nlinarith [hmul, numBound, hlogpos, hεpos, Real.sqrt_nonneg 10]
-    linarith [hnum, numBound]
-  linarith [hfinal, hlam]
+      nlinarith only [hmul, numBound, hlogpos, hεpos, Real.sqrt_nonneg 10, hsval]
+    linarith only [hnum, numBound, hsval, hlam, hmul]
+  linarith only [hfinal, hlam]
 
 end
 

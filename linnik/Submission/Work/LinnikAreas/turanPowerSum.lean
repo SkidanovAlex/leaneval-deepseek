@@ -14,7 +14,7 @@ open scoped BigOperators
 lemma fejerWeight_nonneg {J j : ℕ} (hj : j ≤ J) : 0 ≤ 1 - (j : ℝ) / (J + 1) := by
   have h : (j : ℝ) ≤ (J : ℝ) + 1 := by
     have h' : (j : ℝ) ≤ (J : ℝ) := by exact_mod_cast hj
-    linarith
+    linarith only [h']
   have hd : (0 : ℝ) < (J : ℝ) + 1 := by positivity
   rw [sub_nonneg, div_le_one hd]
   exact h
@@ -34,7 +34,7 @@ lemma norm_pow_le_one {z : ℂ} (hz : ‖z‖ ≤ 1) {j : ℕ} (hj : 1 ≤ j) : 
 lemma re_bounds {z : ℂ} (hz : ‖z‖ ≤ 1) : -1 ≤ z.re ∧ z.re ≤ 1 := by
   have h := Complex.abs_re_le_norm z
   rw [abs_le] at h
-  exact ⟨by linarith [h.1, hz], by linarith [h.2, hz]⟩
+  exact ⟨by linarith only [h.1, hz, h], by linarith only [h.2, hz, h]⟩
 
 /-- Absolute value bound for a single term of the double sum behind the power-sum method. -/
 lemma term_abs_bound {J : ℕ} {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) {j : ℕ}
@@ -43,7 +43,7 @@ lemma term_abs_bound {J : ℕ} {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ �
   have hw0 : 0 ≤ 1 - (j : ℝ) / (J + 1) := fejerWeight_nonneg hjJ
   have hw1 : 1 - (j : ℝ) / (J + 1) ≤ 1 := by
     have : 0 ≤ (j : ℝ) / (J + 1) := by positivity
-    linarith
+    linarith only [this]
   have ha : |(u ^ j).re| ≤ ‖u‖ := by
     calc |(u ^ j).re| ≤ ‖u ^ j‖ := Complex.abs_re_le_norm _
       _ = ‖u‖ ^ j := Complex.norm_pow u j
@@ -51,7 +51,7 @@ lemma term_abs_bound {J : ℕ} {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ �
   have hb : |1 + (v ^ j).re| ≤ 2 := by
     have h := re_bounds (norm_pow_le_one hv hj1)
     rw [abs_le]
-    exact ⟨by linarith [h.1], by linarith [h.2]⟩
+    exact ⟨by linarith only [h.1, h], by linarith only [h.2, h]⟩
   have hw : |1 - (j : ℝ) / (J + 1)| ≤ 1 := by
     rw [abs_of_nonneg hw0]; exact hw1
   rw [abs_mul, abs_mul]
@@ -165,9 +165,9 @@ theorem turanPowerSum_lower (J : ℕ) (hJ : 1 ≤ J) (z : ℕ → ℂ) (h0 : ‖
         = (∑' n : ℕ, ‖z n‖ / (1 + ‖z n‖)) - 1 / 2 := by
       have h := hweyl.sum_add_tsum_nat_add 1
       simp only [Finset.sum_range_one, hb0] at h
-      linarith
+      linarith only [h]
     rw [Summable.tsum_mul_left (-2) hsum_tailb, hsplitb]
-  linarith [hC0, htail, htail_eq]
+  linarith only [hC0, htail, htail_eq]
 
 /-! ### The upper bound -/
 
@@ -183,7 +183,7 @@ theorem turanPowerSum_upper (J : ℕ) (hJ : 1 ≤ J) (z : ℕ → ℂ) (h0 : ‖
     intro j hj
     have hnorm : ‖z 0 ^ j‖ ≤ 1 := by rw [Complex.norm_pow, h0, one_pow]
     have h := re_bounds hnorm
-    exact mul_nonneg (fejerWeight_nonneg (Finset.mem_Icc.mp hj).2) (by linarith [h.1])
+    exact mul_nonneg (fejerWeight_nonneg (Finset.mem_Icc.mp hj).2) (by linarith only [h.1, h])
   have hWsumnn : 0 ≤ ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + (z 0 ^ j).re) :=
     Finset.sum_nonneg hWnn
   have hdiff : (∑ j ∈ Finset.Icc 1 J,
@@ -200,7 +200,7 @@ theorem turanPowerSum_upper (J : ℕ) (hJ : 1 ≤ J) (z : ℕ → ℂ) (h0 : ‖
         ((∑' n : ℕ, (z n) ^ j).re - (∑' n : ℕ, (z n) ^ j0).re)) ≤ 0 := by
     refine Finset.sum_nonpos ?_
     intro j hj
-    exact mul_nonpos_of_nonneg_of_nonpos (hWnn j hj) (by linarith [hmax j hj])
+    exact mul_nonpos_of_nonneg_of_nonpos (hWnn j hj) (by linarith only [hmax j hj, hmax, hj])
   have hWsum : (∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + (z 0 ^ j).re))
       ≤ (J : ℝ) := by
     have h1 : (∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + (z 0 ^ j).re))
@@ -209,12 +209,12 @@ theorem turanPowerSum_upper (J : ℕ) (hJ : 1 ≤ J) (z : ℕ → ℂ) (h0 : ‖
       intro j hj
       have hnorm : ‖z 0 ^ j‖ ≤ 1 := by rw [Complex.norm_pow, h0, one_pow]
       have h := re_bounds hnorm
-      exact mul_le_mul_of_nonneg_left (by linarith [h.2])
+      exact mul_le_mul_of_nonneg_left (by linarith only [h.2, h])
         (fejerWeight_nonneg (Finset.mem_Icc.mp hj).2)
     have h2 : (∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * 2) = (J : ℝ) := by
       rw [← Finset.sum_mul, turanPerTermZero_sumW]
       ring
-    linarith
+    linarith only [h1, h2]
   have hkey : (∑' n : ℕ, (z n) ^ j0).re *
         (∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + (z 0 ^ j).re))
       ≤ max ((∑' n : ℕ, (z n) ^ j0).re) 0 * (J : ℝ) := by
@@ -223,7 +223,7 @@ theorem turanPowerSum_upper (J : ℕ) (hJ : 1 ≤ J) (z : ℕ → ℂ) (h0 : ‖
       exact mul_le_mul_of_nonneg_left hWsum h
     · rw [max_eq_right h, zero_mul]
       exact mul_nonpos_of_nonpos_of_nonneg h hWsumnn
-  linarith [hdiff.symm ▸ hle0, hkey]
+  linarith only [hdiff.symm ▸ hle0, hkey, hdiff, hle0]
 
 /-! ### The normalized version of Turán's power-sum method -/
 
@@ -245,7 +245,7 @@ theorem turanPowerSum_normalized (ε : ℝ) (hε : 0 < ε) (z : ℕ → ℂ)
     have h := hweyl.le_tsum 0 (fun j hj => by positivity)
     rw [h0] at h
     norm_num at h
-    linarith
+    linarith only [h]
   set M : ℝ := ∑' n : ℕ, ‖z n‖ / (1 + ‖z n‖) with hM
   have hMge' : (1 : ℝ) / 2 ≤ M := by rw [hM]; exact hMge
   set J : ℕ := ⌊(8 + ε) * M⌋₊ with hJ
@@ -257,7 +257,7 @@ theorem turanPowerSum_normalized (ε : ℝ) (hε : 0 < ε) (z : ℕ → ℂ)
     rw [hJ]
     apply Nat.le_floor
     push_cast
-    nlinarith [hMge', hε]
+    nlinarith only [hMge', hε, hMge]
   have hsne : (Finset.Icc 1 J).Nonempty := ⟨1, Finset.mem_Icc.mpr ⟨le_rfl, hJ1⟩⟩
   obtain ⟨j0, hj0, hj0max⟩ :=
     Finset.exists_max_image (Finset.Icc 1 J) (fun j => (∑' n : ℕ, (z n) ^ j).re) hsne
@@ -270,9 +270,9 @@ theorem turanPowerSum_normalized (ε : ℝ) (hε : 0 < ε) (z : ℕ → ℂ)
   have hJpos : (0 : ℝ) < (J : ℝ) := by
     exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hJ1
   have hge : ε * M / 4 ≤ max S0 0 * (J : ℝ) := by
-    have h2 : 2 * M + ε * M / 4 < ((J : ℝ) + 1) / 4 := by nlinarith [hJM']
-    linarith
-  have hmaxpos : 0 < max S0 0 := by nlinarith [hge, hε, hJpos]
+    have h2 : 2 * M + ε * M / 4 < ((J : ℝ) + 1) / 4 := by linarith only [hJM']
+    linarith only [hJM', hlow, hup]
+  have hmaxpos : 0 < max S0 0 := by nlinarith only [hge, hε, hJpos, hJM', hlow, hup, hMge]
   have hS0eq : max S0 0 = S0 := by
     rcases le_total (0 : ℝ) S0 with h | h
     · exact max_eq_left h
@@ -282,18 +282,18 @@ theorem turanPowerSum_normalized (ε : ℝ) (hε : 0 < ε) (z : ℕ → ℂ)
   rw [hS0eq] at hge
   have hmid : ε * M / (4 * (J : ℝ)) ≤ S0 := by
     rw [div_le_iff₀ (by positivity : (0 : ℝ) < 4 * (J : ℝ))]
-    nlinarith [hge]
+    linarith only [hge]
   have hfinal : ε / (32 + 4 * ε) ≤ ε * M / (4 * (J : ℝ)) := by
     rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 32 + 4 * ε)
       (by positivity : (0 : ℝ) < 4 * (J : ℝ))]
-    have h4 : (4 : ℝ) * (J : ℝ) ≤ (32 + 4 * ε) * M := by nlinarith [hJM]
-    nlinarith [h4, hε]
+    have h4 : (4 : ℝ) * (J : ℝ) ≤ (32 + 4 * ε) * M := by linarith only [hJM]
+    nlinarith only [h4, hε, hJM]
   refine ⟨j0, hj0ge, ?_, ?_⟩
   · calc (j0 : ℝ) ≤ (J : ℝ) := by exact_mod_cast hj0le
       _ ≤ (8 + ε) * M := hJM
       _ = (8 + ε) * (∑' n : ℕ, ‖z n‖ / (1 + ‖z n‖)) := by rw [hM]
   · rw [← hS0]
-    linarith [hmid, hfinal]
+    linarith only [hmid, hfinal]
 
 /-! ### Turán's power-sum method -/
 
@@ -368,6 +368,6 @@ theorem turanPowerSum (ε : ℝ) (hε : 0 < ε) (z : ℕ → ℂ) (hz : z 0 ≠ 
     exact hj2
   · rw [hz_eq]
     have hRj : 0 ≤ R ^ j := pow_nonneg hRpos.le j
-    nlinarith [hj3, hRj, hε]
+    nlinarith only [hj3, hRj, hε]
 
 end Work.LinnikAreas

@@ -33,7 +33,7 @@ private lemma summable_telescoping :
     (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
   have hps2 : Summable (fun i : ℕ => 1 / ((i : ℝ) + 2) ^ 2) := by
     have hs : Summable (fun n : ℕ => (fun n : ℕ => 1 / (n : ℝ) ^ 2) (n + 2)) :=
-      (summable_nat_add_iff 2).mpr hps
+      (summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℝ) ^ 2) 2).mpr hps
     simpa [Nat.cast_add] using hs
   exact Summable.of_nonneg_of_le (fun m => telescoping_term_nonneg m) (fun m => telescoping_term_le m) hps2
 
@@ -47,7 +47,8 @@ private lemma tsum_telescoping :
     rw [h₁]
     norm_num [Nat.cast_add]
   have hsum : Summable (fun i : ℕ => a i - a (i + 1)) := by
-    exact summable_telescoping.congr (fun i => (ha i).symm)
+    rw [show (fun i : ℕ => a i - a (i + 1)) = _ from funext ha]
+    exact summable_telescoping
   have htend : Tendsto (fun N : ℕ => ∑ i ∈ Finset.range N, (a i - a (i + 1))) atTop (𝓝 (1 / 2)) := by
     have htelesc : ∀ N : ℕ, (∑ i ∈ Finset.range N, (a i - a (i + 1))) = a 0 - a N :=
       Finset.sum_range_sub' a
@@ -88,7 +89,7 @@ private lemma tsum_sq_tail_le_half :
     have hps : Summable (fun n : ℕ => 1 / (n : ℝ) ^ 2) :=
       (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
     have hs : Summable (fun n : ℕ => (fun n : ℕ => 1 / (n : ℝ) ^ 2) (n + 3)) :=
-      (summable_nat_add_iff 3).mpr hps
+      (summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℝ) ^ 2) 3).mpr hps
     simpa [Nat.cast_add, add_assoc] using hs
   calc
     (∑' m : ℕ, (1 : ℝ) / ((m : ℝ) + 3) ^ 2)
@@ -106,7 +107,7 @@ private lemma tsum_inv_sq_shift_le_three_quarters :
       have hps : Summable (fun n : ℕ => 1 / (n : ℝ) ^ 2) :=
         (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
       have hs : Summable (fun n : ℕ => (fun n : ℕ => 1 / (n : ℝ) ^ 2) (n + 2)) :=
-        (summable_nat_add_iff 2).mpr hps
+        (summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℝ) ^ 2) 2).mpr hps
       refine hs.congr ?_
       intro n
       have h₁ : ((n + 2 : ℕ) : ℝ) = (n : ℝ) + 2 := by norm_num
@@ -136,7 +137,7 @@ private lemma zeta_eq_one_add_tail {s : ℂ} (hs : 1 < s.re) :
     (Complex.summable_one_div_nat_cpow).mpr hs
   have hsumf : Summable f := by
     have hshift : Summable (fun n : ℕ => (fun n : ℕ => 1 / (n : ℂ) ^ s) (n + 1)) :=
-      (summable_nat_add_iff 1).mpr hbase
+      (summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℂ) ^ s) 1).mpr hbase
     exact hshift.congr (fun n => rfl)
   calc
     riemannZeta s = ∑' n : ℕ, 1 / ((n : ℂ) + 1) ^ s :=
@@ -190,7 +191,7 @@ theorem zeta_lower_re_two :
             have hps : Summable (fun n : ℕ => 1 / (n : ℝ) ^ 2) :=
               (Real.summable_one_div_nat_pow (p := 2)).2 (by norm_num)
             have hs2 : Summable (fun n : ℕ => (fun n : ℕ => 1 / (n : ℝ) ^ 2) (n + 2)) :=
-              (summable_nat_add_iff 2).mpr hps
+              (summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℝ) ^ 2) 2).mpr hps
             have hfeq : (fun m : ℕ => ‖(1 : ℂ) / (((m + 2 : ℕ) : ℂ) ^ s)‖) =
                 fun m : ℕ => (1 : ℝ) / ((m : ℝ) + 2) ^ 2 := by
               funext m

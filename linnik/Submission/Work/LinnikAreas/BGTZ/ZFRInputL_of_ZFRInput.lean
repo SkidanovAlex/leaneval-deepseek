@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikAreas.BGTZZFR
 import Submission.Work.LinnikAreas.BGTZ.ZFRInput_exists
 import Submission.Work.LinnikAreas.BGTZ.LFunction_eq_zero_imp_zeroMult
-import Submission.Work.LinnikAreas.BGTZ.zetaZFR_working
 import Submission.Work.LinnikAreas.Density4.LFunction_one_apply_one
 import Submission.Work.ZeroDensity.Ingham.zetaZeroBridge
 

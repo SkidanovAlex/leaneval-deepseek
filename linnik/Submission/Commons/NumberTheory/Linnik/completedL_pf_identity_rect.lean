@@ -21,52 +21,52 @@ def L_N (N : ℕ) (A : ℝ) : ℝ := Real.log (A + 2) + Real.log (N : ℝ) + 2
 lemma pf_L_ge_two {N : ℕ} [NeZero N] {A : ℝ} (hA : 0 ≤ A) : 2 ≤ L_N N A := by
   have h1 : 0 ≤ Real.log (A + 2) := by
     refine Real.log_nonneg ?_
-    linarith
+    linarith only [hA]
   dsimp [L_N]
   have hN : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-  linarith
+  linarith only [h1, hN]
 
 lemma pf_L_pos {N : ℕ} [NeZero N] {A : ℝ} (hA : 0 ≤ A) : 0 < L_N N A := by
   linarith [pf_L_ge_two (N := N) hA]
 
 lemma pf_L_mono {N : ℕ} {A B : ℝ} (hA : 0 ≤ A) (h : A ≤ B) : L_N N A ≤ L_N N B := by
-  have hp1 : 0 < A + 2 := by linarith
-  have hp2 : 0 < B + 2 := by linarith
-  have hle : A + 2 ≤ B + 2 := by linarith
+  have hp1 : 0 < A + 2 := by linarith only [hA]
+  have hp2 : 0 < B + 2 := by linarith only [hA, h]
+  have hle : A + 2 ≤ B + 2 := by linarith only [h]
   have hlog : Real.log (A + 2) ≤ Real.log (B + 2) := Real.log_le_log hp1 hle
   dsimp [L_N]
-  linarith
+  linarith only [hlog]
 
 lemma pf_log_L_le_L {N : ℕ} [NeZero N] {A : ℝ} (hA : 0 ≤ A) : Real.log (L_N N A) ≤ L_N N A := by
   have h1 : 1 ≤ L_N N A := by linarith [pf_L_ge_two (N := N) hA]
-  exact Real.log_le_self (by linarith)
+  exact Real.log_le_self (by linarith only [h1])
 
 /-- For 1 ≤ A, L_N(2A) ≤ 2·L_N(A). -/
 lemma pf_L_two_mul_le {N : ℕ} [NeZero N] {A : ℝ} (hA : 1 ≤ A) : L_N N (2 * A) ≤ 2 * L_N N A := by
-  have hA2 : 0 ≤ A := by linarith
-  have h₁ : 0 < A + 1 := by linarith
+  have hA2 : 0 ≤ A := by linarith only [hA]
+  have h₁ : 0 < A + 1 := by linarith only [hA]
   have h₂ : 0 < 2 := by norm_num
-  have h₁₂ : (A + 1 : ℝ) ≠ 0 := by linarith
+  have h₁₂ : (A + 1 : ℝ) ≠ 0 := by linarith only [hA]
   have hlog : Real.log (2 * A + 2) ≤ Real.log (A + 2) + Real.log 2 := by
     calc
       Real.log (2 * A + 2) = Real.log ((A + 1) * 2) := by congr 1; ring
       _ = Real.log (A + 1) + Real.log 2 := by rw [Real.log_mul h₁₂ (by norm_num : (2 : ℝ) ≠ 0)]
       _ ≤ Real.log (A + 2) + Real.log 2 := by
-        have hlogle : Real.log (A + 1) ≤ Real.log (A + 2) := Real.log_le_log h₁ (by linarith)
-        linarith
+        have hlogle : Real.log (A + 1) ≤ Real.log (A + 2) := Real.log_le_log h₁ (by linarith only [])
+        linarith only [hlogle]
   have hlog2 : Real.log 2 ≤ 1 := by
     have hlt := Real.log_two_lt_d9
     norm_num at hlt
-    linarith
+    linarith only [hlt]
   have h12 : 1 ≤ Real.log (A + 2) := by
     have he : Real.exp 1 ≤ A + 2 := by
       have h3 : Real.exp 1 ≤ 3 := le_of_lt Real.exp_one_lt_three
-      linarith
+      linarith only [hA, h3]
     have h := Real.log_le_log (Real.exp_pos 1) he
     rwa [Real.log_exp] at h
   dsimp [L_N]
   have hN : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-  nlinarith
+  linarith only [hlog, hlog2, h12, hN]
 
 /-- (L_N A)^2 / A → 0 -/
 lemma pf_L_sq_div_self_tendsto_zero {N : ℕ} [NeZero N] :
@@ -203,7 +203,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
   have hMge : 2 * M0 ≤ M := by
     dsimp [M]
     have h1 : M0 ≤ max M0 1 := le_max_left M0 1
-    nlinarith
+    linarith only [h1]
   have hFreM : ∀ w : ℂ, w ∈ ball (0 : ℂ) R → ((F w - F 0).re) ≤ M := by
     intro w hw
     have hle1 : (F w).re ≤ M0 := by
@@ -212,8 +212,8 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
     have hle2 : -M0 ≤ (F 0).re := by
       rw [hF0re]
       have habs := abs_le.mp hg0
-      linarith
-    have hmain : (F w).re - (F 0).re ≤ 2 * M0 := by linarith
+      linarith only [habs]
+    have hmain : (F w).re - (F 0).re ≤ 2 * M0 := by linarith only [hle1, hle2]
     have : ((F w - F 0).re) = (F w).re - (F 0).re := by simp
     rw [this]
     exact le_trans hmain hMge
@@ -227,16 +227,16 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
     have hwb : w ∈ ball (0 : ℂ) R := by
       rw [mem_ball_zero_iff]
       have hR2 : 0 ≤ R / 2 := by positivity
-      nlinarith
+      linarith only [hR, hw]
     have hbc := Complex.borelCaratheodory_zero (M := M) hMpos (f := fun z : ℂ => F z - F 0)
       (R := R) hFdiff2 (by intro z hz; simpa using hFreM z hz) hR hwb hF0eq
     have hden : 0 < R - ‖w‖ := by
       rw [mem_ball_zero_iff] at hwb
-      linarith
+      linarith only [hwb]
     have hle : ‖w‖ / (R - ‖w‖) ≤ 1 := by
       rw [div_le_one hden]
-      have hR2 : R / 2 ≤ R - ‖w‖ := by nlinarith
-      linarith
+      have hR2 : R / 2 ≤ R - ‖w‖ := by linarith only [hw]
+      linarith only [hw]
     calc
       ‖F w - F 0‖ ≤ 2 * M * ‖w‖ / (R - ‖w‖) := hbc
       _ = 2 * M * (‖w‖ / (R - ‖w‖)) := by ring
@@ -258,7 +258,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
         simpa [add_comm] using (norm_add_le z (x - z))
       have hxr : ‖x - z‖ ≤ r := hx
       dsimp [r] at hxr ⊢
-      nlinarith [hz, hxr]
+      linarith only [hz, hxr, hR, hle]
     have hFz : DifferentiableOn ℂ (fun w : ℂ => F w - F 0) (Metric.closedBall z r) := by
       intro x hx
       have hxR : x ∈ ball (0 : ℂ) R := hclosed hx
@@ -277,13 +277,13 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
           rw [hw2]
           simpa [add_comm] using (norm_add_le z (w - z))
         dsimp [r] at hwz ⊢
-        nlinarith [hz, hwz]
+        linarith only [hz, hwz, hle]
       exact hsup w hw'
     have hCau := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (f := fun w : ℂ => F w - F 0)
       (c := z) (R := r) hr hdiffCl (by intro w hw; simpa using hC w hw)
     have hzR : z ∈ ball (0 : ℂ) R := by
       rw [mem_ball_zero_iff]
-      nlinarith [hz, show 0 < R from hR]
+      linarith only [hz, show 0 < R from hR, hR]
     have hfder : deriv (fun w : ℂ => F w - F 0) z = deriv F z := by
       have hFdz : DifferentiableAt ℂ F z := hFdiff.differentiableAt (isOpen_ball.mem_nhds hzR)
       calc
@@ -317,7 +317,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
         rw [hw2]
         simpa [add_comm] using (norm_add_le z (w - z))
       dsimp [r] at hwz ⊢
-      nlinarith [hz, hwz]
+      linarith only [hz, hwz, hle]
     have hF' : ∀ w : ℂ, w ∈ sphere z r → ‖logDeriv g w‖ ≤ 16 * M / R := by
       intro w hw
       exact hder1 w (hz3 w hw)
@@ -331,7 +331,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
         simpa [add_comm] using (norm_add_le z (x - z))
       have hxr : ‖x - z‖ ≤ r := hx
       dsimp [r] at hxr ⊢
-      nlinarith [hz, hxr]
+      linarith only [hz, hxr, hR, hle]
     have hlg_an : AnalyticOnNhd ℂ (fun w : ℂ => logDeriv g w) (ball (0 : ℂ) R) :=
       pf_logDeriv_analytic_ball hg_an hg_ne
     have hlg_z : DifferentiableOn ℂ (fun w : ℂ => logDeriv g w) (Metric.closedBall z r) := by
@@ -353,7 +353,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
   have hsR4 : s ∈ ball (0 : ℂ) (R / 4) := by
     rw [mem_ball_zero_iff]
     have hRp : 0 < R / 4 := by positivity
-    nlinarith
+    linarith only [hR, hs]
   have h0R4 : (0 : ℂ) ∈ ball (0 : ℂ) (R / 4) := by
     rw [mem_ball_zero_iff]
     have hR4 : 0 < R / 4 := by positivity
@@ -361,7 +361,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
   have hCbound : ∀ z : ℂ, z ∈ ball (0 : ℂ) (R / 4) → ‖deriv (logDeriv g) z‖ ≤ 128 * M / R ^ 2 := by
     intro z hz
     rw [mem_ball_zero_iff] at hz
-    exact hder2 z (by nlinarith)
+    exact hder2 z (by linarith only [hz])
   have hdiff_at : ∀ z : ℂ, z ∈ ball (0 : ℂ) (R / 4) → DifferentiableAt ℂ (logDeriv g) z := by
     intro z hz
     have hlg_anR4 : AnalyticOnNhd ℂ (fun w : ℂ => logDeriv g w) (ball (0 : ℂ) (R / 4)) := by
@@ -369,7 +369,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
       have hwR : w ∈ ball (0 : ℂ) R := by
         rw [mem_ball_zero_iff]
         rw [mem_ball_zero_iff] at hw
-        nlinarith
+        linarith only [hR, hw]
       exact (pf_logDeriv_analytic_ball hg_an hg_ne) w hwR
     exact (hlg_anR4.differentiableOn.differentiableAt (isOpen_ball.mem_nhds hz))
   have hmvt := Convex.norm_image_sub_le_of_norm_deriv_le (𝕜 := ℂ) (f := fun w : ℂ => logDeriv g w)
@@ -383,7 +383,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
         field_simp [show R ^ 2 ≠ 0 from pow_ne_zero 2 (ne_of_gt hR)]
   have hle_mul : 128 * M ≤ 1024 * max M0 1 := by
     dsimp [M]
-    nlinarith
+    linarith only [hMpos]
   have hle1 : 128 * M * ‖s‖ / R ^ 2 ≤ 1024 * (max M0 1) * ‖s‖ / R ^ 2 := by
     exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hle_mul (norm_nonneg s))
       (sq_pos_of_pos hR).le
@@ -561,11 +561,11 @@ lemma pf_fac_log_lower {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have hstep : (d u : ℝ) * Real.log m ≤ Real.log ‖(ζ - u) ^ (d u)‖ := by
       simpa [hlogm] using hlog_ge
     have hmain : -Real.log ‖(ζ - u) ^ (d u)‖ ≤ (d u : ℝ) * (2 * Real.log L) := by
-      have hcalc : -Real.log ‖(ζ - u) ^ (d u)‖ ≤ -(d u : ℝ) * Real.log m := by linarith
+      have hcalc : -Real.log ‖(ζ - u) ^ (d u)‖ ≤ -(d u : ℝ) * Real.log m := by linarith only [hlog_ge, hlogm]
       have hmval : -(d u : ℝ) * Real.log m = (d u : ℝ) * (2 * Real.log L) := by
         rw [hlogmval]
         ring
-      linarith
+      linarith only [hlog_ge, hlogm, hmval]
     exact hmain
   have hsubP : mulSupport (fun u : ℂ => (ζ - u) ^ (d u)) ⊆ (S : Set ℂ) := by
     intro u hu
@@ -590,8 +590,8 @@ lemma pf_fac_log_lower {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     exact Finset.sum_nonneg (by intro u hu; exact_mod_cast (hd_nonneg u))
   have h2L : 0 ≤ 2 * Real.log L := by
     have h1 : 1 ≤ L := by linarith [pf_L_ge_two (N := N) hA0]
-    have hlog : 0 ≤ Real.log L := Real.log_nonneg (by linarith)
-    linarith
+    have hlog : 0 ≤ Real.log L := Real.log_nonneg (by linarith only [h1])
+    linarith only [hlog]
   calc
     -Real.log ‖∏ᶠ u : ℂ, (ζ - u) ^ (d u)‖
         = -Real.log ‖∏ u ∈ S, (ζ - u) ^ (d u)‖ := by rw [hprod_eq]
@@ -653,7 +653,7 @@ lemma pf_P_ne_zero_circle {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
   rcases factorization_open (f := Λ) (R := T) hTpos hΛdiff hΛ0 hcirc with ⟨g, ε, hε, hg_an, hg_nz, hfac⟩
   have hζε : ζ ∈ ball (0 : ℂ) (T + ε) := by
     rw [mem_ball_zero_iff]
-    nlinarith [hζ, hε]
+    linarith only [hζ, hε]
   have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
   have hfacζ := hfac ζ hζε
   have hΛζ : Λ ζ ≠ 0 := by simpa [Λ] using hcirc ζ hζ
@@ -708,13 +708,13 @@ lemma pf_P0_log_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ 
       have h : Real.log ‖u‖ ≤ Real.log T := Real.log_le_log hpos hTge
       have habs : 0 ≤ |Real.log δ₀| := abs_nonneg _
       dsimp [B]
-      linarith
+      linarith only [h, habs]
     have hle2 : -B ≤ Real.log ‖u‖ := by
       have h : Real.log δ₀ ≤ Real.log ‖u‖ := Real.log_le_log hδ₀pos hδle
       have hnegabs : -|Real.log δ₀| ≤ Real.log δ₀ := neg_abs_le (Real.log δ₀)
       have h3 : -B ≤ -|Real.log δ₀| := by
         dsimp [B]
-        linarith
+        linarith only [hlogTnonneg]
       exact le_trans (le_trans h3 hnegabs) h
     exact abs_le.mpr ⟨hle2, hle1⟩
   have hprod_pos_fac : ∀ u : ℂ, u ∈ S → 0 < ‖(0 : ℂ) - u‖ := by
@@ -837,7 +837,7 @@ lemma pfr_gc_spec {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ
       rexp (c * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2)) := by
     simpa using ((Commons.NumberTheory.Linnik.completedL_growth_circle χ hχ hχprim).choose_spec R hR z hz)
   have hle : c * R * L_N N R ≤ pfr_gc χ hχ hχprim * R * L_N N R := by
-    have hR0 : 0 ≤ R := by linarith
+    have hR0 : 0 ≤ R := by linarith only [hR]
     have hL : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) hR0)
     dsimp [pfr_gc]
     have hcm : c ≤ max c 0 := le_max_left c 0
@@ -864,7 +864,7 @@ lemma pfr_zc_spec {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ
       c * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2) := by
     simpa using ((Commons.NumberTheory.Linnik.completedL_zeroCount χ hχ hχprim).choose_spec R hR)
   have hle : c * R * L_N N R ≤ pfr_zc χ hχ hχprim * R * L_N N R := by
-    have hR0 : 0 ≤ R := by linarith
+    have hR0 : 0 ≤ R := by linarith only [hR]
     have hL : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) hR0)
     dsimp [pfr_zc]
     have hcm : c ≤ max c 0 := le_max_left c 0
@@ -894,7 +894,7 @@ lemma pfr_M0_nonneg {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : 
     0 ≤ pfr_M0 χ hχ hχprim A T := by
   have hgc : 0 ≤ pfr_gc χ hχ hχprim := pfr_gc_nonneg χ hχ hχprim
   have hzc : 0 ≤ pfr_zc χ hχ hχprim := pfr_zc_nonneg χ hχ hχprim
-  have hT0 : 0 ≤ T := by linarith
+  have hT0 : 0 ≤ T := by linarith only [hT1]
   have hLT : 0 ≤ L_N N T := le_of_lt (pf_L_pos (N := N) hT0)
   have hLA : 0 ≤ L_N N A := le_of_lt (pf_L_pos (N := N) hA)
   have hlogLA : 0 ≤ Real.log (L_N N A) := by
@@ -946,13 +946,13 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
     have hL2 : 0 < (L_N N A) ^ 2 := by positivity
     have hzero : |‖u‖ - T| = 0 := by simp [hu]
     have hb : (1 : ℝ) ≤ 0 := by simpa [hzero, mul_zero] using hmm
-    linarith
+    linarith only [hb]
   rcases factorization_open (f := Λc) (R := T) hTpos hΛdiff hΛ0 hcirc with ⟨g, ε, hε, hg_an, hg_nz, hfac⟩
   have hg_nz_T : ∀ w : ℂ, w ∈ ball 0 T → g w ≠ 0 := by
     intro w hw
     have hwε : w ∈ ball 0 (T + ε) := by
       rw [mem_ball_zero_iff] at hw ⊢
-      nlinarith [hε]
+      linarith only [hε, hw]
     exact hg_nz w hwε
   have hM0_eq : M0 = pfr_M0 χ hχ hχprim A T := by
     dsimp [M0, Q1, Q2, Q3, Q4, gc, zc, δ₀, LT, LA, Λc, pfr_M0]
@@ -960,7 +960,7 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
   have hQ3 : 0 ≤ Q3 := by dsimp [Q3]; exact abs_nonneg _
   have hQ4 : 0 ≤ Q4 := by
     dsimp [Q4]
-    have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith : (1 : ℝ) ≤ T)
+    have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith only [hT2] : (1 : ℝ) ≤ T)
     have hzc0 : 0 ≤ zc := pfr_zc_nonneg χ hχ hχprim
     positivity
   have hQ1 : 0 ≤ Q1 := by
@@ -977,16 +977,16 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
     positivity
   have hQ1Q2_le_M0 : Q1 + Q2 ≤ M0 := by
     dsimp [M0]
-    nlinarith [hQ3, hQ4]
+    linarith only [hQ3, hQ4]
   have hQ34_le_M0 : Q3 + Q4 ≤ M0 := by
     dsimp [M0]
-    nlinarith [hQ1, hQ2]
+    linarith only [hQ1, hQ2]
   -- boundary bound on the sphere
   have hbnd_ζ : ∀ ζ : ℂ, ‖ζ‖ = T → Real.log ‖g ζ‖ ≤ Q1 + Q2 := by
     intro ζ hζ
     have hζε : ζ ∈ ball 0 (T + ε) := by
       rw [mem_ball_zero_iff]
-      nlinarith [hζ, hε]
+      linarith only [hζ, hε]
     have hΛζ : Λc ζ ≠ 0 := hcirc ζ hζ
     have hPζ : pfP N χ T ζ ≠ 0 := pf_P_ne_zero_circle χ hχ hχprim hTpos (by intro u hu; simpa [Λc] using hcirc u hu) (hζ := hζ)
     have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
@@ -1035,7 +1035,7 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
       have hxε : x ∈ ball 0 (T + ε) := by
         rw [mem_ball_zero_iff]
         have hxT : ‖x‖ ≤ T := by simpa [Metric.mem_closedBall, dist_eq_norm] using hx
-        nlinarith [hε]
+        linarith only [hε, hxT]
       exact (hg_an.differentiableOn.differentiableAt (isOpen_ball.mem_nhds hxε)).differentiableWithinAt
     have hdiffCl : DiffContOnCl ℂ g (ball 0 T) := by
       refine DifferentiableOn.diffContOnCl ?_
@@ -1047,7 +1047,7 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
       have hb := hbnd_ζ ζ hζ
       have hleM : Real.log ‖g ζ‖ ≤ M0 := le_trans hb hQ1Q2_le_M0
       have hgζnz : g ζ ≠ 0 := by
-        have hζε : ζ ∈ ball 0 (T + ε) := by rw [mem_ball_zero_iff]; nlinarith [hζ, hε]
+        have hζε : ζ ∈ ball 0 (T + ε) := by rw [mem_ball_zero_iff]; linarith only [hζ, hε]
         exact hg_nz ζ hζε
       have hnormpos : 0 < ‖g ζ‖ := norm_pos_iff.mpr hgζnz
       calc
@@ -1083,7 +1083,7 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
     exact pf_log_eq_of_mul hP0nz hg0nz
   have hP0_bound : |Real.log ‖pfP N χ T 0‖| ≤ (pfZ N χ T) * (Real.log T + |Real.log δ₀|) := by
     have hδspec := pfr_delta_spec χ hχ hχprim
-    exact pf_P0_log_bound χ hχ (hT := by linarith) δ₀ hδspec.1 (by intro u hu; simpa [δ₀, Λc] using (hδspec.2.2 u hu))
+    exact pf_P0_log_bound χ hχ (hT := by linarith only [hT2]) δ₀ hδspec.1 (by intro u hu; simpa [δ₀, Λc] using (hδspec.2.2 u hu))
   have hlogg0 : |Real.log ‖g 0‖| ≤ Q3 + Q4 := by
     have hrew : Real.log ‖g 0‖ = Real.log ‖Λc 0‖ - Real.log ‖pfP N χ T 0‖ := by
       rw [hlog_mul0]
@@ -1099,7 +1099,7 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
         have hb0 : (pfZ N χ T) * (Real.log T + |Real.log δ₀|) ≤
             (zc * T * LT) * (Real.log T + |Real.log δ₀|) := by
           have hnon : 0 ≤ Real.log T + |Real.log δ₀| := by
-            have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith : (1 : ℝ) ≤ T)
+            have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith only [hT2] : (1 : ℝ) ≤ T)
             positivity
           exact mul_le_mul_of_nonneg_right hZle hnon
         exact le_trans hP0_bound hb0
@@ -1120,8 +1120,8 @@ lemma pfr_cofactor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
 /-- `log T ≤ 1 + log-scale(A)` when `1 ≤ A`, `A ≤ T`, `T ≤ 2A`. -/
 lemma pfr_logT_le {N : ℕ} [NeZero N] {A T : ℝ} (hA1 : 1 ≤ A) (hT2A : T ≤ 2 * A) (hAT : A ≤ T) :
     Real.log T ≤ 1 + L_N N A := by
-  have hApos : 0 < A := by linarith
-  have hTpos : 0 < T := by linarith
+  have hApos : 0 < A := by linarith only [hA1]
+  have hTpos : 0 < T := by linarith only [hA1, hAT]
   have h1 : Real.log T ≤ Real.log (2 * A) := by
     apply Real.log_le_log hTpos
     exact hT2A
@@ -1132,22 +1132,22 @@ lemma pfr_logT_le {N : ℕ} [NeZero N] {A T : ℝ} (hA1 : 1 ≤ A) (hT2A : T ≤
       _ ≤ 1 + Real.log A := by
         have hlog2 : Real.log 2 ≤ 1 := by
           have h := Real.log_le_sub_one_of_pos (x := (2 : ℝ)) (by norm_num : (0 : ℝ) < 2)
-          linarith
-        linarith
+          linarith only [h]
+        linarith only [hlog2]
   have h3 : Real.log A ≤ Real.log (A + 2) := by
-    apply Real.log_le_log (by linarith : 0 < A)
-    linarith
+    apply Real.log_le_log (by linarith only [hA1] : 0 < A)
+    linarith only []
   have h4 : Real.log (A + 2) ≤ L_N N A := by
     dsimp [L_N]
     have hlogN : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-    linarith
-  linarith
+    linarith only [hlogN]
+  linarith only [h1, h2, h3, h4]
 
 /-- `T·log-scale(T) ≤ 4·A·log-scale(A)` when `1 ≤ A ≤ T ≤ 2A`. -/
 lemma pfr_mul_bound {N : ℕ} [NeZero N] {A T : ℝ} (hA1 : 1 ≤ A) (hAT : A ≤ T) (hT2A : T ≤ 2 * A) :
     T * L_N N T ≤ 4 * A * L_N N A := by
-  have hT0 : 0 ≤ T := by linarith
-  have h2A0 : 0 ≤ 2 * A := by nlinarith
+  have hT0 : 0 ≤ T := by linarith only [hA1, hAT]
+  have h2A0 : 0 ≤ 2 * A := by linarith only [hA1]
   have hLT0 : 0 ≤ L_N N T := le_of_lt (pf_L_pos (N := N) hT0)
   have hLTle : L_N N T ≤ L_N N (2 * A) := pf_L_mono (N := N) hT0 hT2A
   have hLTle2 : L_N N T ≤ 2 * L_N N A := by
@@ -1179,14 +1179,14 @@ lemma pfr_M0_le {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
   let zc : ℝ := pfr_zc χ hχ hχprim
   let del : ℝ := pfr_delta χ hχ hχprim
   let LA : ℝ := L_N N A
-  have hA0 : 0 ≤ A := by linarith
-  have hT0 : 0 ≤ T := by linarith
+  have hA0 : 0 ≤ A := by linarith only [hA1]
+  have hT0 : 0 ≤ T := by linarith only [hA1, hAT]
   have hLA0 : 0 ≤ LA := le_of_lt (pf_L_pos (N := N) hA0)
   have hLA1 : 1 ≤ LA := by dsimp [LA]; linarith [pf_L_ge_two (N := N) hA0]
   have hgc0 : 0 ≤ gc := by dsimp [gc]; exact pfr_gc_nonneg χ hχ hχprim
   have hzc0 : 0 ≤ zc := by dsimp [zc]; exact pfr_zc_nonneg χ hχ hχprim
-  have hlogLA0 : 0 ≤ Real.log (L_N N A) := Real.log_nonneg (by linarith : 1 ≤ L_N N A)
-  have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith)
+  have hlogLA0 : 0 ≤ Real.log (L_N N A) := Real.log_nonneg (by linarith only [hLA1] : 1 ≤ L_N N A)
+  have hlogT0 : 0 ≤ Real.log T := Real.log_nonneg (by linarith only [hA1, hAT])
   have hLT0 : 0 ≤ L_N N T := le_of_lt (pf_L_pos (N := N) hT0)
   have hlogLAle : Real.log (L_N N A) ≤ LA := by
     dsimp [LA]
@@ -1209,7 +1209,7 @@ lemma pfr_M0_le {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
     rw [mul_comm]
     exact le_mul_of_one_le_left (abs_nonneg _) h
   have hLTleLA2 : Real.log T + |Real.log del| ≤ LA * (2 + |Real.log del|) := by
-    nlinarith [hlogTle, hlogd]
+    linarith only [hlogTle, hlogd, hLA1]
   -- term bounds
   have hterm1 : gc * T * L_N N T ≤ 4 * gc * A * LA ^ 2 := by
     have h1 := mul_le_mul_of_nonneg_left hTL4 hgc0   -- gc·(T·LT) ≤ gc·(4·A·LA)
@@ -1217,20 +1217,20 @@ lemma pfr_M0_le {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
       have h4gcA0 : 0 ≤ gc * (4 * A * LA) := by positivity
       exact le_mul_of_one_le_right h4gcA0 hLA1
     dsimp [LA] at h2
-    nlinarith [h1, h2]
+    linarith only [h1, h2]
   have hterm2 : 2 * Real.log (L_N N A) * zc * T * L_N N T ≤ 8 * zc * A * (L_N N A) ^ 2 := by
     have hzcT : zc * (T * L_N N T) ≤ zc * (4 * A * LA) := mul_le_mul_of_nonneg_left hTL4 hzc0
-    have hlog2 : (2 * Real.log (L_N N A)) ≤ (2 * LA) := by nlinarith [hlogLAle]
+    have hlog2 : (2 * Real.log (L_N N A)) ≤ (2 * LA) := by linarith only [hlogLAle]
     have hpart : (2 * LA) * (zc * (4 * A * LA)) ≤ 8 * zc * A * LA ^ 2 := by
       have h1 : 0 ≤ 2 * LA := by positivity
       have h2 : 0 ≤ zc * (4 * A * LA) := by positivity
-      nlinarith
+      linarith only []
     have hzcT0 : 0 ≤ zc * (T * L_N N T) := by positivity
     have h2LA0 : 0 ≤ 2 * LA := by positivity
     have hprod : (2 * Real.log (L_N N A)) * (zc * (T * L_N N T)) ≤ (2 * LA) * (zc * (4 * A * LA)) :=
       mul_le_mul hlog2 hzcT hzcT0 h2LA0
     dsimp [LA] at hpart
-    nlinarith [hprod, hpart]
+    linarith only [hprod, hpart]
   have hterm4 : zc * T * L_N N T * (Real.log T + |Real.log del|)
       ≤ 4 * zc * (2 + |Real.log del|) * A * (L_N N A) ^ 2 := by
     have hzcT : zc * (T * L_N N T) ≤ zc * (4 * A * LA) := mul_le_mul_of_nonneg_left hTL4 hzc0
@@ -1250,7 +1250,7 @@ lemma pfr_M0_le {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
       have hA0' : 0 ≤ A := hA0
       rw [heq]
     dsimp [LA] at h2
-    nlinarith [h1, h2]
+    linarith only [h1, h2]
   have hq3 : |Real.log ‖DirichletCharacter.completedLFunction χ 0‖| ≤
       |Real.log ‖DirichletCharacter.completedLFunction χ 0‖| := le_rfl
   calc
@@ -1359,28 +1359,28 @@ lemma pfr_pf_tendsto {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ :
     have hA_le_T : A ≤ T := hspec.1
     have hT_le_2A : T ≤ 2 * A := hspec.2.1
     have hmargin : ∀ u : ℂ, Λc u = 0 → (L_N N A) ^ 2 * |‖u‖ - T| ≥ 1 := hspec.2.2
-    have hA0 : 0 ≤ A := by linarith
-    have hTpos : 0 < T := by dsimp [T]; linarith
-    have hT2 : 2 ≤ T := by dsimp [T]; linarith
-    have hT1 : 1 ≤ T := by linarith
+    have hA0 : 0 ≤ A := by linarith only [hA2]
+    have hTpos : 0 < T := by dsimp [T]; linarith only [hA2, hspec]
+    have hT2 : 2 ≤ T := by dsimp [T]; linarith only [hA2, hspec]
+    have hT1 : 1 ≤ T := by linarith only [hA2, hspec]
     have hsT : ‖s‖ ≤ T / 8 := by
       dsimp [T]
       have h1 : 8 * ‖s‖ ≤ A := hA8
       have hle : A ≤ τ A := hA_le_T
-      nlinarith
+      linarith only [hA8, hspec]
     rcases pfr_cofactor_bound χ hχ hχprim (A := A) (T := T) hA0 hTpos hT2 hmargin with
       ⟨g, ε, hε, hg_an, hg_nz, hfac, hgM, hg0M⟩
     have hg_an_T : AnalyticOnNhd ℂ g (ball 0 T) := by
       refine AnalyticOnNhd.mono hg_an ?_
       intro w hw
       rw [mem_ball_zero_iff] at hw ⊢
-      nlinarith [hε]
+      linarith only [hε, hw]
     have hg_nz_T : ∀ w : ℂ, w ∈ ball 0 T → g w ≠ 0 := by
       intro w hw
       have hwε : w ∈ ball 0 (T + ε) := by
         rw [mem_ball_zero_iff]
         rw [mem_ball_zero_iff] at hw
-        nlinarith [hε]
+        linarith only [hε, hw]
       exact hg_nz w hwε
     have hM0nn : 0 ≤ pfr_M0 χ hχ hχprim A T := pfr_M0_nonneg χ hχ hχprim (A := A) (T := T) hA0 hT1
     have hsub := pf_logDeriv_sub_of_sup (g := g) (R := T) hTpos hg_an_T hg_nz_T
@@ -1391,14 +1391,14 @@ lemma pfr_pf_tendsto {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ :
     have hdec_s := logDeriv_decompose (f := Λc) (g := g) (R := T) (ε := ε) hΛdiff hfac_sT
       (x := s) (hx := by
         rw [mem_ball_zero_iff]
-        have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
-        nlinarith [hε]) hΛs' (hg_an s (by
+        have hsT' : ‖s‖ < T := by linarith only [hsT, show 0 < T from hTpos, hA8, hA2, hspec]
+        linarith only [hε, hA8, hA2, hspec]) hΛs' (hg_an s (by
           rw [mem_ball_zero_iff]
-          have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
-          nlinarith [hε])).differentiableAt (hg_nz s (by
+          have hsT' : ‖s‖ < T := by linarith only [hsT, show 0 < T from hTpos, hA8, hA2, hspec]
+          linarith only [hε, hA8, hA2, hspec])).differentiableAt (hg_nz s (by
             rw [mem_ball_zero_iff]
-            have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
-            nlinarith [hε]))
+            have hsT' : ‖s‖ < T := by linarith only [hsT, show 0 < T from hTpos, hA8, hA2, hspec]
+            linarith only [hε, hA8, hA2, hspec]))
     have hdec_0 := logDeriv_decompose (f := Λc) (g := g) (R := T) (ε := ε) hΛdiff hfac_sT
       (x := 0) (hx := by rw [mem_ball_zero_iff]; simp; positivity) hΛ0
       (hg_an 0 (by rw [mem_ball_zero_iff]; simp; positivity)).differentiableAt
@@ -1515,14 +1515,14 @@ lemma pfr_pf_tendsto {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ :
       exact div_le_div_of_nonneg_right h2 hT2nn
     have hmain' : 1024 * (pfr_M0 χ hχ hχprim A T + 1) * ‖s‖ / T ^ 2 ≤ E A := by
       have hM0le : pfr_M0 χ hχ hχprim A T ≤ pfr_C0 χ hχ hχprim * A * (L_N N A) ^ 2 + pfr_C1 χ hχ hχprim := by
-        exact pfr_M0_le χ hχ hχprim (hA1 := (by linarith : 1 ≤ A)) hA_le_T hT_le_2A
+        exact pfr_M0_le χ hχ hχprim (hA1 := (by linarith only [hA2] : 1 ≤ A)) hA_le_T hT_le_2A
       have hA2le : A ^ 2 ≤ T ^ 2 := by
-        have hTmA : 0 ≤ T - A := by linarith
+        have hTmA : 0 ≤ T - A := by linarith only [hspec]
         have hTpA : 0 ≤ T + A := by
           have hT0' : 0 ≤ T := le_of_lt hTpos
-          linarith
+          linarith only [hA2, hspec]
         have hprod : 0 ≤ (T - A) * (T + A) := mul_nonneg hTmA hTpA
-        nlinarith [hprod]
+        linarith only [hprod]
       have hdenpos : 0 < A ^ 2 := by positivity
       have hdenpos' : 0 < T ^ 2 := by positivity
       have hnumle : (pfr_M0 χ hχ hχprim A T + 1) / T ^ 2 ≤

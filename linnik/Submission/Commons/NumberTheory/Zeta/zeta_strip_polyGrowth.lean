@@ -62,12 +62,12 @@ private lemma pole_norm_le (s : ℂ) (ht : 1 ≤ |s.im|) (N : ℕ) (hN : 1 ≤ N
     have hcontra : |s.im| = 0 := by
       rw [hsi]
       simp
-    linarith
+    linarith only [ht, hcontra]
   have hnorm_pos : 0 < ‖s - 1‖ := norm_pos_iff.mpr hsne
   have hden : 1 ≤ ‖s - 1‖ := by
     have h1 : |(s - 1).im| ≤ ‖s - 1‖ := abs_im_le_norm (s - 1)
     have h2 : |(s - 1).im| = |s.im| := by simp
-    linarith
+    linarith only [ht, h1, h2]
   have hpow_nonneg : 0 ≤ ((N : ℕ) : ℝ) ^ (1 - s.re) := Real.rpow_nonneg hN0le _
   calc
     ‖((((N : ℕ) : ℂ) ^ (1 - s)) / (s - 1))‖ = ‖(((N : ℕ) : ℂ) ^ (1 - s))‖ / ‖s - 1‖ := by rw [norm_div]
@@ -120,7 +120,7 @@ private lemma zeta_bound_emN3 {σ t : ℝ} (hσ0 : 0 < σ) (hσ3 : σ ≤ 3) (ht
     have ht0 : t = 0 := by simpa [hsim] using hsi
     have habs : |t| = 0 := by rw [ht0]; simp
     have hpos : (0 : ℝ) < |t| := lt_of_lt_of_le zero_lt_one ht
-    linarith
+    linarith only [ht, habs]
   have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
   have hN0le : (0 : ℝ) ≤ (N : ℝ) := le_of_lt hN0
   have hNnorm : ‖s‖ ≤ (N : ℝ) := by
@@ -128,8 +128,8 @@ private lemma zeta_bound_emN3 {σ t : ℝ} (hσ0 : 0 < σ) (hσ3 : σ ≤ 3) (ht
       simpa [s] using norm_add_mul_I_le σ t (le_of_lt hσ0)
     have h2 : σ + |t| ≤ (N : ℝ) := by
       have : |t| + 3 ≤ (N : ℝ) := hNt
-      linarith
-    linarith
+      linarith only [hσ3, hNt]
+    linarith only [hσ3, hNt, h1]
   have hmul' : ((N : ℕ) : ℝ) ^ (1 - s.re) = ((N : ℕ) : ℝ) * ((N : ℕ) : ℝ) ^ (-s.re) := by
     calc
       ((N : ℕ) : ℝ) ^ (1 - s.re)
@@ -170,7 +170,7 @@ private lemma zeta_bound_emN3 {σ t : ℝ} (hσ0 : 0 < σ) (hσ3 : σ ≤ 3) (ht
   have htri : ‖H + M + T‖ ≤ ‖H‖ + ‖M‖ + ‖T‖ := by
     have h1 : ‖H + M + T‖ ≤ ‖H + M‖ + ‖T‖ := norm_add_le (H + M) T
     have h2 : ‖H + M‖ ≤ ‖H‖ + ‖M‖ := norm_add_le H M
-    linarith
+    linarith only [h1, h2]
   calc
     ‖riemannZeta ((σ : ℂ) + Complex.I * (t : ℂ))‖ = ‖riemannZeta s‖ := by simp [s]
     _ = ‖H + M + T‖ := by
@@ -192,7 +192,7 @@ private theorem zeta_re_quarter_three_poly :
       ‖riemannZeta ((σ : ℂ) + Complex.I * (t : ℂ))‖ ≤ C * (|t| + 3) ^ 4 := by
   refine ⟨12, by norm_num, ?_⟩
   intro σ t hσlo hσhi ht
-  have hσ0 : 0 < σ := by linarith
+  have hσ0 : 0 < σ := by linarith only [hσlo]
   have hσn0 : 0 ≤ σ := le_of_lt hσ0
   let N : ℕ := Nat.floor |t| + 4
   have hNge : |t| + 3 ≤ (N : ℝ) := by
@@ -200,13 +200,13 @@ private theorem zeta_re_quarter_three_poly :
     rw [Nat.cast_add]
     have hlt : |t| < ((Nat.floor |t| : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one |t|
     norm_num
-    linarith
+    linarith only [hlt]
   have hNle : (N : ℝ) ≤ |t| + 4 := by
     dsimp [N]
     rw [Nat.cast_add]
     norm_num
     have hfl : ((Nat.floor |t| : ℕ) : ℝ) ≤ |t| := Nat.floor_le (abs_nonneg t)
-    linarith
+    linarith only [hfl]
   have hN1 : 1 ≤ N := by
     have hfl1 : (1 : ℕ) ≤ Nat.floor |t| := by
       exact Nat.le_floor (by exact_mod_cast ht : ((1 : ℕ) : ℝ) ≤ |t|)
@@ -221,7 +221,7 @@ private theorem zeta_re_quarter_three_poly :
       have hx : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn1n
       calc
         ((n : ℕ) : ℝ) ^ (-σ) ≤ ((n : ℕ) : ℝ) ^ (0 : ℝ) := by
-          exact Real.rpow_le_rpow_of_exponent_le hx (by linarith : -σ ≤ 0)
+          exact Real.rpow_le_rpow_of_exponent_le hx (by linarith only [hσ0] : -σ ≤ 0)
         _ = 1 := by rw [Real.rpow_zero]
     calc
       (∑ n ∈ Finset.Icc 1 N, ((n : ℕ) : ℝ) ^ (-σ)) ≤ ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) := by
@@ -234,15 +234,15 @@ private theorem zeta_re_quarter_three_poly :
         rw [hcard]
         simp
   have hinv : σ⁻¹ ≤ 4 := by
-    have h4s : (1 : ℝ) ≤ 4 * σ := by nlinarith
+    have h4s : (1 : ℝ) ≤ 4 * σ := by linarith only [hσlo]
     simpa using (div_le_iff₀ hσ0).mpr h4s
   have h15 : (1 + 1 / σ : ℝ) ≤ 5 := by
     have : (1 / σ : ℝ) ≤ 4 := by simpa [one_div] using hinv
-    linarith
+    linarith only [this]
   have hP : ((N : ℕ) : ℝ) ^ (1 - σ) ≤ (N : ℝ) := by
     calc
       ((N : ℕ) : ℝ) ^ (1 - σ) ≤ ((N : ℕ) : ℝ) ^ (1 : ℝ) := by
-        exact Real.rpow_le_rpow_of_exponent_le hN1R (by linarith : 1 - σ ≤ 1)
+        exact Real.rpow_le_rpow_of_exponent_le hN1R (by linarith only [hσ0] : 1 - σ ≤ 1)
       _ = (N : ℝ) := by rw [Real.rpow_one]
   have hPnonneg : 0 ≤ ((N : ℕ) : ℝ) ^ (1 - σ) := Real.rpow_nonneg (by exact_mod_cast (by omega : 0 ≤ N)) _
   have hNnonneg : 0 ≤ (N : ℝ) := by exact_mod_cast (by omega : 0 ≤ N)
@@ -263,10 +263,10 @@ private theorem zeta_re_quarter_three_poly :
     _ ≤ 6 * (|t| + 4) := by
       exact mul_le_mul_of_nonneg_left hNle (by norm_num : (0 : ℝ) ≤ 6)
     _ ≤ 12 * (|t| + 3) := by
-      have ht13 : (|t| + 4 : ℝ) ≤ 2 * (|t| + 3) := by nlinarith [ht]
-      nlinarith
+      have ht13 : (|t| + 4 : ℝ) ≤ 2 * (|t| + 3) := by linarith only [ht]
+      linarith only [ht]
     _ ≤ 12 * (|t| + 3) ^ 4 := by
-      have hx : 1 ≤ |t| + 3 := by nlinarith [ht]
+      have hx : 1 ≤ |t| + 3 := by linarith only [ht]
       have hpow : (|t| + 3 : ℝ) ≤ (|t| + 3) ^ 4 := by
         have h1 : (|t| + 3 : ℝ) ^ (1 : ℕ) ≤ (|t| + 3) ^ 4 := pow_le_pow_right₀ hx (by norm_num : (1:ℕ) ≤ 4)
         simpa using h1
@@ -290,7 +290,7 @@ private lemma gamma_strip_poly2 {x t : ℝ} (hxlo : (3 / 4 : ℝ) ≤ x) (hx2 : 
     have harg : (x : ℂ) + I * (t : ℂ) + (1 : ℂ) = ((x + 1 : ℝ) : ℂ) + I * (t : ℂ) := by
       apply Complex.ext <;> simp <;> ring
     have hmain := Commons.Analysis.Complex.gamma_upper_main (hL11 := (by norm_num : (2 : ℝ) ≤ 11))
-      (h1 := (show (1 : ℝ) ≤ x + 1 by linarith)) (hσL := (show x + 1 ≤ 2 by linarith)) t
+      (h1 := (show (1 : ℝ) ≤ x + 1 by linarith only [hxlo])) (hσL := (show x + 1 ≤ 2 by linarith only [hx1])) t
     calc
       ‖Complex.Gamma ((x : ℂ) + I * (t : ℂ))‖ ≤
           ‖Complex.Gamma ((x : ℂ) + I * (t : ℂ) + (1 : ℂ))‖ := by simpa using hle
@@ -343,10 +343,10 @@ private theorem zeta_strip_threeQuarter_two :
   refine ⟨5 * C0, mul_pos (by norm_num) hC0, ?_⟩
   intro u t hu h2 ht
   have hb := hC0spec (1 / 4) u t (by norm_num : (0 : ℝ) < 1 / 4)
-    (by norm_num : (1 / 4 : ℝ) ≤ 1) (by linarith : (1 / 2 + 1 / 4 : ℝ) ≤ u) h2 ht
+    (by norm_num : (1 / 4 : ℝ) ≤ 1) (by linarith only [hu] : (1 / 2 + 1 / 4 : ℝ) ≤ u) h2 ht
   -- hb : ‖ζ(u+it)‖ ≤ C0 * (1 + 1 / (1/4)) * (|t| + 3) ^ (1/2 - (1/4)/2)
   have hpow : (|t| + 3) ^ ((1 / 2 - (1 / 4) / 2 : ℝ)) ≤ |t| + 3 := by
-    have hx : 1 ≤ |t| + 3 := by nlinarith [ht]
+    have hx : 1 ≤ |t| + 3 := by linarith only [ht]
     have hle : ((1 / 2 - (1 / 4) / 2 : ℝ) ≤ 1) := by norm_num
     calc
       (|t| + 3) ^ ((1 / 2 - (1 / 4) / 2 : ℝ)) ≤ (|t| + 3) ^ (1 : ℝ) := by
@@ -362,9 +362,9 @@ private theorem zeta_strip_threeQuarter_two :
     _ ≤ (5 * C0) * (|t| + 3) := by
       have hf : C0 * (1 + 1 / (1 / 4)) ≤ 5 * C0 := by
         have : (1 + 1 / (1 / 4) : ℝ) = 5 := by norm_num
-        nlinarith
+        linarith only []
       have hx0 : 0 ≤ |t| + 3 := by positivity
-      nlinarith
+      linarith only []
 
 
 /-- Region lemma 1 (`-1 ≤ σ ≤ 1/4`): functional equation + Gamma bounds. -/
@@ -389,15 +389,15 @@ private theorem zeta_left_poly :
     intro h
     rw [h] at ht
     norm_num at ht
-  have hu_ge : (3 / 4 : ℝ) ≤ u := by dsimp [u]; linarith
-  have hu_le : u ≤ 2 := by dsimp [u]; linarith
+  have hu_ge : (3 / 4 : ℝ) ≤ u := by dsimp [u]; linarith only [hσhi]
+  have hu_le : u ≤ 2 := by dsimp [u]; linarith only [hσlo]
   have hwim : w.im = -t := by dsimp [w, s]; simp
   have hw_ne : ∀ n : ℕ, w ≠ -↑n := by
     intro n hn
     have him := congrArg Complex.im hn
     rw [hwim] at him
     simp at him
-    have ht0 : t = 0 := by linarith
+    have ht0 : t = 0 := by linarith only [him]
     rw [ht0] at ht
     norm_num at ht
   have hw1 : w ≠ 1 := by
@@ -405,7 +405,7 @@ private theorem zeta_left_poly :
     have him := congrArg Complex.im h1
     rw [hwim] at him
     simp at him
-    have ht0 : t = 0 := by linarith
+    have ht0 : t = 0 := by linarith only [him]
     rw [ht0] at ht
     norm_num at ht
   have hFE0 := riemannZeta_one_sub (s := w) hw_ne hw1
@@ -432,8 +432,8 @@ private theorem zeta_left_poly :
     rw [hpow2]
     have hx : 1 ≤ 2 * Real.pi := by
       have hpi : (2 : ℝ) ≤ Real.pi := Real.two_le_pi
-      nlinarith
-    have hle : σ - 1 ≤ 0 := by linarith
+      linarith only [hpi]
+    have hle : σ - 1 ≤ 0 := by linarith only [hσhi]
     calc
       (2 * Real.pi : ℝ) ^ (σ - 1) ≤ (2 * Real.pi : ℝ) ^ (0 : ℝ) := by
         exact Real.rpow_le_rpow_of_exponent_le hx hle
@@ -483,7 +483,7 @@ private theorem zeta_left_poly :
   have hmain3 : ‖riemannZeta s‖ ≤ 2 * G2 * C34 * (|t| + 3) ^ 3 := by
     have hq1 : (1 + |t|) ^ 2 ≤ (|t| + 3) ^ 2 := by
       have hx01 : 0 ≤ 1 + |t| := by positivity
-      have hx1 : 1 + |t| ≤ |t| + 3 := by nlinarith
+      have hx1 : 1 + |t| ≤ |t| + 3 := by linarith only []
       exact pow_le_pow_left₀ hx01 hx1 2
     calc
       ‖riemannZeta s‖ ≤ 2 * G2 * C34 * (1 + |t|) ^ 2 * (|t| + 3) := hmain
@@ -496,7 +496,7 @@ private theorem zeta_left_poly :
     ‖riemannZeta ((σ : ℂ) + I * (t : ℂ))‖ = ‖riemannZeta s‖ := by simp [s]
     _ ≤ 2 * G2 * C34 * (|t| + 3) ^ 3 := hmain3
     _ ≤ (2 * G2 * C34) * (|t| + 3) ^ 4 := by
-      have hx : 1 ≤ |t| + 3 := by nlinarith [ht]
+      have hx : 1 ≤ |t| + 3 := by linarith only [ht]
       have hp : (|t| + 3) ^ 3 ≤ (|t| + 3) ^ 4 := pow_le_pow_right₀ hx (by norm_num : (3 : ℕ) ≤ 4)
       exact mul_le_mul_of_nonneg_left hp hconst0
 
@@ -515,13 +515,13 @@ theorem zeta_strip_polyGrowth :
       ‖riemannZeta ((σ : ℂ) + Complex.I * (t : ℂ))‖ ≤ C1 * (|t| + 3) ^ 4 := hb
       _ ≤ (C1 + C2) * (|t| + 3) ^ 4 := by
         have hx0 : 0 ≤ (|t| + 3) ^ 4 := by positivity
-        nlinarith
-  · have hσ2 : (1 / 4 : ℝ) ≤ σ := by linarith
+        nlinarith only [hC2, hx0]
+  · have hσ2 : (1 / 4 : ℝ) ≤ σ := by linarith only [hσ]
     have hb := hC2spec σ t hσ2 hσhi ht
     calc
       ‖riemannZeta ((σ : ℂ) + Complex.I * (t : ℂ))‖ ≤ C2 * (|t| + 3) ^ 4 := hb
       _ ≤ (C1 + C2) * (|t| + 3) ^ 4 := by
         have hx0 : 0 ≤ (|t| + 3) ^ 4 := by positivity
-        nlinarith
+        nlinarith only [hC1, hx0]
 
 end Commons.NumberTheory.Zeta

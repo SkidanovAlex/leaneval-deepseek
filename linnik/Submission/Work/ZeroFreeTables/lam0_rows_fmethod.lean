@@ -18,6 +18,7 @@ import Submission.Work.ZeroFreeTables.lam0_row01
 import Submission.Work.ZeroFreeTables.lam0_rows_a
 import Submission.Work.ZeroFreeTables.lam0_rows_b
 import Submission.Work.ZeroFreeTables.lam0_rows_c
+import Submission.Work.LinnikAreas.A5.boxAbs_le_deltaSum
 
 namespace Work.ZeroFreeTables
 

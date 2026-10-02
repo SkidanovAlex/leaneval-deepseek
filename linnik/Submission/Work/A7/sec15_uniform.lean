@@ -192,7 +192,7 @@ lemma sec15_crude {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ}
         have hPL : Phi ((43:ℝ)/40) ≤ ((842817:ℝ)/(100000000)) := (v_43_40).1
         have hWL : ((10208027:ℝ)/(100000000)) ≤ Wf ((43:ℝ)/40) := (v_43_40).2.2.2.1
         rw [div_le_div_iff₀ (Wf_pos (by norm_num)) (by norm_num)]
-        nlinarith [hPL, hWL, (Phi_pos (by norm_num : (0:ℝ) < 43/40)).le]
+        linarith only [hPL, hWL]
       have := le_trans h1 h2
       calc Phi (lamChar χ) = Phi (lamChar χ) / Wf (lamChar χ) * Wf (lamChar χ) := by
             rw [div_mul_cancel₀]; exact ne_of_gt (Wf_pos hlam0)
@@ -211,7 +211,7 @@ lemma sec15_crude {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ}
       have h2 : Real.exp (-(ac * ((43:ℝ)/40))) / Wf ((43:ℝ)/40)
           ≤ (((515649:ℝ)/(100000000)) / ((10208027:ℝ)/(100000000))) := by
         rw [div_le_div_iff₀ (Wf_pos (by norm_num)) (by norm_num)]
-        nlinarith [h3, hWL, Real.exp_pos (-(ac * ((43:ℝ)/40)))]
+        linarith only [h3, hWL]
       calc Real.exp (-(ac * lamChar χ))
           = Real.exp (-(ac * lamChar χ)) / Wf (lamChar χ) * Wf (lamChar χ) := by
             rw [div_mul_cancel₀]; exact ne_of_gt (Wf_pos hlam0)
@@ -226,7 +226,7 @@ lemma sec15_crude {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ}
       _ ≤ ((9:ℝ)/100) * (((842817:ℝ)/(100000000)) / ((10208027:ℝ)/(100000000)) * wHB (lamChar χ)
             + η * ((((515649:ℝ)/(100000000)) / ((10208027:ℝ)/(100000000))) * wHB (lamChar χ))) := by
           apply mul_le_mul_of_nonneg_left _ (by norm_num)
-          exact add_le_add hPhi (by nlinarith [hExp, hη])
+          exact add_le_add hPhi (mul_le_mul_of_nonneg_left hExp hη)
       _ = ((9:ℝ)/100) * (((842817:ℝ)/(100000000)) / ((10208027:ℝ)/(100000000))
             + η * (((515649:ℝ)/(100000000)) / ((10208027:ℝ)/(100000000)))) * wHB (lamChar χ) := by
           ring
@@ -240,7 +240,7 @@ lemma sec15_crude {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ}
     have hε0 : (0:ℝ) ≤ ((67:ℝ)/6 + εw) := by linarith
     have hε : ((67:ℝ)/6 + εw) ≤ ((67:ℝ)/6 + 1/1000) := by linarith
     have hη0 : 0 ≤ η := hη
-    nlinarith [hA, hB, hε, hε0, hη0,
+    nlinarith only [hA, hB, hε, hε0, hη0,
       mul_nonneg (by norm_num : (0:ℝ) ≤ (9:ℝ)/100) hη0,
       mul_le_mul_of_nonneg_left hε hη0]
   calc ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ
@@ -274,23 +274,23 @@ theorem cfg_r0 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((49:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((451:ℝ)/(500)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((327:ℝ)/(250)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((327:ℝ)/(250)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((87:ℝ)/(250))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((87:ℝ)/(250))))))/(((87:ℝ)/(250))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((87:ℝ)/(250))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((87:ℝ)/(250))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((1229:ℝ)/(1000)) ((49:ℝ)/(40)) ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((49:ℝ)/(40)) lam₁ - Aref ((327:ℝ)/(250)) lam₁ ≤ ((3646547:ℝ)/(25000000)) := by
     refine le_trans (rowA_0_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -299,15 +299,15 @@ theorem cfg_r0 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((3646547:ℝ)/(25000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((3646547:ℝ)/(25000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -329,7 +329,7 @@ theorem cfg_r0 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((1229:ℝ)/(1000))) (CST1 := ((3646547:ℝ)/(25000000))) (CST2 := ((165177:ℝ)/(12500000)))
     (n₁ := 2) (s := 0) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r0 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r0 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r0).2.1 hTOT hETA
 
 /-- Region I, row 1. -/
@@ -350,23 +350,23 @@ theorem cfg_r1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((6:ℝ)/(5)) := by norm_num
   have hl2 : (0:ℝ) < ((443:ℝ)/(500)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((1249:ℝ)/(1000)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((1249:ℝ)/(1000)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((9:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((9:ℝ)/(25))))))/(((9:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((9:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((9:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((59:ℝ)/(50)) ((6:ℝ)/(5)) ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((0:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((6:ℝ)/(5)) lam₁ - Aref ((1249:ℝ)/(1000)) lam₁ ≤ ((13564633:ℝ)/(100000000)) := by
     refine le_trans (rowA_1_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -375,15 +375,15 @@ theorem cfg_r1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((13564633:ℝ)/(100000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((13564633:ℝ)/(100000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -405,7 +405,7 @@ theorem cfg_r1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((59:ℝ)/(50))) (CST1 := ((13564633:ℝ)/(100000000))) (CST2 := ((282441:ℝ)/(20000000)))
     (n₁ := 2) (s := 0) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r1 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r1 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r1).2.1 hTOT hETA
 
 /-- Region I, row 2. -/
@@ -426,23 +426,23 @@ theorem cfg_r2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((6:ℝ)/(5)) := by norm_num
   have hl2 : (0:ℝ) < ((87:ℝ)/(100)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((239:ℝ)/(200)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((239:ℝ)/(200)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((19:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((19:ℝ)/(50))))))/(((19:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((19:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((19:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((567:ℝ)/(500)) ((6:ℝ)/(5)) ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((2:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((2:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((2:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((6:ℝ)/(5)) lam₁ - Aref ((239:ℝ)/(200)) lam₁ ≤ ((3046547:ℝ)/(25000000)) := by
     refine le_trans (rowA_2_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -451,15 +451,15 @@ theorem cfg_r2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((3046547:ℝ)/(25000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((3046547:ℝ)/(25000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -481,7 +481,7 @@ theorem cfg_r2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((567:ℝ)/(500))) (CST1 := ((3046547:ℝ)/(25000000))) (CST2 := ((394349:ℝ)/(25000000)))
     (n₁ := 2) (s := 2) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r2 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r2 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r2).2.1 hTOT hETA
 
 /-- Region I, row 3. -/
@@ -502,23 +502,23 @@ theorem cfg_r3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((6:ℝ)/(5)) := by norm_num
   have hl2 : (0:ℝ) < ((171:ℝ)/(200)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((143:ℝ)/(125)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((143:ℝ)/(125)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((2:ℝ)/(5))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((2:ℝ)/(5))))))/(((2:ℝ)/(5))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((2:ℝ)/(5))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((2:ℝ)/(5))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((1093:ℝ)/(1000)) ((6:ℝ)/(5)) ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((4:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((4:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((4:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((6:ℝ)/(5)) lam₁ - Aref ((143:ℝ)/(125)) lam₁ ≤ ((10969797:ℝ)/(100000000)) := by
     refine le_trans (rowA_3_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -527,15 +527,15 @@ theorem cfg_r3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((10969797:ℝ)/(100000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((10969797:ℝ)/(100000000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -557,7 +557,7 @@ theorem cfg_r3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((1093:ℝ)/(1000))) (CST1 := ((10969797:ℝ)/(100000000))) (CST2 := ((436587:ℝ)/(25000000)))
     (n₁ := 2) (s := 4) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r3 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r3 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r3).2.1 hTOT hETA
 
 /-- Region I, row 4. -/
@@ -578,23 +578,23 @@ theorem cfg_r4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((6:ℝ)/(5)) := by norm_num
   have hl2 : (0:ℝ) < ((841:ℝ)/(1000)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((549:ℝ)/(500)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((6:ℝ)/(5)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((549:ℝ)/(500)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((21:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((21:ℝ)/(50))))))/(((21:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((21:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((21:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((527:ℝ)/(500)) ((6:ℝ)/(5)) ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((5:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((5:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((6:ℝ)/(5)) - (25:ℝ)/1000 * ((5:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((6:ℝ)/(5)) lam₁ - Aref ((549:ℝ)/(500)) lam₁ ≤ ((618589:ℝ)/(6250000)) := by
     refine le_trans (rowA_4_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -603,15 +603,15 @@ theorem cfg_r4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((618589:ℝ)/(6250000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((618589:ℝ)/(6250000)) + (Phi ((6:ℝ)/(5)) / Wf ((6:ℝ)/(5))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -633,7 +633,7 @@ theorem cfg_r4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((527:ℝ)/(500))) (CST1 := ((618589:ℝ)/(6250000))) (CST2 := ((1917351:ℝ)/(100000000)))
     (n₁ := 2) (s := 5) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r4 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r4 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r4).2.1 hTOT hETA
 
 /-- Region I, row 5. -/
@@ -654,23 +654,23 @@ theorem cfg_r5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((49:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((207:ℝ)/(250)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((527:ℝ)/(500)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((527:ℝ)/(500)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((11:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((11:ℝ)/(25))))))/(((11:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((11:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((11:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((1017:ℝ)/(1000)) ((49:ℝ)/(40)) ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((49:ℝ)/(40)) lam₁ - Aref ((527:ℝ)/(500)) lam₁ ≤ ((1137307:ℝ)/(12500000)) := by
     refine le_trans (rowA_5_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -679,15 +679,15 @@ theorem cfg_r5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((1137307:ℝ)/(12500000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((1137307:ℝ)/(12500000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -709,7 +709,7 @@ theorem cfg_r5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((1017:ℝ)/(1000))) (CST1 := ((1137307:ℝ)/(12500000))) (CST2 := ((539411:ℝ)/(25000000)))
     (n₁ := 2) (s := 8) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r5 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r5 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r5).2.1 hTOT hETA
 
 /-- Region I, row 6. -/
@@ -730,23 +730,23 @@ theorem cfg_r6 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((49:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((163:ℝ)/(200)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((507:ℝ)/(500)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((507:ℝ)/(500)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((23:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((23:ℝ)/(50))))))/(((23:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((23:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((23:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((983:ℝ)/(1000)) ((49:ℝ)/(40)) ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((49:ℝ)/(40)) lam₁ - Aref ((507:ℝ)/(500)) lam₁ ≤ ((8277873:ℝ)/(100000000)) := by
     refine le_trans (rowA_6_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -755,15 +755,15 @@ theorem cfg_r6 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((8277873:ℝ)/(100000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((8277873:ℝ)/(100000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -785,7 +785,7 @@ theorem cfg_r6 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((983:ℝ)/(1000))) (CST1 := ((8277873:ℝ)/(100000000))) (CST2 := ((1171667:ℝ)/(50000000)))
     (n₁ := 2) (s := 9) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r6 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r6 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r6).2.1 hTOT hETA
 
 /-- Region I, row 7. -/
@@ -806,23 +806,23 @@ theorem cfg_r7 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((49:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((401:ℝ)/(500)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((122:ℝ)/(125)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((49:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((122:ℝ)/(125)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((12:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((12:ℝ)/(25))))))/(((12:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((12:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((12:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((951:ℝ)/(1000)) ((49:ℝ)/(40)) ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((49:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((49:ℝ)/(40)) lam₁ - Aref ((122:ℝ)/(125)) lam₁ ≤ ((3785989:ℝ)/(50000000)) := by
     refine le_trans (rowA_7_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -831,15 +831,15 @@ theorem cfg_r7 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((3785989:ℝ)/(50000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((3785989:ℝ)/(50000000)) + (Phi ((49:ℝ)/(40)) / Wf ((49:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -861,7 +861,7 @@ theorem cfg_r7 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((951:ℝ)/(1000))) (CST1 := ((3785989:ℝ)/(50000000))) (CST2 := ((2542779:ℝ)/(100000000)))
     (n₁ := 2) (s := 10) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r7 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r7 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r7).2.1 hTOT hETA
 
 /-- Region I, row 8. -/
@@ -882,23 +882,23 @@ theorem cfg_r8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((5:ℝ)/(4)) := by norm_num
   have hl2 : (0:ℝ) < ((79:ℝ)/(100)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((47:ℝ)/(50)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((47:ℝ)/(50)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((1:ℝ)/(2))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((1:ℝ)/(2))))))/(((1:ℝ)/(2))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((1:ℝ)/(2))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((1:ℝ)/(2))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((921:ℝ)/(1000)) ((5:ℝ)/(4)) ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((5:ℝ)/(4)) lam₁ - Aref ((47:ℝ)/(50)) lam₁ ≤ ((7084397:ℝ)/(100000000)) := by
     refine le_trans (rowA_8_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -907,15 +907,15 @@ theorem cfg_r8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((7084397:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((7084397:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -937,7 +937,7 @@ theorem cfg_r8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((921:ℝ)/(1000))) (CST1 := ((7084397:ℝ)/(100000000))) (CST2 := ((702093:ℝ)/(25000000)))
     (n₁ := 2) (s := 13) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r8 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r8 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r8).2.1 hTOT hETA
 
 /-- Region I, row 9. -/
@@ -958,23 +958,23 @@ theorem cfg_r9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((5:ℝ)/(4)) := by norm_num
   have hl2 : (0:ℝ) < ((779:ℝ)/(1000)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((453:ℝ)/(500)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((453:ℝ)/(500)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((13:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((13:ℝ)/(25))))))/(((13:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((13:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((13:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((223:ℝ)/(250)) ((5:ℝ)/(4)) ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((5:ℝ)/(4)) lam₁ - Aref ((453:ℝ)/(500)) lam₁ ≤ ((6576779:ℝ)/(100000000)) := by
     refine le_trans (rowA_9_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -983,15 +983,15 @@ theorem cfg_r9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((6576779:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((6576779:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1013,7 +1013,7 @@ theorem cfg_r9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((223:ℝ)/(250))) (CST1 := ((6576779:ℝ)/(100000000))) (CST2 := ((750559:ℝ)/(25000000)))
     (n₁ := 2) (s := 14) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r9 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r9 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r9).2.1 hTOT hETA
 
 /-- Region I, row 10. -/
@@ -1034,23 +1034,23 @@ theorem cfg_r10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((5:ℝ)/(4)) := by norm_num
   have hl2 : (0:ℝ) < ((96:ℝ)/(125)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((437:ℝ)/(500)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((437:ℝ)/(500)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((27:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((27:ℝ)/(50))))))/(((27:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((27:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((27:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((173:ℝ)/(200)) ((5:ℝ)/(4)) ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((5:ℝ)/(4)) lam₁ - Aref ((437:ℝ)/(500)) lam₁ ≤ ((615773:ℝ)/(10000000)) := by
     refine le_trans (rowA_10_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1059,15 +1059,15 @@ theorem cfg_r10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((615773:ℝ)/(10000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((615773:ℝ)/(10000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1089,7 +1089,7 @@ theorem cfg_r10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((173:ℝ)/(200))) (CST1 := ((615773:ℝ)/(10000000))) (CST2 := ((128321:ℝ)/(4000000)))
     (n₁ := 2) (s := 15) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r10 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r10 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r10).2.1 hTOT hETA
 
 /-- Region I, row 11. -/
@@ -1110,23 +1110,23 @@ theorem cfg_r11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((5:ℝ)/(4)) := by norm_num
   have hl2 : (0:ℝ) < ((379:ℝ)/(500)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((211:ℝ)/(250)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((211:ℝ)/(250)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((14:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((14:ℝ)/(25))))))/(((14:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((14:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((14:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((5:ℝ)/(4)) ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((5:ℝ)/(4)) lam₁ - Aref ((211:ℝ)/(250)) lam₁ ≤ ((5818981:ℝ)/(100000000)) := by
     refine le_trans (rowA_11_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1135,15 +1135,15 @@ theorem cfg_r11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((5818981:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((5818981:ℝ)/(100000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1165,7 +1165,7 @@ theorem cfg_r11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((5818981:ℝ)/(100000000))) (CST2 := ((106439:ℝ)/(3125000)))
     (n₁ := 2) (s := 15) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r11 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r11 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r11).2.1 hTOT hETA
 
 /-- Region I, row 12. -/
@@ -1186,23 +1186,23 @@ theorem cfg_r12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((187:ℝ)/(250)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((163:ℝ)/(200)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((163:ℝ)/(200)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((29:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((29:ℝ)/(50))))))/(((29:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((29:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((29:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((51:ℝ)/(40)) lam₁ - Aref ((163:ℝ)/(200)) lam₁ ≤ ((5651003:ℝ)/(100000000)) := by
     refine le_trans (rowA_12_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1211,15 +1211,15 @@ theorem cfg_r12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((5651003:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((5651003:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1241,7 +1241,7 @@ theorem cfg_r12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((5651003:ℝ)/(100000000))) (CST2 := ((3683353:ℝ)/(100000000)))
     (n₁ := 2) (s := 16) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r12 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r12 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r12).2.1 hTOT hETA
 
 /-- Region I, row 11 (rc). -/
@@ -1262,23 +1262,23 @@ theorem cfg_r11rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((5:ℝ)/(4)) := by norm_num
   have hl2 : (0:ℝ) < ((379:ℝ)/(500)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((211:ℝ)/(250)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((5:ℝ)/(4)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((211:ℝ)/(250)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((14:ℝ)/(25))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((14:ℝ)/(25))))))/(((14:ℝ)/(25))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((14:ℝ)/(25))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((14:ℝ)/(25))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((5:ℝ)/(4)) ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((5:ℝ)/(4)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((5:ℝ)/(4)) lam₁ - Aref ((211:ℝ)/(250)) lam₁ ≤ ((2478327:ℝ)/(25000000)) := by
     refine le_trans (rowA_11_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1290,15 +1290,15 @@ theorem cfg_r11rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_rc hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
+    exact S1_rc hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((2478327:ℝ)/(25000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
+    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((2478327:ℝ)/(25000000)) + (Phi ((5:ℝ)/(4)) / Wf ((5:ℝ)/(4))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1320,7 +1320,7 @@ theorem cfg_r11rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((2478327:ℝ)/(25000000))) (CST2 := ((106439:ℝ)/(3125000)))
     (n₁ := 1) (s := 15) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r11rc hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r11rc hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r11rc).2.1 hTOT hETA
 
 /-- Region I, row 12 (rc). -/
@@ -1341,23 +1341,23 @@ theorem cfg_r12rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((187:ℝ)/(250)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((163:ℝ)/(200)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((163:ℝ)/(200)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
 
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) (((29:ℝ)/(50))) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*(((29:ℝ)/(50))))))/(((29:ℝ)/(50))))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := ((29:ℝ)/(50))) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := ((29:ℝ)/(50))) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((51:ℝ)/(40)) lam₁ - Aref ((163:ℝ)/(200)) lam₁ ≤ ((4505027:ℝ)/(50000000)) := by
     refine le_trans (rowA_12_cx h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1369,15 +1369,15 @@ theorem cfg_r12rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_rc hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
+    exact S1_rc hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((4505027:ℝ)/(50000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
+    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((4505027:ℝ)/(50000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1399,7 +1399,7 @@ theorem cfg_r12rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((4505027:ℝ)/(50000000))) (CST2 := ((3683353:ℝ)/(100000000)))
     (n₁ := 1) (s := 16) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_r12rc hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_r12rc hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_r12rc).2.1 hTOT hETA
 
 /-- Region II (`λ₁ ∈ [3/5, 139/200]`), universal row. -/
@@ -1420,22 +1420,22 @@ theorem cfg_u2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((701:ℝ)/(1000)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((139:ℝ)/(200)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((139:ℝ)/(200)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) ((3:ℝ)/5) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/5))))/((3:ℝ)/5))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := (3:ℝ)/5) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := (3:ℝ)/5) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((51:ℝ)/(40)) lam₁ - Aref ((139:ℝ)/(200)) lam₁ ≤ ((6788827:ℝ)/(100000000)) :=
     rowA_13_cx h1 h2 hbn hf2 hbf1
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
@@ -1443,15 +1443,15 @@ theorem cfg_u2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_alpha1 hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
+    exact S1_alpha1 hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hnotrc
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((6788827:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
+    refine S1_inv_bound_alpha1 hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hnotrc ?_ hrowA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((6788827:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1473,7 +1473,7 @@ theorem cfg_u2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((6788827:ℝ)/(100000000))) (CST2 := ((100147:ℝ)/(2000000)))
     (n₁ := 2) (s := 16) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u2 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u2 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u2).2.1 hTOT hETA
 
 /-- Region II (`λ₁ ∈ [3/5, 139/200]`), universal row (rc). -/
@@ -1494,22 +1494,22 @@ theorem cfg_u2rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((701:ℝ)/(1000)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
-  have hlam1c0 : lam₁ ≤ ((139:ℝ)/(200)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
+  have hlam1c0 : lam₁ ≤ ((139:ℝ)/(200)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hbn : Bfun ((3:ℝ)/10) lam₁ ≤ Bfun ((3:ℝ)/10) ((3:ℝ)/5) :=
-    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by linarith) h1
+    Bfun_antitone (K := (3:ℝ)/10) (by norm_num) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hf2 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/5))))/((3:ℝ)/5))^2/((9:ℝ)/100) :=
-    F2K2_antitone (p := (3:ℝ)/5) (q := lam₁) (by linarith) h1
+    F2K2_antitone (p := (3:ℝ)/5) (q := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1
   have hbf1 : ((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    simpa using cF2K2_le_Bfun (c := 1) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
+    simpa only [one_mul] using cF2K2_le_Bfun (c := 1) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
   have hbf2 : 2*((1-Real.exp (-((3:ℝ)/10*lam₁)))/lam₁)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) lam₁ := by
-    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by linarith) (by norm_num) (by norm_num)
-    linarith [h]
+    have h := cF2K2_le_Bfun (c := 2) (p := lam₁) (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) (by norm_num) (by norm_num)
+    linarith only [h]
   have hle3 : min ((107:ℝ)/(125)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hrowA : Cf ((51:ℝ)/(40)) lam₁ - Aref ((139:ℝ)/(200)) lam₁ ≤ ((4218353:ℝ)/(50000000)) := by
     refine le_trans (rowA_13_rc h1 h2 hbn hf2 hbf1) ?_
     norm_num
@@ -1521,15 +1521,15 @@ theorem cfg_u2rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    exact S1_rc hq hRlog hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
+    exact S1_rc hq hRlog hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hmin.1 hlam1 hsq
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowA hrowA2
   have hpt2 (hA : χ₁⁻¹ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁⁻¹ ≤ ((9:ℝ)/100) * (((4218353:ℝ)/(50000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_inv_eq hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
-    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
+    refine S1_inv_bound_rc hq hRlog hmin hlam1 hΛ hη (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1Λ hlam1c0 hL0 hsq ?_ hrowA hrowA2
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
-    exact hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
+    exact hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)
   have hS1point : ∀ χ ∈ ({χ₁, χ₁⁻¹} : Finset (DirichletCharacter ℂ q)) ∩ Aset q R,
       WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (((4218353:ℝ)/(50000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     intro χ hχ
@@ -1551,7 +1551,7 @@ theorem cfg_u2rc {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((4218353:ℝ)/(50000000))) (CST2 := ((100147:ℝ)/(2000000)))
     (n₁ := 1) (s := 16) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     hlam1c0 hL0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u2rc hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u2rc hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u2rc).2.1 hTOT hETA
 
 /-- III: plain `χ₁` bound. -/
@@ -1571,25 +1571,25 @@ theorem cfg_u3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((701:ℝ)/(1000)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((701:ℝ)/(1000)) := hZ3L2
   have hL3 : Lam3Bound χ₁ ((107:ℝ)/(125)) := hZ3L3
   have hle3 : min ((107:ℝ)/(125)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((16:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((100147:ℝ)/(2000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u3).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u3).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((100147:ℝ)/(2000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1599,7 +1599,7 @@ theorem cfg_u3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1619,12 +1619,12 @@ theorem cfg_u3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ�
   have hcred : Cf ((51:ℝ)/(40)) (min ((107:ℝ)/(125)) ((51:ℝ)/(40))) ≤ ((100147:ℝ)/(2000000)) := by
     rw [show min ((107:ℝ)/(125)) ((51:ℝ)/(40)) = ((107:ℝ)/(125)) from by norm_num]
     exact (cred_u3).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j) (c₀ := lam₁) (l₂ := ((701:ℝ)/(1000)))
     (l₃ := ((107:ℝ)/(125))) (CST1 := ((100147:ℝ)/(2000000))) (CST2 := ((100147:ℝ)/(2000000)))
     (n₁ := 2) (s := 16) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u3 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u3 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u3).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -1643,10 +1643,10 @@ theorem cfg_u4_15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((7:ℝ)/(8)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((7:ℝ)/(8)) := fun _χ _ρ _hZ _ _ =>
@@ -1654,16 +1654,16 @@ theorem cfg_u4_15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((7:ℝ)/(8)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((7:ℝ)/(8)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((15:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((1699609:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_15).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_15).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((1699609:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1673,7 +1673,7 @@ theorem cfg_u4_15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1693,12 +1693,12 @@ theorem cfg_u4_15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((7:ℝ)/(8)) ((51:ℝ)/(40))) ≤ ((1699609:ℝ)/(100000000)) := by
     rw [show min ((7:ℝ)/(8)) ((51:ℝ)/(40)) = ((7:ℝ)/(8)) from by norm_num]
     exact (cred_u4_15).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10] j) (c₀ := lam₁) (l₂ := ((7:ℝ)/(8)))
     (l₃ := ((7:ℝ)/(8))) (CST1 := ((1699609:ℝ)/(100000000))) (CST2 := ((1699609:ℝ)/(100000000)))
     (n₁ := 2) (s := 15) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_15 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_15 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_15).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -1717,10 +1717,10 @@ theorem cfg_u4_14 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((9:ℝ)/(10)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((9:ℝ)/(10)) := fun _χ _ρ _hZ _ _ =>
@@ -1728,16 +1728,16 @@ theorem cfg_u4_14 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((9:ℝ)/(10)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((9:ℝ)/(10)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((14:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((1446777:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_14).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_14).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((1446777:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1747,7 +1747,7 @@ theorem cfg_u4_14 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1767,12 +1767,12 @@ theorem cfg_u4_14 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((9:ℝ)/(10)) ((51:ℝ)/(40))) ≤ ((1446777:ℝ)/(100000000)) := by
     rw [show min ((9:ℝ)/(10)) ((51:ℝ)/(40)) = ((9:ℝ)/(10)) from by norm_num]
     exact (cred_u4_14).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11] j) (c₀ := lam₁) (l₂ := ((9:ℝ)/(10)))
     (l₃ := ((9:ℝ)/(10))) (CST1 := ((1446777:ℝ)/(100000000))) (CST2 := ((1446777:ℝ)/(100000000)))
     (n₁ := 2) (s := 14) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_14 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_14 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_14).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -1791,10 +1791,10 @@ theorem cfg_u4_13 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((37:ℝ)/(40)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((37:ℝ)/(40)) := fun _χ _ρ _hZ _ _ =>
@@ -1802,16 +1802,16 @@ theorem cfg_u4_13 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((37:ℝ)/(40)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((37:ℝ)/(40)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((13:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((1226677:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_13).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_13).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((1226677:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1821,7 +1821,7 @@ theorem cfg_u4_13 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1841,12 +1841,12 @@ theorem cfg_u4_13 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((37:ℝ)/(40)) ((51:ℝ)/(40))) ≤ ((1226677:ℝ)/(100000000)) := by
     rw [show min ((37:ℝ)/(40)) ((51:ℝ)/(40)) = ((37:ℝ)/(40)) from by norm_num]
     exact (cred_u4_13).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12] j) (c₀ := lam₁) (l₂ := ((37:ℝ)/(40)))
     (l₃ := ((37:ℝ)/(40))) (CST1 := ((1226677:ℝ)/(100000000))) (CST2 := ((1226677:ℝ)/(100000000)))
     (n₁ := 2) (s := 13) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_13 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_13 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_13).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -1865,10 +1865,10 @@ theorem cfg_u4_12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((19:ℝ)/(20)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((19:ℝ)/(20)) := fun _χ _ρ _hZ _ _ =>
@@ -1876,16 +1876,16 @@ theorem cfg_u4_12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((19:ℝ)/(20)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((19:ℝ)/(20)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((12:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((12:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((12:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((51763:ℝ)/(5000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_12).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_12).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((51763:ℝ)/(5000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1895,7 +1895,7 @@ theorem cfg_u4_12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1915,12 +1915,12 @@ theorem cfg_u4_12 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((19:ℝ)/(20)) ((51:ℝ)/(40))) ≤ ((51763:ℝ)/(5000000)) := by
     rw [show min ((19:ℝ)/(20)) ((51:ℝ)/(40)) = ((19:ℝ)/(20)) from by norm_num]
     exact (cred_u4_12).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13] j) (c₀ := lam₁) (l₂ := ((19:ℝ)/(20)))
     (l₃ := ((19:ℝ)/(20))) (CST1 := ((51763:ℝ)/(5000000))) (CST2 := ((51763:ℝ)/(5000000)))
     (n₁ := 2) (s := 12) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_12 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_12 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_12).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -1939,10 +1939,10 @@ theorem cfg_u4_11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((39:ℝ)/(40)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((39:ℝ)/(40)) := fun _χ _ρ _hZ _ _ =>
@@ -1950,16 +1950,16 @@ theorem cfg_u4_11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((39:ℝ)/(40)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((39:ℝ)/(40)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((11:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((11:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((11:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((108621:ℝ)/(12500000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_11).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_11).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((108621:ℝ)/(12500000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -1969,7 +1969,7 @@ theorem cfg_u4_11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -1989,12 +1989,12 @@ theorem cfg_u4_11 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((39:ℝ)/(40)) ((51:ℝ)/(40))) ≤ ((108621:ℝ)/(12500000)) := by
     rw [show min ((39:ℝ)/(40)) ((51:ℝ)/(40)) = ((39:ℝ)/(40)) from by norm_num]
     exact (cred_u4_11).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14] j) (c₀ := lam₁) (l₂ := ((39:ℝ)/(40)))
     (l₃ := ((39:ℝ)/(40))) (CST1 := ((108621:ℝ)/(12500000))) (CST2 := ((108621:ℝ)/(12500000)))
     (n₁ := 2) (s := 11) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_11 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_11 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_11).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -2013,10 +2013,10 @@ theorem cfg_u4_10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((1:ℝ)/(1)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((1:ℝ)/(1)) := fun _χ _ρ _hZ _ _ =>
@@ -2024,16 +2024,16 @@ theorem cfg_u4_10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hL3 : Lam3Bound χ₁ ((1:ℝ)/(1)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((1:ℝ)/(1)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((10:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((724679:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_10).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_10).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((724679:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -2043,7 +2043,7 @@ theorem cfg_u4_10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -2063,12 +2063,12 @@ theorem cfg_u4_10 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {�
   have hcred : Cf ((51:ℝ)/(40)) (min ((1:ℝ)/(1)) ((51:ℝ)/(40))) ≤ ((724679:ℝ)/(100000000)) := by
     rw [show min ((1:ℝ)/(1)) ((51:ℝ)/(40)) = ((1:ℝ)/(1)) from by norm_num]
     exact (cred_u4_10).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15] j) (c₀ := lam₁) (l₂ := ((1:ℝ)/(1)))
     (l₃ := ((1:ℝ)/(1))) (CST1 := ((724679:ℝ)/(100000000))) (CST2 := ((724679:ℝ)/(100000000)))
     (n₁ := 2) (s := 10) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_10 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_10 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_10).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -2087,10 +2087,10 @@ theorem cfg_u4_9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((41:ℝ)/(40)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((41:ℝ)/(40)) := fun _χ _ρ _hZ _ _ =>
@@ -2098,16 +2098,16 @@ theorem cfg_u4_9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
   have hL3 : Lam3Bound χ₁ ((41:ℝ)/(40)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((41:ℝ)/(40)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((9:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((599649:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_9).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_9).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((599649:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -2117,7 +2117,7 @@ theorem cfg_u4_9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -2137,12 +2137,12 @@ theorem cfg_u4_9 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
   have hcred : Cf ((51:ℝ)/(40)) (min ((41:ℝ)/(40)) ((51:ℝ)/(40))) ≤ ((599649:ℝ)/(100000000)) := by
     rw [show min ((41:ℝ)/(40)) ((51:ℝ)/(40)) = ((41:ℝ)/(40)) from by norm_num]
     exact (cred_u4_9).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17] j) (c₀ := lam₁) (l₂ := ((41:ℝ)/(40)))
     (l₃ := ((41:ℝ)/(40))) (CST1 := ((599649:ℝ)/(100000000))) (CST2 := ((599649:ℝ)/(100000000)))
     (n₁ := 2) (s := 9) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_9 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_9 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_9).2.1 hTOT hETA
 
 /-- IV: plain `χ₁` bound. -/
@@ -2161,10 +2161,10 @@ theorem cfg_u4_8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
         (∀ (χ : DirichletCharacter ℂ q) (ρ : ℂ), IsZ χ ρ → e.2.1 ≤ lamOf q ρ) →
         Ncount q e.1 ≤ e.2.2) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by
-  have h348 : (348:ℝ)/1000 ≤ lam₁ := by linarith
+  have h348 : (348:ℝ)/1000 ≤ lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hΛ : (0:ℝ) < ((51:ℝ)/(40)) := by norm_num
   have hl2 : (0:ℝ) < ((21:ℝ)/(20)) := by norm_num
-  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by linarith
+  have hlam1Λ : lam₁ ≤ ((51:ℝ)/(40)) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hlam1c0 : lam₁ ≤ lam₁ := le_rfl
   have hLam0 : Lam0Bound χ₁ ρ₁ lam₁ := lam0Bound_self hmin hlam1
   have hL2 : Lam2Bound χ₁ ((21:ℝ)/(20)) := fun _χ _ρ _hZ _ _ =>
@@ -2172,16 +2172,16 @@ theorem cfg_u4_8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
   have hL3 : Lam3Bound χ₁ ((21:ℝ)/(20)) := ⟨χ₁, fun _χ _ρ _hZ _ _ _ _ =>
     le_trans (hlam1.symm ▸ h1) (hmin.2 _χ _ρ _hZ)⟩
   have hle3 : min ((21:ℝ)/(20)) ((51:ℝ)/(40)) ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by norm_num
-  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by linarith
+  have hlam1small : lam₁ ≤ ((51:ℝ)/(40)) - (25:ℝ)/1000 * ((8:ℕ):ℝ) := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   have hcard := card_S1_le_two (q := q) (χ₁ := χ₁) (R := R)
   have hrowB : Cf ((51:ℝ)/(40)) lam₁ ≤ ((491473:ℝ)/(100000000)) :=
-    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by linarith) h1) (cred_u4_8).2.2
+    le_trans (Cf_antitone (fun {x y} hx hxy => PhiWf_antitone hx hxy) hΛ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) h1) (cred_u4_8).2.2
   have hpt1 (hA : χ₁ ∈ Aset q R) : WBox q ((3:ℝ)/10) R χ₁ ≤ ((9:ℝ)/100) * (((491473:ℝ)/(100000000)) + (Phi ((51:ℝ)/(40)) / Wf ((51:ℝ)/(40))) * wHB lam₁ + η) := by
     have hlam1R : lam₁ ≤ R := by
       rw [← lamChar_eq_of_isMin1 hq hmin hlam1]
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁ hmin.1.1 lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁ hmin.1.1 lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁ ρ' (box_api7_p1 hq hRlog hmin.1.1 hz' hb')
@@ -2191,7 +2191,7 @@ theorem cfg_u4_8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
       exact lamChar_le_R_of_mem_Aset hq hRlog hA
     have hne : χ₁⁻¹ ≠ 1 := fun h => hmin.1.1 (inv_eq_one.mp h)
     refine S1_plain (c := 0) hΛ hη (lt_of_lt_of_le (by norm_num) h348) hlam1Λ ?_
-      (hPC χ₁⁻¹ hne lam₁ (by linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
+      (hPC χ₁⁻¹ hne lam₁ (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hlam1R (fun ρ hZ => by rw [← hlam1]; exact hmin.2 χ₁⁻¹ ρ hZ)) hrowB (by norm_num)
     intro ρ' hb' hz'
     rw [← hlam1]
     exact hmin.2 χ₁⁻¹ ρ' (box_api7_p1 hq hRlog hne hz' hb')
@@ -2211,12 +2211,12 @@ theorem cfg_u4_8 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ} {χ
   have hcred : Cf ((51:ℝ)/(40)) (min ((21:ℝ)/(20)) ((51:ℝ)/(40))) ≤ ((491473:ℝ)/(100000000)) := by
     rw [show min ((21:ℝ)/(20)) ((51:ℝ)/(40)) = ((21:ℝ)/(20)) from by norm_num]
     exact (cred_u4_8).1
-  have hc0 : (0:ℝ) < lam₁ := by linarith
+  have hc0 : (0:ℝ) < lam₁ := by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith
   exact sec15_step (N := fun j => Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19] j) (c₀ := lam₁) (l₂ := ((21:ℝ)/(20)))
     (l₃ := ((21:ℝ)/(20))) (CST1 := ((491473:ℝ)/(100000000))) (CST2 := ((491473:ℝ)/(100000000)))
     (n₁ := 2) (s := 8) hq hR hRlog hRmax hΛ hη hc0 hl2 hmin hlam1 h348 hlam1Λ
     le_rfl hLam0 hL2 hL3 (by simpa using hcard) hS1point hS hSiff hD1 hPC
-    (hcount_u4_8 hmin hlam1 (by linarith) hD2) hle3 hlam1small
+    (hcount_u4_8 hmin hlam1 (by first | exact le_trans (by norm_num) h1 | exact le_trans h2 (by norm_num) | exact lt_of_lt_of_le (by norm_num) h1 | exact (lt_of_lt_of_le (by norm_num) h1).le | linarith only [h1, h2] | linarith) hD2) hle3 hlam1small
     hcred (by norm_num) (cred_u4_8).2.1 hTOT hETA
 
 theorem sec15_uniform {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ : ℝ}

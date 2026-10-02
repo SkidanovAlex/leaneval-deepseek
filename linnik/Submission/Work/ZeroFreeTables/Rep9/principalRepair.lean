@@ -111,8 +111,8 @@ lemma analyticAt_principalCorrector {q : ℕ} [NeZero q] {z : ℂ} (hz : 1 < z.r
     have h' : z.re = 1 := by
       have := congrArg Complex.re h
       simp at this
-      linarith
-    linarith
+      linarith only [hz, this]
+    linarith only [hz, h']
   have h2 : AnalyticAt ℂ (fun w : ℂ => (w - 1)⁻¹) z := by
     first
     | fun_prop
@@ -174,7 +174,7 @@ theorem SigmaP3L_principal_eq_pole_add_corrector (q : ℕ) [NeZero q] {L a lam�
   set P : ℂ → ℂ := fun z : ℂ => (z - 1)⁻¹ with hP
   have hsne : s ≠ 1 := fun h => by
     have : s.re = 1 := by simpa using congrArg Complex.re h
-    linarith
+    linarith only [hs, this]
   have hs1 : s - 1 ≠ 0 := sub_ne_zero.mpr hsne
   have hF : logDeriv (DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q)) = -(H + P) := by
     rw [hH, hP]
@@ -273,10 +273,10 @@ theorem principalBoundM_of_bounds {a e M : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he 
   have hs2 : s.re ≤ 2 := by
     rw [hsre]
     have hle : a / L ≤ 1 := by rw [div_le_one hLpos]; exact haL
-    linarith
+    linarith only [hle]
   have hsim5 : |s.im| ≤ 5 := le_trans hsim (by norm_num)
-  have hαnn : 0 ≤ a + lam₁ := by linarith
-  have hαM : a + lam₁ ≤ a + M := by linarith
+  have hαnn : 0 ≤ a + lam₁ := by linarith only [ha, hlam0]
+  have hαM : a + lam₁ ≤ a + M := by linarith only [hlamM]
   have hy : 0 ≤ (a + lam₁) / L := div_nonneg hαnn hLpos.le
   -- ## the reduction at `q = 1`
   have hred : SigmaP3L 1 L 1 s a lam₁
@@ -303,7 +303,7 @@ theorem principalBoundM_of_bounds {a e M : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he 
         ≤ ((a + lam₁) / L) ^ 2 * C₁ := mul_le_mul_of_nonneg_left hb1 h2
     have e3 : ((a + lam₁) / L) ^ 3 * (iteratedDeriv 2 zetaCorrector s).re
         ≤ ((a + lam₁) / L) ^ 3 * C₁ := mul_le_mul_of_nonneg_left hb2 h3
-    nlinarith [e1, e2, e3, hy, h2, h3, hC₁pos]
+    nlinarith only [e1, e2, e3, hy, h2, h3, hC₁pos]
   -- ## the mod-`q` correction
   have hdiff : SigmaP3L q L (1 : DirichletCharacter ℂ q) s a lam₁ - SigmaP3L 1 L 1 s a lam₁
       ≤ ((a + lam₁) / L) * C₂ * (1 + Real.sqrt L)
@@ -316,17 +316,17 @@ theorem principalBoundM_of_bounds {a e M : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he 
           * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2)
         ≤ ((a + lam₁) / L) * C₂ * (1 + Real.sqrt L)
           * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2) := by
-      have h1 : 1 + Real.sqrt (Real.log (q:ℝ)) ≤ 1 + Real.sqrt L := by linarith
+      have h1 : 1 + Real.sqrt (Real.log (q:ℝ)) ≤ 1 + Real.sqrt L := by linarith only [hsq]
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h1 hfac) hfac2
     have habs := le_abs_self (SigmaP3L q L (1 : DirichletCharacter ℂ q) s a lam₁
       - SigmaP3L 1 L 1 s a lam₁)
-    linarith [habs, h, hstep]
+    linarith only [habs, h, hstep, _inst]
   -- ## absorption
   have hkey := hL₀ hL₀le (x := a + lam₁) hαnn hαM
   calc SigmaP3L q L (1 : DirichletCharacter ℂ q) s a lam₁
       ≤ SigmaP3L 1 L 1 s a lam₁
         + ((a + lam₁) / L) * C₂ * (1 + Real.sqrt L)
-          * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2) := by linarith [hdiff]
+          * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2) := by linarith only [hdiff, _inst]
     _ = (P3 ((a + lam₁) / ((s - 1) * (L : ℂ)))).re
         + (((a + lam₁) / L) * (zetaCorrector s).re
           - ((a + lam₁) / L) ^ 2 * (iteratedDeriv 1 zetaCorrector s).re
@@ -339,9 +339,9 @@ theorem principalBoundM_of_bounds {a e M : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he 
         + ((a + lam₁) / L) * C₁ * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2)
         + ((a + lam₁) / L) * C₂ * (1 + Real.sqrt L)
           * (1 + (a + lam₁) / L + ((a + lam₁) / L) ^ 2) := by
-      linarith [hcorr]
+      linarith only [hcorr]
     _ ≤ (P3 ((a + lam₁) / ((s - 1) * (L : ℂ)))).re + (a + lam₁) * e := by
-      linarith [hkey]
+      linarith only [hkey]
 
 
 end Work.ZeroFreeTables.Rep9

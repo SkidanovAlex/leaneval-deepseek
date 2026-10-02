@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ConvexityAbsDep
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_strip_convexity_abs
 
 /-!
 # The `1/4`-convexity bound for primitive Dirichlet `L`-functions at `σ ≥ 1/2`

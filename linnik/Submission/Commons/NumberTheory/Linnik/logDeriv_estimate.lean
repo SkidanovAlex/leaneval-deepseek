@@ -387,8 +387,8 @@ theorem logDeriv_estimate {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
   have hKnle : Kn ≤ Knn := by dsimp [Knn]; exact le_max_left Kn 0
   have hKfle : Kf ≤ Kfn := by dsimp [Kfn]; exact le_max_left Kf 0
   have hellR1 : (1 : ℝ) ≤ ell R := by simpa [ell] using (ell_ge_one (N := N) hR)
-  have hellRsq : 1 ≤ (ell R) ^ 2 := by nlinarith [sq_nonneg (ell R - 1)]
-  have hpos1 : 0 ≤ (ell R) ^ 2 + 1 := by nlinarith [sq_nonneg (ell R)]
+  have hellRsq : 1 ≤ (ell R) ^ 2 := one_le_pow₀ hellR1
+  have hpos1 : 0 ≤ (ell R) ^ 2 + 1 := by nlinarith only [sq_nonneg (ell R)]
   have hRpos : 0 < R := by linarith
   let nr : ℝ := ∑ᶠ u : ℂ, (((MeromorphicOn.divisor Λ (Metric.closedBall w 1)) u : ℤ) : ℝ) * ((‖w - u‖ : ℝ)⁻¹)
   -- |Λ'/Λ(w)| ≤ |B| + tail + near + far + nr
@@ -404,18 +404,19 @@ theorem logDeriv_estimate {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       calc
         ‖deriv Λ w / Λ w - B‖ = ‖((deriv Λ w / Λ w - B) - F T₀) + F T₀‖ := by rw [hEq2]
         _ ≤ ‖(deriv Λ w / Λ w - B) - F T₀‖ + ‖F T₀‖ := norm_add_le _ _
-        _ ≤ Ktn * ‖w‖ * ell T₀ / T₀ + ‖F T₀‖ := by nlinarith [htail]
-    nlinarith [hnorm0, hnorm1, hFsplit]
+        _ ≤ Ktn * ‖w‖ * ell T₀ / T₀ + ‖F T₀‖ := by nlinarith only [htail]
+    nlinarith only [hnorm0, hnorm1, hFsplit]
   -- per-part absorption into c·ℓ(R)²
   have hA1 : ‖B‖ ≤ ‖B‖ * (ell R) ^ 2 := by
-    nlinarith [mul_le_mul_of_nonneg_right hellRsq (norm_nonneg B)]
+    nlinarith only [mul_le_mul_of_nonneg_right hellRsq (norm_nonneg B)]
   have hT1 : Ktn * ‖w‖ * ell T₀ / T₀ ≤ 2 * Ktn * (ell R) ^ 2 := by
     have hwR : ‖w‖ = R := hw
     have hdiv1 : ‖w‖ / T₀ ≤ 1 := by
       rw [hwR]
       dsimp [T₀]
-      rw [div_le_iff₀ (by positivity : 0 < 5 * R)]
-      nlinarith
+      have h5R : (0:ℝ) < 5 * R := by positivity
+      rw [div_le_iff₀ h5R]
+      linarith only [h5R]
     have heq : Ktn * ‖w‖ * ell T₀ / T₀ = Ktn * ell T₀ * (‖w‖ / T₀) := by
       rw [div_eq_mul_inv, div_eq_mul_inv]
       ring
@@ -429,10 +430,10 @@ theorem logDeriv_estimate {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       simpa [ell, T₀] using (ell_five_mul_le_two (N := N) hR)
     have h6 : Ktn * ell T₀ ≤ 2 * Ktn * ell R := by
       have h6' := mul_le_mul_of_nonneg_right h5 hKtn0
-      nlinarith
+      linarith only [h6']
     have h7 : 2 * Ktn * ell R ≤ 2 * Ktn * (ell R) ^ 2 := by
       have hnn3 : 0 ≤ 2 * Ktn := by positivity
-      have hellle : ell R ≤ (ell R) ^ 2 := by nlinarith [sq_nonneg (ell R), hellR1]
+      have hellle : ell R ≤ (ell R) ^ 2 := by nlinarith only [sq_nonneg (ell R), hellR1]
       exact mul_le_mul_of_nonneg_left hellle hnn3
     calc
       Ktn * ‖w‖ * ell T₀ / T₀ = Ktn * ell T₀ * (‖w‖ / T₀) := heq
@@ -456,7 +457,7 @@ theorem logDeriv_estimate {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       ‖deriv Λ w / Λ w‖ ≤ ‖B‖ + (Ktn * ‖w‖ * ell T₀ / T₀) +
             Kn * (ell R ^ 2 + 1) + Kf * (ell R ^ 2 + 1) + nr := hmain0
       _ ≤ (‖B‖ + 2 * Ktn + 2 * Knn + 2 * Kfn) * (ell R) ^ 2 + nr := by
-        nlinarith [hA1, hT1, hN1, hF1]
+        linarith only [hA1, hT1, hN1, hF1]
       _ = c * (ell R) ^ 2 + nr := by dsimp [c]; ring
   -- convert from Λ / ell / nr back to the statement's completedLFunction
   simpa [Λ, ell, nr] using hfinal0

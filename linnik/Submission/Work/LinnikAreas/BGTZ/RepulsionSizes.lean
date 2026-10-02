@@ -33,7 +33,7 @@ lemma repulsionSizesThreeQuartersLe {L : ℝ} (hL : 0 < L) (h100 : (100:ℝ) ≤
   have hsplit : L ^ (1/4:ℝ) * L ^ (3/4:ℝ) = L := by
     rw [← Real.rpow_add hL]; norm_num
   have h34nn : (0:ℝ) ≤ L ^ (3/4:ℝ) := Real.rpow_nonneg hL.le _
-  nlinarith [hsplit, h100, h34nn, hL]
+  linarith only [hsplit, mul_le_mul_of_nonneg_right h100 h34nn]
 
 lemma repulsionSizesLogPow4LeRpow {X : ℝ} (hX : Real.exp 100000000 ≤ X) :
     (Real.log X)^4 ≤ X^(1/100:ℝ) := by
@@ -48,8 +48,9 @@ lemma repulsionSizesLogPow4LeRpow {X : ℝ} (hX : Real.exp 100000000 ≤ X) :
       rw [← Real.rpow_natCast, ← Real.rpow_mul (show (0:ℝ) ≤ 1200 by norm_num)]
       norm_num
     have h1200L2 : (1200:ℝ)^3 ≤ (Real.log X)^2 := by
-      have h1 : ((100000000:ℝ))^2 ≤ (Real.log X)^2 := by nlinarith
-      nlinarith [h1]
+      have h1 : ((100000000:ℝ))^2 ≤ (Real.log X)^2 :=
+        pow_le_pow_left₀ (by norm_num) hL 2
+      exact le_trans (by norm_num) h1
     have h2 : ((1200:ℝ)^3)^(1/3:ℝ) ≤ (((Real.log X)^2))^(1/3:ℝ) :=
       Real.rpow_le_rpow (by positivity) h1200L2 (by norm_num)
     have h3 : (((Real.log X)^2))^(1/3:ℝ) = (Real.log X)^((2:ℝ)/3) := by
@@ -61,7 +62,7 @@ lemma repulsionSizesLogPow4LeRpow {X : ℝ} (hX : Real.exp 100000000 ≤ X) :
     have hsplit : (Real.log X)^(1/3:ℝ) * (Real.log X)^((2:ℝ)/3) = Real.log X := by
       rw [← Real.rpow_add hLpos]; norm_num
     have h13 : (0:ℝ) ≤ (Real.log X)^(1/3:ℝ) := Real.rpow_nonneg hLpos.le _
-    nlinarith [hlogL, hsplit, h13, hL23]
+    linarith only [hlogL, hsplit, mul_le_mul_of_nonneg_left hL23 h13]
   rw [Real.rpow_def_of_pos hXpos]
   apply (Real.log_le_iff_le_exp (show (0:ℝ) < (Real.log X)^4 by positivity)).mp
   rw [Real.log_pow]
@@ -80,8 +81,9 @@ lemma repulsionSizesLogPow28Le {X : ℝ} (hX : Real.exp 100000000 ≤ X) :
       rw [← Real.rpow_natCast, ← Real.rpow_mul (show (0:ℝ) ≤ 16800 by norm_num)]
       norm_num
     have h2 : (16800:ℝ)^3 ≤ (Real.log X)^2 := by
-      have h3 : ((100000000:ℝ))^2 ≤ (Real.log X)^2 := by nlinarith
-      nlinarith [h3]
+      have h3 : ((100000000:ℝ))^2 ≤ (Real.log X)^2 :=
+        pow_le_pow_left₀ (by norm_num) hL 2
+      exact le_trans (by norm_num) h3
     have h4 : ((16800:ℝ)^3)^(1/3:ℝ) ≤ (((Real.log X)^2))^(1/3:ℝ) :=
       Real.rpow_le_rpow (by positivity) h2 (by norm_num)
     have h5 : (((Real.log X)^2))^(1/3:ℝ) = (Real.log X)^((2:ℝ)/3) := by
@@ -93,7 +95,7 @@ lemma repulsionSizesLogPow28Le {X : ℝ} (hX : Real.exp 100000000 ≤ X) :
     have hsplit : (Real.log X)^(1/3:ℝ) * (Real.log X)^((2:ℝ)/3) = Real.log X := by
       rw [← Real.rpow_add hLpos]; norm_num
     have h13 : (0:ℝ) ≤ (Real.log X)^(1/3:ℝ) := Real.rpow_nonneg hLpos.le _
-    nlinarith [hlogL, hsplit, h13, hL23]
+    linarith only [hlogL, hsplit, mul_le_mul_of_nonneg_left hL23 h13]
   have hlog2 : Real.log (2:ℝ) ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith
   rw [Real.rpow_def_of_pos hXpos]
@@ -312,14 +314,14 @@ theorem RepulsionSizes {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
   have hexp2 : Real.exp (2 * (Real.log (q:ℝ))^(3/4:ℝ)) ≤ (q:ℝ)^(1/50:ℝ) := by
     have h1 : 2 * (Real.log (q:ℝ))^(3/4:ℝ) ≤ Real.log (q:ℝ) * (1/50) := by
       have h2 : Real.log (q:ℝ) / 100 = Real.log (q:ℝ) * (1/100) := by ring
-      nlinarith [h34, h2]
+      linarith only [h34, h2]
     calc Real.exp (2 * (Real.log (q:ℝ))^(3/4:ℝ))
         ≤ Real.exp (Real.log (q:ℝ) * (1/50)) := Real.exp_le_exp.mpr h1
       _ = (q:ℝ)^(1/50:ℝ) := by rw [Real.rpow_def_of_pos hxpos]
   have hexp8 : Real.exp (8 * (Real.log (q:ℝ))^(3/4:ℝ)) ≤ (q:ℝ)^(2/25:ℝ) := by
     have h1 : 8 * (Real.log (q:ℝ))^(3/4:ℝ) ≤ Real.log (q:ℝ) * (2/25) := by
       have h2 : 8 * (Real.log (q:ℝ) / 100) = Real.log (q:ℝ) * (2/25) := by ring
-      nlinarith [h34]
+      linarith only [h34, h2]
     calc Real.exp (8 * (Real.log (q:ℝ))^(3/4:ℝ))
         ≤ Real.exp (Real.log (q:ℝ) * (2/25)) := Real.exp_le_exp.mpr h1
       _ = (q:ℝ)^(2/25:ℝ) := by rw [Real.rpow_def_of_pos hxpos]
@@ -348,7 +350,7 @@ theorem RepulsionSizes {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
     rwa [Real.rpow_one] at h
   have hexp4e : 4 * Real.exp 1 ≤ (q:ℝ)^2 := by
     have h1 : Real.exp 1 < 3 := Real.exp_one_lt_three
-    nlinarith [hq11, h1]
+    nlinarith only [hq11, h1]
   have hsum2 : 202 + (q:ℝ)^(53/1000:ℝ) ≤ 2 * (q:ℝ) := by linarith [hq202, hq053]
   have hRlt : ((⌈max 200 LR⌉₊ : ℕ) : ℝ) < max 200 LR + 1 :=
     Nat.ceil_lt_add_one (le_trans (by norm_num : (0:ℝ) ≤ 200) (le_max_left 200 LR))
@@ -368,10 +370,13 @@ theorem RepulsionSizes {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
     have h3 : 2 * Real.exp 1 * (202 + (q:ℝ)^(53/1000:ℝ)) ≤ 2 + A^2 * (q:ℝ)^3 := by
       have he1 : (0:ℝ) < Real.exp 1 := Real.exp_pos 1
       have h4 : 2 * Real.exp 1 * (202 + (q:ℝ)^(53/1000:ℝ)) ≤ 4 * Real.exp 1 * (q:ℝ) := by
-        nlinarith [hsum2, he1]
-      have h5 : 4 * Real.exp 1 * (q:ℝ) ≤ (q:ℝ)^3 := by nlinarith [hexp4e, hx1]
-      have h6 : (q:ℝ)^3 ≤ A^2 * (q:ℝ)^3 := by
-        nlinarith [hA2ge1, pow_nonneg hxpos.le 3]
+        have h := mul_le_mul_of_nonneg_left hsum2 (by positivity : (0:ℝ) ≤ 2 * Real.exp 1)
+        linarith only [h]
+      have h5 : 4 * Real.exp 1 * (q:ℝ) ≤ (q:ℝ)^3 := by
+        calc 4 * Real.exp 1 * (q:ℝ) ≤ (q:ℝ)^2 * (q:ℝ) := mul_le_mul_of_nonneg_right hexp4e hxpos.le
+          _ = (q:ℝ)^3 := by ring
+      have h6 : (q:ℝ)^3 ≤ A^2 * (q:ℝ)^3 :=
+        le_mul_of_one_le_left (pow_nonneg hxpos.le 3) hA2ge1
       linarith [h4, h5, h6]
     exact le_trans (le_of_lt h2) h3
   -- N upper bound
@@ -380,7 +385,7 @@ theorem RepulsionSizes {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
       have hL1 : (1:ℝ) ≤ Real.log (q:ℝ) := by linarith
       have h2 : (Real.log (q:ℝ))^2 * 1 ≤ (Real.log (q:ℝ))^2 * (Real.log (q:ℝ))^2 := by
         apply mul_le_mul_of_nonneg_left _ (pow_nonneg hLpos.le 2)
-        nlinarith [hL1]
+        exact one_le_pow₀ hL1
       have h3 : (Real.log (q:ℝ))^2 * (Real.log (q:ℝ))^2 = (Real.log (q:ℝ))^4 := by ring
       linarith [h2, h3]
     have h1 : (q:ℝ)^(1/100:ℝ) * (Real.log (q:ℝ))^2 ≤ (q:ℝ)^(1/100:ℝ) * (Real.log (q:ℝ))^4 :=
@@ -396,7 +401,7 @@ theorem RepulsionSizes {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
     rw [Real.rpow_def_of_pos hxpos]
     have h1 : (3:ℝ) ≤ Real.exp 2 := by have := Real.add_one_le_exp (2:ℝ); linarith
     have h2 : Real.exp 2 ≤ Real.exp (Real.log (q:ℝ) * (1/1000)) := by
-      apply Real.exp_le_exp.mpr; nlinarith [hlogq]
+      apply Real.exp_le_exp.mpr; linarith only [hlogq]
     linarith [h1, h2]
   have hNlt : ((⌈max (max 2 LN) ((1-β₁)⁻¹)⌉₊ : ℕ) : ℝ) < max (max 2 LN) ((1-β₁)⁻¹) + 1 :=
     Nat.ceil_lt_add_one (le_trans (le_trans (by norm_num : (0:ℝ) ≤ 2) (le_max_left 2 LN))

@@ -14,7 +14,6 @@ shift across the pole), `DetResNormLe`, `DetTrivCharValue`, `DetSieveLocalTriv`.
 import Mathlib
 import Submission.Work.LinnikAreas.BGTZSetup
 import Submission.Work.LinnikAreas.BGTZ.DetectorDefs
-import Submission.Work.LinnikAreas.BGTZ.RatioLone
 import Submission.Work.Sieve.LFunction_critical_line_bound
 import Submission.Work.LinnikAreas.BGTZ.DetContourDefs
 import Submission.Work.LinnikAreas.BGTZ.DetectorContourCore

@@ -2,15 +2,14 @@ import Mathlib
 import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikAreas.DhRepel.dhTrianglePtH
 import Submission.Work.LinnikAreas.DhRepel.witnessNear
-import Submission.Work.LinnikAreas.DhRepel.farZeroLambdaLowerWide
-import Submission.Work.LinnikAreas.sixArith
 import Submission.Work.LinnikAreas.boxMaxZero
-import Submission.Work.LinnikAreas.DhRepel.maximalityFromBall
 import Submission.Work.LinnikAreas.DhCapped.SiegelSimple
 import Submission.Work.LinnikAreas.L52Hyp_of_partialFraction
 import Submission.Work.LinnikAreas.repelPsiSubLe
 import Submission.Work.LinnikAreas.repelPsiEval
 import Submission.Work.LinnikAreas.log_unbounded_nat
+import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultTransfer
+import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultStripPos
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

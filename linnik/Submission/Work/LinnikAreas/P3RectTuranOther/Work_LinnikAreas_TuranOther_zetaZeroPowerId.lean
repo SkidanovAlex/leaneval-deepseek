@@ -1,12 +1,9 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_ZSBase
 import Submission.Work.LinnikAreas.PrincipalZeroCount
 import Submission.Work.LinnikAreas.tendsto_finsum_divisor_closedBall_mero
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_FarRepel_xiDerivPF
 import Submission.Work.LinnikAreas.FarRepel.digammaDerivSeries
 import Submission.Work.LinnikAreas.FarRepel.digammaDerivSeriesSummable
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_FarRepel_iteratedDeriv_logDeriv_Xi
 import Submission.Work.LinnikAreas.xiCZeroInvSqTailBound
 import Submission.Commons.Analysis.InfiniteSum.summable_of_finset_tail_bound
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.logDeriv_GammaR_off_pole
@@ -15,6 +12,7 @@ import Submission.Work.LinnikAreas.TuranOther.orderZeta_eq_orderLambda_add_invGa
 import Submission.Work.LinnikAreas.TuranOther.orderInvGammaR_eq_indicator
 import Submission.Work.LinnikAreas.TuranOther.iteratedDeriv_logDeriv_GammaR
 import Submission.Work.LinnikAreas.P3RectTuranOther.Work_LinnikAreas_TuranOther_xiDerivZeroSum
+import Submission.Work.LinnikAreas.FarRepel.iteratedDeriv_logDeriv_Xi
 
 open scoped Classical BigOperators Topology
 open Filter

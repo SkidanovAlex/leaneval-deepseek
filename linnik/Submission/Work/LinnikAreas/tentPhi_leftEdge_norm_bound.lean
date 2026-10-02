@@ -1,6 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.tentLeftEdgeDeps
 import Submission.Work.LinnikAreas.FarBoundOfDensity
+import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
 
 /-!
 # Norm bound for the tent kernel `Φ` on the left edge `Re u = -1/2`

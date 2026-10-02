@@ -37,32 +37,32 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
   have hq3 : 3 ≤ q := by omega
   have hqR : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq1
   have hq400 : (400001 : ℝ) ≤ (q : ℝ) := by exact_mod_cast (by omega : 400001 ≤ q)
-  have hqpos : (0 : ℝ) < (q : ℝ) := by linarith
+  have hqpos : (0 : ℝ) < (q : ℝ) := by linarith only [hq400]
   have hlogq1 : (1 : ℝ) ≤ Real.log (q : ℝ) := by
     rw [Real.le_log_iff_exp_le (by positivity)]
-    linarith [Real.exp_one_lt_three]
-  have hlogqpos : (0 : ℝ) < Real.log (q : ℝ) := by linarith
-  have h1mβ : 1 - β < 1 / (10 * Real.log (q : ℝ)) := by linarith [hβ']
+    linarith only [Real.exp_one_lt_three, hq400]
+  have hlogqpos : (0 : ℝ) < Real.log (q : ℝ) := by linarith only [hlogq1]
+  have h1mβ : 1 - β < 1 / (10 * Real.log (q : ℝ)) := by linarith only [hβ']
   have hdiv : 1 / (10 * Real.log (q : ℝ)) ≤ 1 / 10 :=
-    one_div_le_one_div_of_le (by norm_num : (0:ℝ) < 10) (by linarith)
-  have hβpos : 0 < β := by linarith
-  have hβ34 : 3 / 4 ≤ β := by linarith
-  have hβhalf : 1 / 2 < β := by linarith
+    one_div_le_one_div_of_le (by norm_num : (0:ℝ) < 10) (by linarith only [hlogq1])
+  have hβpos : 0 < β := by linarith only [hβ1, hβ', hdiv]
+  have hβ34 : 3 / 4 ≤ β := by linarith only [hβ1, hβ', hdiv]
+  have hβhalf : 1 / 2 < β := by linarith only [hβ1, hβ', hdiv]
   have h1mβlog : (1 - β) * Real.log (q : ℝ) < 1 / 10 := by
     have h := mul_lt_mul_of_pos_right h1mβ hlogqpos
     have h2 : (1 / (10 * Real.log (q : ℝ))) * Real.log (q : ℝ) = 1/10 := by
       field_simp
-    linarith
+    linarith only [h, h2]
   set x : ℝ := (q : ℝ) ^ N + 1 / 2 with hxdef
   have hqNge1 : (1 : ℝ) ≤ (q : ℝ) ^ N := by
     simpa using pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 1) hqR N
   have hqle : (q : ℝ) ≤ (q : ℝ) ^ N := by
     simpa using pow_le_pow_right₀ hqR (by omega : 1 ≤ N)
-  have hx1 : 1 < x := by rw [hxdef]; linarith
-  have hxpos : 0 < x := by linarith
-  have hx4 : 4 ≤ x := by rw [hxdef]; linarith
+  have hx1 : 1 < x := by rw [hxdef]; linarith only [hβ1, hβ', hq400, hdiv, hqle]
+  have hxpos : 0 < x := by linarith only [hβ1, hβ', hq400, hdiv, hxdef, hqle]
+  have hx4 : 4 ≤ x := by rw [hxdef]; linarith only [hβ1, hβ', hq400, hdiv, hqle]
   have hqNpos : (0:ℝ) < (q:ℝ)^N := by positivity
-  have hxqN : (q:ℝ)^N ≤ x := by rw [hxdef]; linarith
+  have hxqN : (q:ℝ)^N ≤ x := by rw [hxdef]; linarith only [hβ1, hβ', hdiv]
   have hxnn : ∀ n : ℕ, (n : ℝ) ≠ x := by
     intro n hn
     have hqNcast : (q:ℝ)^N = ((q^N : ℕ) : ℝ) := by push_cast; ring
@@ -71,17 +71,17 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
       have h5 : ((2 * n : ℕ) : ℝ) = ((2 * q^N + 1 : ℕ) : ℝ) := by
         push_cast
         rw [hqNcast] at h2
-        linarith
+        linarith only [hxdef, hn]
       exact_mod_cast h5
     omega
   have hL0 : DirichletCharacter.LFunction χ (β : ℂ) = 0 :=
     Work.LinnikAreas.LFunction_eq_zero_of_zeroMult χ hχne hβpos hβ1 hzm
   have hJb := hJconv q hq3 χ hχne hβ34 hβ1 (le_of_lt hx1)
   -- ---- the bound on the critical-line integral
-  have hβlt : 1 / 2 - β < 0 := by linarith
+  have hβlt : 1 / 2 - β < 0 := by linarith only [hβ1, hβ', hdiv]
   have hqNpow : (q:ℝ) ^ ((N:ℝ) * (1 - β)) ≤ Real.exp ((N:ℝ)/10) := by
     have hle := mul_le_mul_of_nonneg_left h1mβlog.le (Nat.cast_nonneg N)
-    have hstep : Real.log (q:ℝ) * ((N:ℝ)*(1-β)) ≤ (N:ℝ)/10 := by nlinarith [hle]
+    have hstep : Real.log (q:ℝ) * ((N:ℝ)*(1-β)) ≤ (N:ℝ)/10 := by linarith only [hle]
     rw [Real.rpow_def_of_pos hqpos]
     exact Real.exp_le_exp.mpr hstep
   have hxqhalf : x ^ (1/2 - β) ≤ Real.exp ((N:ℝ)/10) * (q:ℝ) ^ (-((N:ℝ)/2)) := by
@@ -99,10 +99,10 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
           mul_le_mul_of_nonneg_right hqNpow (Real.rpow_nonneg hqpos.le _)
   have hlogb : Real.log (2*(q:ℝ)+2) ≤ 3 * (q:ℝ) := by
     have h := Real.log_le_sub_one_of_pos (show 0 < 2*(q:ℝ)+2 by positivity)
-    linarith
+    linarith only [hβ1, hβ', hq400, hdiv, h]
   have hqpow : (q:ℝ)^((4:ℝ)/3 - (N:ℝ)/2) ≤ (400001:ℝ)^((4:ℝ)/3 - (N:ℝ)/2) := by
     have hN3R : (3:ℝ) ≤ (N:ℝ) := by exact_mod_cast hN3
-    have hexp : (4:ℝ)/3 - (N:ℝ)/2 ≤ 0 := by linarith
+    have hexp : (4:ℝ)/3 - (N:ℝ)/2 ≤ 0 := by linarith only [hβ1, hβ', hdiv, hN3R]
     exact Real.rpow_le_rpow_of_nonpos (by norm_num) hq400 hexp
   have hK : C6 * (q:ℝ)^((1:ℝ)/3) * Real.log (2*(q:ℝ)+2) * x^(1/2-β) ≤ 1/4 := by
     have hC6q : 0 ≤ C6 * (q:ℝ)^((1:ℝ)/3) :=
@@ -154,12 +154,12 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
     Work.LinnikAreas.BGTZ.Ssm_ge_one' χ hχ2 β (le_of_lt hx1)
   have h1divx : 1/x ≤ 1/4 := by
     rw [div_le_div_iff₀ hxpos (by norm_num : (0:ℝ) < 4)]
-    linarith
+    linarith only [hβ1, hβ', hq400, hdiv, hxdef, hqle]
   have hkey : (1:ℝ)/2 ≤ (DirichletCharacter.LFunction χ (1:ℂ)).re
       * (x^(1-β)/((1-β)*(2-β))) := by
-    linarith [hmain, hssm, h1divx]
-  have h1mβpos : 0 < 1 - β := by linarith
-  have hdenpos : 0 < (1-β)*(2-β) := by nlinarith
+    linarith only [hmain, hssm, h1divx, inst]
+  have h1mβpos : 0 < 1 - β := by linarith only [hβ1]
+  have hdenpos : 0 < (1-β)*(2-β) := by nlinarith only [hβ1]
   have hxpowpos : 0 < x^(1-β) := Real.rpow_pos_of_pos hxpos _
   have hBpos : 0 < (1-β)*(2-β)/x^(1-β) := div_pos hdenpos hxpowpos
   have hratio : x^(1-β)/((1-β)*(2-β)) = 1/((1-β)*(2-β)/x^(1-β)) := by
@@ -167,14 +167,14 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
   rw [hratio, mul_one_div, le_div_iff₀ hBpos] at hkey
   have hxpow_le : x^(1-β) ≤ 2 * Real.exp ((N:ℝ)/10) := by
     have hx2 : x ≤ 2 * (q:ℝ)^N := by
-      rw [hxdef]; linarith [hqNge1]
+      rw [hxdef]; linarith only [hqNge1, hβ1, hβ', hq400, hdiv, hqle]
     have h1 : x^(1-β) ≤ (2*(q:ℝ)^N)^(1-β) :=
       Real.rpow_le_rpow hxpos.le hx2 h1mβpos.le
     have h2 : (2*(q:ℝ)^N)^(1-β) = 2^(1-β) * ((q:ℝ)^N)^(1-β) :=
       Real.mul_rpow (by norm_num) (le_of_lt hqNpos)
     have h3 : (2:ℝ)^(1-β) ≤ 2 := by
       calc (2:ℝ)^(1-β) ≤ (2:ℝ)^(1:ℝ) :=
-            Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
+            Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith only [hβ1, hβ', hdiv])
         _ = 2 := Real.rpow_one 2
     have h4 : ((q:ℝ)^N)^(1-β) ≤ Real.exp ((N:ℝ)/10) := by
       rw [← Real.rpow_natCast (q:ℝ) N, ← Real.rpow_mul hqpos.le]
@@ -192,7 +192,7 @@ theorem ratio_of_convex_bound (C6 : ℝ) (hC6 : 0 < C6)
       have h2 : (Real.exp ((N:ℝ)/10))⁻¹ * (2 * Real.exp ((N:ℝ)/10)) = 2 := by
         rw [mul_comm ((Real.exp ((N:ℝ)/10))⁻¹) (2 * Real.exp ((N:ℝ)/10)), mul_assoc,
           mul_inv_cancel₀ (Real.exp_ne_zero _), mul_one]
-      linarith
+      linarith only [hβ1, h1, h2]
     have step : Real.exp (-((N:ℝ)/10)) * (1-β) ≤ 2*(1-β)*(2-β)/x^(1-β) := by
       rw [le_div_iff₀ hxpowpos]
       calc Real.exp (-((N:ℝ)/10)) * (1-β) * x^(1-β)

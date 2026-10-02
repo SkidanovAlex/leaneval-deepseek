@@ -1,5 +1,10 @@
 import Mathlib
-import Submission.Commons.NumberTheory.DirichletCharacter.explicit_formula_smoothed_upper
+import Submission.Commons.NumberTheory.DirichletCharacter.explicit_formula_smoothed_upper_lapX
+import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_ne_zero_of_one_lt_re
+import Submission.Commons.NumberTheory.DirichletCharacter.completedL_shift_identity_gen
+import Submission.Commons.NumberTheory.DirichletCharacter.norm_logDeriv_LFunction_le_re_gt_one
+import Submission.Commons.NumberTheory.DirichletCharacter.divisorSum_summable_and_tendsto
+import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
 import Submission.Commons.Analysis.Complex.lapX_sub_inv_bound
 import Submission.Commons.Analysis.Complex.regularized_kernel_bound_negRe
 import Submission.Commons.NumberTheory.DirichletCharacter.rectInt_logDeriv_completed_mul_simplePole
@@ -53,7 +58,7 @@ lemma rdcKernel_entire_part_bound {x₀ : ℝ} (hx₀ : 0 < x₀) {f : ℝ → �
   have hCfnn : 0 ≤ Cf := le_trans (norm_nonneg (f 0)) (hCf 0 ⟨le_refl 0, hx₀.le⟩)
   refine ⟨Real.exp (L * (α - s.re) * x₀) * (Cf + 1) * x₀, ?_, ?_⟩
   · apply mul_pos (mul_pos (Real.exp_pos _) _) hx₀
-    linarith
+    linarith only [hCfnn]
   · intro u hu
     rw [lapX]
     have hb : ∀ t ∈ Set.uIcc (0:ℝ) x₀,
@@ -75,18 +80,18 @@ lemma rdcKernel_entire_part_bound {x₀ : ℝ} (hx₀ : 0 < x₀) {f : ℝ → �
         rw [hre]
         have ht0 : 0 ≤ t := htI.1
         have h1 : L * (s.re - u.re) ≥ L * (s.re - α) :=
-          mul_le_mul_of_nonneg_left (by linarith) hL.le
-        have h2 : L * (s.re - α) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hL.le (by linarith)
+          mul_le_mul_of_nonneg_left (by linarith only [hu]) hL.le
+        have h2 : L * (s.re - α) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hL.le (by linarith only [hασ])
         have h3 : L * (s.re - u.re) * t ≥ L * (s.re - α) * t :=
           mul_le_mul_of_nonneg_right h1 ht0
         have h4 : L * (s.re - α) * t ≥ L * (s.re - α) * x₀ := by
-          nlinarith [h2, ht0, htI.2]
-        nlinarith [h3, h4]
+          nlinarith only [h2, ht0, htI.2, htI]
+        linarith only [h3, h4]
       calc ‖Complex.exp (-(((s - u) * (L : ℂ)) * (t : ℂ)))‖ * ‖f t‖
           ≤ Real.exp (L * (α - s.re) * x₀) * Cf :=
             mul_le_mul hexp hft (norm_nonneg _) (Real.exp_pos _).le
         _ ≤ Real.exp (L * (α - s.re) * x₀) * (Cf + 1) := by
-            nlinarith [hCfnn, (Real.exp_pos (L * (α - s.re) * x₀))]
+            linarith only [hCfnn, (Real.exp_pos (L * (α - s.re) * x₀))]
     calc ‖∫ t in (0:ℝ)..x₀, Complex.exp (-(((s - u) * (L : ℂ)) * (t : ℂ))) * f t‖
         ≤ (Real.exp (L * (α - s.re) * x₀) * (Cf + 1)) * |x₀ - 0| :=
           intervalIntegral.norm_integral_le_of_norm_le_const
@@ -105,7 +110,7 @@ lemma rdcKernel_norm_le_inv_sq {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
     (hα2 : α ≤ 2) :
     ∃ C : ℝ, 0 < C ∧ ∀ u : ℂ, -(1/2 : ℝ) ≤ u.re → u.re ≤ α → u ≠ s →
       ‖rdcKernel x₀ L f s u‖ ≤ C / ‖u - s‖ ^ 2 := by
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL]
   set C0 : ℝ := Real.exp (3 * L * x₀) * (5 * B * x₀ + 2 * ‖f 0‖ / x₀)
     + (3 * B * x₀ + 2 * ‖f 0‖ / x₀) + 1 with hC0def
   have hC0pos : 0 < C0 := by rw [hC0def]; positivity
@@ -121,13 +126,13 @@ lemma rdcKernel_norm_le_inv_sq {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
   have hnorm_us : ‖u - s‖ = ‖s - u‖ := by rw [← norm_neg, neg_sub]
   have hzre_le : |((s - u) * (L : ℂ)).re| ≤ 3 * L := by
     rw [hre, abs_mul, abs_of_nonneg hLpos.le]
-    have h : |s.re - u.re| ≤ 3 := by rw [abs_le]; constructor <;> linarith
-    nlinarith [hLpos]
+    have h : |s.re - u.re| ≤ 3 := by rw [abs_le]; constructor <;> linarith only [hsre, hα2, hu2, hασ, hu1]
+    nlinarith only [hLpos, h, hL]
   have hC0_ge2 : 3 * B * x₀ + 2 * ‖f 0‖ / x₀ ≤ C0 := by
     rw [hC0def]
     have hnum : 0 ≤ 5 * B * x₀ + 2 * ‖f 0‖ / x₀ := by positivity
     have := mul_nonneg (Real.exp_pos (3 * L * x₀)).le hnum
-    linarith
+    linarith only [this]
   rw [rdcKernel_eq_lapX]
   have hval : lapX x₀ f ((s - u) * (L : ℂ)) - f 0 / ((s - u) * (L : ℂ))
       = (∫ t in (0:ℝ)..x₀, Complex.exp (-(((s - u) * (L : ℂ)) * (t : ℂ))) * f t)
@@ -138,7 +143,7 @@ lemma rdcKernel_norm_le_inv_sq {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
       hBnd hvan (z := (s - u) * (L : ℂ)) hz hneg
     have hexp : Real.exp (|((s - u) * (L : ℂ)).re| * x₀) ≤ Real.exp (3 * L * x₀) := by
       apply Real.exp_le_exp.mpr
-      nlinarith [hzre_le, hx₀]
+      nlinarith only [hzre_le, hx₀]
     have hnum : 0 ≤ 5 * B * x₀ + 2 * ‖f 0‖ / x₀ := by positivity
     have hEN : Real.exp (|((s - u) * (L : ℂ)).re| * x₀) * (5 * B * x₀ + 2 * ‖f 0‖ / x₀) ≤ C0 := by
       have h1 : Real.exp (|((s - u) * (L : ℂ)).re| * x₀) * (5 * B * x₀ + 2 * ‖f 0‖ / x₀)
@@ -147,8 +152,8 @@ lemma rdcKernel_norm_le_inv_sq {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
       have h2 : Real.exp (3 * L * x₀) * (5 * B * x₀ + 2 * ‖f 0‖ / x₀) ≤ C0 := by
         rw [hC0def]
         have h3 : 0 ≤ 3 * B * x₀ + 2 * ‖f 0‖ / x₀ := by positivity
-        linarith
-      linarith
+        linarith only [h3]
+      linarith only [h1, h2]
     calc ‖(∫ t in (0:ℝ)..x₀, Complex.exp (-(((s - u) * (L : ℂ)) * (t : ℂ))) * f t)
           - f 0 / ((s - u) * (L : ℂ))‖
         ≤ Real.exp (|((s - u) * (L : ℂ)).re| * x₀) * (5 * B * x₀ + 2 * ‖f 0‖ / x₀)
@@ -266,22 +271,22 @@ lemma inv_one_add_sq_sub_le (a t : ℝ) :
     1 / (1 + (t - a) ^ 2) ≤ (3 + 2 * a ^ 2) / (1 + t ^ 2) := by
   rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul]
   have h : t ^ 2 ≤ 2 * (t - a) ^ 2 + 2 * a ^ 2 := by
-    nlinarith [sq_nonneg (a - (t - a)), sq_nonneg a, sq_nonneg (t - a)]
+    linarith only [sq_nonneg (a - (t - a)), sq_nonneg a, sq_nonneg (t - a)]
   have hexp : (3 + 2 * a ^ 2) * (1 + (t - a) ^ 2)
       = 3 + 2 * a ^ 2 + 3 * (t - a) ^ 2 + 2 * a ^ 2 * (t - a) ^ 2 := by ring
   rw [hexp]
-  nlinarith [h, sq_nonneg (t - a), sq_nonneg a, mul_nonneg (sq_nonneg a) (sq_nonneg (t - a))]
+  linarith only [h, sq_nonneg (t - a), sq_nonneg a, mul_nonneg (sq_nonneg a) (sq_nonneg (t - a))]
 
 lemma lorentzian_le (δ z : ℝ) (hδ : 0 < δ) :
     1 / (δ ^ 2 + z ^ 2) ≤ (1 + δ ^ 2) / δ ^ 2 / (1 + z ^ 2) := by
   rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul]
   have hδ2 : 0 < δ ^ 2 := by positivity
   have hq : (1 : ℝ) ≤ (1 + δ ^ 2) / δ ^ 2 := by
-    rw [le_div_iff₀ hδ2]; linarith [sq_nonneg δ]
+    rw [le_div_iff₀ hδ2]; linarith only [sq_nonneg δ]
   have hq2 : (1 + δ ^ 2) / δ ^ 2 * δ ^ 2 = 1 + δ ^ 2 := by field_simp
   have hz : z ^ 2 ≤ (1 + δ ^ 2) / δ ^ 2 * z ^ 2 := by
-    nlinarith [mul_le_mul_of_nonneg_right hq (sq_nonneg z)]
-  nlinarith [hq2, hz, sq_nonneg z, sq_nonneg δ]
+    linarith only [mul_le_mul_of_nonneg_right hq (sq_nonneg z), hq]
+  linarith only [hq2, hz, sq_nonneg z, sq_nonneg δ, hδ2]
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -298,12 +303,12 @@ lemma integrable_logDeriv_LFunction_mul_rdc_alpha {x₀ B : ℝ} (hx₀ : 0 < x�
       ((α:ℂ)+(t:ℂ)*Complex.I) * rdcKernel x₀ L f s ((α:ℂ)+(t:ℂ)*Complex.I)) := by
   obtain ⟨C, hCpos, hCb⟩ := rdcKernel_norm_le_inv_sq hx₀ hB hcont hf2 hBnd hvan hL hsre hασ (le_of_lt hα2)
   set δ : ℝ := α - s.re with hδdef
-  have hδpos : 0 < δ := by rw [hδdef]; linarith
+  have hδpos : 0 < δ := by rw [hδdef]; linarith only [hασ]
   set Cfin : ℝ := (100/(α-1)^2 + 100) * (C * (1+δ^2)/δ^2 * (3 + 2*s.im^2)) with hCfindef
   have hCfinnn : 0 ≤ Cfin := by rw [hCfindef]; positivity
   refine Commons.NumberTheory.Linnik.integrable_of_log_bound hCfinnn ?_ ?_
   · have hc1 : Continuous (fun t : ℝ => rdcKernel x₀ L f s ((α:ℂ)+(t:ℂ)*Complex.I)) :=
-      rdcKernel_continuousOn_vertical hx₀.le (by linarith : L ≠ 0) hcont (ne_of_lt hασ)
+      rdcKernel_continuousOn_vertical hx₀.le (by linarith only [hL, hα1, hα2] : L ≠ 0) hcont (ne_of_lt hασ)
     have hm1 : AEStronglyMeasurable (fun t : ℝ =>
         logDeriv (DirichletCharacter.LFunction χ) ((α:ℂ)+(t:ℂ)*Complex.I)) volume :=
       (((measurable_logDeriv_LFunction' χ hχ).comp (by fun_prop))).aestronglyMeasurable
@@ -316,7 +321,7 @@ lemma integrable_logDeriv_LFunction_mul_rdc_alpha {x₀ B : ℝ} (hx₀ : 0 < x�
       · simpa using h
       · simpa using hα1
       · have : ((α:ℂ)+(t:ℂ)*Complex.I).re = α := by simp
-        rw [this]; linarith
+        rw [this]; linarith only [hα2]
     have h2 : ‖rdcKernel x₀ L f s ((α:ℂ)+(t:ℂ)*Complex.I)‖
         ≤ C * (1+δ^2)/δ^2 * (3+2*s.im^2) / (1+t^2) := by
       have hure : ((α:ℂ)+(t:ℂ)*Complex.I).re = α := by simp
@@ -324,9 +329,9 @@ lemma integrable_logDeriv_LFunction_mul_rdc_alpha {x₀ B : ℝ} (hx₀ : 0 < x�
         intro hh
         have := congrArg Complex.re hh
         rw [hure] at this
-        linarith [hασ]
+        linarith only [hασ, this]
       have h := hCb ((α:ℂ)+(t:ℂ)*Complex.I)
-        (by rw [hure]; linarith) (by rw [hure]) hne
+        (by rw [hure]; linarith only [hα1, hα2]) (by rw [hure]) hne
       have hnsq : ‖((α:ℂ)+(t:ℂ)*Complex.I) - s‖^2 = δ^2 + (t - s.im)^2 := by
         have hre : (((α:ℂ)+(t:ℂ)*Complex.I) - s).re = α - s.re := by simp
         have him : (((α:ℂ)+(t:ℂ)*Complex.I) - s).im = t - s.im := by simp
@@ -354,13 +359,13 @@ lemma integrable_logDeriv_LFunction_mul_rdc_alpha {x₀ B : ℝ} (hx₀ : 0 < x�
       _ ≤ Cfin * (Real.log (2+|t|) + 1) / (1+t^2) := by
           rw [hCfindef]
           have h1 : (1:ℝ) ≤ Real.log (2+|t|) + 1 := by
-            have := Real.log_nonneg (show (1:ℝ) ≤ 2 + |t| by linarith [abs_nonneg t]); linarith
+            have := Real.log_nonneg (show (1:ℝ) ≤ 2 + |t| by linarith only [abs_nonneg t, hα1, hα2]); linarith only [this]
           have hK : 0 ≤ 100/(α-1)^2 + 100 := by positivity
           have hD : 0 ≤ C * (1+δ^2)/δ^2 * (3 + 2*s.im^2) := by positivity
           rw [show (100/(α-1)^2 + 100) * (C * (1+δ^2)/δ^2 * (3+2*s.im^2) / (1+t^2))
               = (100/(α-1)^2 + 100) * (C * (1+δ^2)/δ^2 * (3+2*s.im^2)) / (1+t^2) by ring_nf]
           apply div_le_div_of_nonneg_right _ (by positivity)
-          nlinarith [mul_le_mul_of_nonneg_left h1 (mul_nonneg hK hD)]
+          linarith only [mul_le_mul_of_nonneg_left h1 (mul_nonneg hK hD), h1, hK, hD]
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -378,29 +383,29 @@ lemma integrable_logDeriv_LFunction_mul_rdc_left {x₀ B : ℝ} (hx₀ : 0 < x�
   obtain ⟨C, hCpos, hCb⟩ := rdcKernel_norm_le_inv_sq hx₀ hB hcont hf2 hBnd hvan hL hsre hασ
     (le_of_lt hα2)
   set δ : ℝ := s.re + 1/2 with hδdef
-  have hδpos : 0 < δ := by rw [hδdef]; linarith
+  have hδpos : 0 < δ := by rw [hδdef]; linarith only [hsre]
   have hlogN : 0 ≤ Real.log (N:ℝ) :=
     Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N))
   set Cfin : ℝ := 100 * (Real.log (N:ℝ) + 1) * (C * (1+δ^2)/δ^2 * (3 + 2*s.im^2)) with hCfindef
   have hCfinnn : 0 ≤ Cfin := by rw [hCfindef]; positivity
   refine Commons.NumberTheory.Linnik.integrable_of_log_bound hCfinnn ?_ ?_
   · have hc1 : Continuous (fun t : ℝ => rdcKernel x₀ L f s (((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I)) :=
-      rdcKernel_continuousOn_vertical (α := (-1/2:ℝ)) hx₀.le (by linarith : L ≠ 0) hcont
-        (by linarith : s.re ≠ (-1/2:ℝ))
+      rdcKernel_continuousOn_vertical (α := (-1/2:ℝ)) hx₀.le (by linarith only [hL, hα1, hα2] : L ≠ 0) hcont
+        (by linarith only [hsre] : s.re ≠ (-1/2:ℝ))
     have hm1 : AEStronglyMeasurable (fun t : ℝ =>
         logDeriv (DirichletCharacter.LFunction χ) (((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I)) volume :=
       (((measurable_logDeriv_LFunction' χ hχ).comp (by fun_prop))).aestronglyMeasurable
     exact hm1.mul hc1.aestronglyMeasurable
   · intro t
     rw [norm_mul]
-    have hlog0 : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+    have hlog0 : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t, hα1, hα2])
     have h1log : ‖logDeriv (DirichletCharacter.LFunction χ) (((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I)‖
         ≤ 100 * (Real.log (N:ℝ) + 1) * (Real.log (2+|t|) + 1) := by
       have h := Commons.NumberTheory.Linnik.logDeriv_LFunction_leftEdge_uniform χ hχ hχprim t
-      have h1 : (1:ℝ) ≤ Real.log (2+|t|) + 1 := by linarith
+      have h1 : (1:ℝ) ≤ Real.log (2+|t|) + 1 := by linarith only [hlog0]
       have hexp : 100 * (Real.log (N:ℝ) + Real.log (2+|t|) + 1)
           ≤ 100 * (Real.log (N:ℝ) + 1) * (Real.log (2+|t|) + 1) := by
-        nlinarith [hlogN, hlog0]
+        nlinarith only [hlogN, hlog0, hα1, hα2]
       linarith [h, hexp]
     have h2 : ‖rdcKernel x₀ L f s (((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I)‖
         ≤ C * (1+δ^2)/δ^2 * (3+2*s.im^2) / (1+t^2) := by
@@ -409,9 +414,9 @@ lemma integrable_logDeriv_LFunction_mul_rdc_left {x₀ B : ℝ} (hx₀ : 0 < x�
         intro hh
         have := congrArg Complex.re hh
         rw [hure] at this
-        linarith [hsre]
+        linarith only [hsre, this]
       have h := hCb (((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I)
-        (by rw [hure]; linarith) (by rw [hure]; linarith) hne
+        (by rw [hure]; linarith only []) (by rw [hure]; linarith only [hα1, hα2]) hne
       have hnsq : ‖(((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I) - s‖^2 = δ^2 + (t - s.im)^2 := by
         have hre : ((((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I) - s).re = -1/2 - s.re := by simp
         have him : ((((-1/2:ℝ):ℂ)+(t:ℂ)*Complex.I) - s).im = t - s.im := by simp
@@ -462,11 +467,11 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
   intro A B v δ hA hAB hB2 hv2 hδ hδ1 hsepA hsepB
   have hvT : 2 ≤ |v| := hv2
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast NeZero.one_le
-  have hv3 : (5:ℝ) ≤ (N:ℝ) * (|v| + 3) := by nlinarith [hN1, abs_nonneg v]
+  have hv3 : (5:ℝ) ≤ (N:ℝ) * (|v| + 3) := by nlinarith only [hN1, abs_nonneg v, hv2]
   have hL1 : 1 ≤ Real.log ((N:ℝ) * (|v| + 3)) := by
     rw [Real.le_log_iff_exp_le (by positivity)]
-    have he : Real.exp 1 < 5 := by linarith [Real.exp_one_lt_d9]
-    linarith
+    have he : Real.exp 1 < 5 := by linarith only [Real.exp_one_lt_d9]
+    linarith only [hv3, he]
   have hLpos : 0 < Real.log ((N:ℝ) * (|v| + 3)) := lt_of_lt_of_le one_pos hL1
   have hδlog : 0 ≤ Real.log (1 / δ) := Real.log_nonneg (by rw [le_div_iff₀ hδ, one_mul]; exact hδ1)
   let FΛ : ℝ → ℝ := fun x => ‖logDeriv (DirichletCharacter.completedLFunction χ) ((x:ℂ) + (v:ℂ)*Complex.I)‖
@@ -479,16 +484,16 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
     intro x hx h0
     have hle := hsepA _ h0
     rw [him x, sub_self, abs_zero] at hle
-    linarith
+    linarith only [hδ, hle]
   have hne0 : ∀ x : ℝ, ((x:ℂ) + (v:ℂ)*Complex.I) ≠ 0 := by
     intro x h0
     have := congrArg Complex.im h0
     rw [him x] at this; simp at this
-    rw [this, abs_zero] at hvT; linarith
+    rw [this, abs_zero] at hvT; linarith only [hvT]
   have hle_half : ∀ x ∈ Set.uIcc (-1/2 : ℝ) 2, -(1 : ℝ) < x := by
     intro x hx
     rw [Set.uIcc_of_le (by norm_num : (-1/2:ℝ) ≤ 2)] at hx
-    linarith [hx.1]
+    linarith only [hx.1, hx]
   have hmemγ : ∀ x ∈ Set.uIcc (-1/2 : ℝ) 2,
       ((x:ℂ) + (v:ℂ)*Complex.I) ∈ {z : ℂ | -(1 : ℝ) < z.re ∧ z ≠ 0} := by
     intro x hx
@@ -520,7 +525,7 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
     intro x hx
     rw [Set.uIcc_of_le hAB] at hx
     rw [Set.uIcc_of_le (by norm_num : (-1/2:ℝ) ≤ 2)]
-    exact ⟨by linarith [hx.1], by linarith [hx.2]⟩
+    exact ⟨by linarith only [hx.1, hA, hx], by linarith only [hx.2, hB2, hx]⟩
   have h1 : (∫ x in A..B, FL x) ≤ ∫ x in A..B, (FΛ x + Fγ x) := by
     apply intervalIntegral.integral_mono_on hAB
     · exact (hcontL.mono hsub).intervalIntegrable
@@ -535,7 +540,7 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
     have h2' : (∫ x in A..B, Fγ x) ≤ ∫ x in (-1/2)..2, Fγ x :=
       intervalIntegral.integral_mono_interval hA hAB hB2
         (Filter.Eventually.of_forall (fun x => norm_nonneg _)) hcontγ.intervalIntegrable
-    linarith
+    linarith only [h1', h2']
   have hvabs : 2 ≤ |v| := hvT
   have hΛb : (∫ x in (-1/2)..2, FΛ x) ≤ C1 * Real.log (N*(|v|+3)) * (Real.log (N*(|v|+3)) + Real.log (1/δ)) := by
     change (∫ x in (-1/2)..2, ‖logDeriv (DirichletCharacter.completedLFunction χ) ((x:ℂ) + (v:ℂ)*Complex.I)‖) ≤ _
@@ -556,7 +561,7 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
         intro ρ hρ
         rw [hv', show ρ.im + (-v) = ρ.im - v by ring]
         exact hsepA ρ hρ
-      have h := (hC1 |v| (by rw [hv']; linarith) δ hδ hδ1 hA' hB').2
+      have h := (hC1 |v| (by rw [hv']; linarith only [hv2, hv']) δ hδ hδ1 hA' hB').2
       simpa [hv', neg_neg] using h
   have hγb : (∫ x in (-1/2)..2, Fγ x) ≤ C2 * Real.log (N*(|v|+3)) := by
     change (∫ x in (-1/2)..2, ‖logDeriv (DirichletCharacter.gammaFactor χ) ((x:ℂ) + (v:ℂ)*Complex.I)‖) ≤ _
@@ -565,12 +570,12 @@ lemma integral_norm_logDeriv_LFunction_le {N : ℕ} [NeZero N] (χ : DirichletCh
       have h := (hC2 |v| hvabs).1
       simpa [hv'] using h
     · have hv' : |v| = -v := abs_of_neg hv
-      have h := (hC2 |v| (by rw [hv']; linarith)).2
+      have h := (hC2 |v| (by rw [hv']; linarith only [hv2, hv'])).2
       simpa [hv', neg_neg] using h
-  have hLD : 1 ≤ Real.log (N*(|v|+3)) + Real.log (1/δ) := by linarith
-  have hLDnn : 0 ≤ Real.log (N*(|v|+3)) + Real.log (1/δ) := by linarith
+  have hLD : 1 ≤ Real.log (N*(|v|+3)) + Real.log (1/δ) := by linarith only [hL1, hδlog]
+  have hLDnn : 0 ≤ Real.log (N*(|v|+3)) + Real.log (1/δ) := by linarith only [hL1, hδlog]
   have hC2b : C2 * Real.log (N*(|v|+3)) ≤ C2 * Real.log (N*(|v|+3)) * (Real.log (N*(|v|+3)) + Real.log (1/δ)) := by
-    nlinarith [mul_le_mul_of_nonneg_left hLD hC2pos.le, hC2pos, hLpos]
+    nlinarith only [mul_le_mul_of_nonneg_left hLD hC2pos.le, hC2pos, hLpos, hLD, hL1]
   have hC1b : C1 * Real.log (N*(|v|+3)) * (Real.log (N*(|v|+3)) + Real.log (1/δ))
       ≤ (C1 + C2 + 1) * Real.log (N*(|v|+3)) * (Real.log (N*(|v|+3)) + Real.log (1/δ)) := by
     have hnn : 0 ≤ Real.log (N*(|v|+3)) * (Real.log (N*(|v|+3)) + Real.log (1/δ)) := mul_nonneg hLpos.le hLDnn
@@ -590,7 +595,7 @@ lemma rdcKernel_horiz_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) {f 
     ∃ C : ℝ, 0 < C ∧ ∀ (x v : ℝ), (-1/2:ℝ) ≤ x → x ≤ α → 2 * |s.im| + 2 ≤ |v| →
       ‖rdcKernel x₀ L f s ((x:ℂ) + (v:ℂ)*Complex.I)‖ ≤ C / v ^ 2 := by
   obtain ⟨C, hCpos, hCb⟩ := rdcKernel_norm_le_inv_sq hx₀ hB hcont hf2 hBnd hvan hL
-    (by linarith : -(1/2:ℝ) < s.re) hασ (le_of_lt hα2)
+    (by linarith only [hsre] : -(1/2:ℝ) < s.re) hασ (le_of_lt hα2)
   refine ⟨4 * C, by positivity, ?_⟩
   intro x v hx1 hx2 hv
   have hne : ((x:ℂ)+(v:ℂ)*Complex.I) ≠ s := by
@@ -598,10 +603,10 @@ lemma rdcKernel_horiz_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) {f 
     have him := congrArg Complex.im hh
     rw [show (((x:ℂ)+(v:ℂ)*Complex.I)).im = v by simp] at him
     have : |v| = |s.im| := by rw [him]
-    linarith [abs_nonneg s.im]
+    linarith only [abs_nonneg s.im, hv, this]
   have hxre : (((x:ℂ)+(v:ℂ)*Complex.I)).re = x := by simp
   have h := hCb ((x:ℂ)+(v:ℂ)*Complex.I)
-    (by rw [hxre]; linarith) (by rw [hxre]; linarith) hne
+    (by rw [hxre]; linarith only [hx1]) (by rw [hxre]; linarith only [hx2]) hne
   have hnsq : ‖((x:ℂ)+(v:ℂ)*Complex.I) - s‖^2 = (x - s.re)^2 + (v - s.im)^2 := by
     have h1 : (((x:ℂ)+(v:ℂ)*Complex.I) - s).re = x - s.re := by simp
     have h2 : (((x:ℂ)+(v:ℂ)*Complex.I) - s).im = v - s.im := by simp
@@ -610,24 +615,24 @@ lemma rdcKernel_horiz_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) {f 
   have hvne : v ≠ 0 := by
     intro h0
     rw [h0, abs_zero] at hv
-    linarith [abs_nonneg s.im]
+    linarith only [abs_nonneg s.im, hv]
   have hvpos : (0:ℝ) < v^2/4 := by positivity
   have hquarter : v^2/4 ≤ (v - s.im)^2 := by
     have h1 : |v| - |s.im| ≤ |v - s.im| := by
       have h := abs_add_le (v - s.im) s.im
       rw [sub_add_cancel] at h
-      linarith
-    have h2 : |v|/2 ≤ |v - s.im| := by linarith [h1, abs_nonneg s.im, hv]
+      linarith only [h]
+    have h2 : |v|/2 ≤ |v - s.im| := by linarith only [h1, abs_nonneg s.im, hv]
     calc v^2/4 = (|v|/2)^2 := by rw [div_pow, sq_abs]; ring
       _ ≤ (v - s.im)^2 := by
           calc (|v|/2)^2 ≤ |v - s.im|^2 := pow_le_pow_left₀ (by positivity) h2 2
             _ = (v - s.im)^2 := sq_abs _
-  have hApos : (0:ℝ) < (x - s.re)^2 + (v - s.im)^2 := by nlinarith [sq_nonneg (x - s.re), hquarter, hvpos]
+  have hApos : (0:ℝ) < (x - s.re)^2 + (v - s.im)^2 := by linarith only [sq_nonneg (x - s.re), hquarter, hvpos]
   calc ‖rdcKernel x₀ L f s ((x:ℂ) + (v:ℂ)*Complex.I)‖
       ≤ C / ((x - s.re)^2 + (v - s.im)^2) := h
     _ ≤ C / (v^2/4) := by
         rw [div_le_div_iff₀ hApos hvpos]
-        nlinarith [hCpos.le, hquarter, sq_nonneg (x - s.re), hvpos]
+        nlinarith only [hCpos.le, hquarter, sq_nonneg (x - s.re), hvpos, hCpos]
     _ = 4*C / v^2 := by
         rw [div_eq_div_iff (by positivity : (v^2/4) ≠ 0) (by positivity : v^2 ≠ 0)]
         ring
@@ -676,7 +681,7 @@ lemma rdc_horiz_integral_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
           * rdcKernel x₀ L f s ((x:ℂ) + (V:ℂ)*Complex.I)‖
         ≤ Kk * (Real.log ((N:ℝ)*(|V|+3)))^2 / (1 + V^2) := by
   obtain ⟨CΦ, hCΦpos, hCΦb⟩ := rdcKernel_horiz_bound hx₀ hB hcont hf2 hBnd hvan hL
-    (by linarith : (-1/2:ℝ) < s.re) hασ hα2
+    (by linarith only [hsre] : (-1/2:ℝ) < s.re) hασ hα2
   obtain ⟨CL, hCLpos, hCLb⟩ := integral_norm_logDeriv_LFunction_le χ hχ hχprim
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast NeZero.one_le
   have hmin : 0 < min c 1 := lt_min hc zero_lt_one
@@ -692,54 +697,54 @@ lemma rdc_horiz_integral_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
   have hVne : V ≠ 0 := by
     intro h0
     rw [h0, abs_zero] at hV
-    linarith [abs_nonneg s.im]
-  have hV2 : 4 ≤ V^2 := by nlinarith [hV, abs_nonneg s.im, sq_abs V]
+    linarith only [abs_nonneg s.im, hα1, hα2, hV]
+  have hV2 : 4 ≤ V^2 := by nlinarith only [hV, abs_nonneg s.im, sq_abs V]
   have hLp : 0 < Lg := by
-    rw [hLgdef]; apply Real.log_pos; nlinarith [hN1, abs_nonneg V]
+    rw [hLgdef]; apply Real.log_pos; nlinarith only [hN1, abs_nonneg V, hα1, hα2]
   have hL1 : 1 ≤ Lg := by
     rw [hLgdef, Real.le_log_iff_exp_le (by positivity)]
-    have he : Real.exp 1 < 5 := by linarith [Real.exp_one_lt_d9]
-    have h5 : (5:ℝ) ≤ (N:ℝ) * (|V| + 3) := by nlinarith [hN1, abs_nonneg V, hV, abs_nonneg s.im]
-    linarith
+    have he : Real.exp 1 < 5 := by linarith only [Real.exp_one_lt_d9, hα1, hα2]
+    have h5 : (5:ℝ) ≤ (N:ℝ) * (|V| + 3) := by nlinarith only [hN1, abs_nonneg V, hV, abs_nonneg s.im]
+    linarith only [he, h5]
   set δ : ℝ := min c 1 / Lg with hδdef
   have hδpos : 0 < δ := div_pos hmin hLp
-  have hδle1 : δ ≤ 1 := by rw [hδdef, div_le_one hLp]; linarith [hminle1, hL1]
+  have hδle1 : δ ≤ 1 := by rw [hδdef, div_le_one hLp]; linarith only [hminle1, hL1]
   have hδA : ∀ ρ : ℂ, DirichletCharacter.completedLFunction χ ρ = 0 → δ ≤ |ρ.im - V| := by
     intro ρ hρ; rw [hδdef, hLgdef]; exact hsp ρ hρ
   have hδB : ∀ ρ : ℂ, DirichletCharacter.completedLFunction χ ρ = 0 → δ ≤ |ρ.im + V| := by
     intro ρ hρ; rw [hδdef, hLgdef]; exact hsp' ρ hρ
-  have hCLb' := hCLb le_rfl (by linarith : (-1/2:ℝ) ≤ α) (le_of_lt hα2)
-    (by linarith [hV, abs_nonneg s.im] : 2 ≤ |V|) hδpos hδle1 hδA hδB
+  have hCLb' := hCLb le_rfl (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α) (le_of_lt hα2)
+    (by linarith only [hV, abs_nonneg s.im] : 2 ≤ |V|) hδpos hδle1 hδA hδB
   have hkern : ∀ x ∈ Set.uIcc (-1/2:ℝ) α,
       ‖rdcKernel x₀ L f s ((x:ℂ) + (V:ℂ)*Complex.I)‖ ≤ CΦ / V^2 := by
     intro x hx
-    rw [Set.uIcc_of_le (by linarith : (-1/2:ℝ) ≤ α)] at hx
+    rw [Set.uIcc_of_le (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α)] at hx
     exact hCΦb x V hx.1 hx.2 hV
   have hneV : ∀ x : ℝ, ((x:ℂ) + (V:ℂ)*Complex.I) ≠ s := by
     intro x hx
     have him := congrArg Complex.im hx
     rw [show (((x:ℂ) + (V:ℂ)*Complex.I)).im = V by simp] at him
     have : |V| = |s.im| := by rw [him]
-    linarith [abs_nonneg s.im, hV]
+    linarith only [abs_nonneg s.im, hV, hα1, hα2, this]
   have hmemΛ : ∀ x ∈ Set.uIcc (-1/2:ℝ) α, DirichletCharacter.completedLFunction χ
       ((x:ℂ) + (V:ℂ)*Complex.I) ≠ 0 := by
     intro x hx h0
     have hle := hδA _ h0
     have him : (((x:ℂ) + (V:ℂ)*Complex.I)).im = V := by simp
-    rw [him, sub_self, abs_zero] at hle; linarith
+    rw [him, sub_self, abs_zero] at hle; linarith only [hδpos, hle]
   have hmemL : ∀ x ∈ Set.uIcc (-1/2:ℝ) α, DirichletCharacter.LFunction χ
       ((x:ℂ) + (V:ℂ)*Complex.I) ≠ 0 := by
     intro x hx h0
     have hx' := hx
-    rw [Set.uIcc_of_le (by linarith : (-1/2:ℝ) ≤ α)] at hx'
+    rw [Set.uIcc_of_le (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α)] at hx'
     have hu0 : ((x:ℂ) + (V:ℂ)*Complex.I) ≠ 0 := by
       intro hz
       have him := congrArg Complex.im hz
       rw [show (((x:ℂ) + (V:ℂ)*Complex.I)).im = V by simp] at him
       rw [him] at hV
       simp at hV
-      linarith [abs_nonneg s.im]
-    have hprod := completedL_eq_gammaFactor_mul_L χ hu0 (by simp; linarith [hx'.1])
+      linarith only [abs_nonneg s.im, hα1, hα2, hV]
+    have hprod := completedL_eq_gammaFactor_mul_L χ hu0 (by simp; linarith only [hx'.1, hα1, hα2, hx'])
     rw [h0, mul_zero] at hprod
     exact hmemΛ x hx hprod
   have hcont1 : ContinuousOn (fun x : ℝ => logDeriv (DirichletCharacter.LFunction χ)
@@ -747,7 +752,7 @@ lemma rdc_horiz_integral_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
     (continuousOn_logDeriv_L χ hχ).comp (by fun_prop) (fun x hx => hmemL x hx)
   have hcont2 : ContinuousOn (fun x : ℝ => rdcKernel x₀ L f s ((x:ℂ)+(V:ℂ)*Complex.I))
       (Set.uIcc (-1/2:ℝ) α) :=
-    (rdcKernel_continuousOn_ne hx₀.le (by linarith : L ≠ 0) hcont s).comp (by fun_prop)
+    (rdcKernel_continuousOn_ne hx₀.le (by linarith only [hL, hα1, hα2] : L ≠ 0) hcont s).comp (by fun_prop)
       (fun x hx => hneV x)
   have hintF : IntervalIntegrable (fun x : ℝ => logDeriv (DirichletCharacter.LFunction χ)
       ((x:ℂ)+(V:ℂ)*Complex.I) * rdcKernel x₀ L f s ((x:ℂ)+(V:ℂ)*Complex.I)) volume (-1/2) α :=
@@ -769,25 +774,25 @@ lemma rdc_horiz_integral_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
   have hlogδ : Real.log (1/δ) ≤ Real.log Lg + K0 := by
     have h1 : (1:ℝ)/δ = Lg / min c 1 := by rw [hδdef, one_div, inv_div]
     rw [h1, Real.log_div hLp.ne' hmin.ne']
-    linarith [hK0le]
+    linarith only [hK0le]
   have hloglog : Real.log Lg ≤ Lg := Real.log_le_self hLp.le
   have hsum : Lg * (Lg + Real.log (1/δ)) ≤ (3 + K0) * Lg^2 := by
-    have h1 : Real.log (1/δ) ≤ Lg + K0 := by linarith [hlogδ, hloglog]
+    have h1 : Real.log (1/δ) ≤ Lg + K0 := by linarith only [hlogδ, hloglog]
     have h2 : Lg * (Lg + Real.log (1/δ)) ≤ Lg * (Lg + (Lg + K0)) := by
-      apply mul_le_mul_of_nonneg_left _ hLp.le; linarith
+      apply mul_le_mul_of_nonneg_left _ hLp.le; linarith only [hlogδ, hloglog]
     have h3 : Lg * (Lg + (Lg + K0)) = 2*Lg^2 + K0*Lg := by ring
-    have h4 : K0 * Lg ≤ K0 * Lg^2 := by nlinarith [mul_nonneg hK0nn hLp.le, hL1, hK0nn, hLp, sq_nonneg Lg]
-    nlinarith [h2, h3, h4]
+    have h4 : K0 * Lg ≤ K0 * Lg^2 := by nlinarith only [mul_nonneg hK0nn hLp.le, hL1, hK0nn, hLp, sq_nonneg Lg, hα1, hα2]
+    nlinarith only [h2, h3, h4]
   calc ‖∫ x in (-1/2)..α, logDeriv (DirichletCharacter.LFunction χ) ((x:ℂ) + (V:ℂ)*Complex.I)
           * rdcKernel x₀ L f s ((x:ℂ) + (V:ℂ)*Complex.I)‖
       ≤ ∫ x in (-1/2)..α, ‖logDeriv (DirichletCharacter.LFunction χ) ((x:ℂ) + (V:ℂ)*Complex.I)
           * rdcKernel x₀ L f s ((x:ℂ) + (V:ℂ)*Complex.I)‖ :=
-        intervalIntegral.norm_integral_le_integral_norm (by linarith : (-1/2:ℝ) ≤ α)
+        intervalIntegral.norm_integral_le_integral_norm (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α)
     _ ≤ ∫ x in (-1/2)..α, (CΦ/V^2) * ‖logDeriv (DirichletCharacter.LFunction χ)
           ((x:ℂ) + (V:ℂ)*Complex.I)‖ := by
-        apply intervalIntegral.integral_mono_on (by linarith : (-1/2:ℝ) ≤ α) hintF.norm hintg
+        apply intervalIntegral.integral_mono_on (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α) hintF.norm hintg
         intro x hx
-        exact hpt x (by rw [Set.uIcc_of_le (by linarith : (-1/2:ℝ) ≤ α)]; exact hx)
+        exact hpt x (by rw [Set.uIcc_of_le (by linarith only [hα1, hα2] : (-1/2:ℝ) ≤ α)]; exact hx)
     _ = (CΦ/V^2) * ∫ x in (-1/2)..α, ‖logDeriv (DirichletCharacter.LFunction χ)
           ((x:ℂ) + (V:ℂ)*Complex.I)‖ := intervalIntegral.integral_const_mul _ _
     _ ≤ (CΦ/V^2) * (CL * Lg * (Lg + Real.log (1/δ))) :=
@@ -800,9 +805,9 @@ lemma rdc_horiz_integral_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) 
         exact mul_le_mul_of_nonneg_left hsum (by positivity : (0:ℝ) ≤ CΦ * CL)
     _ ≤ (2 * CΦ * CL * (3 + K0)) * Lg^2 / (1 + V^2) := by
         rw [div_le_div_iff₀ (by positivity : (0:ℝ) < V^2) (by positivity : (0:ℝ) < 1 + V^2)]
-        have hfac : 1 + V^2 ≤ 2 * V^2 := by linarith [hV2]
+        have hfac : 1 + V^2 ≤ 2 * V^2 := by linarith only [hV2, hα1, hα2]
         have hpos : 0 ≤ CΦ * CL * (3 + K0) * Lg^2 := by positivity
-        nlinarith [hfac, hpos, hCΦpos, hCLpos, hK0nn, sq_nonneg Lg]
+        nlinarith only [hfac, hpos, hCΦpos, hCLpos, hK0nn, sq_nonneg Lg, hα1, hα2, hV2]
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -846,7 +851,7 @@ lemma horizontal_rdc_tendsto {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) {f
     rw [heq]; simpa using h
   have hlogv : ∀ᶠ T : ℝ in Filter.atTop, 0 ≤ Real.log ((N:ℝ)*(|Tf T|+3)) := by
     filter_upwards with T
-    exact Real.log_nonneg (by nlinarith [hN1, abs_nonneg (Tf T)])
+    exact Real.log_nonneg (by nlinarith only [hN1, abs_nonneg (Tf T), hα1, hα2])
   have hkeyP : ∀ᶠ T : ℝ in Filter.atTop, ‖∫ x in (-1/2)..α,
       logDeriv (DirichletCharacter.LFunction χ) ((x:ℂ) + (Tf T:ℂ)*Complex.I)
         * rdcKernel x₀ L f s ((x:ℂ) + (Tf T:ℂ)*Complex.I)‖
@@ -917,10 +922,10 @@ lemma GammaR_ne_zero_of {z : ℂ} (hz0 : z ≠ 0) (hzre : -(1:ℝ) < z.re) :
       omega
     have hlt : (-(2 * (n:ℝ))) ≤ -2 := by
       have : (2:ℝ) ≤ 2 * (n:ℝ) := by exact_mod_cast h2
-      linarith
+      linarith only [this]
     have hre : z.re = -(2 * (n:ℝ)) := by
       rw [hn]; push_cast; simp
-    linarith
+    linarith only [hzre, hlt, hre]
 
 lemma analyticAt_GammaR_of {z : ℂ} (hz0 : z ≠ 0) (hzre : -(1:ℝ) < z.re) :
     AnalyticAt ℂ Complex.Gammaℝ z := by
@@ -939,11 +944,11 @@ lemma gammaFactor_analyticAt {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   · have hγ : DirichletCharacter.gammaFactor χ = Complex.Gammaℝ := by
       funext z; exact DirichletCharacter.Even.gammaFactor_def hE z
     rw [hγ]
-    exact analyticAt_GammaR_of (hs0 hE) (by linarith)
+    exact analyticAt_GammaR_of (hs0 hE) (by linarith only [hsre])
   · have hγ : DirichletCharacter.gammaFactor χ = (fun z : ℂ => Complex.Gammaℝ (z + 1)) := by
       funext z; exact DirichletCharacter.Odd.gammaFactor_def hO z
     rw [hγ]
-    have h1 : (0:ℝ) < (s + 1).re := by simp; linarith
+    have h1 : (0:ℝ) < (s + 1).re := by simp; linarith only [hsre]
     exact AnalyticAt.comp (g := Complex.Gammaℝ) (f := fun z : ℂ => z + 1) (x := s)
       (analyticAt_GammaR_of_re_pos h1) (by fun_prop)
 
@@ -954,12 +959,12 @@ lemma gammaFactor_ne_zero' {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) 
   · have hγ : DirichletCharacter.gammaFactor χ = Complex.Gammaℝ := by
       funext z; exact DirichletCharacter.Even.gammaFactor_def hE z
     rw [hγ]
-    exact GammaR_ne_zero_of (hs0 hE) (by linarith)
+    exact GammaR_ne_zero_of (hs0 hE) (by linarith only [hsre])
   · have hγ : DirichletCharacter.gammaFactor χ = (fun z : ℂ => Complex.Gammaℝ (z + 1)) := by
       funext z; exact DirichletCharacter.Odd.gammaFactor_def hO z
     rw [hγ]
     apply Complex.Gammaℝ_ne_zero_of_re_pos
-    simp only [Complex.add_re, Complex.one_re]; linarith
+    simp only [Complex.add_re, Complex.one_re]; linarith only [hsre]
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -977,11 +982,11 @@ lemma gammaFactor_analyticAt_rect {N : ℕ} [NeZero N] (χ : DirichletCharacter 
       funext w; exact DirichletCharacter.Odd.gammaFactor_def hO w
     rw [hγ]
     have hz1 : z + 1 ≠ 0 := by
-      intro hh; have := congrArg Complex.re hh; simp at this; linarith
+      intro hh; have := congrArg Complex.re hh; simp at this; linarith only [hzre, this]
     have h1 : AnalyticAt ℂ Complex.Gammaℝ (z + 1) :=
-      analyticAt_GammaR_of hz1 (by simp; linarith)
+      analyticAt_GammaR_of hz1 (by simp; linarith only [hzre])
     have h2 : Complex.Gammaℝ (z + 1) ≠ 0 :=
-      GammaR_ne_zero_of hz1 (by simp; linarith)
+      GammaR_ne_zero_of hz1 (by simp; linarith only [hzre])
     exact ⟨AnalyticAt.comp (g := Complex.Gammaℝ) (f := fun w : ℂ => w + 1) (x := z) h1
       (by fun_prop), h2⟩
 
@@ -1022,7 +1027,7 @@ lemma zeros_far_from {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ :
       intro ρ hρ
       by_cases h1 : ‖ρ - s‖ ≤ 1
       · exact Finset.inf'_le _ ((hSmem ρ).mpr ⟨hρ, h1⟩)
-      · push_neg at h1; linarith
+      · push_neg at h1; linarith only [hne, hδ1, h1]
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -1062,7 +1067,7 @@ lemma completedL_ne_zero_of_re_eq_neg_half {N : ℕ} [NeZero N] (χ : DirichletC
 lemma completedL_ne_zero_of_one_lt_re' {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (hχ : χ ≠ 1) {τ : ℝ} {σ : ℝ} (hσ : 1 < σ) :
     DirichletCharacter.completedLFunction χ ((σ:ℂ) + (τ:ℂ)*Complex.I) ≠ 0 :=
-  completedLFunction_ne_zero_of_one_lt_re χ (by simp; linarith)
+  completedLFunction_ne_zero_of_one_lt_re χ (by simp; linarith only [hσ])
 
 end Commons.NumberTheory.DirichletCharacter
 
@@ -1107,7 +1112,7 @@ lemma logDeriv_completedL_eq_add' {N : ℕ} [NeZero N] (χ : DirichletCharacter 
           (analyticAt_GammaR_of_re_pos (by norm_num)) (by fun_prop)
       exact logDeriv_mul 0 (by rw [hγ0]; norm_num) hLs hγan0.differentiableAt
         ((DirichletCharacter.differentiable_LFunction hχ) 0)
-  · rw [logDeriv_completedL_eq_add χ hχ hs0 (by linarith) hLs]
+  · rw [logDeriv_completedL_eq_add χ hχ hs0 (by linarith only [hsre]) hLs]
 
 
 
@@ -1132,7 +1137,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
         - logDeriv (DirichletCharacter.LFunction χ) s * (f 0 / (L : ℂ))
         - (if χ.Even then rdcKernel x₀ L f s 0 else 0) := by
   classical
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL, hα1, hα2]
   set Λ := DirichletCharacter.completedLFunction χ with hΛdef
   set γ := DirichletCharacter.gammaFactor χ with hγdef
   set Lf := DirichletCharacter.LFunction χ with hLfdef
@@ -1143,8 +1148,8 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     by_cases hs0 : s = 0
     · subst hs0
       exact Commons.NumberTheory.Linnik.completedLFunction_zero_ne_zero χ hχ hχprim
-    · rw [hΛdef, completedL_eq_gammaFactor_mul_L χ hs0 (by linarith)]
-      exact mul_ne_zero (gammaFactor_ne_zero_of_re_gt_neg_one χ (by linarith) hs0) hLs
+    · rw [hΛdef, completedL_eq_gammaFactor_mul_L χ hs0 (by linarith only [hα1, hα2, hsre])]
+      exact mul_ne_zero (gammaFactor_ne_zero_of_re_gt_neg_one χ (by linarith only [hα1, hα2, hsre]) hs0) hLs
   have hEven0 : χ.Even → s ≠ 0 := by
     intro hE hs0
     have hN1 : N ≠ 1 := by
@@ -1155,9 +1160,9 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     rw [hE.gammaFactor_def, Complex.Gammaℝ_eq_zero_iff.mpr ⟨0, by simp⟩, div_zero] at h
     exact hLs (by rw [hs0]; exact h)
   have hγan : AnalyticAt ℂ γ s := by
-    rw [hγdef]; exact gammaFactor_analyticAt χ (by linarith) hEven0
+    rw [hγdef]; exact gammaFactor_analyticAt χ (by linarith only [hsre]) hEven0
   have hγne : γ s ≠ 0 := by
-    rw [hγdef]; exact gammaFactor_ne_zero' χ (by linarith) hEven0
+    rw [hγdef]; exact gammaFactor_ne_zero' χ (by linarith only [hsre]) hEven0
   obtain ⟨δ, hδpos, hδsep⟩ := zeros_far_from χ hχ hχprim hΛs
   -- good heights
   obtain ⟨c, hc0, hgood⟩ := goodHeight_separated χ hχ hχprim
@@ -1174,7 +1179,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     rw [Filter.tendsto_atTop]
     intro b
     filter_upwards [Filter.eventually_ge_atTop (1:ℝ), Filter.eventually_ge_atTop (b - 1)] with T h1 h2
-    exact le_trans (by linarith) ((hTf T h1).1)
+    exact le_trans (by linarith only [h2]) ((hTf T h1).1)
   -- bounds on the entire part
   obtain ⟨CΦ, hCΦpos, hCΦb⟩ := rdcKernel_norm_le_inv_sq hx₀ hB hcont hf2 hBnd hvan hL hsre hασ (le_of_lt hα2)
   have hsub_pole : ∀ u : ℂ, Φ u - r / (u - s) = lapX x₀ f ((s - u) * (L : ℂ)) := by
@@ -1190,29 +1195,29 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       ‖Φ u‖ ≤ CΦ * (‖s‖/δ + 1)^2 / ‖u‖^2 := by
     intro u h1 h2 h3 h4
     have hus : u ≠ s := by
-      intro h; rw [h, sub_self, norm_zero] at h4; linarith [hδpos]
-    have h := hCΦb u (by linarith) (by linarith) hus
+      intro h; rw [h, sub_self, norm_zero] at h4; linarith only [hδpos, h4]
+    have h := hCΦb u (by linarith only [hα1, hα2, h1]) (by linarith only [hα1, h2]) hus
     have h5 : ‖u‖ ≤ (‖s‖/δ + 1) * ‖u - s‖ := by
       have h6 : ‖u‖ ≤ ‖s‖ + ‖u - s‖ := by
         have := norm_add_le (u - s) s
         simpa [sub_add_cancel, add_comm] using this
       have h7 : ‖u - s‖ ≠ 0 := by
-        intro h8; rw [h8] at h4; linarith [hδpos]
+        intro h8; rw [h8] at h4; linarith only [hδpos, h4]
       have h8 : ‖s‖ ≤ ‖s‖/δ * ‖u - s‖ := by
         rw [div_mul_eq_mul_div, le_div_iff₀ hδpos]
         exact mul_le_mul_of_nonneg_left h4 (norm_nonneg s)
-      nlinarith [h6, h8, hδpos, norm_nonneg (u - s), norm_nonneg s, div_nonneg (norm_nonneg s) hδpos.le]
+      linarith only [h6, h8, hδpos, norm_nonneg (u - s), norm_nonneg s, div_nonneg (norm_nonneg s) hδpos.le]
     rw [hΦdef]
     have hpos1 : (0:ℝ) < ‖u - s‖^2 := by
-      have : ‖u - s‖ ≠ 0 := by intro hz; rw [hz] at h4; linarith [hδpos]
+      have : ‖u - s‖ ≠ 0 := by intro hz; rw [hz] at h4; linarith only [hδpos, h4]
       positivity
-    have hpos2 : (0:ℝ) < ‖u‖^2 := pow_pos (by linarith : (0:ℝ) < ‖u‖) 2
+    have hpos2 : (0:ℝ) < ‖u‖^2 := pow_pos (by linarith only [hα1, hα2, h3] : (0:ℝ) < ‖u‖) 2
     have h9 : CΦ / ‖u - s‖^2 ≤ CΦ * (‖s‖/δ + 1)^2 / ‖u‖^2 := by
       rw [div_le_div_iff₀ hpos1 hpos2]
       have h10 : ‖u‖^2 ≤ ((‖s‖/δ + 1) * ‖u - s‖)^2 :=
         pow_le_pow_left₀ (norm_nonneg u) h5 2
       have h11 : ((‖s‖/δ + 1) * ‖u - s‖)^2 = (‖s‖/δ + 1)^2 * ‖u - s‖^2 := by ring
-      nlinarith [h10, h11, hCΦpos]
+      nlinarith only [h10, h11, hCΦpos, hα1, hα2]
     exact le_trans h h9
   obtain ⟨hsumm, hten⟩ := divisorSum_summable_and_tendsto_hole χ hχ hχprim
     (Φ := Φ) (s₀ := s) (A := CΦ * (‖s‖/δ + 1)^2) (δ := δ) (by positivity) hδpos hδsep hΦbd
@@ -1226,23 +1231,23 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
   -- horizontal vanishing
   have hTfbig : ∀ᶠ T : ℝ in Filter.atTop, 2 * |s.im| + 2 ≤ |Tf T| := by
     filter_upwards [Filter.eventually_ge_atTop (2 * |s.im| + 2)] with T hT
-    have h1 : 1 ≤ T := by linarith [hT, abs_nonneg s.im]
+    have h1 : 1 ≤ T := by linarith only [hT, abs_nonneg s.im, hα1, hα2]
     have h2 : T + 1 ≤ Tf T := (hTf T h1).1
-    have h3 : (0:ℝ) ≤ Tf T := by linarith [abs_nonneg s.im]
+    have h3 : (0:ℝ) ≤ Tf T := by linarith only [abs_nonneg s.im, hα1, hα2, h1, h2]
     rw [abs_of_nonneg h3]
-    linarith
+    linarith only [hα1, hα2, hT, h2]
   have hsepE : ∀ᶠ T : ℝ in Filter.atTop, ∀ ρ : ℂ, Λ ρ = 0 →
       c / Real.log ((N:ℝ) * (|Tf T| + 3)) ≤ |ρ.im - Tf T| := by
     filter_upwards [Filter.eventually_ge_atTop (1:ℝ)] with T hT ρ hρ
     have h1 : Tf T ≥ T + 1 := (hTf T hT).1
     have h2 := (hTf T hT).2.2.1 ρ hρ
-    rwa [abs_of_nonneg (by linarith : (0:ℝ) ≤ Tf T)]
+    rwa [abs_of_nonneg (by linarith only [hα1, hα2, hT, h1] : (0:ℝ) ≤ Tf T)]
   have hsepE' : ∀ᶠ T : ℝ in Filter.atTop, ∀ ρ : ℂ, Λ ρ = 0 →
       c / Real.log ((N:ℝ) * (|Tf T| + 3)) ≤ |ρ.im + Tf T| := by
     filter_upwards [Filter.eventually_ge_atTop (1:ℝ)] with T hT ρ hρ
     have h1 : Tf T ≥ T + 1 := (hTf T hT).1
     have h2 := (hTf T hT).2.2.2 ρ hρ
-    rwa [abs_of_nonneg (by linarith : (0:ℝ) ≤ Tf T)]
+    rwa [abs_of_nonneg (by linarith only [hα1, hα2, hT, h1] : (0:ℝ) ≤ Tf T)]
   obtain ⟨huv, hdv⟩ := horizontal_rdc_tendsto hx₀ hB hcont hf2 hBnd hvan χ hχ hχprim hL hα1 hα2 hασ hsre
     hc0 hTftend hTfbig hsepE hsepE'
   -- vertical limit
@@ -1251,7 +1256,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       (nhds (Complex.I * ((∫ τ : ℝ, logDeriv Lf ((α : ℂ) + (τ : ℂ) * Complex.I) * Φ ((α:ℂ)+(τ:ℂ)*Complex.I)) -
         (∫ τ : ℝ, logDeriv Lf (((-1/2:ℝ):ℂ) + (τ : ℂ) * Complex.I) * Φ (((-1/2:ℝ):ℂ)+(τ:ℂ)*Complex.I))))) := by
     have := rectInt_tendsto_vertical_gen_comp (F := fun u => logDeriv Lf u * Φ u)
-      (A := (-1/2:ℝ)) (B := α) (by linarith) hTftend
+      (A := (-1/2:ℝ)) (B := α) (by linarith only [hα1, hα2]) hTftend
       (by simpa [hLfdef, hΦdef] using hIα)
       (by simpa [hLfdef, hΦdef] using hIl)
       (by simpa [hLfdef, hΦdef] using huv) (by simpa [hLfdef, hΦdef] using hdv)
@@ -1272,29 +1277,29 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     intro T hT
     have hT1 : 1 ≤ T := le_trans (le_max_left _ _) hT
     have hTf1 : T + 1 ≤ Tf T := (hTf T hT1).1
-    have hTfpos : 0 < Tf T := by linarith
+    have hTfpos : 0 < Tf T := by linarith only [hα1, hα2, hT1, hTf1]
     have hTfabs : |s.im| < Tf T := by
       have h2 : |s.im| + 1 ≤ T := le_trans (le_max_right _ _) hT
-      linarith [hTf1, h2]
+      linarith only [hTf1, h2, hα1, hα2]
     set z : ℂ := (((-1/2:ℝ)):ℂ) - ((Tf T : ℝ):ℂ) * Complex.I with hzdef
     set w : ℂ := ((α:ℝ):ℂ) + ((Tf T : ℝ):ℂ) * Complex.I with hwdef
     have hzre : z.re = (-1/2:ℝ) := by rw [hzdef]; simp
     have hzim : z.im = -(Tf T) := by rw [hzdef]; simp
     have hwre : w.re = α := by rw [hwdef]; simp
     have hwim : w.im = Tf T := by rw [hwdef]; simp
-    have hzrlt : z.re < w.re := by rw [hzre, hwre]; linarith
-    have hzimlt : z.im < w.im := by rw [hzim, hwim]; linarith
+    have hzrlt : z.re < w.re := by rw [hzre, hwre]; linarith only [hα1, hα2]
+    have hzimlt : z.im < w.im := by rw [hzim, hwim]; linarith only [hα1, hα2, hT1, hTf1]
     have h0in : z.re < 0 ∧ 0 < w.re ∧ z.im < 0 ∧ 0 < w.im := by
       rw [hzre, hwre, hzim, hwim]
-      exact ⟨by norm_num, by linarith, by linarith, by linarith⟩
+      exact ⟨by norm_num, by linarith only [hα1, hα2], by linarith only [hα1, hα2, hT1, hTf1], by linarith only [hα1, hα2, hT1, hTf1]⟩
     have hs0in : z.re < s.re ∧ s.re < w.re ∧ z.im < s.im ∧ s.im < w.im := by
       rw [hzre, hwre, hzim, hwim]
-      exact ⟨by linarith, by linarith, (abs_lt.mp hTfabs).1, (abs_lt.mp hTfabs).2⟩
+      exact ⟨by linarith only [hsre], by linarith only [hασ], (abs_lt.mp hTfabs).1, (abs_lt.mp hTfabs).2⟩
     have hins : ∀ ρ : ℂ, Λ ρ = 0 → z.re < ρ.re ∧ ρ.re < w.re := by
       intro ρ hρ
       have hstrip := Commons.NumberTheory.Linnik.completedL_zero_strip χ hχ hχprim hρ
       rw [hzre, hwre]
-      exact ⟨by linarith [hstrip.1], by linarith [hstrip.2, hα1]⟩
+      exact ⟨by linarith only [hstrip.1, hα1, hα2, hstrip], by linarith only [hstrip.2, hα1, hstrip]⟩
     have hnz : ∀ u ∈ rectBoundary z w, Λ u ≠ 0 := by
       intro u hu h0
       rcases hu with ⟨hre, him | him⟩ | ⟨him, hre | hre⟩
@@ -1303,17 +1308,17 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
         rw [him'] at h2
         rw [show |(-(Tf T)) + Tf T| = 0 by rw [neg_add_cancel, abs_zero]] at h2
         have hlogp : 0 < Real.log ((N:ℝ) * (Tf T + 3)) := by
-          apply Real.log_pos; nlinarith [hN1, hTfpos]
+          apply Real.log_pos; nlinarith only [hN1, hTfpos, hα1, hα2, hT1, hTf1]
         have : 0 < c / Real.log ((N:ℝ) * (Tf T + 3)) := div_pos hc0 hlogp
-        linarith
+        linarith only [h2, this]
       · have h2 := (hTf T hT1).2.2.1 u h0
         have him' : u.im = Tf T := by rw [him, hwim]
         rw [him'] at h2
         rw [show |Tf T - Tf T| = 0 by rw [sub_self, abs_zero]] at h2
         have hlogp : 0 < Real.log ((N:ℝ) * (Tf T + 3)) := by
-          apply Real.log_pos; nlinarith [hN1, hTfpos]
+          apply Real.log_pos; nlinarith only [hN1, hTfpos, hα1, hα2, hT1, hTf1]
         have : 0 < c / Real.log ((N:ℝ) * (Tf T + 3)) := div_pos hc0 hlogp
-        linarith
+        linarith only [h2, this]
       · have hre' : u.re = (-1/2:ℝ) := by rw [hre, hzre]
         have hu' : u = (((-1/2:ℝ)):ℂ) + (u.im:ℂ)*Complex.I := by
           apply Complex.ext <;> simp [hre']
@@ -1330,7 +1335,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       apply hM0b u
       obtain ⟨hre, -⟩ := Complex.mem_reProdIm.mp hu
       rw [Set.uIcc_of_le (le_of_lt hzrlt), hzre, hwre] at hre
-      linarith [hre.2]
+      linarith only [hre.2, hre]
     have hne_s : ∀ u ∈ rectBoundary z w, u ≠ s := by
       intro u hu
       exact ne_of_mem_rectBoundary_of_inside hs0in hu
@@ -1357,15 +1362,15 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       have hset := rectBoundary_subset_rectSet hzrlt hzimlt hu
       obtain ⟨hre, -⟩ := Complex.mem_reProdIm.mp hset
       rw [Set.uIcc_of_le (le_of_lt hzrlt), hzre, hwre] at hre
-      linarith [hre.1]
+      linarith only [hre.1, hα1, hα2, hre]
     have hne0b : ∀ u ∈ rectBoundary z w, u ≠ 0 := by
       intro u hu h0
       rw [h0] at hu
       rcases hu with ⟨hre, him | him⟩ | ⟨him, hre | hre⟩
-      · rw [hzim] at him; simp at him; linarith [hTfpos, him]
-      · rw [hwim] at him; simp at him; linarith [hTfpos, him]
+      · rw [hzim] at him; simp at him; linarith only [hTfpos, him, hα1, hα2, hT1, hTf1]
+      · rw [hwim] at him; simp at him; linarith only [hTfpos, him, hα1, hα2, hT1, hTf1]
       · rw [hzre] at hre; simp only [Complex.zero_re] at hre; norm_num at hre
-      · rw [hwre] at hre; simp only [Complex.zero_re] at hre; linarith [hα1]
+      · rw [hwre] at hre; simp only [Complex.zero_re] at hre; linarith only [hα1, hα2, hre]
     have hγne_b : ∀ u ∈ rectBoundary z w, γ u ≠ 0 := by
       intro u hu
       rw [hγdef]
@@ -1374,7 +1379,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
         exact GammaR_ne_zero_of (hne0b u hu) (hre1 u hu)
       · rw [hO.gammaFactor_def]
         apply Complex.Gammaℝ_ne_zero_of_re_pos
-        simp only [Complex.add_re, Complex.one_re]; linarith [hre1 u hu]
+        simp only [Complex.add_re, Complex.one_re]; linarith only [hre1 u hu, hre1, hu]
     have hLfne : ∀ u ∈ rectBoundary z w, Lf u ≠ 0 := by
       intro u hu h0
       have hN1' : N ≠ 1 := by intro h; exact hχ (by subst h; exact Subsingleton.elim χ 1)
@@ -1431,7 +1436,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
           constructor
           · intro ⟨_, _, h1, h2⟩; exact abs_lt.mpr ⟨h1, h2⟩
           · intro h1
-            exact ⟨by linarith [hstrip.1], by linarith [hstrip.2, hα1],
+            exact ⟨by linarith only [hstrip.1, hα1, hα2, hstrip], by linarith only [hstrip.2, hα1, hstrip],
               (abs_lt.mp h1).1, (abs_lt.mp h1).2⟩
         exact if_congr hcond rfl rfl
       · have hord : analyticOrderNatAt Λ ρ = 0 := by
@@ -1439,7 +1444,7 @@ theorem rdc_shift_identity {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B)
         rw [hord]; simp
     have hLss : logDeriv Λ s = logDeriv γ s + logDeriv Lf s := by
       rw [hΛdef, hγdef, hLfdef]
-      exact logDeriv_completedL_eq_add' χ hχ (by linarith) hLs
+      exact logDeriv_completedL_eq_add' χ hχ (by linarith only [hsre]) hLs
     rw [hsplit, hG1, hG2, hsum_eq]
     rw [hLss]
     ring

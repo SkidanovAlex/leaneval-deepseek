@@ -24,48 +24,48 @@ theorem window_log_bound : ∃ Kw : ℝ, 0 < Kw ∧ ∀ Q : ℝ, 1 ≤ Q →
       have h := Real.rpow_le_rpow_of_exponent_le hQ (by norm_num : (99:ℝ)/100 ≤ 1)
       simpa using h
     rw [hLdef, hMdef]
-    exact Real.log_le_log (by linarith) (by linarith)
+    exact Real.log_le_log (by linarith only [hQ991]) (by linarith only [h1])
   -- `1 ≤ M`, since `2 + Q ≥ 3` and `log 3 ≥ 1`.
   have hMge1 : 1 ≤ M := by
     rw [hMdef]
-    have h3 : (3:ℝ) ≤ 2 + Q := by linarith
+    have h3 : (3:ℝ) ≤ 2 + Q := by linarith only [hQ]
     have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) h3
     have h5 : (1:ℝ) ≤ Real.log 3 :=
       (Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three.le
-    linarith
+    linarith only [h4, h5]
   have hMnn : 0 ≤ M := le_trans (by norm_num) hMge1
   have hLnn : 0 ≤ L := by
     rw [hLdef]
     apply Real.log_nonneg
     have hQ991 : (1:ℝ) ≤ Q ^ ((99:ℝ)/100) := Real.one_le_rpow hQ (by norm_num)
-    linarith
+    linarith only [hQ991]
   -- `1000 + L(1+L) ≤ 1002 M²`.
   have hpoly : 1000 + L * (1 + L) ≤ 1002 * M^2 := by
     have h1 : L * (1 + L) ≤ M * (1 + M) :=
-      mul_le_mul hLleM (by linarith) (by linarith) hMnn
+      mul_le_mul hLleM (by linarith only [hLleM]) (by linarith only [hLnn]) hMnn
     have h2 : 1000 + M * (1 + M) ≤ 1002 * M^2 := by
-      nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ M - 1)
+      linarith only [mul_nonneg (by linarith : (0:ℝ) ≤ M - 1)
         (by linarith : (0:ℝ) ≤ 1001 * M + 1000)]
-    linarith
+    linarith only [h1, h2]
   -- `log Q ≤ 1000 · Q^{1/1000}`.
   have hlogQ : Real.log Q ≤ 1000 * Q ^ ((1:ℝ)/1000) := by
     have h := Real.log_le_rpow_div (le_of_lt hQpos) (by norm_num : (0:ℝ) < 1/1000)
     have h' : Q ^ ((1:ℝ)/1000) / ((1:ℝ)/1000) = 1000 * Q ^ ((1:ℝ)/1000) := by ring
-    linarith [h, h'.le]
+    linarith only [h, h'.le]
   -- `M ≤ 1002 · Q^{1/1000}`.
   have hMle : M ≤ 1002 * Q ^ ((1:ℝ)/1000) := by
     rw [hMdef]
-    have h3Q : (2 + Q) ≤ 3 * Q := by linarith
-    have hlog3Q : Real.log (2 + Q) ≤ Real.log (3 * Q) := Real.log_le_log (by linarith) h3Q
+    have h3Q : (2 + Q) ≤ 3 * Q := by linarith only [hQ]
+    have hlog3Q : Real.log (2 + Q) ≤ Real.log (3 * Q) := Real.log_le_log (by linarith only [hQ]) h3Q
     have hlog3mul : Real.log (3 * Q) = Real.log 3 + Real.log Q :=
       Real.log_mul (by norm_num) (ne_of_gt hQpos)
     have hlog3le2 : Real.log 3 ≤ 2 := by
-      have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 3); linarith
+      have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 3); linarith only [this]
     have hQp : (1:ℝ) ≤ Q ^ ((1:ℝ)/1000) := Real.one_le_rpow hQ (by norm_num)
     calc Real.log (2 + Q) ≤ Real.log (3 * Q) := hlog3Q
       _ = Real.log 3 + Real.log Q := hlog3mul
-      _ ≤ 2 + 1000 * Q ^ ((1:ℝ)/1000) := by linarith
-      _ ≤ 1002 * Q ^ ((1:ℝ)/1000) := by nlinarith [hQp]
+      _ ≤ 2 + 1000 * Q ^ ((1:ℝ)/1000) := by linarith only [hlogQ, hlog3le2]
+      _ ≤ 1002 * Q ^ ((1:ℝ)/1000) := by linarith only [hQp]
   -- `(Q^{1/1000})^5 = Q^{1/200}`.
   have hpow : (Q ^ ((1:ℝ)/1000)) ^ 5 = Q ^ ((1:ℝ)/200) := by
     calc (Q ^ ((1:ℝ)/1000)) ^ 5

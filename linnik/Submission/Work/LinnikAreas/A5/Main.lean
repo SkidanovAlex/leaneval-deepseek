@@ -29,7 +29,6 @@ import Submission.Work.LinnikContract.Areas
 import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 import Submission.Work.LinnikAreas.A5.Basic
 import Submission.Work.LinnikAreas.A5.Weights
-import Submission.Work.LinnikAreas.A5.f1_data
 import Submission.Work.LinnikAreas.A5.g0_data
 import Submission.Work.LinnikAreas.A5.Bfun_facts
 import Submission.Work.LinnikAreas.A5.F1_neg_lam

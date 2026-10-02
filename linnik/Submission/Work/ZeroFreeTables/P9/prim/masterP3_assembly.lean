@@ -55,9 +55,12 @@ private lemma error_bound {A Amax k2 k3 C Ct J T2r T3r L e : ℝ}
   have hA2eq : (A / L) ^ 2 = A ^ 2 / L ^ 2 := by rw [div_pow]
   have hA3eq : (A / L) ^ 3 = A ^ 3 / L ^ 3 := by rw [div_pow]
   have hL2' : (L + 2) / L ^ 2 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith [hL2]
+    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]
+    linarith only [mul_nonneg hLpos.le (sub_nonneg.2 hL2)]
   have hL3' : (L + 2) / L ^ 3 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith [hL2, sq_nonneg L]
+    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]
+    linarith only [mul_nonneg (mul_nonneg hLpos.le hLpos.le) (sub_nonneg.2 hL2),
+      mul_nonneg hLpos.le (sub_nonneg.2 hL2), hLpos]
   have herr2 : (A / L) ^ 2 * (k2 * J - T2r) ≤ Amax ^ 2 * (k2 * C + Ct) * (2 / L) := by
     rw [hA2eq]
     calc A ^ 2 / L ^ 2 * (k2 * J - T2r)
@@ -86,7 +89,7 @@ private lemma error_bound {A Amax k2 k3 C Ct J T2r T3r L e : ℝ}
       = (2 * Amax ^ 2 * (k2 * C + Ct) + (4 / 3) * Amax ^ 3 * (k3 * C + Ct)) / L := by ring
   have hKL : (2 * Amax ^ 2 * (k2 * C + Ct) + (4 / 3) * Amax ^ 3 * (k3 * C + Ct)) / L ≤ A * e := by
     rw [div_le_iff₀ hLpos]; linarith [hK]
-  linarith [herr2, herr3, hsum, hKL]
+  linarith only [herr2, herr3, hsum, hKL]
 
 set_option maxHeartbeats 1000000 in
 theorem masterP3 {a δ c e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ < 1) (he : 0 < e) :
@@ -166,14 +169,14 @@ theorem masterP3 {a δ c e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ < 1) (
       rwa [mul_inv_cancel₀ (ne_of_gt ha)] at h
     have : 1 / (L * Real.log L) ≤ a / L := by
       rw [div_le_div_iff₀ (by positivity : 0 < L * Real.log L) hLpos]
-      nlinarith [h1, hLpos]
-    linarith
+      linarith only [mul_le_mul_of_nonneg_left h1 hLpos.le]
+    linarith only [this]
   have hs2 : s.re ≤ 1 + Real.log L / L := by
     rw [hsre]
     have h2 : a ≤ Real.log L := le_trans (le_max_left a a⁻¹) hlogL_ge
     have : a / L ≤ Real.log L / L := by
-      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith [h2, hLpos]
-    linarith
+      rw [div_le_div_iff₀ hLpos hLpos]; exact mul_le_mul_of_nonneg_right h2 hLpos.le
+    linarith only [this]
   have hs3 : |s.im| ≤ L := le_trans hsim hLge4
   have hlog := hyp s hs1 hs2 hs3
   have hlog' : (-logDeriv (DirichletCharacter.LFunction χ) s).re + nearInvSum N χ s δ ≤ c * L := by
@@ -192,7 +195,7 @@ theorem masterP3 {a δ c e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ < 1) (
       _ = 1 + a / L + |s.im| := by rw [hsre]
       _ ≤ 1 + a / L + 4 := by linarith [hsim]
       _ ≤ L + 5 := by
-          have hdiv : a / L ≤ a := by rw [div_le_iff₀ hLpos]; nlinarith [haL, ha]
+          have hdiv : a / L ≤ a := by rw [div_le_iff₀ hLpos]; exact le_mul_of_one_le_right ha.le hLge1
           linarith
   have hJ : invSqSum N χ s ≤ C * (L + 2) := hC χ hχ hprim hLge1 hlogN hnorm_s
   obtain ⟨hT2abs, hT3abs⟩ := hCt s (by linarith) par hpar_le
@@ -203,9 +206,9 @@ theorem masterP3 {a δ c e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ < 1) (
   have hAle : a + lam₁ ≤ a + M := by linarith
   have hAe_pos : 0 < (a + lam₁) * e := mul_pos (by linarith) he
   have hKL : K ≤ (a + lam₁) * e * L := by
-    have h1 : a * e ≤ (a + lam₁) * e := by nlinarith [hlam₁, he]
+    have h1 : a * e ≤ (a + lam₁) * e := mul_le_mul_of_nonneg_right (by linarith only [hlam₁]) he.le
     have h2 : a * e * L ≤ (a + lam₁) * e * L := mul_le_mul_of_nonneg_right h1 hLpos.le
-    linarith [hKe, h2]
+    linarith only [hKe, h2]
   have herr := error_bound (A := a + lam₁) (Amax := a + M) (k2 := 1 + 4 / δ ^ 2)
     (k3 := (2 / δ) * (1 + 4 / δ ^ 2)) (C := C) (Ct := Ct)
     (J := invSqSum N χ s)
@@ -217,6 +220,6 @@ theorem masterP3 {a δ c e : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ < 1) (
   have hbridge2 := Work.ZeroFreeTables.P9.P3NearSumL_eq_nearP3sum (s := s) (a := a) (lam₁ := lam₁) (L := L)
     χ hχ hprim hδ0 (le_of_lt hδ1)
   rw [← hbridge2] at hmain
-  linarith [hmain, hterm1, herr]
+  linarith only [hmain, hterm1, herr]
 
 end Work.ZeroFreeTables.P9.prim

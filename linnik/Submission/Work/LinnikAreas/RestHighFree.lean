@@ -4,7 +4,6 @@ import Submission.Work.LinnikAreas.SiegelBase
 import Submission.Work.LinnikAreas.siegelRestHigh
 import Submission.Work.LinnikAreas.pairCountHeight_le_famCount
 import Submission.Work.LinnikAreas.siegelZeroWeightSummable
-import Submission.Work.ZeroDensity.Assembly.logFreeFamHeight_of_cores
 
 /-!
 # `Work.LinnikAreas.RestHighFree` — the `λ₁`-*free* bound on the far-height zero mass of AREA 6

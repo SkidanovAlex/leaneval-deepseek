@@ -21,9 +21,9 @@ private lemma b2 {α δ L C Ct Amax : ℝ} (hα : 0 < α) (hαA : α ≤ Amax) (
   have hα2 : α^2 ≤ Amax^2 := by
     nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ Amax - α) (by linarith : (0:ℝ) ≤ Amax + α)]
   have hX2 : 2*(δ^2+4)*C*(L+2)+δ^3*Ct ≤ L^2*(2*3*(δ^2+4)*C+δ^3*Ct) := by
-    nlinarith [mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hC (by positivity : (0:ℝ) ≤ δ^2+4)) (by linarith : (0:ℝ) ≤ 3*L+2)) (by linarith : (0:ℝ) ≤ L-1)) (by norm_num : (0:ℝ) ≤ 2),
+    linarith only [mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hC (by positivity : (0:ℝ) ≤ δ^2+4)) (by linarith : (0:ℝ) ≤ 3*L+2)) (by linarith : (0:ℝ) ≤ L-1)) (by norm_num : (0:ℝ) ≤ 2),
       mul_nonneg (mul_nonneg (mul_nonneg (by positivity : (0:ℝ) ≤ δ^3) hCt) (by linarith : (0:ℝ) ≤ L-1)) (by linarith : (0:ℝ) ≤ L+1)]
-  nlinarith [hα2, hX2, hbB, sq_nonneg Amax]
+  nlinarith only [hα2, hX2, hbB, sq_nonneg Amax]
 
 private lemma b3 {α L Cs Amax : ℝ} (hα : 0 < α) (hαA : α ≤ Amax) (hL : 1 ≤ L) (hCs : 0 ≤ Cs) :
     Cs * (α + α ^ 2 + α ^ 3) * (Real.log L + 2) ^ 4 / L
@@ -32,7 +32,7 @@ private lemma b3 {α L Cs Amax : ℝ} (hα : 0 < α) (hαA : α ≤ Amax) (hL : 
   have hpoly : 1 + α + α^2 ≤ 1 + Amax + Amax^2 := by
     nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ Amax - α) (by linarith : (0:ℝ) ≤ Amax + α)]
   have hnn : 0 ≤ Cs * (Real.log L + 2)^4 := by positivity
-  nlinarith [hpoly, hnn]
+  nlinarith only [hpoly, hnn]
 
 private lemma b4 {α δ L : ℝ} (hα : 0 < α) (hδ : 0 < δ) (hL : 1 ≤ L) :
     3 * (8 * α / (δ * L)) ≤ α * ((24 / δ) / L) := by
@@ -49,11 +49,11 @@ theorem error_budget {α δ L ε C Ct Cs Amax : ℝ}
         + (2 / 3) * (α ^ 3 / L ^ 3) * ((2 / δ) * (1 + 4 / δ ^ 2) * (C * (L + 2)) + Ct)
         + Cs * (α + α ^ 2 + α ^ 3) * (Real.log L + 2) ^ 4 / L)
       + 3 * (8 * α / (δ * L)) ≤ α * ε / 2 := by
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL]
   have hS : Amax * (3 * C * (1 + 4 / δ ^ 2) + Ct)
       + Amax ^ 2 * (3 * C * (2 / δ) * (1 + 4 / δ ^ 2) + Ct) + 24 / δ ≤ L * ε / 4 := by
     have h := (div_le_iff₀ hε).mp hthr
-    linarith [h]
+    linarith only [h]
   have h1 := b1 hα hαA hδ0 hL hC hCt
   have h2 := b2 hα hαA hδ0 hL hC hCt
   have h3 := b3 hα hαA hL hCs
@@ -64,7 +64,7 @@ theorem error_budget {α δ L ε C Ct Cs Amax : ℝ}
     have hA2nn : 0 ≤ Amax ^ 2 * (3 * C * (2 / δ) * (1 + 4 / δ ^ 2) + Ct) := by positivity
     have hA : Amax * (3 * C * (1 + 4 / δ ^ 2) + Ct)
         + (2 / 3) * (Amax ^ 2 * (3 * C * (2 / δ) * (1 + 4 / δ ^ 2) + Ct)) + 24 / δ ≤ L * ε / 4 := by
-      linarith [hS, hA2nn]
+      linarith only [hS, hA2nn]
     have hd := div_le_div_of_nonneg_right hA (le_of_lt hLpos)
     have hsplit : (Amax * (3 * C * (1 + 4 / δ ^ 2) + Ct)
         + (2 / 3) * (Amax ^ 2 * (3 * C * (2 / δ) * (1 + 4 / δ ^ 2) + Ct)) + 24 / δ) / L
@@ -79,7 +79,7 @@ theorem error_budget {α δ L ε C Ct Cs Amax : ℝ}
         + (24 / δ) / L + Cs * (1 + Amax + Amax ^ 2) * (Real.log L + 2) ^ 4 / L)
       ≤ α * (ε / 2) := by
     apply mul_le_mul_of_nonneg_left _ (le_of_lt hα)
-    linarith [hbrace, hlog]
-  nlinarith [h1, h2, h3, h4, key]
+    linarith only [hbrace, hlog]
+  linarith only [h1, h2, h3, h4, key]
 
 end Work.ZeroFreeTables.Table4

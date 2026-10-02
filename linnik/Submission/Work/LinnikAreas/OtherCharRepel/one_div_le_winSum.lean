@@ -22,7 +22,6 @@ pointwise non-negativity of the summands of `winSum`.
 -/
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.OtherCharRepel.gammaFactorLogDerivReLe
 import Submission.Work.LinnikAreas.OtherCharRepel.completedLFunction_analyticOrderAt_ne_top
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_supply
 

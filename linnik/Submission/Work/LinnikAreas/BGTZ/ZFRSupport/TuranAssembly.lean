@@ -9,7 +9,6 @@ import Submission.Work.LinnikAreas.DhK.turanWeighted
 import Submission.Work.LinnikAreas.exists_minLam_zero
 import Submission.Work.LinnikAreas.Density4.isZ_LFunction_zero
 import Submission.Work.LinnikAreas.LFunction_eq_zero_of_zeroMult
-import Submission.Work.LinnikAreas.LFunctionImprimitiveZero
 import Submission.Work.LinnikAreas.TuranOther.twAuxBounds
 import Submission.Work.LinnikAreas.TuranOther.chooseJ
 import Submission.Work.LinnikAreas.repelFinalArith
@@ -62,19 +61,19 @@ theorem repelArith {A B lam0 lam' : ℝ} (hA : 0 < A) (hlam0 : 0 < lam0) (hlam01
   have hbB : B ≤ b := by rw [hbdef]; exact le_trans (le_max_left B 0) (le_max_left _ _)
   have hlog0 : 0 ≤ Real.log (1 / lam0) := by
     apply Real.log_nonneg
-    rw [le_div_iff₀ hlam0]; linarith
+    rw [le_div_iff₀ hlam0]; linarith only [hlam01]
   rcases le_total (2 * b / A) (Real.log (1 / lam0)) with hle | hlt
   · have hstep : (A / 2) * Real.log (1 / lam0) ≤ lam' := by
       have h2 : b ≤ (A / 2) * Real.log (1 / lam0) := by
         have h3 : 2 * b ≤ Real.log (1 / lam0) * A := (div_le_iff₀ hA).mp hle
-        have h4 : b ≤ Real.log (1 / lam0) * A / 2 := by linarith
+        have h4 : b ≤ Real.log (1 / lam0) * A / 2 := by linarith only [h3]
         calc b ≤ Real.log (1 / lam0) * A / 2 := h4
           _ = (A / 2) * Real.log (1 / lam0) := by ring
       have h3 : A * Real.log (1 / lam0) - (A / 2) * Real.log (1 / lam0) ≤ lam' := by
-        linarith [hmain, h2, hbB]
+        linarith only [hmain, h2, hbB]
       have h4 : A * Real.log (1 / lam0) - (A / 2) * Real.log (1 / lam0)
           = (A / 2) * Real.log (1 / lam0) := by ring
-      linarith [h3, h4]
+      linarith only [h3, h4, hmain, hbB, h2]
     calc min (A / 2) (A / (2 * (max (max B 0) 1)) * Real.exp (-(2 * (max (max B 0) 1) / A)))
           * Real.log (1 / lam0)
         = min (A / 2) (A / (2 * b) * Real.exp (-(2 * b / A))) * Real.log (1 / lam0) := by
@@ -85,7 +84,7 @@ theorem repelArith {A B lam0 lam' : ℝ} (hA : 0 < A) (hlam0 : 0 < lam0) (hlam01
   · have hexp : Real.exp (-(2 * b / A)) ≤ lam0 := by
       have h2 : -(2 * b / A) ≤ Real.log lam0 := by
         rw [Real.log_div one_ne_zero (ne_of_gt hlam0), Real.log_one, zero_sub] at hlt
-        linarith [hlt]
+        linarith only [hlt]
       have h3 := Real.exp_le_exp.mpr h2
       rwa [Real.exp_log hlam0] at h3
     have h4 : A / (2 * b) * Real.exp (-(2 * b / A)) * (2 * b / A)
@@ -153,7 +152,7 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
   obtain ⟨JB, hJBdef⟩ : ∃ JB : ℝ, JB = (8 + 1) * (1 + 3) ^ 2 * C + 1 := ⟨_, rfl⟩
   have hJBpos : 0 < JB := by rw [hJBdef]; positivity
   have hL1 : 1 ≤ L := by rw [hLdef]; exact hlogq1
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hρ₀pos, hρ₀lt, hlogq1, hLdef]
   -- the designated point `ρ₂.re` lies in the zero multiset of the twisted product
   have hsupp : TuranOther.twMult χ₀ χ ρ₀.re γ (ρ₂.re : ℂ) ≠ 0 := by
     have h0 : (ρ₂.re : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt hρ₂pos)
@@ -191,7 +190,7 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
         rw [← Complex.normSq_eq_norm_sq, Complex.normSq_ofReal]
         ring
       have h2 : ‖((4 - ρ₂.re : ℝ) : ℂ)‖ = 4 - ρ₂.re := by
-        nlinarith [h1, norm_nonneg ((4 - ρ₂.re : ℝ) : ℂ), hρ₂lt]
+        nlinarith only [h1, norm_nonneg ((4 - ρ₂.re : ℝ) : ℂ), hρ₂lt, hρ₀pos, hρ₀lt]
       rw [h2]
     rw [hnorm] at hmax'
     exact hmax'
@@ -200,7 +199,7 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
     have h2 : 1 / (4 - ρ₂.re) ^ 2 ≤ 1 / ‖(1 : ℂ) + ((3 : ℝ) : ℂ) - u₀‖ ^ 2 := by
       rw [← TuranOther.norm_zval_eq 3 u₀]
       exact hval
-    have hp : 0 < (4 - ρ₂.re) ^ 2 := pow_pos (by linarith : (0 : ℝ) < 4 - ρ₂.re) 2
+    have hp : 0 < (4 - ρ₂.re) ^ 2 := pow_pos (by linarith only [hρ₀pos, hρ₀lt, hρ₂lt] : (0 : ℝ) < 4 - ρ₂.re) 2
     have hz0 : 0 < ‖(1 : ℂ) + ((3 : ℝ) : ℂ) - u₀‖ ^ 2 := by
       have h := hzu0pos
       rw [TuranOther.norm_zval_eq] at h
@@ -209,9 +208,9 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
       simpa [one_div] using h2
     have h4 : ‖(1 : ℂ) + ((3 : ℝ) : ℂ) - u₀‖ ^ 2 ≤ (4 - ρ₂.re) ^ 2 :=
       (inv_le_inv₀ hp hz0).mp h2'
-    nlinarith [h4, hρ₂pos]
+    nlinarith only [h4, hρ₂pos, hρ₀pos, hρ₀lt, hρ₂lt]
   -- the mass hypothesis at the chosen parameters
-  have hγ2 : |γ| ≤ 2 := by rw [hγdef]; linarith [abs_nonneg ρ₂.im]
+  have hγ2 : |γ| ≤ 2 := by rw [hγdef]; linarith only [abs_nonneg ρ₂.im, hρ₀pos, hρ₀lt, hρ₂im]
   obtain ⟨hmassSumm, hmassBnd⟩ :=
     hMassB χ₀ χ ρ₀.re γ 3 (by norm_num) (by norm_num) hγ2
   -- the mass part of `twAuxBounds` (independent of `j`)
@@ -280,7 +279,7 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
     linarith [hlow, hjbound', hupper]
   -- the choice of the interpolation node
   have hJB9 : JB = 9 * 16 * C + 1 := by rw [hJBdef]; ring
-  have hx : 0 < 1 - ρ₀.re := by linarith
+  have hx : 0 < 1 - ρ₀.re := by linarith only [hρ₀lt]
   have hxL : (1 - ρ₀.re) * L ≤ min (1 / 2) (3 / ((32 + 4 * 1) * 4 * Real.exp 1 * JB)) := by
     rw [hLdef, hJBdef]
     simpa using hlamsmall
@@ -295,10 +294,10 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
     have heq : 3 / ((32 + 4 * 1) * 4 * Real.exp 1 * JB) = 1 / (48 * Real.exp 1 * JB) := by
       rw [div_eq_div_iff (by positivity) (by positivity)]
       ring
-    linarith [h, heq]
+    linarith only [h, heq]
   have hJ24e : (J : ℝ) * (1 - ρ₀.re) ≤ 1 / (24 * Real.exp 1) := by
     calc (J : ℝ) * (1 - ρ₀.re) ≤ (2 * JB * L) * (1 - ρ₀.re) :=
-          mul_le_mul_of_nonneg_right hJle (by linarith)
+          mul_le_mul_of_nonneg_right hJle (by linarith only [hρ₀lt])
       _ = 2 * JB * ((1 - ρ₀.re) * L) := by ring
       _ ≤ 2 * JB * (1 / (48 * Real.exp 1 * JB)) :=
           mul_le_mul_of_nonneg_left hxL48 (by positivity)
@@ -309,7 +308,7 @@ theorem turanStep {q : ℕ} [NeZero q] (hU : TuranOther.TwUpperCore) (C : ℝ) (
       calc Real.exp 1 * ((J : ℝ) * (1 - ρ₀.re)) ≤ Real.exp 1 * (1 / (24 * Real.exp 1)) :=
             mul_le_mul_of_nonneg_left hJ24e (le_of_lt he)
         _ = 1 / 24 := by field_simp
-    nlinarith [h2]
+    linarith only [h2]
   have hjJ : (j : ℝ) ≤ (J : ℝ) := hJj j hjle'
   have hy := hArith (α := (3 : ℝ)) (ε := (1 : ℝ)) (β := ρ₂.re) (β₀ := ρ₀.re) (j := j) (J := J)
     (by norm_num) one_pos hJ1 hj1 hjJ (le_of_lt hρ₂lt) hρ₀lt hreg hmain

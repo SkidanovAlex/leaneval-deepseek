@@ -41,7 +41,7 @@ lemma prod_primeFactors_le (N : ℕ) {σ : ℝ} (hσ : 1 / 2 ≤ σ) :
       ≤ Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1 := by
   by_cases h : 3 ≤ N
   · have h1 := primeFactors_prod_one_add_rpow_le N h hσ
-    linarith [Real.exp_pos ((Real.log N) ^ (3 / 4 : ℝ))]
+    linarith only [Real.exp_pos ((Real.log N) ^ (3 / 4 : ℝ)), h1]
   · have hN2 : N ≤ 2 := by omega
     have hterm : ∀ p ∈ N.primeFactors, (1 + (p : ℝ) ^ (-σ)) ≤ 2 := by
       intro p hp
@@ -49,8 +49,8 @@ lemma prod_primeFactors_le (N : ℕ) {σ : ℝ} (hσ : 1 / 2 ≤ σ) :
       have hp1 : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast (by omega : 1 ≤ p)
       have h3 : (p : ℝ) ^ (-σ) ≤ 1 := by
         rw [← Real.rpow_zero (p : ℝ)]
-        exact Real.rpow_le_rpow_of_exponent_le hp1 (by linarith)
-      linarith
+        exact Real.rpow_le_rpow_of_exponent_le hp1 (by linarith only [hσ])
+      linarith only [h3]
     have hcard : N.primeFactors.card ≤ 1 := by
       rw [Finset.card_le_one]
       intro a ha b hb
@@ -81,7 +81,7 @@ lemma prod_primeFactors_le (N : ℕ) {σ : ℝ} (hσ : 1 / 2 ≤ σ) :
               Finset.prod_le_prod₀ (fun p _ => by
                 have h1 : (0:ℝ) ≤ (p:ℝ) := Nat.cast_nonneg p
                 have h2 : (0:ℝ) ≤ (p:ℝ) ^ (-σ) := Real.rpow_nonneg h1 _
-                linarith) hterm
+                linarith only [h2]) hterm
         _ = (2 : ℝ) ^ N.primeFactors.card := by rw [Finset.prod_const]
         _ ≤ 2 ^ 1 := pow_le_pow_right₀ (by norm_num) hcard
         _ = 2 := by norm_num
@@ -91,7 +91,7 @@ lemma prod_primeFactors_le (N : ℕ) {σ : ℝ} (hσ : 1 / 2 ≤ σ) :
       rcases Nat.eq_zero_or_pos N with h0 | hpos
       · rw [h0]; simp
       · exact Real.rpow_nonneg (Real.log_nonneg (by exact_mod_cast hpos)) _
-    linarith
+    linarith only [hprod2, hexp1]
 
 /-- `‖ζ(σ + it)‖ ≤ 8√(N+1)` for `1/2 ≤ σ ≤ 1`, `|t| ≥ 1` and `N ≥ |t| + 3`. -/
 private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1) (ht : 1 ≤ |t|)
@@ -100,13 +100,13 @@ private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1)
   set s : ℂ := (σ : ℂ) + (t : ℂ) * Complex.I with hs
   have hsre : s.re = σ := by rw [hs]; simp
   have hsim : s.im = t := by rw [hs]; simp
-  have hs0 : 0 < s.re := by rw [hsre]; linarith
+  have hs0 : 0 < s.re := by rw [hsre]; linarith only [hσ1]
   have hsne : s ≠ 1 := by
     intro h
     have h1 : s.im = 0 := by rw [h]; simp
     rw [hsim] at h1
     have h2 : |t| = 0 := by rw [h1]; simp
-    linarith [abs_nonneg t]
+    linarith only [abs_nonneg t, ht, h2]
   obtain ⟨hsum, hbound⟩ := Commons.NumberTheory.Zeta.emTerm_tsum_le N hN s hs0 hsne
   set TT : ℂ := ∑' m : ℕ, ((((N + m + 1 : ℕ) : ℂ) ^ (-s)) -
       (((((N + m + 1 : ℕ) : ℂ) ^ (1 - s)) - (((N + m : ℕ) : ℂ) ^ (1 - s))) / (1 - s))) with hTdef
@@ -118,7 +118,7 @@ private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1)
   have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
   have hN0le : (0 : ℝ) ≤ (N : ℝ) := hN0.le
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
-  have hN1p : (0 : ℝ) < (N : ℝ) + 1 := by linarith
+  have hN1p : (0 : ℝ) < (N : ℝ) + 1 := by linarith only [ht, hNt]
   have hhead : ‖H‖ ≤ 2 * (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := by
     have h1 : ‖H‖ ≤ ∑ n ∈ Finset.Icc 1 N, (n : ℝ) ^ (-(1 / 2 : ℝ)) := by
       rw [hHdef]
@@ -130,9 +130,9 @@ private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1)
         rw [← Complex.ofReal_natCast n, Complex.norm_cpow_eq_rpow_re_of_pos hnpos]
         rw [show (-s).re = -s.re from Complex.neg_re s, hsre]
       rw [heq]
-      exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn1) (by linarith)
+      exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn1) (by linarith only [hσ1])
     have h2 := Work.Sieve.sum_Icc_rpow_neg_half_le N hN
-    linarith
+    linarith only [h1, h2]
   have hpole : ‖M‖ ≤ (N : ℝ) ^ (1 / 2 : ℝ) := by
     have hden : |t| ≤ ‖s - 1‖ := by
       have h := Complex.abs_im_le_norm (s - 1)
@@ -146,10 +146,10 @@ private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1)
     rw [hMdef, norm_div, hnum]
     have hstep : (N : ℝ) ^ (1 - σ) / ‖s - 1‖ ≤ (N : ℝ) ^ (1 - σ) := by
       rw [div_le_iff₀ hdenpos]
-      nlinarith [Real.rpow_nonneg hN0le (1 - σ), hden1]
+      nlinarith only [Real.rpow_nonneg hN0le (1 - σ), hden1, ht, hN0le, hden]
     have hstep2 : (N : ℝ) ^ (1 - σ) ≤ (N : ℝ) ^ (1 / 2 : ℝ) :=
-      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith)
-    linarith
+      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith only [hσ1])
+    linarith only [hstep, hstep2]
   have htail : ‖TT‖ ≤ 2 * (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := by
     have h1 : ‖TT‖ ≤ (‖s‖ / s.re) * ((N : ℝ) ^ (-s.re)) := by
       refine le_trans ?_ hbound
@@ -158,38 +158,38 @@ private lemma zeta_em_bound (σ t : ℝ) (hσ1 : 1 / 2 ≤ σ) (hσ2 : σ ≤ 1)
     rw [hsre] at h1
     have h3 : ‖s‖ ≤ (N : ℝ) := by
       have h4 : ‖s‖ ≤ σ + |t| := by
-        rw [hs]; exact norm_add_mul_I_le' σ t (by linarith)
-      have h5 : σ + |t| ≤ (N : ℝ) := by linarith
-      linarith
+        rw [hs]; exact norm_add_mul_I_le' σ t (by linarith only [hσ1])
+      have h5 : σ + |t| ≤ (N : ℝ) := by linarith only [hσ2, hNt]
+      linarith only [hσ2, hNt, h4]
     have h6 : ‖s‖ / σ ≤ 2 * (N : ℝ) := by
-      rw [div_le_iff₀ (by linarith : (0 : ℝ) < σ)]
-      nlinarith [h3, hσ1]
+      rw [div_le_iff₀ (by linarith only [hσ1] : (0 : ℝ) < σ)]
+      nlinarith only [h3, hσ1]
     have h7 : (N : ℝ) ^ (-σ) ≤ (N : ℝ) ^ (-(1 / 2 : ℝ)) :=
-      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith)
+      Real.rpow_le_rpow_of_exponent_le hN1 (by linarith only [hσ1])
     have h8 : (N : ℝ) * (N : ℝ) ^ (-(1 / 2 : ℝ)) = (N : ℝ) ^ (1 / 2 : ℝ) := by
       nth_rewrite 1 [← Real.rpow_one (N : ℝ)]
       rw [← Real.rpow_add hN0]
       norm_num
     have h11 : (‖s‖ / σ) * ((N : ℝ) ^ (-σ)) ≤ (2 * (N : ℝ)) * ((N : ℝ) ^ (-(1 / 2 : ℝ))) :=
-      mul_le_mul h6 h7 (Real.rpow_nonneg hN0le _) (by linarith)
+      mul_le_mul h6 h7 (Real.rpow_nonneg hN0le _) (by linarith only [ht, hNt])
     have h12 : (2 * (N : ℝ)) * ((N : ℝ) ^ (-(1 / 2 : ℝ)))
         ≤ 2 * (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := by
       rw [show (2 * (N : ℝ)) * ((N : ℝ) ^ (-(1 / 2 : ℝ)))
           = 2 * ((N : ℝ) * (N : ℝ) ^ (-(1 / 2 : ℝ))) by ring, h8]
       exact mul_le_mul_of_nonneg_left
-        (Real.rpow_le_rpow hN0le (by linarith) (by norm_num)) (by norm_num)
-    linarith
+        (Real.rpow_le_rpow hN0le (by linarith only []) (by norm_num)) (by norm_num)
+    linarith only [h1, h11, h12]
   have htri : ‖H + M + TT‖ ≤ ‖H‖ + ‖M‖ + ‖TT‖ := by
     have h1 : ‖H + M + TT‖ ≤ ‖H + M‖ + ‖TT‖ := norm_add_le (H + M) TT
     have h2 : ‖H + M‖ ≤ ‖H‖ + ‖M‖ := norm_add_le H M
-    linarith
+    linarith only [h1, h2]
   have hp : (N : ℝ) ^ (1 / 2 : ℝ) ≤ (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) :=
-    Real.rpow_le_rpow hN0le (by linarith) (by norm_num)
+    Real.rpow_le_rpow hN0le (by linarith only []) (by norm_num)
   have hsq : (0 : ℝ) ≤ (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := Real.rpow_nonneg hN1p.le _
   calc ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖ = ‖riemannZeta s‖ := by simp [hs]
     _ = ‖H + M + TT‖ := by rw [hid]
     _ ≤ ‖H‖ + ‖M‖ + ‖TT‖ := htri
-    _ ≤ 8 * (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := by linarith
+    _ ≤ 8 * (((N : ℝ) + 1) ^ (1 / 2 : ℝ)) := by linarith only [hhead, hpole, htail, hp, hsq]
 
 /-- `‖ζ(σ+it)‖ ≤ C(1+|t|)^{1/2}` for `1/2 ≤ σ ≤ 2` and `|t| ≥ 1`. -/
 lemma zeta_half_strip :
@@ -198,15 +198,15 @@ lemma zeta_half_strip :
   obtain ⟨CZ, hCZpos, hCZ⟩ := Work.LinnikAreas.zeta_strip_uniform
   refine ⟨max 100 (32 * CZ), lt_of_lt_of_le (by norm_num) (le_max_left _ _), ?_⟩
   intro σ t hσ1 hσ2 ht
-  have hbase : (1 : ℝ) ≤ 1 + |t| := by linarith [abs_nonneg t]
-  have hbpos : (0 : ℝ) < 1 + |t| := by linarith
+  have hbase : (1 : ℝ) ≤ 1 + |t| := by linarith only [abs_nonneg t, ht]
+  have hbpos : (0 : ℝ) < 1 + |t| := by linarith only [ht]
   have hCJle : CZ ≤ max 100 (32 * CZ) := by
-    have : CZ ≤ 32 * CZ := by linarith
+    have : CZ ≤ 32 * CZ := by linarith only [hCZpos]
     exact le_trans this (le_max_right _ _)
   have h100 : (100 : ℝ) ≤ max 100 (32 * CZ) := le_max_left _ _
   by_cases h : (5 / 8 : ℝ) ≤ σ
   · calc ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖
-        ≤ CZ * (1 + |t|) ^ ((7 : ℝ) / 16) := hCZ σ t h (by linarith) ht
+        ≤ CZ * (1 + |t|) ^ ((7 : ℝ) / 16) := hCZ σ t h (by linarith only [hσ2]) ht
       _ ≤ CZ * (1 + |t|) ^ (1 / 2 : ℝ) :=
           mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hbase (by norm_num))
             hCZpos.le
@@ -217,29 +217,29 @@ lemma zeta_half_strip :
     have hNt : |t| + 3 ≤ ((Nat.floor |t| + 4 : ℕ) : ℝ) := by
       have hfl := Nat.lt_floor_add_one |t|
       push_cast
-      linarith
-    have hb := zeta_em_bound σ t hσ1 (by linarith) ht (Nat.floor |t| + 4) hN1 hNt
+      linarith only [hfl]
+    have hb := zeta_em_bound σ t hσ1 (by linarith only [h]) ht (Nat.floor |t| + 4) hN1 hNt
     have hNle : (((Nat.floor |t| + 4 : ℕ) : ℝ) + 1) ≤ 6 * (1 + |t|) := by
       have hfl := Nat.floor_le (abs_nonneg t)
       push_cast
-      linarith
+      linarith only [ht, hfl]
     have hsq : (((Nat.floor |t| + 4 : ℕ) : ℝ) + 1) ^ (1 / 2 : ℝ)
         ≤ 3 * (1 + |t|) ^ (1 / 2 : ℝ) := by
       calc (((Nat.floor |t| + 4 : ℕ) : ℝ) + 1) ^ (1 / 2 : ℝ)
           ≤ (6 * (1 + |t|)) ^ (1 / 2 : ℝ) :=
-            Real.rpow_le_rpow (by linarith) hNle (by norm_num)
+            Real.rpow_le_rpow (by linarith only [ht, hNt]) hNle (by norm_num)
         _ = (6 : ℝ) ^ (1 / 2 : ℝ) * (1 + |t|) ^ (1 / 2 : ℝ) :=
             Real.mul_rpow (by norm_num) hbpos.le
         _ ≤ 3 * (1 + |t|) ^ (1 / 2 : ℝ) := by
             have h6 : (6 : ℝ) ^ (1 / 2 : ℝ) ≤ 3 := by
               rw [← Real.sqrt_eq_rpow]
-              nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 6)]
+              nlinarith only [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 6)]
             exact mul_le_mul_of_nonneg_right h6 (Real.rpow_nonneg hbpos.le _)
     calc ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖
         ≤ 8 * ((((Nat.floor |t| + 4 : ℕ) : ℝ) + 1) ^ (1 / 2 : ℝ)) := hb
-      _ ≤ 24 * (1 + |t|) ^ (1 / 2 : ℝ) := by linarith [hsq]
+      _ ≤ 24 * (1 + |t|) ^ (1 / 2 : ℝ) := by linarith only [hsq]
       _ ≤ max 100 (32 * CZ) * (1 + |t|) ^ (1 / 2 : ℝ) :=
-          mul_le_mul_of_nonneg_right (by linarith) (Real.rpow_nonneg hbpos.le _)
+          mul_le_mul_of_nonneg_right (by linarith only [h100]) (Real.rpow_nonneg hbpos.le _)
 
 /-- The majorant for the `L`-function on the strip `1/2 ≤ σ ≤ 2`. -/
 def Lmaj (N : ℕ) (t : ℝ) : ℝ :=
@@ -257,9 +257,9 @@ lemma L_half_strip :
   intro N _inst ψ hψ σ t hσ1 hσ2 ht
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-  have hNpos : (0 : ℝ) < (N : ℝ) := by linarith
-  have h2t : (0 : ℝ) < 2 + |t| := by linarith [abs_nonneg t]
-  have hNt1 : (1 : ℝ) ≤ (N : ℝ) * (2 + |t|) := by nlinarith
+  have hNpos : (0 : ℝ) < (N : ℝ) := by linarith only [hN1]
+  have h2t : (0 : ℝ) < 2 + |t| := by linarith only [abs_nonneg t, ht]
+  have hNt1 : (1 : ℝ) ≤ (N : ℝ) * (2 + |t|) := by nlinarith only [hN1, ht]
   have hstuff : (0 : ℝ) ≤ (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1)
       * ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ)
       * (Real.log ((N : ℝ) * (2 + |t|)) + 2) := by
@@ -267,10 +267,10 @@ lemma L_half_strip :
       Real.rpow_nonneg (by positivity) _
     have h8 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) + 2 := by
       have h9 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) := Real.log_nonneg hNt1
-      linarith
+      linarith only [h9]
     positivity
-  have hlog2N : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) := Real.log_nonneg (by linarith)
-  have hlog2t : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+  have hlog2N : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) := Real.log_nonneg (by linarith only [hN1])
+  have hlog2t : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t, ht])
   by_cases hσ : σ ≤ 1
   · haveI hcond : NeZero ψ.conductor := ⟨ψ.conductor_ne_zero⟩
     have hprim : ψ.primitiveCharacter.IsPrimitive :=
@@ -281,7 +281,7 @@ lemma L_half_strip :
       (σ := σ) hσ1 (t := t)
     have hprod := prod_primeFactors_le N hσ1
     have hconv := Commons.NumberTheory.DirichletCharacter.LFunction_strip_convexity_abs
-      ψ.primitiveCharacter hprimne hprim (σ := σ) (T := t) (by linarith) hσ
+      ψ.primitiveCharacter hprimne hprim (σ := σ) (T := t) (by linarith only [hσ1]) hσ
     rw [show ((σ : ℂ) + Complex.I * (t : ℂ)) = ((σ : ℂ) + (t : ℂ) * Complex.I) by ring] at hconv
     have hNcpos : (0 : ℝ) < (ψ.conductor : ℝ) := by
       exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne ψ.conductor)
@@ -291,9 +291,9 @@ lemma L_half_strip :
       exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne ψ.conductor)
     have hbpos : (0 : ℝ) < (ψ.conductor : ℝ) * (2 + |t|) := mul_pos hNcpos h2t
     have hlc : (0 : ℝ) < Real.log ((ψ.conductor : ℝ) * (2 + |t|)) + 2 := by
-      have h1 : (1 : ℝ) ≤ (ψ.conductor : ℝ) * (2 + |t|) := by nlinarith [hNc1, ht]
+      have h1 : (1 : ℝ) ≤ (ψ.conductor : ℝ) * (2 + |t|) := by nlinarith only [hNc1, ht, hbpos]
       have := Real.log_nonneg h1
-      linarith
+      linarith only [this]
     have hE : Real.exp (((1 - σ) / 2) * (Real.log (ψ.conductor : ℝ) + Real.log (2 + |t|))
         + Real.log (Real.log ((ψ.conductor : ℝ) * (2 + |t|)) + 2) + 6)
         = Real.exp 6 * ((((ψ.conductor : ℝ) * (2 + |t|)) ^ ((1 - σ) / 2))
@@ -320,7 +320,7 @@ lemma L_half_strip :
           ≤ ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) := by
         calc ((ψ.conductor : ℝ) * (2 + |t|)) ^ ((1 - σ) / 2)
             ≤ ((ψ.conductor : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) :=
-              Real.rpow_le_rpow_of_exponent_le (by nlinarith [hNc1, ht]) (by linarith)
+              Real.rpow_le_rpow_of_exponent_le (by nlinarith only [hNc1, ht, hbpos]) (by linarith only [hσ1])
           _ ≤ ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) :=
               Real.rpow_le_rpow (mul_pos hNcpos h2t).le
                 (mul_le_mul_of_nonneg_right hNcq h2t.le) (by norm_num)
@@ -328,7 +328,7 @@ lemma L_half_strip :
           ≤ Real.log ((N : ℝ) * (2 + |t|)) + 2 := by
         have := Real.log_le_log (mul_pos hNcpos h2t)
           (mul_le_mul_of_nonneg_right hNcq h2t.le)
-        linarith
+        linarith only [this]
       exact mul_le_mul_of_nonneg_left
         (mul_le_mul hp1 hp2 hlc.le (Real.rpow_nonneg (mul_pos hNpos h2t).le _))
         (Real.exp_pos 6).le
@@ -355,7 +355,7 @@ lemma L_half_strip :
                 * ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ)
                 * (Real.log ((N : ℝ) * (2 + |t|)) + 2)) := by
             apply mul_le_mul_of_nonneg_right _ hstuff
-            linarith [Real.exp_pos 6]
+            linarith only [Real.exp_pos 6]
           have h2 : (Real.exp 6 + 1) * ((Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1)
                 * ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ)
                 * (Real.log ((N : ℝ) * (2 + |t|)) + 2))
@@ -364,18 +364,18 @@ lemma L_half_strip :
                 * (Real.log ((N : ℝ) * (2 + |t|)) + 2)
                 + (Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6)) := by
             apply mul_le_mul_of_nonneg_left _ (by positivity)
-            linarith [hlog2N, hlog2t]
-          linarith
+            linarith only [hlog2N, hlog2t]
+          linarith only [hstuff, h2]
   · have hσ' : (1 : ℝ) ≤ σ := (not_le.mp hσ).le
     have h := Work.LinnikAreas.LFunction_log_bound ψ hψ ((σ : ℂ) + (t : ℂ) * Complex.I)
-      (by simp; linarith)
+      (by simp; linarith only [hσ])
     have him : ((σ : ℂ) + (t : ℂ) * Complex.I).im = t := by simp
     rw [him] at h
     refine h.trans ?_
     simp only [Lmaj]
-    have h3 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6 := by linarith
-    have hexp6 : (1 : ℝ) ≤ Real.exp 6 + 1 := by linarith [Real.exp_pos 6]
-    nlinarith [hstuff, h3, hexp6]
+    have h3 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6 := by linarith only [hlog2N, hlog2t]
+    have hexp6 : (1 : ℝ) ≤ Real.exp 6 + 1 := by linarith only [Real.exp_pos 6]
+    nlinarith only [hstuff, h3, hexp6, hlog2N, hlog2t]
 
 /-- Pointwise bound for `triFun` on the horizontal segment `Im s = t`, `Re s = u ∈ [1/2-β, 1]`. -/
 lemma norm_triFun_horiz_half :
@@ -393,11 +393,11 @@ lemma norm_triFun_horiz_half :
   have hsim : s.im = t := by rw [hs]; simp
   have hsp : s + (β : ℂ) = ((u + β : ℝ) : ℂ) + (t : ℂ) * Complex.I := by
     rw [hs]; push_cast; ring
-  have hσ1 : (1 / 2 : ℝ) ≤ u + β := by linarith
-  have hσ2 : u + β ≤ 2 := by linarith
-  have htne : t ≠ 0 := by intro h0; rw [h0, abs_zero] at ht; linarith
+  have hσ1 : (1 / 2 : ℝ) ≤ u + β := by linarith only [hu]
+  have hσ2 : u + β ≤ 2 := by linarith only [hβ1, hu']
+  have htne : t ≠ 0 := by intro h0; rw [h0, abs_zero] at ht; linarith only [hβ, hβ1, ht]
   have ht2pos : (0 : ℝ) < t ^ 2 := by positivity
-  have htbase : (0 : ℝ) < 1 + |t| := by linarith [abs_nonneg t]
+  have htbase : (0 : ℝ) < 1 + |t| := by linarith only [abs_nonneg t, hβ, hβ1, ht]
   have hζ : ‖riemannZeta (s + (β : ℂ))‖ ≤ Cz * (1 + |t|) ^ (1 / 2 : ℝ) := by
     rw [hsp]; exact hZ (u + β) t hσ1 hσ2 ht
   have hLb : ‖DirichletCharacter.LFunction ψ (s + (β : ℂ))‖ ≤ CL * Lmaj N t := by
@@ -413,19 +413,19 @@ lemma norm_triFun_horiz_half :
       have h := Complex.abs_im_le_norm (s + 1)
       rw [Complex.add_im, hsim] at h
       simpa using h
-    nlinarith [h1, h2, sq_abs t, abs_nonneg t, norm_nonneg s, norm_nonneg (s + 1)]
+    nlinarith only [h1, h2, sq_abs t, abs_nonneg t, norm_nonneg s, norm_nonneg (s + 1), hβ, hβ1, ht]
   have hxu : x ^ u ≤ x + x ^ (-(1 / 2 : ℝ)) := by
-    have hβu : (-(1 / 2 : ℝ)) ≤ u := by linarith
+    have hβu : (-(1 / 2 : ℝ)) ≤ u := by linarith only [hβ1, hu]
     by_cases hx1 : (1 : ℝ) ≤ x
     · have h1 : x ^ u ≤ x ^ (1 : ℝ) := Real.rpow_le_rpow_of_exponent_le hx1 hu'
       rw [Real.rpow_one] at h1
       have h2 : (0 : ℝ) ≤ x ^ (-(1 / 2 : ℝ)) := Real.rpow_nonneg hx.le _
-      linarith
+      linarith only [h1, h2]
     · have hxle : x ≤ 1 := le_of_lt (not_le.mp hx1)
       have h1 : x ^ u ≤ x ^ (-(1 / 2 : ℝ)) :=
         Real.rpow_le_rpow_of_exponent_ge hx hxle hβu
       have h2 : (0 : ℝ) ≤ x := hx.le
-      linarith
+      linarith only [hx, h1]
   have hLmajnn : (0 : ℝ) ≤ Lmaj N t := by
     simp only [Lmaj]
     have h3 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) + 2 := by
@@ -433,16 +433,16 @@ lemma norm_triFun_horiz_half :
         Real.log_nonneg (by
           have : (1 : ℝ) ≤ (N : ℝ) := by
             exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-          nlinarith [abs_nonneg t])
-      linarith
+          nlinarith only [abs_nonneg t, hβ, hβ1, this, ht])
+      linarith only [hβ, hβ1, h4]
     have h5 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6 := by
       have h6 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) :=
         Real.log_nonneg (by
           have : (1 : ℝ) ≤ (N : ℝ) := by
             exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-          linarith)
-      have h7 : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith)
-      linarith
+          linarith only [hβ, hβ1, this])
+      have h7 : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [hβ, hβ1, ht])
+      linarith only [hβ, hβ1, h6, h7]
     have h2 : (0 : ℝ) ≤ ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) :=
       Real.rpow_nonneg (by positivity) _
     have h1 : (0 : ℝ) ≤ (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) := by positivity
@@ -496,7 +496,7 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
     have hlogt : Real.log |t| ≤ 4 * |t| ^ (1 / 4 : ℝ) := by
       have h := Real.log_le_rpow_div (x := |t|) (ε := (1 / 4 : ℝ)) (abs_nonneg t) (by norm_num)
       have h2 : |t| ^ (1 / 4 : ℝ) / (1 / 4) = 4 * |t| ^ (1 / 4 : ℝ) := by ring
-      linarith [h, h2]
+      linarith only [h, h2]
     have hy14le : |t| ^ (1 / 4 : ℝ) ≤ |t| ^ (1 / 2 : ℝ) :=
       Real.rpow_le_rpow_of_exponent_le ht (by norm_num)
     have hy14nn : (0 : ℝ) ≤ |t| ^ (1 / 4 : ℝ) := Real.rpow_nonneg (abs_nonneg t) _
@@ -507,24 +507,24 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
     have hsq : |t| ^ (1 / 4 : ℝ) * |t| ^ (1 / 4 : ℝ) = |t| ^ (1 / 2 : ℝ) := by
       rw [← Real.rpow_add ht0]; norm_num
     have hlog30 : (0 : ℝ) ≤ Real.log (3 * (N : ℝ)) + 2 := by
-      have := Real.log_nonneg (by linarith : (1 : ℝ) ≤ 3 * (N : ℝ)); linarith
+      have := Real.log_nonneg (by linarith only [hβ, hβ1, hN1] : (1 : ℝ) ≤ 3 * (N : ℝ)); linarith only [hβ, hβ1, this]
     have hlog31 : (1 : ℝ) ≤ Real.log (3 * (N : ℝ)) + 2 := by
       have h1 : (1 : ℝ) ≤ Real.log (3 * (N : ℝ)) := by
         have h2 : Real.log 3 ≤ Real.log (3 * (N : ℝ)) :=
-          Real.log_le_log (by norm_num) (by nlinarith [hN1])
+          Real.log_le_log (by norm_num) (by nlinarith only [hN1])
         have h3 : (1 : ℝ) ≤ Real.log 3 := by
           rw [Real.le_log_iff_exp_le (by norm_num : (0 : ℝ) < 3)]
           exact le_of_lt Real.exp_one_lt_three
-        linarith
-      linarith
+        linarith only [h2, h3]
+      linarith only [hβ, hβ1, h1]
     have hlog20 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + 8 := by
-      have := Real.log_nonneg (by linarith : (1 : ℝ) ≤ 2 * (N : ℝ)); linarith
+      have := Real.log_nonneg (by linarith only [hβ, hβ1, hN1] : (1 : ℝ) ≤ 2 * (N : ℝ)); linarith only [hβ, hβ1, this]
     have henn : (0 : ℝ) ≤ Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1 := by positivity
-    have h3Npos : (0 : ℝ) < 3 * (N : ℝ) := by linarith
+    have h3Npos : (0 : ℝ) < 3 * (N : ℝ) := by linarith only [hβ, hβ1, hN1]
     have hp1 : ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ)
         ≤ (3 * (N : ℝ)) ^ (1 / 4 : ℝ) * |t| ^ (1 / 4 : ℝ) := by
       have hbase0 : (0 : ℝ) ≤ (N : ℝ) * (2 + |t|) := by positivity
-      have hbase : (N : ℝ) * (2 + |t|) ≤ 3 * (N : ℝ) * |t| := by nlinarith [hN1, ht]
+      have hbase : (N : ℝ) * (2 + |t|) ≤ 3 * (N : ℝ) * |t| := by nlinarith only [hN1, ht]
       calc ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) ≤ (3 * (N : ℝ) * |t|) ^ (1 / 4 : ℝ) :=
             Real.rpow_le_rpow hbase0 hbase (by norm_num)
         _ = (3 * (N : ℝ)) ^ (1 / 4 : ℝ) * |t| ^ (1 / 4 : ℝ) :=
@@ -535,7 +535,7 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
         ≤ 5 * (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) * (3 * (N : ℝ)) ^ (1 / 4 : ℝ)
           * (Real.log (3 * (N : ℝ)) + 2) * |t| ^ (1 / 2 : ℝ) := by
       have hx0 : (0 : ℝ) < (N : ℝ) * (2 + |t|) := by positivity
-      have hbase : (N : ℝ) * (2 + |t|) ≤ 3 * (N : ℝ) * |t| := by nlinarith [hN1, ht]
+      have hbase : (N : ℝ) * (2 + |t|) ≤ 3 * (N : ℝ) * |t| := by nlinarith only [hN1, ht]
       have hlogNt : Real.log ((N : ℝ) * (2 + |t|)) ≤ Real.log (3 * (N : ℝ)) + Real.log |t| := by
         have h := Real.log_le_log hx0 hbase
         rw [Real.log_mul (ne_of_gt h3Npos) (ne_of_gt ht0)] at h
@@ -544,14 +544,14 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
           ≤ (Real.log (3 * (N : ℝ)) + 2) * (1 + 4 * |t| ^ (1 / 4 : ℝ)) := by
         have h4a : 4 * |t| ^ (1 / 4 : ℝ) ≤ 4 * |t| ^ (1 / 4 : ℝ) * (Real.log (3 * (N : ℝ)) + 2) :=
           le_mul_of_one_le_right (by positivity) hlog31
-        nlinarith [hlogNt, hlogt, hlog30, h4a, hy14nn]
+        nlinarith only [hlogNt, hlogt, hlog30, h4a, hy14nn]
       have hmid : (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1)
             * ((3 * (N : ℝ)) ^ (1 / 4 : ℝ) * |t| ^ (1 / 4 : ℝ))
             * ((Real.log (3 * (N : ℝ)) + 2) * (1 + 4 * |t| ^ (1 / 4 : ℝ)))
           ≤ 5 * (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) * (3 * (N : ℝ)) ^ (1 / 4 : ℝ)
             * (Real.log (3 * (N : ℝ)) + 2) * |t| ^ (1 / 2 : ℝ) := by
         have hkey : |t| ^ (1 / 4 : ℝ) * (1 + 4 * |t| ^ (1 / 4 : ℝ)) ≤ 5 * |t| ^ (1 / 2 : ℝ) := by
-          nlinarith [hsq, hy14le, hy14nn]
+          nlinarith only [hsq, hy14le, hy14nn]
         have hc : (0 : ℝ) ≤ (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) * (3 * (N : ℝ)) ^ (1 / 4 : ℝ)
             * (Real.log (3 * (N : ℝ)) + 2) :=
           mul_nonneg (mul_nonneg henn (Real.rpow_nonneg h3Npos.le _)) hlog30
@@ -567,9 +567,9 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
           _ = 5 * (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) * (3 * (N : ℝ)) ^ (1 / 4 : ℝ)
                 * (Real.log (3 * (N : ℝ)) + 2) * |t| ^ (1 / 2 : ℝ) := by ring
       have hcnn : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) + 2 := by
-        have h1 : (1 : ℝ) ≤ (N : ℝ) * (2 + |t|) := by nlinarith [hN1, abs_nonneg t]
+        have h1 : (1 : ℝ) ≤ (N : ℝ) * (2 + |t|) := by nlinarith only [hN1, abs_nonneg t, hβ, hβ1, hbase]
         have h2 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) := Real.log_nonneg h1
-        linarith
+        linarith only [hβ, hβ1, h2]
       have hbnn : (0 : ℝ) ≤ (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1)
           * ((3 * (N : ℝ)) ^ (1 / 4 : ℝ) * |t| ^ (1 / 4 : ℝ)) := by positivity
       calc (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1)
@@ -583,30 +583,30 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
     have hstep2 : Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6
         ≤ ((Real.log (2 * (N : ℝ)) + 8) + 4) * |t| ^ (1 / 2 : ℝ) := by
       have h2a : Real.log (2 + |t|) ≤ Real.log (3 * |t|) :=
-        Real.log_le_log (by linarith [abs_nonneg t]) (by linarith)
+        Real.log_le_log (by linarith only [abs_nonneg t, hβ, hβ1, ht]) (by linarith only [ht])
       have h2b : Real.log (3 * |t|) = Real.log 3 + Real.log |t| :=
         Real.log_mul (by norm_num) (ne_of_gt ht0)
       have h2c : Real.log 3 ≤ 2 := by
         have h := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 3)
-        linarith
-      nlinarith [h2a, h2b, h2c, hlogt, hy14le, hy12ge1, hlog20]
+        linarith only [h]
+      nlinarith only [h2a, h2b, h2c, hlogt, hy14le, hy12ge1, hlog20, hβ, hβ1]
     rw [Lmaj, hBdef]
-    linarith [hstep1, hstep2]
+    linarith only [hstep1, hstep2]
   have hKxnn : (0 : ℝ) ≤ x + x ^ (-(1 / 2 : ℝ)) := by
     have h2 : (0 : ℝ) ≤ x ^ (-(1 / 2 : ℝ)) := Real.rpow_nonneg hx.le _
-    linarith
+    linarith only [hx, h2]
   have hBnn : (0 : ℝ) ≤ B₁ := by
     rw [hBdef]
     have h1 : (0 : ℝ) ≤ Real.log (3 * (N : ℝ)) + 2 := by
-      have := Real.log_nonneg (by linarith : (1 : ℝ) ≤ 3 * (N : ℝ)); linarith
+      have := Real.log_nonneg (by linarith only [hβ, hβ1, hN1] : (1 : ℝ) ≤ 3 * (N : ℝ)); linarith only [hβ, hβ1, this]
     have h2 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + 8 := by
-      have := Real.log_nonneg (by linarith : (1 : ℝ) ≤ 2 * (N : ℝ)); linarith
-    have h5 : (0 : ℝ) ≤ (3 * (N : ℝ)) ^ (1 / 4 : ℝ) := Real.rpow_nonneg (by linarith) _
+      have := Real.log_nonneg (by linarith only [hβ, hβ1, hN1] : (1 : ℝ) ≤ 2 * (N : ℝ)); linarith only [hβ, hβ1, this]
+    have h5 : (0 : ℝ) ≤ (3 * (N : ℝ)) ^ (1 / 4 : ℝ) := Real.rpow_nonneg (by linarith only [hβ, hβ1, hN1]) _
     have h6 : (0 : ℝ) ≤ Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1 := by positivity
     have h7 : (0 : ℝ) ≤ 5 * (Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1) * (3 * (N : ℝ)) ^ (1 / 4 : ℝ)
         * (Real.log (3 * (N : ℝ)) + 2) :=
       mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) h6) h5) h1
-    linarith
+    linarith only [hβ, hβ1, h2, h7]
   have hKnn : (0 : ℝ) ≤ C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁) := by
     have h2 : (0 : ℝ) ≤ 2 ^ (1 / 2 : ℝ) := Real.rpow_nonneg (by norm_num) _
     positivity
@@ -617,10 +617,10 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
     have h1 := hC N ψ hψ hβ hβ1 hx ht hu hu'
     have hLm := hLmajB ht
     have ht0 : (0 : ℝ) < |t| := lt_of_lt_of_le zero_lt_one ht
-    have htne : t ≠ 0 := by intro h0; rw [h0, abs_zero] at ht; linarith
+    have htne : t ≠ 0 := by intro h0; rw [h0, abs_zero] at ht; linarith only [hβ, hβ1, ht]
     have hb : (1 + |t|) ^ (1 / 2 : ℝ) ≤ 2 ^ (1 / 2 : ℝ) * |t| ^ (1 / 2 : ℝ) := by
       calc (1 + |t|) ^ (1 / 2 : ℝ) ≤ (2 * |t|) ^ (1 / 2 : ℝ) :=
-            Real.rpow_le_rpow (by linarith [abs_nonneg t]) (by linarith) (by norm_num)
+            Real.rpow_le_rpow (by linarith only [abs_nonneg t, hβ, hβ1, ht]) (by linarith only [ht]) (by norm_num)
         _ = 2 ^ (1 / 2 : ℝ) * |t| ^ (1 / 2 : ℝ) := Real.mul_rpow (by norm_num) (abs_nonneg t)
     have hq : |t| ^ (1 / 2 : ℝ) * |t| ^ (1 / 2 : ℝ) = |t| := by
       rw [← Real.rpow_add ht0]; norm_num
@@ -630,12 +630,12 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
         rw [Lmaj]
         have h6 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) + 2 := by
           have h7 : (0 : ℝ) ≤ Real.log ((N : ℝ) * (2 + |t|)) :=
-            Real.log_nonneg (by nlinarith [hN1, abs_nonneg t])
-          linarith
+            Real.log_nonneg (by nlinarith only [hN1, abs_nonneg t, hβ, hβ1, ht])
+          linarith only [hβ, hβ1, h7]
         have h8 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) + Real.log (2 + |t|) + 6 := by
-          have h9 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) := Real.log_nonneg (by linarith)
-          have h10 : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
-          linarith
+          have h9 : (0 : ℝ) ≤ Real.log (2 * (N : ℝ)) := Real.log_nonneg (by linarith only [hβ, hβ1, hN1])
+          have h10 : (0 : ℝ) ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t, hβ, hβ1, ht])
+          linarith only [hβ, hβ1, h9, h10]
         have h11 : (0 : ℝ) ≤ ((N : ℝ) * (2 + |t|)) ^ (1 / 4 : ℝ) :=
           Real.rpow_nonneg (by positivity) _
         have h12 : (0 : ℝ) ≤ Real.exp ((Real.log N) ^ (3 / 4 : ℝ)) + 1 := by positivity
@@ -651,7 +651,7 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
           show (2 ^ (1 / 2 : ℝ) * |t| ^ (1 / 2 : ℝ)) * (B₁ * |t| ^ (1 / 2 : ℝ))
             = 2 ^ (1 / 2 : ℝ) * B₁ * (|t| ^ (1 / 2 : ℝ) * |t| ^ (1 / 2 : ℝ)) by ring, hq]
         field_simp
-      linarith [h3, h4.le]
+      linarith only [h3, h4.le, h4]
     have h5 : 2 ^ (1 / 2 : ℝ) * B₁ / |t| ≤ 2 ^ (1 / 2 : ℝ) * B₁ * |t| ^ (-(1 / 4 : ℝ)) := by
       rw [show 2 ^ (1 / 2 : ℝ) * B₁ / |t| = 2 ^ (1 / 2 : ℝ) * B₁ * |t| ^ (-(1 : ℝ)) by
         rw [Real.rpow_neg_one]; ring]
@@ -667,19 +667,19 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
       _ ≤ C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁ * |t| ^ (-(1 / 4 : ℝ))) :=
           mul_le_mul_of_nonneg_left h5 (by positivity)
       _ = C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁) * |t| ^ (-(1 / 4 : ℝ)) := by ring
-  have hLx : (1 / 2 - β : ℝ) ≤ 1 := by linarith
+  have hLx : (1 / 2 - β : ℝ) ≤ 1 := by linarith only [hβ, hβ1]
   have hbnd : ∀ T : ℝ, 1 ≤ T →
       ‖(1 / (2 * Real.pi * Complex.I)) *
         ((∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) + T * Complex.I))
          - (∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) - T * Complex.I)))‖
       ≤ 4 * (C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)) := by
     intro T hT
-    have hT1 : (1 : ℝ) ≤ |T| := by rw [abs_of_nonneg (by linarith)]; exact hT
+    have hT1 : (1 : ℝ) ≤ |T| := by rw [abs_of_nonneg (by linarith only [hβ, hβ1, hT])]; exact hT
     have hT1' : (1 : ℝ) ≤ |-T| := by rwa [abs_neg]
     have hVal : (1 : ℝ) ≤ |1 - (1 / 2 - β : ℝ)| := by
-      rw [abs_of_nonneg (by linarith)]; linarith
+      rw [abs_of_nonneg (by linarith only [hβ, hβ1])]; linarith only [hβ]
     have hVal2 : |1 - (1 / 2 - β : ℝ)| ≤ 2 := by
-      rw [abs_le]; constructor <;> linarith
+      rw [abs_le]; constructor <;> linarith only [hβ, hβ1]
     have hI1 : ‖(∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) + T * Complex.I))‖
         ≤ (C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)) * 2 := by
       have h := intervalIntegral.norm_integral_le_of_norm_le_const (a := (1 / 2 - β : ℝ)) (b := 1)
@@ -687,12 +687,12 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
         (f := fun u : ℝ => triFun ψ β x ((u : ℂ) + T * Complex.I))
         (fun u hu => by
           rw [Set.uIoc_of_le hLx] at hu
-          simpa [abs_of_nonneg (by linarith : (0 : ℝ) ≤ T)] using hpt hu.1.le hu.2 hT1)
+          simpa [abs_of_nonneg (by linarith only [hβ, hβ1, hT] : (0 : ℝ) ≤ T)] using hpt hu.1.le hu.2 hT1)
       calc _ ≤ ((C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)))
             * |1 - (1 / 2 - β : ℝ)| := h
         _ ≤ ((C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ))) * 2 := by
             have h3 : (0 : ℝ) ≤ (C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)) := by
-              have h4 : (0 : ℝ) ≤ T ^ (-(1 / 4 : ℝ)) := Real.rpow_nonneg (by linarith) _
+              have h4 : (0 : ℝ) ≤ T ^ (-(1 / 4 : ℝ)) := Real.rpow_nonneg (by linarith only [hβ, hβ1, hT]) _
               positivity
             exact mul_le_mul_of_nonneg_left hVal2 h3
     have hI2 : ‖(∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) - T * Complex.I))‖
@@ -705,12 +705,12 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
           have h' := hpt (t := -T) hu.1.le hu.2 hT1'
           rw [show ((u : ℂ) - (T : ℂ) * Complex.I)
             = ((u : ℂ) + ((-T : ℝ) : ℂ) * Complex.I) by push_cast; ring]
-          simpa [abs_of_nonneg (by linarith : (0 : ℝ) ≤ T)] using h')
+          simpa [abs_of_nonneg (by linarith only [hβ, hβ1, hT] : (0 : ℝ) ≤ T)] using h')
       calc _ ≤ ((C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)))
             * |1 - (1 / 2 - β : ℝ)| := h
         _ ≤ ((C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ))) * 2 := by
             have h3 : (0 : ℝ) ≤ (C * (x + x ^ (-(1 / 2 : ℝ))) * (2 ^ (1 / 2 : ℝ) * B₁)) * T ^ (-(1 / 4 : ℝ)) := by
-              have h4 : (0 : ℝ) ≤ T ^ (-(1 / 4 : ℝ)) := Real.rpow_nonneg (by linarith) _
+              have h4 : (0 : ℝ) ≤ T ^ (-(1 / 4 : ℝ)) := Real.rpow_nonneg (by linarith only [hβ, hβ1, hT]) _
               positivity
             exact mul_le_mul_of_nonneg_left hVal2 h3
     have hnormc : ‖(1 / (2 * Real.pi * Complex.I) : ℂ)‖ ≤ 1 := by
@@ -721,7 +721,7 @@ theorem horizSegTendstoZero {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N)
             = ‖((2 : ℂ))‖ * ‖((Real.pi : ℂ))‖ * ‖(Complex.I)‖ := by rw [norm_mul, norm_mul]
           _ = 2 * Real.pi := by rw [Complex.norm_two, hp, Complex.norm_I, mul_one]
       rw [norm_div, hden, norm_one, div_le_one (by positivity : (0 : ℝ) < 2 * Real.pi)]
-      linarith [Real.pi_gt_three]
+      linarith only [Real.pi_gt_three, hβ, hβ1]
     calc ‖(1 / (2 * Real.pi * Complex.I)) *
           ((∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) + T * Complex.I))
            - (∫ u in ((1 / 2 - β : ℝ))..1, triFun ψ β x ((u : ℂ) - T * Complex.I)))‖

@@ -37,9 +37,9 @@ import Mathlib
 import Submission.Work.ZeroFreeTables.XYDefs
 import Submission.Work.ZeroFreeTables.XY.SupDefs
 import Submission.Work.ZeroFreeTables.XY.XyReDecompB
-import Submission.Work.ZeroFreeTables.XY.XySupIntegral
 import Submission.Work.ZeroFreeTables.XY.SupAux
 import Submission.Work.ZeroFreeTables.XY.XyInvPowReIm
+import Submission.Work.ZeroFreeTables.XY.XYEngineDefs
 
 open MeasureTheory intervalIntegral
 open scoped BigOperators
@@ -85,33 +85,33 @@ lemma xyReQ_neg1 (t : ℝ) (ht : 13 ≤ t) :
     have hfac : 1000*(3*s-1)*s^2 - 2941*(1+s)^3
         = (s-169)*(59*s^2+148*s+16189) + 2733000 := by ring
     have h1 : (0:ℝ) ≤ s-169 := by linarith
-    have h2 : (0:ℝ) ≤ 59*s^2+148*s+16189 := by nlinarith [hs]
+    have h2 : (0:ℝ) ≤ 59*s^2+148*s+16189 := by nlinarith only [hs]
     have h3 := mul_nonneg h1 h2
     linarith [hfac]
   have e2 : ((512:ℝ)/81)*((2941:ℝ)/1000)/s^2 ≤ ((512:ℝ)/81)*(3*s-1)/(1+s)^3 := by
     refine div_le_div_aux (by positivity) (by positivity) ?_
-    nlinarith [key2]
+    nlinarith only [key2]
   have e2' : -((512:ℝ)/81)*(3*s-1)/(1+s)^3 ≤ -((512:ℝ)/81)*((2941:ℝ)/1000)/s^2 := by
     rw [show -((512:ℝ)/81)*(3*s-1)/(1+s)^3 = -(((512:ℝ)/81)*(3*s-1)/(1+s)^3) by ring,
         show -((512:ℝ)/81)*((2941:ℝ)/1000)/s^2 = -(((512:ℝ)/81)*((2941:ℝ)/1000)/s^2) by ring]
     exact neg_le_neg e2
   have key3 : (s^2-6*s+1)*s^2 ≤ (1+s)^4 := by
     have hfac : (1+s)^4 - (s^2-6*s+1)*s^2 = 1+4*s+5*s^2+10*s^3 := by ring
-    have h : (0:ℝ) ≤ 1+4*s+5*s^2+10*s^3 := by nlinarith [hs, sq_nonneg s]
+    have h : (0:ℝ) ≤ 1+4*s+5*s^2+10*s^3 := by nlinarith only [hs, sq_nonneg s]
     linarith [hfac]
   have e3 : ((1024:ℝ)/81)*(s^2-6*s+1)/(1+s)^4 ≤ ((1024:ℝ)/81)/s^2 := by
     refine div_le_div_aux (by positivity) (by positivity) ?_
-    nlinarith [key3]
+    nlinarith only [key3]
   have key4 : 169*(s^3-15*s^2+15*s-1)*s^2 ≤ (1+s)^6 := by
     have hfac : (1+s)^6 - 169*(s^3-15*s^2+15*s-1)*s^2
         = s^5*(s-163) + s^3*(2550*s-2515) + 184*s^2+6*s+1 := by ring
     have h1 : (0:ℝ) ≤ s^5*(s-163) := mul_nonneg (pow_nonneg (by linarith) 5) (by linarith)
     have h2 : (0:ℝ) ≤ s^3*(2550*s-2515) := mul_nonneg (pow_nonneg (by linarith) 3) (by linarith)
-    have h3 : (0:ℝ) ≤ 184*s^2+6*s+1 := by nlinarith [hs, sq_nonneg s]
+    have h3 : (0:ℝ) ≤ 184*s^2+6*s+1 := by nlinarith only [hs, sq_nonneg s]
     linarith [hfac]
   have e4 : ((16384:ℝ)/729)*(s^3-15*s^2+15*s-1)/(1+s)^6 ≤ ((16384:ℝ)/729/169)/s^2 := by
     refine div_le_div_aux (by positivity) (by positivity) ?_
-    nlinarith [key4]
+    nlinarith only [key4]
   have h1 : -(((512:ℝ)/81)*(3*s-1)/(1+s)^3)
       ≤ -(((512:ℝ)/81)*((2941:ℝ)/1000)/s^2) := neg_le_neg e2
   have h2 : (((1024:ℝ)/81)*(s^2-6*s+1))/(1+s)^4 ≤ (((1024:ℝ)/81)/s^2) := e3
@@ -152,7 +152,7 @@ lemma xyReQ_beta (β t : ℝ) (hβ₁ : 372/1000 ≤ β) (hβ₂ : β ≤ 482/10
   have hs : (169:ℝ) ≤ s := by rw [hsdef]; nlinarith
   have hs0 : (0:ℝ) < s := by linarith
   have hβ0 : (0:ℝ) < β := by linarith
-  have hβ2 : β^2 ≤ 232324/1000000 := by nlinarith [hβ₁, hβ₂]
+  have hβ2 : β^2 ≤ 232324/1000000 := by nlinarith only [hβ₁, hβ₂]
   have hbpos : (0:ℝ) < β^2 + s := by positivity
   have ht4eq : t^4 = s^2 := by rw [hsdef]; ring
   rw [ht4eq]
@@ -169,23 +169,23 @@ lemma xyReQ_beta (β t : ℝ) (hβ₁ : 372/1000 ≤ β) (hβ₂ : β ≤ 482/10
     ring
   have h4nn : (0:ℝ) ≤ ((16384:ℝ)/729)*(s^3-15*β^2*s^2+15*β^4*s-β^6)/(β^2+s)^6 := by
     have hnum4 : (0:ℝ) ≤ s^3-15*β^2*s^2+15*β^4*s-β^6 := by
-      have h1 : 15*β^2 ≤ s := by linarith [hβ2, hs]
-      have h2 : β^2 ≤ 15*s := by linarith [hβ2, hs]
+      have h1 : 15*β^2 ≤ s := by linarith only [hβ2, hs]
+      have h2 : β^2 ≤ 15*s := by linarith only [hβ2, hs]
       have h3 : (0:ℝ) ≤ s^2*(s-15*β^2) := mul_nonneg (sq_nonneg s) (by linarith)
       have h4 : (0:ℝ) ≤ β^4*(15*s-β^2) := mul_nonneg (pow_nonneg hβ0.le 4) (by linarith)
-      nlinarith [h3, h4]
+      nlinarith only [h3, h4]
     exact div_nonneg (mul_nonneg (by norm_num) hnum4) (by positivity)
   have hnum : (277:ℝ)/1000*s^2 - (151:ℝ)/100*s
       ≤ s^2*(1-(3/2)*β) - s*(6*β^2+β^3) + (β^4+β^5/2) := by
     have hA : (277:ℝ)/1000 ≤ 1-(3/2)*β := by linarith
-    have hB : 6*β^2+β^3 ≤ (151:ℝ)/100 := by nlinarith [hβ2, hβ₂]
+    have hB : 6*β^2+β^3 ≤ (151:ℝ)/100 := by nlinarith only [hβ2, hβ₂]
     have hC : (0:ℝ) ≤ β^4+β^5/2 := by positivity
     have h1 : s^2*((277:ℝ)/1000) ≤ s^2*(1-(3/2)*β) :=
       mul_le_mul_of_nonneg_left hA (sq_nonneg s)
     have h2 : s*(6*β^2+β^3) ≤ s*((151:ℝ)/100) := mul_le_mul_of_nonneg_left hB hs0.le
-    nlinarith [h1, h2, hC]
+    nlinarith only [h1, h2, hC]
   have hden : (β^2+s)^4 ≤ (10056:ℝ)/10000*s^4 := by
-    have h1 : β^2 + s ≤ (1+232324/1000000/169)*s := by nlinarith [hβ2, hs]
+    have h1 : β^2 + s ≤ (1+232324/1000000/169)*s := by nlinarith only [hβ2, hs]
     have h2 : (1+232324/1000000/169)^4 ≤ (10056:ℝ)/10000 := by norm_num
     calc (β^2+s)^4 ≤ ((1+232324/1000000/169)*s)^4 := pow_le_pow_left₀ (by positivity) h1 4
       _ = (1+232324/1000000/169)^4 * s^4 := by ring
@@ -200,9 +200,9 @@ lemma xyReQ_beta (β t : ℝ) (hβ₁ : 372/1000 ≤ β) (hβ₂ : β ≤ 482/10
         _ = ((33:ℝ)/10*((10056:ℝ)/10000))*s^4 := by ring
         _ ≤ ((1024:ℝ)/81)*((277:ℝ)/1000*s^2 - (151:ℝ)/100*s)*s^2 := by
             have hlin : ((33:ℝ)/10*((10056:ℝ)/10000))*s
-                ≤ ((1024:ℝ)/81)*((277:ℝ)/1000*s - (151:ℝ)/100) := by nlinarith [hs]
+                ≤ ((1024:ℝ)/81)*((277:ℝ)/1000*s - (151:ℝ)/100) := by nlinarith only [hs]
             have h3 := mul_le_mul_of_nonneg_right hlin (pow_nonneg hs0.le 3)
-            nlinarith [h3]
+            nlinarith only [h3]
     have hN : ((1024:ℝ)/81)*((277:ℝ)/1000*s^2 - (151:ℝ)/100*s)
         ≤ ((1024:ℝ)/81)*(s^2*(1-(3/2)*β) - s*(6*β^2+β^3) + (β^4+β^5/2)) :=
       mul_le_mul_of_nonneg_left hnum (by norm_num)
@@ -283,7 +283,7 @@ lemma xyExpPart (x t : ℝ) (hx₁ : -1 ≤ x) (hx₂ : x ≤ 0) (ht : 13 ≤ t)
       ≤ ((1573888:ℝ)/123201)/t^4 := by
   have ht0 : (0:ℝ) < t := by linarith
   have ht2 : (169:ℝ) ≤ t^2 := by nlinarith
-  have hxt : x^2 + t^2 ≠ 0 := by nlinarith [sq_nonneg x, ht]
+  have hxt : x^2 + t^2 ≠ 0 := by nlinarith only [sq_nonneg x, ht]
   have hzc : Complex.normSq ((x:ℂ) + (t:ℂ)*Complex.I) = x^2 + t^2 := by
     rw [Complex.normSq_apply]
     simp [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re,
@@ -302,7 +302,7 @@ lemma xyExpPart (x t : ℝ) (hx₁ : -1 ≤ x) (hx₂ : x ≤ 0) (ht : 13 ≤ t)
     rw [hcast]
     have hnum : ‖((x:ℂ) + (t:ℂ)*Complex.I) + 4/3‖^2 ≤ (16:ℝ)/9 + t^2 := by
       rw [← Complex.normSq_eq_norm_sq, hzc4]
-      nlinarith [hx₁, hx₂]
+      nlinarith only [hx₁, hx₂]
     have hden : t^6 ≤ ‖((x:ℂ) + (t:ℂ)*Complex.I)‖^6 := by
       have h1 : ‖((x:ℂ) + (t:ℂ)*Complex.I)‖^2 = x^2+t^2 := by
         rw [← Complex.normSq_eq_norm_sq]; exact hzc
@@ -311,7 +311,7 @@ lemma xyExpPart (x t : ℝ) (hx₁ : -1 ≤ x) (hx₂ : x ≤ 0) (ht : 13 ≤ t)
         rw [show ‖((x:ℂ) + (t:ℂ)*Complex.I)‖^6
               = (‖((x:ℂ) + (t:ℂ)*Complex.I)‖^2)^3 by ring, h1]
       rw [h2]
-      have h3 : t^2 ≤ x^2+t^2 := by nlinarith [sq_nonneg x]
+      have h3 : t^2 ≤ x^2+t^2 := by nlinarith only [sq_nonneg x]
       calc t^6 = (t^2)^3 := by ring
         _ ≤ (x^2+t^2)^3 := pow_le_pow_left₀ (by positivity) h3 3
     have hmid : ‖((x:ℂ) + (t:ℂ)*Complex.I) + 4/3‖^2 / ‖((x:ℂ) + (t:ℂ)*Complex.I)‖^6
@@ -320,9 +320,9 @@ lemma xyExpPart (x t : ℝ) (hx₁ : -1 ≤ x) (hx₂ : x ≤ 0) (ht : 13 ≤ t)
         (div_le_div_of_nonneg_left (by positivity) (by positivity) hden)
     have hfin : ((16:ℝ)/9 + t^2)/t^6 ≤ ((1537:ℝ)/1521)/t^4 := by
       refine div_le_div_aux (by positivity) (by positivity) ?_
-      have h : (16:ℝ)/9 + t^2 ≤ ((1537:ℝ)/1521)*t^2 := by nlinarith [ht2]
+      have h : (16:ℝ)/9 + t^2 ≤ ((1537:ℝ)/1521)*t^2 := by nlinarith only [ht2]
       have h2 := mul_le_mul_of_nonneg_right h (pow_nonneg ht0.le 4)
-      linarith [h2]
+      linarith only [h2]
     calc (1024:ℝ)/81 * (‖((x:ℂ) + (t:ℂ)*Complex.I) + 4/3‖^2 / ‖((x:ℂ) + (t:ℂ)*Complex.I)‖^6)
         ≤ (1024:ℝ)/81 * (((1537:ℝ)/1521)/t^4) :=
           mul_le_mul_of_nonneg_left (hmid.trans hfin) (by norm_num)
@@ -331,7 +331,7 @@ lemma xyExpPart (x t : ℝ) (hx₁ : -1 ≤ x) (hx₂ : x ≤ 0) (ht : 13 ≤ t)
       ≤ ‖((ReP x t : ℂ) + (ImP x t : ℂ) * Complex.I)‖ := by
     have h1 : (Real.cos (3*t/2) * ReP x t + Real.sin (3*t/2) * ImP x t)^2
         ≤ ReP x t^2 + ImP x t^2 := by
-      nlinarith [sq_nonneg (Real.cos (3*t/2) * ImP x t - Real.sin (3*t/2) * ReP x t),
+      nlinarith only [sq_nonneg (Real.cos (3*t/2) * ImP x t - Real.sin (3*t/2) * ReP x t),
         Real.cos_sq_add_sin_sq (3*t/2)]
     have h2 : Complex.normSq ((ReP x t : ℂ) + (ImP x t : ℂ) * Complex.I)
         = ReP x t^2 + ImP x t^2 := by
@@ -423,14 +423,14 @@ lemma xyArith60 (s β : ℝ) (hs : 169 ≤ s) (hβ₁ : 372/1000 ≤ β) (hβ₂
       field_simp
       try ring
     rw [h]
-    exact div_nonneg (by nlinarith [hβ₂, sq_nonneg β, hspos]) (by positivity)
+    exact div_nonneg (by nlinarith only [hβ₂, sq_nonneg β, hspos]) (by positivity)
   have hC : (1510000:ℝ)/s^2 ≤ (1510000/169)/s := by
     rw [← sub_nonneg]
     have h : (1510000/169)/s - (1510000:ℝ)/s^2 = (1510000*s - 1510000*169)/(169*s^2) := by
       field_simp
       try ring
     rw [h]
-    exact div_nonneg (by nlinarith [hs]) (by positivity)
+    exact div_nonneg (by nlinarith only [hs]) (by positivity)
   have e1 : -((953600:ℝ)/45)/(1+s) ≤ -(((953600:ℝ)/45)*((169:ℝ)/170)/s) := by
     have h := neg_le_neg hA
     have h2 : -(((953600:ℝ)/45)/(1+s)) = -((953600:ℝ)/45)/(1+s) := by ring
@@ -446,7 +446,7 @@ lemma xyArith60 (s β : ℝ) (hs : 169 ≤ s) (hβ₁ : 372/1000 ≤ β) (hβ₂
   have hcomb : -((953600:ℝ)/45)/(1+s) + ((1950720:ℝ)/45)*β/(β^2+s) + 1510000/s^2
       ≤ (-((953600:ℝ)/45)*((169:ℝ)/170) + ((1950720:ℝ)/45)*((482:ℝ)/1000)
           + 1510000/169)/s := by
-    linarith [e1, e2, hC, e4]
+    linarith only [e1, e2, hC, e4]
   have hK : (0:ℝ) ≤ -((953600:ℝ)/45)*((169:ℝ)/170) + ((1950720:ℝ)/45)*((482:ℝ)/1000)
       + 1510000/169 := by norm_num
   calc -((953600:ℝ)/45)/(1+s) + ((1950720:ℝ)/45)*β/(β^2+s) + 1510000/s^2
@@ -479,14 +479,14 @@ lemma xyArith160 (s β : ℝ) (hs : 169 ≤ s) (hβ₁ : 372/1000 ≤ β) (hβ�
       field_simp
       try ring
     rw [h]
-    exact div_nonneg (by nlinarith [hβ₂, sq_nonneg β, hspos]) (by positivity)
+    exact div_nonneg (by nlinarith only [hβ₂, sq_nonneg β, hspos]) (by positivity)
   have hC : (210000:ℝ)/s^2 ≤ (210000/169)/s := by
     rw [← sub_nonneg]
     have h : (210000/169)/s - (210000:ℝ)/s^2 = (210000*s - 210000*169)/(169*s^2) := by
       field_simp
       try ring
     rw [h]
-    exact div_nonneg (by nlinarith [hs]) (by positivity)
+    exact div_nonneg (by nlinarith only [hs]) (by positivity)
   have e1 : -((80000:ℝ)/45)/(1+s) ≤ -(((80000:ℝ)/45)*((169:ℝ)/170)/s) := by
     have h := neg_le_neg hA
     have h2 : -(((80000:ℝ)/45)/(1+s)) = -((80000:ℝ)/45)/(1+s) := by ring
@@ -502,7 +502,7 @@ lemma xyArith160 (s β : ℝ) (hs : 169 ≤ s) (hβ₁ : 372/1000 ≤ β) (hβ�
   have hcomb : -((80000:ℝ)/45)/(1+s) + ((384000:ℝ)/45)*β/(β^2+s) + 210000/s^2
       ≤ (-((80000:ℝ)/45)*((169:ℝ)/170) + ((384000:ℝ)/45)*((482:ℝ)/1000)
           + 210000/169)/s := by
-    linarith [e1, e2, hC, e4]
+    linarith only [e1, e2, hC, e4]
   have hK : (0:ℝ) ≤ -((80000:ℝ)/45)*((169:ℝ)/170) + ((384000:ℝ)/45)*((482:ℝ)/1000)
       + 210000/169 := by norm_num
   calc -((80000:ℝ)/45)/(1+s) + ((384000:ℝ)/45)*β/(β^2+s) + 210000/s^2
@@ -529,8 +529,8 @@ theorem XySupLargeTB :
     have hβ₂ : 1 - lam ≤ (482:ℝ)/1000 := by linarith
     have ht4 : (0:ℝ) < t^4 := by positivity
     have ht2 : (169:ℝ) ≤ t^2 := by nlinarith
-    have hxt₁ : (-1:ℝ)^2 + t^2 ≠ 0 := by nlinarith [sq_nonneg t]
-    have hxt₂ : (-(1-lam))^2 + t^2 ≠ 0 := by nlinarith [sq_nonneg (1-lam), ht]
+    have hxt₁ : (-1:ℝ)^2 + t^2 ≠ 0 := by nlinarith only [sq_nonneg t]
+    have hxt₂ : (-(1-lam))^2 + t^2 ≠ 0 := by nlinarith only [sq_nonneg (1-lam), ht]
     have d1 := XyReDecompB (-1) t hxt₁
     have d2 := XyReDecompB (-(1-lam)) t hxt₂
     have R1 : ReQ (-1) t ≤ -((64:ℝ)/45)/(1+t^2) - (29/5)/t^4 := xyReQ_neg1 t ht
@@ -546,7 +546,7 @@ theorem XySupLargeTB :
         ≤ ((1950720:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) - 100584/t^4 := by
       have h := mul_le_mul_of_nonneg_left R2 (by norm_num : (0:ℝ) ≤ 30480)
       calc -30480 * ReQ (-(1-lam)) t
-          ≤ -30480 * (-((64:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) + (33/10)/t^4) := by linarith [h]
+          ≤ -30480 * (-((64:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) + (33/10)/t^4) := by linarith only [h]
         _ = ((1950720:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) - 100584/t^4 := by ring
     have b3 : 14900 * xyE (-1) t ≤ 870000/t^4 := by
       have h := (abs_le.mp E1).2
@@ -560,7 +560,7 @@ theorem XySupLargeTB :
       have h' : -30480 * xyE (-(1-lam)) t ≤ 30480 * (((26793:ℝ)/1000)/t^4) := by
         have h2 : -xyE (-(1-lam)) t ≤ ((26793:ℝ)/1000)/t^4 := by linarith
         have h3 := mul_le_mul_of_nonneg_left h2 (by norm_num : (0:ℝ) ≤ 30480)
-        linarith [h3]
+        linarith only [h3]
       calc -30480 * xyE (-(1-lam)) t ≤ 30480 * (((26793:ℝ)/1000)/t^4) := h'
         _ = (30480 * ((26793:ℝ)/1000))/t^4 := by ring
         _ ≤ 820000/t^4 :=
@@ -581,14 +581,14 @@ theorem XySupLargeTB :
     have dd1 : xyRe (-1) t = ReQ (-1) t + xyE (-1) t := d1
     have dd2 : xyRe (-(1-lam)) t = ReQ (-(1-lam)) t + xyE (-(1-lam)) t := d2
     rw [hsup, dd1, dd2]
-    linarith [b1, b2, b3, b4, expand, har', hnum, hnum2]
+    linarith only [b1, b2, b3, b4, expand, har', hnum, hnum2]
   · intro lam t h₁ h₂ ht
     have hβ₁ : (372:ℝ)/1000 ≤ 1 - lam := by linarith
     have hβ₂ : 1 - lam ≤ (482:ℝ)/1000 := by linarith
     have ht4 : (0:ℝ) < t^4 := by positivity
     have ht2 : (169:ℝ) ≤ t^2 := by nlinarith
-    have hxt₁ : (-1:ℝ)^2 + t^2 ≠ 0 := by nlinarith [sq_nonneg t]
-    have hxt₂ : (-(1-lam))^2 + t^2 ≠ 0 := by nlinarith [sq_nonneg (1-lam), ht]
+    have hxt₁ : (-1:ℝ)^2 + t^2 ≠ 0 := by nlinarith only [sq_nonneg t]
+    have hxt₂ : (-(1-lam))^2 + t^2 ≠ 0 := by nlinarith only [sq_nonneg (1-lam), ht]
     have d1 := XyReDecompB (-1) t hxt₁
     have d2 := XyReDecompB (-(1-lam)) t hxt₂
     have R1 : ReQ (-1) t ≤ -((64:ℝ)/45)/(1+t^2) - (29/5)/t^4 := xyReQ_neg1 t ht
@@ -604,7 +604,7 @@ theorem XySupLargeTB :
         ≤ ((384000:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) - 19800/t^4 := by
       have h := mul_le_mul_of_nonneg_left R2 (by norm_num : (0:ℝ) ≤ 6000)
       calc -6000 * ReQ (-(1-lam)) t
-          ≤ -6000 * (-((64:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) + (33/10)/t^4) := by linarith [h]
+          ≤ -6000 * (-((64:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) + (33/10)/t^4) := by linarith only [h]
         _ = ((384000:ℝ)/45)*(1-lam)/((1-lam)^2+t^2) - 19800/t^4 := by ring
     have b3 : 1250 * xyE (-1) t ≤ 73000/t^4 := by
       have h := (abs_le.mp E1).2
@@ -618,7 +618,7 @@ theorem XySupLargeTB :
       have h' : -6000 * xyE (-(1-lam)) t ≤ 6000 * (((26793:ℝ)/1000)/t^4) := by
         have h2 : -xyE (-(1-lam)) t ≤ ((26793:ℝ)/1000)/t^4 := by linarith
         have h3 := mul_le_mul_of_nonneg_left h2 (by norm_num : (0:ℝ) ≤ 6000)
-        linarith [h3]
+        linarith only [h3]
       calc -6000 * xyE (-(1-lam)) t ≤ 6000 * (((26793:ℝ)/1000)/t^4) := h'
         _ = (6000 * ((26793:ℝ)/1000))/t^4 := by ring
         _ ≤ 161000/t^4 :=
@@ -639,6 +639,6 @@ theorem XySupLargeTB :
     have dd1 : xyRe (-1) t = ReQ (-1) t + xyE (-1) t := d1
     have dd2 : xyRe (-(1-lam)) t = ReQ (-(1-lam)) t + xyE (-(1-lam)) t := d2
     rw [hsup, dd1, dd2]
-    linarith [b1, b2, b3, b4, expand, har', hnum, hnum2]
+    linarith only [b1, b2, b3, b4, expand, har', hnum, hnum2]
 
 end Work.ZeroFreeTables.XY

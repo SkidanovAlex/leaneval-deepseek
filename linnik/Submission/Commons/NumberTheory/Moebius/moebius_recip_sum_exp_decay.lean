@@ -57,8 +57,8 @@ lemma pskInt_dev_of_pos (σ T α : ℝ) (hσ : 0 < σ) (hT : 1 ≤ T) (hα : α 
         simpa [Commons.Analysis.Fourier.pskInt, Commons.Analysis.Fourier.pskKern] using
           (Commons.Analysis.Fourier.perronKernelSigma_regionBound σ T α hσ
             (le_trans zero_le_one hT))
-      have hbt : 2 * |α| * T ≤ 2 := by nlinarith
-      nlinarith
+      have hbt : 2 * |α| * T ≤ 2 := by linarith only [hδle]
+      linarith only [hδle, hb]
     have hVnorm : ‖V‖ ≤ 2 * Real.pi := by
       simpa [V] using Commons.Analysis.Fourier.psk_value_norm σ α hσ
     have hmain : ‖Commons.Analysis.Fourier.pskInt σ T α - V‖ ≤ 32 := by
@@ -66,7 +66,7 @@ lemma pskInt_dev_of_pos (σ T α : ℝ) (hσ : 0 < σ) (hT : 1 ≤ T) (hα : α 
         ‖Commons.Analysis.Fourier.pskInt σ T α - V‖
             ≤ ‖Commons.Analysis.Fourier.pskInt σ T α‖ + ‖V‖ := norm_sub_le _ _
         _ ≤ (Real.pi + 2) + 2 * Real.pi := add_le_add hreg hVnorm
-        _ ≤ 32 := by nlinarith [Real.pi_lt_four]
+        _ ≤ 32 := by linarith only [Real.pi_lt_four]
     simpa using hmain
   · have hδgt1 : 1 < T * |α| := lt_of_not_ge hδle
     have hmin : min 1 (1 / (T * |α|)) = 1 / (T * |α|) := by
@@ -308,7 +308,7 @@ lemma recipIntegrand_eq (x : ℝ) (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     simp at hs
   have h1s : (1 : ℝ) < (1 + s).re := by
     simp only [Complex.add_re, Complex.one_re]
-    linarith
+    linarith only [hs]
   have hz : riemannZeta (1 + s) ≠ 0 := riemannZeta_ne_zero_of_one_lt_re h1s
   rw [LSeries_moebius_eq_inv_zeta h1s, riemannZeta₁_one_add s hs0]
   field_simp
@@ -435,7 +435,7 @@ theorem recipPerron_eq_tsum (x T : ℝ) (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     positivity
   have hb_summable : Summable b := by
     have hbase : Summable (fun n : ℕ => ((n : ℝ) ^ (1 + σ))⁻¹) :=
-      (Real.summable_nat_rpow_inv).mpr (by linarith)
+      (Real.summable_nat_rpow_inv).mpr (by linarith only [hσ])
     have hmul : Summable (fun n : ℕ => (‖c‖ * x ^ σ / σ) * ((n : ℝ) ^ (1 + σ))⁻¹) :=
       hbase.mul_left _
     refine Summable.congr hmul fun n => ?_
@@ -543,9 +543,9 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
           (∑' n : ℕ, (1 / (n : ℝ)) * (x / (n : ℝ)) ^ σ *
             min 1 (1 / (T * |Real.log (x / (n : ℝ))|))) +
         (3 / 2) * (1 / (⌊x⌋₊ : ℝ)) := by
-  have hxpos : 0 < x := by linarith
-  have hT1 : (1 : ℝ) ≤ T := by linarith
-  have hx2 : (2 : ℝ) ≤ x := by linarith
+  have hxpos : 0 < x := by linarith only [hx]
+  have hT1 : (1 : ℝ) ≤ T := by linarith only [hT]
+  have hx2 : (2 : ℝ) ≤ x := by linarith only [hx]
   set f : ℕ → ℂ := fun n => (ArithmeticFunction.moebius n : ℂ) / (n : ℂ) with hfdef
   set g : ℕ → ℂ := fun n => f n * perronStep σ T (x / (n : ℝ)) with hgdef
   set err : ℕ → ℝ := fun n => (1 / (n : ℝ)) * (x / (n : ℝ)) ^ σ *
@@ -576,7 +576,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
       simp only [Finset.mem_Icc, Finset.mem_insert]
       omega
     have hzero : ind 0 = 0 := by
-      have h0 : ((0 : ℕ) : ℝ) ≤ x := by simp; linarith
+      have h0 : ((0 : ℕ) : ℝ) ≤ x := by simp; linarith only [hx]
       simp only [ind]
       rw [if_pos h0]
       simp [f, hfdef, ArithmeticFunction.map_zero]
@@ -600,7 +600,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
     · subst hn0
       have hf0 : f 0 = 0 := by simp [f, hfdef, ArithmeticFunction.map_zero]
       have hind0 : ind 0 = 0 := by
-        have h0 : ((0 : ℕ) : ℝ) ≤ x := by simp; linarith
+        have h0 : ((0 : ℕ) : ℝ) ≤ x := by simp; linarith only [hx]
         simp only [ind]
         rw [if_pos h0, hf0]
       have hg0 : g 0 = 0 := by simp only [g, hgdef, hf0, zero_mul]
@@ -609,7 +609,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
         simp [Real.zero_rpow (ne_of_gt hσ)]
       have hbd0 : (if (((0 : ℕ)) : ℝ) = x then (3 / 2) * (1 / ((0 : ℕ) : ℝ)) else 0) = 0 := by
         have h0x : (((0 : ℕ)) : ℝ) ≠ x := by
-          simp only [Nat.cast_zero]; linarith
+          simp only [Nat.cast_zero]; linarith only [hx]
         rw [if_neg h0x]
       rw [hind0, hg0, herr0, hbd0]
       simp
@@ -625,7 +625,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
         have hgn : g n = f n * perronStep σ T 1 := by
           simp only [g, hgdef]
           rw [hnx, div_self (ne_of_gt hxpos)]
-        have hper : ‖perronStep σ T 1‖ ≤ 1 / 2 := perronStep_one_norm hσ (by linarith)
+        have hper : ‖perronStep σ T 1‖ ≤ 1 / 2 := perronStep_one_norm hσ (by linarith only [hT])
         have herrzero : err n = 0 := by
           simp only [err, herrdef]
           rw [hnx, div_self (ne_of_gt hxpos), Real.one_rpow, Real.log_one, abs_zero, mul_zero,
@@ -642,7 +642,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
               refine mul_le_mul hfnle ?_ (norm_nonneg _) (by positivity)
               calc ‖(1 : ℂ) - perronStep σ T 1‖ ≤ ‖(1 : ℂ)‖ + ‖perronStep σ T 1‖ :=
                     norm_sub_le _ _
-                _ ≤ 1 + 1 / 2 := by rw [norm_one]; linarith
+                _ ≤ 1 + 1 / 2 := by rw [norm_one]; linarith only [hper]
                 _ = 3 / 2 := by norm_num
           _ = (32 / (2 * Real.pi)) * err n + (3 / 2) * (1 / (n : ℝ)) := by
               rw [herrzero]; ring
@@ -655,8 +655,8 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
             simp [h, h2]
           · exact absurd h hnx
           · have h2 : ¬ (1 < x / (n : ℝ)) := by
-              rw [lt_div_iff₀ hnR]; simp; linarith
-            have h2' : ¬ ((n : ℝ) < x) := by linarith
+              rw [lt_div_iff₀ hnR]; simp; linarith only [h]
+            have h2' : ¬ ((n : ℝ) < x) := by linarith only [h]
             simp [h2', h2]
         have hind_eq : ind n = f n * (if (n : ℝ) < x then (1 : ℂ) else 0) := by
           by_cases h : (n : ℝ) ≤ x
@@ -756,7 +756,7 @@ theorem recipPerron_sub_sum_le (x T : ℝ) (hx : 3 ≤ x) (hT : 2 ≤ T) (hTx : 
             (∑' n : ℕ, (if (n : ℝ) = x then (3 / 2) * (1 / (n : ℝ)) else 0)) := by
             rw [Summable.tsum_add (hsum_err.mul_left _) hsum_bdry, tsum_mul_left]
       _ ≤ (32 / (2 * Real.pi)) * (∑' n : ℕ, err n) + (3 / 2) * (1 / (⌊x⌋₊ : ℝ)) := by
-            linarith [hbdry_le]
+            linarith only [hbdry_le]
 
 /-! ## 4. The contour-shift bound -/
 
@@ -854,7 +854,7 @@ theorem recipPerron_le_edges (x T σ δ : ℝ) (hx : 0 < x) (hT : 0 < T) (hσ : 
       ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + (((-T : ℝ)) : ℂ) * Complex.I)‖ +
       ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I)‖ +
       ‖∫ (t : ℝ) in -T..T, recipInt x ((((-δ : ℝ)) : ℂ) + (t : ℂ) * Complex.I)‖ := by
-    linarith [hnorm]
+    linarith only [hnorm]
   exact mul_le_mul_of_nonneg_left hle (by positivity)
 
 /-! ## 5. Auxiliary bounds: `1/ζ` near the axis and absorption of log-powers -/
@@ -890,9 +890,9 @@ lemma zeta_inv_bound_near_axis :
     intro s hs
     obtain ⟨hs1, hs2, hs3⟩ := hs
     have h1 : 1 - ε₀ ≤ s.re := by
-      have : ε ≤ ε₀ := min_le_left _ _; linarith
-    have h3 : |s.im| ≤ 4 := by linarith
-    have hzf := hZF s.im s.re h3 h1 (by linarith : s.re ≤ 2)
+      have : ε ≤ ε₀ := min_le_left _ _; linarith only [hεε₀, hs1]
+    have h3 : |s.im| ≤ 4 := by linarith only [hs3]
+    have hzf := hZF s.im s.re h3 h1 (by linarith only [hs2] : s.re ≤ 2)
     have heq : ((s.re : ℂ) + Complex.I * (s.im : ℂ)) = s := by
       rw [show Complex.I * (s.im : ℂ) = (s.im : ℂ) * Complex.I by ring, Complex.re_add_im]
     rw [heq] at hzf
@@ -942,10 +942,10 @@ lemma poly_mul_exp_neg_sqrtLog_le_uniform (c : ℝ) (hc : 0 < c) (k : ℕ) (K : 
     (Commons.Analysis.Asymptotics.poly_mul_exp_neg_sqrtLog_le c hc k K hK)
   set y₀ : ℝ := max x₀ 2 with hy₀def
   have hy₀2 : (2 : ℝ) ≤ y₀ := le_max_right _ _
-  have hlogy₀ : 0 ≤ Real.log y₀ := Real.log_nonneg (by linarith)
+  have hlogy₀ : 0 ≤ Real.log y₀ := Real.log_nonneg (by linarith only [hy₀2])
   set B : ℝ := K * (Real.log y₀) ^ k * Real.exp ((c / 2) * Real.sqrt (Real.log y₀)) with hB
   have hBnn : 0 ≤ B := by rw [hB]; positivity
-  refine ⟨c / 2, max 1 B, by linarith, lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  refine ⟨c / 2, max 1 B, by linarith only [hc], lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
   intro x hx2
   have hCe : (1 : ℝ) ≤ max 1 B := le_max_left _ _
   have hCB : B ≤ max 1 B := le_max_right _ _
@@ -958,14 +958,14 @@ lemma poly_mul_exp_neg_sqrtLog_le_uniform (c : ℝ) (hc : 0 < c) (k : ℕ) (K : 
             mul_le_mul_of_nonneg_left hCe (Real.exp_nonneg _)
       _ = max 1 B * Real.exp (-(c / 2) * Real.sqrt (Real.log x)) := by ring
   · push Not at h
-    have hlogxnn : 0 ≤ Real.log x := Real.log_nonneg (by linarith)
-    have hlogx : Real.log x ≤ Real.log y₀ := Real.log_le_log (by linarith) h.le
+    have hlogxnn : 0 ≤ Real.log x := Real.log_nonneg (by linarith only [hx2])
+    have hlogx : Real.log x ≤ Real.log y₀ := Real.log_le_log (by linarith only [hx2]) h.le
     have hpow : (Real.log x) ^ k ≤ (Real.log y₀) ^ k := pow_le_pow_left₀ hlogxnn hlogx k
     have hexp1 : Real.exp (-c * Real.sqrt (Real.log x)) ≤ 1 := by
       rw [← Real.exp_zero]
       refine Real.exp_le_exp.mpr ?_
       have : 0 ≤ Real.sqrt (Real.log x) := Real.sqrt_nonneg _
-      nlinarith
+      nlinarith only [hc, this]
     have hLHS : K * (Real.log x) ^ k * Real.exp (-c * Real.sqrt (Real.log x)) ≤
         K * (Real.log y₀) ^ k := by
       calc K * (Real.log x) ^ k * Real.exp (-c * Real.sqrt (Real.log x))
@@ -987,8 +987,8 @@ lemma poly_mul_exp_neg_sqrtLog_le_uniform (c : ℝ) (hc : 0 < c) (k : ℕ) (K : 
         _ ≤ max 1 B * Real.exp (-(c / 2) * Real.sqrt (Real.log y₀)) :=
               mul_le_mul_of_nonneg_right hCB (Real.exp_nonneg _)
         _ ≤ max 1 B * Real.exp (-(c / 2) * Real.sqrt (Real.log x)) :=
-              mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by nlinarith)) (by positivity)
-    linarith [hLHS, hRHS]
+              mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by nlinarith only [hc, hsq])) (by positivity)
+    linarith only [hLHS, hRHS]
 
 /-! ## 6. Pointwise bounds for the Perron integrand on the edges -/
 
@@ -1002,8 +1002,8 @@ lemma recipInt_horiz_le (x T σ δ czf Czf sgn u : ℝ) (hx1 : 1 ≤ x)
     (hsgn : |sgn| = T) (hu1 : -δ ≤ u) (hu2 : u ≤ σ) (hσ1 : σ ≤ 1) :
     ‖recipInt x ((u : ℂ) + (sgn : ℂ) * Complex.I)‖ ≤
       x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf) := by
-  have hxpos : 0 < x := by linarith
-  have hTpos : 0 < T := by linarith
+  have hxpos : 0 < x := by linarith only [hx1]
+  have hTpos : 0 < T := by linarith only [hT]
   have hsre : ((u : ℂ) + (sgn : ℂ) * Complex.I).re = u := by simp
   have hsim : ((u : ℂ) + (sgn : ℂ) * Complex.I).im = sgn := by simp
   have hsne : ((u : ℂ) + (sgn : ℂ) * Complex.I) ≠ 0 := by
@@ -1012,7 +1012,7 @@ lemma recipInt_horiz_le (x T σ δ czf Czf sgn u : ℝ) (hx1 : 1 ≤ x)
     rw [hsim] at h
     simp at h
     rw [h, abs_zero] at hsgn
-    linarith
+    linarith only [hT, hsgn]
   have hnorm1 : ‖(x : ℂ) ^ ((u : ℂ) + (sgn : ℂ) * Complex.I)‖ = x ^ u := by
     rw [Complex.norm_cpow_eq_rpow_re_of_pos hxpos, hsre]
   have hz1 : riemannZeta₁ (1 + ((u : ℂ) + (sgn : ℂ) * Complex.I)) =
@@ -1032,8 +1032,8 @@ lemma recipInt_horiz_le (x T σ δ czf Czf sgn u : ℝ) (hx1 : 1 ≤ x)
     have hlog : Real.log (|sgn| + 2) = Real.log (T + 2) := by rw [hsgn]
     have h2 : 1 - czf / Real.log (|sgn| + 2) ≤ 1 + u := by
       rw [hlog]
-      linarith [hδle, hu1]
-    have h3 : 1 + u ≤ 2 := by linarith
+      linarith only [hδle, hu1]
+    have h3 : 1 + u ≤ 2 := by linarith only [hu2, hσ1]
     have h4 := hZF (1 + u) sgn h1 h2 h3
     rw [hlog] at h4
     rw [harg]
@@ -1071,7 +1071,7 @@ lemma recipInt_vert_le (x T δ εb Kb czf Czf t : ℝ) (hx1 : 1 ≤ x)
     (ht : |t| ≤ T) :
     ‖recipInt x (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖ ≤
       x ^ (-δ) * (1 / δ) * (Kb + Czf * (Real.log (T + 2)) ^ Czf) := by
-  have hxpos : 0 < x := by linarith
+  have hxpos : 0 < x := by linarith only [hx1]
   have hsre : (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I).re = -δ := by simp
   have hsim : (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I).im = t := by simp
   have hsne : (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I) ≠ 0 := by
@@ -1079,7 +1079,7 @@ lemma recipInt_vert_le (x T δ εb Kb czf Czf t : ℝ) (hx1 : 1 ≤ x)
     have h := congrArg Complex.re hh
     rw [hsre] at h
     simp at h
-    linarith
+    linarith only [hδ, h]
   have hnorm1 : ‖(x : ℂ) ^ (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖ = x ^ (-δ) := by
     rw [Complex.norm_cpow_eq_rpow_re_of_pos hxpos, hsre]
   have hz1 : riemannZeta₁ (1 + (((-δ : ℝ) : ℂ) + (t : ℂ) * Complex.I)) =
@@ -1097,18 +1097,18 @@ lemma recipInt_vert_le (x T δ εb Kb czf Czf t : ℝ) (hx1 : 1 ≤ x)
       Kb + Czf * (Real.log (T + 2)) ^ Czf := by
     rw [harg]
     by_cases ht3 : |t| ≤ 3
-    · have hna := hNAb (1 - δ) t (by linarith) (by linarith) ht3 (by linarith)
+    · have hna := hNAb (1 - δ) t (by linarith only [hδb]) (by linarith only [hδ]) ht3 (by linarith only [hδ])
       rw [one_div, ← norm_inv]
       exact le_trans hna (le_add_of_nonneg_right
-        (mul_nonneg hCzf (Real.rpow_nonneg (Real.log_nonneg (by linarith)) Czf)))
+        (mul_nonneg hCzf (Real.rpow_nonneg (Real.log_nonneg (by linarith only [hT])) Czf)))
     · push Not at ht3
       have hlog : Real.log (|t| + 2) ≤ Real.log (T + 2) :=
-        Real.log_le_log (by linarith) (by linarith)
-      have hl : 0 < Real.log (|t| + 2) := Real.log_pos (by linarith)
+        Real.log_le_log (by linarith only [ht3]) (by linarith only [ht])
+      have hl : 0 < Real.log (|t| + 2) := Real.log_pos (by linarith only [ht3])
       have h3 : czf / Real.log (T + 2) ≤ czf / Real.log (|t| + 2) :=
         div_le_div_of_nonneg_left (le_of_lt hczf) hl hlog
-      have h2 : 1 - czf / Real.log (|t| + 2) ≤ 1 - δ := by linarith [hδle]
-      have h4 := hZF (1 - δ) t (by linarith) h2 (by linarith)
+      have h2 : 1 - czf / Real.log (|t| + 2) ≤ 1 - δ := by linarith only [hδle, h3]
+      have h4 := hZF (1 - δ) t (by linarith only [ht3]) h2 (by linarith only [hδ])
       have h5 : Czf * (Real.log (|t| + 2)) ^ Czf ≤ Czf * (Real.log (T + 2)) ^ Czf :=
         mul_le_mul_of_nonneg_left
           (Real.rpow_le_rpow (le_of_lt hl) hlog hCzf) hCzf
@@ -1160,19 +1160,19 @@ theorem moebius_recip_sum_exp_decay :
   have hθle3 : θ ≤ Real.sqrt (c₀ / 3) := min_le_right _ _
   have hθpos : 0 < θ := by
     rw [hθdef]
-    exact lt_min (lt_min (by linarith) (by norm_num)) (Real.sqrt_pos_of_pos (by linarith))
+    exact lt_min (lt_min (by linarith only [hc0pos]) (by norm_num)) (Real.sqrt_pos_of_pos (by linarith only [hc0pos]))
   have hθsq : 3 * θ ^ 2 ≤ c₀ := by
     have h2 : θ ^ 2 ≤ c₀ / 3 := by
       calc θ ^ 2 ≤ (Real.sqrt (c₀ / 3)) ^ 2 := pow_le_pow_left₀ (le_of_lt hθpos) hθle3 2
-        _ = c₀ / 3 := Real.sq_sqrt (by linarith)
-    linarith
+        _ = c₀ / 3 := Real.sq_sqrt (by linarith only [hθle1, hθpos])
+    linarith only [h2]
   have hθneed : θ / 2 ≤ c₀ / (2 * θ) - θ := by
     have h1 : 3 * θ ^ 2 ≤ c₀ := hθsq
-    have h2 : 0 < 2 * θ := by linarith
+    have h2 : 0 < 2 * θ := by linarith only [hθpos]
     have h3 : 3 * θ ^ 2 / (2 * θ) ≤ c₀ / (2 * θ) := div_le_div_of_nonneg_right h1 (le_of_lt h2)
     have h4 : 3 * θ ^ 2 / (2 * θ) = 3 * θ / 2 := by field_simp
     rw [h4] at h3
-    linarith
+    linarith only [h3]
   set L1 : ℝ := max 8 (max (4 / θ ^ 2) (max ((2 * c₀ / (ε0 * θ)) ^ 2) ((2 * c₀ / (εb * θ)) ^ 2)))
     with hL1def
   have hL1ge8 : 8 ≤ L1 := le_max_left _ _
@@ -1187,7 +1187,7 @@ theorem moebius_recip_sum_exp_decay :
     rw [hx1def]
     have hlog4 : Real.log 4 ≤ L1 := by
       have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 4)
-      linarith
+      linarith only [hθle2, hθpos, hL1ge8, this]
     calc (4 : ℝ) = Real.exp (Real.log 4) := (Real.exp_log (by norm_num)).symm
       _ ≤ Real.exp L1 := Real.exp_le_exp.mpr hlog4
   -- ---------- constants ----------
@@ -1221,19 +1221,19 @@ theorem moebius_recip_sum_exp_decay :
     set T : ℝ := Real.exp (θ * Real.sqrt L) with hTdef
     set σ : ℝ := 1 / L with hσdef
     set δ : ℝ := c₀ / Real.log (T + 3) with hδdef
-    have hxpos : (0 : ℝ) < x := by linarith [le_trans hx1ge4 hx]
+    have hxpos : (0 : ℝ) < x := by linarith only [le_trans hx1ge4 hx, hθle2, hθpos, hx1ge4, hx]
     have hLge : L1 ≤ L := by
       rw [hLdef]
       exact (Real.le_log_iff_exp_le hxpos).mpr (by rw [← hx1def]; exact hx)
     have hLge8 : 8 ≤ L := le_trans hL1ge8 hLge
-    have hLpos : 0 < L := by linarith
-    have hLge1 : 1 ≤ L := by linarith
+    have hLpos : 0 < L := by linarith only [hθle2, hθpos, hL1ge8, hLge]
+    have hLge1 : 1 ≤ L := by linarith only [hθle2, hθpos, hL1ge8, hLge]
     have hLnonneg : 0 ≤ L := le_of_lt hLpos
     have hsqL : (Real.sqrt L) ^ 2 = L := Real.sq_sqrt hLnonneg
     have hsqL' : Real.sqrt L * Real.sqrt L = L := by rw [← sq]; exact hsqL
     have hsqrtL_pos : 0 < Real.sqrt L := Real.sqrt_pos_of_pos hLpos
     have hsqrtLge2 : 2 ≤ Real.sqrt L := by
-      have h16 : (2 : ℝ) ^ 2 ≤ L := by norm_num; linarith
+      have h16 : (2 : ℝ) ^ 2 ≤ L := by norm_num; linarith only [hθle2, hθpos, hL1ge8, hLge]
       calc (2 : ℝ) = Real.sqrt ((2 : ℝ) ^ 2) := (Real.sqrt_sq (by norm_num)).symm
         _ ≤ Real.sqrt L := Real.sqrt_le_sqrt h16
     have hθsqrtL : 2 ≤ θ * Real.sqrt L := by
@@ -1253,10 +1253,10 @@ theorem moebius_recip_sum_exp_decay :
         have h2 : Real.exp 2 = Real.exp 1 * Real.exp 1 := by
           rw [show (2 : ℝ) = 1 + 1 by norm_num, Real.exp_add]
         rw [h2]
-        nlinarith [Real.exp_one_gt_two, Real.exp_pos 1]
+        nlinarith only [Real.exp_one_gt_two, Real.exp_pos 1, hθle2, hθpos]
       exact le_trans h3 (Real.exp_le_exp.mpr hθsqrtL)
     have hTle_x : T ≤ x := by
-      have h1 : θ ≤ Real.sqrt L := le_trans hθle2 (le_trans (by linarith : (1:ℝ)/2 ≤ 2) hsqrtLge2)
+      have h1 : θ ≤ Real.sqrt L := le_trans hθle2 (le_trans (by linarith only [hθle2, hθpos] : (1:ℝ)/2 ≤ 2) hsqrtLge2)
       have h2 : θ * Real.sqrt L ≤ L := by
         calc θ * Real.sqrt L ≤ Real.sqrt L * Real.sqrt L :=
               mul_le_mul_of_nonneg_right h1 (le_of_lt hsqrtL_pos)
@@ -1266,24 +1266,24 @@ theorem moebius_recip_sum_exp_decay :
         _ = Real.exp (Real.log x) := by rw [hLdef]
         _ = x := Real.exp_log hxpos
     have hσpos : 0 < σ := by rw [hσdef]; positivity
-    have hσle1 : σ ≤ 1 := by rw [hσdef, div_le_one hLpos]; linarith
-    have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hc0pos (Real.log_pos (by linarith))
-    have hlogT3pos : 0 < Real.log (T + 3) := Real.log_pos (by linarith)
+    have hσle1 : σ ≤ 1 := by rw [hσdef, div_le_one hLpos]; linarith only [hθle2, hθpos, hL1ge8, hLge]
+    have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hc0pos (Real.log_pos (by linarith only [hθle2, hθpos, hTge3]))
+    have hlogT3pos : 0 < Real.log (T + 3) := Real.log_pos (by linarith only [hθle2, hθpos, hTge3])
     have hlogT3ge : θ * Real.sqrt L ≤ Real.log (T + 3) := by
-      have h := Real.log_le_log hTpos (by linarith : T ≤ T + 3)
+      have h := Real.log_le_log hTpos (by linarith only [hθle2, hθpos] : T ≤ T + 3)
       rwa [Real.log_exp] at h
     have hlogT3le : Real.log (T + 3) ≤ 2 * (θ * Real.sqrt L) := by
-      have hT3 : T + 3 ≤ 2 * T := by linarith
+      have hT3 : T + 3 ≤ 2 * T := by linarith only [hTge3]
       have hlog2T : Real.log (2 * T) = Real.log 2 + Real.log T :=
         Real.log_mul (by norm_num) hTpos.ne'
       have hlogT : Real.log T = θ * Real.sqrt L := by rw [hTdef, Real.log_exp]
       have hlog2le : Real.log 2 ≤ 1 := by
         have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-        linarith
-      calc Real.log (T + 3) ≤ Real.log (2 * T) := Real.log_le_log (by linarith) hT3
+        linarith only [this]
+      calc Real.log (T + 3) ≤ Real.log (2 * T) := Real.log_le_log (by linarith only [hθle2, hθpos, hTge3]) hT3
         _ = Real.log 2 + Real.log T := hlog2T
-        _ ≤ 1 + θ * Real.sqrt L := by rw [hlogT]; linarith
-        _ ≤ 2 * (θ * Real.sqrt L) := by nlinarith [hθsqrtL]
+        _ ≤ 1 + θ * Real.sqrt L := by rw [hlogT]; linarith only [hlog2le]
+        _ ≤ 2 * (θ * Real.sqrt L) := by linarith only [hθsqrtL, hθle2, hθpos]
     have hθsqrtL_ε0 : 2 * c₀ / ε0 ≤ θ * Real.sqrt L := by
       have h2 : (2 * c₀ / (ε0 * θ)) ^ 2 ≤ L := le_trans hL1geε0 hLge
       have h : 2 * c₀ / (ε0 * θ) ≤ Real.sqrt L := by
@@ -1310,35 +1310,35 @@ theorem moebius_recip_sum_exp_decay :
         have h3 : ε0 * (2 * c₀ / ε0) ≤ ε0 * (θ * Real.sqrt L) :=
           mul_le_mul_of_nonneg_left hθsqrtL_ε0 hε0_pos.le
         rw [mul_div_cancel₀ (2 * c₀) hε0_pos.ne'] at h3
-        linarith
+        linarith only [hθle1, hθpos, h3]
       have h4 : ε0 * (θ * Real.sqrt L) ≤ ε0 * Real.log (T + 3) :=
         mul_le_mul_of_nonneg_left hlogT3ge hε0_pos.le
-      linarith
+      linarith only [h2, h4]
     have hδ_le_εb : δ ≤ εb := by
       rw [hδdef, div_le_iff₀ hlogT3pos]
       have h2 : c₀ ≤ εb * (θ * Real.sqrt L) := by
         have h3 : εb * (2 * c₀ / εb) ≤ εb * (θ * Real.sqrt L) :=
           mul_le_mul_of_nonneg_left hθsqrtL_εb hεb_pos.le
         rw [mul_div_cancel₀ (2 * c₀) hεb_pos.ne'] at h3
-        linarith
+        linarith only [hθle1, hθpos, h3]
       have h4 : εb * (θ * Real.sqrt L) ≤ εb * Real.log (T + 3) :=
         mul_le_mul_of_nonneg_left hlogT3ge hεb_pos.le
-      linarith
+      linarith only [h2, h4]
     have hδ_le_zf : δ ≤ czf / Real.log (T + 2) := by
-      have hlogT2pos : 0 < Real.log (T + 2) := Real.log_pos (by linarith)
+      have hlogT2pos : 0 < Real.log (T + 2) := Real.log_pos (by linarith only [hθle2, hθpos, hTge3])
       have hlog23 : Real.log (T + 2) ≤ Real.log (T + 3) :=
-        Real.log_le_log (by linarith) (by linarith)
+        Real.log_le_log (by linarith only [hθle2, hθpos, hTge3]) (by linarith only [hθle2, hθpos])
       rw [hδdef, div_le_div_iff₀ hlogT3pos hlogT2pos]
       have h1 : c₀ * Real.log (T + 2) ≤ czf * Real.log (T + 2) :=
         mul_le_mul_of_nonneg_right hc0zf (le_of_lt hlogT2pos)
       have h2 : czf * Real.log (T + 2) ≤ czf * Real.log (T + 3) :=
         mul_le_mul_of_nonneg_left hlog23 (le_of_lt hczf_pos)
-      linarith
+      linarith only [h1, h2]
     have hδ_le_c2 : δ ≤ czf2 / Real.log (T + 3) := by
       rw [hδdef, div_le_div_iff₀ hlogT3pos hlogT3pos]
       have h1 : c₀ * Real.log (T + 3) ≤ czf2 * Real.log (T + 3) :=
         mul_le_mul_of_nonneg_right hc02 (le_of_lt hlogT3pos)
-      linarith
+      linarith only [h1]
     have hxσ : x ^ σ = Real.exp 1 := by
       rw [hσdef, Real.rpow_def_of_pos hxpos, one_div, ← hLdef, mul_inv_cancel₀ hLpos.ne']
     have hTinv : (1 : ℝ) / T = Real.exp (-θ * Real.sqrt L) := by
@@ -1355,11 +1355,11 @@ theorem moebius_recip_sum_exp_decay :
       intro s hs
       rw [Complex.mem_reProdIm] at hs
       obtain ⟨hsre, hsim⟩ := hs
-      rw [Set.uIcc_of_le (by linarith : -δ ≤ σ)] at hsre
-      rw [Set.uIcc_of_le (by linarith : -T ≤ T)] at hsim
+      rw [Set.uIcc_of_le (by linarith only [hσpos, hδpos] : -δ ≤ σ)] at hsre
+      rw [Set.uIcc_of_le (by linarith only [hθle2, hθpos, hTge3] : -T ≤ T)] at hsim
       rw [Set.mem_Icc] at hsre hsim
-      have hre1 : 1 - ε0 ≤ 1 + s.re := by linarith [hsre.1, hδ_le_ε0]
-      have hre2 : 1 + s.re ≤ 2 := by linarith [hsre.2, hσle1]
+      have hre1 : 1 - ε0 ≤ 1 + s.re := by linarith only [hsre.1, hδ_le_ε0, hsre]
+      have hre2 : 1 + s.re ≤ 2 := by linarith only [hsre.2, hσle1, hsre]
       have hsimT : |s.im| ≤ T := abs_le.mpr ⟨hsim.1, hsim.2⟩
       have heq : ((1 + s.re : ℝ) : ℂ) + Complex.I * (s.im : ℂ) = 1 + s := by
         apply Complex.ext
@@ -1371,22 +1371,22 @@ theorem moebius_recip_sum_exp_decay :
       · have h := hNAnv s.im (1 + s.re) hcase hre1 hre2
         rwa [heq] at h
       · push Not at hcase
-        have him1 : 1 ≤ |s.im| := by linarith
+        have him1 : 1 ≤ |s.im| := by linarith only [hθle2, hθpos, hcase]
         have h2 : 1 - czf2 / Real.log (|s.im| + 3) ≤ 1 + s.re := by
           have hlog : Real.log (|s.im| + 3) ≤ Real.log (T + 3) :=
-            Real.log_le_log (by linarith) (by linarith)
-          have hl : 0 < Real.log (|s.im| + 3) := Real.log_pos (by linarith)
+            Real.log_le_log (by linarith only [hθle2, hθpos, hcase]) (by linarith only [hsimT])
+          have hl : 0 < Real.log (|s.im| + 3) := Real.log_pos (by linarith only [hθle2, hθpos, hcase])
           have h3 : czf2 / Real.log (T + 3) ≤ czf2 / Real.log (|s.im| + 3) :=
             div_le_div_of_nonneg_left hczf2_pos.le hl hlog
-          linarith [hδ_le_c2]
+          linarith only [hδ_le_c2, hsre, h3]
         have h := hZFnv s.im him1 (1 + s.re) h2
         rwa [heq] at h
     -- ---------- the truncation error ----------
     have hbound1 : ‖(∑ n ∈ Finset.Icc 1 ⌊x⌋₊,
           (((ArithmeticFunction.moebius n : ℝ) / (n : ℝ)) : ℂ)) - recipPerron x T σ‖ ≤
         Ae * (1 + L) * Real.exp (-θ * Real.sqrt L) := by
-      have h3x : (3 : ℝ) ≤ x := by linarith
-      have hT2 : (2 : ℝ) ≤ T := by linarith
+      have h3x : (3 : ℝ) ≤ x := by linarith only [hθle2, hθpos, hx1ge4, hx]
+      have hT2 : (2 : ℝ) ≤ T := by linarith only [hθle2, hθpos, hTge3]
       have hmain := recipPerron_sub_sum_le x T h3x hT2 hTle_x hσpos hσle1
       have hsum := (hm x σ T h3x hσpos hσle1 hT2 hTle_x).2
       have hxσ : x ^ σ = Real.exp 1 := by
@@ -1399,8 +1399,8 @@ theorem moebius_recip_sum_exp_decay :
       have hexpnn : 0 ≤ Real.exp (-θ * Real.sqrt L) := Real.exp_nonneg _
       have hkey : x ^ σ * (1 + 1 / σ) + 1 ≤ (Real.exp 1 + 1) * (1 + L) := by
         rw [hxσ, hinvσ]
-        have h1 : (1 : ℝ) ≤ 1 + L := by linarith
-        calc Real.exp 1 * (1 + L) + 1 ≤ Real.exp 1 * (1 + L) + (1 + L) := by linarith
+        have h1 : (1 : ℝ) ≤ 1 + L := by linarith only [hθle2, hθpos, hL1ge8, hLge]
+        calc Real.exp 1 * (1 + L) + 1 ≤ Real.exp 1 * (1 + L) + (1 + L) := by linarith only [hθle2, hθpos, hL1ge8, hLge]
           _ = (Real.exp 1 + 1) * (1 + L) := by ring
       have hE : (∑' n : ℕ, (1 / (n : ℝ)) * (x / (n : ℝ)) ^ σ *
             min 1 (1 / (T * |Real.log (x / (n : ℝ))|))) ≤
@@ -1414,30 +1414,30 @@ theorem moebius_recip_sum_exp_decay :
                 mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hkey hCm_pos.le) hexpnn
           _ = Cm * (Real.exp 1 + 1) * (1 + L) * Real.exp (-θ * Real.sqrt L) := by ring
       have hfloorpos : 0 < ((⌊x⌋₊ : ℕ) : ℝ) := by
-        have h2 : (1 : ℕ) ≤ ⌊x⌋₊ := Nat.le_floor (by push_cast; linarith : ((1:ℕ):ℝ) ≤ x)
+        have h2 : (1 : ℕ) ≤ ⌊x⌋₊ := Nat.le_floor (by push_cast; linarith only [hθle2, hθpos, hx1ge4, hx] : ((1:ℕ):ℝ) ≤ x)
         have h3 : (0 : ℕ) < ⌊x⌋₊ := by omega
         exact_mod_cast h3
       have hfloor : x / 2 ≤ ((⌊x⌋₊ : ℕ) : ℝ) := by
         have h := Nat.lt_floor_add_one x
         push_cast
-        linarith
+        linarith only [hθle2, hθpos, hx1ge4, hx, h]
       have hbdry : (3 / 2) * (1 / ((⌊x⌋₊ : ℕ) : ℝ)) ≤ 3 * Real.exp (-θ * Real.sqrt L) := by
         have h1 : (1 : ℝ) / ((⌊x⌋₊ : ℕ) : ℝ) ≤ 2 / x := by
           rw [div_le_div_iff₀ hfloorpos hxpos]
           have hh : x / 2 ≤ ((⌊x⌋₊ : ℕ) : ℝ) := hfloor
-          linarith
+          linarith only [hfloor]
         have h2 : (2 : ℝ) / x = 2 * Real.exp (-L) := by
           have hxL : x = Real.exp L := by rw [hLdef]; exact (Real.exp_log hxpos).symm
           rw [hxL, div_eq_mul_inv, ← Real.exp_neg]
         have h3 : Real.exp (-L) ≤ Real.exp (-θ * Real.sqrt L) := by
           refine Real.exp_le_exp.mpr ?_
           have h1 : θ ≤ Real.sqrt L :=
-            le_trans hθle2 (le_trans (by linarith : (1:ℝ)/2 ≤ 2) hsqrtLge2)
+            le_trans hθle2 (le_trans (by linarith only [hθle2, hθpos] : (1:ℝ)/2 ≤ 2) hsqrtLge2)
           have h2 : θ * Real.sqrt L ≤ Real.sqrt L * Real.sqrt L :=
             mul_le_mul_of_nonneg_right h1 (le_of_lt hsqrtL_pos)
           rw [hsqL'] at h2
-          linarith
-        linarith
+          linarith only [h2]
+        linarith only [h1, h2, h3]
       have h32 : 0 ≤ 32 / (2 * Real.pi) := by positivity
       have hfirst : (32 / (2 * Real.pi)) * (∑' n : ℕ, (1 / (n : ℝ)) * (x / (n : ℝ)) ^ σ *
             min 1 (1 / (T * |Real.log (x / (n : ℝ))|))) ≤
@@ -1451,7 +1451,7 @@ theorem moebius_recip_sum_exp_decay :
             (3 / 2) * (1 / ((⌊x⌋₊ : ℕ) : ℝ)) := hmain
         _ ≤ (32 / (2 * Real.pi)) * (Cm * (Real.exp 1 + 1) * (1 + L) *
               Real.exp (-θ * Real.sqrt L)) + 3 * Real.exp (-θ * Real.sqrt L) := by
-              linarith [hfirst, hbdry]
+              linarith only [hfirst, hbdry]
         _ ≤ Ae * (1 + L) * Real.exp (-θ * Real.sqrt L) := by
               have hstep : (32 / (2 * Real.pi)) * (Cm * (Real.exp 1 + 1) * (1 + L) *
                     Real.exp (-θ * Real.sqrt L)) + 3 * Real.exp (-θ * Real.sqrt L) =
@@ -1465,7 +1465,7 @@ theorem moebius_recip_sum_exp_decay :
                     (32 / (2 * Real.pi)) * Cm * (Real.exp 1 + 1) * (1 + L) + 3 * (1 + L) := by
                   ring
                 rw [heq]
-                linarith
+                linarith only [hθle2, hθpos, hL1ge8, hLge]
               calc ((32 / (2 * Real.pi)) * Cm * (Real.exp 1 + 1) * (1 + L) + 3) *
                     Real.exp (-θ * Real.sqrt L)
                   ≤ (Ae * (1 + L)) * Real.exp (-θ * Real.sqrt L) :=
@@ -1473,51 +1473,51 @@ theorem moebius_recip_sum_exp_decay :
                 _ = Ae * (1 + L) * Real.exp (-θ * Real.sqrt L) := by ring
     -- ---------- the Perron integral ----------
     have hpowC : (Real.log (T + 2)) ^ Czf ≤ (1 + L) ^ (Nat.ceil Czf : ℝ) := by
-      have hlogT2nonneg : 0 ≤ Real.log (T + 2) := le_of_lt (Real.log_pos (by linarith))
+      have hlogT2nonneg : 0 ≤ Real.log (T + 2) := le_of_lt (Real.log_pos (by linarith only [hθle2, hθpos, hTge3]))
       have hlogT2le : Real.log (T + 2) ≤ 2 * (θ * Real.sqrt L) :=
-        le_trans (Real.log_le_log (by linarith) (by linarith : T + 2 ≤ T + 3)) hlogT3le
+        le_trans (Real.log_le_log (by linarith only [hθle2, hθpos, hTge3]) (by linarith only [hθle2, hθpos] : T + 2 ≤ T + 3)) hlogT3le
       have h1 : (Real.log (T + 2)) ^ Czf ≤ (2 * (θ * Real.sqrt L)) ^ Czf :=
         Real.rpow_le_rpow hlogT2nonneg hlogT2le hCzf_pos.le
       have h2 : (2 * (θ * Real.sqrt L)) ^ Czf ≤ (1 + L) ^ (Nat.ceil Czf : ℝ) := by
         rw [show 2 * (θ * Real.sqrt L) = (2 * θ) * Real.sqrt L by ring,
           Real.mul_rpow (by positivity) (Real.sqrt_nonneg L)]
-        have h2θ1 : (2 * θ) ^ Czf ≤ 1 := Real.rpow_le_one (by positivity) (by linarith) hCzf_pos.le
+        have h2θ1 : (2 * θ) ^ Czf ≤ 1 := Real.rpow_le_one (by positivity) (by linarith only [hθle2]) hCzf_pos.le
         have hsq : (Real.sqrt L) ^ Czf ≤ (1 + L) ^ (Nat.ceil Czf : ℝ) := by
           have hbase : Real.sqrt L ≤ 1 + L := by
-            have h1 : (1 : ℝ) ≤ Real.sqrt L := by linarith
+            have h1 : (1 : ℝ) ≤ Real.sqrt L := by linarith only [hθle2, hθpos, hsqrtLge2]
             have h2 : Real.sqrt L ≤ Real.sqrt L * Real.sqrt L := by
               have hh := mul_le_mul_of_nonneg_left h1 (le_of_lt hsqrtL_pos)
               rwa [mul_one] at hh
             rw [hsqL'] at h2
-            linarith
+            linarith only [hθle2, hθpos, h2]
           have hb1 : (Real.sqrt L) ^ Czf ≤ (1 + L) ^ Czf :=
             Real.rpow_le_rpow (Real.sqrt_nonneg L) hbase hCzf_pos.le
           have hb2 : (1 + L) ^ Czf ≤ (1 + L) ^ (Nat.ceil Czf : ℝ) :=
-            Real.rpow_le_rpow_of_exponent_le (by linarith) (Nat.le_ceil Czf)
-          linarith
+            Real.rpow_le_rpow_of_exponent_le (by linarith only [hθle2, hθpos, hL1ge8, hLge]) (Nat.le_ceil Czf)
+          linarith only [hb1, hb2]
         calc (2 * θ) ^ Czf * (Real.sqrt L) ^ Czf ≤ 1 * (1 + L) ^ (Nat.ceil Czf : ℝ) :=
               mul_le_mul h2θ1 hsq (Real.rpow_nonneg (Real.sqrt_nonneg L) _) (by norm_num)
           _ = (1 + L) ^ (Nat.ceil Czf : ℝ) := one_mul _
       exact h1.trans h2
     have hpowCmono : (1 + L) ^ (Nat.ceil Czf : ℝ) ≤ (1 + L) ^ kb := by
       rw [← Real.rpow_natCast (1 + L) kb]
-      exact Real.rpow_le_rpow_of_exponent_le (x := 1 + L) (by linarith) hkbC
+      exact Real.rpow_le_rpow_of_exponent_le (x := 1 + L) (by linarith only [hθle2, hθpos, hL1ge8, hLge]) hkbC
     have hpowCkb : (1 + L) ^ (Nat.ceil Czf : ℝ) * (1 + L) ≤ (1 + L) ^ kb := by
       have h1 : (1 + L) ^ ((Nat.ceil Czf : ℝ) + 1) = (1 + L) ^ (Nat.ceil Czf : ℝ) * (1 + L) := by
-        rw [Real.rpow_add (by linarith : (0:ℝ) < 1 + L), Real.rpow_one]
+        rw [Real.rpow_add (by linarith only [hθle2, hθpos, hL1ge8, hLge] : (0:ℝ) < 1 + L), Real.rpow_one]
       rw [← h1]
       have h2 : (1 + L) ^ ((Nat.ceil Czf : ℝ) + 1) ≤ (1 + L) ^ (kb : ℝ) :=
-        Real.rpow_le_rpow_of_exponent_le (by linarith) hkbC1
+        Real.rpow_le_rpow_of_exponent_le (by linarith only [hθle2, hθpos, hL1ge8, hLge]) hkbC1
       rwa [Real.rpow_natCast] at h2
     have hE2 : Real.exp (-θ * Real.sqrt L) ≤ Real.exp (-(θ / 2) * Real.sqrt L) := by
       refine Real.exp_le_exp.mpr ?_
       have h3 : 0 ≤ θ * Real.sqrt L := mul_nonneg hθpos.le hsqrtL_pos.le
-      linarith
+      linarith only [hθle2, hθpos, hθsqrtL]
     have hE2pos : 0 ≤ Real.exp (-(θ / 2) * Real.sqrt L) := Real.exp_nonneg _
     have hFpos : 0 < Real.exp (-(θ / 2) * Real.sqrt L) := Real.exp_pos _
     have hbound2 : ‖recipPerron x T σ‖ ≤ Cb * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := by
       have hrec := recipPerron_le_edges x T σ δ hxpos hTpos hσpos hδpos hrect
-      have hlogT2pos : 0 < Real.log (T + 2) := Real.log_pos (by linarith)
+      have hlogT2pos : 0 < Real.log (T + 2) := Real.log_pos (by linarith only [hθle2, hθpos, hTge3])
       have hargTneg : |(-T : ℝ)| = T := by rw [abs_neg, abs_of_nonneg (le_of_lt hTpos)]
       have hargT : |(T : ℝ)| = T := abs_of_nonneg (le_of_lt hTpos)
       have hCzfnn : (0 : ℝ) ≤ Czf := le_of_lt hCzf_pos
@@ -1528,45 +1528,45 @@ theorem moebius_recip_sum_exp_decay :
         have hmain := intervalIntegral.norm_integral_le_of_norm_le_const (a := -δ) (b := σ)
           (C := x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf))
           (f := fun u : ℝ => recipInt x ((u : ℂ) + (((-T : ℝ)) : ℂ) * Complex.I))
-          (fun u hu => recipInt_horiz_le x T σ δ czf Czf (-T) u (by linarith) hTge3 hδpos
+          (fun u hu => recipInt_horiz_le x T σ δ czf Czf (-T) u (by linarith only [hθle2, hθpos, hx1ge4, hx]) hTge3 hδpos
             hδ_le_zf hczf_pos hCzfnn hZF hargTneg
-            (by have h := hu.1; rw [min_eq_left (by linarith : -δ ≤ σ)] at h; exact le_of_lt h)
-            (by have h := hu.2; rw [max_eq_right (by linarith : -δ ≤ σ)] at h; exact h) hσle1)
+            (by have h := hu.1; rw [min_eq_left (by linarith only [hσpos, hδpos] : -δ ≤ σ)] at h; exact le_of_lt h)
+            (by have h := hu.2; rw [max_eq_right (by linarith only [hσpos, hδpos] : -δ ≤ σ)] at h; exact h) hσle1)
         calc ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + (((-T : ℝ)) : ℂ) * Complex.I)‖
             ≤ x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf) * |σ - (-δ)| := hmain
           _ = (σ + δ) * (x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf)) := by
-              rw [abs_of_nonneg (by linarith)]; ring
+              rw [abs_of_nonneg (by linarith only [hσpos, hδpos])]; ring
       have hB : ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I)‖ ≤
           (σ + δ) * (x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf)) := by
         have hmain := intervalIntegral.norm_integral_le_of_norm_le_const (a := -δ) (b := σ)
           (C := x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf))
           (f := fun u : ℝ => recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I))
-          (fun u hu => recipInt_horiz_le x T σ δ czf Czf T u (by linarith) hTge3 hδpos
+          (fun u hu => recipInt_horiz_le x T σ δ czf Czf T u (by linarith only [hθle2, hθpos, hx1ge4, hx]) hTge3 hδpos
             hδ_le_zf hczf_pos hCzfnn hZF hargT
-            (by have h := hu.1; rw [min_eq_left (by linarith : -δ ≤ σ)] at h; exact le_of_lt h)
-            (by have h := hu.2; rw [max_eq_right (by linarith : -δ ≤ σ)] at h; exact h) hσle1)
+            (by have h := hu.1; rw [min_eq_left (by linarith only [hσpos, hδpos] : -δ ≤ σ)] at h; exact le_of_lt h)
+            (by have h := hu.2; rw [max_eq_right (by linarith only [hσpos, hδpos] : -δ ≤ σ)] at h; exact h) hσle1)
         calc ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I)‖
             ≤ x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf) * |σ - (-δ)| := hmain
           _ = (σ + δ) * (x ^ σ * (1 / T) * (Czf * (Real.log (T + 2)) ^ Czf)) := by
-              rw [abs_of_nonneg (by linarith)]; ring
+              rw [abs_of_nonneg (by linarith only [hσpos, hδpos])]; ring
       have hD : ‖∫ (t : ℝ) in -T..T, recipInt x ((((-δ : ℝ)) : ℂ) + (t : ℂ) * Complex.I)‖ ≤
           (T + T) * (x ^ (-δ) * (1 / δ) * (Kb + Czf * (Real.log (T + 2)) ^ Czf)) := by
         have hmain := intervalIntegral.norm_integral_le_of_norm_le_const (a := -T) (b := T)
           (C := x ^ (-δ) * (1 / δ) * (Kb + Czf * (Real.log (T + 2)) ^ Czf))
           (f := fun t : ℝ => recipInt x ((((-δ : ℝ)) : ℂ) + (t : ℂ) * Complex.I))
-          (fun t ht => recipInt_vert_le x T δ εb Kb czf Czf t (by linarith) hTge3 hδpos hδ_le_zf
+          (fun t ht => recipInt_vert_le x T δ εb Kb czf Czf t (by linarith only [hθle2, hθpos, hx1ge4, hx]) hTge3 hδpos hδ_le_zf
             hδ_le_εb hczf_pos hCzfnn hKb_pos.le hεb_pos hNAb hZF
             (abs_le.mpr ⟨by
-                have h := ht.1; rw [min_eq_left (by linarith : -T ≤ T)] at h; exact le_of_lt h,
-              by have h := ht.2; rw [max_eq_right (by linarith : -T ≤ T)] at h; exact h⟩))
+                have h := ht.1; rw [min_eq_left (by linarith only [hθle2, hθpos, hTge3] : -T ≤ T)] at h; exact le_of_lt h,
+              by have h := ht.2; rw [max_eq_right (by linarith only [hθle2, hθpos, hTge3] : -T ≤ T)] at h; exact h⟩))
         calc ‖∫ (t : ℝ) in -T..T, recipInt x ((((-δ : ℝ)) : ℂ) + (t : ℂ) * Complex.I)‖
             ≤ x ^ (-δ) * (1 / δ) * (Kb + Czf * (Real.log (T + 2)) ^ Czf) * |T - (-T)| := hmain
           _ = (T + T) * (x ^ (-δ) * (1 / δ) * (Kb + Czf * (Real.log (T + 2)) ^ Czf)) := by
-              rw [abs_of_nonneg (by linarith)]; ring
+              rw [abs_of_nonneg (by linarith only [hθle2, hθpos, hTge3])]; ring
       -- reduce each to the shape `C1/C2 * (1+L)^kb * exp(-(θ/2)√L)`
       have hA' : ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + (((-T : ℝ)) : ℂ) * Complex.I)‖ ≤
           C1 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := by
-        have h1 : σ + δ ≤ 1 + ε0 := by linarith [hσle1, hδ_le_ε0]
+        have h1 : σ + δ ≤ 1 + ε0 := by linarith only [hσle1, hδ_le_ε0]
         have h2 : x ^ σ ≤ 3 := by rw [hxσ]; exact le_of_lt Real.exp_one_lt_three
         have h3 : (1 : ℝ) / T ≤ Real.exp (-θ * Real.sqrt L) := by rw [hTinv]
         have hA2 : (1 / T) * (Real.log (T + 2)) ^ Czf ≤
@@ -1578,13 +1578,13 @@ theorem moebius_recip_sum_exp_decay :
           _ = (σ + δ) * x ^ σ * (1 / T) * Czf * (Real.log (T + 2)) ^ Czf := by ring
           _ ≤ (1 + ε0) * 3 * Real.exp (-θ * Real.sqrt L) * Czf * (1 + L) ^ kb := by
               have hA1 : (σ + δ) * x ^ σ ≤ (1 + ε0) * 3 :=
-                mul_le_mul h1 h2 (Real.rpow_nonneg hxpos.le σ) (by linarith)
+                mul_le_mul h1 h2 (Real.rpow_nonneg hxpos.le σ) (by linarith only [hε0_pos, hθle2, hθpos])
               have hA3 : (σ + δ) * x ^ σ * (1 / T) * Czf * (Real.log (T + 2)) ^ Czf =
                   ((σ + δ) * x ^ σ * Czf) * ((1 / T) * (Real.log (T + 2)) ^ Czf) := by ring
               rw [hA3]
               calc ((σ + δ) * x ^ σ * Czf) * ((1 / T) * (Real.log (T + 2)) ^ Czf)
                   ≤ ((1 + ε0) * 3 * Czf) * (Real.exp (-θ * Real.sqrt L) * (1 + L) ^ kb) :=
-                    mul_le_mul (mul_le_mul hA1 le_rfl hCzf_pos.le (by linarith)) hA2
+                    mul_le_mul (mul_le_mul hA1 le_rfl hCzf_pos.le (by linarith only [hε0_pos, hθle2, hθpos])) hA2
                       (by positivity) (by positivity)
                 _ = (1 + ε0) * 3 * Real.exp (-θ * Real.sqrt L) * Czf * (1 + L) ^ kb := by ring
           _ ≤ (1 + ε0) * 3 * Real.exp (-(θ / 2) * Real.sqrt L) * Czf * (1 + L) ^ kb := by
@@ -1597,7 +1597,7 @@ theorem moebius_recip_sum_exp_decay :
           _ = C1 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := by rw [hC1def]; ring
       have hB' : ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I)‖ ≤
           C1 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := by
-        have h1 : σ + δ ≤ 1 + ε0 := by linarith [hσle1, hδ_le_ε0]
+        have h1 : σ + δ ≤ 1 + ε0 := by linarith only [hσle1, hδ_le_ε0]
         have h2 : x ^ σ ≤ 3 := by rw [hxσ]; exact le_of_lt Real.exp_one_lt_three
         have h3 : (1 : ℝ) / T ≤ Real.exp (-θ * Real.sqrt L) := by rw [hTinv]
         have hA2 : (1 / T) * (Real.log (T + 2)) ^ Czf ≤
@@ -1609,13 +1609,13 @@ theorem moebius_recip_sum_exp_decay :
           _ = (σ + δ) * x ^ σ * (1 / T) * Czf * (Real.log (T + 2)) ^ Czf := by ring
           _ ≤ (1 + ε0) * 3 * Real.exp (-θ * Real.sqrt L) * Czf * (1 + L) ^ kb := by
               have hA1 : (σ + δ) * x ^ σ ≤ (1 + ε0) * 3 :=
-                mul_le_mul h1 h2 (Real.rpow_nonneg hxpos.le σ) (by linarith)
+                mul_le_mul h1 h2 (Real.rpow_nonneg hxpos.le σ) (by linarith only [hε0_pos, hθle2, hθpos])
               have hA3 : (σ + δ) * x ^ σ * (1 / T) * Czf * (Real.log (T + 2)) ^ Czf =
                   ((σ + δ) * x ^ σ * Czf) * ((1 / T) * (Real.log (T + 2)) ^ Czf) := by ring
               rw [hA3]
               calc ((σ + δ) * x ^ σ * Czf) * ((1 / T) * (Real.log (T + 2)) ^ Czf)
                   ≤ ((1 + ε0) * 3 * Czf) * (Real.exp (-θ * Real.sqrt L) * (1 + L) ^ kb) :=
-                    mul_le_mul (mul_le_mul hA1 le_rfl hCzf_pos.le (by linarith)) hA2
+                    mul_le_mul (mul_le_mul hA1 le_rfl hCzf_pos.le (by linarith only [hε0_pos, hθle2, hθpos])) hA2
                       (by positivity) (by positivity)
                 _ = (1 + ε0) * 3 * Real.exp (-θ * Real.sqrt L) * Czf * (1 + L) ^ kb := by ring
           _ ≤ (1 + ε0) * 3 * Real.exp (-(θ / 2) * Real.sqrt L) * Czf * (1 + L) ^ kb := by
@@ -1633,7 +1633,7 @@ theorem moebius_recip_sum_exp_decay :
           rw [hδdef, div_le_div_iff₀ (by positivity) hlogT3pos]
           have h1 : c₀ * Real.log (T + 3) ≤ c₀ * (2 * (θ * Real.sqrt L)) :=
             mul_le_mul_of_nonneg_left hlogT3le (le_of_lt hc0pos)
-          linarith
+          linarith only [h1]
         have hxδ : x ^ (-δ) ≤ Real.exp (-(c₀ / (2 * θ)) * Real.sqrt L) := by
           rw [Real.rpow_def_of_pos hxpos]
           refine Real.exp_le_exp.mpr ?_
@@ -1649,8 +1649,8 @@ theorem moebius_recip_sum_exp_decay :
           have h6 : δ * Real.sqrt L * Real.sqrt L = δ * L := by
             rw [show δ * Real.sqrt L * Real.sqrt L = δ * (Real.sqrt L * Real.sqrt L) by ring,
               hsqL']
-          linarith [h5, h6.le, h6.ge]
-        have hll : Real.log (T + 3) ≤ 2 * θ * Real.sqrt L := by linarith [hlogT3le]
+          linarith only [h5, h6.le, h6.ge, h6]
+        have hll : Real.log (T + 3) ≤ 2 * θ * Real.sqrt L := by linarith only [hlogT3le]
         have hinvδ : 1 / δ ≤ 2 * θ * Real.sqrt L / c₀ := by
           rw [hδdef, one_div, inv_div]
           exact div_le_div_of_nonneg_right hll (le_of_lt hc0pos)
@@ -1659,17 +1659,17 @@ theorem moebius_recip_sum_exp_decay :
           add_le_add le_rfl (mul_le_mul_of_nonneg_left hpowC hCzfnn)
         have hexp1 : Real.exp (-(c₀ / (2 * θ)) * Real.sqrt L) ≤ Real.exp (-(θ / 2) * Real.sqrt L) := by
           refine Real.exp_le_exp.mpr ?_
-          have h1 : θ / 2 ≤ c₀ / (2 * θ) := by linarith [hθneed]
+          have h1 : θ / 2 ≤ c₀ / (2 * θ) := by linarith only [hθneed, hθpos]
           have h2 : (θ / 2) * Real.sqrt L ≤ (c₀ / (2 * θ)) * Real.sqrt L :=
             mul_le_mul_of_nonneg_right h1 (le_of_lt hsqrtL_pos)
-          linarith
+          linarith only [h2]
         have hexp2 : Real.exp ((θ - c₀ / (2 * θ)) * Real.sqrt L) ≤
             Real.exp (-(θ / 2) * Real.sqrt L) := by
           refine Real.exp_le_exp.mpr ?_
-          have h1 : θ - c₀ / (2 * θ) ≤ -(θ / 2) := by linarith [hθneed]
+          have h1 : θ - c₀ / (2 * θ) ≤ -(θ / 2) := by linarith only [hθneed]
           have h2 : (θ - c₀ / (2 * θ)) * Real.sqrt L ≤ (-(θ / 2)) * Real.sqrt L :=
             mul_le_mul_of_nonneg_right h1 (le_of_lt hsqrtL_pos)
-          linarith
+          linarith only [h2]
         have hD1 : ‖∫ (t : ℝ) in -T..T, recipInt x ((((-δ : ℝ)) : ℂ) + (t : ℂ) * Complex.I)‖ ≤
             (2 * Real.exp (θ * Real.sqrt L)) *
               (Real.exp (-(c₀ / (2 * θ)) * Real.sqrt L) * (2 * θ * Real.sqrt L / c₀) *
@@ -1696,12 +1696,12 @@ theorem moebius_recip_sum_exp_decay :
           have hcoef2 : 0 ≤ Kb + Czf * (1 + L) ^ (Nat.ceil Czf : ℝ) := by positivity
           exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hexp2 hcoef) hcoef2
         have hsL : Real.sqrt L ≤ 1 + L := by
-          have hh1 : (1 : ℝ) ≤ Real.sqrt L := by linarith
+          have hh1 : (1 : ℝ) ≤ Real.sqrt L := by linarith only [hθle2, hθpos, hsqrtLge2]
           have hh2 : Real.sqrt L ≤ Real.sqrt L * Real.sqrt L := by
             have hh := mul_le_mul_of_nonneg_left hh1 (le_of_lt hsqrtL_pos)
             rwa [mul_one] at hh
           rw [hsqL'] at hh2
-          linarith
+          linarith only [hθle2, hθpos, hh2]
         have hD4 : (4 * θ * Real.sqrt L / c₀) * Real.exp (-(θ / 2) * Real.sqrt L) *
               (Kb + Czf * (1 + L) ^ (Nat.ceil Czf : ℝ)) ≤
             (4 * θ / c₀) * (1 + L) * Real.exp (-(θ / 2) * Real.sqrt L) *
@@ -1724,7 +1724,7 @@ theorem moebius_recip_sum_exp_decay :
             C2 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := by
           have hp : (1 + L) ≤ (1 + L) ^ kb := by
             calc (1 + L) = (1 + L) ^ (1 : ℕ) := (pow_one _).symm
-              _ ≤ (1 + L) ^ kb := pow_le_pow_right₀ (by linarith) hkbge1
+              _ ≤ (1 + L) ^ kb := pow_le_pow_right₀ (by linarith only [hθle2, hθpos, hL1ge8, hLge]) hkbge1
           have h1 : (1 + L) * Kb ≤ (1 + L) ^ kb * Kb :=
             mul_le_mul_of_nonneg_right hp (le_of_lt hKb_pos)
           have h2 : (1 + L) * (Czf * (1 + L) ^ (Nat.ceil Czf : ℝ)) ≤ Czf * (1 + L) ^ kb := by
@@ -1772,8 +1772,8 @@ theorem moebius_recip_sum_exp_decay :
               ‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + ((T : ℝ) : ℂ) * Complex.I)‖ ≤
               C1 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) +
               C1 * (1 + L) ^ kb * Real.exp (-(θ / 2) * Real.sqrt L) := add_le_add hA' hB'
-          linarith
-        linarith [h1, hD', h2C]
+          linarith only [hA', hB']
+        linarith only [h1, hD', h2C, hA', hB']
       calc ‖recipPerron x T σ‖
           ≤ (1 / (2 * Real.pi)) *
             (‖∫ (u : ℝ) in -δ..σ, recipInt x ((u : ℂ) + (((-T : ℝ)) : ℂ) * Complex.I)‖ +
@@ -1790,15 +1790,15 @@ theorem moebius_recip_sum_exp_decay :
       have h1 : Real.exp (-θ * Real.sqrt L) ≤ Real.exp (-(θ / 2) * Real.sqrt L) := hE2
       have h2 : (1 + L) ≤ (1 + L) ^ k0 := by
         calc (1 + L) = (1 + L) ^ (1 : ℕ) := (pow_one _).symm
-          _ ≤ (1 + L) ^ k0 := pow_le_pow_right₀ (by linarith) hk0ge1
-      have hp : (1 + L) ^ kb ≤ (1 + L) ^ k0 := pow_le_pow_right₀ (by linarith) hk0geb
+          _ ≤ (1 + L) ^ k0 := pow_le_pow_right₀ (by linarith only [hθle2, hθpos, hL1ge8, hLge]) hk0ge1
+      have hp : (1 + L) ^ kb ≤ (1 + L) ^ k0 := pow_le_pow_right₀ (by linarith only [hθle2, hθpos, hL1ge8, hLge]) hk0geb
       have hA : Ae * (1 + L) ≤ (Ae + Cb) * (1 + L) ^ k0 := by
         have hAeL : Ae * (1 + L) ≤ (Ae + Cb) * (1 + L) :=
-          mul_le_mul_of_nonneg_right (by linarith) (by linarith)
+          mul_le_mul_of_nonneg_right (by linarith only [hCb_pos]) (by linarith only [hθle2, hθpos, hL1ge8, hLge])
         calc Ae * (1 + L) ≤ (Ae + Cb) * (1 + L) := hAeL
           _ ≤ (Ae + Cb) * (1 + L) ^ k0 := mul_le_mul_of_nonneg_left h2 (by positivity)
       have hB : Cb * (1 + L) ^ kb ≤ (Ae + Cb) * (1 + L) ^ k0 := by
-        have hCbL : Cb ≤ Ae + Cb := by linarith [hAe_pos]
+        have hCbL : Cb ≤ Ae + Cb := by linarith only [hAe_pos]
         exact mul_le_mul hCbL hp (by positivity) (by positivity)
       have htri : ‖(∑ n ∈ Finset.Icc 1 ⌊x⌋₊,
             (((ArithmeticFunction.moebius n : ℝ) / (n : ℝ)) : ℂ))‖ ≤
@@ -1829,9 +1829,9 @@ theorem moebius_recip_sum_exp_decay :
     calc ‖(∑ n ∈ Finset.Icc 1 ⌊x⌋₊, (((ArithmeticFunction.moebius n : ℝ) / (n : ℝ)) : ℂ))‖
         ≤ (2 * (Ae + Cb)) * (1 + L) ^ k0 * Real.exp (-(θ / 2) * Real.sqrt L) := hcomb
       _ ≤ (2 * (Ae + Cb)) * (2 * L) ^ k0 * Real.exp (-(θ / 2) * Real.sqrt L) := by
-            have h1L : (1 + L) ≤ 2 * L := by linarith
+            have h1L : (1 + L) ≤ 2 * L := by linarith only [hθle2, hθpos, hL1ge8, hLge]
             exact mul_le_mul_of_nonneg_right
-              (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith) h1L k0) (by positivity))
+              (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith only [hθle2, hθpos, hL1ge8, hLge]) h1L k0) (by positivity))
               (Real.exp_nonneg _)
       _ = K0 * L ^ k0 * Real.exp (-(θ / 2) * Real.sqrt L) := by
             rw [hK0def, mul_pow]; ring
@@ -1888,9 +1888,9 @@ theorem moebius_recip_sum_exp_decay :
           have hn1 : (1 : ℝ) ≤ (n : ℝ) := by
             exact_mod_cast (Finset.mem_Icc.mp hn).1
           have h1' := Commons.NumberTheory.Moebius.moebius_abs_le_one n
-          rw [abs_div, abs_of_nonneg (by linarith : (0 : ℝ) ≤ (n : ℝ))]
-          rw [div_le_one (by linarith : (0 : ℝ) < (n : ℝ))]
-          linarith [h1', hn1]
+          rw [abs_div, abs_of_nonneg (by linarith only [hθle2, hθpos, hn1] : (0 : ℝ) ≤ (n : ℝ))]
+          rw [div_le_one (by linarith only [hθle2, hθpos, hn1] : (0 : ℝ) < (n : ℝ))]
+          linarith only [h1', hn1]
         calc |∑ n ∈ Finset.Icc 1 ⌊x⌋₊, (ArithmeticFunction.moebius n : ℝ) / (n : ℝ)|
             ≤ ∑ n ∈ Finset.Icc 1 ⌊x⌋₊, |(ArithmeticFunction.moebius n : ℝ) / (n : ℝ)| := h1
           _ ≤ ∑ n ∈ Finset.Icc 1 ⌊x⌋₊, (1 : ℝ) := h2
@@ -1898,15 +1898,15 @@ theorem moebius_recip_sum_exp_decay :
               rw [Finset.sum_const, nsmul_eq_mul, mul_one]
               simp
           _ ≤ x₁ := by
-              have := Nat.floor_le (by linarith : (0 : ℝ) ≤ x)
-              linarith
+              have := Nat.floor_le (by linarith only [hθle2, hθpos, hx2] : (0 : ℝ) ≤ x)
+              linarith only [h, this]
       have hle : Real.exp (-(c' * Real.sqrt (Real.log x₁))) ≤
           Real.exp (-(c' * Real.sqrt (Real.log x))) := by
         refine Real.exp_le_exp.mpr ?_
-        have hlog : Real.log x ≤ Real.log x₁ := Real.log_le_log (by linarith : (0:ℝ) < x) h.le
+        have hlog : Real.log x ≤ Real.log x₁ := Real.log_le_log (by linarith only [hθle2, hθpos, hx2] : (0:ℝ) < x) h.le
         have hh : c' * Real.sqrt (Real.log x) ≤ c' * Real.sqrt (Real.log x₁) :=
           mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt hlog) (le_of_lt hc'pos)
-        linarith
+        linarith only [hh]
       have hexpc : Real.exp (c' * Real.sqrt (Real.log x₁)) *
           Real.exp (-(c' * Real.sqrt (Real.log x₁))) = 1 := by
         rw [← Real.exp_add]
@@ -1930,7 +1930,7 @@ theorem moebius_recip_sum_exp_decay :
           _ ≤ max C' (x₁ * Real.exp (c' * Real.sqrt (Real.log x₁))) *
               Real.exp (-(c' * Real.sqrt (Real.log x))) :=
               mul_le_mul_of_nonneg_left hle (by positivity)
-      linarith [hS, hkey]
+      linarith only [hS, hkey]
 
 end
 

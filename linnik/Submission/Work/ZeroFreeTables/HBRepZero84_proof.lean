@@ -33,12 +33,12 @@ import Submission.Work.ZeroFreeTables.HB8Defs
 import Submission.Work.ZeroFreeTables.Table4Defs
 import Submission.Work.ZeroFreeTables.winSumTwoMul
 import Submission.Work.ZeroFreeTables.l52HypRealFixed
-import Submission.Work.NumberTheory.Linnik.scratch_l64
 import Submission.Work.LinnikAreas.triangle_hFnn
 import Submission.Work.LinnikAreas.DhRepel.integral_exp_mul_sub
 import Submission.Work.LinnikAreas.DhRepel.integral_mul_max_sub_eq
 import Submission.Work.LinnikAreas.DhRepel.integral_sub_self
 import Submission.Commons.NumberTheory.DirichletCharacter.zerosInStrip
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex Metric Filter
 open scoped BigOperators
@@ -78,7 +78,7 @@ theorem hb6RepeatedWindow {x₀ B c ε δ : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ 
   have hlogq1 : (1 : ℝ) ≤ Real.log (q : ℝ) := by
     rw [Real.le_log_iff_exp_le (by exact_mod_cast (by omega : 0 < q))]
     have h3 : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast (by omega : 3 ≤ q)
-    linarith [Real.exp_one_lt_three]
+    linarith only [Real.exp_one_lt_three, h3]
   have Hraw : ∀ s : ℂ, 1 + 1 / (Real.log (q : ℝ) * Real.log (Real.log (q : ℝ))) ≤ s.re →
       s.re ≤ 1 + Real.log (Real.log (q : ℝ)) / Real.log (q : ℝ) →
       |s.im| ≤ 10 * Real.log (q : ℝ) →
@@ -92,7 +92,7 @@ theorem hb6RepeatedWindow {x₀ B c ε δ : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ 
     simpa only [abs_sub_comm] using hpt
   have hlo : 1 - Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) ≤ β₁ := by
     have h : 1 - β₁ ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := (abs_le.mp hpt).2
-    linarith
+    linarith only [h]
   have hχ' : χ.primitiveCharacter ≠ 1 := by
     intro h
     apply hχ
@@ -116,12 +116,12 @@ theorem hb6RepeatedWindow {x₀ B c ε δ : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ 
         + f 0 * (c + ε) * Real.log (q : ℝ) := by
     have h := hq₀χ hqχ χ hχ Hraw (β₁ : ℂ)
       (by simp only [Complex.ofReal_re]; exact hram)
-      (by simp only [Complex.ofReal_im, abs_zero]; linarith [hlogq])
+      (by simp only [Complex.ofReal_im, abs_zero]; linarith only [hlogq, hδ0, hδ1, hlogq1])
       (by simp only [Complex.ofReal_re]; exact hlo)
     have h2 : -(Real.log (q : ℝ)) *
           (Commons.NumberTheory.Linnik.winSum χ.primitiveCharacter f x₀ (Real.log (q : ℝ)) δ (β₁ : ℂ))
         ≤ -(Real.log (q : ℝ)) * (2 * (∫ t in (0:ℝ)..x₀, f t)) :=
-      mul_le_mul_of_nonpos_left hwin (by linarith)
+      mul_le_mul_of_nonpos_left hwin (by linarith only [hδ0, hδ1, hlogq1])
     rw [Commons.NumberTheory.Linnik.winSum] at h2
     linarith only [h, h2]
   -- (6.9) bound for the principal term at `s = β₁`
@@ -188,7 +188,7 @@ theorem tent_contDiffOn (X : ℝ) : ContDiffOn ℝ 2 (fun t : ℝ => max (X - t)
   refine h1.congr ?_
   intro t ht
   rw [Set.mem_Ioo] at ht
-  exact max_eq_left (by linarith [ht.2])
+  exact max_eq_left (by linarith only [ht.2, ht])
 
 theorem tent_iteratedDeriv_two (X t : ℝ) (ht : t ∈ Set.Ioo 0 X) :
     iteratedDeriv 2 (fun s : ℝ => max (X - s) 0) t = 0 := by
@@ -196,7 +196,7 @@ theorem tent_iteratedDeriv_two (X t : ℝ) (ht : t ∈ Set.Ioo 0 X) :
   have hev : (fun s : ℝ => max (X - s) 0) =ᶠ[nhds t] (fun s : ℝ => X - s) := by
     filter_upwards [hs] with s hs'
     rw [Set.mem_Ioo] at hs'
-    exact max_eq_left (by linarith [hs'.2])
+    exact max_eq_left (by linarith only [hs'.2, hs'])
   have hlin : iteratedDeriv 2 (fun s : ℝ => X - s) t = 0 := by
     rw [show (fun s : ℝ => X - s) = (fun s : ℝ => X + (-(id s))) from rfl,
       iteratedDeriv_const_add (f := fun s : ℝ => -(id s)) (c := X) (show (0:ℕ) < 2 by norm_num)]
@@ -215,12 +215,12 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
   obtain ⟨Q₁, hQ₁⟩ := hb6RepeatedWindow (x₀ := X) (B := 0) (c := 1/6 + 1/1000000)
     (ε := 1/1000) (δ := δ₀) hXpos le_rfl (by norm_num) hδ₀0 hδ₀1
     (by fun_prop)
-    (fun t ht => max_eq_right (by linarith))
+    (fun t ht => max_eq_right (by linarith only [ht]))
     (tent_contDiffOn X)
     (fun t ht => by rw [tent_iteratedDeriv_two X t ht]; simp)
     (by
       have h : max (X - 0) 0 = X := by
-        rw [max_eq_left (by linarith [hXpos])]
+        rw [max_eq_left (by linarith only [hXpos])]
         ring
       rw [h]; exact hXpos)
     (fun t => le_max_right _ _)
@@ -259,7 +259,7 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
       have h5 : ((Nat.ceil (Real.exp (max ((1294:ℝ)/(1000*δ₀)) (Real.exp 3))) : ℕ) : ℝ) ≤ (q:ℝ) := by
         have : Nat.ceil (Real.exp (max ((1294:ℝ)/(1000*δ₀)) (Real.exp 3))) ≤ q := by omega
         exact_mod_cast this
-      linarith
+      linarith only [h4, h5]
     rw [← Real.log_exp (max ((1294:ℝ)/(1000*δ₀)) (Real.exp 3))]
     exact Real.log_le_log (Real.exp_pos _) hexp_le
   refine ⟨Qbig, ?_⟩
@@ -298,8 +298,8 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
       rw [div_le_iff₀ hlogq]
       have h4 : (1294:ℝ)/(1000*δ₀) * δ₀ = 1294/1000 := by field_simp
       have h5 : (1294:ℝ)/(1000*δ₀) ≤ Real.log (q:ℝ) := le_trans (le_max_left _ _) hqlog
-      nlinarith [h5, hδ₀0, h4]
-    linarith
+      nlinarith only [h5, hδ₀0, h4]
+    linarith only [h2, h3]
   have hpt : |1 - β₁| ≤ Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) := by
     have h2 : 1 - β₁ ≤ (1294/1000) / Real.log (q:ℝ) := le_of_lt ((lt_div_iff₀ hlogq).mpr hlt1)
     have hsqrt3' : (1294:ℝ)/1000 ≤ Real.sqrt 3 := by
@@ -314,12 +314,12 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
     have hdiv : (1294/1000) / Real.log (q:ℝ) ≤
         Real.sqrt (Real.log (Real.log (q:ℝ))) / Real.log (q:ℝ) :=
       div_le_div_of_nonneg_right hsq (le_of_lt hlogq)
-    rw [abs_of_nonneg (by linarith [hβ₁01.2])]
-    linarith
+    rw [abs_of_nonneg (by linarith only [hβ₁01.2, hstrip])]
+    linarith only [h2, hdiv]
   have hmem2 : (β₁ : ℂ) ∈ Metric.closedBall (0:ℂ) (|((β₁ : ℂ)).im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_le]
     simp only [Complex.ofReal_im, abs_zero, zero_add]
-    exact ⟨by linarith [hβ₁01.1], by linarith [hβ₁01.2]⟩
+    exact ⟨by linarith only [hβ₁01.1, hδ₀0, hδ₀1, hstrip], by linarith only [hβ₁01.2, hδ₀0, hδ₀1, hstrip]⟩
   have hcoeff : (2 : ℤ) ≤ MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
       (Metric.closedBall 0 (|((β₁ : ℂ)).im| + 2)) (β₁ : ℂ) := by
@@ -332,7 +332,7 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
     simpa [zeroMult] using this
   have hwinβ : ‖(1:ℂ) - (β₁ : ℂ)‖ ≤ δ₀ := by
     have h1 : (1:ℂ) - (β₁ : ℂ) = ((1 - β₁ : ℝ) : ℂ) := by push_cast; ring
-    rw [h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith [hβ₁01.2])]
+    rw [h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith only [hβ₁01.2, hstrip])]
     exact hβ₁δ
   have hzeroW : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
@@ -354,14 +354,14 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
       have h1 : |(1 - u).im| ≤ ‖(1:ℂ) - u‖ := Complex.abs_im_le_norm (1 - u)
       have h2 : (1 - u).im = -u.im := by simp
       rw [h2, abs_neg] at h1
-      linarith [h1, hw, hδ₀1]
+      linarith only [h1, hw, hδ₀1, hδ₀0]
     have hle := hwide.2 χ₁ u hχ1 hzmult himu
     have hle' : (1 - β₁) * Real.log (q:ℝ) ≤ (1 - u.re) * Real.log (q:ℝ) := by
       have h := hle
       rw [hlamEq, lamOf] at h
       exact h
     have h2 : 1 - β₁ ≤ 1 - u.re := (mul_le_mul_iff_of_pos_right hlogq).mp hle'
-    linarith
+    linarith only [h2]
   have hwin : 2 * (∫ t in (0:ℝ)..X, max (X - t) 0) ≤
       Commons.NumberTheory.Linnik.winSum χ₁.primitiveCharacter (fun t => max (X - t) 0) X (Real.log (q:ℝ)) δ₀ (β₁:ℂ) :=
     winSumTwoMul χ₁.primitiveCharacter hχ' (le_of_lt hlogq) hδ₀1
@@ -375,7 +375,7 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
       ≤ (∫ t in (0:ℝ)..X, Real.exp ((13/10) * t) * max (X - t) 0) := by
     have h1 : Real.log (q:ℝ) * (1 - β₁) ≤ 13/10 := by
       have hlt : (1 - β₁) * Real.log (q:ℝ) < 1294/1000 := by rw [← hlamEq]; exact hcon
-      linarith
+      linarith only [hδ₀0, hδ₀1, hlamEq, hcon]
     have h2 : ∀ t ∈ Set.Icc (0:ℝ) X, Real.exp ((Real.log (q:ℝ) * (1 - β₁)) * t) ≤ Real.exp ((13/10) * t) := by
       intro t ht
       apply Real.exp_le_exp.mpr
@@ -400,7 +400,7 @@ theorem HBRepZero84_proof : Work.ZeroFreeTables.HBRepZero84 := by
     have hexp : Real.exp 1 < 2.72 := lt_trans Real.exp_one_lt_d9 (by norm_num)
     have hval : max ((10:ℝ)/13 - 0) 0 = 10/13 := by norm_num
     rw [hval]
-    nlinarith [hexp]
+    linarith only [hexp, hδ₀0, hδ₀1, hF0val, hFlamval, hR, hmono, hval]
   linarith only [hR', hF0val, hFlamval, harith]
 
 end Work.ZeroFreeTables

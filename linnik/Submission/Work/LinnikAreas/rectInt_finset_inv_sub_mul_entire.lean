@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
+import Submission.Commons.NumberTheory.DirichletCharacter.rectInt_logDeriv_completed_tentF_eq
+import Submission.Commons.NumberTheory.DirichletCharacter.chebyshevPsiChi_explicit_formula_mult
 
 namespace Work.LinnikAreas
 

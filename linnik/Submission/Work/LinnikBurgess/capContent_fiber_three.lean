@@ -5,7 +5,6 @@ import Submission.Work.LinnikBurgess.cftValPowMul
 import Submission.Work.LinnikBurgess.cftTaylorSq
 import Submission.Work.LinnikBurgess.cftCountDvd
 import Submission.Work.LinnikBurgess.cftCountVal
-import Submission.Work.LinnikBurgess.cftCountValGe
 import Submission.Work.LinnikBurgess.cftCountClass
 import Submission.Work.LinnikBurgess.cftCoeffCompMulX
 import Submission.Work.LinnikBurgess.cftDerivSubCoeffOne

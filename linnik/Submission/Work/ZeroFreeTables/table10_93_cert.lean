@@ -82,7 +82,7 @@ lemma integral_monotone_weight (φ ψ χ : ℝ → ℝ)
     have h1 : φ s * χ s ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hφs hχs
     have h2 : ψ s - ψ s₀ ≤ 0 := by linarith
     have h3 : 0 ≤ (φ s * χ s) * (ψ s - ψ s₀) := mul_nonneg_of_nonpos_of_nonpos h1 h2
-    nlinarith [h3]
+    linarith only [h3]
   have hptR : ∀ s ∈ Set.Icc s₀ 2, ψ s₀ * (φ s * χ s) ≤ φ s * ψ s * χ s := by
     intro s hs
     rw [Set.mem_Icc] at hs
@@ -94,7 +94,7 @@ lemma integral_monotone_weight (φ ψ χ : ℝ → ℝ)
     have hφs : 0 ≤ φ s := hφ0 s hs'
     have h3 : 0 ≤ (φ s * χ s) * (ψ s - ψ s₀) :=
       mul_nonneg (mul_nonneg hφs hχs) (by linarith)
-    nlinarith [h3]
+    linarith only [h3]
   have hint1 : IntervalIntegrable (fun s : ℝ => ψ s₀ * (φ s * χ s)) volume (0:ℝ) s₀ :=
     (continuous_const.mul (hφc.mul hχc)).intervalIntegrable _ _
   have hint2 : IntervalIntegrable (fun s : ℝ => φ s * ψ s * χ s) volume (0:ℝ) s₀ :=
@@ -116,7 +116,7 @@ lemma integral_monotone_weight (φ ψ χ : ℝ → ℝ)
     ring
   have hfin : 0 ≤ ψ s₀ * (∫ s in (0:ℝ)..2, φ s * χ s) := mul_nonneg hψs₀ hint
   rw [← intervalIntegral.integral_add_adjacent_intervals hint2 hint4]
-  linarith [hL, hR, hsum, hfin]
+  linarith only [hL, hR, hsum, hfin]
 
 /-- Linearity of the interval integral for the four-term combination. -/
 lemma integral_lin4 (c d : ℝ) (F₁ F₂ G₁ G₂ : ℝ → ℝ)
@@ -192,7 +192,7 @@ theorem tf72Phi_mono_step_aux (a b lam k u : ℝ) (hl : 0 < lam) (ha0 : 0 ≤ a)
     have e1 := mul_le_mul_of_nonneg_left h1' hk2
     have e2 := mul_le_mul_of_nonpos_left h2' hn2
     simp only [tf72Chi]
-    linarith [e1, e2]
+    linarith only [e1, e2]
   have hχ0 : tf72Chi a b lam k 0 ≤ 0 := by
     simp only [tf72Chi, mul_zero, zero_div, neg_zero, Real.exp_zero, mul_one]
     linarith
@@ -200,7 +200,7 @@ theorem tf72Phi_mono_step_aux (a b lam k u : ℝ) (hl : 0 < lam) (ha0 : 0 ≤ a)
     simp only [tf72Chi]
     have hexp1 : Real.exp (-((b-a)*2/lam)) ≤ 1 := by
       rw [Real.exp_le_one_iff]
-      have : 0 ≤ (b-a)*2/lam := div_nonneg (by nlinarith) hl.le
+      have : 0 ≤ (b-a)*2/lam := div_nonneg (by linarith) hl.le
       linarith
     have hstep : 2*k*Real.exp (-((b-a)*2/lam)) ≤ 2*k := by
       calc 2*k*Real.exp (-((b-a)*2/lam)) ≤ 2*k*1 :=
@@ -208,7 +208,7 @@ theorem tf72Phi_mono_step_aux (a b lam k u : ℝ) (hl : 0 < lam) (ha0 : 0 ≤ a)
         _ = 2*k := by ring
     have harg : a*2/lam = 2*a/lam := by ring
     rw [harg]
-    linarith [h2, hstep]
+    linarith only [h2, hstep]
   have hint : 0 ≤ ∫ s in (0:ℝ)..2, tf72Body s * tf72Chi a b lam k s := by
     have hfun : (fun s : ℝ => tf72Body s * tf72Chi a b lam k s)
         = fun s : ℝ => ((k^2+1/2) * (Real.exp (a*s/lam)*tf72Body s)
@@ -223,7 +223,7 @@ theorem tf72Phi_mono_step_aux (a b lam k u : ℝ) (hl : 0 < lam) (ha0 : 0 ≤ a)
     have h31 : 2*k * (∫ s in (0:ℝ)..2, Real.exp (-((b-a)*s/lam)) * tf72Body s)
         = 30 * (2*k * tf72Phi ((b-a)/lam)) := by
       rw [hIba]; ring
-    linarith [h30, h31, h3]
+    linarith only [h30, h31, h3]
   -- the pointwise identity linking the two sides
   have hpt : ∀ s : ℝ, tf72Body s * (1 - Real.exp (-((a-u)*s/lam))) * tf72Chi a b lam k s
       = ((k^2+1/2) * (Real.exp (a*s/lam)*tf72Body s - Real.exp (u*s/lam)*tf72Body s)
@@ -276,7 +276,7 @@ theorem tf72Phi_mono_step_aux (a b lam k u : ℝ) (hl : 0 < lam) (ha0 : 0 ≤ a)
           (G₂ := fun s : ℝ => Real.exp (-((b-u)*s/lam))*tf72Body s)
           ((contF a).intervalIntegrable 0 2) ((contF u).intervalIntegrable 0 2)
           ((contG (b-a)).intervalIntegrable 0 2) ((contG (b-u)).intervalIntegrable 0 2)]
-  linarith [hw, hlin2]
+  linarith only [hw, hlin2]
 
 
 /-- The additive constant `f(0)((k²+4k+3/2)(1/6+ε))` of the Lemma 9.3 inequality,
@@ -310,14 +310,14 @@ theorem rowcert_phi (a b lam k : ℝ) (hl : 0 < lam) (hk : 0 ≤ k)
       div_le_div_of_nonneg_right (by linarith) hl.le
     have hv : tf72Phi ((b - u)/lam) ≤ tf72Phi ((v - u)/lam) := tf72Phi_antitone hvu
     have := mul_le_mul_of_nonpos_left hv h2k
-    linarith [this]
+    linarith only [this]
   -- the `u`-dependence
   have h2e : 2*k ≤ (k^2 + 1/2) * Real.exp (2*a/lam) := by
     have hexp : 1 + 2*a/lam ≤ Real.exp (2*a/lam) := by
       have := Real.add_one_le_exp (2*a/lam)
       linarith
     have := mul_le_mul_of_nonneg_left hexp hk2
-    linarith [this, h2]
+    linarith only [this, h2]
   have h3' : 2*k*tf72Phi ((b-a)/lam) ≤ (k^2 + 1/2)*tf72Phi (-(a/lam)) := by
     have hL : tf72PhiLBneg (a/lam) ≤ tf72Phi (-(a/lam)) :=
       tf72Phi_neg_lower (a/lam) (by positivity) hal
@@ -327,13 +327,13 @@ theorem rowcert_phi (a b lam k : ℝ) (hl : 0 < lam) (hk : 0 ≤ k)
       mul_le_mul_of_nonneg_left hU (by linarith : (0:ℝ) ≤ 2*k)
     have hB : (k^2+1/2)*tf72PhiLBneg (a/lam) ≤ (k^2+1/2)*tf72Phi (-(a/lam)) :=
       mul_le_mul_of_nonneg_left hL hk2
-    linarith [hA, hB, h3]
+    linarith only [hA, hB, h3]
   have step_u : (k^2+1/2)*(tf72Phi (-(u/lam)) - 8/9) - 2*k*tf72Phi ((b-u)/lam)
       + tf72C lam k
       ≤ (k^2+1/2)*(tf72Phi (-(a/lam)) - 8/9) - 2*k*tf72Phi ((b-a)/lam)
         + tf72C lam k := by
     have mono := tf72Phi_mono_step_aux a b lam k u hl ha0 hba hua hk h1 h2e h3'
-    linarith [mono]
+    linarith only [mono]
   -- the scalar value at `u = a`
   have h4' : (k^2+1/2)*(tf72Phi (-(a/lam)) - 8/9) - 2*k*tf72Phi ((b-a)/lam)
       + tf72C lam k < 0 := by
@@ -341,12 +341,12 @@ theorem rowcert_phi (a b lam k : ℝ) (hl : 0 < lam) (hk : 0 ≤ k)
       tf72Phi_upper (a/lam) (by positivity) hal
     have hL2 : tf72PhiLB ((b-a)/lam) ≤ tf72Phi ((b-a)/lam) :=
       tf72Phi_lower ((b-a)/lam) (by positivity) hbl
-    have hB1 : tf72Phi (-(a/lam)) - 8/9 ≤ tf72PhiUB (a/lam) - 8/9 := by linarith [hU2]
+    have hB1 : tf72Phi (-(a/lam)) - 8/9 ≤ tf72PhiUB (a/lam) - 8/9 := by linarith only [hU2]
     have hB := mul_le_mul_of_nonneg_left hB1 hk2
     have hC : -2*k*tf72Phi ((b-a)/lam) ≤ -2*k*tf72PhiLB ((b-a)/lam) :=
       mul_le_mul_of_nonpos_left hL2 h2k
-    linarith [hB, hC, h4]
-  linarith [step_v, step_u, h4']
+    linarith only [hB, hC, h4]
+  linarith only [step_v, step_u, h4']
 
 /-- Region-form certificate for HB Lemma 9.3, in the form used by the target
 theorem (the left-hand side of the Lemma 9.3 inequality for the test function

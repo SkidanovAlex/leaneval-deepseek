@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikBurgess.singleton_defs
-import Submission.Work.LinnikBurgess.api
 import Submission.Commons.NumberTheory.DirichletCharacter.charCorrelation6_levelSum_nondegenerate
 import Submission.Commons.NumberTheory.GaussSum.quadratic_phase_prime_pow
 import Submission.Work.LinnikBurgess.ddDefs

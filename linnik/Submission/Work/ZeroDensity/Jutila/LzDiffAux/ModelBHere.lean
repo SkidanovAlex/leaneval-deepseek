@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.ZeroDensity.Jutila.BzCross.BzCrossDefs
 import Submission.Work.ZeroDensity.Jutila.Bz3Defs
-import Submission.Work.LinnikAreas.JutilaPieces.S3ModelEval
 import Submission.Work.ZeroDensity.Jutila.BzCross.ModelBDefs
 import Submission.Work.ZeroDensity.Jutila.LzDiffAux.KappaMertensHere
 import Submission.Work.ZeroDensity.Jutila.LzDiffAux.CzRIBoundHere

@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.BzS3.S3InnerDefs
 import Submission.Work.LinnikAreas.Density4.BzS3.S3GAuxDefs
-import Submission.Work.LinnikAreas.Density4.BzBilin.sqfree_coprime_count_sigma
 import Submission.Work.LinnikAreas.Density4.BzBilin.abel_weighted_difference_bound_range
 import Submission.Work.LinnikAreas.Density4.BzS3.sqfree_coprime_count_main
 import Submission.Work.LinnikAreas.Density4.BzBilin.sqfree_weighted_abel
@@ -50,14 +49,14 @@ private lemma log_le_four_rpow {t : ℝ} (ht : 0 ≤ t) :
 private lemma rpow_neg_three_quarters_le_diff {x : ℝ} (hx : 1 ≤ x) :
     x ^ (-(3 / 4) : ℝ) ≤ 4 * (x ^ ((1 : ℝ) / 4) - (x - 1) ^ ((1 : ℝ) / 4)) := by
   have hx0 : 0 < x := lt_of_lt_of_le one_pos hx
-  have hy0 : 0 ≤ x - 1 := by linarith
+  have hy0 : 0 ≤ x - 1 := by linarith only [hx]
   set a : ℝ := x ^ ((1 : ℝ) / 4) with ha
   set b : ℝ := (x - 1) ^ ((1 : ℝ) / 4) with hb
   have ha0 : 0 ≤ a := Real.rpow_nonneg hx0.le _
   have hb0 : 0 ≤ b := Real.rpow_nonneg hy0 _
   have hba : b ≤ a := by
     rw [ha, hb]
-    exact Real.rpow_le_rpow hy0 (by linarith) (by norm_num)
+    exact Real.rpow_le_rpow hy0 (by linarith only []) (by norm_num)
   have ha4 : a ^ 4 = x := by
     rw [ha, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]
     norm_num
@@ -71,12 +70,12 @@ private lemma rpow_neg_three_quarters_le_diff {x : ℝ} (hx : 1 ≤ x) :
     have h : (a - b) * (a ^ 3 + a ^ 2 * b + a * b ^ 2 + b ^ 3) = a ^ 4 - b ^ 4 := by ring
     rw [h, ha4, hb4]; ring
   have hsum : a ^ 3 + a ^ 2 * b + a * b ^ 2 + b ^ 3 ≤ 4 * a ^ 3 := by
-    nlinarith [ha0, hb0, hba, sq_nonneg a, sq_nonneg b, mul_nonneg ha0 hb0,
+    nlinarith only [ha0, hb0, hba, sq_nonneg a, sq_nonneg b, mul_nonneg ha0 hb0,
       mul_nonneg (sq_nonneg a) hb0, mul_nonneg ha0 (sq_nonneg b)]
   have ha3pos : 0 < a ^ 3 := by positivity
   have hSpos : 0 < a ^ 3 + a ^ 2 * b + a * b ^ 2 + b ^ 3 := by
-    nlinarith [ha3pos, mul_nonneg (sq_nonneg a) hb0, mul_nonneg ha0 (sq_nonneg b),
-      pow_nonneg hb0 3]
+    linarith only [ha3pos, mul_nonneg (sq_nonneg a) hb0, mul_nonneg ha0 (sq_nonneg b),
+      pow_nonneg hb0 3, hb0, ha0]
   have hdiff : a - b = 1 / (a ^ 3 + a ^ 2 * b + a * b ^ 2 + b ^ 3) := by
     rw [eq_div_iff (ne_of_gt hSpos)]
     exact hfac
@@ -86,7 +85,7 @@ private lemma rpow_neg_three_quarters_le_diff {x : ℝ} (hx : 1 ≤ x) :
         = 4 * a ^ 3 / (a ^ 3 + a ^ 2 * b + a * b ^ 2 + b ^ 3) from by
       rw [div_eq_mul_inv]; ring]
     rw [le_div_iff₀ hSpos]
-    nlinarith [hsum]
+    linarith only [hsum]
   have hgoal : x ^ (-(3 / 4) : ℝ) = 1 / a ^ 3 := by
     rw [ha3, Real.rpow_neg hx0.le, one_div]
   rw [hgoal, div_le_iff₀ ha3pos]
@@ -99,10 +98,10 @@ private lemma sum_rpow_neg_three_quarters_le (M : ℕ) :
   | succ n ih =>
     rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ n + 1)]
     have hkey := rpow_neg_three_quarters_le_diff (x := (n : ℝ) + 1)
-      (by have h : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n; linarith)
+      (by have h : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n; linarith only [])
     rw [show ((n : ℝ) + 1) - 1 = (n : ℝ) by ring] at hkey
     simp only [Nat.cast_add, Nat.cast_one]
-    linarith [ih, hkey]
+    linarith only [ih, hkey]
 
 private lemma sum_inv_sqrt_mul_log_div_le (M : ℕ) :
     (∑ m ∈ Finset.Icc 1 M, (1 : ℝ) / Real.sqrt (m : ℝ) * Real.log ((M : ℝ) / (m : ℝ)))
@@ -196,11 +195,11 @@ private lemma sum_inv_sqrt_abs_log_sub_le (M : ℕ) (γ : ℝ) :
         have h2 := sum_inv_sqrt_le M
         have h3 : (0 : ℝ) ≤ |Real.log (M : ℝ) - γ| := abs_nonneg _
         have h4 : (0 : ℝ) ≤ Real.sqrt (M : ℝ) := Real.sqrt_nonneg _
-        nlinarith [h1, h2, h3, h4]
+        nlinarith only [h1, h2, h3, h4]
     _ ≤ 20 * Real.sqrt (M : ℝ) * (1 + |Real.log (M : ℝ) - γ|) := by
         have h4 : (0 : ℝ) ≤ Real.sqrt (M : ℝ) := Real.sqrt_nonneg _
         have h3 : (0 : ℝ) ≤ |Real.log (M : ℝ) - γ| := abs_nonneg _
-        nlinarith [h3, h4]
+        nlinarith only [h3, h4]
 
 private lemma sum_inv_abs_log_sub_le (M : ℕ) (γ : ℝ) :
     (∑ m ∈ Finset.Icc 1 M, (1 : ℝ) / (m : ℝ) * |Real.log (m : ℝ) - γ|)
@@ -224,16 +223,16 @@ private lemma log_two_mul_add_one_sq_le (X : ℕ) (hX : 2 ≤ X) :
     (Real.log (2 * (X : ℝ)) + 1) ^ 2 ≤ 100 * Real.sqrt (X : ℝ) := by
   have h2X : (1 : ℝ) ≤ 2 * (X : ℝ) := by
     have : (2 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX
-    linarith
+    linarith only [this]
   have hlog : Real.log (2 * (X : ℝ)) ≤ 4 * (2 * (X : ℝ)) ^ ((1 : ℝ) / 4) :=
-    log_le_four_rpow (by linarith)
+    log_le_four_rpow (by linarith only [h2X])
   have hr1 : (1 : ℝ) ≤ (2 * (X : ℝ)) ^ ((1 : ℝ) / 4) := by
     have h := Real.rpow_le_rpow (by norm_num : (0 : ℝ) ≤ 1) h2X (by norm_num : (0 : ℝ) ≤ 1 / 4)
     rwa [Real.one_rpow] at h
   have hpos : (0 : ℝ) ≤ Real.log (2 * (X : ℝ)) + 1 := by
     have : 0 ≤ Real.log (2 * (X : ℝ)) := Real.log_nonneg h2X
-    linarith
-  have hsum : Real.log (2 * (X : ℝ)) + 1 ≤ 5 * (2 * (X : ℝ)) ^ ((1 : ℝ) / 4) := by linarith
+    linarith only [this]
+  have hsum : Real.log (2 * (X : ℝ)) + 1 ≤ 5 * (2 * (X : ℝ)) ^ ((1 : ℝ) / 4) := by linarith only [hlog, hr1]
   have hsq : (Real.log (2 * (X : ℝ)) + 1) ^ 2
       ≤ (5 * (2 * (X : ℝ)) ^ ((1 : ℝ) / 4)) ^ 2 := by
     have hmm := mul_self_le_mul_self hpos hsum
@@ -252,10 +251,10 @@ private lemma log_two_mul_add_one_sq_le (X : ℕ) (hX : 2 ≤ X) :
   have hsqrt2 : Real.sqrt (2 * (X : ℝ)) ≤ 2 * Real.sqrt (X : ℝ) := by
     rw [show (2 : ℝ) * (X : ℝ) = 2 * (X : ℝ) from rfl, Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2)]
     have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    have hle : Real.sqrt 2 ≤ 2 := by nlinarith [h2, Real.sqrt_nonneg 2]
+    have hle : Real.sqrt 2 ≤ 2 := by nlinarith only [h2, Real.sqrt_nonneg 2]
     exact mul_le_mul_of_nonneg_right hle (Real.sqrt_nonneg _)
   have hsqrtnn : (0 : ℝ) ≤ Real.sqrt (X : ℝ) := Real.sqrt_nonneg _
-  linarith [hsq, hsqrt2, hsqrtnn]
+  linarith only [hsq, hsqrt2, hsqrtnn]
 
 /-! ## Pointwise bounds for the Abel weight -/
 
@@ -264,41 +263,41 @@ private lemma log_two_mul_sub_abs_bound (X : ℕ) (α : ℝ) :
   by_cases hX : X = 0
   · subst hX
     simp only [Nat.cast_zero, mul_zero, Real.log_zero, zero_sub, abs_neg]
-    linarith [abs_nonneg α]
+    linarith only [abs_nonneg α]
   have hX0 : (0 : ℝ) < (X : ℝ) := by positivity
   have hlog : Real.log (2 * (X : ℝ)) = Real.log 2 + Real.log (X : ℝ) :=
     Real.log_mul (by norm_num) (ne_of_gt hX0)
   have hlog2nn : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
   have hlog2le : Real.log 2 ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-    linarith
+    linarith only [this]
   have hsplit : Real.log (X : ℝ) - α
       = -(Real.log 2) + (Real.log (2 * (X : ℝ)) - α) := by rw [hlog]; ring
   calc |Real.log (X : ℝ) - α| = |-(Real.log 2) + (Real.log (2 * (X : ℝ)) - α)| := by rw [hsplit]
     _ ≤ |-(Real.log 2)| + |Real.log (2 * (X : ℝ)) - α| := abs_add_le _ _
     _ = Real.log 2 + |Real.log (2 * (X : ℝ)) - α| := by rw [abs_neg, abs_of_nonneg hlog2nn]
     _ ≤ 2 * (1 + |Real.log (2 * (X : ℝ)) - α|) := by
-        linarith [abs_nonneg (Real.log (2 * (X : ℝ)) - α)]
+        linarith only [abs_nonneg (Real.log (2 * (X : ℝ)) - α), hlog2le]
 
 private lemma alpha_add_one_le (X : ℕ) (α : ℝ) :
     α + 1 ≤ (Real.log (2 * (X : ℝ)) + 1) * (1 + |Real.log (2 * (X : ℝ)) - α|) := by
   have hA : (0 : ℝ) ≤ |Real.log (2 * (X : ℝ)) - α| := abs_nonneg _
   have h1 : α ≤ Real.log (2 * (X : ℝ)) + |Real.log (2 * (X : ℝ)) - α| := by
-    linarith [neg_le_abs (Real.log (2 * (X : ℝ)) - α)]
-  calc α + 1 ≤ (Real.log (2 * (X : ℝ)) + |Real.log (2 * (X : ℝ)) - α|) + 1 := by linarith
+    linarith only [neg_le_abs (Real.log (2 * (X : ℝ)) - α)]
+  calc α + 1 ≤ (Real.log (2 * (X : ℝ)) + |Real.log (2 * (X : ℝ)) - α|) + 1 := by linarith only [h1]
     _ = (Real.log (2 * (X : ℝ)) + 1) + |Real.log (2 * (X : ℝ)) - α| := by ring
     _ ≤ (Real.log (2 * (X : ℝ)) + 1) * (1 + |Real.log (2 * (X : ℝ)) - α|) := by
         rcases Nat.eq_zero_or_pos X with h | h
         · subst h
           simp only [Nat.cast_zero, mul_zero, Real.log_zero, add_zero, one_mul]
-          linarith
+          linarith only []
         · have hc1 : (1 : ℝ) ≤ Real.log (2 * (X : ℝ)) + 1 := by
             have h2X : (1 : ℝ) ≤ 2 * (X : ℝ) := by
               have : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast h
-              linarith
+              linarith only [this]
             have : (0 : ℝ) ≤ Real.log (2 * (X : ℝ)) := Real.log_nonneg h2X
-            linarith
-          nlinarith [hA, hc1]
+            linarith only [this]
+          nlinarith only [hA, hc1]
 
 private lemma wfun_abs_le (X : ℕ) (α β : ℝ) :
     |LinnikAreas.Density4.BzS3.wfun α β X| ≤
@@ -369,7 +368,7 @@ private lemma wfun_diff_le (m : ℕ) (hm : 1 ≤ m) (α β : ℝ) :
         have h3 : (0 : ℝ) ≤ |Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| := by positivity
         have : (1 : ℝ) / (m : ℝ) ≤ 1 := by
           rw [div_le_one hm0]; exact hm1
-        nlinarith [h3, this, hm0]
+        nlinarith only [h3, this, hm0, hone]
 
 /-! ## The Abel weight, the telescoping function and its increment -/
 
@@ -412,7 +411,7 @@ private lemma eta_abs_le (m : ℕ) (hm : 1 ≤ m) (α β : ℝ) :
   have hm1 : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
   obtain ⟨hδlb, hδub⟩ := log_succ_sub_log_bounds m hm
   have hδnn : 0 ≤ Real.log ((m : ℝ) + 1) - Real.log (m : ℝ) := le_trans (by positivity) hδlb
-  have hmpos : 0 < (m : ℝ) + 1 := by linarith
+  have hmpos : 0 < (m : ℝ) + 1 := by linarith only [hm0]
   have h1 : |1 - ((m : ℝ) + 1) * (Real.log ((m : ℝ) + 1) - Real.log (m : ℝ))|
       ≤ 1 / (m : ℝ) := by
     rw [abs_le]
@@ -420,13 +419,13 @@ private lemma eta_abs_le (m : ℕ) (hm : 1 ≤ m) (α β : ℝ) :
     · have hup := mul_le_mul_of_nonneg_left hδub (le_of_lt hmpos)
       have heq : ((m : ℝ) + 1) * (1 / (m : ℝ)) = 1 + 1 / (m : ℝ) := by
         field_simp
-      linarith [hup, heq.le]
+      linarith only [hup, heq.le, heq]
     · have hlow := mul_le_mul_of_nonneg_left hδlb (le_of_lt hmpos)
       have heq : ((m : ℝ) + 1) * (1 / ((m : ℝ) + 1)) = 1 := by
         field_simp
       have hone : (1 : ℝ) ≤ 1 / (m : ℝ) * (m : ℝ) := by
         rw [one_div, inv_mul_cancel₀ (ne_of_gt hm0)]
-      linarith [hlow, heq.le, hone]
+      linarith only [hlow, heq.le, hone, hδub, hδnn, heq]
   have h2 : |(Real.log ((m : ℝ) + 1) - Real.log (m : ℝ)) * (2 * (m : ℝ) + 1) - 2|
       ≤ 1 / (m : ℝ) := by
     rw [abs_le]
@@ -436,12 +435,12 @@ private lemma eta_abs_le (m : ℕ) (hm : 1 ≤ m) (α β : ℝ) :
         field_simp; ring
       have hmono : 1 / ((m : ℝ) + 1) ≤ 1 / (m : ℝ) := by
         rw [div_le_div_iff₀ hmpos hm0, one_mul, one_mul]
-        linarith [hm0]
-      linarith [hlow, heq.le, hmono]
+        linarith only [hm0]
+      linarith only [hlow, heq.le, hmono, hδlb, hδub, heq]
     · have hup := mul_le_mul_of_nonneg_left hδub (by positivity : (0 : ℝ) ≤ 2 * (m : ℝ) + 1)
       have heq : (1 / (m : ℝ)) * (2 * (m : ℝ) + 1) = 2 + 1 / (m : ℝ) := by
         field_simp
-      linarith [hup, heq.le]
+      linarith only [hup, heq.le, heq]
   have hA : |Real.log ((m : ℝ) + 1) + Real.log (m : ℝ) - α - β|
       ≤ |Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| + 1 / (m : ℝ) := by
     have hsplit : Real.log ((m : ℝ) + 1) + Real.log (m : ℝ) - α - β
@@ -475,13 +474,13 @@ private lemma eta_abs_le (m : ℕ) (hm : 1 ≤ m) (α β : ℝ) :
     _ ≤ (1 / (m : ℝ)) * (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| + 2) := by
         have hle : (1 : ℝ) / (m : ℝ) ≤ 1 := by rw [div_le_one hm0]; exact hm1
         have hsq : (1 : ℝ) / (m : ℝ) * (1 / (m : ℝ)) ≤ 1 / (m : ℝ) := by
-          nlinarith [h1mnn, hle]
+          nlinarith only [h1mnn, hle, hδub, hδnn]
         calc (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| + 1 / (m : ℝ)) * (1 / (m : ℝ))
               + 1 / (m : ℝ)
             = (1 / (m : ℝ)) * (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β|)
               + ((1 / (m : ℝ)) * (1 / (m : ℝ)) + 1 / (m : ℝ)) := by ring
           _ ≤ (1 / (m : ℝ)) * (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β|)
-              + (1 / (m : ℝ) + 1 / (m : ℝ)) := by linarith [hsq]
+              + (1 / (m : ℝ) + 1 / (m : ℝ)) := by linarith only [hsq]
           _ = (1 / (m : ℝ)) * (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| + 2) := by ring
 
 /-! ## The sharp smooth-sum estimate -/
@@ -500,21 +499,21 @@ private lemma log_pred_sub_abs_le (X : ℕ) (hX : 2 ≤ X) (γ : ℝ) :
     rw [hcast] at h
     have h2 : 1 / (((X - 1 : ℕ)) : ℝ) ≤ 1 := by
       rw [div_le_one hp0]; exact_mod_cast h1
-    linarith [h, h2]
+    linarith only [h, h2]
   have hle0 : Real.log (((X - 1 : ℕ)) : ℝ) - Real.log (X : ℝ) ≤ 0 := by
     have hmono : Real.log (((X - 1 : ℕ)) : ℝ) ≤ Real.log (X : ℝ) :=
       Real.log_le_log hp0 (by exact_mod_cast (by omega : X - 1 ≤ X))
-    linarith
+    linarith only [hmono]
   have habs : |Real.log (((X - 1 : ℕ)) : ℝ) - Real.log (X : ℝ)| ≤ 1 := by
     rw [abs_of_nonpos hle0]
-    linarith [hδ']
+    linarith only [hδ']
   have hsplit : Real.log (((X - 1 : ℕ)) : ℝ) - γ
       = (Real.log (((X - 1 : ℕ)) : ℝ) - Real.log (X : ℝ)) + (Real.log (X : ℝ) - γ) := by ring
   rw [hsplit]
   calc |(Real.log (((X - 1 : ℕ)) : ℝ) - Real.log (X : ℝ)) + (Real.log (X : ℝ) - γ)|
       ≤ |Real.log (((X - 1 : ℕ)) : ℝ) - Real.log (X : ℝ)| + |Real.log (X : ℝ) - γ| :=
         abs_add_le _ _
-    _ ≤ |Real.log (X : ℝ) - γ| + 1 := by linarith [habs]
+    _ ≤ |Real.log (X : ℝ) - γ| + 1 := by linarith only [habs]
 
 private lemma smooth_shift_sharp_local :
     ∃ K : ℝ, 0 < K ∧ ∀ (X : ℕ) (α β : ℝ), 2 ≤ X → 0 ≤ α → 0 ≤ β →
@@ -529,7 +528,7 @@ private lemma smooth_shift_sharp_local :
   set B := |Real.log (2 * (X : ℝ)) - β| with hBdef
   have hAnn : 0 ≤ A := by rw [hAdef]; exact abs_nonneg _
   have hBnn : 0 ≤ B := by rw [hBdef]; exact abs_nonneg _
-  have hQ1 : (1 : ℝ) ≤ (1 + A) * (1 + B) := by nlinarith
+  have hQ1 : (1 : ℝ) ≤ (1 + A) * (1 + B) := by nlinarith only [hAnn, hBnn]
   have hQnn : (0 : ℝ) ≤ (1 + A) * (1 + B) := by positivity
   have hsqnn : (0 : ℝ) ≤ Real.sqrt (X : ℝ) := Real.sqrt_nonneg _
   have hsq1 : (1 : ℝ) ≤ Real.sqrt (X : ℝ) := Real.one_le_sqrt.mpr (by exact_mod_cast hX1)
@@ -587,15 +586,15 @@ private lemma smooth_shift_sharp_local :
           + 2 * (2 * Real.sqrt (X : ℝ)) := by
       have h4 : 2 * (∑ m ∈ Finset.Icc 1 X, (1 / (m : ℝ))) ≤ 2 * (2 * Real.sqrt (X : ℝ)) :=
         mul_le_mul_of_nonneg_left hb3 (by norm_num)
-      linarith [hb1, hb2, h4]
+      linarith only [hb1, hb2, h4, hb3]
     have hfin : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - α|)
           + 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - β|)
           + 2 * (2 * Real.sqrt (X : ℝ))
         ≤ 210 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
-      have h5a : (1 : ℝ) + |Real.log (X : ℝ) - α| ≤ 5 * (1 + A) := by linarith [hLXα]
-      have h5b : (1 : ℝ) + |Real.log (X : ℝ) - β| ≤ 5 * (1 + B) := by linarith [hLXβ]
-      have hB1 : (1 : ℝ) ≤ 1 + B := by linarith
-      have hA1 : (1 : ℝ) ≤ 1 + A := by linarith
+      have h5a : (1 : ℝ) + |Real.log (X : ℝ) - α| ≤ 5 * (1 + A) := by linarith only [hLXα, hAnn]
+      have h5b : (1 : ℝ) + |Real.log (X : ℝ) - β| ≤ 5 * (1 + B) := by linarith only [hLXβ, hBnn]
+      have hB1 : (1 : ℝ) ≤ 1 + B := by linarith only [hBnn]
+      have hA1 : (1 : ℝ) ≤ 1 + A := by linarith only [hAnn]
       have p1 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - α|)
           ≤ 100 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have h1 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - α|)
@@ -609,8 +608,8 @@ private lemma smooth_shift_sharp_local :
               - 100 * (1 + A) * Real.sqrt (X : ℝ) = 100 * (1 + A) * B * Real.sqrt (X : ℝ) := by
             ring
           have hnn : (0 : ℝ) ≤ 100 * (1 + A) * B * Real.sqrt (X : ℝ) := by positivity
-          linarith [hkey, hnn]
-        linarith [h1, h2.le, h3]
+          linarith only [hkey, hnn]
+        linarith only [h1, h2.le, h3]
       have p2 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - β|)
           ≤ 100 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have h1 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (X : ℝ) - β|)
@@ -624,16 +623,16 @@ private lemma smooth_shift_sharp_local :
               - 100 * (1 + B) * Real.sqrt (X : ℝ) = 100 * (1 + B) * A * Real.sqrt (X : ℝ) := by
             ring
           have hnn : (0 : ℝ) ≤ 100 * (1 + B) * A * Real.sqrt (X : ℝ) := by positivity
-          linarith [hkey, hnn]
-        linarith [h1, h2.le, h3]
+          linarith only [hkey, hnn]
+        linarith only [h1, h2.le, h3]
       have p3 : 2 * (2 * Real.sqrt (X : ℝ)) ≤ 4 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have hkey : 4 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) - 2 * (2 * Real.sqrt (X : ℝ))
             = 4 * (A + B + A * B) * Real.sqrt (X : ℝ) := by ring
         have hnn : (0 : ℝ) ≤ 4 * (A + B + A * B) * Real.sqrt (X : ℝ) := by
-          have hAB : (0 : ℝ) ≤ A + B + A * B := by nlinarith [hAnn, hBnn]
+          have hAB : (0 : ℝ) ≤ A + B + A * B := by linarith only [hAnn, hBnn, hQ1]
           positivity
-        linarith [hkey, hnn]
-      linarith [p1, p2, p3]
+        linarith only [hkey, hnn]
+      linarith only [p1, p2, p3, hsq1]
     calc |∑ m ∈ Finset.Icc 1 X, S3Geta α β m| ≤ ∑ m ∈ Finset.Icc 1 X, |S3Geta α β m| :=
           Finset.abs_sum_le_sum_abs _ _
       _ ≤ ∑ m ∈ Finset.Icc 1 X,
@@ -660,7 +659,7 @@ private lemma smooth_shift_sharp_local :
     have hb : (1 / (X : ℝ)) * (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2)
         ≤ 2 * (1 + A) + 2 * (1 + B) + 2 := by
       have hsum2 : |Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2
-          ≤ 2 * (1 + A) + 2 * (1 + B) + 2 := by linarith [hLXα, hLXβ]
+          ≤ 2 * (1 + A) + 2 * (1 + B) + 2 := by linarith only [hLXα, hLXβ]
       calc (1 / (X : ℝ)) * (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2)
           ≤ 1 * (2 * (1 + A) + 2 * (1 + B) + 2) :=
             mul_le_mul hle1 hsum2 hnn (by norm_num)
@@ -673,7 +672,7 @@ private lemma smooth_shift_sharp_local :
             + (1 / (X : ℝ)) * (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2) :=
           add_le_add hwa heta
       _ ≤ 10 * (1 + A) * (1 + B) := by
-          nlinarith [hb, hQ1, hAnn, hBnn]
+          nlinarith only [hb, hQ1, hAnn, hBnn]
   have hG1 : |S3GF α β 1| ≤ 101 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
     have hval : S3GF α β 1 = (α + 1) * (β + 1) + 1 := by
       simp only [S3GF, Nat.cast_one, Real.log_one]
@@ -685,16 +684,16 @@ private lemma smooth_shift_sharp_local :
       rw [hBdef]; exact alpha_add_one_le X β
     have hLs : (Real.log (2 * (X : ℝ)) + 1) ^ 2 ≤ 100 * Real.sqrt (X : ℝ) :=
       log_two_mul_add_one_sq_le X hX
-    have h2nn : (0 : ℝ) ≤ β + 1 := by linarith
+    have h2nn : (0 : ℝ) ≤ β + 1 := by linarith only [hβ]
     have h3nn : (0 : ℝ) ≤ (Real.log (2 * (X : ℝ)) + 1) * (1 + A) := by
       have h2X : (1 : ℝ) ≤ 2 * (X : ℝ) := by
         have : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX1
-        linarith
+        linarith only [this]
       have hLn : (0 : ℝ) ≤ Real.log (2 * (X : ℝ)) := Real.log_nonneg h2X
-      have h1A : (0 : ℝ) < 1 + A := by linarith
+      have h1A : (0 : ℝ) < 1 + A := by linarith only [hAnn]
       calc (0 : ℝ) = 0 * (1 + A) := by ring
         _ ≤ (Real.log (2 * (X : ℝ)) + 1) * (1 + A) :=
-            mul_le_mul_of_nonneg_right (by linarith) h1A.le
+            mul_le_mul_of_nonneg_right (by linarith only [hLn]) h1A.le
     have hmain : (α + 1) * (β + 1)
         ≤ (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (1 + A) * (1 + B) := by
       calc (α + 1) * (β + 1)
@@ -705,12 +704,12 @@ private lemma smooth_shift_sharp_local :
     have h100 : (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (1 + A) * (1 + B)
         ≤ 100 * Real.sqrt (X : ℝ) * (1 + A) * (1 + B) :=
       mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_right hLs (by linarith [hAnn])) (by linarith [hBnn])
-    have hone : (1 : ℝ) ≤ (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by nlinarith [hQ1, hsq1]
+        (mul_le_mul_of_nonneg_right hLs (by linarith only [hAnn])) (by linarith only [hBnn])
+    have hone : (1 : ℝ) ≤ (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by nlinarith only [hQ1, hsq1, hsqnn]
     calc (α + 1) * (β + 1) + 1
-        ≤ (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (1 + A) * (1 + B) + 1 := by linarith [hmain]
+        ≤ (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (1 + A) * (1 + B) + 1 := by linarith only [hmain]
       _ ≤ 100 * Real.sqrt (X : ℝ) * (1 + A) * (1 + B)
-            + (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by linarith [h100, hone]
+            + (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by linarith only [h100, hone]
       _ = 101 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by ring
   have hGX : S3GF α β X
       = (X : ℝ) * ((Real.log (X : ℝ) - α - 1) * (Real.log (X : ℝ) - β - 1) + 1) := rfl
@@ -731,7 +730,7 @@ private lemma smooth_shift_sharp_local :
       _ ≤ (|∑ m ∈ Finset.Icc 1 X, S3Geta α β m| + |S3GF α β (X + 1) - S3GF α β X|)
           + |S3GF α β 1| := by
           rw [abs_neg]
-          linarith [abs_add_le (∑ m ∈ Finset.Icc 1 X, S3Geta α β m)
+          linarith only [abs_add_le (∑ m ∈ Finset.Icc 1 X, S3Geta α β m)
             (S3GF α β (X + 1) - S3GF α β X)]
       _ = |∑ m ∈ Finset.Icc 1 X, S3Geta α β m| + |S3GF α β (X + 1) - S3GF α β X|
           + |S3GF α β 1| := by ring
@@ -747,11 +746,11 @@ private lemma smooth_shift_sharp_local :
           calc 10 * (1 + A) * (1 + B) = 10 * (1 + A) * (1 + B) * 1 := by ring
             _ ≤ 10 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) :=
                 mul_le_mul_of_nonneg_left hsq1 (by positivity)
-        linarith [h10]
+        linarith only [h10]
     _ ≤ 400 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have hnn : (0 : ℝ) ≤ (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by positivity
         have h321 := mul_le_mul_of_nonneg_right (by norm_num : (321 : ℝ) ≤ 400) hnn
-        linarith [h321]
+        linarith only [h321, hnn]
 
 /-! ## The sharp Abel error estimate -/
 
@@ -774,7 +773,7 @@ private lemma abel_error_sharp_local :
   have hAnn : 0 ≤ A := by rw [hAdef]; exact abs_nonneg _
   have hBnn : 0 ≤ B := by rw [hBdef]; exact abs_nonneg _
   have hQnn : (0 : ℝ) ≤ (1 + A) * (1 + B) := by positivity
-  have hQ1 : (1 : ℝ) ≤ (1 + A) * (1 + B) := by nlinarith
+  have hQ1 : (1 : ℝ) ≤ (1 + A) * (1 + B) := by nlinarith only [hAnn, hBnn]
   have hsgnn : (0 : ℝ) ≤ s3Sig c := s3Sig_nonneg c
   have hsqnn : (0 : ℝ) ≤ Real.sqrt (X : ℝ) := Real.sqrt_nonneg _
   have hsq1 : (1 : ℝ) ≤ Real.sqrt (X : ℝ) := Real.one_le_sqrt.mpr (by exact_mod_cast hX1)
@@ -863,13 +862,13 @@ private lemma abel_error_sharp_local :
     have hb1' : (∑ m ∈ Finset.Icc 1 (X - 1), (1 / Real.sqrt (m : ℝ)) * |Real.log (m : ℝ) - α|)
         ≤ 120 * (1 + A) * Real.sqrt (X : ℝ) := by
       have h6 : (1 : ℝ) + |Real.log (((X - 1 : ℕ)) : ℝ) - α| ≤ 6 * (1 + A) := by
-        linarith [hpredα, hLXα]
+        linarith only [hpredα, hLXα, hAnn]
       have hy : (0 : ℝ) ≤ 1 + |Real.log (((X - 1 : ℕ)) : ℝ) - α| := by positivity
       have hstep1 : 20 * Real.sqrt (((X - 1 : ℕ)) : ℝ)
             * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - α|)
           ≤ 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - α|) := by
         have hmono : 20 * Real.sqrt (((X - 1 : ℕ)) : ℝ) ≤ 20 * Real.sqrt (X : ℝ) := by
-          linarith [hsqX]
+          linarith only [hsqX]
         exact mul_le_mul_of_nonneg_right hmono hy
       have hstep2 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - α|)
           ≤ 20 * Real.sqrt (X : ℝ) * (6 * (1 + A)) :=
@@ -883,13 +882,13 @@ private lemma abel_error_sharp_local :
     have hb2' : (∑ m ∈ Finset.Icc 1 (X - 1), (1 / Real.sqrt (m : ℝ)) * |Real.log (m : ℝ) - β|)
         ≤ 120 * (1 + B) * Real.sqrt (X : ℝ) := by
       have h6 : (1 : ℝ) + |Real.log (((X - 1 : ℕ)) : ℝ) - β| ≤ 6 * (1 + B) := by
-        linarith [hpredβ, hLXβ]
+        linarith only [hpredβ, hLXβ, hBnn]
       have hy : (0 : ℝ) ≤ 1 + |Real.log (((X - 1 : ℕ)) : ℝ) - β| := by positivity
       have hstep1 : 20 * Real.sqrt (((X - 1 : ℕ)) : ℝ)
             * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - β|)
           ≤ 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - β|) := by
         have hmono : 20 * Real.sqrt (((X - 1 : ℕ)) : ℝ) ≤ 20 * Real.sqrt (X : ℝ) := by
-          linarith [hsqX]
+          linarith only [hsqX]
         exact mul_le_mul_of_nonneg_right hmono hy
       have hstep2 : 20 * Real.sqrt (X : ℝ) * (1 + |Real.log (((X - 1 : ℕ)) : ℝ) - β|)
           ≤ 20 * Real.sqrt (X : ℝ) * (6 * (1 + B)) :=
@@ -901,33 +900,33 @@ private lemma abel_error_sharp_local :
         _ ≤ 20 * Real.sqrt (X : ℝ) * (6 * (1 + B)) := hstep2
         _ = 120 * (1 + B) * Real.sqrt (X : ℝ) := by ring
     have hb3' : (∑ m ∈ Finset.Icc 1 (X - 1), (1 : ℝ) / Real.sqrt (m : ℝ))
-        ≤ 2 * Real.sqrt (X : ℝ) := le_trans hb3 (by linarith [hsqX])
+        ≤ 2 * Real.sqrt (X : ℝ) := le_trans hb3 (by linarith only [hsqX])
     have htot : (∑ m ∈ Finset.Icc 1 (X - 1), (1 / Real.sqrt (m : ℝ))
           * (|Real.log (m : ℝ) - α| + |Real.log (m : ℝ) - β| + 1))
         ≤ 250 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
       rw [hsum']
-      have hB1 : (1 : ℝ) ≤ 1 + B := by linarith
-      have hA1 : (1 : ℝ) ≤ 1 + A := by linarith
+      have hB1 : (1 : ℝ) ≤ 1 + B := by linarith only [hBnn]
+      have hA1 : (1 : ℝ) ≤ 1 + A := by linarith only [hAnn]
       have e1 : 120 * (1 + A) * Real.sqrt (X : ℝ)
           ≤ 120 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have hkey : 120 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ)
             - 120 * (1 + A) * Real.sqrt (X : ℝ) = 120 * (1 + A) * B * Real.sqrt (X : ℝ) := by ring
         have hnn : (0 : ℝ) ≤ 120 * (1 + A) * B * Real.sqrt (X : ℝ) := by positivity
-        linarith [hkey, hnn]
+        linarith only [hkey, hnn]
       have e2 : 120 * (1 + B) * Real.sqrt (X : ℝ)
           ≤ 120 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have hkey : 120 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ)
             - 120 * (1 + B) * Real.sqrt (X : ℝ) = 120 * (1 + B) * A * Real.sqrt (X : ℝ) := by ring
         have hnn : (0 : ℝ) ≤ 120 * (1 + B) * A * Real.sqrt (X : ℝ) := by positivity
-        linarith [hkey, hnn]
+        linarith only [hkey, hnn]
       have e3 : 2 * Real.sqrt (X : ℝ) ≤ 2 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) := by
         have hkey : 2 * (1 + A) * (1 + B) * Real.sqrt (X : ℝ) - 2 * Real.sqrt (X : ℝ)
             = 2 * (A + B + A * B) * Real.sqrt (X : ℝ) := by ring
         have hnn : (0 : ℝ) ≤ 2 * (A + B + A * B) * Real.sqrt (X : ℝ) := by
-          have hAB : (0 : ℝ) ≤ A + B + A * B := by nlinarith [hAnn, hBnn]
+          have hAB : (0 : ℝ) ≤ A + B + A * B := by linarith only [hAnn, hBnn, hQ1]
           positivity
-        linarith [hkey, hnn]
-      linarith [hb1', hb2', hb3', e1, e2, e3]
+        linarith only [hkey, hnn]
+      linarith only [hb1', hb2', hb3', e1, e2, e3, hsq1, hb3, hsqX]
     calc |∑ m ∈ Finset.Icc 1 (X - 1),
           (LinnikAreas.Density4.BzS3.wfun α β m
             - LinnikAreas.Density4.BzS3.wfun α β (m + 1)) * s3Delta c m|
@@ -954,7 +953,7 @@ private lemma abel_error_sharp_local :
         have hnn : (0 : ℝ) ≤ C₀ * s3Sig c * Real.sqrt (X : ℝ) * (1 + A) * (1 + B) := by
           positivity
         have h254 := mul_le_mul_of_nonneg_right (by norm_num : (254 : ℝ) ≤ 300) hnn
-        linarith [h254]
+        linarith only [h254, hnn]
 
 private lemma mu_sq_indicator (m : ℕ) :
     ((ArithmeticFunction.moebius m : ℤ) : ℝ) ^ 2 = if Squarefree m then 1 else 0 := by
@@ -1016,7 +1015,7 @@ theorem S3GAbelSharp :
           (1 + |Real.log (2 * (X : ℝ)) - α|) * (1 + |Real.log (2 * (X : ℝ)) - β|) := by
   obtain ⟨K₁, hK₁, hSmooth⟩ := smooth_shift_sharp_local
   obtain ⟨K₂, hK₂, hAbel⟩ := abel_error_sharp_local
-  refine ⟨K₁ + K₂, by linarith, ?_⟩
+  refine ⟨K₁ + K₂, by linarith only [hK₁, hK₂], ?_⟩
   intro c X α β hc hX hα hβ
   -- the two error terms of the two-weight Abel identity
   have hsmooth := hSmooth X α β hX hα hβ
@@ -1045,7 +1044,7 @@ theorem S3GAbelSharp :
                 (LinnikAreas.Density4.BzS3.wfun α β m
                   - LinnikAreas.Density4.BzS3.wfun α β (m + 1)) * s3Delta c m) := by
     rw [hmain]
-    linarith [hkey]
+    linarith only [hkey]
   rw [hstep]
   -- the two pieces, bounded
   have hb1 : |LinnikAreas.Density4.BzS3.s3c c
@@ -1091,7 +1090,7 @@ theorem S3GAbelSharp :
     have h2 : K₁ * s3Sig c * R * W * V + K₂ * s3Sig c * R * W * V
         = (K₁ + K₂) * s3Sig c * R * W * V := by ring
     rw [← h2]
-    linarith [h1]
+    linarith only [h1]
   calc |LinnikAreas.Density4.BzS3.s3c c
           * ((∑ m ∈ Finset.Icc 1 X, LinnikAreas.Density4.BzS3.wfun α β m)
               - (X : ℝ) * ((Real.log (X : ℝ) - α - 1) * (Real.log (X : ℝ) - β - 1) + 1))

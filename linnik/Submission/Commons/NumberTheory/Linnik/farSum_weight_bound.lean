@@ -351,7 +351,7 @@ private theorem lowBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     have hn : ((N1 + 1 : ℕ) : ℝ) = (N1 : ℝ) + 1 := by norm_cast
     have h2A : ((N1 + 1 : ℕ) : ℝ) ≤ 3 * A := by
       rw [hn]
-      nlinarith
+      linarith only [hdiv, hA2, hApos, hn]
     simpa [hn] using h2A
   have hW0' : ∀ k ∈ I1, 0 ≤ 4 / 3 / (2 : ℝ) ^ k := hW01
   have hchain1 : (∑ u ∈ S.filter (fun u => ‖u‖ ≤ R / 4), M u * (4 / 3 / ‖u‖)) ≤
@@ -380,18 +380,18 @@ private theorem lowBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     have hlog2 : Real.log ((2 : ℝ) ^ (k + 1) + 2) ≤ Real.log (R + 2) := by
       refine Real.log_le_log ?_ ?_
       · positivity
-      · nlinarith
+      · linarith only [h2R]
     have hmain : Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ A := by
       calc
-        Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ Real.log (R + 2) + q + 2 := by linarith
+        Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ Real.log (R + 2) + q + 2 := by linarith only [hlog2]
         _ = A := by dsimp [A]
     have hfac1 : C * ((2 : ℝ) ^ (k + 1) + 1) * (Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2)
         ≤ C * (2 : ℝ) ^ (k + 2) * A := by
       have hps : (2 : ℝ) ^ (k + 1) + 1 ≤ (2 : ℝ) ^ (k + 2) := pow_succ_two_add_one_le (k := k)
       have hposLog : (0 : ℝ) ≤ Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2 := by
-        have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ (k + 1) + 2 := by linarith [two_pow_ge_one (k + 1)]
+        have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ (k + 1) + 2 := by linarith only [two_pow_ge_one (k + 1)]
         have hl : 0 ≤ Real.log ((2 : ℝ) ^ (k + 1) + 2) := Real.log_nonneg h1
-        linarith
+        linarith only [hl, hq]
       have hpos2 : (0 : ℝ) ≤ (2 : ℝ) ^ (k + 2) := by positivity
       have hmul1 : ((2 : ℝ) ^ (k + 1) + 1) * (Real.log ((2 : ℝ) ^ (k + 1) + 2) + q + 2)
           ≤ (2 : ℝ) ^ (k + 2) * A := mul_le_mul hps hmain hposLog hpos2
@@ -455,7 +455,7 @@ private theorem lowBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         exact mul_le_mul_of_nonneg_right hN1A' hfac
       _ = (16 : ℝ) * C * A ^ 2 := by ring
   have hfinal3 : (16 : ℝ) * C * A ^ 2 ≤ (64 : ℝ) * C * (A ^ 2 + 1) := by
-    nlinarith [mul_nonneg hC (sq_nonneg A)]
+    linarith only [mul_nonneg hC (sq_nonneg A), hC]
   calc
     (∑ u ∈ S.filter (fun u => ‖u‖ ≤ R / 4), M u * (4 / 3 / ‖u‖)) ≤
         ((N1 + 1 : ℕ) : ℝ) * ((16 / 3) * C * A) := hfinal1
@@ -499,7 +499,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
   have hA2 : (2 : ℝ) ≤ A := by dsimp [A]; linarith
   have hlogA : Real.log (R + 2) ≤ A := by dsimp [A]; linarith
   let s2 : ℝ := 5 * R
-  have hs2ge1 : 1 ≤ s2 := by dsimp [s2]; nlinarith
+  have hs2ge1 : 1 ≤ s2 := by dsimp [s2]; linarith only [hR]
   let J : ℕ := dIdx s2
   have h2J : (2 : ℝ) ^ (J + 1) ≤ 10 * R := by
     have h1 : (2 : ℝ) ^ (dIdx s2 + 1) ≤ 2 * s2 := two_pow_succ_le_two_mul hs2ge1
@@ -517,7 +517,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         calc
           ‖w - u‖ ≤ ‖w‖ + ‖u‖ := htri
           _ = R + ‖u‖ := by rw [hw]
-      nlinarith
+      linarith only [h1, hp.1]
     have hds : ‖w - u‖ ≤ s2 := by simpa [s2] using hd5
     have hsp : ‖w - u‖ < (2 : ℝ) ^ (J + 1) := lt_of_le_of_lt hds (by
       dsimp [J, s2]
@@ -584,8 +584,8 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     rw [hlp, h10] at hlog1
     calc
       ((J + 1 : ℕ) : ℝ) * Real.log 2 ≤ Real.log (10 : ℝ) + Real.log R := hlog1
-      _ ≤ Real.log (10 : ℝ) + Real.log (R + 2) := by nlinarith [hRle]
-      _ ≤ Real.log (10 : ℝ) + A := by nlinarith [hlogA]
+      _ ≤ Real.log (10 : ℝ) + Real.log (R + 2) := by linarith only [hRle]
+      _ ≤ Real.log (10 : ℝ) + A := by linarith only [hlogA]
       _ = A + Real.log (10 : ℝ) := by ring
   have hJp1 : ((J : ℕ) : ℝ) + 1 ≤ 2 * (A + 9) := by
     have hlog2pos : (0 : ℝ) < Real.log 2 := by linarith [half_lt_log_two]
@@ -596,7 +596,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
       have hl10 : 0 ≤ Real.log (10 : ℝ) := by
         refine Real.log_nonneg ?_
         norm_num
-      linarith
+      linarith only [hl10, hApos]
     have hinv : (1 / Real.log 2 : ℝ) ≤ 2 := by
       have h2le : (1 / 2 : ℝ) ≤ Real.log 2 := le_of_lt half_lt_log_two
       calc
@@ -610,7 +610,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         _ = 2 * (A + Real.log (10 : ℝ)) := by ring
     have hten : Real.log (10 : ℝ) ≤ 9 := log_ten_le_nine
     have hst : 2 * (A + Real.log (10 : ℝ)) ≤ 2 * (A + 9) := by
-      nlinarith
+      linarith only [hten]
     have hc : ((J + 1 : ℕ) : ℝ) ≤ 2 * (A + 9) := le_trans (le_trans hdiv hstep1) hst
     have hn : ((J + 1 : ℕ) : ℝ) = (J : ℝ) + 1 := by norm_cast
     rw [hn] at hc
@@ -639,28 +639,28 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     have h2R : (2 : ℝ) ^ (k + 1) ≤ 10 * R := le_trans h2k1 h2J
     have hlog1 : Real.log (R + (2 : ℝ) ^ (k + 1) + 2) ≤ Real.log (11 : ℝ) + Real.log (R + 2) := by
       have hle11 : R + (2 : ℝ) ^ (k + 1) + 2 ≤ 11 * (R + 2) := by
-        nlinarith
+        linarith only [h2R, hR]
       have hlogl := Real.log_le_log (by positivity : (0 : ℝ) < R + (2 : ℝ) ^ (k + 1) + 2) hle11
       have hmul : Real.log (11 * (R + 2)) = Real.log (11 : ℝ) + Real.log (R + 2) :=
-        Real.log_mul (by norm_num : (11 : ℝ) ≠ 0) (by nlinarith : R + 2 ≠ 0)
+        Real.log_mul (by norm_num : (11 : ℝ) ≠ 0) (ne_of_gt (by linarith only [hR] : (0 : ℝ) < R + 2))
       rwa [hmul] at hlogl
     have hmain2 : Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ A + 10 := by
       have h11le : Real.log (11 : ℝ) ≤ 10 := log_eleven_le_ten
       calc
-        Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ Real.log (11 : ℝ) + Real.log (R + 2) + q + 2 := by linarith
+        Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2 ≤ Real.log (11 : ℝ) + Real.log (R + 2) + q + 2 := by linarith only [hlog1]
         _ ≤ 10 + Real.log (R + 2) + q + 2 := by
           have hadd := add_le_add_right h11le (Real.log (R + 2) + q + 2)
-          linarith
+          linarith only [hadd]
         _ = A + 10 := by dsimp [A]; ring
     have hps : (2 : ℝ) ^ (k + 1) + 1 ≤ (2 : ℝ) ^ (k + 2) := pow_succ_two_add_one_le (k := k)
     have hposLog : (0 : ℝ) ≤ Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2 := by
       have h1 : (1 : ℝ) ≤ R + (2 : ℝ) ^ (k + 1) + 2 := by
         have hp2 : (0 : ℝ) < (2 : ℝ) ^ (k + 1) := pow_pos (by norm_num) (k + 1)
-        nlinarith
+        linarith only [hp2, hR]
       have hl : 0 ≤ Real.log (R + (2 : ℝ) ^ (k + 1) + 2) := Real.log_nonneg h1
-      linarith
+      linarith only [hl, hq]
     have hpos2 : (0 : ℝ) ≤ (2 : ℝ) ^ (k + 2) := by positivity
-    have hA10pos : (0 : ℝ) ≤ A + 10 := by linarith
+    have hA10pos : (0 : ℝ) ≤ A + 10 := by linarith only [hApos]
     have hmul1 : ((2 : ℝ) ^ (k + 1) + 1) * (Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2)
         ≤ (2 : ℝ) ^ (k + 2) * (A + 10) := mul_le_mul hps hmain2 hposLog hpos2
     have hmul2 : C * (((2 : ℝ) ^ (k + 1) + 1) * (Real.log (R + (2 : ℝ) ^ (k + 1) + 2) + q + 2))
@@ -690,7 +690,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         (4 / (2 : ℝ) ^ k) * (C * (2 : ℝ) ^ (k + 2) * (A + 10))
             = C * (A + 10) * ((4 / (2 : ℝ) ^ k) * (2 : ℝ) ^ (k + 2)) := by ring
         _ ≤ C * (A + 10) * 16 := by
-          exact mul_le_mul_of_nonneg_left hcoef (mul_nonneg hC (by linarith : (0 : ℝ) ≤ A + 10))
+          exact mul_le_mul_of_nonneg_left hcoef (mul_nonneg hC (by linarith only [hApos] : (0 : ℝ) ≤ A + 10))
         _ = (16 : ℝ) * C * (A + 10) := by ring
     calc
       (4 / (2 : ℝ) ^ k) * (C * ((2 : ℝ) ^ (k + 1) + 1) *
@@ -715,7 +715,7 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     le_trans (le_trans hchain1b hchain2b) hsum2
   have hjn : ((J + 1 : ℕ) : ℝ) = (J : ℝ) + 1 := by norm_cast
   have hfacb : 0 ≤ (16 : ℝ) * C * (A + 10) := by
-    exact mul_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 16) hC) (by linarith : (0 : ℝ) ≤ A + 10)
+    exact mul_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 16) hC) (by linarith only [hApos] : (0 : ℝ) ≤ A + 10)
   have hfinalb2 : ((J + 1 : ℕ) : ℝ) * ((16 : ℝ) * C * (A + 10)) ≤
       (32 : ℝ) * C * (A + 9) * (A + 10) := by
     calc
@@ -726,10 +726,10 @@ private theorem midBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
       _ = (32 : ℝ) * C * (A + 9) * (A + 10) := by ring
   have hA0 : 0 ≤ A := hApos
   have hAleA2 : A ≤ A ^ 2 := by
-    have h := mul_le_mul_of_nonneg_left (by linarith : (1 : ℝ) ≤ A) hA0
+    have h := mul_le_mul_of_nonneg_left (by linarith only [hA2] : (1 : ℝ) ≤ A) hA0
     simpa [mul_one, pow_two] using h
   have hfinalb3 : (32 : ℝ) * C * (A + 9) * (A + 10) ≤ (8192 : ℝ) * C * (A ^ 2 + 1) := by
-    nlinarith [hC, hAleA2, sq_nonneg A]
+    linarith only [mul_le_mul_of_nonneg_left hAleA2 hC, mul_nonneg hC (sq_nonneg A), hC]
   calc
     (∑ u ∈ S.filter (fun u => ‖u‖ ≤ 4 * R ∧ 1 < ‖w - u‖), M u * (4 / ‖w - u‖)) ≤
         ((J + 1 : ℕ) : ℝ) * ((16 : ℝ) * C * (A + 10)) := hfinalb1
@@ -771,16 +771,16 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
   have hlogA : Real.log (R + 2) ≤ A := by dsimp [A]; linarith
   let K0 : ℕ := dIdx (4 * R)
   have hK0pow : (2 : ℝ) ^ K0 ≤ 4 * R := by
-    have h1 := dIdx_pow_le (by nlinarith : (1 : ℝ) ≤ 4 * R)
+    have h1 := dIdx_pow_le (by linarith only [hR] : (1 : ℝ) ≤ 4 * R)
     simpa [K0] using h1
   have hK0lt : 4 * R < (2 : ℝ) ^ (K0 + 1) := by
-    have h1 := dIdx_lt_pow_succ (by nlinarith : (1 : ℝ) ≤ 4 * R)
+    have h1 := dIdx_lt_pow_succ (by linarith only [hR] : (1 : ℝ) ≤ 4 * R)
     simpa [K0] using h1
   have hK0large : 2 * R ≤ (2 : ℝ) ^ K0 := by
     have h : 4 * R < 2 * (2 : ℝ) ^ K0 := by
       rw [pow_succ] at hK0lt
       simpa [mul_comm, mul_left_comm, mul_assoc] using hK0lt
-    nlinarith
+    linarith only [h]
   have hK0le : ((K0 : ℕ) : ℝ) ≤ 2 * A + 4 := by
     have hlogm : ((K0 : ℕ) : ℝ) * Real.log 2 ≤ Real.log (4 * R) := by
       have hlog1 : Real.log ((2 : ℝ) ^ K0) ≤ Real.log (4 * R) := by
@@ -796,7 +796,7 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
       calc
         ((K0 : ℕ) : ℝ) * Real.log 2 ≤ Real.log (4 : ℝ) + Real.log R := by
           rwa [h4] at hlogm
-        _ ≤ Real.log (4 : ℝ) + A := by nlinarith [hRle, hlogA]
+        _ ≤ Real.log (4 : ℝ) + A := by linarith only [hRle, hlogA]
     have h4le : Real.log (4 : ℝ) ≤ 2 := by
       have hlog2le : Real.log (2 : ℝ) ≤ 1 := by
         have h2 := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
@@ -807,17 +807,17 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         rw [Real.log_pow (2 : ℝ) 2]
         norm_num
       rw [hmul]
-      nlinarith
+      linarith only [hlog2le]
     have hmain : ((K0 : ℕ) : ℝ) * Real.log 2 ≤ A + 2 := by
       calc
         ((K0 : ℕ) : ℝ) * Real.log 2 ≤ Real.log (4 : ℝ) + A := hlogm'
-        _ ≤ 2 + A := by nlinarith [h4le]
+        _ ≤ 2 + A := by linarith only [h4le]
         _ = A + 2 := by ring
     have hlog2pos : (0 : ℝ) < Real.log 2 := by linarith [half_lt_log_two]
     have hdiv : ((K0 : ℕ) : ℝ) ≤ (A + 2) / Real.log 2 := by
       rw [le_div_iff₀ hlog2pos]
       simpa [mul_comm] using hmain
-    have hA2pos : 0 ≤ A + 2 := by linarith
+    have hA2pos : 0 ≤ A + 2 := by linarith only [hApos]
     have hinv : (1 / Real.log 2 : ℝ) ≤ 2 := by
       have h2le : (1 / 2 : ℝ) ≤ Real.log 2 := le_of_lt half_lt_log_two
       calc
@@ -843,7 +843,7 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     intro u hu hfar j hjin hfj
     have hge : K0 ≤ dIdx ‖u‖ := by
       have h4Ru : 4 * R ≤ ‖u‖ := le_of_lt hfar
-      have hm := dIdx_mono (by nlinarith : (1 : ℝ) ≤ 4 * R) h4Ru
+      have hm := dIdx_mono (by linarith only [hR] : (1 : ℝ) ≤ 4 * R) h4Ru
       simpa [K0] using hm
     have hdIdx : dIdx ‖u‖ = K0 + j := by
       have hsub : dIdx ‖u‖ - K0 = j := by
@@ -867,12 +867,12 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         have := hu1 u hu
         linarith
       exact pow_pos hnorm 2
-    have hdivv := div_le_div_of_nonneg_left (by nlinarith : (0 : ℝ) ≤ 4 * R / 3)
+    have hdivv := div_le_div_of_nonneg_left (by linarith only [hR] : (0 : ℝ) ≤ 4 * R / 3)
       hdenpos h4u
     exact hdivv
   have hW03 : ∀ j ∈ I3, 0 ≤ (4 * R / 3) / (4 : ℝ) ^ (K0 + j) := by
     intro j hj
-    exact div_nonneg (by nlinarith : (0 : ℝ) ≤ 4 * R / 3) (pow_nonneg (by norm_num : (0 : ℝ) ≤ 4) (K0 + j))
+    exact div_nonneg (by linarith only [hR] : (0 : ℝ) ≤ 4 * R / 3) (pow_nonneg (by norm_num : (0 : ℝ) ≤ 4) (K0 + j))
   have hshell3 := sum_le_shell_sum (S := S) (M := M) hMm
     (P := fun u : ℂ => 4 * R < ‖u‖) (K := F) (I := I3) hK3
     (wt := fun u : ℂ => (4 * R / 3) / ‖u‖ ^ 2)
@@ -945,10 +945,10 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
       have hmm := mul_le_mul_of_nonneg_left hlog2le1 hc
       simpa using hmm
     calc
-      Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) + q + 2 ≤ (((K0 + j : ℕ) : ℝ) + 2) * Real.log 2 + q + 2 := by nlinarith [hl]
+      Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) + q + 2 ≤ (((K0 + j : ℕ) : ℝ) + 2) * Real.log 2 + q + 2 := by linarith only [hl]
       _ ≤ ((K0 + j : ℕ) : ℝ) + 2 + q + 2 := by
         have hmm := add_le_add_right hm (q + 2)
-        linarith
+        linarith only [hmm]
       _ = ((K0 + j : ℕ) : ℝ) + q + 4 := by ring
   have hterm3 : ∀ j ∈ I3,
       (4 * R / 3) / (4 : ℝ) ^ (K0 + j) *
@@ -959,15 +959,15 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     have hps : (2 : ℝ) ^ (K0 + j + 1) + 1 ≤ (2 : ℝ) ^ (K0 + j + 2) :=
       pow_succ_two_add_one_le (k := K0 + j)
     have hposLog : (0 : ℝ) ≤ Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) + q + 2 := by
-      have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ (K0 + j + 1) + 2 := by linarith [two_pow_ge_one (K0 + j + 1)]
+      have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ (K0 + j + 1) + 2 := by linarith only [two_pow_ge_one (K0 + j + 1)]
       have hl : 0 ≤ Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) := Real.log_nonneg h1
-      linarith
+      linarith only [hl, hq]
     have hpos2 : (0 : ℝ) ≤ (2 : ℝ) ^ (K0 + j + 2) := by positivity
     have hmainlog : Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) + q + 2 ≤ ((K0 + j : ℕ) : ℝ) + q + 4 :=
       hlogterm j hj
     have hpq : (0 : ℝ) ≤ ((K0 + j : ℕ) : ℝ) + q + 4 := by
       have hn0 : 0 ≤ ((K0 + j : ℕ) : ℝ) := by positivity
-      linarith
+      linarith only [hn0, hq]
     have hmul1 : ((2 : ℝ) ^ (K0 + j + 1) + 1) * (Real.log ((2 : ℝ) ^ (K0 + j + 1) + 2) + q + 2)
         ≤ (2 : ℝ) ^ (K0 + j + 2) * (((K0 + j : ℕ) : ℝ) + q + 4) :=
       mul_le_mul hps hmainlog hposLog hpos2
@@ -1050,7 +1050,7 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
               simpa [I3] using h1
             _ = 2 := by norm_num
         have hc1 : (0 : ℝ) ≤ (16 * R / 3) * C * ((1 / 2 : ℝ) ^ K0) := by
-          have hRp : (0 : ℝ) ≤ R := by linarith
+          have hRp : (0 : ℝ) ≤ R := by linarith only [hR]
           positivity
         have hK0p : (0 : ℝ) ≤ ((K0 : ℕ) : ℝ) + q + 4 := by positivity
         have hinner :
@@ -1083,7 +1083,7 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
     have hdiv : 1 / (2 : ℝ) ^ K0 ≤ 1 / (2 * R) := by
       exact one_div_le_one_div_of_le h2Rpos hK0large
     have hcoeff : (0 : ℝ) ≤ 16 * R / 3 := by
-      have hRle : (0 : ℝ) ≤ R := by linarith
+      have hRle : (0 : ℝ) ≤ R := by linarith only [hR]
       exact div_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 16) hRle) (by norm_num : (0 : ℝ) ≤ 3)
     calc
       (16 * R / 3) * (1 / (2 : ℝ) ^ K0) ≤ (16 * R / 3) * (1 / (2 * R)) :=
@@ -1092,15 +1092,15 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         field_simp [hR0]
         ring
   have hboundK : (2 * (((K0 : ℕ) : ℝ) + q + 4) + 2) ≤ 30 * A := by
-    have hqA : q ≤ A := by dsimp [A]; linarith [hlogR]
+    have hqA : q ≤ A := by dsimp [A]; linarith only [hlogR]
     have hK0b : ((K0 : ℕ) : ℝ) ≤ 2 * A + 4 := hK0le
-    nlinarith [hK0b, hqA, hA2]
+    linarith only [hK0b, hqA, hA2]
   have hA0 : 0 ≤ A := hApos
   have hAleA2 : A ≤ A ^ 2 := by
-    have h := mul_le_mul_of_nonneg_left (by linarith : (1 : ℝ) ≤ A) hA0
+    have h := mul_le_mul_of_nonneg_left (by linarith only [hA2] : (1 : ℝ) ≤ A) hA0
     simpa [mul_one, pow_two] using h
   have hfacA : (8 / 3) * (30 * A) ≤ 8192 * (A ^ 2 + 1) := by
-    nlinarith [hAleA2, sq_nonneg A]
+    linarith only [hAleA2, sq_nonneg A]
   have hfinal1c :
       (∑ u ∈ S.filter (fun u => 4 * R < ‖u‖), M u * ((4 * R / 3) / ‖u‖ ^ 2)) ≤
         (16 * R / 3) * C * ((1 / 2 : ℝ) ^ K0) * (2 * (((K0 : ℕ) : ℝ) + q + 4) + 2) :=
@@ -1129,7 +1129,7 @@ private theorem farBound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) {S : Finset �
         have hfac := hfacA
         have hm1 : (8 / 3) * C * (30 * A) ≤ (8192 : ℝ) * C * (A ^ 2 + 1) := by
           -- (8/3)·C·30A ≤ C·(8/3·30A) ≤ C·(8192(A²+1))
-          have hA' : (0 : ℝ) ≤ A ^ 2 + 1 := by nlinarith [sq_nonneg A]
+          have hA' : (0 : ℝ) ≤ A ^ 2 + 1 := by positivity
           have hprod : (8 / 3) * (30 * A) ≤ 8192 * (A ^ 2 + 1) := hfacA
           calc
             (8 / 3) * C * (30 * A) = C * ((8 / 3) * (30 * A)) := by ring
@@ -1204,7 +1204,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
       refine Real.log_nonneg ?_
       linarith
     have hApos : 0 ≤ A := by dsimp [A]; linarith
-    have hGpos : 0 ≤ A ^ 2 + 1 := by nlinarith [sq_nonneg A]
+    have hGpos : 0 ≤ A ^ 2 + 1 := by positivity
     -- the three regime bounds
     have hLB := lowBound (q := q) (C := C) hq hC hu1 hm hN (R := R) hR
     have hMB := midBound (q := q) (C := C) hq hC hu1 hm hN (R := R) hR (w := w) hw
@@ -1213,12 +1213,12 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
     let g1 : ℂ → ℝ := fun u => if ‖u‖ ≤ R / 4 then M u * (4 / 3 / ‖u‖) else 0
     let g2 : ℂ → ℝ := fun u => if (‖u‖ ≤ 4 * R ∧ 1 < ‖w - u‖) then M u * (4 / ‖w - u‖) else 0
     let g3 : ℂ → ℝ := fun u => if 4 * R < ‖u‖ then M u * ((4 * R / 3) / ‖u‖ ^ 2) else 0
-    have hRpos : 0 < R := by linarith
+    have hRpos : 0 < R := by linarith only [hR]
     have htri1 (u : ℂ) : ‖w‖ - ‖u‖ ≤ ‖w - u‖ := by
       have htri' : ‖w‖ ≤ ‖w - u‖ + ‖u‖ := by
         calc ‖w‖ = ‖(w - u) + u‖ := by rw [sub_add_cancel]
           _ ≤ ‖w - u‖ + ‖u‖ := norm_add_le (w - u) u
-      linarith
+      linarith only [htri', hw]
     have htri2 (u : ℂ) : ‖u‖ - R ≤ ‖w - u‖ := by
       have htri' : ‖u‖ ≤ R + ‖u - w‖ := by
         have h1 : ‖w + (u - w)‖ = ‖u‖ := by rw [add_sub_cancel]
@@ -1227,7 +1227,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
           ‖u‖ = ‖w + (u - w)‖ := h1.symm
           _ ≤ ‖w‖ + ‖u - w‖ := h2
           _ ≤ R + ‖u - w‖ := by rw [hw]
-      have hu : ‖u‖ - R ≤ ‖u - w‖ := by linarith
+      have hu : ‖u‖ - R ≤ ‖u - w‖ := by linarith only [htri']
       simpa [norm_sub_rev] using hu
     have hg1ge0 : ∀ u ∈ S, 0 ≤ g1 u := by
       intro u hu
@@ -1237,7 +1237,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         exact mul_nonneg (hMm u hu) (by
           have hupos : 0 < ‖u‖ := by
             have := hu1 u hu
-            linarith
+            linarith only [this]
           positivity)
       · have hh : g1 u = 0 := by simp [g1, h]
         rw [hh]
@@ -1249,7 +1249,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         exact mul_nonneg (hMm u hu) (by
           have hd : (0 : ℝ) < ‖w - u‖ := by
             have := h.2
-            linarith
+            linarith only [this]
           positivity)
       · have hh : g2 u = 0 := by simp [g2, h]
         rw [hh]
@@ -1261,7 +1261,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         exact mul_nonneg (hMm u hu) (by
           have hupos : 0 < ‖u‖ := by
             have := hu1 u hu
-            linarith
+            linarith only [this]
           positivity)
       · have hh : g3 u = 0 := by simp [g3, h]
         rw [hh]
@@ -1269,7 +1269,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         M u * (R / (‖u‖ * ‖w - u‖)) ≤ g1 u + g2 u + g3 u := by
       intro u hu hd
       have hM0 : 0 ≤ M u := hMm u hu
-      have hdpos : (0 : ℝ) < ‖w - u‖ := by linarith
+      have hdpos : (0 : ℝ) < ‖w - u‖ := by linarith only [hd]
       have hdge1 : 1 ≤ ‖w - u‖ := le_of_lt hd
       have hwgt : R / (‖u‖ * ‖w - u‖) = R / (‖u‖ * ‖w - u‖) := rfl
       by_cases hlow : ‖u‖ ≤ R / 4
@@ -1278,7 +1278,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         have hg23 : 0 ≤ g2 u + g3 u := add_nonneg (hg2ge0 u hu) (hg3ge0 u hu)
         have h3R4 : 3 * R / 4 ≤ ‖w - u‖ := by
           calc
-            3 * R / 4 ≤ R - ‖u‖ := by nlinarith
+            3 * R / 4 ≤ R - ‖u‖ := by linarith only [hlow]
             _ ≤ ‖w - u‖ := by
               calc R - ‖u‖ ≤ ‖w‖ - ‖u‖ := by rw [hw]
                 _ ≤ ‖w - u‖ := htri1 u
@@ -1286,7 +1286,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
         calc
           M u * (R / (‖u‖ * ‖w - u‖)) ≤ M u * (4 / 3 / ‖u‖) := mul_le_mul_of_nonneg_left hw hM0
           _ = g1 u := hg1.symm
-          _ ≤ g1 u + (g2 u + g3 u) := by linarith
+          _ ≤ g1 u + (g2 u + g3 u) := by linarith only [hg23]
           _ = g1 u + g2 u + g3 u := by abel
       · have hnotlow : ¬ ‖u‖ ≤ R / 4 := hlow
         by_cases hmid : ‖u‖ ≤ 4 * R
@@ -1298,7 +1298,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
           calc
             M u * (R / (‖u‖ * ‖w - u‖)) ≤ M u * (4 / ‖w - u‖) := mul_le_mul_of_nonneg_left hw hM0
             _ = g2 u := hg2.symm
-            _ ≤ g1 u + g2 u + g3 u := by linarith
+            _ ≤ g1 u + g2 u + g3 u := by linarith only [hg13]
         · have hnotmid : ¬ ‖u‖ ≤ 4 * R := hmid
           have hg3 : g3 u = M u * ((4 * R / 3) / ‖u‖ ^ 2) := by
             have hgt : 4 * R < ‖u‖ := lt_of_not_ge hnotmid
@@ -1310,7 +1310,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
           calc
             M u * (R / (‖u‖ * ‖w - u‖)) ≤ M u * ((4 * R / 3) / ‖u‖ ^ 2) := mul_le_mul_of_nonneg_left hw hM0
             _ = g3 u := hg3.symm
-            _ ≤ g1 u + g2 u + g3 u := by linarith
+            _ ≤ g1 u + g2 u + g3 u := by linarith only [hg12]
     have hsplit : (∑ u ∈ S.filter (fun u => 1 < ‖w - u‖), M u * (R / (‖u‖ * ‖w - u‖))) ≤
         ∑ u ∈ S, (g1 u + g2 u + g3 u) := by
       calc
@@ -1357,7 +1357,7 @@ theorem farSum_weight_bound {q C : ℝ} (hq : 0 ≤ q) (hC : 0 ≤ C) :
           have h1 := hB1
           have h2 := hB2
           have h3 := hB3
-          linarith
+          linarith only [h1, h2, h3]
         _ = (16448 : ℝ) * C * (A ^ 2 + 1) := by ring
     have hG : (A ^ 2 + 1) = (Real.log (R + 2) + q + 2) ^ 2 + 1 := by dsimp [A]
     calc

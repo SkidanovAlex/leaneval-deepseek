@@ -20,7 +20,6 @@ the certificate `Table8Cert` and the engine lemmas of `Table8Derive.lean`.
 -/
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikContract2.Contract
 import Submission.Work.ZeroFreeTables.Defs
 import Submission.Work.ZeroFreeTables.API
 import Submission.Work.ZeroFreeTables.Engine
@@ -29,6 +28,7 @@ import Submission.Work.ZeroFreeTables.Tables
 import Submission.Work.ZeroFreeTables.CertData
 import Submission.Work.ZeroFreeTables.Table8Derive
 import Submission.Work.ZeroFreeTables.HBRepZero_red
+import Submission.Work.LinnikContract2.Areas
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

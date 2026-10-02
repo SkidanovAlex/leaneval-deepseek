@@ -16,8 +16,6 @@ the given `u`.  The Weyl sum `M` is bounded by
 -/
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.DhK.turanWeighted
 import Submission.Work.LinnikAreas.turanPowerSum
 import Submission.Work.LinnikAreas.finite_inBox_zeroMult
@@ -102,15 +100,15 @@ private lemma turan_arith {Cw J0 j β' lam0 lam' L : ℝ} (hCw : 0 < Cw) (hJ0 : 
   have hstep : Real.exp (-(J0 * Cw * L * (1 - β') / 2)) ≤ 36 * j * (lam0 / L) := by
     refine le_trans ?_ hkey
     apply Real.exp_le_exp.mpr
-    nlinarith [hjL, hb, hCw, hJ0]
+    linarith only [mul_le_mul_of_nonneg_right hjL hb]
   have hfacs : 36 * j * (lam0 / L) ≤ 36 * J0 * Cw * lam0 := by
     have hnn : 0 ≤ 36 * (lam0 / L) := by positivity
     have h2a : 36 * j * (lam0 / L) ≤ 36 * (J0 * Cw * L) * (lam0 / L) := by
-      nlinarith [hjL, hnn]
+      linarith only [mul_le_mul_of_nonneg_right hjL hnn]
     have h2b : 36 * (J0 * Cw * L) * (lam0 / L) = 36 * J0 * Cw * lam0 := by
       have hLne : L ≠ 0 := ne_of_gt hL
       field_simp
-    linarith [h2a, h2b.le, h2b.ge]
+    linarith only [h2a, h2b.le, h2b.ge]
   have hexp3 : -(J0 * Cw * L * (1 - β') / 2) = -(J0 * Cw / 2) * lam' := by
     rw [hlam']; ring
   have h4 : Real.exp (-(J0 * Cw / 2) * lam') ≤ 36 * J0 * Cw * lam0 := by
@@ -122,7 +120,7 @@ private lemma turan_arith {Cw J0 j β' lam0 lam' L : ℝ} (hCw : 0 < Cw) (hJ0 : 
   have h6 : (2 / (J0 * Cw)) * (Real.log (1 / lam0) - Real.log (36 * J0 * Cw)) ≤ lam' := by
     have hinv : Real.log (1 / lam0) = -Real.log lam0 := by rw [one_div, Real.log_inv]
     have h7 : (Real.log (1 / lam0) - Real.log (36 * J0 * Cw)) ≤ (J0 * Cw / 2) * lam' := by
-      rw [hinv]; linarith [h5]
+      rw [hinv]; linarith only [h5]
     have h11 : (2 / (J0 * Cw)) * ((J0 * Cw / 2) * lam') = lam' := by
       field_simp
     have h12 : 0 ≤ 2 / (J0 * Cw) := by positivity
@@ -217,9 +215,9 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
     · have h1 : ‖u‖ ≤ |u.re| + |u.im| := Complex.norm_le_abs_re_add_abs_im u
       have h2 : |u.re| ≤ 1 := by
         rw [abs_le]
-        exact ⟨by linarith [hu_strip.1], by linarith⟩
+        exact ⟨by linarith only [hu_strip.1], by linarith⟩
       have h3 : |u.im| ≤ 1 := by rwa [abs_le] at himu ⊢
-      linarith [h1, h2, h3]
+      linarith only [h1, h2, h3]
   have hρ₀U : ρ₀ ∈ U := by
     refine (hUmem ρ₀).mpr ⟨?_, ?_⟩
     · intro h0
@@ -228,9 +226,9 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
     · have h1 : ‖ρ₀‖ ≤ |ρ₀.re| + |ρ₀.im| := Complex.norm_le_abs_re_add_abs_im ρ₀
       have h2 : |ρ₀.re| ≤ 1 := by
         rw [abs_le]
-        exact ⟨by linarith [hρ₀_strip.1], by linarith⟩
+        exact ⟨by linarith only [hρ₀_strip.1], by linarith⟩
       have h3 : |ρ₀.im| = 0 := by rw [hρ₀im]; norm_num
-      linarith [h1, h2, h3]
+      linarith only [h1, h2, h3]
   set T : Finset ℂ := U.filter (fun v => |v.im| ≤ 1 ∧
     analyticOrderNatAt (DirichletCharacter.completedLFunction ψ) v ≠ 0 ∧ v ≠ ρ₀) with hTdef
   have huT : u ∈ T := by
@@ -247,7 +245,7 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
       apply_eq_zero_of_analyticOrderNatAt_ne_zero hρ'k
     have := (Commons.NumberTheory.Linnik.completedL_zero_strip ψ hψ hprim h0).2
     rw [hβ'def]; exact this
-  have hβ'ge : 1 - 1 / 100 ≤ β' := by linarith [hule, hre_le]
+  have hβ'ge : 1 - 1 / 100 ≤ β' := by linarith only [hule, hre_le]
   have hβ'le1 : β' ≤ 1 := le_of_lt hβ'lt
   have hγ'abs : |γ'| ≤ 1 := hρ'im
   set d : ℂ → ℝ := fun v => min ‖((5 : ℂ) - v)‖ ‖((5 : ℂ) + Complex.I * (γ' : ℂ) - v)‖
@@ -302,33 +300,33 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
       _ = 5 - β' := hnorm2
   have hm_le_5β' : m ≤ 5 - β' := le_trans hm_le_dρ' hdρ'_le
   have hm_sq_le : m ^ 2 ≤ 17 := by
-    have h1 : 5 - β' ≤ 4 + 1 / 100 := by linarith [hβ'ge]
-    have h2 : m ^ 2 ≤ (4 + 1 / 100) ^ 2 := by nlinarith [hm_le_5β', hmnn, h1]
-    nlinarith [h2]
+    have h1 : 5 - β' ≤ 4 + 1 / 100 := by linarith only [hβ'ge]
+    have h2 : m ^ 2 ≤ (4 + 1 / 100) ^ 2 := pow_le_pow_left₀ hmnn (le_trans hm_le_5β' h1) 2
+    linarith only [h2]
   have hγ6 : ‖((5 : ℂ) + Complex.I * (γ' : ℂ))‖ ≤ 6 := by
     have h1 : ‖((5 : ℂ) + Complex.I * (γ' : ℂ))‖ ≤ ‖((5 : ℂ))‖ + ‖Complex.I * (γ' : ℂ)‖ :=
       norm_add_le _ _
     have h2 : ‖Complex.I * (γ' : ℂ)‖ = |γ'| := by simp
     have h3 : ‖((5 : ℂ))‖ = 5 := by norm_num
-    linarith [h1, h2, h3, hγ'abs]
+    linarith only [h1, h2, h3, hγ'abs]
   have hfar : ∀ v : ℂ, 20 < ‖v‖ →
       m ≤ ‖((5 : ℂ) - v)‖ ∧ m ≤ ‖((5 : ℂ) + Complex.I * (γ' : ℂ) - v)‖ := by
     intro v hv
-    have hβ'ge4 : 5 - β' ≤ 4 + 1 / 100 := by linarith [hβ'ge]
+    have hβ'ge4 : 5 - β' ≤ 4 + 1 / 100 := by linarith only [hβ'ge]
     have h5n : ‖((5 : ℂ))‖ = 5 := by norm_num
     constructor
     · have h := abs_norm_sub_norm_le v (5 : ℂ)
       rw [h5n, abs_le] at h
       have h1 : ‖v‖ - 5 ≤ ‖((5 : ℂ) - v)‖ := by
         rw [norm_sub_rev]
-        linarith [h.2]
-      linarith [h1, hm_le_5β', hβ'ge4, hv]
+        linarith only [h.2]
+      linarith only [h1, hm_le_5β', hβ'ge4, hv]
     · have h := abs_norm_sub_norm_le v ((5 : ℂ) + Complex.I * (γ' : ℂ))
       rw [abs_le] at h
       have h1 : ‖v‖ - 6 ≤ ‖((5 : ℂ) + Complex.I * (γ' : ℂ) - v)‖ := by
         rw [norm_sub_rev]
-        linarith [h.2, hγ6]
-      linarith [h1, hm_le_5β', hβ'ge4, hv]
+        linarith only [h.2, hγ6]
+      linarith only [h1, hm_le_5β', hβ'ge4, hv]
   -- the weight and the two point families
   set Wt : ℂ → ℝ := fun v => if v = ρ₀ then 0 else (DhK.kMult ψ v : ℝ) with hWtdef
   set Z1 : ℂ → ℂ := fun v => if v = ρ₀ ∨ DhK.kMult ψ v = 0 then 0
@@ -540,15 +538,15 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
     rw [hzfun_apply]
     by_cases hb : i.2
     · rw [if_pos hb]
-      linarith [hZ2_bound i.1, sq_nonneg (m / ‖((5 : ℂ) - i.1)‖)]
+      linarith only [hZ2_bound i.1, sq_nonneg (m / ‖((5 : ℂ) - i.1)‖)]
     · rw [if_neg hb]
-      linarith [hZ1_bound i.1, sq_nonneg (m / ‖((5 : ℂ) + Complex.I * (γ' : ℂ) - i.1)‖)]
+      linarith only [hZ1_bound i.1, sq_nonneg (m / ‖((5 : ℂ) + Complex.I * (γ' : ℂ) - i.1)‖)]
   have hfamily_le : ∀ i : ℂ × Bool, wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖)) ≤ Gmaj i := by
     intro i
     have hcase : wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖)) ≤ wfun i * ‖zfun i‖ := by
       apply mul_le_mul_of_nonneg_left _ (hw_nonneg i)
       rw [hz_i₀_norm, div_le_iff₀ (by positivity : (0:ℝ) < 1 + ‖zfun i‖)]
-      nlinarith [hz_norm i, norm_nonneg (zfun i)]
+      nlinarith only [hz_norm i, norm_nonneg (zfun i)]
     refine le_trans hcase ?_
     rw [hwfun_apply, hWt_apply]
     by_cases hρ : i.1 = ρ₀
@@ -564,7 +562,7 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
                 + 1 / ((5 - i.1.re) ^ 2 + (i.1.im - γ') ^ 2))) := by
             have hA := hm_sq_ker1 i.1
             have hB := hm_sq_ker2 i.1
-            nlinarith [hk, hA, hB]
+            nlinarith only [hk, hA, hB]
   have hsum_family : Summable (fun i : ℂ × Bool =>
       wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖))) := by
     refine Summable.of_nonneg_of_le (f := Gmaj) (g := fun i : ℂ × Bool =>
@@ -579,8 +577,8 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
       le_trans (Summable.tsum_le_tsum hfamily_le hsum_family hGmaj_summable) hGmaj_tsum
     have h9 : (j : ℝ) ≤ 9 * (34 * (Cw * L)) := by
       calc (j : ℝ) ≤ (8 + 1) * (∑' i : ℂ × Bool, wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖))) := hj2
-        _ ≤ 9 * (34 * (Cw * L)) := by linarith [hMb]
-    nlinarith [h9]
+        _ ≤ 9 * (34 * (Cw * L)) := by linarith only [hMb]
+    linarith only [h9]
   -- the sum identity
   set Sfin : ℝ := ∑' v : ℂ, (if v = ρ₀ then 0 else (DhK.kMult ψ v : ℝ)) *
       ((1 / ((5 : ℂ) - v) ^ (2 * j)).re
@@ -602,7 +600,7 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
                   + 1 / ((5 - i.1.re) ^ 2 + (i.1.im - γ') ^ 2))) := by
               have hA := hm_sq_ker1 i.1
               have hB := hm_sq_ker2 i.1
-              nlinarith [hk, hA, hB]
+              nlinarith only [hk, hA, hB]
     exact hcase
   have hhalf : Summable (fun v : ℂ => Gmaj (v, false) + Gmaj (v, true)) := by
     have hpt : (fun v : ℂ => Gmaj (v, false) + Gmaj (v, true)) = fun v : ℂ => 34 * ((DhK.kMult ψ v : ℝ) *
@@ -708,11 +706,11 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
     have hmposj : 0 < m ^ (2 * j) := pow_pos hmpos _
     have h2 : (1 / 36) / m ^ (2 * j) ≤ 4 * (j : ℝ) * (1 - ρ₀.re) / 4 ^ (2 * j + 1) := by
       rw [div_le_iff₀ hmposj]
-      linarith [h1]
+      linarith only [h1]
     have h4 : m ^ (2 * j) ≤ (5 - β') ^ (2 * j) := pow_le_pow_left₀ hmnn hm_le_5β' _
     have h5 : (1 / 36) / (5 - β') ^ (2 * j) ≤ (1 / 36) / m ^ (2 * j) :=
       div_le_div_of_nonneg_left (by norm_num) hmposj h4
-    linarith [h2, h5]
+    linarith only [h2, h5]
   -- the exponential form fits `turan_arith`
   have hkey : Real.exp (-(2 * (j : ℝ) * (1 - β') / 4))
       ≤ 36 * (j : ℝ) * (((1 - ρ₀.re) * L) / L) := by
@@ -722,13 +720,13 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
     have hA : (1 / 36) * 4 ^ (2 * j + 1) ≤ 4 * (j : ℝ) * (1 - ρ₀.re) * (5 - β') ^ (2 * j) := by
       have hpos : 0 < (5 - β') ^ (2 * j) := pow_pos h5b _
       have h2 := (div_le_div_iff₀ hpos (pow_pos (by norm_num : (0 : ℝ) < 4) _)).mp hmain
-      linarith [h2]
+      linarith only [h2]
     have hB : (4 / (5 - β')) ^ (2 * j) ≤ 36 * (j : ℝ) * (1 - ρ₀.re) := by
       rw [div_pow, div_le_iff₀ (pow_pos h5b _)]
       have h4 : (4 : ℝ) ^ (2 * j) ≤ 36 * (j : ℝ) * (1 - ρ₀.re) * (5 - β') ^ (2 * j) := by
         have hpow : (4 : ℝ) ^ (2 * j + 1) = 4 * 4 ^ (2 * j) := by rw [pow_succ']
-        nlinarith [hA]
-      linarith [h4]
+        linarith only [hA, hpow]
+      linarith only [h4]
     have hlog : Real.log ((5 - β') / 4) ≤ (1 - β') / 4 := by
       have h1 : (5 - β') / 4 = 1 + (1 - β') / 4 := by ring
       rw [h1]
@@ -742,7 +740,7 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
           have h1 : ((5 - β') / 4 : ℝ)⁻¹ = 4 / (5 - β') := inv_div _ _
           rw [← h1, Real.log_inv]
         rw [hlogarg]
-        nlinarith [hlog]
+        linarith only [mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg (α := ℝ) j)]
       calc Real.exp (-(2 * (j : ℝ) * (1 - β') / 4))
           ≤ Real.exp (2 * (j : ℝ) * Real.log (4 / (5 - β'))) := Real.exp_le_exp.mpr h4
         _ = (4 / (5 - β')) ^ (2 * j) := by
@@ -751,11 +749,11 @@ private lemma turan_bound (ψ : DirichletCharacter ℂ q) (ρ₀ u : ℂ)
           rw [Real.exp_mul, Real.rpow_natCast, Real.exp_log hy]
     exact le_trans hexp_le hB
   have hlam'bd : (1 - β') * L ≤ (1 - u.re) * L :=
-    mul_le_mul_of_nonneg_right (by linarith [hre_le]) hLpos.le
+    mul_le_mul_of_nonneg_right (by linarith only [hre_le]) hLpos.le
   have hmain2 := turan_arith (Cw := Cw) (J0 := 306) (j := (j : ℝ)) (β' := β')
     (lam0 := (1 - ρ₀.re) * L) (lam' := (1 - β') * L)
     hCw (by norm_num) hLpos (by exact_mod_cast hj1) hMj (by positivity) (by linarith) rfl hkey
-  linarith [hmain2, hlam'bd]
+  linarith only [hmain2, hlam'bd]
 
 /-! ## The final repulsion theorem
 
@@ -774,13 +772,13 @@ private lemma hkey_of_power {j : ℕ} {β' β₀ : ℝ} (hβ' : β' ≤ 1)
   have hA : (1 / 36) * 4 ^ (2 * j + 1) ≤ 4 * (j : ℝ) * (1 - β₀) * (5 - β') ^ (2 * j) := by
     have hpos : 0 < (5 - β') ^ (2 * j) := pow_pos h5b _
     have h2 := (div_le_div_iff₀ hpos (pow_pos (by norm_num : (0 : ℝ) < 4) _)).mp h
-    linarith [h2]
+    linarith only [h2]
   have hB : (4 / (5 - β')) ^ (2 * j) ≤ 36 * (j : ℝ) * (1 - β₀) := by
     rw [div_pow, div_le_iff₀ (pow_pos h5b _)]
     have h4 : (4 : ℝ) ^ (2 * j) ≤ 36 * (j : ℝ) * (1 - β₀) * (5 - β') ^ (2 * j) := by
       have hpow : (4 : ℝ) ^ (2 * j + 1) = 4 * 4 ^ (2 * j) := by rw [pow_succ']
-      nlinarith [hA]
-    linarith [h4]
+      linarith only [hA, hpow]
+    linarith only [h4]
   have hlog : Real.log ((5 - β') / 4) ≤ (1 - β') / 4 := by
     have h1 : (5 - β') / 4 = 1 + (1 - β') / 4 := by ring
     rw [h1]
@@ -794,7 +792,7 @@ private lemma hkey_of_power {j : ℕ} {β' β₀ : ℝ} (hβ' : β' ≤ 1)
         have h1 : ((5 - β') / 4 : ℝ)⁻¹ = 4 / (5 - β') := inv_div _ _
         rw [← h1, Real.log_inv]
       rw [hlogarg]
-      nlinarith [hlog]
+      linarith only [mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg (α := ℝ) j)]
     calc Real.exp (-(2 * (j : ℝ) * (1 - β') / 4))
         ≤ Real.exp (2 * (j : ℝ) * Real.log (4 / (5 - β'))) := Real.exp_le_exp.mpr h4
       _ = (4 / (5 - β')) ^ (2 * j) := by
@@ -837,7 +835,7 @@ private lemma ownRepel_aux (hExpl : Work.LinnikAreas.DhExplicit.ExplFormula) :
     have hM : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq3
     have h2 : (1 : ℝ) ≤ Real.log 3 := by
       rw [Real.le_log_iff_exp_le (by norm_num)]
-      linarith [Real.exp_one_lt_d9]
+      linarith only [Real.exp_one_lt_d9]
     exact le_trans h2 (Real.log_le_log (by norm_num) hM)
   have hlogqpos : 0 < Real.log (q : ℝ) := lt_of_lt_of_le zero_lt_one hlogq1
   have hχ0ne : χ₀ ≠ 1 := hmin.1.1
@@ -872,7 +870,7 @@ private lemma ownRepel_aux (hExpl : Work.LinnikAreas.DhExplicit.ExplFormula) :
   -- the Turán power inequality at the given zero `u`
   have hu3 : Work.LinnikContract.lamOf q u ≤ (1 / 3) * Real.log (q : ℝ) := by
     rw [Work.LinnikContract.lamOf] at hule ⊢
-    nlinarith [hule, hlogqpos]
+    linarith only [hule, hlogqpos]
   obtain ⟨j, hj1, hjle, hpow⟩ := hT q hqT χ₀ ρ₀ u hmin hsq him0 h100 hzu hne himu hu3
   have hden : 4 + Work.LinnikContract.lamOf q u / Real.log (q : ℝ) = 5 - u.re := by
     rw [Work.LinnikContract.lamOf, mul_div_cancel_right₀ _ (ne_of_gt hlogqpos)]
@@ -909,11 +907,11 @@ private lemma ownRepel_aux (hExpl : Work.LinnikAreas.DhExplicit.ExplFormula) :
       have h2 : c * T ≤ cE * (T / 2) := by
         have h3 : c * T ≤ (cE / 2) * T := mul_le_mul_of_nonneg_right hcle (by linarith)
         have h4 : (cE / 2) * T = cE * (T / 2) := by ring
-        linarith [h3, h4.le, h4.ge]
-      linarith [hmain, h1, h2]
+        linarith only [h3, h4.le, h4.ge]
+      linarith only [hmain, h1, h2]
     · push_neg at hcase
       -- `T` is bounded above, so `λ(ρ₀) = exp (-T) > 1/Λ²`
-      have hTb : T < 2 * Real.log Λ := lt_of_lt_of_le hcase (by linarith [hmaxle])
+      have hTb : T < 2 * Real.log Λ := lt_of_lt_of_le hcase (by linarith only [hmaxle])
       have hlam0T : Work.LinnikContract.lamOf q ρ₀ = Real.exp (-T) := by
         rw [Work.LinnikContract.lamOf]
         have hthis : Real.exp T = 1 / ((1 - ρ₀.re) * Real.log (q : ℝ)) := by
@@ -933,17 +931,17 @@ private lemma ownRepel_aux (hExpl : Work.LinnikAreas.DhExplicit.ExplFormula) :
         have h4 : Real.exp (-(2 * Real.log Λ)) < Real.exp (-T) := Real.exp_lt_exp.mpr (by linarith)
         rw [h2] at h4
         rw [← hlam0T] at h4
-        linarith [h4, hminimal]
+        linarith only [h4, hminimal]
       have hct : c * T ≤ 1 / Λ ^ 2 := by
         have h3 : c * T ≤ c * (2 * Real.log Λ) := mul_le_mul_of_nonneg_left hTb.le hcpos.le
         have h4 : c * (2 * Real.log Λ) ≤ 1 / Λ ^ 2 := by
           have h6 : 0 < 2 * Λ ^ 2 * Real.log Λ := by positivity
           calc c * (2 * Real.log Λ) ≤ (1 / (2 * Λ ^ 2 * Real.log Λ)) * (2 * Real.log Λ) :=
-                mul_le_mul_of_nonneg_right hcle2 (by linarith [hlogΛpos])
+                mul_le_mul_of_nonneg_right hcle2 (by linarith only [hlogΛpos])
             _ = 1 / Λ ^ 2 := by
                 field_simp
-        linarith [h3, h4]
-      linarith [hbig, hct, hlamu]
+        linarith only [h3, h4]
+      linarith only [hbig, hct, hlamu]
   exact hgoal
 
 /-- **The window half of the same-character Deuring–Heilbronn repulsion** (Heath-Brown (1992),

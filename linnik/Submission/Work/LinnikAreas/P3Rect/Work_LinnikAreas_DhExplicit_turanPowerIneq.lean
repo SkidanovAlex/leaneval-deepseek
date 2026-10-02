@@ -1,10 +1,9 @@
 import Mathlib
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_Inputs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Reduction
 import Submission.Work.LinnikAreas.DhK.turanWeighted
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_turanPowerStepConst
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 namespace Work.LinnikAreas.DhExplicit
 
@@ -53,13 +52,13 @@ theorem weylBound_of_massBound (hmass : MassBound) :
     have h3 : (3 : ℝ) ≤ (N : ℝ) := by exact_mod_cast (by omega : 3 ≤ N)
     have h1 : (1 : ℝ) ≤ Real.log 3 := by
       rw [Real.le_log_iff_exp_le (by norm_num)]
-      linarith [Real.exp_one_lt_d9]
+      linarith only [Real.exp_one_lt_d9]
     exact le_trans h1 (Real.log_le_log (by norm_num) h3)
-  have hw1re : (3 / 2 : ℝ) ≤ ((c : ℂ)).re := by simp; linarith
+  have hw1re : (3 / 2 : ℝ) ≤ ((c : ℂ)).re := by simp; linarith only [hc]
   have hw2re : (3 / 2 : ℝ) ≤ ((c : ℂ) + Complex.I * (γ' : ℂ)).re := by
     simp only [Complex.add_re, Complex.mul_re, Complex.I_re, Complex.ofReal_re, Complex.ofReal_im,
       mul_zero, sub_zero]
-    linarith
+    linarith only [hc]
   obtain ⟨hs1, hb1⟩ := hM N hN2 χ hχ hprim (c : ℂ) hw1re
   obtain ⟨hs2, hb2⟩ := hM N hN2 χ hχ hprim ((c : ℂ) + Complex.I * (γ' : ℂ)) hw2re
   have hden1 : ∀ v : ℂ, ‖(c : ℂ) - v‖ ^ 2 = (c - v.re) ^ 2 + v.im ^ 2 := by
@@ -103,10 +102,10 @@ theorem weylBound_of_massBound (hmass : MassBound) :
     rw [heq] at h
     refine le_trans h (mul_le_mul_of_nonneg_left ?_ (le_of_lt hC₀))
     have hcn : ‖(c : ℂ)‖ = c := by
-      rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]
+      rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith only [hc])]
     rw [hcn]
-    have h1 : Real.log (2 + c) ≤ 2 + c - 1 := Real.log_le_sub_one_of_pos (by linarith)
-    linarith
+    have h1 : Real.log (2 + c) ≤ 2 + c - 1 := Real.log_le_sub_one_of_pos (by linarith only [hc])
+    linarith only [hc10, h1]
   have hb2' : (∑' v : ℂ, (DhK.kMult χ v : ℝ) * (1 / ((c - v.re) ^ 2 + (v.im - γ') ^ 2)))
       ≤ C₀ * (Real.log (N : ℝ) + 14) := by
     have h := hb2
@@ -118,19 +117,19 @@ theorem weylBound_of_massBound (hmass : MassBound) :
     have hnorm : ‖(c : ℂ) + Complex.I * (γ' : ℂ)‖ ≤ 11 := by
       have h1 := norm_add_le (c : ℂ) (Complex.I * (γ' : ℂ))
       have h2 : ‖(c : ℂ)‖ = c := by
-        rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]
+        rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith only [hc])]
       have h3 : ‖Complex.I * (γ' : ℂ)‖ = |γ'| := by
         rw [norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]
-      linarith [h1, h2, h3, hγ', hc10]
+      linarith only [h1, h2, h3, hγ', hc10]
     have h1 : Real.log (2 + ‖(c : ℂ) + Complex.I * (γ' : ℂ)‖)
         ≤ 2 + ‖(c : ℂ) + Complex.I * (γ' : ℂ)‖ - 1 :=
       Real.log_le_sub_one_of_pos (by positivity)
-    linarith
+    linarith only [hnorm, h1]
   calc (∑' v : ℂ, (DhK.kMult χ v : ℝ) * (1 / ((c - v.re) ^ 2 + v.im ^ 2)))
         + (∑' v : ℂ, (DhK.kMult χ v : ℝ) * (1 / ((c - v.re) ^ 2 + (v.im - γ') ^ 2)))
       ≤ C₀ * (Real.log (N : ℝ) + 14) + C₀ * (Real.log (N : ℝ) + 14) := add_le_add hb1' hb2'
     _ = C₀ * (2 * Real.log (N : ℝ) + 28) := by ring
-    _ ≤ 30 * C₀ * Real.log (N : ℝ) := by nlinarith [hC₀, hlogN1]
+    _ ≤ 30 * C₀ * Real.log (N : ℝ) := by nlinarith only [hC₀, hlogN1]
 
 /-- `ExplFormula` in "pinned" (exceptional zero removed) form at `c ≥ 5`. -/
 theorem diffBound_of_expl (hef : ExplFormula) :
@@ -199,7 +198,7 @@ theorem turanPowerIneq : Work.LinnikAreas.DhExplicit.MassBound → Work.LinnikAr
     have h3 : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq3
     have h1 : (1 : ℝ) ≤ Real.log 3 := by
       rw [Real.le_log_iff_exp_le (by norm_num)]
-      linarith [Real.exp_one_lt_d9]
+      linarith only [Real.exp_one_lt_d9]
     exact le_trans h1 (Real.log_le_log (by norm_num) h3)
   have hlogq : 0 < Real.log (q : ℝ) := lt_of_lt_of_le zero_lt_one hlogq1
   -- the primitive character inducing `χ₀`
@@ -220,14 +219,14 @@ theorem turanPowerIneq : Work.LinnikAreas.DhExplicit.MassBound → Work.LinnikAr
     have h := h100
     rw [Work.LinnikContract.lamOf] at h
     have h2 : (1 - ρ₀.re) ≤ (1 - ρ₀.re) * Real.log q :=
-      le_mul_of_one_le_right (by linarith [hρ₀strip.2]) hlogq1
-    linarith
+      le_mul_of_one_le_right (by linarith only [hρ₀strip.2, hρ₀strip]) hlogq1
+    linarith only [h, h2]
   have hρle' : 1 - ρ.re ≤ 1 / 3 := by
     have h := hρle
     rw [Work.LinnikContract.lamOf] at h
     by_contra hc
     push_neg at hc
-    nlinarith [h, hlogq, hc]
+    nlinarith only [h, hlogq, hc, hlogq1]
   -- the Weyl bound at level `χ₀.conductor`
   have hweyl' : ∀ {c γ' : ℝ}, 2 ≤ c → c ≤ 10 → |γ'| ≤ 1 →
       Summable (fun v : ℂ => (DhK.kMult χ₀.primitiveCharacter v : ℝ) *

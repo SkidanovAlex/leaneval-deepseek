@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikBurgess.frame_count_prov_defs
 import Submission.Work.LinnikBurgess.DLd_perm
-import Submission.Work.LinnikBurgess.frameMod_arith
 
 /-!
 # Small helpers for the frame count (`frame_count_prov`)

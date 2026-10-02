@@ -3,7 +3,6 @@ import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_norm_half_pl
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gammaR_real_growth
 import Submission.Commons.NumberTheory.DirichletCharacter.rootNumber_norm_eq_one
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
-import Submission.Commons.NumberTheory.DirichletCharacter.norm_completedLFunction_vertical
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_real_growth
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.norm_gammaR_le_norm_gammaR_re
 
@@ -264,7 +263,7 @@ theorem completedL_right_half_aux {N : ℕ} [NeZero N] (χ : DirichletCharacter 
     rwa [← Real.exp_add] at h1
   -- exponent algebra: x·log N + 2x + cg(x+2)(log(x+3)+1) ≤ (1+6cg)·x·(L + log N + 2)
   have hGbound : cg * (x + 2) * (Real.log (x + 3) + 1) ≤ 6 * cg * x * L + 3 * cg * x := by
-    have h32 : x + 2 ≤ 3 * x := by nlinarith
+    have h32 : x + 2 ≤ 3 * x := by linarith
     have hLg : Real.log (x + 3) + 1 ≤ 2 * L + 1 := by
       have hll := log_x_add_three_le_two_log_x_add_two hx
       dsimp [L]
@@ -286,8 +285,8 @@ theorem completedL_right_half_aux {N : ℕ} [NeZero N] (χ : DirichletCharacter 
   have hxlogN0 : 0 ≤ x * Real.log Nn := mul_nonneg hx0 (Real.log_nonneg hNn)
   have h1 : x * Real.log Nn ≤ (1 + 6 * cg) * x * Real.log Nn := by
     have hz : 0 ≤ (6 * cg) * x * Real.log Nn := by
-      exact mul_nonneg (mul_nonneg (by nlinarith) hx0) (Real.log_nonneg hNn)
-    nlinarith
+      exact mul_nonneg (mul_nonneg (by linarith) hx0) (Real.log_nonneg hNn)
+    linarith
   have h2 : 2 * x + 6 * cg * x * L + 3 * cg * x ≤ (1 + 6 * cg) * x * L + 2 * (1 + 6 * cg) * x := by
     nlinarith [hxL0, hcg]
   have hexp : x * Real.log Nn + 2 * x + cg * (x + 2) * (Real.log (x + 3) + 1)
@@ -405,12 +404,12 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
     dsimp [T]
     have h1 : 1 ≤ Real.log (R + 2) := log_ge_one_of_one_le_add_two (by linarith)
     have h2 : 0 ≤ Real.log Nn := Real.log_nonneg hNn
-    nlinarith
+    linarith
   have hlog : Real.log (R + 3) ≤ 2 * Real.log (R + 2) := log_R_add_three_le_two_log_R_add_two hR
   have hlogN : 0 ≤ Real.log Nn := Real.log_nonneg hNn
   have hRlog : 0 ≤ R * Real.log (R + 2) := mul_nonneg hR0 (by
     exact le_trans (by linarith : (0 : ℝ) ≤ 1) (log_ge_one_of_one_le_add_two (by linarith)))
-  have hc : C ≤ c := by dsimp [c]; nlinarith
+  have hc : C ≤ c := by dsimp [c]; linarith
   by_cases hσ : (1 / 2 : ℝ) ≤ s.re
   · -- right half plane: use the bound for χ at s
     have hsbig : 1 ≤ ‖s‖ := by rw [hsnorm]; linarith
@@ -420,7 +419,7 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
     have hmono : Real.exp (c0 * R * (Real.log (R + 2) + Real.log Nn + 2))
         ≤ Real.exp (c * R * (Real.log (R + 2) + Real.log Nn + 2)) := by
       have h1 : c0 * R * (Real.log (R + 2) + Real.log Nn + 2) ≤ c * R * (Real.log (R + 2) + Real.log Nn + 2) := by
-        have hc0c : c0 ≤ c := by dsimp [c, C]; nlinarith
+        have hc0c : c0 ≤ c := by dsimp [c, C]; linarith
         have hz : 0 ≤ R * (Real.log (R + 2) + Real.log Nn + 2) := by positivity
         calc
           c0 * R * (Real.log (R + 2) + Real.log Nn + 2) = c0 * (R * (Real.log (R + 2) + Real.log Nn + 2)) := by ring
@@ -472,9 +471,9 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
         have h1 : ‖w‖ * (Real.log (‖w‖ + 2) + Real.log Nn + 2) ≤ (R + 1) * (Real.log (R + 3) + Real.log Nn + 2) := by
           have hA : Real.log (‖w‖ + 2) + Real.log Nn + 2 ≤ Real.log (R + 3) + Real.log Nn + 2 := by linarith
           have hnn : 0 ≤ Real.log (‖w‖ + 2) + Real.log Nn + 2 := by
-            have h1l : 0 ≤ Real.log (‖w‖ + 2) := Real.log_nonneg (by linarith [hwbig])
+            have h1l : 0 ≤ Real.log (‖w‖ + 2) := Real.log_nonneg (by linarith only [hwbig])
             have h2l : 0 ≤ Real.log Nn := Real.log_nonneg hNn
-            nlinarith
+            linarith
           calc
             ‖w‖ * (Real.log (‖w‖ + 2) + Real.log Nn + 2) ≤ (R + 1) * (Real.log (‖w‖ + 2) + Real.log Nn + 2) := by
               exact mul_le_mul_of_nonneg_right hwub hnn
@@ -489,7 +488,7 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
       have hpos : 0 < (N : ℝ) := by exact_mod_cast (Nat.pos_of_ne_zero (NeZero.ne N))
       rw [Real.rpow_def_of_pos hpos (R + 1 / 2)]
       have hlogle : Real.log (N : ℝ) * (R + 1 / 2) ≤ (R + 1) * Real.log (N : ℝ) := by
-        nlinarith [Real.log_nonneg hNn]
+        linarith only [Real.log_nonneg hNn]
       exact exp_mono hlogle
     have hb3 : ‖completedLFunction χ s‖ ≤
         Real.exp ((R + 1) * Real.log Nn + c1 * (R + 1) * (Real.log (R + 3) + Real.log Nn + 2)) := by
@@ -516,12 +515,12 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
       have hh := mul_le_mul_of_nonneg_left h1 hc1
       ring_nf at hh ⊢
       exact hh
-    have hR2b : R + 1 ≤ 2 * R := by nlinarith
-    have hc1l : 4 * c1 ≤ c := by dsimp [c, C]; nlinarith
-    have hc2l : 2 * (c1 + 1) ≤ c := by dsimp [c, C]; nlinarith
-    have hc3l : 2 * c1 ≤ c := by dsimp [c, C]; nlinarith
-    have hcc1 : c0 ≤ c := by dsimp [c, C]; nlinarith
-    have hcc2 : 4 * C ≤ c := by dsimp [c, C]; nlinarith
+    have hR2b : R + 1 ≤ 2 * R := by linarith
+    have hc1l : 4 * c1 ≤ c := by dsimp [c, C]; linarith
+    have hc2l : 2 * (c1 + 1) ≤ c := by dsimp [c, C]; linarith
+    have hc3l : 2 * c1 ≤ c := by dsimp [c, C]; linarith
+    have hcc1 : c0 ≤ c := by dsimp [c, C]; linarith
+    have hcc2 : 4 * C ≤ c := by dsimp [c, C]; linarith
     -- m1: (c1+1)(R+1)·logN ≤ c·R·logN
     have hm1 : (c1 + 1) * (R + 1) ≤ c * R := by
       have hstep1 : (c1 + 1) * (R + 1) ≤ (c1 + 1) * (2 * R) := by
@@ -550,7 +549,7 @@ theorem completedL_growth_circle_aux {N : ℕ} [NeZero N] (χ : DirichletCharact
             _ = 4 * c1 * R := by ring
         _ ≤ 2 * c * R := by
           have hcpos : 0 ≤ c := by dsimp [c]; positivity
-          exact mul_le_mul_of_nonneg_right (by nlinarith [hc1l, hcpos] : 4 * c1 ≤ 2 * c) (by linarith : 0 ≤ R)
+          exact mul_le_mul_of_nonneg_right (by linarith only [hc1l, hcpos] : 4 * c1 ≤ 2 * c) (by linarith : 0 ≤ R)
     have hM1 : (c1 + 1) * (R + 1) * Real.log Nn ≤ c * R * Real.log Nn := by
       exact mul_le_mul_of_nonneg_right hm1 hlogN
     have hM2 : 2 * c1 * (R + 1) * Real.log (R + 2) ≤ c * R * Real.log (R + 2) := by

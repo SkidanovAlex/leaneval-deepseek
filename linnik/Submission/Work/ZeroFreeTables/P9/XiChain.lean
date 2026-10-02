@@ -254,7 +254,7 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
   -- boundary (circle) estimate: `log ‖g ζ‖ ≤ Q1 + Q2` for `‖ζ‖ = T`
   have hbnd : ∀ ζ : ℂ, ‖ζ‖ = T → Real.log ‖g ζ‖ ≤ Q1 + Q2 := by
     intro ζ hζ
-    have hζε : ζ ∈ ball 0 (T + ε) := mem_ball_zero_iff.mpr (by linarith [hζ, hε])
+    have hζε : ζ ∈ ball 0 (T + ε) := mem_ball_zero_iff.mpr (by linarith only [hζ, hε])
     have hXiζ : Xi ζ ≠ 0 := hcirc ζ hζ
     have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
     have hfacζ : Xi ζ =
@@ -317,9 +317,9 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
       rw [frontier_ball (0 : ℂ) (ne_of_gt hTpos), Metric.mem_sphere, dist_eq_norm] at hζf
       have hζ : ‖ζ‖ = T := by simpa using hζf
       have hb := hbnd ζ hζ
-      have hζε : ζ ∈ ball 0 (T + ε) := mem_ball_zero_iff.mpr (by linarith [hζ, hε])
+      have hζε : ζ ∈ ball 0 (T + ε) := mem_ball_zero_iff.mpr (by linarith only [hζ, hε])
       have hle : Real.log ‖g ζ‖ ≤ M0 := by
-        have hQ12 : Q1 + Q2 ≤ M0 := by dsimp [M0]; linarith [hQ3, hQ4]
+        have hQ12 : Q1 + Q2 ≤ M0 := by dsimp [M0]; linarith only [hQ3, hQ4]
         linarith
       exact le_trans (le_of_eq (Real.exp_log (norm_pos_iff.mpr (hg_nz ζ hζε))).symm)
         (Real.exp_le_exp.mpr hle)
@@ -387,13 +387,13 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
       have h3 : |Real.log ‖Xi 0‖ - Real.log ‖(∏ᶠ u : ℂ, ((0 : ℂ) - u) ^
           (MeromorphicOn.divisor Xi (Metric.closedBall 0 T) u))‖| ≤ Q3 + Q4 := by
         have hQ3eq : |Real.log ‖Xi 0‖| = Q3 := by dsimp [Q3]
-        linarith [hAb, hP0le, hQ3eq]
+        linarith only [hAb, hP0le, hQ3eq]
       exact h3
-    have h34 : Q3 + Q4 ≤ M0 := by dsimp [M0]; linarith [hQ1, hQ2]
+    have h34 : Q3 + Q4 ≤ M0 := by dsimp [M0]; linarith only [hQ1, hQ2]
     have hg0ball : Real.log ‖g 0‖ ≤ M0 := hball 0 h0T
     have h2 : -M0 ≤ Real.log ‖g 0‖ := by
       have hle' : |Real.log ‖g 0‖| ≤ M0 := le_trans hlogg0 h34
-      linarith [abs_le.mp hle']
+      linarith only [abs_le.mp hle']
     exact abs_le.mpr ⟨h2, hg0ball⟩
   -- arithmetic: the four terms fit the prescribed shape of `M0`
   have hM0_bound : M0 ≤ (4 * gc + 20 * zc + |Real.log ‖Xi 0‖| + 1) * (A * L ^ 2 + 1) := by
@@ -416,7 +416,7 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
       have hLsq : L ≤ L ^ 2 := by nlinarith [hL1]
       have hstep : gc * T * LT ≤ gc * ((2 * A) * (2 * L)) := by
         have := mul_le_mul_of_nonneg_left hTl hgc_nonneg
-        nlinarith [this]
+        linarith only [this]
       have hstep2 : gc * ((2 * A) * (2 * L)) = 4 * (gc * A * L) := by ring
       have hstep3 : gc * A * L ≤ gc * A * L ^ 2 := mul_le_mul_of_nonneg_left hLsq hga
       calc Q1 = gc * T * LT := rfl
@@ -430,7 +430,7 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
       have hzT : 0 ≤ zc * T * LT := by positivity
       have hzle : zc * T * LT ≤ zc * ((2 * A) * (2 * L)) := by
         have := mul_le_mul_of_nonneg_left hTl hzc_nonneg
-        nlinarith [this]
+        linarith only [this]
       calc Q2 = (2 * Real.log L) * (zc * T * LT) := rfl
         _ ≤ (2 * L) * (zc * T * LT) := mul_le_mul_of_nonneg_right h2log hzT
         _ ≤ (2 * L) * (zc * ((2 * A) * (2 * L))) := by
@@ -447,7 +447,7 @@ theorem xiE_cofactor_logbound {A T : ℝ} (hA0 : 0 ≤ A) (hA1 : 1 ≤ A)
         linarith
       have hzle : zc * T * LT ≤ zc * ((2 * A) * (2 * L)) := by
         have := mul_le_mul_of_nonneg_left hTl hzc_nonneg
-        nlinarith [this]
+        linarith only [this]
       have hBnn : 0 ≤ Real.log T + |Real.log δ₀| := by linarith
       have hz2A : 0 ≤ zc * ((2 * A) * (2 * L)) := by positivity
       calc Q4 = (zc * T * LT) * (Real.log T + |Real.log δ₀|) := rfl
@@ -481,10 +481,10 @@ lemma xiE_truncBound (k : ℕ) (hk : 1 ≤ k) :
   let K0 : ℝ := 4 * gc + 20 * zc + |Real.log ‖Xi 0‖| + 1
   have hK0nn : 0 ≤ K0 := by
     dsimp [K0]
-    nlinarith [hzcnn, hgcnn, abs_nonneg (Real.log ‖Xi 0‖)]
+    linarith only [hzcnn, hgcnn, abs_nonneg (Real.log ‖Xi 0‖)]
   have hK0one : 1 ≤ K0 := by
     dsimp [K0]
-    nlinarith [hzcnn, hgcnn, abs_nonneg (Real.log ‖Xi 0‖)]
+    linarith only [hzcnn, hgcnn, abs_nonneg (Real.log ‖Xi 0‖)]
   let C : ℝ := (k.factorial : ℝ) * 192 * 16 ^ k * K0 * 2
   have hCnn : 0 ≤ C := by dsimp [C]; positivity
   refine ⟨C, hCnn, max (Real.exp |Real.log δ₀|) 2, ?_⟩
@@ -569,7 +569,7 @@ lemma xiE_truncBound (k : ℕ) (hk : 1 ≤ k) :
     have s5 : 2 * K0 * (xiL A) ^ 2 / A ^ k ≤ 2 * K0 * (xiL A) ^ 2 / A := by
       have hnum2 : 0 ≤ 2 * K0 * (xiL A) ^ 2 := by positivity
       exact div_le_div_of_nonneg_left hnum2 hApos hAkge
-    linarith [s1, s2, s3, s4.le, s4.ge, s5]
+    linarith only [s1, s2, s3, s4.le, s4.ge, s5]
   have hCeq : C = (k.factorial : ℝ) * 192 * 16 ^ k * K0 * 2 := rfl
   have hstep : (k.factorial : ℝ) * 192 * 16 ^ k * max M0 1 / T ^ (k + 1)
       ≤ (k.factorial : ℝ) * 192 * 16 ^ k * (2 * K0 * (xiL A) ^ 2 / A) := by
@@ -729,7 +729,7 @@ theorem xiDerivPF (k : ℕ) (hk : 1 ≤ k) :
     rw [hsplit]
     refine le_trans (norm_add_le _ _) ?_
     simp only [heRdef]
-    linarith [hfirst, hsecond]
+    linarith only [hfirst, hsecond]
   rw [tendsto_iff_norm_sub_tendsto_zero]
   exact squeeze_zero' (Filter.Eventually.of_forall fun R => norm_nonneg _) hev heR0
 

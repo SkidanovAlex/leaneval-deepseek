@@ -4,7 +4,8 @@ import Submission.Work.ZeroDensity.Jutila.jutilaNonPrincipal
 import Submission.Work.LinnikAreas.DhRepel.nearSumLeZeroCountIn
 import Submission.Work.LinnikAreas.DhRepel.rpowArithLogFree
 import Submission.Work.LinnikAreas.DhRepel.logLogLogDivThreeLeLogDivFive
-import Submission.Work.LinnikAreas.JMAuxSh.ZeroDensityBridges
+import Submission.Work.LinnikAreas.FarBoundOfDensity
+import Submission.Work.LinnikAreas.FarBoundOfJutilaMontgomery
 
 namespace Work.ZeroFreeTables
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.SelbergDefs
 import Submission.Work.LinnikAreas.Density4.sum_Icc_div_reindex
-import Submission.Commons.NumberTheory.Moebius.sum_Icc_divisors_bijection
 
 namespace Work.LinnikAreas.Density4
 

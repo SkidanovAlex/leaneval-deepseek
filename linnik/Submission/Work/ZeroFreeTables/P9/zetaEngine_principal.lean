@@ -27,15 +27,15 @@ private lemma one_div_cube_le {δ r : ℝ} (hδ : 0 < δ) (hr : δ / 2 ≤ r) :
     rw [div_le_div_iff₀ (pow_pos hrpos 2) (by positivity : (0 : ℝ) < 1 + r ^ 2)]
     have hkey : (1 : ℝ) ≤ (4 / δ ^ 2) * r ^ 2 := by
       have hδ2 : (0 : ℝ) < δ ^ 2 := by positivity
-      have h2r : δ ≤ 2 * r := by linarith
+      have h2r : δ ≤ 2 * r := by linarith only [hr]
       have h4 : δ ^ 2 ≤ 4 * r ^ 2 := by
         have h := pow_le_pow_left₀ (le_of_lt hδ) h2r 2
-        nlinarith [h]
+        linarith only [h]
       rw [div_mul_eq_mul_div]
       calc (1 : ℝ) = δ ^ 2 / δ ^ 2 := (div_self (ne_of_gt hδ2)).symm
         _ ≤ 4 * r ^ 2 / δ ^ 2 := div_le_div_of_nonneg_right h4 (le_of_lt hδ2)
     have hexp : (1 + 4 / δ ^ 2) * r ^ 2 = (4 / δ ^ 2) * r ^ 2 + r ^ 2 := by ring
-    linarith [hkey, hexp]
+    linarith only [hkey, hexp]
   have hcube : (1 / r) ^ 3 = (1 / r) * (1 / r ^ 2) := by
     rw [div_pow, one_pow, one_div_mul_one_div]
     congr 1
@@ -52,7 +52,7 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
       ≥ -(2 / δ) * (1 + 4 / δ ^ 2) * Cz := by
   have hLpos : 0 < L := lt_trans zero_lt_one hLt
   have haLpos : 0 < a / L := div_pos ha hLpos
-  have hsc : 1 < s.re := by rw [hsre]; linarith
+  have hsc : 1 < s.re := by rw [hsre]; linarith only [haLpos]
   have hfar : ∀ u : ℂ, analyticOrderNatAt completedRiemannZeta u ≠ 0 → δ / 2 ≤ ‖s - u‖ := by
     intro u hord
     have hζ : riemannZeta u = 0 := by
@@ -66,13 +66,13 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
     have hδu : δ < ‖((1 : ℂ) + (s.im : ℂ) * Complex.I) - u‖ := hnz u hζ
     have haLδ : a / L ≤ δ / 2 := by
       rw [div_le_div_iff₀ hLpos (by norm_num : (0 : ℝ) < 2)]
-      linarith [haδL]
+      linarith only [haδL]
     have hw0 : s - ((1 : ℂ) + (s.im : ℂ) * Complex.I) = ((a / L : ℝ) : ℂ) := by
       apply Complex.ext
       · simp only [Complex.sub_re, Complex.add_re, Complex.one_re, Complex.mul_re,
           Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_one, mul_zero,
           sub_zero, add_zero]
-        linarith [hsre]
+        linarith only [hsre]
       · simp only [Complex.sub_im, Complex.add_im, Complex.one_im, Complex.mul_im,
           Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_one, mul_zero,
           add_zero, zero_add, sub_self]
@@ -86,7 +86,7 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
       calc ‖(s - u) - (s - ((1 : ℂ) + (s.im : ℂ) * Complex.I))‖
           ≤ ‖s - u‖ + ‖s - ((1 : ℂ) + (s.im : ℂ) * Complex.I)‖ := norm_sub_le _ _
         _ = ‖s - ((1 : ℂ) + (s.im : ℂ) * Complex.I)‖ + ‖s - u‖ := add_comm _ _
-    linarith [hδu, htri, hsw0, haLδ, hδ]
+    linarith only [hδu, htri, hsw0, haLδ, hδ]
   have hsummSq : Summable (fun u : ℂ =>
       (analyticOrderNatAt completedRiemannZeta u : ℂ) * (1 / (s - u)) ^ 2) :=
     zetaZeroSum_summable_gen 1 le_rfl hsc
@@ -109,7 +109,7 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
         have hrpos : 0 < ‖s - u‖ := lt_of_lt_of_le (by positivity) hr
         have hle1 : 1 / (1 + ‖s - u‖ ^ 2) ≤ 1 / ‖s - u‖ ^ 2 := by
           rw [div_le_div_iff₀ (by positivity) (pow_pos hrpos 2)]
-          nlinarith [sq_nonneg ‖s - u‖]
+          linarith only [sq_nonneg ‖s - u‖]
         calc (analyticOrderNatAt completedRiemannZeta u : ℝ) * (1 / (1 + ‖s - u‖ ^ 2))
             ≤ (analyticOrderNatAt completedRiemannZeta u : ℝ) * (1 / ‖s - u‖ ^ 2) :=
               mul_le_mul_of_nonneg_left hle1 (Nat.cast_nonneg _)
@@ -128,12 +128,12 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
         rw [abs_le] at h'
         have hn : ‖(1 / (s - u)) ^ 3‖ = (1 / ‖s - u‖) ^ 3 := by
           rw [norm_pow, norm_div, norm_one]
-        linarith [h'.1, hn]
+        linarith only [h'.1, hn, h']
       have h₂ : -(((2 / δ) * (1 + 4 / δ ^ 2)) / (1 + ‖s - u‖ ^ 2))
           ≤ -(1 / ‖s - u‖) ^ 3 := by
         have hb := one_div_cube_le hδ hr (r := ‖s - u‖)
         rw [← mul_div_assoc] at hb
-        linarith [hb]
+        linarith only [hb]
       have hc : (0 : ℝ) ≤ (analyticOrderNatAt completedRiemannZeta u : ℝ) := Nat.cast_nonneg _
       have key : ((-(2 / δ)) * (1 + 4 / δ ^ 2)) *
             ((analyticOrderNatAt completedRiemannZeta u : ℝ) * (1 / (1 + ‖s - u‖ ^ 2)))
@@ -151,7 +151,7 @@ private lemma zetaFarZeroCubeBound_aux {a δ L Cz : ℝ} (ha : 0 < a) (hδ : 0 <
     rwa [tsum_mul_left] at h
   have hneg : ((-(2 / δ)) * (1 + 4 / δ ^ 2)) ≤ 0 := by
     have : (0 : ℝ) < 2 / δ * (1 + 4 / δ ^ 2) := by positivity
-    nlinarith [this]
+    linarith only [this]
   have hmain : ((-(2 / δ)) * (1 + 4 / δ ^ 2)) * Cz ≤
       ∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 3).re :=
     le_trans (mul_le_mul_of_nonpos_left hCz hneg) hkey
@@ -204,10 +204,10 @@ theorem zetaEngine_principal {a lam₁ δ L Ct Cz C₀ : ℝ}
       ≤ (Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - 1) * (L : ℂ)))).re + ((a + lam₁) / L) * C₀
         + ((a + lam₁) ^ 2 / L ^ 2) * ((1 + 4 / δ ^ 2) * Cz + Ct)
         + (2 / 3) * ((a + lam₁) ^ 3 / L ^ 3) * ((2 / δ) * (1 + 4 / δ ^ 2) * Cz + Ct) := by
-  have hLpos : (0 : ℝ) < L := by linarith
+  have hLpos : (0 : ℝ) < L := by linarith only [hδ, hδ1, hLt]
   have haL : 0 < a / L := div_pos ha hLpos
-  have hs1 : 1 < s.re := by rw [hsre]; linarith
-  have hA : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith) (le_of_lt hLpos)
+  have hs1 : 1 < s.re := by rw [hsre]; linarith only [haL]
+  have hA : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith only [ha, hlam₁]) (le_of_lt hLpos)
   have hSigma := SigmaP3L_one_eq_iteratedDeriv (a := a) (lam₁ := lam₁) (L := L) hs1
   have hr1 := zetaDiffExplicit_re_one hs1
   have hr2 := zetaDiffExplicit_re_two hs1
@@ -219,7 +219,7 @@ theorem zetaEngine_principal {a lam₁ δ L Ct Cz C₀ : ℝ}
   have hB1 : 0 ≤ (logDeriv riemannZeta s).re + (1 / (s - 1)).re + C₀ := by
     have h := hC0
     rw [Complex.neg_re] at h
-    linarith
+    linarith only [h]
   have hZ1 : -(1 + 4 / δ ^ 2) * Cz ≤
       (∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 2).re) :=
     zetaFarZeroSqBound ha hδ hLt haδL hsre hnz hCz
@@ -237,7 +237,7 @@ theorem zetaEngine_principal {a lam₁ δ L Ct Cz C₀ : ℝ}
       ((logDeriv riemannZeta s).re + (1 / (s - 1)).re + C₀) := mul_nonneg hA hB1
   have h2c : 0 ≤ (∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 2).re)
         + (∑' n : ℕ, ((1 / (s + ((2 * (n + 1) : ℕ) : ℂ))) ^ 2).re)
-        + ((1 + 4 / δ ^ 2) * Cz + Ct) := by linarith [hZ1, hT1]
+        + ((1 + 4 / δ ^ 2) * Cz + Ct) := by linarith only [hZ1, hT1]
   have h2 : 0 ≤ ((a + lam₁) / L) ^ 2 *
       ((∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 2).re)
         + (∑' n : ℕ, ((1 / (s + ((2 * (n + 1) : ℕ) : ℂ))) ^ 2).re)
@@ -245,13 +245,13 @@ theorem zetaEngine_principal {a lam₁ δ L Ct Cz C₀ : ℝ}
     mul_nonneg (sq_nonneg ((a + lam₁) / L)) h2c
   have h3c : 0 ≤ (∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 3).re)
         + (∑' n : ℕ, ((1 / (s + ((2 * (n + 1) : ℕ) : ℂ))) ^ 3).re)
-        + ((2 / δ) * (1 + 4 / δ ^ 2) * Cz + Ct) := by linarith [hZ2, hT2]
+        + ((2 / δ) * (1 + 4 / δ ^ 2) * Cz + Ct) := by linarith only [hZ2, hT2]
   have h3b : (0:ℝ) ≤ ((a + lam₁) / L) ^ 3 := pow_nonneg hA 3
   have h3 : 0 ≤ (2 / 3) * ((a + lam₁) / L) ^ 3 *
       ((∑' u : ℂ, (analyticOrderNatAt completedRiemannZeta u : ℝ) * ((1 / (s - u)) ^ 3).re)
         + (∑' n : ℕ, ((1 / (s + ((2 * (n + 1) : ℕ) : ℂ))) ^ 3).re)
         + ((2 / δ) * (1 + 4 / δ ^ 2) * Cz + Ct)) :=
     mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 2/3) h3b) h3c
-  nlinarith [h1, h2, h3]
+  linarith only [h1, h2, h3]
 
 end Work.ZeroFreeTables.P9

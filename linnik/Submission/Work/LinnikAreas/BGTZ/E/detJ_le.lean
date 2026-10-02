@@ -48,8 +48,8 @@ open DirichletCharacter
 of the exponent: for every `t`, `log (2+|t|) + 2 ≤ 103 · (1+|t|)^{1/100}`. -/
 private lemma detJA_log_two_add_le_rpow (t : ℝ) :
     Real.log (2 + |t|) + 2 ≤ 103 * (1 + |t|) ^ ((1 : ℝ) / 100) := by
-  have hu1 : (1 : ℝ) ≤ 1 + |t| := by linarith [abs_nonneg t]
-  have hu0 : (0 : ℝ) < 1 + |t| := by linarith
+  have hu1 : (1 : ℝ) ≤ 1 + |t| := by linarith only [abs_nonneg t]
+  have hu0 : (0 : ℝ) < 1 + |t| := by linarith only [hu1]
   -- `log (1+|t|) ≤ 100 (1+|t|)^{1/100}`
   have hlog : Real.log (1 + |t|) ≤ 100 * (1 + |t|) ^ ((1 : ℝ) / 100) := by
     have h := Real.log_le_rpow_div (x := 1 + |t|) (ε := (1 : ℝ) / 100) hu0.le (by norm_num)
@@ -58,17 +58,17 @@ private lemma detJA_log_two_add_le_rpow (t : ℝ) :
     rw [he] at h; exact h
   -- `log (2+|t|) ≤ log 2 + log (1+|t|) ≤ 1 + log (1+|t|)`
   have hlog2 : Real.log (2 + |t|) ≤ 1 + Real.log (1 + |t|) := by
-    have h2 : (2 + |t|) ≤ 2 * (1 + |t|) := by linarith [abs_nonneg t]
+    have h2 : (2 + |t|) ≤ 2 * (1 + |t|) := by linarith only [abs_nonneg t, hu1]
     have h3 : Real.log (2 + |t|) ≤ Real.log (2 * (1 + |t|)) :=
-      Real.log_le_log (by linarith [abs_nonneg t]) h2
+      Real.log_le_log (by linarith only [abs_nonneg t, hu1]) h2
     have h4 : Real.log (2 * (1 + |t|)) = Real.log 2 + Real.log (1 + |t|) :=
       Real.log_mul (by norm_num) (ne_of_gt hu0)
     have h5 : Real.log 2 ≤ 1 := by
       rw [Real.log_le_iff_le_exp (by norm_num)]
       exact le_of_lt Real.exp_one_gt_two
-    linarith [h3, h4]
+    linarith only [h3, h4, h5]
   have hu100 : (1 : ℝ) ≤ (1 + |t|) ^ ((1 : ℝ) / 100) := Real.one_le_rpow hu1 (by norm_num)
-  linarith [hlog, hlog2, hu100]
+  linarith only [hlog, hlog2, hu100]
 
 /-- The convexity bound for `ζ` on the critical line, in the exponent `thA`. -/
 private lemma detJA_zeta_half_le : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ,
@@ -84,7 +84,7 @@ private lemma detJA_zeta_half_le : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ,
     have hlog := detJA_log_two_add_le_rpow t
     have hsplit : (1 + |t|) ^ ((1 : ℝ) / 4) * (1 + |t|) ^ ((1 : ℝ) / 100)
         = (1 + |t|) ^ thA := by
-      rw [← Real.rpow_add (by linarith [abs_nonneg t]), hthA]
+      rw [← Real.rpow_add (by linarith only [abs_nonneg t, ht]), hthA]
     calc ‖riemannZeta (((1 / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖
         ≤ Cz * (1 + |t|) ^ ((1 : ℝ) / 4) * (Real.log (2 + |t|) + 2) := h
       _ ≤ Cz * (1 + |t|) ^ ((1 : ℝ) / 4) * (103 * (1 + |t|) ^ ((1 : ℝ) / 100)) := by
@@ -94,13 +94,13 @@ private lemma detJA_zeta_half_le : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ,
       _ = 103 * Cz * (1 + |t|) ^ thA := by rw [hsplit]
       _ ≤ (103 * Cz + Cs + 1) * (1 + |t|) ^ thA := by
           have h1 : (1 : ℝ) ≤ (1 + |t|) ^ thA :=
-            Real.one_le_rpow (by linarith [abs_nonneg t]) (by rw [hthA]; norm_num)
-          nlinarith [h1, hCzpos, hCspos]
+            Real.one_le_rpow (by linarith only [abs_nonneg t, ht]) (by rw [hthA]; norm_num)
+          nlinarith only [h1, hCzpos, hCspos]
   · have h := hCs t ht
     have h1 : (1 : ℝ) ≤ (1 + |t|) ^ thA :=
-      Real.one_le_rpow (by linarith [abs_nonneg t]) (by rw [hthA]; norm_num)
+      Real.one_le_rpow (by linarith only [abs_nonneg t]) (by rw [hthA]; norm_num)
     calc ‖riemannZeta (((1 / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖ ≤ Cs := h
-      _ ≤ (103 * Cz + Cs + 1) * (1 + |t|) ^ thA := by nlinarith [h1, hCzpos, hCspos]
+      _ ≤ (103 * Cz + Cs + 1) * (1 + |t|) ^ thA := by nlinarith only [h1, hCzpos, hCspos]
 
 /-- **The principal character on the critical line.**  `L(s,1) = ζ(s)·∏_{p|q}(1-p^{-s})`, and
 the Euler product is `≤ exp((log q)^{3/4})` at `Re s = 1/2`. -/
@@ -171,11 +171,11 @@ private theorem detJA_Fpair_half_le :
     have h1q : 1 ≤ q := by omega
     exact_mod_cast h1q
   have h1t0 : (0 : ℝ) < 1 + |t| := by positivity
-  have hA0 : (0 : ℝ) ≤ A := by linarith
+  have hA0 : (0 : ℝ) ≤ A := by linarith only [hA1]
   have hthA0 : (0 : ℝ) ≤ thA := by norm_num [thA]
-  have hA2 : A ≤ A ^ 2 := by nlinarith
+  have hA2 : A ≤ A ^ 2 := by nlinarith only [hA1]
   have hqpow : (q : ℝ) ^ thA ≤ (q : ℝ) ^ (2 * thA) :=
-    Real.rpow_le_rpow_of_exponent_le hqR1 (by linarith)
+    Real.rpow_le_rpow_of_exponent_le hqR1 (by linarith only [hthA0])
   have hAV : A * (q : ℝ) ^ thA ≤ A ^ 2 * (q : ℝ) ^ (2 * thA) :=
     mul_le_mul hA2 hqpow (Real.rpow_nonneg hqR0.le _) (by positivity)
   have hEE : Real.exp ((Real.log (q : ℝ)) ^ (3 / 4 : ℝ))
@@ -186,9 +186,9 @@ private theorem detJA_Fpair_half_le :
     rw [← Real.rpow_add h1t0]; congr 1; ring
   have hqq : (q : ℝ) ^ thA * (q : ℝ) ^ thA = (q : ℝ) ^ (2 * thA) := by
     rw [← Real.rpow_add hqR0]; congr 1; ring
-  have hCF1 : C1 * Ch ≤ C1 * Ch + Ch ^ 2 + 1 := by nlinarith [sq_nonneg Ch]
-  have hCF3 : Ch ^ 2 + 1 ≤ C1 * Ch + Ch ^ 2 + 1 := by nlinarith [mul_pos hC1pos hChpos]
-  have h1t1 : (1 : ℝ) ≤ 1 + |t| := by linarith [abs_nonneg t]
+  have hCF1 : C1 * Ch ≤ C1 * Ch + Ch ^ 2 + 1 := by linarith only [sq_nonneg Ch]
+  have hCF3 : Ch ^ 2 + 1 ≤ C1 * Ch + Ch ^ 2 + 1 := by linarith only [mul_pos hC1pos hChpos, hC1pos, hChpos]
+  have h1t1 : (1 : ℝ) ≤ 1 + |t| := by linarith only [abs_nonneg t]
   by_cases hχ : χ = 1
   · rw [hχ, one_mul]
     have hX : ‖DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q) s‖
@@ -295,7 +295,7 @@ private theorem detJA_Fpair_half_le :
               * (Real.exp ((Real.log (q : ℝ)) ^ (3 / 4 : ℝ))
                   * Real.exp ((Real.log (q : ℝ)) ^ (3 / 4 : ℝ)))
               * ((1 + |t|) ^ thA * (1 + |t|) ^ thA) := by
-            have hC2 : Ch ^ 2 ≤ C1 * Ch + Ch ^ 2 + 1 := by nlinarith [mul_pos hC1pos hChpos]
+            have hC2 : Ch ^ 2 ≤ C1 * Ch + Ch ^ 2 + 1 := by linarith only [mul_pos hC1pos hChpos, hCF3]
             have hA2' : (0 : ℝ) ≤ A ^ 2 * (q : ℝ) ^ (2 * thA) := by positivity
             have hE2' : (0 : ℝ) ≤ Real.exp ((Real.log (q : ℝ)) ^ (3 / 4 : ℝ))
                 * Real.exp ((Real.log (q : ℝ)) ^ (3 / 4 : ℝ)) := by positivity
@@ -311,7 +311,7 @@ private lemma detJL_rpow_abs_add_le (γ t θ : ℝ) (hθ : 0 ≤ θ) :
     (1 + |γ + t|) ^ θ ≤ (1 + |γ|) ^ θ * (1 + |t|) ^ θ := by
   have h : 1 + |γ + t| ≤ (1 + |γ|) * (1 + |t|) := by
     have h1 : |γ + t| ≤ |γ| + |t| := abs_add_le _ _
-    nlinarith [abs_nonneg γ, abs_nonneg t]
+    nlinarith only [abs_nonneg γ, abs_nonneg t, h1]
   have hpos : 0 ≤ 1 + |γ + t| := by positivity
   calc (1 + |γ + t|) ^ θ ≤ ((1 + |γ|) * (1 + |t|)) ^ θ := Real.rpow_le_rpow hpos h hθ
     _ = (1 + |γ|) ^ θ * (1 + |t|) ^ θ :=
@@ -326,7 +326,7 @@ private lemma detJL_kernel_div_le (t : ℝ) :
     have h2 : (1 + |t|) ^ (2:ℝ) = (1 + |t|)^2 := by
       rw [← Real.rpow_natCast]; norm_num
     rw [h2]
-    nlinarith [sq_abs t, abs_nonneg t, sq_nonneg (|t| - 1)]
+    nlinarith only [sq_abs t, abs_nonneg t, sq_nonneg (|t| - 1)]
   have hsplit : (1 + |t|) ^ ((13:ℝ)/25)
       = (1 + |t|) ^ (2:ℝ) * (1 + |t|) ^ (-(37/25 : ℝ)) := by
     rw [← Real.rpow_add hpos]; norm_num
@@ -384,10 +384,10 @@ private lemma detJL_norm_detInt_bound
     rw [ha]
     have hb : Real.sqrt ((ρ.re-1/2)^2 + t^2) ≤ Real.sqrt ((3/2-ρ.re)^2 + t^2) := by
       apply Real.sqrt_le_sqrt
-      nlinarith [sq_nonneg (ρ.re-1/2), sq_nonneg (3/2-ρ.re), abs_nonneg t]
-    calc 1/16 + t^2 ≤ (ρ.re-1/2)^2 + t^2 := by nlinarith [hρlo]
+      linarith only [sq_nonneg (ρ.re-1/2), sq_nonneg (3/2-ρ.re), abs_nonneg t, hρhi]
+    calc 1/16 + t^2 ≤ (ρ.re-1/2)^2 + t^2 := by nlinarith only [hρlo]
       _ = Real.sqrt ((ρ.re-1/2)^2 + t^2) * Real.sqrt ((ρ.re-1/2)^2 + t^2) := by
-          rw [Real.mul_self_sqrt (by nlinarith [sq_nonneg (ρ.re-1/2), sq_nonneg t])]
+          rw [Real.mul_self_sqrt (by linarith only [sq_nonneg (ρ.re-1/2), sq_nonneg t])]
       _ ≤ Real.sqrt ((3/2-ρ.re)^2 + t^2) * Real.sqrt ((ρ.re-1/2)^2 + t^2) :=
           mul_le_mul_of_nonneg_right hb (Real.sqrt_nonneg _)
       _ = Real.sqrt ((ρ.re-1/2)^2 + t^2) * Real.sqrt ((3/2-ρ.re)^2 + t^2) := by ring

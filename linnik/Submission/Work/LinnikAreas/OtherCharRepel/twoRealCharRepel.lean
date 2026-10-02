@@ -39,8 +39,8 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
   obtain ⟨Ce, hCepos, hCe⟩ := changeLevelLogDerivLower
   -- aggregate constant
   set Lam : ℝ := Cz + 4 * Cp + 2 * Ce + 2 * Cl + 1 with hLamdef
-  have hLampos : 0 < Lam := by rw [hLamdef]; linarith
-  have hLamge : Cz + 4 * Cp + 2 * Ce + 2 * Cl ≤ Lam := by rw [hLamdef]; linarith
+  have hLampos : 0 < Lam := by rw [hLamdef]; linarith only [hCzpos, hCppos, hClpos, hCepos]
+  have hLamge : Cz + 4 * Cp + 2 * Ce + 2 * Cl ≤ Lam := by rw [hLamdef]; linarith only []
   -- the window parameter and the final constant
   set K : ℝ := min (1 / 4) (1 / (16 * (Lam + 1))) with hKdef
   have hKpos : 0 < K := lt_min (by norm_num) (by positivity)
@@ -48,11 +48,11 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
   have hK16 : K * (Lam + 1) ≤ 1 / 16 := by
     have h := min_le_right (1 / 4 : ℝ) (1 / (16 * (Lam + 1)))
     rw [hKdef]
-    have hden : 0 < 16 * (Lam + 1) := by linarith
+    have hden : 0 < 16 * (Lam + 1) := by linarith only [hCzpos, hCppos, hClpos, hCepos, hKpos, hKle4]
     have hmul := mul_le_mul_of_nonneg_right h hden.le
     have heq : (1 / (16 * (Lam + 1))) * (16 * (Lam + 1)) = 1 := by field_simp
-    have h2 : (16 * (Lam + 1)) * K ≤ 1 := by linarith [hmul, heq]
-    nlinarith [h2, hden]
+    have h2 : (16 * (Lam + 1)) * K ≤ 1 := by linarith only [hmul, heq]
+    linarith only [h2, hden, hmul, heq]
   refine ⟨K / 2, by positivity, 9, ?_⟩
   intro q hq hqne χ₀ ρ₀ χ ρ hχ₀1 hχ₀sq hρ₀im hzm₀ hχ1 hχsq hρim hzm hχχ₀
   set L : ℝ := Real.log (q : ℝ) with hLdef
@@ -64,18 +64,18 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
       have h1 : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
       have h2 : Real.exp 1 < 3 := Real.exp_one_lt_three
       have h3 : (9 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-      nlinarith [h1, h2, Real.exp_pos 1, h3]
+      nlinarith only [h1, h2, Real.exp_pos 1, h3, hKpos, hKle4]
     calc (2 : ℝ) = Real.log (Real.exp 2) := (Real.log_exp 2).symm
       _ ≤ Real.log (q : ℝ) := Real.log_le_log (Real.exp_pos 2) he
   -- the evaluation point `σ = 1 + K/L`
   have hσpos : 0 < K / L := div_pos hKpos hLpos
-  have hσ1 : 1 < 1 + K / L := by linarith
+  have hσ1 : 1 < 1 + K / L := by linarith only [hσpos]
   have hσ54 : 1 + K / L ≤ 5 / 4 := by
     have h1 : K / L ≤ 1 / 4 := by
       rw [div_le_iff₀ hLpos]
-      nlinarith [hKle4, hL2]
-    linarith
-  have hσ2 : 1 + K / L ≤ 2 := by linarith
+      linarith only [hKle4, hL2, hKpos]
+    linarith only [h1]
+  have hσ2 : 1 + K / L ≤ 2 := by linarith only [hKpos, hKle4, hσ54]
   -- the two zeros are real
   have hρ₀eq : ρ₀ = ((ρ₀.re : ℝ) : ℂ) := by
     apply Complex.ext
@@ -121,11 +121,11 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
   -- elementary bounds for the logarithm terms
   have hlog2 : Real.log 2 ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2)
-    linarith
+    linarith only [this]
   have hlogq : Real.log (2 * (q : ℝ)) + 1 ≤ 2 * (L + 1) := by
     have h3 : Real.log (2 * (q : ℝ)) = Real.log 2 + L := by
       rw [hLdef, Real.log_mul (by norm_num) (by positivity)]
-    linarith
+    linarith only [hKpos, hKle4, hL2, hlog2, h3]
   have hlogq0 : Real.log (2 * (χ₀.conductor : ℝ)) + 1 ≤ 2 * (L + 1) := by
     have h1 : (χ₀.conductor : ℝ) ≤ (q : ℝ) :=
       Nat.cast_le.mpr (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne q)) χ₀.conductor_dvd_level)
@@ -133,11 +133,11 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
       apply Real.log_le_log
       · have : (0:ℝ) < (χ₀.conductor : ℝ) := by
           exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne χ₀.conductor)
-        linarith
+        linarith only [this]
       · exact mul_le_mul_of_nonneg_left h1 (by norm_num)
     have h3 : Real.log (2 * (q : ℝ)) = Real.log 2 + L := by
       rw [hLdef, Real.log_mul (by norm_num) (by positivity)]
-    linarith
+    linarith only [hKpos, hKle4, hL2, hlog2, h2, h3]
   have hlogq1 : Real.log (2 * (χ.conductor : ℝ)) + 1 ≤ 2 * (L + 1) := by
     have h1 : (χ.conductor : ℝ) ≤ (q : ℝ) :=
       Nat.cast_le.mpr (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne q)) χ.conductor_dvd_level)
@@ -145,18 +145,18 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
       apply Real.log_le_log
       · have : (0:ℝ) < (χ.conductor : ℝ) := by
           exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne χ.conductor)
-        linarith
+        linarith only [this]
       · exact mul_le_mul_of_nonneg_left h1 (by norm_num)
     have h3 : Real.log (2 * (q : ℝ)) = Real.log 2 + L := by
       rw [hLdef, Real.log_mul (by norm_num) (by positivity)]
-    linarith
+    linarith only [hKpos, hKle4, hL2, hlog2, h2, h3]
   -- the core inequality
   have hmain : 1 / (1 + K / L - ρ₀.re) + 1 / (1 + K / L - ρ.re) ≤ L / K + Lam * (L + 1) := by
     have hsum : 1 / (1 + K / L - ρ₀.re) + 1 / (1 + K / L - ρ.re) ≤ 1 / (K / L) + Cz
         + (Cp * (Real.log (2 * (χ₀.conductor : ℝ)) + 1) + Ce * (L + 1))
         + (Cp * (Real.log (2 * (χ.conductor : ℝ)) + 1) + Ce * (L + 1))
         + Cl * (Real.log (2 * (q : ℝ)) + 1) := by
-      linarith [hpos, hzeta, hp₀, hp, he₀, he, hdl]
+      linarith only [hpos, hzeta, hp₀, hp, he₀, he, hdl, hqne, hc₀, hc]
     have hLKnz : L / K = 1 / (K / L) := by
       have : K / L ≠ 0 := ne_of_gt hσpos
       field_simp
@@ -167,10 +167,10 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
       mul_le_mul_of_nonneg_left hlogq1 hCppos.le
     have hb3 : Cl * (Real.log (2 * (q : ℝ)) + 1) ≤ Cl * (2 * (L + 1)) :=
       mul_le_mul_of_nonneg_left hlogq hClpos.le
-    have hb4 : Cz ≤ Cz * (L + 1) := by nlinarith [hCzpos, hL2]
-    have hLnn : 0 ≤ L + 1 := by linarith
-    nlinarith [hsum, hb1, hb2, hb3, hb4, hLamge, hLnn, hCzpos, hCppos, hCepos, hClpos,
-      hLampos]
+    have hb4 : Cz ≤ Cz * (L + 1) := by nlinarith only [hCzpos, hL2, hLpos]
+    have hLnn : 0 ≤ L + 1 := by linarith only [hKpos, hKle4, hL2]
+    linarith only [hsum, hb1, hb2, hb3, hb4, hLamge, hLnn, hCzpos, hCppos, hCepos, hClpos,
+      hLampos, hqne, hc₀, hc, hKpos, hKle4, hL2, hpos, hzeta, hp₀, hp, he₀, he, hdl]
   -- ------------------------------------------------------------------
   -- the arithmetic contradiction
   -- ------------------------------------------------------------------
@@ -184,14 +184,14 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
     rw [Work.LinnikContract.lamOf, hLdef]
   have hsub0 : (1 - ρ₀.re) * L < K / 2 := by rw [hlamEq0]; exact hlam0
   have hsubZ : (1 - ρ.re) * L < K / 2 := by rw [hlamEq]; exact hlamZ
-  have hpos0 : 0 < (1 - ρ₀.re) * L := mul_pos (by linarith [hb₀1]) hLpos
-  have hposZ : 0 < (1 - ρ.re) * L := mul_pos (by linarith [hb1]) hLpos
-  have hd₀ : K + (1 - ρ₀.re) * L < K + K / 2 := by linarith
-  have hd : K + (1 - ρ.re) * L < K + K / 2 := by linarith
-  have hden0pos : 0 < 1 + K / L - ρ₀.re := by linarith [hb₀1]
-  have hdenpos : 0 < 1 + K / L - ρ.re := by linarith [hb1]
-  have hKK0 : 0 < K + (1 - ρ₀.re) * L := by linarith
-  have hKKZ : 0 < K + (1 - ρ.re) * L := by linarith
+  have hpos0 : 0 < (1 - ρ₀.re) * L := mul_pos (by linarith only [hb₀1]) hLpos
+  have hposZ : 0 < (1 - ρ.re) * L := mul_pos (by linarith only [hb1]) hLpos
+  have hd₀ : K + (1 - ρ₀.re) * L < K + K / 2 := by linarith only [hlam0, hlamEq0]
+  have hd : K + (1 - ρ.re) * L < K + K / 2 := by linarith only [hlamZ, hlamEq]
+  have hden0pos : 0 < 1 + K / L - ρ₀.re := by linarith only [hb₀1, hσpos]
+  have hdenpos : 0 < 1 + K / L - ρ.re := by linarith only [hb1, hσpos]
+  have hKK0 : 0 < K + (1 - ρ₀.re) * L := by linarith only [hKpos, hpos0]
+  have hKKZ : 0 < K + (1 - ρ.re) * L := by linarith only [hKpos, hposZ]
   have hterm0 : 1 / (1 + K / L - ρ₀.re) = L / (K + (1 - ρ₀.re) * L) := by
     rw [div_eq_div_iff (ne_of_gt hden0pos) (ne_of_gt hKK0)]
     field_simp <;> ring
@@ -206,11 +206,11 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
       div_lt_div_of_pos_left hLpos hKKZ hd
     have h3 : L / (K + K / 2) = (2 / 3) * (L / K) := by
       field_simp <;> ring
-    linarith [h1, h2, h3]
+    linarith only [h1, h2, h3]
   have hle : (4 / 3) * (L / K) < L / K + Lam * (L + 1) := lt_of_lt_of_le hlow hmain
-  have hcancel : (1 / 3) * (L / K) < Lam * (L + 1) := by linarith
+  have hcancel : (1 / 3) * (L / K) < Lam * (L + 1) := by linarith only [hmain, hlow]
   have hfin1 : L < 3 * K * Lam * (L + 1) := by
-    have h3K : (0 : ℝ) < 3 * K := by linarith
+    have h3K : (0 : ℝ) < 3 * K := by linarith only [hKpos]
     have hmul := mul_lt_mul_of_pos_left hcancel h3K
     have hKne : K ≠ 0 := ne_of_gt hKpos
     have h4 : 3 * K * ((1 / 3) * (L / K)) = L := by
@@ -220,20 +220,20 @@ theorem twoRealCharRepel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ,
     exact hmul
   have hfin2 : 1 < 3 * K * Lam * (L + 1) / L := by
     rw [lt_div_iff₀ hLpos]
-    linarith
+    linarith only [hfin1]
   have hfin3 : 3 * K * Lam * (L + 1) / L ≤ (9 / 2) * (K * (Lam + 1)) := by
     have h : (L + 1) / L ≤ 3 / 2 := by
       rw [div_le_iff₀ hLpos]
-      linarith
+      linarith only [hL2]
     have hnn : (0 : ℝ) ≤ 3 * K * Lam := by positivity
     have heq : 3 * K * Lam * (L + 1) / L = (3 * K * Lam) * ((L + 1) / L) := by ring
     have hstep : (3 * K * Lam) * ((L + 1) / L) ≤ (3 * K * Lam) * (3 / 2) :=
       mul_le_mul_of_nonneg_left h hnn
     have hstep2 : (3 * K * Lam) * (3 / 2) = (9 / 2) * (K * Lam) := by ring
     have hstep3 : (9 / 2) * (K * Lam) ≤ (9 / 2) * (K * (Lam + 1)) := by
-      have hkk : K * Lam ≤ K * (Lam + 1) := by nlinarith [hKpos]
-      linarith
-    linarith [hstep, hstep2, hstep3]
-  linarith [hfin2, hfin3, hK16]
+      have hkk : K * Lam ≤ K * (Lam + 1) := by linarith only [hKpos, hK16, hlam0, hlamEq0, hpos0, hfin2, hnn, heq, hstep]
+      linarith only [hK16, hlam0, hlamEq0, hpos0, hfin2, hnn, heq, hstep]
+    linarith only [hstep, hstep2, hstep3, hK16, hlam0, hlamEq0, hpos0, hfin2, hnn, heq]
+  linarith only [hfin2, hfin3, hK16]
 
 end Work.LinnikAreas.OtherCharRepel

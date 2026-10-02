@@ -2,13 +2,11 @@ import Mathlib
 import Submission.Work.LinnikContract2.Defs
 import Submission.Work.LinnikContract2.API
 import Submission.Work.LinnikContract2.Areas
-import Submission.Work.LinnikContract2.Spec
 import Submission.Work.LinnikContract2.Bridge
 import Submission.Work.LinnikContract2.Numbering
 import Submission.Work.LinnikContract2.A7.WindowCert
 import Submission.Work.LinnikContract2.A7.Area7
 import Submission.Work.LinnikContract2.A7.sec15_caseB
-import Submission.Work.LinnikContract2.A7.sec15_caseB_large
 import Submission.Work.LinnikContract2.A7.table13_col_le
 import Submission.Work.A7.sec15_uniform
 import Submission.Work.A7.sec14_uniform
@@ -232,7 +230,7 @@ theorem area7_window :
           hqe2 hR hRlog hRmax hη0 (by norm_num) le_rfl hminN hlam₁ h348 hZ2'
           hZ3' hZ4 hD2narrow hS hSiff hD1' hPC'
         refine lt_of_le_of_lt h15 ?_
-        have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by nlinarith [hη0, hη1]
+        have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by linarith only [hη0, hη1]
         have hc : (9:ℝ)/100*((9968:ℝ)/10000) + (9:ℝ)/100*(1/100000000)*1000
             < (9:ℝ)/100 - 1/5000 := by norm_num
         linarith
@@ -279,7 +277,7 @@ theorem area7_window :
           hqe2 hR hRlog hRmax hη0 (by norm_num) le_rfl hmin hZ3 hminN h695 hlarge
           hS hSiff hD1' hPC' hD2wide
         refine lt_of_le_of_lt hB ?_
-        have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by nlinarith [hη0, hη1]
+        have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by linarith only [hη0, hη1]
         have hc : (9:ℝ)/100*((9968:ℝ)/10000) + (9:ℝ)/100*(1/100000000)*1000
             < (9:ℝ)/100 - 1/5000 := by norm_num
         linarith
@@ -372,7 +370,7 @@ theorem area7_window :
                     * ((67:ℝ)/6 + 1/1000) := mul_le_mul_of_nonneg_right h1 hWnn
               _ ≤ 1000 := h2
         have hfincmp : (9:ℝ)/100 * ((9968:ℝ)/10000) + (9:ℝ)/100 * η * 1000 < (9:ℝ)/100 - ηf := by
-          have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by nlinarith [hη0, hη1]
+          have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by linarith only [hη0, hη1]
           have hc : (9:ℝ)/100*((9968:ℝ)/10000) + (9:ℝ)/100*(1/100000000)*1000
               < (9:ℝ)/100 - 1/5000 := by norm_num
           linarith
@@ -451,7 +449,7 @@ theorem area7_window :
             _ = ((9:ℝ)/100) * ((Work.LinnikAreas.A7.Phi Λ' / Work.LinnikAreas.A7.Wf Λ') * ((67:ℝ)/6 + 1/1000))
                 + ((9:ℝ)/100) * η * ((Real.exp (-(Work.LinnikAreas.A7.ac * Λ')) / Work.LinnikAreas.A7.Wf Λ')
                     * ((67:ℝ)/6 + 1/1000)) := hsplit
-            _ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by nlinarith [hn1, hn2, hη0]
+            _ ≤ ((9:ℝ)/100) * ((9968:ℝ)/10000) + ((9:ℝ)/100) * η * 1000 := by linarith only [hn1, mul_le_mul_of_nonneg_left hn2 hη0]
         by_cases hb1 : lam₁ < (2:ℝ)/5
         · -- G1: rows `[0.348,0.40)`, `Λ = 6/5`
           have hG : Lam0Bound χ₁ ρ₁ ((1195:ℝ)/1000) ∧ Lam2Bound χ₁ ((870:ℝ)/1000) ∧
@@ -459,15 +457,15 @@ theorem area7_window :
             by_cases hr0 : lam₁ < ((36:ℝ)/100)
             · obtain ⟨hL0, hL2, hL3⟩ := hrow ((348:ℝ)/1000) ((36:ℝ)/100) ((1308:ℝ)/1000) ((902:ℝ)/1000) ((1229:ℝ)/1000)
 
-                (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+                (List.getElem_mem (l := rows15) (n := 0) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
               exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
             by_cases hr1 : lam₁ < ((38:ℝ)/100)
             · obtain ⟨hL0, hL2, hL3⟩ := hrow ((36:ℝ)/100) ((38:ℝ)/100) ((1249:ℝ)/1000) ((886:ℝ)/1000) ((1180:ℝ)/1000)
 
-                (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+                (List.getElem_mem (l := rows15) (n := 1) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
               exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
             obtain ⟨hL0, hL2, hL3⟩ := hrow ((38:ℝ)/100) ((4:ℝ)/10) ((1195:ℝ)/1000) ((870:ℝ)/1000) ((1134:ℝ)/1000)
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 2) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           obtain ⟨hL0, hL2, hL3⟩ := hG
           by_cases hlamNΛ : Work.LinnikContract.lamOf q ρ₀ ≤ ((6:ℝ)/5)
@@ -484,10 +482,10 @@ theorem area7_window :
             by_cases hr0 : lam₁ < ((42:ℝ)/100)
             · obtain ⟨hL0, hL2, hL3⟩ := hrow ((4:ℝ)/10) ((42:ℝ)/100) ((1144:ℝ)/1000) ((855:ℝ)/1000) ((1093:ℝ)/1000)
 
-                (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+                (List.getElem_mem (l := rows15) (n := 3) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
               exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
             obtain ⟨hL0, hL2, hL3⟩ := hrow ((42:ℝ)/100) ((44:ℝ)/100) ((1098:ℝ)/1000) ((841:ℝ)/1000) ((1054:ℝ)/1000)
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 4) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           obtain ⟨hL0, hL2, hL3⟩ := hG
           by_cases hlamNΛ : Work.LinnikContract.lamOf q ρ₀ ≤ ((6:ℝ)/5)
@@ -504,15 +502,15 @@ theorem area7_window :
             by_cases hr0 : lam₁ < ((46:ℝ)/100)
             · obtain ⟨hL0, hL2, hL3⟩ := hrow ((44:ℝ)/100) ((46:ℝ)/100) ((1054:ℝ)/1000) ((828:ℝ)/1000) ((1017:ℝ)/1000)
 
-                (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+                (List.getElem_mem (l := rows15) (n := 5) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
               exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
             by_cases hr1 : lam₁ < ((48:ℝ)/100)
             · obtain ⟨hL0, hL2, hL3⟩ := hrow ((46:ℝ)/100) ((48:ℝ)/100) ((1014:ℝ)/1000) ((815:ℝ)/1000) ((983:ℝ)/1000)
 
-                (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+                (List.getElem_mem (l := rows15) (n := 6) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
               exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
             obtain ⟨hL0, hL2, hL3⟩ := hrow ((48:ℝ)/100) ((5:ℝ)/10) ((976:ℝ)/1000) ((802:ℝ)/1000) ((951:ℝ)/1000)
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 7) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           obtain ⟨hL0, hL2, hL3⟩ := hG
           by_cases hlamNΛ : Work.LinnikContract.lamOf q ρ₀ ≤ ((49:ℝ)/40)
@@ -528,20 +526,20 @@ theorem area7_window :
           by_cases hr0 : lam₁ < ((52:ℝ)/100)
           · obtain ⟨hL0, hL2, hL3⟩ := hrow ((5:ℝ)/10) ((52:ℝ)/100) ((940:ℝ)/1000) ((790:ℝ)/1000) ((921:ℝ)/1000)
 
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 8) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           by_cases hr1 : lam₁ < ((54:ℝ)/100)
           · obtain ⟨hL0, hL2, hL3⟩ := hrow ((52:ℝ)/100) ((54:ℝ)/100) ((906:ℝ)/1000) ((779:ℝ)/1000) ((892:ℝ)/1000)
 
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 9) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           by_cases hr2 : lam₁ < ((56:ℝ)/100)
           · obtain ⟨hL0, hL2, hL3⟩ := hrow ((54:ℝ)/100) ((56:ℝ)/100) ((874:ℝ)/1000) ((768:ℝ)/1000) ((865:ℝ)/1000)
 
-              (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+              (List.getElem_mem (l := rows15) (n := 10) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
             exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
           obtain ⟨hL0, hL2, hL3⟩ := hrow ((56:ℝ)/100) ((58:ℝ)/100) ((844:ℝ)/1000) ((758:ℝ)/1000) ((856:ℝ)/1000)
-            (by norm_num [rows15]) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
+            (List.getElem_mem (l := rows15) (n := 11) (by decide)) (by rw [hlam₁]; linarith) (by rw [hlam₁]; linarith)
           exact ⟨hw0 (by norm_num) hL0, hw2 (by norm_num) hL2, hw3 (by norm_num) hL3⟩
         obtain ⟨hL0, hL2, hL3⟩ := hG
         by_cases hlamNΛ : Work.LinnikContract.lamOf q ρ₀ ≤ ((5:ℝ)/4)

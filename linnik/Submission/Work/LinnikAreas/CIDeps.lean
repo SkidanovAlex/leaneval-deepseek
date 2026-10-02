@@ -6,7 +6,6 @@ import Submission.Commons.NumberTheory.DirichletCharacter.divisorSum_summable_an
 import Submission.Commons.Analysis.InfiniteSum.hasSum_tendsto_finset_sum
 import Submission.Commons.NumberTheory.Chebyshev.cumulativePrimePowerLeSqrt
 import Submission.Commons.Analysis.InfiniteSum.partialDivSumLeOfCumulativeSqrt
-import Submission.Commons.NumberTheory.PrimesInAP.vonMangoldt_residueClass_weighted
 
 /-!
 # `CIDeps` — imports and elementary glue for the class-identity proof

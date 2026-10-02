@@ -244,17 +244,17 @@ private theorem nearLine_zeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter
         have hzero : Λ u = 0 := zero_of_divisor_ne_zero (hΛan _) huB3 hdz
         have hstrip := zerosInStrip χ hχ hχprim u (by simpa [hΛ] using hzero)
         have hule : ‖u‖ ≤ T' + 2 := by
-          have h1 : u.re ^ 2 ≤ 1 := by nlinarith [hstrip.1, hstrip.2]
+          have h1 : u.re ^ 2 ≤ 1 := by nlinarith only [hstrip.1, hstrip.2]
           have h2 : u.im ^ 2 ≤ (T' + 1) ^ 2 := by
             have : |u.im - T'| ≤ 1 := hid
             have : u.im ≤ T' + 1 := by
               have := (abs_le.mp hid).2; linarith
             have : -(T' + 1) ≤ u.im := by
               have := (abs_le.mp hid).1; linarith
-            nlinarith [abs_nonneg u.im]
+            exact sq_le_sq' ‹-(T' + 1) ≤ u.im› ‹u.im ≤ T' + 1›
           rw [Complex.norm_def, Complex.normSq_apply, Real.sqrt_le_iff]
           refine ⟨by positivity, ?_⟩
-          nlinarith [h1, h2]
+          nlinarith only [h1, h2, hT']
         have heq : MeromorphicOn.divisor Λ (Metric.closedBall 0 (T' + 3)) u =
             MeromorphicOn.divisor Λ (Metric.closedBall 0 (T' + 2)) u :=
           Commons.NumberTheory.Linnik.divisor_closedBall_eq_of_le (f := Λ) hΛmer (by linarith) hule
@@ -285,7 +285,7 @@ private theorem nearLine_zeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter
     simpa [hΛ, hB] using h
   refine le_trans hb' ?_
   have hlog : Real.log (T' + 4) ≤ 2 * Real.log (T' + 3) := by
-    have h1 : T' + 4 ≤ (T' + 3) ^ 2 := by nlinarith [sq_nonneg (T' + 3)]
+    have h1 : T' + 4 ≤ (T' + 3) ^ 2 := by nlinarith only [hT']
     have h2 : (0:ℝ) < T' + 4 := by linarith
     calc Real.log (T' + 4) ≤ Real.log ((T' + 3) ^ 2) := Real.log_le_log h2 h1
       _ = 2 * Real.log (T' + 3) := by rw [Real.log_pow]; norm_num
@@ -297,7 +297,7 @@ private theorem nearLine_zeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter
   have hstep : c * 4 * (Real.log (T' + 4) + Real.log (N : ℝ) + 2) ≤
       8 * c * (Real.log (T' + 3) + Real.log (N : ℝ) + 2) := by
     have hc0 : 0 ≤ c := le_of_lt hcpos
-    nlinarith [hlog, hl3, hlN, hc0]
+    nlinarith only [mul_le_mul_of_nonneg_left hlog hc0, mul_nonneg hc0 hlN, hc0]
   linarith [hstep]
 
 /-- support of `f u * ‖w-u‖⁻¹` is finite when `f` has finite support. -/
@@ -378,13 +378,13 @@ private lemma moving_divisor_le {Λ : ℂ → ℂ} (hΛdiff : Differentiable ℂ
           have := (abs_le.mp hid).2; linarith
         have h2 : -(T' + 1) ≤ u.im := by
           have := (abs_le.mp hid).1; linarith
-        have h3 : u.re ^ 2 ≤ 1 := by nlinarith [hst.1, hst.2]
+        have h3 : u.re ^ 2 ≤ 1 := by nlinarith only [hst.1, hst.2]
         have h4 : u.im ^ 2 ≤ (T' + 1) ^ 2 := by
           have hab : |u.im| ≤ T' + 1 := by rw [abs_le]; exact ⟨h2, h1⟩
-          nlinarith [abs_nonneg u.im]
+          exact sq_le_sq' h2 h1
         rw [Complex.norm_def, Complex.normSq_apply, Real.sqrt_le_iff]
         refine ⟨by positivity, ?_⟩
-        nlinarith [h3, h4, hT']
+        nlinarith only [h3, h4, hT']
       have huB3 : u ∈ Metric.closedBall 0 (T' + 3) := by
         rw [Metric.mem_closedBall, dist_eq_norm]
         simpa using le_trans hule (by linarith : T' + 2 ≤ T' + 3)
@@ -453,7 +453,7 @@ theorem completedLogDeriv_horizontal_segment_bound {N : ℕ} [NeZero N] (χ : Di
     have h1 : 0 ≤ Real.log (T' + 4) := Real.log_nonneg (by linarith)
     linarith
   have hlogT4 : Real.log (T' + 4) ≤ 2 * L := by
-    have h1 : T' + 4 ≤ (T' + 3) ^ 2 := by nlinarith [sq_nonneg (T' + 3)]
+    have h1 : T' + 4 ≤ (T' + 3) ^ 2 := by nlinarith only [hT']
     have h2 : (0:ℝ) < T' + 4 := by linarith
     calc Real.log (T' + 4) ≤ Real.log ((T' + 3)^2) := Real.log_le_log h2 h1
       _ = 2 * Real.log (T' + 3) := by rw [Real.log_pow]; norm_num
@@ -462,7 +462,8 @@ theorem completedLogDeriv_horizontal_segment_bound {N : ℕ} [NeZero N] (χ : Di
     rw [helldef]
     have h2 : Real.log (N:ℝ) ≤ L := by rw [hLval]; linarith
     linarith
-  have hell2_le : ell^2 ≤ 25 * L^2 := by nlinarith [hell0, hell_le, hL0]
+  have hell2_le : ell^2 ≤ 25 * L^2 := by
+    nlinarith only [mul_le_mul hell_le hell_le hell0 (by linarith only [hL0])]
   -- divisor, window, weight
   set d0 : ℂ → ℤ := fun u => MeromorphicOn.divisor Λ (Metric.closedBall 0 (T' + 3)) u with hd0def
   have hd0fin : (Function.support d0).Finite := by
@@ -584,7 +585,7 @@ theorem completedLogDeriv_horizontal_segment_bound {N : ℕ} [NeZero N] (χ : Di
               Real.log_le_log (by positivity) (by linarith)
             linarith
           have h3 : (Real.log (‖w‖ + 2) + Real.log (N : ℝ) + 2) ^ 2 ≤ ell ^ 2 := by
-            nlinarith
+            exact pow_le_pow_left₀ h0 h2 2
           exact mul_le_mul hcLle h3 (by positivity) hcL0
         have h4 : (∑ᶠ u : ℂ, (((MeromorphicOn.divisor Λ (Metric.closedBall w 1)) u : ℤ) : ℝ) *
             (‖w - u‖)⁻¹) ≤ ∑ u ∈ Z, ((d0 u : ℤ) : ℝ) * (‖w - u‖)⁻¹ :=
@@ -687,19 +688,20 @@ theorem completedLogDeriv_horizontal_segment_bound {N : ℕ} [NeZero N] (χ : Di
       have h3 : (2:ℝ) ≤ 2 * L := by linarith
       linarith
     have hK0 : 0 ≤ 3 * mx + 10 := by linarith
-    have hA : L ^ 2 ≤ L * (L + mx) := by nlinarith [hL0, hmx0]
-    have hA' : L * mx ≤ L * (L + mx) := by nlinarith [hL0, hmx0]
-    have hB : L ≤ L * (L + mx) := by nlinarith [hL0, hmx0, hLge1]
+    have hA : L ^ 2 ≤ L * (L + mx) := by nlinarith only [mul_nonneg hL0 hmx0]
+    have hA' : L * mx ≤ L * (L + mx) := by nlinarith only [mul_nonneg hL0 hL0]
+    have hB : L ≤ L * (L + mx) := by
+      nlinarith only [mul_nonneg hL0 hmx0, mul_nonneg hL0 (sub_nonneg.mpr hLge1)]
     have e1 : (5/2) * cL * ell^2 ≤ 62.5 * cL * (L * (L + mx)) := by
-      have hC : ell ^ 2 ≤ 25 * (L * (L + mx)) := by nlinarith [hell2_le, hA]
-      nlinarith [hC, hcL0]
+      have hC : ell ^ 2 ≤ 25 * (L * (L + mx)) := by nlinarith only [hell2_le, hA]
+      nlinarith only [mul_le_mul_of_nonneg_left hC hcL0]
     have e2 : (cW * (Real.log (T' + 3) + Real.log (N : ℝ) + 2)) * (3 * mx + 10)
         ≤ 52 * cW * (L * (L + mx)) := by
       have h1 : cW * (Real.log (T' + 3) + Real.log (N : ℝ) + 2) ≤ 4 * cW * L := by
-        nlinarith [hb1, hcW0]
+        nlinarith only [mul_le_mul_of_nonneg_left hb1 hcW0]
       have h2 : (cW * (Real.log (T' + 3) + Real.log (N : ℝ) + 2)) * (3 * mx + 10)
           ≤ (4 * cW * L) * (3 * mx + 10) := mul_le_mul_of_nonneg_right h1 hK0
-      nlinarith [h2, hA', hB, hcW0]
+      nlinarith only [h2, mul_le_mul_of_nonneg_left hA' hcW0, mul_le_mul_of_nonneg_left hB hcW0]
     have e3 : (5/2) * cL * ell^2 +
           (cW * (Real.log (T' + 3) + Real.log (N : ℝ) + 2)) * (3 * mx + 10)
         ≤ 62.5 * cL * (L * (L + mx)) + 52 * cW * (L * (L + mx)) := add_le_add e1 e2
@@ -707,14 +709,14 @@ theorem completedLogDeriv_horizontal_segment_bound {N : ℕ} [NeZero N] (χ : Di
         = (62.5 * cL + 52 * cW) * (L * (L + mx)) := by ring
     have e5 : (62.5 * cL + 52 * cW) * (L * (L + mx)) ≤ (63 * cL + 52 * cW) * (L * (L + mx)) := by
       have h6 : 0 ≤ L * (L + mx) := mul_nonneg hL0 (by linarith)
-      nlinarith [hcL0, h6]
+      nlinarith only [mul_nonneg hcL0 h6]
     have e6 : (63 * cL + 52 * cW) * (L * (L + mx)) = (63 * cL + 52 * cW) * L * (L + mx) := by ring
     linarith [e3, e4, e5, e6]
   have hfinal : (∫ x : ℝ in (-1/2)..2, ‖logDeriv Λ ((x : ℂ) + (T' : ℂ) * Complex.I)‖)
       ≤ (63 * cL + 52 * cW + 1) * L * (L + mx) := by
     refine le_trans htotal (le_trans hconst ?_)
     have h6 : 0 ≤ L * (L + mx) := mul_nonneg hL0 (by linarith)
-    nlinarith [h6]
+    nlinarith only [h6]
   simpa only [hLdef, hmxdef, hΛdef] using hfinal
 
 end Commons.NumberTheory.DirichletCharacter

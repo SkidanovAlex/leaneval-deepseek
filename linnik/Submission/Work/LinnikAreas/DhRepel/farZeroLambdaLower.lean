@@ -1,8 +1,8 @@
 import Mathlib
-import Submission.Work.LinnikAreas.DhRepel.Defs
 import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_zeroFree_offAxis_uniform
 import Submission.Commons.NumberTheory.DirichletCharacter.lFunction_order_eq_completed_order_on_strip
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
+import Submission.Work.LinnikContract.Defs
 
 namespace Work.LinnikAreas.DhRepel
 

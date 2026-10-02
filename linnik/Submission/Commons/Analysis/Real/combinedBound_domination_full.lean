@@ -33,22 +33,22 @@ lemma cb_unit_full_aux {x s t : ℝ} (hx : Real.exp 16 ≤ x) (hs : s = Real.sqr
   have hL2le3 : Real.log (s / (1 / 2 + 1 / t)) + 1 ≤ 3 * t := by
     simpa [hs, ht] using CBDev.L2_le_three_log hx
   have h1t3 : (1 + t) ^ 3 ≤ 8 * t ^ 3 := by
-    have hsum : 1 + t ≤ 2 * t := by linarith
+    have hsum : 1 + t ≤ 2 * t := by linarith only [ht1]
     have hcube : (1 + t) ^ 3 ≤ (2 * t) ^ 3 :=
-      pow_le_pow_left₀ (by linarith : 0 ≤ 1 + t) hsum 3
-    nlinarith [hcube]
-  have hAn : 0 ≤ (1 + t) ^ 3 := pow_nonneg (by linarith : 0 ≤ 1 + t) 3
+      pow_le_pow_left₀ (by linarith only [htp] : 0 ≤ 1 + t) hsum 3
+    nlinarith only [hcube]
+  have hAn : 0 ≤ (1 + t) ^ 3 := pow_nonneg (by linarith only [htp] : 0 ≤ 1 + t) 3
   have hL1cub : 0 ≤ (Real.log (s + 3) + 1) ^ 3 := pow_nonneg hL1n0 3
   have hb8n : 0 ≤ 8 * t ^ 3 := mul_nonneg (by norm_num : (0 : ℝ) ≤ 8) (pow_nonneg ht0 3)
   have hc0 : 0 ≤ 1 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) := by
     have h8 : 0 ≤ 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) :=
       mul_nonneg (by norm_num : (0 : ℝ) ≤ 8) hL2n0
-    linarith
+    linarith only [hL2n0]
   have h25 : 1 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 25 * t := by
     have h8' : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t := by
       have h := mul_le_mul_of_nonneg_left hL2le3 (by norm_num : (0 : ℝ) ≤ 8)
-      nlinarith
-    nlinarith
+      nlinarith only [hL2le3]
+    nlinarith only [ht1, hL2le3]
   have hinner_eq :
       2 * ((1 + t) ^ 3 * (Real.log (s + 3) + 1) ^ 3 * x ^ (1 + 1 / t) * (1 / 2) / s) +
           8 * (1 + t) ^ 3 * x ^ (1 / 2 + 1 / t) * (Real.log (s + 3) + 1) ^ 3 *
@@ -65,7 +65,7 @@ lemma cb_unit_full_aux {x s t : ℝ} (hx : Real.exp 16 ≤ x) (hs : s = Real.sqr
   have hone : (1 / (2 * Real.pi)) ≤ 1 := by
     have hpi2 : (1 : ℝ) ≤ 2 * Real.pi := by
       have h := Real.pi_gt_three
-      nlinarith
+      nlinarith only [h]
     exact (div_le_iff₀ hpi0).2 (by simpa using hpi2)
   -- nonnegativity of the factored bracket B = e·s·(1+t)^3·L1^3·(1+8L2)
   have hB0 : 0 ≤ Real.exp 1 * s * (1 + t) ^ 3 * (Real.log (s + 3) + 1) ^ 3 *
@@ -186,7 +186,7 @@ theorem combinedBound_domination_full {C P x : ℝ} (hC : 0 < C) (hP : 0 ≤ P)
         C * (1000000 * Real.sqrt x * (Real.log x) ^ 10) := add_le_add hA' hU'
     _ = (P + C) * (1000000 * Real.sqrt x * (Real.log x) ^ 10) := by ring
     _ ≤ (P + C + 1) * (1000000 * Real.sqrt x * (Real.log x) ^ 10) := by
-      exact mul_le_mul_of_nonneg_right (by linarith) hR0
+      exact mul_le_mul_of_nonneg_right (by linarith only []) hR0
     _ = (P + C + 1) * 1000000 * Real.sqrt x * (Real.log x) ^ 10 := by ring
 
 end Commons.Analysis.Real

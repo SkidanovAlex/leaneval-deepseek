@@ -12,9 +12,9 @@ set_option maxHeartbeats 4000000
 lemma repulsionSizesDLogBound {q : ℕ} {C : ℝ} (hCpos : 0 < C) (hC510 : C ≤ 510)
     (hlogq : 100000000 ≤ Real.log (q : ℝ)) : Real.log C ≤ Real.log (q : ℝ) / 1000 := by
   have h1 : Real.log C ≤ C - 1 := Real.log_le_sub_one_of_pos hCpos
-  have h2 : C - 1 ≤ 509 := by linarith
-  have h3 : (509 : ℝ) ≤ Real.log (q : ℝ) / 1000 := by linarith
-  linarith
+  have h2 : C - 1 ≤ 509 := by linarith only [hC510]
+  have h3 : (509 : ℝ) ≤ Real.log (q : ℝ) / 1000 := by linarith only [hlogq]
+  linarith only [hC510, hlogq, h1]
 
 lemma repulsionSizesDRBound {q : ℕ} {A C β₁ : ℝ}
     (hA1 : 1 ≤ A) (hCpos : 0 < C) (hC510 : C ≤ 510)
@@ -23,9 +23,9 @@ lemma repulsionSizesDRBound {q : ℕ} {A C β₁ : ℝ}
     ((max 200 (⌈C * A ^ 2 * (q : ℝ) ^ ((2 : ℝ) * (1 / 4 + 1 / 100))
           * Real.exp (2 * (Real.log (q : ℝ)) ^ (3 / 4 : ℝ)) * (1 - β₁) ^ (-2 : ℝ)⌉₊ + 1) : ℕ) : ℝ)
       ≤ 2 * Work.LinnikAreas.BGTZ.sieveR A (1 / 4 + 1 / 100) q β₁ := by
-  have hA2ge1 : (1:ℝ) ≤ A^2 := by nlinarith
+  have hA2ge1 : (1:ℝ) ≤ A^2 := by nlinarith only [hA1]
   have hY1 : (1:ℝ) ≤ A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
-      * (1-β₁)^(-2:ℝ)) := by nlinarith [hA2ge1, hZ1]
+      * (1-β₁)^(-2:ℝ)) := by nlinarith only [hA2ge1, hZ1]
   have hYnn : (0:ℝ) ≤ A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
       * (1-β₁)^(-2:ℝ)) := le_trans zero_le_one hY1
   have hEnn : (0:ℝ) ≤ C * A ^ 2 * (q : ℝ) ^ ((2 : ℝ) * (1 / 4 + 1 / 100))
@@ -41,7 +41,7 @@ lemma repulsionSizesDRBound {q : ℕ} {A C β₁ : ℝ}
           * (1-β₁)^(-2:ℝ)))
         ≤ 510 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
           * (1-β₁)^(-2:ℝ))) := mul_le_mul_of_nonneg_right hC510 hYnn
-    nlinarith [h1, h2, hY1]
+    linarith only [h1, h2, hY1]
   have hmax : ((max 200 (⌈C * A ^ 2 * (q : ℝ) ^ ((2 : ℝ) * (1 / 4 + 1 / 100))
         * Real.exp (2 * (Real.log (q : ℝ)) ^ (3 / 4 : ℝ)) * (1 - β₁) ^ (-2 : ℝ)⌉₊ + 1) : ℕ) : ℝ)
       ≤ 512 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
@@ -54,8 +54,8 @@ lemma repulsionSizesDRBound {q : ℕ} {A C β₁ : ℝ}
       ring
     rw [hcast]
     refine max_le ?_ ?_
-    · nlinarith [hY1]
-    · linarith [hceil]
+    · linarith only [hY1]
+    · linarith only [hceil]
   have hEq : 512 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
         * (1-β₁)^(-2:ℝ))) = 2 * Work.LinnikAreas.BGTZ.sieveR A (1 / 4 + 1 / 100) q β₁ := by
     rw [Work.LinnikAreas.BGTZ.sieveR]
@@ -99,12 +99,12 @@ theorem RepulsionSizesD {q : ℕ} [NeZero q] {A B C cZ T β₁ γ : ℝ}
   have hq1 : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   have hβ0 : 0 < β₁ := by
     have h10 : (0:ℝ) < 10 * Real.log (q:ℝ) := by
-      have : (0:ℝ) < Real.log (q:ℝ) := by linarith
-      linarith
+      have : (0:ℝ) < Real.log (q:ℝ) := by linarith only [hlogq]
+      linarith only [hlogq]
     have h1 : 1 / (10 * Real.log (q:ℝ)) ≤ 1 := by
       rw [div_le_one h10]
-      linarith
-    linarith
+      linarith only [hlogq]
+    linarith only [hβ₁big, h1]
   have hZ1 : (1:ℝ) ≤ (q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
       * (1-β₁)^(-2:ℝ) := repulsionSizesCXgeOne hq1 hβ0 hβ₁lt
   refine ⟨max 200 (⌈C * A ^ 2 * (q : ℝ) ^ ((2 : ℝ) * (1 / 4 + 1 / 100))
@@ -126,7 +126,7 @@ theorem RepulsionSizesD {q : ℕ} [NeZero q] {A B C cZ T β₁ γ : ℝ}
           * Real.exp (2 * (Real.log (q : ℝ)) ^ (3 / 4 : ℝ)) * (1 - β₁) ^ (-2 : ℝ)⌉₊ + 1) :=
         le_trans (Nat.le_succ _) (le_max_right _ _)
       exact_mod_cast h3
-    linarith
+    linarith only [h1, h2]
   · exact repulsionSizesDRBound hA1 hCpos hC510 hZ1
 
 end Work.LinnikAreas.BGTZArith

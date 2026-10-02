@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikContract.Pre
+import Submission.Work.LinnikContract.Defs
 
 open scoped BigOperators
 

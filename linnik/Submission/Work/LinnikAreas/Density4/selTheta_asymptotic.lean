@@ -27,7 +27,6 @@ import Submission.Commons.NumberTheory.Moebius.moebius_abs_le_one
 import Submission.Commons.Analysis.SpecialFunctions.Harmonic.harmonic_log_bounds
 import Submission.Work.LinnikAreas.Density4.selTheta_recursion
 import Submission.Work.LinnikAreas.Density4.divisorTail_bounds
-import Submission.Work.LinnikAreas.Density4.shiftedDivisorSum_le
 import Submission.Work.LinnikAreas.Density4.diag_weighted_sum_le_alt
 import Submission.Work.LinnikAreas.Density4.sHalf_facts
 import Submission.Work.LinnikAreas.Density4.selU_sub_one_bound

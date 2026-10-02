@@ -1,9 +1,10 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.SsmPhiAux
 import Submission.Work.LinnikAreas.Density4.norm_lcmF_le_gen
-import Submission.Work.LinnikAreas.Density4.SsmCommonsDeps
 import Submission.Work.LinnikAreas.Density4.integrable_one_add_abs_rpow_exp
 import Submission.Work.LinnikAreas.Density4.gamma_vertical_integrable_of_bound
+import Submission.Commons.NumberTheory.DirichletCharacter.norm_LFunction_le_re_ge_one
+import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_vertical_exp_decay
 
 namespace Work.LinnikAreas.Density4
 

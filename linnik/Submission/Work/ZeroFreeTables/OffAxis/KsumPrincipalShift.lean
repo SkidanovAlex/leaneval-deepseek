@@ -67,7 +67,7 @@ private lemma card_primeFactors_le_add_log {b q : ℕ} (hb : 1 < b) (hq : q ≠ 
         intro x hx
         rw [Finset.mem_sdiff] at hx
         exact Nat.Prime.one_le (Nat.prime_of_mem_primeFactors hx.1)
-      nlinarith
+      nlinarith only [hsplit2, hqeq, hone]
     exact le_trans hle1 hle2
   omega
 
@@ -82,8 +82,8 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have hle : Real.exp (8/δ) ≤ (b : ℝ) := by
       have h1 : Real.exp (8/δ) ≤ ((⌈Real.exp (8/δ)⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
       have h2 : ((⌈Real.exp (8/δ)⌉₊ : ℕ) : ℝ) ≤ (b : ℝ) := by
-        rw [hbdef]; push_cast; linarith
-      linarith
+        rw [hbdef]; push_cast; linarith only []
+      linarith only [h1, h2]
     calc 8 / δ = Real.log (Real.exp (8/δ)) := (Real.log_exp _).symm
       _ ≤ Real.log b := Real.log_le_log (Real.exp_pos _) hle
   refine ⟨⌈Real.exp (4 * (b : ℝ) / δ)⌉₊ + 1, ?_⟩
@@ -98,7 +98,7 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have hle : Real.exp (4 * (b:ℝ) / δ) ≤ (q : ℝ) := by
       have h1 : Real.exp (4 * (b:ℝ) / δ) ≤ ((⌈Real.exp (4 * (b:ℝ) / δ)⌉₊ : ℕ) : ℝ) :=
         Nat.le_ceil _
-      linarith
+      linarith only [hceilq, h1]
     calc 4 * (b:ℝ) / δ = Real.log (Real.exp (4 * (b:ℝ) / δ)) := (Real.log_exp _).symm
       _ ≤ Real.log q := Real.log_le_log (Real.exp_pos _) hle
   have hlogqnonneg : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q))
@@ -111,21 +111,21 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have h1 : Real.log ((b:ℝ) ^ Nat.log b q) ≤ Real.log q :=
       Real.log_le_log (by positivity) hcast
     rw [Real.log_pow] at h1
-    rw [le_div_iff₀ (by linarith : (0:ℝ) < Real.log b)]
-    linarith
+    rw [le_div_iff₀ (by linarith only [h8, hlogb] : (0:ℝ) < Real.log b)]
+    linarith only [h1]
   have hstep1 : Real.log (q:ℝ) / Real.log b ≤ (δ/8) * Real.log (q:ℝ) := by
-    rw [div_le_iff₀ (by linarith : (0:ℝ) < Real.log b)]
+    rw [div_le_iff₀ (by linarith only [h8, hlogb] : (0:ℝ) < Real.log b)]
     have hprod : (δ/8) * (8/δ) = (1:ℝ) := by field_simp
     have h1 : (δ/8) * (8/δ) ≤ (δ/8) * Real.log b :=
       mul_le_mul_of_nonneg_left hlogb (by positivity)
     rw [hprod] at h1
-    nlinarith
+    nlinarith only [hlogqnonneg, h1]
   have hstep2 : (b:ℝ) ≤ (δ/4) * Real.log (q:ℝ) := by
     have h1 : (δ/4) * (4 * (b:ℝ)/δ) ≤ (δ/4) * Real.log q :=
       mul_le_mul_of_nonneg_left hlogq (by positivity)
     have h2 : (δ/4) * (4 * (b:ℝ)/δ) = (b:ℝ) := by field_simp
-    linarith
-  nlinarith [hcastcard, hlogbq, hstep1, hstep2, hlogqnonneg]
+    linarith only [h1, h2]
+  linarith only [hcastcard, hlogbq, hstep1, hstep2, hlogqnonneg]
 
 /-- For real `a g` and complex `w v`: `ℜ(a·(w/v)·g) = a·ℜ(w/v)·g`. -/
 private lemma re_mul_div_mul (a g : ℝ) (w v : ℂ) :
@@ -160,15 +160,15 @@ private lemma exists_error_bound (C f₀ ε : ℝ) (hC : 0 < C) (hf₀ : 0 < f�
     have h2 : ((⌈Real.exp (T^2+1)⌉₊ : ℕ) : ℝ) < (q:ℝ) := by
       have h3 : ⌈Real.exp (T^2+1)⌉₊ < q := by omega
       exact_mod_cast h3
-    linarith
+    linarith only [h1, h2]
   have hlogq : T^2 + 1 ≤ Real.log (q:ℝ) := by
     calc T^2 + 1 = Real.log (Real.exp (T^2+1)) := (Real.log_exp _).symm
       _ ≤ Real.log q := Real.log_le_log (Real.exp_pos _) hceil
-  have hlogq1 : 1 ≤ Real.log (q:ℝ) := by nlinarith [hlogq, sq_nonneg T]
-  have hlogqpos : 0 < Real.log (q:ℝ) := by linarith
+  have hlogq1 : 1 ≤ Real.log (q:ℝ) := by linarith only [hlogq, sq_nonneg T]
+  have hlogqpos : 0 < Real.log (q:ℝ) := by linarith only [hlogq1]
   have hTle : T ≤ Real.sqrt (Real.log (q:ℝ)) := by
     have h1 : Real.sqrt (T^2) ≤ Real.sqrt (Real.log q) :=
-      Real.sqrt_le_sqrt (by nlinarith [hlogq])
+      Real.sqrt_le_sqrt (by linarith only [hlogq])
     rwa [Real.sqrt_sq (le_of_lt hTpos)] at h1
   have h16 : 16 * Real.sqrt (Real.log (q:ℝ)) ≤ δ * Real.log (q:ℝ) := by
     have hδT : δ * T = 16 := by rw [hTdef]; field_simp
@@ -186,7 +186,7 @@ private lemma exists_error_bound (C f₀ ε : ℝ) (hC : 0 < C) (hf₀ : 0 < f�
       have h1 : Real.log (Real.log (q:ℝ)) ≤ (Real.log (q:ℝ))^(1/4:ℝ) / (1/4) :=
         Real.log_le_rpow_div (le_of_lt hlogqpos) (by norm_num)
       have h3 : (Real.log (q:ℝ))^(1/4:ℝ) / (1/4) = 4 * (Real.log (q:ℝ))^(1/4:ℝ) := by ring
-      linarith [h1, h3]
+      linarith only [h1, h3]
     have hrpow : (Real.log (q:ℝ))^(1/4:ℝ) = Real.sqrt (Real.sqrt (Real.log (q:ℝ))) := by
       rw [Real.sqrt_eq_rpow, Real.sqrt_eq_rpow, ← Real.rpow_mul (le_of_lt hlogqpos)]
       norm_num
@@ -194,18 +194,18 @@ private lemma exists_error_bound (C f₀ ε : ℝ) (hC : 0 < C) (hf₀ : 0 < f�
       rw [hrpow, mul_pow, Real.sq_sqrt (Real.sqrt_nonneg _)]
       ring
     have h5 : (Real.log (Real.log (q:ℝ)))^2 ≤ (4 * (Real.log (q:ℝ))^(1/4:ℝ))^2 := by
-      nlinarith [hloglog, hll, Real.rpow_nonneg (le_of_lt hlogqpos) (1/4:ℝ)]
+      nlinarith only [hloglog, hll, Real.rpow_nonneg (le_of_lt hlogqpos) (1/4:ℝ)]
     rw [h4] at h5
-    linarith [h5, h16]
+    linarith only [h5, h16]
   have hsum : (q.primeFactors.card : ℝ) + (Real.log (Real.log (q:ℝ)))^2
-      ≤ 2 * δ * Real.log (q:ℝ) := by linarith [hω, hsq]
+      ≤ 2 * δ * Real.log (q:ℝ) := by linarith only [hω, hsq]
   have hfinal : C * (2 * δ * Real.log (q:ℝ)) = (f₀ * ε / 2) * Real.log (q:ℝ) := by
     rw [hδdef]; field_simp; ring
   have hLnn : 0 ≤ Real.log (q:ℝ) := le_of_lt hlogqpos
   calc C * ((q.primeFactors.card : ℝ) + (Real.log (Real.log (q:ℝ)))^2)
       ≤ C * (2 * δ * Real.log (q:ℝ)) := mul_le_mul_of_nonneg_left hsum (le_of_lt hC)
     _ = (f₀ * ε / 2) * Real.log (q:ℝ) := hfinal
-    _ ≤ f₀ * ε * Real.log (q:ℝ) := by nlinarith [hLnn, mul_pos hf₀ hε]
+    _ ≤ f₀ * ε * Real.log (q:ℝ) := by nlinarith only [hLnn, mul_pos hf₀ hε, hfinal, hC, hω]
 /-- **The principal-character `K`-sum at a shifted point.**  For every `ε > 0` and all
 sufficiently large moduli `q`, the principal `K`-sum at `s = β + iτ` is at most
 `f(0)·ε·log q + Cdec`, provided `|Re s - 1| ≤ √(log log q)/log q`, `log q·(1-β) ≤ 1` and
@@ -245,9 +245,9 @@ theorem KsumPrincipalShift (x₀ B Cdec : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     rw [h3] at h1
     have h4 : (2:ℝ) < 3 * Real.log 2 := by
       have := Real.log_two_gt_d9
-      linarith
-    linarith
-  have hLpos : 0 < L := by linarith
+      linarith only [this]
+    linarith only [h1, h4]
+  have hLpos : 0 < L := by linarith only [hL2]
   have herr : C * ((q.primeFactors.card : ℝ) + (Real.log L)^2) ≤ f 0 * ε * L :=
     hq₁ q hq₁q
   -- the shifted point
@@ -285,14 +285,14 @@ theorem KsumPrincipalShift (x₀ B Cdec : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     have h2 : ⌊Real.exp (L*x₀)⌋₊ + 1 ≤ n := by omega
     have h1 : ((⌊Real.exp (L*x₀)⌋₊ : ℕ) : ℝ) + 1 ≤ (n:ℝ) := by exact_mod_cast h2
     have h3 := Nat.lt_floor_add_one (Real.exp (L*x₀))
-    have hexp : Real.exp (L*x₀) < (n:ℝ) := by linarith
-    have hnpos : (0:ℝ) < n := by linarith
+    have hexp : Real.exp (L*x₀) < (n:ℝ) := by linarith only [h1, h3]
+    have hnpos : (0:ℝ) < n := by linarith only [h1]
     have h4 : L * x₀ < Real.log (n:ℝ) := by
       rw [← Real.log_exp (L*x₀)]
       exact Real.log_lt_log (Real.exp_pos _) hexp
     apply hsupp
     rw [le_div_iff₀ hLpos]
-    linarith
+    linarith only [h4]
   have hzero_r : ∀ n : ℕ, n ∉ Finset.Icc 1 N → rterm n = 0 := by
     intro n hn
     by_cases hn1 : n < 1
@@ -335,12 +335,12 @@ theorem KsumPrincipalShift (x₀ B Cdec : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
     rw [h2]; simp
   have hz_im1 : 1 ≤ |(((s - 1) * L)).im| := by
     rw [hz_im, abs_mul, abs_of_pos hLpos]
-    nlinarith [hτ1, hL2]
+    nlinarith only [hτ1, hL2, hτL]
   have hMnorm : ‖M‖ ≤ Cdec / |(((s - 1) * L)).im| := by
     have h := hdec ((s - 1) * L)
       (by rw [hz_re]
           have hb : L * (1 - β) ≤ 1 := by rw [hLdef]; exact hβlam
-          nlinarith [hb]) hz_im1
+          linarith only [hb, hβlam]) hz_im1
     simpa only [M] using h
   -- the main term is at most `Cdec`
   have hmain : (((L:ℝ):ℂ) * M).re ≤ Cdec := by
@@ -353,12 +353,12 @@ theorem KsumPrincipalShift (x₀ B Cdec : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       mul_le_mul_of_nonneg_left hMnorm hLpos.le
     have h5 : L * (Cdec / |(((s - 1) * L)).im|) = Cdec / |τ| := by
       rw [hz_im, abs_mul, abs_of_pos hLpos]
-      have ha : (|τ| : ℝ) ≠ 0 := ne_of_gt (by linarith : (0:ℝ) < |τ|)
+      have ha : (|τ| : ℝ) ≠ 0 := ne_of_gt (by linarith only [hτ1] : (0:ℝ) < |τ|)
       field_simp
     have h6 : Cdec / |τ| ≤ Cdec := by
-      rw [div_le_iff₀ (by linarith : (0:ℝ) < |τ|)]
-      nlinarith [hτ1, hCdec]
-    linarith [h2, h3, h4, h5, h6]
+      rw [div_le_iff₀ (by linarith only [hτ1] : (0:ℝ) < |τ|)]
+      nlinarith only [hτ1, hCdec]
+    linarith only [h2, h3, h4, h5, h6]
   have herr_le : ((∑' n : ℕ, cterm n) - ((L:ℝ):ℂ) * M).re
       ≤ C * ((q.primeFactors.card : ℝ) + (Real.log L)^2) :=
     le_trans (Complex.re_le_norm _) hbound
@@ -367,6 +367,6 @@ theorem KsumPrincipalShift (x₀ B Cdec : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B)
       = (((L:ℝ):ℂ) * M).re + ((∑' n : ℕ, cterm n) - ((L:ℝ):ℂ) * M).re := by
     rw [Complex.sub_re]; ring
   rw [hsplit]
-  linarith [hmain, herr_le, herr]
+  linarith only [hmain, herr_le, herr]
 
 end Work.ZeroFreeTables.OffAxis

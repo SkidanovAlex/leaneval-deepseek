@@ -224,7 +224,7 @@ theorem hb106RealC (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       calc |u.im| = |s.im - (s.im - u.im)| := by ring_nf
         _ ≤ |s.im| + |s.im - u.im| := abs_sub _ _
         _ ≤ |s.im| + δ := by linarith
-    have him3 : |u.im| ≤ 10 * L := by linarith [hsim, him2, hδ1, hL1]
+    have him3 : |u.im| ≤ 10 * L := by linarith only [hsim, him2, hδ1, hL1]
     have hZ : Work.ZeroFreeTables.IsZAt (10 * L) χ u := ⟨hχ, hzm, him3⟩
     have hle : Work.LinnikContract.lamOf q ρ₁ ≤ Work.LinnikContract.lamOf q u := hR.2 χ u hZ
     rw [← hlam₁, Work.LinnikContract.lamOf] at hle
@@ -446,7 +446,7 @@ theorem hb106RealC (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
   simp only [Work.ZeroFreeTables.Ksum] at hbT123 hbT12i3 hbT1i23 hbTi123
   have hkey : 0 ≤ Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁))
       + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by
-    linarith [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
+    linarith only [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
       hbT123, hbT12i3, hbT1i23, hbTi123]
   have hX : 0 ≤ T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁) + T.f 0 * (7/6 + 8 * ε') := by
     by_contra hneg
@@ -456,7 +456,7 @@ theorem hb106RealC (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     have h3 : Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁)
         + T.f 0 * (7/6 + 8 * ε')) = Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁)
           - T.F (lam₃ - lam₁)) + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by ring
-    linarith [hkey, h2, h3]
+    linarith only [hkey, h2, h3]
   rw [hlam₁, hlam₂, hlam₃] at hX
   exact hX
 
@@ -530,11 +530,11 @@ theorem rect10_3_endgame_realC (T : Work.ZeroFreeTables.TestFn) (ε' ε s l₁ l
     have hk : T.f 0 * (7/6 + 8 * ε') = (3 * T.F 0 - T.F (-(6/7))) + 8 * ε' * T.f 0 := by
       rw [← hL75]; ring
     rw [hk] at h106
-    linarith [h2, h3, h106, hs8]
+    linarith only [h2, h3, h106, hs8]
   by_cases hcase : l₁ < 6/7
   · rcases hmom l₁ h01 hcase h107 with hle | hbig
     · have hh := href l₁ h01 hle
-      linarith [hh, h107, hs83]
+      linarith only [hh, h107, hs83]
     · linarith
   · push Not at hcase
     linarith
@@ -603,7 +603,7 @@ theorem Rect10_3RealF1Clean : ∀ ε : ℝ, 0 < ε → ∀ L : ℝ, 1 ≤ L → 
   have hL75 : T.f 0 * (7/6) = 3 * T.F 0 - T.F (-(6/7)) := by
     rw [hf0, hF0, hF6]; norm_num
   have hs8 : 8 * ε' * T.f 0 ≤ s := by
-    rw [hepsdef, hf0]; linarith [hs0]
+    rw [hepsdef, hf0]; linarith only [hs0]
   have href := Work.ZeroFreeTables.OffAxis.tf72f_refute_quant_realC T hT hf hF0 hF6
   have hmom : ∀ l : ℝ, 0 ≤ l → l < 6/7 →
       T.F (-(6/7)) - T.F (-l) ≤ 2 * (T.F 0 - T.F (6/7 - l)) + s →

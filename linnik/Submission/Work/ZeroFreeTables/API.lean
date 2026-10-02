@@ -9,6 +9,7 @@ Everything here is a projection, a monotonicity statement or a combination of tw
 bounds; it is the glue that AREA 7 (`Assembly`) and any consumer of AREA 3 needs.
 -/
 import Submission.Work.ZeroFreeTables.Defs
+import Submission.Work.LinnikContract2.API
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

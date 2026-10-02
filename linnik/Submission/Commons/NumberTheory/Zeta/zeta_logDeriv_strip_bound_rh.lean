@@ -42,8 +42,8 @@ lemma zeta_logDeriv_norm_le (s : ℂ) (hs : s ≠ 1) (hz1 : riemannZeta₁ s ≠
 /-! ===== real arithmetic helpers ===== -/
 lemma one_le_one_add_inv (δ : ℝ) (hδ0 : 0 < δ) : (1 : ℝ) ≤ 1 + 1 / δ := by
   have h : 0 ≤ 1 / δ := le_of_lt (one_div_pos.mpr hδ0)
-  linarith
-lemma inv_le_one_add_inv (δ : ℝ) (hδ0 : 0 < δ) : (1 / δ : ℝ) ≤ 1 + 1 / δ := by linarith
+  linarith only [h]
+lemma inv_le_one_add_inv (δ : ℝ) (hδ0 : 0 < δ) : (1 / δ : ℝ) ≤ 1 + 1 / δ := by linarith only []
 lemma invsq_le_inv (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) : (1 : ℝ) ≤ 1 / δ := by
   exact (one_le_div hδ0).2 hδ1
 lemma invsq_le_pow3 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) : (1 / δ) ^ 2 ≤ (1 + 1 / δ) ^ 3 := by
@@ -55,7 +55,7 @@ lemma invsq_le_pow3 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) : (1 / δ) ^ 2 
     _ ≤ (1 + 1 / δ) ^ 3 := pow_le_pow_left₀ (by positivity : 0 ≤ 1 / δ) (inv_le_one_add_inv δ hδ0) 3
 lemma log_lepoly (δ : ℝ) (hδ0 : 0 < δ) : Real.log (1 + 1 / δ) ≤ 1 + 1 / δ := by
   have h := Real.log_le_sub_one_of_pos (by positivity : 0 < 1 + 1 / δ)
-  linarith
+  linarith only [h]
 lemma log1p_div_sq_le (δ : ℝ) (hδ0 : 0 < δ) :
     Real.log (1 + 1 / δ) / δ ^ 2 ≤ (1 + 1 / δ) ^ 3 := by
   calc
@@ -69,24 +69,24 @@ lemma log1p_div_sq_le (δ : ℝ) (hδ0 : 0 < δ) :
       exact mul_le_mul_of_nonneg_left hsq (by positivity : 0 ≤ 1 + 1 / δ)
     _ = (1 + 1 / δ) ^ 3 := by ring
 lemma logxadd6_le (t : ℝ) : Real.log (|t| + 6) ≤ 2 * Real.log (|t| + 3) := by
-  have h : |t| + 6 ≤ (|t| + 3) ^ 2 := by nlinarith [abs_nonneg t]
-  have h1 : Real.log (|t| + 6) ≤ Real.log ((|t| + 3) ^ 2) := Real.log_le_log (by nlinarith [abs_nonneg t]) h
+  have h : |t| + 6 ≤ (|t| + 3) ^ 2 := by nlinarith only [abs_nonneg t]
+  have h1 : Real.log (|t| + 6) ≤ Real.log ((|t| + 3) ^ 2) := Real.log_le_log (by nlinarith only [abs_nonneg t]) h
   calc
     Real.log (|t| + 6) ≤ Real.log ((|t| + 3) ^ 2) := h1
     _ = 2 * Real.log (|t| + 3) := by rw [Real.log_pow]; ring
 lemma LL_ge_one (t : ℝ) : (1 : ℝ) ≤ Real.log (|t| + 3) + 1 := by
-  have h : 0 ≤ Real.log (|t| + 3) := Real.log_nonneg (by nlinarith [abs_nonneg t])
-  linarith
+  have h : 0 ≤ Real.log (|t| + 3) := Real.log_nonneg (by nlinarith only [abs_nonneg t])
+  linarith only [h]
 lemma logx6_div_sq_le_two (δ t : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
     Real.log (|t| + 6) / δ ^ 2 ≤
       2 * ((1 + 1 / δ) ^ 3 * (Real.log (|t| + 3) + 1) ^ 3) := by
   let L : ℝ := Real.log (|t| + 3) + 1
   have hL1 : (1 : ℝ) ≤ L := LL_ge_one t
-  have hLpos : 0 ≤ L := by linarith
+  have hLpos : 0 ≤ L := by linarith only [hL1]
   have hlg2 : Real.log (|t| + 6) ≤ 2 * L := by
     have h := logxadd6_le t
     dsimp [L]
-    nlinarith
+    nlinarith only [h]
   have hD : L * (1 / δ) ^ 2 ≤ (1 + 1 / δ) ^ 3 * L ^ 3 := by
     have hs : (1 / δ) ^ 2 ≤ (1 + 1 / δ) ^ 3 := invsq_le_pow3 δ hδ0 hδ1
     have h1 : L * (1 / δ) ^ 2 ≤ L * (1 + 1 / δ) ^ 3 := mul_le_mul_of_nonneg_left hs hLpos
@@ -147,8 +147,8 @@ lemma final_arith {C1 : ℝ} (hC1 : 0 ≤ C1) {δ t : ℝ} (hδ0 : 0 < δ) (hδ1
     exact mul_le_mul_of_nonneg_left qlog1p (by norm_num : (0 : ℝ) ≤ 48)
   have B4 : 240 * (Real.log (|t| + 6) / δ ^ 2) ≤ 480 * D := by
     have h := mul_le_mul_of_nonneg_left qlogx6 (by norm_num : (0 : ℝ) ≤ 240)
-    linarith
-  have B5 : (4 : ℝ) ≤ 4 * D := by nlinarith
+    linarith only [qlogx6]
+  have B5 : (4 : ℝ) ≤ 4 * D := by nlinarith only [hDge1]
   calc
     48 * (Real.log 8 + C1 + Real.log (1 + 1 / δ) + 5 * Real.log (|t| + 6)) / δ ^ 2 + 4
         = 48 * Real.log 8 * (1 / δ) ^ 2 + 48 * C1 * (1 / δ) ^ 2 +
@@ -157,7 +157,7 @@ lemma final_arith {C1 : ℝ} (hC1 : 0 ≤ C1) {δ t : ℝ} (hδ0 : 0 < δ) (hδ1
           field_simp [hδsq]
           ring
     _ ≤ 48 * Real.log 8 * D + 48 * C1 * D + 48 * D + 480 * D + 4 * D := by
-          nlinarith
+          nlinarith only [qlog1p, qlogx6, hDge1, B1, B2]
     _ = (48 * (Real.log 8 + C1 + 1) + 480 + 4) * D := by ring
     _ = (48 * (Real.log 8 + C1 + 1) + 480 + 4) * (1 + 1 / δ) ^ 3 *
         (Real.log (|t| + 3) + 1) ^ 3 := by
@@ -179,7 +179,7 @@ theorem zeta_logDeriv_strip_bound_rh :
   · have hC1ge0 : 0 ≤ C1 := Real.log_nonneg (le_max_right Cg 1)
     have hlog8 : 0 < Real.log 8 := Real.log_pos (by norm_num : (1 : ℝ) < 8)
     dsimp [C]
-    nlinarith
+    nlinarith only [hC1ge0, hlog8]
   · intro h δ σ t hδ0 hδ1 hσlo hσhi hdist
     let s : ℂ := (σ : ℂ) + Complex.I * (t : ℂ)
     let c : ℂ := (2 : ℂ) + Complex.I * (t : ℂ)
@@ -193,14 +193,14 @@ theorem zeta_logDeriv_strip_bound_rh :
     -- geometry
     have hRpos : 0 < R := by
       dsimp [R]
-      linarith
+      linarith only [hδ1]
     have hdnorm : ‖s - c‖ = |σ - 2| := by
       dsimp [s, c]
       have h : ((σ : ℂ) + Complex.I * (t : ℂ)) - ((2 : ℂ) + Complex.I * (t : ℂ)) = ((σ - 2 : ℝ) : ℂ) := by
         apply Complex.ext <;> simp
       rw [h]
       simpa [Real.norm_eq_abs] using (Complex.norm_real (σ - 2))
-    have hσ2 : σ - 2 ≤ 0 := by linarith
+    have hσ2 : σ - 2 ≤ 0 := by linarith only [hσhi]
     have hd_eq : d = 2 - σ := by
       dsimp [d]
       rw [hdnorm]
@@ -212,9 +212,9 @@ theorem zeta_logDeriv_strip_bound_rh :
       change d < R
       rw [hd_eq]
       dsimp [R]
-      have h1 : 2 - σ ≤ 3 / 2 - δ := by linarith
-      have h2 : 3 / 2 - δ < 3 / 2 - δ / 2 := by linarith
-      linarith
+      have h1 : 2 - σ ≤ 3 / 2 - δ := by linarith only [hσlo]
+      have h2 : 3 / 2 - δ < 3 / 2 - δ / 2 := by linarith only [hδ0]
+      linarith only [hδ0, hσlo]
     have hs_ball : s ∈ Metric.ball c R := by
       simpa [Metric.mem_ball, dist_eq_norm] using hds
     -- nonzero on the ball under RH
@@ -226,9 +226,9 @@ theorem zeta_logDeriv_strip_bound_rh :
         have hre2' : |w.re - 2| ≤ ‖w - c‖ := by simpa [c] using hre2
         have hneg : -(‖w - c‖) ≤ w.re - 2 := by
           have h0 : -(w.re - 2) ≤ |w.re - 2| := neg_le_abs (w.re - 2)
-          linarith
+          linarith only [hre2', h0]
         dsimp [R] at hw1
-        linarith
+        linarith only [hδ0, hw1, hneg]
       exact zeta1_ne_zero_of_rh_gt_half h hwre
     -- upper growth bound on the ball
     have hgM : ∀ w : ℂ, w ∈ Metric.ball c R → ‖riemannZeta₁ w‖ ≤ M := by
@@ -250,7 +250,7 @@ theorem zeta_logDeriv_strip_bound_rh :
     have hρ_lt : δ / 4 < R - d := by
       dsimp [R]
       rw [hd_eq]
-      linarith
+      linarith only [hδ0, hσlo]
     have hgcore : ‖deriv riemannZeta₁ s / riemannZeta₁ s‖ ≤
         2 * A * (d + δ / 4) / ((R - d - δ / 4) * (δ / 4)) := by
       have hh := Commons.Analysis.Complex.logDeriv_zeroFree_ball_bound hg (c := c) (R := R) (m := 1 / 4) (M := M)
@@ -261,19 +261,19 @@ theorem zeta_logDeriv_strip_bound_rh :
     have hs_ne1 : s ≠ 1 := by
       intro h1
       have : ‖s - 1‖ = 0 := by simp [h1]
-      linarith
+      linarith only [hdist, this]
     have hz1s : riemannZeta₁ s ≠ 0 := hgne s hs_ball
     have hlogd := zeta_logDeriv_norm_le s hs_ne1 hz1s
     have hdist4 : 1 / ‖s - 1‖ ≤ 4 := by
       have hs1pos : 0 < ‖s - 1‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hs_ne1)
       rw [div_le_iff₀ hs1pos]
-      nlinarith
+      nlinarith only [hdist]
     -- bound on A
     have hA0 : 0 ≤ A := by
       dsimp [A]
-      have h2M : (1 / 4 : ℝ) ≤ 2 * M := by nlinarith
+      have h2M : (1 / 4 : ℝ) ≤ 2 * M := by nlinarith only [hMm, hMpos]
       have h1 : Real.log (1 / 4) ≤ Real.log (2 * M) := Real.log_le_log (by norm_num) h2M
-      linarith
+      linarith only [h1]
     have hMlog : Real.log M = Real.log Cg + Real.log (1 + 1 / δ) + 5 * Real.log (|t| + 6) := by
       have hpos1 : 0 < Cg := hCg0
       have hpos2 : 0 < 1 + 1 / δ := by positivity
@@ -302,26 +302,26 @@ theorem zeta_logDeriv_strip_bound_rh :
         have h2 : (2 * M) / (1 / 4) = 8 * M := by ring
         rw [h1, h2, Real.log_mul (by norm_num : (8 : ℝ) ≠ 0) (ne_of_gt hMpos)]
       rw [hlog, hMlog]
-      nlinarith
+      nlinarith only [hlogCg]
     -- geometric bound: 2A(d+δ/4)/((R-d-δ/4)*(δ/4)) ≤ 48A/δ²
     have hgeom : 2 * A * (d + δ / 4) / ((R - d - δ / 4) * (δ / 4)) ≤ 48 * A / δ ^ 2 := by
       have hd2pos : 0 < (R - d - δ / 4) * (δ / 4) := by
         have h1 : 0 < R - d - δ / 4 := by
           dsimp [R]
           rw [hd_eq]
-          linarith
+          linarith only [hδ0, hσlo]
         positivity
       have hδ2pos : 0 < δ ^ 2 := sq_pos_of_pos hδ0
       have hcross : (d + δ / 4) * δ ^ 2 ≤ 24 * ((R - d - δ / 4) * (δ / 4)) := by
         dsimp [R]
         rw [hd_eq]
         have hδsq : 0 ≤ δ ^ 2 := sq_nonneg δ
-        have h1 : (2 - σ + δ / 4) ≤ 3 / 2 := by nlinarith
+        have h1 : (2 - σ + δ / 4) ≤ 3 / 2 := by nlinarith only [hδ0, hσlo]
         have h2 : (3 / 2 : ℝ) * δ ^ 2 ≤ 24 * ((3 / 2 - δ / 2 - (2 - σ) - δ / 4) * (δ / 4)) := by
           have hR : (3 / 2 - δ / 2 - (2 - σ) - δ / 4) = σ - 1 / 2 - 3 * δ / 4 := by ring
           rw [hR]
-          have hsub : (1 / 4 : ℝ) * δ ≤ σ - 1 / 2 - 3 * δ / 4 := by nlinarith
-          nlinarith
+          have hsub : (1 / 4 : ℝ) * δ ≤ σ - 1 / 2 - 3 * δ / 4 := by nlinarith only [hσlo]
+          nlinarith only [hδ0, hσlo]
         calc
           (2 - σ + δ / 4) * δ ^ 2 ≤ (3 / 2) * δ ^ 2 := by
             exact mul_le_mul_of_nonneg_right h1 hδsq
@@ -340,17 +340,17 @@ theorem zeta_logDeriv_strip_bound_rh :
     calc
       ‖deriv riemannZeta s / riemannZeta s‖
           ≤ ‖deriv riemannZeta₁ s / riemannZeta₁ s‖ + 1 / ‖s - 1‖ := by simpa [s] using hlogd
-      _ ≤ ‖deriv riemannZeta₁ s / riemannZeta₁ s‖ + 4 := by linarith
-      _ ≤ 2 * A * (d + δ / 4) / ((R - d - δ / 4) * (δ / 4)) + 4 := by linarith
-      _ ≤ 48 * A / δ ^ 2 + 4 := by linarith
+      _ ≤ ‖deriv riemannZeta₁ s / riemannZeta₁ s‖ + 4 := by linarith only [hdist4]
+      _ ≤ 2 * A * (d + δ / 4) / ((R - d - δ / 4) * (δ / 4)) + 4 := by linarith only [hgcore]
+      _ ≤ 48 * A / δ ^ 2 + 4 := by linarith only [hgeom]
       _ ≤ 48 * (Real.log 8 + C1 + Real.log (1 + 1 / δ) + 5 * Real.log (|t| + 6)) / δ ^ 2 + 4 := by
         have hδ2pos : 0 < δ ^ 2 := sq_pos_of_pos hδ0
         have hmul : 48 * A ≤ 48 * (Real.log 8 + C1 + Real.log (1 + 1 / δ) + 5 * Real.log (|t| + 6)) := by
-          nlinarith
+          nlinarith only [hA_le]
         have hdiv : 48 * A / δ ^ 2 ≤
             48 * (Real.log 8 + C1 + Real.log (1 + 1 / δ) + 5 * Real.log (|t| + 6)) / δ ^ 2 :=
           div_le_div_of_nonneg_right hmul (le_of_lt hδ2pos)
-        linarith
+        linarith only [hdiv]
       _ ≤ (48 * (Real.log 8 + C1 + 1) + 480 + 4) * (1 + 1 / δ) ^ 3 *
           (Real.log (|t| + 3) + 1) ^ 3 := hB
       _ = C * (1 + 1 / δ) ^ 3 * (Real.log (|t| + 3) + 1) ^ 3 := by rfl

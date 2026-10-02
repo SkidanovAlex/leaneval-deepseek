@@ -8,7 +8,7 @@ The per-character bound of HB Lemma 13.3 is `B(λ)` = `Work.LinnikContract.Bfun 
 weight of HB Lemma 11.1 is `w(λ)` = `Work.LinnikContract.wHB λ`.
 -/
 import Mathlib
-import Submission.Work.LinnikContract.Pre
+import Submission.Work.LinnikContract.Defs
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

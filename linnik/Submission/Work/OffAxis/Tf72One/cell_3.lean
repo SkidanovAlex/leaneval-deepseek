@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.OffAxis.Tf72One.Box
 import Submission.Work.OffAxis.Tf72One.corner_mid
 import Submission.Work.OffAxis.Tf72One.Mss_bound
 import Submission.Work.OffAxis.Tf72One.Mtt_bound

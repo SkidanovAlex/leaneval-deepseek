@@ -147,7 +147,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       have hfin : 1 + CBX * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) * (m:ℝ)^((1 - 1/((k:ℝ)))) ≤ A * (m:ℝ)^((1 - 1/((k:ℝ)))) := by
         rw [hAdef]
         have hqnn : (0:ℝ) ≤ (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) := Real.rpow_nonneg (le_of_lt hqRpos) _
-        nlinarith [hA1, hqnn, Real.rpow_nonneg (by positivity : (0:ℝ) ≤ (m:ℝ)) ((1 - 1/((k:ℝ)))), hCBXpos.le]
+        linarith only [hA1]
       calc ‖χ ((1:ℕ):ZMod q) + ∑ n ∈ Finset.Ioc 1 m, χ n‖
           ≤ 1 + CBX * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) * ((m-1:ℕ):ℝ)^((1 - 1/((k:ℝ)))) := by
             refine (norm_add_le _ _).trans ?_
@@ -168,7 +168,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       rw [mul_one, hAdef]
       have h1 : (1:ℝ) ≤ (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) := Real.one_le_rpow hqR1 (by positivity)
       have h2 : (1:ℝ) ≤ CBX + 1 := by linarith
-      nlinarith [h1, h2, mul_le_mul h1 (le_refl (1:ℝ)) (by norm_num) (Real.rpow_nonneg (le_of_lt hqRpos) _)]
+      linarith only [h1, mul_nonneg hCBXpos.le (le_trans zero_le_one h1)]
   -- s
   set s : ℂ := (σ:ℂ) + (t:ℂ)*Complex.I with hsdef
   have hsre : s.re = σ := by simp [hsdef]
@@ -178,7 +178,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
     rw [hsre] at h
     have h1 : |s.im| = |t| := by simp [hsdef]
     have h2 : |σ| ≤ 1 := by rw [abs_of_nonneg (by linarith)]; exact hσle
-    rw [h1] at h; linarith
+    rw [h1] at h; linarith only [h, h2]
   -- head
   have hQpow : (Q:ℝ)^μ ≤ 2*(q:ℝ)^(θ*μ) := by
     have h1 : (Q:ℝ)^μ ≤ (2*(q:ℝ)^θ)^μ := Real.rpow_le_rpow (by positivity) hQle hμ0
@@ -196,7 +196,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
     have h3 : (1:ℝ) ≤ (q:ℝ)^(ε/2) := Real.one_le_rpow hqR1 (by positivity)
     have h4 : Real.log (Q:ℝ) ≤ Clog * (q:ℝ)^(ε/2) :=
       le_trans h1 (mul_le_mul_of_nonneg_left h2 (le_of_lt hClogpos))
-    nlinarith [h3, h4]
+    linarith only [h3, h4]
   have hhead : ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) ≤ (3+2*Clog) * (q:ℝ)^(θ*μ + ε/2) := by
     have h1 := sum_Icc_one_rpow_le hQ1 hμ0
     have hQμ1 : (1:ℝ) ≤ (Q:ℝ)^μ := Real.one_le_rpow (by exact_mod_cast hQ1) hμ0
@@ -214,7 +214,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       _ ≤ (3+2*Clog) * (q:ℝ)^(θ*μ + ε/2) := by
           have hqnn : (0:ℝ) ≤ (q:ℝ)^(θ*μ+ε/2) := Real.rpow_nonneg (le_of_lt hqRpos) _
           have hClognn : (0:ℝ) ≤ Clog := le_of_lt hClogpos
-          nlinarith [hqexp, hqnn, hClognn, mul_le_mul_of_nonneg_left hqexp hClognn]
+          linarith only [hqexp]
   -- Chead
   have hhead2 : ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) ≤ 3*(1+Clog) * (q:ℝ)^(θ*μ + ε/2) := by
     refine hhead.trans ?_
@@ -272,19 +272,19 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       have h3 : (1:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.one_le_rpow hqR1 (le_of_lt hδ')
       have h4 : Real.log (R:ℝ) ≤ Clog2 * (q:ℝ)^((ε/8)) :=
         h1.trans (mul_le_mul_of_nonneg_left h2 (le_of_lt hClog2pos))
-      nlinarith [h3, h4, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8))]
+      linarith only [h3, h4]
     have hY1 : (1:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by
       have h3 : (1:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.one_le_rpow hqR1 (le_of_lt hδ')
-      nlinarith [h3, hClog2pos]
+      linarith only [h3, mul_nonneg hClog2pos.le (le_trans zero_le_one h3)]
     have hY0 : (0:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by positivity
-    have hsn' : ‖s‖ ≤ 2*(1+|t|) := by linarith [hsnorm, abs_nonneg t]
+    have hsn' : ‖s‖ ≤ 2*(1+|t|) := by linarith only [hsnorm, abs_nonneg t]
     have hYbound : (2:ℝ) + ‖s‖*((1+Clog2)*(q:ℝ)^((ε/8)))
         ≤ 4*(1+Clog2)*(q:ℝ)^((ε/8))*(1+|t|) := by
       have h4 : ‖s‖*((1+Clog2)*(q:ℝ)^((ε/8))) ≤ 2*(1+|t|)*((1+Clog2)*(q:ℝ)^((ε/8))) :=
         mul_le_mul_of_nonneg_right hsn' hY0
       have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith
       have hY2 : (0:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.rpow_nonneg hqn1 _
-      nlinarith [h4, hY1, hY0, ht1, hsn', hClog2pos, hY2, le_of_lt hδ']
+      linarith only [h4, mul_le_mul hY1 ht1 zero_le_one hY0]
     have hE : ((((k:ℝ)+1)/(4*((k:ℝ))^2)) + ε/2) + θ*((1 - 1/((k:ℝ))) - σ) + (ε/8)
         ≤ μ*(1+1/(k:ℝ))/4 + ε - δ := by
       have hkey : ((((k:ℝ)+1)/(4*((k:ℝ))^2))) + θ*((1 - 1/((k:ℝ))) - σ) = μ*(1+1/(k:ℝ))/4 := by
@@ -334,15 +334,15 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
         rw [Finset.mem_range] at h1; rw [Finset.mem_Icc] at h2; omega
       rw [hun, Finset.sum_union hdisj]; ring
     rw [hsplit]
-    exact (norm_sub_le _ _).trans (by linarith [h1, h2])
+    exact (norm_sub_le _ _).trans (by linarith only [h1, h2])
   have hlogqq : Real.log (q:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by
     have h1 : Real.log (q:ℝ) ≤ Clog2 * (q:ℝ)^((ε/8)) := by simpa using hClog2 (q:ℝ) hqR1
-    nlinarith [h1, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8))]
+    linarith only [h1, Real.rpow_nonneg hqn1 ((ε/8))]
   have hσinv : (1:ℝ) + ‖s‖/σ ≤ 4*(1+|t|) := by
     have h2 : ‖s‖/s.re ≤ (2+|t|)/(2/3) :=
       div_le_div₀ (by positivity) hsnorm (by norm_num) (by linarith [hσ23])
     rw [hsre] at h2
-    nlinarith [h2, hsnorm, abs_nonneg t]
+    linarith only [h2, abs_nonneg t]
   have htail : ∀ M : ℕ, q < M →
       ‖∑ n ∈ Finset.Icc (q+1) M, χ n * (n:ℂ)^(-s)‖
         ≤ (14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
@@ -394,7 +394,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       _ ≤ (14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by positivity
           have h5 : (8:ℝ)*CPV*(1+Clog2) ≤ 14*CPV*(1+Clog2) := by
-            nlinarith [hCPVpos, hClog2pos]
+            linarith only [mul_nonneg hCPVpos.le (by linarith only [hClog2pos] : (0:ℝ) ≤ 1 + Clog2)]
           calc 8*CPV*(1+Clog2)*(q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)
               = (8*CPV*(1+Clog2)) * ((q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)) := by ring
             _ ≤ (14*CPV*(1+Clog2)) * ((q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)) :=
@@ -404,7 +404,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
   have hBig : (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2))
       ≤ 3 * (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2)) + 1 := by
     have h4 : (0:ℝ) ≤ 3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2) := by positivity
-    linarith
+    linarith only [h4]
   have hPerM : ∀ M : ℕ, ‖∑ n ∈ Finset.Icc 1 M, χ n * (n:ℂ)^(-s)‖
       ≤ (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2))
           * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
@@ -430,7 +430,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
       refine (h1.trans h2).trans ?_
       have hk1 : (3*(1+Clog)) ≤ 3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2) := by
         have h2 : (0:ℝ) ≤ 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2) := by positivity
-        linarith
+        linarith only [h2]
       calc (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)
           ≤ (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) :=
             mul_le_mul_of_nonneg_right hk1 (Real.rpow_nonneg hqn1 _)
@@ -487,7 +487,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
               add_le_add hhead3 (add_le_add hmid' htail')
         _ ≤ (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2))
             * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
-              nlinarith [hTpos, hClogpos, hClog2pos, hCPVpos]
+              exact le_of_eq (by ring)
   have hlim := LSeries_partial_sums_tendsto χ hχ hs0
   have hnormlim : Filter.Tendsto (fun M : ℕ => ‖∑ n ∈ Finset.Icc 1 M, χ n * (n:ℂ)^(-s)‖)
       Filter.atTop (nhds ‖χ.LFunction s‖) := hlim.norm
@@ -498,7 +498,7 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
   have hstep : ‖χ.LFunction s‖ ≤
       (3 * (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2)) + 1)
         * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
-    nlinarith [hXnn, mul_le_mul_of_nonneg_right hBig hXnn]
+    linarith only [hfin, mul_le_mul_of_nonneg_right hBig hXnn]
   refine hstep.trans ?_
   -- the per-character constant still carries the order factor `u ≥ 1`; this cancels the growth
   have hspec : 3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2)
@@ -507,14 +507,14 @@ theorem primitive_quarter_charConst (k : ℕ) (hk : 3 ≤ k)
     have h1 : 3*(1+Clog) ≤ 3*(1+Clog) * u := le_mul_of_one_le_right (by positivity) hu1
     have h3 : 14*CPV*(1+Clog2) ≤ 14*CPV*(1+Clog2) * u := le_mul_of_one_le_right (by positivity) hu1
     have h2 : 4*(1+Clog2)*(CB*u+1) ≤ 4*(1+Clog2)*(CB+1) * u := by
-      have hA : CB*u + 1 ≤ (CB+1)*u := by nlinarith [hu1, hCB.le]
+      have hA : CB*u + 1 ≤ (CB+1)*u := by linarith only [hu1]
       calc 4*(1+Clog2)*(CB*u+1) ≤ 4*(1+Clog2)*((CB+1)*u) :=
             mul_le_mul_of_nonneg_left hA (by positivity)
         _ = 4*(1+Clog2)*(CB+1) * u := by ring
-    nlinarith [h1, h2, h3]
+    linarith only [h1, h2, h3]
   have hK : 3 * (3*(1+Clog) + 4*(1+Clog2)*(CBX+1) + 14*CPV*(1+Clog2)) + 1
       ≤ (3 * (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2)) + 1) * u := by
-    nlinarith [hspec, hu1]
+    linarith only [hspec, hu1]
   have hqEnn : (0:ℝ) ≤ (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) := Real.rpow_nonneg (by positivity) _
   have htnn : (0:ℝ) ≤ 1 + |t| := by positivity
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hK hqEnn) htnn

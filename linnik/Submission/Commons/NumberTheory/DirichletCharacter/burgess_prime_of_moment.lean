@@ -1,8 +1,6 @@
 import Mathlib
-import Submission.Commons.NumberTheory.CharacterSum.dyadic_interval_decomposition
 import Submission.Commons.NumberTheory.CharacterSum.card_floor_close_offdiag
 import Submission.Commons.NumberTheory.CharacterSum.card_floor_close_diag
-import Submission.Commons.NumberTheory.DivisorSum.gcd_sum_square_bound
 import Submission.Commons.Analysis.MeanInequalities.sum_mul_pow_le
 import Submission.Commons.Analysis.MeanInequalities.sum_mul_sq_le
 import Submission.Commons.NumberTheory.Auxiliary.ediv_add_sub_ediv_le
@@ -69,7 +67,7 @@ lemma sum_Icc_periodic {p : ℕ} (hp : 0 < p) (G : ℤ → ℝ) (hper : ∀ x, G
   have key : ∀ x : ℤ, G x = G (x % (p:ℤ)) := by
     intro x
     have hx : x = (x % (p:ℤ)) + (x / (p:ℤ)) * (p:ℤ) := by
-      have := Int.mul_ediv_add_emod x (p:ℤ); linarith [this]
+      have := Int.mul_ediv_add_emod x (p:ℤ); linarith only [this]
     conv_lhs => rw [hx]
     have := hper'.int_mul (x / (p:ℤ)) (x % (p:ℤ))
     simpa using this
@@ -95,7 +93,7 @@ lemma sum_Icc_periodic {p : ℕ} (hp : 0 < p) (G : ℤ → ℝ) (hper : ∀ x, G
     have hc0 : c = 0 := by
       by_contra hcne
       have hc1 : (1:ℤ) ≤ |c| := by have : (0:ℤ) < |c| := abs_pos.mpr hcne; omega
-      nlinarith
+      nlinarith only [habs, hc1]
     rw [hc0, mul_zero] at hc; omega
   · intro r hr
     rw [Finset.mem_range] at hr
@@ -106,7 +104,7 @@ lemma sum_Icc_periodic {p : ℕ} (hp : 0 < p) (G : ℤ → ℝ) (hper : ∀ x, G
       constructor <;> omega
     · have hsub : (a + ((r:ℤ) - a) % (p:ℤ)) - (r:ℤ)
             = -((p:ℤ) * (((r:ℤ) - a) / (p:ℤ))) := by
-        have := Int.mul_ediv_add_emod ((r:ℤ) - a) (p:ℤ); linarith [this]
+        have := Int.mul_ediv_add_emod ((r:ℤ) - a) (p:ℤ); linarith only [this]
       have hmod0 : (a + ((r:ℤ) - a) % (p:ℤ)) % (p:ℤ) = (r:ℤ) % (p:ℤ) := by
         refine (Int.emod_eq_emod_iff_emod_sub_eq_zero (m := a + ((r:ℤ)-a) % (p:ℤ))
           (n := p) (k := r)).mpr ?_
@@ -347,7 +345,7 @@ lemma cSum_le_two_supShift (χ : DirichletCharacter ℂ q) {n lo : ℤ} {len h :
     (hlen : len ≤ h) (hnh : lo - h < n) :
     ‖cSum χ lo (lo + len)‖ ≤ 2 * supShift χ n (2*h) := by
   have hsplit := cSum_split χ hn (show lo ≤ lo + (len:ℤ) by
-    have := (show (0:ℤ) ≤ (len:ℤ) by exact_mod_cast Nat.zero_le len); linarith)
+    have := (show (0:ℤ) ≤ (len:ℤ) by exact_mod_cast Nat.zero_le len); linarith only [])
   have hdiff : cSum χ lo (lo + len) = cSum χ n (lo + len) - cSum χ n lo := by
     rw [hsplit]; ring
   have h1 : (lo - n).toNat ≤ 2*h := by
@@ -421,7 +419,7 @@ lemma norm_pow_le_famSum (f : ℤ → ℂ) (t : ℕ) (n : ℤ) (k : ℕ) (hk : k
     · exact Finset.sum_le_sum_of_subset_of_nonneg hS (fun i hi _ => pow_nonneg (famVal_nonneg ..) _)
     · exact Finset.sum_nonneg (fun i hi => pow_nonneg (famVal_nonneg ..) _)
     · exact pow_nonneg (by positivity) _
-  linarith
+  linarith only [h1, h2, h3]
 
 lemma supShift_pow_le_fam (χ : DirichletCharacter ℂ q) (t : ℕ) (n : ℤ) (K : ℕ)
     (hK : K ≤ 2^t) (r : ℕ) (hr : 1 ≤ r) :
@@ -513,12 +511,12 @@ lemma geom_pow_sum_le (r : ℕ) (hr : 2 ≤ r) (t : ℕ) :
       rw [h2r]
       have hnn : (0:ℝ) ≤ ((2:ℝ)^t)^r := pow_nonneg (by norm_num) _
       have hpos : (0:ℝ) < (2:ℝ)^r := pow_pos (by norm_num) _
-      nlinarith [h8, hnn, hpos]
+      nlinarith only [h8, hnn, hpos]
     calc 2 * (∑ d ∈ Finset.range (t+1), (2:ℝ)^(d+1) * ((2:ℝ)^(t-d))^r)
           + 2 * ((2:ℝ)^(t+1))^r
         ≤ 2 * (4 * ((2:ℝ)^t)^r) + 2 * ((2:ℝ)^r * ((2:ℝ)^t)^r) := by
           rw [h2r]
-          linarith [ih]
+          linarith only [ih]
       _ ≤ 4 * ((2:ℝ)^(t+1))^r := hkey
 
 
@@ -571,13 +569,13 @@ lemma supShift_window_le (χ : DirichletCharacter ℂ q) (Cm : ℝ) (r : ℕ) (h
       refine Finset.sum_bij (fun x _ => x + (v:ℤ) * (2:ℤ)^(t-d)) ?_ ?_ ?_ ?_
       · intro x hx
         rw [Finset.mem_Icc] at hx ⊢
-        constructor <;> linarith [hx.1, hx.2]
+        constructor <;> linarith only [hx.1, hx.2, hx]
       · intro x hx y hy hxy
-        linarith
+        linarith only [hxy]
       · intro y hy
         refine ⟨y - (v:ℤ) * (2:ℤ)^(t-d), ?_, by ring⟩
         rw [Finset.mem_Icc] at hy ⊢
-        constructor <;> linarith [hy.1, hy.2]
+        constructor <;> linarith only [hy.1, hy.2, hy]
       · intro x hx
         rfl
     rw [Finset.sum_congr rfl (fun x _ => hterm x), hshift]
@@ -611,7 +609,7 @@ lemma supShift_window_le (χ : DirichletCharacter ℂ q) (Cm : ℝ) (r : ℕ) (h
       simp only [Nat.cast_one, one_pow, mul_one, one_mul]
       have hq' : (0:ℝ) < (q:ℝ) := by exact_mod_cast hq1
       have := Real.sqrt_nonneg (q:ℝ)
-      linarith
+      linarith only [hsq, hq']
     exact (nonneg_of_mul_nonneg_left h1' h2')
   have hinner : (q:ℝ) * (∑ d ∈ Finset.range (t+1), ((2:ℝ)^(d+1) * ((2:ℝ)^(t-d))^r))
         + Real.sqrt (q:ℝ) * ∑ d ∈ Finset.range (t+1),
@@ -642,11 +640,11 @@ lemma log_pow_le_mul_rpow {ε : ℝ} (hε : 0 < ε) (A : ℕ) :
   · have hApos : (0:ℝ) < (A:ℝ) := by exact_mod_cast hA
     refine ⟨(A / ε)^A, by positivity, fun x hx => ?_⟩
     have hδpos : 0 < ε / (A:ℝ) := by positivity
-    have hlog : Real.log x ≤ x^(ε/(A:ℝ)) / (ε/(A:ℝ)) := Real.log_le_rpow_div (by linarith) hδpos
+    have hlog : Real.log x ≤ x^(ε/(A:ℝ)) / (ε/(A:ℝ)) := Real.log_le_rpow_div (by linarith only [hx]) hδpos
     have hlog0 : 0 ≤ Real.log x := Real.log_nonneg hx
     have h1 : (Real.log x)^A ≤ (x^(ε/(A:ℝ)) / (ε/(A:ℝ)))^A := pow_le_pow_left₀ hlog0 hlog A
     have h2 : (x^(ε/(A:ℝ)) / (ε/(A:ℝ)))^A = x^ε / (ε/(A:ℝ))^A := by
-      rw [div_pow, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith : (0:ℝ) ≤ x)]
+      rw [div_pow, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith only [hx] : (0:ℝ) ≤ x)]
       congr 2
       rw [mul_comm]
       field_simp
@@ -659,8 +657,8 @@ lemma mem_Ioc_ediv_iff {L : ℤ} (hL : 0 < L) (X Y m : ℤ) :
     m ∈ Finset.Ioc (X / L) (Y / L) ↔ X < L * m ∧ L * m ≤ Y := by
   rw [Finset.mem_Ioc, Int.ediv_lt_iff_lt_mul hL, Int.le_ediv_iff_mul_le hL]
   constructor
-  · rintro ⟨h1, h2⟩; exact ⟨by linarith, by linarith⟩
-  · rintro ⟨h1, h2⟩; exact ⟨by linarith, by linarith⟩
+  · rintro ⟨h1, h2⟩; exact ⟨by linarith only [h1], by linarith only [h2]⟩
+  · rintro ⟨h1, h2⟩; exact ⟨by linarith only [h1], by linarith only [h2]⟩
 
 lemma zmod_mul_residue_unique {ℓ : ℕ} (hℓ0 : 0 < ℓ) {p : ℕ}
     (h : IsUnit ((p : ZMod ℓ))) (n : ℤ) :
@@ -708,7 +706,7 @@ theorem cSum_ap_split {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p) {
   have hlen : ∀ a : ℕ, (a:ℤ) * p < (a+1) * p := by
     intro a
     have : (0:ℤ) < p := by exact_mod_cast hp.pos
-    nlinarith
+    nlinarith only [hℓ0, hℓp]
   obtain ⟨u, hu⟩ := hunit
   have hsigma : (∑ x ∈ (Finset.range ℓ).sigma (fun a =>
         Finset.Ioc ((N - (a:ℤ) * p) / (ℓ:ℤ)) (((N + (H:ℤ)) - (a:ℤ) * p) / (ℓ:ℤ))),
@@ -728,7 +726,7 @@ theorem cSum_ap_split {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p) {
     rw [Finset.mem_range] at ha
     have hm' := (mem_Ioc_ediv_iff hL (N - (x.1:ℤ)*p) ((N + (H:ℤ)) - (x.1:ℤ)*p) x.2).mp hm
     rw [Finset.mem_Ioc]
-    constructor <;> linarith [hm'.1, hm'.2]
+    constructor <;> linarith only [hm'.1, hm'.2, hm']
   · -- injective
     rintro ⟨x1, x2⟩ hx ⟨y1, y2⟩ hy hxy
     rw [Finset.mem_sigma] at hx hy
@@ -752,7 +750,7 @@ theorem cSum_ap_split {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p) {
     have hmeq : x2 = y2 := by
       have hh := hxy
       rw [haeq] at hh
-      have : (ℓ:ℤ) * x2 = (ℓ:ℤ) * y2 := by linarith [hh]
+      have : (ℓ:ℤ) * x2 = (ℓ:ℤ) * y2 := by linarith only [hh]
       exact mul_left_cancel₀ (by omega : (ℓ:ℤ) ≠ 0) this
     rw [haeq, hmeq]
   · -- surjective
@@ -771,9 +769,9 @@ theorem cSum_ap_split {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p) {
       rw [mem_Ioc_ediv_iff hL]
       have h1 : ((n - (ha:ℤ)*p) / (ℓ:ℤ)) * (ℓ:ℤ) = n - (ha:ℤ)*p :=
         Int.ediv_mul_cancel hdvd
-      constructor <;> linarith [hn.1, hn.2, h1]
+      constructor <;> linarith only [hn.1, hn.2, h1, hn]
     · have h1 : ((n - (ha:ℤ)*p) / (ℓ:ℤ)) * (ℓ:ℤ) = n - (ha:ℤ)*p := Int.ediv_mul_cancel hdvd
-      linarith [h1]
+      linarith only [h1]
   · -- the value identity
     intro x hx
     rw [hkey, map_mul]
@@ -794,7 +792,7 @@ lemma oLo_le_oHi (N : ℤ) (p H l a : ℕ) (hl : 0 < l) : oLo N p l a ≤ oHi N 
   unfold oLo oHi
   refine Int.ediv_le_ediv (by exact_mod_cast hl) ?_
   have : (0:ℤ) ≤ (H:ℤ) := by exact_mod_cast Nat.zero_le H
-  linarith
+  linarith only []
 
 lemma cSum_le_two_supShift' (χ : DirichletCharacter ℂ q) {n lo hi : ℤ} (hlo : lo ≤ hi)
     (hn : n ≤ lo) {h : ℕ} (hlen : hi - lo ≤ (h:ℤ)) (hnh : lo - h < n) :
@@ -807,7 +805,7 @@ lemma cSum_le_two_supShift' (χ : DirichletCharacter ℂ q) {n lo hi : ℤ} (hlo
     omega
   have h2 : (hi - n).toNat ≤ 2*h := by
     have h0 : (0:ℤ) ≤ hi - n := by omega
-    have : hi - n ≤ 2 * (h:ℤ) := by linarith
+    have : hi - n ≤ 2 * (h:ℤ) := by linarith only [hlen, hnh]
     omega
   have hb1 : ‖cSum χ n hi‖ = ‖cSum χ n (n + ((hi - n).toNat : ℤ))‖ := by
     congr 1
@@ -931,7 +929,7 @@ lemma burgess_principle {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p)
     intro x hx n hn
     rw [Finset.mem_Ioc] at hn
     rw [Finset.mem_Icc]
-    exact ⟨by linarith [(hlo x hx).1], by linarith [hn.2, (hlo x hx).2]⟩
+    exact ⟨by linarith only [(hlo x hx).1, hn, hlo, hx], by linarith only [hn.2, (hlo x hx).2, hn, hlo, hx]⟩
   have hpt : ∀ x ∈ objFinset P, (h:ℝ) * ‖cSum χ (oLo N p x.1 x.2) (oHi N p H x.1 x.2)‖
       ≤ 2 * ∑ n ∈ Finset.Icc (-(2*(p:ℤ))) (p:ℤ),
           (if oLo N p x.1 x.2 - (h:ℤ) < n ∧ n ≤ oLo N p x.1 x.2 then (1:ℝ) else 0)
@@ -1088,7 +1086,7 @@ lemma weight_pointwise_count {N : ℤ} {p h P : ℕ} {x : ℕ × ℕ} (hx : x �
       exact Finset.mem_Ioc.mpr ⟨h1, h2⟩
     · intro hn
       obtain ⟨h1, h2⟩ := Finset.mem_Ioc.mp hn
-      exact ⟨Finset.mem_Icc.mpr ⟨by linarith [hlo.1], by linarith [hlo.2]⟩, h1, h2⟩
+      exact ⟨Finset.mem_Icc.mpr ⟨by linarith only [hlo.1, hlo, h1], by linarith only [hlo.2, hlo, h2]⟩, h1, h2⟩
   rw [← Finset.sum_filter, hfilter]
   rw [Finset.sum_const, Int.card_Ioc]
   have heq : oLo N p x.1 x.2 - (oLo N p x.1 x.2 - (h:ℤ)) = (h:ℤ) := by ring
@@ -1244,7 +1242,7 @@ lemma weight_sq_le (N : ℤ) (p h P : ℕ) (hP : 1 ≤ P)
       obtain ⟨hxe, hye⟩ := hne
       obtain ⟨hxc1, hxc2⟩ := winInd_ne_zero_iff.mp hxe
       obtain ⟨hyc1, hyc2⟩ := winInd_ne_zero_iff.mp hye
-      exact hc (by rw [abs_le]; constructor <;> linarith)
+      exact hc (by rw [abs_le]; constructor <;> linarith only [hxc2, hyc1, hxc1, hyc2])
   have hexp : ∀ n, (weightA N p h P n)^2
       = ∑ x ∈ objFinset P, ∑ y ∈ objFinset P, winInd N p h x n * winInd N p h y n := by
     intro n
@@ -1351,6 +1349,92 @@ lemma sq_rpow (p L : ℝ) (hp : 0 ≤ p) (a : ℝ) (m : ℕ) :
 lemma mul_rpow_neg_mul (p H : ℝ) (hp : 0 < p) (a : ℝ) : (H * p^(-a)) * p^a = H := by
   rw [mul_assoc, ← Real.rpow_add hp]; ring_nf; rw [Real.rpow_zero, mul_one]
 
+private lemma burgess_core_tail (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) {p : ℕ} (hp0 : (0:ℝ) < (p:ℝ))
+    (H : ℕ) (hHpos : (0:ℝ) < (H:ℝ)) (hL1 : (1:ℝ) ≤ Real.log p) (X : ℝ) (hX : 0 ≤ X)
+    (hpow : X^(2*k)
+      ≤ 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)) :
+    X ≤ 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20) := by
+  have hk1 : 1 ≤ k := by omega
+  have hkpos : (0:ℝ) < (k:ℝ) := by exact_mod_cast (show 0 < k by omega)
+  -- ### extract the 2k-th root
+  have hRHSnn : (0:ℝ) ≤ 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20) := by
+    have h1 : (0:ℝ) ≤ (p:ℝ)^((k+1)/(4*k^2:ℝ)) := Real.rpow_nonneg hp0.le _
+    have h2 : (0:ℝ) ≤ (H:ℝ)^(1 - 1/(k:ℝ)) := Real.rpow_nonneg hHpos.le _
+    have h3 : (0:ℝ) ≤ (Real.log p)^(10*k+20) := by positivity
+    positivity
+  have hsq : 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
+      ≤ (2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k) := by
+    have hp2 : ((p:ℝ)^((k+1)/(4*k^2:ℝ)))^(2*k) = (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) := by
+      have hpe : ((k:ℝ)+1)/(4*(k:ℝ)^2) * ((2*k:ℕ):ℝ) = ((k:ℝ)+1)/(2*(k:ℝ)) := by
+        have hkne : (k:ℝ) ≠ 0 := ne_of_gt hkpos
+        push_cast
+        field_simp
+        ring
+      rw [← Real.rpow_natCast (x := (p:ℝ)^((k+1)/(4*k^2:ℝ))) (n := 2*k), ← Real.rpow_mul hp0.le, hpe]
+    have hH2' : ((H:ℝ)^(1 - 1/(k:ℝ)))^(2*k) = (H:ℝ)^(2*k-2) := by
+      have hHe : (1 - 1/(k:ℝ)) * ((2*k:ℕ):ℝ) = ((2*k-2:ℕ):ℝ) := by
+        have hkne : (k:ℝ) ≠ 0 := ne_of_gt hkpos
+        have hcast : ((2*k-2:ℕ):ℝ) = 2*(k:ℝ) - 2 := by
+          rw [Nat.cast_sub (by omega : 2 ≤ 2*k)]; push_cast; ring
+        rw [hcast]
+        push_cast
+        field_simp
+      rw [← Real.rpow_natCast (x := (H:ℝ)^(1 - 1/(k:ℝ))) (n := 2*k), ← Real.rpow_mul hHpos.le, hHe,
+        Real.rpow_natCast]
+    have hL2 : ((Real.log p)^(10*k+20))^(2*k) = (Real.log p)^((10*k+20)*(2*k)) :=
+      (pow_mul (Real.log p) (10*k+20) (2*k)).symm
+    have hB : (2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k)
+        = 2^(70*(2*k)) * Cm^(2*k) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (H:ℝ)^(2*k-2)
+          * (Real.log p)^((10*k+20)*(2*k)) := by
+      rw [show 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20)
+          = (2^70 * Cm) * ((p:ℝ)^((k+1)/(4*k^2:ℝ)) * ((H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))) from by ring]
+      simp only [mul_pow]
+      rw [← pow_mul, hp2, hH2', hL2]
+      ring
+    rw [hB]
+    have hc : (2:ℝ)^68 * Cm ≤ 2^(70*(2*k)) * Cm^(2*k) := by
+      have h2 : (2:ℝ)^68 ≤ 2^(70*(2*k)) :=
+        pow_le_pow_right₀ (by norm_num : (1:ℝ) ≤ 2) (by omega : 68 ≤ 70*(2*k))
+      have h3 : Cm ≤ Cm^(2*k) := by
+        have := pow_le_pow_right₀ hCm1 (show 1 ≤ 2*k by omega)
+        simpa using this
+      exact mul_le_mul h2 h3 (le_trans zero_le_one hCm1) (by positivity)
+    have hL : (Real.log p)^(10*k+17) ≤ (Real.log p)^((10*k+20)*(2*k)) :=
+      pow_le_pow_right₀ hL1 (by nlinarith only [hk1, hk2])
+    have h2 : (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
+        ≤ (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^((10*k+20)*(2*k)) :=
+      mul_le_mul_of_nonneg_left hL (by positivity)
+    calc 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
+        = (2^68 * Cm) * ((H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)) := by ring
+      _ ≤ 2^(70*(2*k)) * Cm^(2*k) * ((H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^((10*k+20)*(2*k))) :=
+            mul_le_mul hc h2 (by positivity) (by positivity)
+      _ = 2^(70*(2*k)) * Cm^(2*k) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (H:ℝ)^(2*k-2) * (Real.log p)^((10*k+20)*(2*k)) := by ring
+  have hfin1 : X
+      ≤ (2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17))^(((2*k:ℕ):ℝ)⁻¹) := by
+    have h2k : (0:ℝ) ≤ X^(2*k) := pow_nonneg hX _
+    have := Real.rpow_le_rpow h2k hpow (by positivity : (0:ℝ) ≤ ((2*k:ℕ):ℝ)⁻¹)
+    rwa [Real.pow_rpow_inv_natCast hX (by omega : 2*k ≠ 0)] at this
+  refine hfin1.trans ?_
+  calc (2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17))^(((2*k:ℕ):ℝ)⁻¹)
+      ≤ ((2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k))^(((2*k:ℕ):ℝ)⁻¹) :=
+        Real.rpow_le_rpow (by positivity) hsq (by positivity)
+    _ = 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20) :=
+        Real.pow_rpow_inv_natCast hRHSnn (by omega : 2*k ≠ 0)
+
+private lemma burgess_core_aux (k : ℕ) (hk2 : 2 ≤ k) (hk3 : k ≤ 3) : (2:ℝ)^(2*k) * 2^(2*k-2) * 20000 * 4 * 2^(2*k) * 4 * 2 * 16^(2*k) * 2^(2*k) ≤ 2^68 := by
+  have h1 : (2:ℝ)^(2*k) ≤ 2^6 := pow_le_pow_right₀ (by norm_num) (by omega)
+  have h2 : (2:ℝ)^(2*k-2) ≤ 2^4 := pow_le_pow_right₀ (by norm_num) (by omega)
+  have h3 : (16:ℝ)^(2*k) ≤ 2^24 := by
+    rw [show (16:ℝ) = 2^4 by norm_num, ← pow_mul]
+    exact pow_le_pow_right₀ (by norm_num) (by omega)
+  have h4 : (2:ℝ)^(2*k) ≤ 2^6 := h1
+  have h5 : (2:ℝ)^(2*k) ≤ 2^6 := h1
+  have h6 : (20000:ℝ) * 4 * 4 * 2 ≤ 2^20 := by norm_num
+  calc (2:ℝ)^(2*k) * 2^(2*k-2) * 20000 * 4 * 2^(2*k) * 4 * 2 * 16^(2*k) * 2^(2*k)
+      = ((2:ℝ)^(2*k) * 2^(2*k-2) * 2^(2*k) * 16^(2*k) * 2^(2*k)) * (20000 * 4 * 4 * 2) := by ring
+    _ ≤ (2^6 * 2^4 * 2^6 * 2^24 * 2^6) * 2^20 := by gcongr
+    _ ≤ 2^68 := by norm_num
+
 lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 : k ≤ 3)
     (hmom : ∀ (p : ℕ) [Fact p.Prime] (χ : DirichletCharacter ℂ p), χ ≠ 1 → ∀ L : ℕ, L ≤ p →
       ∑ m ∈ Finset.range p, ‖cSum χ (m:ℤ) ((m:ℤ) + L)‖^(2*k)
@@ -1387,7 +1471,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
     have hexp_le : (1:ℝ)/6 ≤ 1/(2*(k:ℝ)) := by
       rw [div_le_div_iff₀ (by norm_num) (by positivity)]
       push_cast
-      linarith [hk3R]
+      linarith only [hk3R]
     have h1 : (1024:ℝ) ≤ ((2:ℝ)^60)^((1:ℝ)/6) := by
       rw [← Real.rpow_natCast_mul (by norm_num : (0:ℝ) ≤ 2) 60 (1/6)]
       have he : (↑(60:ℕ) : ℝ) * ((1:ℝ)/6) = 10 := by norm_num
@@ -1401,7 +1485,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   have h2le : (2:ℝ) ≤ (p:ℝ)^(1/(2*(k:ℝ))) := le_trans (by norm_num) h1024le
   have hexp_le_half : 1/(2*(k:ℝ)) ≤ (1:ℝ)/2 := by
     rw [div_le_div_iff₀ (by positivity) (by norm_num)]
-    push_cast; linarith [hkR2]
+    push_cast; linarith only [hkR2]
   have hpHalf : (p:ℝ)^(1/(2*(k:ℝ))) ≤ (p:ℝ)^((1:ℝ)/2) :=
     Real.rpow_le_rpow_of_exponent_le hp1 hexp_le_half
   have hp_sqrt_ge : (2:ℝ)^30 ≤ (p:ℝ)^((1:ℝ)/2) := by
@@ -1419,20 +1503,20 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       mul_le_mul h16sqrt hpHalf (Real.rpow_nonneg hp0.le (1/(2*(k:ℝ)))) (Real.rpow_nonneg hp0.le ((1:ℝ)/2))
     have h2 : (p:ℝ)^((1:ℝ)/2) * (p:ℝ)^((1:ℝ)/2) = (p:ℝ) := by
       rw [← Real.rpow_add hp0]; norm_num
-    linarith
+    linarith only [h1, h2]
   have h4p : (4:ℝ) * (p:ℝ)^(1 - 1/(2*(k:ℝ))) < (p:ℝ) := by
     have hsub : (p:ℝ)^(1 - 1/(2*(k:ℝ))) = (p:ℝ) / (p:ℝ)^(1/(2*(k:ℝ))) := by
       rw [Real.rpow_sub hp0, Real.rpow_one]
     have h1 : (p:ℝ) / (p:ℝ)^(1/(2*(k:ℝ))) ≤ (p:ℝ) / 8 :=
       div_le_div_of_nonneg_left hp0.le (by norm_num : (0:ℝ) < 8) h8le
     have h2 : (4:ℝ) * ((p:ℝ) / 8) = (p:ℝ) / 2 := by ring
-    have h3 : (p:ℝ) / 2 < (p:ℝ) := by linarith
-    linarith [hsub, h1, h2, h3]
+    have h3 : (p:ℝ) / 2 < (p:ℝ) := by linarith only [hp60r]
+    linarith only [hsub, h1, h2, h3, hp60r]
   -- ### A and P
   set A : ℝ := (H:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))) with hAdef
   have hexp2 : 1/(2*(k:ℝ)) ≤ ((k:ℝ)+1)/(4*(k:ℝ)) := by
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    push_cast; nlinarith [hk1]
+    push_cast; nlinarith only [hk1, hkR2]
   have hHlo' : (p:ℝ)^(1/(2*(k:ℝ))) ≤ (H:ℝ) :=
     le_trans (Real.rpow_le_rpow_of_exponent_le hp1 hexp2) hHlo
   have hA1 : 1 ≤ A := by
@@ -1452,7 +1536,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
     rw [h1]
     calc (H:ℝ) * (2 * (p:ℝ)^(-(1/(2*(k:ℝ))))) ≤ (H:ℝ) * 1 := by
           apply mul_le_mul_of_nonneg_left _ hHnn
-          linarith
+          linarith only [hpinv]
       _ = (H:ℝ) := by ring
   set P : ℕ := Nat.floor A + 1 with hPdef
   have hP1 : 1 ≤ P := by rw [hPdef]; omega
@@ -1463,10 +1547,10 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   have hPhigh : (P:ℝ) ≤ 2 * A := by
     rw [hPdef]; push_cast
     have h := Nat.floor_le hAnneg
-    linarith
-  have hPleH : (P:ℝ) ≤ (H:ℝ) := by linarith [hPhigh, hA2H]
+    linarith only [hA1, h]
+  have hPleH : (P:ℝ) ≤ (H:ℝ) := by linarith only [hPhigh, hA2H]
   have hPx' : 2 * A = 2 * (H:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))) := by rw [hAdef]; ring
-  have hPx : (P:ℝ) ≤ 2 * (H:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))) := by linarith [hPhigh, hPx']
+  have hPx : (P:ℝ) ≤ 2 * (H:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))) := by linarith only [hPhigh, hPx']
   have h2P : 2*P < p := by
     have h2 : (4:ℝ) * A < (p:ℝ) := by
       rw [hAdef]
@@ -1478,8 +1562,8 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       have h4 : (4:ℝ) * ((p:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ))))) = 4 * (p:ℝ)^(1 - 1/(2*(k:ℝ))) := by
         rw [show (p:ℝ)^(1 - 1/(2*(k:ℝ))) = (p:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))) by
           rw [Real.rpow_sub hp0, Real.rpow_one, div_eq_mul_inv, Real.rpow_neg hp0.le]]
-      linarith [h3, h4, h4p]
-    have : (2:ℝ)*(P:ℝ) < (p:ℝ) := by linarith [hPhigh, h2]
+      linarith only [h3, h4, h4p]
+    have : (2:ℝ)*(P:ℝ) < (p:ℝ) := by linarith only [hPhigh, h2]
     exact_mod_cast this
   -- ### the parameter hh
   set hh : ℕ := Nat.ceil ((H:ℝ)/(P:ℝ)) + 1 with hhhdef
@@ -1488,17 +1572,17 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   have hhhge : (H:ℝ)/(P:ℝ) ≤ (hh:ℝ) := by
     rw [hhhdef]; push_cast
     have h := Nat.le_ceil ((H:ℝ)/(P:ℝ))
-    linarith
+    linarith only [h]
   have hhhle : (hh:ℝ) ≤ (H:ℝ)/(P:ℝ) + 2 := by
     rw [hhhdef]; push_cast
     have h := Nat.ceil_lt_add_one (show (0:ℝ) ≤ (H:ℝ)/(P:ℝ) by positivity)
-    linarith
+    linarith only [h]
   have hhdivP1 : (1:ℝ) ≤ (H:ℝ)/(P:ℝ) := by
-    rw [le_div_iff₀ hPpos]; linarith [hPleH]
+    rw [le_div_iff₀ hPpos]; linarith only [hPleH, hA2H, hPhigh]
   have hhlo : (H:ℝ)/(2*(P:ℝ)) ≤ (hh:ℝ) := by
     have h2 : (H:ℝ)/(2*(P:ℝ)) ≤ (H:ℝ)/(P:ℝ) :=
-      div_le_div_of_nonneg_left hHnn (by linarith) (by linarith)
-    linarith [hhhge, h2]
+      div_le_div_of_nonneg_left hHnn (by linarith only [hPpos]) (by linarith only [hPpos])
+    linarith only [hhhge, h2]
   have hhhle2 : (hh:ℝ) ≤ 4 * (p:ℝ)^(1/(2*(k:ℝ))) := by
     have h1 : (H:ℝ)/(P:ℝ) ≤ (p:ℝ)^(1/(2*(k:ℝ))) := by
       rw [div_le_iff₀ hPpos]
@@ -1509,8 +1593,8 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
             mul_le_mul_of_nonneg_right hPlow (Real.rpow_nonneg hp0.le _)
         _ = (p:ℝ)^(1/(2*(k:ℝ))) * (P:ℝ) := by ring
     have h3 : (1:ℝ) ≤ (p:ℝ)^(1/(2*(k:ℝ))) := le_trans (by norm_num) h2le
-    linarith [hhhle, h1, h3]
-  have hhh_le_p : (hh:ℝ) ≤ (p:ℝ) := by linarith [hhhle2, h16p]
+    linarith only [hhhle, h1, h3, h1024le]
+  have hhh_le_p : (hh:ℝ) ≤ (p:ℝ) := by linarith only [hhhle2, h16p, hp60r]
   -- ### dyadic parameters
   set t : ℕ := Nat.log2 (2*hh) + 1 with htdef
   set K : ℕ := 2^t with hKdef
@@ -1518,7 +1602,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   have hhhge1 : (H:ℝ)/(P:ℝ) + 1 ≤ (hh:ℝ) := by
     rw [hhhdef]; push_cast
     have h := Nat.le_ceil ((H:ℝ)/(P:ℝ))
-    linarith
+    linarith only [h]
   have hKge : 2*hh ≤ K := by
     rw [hKdef, htdef, Nat.log2_eq_log_two]
     have h := Nat.lt_pow_succ_log_self (b := 2) (by norm_num) (2*hh)
@@ -1534,7 +1618,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
     have h2 : (4:ℝ)*(hh:ℝ) ≤ 4 * (4 * (p:ℝ)^(1/(2*(k:ℝ)))) :=
       mul_le_mul_of_nonneg_left hhhle2 (by norm_num : (0:ℝ) ≤ 4)
     have h3 : (4:ℝ) * (4 * (p:ℝ)^(1/(2*(k:ℝ)))) = 16 * (p:ℝ)^(1/(2*(k:ℝ))) := by ring
-    have : (K:ℝ) ≤ (p:ℝ) := by linarith [h1, h2, h3, h16p]
+    have : (K:ℝ) ≤ (p:ℝ) := by linarith only [h1, h2, h3, h16p, hhhle2]
     exact_mod_cast this
   -- ### H squared
   have hH2 : (H:ℝ)^2 ≤ (p:ℝ)^((2*(k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(8*k+16) := by
@@ -1567,15 +1651,15 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
         have hh1 : (hh:ℤ) * (x.1:ℤ) ≤ (p:ℤ) * (x.1:ℤ) := by
           apply mul_le_mul_of_nonneg_right _ (le_of_lt hL)
           exact_mod_cast hhh_le_p
-        nlinarith [hh1, hap, hN0]
+        nlinarith only [hh1, hap, hN0]
       simp only [oLo]
-      linarith
-    · have h1 : N - (x.2:ℤ)*(p:ℤ) ≤ N := by nlinarith [haz, le_of_lt hpz]
+      linarith only [key]
+    · have h1 : N - (x.2:ℤ)*(p:ℤ) ≤ N := by nlinarith only [haz, le_of_lt hpz]
       have h2 : (1:ℤ) ≤ (x.1:ℤ) := by exact_mod_cast hl1
-      have h3 : (p:ℤ) + 1 ≤ (p:ℤ) * (x.1:ℤ) + (x.1:ℤ) := by nlinarith [h2, le_of_lt hpz]
+      have h3 : (p:ℤ) + 1 ≤ (p:ℤ) * (x.1:ℤ) + (x.1:ℤ) := by nlinarith only [h2, le_of_lt hpz, hp, hPdef, hx1]
       simp only [oLo]
       rw [Int.ediv_le_iff_le_mul hL]
-      linarith
+      linarith only [hNp, h1, h3]
   have hlen : ∀ x ∈ objFinset P, oHi N p H x.1 x.2 - oLo N p x.1 x.2 ≤ (hh:ℤ) := by
     intro x hx
     obtain ⟨hx1, hx2, hx3⟩ := mem_objFinset.mp hx
@@ -1589,7 +1673,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       have h2 : ((H:ℝ)/(P:ℝ) + 1) * (P:ℝ) = (H:ℝ) + (P:ℝ) := by
         field_simp
       rw [h2] at h1
-      have : (H:ℝ) < (hh:ℝ) * (P:ℝ) := by linarith
+      have : (H:ℝ) < (hh:ℝ) * (P:ℝ) := by linarith only [hPpos, h1]
       exact_mod_cast this
     have h2 : (H:ℤ) / (x.1:ℤ) + 1 ≤ (hh:ℤ) := by
       have h3 : (H:ℤ) / (x.1:ℤ) ≤ (hh:ℤ) - 1 := by
@@ -1599,8 +1683,8 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
         have h4 : (hh:ℤ) * (P:ℤ) ≤ (hh:ℤ) * (x.1:ℤ) :=
           mul_le_mul_of_nonneg_left (show (P:ℤ) ≤ (x.1:ℤ) by exact_mod_cast hPl)
             (Nat.cast_nonneg hh)
-        linarith
-      linarith
+        linarith only [hHlt, h4]
+      linarith only [h3]
     have hkey : (N + (H:ℤ) - (x.2:ℤ)*(p:ℤ))/(x.1:ℤ) - (N - (x.2:ℤ)*(p:ℤ))/(x.1:ℤ)
         ≤ (H:ℤ)/(x.1:ℤ) + 1 := by
       have h := Commons.NumberTheory.Auxiliary.ediv_add_sub_ediv_le hL (N - (x.2:ℤ)*(p:ℤ)) (H:ℤ) (Nat.cast_nonneg H)
@@ -1713,7 +1797,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   set κ : ℝ := (P:ℝ)^2 * ((hh:ℝ)+2) / (p:ℝ) with hκdef
   have hhh2' : (hh:ℝ) + 2 ≤ 8 * (p:ℝ)^(1/(2*(k:ℝ))) := by
     have h4 : (1:ℝ) ≤ (p:ℝ)^(1/(2*(k:ℝ))) := Real.one_le_rpow hp1 (by positivity)
-    linarith [hhhle2, h4]
+    linarith only [hhhle2, h4, h1024le]
   have hP2H : (P:ℝ)^2 ≤ 4 * (H:ℝ)^2 * (p:ℝ)^(-(1/(k:ℝ))) := by
     have h1 : (P:ℝ)^2 ≤ (2 * (H:ℝ) * (p:ℝ)^(-(1/(2*(k:ℝ)))))^2 :=
       pow_le_pow_left₀ (by positivity) hPx 2
@@ -1776,8 +1860,8 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
     have h1 : Real.log (2 * (P:ℝ)) ≤ Real.log p := by
       apply Real.log_le_log (by positivity)
       have : (2:ℝ)*(P:ℝ) < (p:ℝ) := by exact_mod_cast h2P
-      linarith
-    linarith [hL1]
+      linarith only [this]
+    linarith only [hL1, h1]
   have hκle : κ ≤ 32 * (Real.log p)^(8*k+16) := by
     rw [hκdef, div_le_iff₀ hp0]
     have h2 : (P:ℝ)^2 * ((hh:ℝ)+2)
@@ -1837,14 +1921,14 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       have h1 : 8*κ + 4 ≤ 12 * (32 * (Real.log p)^(8*k+16)) := by
         have h2 : (1:ℝ) ≤ (Real.log p)^(8*k+16) := one_le_pow₀ hL1
         have h3 := mul_le_mul_of_nonneg_left hκle (by norm_num : (0:ℝ) ≤ 8)
-        linarith
+        linarith only [hκle, h2]
       have h2 : (16:ℝ) * (P:ℝ)^2 * (Real.log (2*(P:ℝ)) + 1)
           ≤ (16:ℝ) * (P:ℝ)^2 * (2 * Real.log p) :=
-        mul_le_mul_of_nonneg_left (by linarith [hlog2P]) (by positivity)
+        mul_le_mul_of_nonneg_left (by linarith only [hlog2P]) (by positivity)
       have h3 : (8*κ+4) * (16 * (P:ℝ)^2 * (Real.log (2*(P:ℝ)) + 1))
           ≤ (12 * (32 * (Real.log p)^(8*k+16))) * (16 * (P:ℝ)^2 * (2*Real.log p)) :=
         mul_le_mul h1 h2 (mul_nonneg (by positivity)
-          (add_nonneg (Real.log_nonneg (by linarith [hPpos])) (by norm_num))) (by positivity)
+          (add_nonneg (Real.log_nonneg (by linarith only [hPpos, hA1, hPlow])) (by norm_num))) (by positivity)
       refine h3.trans ?_
       have hLp : (Real.log p)^(8*k+16) * Real.log p = (Real.log p)^(8*k+17) := by
         rw [← pow_succ]
@@ -1853,7 +1937,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
         _ = 12288 * (P:ℝ)^2 * (Real.log p)^(8*k+17) := by rw [hLp]
         _ ≤ 13000 * (P:ℝ)^2 * (Real.log p)^(8*k+17) := by
             have h4 : (0:ℝ) ≤ (P:ℝ)^2 * (Real.log p)^(8*k+17) := by positivity
-            linarith
+            linarith only [hPpos, hPleP2, hb2]
     calc collCount N p hh P
         ≤ 16 * κ * (P:ℝ) + 4 * (P:ℝ)^2
           + (8*κ+4) * (16*(P:ℝ)^2*(Real.log (2*(P:ℝ))+1)) := hRHS
@@ -1863,22 +1947,22 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
           have h4 : 512 * (P:ℝ)^2 * (Real.log p)^(8*k+16)
               ≤ 512 * (P:ℝ)^2 * (Real.log p)^(8*k+17) :=
             mul_le_mul_of_nonneg_left hpow (by positivity)
-          linarith [h4]
+          linarith only [h4, hPpos, hPleP2, hb2]
   -- ### t bound
   have hL20 : (20:ℝ) ≤ Real.log p := by
     have h1 : Real.log ((2:ℝ)^60) ≤ Real.log p := Real.log_le_log (by positivity) hp60r
     have h2 : Real.log ((2:ℝ)^60) = 60 * Real.log 2 := by rw [Real.log_pow]; norm_num
-    have h3 : (20:ℝ) ≤ 60 * Real.log 2 := by linarith [Real.log_two_gt_d9]
-    linarith
+    have h3 : (20:ℝ) ≤ 60 * Real.log 2 := by linarith only [Real.log_two_gt_d9]
+    linarith only [h1, h2, h3]
   have htb : ((t:ℝ)+1)^(2*k) ≤ 2^(2*k) * (Real.log p)^(2*k) := by
     have hK64 : ((2:ℝ)^t) ≤ 64 * (p:ℝ)^(1/(2*(k:ℝ))) := by
       have h1 : (K:ℝ) ≤ 4*(hh:ℝ) := by exact_mod_cast hKle
       have h2 : (4:ℝ)*(hh:ℝ) ≤ 4*(4*(p:ℝ)^(1/(2*(k:ℝ)))) :=
         mul_le_mul_of_nonneg_left hhhle2 (by norm_num : (0:ℝ) ≤ 4)
-      have h3 : (K:ℝ) ≤ 64*(p:ℝ)^(1/(2*(k:ℝ))) := by linarith
+      have h3 : (K:ℝ) ≤ 64*(p:ℝ)^(1/(2*(k:ℝ))) := by linarith only [h1024le, hhhle2, h1]
       rwa [hKcast] at h3
     have hlog2pos : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
-    have hlog2ge : (2:ℝ)/3 ≤ Real.log 2 := by linarith [Real.log_two_gt_d9]
+    have hlog2ge : (2:ℝ)/3 ≤ Real.log 2 := by linarith only [Real.log_two_gt_d9, hlog2pos]
     have hlogineq : (t:ℝ) * Real.log 2 ≤ 6 * Real.log 2 + (1/(2*(k:ℝ))) * Real.log p := by
       have h0 : (0:ℝ) < (2:ℝ)^t := by positivity
       have h1 := Real.log_le_log h0 hK64
@@ -1891,13 +1975,13 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       rw [h2] at h1
       exact h1
     have h4 : (1:ℝ)/(2*(k:ℝ)) ≤ (1:ℝ)/4 := by
-      rw [div_le_div_iff₀ (by positivity) (by norm_num)]; push_cast; linarith [hkR2]
+      rw [div_le_div_iff₀ (by positivity) (by norm_num)]; push_cast; linarith only [hkR2]
     have ht1 : (t:ℝ) * Real.log 2 ≤ 6 * Real.log 2 + (Real.log p)/4 := by
       have h5 : (1/(2*(k:ℝ))) * Real.log p ≤ (Real.log p)/4 := by
         calc (1/(2*(k:ℝ))) * Real.log p ≤ ((1:ℝ)/4) * Real.log p :=
               mul_le_mul_of_nonneg_right h4 hLpos.le
           _ = (Real.log p)/4 := by ring
-      linarith
+      linarith only [hlogineq, h5]
     have ht2 : (t:ℝ) ≤ 6 + (Real.log p)/(4 * Real.log 2) := by
       have h6 : (t:ℝ) * Real.log 2 / Real.log 2
           ≤ (6 * Real.log 2 + (Real.log p)/4) / Real.log 2 :=
@@ -1910,13 +1994,13 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       exact h6
     have hinv : (1:ℝ)/(4 * Real.log 2) ≤ (3:ℝ)/8 := by
       rw [div_le_iff₀ (by positivity)]
-      linarith [hlog2ge]
+      linarith only [hlog2ge]
     have ht4 : (t:ℝ) ≤ 6 + (3:ℝ)/8 * Real.log p := by
       have h8 : (Real.log p)/(4 * Real.log 2) = (Real.log p) * (1/(4 * Real.log 2)) := by ring
       rw [h8] at ht2
       have h9 := mul_le_mul_of_nonneg_left hinv hLpos.le
-      linarith [ht2, h9]
-    have ht5 : (t:ℝ) + 1 ≤ 2 * Real.log p := by linarith [ht4, hL20]
+      linarith only [ht2, h9]
+    have ht5 : (t:ℝ) + 1 ≤ 2 * Real.log p := by linarith only [ht4, hL20]
     have h10 := pow_le_pow_left₀ (by positivity : (0:ℝ) ≤ (t:ℝ)+1) ht5 (2*k)
     rwa [mul_pow] at h10
   -- ### moment bound
@@ -1924,7 +2008,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
     have h1 : (K:ℝ) ≤ 4*(hh:ℝ) := by exact_mod_cast hKle
     have h2 : (4:ℝ)*(hh:ℝ) ≤ 4*(4*(p:ℝ)^(1/(2*(k:ℝ)))) :=
       mul_le_mul_of_nonneg_left hhhle2 (by norm_num : (0:ℝ) ≤ 4)
-    linarith
+    linarith only [hhhle2, h1]
   have hmomB : (p:ℝ)*((K:ℝ))^k + ((K:ℝ))^(2*k)*Real.sqrt (p:ℝ)
       ≤ 2*16^(2*k)*(p:ℝ)^((3:ℝ)/2) := by
     have hsqrt : Real.sqrt (p:ℝ) = (p:ℝ)^((1:ℝ)/2) := Real.sqrt_eq_rpow _
@@ -1960,7 +2044,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       have h2 : (p:ℝ) * (16^k * (p:ℝ)^((1:ℝ)/2)) = 16^k * (p:ℝ)^((3:ℝ)/2) := by
         rw [show (p:ℝ) * (16^k * (p:ℝ)^((1:ℝ)/2)) = 16^k * ((p:ℝ) * (p:ℝ)^((1:ℝ)/2)) by ring,
           hpadd]
-      linarith [h1, h2]
+      linarith only [h1, h2]
     have hb : (K:ℝ)^(2*k) * Real.sqrt (p:ℝ) ≤ 16^(2*k) * (p:ℝ)^((3:ℝ)/2) := by
       rw [hsqrt]
       have h1 : (K:ℝ)^(2*k) * (p:ℝ)^((1:ℝ)/2) ≤ (16^(2*k) * (p:ℝ)) * (p:ℝ)^((1:ℝ)/2) :=
@@ -1968,12 +2052,12 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       have h2 : (16^(2*k) * (p:ℝ)) * (p:ℝ)^((1:ℝ)/2) = 16^(2*k) * (p:ℝ)^((3:ℝ)/2) := by
         rw [show (16^(2*k) * (p:ℝ)) * (p:ℝ)^((1:ℝ)/2) = 16^(2*k) * ((p:ℝ) * (p:ℝ)^((1:ℝ)/2)) by ring,
           hpadd]
-      linarith [h1, h2]
+      linarith only [h1, h2]
     have h16k : (16:ℝ)^k ≤ 16^(2*k) :=
       pow_le_pow_right₀ (by norm_num : (1:ℝ) ≤ 16) (by omega : k ≤ 2*k)
     have h16k2 : 16^k * (p:ℝ)^((3:ℝ)/2) ≤ 16^(2*k) * (p:ℝ)^((3:ℝ)/2) :=
       mul_le_mul_of_nonneg_right h16k (by positivity)
-    linarith [ha, hb, h16k2]
+    linarith only [ha, hb, h16k2]
   have hPhh : (P:ℝ)^(2*k-2) * ((hh:ℝ))⁻¹
       ≤ 2^(2*k) * (H:ℝ)^(2*k-2) * (p:ℝ)^(1/(2*(k:ℝ)) - 1) := by
     have hinv : ((hh:ℝ))⁻¹ ≤ 2 * (P:ℝ) / (H:ℝ) := by
@@ -2016,19 +2100,8 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
       _ = 2^(2*k) * (H:ℝ)^(2*k-2) * (p:ℝ)^(1/(2*(k:ℝ)) - 1) := by
             rw [show (2:ℝ)^(2*k) = 2^(2*k-1) * 2 by rw [← pow_succ]; congr 1; omega, ← he]
   -- ### final monomial comparison
-  have haux : (2:ℝ)^(2*k) * 2^(2*k-2) * 20000 * 4 * 2^(2*k) * 4 * 2 * 16^(2*k) * 2^(2*k) ≤ 2^68 := by
-    have h1 : (2:ℝ)^(2*k) ≤ 2^6 := pow_le_pow_right₀ (by norm_num) (by omega)
-    have h2 : (2:ℝ)^(2*k-2) ≤ 2^4 := pow_le_pow_right₀ (by norm_num) (by omega)
-    have h3 : (16:ℝ)^(2*k) ≤ 2^24 := by
-      rw [show (16:ℝ) = 2^4 by norm_num, ← pow_mul]
-      exact pow_le_pow_right₀ (by norm_num) (by omega)
-    have h4 : (2:ℝ)^(2*k) ≤ 2^6 := h1
-    have h5 : (2:ℝ)^(2*k) ≤ 2^6 := h1
-    have h6 : (20000:ℝ) * 4 * 4 * 2 ≤ 2^20 := by norm_num
-    calc (2:ℝ)^(2*k) * 2^(2*k-2) * 20000 * 4 * 2^(2*k) * 4 * 2 * 16^(2*k) * 2^(2*k)
-        = ((2:ℝ)^(2*k) * 2^(2*k-2) * 2^(2*k) * 16^(2*k) * 2^(2*k)) * (20000 * 4 * 4 * 2) := by ring
-      _ ≤ (2^6 * 2^4 * 2^6 * 2^24 * 2^6) * 2^20 := by gcongr
-      _ ≤ 2^68 := by norm_num
+  have haux : (2:ℝ)^(2*k) * 2^(2*k-2) * 20000 * 4 * 2^(2*k) * 4 * 2 * 16^(2*k) * 2^(2*k) ≤ 2^68 :=
+    burgess_core_aux k hk2 hk3
   have hhhpow : (hh:ℝ)^(2*k-1) = (hh:ℝ)^(2*k) * ((hh:ℝ))⁻¹ := by
     have h1 : (hh:ℝ)^(2*k) = (hh:ℝ)^(2*k-1) * (hh:ℝ) := by
       rw [← pow_succ]; congr 1; omega
@@ -2149,70 +2222,7 @@ lemma burgess_core (Cm : ℝ) (hCm1 : 1 ≤ Cm) (k : ℕ) (hk2 : 2 ≤ k) (hk3 :
   have hpow : ‖cSum χ N (N + (H:ℤ))‖^(2*k)
       ≤ 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17) :=
     le_of_mul_le_mul_left hscaled (by positivity)
-  -- ### extract the 2k-th root
-  have hRHSnn : (0:ℝ) ≤ 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20) := by
-    have h1 : (0:ℝ) ≤ (p:ℝ)^((k+1)/(4*k^2:ℝ)) := Real.rpow_nonneg hp0.le _
-    have h2 : (0:ℝ) ≤ (H:ℝ)^(1 - 1/(k:ℝ)) := Real.rpow_nonneg hHpos.le _
-    have h3 : (0:ℝ) ≤ (Real.log p)^(10*k+20) := by positivity
-    positivity
-  have hsq : 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
-      ≤ (2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k) := by
-    have hp2 : ((p:ℝ)^((k+1)/(4*k^2:ℝ)))^(2*k) = (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) := by
-      have hpe : ((k:ℝ)+1)/(4*(k:ℝ)^2) * ((2*k:ℕ):ℝ) = ((k:ℝ)+1)/(2*(k:ℝ)) := by
-        have hkne : (k:ℝ) ≠ 0 := ne_of_gt hkpos
-        push_cast
-        field_simp
-        ring
-      rw [← Real.rpow_natCast (x := (p:ℝ)^((k+1)/(4*k^2:ℝ))) (n := 2*k), ← Real.rpow_mul hp0.le, hpe]
-    have hH2' : ((H:ℝ)^(1 - 1/(k:ℝ)))^(2*k) = (H:ℝ)^(2*k-2) := by
-      have hHe : (1 - 1/(k:ℝ)) * ((2*k:ℕ):ℝ) = ((2*k-2:ℕ):ℝ) := by
-        have hkne : (k:ℝ) ≠ 0 := ne_of_gt hkpos
-        have hcast : ((2*k-2:ℕ):ℝ) = 2*(k:ℝ) - 2 := by
-          rw [Nat.cast_sub (by omega : 2 ≤ 2*k)]; push_cast; ring
-        rw [hcast]
-        push_cast
-        field_simp
-      rw [← Real.rpow_natCast (x := (H:ℝ)^(1 - 1/(k:ℝ))) (n := 2*k), ← Real.rpow_mul hHpos.le, hHe,
-        Real.rpow_natCast]
-    have hL2 : ((Real.log p)^(10*k+20))^(2*k) = (Real.log p)^((10*k+20)*(2*k)) :=
-      (pow_mul (Real.log p) (10*k+20) (2*k)).symm
-    have hB : (2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k)
-        = 2^(70*(2*k)) * Cm^(2*k) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (H:ℝ)^(2*k-2)
-          * (Real.log p)^((10*k+20)*(2*k)) := by
-      rw [show 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20)
-          = (2^70 * Cm) * ((p:ℝ)^((k+1)/(4*k^2:ℝ)) * ((H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))) from by ring]
-      simp only [mul_pow]
-      rw [← pow_mul, hp2, hH2', hL2]
-      ring
-    rw [hB]
-    have hc : (2:ℝ)^68 * Cm ≤ 2^(70*(2*k)) * Cm^(2*k) := by
-      have h2 : (2:ℝ)^68 ≤ 2^(70*(2*k)) :=
-        pow_le_pow_right₀ (by norm_num : (1:ℝ) ≤ 2) (by omega : 68 ≤ 70*(2*k))
-      have h3 : Cm ≤ Cm^(2*k) := by
-        have := pow_le_pow_right₀ hCm1 (show 1 ≤ 2*k by omega)
-        simpa using this
-      exact mul_le_mul h2 h3 (le_trans zero_le_one hCm1) (by positivity)
-    have hL : (Real.log p)^(10*k+17) ≤ (Real.log p)^((10*k+20)*(2*k)) :=
-      pow_le_pow_right₀ hL1 (by nlinarith [hk1])
-    have h2 : (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
-        ≤ (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^((10*k+20)*(2*k)) :=
-      mul_le_mul_of_nonneg_left hL (by positivity)
-    calc 2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)
-        = (2^68 * Cm) * ((H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17)) := by ring
-      _ ≤ 2^(70*(2*k)) * Cm^(2*k) * ((H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^((10*k+20)*(2*k))) :=
-            mul_le_mul hc h2 (by positivity) (by positivity)
-      _ = 2^(70*(2*k)) * Cm^(2*k) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (H:ℝ)^(2*k-2) * (Real.log p)^((10*k+20)*(2*k)) := by ring
-  have hfin1 : ‖cSum χ N (N + (H:ℤ))‖
-      ≤ (2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17))^(((2*k:ℕ):ℝ)⁻¹) := by
-    have h2k : (0:ℝ) ≤ ‖cSum χ N (N + (H:ℤ))‖^(2*k) := by positivity
-    have := Real.rpow_le_rpow h2k hpow (by positivity : (0:ℝ) ≤ ((2*k:ℕ):ℝ)⁻¹)
-    rwa [Real.pow_rpow_inv_natCast (norm_nonneg _) (by omega : 2*k ≠ 0)] at this
-  refine hfin1.trans ?_
-  calc (2^68 * Cm * (H:ℝ)^(2*k-2) * (p:ℝ)^(((k:ℝ)+1)/(2*(k:ℝ))) * (Real.log p)^(10*k+17))^(((2*k:ℕ):ℝ)⁻¹)
-      ≤ ((2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20))^(2*k))^(((2*k:ℕ):ℝ)⁻¹) :=
-        Real.rpow_le_rpow (by positivity) hsq (by positivity)
-    _ = 2^70 * Cm * (p:ℝ)^((k+1)/(4*k^2:ℝ)) * (H:ℝ)^(1 - 1/(k:ℝ)) * (Real.log p)^(10*k+20) :=
-        Real.pow_rpow_inv_natCast hRHSnn (by omega : 2*k ≠ 0)
+  exact burgess_core_tail Cm hCm1 k hk2 hp0 H hHpos hL1 _ (norm_nonneg _) hpow
 
 /-- Periodicity of `cSum` under translation by a multiple of the modulus. -/
 lemma cSum_add_q_mul (χ : DirichletCharacter ℂ q) (a b : ℤ) (j : ℕ) :
@@ -2279,7 +2289,7 @@ theorem burgess_prime_of_moment
   have hHnn : (0:ℝ) ≤ (H:ℝ) := hHpos.le
   have hσpos : (0:ℝ) < (k + 1 : ℝ) / (4 * k ^ 2) + ε := by
     have h1 : (0:ℝ) < (k + 1 : ℝ) / (4 * k ^ 2) := by positivity
-    linarith
+    linarith only [hε, h1]
   have hσnn : (0:ℝ) ≤ (k + 1 : ℝ) / (4 * k ^ 2) + ε := hσpos.le
   have htriv : ∀ (N' H' : ℕ), ‖∑ n ∈ Finset.Ioc N' (N' + H'), χ (n : ZMod p)‖ ≤ (H':ℝ) := by
     intro N' H'
@@ -2297,7 +2307,7 @@ theorem burgess_prime_of_moment
       · have ha1 : (1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε) ≤ 1 := by
           have h1 : (1:ℝ)/(k:ℝ) ≤ 1 := by
             rw [div_le_one hkposR]; exact hk1R
-          linarith [hσpos, h1]
+          linarith only [hσpos, h1]
         calc (p:ℝ)^((1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε))
             ≤ (((2^60 : ℕ)):ℝ)^((1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε)) :=
               Real.rpow_le_rpow hp0.le (by exact_mod_cast (le_of_lt hp60)) ha
@@ -2307,7 +2317,7 @@ theorem burgess_prime_of_moment
           _ = 2^60 := by norm_num
       · push_neg at ha
         have hpa : (1:ℝ) ≤ (p:ℝ)^(-((1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε))) :=
-          Real.one_le_rpow hp1 (by linarith)
+          Real.one_le_rpow hp1 (by linarith only [ha])
         calc (p:ℝ)^((1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε))
             = ((p:ℝ)^(-((1:ℝ)/(k:ℝ) - ((k + 1 : ℝ) / (4 * k ^ 2) + ε))))⁻¹ := by
               rw [Real.rpow_neg hp0.le, inv_inv]
@@ -2340,15 +2350,15 @@ theorem burgess_prime_of_moment
           apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hHnn _)
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           have h5 : (0:ℝ) ≤ 2^70 * Cm * C1 := by positivity
-          have h6 : (0:ℝ) ≤ 2 * Ccs := by linarith [hCcspos]
-          linarith
+          have h6 : (0:ℝ) ≤ 2 * Ccs := by linarith only [hCcspos]
+          linarith only [hCcspos, h5]
   · -- p ≥ 2^60
     have hL20 : (20:ℝ) ≤ Real.log p := by
       have h1 : Real.log ((2:ℝ)^60) ≤ Real.log p :=
         Real.log_le_log (by positivity) (by exact_mod_cast hp60)
       have h2 : Real.log ((2:ℝ)^60) = 60 * Real.log 2 := by rw [Real.log_pow]; norm_num
-      have h3 : (20:ℝ) ≤ 60 * Real.log 2 := by linarith [Real.log_two_gt_d9]
-      linarith
+      have h3 : (20:ℝ) ≤ 60 * Real.log 2 := by linarith only [Real.log_two_gt_d9]
+      linarith only [h1, h2, h3]
     by_cases hB : (H:ℝ) ≤ (p:ℝ)^((k + 1 : ℝ) / (4 * k : ℝ))
     · -- ### case B: H ≤ p^((k+1)/(4k))
       have hHk : (H:ℝ)^((1:ℝ)/(k:ℝ)) ≤ (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2)) := by
@@ -2371,10 +2381,10 @@ theorem burgess_prime_of_moment
               * (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2) + ε) * (H:ℝ)^(1 - 1/(k:ℝ)) := by
             have h5 : (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2))
                 ≤ (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2) + ε) :=
-              Real.rpow_le_rpow_of_exponent_le hp1 (by linarith [hε])
+              Real.rpow_le_rpow_of_exponent_le hp1 (by linarith only [hε])
             have h6 : (1:ℝ) ≤ 2^60 + 2^70 * Cm * C1 + 2 * Ccs + 1 := by
               have h7 : (0:ℝ) ≤ 2^70 * Cm * C1 := by positivity
-              linarith [hCcspos, h7]
+              linarith only [hCcspos, h7]
             calc (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2)) * (H:ℝ)^(1 - 1/(k:ℝ))
                 ≤ (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2) + ε) * (H:ℝ)^(1 - 1/(k:ℝ)) :=
                   mul_le_mul_of_nonneg_right h5 (Real.rpow_nonneg hHnn _)
@@ -2387,14 +2397,14 @@ theorem burgess_prime_of_moment
       · -- ### case C: Polya-Vinogradov
         have hlog : Real.log (2*(p:ℝ) + 2) ≤ 2 * Real.log p := by
           calc Real.log (2*(p:ℝ) + 2) ≤ Real.log (4*(p:ℝ)) :=
-                Real.log_le_log (by positivity) (by linarith)
+                Real.log_le_log (by positivity) (by linarith only [hp1])
             _ = Real.log 4 + Real.log (p:ℝ) :=
                 Real.log_mul (by norm_num) (ne_of_gt hp0)
             _ = 2*Real.log 2 + Real.log p := by
                 rw [show (4:ℝ) = (2:ℝ)^2 by norm_num, Real.log_pow]; norm_num
             _ ≤ 2 * Real.log p := by
-                have h3 : (2:ℝ) * Real.log 2 ≤ 20 := by linarith [Real.log_two_lt_d9]
-                linarith [hL20]
+                have h3 : (2:ℝ) * Real.log 2 ≤ 20 := by linarith only [Real.log_two_lt_d9]
+                linarith only [hL20, h3]
         have hS : ‖∑ n ∈ Finset.Ioc N (N + H), χ (n : ZMod p)‖
             ≤ Ccs * Real.sqrt (p:ℝ) * Real.log (2*(p:ℝ) + 2) := by
           rw [Ioc_eq_Icc' hH1]
@@ -2403,14 +2413,14 @@ theorem burgess_prime_of_moment
         have hm1 : (1:ℝ) ≤ Me := by
           have h7 : (1:ℝ)/(k:ℝ) ≤ (1:ℝ)/2 := by
             rw [div_le_div_iff₀ hkposR (by norm_num : (0:ℝ) < 2)]
-            linarith [hk2R]
-          have h8 : (8:ℝ) ≤ ((4*k+8 : ℕ) : ℝ) := by push_cast; linarith [hk1R]
-          have h9 : (1:ℝ)/2 ≤ 1 - 1/(k:ℝ) := by linarith
+            linarith only [hk2R]
+          have h8 : (8:ℝ) ≤ ((4*k+8 : ℕ) : ℝ) := by push_cast; linarith only [hk1R, hk2R]
+          have h9 : (1:ℝ)/2 ≤ 1 - 1/(k:ℝ) := by linarith only [h7]
           rw [hmdef]
-          nlinarith [h8, h9]
+          nlinarith only [h8, h9, h7]
         have hmnn : (0:ℝ) ≤ Me := le_trans zero_le_one hm1
-        have hLpos' : (0:ℝ) ≤ Real.log p := by linarith [hL20]
-        have hL1' : (1:ℝ) ≤ Real.log p := by linarith [hL20]
+        have hLpos' : (0:ℝ) ≤ Real.log p := by linarith only [hL20]
+        have hL1' : (1:ℝ) ≤ Real.log p := by linarith only [hL20]
         have hHlower : (p:ℝ)^(((2*k+1:ℝ)/(4*k:ℝ)) * (1 - 1/(k:ℝ))) * (Real.log p)^Me
             ≤ (H:ℝ)^(1 - 1/(k:ℝ)) := by
           have hpow : ((p:ℝ)^((2*k+1:ℝ)/(4*k:ℝ)) * (Real.log p)^(4*k+8))^(1 - 1/(k:ℝ))
@@ -2423,7 +2433,7 @@ theorem burgess_prime_of_moment
           rw [← hpow]
           exact Real.rpow_le_rpow (by positivity : (0:ℝ) ≤ (p:ℝ)^((2*k+1:ℝ)/(4*k:ℝ)) * (Real.log p)^(4*k+8)) hC (by
             have h3 : (1:ℝ)/(k:ℝ) ≤ 1 := by rw [div_le_one hkposR]; exact hk1R
-            linarith)
+            linarith only [h3])
         have hterm : (2:ℝ)*Ccs * Real.log p ≤ (2^60 + 2^70 * Cm * C1 + 2 * Ccs + 1)
             * (p:ℝ)^ε * (Real.log p)^Me := by
           have h1 : Real.log p ≤ (Real.log p)^Me := by
@@ -2432,7 +2442,7 @@ theorem burgess_prime_of_moment
           have h2 : (0:ℝ) ≤ (Real.log p)^Me := by positivity
           have h3 : (2:ℝ)*Ccs ≤ 2^60 + 2^70 * Cm * C1 + 2 * Ccs + 1 := by
             have h5 : (0:ℝ) ≤ 2^70 * Cm * C1 := by positivity
-            linarith
+            linarith only [h5]
           have h4 : (1:ℝ) ≤ (p:ℝ)^ε := Real.one_le_rpow hp1 hε.le
           calc (2:ℝ)*Ccs * Real.log p
               ≤ (2^60 + 2^70 * Cm * C1 + 2 * Ccs + 1) * (Real.log p)^Me := by
@@ -2546,7 +2556,7 @@ theorem burgess_prime_of_moment
                 * (p:ℝ)^((k + 1 : ℝ) / (4 * k ^ 2) + ε) * (H:ℝ)^(1 - 1/(k:ℝ)) := by
               apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hHnn _)
               apply mul_le_mul_of_nonneg_right _ (by positivity)
-              linarith [hCmpos, hC1pos, hCcspos]
+              linarith only [hCmpos, hC1pos, hCcspos]
 
 
 end Commons.NumberTheory.DirichletCharacter

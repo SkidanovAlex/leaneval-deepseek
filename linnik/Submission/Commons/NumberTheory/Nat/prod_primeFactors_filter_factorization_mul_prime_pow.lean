@@ -1,7 +1,6 @@
 import Mathlib.Algebra.Order.Star.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Submission.Commons.Data.Nat.mul_factorization_of_dvd_left
-import Submission.Commons.Data.Nat.factorization_prime_pow_apply
 
 namespace Commons.NumberTheory.Nat
 

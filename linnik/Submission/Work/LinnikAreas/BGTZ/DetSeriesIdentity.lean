@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikAreas.BGTZ.DetSeriesDefs
 import Submission.Work.LinnikAreas.BGTZ.DetSeriesAux
 import Submission.Work.LinnikAreas.BGTZ.DetectorSeries
-import Submission.Work.LinnikAreas.BGTZ.DetSieveLocalEq
 
 namespace Work.LinnikAreas.BGTZ
 

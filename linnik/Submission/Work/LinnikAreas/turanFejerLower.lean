@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikAreas.TFDefs
 import Submission.Work.LinnikAreas.aZAutocorr
 import Submission.Work.LinnikAreas.fejerSq
-import Submission.Work.LinnikAreas.countTri
 import Submission.Work.LinnikAreas.doubleSum
 import Submission.Work.LinnikAreas.summable_aZ_shift
 

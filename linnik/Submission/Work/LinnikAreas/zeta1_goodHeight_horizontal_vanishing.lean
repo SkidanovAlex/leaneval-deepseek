@@ -1,11 +1,11 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_zero_strip
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_windowZeroCount
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_goodHeight_pointwise
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_logDeriv_pointwise_bound
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta_strip_polyGrowth_far_left
 import Submission.Work.LinnikAreas.Zeta1Aux.tendsto_inv_sq_mul_log_sq
+import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
 
 open Filter MeasureTheory
 

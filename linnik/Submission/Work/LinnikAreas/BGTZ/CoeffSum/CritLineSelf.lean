@@ -40,8 +40,8 @@ lemma kernel_inv_bound (β y : ℝ) (hβ : 3 / 4 ≤ β) (hβ1 : β < 1) :
     rw [Complex.sq_norm, Complex.normSq_apply, hsre, hsim]; ring
   have hnorm1 : ‖s + 1‖ ^ 2 = (3 / 2 - β) ^ 2 + y ^ 2 := by
     rw [Complex.sq_norm, Complex.normSq_apply, hs1re, hs1im]; ring
-  have ha : (1 / 16 : ℝ) ≤ (1 / 2 - β) ^ 2 := by nlinarith
-  have hb : (1 / 4 : ℝ) ≤ (3 / 2 - β) ^ 2 := by nlinarith
+  have ha : (1 / 16 : ℝ) ≤ (1 / 2 - β) ^ 2 := by nlinarith only [hβ]
+  have hb : (1 / 4 : ℝ) ≤ (3 / 2 - β) ^ 2 := by nlinarith only [hβ1]
   have haux : 0 < (1 + y ^ 2) / 8 := by positivity
   have hsqrt_le : (1 + y ^ 2) / 8 ≤ ‖s‖ * ‖s + 1‖ := by
     have hrhs : ‖s‖ * ‖s + 1‖ = Real.sqrt (‖s‖ ^ 2 * ‖s + 1‖ ^ 2) := by
@@ -51,7 +51,7 @@ lemma kernel_inv_bound (β y : ℝ) (hβ : 3 / 4 ≤ β) (hβ1 : β < 1) :
       rw [Real.sqrt_sq (by positivity)]]
     apply Real.sqrt_le_sqrt
     rw [hnorms, hnorm1]
-    nlinarith [ha, hb, sq_nonneg y]
+    nlinarith only [ha, hb, sq_nonneg y]
   have hprod_pos : 0 < ‖s‖ * ‖s + 1‖ := lt_of_lt_of_le haux hsqrt_le
   calc ‖(s * (s + 1))⁻¹‖ = (‖s * (s + 1)‖)⁻¹ := norm_inv _
     _ = (‖s‖ * ‖s + 1‖)⁻¹ := by rw [norm_mul]
@@ -62,7 +62,7 @@ lemma kernel_inv_bound (β y : ℝ) (hβ : 3 / 4 ≤ β) (hβ1 : β < 1) :
         rw [show (32 : ℝ) * ((1 + |y|) ^ 2)⁻¹ = 32 / (1 + |y|) ^ 2 by ring]
         rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 1 + y ^ 2)
           (by positivity : (0 : ℝ) < (1 + |y|) ^ 2)]
-        nlinarith [sq_abs y, abs_nonneg y, sq_nonneg (|y| - 1), sq_nonneg y]
+        linarith only [sq_abs y, abs_nonneg y, sq_nonneg (|y| - 1), sq_nonneg y, hβ, hβ1]
 
 /-- The majorant `(1+|y|)^{-7/6}` is integrable with integral at most `12`. -/
 lemma integrable_abs_kernel :
@@ -92,7 +92,7 @@ lemma integrable_abs_kernel :
       HasDerivAt (fun t : ℝ => -6 * (1 + t) ^ (-(1 / 6 : ℝ))) ((1 + x) ^ (-(7 / 6 : ℝ))) x := by
     intro x hx
     have hx0 : (0 : ℝ) ≤ x := hx
-    have hx1 : (0 : ℝ) < 1 + x := by linarith
+    have hx1 : (0 : ℝ) < 1 + x := by linarith only [hx0]
     have h1 : HasDerivAt (fun t : ℝ => 1 + t) 1 x := by
       simpa using (hasDerivAt_id x).const_add (1 : ℝ)
     have h2 : HasDerivAt (fun t : ℝ => (1 + t) ^ (-(1 / 6 : ℝ)))
@@ -202,10 +202,10 @@ lemma continuous_triFun_critline {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     intro y h
     rcases mul_eq_zero.mp h with h1 | h1
     · have : (s y).re = 0 := by rw [h1]; simp
-      rw [hsre y] at this; linarith
+      rw [hsre y] at this; linarith only [hβ, this]
     · have h3 : (s y + 1).re = 0 := by rw [h1]; simp
       rw [Complex.add_re, hsre y, Complex.one_re] at h3
-      linarith
+      linarith only [hβ, hβ1, h3]
   have hinv : Continuous fun y : ℝ => (s y * (s y + 1))⁻¹ :=
     (hs.mul (hs.add continuous_const)).inv₀ hne0
   have hfun : (fun y : ℝ => triFun χ β x (s y)) = fun y : ℝ =>
@@ -233,9 +233,9 @@ theorem critLineIntegralHypA_self :
   intro q _inst χ hχ hq3 A θ β x hA hβ34 hβ1 hx1
   have hApos : 0 < A := hA.1
   have hθle : θ ≤ 1 / 4 + 1 / 100 := hA.2.2.1
-  have hθlt : θ ≤ 1 / 3 := by linarith
+  have hθlt : θ ≤ 1 / 3 := by linarith only [hβ34, hβ1, hθle]
   have hx0 : 0 < x := lt_of_lt_of_le zero_lt_one hx1
-  have hβ : 1 / 2 < β := by linarith
+  have hβ : 1 / 2 < β := by linarith only [hβ34, hβ1]
   have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)
   have hm : (0 : ℝ) ≤ A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ)) * x ^ (1 / 2 - β) :=
     mul_nonneg (mul_nonneg (mul_nonneg hApos.le (Real.rpow_nonneg hqpos.le _))
@@ -281,12 +281,12 @@ theorem critLineIntegralHypA_self :
             * x ^ (1 / 2 - β) * (32 * (1 + |y|) ^ (-(2 : ℝ))) :=
       mul_le_mul hA2 hker (norm_nonneg _) (by positivity)
     refine hA3.trans ?_
-    have hbase1 : (1 : ℝ) ≤ 1 + |y| := by have := abs_nonneg y; linarith
+    have hbase1 : (1 : ℝ) ≤ 1 + |y| := by have := abs_nonneg y; linarith only [this]
     have hpow : (1 + |y|) ^ ((1 / 2 : ℝ)) * (1 + |y|) ^ θ * (1 + |y|) ^ (-(2 : ℝ))
         ≤ (1 + |y|) ^ (-(7 / 6 : ℝ)) := by
       rw [← Real.rpow_add (by positivity : (0 : ℝ) < 1 + |y|) (1 / 2) θ,
         ← Real.rpow_add (by positivity : (0 : ℝ) < 1 + |y|) (1 / 2 + θ) (-(2 : ℝ))]
-      exact Real.rpow_le_rpow_of_exponent_le hbase1 (by linarith)
+      exact Real.rpow_le_rpow_of_exponent_le hbase1 (by linarith only [hβ34, hβ1, hθle])
     have hgroup : (9 * (1 + |y|) ^ ((1 / 2 : ℝ)))
             * (CL * A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ)) * (1 + |y|) ^ θ)
             * x ^ (1 / 2 - β) * (32 * (1 + |y|) ^ (-(2 : ℝ)))
@@ -316,7 +316,7 @@ theorem critLineIntegralHypA_self :
     rw [he, Complex.norm_def, Complex.normSq_ofReal,
       Real.sqrt_mul_self (by positivity : (0 : ℝ) ≤ 1 / (2 * Real.pi))]
     rw [div_le_one (by positivity : (0 : ℝ) < 2 * Real.pi)]
-    linarith [Real.pi_gt_three]
+    linarith only [Real.pi_gt_three, hβ34, hβ1]
   have step2 : (∫ y : ℝ, ‖triFun χ β x (((1 / 2 - β : ℝ)) + (y : ℂ) * Complex.I)‖)
       ≤ (288 * CL * A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ)) * x ^ (1 / 2 - β))
         * (∫ y : ℝ, (1 + |y|) ^ (-(7 / 6 : ℝ))) := by
@@ -345,7 +345,7 @@ theorem critLineIntegralHypA_self :
             ≤ 4096 * CL * (A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
               * x ^ (1 / 2 - β)) := by
           apply mul_le_mul_of_nonneg_right _ hm
-          nlinarith
+          linarith only [hCLpos]
         have h2 : (4096 : ℝ) * CL * (A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
               * x ^ (1 / 2 - β))
             ≤ max 1 (4096 * CL) * (A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
@@ -378,10 +378,10 @@ theorem critLineIntegralConvex_self :
   · exact lt_of_lt_of_le zero_lt_one (le_max_left _ _)
   intro q _inst χ hχ hq3 β x hβ34 hβ1 hx1
   have hx0 : 0 < x := lt_of_lt_of_le zero_lt_one hx1
-  have hβ : 1 / 2 < β := by linarith
+  have hβ : 1 / 2 < β := by linarith only [hβ34, hβ1]
   have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)
   have hlogpos : (0 : ℝ) < Real.log (2 * (q : ℝ) + 2) := by
-    apply Real.log_pos; linarith
+    apply Real.log_pos; linarith only [hβ34, hβ1, hqpos]
   have hm : (0 : ℝ) ≤ (q : ℝ) ^ ((1 : ℝ) / 3) * Real.log (2 * (q : ℝ) + 2) * x ^ (1 / 2 - β) :=
     mul_nonneg (mul_nonneg (Real.rpow_nonneg hqpos.le _) hlogpos.le) (Real.rpow_nonneg hx0.le _)
   have hcont := continuous_triFun_critline χ hβ hβ1 hx0
@@ -428,7 +428,7 @@ theorem critLineIntegralConvex_self :
             * x ^ (1 / 2 - β) * (32 * (1 + |y|) ^ (-(2 : ℝ))) :=
       mul_le_mul hA2 hker (norm_nonneg _) (by positivity)
     refine hA3.trans ?_
-    have hbase1 : (1 : ℝ) ≤ 1 + |y| := by have := abs_nonneg y; linarith
+    have hbase1 : (1 : ℝ) ≤ 1 + |y| := by have := abs_nonneg y; linarith only [this]
     have hpow : (1 + |y|) ^ ((1 / 2 : ℝ)) * (1 + |y|) ^ ((1 : ℝ) / 3) * (1 + |y|) ^ (-(2 : ℝ))
         ≤ (1 + |y|) ^ (-(7 / 6 : ℝ)) := by
       rw [← Real.rpow_add (by positivity : (0 : ℝ) < 1 + |y|) (1 / 2) ((1 : ℝ) / 3),
@@ -467,7 +467,7 @@ theorem critLineIntegralConvex_self :
     rw [he, Complex.norm_def, Complex.normSq_ofReal,
       Real.sqrt_mul_self (by positivity : (0 : ℝ) ≤ 1 / (2 * Real.pi))]
     rw [div_le_one (by positivity : (0 : ℝ) < 2 * Real.pi)]
-    linarith [Real.pi_gt_three]
+    linarith only [Real.pi_gt_three, hβ34, hβ1]
   have step2 : (∫ y : ℝ, ‖triFun χ β x (((1 / 2 - β : ℝ)) + (y : ℂ) * Complex.I)‖)
       ≤ (288 * C₀ * (q : ℝ) ^ ((1 : ℝ) / 3) * Real.log (2 * (q : ℝ) + 2) * x ^ (1 / 2 - β))
         * (∫ y : ℝ, (1 + |y|) ^ (-(7 / 6 : ℝ))) := by
@@ -496,7 +496,7 @@ theorem critLineIntegralConvex_self :
             ≤ 4096 * C₀ * ((q : ℝ) ^ ((1 : ℝ) / 3) * Real.log (2 * (q : ℝ) + 2)
               * x ^ (1 / 2 - β)) := by
           apply mul_le_mul_of_nonneg_right _ hm
-          nlinarith
+          linarith only [hC₀pos]
         have h2 : (4096 : ℝ) * C₀ * ((q : ℝ) ^ ((1 : ℝ) / 3) * Real.log (2 * (q : ℝ) + 2)
               * x ^ (1 / 2 - β))
             ≤ max 1 (4096 * C₀) * ((q : ℝ) ^ ((1 : ℝ) / 3) * Real.log (2 * (q : ℝ) + 2)

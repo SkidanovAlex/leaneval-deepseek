@@ -49,7 +49,7 @@ import Submission.Work.ZeroFreeTables.HBProps
 import Submission.Work.ZeroFreeTables.testFn7_2
 import Submission.Work.ZeroFreeTables.ksum_trigPoly_nonneg
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi
-import Submission.Commons.NumberTheory.Linnik.lemma6_2_assembly
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 namespace Work.ZeroFreeTables
 

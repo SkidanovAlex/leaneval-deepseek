@@ -122,8 +122,8 @@ theorem exp_bounds_e :
     rw [show (2:ℝ) = 1 + 1 by norm_num, Real.exp_add]
     ring
   refine ⟨Real.exp_one_gt_d9.le, Real.exp_one_lt_d9.le, ?_, ?_⟩
-  · rw [h2]; nlinarith [Real.exp_one_gt_d9, Real.exp_pos 1]
-  · rw [h2]; nlinarith [Real.exp_one_lt_d9, Real.exp_pos 1]
+  · rw [h2]; nlinarith only [Real.exp_one_gt_d9, Real.exp_pos 1]
+  · rw [h2]; nlinarith only [Real.exp_one_lt_d9, Real.exp_pos 1]
 
 /-! ## Pointwise two-point interpolation error bounds -/
 
@@ -188,8 +188,8 @@ lemma exp_interp_point (y t t0 t1 : ℝ) (hy : 0 ≤ y) (h : t0 < t1) (ht0 : t0 
     intro u hu
     rw [hderiv u, abs_of_nonneg (by positivity)]
     have hmono : Real.exp (u*y) ≤ Real.exp (t1*y) :=
-      Real.exp_le_exp.mpr (by nlinarith [hu.2, hy])
-    nlinarith [sq_nonneg y, hmono]
+      Real.exp_le_exp.mpr (by nlinarith only [hu.2, hy, hu])
+    nlinarith only [sq_nonneg y, hmono]
   exact Tf72One.abs_interp_error_le (fun u : ℝ => Real.exp (u*y)) t0 t1 t
     (y^2 * Real.exp (t1*y)) h ⟨ht0, ht1⟩ hf hM
 
@@ -200,7 +200,7 @@ theorem LHF_sigma_interp (s t t0 t1 : ℝ) (hs : 0 ≤ s) (hs1 : s ≤ 1)
     (ht0 : t0 ≤ t) (ht1 : t ≤ t1) :
     LHF s t ≤ max (LHF s t0) (LHF s t1) + (t1 - t0)^2/8*(13/10) := by
   rcases lt_or_ge t0 t1 with h | h
-  · have hba : (0:ℝ) < t1 - t0 := by linarith
+  · have hba : (0:ℝ) < t1 - t0 := by linarith only [h]
     have hpt : ∀ y ∈ Set.Icc (0:ℝ) 2,
         (Real.exp (s*y) - 1) * Real.cos (t*y) * g72 y ≤
           (t1-t)/(t1-t0) * ((Real.exp (s*y) - 1) * Real.cos (t0*y) * g72 y)
@@ -212,10 +212,10 @@ theorem LHF_sigma_interp (s t t0 t1 : ℝ) (hs : 0 ≤ s) (hs1 : s ≤ 1)
         have he1 : (1:ℝ) ≤ Real.exp (s*y) := by
           have hx : Real.exp (0:ℝ) ≤ Real.exp (s*y) := Real.exp_le_exp.mpr (mul_nonneg hs hy.1)
           simpa using hx
-        exact mul_nonneg (by linarith) hg
+        exact mul_nonneg (by linarith only [he1]) hg
       have hc := (abs_le.mp (cos_interp_point y t t0 t1 h ht0 ht1)).2
       have hmul := mul_le_mul_of_nonneg_left hc hgy
-      nlinarith [hmul]
+      linarith only [hmul]
     have hA : IntervalIntegrable
         (fun y : ℝ => (Real.exp (s*y) - 1) * Real.cos (t*y) * g72 y) volume (0:ℝ) 2 := by
       apply Continuous.intervalIntegrable; simp only [g72]; fun_prop
@@ -245,8 +245,8 @@ theorem LHF_sigma_interp (s t t0 t1 : ℝ) (hs : 0 ≤ s) (hs1 : s ≤ 1)
           intervalIntegral.integral_const_mul,
           ← LHF_eq_integral s t0, ← LHF_eq_integral s t1]
     rw [hsplit, ← LHF_eq_integral s t] at hmono
-    have h0 : 0 ≤ (t1 - t)/(t1 - t0) := div_nonneg (by linarith) (le_of_lt hba)
-    have h1 : 0 ≤ (t - t0)/(t1 - t0) := div_nonneg (by linarith) (le_of_lt hba)
+    have h0 : 0 ≤ (t1 - t)/(t1 - t0) := div_nonneg (by linarith only [ht1]) (le_of_lt hba)
+    have h1 : 0 ≤ (t - t0)/(t1 - t0) := div_nonneg (by linarith only [ht0]) (le_of_lt hba)
     have hsum : (t1 - t)/(t1 - t0) + (t - t0)/(t1 - t0) = 1 := by
       rw [← add_div, show t1 - t + (t - t0) = t1 - t0 by ring, div_self (ne_of_gt hba)]
     have hmax : (t1-t)/(t1-t0) * LHF s t0 + (t-t0)/(t1-t0) * LHF s t1
@@ -271,11 +271,11 @@ theorem LHF_sigma_interp (s t t0 t1 : ℝ) (hs : 0 ≤ s) (hs1 : s ≤ 1)
               have h1 : (0:ℝ) ≤ Real.exp (s*y) - 1 := by
                 have hx : Real.exp (0:ℝ) ≤ Real.exp (s*y) :=
                   Real.exp_le_exp.mpr (mul_nonneg hs hy.1)
-                linarith [Real.exp_zero]
+                linarith only [Real.exp_zero, hx]
               have hy2 : (0:ℝ) ≤ y^2 := sq_nonneg y
-              nlinarith [hg, h1, hy2, Real.exp_pos (s*y)]
-        _ ≤ 13/10 := Tf72One.Mss_bound s hs (by linarith)
-    linarith [hmono, hmax, herr]
+              nlinarith only [hg, h1, hy2, Real.exp_pos (s*y)]
+        _ ≤ 13/10 := Tf72One.Mss_bound s hs (by linarith only [hs1])
+    linarith only [hmono, hmax, herr]
   · have ht1t0 : t1 = t0 := le_antisymm h (le_trans ht0 ht1)
     have htt0 : t = t0 := le_antisymm (by rw [ht1t0] at ht1; exact ht1) ht0
     rw [htt0, ht1t0]
@@ -286,7 +286,7 @@ theorem LHF_s_interp (s t s0 s1 : ℝ) (h0 : 0 ≤ s0) (h17 : s1 ≤ 17/16)
     (hs0 : s0 ≤ s) (hs1 : s ≤ s1) :
     LHF s t ≤ max (LHF s0 t) (LHF s1 t) + (s1 - s0)^2/8*(13/10) := by
   rcases lt_or_ge s0 s1 with h | h
-  · have hba : (0:ℝ) < s1 - s0 := by linarith
+  · have hba : (0:ℝ) < s1 - s0 := by linarith only [h]
     have hpt : ∀ y ∈ Set.Icc (0:ℝ) 2,
         (Real.exp (s*y) - 1) * Real.cos (t*y) * g72 y ≤
           (s1-s)/(s1-s0) * ((Real.exp (s0*y) - 1) * Real.cos (t*y) * g72 y)
@@ -336,7 +336,7 @@ theorem LHF_s_interp (s t s0 s1 : ℝ) (h0 : 0 ≤ s0) (h17 : s1 ≤ 17/16)
               + (s-s0)/(s1-s0) * Real.exp (s1*y))| * |Real.cos (t*y)| * g72 y := habs1
           _ ≤ ((s1-s0)^2/8 * (y^2 * Real.exp (s1*y))) * 1 * g72 y := habs2
           _ = (s1-s0)^2/8 * (y^2 * Real.exp (s1*y)) * g72 y := by ring
-      linarith [hdiff, hb]
+      linarith only [hdiff, hb]
     have hA : IntervalIntegrable
         (fun y : ℝ => (Real.exp (s*y) - 1) * Real.cos (t*y) * g72 y) volume (0:ℝ) 2 := by
       apply Continuous.intervalIntegrable; simp only [g72]; fun_prop
@@ -366,8 +366,8 @@ theorem LHF_s_interp (s t s0 s1 : ℝ) (h0 : 0 ≤ s0) (h17 : s1 ≤ 17/16)
           intervalIntegral.integral_const_mul,
           ← LHF_eq_integral s0 t, ← LHF_eq_integral s1 t]
     rw [hsplit, ← LHF_eq_integral s t] at hmono
-    have h0' : 0 ≤ (s1 - s)/(s1 - s0) := div_nonneg (by linarith) (le_of_lt hba)
-    have h1' : 0 ≤ (s - s0)/(s1 - s0) := div_nonneg (by linarith) (le_of_lt hba)
+    have h0' : 0 ≤ (s1 - s)/(s1 - s0) := div_nonneg (by linarith only [hs1]) (le_of_lt hba)
+    have h1' : 0 ≤ (s - s0)/(s1 - s0) := div_nonneg (by linarith only [hs0]) (le_of_lt hba)
     have hsum : (s1 - s)/(s1 - s0) + (s - s0)/(s1 - s0) = 1 := by
       rw [← add_div, show s1 - s + (s - s0) = s1 - s0 by ring, div_self (ne_of_gt hba)]
     have hmax : (s1-s)/(s1-s0) * LHF s0 t + (s-s0)/(s1-s0) * LHF s1 t
@@ -382,8 +382,8 @@ theorem LHF_s_interp (s t s0 s1 : ℝ) (h0 : 0 ≤ s0) (h17 : s1 ≤ 17/16)
         _ = max (LHF s0 t) (LHF s1 t) := by rw [← add_mul, hsum, one_mul]
     have herr : (s1-s0)^2/8 * (∫ y in (0:ℝ)..2, y^2 * Real.exp (s1*y) * g72 y)
         ≤ (s1-s0)^2/8 * (13/10) :=
-      mul_le_mul_of_nonneg_left (Tf72One.Mss_bound s1 (by linarith) h17) (by positivity)
-    linarith [hmono, hmax, herr]
+      mul_le_mul_of_nonneg_left (Tf72One.Mss_bound s1 (by linarith only [h0, hs0, hs1]) h17) (by positivity)
+    linarith only [hmono, hmax, herr]
   · have hs1s0 : s1 = s0 := le_antisymm h (le_trans hs0 hs1)
     have hss0 : s = s0 := le_antisymm (by rw [hs1s0] at hs1; exact hs1) hs0
     rw [hss0, hs1s0]

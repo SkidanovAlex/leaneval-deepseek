@@ -32,6 +32,7 @@ import Submission.Work.LinnikAreas.DhRepel.sameCharRepelNear
 import Submission.Commons.Analysis.Complex.exterior_jensen_multiplicity
 import Submission.Work.LinnikAreas.OtherCharRepel.completedLFunction_analyticOrderAt_ne_top
 import Submission.Work.ZeroFreeTables.tf72Fc_re_eq_hb72G
+import Submission.Work.LinnikAreas.A5.boxAbs_le_deltaSum
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

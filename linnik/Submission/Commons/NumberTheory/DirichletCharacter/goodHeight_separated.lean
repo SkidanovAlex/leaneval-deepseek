@@ -81,32 +81,32 @@ private lemma window_log_bound {T : ℝ} (hT : 1 ≤ T) {N : ℕ} [NeZero N] :
     exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N))
-  have hT4 : 0 < T + 4 := by linarith
+  have hT4 : 0 < T + 4 := by linarith only [hT]
   have hlog2 : Real.log 2 ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)
-    linarith
+    linarith only [this]
   have h1 : Real.log (T + 6) ≤ Real.log 2 + Real.log (T + 4) := by
-    have h2 : T + 6 ≤ 2 * (T + 4) := by linarith
-    calc Real.log (T + 6) ≤ Real.log (2 * (T + 4)) := Real.log_le_log (by linarith) h2
+    have h2 : T + 6 ≤ 2 * (T + 4) := by linarith only [hT]
+    calc Real.log (T + 6) ≤ Real.log (2 * (T + 4)) := Real.log_le_log (by linarith only [hT]) h2
       _ = Real.log 2 + Real.log (T + 4) := Real.log_mul (by norm_num) (ne_of_gt hT4)
   have hmul : Real.log ((N : ℝ) * (T + 4)) = Real.log (N : ℝ) + Real.log (T + 4) :=
     Real.log_mul (ne_of_gt hNpos) (ne_of_gt hT4)
   have hL1 : 1 ≤ Real.log ((N : ℝ) * (T + 4)) := by
     have h5 : (5 : ℝ) ≤ (N : ℝ) * (T + 4) := by
-      have hT5 : (5 : ℝ) ≤ T + 4 := by linarith
+      have hT5 : (5 : ℝ) ≤ T + 4 := by linarith only [hT]
       calc (5 : ℝ) = 1 * 5 := by ring
-        _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT5 (by norm_num) (by linarith)
+        _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT5 (by norm_num) (by linarith only [hNpos])
     have hexp : Real.exp 1 ≤ (N : ℝ) * (T + 4) := by
       have := Real.exp_one_lt_three
-      linarith
+      linarith only [h5, this]
     have := Real.log_le_log (Real.exp_pos 1) hexp
     rwa [Real.log_exp] at this
   calc Real.log (T + 6) + Real.log (N : ℝ) + 2
-      ≤ (Real.log 2 + Real.log (T + 4)) + Real.log (N : ℝ) + 2 := by linarith
+      ≤ (Real.log 2 + Real.log (T + 4)) + Real.log (N : ℝ) + 2 := by linarith only [h1]
     _ = Real.log ((N : ℝ) * (T + 4)) + 2 + Real.log 2 := by
           rw [hmul]; ring
-    _ ≤ Real.log ((N : ℝ) * (T + 4)) + 3 := by linarith
-    _ ≤ 4 * Real.log ((N : ℝ) * (T + 4)) := by linarith
+    _ ≤ Real.log ((N : ℝ) * (T + 4)) + 3 := by linarith only [hlog2]
+    _ ≤ 4 * Real.log ((N : ℝ) * (T + 4)) := by linarith only [hL1]
 
 /-- **A "good height" far from all zeros of the completed L-function.**
 
@@ -145,7 +145,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     fun u => ((MeromorphicOn.divisor Λ (Metric.closedBall (0 : ℂ) (T + 4)) u : ℤ) : ℝ)
   let w : ℂ → ℝ := fun u => if T ≤ |u.im| ∧ |u.im| ≤ T + 3 then (1 : ℝ) else 0
   let G : ℂ → ℝ := fun u => F u * w u
-  have hwin_raw := hwzc T (T + 3) hT (by linarith : T ≤ T + 3)
+  have hwin_raw := hwzc T (T + 3) hT (by linarith only [hcfpos, hcf_half] : T ≤ T + 3)
   have hwinG : (∑ᶠ u : ℂ, G u)
       ≤ cw * 5 * (Real.log (T + 6) + Real.log (N : ℝ) + 2) := by
     have hfun : G = (fun u : ℂ =>
@@ -229,7 +229,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       omega
     calc (S.card : ℝ) ≤ ((2 * D.card : ℕ) : ℝ) := by exact_mod_cast hcard_nat
       _ = 2 * (D.card : ℝ) := by push_cast; ring
-      _ ≤ 2 * (cw * 5 * (Real.log (T + 6) + Real.log (N : ℝ) + 2)) := by linarith
+      _ ≤ 2 * (cw * 5 * (Real.log (T + 6) + Real.log (N : ℝ) + 2)) := by linarith only [hwinG, hDsum, hDcard]
   have hScont : ∀ ρ : ℂ, Λ ρ = 0 → T ≤ |ρ.im| → |ρ.im| ≤ T + 3 →
       ρ.im ∈ S ∧ -ρ.im ∈ S := by
     intro ρ hρ h1 h2
@@ -239,7 +239,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       rw [Metric.mem_closedBall, dist_zero_right]
       have hre : |ρ.re| ≤ 1 := by rw [abs_of_pos hstrip.1]; exact le_of_lt hstrip.2
       calc ‖ρ‖ ≤ |ρ.re| + |ρ.im| := Complex.norm_le_abs_re_add_abs_im ρ
-        _ ≤ 1 + (T + 3) := by linarith
+        _ ≤ 1 + (T + 3) := by linarith only [h2, hre]
         _ = T + 4 := by ring
     have hFne : F ρ ≠ 0 := by
       intro h0
@@ -262,11 +262,11 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     exact_mod_cast Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N))
   have hLlpos : 0 < Real.log ((N : ℝ) * (T + 4)) := by
     apply Real.log_pos
-    have hT4 : (5 : ℝ) ≤ T + 4 := by linarith
+    have hT4 : (5 : ℝ) ≤ T + 4 := by linarith only [hT]
     calc (1 : ℝ) < 5 := by norm_num
       _ ≤ (N : ℝ) * (T + 4) := by
           calc (5 : ℝ) = 1 * 5 := by ring
-            _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT4 (by norm_num) (by linarith)
+            _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT4 (by norm_num) (by linarith only [hcfpos, hcf_half, hN1])
   -- ===== the combinatorial choice of `T'` =====
   set δ : ℝ := cf / Real.log ((N : ℝ) * (T + 4)) with hδdef
   have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hcfpos hLlpos
@@ -282,7 +282,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       positivity
     have hdiv : (Real.log (T + 6) + Real.log (N : ℝ) + 2) / Real.log ((N : ℝ) * (T + 4)) ≤ 4 := by
       rw [div_le_iff₀ hLlpos]
-      linarith
+      linarith only [hlog]
     have hstep2 : 2 * (cf / Real.log ((N : ℝ) * (T + 4)))
           * (2 * (cw * 5 * (Real.log (T + 6) + Real.log (N : ℝ) + 2)))
         = 20 * cf * cw * ((Real.log (T + 6) + Real.log (N : ℝ) + 2)
@@ -294,7 +294,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
         mul_le_mul_of_nonneg_right hcf_le (le_of_lt hcwpos)
       have h2 : (1 / (160 * cw)) * cw = 1 / 160 := by
         field_simp
-      linarith [h1, h2]
+      linarith only [h1, h2]
     calc 2 * δ * (S.card : ℝ)
         ≤ 2 * (cf / Real.log ((N : ℝ) * (T + 4)))
             * (2 * (cw * 5 * (Real.log (T + 6) + Real.log (N : ℝ) + 2))) := hstep
@@ -303,10 +303,10 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       _ ≤ 20 * cf * cw * 4 := by
             apply mul_le_mul_of_nonneg_left hdiv
             have : (0 : ℝ) ≤ cf * cw := mul_nonneg (le_of_lt hcfpos) (le_of_lt hcwpos)
-            linarith
+            linarith only [this]
       _ ≤ 20 * (1 / 160) * 4 := by
             have : 0 ≤ cf * cw := mul_nonneg (le_of_lt hcfpos) (le_of_lt hcwpos)
-            nlinarith [hcfcw]
+            linarith only [hcfcw]
       _ = 1 / 2 := by norm_num
       _ ≤ 1 := by norm_num
   obtain ⟨T', hT'lo, hT'hi, hfar⟩ :=
@@ -316,7 +316,7 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   have hlogcmp : cf / Real.log ((N : ℝ) * (T' + 3)) ≤ δ := by
     have harg : (N : ℝ) * (T + 4) ≤ (N : ℝ) * (T' + 3) := by
       apply mul_le_mul_of_nonneg_left _ (le_of_lt hNpos)
-      linarith
+      linarith only [hT'lo]
     have hlog : Real.log ((N : ℝ) * (T + 4)) ≤ Real.log ((N : ℝ) * (T' + 3)) :=
       Real.log_le_log (by positivity) harg
     rw [hδdef]
@@ -324,21 +324,21 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   have hcle1 : cf / Real.log ((N : ℝ) * (T' + 3)) ≤ 1 := by
     have harg : (N : ℝ) * (T + 4) ≤ (N : ℝ) * (T' + 3) := by
       apply mul_le_mul_of_nonneg_left _ (le_of_lt hNpos)
-      linarith
+      linarith only [hT'lo]
     have hlog : Real.log ((N : ℝ) * (T + 4)) ≤ Real.log ((N : ℝ) * (T' + 3)) :=
       Real.log_le_log (by positivity) harg
     have hlog1 : 1 ≤ Real.log ((N : ℝ) * (T' + 3)) := by
       have h5 : (5 : ℝ) ≤ (N : ℝ) * (T + 4) := by
-        have hT5 : (5 : ℝ) ≤ T + 4 := by linarith
+        have hT5 : (5 : ℝ) ≤ T + 4 := by linarith only [hT]
         calc (5 : ℝ) = 1 * 5 := by ring
-          _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT5 (by norm_num) (by linarith)
+          _ ≤ (N : ℝ) * (T + 4) := mul_le_mul hN1 hT5 (by norm_num) (by linarith only [hcfpos, hcf_half, hN1])
       have hexp : Real.exp 1 ≤ (N : ℝ) * (T + 4) := by
         have := Real.exp_one_lt_three
-        linarith
+        linarith only [hcfpos, hcf_half, h5, this]
       have h1' : 1 ≤ Real.log ((N : ℝ) * (T + 4)) := by
         have := Real.log_le_log (Real.exp_pos 1) hexp
         rwa [Real.log_exp] at this
-      linarith
+      linarith only [hlog, h1']
     have hlogpos' : 0 < Real.log ((N : ℝ) * (T' + 3)) := lt_of_lt_of_le hLlpos hlog
     rw [div_le_one hlogpos']
     exact le_trans (le_trans hcf_half (by norm_num)) hlog1
@@ -356,16 +356,16 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       have hdist : 1 ≤ |ρ.im - T'| := by
         rcases hnot with hlt | hgt
         · have him2 : ρ.im < T := (abs_lt.mp hlt).2
-          have : ρ.im - T' ≤ -1 := by linarith [him2, hT'lo]
-          rw [abs_of_nonpos (by linarith)]
-          linarith
+          have : ρ.im - T' ≤ -1 := by linarith only [him2, hT'lo]
+          rw [abs_of_nonpos (by linarith only [hcfpos, hcf_half, hT'lo, him2])]
+          linarith only [hT'lo, him2]
         · rcases (lt_abs.mp hgt) with him3 | him4
-          · have : 1 ≤ ρ.im - T' := by linarith [him3, hT'hi]
-            rw [abs_of_nonneg (by linarith)]
+          · have : 1 ≤ ρ.im - T' := by linarith only [him3, hT'hi]
+            rw [abs_of_nonneg (by linarith only [hcfpos, hcf_half, hT'hi, him3])]
             exact this
-          · have : ρ.im - T' ≤ -1 := by linarith [him4, hT'lo]
-            rw [abs_of_nonpos (by linarith)]
-            linarith
+          · have : ρ.im - T' ≤ -1 := by linarith only [him4, hT'lo, hcfpos, hcf_half, hT]
+            rw [abs_of_nonpos (by linarith only [hcfpos, hcf_half, hT, hT'lo, him4])]
+            linarith only [hcfpos, hcf_half, hT, hT'lo, him4]
       calc cf / Real.log ((N : ℝ) * (T' + 3)) ≤ 1 := hcle1
         _ ≤ |ρ.im - T'| := hdist
   · intro ρ hρ
@@ -381,16 +381,16 @@ theorem goodHeight_separated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       have hdist : 1 ≤ |ρ.im + T'| := by
         rcases hnot with hlt | hgt
         · have him1 : -T < ρ.im := (abs_lt.mp hlt).1
-          have : 1 ≤ ρ.im + T' := by linarith [him1, hT'lo]
-          rw [abs_of_nonneg (by linarith)]
+          have : 1 ≤ ρ.im + T' := by linarith only [him1, hT'lo]
+          rw [abs_of_nonneg (by linarith only [hcfpos, hcf_half, hT'lo, him1])]
           exact this
         · rcases (lt_abs.mp hgt) with him3 | him4
-          · have : 1 ≤ ρ.im + T' := by linarith [him3, hT'lo]
-            rw [abs_of_nonneg (by linarith)]
+          · have : 1 ≤ ρ.im + T' := by linarith only [him3, hT'lo, hcfpos, hcf_half, hT]
+            rw [abs_of_nonneg (by linarith only [hcfpos, hcf_half, hT, hT'lo, him3])]
             exact this
-          · have : ρ.im + T' ≤ -1 := by linarith [him4, hT'hi]
-            rw [abs_of_nonpos (by linarith)]
-            linarith
+          · have : ρ.im + T' ≤ -1 := by linarith only [him4, hT'hi]
+            rw [abs_of_nonpos (by linarith only [hcfpos, hcf_half, hT'hi, him4])]
+            linarith only [hT'hi, him4]
       calc cf / Real.log ((N : ℝ) * (T' + 3)) ≤ 1 := hcle1
         _ ≤ |ρ.im + T'| := hdist
 

@@ -1,7 +1,8 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_window_mem_inner_ball
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_inner_ball_subset_closedBall
+import Submission.Commons.NumberTheory.Linnik.divisor_eq_closedBall_subset
+import Submission.Commons.NumberTheory.Zeta.zetaZeroBall
 
 /-!
 # The `ζ₁`-window sum is bounded by the divisor sum on the inner ball

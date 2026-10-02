@@ -120,7 +120,7 @@ lemma pf_cofactor_logbound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have hPζ : pfP N χ T ζ ≠ 0 := pf_P_ne_zero_circle χ hχ hχprim hTpos hcirc hζ
     have hζε : ζ ∈ ball (0 : ℂ) (T + ε) := by
       rw [mem_ball_zero_iff]
-      nlinarith [hζ, hε]
+      nlinarith only [hζ, hε]
     have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
     have hfacζ : Λ ζ = pfP N χ T ζ * g ζ := by
       have hfac' := hfac ζ hζε
@@ -177,7 +177,7 @@ lemma pf_cofactor_logbound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       have hb := hboundary ζ hζ
       have hζε' : ζ ∈ ball 0 (T + ε) := by
         rw [mem_ball_zero_iff]
-        nlinarith [hζ, hε]
+        nlinarith only [hζ, hε]
       have hg0 : ‖g ζ‖ ≠ 0 := norm_ne_zero_iff.mpr (hg_nz ζ hζε')
       have hle : Real.log ‖g ζ‖ ≤ M0 := by
         have hQ12le : Q1 + Q2 ≤ M0 := by
@@ -270,7 +270,7 @@ lemma pf_cofactor_logbound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
         have hT0 : 0 ≤ T := hTpos.le
         have h3 : T * LT ≤ (2 * A) * (2 * L) := by nlinarith
         have h3' := mul_le_mul_of_nonneg_left h3 hgc_nonneg
-        nlinarith [h3']
+        nlinarith only [h3']
       have h4 : gc * (2 * A) * (2 * L) ≤ 4 * gc * A * L ^ 2 := by nlinarith
       dsimp only [Q1]
       linarith
@@ -292,7 +292,7 @@ lemma pf_cofactor_logbound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
             have : T * LT ≤ (2 * A) * (2 * L) := h3
             nlinarith
           have h9' := mul_le_mul_of_nonneg_left h9 h8
-          nlinarith [h9']
+          nlinarith only [h9']
         linarith
       have h10 : (2 * L) * (zc * (2 * A) * (2 * L)) ≤ 8 * zc * A * L ^ 2 := by nlinarith
       dsimp only [Q2]

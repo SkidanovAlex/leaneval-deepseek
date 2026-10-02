@@ -1,6 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.A5.LFunction_disc_zeroCount
 import Submission.Commons.Analysis.Dyadic.invSq_le_dyadic_layer
 import Submission.Work.LinnikAreas.DhExplicit.dyadicBallSumLe

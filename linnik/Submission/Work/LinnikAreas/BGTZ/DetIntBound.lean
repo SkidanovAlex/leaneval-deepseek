@@ -85,7 +85,7 @@ lemma sieveLocal_norm_le {q : ℕ} [NeZero q] (χ₁ χ : DirichletCharacter ℂ
     rw [norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs,
       abs_of_nonneg (by linarith)]
     have hprod1 : ‖χ p‖ * ‖(p : ℂ) ^ (-u)‖ ≤ 1 := by
-      nlinarith [hχ, hpow1, norm_nonneg (χ p), norm_nonneg ((p : ℂ) ^ (-u))]
+      exact mul_le_one₀ hχ (norm_nonneg _) hpow1
     calc (1 + (χ₁ p).re) * ‖χ p‖ * ‖(p : ℂ) ^ (-u)‖
         = (1 + (χ₁ p).re) * (‖χ p‖ * ‖(p : ℂ) ^ (-u)‖) := by ring
       _ ≤ (1 + (χ₁ p).re) * 1 := mul_le_mul_of_nonneg_left hprod1 (by linarith)
@@ -93,9 +93,9 @@ lemma sieveLocal_norm_le {q : ℕ} [NeZero q] (χ₁ χ : DirichletCharacter ℂ
   have hB : ‖(((χ₁ p).re : ℝ) : ℂ) * (χ p) ^ 2 * (p : ℂ) ^ (-(2 * u))‖ ≤ 1 := by
     rw [norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, norm_pow]
     have habs : |(χ₁ p).re| ≤ 1 := abs_le.mpr ⟨hre_ge, hre_le⟩
-    have hχ2 : ‖χ p‖ ^ 2 ≤ 1 := by nlinarith [hχ, norm_nonneg (χ p)]
+    have hχ2 : ‖χ p‖ ^ 2 ≤ 1 := pow_le_one₀ (norm_nonneg _) hχ
     have hprod2 : ‖χ p‖ ^ 2 * ‖(p : ℂ) ^ (-(2 * u))‖ ≤ 1 := by
-      nlinarith [hχ2, hpow2, pow_nonneg (norm_nonneg (χ p)) 2, norm_nonneg ((p : ℂ) ^ (-(2 * u)))]
+      exact mul_le_one₀ hχ2 (norm_nonneg _) hpow2
     calc |(χ₁ p).re| * ‖χ p‖ ^ 2 * ‖(p : ℂ) ^ (-(2 * u))‖
         = |(χ₁ p).re| * (‖χ p‖ ^ 2 * ‖(p : ℂ) ^ (-(2 * u))‖) := by ring
       _ ≤ 1 * 1 := mul_le_mul habs hprod2 (by positivity) (by norm_num)
@@ -205,7 +205,7 @@ lemma absorb_quarter_third :
     have h1 : 12 * (2 + x) ^ ((1 : ℝ) / 12) ≤
         12 * ((2 : ℝ) ^ ((1 : ℝ) / 12) * (1 + x) ^ ((1 : ℝ) / 12)) :=
       mul_le_mul_of_nonneg_left hmono (by norm_num)
-    nlinarith [hlog, h1, h1x12, h2p]
+    nlinarith only [hlog, h1, h1x12, h2p]
   have hx14 : 0 ≤ (1 + x) ^ ((1 : ℝ) / 4) := Real.rpow_nonneg (le_of_lt hpos) _
   calc (1 + x) ^ ((1 : ℝ) / 4) * (Real.log (2 + x) + 2)
       ≤ (1 + x) ^ ((1 : ℝ) / 4)
@@ -237,7 +237,7 @@ lemma log_le_third :
       _ = (2 : ℝ) ^ ((1 : ℝ) / 3) * (1 + x) ^ ((1 : ℝ) / 3) :=
           Real.mul_rpow (by norm_num) (le_of_lt hpos)
   have h2p : (0 : ℝ) < (2 : ℝ) ^ ((1 : ℝ) / 3) := Real.rpow_pos_of_pos (by norm_num) _
-  nlinarith [hlog, hmono, h1x13, h2p]
+  nlinarith only [hlog, hmono, h1x13, h2p]
 
 lemma LFunction_one_bound (q : ℕ) [NeZero q] :
     ∃ C : ℝ, 0 < C ∧ ∀ (u : ℂ), (1 : ℝ) / 2 ≤ u.re → u.re ≤ 3 →
@@ -311,7 +311,7 @@ lemma LFunction_one_bound (q : ℕ) [NeZero q] :
         refine le_trans h2 ?_
         have hX1 : (1 : ℝ) ≤ (1 + |u.im|) ^ ((1 : ℝ) / 3) :=
           Real.one_le_rpow (by have := abs_nonneg u.im; linarith) (by norm_num)
-        nlinarith [hn1, hC2pos, hCbpos, hX1]
+        nlinarith only [hn1, hC2pos, hCbpos, hX1]
   calc ‖DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q) u‖
       = ‖(∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-u))) * riemannZeta u‖ := by rw [hEP]
     _ = ‖∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-u))‖ * ‖riemannZeta u‖ := norm_mul _ _
@@ -365,7 +365,7 @@ lemma LFunction_half_strip (q : ℕ) [NeZero q] (hq : 2 ≤ q) :
     rw [Real.log_mul (ne_of_gt hdpos) (ne_of_gt h2pos)]
     have hlogd : Real.log (χ.conductor : ℝ) ≤ Real.log (q : ℝ) :=
       Real.log_le_log hdpos hd_le
-    nlinarith [hlogq, hlogt, hlogd, mul_nonneg hlogq hlogt]
+    nlinarith only [hlogq, hlogt, hlogd, mul_nonneg hlogq hlogt]
   have hkey : (χ.conductor : ℝ) ^ ((1 : ℝ) / 4) * (Real.log ((χ.conductor : ℝ) * (2 + |t|)) + 2)
       ≤ (q : ℝ) ^ ((1 : ℝ) / 4) * ((Real.log (q : ℝ) + 3) * (Real.log (2 + |t|) + 2)) := by
     apply mul_le_mul
@@ -376,7 +376,7 @@ lemma LFunction_half_strip (q : ℕ) [NeZero q] (hq : 2 ≤ q) :
           have : (1 : ℕ) ≤ χ.conductor := Nat.one_le_iff_ne_zero.mpr (NeZero.ne χ.conductor)
           exact_mod_cast this
         have h2 : (1 : ℝ) ≤ 2 + |t| := by have := abs_nonneg t; linarith
-        nlinarith
+        exact one_le_mul_of_one_le_of_one_le hd1 h2
       have := Real.log_nonneg harg1
       linarith
     · exact Real.rpow_nonneg hqpos.le _
@@ -510,7 +510,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
   have hcs_pos : 0 < cs := by
     rw [hcs]
     refine lt_min ?_ (by norm_num)
-    nlinarith [h1, h2]
+    exact mul_pos (by linarith only [h1]) (by linarith only [h2])
   set c : ℝ := cs / 8 with hc
   have hcpos : 0 < c := by rw [hc]; positivity
   set NK : ℝ := (N : ℝ) ^ 2 with hNK
@@ -518,7 +518,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
   have hNK1 : 1 ≤ NK := by
     rw [hNK]
     have : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
-    nlinarith
+    exact one_le_pow₀ this
   refine ⟨B * B * K * (M ^ ((2 : ℝ) / 3)) * NK * c⁻¹ + 16 * K * NK
       + 4 * (3 : ℝ) ^ ((2 : ℝ) / 3) * B * B * K * NK + 1, -(4 / 3), by positivity,
     by norm_num, ?_, ?_, ?_⟩
@@ -538,7 +538,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
     have hMXu : 1 + |u.im| ≤ M * X := by
       rw [huim, hM, hX]
       have h : |ρ.im + t| ≤ |ρ.im| + |t| := abs_add_le _ _
-      nlinarith [abs_nonneg ρ.im, abs_nonneg t]
+      nlinarith only [h, abs_nonneg ρ.im, abs_nonneg t, mul_nonneg (abs_nonneg ρ.im) (abs_nonneg t)]
     have hL1 : ‖LFunction χ u‖ ≤ B * (1 + |u.im|) ^ ((1 : ℝ) / 3) :=
       hB χ u (le_of_eq hure.symm) (by rw [hure]; norm_num) (Or.inr hure)
     have hL2 : ‖LFunction (χ * χ₁) u‖ ≤ B * (1 + |u.im|) ^ ((1 : ℝ) / 3) :=
@@ -580,28 +580,28 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
       have hc₀ : (ρ.re - 1 / 2) * (3 / 2 - ρ.re) ≤ ‖s‖ * ‖s + 1‖ := by
         have ha₁ : ρ.re - 1 / 2 ≤ ‖s‖ := by
           have h := Complex.abs_re_le_norm s
-          rw [hsre, abs_of_neg (by linarith)] at h
-          linarith
+          rw [hsre, abs_of_neg (by linarith only [h1])] at h
+          linarith only [h]
         have ha₂ : 3 / 2 - ρ.re ≤ ‖s + 1‖ := by
           have h := Complex.abs_re_le_norm (s + 1)
-          rw [hs1re, abs_of_pos (by linarith)] at h
-          linarith
-        nlinarith [ha₁, ha₂, h1, h2]
+          rw [hs1re, abs_of_pos (by linarith only [h2])] at h
+          linarith only [h]
+        exact mul_le_mul ha₁ ha₂ (by linarith only [h2]) (norm_nonneg s)
       have ht2 : t ^ 2 ≤ ‖s‖ * ‖s + 1‖ := by
         have hb₁ : |t| ≤ ‖s‖ := by
           have h := Complex.abs_im_le_norm s; rwa [hsim] at h
         have hb₂ : |t| ≤ ‖s + 1‖ := by
           have h := Complex.abs_im_le_norm (s + 1); rwa [hs1im] at h
-        nlinarith [hb₁, hb₂, norm_nonneg s, norm_nonneg (s + 1), sq_abs t]
+        nlinarith only [mul_le_mul hb₁ hb₂ (abs_nonneg t) (norm_nonneg s), sq_abs t]
       have hkey : c * X ^ 2 ≤ max ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (t ^ 2) := by
         rw [hc, hX, hcs]
         have hsnn : (0 : ℝ) ≤ min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) := le_of_lt hcs_pos
-        have h4 : (1 + |t|) ^ 2 ≤ 4 * (1 + t ^ 2) := by nlinarith [abs_nonneg t, sq_abs t]
+        have h4 : (1 + |t|) ^ 2 ≤ 4 * (1 + t ^ 2) := by nlinarith only [sq_nonneg (|t| - 1), sq_abs t]
         by_cases ht : (1 : ℝ) ≤ t ^ 2
         · have h8 : (1 + t ^ 2) ≤ 2 * t ^ 2 := by linarith
           have hcs_t : min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) / 8
               * (1 + |t|) ^ 2 ≤ min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) * t ^ 2 := by
-            nlinarith [h4, h8, hsnn]
+            nlinarith only [mul_le_mul_of_nonneg_left h4 hsnn, mul_le_mul_of_nonneg_left h8 hsnn]
           have hle : min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) * t ^ 2
               ≤ max ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (t ^ 2) := by
             calc min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) * t ^ 2
@@ -616,7 +616,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
           have h8 : (1 + t ^ 2) ≤ 2 := by linarith
           have hcs_t : min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) / 8 * (1 + |t|) ^ 2
               ≤ min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4) := by
-            nlinarith [hsnn, h4, h8]
+            nlinarith only [mul_le_mul_of_nonneg_left h4 hsnn, mul_le_mul_of_nonneg_left h8 hsnn]
           have hle : min ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (1 / 4)
               ≤ max ((ρ.re - 1 / 2) * (3 / 2 - ρ.re)) (t ^ 2) :=
             le_trans (min_le_left _ _) (le_max_left _ _)
@@ -654,7 +654,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
       have hA : (0 : ℝ) ≤ B * B * K * M ^ ((2 : ℝ) / 3) := by
         have hMnn := Real.rpow_nonneg hMpos.le ((2 : ℝ) / 3); positivity
       have hle : B * B * K * M ^ ((2 : ℝ) / 3) ≤ B * B * K * M ^ ((2 : ℝ) / 3) * NK := by
-        nlinarith [hA, hNK1]
+        exact le_mul_of_one_le_right hA hNK1
       have hfin : B * B * K * M ^ ((2 : ℝ) / 3) * c⁻¹
           ≤ B * B * K * M ^ ((2 : ℝ) / 3) * NK * c⁻¹ :=
         mul_le_mul_of_nonneg_right hle (inv_nonneg.mpr hcpos.le)
@@ -698,7 +698,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
         rw [hs1re, hs1im, abs_of_pos (by norm_num : (0 : ℝ) < 3)] at h
         have hmax : max 2 |t| ≤ max 3 |t| := max_le_max (by norm_num) le_rfl
         linarith [h, half_le_max_two_abs t, hmax]
-      nlinarith [h1', h2', norm_nonneg s, norm_nonneg (s + 1)]
+      nlinarith only [mul_le_mul h1' h2' (by positivity) (norm_nonneg s)]
     have hrepr : detInt χ₁ χ R θw N ρ s
         = LFunction χ u * LFunction (χ * χ₁) u * sieveG χ₁ R θw u χ
             * (N : ℂ) ^ s / (s * (s + 1)) := by
@@ -750,7 +750,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
     have him2 : 1 + |u.im| ≤ 3 * (1 + |T|) := by
       rw [huim]
       have h : |ρ.im + T| ≤ |ρ.im| + |T| := abs_add_le _ _
-      nlinarith [abs_nonneg ρ.im, abs_nonneg T, h, hT1]
+      linarith only [abs_nonneg T, h, hT]
     have hL1 : ‖LFunction χ u‖ ≤ B * (1 + |u.im|) ^ ((1 : ℝ) / 3) :=
       hB χ u hure hure3 (Or.inl him1)
     have hL2 : ‖LFunction (χ * χ₁) u‖ ≤ B * (1 + |u.im|) ^ ((1 : ℝ) / 3) :=
@@ -776,7 +776,7 @@ theorem DetIntBound {q : ℕ} [NeZero q] (hq : 2 ≤ q) (χ₁ χ : DirichletCha
         have h := Complex.abs_im_le_norm s; rwa [hsim] at h
       have h2' : |T| ≤ ‖s + 1‖ := by
         have h := Complex.abs_im_le_norm (s + 1); rwa [hs1im] at h
-      nlinarith [h1', h2', hT1, abs_nonneg T, norm_nonneg s, norm_nonneg (s + 1)]
+      nlinarith only [mul_le_mul h1' h2' (abs_nonneg T) (norm_nonneg s), hT1, abs_nonneg T]
     have hrepr : detInt χ₁ χ R θw N ρ s
         = LFunction χ u * LFunction (χ * χ₁) u * sieveG χ₁ R θw u χ
             * (N : ℂ) ^ s / (s * (s + 1)) := by

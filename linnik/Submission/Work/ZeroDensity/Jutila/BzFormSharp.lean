@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.LamRDefs
 import Submission.Work.ZeroDensity.Jutila.bvDefs
-import Submission.Work.ZeroDensity.Jutila.LzQDefs
 import Submission.Work.ZeroDensity.Jutila.LzDiffDefs
 import Submission.Work.ZeroDensity.Jutila.LzDiffFormBound
 import Submission.Work.ZeroDensity.Jutila.MsqDiag

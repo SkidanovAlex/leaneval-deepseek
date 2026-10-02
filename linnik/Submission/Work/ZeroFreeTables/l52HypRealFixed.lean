@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.l52HypReal
 import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen_real
 import Submission.Work.LinnikAreas.l31free.hbound_third_real
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi

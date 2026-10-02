@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikAreas.boxMaxZero
-import Submission.Work.LinnikAreas.DhRepel.existsDesignated3
 import Submission.Work.LinnikAreas.OtherCharRepel.existsDesignatedDecent
 
 namespace Work.LinnikAreas.OtherCharRepel

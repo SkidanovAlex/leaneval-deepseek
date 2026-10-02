@@ -90,7 +90,7 @@ lemma repulsionSizesCRBound {q : ℕ} {A C β₁ : ℝ}
           * (1-β₁)^(-2:ℝ)))
         ≤ 256 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
           * (1-β₁)^(-2:ℝ))) := mul_le_mul_of_nonneg_right hC256 hYnn
-    nlinarith [h1, h2, hY1]
+    linarith only [h1, h2, hY1]
   have hmax : ((max 200 (⌈C * A ^ 2 * (q : ℝ) ^ ((2 : ℝ) * (1 / 4 + 1 / 100))
         * Real.exp (2 * (Real.log (q : ℝ)) ^ (3 / 4 : ℝ)) * (1 - β₁) ^ (-2 : ℝ)⌉₊ + 1) : ℕ) : ℝ)
       ≤ 512 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
@@ -103,8 +103,8 @@ lemma repulsionSizesCRBound {q : ℕ} {A C β₁ : ℝ}
       ring
     rw [hcast]
     refine max_le ?_ ?_
-    · nlinarith [hY1]
-    · linarith [hceil]
+    · linarith only [hY1]
+    · linarith only [hceil]
   have hEq : 512 * (A^2 * ((q:ℝ)^((2:ℝ)*(1/4+1/100)) * Real.exp (2*(Real.log (q:ℝ))^(3/4:ℝ))
         * (1-β₁)^(-2:ℝ))) = 2 * Work.LinnikAreas.BGTZ.sieveR A (1 / 4 + 1 / 100) q β₁ := by
     rw [Work.LinnikAreas.BGTZ.sieveR]

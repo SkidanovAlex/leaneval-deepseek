@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.Udecay.mellin_defs
 
 namespace Work.LinnikAreas.Density4.Udecay
 

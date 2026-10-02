@@ -27,6 +27,7 @@ import Submission.Work.LinnikContract2.API
 import Submission.Work.ZeroFreeTables.OffAxis.offAxis_clauses_of_rectC
 import Submission.Work.ZeroFreeTables.OffAxis.lam2Bound_transport
 import Submission.Work.ZeroFreeTables.OffAxis.lam3Bound_transport
+import Submission.Work.A7.core15
 
 namespace Work.ZeroFreeTables.OffAxis
 

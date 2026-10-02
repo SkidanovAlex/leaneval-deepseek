@@ -9,8 +9,8 @@ theorem shiftAbsorb {a M e C C' : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he : 0 < e)
         + (x / L) * C' * (1 + Real.sqrt L) * (1 + x / L + (x / L) ^ 2)
         ≤ x * e := by
   set K : ℝ := 1 + (a + M) with hKdef
-  have hKpos : 0 < K := by rw [hKdef]; linarith
-  have haM : 0 ≤ a + M := by linarith
+  have hKpos : 0 < K := by rw [hKdef]; linarith only [ha, hM]
+  have haM : 0 ≤ a + M := by linarith only [ha, hM]
   set q : ℝ := 2 * (C + C') * K^2 / e with hqdef
   have hqpos : 0 < q := by
     rw [hqdef]
@@ -35,38 +35,38 @@ theorem shiftAbsorb {a M e C C' : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he : 0 < e)
   have hratio : (C + C' * (1 + s)) / L ≤ 2 * (C + C') / s := by
     have hA : C + C' * (1 + s) ≤ (C + C') * (1 + s) := by
       have hcs : 0 ≤ C * s := mul_nonneg (le_of_lt hC) hs_nonneg
-      nlinarith
+      linarith only [hcs]
     have hB : (1 + s) / L ≤ 2 / s := by
       rw [div_le_iff₀ hLpos]
       have h2 : (2 / s) * L = 2 * s := by
         rw [show L = s^2 from hs_sq.symm]
         field_simp
       rw [h2]
-      linarith
+      linarith only [hs1]
     calc (C + C' * (1 + s)) / L ≤ ((C + C') * (1 + s)) / L := div_le_div_of_nonneg_right hA (le_of_lt hLpos)
       _ = (C + C') * ((1 + s) / L) := by ring
-      _ ≤ (C + C') * (2 / s) := mul_le_mul_of_nonneg_left hB (by linarith)
+      _ ≤ (C + C') * (2 / s) := mul_le_mul_of_nonneg_left hB (by linarith only [hC, hC'])
       _ = 2 * (C + C') / s := by ring
   have hy_nonneg : 0 ≤ x / L := div_nonneg hx (le_of_lt hLpos)
   have hy_le : x / L ≤ a + M := by
     have h1 : x / L ≤ (a + M) / L := div_le_div_of_nonneg_right hxM (le_of_lt hLpos)
     have h2 : (a + M) / L ≤ a + M := div_le_self haM hL1
-    linarith
+    linarith only [h1, h2]
   have hpoly : 1 + x / L + (x / L)^2 ≤ K^2 := by
-    have h1 : 1 + x / L + (x / L)^2 ≤ (1 + x/L)^2 := by nlinarith [hy_nonneg]
+    have h1 : 1 + x / L + (x / L)^2 ≤ (1 + x/L)^2 := by linarith only [hy_nonneg]
     have h2 : (1 + x/L)^2 ≤ K^2 := by
       rw [hKdef]
-      nlinarith [hy_nonneg, hy_le]
-    linarith
+      nlinarith only [hy_nonneg, hy_le, ha, hM]
+    linarith only [hy_nonneg, h2]
   have hratio_nonneg : 0 ≤ (C + C' * (1 + s)) / L :=
-    div_nonneg (by nlinarith [hC, hC', hs_nonneg]) (le_of_lt hLpos)
-  have hpoly_nonneg : 0 ≤ 1 + x / L + (x / L)^2 := by nlinarith [hy_nonneg]
+    div_nonneg (by nlinarith only [hC, hC', hs_nonneg, hspos]) (le_of_lt hLpos)
+  have hpoly_nonneg : 0 ≤ 1 + x / L + (x / L)^2 := by nlinarith only [hy_nonneg]
   have hup : 0 ≤ 2 * (C + C') / s :=
-    div_nonneg (mul_nonneg (by norm_num) (by linarith)) (le_of_lt hspos)
+    div_nonneg (mul_nonneg (by norm_num) (by linarith only [hC, hC'])) (le_of_lt hspos)
   have hbracket : (C + C' * (1 + s)) / L * (1 + x / L + (x / L)^2) ≤ (2 * (C + C') / s) * K^2 :=
     mul_le_mul hratio hpoly hpoly_nonneg hup
   have hs_ge : 2 * (C + C') * K^2 / s ≤ 2 * (C + C') * K^2 / q :=
-    div_le_div_of_nonneg_left (by nlinarith [hC, hC', hKpos]) hqpos hqs
+    div_le_div_of_nonneg_left (by nlinarith only [hC, hC', hKpos]) hqpos hqs
   have hqe : q * e = 2 * (C + C') * K^2 := by
     rw [hqdef]; field_simp
   have heq : 2 * (C + C') * K^2 / q = e := by
@@ -74,7 +74,7 @@ theorem shiftAbsorb {a M e C C' : ℝ} (ha : 0 < a) (hM : 0 ≤ M) (he : 0 < e)
   have h2 : 2 * (C + C') / s * K^2 ≤ e := by
     have h3 : 2 * (C + C') / s * K^2 = 2 * (C + C') * K^2 / s := by ring
     rw [h3]
-    linarith
+    linarith only [hs_ge, heq]
   have hfin : (C + C' * (1 + s)) / L * (1 + x / L + (x / L)^2) ≤ e := le_trans hbracket h2
   calc (x / L) * C * (1 + x / L + (x / L)^2) + (x / L) * C' * (1 + s) * (1 + x / L + (x / L)^2)
       = x * ((C + C' * (1 + s)) / L * (1 + x / L + (x / L)^2)) := by

@@ -146,7 +146,7 @@ theorem h5CaseB_six (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     have h9 : (2:ℝ) ≤ Real.log 10 := by
       rw [Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 10)]
       have he : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-      nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      nlinarith only [he, Real.exp_one_lt_three, Real.exp_pos 1]
     rw [h8] at h7
     linarith
   -- `δ log q ≥ 0.82`
@@ -236,7 +236,7 @@ theorem h5CaseB_six (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
   have hs1im : s1.im = ρ₁.im := by rw [hs1def]; simp
   have hs1re : s1.re = β := by rw [hs1def]; simp
   have hsim10 : |s1.im| ≤ 10 * Real.log (q:ℝ) := by
-    rw [hs1im]; nlinarith [hν1, hlog6]
+    rw [hs1im]; linarith only [hν1, hlog6]
   -- every other window zero of `χ₁` satisfies `hLam0`
   have hzw1 : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
@@ -352,7 +352,7 @@ theorem h5CaseB_six (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     have hkR : ((k:ℝ)) ≤ 4 := by exact_mod_cast hk4
     have hsk10 : |sk.im| ≤ 10 * Real.log (q:ℝ) := by
       rw [hskim, abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (k:ℝ))]
-      nlinarith [hν1, hkR, hlog6]
+      nlinarith only [mul_le_mul hkR hν1 (abs_nonneg _) (by norm_num), hlog6]
     have hzwk : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction (χ₁^k).primitiveCharacter)
         (Metric.closedBall 0 (|sk.im| + 2))) u ≠ 0 →
@@ -369,8 +369,8 @@ theorem h5CaseB_six (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
             _ ≤ |u.im - sk.im| + |sk.im| := abs_add_le _ _
         have h5 : |sk.im| ≤ 4 := by
           rw [hskim, abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (k:ℝ))]
-          nlinarith [hν1, hkR]
-        linarith [h3, h4, h5, hδ1]
+          nlinarith only [mul_le_mul hkR hν1 (abs_nonneg _) (by norm_num)]
+        linarith only [h3, h4, h5, hδ1, hwin]
       have hle := hLam2' q hq₃ χ₁ ρ₁ hm hsmall (χ₁^k) u hzm hkne1 hkneχ hkneinv huim8
       have hle2 : lamS ≤ Work.LinnikContract.lamOf q u := by
         rw [hlamSdef, hlam1def]; exact hle

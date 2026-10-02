@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.tentLeftEdgeDeps
+import Submission.Commons.Analysis.Integral.integrable_log_lorentz
 
 namespace Work.LinnikAreas
 

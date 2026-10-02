@@ -49,7 +49,7 @@ theorem boxSumCap {ε₀ c : ℝ} (R : ℝ) (hR : 1 ≤ R) (hε₀ : 0 < ε₀) 
   have hK : (0 : ℝ) < 3 / 10 := by norm_num
   have hK2 : (0 : ℝ) < (3 / 10 : ℝ) ^ 2 := by norm_num
   set e' : ℝ := -e with he'def
-  have he'pos : 0 < e' := by rw [he'def]; linarith
+  have he'pos : 0 < e' := by rw [he'def]; linarith only [heneg]
   set L₀ : ℝ := (8 * C₂ / ((3 / 10 : ℝ) ^ 2 * (49 / 10))) ^ (1 / e') with hL₀def
   have hL₀pos : 0 < L₀ := by rw [hL₀def]; exact Real.rpow_pos_of_pos (by positivity) _
   have hL₀pow : L₀ ^ e = (3 / 10 : ℝ) ^ 2 * (49 / 10) / (8 * C₂) := by
@@ -98,7 +98,7 @@ theorem boxSumCap {ε₀ c : ℝ} (R : ℝ) (hR : 1 ≤ R) (hε₀ : 0 < ε₀) 
       have h2 : Real.exp R ≤ ((⌈Real.exp R⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
       have h3 : ((⌈Real.exp R⌉₊ : ℕ) : ℝ) < ((⌈Real.exp R⌉₊ : ℕ) : ℝ) + 1 := by norm_num
       push_cast
-      linarith
+      linarith only [h2]
     have h2 : (qR' : ℝ) ≤ (q : ℝ) := by exact_mod_cast hqR'
     have h3 : Real.log (Real.exp R) < Real.log q :=
       Real.log_lt_log (Real.exp_pos R) (lt_of_lt_of_le h1 h2)
@@ -132,13 +132,13 @@ theorem boxSumCap {ε₀ c : ℝ} (R : ℝ) (hR : 1 ≤ R) (hε₀ : 0 < ε₀) 
         rw [one_div, ← Real.exp_neg]
         congr 1
         ring
-      linarith [h3, h4]
+      linarith only [h3, h4]
     have h5 : (R + 1) / c ≤ Real.log (1 / lam) := by
       have h6 : Real.log (Real.exp ((R + 1) / c)) ≤ Real.log (1 / lam) :=
         Real.log_le_log (Real.exp_pos _) h1
       rwa [Real.log_exp] at h6
     have h7 : c * ((R + 1) / c) = R + 1 := by field_simp
-    nlinarith [h5, hc, h7]
+    nlinarith only [h5, hc, h7]
   -- the box part
   have hsimple : zeroMult χ₁ (β₁ : ℂ) = 1 := hSimple' q hqS χ₁ β₁ hχ hsq hβ1 hz hlam1
   have hlamR : lam ≤ R := le_trans hlam1 (le_trans (by norm_num) hR)
@@ -178,9 +178,9 @@ theorem boxSumCap {ε₀ c : ℝ} (R : ℝ) (hR : 1 ≤ R) (hε₀ : 0 < ε₀) 
       have h1 : Real.exp L₀ ≤ (qH' : ℝ) := by
         rw [hqH'def]
         have h2 : Real.exp L₀ ≤ ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
-        have h3 : ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) ≤ ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) + 1 := by linarith
+        have h3 : ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) ≤ ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) + 1 := by linarith only []
         push_cast
-        linarith
+        linarith only [h2]
       have h2 : (qH' : ℝ) ≤ (q : ℝ) := by exact_mod_cast hqH'
       calc L₀ = Real.log (Real.exp L₀) := (Real.log_exp L₀).symm
         _ ≤ Real.log q := Real.log_le_log (Real.exp_pos L₀) (le_trans h1 h2)
@@ -206,7 +206,7 @@ theorem boxSumCap {ε₀ c : ℝ} (R : ℝ) (hR : 1 ≤ R) (hε₀ : 0 < ε₀) 
     _ ≤ (3 / 10 : ℝ) ^ 2 * Real.exp (-(49 / 10 * lam))
           + (C₁ * lam ^ (1 + δ) + C₂ * lam * (Real.log q) ^ e) :=
         add_le_add hkern' (add_le_add hlow hhigh)
-    _ ≤ (3 / 10 : ℝ) ^ 2 * (1 - (49 / 10) * lam / 2) := by linarith [hmain]
+    _ ≤ (3 / 10 : ℝ) ^ 2 * (1 - (49 / 10) * lam / 2) := by linarith only [hmain]
     _ = (3 / 10 : ℝ) ^ 2 * (1 - (49 / 10) * lamOf q (β₁ : ℂ) / 2) := by rw [hlamdef]
 
 end

@@ -18,7 +18,6 @@ absolute constant `C` (uniform in the level `q` and in the primitive non-trivial
 (for `q ≥ 13`) gives the claim with `C = 8C₀ + 1` and `q₀ = 13`.
 --/
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_zeroSumKMultBound
 
 open scoped Classical BigOperators

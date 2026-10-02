@@ -27,6 +27,7 @@ import Submission.Work.ZeroFreeTables.l52HypConvexityFixed
 import Submission.Work.LinnikAreas.triangle_hFnn
 import Submission.Work.ZeroFreeTables.t23triBound
 import Submission.Work.ZeroFreeTables.t23guard
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

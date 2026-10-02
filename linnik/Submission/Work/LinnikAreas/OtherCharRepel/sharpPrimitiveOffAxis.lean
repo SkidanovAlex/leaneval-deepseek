@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.OtherCharRepel.gammaFactorLogDerivReLe
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_supply
 import Submission.Work.LinnikAreas.OtherCharRepel.one_div_le_winSum
 import Submission.Work.LinnikAreas.OtherCharRepel.winSum_nonneg

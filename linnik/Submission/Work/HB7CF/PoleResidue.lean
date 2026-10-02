@@ -4,7 +4,7 @@ import Submission.Work.ZeroDensity.LogFree.PoleDefs
 import Submission.Work.ZeroDensity.LogFree.poleResidue_mul_log_sq
 import Submission.Work.ZeroDensity.LogFree.innerDiffSq_sum_le
 import Submission.Work.ZeroDensity.LogFree.exists_const_log_bound
-import Submission.Work.HB7CF2.ZeroDensity.Jutila.LzSqIntGood
+import Submission.Work.ZeroDensity.Jutila.LzSqIntGood
 
 /-!
 # `Work.ZeroDensity.LogFree.poleResidueBound` — the pole residue of the damped large sieve

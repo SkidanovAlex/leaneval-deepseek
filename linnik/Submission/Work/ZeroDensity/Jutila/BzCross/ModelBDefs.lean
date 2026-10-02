@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.ZeroDensity.Jutila.BzCross.BzCrossDefs
 import Submission.Work.ZeroDensity.Jutila.Bz3Defs
-import Submission.Work.LinnikAreas.JutilaPieces.S3ModelEval
 
 /-!
 # The two regions of the two-sided `S₃` boundary sum `czModelB`

@@ -1,6 +1,10 @@
 import Mathlib
-import Submission.Work.LinnikAreas.PairDensityGen
 import Submission.Work.SiegelAbsorb.famCount_nearLine
+import Submission.Work.ZeroDensity.Deuring.deuringHeilbronnLogFree
+import Submission.Work.LinnikAreas.RepulsionCapDefs
+import Submission.Work.ZeroDensity.Deuring.restCount_eq_zero_of_lt_repulsion
+import Submission.Work.LinnikAreas.repelOwnCount
+import Submission.Work.ZeroDensity.Deuring.multCount_le_famCount
 
 /-!
 # U5 of `AREA6_ROUTE_LEAD.md`: the Deuring--Heilbronn count truncated at `t ≤ (7/100)·log q`

@@ -25,7 +25,6 @@ The proof is the *Hadamard partial-fraction* route (no Burgess input):
   `L52Hyp` with the absolute constants `c = 2`, `q₀ = 10 ^ 6`.
 -/
 import Mathlib
-import Submission.Work.LinnikAreas.DhRepel.Defs
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_defs
 import Submission.Work.LinnikAreas.DhRepel.divisor_refl
 import Submission.Work.LinnikAreas.DhRepel.tendsto_kernSum
@@ -89,7 +88,7 @@ lemma kernel_first_nonneg {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (
   rw [one_div, Complex.inv_re]
   apply div_nonneg _ (Complex.normSq_nonneg _)
   simp only [Complex.sub_re]
-  linarith
+  linarith only [hs, h2]
 
 /-- The second (reflected) kernel is non-negative at every `Λ`-zero. -/
 lemma kernel_second_nonneg {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
@@ -100,7 +99,7 @@ lemma kernel_second_nonneg {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) 
   rw [one_div, Complex.inv_re]
   apply div_nonneg _ (Complex.normSq_nonneg _)
   simp only [Complex.sub_re, Complex.add_re, Complex.one_re, Complex.conj_re]
-  linarith
+  linarith only [hs, h1]
 
 /-- The two kernels are exchanged by the reflection `u ↦ 1 - conj u`. -/
 lemma kernel_conj {s u : ℂ} :
@@ -166,7 +165,7 @@ lemma winSum_le_firstSum {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
   · have hu1 : u ∈ Metric.closedBall (0:ℂ) (|s.im| + 2) := mem_of_divisor_ne_zero hD
     have hu2 : u ∈ Metric.closedBall (0:ℂ) R := by
       rw [Metric.mem_closedBall, dist_zero_right] at hu1 ⊢
-      linarith
+      linarith only [hR, hu1]
     have hEq : MeromorphicOn.divisor (completedLFunction χ) (Metric.closedBall (0:ℂ) (|s.im| + 2)) u =
         MeromorphicOn.divisor (completedLFunction χ) (Metric.closedBall (0:ℂ) R) u :=
       Commons.NumberTheory.Linnik.divisor_eq_closedBall_subset han hu1 hu2
@@ -293,7 +292,7 @@ lemma winSum_le_secondSum {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (
       simpa using this
     have him : ‖(s.im : ℂ) * Complex.I‖ = |s.im| := by simp
     have hnorm : ‖(starRingEnd ℂ) v‖ = ‖v‖ := by simp
-    linarith
+    linarith only [hδ1, hR, hδ, htri, him, hnorm]
   · -- the reflected point lies in the window ball `closedBall 0 (|Im s| + 2)`
     rw [Metric.mem_closedBall, dist_zero_right]
     have harg : (1:ℂ) + (s.im : ℂ) * Complex.I - (1 - (starRingEnd ℂ) v) =
@@ -311,7 +310,7 @@ lemma winSum_le_secondSum {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (
       calc ‖(1:ℂ) + (s.im : ℂ) * Complex.I‖
           ≤ ‖(1:ℂ)‖ + ‖(s.im : ℂ) * Complex.I‖ := norm_add_le _ _
         _ = 1 + |s.im| := by simp
-    linarith
+    linarith only [hδ1, hδ, htri, hb]
 
 /-! ## The completed-`L` bound -/
 
@@ -357,11 +356,11 @@ lemma kernSum_mono {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : �
       · exact divisor_nonneg χ hχ R₂ u
       · have h1 := kernel_first_nonneg χ hχ hχprim hs hE
         have h2 := kernel_second_nonneg χ hχ hχprim hs hE
-        linarith
+        linarith only [h1, h2]
   · have hu1 : u ∈ Metric.closedBall (0:ℂ) R₁ := mem_of_divisor_ne_zero hD
     have hu2 : u ∈ Metric.closedBall (0:ℂ) R₂ := by
       rw [Metric.mem_closedBall, dist_zero_right] at hu1 ⊢
-      linarith
+      linarith only [h12, hu1]
     have hEq : MeromorphicOn.divisor (completedLFunction χ) (Metric.closedBall (0:ℂ) R₁) u =
         MeromorphicOn.divisor (completedLFunction χ) (Metric.closedBall (0:ℂ) R₂) u :=
       Commons.NumberTheory.Linnik.divisor_eq_closedBall_subset han hu1 hu2
@@ -403,9 +402,9 @@ theorem core {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 
     simp only [firstSum, secondSum]
   set R : ℝ := |s.im| + 4 with hRdef
   have hfirst : winSum χ s δ ≤ firstSum χ s R :=
-    winSum_le_firstSum χ hχ hχprim hs (by rw [hRdef]; linarith)
+    winSum_le_firstSum χ hχ hχprim hs (by rw [hRdef]; linarith only [hδ0, hδ1])
   have hsecond : winSum χ s δ ≤ secondSum χ s R :=
-    winSum_le_secondSum χ hχ hχprim hs hδ1 (by rw [hRdef]; linarith)
+    winSum_le_secondSum χ hχ hχprim hs hδ1 (by rw [hRdef]; linarith only [hδ0, hδ1])
   have hb : kernSum χ s R ≤ 2 * (logDeriv (completedLFunction χ) s).re + Real.log N := hbound R
   rw [hsplit R] at hb
   linarith
@@ -427,7 +426,7 @@ lemma gammaFactor_logDeriv_re_le {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     have hb : ‖logDeriv Complex.Gammaℝ s‖ ≤
         Real.log Real.pi / 2 + (1/2) * (Real.log (2 + |s.im|) + 8) := by
       have hle := Commons.NumberTheory.DirichletCharacter.norm_logDeriv_Gammaℝ_le s.re s.im h1
-        (by linarith : s.re ≤ 16)
+        (by linarith only [h2] : s.re ≤ 16)
       rwa [show (((s.re : ℝ)) : ℂ) + Complex.I * (((s.im : ℝ)) : ℂ) = s from by
         apply Complex.ext <;> simp] at hle
     exact le_trans hre hb
@@ -437,7 +436,7 @@ lemma gammaFactor_logDeriv_re_le {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     have hld : logDeriv (fun z : ℂ => Complex.Gammaℝ (z + 1)) s =
         logDeriv Complex.Gammaℝ (s + 1) := by
       have hf : DifferentiableAt ℂ Complex.Gammaℝ (s + 1) :=
-        Commons.NumberTheory.DirichletCharacter.differentiableAt_Gammaℝ (s + 1) (by rw [Complex.add_re]; simp; linarith)
+        Commons.NumberTheory.DirichletCharacter.differentiableAt_Gammaℝ (s + 1) (by rw [Complex.add_re]; simp; linarith only [h1])
       have hg : DifferentiableAt ℂ (fun z : ℂ => z + 1) s := by fun_prop
       have h := logDeriv_comp (f := Complex.Gammaℝ) (g := fun z : ℂ => z + 1) (x := s) hf hg
       have hder : deriv (fun z : ℂ => z + 1) s = 1 := by simp
@@ -447,7 +446,7 @@ lemma gammaFactor_logDeriv_re_le {N : ℕ} [NeZero N] (χ : DirichletCharacter �
     have hb : ‖logDeriv Complex.Gammaℝ (s + 1)‖ ≤
         Real.log Real.pi / 2 + (1/2) * (Real.log (2 + |s.im|) + 8) := by
       have hle := Commons.NumberTheory.DirichletCharacter.norm_logDeriv_Gammaℝ_le (s.re + 1) s.im
-        (by linarith) (by linarith : s.re + 1 ≤ 16)
+        (by linarith only [h1]) (by linarith only [h2] : s.re + 1 ≤ 16)
       rwa [show (((s.re + 1 : ℝ)) : ℂ) + Complex.I * (((s.im : ℝ)) : ℂ) = s + 1 from by
         apply Complex.ext <;> simp <;> ring] at hle
     exact le_trans hre hb
@@ -462,7 +461,7 @@ theorem shape {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠
   have hLs : DirichletCharacter.LFunction χ s ≠ 0 :=
     DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (le_of_lt hs)
   have hdec := Commons.NumberTheory.DirichletCharacter.logDeriv_completedLFunction_eq_add χ hχ s (lt_trans zero_lt_one hs) hLs
-  have hgam := gammaFactor_logDeriv_re_le χ (s := s) (by linarith) hs15
+  have hgam := gammaFactor_logDeriv_re_le χ (s := s) (by linarith only [hs, hδ0, hδ1]) hs15
   have hsplit : (-(logDeriv (DirichletCharacter.LFunction χ) s).re) =
       (-(logDeriv (completedLFunction χ) s).re) +
         (logDeriv (DirichletCharacter.gammaFactor χ) s).re := by
@@ -490,30 +489,30 @@ theorem l52Hyp_supply : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : ℕ, q₀
   have hlog10 : (2 : ℝ) < Real.log 10 := by
     rw [Real.lt_log_iff_exp_lt (by norm_num : (0:ℝ) < 10)]
     calc Real.exp 2 = (Real.exp 1)^2 := by rw [← Real.exp_nat_mul]; norm_num
-      _ < 3^2 := by nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      _ < 3^2 := by nlinarith only [Real.exp_one_lt_three, Real.exp_pos 1, hδ0, hδ1]
       _ < 10 := by norm_num
   have hlogq : (12 : ℝ) ≤ Real.log (q : ℝ) := by
     have h := Real.log_le_log (by norm_num : (0:ℝ) < 10 ^ 6) hq1e6
     have h2 : Real.log ((10:ℝ) ^ 6) = 6 * Real.log 10 := by
       rw [Real.log_pow]; norm_num
-    have h3 : (12 : ℝ) ≤ 6 * Real.log 10 := by nlinarith [hlog10]
-    rw [h2] at h; linarith
-  have hlogqpos : (0 : ℝ) < Real.log (q : ℝ) := by linarith
+    have h3 : (12 : ℝ) ≤ 6 * Real.log 10 := by linarith only [hlog10]
+    rw [h2] at h; linarith only [hlog10, h]
+  have hlogqpos : (0 : ℝ) < Real.log (q : ℝ) := by linarith only [hδ0, hδ1, hlogq]
   -- the region conditions
   have hloglogqpos : 0 < Real.log (Real.log (q : ℝ)) := by
-    apply Real.log_pos; linarith
+    apply Real.log_pos; linarith only [hδ0, hδ1, hlogq]
   have hden : 0 < Real.log (q : ℝ) * Real.log (Real.log (q : ℝ)) := mul_pos hlogqpos hloglogqpos
   intro s hs1 hs2 hs3
   have hs1' : 1 < s.re := by
     have : 0 < 1 / (Real.log (q : ℝ) * Real.log (Real.log (q : ℝ))) := by positivity
-    linarith
+    linarith only [hs1, this]
   have hs15 : s.re ≤ 15 := by
     have hle : Real.log (Real.log (q : ℝ)) ≤ Real.log (q : ℝ) := by
       have := Real.log_le_sub_one_of_pos hlogqpos
-      linarith
+      linarith only [hδ0, hδ1, this]
     have h1 : Real.log (Real.log (q : ℝ)) / Real.log (q : ℝ) ≤ 1 := by
       rw [div_le_one hlogqpos]; exact hle
-    linarith
+    linarith only [hδ0, hδ1, hs2, h1]
   have hshape := shape χ.primitiveCharacter hχ' hprim hs1' hs15 hδ0 hδ1
   have hgoal : (-(logDeriv (DirichletCharacter.LFunction χ.primitiveCharacter) s).re) +
       (∑ᶠ u : ℂ, ((MeromorphicOn.divisor (completedLFunction χ.primitiveCharacter)
@@ -525,27 +524,27 @@ theorem l52Hyp_supply : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : ℕ, q₀
       have := Nat.pos_of_ne_zero (NeZero.ne χ.conductor)
       exact_mod_cast this
     have hlogN : Real.log (χ.conductor : ℝ) ≤ Real.log (q : ℝ) :=
-      Real.log_le_log (by linarith) (by exact_mod_cast hNle)
+      Real.log_le_log (by linarith only [hδ0, hδ1, hN1]) (by exact_mod_cast hNle)
     have hpi : Real.log Real.pi / 2 ≤ 1 := by
       have h1 : Real.log Real.pi ≤ Real.log 4 := Real.log_le_log Real.pi_pos (le_of_lt Real.pi_lt_four)
       have h2 : Real.log (4:ℝ) = 2 * Real.log 2 := by
         rw [show (4:ℝ) = 2^2 by norm_num, Real.log_pow]; norm_num
       have h3 : Real.log (2:ℝ) ≤ 1 := by
-        have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith
-      linarith
+        have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith only [this]
+      linarith only [h1, h2, h3]
     have hlog12 : Real.log (12:ℝ) ≤ 4 := by
       have h1 : Real.log (12:ℝ) ≤ Real.log 16 := Real.log_le_log (by norm_num) (by norm_num)
       have h2 : Real.log (16:ℝ) = 4 * Real.log 2 := by
         rw [show (16:ℝ) = 2^4 by norm_num, Real.log_pow]; norm_num
       have h3 : Real.log (2:ℝ) ≤ 1 := by
-        have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith
-      linarith
+        have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith only [this]
+      linarith only [h1, h2, h3]
     have hhalf : Real.log (Real.log (q:ℝ)) ≤ (1/2) * Real.log (q:ℝ) := by
-      have h4 : (4:ℝ) ≤ Real.log (q:ℝ) := by linarith
+      have h4 : (4:ℝ) ≤ Real.log (q:ℝ) := by linarith only [hδ0, hδ1, hlogq]
       have hspos : 0 < Real.sqrt (Real.log (q:ℝ)) := Real.sqrt_pos.mpr hlogqpos
       have hsq2 : (2:ℝ) ≤ Real.sqrt (Real.log (q:ℝ)) := by
-        rw [Real.le_sqrt (by norm_num) (by linarith)]
-        linarith
+        rw [Real.le_sqrt (by norm_num) (by linarith only [hδ0, hδ1, hlogq])]
+        linarith only [hδ0, hδ1, hlogq]
       have hsq : (Real.sqrt (Real.log (q:ℝ)))^2 = Real.log (q:ℝ) :=
         Real.sq_sqrt (le_of_lt hlogqpos)
       have hlog_eq : Real.log (Real.log (q:ℝ)) = 2 * Real.log (Real.sqrt (Real.log (q:ℝ))) := by
@@ -553,24 +552,24 @@ theorem l52Hyp_supply : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : ℕ, q₀
       have hbound : Real.log (Real.sqrt (Real.log (q:ℝ))) ≤ Real.sqrt (Real.log (q:ℝ)) - 1 :=
         Real.log_le_sub_one_of_pos hspos
       rw [hlog_eq]
-      nlinarith [hsq2, hsq, hbound]
+      nlinarith only [hsq2, hsq, hbound, hspos, hlog_eq, hδ0, hδ1, hlogq, hloglogqpos]
     have h2t : Real.log (2 + |s.im|) ≤ Real.log 12 + Real.log (Real.log (q:ℝ)) := by
       have h1 : Real.log (2 + |s.im|) ≤ Real.log (2 + 10 * Real.log (q:ℝ)) := by
         apply Real.log_le_log (by positivity)
-        linarith [abs_nonneg s.im, hs3]
+        linarith only [abs_nonneg s.im, hs3]
       have h2 : Real.log (2 + 10 * Real.log (q:ℝ)) ≤ Real.log (12 * Real.log (q:ℝ)) := by
         apply Real.log_le_log (by positivity)
-        linarith
+        linarith only [hδ0, hδ1, hlogq]
       have h3 : Real.log (12 * Real.log (q:ℝ)) = Real.log 12 + Real.log (Real.log (q:ℝ)) :=
         Real.log_mul (by norm_num) (ne_of_gt hlogqpos)
-      linarith
-    have hA : (1/2) * Real.log (χ.conductor : ℝ) ≤ (1/2) * Real.log (q : ℝ) := by linarith
+      linarith only [h1, h2, h3]
+    have hA : (1/2) * Real.log (χ.conductor : ℝ) ≤ (1/2) * Real.log (q : ℝ) := by linarith only [hlogN]
     have hB : (1/2) * (Real.log (2 + |s.im|) + 8) ≤
-        (1/2) * (Real.log 12 + (1/2) * Real.log (q:ℝ) + 8) := by linarith
+        (1/2) * (Real.log 12 + (1/2) * Real.log (q:ℝ) + 8) := by linarith only [hhalf, h2t]
     have hC : (2:ℝ) * Real.log (q : ℝ) ≤ (2 + ε/4) * Real.log (q : ℝ) := by
-      have := mul_le_mul_of_nonneg_right (by linarith : (2:ℝ) ≤ 2 + ε/4) (le_of_lt hlogqpos)
-      linarith
-    nlinarith [hA, hB, hC, hpi, hlog12, hlogq]
+      have := mul_le_mul_of_nonneg_right (by linarith only [hε] : (2:ℝ) ≤ 2 + ε/4) (le_of_lt hlogqpos)
+      linarith only [this]
+    linarith only [hA, hB, hC, hpi, hlog12, hlogq, hδ0, hδ1, hlogN, hhalf, h2t]
   simpa only [Complex.neg_re] using hgoal
 
 end Work.LinnikAreas.DhRepel

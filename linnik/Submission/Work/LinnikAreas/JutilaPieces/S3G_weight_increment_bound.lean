@@ -41,7 +41,7 @@ lemma sqrt_div_self_nat (m : ℕ) (hm : 1 ≤ m) :
   have hsq : Real.sqrt (m : ℝ) * Real.sqrt (m : ℝ) = (m : ℝ) := by
     rw [← pow_two]; exact Real.sq_sqrt hm0.le
   field_simp
-  linarith [hsq]
+  linarith only [hsq]
 
 /-- `1/√m ≤ 2(√m − √(m−1))` for `m ≥ 1`. -/
 lemma inv_sqrt_le_two_sqrt_sub (m : ℕ) (hm : 1 ≤ m) :
@@ -58,7 +58,7 @@ lemma inv_sqrt_le_two_sqrt_sub (m : ℕ) (hm : 1 ≤ m) :
   have hsq1 : (Real.sqrt (m : ℝ))^2 = (m : ℝ) := Real.sq_sqrt hm0.le
   have hsq2 : (Real.sqrt (((m-1 : ℕ)) : ℝ))^2 = (((m-1 : ℕ)) : ℝ) :=
     Real.sq_sqrt (by positivity)
-  have hden : (0 : ℝ) < Real.sqrt (m : ℝ) + Real.sqrt (((m-1 : ℕ)) : ℝ) := by linarith
+  have hden : (0 : ℝ) < Real.sqrt (m : ℝ) + Real.sqrt (((m-1 : ℕ)) : ℝ) := by linarith only [hsm, hspos]
   have hkey : (Real.sqrt (m : ℝ) - Real.sqrt (((m-1 : ℕ)) : ℝ))
       * (Real.sqrt (m : ℝ) + Real.sqrt (((m-1 : ℕ)) : ℝ)) = (m : ℝ) - (((m-1 : ℕ)) : ℝ) := by
     rw [show (Real.sqrt (m : ℝ) - Real.sqrt (((m-1 : ℕ)) : ℝ))
@@ -67,13 +67,13 @@ lemma inv_sqrt_le_two_sqrt_sub (m : ℕ) (hm : 1 ≤ m) :
   have hdiff : Real.sqrt (m : ℝ) - Real.sqrt (((m-1 : ℕ)) : ℝ)
       = ((m : ℝ) - (((m-1 : ℕ)) : ℝ))
         / (Real.sqrt (m : ℝ) + Real.sqrt (((m-1 : ℕ)) : ℝ)) := by
-    rw [eq_div_iff (ne_of_gt hden)]; linarith [hkey]
+    rw [eq_div_iff (ne_of_gt hden)]; linarith only [hkey, hsq1, hsq2]
   rw [hdiff, ← mul_div_assoc, div_le_div_iff₀ hsm hden]
   have hsub : (m : ℝ) - (((m-1 : ℕ)) : ℝ) = 1 := by
     have h1 : ((m-1 : ℕ) : ℝ) = (m : ℝ) - 1 := by rw [Nat.cast_sub hm]; norm_num
-    linarith
+    linarith only [h1]
   rw [hsub]
-  linarith
+  linarith only [hle]
 
 /-- The telescoping sum `∑_{m ≤ X} (√m − √(m−1)) = √X`. -/
 lemma sum_Icc_sqrt_sub_pred (X : ℕ) :
@@ -117,7 +117,7 @@ lemma rpow34_sum_le (X : ℕ) (hX : 1 ≤ X) :
   have hX1 : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX
   have hant : AntitoneOn (fun x : ℝ => x ^ (-(3/4) : ℝ)) (Set.Icc (1 : ℝ) (1 + (X : ℝ))) := by
     intro x hx y hy hxy
-    have hx0 : 0 < x := by linarith [hx.1]
+    have hx0 : 0 < x := by linarith only [hx.1, hx]
     exact Real.rpow_le_rpow_of_nonpos hx0 hxy (by norm_num)
   have hint := AntitoneOn.sum_le_integral (x₀ := (1 : ℝ)) (a := X) hant
   have hcast : ∀ i : ℕ, (1 : ℝ) + ↑(i+1) = ↑(i+2) := by intro i; push_cast; ring
@@ -156,13 +156,13 @@ lemma rpow34_sum_le (X : ℕ) (hX : 1 ≤ X) :
   have hfin : (1 + (X : ℝ)) ^ (1/4 : ℝ) ≤ (2 : ℝ)^(1/4 : ℝ) * (X : ℝ)^(1/4 : ℝ) := by
     have h1 : (1 + (X : ℝ)) ^ (1/4 : ℝ) ≤ ((2 : ℝ) * (X : ℝ)) ^ (1/4 : ℝ) :=
       Real.rpow_le_rpow (x := 1 + (X : ℝ)) (y := 2 * (X : ℝ)) (z := (1/4 : ℝ)) (by positivity)
-        (by linarith) (by norm_num)
+        (by linarith only [hX1]) (by norm_num)
     have h2 : ((2 : ℝ) * (X : ℝ)) ^ (1/4 : ℝ) = (2 : ℝ)^(1/4 : ℝ) * (X : ℝ)^(1/4 : ℝ) :=
       Real.mul_rpow (x := (2 : ℝ)) (y := (X : ℝ)) (z := (1/4 : ℝ)) (by norm_num) hX0.le
     rw [h2] at h1; exact h1
   have hone : (1 : ℝ) ^ (-(3/4) : ℝ) = 1 := Real.one_rpow _
   rw [hsplit, hone]
-  linarith [hint, hmono, hfin, hintval]
+  linarith only [hint, hmono, hfin, hintval]
 
 /-- `∑_{m ≤ X} log(2X/m)/√m ≤ 100·√X` for `X ≥ 1`. -/
 lemma log_div_sqrt_sum_le (X : ℕ) (hX : 1 ≤ X) :
@@ -178,7 +178,7 @@ lemma log_div_sqrt_sum_le (X : ℕ) (hX : 1 ≤ X) :
     have hX0 : (0 : ℝ) < (X : ℝ) := by
       have h : 0 < X := by omega
       exact_mod_cast h
-    have h2X0 : (0 : ℝ) < 2 * (X : ℝ) := by linarith
+    have h2X0 : (0 : ℝ) < 2 * (X : ℝ) := by linarith only [hX0]
     have hY : (0 : ℝ) ≤ 2 * (X : ℝ) := le_of_lt h2X0
     have hnonneg : (0 : ℝ) ≤ 2 * (X : ℝ)/(m : ℝ) := div_nonneg hY (le_of_lt hm0)
     have hlog := Real.log_le_rpow_div (x := 2 * (X : ℝ)/(m : ℝ)) (ε := (1/4 : ℝ)) hnonneg
@@ -186,7 +186,7 @@ lemma log_div_sqrt_sum_le (X : ℕ) (hX : 1 ≤ X) :
     have hlog' : Real.log (2 * (X : ℝ)/(m : ℝ)) ≤ 4 * ((2 * (X : ℝ)/(m : ℝ))^(1/4 : ℝ)) := by
       have h : ((2 * (X : ℝ)/(m : ℝ))^(1/4 : ℝ))/(1/4 : ℝ)
           = 4 * ((2 * (X : ℝ)/(m : ℝ))^(1/4 : ℝ)) := by ring
-      linarith [hlog]
+      linarith only [hlog]
     have hid := rpow_quarter_div_sqrt (2 * (X : ℝ)) (m : ℝ) hY hm0
     calc Real.log (2 * (X : ℝ)/(m : ℝ))/Real.sqrt (m : ℝ)
         ≤ 4 * ((2 * (X : ℝ)/(m : ℝ))^(1/4 : ℝ)) / Real.sqrt (m : ℝ) :=
@@ -225,7 +225,7 @@ lemma log_div_sqrt_sum_le (X : ℕ) (hX : 1 ≤ X) :
             norm_num
           rwa [Real.rpow_one] at h'
         have hs : 0 ≤ Real.sqrt (X : ℝ) := Real.sqrt_nonneg _
-        nlinarith [mul_le_mul_of_nonneg_right h2half hs]
+        linarith only [mul_le_mul_of_nonneg_right h2half hs, hs, h2half]
 
 /-! ## The pointwise weight-increment bound -/
 
@@ -243,7 +243,7 @@ lemma weight_diff_mul_sqrt_le (X m : ℕ) (α β : ℝ) (hX : 2 ≤ X) (hm : 1 �
   have hm0 : (0:ℝ) < (m:ℝ) := by exact_mod_cast (by omega : 0 < m)
   have hmp0 : (0:ℝ) < (((m+1:ℕ)):ℝ) := by positivity
   have hX0 : (0:ℝ) < (X:ℝ) := by exact_mod_cast (by omega : 0 < X)
-  have h2X0 : (0:ℝ) < 2*(X:ℝ) := by linarith
+  have h2X0 : (0:ℝ) < 2*(X:ℝ) := by linarith only [hX0]
   have hab : a ≤ b := by
     rw [ha, hb]
     exact Real.log_le_log hm0 (by exact_mod_cast (by omega : m ≤ m+1))
@@ -255,7 +255,7 @@ lemma weight_diff_mul_sqrt_le (X m : ℕ) (α β : ℝ) (hX : 2 ≤ X) (hm : 1 �
     rw [show (2:ℝ) * Real.log (2*(X:ℝ)) = Real.log (2*(X:ℝ)) + Real.log (2*(X:ℝ)) by ring,
         ← Real.log_mul (ne_of_gt h2X0) (ne_of_gt h2X0)]
     apply Real.log_le_log (by positivity)
-    nlinarith
+    nlinarith only [hmX', hmpX]
   have hdiff : b - a ≤ 1/(m:ℝ) := by
     rw [ha, hb]
     have hpos : (0:ℝ) < (((m+1:ℕ)):ℝ)/(m:ℝ) := by positivity
@@ -265,23 +265,23 @@ lemma weight_diff_mul_sqrt_le (X m : ℕ) (α β : ℝ) (hX : 2 ≤ X) (hm : 1 �
       field_simp
       push_cast
       ring
-    linarith
+    linarith only [h, hval]
   have hdiffabs : |b - a| ≤ 1/(m:ℝ) := by
-    rw [abs_of_nonneg (by linarith : 0 ≤ b - a)]
+    rw [abs_of_nonneg (by linarith only [hab] : 0 ≤ b - a)]
     exact hdiff
   have h1 : |a + b - α - β| ≤ (2*L - (a+b)) + (|L - α| + |L - β|) := by
     have hde : a + b - α - β = (a + b - 2*L) + (2*L - α - β) := by ring
     rw [hde]
-    have hA : |a + b - 2*L| = 2*L - (a+b) := by rw [abs_of_nonpos (by linarith)]; ring
+    have hA : |a + b - 2*L| = 2*L - (a+b) := by rw [abs_of_nonpos (by linarith only [hsum2L])]; ring
     have hB : |2*L - α - β| = |(L - α) + (L - β)| := by congr 1; ring
     calc |(a + b - 2*L) + (2*L - α - β)| ≤ |a + b - 2*L| + |2*L - α - β| := abs_add_le _ _
       _ = (2*L - (a+b)) + |(L - α) + (L - β)| := by rw [hA, hB]
-      _ ≤ (2*L - (a+b)) + (|L - α| + |L - β|) := by linarith [abs_add_le (L-α) (L-β)]
+      _ ≤ (2*L - (a+b)) + (|L - α| + |L - β|) := by linarith only [abs_add_le (L-α) (L-β)]
   have hlog2 : L - a = Real.log (2*(X:ℝ)/(m:ℝ)) := by
     rw [hL, ha, Real.log_div (ne_of_gt h2X0) (ne_of_gt hm0)]
   have h2Lsub : 2*L - (a + b) ≤ 2 * Real.log (2*(X:ℝ)/(m:ℝ)) := by
-    have hle : 2*L - (a+b) ≤ 2*L - 2*a := by linarith
-    linarith [hlog2]
+    have hle : 2*L - (a+b) ≤ 2*L - 2*a := by linarith only [hab]
+    linarith only [hlog2, hab]
   have main : |(b - α)*(b - β) - (a - α)*(a - β)|
       ≤ (2 * Real.log (2*(X:ℝ)/(m:ℝ)) + |L - α| + |L - β|) / (m:ℝ) := by
     have hval : (b - α)*(b - β) - (a - α)*(a - β) = (b - a)*(a + b - α - β) := by ring
@@ -291,7 +291,7 @@ lemma weight_diff_mul_sqrt_le (X m : ℕ) (α β : ℝ) (hX : 2 ≤ X) (hm : 1 �
           mul_le_mul hdiffabs h1 (abs_nonneg _) (by positivity)
       _ ≤ (1/(m:ℝ)) * (2 * Real.log (2*(X:ℝ)/(m:ℝ)) + |L - α| + |L - β|) := by
           apply mul_le_mul_of_nonneg_left _ (by positivity)
-          linarith [h2Lsub]
+          linarith only [h2Lsub, hab, hlog2]
       _ = (2 * Real.log (2*(X:ℝ)/(m:ℝ)) + |L - α| + |L - β|) / (m:ℝ) := by ring
   have hgoal : |(b - α)*(b - β) - (a - α)*(a - β)| * Real.sqrt (m:ℝ)
       ≤ (2 * Real.log (2*(X:ℝ)/(m:ℝ)) + |L - α| + |L - β|) / Real.sqrt (m:ℝ) := by
@@ -371,12 +371,12 @@ theorem S3G_weight_increment_bound : ∃ C : ℝ, 0 < C ∧ ∀ (X : ℕ) (α β
           apply Real.log_nonneg
           rw [le_div_iff₀ hm0]
           have hmX : (m : ℝ) ≤ (X : ℝ) := by exact_mod_cast hm1.2
-          linarith
+          linarith only [hm0, hmX]
       _ ≤ 100 * Real.sqrt (X : ℝ) := log_div_sqrt_sum_le X hX1
   have hB : (|L - α| + |L - β|)
         * (∑ m ∈ Finset.Icc 1 (X - 1), (1 : ℝ)/Real.sqrt (m : ℝ))
       ≤ (|L - α| + |L - β|) * (2 * Real.sqrt (X : ℝ)) := by
-    apply mul_le_mul_of_nonneg_left _ (by linarith)
+    apply mul_le_mul_of_nonneg_left _ (by linarith only [hu, hv])
     calc (∑ m ∈ Finset.Icc 1 (X - 1), (1 : ℝ)/Real.sqrt (m : ℝ))
         ≤ ∑ m ∈ Finset.Icc 1 X, (1 : ℝ)/Real.sqrt (m : ℝ) := by
           apply Finset.sum_le_sum_of_subset_of_nonneg hsub
@@ -390,11 +390,11 @@ theorem S3G_weight_increment_bound : ∃ C : ℝ, 0 < C ∧ ∀ (X : ℕ) (α β
       ≤ 200 * Real.sqrt (X : ℝ) * (1 + |L - α|) * (1 + |L - β|) := by
     have h1 : 2 * (∑ m ∈ Finset.Icc 1 (X - 1),
           Real.log (2 * (X : ℝ)/(m : ℝ)) / Real.sqrt (m : ℝ)) ≤ 2 * (100 * Real.sqrt (X : ℝ)) :=
-      by linarith [hA]
+      by linarith only [hA]
     have h3 : 200 * Real.sqrt (X : ℝ) + 2 * Real.sqrt (X : ℝ) * (|L - α| + |L - β|)
         ≤ 200 * Real.sqrt (X : ℝ) * (1 + |L - α|) * (1 + |L - β|) := by
-      nlinarith [mul_nonneg hs (add_nonneg hu hv), mul_nonneg hs (mul_nonneg hu hv)]
-    linarith [h1, hB, h3]
+      linarith only [mul_nonneg hs (add_nonneg hu hv), mul_nonneg hs (mul_nonneg hu hv), hs, hu, hv]
+    linarith only [h1, hB, h3, hA]
   calc (∑ m ∈ Finset.Icc 1 (X - 1),
         |(Real.log ((m + 1 : ℕ) : ℝ) - α) * (Real.log ((m + 1 : ℕ) : ℝ) - β)
           - (Real.log (m : ℝ) - α) * (Real.log (m : ℝ) - β)| * Real.sqrt (m : ℝ))

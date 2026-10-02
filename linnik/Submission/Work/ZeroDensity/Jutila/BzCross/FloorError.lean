@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.ZeroDensity.Jutila.BzCross.BzCrossDefs
-import Submission.Work.LinnikAreas.JutilaPieces.S3FloorReduce
 import Submission.Work.ZeroDensity.Jutila.BzCross.FloorPointwise
 import Submission.Work.ZeroDensity.Jutila.BzCross.FloorSumLog
 import Submission.Work.ZeroDensity.Jutila.BzCross.FloorInvSq

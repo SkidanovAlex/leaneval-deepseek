@@ -31,7 +31,6 @@ import Submission.Work.LinnikAreas.Density4.sum_mu_sq_div_totient_sharp
 import Submission.Work.LinnikAreas.Density4.natDiv_cast_mul_le
 import Submission.Work.LinnikAreas.Density4.SelbergDefs
 import Submission.Work.ZeroDensity.Jutila.BzApplyPrimePowReal
-import Submission.Work.ZeroDensity.Jutila.ThetaSubIdEffectivePNT
 import Submission.Work.LinnikAreas.Density4.prime_log_sum_repr
 import Submission.Work.LinnikAreas.Density4.interval_integrable_theta_div
 set_option maxHeartbeats 1000000
@@ -423,7 +422,7 @@ theorem bzSq_le_of
   have hlogN0 : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg hN1'
   have hlogz_le : Real.log z ≤ Real.log (N : ℝ) := Real.log_le_log hzpos hzN
   have hlogmul : 2 * Real.log z * Real.log (N : ℝ) ≤ 8 * (N : ℝ) := by
-    nlinarith [hlog, hlogz_le, hlogsq, hlogN0]
+    nlinarith only [hlog, hlogz_le, hlogsq, hlogN0]
   have hmid : (∑ n ∈ Finset.Icc 1 N,
         (Work.ZeroDensity.Jutila.Lz z n - ArithmeticFunction.vonMangoldt n) ^ 2)
       ≤ (N : ℝ) * Real.log z + C₁ * (N : ℝ)
@@ -436,7 +435,7 @@ theorem bzSq_le_of
       ≤ (N : ℝ) * Real.log ((N : ℝ) / z) + (3 * C₁ + C₂ + 8) * (N : ℝ) := by
     have hlogzsq : (0:ℝ) ≤ (Real.log z) ^ 2 := sq_nonneg _
     rw [hlogdiv]
-    nlinarith [hB, hmid, hlogmul, hlogzsq]
+    nlinarith only [hB, hmid, hlogmul, hlogzsq]
   rw [hsplit]
   exact hfinal
 
@@ -483,7 +482,7 @@ theorem lzDiff_le_of
   have hlogdiv : Real.log (y / w) = Real.log y - Real.log w :=
     Real.log_div (ne_of_gt hypos) (ne_of_gt hwpos)
   rw [hpt, hdiagW, hdiagY, hlogdiv]
-  nlinarith [e1.1, e1.2, e2.1, e2.2, e3.1, e3.2]
+  nlinarith only [e1.1, e1.2, e2.1, e2.2, e3.1, e3.2]
 
 /-! ## The target, from the seven analytic inputs -/
 
@@ -631,10 +630,12 @@ theorem graham_psi_sieve_of
           _ = Real.exp (u * L) := hexp2
       have hexpN : Real.exp (u * L) ≤ (N : ℝ) := by rw [← hU]; exact hUN
       have hu2 : 0 < u ^ 2 := by positivity
-      have hkey : u ^ 2 * L ^ 2 / 4 ≤ (N : ℝ) := by nlinarith [h1, hexpN, sq_nonneg (u * L)]
-      have hkey' : u ^ 2 * L ^ 2 ≤ 4 * (N : ℝ) := by nlinarith [hkey, hu2]
+      have hkey : u ^ 2 * L ^ 2 / 4 ≤ (N : ℝ) := by
+        have he : u ^ 2 * L ^ 2 / 4 = (u * L / 2) ^ 2 := by ring
+        linarith only [h1, hexpN, he]
+      have hkey' : u ^ 2 * L ^ 2 ≤ 4 * (N : ℝ) := by linarith only [hkey]
       rw [show 4 / u ^ 2 * (N : ℝ) = (4 * (N : ℝ)) / u ^ 2 by ring, le_div_iff₀ hu2]
-      nlinarith [hkey', mul_comm (u ^ 2) (L ^ 2)]
+      nlinarith only [hkey', mul_comm (u ^ 2) (L ^ 2)]
     have hεterm : 0 ≤ ε * (N : ℝ) * Real.log ((N : ℝ) / U) := by positivity
     have hbz := hbzSq U hU1 N hUN
     have hlogVUsq : (Real.log (V / U)) ^ 2 ≤ (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) := by
@@ -644,7 +645,7 @@ theorem graham_psi_sieve_of
         mul_le_mul_of_nonneg_left hLsq hvusq
       have h2 : (v - u) ^ 2 * ((4 / u ^ 2) * (N : ℝ))
           = (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) := by ring
-      nlinarith [h1, h2]
+      nlinarith only [h1, h2]
     have hcN : (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) ≤ C₁ * (N : ℝ) :=
       mul_le_mul_of_nonneg_right (by linarith [hCbin, hCb.le]) hNnn
     have hkey : (Real.log (V / U)) ^ 2
@@ -690,7 +691,7 @@ theorem graham_psi_sieve_of
           have : (0:ℝ) < V := hVpos
           linarith
         positivity
-      nlinarith [h1, hcN, hεNlog]
+      nlinarith only [h1, hcN, hεNlog]
     calc (∑ n ∈ Finset.Icc 1 N,
           (Work.ZeroDensity.Jutila.Lz V n - Work.ZeroDensity.Jutila.Lz U n) ^ 2)
             / (Real.log (V / U)) ^ 2
@@ -831,10 +832,12 @@ theorem graham_psi_sieve_of_lz
           _ = Real.exp (u * L) := hexp2
       have hexpN : Real.exp (u * L) ≤ (N : ℝ) := by rw [← hU]; exact hUN
       have hu2 : 0 < u ^ 2 := by positivity
-      have hkey : u ^ 2 * L ^ 2 / 4 ≤ (N : ℝ) := by nlinarith [h1, hexpN, sq_nonneg (u * L)]
-      have hkey' : u ^ 2 * L ^ 2 ≤ 4 * (N : ℝ) := by nlinarith [hkey, hu2]
+      have hkey : u ^ 2 * L ^ 2 / 4 ≤ (N : ℝ) := by
+        have he : u ^ 2 * L ^ 2 / 4 = (u * L / 2) ^ 2 := by ring
+        linarith only [h1, hexpN, he]
+      have hkey' : u ^ 2 * L ^ 2 ≤ 4 * (N : ℝ) := by linarith only [hkey]
       rw [show 4 / u ^ 2 * (N : ℝ) = (4 * (N : ℝ)) / u ^ 2 by ring, le_div_iff₀ hu2]
-      nlinarith [hkey', mul_comm (u ^ 2) (L ^ 2)]
+      nlinarith only [hkey', mul_comm (u ^ 2) (L ^ 2)]
     have hεterm : 0 ≤ ε * (N : ℝ) * Real.log ((N : ℝ) / U) := by positivity
     have hbz := hbzSq U hU1 N hUN
     have hlogVUsq : (Real.log (V / U)) ^ 2 ≤ (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) := by
@@ -844,7 +847,7 @@ theorem graham_psi_sieve_of_lz
         mul_le_mul_of_nonneg_left hLsq hvusq
       have h2 : (v - u) ^ 2 * ((4 / u ^ 2) * (N : ℝ))
           = (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) := by ring
-      nlinarith [h1, h2]
+      nlinarith only [h1, h2]
     have hcN : (4 * (v - u) ^ 2 / u ^ 2) * (N : ℝ) ≤ C₁ * (N : ℝ) :=
       mul_le_mul_of_nonneg_right (by linarith [hCbin, hCb.le]) hNnn
     have hkey : (Real.log (V / U)) ^ 2
@@ -890,7 +893,7 @@ theorem graham_psi_sieve_of_lz
           have : (0:ℝ) < V := hVpos
           linarith
         positivity
-      nlinarith [h1, hcN, hεNlog]
+      nlinarith only [h1, hcN, hεNlog]
     calc (∑ n ∈ Finset.Icc 1 N,
           (Work.ZeroDensity.Jutila.Lz V n - Work.ZeroDensity.Jutila.Lz U n) ^ 2)
             / (Real.log (V / U)) ^ 2

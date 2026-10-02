@@ -29,7 +29,7 @@ This is `Work.LinnikAreas.algPow_own` with `24` replaced by `C₀`: the extra fa
 theorem algPowC {C₀ u A : ℝ} (hC₀ : 0 < C₀) (hu : 4 / 3 + 1 / 100 ≤ u) :
     Real.exp (-(12 / 5) * ((A - Real.log (C₀ * u)) / u))
       ≤ Real.exp (12 * C₀ / 5) * (Real.exp (-A)) ^ (12 / (5 * u)) := by
-  have hu0 : 0 < u := by linarith
+  have hu0 : 0 < u := by linarith only [hu]
   have hCu : 0 < C₀ * u := mul_pos hC₀ hu0
   have hsplit : Real.exp (-(12 / 5) * ((A - Real.log (C₀ * u)) / u))
       = Real.exp (-(12 / (5 * u) * A)) * Real.exp (12 / (5 * u) * Real.log (C₀ * u)) := by
@@ -45,11 +45,11 @@ theorem algPowC {C₀ u A : ℝ} (hC₀ : 0 < C₀) (hu : 4 / 3 + 1 / 100 ≤ u)
     rw [Real.exp_le_exp]
     have h5 : Real.log (C₀ * u) ≤ C₀ * u := by
       have h6 := Real.log_le_sub_one_of_pos hCu
-      linarith
+      linarith only [h6]
     have h7 : 0 ≤ 12 / (5 * u) := by positivity
     have h8 := mul_le_mul_of_nonneg_left h5 h7
     have h9 : 12 / (5 * u) * (C₀ * u) = 12 * C₀ / 5 := by field_simp; try ring
-    linarith
+    linarith only [h8, h9]
   calc Real.exp (-(12 / 5) * ((A - Real.log (C₀ * u)) / u))
       = (Real.exp (-A)) ^ (12 / (5 * u)) * Real.exp (12 / (5 * u) * Real.log (C₀ * u)) := by
         rw [hsplit, h3]
@@ -80,8 +80,8 @@ theorem repulsionFloorHiC {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q
   set U : ℝ := u + v * (Real.log (5 + H) / Real.log q) with hUdef
   set Uρ : ℝ := u + v * (Real.log (5 + |ρ.im|) / Real.log q) with hUρdef
   have him5 : (0 : ℝ) < 5 + |ρ.im| := by positivity
-  have hH5 : (0 : ℝ) < 5 + H := by linarith
-  have hlogρ : Real.log (5 + |ρ.im|) ≤ Real.log (5 + H) := Real.log_le_log him5 (by linarith)
+  have hH5 : (0 : ℝ) < 5 + H := by linarith only [hH]
+  have hlogρ : Real.log (5 + |ρ.im|) ≤ Real.log (5 + H) := Real.log_le_log him5 (by linarith only [him])
   have hlogq_pos : 0 < Real.log (q : ℝ) := Real.log_pos (by exact_mod_cast hq1)
   have hUρleU : Uρ ≤ U := by
     rw [hUdef, hUρdef]
@@ -89,15 +89,15 @@ theorem repulsionFloorHiC {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q
         ≤ Real.log (5 + H) / Real.log (q : ℝ) :=
       div_le_div_of_nonneg_right hlogρ hlogq_pos.le
     have h2 := mul_le_mul_of_nonneg_left h1 hv
-    linarith
+    linarith only [h2]
   have hUρpos : 0 < Uρ := by
     rw [hUρdef]
     have h2 : 0 ≤ Real.log (5 + |ρ.im|) := by
       refine Real.log_nonneg ?_
-      have := abs_nonneg ρ.im; linarith
+      have := abs_nonneg ρ.im; linarith only [him5, this]
     have h3 : 0 ≤ Real.log (5 + |ρ.im|) / Real.log (q : ℝ) := div_nonneg h2 hlogq_pos.le
     have h4 := mul_nonneg hv h3
-    linarith
+    linarith only [hu, h4]
   have hUpos' : 0 < U := by rw [hUdef]; exact hUpos
   have hlampos : 0 < lamOf q (β₁ : ℂ) := by
     have h1 : 0 < 1 / lamOf q (β₁ : ℂ) :=
@@ -114,9 +114,9 @@ theorem repulsionFloorHiC {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q
     have h1 : Real.log (C₀ * Uρ) ≤ Real.log (C₀ * U) :=
       Real.log_le_log (mul_pos hC₀ hUρpos) (mul_le_mul_of_nonneg_left hUρleU hC₀.le)
     calc (A - Real.log (C₀ * U)) * Uρ ≤ (A - Real.log (C₀ * U)) * U :=
-          mul_le_mul_of_nonneg_left hUρleU (by linarith)
+          mul_le_mul_of_nonneg_left hUρleU (by linarith only [hCU])
       _ ≤ (A - Real.log (C₀ * Uρ)) * U :=
-          mul_le_mul_of_nonneg_right (by linarith) hUpos'.le
+          mul_le_mul_of_nonneg_right (by linarith only [h1]) hUpos'.le
   rw [hUρdef] at hmono
   rw [hAdef] at hmono
   exact hmono.trans hrepρ
@@ -131,7 +131,7 @@ lemma layer_gap {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α 
         + α * (12 / (5 * (11 / 5 + (11 / 10)
             * (Real.log (5 + (2 : ℝ) ^ (j + 1)) / 𝓛))) - 1) := by
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have h𝓛pos : 0 < 𝓛 := by linarith
+  have h𝓛pos : 0 < 𝓛 := by linarith only [h𝓛]
   set ξ : ℝ := Real.log (5 + (2 : ℝ) ^ (j + 1)) / 𝓛 with hξdef
   set U : ℝ := 11 / 5 + (11 / 10) * ξ with hUdef
   have hξnn : 0 ≤ ξ := by
@@ -139,10 +139,10 @@ lemma layer_gap {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α 
     refine div_nonneg ?_ h𝓛pos.le
     refine Real.log_nonneg ?_
     have h2 : (1 : ℝ) ≤ (2 : ℝ) ^ (j + 1) := one_le_pow₀ (by norm_num)
-    linarith
+    linarith only [h2]
   have hUpos : 0 < U := by
     have h2 : 0 ≤ (11 / 10) * ξ := mul_nonneg (by norm_num) hξnn
-    rw [hUdef]; linarith
+    rw [hUdef]; linarith only [hξnn]
   have h5U : 5 * U = 11 + (11 / 2) * ξ := by rw [hUdef]; ring
   have hkey : α * (12 / (5 * U) - 1) ≥ -(𝓛 * ξ) / 4 := by
     have h5Upos : 0 < 5 * U := by positivity
@@ -152,22 +152,22 @@ lemma layer_gap {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α 
       ring
     rw [h12]
     by_cases hcase : (11 / 2) * ξ ≤ 1
-    · have h1 : 0 ≤ 1 - (11 / 2) * ξ := by linarith
+    · have h1 : 0 ≤ 1 - (11 / 2) * ξ := by linarith only [hcase]
       have h2 : 0 ≤ α * (1 - (11 / 2) * ξ) / (5 * U) :=
         div_nonneg (mul_nonneg hα0.le h1) h5Upos.le
       have h3 : -(𝓛 * ξ) / 4 ≤ 0 := by
         have : 0 ≤ 𝓛 * ξ := mul_nonneg h𝓛pos.le hξnn
-        linarith
-      linarith
+        linarith only [this]
+      linarith only [h2, h3]
     · push_neg at hcase
-      have hneg : 1 - (11 / 2) * ξ ≤ 0 := by linarith
+      have hneg : 1 - (11 / 2) * ξ ≤ 0 := by linarith only [hcase]
       rw [ge_iff_le, le_div_iff₀ h5Upos, h5U]
-      nlinarith [hα, hcase, hneg, h𝓛pos, sq_nonneg ξ, mul_nonneg h𝓛pos.le (sq_nonneg ξ)]
+      nlinarith only [hα, hcase, hneg, h𝓛pos, sq_nonneg ξ, mul_nonneg h𝓛pos.le (sq_nonneg ξ), hα0, hξnn]
   have hξlog : 𝓛 * ξ = Real.log (5 + (2 : ℝ) ^ (j + 1)) := by
     rw [hξdef, mul_div_cancel₀ _ (ne_of_gt h𝓛pos)]
   have hlogpow : Real.log (5 + (2 : ℝ) ^ (j + 1)) ≤ Real.log 9 + ((j : ℝ) + 1) * Real.log 2 := by
     have h2 : (1 : ℝ) ≤ (2 : ℝ) ^ (j + 1) := one_le_pow₀ (by norm_num)
-    have h4 : (5 : ℝ) + (2 : ℝ) ^ (j + 1) ≤ 9 * (2 : ℝ) ^ (j + 1) := by linarith
+    have h4 : (5 : ℝ) + (2 : ℝ) ^ (j + 1) ≤ 9 * (2 : ℝ) ^ (j + 1) := by linarith only [h2]
     calc Real.log (5 + (2 : ℝ) ^ (j + 1)) ≤ Real.log (9 * (2 : ℝ) ^ (j + 1)) :=
           Real.log_le_log (by positivity) h4
       _ = Real.log 9 + ((j : ℝ) + 1) * Real.log 2 := by
@@ -176,15 +176,15 @@ lemma layer_gap {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α 
   have hmain : (j : ℝ) / 2 * Real.log 2 + α * (12 / (5 * U) - 1)
       ≥ (j : ℝ) / 2 * Real.log 2 - (Real.log 9 + ((j : ℝ) + 1) * Real.log 2) / 4 := by
     have h1 : -(𝓛 * ξ) / 4 ≥ -(Real.log 9 + ((j : ℝ) + 1) * Real.log 2) / 4 := by
-      rw [hξlog]; linarith [hlogpow]
-    linarith
+      rw [hξlog]; linarith only [hlogpow]
+    linarith only [hkey, hξlog, hlogpow]
   have hgoal : (Real.log 2 / 4) * ((j : ℝ) - 1 - Real.log 9 / Real.log 2)
       = (j : ℝ) / 2 * Real.log 2
         - (Real.log 9 + ((j : ℝ) + 1) * Real.log 2) / 4 := by
     field_simp
     ring
   rw [hgoal, hUdef] at *
-  linarith [hmain]
+  linarith only [hmain, hkey, hξlog, hlogpow]
 
 /-- **The layer-gap estimate in exponential form.**  With `U_j = 11/5 + (11/10)ξ_j`,
 `ξ_j = log(5+2^{j+1})/𝓛`, `α > 0` and `α ≤ 𝓛/2`,
@@ -204,7 +204,7 @@ lemma layer_gap2 {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α
     have h2 : Real.log 16 = 4 * Real.log 2 := by
       rw [show (16 : ℝ) = (2 : ℝ) ^ 4 by norm_num, Real.log_pow]
       push_cast; ring
-    linarith
+    linarith only [h1, h2]
   have hgap := layer_gap h𝓛 hα0 hα j
   have hL : ((2 : ℝ) ^ (-(1 / 2) : ℝ)) ^ j
         * (Real.exp (-α)) ^ (12 / (5 * (11 / 5 + (11 / 10)
@@ -239,12 +239,12 @@ lemma layer_gap2 {𝓛 α : ℝ} (h𝓛 : 20 ≤ 𝓛) (hα0 : 0 < α) (hα : α
       ≤ (j : ℝ) / 2 * Real.log 2 + α * (12 / (5 * (11 / 5 + (11 / 10)
           * (Real.log (5 + (2 : ℝ) ^ (j + 1)) / 𝓛))) - 1) := by
     refine le_trans (mul_le_mul_of_nonneg_left ?_ (by positivity)) hgap
-    linarith [hκ]
+    linarith only [hκ]
   have hgoal : (5 : ℝ) / 4 * Real.log 2 - ((j : ℝ) / 4 * Real.log 2)
       = -((Real.log 2 / 4) * ((j : ℝ) - 5)) := by
     push_cast; ring
   rw [hgoal]
-  linarith [h1]
+  linarith only [h1]
 
 /-- The dyadic height layer index of a zero pair, `⌊log₂ ⌊|Im ρ|⌋⌋`. -/
 noncomputable def jjC {q : ℕ} (z : DirichletCharacter ℂ q × ℂ) : ℕ :=
@@ -291,7 +291,7 @@ lemma kernel_leC {q : ℕ} [NeZero q] (hq : 1 < q) (z : DirichletCharacter ℂ q
         * ((zeroMult z.1 z.2 : ℝ) * Real.exp (-(49 / 10) * lamOf q z.2)) := by
   have hlog : 0 < Real.log (q : ℝ) := Real.log_pos (by exact_mod_cast hq)
   have hker := high_kernel_le hq z hzm hhigh
-  have himpos : 0 < |z.2.im| := by linarith
+  have himpos : 0 < |z.2.im| := by linarith only [hhigh]
   have h4 : (4 : ℝ) ^ (jjC z) ≤ |z.2.im| ^ 2 := by
     have hle : (2 : ℝ) ^ (jjC z) ≤ |z.2.im| := by
       have hn1 : 1 ≤ Nat.floor |z.2.im| := Nat.floor_pos.mpr hhigh.le
@@ -303,7 +303,7 @@ lemma kernel_leC {q : ℕ} [NeZero q] (hq : 1 < q) (z : DirichletCharacter ℂ q
         push_cast at h2
         simpa [jjC] using h2
       have h3 : (Nat.floor |z.2.im| : ℝ) ≤ |z.2.im| := Nat.floor_le (abs_nonneg _)
-      linarith
+      linarith only [h1, h3]
     have h3 : (4 : ℝ) ^ (jjC z) = ((2 : ℝ) ^ (jjC z)) ^ 2 := by
       rw [show (4 : ℝ) = (2 : ℝ) ^ 2 by norm_num]
       exact (pow_mul (2 : ℝ) 2 (jjC z)).symm.trans (pow_mul' (2 : ℝ) 2 (jjC z))
@@ -346,7 +346,7 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
   have hlog : 0 < Real.log (q : ℝ) := Real.log_pos hq1
   have hqpos : (0 : ℝ) < (q : ℝ) := by positivity
   have hlam1pos : 0 < lamOf q (β₁ : ℂ) := Siegel.lamOf_pos hχ hβ hz
-  have hcZ : 0 < cZ := by linarith
+  have hcZ : 0 < cZ := by linarith only [hε, hlam1pos]
   have hq16 : (16 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
   have hlog16 : (1 : ℝ) ≤ Real.log (q : ℝ) := by
     have h2 : Real.log 16 ≤ Real.log (q : ℝ) :=
@@ -355,8 +355,8 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
       rw [show (16 : ℝ) = (2 : ℝ) ^ 4 by norm_num, Real.log_pow]
       push_cast; ring
     have h4 : (1 : ℝ) < Real.log 16 := by
-      rw [h3]; have := Real.log_two_gt_d9; linarith
-    linarith
+      rw [h3]; have := Real.log_two_gt_d9; linarith only [hlam10, hlam1pos, this]
+    linarith only [h2, h4]
   -- `1 - 1/(10𝓛) < β₁`
   have hβ1 : 1 - 1 / (10 * Real.log q) < β₁ := by
     have h2 : (1 - β₁) * Real.log (q : ℝ) = lamOf q (β₁ : ℂ) := by
@@ -364,8 +364,8 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
     have h3 : (1 - β₁) * Real.log (q : ℝ) < 1 / 10 := by rw [h2]; exact hlam10
     have h4 : 1 - β₁ < 1 / (10 * Real.log q) := by
       rw [lt_div_iff₀ (by positivity : (0 : ℝ) < 10 * Real.log q)]
-      linarith
-    linarith
+      linarith only [hlam10, h2]
+    linarith only [h4]
   -- `1/2 < Re ρ`
   have hre : (1 / 2 : ℝ) < ρ.re := by
     by_contra hcon
@@ -373,10 +373,10 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
     have h2 : lamOf q ρ = (1 - ρ.re) * Real.log (q : ℝ) := rfl
     have h3 : (1 / 2 : ℝ) * Real.log (q : ℝ) ≤ lamOf q ρ := by
       rw [h2]
-      exact mul_le_mul_of_nonneg_right (by linarith) hlog.le
+      exact mul_le_mul_of_nonneg_right (by linarith only [hcon]) hlog.le
     have h4 : (1 / 10 : ℝ) < (1 / 2 : ℝ) * Real.log (q : ℝ) := by
-      nlinarith [hlog16]
-    linarith [hlt, hlam10]
+      linarith only [hlog16, hlam10, hlt, hlam1pos, h3]
+    linarith only [hlt, hlam10, hlam1pos, hlog16, h3]
   have hne : ρ ≠ (β₁ : ℂ) := by
     intro h0
     rw [h0] at hlt
@@ -385,11 +385,11 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
   -- `M = max 4 |ρ.im|`
   set M : ℝ := max 4 |ρ.im| with hMdef
   have hM4 : (4 : ℝ) ≤ M := le_max_left _ _
-  have hMpos : 0 < M := by linarith
+  have hMpos : 0 < M := by linarith only [hlam10, hlam1pos, hM4]
   have hqM : (1 : ℝ) < (q : ℝ) * M := by
     have : (1 : ℝ) * 1 < (q : ℝ) * M := by
-      refine mul_lt_mul ?_ ?_ ?_ ?_ <;> linarith [hq1, hM4]
-    linarith
+      refine mul_lt_mul ?_ ?_ ?_ ?_ <;> linarith only [hq1, hM4, hlam10, hlam1pos, hq16]
+    linarith only [this]
   have hlogqM : 0 < Real.log ((q : ℝ) * M) := Real.log_pos hqM
   -- multiply the ZFR bound by `log q`
   have h1 : cZ * Real.log (q : ℝ) / Real.log ((q : ℝ) * M) ≤ lamOf q ρ := by
@@ -398,19 +398,19 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
     rwa [show lamOf q ρ = (1 - ρ.re) * Real.log (q : ℝ) from rfl]
   have h2 : cZ * Real.log (q : ℝ) / Real.log ((q : ℝ) * M) < cZ / 4 := by
     have h3 : lamOf q ρ < cZ / 4 := lt_trans hlt hε
-    linarith [h1, h3]
+    linarith only [h1, h3, hε, hlt]
   -- `4𝓛 < log (q M)`
   have h4 : 4 * Real.log (q : ℝ) < Real.log ((q : ℝ) * M) := by
     have h2' : cZ * Real.log (q : ℝ) * 4 < cZ * Real.log ((q : ℝ) * M) :=
       (div_lt_div_iff₀ hlogqM (by norm_num : (0 : ℝ) < 4)).mp h2
     have h2'' : cZ * (4 * Real.log (q : ℝ)) < cZ * Real.log ((q : ℝ) * M) := by
-      nlinarith [h2']
+      linarith only [h2']
     exact lt_of_mul_lt_mul_left h2'' hcZ.le
   have h5 : Real.log M > 3 * Real.log (q : ℝ) := by
     have hmul : Real.log ((q : ℝ) * M) = Real.log (q : ℝ) + Real.log M :=
       Real.log_mul (ne_of_gt hqpos) (ne_of_gt hMpos)
     rw [hmul] at h4
-    linarith
+    linarith only [h4]
   have h6 : M > (q : ℝ) ^ 3 := by
     have hexp : Real.exp (3 * Real.log (q : ℝ)) = (q : ℝ) ^ 3 := by
       rw [show (3 : ℝ) * Real.log (q : ℝ) = Real.log ((q : ℝ) ^ 3) by
@@ -423,16 +423,16 @@ theorem height_sep_of_ZFR {cZ : ℝ} {q : ℕ} [NeZero q] (hq : 16 ≤ q)
   have h4le : (4 : ℝ) < (q : ℝ) ^ 3 := by
     have h1 : (4 : ℝ) < (16 : ℝ) ^ 3 := by norm_num
     have h2 : (16 : ℝ) ^ 3 ≤ (q : ℝ) ^ 3 := pow_le_pow_left₀ (by norm_num) hq16 3
-    linarith
+    linarith only [hlam10, hlam1pos, h2]
   have hmax : M = |ρ.im| := by
     rcases le_total 4 |ρ.im| with h | h
     · rw [hMdef]; exact max_eq_right h
     · have hh : M = 4 := by rw [hMdef]; exact max_eq_left h
-      rw [hh] at h6; linarith
+      rw [hh] at h6; linarith only [h6, h4le]
   have h7 : |ρ.im| > (q : ℝ) ^ 3 := by rw [← hmax]; exact h6
   have h8 : 4 * (q : ℝ) ^ 2 ≤ (q : ℝ) ^ 3 := by
-    nlinarith [hqpos, hq16]
-  linarith [h7, h8]
+    nlinarith only [hqpos, hq16, hlam10, hlam1pos, h4le]
+  linarith only [h7, h8, h6, hmax]
 
 end
 end Work.LinnikAreas.BGTZ

@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Commons.Analysis.Complex.bromwich_cpow
 import Submission.Commons.Analysis.Perron.integral_cpow_kernel
 
 noncomputable section

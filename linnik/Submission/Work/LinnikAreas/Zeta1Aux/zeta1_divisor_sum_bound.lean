@@ -1,7 +1,7 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
 import Submission.Work.LinnikAreas.Zeta1Aux.divisor_ne_zero_imp
 import Submission.Work.LinnikAreas.Zeta1Aux.finsum_intCast_div_sub_bound
+import Submission.Commons.NumberTheory.Linnik.divisor_eq_closedBall_subset
 
 open Complex Metric
 open scoped Real Topology BigOperators

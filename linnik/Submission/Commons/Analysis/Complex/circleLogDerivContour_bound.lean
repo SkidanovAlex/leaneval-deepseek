@@ -213,7 +213,7 @@ lemma localDivisor_eq_global (f : ℂ → ℂ) {ρ : ℝ} {w : ℂ} (hwρ : ‖w
           have h2 : ‖u‖ = ‖(u - w) + w‖ := congrArg norm (by ring : u = (u - w) + w)
           rw [h2]
           simpa [add_comm] using norm_add_le (u - w) w
-        have hgoal : ‖u‖ ≤ ρ + 1 := by nlinarith [htri2, hwρ, hu]
+        have hgoal : ‖u‖ ≤ ρ + 1 := by nlinarith only [htri2, hwρ, hu]
         simpa [Metric.mem_closedBall, dist_eq_norm] using hgoal
       have heq : dloc u = dg u := by
         dsimp [dloc, dg]
@@ -580,7 +580,7 @@ theorem circleLogDerivContour_bound (f : ℂ → ℂ) (hf : Differentiable ℂ f
   have hρ2 : 2 ≤ ρ := by linarith
   have hn0 : 0 ≤ n := by dsimp [n]; exact norm_nonneg s
   have hsw : n < ρ := by dsimp [n]; nlinarith [hs]
-  have hgeom : ρ / 2 ≤ ρ - n := by dsimp [n]; nlinarith [hs]
+  have hgeom : ρ / 2 ≤ ρ - n := by dsimp [n]; nlinarith only [hs]
   have hρnpos : 0 < ρ - n := by dsimp [n]; nlinarith [hs]
   have hK0 : 0 ≤ K := by
     dsimp [K]
@@ -816,7 +816,8 @@ theorem circleLogDerivContour_bound (f : ℂ → ℂ) (hf : Differentiable ℂ f
       C * cz * n * (ρ + 1) * Lp1 * L ^ 2 / ρ ^ 2 := by
     have hden : 1 / (2 * Real.pi * (ρ - n)) ≤ 1 / (Real.pi * ρ) := by
       rw [div_le_div_iff₀]
-      · nlinarith [Real.pi_pos, hρnpos]
+      · have hX : ρ ≤ 2 * (ρ - n) := by dsimp [n]; nlinarith only [hs]
+        nlinarith only [mul_le_mul_of_nonneg_left hX Real.pi_pos.le]
       · positivity
       · positivity
     have hm : 0 ≤ n * (∫ θ in 0..(2 * Real.pi), Dθ θ) := by

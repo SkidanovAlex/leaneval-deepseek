@@ -17,8 +17,12 @@ form costs nothing but the bookkeeping `Qsup ≤ q`.
 -/
 import Mathlib
 import Submission.Work.ZeroFreeTables.HBTable7_of_count
-import Submission.Work.ZeroFreeTables.HBTable7RowCoreA
 import Submission.Work.ZeroFreeTables.maximalityAtClosed
+import Submission.Work.ZeroFreeTables.HBTable7_engine_region
+import Submission.Work.ZeroFreeTables.tf71Pi4Data
+import Submission.Work.ZeroFreeTables.HBTable7_assembly
+import Submission.Work.ZeroFreeTables.testFn71_defs
+import Submission.Work.ZeroFreeTables.chiMulNeFacts
 
 namespace Work.ZeroFreeTables
 

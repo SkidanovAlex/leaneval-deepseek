@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 
 namespace Work.LinnikAreas.DhExplicit
 

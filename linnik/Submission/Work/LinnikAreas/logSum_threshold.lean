@@ -8,7 +8,7 @@ lemma log_le_two_sqrt {x : ℝ} (hx : 0 ≤ x) : Real.log x ≤ 2 * Real.sqrt x 
   have h := Real.log_le_rpow_div hx (by norm_num : (0:ℝ) < 1/2)
   rw [Real.sqrt_eq_rpow]
   have : x ^ (1/2 : ℝ) / (1/2 : ℝ) = 2 * x ^ (1/2 : ℝ) := by ring
-  linarith [h, this]
+  linarith only [h, this]
 
 /-- Elementary numerical fact: for every `ε > 0` and every absolute constant `A`, all
 sufficiently large `q` satisfy
@@ -28,18 +28,18 @@ theorem logSum_threshold (A : ℝ) (ε : ℝ) (hε : 0 < ε) :
   set x : ℝ := Real.log (q : ℝ) with hxdef
   have hx11 : (11:ℝ) ≤ x := by
     have : (11:ℝ) ≤ M := by rw [hMdef]; exact le_max_left _ _
-    linarith
+    linarith only [hxM, this]
   have hx1024 : 1024 / ε^2 ≤ x := by
     have : 1024 / ε^2 ≤ M := by
       rw [hMdef]
       exact le_trans (le_max_left _ _) (le_max_right _ _)
-    linarith
+    linarith only [hxM, this]
   have hx8B : 8 * B / ε ≤ x := by
     have : 8 * B / ε ≤ M := by
       rw [hMdef]
       exact le_trans (le_max_right _ _) (le_max_right _ _)
-    linarith
-  have hxpos : 0 < x := by linarith
+    linarith only [hxM, this]
+  have hxpos : 0 < x := by linarith only [hx11]
   have hxnn : 0 ≤ x := le_of_lt hxpos
   have hε2pos : 0 < ε^2 := pow_pos hε 2
   have hε2ne : ε^2 ≠ 0 := ne_of_gt hε2pos
@@ -54,33 +54,33 @@ theorem logSum_threshold (A : ℝ) (ε : ℝ) (hε : 0 < ε) :
     have hc : ε * (8*B/ε) = 8*B := by
       rw [mul_comm ε (8*B/ε), div_mul_cancel₀ (8*B) hεne]
     rwa [hc] at h
-  have hBle : B ≤ (ε/8) * x := by linarith
+  have hBle : B ≤ (ε/8) * x := by linarith only [h8B]
   have hA_bound : A ≤ (ε/8) * x := le_trans hBge hBle
   have hsqrt : 4 * Real.sqrt x ≤ (ε/8) * x := by
     have hmul : 1024 * x ≤ (ε^2 * x) * x := mul_le_mul_of_nonneg_right h1024 hxnn
-    have hx2sq : x ≤ ((ε/32) * x)^2 := by nlinarith [hmul]
+    have hx2sq : x ≤ ((ε/32) * x)^2 := by linarith only [hmul]
     have hy : 0 ≤ (ε/32) * x :=
       mul_nonneg (le_of_lt (div_pos hε (by norm_num))) hxnn
     have hle : Real.sqrt x ≤ (ε/32) * x := (Real.sqrt_le_left hy).mpr hx2sq
-    nlinarith [hle]
+    linarith only [hle]
   have hlog1 : Real.log (2 + 10 * x) ≤ (ε/8) * x := by
-    have hx2 : 2 + 10 * x ≤ x^2 := by nlinarith [hx11]
-    have hpos : 0 < 2 + 10 * x := by linarith
+    have hx2 : 2 + 10 * x ≤ x^2 := by nlinarith only [hx11]
+    have hpos : 0 < 2 + 10 * x := by linarith only [hx11]
     have h1 : Real.log (2 + 10 * x) ≤ Real.log (x^2) := Real.log_le_log hpos hx2
     rw [Real.log_pow] at h1
     have h2 : Real.log x ≤ 2 * Real.sqrt x := log_le_two_sqrt hxnn
     have h1' : Real.log (2 + 10 * x) ≤ 2 * Real.log x := by simpa using h1
-    have h2' : 2 * Real.log x ≤ 4 * Real.sqrt x := by linarith [h2]
+    have h2' : 2 * Real.log x ≤ 4 * Real.sqrt x := by linarith only [h2]
     exact le_trans h1' (le_trans h2' hsqrt)
   have hlog2 : Real.log (2 + 5 * x) ≤ (ε/8) * x := by
-    have hx2 : 2 + 5 * x ≤ x^2 := by nlinarith [hx11]
-    have hpos : 0 < 2 + 5 * x := by linarith
+    have hx2 : 2 + 5 * x ≤ x^2 := by nlinarith only [hx11]
+    have hpos : 0 < 2 + 5 * x := by linarith only [hx11]
     have h1 : Real.log (2 + 5 * x) ≤ Real.log (x^2) := Real.log_le_log hpos hx2
     rw [Real.log_pow] at h1
     have h2 : Real.log x ≤ 2 * Real.sqrt x := log_le_two_sqrt hxnn
     have h1' : Real.log (2 + 5 * x) ≤ 2 * Real.log x := by simpa using h1
-    have h2' : 2 * Real.log x ≤ 4 * Real.sqrt x := by linarith [h2]
+    have h2' : 2 * Real.log x ≤ 4 * Real.sqrt x := by linarith only [h2]
     exact le_trans h1' (le_trans h2' hsqrt)
-  linarith [hlog1, hlog2, hA_bound]
+  linarith only [hlog1, hlog2, hA_bound, hBge, h8B]
 
 end Work.LinnikAreas

@@ -7,113 +7,181 @@ set_option exponentiation.threshold 100000
 
 namespace Commons.NumberTheory.Chebyshev
 
-theorem lcmUpto_table2500_anchor_0 : Nat.lcmUpto 2500 ≤ 3 ^ 2275 := by decide
+/-- `lcm(1, …, n)` by plain structural recursion (cheap to evaluate). -/
+private def lcmRec : ℕ → ℕ
+  | 0 => 1
+  | n + 1 => Nat.lcm (n + 1) (lcmRec n)
 
-theorem lcmUpto_table2500_anchor_1 : Nat.lcmUpto 2274 ≤ 3 ^ 2068 := by decide
+private theorem lcmUpto_eq_lcmRec (n : ℕ) : Nat.lcmUpto n = lcmRec n := by
+  induction n with
+  | zero => simp [Nat.lcmUpto, lcmRec]
+  | succ n ih =>
+    have hI : Finset.Icc 1 (n + 1) = insert (n + 1) (Finset.Icc 1 n) := by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [lcmRec, ← ih, Nat.lcmUpto, Nat.lcmUpto, hI, Finset.lcm_insert]
+    rfl
 
-theorem lcmUpto_table2500_anchor_2 : Nat.lcmUpto 2067 ≤ 3 ^ 1872 := by decide
+theorem lcmUpto_table2500_anchor_0 : Nat.lcmUpto 2500 ≤ 3 ^ 2275 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_3 : Nat.lcmUpto 1871 ≤ 3 ^ 1699 := by decide
+theorem lcmUpto_table2500_anchor_1 : Nat.lcmUpto 2274 ≤ 3 ^ 2068 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_4 : Nat.lcmUpto 1698 ≤ 3 ^ 1552 := by decide
+theorem lcmUpto_table2500_anchor_2 : Nat.lcmUpto 2067 ≤ 3 ^ 1872 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_5 : Nat.lcmUpto 1551 ≤ 3 ^ 1408 := by decide
+theorem lcmUpto_table2500_anchor_3 : Nat.lcmUpto 1871 ≤ 3 ^ 1699 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_6 : Nat.lcmUpto 1407 ≤ 3 ^ 1262 := by decide
+theorem lcmUpto_table2500_anchor_4 : Nat.lcmUpto 1698 ≤ 3 ^ 1552 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_7 : Nat.lcmUpto 1261 ≤ 3 ^ 1145 := by decide
+theorem lcmUpto_table2500_anchor_5 : Nat.lcmUpto 1551 ≤ 3 ^ 1408 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_8 : Nat.lcmUpto 1144 ≤ 3 ^ 1042 := by decide
+theorem lcmUpto_table2500_anchor_6 : Nat.lcmUpto 1407 ≤ 3 ^ 1262 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_9 : Nat.lcmUpto 1041 ≤ 3 ^ 953 := by decide
+theorem lcmUpto_table2500_anchor_7 : Nat.lcmUpto 1261 ≤ 3 ^ 1145 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_10 : Nat.lcmUpto 952 ≤ 3 ^ 861 := by decide
+theorem lcmUpto_table2500_anchor_8 : Nat.lcmUpto 1144 ≤ 3 ^ 1042 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_11 : Nat.lcmUpto 860 ≤ 3 ^ 786 := by decide
+theorem lcmUpto_table2500_anchor_9 : Nat.lcmUpto 1041 ≤ 3 ^ 953 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_12 : Nat.lcmUpto 785 ≤ 3 ^ 710 := by decide
+theorem lcmUpto_table2500_anchor_10 : Nat.lcmUpto 952 ≤ 3 ^ 861 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_13 : Nat.lcmUpto 709 ≤ 3 ^ 649 := by decide
+theorem lcmUpto_table2500_anchor_11 : Nat.lcmUpto 860 ≤ 3 ^ 786 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_14 : Nat.lcmUpto 648 ≤ 3 ^ 595 := by decide
+theorem lcmUpto_table2500_anchor_12 : Nat.lcmUpto 785 ≤ 3 ^ 710 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_15 : Nat.lcmUpto 594 ≤ 3 ^ 535 := by decide
+theorem lcmUpto_table2500_anchor_13 : Nat.lcmUpto 709 ≤ 3 ^ 649 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_16 : Nat.lcmUpto 534 ≤ 3 ^ 483 := by decide
+theorem lcmUpto_table2500_anchor_14 : Nat.lcmUpto 648 ≤ 3 ^ 595 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_17 : Nat.lcmUpto 482 ≤ 3 ^ 440 := by decide
+theorem lcmUpto_table2500_anchor_15 : Nat.lcmUpto 594 ≤ 3 ^ 535 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_18 : Nat.lcmUpto 439 ≤ 3 ^ 401 := by decide
+theorem lcmUpto_table2500_anchor_16 : Nat.lcmUpto 534 ≤ 3 ^ 483 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_19 : Nat.lcmUpto 400 ≤ 3 ^ 363 := by decide
+theorem lcmUpto_table2500_anchor_17 : Nat.lcmUpto 482 ≤ 3 ^ 440 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_20 : Nat.lcmUpto 362 ≤ 3 ^ 330 := by decide
+theorem lcmUpto_table2500_anchor_18 : Nat.lcmUpto 439 ≤ 3 ^ 401 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_21 : Nat.lcmUpto 329 ≤ 3 ^ 294 := by decide
+theorem lcmUpto_table2500_anchor_19 : Nat.lcmUpto 400 ≤ 3 ^ 363 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_22 : Nat.lcmUpto 293 ≤ 3 ^ 273 := by decide
+theorem lcmUpto_table2500_anchor_20 : Nat.lcmUpto 362 ≤ 3 ^ 330 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_23 : Nat.lcmUpto 272 ≤ 3 ^ 250 := by decide
+theorem lcmUpto_table2500_anchor_21 : Nat.lcmUpto 329 ≤ 3 ^ 294 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_24 : Nat.lcmUpto 249 ≤ 3 ^ 224 := by decide
+theorem lcmUpto_table2500_anchor_22 : Nat.lcmUpto 293 ≤ 3 ^ 273 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_25 : Nat.lcmUpto 223 ≤ 3 ^ 198 := by decide
+theorem lcmUpto_table2500_anchor_23 : Nat.lcmUpto 272 ≤ 3 ^ 250 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_26 : Nat.lcmUpto 197 ≤ 3 ^ 183 := by decide
+theorem lcmUpto_table2500_anchor_24 : Nat.lcmUpto 249 ≤ 3 ^ 224 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_27 : Nat.lcmUpto 182 ≤ 3 ^ 169 := by decide
+theorem lcmUpto_table2500_anchor_25 : Nat.lcmUpto 223 ≤ 3 ^ 198 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_28 : Nat.lcmUpto 168 ≤ 3 ^ 152 := by decide
+theorem lcmUpto_table2500_anchor_26 : Nat.lcmUpto 197 ≤ 3 ^ 183 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_29 : Nat.lcmUpto 151 ≤ 3 ^ 139 := by decide
+theorem lcmUpto_table2500_anchor_27 : Nat.lcmUpto 182 ≤ 3 ^ 169 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_30 : Nat.lcmUpto 138 ≤ 3 ^ 125 := by decide
+theorem lcmUpto_table2500_anchor_28 : Nat.lcmUpto 168 ≤ 3 ^ 152 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_31 : Nat.lcmUpto 124 ≤ 3 ^ 110 := by decide
+theorem lcmUpto_table2500_anchor_29 : Nat.lcmUpto 151 ≤ 3 ^ 139 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_32 : Nat.lcmUpto 109 ≤ 3 ^ 103 := by decide
+theorem lcmUpto_table2500_anchor_30 : Nat.lcmUpto 138 ≤ 3 ^ 125 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_33 : Nat.lcmUpto 102 ≤ 3 ^ 90 := by decide
+theorem lcmUpto_table2500_anchor_31 : Nat.lcmUpto 124 ≤ 3 ^ 110 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_34 : Nat.lcmUpto 89 ≤ 3 ^ 82 := by decide
+theorem lcmUpto_table2500_anchor_32 : Nat.lcmUpto 109 ≤ 3 ^ 103 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_35 : Nat.lcmUpto 81 ≤ 3 ^ 74 := by decide
+theorem lcmUpto_table2500_anchor_33 : Nat.lcmUpto 102 ≤ 3 ^ 90 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_36 : Nat.lcmUpto 73 ≤ 3 ^ 69 := by decide
+theorem lcmUpto_table2500_anchor_34 : Nat.lcmUpto 89 ≤ 3 ^ 82 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_37 : Nat.lcmUpto 68 ≤ 3 ^ 61 := by decide
+theorem lcmUpto_table2500_anchor_35 : Nat.lcmUpto 81 ≤ 3 ^ 74 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_38 : Nat.lcmUpto 60 ≤ 3 ^ 53 := by decide
+theorem lcmUpto_table2500_anchor_36 : Nat.lcmUpto 73 ≤ 3 ^ 69 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_39 : Nat.lcmUpto 52 ≤ 3 ^ 46 := by decide
+theorem lcmUpto_table2500_anchor_37 : Nat.lcmUpto 68 ≤ 3 ^ 61 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_40 : Nat.lcmUpto 45 ≤ 3 ^ 40 := by decide
+theorem lcmUpto_table2500_anchor_38 : Nat.lcmUpto 60 ≤ 3 ^ 53 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_41 : Nat.lcmUpto 39 ≤ 3 ^ 33 := by decide
+theorem lcmUpto_table2500_anchor_39 : Nat.lcmUpto 52 ≤ 3 ^ 46 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_42 : Nat.lcmUpto 32 ≤ 3 ^ 30 := by decide
+theorem lcmUpto_table2500_anchor_40 : Nat.lcmUpto 45 ≤ 3 ^ 40 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_43 : Nat.lcmUpto 29 ≤ 3 ^ 26 := by decide
+theorem lcmUpto_table2500_anchor_41 : Nat.lcmUpto 39 ≤ 3 ^ 33 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_44 : Nat.lcmUpto 25 ≤ 3 ^ 22 := by decide
+theorem lcmUpto_table2500_anchor_42 : Nat.lcmUpto 32 ≤ 3 ^ 30 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_45 : Nat.lcmUpto 21 ≤ 3 ^ 18 := by decide
+theorem lcmUpto_table2500_anchor_43 : Nat.lcmUpto 29 ≤ 3 ^ 26 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_46 : Nat.lcmUpto 17 ≤ 3 ^ 15 := by decide
+theorem lcmUpto_table2500_anchor_44 : Nat.lcmUpto 25 ≤ 3 ^ 22 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_47 : Nat.lcmUpto 14 ≤ 3 ^ 12 := by decide
+theorem lcmUpto_table2500_anchor_45 : Nat.lcmUpto 21 ≤ 3 ^ 18 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_48 : Nat.lcmUpto 11 ≤ 3 ^ 10 := by decide
+theorem lcmUpto_table2500_anchor_46 : Nat.lcmUpto 17 ≤ 3 ^ 15 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_49 : Nat.lcmUpto 9 ≤ 3 ^ 8 := by decide
+theorem lcmUpto_table2500_anchor_47 : Nat.lcmUpto 14 ≤ 3 ^ 12 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_50 : Nat.lcmUpto 7 ≤ 3 ^ 6 := by decide
+theorem lcmUpto_table2500_anchor_48 : Nat.lcmUpto 11 ≤ 3 ^ 10 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_51 : Nat.lcmUpto 5 ≤ 3 ^ 4 := by decide
+theorem lcmUpto_table2500_anchor_49 : Nat.lcmUpto 9 ≤ 3 ^ 8 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_52 : Nat.lcmUpto 3 ≤ 3 ^ 2 := by decide
+theorem lcmUpto_table2500_anchor_50 : Nat.lcmUpto 7 ≤ 3 ^ 6 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
-theorem lcmUpto_table2500_anchor_53 : Nat.lcmUpto 1 ≤ 3 ^ 0 := by decide
+theorem lcmUpto_table2500_anchor_51 : Nat.lcmUpto 5 ≤ 3 ^ 4 := by
+  rw [lcmUpto_eq_lcmRec]; decide
+
+theorem lcmUpto_table2500_anchor_52 : Nat.lcmUpto 3 ≤ 3 ^ 2 := by
+  rw [lcmUpto_eq_lcmRec]; decide
+
+theorem lcmUpto_table2500_anchor_53 : Nat.lcmUpto 1 ≤ 3 ^ 0 := by
+  rw [lcmUpto_eq_lcmRec]; decide
 
 theorem lcmUpto_table2500_block_0 : ∀ n : ℕ, 2275 ≤ n → n ≤ 2500 → Nat.lcmUpto n ≤ 3 ^ n := by
   intro n han hnb

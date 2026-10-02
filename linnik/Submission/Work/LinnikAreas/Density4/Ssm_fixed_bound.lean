@@ -148,15 +148,15 @@ lemma Gamma_line_integral_bound :
   have hle : ∀ t : ℝ, ‖Complex.Gamma ((a : ℂ) + (t : ℂ) * Complex.I)‖ * (2 + |t|) ≤ 3 * C₀ * G t := by
     intro t
     have h1 := hC₀ a ha1 ha2 t
-    have hx1 : (0:ℝ) < 1 + |t| := by linarith [abs_nonneg t]
-    have h2 : (2 + |t|) ≤ 3 * (1 + |t|) := by linarith [abs_nonneg t]
+    have hx1 : (0:ℝ) < 1 + |t| := by linarith only [abs_nonneg t]
+    have h2 : (2 + |t|) ≤ 3 * (1 + |t|) := by linarith only [abs_nonneg t]
     have h7 : (1 + |t|) ^ (5/2 : ℝ) = (1 + |t|) ^ (3/2 : ℝ) * (1 + |t|) := by
       rw [show (5/2:ℝ) = 3/2 + 1 by norm_num, Real.rpow_add hx1, Real.rpow_one]
     have hGt : G t = (1 + |t|) ^ (5/2 : ℝ) * Real.exp (-(Real.pi / 2 * |t|)) := by rw [hGdef]
     rw [hGt, h7]
     calc ‖Complex.Gamma ((a : ℂ) + (t : ℂ) * Complex.I)‖ * (2 + |t|)
         ≤ (C₀ * (1 + |t|) ^ (3/2 : ℝ) * Real.exp (-(Real.pi / 2 * |t|))) * (3 * (1 + |t|)) := by
-          apply mul_le_mul h1 h2 (by linarith [abs_nonneg t]) (by positivity)
+          apply mul_le_mul h1 h2 (by linarith only [abs_nonneg t]) (by positivity)
       _ = 3 * C₀ * ((1 + |t|) ^ (3/2 : ℝ) * (1 + |t|) * Real.exp (-(Real.pi / 2 * |t|))) := by ring
   have hre_eq : ∀ (t : ℝ), ((a : ℂ) + (t : ℂ) * Complex.I).re = a := by
     intro t
@@ -187,7 +187,7 @@ lemma Gamma_line_integral_bound :
     _ = 3 * C₀ * M := by rw [integral_const_mul, hMdef]
     _ ≤ 3 * C₀ * |M| + 1 := by
         have h1 : M ≤ |M| := le_abs_self M
-        nlinarith [hC₀pos]
+        nlinarith only [mul_le_mul_of_nonneg_left h1 (by linarith only [hC₀pos] : (0:ℝ) ≤ 3 * C₀)]
 
 
 
@@ -245,7 +245,7 @@ theorem norm_Phi_shifted_pointwise (q : ℕ) [NeZero q] (hq : 2 ≤ q) {U V W X 
   have hq1 : 1 < q := by omega
   have hlogpos : 0 < Real.log q := Real.log_pos (by exact_mod_cast hq1)
   have hXpos : 0 < X := hX
-  have hVWpos : (0:ℝ) < V * W := by nlinarith
+  have hVWpos : (0:ℝ) < V * W := mul_pos (by linarith only [hV]) (by linarith only [hW])
   set s : ℂ := (c1 : ℂ) + (t : ℂ) * Complex.I with hsdef
   have hs_re : s.re = c1 := by
     simp only [hsdef, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
@@ -315,7 +315,7 @@ theorem integrable_Phi_line_shifted (q : ℕ) [NeZero q] (hq : 2 ≤ q) {U V W X
       (fun t : ℝ => Phi q U V W X χ ρ ((c1 : ℂ) + (t : ℂ) * Complex.I)) := by
   have hbd := norm_Phi_shifted_pointwise q hq hU hUV hV hW hX χ ρ hk hCbpos hL0 hc1 hdist hLbd
   have hlogq : 0 < Real.log q := Real.log_pos (by exact_mod_cast (by omega : 1 < q))
-  have hVW1 : (1:ℝ) ≤ V * W := by nlinarith
+  have hVW1 : (1:ℝ) ≤ V * W := one_le_mul_of_one_le_of_one_le hV hW
   set M : ℝ := Cb * Real.log q * X ^ c1 with hMdef
   set DD : ℝ := (V * W) ^ (1 / (k:ℝ)) * (1 + Real.log (V * W)) ^ 3 with hDDdef
   have hM0 : 0 ≤ M := by
@@ -372,7 +372,7 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
       rw [Real.lt_log_iff_exp_lt (by norm_num)]; exact Real.exp_one_lt_three
     have := Real.log_le_log (by norm_num : (0:ℝ) < 3) hq3
     linarith
-  have hVW1 : (1:ℝ) ≤ V * W := by nlinarith
+  have hVW1 : (1:ℝ) ≤ V * W := one_le_mul_of_one_le_of_one_le hV hW
   set DF : ℝ := (V * W) ^ (1 / (k:ℝ)) * (1 + Real.log (V * W)) ^ 3 with hDFdef
   have hDF0 : 0 ≤ DF := by
     rw [hDFdef]
@@ -385,9 +385,9 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
     rw [hCLdef]
     have h0 : (0:ℝ) ≤ Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) :=
       mul_nonneg hCb0pos.le (Real.rpow_nonneg (by linarith) _)
-    linarith
+    linarith only [h0]
   have hCLbig2 : Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) ≤ CL := by
-    rw [hCLdef]; linarith
+    rw [hCLdef]; linarith only [hlogq]
   have hLunif : ∀ σ t : ℝ, 1 - 1/(k:ℝ) ≤ σ → σ ≤ 2 →
       ‖DirichletCharacter.LFunction χ ((σ:ℂ) + (t:ℂ) * Complex.I)‖ ≤ CL * (2 + |t|) := by
     intro σ t hσ1 hσ2
@@ -395,58 +395,58 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
     · have hb := hCb0 (χ := χ) hχ σ t hσ1 (by
         have hll : 0 ≤ Real.log (Real.log (q:ℝ)) / Real.log (q:ℝ) :=
           div_nonneg (Real.log_nonneg hlog3) hlogq.le
-        linarith)
+        linarith only [hll, hσlt])
       refine le_trans hb ?_
-      have hσle : (0:ℝ) ≤ 1 - σ := by linarith
+      have hσle : (0:ℝ) ≤ 1 - σ := by linarith only [hσlt]
       have hk0 : (0:ℝ) ≤ (k:ℝ)⁻¹ := by positivity
-      have hkk : (0:ℝ) ≤ 1 + 1/(k:ℝ) := by linarith
+      have hkk : (0:ℝ) ≤ 1 + 1/(k:ℝ) := by positivity
       have hexp0 : (0:ℝ) ≤ (1/3:ℝ) * (1 - σ) * (1 + 1/(k:ℝ)) + 1 :=
         add_nonneg (mul_nonneg (mul_nonneg (by norm_num) hσle) hkk) (by norm_num)
       have hexp : ((1/3:ℝ) * (1 - σ) * (1 + 1/(k:ℝ)) + 1)
           ≤ (1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1 := by
         have hle : 1 - σ ≤ 1/(k:ℝ) := by
-          rw [div_eq_inv_mul] at hσ1 ⊢; linarith
-        nlinarith [hkk, hσle, hk0, hle]
+          rw [div_eq_inv_mul] at hσ1 ⊢; linarith only [hσ1]
+        nlinarith only [mul_le_mul_of_nonneg_right hle hkk]
       have hpow : (q:ℝ) ^ ((1/3:ℝ) * (1 - σ) * (1 + 1/(k:ℝ)) + 1)
           ≤ (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) :=
-        Real.rpow_le_rpow_of_exponent_le (by linarith : (1:ℝ) ≤ (q:ℝ)) hexp
+        Real.rpow_le_rpow_of_exponent_le (by linarith only [hq1] : (1:ℝ) ≤ (q:ℝ)) hexp
       have h1 : Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1 - σ) * (1 + 1/(k:ℝ)) + 1)
           ≤ Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) :=
         mul_le_mul_of_nonneg_left hpow hCb0pos.le
       have h3 : Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1 - σ) * (1 + 1/(k:ℝ)) + 1) * (1 + |t|)
           ≤ Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) * (2 + |t|) :=
-        mul_le_mul h1 (by linarith [abs_nonneg t]) (by positivity)
-          (mul_nonneg hCb0pos.le (Real.rpow_nonneg (by linarith) _))
+        mul_le_mul h1 (by linarith only [abs_nonneg t]) (by positivity)
+          (mul_nonneg hCb0pos.le (Real.rpow_nonneg (by linarith only [hq1]) _))
       have h4 : Cb0 * (q:ℝ) ^ ((1/3:ℝ) * (1/(k:ℝ)) * (1 + 1/(k:ℝ)) + 1) * (2 + |t|)
           ≤ CL * (2 + |t|) :=
-        mul_le_mul_of_nonneg_right hCLbig2 (by linarith [abs_nonneg t])
-      linarith
+        mul_le_mul_of_nonneg_right hCLbig2 (by linarith only [abs_nonneg t])
+      linarith only [h3, h4]
     · have hb := Commons.NumberTheory.DirichletCharacter.norm_LFunction_le_re_ge_one χ hχ
-        ((σ:ℂ) + (t:ℂ) * Complex.I) (by simp; linarith)
+        ((σ:ℂ) + (t:ℂ) * Complex.I) (by simp; linarith only [hσge])
       have him : (((σ:ℂ) + (t:ℂ) * Complex.I)).im = t := by simp
       rw [him] at hb
       have hloglt : Real.log (2 + |t|) ≤ 1 + |t| := by
         have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 + |t| by positivity)
-        linarith
+        linarith only [this]
       have habs : (0:ℝ) ≤ |t| := abs_nonneg t
       refine le_trans hb ?_
       have h6 : Real.log (q:ℝ) + Real.log (2 + |t|) + 6 ≤ Real.log (q:ℝ) + 7 + |t| := by
-        linarith
+        linarith only [hloglt]
       have h7 : Real.log (q:ℝ) + 7 + |t| ≤ (Real.log (q:ℝ) + 8) * (2 + |t|) := by
-        nlinarith [hlog3, habs]
+        nlinarith only [hlog3, habs, mul_nonneg (by linarith only [hlog3] : (0:ℝ) ≤ Real.log q) habs]
       have h8 : (Real.log (q:ℝ) + 8) * (2 + |t|) ≤ CL * (2 + |t|) :=
-        mul_le_mul_of_nonneg_right hCLbig (by linarith)
-      linarith
+        mul_le_mul_of_nonneg_right hCLbig (by linarith only [habs])
+      linarith only [h6, h7, h8]
   set CLtot : ℝ := 4 * CL + ‖DirichletCharacter.LFunction χ ρ‖ with hCLtotdef
   have hCLtot0 : 0 ≤ CLtot := by rw [hCLtotdef]; positivity
-  have hX0 : (0:ℝ) ≤ X := by linarith
+  have hX0 : (0:ℝ) ≤ X := by linarith only [hX]
   refine ⟨Cg * CLtot * X * DF * 4 + 1, by positivity, ?_⟩
   have key : ∀ ε : ℝ, (ε = 1 ∨ ε = -1) → ∀ x ∈ Set.Icc c1 1, ∀ T : ℝ, 1 ≤ T →
       ‖Phi q U V W X χ ρ ((x : ℂ) + (ε * (T : ℂ)) * Complex.I)‖
         ≤ (Cg * CLtot * X * DF * 4 + 1) * Real.exp (-(Real.pi / 2) * T) * T ^ (4:ℝ) := by
     intro ε hε x hx T hT
     obtain ⟨hx1, hx2⟩ := hx
-    have hT0 : (0:ℝ) < T := by linarith
+    have hT0 : (0:ℝ) < T := by linarith only [hT]
     have hεabs : |ε| = 1 := by rcases hε with h | h <;> rw [h] <;> norm_num
     have hεT : |ε * T| = T := by rw [abs_mul, hεabs, one_mul, abs_of_pos hT0]
     have hc1' : c1 = 1 - ρ.re - 1/(k:ℝ) := by rw [hc1, one_div]
@@ -455,7 +455,7 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
       have h : (1:ℝ) / (k:ℝ) ≤ 1 / 3 :=
         one_div_le_one_div_of_le (by norm_num) (by exact_mod_cast (show 3 ≤ k by omega))
       simpa [one_div] using h
-    have hxlow : -(1/3:ℝ) ≤ x := by linarith
+    have hxlow : -(1/3:ℝ) ≤ x := by linarith only [hx1', hkinv, hβ1, one_div (k:ℝ)]
     set s : ℂ := (x : ℂ) + (ε * (T : ℂ)) * Complex.I with hsdef
     have hs_eq : s = ((x : ℝ) : ℂ) + ((ε * T : ℝ) : ℂ) * Complex.I := by
       rw [hsdef]; push_cast; ring
@@ -465,12 +465,12 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
       calc T = |s.im| := by rw [hs_im, hεT]
         _ ≤ ‖s‖ := Complex.abs_im_le_norm s
     have hs_ne : s ≠ 0 := by
-      intro h0; rw [h0, norm_zero] at hs_norm; linarith
+      intro h0; rw [h0, norm_zero] at hs_norm; linarith only [hs_norm, hT0]
     have hΓb : ‖Complex.Gamma (s + 1)‖
         ≤ Cg * (1 + T) ^ (3/2 : ℝ) * Real.exp (-(Real.pi / 2) * T) := by
       have hcast : s + 1 = ((x + 1 : ℝ) : ℂ) + ((ε * T : ℝ) : ℂ) * Complex.I := by
         rw [hs_eq]; push_cast; ring
-      have hb := hCg (x + 1) (by linarith) (by linarith) (ε * T)
+      have hb := hCg (x + 1) (by linarith only [hxlow, hx2]) (by linarith only [hxlow, hx2]) (ε * T)
       have hb' : ‖Complex.Gamma (s + 1)‖
           ≤ Cg * (1 + T) ^ (3/2 : ℝ) * Real.exp (-(Real.pi / 2 * T)) := by
         rw [hcast]
@@ -482,12 +482,12 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
       have hsplit : ρ + s = ((ρ.re + x : ℝ) : ℂ) + ((ρ.im + ε * T : ℝ) : ℂ) * Complex.I := by
         apply Complex.ext <;> simp [hre, him]
       rw [hsplit]
-      have hb := hLunif (ρ.re + x) (ρ.im + ε * T) (by linarith) (by linarith)
+      have hb := hLunif (ρ.re + x) (ρ.im + ε * T) (by linarith only [hx1']) (by linarith only [hβ1, hx2])
       refine le_trans hb ?_
       have h2 : (2 : ℝ) + |ρ.im + ε * T| ≤ 3 + T := by
         have hab := abs_add_le ρ.im (ε * T)
         rw [hεT] at hab
-        linarith [hβim]
+        linarith only [hab, hβim]
       exact mul_le_mul_of_nonneg_left h2 hCL0.le
     have hdsl : ‖dslope (fun u : ℂ => DirichletCharacter.LFunction χ (ρ + u)) 0 s‖ ≤ CLtot := by
       have hnum : ‖DirichletCharacter.LFunction χ (ρ + s) - DirichletCharacter.LFunction χ ρ‖
@@ -502,17 +502,17 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
         _ ≤ CLtot := by
             rw [hCLtotdef]
             have h1 : T⁻¹ * (CL * (3 + T)) ≤ 4 * CL := by
-              rw [inv_mul_le_iff₀ hT0]; nlinarith [hCL0.le]
+              rw [inv_mul_le_iff₀ hT0]; nlinarith only [mul_le_mul_of_nonneg_left hT hCL0.le]
             have h2 : T⁻¹ * ‖DirichletCharacter.LFunction χ ρ‖
                 ≤ ‖DirichletCharacter.LFunction χ ρ‖ := by
               rw [inv_mul_le_iff₀ hT0]
-              nlinarith [norm_nonneg (DirichletCharacter.LFunction χ ρ)]
+              nlinarith only [mul_le_mul_of_nonneg_left hT (norm_nonneg (DirichletCharacter.LFunction χ ρ))]
             calc T⁻¹ * (CL * (3 + T) + ‖DirichletCharacter.LFunction χ ρ‖)
                 = T⁻¹ * (CL * (3 + T)) + T⁻¹ * ‖DirichletCharacter.LFunction χ ρ‖ := by ring
               _ ≤ 4 * CL + ‖DirichletCharacter.LFunction χ ρ‖ := add_le_add h1 h2
     have hXb : ‖(X : ℂ) ^ s‖ ≤ X := by
       rw [Complex.norm_cpow_eq_rpow_re_of_pos (by linarith : (0:ℝ) < X), hs_re]
-      calc X ^ x ≤ X ^ (1:ℝ) := Real.rpow_le_rpow_of_exponent_le (by linarith) hx2
+      calc X ^ x ≤ X ^ (1:ℝ) := Real.rpow_le_rpow_of_exponent_le (by linarith only [hX]) hx2
         _ = X := Real.rpow_one X
     have hFb : ‖lcmF q U V W χ (ρ + s)‖ ≤ DF := by
       have hre : 1 - (k:ℝ)⁻¹ ≤ (ρ + s).re := by
@@ -521,9 +521,9 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
       simpa [hDFdef] using
         norm_lcmF_le_gen q hU hUV hV hW χ (k := k) (by omega : 1 ≤ k) hre
     have hT4 : (1 + T) ^ (3/2:ℝ) ≤ 4 * T ^ (4:ℝ) := by
-      have h1 : (1 + T) ≤ 2 * T := by linarith
+      have h1 : (1 + T) ≤ 2 * T := by linarith only [hT]
       have h2 : (1 + T) ^ (3/2:ℝ) ≤ (2 * T) ^ (3/2:ℝ) :=
-        Real.rpow_le_rpow (by linarith) h1 (by norm_num)
+        Real.rpow_le_rpow (by linarith only [hT]) h1 (by norm_num)
       have h3 : (2 * T) ^ (3/2:ℝ) = 2 ^ (3/2:ℝ) * T ^ (3/2:ℝ) :=
         Real.mul_rpow (by norm_num) hT0.le
       have h4 : (2:ℝ) ^ (3/2:ℝ) ≤ 4 := by
@@ -531,9 +531,9 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
           rw [show (3/2:ℝ) = 1 + 1/2 by norm_num, Real.rpow_add (by norm_num),
             Real.rpow_one, ← Real.sqrt_eq_rpow]
         rw [h2']
-        nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 2 by norm_num), Real.sqrt_nonneg 2]
+        nlinarith only [Real.sq_sqrt (show (0:ℝ) ≤ 2 by norm_num), Real.sqrt_nonneg 2]
       have h5 : T ^ (3/2:ℝ) ≤ T ^ (4:ℝ) :=
-        Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)
+        Real.rpow_le_rpow_of_exponent_le (by linarith only [hT]) (by norm_num)
       have hT32 : (0:ℝ) ≤ T ^ (3/2:ℝ) := Real.rpow_nonneg hT0.le _
       calc (1 + T) ^ (3/2:ℝ) ≤ (2 * T) ^ (3/2:ℝ) := h2
         _ = 2 ^ (3/2:ℝ) * T ^ (3/2:ℝ) := h3
@@ -560,7 +560,7 @@ theorem norm_Phi_edge_pointwise (h1 : Area1) (q : ℕ) [NeZero q] (hq : 3 ≤ q)
         = (Cg * CLtot * X * DF * 4) * Real.exp (-(Real.pi / 2) * T) * T ^ (4:ℝ) := by ring
       _ ≤ (Cg * CLtot * X * DF * 4 + 1) * Real.exp (-(Real.pi / 2) * T) * T ^ (4:ℝ) :=
           mul_le_mul_of_nonneg_right
-            (mul_le_mul_of_nonneg_right (by linarith) hE0) hT40
+            (mul_le_mul_of_nonneg_right (by linarith only []) hE0) hT40
   intro x hx T hT
   refine ⟨?_, ?_⟩
   · have hk1 := key 1 (Or.inl rfl)
@@ -817,7 +817,7 @@ theorem Ssm_main_bound (h1 : Area1) (u v w x : ℝ) (hw : 0 < w) (hwu : w < u) (
     rw [harg]
     refine le_trans hb ?_
     have h2 : (1:ℝ) + |ρ.im + t| ≤ 2 + |t| := by
-      have := abs_add_le ρ.im t; linarith [hβim]
+      have := abs_add_le ρ.im t; linarith only [this, hβim]
     rw [hCbdef]
     exact mul_le_mul_of_nonneg_left h2 (by positivity)
   have hΓ : ∫ t : ℝ, ‖Complex.Gamma ((((c1 : ℂ) + (t : ℂ) * Complex.I)) + 1)‖ * (2 + |t|) ≤ CΓ := by
@@ -929,7 +929,7 @@ theorem Ssm_fixed_bound (h1 : Work.LinnikContract.Area1) :
           ≤ C / (Real.log q) := by
   intro u v w x hw hwu huv hvx hx h2w
   set δ : ℝ := x - v - w - 1/3 with hδdef
-  have hδpos : 0 < δ := by rw [hδdef]; linarith
+  have hδpos : 0 < δ := by rw [hδdef]; linarith only [hx]
   -- pick `k ≥ 3` with `δ k > 2`
   have hkexists : ∃ k : ℕ, 3 ≤ k ∧ 2 < δ * (k:ℝ) := by
     refine ⟨max 3 (Nat.floor (2/δ) + 1), le_max_left _ _, ?_⟩
@@ -951,7 +951,7 @@ theorem Ssm_fixed_bound (h1 : Work.LinnikContract.Area1) :
     have h3 : δ/(k:ℝ) = (6*δ*(k:ℝ))/(6*((k:ℝ))^2) := by
       field_simp
     rw [h2, h3, div_lt_div_iff_of_pos_right (by positivity : (0:ℝ) < 6*((k:ℝ))^2)]
-    nlinarith [hkδ, hδpos]
+    linarith only [hkδ]
   obtain ⟨Qlam, hQlam⟩ := lamMax_div_log_small (1/(k:ℝ)) (by positivity)
   obtain ⟨Cmain, hCmainpos, Qmain, hmain⟩ :=
     Ssm_main_bound h1 u v w x hw hwu huv hvx hx k hk3 (δ/(2*(k:ℝ))) he hek

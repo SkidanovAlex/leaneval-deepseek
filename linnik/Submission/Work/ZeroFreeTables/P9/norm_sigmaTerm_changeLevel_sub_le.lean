@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.ZeroFreeTables.P9.SigmaP3LChangeLevelAux
-import Submission.Work.ZeroFreeTables.P9.changeLevel_norm_sub_le
 
 open DirichletCharacter
 open scoped BigOperators

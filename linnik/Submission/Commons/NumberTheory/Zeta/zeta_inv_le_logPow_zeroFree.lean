@@ -54,13 +54,13 @@ private lemma segment_dist_endpoint_le {σ σ₂ t : ℝ} (hσσ₂ : σ ≤ σ�
     ‖w - ((σ₂ : ℂ) + (t : ℂ) * Complex.I)‖ ≤ σ₂ - σ := by
   rw [segment_eq_image'] at hw
   obtain ⟨θ, hθ, rfl⟩ := hw
-  have hθ1 : (0 : ℝ) ≤ 1 - θ := by linarith [hθ.2]
+  have hθ1 : (0 : ℝ) ≤ 1 - θ := by linarith only [hθ.2, hθ]
   have hxy : ‖(((σ : ℂ) + (t : ℂ) * Complex.I)) - (((σ₂ : ℂ) + (t : ℂ) * Complex.I))‖
       = σ₂ - σ := by
     have h : (((σ : ℂ) + (t : ℂ) * Complex.I)) - (((σ₂ : ℂ) + (t : ℂ) * Complex.I))
         = (((σ - σ₂ : ℝ)) : ℂ) := by
       apply Complex.ext <;> simp
-    rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith)]
+    rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith only [hσσ₂])]
     ring
   have hrewrite : ((σ : ℂ) + (t : ℂ) * Complex.I)
         + θ • ((((σ₂ : ℂ) + (t : ℂ) * Complex.I)) - (((σ : ℂ) + (t : ℂ) * Complex.I)))
@@ -69,8 +69,8 @@ private lemma segment_dist_endpoint_le {σ σ₂ t : ℝ} (hσσ₂ : σ ≤ σ�
     module
   rw [hrewrite, norm_smul, Real.norm_eq_abs, abs_of_nonneg hθ1, hxy]
   have hle : (1 - θ) * (σ₂ - σ) ≤ 1 * (σ₂ - σ) :=
-    mul_le_mul_of_nonneg_right (by linarith [hθ.1]) (by linarith)
-  linarith [hle]
+    mul_le_mul_of_nonneg_right (by linarith only [hθ.1, hθ]) (by linarith only [hσσ₂])
+  linarith only [hle]
 
 /-- Case `σ ≥ 1`: the classical `3`–`4`–`1` lower bound, with explicit constant
 `‖ζ(σ+it)‖ ≥ 1/(10 log(|t|+2))` for `1 + 1/(4 log(|t|+2)) ≤ σ ≤ 2`, `|t| ≥ 1`. -/
@@ -81,19 +81,19 @@ private lemma zeta_norm_ge_inv_log_of_ge_one {σ t : ℝ}
   have hL1 : 1 ≤ L := by
     rw [hL]
     have h3 : Real.log 3 ≤ Real.log (|t| + 2) :=
-      Real.log_le_log (by norm_num) (by linarith [abs_nonneg t, ht])
-    linarith [Real.log_three_gt_d9]
+      Real.log_le_log (by norm_num) (by linarith only [abs_nonneg t, ht])
+    linarith only [Real.log_three_gt_d9, h3]
   have hLpos : 0 < L := lt_of_lt_of_le one_pos hL1
   have hσ1 : 1 < σ := by
     have : 0 < 1 / (4 * L) := by positivity
-    linarith
+    linarith only [hσ, this]
   have hmain : ((σ - 1) ^ 3 / (100 * L)) ^ (1 / 4 : ℝ) ≤
       ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖ := by
     have h := Commons.NumberTheory.LSeries.norm_riemannZeta_lower_of_three_four_one
       (σ := σ) (t := t) hσ1 hσ2 ht
     rw [← hL] at h
     exact h
-  have hsm1 : 1 / (4 * L) ≤ σ - 1 := by linarith
+  have hsm1 : 1 / (4 * L) ≤ σ - 1 := by linarith only [hσ]
   have hcube : (1 / (4 * L)) ^ 3 ≤ (σ - 1) ^ 3 :=
     pow_le_pow_left₀ (by positivity) hsm1 3
   have hA : (1 / (4 * L)) ^ 3 / (100 * L) = 1 / (6400 * L ^ 4) := by
@@ -105,7 +105,7 @@ private lemma zeta_norm_ge_inv_log_of_ge_one {σ t : ℝ}
   have hnum2 : 1 / (10000 * L ^ 4) ≤ 1 / (6400 * L ^ 4) :=
     one_div_le_one_div_of_le (by positivity) (by
       have hL4 : (1:ℝ) ≤ L ^ 4 := one_le_pow₀ hL1
-      nlinarith [hL4])
+      linarith only [hL4])
   have hnum : 1 / (10000 * L ^ 4) ≤ (σ - 1) ^ 3 / (100 * L) := le_trans hnum2 hnum1
   have hbase : (1 / (10000 * L ^ 4)) ^ (1 / 4 : ℝ) = 1 / (10 * L) := by
     have hy : (0 : ℝ) ≤ 1 / (10 * L) := by positivity
@@ -137,23 +137,23 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
           C * (Real.log (|t| + 2)) ^ C := by
   set cT : ℝ := c₁ / 10 with hcTdef
   have hcTpos : 0 < cT := by positivity
-  have hcTle : cT ≤ 1 / 10 := by rw [hcTdef]; linarith
+  have hcTle : cT ≤ 1 / 10 := by rw [hcTdef]; linarith only [hc₁le1]
   set CM : ℝ := max 10 (max (2 * Cfr * Real.exp (1 / 5)) cL) + 1 with hCMdef
   have hCM10 : 10 ≤ CM := by
     rw [hCMdef]
-    linarith [le_max_left 10 (max (2 * Cfr * Real.exp (1 / 5)) cL)]
+    linarith only [le_max_left 10 (max (2 * Cfr * Real.exp (1 / 5)) cL)]
   have hCMfr : 2 * Cfr * Real.exp (1 / 5) ≤ CM := by
     rw [hCMdef]
-    linarith [le_max_right 10 (max (2 * Cfr * Real.exp (1 / 5)) cL),
+    linarith only [le_max_right 10 (max (2 * Cfr * Real.exp (1 / 5)) cL),
       le_max_left (2 * Cfr * Real.exp (1 / 5)) cL]
   have hCMcL : cL ≤ CM := by
     rw [hCMdef]
-    linarith [le_max_right 10 (max (2 * Cfr * Real.exp (1 / 5)) cL),
+    linarith only [le_max_right 10 (max (2 * Cfr * Real.exp (1 / 5)) cL),
       le_max_right (2 * Cfr * Real.exp (1 / 5)) cL]
   have hCMpos : 0 < CM := lt_of_lt_of_le (by norm_num : (0:ℝ) < 10) hCM10
   set CA : ℝ := 2 * |Real.log (8 * CM / cL)| + 4 with hCAdef
-  have hCA4 : 4 ≤ CA := by rw [hCAdef]; linarith [abs_nonneg (Real.log (8*CM/cL))]
-  have hCApos : 0 < CA := by linarith
+  have hCA4 : 4 ≤ CA := by rw [hCAdef]; linarith only [abs_nonneg (Real.log (8*CM/cL))]
+  have hCApos : 0 < CA := by linarith only [hCA4]
   set GEOM : ℝ := (1 + 6 * cT) / cT ^ 2 with hGEOMdef
   have hGEOMpos : 0 < GEOM := by rw [hGEOMdef]; positivity
   set CB : ℝ := |Real.log (cL / 4)| + 1 + CA * GEOM * (1 / 4 + cT) with hCBdef
@@ -161,39 +161,39 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
     rw [hCBdef]
     have h1 : 0 < CA * GEOM * (1 / 4 + cT) := by positivity
     have h2 := abs_nonneg (Real.log (cL / 4))
-    linarith
+    linarith only [h1, h2]
   refine ⟨max CB (3 ^ CB) + 1, by positivity, ?_⟩
   intro σ t ht hσlo hσhi
   set L : ℝ := Real.log (|t| + 2) with hLdef
   have hL1 : 1 ≤ L := by
     rw [hLdef]
     have h3 : Real.log 3 ≤ Real.log (|t| + 2) :=
-      Real.log_le_log (by norm_num) (by linarith [abs_nonneg t, ht])
-    linarith [Real.log_three_gt_d9]
+      Real.log_le_log (by norm_num) (by linarith only [abs_nonneg t, ht])
+    linarith only [Real.log_three_gt_d9, h3]
   have hLpos : 0 < L := lt_of_lt_of_le one_pos hL1
-  have hL2pos : 0 < L + 2 := by linarith
+  have hL2pos : 0 < L + 2 := by linarith only [hL1]
   have hlog2ge1 : 1 ≤ Real.log (L + 2) := by
     rw [Real.le_log_iff_exp_le hL2pos]
-    linarith [Real.exp_one_lt_d9]
+    linarith only [Real.exp_one_lt_d9, hL1]
   -- reference point
   set hh : ℝ := 1 / (4 * L) with hhhdef
   have hhpos : 0 < hh := by rw [hhhdef]; positivity
   have hhle : hh ≤ 1 / 4 := by
-    rw [hhhdef, div_le_iff₀ (by positivity)]; linarith
+    rw [hhhdef, div_le_iff₀ (by positivity)]; linarith only [hL1]
   set σ₂ : ℝ := 1 + hh with hσ₂def
-  have hσσ₂ : σ ≤ σ₂ := by rw [hσ₂def]; linarith
+  have hσσ₂ : σ ≤ σ₂ := by rw [hσ₂def]; linarith only [hσhi]
   set R : ℝ := (1 / 4 + 2 * cT) / L with hRdef
   have hRpos : 0 < R := by rw [hRdef]; positivity
   have hRle1 : R ≤ 1 := by
     rw [hRdef, div_le_one (by positivity)]
-    nlinarith [hcTle, hL1]
+    linarith only [hcTle, hL1, hc₁le1, hcTdef, hcTpos]
   have hdist : σ₂ - σ ≤ (1 / 4 + cT) / L := by
     have h2 : σ₂ = 1 + 1 / (4 * L) := by rw [hσ₂def, hhhdef]
     rw [h2]
     have h3 : (1 + 1 / (4 * L)) - (1 - cT / L) = (1 / 4 + cT) / L := by
       field_simp
       ring
-    linarith [hσlo, h3]
+    linarith only [hσlo, h3]
   set c : ℂ := (σ₂ : ℂ) + (t : ℂ) * Complex.I with hcdef
   set x : ℂ := (σ : ℂ) + (t : ℂ) * Complex.I with hxdef
   have hxdist : ‖x - c‖ = σ₂ - σ := by
@@ -201,13 +201,13 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
     have h : ((σ : ℂ) + (t : ℂ) * Complex.I) - ((σ₂ : ℂ) + (t : ℂ) * Complex.I)
         = (((σ - σ₂ : ℝ)) : ℂ) := by
       apply Complex.ext <;> simp
-    rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith)]
+    rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith only [hσhi])]
     ring
   have hxball : x ∈ Metric.ball c R := by
     rw [Metric.mem_ball, dist_eq_norm, hxdist]
     refine lt_of_le_of_lt hdist ?_
     rw [hRdef]
-    exact div_lt_div_of_pos_right (by linarith) hLpos
+    exact div_lt_div_of_pos_right (by linarith only [hcTpos]) hLpos
   have hyball : c ∈ Metric.ball c R := Metric.mem_ball_self hRpos
   -- the ball avoids `1`
   have hne1 : ∀ w ∈ Metric.ball c R, w ≠ 1 := by
@@ -224,7 +224,7 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       calc (3:ℝ) ≤ |t| := ht
         _ = |-t| := by rw [abs_neg]
         _ ≤ _ := hnorm
-    linarith [hRle1]
+    linarith only [hRle1, hc₁le1, hcTdef, hcTpos, h1, h2, h3]
   have hAn : AnalyticOnNhd ℂ riemannZeta (Metric.ball c R) := by
     rw [Complex.analyticOnNhd_iff_differentiableOn Metric.isOpen_ball]
     intro w hw
@@ -237,12 +237,12 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       have h := Complex.abs_re_le_norm (w - c)
       rwa [show (w - c).re = w.re - σ₂ by simp [hcdef]] at h
     have h3 : σ₂ - ‖w - c‖ ≤ w.re := by
-      rw [abs_le] at h2; linarith [h2.1]
-    have h4 : σ₂ - R < σ₂ - ‖w - c‖ := by linarith
+      rw [abs_le] at h2; linarith only [h2.1, h2]
+    have h4 : σ₂ - R < σ₂ - ‖w - c‖ := by linarith only [h1]
     have h5 : σ₂ - R = 1 - 2 * cT / L := by
       rw [hσ₂def, hhhdef, hRdef]; field_simp; ring
     rw [h5] at h4
-    linarith [h4, h3]
+    linarith only [h4, h3]
   have hball_im_ge : ∀ w ∈ Metric.ball c R, |t| - R ≤ |w.im| := by
     intro w hw
     have h1 : ‖w - c‖ < R := by simpa [Metric.mem_ball, dist_eq_norm] using hw
@@ -251,7 +251,7 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       rwa [show (w - c).im = w.im - t by simp [hcdef]] at h
     have h3 : |t| - |w.im| ≤ |w.im - t| := by
       simpa [abs_sub_comm] using abs_sub_abs_le_abs_sub t w.im
-    linarith
+    linarith only [h1, h2, h3]
   have hball_im_le : ∀ w ∈ Metric.ball c R, |w.im| ≤ |t| + 1 := by
     intro w hw
     have h1 : ‖w - c‖ < R := by simpa [Metric.mem_ball, dist_eq_norm] using hw
@@ -260,21 +260,21 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       rwa [show (w - c).im = w.im - t by simp [hcdef]] at h
     have h3 : |w.im| - |t| ≤ |w.im - t| := by
       simpa [abs_sub_comm] using abs_sub_abs_le_abs_sub w.im t
-    linarith
+    linarith only [hRle1, h1, h2, h3]
   have hball_im1 : ∀ w ∈ Metric.ball c R, 1 ≤ |w.im| := by
     intro w hw
     have := hball_im_ge w hw
-    linarith [hRle1, ht]
+    linarith only [hRle1, ht, hc₁le1, hcTdef, hcTpos, this]
   have hball_re_half : ∀ w ∈ Metric.ball c R, (1/2 : ℝ) ≤ w.re := by
     intro w hw
     have h1 := hball_re w hw
     have h2 : cT / L ≤ 1 / 10 := by
       rw [div_le_iff₀ hLpos]
-      have h3 : (1:ℝ) / 10 ≤ (1 / 10) * L := by nlinarith [hL1]
-      linarith [hcTle, h3]
+      have h3 : (1:ℝ) / 10 ≤ (1 / 10) * L := by linarith only [hL1]
+      linarith only [hcTle, h3, hc₁le1, hcTdef, hL1]
     have h4 : 2 * (cT / L) ≤ 2 * (1 / 10) := mul_le_mul_of_nonneg_left h2 (by norm_num)
     have h5 : 2 * cT / L = 2 * (cT / L) := by ring
-    linarith [h1, h4, h5]
+    linarith only [h1, h4, h5, hc₁le1, hcTdef, hcTpos, h2]
   -- zero-freeness on the ball
   have hne : ∀ w ∈ Metric.ball c R, riemannZeta w ≠ 0 := by
     intro w hw
@@ -282,27 +282,27 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
     have hτ1 := hball_im1 w hw
     have hτle := hball_im_le w hw
     have hlog : Real.log (|w.im| + 3) ≤ 2 * L := by
-      have hle : |w.im| + 3 ≤ 2 * (|t| + 2) := by linarith [hτle]
+      have hle : |w.im| + 3 ≤ 2 * (|t| + 2) := by linarith only [hτle, hc₁le1, hcTdef, hcTpos, ht]
       calc Real.log (|w.im| + 3) ≤ Real.log (2 * (|t| + 2)) :=
-            Real.log_le_log (by linarith [abs_nonneg w.im]) hle
+            Real.log_le_log (by linarith only [abs_nonneg w.im, hτ1]) hle
         _ = Real.log 2 + Real.log (|t| + 2) :=
-            Real.log_mul (by norm_num) (by linarith [abs_nonneg t])
+            Real.log_mul (by norm_num) (by linarith only [abs_nonneg t, ht])
         _ ≤ L + L := by
             have h2 : Real.log 2 ≤ L := by
               rw [hLdef]
-              exact Real.log_le_log (by norm_num) (by linarith [abs_nonneg t])
-            linarith
+              exact Real.log_le_log (by norm_num) (by linarith only [abs_nonneg t, ht])
+            linarith only [h2]
         _ = 2 * L := by ring
-    have hlog2 : 0 < Real.log (|w.im| + 3) := Real.log_pos (by linarith [abs_nonneg w.im])
+    have hlog2 : 0 < Real.log (|w.im| + 3) := Real.log_pos (by linarith only [abs_nonneg w.im, hτ1])
     have hz := hZF₁ w.im hτ1 w.re (by
-      have h5L : Real.log (|w.im| + 3) ≤ 5 * L := by linarith
+      have h5L : Real.log (|w.im| + 3) ≤ 5 * L := by linarith only [hL1, hlog]
       have hc5 : c₁ / (5 * L) ≤ c₁ / Real.log (|w.im| + 3) := by
         rw [div_le_div_iff₀ (by positivity) hlog2]
-        nlinarith [hc₁pos, h5L]
+        nlinarith only [hc₁pos, h5L, hL1, hlog]
       have hw5 : 1 - c₁ / (5 * L) ≤ w.re := by
         have h4 : c₁ / (5 * L) = 2 * cT / L := by rw [hcTdef]; field_simp; ring
-        rw [h4]; linarith
-      linarith)
+        rw [h4]; linarith only [hre]
+      linarith only [hc5, hw5])
     simpa [re_add_im_eq w] using hz
   -- sup bound `M`
   set M : ℝ := CM * (L + 1) with hMdef
@@ -313,16 +313,16 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
     have hτ1 := hball_im1 w hw
     have hτle := hball_im_le w hw
     have hlog2 : Real.log (|w.im| + 2) ≤ 2 * L := by
-      have hle : |w.im| + 2 ≤ 2 * (|t| + 2) := by linarith [hτle]
+      have hle : |w.im| + 2 ≤ 2 * (|t| + 2) := by linarith only [hτle, hc₁le1, hcTdef, hcTpos, ht]
       calc Real.log (|w.im| + 2) ≤ Real.log (2 * (|t| + 2)) :=
-            Real.log_le_log (by linarith [abs_nonneg w.im]) hle
+            Real.log_le_log (by linarith only [abs_nonneg w.im, hτ1]) hle
         _ = Real.log 2 + Real.log (|t| + 2) :=
-            Real.log_mul (by norm_num) (by linarith [abs_nonneg t])
+            Real.log_mul (by norm_num) (by linarith only [abs_nonneg t, ht])
         _ ≤ L + L := by
             have h2 : Real.log 2 ≤ L := by
               rw [hLdef]
-              exact Real.log_le_log (by norm_num) (by linarith [abs_nonneg t])
-            linarith
+              exact Real.log_le_log (by norm_num) (by linarith only [abs_nonneg t, ht])
+            linarith only [h2]
         _ = 2 * L := by ring
     by_cases hge : (1:ℝ) ≤ w.re
     · have hb := Commons.NumberTheory.LSeries.norm_riemannZeta_le_five_mul_log
@@ -330,13 +330,13 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       have hb' : ‖riemannZeta w‖ ≤ 5 * Real.log (|w.im| + 2) := by
         simpa [re_add_im_eq w] using hb
       calc ‖riemannZeta w‖ ≤ 5 * Real.log (|w.im| + 2) := hb'
-        _ ≤ 5 * (2 * L) := by linarith
+        _ ≤ 5 * (2 * L) := by linarith only [hlog2]
         _ = 10 * L := by ring
         _ ≤ CM * (L + 1) := by
-            have h1 : 10 * L ≤ CM * L := mul_le_mul_of_nonneg_right hCM10 (by linarith)
+            have h1 : 10 * L ≤ CM * L := mul_le_mul_of_nonneg_right hCM10 (by linarith only [hL1])
             have h2 : CM * L ≤ CM * (L + 1) :=
-              mul_le_mul_of_nonneg_left (by linarith) (le_of_lt hCMpos)
-            linarith
+              mul_le_mul_of_nonneg_left (by linarith only [hc₁le1, hcTdef, hcTpos]) (le_of_lt hCMpos)
+            linarith only [hc₁le1, hcTdef, hcTpos, hCM10, h1]
         _ = M := hMdef.symm
     · have hhalf := hball_re_half w hw
       have hlt1 : w.re < 1 := lt_of_not_ge hge
@@ -350,14 +350,14 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
         have hlogim : Real.log |w.im| ≤ L := by
           rw [hLdef]
           apply Real.log_le_log him0
-          linarith
-        have h1a : 1 - w.re ≤ 2 * cT / L := by linarith
-        have h1ann : 0 ≤ 1 - w.re := by linarith
+          linarith only [hc₁le1, hcTdef, hcTpos, hτle]
+        have h1a : 1 - w.re ≤ 2 * cT / L := by linarith only [hre]
+        have h1ann : 0 ≤ 1 - w.re := by linarith only [hge]
         have h1 : Real.log |w.im| * (1 - w.re) ≤ L * (2 * cT / L) :=
           mul_le_mul hlogim h1a h1ann (le_of_lt hLpos)
         have h2 : L * (2 * cT / L) = 2 * cT := by field_simp
-        linarith [h1, h2, hcTle]
-      have hlog2nn : 0 ≤ Real.log (|w.im| + 2) := Real.log_nonneg (by linarith [abs_nonneg w.im])
+        linarith only [h1, h2, hcTle, hc₁le1, hcTdef]
+      have hlog2nn : 0 ≤ Real.log (|w.im| + 2) := Real.log_nonneg (by linarith only [abs_nonneg w.im, hτ1])
       have hc : 0 ≤ Cfr := le_of_lt hCfrpos
       calc ‖riemannZeta w‖ ≤ Cfr * |w.im| ^ (1 - w.re) * Real.log (|w.im| + 2) := hb'
         _ ≤ Cfr * Real.exp (1 / 5) * (2 * L) := by
@@ -370,10 +370,10 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
         _ = 2 * Cfr * Real.exp (1 / 5) * L := by ring
         _ ≤ CM * (L + 1) := by
             have h1 : 2 * Cfr * Real.exp (1 / 5) * L ≤ CM * L :=
-              mul_le_mul_of_nonneg_right hCMfr (by linarith)
+              mul_le_mul_of_nonneg_right hCMfr (by linarith only [hL1])
             have h2 : CM * L ≤ CM * (L + 1) :=
-              mul_le_mul_of_nonneg_left (by linarith) (le_of_lt hCMpos)
-            linarith
+              mul_le_mul_of_nonneg_left (by linarith only []) (le_of_lt hCMpos)
+            linarith only [hCM10, h1]
         _ = M := hMdef.symm
   -- lower bound at the centre
   have hm_le : cL * hh ≤ ‖riemannZeta c‖ := by
@@ -385,8 +385,8 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
     rw [hMdef, hhhdef]
     have h1 : cL / (4 * L) ≤ CM := by
       rw [div_le_iff₀ (by positivity)]
-      nlinarith [hCMcL, hL1]
-    nlinarith [h1, hL1, hcLpos]
+      nlinarith only [hCMcL, hL1, hCM10]
+    nlinarith only [h1, hL1, hcLpos, hCM10, hCMcL, hc₁le1, hhle, hcTdef, hcTpos]
   -- Borel–Carathéodory
   have hBC : ∀ ⦃z₀ : ℂ⦄, z₀ ∈ Metric.ball c R → ∀ ρ : ℝ, 0 < ρ → ρ < R - ‖z₀ - c‖ →
       ‖deriv riemannZeta z₀ / riemannZeta z₀‖ ≤
@@ -406,38 +406,38 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       refine lt_of_le_of_lt hwd ?_
       refine lt_of_le_of_lt hdist ?_
       rw [hRdef]
-      exact div_lt_div_of_pos_right (by linarith) hLpos
+      exact div_lt_div_of_pos_right (by linarith only [hcTpos]) hLpos
     set ρ : ℝ := cT / (2 * L) with hρdef
     have hρpos : 0 < ρ := by rw [hρdef]; positivity
     have hRsub : cT / L ≤ R - (σ₂ - σ) := by
       have h2 : R - (1/4 + cT)/L = cT / L := by rw [hRdef]; field_simp; ring
-      linarith [hdist, h2]
+      linarith only [hdist, h2]
     have hρlt : ρ < R - ‖w - c‖ := by
       have h2 : ρ < cT / L := by
         rw [hρdef]
         have h3 : cT / (2 * L) = (cT / 2) / L := by ring
         rw [h3]
-        exact div_lt_div_of_pos_right (by linarith) hLpos
-      have h1 : cT / L ≤ R - ‖w - c‖ := by linarith [hwd, hRsub]
-      linarith
+        exact div_lt_div_of_pos_right (by linarith only [hcTpos]) hLpos
+      have h1 : cT / L ≤ R - ‖w - c‖ := by linarith only [hwd, hRsub]
+      linarith only [hwd, hRsub, h2]
     have hbc := hBC hwball ρ hρpos hρlt
     have hnum1 : ‖w - c‖ + ρ ≤ (1/4 + 3*cT/2) / L := by
       rw [hρdef]
       have h1 : ‖w - c‖ ≤ (1/4 + cT) / L := le_trans hwd hdist
       have h2 : (1/4 + cT)/L + cT/(2*L) = (1/4 + 3*cT/2)/L := by field_simp; ring
-      linarith [h1]
+      linarith only [h1, hdist, hwd, h2]
     have hden1 : cT / (2 * L) ≤ R - ‖w - c‖ - ρ := by
       rw [hρdef]
-      have h1 : cT / L ≤ R - ‖w - c‖ := by linarith [hwd, hRsub]
+      have h1 : cT / L ≤ R - ‖w - c‖ := by linarith only [hwd, hRsub]
       have h3 : cT / L - cT / (2 * L) = cT / (2 * L) := by field_simp; ring
-      linarith [h1, h3]
+      linarith only [h1, h3, hwd, hRsub]
     have hden2 : (cT / (2 * L)) * ρ = cT ^ 2 / (4 * L ^ 2) := by
       rw [hρdef]; field_simp; ring
     have hden_le : cT ^ 2 / (4 * L ^ 2) ≤ (R - ‖w - c‖ - ρ) * ρ := by
       rw [← hden2]
       exact mul_le_mul_of_nonneg_right hden1 (le_of_lt hρpos)
     have hfac : (‖w - c‖ + ρ) / ((R - ‖w - c‖ - ρ) * ρ) ≤ GEOM * L := by
-      have hdenpos : 0 < (R - ‖w - c‖ - ρ) * ρ := by nlinarith [hden1, hρpos]
+      have hdenpos : 0 < (R - ‖w - c‖ - ρ) * ρ := by nlinarith only [hden1, hρpos, hden2, hden_le]
       have hDpos : 0 < cT ^ 2 / (4 * L ^ 2) := by positivity
       have hAD : ((1/4 + 3*cT/2) / L) / (cT ^ 2 / (4 * L ^ 2)) = (1 + 6*cT) / cT ^ 2 * L := by
         field_simp; ring
@@ -463,26 +463,26 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
           = Real.log (8 * CM / cL) + Real.log L + Real.log (L + 1) := by
         have h1 : (8 * CM / cL) ≠ 0 := by positivity
         have h2 : L * (L + 1) ≠ 0 := by
-          exact mul_ne_zero hLpos.ne' (ne_of_gt (by linarith)) 
-        have h3 : (L + 1 : ℝ) ≠ 0 := ne_of_gt (by linarith)
+          exact mul_ne_zero hLpos.ne' (ne_of_gt (by linarith only [hL1])) 
+        have h3 : (L + 1 : ℝ) ≠ 0 := ne_of_gt (by linarith only [hL1])
         rw [Real.log_mul h1 h2, Real.log_mul hLpos.ne' h3]
         ring
       rw [hlogmul]
-      have hlogL : Real.log L ≤ Real.log (L + 2) := Real.log_le_log hLpos (by linarith)
+      have hlogL : Real.log L ≤ Real.log (L + 2) := Real.log_le_log hLpos (by linarith only [])
       have hlogL1 : Real.log (L + 1) ≤ Real.log (L + 2) :=
-        Real.log_le_log (by linarith) (by linarith)
+        Real.log_le_log (by linarith only [hL1]) (by linarith only [])
       have hlogabs : Real.log (8 * CM / cL) ≤ |Real.log (8 * CM / cL)| := le_abs_self _
       have hAnn : 0 ≤ |Real.log (8 * CM / cL)| := abs_nonneg _
       have hstep1 : 2 * (Real.log (8 * CM / cL) + Real.log L + Real.log (L + 1))
-          ≤ 2 * |Real.log (8 * CM / cL)| + 4 * Real.log (L + 2) := by linarith
+          ≤ 2 * |Real.log (8 * CM / cL)| + 4 * Real.log (L + 2) := by linarith only [hlogL, hlogL1, hlogabs]
       have hstep2 : 2 * |Real.log (8 * CM / cL)| + 4 * Real.log (L + 2)
           ≤ CA * Real.log (L + 2) := by
         rw [hCAdef]
         have h1 : 2 * |Real.log (8 * CM / cL)| ≤ 2 * |Real.log (8 * CM / cL)| * Real.log (L + 2) := by
           have := mul_le_mul_of_nonneg_left hlog2ge1 hAnn
-          linarith
-        nlinarith [h1]
-      linarith
+          linarith only [this]
+        linarith only [h1]
+      linarith only [hlogL, hlogL1, hlogabs, hstep2]
     calc ‖deriv riemannZeta w / riemannZeta w‖
         ≤ 2 * (Real.log (2 * M) - Real.log (cL * hh)) *
             (‖w - c‖ + ρ) / ((R - ‖w - c‖ - ρ) * ρ) := hbc
@@ -499,7 +499,7 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
   have hre : (F c).re - (F x).re ≤ K * ‖c - x‖ := by
     have h1 : (F c - F x).re ≤ ‖F c - F x‖ := Complex.re_le_norm _
     rw [Complex.sub_re] at h1
-    linarith [hmv]
+    linarith only [hmv, h1]
   rw [hFre c hyball, hFre x hxball] at hre
   have hcx : ‖c - x‖ = σ₂ - σ := by
     rw [norm_sub_rev c x, hxdist]
@@ -508,7 +508,7 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
   have h5 : K * (σ₂ - σ) ≤ CA * Real.log (L + 2) * GEOM * (1 / 4 + cT) := by
     rw [hKdef]
     have h7 : 0 ≤ CA * Real.log (L + 2) * GEOM * L := by
-      have h8 : 0 ≤ Real.log (L + 2) := Real.log_nonneg (by linarith)
+      have h8 : 0 ≤ Real.log (L + 2) := Real.log_nonneg (by linarith only [hL1])
       positivity
     calc CA * Real.log (L + 2) * GEOM * L * (σ₂ - σ)
         ≤ CA * Real.log (L + 2) * GEOM * L * ((1 / 4 + cT) / L) :=
@@ -520,19 +520,19 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       have h1a : cL * hh = (cL / 4) / L := by rw [hhhdef]; ring
       rw [h1a, Real.log_div (div_ne_zero hcLpos.ne' (by norm_num)) hLpos.ne']
     have h2 : -Real.log (cL / 4) ≤ |Real.log (cL / 4)| := neg_le_abs _
-    have h3 : Real.log L ≤ Real.log (L + 2) := Real.log_le_log hLpos (by linarith)
+    have h3 : Real.log L ≤ Real.log (L + 2) := Real.log_le_log hLpos (by linarith only [])
     have hAnL : 0 ≤ |Real.log (cL / 4)| := abs_nonneg _
     have hlgc : Real.log (cL * hh) ≤ Real.log ‖riemannZeta c‖ :=
       Real.log_le_log (by positivity) hm_le
     have hB : Real.log ‖riemannZeta x‖ ≥ Real.log (cL * hh) - K * (σ₂ - σ) := by
-      linarith [hre, hlgc]
+      linarith only [hre, hlgc]
     have hAB : |Real.log (cL / 4)| ≤ |Real.log (cL / 4)| * Real.log (L + 2) := by
       have := mul_le_mul_of_nonneg_left hlog2ge1 hAnL
-      linarith
+      linarith only [this]
     have hC : Real.log (cL * hh) - K * (σ₂ - σ) ≥ -CB * Real.log (L + 2) := by
       rw [h1, hCBdef]
-      nlinarith [h2, h3, h5, hAB]
-    linarith
+      linarith only [h2, h3, h5, hAB]
+    linarith only [hre, hlgc, hC]
   have hxne : riemannZeta x ≠ 0 := hne x hxball
   have hxnormpos : 0 < ‖riemannZeta x‖ := norm_pos_iff.mpr hxne
   have hexp : Real.exp (-CB * Real.log (L + 2)) ≤ ‖riemannZeta x‖ := by
@@ -549,14 +549,14 @@ private lemma zeta_inv_le_logpow_of_lt_one (c₁ cL Cfr : ℝ) (hc₁pos : 0 < c
       ring
     rw [h2] at h1
     calc 1 / ‖riemannZeta x‖ ≤ (L + 2) ^ CB := h1
-      _ ≤ (3 * L) ^ CB := Real.rpow_le_rpow (by linarith) (by linarith) hCBpos.le
+      _ ≤ (3 * L) ^ CB := Real.rpow_le_rpow (by linarith only [hL1]) (by linarith only [hL1]) hCBpos.le
       _ = 3 ^ CB * L ^ CB := Real.mul_rpow (by norm_num) hLpos.le
   have hxeq : x = (σ : ℂ) + (t : ℂ) * Complex.I := hxdef
   rw [hxeq] at hfinal
   have hK_ge : 3 ^ CB ≤ max CB (3 ^ CB) + 1 := by
-    have := le_max_right CB (3 ^ CB); linarith
+    have := le_max_right CB (3 ^ CB); linarith only [this]
   have hK_geCB : CB ≤ max CB (3 ^ CB) + 1 := by
-    have := le_max_left CB (3 ^ CB); linarith
+    have := le_max_left CB (3 ^ CB); linarith only [this]
   calc 1 / ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖ ≤ 3 ^ CB * L ^ CB := hfinal
     _ ≤ (max CB (3 ^ CB) + 1) * L ^ (max CB (3 ^ CB) + 1) := by
         apply mul_le_mul hK_ge (Real.rpow_le_rpow_of_exponent_le hL1 hK_geCB)
@@ -579,23 +579,23 @@ theorem zeta_inv_le_logPow_zeroFree :
   have hZF₁ : ∀ t : ℝ, 1 ≤ |t| → ∀ σ : ℝ, 1 - c₁ / Real.log (|t| + 3) ≤ σ →
       riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I) ≠ 0 := by
     intro t ht σ hσ
-    have hlog : 0 < Real.log (|t| + 3) := Real.log_pos (by linarith [abs_nonneg t])
+    have hlog : 0 < Real.log (|t| + 3) := Real.log_pos (by linarith only [abs_nonneg t, ht])
     have hle : c₁ / Real.log (|t| + 3) ≤ c₀ / Real.log (|t| + 3) :=
       div_le_div_of_nonneg_right hc₁le (le_of_lt hlog)
-    simpa [mul_comm] using hZF₀ t ht σ (by linarith)
+    simpa [mul_comm] using hZF₀ t ht σ (by linarith only [hσ, hle])
   obtain ⟨CB, hCBpos, hCBbound⟩ :=
     zeta_inv_le_logpow_of_lt_one c₁ cL Cfr hc₁pos hc₁le1 hcLpos hlowB hCfrpos hfr hZF₁
   set CT : ℝ := max CB 10 + 1 with hCTdef
-  have hCT1 : 1 ≤ CT := by rw [hCTdef]; linarith [le_max_right CB 10]
-  have hCT10 : 10 ≤ CT := by rw [hCTdef]; linarith [le_max_right CB 10]
-  have hCTCB : CB ≤ CT := by rw [hCTdef]; linarith [le_max_left CB 10]
-  refine ⟨c₁ / 10, CT, by positivity, by linarith, ?_⟩
+  have hCT1 : 1 ≤ CT := by rw [hCTdef]; linarith only [le_max_right CB 10]
+  have hCT10 : 10 ≤ CT := by rw [hCTdef]; linarith only [le_max_right CB 10]
+  have hCTCB : CB ≤ CT := by rw [hCTdef]; linarith only [le_max_left CB 10]
+  refine ⟨c₁ / 10, CT, by positivity, by linarith only [hCT10], ?_⟩
   intro σ t ht hσlo hσhi
   have hL1 : 1 ≤ Real.log (|t| + 2) := by
     have h3 : Real.log 3 ≤ Real.log (|t| + 2) :=
-      Real.log_le_log (by norm_num) (by linarith [abs_nonneg t, ht])
-    linarith [Real.log_three_gt_d9]
-  have hLnn : 0 ≤ Real.log (|t| + 2) := by linarith
+      Real.log_le_log (by norm_num) (by linarith only [abs_nonneg t, ht])
+    linarith only [Real.log_three_gt_d9, h3]
+  have hLnn : 0 ≤ Real.log (|t| + 2) := by linarith only [hL1]
   by_cases hcase : σ ≤ 1 + 1 / (4 * Real.log (|t| + 2))
   · have hb := hCBbound σ t ht hσlo hcase
     calc 1 / ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖
@@ -605,7 +605,7 @@ theorem zeta_inv_le_logPow_zeroFree :
             (Real.rpow_nonneg hLnn _) (by positivity)
   · have hge : 1 + 1 / (4 * Real.log (|t| + 2)) ≤ σ :=
       le_of_lt (lt_of_not_ge hcase)
-    have hza := zeta_norm_ge_inv_log_of_ge_one hge hσhi (by linarith)
+    have hza := zeta_norm_ge_inv_log_of_ge_one hge hσhi (by linarith only [ht])
     have hb : 1 / ‖riemannZeta ((σ : ℂ) + (t : ℂ) * Complex.I)‖
         ≤ 10 * Real.log (|t| + 2) := by
       have hpos : 0 < 1 / (10 * Real.log (|t| + 2)) := by positivity
@@ -617,7 +617,7 @@ theorem zeta_inv_le_logPow_zeroFree :
           have hLle : Real.log (|t| + 2) ≤ (Real.log (|t| + 2)) ^ CT := by
             calc Real.log (|t| + 2) = (Real.log (|t| + 2)) ^ (1:ℝ) := (Real.rpow_one _).symm
               _ ≤ (Real.log (|t| + 2)) ^ CT := Real.rpow_le_rpow_of_exponent_le hL1 hCT1
-          nlinarith [hCT10, hLle, Real.rpow_nonneg hLnn CT]
+          nlinarith only [hCT10, hLle, Real.rpow_nonneg hLnn CT, hCT1, hL1]
 
 end
 

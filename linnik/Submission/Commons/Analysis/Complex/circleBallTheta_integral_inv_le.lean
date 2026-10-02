@@ -71,10 +71,10 @@ lemma normSq_sub_circleMap_sq {r ρ : ℝ} (θ : ℝ) :
   have hpy : (Real.sin (θ / 2)) ^ 2 + (Real.cos (θ / 2)) ^ 2 = 1 :=
     Real.sin_sq_add_cos_sq (θ / 2)
   have hcos2 : Real.cos θ = 1 - 2 * (Real.sin (θ / 2)) ^ 2 := by
-    nlinarith
+    linarith only [hcos, hpy]
   have hsin2 : (Real.sin θ) ^ 2 = 1 - (Real.cos θ) ^ 2 := by
     have := Real.sin_sq_add_cos_sq θ
-    nlinarith
+    linarith only [this]
   ring_nf
   rw [hsin2, hcos2]
   ring_nf
@@ -85,7 +85,7 @@ lemma normSq_sub_circleMap_sq {r ρ : ℝ} (θ : ℝ) :
 /-- On the left half-circle, membership in the unit ball forces `θ ≤ π/ρ`. -/
 lemma theta_le_pi_div_rho_of_sin_half_le {ρ θ : ℝ} (_hρ0 : 0 < ρ) (hθ0 : 0 ≤ θ)
     (hθp : θ ≤ Real.pi) (h : Real.sin (θ / 2) ≤ 1 / ρ) : θ ≤ Real.pi / ρ := by
-  have hJ := Real.mul_le_sin (by positivity : 0 ≤ θ / 2) (by linarith : θ / 2 ≤ Real.pi / 2)
+  have hJ := Real.mul_le_sin (by positivity : 0 ≤ θ / 2) (by linarith only [hθp] : θ / 2 ≤ Real.pi / 2)
   have hA : (2 / Real.pi) * (θ / 2) ≤ 1 / ρ := le_trans hJ h
   have hB : θ / Real.pi ≤ 1 / ρ := by
     convert hA using 1
@@ -103,8 +103,8 @@ lemma one_le_rho_mul_sin_half_left {ρ θ : ℝ} (hρ0 : 0 < ρ) (hθ0 : Real.pi
     (hθp : θ ≤ Real.pi) : 1 ≤ ρ * Real.sin (θ / 2) := by
   have hθ'0 : 0 ≤ θ / 2 := by
     have hπρ : 0 < Real.pi / ρ := by positivity
-    linarith
-  have hJ := Real.mul_le_sin hθ'0 (by linarith : θ / 2 ≤ Real.pi / 2)
+    linarith only [hθ0, hπρ]
+  have hJ := Real.mul_le_sin hθ'0 (by linarith only [hθp] : θ / 2 ≤ Real.pi / 2)
   have hρθ : Real.pi ≤ ρ * θ := by
     simpa [mul_comm] using (div_le_iff₀ hρ0).mp hθ0
   have hB' : 1 ≤ (ρ * θ) / Real.pi := (le_div_iff₀ Real.pi_pos).2 (by simpa using hρθ)
@@ -123,8 +123,8 @@ lemma two_pi_sub_theta_le_of_sin_half_le {ρ θ : ℝ} (hρ0 : 0 < ρ) (hθp : R
     (hθ2 : θ ≤ 2 * Real.pi) (h : Real.sin (θ / 2) ≤ 1 / ρ) :
     2 * Real.pi - θ ≤ Real.pi / ρ := by
   let θ' : ℝ := 2 * Real.pi - θ
-  have hθ'0 : 0 ≤ θ' := by dsimp [θ']; linarith
-  have hθ'p : θ' ≤ Real.pi := by dsimp [θ']; linarith
+  have hθ'0 : 0 ≤ θ' := by dsimp [θ']; linarith only [hθ2]
+  have hθ'p : θ' ≤ Real.pi := by dsimp [θ']; linarith only [hθp]
   have hs : Real.sin (θ' / 2) = Real.sin (θ / 2) := by
     dsimp [θ']
     have hx : (2 * Real.pi - θ) / 2 = Real.pi - θ / 2 := by ring
@@ -137,8 +137,8 @@ lemma two_pi_sub_theta_le_of_sin_half_le {ρ θ : ℝ} (hρ0 : 0 < ρ) (hθp : R
 lemma one_le_rho_mul_sin_half_right {ρ θ : ℝ} (hρ0 : 0 < ρ) (hθp : Real.pi ≤ θ)
     (hθ2 : θ ≤ 2 * Real.pi - Real.pi / ρ) : 1 ≤ ρ * Real.sin (θ / 2) := by
   let θ' : ℝ := 2 * Real.pi - θ
-  have hθ'0 : Real.pi / ρ ≤ θ' := by dsimp [θ']; linarith
-  have hθ'p : θ' ≤ Real.pi := by dsimp [θ']; linarith
+  have hθ'0 : Real.pi / ρ ≤ θ' := by dsimp [θ']; linarith only [hθ2]
+  have hθ'p : θ' ≤ Real.pi := by dsimp [θ']; linarith only [hθp]
   have hleft := one_le_rho_mul_sin_half_left hρ0 hθ'0 hθ'p
   have hs : Real.sin (θ' / 2) = Real.sin (θ / 2) := by
     dsimp [θ']
@@ -153,11 +153,11 @@ lemma rho_mul_sin_half_le_of_mem {r ρ : ℝ} (hρ : 2 ≤ ρ) (hclose : |r - ρ
     (hmem : ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ≤ 1) :
     ρ * Real.sin (θ / 2) ≤ 1 := by
   let s : ℝ := Real.sin (θ / 2)
-  have hρ0 : 0 < ρ := by linarith
-  have hρ0' : 0 ≤ ρ := by linarith
+  have hρ0 : 0 < ρ := by linarith only [hρ]
+  have hρ0' : 0 ≤ ρ := by linarith only [hρ]
   have hs0 : 0 ≤ s := by
     dsimp [s]
-    exact Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by nlinarith [hθ.2])
+    exact Real.sin_nonneg_of_nonneg_of_le_pi (by linarith only [hθ.1, hθ]) (by linarith only [hθ.2, hθ])
   have hsq : ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 ≤ 1 := by
     have := pow_le_pow_left₀ (norm_nonneg _) hmem 2
     simpa using this
@@ -166,16 +166,16 @@ lemma rho_mul_sin_half_le_of_mem {r ρ : ℝ} (hρ : 2 ≤ ρ) (hclose : |r - ρ
     simpa [s] using hid
   have h1 : 4 * r * ρ * s ^ 2 ≤ 1 := by
     have hsq0 : 0 ≤ (r - ρ) ^ 2 := sq_nonneg _
-    nlinarith
+    nlinarith only [hsq, hid]
   have hle2 : ρ - r ≤ 1 := (abs_sub_le_iff.1 hclose).2
-  have hrsub : ρ - 1 ≤ r := by nlinarith
-  have hr1 : 1 ≤ r := by nlinarith [hρ]
-  have hρle : ρ ≤ r + 1 := by nlinarith
-  have hρle4r : ρ ≤ 4 * r := by nlinarith
+  have hrsub : ρ - 1 ≤ r := by linarith only [hle2]
+  have hr1 : 1 ≤ r := by linarith only [hρ, hle2]
+  have hρle : ρ ≤ r + 1 := by linarith only [hle2]
+  have hρle4r : ρ ≤ 4 * r := by linarith only [hρ, hle2]
   have hρ2 : ρ ^ 2 ≤ 4 * r * ρ := by
     have hm := mul_le_mul_of_nonneg_left hρle4r hρ0'
     -- ρ·ρ ≤ ρ·(4r)
-    nlinarith
+    linarith only [hm]
   have h2 : ρ ^ 2 * s ^ 2 ≤ 1 := by
     have hstep := mul_le_mul_of_nonneg_right hρ2 (sq_nonneg s)
     exact le_trans hstep h1
@@ -199,20 +199,20 @@ lemma circleTheta_eq_zero_of_middle {r ρ : ℝ} (hρ : 2 ≤ ρ) (hclose : |r -
   unfold circleTheta
   by_cases hmem : ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ≤ 1
   · exfalso
-    have hρ0 : 0 < ρ := by linarith
+    have hρ0 : 0 < ρ := by linarith only [hρ]
     let s : ℝ := Real.sin (θ / 2)
     have hs1 : 1 ≤ ρ * s := by
       dsimp [s]
       rcases le_total θ Real.pi with hθp | hθp
-      · exact one_le_rho_mul_sin_half_left hρ0 (by linarith [hθ.1]) hθp
-      · exact one_le_rho_mul_sin_half_right hρ0 hθp (by linarith [hθ.2])
+      · exact one_le_rho_mul_sin_half_left hρ0 (by linarith only [hθ.1, hθ]) hθp
+      · exact one_le_rho_mul_sin_half_right hρ0 hθp (by linarith only [hθ.2, hθ])
     have hs0 : 0 ≤ s := by
       have h1ρ : 1 / ρ ≤ s := (div_le_iff₀ hρ0).mpr (by simpa [mul_comm] using hs1)
       have h1ρ0 : 0 < 1 / ρ := by positivity
-      linarith
-    have hρm1 : 0 ≤ ρ - 1 := by linarith
+      linarith only [h1ρ, h1ρ0]
+    have hρm1 : 0 ≤ ρ - 1 := by linarith only [hρ]
     have hle2 : ρ - r ≤ 1 := (abs_sub_le_iff.1 hclose).2
-    have hrsub : ρ - 1 ≤ r := by nlinarith
+    have hrsub : ρ - 1 ≤ r := by linarith only [hle2]
     have hd2 : 2 ≤ ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 := by
       have hid := normSq_sub_circleMap_sq (r := r) (ρ := ρ) θ
       have hid' : ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 = (r - ρ)^2 + 4 * r * ρ * s ^ 2 := by
@@ -220,18 +220,18 @@ lemma circleTheta_eq_zero_of_middle {r ρ : ℝ} (hρ : 2 ≤ ρ) (hclose : |r -
       have hsq0 : 0 ≤ (r - ρ) ^ 2 := sq_nonneg _
       have hbig1 : 4 * (ρ - 1) * ρ * s ^ 2 ≤ 4 * r * ρ * s ^ 2 := by
         have h1m := mul_le_mul_of_nonneg_left hrsub (by positivity : 0 ≤ 4 * ρ * s ^ 2)
-        nlinarith
+        linarith only [h1m]
       have hcc : 0 ≤ 4 * (ρ - 1) * s := by positivity
       have hbig2 : 4 * (ρ - 1) * s ≤ 4 * (ρ - 1) * ρ * s ^ 2 := by
         have hm := mul_le_mul_of_nonneg_left hs1 hcc
-        nlinarith
+        linarith only [hm]
       have h1ρ : 1 / ρ ≤ s := (div_le_iff₀ hρ0).mpr (by simpa [mul_comm] using hs1)
       have hbig3 : 4 * (ρ - 1) / ρ ≤ 4 * (ρ - 1) * s := by
         have hm := mul_le_mul_of_nonneg_left h1ρ (by positivity : 0 ≤ 4 * (ρ - 1))
         simpa [div_eq_mul_inv] using hm
       have hbig4 : 2 ≤ 4 * (ρ - 1) / ρ := by
-        exact (le_div_iff₀ hρ0).2 (by nlinarith [hρ])
-      have h4 : 4 * r * ρ * s ^ 2 ≤ ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 := by nlinarith
+        exact (le_div_iff₀ hρ0).2 (by linarith only [hρ])
+      have h4 : 4 * r * ρ * s ^ 2 ≤ ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 := by nlinarith only [hid]
       calc
         2 ≤ 4 * (ρ - 1) / ρ := hbig4
         _ ≤ 4 * (ρ - 1) * s := hbig3
@@ -241,7 +241,7 @@ lemma circleTheta_eq_zero_of_middle {r ρ : ℝ} (hρ : 2 ≤ ρ) (hclose : |r -
     have hd1 : ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ ^ 2 ≤ 1 := by
       have := pow_le_pow_left₀ (norm_nonneg _) hmem 2
       simpa using this
-    nlinarith
+    linarith only [hd2, hd1]
   · rw [if_neg hmem]
 
 
@@ -303,7 +303,7 @@ lemma norm_ofReal_of_nonneg {r : ℝ} (hr : 0 ≤ r) : ‖(r : ℂ)‖ = r := by
 theorem circleTheta_integral_inv_le_of_real {ρ η r : ℝ} (hρ : 2 ≤ ρ) (hη : 0 < η)
     (hr : 0 ≤ r) (hu : η ≤ |r - ρ|) :
     (∫ θ in 0..(2 * Real.pi), circleTheta (r : ℂ) ρ θ) ≤ (16 / ρ) / η := by
-  have hρ0 : 0 < ρ := by linarith
+  have hρ0 : 0 < ρ := by linarith only [hρ]
   have huθ : ∀ θ, η ≤ ‖(r : ℂ) - _root_.circleMap 0 ρ θ‖ := by
     intro θ
     have hrn : ‖(r : ℂ)‖ = r := norm_ofReal_of_nonneg hr
@@ -314,7 +314,7 @@ theorem circleTheta_integral_inv_le_of_real {ρ η r : ℝ} (hρ : 2 ≤ ρ) (h�
   · let a₁ : ℝ := Real.pi / ρ
     let a₂ : ℝ := 2 * Real.pi - Real.pi / ρ
     have hπ0 : 0 ≤ Real.pi := le_of_lt Real.pi_pos
-    have hρ1 : 1 ≤ ρ := by linarith
+    have hρ1 : 1 ≤ ρ := by linarith only [hρ]
     have hpr : Real.pi / ρ ≤ Real.pi := (div_le_iff₀ hρ0).2
       (by simpa using (mul_le_mul_of_nonneg_left hρ1 hπ0))
     have hpr0 : 0 ≤ Real.pi / ρ := by positivity
@@ -323,13 +323,13 @@ theorem circleTheta_integral_inv_le_of_real {ρ η r : ℝ} (hρ : 2 ≤ ρ) (h�
       mul_le_mul_of_nonneg_left hpr (by norm_num)
     have ha₁₂ : a₁ ≤ a₂ := by
       dsimp [a₁, a₂]
-      nlinarith
+      linarith only [hpr]
     have ha₂π : a₂ ≤ 2 * Real.pi := by
       dsimp [a₂]
-      nlinarith [hpr0]
+      linarith only [hpr0]
     have ha₂₀ : 0 ≤ a₂ := by
       dsimp [a₂]
-      nlinarith [hpr]
+      linarith only [hpr, hπ0]
     have ha₁π : a₁ ≤ 2 * Real.pi := le_trans ha₁₂ ha₂π
     -- middle zero pointwise
     have hmid : ∀ θ, θ ∈ Icc a₁ a₂ → circleTheta (r : ℂ) ρ θ = 0 := by
@@ -384,7 +384,7 @@ theorem circleTheta_integral_inv_le_of_real {ρ η r : ℝ} (hρ : 2 ≤ ρ) (h�
       have hrhs : (16 / ρ) / η * (ρ * η) = 16 := by
         field_simp [hρ0.ne', hη.ne']
       rw [hrhs]
-      have h2p : 2 * Real.pi ≤ 16 := by nlinarith [Real.pi_lt_four]
+      have h2p : 2 * Real.pi ≤ 16 := by linarith only [Real.pi_lt_four]
       exact h2p
     calc
       (∫ θ in 0..(2 * Real.pi), circleTheta (r : ℂ) ρ θ)

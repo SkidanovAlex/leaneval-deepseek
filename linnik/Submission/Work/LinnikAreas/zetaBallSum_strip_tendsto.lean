@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.PrincipalZeroCount
 import Submission.Work.LinnikAreas.kernelStripInvSqBound
 import Submission.Work.LinnikAreas.zetaOrder_eq_xiF
@@ -7,6 +6,8 @@ import Submission.Work.LinnikAreas.completedRiemannZeta_orderAt_zero_one
 import Submission.Work.LinnikAreas.stripSum_tendsto_of_ballSum_entire
 import Submission.Commons.NumberTheory.Zeta.xi_logDeriv_re_lower_general
 import Submission.Commons.NumberTheory.Zeta.xiE_zeroCount
+import Submission.Work.LinnikAreas.ZetaPrincipalDefs
+import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
 
 /-!
 # From the ball-restricted divisor sum of `Λ = completedRiemannZeta` to the strip zero sum

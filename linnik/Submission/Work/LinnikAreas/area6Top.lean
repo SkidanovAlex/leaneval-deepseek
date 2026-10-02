@@ -50,7 +50,7 @@ theorem prime_of_classSum_pos {q : ℕ} [NeZero q] {L K : ℝ} {a : ℕ}
     rw [classLimit]
     exact Nat.floor_le (Real.rpow_nonneg hqnonneg L)
   have hp' : (p : ℝ) ≤ (classLimit q L : ℝ) := by exact_mod_cast hple
-  linarith
+  linarith only [hlim, hp']
 
 /-- **The assembly of AREA 6 in the Siegel case.**  The class-sum expansion (S4) with the
 Siegel-case zero-sum bound (S5) -- which is what the repulsion (S1), the `λ₁`-saving density
@@ -117,16 +117,16 @@ theorem area6_of (R : ℝ) (hExp : ExpansionInput R) (hBox : BoxSumBound R) :
           ≤ -(1 / (q : ℝ) ^ 2) := by
         have h6 : 0 ≤ (q.totient : ℝ)⁻¹ * farZeroSum q (11 / 2) (3 / 10) R :=
           mul_nonneg (inv_nonneg.mpr hphipos.le) hfar_nonneg
-        linarith
-      linarith [h2, h4, h5]
+        linarith only [this, h6]
+      linarith only [h2, h4, h5, this]
     have h7 := mul_le_mul_of_nonneg_left h3 hlogpos.le
     have h8 : Real.log q * ((Real.log q)⁻¹ * S) = S := by
       rw [← mul_assoc, mul_inv_cancel₀ (ne_of_gt hlogpos), one_mul]
-    linarith [h7, h8]
+    linarith only [h7, h8, this]
   -- (S5) specialised: `K²a₀λ/2 ≤ K² - V`
   have hS5 : (3 / 10 : ℝ) ^ 2 * ((49 / 10) * lam / 2) ≤ (3 / 10 : ℝ) ^ 2 - V := by
     rw [hV]
-    nlinarith [hbox]
+    linarith only [hbox, this]
   -- the closing inequality `𝓛/q² < 𝓛·φ(q)⁻¹K²a₀λ/2`
   have hQK : (3 / 10 : ℝ) ^ 2 * ((49 / 10) * lam / 2)
       = ((3 / 10 : ℝ) ^ 2 * (49 / 10) / 2) * lam := by ring
@@ -138,27 +138,27 @@ theorem area6_of (R : ℝ) (hExp : ExpansionInput R) (hBox : BoxSumBound R) :
       have h0 : (1 / D ^ 2 : ℝ) < ((⌊(1 / D ^ 2)⌋₊ : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
       have h1 : ((⌊1 / D ^ 2⌋₊ : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by
         exact_mod_cast hqthr
-      linarith
+      linarith only [h0, h1]
     have hsqrtgt : 1 / D < Real.sqrt (q : ℝ) := by
       have h3 : Real.sqrt (1 / D ^ 2) < Real.sqrt (q : ℝ) := Real.sqrt_lt_sqrt (by positivity) hthr
       have h4 : Real.sqrt (1 / D ^ 2) = 1 / D := by
         have h5 : (1 / D) ^ 2 = 1 / D ^ 2 := by ring
         rw [← h5, Real.sqrt_sq (by positivity)]
-      linarith
+      linarith only [h3, h4]
     have hDsqrt : 1 < D * Real.sqrt (q : ℝ) := by
       have h6 := mul_lt_mul_of_pos_left hsqrtgt hDpos
       have h7 : D * (1 / D) = 1 := by field_simp
-      linarith [h6, h7]
+      linarith only [h6, h7]
     -- `1 ≤ log q`
     have hlog1 : 1 ≤ Real.log q := by
       have h8 : Real.exp 1 < (3 : ℝ) := Real.exp_one_lt_three
       have h9 : (1 : ℝ) < Real.log 3 := (Real.lt_log_iff_exp_lt (by norm_num)).mpr h8
       have h10 : Real.log 3 ≤ Real.log q := Real.log_le_log (by norm_num) (by exact_mod_cast hq3)
-      linarith
+      linarith only [h9, h10]
     -- `C/√q ≤ λ`
     have hClam : C / Real.sqrt (q : ℝ) ≤ lam := by
       have h11 : C / Real.sqrt (q : ℝ) ≤ C * Real.log q / Real.sqrt (q : ℝ) :=
-        div_le_div_of_nonneg_right (by nlinarith [hCpos, hlog1]) hsqrtq_pos.le
+        div_le_div_of_nonneg_right (by nlinarith only [hCpos, hlog1, hlamS0, hlamSle]) hsqrtq_pos.le
       rw [hlam]
       exact le_trans h11 hlow
     -- `1/q² < D/(q√q)`
@@ -173,7 +173,7 @@ theorem area6_of (R : ℝ) (hExp : ExpansionInput R) (hBox : BoxSumBound R) :
       have h18 := mul_lt_mul_of_pos_right hDsqrt hsqrtq_pos
       have h19 : D * Real.sqrt (q : ℝ) * Real.sqrt (q : ℝ) = D * (q : ℝ) := by
         rw [mul_assoc, Real.mul_self_sqrt hqpos.le]
-      linarith [h18, h19]
+      linarith only [h18, h19]
 
     -- `D/(q√q) ≤ φ(q)⁻¹·K²a₀λ/2`
     have h20 : D / ((q : ℝ) * Real.sqrt (q : ℝ))
@@ -193,7 +193,7 @@ theorem area6_of (R : ℝ) (hExp : ExpansionInput R) (hBox : BoxSumBound R) :
       rw [h25] at h24
       have h26 : (q : ℝ)⁻¹ ≤ (q.totient : ℝ)⁻¹ := inv_anti₀ hphipos hphile
       have h27 : (0 : ℝ) ≤ (3 / 10 : ℝ) ^ 2 * ((49 / 10) * lam / 2) :=
-        mul_nonneg (by norm_num) (by nlinarith [hlampos])
+        mul_nonneg (by norm_num) (by linarith only [hlampos, hlam0])
       rw [h21]
       exact le_trans h24 (mul_le_mul_of_nonneg_right h26 h27)
     exact mul_lt_mul_of_pos_left (lt_of_lt_of_le h14 h20) hlogpos
@@ -204,7 +204,7 @@ theorem area6_of (R : ℝ) (hExp : ExpansionInput R) (hBox : BoxSumBound R) :
         ≤ (q.totient : ℝ)⁻¹ * ((3 / 10 : ℝ) ^ 2 - V) :=
       mul_le_mul_of_nonneg_left hS5 (inv_nonneg.mpr hphipos.le)
     exact mul_le_mul_of_nonneg_left h25 hlogpos.le
-  have hSpos : 0 < S := by linarith [hS4, hK2lam, hclose]
+  have hSpos : 0 < S := by linarith only [hS4, hK2lam, hclose, this]
   rw [hS] at hSpos
   exact prime_of_classSum_pos hSpos
 

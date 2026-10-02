@@ -100,7 +100,7 @@ theorem h5CaseA_v2 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     have h9 : (2:ℝ) ≤ Real.log 10 := by
       rw [Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 10)]
       have he : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-      nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      nlinarith only [he, Real.exp_one_lt_three, Real.exp_pos 1]
     rw [h8] at h7; linarith
   have hδlog : (348:ℝ)/1000 ≤ δ * Real.log (q:ℝ) := by
     have h3 : Real.exp (348 / (1000 * δ)) ≤ (q:ℝ) := by
@@ -171,7 +171,7 @@ theorem h5CaseA_v2 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     have h2 : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
     rw [h2, div_le_iff₀ hlogq]
-    nlinarith [hsmall, hδlog]
+    nlinarith only [hsmall, hδlog]
   have hwin1 : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
       (Metric.closedBall 0 (|((ρ₁.re : ℂ) + ((1:ℝ)*ρ₁.im : ℂ)*Complex.I).im| + 2))) ρ₁ ≠ 0 :=
     divisor_ne_zero_of_zeroMult_aux χ₁ hχ1 (by simpa using hmem1) hzm1
@@ -200,7 +200,7 @@ theorem h5CaseA_v2 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     rw [show Work.LinnikContract.lamOf q u = (1 - u.re) * Real.log (q:ℝ) from rfl,
       show Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * Real.log (q:ℝ) from rfl] at hle
     rw [hsre]
-    nlinarith [hle, hlogq]
+    nlinarith only [hle, hlogq]
   have hL52_1 : Commons.NumberTheory.Linnik.L52Hyp χ₁ ((1:ℝ)/8) (1/1000) δ :=
     hL8 q hq1 χ₁ hχ1 (by simpa only [pow_one] using hord 1 (by norm_num) (by norm_num))
   have hL52_2 : Commons.NumberTheory.Linnik.L52Hyp (χ₁^2) ((1:ℝ)/8) (1/1000) δ :=
@@ -285,7 +285,7 @@ theorem h5CaseA_v2 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) (q₁ : ℕ)
     rw [show Work.LinnikContract.lamOf q u = (1 - u.re) * Real.log (q:ℝ) from rfl,
       show Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * Real.log (q:ℝ) from rfl] at hle
     rw [hsr1]
-    nlinarith [hle, hlogq]
+    nlinarith only [hle, hlogq]
   have hs1abs : |((ρ₁.re : ℂ) + ((1:ℝ)*ρ₁.im : ℂ)*Complex.I).im| ≤ 8 := by
     rw [hsi1]; linarith [hν1]
   have hb0 : Ksum q f (Real.log (q:ℝ)) ((ρ₁.re : ℂ)) 1

@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 
 namespace Work.LinnikAreas
 

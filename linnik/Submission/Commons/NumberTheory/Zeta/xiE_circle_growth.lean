@@ -95,7 +95,7 @@ private lemma Gammaℝ_ne_zero_of_re_ge_neg_one {z : ℂ} (hre : -1 ≤ z.re) (h
     have hle : z.re ≤ -2 := by
       rw [hre']
       have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (Nat.succ_le_of_lt hnpos)
-      nlinarith
+      linarith
     linarith
 
 /-- Norm of the real Gamma factor. -/
@@ -174,7 +174,7 @@ private lemma half_monomial_norm_le (u : ℂ) :
     _ ≤ ‖u‖ * ‖u - 1‖ := mul_le_mul_of_nonneg_right hh (norm_nonneg (u - 1))
     _ ≤ ‖u‖ * (‖u‖ + 1) := by
       have hmul := mul_le_mul_of_nonneg_right hsub (norm_nonneg u)
-      nlinarith
+      linarith
 
 /-- The norm of `xiV` factors. -/
 private lemma xiV_norm_eq (z : ℂ) (hz0 : z ≠ 0) (hz1 : z ≠ 1) :
@@ -303,7 +303,7 @@ private lemma log_ρ3_le {ρ : ℝ} (hρ : 3 ≤ ρ) :
   have hρlog : 0 ≤ ρ * Real.log (ρ + 2) := mul_nonneg hρ0 hlog2
   have hρ2 : 0 ≤ ρ - 2 := by linarith
   have hmain : ρ + 2 ≤ ρ * (Real.log (ρ + 2) + 2) := by
-    nlinarith
+    linarith
   linarith
 
 /-- Absorbing polynomial factors and multiplicative constants into the exponential shape. -/
@@ -316,7 +316,7 @@ private lemma poly_mul_exp_le {a B : ℝ} (ha : 0 ≤ a) (hB : 1 ≤ B) {k : ℕ
     have hρ0 : 0 ≤ ρ := by linarith
     have hlg : 0 ≤ Real.log (ρ + 2) := Real.log_nonneg (by linarith : (1 : ℝ) ≤ ρ + 2)
     have hA : 0 ≤ ρ * Real.log (ρ + 2) := mul_nonneg hρ0 hlg
-    nlinarith
+    linarith
   have hBpos : 0 < B := lt_of_lt_of_le zero_lt_one hB
   have hBfactor : B ≤ Real.exp (Real.log B / (3 * (Real.log 5 + 2)) * E0) := by
     calc
@@ -383,7 +383,7 @@ private lemma log_R3_le_log_R2_add_fifth {R : ℝ} (hR : 4 ≤ R) :
 private lemma leftconv {R : ℝ} (hR : 4 ≤ R) :
     (R + 1) * (Real.log (R + 3) + 2) ≤ 2 * R * (Real.log (R + 2) + 2) := by
   have hlog : Real.log (R + 3) ≤ Real.log (R + 2) + 1 / 5 := log_R3_le_log_R2_add_fifth hR
-  have hR54 : R + 1 ≤ (5 / 4 : ℝ) * R := by nlinarith
+  have hR54 : R + 1 ≤ (5 / 4 : ℝ) * R := by linarith
   have hA : (R + 1) * (Real.log (R + 3) + 2) ≤ (5 / 4 : ℝ) * R * (Real.log (R + 2) + 1 / 5 + 2) := by
     have h2 : Real.log (R + 3) + 2 ≤ Real.log (R + 2) + 1 / 5 + 2 := by linarith
     have h1n : 0 ≤ Real.log (R + 3) + 2 := by
@@ -392,9 +392,9 @@ private lemma leftconv {R : ℝ} (hR : 4 ≤ R) :
   have hB : (5 / 4 : ℝ) * R * (Real.log (R + 2) + 1 / 5 + 2) ≤ 2 * R * (Real.log (R + 2) + 2) := by
     have hc : (5 / 4 : ℝ) * (Real.log (R + 2) + 1 / 5 + 2) ≤ 2 * (Real.log (R + 2) + 2) := by
       have hlg0 : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith : (1 : ℝ) ≤ R + 2)
-      nlinarith
+      linarith
     have hR0 : 0 ≤ R := by linarith
-    nlinarith
+    linarith only [mul_le_mul_of_nonneg_left hc hR0]
   linarith
 
 /-- Right half-plane growth of `xiV` (used for `Re ≥ 2`, radius ≥ 3). -/
@@ -413,7 +413,7 @@ private lemma xiV_bound_right {C : ℝ} (hC0 : 0 < C)
   have hz1 : u ≠ 1 := by
     intro hz1
     have h1 : ‖u‖ = 1 := by rw [hz1]; simp
-    linarith [hu3, h1]
+    linarith only [hu3, h1]
   have hLam : completedRiemannZeta u = riemannZeta u * Complex.Gammaℝ u :=
     lambda_eq_zeta_mul_GammaR_of_two_le_re u hu
   have hnorm : ‖xiV u‖ = ‖((1 / 2 : ℂ) * u * (u - 1))‖ * ‖completedRiemannZeta u‖ :=
@@ -468,7 +468,7 @@ private lemma xiV_bound_right {C : ℝ} (hC0 : 0 < C)
       _ ≤ ‖u‖ * ‖u - 1‖ := mul_le_mul_of_nonneg_right hh (norm_nonneg (u - 1))
       _ ≤ ‖u‖ * (‖u‖ + 1) := by
         have hmul := mul_le_mul_of_nonneg_right hsub (norm_nonneg u)
-        nlinarith
+        linarith
       _ = ρ * (ρ + 1) := by dsimp [ρ]
   have hnormMain : ‖xiV u‖ ≤ (ρ * (ρ + 1)) * (C * Real.exp ((1 + ρ / 2) * Real.log (2 + ρ / 2))) := by
     calc
@@ -478,7 +478,7 @@ private lemma xiV_bound_right {C : ℝ} (hC0 : 0 < C)
   have hpoly : (ρ * (ρ + 1)) * C ≤ (C + 1) * (ρ + 3) ^ 2 := by
     have hC0le : 0 ≤ C := le_of_lt hC0
     have h1 : ρ * (ρ + 1) ≤ (ρ + 3) ^ 2 := by
-      nlinarith
+      linarith
     have hC : C ≤ C + 1 := by linarith
     calc
       (ρ * (ρ + 1)) * C = C * (ρ * (ρ + 1)) := by ring
@@ -500,7 +500,7 @@ private lemma xiV_bound_right {C : ℝ} (hC0 : 0 < C)
       apply Real.log_nonneg
       linarith
     have hstep2 : ρ * Real.log (2 + ρ / 2) ≤ ρ * (Real.log (ρ + 2) + 2) := by
-      nlinarith
+      exact mul_le_mul_of_nonneg_left (by linarith only [hlog2]) (by linarith only [h1a])
     linarith
   have hmain : ‖xiV u‖ ≤ (C + 1) * (ρ + 3) ^ 2 * Real.exp (ρ * (Real.log (ρ + 2) + 2)) := by
     calc
@@ -531,7 +531,7 @@ namespace Commons.NumberTheory.Zeta
 
 /-- `R·(R+1) ≤ (R+3)^2` for `R ≥ 0`. -/
 private lemma R_mul_R1_le_sq {R : ℝ} (hR : 0 ≤ R) : R * (R + 1) ≤ (R + 3) ^ 2 := by
-  nlinarith
+  linarith
 
 /-- Middle-strip bound: on the circle of radius `R ≥ 4`, for `-1 ≤ Re ≤ 3` the
 whole completion grows only polynomially. -/
@@ -553,7 +553,7 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
   have hz1 : z ≠ 1 := by
     intro hz1
     have h1 : ‖z‖ = 1 := by rw [hz1]; simp
-    linarith [hR, hz, h1]
+    linarith only [hR, hz, h1]
   have hσlo : -1 ≤ σ := by simpa [σ] using hσ1
   have hσhi : σ ≤ 3 := le_of_lt (by simpa [σ] using hσ3)
   have ht2eq : t ^ 2 = R ^ 2 - σ ^ 2 := by
@@ -567,11 +567,11 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
         R ^ 2 = ‖z‖ ^ 2 := by rw [hz]
         _ = z.re ^ 2 + z.im ^ 2 := hn
         _ = σ ^ 2 + t ^ 2 := by simp [σ, t]
-    nlinarith
+    linarith
   have ht4 : (4 : ℝ) ≤ t ^ 2 := by
-    have hR2 : 16 ≤ R ^ 2 := by nlinarith
-    have hσ2 : σ ^ 2 ≤ 9 := by nlinarith
-    nlinarith
+    have hR2 : 16 ≤ R ^ 2 := by nlinarith only [hR]
+    have hσ2 : σ ^ 2 ≤ 9 := by nlinarith only [hσlo, hσhi]
+    linarith
   have htge : (2 : ℝ) ≤ |t| := by
     have hsqmono := Real.sqrt_le_sqrt (by linarith : (4 : ℝ) ≤ t ^ 2)
     norm_num at hsqmono
@@ -584,7 +584,7 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
     have h2 : |(2 : ℝ)| = 2 := by norm_num
     rw [h2]
     rw [le_div_iff₀ (by norm_num : (0:ℝ) < 2)]
-    nlinarith
+    linarith
   have hσge0 : -(z.re / 2) ≤ 1 := by
     rw [show z.re / 2 = σ / 2 by simp [σ]]
     linarith
@@ -595,7 +595,7 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
     have hle0 : (Real.pi : ℝ) ^ (-(z.re / 2)) ≤ (Real.pi : ℝ) ^ (1 : ℝ) :=
       Real.rpow_le_rpow_of_exponent_le hbase1 hσge0
     rw [Real.rpow_one] at hle0
-    exact le_trans hle0 (by linarith [Real.pi_lt_four])
+    exact le_trans hle0 (by linarith only [Real.pi_lt_four])
   have hΓR_ne : Complex.Gammaℝ z ≠ 0 :=
     Gammaℝ_ne_zero_of_re_ge_neg_one (by simpa [σ] using hσ1) hz0
   have hΛ : completedRiemannZeta z = riemannZeta z * Complex.Gammaℝ z :=
@@ -659,7 +659,7 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
       exact pow_le_pow_left₀ (by positivity : 0 ≤ |t| + 3) (by linarith) 4
     have hx1 : 1 + |t| / 2 ≤ |t| + 3 := by
       have hx0 : 0 ≤ |t| := abs_nonneg t
-      nlinarith
+      linarith
     have hB_le : (1 + |t| / 2) ^ 11 ≤ (R + 3) ^ 11 := by
       have hx2 : 1 + |t| / 2 ≤ R + 3 := by
         have hx0 : 0 ≤ |t| := abs_nonneg t
@@ -702,7 +702,7 @@ private lemma xiV_bound_middle {C K : ℝ} (hC : ∀ (σ t : ℝ), -1 ≤ σ →
     ‖xiV z‖ ≤ 4 * C * K * (R + 3) ^ 17 := hmain
     _ ≤ (4 * C * K + 1) * (R + 3) ^ 17 := by
       have hpos : 0 ≤ (R + 3) ^ 17 := by positivity
-      nlinarith
+      linarith
 
 end Commons.NumberTheory.Zeta
 
@@ -771,13 +771,13 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
     linarith
   have hcM0 : 0 ≤ cM := by
     dsimp [cM]
-    have hx1 : 1 ≤ 4 * Cz * Commons.Analysis.Complex.K11 + 1 := by nlinarith
+    have hx1 : 1 ≤ 4 * Cz * Commons.Analysis.Complex.K11 + 1 := le_add_of_nonneg_left (mul_nonneg (mul_nonneg (by norm_num) hCz0) hK11)
     have hl : 0 ≤ Real.log (4 * Cz * Commons.Analysis.Complex.K11 + 1) := Real.log_nonneg hx1
     have hq : 0 ≤ Real.log (4 * Cz * Commons.Analysis.Complex.K11 + 1) / (3 * (Real.log 5 + 2)) := div_nonneg hl (le_of_lt hden)
     linarith
   refine ⟨c, ?_, ?_⟩
   · dsimp [c]
-    nlinarith
+    linarith
   · intro R hR z hz
     let σ : ℝ := z.re
     have hR0 : 0 ≤ R := by linarith
@@ -794,7 +794,7 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
         simpa [cR, hz] using b
       apply le_trans bR
       apply Real.exp_le_exp.mpr
-      have hc : cR ≤ c := by dsimp [c]; nlinarith
+      have hc : cR ≤ c := by dsimp [c]; linarith
       calc
         cR * R * (Real.log (R + 2) + 2) = cR * (R * (Real.log (R + 2) + 2)) := by ring
         _ ≤ c * (R * (Real.log (R + 2) + 2)) := mul_le_mul_of_nonneg_right hc hE0
@@ -820,7 +820,7 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
           have hl : ‖z‖ - 1 ≤ ‖z - 1‖ := by linarith
           rw [hz1] at hl
           have hzR : ‖z‖ = R := hz
-          linarith [hz, hR, hl]
+          linarith only [hz, hR, hl]
         have bw := xiV_bound_right hC2p hC2 w hwre hw3
         have hFE : ‖xiV z‖ = ‖xiV w‖ := by
           have h : xiV z = xiV w := by
@@ -849,11 +849,11 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
           have hp1b : (R + 1) * Real.log (‖w‖ + 2) ≤ (R + 1) * Real.log (R + 3) := by
             exact mul_le_mul_of_nonneg_left hlog1 (by positivity : 0 ≤ R + 1)
           have hp1 : ‖w‖ * Real.log (‖w‖ + 2) ≤ (R + 1) * Real.log (R + 3) := by linarith
-          have hp2 : ‖w‖ * 2 ≤ (R + 1) * 2 := by nlinarith
+          have hp2 : ‖w‖ * 2 ≤ (R + 1) * 2 := by linarith
           linarith
         have hwE2 : cR * ‖w‖ * (Real.log (‖w‖ + 2) + 2) ≤ cR * (R + 1) * (Real.log (R + 3) + 2) := by
           have h1 : ‖w‖ * (Real.log (‖w‖ + 2) + 2) ≤ (R + 1) * (Real.log (R + 3) + 2) := hwE
-          nlinarith
+          linarith only [mul_le_mul_of_nonneg_left h1 hcR0]
         have hfinal : ‖xiV z‖ ≤ Real.exp ((2 * cR) * R * (Real.log (R + 2) + 2)) := by
           calc
             ‖xiV z‖ = ‖xiV w‖ := hFE
@@ -865,12 +865,12 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
               have h1 : cR * (R + 1) * (Real.log (R + 3) + 2) ≤ cR * (2 * R * (Real.log (R + 2) + 2)) := by
                 have h2 := leftconv hR
                 have hcR0 : 0 ≤ cR := hcR0
-                nlinarith
+                linarith only [mul_le_mul_of_nonneg_left h2 hcR0]
               exact Real.exp_le_exp.mpr h1
             _ = Real.exp ((2 * cR) * R * (Real.log (R + 2) + 2)) := by ring
         apply le_trans hfinal
         apply Real.exp_le_exp.mpr
-        have hc : 2 * cR ≤ c := by dsimp [c]; nlinarith
+        have hc : 2 * cR ≤ c := by dsimp [c]; linarith
         calc
           (2 * cR) * R * (Real.log (R + 2) + 2) = (2 * cR) * (R * (Real.log (R + 2) + 2)) := by ring
           _ ≤ c * (R * (Real.log (R + 2) + 2)) := mul_le_mul_of_nonneg_right hc hE0
@@ -886,7 +886,7 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
         have bm := xiV_bound_middle (C := Cz) (K := Commons.Analysis.Complex.K11) hCz
           hKall
           hCz0 hK11 hR z hz (by simpa [σ] using hσ1) (by simpa [σ] using hσ3s)
-        have hB1 : 1 ≤ 4 * Cz * Commons.Analysis.Complex.K11 + 1 := by nlinarith
+        have hB1 : 1 ≤ 4 * Cz * Commons.Analysis.Complex.K11 + 1 := le_add_of_nonneg_left (mul_nonneg (mul_nonneg (by norm_num) hCz0) hK11)
         have hR3 : 3 ≤ R := by linarith
         have hfin := poly_mul_exp_le (a := (0 : ℝ)) (ha := by norm_num)
           (B := 4 * Cz * Commons.Analysis.Complex.K11 + 1) (hB := hB1) (k := 17) (ρ := R) hR3
@@ -905,11 +905,11 @@ private lemma xiV_circle_big {C2 Cz : ℝ} (hC2p : 0 < C2)
               _ ≤ Real.exp (cM * R * (Real.log (R + 2) + 2)) := by
                     exact Real.exp_le_exp.mpr (by
                       dsimp [cM]
-                      nlinarith)
+                      linarith)
           exact le_trans bm h1
         apply le_trans bm'
         apply Real.exp_le_exp.mpr
-        have hc : cM ≤ c := by dsimp [c]; nlinarith
+        have hc : cM ≤ c := by dsimp [c]; linarith
         calc
           cM * R * (Real.log (R + 2) + 2) = cM * (R * (Real.log (R + 2) + 2)) := by ring
           _ ≤ c * (R * (Real.log (R + 2) + 2)) := mul_le_mul_of_nonneg_right hc hE0

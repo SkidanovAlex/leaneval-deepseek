@@ -20,6 +20,7 @@ minimal element of `λ`.
 import Mathlib
 import Submission.Work.LinnikAreas.A7.Defs
 import Submission.Commons.NumberTheory.DirichletCharacter.lFunction_zeroSet_box_finite
+import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 
 set_option linter.style.haveILetI false
 

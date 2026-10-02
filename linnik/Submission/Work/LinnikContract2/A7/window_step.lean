@@ -243,7 +243,7 @@ theorem window_step {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R Λ η εw lam₁ CST1
       have h2 : 0 ≤ Work.LinnikAreas.A7.Wf lam₁ := le_of_lt hWlam1
       have h3 : 0 ≤ SB2 := by
         rw [hSB2]; exact Finset.sum_nonneg (fun χ _ => Wf_nonneg_of_nonneg (lamChar_nonneg_of_hq hq χ))
-      have h4 : 0 ≤ kR := by rw [hkR]; positivity
+      have h4 : 0 ≤ kR := by rw [hkR]; exact Nat.cast_nonneg _
       linarith [mul_nonneg h4 h2]
     linarith [hSbudget]
   have hetabudget : kR + (B2.card : ℝ) ≤ (N 0 : ℝ) := by
@@ -396,7 +396,7 @@ theorem window_step {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R Λ η εw lam₁ CST1
       have hle : Lam (j+1) ≤ Λ := by
         rw [hLam_apply (j+1)]
         have hnn : (0:ℝ) ≤ (((j+1 : ℕ)) : ℝ) := Nat.cast_nonneg _
-        nlinarith
+        linarith only [hnn]
       have hCe : C (Lam (j+1)) = Work.LinnikAreas.A7.Cf Λ (Lam (j+1)) := by
         rw [hC]
         show Work.LinnikAreas.A7.Cf Λ (max (min l₃ Λ) (min (Lam (j+1)) Λ))
@@ -441,16 +441,16 @@ theorem window_step {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R Λ η εw lam₁ CST1
       have h2 : (0:ℝ) ≤ (n₁:ℝ) - kR := by linarith
       have h3 : ((n₁:ℝ) - kR) * CST2 ≤ ((n₁:ℝ) - kR) * CST1 :=
         mul_le_mul_of_nonneg_left hcred12 h2
-      nlinarith [h3, mul_nonneg h2 hCST2nn]
+      linarith only [h3, mul_nonneg h2 hCST2nn]
     have h4 : ((N s : ℝ) - mR) * q0
         ≤ max 0 ((N s : ℝ) - 2) * q0 + (2 - mR) * CST2 := by
       have hm2 : (0:ℝ) ≤ 2 - mR := by linarith
       have h5 : (2 - mR) * q0 ≤ (2 - mR) * CST2 := mul_le_mul_of_nonneg_left hcq hm2
       have h6 : ((N s : ℝ) - 2) * q0 ≤ max 0 ((N s : ℝ) - 2) * q0 :=
         mul_le_mul_of_nonneg_right (le_max_right _ _) hq0_nn
-      nlinarith [h5, h6]
+      linarith only [h5, h6]
     have h7 : mR * CST2 + (2 - mR) * CST2 = 2 * CST2 := by ring
-    nlinarith [h1, h4, h7]
+    linarith only [h1, h4, h7]
   have hp3 : kR * CST1 + CfB2 ≤ (n₁:ℝ) * CST1 + 2 * CST2
       + max 0 ((N s : ℝ) - 2) * q0 + Dsum := by
     linarith [hCsum, hcredit]

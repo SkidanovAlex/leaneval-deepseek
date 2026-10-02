@@ -384,7 +384,7 @@ theorem mulchar_sum_monic_resultant_eq_zero {F : Type*} [Field F] [Fintype F] [D
       rw [map_mul, map_pow, AdjoinRoot.mk_C, AdjoinRoot.mk_X]
       rw [Algebra.smul_def, AdjoinRoot.algebraMap_eq]
     rw [Commons.FieldTheory.Polynomial.repPoly, map_add, map_pow, AdjoinRoot.mk_X, map_sum, hψ]
-    congr 1
+    refine congrArg (HAdd.hAdd _) ?_
     exact Finset.sum_congr rfl (fun i _ => hterm i)
   have hper : ∀ c : Fin n → F,
       χ (Polynomial.resultant (Commons.FieldTheory.Polynomial.repPoly n c) f)
@@ -414,19 +414,19 @@ theorem mulchar_sum_monic_resultant_eq_zero {F : Type*} [Field F] [Fintype F] [D
         rw [Finset.mul_sum]
     _ = χ ((-1 : F) ^ (n * f.natDegree))
           * ∑ c : Fin n → F, G ((AdjoinRoot.root R) ^ n + ψ c) := by
-        congr 1
+        refine congrArg (HMul.hMul _) ?_
         exact Finset.sum_congr rfl (fun c _ => by rw [hmk c])
     _ = χ ((-1 : F) ^ (n * f.natDegree))
           * (((Finset.univ.filter (fun c : Fin n → F => ψ c = 0)).card : ℂ)
             * ∑ w : AdjoinRoot R, G ((AdjoinRoot.root R) ^ n + w)) := by
-        congr 1
+        refine congrArg (HMul.hMul _) ?_
         exact sum_comp_surjective_addHom_complex ψ.toAddMonoidHom hψ_surj
           (fun w => G ((AdjoinRoot.root R) ^ n + w))
     _ = χ ((-1 : F) ^ (n * f.natDegree))
           * (((Finset.univ.filter (fun c : Fin n → F => ψ c = 0)).card : ℂ)
             * ∑ w : AdjoinRoot R, G w) := by
-        congr 1
-        congr 1
+        refine congrArg (HMul.hMul _) ?_
+        refine congrArg (HMul.hMul _) ?_
         exact Equiv.sum_comp (Equiv.addLeft ((AdjoinRoot.root R) ^ n)) G
     _ = 0 := by rw [hGsum, mul_zero, mul_zero]
 

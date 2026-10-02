@@ -1,7 +1,8 @@
 import Mathlib
-import Submission.Work.LinnikAreas.szPrelude
 import Submission.Work.LinnikAreas.vonMangoldtTsum_eq_neg_zeta_logDeriv_re
 import Submission.Work.LinnikAreas.re_logDeriv_LFunction_le_vonMangoldtTsum
+import Submission.Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_le
+import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_re_axis_bound
 
 namespace Work.LinnikAreas
 

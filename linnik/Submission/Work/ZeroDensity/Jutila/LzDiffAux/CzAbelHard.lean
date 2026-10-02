@@ -88,7 +88,7 @@ theorem cz_s3_sharp : ∃ K : ℝ, 0 < K ∧ ∀ (c X : ℕ) (α β : ℝ), 1 �
     have hG1 : s3G c α β 1 = α * β := cz_s3G_one c α β
     have hM1 : s3main c α β 1 = s3c c * ((α + 1) * (β + 1) + 1) := cz_s3main_one c α β
     have hsc1 : s3c c ≤ 1 := Work.LinnikAreas.Density4.BzS3.s3c_le_one c
-    have hbr : (0 : ℝ) ≤ (α + 1) * (β + 1) + 1 := by nlinarith [hα, hβ]
+    have hbr : (0 : ℝ) ≤ (α + 1) * (β + 1) + 1 := by nlinarith only [hα, hβ]
     have hA : (1 + α) / 2 ≤ 1 + |Real.log 2 - α| := cz_one_add_half_le α hα
     have hB : (1 + β) / 2 ≤ 1 + |Real.log 2 - β| := cz_one_add_half_le β hβ
     have hA0 : 0 ≤ 1 + |Real.log 2 - α| := by positivity
@@ -103,7 +103,7 @@ theorem cz_s3_sharp : ∃ K : ℝ, 0 < K ∧ ∀ (c X : ℕ) (α β : ℝ), 1 �
         calc s3c c * ((α + 1) * (β + 1) + 1) ≤ 1 * ((α + 1) * (β + 1) + 1) :=
               mul_le_mul_of_nonneg_right hsc1 hbr
           _ = (α + 1) * (β + 1) + 1 := by ring
-      nlinarith [h3, h4, hα, hβ]
+      nlinarith only [h3, h4, hα, hβ]
     have hprod : 4 * (1 + α) * (1 + β) ≤ 16 * (1 + |Real.log 2 - α|) * (1 + |Real.log 2 - β|) := by
       have h1' : 1 + α ≤ 2 * (1 + |Real.log 2 - α|) := by linarith
       have h2' : 1 + β ≤ 2 * (1 + |Real.log 2 - β|) := by linarith
@@ -112,7 +112,7 @@ theorem cz_s3_sharp : ∃ K : ℝ, 0 < K ∧ ∀ (c X : ℕ) (α β : ℝ), 1 �
       have h5 := mul_le_mul h1' h2' h3 h4
       linarith [h5]
     have hfin : 2 * α * β + α + β + 2 ≤ 16 * (1 + |Real.log 2 - α|) * (1 + |Real.log 2 - β|) := by
-      have h4 : 2 * α * β + α + β + 2 ≤ 4 * (1 + α) * (1 + β) := by nlinarith [hα, hβ]
+      have h4 : 2 * α * β + α + β + 2 ≤ 4 * (1 + α) * (1 + β) := by nlinarith only [hα, hβ]
       linarith [h4, hprod]
     have h16s : (16 : ℝ) ≤ max K₀ 16 * Work.ZeroDensity.Jutila.s3Sig c := by
       have ha : 16 * (1 : ℝ) ≤ 16 * Work.ZeroDensity.Jutila.s3Sig c :=
@@ -195,10 +195,10 @@ lemma cz_inv_mul_sqrt_step {n : ℕ} (hn : 1 ≤ n) :
   have hsq : ((1 + 2 * ((n : ℝ) + 1)) * Real.sqrt (n : ℝ))^2
       ≤ (2 * (((n : ℝ) + 1) * Real.sqrt ((n : ℝ) + 1)))^2 := by
     rw [hL, hR]
-    nlinarith [hn0]
+    nlinarith only [hn0]
   have hnn1 : (0:ℝ) ≤ 1 + 2 * ((n:ℝ) + 1) := by linarith
   have hnn2 : (0:ℝ) ≤ 2 * ((n:ℝ) + 1) := by linarith
-  nlinarith [hsq, hnn1, hnn2, Real.sqrt_nonneg (n:ℝ), Real.sqrt_nonneg ((n:ℝ)+1),
+  nlinarith only [hsq, hnn1, hnn2, Real.sqrt_nonneg (n:ℝ), Real.sqrt_nonneg ((n:ℝ)+1),
     mul_nonneg hnn1 (Real.sqrt_nonneg (n:ℝ)),
     mul_nonneg hnn2 (Real.sqrt_nonneg ((n:ℝ)+1)), mul_pos h2 h1]
 
@@ -277,7 +277,7 @@ lemma cz_sig_sum_le : ∃ C : ℝ, 0 < C ∧ ∀ (V : ℕ) (A : ℝ), 1 ≤ V �
     have h1 : 1 + Real.log (A / (r : ℝ))
         ≤ (1 + Real.log 4) * (1 + Real.log (2 * (V : ℝ) / (r : ℝ))) := by
       rw [hsplit] at hlogA
-      nlinarith [hlogA, hlog2, h2pos, hlog4]
+      nlinarith only [hlogA, hlog2, h2pos, hlog4]
     have hs : (0 : ℝ) ≤ (1 / Real.sqrt (r : ℝ)) * Work.ZeroDensity.Jutila.s3Sig r :=
       mul_nonneg (by positivity) (Work.ZeroDensity.Jutila.s3Sig_nonneg r)
     calc (1 / Real.sqrt (r : ℝ)) * Work.ZeroDensity.Jutila.s3Sig r * (1 + Real.log (A / (r : ℝ)))
@@ -382,7 +382,7 @@ lemma cz_lo_le_up (hlog : ∀ r : ℝ, 1 ≤ r → (1 + Real.log r) ^ 2 ≤ 25 *
       exact h3
     have hX0 : (0 : ℝ) ≤ |Real.log (2 * (M : ℝ)) - γ| := abs_nonneg _
     have hu0 : (0 : ℝ) ≤ Real.log ratio := Real.log_nonneg hratio1
-    nlinarith [htri, hX0, hu0]
+    nlinarith only [htri, hX0, hu0]
   have hW : (1 + |Real.log (2 * (B : ℝ)) - α|) * (1 + |Real.log (2 * (B : ℝ)) - β|)
       ≤ (1 + Real.log ratio) * (1 + Real.log ratio)
         * ((1 + |Real.log (2 * (M : ℝ)) - α|) * (1 + |Real.log (2 * (M : ℝ)) - β|)) := by
@@ -392,7 +392,7 @@ lemma cz_lo_le_up (hlog : ∀ r : ℝ, 1 ≤ r → (1 + Real.log r) ^ 2 ≤ 25 *
     have h2' : (0 : ℝ) ≤ (1 + Real.log ratio) * (1 + |Real.log (2 * (M : ℝ)) - α|) :=
       mul_nonneg (by have := Real.log_nonneg hratio1; linarith) (by positivity)
     have h3 := mul_le_mul h1 h2 h1' h2'
-    nlinarith [h3]
+    nlinarith only [h3]
   -- the square-root factor
   have hsq : Real.sqrt (B : ℝ) * (1 + Real.log ratio) ^ 2
       ≤ 25 * Real.sqrt (M : ℝ) := by
@@ -844,7 +844,7 @@ lemma cz_abel_hard_of
                 - s3main (r * t) (czAl w t) (czBe y r) (czUp N q r t))
               - (s3G (r * t) (czAl w t) (czBe y r) (czLo w y r t)
                 - s3main (r * t) (czAl w t) (czBe y r) (czLo w y r t))| := abs_nonneg _
-            nlinarith [hcz, hnn, hsub, abs_nonneg (s3G (r * t) (czAl w t) (czBe y r) (czUp N q r t)
+            nlinarith only [hcz, hnn, hsub, abs_nonneg (s3G (r * t) (czAl w t) (czBe y r) (czUp N q r t)
               - s3main (r * t) (czAl w t) (czBe y r) (czUp N q r t))]
         _ = |s3G (r * t) (czAl w t) (czBe y r) (czUp N q r t)
               - s3main (r * t) (czAl w t) (czBe y r) (czUp N q r t)|
@@ -992,7 +992,7 @@ lemma cz_abel_hard_of
         rw [div_le_div_iff₀ (by positivity) (by positivity)]
         have h1 : (N : ℝ) * ((N : ℝ) * ((q : ℝ)^3)) ≤ w * y * ((N : ℝ) * ((q : ℝ)^3)) :=
           mul_le_mul_of_nonneg_right (le_of_lt hhard) (by positivity)
-        nlinarith [h1]
+        nlinarith only [h1]
       have h4 : Real.sqrt ((N : ℝ)^2 / (q : ℝ)^3) = (N : ℝ) * (1 / ((q : ℝ) * Real.sqrt (q : ℝ))) := by
         have hq3 : Real.sqrt ((q : ℝ)^3) = (q : ℝ) * Real.sqrt (q : ℝ) := by
           rw [show ((q : ℝ)^3) = (q : ℝ)^2 * (q : ℝ) by ring, Real.sqrt_mul (by positivity),
@@ -1083,7 +1083,7 @@ lemma cz_abel_hard_of
             (le_div_iff₀ (by positivity : (0 : ℝ) < (q : ℝ) * y)).mp htle
           have h3 : (1 : ℝ) ≤ 2 * (N : ℝ) / ((q : ℝ) * y * (t : ℝ)) := by
             rw [le_div_iff₀ (by positivity)]
-            nlinarith [h2, hNpos]
+            nlinarith only [h2, hNpos]
           have h4 : (0 : ℝ) ≤ 1 + Real.log (2 * (N : ℝ) / ((q : ℝ) * y * (t : ℝ))) := by
             have := Real.log_nonneg h3
             linarith
@@ -1115,7 +1115,7 @@ lemma cz_abel_hard_of
             ≤ (26 * (K * (C₁ * C₁)) * (1 + 3) + 1) := by
           have h3 : (0 : ℝ) ≤ K * (C₁ * C₁) := by
             exact mul_nonneg (le_of_lt hK) (mul_nonneg (le_of_lt hC₁) (le_of_lt hC₁))
-          nlinarith [h3]
+          nlinarith only [h3]
         calc 26 * K * (C₁ * C₁) * (N : ℝ) * 3
             = (26 * K * (C₁ * C₁) * 3) * (N : ℝ) := by ring
           _ ≤ (26 * (K * (C₁ * C₁)) * (1 + 3) + 1) * (N : ℝ) :=

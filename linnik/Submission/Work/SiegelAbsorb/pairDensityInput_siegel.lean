@@ -3,7 +3,6 @@ import Submission.Work.SiegelAbsorb.dhCapTrunc
 import Submission.Work.SiegelAbsorb.famCount_nearLine
 import Submission.Work.SiegelAbsorb.famCountCrudeCorollaries
 import Submission.Work.SiegelAbsorb.lamOf_ge_exp_neg
-import Submission.Work.LinnikAreas.PairDensityGen
 
 /-!
 # U6 of `AREA6_ROUTE_LEAD.md`: the `λ₁`-saving density input from the capped repulsion

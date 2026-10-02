@@ -52,7 +52,7 @@ private lemma sub_norm_le (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 0 < z.re) :
   rw [norm_one] at h
   have h0 : (0:ℝ) ≤ ‖((p:ℂ))^z‖ - 1 := by
     have h1 := cpow_norm_gt_one p hp2 hz
-    linarith
+    linarith only [h1]
   rwa [abs_of_nonneg h0] at h
 
 private lemma sub_one_norm_ge (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 1 ≤ z.re) :
@@ -60,7 +60,7 @@ private lemma sub_one_norm_ge (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 1 ≤ z.
   have h := sub_norm_le p hp2 (lt_of_lt_of_le zero_lt_one hz)
   have h2 := cpow_norm_ge p hp2 hz
   have hpR : (2:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp2
-  linarith
+  linarith only [h, h2, hpR]
 
 private lemma cpow_sub_one_ne_zero (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 0 < z.re) :
     ((p:ℂ))^z - 1 ≠ 0 := by
@@ -107,11 +107,11 @@ private lemma efTerm_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re)
   have hlogp : 0 ≤ Real.log (p:ℝ) := Real.log_nonneg (by exact_mod_cast hp1)
   have hD : 0 < ‖((p:ℂ))^s - 1‖ := by
     have h := sub_one_norm_ge p hp2 hs
-    linarith
+    linarith only [hp0, h]
   unfold efTerm
   rw [norm_div, norm_ofReal_log p hp1]
   rw [div_le_div_iff₀ hD hp0]
-  nlinarith [sub_one_norm_ge p hp2 hs, hlogp]
+  nlinarith only [sub_one_norm_ge p hp2 hs, hlogp, hp2, hs]
 
 private lemma efTerm_hasDerivAt (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt (efTerm p) (efD1 p z) z := by
@@ -142,7 +142,7 @@ private lemma efD1_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re) :
     rw [log_natCast p (by omega), norm_ofReal_log p hp1]
   have hDpos : 0 < ‖((p:ℂ))^s - 1‖ := by
     have h := sub_one_norm_ge p hp2 hs
-    linarith
+    linarith only [hpR, h]
   have hDsub : x - 1 ≤ ‖((p:ℂ))^s - 1‖ := by
     have h := sub_norm_le p hp2 (lt_of_lt_of_le zero_lt_one hs)
     rwa [hA] at h
@@ -153,20 +153,20 @@ private lemma efD1_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re) :
           Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hp1) hs
   have hx2 : (2:ℝ) ≤ x := le_trans hpR hpx
   have hkey1 : (p:ℝ) * x ≤ 4 * (x - 1)^2 := by
-    have h1 : (p:ℝ) * x ≤ x * x := by nlinarith [hpx, hx2]
-    have h2 : x * x ≤ 4 * (x - 1)^2 := by nlinarith [hx2]
-    linarith
+    have h1 : (p:ℝ) * x ≤ x * x := by nlinarith only [hpx, hx2]
+    have h2 : x * x ≤ 4 * (x - 1)^2 := by nlinarith only [hx2, hpR, h1, hpx]
+    linarith only [h1, h2]
   have hDsq : (x - 1)^2 ≤ ‖((p:ℂ))^s - 1‖^2 :=
-    pow_le_pow_left₀ (by linarith) hDsub 2
+    pow_le_pow_left₀ (by linarith only [hpR, hpx]) hDsub 2
   have hm1 : (Real.log (p:ℝ))^2 * ((p:ℝ) * x) ≤ (Real.log (p:ℝ))^2 * (4 * (x - 1)^2) :=
     mul_le_mul_of_nonneg_left hkey1 (sq_nonneg _)
   have hm2 : (Real.log (p:ℝ))^2 * (4 * (x - 1)^2)
       ≤ (Real.log (p:ℝ))^2 * (4 * ‖((p:ℂ))^s - 1‖^2) :=
-    mul_le_mul_of_nonneg_left (by linarith [hDsq]) (sq_nonneg _)
+    mul_le_mul_of_nonneg_left (by linarith only [hDsq]) (sq_nonneg _)
   unfold efD1
   simp only [norm_div, norm_neg, norm_mul, norm_pow, hA, hL, norm_ofReal_log p hp1]
   rw [div_le_div_iff₀ (pow_pos hDpos 2) hp0]
-  linarith [hm1, hm2]
+  linarith only [hm1, hm2]
 
 private lemma efD1_hasDerivAt (p : ℕ) (hp2 : 2 ≤ p) {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt (efD1 p) (efD2 p z) z := by
@@ -210,7 +210,7 @@ private lemma efD2_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re) :
     rw [log_natCast p (by omega), norm_ofReal_log p hp1]
   have hDpos : 0 < ‖((p:ℂ))^s - 1‖ := by
     have h := sub_one_norm_ge p hp2 hs
-    linarith
+    linarith only [hpR, h]
   have hDsub : x - 1 ≤ ‖((p:ℂ))^s - 1‖ := by
     have h := sub_norm_le p hp2 (lt_of_lt_of_le zero_lt_one hs)
     rwa [hA] at h
@@ -224,17 +224,17 @@ private lemma efD2_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re) :
     calc ‖((p:ℂ))^s + 1‖ ≤ ‖((p:ℂ))^s‖ + ‖(1:ℂ)‖ := norm_add_le _ _
       _ = x + 1 := by rw [hA, norm_one]
   have hkey2 : (p:ℝ) * x * (x + 1) ≤ 16 * (x - 1)^3 := by
-    have h1 : (p:ℝ) * x * (x + 1) ≤ x * x * (x + 1) := by nlinarith [hpx, hx2]
+    have h1 : (p:ℝ) * x * (x + 1) ≤ x * x * (x + 1) := by nlinarith only [hpx, hx2]
     have h2 : x * x * (x + 1) ≤ 16 * (x - 1)^3 := by
-      nlinarith [hx2, sq_nonneg (x - 19/30)]
-    linarith
+      nlinarith only [hx2, sq_nonneg (x - 19/30), hpR, hpx]
+    linarith only [h1, h2]
   have hDcube : (x - 1)^3 ≤ ‖((p:ℂ))^s - 1‖^3 :=
-    pow_le_pow_left₀ (by linarith) hDsub 3
+    pow_le_pow_left₀ (by linarith only [hpR, hpx]) hDsub 3
   have hC3 : (0:ℝ) ≤ (Real.log (p:ℝ))^3 := by positivity
   have h2 : (Real.log (p:ℝ))^3 * (x * ‖((p:ℂ))^s + 1‖ * (p:ℝ))
       ≤ (Real.log (p:ℝ))^3 * (x * (x + 1) * (p:ℝ)) := by
     have h1 : x * ‖((p:ℂ))^s + 1‖ * (p:ℝ) ≤ x * (x + 1) * (p:ℝ) := by
-      have hx0 : 0 ≤ x := by linarith [hx2]
+      have hx0 : 0 ≤ x := by linarith only [hx2, hpR, hpx]
       have hmul1 : x * ‖((p:ℂ))^s + 1‖ ≤ x * (x + 1) :=
         mul_le_mul_of_nonneg_left hAadd hx0
       exact mul_le_mul_of_nonneg_right hmul1 hp0.le
@@ -244,12 +244,12 @@ private lemma efD2_bound (p : ℕ) (hp2 : 2 ≤ p) {s : ℂ} (hs : 1 ≤ s.re) :
     have h1 : x * (x + 1) * (p:ℝ) ≤ 16 * ‖((p:ℂ))^s - 1‖^3 := by
       have hh : x * (x + 1) * (p:ℝ) = (p:ℝ) * x * (x + 1) := by ring
       rw [hh]
-      linarith [hkey2, hDcube]
+      linarith only [hkey2, hDcube]
     exact mul_le_mul_of_nonneg_left h1 hC3
   unfold efD2
   simp only [norm_div, norm_mul, norm_pow, hA, hL, norm_ofReal_log p hp1]
   rw [div_le_div_iff₀ (pow_pos hDpos 3) hp0]
-  linarith [h2, h3]
+  linarith only [h2, h3]
 
 /-! ## The Euler-factor bounds -/
 

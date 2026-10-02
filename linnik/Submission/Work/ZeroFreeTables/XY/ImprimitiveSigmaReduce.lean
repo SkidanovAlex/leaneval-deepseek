@@ -501,8 +501,7 @@ theorem PrimeFactorTailNumeric {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
                 have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith
               exact (div_le_one (by norm_num : (0:ℝ) < 2)).mpr (le_trans h2' (by norm_num))
       have hR : 1 ≤ Cc * (Real.log L)^2 := by
-        have : (1:ℝ) ≤ (Real.log L)^2 := one_le_pow₀ hlogL1
-        nlinarith [hCc1, this]
+        exact one_le_mul_of_one_le_of_one_le hCc1 (one_le_pow₀ hlogL1)
       linarith
     · have hq3' : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
       have hlog3 : 1 < Real.log 3 := by
@@ -540,8 +539,7 @@ theorem PrimeFactorTailNumeric {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
               have hle : (Real.log 2)^2 ≤ 1 := pow_le_one₀ h2 h2'
               exact (div_le_one (by norm_num : (0:ℝ) < 2)).mpr (le_trans hle (by norm_num))
       have hR : 1 ≤ Cc * (Real.log L)^3 := by
-        have : (1:ℝ) ≤ (Real.log L)^3 := one_le_pow₀ hlogL1
-        nlinarith [hCc1, this]
+        exact one_le_mul_of_one_le_of_one_le hCc1 (one_le_pow₀ hlogL1)
       linarith
     · have hq3' : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
       have hlog3 : 1 < Real.log 3 := by
@@ -579,8 +577,7 @@ theorem PrimeFactorTailNumeric {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
               have hle : (Real.log 2)^3 ≤ 1 := pow_le_one₀ h2 h2'
               exact (div_le_one (by norm_num : (0:ℝ) < 2)).mpr (le_trans hle (by norm_num))
       have hR : 1 ≤ Cc * (Real.log L)^4 := by
-        have : (1:ℝ) ≤ (Real.log L)^4 := one_le_pow₀ hlogL1
-        nlinarith [hCc1, this]
+        exact one_le_mul_of_one_le_of_one_le hCc1 (one_le_pow₀ hlogL1)
       linarith
     · have hq3' : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
       have hlog3 : 1 < Real.log 3 := by
@@ -667,9 +664,8 @@ theorem PrimeFactorTailNumeric {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
     have h3 : (a+lam₁)^3 ≤ (a+lam₁)*(a+1)^2 := by
       calc (a+lam₁)^3 = (a+lam₁)*(a+lam₁)^2 := by ring
         _ ≤ (a+lam₁)*(a+1)^2 := mul_le_mul_of_nonneg_left h2 hαnn
-    have hk1 : 1 ≤ Kk := by rw [hKk]; nlinarith [hA0, sq_nonneg (a+1)]
     rw [hKk]
-    nlinarith [hαnn, h1, h3, hk1, sq_nonneg (a+lam₁), sq_nonneg (a+1)]
+    linarith only [hαnn, h1, h3, mul_nonneg hαnn hA0]
   have hsum : (24 / L) * (a + lam₁) * (∑ p ∈ q.primeFactors, Real.log (p : ℝ) / (p : ℝ))
         + (24 / L) * ((a + lam₁)^2 / L) * (∑ p ∈ q.primeFactors, (Real.log (p : ℝ))^2 / (p : ℝ))
         + (24 / L) * ((a + lam₁)^3 / L^2) * (∑ p ∈ q.primeFactors, (Real.log (p : ℝ))^3 / (p : ℝ))
@@ -749,7 +745,7 @@ theorem ImprimitiveSigmaReduce {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
         ≤ 24 * ((a+lam₁) * (∑ p ∈ q.primeFactors, Real.log (p:ℝ)/(p:ℝ))
           + ((a+lam₁)^2/L) * (∑ p ∈ q.primeFactors, (Real.log (p:ℝ))^2/(p:ℝ))
           + ((a+lam₁)^3/L^2) * (∑ p ∈ q.primeFactors, (Real.log (p:ℝ))^3/(p:ℝ))) := by
-      nlinarith [h8, hS1nn, hS2nn, hS3nn, hαnn, sq_nonneg (a+lam₁), hLpos]
+      linarith only [h8]
     calc L⁻¹ * (∑' n : ℕ, (if Nat.Coprime n q then (0:ℝ) else 1)
             * (ArithmeticFunction.vonMangoldt n : ℝ) * (n : ℝ) ^ (-s.re)
             * Work.ZeroFreeTables.hbWL L a lam₁ n)

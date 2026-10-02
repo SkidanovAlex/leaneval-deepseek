@@ -234,38 +234,38 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     have h' := hzc0 R hR
     have h : (∑ᶠ u : ℂ, ((MeromorphicOn.divisor Λ (Metric.closedBall 0 R)) u : ℝ))
         ≤ zc0 * R * L_N N R := by simpa [Commons.NumberTheory.Linnik.L_N] using h'
-    have hL0 : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) (by linarith))
-    have hR0 : 0 ≤ R := by linarith
+    have hL0 : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) (by linarith only [hR]))
+    have hR0 : 0 ≤ R := by linarith only [hR]
     have h1 : zc0 * R * L_N N R ≤ zc * R * L_N N R := by
       have h2 : zc0 * R ≤ zc * R := mul_le_mul_of_nonneg_right hzc0le hR0
       exact mul_le_mul_of_nonneg_right h2 hL0
-    linarith
+    linarith only [h, h1]
   have hgc : ∀ R : ℝ, 2 ≤ R → ∀ z : ℂ, ‖z‖ = R →
       ‖Λ z‖ ≤ Real.exp (gc * R * L_N N R) := by
     intro R hR z hz
     have h := hgc0 R hR z hz
     refine le_trans h (Real.exp_le_exp.mpr ?_)
-    have hL0 : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) (by linarith))
-    have hR0 : 0 ≤ R := by linarith
+    have hL0 : 0 ≤ L_N N R := le_of_lt (pf_L_pos (N := N) (by linarith only [hR]))
+    have hR0 : 0 ≤ R := by linarith only [hR]
     have h2 : gc0 * R ≤ gc * R := mul_le_mul_of_nonneg_right hgc0le hR0
     exact mul_le_mul_of_nonneg_right h2 hL0
   let K0 : ℝ := 4 * gc + 20 * zc + |Real.log ‖Λ 0‖| + 1
   have hK0nn : 0 ≤ K0 := by
-    dsimp [K0]; nlinarith [hzcnn, hgcnn, abs_nonneg (Real.log ‖Λ 0‖)]
+    dsimp [K0]; linarith only [hzcnn, hgcnn, abs_nonneg (Real.log ‖Λ 0‖)]
   have hK0one : 1 ≤ K0 := by
-    dsimp [K0]; nlinarith [hzcnn, hgcnn, abs_nonneg (Real.log ‖Λ 0‖)]
+    dsimp [K0]; linarith only [hzcnn, hgcnn, abs_nonneg (Real.log ‖Λ 0‖)]
   have hK0pos : 0 < K0 := lt_of_lt_of_le one_pos hK0one
   let C : ℝ := (k.factorial : ℝ) * 192 * 16 ^ k * K0 * 2
   have hCnn : 0 ≤ C := by dsimp [C]; positivity
   refine ⟨C, hCnn, max (Real.exp |Real.log δ₀|) 2, ?_⟩
   intro A hA T hAT hT2A hmargin s hΛs hsT
   have hA2 : 2 ≤ A := le_trans (le_max_right _ _) hA
-  have hA1 : 1 ≤ A := by linarith
-  have hA0 : 0 ≤ A := by linarith
-  have hApos : 0 < A := by linarith
+  have hA1 : 1 ≤ A := by linarith only [hA2]
+  have hA0 : 0 ≤ A := by linarith only [hA2]
+  have hApos : 0 < A := by linarith only [hA2]
   have hAexp : Real.exp |Real.log δ₀| ≤ A := le_trans (le_max_left _ _) hA
-  have hTpos : 0 < T := by linarith
-  have hT2 : 2 ≤ T := by linarith
+  have hTpos : 0 < T := by linarith only [hAT, hA2]
+  have hT2 : 2 ≤ T := by linarith only [hAT, hA2]
   have hT0 : 0 ≤ T := le_of_lt hTpos
   have hLgeD : |Real.log δ₀| ≤ L_N N A := by
     have h1 : |Real.log δ₀| ≤ Real.log A := by
@@ -273,10 +273,10 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       rwa [Real.log_exp] at h
     have h2 : Real.log A ≤ L_N N A := by
       dsimp [L_N]
-      have h3 : Real.log A ≤ Real.log (A + 2) := Real.log_le_log (by linarith) (by linarith)
+      have h3 : Real.log A ≤ Real.log (A + 2) := Real.log_le_log (by linarith only [hA2]) (by linarith only [])
       have h4 : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-      linarith
-    linarith
+      linarith only [h3, h4]
+    linarith only [h1, h2]
   -- cofactor
   obtain ⟨g, M0, hM0nn, hg_an_T, hg_nz_T, hfac_T, hfacs, hball, horigin, hM0le⟩ :=
     pf_cofactor_logbound χ hχ hχprim hA0 hA1 hTpos hT2 hT2A hmargin
@@ -292,8 +292,8 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     simpa [Commons.NumberTheory.Linnik.pfP] using h
   have hs_ball : s ∈ Metric.ball (0 : ℂ) (T + ε) := by
     rw [Metric.mem_ball, dist_eq_norm, sub_zero]
-    have : ‖s‖ ≤ T / 8 := by linarith
-    linarith
+    have : ‖s‖ ≤ T / 8 := by linarith only [hsT]
+    linarith only [hAT, hsT, hA2, hε]
   have hdec := iteratedDeriv_logDeriv_decompose (f := Λ) (g := g) (R := T) (ε := ε)
     hΛdiff hfac_decomp hg_an_ε hs_ball hΛs k
   -- the Cauchy bound on the cofactor defect
@@ -316,20 +316,20 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     have h3 : 1 ≤ K0 * (A * (L_N N A) ^ 2 + 1) := by
       have h4 : 1 ≤ A * (L_N N A) ^ 2 + 1 := by
         have h5 : 0 ≤ (L_N N A) ^ 2 := sq_nonneg _
-        nlinarith
-      nlinarith [hK0one, h4, hK0nn]
+        nlinarith only [hAT, hT2A]
+      nlinarith only [hK0one, h4, hK0nn]
     exact max_le (le_trans h1 h2) h3
   have hTpow : A * A ^ k ≤ T ^ (k + 1) := by
     have hAk : A ^ k ≤ T ^ k := pow_le_pow_left₀ hA0 hAT k
     have h1 : A * A ^ k ≤ A * T ^ k := mul_le_mul_of_nonneg_left hAk hA0
     have h2 : A * T ^ k ≤ T * T ^ k := mul_le_mul_of_nonneg_right hAT (pow_nonneg hT0 k)
     have h3 : T * T ^ k = T ^ (k + 1) := by rw [pow_succ]; ring
-    linarith
+    linarith only [h1, h2, h3]
   have hden1 : (0:ℝ) < T ^ (k + 1) := pow_pos hTpos _
   have hden2 : (0:ℝ) < A * A ^ k := mul_pos hApos (pow_pos hApos k)
   have hAL2 : 1 ≤ (L_N N A) ^ 2 := by
     have h := pf_L_ge_two (N := N) hA0
-    nlinarith
+    nlinarith only [h]
   have hAkge : A ≤ A ^ k := by
     calc A = A ^ 1 := (pow_one A).symm
       _ ≤ A ^ k := pow_le_pow_right₀ hA1 hk
@@ -341,7 +341,7 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       div_le_div_of_nonneg_right hm0 (le_of_lt hden2)
     have s3 : K0 * (A * (L_N N A) ^ 2 + 1) / (A * A ^ k)
         ≤ K0 * (2 * (L_N N A) ^ 2 * A) / (A * A ^ k) := by
-      have hnum : A * (L_N N A) ^ 2 + 1 ≤ 2 * (L_N N A) ^ 2 * A := by nlinarith [hAL2, hA1]
+      have hnum : A * (L_N N A) ^ 2 + 1 ≤ 2 * (L_N N A) ^ 2 * A := by nlinarith only [hAL2, hA1, hA2]
       have := div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left hnum hK0nn) (le_of_lt hden2)
       simpa [mul_assoc] using this
     have s4 : K0 * (2 * (L_N N A) ^ 2 * A) / (A * A ^ k) = 2 * K0 * (L_N N A) ^ 2 / A ^ k := by
@@ -350,7 +350,7 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     have s5 : 2 * K0 * (L_N N A) ^ 2 / A ^ k ≤ 2 * K0 * (L_N N A) ^ 2 / A := by
       have hnum2 : 0 ≤ 2 * K0 * (L_N N A) ^ 2 := by positivity
       exact div_le_div_of_nonneg_left hnum2 hApos hAkge
-    linarith [s1, s2, s3, s4.le, s4.ge, s5]
+    linarith only [s1, s2, s3, s4.le, s4.ge, s5, s4]
   have hCeq : C = (k.factorial : ℝ) * 192 * 16 ^ k * K0 * 2 := rfl
   have hstep : (k.factorial : ℝ) * 192 * 16 ^ k * max M0 1 / T ^ (k + 1)
       ≤ (k.factorial : ℝ) * 192 * 16 ^ k * (2 * K0 * (L_N N A) ^ 2 / A) := by
@@ -362,7 +362,7 @@ lemma CompletedDerivPF_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   refine le_trans hgd ?_
   refine le_trans hstep ?_
   rw [hCeq]
-  have hpos : 1 ≤ 1 + ‖s‖ := by have := norm_nonneg s; linarith
+  have hpos : 1 ≤ 1 + ‖s‖ := by have := norm_nonneg s; linarith only [this]
   have hL2n : 0 ≤ (L_N N A) ^ 2 := sq_nonneg _
   have hAinv : 0 ≤ (L_N N A) ^ 2 / A := div_nonneg hL2n hA0
   have hbase : (k.factorial : ℝ) * 192 * 16 ^ k * (2 * K0 * (L_N N A) ^ 2 / A)
@@ -516,13 +516,13 @@ theorem CompletedDerivPF_identity {N : ℕ} [NeZero N] (χ : DirichletCharacter 
     have hR2 : 2 ≤ R := le_trans (le_trans (le_max_left 2 (8 * ‖s‖ + 1)) (le_max_right _ _)) hR
     have hRs : 8 * ‖s‖ + 1 ≤ R :=
       le_trans (le_trans (le_max_right 2 (8 * ‖s‖ + 1)) (le_max_right _ _)) hR
-    have hsR : 8 * ‖s‖ ≤ R := by linarith
+    have hsR : 8 * ‖s‖ ≤ R := by linarith only [hRs]
     obtain ⟨T, hRT, hT2R, hmargin_raw⟩ := hgood R hRAg
     have hmargin : ∀ u : ℂ, Λ u = 0 → (L_N N R) ^ 2 * |‖u‖ - T| ≥ 1 := by
       intro u hu
       have h := hmargin_raw u (by rwa [hΛdef] at hu)
       simpa [Commons.NumberTheory.Linnik.L_N] using h
-    have hTR : 8 * ‖s‖ ≤ T := by linarith
+    have hTR : 8 * ‖s‖ ≤ T := by linarith only [hRs, hRT]
     have hb2 := hbound2 R hRA2 T hRT hT2R hmargin s hΛs hTR
     set SR : ℂ := ∑ᶠ u : ℂ, (((MeromorphicOn.divisor Λ (Metric.closedBall 0 R)) u : ℤ) : ℂ)
         * (1 / (s - u)) ^ (k + 1) with hSR
@@ -577,7 +577,7 @@ theorem CompletedDerivPF_identity {N : ℕ} [NeZero N] (χ : DirichletCharacter 
     rw [hsplit]
     refine le_trans (norm_add_le _ _) ?_
     simp only [heRdef]
-    linarith [hfirst, hsecond]
+    linarith only [hfirst, hsecond]
   rw [tendsto_iff_norm_sub_tendsto_zero]
   exact squeeze_zero' (Filter.Eventually.of_forall fun R => norm_nonneg _) hev heR0
 

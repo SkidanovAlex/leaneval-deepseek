@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Linnik.tentWeight_spec
-import Submission.Commons.NumberTheory.Linnik.tentWeight_laplace
 import Submission.Commons.NumberTheory.Linnik.tentWeight_bounds
 import Submission.Commons.NumberTheory.Linnik.completedL_zeroCount
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip

@@ -11,7 +11,7 @@ holds verbatim on the whole range `0 < a ≤ α ≤ |u|`.
 -/
 import Mathlib
 import Submission.Work.ZeroFreeTables.P3.DefsL
-import Submission.Work.ZeroFreeTables.XY.P3ReDecay
+import Submission.Work.ZeroFreeTables.P3Pos
 
 namespace Work.ZeroFreeTables.XY
 

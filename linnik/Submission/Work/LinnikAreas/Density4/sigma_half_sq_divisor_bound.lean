@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.divisors_recip_pow_le_totient_div
 import Submission.Work.LinnikAreas.Density4.divisors_sqrtrecip_mul_coprime
 import Submission.Work.LinnikAreas.Density4.divisors_tau_sqrtrecip_mul_coprime
 import Submission.Work.LinnikAreas.Density4.prime_local_sqrt_bound

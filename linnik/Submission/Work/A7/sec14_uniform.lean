@@ -94,16 +94,16 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
   have hLge : (39:ℝ)/10 ≤ L := by
     rw [hL]; exact le_trans hlog50 (Real.log_le_log (by norm_num) h50)
   have hcpos : 0 < c := by rw [hc]; positivity
-  have hcge : (19:ℝ)/5 ≤ c := by rw [hc]; nlinarith [hLge]
+  have hcge : (19:ℝ)/5 ≤ c := by rw [hc]; nlinarith only [hLge]
   have hExpL : Real.exp (-L) = lam := by
     rw [hL, Real.exp_neg, Real.exp_log (by positivity), one_div, inv_inv]
   have hac_eq : ac * c = (4851:ℝ)/1000 * L := by rw [hc, Work.LinnikAreas.A7.ac]; ring
   have hExp3851 : Real.exp (-((3851:ℝ)/1000*L)) ≤ 1/3000000 := by
     refine le_trans (Real.exp_le_exp.mpr ?_) exp_neg_15_le
-    nlinarith [hLge]
+    nlinarith only [hLge]
   have hExp1442 : Real.exp (-((1442:ℝ)/1000*L)) ≤ 1/270 := by
     refine le_trans (Real.exp_le_exp.mpr ?_) exp_neg_28_5_le
-    nlinarith [hLge]
+    nlinarith only [hLge]
   have hEc : Real.exp (-(ac*c)) ≤ lam/3000000 := by
     have hsplit : -(ac*c) = -L + -((3851:ℝ)/1000*L) := by rw [hac_eq]; ring
     calc Real.exp (-(ac*c)) = Real.exp (-L) * Real.exp (-((3851:ℝ)/1000*L)) := by
@@ -114,7 +114,7 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
   have hT1 : Real.exp (-(ac*lam)) * ((1 - Real.exp (-(Kc*lam)))/lam)^2 / K2 ≤ Real.exp (-(ac*lam)) := by
     have hnum0 : 0 ≤ (1 - Real.exp (-(Kc*lam)))/lam := by
       refine div_nonneg ?_ hlam.le
-      rw [sub_nonneg, Real.exp_le_one_iff]; nlinarith [hKcpos, hlam]
+      rw [sub_nonneg, Real.exp_le_one_iff]; nlinarith only [hKcpos, hlam]
     have hle : (1 - Real.exp (-(Kc*lam)))/lam ≤ Kc := by
       rw [div_le_iff₀ hlam]
       have := Real.one_sub_le_exp_neg (Kc*lam); linarith
@@ -128,7 +128,7 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
       _ = Real.exp (-(ac*lam)) := by ring
   have hT1' : Real.exp (-(ac*lam)) * ((1 - Real.exp (-(Kc*lam)))/lam)^2 / K2 ≤ 1 - (2450:ℝ)/549*lam := by
     have hone : (2450:ℝ)/549*lam ≤ 1 - Real.exp (-(ac*lam)) := by
-      have hx : ac*lam ≤ (49:ℝ)/500 := by rw [Work.LinnikAreas.A7.ac]; nlinarith [hlam2]
+      have hx : ac*lam ≤ (49:ℝ)/500 := by rw [Work.LinnikAreas.A7.ac]; nlinarith only [hlam2]
       have hx0 : 0 ≤ ac*lam := by positivity
       have hstep := one_sub_exp_neg_ge (ac*lam) hx0
       have hden : (2450:ℝ)/549*lam ≤ ac*lam/(1+ac*lam) := by
@@ -160,7 +160,7 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
     rw [hWf_eq]
     refine div_pos hcpos ?_
     have hlt : Real.exp ((16:ℝ)/15*c) < Real.exp ((73:ℝ)/30*c) := by
-      rw [Real.exp_lt_exp]; nlinarith [hcpos]
+      rw [Real.exp_lt_exp]; nlinarith only [hcpos]
     linarith
   have h37 : -(ac*c) + (73:ℝ)/30*c = (-(37:ℝ)/15)*c := by rw [Work.LinnikAreas.A7.ac]; ring
   have hE73 : Real.exp (-(ac*c) + (73:ℝ)/30*c) ≤ lam/270 := by
@@ -193,7 +193,7 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
           have hfin : (19:ℝ)/9 * (lam/270) / c ≤ lam/486 := by
             rw [div_le_iff₀ hcpos]
             have key : (19:ℝ)/2430 ≤ c/486 := by
-              rw [le_div_iff₀ (by norm_num : (0:ℝ) < 486)]; nlinarith [hcge]
+              rw [le_div_iff₀ (by norm_num : (0:ℝ) < 486)]; nlinarith only [hcge]
             calc (19:ℝ)/9 * (lam/270) = lam * ((19:ℝ)/2430) := by ring
               _ ≤ lam * (c/486) := mul_le_mul_of_nonneg_left key hlam.le
               _ = lam/486 * c := by ring
@@ -208,7 +208,7 @@ private lemma sec14_repel_aux {lam η εw : ℝ} (hlam : 0 < lam) (hlam2 : lam �
       _ ≤ lam/1026 := by
           rw [div_le_iff₀ hcpos]
           have key : (1:ℝ)/270 ≤ c/1026 := by
-            rw [le_div_iff₀ (by norm_num : (0:ℝ) < 1026)]; nlinarith [hcge]
+            rw [le_div_iff₀ (by norm_num : (0:ℝ) < 1026)]; nlinarith only [hcge]
           calc lam/270 = lam * ((1:ℝ)/270) := by ring
             _ ≤ lam * (c/1026) := mul_le_mul_of_nonneg_left key hlam.le
             _ = lam/1026 * c := by ring
