@@ -14,7 +14,6 @@ import Submission.Work.ZeroFreeTables.rowcontra92
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi
 import Submission.Work.ZeroFreeTables.HB94.L52supply
 import Submission.Work.ZeroFreeTables.HB94.L52supply_pow
-import Submission.Work.ZeroFreeTables.HB94.rowcontra92q
 import Submission.Work.ZeroFreeTables.HB94.rowcontra92_all
 import Submission.Work.ZeroFreeTables.HB94.rowcontra93q
 import Submission.Work.ZeroFreeTables.HB94.rowcontra62_all

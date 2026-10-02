@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.ZeroFreeTables.HBTable8StrictLast
 import Submission.Work.ZeroFreeTables.Table8Derive
 import Submission.Work.ZeroFreeTables.Table8Printed
 import Submission.Work.ZeroFreeTables.Table8Cert

@@ -1,7 +1,7 @@
 import Mathlib
 import Submission.Work.ZeroDensity.Jutila.bvDefs
 import Submission.Work.ZeroDensity.Jutila.LzSqIntBad
-import Submission.Work.HB7CF2.LinnikAreas2.bz_sq_hard_via_s3h
+import Submission.Work.LinnikAreas2.bz_sq_hard_via_s3h
 
 /-!
 # The sharp `Λ²` (Selberg) second moment in the hard range `N < z²`

@@ -30,6 +30,7 @@ import Submission.Commons.NumberTheory.Linnik.Ksum_principal_le
 import Submission.Work.A7.zeroMult_conj_inv
 import Submission.Work.LinnikAreas.principalKsumWide
 import Submission.Work.ZeroFreeTables.OffAxis.KsumLeTwoOfL52
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 set_option autoImplicit false
 set_option maxHeartbeats 4000000
@@ -607,7 +608,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       have hmult' : Real.log (q : ℝ)
             * (T.Fc ((((-(lamOf q ρ₁) : ℝ) : ℂ) + (mu0 : ℂ) * Complex.I))).re
           ≤ Real.log (q : ℝ) * (2 * (T.Fc ((mu0 : ℂ) * Complex.I)).re)
@@ -654,7 +655,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT0 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im + ρ₃.im by simp]
@@ -705,7 +706,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd1, if_neg h1]
       by_cases hψ1 : χ₁ * χ₂ * χ₃⁻¹ = 1
@@ -732,7 +733,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT1 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im - ρ₃.im by simp]
@@ -783,7 +784,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd2, if_neg h2]
       by_cases hψ2 : χ₁ * χ₂⁻¹ * χ₃ = 1
@@ -810,7 +811,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT2 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im - ρ₂.im + ρ₃.im by simp]
@@ -861,7 +862,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd3, if_neg h3]
       by_cases hψ3 : χ₁⁻¹ * χ₂ * χ₃ = 1
@@ -888,7 +889,7 @@ theorem HB10_3Engine (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 0 <
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT3 : |((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = -ρ₁.im + ρ₂.im + ρ₃.im by simp]

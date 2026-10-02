@@ -60,7 +60,7 @@ private lemma abs_im_le_of_window {s u : ℂ} {δ : ℝ} (hδ : δ < 1)
   have h4 : |u.im| ≤ |u.im - s.im| + |s.im| := by
     calc |u.im| = |(u.im - s.im) + s.im| := by ring_nf
       _ ≤ |u.im - s.im| + |s.im| := abs_add_le _ _
-  linarith [le_trans h3 h, h4, hδ]
+  linarith only [le_trans h3 h, h4, hδ, h, h3]
 
 /-- The support of a meromorphic divisor is contained in its domain. -/
 private lemma mem_ball_of_divisor_ne_zero {f : ℂ → ℂ} {U : Set ℂ} {u : ℂ}
@@ -105,14 +105,14 @@ private lemma window_le_of_rectMin {q : ℕ} [NeZero q] {L : ℝ} (hL : 1 ≤ L)
     u.re ≤ 1 - Work.LinnikContract.lamOf q ρ₁ / Real.log q := by
   have him := abs_im_le_of_window hδ1 hwin
   have h10 : |u.im| ≤ 10 * L := by
-    have h1 : |u.im| ≤ 3 * L + 1 := by linarith
-    nlinarith
+    have h1 : |u.im| ≤ 3 * L + 1 := by linarith only [hsL, him]
+    linarith only [hL, hsL, him]
   have hmin := hR.2 χ₁ u ⟨hR.1.1, hzm, h10⟩
   rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at hmin
   have h4 : 1 - ρ₁.re ≤ 1 - u.re := (mul_le_mul_iff_left₀ hlogq).mp hmin
   have h5 : Work.LinnikContract.lamOf q ρ₁ / Real.log q = 1 - ρ₁.re := by
     rw [Work.LinnikContract.lamOf, mul_div_cancel_right₀ _ (ne_of_gt hlogq)]
-  linarith [h4, h5]
+  linarith only [h4, h5]
 
 /-- The window condition in the shape consumed by the `K`-sum lemmas, for a point `s` with
 `s.re = ρ₁.re` and `|s.im| ≤ 3L`. -/
@@ -130,7 +130,7 @@ private lemma window_condition {q : ℕ} [NeZero q] {L : ℝ} (hL : 1 ≤ L)
   have h5 : Work.LinnikContract.lamOf q ρ₁ / Real.log q = 1 - ρ₁.re := by
     rw [Work.LinnikContract.lamOf, mul_div_cancel_right₀ _ (ne_of_gt hlogq)]
   rw [hsre]
-  linarith
+  linarith only [h, h5]
 
 
 /-! ## The main theorem -/
@@ -146,7 +146,7 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
   set θ : ℝ := Real.arctan 2 with hθdef
   have hθ_ge : (110:ℝ)/100 ≤ θ := by rw [hθdef]; exact hθbounds.1
   have hθ_le : θ ≤ (111:ℝ)/100 := by rw [hθdef]; exact hθbounds.2
-  have hθ0 : 0 < θ := by linarith
+  have hθ0 : 0 < θ := by linarith only [hθbounds]
   have hθ1 : θ < Real.pi / 2 := by rw [hθdef]; exact Real.arctan_lt_pi_div_two 2
   have htan : Real.tan θ = 2 := by rw [hθdef]; exact Real.tan_arctan 2
   set lam0 : ℝ := 14/25 with hlam0def
@@ -161,7 +161,7 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     rw [hfdef, tf71f_at_zero hθ0 hθ1 hlam0pos, htan, hlam0def]
     norm_num
     ring
-  have hf0pos : 0 < f 0 := by rw [hf0val]; linarith
+  have hf0pos : 0 < f 0 := by rw [hf0val]; linarith only [hθbounds]
   have hfnn : ∀ t : ℝ, 0 ≤ f t := by
     intro t; rw [hfdef]; exact tf71f_nonneg θ lam0 hθ0 hθ1 hlam0pos t
   have hF0int : (∫ t in (0:ℝ)..x₀, f t) = 10 * (1 - θ/2)^2 := by
@@ -287,7 +287,7 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     have h2 : ((Nat.ceil (Real.exp Lreq) + 10 : ℕ) : ℝ) ≤ (q : ℝ) := by
       exact_mod_cast hqceil
     push_cast at h2
-    linarith
+    linarith only [hδ0, hδ1, h1, h2]
   have hLreq_le : Lreq ≤ Real.log q := by
     rw [← Real.log_exp Lreq]
     exact Real.log_le_log (Real.exp_pos Lreq) hexp_le
@@ -326,8 +326,8 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
       (DirichletCharacter.primitiveCharacter_isPrimitive χ₁) hzero
   have hlam1nn : 0 ≤ Work.LinnikContract.lamOf q ρ₁ := by
     rw [Work.LinnikContract.lamOf]
-    exact mul_nonneg (by linarith [hstrip.2]) hlogq.le
-  have hlam1lt : Work.LinnikContract.lamOf q ρ₁ < 14/25 := by linarith [hcon]
+    exact mul_nonneg (by linarith only [hstrip.2, hstrip]) hlogq.le
+  have hlam1lt : Work.LinnikContract.lamOf q ρ₁ < 14/25 := by linarith only [hcon]
   have hlamval : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log q := by
     rw [Work.LinnikContract.lamOf, mul_div_cancel_right₀ _ (ne_of_gt hlogq)]
   have hsqrtge : (14:ℝ)/25 ≤ Real.sqrt (Real.log (Real.log q)) := by
@@ -335,20 +335,20 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     have h4 : ((14:ℝ)/25)^2 ≤ Real.log 2 := by
       have h5 := Real.log_two_gt_d9
       norm_num
-      linarith
-    have h6 : ((14:ℝ)/25)^2 ≤ Real.log (Real.log q) := by linarith
+      linarith only [hδ0, hδ1, h5]
+    have h6 : ((14:ℝ)/25)^2 ≤ Real.log (Real.log q) := by linarith only [h3, h4]
     calc (14:ℝ)/25 = Real.sqrt (((14:ℝ)/25)^2) :=
           (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ (14:ℝ)/25)).symm
       _ ≤ Real.sqrt (Real.log (Real.log q)) := Real.sqrt_le_sqrt h6
   have hβre : |ρ₁.re - 1| ≤ Real.sqrt (Real.log (Real.log q)) / Real.log q := by
     have h2 : |ρ₁.re - 1| = 1 - ρ₁.re := by
-      have h3 : 0 ≤ 1 - ρ₁.re := by linarith [hstrip.2]
-      rw [abs_of_nonpos (by linarith)]; ring
+      have h3 : 0 ≤ 1 - ρ₁.re := by linarith only [hstrip.2, hstrip]
+      rw [abs_of_nonpos (by linarith only [hstrip])]; ring
     rw [h2, hlamval]
     exact div_le_div_of_nonneg_right (le_trans hlam1lt.le hsqrtge) hlogq.le
   have hslo : 1 - Real.sqrt (Real.log (Real.log q)) / Real.log q ≤ ρ₁.re := by
     have h1 : -|ρ₁.re - 1| ≤ ρ₁.re - 1 := neg_abs_le _
-    linarith [hβre, h1]
+    linarith only [hβre, h1]
   have hχ60 : χ₁ ^ 60 = 1 := by
     rw [show (60:ℕ) = 2 * 30 by norm_num, pow_mul, hsq, one_pow]
   have hL52 : Commons.NumberTheory.Linnik.L52Hyp χ₁ ((1:ℝ)/8) (1/1000000) δ :=
@@ -384,20 +384,20 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
         rw [Metric.mem_closedBall, dist_zero_right]
         have hre : |ρ₁.re| ≤ 1 := by rw [abs_of_pos hstrip.1]; exact hstrip.2.le
         calc ‖ρ₁‖ ≤ |ρ₁.re| + |ρ₁.im| := Complex.norm_le_abs_re_add_abs_im ρ₁
-          _ ≤ |ρ₁.im| + 1 := by linarith
-          _ ≤ |ρ₁.im| + 2 := by linarith
+          _ ≤ |ρ₁.im| + 1 := by linarith only [hre]
+          _ ≤ |ρ₁.im| + 2 := by linarith only [hδ0, hδ1]
       exact Work.ZeroFreeTables.HB94.divisor_ne_zero_of_zeroMult_aux χ₁ hχ1 hmem hzm
     have hwin1 : ‖(1:ℂ) + (ρ₁.im : ℂ) * Complex.I - ρ₁‖ ≤ δ := by
       have h1 : (1:ℂ) + (ρ₁.im : ℂ) * Complex.I - ρ₁ = ((1 - ρ₁.re : ℝ) : ℂ) := by
         apply Complex.ext <;> simp
-      rw [h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith [hstrip.2])]
+      rw [h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith only [hstrip.2, hstrip])]
       rw [hlamval, div_le_iff₀ hlogq]
       have h2 : δ * (14/(25*δ) + 1) ≤ δ * Real.log q := mul_le_mul_of_nonneg_left hδLg hδ0.le
       have h3 : δ * (14/(25*δ) + 1) = 14/25 + δ := by field_simp
-      linarith [h2, h3, hδ0]
-    have hsL1 : |ρ₁.im| ≤ 3 * L := by linarith [hγL]
+      linarith only [h2, h3, hδ0, hcon]
+    have hsL1 : |ρ₁.im| ≤ 3 * L := by linarith only [hγL, hL]
     have hzw := window_condition hL hR hχ1 hδ1 (s := ρ₁) hsL1 hlogq rfl
-    have hsim1 : |ρ₁.im| ≤ 10 * Real.log q := by linarith [hγL, h4L]
+    have hsim1 : |ρ₁.im| ≤ 10 * Real.log q := by linarith only [hγL, h4L, hδ0, hδ1, hCdecpos, hCLg]
     have h := hS (q := q) hqS χ₁ hχ1 (s := ρ₁) (ρ := ρ₁) hβre hsim1 hslo hL52 hdiv1 hwin1 hzw
     rw [← Work.ZeroFreeTables.HB94.Ksum_def_aux] at h
     have hF0c : (∫ t in (0:ℝ)..x₀,
@@ -419,14 +419,14 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     rw [hsq]
     have hτabs : |(2:ℝ) * ρ₁.im| ≤ Real.log q := by
       rw [abs_mul, abs_of_nonneg (by norm_num : (0:ℝ) ≤ 2)]
-      linarith [hγL, h4L]
+      linarith only [hγL, h4L, hCdecpos, hCLg]
     have hτ1 : 1 ≤ |(2:ℝ) * ρ₁.im| := by
       rw [abs_mul, abs_of_nonneg (by norm_num : (0:ℝ) ≤ 2)]
-      linarith [hγ1]
+      linarith only [hγ1, hδ0, hδ1, hIm]
     have hlam_le : Real.log q * (1 - ρ₁.re) ≤ 1 := by
       rw [show Real.log q * (1 - ρ₁.re) = Work.LinnikContract.lamOf q ρ₁ by
         rw [Work.LinnikContract.lamOf]; ring]
-      linarith [hlam1lt]
+      linarith only [hlam1lt, hδ0, hδ1, hcon]
     exact hSh (q := q) hqSh (β := ρ₁.re) (τ := (2:ℝ) * ρ₁.im) hβre hlam_le hτabs hτ1
   -- ## (k = 3) the `χ₁`-term with an empty window
   have hb3 : Ksum q f (Real.log q)
@@ -438,10 +438,10 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     have hs3im : s3.im = 3 * ρ₁.im := by rw [hs3def]; simp
     have hsL3 : |s3.im| ≤ 3 * L := by
       rw [hs3im, abs_mul, abs_of_nonneg (by norm_num : (0:ℝ) ≤ 3)]
-      linarith [hγL]
+      linarith only [hγL]
     have hsim3 : |s3.im| ≤ 10 * Real.log q := by
       have h1 : |s3.im| ≤ 3 * L := hsL3
-      linarith [h4L]
+      linarith only [h4L, hδ0, hδ1, hCdecpos, hCLg, hsL3]
     have hzw := window_condition hL hR hχ1 hδ1 (s := s3) hsL3 hlogq hs3re
     have h := hT (q := q) hqT χ₁ hχ1 (s := s3) (by rw [hs3re]; exact hβre)
       (by rw [hs3im] at hsim3 ⊢; exact hsim3) (by rw [hs3re]; exact hslo) hL52 hzw
@@ -454,14 +454,14 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
     rw [hpow4]
     have hτabs : |(4:ℝ) * ρ₁.im| ≤ Real.log q := by
       rw [abs_mul, abs_of_nonneg (by norm_num : (0:ℝ) ≤ 4)]
-      linarith [hγL, h4L]
+      linarith only [hγL, h4L]
     have hτ1 : 1 ≤ |(4:ℝ) * ρ₁.im| := by
       rw [abs_mul, abs_of_nonneg (by norm_num : (0:ℝ) ≤ 4)]
-      linarith [hγ1]
+      linarith only [hγ1, hδ0, hδ1, hIm]
     have hlam_le : Real.log q * (1 - ρ₁.re) ≤ 1 := by
       rw [show Real.log q * (1 - ρ₁.re) = Work.LinnikContract.lamOf q ρ₁ by
         rw [Work.LinnikContract.lamOf]; ring]
-      linarith [hlam1lt]
+      linarith only [hlam1lt, hδ0, hδ1, hcon]
     exact hSh (q := q) hqSh (β := ρ₁.re) (τ := (4:ℝ) * ρ₁.im) hβre hlam_le hτabs hτ1
   -- ## the (9.16) combination
   have hcomb := Work.ZeroFreeTables.ksum_trigPoly_nonneg (q := q) (f := f) hfnn
@@ -498,7 +498,7 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
         + 6000 * (f 0 * (1/8 + 1/1000000) * Real.log q)
         + 1250 * (f 0 * (1/1000) * Real.log q + Cdec) := by
     rw [hexp]
-    linarith [hK0, hK1, hK2, hK3, hK4]
+    linarith only [hK0, hK1, hK2, hK3, hK4, this, hb0, hb1, hb2, hb3, hb4]
   -- ## the monotonicity of the principal term and the numeric core
   have hA_le : (∫ t in (0:ℝ)..x₀, Real.exp (Work.LinnikContract.lamOf q ρ₁ * t) * f t)
       ≤ (∫ t in (0:ℝ)..x₀, Real.exp (lam0 * t) * f t) := by
@@ -527,11 +527,11 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
         ≤ 14379 * (11 - (15:ℝ)/2 * ((111:ℝ)/100)) - 24480 * (10 * (1 - ((111:ℝ)/100)/2)^2)
         + 30480 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/8 + 1/1000000)
         + 30529 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/1000) := by
-      nlinarith [hθ_ge, hθ_le]
+      nlinarith only [hθ_ge, hθ_le, hθbounds]
     have h2 : 14379 * (11 - (15:ℝ)/2 * ((111:ℝ)/100)) - 24480 * (10 * (1 - ((111:ℝ)/100)/2)^2)
         + 30480 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/8 + 1/1000000)
         + 30529 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/1000) ≤ -495 := by norm_num
-    linarith [h1, h2]
+    linarith only [h1, h2, hδ0, hδ1]
   have hcombine : 14379 * (Real.log q * (∫ t in (0:ℝ)..x₀,
           Real.exp (Work.LinnikContract.lamOf q ρ₁ * t) * f t)
         + f 0 * (1/1000) * Real.log q)
@@ -547,7 +547,7 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
         - 24480 * (10 * (1 - θ/2)^2) + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000)
       ≤ 14379 * (11 - (15:ℝ)/2 * θ) - 24480 * (10 * (1 - θ/2)^2)
         + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000) := by
-    linarith [hA_le']
+    linarith only [hA_le', hFnegint, hA_le]
   have hstep1 : 0 ≤ Real.log q * (14379 * (∫ t in (0:ℝ)..x₀,
           Real.exp (Work.LinnikContract.lamOf q ρ₁ * t) * f t)
         - 24480 * (10 * (1 - θ/2)^2) + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000))
@@ -566,8 +566,8 @@ theorem RectC_Z2 : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ �
       ≤ Real.log q * (-495) + 16150 * Cdec :=
     add_le_add (mul_le_mul_of_nonneg_left hPhi hlogq.le) le_rfl
   have hfin : 0 ≤ Real.log q * (-495) + 16150 * Cdec := le_trans hstep1 (le_trans hstep2 hstep3)
-  have hthr : 16150 * Cdec < 495 * Real.log q := by nlinarith [hCLg, hCdecpos]
-  linarith
+  have hthr : 16150 * Cdec < 495 * Real.log q := by linarith only [hCLg, hCdecpos, this, hδ0, hδ1, hb0, hb1, hb2, hb3, hb4, hexp, hcomb', hstep2, hstep3]
+  linarith only [this, hδ0, hδ1, hCLg, hb0, hb1, hb2, hb3, hb4, hexp, hcomb', hstep2, hstep3]
 
 end
 

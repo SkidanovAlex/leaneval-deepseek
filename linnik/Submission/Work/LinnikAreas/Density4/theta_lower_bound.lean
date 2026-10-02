@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.vonMangoldt_sq_sum_bound
-import Submission.Work.LinnikAreas.Density4.ThetaPNTImports
 import Submission.Commons.NumberTheory.Chebyshev.theta_abs_sub_id_le
 
 namespace Work.LinnikAreas.Density4

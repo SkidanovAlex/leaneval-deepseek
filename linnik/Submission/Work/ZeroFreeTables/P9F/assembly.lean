@@ -13,7 +13,6 @@ with `χ_b ∉ {χ₁^{±1}}`; taking `χ₂ := χ_b`, a second bad pair `(χ, �
 import Mathlib
 import Submission.Work.ZeroFreeTables.P9F.Defs
 import Submission.Work.ZeroFreeTables.P9F.La_defs
-import Submission.Work.LinnikAreas.le_re_of_LFunction_primitive_eq_zero
 import Submission.Work.ZeroFreeTables.hbLemma9_3_engine
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 import Submission.Commons.NumberTheory.DirichletCharacter.lFunction_order_eq_completed_order_on_strip

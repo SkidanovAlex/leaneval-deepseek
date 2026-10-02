@@ -24,9 +24,9 @@ The mechanism is the classical pointwise one.  For `n` a unit of `ZMod q` write
 -/
 import Mathlib
 import Submission.Work.ZeroFreeTables.XY.XYEngineDefs
-import Submission.Work.ZeroFreeTables.XY.NebenfallOrd2
 import Submission.Work.ZeroFreeTables.ksum_trigPoly_nonneg
 import Submission.Work.ZeroFreeTables.TrigPolyPos
+import Submission.Work.ZeroFreeTables.XY.KsumFiveNonneg
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

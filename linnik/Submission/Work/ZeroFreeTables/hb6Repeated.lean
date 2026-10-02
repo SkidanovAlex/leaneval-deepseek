@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.NumberTheory.Linnik.scratch_l63
 import Submission.Work.NumberTheory.Linnik.scratch_l52phi_imprim
 import Submission.Work.NumberTheory.Linnik.scratch_kpos_real
-import Submission.Work.LinnikAreas.lemma6_3_wide
 import Submission.Work.LinnikAreas.principalKsumWide
 
 open scoped BigOperators

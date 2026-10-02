@@ -21,14 +21,14 @@ lemma repulsionSizesRHeightAux {q A X : ℝ} (hq : 202 ≤ q) (hA : 1 ≤ A) (hX
   have hq2 : (202:ℝ)^2 ≤ q^2 := pow_le_pow_left₀ (by norm_num) hq 2
   have hq3 : (202:ℝ)^3 ≤ q^3 := pow_le_pow_left₀ (by norm_num) hq 3
   have h1 : 2 * Real.exp 1 * q ≤ q^3 / 2 := by
-    have h4e : 4 * Real.exp 1 ≤ q^2 := by nlinarith [hq2, he1lt3]
+    have h4e : 4 * Real.exp 1 ≤ q^2 := by nlinarith only [hq2, he1lt3]
     have hmul : 4 * Real.exp 1 * q ≤ q^2 * q := mul_le_mul_of_nonneg_right h4e hq0.le
     have hq3eq : q^2 * q = q^3 := by ring
     linarith [hmul, hq3eq]
-  have h2 : 2 * Real.exp 1 * 1 ≤ q^3 / 2 := by nlinarith [hq3, he1lt3]
-  have h3 : 2 * Real.exp 1 * (q + 1) ≤ q^3 := by nlinarith [h1, h2]
-  have hA2 : (1:ℝ) ≤ A^2 := by nlinarith [hA]
-  have h4 : q^3 ≤ A^2 * q^3 := by nlinarith [hA2, pow_nonneg hq0.le 3]
+  have h2 : 2 * Real.exp 1 * 1 ≤ q^3 / 2 := by nlinarith only [hq3, he1lt3]
+  have h3 : 2 * Real.exp 1 * (q + 1) ≤ q^3 := by nlinarith only [h1, h2]
+  have hA2 : (1:ℝ) ≤ A^2 := by nlinarith only [hA]
+  have h4 : q^3 ≤ A^2 * q^3 := by nlinarith only [hA2, pow_nonneg hq0.le 3]
   have h5 : 2 * Real.exp 1 * ((⌈max 200 X⌉₊ : ℕ) : ℝ) < 2 * Real.exp 1 * (q + 1) :=
     mul_lt_mul_of_pos_left hRlt (by positivity)
   linarith [h5, h3, h4]
@@ -88,11 +88,11 @@ lemma repulsionSizesNHeightAux {q X Y γ : ℝ} (hq1 : 1 ≤ q) (hq3 : 3 ≤ q ^
       _ ≤ q ^ (11/5:ℝ) := Real.rpow_le_rpow_of_exponent_le hq1 (by norm_num)
       _ ≤ q ^ (11/5:ℝ) * (5 + |γ|) ^ (11/10:ℝ) := by
           have h1 : (1:ℝ) ≤ (5 + |γ|) ^ (11/10:ℝ) := Real.one_le_rpow h5g1 (by norm_num)
-          nlinarith [h1, Real.rpow_nonneg hq0.le (11/5:ℝ)]
+          nlinarith only [h1, Real.rpow_nonneg hq0.le (11/5:ℝ)]
   have h9 : (9:ℝ) ≤ P := by
     rw [hPdef]
     have h1 : (1:ℝ) ≤ (5 + |γ|) ^ (11/10:ℝ) := Real.one_le_rpow h5g1 (by norm_num)
-    nlinarith [h9q, h1, Real.rpow_nonneg hq0.le (11/5:ℝ)]
+    nlinarith only [h9q, h1, Real.rpow_nonneg hq0.le (11/5:ℝ)]
   have h2le : (2:ℝ) ≤ P - 1 := by linarith [h9]
   have hXle : X ≤ P - 1 := by
     by_cases h : 0 ≤ X
@@ -154,7 +154,7 @@ theorem RepulsionSizesReal {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
   have hLpos : 0 < Real.log (q:ℝ) := by linarith
   have hXe : Real.exp 100000000 ≤ (q:ℝ) := (Real.le_log_iff_exp_le hxpos).mp hlogq
   have hA0 : 0 < A := lt_of_lt_of_le zero_lt_one hA1
-  have hA2ge1 : (1:ℝ) ≤ A^2 := by nlinarith [hA1]
+  have hA2ge1 : (1:ℝ) ≤ A^2 := by nlinarith only [hA1]
   have hqcont : (1:ℝ) < (q:ℝ) := by
     have h1 : (1:ℝ) < Real.exp 100000000 := by
       rw [← Real.exp_zero]
@@ -212,14 +212,14 @@ theorem RepulsionSizesReal {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
   have hexp2 : Real.exp (2 * (Real.log (q:ℝ))^(3/4:ℝ)) ≤ (q:ℝ)^(1/50:ℝ) := by
     have h1 : 2 * (Real.log (q:ℝ))^(3/4:ℝ) ≤ Real.log (q:ℝ) * (1/50) := by
       have h2 : Real.log (q:ℝ) / 100 = Real.log (q:ℝ) * (1/100) := by ring
-      nlinarith [h34, h2]
+      nlinarith only [h34, h2]
     calc Real.exp (2 * (Real.log (q:ℝ))^(3/4:ℝ))
         ≤ Real.exp (Real.log (q:ℝ) * (1/50)) := Real.exp_le_exp.mpr h1
       _ = (q:ℝ)^(1/50:ℝ) := by rw [Real.rpow_def_of_pos hxpos]
   have hexp8 : Real.exp (8 * (Real.log (q:ℝ))^(3/4:ℝ)) ≤ (q:ℝ)^(2/25:ℝ) := by
     have h1 : 8 * (Real.log (q:ℝ))^(3/4:ℝ) ≤ Real.log (q:ℝ) * (2/25) := by
       have h2 : 8 * (Real.log (q:ℝ) / 100) = Real.log (q:ℝ) * (2/25) := by ring
-      nlinarith [h34]
+      nlinarith only [h34]
     calc Real.exp (8 * (Real.log (q:ℝ))^(3/4:ℝ))
         ≤ Real.exp (Real.log (q:ℝ) * (2/25)) := Real.exp_le_exp.mpr h1
       _ = (q:ℝ)^(2/25:ℝ) := by rw [Real.rpow_def_of_pos hxpos]
@@ -237,14 +237,14 @@ theorem RepulsionSizesReal {q : ℕ} [NeZero q] {A B Cd cZ T β₁ γ : ℝ}
     rw [Real.rpow_def_of_pos hxpos]
     have h1 : (3:ℝ) ≤ Real.exp 2 := by have := Real.add_one_le_exp (2:ℝ); linarith
     have h2 : Real.exp 2 ≤ Real.exp (Real.log (q:ℝ) * (1/1000)) := by
-      apply Real.exp_le_exp.mpr; nlinarith [hlogq]
+      apply Real.exp_le_exp.mpr; nlinarith only [hlogq]
     linarith [h1, h2]
   have hδ50 : (1-β₁)⁻¹ ≤ (q:ℝ)^(1/50:ℝ) := by
     have hLs : (Real.log (q:ℝ))^2 ≤ (Real.log (q:ℝ))^4 := by
       have hL1 : (1:ℝ) ≤ Real.log (q:ℝ) := by linarith
       have h2 : (Real.log (q:ℝ))^2 * 1 ≤ (Real.log (q:ℝ))^2 * (Real.log (q:ℝ))^2 := by
         apply mul_le_mul_of_nonneg_left _ (pow_nonneg hLpos.le 2)
-        nlinarith [hL1]
+        nlinarith only [hL1]
       have h3 : (Real.log (q:ℝ))^2 * (Real.log (q:ℝ))^2 = (Real.log (q:ℝ))^4 := by ring
       linarith [h2, h3]
     have h1 : (q:ℝ)^(1/100:ℝ) * (Real.log (q:ℝ))^2 ≤ (q:ℝ)^(1/100:ℝ) * (Real.log (q:ℝ))^4 :=

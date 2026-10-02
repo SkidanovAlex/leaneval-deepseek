@@ -43,7 +43,7 @@ theorem K2_pos (a c : ℝ) (ha : 0 < a) (hc : 0 < c) : K2 a c = 2 * Real.pi * c 
     apply MeasureTheory.integral_congr_ae
     filter_upwards with t
     have hne : (a:ℂ)+(t:ℂ)*Complex.I ≠ 0 := by
-      intro hh; have := congrArg Complex.re hh; simp at this; linarith
+      intro hh; have := congrArg Complex.re hh; simp at this; linarith only [ha, this]
     rw [cpow_neg_two _ hne]
     rw [mul_comm ((a:ℂ)+(t:ℂ)*Complex.I) (c:ℂ)]
   have hh : 1 / (2 * (Real.pi : ℂ)) * K2 a c = (c : ℂ) := by
@@ -68,10 +68,10 @@ lemma integrable_K2 (s c : ℝ) (hs : 0 < s) (hc : c ≤ 0) :
         have hm : ((s:ℂ)+(t:ℂ)*Complex.I)*((s:ℂ)+(t:ℂ)*Complex.I) = 0 := by rwa [sq] at h
         exact mul_self_eq_zero.mp hm
       have := congrArg Complex.re h0
-      simp at this; linarith
+      simp at this; linarith only [hs, this]
   · filter_upwards with t
     rw [norm_K2_line]
-    have hexp : Real.exp (c*s) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith)
+    have hexp : Real.exp (c*s) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith only [hs, hc])
     calc Real.exp (c*s) * (s^2+t^2)⁻¹ ≤ 1 * (s^2+t^2)⁻¹ :=
           mul_le_mul_of_nonneg_right hexp (by positivity)
       _ ≤ (1+1/s^2) * (1+t^2)⁻¹ := by
@@ -80,7 +80,7 @@ lemma integrable_K2 (s c : ℝ) (hs : 0 < s) (hc : c ≤ 0) :
             rw [div_le_iff₀ (by positivity)]
             have hs2 : s^2 ≠ 0 := by positivity
             field_simp
-            nlinarith [sq_nonneg s, sq_nonneg t, sq_nonneg (s^2)]
+            linarith only [sq_nonneg s, sq_nonneg t, sq_nonneg (s^2)]
           calc (s^2+t^2)⁻¹ ≤ ((1+t^2)/(1+1/s^2))⁻¹ := inv_anti₀ (by positivity) hkey
             _ = (1+1/s^2)*(1+t^2)⁻¹ := by rw [inv_div, div_eq_mul_inv]
 
@@ -99,7 +99,7 @@ theorem K2_nonpos (a c : ℝ) (ha : 0 < a) (hc : c ≤ 0) : K2 a c = 0 := by
         have hm : ((x:ℂ)+(R:ℂ)*Complex.I)*((x:ℂ)+(R:ℂ)*Complex.I) = 0 := by rwa [sq] at h
         exact mul_self_eq_zero.mp hm
       have := congrArg Complex.im h0
-      simp at this; linarith
+      simp at this; linarith only [hR, this]
   have hquad : ∀ Q : ℝ, 0 < Q → (∫ t : ℝ, (Q^2+t^2)⁻¹) = Real.pi * Q⁻¹ := by
     intro Q hQ
     have hsub : (∫ t : ℝ, (1+(t/Q)^2)⁻¹) = Q * Real.pi := by
@@ -145,13 +145,13 @@ theorem K2_nonpos (a c : ℝ) (ha : 0 < a) (hc : c ≤ 0) : K2 a c = 0 := by
                 intervalIntegrable_const ?_
               intro x hx
               rw [norm_K2_line]
-              have hexp : Real.exp (c*x) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith [hx.1])
+              have hexp : Real.exp (c*x) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith only [hx.1, ha, hc, hx])
               calc Real.exp (c*x) * (x^2+R^2)⁻¹ ≤ 1 * (x^2+R^2)⁻¹ :=
                     mul_le_mul_of_nonneg_right hexp (by positivity)
                 _ ≤ (R^2)⁻¹ := by
                     rw [one_mul]
                     apply inv_anti₀ (by positivity)
-                    nlinarith [sq_nonneg x]
+                    linarith only [sq_nonneg x]
           _ = (Q-a)*((R^2)⁻¹) := by rw [intervalIntegral.integral_const, smul_eq_mul]
       refine squeeze_zero_norm' (a := fun R : ℝ => (Q-a)*(R^2)⁻¹) ?_ ?_
       · filter_upwards [eventually_gt_atTop (0:ℝ)] with R hR
@@ -173,7 +173,7 @@ theorem K2_nonpos (a c : ℝ) (ha : 0 < a) (hc : c ≤ 0) : K2 a c = 0 := by
               have hm : ((x:ℂ)-(R:ℂ)*Complex.I)*((x:ℂ)-(R:ℂ)*Complex.I) = 0 := by rwa [sq] at h
               exact mul_self_eq_zero.mp hm
             have := congrArg Complex.im h0
-            simp at this; linarith
+            simp at this; linarith only [hR, this]
         calc ‖∫ x in a..Q, F ((x:ℂ)-(R:ℂ)*Complex.I)‖
             ≤ ∫ x in a..Q, ‖F ((x:ℂ)-(R:ℂ)*Complex.I)‖ :=
               intervalIntegral.norm_integral_le_integral_norm hQ
@@ -184,13 +184,13 @@ theorem K2_nonpos (a c : ℝ) (ha : 0 < a) (hc : c ≤ 0) : K2 a c = 0 := by
               intro x hx
               rw [show (x:ℂ)-(R:ℂ)*Complex.I = (x:ℂ)+((-R:ℝ):ℂ)*Complex.I from by push_cast; ring]
               rw [norm_K2_line]
-              have hexp : Real.exp (c*x) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith [hx.1])
+              have hexp : Real.exp (c*x) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith only [hx.1, ha, hc, hx])
               calc Real.exp (c*x) * (x^2+(-R)^2)⁻¹ ≤ 1 * (x^2+(-R)^2)⁻¹ :=
                     mul_le_mul_of_nonneg_right hexp (by positivity)
                 _ ≤ (R^2)⁻¹ := by
                     rw [one_mul]
                     apply inv_anti₀ (by positivity)
-                    nlinarith [sq_nonneg x]
+                    linarith only [sq_nonneg x]
           _ = (Q-a)*((R^2)⁻¹) := by rw [intervalIntegral.integral_const, smul_eq_mul]
       refine squeeze_zero_norm' (a := fun R : ℝ => (Q-a)*(R^2)⁻¹) ?_ ?_
       · filter_upwards [eventually_gt_atTop (0:ℝ)] with R hR
@@ -210,7 +210,7 @@ theorem K2_nonpos (a c : ℝ) (ha : 0 < a) (hc : c ≤ 0) : K2 a c = 0 := by
           apply integral_congr_ae; filter_upwards with t; rw [norm_K2_line]
       _ = Real.exp (c*Q) * (∫ t : ℝ, (Q^2+t^2)⁻¹) := integral_const_mul _ _
       _ = Real.exp (c*Q) * (Real.pi * Q⁻¹) := by rw [hquad Q hQ]
-      _ ≤ 1 * (Real.pi * Q⁻¹) := mul_le_mul_of_nonneg_right (Real.exp_le_one_iff.mpr (by nlinarith)) (by positivity)
+      _ ≤ 1 * (Real.pi * Q⁻¹) := mul_le_mul_of_nonneg_right (Real.exp_le_one_iff.mpr (by nlinarith only [hc, hQ])) (by positivity)
       _ = Real.pi * Q⁻¹ := one_mul _
   have hlim : Tendsto (fun Q : ℝ => (∫ t : ℝ, F ((Q:ℂ)+(t:ℂ)*Complex.I))) atTop (nhds 0) := by
     refine squeeze_zero_norm' (a := fun Q : ℝ => Real.pi * Q⁻¹) ?_ ?_
@@ -238,7 +238,7 @@ lemma integrable_exp_mul_K2 (a c : ℝ) (ha : 0 < a) :
       have h0 : (a:ℂ)+(u:ℂ)*Complex.I = 0 := by
         have hm : ((a:ℂ)+(u:ℂ)*Complex.I)*((a:ℂ)+(u:ℂ)*Complex.I) = 0 := by rwa [sq] at h
         exact mul_self_eq_zero.mp hm
-      have := congrArg Complex.re h0; simp at this; linarith
+      have := congrArg Complex.re h0; simp at this; linarith only [ha, this]
   · filter_upwards with u
     rw [Complex.norm_mul, Complex.norm_exp, norm_inv, norm_pow]
     have hre : ((c:ℂ)*((u:ℂ)*Complex.I)).re = 0 := by
@@ -251,7 +251,7 @@ lemma integrable_exp_mul_K2 (a c : ℝ) (ha : 0 < a) :
       rw [div_le_iff₀ (by positivity)]
       have ha2 : a^2 ≠ 0 := by positivity
       field_simp
-      nlinarith [sq_nonneg a, sq_nonneg u]
+      nlinarith only [sq_nonneg a, sq_nonneg u]
     calc (a^2+u^2)⁻¹ ≤ ((1+u^2)/(1+1/a^2))⁻¹ := inv_anti₀ (by positivity) hkey
       _ = (1+1/a^2)*(1+u^2)⁻¹ := by rw [inv_div, div_eq_mul_inv]
 
@@ -318,7 +318,7 @@ lemma integrable_gK (a lam : ℝ) (ha : 0 < a) :
       have h0 : (a:ℂ)+(u:ℂ)*Complex.I = 0 := by
         have hm : ((a:ℂ)+(u:ℂ)*Complex.I)*((a:ℂ)+(u:ℂ)*Complex.I) = 0 := by rwa [sq] at h
         exact mul_self_eq_zero.mp hm
-      have := congrArg Complex.re h0; simp at this; linarith
+      have := congrArg Complex.re h0; simp at this; linarith only [ha, this]
   · filter_upwards with u
     unfold gK
     rw [norm_mul]
@@ -342,7 +342,7 @@ lemma integrable_gK (a lam : ℝ) (ha : 0 < a) :
         rw [div_le_iff₀ (by positivity)]
         have ha2 : a^2 ≠ 0 := by positivity
         field_simp
-        nlinarith [sq_nonneg a, sq_nonneg u]
+        nlinarith only [sq_nonneg a, sq_nonneg u]
       calc (a^2+u^2)⁻¹ ≤ ((1+u^2)/(1+1/a^2))⁻¹ := inv_anti₀ (by positivity) hkey
         _ = (1+1/a^2)*(1+u^2)⁻¹ := by rw [inv_div, div_eq_mul_inv]
     calc ‖Complex.exp (-(((a:ℂ) + (u:ℂ) * Complex.I) * (lam:ℂ))) - 1‖ * (a^2+u^2)⁻¹
@@ -360,7 +360,7 @@ lemma ghat_eq' (a lam r : ℝ) (ha : 0 < a) :
 
 lemma integrable_exp_restrict (P : ℂ) (hP : 0 < P.re) :
     IntegrableOn (fun r : ℝ => Real.exp (-P.re * r)) (Ioi (0:ℝ)) volume := by
-  have h := integrableOn_exp_mul_Ioi (a := -P.re) (by linarith) (c := 0)
+  have h := integrableOn_exp_mul_Ioi (a := -P.re) (by linarith only [hP]) (c := 0)
   simpa only [neg_mul] using h
 
 lemma integrable_fubini (a lam : ℝ) (ha : 0 < a) (P : ℂ) (hP : 0 < P.re) :
@@ -384,7 +384,7 @@ lemma integrable_fubini (a lam : ℝ) (ha : 0 < a) (P : ℂ) (hP : 0 < P.re) :
           have h0 : (a:ℂ)+(u:ℂ)*Complex.I = 0 := by
             have hm : ((a:ℂ)+(u:ℂ)*Complex.I)*((a:ℂ)+(u:ℂ)*Complex.I) = 0 := by rwa [sq] at h
             exact mul_self_eq_zero.mp hm
-          have := congrArg Complex.re h0; simp at this; linarith
+          have := congrArg Complex.re h0; simp at this; linarith only [ha, this]
       exact hcont.measurable.comp measurable_fst
     · exact Measurable.ite (measurableSet_Ioi.preimage measurable_snd)
         (Complex.continuous_exp.measurable.comp (by fun_prop)) measurable_const
@@ -421,7 +421,7 @@ lemma J_fubini (a lam : ℝ) (ha : 0 < a) (P : ℂ) (hP : 0 < P.re) :
     have hP' : (-(P - (u:ℂ)*Complex.I)).re < 0 := by
       simp only [Complex.neg_re, Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
         Complex.I_re, Complex.I_im, mul_one, mul_zero, sub_zero, Complex.neg_im, Complex.sub_im, neg_zero]
-      linarith
+      linarith only [hP]
     have h := integral_exp_mul_complex_Ioi (a := -(P - (u:ℂ)*Complex.I)) hP' 0
     have hexp : (∫ r : ℝ in Ioi (0:ℝ), Complex.exp (-((P - (u:ℂ)*Complex.I)*(r:ℂ))))
         = (P - (u:ℂ)*Complex.I)⁻¹ := by
@@ -502,10 +502,10 @@ theorem J_eq (a lam x b j : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hxj : 0 < x + j)
   have hPre_eq : P.re = 2*(x+j) := by
     rw [hPdef]
     simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]
-  have hPre : 0 < P.re := by rw [hPre_eq]; linarith
+  have hPre : 0 < P.re := by rw [hPre_eq]; linarith only [hxj]
   have hcre : 0 < c.re := by
     have h1 : c.re = a + P.re := by rw [hcdef]; simp
-    rw [h1]; linarith [ha, hPre]
+    rw [h1]; linarith only [ha, hPre, hxj, hPre_eq]
   have hcne : c ≠ 0 := by intro h; rw [h] at hcre; simp at hcre
   have hstep1 : (∫ u : ℝ, gK a lam u / ((x+j:ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I))
       = 2 * (∫ u : ℝ, gK a lam u / (P - (u:ℂ)*Complex.I)) := by
@@ -514,7 +514,7 @@ theorem J_eq (a lam x b j : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hxj : 0 < x + j)
       rw [hPdef]; push_cast; ring
     rw [hz]
     have hne : 2*((x+j:ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) ≠ 0 := by
-      intro h; have := congrArg Complex.re h; simp at this; linarith [hxj]
+      intro h; have := congrArg Complex.re h; simp at this; linarith only [hxj, this]
     field_simp
   rw [hstep1, J_fubini a lam ha P hPre]
   have hpoint : ∀ r : ℝ, Complex.exp (-(P*(r:ℂ))) * ghat a lam r
@@ -533,7 +533,7 @@ theorem J_eq (a lam x b j : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hxj : 0 < x + j)
   rw [hstep2]
   have hdisj : Disjoint (Ioc (0:ℝ) lam) (Ioi lam) := by
     rw [Set.disjoint_left]; intro r hr hr2
-    rw [mem_Ioc] at hr; rw [mem_Ioi] at hr2; linarith
+    rw [mem_Ioc] at hr; rw [mem_Ioi] at hr2; linarith only [hr, hr2]
   have hunion : Ioc (0:ℝ) lam ∪ Ioi lam = Ioi (0:ℝ) := by
     ext r; simp only [mem_union, mem_Ioc, mem_Ioi]
     constructor
@@ -545,12 +545,12 @@ theorem J_eq (a lam x b j : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hxj : 0 < x + j)
   have hvalIoc : ∀ r ∈ Ioc (0:ℝ) lam, (K2 a (r-lam) - K2 a r) = -(2*Real.pi*r) := by
     intro r hr
     rw [mem_Ioc] at hr
-    rw [K2_nonpos a (r-lam) ha (by linarith), K2_pos a r ha hr.1]
+    rw [K2_nonpos a (r-lam) ha (by linarith only [hr]), K2_pos a r ha hr.1]
     push_cast; ring
   have hvalIoi : ∀ r ∈ Ioi lam, (K2 a (r-lam) - K2 a r) = -(2*Real.pi*lam) := by
     intro r hr
     rw [mem_Ioi] at hr
-    rw [K2_pos a (r-lam) ha (by linarith), K2_pos a r ha (by linarith)]
+    rw [K2_pos a (r-lam) ha (by linarith only [hr]), K2_pos a r ha (by linarith only [hlam, hr])]
     push_cast; ring
   have hcongrIoc : (∫ r in Ioc (0:ℝ) lam, Complex.exp (-(c*(r:ℂ))) * (K2 a (r-lam) - K2 a r))
       = ∫ r in Ioc (0:ℝ) lam, (-(2*Real.pi*r)) * Complex.exp (-(c*(r:ℂ))) := by
@@ -570,7 +570,7 @@ theorem J_eq (a lam x b j : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hxj : 0 < x + j)
         (Complex.continuous_exp.comp (by fun_prop)).continuousOn)).mono_set Ioc_subset_Icc_self
   have hint2 : IntegrableOn (fun r : ℝ => (-(2*Real.pi*lam)) * Complex.exp (-(c*(r:ℂ)))) (Ioi lam) := by
     have hbase : IntegrableOn (fun r : ℝ => Real.exp (-c.re * r)) (Ioi lam) :=
-      integrableOn_exp_mul_Ioi (a := -c.re) (by linarith) lam
+      integrableOn_exp_mul_Ioi (a := -c.re) (by linarith only [hcre]) lam
     refine MeasureTheory.Integrable.mono' (hbase.const_mul ‖(-(2*Real.pi*lam) : ℂ)‖) ?_ ?_
     · apply Measurable.aestronglyMeasurable
       exact Measurable.mul measurable_const
@@ -622,9 +622,9 @@ lemma integrable_log_one_add_sq :
   refine hdom.mono' ?_ ?_
   · exact ((by fun_prop : Measurable (fun u : ℝ => Real.log (1+u^2)/(1+u^2)))).aestronglyMeasurable
   · filter_upwards with u
-    rw [Real.norm_eq_abs, abs_of_nonneg (by apply div_nonneg _ (by positivity); apply Real.log_nonneg; nlinarith [sq_nonneg u])]
+    rw [Real.norm_eq_abs, abs_of_nonneg (by apply div_nonneg _ (by positivity); apply Real.log_nonneg; linarith only [sq_nonneg u])]
     rw [div_le_iff₀ (by positivity)]
-    have hpos : (0:ℝ) < 1+u^2 := by nlinarith [sq_nonneg u]
+    have hpos : (0:ℝ) < 1+u^2 := by linarith only [sq_nonneg u]
     have hlog := Real.log_le_rpow_div (x := 1+u^2) (ε := (1/4:ℝ)) (le_of_lt hpos) (by norm_num)
     have hrw : (1+u^2)^(1/4:ℝ) / (1/4:ℝ) = 4*(1+u^2)^(1/4:ℝ) := by
       rw [div_eq_mul_inv, show ((1:ℝ)/4)⁻¹ = 4 by norm_num]; ring
@@ -659,7 +659,7 @@ lemma norm_gK_bound (a lam u : ℝ) (ha : 0 < a) :
       rw [div_le_iff₀ (by positivity)]
       have ha2 : a^2 ≠ 0 := by positivity
       field_simp
-      nlinarith [sq_nonneg a, sq_nonneg u]
+      nlinarith only [sq_nonneg a, sq_nonneg u]
     calc (a^2+u^2)⁻¹ ≤ ((1+u^2)/(1+1/a^2))⁻¹ := inv_anti₀ (by positivity) hkey
       _ = (1+1/a^2)*(1+u^2)⁻¹ := by rw [inv_div, div_eq_mul_inv]
   calc ‖Complex.exp (-(((a:ℂ) + (u:ℂ) * Complex.I) * (lam:ℂ))) - 1‖ * (a^2+u^2)⁻¹
@@ -683,38 +683,38 @@ lemma integrable_log_gK (a lam b : ℝ) (ha : 0 < a) :
   · filter_upwards with u
     have hnn : (0:ℝ) ≤ (Real.log (2 + |b - u|/2) + 7) * ‖gK a lam u‖ := by
       apply mul_nonneg _ (norm_nonneg _)
-      have hx : (0:ℝ) ≤ Real.log (2 + |b - u|/2) := Real.log_nonneg (by nlinarith [abs_nonneg (b-u)])
-      linarith
+      have hx : (0:ℝ) ≤ Real.log (2 + |b - u|/2) := Real.log_nonneg (by linarith only [abs_nonneg (b-u)])
+      linarith only [hx]
     rw [Real.norm_eq_abs, abs_of_nonneg hnn]
     have hbk := norm_gK_bound a lam u ha
     have hsub : |b - u| ≤ |b| + |u| := abs_sub_le_iff.mpr
-      ⟨by linarith [le_abs_self b, neg_le_abs u], by linarith [le_abs_self u, neg_le_abs b]⟩
+      ⟨by linarith only [le_abs_self b, neg_le_abs u], by linarith only [le_abs_self u, neg_le_abs b]⟩
     have hbabs : |b - u|/2 ≤ (|b| + |u|)/2 := div_le_div_of_nonneg_right hsub (by norm_num)
     have hlogb : Real.log (2 + |b - u|/2) ≤ Real.log (4+|b|) + Real.log (2+|u|) := by
       have h1 : 2 + |b - u|/2 ≤ (4+|b|)*(2+|u|) := by
-        nlinarith [hbabs, abs_nonneg b, abs_nonneg u]
-      have h2 : (0:ℝ) < 2 + |b-u|/2 := by nlinarith [abs_nonneg (b-u)]
+        nlinarith only [hbabs, abs_nonneg b, abs_nonneg u, hsub]
+      have h2 : (0:ℝ) < 2 + |b-u|/2 := by linarith only [abs_nonneg (b-u)]
       have h3 : (0:ℝ) < (4+|b|)*(2+|u|) := by
         have hb : (0:ℝ) ≤ |b| := abs_nonneg b
         have hu : (0:ℝ) ≤ |u| := abs_nonneg u
-        nlinarith
+        linarith only [h1, h2]
       calc Real.log (2 + |b - u|/2) ≤ Real.log ((4+|b|)*(2+|u|)) := Real.log_le_log h2 h1
         _ = Real.log (4+|b|) + Real.log (2+|u|) := Real.log_mul (by positivity) (by positivity)
     have hlogu : Real.log (2+|u|) ≤ Real.log 3 + Real.log (1+u^2) := by
-      have h1 : 2 + |u| ≤ 3*(1+u^2) := by nlinarith [abs_nonneg u, sq_abs u, sq_nonneg u]
-      have h2 : (0:ℝ) < 2+|u| := by nlinarith [abs_nonneg u]
-      have h3 : (0:ℝ) < 3*(1+u^2) := by nlinarith [sq_nonneg u]
+      have h1 : 2 + |u| ≤ 3*(1+u^2) := by nlinarith only [abs_nonneg u, sq_abs u, sq_nonneg u]
+      have h2 : (0:ℝ) < 2+|u| := by linarith only [abs_nonneg u]
+      have h3 : (0:ℝ) < 3*(1+u^2) := by linarith only [sq_nonneg u]
       calc Real.log (2+|u|) ≤ Real.log (3*(1+u^2)) := Real.log_le_log h2 h1
         _ = Real.log 3 + Real.log (1+u^2) := Real.log_mul (by norm_num) (by positivity)
     have hABE : Real.log (2 + |b - u|/2) + 7 ≤ Real.log (4+|b|) + 7 + Real.log 3 + Real.log (1+u^2) := by
       have h1 := hlogb
       have h2 := hlogu
-      linarith
+      linarith only [hlogb, hlogu]
     calc (Real.log (2 + |b - u|/2) + 7) * ‖gK a lam u‖
         ≤ (Real.log (2 + |b - u|/2) + 7) * (C/(1+u^2)) :=
           mul_le_mul_of_nonneg_left hbk (by
-            have : (1:ℝ) ≤ 2 + |b-u|/2 := by nlinarith [abs_nonneg (b-u)]
-            linarith [Real.log_nonneg this])
+            have : (1:ℝ) ≤ 2 + |b-u|/2 := by linarith only [abs_nonneg (b-u)]
+            linarith only [Real.log_nonneg this, this])
       _ ≤ (Real.log (4+|b|) + 7 + Real.log 3 + Real.log (1+u^2)) * (C/(1+u^2)) :=
           mul_le_mul_of_nonneg_right hABE (div_nonneg (le_of_lt hCpos) (by positivity))
       _ = C * (((Real.log (4+|b|)+7+Real.log 3) * (1+u^2)⁻¹) + Real.log (1+u^2)/(1+u^2)) := by
@@ -729,7 +729,7 @@ lemma integral_gK_zero (a lam : ℝ) (ha : 0 < a) (hlam : 0 < lam) :
     rw [Complex.ofReal_zero, zero_mul, Complex.exp_zero, mul_one]
   rw [h2] at h
   rw [h, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, one_mul,
-    show (0:ℝ) - lam = -lam by ring, K2_nonpos a (-lam) ha (by linarith), K2_nonpos a 0 ha (le_refl 0)]
+    show (0:ℝ) - lam = -lam by ring, K2_nonpos a (-lam) ha (by linarith only [hlam]), K2_nonpos a 0 ha (le_refl 0)]
   ring
 
 lemma re_wfun (x' b u : ℝ) : (((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I)).re = x' := by
@@ -748,7 +748,7 @@ lemma dgTermC_cont (x' b : ℝ) (hx1 : (1:ℝ)/4 ≤ x') (n : ℕ) :
     have h2 := congrArg Complex.re h
     simp at h2
     have hn : (0:ℝ) ≤ (n : ℝ) := by positivity
-    linarith [hx1]
+    linarith only [hx1, h2]
   have h1 : Continuous (fun u : ℝ => (((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) + (n:ℂ))⁻¹) := by
     apply Continuous.inv₀ _ hne
     exact (wfun_cont x' b).add continuous_const
@@ -766,7 +766,7 @@ lemma continuous_gK (a lam : ℝ) (ha : 0 < a) : Continuous (fun u : ℝ => gK a
     have h0 : (a:ℂ)+(u:ℂ)*Complex.I = 0 := by
       have hm : ((a:ℂ)+(u:ℂ)*Complex.I)*((a:ℂ)+(u:ℂ)*Complex.I) = 0 := by rwa [sq] at h
       exact mul_self_eq_zero.mp hm
-    have := congrArg Complex.re h0; simp at this; linarith
+    have := congrArg Complex.re h0; simp at this; linarith only [ha, this]
 
 lemma integrable_bound_gK (a lam b : ℝ) (ha : 0 < a) :
     Integrable (fun u : ℝ => (Real.log (2 + |b - u|/2) + 7 + ‖(Real.eulerMascheroniConstant : ℂ)‖) * ‖gK a lam u‖) (volume : Measure ℝ) := by
@@ -784,7 +784,7 @@ lemma psi_integrable_inv_gK (a lam x' b j : ℝ) (ha : 0 < a) (hj : 0 < x' + j) 
       have h2 := congrArg Complex.re h
       rw [re_wfun] at h2
       simp at h2
-      linarith
+      linarith only [hj, h2]
     exact (hc.mul (continuous_gK a lam ha)).aestronglyMeasurable
   · filter_upwards with u
     rw [norm_mul]
@@ -837,7 +837,7 @@ lemma interchange_aux (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam)
       le_trans (norm_sum_le _ _) (le_trans (hsum.sum_le_tsum _ (fun n _ => norm_nonneg _)) hb1)
     calc ‖(-(Real.eulerMascheroniConstant:ℂ)) + ∑ n ∈ Finset.range N, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖
         ≤ ‖(-(Real.eulerMascheroniConstant:ℂ))‖ + ‖∑ n ∈ Finset.range N, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖ := norm_add_le _ _
-      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith
+      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith only [h2]
       _ = Real.log (2 + |b-u|/2) + 7 + ‖(Real.eulerMascheroniConstant : ℂ)‖ := by ring
   have hlim : ∀ᵐ u : ℝ ∂volume, Tendsto (fun N : ℕ => (-(Real.eulerMascheroniConstant:ℂ) + ∑ n ∈ Finset.range N, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n) * gK a lam u) atTop
       (nhds (Complex.digamma ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) * gK a lam u)) := by
@@ -892,7 +892,7 @@ lemma interchange_aux (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam)
           apply inv_anti₀
           · show (0:ℝ) < x'+n
             have hn : (0:ℝ) ≤ (n:ℝ) := by positivity
-            linarith [hx1, hn]
+            linarith only [hx1, hn]
           · show x'+n ≤ ‖((x'+n:ℝ):ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I‖
             have h := Complex.re_le_norm (((x'+n:ℝ):ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I)
             rwa [re_wfun] at h
@@ -948,7 +948,7 @@ lemma interchange_aux (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam)
       rw [hcre]
       have hn : (0:ℝ) ≤ (n:ℝ) := by positivity
       push_cast
-      linarith [ha, hx1, hn]
+      linarith only [ha, hx1, hn]
     have hnum : ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ ≤ 2 := by
       calc ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ ≤ ‖Complex.exp (-(c*(lam:ℂ)))‖ + ‖(1:ℂ)‖ := norm_sub_le _ _
         _ = Real.exp ((-(c*(lam:ℂ))).re) + 1 := by rw [Complex.norm_exp, norm_one]
@@ -957,21 +957,21 @@ lemma interchange_aux (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam)
             simp only [Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_one,
               mul_zero, sub_zero]
           rw [hre]
-          have h1 : Real.exp (-(c.re * lam)) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith [hcpos, hlam])
-          linarith
+          have h1 : Real.exp (-(c.re * lam)) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith only [hcpos, hlam, ha, hx1, hcre])
+          linarith only [h1]
     have hden : c.re^2 ≤ ‖c^2‖ := by
       rw [norm_pow, Complex.sq_norm, Complex.normSq_apply]
       have hx := sq_nonneg c.im
-      nlinarith [hx]
+      linarith only [hx]
     have hkey : ((n:ℝ)+1)/2 ≤ c.re := by
       rw [hcre]
       have hn : (0:ℝ) ≤ (n:ℝ) := by positivity
       push_cast
-      linarith [ha, hx1, hn]
+      linarith only [ha, hx1, hn]
     have hkey2 : ((n:ℝ)+1)^2/4 ≤ c.re^2 := by
       have h1 : (0:ℝ) ≤ ((n:ℝ)+1)/2 := by positivity
       have h2 := mul_self_le_mul_self h1 hkey
-      nlinarith [h2]
+      linarith only [h2]
     calc ‖(Complex.exp (-(c*(lam:ℂ))) - 1) / c^2‖
         = ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ / ‖c^2‖ := norm_div _ _
       _ ≤ 2 / (c.re^2) := by
@@ -1048,7 +1048,7 @@ lemma psi_T_bound (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx1 : (1:ℝ
     rw [hcre]
     have hn : (0:ℝ) ≤ (n:ℝ) := by positivity
     push_cast
-    linarith [ha, hx1, hn]
+    linarith only [ha, hx1, hn]
   have hnum : ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ ≤ 2 := by
     calc ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ ≤ ‖Complex.exp (-(c*(lam:ℂ)))‖ + ‖(1:ℂ)‖ := norm_sub_le _ _
       _ = Real.exp ((-(c*(lam:ℂ))).re) + 1 := by rw [Complex.norm_exp, norm_one]
@@ -1057,21 +1057,21 @@ lemma psi_T_bound (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx1 : (1:ℝ
           simp only [Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_one,
             mul_zero, sub_zero]
         rw [hre]
-        have h1 : Real.exp (-(c.re * lam)) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith [hcpos, hlam])
-        linarith
+        have h1 : Real.exp (-(c.re * lam)) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith only [hcpos, hlam, ha, hx1, hcre])
+        linarith only [h1]
   have hden : c.re^2 ≤ ‖c^2‖ := by
     rw [norm_pow, Complex.sq_norm, Complex.normSq_apply]
     have hx := sq_nonneg c.im
-    nlinarith [hx]
+    linarith only [hx]
   have hkey : ((n:ℝ)+1)/2 ≤ c.re := by
     rw [hcre]
     have hn : (0:ℝ) ≤ (n:ℝ) := by positivity
     push_cast
-    linarith [ha, hx1, hn]
+    linarith only [ha, hx1, hn]
   have hkey2 : ((n:ℝ)+1)^2/4 ≤ c.re^2 := by
     have h1 : (0:ℝ) ≤ ((n:ℝ)+1)/2 := by positivity
     have h2 := mul_self_le_mul_self h1 hkey
-    nlinarith [h2]
+    linarith only [h2]
   calc ‖(Complex.exp (-(c*(lam:ℂ))) - 1) / c^2‖
       = ‖Complex.exp (-(c*(lam:ℂ))) - 1‖ / ‖c^2‖ := norm_div _ _
     _ ≤ 2 / (c.re^2) := by
@@ -1111,7 +1111,7 @@ lemma psi_hFN (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx1 : (1:ℝ)/4 
       le_trans (norm_sum_le _ _) (le_trans (hsum.sum_le_tsum _ (fun n _ => norm_nonneg _)) hb1)
     calc ‖(-(Real.eulerMascheroniConstant:ℂ)) + ∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖
         ≤ ‖(-(Real.eulerMascheroniConstant:ℂ))‖ + ‖∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖ := norm_add_le _ _
-      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith
+      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith only [h2]
       _ = Real.log (2 + |b-u|/2) + 7 + ‖(Real.eulerMascheroniConstant : ℂ)‖ := by ring
   have hFint : ∀ M : ℕ, Integrable (fun u : ℝ => (-(Real.eulerMascheroniConstant:ℂ) + ∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n) * gK a lam u) (volume : Measure ℝ) :=
     fun M => (integrable_bound_gK a lam b ha).mono' (((hcont1 M).mul (continuous_gK a lam ha)).aestronglyMeasurable) (Filter.Eventually.of_forall (hbnd M))
@@ -1141,7 +1141,7 @@ lemma psi_hFN (a lam x' b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx1 : (1:ℝ)/4 
         apply inv_anti₀
         · show (0:ℝ) < x'+k
           have hn : (0:ℝ) ≤ (k:ℝ) := by positivity
-          linarith [hx1, hn]
+          linarith only [hx1, hn]
         · show x'+k ≤ ‖((x'+k:ℝ):ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I‖
           have h := Complex.re_le_norm (((x'+k:ℝ):ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I)
           rwa [re_wfun] at h
@@ -1233,16 +1233,16 @@ theorem interchange_gen (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (1
   have hxm : x = x' + m := by rw [hx'def]; ring
   have hx'1 : (1:ℝ)/4 ≤ x' := by
     rw [hx'def]
-    have := Nat.floor_le (show (0:ℝ) ≤ x - (1:ℝ)/4 by linarith)
-    linarith
+    have := Nat.floor_le (show (0:ℝ) ≤ x - (1:ℝ)/4 by linarith only [hx])
+    linarith only [this]
   have hx'8 : x' ≤ 8 := by
     rw [hx'def]
     have := Nat.lt_floor_add_one (x - (1:ℝ)/4)
-    linarith
+    linarith only [this]
   have hjm : ∀ j : ℕ, (0:ℝ) < x' + (j:ℝ) := by
     intro j
     have hj0 : (0:ℝ) ≤ (j:ℝ) := Nat.cast_nonneg j
-    linarith [hx'1]
+    linarith only [hx'1]
   have hpw : ∀ u : ℝ, Complex.digamma ((x:ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I)
       = Complex.digamma ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) + ∑ j ∈ Finset.range m, (((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) + (j:ℂ))⁻¹ := by
     intro u
@@ -1259,7 +1259,7 @@ theorem interchange_gen (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (1
       simp at h5
       have hj0 : (0:ℝ) ≤ (j:ℝ) := Nat.cast_nonneg j
       have hn0 : (0:ℝ) ≤ (n:ℝ) := Nat.cast_nonneg n
-      linarith [hx'1]
+      linarith only [hx'1, h5]
   have hcont1 : ∀ M : ℕ, Continuous (fun u : ℝ => (-(Real.eulerMascheroniConstant:ℂ) + ∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n)) := by
     intro M
     apply Continuous.add continuous_const
@@ -1276,7 +1276,7 @@ theorem interchange_gen (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (1
     rw [h3] at h5
     simp at h5
     have hj0 : (0:ℝ) ≤ (j:ℝ) := Nat.cast_nonneg j
-    linarith [hx'1]
+    linarith only [hx'1, h5]
   have hCnn : ∀ u : ℝ, ‖∑ j ∈ Finset.range m, (((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) + (j:ℂ))⁻¹‖ ≤ ∑ j ∈ Finset.range m, (x' + (j:ℝ))⁻¹ := by
     intro u
     refine le_trans (norm_sum_le _ _) (Finset.sum_le_sum (fun j hj => ?_))
@@ -1298,7 +1298,7 @@ theorem interchange_gen (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (1
       le_trans (norm_sum_le _ _) (le_trans (hsum.sum_le_tsum _ (fun n _ => norm_nonneg _)) hb1)
     calc ‖(-(Real.eulerMascheroniConstant:ℂ)) + ∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖
         ≤ ‖(-(Real.eulerMascheroniConstant:ℂ))‖ + ‖∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n‖ := norm_add_le _ _
-      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith
+      _ ≤ ‖(Real.eulerMascheroniConstant:ℂ)‖ + (Real.log (2 + |b-u|/2) + 7) := by rw [norm_neg]; linarith only [h2]
   have hDint : Integrable (fun u : ℝ => (Real.log (2 + |b - u|/2) + 7 + ‖(Real.eulerMascheroniConstant : ℂ)‖ + ∑ j ∈ Finset.range m, (x' + (j:ℝ))⁻¹) * ‖gK a lam u‖) (volume : Measure ℝ) := by
     have h1 : (fun u : ℝ => (Real.log (2 + |b - u|/2) + 7 + ‖(Real.eulerMascheroniConstant : ℂ)‖ + ∑ j ∈ Finset.range m, (x' + (j:ℝ))⁻¹) * ‖gK a lam u‖)
         = fun u : ℝ => (Real.log (2 + |b - u|/2) + 7) * ‖gK a lam u‖ + (‖(Real.eulerMascheroniConstant : ℂ)‖ + ∑ j ∈ Finset.range m, (x' + (j:ℝ))⁻¹) * ‖gK a lam u‖ := by
@@ -1348,7 +1348,7 @@ theorem interchange_gen (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (1
     rw [norm_mul]
     apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
     have h := hb2 M u
-    linarith [h]
+    linarith only [h]
   have hAFint : ∀ M : ℕ, Integrable (fun u : ℝ => (-(Real.eulerMascheroniConstant:ℂ) + ∑ n ∈ Finset.range M, Commons.Analysis.SpecialFunctions.Gamma.dgTermC ((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) n) * gK a lam u) (volume : Measure ℝ) :=
     fun M => (integrable_bound_gK a lam b ha).mono' (((hcont1 M).mul (continuous_gK a lam ha)).aestronglyMeasurable) (Filter.Eventually.of_forall (hbndA M))
   have hBint : Integrable (fun u : ℝ => (∑ j ∈ Finset.range m, (((x':ℂ) + (((b-u)/2:ℝ):ℂ)*Complex.I) + (j:ℂ))⁻¹) * gK a lam u) (volume : Measure ℝ) := by
@@ -1454,18 +1454,18 @@ theorem psi_kernel_bound (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (
     rw [h1, hs.tsum_eq]
   have hfinal : ‖∑' n : ℕ, psiT a lam x b n‖ ≤ 8 * (Real.pi^2/6) := by
     rw [h8] at hnorm2
-    linarith
+    linarith only [hnorm1, hnorm2]
   have hpi3 : Real.pi^3 < 37.5 := by
-    have h1 : Real.pi^2 < 9.9225 := by nlinarith [Real.pi_lt_d2, Real.pi_pos]
-    nlinarith [h1, Real.pi_pos, Real.pi_lt_d2]
+    have h1 : Real.pi^2 < 9.9225 := by nlinarith only [Real.pi_lt_d2, Real.pi_pos]
+    nlinarith only [h1, Real.pi_pos, Real.pi_lt_d2]
   have hc1 : ‖((-4:ℂ))‖ = 4 := by
     have h2 : ‖((-4:ℂ))‖^2 = 16 := by
       rw [Complex.sq_norm, Complex.normSq_apply]; norm_num
-    nlinarith [h2, norm_nonneg ((-4:ℂ))]
+    nlinarith only [h2, norm_nonneg ((-4:ℂ))]
   have hc2 : ‖((Real.pi:ℝ):ℂ)‖ = Real.pi := by
     have h2 : ‖((Real.pi:ℝ):ℂ)‖^2 = Real.pi^2 := by
       rw [Complex.sq_norm, Complex.normSq_ofReal]; ring
-    nlinarith [h2, norm_nonneg ((Real.pi:ℝ):ℂ), Real.pi_pos]
+    nlinarith only [h2, norm_nonneg ((Real.pi:ℝ):ℂ), Real.pi_pos]
   calc ‖-4 * Real.pi * ∑' n : ℕ, psiT a lam x b n‖
       = 4 * Real.pi * ‖∑' n : ℕ, psiT a lam x b n‖ := by
         rw [norm_mul, norm_mul, hc1, hc2]
@@ -1473,6 +1473,6 @@ theorem psi_kernel_bound (a lam x b : ℝ) (ha : 0 < a) (hlam : 0 < lam) (hx : (
         apply mul_le_mul_of_nonneg_left hfinal
         positivity
     _ = 16/3 * Real.pi^3 := by ring
-    _ ≤ 200 := by nlinarith [hpi3]
+    _ ≤ 200 := by linarith only [hpi3]
 
 end Commons.Analysis.SpecialFunctions.Gamma

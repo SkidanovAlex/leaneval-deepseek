@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikContract.Pre
 import Submission.Work.LinnikContract.API.norm_sinh_sq
 import Submission.Work.LinnikContract.API.F2_eq_exp_sinh
 

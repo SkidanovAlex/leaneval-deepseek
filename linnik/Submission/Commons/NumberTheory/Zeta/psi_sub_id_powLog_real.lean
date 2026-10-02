@@ -29,7 +29,7 @@ private lemma log_le_four_rpow (u : ℝ) (hu : 1 ≤ u) : Real.log u ≤ 4 * u ^
     _ ≤ 4 * (u ^ (1 / 4 : ℝ) - 1) := by
       exact mul_le_mul_of_nonneg_left hlogv (by norm_num)
     _ ≤ 4 * u ^ (1 / 4 : ℝ) := by
-      exact mul_le_mul_of_nonneg_left (by linarith) (by norm_num)
+      exact mul_le_mul_of_nonneg_left (by linarith only []) (by norm_num)
 
 /-- `c·√u ≥ A·log u` eventually in `u`. -/
 private lemma sqrt_log_domination (c : ℝ) (hc : 0 < c) (A : ℝ) (hA : 0 < A) :
@@ -73,7 +73,7 @@ private lemma sqrt_log_domination (c : ℝ) (hc : 0 < c) (A : ℝ) (hA : 0 < A) 
     calc
       A * Real.log u ≤ A * (4 * u ^ (1 / 4 : ℝ)) := hA1
       _ ≤ c * u ^ (1 / 2 : ℝ) := hmain
-  linarith
+  linarith only [hfinal]
 
 /-- If `|ψ(x)−x| ≤ x·exp(−c√(log x))` eventually, then for every `A > 0`,
 `|ψ(x)−x| ≤ x/(log x)^A` eventually. -/
@@ -90,7 +90,7 @@ private lemma exp_sqrtLog_pow_le_one {c : ℝ} (hc : 0 < c) :
       exact (Real.le_log_iff_exp_le hxpos).2 hx
     have hdomx := hdom (Real.log x) hlogU
     have hLpos : 0 < Real.log x := lt_of_lt_of_le (by exact lt_of_lt_of_le zero_lt_one hU₀) hlogU
-    have hLge : A * Real.log (Real.log x) ≤ c * Real.sqrt (Real.log x) := by linarith
+    have hLge : A * Real.log (Real.log x) ≤ c * Real.sqrt (Real.log x) := by linarith only [hdomx]
     have hstep : Real.log ((Real.log x) ^ A) ≤ c * Real.sqrt (Real.log x) := by
       rw [Real.log_rpow hLpos]
       exact hLge
@@ -138,7 +138,7 @@ private lemma mangoldt_three_four_one (σ : ℝ) (hσ : 1 < σ) (t : ℝ) :
           ((((n + 1 : ℕ) : ℝ) ^ σ))) := by
   apply tsum_nonneg
   intro n
-  exact mangoldt_three_four_one_term_nonneg n σ (by linarith) t
+  exact mangoldt_three_four_one_term_nonneg n σ (by linarith only [hσ]) t
 
 private lemma norm_term_mangoldt (n : ℕ) (σ : ℝ) (t : ℝ) :
     ‖(((ArithmeticFunction.vonMangoldt (n + 1) : ℝ) : ℂ) /
@@ -495,7 +495,7 @@ lemma perronZeta_sub_id_noZero {x : ℝ} (hx : 0 < x) {T σ₁ : ℝ}
   have hzim0 : z.im < w.im := by
     dsimp [z, w]
     simp
-    linarith
+    linarith only [hT]
   have huin : z.re < (1 : ℂ).re ∧ (1 : ℂ).re < w.re ∧ z.im < (1 : ℂ).im ∧ (1 : ℂ).im < w.im := by
     repeat' constructor
     · simpa [z] using hσ₁lt
@@ -607,7 +607,7 @@ lemma perronZeta_sub_id_norm_le_noZero {x : ℝ} (hx : 0 < x) {T σ₁ : ℝ}
          (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) - (T : ℂ) * Complex.I)‖) +
          (∫ (t : ℝ) in -T..T, ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖)) := by
   have hleA : σ₁ ≤ perronRe x := le_of_lt (lt_trans hσ₁lt hper)
-  have hleT : -T ≤ T := by linarith
+  have hleT : -T ≤ T := by linarith only [hT]
   have hsub := perronZeta_sub_id_noZero hx hT hσ₁ hσ₁lt hper hrect
   have htopb : ‖topIntG σ₁ x T‖ ≤ (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) + (T : ℂ) * Complex.I)‖) := by
     dsimp [topIntG]
@@ -646,7 +646,7 @@ lemma perronZeta_sub_id_norm_le_noZero {x : ℝ} (hx : 0 < x) {T σ₁ : ℝ}
       (1 / (2 * Real.pi)) * (‖topIntG σ₁ x T‖ + ‖botIntG σ₁ x T‖ + ‖leftIntG σ₁ x T‖) := by
     have hadd := norm_add_le (((1 : ℂ) / ((2 : ℂ) * (Real.pi : ℂ) * Complex.I)) * (topIntG σ₁ x T - botIntG σ₁ x T))
       (((1 : ℂ) / ((2 : ℂ) * (Real.pi : ℂ))) * leftIntG σ₁ x T)
-    linarith
+    linarith only [h1, h2, hadd]
   have hcoef : 0 ≤ 1 / (2 * Real.pi) := by positivity
   have hfin : (1 / (2 * Real.pi)) * (‖topIntG σ₁ x T‖ + ‖botIntG σ₁ x T‖ + ‖leftIntG σ₁ x T‖) ≤
       (1 / (2 * Real.pi)) *
@@ -657,7 +657,7 @@ lemma perronZeta_sub_id_norm_le_noZero {x : ℝ} (hx : 0 < x) {T σ₁ : ℝ}
         (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) + (T : ℂ) * Complex.I)‖) +
         (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) - (T : ℂ) * Complex.I)‖) +
         (∫ (t : ℝ) in -T..T, ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖) := by
-      nlinarith
+      linarith only [htopb, hbotb, hleftb]
     exact mul_le_mul_of_nonneg_left hsum hcoef
   exact le_trans htot hfin
 
@@ -800,13 +800,13 @@ lemma leftEdgeNearAxis_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < �
     have ht2 : |t| ≤ 2 := by
       have h1 : (-2 : ℝ) ≤ t := ht.1
       have h2 : t ≤ 2 := ht.2
-      exact abs_le.mpr ⟨by linarith, by linarith⟩
+      exact abs_le.mpr ⟨by linarith only [h1], by linarith only [h2]⟩
     have hb := hM2 t ht2
     have hden : (1 - σ₁) ≤ ‖(((σ₁ : ℂ) + (t : ℂ) * Complex.I)) - 1‖ := by
       have hre : ((((σ₁ : ℂ) + (t : ℂ) * Complex.I)) - 1).re = σ₁ - 1 := by simp
       have h1 : (1 - σ₁) ≤ |σ₁ - 1| := by
-        rw [abs_of_nonpos (by linarith : σ₁ - 1 ≤ 0)]
-        linarith
+        rw [abs_of_nonpos (by linarith only [hδ₁] : σ₁ - 1 ≤ 0)]
+        linarith only []
       calc
         (1 - σ₁) ≤ |σ₁ - 1| := h1
         _ = |((((σ₁ : ℂ) + (t : ℂ) * Complex.I)) - 1).re| := by rw [hre]
@@ -816,7 +816,7 @@ lemma leftEdgeNearAxis_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < �
     have hB : ‖deriv riemannZeta (((σ₁ : ℂ) + (t : ℂ) * Complex.I)) /
         riemannZeta (((σ₁ : ℂ) + (t : ℂ) * Complex.I))‖ ≤ C₂ + 1 / (1 - σ₁) := by
       have h1 : C₂ + 1 / ‖(((σ₁ : ℂ) + (t : ℂ) * Complex.I)) - 1‖ ≤ C₂ + 1 / (1 - σ₁) := by
-        linarith
+        linarith only [hδ₁le]
       exact le_trans hb h1
     have hBnd := psiIntF_norm_le_of_logDeriv_bound hx ((σ₁ : ℂ) + (t : ℂ) * Complex.I) hB
     have hsre : ((σ₁ : ℂ) + (t : ℂ) * Complex.I).re = σ₁ := by simp
@@ -827,7 +827,7 @@ lemma leftEdgeNearAxis_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < �
            _ ≤ ‖((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖ := hre
     have hC0 : 0 ≤ C₂ + 1 / (1 - σ₁) := by
       have hpos : 0 < 1 / (1 - σ₁) := one_div_pos.mpr hδ₁
-      linarith
+      linarith only [hC₂, hpos]
     have hfac : 0 ≤ (C₂ + 1 / (1 - σ₁)) * (x : ℝ) ^ σ₁ :=
       mul_nonneg hC0 (Real.rpow_nonneg (le_of_lt hx) σ₁)
     calc
@@ -854,31 +854,31 @@ lemma leftEdgeFarPos_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < σ�
       C * (x : ℝ) ^ σ₁ * (Real.log (T + 3) + 1) ^ 5 * Real.log (T / 2) := by
   have hTpos : 0 < T := lt_of_lt_of_le (by norm_num) h2T
   have hT2 : 2 ≤ T := h2T
-  have hlogT : 0 ≤ Real.log (T + 3) := Real.log_nonneg (by linarith)
+  have hlogT : 0 ≤ Real.log (T + 3) := Real.log_nonneg (by linarith only [h2T])
   have hM0 : 0 ≤ C * (Real.log (T + 3) + 1) ^ 5 := by positivity
 
   let M : ℝ := C * (Real.log (T + 3) + 1) ^ 5
   have hM0' : 0 ≤ M := by
     dsimp [M]
-    have hb2 : (1 : ℝ) ≤ T + 3 := by linarith
-    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith
+    have hb2 : (1 : ℝ) ≤ T + 3 := by linarith only [h2T]
+    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith only [hlogT]
     positivity
   have hpt : ∀ t : ℝ, t ∈ Set.Icc 2 T →
       ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖ ≤ M * (x : ℝ) ^ σ₁ * t⁻¹ := by
     intro t ht
     have ht2 : 2 ≤ t := ht.1
     have htT : t ≤ T := ht.2
-    have ht0 : 0 ≤ t := by linarith
+    have ht0 : 0 ≤ t := by linarith only [ht2]
     have htpos : 0 < t := lt_of_lt_of_le (by norm_num) ht2
     have htabs : |t| = t := abs_of_nonneg ht0
     have hb := hB t ht
-    have hle : |t| + 3 ≤ T + 3 := by linarith
-    have hlog : Real.log (|t| + 3) ≤ Real.log (T + 3) := Real.log_le_log (by linarith) hle
-    have hb1 : (1 : ℝ) ≤ |t| + 3 := by nlinarith
-    have hbase0 : 0 ≤ Real.log (|t| + 3) + 1 := by have h1 := Real.log_nonneg hb1; linarith
-    have hb2 : (1 : ℝ) ≤ T + 3 := by nlinarith
-    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith
-    have hle5 : (Real.log (|t| + 3) + 1) ≤ Real.log (T + 3) + 1 := by linarith
+    have hle : |t| + 3 ≤ T + 3 := by linarith only [htT, htabs]
+    have hlog : Real.log (|t| + 3) ≤ Real.log (T + 3) := Real.log_le_log (by linarith only [ht2, htabs]) hle
+    have hb1 : (1 : ℝ) ≤ |t| + 3 := by linarith only [ht2, htabs]
+    have hbase0 : 0 ≤ Real.log (|t| + 3) + 1 := by have h1 := Real.log_nonneg hb1; linarith only [h1]
+    have hb2 : (1 : ℝ) ≤ T + 3 := by linarith only [h2T]
+    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith only [hlogT]
+    have hle5 : (Real.log (|t| + 3) + 1) ≤ Real.log (T + 3) + 1 := by linarith only [hlog]
     have hlogle : (Real.log (|t| + 3) + 1) ^ 5 ≤ (Real.log (T + 3) + 1) ^ 5 :=
       pow_le_pow_left₀ hbase0 hle5 5
     have hBle : ‖deriv riemannZeta (((σ₁ : ℂ) + (t : ℂ) * Complex.I)) /
@@ -915,7 +915,7 @@ lemma leftEdgeFarPos_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < σ�
       have hu2 : 2 ≤ u := by
         have hu' : u ∈ Set.Icc 2 T := by rw [Set.uIcc_of_le h2T] at hu; exact hu
         exact hu'.1
-      have hu0 : u ≠ 0 := by linarith
+      have hu0 : u ≠ 0 := by linarith only [hu2]
       have hid : ContinuousAt (fun t : ℝ => t) u := continuousAt_id
       exact (hid.inv₀ hu0).continuousWithinAt
     intro u hu
@@ -950,8 +950,8 @@ lemma leftEdgeFarNeg_le_noZero {x σ₁ : ℝ} (hx : 0 < x) {T C : ℝ}
   let M : ℝ := C * (Real.log (T + 3) + 1) ^ 5
   have hM0 : 0 ≤ M := by
     dsimp [M]
-    have hb2 : (1 : ℝ) ≤ T + 3 := by nlinarith
-    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith
+    have hb2 : (1 : ℝ) ≤ T + 3 := by linarith only [h2T]
+    have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith only [h1]
     positivity
   let c : ℝ := M * (x : ℝ) ^ σ₁
   have hpt : ∀ t : ℝ, t ∈ Set.Icc (-T) (-2) →
@@ -959,18 +959,18 @@ lemma leftEdgeFarNeg_le_noZero {x σ₁ : ℝ} (hx : 0 < x) {T C : ℝ}
     intro t ht
     have htneg : t < 0 := by
       have h2 : t ≤ -2 := ht.2
-      linarith
+      linarith only [h2]
     have htabs : |t| = -t := abs_of_neg htneg
     have hb := hB t ht
     have hle_abs : C * (Real.log (|t| + 3) + 1) ^ 5 ≤ M := by
       have ht1 : -T ≤ t := ht.1
-      have hle : |t| + 3 ≤ T + 3 := by rw [htabs]; linarith
-      have hlog : Real.log (|t| + 3) ≤ Real.log (T + 3) := Real.log_le_log (by linarith) hle
-      have hb1 : (1 : ℝ) ≤ |t| + 3 := by nlinarith [abs_nonneg t]
-      have hbase0 : 0 ≤ Real.log (|t| + 3) + 1 := by have h1 := Real.log_nonneg hb1; linarith
-      have hb2 : (1 : ℝ) ≤ T + 3 := by nlinarith
-      have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith
-      have hle5 : (Real.log (|t| + 3) + 1) ≤ Real.log (T + 3) + 1 := by linarith [hlog]
+      have hle : |t| + 3 ≤ T + 3 := by rw [htabs]; linarith only [ht1]
+      have hlog : Real.log (|t| + 3) ≤ Real.log (T + 3) := Real.log_le_log (by linarith only [htneg, htabs]) hle
+      have hb1 : (1 : ℝ) ≤ |t| + 3 := by linarith only [abs_nonneg t, htneg, htabs]
+      have hbase0 : 0 ≤ Real.log (|t| + 3) + 1 := by have h1 := Real.log_nonneg hb1; linarith only [h1]
+      have hb2 : (1 : ℝ) ≤ T + 3 := by linarith only [h2T]
+      have hb3 : 0 ≤ Real.log (T + 3) + 1 := by have h1 := Real.log_nonneg hb2; linarith only [h1]
+      have hle5 : (Real.log (|t| + 3) + 1) ≤ Real.log (T + 3) + 1 := by linarith only [hlog]
       have hlogle : (Real.log (|t| + 3) + 1) ^ 5 ≤ (Real.log (T + 3) + 1) ^ 5 :=
         pow_le_pow_left₀ hbase0 hle5 5
       dsimp [M]
@@ -986,7 +986,7 @@ lemma leftEdgeFarNeg_le_noZero {x σ₁ : ℝ} (hx : 0 < x) {T C : ℝ}
         |t| = |s.im| := by dsimp [s]; simp
         _ ≤ ‖s‖ := Complex.abs_im_le_norm s
     have hMxp : 0 ≤ M * (x : ℝ) ^ σ₁ := mul_nonneg hM0 (Real.rpow_nonneg (le_of_lt hx) σ₁)
-    have htp : 0 < -t := by linarith
+    have htp : 0 < -t := by linarith only [htneg]
     calc
       ‖psiIntF x s‖ ≤ M * (x : ℝ) ^ s.re / ‖s‖ := by simpa [M] using hBnd
       _ = M * (x : ℝ) ^ σ₁ / ‖s‖ := by rw [hsre]
@@ -1003,12 +1003,12 @@ lemma leftEdgeFarNeg_le_noZero {x σ₁ : ℝ} (hx : 0 < x) {T C : ℝ}
     apply ContinuousOn.mul continuousOn_const ?_
     intro u hu
     have hu2 : u ≤ -2 := by
-      have hu' : u ∈ Set.Icc (-T) (-2) := by rw [Set.uIcc_of_le (by linarith)] at hu; exact hu
+      have hu' : u ∈ Set.Icc (-T) (-2) := by rw [Set.uIcc_of_le (by linarith only [h2T])] at hu; exact hu
       exact hu'.2
-    have hu0 : -u ≠ 0 := by linarith
+    have hu0 : -u ≠ 0 := by linarith only [hu2]
     have hid : ContinuousAt (fun t : ℝ => -t) u := by fun_prop
     exact (hid.inv₀ hu0).continuousWithinAt
-  have hle := intervalIntegral.integral_mono_on (by linarith : -T ≤ -2) hInt hgInt (by
+  have hle := intervalIntegral.integral_mono_on (by linarith only [h2T] : -T ≤ -2) hInt hgInt (by
     intro t ht
     dsimp [g]
     exact hpt t ht)
@@ -1049,19 +1049,19 @@ lemma leftEdgeTot_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < σ₁)
   let F : ℝ → ℝ := fun t : ℝ => ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖
   have hsub1 : Set.uIcc (-T) (-2) ⊆ Set.uIcc (-T) T := by
     intro z hz
-    have hz1 : z ∈ Set.Icc (-T) (-2) := by simpa [Set.uIcc_of_le (by linarith : -T ≤ -2)] using hz
-    have hz2 : z ∈ Set.Icc (-T) T := ⟨hz1.1, le_trans hz1.2 (by linarith : -2 ≤ T)⟩
-    simpa [Set.uIcc_of_le (by linarith : -T ≤ T)] using hz2
+    have hz1 : z ∈ Set.Icc (-T) (-2) := by simpa [Set.uIcc_of_le (by linarith only [h2T] : -T ≤ -2)] using hz
+    have hz2 : z ∈ Set.Icc (-T) T := ⟨hz1.1, le_trans hz1.2 (by linarith only [hσ₁pos, hδ₁, h2T] : -2 ≤ T)⟩
+    simpa [Set.uIcc_of_le (by linarith only [hσ₁pos, hδ₁, h2T] : -T ≤ T)] using hz2
   have hsub2 : Set.uIcc (-2) 2 ⊆ Set.uIcc (-T) T := by
     intro z hz
     have hz1 : z ∈ Set.Icc (-2) 2 := by simpa [Set.uIcc_of_le (by norm_num : -2 ≤ 2)] using hz
-    have hz2 : z ∈ Set.Icc (-T) T := ⟨le_trans (by linarith : -T ≤ -2) hz1.1, le_trans hz1.2 (by linarith : 2 ≤ T)⟩
-    simpa [Set.uIcc_of_le (by linarith : -T ≤ T)] using hz2
+    have hz2 : z ∈ Set.Icc (-T) T := ⟨le_trans (by linarith only [h2T] : -T ≤ -2) hz1.1, le_trans hz1.2 (by linarith only [h2T] : 2 ≤ T)⟩
+    simpa [Set.uIcc_of_le (by linarith only [hσ₁pos, hδ₁, h2T] : -T ≤ T)] using hz2
   have hsub3 : Set.uIcc 2 T ⊆ Set.uIcc (-T) T := by
     intro z hz
     have hz1 : z ∈ Set.Icc 2 T := by simpa [Set.uIcc_of_le h2T] using hz
-    have hz2 : z ∈ Set.Icc (-T) T := ⟨le_trans (by linarith : -T ≤ 2) hz1.1, hz1.2⟩
-    simpa [Set.uIcc_of_le (by linarith : -T ≤ T)] using hz2
+    have hz2 : z ∈ Set.Icc (-T) T := ⟨le_trans (by linarith only [hσ₁pos, hδ₁, h2T] : -T ≤ 2) hz1.1, hz1.2⟩
+    simpa [Set.uIcc_of_le (by linarith only [hσ₁pos, hδ₁, h2T] : -T ≤ T)] using hz2
   have hIntM : IntervalIntegrable F volume (-T) (-2) := by
     dsimp [F]
     exact hIntT.mono_set hsub1
@@ -1097,7 +1097,7 @@ lemma leftEdgeTot_le_noZero {x σ₁ : ℝ} (hx : 0 < x) (hσ₁pos : 0 < σ₁)
     dsimp [F]
     simpa using hFarPosB
   rw [← hEq]
-  linarith
+  linarith only [hNearB, hFarPosB, hFarNegB]
 
 /-- Bridge: the committed truncated-Perron identity (whose integral is written with the
 von-Mangoldt L-series) is exactly `‖ψ(x) − perronZeta x T‖ ≤ C·(x log²x/T + log x)`. -/
@@ -1107,7 +1107,7 @@ lemma psi_sub_perronZeta_bound :
   rcases chebyshevPsi_truncatedPerron with ⟨C, hCpos, hC⟩
   refine ⟨C, hCpos, ?_⟩
   intro x hx T hT
-  have hxlog : 0 < Real.log x := Real.log_pos (by linarith : (1 : ℝ) < x)
+  have hxlog : 0 < Real.log x := Real.log_pos (by linarith only [hx] : (1 : ℝ) < x)
   let s₀ : ℝ → ℂ := fun t : ℝ => ((1 + 1 / Real.log x : ℝ) : ℂ) + Complex.I * (t : ℂ)
   have hinteg : (1 / (2 * Real.pi)) *
       (∫ (t : ℝ) in -T..T,
@@ -1121,7 +1121,7 @@ lemma psi_sub_perronZeta_bound :
       dsimp [s₀]
       have h : 0 < 1 / Real.log x := one_div_pos.mpr hxlog
       simp
-      linarith
+      linarith only [hxlog]
     have hL := ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div (s := s₀ t) hs1
     have harg1 : (((1 + 1 / Real.log x : ℝ) : ℂ) + Complex.I * (t : ℂ)) =
         ((perronRe x : ℂ) + (t : ℂ) * Complex.I) := by
@@ -1166,10 +1166,10 @@ lemma psi_sub_id_le_trunc_add_edges {x T σ₁ : ℝ}
           ((∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) + (T : ℂ) * Complex.I)‖) +
            (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) - (T : ℂ) * Complex.I)‖) +
            (∫ (t : ℝ) in -T..T, ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖)) := by
-  have hxpos : 0 < x := by linarith
-  have hTpos : 0 < T := by linarith
+  have hxpos : 0 < x := by linarith only [hx, hσ₁pos, hδ₁]
+  have hTpos : 0 < T := by linarith only [hT, hσ₁pos, hδ₁]
   have htrunc := htr x hx T hT
-  have hsub := perronZeta_sub_id_norm_le_noZero hxpos hTpos hσ₁pos (by linarith : σ₁ < 1) hper1 hrect
+  have hsub := perronZeta_sub_id_norm_le_noZero hxpos hTpos hσ₁pos (by linarith only [hδ₁] : σ₁ < 1) hper1 hrect
   have habs1 : |Chebyshev.psi x - x| = ‖(Chebyshev.psi x : ℂ) - (x : ℂ)‖ := by
     rw [← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
   have htri1 : ‖(Chebyshev.psi x : ℂ) - (x : ℂ)‖ ≤
@@ -1185,12 +1185,12 @@ lemma psi_sub_id_le_trunc_add_edges {x T σ₁ : ℝ}
   calc
     |Chebyshev.psi x - x| = ‖(Chebyshev.psi x : ℂ) - (x : ℂ)‖ := habs1
     _ ≤ ‖(Chebyshev.psi x : ℂ) - perronZeta x T‖ + ‖perronZeta x T - (x : ℂ)‖ := htri1
-    _ ≤ Ctr * (x * (Real.log x) ^ 2 / T + Real.log x) + ‖perronZeta x T - (x : ℂ)‖ := by linarith
+    _ ≤ Ctr * (x * (Real.log x) ^ 2 / T + Real.log x) + ‖perronZeta x T - (x : ℂ)‖ := by linarith only [htrunc]
     _ ≤ Ctr * (x * (Real.log x) ^ 2 / T + Real.log x) +
         (1 / (2 * Real.pi)) *
           ((∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) + (T : ℂ) * Complex.I)‖) +
            (∫ (u : ℝ) in σ₁..perronRe x, ‖psiIntF x ((u : ℂ) - (T : ℂ) * Complex.I)‖) +
-           (∫ (t : ℝ) in -T..T, ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖)) := by linarith
+           (∫ (t : ℝ) in -T..T, ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖)) := by linarith only [hsub]
 
 /-- `‖ζ'(s)/ζ(s)‖` (real). -/
 noncomputable def logDerivZ (s : ℂ) : ℝ := ‖deriv riemannZeta s / riemannZeta s‖
@@ -1228,7 +1228,7 @@ lemma psi_sub_id_edges_le_perronEdgeSum {x T σ₁ : ℝ}
     (hIntL : IntervalIntegrable (fun t : ℝ => ‖psiIntF x ((σ₁ : ℂ) + (t : ℂ) * Complex.I)‖) volume (-T) T) :
     edgeTopInt x T σ₁ + edgeBotInt x T σ₁ + edgeLeftInt x T σ₁ ≤ perronEdgeSum x T σ₁ C1 C2 := by
   rw [edgeTopInt, edgeBotInt, edgeLeftInt]
-  have hTpos : 0 < T := by linarith
+  have hTpos : 0 < T := by linarith only [hT, hσ₁pos, hδ₁]
   have htopInt := topEdgeInt_le_noZero (x := x) (T := T) (σ₁ := σ₁) hx
       (hσ₁le := hσ₁le) hTpos
       (by intro u hu; simpa [logDerivZ] using hTopB u hu) hIntTop
@@ -1248,13 +1248,13 @@ lemma psi_sub_id_edges_le_perronEdgeSum {x T σ₁ : ℝ}
       C1 * (Real.log (T + 3) + 1) ^ 5 * (x : ℝ) ^ perronRe x * (perronRe x - σ₁) / T := by
     rw [hboteq]
     exact hbotInt
-  have hleftInt := leftEdgeTot_le_noZero (x := x) (σ₁ := σ₁) (by linarith : 0 < x) hσ₁pos hδ₁
+  have hleftInt := leftEdgeTot_le_noZero (x := x) (σ₁ := σ₁) (by linarith only [hx, hσ₁pos, hδ₁] : 0 < x) hσ₁pos hδ₁
       (h2T := hT) (C := C1) (C₂ := C2) hC1 hC2
       (by intro t ht; simpa [logDerivZ] using hNear t ht)
       (by intro t ht; simpa [logDerivZ] using hFarPos t ht)
       (by intro t ht; simpa [logDerivZ] using hFarNeg t ht) hIntL
   dsimp [perronEdgeSum]
-  linarith [htopInt, hbotIntM, hleftInt]
+  linarith only [htopInt, hbotIntM, hleftInt, hbotInt, hboteq]
 
 /-- **Parameterized engine bound.** Combining the norm chain (Step A) with the edge
 assembly (Step C): under the (M1-shape) far log-derivative bounds, the (M2-shape)
@@ -1287,12 +1287,12 @@ lemma psi_sub_id_le_engine {x T σ₁ : ℝ}
         (1 / (2 * Real.pi)) * perronEdgeSum x T σ₁ C1 C2 := by
   have hA := psi_sub_id_le_trunc_add_edges (x := x) (T := T) (σ₁ := σ₁) hx hT hσ₁pos hδ₁ hper1 hrect htr
   have hC := psi_sub_id_edges_le_perronEdgeSum (x := x) (T := T) (σ₁ := σ₁)
-      (by linarith : (1 : ℝ) ≤ x) hT hσ₁pos hδ₁ (le_of_lt (lt_trans (by linarith : σ₁ < 1) hper1))
+      (by linarith only [hx, hσ₁pos, hδ₁] : (1 : ℝ) ≤ x) hT hσ₁pos hδ₁ (le_of_lt (lt_trans (by linarith only [hδ₁] : σ₁ < 1) hper1))
       hC1 hC2 hTopB hBotB hNear hFarPos hFarNeg hIntTop hIntBot hIntL
   rw [edgeTopInt, edgeBotInt, edgeLeftInt] at hC
   have hcoef : 0 ≤ 1 / (2 * Real.pi) := by positivity
   have hm := mul_le_mul_of_nonneg_left hC hcoef
-  linarith
+  linarith only [hA, hm]
 
 /-- **Engine bound with the truncation constant instantiated** from the committed
 `psi_sub_perronZeta_bound`. -/
@@ -1357,14 +1357,14 @@ lemma hTopB_engine {x c C H : ℝ} (hx : 3 ≤ x) (hper2 : perronRe x ≤ 2) (hc
     have hδ : engDelta x c ≤ c / (Real.log (engT x + 3) + 1) := by
       dsimp [engDelta]
       have hpos : 0 < Real.log (engT x + 3) + 1 := by
-        have h2 : (1 : ℝ) < engT x + 3 := by linarith [hTpos]
+        have h2 : (1 : ℝ) < engT x + 3 := by linarith only [hTpos]
         have h3 : 0 < Real.log (engT x + 3) := Real.log_pos h2
-        linarith
+        linarith only [h3]
       rw [div_le_div_iff₀ (by positivity : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1)) hpos]
-      nlinarith
+      nlinarith only [hc, hpos]
     have : engSigma x c = 1 - engDelta x c := rfl
     rw [this] at hu1
-    linarith
+    linarith only [hu1, hδ]
   have hu2' : u ≤ 2 := le_trans hu2 hper2
   have h := hM1 (engT x) hTm u hreg hu2'
   rwa [hlogabs] at h
@@ -1389,14 +1389,14 @@ lemma hBotB_engine {x c C H : ℝ} (hx : 3 ≤ x) (hper2 : perronRe x ≤ 2) (hc
     have hδ : engDelta x c ≤ c / (Real.log (engT x + 3) + 1) := by
       dsimp [engDelta]
       have hpos : 0 < Real.log (engT x + 3) + 1 := by
-        have h2 : (1 : ℝ) < engT x + 3 := by linarith [hTpos]
+        have h2 : (1 : ℝ) < engT x + 3 := by linarith only [hTpos]
         have h3 : 0 < Real.log (engT x + 3) := Real.log_pos h2
-        linarith
+        linarith only [h3]
       rw [div_le_div_iff₀ (by positivity : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1)) hpos]
-      nlinarith
+      nlinarith only [hc, hpos]
     have : engSigma x c = 1 - engDelta x c := rfl
     rw [this] at hu1
-    linarith
+    linarith only [hu1, hδ]
   have hu2' : u ≤ 2 := le_trans hu2 hper2
   have h := hM1 (-engT x) hTm u hreg hu2'
   rwa [hlogabs] at h
@@ -1414,30 +1414,30 @@ lemma hFarPos_engine {x c C H : ℝ} (hx : 3 ≤ x) (hc : 0 ≤ c) (hH2 : H ≤ 
   intro t ht
   have ht2 : 2 ≤ t := ht.1
   have htT : t ≤ engT x := ht.2
-  have htpos : 0 < t := by linarith
-  have htabs : |t| = t := abs_of_nonneg (by linarith)
-  have hTm : H ≤ |t| := by rw [htabs]; linarith
+  have htpos : 0 < t := by linarith only [ht2]
+  have htabs : |t| = t := abs_of_nonneg (by linarith only [ht2])
+  have hTm : H ≤ |t| := by rw [htabs]; linarith only [hH2, ht2]
   have hlogpos : 0 < Real.log (|t| + 3) + 1 := by
-    have h1 : (1 : ℝ) < |t| + 3 := by linarith [abs_nonneg t]
+    have h1 : (1 : ℝ) < |t| + 3 := by linarith only [abs_nonneg t, ht2, htabs]
     have h2 : 0 < Real.log (|t| + 3) := Real.log_pos h1
-    linarith
+    linarith only [h2]
   have hlogTpos : 0 < 2 * (Real.log (engT x + 3) + 1) := by
-    have h1 : (1 : ℝ) < engT x + 3 := by linarith [engT_pos x]
+    have h1 : (1 : ℝ) < engT x + 3 := by linarith only [engT_pos x, hT2]
     have h2 : 0 < Real.log (engT x + 3) := Real.log_pos h1
-    linarith
+    linarith only [h2]
   have hreg : (1 - c / (Real.log (|t| + 3) + 1)) ≤ engSigma x c := by
     have hd : c / (2 * (Real.log (engT x + 3) + 1)) ≤ c / (Real.log (|t| + 3) + 1) := by
       apply div_le_div_of_nonneg_left hc hlogpos
       have hlogtT : Real.log (|t| + 3) ≤ Real.log (engT x + 3) := by
         rw [htabs]
-        exact Real.log_le_log (by linarith) (by linarith)
-      linarith
+        exact Real.log_le_log (by linarith only [ht2]) (by linarith only [htT])
+      linarith only [hlogpos, hlogtT]
     dsimp [engSigma, engDelta]
-    linarith
+    linarith only [hd]
   have h2 : engSigma x c ≤ 2 := by
     dsimp [engSigma, engDelta]
     have h3 : 0 ≤ c / (2 * (Real.log (engT x + 3) + 1)) := div_nonneg hc (le_of_lt hlogTpos)
-    linarith
+    linarith only [h3]
   exact hM1 t hTm (engSigma x c) hreg h2
 
 /-- The negative far slice of the left edge (heights `−T ≤ t ≤ −2`), discharged from the
@@ -1453,30 +1453,30 @@ lemma hFarNeg_engine {x c C H : ℝ} (hx : 3 ≤ x) (hc : 0 ≤ c) (hH2 : H ≤ 
   intro t ht
   have ht2 : t ≤ -2 := ht.2
   have htT : -(engT x) ≤ t := ht.1
-  have htneg : t < 0 := by linarith
+  have htneg : t < 0 := by linarith only [ht2]
   have htabs : |t| = -t := abs_of_neg htneg
-  have hTm : H ≤ |t| := by rw [htabs]; linarith
+  have hTm : H ≤ |t| := by rw [htabs]; linarith only [hH2, ht2]
   have hlogpos : 0 < Real.log (|t| + 3) + 1 := by
-    have h1 : (1 : ℝ) < |t| + 3 := by linarith [abs_nonneg t]
+    have h1 : (1 : ℝ) < |t| + 3 := by linarith only [abs_nonneg t, ht2, htabs]
     have h2 : 0 < Real.log (|t| + 3) := Real.log_pos h1
-    linarith
+    linarith only [h2]
   have hlogTpos : 0 < 2 * (Real.log (engT x + 3) + 1) := by
-    have h1 : (1 : ℝ) < engT x + 3 := by linarith [engT_pos x]
+    have h1 : (1 : ℝ) < engT x + 3 := by linarith only [engT_pos x, hT2]
     have h2 : 0 < Real.log (engT x + 3) := Real.log_pos h1
-    linarith
+    linarith only [h2]
   have hreg : (1 - c / (Real.log (|t| + 3) + 1)) ≤ engSigma x c := by
     have hd : c / (2 * (Real.log (engT x + 3) + 1)) ≤ c / (Real.log (|t| + 3) + 1) := by
       apply div_le_div_of_nonneg_left hc hlogpos
       have hlogtT : Real.log (|t| + 3) ≤ Real.log (engT x + 3) := by
         rw [htabs]
-        exact Real.log_le_log (by linarith) (by linarith)
-      linarith
+        exact Real.log_le_log (by linarith only [ht2]) (by linarith only [htT])
+      linarith only [hlogpos, hlogtT]
     dsimp [engSigma, engDelta]
-    linarith
+    linarith only [hd]
   have h2 : engSigma x c ≤ 2 := by
     dsimp [engSigma, engDelta]
     have h3 : 0 ≤ c / (2 * (Real.log (engT x + 3) + 1)) := div_nonneg hc (le_of_lt hlogTpos)
-    linarith
+    linarith only [h3]
   exact hM1 t hTm (engSigma x c) hreg h2
 
 /-- The near-axis M2-shape hypothesis at `σ₁ = engSigma x c` follows from the committed
@@ -1490,34 +1490,34 @@ lemma hNear_engine {x c C₂ δ₂ : ℝ} (hc : 0 < c) (hδ : engDelta x c ≤ �
         C₂ + 1 / ‖(((engSigma x c : ℂ) + (t : ℂ) * Complex.I)) - 1‖ := by
   intro t ht
   have hden : 0 < 2 * (Real.log (engT x + 3) + 1) := by
-    have h1 : (1 : ℝ) < engT x + 3 := by linarith [engT_pos x]
+    have h1 : (1 : ℝ) < engT x + 3 := by linarith only [engT_pos x]
     have h2 : 0 < Real.log (engT x + 3) := Real.log_pos h1
-    linarith
+    linarith only [h2]
   have hδpos : 0 < engDelta x c := by
     dsimp [engDelta]
     exact div_pos hc hden
   have hσne : engSigma x c ≠ 1 := by
     dsimp [engSigma]
-    linarith
+    linarith only [hδpos]
   have hσlo : (1 - δ₂) ≤ engSigma x c := by
     dsimp [engSigma]
-    linarith
+    linarith only [hδ]
   have hσhi : engSigma x c ≤ 2 := by
     dsimp [engSigma]
-    linarith
+    linarith only [hδpos]
   exact hM2 t (engSigma x c) ht hσne hσlo hσhi
 
 
 /-! ## Basic helpers -/
 
 private lemma engM_pos (x : ℝ) : 0 < Real.log (engT x + 3) + 1 := by
-  have h : (1 : ℝ) < engT x + 3 := by linarith [engT_pos x]
+  have h : (1 : ℝ) < engT x + 3 := by linarith only [engT_pos x]
   have := Real.log_pos h
-  linarith
+  linarith only [this]
 
 private lemma engDelta_nonneg {x c : ℝ} (hc : 0 < c) : 0 ≤ engDelta x c := by
   dsimp [engDelta]
-  exact div_nonneg (le_of_lt hc) (by linarith [engM_pos x])
+  exact div_nonneg (le_of_lt hc) (by linarith only [engM_pos x])
 
 private lemma engDelta_pos {x c : ℝ} (hc : 0 < c) : 0 < engDelta x c := by
   dsimp [engDelta]
@@ -1529,18 +1529,18 @@ private lemma perronRe_gt_one {x : ℝ} (hx : 1 < x) : 1 < perronRe x := by
   have h : 0 < 1 / Real.log x := by
     have := Real.log_pos hx
     positivity
-  linarith
+  linarith only [h]
 
 private lemma perronRe_le_two_of_three {x : ℝ} (hx : 3 ≤ x) : perronRe x ≤ 2 := by
   dsimp [perronRe]
-  have hx1 : 1 < x := by linarith
+  have hx1 : 1 < x := by linarith only [hx]
   have hlogpos : 0 < Real.log x := Real.log_pos hx1
   have hlog : 1 ≤ Real.log x := by
     have h3 : (1 : ℝ) ≤ Real.log 3 :=
       (Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 3)).2 (le_of_lt Real.exp_one_lt_three)
     exact le_trans h3 (Real.log_le_log (by norm_num) hx)
   have hd : 1 / Real.log x ≤ 1 := (div_le_one hlogpos).2 hlog
-  linarith
+  linarith only [hd]
 
 private lemma zeta1_eq_sub_mul_zeta {s : ℂ} (hs : s ≠ 1) :
     riemannZeta₁ s = (s - 1) * riemannZeta s := by
@@ -1635,17 +1635,17 @@ private lemma rect_zeta1_ne_zero_engine {x c ε₀ : ℝ} (hx : 3 ≤ x) (hc : 0
     have h1 : engSigma x c ≤ 1 := by
       dsimp [engSigma]
       have hdn : 0 ≤ engDelta x c := engDelta_nonneg hc
-      linarith
-    have h2 : 1 < perronRe x := perronRe_gt_one (by linarith : 1 < x)
-    linarith
+      linarith only [hdn]
+    have h2 : 1 < perronRe x := perronRe_gt_one (by linarith only [hx] : 1 < x)
+    linarith only [h1, h2]
   rw [Set.uIcc_of_le hσle] at hsre
   dsimp [engSigma, engDelta] at hsre
   dsimp [engDelta] at hδ hε
-  have hTm : -(engT x) ≤ engT x := by linarith [engT_pos x]
+  have hTm : -(engT x) ≤ engT x := by linarith only [engT_pos x]
   rw [Set.uIcc_of_le hTm] at hsim
   constructor
   · have := hsre.1
-    linarith [hδ]
+    linarith only [hδ, this]
   · by_cases hs1 : s = 1
     · rw [hs1, riemannZeta₁_one]; exact one_ne_zero
     · apply zeta1_ne_zero_of_zeta_ne_zero _ hs1
@@ -1658,25 +1658,25 @@ private lemma rect_zeta1_ne_zero_engine {x c ε₀ : ℝ} (hx : 3 ≤ x) (hc : 0
       · push Not at hre1
         by_cases him4 : |s.im| ≤ 4
         · rw [← hdecomp]
-          exact hNA s.im s.re him4 (by linarith [hsre.1, hε]) hre2
+          exact hNA s.im s.re him4 (by linarith only [hsre.1, hε, hsre]) hre2
         · push Not at him4
-          have him1 : 1 ≤ |s.im| := by linarith
+          have him1 : 1 ≤ |s.im| := by linarith only [him4]
           have hre' : 1 - c / Real.log (|s.im| + 3) ≤ s.re := by
             have hlogT : 0 < Real.log (engT x + 3) := by
-              have : (1 : ℝ) < engT x + 3 := by linarith [engT_pos x]
+              have : (1 : ℝ) < engT x + 3 := by linarith only [engT_pos x, hTm]
               exact Real.log_pos this
             have hlogim_pos : 0 < Real.log (|s.im| + 3) := by
-              have : (1 : ℝ) < |s.im| + 3 := by linarith [abs_nonneg s.im]
+              have : (1 : ℝ) < |s.im| + 3 := by linarith only [abs_nonneg s.im, him4]
               exact Real.log_pos this
             have himle : |s.im| ≤ engT x := abs_le.mpr ⟨hsim.1, hsim.2⟩
             have hlogle : Real.log (|s.im| + 3) ≤ Real.log (engT x + 3) :=
-              Real.log_le_log (by linarith [abs_nonneg s.im]) (by linarith)
+              Real.log_le_log (by linarith only [abs_nonneg s.im, him4]) (by linarith only [himle])
             have h3 : c / (2 * (Real.log (engT x + 3) + 1)) ≤ c / Real.log (engT x + 3) := by
-              rw [div_le_div_iff₀ (by linarith : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1)) hlogT]
-              nlinarith
+              rw [div_le_div_iff₀ (by linarith only [hlogT] : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1)) hlogT]
+              nlinarith only [hc, hlogT]
             have h4 : c / Real.log (engT x + 3) ≤ c / Real.log (|s.im| + 3) :=
               div_le_div_of_nonneg_left (le_of_lt hc) hlogim_pos hlogle
-            linarith [hsre.1]
+            linarith only [hsre.1, h3, h4, hsre]
           rw [← hdecomp]
           exact hZF s.im him1 s.re hre'
 
@@ -1686,8 +1686,8 @@ private lemma engSigma_le_perronRe {x c : ℝ} (hx : 1 < x) (hc : 0 < c) :
     engSigma x c ≤ perronRe x := by
   have h1 : engSigma x c ≤ 1 := by
     dsimp [engSigma]
-    linarith [engDelta_nonneg (x := x) hc]
-  linarith [perronRe_gt_one hx]
+    linarith only [engDelta_nonneg (x := x) hc, hc]
+  linarith only [perronRe_gt_one hx, h1, hx]
 
 private lemma mem_rect_horiz {x c T u : ℝ} (hu : u ∈ Set.uIcc (engSigma x c) (perronRe x))
     (hT : T ∈ Set.uIcc (-(engT x)) (engT x)) :
@@ -1704,12 +1704,12 @@ private lemma mem_rect_vert {x c σ t : ℝ} (hσ : σ ∈ Set.uIcc (engSigma x 
   exact ⟨by simpa using hσ, by simpa using ht⟩
 
 private lemma engT_mem_uIcc (x : ℝ) : engT x ∈ Set.uIcc (-(engT x)) (engT x) := by
-  rw [Set.uIcc_of_le (by linarith [engT_pos x])]
-  exact ⟨by linarith [engT_pos x], le_rfl⟩
+  rw [Set.uIcc_of_le (by linarith only [engT_pos x])]
+  exact ⟨by linarith only [engT_pos x], le_rfl⟩
 
 private lemma neg_engT_mem_uIcc (x : ℝ) : -(engT x) ∈ Set.uIcc (-(engT x)) (engT x) := by
-  rw [Set.uIcc_of_le (by linarith [engT_pos x])]
-  exact ⟨le_rfl, by linarith [engT_pos x]⟩
+  rw [Set.uIcc_of_le (by linarith only [engT_pos x])]
+  exact ⟨le_rfl, by linarith only [engT_pos x]⟩
 
 private lemma engSigma_mem_uIcc {x c : ℝ} (hx : 1 < x) (hc : 0 < c) :
     engSigma x c ∈ Set.uIcc (engSigma x c) (perronRe x) := by
@@ -1726,12 +1726,12 @@ private lemma engine_edge_integrable {x c : ℝ} (hx : 3 ≤ x) (hc : 0 < c)
         volume (engSigma x c) (perronRe x) ∧
     IntervalIntegrable (fun t : ℝ => ‖psiIntF x ((engSigma x c : ℂ) + (t : ℂ) * Complex.I)‖)
         volume (-(engT x)) (engT x) := by
-  have hxpos : 0 < x := by linarith
-  have hx1 : 1 < x := by linarith
+  have hxpos : 0 < x := by linarith only [hx]
+  have hx1 : 1 < x := by linarith only [hx]
   have hσpos : 0 < engSigma x c := by
-    dsimp [engSigma]; linarith
+    dsimp [engSigma]; linarith only [hδ]
   have hσne : engSigma x c ≠ 1 := by
-    dsimp [engSigma]; linarith [engDelta_pos (x := x) hc]
+    dsimp [engSigma]; linarith only [engDelta_pos (x := x) hc, hc]
   have hTnz : engT x ≠ 0 := ne_of_gt (engT_pos x)
   have hneghTnz : -engT x ≠ 0 := neg_ne_zero.mpr hTnz
   -- zeta nonzero helper
@@ -1787,18 +1787,18 @@ private lemma hM1_datum {c₁ C₁ : ℝ} (hc₁ : 0 < c₁) (hC₁ : 0 ≤ C₁
     ∀ t : ℝ, 1 ≤ |t| → ∀ σ : ℝ, 1 - c₁ / (Real.log (|t| + 3) + 1) ≤ σ → σ ≤ 2 →
       logDerivZ (((σ : ℂ) + (t : ℂ) * Complex.I)) ≤ C₁ * (Real.log (|t| + 3) + 1) ^ 5 := by
   intro t ht σ hσ hσ2
-  have hLpos : 0 < Real.log (|t| + 3) := Real.log_pos (by linarith [abs_nonneg t])
+  have hLpos : 0 < Real.log (|t| + 3) := Real.log_pos (by linarith only [abs_nonneg t, ht])
   have hσ' : 1 - c₁ / Real.log (|t| + 3) ≤ σ := by
     have hle : c₁ / (Real.log (|t| + 3) + 1) ≤ c₁ / Real.log (|t| + 3) := by
-      rw [div_le_div_iff₀ (by linarith : (0:ℝ) < Real.log (|t| + 3) + 1) hLpos]
-      nlinarith
-    linarith
+      rw [div_le_div_iff₀ (by linarith only [hLpos] : (0:ℝ) < Real.log (|t| + 3) + 1) hLpos]
+      linarith only [hc₁]
+    linarith only [hσ, hle]
   have h := hLD t ht σ hσ' hσ2
   have hpow : (Real.log (|t| + 3) + 1) ^ 4 ≤ (Real.log (|t| + 3) + 1) ^ 5 := by
-    have h1 : (1 : ℝ) ≤ Real.log (|t| + 3) + 1 := by linarith
+    have h1 : (1 : ℝ) ≤ Real.log (|t| + 3) + 1 := by linarith only [hLpos]
     calc (Real.log (|t| + 3) + 1) ^ 4 = (Real.log (|t| + 3) + 1) ^ 4 * 1 := by ring
       _ ≤ (Real.log (|t| + 3) + 1) ^ 4 * (Real.log (|t| + 3) + 1) :=
-          mul_le_mul_of_nonneg_left h1 (pow_nonneg (by linarith) 4)
+          mul_le_mul_of_nonneg_left h1 (pow_nonneg (by linarith only [hLpos]) 4)
       _ = (Real.log (|t| + 3) + 1) ^ 5 := by ring
   have harg : ((σ : ℂ) + (t : ℂ) * Complex.I) = ((σ : ℂ) + Complex.I * (t : ℂ)) := by ring
   rw [harg, logDerivZ]
@@ -1831,7 +1831,7 @@ private lemma engM_pow5_le {x : ℝ} (hL1 : 1 ≤ Real.log x)
   have h2 : (3 * Real.sqrt (Real.log x)) ^ 5 = 243 * (Real.sqrt (Real.log x)) ^ 5 := by ring
   have hs := Real.sq_sqrt (le_of_lt hLpos)
   have hs1 : 1 ≤ Real.sqrt (Real.log x) := Real.one_le_sqrt.mpr hL1
-  have hsle : Real.sqrt (Real.log x) ≤ Real.log x := by nlinarith
+  have hsle : Real.sqrt (Real.log x) ≤ Real.log x := by nlinarith only [hs, hM3, hs1, hMnn]
   have h3 : (Real.sqrt (Real.log x)) ^ 5 ≤ (Real.log x) ^ 3 := by
     have h4 : (Real.sqrt (Real.log x)) ^ 5
         = (Real.sqrt (Real.log x)) ^ 2 * ((Real.sqrt (Real.log x)) ^ 2 * Real.sqrt (Real.log x)) := by
@@ -1858,13 +1858,13 @@ private lemma engDelta_mul_log_ge {x c : ℝ} (hc : 0 < c) (hL1 : 1 ≤ Real.log
   conv_rhs => rw [hsqL2']
   rw [show c / (2 * (Real.log (engT x + 3) + 1)) * Real.sqrt (Real.log x) ^ 2
       = c * Real.sqrt (Real.log x) ^ 2 / (2 * (Real.log (engT x + 3) + 1)) by ring]
-  rw [le_div_iff₀ (by linarith : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1))]
+  rw [le_div_iff₀ (by linarith only [hMpos] : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1))]
   have hnn : 0 ≤ (c / 3) * Real.sqrt (Real.log x) :=
     mul_nonneg (by positivity) (Real.sqrt_nonneg _)
   have hprod : (c / 3) * Real.sqrt (Real.log x) * (Real.log (engT x + 3) + 1)
       ≤ (c / 3) * Real.sqrt (Real.log x) * (3 * Real.sqrt (Real.log x)) :=
     mul_le_mul_of_nonneg_left hM3 hnn
-  nlinarith [hprod, hsqLpos]
+  linarith only [hprod, hsqLpos]
 
 private lemma engDelta_inv_le {x c : ℝ} (hc : 0 < c)
     (hM3 : Real.log (engT x + 3) + 1 ≤ 3 * Real.sqrt (Real.log x)) :
@@ -1874,20 +1874,20 @@ private lemma engDelta_inv_le {x c : ℝ} (hc : 0 < c)
   have hδeq : engDelta x c = c / (2 * (Real.log (engT x + 3) + 1)) := rfl
   rw [hδeq, one_div, inv_div]
   apply div_le_div_of_nonneg_right _ (le_of_lt hc)
-  linarith [hM3]
+  linarith only [hM3]
 
 private lemma log_engT_div_two_le (x : ℝ) :
     Real.log (engT x / 2) ≤ Real.sqrt (Real.log x) := by
   have hTpos : 0 < engT x := engT_pos x
   have h1 : Real.log (engT x / 2) ≤ Real.log (engT x) :=
-    Real.log_le_log (by linarith) (by linarith)
+    Real.log_le_log (by linarith only [hTpos]) (by linarith only [hTpos])
   rw [engT, Real.log_exp] at h1
   exact h1
 
 private lemma engSigma_ge_half {x c : ℝ} (hδh : engDelta x c ≤ 1 / 2) :
     1 / 2 ≤ engSigma x c := by
   dsimp [engSigma]
-  linarith
+  linarith only [hδh]
 
 private lemma perronRe_sub_engSigma_le_two {x c : ℝ} (hL1 : 1 ≤ Real.log x)
     (hδh : engDelta x c ≤ 1 / 2) :
@@ -1895,7 +1895,7 @@ private lemma perronRe_sub_engSigma_le_two {x c : ℝ} (hL1 : 1 ≤ Real.log x)
   have hLpos : 0 < Real.log x := lt_of_lt_of_le zero_lt_one hL1
   have hd : 1 / Real.log x ≤ 1 := (div_le_one hLpos).2 hL1
   dsimp [perronRe, engSigma]
-  linarith
+  linarith only [hδh, hd]
 
 /-! ## Eventual size facts -/
 
@@ -1908,31 +1908,31 @@ private lemma engT_eventually_ge (B : ℝ) : ∀ᶠ x : ℝ in atTop, B ≤ engT
 private lemma engDelta_eventually_le {c d : ℝ} (hc : 0 < c) (hd : 0 < d) :
     ∀ᶠ x : ℝ in atTop, engDelta x c ≤ d := by
   filter_upwards [engT_eventually_ge (Real.exp (c / (2 * d)) + 3)] with x hx
-  have h1 : Real.exp (c / (2 * d)) ≤ engT x + 3 := by linarith
+  have h1 : Real.exp (c / (2 * d)) ≤ engT x + 3 := by linarith only [hx]
   have h2 : c / (2 * d) ≤ Real.log (engT x + 3) :=
-    (Real.le_log_iff_exp_le (by linarith [engT_pos x])).2 h1
+    (Real.le_log_iff_exp_le (by linarith only [engT_pos x])).2 h1
   have hM : 0 < Real.log (engT x + 3) + 1 := engM_pos x
   have h3 : c ≤ Real.log (engT x + 3) * (2 * d) := by
-    have h4 := mul_le_mul_of_nonneg_right h2 (by linarith : (0:ℝ) ≤ 2 * d)
+    have h4 := mul_le_mul_of_nonneg_right h2 (by linarith only [hd] : (0:ℝ) ≤ 2 * d)
     rwa [div_mul_cancel₀ _ (by positivity : (2:ℝ) * d ≠ 0)] at h4
   rw [engDelta]
-  rw [div_le_iff₀ (by linarith : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1))]
-  nlinarith [h3, hM]
+  rw [div_le_iff₀ (by linarith only [hM] : (0:ℝ) < 2 * (Real.log (engT x + 3) + 1))]
+  linarith only [h3, hM, hd]
 
 private lemma engM_eventually_le :
     ∀ᶠ x : ℝ in atTop, Real.log (engT x + 3) + 1 ≤ 3 * Real.sqrt (Real.log x) := by
   filter_upwards [engT_eventually_ge 3, Real.tendsto_log_atTop.eventually_ge_atTop 1] with x hT3 hL1
   have hsq1 : 1 ≤ Real.sqrt (Real.log x) := Real.one_le_sqrt.mpr hL1
   have hlog2 : Real.log 2 ≤ Real.sqrt (Real.log x) := by
-    have h : Real.log 2 < 1 := by have := Real.log_two_lt_d9; linarith
-    linarith
+    have h : Real.log 2 < 1 := by have := Real.log_two_lt_d9; linarith only [this]
+    linarith only [hsq1, h]
   have hTpos : 0 < engT x := engT_pos x
   have h1 : Real.log (engT x + 3) ≤ Real.log (engT x * 2) :=
-    Real.log_le_log (by linarith) (by linarith)
+    Real.log_le_log (by linarith only [hT3]) (by linarith only [hT3])
   rw [Real.log_mul (ne_of_gt hTpos) (by norm_num : (2:ℝ) ≠ 0)] at h1
   have h2 : Real.log (engT x) = Real.sqrt (Real.log x) := by rw [engT, Real.log_exp]
   rw [h2] at h1
-  linarith
+  linarith only [hsq1, hlog2, h1]
 
 /-! ## The perronEdgeSum bound -/
 
@@ -1978,7 +1978,7 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
     simpa using hx'
   filter_upwards [hx3, hL1, hT2, engM_eventually_le, hδh, hP1, hP2, hP3]
     with x hx3 hL1 hT2 hM3 hδh hP1 hP2 hP3
-  have hxpos : 0 < x := by linarith
+  have hxpos : 0 < x := by linarith only [hcf, hcf2, hx3]
   have hLpos : 0 < Real.log x := lt_of_lt_of_le zero_lt_one hL1
   have hLnn : 0 ≤ Real.log x := le_of_lt hLpos
   have hsqLnn : 0 ≤ Real.sqrt (Real.log x) := Real.sqrt_nonneg _
@@ -1990,43 +1990,43 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
   have hδinv := engDelta_inv_le hc₁ hM3
   have hlogT2 := log_engT_div_two_le x
   have hσhalf := engSigma_ge_half (x := x) (c := c₁) hδh
-  have hσpos : 0 < engSigma x c₁ := by linarith
+  have hσpos : 0 < engSigma x c₁ := by linarith only [hcf, hcf2, hσhalf]
   have hdiff := perronRe_sub_engSigma_le_two hL1 hδh
   have hδle : Real.exp (-(engDelta x c₁ * Real.log x)) ≤
       Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x)) :=
-    Real.exp_le_exp.mpr (by linarith [hδmul])
+    Real.exp_le_exp.mpr (by linarith only [hδmul])
   have hexp12 : Real.exp (-(c₁ / 12) * Real.sqrt (Real.log x)) ≤
       Real.exp (-cf * Real.sqrt (Real.log x)) :=
-    Real.exp_le_exp.mpr (by nlinarith [hcf1, hsqLnn])
+    Real.exp_le_exp.mpr (by nlinarith only [hcf1, hsqLnn])
   have hexp2 : Real.exp (-(1 / 2) * Real.sqrt (Real.log x)) ≤
       Real.exp (-cf * Real.sqrt (Real.log x)) :=
-    Real.exp_le_exp.mpr (by nlinarith [hcf2, hsqLnn])
+    Real.exp_le_exp.mpr (by nlinarith only [hcf2, hsqLnn])
   have hMnn : 0 ≤ Real.log (engT x + 3) + 1 := le_of_lt (engM_pos x)
   have hxe : 0 ≤ x * Real.exp 1 := mul_nonneg (le_of_lt hxpos) (le_of_lt (Real.exp_pos 1))
   have hdiffnn : 0 ≤ perronRe x - engSigma x c₁ := by
-    have h1 : engSigma x c₁ ≤ 1 := by dsimp [engSigma]; linarith [engDelta_nonneg (x := x) hc₁]
+    have h1 : engSigma x c₁ ≤ 1 := by dsimp [engSigma]; linarith only [engDelta_nonneg (x := x) hc₁, hc₁]
     linarith [perronRe_gt_one (by linarith : 1 < x)]
   have hK : C₂ + 6 * Real.sqrt (Real.log x) / c₁ ≤ 2 * (C₂ + 6 / c₁ + 1) * Real.log x := by
     have h1 : 6 * Real.sqrt (Real.log x) / c₁ = (6 / c₁) * Real.sqrt (Real.log x) := by ring
     rw [h1]
     have h4 : Real.sqrt (Real.log x) ≤ Real.log x := by
-      nlinarith [Real.sq_sqrt (le_of_lt hLpos), Real.one_le_sqrt.mpr hL1]
+      nlinarith only [Real.sq_sqrt (le_of_lt hLpos), Real.one_le_sqrt.mpr hL1, hLpos, hcf, hcf2, hL1, hsqLnn]
     have hKnn : 0 ≤ C₂ + 6 / c₁ + 1 := by
       have h0 : 0 ≤ 6 / c₁ := div_nonneg (by norm_num) (le_of_lt hc₁)
-      linarith
+      linarith only [hC₂, hcf, hcf2, h0]
     have h2 : (6 / c₁) * Real.sqrt (Real.log x) ≤ (C₂ + 6 / c₁ + 1) * Real.log x := by
-      have h3 : 6 / c₁ ≤ C₂ + 6 / c₁ + 1 := by linarith [hC₂]
+      have h3 : 6 / c₁ ≤ C₂ + 6 / c₁ + 1 := by linarith only [hC₂, hcf, hcf2]
       calc (6 / c₁) * Real.sqrt (Real.log x) ≤ (C₂ + 6 / c₁ + 1) * Real.sqrt (Real.log x) :=
             mul_le_mul_of_nonneg_right h3 hsqLnn
         _ ≤ (C₂ + 6 / c₁ + 1) * Real.log x := mul_le_mul_of_nonneg_left h4 hKnn
     have h5 : C₂ ≤ (C₂ + 6 / c₁ + 1) * Real.log x := by
       have h6 : C₂ ≤ C₂ + 6 / c₁ + 1 := by
         have h0 : 0 ≤ 6 / c₁ := div_nonneg (by norm_num) (le_of_lt hc₁)
-        linarith
+        linarith only [hcf, hcf2, h0]
       calc C₂ = C₂ * 1 := by ring
         _ ≤ (C₂ + 6 / c₁ + 1) * 1 := mul_le_mul_of_nonneg_right h6 (by norm_num)
         _ ≤ (C₂ + 6 / c₁ + 1) * Real.log x := mul_le_mul_of_nonneg_left hL1 hKnn
-    linarith
+    linarith only [h2, h5]
   have hA : C₁ * (Real.log (engT x + 3) + 1) ^ 5 * x ^ perronRe x *
         (perronRe x - engSigma x c₁) / engT x
       ≤ x * Real.exp (-cf * Real.sqrt (Real.log x)) := by
@@ -2057,7 +2057,7 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
             (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))) := by
       rw [hrpowsig]
       have hsum : C₂ + 1 / (1 - engSigma x c₁) ≤ C₂ + 6 * Real.sqrt (Real.log x) / c₁ := by
-        linarith [hδinv]
+        linarith only [hδinv]
       have h1 : 4 * (C₂ + 1 / (1 - engSigma x c₁)) ≤
           4 * (C₂ + 6 * Real.sqrt (Real.log x) / c₁) :=
         mul_le_mul_of_nonneg_left hsum (by norm_num)
@@ -2076,15 +2076,15 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
         rw [div_eq_mul_inv, one_div]
       rw [h2] at h1
       refine le_trans h1 ?_
-      have hinv : 1 / engSigma x c₁ ≤ 2 := by rw [div_le_iff₀ hσpos]; linarith [hσhalf]
+      have hinv : 1 / engSigma x c₁ ≤ 2 := by rw [div_le_iff₀ hσpos]; linarith only [hσhalf]
       have h3 := mul_le_mul_of_nonneg_left hinv (by positivity : (0:ℝ) ≤ 4 *
         (C₂ + 6 * Real.sqrt (Real.log x) / c₁) *
         (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))))
-      linarith [h3]
+      linarith only [h3]
     have h16 : 8 * (C₂ + 6 * Real.sqrt (Real.log x) / c₁) ≤
         16 * (C₂ + 6 / c₁ + 1) * (Real.log x) := by
       have hh := mul_le_mul_of_nonneg_left hK (by norm_num : (0:ℝ) ≤ 8)
-      linarith [hh]
+      linarith only [hh, hK]
     have hfin : 8 * (C₂ + 6 * Real.sqrt (Real.log x) / c₁) *
           (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x)))
         ≤ x * Real.exp (-cf * Real.sqrt (Real.log x)) := by
@@ -2099,7 +2099,7 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
           = x * (16 * (C₂ + 6 / c₁ + 1) * (Real.log x) *
             Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))) by ring]
       exact mul_le_mul_of_nonneg_left (le_trans hP3 hexp12) (le_of_lt hxpos)
-    linarith
+    linarith only [hdiv, hfin]
   have hC : C₁ * x ^ (engSigma x c₁) * (Real.log (engT x + 3) + 1) ^ 5 *
         Real.log (engT x / 2)
       ≤ x * Real.exp (-cf * Real.sqrt (Real.log x)) := by
@@ -2111,13 +2111,13 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
       have hY : C₁ * (x * Real.exp (-(engDelta x c₁ * Real.log x))) ≤
           C₁ * (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))) :=
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hδle (le_of_lt hxpos)) hC₁
-      have hLognn : 0 ≤ Real.log (engT x / 2) := Real.log_nonneg (by linarith : (1:ℝ) ≤ engT x / 2)
+      have hLognn : 0 ≤ Real.log (engT x / 2) := Real.log_nonneg (by linarith only [hT2] : (1:ℝ) ≤ engT x / 2)
       have hX'nn : 0 ≤ C₁ * (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))) :=
         mul_nonneg hC₁ (mul_nonneg (le_of_lt hxpos) (le_of_lt (Real.exp_pos _)))
       exact mul_le_mul (mul_le_mul hY hM5 (pow_nonneg hMnn 5) hX'nn) hlogT2 hLognn
         (mul_nonneg hX'nn (mul_nonneg (by norm_num) (pow_nonneg hLnn 3)))
     have h3 : Real.sqrt (Real.log x) ≤ Real.log x := by
-      nlinarith [Real.sq_sqrt (le_of_lt hLpos), Real.one_le_sqrt.mpr hL1]
+      nlinarith only [Real.sq_sqrt (le_of_lt hLpos), Real.one_le_sqrt.mpr hL1, hLpos, hcf, hcf2, hL1, hsqLnn]
     have hmid : C₁ * (x * Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x))) *
         (243 * (Real.log x) ^ 3) * Real.sqrt (Real.log x)
         ≤ x * (243 * C₁ * (Real.log x) ^ 4 *
@@ -2142,9 +2142,9 @@ private lemma perronEdgeSum_eventually_le {c₁ C₁ C₂ cf : ℝ} (hc₁ : 0 <
           Real.exp (-(c₁ / 6) * Real.sqrt (Real.log x)))
         ≤ x * Real.exp (-cf * Real.sqrt (Real.log x)) :=
       mul_le_mul_of_nonneg_left (le_trans hP2 hexp12) (le_of_lt hxpos)
-    linarith
+    linarith only [hnum, hmid, h6]
   rw [perronEdgeSum]
-  linarith
+  linarith only [hA, hB, hC]
 
 /-! ## const_mul_log absorption -/
 
@@ -2184,38 +2184,38 @@ private lemma const_mul_log_le_mul_exp_neg_sqrtLog (a : ℝ) (ha : 0 < a) (C : �
         exact le_trans (le_trans (le_max_left 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))
             (le_max_right (2 * a) (max 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))))
           (le_max_right 1 (max (2 * a) (max 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))))
-      linarith
+      linarith only [hbge, h8]
     have hbgeT : 2 * Real.sqrt (2 * max (Real.log C) 0) ≤ b := by
       have h8 : 2 * Real.sqrt (2 * max (Real.log C) 0) ≤ b₀ := by
         rw [hb₀def]
         exact le_trans (le_trans (le_max_right 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))
             (le_max_right (2 * a) (max 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))))
           (le_max_right 1 (max (2 * a) (max 8 (2 * Real.sqrt (2 * max (Real.log C) 0)))))
-      linarith
+      linarith only [hbge, h8]
     have hbpos : 0 < b := lt_of_lt_of_le zero_lt_one hbge1
     have hlogC : Real.log C ≤ b ^ 2 / 8 := by
-      have hs : Real.sqrt (2 * max (Real.log C) 0) ≤ b / 2 := by linarith
+      have hs : Real.sqrt (2 * max (Real.log C) 0) ≤ b / 2 := by linarith only [hbgeT]
       have hTnn : (0:ℝ) ≤ 2 * max (Real.log C) 0 := by
         have : (0:ℝ) ≤ max (Real.log C) 0 := le_max_right _ _
-        linarith
+        linarith only [this]
       have hsq : 2 * max (Real.log C) 0 ≤ (b / 2) ^ 2 := by
         have h := pow_le_pow_left₀ (Real.sqrt_nonneg _) hs 2
         rwa [Real.sq_sqrt hTnn] at h
-      have hmax : max (Real.log C) 0 ≤ b ^ 2 / 8 := by nlinarith
+      have hmax : max (Real.log C) 0 ≤ b ^ 2 / 8 := by linarith only [hsq]
       exact le_trans (le_max_left _ _) hmax
     have hlogb : 2 * Real.log b ≤ 3 * b ^ 2 / 8 := by
       have h1 : Real.log b ≤ b := Real.log_le_self (le_of_lt hbpos)
-      have h2 : b ≤ 3 * b ^ 2 / 16 := by nlinarith
-      linarith
+      have h2 : b ≤ 3 * b ^ 2 / 16 := by nlinarith only [hbge8, hbnonneg]
+      linarith only [h1, h2]
     have hkey : C * b ^ 2 * Real.exp (a * b) ≤ Real.exp (b ^ 2) := by
       have hb2pos : 0 < b ^ 2 := pow_pos hbpos 2
       have expand : C * b ^ 2 ≤ Real.exp (b ^ 2 / 2) := by
         rw [← Real.log_le_log_iff (mul_pos hCpos hb2pos) (Real.exp_pos _), Real.log_exp,
           Real.log_mul (ne_of_gt hCpos) (ne_of_gt hb2pos), Real.log_pow]
         push_cast
-        linarith
+        linarith only [hlogC, hlogb]
       have expab : Real.exp (a * b) ≤ Real.exp (b ^ 2 / 2) := by
-        apply Real.exp_le_exp.mpr; nlinarith [hbge2a]
+        apply Real.exp_le_exp.mpr; nlinarith only [hbge2a, hb₀ge2a, hbnonneg, hbge]
       calc C * b ^ 2 * Real.exp (a * b) = (C * b ^ 2) * Real.exp (a * b) := by ring
         _ ≤ Real.exp (b ^ 2 / 2) * Real.exp (b ^ 2 / 2) :=
             mul_le_mul expand expab (le_of_lt (Real.exp_pos _)) (le_of_lt (Real.exp_pos _))
@@ -2253,7 +2253,7 @@ private lemma trunc_eventually_le {Ctr cf : ℝ} (hCtr : 0 ≤ Ctr) (hcf : 0 < c
   have hTinv : (engT x)⁻¹ = Real.exp (-Real.sqrt (Real.log x)) := by rw [engT, ← Real.exp_neg]
   have h2 : Real.exp (-(1 / 2) * Real.sqrt (Real.log x)) ≤
       Real.exp (-cf * Real.sqrt (Real.log x)) :=
-    Real.exp_le_exp.mpr (by nlinarith [hcf2, hsqLnn])
+    Real.exp_le_exp.mpr (by nlinarith only [hcf2, hsqLnn])
   have hA : Ctr * (x * (Real.log x) ^ 2 / engT x)
       ≤ x * Real.exp (-cf * Real.sqrt (Real.log x)) := by
     have heq : Ctr * (x * (Real.log x) ^ 2 / engT x)
@@ -2266,7 +2266,7 @@ private lemma trunc_eventually_le {Ctr cf : ℝ} (hCtr : 0 ≤ Ctr) (hcf : 0 < c
       _ ≤ Real.exp (-cf * Real.sqrt (Real.log x)) * x :=
           mul_le_mul_of_nonneg_right h2 (le_of_lt hxpos)
       _ = x * Real.exp (-cf * Real.sqrt (Real.log x)) := by ring
-  linarith
+  linarith only [hC, hA]
 
 /-! ## The engine with exponential error -/
 
@@ -2282,11 +2282,11 @@ private lemma psi_sub_id_engine_exp :
   have hcf1 : cf ≤ c₁ / 12 := by
     rw [hcfdef]
     have h1 : min c₁ 1 ≤ c₁ := min_le_left _ _
-    nlinarith [hc₁, h1]
+    linarith only [hc₁, h1]
   have hcf2 : cf ≤ 1 / 2 := by
     rw [hcfdef]
     have h1 : min c₁ 1 ≤ 1 := min_le_right _ _
-    nlinarith [h1]
+    linarith only [h1]
   have hC₁ : 0 ≤ C₁ := le_of_lt hC₁pos
   have hM1D := hM1_datum (c₁ := c₁) (C₁ := C₁) hc₁ hC₁ hLD1
   have hM2D := hM2_datum (C₂ := C₂) (δ₂ := δ₂) hM2
@@ -2310,7 +2310,7 @@ private lemma psi_sub_id_engine_exp :
       IntervalIntegrable (fun t : ℝ => ‖psiIntF x ((engSigma x c₁ : ℂ) + (t : ℂ) * Complex.I)‖)
           volume (-(engT x)) (engT x) := by
     filter_upwards [hx3, hδh, hrectEv] with x hx3 hδh hrect
-    exact engine_edge_integrable hx3 hc₁ (by linarith) hrect
+    exact engine_edge_integrable hx3 hc₁ (by linarith only [hcfpos, hcf2, hδh]) hrect
   have htruncEv := trunc_eventually_le (Ctr := Ctr) (cf := cf) (le_of_lt hCtrpos) hcfpos hcf2
   have hpeS := perronEdgeSum_eventually_le (c₁ := c₁) (C₁ := C₁) (C₂ := C₂) (cf := cf)
     hc₁ hC₁ (le_of_lt hC₂pos) hcfpos hcf1 hcf2
@@ -2326,10 +2326,10 @@ private lemma psi_sub_id_engine_exp :
       with x hx3 hL1 hT2 hδδ hδε hδh hrect hint htruncB hpeSB h7B
     obtain ⟨hIntTop, hIntBot, hIntL⟩ := hint
     have hper2 : perronRe x ≤ 2 := perronRe_le_two_of_three hx3
-    have hper1 : 1 < perronRe x := perronRe_gt_one (by linarith : 1 < x)
-    have hxpos : 0 < x := by linarith
-    have hσpos : 0 < engSigma x c₁ := by dsimp [engSigma]; linarith [engDelta_pos (x := x) hc₁]
-    have hδ1 : 0 < 1 - engSigma x c₁ := by dsimp [engSigma]; linarith [engDelta_pos (x := x) hc₁]
+    have hper1 : 1 < perronRe x := perronRe_gt_one (by linarith only [hcfpos, hcf2, hx3] : 1 < x)
+    have hxpos : 0 < x := by linarith only [hcfpos, hcf2, hx3]
+    have hσpos : 0 < engSigma x c₁ := by dsimp [engSigma]; linarith only [engDelta_pos (x := x) hc₁, hcfpos, hcf2, hδh]
+    have hδ1 : 0 < 1 - engSigma x c₁ := by dsimp [engSigma]; linarith only [engDelta_pos (x := x) hc₁, hc₁]
     have hHT : (1 : ℝ) ≤ engT x := le_trans (by norm_num) hT2
     have hTopB := hTopB_engine (x := x) (c := c₁) (C := C₁) (H := 1) hx3 hper2
       (le_of_lt hc₁) hHT hM1D
@@ -2347,7 +2347,7 @@ private lemma psi_sub_id_engine_exp :
     have h2' := mul_le_mul_of_nonneg_left hpeSB hcoef
     have hle1 : 1 / (2 * Real.pi) ≤ 1 := by
       rw [div_le_one (by positivity : (0:ℝ) < 2 * Real.pi)]
-      linarith [Real.pi_gt_three]
+      linarith only [Real.pi_gt_three, hcfpos, hcf2]
     have h2'' : (1 / (2 * Real.pi)) * (5 * x * Real.exp (-cf * Real.sqrt (Real.log x)))
         ≤ 5 * x * Real.exp (-cf * Real.sqrt (Real.log x)) := by
       have hnn : 0 ≤ 5 * x * Real.exp (-cf * Real.sqrt (Real.log x)) := by positivity
@@ -2359,7 +2359,7 @@ private lemma psi_sub_id_engine_exp :
         ≤ Ctr * (x * (Real.log x) ^ 2 / engT x + Real.log x) +
             (1 / (2 * Real.pi)) * perronEdgeSum x (engT x) (engSigma x c₁) C₁ C₂ := hE
       _ ≤ 2 * x * Real.exp (-cf * Real.sqrt (Real.log x)) +
-            5 * x * Real.exp (-cf * Real.sqrt (Real.log x)) := by linarith [htruncB, hcomb]
+            5 * x * Real.exp (-cf * Real.sqrt (Real.log x)) := by linarith only [htruncB, hcomb, h2', h2'']
       _ = (7 * Real.exp (-cf * Real.sqrt (Real.log x))) * x := by ring
       _ ≤ Real.exp (-(cf / 2) * Real.sqrt (Real.log x)) * x :=
           mul_le_mul_of_nonneg_right h7B (le_of_lt hxpos)
@@ -2380,12 +2380,12 @@ theorem psi_sub_id_powLog_real :
   have hx3 : (3 : ℝ) ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx
   have h1 := hx₀₁ x hx1
   have h2 := hx₀₂ x hx2
-  have hxpos : 0 < x := by linarith
-  have hlogpos : 0 < Real.log x := Real.log_pos (by linarith)
+  have hxpos : 0 < x := by linarith only [hx3]
+  have hlogpos : 0 < Real.log x := Real.log_pos (by linarith only [hx3])
   have hLApos : 0 < (Real.log x) ^ A := Real.rpow_pos_of_pos hlogpos A
   have hexp : Real.exp (-c * Real.sqrt (Real.log x)) ≤ 1 / (Real.log x) ^ A := by
     rw [le_div_iff₀ hLApos]
-    linarith [h2]
+    linarith only [h2]
   calc |Chebyshev.psi x - x| ≤ x * Real.exp (-c * Real.sqrt (Real.log x)) := h1
     _ ≤ x * (1 / (Real.log x) ^ A) := mul_le_mul_of_nonneg_left hexp (le_of_lt hxpos)
     _ = x / (Real.log x) ^ A := by rw [mul_one_div]

@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.ZeroFreeTables.XY.SupGridDefs
 
 open scoped BigOperators
 

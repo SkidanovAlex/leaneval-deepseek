@@ -2,11 +2,10 @@ import Mathlib
 import Submission.Work.SiegelAbsorb.windowInterface
 import Submission.Work.SiegelAbsorb.famCount_nearLine
 import Submission.Work.SiegelAbsorb.famCountCrudeCorollaries
-import Submission.Work.LinnikAreas.BGTZ.RestHighBGTZGenC
-import Submission.Work.LinnikAreas.BGTZ.RestHighBGTZGenCGen
-import Submission.Work.LinnikAreas.RestHighBGTZ
 import Submission.Work.SiegelAbsorb.lamOf_ge_exp_neg
 import Submission.Work.LinnikAreas.RestHighFree
+import Submission.Work.LinnikAreas.BGTZZFR
+import Submission.Work.LinnikAreas.BGTZ.AuxC
 
 /-!
 # `Work.SiegelAbsorb.RestHighBGTZSiegel_of_window`

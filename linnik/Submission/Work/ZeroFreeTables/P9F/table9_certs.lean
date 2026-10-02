@@ -47,8 +47,8 @@ theorem rowcert_034_1283 {θ : ℝ}
       - 2 * (81/100 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (21/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((17987/20000 : ℝ) + ((53961/10000 : ℝ)) * (1/1000000 : ℝ) + ((11561/10000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((21/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-17/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_034_1283 θ htan
@@ -56,15 +56,15 @@ theorem rowcert_034_1283 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_034_1283 θ htan
   have hΦ1 : tf71Fr θ (21/500 : ℝ) (-17/50 : ℝ) ≤ (2875797868951/2000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (21/500 : ℝ) (-17/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (1542916535889/2500000000 : ℝ) ≤ tf71Fr θ (21/500 : ℝ) (943/1000 : ℝ) := by
     rw [tf71Fr_bilinear θ (21/500 : ℝ) (943/1000 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (21/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (145650035225315432721/156250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_036_123 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (21/500) (-9/25 : ℝ) = (437311814611/674697960 : ℝ) ∧
@@ -99,8 +99,8 @@ theorem rowcert_036_123 {θ : ℝ}
       - 2 * (407/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (21/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((1354649/1500000 : ℝ) + ((1354649/250000 : ℝ)) * (1/1000000 : ℝ) + ((290649/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((21/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-9/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_036_123 θ htan
@@ -108,15 +108,15 @@ theorem rowcert_036_123 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_036_123 θ htan
   have hΦ1 : tf71Fr θ (21/500 : ℝ) (-9/25 : ℝ) ≤ (7310230768471/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (21/500 : ℝ) (-9/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (6412125199443/10000000000 : ℝ) ≤ tf71Fr θ (21/500 : ℝ) (87/100 : ℝ) := by
     rw [tf71Fr_bilinear θ (21/500 : ℝ) (87/100 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (21/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (145650035225315432721/156250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_038_1181 (θ : ℝ) (htan : Real.tan θ = 24/1) :
     tf71P00 θ (9/200) (-19/50 : ℝ) = (9221131503945/15506724676 : ℝ) ∧
@@ -151,8 +151,8 @@ theorem rowcert_038_1181 {θ : ℝ}
       - 2 * (817/1000 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (9/200 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((5435489/6000000 : ℝ) + ((5435489/1000000 : ℝ)) * (1/1000000 : ℝ) + ((1167489/1000000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((9/200 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-19/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_038_1181 θ htan
@@ -160,15 +160,15 @@ theorem rowcert_038_1181 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_038_1181 θ htan
   have hΦ1 : tf71Fr θ (9/200 : ℝ) (-19/50 : ℝ) ≤ (13507027291663/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (9/200 : ℝ) (-19/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (6178076692099/10000000000 : ℝ) ≤ tf71Fr θ (9/200 : ℝ) (801/1000 : ℝ) := by
     rw [tf71Fr_bilinear θ (9/200 : ℝ) (801/1000 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (323721959285583384320071840949433/320000000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (9/200 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (140796081447487900119/160000000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_04_1135 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (11/250) (-2/5 : ℝ) = (58950870407/93845000 : ℝ) ∧
@@ -203,8 +203,8 @@ theorem rowcert_04_1135 {θ : ℝ}
       - 2 * (41/50 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (11/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((13631/15000 : ℝ) + ((13631/2500 : ℝ)) * (1/1000000 : ℝ) + ((2931/2500 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((11/250 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-2/5 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_04_1135 θ htan
@@ -212,15 +212,15 @@ theorem rowcert_04_1135 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_04_1135 θ htan
   have hΦ1 : tf71Fr θ (11/250 : ℝ) (-2/5 : ℝ) ≤ (2978126339431/2000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (11/250 : ℝ) (-2/5 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (54924345861/78125000 : ℝ) ≤ tf71Fr θ (11/250 : ℝ) (147/200 : ℝ) := by
     rw [tf71Fr_bilinear θ (11/250 : ℝ) (147/200 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (11/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (76292875594212845711/78125000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_042_1094 (θ : ℝ) (htan : Real.tan θ = 24/1) :
     tf71P00 θ (23/500) (-21/50 : ℝ) = (1178687603249101/2069981698050 : ℝ) ∧
@@ -255,8 +255,8 @@ theorem rowcert_042_1094 {θ : ℝ}
       - 2 * (411/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((455307/500000 : ℝ) + ((1365921/250000 : ℝ)) * (1/1000000 : ℝ) + ((293921/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((23/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-21/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_042_1094 θ htan
@@ -264,15 +264,15 @@ theorem rowcert_042_1094 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_042_1094 θ htan
   have hΦ1 : tf71Fr θ (23/500 : ℝ) (-21/50 : ℝ) ≤ (6926450760859/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (-21/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (1668607936707/2500000000 : ℝ) ≤ tf71Fr θ (23/500 : ℝ) (337/500 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (337/500 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (323721959285583384320071840949433/320000000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (359812208143580189193/400000000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_044_1055 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (23/500) (-11/25 : ℝ) = (679042815535603/1112502657640 : ℝ) ∧
@@ -307,8 +307,8 @@ theorem rowcert_044_1055 {θ : ℝ}
       - 2 * (33/40 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((2923/3200 : ℝ) + ((8769/1600 : ℝ)) * (1/1000000 : ℝ) + ((1889/1600 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((23/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-11/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_044_1055 θ htan
@@ -316,15 +316,15 @@ theorem rowcert_044_1055 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_044_1055 θ htan
   have hΦ1 : tf71Fr θ (23/500 : ℝ) (-11/25 : ℝ) ≤ (3028728591253/2000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (-11/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (762281111801/1000000000 : ℝ) ≤ tf71Fr θ (23/500 : ℝ) (123/200 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (123/200 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (159521467151535950123/156250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_046_1018 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (23/500) (-23/50 : ℝ) = (4998923/8410 : ℝ) ∧
@@ -359,8 +359,8 @@ theorem rowcert_046_1018 {θ : ℝ}
       - 2 * (207/250 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((114533/125000 : ℝ) + ((343599/62500 : ℝ)) * (1/1000000 : ℝ) + ((74099/62500 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((23/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-23/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_046_1018 θ htan
@@ -368,15 +368,15 @@ theorem rowcert_046_1018 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_046_1018 θ htan
   have hΦ1 : tf71Fr θ (23/500 : ℝ) (-23/50 : ℝ) ≤ (7690519184687/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (-23/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (3931923660713/5000000000 : ℝ) ≤ tf71Fr θ (23/500 : ℝ) (279/500 : ℝ) := by
     rw [tf71Fr_bilinear θ (23/500 : ℝ) (279/500 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (23/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (159521467151535950123/156250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_048_0984 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (47/1000) (-12/25 : ℝ) = (56133570378812683/95676882762240 : ℝ) ∧
@@ -411,8 +411,8 @@ theorem rowcert_048_0984 {θ : ℝ}
       - 2 * (104/125 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (47/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((172507/187500 : ℝ) + ((172507/31250 : ℝ)) * (1/1000000 : ℝ) + ((37257/31250 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((47/1000 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-12/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_048_0984 θ htan
@@ -420,15 +420,15 @@ theorem rowcert_048_0984 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_048_0984 θ htan
   have hΦ1 : tf71Fr θ (47/1000 : ℝ) (-12/25 : ℝ) ≤ (7749580467967/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (47/1000 : ℝ) (-12/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (8152730895553/10000000000 : ℝ) ≤ tf71Fr θ (47/1000 : ℝ) (63/125 : ℝ) := by
     rw [tf71Fr_bilinear θ (47/1000 : ℝ) (63/125 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (47/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (325978650266182158947/312500000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_05_0952 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (6/125) (-1/2 : ℝ) = (258559607016/446265625 : ℝ) ∧
@@ -463,8 +463,8 @@ theorem rowcert_05_0952 {θ : ℝ}
       - 2 * (417/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((460963/500000 : ℝ) + ((1382889/250000 : ℝ)) * (1/1000000 : ℝ) + ((298889/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((6/125 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-1/2 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_05_0952 θ htan
@@ -472,15 +472,15 @@ theorem rowcert_05_0952 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_05_0952 θ htan
   have hΦ1 : tf71Fr θ (6/125 : ℝ) (-1/2 : ℝ) ≤ (15613585549679/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (-1/2 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (4218257430903/5000000000 : ℝ) ≤ tf71Fr θ (6/125 : ℝ) (113/250 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (113/250 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (20807147889330776103/19531250000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_052_0922 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (6/125) (-13/25 : ℝ) = (545233651524/965633045 : ℝ) ∧
@@ -515,8 +515,8 @@ theorem rowcert_052_0922 {θ : ℝ}
       - 2 * (209/250 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((115477/125000 : ℝ) + ((346431/62500 : ℝ)) * (1/1000000 : ℝ) + ((74931/62500 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((6/125 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-13/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_052_0922 θ htan
@@ -524,15 +524,15 @@ theorem rowcert_052_0922 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_052_0922 θ htan
   have hΦ1 : tf71Fr θ (6/125 : ℝ) (-13/25 : ℝ) ≤ (15851198844617/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (-13/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (433707297679/500000000 : ℝ) ≤ tf71Fr θ (6/125 : ℝ) (201/500 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (201/500 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (20807147889330776103/19531250000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_054_0893 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (6/125) (-27/50 : ℝ) = (51550216088/93701205 : ℝ) ∧
@@ -567,8 +567,8 @@ theorem rowcert_054_0893 {θ : ℝ}
       - 2 * (419/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((1388561/1500000 : ℝ) + ((1388561/250000 : ℝ)) * (1/1000000 : ℝ) + ((300561/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((6/125 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-27/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_054_0893 θ htan
@@ -576,15 +576,15 @@ theorem rowcert_054_0893 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_054_0893 θ htan
   have hΦ1 : tf71Fr θ (6/125 : ℝ) (-27/50 : ℝ) ≤ (16094010346621/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (-27/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (8917449770649/10000000000 : ℝ) ≤ tf71Fr θ (6/125 : ℝ) (353/1000 : ℝ) := by
     rw [tf71Fr_bilinear θ (6/125 : ℝ) (353/1000 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (6/125 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (20807147889330776103/19531250000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_056_0866 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (49/1000) (-14/25 : ℝ) = (763679300923/1403751040 : ℝ) ∧
@@ -619,8 +619,8 @@ theorem rowcert_056_0866 {θ : ℝ}
       - 2 * (21/25 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (49/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((2319/2500 : ℝ) + ((6957/1250 : ℝ)) * (1/1000000 : ℝ) + ((1507/1250 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((49/1000 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-14/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_056_0866 θ htan
@@ -628,15 +628,15 @@ theorem rowcert_056_0866 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_056_0866 θ htan
   have hΦ1 : tf71Fr θ (49/1000 : ℝ) (-14/25 : ℝ) ≤ (16199697257059/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (49/1000 : ℝ) (-14/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (1149276628607/1250000000 : ℝ) ≤ tf71Fr θ (49/1000 : ℝ) (153/500 : ℝ) := by
     rw [tf71Fr_bilinear θ (49/1000 : ℝ) (153/500 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (49/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (339850082192402676349/312500000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_058_084 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (1/20) (-29/50 : ℝ) = (326411450885135/606499127522 : ℝ) ∧
@@ -671,8 +671,8 @@ theorem rowcert_058_084 {θ : ℝ}
       - 2 * (421/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (1/20 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((464747/500000 : ℝ) + ((1394241/250000 : ℝ)) * (1/1000000 : ℝ) + ((302241/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((1/20 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-29/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_058_084 θ htan
@@ -680,15 +680,15 @@ theorem rowcert_058_084 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_058_084 θ htan
   have hΦ1 : tf71Fr θ (1/20 : ℝ) (-29/50 : ℝ) ≤ (3260417704887/2000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (1/20 : ℝ) (-29/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (2366851301621/2500000000 : ℝ) ≤ tf71Fr θ (1/20 : ℝ) (13/50 : ℝ) := by
     rw [tf71Fr_bilinear θ (1/20 : ℝ) (13/50 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (1/20 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (6935715963110258701/6250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_06_0816 (θ : ℝ) (htan : Real.tan θ = 15/1) :
     tf71P00 θ (41/500) (-3/5 : ℝ) = (41396273818567/194875245000 : ℝ) ∧
@@ -723,8 +723,8 @@ theorem rowcert_06_0816 {θ : ℝ}
       - 2 * (211/250 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (41/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((349271/375000 : ℝ) + ((349271/62500 : ℝ)) * (1/1000000 : ℝ) + ((75771/62500 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((41/500 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-3/5 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_06_0816 θ htan
@@ -732,15 +732,15 @@ theorem rowcert_06_0816 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_06_0816 θ htan
   have hΦ1 : tf71Fr θ (41/500 : ℝ) (-3/5 : ℝ) ≤ (5485490484317/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (41/500 : ℝ) (-3/5 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (804809507069/2500000000 : ℝ) ≤ tf71Fr θ (41/500 : ℝ) (27/125 : ℝ) := by
     rw [tf71Fr_bilinear θ (41/500 : ℝ) (27/125 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (12863344934231719511546343860777/35156250000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (41/500 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (2875973562652013879/7812500000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_062_0792 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (1/20) (-31/50 : ℝ) = (372651258880615/728518649042 : ℝ) ∧
@@ -775,8 +775,8 @@ theorem rowcert_062_0792 {θ : ℝ}
       - 2 * (847/1000 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (1/20 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((5605409/6000000 : ℝ) + ((5605409/1000000 : ℝ)) * (1/1000000 : ℝ) + ((1217409/1000000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((1/20 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-31/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_062_0792 θ htan
@@ -784,15 +784,15 @@ theorem rowcert_062_0792 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_062_0792 θ htan
   have hΦ1 : tf71Fr θ (1/20 : ℝ) (-31/50 : ℝ) ≤ (16792276269677/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (1/20 : ℝ) (-31/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (9956983208373/10000000000 : ℝ) ≤ tf71Fr θ (1/20 : ℝ) (43/250 : ℝ) := by
     rw [tf71Fr_bilinear θ (1/20 : ℝ) (43/250 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (1/20 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (6935715963110258701/6250000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_064_077 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (51/1000) (-16/25 : ℝ) = (137536425218043027/271459339509760 : ℝ) ∧
@@ -827,8 +827,8 @@ theorem rowcert_064_077 {θ : ℝ}
       - 2 * (849/1000 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (51/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((1872267/2000000 : ℝ) + ((5616801/1000000 : ℝ)) * (1/1000000 : ℝ) + ((1220801/1000000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((51/1000 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-16/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_064_077 θ htan
@@ -836,15 +836,15 @@ theorem rowcert_064_077 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_064_077 θ htan
   have hΦ1 : tf71Fr θ (51/1000 : ℝ) (-16/25 : ℝ) ≤ (8442944173887/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (51/1000 : ℝ) (-16/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (5109945516429/5000000000 : ℝ) ≤ tf71Fr θ (51/1000 : ℝ) (13/100 : ℝ) := by
     rw [tf71Fr_bilinear θ (51/1000 : ℝ) (13/100 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (51/1000 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (353721514118623193751/312500000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_066_0748 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (13/250) (-33/50 : ℝ) = (19297172592113/38439788805 : ℝ) ∧
@@ -879,8 +879,8 @@ theorem rowcert_066_0748 {θ : ℝ}
       - 2 * (213/250 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((117373/125000 : ℝ) + ((352119/62500 : ℝ)) * (1/1000000 : ℝ) + ((76619/62500 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((13/250 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-33/50 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_066_0748 θ htan
@@ -888,15 +888,15 @@ theorem rowcert_066_0748 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_066_0748 θ htan
   have hΦ1 : tf71Fr θ (13/250 : ℝ) (-33/50 : ℝ) ≤ (16976597554613/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (-33/50 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (10482875299991/10000000000 : ℝ) ≤ tf71Fr θ (13/250 : ℝ) (11/125 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (11/125 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (90164307520433363113/78125000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_068_0728 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (13/250) (-17/25 : ℝ) = (40977664656643/83680415290 : ℝ) ∧
@@ -931,8 +931,8 @@ theorem rowcert_068_0728 {θ : ℝ}
       - 2 * (427/500 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((470443/500000 : ℝ) + ((1411329/250000 : ℝ)) * (1/1000000 : ℝ) + ((307329/250000 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((13/250 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-17/25 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_068_0728 θ htan
@@ -940,15 +940,15 @@ theorem rowcert_068_0728 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_068_0728 θ htan
   have hΦ1 : tf71Fr θ (13/250 : ℝ) (-17/25 : ℝ) ≤ (8611755039553/5000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (-17/25 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (1072792600171/1000000000 : ℝ) ≤ tf71Fr θ (13/250 : ℝ) (6/125 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (6/125 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (90164307520433363113/78125000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_07_0708 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (13/250) (-7/10 : ℝ) = (173775967079/363855625 : ℝ) ∧
@@ -983,8 +983,8 @@ theorem rowcert_07_0708 {θ : ℝ}
       - 2 * (107/125 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((176773/187500 : ℝ) + ((176773/31250 : ℝ)) * (1/1000000 : ℝ) + ((38523/31250 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((13/250 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-7/10 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_07_0708 θ htan
@@ -992,15 +992,15 @@ theorem rowcert_07_0708 {θ : ℝ}
   obtain ⟨hd00,hd10,hd01,hd11⟩ := coefB_07_0708 θ htan
   have hΦ1 : tf71Fr θ (13/250 : ℝ) (-7/10 : ℝ) ≤ (17475516997509/10000000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (-7/10 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hΦ2 : (34318144279/31250000 : ℝ) ≤ tf71Fr θ (13/250 : ℝ) (1/125 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (1/125 : ℝ) hθ0 hθπ hlam hz2, hd00, hd10, hd01, hd11]
-    nlinarith [h1, h2, hE2lo]
+    linarith only [h1, h2, hE2lo]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (90164307520433363113/78125000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hΦ2, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hΦ2, hF0, hf0]
 
 theorem coefA_0704_0704 (θ : ℝ) (htan : Real.tan θ = 25/1) :
     tf71P00 θ (13/250) (-88/125 : ℝ) = (137335435415840207/289003496617088 : ℝ) ∧
@@ -1023,18 +1023,18 @@ theorem rowcert_0704_0704 {θ : ℝ}
       - 2 * (107/125 : ℝ) * (2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2)
       + (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3)
           * ((176773/187500 : ℝ) + ((176773/31250 : ℝ)) * (1/1000000 : ℝ) + ((38523/31250 : ℝ)) * (1/1000000 : ℝ)) < 0 := by
-  have hθ0 : 0 < θ := by linarith
-  have hθπ : θ < Real.pi / 2 := by linarith [Real.pi_gt_d4]
+  have hθ0 : 0 < θ := by linarith only [h1]
+  have hθπ : θ < Real.pi / 2 := by linarith only [Real.pi_gt_d4, h2]
   have hlam : ((13/250 : ℝ)) ≠ 0 := by norm_num
   have hz1 : ((-88/125 : ℝ)) ≠ 0 := by norm_num
   obtain ⟨hc00,hc10,hc01,hc11⟩ := coefA_0704_0704 θ htan
   have hΦ1 : tf71Fr θ (13/250 : ℝ) (-88/125 : ℝ) ≤ (2190817579401/1250000000 : ℝ) := by
     rw [tf71Fr_bilinear θ (13/250 : ℝ) (-88/125 : ℝ) hθ0 hθπ hlam hz1, hc00, hc10, hc01, hc11]
-    nlinarith [h1, h2, hE1hi]
+    linarith only [h1, h2, hE1hi]
   have hF0 : (1724011889673153181266292043175273/1562500000000000000000000000000 : ℝ) ≤ 2 * (1 + Real.tan θ ^ 2) * (1 - θ / Real.tan θ) ^ 2 := by
-    rw [htan]; nlinarith [h1, h2]
+    rw [htan]; nlinarith only [h1, h2]
   have hf0 : (13/250 : ℝ) * (1 + Real.tan θ ^ 2) * (θ * Real.tan θ + 3 * θ / Real.tan θ - 3) ≤ (90164307520433363113/78125000000000000 : ℝ) := by
-    rw [htan]; nlinarith [h1, h2]
-  nlinarith [hΦ1, hF0, hf0]
+    rw [htan]; linarith only [h1, h2]
+  linarith only [hΦ1, hF0, hf0]
 
 end Work.ZeroFreeTables

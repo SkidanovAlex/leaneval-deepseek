@@ -14,13 +14,13 @@ private def Tfun : ℝ → ℝ := fun y => Real.arctan (2 * y)
 private def Gfun : ℝ → ℝ := fun y => (Lfun y) ^ 2 - (Bfun y) ^ 2 - (Tfun y) ^ 2
 
 private lemma Lfun_hasDerivAt (t : ℝ) (ht : 0 ≤ t) : HasDerivAt Lfun ((1 + t)⁻¹) t := by
-  have htpos : 0 < 2 + 2 * t := by nlinarith [ht]
+  have htpos : 0 < 2 + 2 * t := by linarith only [ht]
   have harg : HasDerivAt (fun y : ℝ => 2 + 2 * y) 2 t := by
     simpa [two_mul] using (((hasDerivAt_id t).const_mul (2 : ℝ)).const_add (2 : ℝ))
   have hlog : HasDerivAt (fun y : ℝ => Real.log (2 + 2 * y)) (2 / (2 + 2 * t)) t := by
     simpa using harg.log (ne_of_gt htpos)
   have hval : 2 / (2 + 2 * t) = (1 + t)⁻¹ := by
-    field_simp [show (1 : ℝ) + t ≠ 0 by nlinarith [ht]]
+    field_simp [show (1 : ℝ) + t ≠ 0 by linarith only [ht]]
   unfold Lfun
   simpa [hval] using hlog
 
@@ -89,14 +89,14 @@ private lemma Gfun_deriv_nonneg (t : ℝ) (ht : 0 ≤ t) : 0 ≤ deriv Gfun t :=
     · positivity
   have hmm0 : 0 ≤ (1 + 4 * t ^ 2) * Real.log (2 + 2 * t) -
       4 * t * (1 + t) * Real.log (Real.sqrt (t ^ 2 + 1 / 4)) - 2 * (1 + t) * Real.arctan (2 * t) := by
-    nlinarith
+    linarith only [hmm]
   have hmm' : 0 ≤ (1 + 4 * t ^ 2) * Lfun t - 4 * t * (1 + t) * Bfun t - 2 * (1 + t) * Tfun t := by
     rw [show Real.log (2 + 2 * t) = Lfun t by rfl] at hmm0
     rw [hlogeq] at hmm0
     rw [show Real.arctan (2 * t) = Tfun t by rfl] at hmm0
     exact hmm0
   -- algebra: raw derivative = 2 * mm' / ((1+t)*(1+4t²))
-  have hne1 : (1 : ℝ) + t ≠ 0 := by nlinarith [ht]
+  have hne1 : (1 : ℝ) + t ≠ 0 := by linarith only [ht]
   have hne2 : (1 : ℝ) + 4 * t ^ 2 ≠ 0 := by positivity
   have hne3 : t ^ 2 + 1 / 4 ≠ 0 := by positivity
   have hraw : 0 ≤ 2 * Lfun t * (1 + t)⁻¹ - 2 * Bfun t * (t * (t ^ 2 + 1 / 4)⁻¹) -
@@ -163,10 +163,10 @@ private lemma half_curve_key_local (t : ℝ) (ht : 0 ≤ t) :
   have hG := Gfun_nonneg t ht
   have hsq : (Bfun t) ^ 2 + (Tfun t) ^ 2 ≤ (Lfun t) ^ 2 := by
     unfold Gfun at hG
-    nlinarith
+    linarith only [hG]
   have hL : 0 ≤ Lfun t := by
     unfold Lfun
-    exact Real.log_nonneg (by linarith)
+    exact Real.log_nonneg (by linarith only [ht])
   have hs : Real.sqrt ((Bfun t) ^ 2 + (Tfun t) ^ 2) ≤ Lfun t := by
     exact (Real.sqrt_le_iff).2 ⟨hL, hsq⟩
   unfold Bfun Tfun Lfun at hs
@@ -175,16 +175,16 @@ private lemma half_curve_key_local (t : ℝ) (ht : 0 ≤ t) :
 -- ============ assembly ============
 lemma log_two_le_one : Real.log 2 ≤ (1:ℝ) := by
   have h := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2)
-  linarith
+  linarith only [h]
 
 lemma sqrt_sq_add_quarter_ge_half (t : ℝ) : (1 / 2 : ℝ) ≤ Real.sqrt (t ^ 2 + 1 / 4) := by
-  have hs : (1:ℝ)/4 ≤ t ^ 2 + 1/4 := by nlinarith [sq_nonneg t]
+  have hs : (1:ℝ)/4 ≤ t ^ 2 + 1/4 := by linarith only [sq_nonneg t]
   have hs' : Real.sqrt (1 / 4 : ℝ) ≤ Real.sqrt (t ^ 2 + 1 / 4) := Real.sqrt_le_sqrt hs
   norm_num at hs'
   exact hs'
 
 lemma sqrt_sq_add_quarter_ge_one (t : ℝ) (ht1 : 1 ≤ t) : (1 : ℝ) ≤ Real.sqrt (t ^ 2 + 1 / 4) := by
-  have hs : (1:ℝ) ≤ t ^ 2 + 1/4 := by nlinarith [sq_nonneg (t - 1), ht1]
+  have hs : (1:ℝ) ≤ t ^ 2 + 1/4 := by linarith only [sq_nonneg (t - 1), ht1]
   have hs' : Real.sqrt (1:ℝ) ≤ Real.sqrt (t ^ 2 + 1 / 4) := Real.sqrt_le_sqrt hs
   have hs1 : Real.sqrt (1 : ℝ) = 1 := by norm_num
   rwa [hs1] at hs'
@@ -193,7 +193,7 @@ lemma inv_two_sqrt_le_half (t : ℝ) (ht1 : 1 ≤ t) :
     ((1 : ℝ) / 2) * (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 1 / 2 := by
   have hu1 : 1 ≤ Real.sqrt (t ^ 2 + 1 / 4) := sqrt_sq_add_quarter_ge_one t ht1
   have h : (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hu1
-  nlinarith
+  linarith only [h]
 
 lemma inv_two_sqrt_le_one (t : ℝ) (_ht : 0 ≤ t) :
     ((1 : ℝ) / 2) * (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 1 := by
@@ -202,7 +202,7 @@ lemma inv_two_sqrt_le_one (t : ℝ) (_ht : 0 ≤ t) :
   have h : (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 2 := by
     rw [inv_eq_one_div]
     exact (one_div_le hu (by norm_num : (0:ℝ) < 2)).2 huh
-  nlinarith
+  linarith only [h]
 
 theorem half_curve_log_le (t : ℝ) (ht : 0 ≤ t) :
     Real.sqrt ((((1 : ℝ) / 2) * Real.log (t ^ 2 + (1 : ℝ) / 4)) ^ 2 + (Real.arctan (2 * t)) ^ 2) +
@@ -211,7 +211,7 @@ theorem half_curve_log_le (t : ℝ) (ht : 0 ≤ t) :
   have hkey := half_curve_key_local t ht
   by_cases h1 : t ≤ 1
   · have hsq : ((1 : ℝ) / 2) * (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 1 := inv_two_sqrt_le_one t ht
-    have hmon : 2 + 2 * t ≤ (4 / 3) * (2 + t) := by nlinarith [h1]
+    have hmon : 2 + 2 * t ≤ (4 / 3) * (2 + t) := by linarith only [h1]
     have hle43 : Real.log (2 + 2 * t) ≤ Real.log ((4 / 3) * (2 + t)) :=
       Real.log_le_log (by positivity) hmon
     have hsplit : Real.log ((4 / 3) * (2 + t)) = Real.log (4 / 3) + Real.log (2 + t) := by
@@ -220,14 +220,14 @@ theorem half_curve_log_le (t : ℝ) (ht : 0 ≤ t) :
       · positivity
     have h43 : Real.log (4 / 3) ≤ 1 / 3 := by
       have h := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 4 / 3)
-      linarith
+      linarith only [h]
     have hlog : Real.log (2 + 2 * t) ≤ Real.log (2 + t) + 1 / 3 := by
       rw [hsplit] at hle43
-      linarith
-    nlinarith
-  · have ht1 : 1 ≤ t := by linarith
+      linarith only [hle43, h43]
+    linarith only [hkey, hsq, hle43, hsplit, h43]
+  · have ht1 : 1 ≤ t := by linarith only [h1]
     have hsq : ((1 : ℝ) / 2) * (Real.sqrt (t ^ 2 + 1 / 4))⁻¹ ≤ 1 / 2 := inv_two_sqrt_le_half t ht1
-    have hmon : 2 + 2 * t ≤ 2 * (2 + t) := by nlinarith
+    have hmon : 2 + 2 * t ≤ 2 * (2 + t) := by linarith only []
     have hle2 : Real.log (2 + 2 * t) ≤ Real.log (2 * (2 + t)) :=
       Real.log_le_log (by positivity) hmon
     have hsplit : Real.log (2 * (2 + t)) = Real.log 2 + Real.log (2 + t) := by
@@ -236,8 +236,8 @@ theorem half_curve_log_le (t : ℝ) (ht : 0 ≤ t) :
       · positivity
     have hlog : Real.log (2 + 2 * t) ≤ Real.log (2 + t) + Real.log 2 := by
       rw [hsplit] at hle2
-      linarith
+      linarith only [hle2]
     have hl2 : Real.log 2 ≤ 1 := log_two_le_one
-    nlinarith
+    linarith only [hkey, hsq, hle2, hsplit, hl2]
 
 end Commons.Analysis.SpecialFunctions.Log

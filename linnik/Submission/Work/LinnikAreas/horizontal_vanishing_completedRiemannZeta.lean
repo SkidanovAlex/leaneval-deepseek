@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.zeta1_goodHeight_horizontal_vanishing
 import Submission.Work.LinnikAreas.logDeriv_completedRiemannZeta_eq
 

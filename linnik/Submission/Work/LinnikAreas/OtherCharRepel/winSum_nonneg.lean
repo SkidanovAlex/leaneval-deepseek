@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.OtherCharRepel.gammaFactorLogDerivReLe
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_supply
 
 namespace Work.LinnikAreas.OtherCharRepel

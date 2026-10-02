@@ -35,12 +35,12 @@ finishes the estimate. -/
 lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : ℝ) :
     (logDeriv Complex.Gammaℝ ((x : ℂ) + Complex.I * (y : ℂ))).re ≤
       (1 / 2) * Real.log (2 + |y|) - 1 / 4 := by
-  have hx2 : (2 : ℝ) ≤ x := by rcases hx with h | h <;> linarith
-  have hx3 : x ≤ 3 := by rcases hx with h | h <;> linarith
+  have hx2 : (2 : ℝ) ≤ x := by rcases hx with h | h <;> linarith only [h]
+  have hx3 : x ≤ 3 := by rcases hx with h | h <;> linarith only [h]
   set s : ℂ := (x : ℂ) + Complex.I * (y : ℂ) with hs
   have hsre : 0 < s.re := by
     simp [hs]
-    linarith
+    linarith only [hx2]
   have hformula := logDeriv_Gammaℝ_formula s hsre
   set z : ℂ := ((x / 2 : ℝ) : ℂ) + ((y / 2 : ℝ) : ℂ) * Complex.I with hz
   have hs2z : s / 2 = z := by
@@ -48,7 +48,7 @@ lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : �
     push_cast
     ring
   have hdg := Commons.Analysis.SpecialFunctions.Gamma.digamma_logRem_le (x / 2) (y / 2)
-    (by linarith : (1 : ℝ) / 2 ≤ x / 2) (by linarith : x / 2 ≤ 8)
+    (by linarith only [hx2] : (1 : ℝ) / 2 ≤ x / 2) (by linarith only [hx3] : x / 2 ≤ 8)
   have hzre : z.re = x / 2 := by
     rw [hz]
     simp
@@ -57,7 +57,7 @@ lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : �
     intro h0
     have h1 : z.re = 0 := by rw [h0]; simp
     rw [hzre] at h1
-    linarith
+    linarith only [hx2, h1]
   have hznorm : ‖z‖ ≤ 2 + |y| := by
     have hzim : z.im = y / 2 := by rw [hz]; simp
     have h1 : ‖z‖ ^ 2 = (x / 2) ^ 2 + (y / 2) ^ 2 := by
@@ -65,16 +65,16 @@ lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : �
       ring
     have h2 : ‖z‖ ^ 2 ≤ (2 + |y|) ^ 2 := by
       rw [h1, add_sq, sq_abs]
-      have hxq : (x / 2) ^ 2 ≤ 9 / 4 := by nlinarith [hx2, hx3]
+      have hxq : (x / 2) ^ 2 ≤ 9 / 4 := by nlinarith only [hx2, hx3]
       have hyq : (y / 2) ^ 2 = y ^ 2 / 4 := by ring
       rw [hyq]
-      nlinarith [abs_nonneg y, sq_nonneg y]
-    nlinarith [norm_nonneg z, abs_nonneg y]
+      linarith only [abs_nonneg y, sq_nonneg y, hxq]
+    nlinarith only [norm_nonneg z, abs_nonneg y, h2, hznormpos]
   have hpsi : (Complex.digamma z).re ≤ Real.log ‖z‖ + 1 / 2 := by
     have h1 : (Complex.digamma z - Complex.log z + ((2 : ℂ)⁻¹) * z⁻¹).re ≤ 1 / 2 :=
       le_trans (Complex.re_le_norm _) hdg
     rw [Complex.add_re, Complex.sub_re] at h1
-    have hzren : 0 ≤ z.re := by rw [hzre]; linarith
+    have hzren : 0 ≤ z.re := by rw [hzre]; linarith only [hx2]
     have hznormsq : 0 < Complex.normSq z := by
       rw [← Complex.sq_norm]
       exact pow_pos hznormpos 2
@@ -85,10 +85,10 @@ lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : �
       have h2c : ((2 : ℂ)⁻¹) = ((1 / 2 : ℝ) : ℂ) := by norm_num
       rw [h2c, Complex.mul_re]
       simp only [Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]
-      linarith
+      linarith only [hinvnn]
     have hlog : (Complex.log z).re = Real.log ‖z‖ := Complex.log_re z
     rw [hlog] at h1
-    linarith
+    linarith only [h1, h3]
   have hlogpi : 1 ≤ Real.log Real.pi := by
     have hlt : Real.exp 1 < Real.pi := lt_trans Real.exp_one_lt_three Real.pi_gt_three
     rw [← Real.log_exp 1]
@@ -101,7 +101,7 @@ lemma re_logDeriv_Gammaℝ_le_two_three {x : ℝ} (hx : x = 2 ∨ x = 3) (y : �
     rw [Complex.add_re, Complex.div_ofNat_re, Complex.div_ofNat_re, Complex.neg_re, hlogpi_eq]
     simp
   rw [hformula, hs2z, hA]
-  linarith [hpsi, hlogz, hlogpi]
+  linarith only [hpsi, hlogz, hlogpi]
 
 /-- Sharp one-sided bound for the real part of the logarithmic derivative of `Λ` on the
 line `Re s = 2`: `Re(Λ′/Λ)(2+iT) ≤ (1/2)·log(2+|T|) + 3/4`.

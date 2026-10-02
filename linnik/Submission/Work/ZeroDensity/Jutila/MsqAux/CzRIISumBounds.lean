@@ -39,7 +39,6 @@ import Submission.Work.ZeroDensity.Jutila.LzDiffAux.CzRIIRow4Final
 import Submission.Work.ZeroDensity.Jutila.LzDiffAux.SumDivisorsIccSwap
 import Submission.Work.ZeroDensity.Jutila.LzDiffAux.CzSigmaTsumHere
 import Submission.Work.ZeroDensity.Jutila.BzCross.czRII_aux_bounds
-import Submission.Work.BGTZ.sum_inv_sqrt_le
 
 set_option autoImplicit false
 
@@ -63,7 +62,7 @@ private lemma czRII_exp_half_log (x : ℝ) (hx : 0 < x) :
   · exact h
   · have h1 := Real.exp_pos (Real.log x / 2)
     have h3 := Real.sqrt_pos.mpr hx
-    linarith
+    linarith only [h, h1, h3]
 
 lemma czRII_czEpsR_div_le (c : ℝ) (hc : 0 ≤ c) {x n : ℝ} (hx : 0 < x) (hn : 1 ≤ n) :
     czEpsR c (x / n) ≤ Real.exp (c * Real.sqrt (Real.log n)) * czEpsR c x := by
@@ -79,20 +78,20 @@ lemma czRII_czEpsR_div_le (c : ℝ) (hc : 0 ≤ c) {x n : ℝ} (hx : 0 < x) (hn 
       · exact Real.sqrt_le_sqrt hlog
     have h2 : Real.exp (-(c * Real.sqrt (Real.log n))) ≤ czEpsR c x := by
       rw [czEpsR]
-      exact Real.exp_le_exp.mpr (by nlinarith [hsq, hc])
+      exact Real.exp_le_exp.mpr (by nlinarith only [hsq, hc])
     calc (1:ℝ) = Real.exp (c * Real.sqrt (Real.log n)) * Real.exp (-(c * Real.sqrt (Real.log n))) := by
           rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
       _ ≤ Real.exp (c * Real.sqrt (Real.log n)) * czEpsR c x :=
           mul_le_mul_of_nonneg_left h2 (Real.exp_pos _).le
-  · have hxn1 : 1 < x / n := by rw [lt_div_iff₀ hn0]; nlinarith
+  · have hxn1 : 1 < x / n := by rw [lt_div_iff₀ hn0]; linarith only [hxn]
     have hlogxn : Real.log (x / n) = Real.log x - Real.log n := Real.log_div hx.ne' hn0.ne'
     have h1 : Real.sqrt (Real.log x) ≤ Real.sqrt (Real.log (x / n)) + Real.sqrt (Real.log n) := by
       have h := sqrt_le_sqrt_add (x := Real.log x) (y := Real.log (x / n))
-        (by rw [hlogxn]; linarith [Real.log_nonneg hn])
+        (by rw [hlogxn]; linarith only [Real.log_nonneg hn, hn])
       rwa [show Real.log x - Real.log (x / n) = Real.log n by rw [hlogxn]; ring] at h
     rw [czEpsR, czEpsR, ← Real.exp_add]
     apply Real.exp_le_exp.mpr
-    nlinarith [h1, hc]
+    nlinarith only [h1, hc]
 
 lemma czRII_czEpsR_ratio (c : ℝ) (hc : 0 ≤ c) {a : ℝ} (ha : 0 < a) {m M : ℕ}
     (hm1 : 1 ≤ m) (hmM : m ≤ M) :
@@ -114,13 +113,13 @@ lemma czRII_czEpsR_ratio (c : ℝ) (hc : 0 ≤ c) {a : ℝ} (ha : 0 < a) {m M : 
   · have h1 : czEpsR c (a * (m:ℝ)) = 1 := by
       rw [czEpsR, Real.sqrt_eq_zero_of_nonpos hL.le, mul_zero, neg_zero, Real.exp_zero]
     rw [h1]
-    have hKle : Real.log (a * (M:ℝ)) ≤ Real.log ((M:ℝ)/(m:ℝ)) := by rw [hKsplit]; linarith
+    have hKle : Real.log (a * (M:ℝ)) ≤ Real.log ((M:ℝ)/(m:ℝ)) := by rw [hKsplit]; linarith only [hL]
     have hsq : Real.sqrt (Real.log (a * (M:ℝ))) ≤ Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) := by
       rcases lt_or_ge (Real.log (a * (M:ℝ))) 0 with h | h
       · rw [Real.sqrt_eq_zero_of_nonpos h.le]; exact Real.sqrt_nonneg _
       · exact Real.sqrt_le_sqrt hKle
     have hcz : Real.exp (-(c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))))) ≤ czEpsR c (a * (M:ℝ)) := by
-      rw [czEpsR]; exact Real.exp_le_exp.mpr (by nlinarith [hsq, hc])
+      rw [czEpsR]; exact Real.exp_le_exp.mpr (by nlinarith only [hsq, hc])
     calc (1:ℝ) = Real.exp (c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))))
           * Real.exp (-(c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))))) := by
           rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
@@ -130,12 +129,12 @@ lemma czRII_czEpsR_ratio (c : ℝ) (hc : 0 ≤ c) {a : ℝ} (ha : 0 < a) {m M : 
   · have hsub : Real.sqrt (Real.log (a * (M:ℝ)))
         ≤ Real.sqrt (Real.log (a * (m:ℝ))) + Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) := by
       have h := sqrt_le_sqrt_add (x := Real.log (a * (M:ℝ))) (y := Real.log (a * (m:ℝ)))
-        (by rw [hKsplit]; linarith [hlogMm])
+        (by rw [hKsplit]; linarith only [hlogMm])
       rwa [show Real.log (a * (M:ℝ)) - Real.log (a * (m:ℝ)) = Real.log ((M:ℝ)/(m:ℝ)) by
             rw [hKsplit]; ring] at h
     rw [czEpsR, czEpsR, ← Real.exp_add]
     apply Real.exp_le_exp.mpr
-    nlinarith [hsub, hc]
+    nlinarith only [hsub, hc]
 
 lemma czRII_eps_sum_le (c : ℝ) (hc : 0 ≤ c) :
     ∃ K : ℝ, 0 < K ∧ ∀ (a : ℝ) (M : ℕ), 0 < a →
@@ -161,7 +160,7 @@ lemma czRII_eps_sum_le (c : ℝ) (hc : 0 ≤ c) :
     rcases le_or_gt (Real.log ((M:ℝ)/(m:ℝ))) (4*c^2) with hs | hs
     · have h1 : Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) ≤ 2*c := by
         rw [Real.sqrt_le_iff]
-        exact ⟨by linarith, by nlinarith⟩
+        exact ⟨by linarith only [hc], by linarith only [hs]⟩
       have h2 : c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) ≤ 2*c^2 :=
         calc c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) ≤ c * (2*c) :=
               mul_le_mul_of_nonneg_left h1 hc
@@ -171,20 +170,20 @@ lemma czRII_eps_sum_le (c : ℝ) (hc : 0 ≤ c) :
       calc Real.exp (c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ)))) ≤ Real.exp (2*c^2) :=
             Real.exp_le_exp.mpr h2
         _ ≤ Real.exp (2*c^2) * Real.sqrt ((M:ℝ)/(m:ℝ)) := by
-            nlinarith [Real.exp_pos (2*c^2), h3]
+            nlinarith only [Real.exp_pos (2*c^2), h3]
     · have h4 : Real.sqrt (4*c^2) = 2*c := by
-        rw [show (4:ℝ)*c^2 = (2*c)^2 by ring, Real.sqrt_sq (by linarith : (0:ℝ) ≤ 2*c)]
+        rw [show (4:ℝ)*c^2 = (2*c)^2 by ring, Real.sqrt_sq (by linarith only [hc] : (0:ℝ) ≤ 2*c)]
       have h5 : 2*c ≤ Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) := by
         rw [← h4]; exact Real.sqrt_le_sqrt hs.le
       have hs2 : c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))) ≤ Real.log ((M:ℝ)/(m:ℝ)) / 2 := by
-        nlinarith [h5, Real.sqrt_nonneg (Real.log ((M:ℝ)/(m:ℝ))), Real.sq_sqrt hs0]
+        nlinarith only [h5, Real.sqrt_nonneg (Real.log ((M:ℝ)/(m:ℝ))), Real.sq_sqrt hs0, hs, hs0]
       have h7 : 1 ≤ Real.exp (2*c^2) := by
         rw [← Real.exp_zero]; exact Real.exp_le_exp.mpr (by positivity)
       calc Real.exp (c * Real.sqrt (Real.log ((M:ℝ)/(m:ℝ))))
             ≤ Real.exp (Real.log ((M:ℝ)/(m:ℝ))/2) := Real.exp_le_exp.mpr hs2
         _ = Real.sqrt ((M:ℝ)/(m:ℝ)) := czRII_exp_half_log _ hSm0
         _ ≤ Real.exp (2*c^2) * Real.sqrt ((M:ℝ)/(m:ℝ)) := by
-            nlinarith [Real.sqrt_nonneg ((M:ℝ)/(m:ℝ)), h7]
+            nlinarith only [Real.sqrt_nonneg ((M:ℝ)/(m:ℝ)), h7]
   calc (∑ m ∈ Finset.Icc 1 M, czEpsR c (a * (m:ℝ)))
       ≤ ∑ m ∈ Finset.Icc 1 M,
           czEpsR c (a * (M:ℝ)) * (Real.exp (2*c^2) * Real.sqrt ((M:ℝ)/(m:ℝ))) :=
@@ -232,7 +231,7 @@ lemma czRII_czEpsR_le_one (c : ℝ) (hc : 0 ≤ c) (x : ℝ) : czEpsR c x ≤ 1 
   rw [czEpsR, ← Real.exp_zero]
   exact Real.exp_le_exp.mpr (by
     have := Real.sqrt_nonneg (Real.log x)
-    nlinarith [hc, this])
+    nlinarith only [hc, this])
 
 /-- Pointwise bound of `Dc c (czTmax …)` by `Dc c (czT …)` plus the envelope at `w·r/(4y)`. -/
 lemma czRII_Dc_czTmax_le (c : ℝ) (hc : 0 ≤ c) {w y : ℝ} (hw : 0 < w) (hwy : w ≤ y)
@@ -256,24 +255,24 @@ lemma czRII_Dc_czTmax_le (c : ℝ) (hc : 0 ≤ c) {w y : ℝ} (hw : 0 < w) (hwy 
     · have hsmall' : 1 < w * (r : ℝ) / (4 * y) := lt_of_not_ge hsmall
       have hXpos : 0 < w * (r : ℝ) / (4 * y) := by positivity
       have hAle : ((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) ≤ y / (r : ℝ) := Nat.floor_le (by positivity)
-      have h1r : (1 : ℝ) ≤ y / (r : ℝ) := by rw [le_div_iff₀ hr0]; linarith [hry.le]
+      have h1r : (1 : ℝ) ≤ y / (r : ℝ) := by rw [le_div_iff₀ hr0]; linarith only [hry.le, hry]
       have hden : ((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) + 1 ≤ 2 * y / (r : ℝ) := by
         have h2 : y / (r : ℝ) + y / (r : ℝ) = 2 * y / (r : ℝ) := by ring
-        linarith [hAle, h1r, h2]
+        linarith only [hAle, h1r, h2]
       have hdenpos : (0 : ℝ) < ((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) + 1 := by positivity
       have hAr : (((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ)) * (r : ℝ) ≤ y := by
         have h := mul_le_mul_of_nonneg_right hAle hr0.le
         rwa [div_mul_cancel₀ _ (ne_of_gt hr0)] at h
       have hwdiv : w * (r : ℝ) / (2 * y) ≤ w / (((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) + 1) := by
         rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 2 * y) hdenpos]
-        nlinarith [hAr, hry.le, hw, hy0]
+        nlinarith only [hAr, hry.le, hw, hy0, hry]
       have hXle : w * (r : ℝ) / (4 * y) + 1 ≤ w / (((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) + 1) := by
         have : w * (r : ℝ) / (2 * y) = 2 * (w * (r : ℝ) / (4 * y)) := by ring
-        linarith
+        linarith only [hsmall, hwdiv, this]
       have hFle : w * (r : ℝ) / (4 * y) ≤ (F : ℝ) := by
         have h' : w / (((⌊y / (r : ℝ)⌋₊ : ℕ) : ℝ) + 1) < (F : ℝ) + 1 := by
           rw [hF]; exact Nat.lt_floor_add_one _
-        linarith
+        linarith only [hXle, h']
       exact czEpsR_anti hc hXpos hFle
 
 /-- Scale comparison: the envelope at `w·R/(4y)` is bounded by `exp(c√log 5)·Dc c (czT …)`. -/
@@ -293,26 +292,26 @@ lemma czRII_scale_le (c : ℝ) (hc : 0 ≤ c) {w y : ℝ} (hw : 1 ≤ w) (hwy : 
       rw [le_div_iff₀ hq0]
       have h := hTle
       rw [le_div_iff₀ (by positivity : (0 : ℝ) < (q : ℝ) * y)] at h
-      linarith [h]
+      linarith only [h]
     have h2 : (N : ℝ) / (q : ℝ) < w * ((czR w N q : ℝ) + 1) := by
       rw [div_lt_iff₀ hq0]
       have h := hRlt
       rw [div_lt_iff₀ (by positivity : (0 : ℝ) < (q : ℝ) * w)] at h
-      nlinarith [h]
+      linarith only [h]
     have h3a : (czT y N q : ℝ) * y < w * (czR w N q : ℝ) + w := by
       have heq : w * ((czR w N q : ℝ) + 1) = w * (czR w N q : ℝ) + w := by ring
-      linarith [h1, h2, heq]
+      linarith only [h1, h2, heq]
     have h3b : (czT y N q : ℝ) < w * (czR w N q : ℝ) / y + w / y := by
       have hdiv : w * (czR w N q : ℝ) / y + w / y = (w * (czR w N q : ℝ) + w) / y := by ring
       rw [hdiv, lt_div_iff₀ hy0]
-      linarith [h3a]
+      linarith only [h3a, h1, h2]
     have h3c : w / y ≤ 1 := (div_le_one hy0).mpr hwy
-    have h3 : (czT y N q : ℝ) - 1 < w * (czR w N q : ℝ) / y := by linarith [h3b, h3c]
+    have h3 : (czT y N q : ℝ) - 1 < w * (czR w N q : ℝ) / y := by linarith only [h3b, h3c]
     have h3'' : ((czT y N q : ℝ) - 1) * y < w * (czR w N q : ℝ) := by
       rw [lt_div_iff₀ hy0] at h3
       exact h3
     rw [div_le_div_iff₀ (by norm_num : (0 : ℝ) < 4) (by positivity : (0 : ℝ) < 4 * y)]
-    nlinarith [h3'', hy0]
+    linarith only [h3'', hy0, hwy, h1, h2]
   rcases le_or_gt (czT y N q) 5 with hT5 | hT5
   · have h1 : czEpsR c (w * (czR w N q : ℝ) / (4 * y)) ≤ 1 :=
       czRII_czEpsR_le_one c hc _
@@ -329,17 +328,17 @@ lemma czRII_scale_le (c : ℝ) (hc : 0 ≤ c) {w y : ℝ} (hw : 1 ≤ w) (hwy : 
   · have hT5' : 5 < czT y N q := hT5
     have hTpos : (0 : ℝ) < (czT y N q : ℝ) := by
       have : (5 : ℝ) < (czT y N q : ℝ) := by exact_mod_cast hT5
-      linarith
+      linarith only [this]
     have hstep1 : czEpsR c (w * (czR w N q : ℝ) / (4 * y))
         ≤ czEpsR c (((czT y N q : ℝ) - 1) / 4) := by
       refine czEpsR_anti hc ?_ hkey
       have : (5 : ℝ) < (czT y N q : ℝ) := by exact_mod_cast hT5
-      linarith
+      linarith only [this]
     have hstep2 : czEpsR c (((czT y N q : ℝ) - 1) / 4)
         ≤ czEpsR c ((czT y N q : ℝ) / 5) := by
       refine czEpsR_anti hc (by positivity) ?_
       have : (5 : ℝ) ≤ (czT y N q : ℝ) := by exact_mod_cast le_of_lt hT5
-      linarith
+      linarith only [this]
     have hstep3 : czEpsR c ((czT y N q : ℝ) / 5)
         ≤ Real.exp (c * Real.sqrt (Real.log 5)) * czEpsR c (czT y N q : ℝ) :=
       czRII_czEpsR_div_le c hc hTpos (by norm_num)
@@ -389,7 +388,7 @@ lemma czRII_czSigEpsR_sum_le (c : ℝ) (hc : 0 ≤ c) (Ke : ℝ) (hKe : 0 < Ke)
       have h2d'' : (R : ℝ) * 4 ≤ ((d : ℝ) * (((R / d : ℕ) : ℝ))) * 8 := by
         have h := h2d'
         push_cast at h
-        linarith [h]
+        linarith only [h]
       have hgoal : w * (R : ℝ) * (4 * y) ≤ w * ((d : ℝ) * (((R / d : ℕ) : ℝ))) * (8 * y) := by
         calc w * (R : ℝ) * (4 * y) = ((R : ℝ) * 4) * (w * y) := by ring
           _ ≤ (((d : ℝ) * (((R / d : ℕ) : ℝ))) * 8) * (w * y) :=
@@ -469,8 +468,8 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
   refine ⟨Cs + 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2)) * Real.exp (c * Real.sqrt (Real.log 5)),
     by positivity, ?_⟩
   intro w y N q hw hwy hNwy
-  have hw0 : 0 < w := by linarith
-  have hy0 : 0 < y := by linarith
+  have hw0 : 0 < w := by linarith only [hw]
+  have hy0 : 0 < y := by linarith only [hw, hwy]
   rcases Nat.eq_zero_or_pos q with hq0 | hq1
   · subst hq0
     have hR : czR w N 0 = 0 := by simp [czR]
@@ -485,10 +484,10 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
       have h3 : 0 < Real.exp (c * Real.sqrt (Real.log 5)) := Real.exp_pos _
       have hp : 0 < 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2))
           * Real.exp (c * Real.sqrt (Real.log 5)) := by
-        nlinarith [h1, h2, h3, mul_pos h1 h2, mul_pos (mul_pos h1 h2) h3]
-      linarith [hCs, hp]
+        linarith only [h1, h2, h3, mul_pos h1 h2, mul_pos (mul_pos h1 h2) h3]
+      linarith only [hCs, hp]
     have := mul_nonneg hCpos.le hnn
-    linarith
+    linarith only [this]
   · have hq0' : (0 : ℝ) < (q : ℝ) := by exact_mod_cast (by omega : 0 < q)
     have hRy : (czR w N q : ℝ) < y := by
       have h1 : (czR w N q : ℝ) ≤ (N : ℝ) / ((q : ℝ) * w) := by
@@ -500,8 +499,8 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
           have h := mul_le_mul_of_nonneg_right hq1' (mul_nonneg hw0.le hy0.le)
           simpa using h
         have heq : (q : ℝ) * (w * y) = y * ((q : ℝ) * w) := by ring
-        linarith [hNwy, hle, heq]
-      linarith
+        linarith only [hNwy, hle, heq]
+      linarith only [h1, h2]
     have hpt : ∀ r ∈ Finset.Icc 1 (czR w N q),
         (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ))
           * Dc c (Work.ZeroDensity.Jutila.BzCross.czTmax w y N q r)
@@ -531,7 +530,7 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
       have h0 : (0 : ℝ) ≤ 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2)) * (czR w N q : ℝ) := by
         positivity
       have := mul_le_mul_of_nonneg_left hscale h0
-      nlinarith [this]
+      linarith only [this]
     calc (∑ r ∈ Finset.Icc 1 (czR w N q),
           (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ))
           * Dc c (Work.ZeroDensity.Jutila.BzCross.czTmax w y N q r))
@@ -561,15 +560,15 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
             * (y / w + (czR w N q : ℝ) * Dc c (czT y N q)) := by
           have h1 : Dc c (czT y N q) * (Cs * (czR w N q : ℝ))
               ≤ Cs * ((czR w N q : ℝ) * Dc c (czT y N q)) := by
-            nlinarith [hDT, hRnn, hCs]
+            linarith only [hDT, hRnn, hCs]
           have h3 : (0 : ℝ) ≤ Cs + 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2))
               * Real.exp (c * Real.sqrt (Real.log 5)) := by
             have h2 : 0 < Real.exp (c * Real.sqrt (Real.log 2)) := Real.exp_pos _
             have h5 : 0 < Real.exp (c * Real.sqrt (Real.log 5)) := Real.exp_pos _
             have hp : 0 < 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2))
                 * Real.exp (c * Real.sqrt (Real.log 5)) := by
-              nlinarith [hKe, h2, h5, mul_pos hKe h2, mul_pos (mul_pos hKe h2) h5]
-            linarith [hCs, hp]
+              linarith only [hKe, h2, h5, mul_pos hKe h2, mul_pos (mul_pos hKe h2) h5]
+            linarith only [hCs, hp]
           have h4 : ((czR w N q : ℝ) * Dc c (czT y N q))
               ≤ y / w + (czR w N q : ℝ) * Dc c (czT y N q) := le_add_of_nonneg_left hyw
           have h5 : (Cs + 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2)) * Real.exp (c * Real.sqrt (Real.log 5)))
@@ -582,7 +581,7 @@ lemma czRII_sumSigDcTmax_le (c : ℝ) (hc : 0 < c) :
               = Cs * ((czR w N q : ℝ) * Dc c (czT y N q))
                 + 3 * Ke * Real.exp (c * Real.sqrt (Real.log 2)) * Real.exp (c * Real.sqrt (Real.log 5))
                   * ((czR w N q : ℝ) * Dc c (czT y N q)) := by ring
-          linarith [h1, h2, h5, h6]
+          linarith only [h1, h2, h5, h6]
 
 /-- **The four Region-II sum bounds.** -/
 theorem CzRIISumBounds (c : ℝ) (hc : 0 < c) :
@@ -620,14 +619,14 @@ theorem CzRIISumBounds (c : ℝ) (hc : 0 < c) :
   · intro w y N hw hwy hyN hNwy
     exact le_trans (hQ2 w y N hw hwy hyN hNwy) hC12le
   · intro w y N q hw hwy hNwy
-    have hw0 : (0 : ℝ) < w := by linarith
-    have hy0 : (0 : ℝ) < y := by linarith
+    have hw0 : (0 : ℝ) < w := by linarith only [hw]
+    have hy0 : (0 : ℝ) < y := by linarith only [hw, hwy]
     refine le_trans (hRow3 w y N q hw hwy hNwy)
       (mul_le_mul_of_nonneg_right hC3le ?_)
     exact add_nonneg (div_nonneg hy0.le hw0.le)
       (mul_nonneg (Nat.cast_nonneg _) (Dc_pos c _).le)
   · intro w y N q hw hwy hNwy
-    have hy0 : (0 : ℝ) < y := by linarith
+    have hy0 : (0 : ℝ) < y := by linarith only [hw, hwy]
     refine le_trans (hRow4 w y N q hw hwy hNwy)
       (mul_le_mul_of_nonneg_right hC4le ?_)
     positivity

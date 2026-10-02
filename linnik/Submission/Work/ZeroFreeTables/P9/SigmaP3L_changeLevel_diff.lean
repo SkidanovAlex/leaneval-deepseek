@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.ZeroFreeTables.P3.DefsL
 import Submission.Work.ZeroFreeTables.P9.SigmaP3LChangeLevelAux
-import Submission.Work.ZeroFreeTables.P9.changeLevel_norm_sub_le
 import Submission.Work.ZeroFreeTables.P9.summable_sigmaTerm
 import Submission.Work.ZeroFreeTables.P9.norm_sigmaTerm_changeLevel_sub_le
 import Submission.Work.ZeroFreeTables.P9.tsum_badTail_eq

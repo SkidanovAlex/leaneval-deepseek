@@ -19,6 +19,7 @@ import Mathlib
 import Submission.Work.LinnikAreas2.D2Aux
 import Submission.Work.LinnikAreas2.T13Cert
 import Submission.Work.LinnikAreas2.exists_eps_side
+import Submission.Work.LinnikContract2.A7.WindowAssembly
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

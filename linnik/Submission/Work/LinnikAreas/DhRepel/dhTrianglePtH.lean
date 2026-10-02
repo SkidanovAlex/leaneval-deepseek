@@ -166,7 +166,7 @@ theorem lemma6_3_widePtNB (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
       ≤ -(Real.log (q : ℝ)) * (∫ t in (0:ℝ)..x₀, Complex.exp (-((((β' : ℂ) - (β₁ : ℂ)) * (Real.log (q : ℝ))) * (t : ℂ))) * ((f t : ℝ) : ℂ)).re + f 0 * (c + ε) * Real.log (q : ℝ) := by
     have h := hq₀χ hqχ χ hχ Hraw (β' : ℂ)
       (by rw [hs₁re]; exact hranβ')
-      (by rw [hs₁im]; simp only [abs_zero]; linarith [hlogq])
+      (by rw [hs₁im]; simp only [abs_zero]; linarith only [hlogq])
       (by rw [hs₁re]; exact hlowβ')
     have h2 : (∫ t in (0:ℝ)..x₀, Complex.exp (-((((β' : ℂ) - (β₁ : ℂ)) * (Real.log (q : ℝ))) * (t : ℂ))) * ((f t : ℝ) : ℂ)).re ≤ winSum χ.primitiveCharacter f x₀ (Real.log (q : ℝ)) δ (β' : ℂ) := hw13
     have h3 := mul_le_mul_of_nonneg_left h2 hLnn
@@ -190,7 +190,7 @@ theorem lemma6_3_widePtNB (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
         f (Real.log n / Real.log (q : ℝ)))
       ≤ (Real.log (q : ℝ)) * (∫ t in (0:ℝ)..x₀, Complex.exp (-((((β' : ℂ) - 1) * (Real.log (q : ℝ))) * (t : ℂ))) * ((f t : ℝ) : ℂ)).re + f 0 * (ε/2) * Real.log (q : ℝ) := by
     have h := hq₀p hqp (β := β') (γ := 0) hranβ'
-      (by simp only [abs_zero]; linarith [hLnn])
+      (by simp only [abs_zero]; linarith only [hLnn])
     simpa using h
   have hp₂ : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((1 : DirichletCharacter ℂ q) (n : ZMod q) / (n : ℂ) ^ (((β' : ℂ) + (γ' : ℂ) * Complex.I))).re *
@@ -285,7 +285,7 @@ theorem lemma6_3_widePtNB (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
       have hexp : Real.exp (-((Real.log (q : ℝ) * (1 - β₁)) - (Real.log (q : ℝ) * (1 - β'))) * t)
           ≤ Real.exp ((Real.log (q : ℝ) * (1 - β')) * t) := by
         apply Real.exp_le_exp.mpr
-        nlinarith [ht.1, hlim]
+        linarith only [mul_nonneg hlim ht.1]
       exact mul_le_mul_of_nonneg_right hexp (hfnn t)
     have h := integral_cos_sub_le (x₀ := x₀) (c := γ' * Real.log (q : ℝ)) hx₀ hc1 hc2 hn1 hn2 hle
     have e1 : (∫ t in (0:ℝ)..x₀,
@@ -435,7 +435,7 @@ theorem lemma6_3_fullH (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B
   have hwinK₁ : |((β' : ℂ)).im| + δ ≤ Hh := by
     have him0 : ((β' : ℂ)).im = 0 := by simp
     rw [him0, abs_zero, zero_add]
-    linarith [hγH, abs_nonneg γ']
+    linarith only [hγH, abs_nonneg γ']
   have hwinK' : |(((β' : ℂ) + (γ' : ℂ) * Complex.I)).im| + δ ≤ Hh := by
     rw [himρ]
     exact hγH
@@ -513,17 +513,17 @@ theorem lemma6_3_fullH (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B
             have h2 : β₁ - β' ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 / Real.log (q : ℝ) := by
               rw [le_div_iff₀ hlogq]
               nlinarith [hrect', hrect₁]
-            rw [abs_of_nonpos (by linarith)]
-            nlinarith [h2, hlogq]
+            rw [abs_of_nonpos (by linarith only [hle])]
+            nlinarith only [(le_div_iff₀ hlogq).1 h2, hlogq]
           · -- `β₁ ≤ β'`
             have h2 : β' - β₁ ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 / Real.log (q : ℝ) := by
               rw [le_div_iff₀ hlogq]
               nlinarith [hrect', hrect₁]
-            rw [abs_of_nonneg (by linarith)]
-            nlinarith [h2, hlogq])
+            rw [abs_of_nonneg (by linarith only [hge])]
+            nlinarith only [(le_div_iff₀ hlogq).1 h2, hlogq])
         (by
           rw [abs_mul, abs_of_pos hlogq]
-          nlinarith [hfar1, hlogq])
+          nlinarith only [hfar1, hlogq])
       have heqint : (∫ t in (0:ℝ)..x₀,
             Complex.exp (-(((((β' : ℂ) + (γ' : ℂ) * Complex.I) - (β₁ : ℂ)) *
               (Real.log (q : ℝ))) * (t : ℂ))) * ((f t : ℝ) : ℂ))
@@ -592,7 +592,7 @@ private lemma dhH_iteratedDeriv_two_tent {x t : ℝ} (ht : t ∈ Set.Ioo (0:ℝ)
     iteratedDeriv 2 (fun s : ℝ => max (x - s) 0) t = 0 := by
   have hcongr : Set.EqOn (fun s : ℝ => max (x - s) 0) (fun s : ℝ => x - s)
       (Set.Ioo (0:ℝ) x) :=
-    fun s hs => max_eq_left (by linarith [hs.2])
+    fun s hs => max_eq_left (by linarith only [hs.2])
   have h1 := Set.EqOn.iteratedDeriv_of_isOpen hcongr isOpen_Ioo 2 ht
   rw [h1]
   simp [iteratedDeriv_succ, iteratedDeriv_const, iteratedDeriv_id]
@@ -604,7 +604,7 @@ private lemma dhH_integral_tent (x : ℝ) (hx : 0 ≤ x) :
     apply intervalIntegral.integral_congr
     intro t ht
     rw [Set.uIcc_of_le hx] at ht
-    exact max_eq_left (by linarith [ht.2])
+    exact max_eq_left (by linarith only [ht.2])
   rw [hcongr]
   have hsub : (∫ t in (0:ℝ)..x, (x - t))
       = (∫ t in (0:ℝ)..x, (fun _ : ℝ => x) t) - ∫ t in (0:ℝ)..x, t :=
@@ -653,11 +653,11 @@ theorem dhTrianglePtH :
   obtain ⟨q₀, hq₀⟩ := Commons.NumberTheory.Linnik.lemma6_3_fullH x 0 c hx le_rfl
     (f := fun t : ℝ => max (x - t) 0)
     (by fun_prop)
-    (fun t ht => max_eq_right (by linarith [ht]))
+    (fun t ht => max_eq_right (by linarith only [ht]))
     (by
       have haff : ContDiffOn ℝ 2 (fun t : ℝ => x - t) (Set.Ioo 0 x) :=
         (contDiffOn_const (c := x)).sub contDiffOn_id
-      exact haff.congr (fun t ht => max_eq_left (by linarith [ht.2])))
+      exact haff.congr (fun t ht => max_eq_left (by linarith only [ht.2])))
     (fun t ht => by rw [dhH_iteratedDeriv_two_tent ht]; norm_num)
     (by rw [sub_zero, max_eq_left hx.le]; exact hx)
     (fun t => le_max_right _ _)
@@ -708,7 +708,7 @@ theorem dhTrianglePtH :
   have hF : ∀ t ∈ Set.uIcc (0:ℝ) x, max (x - t) 0 = x - t := by
     intro t ht
     rw [Set.uIcc_of_le hx.le] at ht
-    exact max_eq_left (by linarith [ht.2])
+    exact max_eq_left (by linarith only [ht.2])
   have heq1 : (∫ t in (0:ℝ)..x,
         Real.exp (Real.log (q : ℝ) * (1 - ρ'.re) * t) * max (x - t) 0)
       = ∫ t in (0:ℝ)..x, Real.exp ((Work.LinnikContract.lamOf q ρ') * t) * (x - t) := by

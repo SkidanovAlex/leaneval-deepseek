@@ -8,6 +8,7 @@ import Submission.Work.ZeroFreeTables.API
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 import Submission.Commons.NumberTheory.Linnik.goodRadius_geometric
 import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

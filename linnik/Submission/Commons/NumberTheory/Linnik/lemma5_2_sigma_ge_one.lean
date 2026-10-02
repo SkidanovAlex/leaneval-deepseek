@@ -1,6 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Linnik.explicitFormula_chi_gen
-import Submission.Commons.NumberTheory.DirichletCharacter.logDeriv_rightHalf_avg
+import Submission.Commons.NumberTheory.DirichletCharacter.logDeriv_rightHalf_avg_core
 import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 import Submission.Commons.NumberTheory.Linnik.completedL_ballZeroCount
 import Submission.Commons.Analysis.Complex.lapX_sub_inv_bound
@@ -81,44 +81,44 @@ theorem far_zero_invSq_sum_uniform :
     rw [hre, him]; ring
   have hKge : ∀ u : ℂ, 0 < u.re → u.re < 1 → 1 / (1 + (T - u.im) ^ 2) ≤ K u := by
     intro u h1 h2
-    have ha : (1 : ℝ) < 2 - u.re := by linarith
-    have ha2 : (2 : ℝ) - u.re < 2 := by linarith
-    have hb : (1 : ℝ) < 1 + u.re := by linarith
-    have hb2 : (1 : ℝ) + u.re < 2 := by linarith
+    have ha : (1 : ℝ) < 2 - u.re := by linarith only [h2]
+    have ha2 : (2 : ℝ) - u.re < 2 := by linarith only [h1]
+    have hb : (1 : ℝ) < 1 + u.re := by linarith only [h1]
+    have hb2 : (1 : ℝ) + u.re < 2 := by linarith only [h2]
     have h1' : (1 / 2) / (1 + (T - u.im) ^ 2) ≤ (2 - u.re) / ((2 - u.re) ^ 2 + (T - u.im) ^ 2) := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
-      nlinarith [sq_nonneg (T - u.im), ha, ha2]
+      nlinarith only [sq_nonneg (T - u.im), ha, ha2, h1, h2]
     have h2' : (1 / 2) / (1 + (T - u.im) ^ 2) ≤ (1 + u.re) / ((1 + u.re) ^ 2 + (T - u.im) ^ 2) := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
-      nlinarith [sq_nonneg (T - u.im), hb, hb2]
+      nlinarith only [sq_nonneg (T - u.im), hb, hb2, h2, h1]
     have hsum : (1 / 2) / (1 + (T - u.im) ^ 2) + (1 / 2) / (1 + (T - u.im) ^ 2)
         = 1 / (1 + (T - u.im) ^ 2) := by field_simp; ring
     rw [hKdef]
-    linarith [h1', h2', hsum.le, hsum.ge]
+    linarith only [h1', h2', hsum.le, hsum.ge, hsum]
   have hKnn : ∀ u : ℂ, 0 < u.re → u.re < 1 → 0 ≤ K u := by
     intro u h1 h2
     have h := hKge u h1 h2
     have h2' : 0 < 1 / (1 + (T - u.im) ^ 2) := by positivity
-    linarith
+    linarith only [h, h2']
   have hwcmp : ∀ u : ℂ, 0 < u.re → u.re < 1 →
       (if ‖P - u‖ > 1/2 then (1 / ‖s - u‖ ^ 2) else 0) ≤ 5 * K u := by
     intro u h1 h2
     have hsq : ‖P - u‖ ^ 2 ≤ ‖s - u‖ ^ 2 := by
       rw [hsqn u, hsqn' u]
       have hprod : 0 ≤ (s.re - u.re - (1 - u.re)) * (s.re - u.re + (1 - u.re)) :=
-        mul_nonneg (by linarith) (by linarith)
-      nlinarith [hprod]
+        mul_nonneg (by linarith only [hs]) (by linarith only [hs, h2])
+      linarith only [hprod]
     have hsq2 : (T - u.im) ^ 2 ≤ ‖s - u‖ ^ 2 := by
       rw [hsqn u]
       have hTe : s.im - u.im = T - u.im := by simp [hTdef]
-      nlinarith [sq_nonneg (s.re - u.re)]
+      linarith only [sq_nonneg (s.re - u.re)]
     by_cases hc : ‖P - u‖ > 1/2
     · rw [if_pos hc]
       have h4 : (1 / 4 : ℝ) < ‖P - u‖ ^ 2 := by
-        have hp := mul_pos (by linarith : (0 : ℝ) < ‖P - u‖ - 1/2)
-          (by linarith : (0 : ℝ) < ‖P - u‖ + 1/2)
-        nlinarith [hp]
-      have hmaxle : max (1/4) ((T - u.im) ^ 2) ≤ ‖s - u‖ ^ 2 := max_le (by linarith) hsq2
+        have hp := mul_pos (by linarith only [hc] : (0 : ℝ) < ‖P - u‖ - 1/2)
+          (by linarith only [h1, h2, hc] : (0 : ℝ) < ‖P - u‖ + 1/2)
+        linarith only [hp]
+      have hmaxle : max (1/4) ((T - u.im) ^ 2) ≤ ‖s - u‖ ^ 2 := max_le (by linarith only [hsq, h4]) hsq2
       have hmaxpos : 0 < max (1/4) ((T - u.im) ^ 2) := lt_of_lt_of_le (by norm_num) (le_max_left _ _)
       have hle1 : (1 : ℝ) / ‖s - u‖ ^ 2 ≤ 1 / max (1/4) ((T - u.im) ^ 2) :=
         one_div_le_one_div_of_le hmaxpos hmaxle
@@ -126,19 +126,19 @@ theorem far_zero_invSq_sum_uniform :
         rcases le_total ((T - u.im) ^ 2) (1/4) with hcase | hcase
         · rw [max_eq_left hcase]
           rw [div_le_div_iff₀ (by norm_num) (by positivity)]
-          nlinarith [sq_nonneg (T - u.im)]
+          linarith only [sq_nonneg (T - u.im), hcase]
         · rw [max_eq_right hcase]
           rw [div_le_div_iff₀ (by positivity) (by positivity)]
-          nlinarith
+          linarith only [hcase]
       have hle3 : 5 / (1 + (T - u.im) ^ 2) ≤ 5 * K u := by
         have h := hKge u h1 h2
         have hx : 5 / (1 + (T - u.im) ^ 2) = 5 * (1 / (1 + (T - u.im) ^ 2)) := by ring
         rw [hx]
         exact mul_le_mul_of_nonneg_left h (by norm_num)
-      linarith
+      linarith only [hle1, hle2, hle3]
     · rw [if_neg hc]
       have h := hKnn u h1 h2
-      linarith
+      linarith only [h]
   have hfinsum : ∀ z : Finset ℂ,
       ∑ x ∈ z, ((((MeromorphicOn.divisor Λ Set.univ x : ℤ) : ℝ)) *
           (if ‖P - x‖ > 1/2 then (1 / ‖s - x‖ ^ 2) else 0))
@@ -164,7 +164,7 @@ theorem far_zero_invSq_sum_uniform :
           simp only [hRdef]
           have h1 : ‖u‖ ≤ ∑ v ∈ z', ‖v‖ :=
             Finset.single_le_sum (fun v _ => norm_nonneg v) hu
-          linarith
+          linarith only [h1]
         have huB : u ∈ Metric.closedBall (0 : ℂ) R := by
           rw [Metric.mem_closedBall, dist_zero_right]; exact huR
         rw [huniv u, hball R u huB]
@@ -193,7 +193,7 @@ theorem far_zero_invSq_sum_uniform :
         have hw := hwcmp x hst.1 hst.2
         have hDx := hposD x hx
         rw [hdn x hx]
-        nlinarith [hw, hDx]
+        nlinarith only [hw, hDx]
       have hsum_le : ∑ x ∈ z', ((((MeromorphicOn.divisor Λ Set.univ x : ℤ) : ℝ)) *
               (if ‖P - x‖ > 1/2 then (1 / ‖s - x‖ ^ 2) else 0))
           ≤ 5 * ∑ x ∈ z', ((((MeromorphicOn.divisor Λ (Metric.closedBall 0 R) x : ℤ) : ℝ)) * K x) := by
@@ -238,14 +238,14 @@ theorem far_zero_invSq_sum_uniform :
         apply Real.log_le_log (by positivity)
         have := Complex.abs_im_le_norm s
         simp only [hTdef]
-        linarith
+        linarith only [this]
       have hlogN0 : 0 ≤ Real.log (N : ℝ) := by
         apply Real.log_nonneg
         exact_mod_cast (Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N)))
-      have hlog2 : 0 ≤ Real.log (2 + ‖s‖) := Real.log_nonneg (by linarith [norm_nonneg s])
+      have hlog2 : 0 ≤ Real.log (2 + ‖s‖) := Real.log_nonneg (by linarith only [norm_nonneg s])
       have hfinal : 5 * (Real.log (N : ℝ) + Real.log (2 + |T|) + 10)
           ≤ 50 * (Real.log (N : ℝ) + Real.log (2 + ‖s‖) + 2) := by
-        nlinarith [hlogT, hlogN0, hlog2]
+        linarith only [hlogT, hlogN0, hlog2]
       calc ∑ x ∈ z', ((((MeromorphicOn.divisor Λ Set.univ x : ℤ) : ℝ)) *
               (if ‖P - x‖ > 1/2 then (1 / ‖s - x‖ ^ 2) else 0))
           ≤ 5 * ∑ x ∈ z', ((((MeromorphicOn.divisor Λ (Metric.closedBall 0 R) x : ℤ) : ℝ)) * K x) := hsum_le
@@ -261,7 +261,7 @@ theorem far_zero_invSq_sum_uniform :
         have h1 : 0 ≤ Real.log (N : ℝ) := by
           apply Real.log_nonneg
           exact_mod_cast (Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N)))
-        have h2 : 0 < Real.log (2 + ‖s‖) := Real.log_pos (by linarith [norm_nonneg s])
+        have h2 : 0 < Real.log (2 + ‖s‖) := Real.log_pos (by linarith only [norm_nonneg s])
         positivity
       exact hpos.le
   have hnn : ∀ x : ℂ, 0 ≤ ((((MeromorphicOn.divisor Λ Set.univ x : ℤ) : ℝ)) *
@@ -299,7 +299,7 @@ lemma norm_rdcKernel_le {x₀ B : ℝ} (hx₀ : 0 < x₀) (hB : 0 ≤ B) {f : �
   have hvanF : ∀ t : ℝ, x₀ ≤ t → F t = 0 := by intro t ht; simp [hF, hsupp t ht]
   have hzre : 0 < ((s - u) * (L:ℂ)).re := by
     rw [Complex.mul_re, Complex.sub_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]
-    exact mul_pos (by linarith) hL
+    exact mul_pos (by linarith only [hu]) hL
   have h := Commons.Analysis.Complex.lapX_sub_inv_bound (x₀ := x₀) (B := B) (f := F)
     hx₀ hB hcontF hf2F hBndF hvanF hzre
   have hnorm : ‖((s - u) * (L:ℂ))‖ ^ 2 = L ^ 2 * ‖s - u‖ ^ 2 := by
@@ -366,13 +366,13 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
         _ < Real.log 3 := Real.log_lt_log (Real.exp_pos 1) Real.exp_one_lt_three
     exact lt_of_lt_of_le h1 (Real.log_le_log (by norm_num) h3)
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hLgt1]
   have hsre : |s.re - 1| ≤ Real.sqrt (Real.log L) / L := by
     rw [abs_le]
     refine ⟨?_, ?_⟩
     · have h0 : 0 ≤ Real.sqrt (Real.log L) / L := by positivity
-      linarith
-    · linarith [hs2]
+      linarith only [hs1, hs2]
+    · linarith only [hs2]
   have hsim' : |s.im| ≤ L := hsim
   have hLne : DirichletCharacter.LFunction χ s ≠ 0 :=
     DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) hs1
@@ -385,9 +385,9 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
   have hAle : A ≤ 3 * Q := by
     rw [hAdef, hQdef]
     have h1 : (0:ℝ) ≤ |f 0| / x₀ := by positivity
-    have h2 : 2 * (|f 0| / x₀) ≤ 3 * (|f 0| / x₀) + 3 := by linarith
+    have h2 : 2 * (|f 0| / x₀) ≤ 3 * (|f 0| / x₀) + 3 := by linarith only [h1]
     calc 3 * B * x₀ + 2 * |f 0| / x₀ = 3 * B * x₀ + 2 * (|f 0| / x₀) := by ring
-      _ ≤ 3 * B * x₀ + (3 * (|f 0| / x₀) + 3) := by linarith
+      _ ≤ 3 * B * x₀ + (3 * (|f 0| / x₀) + 3) := by linarith only [h1]
       _ = 3 * (B * x₀ + |f 0| / x₀ + 1) := by ring
   have hEFb : ‖(∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℂ) * (χ (n : ZMod q) : ℂ) / (n : ℂ) ^ s
         * ((f (Real.log n / L) : ℝ) : ℂ))
@@ -446,7 +446,7 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     intro u hu
     have hst := hdustrip u hu
     have h := norm_rdcKernel_le hx₀ hB hcont hsupp hf2 hBnd hLpos (u := u) (s := s)
-      (by linarith [hst.2, hs1])
+      (by linarith only [hst.2, hs1, hst])
     rw [hΦdef]
     exact h
   -- ===== the far weight =====
@@ -466,11 +466,11 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     rw [h1, hdueq]
     by_cases h : Near u
     · have h2 : ¬ (‖(1:ℂ) + (s.im:ℂ) * Complex.I - u‖ > 1/2) := by
-        intro hc; have hh := h; rw [hNeardef] at hh; linarith
+        intro hc; have hh := h; rw [hNeardef] at hh; linarith only [h, hc]
       rw [if_pos h, if_neg h2]
     · have h2 : ‖(1:ℂ) + (s.im:ℂ) * Complex.I - u‖ > 1/2 := by
         by_contra hc
-        exact h (by rw [hNeardef]; linarith [not_lt.mp hc])
+        exact h (by rw [hNeardef]; linarith only [not_lt.mp hc, h, hc])
       rw [if_neg h, if_pos h2]
   have hPnorm_le : ‖(1:ℂ) + (s.im:ℂ) * Complex.I‖ ≤ 1 + |s.im| := by
     have h1 : ‖(1:ℂ) + (s.im:ℂ) * Complex.I‖ ^ 2 = 1 + s.im ^ 2 := by
@@ -482,7 +482,7 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
           (Real.sqrt_sq (norm_nonneg _)).symm
       _ = Real.sqrt (1 + s.im ^ 2) := by rw [h1]
       _ ≤ Real.sqrt ((1 + |s.im|) ^ 2) :=
-          Real.sqrt_le_sqrt (by nlinarith [sq_abs s.im, abs_nonneg s.im])
+          Real.sqrt_le_sqrt (by linarith only [sq_abs s.im, abs_nonneg s.im])
       _ = 1 + |s.im| := Real.sqrt_sq (by positivity)
   have hNear_iff : ∀ u : ℂ, Near u ↔ ‖(1:ℂ) + (s.im:ℂ) * Complex.I - u‖ ≤ (1/2:ℝ) := by
     intro u; simp [hNeardef]
@@ -496,7 +496,7 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h3 : ‖u - ((1:ℂ) + (s.im:ℂ) * Complex.I)‖ = ‖(1:ℂ) + (s.im:ℂ) * Complex.I - u‖ := by
       rw [norm_sub_rev]
     rw [h3] at h1
-    linarith [hPnorm_le, h2]
+    linarith only [hPnorm_le, h2, hu, h1]
   have hdiv_eq_near : ∀ u : ℂ, Near u →
       du u = MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ)
         (Metric.closedBall 0 (|s.im| + 2)) u := by
@@ -728,7 +728,7 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       exact h3.trans (by
         have h5 : (0:ℝ) ≤ A / L ^ 2 := by positivity
         exact mul_le_mul_of_nonneg_left hfarwt_bound h5)
-    linarith
+    linarith only [h1, h2]
   -- ===== abbreviations for the assembly =====
   set TL : ℝ := ∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
       ((χ (n : ZMod q) / (n : ℂ) ^ s).re) * f (Real.log n / L) with hTL
@@ -788,7 +788,7 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       simp only [Complex.neg_re] at h3
       exact h3
     simp only [Complex.neg_re] at h2
-    linarith
+    linarith only [_inst, h2]
   -- ===== real part of the explicit formula =====
   have hReEF : TL + L * (TN + TF) + f 0 * (logDeriv (DirichletCharacter.LFunction χ) s).re
       ≤ CEF * Q * (Real.log L) ^ (-(1/2 : ℝ)) * Real.log (2 + ‖s‖) := by
@@ -824,29 +824,29 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have hlogL_ge : (1/121 : ℝ) ≤ Real.log L := by
       have h1 : (121/120 : ℝ) ≤ L := by
         have h := Real.log_three_gt_d9
-        linarith
-      have h2 : 0 < L := by linarith
+        linarith only [hLgt1, hL3, h]
+      have h2 : 0 < L := by linarith only [hLgt1]
       have h3 : (L - 1) / L ≤ Real.log L := by
         have h := Real.log_le_sub_one_of_pos (x := L⁻¹) (inv_pos.mpr h2)
         rw [Real.log_inv] at h
         have h4 : (L - 1) / L = 1 - L⁻¹ := by field_simp; try ring
-        rw [h4]; linarith
+        rw [h4]; linarith only [h]
       have h5 : (121/120 - 1)/(121/120) ≤ (L - 1) / L := by
         rw [div_le_div_iff₀ (by norm_num) h2]
-        nlinarith [h1]
+        linarith only [h1]
       have h6 : (121/120 - 1)/(121/120) = (1/121 : ℝ) := by norm_num
-      linarith [h3, h5]
+      linarith only [h3, h5]
     have hpos : 0 < Real.log L := Real.log_pos hLgt1
     have hsqrt : (1/11 : ℝ) ≤ Real.sqrt (Real.log L) := by
       rw [← Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 1/11)]
-      exact Real.sqrt_le_sqrt (by nlinarith [hlogL_ge])
+      exact Real.sqrt_le_sqrt (by linarith only [hlogL_ge])
     have heq : (Real.log L) ^ (-(1/2 : ℝ)) = 1 / Real.sqrt (Real.log L) := by
       rw [Real.rpow_neg hpos.le, Real.sqrt_eq_rpow]
       exact (one_div _).symm
     rw [heq, div_le_iff₀ (Real.sqrt_pos.mpr hpos)]
-    linarith
+    linarith only [hsqrt]
   have hQlog : (0:ℝ) < Real.log (2 + ‖s‖) :=
-    Real.log_pos (by have := norm_nonneg s; linarith)
+    Real.log_pos (by have := norm_nonneg s; linarith only [this])
   have hlog2pos : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
   have hEbound : CEF * Q * (Real.log L) ^ (-(1/2 : ℝ)) * Real.log (2 + ‖s‖)
       ≤ CEF * 11 * Q * Real.log (2 + ‖s‖) := by
@@ -855,53 +855,53 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     exact mul_le_mul_of_nonneg_right h1 hQlog.le
   have hXbound : (A / L) * (cF * (L + Real.log (2 + ‖s‖) + 2))
       ≤ (10000 / Real.log 2) * cF * Q * Real.log (2 + ‖s‖) := by
-    have hL1 : (1:ℝ) ≤ L := by linarith
+    have hL1 : (1:ℝ) ≤ L := by linarith only [hLgt1]
     have hnorm_s : ‖s‖ ≤ 3 * L := by
       have h1 : s.re ≤ 1 + Real.sqrt (Real.log L) / L := hs2
       have h2 : Real.sqrt (Real.log L) / L ≤ 1 := by
         rw [div_le_one hLpos]
-        have h3 : Real.log L ≤ L ^ 2 := by nlinarith [hL1, Real.log_le_sub_one_of_pos hLpos]
+        have h3 : Real.log L ≤ L ^ 2 := by nlinarith only [hL1, Real.log_le_sub_one_of_pos hLpos, hLgt1, hLpos]
         rw [Real.sqrt_le_iff]
         exact ⟨by positivity, h3⟩
-      have h3 : s.re ≤ 2 := by linarith
+      have h3 : s.re ≤ 2 := by linarith only [hs2, h2]
       calc ‖s‖ ≤ |s.re| + |s.im| := Complex.norm_le_abs_re_add_abs_im s
-        _ = s.re + |s.im| := by rw [abs_of_pos (by linarith : (0:ℝ) < s.re)]
-        _ ≤ 2 + L := by linarith [hsim]
-        _ ≤ 3 * L := by linarith
+        _ = s.re + |s.im| := by rw [abs_of_pos (by linarith only [hs1] : (0:ℝ) < s.re)]
+        _ ≤ 2 + L := by linarith only [hsim, hs2, h2]
+        _ ≤ 3 * L := by linarith only [hLgt1]
     have hlogbound : Real.log (2 + ‖s‖) ≤ 5 * L := by
-      have h1 : (2:ℝ) + ‖s‖ ≤ 2 + 3 * L := by linarith
+      have h1 : (2:ℝ) + ‖s‖ ≤ 2 + 3 * L := by linarith only [hnorm_s]
       have h2 : Real.log (2 + ‖s‖) ≤ Real.log (2 + 3 * L) :=
         Real.log_le_log (by positivity) h1
       have h3 : Real.log (2 + 3 * L) ≤ 2 + 3 * L := Real.log_le_self (by positivity)
-      linarith
+      linarith only [hLgt1, h2, h3]
     have hres : (A / L) * (cF * (L + Real.log (2 + ‖s‖) + 2))
         = (A * cF) * ((L + Real.log (2 + ‖s‖) + 2) / L) := by field_simp; try ring
     rw [hres]
     have hratio : (L + Real.log (2 + ‖s‖) + 2) / L ≤ 8 := by
       rw [div_le_iff₀ hLpos]
-      nlinarith [hlogbound, hL1]
+      linarith only [hlogbound, hL1, hLgt1]
     have hmain : A * cF * ((L + Real.log (2+‖s‖) + 2)/L) ≤ A * cF * 8 :=
       mul_le_mul_of_nonneg_left hratio (by positivity)
     have hlast : A * cF * 8 ≤ (10000 / Real.log 2) * cF * Q * Real.log (2 + ‖s‖) := by
-      have h1 : A * cF * 8 ≤ 24 * Q * cF := by nlinarith [hAle, hcFpos.le, hAnn]
+      have h1 : A * cF * 8 ≤ 24 * Q * cF := by nlinarith only [hAle, hcFpos.le, hAnn, hcFpos]
       have h2 : 24 * Q * cF ≤ (10000 / Real.log 2) * cF * Q * Real.log (2 + ‖s‖) := by
         have h4 : Real.log 2 ≤ Real.log (2 + ‖s‖) :=
-          Real.log_le_log (by norm_num) (by have := norm_nonneg s; linarith)
+          Real.log_le_log (by norm_num) (by have := norm_nonneg s; linarith only [this])
         have h3 : (24:ℝ) ≤ (10000 / Real.log 2) * Real.log (2 + ‖s‖) := by
           calc (24:ℝ) ≤ 10000 := by norm_num
             _ = (10000 / Real.log 2) * Real.log 2 := by field_simp
             _ ≤ (10000 / Real.log 2) * Real.log (2 + ‖s‖) :=
                 mul_le_mul_of_nonneg_left h4 (by positivity)
-        nlinarith [h3, hQnn, hcFpos.le, mul_nonneg hQnn hcFpos.le]
-      linarith
-    linarith
+        nlinarith only [h3, hQnn, hcFpos.le, mul_nonneg hQnn hcFpos.le, hcFpos]
+      linarith only [h1, h2]
+    linarith only [hmain, hlast]
   -- ===== assemble =====
   have hTF' : -(L * TF) ≤ (A / L) * (cF * (L + Real.log (2 + ‖s‖) + 2)) := by
     have h3 : L * (-((A / L ^ 2) * (cF * (L + Real.log (2 + ‖s‖) + 2)))) ≤ L * TF :=
       mul_le_mul_of_nonneg_left hFlower hLpos.le
     have h4 : -(L * (-((A / L ^ 2) * (cF * (L + Real.log (2 + ‖s‖) + 2)))))
         = (A / L) * (cF * (L + Real.log (2 + ‖s‖) + 2)) := by field_simp; try ring
-    linarith [h3, h4.le, h4.ge]
+    linarith only [h3, h4.le, h4.ge, h4]
   have hfin : TL ≤ -(L * Tdiv) + f 0 * ((1/6 : ℝ) + ε) * L
       + (CEF * 11 + (10000 / Real.log 2) * cF + 1) * Q * Real.log (2 + ‖s‖) := by
     have h1 := hReEF
@@ -912,19 +912,19 @@ theorem lemma5_2_sigma_ge_one (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     have h2f : f 0 * (Hsum - (logDeriv (DirichletCharacter.LFunction χ) s).re)
         ≤ f 0 * ((1/6 : ℝ) + ε) * L := by
       have h2 := mul_le_mul_of_nonneg_left hHideal hf0
-      linarith
+      linarith only [_inst, h2]
     have hCL : CEF * 11 * Q * Real.log (2 + ‖s‖) + (10000 / Real.log 2) * cF * Q * Real.log (2 + ‖s‖)
         ≤ (CEF * 11 + (10000 / Real.log 2) * cF + 1) * Q * Real.log (2 + ‖s‖) := by
-      nlinarith [mul_nonneg hQnn hQlog.le]
+      linarith only [mul_nonneg hQnn hQlog.le, hQnn, hQlog]
     have stepA : TL ≤ CEF * Q * (Real.log L) ^ (-(1/2 : ℝ)) * Real.log (2 + ‖s‖) - L * Tdiv
         + f 0 * (Hsum - (logDeriv (DirichletCharacter.LFunction χ) s).re) + -(L * TF) := by
-      linarith [h1]
+      linarith only [h1, _inst]
     have stepB : TL ≤ CEF * 11 * Q * Real.log (2 + ‖s‖) - L * Tdiv
         + f 0 * ((1/6 : ℝ) + ε) * L + (A / L) * (cF * (L + Real.log (2 + ‖s‖) + 2)) := by
-      linarith [stepA, h2f, hTF', hEbound]
+      linarith only [stepA, h2f, hTF', hEbound, _inst, h1]
     have stepC : TL ≤ CEF * 11 * Q * Real.log (2 + ‖s‖) - L * Tdiv
         + f 0 * ((1/6 : ℝ) + ε) * L + (10000 / Real.log 2) * cF * Q * Real.log (2 + ‖s‖) := by
-      linarith [stepB, hXbound]
-    linarith [stepC, hCL]
+      linarith only [stepB, hXbound, _inst, hEbound, hTF', h1, h2f]
+    linarith only [stepC, hCL, _inst, hEbound, hXbound, hTF', h1, h2f]
   simpa only [hLdef, hTL, hTdiv, hQdef, neg_mul] using hfin
 end Commons.NumberTheory.Linnik

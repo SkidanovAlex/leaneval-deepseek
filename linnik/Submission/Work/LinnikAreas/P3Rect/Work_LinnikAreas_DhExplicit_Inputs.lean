@@ -1,6 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
+import Submission.Work.LinnikAreas.DhK.Defs
 
 /-!
 # `Work.LinnikAreas.DhExplicit.Inputs`

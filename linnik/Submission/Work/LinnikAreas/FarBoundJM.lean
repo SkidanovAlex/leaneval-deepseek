@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.FarBoundOfJutilaMontgomery
-import Submission.Work.LinnikAreas.JMAux.FinsetSumLeFamGe
 import Submission.Work.LinnikAreas.JMAux.FarMassLeDoubleSum
 import Submission.Work.LinnikAreas.JMAux.CellMultLeBoundJM
 import Submission.Work.LinnikAreas.JMAux.MsumBranch1
@@ -132,7 +131,7 @@ lemma geom_exp_tail_gen {L b : ℝ} (hL : 0 < L) {s : Finset ℕ}
   have hrM : r^M ≤ Real.exp (-(49/10) * (b*L - 1)) := by
     rw [show r^M = Real.exp (-(49/10) * (M:ℝ)) by
       rw [hr, ← Real.exp_nat_mul]; congr 1; ring]
-    exact Real.exp_le_exp.mpr (by nlinarith)
+    exact Real.exp_le_exp.mpr (by linarith)
   have hexp4 : Real.exp (-(49/10) * (b*L - 1)) = Real.exp (49/10) * Real.exp (-((49/10)*b*L)) := by
     rw [← Real.exp_add]
     congr 1
@@ -189,7 +188,7 @@ lemma msum_branch3 (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1000 : 1
         have hl2 : 0 ≤ Real.log (q:ℝ) := Real.log_nonneg hq1
         have hqc : (0:ℝ) ≤ (q:ℝ) * c0 := mul_nonneg hq0.le hc0
         refine mul_nonneg (by positivity) ?_
-        exact mul_nonneg (mul_nonneg hqc h4) (by linarith [hlog7 k, hl2])
+        exact mul_nonneg (mul_nonneg hqc h4) (by linarith only [hlog7 k, hl2])
       calc (1/4:ℝ)^k * cellLayer R m k * ((q:ℝ) * c0 * (4 + (2:ℝ)^k)
               * (Real.log (7 + (2:ℝ)^k) + Real.log (q:ℝ) + 2))
           = ((1/4:ℝ)^k * ((q:ℝ) * c0 * (4 + (2:ℝ)^k)
@@ -212,7 +211,7 @@ lemma msum_branch3 (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1000 : 1
       have h := Real.pow_div_factorial_le_exp (L/24) (by positivity) 2
       simpa using h
     have h1 : 500 * (10*L + 100) ≤ 52 * L^2 := by nlinarith [hL1000, sq_nonneg L]
-    have h2 : 52 * L^2 ≤ 60000 * ((L/24)^2/2) := by nlinarith
+    have h2 : 52 * L^2 ≤ 60000 * ((L/24)^2/2) := by linarith
     have h3 : 60000 * ((L/24)^2/2) ≤ 60000 * Real.exp (L/24) :=
       mul_le_mul_of_nonneg_left hexp_lb (by norm_num)
     linarith
@@ -341,7 +340,7 @@ lemma msum_boundJM {q : ℕ} [NeZero q] (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L)
     intro m hm
     have h2 : (5/12)*L < (m:ℝ)+1 := lt_of_not_ge (Finset.mem_filter.mp hm).2
     linarith
-  linarith [hA, hB, hC]
+  linarith only [hA, hB, hC]
 
 /-- **The far-zero mass bound** under the pair of hypotheses (Jutila, Montgomery). -/
 lemma finset_boundJM (q : ℕ) [NeZero q] (hq : 2 ≤ q) (R : ℕ) (hR : 1 ≤ R)
@@ -453,14 +452,14 @@ theorem FarBoundHyp_of_jutila_and_montgomery
     have h1 : A₁ ≤ max A₁ A₂ := le_max_left _ _
     have h2 : max A₁ A₂ < ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
     have h3 : ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 ≤ (R:ℝ) := by
-      rw [hRdef]; push_cast; linarith
-    linarith
+      rw [hRdef]; push_cast; linarith only []
+    linarith only [h1, h2, h3]
   have hRleA₂ : A₂ ≤ (R:ℝ) := by
     have h1 : A₂ ≤ max A₁ A₂ := le_max_right _ _
     have h2 : max A₁ A₂ < ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
     have h3 : ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 ≤ (R:ℝ) := by
-      rw [hRdef]; push_cast; linarith
-    linarith
+      rw [hRdef]; push_cast; linarith only []
+    linarith only [h1, h2, h3]
   have hA₁pow : A₁ ^ ((3:ℝ)/2) = 6400 * CJ / ε := by
     rw [hA₁def, ← Real.rpow_mul (by positivity : (0:ℝ) ≤ 6400 * CJ / ε)]
     norm_num
@@ -476,7 +475,7 @@ theorem FarBoundHyp_of_jutila_and_montgomery
     have hval : 3200 * CJ / (6400 * CJ / ε) = ε/2 := by
       field_simp
       ring
-    linarith
+    linarith only [hquot, hval]
   set q₀ : ℕ := max (max (Nat.ceil (Real.exp 1000))
     (Nat.ceil (4 * (1920000:ℝ) * c0 / ε))) 2 with hq₀def
   have hq₀2 : 2 ≤ q₀ := by rw [hq₀def]; exact le_max_right _ _
@@ -493,7 +492,7 @@ theorem FarBoundHyp_of_jutila_and_montgomery
     have h1 : Real.exp 1000 ≤ ((Nat.ceil (Real.exp 1000) : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (Real.exp 1000) : ℕ) : ℝ) ≤ (q:ℝ) :=
       Nat.cast_le.mpr (le_trans hq₀exp hq)
-    linarith
+    linarith only [h1, h2]
   have hL : 1000 ≤ Real.log (q:ℝ) := by
     rw [← Real.log_exp 1000]
     exact Real.log_le_log (Real.exp_pos 1000) hexpq
@@ -502,13 +501,13 @@ theorem FarBoundHyp_of_jutila_and_montgomery
         ≤ ((Nat.ceil (4 * (1920000:ℝ) * c0 / ε) : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (4 * (1920000:ℝ) * c0 / ε) : ℕ) : ℝ) ≤ (q:ℝ) :=
       Nat.cast_le.mpr (le_trans hq₀c hq)
-    linarith
+    linarith only [h1, h2]
   have hthird : 1920000 * c0 / (q:ℝ) ≤ ε/4 := by
     have hh : 4 * (1920000:ℝ) * c0 ≤ ε * (q:ℝ) := by
       rw [div_le_iff₀ hε] at hqbig
-      linarith [hqbig]
+      linarith only [hqbig]
     rw [div_le_iff₀ hqRpos]
-    nlinarith [hh]
+    linarith only [hh]
   have hsecond : 960000 * CM / ((R:ℝ)^(9/10:ℝ) * (q:ℝ)^(19/40:ℝ)) ≤ ε/4 := by
     have hge : 4 * (10:ℝ)^6 * CM / ε ≤ (R:ℝ) ^ ((9:ℝ)/10) := by
       have h := Real.rpow_le_rpow hA₂pos.le hRleA₂ (by norm_num : (0:ℝ) ≤ 9/10)
@@ -525,7 +524,7 @@ theorem FarBoundHyp_of_jutila_and_montgomery
     have hval : 960000 * CM / (4 * (10:ℝ)^6 * CM / ε) = (24:ℝ)/100 * ε := by
       field_simp
       ring
-    linarith [hquot, hval, hε]
+    linarith only [hquot, hval, hε]
   -- the family hypotheses needed by `finset_boundJM`
   have hfamJ : ∀ σ T : ℝ, (4:ℝ)/5 ≤ σ → σ ≤ 1 → 1 ≤ T →
       ∑ χ : DirichletCharacter ℂ q, zeroCountIn χ σ T
@@ -537,14 +536,14 @@ theorem FarBoundHyp_of_jutila_and_montgomery
     intro σ T hσ0 hσ1 hT
     have hb : (1:ℝ) ≤ (q:ℝ) * T := by
       have h2q : (2:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq2
-      nlinarith
+      nlinarith only [h2q, hT]
     have hbase0 : (0:ℝ) ≤ (q:ℝ) * T := le_of_lt (lt_of_lt_of_le one_pos hb)
     rcases le_total ((4:ℝ)/5) σ with hσ | hσ
     · have h1 := hJ q hq2 σ T hσ hσ1 hT
       refine le_trans h1 ?_
       have hmono : ((q:ℝ) * T) ^ ((2 + 1/1000) * (1 - σ))
           ≤ ((q:ℝ) * T) ^ ((2451/1000) * (1 - σ)) :=
-        Real.rpow_le_rpow_of_exponent_le hb (by nlinarith)
+        Real.rpow_le_rpow_of_exponent_le hb (by linarith only [hσ1])
       calc CJ * ((q:ℝ) * T) ^ ((2 + 1/1000) * (1 - σ))
           ≤ CM * ((q:ℝ) * T) ^ ((2 + 1/1000) * (1 - σ)) :=
             mul_le_mul_of_nonneg_right (le_trans (le_max_right _ _) (le_of_eq hCMdef))
@@ -575,7 +574,7 @@ theorem FarBoundHyp_of_jutila_and_montgomery
             * ((q:ℝ) * T) ^ ((1:ℝ)/100)) by ring]
       rw [hexpadd]
       have hsumexp : ((12:ℝ)/5 + 1/1000) * (1 - σ) + 1/100 ≤ (2451/1000) * (1 - σ) := by
-        nlinarith
+        linarith only [hσ]
       have hmono : ((q:ℝ) * T) ^ (((12:ℝ)/5 + 1/1000) * (1 - σ) + 1/100)
           ≤ ((q:ℝ) * T) ^ ((2451/1000) * (1 - σ)) :=
         Real.rpow_le_rpow_of_exponent_le hb hsumexp
@@ -588,7 +587,7 @@ theorem FarBoundHyp_of_jutila_and_montgomery
   have hfin : ∀ u : Finset (DirichletCharacter ℂ q × ℂ), farMassSum R (Real.log (q:ℝ)) u ≤ ε := by
     intro u
     have hb := finset_boundJM q hq2 R hR1 CJ CM c0 hCJpos hCMpos hc0pos hfamJ hfamM hball hL u
-    linarith [hb, hfirst, hsecond, hthird]
+    linarith only [hb, hfirst, hsecond, hthird]
   let F : DirichletCharacter ℂ q × ℂ → ℝ := fun z =>
     if z.1 = 1 then 0 else if InBox q (R:ℝ) z.2 then 0
       else (zeroMult z.1 z.2 : ℝ) * ‖Hk (11/2) (3/10) ((1 - z.2) * Real.log (q:ℝ))‖
@@ -740,7 +739,7 @@ lemma msum_branch3sc (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1 : 1 
     intro m k
     have hqc0 : (0:ℝ) ≤ (q:ℝ) * c0 := mul_nonneg hq0.le hc0
     have h1 : (0:ℝ) ≤ (4:ℝ) + (2:ℝ)^k / L := by positivity
-    have h2 : (4:ℝ) + (2:ℝ)^k / L ≤ 4 + (2:ℝ)^k := by linarith [hscale k]
+    have h2 : (4:ℝ) + (2:ℝ)^k / L ≤ 4 + (2:ℝ)^k := by linarith only [hscale k]
     have h3 : (0:ℝ) ≤ Real.log (7 + (2:ℝ)^k / L) + Real.log (q:ℝ) + 2 := by
       have h5 : (0:ℝ) ≤ Real.log (7 + (2:ℝ)^k / L) := by
         apply Real.log_nonneg
@@ -751,7 +750,7 @@ lemma msum_branch3sc (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1 : 1 
         ≤ Real.log (7 + (2:ℝ)^k) + Real.log (q:ℝ) + 2 := by
       have h5 : Real.log (7 + (2:ℝ)^k / L) ≤ Real.log (7 + (2:ℝ)^k) := by
         apply Real.log_le_log (by positivity)
-        linarith [hscale k]
+        linarith only [hscale k]
       linarith
     have h6 : (q:ℝ) * c0 * (4 + (2:ℝ)^k / L) ≤ (q:ℝ) * c0 * (4 + (2:ℝ)^k) :=
       mul_le_mul_of_nonneg_left h2 hqc0
@@ -800,7 +799,7 @@ lemma msum_branch3sc (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1 : 1 
         linarith
       have hAunn : (0:ℝ) ≤ (q:ℝ) * c0 * (4 + (2:ℝ)^k)
           * (Real.log (7 + (2:ℝ)^k) + Real.log (q:ℝ) + 2) :=
-        mul_nonneg (mul_nonneg hqc0 (by positivity)) (by linarith [h5, hlogq0])
+        mul_nonneg (mul_nonneg hqc0 (by positivity)) (by linarith only [h5, hlogq0])
       calc (1/4:ℝ)^k * cellLayer R m k
             * ((q:ℝ) * c0 * (4 + (2:ℝ)^k)
               * (Real.log (7 + (2:ℝ)^k) + Real.log (q:ℝ) + 2))
@@ -825,7 +824,7 @@ lemma msum_branch3sc (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1 : 1 
     rw [← Real.exp_add, Real.rpow_def_of_pos hq0, ← hLdef]
     congr 1
     ring
-  have hkey : 500 * (10*L + 100) ≤ 60000 * L := by nlinarith [hL1]
+  have hkey : 500 * (10*L + 100) ≤ 60000 * L := by linarith only [hL1]
   calc (∑ m ∈ s, Real.exp (-(49/10) * (m:ℝ))
         * ∑ k ∈ Finset.range N, (1/4:ℝ)^k * cellLayer R m k
             * ((q:ℝ) * c0 * (4 + (2:ℝ)^k / L)
@@ -847,7 +846,7 @@ lemma msum_branch3sc (q : ℕ) (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L) (hL1 : 1 
           have h1 : 500 * (10*L + 100) * c0 * (q:ℝ)^(-(29/50000:ℝ))
               ≤ 60000 * L * c0 * (q:ℝ)^(-(29/50000:ℝ)) :=
             mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hkey hc0) hqnn
-          linarith [h1]
+          linarith only [h1]
     _ = 60000 * c0 * L / (q:ℝ)^(29/50000:ℝ) := by
           rw [Real.rpow_neg hq0.le]; ring
 
@@ -915,7 +914,7 @@ lemma msum_boundJMsh {q : ℕ} [NeZero q] (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L
     · intro m hm
       have h := (Finset.mem_filter.mp (Finset.mem_filter.mp hm).1).2
       calc ((m:ℝ)+1) ≤ (1021/5000)*L := h
-        _ ≤ (5/12)*L := by nlinarith
+        _ ≤ (5/12)*L := by linarith
   have hC : (∑ m ∈ (Finset.range Mmax).filter (fun m : ℕ => ¬ (((m:ℝ)+1) ≤ (1021/5000)*L)),
       Real.exp (-(49/10) * (m:ℝ)) * ∑ k ∈ Finset.range N, (1/4:ℝ)^k * cellLayer R m k
           * cellBoundJMsh q CJ CM c0 L m k)
@@ -939,7 +938,7 @@ lemma msum_boundJMsh {q : ℕ} [NeZero q] (hq2 : 2 ≤ q) {L : ℝ} (hLp : 0 < L
     intro m hm
     have h2 : (1021/5000)*L < (m:ℝ)+1 := lt_of_not_ge (Finset.mem_filter.mp hm).2
     linarith
-  linarith [hA, hB, hC]
+  linarith only [hA, hB, hC]
 
 /-- **The far-zero mass bound** under the pair of hypotheses (Jutila, Montgomery). -/
 
@@ -1044,14 +1043,14 @@ theorem FarBoundHyp_of_jutila_and_mesh
     have h1 : A₁ ≤ max A₁ A₂ := le_max_left _ _
     have h2 : max A₁ A₂ < ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
     have h3 : ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 ≤ (R:ℝ) := by
-      rw [hRdef]; push_cast; linarith
-    linarith
+      rw [hRdef]; push_cast; linarith only []
+    linarith only [h1, h2, h3]
   have hRleA₂ : A₂ ≤ (R:ℝ) := by
     have h1 : A₂ ≤ max A₁ A₂ := le_max_right _ _
     have h2 : max A₁ A₂ < ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
     have h3 : ((Nat.floor (max A₁ A₂) : ℕ) : ℝ) + 1 ≤ (R:ℝ) := by
-      rw [hRdef]; push_cast; linarith
-    linarith
+      rw [hRdef]; push_cast; linarith only []
+    linarith only [h1, h2, h3]
   have hA₁pow : A₁ ^ ((3:ℝ)/2) = 6400 * CJ / ε := by
     rw [hA₁def, ← Real.rpow_mul (by positivity : (0:ℝ) ≤ 6400 * CJ / ε)]
     norm_num
@@ -1067,7 +1066,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
     have hval : 3200 * CJ / (6400 * CJ / ε) = ε/2 := by
       field_simp
       ring
-    linarith
+    linarith only [hquot, hval]
   set B : ℝ := max 1 (7680000 * c0 / ε) with hBdef
   have hB1 : (1:ℝ) ≤ B := le_max_left _ _
   have hBge : 7680000 * c0 / ε ≤ B := le_max_right _ _
@@ -1092,7 +1091,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
     have h1 : Real.exp 30000000 ≤ ((Nat.ceil (Real.exp 30000000) : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (Real.exp 30000000) : ℕ) : ℝ) ≤ (q:ℝ) :=
       Nat.cast_le.mpr (le_trans hq₀exp hq)
-    linarith
+    linarith only [h1, h2]
   have hL : 30000000 ≤ Real.log (q:ℝ) := by
     rw [← Real.log_exp 30000000]
     exact Real.log_le_log (Real.exp_pos 30000000) hexpq
@@ -1101,7 +1100,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
         ≤ ((Nat.ceil (4 * (1920000:ℝ) * c0 / ε) : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (4 * (1920000:ℝ) * c0 / ε) : ℕ) : ℝ) ≤ (q:ℝ) :=
       Nat.cast_le.mpr (le_trans hq₀c hq)
-    linarith
+    linarith only [h1, h2]
   let P : ℝ := Real.exp ((29/100000) * Real.log (q:ℝ))
   have hPval : P = Real.exp ((29/100000) * Real.log (q:ℝ)) := rfl
   have hPpos : (0:ℝ) < P := by rw [hPval]; exact Real.exp_pos _
@@ -1127,21 +1126,21 @@ theorem FarBoundHyp_of_jutila_and_mesh
     have h9 : B ≤ B ^ (((29:ℝ)/100000)*3449) := by
       have h10 := Real.rpow_le_rpow_of_exponent_le hB1 h1
       rwa [Real.rpow_one] at h10
-    linarith [h2, h3, h9]
+    linarith only [h2, h3, h9]
   have hAg : 7680000 * c0 ≤ ε * P := by
     have h2 : 7680000 * c0 / ε ≤ P := le_trans hBge hBq
     rw [div_le_iff₀ hε] at h2
-    linarith [h2]
+    linarith only [h2]
   have hLle : Real.log (q:ℝ) ≤ P := by
     rw [hPval]
     have hx : (0:ℝ) ≤ (29/100000) * Real.log (q:ℝ) := by
-      have h1 : (0:ℝ) ≤ Real.log (q:ℝ) := by linarith [hL]
+      have h1 : (0:ℝ) ≤ Real.log (q:ℝ) := by linarith only [hL]
       positivity
     have h2 := Real.pow_div_factorial_le_exp ((29/100000) * Real.log (q:ℝ)) hx 2
     have hbig : Real.log (q:ℝ) ≤ ((29/100000) * Real.log (q:ℝ))^2/2 := by
       have h3 : ((29:ℝ)/100000) = 0.00029 := by norm_num
-      nlinarith [hL]
-    linarith [h2, hbig]
+      linarith only [mul_nonneg (by linarith only [hL] : (0:ℝ) ≤ Real.log (q:ℝ)) (sub_nonneg.2 hL), hL]
+    linarith only [h2, hbig]
   have hthird : 1920000 * c0 * Real.log (q:ℝ) / (q:ℝ)^(29/50000:ℝ) ≤ ε/4 := by
     have hsplit : (q:ℝ)^(29/50000:ℝ) = P * P := by
       have hPQ : (q:ℝ)^((29:ℝ)/100000) = P := hqP
@@ -1150,7 +1149,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
       norm_num
     rw [hsplit, div_le_iff₀ (mul_pos hPpos hPpos)]
     have hc0 : (0:ℝ) ≤ c0 := le_of_lt hc0pos
-    nlinarith [hLle, hAg, hc0, hPpos, hε]
+    linarith only [mul_le_mul_of_nonneg_left hLle (mul_nonneg (by norm_num : (0:ℝ) ≤ 1920000) hc0), mul_le_mul_of_nonneg_right hAg hPpos.le]
   have hsecond : 960000 * CM / ((R:ℝ)^(9/10:ℝ) * (q:ℝ)^(23/50:ℝ)) ≤ ε/4 := by
     have hge : 4 * (10:ℝ)^6 * CM / ε ≤ (R:ℝ) ^ ((9:ℝ)/10) := by
       have h := Real.rpow_le_rpow hA₂pos.le hRleA₂ (by norm_num : (0:ℝ) ≤ 9/10)
@@ -1167,7 +1166,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
     have hval : 960000 * CM / (4 * (10:ℝ)^6 * CM / ε) = (24:ℝ)/100 * ε := by
       field_simp
       ring
-    linarith [hquot, hval, hε]
+    linarith only [hquot, hval, hε]
   -- the family hypotheses needed by `finset_boundJM`
   have hfamJ : ∀ σ T : ℝ, (4:ℝ)/5 ≤ σ → σ ≤ 1 → 1 ≤ T →
       ∑ χ ∈ Finset.univ.erase (1 : DirichletCharacter ℂ q), zeroCountIn χ σ T
@@ -1179,14 +1178,14 @@ theorem FarBoundHyp_of_jutila_and_mesh
     intro σ T hσ7 hσ45 hT
     have hb : (1:ℝ) ≤ (q:ℝ) * T := by
       have h2q : (2:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq2
-      nlinarith
+      nlinarith only [h2q, hT]
     have hbase0 : (0:ℝ) ≤ (q:ℝ) * T := le_of_lt (lt_of_lt_of_le one_pos hb)
     have h1 := hMm q hq2 σ T hσ7 hσ45 hT
     refine le_trans h1 ?_
     have hmono : ((q:ℝ) * T) ^ (((51:ℝ)/20 + 1/1000) * (1 - σ))
         ≤ ((q:ℝ) * T) ^ ((2551/1000) * (1 - σ)) := by
       refine Real.rpow_le_rpow_of_exponent_le hb ?_
-      nlinarith
+      linarith
     calc CMm * ((q:ℝ) * T) ^ (((51:ℝ)/20 + 1/1000) * (1 - σ))
         ≤ CM * ((q:ℝ) * T) ^ (((51:ℝ)/20 + 1/1000) * (1 - σ)) :=
           mul_le_mul_of_nonneg_right (le_trans hCMmle (le_of_eq hCMdef)) (Real.rpow_nonneg hbase0 _)
@@ -1196,7 +1195,7 @@ theorem FarBoundHyp_of_jutila_and_mesh
   have hfin : ∀ u : Finset (DirichletCharacter ℂ q × ℂ), farMassSum R (Real.log (q:ℝ)) u ≤ ε := by
     intro u
     have hb := finset_boundJMsh q hq2 R hR1 CJ CM c0 hCJpos hCMpos hc0pos hfamJ hfams hball hL u
-    linarith [hb, hfirst, hsecond, hthird]
+    linarith only [hb, hfirst, hsecond, hthird]
   let F : DirichletCharacter ℂ q × ℂ → ℝ := fun z =>
     if z.1 = 1 then 0 else if InBox q (R:ℝ) z.2 then 0
       else (zeroMult z.1 z.2 : ℝ) * ‖Hk (11/2) (3/10) ((1 - z.2) * Real.log (q:ℝ))‖

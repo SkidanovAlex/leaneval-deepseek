@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikAreas.DhRepel.lemma8_5
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_supply
-import Submission.Work.LinnikAreas.OtherCharRepel.tentLaplaceReNonneg
 import Submission.Work.LinnikAreas.OtherCharRepel.lemma85pt
 import Submission.Work.LinnikAreas.OtherCharRepel.l52HypTwo
 import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultTransfer

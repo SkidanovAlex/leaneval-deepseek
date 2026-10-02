@@ -58,8 +58,8 @@ theorem P3AB_one_one_zero : Table4.P3AB 1 1 0 = 8/3 := by
 theorem h2_side {lam : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
     14900 * (((34:ℝ)/10 + lam) / ((34:ℝ)/10))^3 ≤ 30480 ∧
       1250 * (((34:ℝ)/10 + lam) / ((34:ℝ)/10))^3 ≤ 6000 := by
-  have hle' : (34:ℝ)/10 + lam ≤ 1874/500 := by linarith
-  have hpos' : 0 < (34:ℝ)/10 + lam := by linarith
+  have hle' : (34:ℝ)/10 + lam ≤ 1874/500 := by linarith only [hle]
+  have hpos' : 0 < (34:ℝ)/10 + lam := by linarith only [h0]
   have hcube : ((34:ℝ)/10 + lam)^3 ≤ (1874/500)^3 := pow_le_pow_left₀ hpos'.le hle' 3
   have hd : (0:ℝ) < ((34:ℝ)/10)^3 := by norm_num
   constructor
@@ -70,7 +70,7 @@ theorem h2_side {lam : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
     have h1 : 14900 * ((34:ℝ)/10 + lam)^3 ≤ 14900 * (1874/500)^3 :=
       mul_le_mul_of_nonneg_left hcube (by norm_num)
     have h2 : 14900 * (1874/500)^3 ≤ 30480 * ((34:ℝ)/10)^3 := by norm_num
-    linarith [h1, h2]
+    linarith only [h1, h2, hcube]
   · rw [div_pow]
     rw [show 1250 * (((34:ℝ)/10 + lam)^3 / ((34:ℝ)/10)^3)
         = (1250 * ((34:ℝ)/10 + lam)^3) / ((34:ℝ)/10)^3 by ring]
@@ -78,7 +78,7 @@ theorem h2_side {lam : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
     have h1 : 1250 * ((34:ℝ)/10 + lam)^3 ≤ 1250 * (1874/500)^3 :=
       mul_le_mul_of_nonneg_left hcube (by norm_num)
     have h2 : 1250 * (1874/500)^3 ≤ 6000 * ((34:ℝ)/10)^3 := by norm_num
-    linarith [h1, h2]
+    linarith only [h1, h2, hcube]
 
 theorem ratio_cube {a α t : ℝ} (ha : 0 < a) (hα : 0 < α) (hale : a ≤ α) :
     (α * a / (a^2 + t^2))^3 ≤ (α/a)^3 * (α^2/(α^2 + t^2))^3 := by
@@ -89,12 +89,12 @@ theorem ratio_cube {a α t : ℝ} (ha : 0 < a) (hα : 0 < α) (hale : a ≤ α) 
     field_simp
     ring
   have hnum : 0 ≤ α*(α^2 - a^2)*t^2 := by
-    have h1 : 0 ≤ α^2 - a^2 := by nlinarith [hale, ha.le, hα.le]
+    have h1 : 0 ≤ α^2 - a^2 := by nlinarith only [hale, ha.le, hα.le, ha, hα]
     positivity
   have hAB : α * a / (a^2 + t^2) ≤ (α/a) * (α^2/(α^2 + t^2)) := by
     have h3 : 0 ≤ ((α/a) * (α^2/(α^2 + t^2))) - (α * a / (a^2 + t^2)) := by
       rw [hkey]; positivity
-    linarith [h3]
+    linarith only [h3]
   calc (α * a / (a^2 + t^2))^3 ≤ ((α/a) * (α^2/(α^2 + t^2)))^3 :=
         pow_le_pow_left₀ (by positivity) hAB 3
     _ = (α/a)^3 * (α^2/(α^2 + t^2))^3 := by ring
@@ -106,8 +106,8 @@ theorem h2_Tstep {lam T : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
         + 6000 * Table4.P3AB ((34:ℝ)/10 + lam) ((34:ℝ)/10 + lam) (2 * T) := by
   obtain ⟨hs1, hs2⟩ := h2_side h0 hle
   have ha : 0 < ((34:ℝ)/10) := by norm_num
-  have hα : 0 < ((34:ℝ)/10) + lam := by linarith
-  have hale : ((34:ℝ)/10) ≤ ((34:ℝ)/10) + lam := by linarith
+  have hα : 0 < ((34:ℝ)/10) + lam := by linarith only [h0]
+  have hale : ((34:ℝ)/10) ≤ ((34:ℝ)/10) + lam := by linarith only [h0]
   have hfac : ∀ t : ℝ, (((34:ℝ)/10 + lam) * ((34:ℝ)/10)
         / (((34:ℝ)/10)^2 + t^2))^3
       ≤ (((34:ℝ)/10 + lam) / ((34:ℝ)/10))^3
@@ -128,9 +128,9 @@ theorem h2_Tstep {lam T : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
       have h3 : 14900 * ((((34:ℝ)/10 + lam) / ((34:ℝ)/10))^3) ≤ 30480 := hs1
       have h4 : 0 ≤ ((((34:ℝ)/10 + lam)^2 / ((((34:ℝ)/10 + lam)^2) + t^2))^3) := by
         positivity
-      nlinarith [h3, h4]
+      nlinarith only [h3, h4, hs1]
     have h5 : 0 ≤ (8/3 : ℝ) := by norm_num
-    nlinarith [h1, h2, h5]
+    linarith only [h1, h2, h5]
   have key2 : 1250 * ((8/3) * (((34:ℝ)/10 + lam) * ((34:ℝ)/10)
         / (((34:ℝ)/10)^2 + (2*T)^2))^3)
       ≤ 6000 * ((8/3) * (((34:ℝ)/10 + lam)^2 / (((34:ℝ)/10 + lam)^2 + (2*T)^2))^3) := by
@@ -145,9 +145,9 @@ theorem h2_Tstep {lam T : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
       have h3 : 1250 * ((((34:ℝ)/10 + lam) / ((34:ℝ)/10))^3) ≤ 6000 := hs2
       have h4 : 0 ≤ ((((34:ℝ)/10 + lam)^2 / ((((34:ℝ)/10 + lam)^2) + (2*T)^2))^3) := by
         positivity
-      nlinarith [h3, h4]
+      nlinarith only [h3, h4, hs1]
     have h5 : 0 ≤ (8/3 : ℝ) := by norm_num
-    nlinarith [h1, h2, h5]
+    linarith only [h1, h2, h5]
   have hle1 := Table4.P3AB_le (((34:ℝ)/10 + lam)) ((34:ℝ)/10) T hα ha hale
   have hle2 := Table4.P3AB_le (((34:ℝ)/10 + lam)) ((34:ℝ)/10) (2*T) hα ha hale
   have hge1 := Table4.P3AB_ge (((34:ℝ)/10 + lam)) (((34:ℝ)/10 + lam)) T hα hα le_rfl
@@ -173,7 +173,7 @@ theorem h2_Tstep {lam T : ℝ} (h0 : 0 ≤ lam) (hle : lam ≤ 348 / 1000) :
         / (((34:ℝ)/10 + lam)^2 + (2*T)^2))^3)
       ≤ 6000 * Table4.P3AB ((34:ℝ)/10 + lam) ((34:ℝ)/10 + lam) (2*T) :=
     mul_le_mul_of_nonneg_left hge2' (by norm_num)
-  linarith [hk1, hk2, hfin1, hfin2]
+  linarith only [hk1, hk2, hfin1, hfin2, key2, hle2, hge1', hge2']
 
 /-- A non-principal character of level `q` forces `2 ≤ q`. -/
 theorem two_le_of_ne_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) : 2 ≤ q := by
@@ -231,7 +231,7 @@ theorem re_inv_le_of_far {δ a L : ℝ} (hδ : 0 < δ) (hδ1 : δ ≤ 1) (ha : 0
     ((1 / (s - u)).re) ≤ 8 / δ^2 := by
   have hδpos : 0 < δ^2 := by positivity
   have haL : 0 ≤ a / L := div_nonneg ha.le hL.le
-  have hxpos : 0 < s.re - u.re := by rw [hsre]; linarith
+  have hxpos : 0 < s.re - u.re := by rw [hsre]; linarith only [hu, haL]
   have hsq : ‖s - u‖^2 = (s.re - u.re)^2 + (s.im - u.im)^2 := by
     have hre : (s - u).re = s.re - u.re := by simp
     have him : (s - u).im = s.im - u.im := by simp
@@ -245,7 +245,7 @@ theorem re_inv_le_of_far {δ a L : ℝ} (hδ : 0 < δ) (hδ1 : δ ≤ 1) (ha : 0
     ring
   have hkey : δ^2 < (1 - u.re)^2 + (s.im - u.im)^2 := by
     have h1 : δ^2 < ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖^2 := by
-      nlinarith [hfar, hδ, norm_nonneg ((1 : ℂ) + (s.im : ℂ) * Complex.I - u)]
+      nlinarith only [hfar, hδ, norm_nonneg ((1 : ℂ) + (s.im : ℂ) * Complex.I - u)]
     rwa [hsq2] at h1
   have hre : ((1 / (s - u)).re) = (s.re - u.re) / ((s.re - u.re)^2 + (s.im - u.im)^2) := by
     rw [one_div, Complex.inv_re]
@@ -260,35 +260,35 @@ theorem re_inv_le_of_far {δ a L : ℝ} (hδ : 0 < δ) (hδ1 : δ ≤ 1) (ha : 0
   have hsplit : (1 - u.re) = (s.re - u.re) - a / L := by rw [hsre]; ring
   have hden : (0:ℝ) < (s.re - u.re)^2 + (s.im - u.im)^2 := by positivity
   rcases le_or_gt (s.re - u.re) (δ/2) with hxle | hxgt
-  · have hupper : (s.re - u.re) - a/L ≤ δ/2 := by linarith [hxle, haL]
-    have hlower : -(δ/2) ≤ (s.re - u.re) - a/L := by linarith [hLa, hxpos]
+  · have hupper : (s.re - u.re) - a/L ≤ δ/2 := by linarith only [hxle, haL]
+    have hlower : -(δ/2) ≤ (s.re - u.re) - a/L := by linarith only [hLa, hxpos, hsre, hu, haL, hxle]
     have hsquare : (1 - u.re)^2 ≤ δ^2/4 := by
       have h1 : |1 - u.re| ≤ δ/2 := by
         rw [abs_le]
         exact ⟨by rw [hsplit]; exact hlower, by rw [hsplit]; exact hupper⟩
       have h3 := abs_le.mp h1
-      have h4 : (1 - u.re)^2 ≤ (δ/2)^2 := by nlinarith [h3.1, h3.2]
-      linarith [h4, hδ]
-    have hy : 3*δ^2/4 ≤ (s.im - u.im)^2 := by nlinarith [hkey, hsquare]
+      have h4 : (1 - u.re)^2 ≤ (δ/2)^2 := by nlinarith only [h3.1, h3.2, hδ, haL, hLa, hsre, hxle, hu]
+      linarith only [h4, hδ]
+    have hy : 3*δ^2/4 ≤ (s.im - u.im)^2 := by linarith only [hkey, hsquare]
     rw [hre, div_le_iff₀ hden]
     have hxsq : 0 ≤ (s.re - u.re)^2 := sq_nonneg _
     have hbig : 6 ≤ (8/δ^2) * ((s.re - u.re)^2 + (s.im - u.im)^2) := by
       have h6 : (8/δ^2) * (3*δ^2/4) = 6 := by field_simp <;> ring
-      have h8 : (3*δ^2/4) ≤ (s.re - u.re)^2 + (s.im - u.im)^2 := by linarith [hy, hxsq]
+      have h8 : (3*δ^2/4) ≤ (s.re - u.re)^2 + (s.im - u.im)^2 := by linarith only [hy, hxsq, hkey, hsquare]
       exact le_trans h6.ge (mul_le_mul_of_nonneg_left h8 (by positivity : (0:ℝ) ≤ 8/δ^2))
-    nlinarith [hbig, hxle, hδ1, hδ]
-  · have h4 : δ^2/8 ≤ s.re - u.re := by nlinarith [hxgt, hδ, hδ1]
+    linarith only [hbig, hxle, hδ1, hδ, hsre, hu, haL]
+  · have h4 : δ^2/8 ≤ s.re - u.re := by nlinarith only [hxgt, hδ, hδ1, hsre, hu, haL]
     have h5 : 1 ≤ (8/δ^2) * (s.re - u.re) := by
       have h6 : (8/δ^2) * (δ^2/8) ≤ (8/δ^2) * (s.re - u.re) :=
         mul_le_mul_of_nonneg_left h4 (by positivity)
       have h7 : (8/δ^2) * (δ^2/8) = 1 := by field_simp <;> ring
-      linarith [h6, h7.le]
+      linarith only [h6, h7.le, h7]
     rw [hre, div_le_iff₀ hden]
     have h9 : (s.re - u.re) ≤ ((8/δ^2) * (s.re - u.re)) * (s.re - u.re) := by
       have h := mul_le_mul_of_nonneg_right h5 hxpos.le
       simpa using h
     have h10 : 0 ≤ (8/δ^2) * (s.im - u.im)^2 := by positivity
-    nlinarith [h9, h10]
+    linarith only [h9, h10]
 
 /-- The final numeric absorption of the engine.  If two real quantities are each bounded by
 `(P/L)·(16m/δ²)` with `1 ≤ m` integral, `P ≤ 4`, `δ²L ≥ 1000` and `δ²εL ≥ 1000`, then their
@@ -311,16 +311,16 @@ theorem hBnum_aux {P L δ ε R1 R3 m : ℝ} (hP : 0 < P) (hL : 0 < L) (hδ : 0 <
   have hR1 : R1 ≤ R := hkey ▸ h1
   have hR3 : R3 ≤ R := hkey ▸ h3
   have hRnn : 0 ≤ R := by rw [hRdef]; positivity
-  have hstep : 24480 * R1 + 6000 * R3 ≤ 30480 * R := by nlinarith [hR1, hR3, hRnn]
+  have hstep : 24480 * R1 + 6000 * R3 ≤ 30480 * R := by linarith only [hR1, hR3, hRnn, h1, h3, hkey]
   have hRform : R = 16 * m * P * (1 / (δ ^ 2 * L)) := by rw [hRdef]; ring
   have hnonneg : (0:ℝ) ≤ 16 * m * P := by positivity
   have hinv : 1 / (δ ^ 2 * L) ≤ ε / 1000 := by
     rw [div_le_div_iff₀ hδ2L (by norm_num)]
     have h : ε * (δ ^ 2 * L) = δ ^ 2 * ε * L := by ring
-    linarith [hLε, h]
+    linarith only [hLε, h]
   have hinv2 : 1 / (δ ^ 2 * L) ≤ 1 / 1000 := by
     rw [div_le_div_iff₀ hδ2L (by norm_num)]
-    linarith [hLδ]
+    linarith only [hLδ]
   rcases (by omega : k = 1 ∨ 2 ≤ k) with hk1 | hk2
   · subst hk1
     have hmm : m = 1 := by rw [hk']; norm_num
@@ -329,7 +329,7 @@ theorem hBnum_aux {P L δ ε R1 R3 m : ℝ} (hP : 0 < P) (hL : 0 < L) (hδ : 0 <
       exact mul_le_mul_of_nonneg_left hinv hnonneg
     have hfin : 24480 * R1 + 6000 * R3 ≤ 22856 * P * ε := by
       have h2 := mul_le_mul_of_nonneg_left hRle (show (0:ℝ) ≤ 30480 by norm_num)
-      nlinarith [hstep, h2, hmm, hP.le, hε.le]
+      nlinarith only [hstep, h2, hmm, hP.le, hε.le, h1, h3, hkey, hRle, hP, hε, hm, hRnn]
     have hz : (65280 : ℝ) * (m - 1) = 0 := by rw [hmm]; norm_num
     rw [hz, zero_add]
     exact hfin
@@ -340,7 +340,7 @@ theorem hBnum_aux {P L δ ε R1 R3 m : ℝ} (hP : 0 < P) (hL : 0 < L) (hδ : 0 <
       linarith only [h]
     have hfin : 24480 * R1 + 6000 * R3 ≤ 65280 * (m - 1) := by
       have h2 := mul_le_mul_of_nonneg_left hRle (show (0:ℝ) ≤ 30480 by norm_num)
-      nlinarith [hstep, h2, hk2', hP4, hmpos]
+      nlinarith only [hstep, h2, hk2', hP4, hmpos, h1, h3, hk', hkey, hRle, hP]
     have hεP : (0:ℝ) ≤ 22856 * P * ε := by positivity
     linarith only [hfin, hεP]
 
@@ -375,7 +375,7 @@ theorem HB95_h2_engine :
     have h1 : Real.exp Lreq ≤ (Nat.ceil (Real.exp Lreq) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (Real.exp Lreq) + 10 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
     push_cast at h2
-    linarith
+    linarith only [hδ0, hδ1, h1, h2]
   set L : ℝ := Real.log (q : ℝ) with hLdef
   have hLge : Lreq ≤ L := by
     rw [hLdef, ← Real.log_exp Lreq]
@@ -408,7 +408,7 @@ theorem HB95_h2_engine :
   have hq2 : 2 ≤ q := two_le_of_ne_one χ₁ hχ1ne
   have hlam0 : 0 ≤ Work.LinnikContract.lamOf q ρ₁ :=
     Work.LinnikContract.API.isZ_lambda_nonneg hq2 hZ
-  have hlam1 : Work.LinnikContract.lamOf q ρ₁ ≤ 1 := by linarith
+  have hlam1 : Work.LinnikContract.lamOf q ρ₁ ≤ 1 := by linarith only [hδ0, hδ1, hle]
   have hlamval : Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * L := by rw [hLdef]; rfl
   -- ## the primitive character and the notation
   haveI hNne : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
@@ -441,26 +441,26 @@ theorem HB95_h2_engine :
   set s₄ : ℂ := (σ : ℂ) + (((4 : ℝ) * γ) : ℂ) * Complex.I with hs₄def
   set S : Finset ℂ := {ρ₁, starRingEnd ℂ ρ₁} with hSdef
   have hApos : 0 < A := by rw [hAdef]; norm_num
-  have hαpos : 0 < α := by rw [hαdef, hAdef]; linarith
-  have hαle4 : α ≤ 4 := by rw [hαdef, hAdef]; linarith
+  have hαpos : 0 < α := by rw [hαdef, hAdef]; linarith only [hδ0, hδ1, hlam0]
+  have hαle4 : α ≤ 4 := by rw [hαdef, hAdef]; linarith only [hδ0, hδ1, hle]
   have hσgt : 1 < σ := by
     rw [hσdef]
     have h : 0 < A / L := div_pos hApos hLpos
-    linarith
+    linarith only [h]
   have hLne : L ≠ 0 := hLpos.ne'
   have hAlL : A / L ≤ δ / 2 := by
     rw [div_le_iff₀ hLpos]
     have h1 : (δ / 2) * (8 / δ) = 4 := by field_simp <;> ring
     have h2 : (4:ℝ) ≤ (δ / 2) * L := by
       have h3 := mul_le_mul_of_nonneg_left h8δ (by positivity : (0:ℝ) ≤ δ / 2)
-      linarith [h3, h1]
+      linarith only [h3, h1]
     have h4 : A ≤ 4 := by rw [hAdef]; norm_num
-    linarith [h2, h4]
+    linarith only [h2, h4, hδ0, hδ1]
   have hconj_ne : starRingEnd ℂ ρ₁ ≠ ρ₁ := by
     intro h
     have h2 : (starRingEnd ℂ ρ₁).im = ρ₁.im := by rw [h]
     rw [Complex.conj_im] at h2
-    have h3 : ρ₁.im = 0 := by linarith
+    have h3 : ρ₁.im = 0 := by linarith only [h2]
     exact him h3
   -- ## the six denominator identities
   have hρrepr : ((ρ₁.re : ℂ)) + (ρ₁.im : ℂ) * Complex.I = ρ₁ := Complex.re_add_im ρ₁
@@ -514,22 +514,22 @@ theorem HB95_h2_engine :
   have him1 : |s₁.im| ≤ 4 := by
     have h : s₁.im = γ := by rw [hs₁def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre2 : s₂.re = 1 + A / L := by rw [hs₂def]; simp [hσdef]
   have him2 : |s₂.im| ≤ 4 := by
     have h : s₂.im = 2 * γ := by rw [hs₂def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre3 : s₃.re = 1 + A / L := by rw [hs₃def]; simp [hσdef]
   have him3 : |s₃.im| ≤ 4 := by
     have h : s₃.im = 3 * γ := by rw [hs₃def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre4 : s₄.re = 1 + A / L := by rw [hs₄def]; simp [hσdef]
   have him4 : |s₄.im| ≤ 4 := by
     have h : s₄.im = 4 * γ := by rw [hs₄def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs]
   have hre0 : ((σ : ℂ)).re = 1 + A / L := by simp [hσdef]
   have him0 : |((σ : ℂ)).im| ≤ 4 := by simp
   -- ## the principal-character bounds
@@ -595,19 +595,19 @@ theorem HB95_h2_engine :
         rcases Finset.mem_insert.mp hvS with h | h
         · rw [h, ← hγdef]
           rw [abs_le] at hγ1 ⊢
-          exact ⟨by linarith [hγ1.1], by linarith [hγ1.2]⟩
+          exact ⟨by linarith only [hγ1.1, hγ1], by linarith only [hγ1.2, hγ1]⟩
         · rw [Finset.mem_singleton.mp h, Complex.conj_im, abs_neg, ← hγdef]
           rw [abs_le] at hγ1 ⊢
-          exact ⟨by linarith [hγ1.1], by linarith [hγ1.2]⟩
+          exact ⟨by linarith only [hγ1.1, hγ1], by linarith only [hγ1.2, hγ1]⟩
       · have h2 : |s₁.im - v.im| ≤ 1 := by
           have h3 : |((1 : ℂ) + (s₁.im : ℂ) * Complex.I - v).im| ≤ 1 :=
-            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith [hδ1]))
+            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith only [hδ1]))
           simpa using h3
         have h4 : |s₁.im| ≤ 1 := by
           have h : s₁.im = γ := by rw [hs₁def]; simp
           rw [h]; exact hγabs
         rw [abs_le] at h2 h4 ⊢
-        constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
+        constructor <;> linarith only [h2.1, h2.2, h4.1, h4.2, hδ1, hσdef, hσgt, hAlL, h2, h4]
     have hv' : Work.LinnikContract.zeroMult χ₁ v ≠ 0 := by rw [hzm_eq v]; exact hv
     have hmin' := hm1.2 χ₁ v hχ1ne hv' himv
     simpa [Work.LinnikContract.lamOf, hLdef] using hmin'
@@ -621,20 +621,20 @@ theorem HB95_h2_engine :
         rcases Finset.mem_insert.mp hvS with h | h
         · rw [h, ← hγdef]
           rw [abs_le] at hγ1 ⊢
-          exact ⟨by linarith [hγ1.1], by linarith [hγ1.2]⟩
+          exact ⟨by linarith only [hγ1.1, hγ1], by linarith only [hγ1.2, hγ1]⟩
         · rw [Finset.mem_singleton.mp h, Complex.conj_im, abs_neg, ← hγdef]
           rw [abs_le] at hγ1 ⊢
-          exact ⟨by linarith [hγ1.1], by linarith [hγ1.2]⟩
+          exact ⟨by linarith only [hγ1.1, hγ1], by linarith only [hγ1.2, hγ1]⟩
       · have h2 : |s₃.im - v.im| ≤ 1 := by
           have h3 : |((1 : ℂ) + (s₃.im : ℂ) * Complex.I - v).im| ≤ 1 :=
-            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith [hδ1]))
+            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith only [hδ1]))
           simpa using h3
         have h4 : |s₃.im| ≤ 3 := by
           have h : s₃.im = 3 * γ := by rw [hs₃def]; simp
           rw [h]; rw [abs_le] at hγabs ⊢
-          constructor <;> linarith [hγabs.1, hγabs.2]
+          constructor <;> linarith only [hγabs.1, hγabs.2, hγabs]
         rw [abs_le] at h2 h4 ⊢
-        constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
+        constructor <;> linarith only [h2.1, h2.2, h4.1, h4.2, hδ1, hσdef, hσgt, hAlL, h2, h4]
     have hv' : Work.LinnikContract.zeroMult χ₁ v ≠ 0 := by rw [hzm_eq v]; exact hv
     have hmin' := hm1.2 χ₁ v hχ1ne hv' himv
     simpa [Work.LinnikContract.lamOf, hLdef] using hmin'
@@ -691,7 +691,7 @@ theorem HB95_h2_engine :
             (1 - Work.ZeroFreeTables.P9.nearInd s₁ δ u)
             * ((Work.LinnikContract.zeroMult (χ₁.primitiveCharacter) u : ℝ)
                 * ((1 / (s₁ - u)).re))) := by
-    linarith [hi1, hm1']
+    linarith only [hi1, hm1', this, hNne]
   have hb3 : SigmaP3L q L χ₁ s₃ A (Work.LinnikContract.lamOf q ρ₁)
       ≤ - Table4.keptP3Sum χ₁.conductor L (χ₁.primitiveCharacter) s₃ A
             (Work.LinnikContract.lamOf q ρ₁) δ S
@@ -701,7 +701,7 @@ theorem HB95_h2_engine :
             (1 - Work.ZeroFreeTables.P9.nearInd s₃ δ u)
             * ((Work.LinnikContract.zeroMult (χ₁.primitiveCharacter) u : ℝ)
                 * ((1 / (s₃ - u)).re))) := by
-    linarith [hi3, hm3']
+    linarith only [hi3, hm3', this, hNne]
   have hExbound : ∀ (s : ℂ), s.re = 1 + A / L → |s.im| ≤ 4 →
       ((A + Work.LinnikContract.lamOf q ρ₁) / L) * (∑ u ∈ S,
           (1 - Work.ZeroFreeTables.P9.nearInd s δ u)
@@ -716,13 +716,13 @@ theorem HB95_h2_engine :
       refine Finset.sum_le_sum (fun u hu => ?_)
       by_cases hzu : Work.LinnikContract.zeroMult (χ₁.primitiveCharacter) u = 0
       · rw [hzu]; simp only [Nat.cast_zero, mul_zero, zero_mul]
-        exact mul_nonneg (by linarith [hm_ge1]) (by positivity)
+        exact mul_nonneg (by linarith only [hm_ge1]) (by positivity)
       · have hzu_pos : 0 < (Work.LinnikContract.zeroMult (χ₁.primitiveCharacter) u : ℝ) := by
           exact_mod_cast Nat.pos_of_ne_zero hzu
         by_cases hnear : ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖ ≤ δ
         · rw [Work.ZeroFreeTables.P9.nearInd_eq_ite, if_pos hnear]
           simp only [sub_self, zero_mul]
-          exact mul_nonneg (by linarith [hm_ge1]) (by positivity)
+          exact mul_nonneg (by linarith only [hm_ge1]) (by positivity)
         · rw [Work.ZeroFreeTables.P9.nearInd_eq_ite, if_neg hnear]
           have hfar : δ < ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖ := lt_of_not_ge hnear
           have hu' : u = ρ₁ ∨ u = starRingEnd ℂ ρ₁ := by
@@ -748,7 +748,7 @@ theorem HB95_h2_engine :
         field_simp
         ring
       rw [h2]
-    linarith [hsum_le, hconst]
+    linarith only [hsum_le, hconst, hNne]
   have hEx1 : ((A + Work.LinnikContract.lamOf q ρ₁) / L) * (∑ u ∈ S,
         (1 - Work.ZeroFreeTables.P9.nearInd s₁ δ u)
         * ((Work.LinnikContract.zeroMult (χ₁.primitiveCharacter) u : ℝ)

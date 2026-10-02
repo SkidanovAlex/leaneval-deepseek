@@ -18,15 +18,15 @@ theorem rowA_0_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((87:ℝ)/(250)))))/((87:ℝ)/(250)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((327:ℝ)/(250)) lam1 ≤ ((3646547:ℝ)/(25000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((327:ℝ)/(250)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((327:ℝ)/(250)) := by linarith only [h2]
   have hpa : ((87:ℝ)/(250)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) ≤ ((4543401:ℝ)/(25000000)) := exF_a_87_250
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((87:ℝ)/(250)) ≤ ((193666723:ℝ)/(100000000)) := (v_87_250).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((87:ℝ)/(250)))))/((87:ℝ)/(250)))^2/((9:ℝ)/100) ≤ ((90168359:ℝ)/(100000000)) := (v_87_250).2.2.2.2.2.2
   have hPbA : ((7715967:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) := (v_9_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -56,15 +56,15 @@ theorem rowA_0_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((87:ℝ)/(250)))))/((87:ℝ)/(250)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((327:ℝ)/(250)) lam1 ≤ ((3646547:ℝ)/(25000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((327:ℝ)/(250)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((327:ℝ)/(250)) := by linarith only [h2]
   have hpa : ((87:ℝ)/(250)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) ≤ ((4543401:ℝ)/(25000000)) := exF_a_87_250
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((87:ℝ)/(250)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((87:ℝ)/(250)) ≤ ((193666723:ℝ)/(100000000)) := (v_87_250).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((87:ℝ)/(250)))))/((87:ℝ)/(250)))^2/((9:ℝ)/100) ≤ ((90168359:ℝ)/(100000000)) := (v_87_250).2.2.2.2.2.2
   have hPbA : ((7715967:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) := (v_9_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((9:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -94,15 +94,15 @@ theorem rowA_1_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((9:ℝ)/(25)))))/((9:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((1249:ℝ)/(1000)) lam1 ≤ ((13564633:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((1249:ℝ)/(1000)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((1249:ℝ)/(1000)) := by linarith only [h2]
   have hpa : ((9:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) ≤ ((8567903:ℝ)/(50000000)) := exF_a_9_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((9:ℝ)/(25)) ≤ ((193103027:ℝ)/(100000000)) := (v_9_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((9:ℝ)/(25)))))/((9:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((17970011:ℝ)/(20000000)) := (v_9_25).2.2.2.2.2.2
   have hPbA : ((9302549:ℝ)/(25000000)) ≤ Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) := (v_19_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -132,15 +132,15 @@ theorem rowA_1_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((9:ℝ)/(25)))))/((9:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((1249:ℝ)/(1000)) lam1 ≤ ((13564633:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((1249:ℝ)/(1000)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((1249:ℝ)/(1000)) := by linarith only [h2]
   have hpa : ((9:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) ≤ ((8567903:ℝ)/(50000000)) := exF_a_9_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((9:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((9:ℝ)/(25)) ≤ ((193103027:ℝ)/(100000000)) := (v_9_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((9:ℝ)/(25)))))/((9:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((17970011:ℝ)/(20000000)) := (v_9_25).2.2.2.2.2.2
   have hPbA : ((9302549:ℝ)/(25000000)) ≤ Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) := (v_19_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((19:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -170,15 +170,15 @@ theorem rowA_2_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((19:ℝ)/(50)))))/((19:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((239:ℝ)/(200)) lam1 ≤ ((3046547:ℝ)/(25000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((239:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((239:ℝ)/(200)) := by linarith only [h2]
   have hpa : ((19:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) ≤ ((97101:ℝ)/(625000)) := exF_a_19_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((19:ℝ)/(50)) ≤ ((48042207:ℝ)/(25000000)) := (v_19_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((19:ℝ)/(50)))))/((19:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((89322479:ℝ)/(100000000)) := (v_19_50).2.2.2.2.2.2
   have hPbA : ((35886977:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) := (v_2_5).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -208,15 +208,15 @@ theorem rowA_2_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((19:ℝ)/(50)))))/((19:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((239:ℝ)/(200)) lam1 ≤ ((3046547:ℝ)/(25000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((239:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((239:ℝ)/(200)) := by linarith only [h2]
   have hpa : ((19:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) ≤ ((97101:ℝ)/(625000)) := exF_a_19_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((19:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((19:ℝ)/(50)) ≤ ((48042207:ℝ)/(25000000)) := (v_19_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((19:ℝ)/(50)))))/((19:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((89322479:ℝ)/(100000000)) := (v_19_50).2.2.2.2.2.2
   have hPbA : ((35886977:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) := (v_2_5).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((2:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -246,15 +246,15 @@ theorem rowA_3_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((2:ℝ)/(5)))))/((2:ℝ)/(5)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((143:ℝ)/(125)) lam1 ≤ ((10969797:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((143:ℝ)/(125)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((143:ℝ)/(125)) := by linarith only [h2]
   have hpa : ((2:ℝ)/(5)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) ≤ ((14085843:ℝ)/(100000000)) := exF_a_2_5
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((2:ℝ)/(5)) ≤ ((191241281:ℝ)/(100000000)) := (v_2_5).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((2:ℝ)/(5)))))/((2:ℝ)/(5)))^2/((9:ℝ)/100) ≤ ((11099817:ℝ)/(12500000)) := (v_2_5).2.2.2.2.2.2
   have hPbA : ((3460869:ℝ)/(10000000)) ≤ Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) := (v_21_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -284,15 +284,15 @@ theorem rowA_3_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((2:ℝ)/(5)))))/((2:ℝ)/(5)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((143:ℝ)/(125)) lam1 ≤ ((10969797:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((143:ℝ)/(125)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((143:ℝ)/(125)) := by linarith only [h2]
   have hpa : ((2:ℝ)/(5)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) ≤ ((14085843:ℝ)/(100000000)) := exF_a_2_5
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((2:ℝ)/(5)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((2:ℝ)/(5)) ≤ ((191241281:ℝ)/(100000000)) := (v_2_5).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((2:ℝ)/(5)))))/((2:ℝ)/(5)))^2/((9:ℝ)/100) ≤ ((11099817:ℝ)/(12500000)) := (v_2_5).2.2.2.2.2.2
   have hPbA : ((3460869:ℝ)/(10000000)) ≤ Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) := (v_21_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((21:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -322,15 +322,15 @@ theorem rowA_4_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((21:ℝ)/(50)))))/((21:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((549:ℝ)/(500)) lam1 ≤ ((618589:ℝ)/(6250000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((549:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((549:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((21:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) ≤ ((6385457:ℝ)/(50000000)) := exF_a_21_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((21:ℝ)/(50)) ≤ ((7612809:ℝ)/(4000000)) := (v_21_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((21:ℝ)/(50)))))/((21:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((17655639:ℝ)/(20000000)) := (v_21_50).2.2.2.2.2.2
   have hPbA : ((33373891:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) := (v_11_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -360,15 +360,15 @@ theorem rowA_4_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((21:ℝ)/(50)))))/((21:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((6:ℝ)/(5)) lam1 - Work.LinnikAreas.A7.Aref ((549:ℝ)/(500)) lam1 ≤ ((618589:ℝ)/(6250000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((549:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((549:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((21:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) ≤ ((6385457:ℝ)/(50000000)) := exF_a_21_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((21:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((21:ℝ)/(50)) ≤ ((7612809:ℝ)/(4000000)) := (v_21_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((21:ℝ)/(50)))))/((21:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((17655639:ℝ)/(20000000)) := (v_21_50).2.2.2.2.2.2
   have hPbA : ((33373891:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) := (v_11_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((11:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((444287:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Phi ((6:ℝ)/(5)) := (v_6_5).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) ≤ ((125463:ℝ)/(1562500)) := (v_6_5).2.2.1
   have hWL : ((8029629:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((6:ℝ)/(5)) := (v_6_5).2.2.2.1
@@ -398,15 +398,15 @@ theorem rowA_5_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((11:ℝ)/(25)))))/((11:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((527:ℝ)/(500)) lam1 ≤ ((1137307:ℝ)/(12500000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((527:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((527:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((11:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) ≤ ((2315747:ℝ)/(20000000)) := exF_a_11_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((11:ℝ)/(25)) ≤ ((94702837:ℝ)/(50000000)) := (v_11_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((11:ℝ)/(25)))))/((11:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((43880713:ℝ)/(50000000)) := (v_11_25).2.2.2.2.2.2
   have hPbA : ((32181179:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) := (v_23_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -436,15 +436,15 @@ theorem rowA_5_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((11:ℝ)/(25)))))/((11:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((527:ℝ)/(500)) lam1 ≤ ((1137307:ℝ)/(12500000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((527:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((527:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((11:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) ≤ ((2315747:ℝ)/(20000000)) := exF_a_11_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((11:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((11:ℝ)/(25)) ≤ ((94702837:ℝ)/(50000000)) := (v_11_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((11:ℝ)/(25)))))/((11:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((43880713:ℝ)/(50000000)) := (v_11_25).2.2.2.2.2.2
   have hPbA : ((32181179:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) := (v_23_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((23:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -474,15 +474,15 @@ theorem rowA_6_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((23:ℝ)/(50)))))/((23:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((507:ℝ)/(500)) lam1 ≤ ((8277873:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((507:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((507:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((23:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) ≤ ((10497847:ℝ)/(100000000)) := exF_a_23_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((23:ℝ)/(50)) ≤ ((94248789:ℝ)/(50000000)) := (v_23_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((23:ℝ)/(50)))))/((23:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((87248203:ℝ)/(100000000)) := (v_23_50).2.2.2.2.2.2
   have hPbA : ((31029199:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) := (v_12_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -512,15 +512,15 @@ theorem rowA_6_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((23:ℝ)/(50)))))/((23:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((507:ℝ)/(500)) lam1 ≤ ((8277873:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((507:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((507:ℝ)/(500)) := by linarith only [h2]
   have hpa : ((23:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) ≤ ((10497847:ℝ)/(100000000)) := exF_a_23_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((23:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((23:ℝ)/(50)) ≤ ((94248789:ℝ)/(50000000)) := (v_23_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((23:ℝ)/(50)))))/((23:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((87248203:ℝ)/(100000000)) := (v_23_50).2.2.2.2.2.2
   have hPbA : ((31029199:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) := (v_12_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((12:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -550,15 +550,15 @@ theorem rowA_7_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((12:ℝ)/(25)))))/((12:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((122:ℝ)/(125)) lam1 ≤ ((3785989:ℝ)/(50000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((122:ℝ)/(125)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((122:ℝ)/(125)) := by linarith only [h2, hp_c0]
   have hpa : ((12:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) ≤ ((4758931:ℝ)/(50000000)) := exF_a_12_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((12:ℝ)/(25)) ≤ ((93797919:ℝ)/(50000000)) := (v_12_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((12:ℝ)/(25)))))/((12:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((17347703:ℝ)/(20000000)) := (v_12_25).2.2.2.2.2.2
   have hPbA : ((3739579:ℝ)/(12500000)) ≤ Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) := (v_1_2).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -588,15 +588,15 @@ theorem rowA_7_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((12:ℝ)/(25)))))/((12:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((49:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((122:ℝ)/(125)) lam1 ≤ ((3785989:ℝ)/(50000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((122:ℝ)/(125)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((122:ℝ)/(125)) := by linarith only [h2, hp_c0]
   have hpa : ((12:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) ≤ ((4758931:ℝ)/(50000000)) := exF_a_12_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((12:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((12:ℝ)/(25)) ≤ ((93797919:ℝ)/(50000000)) := (v_12_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((12:ℝ)/(25)))))/((12:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((17347703:ℝ)/(20000000)) := (v_12_25).2.2.2.2.2.2
   have hPbA : ((3739579:ℝ)/(12500000)) ≤ Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) := (v_1_2).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((1:ℝ)/(2)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((78181:ℝ)/(20000000)) ≤ Work.LinnikAreas.A7.Phi ((49:ℝ)/(40)) := (v_49_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) ≤ ((7651283:ℝ)/(100000000)) := (v_49_40).2.2.1
   have hWL : ((95641:ℝ)/(1250000)) ≤ Work.LinnikAreas.A7.Wf ((49:ℝ)/(40)) := (v_49_40).2.2.2.1
@@ -626,15 +626,15 @@ theorem rowA_8_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((1:ℝ)/(2)))))/((1:ℝ)/(2)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((47:ℝ)/(50)) lam1 ≤ ((7084397:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((47:ℝ)/(50)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((47:ℝ)/(50)) := by linarith only [h2, hp_c0]
   have hpa : ((1:ℝ)/(2)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) ≤ ((8629359:ℝ)/(100000000)) := exF_a_1_2
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((1:ℝ)/(2)) ≤ ((18670043:ℝ)/(10000000)) := (v_1_2).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((1:ℝ)/(2)))))/((1:ℝ)/(2)))^2/((9:ℝ)/100) ≤ ((8623231:ℝ)/(10000000)) := (v_1_2).2.2.2.2.2.2
   have hPbA : ((28842203:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) := (v_13_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -664,15 +664,15 @@ theorem rowA_8_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((1:ℝ)/(2)))))/((1:ℝ)/(2)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((47:ℝ)/(50)) lam1 ≤ ((7084397:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((47:ℝ)/(50)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((47:ℝ)/(50)) := by linarith only [h2, hp_c0]
   have hpa : ((1:ℝ)/(2)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) ≤ ((8629359:ℝ)/(100000000)) := exF_a_1_2
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((1:ℝ)/(2)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((1:ℝ)/(2)) ≤ ((18670043:ℝ)/(10000000)) := (v_1_2).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((1:ℝ)/(2)))))/((1:ℝ)/(2)))^2/((9:ℝ)/100) ≤ ((8623231:ℝ)/(10000000)) := (v_1_2).2.2.2.2.2.2
   have hPbA : ((28842203:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) := (v_13_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((13:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -702,15 +702,15 @@ theorem rowA_9_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((13:ℝ)/(25)))))/((13:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((453:ℝ)/(500)) lam1 ≤ ((6576779:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((453:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((453:ℝ)/(500)) := by linarith only [h2, hp_c0]
   have hpa : ((13:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) ≤ ((7823799:ℝ)/(100000000)) := exF_a_13_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((13:ℝ)/(25)) ≤ ((185811281:ℝ)/(100000000)) := (v_13_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((13:ℝ)/(25)))))/((13:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((2679049:ℝ)/(3125000)) := (v_13_25).2.2.2.2.2.2
   have hPbA : ((108612:ℝ)/(390625)) ≤ Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) := (v_27_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -740,15 +740,15 @@ theorem rowA_9_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((13:ℝ)/(25)))))/((13:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((453:ℝ)/(500)) lam1 ≤ ((6576779:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((453:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((453:ℝ)/(500)) := by linarith only [h2, hp_c0]
   have hpa : ((13:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) ≤ ((7823799:ℝ)/(100000000)) := exF_a_13_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((13:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((13:ℝ)/(25)) ≤ ((185811281:ℝ)/(100000000)) := (v_13_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((13:ℝ)/(25)))))/((13:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((2679049:ℝ)/(3125000)) := (v_13_25).2.2.2.2.2.2
   have hPbA : ((108612:ℝ)/(390625)) ≤ Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) := (v_27_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((27:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -778,15 +778,15 @@ theorem rowA_10_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((27:ℝ)/(50)))))/((27:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((437:ℝ)/(500)) lam1 ≤ ((615773:ℝ)/(10000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((437:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((437:ℝ)/(500)) := by linarith only [h2, hp_c0]
   have hpa : ((27:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) ≤ ((7093439:ℝ)/(100000000)) := exF_a_27_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((27:ℝ)/(50)) ≤ ((92464189:ℝ)/(50000000)) := (v_27_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((27:ℝ)/(50)))))/((27:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((2130757:ℝ)/(2500000)) := (v_27_50).2.2.2.2.2.2
   have hPbA : ((670071:ℝ)/(2500000)) ≤ Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) := (v_14_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -816,15 +816,15 @@ theorem rowA_10_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((27:ℝ)/(50)))))/((27:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((437:ℝ)/(500)) lam1 ≤ ((615773:ℝ)/(10000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((437:ℝ)/(500)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((437:ℝ)/(500)) := by linarith only [h2, hp_c0]
   have hpa : ((27:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) ≤ ((7093439:ℝ)/(100000000)) := exF_a_27_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((27:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((27:ℝ)/(50)) ≤ ((92464189:ℝ)/(50000000)) := (v_27_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((27:ℝ)/(50)))))/((27:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((2130757:ℝ)/(2500000)) := (v_27_50).2.2.2.2.2.2
   have hPbA : ((670071:ℝ)/(2500000)) ≤ Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) := (v_14_25).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((14:ℝ)/(25)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -854,15 +854,15 @@ theorem rowA_11_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((14:ℝ)/(25)))))/((14:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((211:ℝ)/(250)) lam1 ≤ ((5818981:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((211:ℝ)/(250)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((211:ℝ)/(250)) := by linarith only [h2, hp_c0]
   have hpa : ((14:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) ≤ ((6431259:ℝ)/(100000000)) := exF_a_14_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((14:ℝ)/(25)) ≤ ((184051631:ℝ)/(100000000)) := (v_14_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((14:ℝ)/(25)))))/((14:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((84734403:ℝ)/(100000000)) := (v_14_25).2.2.2.2.2.2
   have hPbA : ((12917771:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) := (v_29_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -892,15 +892,15 @@ theorem rowA_11_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((14:ℝ)/(25)))))/((14:ℝ)/(25)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((5:ℝ)/(4)) lam1 - Work.LinnikAreas.A7.Aref ((211:ℝ)/(250)) lam1 ≤ ((5818981:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((211:ℝ)/(250)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((211:ℝ)/(250)) := by linarith only [h2, hp_c0]
   have hpa : ((14:ℝ)/(25)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) ≤ ((6431259:ℝ)/(100000000)) := exF_a_14_25
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((14:ℝ)/(25)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((14:ℝ)/(25)) ≤ ((184051631:ℝ)/(100000000)) := (v_14_25).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((14:ℝ)/(25)))))/((14:ℝ)/(25)))^2/((9:ℝ)/100) ≤ ((84734403:ℝ)/(100000000)) := (v_14_25).2.2.2.2.2.2
   have hPbA : ((12917771:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) := (v_29_50).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((29:ℝ)/(50)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((171971:ℝ)/(50000000)) ≤ Work.LinnikAreas.A7.Phi ((5:ℝ)/(4)) := (v_5_4).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) ≤ ((3645071:ℝ)/(50000000)) := (v_5_4).2.2.1
   have hWL : ((364507:ℝ)/(5000000)) ≤ Work.LinnikAreas.A7.Wf ((5:ℝ)/(4)) := (v_5_4).2.2.2.1
@@ -930,15 +930,15 @@ theorem rowA_12_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((29:ℝ)/(50)))))/((29:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((51:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((163:ℝ)/(200)) lam1 ≤ ((5651003:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((163:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((163:ℝ)/(200)) := by linarith only [h2, hp_c0]
   have hpa : ((29:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) ≤ ((2915447:ℝ)/(50000000)) := exF_a_29_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((29:ℝ)/(50)) ≤ ((18318101:ℝ)/(10000000)) := (v_29_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((29:ℝ)/(50)))))/((29:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((84241919:ℝ)/(100000000)) := (v_29_50).2.2.2.2.2.2
   have hPbA : ((24901651:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) := (v_3_5).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((2421:ℝ)/(800000)) ≤ Work.LinnikAreas.A7.Phi ((51:ℝ)/(40)) := (v_51_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) ≤ ((6945459:ℝ)/(100000000)) := (v_51_40).2.2.1
   have hWL : ((6945457:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) := (v_51_40).2.2.2.1
@@ -968,15 +968,15 @@ theorem rowA_12_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((29:ℝ)/(50)))))/((29:ℝ)/(50)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((51:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((163:ℝ)/(200)) lam1 ≤ ((5651003:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((163:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((163:ℝ)/(200)) := by linarith only [h2, hp_c0]
   have hpa : ((29:ℝ)/(50)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) ≤ ((2915447:ℝ)/(50000000)) := exF_a_29_50
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((29:ℝ)/(50)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((29:ℝ)/(50)) ≤ ((18318101:ℝ)/(10000000)) := (v_29_50).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((29:ℝ)/(50)))))/((29:ℝ)/(50)))^2/((9:ℝ)/100) ≤ ((84241919:ℝ)/(100000000)) := (v_29_50).2.2.2.2.2.2
   have hPbA : ((24901651:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) := (v_3_5).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((3:ℝ)/(5)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((2421:ℝ)/(800000)) ≤ Work.LinnikAreas.A7.Phi ((51:ℝ)/(40)) := (v_51_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) ≤ ((6945459:ℝ)/(100000000)) := (v_51_40).2.2.1
   have hWL : ((6945457:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) := (v_51_40).2.2.2.1
@@ -1006,15 +1006,15 @@ theorem rowA_13_cx {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((51:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((139:ℝ)/(200)) lam1 ≤ ((6788827:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith only [h2]
   have hpa : ((3:ℝ)/(5)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) ≤ ((5286573:ℝ)/(100000000)) := exF_a_3_5
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((3:ℝ)/(5)) ≤ ((9115823:ℝ)/(5000000)) := (v_3_5).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100) ≤ ((8375279:ℝ)/(10000000)) := (v_3_5).2.2.2.2.2.2
   have hPbA : ((20889217:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) := (v_139_200).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((2421:ℝ)/(800000)) ≤ Work.LinnikAreas.A7.Phi ((51:ℝ)/(40)) := (v_51_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) ≤ ((6945459:ℝ)/(100000000)) := (v_51_40).2.2.1
   have hWL : ((6945457:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) := (v_51_40).2.2.2.1
@@ -1044,15 +1044,15 @@ theorem rowA_13_rr {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((51:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((139:ℝ)/(200)) lam1 ≤ ((6788827:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith only [h2]
   have hpa : ((3:ℝ)/(5)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) ≤ ((5286573:ℝ)/(100000000)) := exF_a_3_5
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((3:ℝ)/(5)) ≤ ((9115823:ℝ)/(5000000)) := (v_3_5).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100) ≤ ((8375279:ℝ)/(10000000)) := (v_3_5).2.2.2.2.2.2
   have hPbA : ((20889217:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) := (v_139_200).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((2421:ℝ)/(800000)) ≤ Work.LinnikAreas.A7.Phi ((51:ℝ)/(40)) := (v_51_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) ≤ ((6945459:ℝ)/(100000000)) := (v_51_40).2.2.1
   have hWL : ((6945457:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) := (v_51_40).2.2.2.1
@@ -1082,15 +1082,15 @@ theorem rowA_13_rc {lam1 : ℝ}
     (hF2_mono : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100))
     (hBF : ((1-Real.exp (-((3:ℝ)/10*lam1)))/lam1)^2/((9:ℝ)/100) ≤ Work.LinnikContract.Bfun ((3:ℝ)/10) lam1) :
     Work.LinnikAreas.A7.Cf ((51:ℝ)/(40)) lam1 - Work.LinnikAreas.A7.Aref ((139:ℝ)/(200)) lam1 ≤ ((6788827:ℝ)/(100000000)) := by
-  have hp_c0 : (0:ℝ) < lam1 := by linarith
-  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith
+  have hp_c0 : (0:ℝ) < lam1 := by linarith only [h1]
+  have hpc : lam1 ≤ ((139:ℝ)/(200)) := by linarith only [h2]
   have hpa : ((3:ℝ)/(5)) ≤ lam1 := h1
   have hEa : Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) ≤ ((5286573:ℝ)/(100000000)) := exF_a_3_5
-  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by nlinarith)
+  have hEaL : Real.exp (-((49:ℝ)/10*lam1)) ≤ Real.exp (-((49:ℝ)/10*((3:ℝ)/(5)))) := Real.exp_le_exp.mpr (by linarith only [h1])
   have hBaL : Work.LinnikContract.Bfun ((3:ℝ)/10) ((3:ℝ)/(5)) ≤ ((9115823:ℝ)/(5000000)) := (v_3_5).2.2.2.2.1
   have hF2aL : ((1-Real.exp (-((3:ℝ)/10*((3:ℝ)/(5)))))/((3:ℝ)/(5)))^2/((9:ℝ)/100) ≤ ((8375279:ℝ)/(10000000)) := (v_3_5).2.2.2.2.2.2
   have hPbA : ((20889217:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) := (v_139_200).2.2.2.1
-  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith) h2
+  have hWp : Work.LinnikAreas.A7.Wf ((139:ℝ)/(200)) ≤ Work.LinnikAreas.A7.Wf lam1 := Density4.wHB_antitone (by linarith only [hp_c0]) h2
   have hPL : ((2421:ℝ)/(800000)) ≤ Work.LinnikAreas.A7.Phi ((51:ℝ)/(40)) := (v_51_40).2.1
   have hWU : Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) ≤ ((6945459:ℝ)/(100000000)) := (v_51_40).2.2.1
   have hWL : ((6945457:ℝ)/(100000000)) ≤ Work.LinnikAreas.A7.Wf ((51:ℝ)/(40)) := (v_51_40).2.2.2.1

@@ -22,7 +22,6 @@ import Submission.Work.ZeroFreeTables.P9.invNearSum_eq_tsum
 import Submission.Work.ZeroFreeTables.P9.prim.SigmaP3L_eq_moments
 import Submission.Work.ZeroFreeTables.P9.prim.iteratedDeriv_logDeriv_re
 import Submission.Work.ZeroFreeTables.P9.lDiffExplicit_gen
-import Submission.Work.ZeroFreeTables.P9.zeroSum_invSq_tsum
 import Submission.Work.ZeroFreeTables.P3Pos
 import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
 import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen_real
@@ -37,6 +36,7 @@ import Submission.Work.ZeroFreeTables.Table4.SigmaP3L_primitive_le
 import Submission.Work.ZeroFreeTables.Table4.error_budget
 import Submission.Work.ZeroFreeTables.Table4.loglogPow4_le_mul
 import Submission.Work.LinnikAreas.boxMaxZero
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open Work.LinnikContract
 open Complex DirichletCharacter
@@ -163,10 +163,11 @@ theorem bracket_le (a lam mu : ℝ) (ha : 0 < a) (hlam : 0 ≤ lam) :
     a ^ 6 / (a + lam) ^ 3
       ≤ (a + lam) ^ 3 * (a ^ 2 + mu ^ 2) ^ 3 / ((a + lam) ^ 2 + mu ^ 2) ^ 3 := by
   have hD : 0 < (a + lam) ^ 2 + mu ^ 2 := by positivity
-  have ha2 : a ^ 2 ≤ (a + lam) ^ 2 := by nlinarith
+  have ha2 : a ^ 2 ≤ (a + lam) ^ 2 := by
+    linarith only [mul_nonneg ha.le hlam, sq_nonneg lam]
   have hkey : a ^ 2 * ((a + lam) ^ 2 + mu ^ 2) ≤ (a ^ 2 + mu ^ 2) * (a + lam) ^ 2 := by
     have := mul_le_mul_of_nonneg_left ha2 (sq_nonneg mu)
-    nlinarith [this]
+    linarith only [this]
   have h3 : (a ^ 2 * ((a + lam) ^ 2 + mu ^ 2)) ^ 3
       ≤ ((a ^ 2 + mu ^ 2) * (a + lam) ^ 2) ^ 3 :=
     pow_le_pow_left₀ (by positivity) hkey 3
@@ -201,14 +202,14 @@ theorem A83_nonneg {a lam₁ lam₀ K mu : ℝ} (ha : 0 < a) (hlam₁ : 0 ≤ la
       ≤ P3AB (a + lam₁) (a + lam₁) mu := P3AB_ge _ _ _ hα hα le_rfl
   have hPa : P3AB (a + lam₁) a mu
       ≤ (8 / 3) * ((a + lam₁) * a / (a ^ 2 + mu ^ 2)) ^ 3 := P3AB_le _ _ _ hα ha (by linarith)
-  have hcoef : 2 * K ≤ K ^ 2 + 1 := by nlinarith [sq_nonneg (K - 1)]
+  have hcoef : 2 * K ≤ K ^ 2 + 1 := by linarith only [sq_nonneg (K - 1)]
   have hkey := cond86_key (lam₁ := lam₁) (lam₀ := lam₀) ha hcond
   have hbr : a ^ 6 / (a + lam₀) ^ 3 + a ^ 6 / (a + lam₁) ^ 3 - a ^ 3
       ≤ (a + lam₀) ^ 3 * (a ^ 2 + mu ^ 2) ^ 3 / ((a + lam₀) ^ 2 + mu ^ 2) ^ 3
         + (a + lam₁) ^ 3 * (a ^ 2 + mu ^ 2) ^ 3 / ((a + lam₁) ^ 2 + mu ^ 2) ^ 3 - a ^ 3 := by
     have h1 := bracket_le a lam₁ mu ha hlam₁
     have h2 := bracket_le a lam₀ mu ha (le_trans hlam₁ hle)
-    linarith
+    linarith only [h1, h2]
   have hA1 : 0 ≤ (a + lam₀) ^ 3 * (a ^ 2 + mu ^ 2) ^ 3 / ((a + lam₀) ^ 2 + mu ^ 2) ^ 3
         + (a + lam₁) ^ 3 * (a ^ 2 + mu ^ 2) ^ 3 / ((a + lam₁) ^ 2 + mu ^ 2) ^ 3 - a ^ 3 :=
     le_trans hkey hbr
@@ -228,16 +229,16 @@ theorem A83_nonneg {a lam₁ lam₀ K mu : ℝ} (ha : 0 < a) (hlam₁ : 0 ≤ la
     rw [hD]; exact hA1
   have hP0nn : 0 ≤ P3AB (a + lam₁) (a + lam₀) mu := le_trans (by positivity) hP0
   have hstep : 2 * K * P3AB (a + lam₁) (a + lam₀) mu
-      ≤ (K ^ 2 + 1) * P3AB (a + lam₁) (a + lam₀) mu := by nlinarith [hcoef, hP0nn]
+      ≤ (K ^ 2 + 1) * P3AB (a + lam₁) (a + lam₀) mu := mul_le_mul_of_nonneg_right hcoef hP0nn
   have hsum : (8 / 3) * ((a + lam₁) * a / D) ^ 3
       ≤ (8 / 3) * ((a + lam₁) * (a + lam₀) / ((a + lam₀) ^ 2 + mu ^ 2)) ^ 3
         + (8 / 3) * ((a + lam₁) * (a + lam₁) / ((a + lam₁) ^ 2 + mu ^ 2)) ^ 3 := by
-    linarith [hfac, hmul]
+    linarith only [hfac, hmul]
   have hmid : 0 ≤ 2 * K * (P3AB (a + lam₁) (a + lam₀) mu + P3AB (a + lam₁) (a + lam₁) mu
       - P3AB (a + lam₁) a mu) := by
-    apply mul_nonneg (by linarith)
-    linarith [hP0, hP1, hPa, hsum]
-  linarith [hstep, hmid, hP0nn]
+    apply mul_nonneg (by linarith only [hK])
+    linarith only [hP0, hP1, hPa, hsum]
+  linarith only [hstep, hmid, hP0nn]
 
 /-- **`B ≥ 0`** (HB (8.7)): with `K ≥ 1/4` and (8.6),
 `2K P(a+λ₀,2µ⁰) + (1/2)P(a+λ₁,2µ⁰) - (1/2)P(a,2µ⁰) ≥ 0`. -/
@@ -262,7 +263,7 @@ theorem B83_nonneg {a lam₁ lam₀ K mu : ℝ} (ha : 0 < a) (hlam₁ : 0 ≤ la
         - a ^ 3 := by
     have h1 := bracket_le a lam₁ (2 * mu) ha hlam₁
     have h2 := bracket_le a lam₀ (2 * mu) ha (le_trans hlam₁ hle)
-    linarith
+    linarith only [h1, h2]
   have hA1 : 0 ≤ (a + lam₀) ^ 3 * (a ^ 2 + (2 * mu) ^ 2) ^ 3 / ((a + lam₀) ^ 2 + (2 * mu) ^ 2) ^ 3
         + (a + lam₁) ^ 3 * (a ^ 2 + (2 * mu) ^ 2) ^ 3 / ((a + lam₁) ^ 2 + (2 * mu) ^ 2) ^ 3
         - a ^ 3 := le_trans hkey hbr
@@ -283,16 +284,16 @@ theorem B83_nonneg {a lam₁ lam₀ K mu : ℝ} (ha : 0 < a) (hlam₁ : 0 ≤ la
   have hP0nn : 0 ≤ P3AB (a + lam₁) (a + lam₀) (2 * mu) := le_trans (by positivity) hP0
   have hP1nn : 0 ≤ P3AB (a + lam₁) (a + lam₁) (2 * mu) := le_trans (by positivity) hP1
   have hstep : (1 / 2) * P3AB (a + lam₁) (a + lam₀) (2 * mu)
-      ≤ 2 * K * P3AB (a + lam₁) (a + lam₀) (2 * mu) := by nlinarith [hcoef, hP0nn]
+      ≤ 2 * K * P3AB (a + lam₁) (a + lam₀) (2 * mu) := mul_le_mul_of_nonneg_right hcoef hP0nn
   have hsum : (8 / 3) * ((a + lam₁) * a / D) ^ 3
       ≤ (8 / 3) * ((a + lam₁) * (a + lam₀) / ((a + lam₀) ^ 2 + (2 * mu) ^ 2)) ^ 3
         + (8 / 3) * ((a + lam₁) * (a + lam₁) / ((a + lam₁) ^ 2 + (2 * mu) ^ 2)) ^ 3 := by
-    linarith [hfac, hmul]
+    linarith only [hfac, hmul]
   have hmid : 0 ≤ (1 / 2) * (P3AB (a + lam₁) (a + lam₀) (2 * mu)
       + P3AB (a + lam₁) (a + lam₁) (2 * mu) - P3AB (a + lam₁) a (2 * mu)) := by
     apply mul_nonneg (by norm_num)
-    linarith [hP0, hP1, hPa, hsum]
-  linarith [hstep, hmid, hP1nn, hP0nn]
+    linarith only [hP0, hP1, hPa, hsum]
+  linarith only [hstep, hmid, hP1nn, hP0nn]
 
 
 /-! ## The boundary case `λ₁ ≥ 15`
@@ -352,10 +353,10 @@ theorem p83_nonneg_of_large {a lam₁ lam₀ K : ℝ} (ha : 0 < a) (hK : 1/4 ≤
         rwa [mul_pow] at h7
       have h8 : ((13 : ℝ) / 10) ^ 3 = 2197 / 1000 := by norm_num
       rw [h8] at h6
-      nlinarith [h6, pow_pos ha 3]
+      linarith only [h6, pow_pos ha 3]
     linarith [h5, h3]
   have h6 : 10 * lam₁ ≤ 3 * a := by linarith [h4]
-  have h7 : 65 ≤ a + lam₁ := by nlinarith [h6, h15]
+  have h7 : 65 ≤ a + lam₁ := by linarith only [h6, h15]
   -- the `P₃` bounds
   have hA : P3R 1 ≤ P3R ((a + lam₁) / a) := by
     apply P3R_mono (y := 1) (x := (a + lam₁) / a) (by norm_num)
@@ -375,12 +376,13 @@ theorem p83_nonneg_of_large {a lam₁ lam₀ K : ℝ} (ha : 0 < a) (hK : 1/4 ≤
     exact mul_le_mul_of_nonneg_left h2 (by linarith : (0 : ℝ) ≤ 2 * K)
   have hterm3 : (65 / 8) * (K + 1) ^ 2 ≤ (K + 1) ^ 2 * (a + lam₁) * (1 / 8) := by
     have h2 : 0 ≤ (K + 1) ^ 2 * (1 / 8) := by positivity
-    nlinarith [h7, h2]
+    have h3 := mul_le_mul_of_nonneg_left h7 h2
+    linarith only [h3]
   have hlast : 0 ≤ -(2 * K * (8 / 3)) + (65 / 8) * (K + 1) ^ 2 := by
     have h2 : (65 / 8) * (K + 1) ^ 2 - 2 * K * (8 / 3)
         = (65 / 8) * K ^ 2 + (131 / 12) * K + 65 / 8 := by ring
-    nlinarith [h2, hK0, sq_nonneg K, hK]
-  linarith [hterm1, hterm2', hterm3, hlast]
+    linarith only [h2, hK0, sq_nonneg K]
+  linarith only [hterm1, hterm2', hterm3, hlast]
 
 
 /-! ## The three-point assembly of HB (8.5)–(8.7)
@@ -417,8 +419,8 @@ theorem assembly_core {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q)
         + ((K ^ 2 + 1 / 2) + 2 * K + 1 / 2) * ((a + lam₁) * εP)
       ≤ (K + 1) ^ 2 * (a + lam₁) * (1 / 8) + (K + 1) ^ 2 * (a + lam₁) * ε) :
     0 ≤ p83 lam₁ lam₀ a K + (K + 1) ^ 2 * (a + lam₁) * ε := by
-  have hK0 : 0 ≤ K := by linarith
-  have hα0 : 0 < a + lam₁ := by linarith
+  have hK0 : 0 ≤ K := by linarith only [hK]
+  have hα0 : 0 < a + lam₁ := by linarith only [ha, hlam₁]
   have hA := A83_nonneg (a := a) (lam₁ := lam₁) (lam₀ := lam₀) (K := K) (mu := μ) ha hlam₁ hle
     (by linarith) hcond
   have hB := B83_nonneg (a := a) (lam₁ := lam₁) (lam₀ := lam₀) (K := K) (mu := μ) ha hlam₁ hle hK hcond
@@ -438,12 +440,17 @@ theorem assembly_core {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q)
           + 2 * K * ((a + lam₁) * (1 / 8 + εL) + E1 + F1)
           + (1 / 2) * ((a + lam₁) * (1 / 8 + εL) + E2 + F2)
           + ((K ^ 2 + 1 / 2) + 2 * K + 1 / 2) * ((a + lam₁) * εP)) := by
-    nlinarith [h85, hχ0, hχ1, hχ2, hp0, hp1, hp2]
+    have c0 : (0 : ℝ) ≤ K ^ 2 + 1 / 2 := by positivity
+    have c1 : (0 : ℝ) ≤ 2 * K := by linarith only [hK0]
+    have m0 := mul_le_mul_of_nonneg_left (add_le_add hp0 hχ0) c0
+    have m1 := mul_le_mul_of_nonneg_left (add_le_add hp1 hχ1) c1
+    have m2 := mul_le_mul_of_nonneg_left (add_le_add hp2 hχ2) (by norm_num : (0 : ℝ) ≤ 1 / 2)
+    linarith only [h85, m0, m1, m2]
   calc (0 : ℝ) ≤ _ := hsub
     _ ≤ (K ^ 2 + 1 / 2) * (P3R ((a + lam₁) / a) - P3R 1) - 2 * K * P3R ((a + lam₁) / (a + lam₀))
           + (K + 1) ^ 2 * (a + lam₁) * (1 / 8) + (K + 1) ^ 2 * (a + lam₁) * ε := by
         rw [hx0, hy1, hz0]
-        nlinarith [hA, hB, hErr, sq_nonneg (K + 1), hK0]
+        linarith only [hA, hB, hErr]
     _ = p83 lam₁ lam₀ a K + (K + 1) ^ 2 * (a + lam₁) * ε := by
         rw [p83]
 
@@ -526,7 +533,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
     have h1 : (3 : ℝ) ≤ Real.exp Θ7 := by
       have h2 : (3 : ℝ) ≤ Real.exp 3 := by
         have h3 := Real.add_one_le_exp (3 : ℝ)
-        linarith
+        linarith only [h3]
       exact le_trans h2 (Real.exp_le_exp.mpr (le_trans hΘ1a h37))
     exact_mod_cast le_trans h1 hq_exp
   have hΘL : Θ7 ≤ Real.log (q : ℝ) := by
@@ -541,7 +548,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
   have hL1' : 1 < L := by linarith
   have haLpos : 0 < a / L := div_pos ha hLpos
   have haLnn : 0 ≤ a / L := le_of_lt haLpos
-  have hK1pos : 0 < 1 + Amax + Amax ^ 2 := by nlinarith [sq_nonneg Amax]
+  have hK1pos : 0 < 1 + Amax + Amax ^ 2 := by linarith only [sq_nonneg (Amax + 1 / 2)]
   have hlogLpos : 0 < Real.log L := Real.log_pos (by linarith)
   have hL0log : L0log ≤ L := le_trans (le_trans hΘ1b h37) hLΘ
   have hL0ζ : L0ζ ≤ L := le_trans (le_trans hΘ2b h47) hLΘ
@@ -559,7 +566,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
     have h1 : ρ₁.re < 1 := Work.LinnikAreas.boxMaxZeroAux.zeroMult_re_lt_one χ₁ hZ1.2.1
     rw [hlam1, Work.LinnikContract.lamOf]
     exact mul_nonneg (by linarith) (Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q)))
-  have hαpos : 0 < α := by rw [hα]; linarith
+  have hαpos : 0 < α := by rw [hα]; linarith only [ha, hlam₁nn]
   have hαnn : 0 ≤ α := le_of_lt hαpos
   by_cases hbig : 15 ≤ lam₁
   · -- the boundary case
@@ -609,13 +616,13 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
       have h3 : lam₁ / L = 1 - ρ₁.re := by
         rw [div_eq_iff hLne]
         exact h2
-      linarith
+      linarith only [h3]
     have hρ₀re : ρ₀.re = 1 - lam₀ / L := by
       have h2 : lam₀ = (1 - ρ₀.re) * L := by rw [hlam0, Work.LinnikContract.lamOf, hLdef]
       have h3 : lam₀ / L = 1 - ρ₀.re := by
         rw [div_eq_iff hLne]
         exact h2
-      linarith
+      linarith only [h3]
     have hconjre : (starRingEnd ℂ ρ₀).re = 1 - lam₀ / L := by
       rw [show (starRingEnd ℂ ρ₀).re = ρ₀.re by simp, hρ₀re]
     have hconjim : (starRingEnd ℂ ρ₀).im = -ρ₀.im := by simp
@@ -632,7 +639,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
       rw [hs2im, abs_mul]
       have h2 : |(2:ℝ)| = 2 := by norm_num
       rw [h2]
-      nlinarith [abs_nonneg ρ₀.im, himρ₀]
+      linarith only [himρ₀]
     have hs0im4 : |s0.im| ≤ 4 := by linarith [hs0im3]
     have hs1im4 : |s1.im| ≤ 4 := by linarith [hs1im3]
     have hs2im4 : |s2.im| ≤ 4 := by linarith [hs2im3]
@@ -650,11 +657,12 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
           rwa [Real.log_exp] at h2
         have h3 : 1 ≤ a * Real.log L := by
           rw [div_le_iff₀ ha] at h1
-          linarith
+          linarith only [h1]
         have h4 : 1 / (L * Real.log L) ≤ a / L := by
           rw [div_le_div_iff₀ (by positivity) hLpos]
-          nlinarith
-        linarith
+          have h5 := mul_le_mul_of_nonneg_left h3 hLpos.le
+          linarith only [h5]
+        linarith only [h4]
       have hreg2 : s.re ≤ 1 + Real.log L / L := by
         rw [hsre]
         have h1 : a ≤ Real.log L := by
@@ -663,7 +671,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
         have h2 : a / L ≤ Real.log L / L := by
           rw [div_le_div_iff₀ hLpos hLpos]
           nlinarith only [h1, hLpos.le]
-        linarith
+        linarith only [h2]
       have hreg3 : |s.im| ≤ L := by linarith [hsim, hL3]
       have h1 := hlogHyp (N := χ₁.conductor) χ₁.primitiveCharacter hχs_ne1 hχs_prim hsqs
         hL0log hlogcond s hreg1 hreg2 hreg3
@@ -723,9 +731,9 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
     have hαδL : 2 * α ≤ δ * L := by
       have h1 : 2 * Amax ≤ δ * L := by
         rw [div_le_iff₀ hδ0] at h2Amaxδ
-        linarith
-      nlinarith [hαAmax]
-    have haδL : 2 * a ≤ δ * L := by nlinarith [hαδL, hα, ha]
+        linarith only [h2Amaxδ]
+      linarith only [h1, hαAmax]
+    have haδL : 2 * a ≤ δ * L := by linarith only [hαδL, hα, hlam₁nn]
     -- the memberships of the three zero sets
     have hρ₀_ne_c : ρ₀ ≠ starRingEnd ℂ ρ₀ := by
       intro h
@@ -919,7 +927,7 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
         rw [hc4, mul_assoc]
         field_simp
       rw [div_le_iff₀ hLpos]
-      linarith
+      linarith only [h2, h3]
     have hbud := error_budget (α := α) (δ := δ) (L := L) (ε := ε) (C := C0) (Ct := Ct)
       (Cs := Cs) (Amax := Amax) hαpos hαAmax hδ0 (le_of_lt hδ1) hε hC0pos.le hCt0pos.le
       hCs0pos.le hL1 hThr hlog4
@@ -929,25 +937,28 @@ theorem HB83 : Work.ZeroFreeTables.HBLemma8_3 := by
     have hF0le : F0 ≤ F1 := by
       rw [hF0, hF1]
       have hx : 0 ≤ 8 * α / (δ * L) := by positivity
-      linarith
+      linarith only [hx]
     have hF2le : F2 ≤ F1 := by
       rw [hF2, hF1]
       have hx : 0 ≤ 8 * α / (δ * L) := by positivity
-      linarith
+      linarith only [hx]
     have hErr : (K ^ 2 + 1 / 2) * ((a + lam₁) * (1 / 8 + ε / 4) + E + F0)
         + 2 * K * ((a + lam₁) * (1 / 8 + ε / 4) + E + F1)
         + (1 / 2) * ((a + lam₁) * (1 / 8 + ε / 4) + E + F2)
         + ((K ^ 2 + 1 / 2) + 2 * K + 1 / 2) * ((a + lam₁) * (ε / 4))
         ≤ (K + 1) ^ 2 * (a + lam₁) * (1 / 8) + (K + 1) ^ 2 * (a + lam₁) * ε := by
       have hkey : α * (1 / 8 + ε / 4) + E + F1 + α * (ε / 4) ≤ α * (1 / 8) + α * ε := by
-        nlinarith [hbud', hαpos, hε]
+        linarith only [hbud']
       have hw0 : (0:ℝ) ≤ K ^ 2 + 1 / 2 := by positivity
-      have hw1 : (0:ℝ) ≤ 2 * K := by linarith
+      have hw1 : (0:ℝ) ≤ 2 * K := by linarith only [hK]
       have hw2 : (0:ℝ) ≤ (1 / 2 : ℝ) := by norm_num
       have hsumW : (K ^ 2 + 1 / 2) + 2 * K + 1 / 2 = (K + 1) ^ 2 := by ring
       have hsq : (0:ℝ) ≤ (K + 1) ^ 2 := by positivity
       rw [← hα]
-      nlinarith [hkey, hF0le, hF2le, hw0, hw1, hw2, hsumW, hsq]
+      have m0 := mul_le_mul_of_nonneg_left hF0le hw0
+      have m2 := mul_le_mul_of_nonneg_left hF2le hw2
+      have mk := mul_le_mul_of_nonneg_left hkey hsq
+      linarith only [m0, m2, mk]
     exact assembly_core (q := q) χ₁ (a := a) (K := K) (ε := ε) (L := L) (lam₁ := lam₁)
       (lam₀ := lam₀) (μ := μ) (εL := ε / 4) (εP := ε / 4) (E0 := E) (E1 := E) (E2 := E)
       (F0 := F0) (F1 := F1) (F2 := F2) ha hK hlam₁nn hle hcond h85 hχ0 hχ1 hχ2 hp0 hp1 hp2 hErr

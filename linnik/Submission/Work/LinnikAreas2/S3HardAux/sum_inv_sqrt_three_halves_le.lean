@@ -17,12 +17,12 @@ lemma inv_sqrt_three_halves_step (q : ℕ) (hq : 1 ≤ q) :
       = 4 / (Real.sqrt (q : ℝ) * Real.sqrt ((q + 1 : ℕ) : ℝ)
               * (Real.sqrt (q : ℝ) + Real.sqrt ((q + 1 : ℕ) : ℝ))) := by
     field_simp
-    nlinarith [hs2, ht2]
+    linarith only [hs2, ht2]
   rw [key]
   rw [div_le_div_iff₀ (by positivity) (by positivity)]
   have hts_sq : (Real.sqrt ((q + 1 : ℕ) : ℝ) * Real.sqrt (q : ℝ)) ^ 2
       ≤ ((q : ℝ) + 1) ^ 2 := by
-    rw [mul_pow, ht2, hs2]; nlinarith [hqR]
+    rw [mul_pow, ht2, hs2]; linarith only [hqR]
   have hts : Real.sqrt ((q + 1 : ℕ) : ℝ) * Real.sqrt (q : ℝ) ≤ (q : ℝ) + 1 := by
     have h1 : |Real.sqrt ((q + 1 : ℕ) : ℝ) * Real.sqrt (q : ℝ)| ≤ |(q : ℝ) + 1| :=
       (sq_le_sq).mp hts_sq
@@ -33,9 +33,9 @@ lemma inv_sqrt_three_halves_step (q : ℕ) (hq : 1 ≤ q) :
           * (Real.sqrt (q : ℝ) + Real.sqrt ((q + 1 : ℕ) : ℝ))
         = Real.sqrt ((q + 1 : ℕ) : ℝ) * Real.sqrt (q : ℝ)
           + Real.sqrt ((q + 1 : ℕ) : ℝ) ^ 2 := by ring
-    rw [hexp]; nlinarith [hts, ht2, hq1]
+    rw [hexp]; linarith only [hts, ht2, hq1]
   have := mul_le_mul_of_nonneg_left hmain (le_of_lt hspos)
-  nlinarith [this]
+  linarith only [this]
 
 theorem sum_inv_sqrt_three_halves_le (Q : ℕ) :
     (∑ q ∈ Finset.Icc 1 Q, 1 / ((q : ℝ) * Real.sqrt (q : ℝ))) ≤ 4 := by
@@ -63,6 +63,6 @@ theorem sum_inv_sqrt_three_halves_le (Q : ℕ) :
           simp only []
           rw [show Real.sqrt (((1 : ℕ) : ℝ)) = 1 by norm_num]
           have hpos : (0 : ℝ) ≤ 4 / Real.sqrt (((Q + 1) + 1 : ℕ) : ℝ) := by positivity
-          linarith
+          linarith only [hpos]
 
 end Work.LinnikAreas2.S3HardAux

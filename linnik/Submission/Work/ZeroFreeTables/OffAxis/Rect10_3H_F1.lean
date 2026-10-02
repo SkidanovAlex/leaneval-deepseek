@@ -223,7 +223,7 @@ theorem hb106 (T : TestFn) (ε' : ℝ) (hε' : 0 < ε') :
       calc |u.im| = |s.im - (s.im - u.im)| := by ring_nf
         _ ≤ |s.im| + |s.im - u.im| := abs_sub _ _
         _ ≤ |s.im| + δ := by linarith
-    have him3 : |u.im| ≤ 10 * L := by linarith [hsim, him2, hδ1, hL1]
+    have him3 : |u.im| ≤ 10 * L := by linarith only [hsim, him2, hδ1, hL1]
     have hZ : Work.ZeroFreeTables.IsZAt (10 * L) χ u := ⟨hχ, hzm, him3⟩
     have hle : Work.LinnikContract.lamOf q ρ₁ ≤ Work.LinnikContract.lamOf q u := hR.2 χ u hZ
     rw [← hlam₁, Work.LinnikContract.lamOf] at hle
@@ -445,7 +445,7 @@ theorem hb106 (T : TestFn) (ε' : ℝ) (hε' : 0 < ε') :
   simp only [Work.ZeroFreeTables.Ksum] at hbT123 hbT12i3 hbT1i23 hbTi123
   have hkey : 0 ≤ Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁))
       + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by
-    linarith [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
+    linarith only [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
       hbT123, hbT12i3, hbT1i23, hbTi123]
   have hX : 0 ≤ T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁) + T.f 0 * (7/6 + 8 * ε') := by
     by_contra hneg
@@ -455,7 +455,7 @@ theorem hb106 (T : TestFn) (ε' : ℝ) (hε' : 0 < ε') :
     have h3 : Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁)
         + T.f 0 * (7/6 + 8 * ε')) = Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁)
           - T.F (lam₃ - lam₁)) + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by ring
-    linarith [hkey, h2, h3]
+    linarith only [hkey, h2, h3]
   rw [hlam₁, hlam₂, hlam₃] at hX
   exact hX
 
@@ -488,12 +488,12 @@ theorem tf72f_endgame (ε' : ℝ) (hε' : 0 < ε') :
         - 2 * ((tf72T ((6:ℝ)/7) (by norm_num)).F 0
             - (tf72T ((6:ℝ)/7) (by norm_num)).F (6/7 - lam₁))
       ≤ 8 * ε' * (tf72T ((6:ℝ)/7) (by norm_num)).f 0 := by
-    linarith [hE, h21, h31, hF6, hF0, h75]
+    linarith only [hE, h21, h31, hF6, hF0, h75]
   have hgap := tf72f_gap_quantitative lam₁ h1 (le_trans h12 (le_trans h23 h36))
   have hstep : 6/7 - lam₁ ≤ 4701 * ε' := by
     have hkey : (104/66825 : ℝ) * (6/7 - lam₁) ≤ 8 * ε' * (32/35) := by
-      rw [← hf0]; linarith [hgap, hii]
-    nlinarith [hkey, hε']
+      rw [← hf0]; linarith only [hgap, hii]
+    linarith only [hkey, hε']
   linarith
 
 theorem Rect10_3H_F1 : ∀ ε : ℝ, 0 < ε → ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q →

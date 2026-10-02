@@ -1,5 +1,7 @@
 import Mathlib
-import Submission.Work.A7.CommonsDeps
+import Submission.Commons.NumberTheory.DirichletCharacter.Even_inv
+import Submission.Commons.NumberTheory.DirichletCharacter.Odd_inv
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_conj
 
 /-!
 # Conjugation symmetry of the completed Dirichlet L-function

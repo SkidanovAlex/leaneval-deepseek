@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.zeroFactor_g
 import Submission.Commons.Analysis.Complex.logDeriv_zeroFree_ball_bound_analytic
-import Submission.Commons.Analysis.Complex.Harmonic.annulus_strong_max
 import Submission.Commons.Analysis.Complex.borelCaratheodory_deriv_le
 import Submission.Commons.Analysis.Complex.divisor_subBall_factor
 
@@ -37,8 +36,8 @@ private lemma logDeriv_decompose_subBall {f g : ℂ → ℂ} {c : ℂ} {R : ℝ}
     intro z hz
     have hzle : ‖z - c‖ ≤ R / 2 := by simpa [Metric.mem_closedBall, dist_eq_norm] using hz
     rw [Metric.mem_closedBall, dist_eq_norm]
-    have hleR : R / 2 ≤ R := by linarith
-    linarith
+    have hleR : R / 2 ≤ R := by linarith only [hR]
+    linarith only [hR, hzle]
   have hf_inner : AnalyticOnNhd ℂ f (Metric.closedBall c (R / 2)) := hfB.mono hsub
   have hsupp : (support d).Finite := by
     dsimp [d]
@@ -159,7 +158,7 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
   have hαR0 : 0 ≤ α * R := mul_nonneg hα0 (le_of_lt hR)
   have hαlt : α * R < R / 2 := by
     have hαR : α * R < (1 / 2) * R := mul_lt_mul_of_pos_right hα hR
-    nlinarith [hαR0]
+    linarith only [hαR0, hαR]
   have hs_ball : s ∈ Metric.ball c (R / 2) := by
     rw [Metric.mem_ball, dist_eq_norm]
     exact lt_of_le_of_lt hs hαlt
@@ -168,8 +167,8 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
     have hzmem : z ∈ Metric.closedBall c R := by
       rw [Metric.mem_closedBall, dist_eq_norm]
       have hle : ‖z - c‖ ≤ R / 2 := le_of_lt (by simpa [Metric.mem_ball, dist_eq_norm] using hz)
-      have hleR : R / 2 ≤ R := by linarith
-      linarith
+      have hleR : R / 2 ≤ R := by linarith only [hR]
+      linarith only [hR, hle]
     exact hg_an z hzmem
   have hg_nz_ball : ∀ w : ℂ, w ∈ Metric.ball c (R / 2) → g w ≠ 0 := by
     intro w hw
@@ -178,12 +177,12 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
   have hs_cb : s ∈ Metric.closedBall c R := by
     rw [Metric.mem_closedBall, dist_eq_norm]
     have hle2 : α * R ≤ R / 2 := le_of_lt hαlt
-    linarith
+    linarith only [hR, hs, hαlt]
   have hs_ballR : s ∈ Metric.ball c R := by
     rw [Metric.mem_ball, dist_eq_norm]
     have hlt : α * R < R := by
       have hlt2 : α * R < R / 2 := hαlt
-      linarith
+      linarith only [hR, hαlt]
     exact lt_of_le_of_lt hs hlt
   have hgdiff_s : DifferentiableAt ℂ g s := (hg_an s hs_cb).differentiableAt
   have hdec := logDeriv_decompose_subBall (f := f) (g := g) (c := c) (R := R) hR hf hfac hs_ballR hfs hgdiff_s hgs
@@ -197,8 +196,8 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
     have hw_cb_R : w ∈ Metric.closedBall c R := by
       rw [Metric.mem_closedBall, dist_eq_norm]
       have hle : ‖w - c‖ ≤ R / 2 := le_of_lt (by simpa [Metric.mem_ball, dist_eq_norm] using hw)
-      have hleR : R / 2 ≤ R := by linarith
-      linarith
+      have hleR : R / 2 ≤ R := by linarith only [hR]
+      linarith only [hR, hle]
     have hgw : ‖g w‖ ≤ A * ‖g c‖ := hg_le w hw_cb_R
     have hlog : Real.log ‖g w‖ ≤ Real.log (A * ‖g c‖) := by
       have hpos1 : 0 < ‖g w‖ := norm_pos_iff.mpr (hg_nz_ball w hw)
@@ -207,9 +206,9 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
     calc
       (H w).re = (F w).re - (F c).re := by simp [H, sub_re]
       _ = Real.log ‖g w‖ - Real.log ‖g c‖ := by rw [hFre w hw, hFc_re]
-      _ ≤ Real.log (A * ‖g c‖) - Real.log ‖g c‖ := by linarith
+      _ ≤ Real.log (A * ‖g c‖) - Real.log ‖g c‖ := by linarith only [hlog]
       _ = Real.log A := by
-        rw [Real.log_mul (by linarith : (A : ℝ) ≠ 0) (norm_ne_zero_iff.mpr hgc0)]
+        rw [Real.log_mul (by linarith only [hA1] : (A : ℝ) ≠ 0) (norm_ne_zero_iff.mpr hgc0)]
         ring
   have hF_an : AnalyticOnNhd ℂ F (Metric.ball c (R / 2)) :=
     hFd.analyticOnNhd (Metric.isOpen_ball : IsOpen (Metric.ball c (R / 2)))
@@ -230,16 +229,16 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
     have ha_pos : 0 < (R / 2) - ‖s - c‖ := by
       exact sub_pos.mpr (lt_of_le_of_lt hs hαlt)
     have hden_pos : 0 < R * (1 - 2 * α) ^ 2 := by
-      have h12 : 0 < 1 - 2 * α := by nlinarith
+      have h12 : 0 < 1 - 2 * α := by linarith only [hα]
       have hs0 : 0 < (1 - 2 * α) ^ 2 := sq_pos_of_pos h12
       positivity
     have hge : R * (1 - 2 * α) / 2 ≤ (R / 2) - ‖s - c‖ := by
       have h1 : ‖s - c‖ ≤ α * R := hs
       have hR0 : 0 ≤ R := le_of_lt hR
-      nlinarith
+      linarith only [hs]
     have hb1 : 0 ≤ (R / 2) - ‖s - c‖ := le_of_lt ha_pos
     have hb2 : 0 ≤ R * (1 - 2 * α) / 2 := by
-      have h12 : 0 < 1 - 2 * α := by linarith
+      have h12 : 0 < 1 - 2 * α := by linarith only [hα]
       positivity
     have hsq : (R * (1 - 2 * α) / 2) ^ 2 ≤ ((R / 2) - ‖s - c‖) ^ 2 := by
       exact (sq_le_sq₀ hb2 hb1).mpr hge
@@ -253,8 +252,8 @@ theorem logDeriv_sub_divisor_le {f : ℂ → ℂ} {c : ℂ} {R A α : ℝ}
         · have hLpos : 0 < Real.log A := lt_of_le_of_ne hlogA0 (Ne.symm hL0)
           rw [div_le_div_iff₀ (sq_pos_of_pos ha_pos) hden_pos]
           have hsq4 : R ^ 2 * (1 - 2 * α) ^ 2 ≤ 4 * ((R / 2) - ‖s - c‖) ^ 2 := by
-            nlinarith [hsq]
-          nlinarith
+            linarith only [hsq]
+          nlinarith only [hlogA0, hsq]
   calc
     ‖logDeriv f s - (∑ᶠ u : ℂ, (((MeromorphicOn.divisor f (Metric.closedBall c (R / 2))) u : ℤ) : ℂ) *
           (1 / (s - u)))‖

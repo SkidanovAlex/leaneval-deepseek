@@ -49,21 +49,21 @@ private lemma log_fourth_le_sqrt (t : ℝ) (ht : 1 ≤ t) :
 private lemma loglog_pow_div_le (u T : ℝ) (hu1 : 1 ≤ u) (huT : u ≤ T) (hT100 : 100 ≤ T)
     (j : ℕ) (hj1 : 1 ≤ j) (hj3 : j ≤ 3) :
     (Real.log u)^(j+1) / T^j ≤ 4096 / Real.sqrt T := by
-  have hTpos : 0 < T := by linarith
-  have hT1 : 1 ≤ T := by linarith
+  have hTpos : 0 < T := by linarith only [hT100]
+  have hT1 : 1 ≤ T := by linarith only [hT100]
   have hu0 : 0 < u := lt_of_lt_of_le zero_lt_one hu1
   have hlogu0 : 0 ≤ Real.log u := Real.log_nonneg hu1
   have hloguT : Real.log u ≤ Real.log T := Real.log_le_log hu0 huT
   have hlogT1 : 1 ≤ Real.log T := by
     have h100 : 1 ≤ Real.log 100 := by
       have h := Real.log_le_log (Real.exp_pos 1)
-        (by linarith [Real.exp_one_lt_three] : Real.exp 1 ≤ 100)
+        (by linarith only [Real.exp_one_lt_three] : Real.exp 1 ≤ 100)
       rwa [Real.log_exp] at h
     exact le_trans h100 (Real.log_le_log (by norm_num) hT100)
   have hkey : Real.log u ^ (j+1) ≤ Real.log T ^ 4 := by
     have ha : Real.log u ^ (j+1) ≤ Real.log T ^ (j+1) := pow_le_pow_left₀ hlogu0 hloguT _
     have hb : Real.log T ^ (j+1) ≤ Real.log T ^ 4 := pow_le_pow_right₀ hlogT1 (by omega)
-    linarith
+    linarith only [ha, hb]
   have hnum : Real.log u ^ (j+1) ≤ 4096 * Real.sqrt T :=
     le_trans hkey (log_fourth_le_sqrt T hT1)
   rw [div_le_div_iff₀ (pow_pos hTpos j) (Real.sqrt_pos.mpr hTpos)]
@@ -75,7 +75,7 @@ private lemma loglog_pow_div_le (u T : ℝ) (hu1 : 1 ≤ u) (huT : u ≤ T) (hT1
   have hTL : 4096 * T ≤ 4096 * T^j := by
     have h : T^1 ≤ T^j := pow_le_pow_right₀ hT1 hj1
     simpa using mul_le_mul_of_nonneg_left h (by norm_num : (0:ℝ) ≤ 4096)
-  linarith
+  linarith only [hs, hTL]
 
 /-- **Absorption of the imprimitive-correction prime-divisor sum.**  For constants `C, a, e > 0`
 there is `L₀ ≥ 1` such that whenever `L ≥ L₀`, `log q ≤ L`, `0 ≤ λ₁` and `a + λ₁ ≤ A`, the
@@ -104,22 +104,22 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
     refine mul_nonneg (le_of_lt hC) (mul_nonneg (by norm_num) ?_)
     have h2 : 0 ≤ A' * C2 := mul_nonneg hA'nn (le_of_lt hC2pos)
     have h3 : 0 ≤ A'^2 * C3 := mul_nonneg (pow_nonneg hA'nn 2) (le_of_lt hC3pos)
-    linarith [le_of_lt hC1pos]
+    linarith only [le_of_lt hC1pos, hC1pos, h2, h3]
   set L0 : ℝ := max 100 (max ((Big2/e)^2) (Small2/(a*e))) with hL0def
   have hL0ge100 : 100 ≤ L0 := by rw [hL0def]; exact le_max_left _ _
   have hL0geBig : (Big2/e)^2 ≤ L0 := by
     rw [hL0def]; exact le_trans (le_max_left _ _) (le_max_right _ _)
   have hL0geSmall : Small2/(a*e) ≤ L0 := by
     rw [hL0def]; exact le_trans (le_max_right _ _) (le_max_right _ _)
-  have hL0pos : 0 < L0 := by linarith
-  have hL0one : 1 ≤ L0 := by linarith
+  have hL0pos : 0 < L0 := by linarith only [hL0ge100]
+  have hL0one : 1 ≤ L0 := by linarith only [hL0ge100]
   refine ⟨L0, hL0one, ?_⟩
   intro q _inst L lam₁ hL0 hlogq hlam0 hαA
   set α : ℝ := a + lam₁ with hαdef
-  have hαpos : 0 < α := by rw [hαdef]; linarith
+  have hαpos : 0 < α := by rw [hαdef]; linarith only [ha, hlam0]
   have hαnn : 0 ≤ α := le_of_lt hαpos
   have hαA' : α ≤ A' := by rw [hαdef]; exact le_trans hαA hAle
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL0ge100, hL0]
   by_cases hq3 : 3 ≤ q
   · -- large `q` : use the `log log` decay of the prime-divisor sums
     have hlogq1 : 1 ≤ Real.log (q:ℝ) := by
@@ -132,7 +132,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
     have hτL0 : L0 ≤ τ := le_max_left _ _
     have hτlogq : Real.log (q:ℝ) ≤ τ := le_max_right _ _
     have hτ100 : 100 ≤ τ := le_trans hL0ge100 hτL0
-    have hτpos : 0 < τ := by linarith
+    have hτpos : 0 < τ := by linarith only [hL0ge100, hτL0]
     set w : ℝ := Real.log (Real.log (q:ℝ)) with hwdef
     have hw0 : 0 ≤ w := by rw [hwdef]; exact Real.log_nonneg hlogq1
     have hS1 : (∑ p ∈ q.primeFactors, Real.log (p:ℝ) / (p:ℝ)) ≤ C1 * w^2 := by
@@ -148,7 +148,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
         rw [hwdef]; simpa using h
       have h4 : 4096 / Real.sqrt τ ≤ 4096 / Real.sqrt L0 :=
         div_le_div_of_nonneg_left (by norm_num) (Real.sqrt_pos.mpr hL0pos) (Real.sqrt_le_sqrt hτL0)
-      linarith
+      linarith only [h2, h3, h4]
     have hW2 : w^3 / L^2 ≤ 4096 / Real.sqrt L0 := by
       have h2 : w^3 / L^2 ≤ w^3 / τ^2 :=
         div_le_div_of_nonneg_left (pow_nonneg hw0 3) (pow_pos hτpos 2)
@@ -158,7 +158,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
         rw [hwdef]; simpa using h
       have h4 : 4096 / Real.sqrt τ ≤ 4096 / Real.sqrt L0 :=
         div_le_div_of_nonneg_left (by norm_num) (Real.sqrt_pos.mpr hL0pos) (Real.sqrt_le_sqrt hτL0)
-      linarith
+      linarith only [h2, h3, h4]
     have hW3 : w^4 / L^3 ≤ 4096 / Real.sqrt L0 := by
       have h2 : w^4 / L^3 ≤ w^4 / τ^3 :=
         div_le_div_of_nonneg_left (pow_nonneg hw0 4) (pow_pos hτpos 3)
@@ -168,7 +168,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
         rw [hwdef]; simpa using h
       have h4 : 4096 / Real.sqrt τ ≤ 4096 / Real.sqrt L0 :=
         div_le_div_of_nonneg_left (by norm_num) (Real.sqrt_pos.mpr hL0pos) (Real.sqrt_le_sqrt hτL0)
-      linarith
+      linarith only [h2, h3, h4]
     have hBigLe : Big2 / Real.sqrt L0 ≤ e := by
       rw [div_le_iff₀ (Real.sqrt_pos.mpr hL0pos)]
       have hsqrt : Big2 / e ≤ Real.sqrt L0 := by
@@ -196,7 +196,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
               ≤ (α^2/L) * (C2*w^3) := mul_le_mul_of_nonneg_left hS2 (by positivity)
           have hD : (α^3/L^2) * (∑ p ∈ q.primeFactors, (Real.log (p:ℝ))^3 / (p:ℝ))
               ≤ (α^3/L^2) * (C3*w^4) := mul_le_mul_of_nonneg_left hS3 (by positivity)
-          linarith
+          linarith only [hA, hB, hD]
       _ = C*α*(C1*(w^2/L) + α*(C2*(w^3/L^2)) + α^2*(C3*(w^4/L^3))) := by ring
       _ ≤ C*α*((C1 + α*C2 + α^2*C3) * (4096/Real.sqrt L0)) := by
           apply mul_le_mul_of_nonneg_left _ (by positivity)
@@ -207,14 +207,14 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
           have hb3 : α^2*(C3*(w^4/L^3)) ≤ α^2*(C3*(4096/Real.sqrt L0)) :=
             mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hW3 (le_of_lt hC3pos))
               (pow_nonneg hαnn 2)
-          linarith
+          linarith only [hb1, hb2, hb3]
       _ ≤ C*α*((C1 + A'*C2 + A'^2*C3) * (4096/Real.sqrt L0)) := by
           apply mul_le_mul_of_nonneg_left _ (by positivity)
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           have h2 : α*C2 ≤ A'*C2 := mul_le_mul_of_nonneg_right hαA' (le_of_lt hC2pos)
           have h3 : α^2*C3 ≤ A'^2*C3 :=
             mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hαnn hαA' 2) (le_of_lt hC3pos)
-          linarith
+          linarith only [h2, h3]
       _ ≤ α * e := hfinal
   · -- small `q` (`q ≤ 2`): the prime-divisor sums are bounded by their values at `q = 2`
     have hq1 : 1 ≤ q := by have := NeZero.ne q; omega
@@ -261,7 +261,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
       have h3 : (α^3/L^2) * (∑ p ∈ q.primeFactors, (Real.log (p:ℝ))^3 / (p:ℝ))
           ≤ (α^3/L^2) * a3 :=
         mul_le_mul_of_nonneg_left (by rw [ha3def]; exact hS3) (by positivity)
-      linarith
+      linarith only [h1, h2, h3]
     -- (ii) expand and bound termwise by `A'/L0`
     have hstep2 : (C/L) * (α * a1 + (α^2/L) * a2 + (α^3/L^2) * a3)
         ≤ Small2 / L0 := by
@@ -278,7 +278,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
           calc C*α*a1/L0 = (C*a1/L0)*α := by ring
             _ ≤ (C*a1/L0)*A' := mul_le_mul_of_nonneg_left hαA' hc
             _ = C*A'*a1/L0 := by ring
-        linarith
+        linarith only [h1a, h1b]
       have h2 : C*α^2*a2/L^2 ≤ C*A'^2*a2/L0^2 := by
         have hα2 : α^2 ≤ A'^2 := pow_le_pow_left₀ hαnn hαA' 2
         have hL2 : L0^2 ≤ L^2 := pow_le_pow_left₀ hL0pos.le hL0 2
@@ -292,7 +292,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
           calc C*α^2*a2/L0^2 = (C*a2/L0^2)*α^2 := by ring
             _ ≤ (C*a2/L0^2)*A'^2 := mul_le_mul_of_nonneg_left hα2 hc
             _ = C*A'^2*a2/L0^2 := by ring
-        linarith
+        linarith only [h2a, h2b]
       have h3 : C*α^3*a3/L^3 ≤ C*A'^3*a3/L0^3 := by
         have hα3 : α^3 ≤ A'^3 := pow_le_pow_left₀ hαnn hαA' 3
         have hL3 : L0^3 ≤ L^3 := pow_le_pow_left₀ hL0pos.le hL0 3
@@ -306,18 +306,18 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
           calc C*α^3*a3/L0^3 = (C*a3/L0^3)*α^3 := by ring
             _ ≤ (C*a3/L0^3)*A'^3 := mul_le_mul_of_nonneg_left hα3 hc
             _ = C*A'^3*a3/L0^3 := by ring
-        linarith
+        linarith only [h3a, h3b]
       have e1 : C*A'^2*a2/L0^2 ≤ C*A'^2*a2/L0 :=
         div_le_div_of_nonneg_left
           (mul_nonneg (mul_nonneg hC.le (pow_nonneg hA'nn 2)) ha2nn) hL0pos
-          (by nlinarith [hL0one])
+          (by nlinarith only [hL0one, hL0ge100])
       have e2 : C*A'^3*a3/L0^3 ≤ C*A'^3*a3/L0 :=
         div_le_div_of_nonneg_left
           (mul_nonneg (mul_nonneg hC.le (pow_nonneg hA'nn 3)) ha3nn) hL0pos
           (by nlinarith [hL0one])
       have hfin : C*A'*a1/L0 + C*A'^2*a2/L0 + C*A'^3*a3/L0 = Small2/L0 := by
         rw [hSmall2def, ha1def, ha2def, ha3def]; ring
-      linarith [h1, h2, h3, e1, e2, hfin.le, hfin.ge]
+      linarith only [h1, h2, h3, e1, e2, hfin.le, hfin.ge, hfin]
     -- (iii) `Small2/L0 ≤ a·e ≤ α·e`
     have hSmallLe : Small2 / L0 ≤ a * e := by
       have hae : 0 < a*e := mul_pos ha he
@@ -331,7 +331,7 @@ theorem imprimAbsorb {C a e A : ℝ} (hC : 0 < C) (ha : 0 < a) (he : 0 < e) :
             + (α^3/L^2) * (∑ p ∈ q.primeFactors, (Real.log (p:ℝ))^3 / (p:ℝ)))
         ≤ Small2 / L0 := le_trans hstep1 hstep2
       _ ≤ a * e := hSmallLe
-      _ ≤ α * e := mul_le_mul_of_nonneg_right (by rw [hαdef]; linarith) he.le
+      _ ≤ α * e := mul_le_mul_of_nonneg_right (by rw [hαdef]; linarith only [hlam0]) he.le
 
 /-- **The imprimitive correction is bounded.**  For `a, e > 0` and a bound `M` on `λ₁` there is
 `L₀` such that for every character `χ` of level `q`, every `L ≥ L₀` with `log q ≤ L`, and every
@@ -349,19 +349,19 @@ theorem imprimCorrBounded {a e M : ℝ} (ha : 0 < a) (he : 0 < e) (hM : 0 ≤ M)
   refine ⟨L₀, ?_⟩
   intro q _inst χ hχ L lam₁ hL0 hlogq hlam0 hlamM s hsre him
   haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL₀1, hL0]
   have hL1 : 1 ≤ L := le_trans hL₀1 hL0
   have hsre' : 1 < s.re := by
     rw [hsre]
     have : 0 < a/L := div_pos ha hLpos
-    linarith
+    linarith only [this]
   have hdiff := hC (N := χ.conductor) (q := q) (χ.conductor_dvd_level) χ.primitiveCharacter
     hL1 hsre' ha hlam0
   rw [DirichletCharacter.changeLevel_primitiveCharacter] at hdiff
-  have habs := hAbs (q := q) hL0 hlogq hlam0 (by linarith)
+  have habs := hAbs (q := q) hL0 hlogq hlam0 (by linarith only [hlamM])
   have hkey : Work.ZeroFreeTables.SigmaP3L q L χ s a lam₁
       - @Work.ZeroFreeTables.SigmaP3L χ.conductor ⟨χ.conductor_ne_zero⟩ L χ.primitiveCharacter
           s a lam₁ ≤ (a + lam₁) * e := le_trans (le_trans (le_abs_self _) hdiff) habs
-  linarith
+  linarith only [_inst, hkey]
 
 end Work.ZeroFreeTables.Rep9

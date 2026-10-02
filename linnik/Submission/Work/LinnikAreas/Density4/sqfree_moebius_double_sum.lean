@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.SqfreeCoprimeDefs
 import Submission.Work.LinnikAreas.Density4.sum_Icc_filter_dvd_reindex
 import Submission.Work.LinnikAreas.Density4.sum_sq_dvd_filter_coprime_reindex
 import Submission.Work.LinnikAreas.Density4.sum_moebius_div_eq_coprime_count

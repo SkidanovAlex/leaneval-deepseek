@@ -1,7 +1,5 @@
 import Mathlib
 import Submission.Commons.Analysis.Complex.cosAvg_analytic
-import Submission.Commons.Analysis.Complex.partialX_log_norm
-import Submission.Commons.Analysis.Complex.sphere_mirror_norm
 import Submission.Commons.Analysis.Complex.sphere_mirror_log
 import Submission.Commons.Analysis.Complex.re_one_sub_mirror
 import Submission.Commons.Analysis.Complex.norm_mirror
@@ -13,7 +11,6 @@ import Submission.Commons.Analysis.Complex.zeroFactor_g
 import Submission.Commons.Analysis.Complex.log_boundary_factor
 import Submission.Commons.Analysis.Complex.deriv_log_factor
 import Submission.Commons.Analysis.Complex.deriv_aux_harmonic
-import Submission.Commons.Analysis.TrigIntegrals.cosPeriodZero
 
 open Complex Metric MeasureTheory Set
 open scoped Interval BigOperators ComplexConjugate Topology

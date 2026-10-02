@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.OtherCharRepel.Prelude
+import Submission.Commons.NumberTheory.Zeta.summable_vonMangoldt_div_rpow
 
 namespace Work.LinnikAreas.OtherCharRepel
 

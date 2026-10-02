@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.NumberTheory.Linnik.scratch_l64
 import Submission.Work.NumberTheory.Linnik.scratch_hzero2
 import Submission.Work.ZeroFreeTables.hb6Repeated
 

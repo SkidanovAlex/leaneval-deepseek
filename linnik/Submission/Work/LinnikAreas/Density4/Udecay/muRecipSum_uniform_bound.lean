@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.Udecay.mellin_defs
+import Submission.Commons.NumberTheory.Moebius.log_weighted_moebius_recip_bound
+import Submission.Commons.NumberTheory.Moebius.moebius_recip_sum_exp_decay
 
 namespace Work.LinnikAreas.Density4.Udecay
 

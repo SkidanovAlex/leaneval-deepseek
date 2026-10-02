@@ -1,7 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_Inputs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Reduction
 import Submission.Work.LinnikAreas.DhK.turanWeighted
 import Submission.Work.LinnikAreas.turanPowerSum
@@ -9,6 +7,7 @@ import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_ne_zero_of_one_lt_re
 import Submission.Commons.NumberTheory.Linnik.completedL_ballZeroCount
 import Submission.Commons.Analysis.Complex.exterior_jensen_multiplicity
+import Submission.Work.LinnikAreas.DhK.XiAux
 
 namespace Work.LinnikAreas.DhExplicit
 
@@ -194,8 +193,8 @@ theorem turanPowerStepConst {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
   have hm_le_5β' : m ≤ 5 - β' := le_trans hm_le_dρ hdρ_le
   have hm_sq_le : m ^ 2 ≤ 19 := by
     have h1 : 5 - β' ≤ 4 + 1 / 3 := by linarith [hβ'ge]
-    have h2 : m ^ 2 ≤ (4 + 1 / 3) ^ 2 := by nlinarith [hm_le_5β', hmnn, h1]
-    nlinarith [h2]
+    have h2 : m ^ 2 ≤ (4 + 1 / 3) ^ 2 := pow_le_pow_left₀ hmnn (hm_le_5β'.trans h1) 2
+    nlinarith only [h2]
   have hγ6 : ‖((5 : ℂ) + Complex.I * (γ' : ℂ))‖ ≤ 6 := by
     have h1 : ‖((5 : ℂ) + Complex.I * (γ' : ℂ))‖ ≤ ‖((5 : ℂ))‖ + ‖Complex.I * (γ' : ℂ)‖ :=
       norm_add_le _ _
@@ -439,7 +438,7 @@ theorem turanPowerStepConst {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have hcase : wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖)) ≤ wfun i * ‖zfun i‖ := by
       apply mul_le_mul_of_nonneg_left _ (hw_nonneg i)
       rw [hz_i₀_norm, div_le_iff₀ (by positivity : (0:ℝ) < 1 + ‖zfun i‖)]
-      nlinarith [hz_norm i, norm_nonneg (zfun i)]
+      nlinarith only [hz_norm i, norm_nonneg (zfun i)]
     refine le_trans hcase ?_
     rw [hwfun_apply, hWt_apply]
     by_cases hρ : i.1 = ρ₀
@@ -455,7 +454,7 @@ theorem turanPowerStepConst {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
                 + 1 / ((5 - i.1.re) ^ 2 + (i.1.im - γ') ^ 2))) := by
             have hA := hm_sq_ker1 i.1
             have hB := hm_sq_ker2 i.1
-            nlinarith [hk, hA, hB]
+            nlinarith only [mul_le_mul_of_nonneg_left hA hk, mul_le_mul_of_nonneg_left hB hk]
   have hsum_family : Summable (fun i : ℂ × Bool =>
       wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖))) := by
     refine Summable.of_nonneg_of_le (f := Gmaj) (g := fun i : ℂ × Bool =>
@@ -471,7 +470,7 @@ theorem turanPowerStepConst {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have h9 : (j : ℝ) ≤ 9 * (38 * (Cw * Real.log (N : ℝ))) := by
       calc (j : ℝ) ≤ (8 + 1) * (∑' i : ℂ × Bool, wfun i * (‖zfun i‖ / (‖zfun i₀‖ + ‖zfun i‖))) := hj2
         _ ≤ 9 * (38 * (Cw * Real.log (N : ℝ))) := by linarith [hMb]
-    nlinarith [h9]
+    linarith only [h9]
   set Sfin : ℝ := ∑' v : ℂ, (if v = ρ₀ then 0 else (DhK.kMult χ v : ℝ)) *
       ((1 / ((5 : ℂ) - v) ^ (2 * j)).re
         + (1 / ((5 : ℂ) + Complex.I * (γ' : ℂ) - v) ^ (2 * j)).re) with hSfindef
@@ -492,7 +491,7 @@ theorem turanPowerStepConst {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
                   + 1 / ((5 - i.1.re) ^ 2 + (i.1.im - γ') ^ 2))) := by
               have hA := hm_sq_ker1 i.1
               have hB := hm_sq_ker2 i.1
-              nlinarith [hk, hA, hB]
+              nlinarith only [mul_le_mul_of_nonneg_left hA hk, mul_le_mul_of_nonneg_left hB hk]
     exact hcase
   have hhalf : Summable (fun v : ℂ => Gmaj (v, false) + Gmaj (v, true)) := by
     have hpt : (fun v : ℂ => Gmaj (v, false) + Gmaj (v, true)) = fun v : ℂ => 38 * ((DhK.kMult χ v : ℝ) *

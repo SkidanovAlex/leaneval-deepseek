@@ -53,9 +53,9 @@ lemma fejerW_nonneg (J : ℕ) {j : ℕ} (hj1 : 1 ≤ j) (hjJ : j ≤ J) : 0 ≤ 
   have hJ : (0 : ℝ) < (J : ℝ) + 1 := by positivity
   have h2 : (j : ℝ) / ((J : ℝ) + 1) ≤ 1 := (div_le_one hJ).mpr (by
     have : (j : ℝ) ≤ (J : ℝ) := by exact_mod_cast hjJ
-    linarith)
+    linarith only [this])
   rw [fejerW_eq]
-  linarith
+  linarith only [h2]
 
 lemma fejerQ_at_one (J : ℕ) : fejerQ J 1 = (J : ℝ) / 2 := by
   rw [fejerQ]
@@ -76,12 +76,12 @@ lemma summable_pow_of_weyl {ι : Type*} (w : ι → ℝ) (z : ι → ℂ)
       simpa using pow_le_pow_of_le_one hr0 (hmax i) hj
     have h1 : ‖z i‖ ≤ 2 * (‖z i‖ / (1 + ‖z i‖)) := by
       rw [show (2 : ℝ) * (‖z i‖ / (1 + ‖z i‖)) = 2 * ‖z i‖ / (1 + ‖z i‖) by ring,
-        le_div_iff₀ (by linarith : (0 : ℝ) < 1 + ‖z i‖)]
-      nlinarith [mul_nonneg hr0 (sub_nonneg.mpr (hmax i))]
+        le_div_iff₀ (by linarith only [hr0] : (0 : ℝ) < 1 + ‖z i‖)]
+      linarith only [mul_nonneg hr0 (sub_nonneg.mpr (hmax i)), hr0, hmax]
     have hnorm : ‖w i * (z i) ^ j‖ = w i * ‖z i‖ ^ j := by
       simp [abs_of_nonneg (hw i)]
     rw [hnorm]
-    nlinarith [hw i, h1, hpow]
+    nlinarith only [hw i, h1, hpow, hw]
 
 /-! ### Fejér estimates
 
@@ -192,7 +192,7 @@ lemma fejerQ_lower_unit (J : ℕ) (u : ℂ) (hu : ‖u‖ = 1) : -(1/2 : ℝ) �
   have h := fejerQ_lower J u hu.le
   rw [hu] at h
   norm_num at h
-  linarith
+  linarith only [h]
 
 /-! ### The upper and lower bounds -/
 
@@ -210,8 +210,8 @@ lemma fejer_sum_le (J : ℕ) (u : ℂ) (hu : ‖u‖ = 1) (S : ℕ → ℂ) (j�
     have h1 : -1 ≤ (u ^ j).re := by
       have h := (abs_le.mp (Complex.abs_re_le_norm (u ^ j))).1
       rw [norm_pow, hu, one_pow] at h
-      linarith
-    linarith
+      linarith only [h]
+    linarith only [h1]
   exact mul_le_mul_of_nonneg_left (hmaxj j hj) hw
 
 lemma fejer_weight_sum_le (J : ℕ) (u : ℂ) (hu : ‖u‖ = 1) :
@@ -222,8 +222,8 @@ lemma fejer_weight_sum_le (J : ℕ) (u : ℂ) (hu : ‖u‖ = 1) :
     have h1 : (u ^ j).re ≤ 1 := by
       have h := Complex.re_le_norm (u ^ j)
       rw [norm_pow, hu, one_pow] at h
-      linarith
-    nlinarith [fejerW_nonneg J hjmem.1 hjmem.2]
+      linarith only [h]
+    nlinarith only [fejerW_nonneg J hjmem.1 hjmem.2, h1, hjmem]
   calc ∑ j ∈ Finset.Icc 1 J, fejerW J j * (1 + (u ^ j).re)
       ≤ ∑ j ∈ Finset.Icc 1 J, fejerW J j * 2 := Finset.sum_le_sum h2
     _ = (∑ j ∈ Finset.Icc 1 J, fejerW J j) * 2 := by rw [Finset.sum_mul]
@@ -250,7 +250,7 @@ lemma fejer_sum_lower {ι : Type*} (J : ℕ) (w : ι → ℝ) (z : ι → ℂ) (
         = fejerQ J (z i) + (1/2) * fejerQ J (z i * u)
           + (1/2) * fejerQ J (z i * star u) := rfl
     rw [h4]
-    nlinarith [hw i]
+    nlinarith only [hw i, h1, hw, h2, h3]
   have hKi0 : ((J : ℝ) - 3) / 4 ≤ fejerK J u u := by
     have h1 : -(1/2 : ℝ) ≤ fejerQ J u := fejerQ_lower_unit J u hunit
     have h2 : -(1/2 : ℝ) ≤ fejerQ J (u * u) :=
@@ -263,7 +263,7 @@ lemma fejer_sum_lower {ι : Type*} (J : ℕ) (w : ι → ℝ) (z : ι → ℂ) (
       rw [huu, fejerQ_at_one]
     simp only [fejerK]
     rw [h3]
-    linarith
+    linarith only [h1, h2]
   have hgi0 : ((J : ℝ) + 1) / 4
       ≤ w i₀ * (fejerK J (z i₀) u + 2 * (‖z i₀‖ / (1 + ‖z i₀‖))) := by
     rw [hzi₀, hunit]
@@ -273,7 +273,7 @@ lemma fejer_sum_lower {ι : Type*} (J : ℕ) (w : ι → ℝ) (z : ι → ℂ) (
       linarith
     have hmul : 1 * (fejerK J u u + 1) ≤ w i₀ * (fejerK J u u + 1) :=
       mul_le_mul_of_nonneg_right hwi₀ hKpos.le
-    linarith
+    linarith only [hKi0, hmul]
   have hgsum : Summable fun i => w i * (fejerK J (z i) u + 2 * (‖z i‖ / (1 + ‖z i‖))) := by
     refine (hKsum.add (hWsum.mul_left 2)).congr (fun i => ?_)
     ring
@@ -286,7 +286,7 @@ lemma fejer_sum_lower {ι : Type*} (J : ℕ) (w : ι → ℝ) (z : ι → ℂ) (
   have hle : w i₀ * (fejerK J (z i₀) u + 2 * (‖z i₀‖ / (1 + ‖z i₀‖)))
       ≤ ∑' i, w i * (fejerK J (z i) u + 2 * (‖z i‖ / (1 + ‖z i‖))) :=
     Summable.le_tsum hgsum i₀ (fun j _ => hglb j)
-  linarith [hgi0, hle, hg_tsum]
+  linarith only [hgi0, hle, hg_tsum]
 
 /-! ### The normalised Turán lemma -/
 
@@ -305,14 +305,14 @@ lemma turanWeighted_unit (ε : ℝ) (hε : 0 < ε) {ι : Type*}
     rw [hM]
     have h := Summable.le_tsum hsum i₀ (fun j _ => mul_nonneg (hw j) (by positivity))
     have hterm : w i₀ * (‖z i₀‖ / (1 + ‖z i₀‖)) = w i₀ / 2 := by rw [hunit]; ring
-    linarith [hterm]
-  have hMhalf : (1 : ℝ) / 2 ≤ M := by linarith
+    linarith only [hterm, h]
+  have hMhalf : (1 : ℝ) / 2 ≤ M := by linarith only [hwi₀, hMge]
   set J : ℕ := Nat.floor ((8 + ε) * M) with hJ
   have hxle : ((1 : ℕ) : ℝ) ≤ (8 + ε) * M := by
-    have : (1 : ℝ) ≤ (8 + ε) * M := by nlinarith
+    have : (1 : ℝ) ≤ (8 + ε) * M := by nlinarith only [hwi₀, hMge, hε, hMnn]
     simpa using this
   have hJle : (J : ℝ) ≤ (8 + ε) * M := by
-    rw [hJ]; exact Nat.floor_le (by linarith)
+    rw [hJ]; exact Nat.floor_le (by linarith only [hxle])
   have hJlt : (8 + ε) * M < (J : ℝ) + 1 := by
     rw [hJ]; exact Nat.lt_floor_add_one _
   have hJ1 : 1 ≤ J := Nat.le_floor hxle
@@ -355,39 +355,39 @@ lemma turanWeighted_unit (ε : ℝ) (hε : 0 < ε) {ι : Type*}
     have h1 : -1 ≤ ((z i₀) ^ j).re := by
       have h := (abs_le.mp (Complex.abs_re_le_norm ((z i₀) ^ j))).1
       rw [norm_pow, hunit, one_pow] at h
-      linarith
-    linarith
+      linarith only [h]
+    linarith only [h1]
   have hWle : ∑ j ∈ Finset.Icc 1 J, fejerW J j * (1 + ((z i₀) ^ j).re) ≤ J :=
     fejer_weight_sum_le J (z i₀) hunit
   have hlb : (J : ℝ) / 4 + 1 / 4 - 2 * M ≤ ∑' i, w i * fejerK J (z i) (z i₀) := by
     rw [hM]
     exact fejer_sum_lower J w z (z i₀) i₀ hw hwi₀ hmax hunit rfl hKsum hsum
-  have hMpos : 0 < M := by linarith
+  have hMpos : 0 < M := by linarith only [hwi₀, hMge]
   have hTgt : ε * M / 4 < ∑' i, w i * fejerK J (z i) (z i₀) := by
     have h2 : ε * M / 4 = ((8 + ε) * M) / 4 - 2 * M := by ring
     rw [h2]
-    have h3 : ((8 + ε) * M) / 4 - 2 * M < (J : ℝ) / 4 + 1 / 4 - 2 * M := by linarith
-    linarith
+    have h3 : ((8 + ε) * M) / 4 - 2 * M < (J : ℝ) / 4 + 1 / 4 - 2 * M := by linarith only [hJlt]
+    linarith only [hJlt, hlb]
   have hpos1 : 0 < ε * M / 4 := by positivity
   have hWpos : 0 < (∑ j ∈ Finset.Icc 1 J, fejerW J j * (1 + ((z i₀) ^ j).re)) * (S j₀).re :=
     lt_of_lt_of_le (lt_trans hpos1 hTgt) hub
   have hReS : 0 < (S j₀).re := by
     rcases lt_trichotomy (∑ j ∈ Finset.Icc 1 J, fejerW J j * (1 + ((z i₀) ^ j).re)) 0
       with h | h | h
-    · linarith [hWnn]
+    · linarith only [hWnn, h]
     · rw [h, zero_mul] at hWpos
       exact absurd hWpos (lt_irrefl 0)
     · exact pos_of_mul_pos_right hWpos h.le
   have hkey : ε * M / 4 < J * (S j₀).re := by
     calc ε * M / 4 < ∑' i, w i * fejerK J (z i) (z i₀) := hTgt
       _ ≤ (∑ j ∈ Finset.Icc 1 J, fejerW J j * (1 + ((z i₀) ^ j).re)) * (S j₀).re := hub
-      _ ≤ J * (S j₀).re := by nlinarith [hWle, hReS]
+      _ ≤ J * (S j₀).re := by nlinarith only [hWle, hReS]
   have hJpos : (0 : ℝ) < J := by exact_mod_cast hJ1
   have h3 : ε * M / (4 * J) < (S j₀).re := by
     rw [div_lt_iff₀ (by positivity : (0 : ℝ) < 4 * J)]
-    nlinarith [hkey]
+    linarith only [hkey]
   have h4 : ε / (32 + 4 * ε) ≤ ε * M / (4 * J) := by
-    have hJM : 4 * J ≤ 4 * ((8 + ε) * M) := by linarith [hJle]
+    have hJM : 4 * J ≤ 4 * ((8 + ε) * M) := by linarith only [hJle]
     have h1 : 1 / (4 * ((8 + ε) * M)) ≤ 1 / (4 * J) :=
       one_div_le_one_div_of_le (by positivity) hJM
     have h2 : ε * M / (4 * ((8 + ε) * M)) ≤ ε * M / (4 * J) := by
@@ -402,7 +402,7 @@ lemma turanWeighted_unit (ε : ℝ) (hε : 0 < ε) {ι : Type*}
     exact h2
   exact ⟨j₀, (Finset.mem_Icc.mp hj₀mem).1, by
       have : (j₀ : ℝ) ≤ (J : ℝ) := by exact_mod_cast (Finset.mem_Icc.mp hj₀mem).2
-      linarith,
+      linarith only [hJle, this],
     le_of_lt (lt_of_le_of_lt h4 h3)⟩
 
 /-! ### Main statement -/
@@ -491,7 +491,7 @@ theorem turanWeighted (ε : ℝ) (hε : 0 < ε) {ι : Type*}
           ≤ ‖z i₀‖ ^ j * ((‖z i₀‖ ^ j)⁻¹ * (∑' i, w i * (z i) ^ j).re) :=
         mul_le_mul_of_nonneg_left h6 hRj.le
       rw [← mul_assoc, mul_inv_cancel₀ (ne_of_gt hRj), one_mul] at h7
-      linarith [h7]
+      linarith only [h7]
     exact h5
 
 end Work.LinnikAreas.DhK

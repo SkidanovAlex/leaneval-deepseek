@@ -48,7 +48,7 @@ lemma abs_s3w_le_inv (n : ℕ) : |s3w n| ≤ 1/(n:ℝ) := by
     · intro p hp; positivity
     · intro p hp
       rw [div_le_one (by positivity)]
-      linarith [Nat.cast_nonneg (α := ℝ) p]
+      linarith only [Nat.cast_nonneg (α := ℝ) p]
   have hmu : |(ArithmeticFunction.moebius n : ℝ)| ≤ 1 :=
     Commons.NumberTheory.Moebius.moebius_abs_le_one n
   have hnabs : |(n:ℝ)| = (n:ℝ) := abs_of_nonneg (Nat.cast_nonneg n)
@@ -71,7 +71,7 @@ lemma sHalf_le_card_divisors (n : ℕ) :
   have hd1 : 1 ≤ d := Nat.pos_of_dvd_of_pos (Nat.dvd_of_mem_divisors hd)
     (Nat.pos_of_ne_zero (Nat.mem_divisors.mp hd).2)
   have hd1R : (1:ℝ) ≤ (d:ℝ) := by exact_mod_cast hd1
-  rw [div_le_one (Real.sqrt_pos_of_pos (by linarith))]
+  rw [div_le_one (Real.sqrt_pos_of_pos (by linarith only [hd1R]))]
   calc (1:ℝ) = Real.sqrt 1 := by rw [Real.sqrt_one]
     _ ≤ Real.sqrt (d:ℝ) := Real.sqrt_le_sqrt hd1R
 
@@ -83,7 +83,7 @@ lemma sum_Icc_inv_le_log (X : ℕ) :
     have h0 : (Finset.Icc 1 0 : Finset ℕ) = ∅ := Finset.Icc_eq_empty (by norm_num)
     rw [h0, Finset.sum_empty, Nat.cast_zero, add_zero]
     have : (0:ℝ) ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-    linarith
+    linarith only [this]
   · have h1 : (∑ m ∈ Finset.Icc 1 X, (1:ℝ)/(m:ℝ)) = (harmonic X : ℝ) := by
       rw [harmonic_eq_sum_Icc]
       push_cast
@@ -94,8 +94,8 @@ lemma sum_Icc_inv_le_log (X : ℕ) :
     refine (harmonic_le_one_add_log X).trans ?_
     have hXpos : (0:ℝ) < (X:ℝ) := by exact_mod_cast hX
     have hle : Real.log (X:ℝ) ≤ Real.log (2 + (X:ℝ)) :=
-      Real.log_le_log hXpos (by linarith [Nat.cast_nonneg (α := ℝ) X])
-    linarith
+      Real.log_le_log hXpos (by linarith only [Nat.cast_nonneg (α := ℝ) X])
+    linarith only [hle]
 
 /-- `Σ_{n ≤ X} σ_{-1/2}(n)·|s3w n| ≤ (1 + log (2+X))²`. -/
 lemma sum_sHalf_abs_s3w_le (X : ℕ) :
@@ -116,13 +116,13 @@ lemma sum_sHalf_abs_s3w_le (X : ℕ) :
   have hnn : (0:ℝ) ≤ ∑ m ∈ Finset.Icc 1 X, (1:ℝ)/(m:ℝ) :=
     Finset.sum_nonneg (fun m hm => by positivity)
   have h4 : (0:ℝ) ≤ 1 + Real.log (2 + (X:ℝ)) := by
-    have : 0 ≤ Real.log (2 + (X:ℝ)) := Real.log_nonneg (by linarith [Nat.cast_nonneg (α := ℝ) X])
-    linarith
+    have : 0 ≤ Real.log (2 + (X:ℝ)) := Real.log_nonneg (by linarith only [Nat.cast_nonneg (α := ℝ) X])
+    linarith only [this]
   calc ∑ n ∈ Finset.Icc 1 X, Work.LinnikAreas.Density4.sHalf n * |s3w n|
       ≤ ∑ n ∈ Finset.Icc 1 X, ((Nat.divisors n).card : ℝ)/(n:ℝ) := Finset.sum_le_sum h1
     _ ≤ (∑ m ∈ Finset.Icc 1 X, (1:ℝ)/(m:ℝ))^2 := h2
     _ ≤ (1 + Real.log (2 + (X:ℝ)))^2 := by
-        apply sq_le_sq' <;> linarith
+        apply sq_le_sq' <;> linarith only [h3, hnn]
 
 /-! ## `exp (-c√log)` is dominated by every negative power of `log` -/
 
@@ -133,8 +133,8 @@ lemma exp_neg_sqrtlog_le_logpow (c B : ℝ) (hc : 0 < c) (hB : 0 < B) :
   have hNfact : 0 < (N.factorial : ℝ) := by exact_mod_cast N.factorial_pos
   have hcN : 0 < c^N := pow_pos hc N
   refine ⟨max 1 ((N.factorial:ℝ)/c^N), lt_max_of_lt_left one_pos, fun X hX => ?_⟩
-  have hxpos : 0 < X := by linarith
-  have hlogpos : 0 < Real.log X := Real.log_pos (by linarith)
+  have hxpos : 0 < X := by linarith only [hX]
+  have hlogpos : 0 < Real.log X := Real.log_pos (by linarith only [hX])
   set u : ℝ := Real.sqrt (Real.log X) with hu
   have hupos : 0 < u := Real.sqrt_pos.mpr hlogpos
   have hfact := Real.pow_div_factorial_le_exp (c*u) (by positivity) N
@@ -153,7 +153,7 @@ lemma exp_neg_sqrtlog_le_logpow (c B : ℝ) (hc : 0 < c) (hB : 0 < B) :
   by_cases h1 : (1:ℝ) ≤ Real.log X
   · have hexp2 : (Real.log X) ^ B ≤ (Real.log X) ^ ((N:ℝ)/2) := by
       apply Real.rpow_le_rpow_of_exponent_le h1
-      linarith
+      linarith only [hN]
     have hp1 : 0 < (Real.log X) ^ ((N:ℝ)/2) := Real.rpow_pos_of_pos hlogpos _
     have hp2 : 0 < (Real.log X) ^ B := Real.rpow_pos_of_pos hlogpos _
     calc Real.exp (-(c*u)) ≤ (N.factorial:ℝ)/(c^N * (Real.log X)^((N:ℝ)/2)) := hexp_le
@@ -170,7 +170,7 @@ lemma exp_neg_sqrtlog_le_logpow (c B : ℝ) (hc : 0 < c) (hB : 0 < B) :
       rw [← Real.exp_zero]
       apply Real.exp_le_exp.mpr
       have : 0 ≤ c*u := le_of_lt hcu
-      linarith
+      linarith only [hcu]
     have hpB : 0 < (Real.log X)^B := Real.rpow_pos_of_pos hlogpos _
     have hB1 : (Real.log X)^B ≤ 1 := by
       have := Real.rpow_le_rpow hlogpos.le h1.le hB.le
@@ -275,38 +275,38 @@ lemma abs_log_div_sub_one_le (x : ℝ) (hx : 2 ≤ x) (t : ℕ)
     (ht : t ∈ Finset.Icc 1 ⌊x⌋₊) : |Real.log (x/(t:ℝ)) - 1| ≤ 3 * Real.log x := by
   obtain ⟨ht1, ht2⟩ := Finset.mem_Icc.mp ht
   have htpos : (0:ℝ) < (t:ℝ) := by exact_mod_cast ht1
-  have hxpos : 0 < x := by linarith
-  have htle : (t:ℝ) ≤ x := le_trans (by exact_mod_cast ht2) (Nat.floor_le (by linarith))
+  have hxpos : 0 < x := by linarith only [hx]
+  have htle : (t:ℝ) ≤ x := le_trans (by exact_mod_cast ht2) (Nat.floor_le (by linarith only [hx]))
   have hlog_split : Real.log (x/(t:ℝ)) = Real.log x - Real.log (t:ℝ) :=
     Real.log_div (ne_of_gt hxpos) (ne_of_gt htpos)
   have htge : 0 ≤ Real.log (t:ℝ) := Real.log_nonneg (by exact_mod_cast ht1)
-  have hlogx : 0 < Real.log x := Real.log_pos (by linarith)
+  have hlogx : 0 < Real.log x := Real.log_pos (by linarith only [hx])
   have htl : Real.log (t:ℝ) ≤ Real.log x := Real.log_le_log htpos htle
-  have hlog2 : (2:ℝ)/3 < Real.log 2 := by linarith [Real.log_two_gt_d9]
+  have hlog2 : (2:ℝ)/3 < Real.log 2 := by linarith only [Real.log_two_gt_d9]
   have hlogx23 : (2:ℝ)/3 < Real.log x := lt_of_lt_of_le hlog2 (Real.log_le_log (by norm_num) hx)
   rw [abs_le]
   constructor
-  · rw [hlog_split]; linarith
-  · rw [hlog_split]; linarith
+  · rw [hlog_split]; linarith only [hlogx, htl, hlogx23]
+  · rw [hlog_split]; linarith only [htge, hlogx]
 
 /-- `|2 - log (x/t)| ≤ 4 log x` for `1 ≤ t ≤ ⌊x⌋`. -/
 lemma abs_two_sub_log_div_le (x : ℝ) (hx : 2 ≤ x) (t : ℕ)
     (ht : t ∈ Finset.Icc 1 ⌊x⌋₊) : |2 - Real.log (x/(t:ℝ))| ≤ 4 * Real.log x := by
   obtain ⟨ht1, ht2⟩ := Finset.mem_Icc.mp ht
   have htpos : (0:ℝ) < (t:ℝ) := by exact_mod_cast ht1
-  have hxpos : 0 < x := by linarith
-  have htle : (t:ℝ) ≤ x := le_trans (by exact_mod_cast ht2) (Nat.floor_le (by linarith))
+  have hxpos : 0 < x := by linarith only [hx]
+  have htle : (t:ℝ) ≤ x := le_trans (by exact_mod_cast ht2) (Nat.floor_le (by linarith only [hx]))
   have hlog_split : Real.log (x/(t:ℝ)) = Real.log x - Real.log (t:ℝ) :=
     Real.log_div (ne_of_gt hxpos) (ne_of_gt htpos)
   have htge : 0 ≤ Real.log (t:ℝ) := Real.log_nonneg (by exact_mod_cast ht1)
-  have hlogx : 0 < Real.log x := Real.log_pos (by linarith)
+  have hlogx : 0 < Real.log x := Real.log_pos (by linarith only [hx])
   have htl : Real.log (t:ℝ) ≤ Real.log x := Real.log_le_log htpos htle
-  have hlog2 : (2:ℝ)/3 < Real.log 2 := by linarith [Real.log_two_gt_d9]
+  have hlog2 : (2:ℝ)/3 < Real.log 2 := by linarith only [Real.log_two_gt_d9]
   have hlogx23 : (2:ℝ)/3 < Real.log x := lt_of_lt_of_le hlog2 (Real.log_le_log (by norm_num) hx)
   rw [abs_le]
   constructor
-  · rw [hlog_split]; linarith
-  · rw [hlog_split]; linarith
+  · rw [hlog_split]; linarith only [htge, hlogx]
+  · rw [hlog_split]; linarith only [hlogx, htl, hlogx23]
 
 /-- **The main estimate**, given the sharp `κ`-Mertens bound `hsharp` and the plain bound
 `hplain` (both with exponent `6`). -/
@@ -323,8 +323,8 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
   obtain ⟨cd, Cd, hcd, hCd, hdec⟩ := Commons.NumberTheory.Moebius.moebius_recip_sum_exp_decay
   obtain ⟨Ce, hCe, hexp⟩ := exp_neg_sqrtlog_le_logpow cd 2 hcd (by norm_num)
   refine ⟨80*(K1+K2)/Real.log 2 + 4*(Cm + Real.log 2 * (Cd*Ce)) + 1, by positivity, fun x hx => ?_⟩
-  have hx0 : 0 < x := by linarith
-  have hlogx : 0 < Real.log x := Real.log_pos (by linarith)
+  have hx0 : 0 < x := by linarith only [hx]
+  have hlogx : 0 < Real.log x := Real.log_pos (by linarith only [hx])
   have hfl2 : 2 ≤ ⌊x⌋₊ := Nat.le_floor hx
   have hfl1 : 1 ≤ ⌊x⌋₊ := by omega
   have hflpos : (0:ℝ) < (⌊x⌋₊:ℝ) := by exact_mod_cast hfl1
@@ -332,12 +332,12 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
   have hlogle : Real.log x ≤ 2 * Real.log (⌊x⌋₊:ℝ) := by
     have h1 : x < (⌊x⌋₊:ℝ) + 1 := Nat.lt_floor_add_one x
     have h2 : (1:ℝ) ≤ (⌊x⌋₊:ℝ) := by exact_mod_cast hfl1
-    have h3 : x ≤ 2 * (⌊x⌋₊:ℝ) := by linarith
+    have h3 : x ≤ 2 * (⌊x⌋₊:ℝ) := by linarith only [hx, h1]
     have h4 := Real.log_le_log hx0 h3
     rw [Real.log_mul (by norm_num) (ne_of_gt hflpos)] at h4
     have h5 : Real.log 2 ≤ Real.log (⌊x⌋₊:ℝ) :=
       Real.log_le_log (by norm_num) (by exact_mod_cast hfl2)
-    linarith
+    linarith only [h4, h5]
   have hsH : ∀ t : ℕ, 0 ≤ Work.LinnikAreas.Density4.sHalf t :=
     fun t => Work.LinnikAreas.Density4.sHalf_nonneg t
   have hM1 : |s3M x - 1| ≤ 4*(Cm + Real.log 2 * (Cd*Ce)) / (Real.log x)^2 := by
@@ -390,7 +390,7 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
           rw [div_le_iff₀ hflpos]
           have h1' : x < (⌊x⌋₊:ℝ) + 1 := Nat.lt_floor_add_one x
           have h2' : (1:ℝ) ≤ (⌊x⌋₊:ℝ) := by exact_mod_cast hfl1
-          linarith
+          linarith only [hx, h1']
         rw [abs_of_nonneg (Real.log_nonneg h1)]
         exact Real.log_le_log (by positivity) h2
       calc |Real.log (x/(⌊x⌋₊:ℝ))| * |(∑ t ∈ Finset.Icc 1 ⌊x⌋₊,
@@ -425,7 +425,7 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
         positivity
       have hkey : 1/(Real.log (⌊x⌋₊:ℝ))^2 ≤ 4/(Real.log x)^2 := by
         rw [div_le_div_iff₀ (pow_pos hlogfl 2) (pow_pos hlogx 2)]
-        nlinarith [hlogle, hlogx, hlogfl]
+        nlinarith only [hlogle, hlogx, hlogfl]
       have hrew : Cm/(Real.log (⌊x⌋₊:ℝ))^2 + Real.log 2 * (Cd*Ce)/(Real.log (⌊x⌋₊:ℝ))^2
           = (Cm + Real.log 2 * (Cd*Ce)) * (1/(Real.log (⌊x⌋₊:ℝ))^2) := by ring
       rw [hrew]
@@ -444,7 +444,7 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
             * (Work.LinnikAreas.Density4.sHalf t * |s3w t| * (3*Real.log x)) := by
       intro t ht
       obtain ⟨ht1, -⟩ := Finset.mem_Icc.mp ht
-      have hb := hsharp x t (by linarith) ht1
+      have hb := hsharp x t (by linarith only [hx]) ht1
       have hb' : |s3KA x t + s3KB x t - s3Main t|
           ≤ K1 * Work.LinnikAreas.Density4.sHalf t * (Real.log (2+x))^(-6:ℝ) := by
         rw [s3KA_add_s3KB]; exact hb
@@ -466,8 +466,8 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
           rw [Finset.mul_sum]
           apply Finset.sum_congr rfl; intro t ht; ring
       _ ≤ K1 * (Real.log (2+x))^(-6:ℝ) * (3*Real.log x) * (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 := by
-          have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith)) _
-          have h2 : (0:ℝ) ≤ 3*Real.log x := by linarith [hlogx]
+          have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith only [hx])) _
+          have h2 : (0:ℝ) ≤ 3*Real.log x := by linarith only [hlogx]
           have h3 : (0:ℝ) ≤ K1 * (Real.log (2+x))^(-6:ℝ) * (3*Real.log x) :=
             mul_nonneg (mul_nonneg hK1.le h1) h2
           exact mul_le_mul_of_nonneg_left hsum h3
@@ -481,14 +481,14 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
             * (Work.LinnikAreas.Density4.sHalf t * |s3w t| * (4*Real.log x)) := by
       intro t ht
       obtain ⟨ht1, -⟩ := Finset.mem_Icc.mp ht
-      have hb := hplain x t (by linarith) ht1
+      have hb := hplain x t (by linarith only [hx]) ht1
       have hl := abs_two_sub_log_div_le x hx t ht
       calc |s3w t * (s3KB x t * (2 - Real.log (x/(t:ℝ))))|
           = |s3w t| * (|s3KB x t| * |2 - Real.log (x/(t:ℝ))|) := by rw [abs_mul, abs_mul]
         _ ≤ |s3w t| * ((K2 * Work.LinnikAreas.Density4.sHalf t * (Real.log (2+x))^(-6:ℝ)) * (4*Real.log x)) := by
             apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
             have hc : (0:ℝ) ≤ K2 * Work.LinnikAreas.Density4.sHalf t * (Real.log (2+x))^(-6:ℝ) := by
-              have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith)) _
+              have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith only [hx])) _
               exact mul_nonneg (mul_nonneg hK2.le (hsH t)) h1
             calc |s3KB x t| * |2 - Real.log (x/(t:ℝ))|
                 ≤ (K2 * Work.LinnikAreas.Density4.sHalf t * (Real.log (2+x))^(-6:ℝ)) * |2 - Real.log (x/(t:ℝ))| :=
@@ -507,8 +507,8 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
           rw [Finset.mul_sum]
           apply Finset.sum_congr rfl; intro t ht; ring
       _ ≤ K2 * (Real.log (2+x))^(-6:ℝ) * (4*Real.log x) * (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 := by
-          have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith)) _
-          have h2 : (0:ℝ) ≤ 4*Real.log x := by linarith [hlogx]
+          have h1 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith only [hx])) _
+          have h2 : (0:ℝ) ≤ 4*Real.log x := by linarith only [hlogx]
           have h3 : (0:ℝ) ≤ K2 * (Real.log (2+x))^(-6:ℝ) * (4*Real.log x) :=
             mul_nonneg (mul_nonneg hK2.le h1) h2
           exact mul_le_mul_of_nonneg_left hsum h3
@@ -549,29 +549,29 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hfin2 : (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 * (Real.log (2+x))^(-6:ℝ)
       ≤ 20 / (Real.log x)^4 := by
-    have hpos2 : 0 < Real.log (2+x) := Real.log_pos (by linarith)
+    have hpos2 : 0 < Real.log (2+x) := Real.log_pos (by linarith only [hx])
     have h4 : (Real.log (2+x))^(-6:ℝ) = 1/(Real.log (2+x))^6 := by
       rw [Real.rpow_neg (le_of_lt hpos2), Real.rpow_ofNat, one_div]
     have h2x : Real.log (2+x) ≤ 2 * Real.log x := by
-      have h : 2 + x ≤ x^2 := by nlinarith
-      calc Real.log (2+x) ≤ Real.log (x^2) := Real.log_le_log (by linarith) h
+      have h : 2 + x ≤ x^2 := by nlinarith only [hx]
+      calc Real.log (2+x) ≤ Real.log (x^2) := Real.log_le_log (by linarith only [hx]) h
         _ = 2 * Real.log x := by rw [Real.log_pow]; norm_num
     have hlog2x_le : Real.log (2 + (⌊x⌋₊:ℝ)) ≤ Real.log (2+x) :=
-      Real.log_le_log (by linarith) (by linarith [Nat.floor_le hx0.le])
+      Real.log_le_log (by linarith only [hflpos]) (by linarith only [Nat.floor_le hx0.le, hx0])
     have hlog4 : (1:ℝ) ≤ Real.log 4 := by
       have h := Real.log_two_gt_d9
       rw [show (4:ℝ) = 2^2 by norm_num, Real.log_pow]
       push_cast
-      linarith
-    have hlog4le : Real.log 4 ≤ Real.log (2+x) := Real.log_le_log (by norm_num) (by linarith)
+      linarith only [hlog2pos, h]
+    have hlog4le : Real.log 4 ≤ Real.log (2+x) := Real.log_le_log (by norm_num) (by linarith only [hx])
     have h6 : (Real.log x)^6 ≤ (Real.log (2+x))^6 :=
-      pow_le_pow_left₀ (le_of_lt hlogx) (Real.log_le_log hx0 (by linarith)) 6
+      pow_le_pow_left₀ (le_of_lt hlogx) (Real.log_le_log hx0 (by linarith only [])) 6
     by_cases ht1 : 1 ≤ Real.log x
-    · have hA : 1 + Real.log (2 + (⌊x⌋₊:ℝ)) ≤ 3 * Real.log x := by linarith [hlog2x_le, h2x, ht1]
+    · have hA : 1 + Real.log (2 + (⌊x⌋₊:ℝ)) ≤ 3 * Real.log x := by linarith only [hlog2x_le, h2x, ht1]
       have hAnn : 0 ≤ 1 + Real.log (2 + (⌊x⌋₊:ℝ)) := by
-        have : 0 ≤ Real.log (2 + (⌊x⌋₊:ℝ)) := Real.log_nonneg (by linarith [Nat.cast_nonneg (α:=ℝ) ⌊x⌋₊])
-        linarith
-      have hsq : (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 ≤ 9 * (Real.log x)^2 := by nlinarith
+        have : 0 ≤ Real.log (2 + (⌊x⌋₊:ℝ)) := Real.log_nonneg (by linarith only [Nat.cast_nonneg (α:=ℝ) ⌊x⌋₊, hflpos])
+        linarith only [this]
+      have hsq : (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 ≤ 9 * (Real.log x)^2 := by nlinarith only [h2x, hlog2x_le, ht1, hlogx, hpos2, hAnn]
       have hstep1 : (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 * (Real.log x)^2 ≤ 9 * (Real.log x)^4 := by
         calc (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 * (Real.log x)^2
             ≤ (9 * (Real.log x)^2) * (Real.log x)^2 :=
@@ -585,8 +585,8 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
           _ = 9 * (Real.log x)^6 := by ring
       rw [h4, mul_one_div]
       rw [div_le_div_iff₀ (pow_pos hpos2 6) (pow_pos hlogx 4)]
-      have hp : (0:ℝ) ≤ (Real.log (2+x))^6 := pow_nonneg (Real.log_nonneg (by linarith)) 6
-      linarith [hstep3, h6, hp]
+      have hp : (0:ℝ) ≤ (Real.log (2+x))^6 := pow_nonneg (Real.log_nonneg (by linarith only [hx])) 6
+      linarith only [hstep3, h6, hp]
     · push_neg at ht1
       have h5e : (5:ℝ) ≤ Real.exp 3 := by
         have h2 : (2:ℝ) ≤ Real.exp 1 := le_of_lt Real.exp_one_gt_two
@@ -595,20 +595,20 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
         have h3 : (8:ℝ) ≤ (Real.exp 1)^3 := by
           have h := pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 2) h2 3
           norm_num at h
-          linarith
-        linarith
+          linarith only [he3, h]
+        linarith only [hlogx, ht1, h3]
       have hxe : x < Real.exp 1 := (Real.log_lt_iff_lt_exp hx0).mp ht1
       have hle5 : 2 + (⌊x⌋₊:ℝ) ≤ 5 := by
         have h4' : (⌊x⌋₊:ℝ) ≤ x := Nat.floor_le hx0.le
         have h3 : Real.exp 1 < 3 := Real.exp_one_lt_three
-        linarith
+        linarith only [hxe, h4', h3]
       have hlog5 : Real.log (2 + (⌊x⌋₊:ℝ)) ≤ 3 := by
-        calc Real.log (2 + (⌊x⌋₊:ℝ)) ≤ Real.log 5 := Real.log_le_log (by linarith) hle5
+        calc Real.log (2 + (⌊x⌋₊:ℝ)) ≤ Real.log 5 := Real.log_le_log (by linarith only [hlogx, hflpos, ht1]) hle5
           _ ≤ 3 := (Real.log_le_iff_le_exp (by norm_num)).mpr h5e
-      have h1 : 1 + Real.log (2 + (⌊x⌋₊:ℝ)) ≤ 4 := by linarith [hlog5]
+      have h1 : 1 + Real.log (2 + (⌊x⌋₊:ℝ)) ≤ 4 := by linarith only [hlog5, hlogx, h2x, hlog2x_le, ht1]
       have hAnn : 0 ≤ 1 + Real.log (2 + (⌊x⌋₊:ℝ)) := by
-        have : 0 ≤ Real.log (2 + (⌊x⌋₊:ℝ)) := Real.log_nonneg (by linarith [Nat.cast_nonneg (α:=ℝ) ⌊x⌋₊])
-        linarith
+        have : 0 ≤ Real.log (2 + (⌊x⌋₊:ℝ)) := Real.log_nonneg (by linarith only [Nat.cast_nonneg (α:=ℝ) ⌊x⌋₊, hlogx, hflpos, ht1])
+        linarith only [hlogx, ht1, this]
       have hsq : (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 ≤ 16 := by
         have h := pow_le_pow_left₀ hAnn h1 2
         norm_num at h ⊢
@@ -631,8 +631,8 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
           _ = 16 := by ring
       rw [h4, mul_one_div]
       rw [div_le_div_iff₀ (pow_pos hpos2 6) (pow_pos hlogx 4)]
-      have hp : (0:ℝ) ≤ (Real.log (2+x))^6 := pow_nonneg (Real.log_nonneg (by linarith)) 6
-      linarith [hsq3, h6', hp]
+      have hp : (0:ℝ) ≤ (Real.log (2+x))^6 := pow_nonneg (Real.log_nonneg (by linarith only [hx, hlogx, ht1])) 6
+      linarith only [hsq3, h6', hp, hlogx, ht1]
   have hkey : s3Phi x - 1 = (Real.pi^2/6)⁻¹ * (s3D x - (Real.pi^2/6)*s3M x) + (s3M x - 1) := by
     have h1 : s3Phi x = (Real.pi^2/6)⁻¹ * s3D x := by
       rw [← s3Phi_mul x, ← mul_assoc, inv_mul_cancel₀ pi_div_six_ne_zero, one_mul]
@@ -642,19 +642,19 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
   rw [hkey]
   have hcoef : |(Real.pi^2/6)⁻¹| ≤ 1 := by
     rw [abs_of_nonneg (by positivity), inv_le_one₀ (by positivity)]
-    nlinarith [Real.pi_gt_three]
+    nlinarith only [Real.pi_gt_three]
   have hb1 : |s3D x - (Real.pi^2/6)*s3M x| ≤ (K1 + K2) * (80/(Real.log x)^3) := by
     refine hDB.trans ?_
     have h3l : (0:ℝ) ≤ (K1 + K2) * (4*Real.log x) := by
-      have h2 : (0:ℝ) ≤ 4*Real.log x := by linarith [hlogx]
+      have h2 : (0:ℝ) ≤ 4*Real.log x := by linarith only [hlogx]
       exact mul_nonneg (add_nonneg hK1.le hK2.le) h2
-    have hnn6 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith)) _
+    have hnn6 : (0:ℝ) ≤ (Real.log (2+x))^(-6:ℝ) := Real.rpow_nonneg (Real.log_nonneg (by linarith only [hx])) _
     have hX : (0:ℝ) ≤ (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 := sq_nonneg _
     have hmono : K1 * (3*Real.log x) + K2 * (4*Real.log x) ≤ (K1 + K2) * (4*Real.log x) := by
       have ha : K1 * (3*Real.log x) ≤ K1 * (4*Real.log x) :=
-        mul_le_mul_of_nonneg_left (by linarith [hlogx]) hK1.le
+        mul_le_mul_of_nonneg_left (by linarith only [hlogx]) hK1.le
       have hb : K2 * (4*Real.log x) ≤ K2 * (4*Real.log x) := le_refl _
-      linarith [ha, hb]
+      linarith only [ha, hb]
     have hstep1 : (K1 * (3*Real.log x) + K2 * (4*Real.log x)) * (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 * (Real.log (2+x))^(-6:ℝ)
         ≤ ((K1 + K2) * (4*Real.log x)) * (1 + Real.log (2 + (⌊x⌋₊:ℝ)))^2 * (Real.log (2+x))^(-6:ℝ) :=
       mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hmono hX) hnn6
@@ -687,7 +687,7 @@ theorem s3Phi_main (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 < K2)
       ≤ (80*(K1+K2)/Real.log 2 + 4*(Cm + Real.log 2 * (Cd*Ce)) + 1) / (Real.log x)^2 := by
     rw [← add_div]
     apply div_le_div_of_nonneg_right _ (pow_pos hlogx 2).le
-    linarith
+    linarith only []
   calc |(Real.pi^2/6)⁻¹ * (s3D x - (Real.pi^2/6)*s3M x) + (s3M x - 1)|
       ≤ |(Real.pi^2/6)⁻¹ * (s3D x - (Real.pi^2/6)*s3M x)| + |s3M x - 1| := abs_add_le _ _
     _ ≤ (80*(K1+K2)/Real.log 2)/(Real.log x)^2 + 4*(Cm + Real.log 2 * (Cd*Ce)) / (Real.log x)^2 :=
@@ -708,7 +708,7 @@ theorem s3Phi_final
   obtain ⟨K2, hK2, h2⟩ := kappaSum_bound 6 (by norm_num)
   refine s3Phi_main K1 K2 hK1 hK2 ?_ ?_
   · intro Q t hQ ht
-    have h := h1 Q t (by linarith) ht
+    have h := h1 Q t (by linarith only [hQ]) ht
     have hsum : (∑ n ∈ (Finset.Icc 1 ⌊Q⌋₊).filter (fun n => Nat.Coprime n t),
           s3w n * Real.log (Q/(n:ℝ)))
         = ∑ n ∈ (Finset.Icc 1 ⌊Q⌋₊).filter (fun n => Nat.Coprime n t),
@@ -727,7 +727,7 @@ theorem s3Phi_final
     rw [hsum, hmain, hrhs]
     exact h
   · intro Q t hQ ht
-    have h := h2 Q t (by linarith) ht
+    have h := h2 Q t (by linarith only [hQ]) ht
     have hsum : (∑ n ∈ (Finset.Icc 1 ⌊Q⌋₊).filter (fun n => Nat.Coprime n t), s3w n)
         = Work.LinnikAreas.Density4.kappaSum ⌊Q⌋₊ t := by
       rw [Work.LinnikAreas.Density4.kappaSum]

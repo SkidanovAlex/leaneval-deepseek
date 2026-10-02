@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Analysis.Integral.extremal_cosine_integral
 import Submission.Commons.Analysis.Integral.extremal_cosh_integral
-import Submission.Commons.Analysis.Integral.extremal_cosine_reflected_integral
 import Submission.Commons.Analysis.Integral.extremal_polynomial_integral
 import Submission.Commons.Analysis.Integral.extremal_quadratic_form_cos
 import Submission.Commons.Analysis.Integral.extremal_quadratic_form_cosh

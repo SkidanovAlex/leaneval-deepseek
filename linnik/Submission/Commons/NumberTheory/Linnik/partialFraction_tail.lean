@@ -13,7 +13,7 @@ namespace Commons.NumberTheory.Linnik
 lemma log_four_ge_one : (1 : ℝ) ≤ Real.log 4 := by
   have he : Real.exp 1 ≤ (4 : ℝ) := by
     have h3 : Real.exp 1 ≤ (3 : ℝ) := le_of_lt Real.exp_one_lt_three
-    linarith
+    linarith only [h3]
   have h := Real.log_le_log (Real.exp_pos 1) he
   simpa using h
 
@@ -26,8 +26,8 @@ lemma partialFrac_term_norm_le {s u : ℂ} {R : ℝ} (hR : 2 ≤ R) (hs : ‖s�
     intro h
     subst h
     norm_num at huR
-    linarith
-  have hRpos : 0 < R := by linarith
+    linarith only [hR, huR]
+  have hRpos : 0 < R := by linarith only [hR]
   have hupos : 0 < ‖u‖ := lt_of_lt_of_le hRpos huR
   have hden : (3 / 4) * ‖u‖ ≤ ‖s - u‖ := by
     have hsub : ‖u‖ - ‖s‖ ≤ ‖s - u‖ := by
@@ -35,7 +35,7 @@ lemma partialFrac_term_norm_le {s u : ℂ} {R : ℝ} (hR : 2 ≤ R) (hs : ‖s�
       rw [norm_sub_rev] at h
       exact le_trans (le_abs_self _) h
     have hmain : (3 / 4 : ℝ) * ‖u‖ ≤ ‖u‖ - ‖s‖ := by
-      nlinarith
+      linarith only [hs, huR]
     exact le_trans hmain hsub
   have hsune : s - u ≠ 0 := by
     intro hz
@@ -43,7 +43,7 @@ lemma partialFrac_term_norm_le {s u : ℂ} {R : ℝ} (hR : 2 ≤ R) (hs : ‖s�
     have hgt : 0 < ‖s - u‖ := by
       have h0 : 0 < (3 / 4) * ‖u‖ := by positivity
       exact lt_of_lt_of_le h0 hden
-    linarith
+    linarith only [hR, huR, hden, hz']
   have hident : 1 / (s - u) + 1 / u = s / ((s - u) * u) := by
     field_simp [hu0, hsune]
     ring
@@ -83,14 +83,14 @@ lemma divisor_closedBall_eq_zero_of_lt_norm {f : ℂ → ℂ} {ρ : ℝ} {u : �
   exact divisor_eq_zero_of_nmem (by
     intro hmem
     have hle : ‖u‖ ≤ ρ := by simpa [Metric.mem_closedBall, dist_eq_norm] using hmem
-    linarith)
+    linarith only [hu, hle])
 
 /-- For `0 < R` and any real `ρ`, some power `2^(j+1) R` reaches past `ρ`. -/
 lemma exists_dyadic_ge (R ρ : ℝ) (hR : 0 < R) : ∃ j : ℕ, ρ ≤ (2 : ℝ) ^ (j + 1) * R := by
   by_cases hρ : ρ ≤ 0
   · refine ⟨0, ?_⟩
     norm_num
-    nlinarith [hρ, hR]
+    linarith only [hρ, hR]
   · have hρpos : 0 < ρ := lt_of_not_ge hρ
     rcases exists_nat_ge (ρ / R) with ⟨n, hn⟩
     refine ⟨n, ?_⟩
@@ -129,7 +129,7 @@ lemma dyadIdx_lower {R ρ : ℝ} (hρ : ∃ j : ℕ, ρ ≤ (2 : ℝ) ^ (j + 1) 
     exact hnot
   by_cases hj : dyadIdx R ρ hρ = 0
   · have hle0 : ρ ≤ R := by simpa [hj] using hle
-    linarith
+    linarith only [hRρ, hle0]
   · obtain ⟨j', hj'⟩ := Nat.exists_eq_succ_of_ne_zero hj
     have hw : ρ ≤ (2 : ℝ) ^ (j' + 1) * R := by
       simpa [hj'] using hle
@@ -173,7 +173,7 @@ lemma log_two_pow_mul_add_two_le {R : ℝ} (hR : 2 ≤ R) (k : ℕ) :
         add_le_add_right hle0 ((2 : ℝ) ^ (k + 1) * R)
       _ = (2 : ℝ) ^ (k + 1) * (R + 2) := by ring
   have hlog := Real.log_le_log h1 hle
-  have hmul := Real.log_mul (pow_ne_zero (k + 1) (by norm_num : (2 : ℝ) ≠ 0)) (by nlinarith : R + 2 ≠ 0)
+  have hmul := Real.log_mul (pow_ne_zero (k + 1) (by norm_num : (2 : ℝ) ≠ 0)) (by linarith only [hR] : R + 2 ≠ 0)
   rw [hmul] at hlog
   have hpow := Real.log_pow (2 : ℝ) (k + 1)
   rw [hpow] at hlog
@@ -267,10 +267,10 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     intro ρ hρ
     have h1 := hzc ρ hρ
     have hT0 : 0 ≤ Real.log (ρ + 2) + Real.log (N : ℝ) + 2 := by
-      have h1 : 0 ≤ Real.log (ρ + 2) := by exact Real.log_nonneg (by linarith)
+      have h1 : 0 ≤ Real.log (ρ + 2) := by exact Real.log_nonneg (by linarith only [hρ])
       have h2 : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-      linarith
-    have hρ0 : 0 ≤ ρ := by linarith
+      linarith only [h1, h2]
+    have hρ0 : 0 ≤ ρ := by linarith only [hρ]
     have hzcC' : zc * ρ * (Real.log (ρ + 2) + Real.log (N : ℝ) + 2) ≤
         C * ρ * (Real.log (ρ + 2) + Real.log (N : ℝ) + 2) := by
       have hCge : zc ≤ C := by dsimp [C]; exact le_max_left zc 0
@@ -291,7 +291,7 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     dsimp [S]
     rw [Set.Finite.mem_toFinset]
     rfl
-  have hRpos : 0 < R := by linarith
+  have hRpos : 0 < R := by linarith only [hR]
   have hR'_ge_R : R ≤ R' := hRR'
   -- rewrite F into finite sums over S
   have hF' : F R' = ∑ u ∈ S, (((m R' u : ℤ) : ℂ) * w u) := by
@@ -489,7 +489,7 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   have hL0 : 0 ≤ L := by
     dsimp [L]
     have h1 : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-    linarith
+    linarith only [h1]
   -- count bound for each dyadic annulus
   have hb_le : ∀ j : ℕ, b j ≤ C * (2 : ℝ) ^ (j + 1) * R *
       (Real.log ((2 : ℝ) ^ (j + 1) * R + 2) + L) := by
@@ -500,8 +500,8 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
       have h1 : (2 : ℝ) ≤ (2 : ℝ) ^ (j + 1) := by
         have := pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ (2 : ℝ)) (by omega : (1 : ℕ) ≤ j + 1)
         simpa using this
-      nlinarith
-    have hρ0 : 0 ≤ ρ := by linarith
+      nlinarith only [hR, h1]
+    have hρ0 : 0 ≤ ρ := by linarith only [hρ2]
     let Sρ : Finset ℂ := (hfin ρ).toFinset
     have hSρ_mem : ∀ u : ℂ, u ∈ Sρ ↔ m ρ u ≠ 0 := by
       intro u
@@ -575,13 +575,13 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     dsimp [G]
     have h1 : 0 ≤ 2 * C * M / R := by positivity
     have h2 : 0 ≤ 1 + Real.log (R + 2) + L := by
-      have h : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith)
-      linarith
+      have h : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith only [hR])
+      linarith only [hL0, h]
     positivity
   have hlog2le1 : Real.log 2 ≤ 1 := by
     have h := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-    linarith
-  have hlogR0 : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith)
+    linarith only [h]
+  have hlogR0 : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith only [hR])
   have hsum_dyadic : Summable (fun k : ℕ => ((k + 1 : ℕ) : ℝ) * ((1 / 2 : ℝ) ^ k)) := by
     have h := hasSum_choose_mul_geometric_of_norm_lt_one (k := 1) (r := (1 / 2 : ℝ))
       (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)
@@ -603,11 +603,11 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
               ((j + 1 : ℕ) : ℝ) * Real.log 2 ≤ ((j + 1 : ℕ) : ℝ) * 1 := by
                 exact mul_le_mul_of_nonneg_left hlog2le1 hjp
               _ = ((j + 1 : ℕ) : ℝ) := by ring
-          linarith
+          linarith only [hm]
         have hC : ((j + 1 : ℕ) : ℝ) + Real.log (R + 2) + L ≤
             ((j + 1 : ℕ) : ℝ) * (1 + Real.log (R + 2) + L) := by
           have hjp : 1 ≤ ((j + 1 : ℕ) : ℝ) := by exact_mod_cast (Nat.succ_pos j)
-          nlinarith
+          nlinarith only [hL0, hjp, hlogR0]
         exact le_trans (le_trans (add_le_add_left hlog L) hA) hC
       have hb'' : b j ≤ C * (2 : ℝ) ^ (j + 1) * R *
           (((j + 1 : ℕ) : ℝ) * (1 + Real.log (R + 2) + L)) := by
@@ -670,20 +670,20 @@ theorem partialFraction_tail {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     dsimp [Tlog]
     have h1 : 0 ≤ Real.log (R + 2) := hlogR0
     have h2 : 0 ≤ Real.log (N : ℝ) := logN_nonneg (N := N)
-    linarith
-  have hT0 : 0 ≤ Tlog := by linarith
+    linarith only [hlogR0, h2]
+  have hT0 : 0 ≤ Tlog := by linarith only [hT2]
   have hfrac : (64 : ℝ) * (4 / 3) * (Tlog + 1) ≤ 128 * Tlog := by
-    nlinarith
+    linarith only [hT2]
   have hconst : (64 : ℝ) * C * M * (Tlog + 1) ≤ (128 * C) * ‖s‖ * Tlog := by
     have hfrac' : (64 : ℝ) * (4 / 3 : ℝ) * (Tlog + 1) ≤ 128 * Tlog := by
-      nlinarith
+      linarith only [hT2]
     dsimp [M]
     have hstep : 64 * (4 / 3 : ℝ) * ‖s‖ * (Tlog + 1) ≤ 128 * ‖s‖ * Tlog := by
       have hm := mul_le_mul_of_nonneg_right hfrac' hs0
-      nlinarith
+      linarith only [hm]
     have hstepC : C * (64 * (4 / 3 : ℝ) * ‖s‖ * (Tlog + 1)) ≤ C * (128 * ‖s‖ * Tlog) :=
       mul_le_mul_of_nonneg_left hstep hC0
-    nlinarith
+    linarith only [hstepC]
   have hgoal : ‖F R' - F R‖ ≤ (128 * C) * ‖s‖ * Tlog / R := by
     calc
       ‖F R' - F R‖ ≤ ∑ u ∈ T, (c u * (M / ‖u‖ ^ 2)) := hbndM

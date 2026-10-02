@@ -61,16 +61,17 @@ theorem stepanov_numerics (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ d) (D : ℕ) (h
       _ ≤ q - 1 := h3
   · -- claim 4
     have hdiv : s / e ≤ s := Nat.div_le_self s e
-    have hsq : s + d + 3 < s * s := by nlinarith [hsd4, hs1, hd]
+    have hsq : s + d + 3 < s * s := by
+      linarith only [Nat.mul_le_mul_left s hsd4, Nat.le_mul_of_pos_left d (by omega : 0 < s), hsd4]
     omega
   · -- claim 5
     have hlt : 2 * e + 2 * e ^ 3 * (D + 1) < s * s := by
       have h1 : 2 * e ^ 3 * (D + 1) ≤ 2 * e ^ 3 * (d + 1) :=
         Nat.mul_le_mul_left (2 * e ^ 3) (by omega)
       have h2 : 2 * e + 2 * e ^ 3 * (d + 1) < 4 * e * (d + 1) + 2 * e ^ 3 * (d + 1) + 4 := by
-        nlinarith [he, hd]
-      have h3 : 4 * e * (d + 1) + 2 * e ^ 3 * (d + 1) + 4 ≤ s * s := by
-        nlinarith [hM, hs1]
+        linarith only [Nat.zero_le (e * d), he]
+      have h3 : 4 * e * (d + 1) + 2 * e ^ 3 * (d + 1) + 4 ≤ s * s :=
+        le_trans hM (Nat.le_mul_of_pos_left s (by omega))
       omega
     have hkey : 2 * (e * (A + 1) + e ^ 3 * (D + 1)) < 2 * q := by
       have heq : 2 * (e * (A + 1) + e ^ 3 * (D + 1)) = 2 * e * A + (2 * e + 2 * e ^ 3 * (D + 1)) := by ring
@@ -114,8 +115,31 @@ theorem stepanov_numerics (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ d) (D : ℕ) (h
       have i8 : (d : ℤ) + 4 ≤ (s : ℤ) := by exact_mod_cast hsd4
       have i9 : (2 : ℤ) ≤ (e : ℤ) := by exact_mod_cast he
       have i9b : (1 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+      have hs0 : (0 : ℤ) ≤ (s : ℤ) := by linarith only [i7, i9]
+      have he0 : (0 : ℤ) ≤ (e : ℤ) := by linarith only [i9]
+      have hd0 : (0 : ℤ) ≤ (d : ℤ) := by linarith only [i9b]
+      have hD0 : (0 : ℤ) ≤ (D : ℤ) := Nat.cast_nonneg _
+      have hB0 : (0 : ℤ) ≤ (B : ℤ) + 1 := by positivity
+      have hss1 : (0 : ℤ) ≤ (s : ℤ) * ((s : ℤ) - 1) := mul_nonneg hs0 (by linarith only [i7, i9])
+      have hq0 : (0 : ℤ) ≤ ((s : ℤ) - 1) ^ 2 + 2 * (e : ℤ) := by positivity
+      have T1 := mul_le_mul_of_nonneg_left i2 (mul_nonneg he0 hB0)
+      have T2 := mul_le_mul_of_nonneg_left i5 (mul_nonneg he0 hD0)
+      have T3 := mul_le_mul_of_nonneg_left i6 (mul_nonneg he0 hss1)
+      have T4 := mul_le_mul_of_nonneg_left i1 hs0
+      have T5 := mul_le_mul_of_nonneg_left i3 hq0
+      have Q1 := mul_nonneg (mul_nonneg hs0 (by linarith only [i8] : (0 : ℤ) ≤ (s : ℤ) - (d : ℤ) - 4))
+        (by linarith only [i9] : (0 : ℤ) ≤ 3 * (e : ℤ) - 2)
+      have Q2 := mul_nonneg (mul_nonneg hs0 hd0) (by linarith only [i9] : (0 : ℤ) ≤ (e : ℤ) - 1)
+      have Q3 := mul_nonneg hs0 (by linarith only [i9] : (0 : ℤ) ≤ (e : ℤ) - 2)
+      have Q4 := mul_nonneg he0 hd0
+      have Q5 := mul_nonneg (mul_nonneg he0 he0) hd0
+      have Q6 := mul_nonneg he0 he0
+      have key : (e : ℤ) * (2 * ((s : ℤ) * (((A : ℤ) + 1) + (B : ℤ) + 1) + (D : ℤ) * (C : ℤ)))
+          < (e : ℤ) * (2 * ((e : ℤ) * ((((A : ℤ) + 1) + 1) * ((B : ℤ) + 1)))) := by
+        linarith only [T1, T2, T3, T4, T5, Q1, Q2, Q3, Q4, Q5, Q6, i9]
+      have key2 := lt_of_mul_lt_mul_left key he0
       push_cast
-      nlinarith [i1, i2, i3, i4, i5, i6, i7, i8, i9, i9b]
+      linarith only [key2]
     exact_mod_cast hZ
 
 end Commons.NumberTheory.Stepanov

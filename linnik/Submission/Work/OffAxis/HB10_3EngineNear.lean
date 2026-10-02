@@ -14,6 +14,7 @@ import Submission.Work.ZeroFreeTables.OffAxis.offAxis_identify
 import Submission.Work.LinnikAreas.principalKsumWide
 import Submission.Work.A7.zeroMult_conj_inv
 import Submission.Work.OffAxis.KsumLeTwoMain6
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators ComplexConjugate
@@ -207,7 +208,7 @@ theorem hb106NearF1 (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε'
       calc |u.im| = |s.im - (s.im - u.im)| := by ring_nf
         _ ≤ |s.im| + |s.im - u.im| := abs_sub _ _
         _ ≤ |s.im| + δ := by linarith
-    have him3 : |u.im| ≤ 10 * L := by linarith [hsim, him2, hδ1, hL1]
+    have him3 : |u.im| ≤ 10 * L := by linarith only [hsim, him2, hδ1, hL1]
     have hZ : Work.ZeroFreeTables.IsZAt (10 * L) χ u := ⟨hχ, hzm, him3⟩
     have hle : Work.LinnikContract.lamOf q ρ₁ ≤ Work.LinnikContract.lamOf q u := hR.2 χ u hZ
     rw [← hlam₁, Work.LinnikContract.lamOf] at hle
@@ -429,7 +430,7 @@ theorem hb106NearF1 (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε'
   simp only [Work.ZeroFreeTables.Ksum] at hbT123 hbT12i3 hbT1i23 hbTi123
   have hkey : 0 ≤ Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁))
       + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by
-    linarith [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
+    linarith only [hpos, hbP, hbS1, hbS2, hbS3, hbP12, hbPi12, hbP13, hbPi13, hbP23, hbPi23,
       hbT123, hbT12i3, hbT1i23, hbTi123]
   have hX : 0 ≤ T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁) + T.f 0 * (7/6 + 8 * ε') := by
     by_contra hneg
@@ -439,7 +440,7 @@ theorem hb106NearF1 (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε'
     have h3 : Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁) - T.F (lam₃ - lam₁)
         + T.f 0 * (7/6 + 8 * ε')) = Real.log (q : ℝ) * (T.F (-lam₁) - T.F 0 - T.F (lam₂ - lam₁)
           - T.F (lam₃ - lam₁)) + T.f 0 * (7/6 + 8 * ε') * Real.log (q : ℝ) := by ring
-    linarith [hkey, h2, h3]
+    linarith only [hkey, h2, h3]
   rw [hlam₁, hlam₂, hlam₃] at hX
   exact hX
 
@@ -530,12 +531,12 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     rw [Real.le_sqrt (by norm_num) hloglog0]; exact hloglog
   have hlogq : 0 < Lq := by
     have h1 : (1:ℝ) < Real.exp (((6:ℝ)/7)^2) := Real.one_lt_exp_iff.mpr (by norm_num)
-    rw [hLqdef]; linarith [hexple, h1]
+    rw [hLqdef]; linarith only [hexple, h1]
   have hδ5 : (5:ℝ) ≤ δ * Lq := by
-    rw [div_le_iff₀ hδ0] at h5δ; linarith [h5δ]
+    rw [div_le_iff₀ hδ0] at h5δ; linarith only [h5δ]
   have hδLq : (12:ℝ)/7 ≤ δ * Lq := by linarith
   have hδinv : (6:ℝ)/7 / Lq ≤ δ := by
-    rw [div_le_iff₀ hlogq]; linarith [hδLq]
+    rw [div_le_iff₀ hlogq]; linarith only [hδLq]
   set lam₁ : ℝ := Work.LinnikContract.lamOf q ρ₁ with hlam₁
   set lam₂ : ℝ := Work.LinnikContract.lamOf q ρ₂ with hlam₂
   set lam₃ : ℝ := Work.LinnikContract.lamOf q ρ₃ with hlam₃
@@ -549,7 +550,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
   have hl3nn : 0 ≤ lam₃ := by rw [hlam₃]; exact lamOf_nonneg_of_zeroMult hZ3.2.1
   have hl12 : lam₁ ≤ lam₂ := by
     rw [hlam₁, hlam₂]
-    exact hR.2 χ₂ ρ₂ ⟨hZ2.1, hZ2.2.1, le_trans hZ2.2.2 (by linarith [hL1])⟩
+    exact hR.2 χ₂ ρ₂ ⟨hZ2.1, hZ2.2.1, le_trans hZ2.2.2 (by linarith only [hL1])⟩
   have hl13 : lam₁ ≤ lam₃ := le_trans hl12 hlam23
   have hl16 : lam₁ ≤ 6/7 := le_trans hl13 hlam3
   have hl26 : lam₂ ≤ 6/7 := le_trans hlam23 hlam3
@@ -617,7 +618,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     refine ⟨?_, ?_, ?_⟩
     · rw [hre, hβ1]; exact hdivle
     · rw [him]; linarith [hγ, hLle]
-    · rw [hre, hβ]; linarith [hdivle]
+    · rw [hre, hβ]; linarith only [hdivle]
   have hwin_sh : ∀ (ρ : ℂ) (τ lam m : ℝ), 1 - ρ.re = lam / Lq → 0 ≤ lam → lam ≤ 6/7 →
       (τ - ρ.im) * Lq = m → |m| ≤ 4 →
       ‖(1:ℂ) + (τ : ℂ) * Complex.I - ρ‖ ≤ δ := by
@@ -632,7 +633,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
         ring
     rw [h1]
     have hm' : τ - ρ.im = m / Lq := by
-      rw [eq_div_iff hlogq.ne']; linarith [hm]
+      rw [eq_div_iff hlogq.ne']; linarith only [hm]
     have hnorm : ‖((1 - ρ.re : ℝ) : ℂ) + ((τ - ρ.im : ℝ) : ℂ) * Complex.I‖ ^ 2
         = (1 - ρ.re) ^ 2 + (τ - ρ.im) ^ 2 := by
       rw [Complex.sq_norm, Complex.normSq_add_mul_I]
@@ -640,14 +641,14 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       rw [hre, hm', div_pow, div_pow, ← add_div, div_le_iff₀ (by positivity : (0:ℝ) < Lq ^ 2)]
       have hkey : (25:ℝ) ≤ δ ^ 2 * Lq ^ 2 := by
         have h := pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 5) hδ5 2
-        nlinarith [h]
+        linarith only [h]
       have h1 : lam ^ 2 ≤ ((6:ℝ)/7) ^ 2 := pow_le_pow_left₀ hlam0 hl67 2
       have h2 : m ^ 2 ≤ (16:ℝ) := by
         have h := pow_le_pow_left₀ (abs_nonneg m) hm4 2
         rw [sq_abs] at h
         norm_num at h
         exact h
-      nlinarith [hkey, h1, h2]
+      linarith only [hkey, h1, h2]
     have hs : ‖((1 - ρ.re : ℝ) : ℂ) + ((τ - ρ.im : ℝ) : ℂ) * Complex.I‖ ^ 2 ≤ δ ^ 2 := by
       rw [hnorm]; exact hsq
     have h3 : |‖((1 - ρ.re : ℝ) : ℂ) + ((τ - ρ.im : ℝ) : ℂ) * Complex.I‖| ≤ |δ| :=
@@ -678,7 +679,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
         _ = |ρ.re| + |ρ.im| := by
             simp only [Complex.norm_real, Real.norm_eq_abs, norm_mul, Complex.norm_I, mul_one]
     have h2 : |ρ.re| + |ρ.im| ≤ 1 + (|τ| + δ) := by linarith
-    have h3 : (1:ℝ) + (|τ| + δ) ≤ |τ| + 2 := by linarith [hδ1]
+    have h3 : (1:ℝ) + (|τ| + δ) ≤ |τ| + 2 := by linarith only [hδ1]
     exact le_trans (le_trans h1 h2) h3
   -- ============ conductor instances and non-principality ============
   haveI hc1 : NeZero χ₁.conductor := ⟨χ₁.conductor_ne_zero⟩
@@ -717,7 +718,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     have h := hA (q := q) hqA ψ hψ hr1 hr2 hr3 (hL52 q hqL52 ψ hψ)
       (Work.ZeroFreeTables.OffAxis.IsRectMin.window_left (q := q) hR hlogq hψ
         (by rw [show (((β : ℂ) + (γ : ℂ) * Complex.I).im) = γ from by simp]
-            linarith [hγ, hδ1, hL1])
+            linarith only [hγ, hδ1, hL1])
         (by rw [show (((β : ℂ) + (γ : ℂ) * Complex.I).re) = β from by simp]; exact hρ1re.symm))
     rw [ha]; exact h
   -- ============ the single-zero bound at the same imaginary part ============
@@ -753,7 +754,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     have h := hS (q := q) hqS ψ hψ hr1 hr2 hr3 (hL52 q hqL52 ψ hψ) hdiv hwinρ
       (Work.ZeroFreeTables.OffAxis.IsRectMin.window_left (q := q) hR hlogq hψ
         (by rw [show (((β : ℂ) + (γ : ℂ) * Complex.I).im) = γ from by simp]
-            linarith [hγ, hδ1, hL1])
+            linarith only [hγ, hδ1, hL1])
         (by rw [show (((β : ℂ) + (γ : ℂ) * Complex.I).re) = β from by simp]; exact hρ1re.symm))
     have hint : (∫ t in (0:ℝ)..T.x₀,
           Complex.exp (-(((((β : ℂ) + (γ : ℂ) * Complex.I)) - ρ) * (Lq : ℂ) * (t:ℂ))) *
@@ -795,7 +796,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       (hL52 q hqL52 ψ hψ) hdivs hwins
       (Work.ZeroFreeTables.OffAxis.IsRectMin.window_left (q := q) hR hlogq hψ
         (by rw [show (((β : ℂ) + (τ : ℂ) * Complex.I).im) = τ from by simp]
-            linarith [hτ, hδ1, hL1])
+            linarith only [hτ, hδ1, hL1])
         (by rw [show (((β : ℂ) + (τ : ℂ) * Complex.I).re) = β from by simp]; exact hρ1re.symm))
     rw [hz] at h
     have hconv : (∫ t in (0:ℝ)..T.x₀, Complex.exp (-((((m : ℝ) : ℂ) * Complex.I) * (t : ℂ)))
@@ -838,7 +839,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       hdivs hdivs' hne hwins hwins' hsre1 hsre2
       (Work.ZeroFreeTables.OffAxis.IsRectMin.window_left (q := q) hR hlogq hψ
         (by rw [show (((β : ℂ) + (τ : ℂ) * Complex.I).im) = τ from by simp]
-            linarith [hτ, hδ1, hL1])
+            linarith only [hτ, hδ1, hL1])
         (by rw [show (((β : ℂ) + (τ : ℂ) * Complex.I).re) = β from by simp]; exact hρ1re.symm))
     have hz : (((β : ℂ) + (τ : ℂ) * Complex.I) - ρ) * (Lq : ℂ) = ((m : ℝ) : ℂ) * Complex.I := by
       have hsub : (β : ℂ) + (τ : ℂ) * Complex.I - ρ = ((τ - ρ.im : ℝ) : ℂ) * Complex.I := by
@@ -915,7 +916,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
   have hbP0 : Work.ZeroFreeTables.Ksum q T.f Lq (β : ℂ) 1
       ≤ Lq * T.F (-lam₁) + T.f 0 * ε' * Lq := by
     have hb := hP (q := q) hqP (β := β) (γ := 0) (by rw [hβ1]; exact hdivle)
-      (by rw [abs_zero]; linarith [hlogq])
+      (by rw [abs_zero]; linarith only [hlogq])
     rw [show ((β : ℂ) + ((0:ℝ) : ℂ) * Complex.I) = (β : ℂ) from by simp] at hb
     have harg : ((β : ℂ) - 1) * (Lq : ℂ) = ((-lam₁ : ℝ) : ℂ) := by
       have h1 : (β : ℂ) - 1 = ((-(lam₁ / Lq) : ℝ) : ℂ) := by
@@ -938,15 +939,15 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
   -- ============ the three single terms ============
   have hbS1 : Work.ZeroFreeTables.Ksum q T.f Lq ((β : ℂ) + (γ₁ : ℂ) * Complex.I) χ₁
       ≤ -Lq * T.F 0 + a := by
-    have h := hsingle χ₁ hR.1.1 γ₁ (by linarith [hγ1L, hL1]) ρ₁ lam₁ hγ₁.symm hlam₁ hl16
+    have h := hsingle χ₁ hR.1.1 γ₁ (by linarith only [hγ1L, hL1]) ρ₁ lam₁ hγ₁.symm hlam₁ hl16
       hR.1.2.1
     simpa using h
   have hbS2 : Work.ZeroFreeTables.Ksum q T.f Lq ((β : ℂ) + (γ₂ : ℂ) * Complex.I) χ₂
       ≤ -Lq * T.F (lam₂ - lam₁) + a :=
-    hsingle χ₂ hZ2.1 γ₂ (by linarith [hγ2L, hL1]) ρ₂ lam₂ hγ₂.symm hlam₂ hl26 hZ2.2.1
+    hsingle χ₂ hZ2.1 γ₂ (by linarith only [hγ2L, hL1]) ρ₂ lam₂ hγ₂.symm hlam₂ hl26 hZ2.2.1
   have hbS3 : Work.ZeroFreeTables.Ksum q T.f Lq ((β : ℂ) + (γ₃ : ℂ) * Complex.I) χ₃
       ≤ -Lq * T.F (lam₃ - lam₁) + a :=
-    hsingle χ₃ hZ3.1 γ₃ (by linarith [hγ3L, hL1]) ρ₃ lam₃ hγ₃.symm hlam₃ hlam3 hZ3.2.1
+    hsingle χ₃ hZ3.1 γ₃ (by linarith only [hγ3L, hL1]) ρ₃ lam₃ hγ₃.symm hlam₃ hlam3 hZ3.2.1
   -- ============ the four generic pairs ============
   have hbP12 : Work.ZeroFreeTables.Ksum q T.f Lq
         ((β : ℂ) + ((γ₁ : ℂ) + (γ₂ : ℂ)) * Complex.I) (χ₁ * χ₂) ≤ a := by
@@ -1112,7 +1113,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
     have hτ : |γ₁ + γ₂ + γ₃| ≤ 3 * L := by
       have h := abs_add_le (γ₁ + γ₂) γ₃
       have h' := abs_add_le γ₁ γ₂
-      linarith [h, h', hγ1L, hγ2L, hγ3L]
+      linarith only [h, h', hγ1L, hγ2L, hγ3L]
     have hb := htriple (γ₁ + γ₂ + γ₃) hτ
     rw [← hμ₀] at hb
     by_cases h4 : |μ₀| ≤ 4
@@ -1141,7 +1142,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       have h := abs_add_le (-γ₁ + γ₂) γ₃
       have h' := abs_add_le (-γ₁) γ₂
       rw [abs_neg] at h'
-      linarith [h, h', hγ1L, hγ2L, hγ3L]
+      linarith only [h, h', hγ1L, hγ2L, hγ3L]
     by_cases h1c : χ₂ * χ₃ = χ₁
     · have hchar : χ₁⁻¹ * χ₂ * χ₃ = 1 := by rw [mul_assoc, h1c, inv_mul_cancel]
       rw [hchar]
@@ -1189,7 +1190,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       have h' := abs_add_le γ₁ (-γ₂)
       rw [abs_neg] at h'
       simp only [sub_eq_add_neg] at h ⊢
-      linarith [h, h', hγ1L, hγ2L, hγ3L]
+      linarith only [h, h', hγ1L, hγ2L, hγ3L]
     by_cases h2c : χ₂ * χ₃⁻¹ = χ₁
     · have hchar : χ₁ * χ₂⁻¹ * χ₃ = 1 := by
         rw [← h2c]
@@ -1241,7 +1242,7 @@ theorem hb106Canon (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 0 < ε')
       have h' := abs_add_le γ₁ γ₂
       rw [abs_neg] at h
       simp only [sub_eq_add_neg] at h ⊢
-      linarith [h, h', hγ1L, hγ2L, hγ3L]
+      linarith only [h, h', hγ1L, hγ2L, hγ3L]
     by_cases h3c : χ₂ * χ₃⁻¹ = χ₁⁻¹
     · have hχ1 : χ₁ = (χ₂ * χ₃⁻¹)⁻¹ := by rw [h3c, inv_inv]
       have hchar : χ₁ * χ₂ * χ₃⁻¹ = 1 := by

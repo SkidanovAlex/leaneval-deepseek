@@ -95,7 +95,7 @@ private lemma order2_budget {K e : ℝ} (hK : 0 < K) (he : e ≤ 1 / (768 * K)) 
     mul_le_mul_of_nonneg_left he' (sq_nonneg _)
   have hpoly : 8 * K * (K + 1) ^ 2 + (K + 1) ^ 2 * (3 / 32)
       ≤ (12 * K + 1 / 2) * (K ^ 2 + 3 * K + 3 / 2) := by
-    nlinarith [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
+    nlinarith only [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
   linarith [hb, hpoly]
 
 /-- **Budget of the order-2 far branch.**  The extra error `eₓ = (K+½)e/(a S)` costs at most
@@ -142,7 +142,7 @@ private lemma order3_budget {K e : ℝ} (hK : 0 < K) (he : e ≤ 1 / (768 * K)) 
   have hpoly : 8 * K * (K ^ 2 + 3 * K + 5 / 4) + (K ^ 2 + K + 3 / 4) * (1 / 32)
       + (K ^ 2 + 3 * K + 5 / 4) * (1 / 16)
       ≤ (12 * K + 63 / 64) * (K ^ 2 + 3 * K + 3 / 2) := by
-    nlinarith [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
+    nlinarith only [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
   linarith [hA, hB, hpoly]
 
 /-- **Budget of the generic case.**  With `e ≤ 1/(768K)` and `e₀ = e/2`,
@@ -164,7 +164,7 @@ private lemma generic_budget {K e : ℝ} (hK : 0 < K) (he : e ≤ 1 / (768 * K))
     linarith [h, h2.le, h2.ge]
   have h3 : 8 * K ^ 3 + 24 * K ^ 2 + 12 * K + (6 * K ^ 2 + 14 * K + 7) / 64
       ≤ (12 * K + 1) * (K ^ 2 + 3 * K + 3 / 2) := by
-    nlinarith [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
+    nlinarith only [hK, sq_nonneg K, pow_nonneg hK.le 3, sq_nonneg (K + 1), sq_nonneg (K - 1)]
   rw [hkey]
   linarith [h1, h3]
 
@@ -219,9 +219,11 @@ private lemma error_bound_local {A Amax k2 k3 C Ct J T2r T3r L e : ℝ}
   have hA2eq : (A / L) ^ 2 = A ^ 2 / L ^ 2 := by rw [div_pow]
   have hA3eq : (A / L) ^ 3 = A ^ 3 / L ^ 3 := by rw [div_pow]
   have hL2' : (L + 2) / L ^ 2 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith [hL2]
+    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]
+    nlinarith only [mul_le_mul_of_nonneg_left hL2 hLpos.le]
   have hL3' : (L + 2) / L ^ 3 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith [hL2, sq_nonneg L]
+    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]
+    nlinarith only [mul_le_mul_of_nonneg_left hL2 (sq_nonneg L), mul_le_mul_of_nonneg_left hL2 hLpos.le, hLpos]
   have herr2 : (A / L) ^ 2 * (k2 * J - T2r) ≤ Amax ^ 2 * (k2 * C + Ct) * (2 / L) := by
     rw [hA2eq]
     calc A ^ 2 / L ^ 2 * (k2 * J - T2r)
@@ -344,13 +346,13 @@ private theorem masterWide_local {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ)
       rwa [mul_inv_cancel₀ (ne_of_gt ha)] at h
     have : 1 / (L * Real.log L) ≤ a / L := by
       rw [div_le_div_iff₀ (by positivity : 0 < L * Real.log L) hLpos]
-      nlinarith [h1, hLpos]
+      nlinarith only [mul_le_mul_of_nonneg_left h1 hLpos.le]
     linarith
   have hs2 : s.re ≤ 1 + Real.log L / L := by
     rw [hsre]
     have h2 : a ≤ Real.log L := le_trans (le_max_left a a⁻¹) hlogL_ge
     have : a / L ≤ Real.log L / L := by
-      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith [h2, hLpos]
+      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith only [mul_le_mul_of_nonneg_right h2 hLpos.le]
     linarith
   have hs3 : |s.im| ≤ 10 * L := hsim
   have hlog := hwd s hs1 hs2 hs3
@@ -377,7 +379,8 @@ private theorem masterWide_local {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ)
           linarith
   have hlog2s : Real.log (2 + ‖s‖) ≤ Real.log 11 + 2 * L := by
     have h1 : (0 : ℝ) < 2 + ‖s‖ := by positivity
-    have h2 : 2 + ‖s‖ ≤ 11 * L ^ 2 := by nlinarith [hnorm_s, hLge4, sq_nonneg L]
+    have h2 : 2 + ‖s‖ ≤ 11 * L ^ 2 := by
+      nlinarith only [hnorm_s, hLge4, mul_le_mul_of_nonneg_right hLge4 (le_trans (by norm_num) hLge4)]
     calc Real.log (2 + ‖s‖) ≤ Real.log (11 * L ^ 2) := Real.log_le_log h1 h2
       _ = Real.log 11 + 2 * Real.log L := by
           rw [Real.log_mul (by norm_num) (by positivity), Real.log_pow]; push_cast; ring
@@ -392,7 +395,7 @@ private theorem masterWide_local {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ)
     have h3 : Cq * (3 * L + Real.log 11 + 2) ≤ C * (L + 2) := by
       rw [hCdef]
       have h4 : 3 * L + Real.log 11 + 2 ≤ (5 + Real.log 11) * (L + 2) := by
-        nlinarith [hLpos.le, hlog11.le]
+        nlinarith only [mul_nonneg hLpos.le hlog11.le, hLpos.le, hlog11.le]
       calc Cq * (3 * L + Real.log 11 + 2) ≤ Cq * ((5 + Real.log 11) * (L + 2)) :=
             mul_le_mul_of_nonneg_left h4 hCqpos.le
         _ = (5 + Real.log 11) * Cq * (L + 2) := by ring
@@ -405,7 +408,8 @@ private theorem masterWide_local {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ)
   have hAle : a + lam₁ ≤ a + M := by linarith
   have hAe_pos : 0 < (a + lam₁) * e := mul_pos (by linarith) he
   have hKL : K ≤ (a + lam₁) * e * L := by
-    have h1 : a * e ≤ (a + lam₁) * e := by nlinarith [hlam₁, he]
+    have h1 : a * e ≤ (a + lam₁) * e :=
+      mul_le_mul_of_nonneg_right (by linarith only [hlam₁]) he.le
     have h2 : a * e * L ≤ (a + lam₁) * e * L := mul_le_mul_of_nonneg_right h1 hLpos.le
     linarith [hKe, h2]
   have herr := error_bound_local (A := a + lam₁) (Amax := a + M) (k2 := 1 + 4 / δ ^ 2)
@@ -1226,11 +1230,11 @@ theorem rectRepOrder3H {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 < �
       simpa only [hΦadef, hΦ2def] using h0
     have hKd : Kond K ≤ 4 * K := min_le_right _ _
     have h1 : (1 / 4 : ℝ) * ((al / a) ^ 3) ≤ 2 * (K + 1 / 2) := by
-      have h2 : (1 / 4 : ℝ) * (Kond K + 1) ≤ 2 * (K + 1 / 2) := by linarith
+      have h2 : (1 / 4 : ℝ) * (Kond K + 1) ≤ 2 * (K + 1 / 2) := by linarith only [hKd, hK]
       have h3 : (1 / 4 : ℝ) * ((al / a) ^ 3) ≤ (1 / 4 : ℝ) * (Kond K + 1) := by
         have := (by simpa only [hal] using hcube : ((al / a) ^ 3) ≤ Kond K + 1)
-        linarith
-      linarith
+        linarith only [this]
+      linarith only [h2, h3]
     calc (1 / 4) * Φa ≤ (1 / 4) * ((al / a) ^ 3 * Φ2) :=
           mul_le_mul_of_nonneg_left hΦle (by norm_num)
       _ = ((1 / 4) * (al / a) ^ 3) * Φ2 := by ring

@@ -38,9 +38,9 @@ private lemma error_bound_kept {A Amax k2 k3 C Ct J L e : ℝ}
   have hnum : A ^ 2 ≤ Amax ^ 2 := pow_le_pow_left₀ hA hAle 2
   have hnum3 : A ^ 3 ≤ Amax ^ 3 := pow_le_pow_left₀ hA hAle 3
   have hL2' : (L + 2) / L ^ 2 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith [hL2]
+    rw [div_le_div_iff₀ (pow_pos hLpos 2) hLpos]; nlinarith only [hL2, hLpos]
   have hL3' : (L + 2) / L ^ 3 ≤ 2 / L := by
-    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith [hL2, sq_nonneg L]
+    rw [div_le_div_iff₀ (pow_pos hLpos 3) hLpos]; nlinarith only [hL2, sq_nonneg L, hLpos]
   have herr2 : A ^ 2 / L ^ 2 * (k2 * J + Ct) ≤ Amax ^ 2 * (k2 * C + Ct) * (2 / L) := by
     calc A ^ 2 / L ^ 2 * (k2 * J + Ct)
         ≤ A ^ 2 / L ^ 2 * ((k2 * C + Ct) * (L + 2)) :=
@@ -233,13 +233,13 @@ theorem masterP3kept {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ 
       rwa [mul_inv_cancel₀ (ne_of_gt ha)] at h
     have : 1 / (L * Real.log L) ≤ a / L := by
       rw [div_le_div_iff₀ (by positivity : 0 < L * Real.log L) hLpos]
-      nlinarith [h1, hLpos]
+      nlinarith only [mul_le_mul_of_nonneg_left h1 hLpos.le]
     linarith
   have hs2 : s.re ≤ 1 + Real.log L / L := by
     rw [hsre]
     have h2 : a ≤ Real.log L := le_trans (le_max_left a a⁻¹) hlogL_ge
     have : a / L ≤ Real.log L / L := by
-      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith [h2, hLpos]
+      rw [div_le_div_iff₀ hLpos hLpos]; nlinarith only [mul_le_mul_of_nonneg_right h2 hLpos.le]
     linarith
   have hs3 : |s.im| ≤ L := le_trans hsim hLge4
   have hlog := hyp s hs1 hs2 hs3
@@ -254,7 +254,7 @@ theorem masterP3kept {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ 
       _ = 1 + a / L + |s.im| := by rw [hsre]
       _ ≤ 1 + a / L + 4 := by linarith [hsim]
       _ ≤ L + 5 := by
-          have hdiv : a / L ≤ a := by rw [div_le_iff₀ hLpos]; nlinarith [haL, ha]
+          have hdiv : a / L ≤ a := by rw [div_le_iff₀ hLpos]; nlinarith only [mul_le_mul_of_nonneg_left hLge1 ha.le]
           linarith
   have hJ : Work.ZeroFreeTables.P9.invSqSum N χ s ≤ C * (L + 2) :=
     hC χ hχ hprim hLge1 hlogN hnorm_s
@@ -270,7 +270,7 @@ theorem masterP3kept {a δ c e M : ℝ} (ha : 0 < a) (hδ0 : 0 < δ) (hδ1 : δ 
   have hAle : a + lam₁ ≤ a + M := by linarith
   have hAe_pos : 0 < (a + lam₁) * e := mul_pos (by linarith) he
   have hKL : K ≤ (a + lam₁) * e * L := by
-    have h1 : a * e ≤ (a + lam₁) * e := by nlinarith [hlam₁, he]
+    have h1 : a * e ≤ (a + lam₁) * e := by nlinarith only [mul_nonneg hlam₁ he.le]
     have h2 : a * e * L ≤ (a + lam₁) * e * L := mul_le_mul_of_nonneg_right h1 hLpos.le
     linarith [hKe, h2]
   have herr : (a + lam₁) ^ 2 / L ^ 2

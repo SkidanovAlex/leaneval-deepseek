@@ -1,7 +1,8 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.rectInt_logDeriv_entire_mul
 import Submission.Commons.NumberTheory.DirichletCharacter.rectInt_logDeriv_completed_mul_simplePole
+import Submission.Commons.NumberTheory.Zeta.xi_logDeriv_re_lower_general
+import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_re_regular_bound
 
 namespace Work.LinnikAreas
 

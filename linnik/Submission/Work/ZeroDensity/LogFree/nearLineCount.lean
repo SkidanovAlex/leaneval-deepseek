@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.ZeroDensity.LogFree.GramProps
-import Submission.Work.ZeroDensity.LogFree.ZFImports
 import Submission.Work.ZeroDensity.LogFree.excZeroReal
 import Submission.Work.ZeroDensity.LogFree.excCharUnique
 

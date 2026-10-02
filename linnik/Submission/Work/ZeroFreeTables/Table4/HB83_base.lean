@@ -28,7 +28,6 @@ import Submission.Work.ZeroFreeTables.P9.HbCombinationL_nonneg
 import Submission.Work.ZeroFreeTables.P9.invNearSum_eq_tsum
 import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen_real
 import Submission.Work.NumberTheory.DirichletCharacter.quarterBurgess
-import Submission.Commons.NumberTheory.DirichletCharacter.burgess_charSum_cubefree
 import Submission.Work.LinnikAreas.charSum_of_moment_all_k
 import Submission.Work.LinnikAreas.moment_cubefree_all_r
 import Submission.Work.ZeroFreeTables.Table4.HB83

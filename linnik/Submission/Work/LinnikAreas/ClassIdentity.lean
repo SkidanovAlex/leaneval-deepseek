@@ -156,7 +156,7 @@ lemma norm_ofReal_of_nonneg {x : ℝ} (hx : 0 ≤ x) : ‖((x : ℂ))‖ = x := 
   have h1 : ‖((x : ℂ))‖ ^ 2 = x ^ 2 := by
     rw [← Complex.normSq_eq_norm_sq, Complex.normSq_ofReal]
     ring
-  nlinarith [h1, norm_nonneg ((x : ℂ) : ℂ), hx]
+  nlinarith only [h1, norm_nonneg ((x : ℂ) : ℂ), hx]
 
 theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
   classical
@@ -170,7 +170,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
   intro q hq hqne R hR a ha X hX
   have hq1 : 1 < q := by omega
   have hqR1 : (1 : ℝ) < (q : ℝ) := by exact_mod_cast hq1
-  have hqR0 : (0 : ℝ) < (q : ℝ) := by linarith
+  have hqR0 : (0 : ℝ) < (q : ℝ) := by linarith only [hqR1]
   have hqRle : (1 : ℝ) ≤ (q : ℝ) := le_of_lt hqR1
   have hlogq : 0 < Real.log (q : ℝ) := Real.log_pos hqR1
   have hlogne : (Real.log (q : ℝ)) ≠ 0 := ne_of_gt hlogq
@@ -462,7 +462,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
         rwa [Real.one_rpow] at h
       have h20 : (q : ℝ) ^ ((49 : ℝ) / 20) ≤ (q : ℝ) ^ ((49 : ℝ) / 10) :=
         Real.rpow_le_rpow_of_exponent_le hqRle (by norm_num)
-      linarith
+      linarith only [hl, hq4, h20]
     have hrpow : (q : ℝ) ^ (-((147 : ℝ) / 20))
         ≤ 16 * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by
       have key : (q : ℝ) ^ (-((147 : ℝ) / 20)) * Real.log (q : ℝ)
@@ -476,7 +476,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
           _ ≤ 16 * (q : ℝ) ^ (-((49 : ℝ) / 20)) := by
               have h1 : (q : ℝ) ^ (-((49 : ℝ) / 10)) ≤ (q : ℝ) ^ (-((49 : ℝ) / 20)) :=
                 Real.rpow_le_rpow_of_exponent_le hqRle (by norm_num)
-              linarith
+              linarith only [h1]
       calc (q : ℝ) ^ (-((147 : ℝ) / 20))
           = ((q : ℝ) ^ (-((147 : ℝ) / 20)) * Real.log (q : ℝ)) / Real.log (q : ℝ) := by
             rw [mul_div_cancel_right₀ _ hlogne]
@@ -501,7 +501,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
           _ = 17 * (q : ℝ) ^ (-((49 : ℝ) / 20)) := by norm_num
           _ ≤ 32 * (q : ℝ) ^ (-((49 : ℝ) / 20)) := by
               have hpos : 0 < (q : ℝ) ^ (-((49 : ℝ) / 20)) := Real.rpow_pos_of_pos hqR0 _
-              linarith
+              linarith only [hpos]
       calc (Real.log (q : ℝ))⁻¹ * (q : ℝ) ^ (-((147 : ℝ) / 20)) * (1 + Real.log (q : ℝ))
           = ((Real.log (q : ℝ))⁻¹ * (q : ℝ) ^ (-((147 : ℝ) / 20)) * (1 + Real.log (q : ℝ))
               * Real.log (q : ℝ)) / Real.log (q : ℝ) := by
@@ -511,14 +511,14 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
         _ = 32 * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by ring
     have hsum : (q : ℝ) ^ (-((49 : ℝ) / 10))
         + (Real.log (q : ℝ))⁻¹ * ((q : ℝ) ^ (-((147 : ℝ) / 20))) * (1 + Real.log (q : ℝ))
-        ≤ 64 * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by linarith
+        ≤ 64 * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by linarith only [hQvnn, h4, h5]
     calc Cbr * ((q : ℝ) ^ (-((49 : ℝ) / 10))
           + ((Real.log (q : ℝ))⁻¹ * ((q : ℝ) ^ (-((147 : ℝ) / 20))) * (1 + Real.log (q : ℝ))))
         ≤ Cbr * (64 * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ))) :=
           mul_le_mul_of_nonneg_left hsum (le_of_lt hCbrpos)
       _ ≤ 128 * Cbr * ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by
           have hpos : 0 ≤ ((q : ℝ) ^ (-((49 : ℝ) / 20)) / Real.log (q : ℝ)) := by positivity
-          nlinarith [hCbrpos, hpos]
+          nlinarith only [hCbrpos, hpos, hQvnn]
   have hNb1 : (Real.log (q : ℝ))⁻¹ * Nb ≤ 256 * Cnc * Qv := by
     rw [hNb, hQv]
     have h256 : (Real.log (q : ℝ)) ^ 2 * (q : ℝ) ^ (-((49 : ℝ) / 20)) ≤ 256 :=
@@ -593,11 +593,11 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
           = ((q.totient : ℝ) * Real.log (q : ℝ))⁻¹ * (1024 * (Cpr + Cnc + Cpp + Cbr + 1)) by ring]
       refine mul_le_mul_of_nonneg_left ?_ (by positivity :
         (0 : ℝ) ≤ ((q.totient : ℝ) * Real.log (q : ℝ))⁻¹)
-      nlinarith [hCprpos, hCncpos, hCpppos, hCbrpos]
+      linarith only [hCprpos, hCncpos, hCpppos, hCbrpos]
     have hEN : Eb + (Real.log (q : ℝ))⁻¹ * Nb ≤ (128 * Cbr + 256 * Cnc) * Qv := by
       have h1 := hEb1
       have h2 := hNb1
-      nlinarith [h1, h2, hQvnn]
+      linarith only [h1, h2, hQvnn, hEb1, hNb1]
     have hP : (Real.log (q : ℝ))⁻¹ * (Cpp * (q : ℝ) ^ (-((49 : ℝ) / 20))) ≤ Cpp * Qv := by
       rw [hQv]
       rw [show (Real.log (q : ℝ))⁻¹ * (Cpp * (q : ℝ) ^ (-((49 : ℝ) / 20)))
@@ -605,7 +605,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
         rw [div_eq_mul_inv]
         ring]
     have hK : (128 * Cbr + 256 * Cnc + Cpp) ≤ 1024 * (Cpr + Cnc + Cpp + Cbr + 1) := by
-      nlinarith [hCprpos, hCncpos, hCpppos, hCbrpos]
+      linarith only [hCprpos, hCncpos, hCpppos, hCbrpos]
     have hKQv : (128 * Cbr + 256 * Cnc + Cpp) * Qv
         ≤ 1024 * (Cpr + Cnc + Cpp + Cbr + 1) * Qv := mul_le_mul_of_nonneg_right hK hQvnn
     have hKQv' : 1024 * (Cpr + Cnc + Cpp + Cbr + 1) * Qv
@@ -615,7 +615,7 @@ theorem ClassIdentity : Work.LinnikAreas.ClassIdentityHyp := by
     have hENP : (128 * Cbr + 256 * Cnc) * Qv + Cpp * Qv
         = (128 * Cbr + 256 * Cnc + Cpp) * Qv := by ring
     rw [hKQv'] at hKQv
-    linarith [hprin, hEN, hP, hKQv, hENP]
+    linarith only [hprin, hEN, hP, hKQv, hENP, hEb1, hNb1]
   refine le_trans hmain ?_
   rw [show (-((49 : ℝ) / 10) / 2) = -((49 : ℝ) / 20) by norm_num]
   exact hnum3

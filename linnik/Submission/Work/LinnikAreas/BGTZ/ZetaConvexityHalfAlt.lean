@@ -45,7 +45,7 @@ lemma gamma_ne_zero_of_re_pos {z : ℂ} (hz : 0 < z.re) : Complex.Gamma z ≠ 0 
   have hre := congrArg Complex.re hm
   simp at hre
   have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
-  linarith
+  linarith only [hz, hre]
 
 lemma norm_Gamma_star' (w : ℂ) : ‖Complex.Gamma (star w)‖ = ‖Complex.Gamma w‖ :=
   Commons.Analysis.Complex.norm_Gamma_conj w
@@ -57,9 +57,9 @@ lemma ZW_ratio_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) :
   set u₂ : ℝ := 1 - s.re / 4 with hu₂
   set u₁ : ℝ := 1 / 2 + s.re / 4 with hu₁
   set τ : ℝ := s.im / 4 with hτ
-  have hu1 : (1 : ℝ) / 2 ≤ u₁ := by rw [hu₁]; linarith
-  have h12 : u₁ ≤ u₂ := by rw [hu₁, hu₂]; linarith
-  have h2 : u₂ ≤ 8 := by rw [hu₂]; linarith
+  have hu1 : (1 : ℝ) / 2 ≤ u₁ := by rw [hu₁]; linarith only [hs0]
+  have h12 : u₁ ≤ u₂ := by rw [hu₁, hu₂]; linarith only [hs1]
+  have h2 : u₂ ≤ 8 := by rw [hu₂]; linarith only [hs0]
   have hu2m1 : u₂ - u₁ = 1 / 2 - s.re / 2 := by rw [hu₂, hu₁]; ring
   have hnum : (1 - s / 4) = star (((u₂ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I) := by
     rw [hu₂, hτ]
@@ -73,26 +73,26 @@ lemma ZW_ratio_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) :
     apply gamma_ne_zero_of_re_pos
     simp only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, Complex.I_re,
       Complex.I_im, mul_one, mul_zero, sub_zero]
-    linarith
+    linarith only [hs1, hu₂]
   have hB : Complex.Gamma (((u₁ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I) ≠ 0 := by
     apply gamma_ne_zero_of_re_pos
     simp only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, Complex.I_re,
       Complex.I_im, mul_one, mul_zero, sub_zero]
-    linarith
+    linarith only [hs0, hu₁]
   have hApos : 0 < ‖Complex.Gamma (((u₂ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I)‖ := norm_pos_iff.mpr hA
   have hBpos : 0 < ‖Complex.Gamma (((u₁ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I)‖ := norm_pos_iff.mpr hB
   have hinc := Commons.Analysis.SpecialFunctions.Gamma.log_norm_Gamma_sub_le u₁ u₂ τ hu1 h12 h2
   have hτabs : |τ| = |s.im| / 4 := by rw [hτ, abs_div]; norm_num
   have hlog : Real.log (2 + |τ|) ≤ Real.log (2 + |s.im|) := by
-    apply Real.log_le_log (by positivity); rw [hτabs]; linarith [abs_nonneg s.im]
+    apply Real.log_le_log (by positivity); rw [hτabs]; linarith only [abs_nonneg s.im]
   have hratio : ‖Complex.Gamma (((u₂ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I)‖ /
       ‖Complex.Gamma (((u₁ : ℝ) : ℂ) + ((τ : ℝ) : ℂ) * I)‖ ≤
       Real.exp ((u₂ - u₁) * (Real.log (2 + |s.im|) + 2)) := by
     have h := Real.exp_le_exp.mpr hinc
     rw [Real.exp_sub, Real.exp_log hApos, Real.exp_log hBpos] at h
     refine h.trans (Real.exp_le_exp.mpr ?_)
-    have h0 : 0 ≤ u₂ - u₁ := by rw [hu2m1]; linarith
-    nlinarith [hlog, h0]
+    have h0 : 0 ≤ u₂ - u₁ := by rw [hu2m1]; linarith only [hs1]
+    nlinarith only [hlog, h0, hs1, hu₂, hu₁]
   rw [hnum, hden, norm_div, norm_Gamma_star']
   refine hratio.trans (le_of_eq ?_)
   rw [hu2m1]
@@ -105,13 +105,13 @@ lemma ZW_log_lower {s : ℂ} (hre0 : 0 ≤ s.re) (hb : 1 ≤ |s.im|) :
     have h1 : (s + 2).re = s.re + 2 := by rw [Complex.add_re]; norm_num
     have h2 : (s + 2).im = s.im := by rw [Complex.add_im]; norm_num
     rw [h1, h2]
-    nlinarith [hre0, abs_nonneg s.im, sq_abs s.im, sq_nonneg (s.re), hb]
-  have hpos2 : (0 : ℝ) < 2 + |s.im| := by linarith [abs_nonneg s.im]
+    nlinarith only [hre0, abs_nonneg s.im, sq_abs s.im, sq_nonneg (s.re), hb]
+  have hpos2 : (0 : ℝ) < 2 + |s.im| := by linarith only [abs_nonneg s.im, hb]
   have h1 : Real.log (2 + |s.im|) ≤ 2 * Real.log ‖s + 2‖ := by
     have h := Real.log_le_log hpos2 hnorm
     rwa [Real.log_pow] at h
   have h2 : Real.log ‖s + 2‖ = (Complex.log (s + 2)).re := (Complex.log_re _).symm
-  calc (1 / 2) * Real.log (2 + |s.im|) ≤ (1 / 2) * (2 * Real.log ‖s + 2‖) := by linarith
+  calc (1 / 2) * Real.log (2 + |s.im|) ≤ (1 / 2) * (2 * Real.log ‖s + 2‖) := by linarith only [h1]
     _ = Real.log ‖s + 2‖ := by ring
     _ = (Complex.log (s + 2)).re := h2
     _ ≤ ‖Complex.log (s + 2)‖ := Complex.re_le_norm _
@@ -120,24 +120,24 @@ lemma ZW_log_lower {s : ℂ} (hre0 : 0 ≤ s.re) (hb : 1 ≤ |s.im|) :
 lemma ZW_norm_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) (hb : 1 ≤ |s.im|) :
     ‖ZW s‖ ≤ 100 * (2 + |s.im|) ^ ((3 : ℝ) / 2 - s.re / 2)
       * (Real.log (2 + |s.im|) + 2) := by
-  have hxpos : (0 : ℝ) < 2 + |s.im| := by linarith [abs_nonneg s.im]
-  have hx1 : (1 : ℝ) ≤ 2 + |s.im| := by linarith [abs_nonneg s.im]
+  have hxpos : (0 : ℝ) < 2 + |s.im| := by linarith only [abs_nonneg s.im, hb]
+  have hx1 : (1 : ℝ) ≤ 2 + |s.im| := by linarith only [abs_nonneg s.im, hb]
   have h1 : ‖s + 2‖ ≤ 4 * (2 + |s.im|) := by
     have h := Complex.norm_le_abs_re_add_abs_im (s + 2)
     have hre : (s + 2).re = s.re + 2 := by rw [Complex.add_re]; norm_num
     have him : (s + 2).im = s.im := by rw [Complex.add_im]; norm_num
     rw [hre, him] at h
-    have hr : |s.re + 2| = s.re + 2 := abs_of_nonneg (by linarith)
+    have hr : |s.re + 2| = s.re + 2 := abs_of_nonneg (by linarith only [hs0])
     rw [hr] at h
-    nlinarith [abs_nonneg s.im, h]
+    linarith only [abs_nonneg s.im, h, hs1, hb]
   have h2 : ‖Complex.log (s + 2)‖ ≤ 5 * (Real.log (2 + |s.im|) + 2) := by
     have hz2 : (2 : ℝ) ≤ ‖s + 2‖ := by
       have h := Complex.re_le_norm (s + 2)
       have hre : (s + 2).re = s.re + 2 := by rw [Complex.add_re]; norm_num
       rw [hre] at h
-      linarith
+      linarith only [hs0, h]
     have hlog : |Real.log ‖s + 2‖| ≤ Real.log (2 + |s.im|) + 2 := by
-      have hpos : (0 : ℝ) < ‖s + 2‖ := by linarith
+      have hpos : (0 : ℝ) < ‖s + 2‖ := by linarith only [hz2]
       have hle1 : Real.log ‖s + 2‖ ≤ Real.log 4 + Real.log (2 + |s.im|) := by
         have hle := Real.log_le_log hpos h1
         rw [Real.log_mul (by norm_num) (ne_of_gt hxpos)] at hle
@@ -148,13 +148,13 @@ lemma ZW_norm_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) (hb : 1 ≤ 
           have h := Real.exp_one_gt_d9
           have he : Real.exp 2 = Real.exp 1 ^ 2 := by
             rw [show (2:ℝ) = ((2:ℕ):ℝ) * 1 by norm_num, Real.exp_nat_mul]
-          rw [he]; nlinarith
+          rw [he]; nlinarith only [h]
         exact h2'
       have hge : Real.log 2 ≤ Real.log (2 + |s.im|) := by
-        apply Real.log_le_log (by norm_num); linarith [abs_nonneg s.im]
-      have hpos' : (0 : ℝ) ≤ Real.log ‖s + 2‖ := Real.log_nonneg (by linarith)
+        apply Real.log_le_log (by norm_num); linarith only [abs_nonneg s.im, hb]
+      have hpos' : (0 : ℝ) ≤ Real.log ‖s + 2‖ := Real.log_nonneg (by linarith only [hz2])
       rw [abs_le]
-      constructor <;> linarith
+      constructor <;> linarith only [hle1, hlog4, hpos']
     have hargle : |Complex.arg (s + 2)| ≤ Real.pi := Complex.abs_arg_le_pi _
     have hlogr : (Complex.log (s + 2)).re = Real.log ‖s + 2‖ := Complex.log_re _
     calc ‖Complex.log (s + 2)‖ ≤ ‖(Complex.log (s + 2)).re‖ + |(Complex.log (s + 2)).im| := by
@@ -163,11 +163,11 @@ lemma ZW_norm_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) (hb : 1 ≤ 
       _ = |Real.log ‖s + 2‖| + |Complex.arg (s + 2)| := by
             rw [hlogr, Complex.log_im, Real.norm_eq_abs]
       _ ≤ (Real.log (2 + |s.im|) + 2) + 4 := by
-            have hpi : Real.pi ≤ 4 := by linarith [Real.pi_lt_four]
-            linarith
+            have hpi : Real.pi ≤ 4 := by linarith only [Real.pi_lt_four]
+            linarith only [hlog, hargle, hpi]
       _ ≤ 5 * (Real.log (2 + |s.im|) + 2) := by
             have h3 : (0 : ℝ) ≤ Real.log (2 + |s.im|) := Real.log_nonneg hx1
-            linarith
+            linarith only [h3]
   have h3 := ZW_ratio_upper hs0 hs1
   have h4 : Real.exp ((1 / 2 - s.re / 2) * (Real.log (2 + |s.im|) + 2))
       ≤ Real.exp 1 * (2 + |s.im|) ^ ((1 : ℝ) / 2 - s.re / 2) := by
@@ -178,7 +178,7 @@ lemma ZW_norm_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) (hb : 1 ≤ 
         Real.exp_mul, Real.exp_log hxpos]
     rw [hsplit]
     have h2a : Real.exp ((1 / 2 - s.re / 2) * 2) ≤ Real.exp 1 :=
-      Real.exp_le_exp.mpr (by linarith)
+      Real.exp_le_exp.mpr (by linarith only [hs0])
     have hna : (0 : ℝ) ≤ (2 + |s.im|) ^ ((1 : ℝ) / 2 - s.re / 2) :=
       Real.rpow_nonneg (by positivity) _
     calc (2 + |s.im|) ^ ((1 : ℝ) / 2 - s.re / 2) * Real.exp ((1 / 2 - s.re / 2) * 2)
@@ -213,16 +213,16 @@ lemma ZW_norm_upper {s : ℂ} (hs0 : 0 ≤ s.re) (hs1 : s.re ≤ 1) (hb : 1 ≤ 
         have hX : (0 : ℝ) ≤ (2 + |s.im|) ^ ((3 : ℝ) / 2 - s.re / 2) :=
           Real.rpow_nonneg (by positivity) _
         have hlg : (0 : ℝ) ≤ Real.log (2 + |s.im|) + 2 := by
-          have := Real.log_nonneg hx1; linarith
+          have := Real.log_nonneg hx1; linarith only [this]
         have he : 20 * Real.exp 1 ≤ 100 := by
-          have := Real.exp_one_lt_three; linarith
+          have := Real.exp_one_lt_three; linarith only [this]
         exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right he hX) hlg
 
 lemma log_two_add_nonneg (t : ℝ) : (0 : ℝ) ≤ Real.log (2 + |t|) :=
-  Real.log_nonneg (by linarith [abs_nonneg t])
+  Real.log_nonneg (by linarith only [abs_nonneg t])
 
 lemma log_two_add_pos (t : ℝ) : (0 : ℝ) < Real.log (2 + |t|) :=
-  Real.log_pos (by linarith [abs_nonneg t])
+  Real.log_pos (by linarith only [abs_nonneg t])
 
 lemma add_norm_sq (a t : ℝ) : ‖(a : ℂ) + (t : ℂ) * I‖ ^ 2 = a ^ 2 + t ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]
@@ -235,9 +235,9 @@ lemma add_norm_sq (a t : ℝ) : ‖(a : ℂ) + (t : ℂ) * I‖ ^ 2 = a ^ 2 + t 
 lemma add_norm_ge (a t : ℝ) (ha : 1 ≤ a) : (1 + |t|) / 2 ≤ ‖(a : ℂ) + (t : ℂ) * I‖ := by
   have h := add_norm_sq a t
   have h2 : ((1 + |t|) / 2) ^ 2 ≤ a ^ 2 + t ^ 2 := by
-    have h1 : (1 + |t|) ^ 2 ≤ 4 * (1 + t ^ 2) := by nlinarith [abs_nonneg t, sq_abs t]
-    have h3 : (1 : ℝ) ≤ a ^ 2 := by nlinarith [ha]
-    nlinarith [h1, h3, sq_nonneg t]
+    have h1 : (1 + |t|) ^ 2 ≤ 4 * (1 + t ^ 2) := by nlinarith only [abs_nonneg t, sq_abs t]
+    have h3 : (1 : ℝ) ≤ a ^ 2 := by nlinarith only [ha]
+    linarith only [h1, h3, sq_nonneg t]
   have h3 : ((1 + |t|) / 2) ^ 2 ≤ ‖(a : ℂ) + (t : ℂ) * I‖ ^ 2 := by rw [h]; exact h2
   rw [show ((1 + |t|) / 2) = Real.sqrt (((1 + |t|) / 2) ^ 2) from
         (Real.sqrt_sq (by positivity)).symm,
@@ -274,7 +274,7 @@ lemma sqrt_div_four {x : ℝ} (hx : 0 ≤ x) : Real.sqrt (x / 4) = Real.sqrt x /
     rw [Real.sq_sqrt h4, div_pow, Real.sq_sqrt hx]; norm_num
   have h1 : (0 : ℝ) ≤ Real.sqrt (x / 4) := Real.sqrt_nonneg _
   have h2 : (0 : ℝ) ≤ Real.sqrt x / 2 := by positivity
-  nlinarith [hval, h1, h2]
+  nlinarith only [hval, h1, h2]
 
 /-- Sharp lower bound for the Gamma-ratio on the imaginary axis. -/
 lemma gamma_ratio_lower (v : ℝ) (hv : v ≠ 0) :
@@ -294,17 +294,17 @@ lemma gamma_ratio_lower (v : ℝ) (hv : v ≠ 0) :
   have hle : |v| ≤ |v| / Real.tanh (Real.pi * |v|) := by
     rw [le_div_iff₀ htpos]
     have h1 : Real.tanh (Real.pi * |v|) ≤ 1 := le_of_lt (Real.tanh_lt_one _)
-    nlinarith [h1, ha]
+    nlinarith only [h1, ha]
   rw [← Real.sqrt_sq (norm_nonneg _), hr]
   exact Real.sqrt_le_sqrt hle
 
 lemma half_le_sqrt_abs {t : ℝ} (ht : 1 ≤ |t|) :
     (1 + |t|) ^ ((1 : ℝ) / 2) / 2 ≤ Real.sqrt |t| := by
   calc (1 + |t|) ^ ((1 : ℝ) / 2) / 2 = Real.sqrt (1 + |t|) / 2 := by rw [Real.sqrt_eq_rpow]
-    _ = Real.sqrt ((1 + |t|) / 4) := (sqrt_div_four (by linarith [abs_nonneg t])).symm
+    _ = Real.sqrt ((1 + |t|) / 4) := (sqrt_div_four (by linarith only [abs_nonneg t, ht])).symm
     _ ≤ Real.sqrt |t| := by
         apply Real.sqrt_le_sqrt
-        linarith [ht, abs_nonneg t]
+        linarith only [ht, abs_nonneg t]
 
 /-- Lower bound for the weight at `σ = 0`. -/
 lemma ZW_lower_zero {t : ℝ} (ht : 1 ≤ |t|) :
@@ -316,7 +316,7 @@ lemma ZW_lower_zero {t : ℝ} (ht : 1 ≤ |t|) :
       ‖Complex.Gamma (1 - ((t : ℂ) * I) / 4) / Complex.Gamma (1 / 2 + ((t : ℂ) * I) / 4)‖ := by
     have hv : (-(t / 4)) ≠ 0 := by
       intro h
-      have ht0 : t = 0 := by linarith
+      have ht0 : t = 0 := by linarith only [h]
       rw [ht0] at ht; norm_num at ht
     have h := gamma_ratio_lower (-(t / 4)) hv
     have habs : |-(t / 4)| = |t| / 4 := by rw [abs_neg, abs_div]; norm_num
@@ -342,9 +342,9 @@ lemma ZW_lower_zero {t : ℝ} (ht : 1 ≤ |t|) :
     have hs := half_le_sqrt_abs ht
     have hpow : (1 + |t|) ^ ((3 : ℝ) / 2) = (1 + |t|) * (1 + |t|) ^ ((1 : ℝ) / 2) := by
       rw [show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num,
-        Real.rpow_add (by linarith [abs_nonneg t]), Real.rpow_one]
+        Real.rpow_add (by linarith only [abs_nonneg t, ht]), Real.rpow_one]
     rw [hpow]
-    have hAn : (0 : ℝ) ≤ 1 + |t| := by linarith [abs_nonneg t]
+    have hAn : (0 : ℝ) ≤ 1 + |t| := by linarith only [abs_nonneg t, ht]
     have hCn : (0 : ℝ) ≤ Real.sqrt |t| := Real.sqrt_nonneg _
     have hLn : (0 : ℝ) ≤ Real.log (2 + |t|) := log_two_add_nonneg t
     have h4 : (1 / 64) * ((1 + |t|) * (1 + |t|) ^ ((1 : ℝ) / 2)) * Real.log (2 + |t|)
@@ -367,7 +367,7 @@ lemma ZW_lower_zero {t : ℝ} (ht : 1 ≤ |t|) :
         ring
       rw [heq]; exact le_trans hstep hstep2
     exact h4
-  linarith [hmain, hprod]
+  linarith only [hmain, hprod]
 
 /-- Lower bound for the weight at `σ = 1`. -/
 lemma ZW_lower_one {t : ℝ} (ht : 1 ≤ |t|) :
@@ -397,8 +397,8 @@ lemma ZW_lower_one {t : ℝ} (ht : 1 ≤ |t|) :
   have hprod : (1 / 8) * (1 + |t|) * Real.log (2 + |t|)
       ≤ ((1 + |t|) / 2) * 1 * ((1 / 2) * Real.log (2 + |t|)) := by
     have h3n : (0 : ℝ) < Real.log (2 + |t|) := log_two_add_pos t
-    nlinarith [h3n]
-  linarith [hmain, hprod]
+    nlinarith only [h3n, ht]
+  linarith only [hmain, hprod]
 
 /-- The `σ = 0` boundary bound, from the functional equation. -/
 lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
@@ -434,35 +434,35 @@ lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
     rw [harg2, abs_neg] at h
     exact h
   have hnegsinh : 0 < Real.sinh (Real.pi * |t|) := Real.sinh_pos_iff.mpr (by positivity)
-  have hx1 : (1 : ℝ) ≤ Real.pi * |t| := by nlinarith [Real.pi_gt_three, ht]
-  have hxpos : (0 : ℝ) < Real.pi * |t| := by linarith
+  have hx1 : (1 : ℝ) ≤ Real.pi * |t| := by nlinarith only [Real.pi_gt_three, ht]
+  have hxpos : (0 : ℝ) < Real.pi * |t| := by linarith only [hx1]
   have hsinh : Real.exp (Real.pi * |t|) / 4 ≤ Real.sinh (Real.pi * |t|) := by
     rw [Real.sinh_eq]
     have hexp : Real.exp (-(Real.pi * |t|)) ≤ Real.exp (Real.pi * |t|) / 2 := by
       rw [Real.exp_neg, inv_le_iff_one_le_mul₀ (Real.exp_pos _)]
       have h2 : (2 : ℝ) ≤ Real.exp (Real.pi * |t|) := by
         have h3 : Real.exp 1 ≤ Real.exp (Real.pi * |t|) := Real.exp_le_exp.mpr hx1
-        linarith [Real.exp_one_gt_d9]
+        linarith only [Real.exp_one_gt_d9, h3]
       have hmul : Real.exp (Real.pi * |t|) * Real.exp (Real.pi * |t|)
           = Real.exp (2 * (Real.pi * |t|)) := by rw [← Real.exp_add]; ring_nf
-      nlinarith [hmul, h2]
-    linarith [hexp]
+      nlinarith only [hmul, h2]
+    linarith only [hexp]
   have hkey : (1 : ℝ) / 4 ≤ Real.exp (-(Real.pi * |t|)) * Real.sinh (Real.pi * |t|) := by
     have h1 := mul_le_mul_of_nonneg_left hsinh (Real.exp_pos (-(Real.pi * |t|))).le
     have h2 : Real.exp (-(Real.pi * |t|)) * (Real.exp (Real.pi * |t|) / 4) = 1 / 4 := by
       rw [show Real.exp (-(Real.pi * |t|)) * (Real.exp (Real.pi * |t|) / 4)
             = (Real.exp (-(Real.pi * |t|)) * Real.exp (Real.pi * |t|)) / 4 by ring,
         ← Real.exp_add, show -(Real.pi * |t|) + Real.pi * |t| = 0 by ring, Real.exp_zero]
-    linarith [h1, h2]
+    linarith only [h1, h2]
   have hG : ‖Complex.Gamma (1 - (t : ℂ) * I)‖
       ≤ 4 * (1 + |t|) ^ ((1 : ℝ) / 2) * Real.exp (-(Real.pi / 2) * |t|) := by
-    have h4 : Real.pi ≤ 4 := by linarith [Real.pi_lt_four]
+    have h4 : Real.pi ≤ 4 := by linarith only [Real.pi_lt_four]
     have hx : (0 : ℝ) ≤ |t| := abs_nonneg t
-    have hXp : 0 < (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith) _
+    have hXp : 0 < (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith only [ht]) _
     have hEp : 0 < Real.exp (-(Real.pi / 2) * |t|) := Real.exp_pos _
     have hEp2 : 0 < Real.exp (-(Real.pi * |t|)) := Real.exp_pos _
     have hX2 : (1 + |t|) ^ ((1 : ℝ) / 2) * (1 + |t|) ^ ((1 : ℝ) / 2) = 1 + |t| := by
-      rw [← Real.rpow_add (by linarith)]; norm_num
+      rw [← Real.rpow_add (by linarith only [ht])]; norm_num
     have hE2 : Real.exp (-(Real.pi / 2) * |t|) * Real.exp (-(Real.pi / 2) * |t|)
         = Real.exp (-(Real.pi * |t|)) := by
       rw [← Real.exp_add]; ring_nf
@@ -477,15 +477,15 @@ lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
           hX2, hE2]
       rw [hsq, hexpand, div_le_iff₀ hnegsinh]
       have hkey' : (1 : ℝ) / 4 ≤ Real.exp (-(Real.pi * |t|)) * Real.sinh (Real.pi * |t|) := hkey
-      have h1 : Real.pi * |t| ≤ 16 * (1 + |t|) * (1 / 4) := by nlinarith [h4, hx]
+      have h1 : Real.pi * |t| ≤ 16 * (1 + |t|) * (1 / 4) := by nlinarith only [h4, hx, ht]
       have h2 : 16 * (1 + |t|) * (1 / 4)
           ≤ 16 * (1 + |t|) * (Real.exp (-(Real.pi * |t|)) * Real.sinh (Real.pi * |t|)) := by
-        have h1n : (0 : ℝ) ≤ 16 * (1 + |t|) := by linarith [hx]
+        have h1n : (0 : ℝ) ≤ 16 * (1 + |t|) := by linarith only [hx, ht]
         exact mul_le_mul_of_nonneg_left hkey' h1n
-      linarith [h1, h2]
+      linarith only [h1, h2]
     have h2 : (0 : ℝ) ≤ 4 * (1 + |t|) ^ ((1 : ℝ) / 2) * Real.exp (-(Real.pi / 2) * |t|) := by
       positivity
-    nlinarith [hsq2, norm_nonneg (Complex.Gamma (1 - (t : ℂ) * I)), h2]
+    nlinarith only [hsq2, norm_nonneg (Complex.Gamma (1 - (t : ℂ) * I)), h2]
   have hc : ‖Complex.cos ((Real.pi : ℂ) * (1 - (t : ℂ) * I) / 2)‖
       ≤ Real.exp ((Real.pi / 2) * |t|) := by
     have hargc : (Real.pi : ℂ) * (1 - (t : ℂ) * I) / 2
@@ -495,7 +495,7 @@ lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
     have him : ((((t : ℂ) * I) / 2)).im = t / 2 := by simp
     rw [him, abs_div, abs_of_pos (by norm_num : (0 : ℝ) < 2)] at h
     refine le_trans h (Real.exp_le_exp.mpr ?_)
-    nlinarith [abs_nonneg t, Real.pi_pos]
+    linarith only [abs_nonneg t, Real.pi_pos]
   have hz : ‖riemannZeta (1 - (t : ℂ) * I)‖ ≤ 5 * Real.log (|t| + 2) := by
     have h := Commons.NumberTheory.LSeries.norm_riemannZeta_le_five_mul_log (σ := (1 : ℝ)) (t := -t)
       (by norm_num) (by simpa using ht)
@@ -535,13 +535,13 @@ lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
     _ = (2 * (2 * Real.pi)⁻¹ * 4 * 5) * (1 + |t|) ^ ((1 : ℝ) / 2) * 1
           * Real.log (2 + |t|) := by rw [mul_comm (Real.exp (-(Real.pi / 2) * |t|)), hcancel]
     _ ≤ 40 * (1 + |t|) ^ ((1 : ℝ) / 2) * (Real.log (2 + |t|) + 2) := by
-        have hX : (0 : ℝ) ≤ (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_nonneg (by linarith) _
+        have hX : (0 : ℝ) ≤ (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_nonneg (by linarith only [ht]) _
         have hL : (0 : ℝ) ≤ Real.log (2 + |t|) := log_two_add_nonneg t
         have hcoef : 2 * (2 * Real.pi)⁻¹ * 4 * 5 ≤ 40 := by
           rw [show (2:ℝ) * (2 * Real.pi)⁻¹ * 4 * 5 = 40 / (2 * Real.pi) by
             field_simp; ring]
           rw [div_le_iff₀ (by positivity)]
-          nlinarith [Real.pi_gt_three]
+          linarith only [Real.pi_gt_three]
         have h1 : (2 * (2 * Real.pi)⁻¹ * 4 * 5) * (1 + |t|) ^ ((1 : ℝ) / 2) * 1
             ≤ 40 * (1 + |t|) ^ ((1 : ℝ) / 2) := by
           rw [mul_one]
@@ -552,8 +552,8 @@ lemma zeta_zero_bound {t : ℝ} (ht : 1 ≤ |t|) :
           mul_le_mul_of_nonneg_right h1 hL
         have h3 : 40 * (1 + |t|) ^ ((1 : ℝ) / 2) * Real.log (2 + |t|)
             ≤ 40 * (1 + |t|) ^ ((1 : ℝ) / 2) * (Real.log (2 + |t|) + 2) :=
-          mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (by norm_num) hX)
-        linarith [h2, h3]
+          mul_le_mul_of_nonneg_left (by linarith only []) (mul_nonneg (by norm_num) hX)
+        linarith only [h2, h3, hX]
 lemma ZW_differentiableAt (z : ℂ) (hlo : -2 < z.re) (hhi : z.re < 4) : DifferentiableAt ℂ ZW z := by
   unfold ZW
   refine DifferentiableAt.mul (DifferentiableAt.mul ?_ ?_) ?_
@@ -565,19 +565,19 @@ lemma ZW_differentiableAt (z : ℂ) (hlo : -2 < z.re) (hhi : z.re < 4) : Differe
       rw [Complex.sub_re, Complex.div_re] at hre
       simp at hre
       have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
-      linarith
+      linarith only [hhi, hre]
     · refine (Complex.differentiableAt_Gamma (1 / 2 + z / 4) ?_).comp z (by fun_prop)
       intro m hm
       have hre := congrArg Complex.re hm
       rw [Complex.add_re, Complex.div_re] at hre
       simp at hre
       have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
-      linarith
+      linarith only [hlo, hre]
     · apply gamma_ne_zero_of_re_pos
-      rw [Complex.add_re, Complex.div_re]; simp; linarith
+      rw [Complex.add_re, Complex.div_re]; simp; linarith only [hlo]
   · have hmem : z + 2 ∈ Complex.slitPlane := by
       rw [Complex.mem_slitPlane_iff]; left
-      rw [Complex.add_re]; simp; linarith
+      rw [Complex.add_re]; simp; linarith only [hlo]
     exact (Complex.differentiableAt_log hmem).comp z
       (by fun_prop : DifferentiableAt ℂ (fun w : ℂ => w + 2) z)
 
@@ -588,27 +588,27 @@ lemma ZW_ne_zero (z : ℂ) (hlo : 0 ≤ z.re) (hhi : z.re ≤ 1) : ZW z ≠ 0 :=
     have hre := congrArg Complex.re h
     rw [Complex.add_re] at hre
     simp at hre
-    linarith
+    linarith only [hlo, hre]
   · refine div_ne_zero (gamma_ne_zero_of_re_pos ?_) (gamma_ne_zero_of_re_pos ?_)
-    · rw [Complex.sub_re, Complex.div_re]; simp; linarith
-    · rw [Complex.add_re, Complex.div_re]; simp; linarith
+    · rw [Complex.sub_re, Complex.div_re]; simp; linarith only [hhi]
+    · rw [Complex.add_re, Complex.div_re]; simp; linarith only [hlo]
   · intro h
     have hre := congrArg Complex.re h
     rw [Complex.log_re, Complex.zero_re] at hre
     have h2 : (2 : ℝ) ≤ ‖z + 2‖ := by
       have h := Complex.re_le_norm (z + 2)
-      rw [Complex.add_re] at h; simp at h; linarith
-    have h3 : 0 < Real.log ‖z + 2‖ := Real.log_pos (by linarith)
-    linarith
+      rw [Complex.add_re] at h; simp at h; linarith only [hlo, h]
+    have h3 : 0 < Real.log ‖z + 2‖ := Real.log_pos (by linarith only [h2])
+    linarith only [hre, h3]
 
 lemma log_two_add_ge_one {t : ℝ} (ht : 1 ≤ |t|) : (1 : ℝ) ≤ Real.log (2 + |t|) := by
-  rw [Real.le_log_iff_exp_le (by linarith [abs_nonneg t])]
-  have h3 : (3 : ℝ) ≤ 2 + |t| := by linarith
-  linarith [Real.exp_one_lt_three]
+  rw [Real.le_log_iff_exp_le (by linarith only [abs_nonneg t, ht])]
+  have h3 : (3 : ℝ) ≤ 2 + |t| := by linarith only [ht]
+  linarith only [Real.exp_one_lt_three, ht]
 
 lemma rpow_three_halves (t σ : ℝ) :
     (1 + |t|) ^ ((3 : ℝ) / 2 - σ / 2) / (1 + |t|) = (1 + |t|) ^ ((1 : ℝ) / 2 - σ / 2) := by
-  have hX : (0 : ℝ) < 1 + |t| := by linarith [abs_nonneg t]
+  have hX : (0 : ℝ) < 1 + |t| := by linarith only [abs_nonneg t]
   have hthis : (3 : ℝ) / 2 - σ / 2 = ((1 : ℝ) / 2 - σ / 2) + 1 := by ring
   rw [hthis, Real.rpow_add hX, Real.rpow_one]
   field_simp
@@ -638,7 +638,7 @@ lemma zeta_ratio_zero : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
     have him : (((t : ℂ) * I) - 1).im = t := by simp
     rw [hre, him] at h
     simp only [abs_neg, abs_one] at h
-    linarith
+    linarith only [h]
   have hnum : ‖riemannZeta₁ ((t : ℂ) * I)‖
       ≤ (1 + |t|) * (40 * (1 + |t|) ^ ((1 : ℝ) / 2) * (Real.log (2 + |t|) + 2)) := by
     rw [hmul, norm_mul]
@@ -646,16 +646,16 @@ lemma zeta_ratio_zero : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
   have hden : (1 / 64) * (1 + |t|) ^ ((3 : ℝ) / 2) * Real.log (2 + |t|) ≤ ‖ZW ((t : ℂ) * I)‖ :=
     ZW_lower_zero ht
   have hdenpos : 0 < (1 / 64) * (1 + |t|) ^ ((3 : ℝ) / 2) * Real.log (2 + |t|) := by
-    refine mul_pos (mul_pos (by norm_num) (Real.rpow_pos_of_pos (by linarith [abs_nonneg t]) _)) ?_
+    refine mul_pos (mul_pos (by norm_num) (Real.rpow_pos_of_pos (by linarith only [abs_nonneg t, ht]) _)) ?_
     exact log_two_add_pos t
   have hWpos : 0 < ‖ZW ((t : ℂ) * I)‖ := lt_of_lt_of_le hdenpos hden
   have hL := log_two_add_pos t
   have hL1 := log_two_add_ge_one ht
-  have hX : (0 : ℝ) < (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith [abs_nonneg t]) _
-  have hX3 : (0 : ℝ) < (1 + |t|) ^ ((3 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith [abs_nonneg t]) _
+  have hX : (0 : ℝ) < (1 + |t|) ^ ((1 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith only [abs_nonneg t, ht]) _
+  have hX3 : (0 : ℝ) < (1 + |t|) ^ ((3 : ℝ) / 2) := Real.rpow_pos_of_pos (by linarith only [abs_nonneg t, ht]) _
   have hsplit : (1 + |t|) ^ ((3 : ℝ) / 2) = (1 + |t|) * (1 + |t|) ^ ((1 : ℝ) / 2) := by
     have hthis : (3 : ℝ) / 2 = 1 + ((1 : ℝ) / 2) := by ring
-    rw [hthis, Real.rpow_add (by linarith [abs_nonneg t]), Real.rpow_one]
+    rw [hthis, Real.rpow_add (by linarith only [abs_nonneg t, ht]), Real.rpow_one]
   rw [norm_div]
   refine le_trans (div_le_div_of_nonneg_right hnum (norm_nonneg _)) ?_
   refine le_trans (div_le_div_of_nonneg_left (by positivity) hdenpos hden) ?_
@@ -666,7 +666,7 @@ lemma zeta_ratio_zero : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
   have hb : 7680 * ((1 / 64) * (1 + |t|) ^ ((3 : ℝ) / 2) * Real.log (2 + |t|))
       = 120 * ((1 + |t|) ^ ((3 : ℝ) / 2) * Real.log (2 + |t|)) := by ring
   rw [hb]
-  nlinarith [hL, hL1, hX3]
+  nlinarith only [hL, hL1, hX3, hdenpos]
 
 lemma zeta_ratio_one : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
     ‖riemannZeta₁ (1 + (t : ℂ) * I) / ZW (1 + (t : ℂ) * I)‖ ≤ C := by
@@ -692,7 +692,7 @@ lemma zeta_ratio_one : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
       _ = ((t : ℂ) * I) * riemannZeta (1 + (t : ℂ) * I) := by rw [hsub]
   have h1 : ‖(t : ℂ) * I‖ = |t| := by
     rw [norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]
-  have h2 : |t| ≤ 1 + |t| := by linarith [abs_nonneg t]
+  have h2 : |t| ≤ 1 + |t| := by linarith only [abs_nonneg t]
   have hz : ‖riemannZeta (1 + (t : ℂ) * I)‖ ≤ 5 * Real.log (2 + |t|) := by
     have h := Commons.NumberTheory.LSeries.norm_riemannZeta_le_five_mul_log (σ := (1:ℝ)) (t := t)
       (by norm_num) (by simpa using ht)
@@ -706,7 +706,7 @@ lemma zeta_ratio_one : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 1 ≤ |t| →
   have hden : (1 / 8) * (1 + |t|) * Real.log (2 + |t|) ≤ ‖ZW (1 + (t : ℂ) * I)‖ :=
     ZW_lower_one ht
   have hdenpos : 0 < (1 / 8) * (1 + |t|) * Real.log (2 + |t|) := by
-    refine mul_pos (mul_pos (by norm_num) (by linarith [abs_nonneg t])) ?_
+    refine mul_pos (mul_pos (by norm_num) (by linarith only [abs_nonneg t, ht])) ?_
     exact log_two_add_pos t
   have hL := log_two_add_pos t
   rw [norm_div]
@@ -731,10 +731,10 @@ lemma zeta_ratio_compact :
       obtain ⟨hz1, hz2⟩ := hz
       simp only [Set.mem_preimage, Set.mem_Icc] at hz1 hz2
       rw [Metric.mem_closedBall, dist_zero_right]
-      have h1 : |z.re| ≤ 1 := by rw [abs_le]; exact ⟨by linarith [hz1.1], hz1.2⟩
+      have h1 : |z.re| ≤ 1 := by rw [abs_le]; exact ⟨by linarith only [hz1.1, hz1], hz1.2⟩
       have h2 : |z.im| ≤ 1 := abs_le.mpr hz2
       calc ‖z‖ ≤ |z.re| + |z.im| := Complex.norm_le_abs_re_add_abs_im z
-        _ ≤ 2 := by linarith
+        _ ≤ 2 := by linarith only [h1, h2]
         _ ≤ 3 := by norm_num
   have hcont : ContinuousOn (fun z : ℂ => riemannZeta₁ z / ZW z)
       (Complex.re ⁻¹' (Set.Icc (0:ℝ) 1) ∩ Complex.im ⁻¹' (Set.Icc (-1:ℝ) 1)) := by
@@ -743,8 +743,8 @@ lemma zeta_ratio_compact :
     simp only [Set.mem_preimage, Set.mem_Icc] at hz1 hz2
     exact ContinuousAt.continuousWithinAt
       (((differentiable_riemannZeta₁ z).continuousAt).div
-        ((ZW_differentiableAt z (by linarith [hz1.1]) (by linarith [hz1.2])).continuousAt)
-        (ZW_ne_zero z (by linarith [hz1.1]) (by linarith [hz1.2])))
+        ((ZW_differentiableAt z (by linarith only [hz1.1, hz1]) (by linarith only [hz1.2, hz1])).continuousAt)
+        (ZW_ne_zero z (by linarith only [hz1.1, hz1]) (by linarith only [hz1.2, hz1])))
   obtain ⟨C, hC⟩ := hKc.exists_bound_of_continuousOn hcont
   refine ⟨max C 1, lt_of_lt_of_le zero_lt_one (le_max_right _ _), ?_⟩
   intro z h1 h2 h3
@@ -770,15 +770,15 @@ lemma ZW_growth :
     simp only [Function.comp_apply] at hzim
     rw [← hzim] at h
     exact h
-  have hb1 : (1 : ℝ) ≤ |z.im| := by linarith
+  have hb1 : (1 : ℝ) ≤ |z.im| := by linarith only [h1]
   have hzre : 0 ≤ z.re ∧ z.re ≤ 1 := by
     simp only [Set.mem_preimage, Set.mem_Ioo] at hz
     exact ⟨le_of_lt hz.1, le_of_lt hz.2⟩
-  have hbpos : (0 : ℝ) < 1 + |z.im| := by linarith [abs_nonneg z.im]
+  have hbpos : (0 : ℝ) < 1 + |z.im| := by linarith only [abs_nonneg z.im, h1]
   -- the zeta factor
   have hzeta : ‖riemannZeta₁ z‖ ≤ 768 * Cz * (1 + |z.im|) ^ 5 := by
     have hz1 : ‖riemannZeta z‖ ≤ Cz * (|z.im| + 3) ^ 4 := by
-      have h := hCz z.re z.im (by linarith [hzre.1]) (by linarith [hzre.2]) (by linarith)
+      have h := hCz z.re z.im (by linarith only [hzre.1, hzre]) (by linarith only [hzre.2, hzre]) (by linarith only [h1])
       have hargz : (z.re : ℂ) + I * (z.im : ℂ) = z := by apply Complex.ext <;> simp
       rwa [hargz] at h
     have hsub : ‖z - 1‖ ≤ 3 * (1 + |z.im|) := by
@@ -786,15 +786,15 @@ lemma ZW_growth :
       have hre : (z - 1).re = z.re - 1 := by simp
       have him : (z - 1).im = z.im := by simp
       rw [hre, him] at h
-      have h2 : |z.re - 1| ≤ 1 := by rw [abs_le]; constructor <;> linarith [hzre.1, hzre.2]
-      nlinarith [h, h2]
+      have h2 : |z.re - 1| ≤ 1 := by rw [abs_le]; constructor <;> linarith only [hzre.1, hzre.2, hzre]
+      linarith only [h, h2, h1]
     have h3 : (|z.im| + 3) ^ 4 ≤ 256 * (1 + |z.im|) ^ 4 := by
-      have h4 : |z.im| + 3 ≤ 4 * (1 + |z.im|) := by linarith
-      have h5 : (0 : ℝ) ≤ |z.im| + 3 := by linarith
+      have h4 : |z.im| + 3 ≤ 4 * (1 + |z.im|) := by linarith only [h1]
+      have h5 : (0 : ℝ) ≤ |z.im| + 3 := by linarith only [h1]
       calc (|z.im| + 3) ^ 4 ≤ (4 * (1 + |z.im|)) ^ 4 := pow_le_pow_left₀ h5 h4 4
         _ = 256 * (1 + |z.im|) ^ 4 := by ring
     have hs : z ≠ 1 := by
-      intro h; rw [h] at h1; simp at h1; linarith
+      intro h; rw [h] at h1; simp at h1; linarith only [h1]
     have hEq : riemannZeta₁ z = (z - 1) * riemannZeta z := by
       have h := riemannZeta_eq_inv_sub_mul (s := z) hs
       have hne : (z - 1) ≠ 0 := sub_ne_zero.mpr hs
@@ -826,12 +826,12 @@ lemma ZW_growth :
         ring
   have hre1 : (1 - z / 4).re ∈ Set.Icc (-5:ℝ) 5 := by
     rw [Complex.sub_re, Complex.div_re]; simp
-    constructor <;> linarith [hzre.1, hzre.2]
+    constructor <;> linarith only [hzre.1, hzre.2, hzre]
   have hre2 : (1 / 2 + z / 4).re ∈ Set.Icc (-5:ℝ) 5 := by
     rw [Complex.add_re, Complex.div_re]; simp
-    constructor <;> linarith [hzre.1, hzre.2]
-  have him1 : 1 ≤ |(1 - z / 4).im| := by rw [hy1]; linarith
-  have him2 : 1 ≤ |(1 / 2 + z / 4).im| := by rw [hy2]; linarith
+    constructor <;> linarith only [hzre.1, hzre.2, hzre]
+  have him1 : 1 ≤ |(1 - z / 4).im| := by rw [hy1]; linarith only [h1]
+  have him2 : 1 ≤ |(1 / 2 + z / 4).im| := by rw [hy2]; linarith only [h1]
   have hx1 : ((1 - z / 4).re : ℂ) + I * ((1 - z / 4).im : ℂ) = 1 - z / 4 := by
     rw [mul_comm I (((1 - z / 4).im : ℝ)), Complex.re_add_im]
   have hx2 : ((1 / 2 + z / 4).re : ℂ) + I * ((1 / 2 + z / 4).im : ℂ) = 1 / 2 + z / 4 := by
@@ -849,9 +849,9 @@ lemma ZW_growth :
   have hG2pos : 0 < ‖Complex.Gamma (1 / 2 + z / 4)‖ := by
     apply norm_pos_iff.mpr
     apply gamma_ne_zero_of_re_pos
-    rw [Complex.add_re, Complex.div_re]; simp; linarith [hzre.1]
+    rw [Complex.add_re, Complex.div_re]; simp; linarith only [hzre.1, hzre]
   have hN : (0 : ℝ) < 1 + |z.im| / 4 := by positivity
-  have hNle : (1 + |z.im| / 4) ≤ 1 + |z.im| := by linarith [abs_nonneg z.im]
+  have hNle : (1 + |z.im| / 4) ≤ 1 + |z.im| := by linarith only [abs_nonneg z.im, h1]
   have hratio : Ag / Bg * (1 + |z.im| / 4) ^ (-(40:ℝ))
       ≤ ‖Complex.Gamma (1 - z / 4) / Complex.Gamma (1 / 2 + z / 4)‖ := by
     have hident : Ag / Bg * (1 + |z.im| / 4) ^ (-(40:ℝ))
@@ -872,7 +872,7 @@ lemma ZW_growth :
       div_le_div_of_nonneg_left (norm_nonneg _) hG2pos hb2
     exact le_trans (le_trans hstep1 hstep2) (le_of_eq (norm_div _ _).symm)
   have hpowN : (1 + |z.im|) ^ (-(40:ℝ)) ≤ (1 + |z.im| / 4) ^ (-(40:ℝ)) := by
-    rw [Real.rpow_neg (by linarith [abs_nonneg z.im]), Real.rpow_neg (le_of_lt hN),
+    rw [Real.rpow_neg (by linarith only [abs_nonneg z.im, h1]), Real.rpow_neg (le_of_lt hN),
       show (1 + |z.im|) ^ (40:ℝ) = (1 + |z.im|) ^ 40 by norm_num,
       show (1 + |z.im| / 4) ^ (40:ℝ) = (1 + |z.im| / 4) ^ 40 by norm_num,
       inv_eq_one_div, inv_eq_one_div]
@@ -882,19 +882,19 @@ lemma ZW_growth :
       have h := Complex.abs_im_le_norm (z + 2)
       have him : (z + 2).im = z.im := by simp
       rw [him] at h
-      linarith
+      linarith only [h1, h]
     have hlog3 : (1 : ℝ) < Real.log 3 := by
       rw [Real.lt_log_iff_exp_lt (by norm_num)]
       exact Real.exp_one_lt_three
     have h3 : (1 : ℝ) ≤ Real.log ‖z + 2‖ := by
       have := Real.log_le_log (by norm_num : (0:ℝ) < 3) h3v
-      linarith
+      linarith only [hlog3, this]
     calc (1 : ℝ) ≤ (Complex.log (z + 2)).re := by rw [Complex.log_re]; exact h3
       _ ≤ ‖Complex.log (z + 2)‖ := Complex.re_le_norm _
   have hW : (2 * Ag / Bg) * (1 + |z.im|) ^ (-(40:ℝ)) ≤ ‖ZW z‖ := by
     have h2 : (2 : ℝ) ≤ ‖z + 2‖ := by
       have h := Complex.re_le_norm (z + 2)
-      rw [Complex.add_re] at h; simp at h; linarith [hzre.1]
+      rw [Complex.add_re] at h; simp at h; linarith only [hzre.1, hzre, h]
     have hW0 : 2 * (Ag / Bg) * (1 + |z.im| / 4) ^ (-(40:ℝ)) ≤ ‖ZW z‖ := by
       unfold ZW
       rw [norm_mul, norm_mul]
@@ -904,7 +904,7 @@ lemma ZW_growth :
               * ‖Complex.log (z + 2)‖ := by
             apply mul_le_mul
             · apply mul_le_mul
-              · linarith
+              · linarith only [h2]
               · exact hratio
               · positivity
               · positivity
@@ -921,7 +921,7 @@ lemma ZW_growth :
       _ ≤ ‖ZW z‖ := hW0
   -- combine
   have hWpos : (0 : ℝ) < (2 * Ag / Bg) * (1 + |z.im|) ^ (-(40:ℝ)) := by
-    apply mul_pos (div_pos (by linarith) hBgpos)
+    apply mul_pos (div_pos (by linarith only [hAgpos]) hBgpos)
     exact Real.rpow_pos_of_pos hbpos _
   have hF : ‖riemannZeta₁ z / ZW z‖ ≤ (768 * Cz * Bg / (2 * Ag)) * (1 + |z.im|) ^ 45 := by
     have hstep1 : ‖riemannZeta₁ z / ZW z‖ ≤ (768 * Cz * (1 + |z.im|) ^ 5) / ‖ZW z‖ := by
@@ -952,12 +952,12 @@ lemma ZW_growth :
     have hl2 : Real.log (1 + |z.im|) ≤ Real.exp |z.im| := by
       have h := Real.log_le_self hbpos.le
       have h2 := Real.add_one_le_exp |z.im|
-      linarith
+      linarith only [h, h2]
     have hex : (1 : ℝ) ≤ Real.exp |z.im| := Real.one_le_exp (abs_nonneg _)
     have hlogC : Real.log (768 * Cz * Bg / (2 * Ag))
         ≤ |Real.log (768 * Cz * Bg / (2 * Ag))| := le_abs_self _
     have habs0 : (0 : ℝ) ≤ |Real.log (768 * Cz * Bg / (2 * Ag))| := abs_nonneg _
-    nlinarith [hl2, hex, hlogC, habs0]
+    nlinarith only [hl2, hex, hlogC, habs0]
   calc ‖riemannZeta₁ z / ZW z‖ ≤ (768 * Cz * Bg / (2 * Ag)) * (1 + |z.im|) ^ 45 := hF
     _ ≤ Real.exp ((|Real.log (768 * Cz * Bg / (2 * Ag))| + 46) * Real.exp (1 * |z.im|)) := hexp
     _ = 1 * ‖Real.exp ((|Real.log (768 * Cz * Bg / (2 * Ag))| + 46) * Real.exp (1 * |z.im|))‖ := by
@@ -981,12 +981,12 @@ theorem ZetaConvexityHalfAlt :
       rw [hCgdef]
       have ha : C0 ≤ max C0 C1 := le_max_left _ _
       have hb : max C0 C1 ≤ max (max C0 C1) C2 := le_max_left _ _
-      linarith
+      linarith only [ha, hb]
     · push_neg at h
-      refine le_trans (hC2 z (by linarith [hz]) (by linarith [hz]) h.le) ?_
+      refine le_trans (hC2 z (by linarith only [hz]) (by linarith only [hz]) h.le) ?_
       rw [hCgdef]
       have ha : C2 ≤ max (max C0 C1) C2 := le_max_right _ _
-      linarith
+      linarith only [ha]
   have hb1 : ∀ z : ℂ, z.re = 1 → ‖riemannZeta₁ z / ZW z‖ ≤ Cg := by
     intro z hz
     by_cases h : 1 ≤ |z.im|
@@ -996,12 +996,12 @@ theorem ZetaConvexityHalfAlt :
       rw [hCgdef]
       have ha : C1 ≤ max C0 C1 := le_max_right _ _
       have hb : max C0 C1 ≤ max (max C0 C1) C2 := le_max_left _ _
-      linarith
+      linarith only [ha, hb]
     · push_neg at h
-      refine le_trans (hC2 z (by linarith [hz]) (by linarith [hz]) h.le) ?_
+      refine le_trans (hC2 z (by linarith only [hz]) (by linarith only [hz]) h.le) ?_
       rw [hCgdef]
       have ha : C2 ≤ max (max C0 C1) C2 := le_max_right _ _
-      linarith
+      linarith only [ha]
   have hclos : closure (Complex.re ⁻¹' Set.Ioo (0:ℝ) 1) ⊆ Complex.re ⁻¹' Set.Icc (0:ℝ) 1 := by
     apply closure_minimal _ (isClosed_Icc.preimage continuous_re)
     intro w hw
@@ -1013,13 +1013,13 @@ theorem ZetaConvexityHalfAlt :
     rw [Set.mem_preimage, Set.mem_Icc] at hz
     exact ContinuousAt.continuousWithinAt
       (((differentiable_riemannZeta₁ z).continuousAt).div
-        ((ZW_differentiableAt z (by linarith [hz.1]) (by linarith [hz.2])).continuousAt)
+        ((ZW_differentiableAt z (by linarith only [hz.1, hz]) (by linarith only [hz.2, hz])).continuousAt)
         (ZW_ne_zero z hz.1 hz.2))
   have hfd : DiffContOnCl ℂ (fun z : ℂ => riemannZeta₁ z / ZW z) (Complex.re ⁻¹' Set.Ioo 0 1) := by
     refine ⟨fun z hz => ?_, hcontOn.mono hclos⟩
     rw [Set.mem_preimage, Set.mem_Ioo] at hz
     exact ((differentiable_riemannZeta₁ z).differentiableWithinAt).div
-      ((ZW_differentiableAt z (by linarith [hz.1]) (by linarith [hz.2])).differentiableWithinAt)
+      ((ZW_differentiableAt z (by linarith only [hz.1, hz]) (by linarith only [hz.2, hz])).differentiableWithinAt)
       (ZW_ne_zero z (le_of_lt hz.1) (le_of_lt hz.2))
   refine ⟨800 * Cg, by positivity, ?_⟩
   intro σ t hσ1 hσ2 ht
@@ -1037,19 +1037,19 @@ theorem ZetaConvexityHalfAlt :
     PhragmenLindelof.vertical_strip (a := 0) (b := 1) (C := Cg)
       (f := fun z : ℂ => riemannZeta₁ z / ZW z) (z := s) hfd
       (by
-        refine ⟨1, by rw [sub_zero, div_one]; linarith [Real.pi_gt_three], Bg, ?_⟩
+        refine ⟨1, by rw [sub_zero, div_one]; linarith only [Real.pi_gt_three], Bg, ?_⟩
         simpa using hBg)
-      hb0 hb1 (by rw [hsre]; linarith) (by rw [hsre]; exact hσ2)
-  have hZne : ZW s ≠ 0 := ZW_ne_zero s (by rw [hsre]; linarith) (by rw [hsre]; exact hσ2)
+      hb0 hb1 (by rw [hsre]; linarith only [hσ1]) (by rw [hsre]; exact hσ2)
+  have hZne : ZW s ≠ 0 := ZW_ne_zero s (by rw [hsre]; linarith only [hσ1]) (by rw [hsre]; exact hσ2)
   have hW : ‖ZW s‖ ≤ 100 * (2 + |t|) ^ ((3:ℝ)/2 - σ/2) * (Real.log (2 + |t|) + 2) := by
-    have h := ZW_norm_upper (s := s) (by rw [hsre]; linarith) (by rw [hsre]; exact hσ2)
+    have h := ZW_norm_upper (s := s) (by rw [hsre]; linarith only [hσ1]) (by rw [hsre]; exact hσ2)
       (by rw [hsim]; exact ht)
     rwa [hsre, hsim] at h
   have hs1 : |t| ≤ ‖s - 1‖ := by
     have h := Complex.abs_im_le_norm (s - 1)
     have him : (s - 1).im = t := by rw [hs]; simp
     rwa [him] at h
-  have htpos : (0:ℝ) < |t| := by linarith [ht]
+  have htpos : (0:ℝ) < |t| := by linarith only [ht]
   have hζ1 : ‖riemannZeta₁ s‖ ≤ ‖ZW s‖ * Cg := by
     have h1 : ‖riemannZeta₁ s‖ = ‖ZW s‖ * ‖riemannZeta₁ s / ZW s‖ := by
       rw [norm_div]
@@ -1069,22 +1069,22 @@ theorem ZetaConvexityHalfAlt :
       _ ≤ (100 * (2 + |t|) ^ ((3:ℝ)/2 - σ/2) * (Real.log (2 + |t|) + 2) * Cg) / |t| := by
           apply div_le_div_of_nonneg_right _ htpos.le
           have h := mul_le_mul_of_nonneg_right hW (le_of_lt hCgpos)
-          linarith
+          linarith only [h]
       _ ≤ 800 * Cg * (1 + |t|) ^ ((1:ℝ)/4) * (Real.log (2 + |t|) + 2) := by
-          have hX : (0:ℝ) < 1 + |t| := by linarith [abs_nonneg t]
-          have hL : (0:ℝ) ≤ Real.log (2 + |t|) + 2 := by have := log_two_add_nonneg t; linarith
+          have hX : (0:ℝ) < 1 + |t| := by linarith only [abs_nonneg t, ht]
+          have hL : (0:ℝ) ≤ Real.log (2 + |t|) + 2 := by have := log_two_add_nonneg t; linarith only [this]
           have hCgn : (0:ℝ) ≤ 100 * Cg := by positivity
           have hA : (2 + |t|) ^ ((3:ℝ)/2 - σ/2) / |t| ≤ 8 * (1 + |t|) ^ ((1:ℝ)/4) := by
             have h1 : (2 + |t|) ^ ((3:ℝ)/2 - σ/2) ≤ 4 * (1 + |t|) ^ ((3:ℝ)/2 - σ/2) := by
-              have hp : (2 + |t|) ≤ 2 * (1 + |t|) := by linarith [abs_nonneg t]
+              have hp : (2 + |t|) ≤ 2 * (1 + |t|) := by linarith only [abs_nonneg t, ht]
               have hb : (2 + |t|) ^ ((3:ℝ)/2 - σ/2) ≤ (2 * (1 + |t|)) ^ ((3:ℝ)/2 - σ/2) :=
-                Real.rpow_le_rpow (by linarith [abs_nonneg t]) hp (by linarith)
+                Real.rpow_le_rpow (by linarith only [abs_nonneg t, ht]) hp (by linarith only [hσ2])
               have hm : (2 * (1 + |t|)) ^ ((3:ℝ)/2 - σ/2)
                   = (2:ℝ) ^ ((3:ℝ)/2 - σ/2) * (1 + |t|) ^ ((3:ℝ)/2 - σ/2) :=
-                Real.mul_rpow (by norm_num) (by linarith [abs_nonneg t])
+                Real.mul_rpow (by norm_num) (by linarith only [abs_nonneg t, ht])
               rw [hm] at hb
               have h2p : (2:ℝ) ^ ((3:ℝ)/2 - σ/2) ≤ 4 := by
-                have hexp : ((3:ℝ)/2 - σ/2) ≤ 2 := by linarith
+                have hexp : ((3:ℝ)/2 - σ/2) ≤ 2 := by linarith only [hσ1]
                 calc (2:ℝ) ^ ((3:ℝ)/2 - σ/2) ≤ (2:ℝ) ^ (2:ℝ) :=
                       Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
                   _ = 4 := by norm_num [Real.rpow_two]
@@ -1094,8 +1094,8 @@ theorem ZetaConvexityHalfAlt :
               exact le_trans hb h3
             have h2 : (|t|)⁻¹ ≤ 2 / (1 + |t|) := by
               rw [inv_eq_one_div]
-              have hden : 0 < (1 + |t|)/2 := by linarith [abs_nonneg t]
-              have hle : (1 + |t|)/2 ≤ |t| := by linarith [ht]
+              have hden : 0 < (1 + |t|)/2 := by linarith only [abs_nonneg t, ht]
+              have hle : (1 + |t|)/2 ≤ |t| := by linarith only [ht]
               have h1' := one_div_le_one_div_of_le hden hle
               refine le_trans h1' ?_
               rw [one_div_div]
@@ -1104,12 +1104,12 @@ theorem ZetaConvexityHalfAlt :
             calc (2 + |t|) ^ ((3:ℝ)/2 - σ/2) / |t|
                 = (2 + |t|) ^ ((3:ℝ)/2 - σ/2) * (|t|)⁻¹ := by rw [div_eq_mul_inv]
               _ ≤ (4 * (1 + |t|) ^ ((3:ℝ)/2 - σ/2)) * (2 / (1 + |t|)) := by
-                  exact mul_le_mul h1 h2 (inv_nonneg.mpr (by linarith [ht])) (by positivity)
+                  exact mul_le_mul h1 h2 (inv_nonneg.mpr (by linarith only [ht])) (by positivity)
               _ = 8 * ((1 + |t|) ^ ((3:ℝ)/2 - σ/2) / (1 + |t|)) := by ring
               _ = 8 * (1 + |t|) ^ ((1:ℝ)/2 - σ/2) := by rw [h3]
               _ ≤ 8 * (1 + |t|) ^ ((1:ℝ)/4) := by
                   apply mul_le_mul_of_nonneg_left _ (by norm_num)
-                  exact Real.rpow_le_rpow_of_exponent_le (by linarith [abs_nonneg t]) (by linarith)
+                  exact Real.rpow_le_rpow_of_exponent_le (by linarith only [abs_nonneg t, ht]) (by linarith only [hσ1])
           have hcoef : (100 * (2 + |t|) ^ ((3:ℝ)/2 - σ/2) * (Real.log (2 + |t|) + 2) * Cg) / |t|
               = 100 * Cg * ((2 + |t|) ^ ((3:ℝ)/2 - σ/2) / |t|)
                 * (Real.log (2 + |t|) + 2) := by ring

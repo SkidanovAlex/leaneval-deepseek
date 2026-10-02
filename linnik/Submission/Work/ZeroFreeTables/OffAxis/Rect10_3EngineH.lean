@@ -114,7 +114,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
     have h : 5/δ ≤ Real.log (q : ℝ) := le_trans (le_max_right _ _) hlogq_ge
     have h' := mul_le_mul_of_nonneg_left h hδ0.le
     have h5 : δ * (5/δ) = 5 := by field_simp
-    linarith [h', h5]
+    linarith only [h', h5]
   have hlogLq : 2 ≤ Real.log (Real.log (q : ℝ)) := by
     have h : Real.exp 2 ≤ Real.log (q : ℝ) := le_trans (le_max_left _ _) hlogq_ge
     have h2 := Real.log_le_log (Real.exp_pos 2) h
@@ -152,7 +152,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
     Work.ZeroFreeTables.re_mem_Ioo_of_zeroMult_v2 χ₂ hχ₂ hzm₂
   have hstrip₃ : 0 < ρ₃.re ∧ ρ₃.re < 1 :=
     Work.ZeroFreeTables.re_mem_Ioo_of_zeroMult_v2 χ₃ hχ₃ hzm₃
-  have hlam₁pos : 0 < lamOf q ρ₁ := by simp only [lamOf]; nlinarith [hstrip₁.2, hLqpos]
+  have hlam₁pos : 0 < lamOf q ρ₁ := by simp only [lamOf]; nlinarith only [hstrip₁.2, hLqpos]
   have hlam12 : lamOf q ρ₁ ≤ lamOf q ρ₂ :=
     hR.2 χ₂ ρ₂ ⟨hχ₂, hzm₂, le_trans hbit₂ (by linarith)⟩
   have hlam13 : lamOf q ρ₁ ≤ lamOf q ρ₃ := le_trans hlam12 hlam23
@@ -184,7 +184,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         ((1 : DirichletCharacter ℂ q) (n : ZMod q) / (n : ℂ) ^ ((ρ₁.re : ℝ) : ℂ)).re
           * T.f (Real.log n / Real.log (q : ℝ)))
       ≤ Real.log (q : ℝ) * T.F (-(lamOf q ρ₁)) + T.f 0 * (ε'/4) * Real.log (q : ℝ) := by
-    have hb := hq₀P (q := q) hq0P (β := ρ₁.re) (γ := 0) hb1_bd (by rw [abs_zero]; linarith [hLqpos])
+    have hb := hq₀P (q := q) hq0P (β := ρ₁.re) (γ := 0) hb1_bd (by rw [abs_zero]; linarith only [hLqpos])
     simp only [Complex.ofReal_zero, zero_mul, add_zero] at hb
     have harg : (((ρ₁.re : ℝ) : ℂ) - 1) * ((Real.log (q : ℝ) : ℂ)) = ((-(lamOf q ρ₁) : ℝ) : ℂ) := by
       rw [show (((ρ₁.re : ℝ) : ℂ) - 1) = (((ρ₁.re - 1 : ℝ)) : ℂ) by push_cast; ring]
@@ -201,7 +201,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
   -- the leading character term for χ₁
   have hs₁im : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im = ρ₁.im by simp]
-    linarith [hbit₁, hbit₁, hLlog, hLqpos]
+    linarith only [hbit₁, hbit₁, hLlog, hLqpos]
   have hwin₁ : ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - ρ₁‖ ≤ δ := by
     rw [one_add_mul_I_sub]
     rw [lamOf_eq q ρ₁ hLqpos.ne']
@@ -214,14 +214,14 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im = ρ₁.im by simp]
     exact Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 χ₁ hχ₁
       (Work.ZeroFreeTables.mem_closedBall_of_absre_le_one_v2 (by
-        rw [abs_of_pos hstrip₁.1]; linarith [hstrip₁.2])) hzm₁
+        rw [abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2])) hzm₁
   have hzw₁ : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
       (Metric.closedBall 0 (|((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im| + 2))) u ≠ 0 →
       ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).re := by
     have him : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im| + δ ≤ 10 * L := by
       rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I)).im = ρ₁.im by simp]
-      linarith [hbit₁, hbit₁, hδ1, hL1]
+      linarith only [hbit₁, hbit₁, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hχ₁ him (by simp)
   have hb1 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         (χ₁ (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -243,27 +243,27 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
   -- the leading character term for χ₂
   have hs₂im : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im = ρ₂.im by simp]
-    linarith [hbit₁, hbit₂, hLlog, hLqpos]
+    linarith only [hbit₁, hbit₂, hLlog, hLqpos]
   have hwin₂ : ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - ρ₂‖ ≤ δ := by
     rw [one_add_mul_I_sub]
     rw [lamOf_eq q ρ₂ hLqpos.ne']
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im - ρ₂.im = (0:ℝ) / Real.log (q : ℝ) by
       rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im = ρ₂.im by simp]; simp]
-    exact norm_win hLqpos hδ0 hlam₂pos.le (by linarith [hlam₂_le]) (by norm_num) hδLq5
+    exact norm_win hLqpos hδ0 hlam₂pos.le (by linarith only [hlam₂_le]) (by norm_num) hδLq5
   have hdiv₂ : (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₂.primitiveCharacter)
       (Metric.closedBall 0 (|((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im| + 2))) ρ₂ ≠ 0 := by
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im = ρ₂.im by simp]
     exact Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 χ₂ hχ₂
       (Work.ZeroFreeTables.mem_closedBall_of_absre_le_one_v2 (by
-        rw [abs_of_pos hstrip₂.1]; linarith [hstrip₂.2])) hzm₂
+        rw [abs_of_pos hstrip₂.1]; linarith only [hstrip₂.2])) hzm₂
   have hzw₂ : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₂.primitiveCharacter)
       (Metric.closedBall 0 (|((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im| + 2))) u ≠ 0 →
       ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).re := by
     have him : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im| + δ ≤ 10 * L := by
       rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) * Complex.I)).im = ρ₂.im by simp]
-      linarith [hbit₁, hbit₂, hδ1, hL1]
+      linarith only [hbit₁, hbit₂, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hχ₂ him (by simp)
   have hb2 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         (χ₂ (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -286,27 +286,27 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
   -- the leading character term for χ₃
   have hs₃im : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im = ρ₃.im by simp]
-    linarith [hbit₁, hbit₃, hLlog, hLqpos]
+    linarith only [hbit₁, hbit₃, hLlog, hLqpos]
   have hwin₃ : ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - ρ₃‖ ≤ δ := by
     rw [one_add_mul_I_sub]
     rw [lamOf_eq q ρ₃ hLqpos.ne']
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im - ρ₃.im = (0:ℝ) / Real.log (q : ℝ) by
       rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im = ρ₃.im by simp]; simp]
-    exact norm_win hLqpos hδ0 hlam₃pos.le (by linarith [hlam3]) (by norm_num) hδLq5
+    exact norm_win hLqpos hδ0 hlam₃pos.le (by linarith only [hlam3]) (by norm_num) hδLq5
   have hdiv₃ : (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₃.primitiveCharacter)
       (Metric.closedBall 0 (|((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im| + 2))) ρ₃ ≠ 0 := by
     rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im = ρ₃.im by simp]
     exact Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 χ₃ hχ₃
       (Work.ZeroFreeTables.mem_closedBall_of_absre_le_one_v2 (by
-        rw [abs_of_pos hstrip₃.1]; linarith [hstrip₃.2])) hzm₃
+        rw [abs_of_pos hstrip₃.1]; linarith only [hstrip₃.2])) hzm₃
   have hzw₃ : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction χ₃.primitiveCharacter)
       (Metric.closedBall 0 (|((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im| + 2))) u ≠ 0 →
       ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).re := by
     have him : |((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im| + δ ≤ 10 * L := by
       rw [show ((((ρ₁.re : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ) * Complex.I)).im = ρ₃.im by simp]
-      linarith [hbit₁, hbit₃, hδ1, hL1]
+      linarith only [hbit₁, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hχ₃ him (by simp)
   have hb3 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         (χ₃ (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -331,7 +331,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
       ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ)) * Complex.I).im
       = ρ₁.im + ρ₂.im by simp]
-    linarith [abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hLlog, hLqpos]
+    linarith only [abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hLlog, hLqpos]
   have hzw4 : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction (χ₁ * χ₂).primitiveCharacter)
         (Metric.closedBall 0 (|(((ρ₁.re : ℝ) : ℂ)
@@ -343,7 +343,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ)) * Complex.I).im
         = ρ₁.im + ρ₂.im by simp]
-      linarith [abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hδ1, hL1]
+      linarith only [abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne4 him (by simp)
   have hb4 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₂) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -356,7 +356,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
       ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ)) * Complex.I).im
       = ρ₁.im - ρ₂.im by simp]
-    linarith [abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hLlog, hLqpos]
+    linarith only [abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hLlog, hLqpos]
   have hzw5 : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction (χ₁ * χ₂⁻¹).primitiveCharacter)
         (Metric.closedBall 0 (|(((ρ₁.re : ℝ) : ℂ)
@@ -368,7 +368,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ)) * Complex.I).im
         = ρ₁.im - ρ₂.im by simp]
-      linarith [abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hδ1, hL1]
+      linarith only [abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne5 him (by simp)
   have hb5 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₂⁻¹) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -381,7 +381,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
       ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
       = ρ₁.im + ρ₃.im by simp]
-    linarith [abs_add_le ρ₁.im ρ₃.im, hbit₁, hbit₃, hLlog, hLqpos]
+    linarith only [abs_add_le ρ₁.im ρ₃.im, hbit₁, hbit₃, hLlog, hLqpos]
   have hzw6 : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction (χ₁ * χ₃).primitiveCharacter)
         (Metric.closedBall 0 (|(((ρ₁.re : ℝ) : ℂ)
@@ -393,7 +393,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
         = ρ₁.im + ρ₃.im by simp]
-      linarith [abs_add_le ρ₁.im ρ₃.im, hbit₁, hbit₃, hδ1, hL1]
+      linarith only [abs_add_le ρ₁.im ρ₃.im, hbit₁, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne6 him (by simp)
   have hb6 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₃) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -406,7 +406,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
       ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
       = ρ₁.im - ρ₃.im by simp]
-    linarith [abs_sub ρ₁.im ρ₃.im, hbit₁, hbit₃, hLlog, hLqpos]
+    linarith only [abs_sub ρ₁.im ρ₃.im, hbit₁, hbit₃, hLlog, hLqpos]
   have hzw7 : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction (χ₁ * χ₃⁻¹).primitiveCharacter)
         (Metric.closedBall 0 (|(((ρ₁.re : ℝ) : ℂ)
@@ -418,7 +418,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
         = ρ₁.im - ρ₃.im by simp]
-      linarith [abs_sub ρ₁.im ρ₃.im, hbit₁, hbit₃, hδ1, hL1]
+      linarith only [abs_sub ρ₁.im ρ₃.im, hbit₁, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne7 him (by simp)
   have hb7 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₃⁻¹) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
@@ -446,7 +446,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
 
   -- (10) the triple character χ₁ * χ₂ * χ₃
   have hγ0 : |ρ₁.im + ρ₂.im + ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_add_le (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_add_le (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
   have hbt0 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₂ * χ₃) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
             + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re * T.f (Real.log n / Real.log (q : ℝ)))
@@ -475,7 +475,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       have hmult' : Real.log (q : ℝ)
             * (T.Fc ((((-(lamOf q ρ₁) : ℝ) : ℂ) + (mu0 : ℂ) * Complex.I))).re
           ≤ Real.log (q : ℝ) * (2 * (T.Fc ((mu0 : ℂ) * Complex.I)).re)
@@ -522,7 +522,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT0 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im + ρ₃.im by simp]
@@ -533,7 +533,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
             ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re := by
           have him : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| + δ ≤ 10 * L := by
             rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im + ρ₃.im by simp]
-            linarith [abs_add_le (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+            linarith only [abs_add_le (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
           exact IsRectMin.window_left hR hLqpos hψ0 him (by simp)
         have hb := hq₀s (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) hq0s (χ₁ * χ₂ * χ₃) hψ0
           (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) himT0
@@ -544,7 +544,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
 
   -- (11) the triple character χ₁ * χ₂ * χ₃⁻¹
   have hγ1 : |ρ₁.im + ρ₂.im - ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_sub (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_sub (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
   have hbt1 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₂ * χ₃⁻¹) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
             + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re * T.f (Real.log n / Real.log (q : ℝ)))
@@ -573,7 +573,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd1, if_neg h1]
       by_cases hψ1 : χ₁ * χ₂ * χ₃⁻¹ = 1
@@ -600,7 +600,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT1 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im - ρ₃.im by simp]
@@ -611,7 +611,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
             ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re := by
           have him : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| + δ ≤ 10 * L := by
             rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im + ρ₂.im - ρ₃.im by simp]
-            linarith [abs_sub (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+            linarith only [abs_sub (ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
           exact IsRectMin.window_left hR hLqpos hψ1 him (by simp)
         have hb := hq₀s (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) hq0s (χ₁ * χ₂ * χ₃⁻¹) hψ1
           (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) himT1
@@ -622,7 +622,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
 
   -- (12) the triple character χ₁ * χ₂⁻¹ * χ₃
   have hγ2 : |ρ₁.im - ρ₂.im + ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_add_le (ρ₁.im - ρ₂.im) ρ₃.im, abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_add_le (ρ₁.im - ρ₂.im) ρ₃.im, abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
   have hbt2 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁ * χ₂⁻¹ * χ₃) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
             + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re * T.f (Real.log n / Real.log (q : ℝ)))
@@ -651,7 +651,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd2, if_neg h2]
       by_cases hψ2 : χ₁ * χ₂⁻¹ * χ₃ = 1
@@ -678,7 +678,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT2 : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im - ρ₂.im + ρ₃.im by simp]
@@ -689,7 +689,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
             ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re := by
           have him : |((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| + δ ≤ 10 * L := by
             rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = ρ₁.im - ρ₂.im + ρ₃.im by simp]
-            linarith [abs_add_le (ρ₁.im - ρ₂.im) ρ₃.im, abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+            linarith only [abs_add_le (ρ₁.im - ρ₂.im) ρ₃.im, abs_sub ρ₁.im ρ₂.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
           exact IsRectMin.window_left hR hLqpos hψ2 him (by simp)
         have hb := hq₀s (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) hq0s (χ₁ * χ₂⁻¹ * χ₃) hψ2
           (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₁.im : ℝ) : ℂ) - ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) himT2
@@ -700,7 +700,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
 
   -- (13) the triple character χ₁⁻¹ * χ₂ * χ₃
   have hγ3 : |-ρ₁.im + ρ₂.im + ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_add_le (-ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le (-ρ₁.im) ρ₂.im, abs_neg ρ₁.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_add_le (-ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le (-ρ₁.im) ρ₂.im, abs_neg ρ₁.im, hbit₁, hbit₂, hbit₃, hLlog, hLqpos]
   have hbt3 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
         ((χ₁⁻¹ * χ₂ * χ₃) (n : ZMod q) / (n : ℂ) ^ (((ρ₁.re : ℝ) : ℂ)
             + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re * T.f (Real.log n / Real.log (q : ℝ)))
@@ -729,7 +729,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
       have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
         have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-        nlinarith [h1, hε']
+        nlinarith only [h1, hε']
       nlinarith only [hb, hmult, hsq]
     · rw [hcrd3, if_neg h3]
       by_cases hψ3 : χ₁⁻¹ * χ₂ * χ₃ = 1
@@ -756,7 +756,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           mul_nonneg (mul_nonneg T.f0_pos.le hε'.le) hLqpos.le
         have hsq : T.f 0 * (ε'/4) * Real.log (q : ℝ) ≤ T.f 0 * ε' * Real.log (q : ℝ) := by
           have h1 : (0:ℝ) ≤ T.f 0 * Real.log (q : ℝ) := mul_nonneg T.f0_pos.le hLqpos.le
-          nlinarith [h1, hε']
+          nlinarith only [h1, hε']
         nlinarith only [hb, hmult, hsq]
       · have himT3 : |((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
           rw [show ((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = -ρ₁.im + ρ₂.im + ρ₃.im by simp]
@@ -767,7 +767,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
             ‖(1:ℂ) + (((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im : ℂ) * Complex.I - u‖ ≤ δ → u.re ≤ ((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re := by
           have him : |((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im| + δ ≤ 10 * L := by
             rw [show ((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).im = -ρ₁.im + ρ₂.im + ρ₃.im by simp]
-            linarith [abs_add_le (-ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le (-ρ₁.im) ρ₂.im, abs_neg ρ₁.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+            linarith only [abs_add_le (-ρ₁.im + ρ₂.im) ρ₃.im, abs_add_le (-ρ₁.im) ρ₂.im, abs_neg ρ₁.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
           exact IsRectMin.window_left hR hLqpos hψ3 him (by simp)
         have hb := hq₀s (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) hq0s (χ₁⁻¹ * χ₂ * χ₃) hψ3
           (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (-((ρ₁.im : ℝ) : ℂ) + ((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) himT3
@@ -776,7 +776,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         simpa using hb
   -- (8) the pair character χ₂χ₃: companion of the triples (10) and (13)
   have hγ8 : |ρ₂.im + ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_add_le ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_add_le ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
   have him8 : |(((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ))
       * Complex.I).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
@@ -794,7 +794,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         * Complex.I).im| + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ))
         * Complex.I).im = ρ₂.im + ρ₃.im by simp]
-      linarith [abs_add_le ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+      linarith only [abs_add_le ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne8 him (by simp)
   have hw8a (hμ : |mu0| ≤ 4) : ‖(1:ℂ) + ((((ρ₁.re : ℝ) : ℂ)
       + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im : ℂ)
@@ -822,7 +822,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
       ring]
     exact norm_win hLqpos hδ0 hlam₁pos.le hlam₁_le1 hμ hδLq5
   have hγ9 : |ρ₂.im - ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_sub ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_sub ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
   have him9 : |(((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ))
       * Complex.I).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
@@ -840,7 +840,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         * Complex.I).im| + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ))
         * Complex.I).im = ρ₂.im - ρ₃.im by simp]
-      linarith [abs_sub ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+      linarith only [abs_sub ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne9 him (by simp)
   have hw9a (hμ : |mu1| ≤ 4) : ‖(1:ℂ) + ((((ρ₁.re : ℝ) : ℂ)
       + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im : ℂ)
@@ -883,11 +883,11 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           rwa [inv_inv] at h2
         have hdivA := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃) hne8
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw8a h0.2) hδ1 (by
-            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq0, Work.A7.zeroMult_conj_inv]; exact hzm₁)
         have hdivB := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃) hne8
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw8b h3.2) hδ1 (by
-            rw [abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq3]; exact hzm₁)
         have hnezeros : (starRingEnd ℂ) ρ₁ ≠ ρ₁ := by
           intro hc
@@ -931,7 +931,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           exact eq_inv_of_mul_eq_one_right h
         have hdivA := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃) hne8
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw8a h0.2) hδ1 (by
-            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq0, Work.A7.zeroMult_conj_inv]; exact hzm₁)
         have hb := hq₀o (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) (ρ := (starRingEnd ℂ) ρ₁) hq0o
           (χ₂ * χ₃) hne8 (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) him8
@@ -958,7 +958,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           rwa [inv_inv] at h2
         have hdivB := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃) hne8
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw8b h3.2) hδ1 (by
-            rw [abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq3]; exact hzm₁)
         have hb := hq₀o (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) (ρ := ρ₁) hq0o
           (χ₂ * χ₃) hne8 (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) + ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) him8
@@ -987,7 +987,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         have hz3 : crd3 = 0 := by rw [hcrd3, if_neg h3]
         linarith only [hb, hz0, hz3]
   have hγ9 : |ρ₂.im - ρ₃.im| ≤ 10 * Real.log (q : ℝ) := by
-    linarith [abs_sub ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
+    linarith only [abs_sub ρ₂.im ρ₃.im, hbit₂, hbit₃, hLlog, hLqpos]
   have him9 : |(((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ))
       * Complex.I).im| ≤ 10 * Real.log (q : ℝ) := by
     rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im
@@ -1005,7 +1005,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
         * Complex.I).im| + δ ≤ 10 * L := by
       rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ))
         * Complex.I).im = ρ₂.im - ρ₃.im by simp]
-      linarith [abs_sub ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
+      linarith only [abs_sub ρ₂.im ρ₃.im, hbit₁, hbit₂, hbit₃, hδ1, hL1]
     exact IsRectMin.window_left hR hLqpos hne9 him (by simp)
   have hw9a (hμ : |mu1| ≤ 4) : ‖(1:ℂ) + ((((ρ₁.re : ℝ) : ℂ)
       + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).im : ℂ)
@@ -1051,11 +1051,11 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           exact h3'
         have hdivA := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃⁻¹) hne9
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw9a h1.2) hδ1 (by
-            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq1, Work.A7.zeroMult_conj_inv]; exact hzm₁)
         have hdivB := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃⁻¹) hne9
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw9b h2.2) hδ1 (by
-            rw [abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq2]; exact hzm₁)
         have hnezeros : (starRingEnd ℂ) ρ₁ ≠ ρ₁ := by
           intro hc
@@ -1100,7 +1100,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           exact eq_inv_of_mul_eq_one_right h
         have hdivA := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃⁻¹) hne9
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw9a h1.2) hδ1 (by
-            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [Complex.conj_re, abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq1, Work.A7.zeroMult_conj_inv]; exact hzm₁)
         have hb := hq₀o (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) (ρ := (starRingEnd ℂ) ρ₁) hq0o
           (χ₂ * χ₃⁻¹) hne9 (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hb1_bd) him9 (by rw [show ((((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)).re = ρ₁.re by simp]; exact hre_low) (hL52 (χ₂ * χ₃⁻¹) hne9) hdivA
@@ -1131,7 +1131,7 @@ theorem Rect10_3EngineH (T : Work.ZeroFreeTables.TestFn) (ε' δ : ℝ) (hε' : 
           exact h3'
         have hdivB := Work.ZeroFreeTables.divisor_ne_zero_of_zeroMult_v2 (χ₂ * χ₃⁻¹) hne9
           (mem_closedBall_of_window (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I) δ (hw9b h2.2) hδ1 (by
-            rw [abs_of_pos hstrip₁.1]; linarith [hstrip₁.2]))
+            rw [abs_of_pos hstrip₁.1]; linarith only [hstrip₁.2]))
           (by rw [heq2]; exact hzm₁)
         have hb := hq₀o (q := q) (s := (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I)) (ρ := ρ₁) hq0o (χ₂ * χ₃⁻¹) hne9 (by rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).re = ρ₁.re by simp]; exact hb1_bd) him9
           (by rw [show (((ρ₁.re : ℝ) : ℂ) + (((ρ₂.im : ℝ) : ℂ) - ((ρ₃.im : ℝ) : ℂ)) * Complex.I).re = ρ₁.re by simp]; exact hre_low) (hL52 (χ₂ * χ₃⁻¹) hne9) hdivB (hw9b h2.2) hzw9

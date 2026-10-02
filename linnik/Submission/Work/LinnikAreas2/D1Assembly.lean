@@ -20,7 +20,6 @@ import Submission.Work.LinnikContract.Areas
 import Submission.Work.LinnikAreas.Density4.Defs
 import Submission.Work.LinnikAreas2.PsiDefs2
 import Submission.Work.LinnikAreas.Density4.zero_detector
-import Submission.Work.LinnikAreas.Density4.theta_diag_eval
 import Submission.Work.LinnikAreas.Density4.duality_principle
 import Submission.Work.LinnikAreas.Density4.Parent
 import Submission.Work.A7.lamChar_api

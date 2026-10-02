@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.Algebra.Polynomial.hasseDeriv_mul_X_pow_prime_pow
 import Submission.Commons.Algebra.Polynomial.hasseDeriv_mul_pow_degree
-import Submission.Commons.Algebra.Polynomial.X_sub_C_pow_dvd_of_hasseDeriv_eval_eq_zero
 import Submission.Commons.FieldTheory.Kummer.binomial_irreducible_iff_forall_prime
 import Submission.Commons.NumberTheory.Stepanov.stevanov_count_gpow
 import Submission.Commons.NumberTheory.Stepanov.gpow_main_g0
@@ -103,7 +102,7 @@ theorem superelliptic_char_sum_bound_of_inputs
           ≤ (Fintype.card F : ℝ) / (e : ℝ) + C * Real.sqrt (Fintype.card F) := by
   have heR : (1 : ℝ) < (e : ℝ) := by
     have : (2 : ℝ) ≤ (e : ℝ) := by exact_mod_cast he
-    linarith
+    linarith only [this]
   have hQ0pos : (0 : ℝ) < Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ) := by
     apply Real.sqrt_pos.mpr
     have : 0 < stepanovQ0 e d := by
@@ -115,13 +114,13 @@ theorem superelliptic_char_sum_bound_of_inputs
   · have h1 : (0 : ℝ) ≤ stepanovC1 e d := by rw [stepanovC1]; positivity
     have h2 : (0 : ℝ) ≤ (1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ) := by
       apply mul_nonneg _ (Real.sqrt_nonneg _)
-      rw [sub_nonneg, div_le_one (by linarith [heR])]
+      rw [sub_nonneg, div_le_one (by linarith only [heR])]
       exact le_of_lt heR
     have h3 := le_max_left (stepanovC1 e d)
       ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ))
     have h4 := le_max_right (stepanovC1 e d)
       ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ))
-    linarith
+    linarith only [h1, h3]
   intro F _ _ _ hdiv g hgd hnd
   obtain ⟨hg0, hD1⟩ := ne_zero_and_natDegree_pos e he g hnd
   set D := g.natDegree with hDdef
@@ -156,12 +155,12 @@ theorem superelliptic_char_sum_bound_of_inputs
     refine le_trans this ?_
     have hC1 : stepanovC1 e d ≤ max (stepanovC1 e d)
         ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) + 1 :=
-      le_trans (le_max_left _ _) (by linarith)
+      le_trans (le_max_left _ _) (by linarith only [])
     have : stepanovC1 e d * Real.sqrt (q : ℝ) ≤
         (max (stepanovC1 e d) ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) + 1)
           * Real.sqrt (q : ℝ) := by
       apply mul_le_mul_of_nonneg_right hC1 (Real.sqrt_nonneg _)
-    linarith
+    linarith only [this]
   · -- small `q`: the trivial bound
     push_neg at hbig
     have hsub : ({x : F | g.eval x ^ ((Fintype.card F - 1) / e) = 1} : Set F) ⊆ Set.univ :=
@@ -184,14 +183,14 @@ theorem superelliptic_char_sum_bound_of_inputs
       field_simp
       ring
     have hge : (0 : ℝ) ≤ 1 - 1 / (e : ℝ) := by
-      rw [sub_nonneg, div_le_one (by linarith [heR])]; exact le_of_lt heR
+      rw [sub_nonneg, div_le_one (by linarith only [heR])]; exact le_of_lt heR
     have hstep : (1 - 1 / (e : ℝ)) * (Fintype.card F : ℝ)
         ≤ ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) * Real.sqrt (Fintype.card F : ℝ) := by
       have h1 : (Fintype.card F : ℝ) ≤ Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ) * Real.sqrt (Fintype.card F : ℝ) := by
         have h2 : Real.sqrt (Fintype.card F : ℝ) * Real.sqrt (Fintype.card F : ℝ)
             = (Fintype.card F : ℝ) := by
           simpa [pow_two] using Real.sq_sqrt (le_of_lt hqR)
-        nlinarith [h2, hsqrtle, Real.sqrt_nonneg ((stepanovQ0 e d : ℕ) : ℝ),
+        nlinarith only [h2, hsqrtle, Real.sqrt_nonneg ((stepanovQ0 e d : ℕ) : ℝ),
           Real.sqrt_nonneg (Fintype.card F : ℝ)]
       calc (1 - 1 / (e : ℝ)) * (Fintype.card F : ℝ)
           ≤ (1 - 1 / (e : ℝ)) * (Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ) * Real.sqrt (Fintype.card F : ℝ)) :=
@@ -200,13 +199,13 @@ theorem superelliptic_char_sum_bound_of_inputs
             ring
     have hC2 : (1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)
         ≤ max (stepanovC1 e d) ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) + 1 :=
-      le_trans (le_max_right _ _) (by linarith)
+      le_trans (le_max_right _ _) (by linarith only [])
     calc (({x : F | g.eval x ^ ((Fintype.card F - 1) / e) = 1} : Set F).ncard : ℝ)
         ≤ (Fintype.card F : ℝ) := hcardR
       _ = (Fintype.card F : ℝ) / (e : ℝ) + (1 - 1 / (e : ℝ)) * (Fintype.card F : ℝ) := hsplit
       _ ≤ (Fintype.card F : ℝ) / (e : ℝ)
             + ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) * Real.sqrt (Fintype.card F : ℝ) := by
-          linarith [hstep]
+          linarith only [hstep]
       _ ≤ (Fintype.card F : ℝ) / (e : ℝ)
             + (max (stepanovC1 e d) ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) + 1)
               * Real.sqrt (Fintype.card F : ℝ) := by
@@ -214,7 +213,7 @@ theorem superelliptic_char_sum_bound_of_inputs
               ≤ (max (stepanovC1 e d) ((1 - 1 / (e : ℝ)) * Real.sqrt ((stepanovQ0 e d : ℕ) : ℝ)) + 1)
                 * Real.sqrt (Fintype.card F : ℝ) :=
             mul_le_mul_of_nonneg_right hC2 (Real.sqrt_nonneg _)
-          linarith
+          linarith only [h1]
 
 
 /-! ## Local copy of the non-vanishing lemma (module clash workaround) -/

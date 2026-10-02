@@ -36,35 +36,35 @@ theorem pfLogLogBound :
   obtain ⟨C1, hC1pos, hC1⟩ := Work.ZeroFreeTables.P9.primeFactors_logPow_div_le 1 (by norm_num)
   obtain ⟨C2, hC2pos, hC2⟩ := Work.ZeroFreeTables.P9.primeFactors_logPow_div_le 2 (by norm_num)
   obtain ⟨C3, hC3pos, hC3⟩ := Work.ZeroFreeTables.P9.primeFactors_logPow_div_le 3 (by norm_num)
-  refine ⟨C0 + C1 + C2 + C3 + 1, by linarith, ?_⟩
+  refine ⟨C0 + C1 + C2 + C3 + 1, by linarith only [hC0pos, hC1pos, hC2pos, hC3pos], ?_⟩
   intro q hq j hj
   set C : ℝ := C0 + C1 + C2 + C3 + 1 with hCdef
   set LL : ℝ := Real.log (Real.log (q : ℝ) + 2) + 2 with hLLdef
   have hLL1 : 1 ≤ LL := by
     rw [hLLdef]
     have h1 : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast hq)
-    have h2 : 0 < Real.log (Real.log (q : ℝ) + 2) := Real.log_pos (by linarith)
-    linarith
+    have h2 : 0 < Real.log (Real.log (q : ℝ) + 2) := Real.log_pos (by linarith only [h1])
+    linarith only [h2]
   have hLLnn : 0 ≤ LL := le_trans zero_le_one hLL1
-  have hCle : C0 ≤ C := by rw [hCdef]; linarith
-  have hC2le : C1 ≤ C := by rw [hCdef]; linarith
-  have hC3le : C2 ≤ C := by rw [hCdef]; linarith
-  have hC4le : C3 ≤ C := by rw [hCdef]; linarith
-  have hCge1 : 1 ≤ C := by rw [hCdef]; linarith
+  have hCle : C0 ≤ C := by rw [hCdef]; linarith only [hC1pos, hC2pos, hC3pos]
+  have hC2le : C1 ≤ C := by rw [hCdef]; linarith only [hC0pos, hC2pos, hC3pos]
+  have hC3le : C2 ≤ C := by rw [hCdef]; linarith only [hC0pos, hC1pos, hC3pos]
+  have hC4le : C3 ≤ C := by rw [hCdef]; linarith only [hC0pos, hC1pos, hC2pos]
+  have hCge1 : 1 ≤ C := by rw [hCdef]; linarith only [hC0pos, hC1pos, hC2pos, hC3pos]
   by_cases hq3 : 3 ≤ q
   · have hq3R : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq3
     have hllq_nn : 0 ≤ Real.log (Real.log (q : ℝ)) := by
       apply Real.log_nonneg
       have h3 : Real.log 3 ≤ Real.log (q : ℝ) := Real.log_le_log (by norm_num) hq3R
-      linarith [one_lt_log_three]
+      linarith only [one_lt_log_three, h3]
     have hllq_le : Real.log (Real.log (q : ℝ)) ≤ LL := by
       rw [hLLdef]
       have hqpos : 0 < Real.log (q : ℝ) := by
         have h3 : Real.log 3 ≤ Real.log (q : ℝ) := Real.log_le_log (by norm_num) hq3R
-        linarith [one_lt_log_three]
+        linarith only [one_lt_log_three, h3]
       have h : Real.log (Real.log (q : ℝ)) ≤ Real.log (Real.log (q : ℝ) + 2) :=
-        Real.log_le_log hqpos (by linarith)
-      linarith
+        Real.log_le_log hqpos (by linarith only [])
+      linarith only [h]
     have hj' : j = 0 ∨ j = 1 ∨ j = 2 ∨ j = 3 := by omega
     rcases hj' with h0 | h1 | h2 | h3
     · subst h0
@@ -77,7 +77,7 @@ theorem pfLogLogBound :
               mul_le_mul_of_nonneg_left hb hC0pos.le
             have h3' : C0 * LL ^ (0 + 1) ≤ C * LL ^ (0 + 1) :=
               mul_le_mul_of_nonneg_right hCle (pow_nonneg hLLnn _)
-            linarith
+            linarith only [h2', h3']
     · subst h1
       calc ∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 1 / (p : ℝ)
           ≤ C1 * (Real.log (Real.log (q : ℝ))) ^ (1 + 1) := hC1 q hq3
@@ -88,7 +88,7 @@ theorem pfLogLogBound :
               mul_le_mul_of_nonneg_left hb hC1pos.le
             have h3' : C1 * LL ^ (1 + 1) ≤ C * LL ^ (1 + 1) :=
               mul_le_mul_of_nonneg_right hC2le (pow_nonneg hLLnn _)
-            linarith
+            linarith only [h2', h3']
     · subst h2
       calc ∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 2 / (p : ℝ)
           ≤ C2 * (Real.log (Real.log (q : ℝ))) ^ (2 + 1) := hC2 q hq3
@@ -99,7 +99,7 @@ theorem pfLogLogBound :
               mul_le_mul_of_nonneg_left hb hC2pos.le
             have h3' : C2 * LL ^ (2 + 1) ≤ C * LL ^ (2 + 1) :=
               mul_le_mul_of_nonneg_right hC3le (pow_nonneg hLLnn _)
-            linarith
+            linarith only [h2', h3']
     · subst h3
       calc ∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 3 / (p : ℝ)
           ≤ C3 * (Real.log (Real.log (q : ℝ))) ^ (3 + 1) := hC3 q hq3
@@ -110,7 +110,7 @@ theorem pfLogLogBound :
               mul_le_mul_of_nonneg_left hb hC3pos.le
             have h3' : C3 * LL ^ (3 + 1) ≤ C * LL ^ (3 + 1) :=
               mul_le_mul_of_nonneg_right hC4le (pow_nonneg hLLnn _)
-            linarith
+            linarith only [h2', h3']
   · have hq2 : q ≤ 2 := by omega
     have hsub : q.primeFactors ⊆ ({2} : Finset ℕ) := by
       intro p hp
@@ -134,12 +134,12 @@ theorem pfLogLogBound :
       _ ≤ C * LL ^ (j + 1) := by
           have hlog2nn : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
           have hlog2le1 : Real.log 2 ≤ 1 := by
-            have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith
+            have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith only [h]
           have hnum : (Real.log 2) ^ j ≤ 1 := pow_le_one₀ hlog2nn hlog2le1
           have hLLpow : 1 ≤ LL ^ (j + 1) := one_le_pow₀ hLL1
-          have hhalf : (Real.log 2) ^ j / 2 ≤ 1 := by linarith
+          have hhalf : (Real.log 2) ^ j / 2 ≤ 1 := by linarith only [hnum]
           calc (Real.log 2) ^ j / 2 ≤ 1 := hhalf
-            _ ≤ C * LL ^ (j + 1) := by nlinarith [hLLpow, hCge1]
+            _ ≤ C * LL ^ (j + 1) := by nlinarith only [hLLpow, hCge1, hC0pos, hC1pos, hC2pos, hC3pos]
 
 /-! ## The analytic core -/
 
@@ -236,11 +236,11 @@ theorem corr_numeric {K a e : ℝ} (hK : 0 < K) (ha : 0 < a) (he : 0 < e) {Cpf :
   intro L lam₁ LL s1 s2 s3 hL hLL0 hLL hlam0 hlam_a hb1 hb2 hb3
   have hL1le : (1 : ℝ) ≤ L := le_trans (le_max_right N 1) hL
   have hLpos : 0 < L := lt_of_lt_of_le zero_lt_one hL1le
-  have hXnn : 0 ≤ a + lam₁ := by linarith
-  have hX2a : a + lam₁ ≤ 2 * a := by linarith
+  have hXnn : 0 ≤ a + lam₁ := by linarith only [ha, hlam0]
+  have hX2a : a + lam₁ ≤ 2 * a := by linarith only [hlam_a]
   have hX2 : (a + lam₁) ^ 2 ≤ 4 * a ^ 2 := by
     have h := pow_le_pow_left₀ hXnn hX2a 2
-    nlinarith [h]
+    linarith only [h]
   have hLLpow2 : LL ^ 2 ≤ (Real.log L + 4) ^ 2 := pow_le_pow_left₀ hLL0 hLL 2
   have hLLpow3 : LL ^ 3 ≤ (Real.log L + 4) ^ 3 := pow_le_pow_left₀ hLL0 hLL 3
   have hLLpow4 : LL ^ 4 ≤ (Real.log L + 4) ^ 4 := pow_le_pow_left₀ hLL0 hLL 4
@@ -251,12 +251,12 @@ theorem corr_numeric {K a e : ℝ} (hK : 0 < K) (ha : 0 < a) (he : 0 < e) {Cpf :
     have hm2 : ((a + lam₁) / L) * LL ^ 3 ≤ (2 * a / L) * (Real.log L + 4) ^ 3 := by
       rw [div_mul_eq_mul_div, div_mul_eq_mul_div]
       apply div_le_div_of_nonneg_right _ hLpos.le
-      exact mul_le_mul hX2a hLLpow3 (pow_nonneg hLL0 3) (by linarith)
+      exact mul_le_mul hX2a hLLpow3 (pow_nonneg hLL0 3) (by linarith only [ha])
     have hm3 : ((a + lam₁) ^ 2 / L ^ 2) * LL ^ 4 ≤ (4 * a ^ 2 / L ^ 2) * (Real.log L + 4) ^ 4 := by
       rw [div_mul_eq_mul_div, div_mul_eq_mul_div]
       apply div_le_div_of_nonneg_right _ (sq_nonneg L)
       exact mul_le_mul hX2 hLLpow4 (pow_nonneg hLL0 4) (by positivity)
-    linarith
+    linarith only [hLLpow2, hm2, hm3]
   have hs : (a + lam₁) * s1 + ((a + lam₁) ^ 2 / L) * s2 + ((a + lam₁) ^ 3 / L ^ 2) * s3
       ≤ (a + lam₁) * Cpf * (LL ^ 2 + ((a + lam₁) / L) * LL ^ 3
           + ((a + lam₁) ^ 2 / L ^ 2) * LL ^ 4) := by
@@ -270,7 +270,7 @@ theorem corr_numeric {K a e : ℝ} (hK : 0 < K) (ha : 0 < a) (he : 0 < e) {Cpf :
           + ((a + lam₁) ^ 2 / L ^ 2) * LL ^ 4)
         = (a + lam₁) * (Cpf * LL ^ 2) + ((a + lam₁) ^ 2 / L) * (Cpf * LL ^ 3)
           + ((a + lam₁) ^ 3 / L ^ 2) * (Cpf * LL ^ 4) := by ring
-    linarith [e1, e2, e3, heq.le, heq.ge]
+    linarith only [e1, e2, e3, heq.le, heq.ge, heq]
   have hgL : g L = (Real.log L + 4) ^ 2 / L + (2 * a) * ((Real.log L + 4) ^ 3 / L ^ 2)
       + (4 * a ^ 2) * ((Real.log L + 4) ^ 4 / L ^ 3) := rfl
   have hN' : K * Cpf * g L < e := by
@@ -310,7 +310,7 @@ theorem imprimCorr4 {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
   have hsy : 1 < s.re := by
     rw [hsre]
     have h : 0 < a / L := div_pos ha hLpos
-    linarith
+    linarith only [h]
   haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
   have hdiff := hC (N := χ.conductor) (q := q) (L := L) (s := s) (a := a) (lam₁ := lam₁)
     χ.conductor_dvd_level χ.primitiveCharacter hL1le hsy ha hlam0
@@ -322,20 +322,20 @@ theorem imprimCorr4 {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
   have hLL0 : 0 ≤ LL := by
     rw [hLLdef]
     have h1 : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast hq1)
-    have h2 : 0 ≤ Real.log (Real.log (q : ℝ) + 2) := Real.log_nonneg (by linarith)
-    linarith
+    have h2 : 0 ≤ Real.log (Real.log (q : ℝ) + 2) := Real.log_nonneg (by linarith only [h1])
+    linarith only [h2]
   have hLLle : LL ≤ Real.log L + 4 := by
     rw [hLLdef]
-    have h1 : Real.log (q : ℝ) + 2 ≤ 3 * L := by linarith
+    have h1 : Real.log (q : ℝ) + 2 ≤ 3 * L := by linarith only [hL0ge1, hL, hlogq]
     have h2 : 0 < Real.log (q : ℝ) + 2 := by
       have h : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast hq1)
-      linarith
+      linarith only [h]
     have h3 : Real.log (Real.log (q : ℝ) + 2) ≤ Real.log (3 * L) := Real.log_le_log h2 h1
     have h4 : Real.log (3 * L) = Real.log 3 + Real.log L :=
       Real.log_mul (by norm_num) (ne_of_gt hLpos)
     have h5 : Real.log 3 ≤ 2 := by
-      have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num); linarith
-    linarith
+      have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num); linarith only [h]
+    linarith only [h3, h4, h5]
   have hb1 : S1 ≤ Cpf * LL ^ 2 := by
     rw [hS1, hLLdef]
     simpa [pow_one] using hpf q hq1 1 (by norm_num)
@@ -360,6 +360,6 @@ theorem imprimCorr4 {a e : ℝ} (ha : 0 < a) (he : 0 < e) :
             + ((a + lam₁) ^ 3 / L ^ 2) * S3) := le_trans (le_abs_self _) hdiff
     rw [heq] at h1
     exact le_trans h1 hnum'
-  linarith [hle]
+  linarith only [hle, hqne]
 
 end Work.ZeroFreeTables.lam0w

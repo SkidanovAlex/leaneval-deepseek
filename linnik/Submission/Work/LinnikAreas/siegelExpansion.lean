@@ -79,12 +79,12 @@ lemma chiSum_eq_of_le_classLimit {N : ℕ} [NeZero N] (ψ : DirichletCharacter �
       rw [Siegel.classLimit]; exact Nat.lt_floor_add_one _
     have h2 : ((Siegel.classLimit q (11/2) : ℕ) : ℝ) + 1 ≤ (n:ℝ) := by
       exact_mod_cast (Nat.succ_le_of_lt hlt : Siegel.classLimit q (11/2) + 1 ≤ n)
-    linarith
+    linarith only [h1, h2]
   have hloglt : ((11:ℝ)/2) * Real.log (q:ℝ) < Real.log (n:ℝ) := by
     have h := Real.log_lt_log hqr hqLn
     rwa [Real.log_rpow (by positivity : (0:ℝ) < (q:ℝ))] at h
   have hx : (11:ℝ)/2 ≤ Real.log (n:ℝ)/Real.log (q:ℝ) := by
-    rw [le_div_iff₀ hlog]; linarith
+    rw [le_div_iff₀ hlog]; linarith only [hloglt]
   have hzero : Commons.NumberTheory.Linnik.tentWeight (11/2) (3/10)
       (Real.log (n:ℝ)/Real.log (q:ℝ)) = 0 :=
     (Commons.NumberTheory.Linnik.tentWeight_bounds (by norm_num) (by norm_num)).2.2.2 _ hx
@@ -115,12 +115,12 @@ lemma allSum_eq_of_le_classLimit {q X : ℕ} (hq : 2 ≤ q)
       rw [Siegel.classLimit]; exact Nat.lt_floor_add_one _
     have h2 : ((Siegel.classLimit q (11/2) : ℕ) : ℝ) + 1 ≤ (n:ℝ) := by
       exact_mod_cast (Nat.succ_le_of_lt hlt : Siegel.classLimit q (11/2) + 1 ≤ n)
-    linarith
+    linarith only [h1, h2]
   have hloglt : ((11:ℝ)/2) * Real.log (q:ℝ) < Real.log (n:ℝ) := by
     have h := Real.log_lt_log hqr hqLn
     rwa [Real.log_rpow (by positivity : (0:ℝ) < (q:ℝ))] at h
   have hx : (11:ℝ)/2 ≤ Real.log (n:ℝ)/Real.log (q:ℝ) := by
-    rw [le_div_iff₀ hlog]; linarith
+    rw [le_div_iff₀ hlog]; linarith only [hloglt]
   have hzero : Commons.NumberTheory.Linnik.tentWeight (11/2) (3/10)
       (Real.log (n:ℝ)/Real.log (q:ℝ)) = 0 :=
     (Commons.NumberTheory.Linnik.tentWeight_bounds (by norm_num) (by norm_num)).2.2.2 _ hx
@@ -206,7 +206,7 @@ lemma chiSum_box_bound {q : ℕ} [NeZero q] {Cb : ℝ} (hbr : BridgeUniform Cb)
   have hχne : χ.primitiveCharacter ≠ 1 := Siegel.primitive_ne_one hχ
   have hprim : χ.primitiveCharacter.IsPrimitive := DirichletCharacter.primitiveCharacter_isPrimitive χ
   have hNq : χ.conductor ≤ q := Nat.le_of_dvd (NeZero.pos q) (DirichletCharacter.conductor_dvd_level χ)
-  obtain ⟨Z, hZtend, hZbox⟩ := ZeroSumBoxComparison χ hχ (R := R) (by linarith)
+  obtain ⟨Z, hZtend, hZbox⟩ := ZeroSumBoxComparison χ hχ (R := R) (by linarith only [hR])
   set X' : ℕ := Siegel.classLimit q (11/2) + 1 with hX'def
   have hX'cast : (X' : ℝ) = ((Siegel.classLimit q (11/2) : ℕ) : ℝ) + 1 := by
     rw [hX'def]; push_cast; ring
@@ -214,7 +214,7 @@ lemma chiSum_box_bound {q : ℕ} [NeZero q] {Cb : ℝ} (hbr : BridgeUniform Cb)
     have h := Nat.lt_floor_add_one ((q:ℝ)^((11:ℝ)/2))
     have h2 : ((Siegel.classLimit q (11/2) : ℕ) : ℝ) = ((⌊(q:ℝ)^((11:ℝ)/2)⌋₊ : ℕ) : ℝ) := rfl
     rw [← h2] at h
-    rw [hX'cast]; linarith
+    rw [hX'cast]; linarith only [h]
   have hZtend' : Filter.Tendsto (fun ρ : ℝ => ∑ᶠ u : ℂ,
       (((MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ.primitiveCharacter)
         (Metric.closedBall 0 ρ)) u : ℤ) : ℂ) *
@@ -281,7 +281,7 @@ lemma principal_box_bound {q : ℕ} [NeZero q] {CZ1 CZ2 : ℝ} (hZ1 : ZetaBridge
     have h := Nat.lt_floor_add_one ((q:ℝ)^((11:ℝ)/2))
     have h2 : ((Siegel.classLimit q (11/2) : ℕ) : ℝ) = ((⌊(q:ℝ)^((11:ℝ)/2)⌋₊ : ℕ) : ℝ) := rfl
     rw [← h2] at h
-    rw [hX'cast]; linarith
+    rw [hX'cast]; linarith only [h]
   have hb := hZ1 q hq Z hZtend X' hX'ge
   have hsumPB : (∑ n ∈ Finset.Icc 1 X', ((ArithmeticFunction.vonMangoldt n : ℝ) : ℂ) / (n : ℂ) *
         ((Commons.NumberTheory.Linnik.tentWeight (11/2) (3/10)
@@ -337,7 +337,7 @@ lemma principal_box_bound {q : ℕ} [NeZero q] {CZ1 CZ2 : ℝ} (hZ1 : ZetaBridge
               (Real.log (q:ℝ))⁻¹ * ((q : ℝ) ^ (-(147:ℝ)/20)) * (1 + Real.log (q:ℝ)))
               + (Real.log (q:ℝ))⁻¹ * ncsSum q (Siegel.classLimit q (11/2)) := by
           refine le_trans (norm_sub_le _ _) ?_
-          linarith [hterm1, hterm2]
+          linarith only [hterm1, hterm2, hb]
         refine le_trans (norm_add_le _ _) ?_
         linarith [hAB, hterm3]
 
@@ -350,7 +350,7 @@ lemma eventually_const_log_pow_mul_rpow {a b : ℝ} (hab : a < b) (k : ℕ) (C :
   · refine ⟨2, fun q hq => ?_⟩
     have hq1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast (by omega : 1 ≤ q)
     have hlog : 0 ≤ Real.log (q:ℝ) := Real.log_nonneg hq1
-    have hqpos : 0 < (q:ℝ) := by linarith
+    have hqpos : 0 < (q:ℝ) := by linarith only [hq1]
     have h1 : C * (Real.log (q:ℝ))^k ≤ 0 :=
       mul_nonpos_of_nonpos_of_nonneg hC (pow_nonneg hlog k)
     have h2 : C * (Real.log (q:ℝ))^k * (q:ℝ)^a ≤ 0 :=
@@ -389,12 +389,12 @@ lemma eventually_const_log_pow_mul_rpow {a b : ℝ} (hab : a < b) (k : ℕ) (C :
         = (C * ε ^ (-(k:ℝ))) * (q:ℝ)^((k:ℝ)*ε + a) := by
       rw [← Real.rpow_natCast ε k, Real.rpow_neg hεpos.le, Real.rpow_add hqpos]
       field_simp
-    have hexp : (k:ℝ)*ε + a ≤ (a + b) / 2 := by linarith
+    have hexp : (k:ℝ)*ε + a ≤ (a + b) / 2 := by linarith only [hkε]
     have h3 : (q:ℝ)^((k:ℝ)*ε + a) ≤ (q:ℝ)^((a+b)/2) :=
       Real.rpow_le_rpow_of_exponent_le hq1 hexp
     have h4 : C * ε ^ (-(k:ℝ)) ≤ (q:ℝ)^((b-a)/2) := by
       have hbase : 0 ≤ C * ε ^ (-(k:ℝ)) := by positivity
-      have hc : (0:ℝ) ≤ (b-a)/2 := by linarith
+      have hc : (0:ℝ) ≤ (b-a)/2 := by linarith only [hab]
       have h := Real.rpow_le_rpow (by positivity : (0:ℝ) ≤ (C * ε ^ (-(k:ℝ))) ^ (2 / (b - a)))
         hq₀ hc
       have hmul : ((C * ε ^ (-(k:ℝ))) ^ (2 / (b - a))) ^ ((b - a)/2) = C * ε ^ (-(k:ℝ)) := by
@@ -402,12 +402,12 @@ lemma eventually_const_log_pow_mul_rpow {a b : ℝ} (hab : a < b) (k : ℕ) (C :
         have he : (2 / (b - a)) * ((b - a)/2) = 1 := by
           rw [div_mul_div_comm]
           rw [show (b - a) * 2 = 2 * (b - a) by ring,
-            div_self (ne_of_gt (by linarith : (0:ℝ) < 2 * (b - a)))]
+            div_self (ne_of_gt (by linarith only [hab] : (0:ℝ) < 2 * (b - a)))]
         rw [he, Real.rpow_one]
       have hq0le : (q₀:ℝ) ≤ (q:ℝ) := by exact_mod_cast hqq₀
       have h2' : (q₀:ℝ)^((b-a)/2) ≤ (q:ℝ)^((b-a)/2) := Real.rpow_le_rpow (by positivity) hq0le hc
       rw [hmul] at h
-      linarith
+      linarith only [h, h2']
     calc C * (Real.log (q:ℝ))^k * (q:ℝ)^a
         ≤ (C * ε ^ (-(k:ℝ))) * (q:ℝ)^((k:ℝ)*ε + a) := le_trans h1 (le_of_eq h2)
       _ ≤ (q:ℝ)^((b-a)/2) * (q:ℝ)^((a+b)/2) :=
@@ -434,16 +434,16 @@ lemma log_inv_le_one {q : ℕ} (hq : 3 ≤ q) : (Real.log (q:ℝ))⁻¹ ≤ 1 :=
     (Real.lt_log_iff_exp_lt (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three
   have hlog1 : (1:ℝ) ≤ Real.log (q:ℝ) := by
     have hle : Real.log 3 ≤ Real.log (q:ℝ) := Real.log_le_log (by norm_num) (by exact_mod_cast hq)
-    linarith
-  have hpos : 0 < Real.log (q:ℝ) := by linarith
+    linarith only [h3, hle]
+  have hpos : 0 < Real.log (q:ℝ) := by linarith only [hlog1]
   rw [inv_le_iff_one_le_mul₀ hpos]
-  linarith
+  linarith only [hlog1]
 
 lemma log_one_le {q : ℕ} (hq : 3 ≤ q) : (1:ℝ) ≤ Real.log (q:ℝ) := by
   have h3 : (1:ℝ) < Real.log 3 :=
     (Real.lt_log_iff_exp_lt (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three
   have hle : Real.log 3 ≤ Real.log (q:ℝ) := Real.log_le_log (by norm_num) (by exact_mod_cast hq)
-  linarith
+  linarith only [h3, hle]
 
 /-- The error shape of the per-character bridge. -/
 noncomputable def Err (q : ℕ) : ℝ :=
@@ -455,7 +455,7 @@ lemma Err_nonneg {q : ℕ} (hq : 3 ≤ q) : 0 ≤ Err q := by
   have h1 : 0 < (q:ℝ)^(-(49:ℝ)/10) := Real.rpow_pos_of_pos hqpos _
   have h2 : 0 < (q:ℝ)^(-(147:ℝ)/20) := Real.rpow_pos_of_pos hqpos _
   have h3 : 0 ≤ (Real.log (q:ℝ))⁻¹ := le_of_lt (inv_pos.mpr hlogpos)
-  have h4 : 0 ≤ 1 + Real.log (q:ℝ) := by linarith [log_one_le hq]
+  have h4 : 0 ≤ 1 + Real.log (q:ℝ) := by linarith only [log_one_le hq, hlogpos]
   rw [Err]
   positivity
 
@@ -467,7 +467,7 @@ lemma threshold_bridge (C : ℝ) :
     have hErrn : 0 ≤ Err q := Err_nonneg (q := q) (by omega)
     have h2 : (0:ℝ) < (1/8) * (q:ℝ)^(-(2:ℝ)) := by
       have := Real.rpow_pos_of_pos hqpos (-(2:ℝ)); positivity
-    nlinarith [hErrn, hC, h2]
+    nlinarith only [hErrn, hC, h2]
   push_neg at hC
   obtain ⟨q1, h1⟩ := exists_const_log_pow_le (a := -(49:ℝ)/10) (by norm_num) 0 C
   obtain ⟨q2, h2⟩ := exists_const_log_pow_le (a := -(147:ℝ)/20) (by norm_num) 0 C
@@ -493,7 +493,7 @@ lemma threshold_bridge (C : ℝ) :
     have h1' : (Real.log (q:ℝ))⁻¹ * (q:ℝ)^(-(147:ℝ)/20) ≤ (q:ℝ)^(-(147:ℝ)/20) := by
       have := mul_le_mul_of_nonneg_right hloginv (le_of_lt h2')
       rwa [one_mul] at this
-    have h3' : 0 ≤ 1 + Real.log (q:ℝ) := by linarith [hlog1]
+    have h3' : 0 ≤ 1 + Real.log (q:ℝ) := by linarith only [hlog1, hlogpos]
     calc (Real.log (q:ℝ))⁻¹ * (q:ℝ)^(-(147:ℝ)/20) * (1 + Real.log (q:ℝ))
         ≤ (q:ℝ)^(-(147:ℝ)/20) * (1 + Real.log (q:ℝ)) :=
           mul_le_mul_of_nonneg_right h1' h3'
@@ -502,13 +502,13 @@ lemma threshold_bridge (C : ℝ) :
       ≤ C * ((q:ℝ)^(-(49:ℝ)/10) + (q:ℝ)^(-(147:ℝ)/20) + (q:ℝ)^(-(147:ℝ)/20) * Real.log (q:ℝ)) := by
     rw [Err]
     refine mul_le_mul_of_nonneg_left ?_ hC.le
-    linarith [hlogmul]
+    linarith only [hlogmul]
   have hA := h1 q H1
   have hB := h2 q H2
   have hC' := h3 q H3
   simp only [pow_zero, mul_one] at hA hB
   simp only [pow_one] at hC'
-  linarith [hA, hB, hC', hsum, hq49, hq20, hrpow2]
+  linarith only [hA, hB, hC', hsum, hq49, hq20, hrpow2]
 
 lemma threshold_zeta1 (C : ℝ) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → C * Err q ≤ (1/8) * (q:ℝ)^(-(2:ℝ)) :=
@@ -522,7 +522,7 @@ lemma threshold_zeta2 (C : ℝ) :
     have h2 : (0:ℝ) < (1/8) * (q:ℝ)^(-(2:ℝ)) := by
       have := Real.rpow_pos_of_pos hqpos (-(2:ℝ)); positivity
     have h3 : 0 < (q:ℝ)^(-(49:ℝ)/10) := Real.rpow_pos_of_pos hqpos _
-    nlinarith [hC, h2, h3]
+    nlinarith only [hC, h2, h3]
   push_neg at hC
   obtain ⟨q1, h1⟩ := exists_const_log_pow_le (a := -(49:ℝ)/10) (by norm_num) 0 C
   refine ⟨max q1 3, fun q hq => ?_⟩
@@ -535,7 +535,7 @@ lemma threshold_zeta2 (C : ℝ) :
   have hrpow2 : (0:ℝ) < (q:ℝ)^(-(2:ℝ)) := Real.rpow_pos_of_pos hqpos _
   have hA := h1 q H1
   simp only [pow_zero, mul_one] at hA
-  linarith [hA, hq49, hrpow2]
+  linarith only [hA, hq49, hrpow2]
 
 lemma threshold_ncs (C : ℝ) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q →
@@ -551,9 +551,9 @@ lemma threshold_ncs (C : ℝ) :
     have h5 : 0 ≤ (Real.log (q:ℝ))⁻¹ := le_of_lt (inv_pos.mpr hlogpos)
     have h6 : C * (Real.log (q:ℝ))^2 * (q:ℝ)^(-(49:ℝ)/10) ≤ 0 := by
       have : (Real.log (q:ℝ))^2 * (q:ℝ)^(-(49:ℝ)/10) > 0 := by positivity
-      nlinarith [hC, this]
+      nlinarith only [hC, this]
     have := mul_nonpos_of_nonneg_of_nonpos h5 h6
-    linarith
+    linarith only [h2, this]
   push_neg at hC
   obtain ⟨q1, h1⟩ := exists_const_log_pow_le (a := -(49:ℝ)/10) (by norm_num) 1 C
   refine ⟨max q1 3, fun q hq => ?_⟩
@@ -571,7 +571,7 @@ lemma threshold_ncs (C : ℝ) :
     field_simp
   rw [hEq]
   have hrpow2 : (0:ℝ) < (q:ℝ)^(-(2:ℝ)) := Real.rpow_pos_of_pos hqpos _
-  linarith [hA, hrpow2, hlog1]
+  linarith only [hA, hrpow2, hlog1]
 
 lemma threshold_pp (C : ℝ) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q →
@@ -584,9 +584,9 @@ lemma threshold_pp (C : ℝ) :
       have := Real.rpow_pos_of_pos hqpos (-(2:ℝ)); positivity
     have h4 : 0 < (q:ℝ)^(-(49:ℝ)/20) := Real.rpow_pos_of_pos hqpos _
     have h5 : 0 ≤ (Real.log (q:ℝ))⁻¹ := le_of_lt (inv_pos.mpr hlogpos)
-    have h6 : C * (q:ℝ)^(-(49:ℝ)/20) ≤ 0 := by nlinarith [hC, h4]
+    have h6 : C * (q:ℝ)^(-(49:ℝ)/20) ≤ 0 := by nlinarith only [hC, h4]
     have := mul_nonpos_of_nonneg_of_nonpos h5 h6
-    linarith
+    linarith only [h2, this]
   push_neg at hC
   obtain ⟨q1, h1⟩ := exists_const_log_pow_le (a := -(49:ℝ)/20) (by norm_num) 0 C
   refine ⟨max q1 3, fun q hq => ?_⟩
@@ -606,8 +606,8 @@ lemma threshold_pp (C : ℝ) :
       rwa [one_mul] at h
     exact mul_le_mul_of_nonneg_right hCinv h2'.le
   have hrpow2 : (0:ℝ) < (q:ℝ)^(-(2:ℝ)) := Real.rpow_pos_of_pos hqpos _
-  have h24 : (1/24) * (q:ℝ)^(-(2:ℝ)) ≤ (1/8) * (q:ℝ)^(-(2:ℝ)) := by linarith
-  linarith [hA, hle, h24]
+  have h24 : (1/24) * (q:ℝ)^(-(2:ℝ)) ≤ (1/8) * (q:ℝ)^(-(2:ℝ)) := by linarith only [hrpow2]
+  linarith only [hA, hle, h24, hrpow2]
 
 lemma one_div_sq_eq_rpow (q : ℕ) : 1 / (q:ℝ)^2 = (q:ℝ)^(-(2:ℝ)) := by
   have h : (0:ℝ) ≤ (q:ℝ) := by positivity
@@ -726,7 +726,7 @@ theorem expansion_of_zeta_inputs {CZ1 CZ2 : ℝ} (hCZ1pos : 0 < CZ1) (hCZ2pos : 
       have hErrn : 0 ≤ Cb * Err q := mul_nonneg hCbpos.le (Err_nonneg Hq3)
       have h2 : 0 ≤ (Real.log (q:ℝ))⁻¹ * ncsSum q X₀ :=
         mul_nonneg (le_of_lt (inv_pos.mpr hlogpos)) hncsnn
-      linarith
+      linarith only [hErrn, h2]
     have h1 : ((Finset.univ.erase (1 : DirichletCharacter ℂ q)).card : ℝ)
         * (Cb * Err q + (Real.log (q:ℝ))⁻¹ * ncsSum q X₀)
         ≤ (q.totient : ℝ) * (Cb * Err q + (Real.log (q:ℝ))⁻¹ * ncsSum q X₀) :=
@@ -826,7 +826,7 @@ theorem expansion_of_zeta_inputs {CZ1 CZ2 : ℝ} (hCZ1pos : 0 < CZ1) (hCZ2pos : 
       = φr⁻¹ * E.re - (Real.log (q:ℝ))⁻¹ * classPP (q := q) a X₀ := by
     have h := congrArg Complex.re hc2
     rw [Complex.sub_re, hre1, hre2, hre3] at h
-    linarith [h]
+    linarith only [h, this]
   have hclassPPnn : 0 ≤ classPP (q := q) a X₀ := by
     refine Finset.sum_nonneg (fun n hn => ?_)
     have hn1 : 1 ≤ n := (Finset.mem_Icc.mp (Finset.mem_filter.mp hn).1).1
@@ -862,7 +862,7 @@ theorem expansion_of_zeta_inputs {CZ1 CZ2 : ℝ} (hCZ1pos : 0 < CZ1) (hCZ2pos : 
       + Siegel.farZeroSum q (11/2) (3/10) R := by
     refine le_trans hEnorm ?_
     rw [hFZ]
-    linarith
+    linarith only [this]
   have hErr1 := hq1 q H1
   have hErr2 := hq2 q H2
   have hErr3 := hq3 q H3
@@ -912,18 +912,18 @@ theorem expansion_of_zeta_inputs {CZ1 CZ2 : ℝ} (hCZ1pos : 0 < CZ1) (hCZ2pos : 
     rw [← mul_assoc, inv_mul_cancel₀ hφrne, one_mul]
   have hφ4 : φr⁻¹ * (CZ1 * Err q) ≤ CZ1 * Err q := by
     have h0 : 0 ≤ CZ1 * Err q := mul_nonneg hCZ1pos.le (Err_nonneg Hq3)
-    nlinarith [hφrinvle, h0]
+    nlinarith only [hφrinvle, h0, hφinvle]
   have hφ5 : φr⁻¹ * (CZ2 * (q:ℝ)^(-(49:ℝ)/10)) ≤ CZ2 * (q:ℝ)^(-(49:ℝ)/10) := by
     have h0 : 0 ≤ CZ2 * (q:ℝ)^(-(49:ℝ)/10) :=
       mul_nonneg hCZ2pos.le (Real.rpow_nonneg hqpos.le _)
-    nlinarith [hφrinvle, h0]
+    nlinarith only [hφrinvle, h0, hφinvle]
   have hφ6 : φr⁻¹ * ((Real.log (q:ℝ))⁻¹ * ncsSum q X₀) ≤ (Real.log (q:ℝ))⁻¹ * ncsSum q X₀ := by
     have h0 : 0 ≤ (Real.log (q:ℝ))⁻¹ * ncsSum q X₀ :=
       mul_nonneg (le_of_lt (inv_pos.mpr hlogpos)) hncsnn
-    nlinarith [hφrinvle, h0]
+    nlinarith only [hφrinvle, h0, hφinvle]
   have hφ7 : φr⁻¹ * Siegel.farZeroSum q (11/2) (3/10) R
       ≤ Siegel.farZeroSum q (11/2) (3/10) R := by
-    nlinarith [hφrinvle, hfarZnn]
+    nlinarith only [hφrinvle, hfarZnn, this, hφinvle]
   have hsum2 : φr⁻¹ * ‖E‖ + (Real.log (q:ℝ))⁻¹ * classPP (q := q) a X₀
       ≤ (q:ℝ)^(-(2:ℝ)) + φr⁻¹ * Siegel.farZeroSum q (11/2) (3/10) R := by
     have hmid : φr⁻¹ * ‖E‖
@@ -932,9 +932,9 @@ theorem expansion_of_zeta_inputs {CZ1 CZ2 : ℝ} (hCZ1pos : 0 < CZ1) (hCZ2pos : 
           + (Real.log (q:ℝ))⁻¹ * ncsSum q X₀
           + φr⁻¹ * Siegel.farZeroSum q (11/2) (3/10) R := by
       refine le_trans hE2 ?_
-      linarith [hφ4, hφ5, hφ3, hφ6, hφ7]
-    linarith [hmid, hErr1, hErr2, hErr3, hErr4, hErr5, hPPn, hncs_bound, hpp_bound]
-  linarith [hsum2]
+      linarith only [hφ4, hφ5, hφ3, hφ6, hφ7, this]
+    linarith only [hmid, hErr1, hErr2, hErr3, hErr4, hErr5, hPPn, hncs_bound, hpp_bound, this, hE2, hφ3, hφ4, hφ5, hφ6]
+  linarith only [hsum2, hqne, this, hErr1, hErr2, hErr3, hErr4, hErr5, hncs_bound, hpp_bound, hPPn, hE2, hφ3, hφ4, hφ5, hφ6]
 
 /-- **The class-sum expansion of Heath-Brown §13 in the Siegel case** (the input `S4` of
 `Work.LinnikAreas.Siegel`): with `L = 11/2`, `K = 3/10`, the tent-weighted *prime* class sum

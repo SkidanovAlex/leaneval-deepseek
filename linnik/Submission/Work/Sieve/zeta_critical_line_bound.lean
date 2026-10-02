@@ -45,12 +45,12 @@ lemma zeta_critical_line_aux (t : ℝ) :
     have h := Nat.lt_floor_add_one |t|
     simp only [hNdef]
     push_cast
-    linarith
+    linarith only [h]
   have hNle : (N : ℝ) ≤ |t| + 1 := by
     have h := Nat.floor_le (abs_nonneg t)
     simp only [hNdef]
     push_cast
-    linarith
+    linarith only [h]
   obtain ⟨hsum, hbound⟩ := Commons.NumberTheory.Zeta.emTerm_tsum_le N hN1 s hs0 hsne
   set TT : ℂ := ∑' m : ℕ,
       ((((N + m + 1 : ℕ) : ℂ) ^ (-s)) -
@@ -78,7 +78,7 @@ lemma zeta_critical_line_aux (t : ℝ) :
       have hN1pos : (0 : ℝ) ≤ (N : ℝ) + 1 := by positivity
       have hle : (N : ℝ) + 1 ≤ 4 * (1 + |t|) := by
         have habs : (0:ℝ) ≤ |t| := abs_nonneg t
-        linarith [hNle]
+        linarith only [hNle, hsre, hs0, habs]
       have hmono : ((N : ℝ) + 1) ^ (1/2 : ℝ) ≤ (4 * (1 + |t|)) ^ (1/2 : ℝ) :=
         Real.rpow_le_rpow hN1pos hle (by norm_num)
       have h4 : (4:ℝ) ^ (1/2 : ℝ) = 2 := by norm_num
@@ -86,17 +86,17 @@ lemma zeta_critical_line_aux (t : ℝ) :
         rw [Real.mul_rpow (by norm_num) (by positivity : (0:ℝ) ≤ 1 + |t|), h4]
       have hmono' : ((N : ℝ) + 1) ^ (1/2 : ℝ) ≤ 2 * (1 + |t|) ^ (1/2 : ℝ) := by
         rw [← hsplit]; exact hmono
-      linarith
-    linarith
+      linarith only [hmono, hsplit]
+    linarith only [h1, h2, h3]
   have hpole : ‖M‖ ≤ 2 * (1 + |t|) ^ (1/2 : ℝ) := by
     have h1 : ‖M‖ ≤ 2 * ((N : ℝ) ^ (1/2 : ℝ)) := by
       rw [hMdef]
       exact pole_term_norm_le_half hN1 hsre
     have h2 : 2 * ((N : ℝ) ^ (1/2 : ℝ)) ≤ 2 * (1 + |t|) ^ (1/2 : ℝ) := by
-      have hNle' : (N : ℝ) ≤ 1 + |t| := by linarith [abs_nonneg t, hNle]
+      have hNle' : (N : ℝ) ≤ 1 + |t| := by linarith only [abs_nonneg t, hNle]
       have hm := Real.rpow_le_rpow (by positivity : (0:ℝ) ≤ (N:ℝ)) hNle' (by norm_num : (0:ℝ) ≤ 1/2)
-      linarith
-    linarith
+      linarith only [hm]
+    linarith only [h1, h2]
   have htail : ‖TT‖ ≤ 3 * (1 + |t|) ^ (1/2 : ℝ) := by
     have h1 : ‖TT‖ ≤ ∑' m : ℕ, ‖(((N + m + 1 : ℕ) : ℂ) ^ (-s)) -
         (((((N + m + 1 : ℕ) : ℂ) ^ (1 - s)) - (((N + m : ℕ) : ℂ) ^ (1 - s))) / (1 - s))‖ := by
@@ -110,10 +110,10 @@ lemma zeta_critical_line_aux (t : ℝ) :
   rw [hid]
   have htri : ‖H + M + TT‖ ≤ ‖H‖ + ‖M‖ + ‖TT‖ := by
     calc ‖H + M + TT‖ ≤ ‖H + M‖ + ‖TT‖ := norm_add_le _ _
-      _ ≤ (‖H‖ + ‖M‖) + ‖TT‖ := by linarith [norm_add_le H M]
+      _ ≤ (‖H‖ + ‖M‖) + ‖TT‖ := by linarith only [norm_add_le H M]
   calc ‖H + M + TT‖ ≤ ‖H‖ + ‖M‖ + ‖TT‖ := htri
     _ ≤ 4 * (1 + |t|) ^ (1/2 : ℝ) + 2 * (1 + |t|) ^ (1/2 : ℝ) + 3 * (1 + |t|) ^ (1/2 : ℝ) := by
-        linarith [hhead, hpole, htail]
+        linarith only [hhead, hpole, htail]
     _ = 9 * (1 + |t|) ^ (1/2 : ℝ) := by ring
 
 theorem zeta_critical_line_bound :
@@ -122,6 +122,6 @@ theorem zeta_critical_line_bound :
   refine ⟨10, by norm_num, fun t => ?_⟩
   refine le_trans (zeta_critical_line_aux t) ?_
   have hpos : (0 : ℝ) ≤ (1 + |t|) ^ (1/2 : ℝ) := Real.rpow_nonneg (by positivity) _
-  linarith
+  linarith only [hpos]
 
 end Work.Sieve

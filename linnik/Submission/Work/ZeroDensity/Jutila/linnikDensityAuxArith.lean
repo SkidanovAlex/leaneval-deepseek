@@ -19,26 +19,26 @@ theorem linnikDensityAuxArith {q N : ℕ} {l T : ℝ} (hq : 2 ≤ q) (hN1 : 1 �
   have hq2 : (2 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
   have hN1' : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN1
   have hNq' : (N : ℝ) ≤ (q : ℝ) := by exact_mod_cast hNq
-  have hT1 : (1 : ℝ) ≤ T + 1 := by linarith
-  have hN_gt : (0 : ℝ) < (N : ℝ) := by linarith
-  have hqT_ge1 : (1 : ℝ) ≤ (q : ℝ) * (T + 1) := by nlinarith
+  have hT1 : (1 : ℝ) ≤ T + 1 := by linarith only [hT]
+  have hN_gt : (0 : ℝ) < (N : ℝ) := by linarith only [hN1']
+  have hqT_ge1 : (1 : ℝ) ≤ (q : ℝ) * (T + 1) := by nlinarith only [hq2, hT]
   -- `log (q * (T+1))` dominates `log N`
   have hlogN : Real.log (N : ℝ) ≤ Real.log ((q : ℝ) * (T + 1)) := by
     apply Real.log_le_log hN_gt
-    nlinarith
+    nlinarith only [hq2, hNq', hT]
   -- and dominates `log (T+1)`
   have hlogT1 : Real.log (T + 1) ≤ Real.log ((q : ℝ) * (T + 1)) := by
-    apply Real.log_le_log (by linarith : (0 : ℝ) < T + 1)
-    nlinarith
+    apply Real.log_le_log (by linarith only [hT] : (0 : ℝ) < T + 1)
+    nlinarith only [hq2, hT]
   -- while `log (2+T) ≤ log (T+1) + 1`
   have hlogT2 : Real.log (2 + T) ≤ Real.log (T + 1) + 1 := by
-    have hle : 2 + T ≤ 2 * (T + 1) := by linarith
-    have h := Real.log_le_log (by linarith : (0 : ℝ) < 2 + T) hle
-    rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith : T + 1 ≠ 0)] at h
+    have hle : 2 + T ≤ 2 * (T + 1) := by linarith only [hT]
+    have h := Real.log_le_log (by linarith only [hT] : (0 : ℝ) < 2 + T) hle
+    rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith only [hT] : T + 1 ≠ 0)] at h
     have h2 : Real.log 2 ≤ 1 := by
       have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-      linarith
-    linarith
+      linarith only [this]
+    linarith only [h, h2]
   set A : ℝ := l * Real.log ((q : ℝ) * (T + 1)) with hA
   have hA_nn : 0 ≤ A := by
     rw [hA]
@@ -52,7 +52,7 @@ theorem linnikDensityAuxArith {q N : ℕ} {l T : ℝ} (hq : 2 ≤ q) (hN1 : 1 �
   have hlT2_le : l * Real.log (2 + T) ≤ A + l := by
     have h1 : l * Real.log (2 + T) ≤ l * (Real.log (T + 1) + 1) :=
       mul_le_mul_of_nonneg_left hlogT2 hl_nn
-    nlinarith
+    linarith only [hlT1_le, h1]
   have hdecomp : 5 * l * (1 / l + (1 / 2) * Real.log (N : ℝ)
         + (1 / 2) * Real.log (2 + T) + 4)
       = 5 + (5 / 2) * (l * Real.log (N : ℝ)) + (5 / 2) * (l * Real.log (2 + T))
@@ -63,8 +63,8 @@ theorem linnikDensityAuxArith {q N : ℕ} {l T : ℝ} (hq : 2 ≤ q) (hN1 : 1 �
         + (1 / 2) * Real.log (2 + T) + 4)
       ≤ 5 + 5 * A + 22.5 * l := by
     rw [hdecomp]
-    nlinarith [hlN_le, hlT2_le]
-  have hfin : 5 + 5 * A + 22.5 * l ≤ 30 * (A + 1) := by nlinarith [hA_nn, hl1]
+    linarith only [hlN_le, hlT2_le]
+  have hfin : 5 + 5 * A + 22.5 * l ≤ 30 * (A + 1) := by linarith only [hA_nn, hl1]
   have h3 := le_trans hmain hfin
   simpa [hA] using h3
 

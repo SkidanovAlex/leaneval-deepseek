@@ -48,7 +48,7 @@ theorem hbound_quarter_pow_four :
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by
     have h : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
     exact_mod_cast h
-  have hNpos : (0:ℝ) < (N:ℝ) := by linarith
+  have hNpos : (0:ℝ) < (N:ℝ) := by linarith only [hN1]
   by_cases hN : 81 ≤ N
   · -- `N ≥ 81`: `orderOf χ ≤ 4 ≤ log N`
     have hord4 : orderOf χ ≤ 4 :=
@@ -61,13 +61,13 @@ theorem hbound_quarter_pow_four :
       have h3 : (1:ℝ) < Real.log 3 := by
         rw [← Real.log_exp 1]
         exact Real.log_lt_log (Real.exp_pos 1) Real.exp_one_lt_three
-      linarith
+      linarith only [h3]
     have hlogN : (4:ℝ) ≤ Real.log (N:ℝ) := by
       have h81 : (81:ℝ) ≤ (N:ℝ) := by exact_mod_cast hN
       exact le_trans hlog81 (Real.log_le_log (by norm_num) h81)
     have hord : (orderOf χ : ℝ) ≤ Real.log (N:ℝ) := by
       have h4 : ((orderOf χ : ℕ) : ℝ) ≤ 4 := by exact_mod_cast hord4
-      linarith
+      linarith only [hlogN, h4]
     have h := hb₁ χ hχ hord σ t hσ hσle
     refine h.trans ?_
     exact mul_le_mul_of_nonneg_right
@@ -76,26 +76,26 @@ theorem hbound_quarter_pow_four :
     have hNle : N ≤ 80 := by omega
     have hNR : (N:ℝ) ≤ 80 := by exact_mod_cast hNle
     have hk3 : (3:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk
-    have h1σ : (1:ℝ) - σ ≤ 1/(k:ℝ) := by linarith
+    have h1σ : (1:ℝ) - σ ≤ 1/(k:ℝ) := by linarith only [hσ]
     have hprod : (1 - σ) * (1 + 1/(k:ℝ)) ≤ 4/9 := by
       by_cases hσ1 : 0 ≤ 1 - σ
       · have h2 : (1:ℝ) + 1/(k:ℝ) ≤ 4/3 := by
           have h : 1/(k:ℝ) ≤ 1/3 := by
             rw [div_le_div_iff₀ hkpos (by norm_num : (0:ℝ) < 3)]
-            linarith
-          linarith
+            linarith only [hk3]
+          linarith only [h]
         have h3 : (1:ℝ)/(k:ℝ) ≤ 1/3 := by
           rw [div_le_div_iff₀ hkpos (by norm_num : (0:ℝ) < 3)]
-          linarith
+          linarith only [hk3]
         have hp : (1 - σ) * (1 + 1/(k:ℝ)) ≤ (1/(k:ℝ)) * (4/3) :=
           mul_le_mul h1σ h2 (by positivity) (by positivity)
-        nlinarith [hp, h3]
-      · have h : (1:ℝ) - σ < 0 := by linarith
+        linarith only [hp, h3, h2]
+      · have h : (1:ℝ) - σ < 0 := by linarith only [hσ1]
         have hpos : (0:ℝ) < 1 + 1/(k:ℝ) := by positivity
         have hneg : (1 - σ) * (1 + 1/(k:ℝ)) < 0 := mul_neg_of_neg_of_pos h hpos
-        linarith
+        linarith only [hneg]
     have hE1 : ((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) ≤ 1/9 := by
-      nlinarith [hprod]
+      linarith only [hprod]
     have hfac : (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ))) ≤ (80:ℝ) ^ ((1:ℝ)/9) := by
       have h1 : (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ))) ≤ (N:ℝ) ^ ((1:ℝ)/9) :=
         Real.rpow_le_rpow_of_exponent_le hN1 hE1
@@ -125,7 +125,7 @@ theorem hbound_quarter_pow_four :
             mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hfac hC₂nn) hz
         _ ≤ (C₂ * 80 ^ ((1:ℝ)/9) * 2)
             * (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) + ε') :=
-            mul_le_mul_of_nonneg_right (by nlinarith [mul_nonneg hC₂nn h80]) hz
+            mul_le_mul_of_nonneg_right (by linarith only [mul_nonneg hC₂nn h80, hC₂nn, h80]) hz
         _ ≤ (max C₁ (C₂ * 80 ^ ((1:ℝ)/9) * 2))
             * (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) + ε') :=
             mul_le_mul_of_nonneg_right (le_max_right _ _) hz

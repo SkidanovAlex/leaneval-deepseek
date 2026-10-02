@@ -6,6 +6,7 @@ minimality hypotheses on `ρ₂`, `ρ₃` deleted: they occur only in the statem
 proof, and the branch `ρ₁ ∈ ℝ`, `χ₁` complex of `HB10_3_Fcases` cannot supply them.
 -/
 import Submission.Work.OffAxis.Rect10_3RealF2Complex
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex
 open Work.ZeroFreeTables
@@ -101,7 +102,7 @@ theorem rect103EngineNoMin (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 
   have hδhalf : (6 : ℝ) / 7 / L ≤ δ / 2 := by
     rw [div_le_iff₀ hlogq]
     have h := (div_le_iff₀ (by positivity : (0:ℝ) < 7 * δ)).mp h12δ
-    nlinarith [h]
+    linarith only [h]
   set lam₁ : ℝ := lamOf q ρ₁ with hlam₁
   set lam₂ : ℝ := lamOf q ρ₂ with hlam₂
   set lam₃ : ℝ := lamOf q ρ₃ with hlam₃
@@ -483,13 +484,16 @@ theorem rect103EngineNoMin (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 
         ring
       have h6b : (lam₁ / L) ^ 2 ≤ (δ / 2) ^ 2 := by
         have h6c : 0 ≤ lam₁ / L := div_nonneg hl1nn hlogq.le
-        nlinarith [h6c, h6]
-      have hτ2 : τ ^ 2 ≤ (δ / 2) ^ 2 := by nlinarith [abs_le.mp hτ]
-      have h5 : ((lam₁ / L) ^ 2 + τ ^ 2) ≤ δ ^ 2 := by nlinarith [h6b, hτ2, hδ0]
+        exact pow_le_pow_left₀ h6c h6 2
+      have hτ2 : τ ^ 2 ≤ (δ / 2) ^ 2 := by
+        rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg τ) hτ 2
+      have h5 : ((lam₁ / L) ^ 2 + τ ^ 2) ≤ δ ^ 2 := by
+        have hd : (δ / 2) ^ 2 = δ ^ 2 / 4 := by ring
+        linarith only [h6b, hτ2, hd, sq_nonneg δ]
       have h7 : ‖((lam₁ / L : ℝ) : ℂ) + (τ : ℂ) * Complex.I‖ ^ 2 ≤ δ ^ 2 := by
         rw [Complex.sq_norm, h4]
         exact h5
-      nlinarith [norm_nonneg (((lam₁ / L : ℝ) : ℂ) + (τ : ℂ) * Complex.I), hδ0]
+      nlinarith only [norm_nonneg (((lam₁ / L : ℝ) : ℂ) + (τ : ℂ) * Complex.I), hδ0, h7]
     have hsre : (((β : ℂ) + (τ : ℂ) * Complex.I).re) = β := by simp
     have h := hSs (q := q) hqSs ψ hψ hr1 hr2 hr3 (hL52 q hqL52 ψ hψ) hdiv hwinρ
       (hwin ψ hψ ((β : ℂ) + (τ : ℂ) * Complex.I) hsre
@@ -697,7 +701,7 @@ theorem rect103EngineNoMin (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 
           - 2 * (L * (T.Fc ((((γ₂ + γ₃) * L : ℝ) : ℂ) * Complex.I)).re)
           ≤ L * (T.f 0 / 6) := by
         have h := mul_le_mul_of_nonneg_left hA1 hlogq.le
-        nlinarith [h]
+        linarith only [h]
       linarith [hbT123, hbP23s hs1, hmul, hgroupRing]
     · have hbig := hbigOf (γ₂ + γ₃) (lt_of_not_ge hs1)
       have hB1 := hB lam₁ ((γ₂ + γ₃) * L) hl1nn hl16 hbig
@@ -728,10 +732,10 @@ theorem rect103EngineNoMin (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 
               - 2 * (L * (T.Fc ((((γ₂ - γ₃) * L : ℝ) : ℂ) * Complex.I)).re)
               ≤ L * (T.f 0 / 6) := by
             have h := mul_le_mul_of_nonneg_left hA1 hlogq.le
-            nlinarith [h]
+            linarith only [h]
           have hb2 := hbPi23s hzPi hs2
           simp only [Work.ZeroFreeTables.Ksum] at hb2
-          nlinarith [hbT12i3 h3r, hb2, hmul, hgroupRing]
+          linarith only [hbT12i3 h3r, hb2, hmul, hgroupRing]
         · have hbig := hbigOf (γ₂ - γ₃) (lt_of_not_ge hs2)
           have hB1 := hB lam₁ ((γ₂ - γ₃) * L) hl1nn hl16 hbig
           have hB1L : L * (T.Fc (((-lam₁ : ℝ) : ℂ) + (((γ₂ - γ₃) * L : ℝ) : ℂ) * Complex.I)).re
@@ -784,10 +788,11 @@ theorem rect103EngineNoMin (T : Work.ZeroFreeTables.TestFn) (ε' : ℝ) (hε' : 
                 - 2 * (L * (T.Fc ((((γ₂ - γ₃) * L : ℝ) : ℂ) * Complex.I)).re)
                 ≤ L * (T.f 0 / 6) := by
               have h := mul_le_mul_of_nonneg_left hA1 hlogq.le
-              nlinarith [h]
+              linarith only [h]
             have hb2 := hbPi23s hzPi hs2
             simp only [Work.ZeroFreeTables.Ksum] at hb2
-            nlinarith [hbT1i23 h2r, heven, hb2, hmul, hgroupRing]
+            have heven' := congrArg (HMul.hMul L) heven
+            linarith only [hbT1i23 h2r, heven', hb2, hmul, hgroupRing]
           · have hbig := hbigOf (γ₂ - γ₃) (lt_of_not_ge hs2)
             have hbig' : 200 ≤ |(γ₃ - γ₂) * L| := by
               rw [show (γ₃ - γ₂) * L = -((γ₂ - γ₃) * L) by ring, abs_neg]

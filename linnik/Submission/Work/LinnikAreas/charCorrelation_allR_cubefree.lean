@@ -1,7 +1,8 @@
 import Mathlib
-import Submission.Work.LinnikAreas.CorrAllR.Prelude
 import Submission.Work.LinnikAreas.CorrAllR.corrSumV_sq_good
 import Submission.Work.LinnikAreas.CorrAllR.corrSumV_crt_split
+import Submission.Commons.NumberTheory.DirichletCharacter.charCorrelation_global_sharp_aux
+import Submission.Commons.NumberTheory.DirichletCharacter.weil_local_bound
 
 /-!
 # The general-`r` correlation bound for cube-free moduli (the singleton case)

@@ -61,7 +61,7 @@ private lemma head_rpow_le_log (X : ℕ) {σ : ℝ} (hσ1 : 1 ≤ σ) :
   have hle_term : ∀ n ∈ Finset.Icc 1 X, (1 : ℝ) / (n : ℝ) ^ σ ≤ (1 : ℝ) / n := by
     intro n hn
     have hn1r : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (Finset.mem_Icc.mp hn).1
-    have hn0 : 0 < (n : ℝ) := by linarith
+    have hn0 : 0 < (n : ℝ) := by linarith only [hn1r]
     have hpow : (n : ℝ) ^ (1 : ℝ) ≤ (n : ℝ) ^ σ := by
       exact Real.rpow_le_rpow_of_exponent_le hn1r hσ1
     have hpow' : (n : ℝ) ≤ (n : ℝ) ^ σ := by simpa [Real.rpow_one] using hpow
@@ -155,7 +155,7 @@ private lemma partial_char_sum_bound {q : ℕ} [NeZero q] (ψ : DirichletCharact
   have htail_norm : ‖∑ k ∈ Finset.Icc (X + 1) M, LSeries.term (fun n : ℕ => (ψ (n : ZMod q) : ℂ)) s k‖
       ≤ (2 * (q : ℝ)) * (X : ℝ) ^ (-s.re) * (1 + ‖s‖ / s.re) := by
     rw [htail_eq]
-    exact abel_char_tail ψ hψ (hs0 := by linarith) (X := X) (M := M) hX1 hXM
+    exact abel_char_tail ψ hψ (hs0 := by linarith only [hs1]) (X := X) (M := M) hX1 hXM
   calc
     ‖∑ k ∈ Finset.Icc 1 M, LSeries.term (fun n : ℕ => (ψ (n : ZMod q) : ℂ)) s k‖
         = ‖(∑ k ∈ Finset.Icc 1 X, LSeries.term (fun n : ℕ => (ψ (n : ZMod q) : ℂ)) s k)
@@ -247,14 +247,14 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
   have hs1 : 1 < s.re := by
     rw [hsre]
     exact hσ
-  have hs0 : 0 < s.re := by linarith
+  have hs0 : 0 < s.re := by linarith only [hσ, hsre]
   have hσ1 : 1 ≤ σ := le_of_lt hσ
   have hqpos : 0 < q := Nat.pos_of_ne_zero (NeZero.ne q)
   have hq1 : (1 : ℝ) ≤ (q : ℝ) := by
     exact_mod_cast (Nat.succ_le_of_lt hqpos)
   have hU1 : (1 : ℝ) ≤ U := by
     dsimp [U]
-    exact one_le_mul_of_one_le_of_one_le hq1 (by nlinarith [abs_nonneg t])
+    exact one_le_mul_of_one_le_of_one_le hq1 (by linarith only [abs_nonneg t])
   have hU0 : 0 < U := lt_of_lt_of_le zero_lt_one hU1
   let X : ℕ := ⌈U⌉₊
   have hXU : U ≤ (X : ℝ) := Nat.le_ceil U
@@ -265,10 +265,10 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
       exact_mod_cast (Nat.ceil_le_floor_add_one U)
     have h2 : ((⌊U⌋₊ : ℕ) : ℝ) ≤ U := by
       exact Nat.floor_le (le_of_lt hU0)
-    linarith
+    linarith only [h1, h2]
   have hXle2U : (X : ℝ) ≤ 2 * U := by
-    linarith
-  have hσpos : 0 < σ := by linarith
+    linarith only [hU1, hXleU1]
+  have hσpos : 0 < σ := by linarith only [hσ]
   have hnorm_le : ‖s‖ ≤ σ + |t| := by
     have hre' : |s.re| ≤ σ := by
       rw [hsre]
@@ -277,19 +277,19 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
       dsimp [s]
       simp
     have htri := Complex.norm_le_abs_re_add_abs_im s
-    linarith
+    linarith only [hre', him', htri]
   have hsn : ‖s‖ / σ ≤ 1 + |t| := by
     have hmt : σ + |t| ≤ σ * (1 + |t|) := by
       have h : |t| ≤ σ * |t| := by
         calc |t| = 1 * |t| := by ring
           _ ≤ σ * |t| := mul_le_mul_of_nonneg_right hσ1 (abs_nonneg t)
-      nlinarith
+      linarith only [h]
     rw [div_le_iff₀ hσpos]
     calc
       ‖s‖ ≤ σ + |t| := hnorm_le
       _ ≤ σ * (1 + |t|) := hmt
       _ = (1 + |t|) * σ := by ring
-  have hone_sn : 1 + ‖s‖ / σ ≤ 2 + |t| := by linarith
+  have hone_sn : 1 + ‖s‖ / σ ≤ 2 + |t| := by linarith only [hsn]
   have hbnd := norm_LSeries_char_le_bound ψ hψ (s := s) hs1 (X := X) hX1
   -- hbnd bounds ‖LSeries f s‖ by head + tail where tail uses s.re = σ
   have hL : ψ.LFunction s = LSeries (fun n : ℕ => (ψ (n : ZMod q) : ℂ)) s := by
@@ -308,7 +308,7 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
     --   = 2·(2+|t|)/(1+|t|) ≤ 4
     have hXpow : (X : ℝ) ^ (-σ) ≤ (X : ℝ) ^ (-1 : ℝ) := by
       have hX1e : (1 : ℝ) ≤ (X : ℝ) := hX1r
-      have hexp : (-σ : ℝ) ≤ (-1 : ℝ) := by linarith
+      have hexp : (-σ : ℝ) ≤ (-1 : ℝ) := by linarith only [hσ]
       exact Real.rpow_le_rpow_of_exponent_le hX1e hexp
     have hXinv : (X : ℝ)⁻¹ ≤ U⁻¹ := by
       -- U ≤ X, both positive: X⁻¹ ≤ U⁻¹
@@ -339,7 +339,7 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
       _ ≤ 4 := by
               have hdenpos : 0 < 1 + |t| := by positivity
               rw [div_mul_eq_mul_div]
-              exact (div_le_iff₀ hdenpos).mpr (by nlinarith [abs_nonneg t])
+              exact (div_le_iff₀ hdenpos).mpr (by linarith only [abs_nonneg t])
 
   have hlog2le2 : Real.log 2 ≤ 2 := Real.log_le_self (by norm_num)
   have hlogX : Real.log (X : ℝ) ≤ Real.log (2 * U) := by
@@ -366,11 +366,11 @@ private lemma norm_LFunction_log_re_gt_one {q : ℕ} [NeZero q] (ψ : DirichletC
               exact add_le_add le_rfl (le_trans htail1 htail2)
       _ ≤ 1 + Real.log (2 * U) + 4 := by
               have h1 : 1 + Real.log (X : ℝ) ≤ 1 + Real.log (2 * U) := by
-                linarith [hlogX]
-              linarith
+                linarith only [hlogX]
+              linarith only [hlogX]
       _ ≤ 5 + Real.log 2 + Real.log U := by
               rw [hlog2U]
-              linarith
+              linarith only []
   -- close the statement (s is (σ:ℂ)+ I*t):
   simpa [s, U] using hmain
 
@@ -401,7 +401,7 @@ private lemma norm_LFunction_log_re_one {q : ℕ} [NeZero q] (ψ : DirichletChar
   have hle_each : ∀ n : ℕ, ‖ψ.LFunction (g (1 + 1 / (n + 1)))‖ ≤ B := by
     intro n
     have hpos : (0 : ℝ) < 1 / (n + 1) := by positivity
-    have hgt : (1 : ℝ) < 1 + 1 / (n + 1) := by linarith
+    have hgt : (1 : ℝ) < 1 + 1 / (n + 1) := by linarith only [hpos]
     dsimp [B, g]
     exact norm_LFunction_log_re_gt_one ψ hψ hgt t
   have hlim : ‖ψ.LFunction (g 1)‖ ≤ B := by
@@ -415,13 +415,13 @@ private lemma log_bound_num {q : ℕ} [NeZero q] (t : ℝ) :
   have hqpos : 0 < (q : ℝ) := by exact_mod_cast (Nat.pos_of_ne_zero (NeZero.ne q))
   have h1p : 0 < 1 + |t| := by positivity
   have h2p : 0 < 2 + |t| := by positivity
-  have hmono : 1 + |t| ≤ 2 + |t| := by nlinarith
+  have hmono : 1 + |t| ≤ 2 + |t| := by linarith only []
   have hlog1 : Real.log (1 + |t|) ≤ Real.log (2 + |t|) := Real.log_le_log h1p hmono
   have hlog2 : Real.log 2 ≤ 1 := by
-    linarith [Real.log_two_lt_d9]
+    linarith only [Real.log_two_lt_d9]
   have hmul : Real.log ((q : ℝ) * (1 + |t|)) = Real.log (q : ℝ) + Real.log (1 + |t|) := by
     exact Real.log_mul (ne_of_gt hqpos) (ne_of_gt h1p)
-  nlinarith
+  linarith only [hlog1, hlog2, hmul]
 
 
 /-- Explicit bound for `|L(χ,s)|` on the closed half-plane `Re s ≥ 1`, for the `goodRadius` proof

@@ -76,7 +76,7 @@ theorem linInterpAux (f f' f'' : ℝ → ℝ) (M a b x : ℝ) (hab : a < b)
     |f x - ((b - x)/(b - a) * f a + (x - a)/(b - a) * f b)| ≤ (b - a)^2/8 * M := by
   obtain ⟨hxa, hxb⟩ := hx
   have hM : 0 ≤ M := le_trans (abs_nonneg (f'' a)) (h3 a ⟨le_refl a, le_of_lt hab⟩)
-  have hba : b - a ≠ 0 := by linarith
+  have hba : b - a ≠ 0 := by linarith only [hab]
   rcases eq_or_lt_of_le hxa with hxaeq | hax
   · rw [← hxaeq, div_self hba]
     have hz : f a - (1 * f a + (a - a) / (b - a) * f b) = 0 := by ring
@@ -110,8 +110,8 @@ theorem linInterpAux (f f' f'' : ℝ → ℝ) (M a b x : ℝ) (hab : a < b)
     exact hasDerivAt_congr' h (by funext t; rfl) (by simp only [id_eq]; ring)
   set K : ℝ := (f x - ((b - x)/(b - a) * f a + (x - a)/(b - a) * f b)) / ((x - a) * (x - b))
     with hK
-  have hqa : x - a ≠ 0 := by linarith
-  have hqb : x - b ≠ 0 := by linarith
+  have hqa : x - a ≠ 0 := by linarith only [hax]
+  have hqb : x - b ≠ 0 := by linarith only [hxb']
   have hqx : (x - a) * (x - b) ≠ 0 := mul_ne_zero hqa hqb
   set g : ℝ → ℝ :=
     fun y => (f y - ((b - y)/(b - a) * f a + (y - a)/(b - a) * f b)) - K * ((y - a) * (y - b))
@@ -168,11 +168,11 @@ theorem linInterpAux (f f' f'' : ℝ → ℝ) (M a b x : ℝ) (hab : a < b)
   have hKc : f'' c = 2 * K := by
     have h := hcz
     rw [hg''] at h
-    linarith
+    linarith only [hcz]
   have hKbound : |K| ≤ M / 2 := by
     have h := h3 c hcIcc
     rw [hKc, abs_mul, show |(2:ℝ)| = 2 by norm_num] at h
-    linarith
+    linarith only [h]
   have hKq : K * ((x - a) * (x - b))
       = f x - ((b - x)/(b - a) * f a + (x - a)/(b - a) * f b) := by
     rw [hK]
@@ -184,12 +184,12 @@ theorem linInterpAux (f f' f'' : ℝ → ℝ) (M a b x : ℝ) (hab : a < b)
   rw [hfinal]
   have hxab : (0:ℝ) ≤ (x - a) * (b - x) :=
     mul_nonneg (sub_nonneg.mpr (le_of_lt hax)) (sub_nonneg.mpr (le_of_lt hxb'))
-  have hM2 : (0:ℝ) ≤ M / 2 := by linarith
+  have hM2 : (0:ℝ) ≤ M / 2 := by linarith only [hM]
   calc |K| * ((x - a) * (b - x))
       ≤ (M/2) * ((x - a) * (b - x)) := mul_le_mul_of_nonneg_right hKbound hxab
     _ ≤ (M/2) * ((b - a)^2/4) := by
         refine mul_le_mul_of_nonneg_left ?_ hM2
-        nlinarith [sq_nonneg (2*x - a - b)]
+        linarith only [sq_nonneg (2*x - a - b)]
     _ = (b - a)^2/8 * M := by ring
 
 /-! ## §1  weights, continuity, numerics -/
@@ -214,18 +214,18 @@ lemma cont_cos_mul_W2 (lam z : ℝ) : Continuous (fun u : ℝ => Real.cos (z*u) 
 
 lemma abs_sub_le_max_of_nonneg (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : |a - b| ≤ max a b := by
   rcases le_total b a with h | h
-  · rw [abs_of_nonneg (by linarith), max_eq_left h]; linarith
-  · rw [abs_of_nonpos (by linarith), max_eq_right h]; linarith
+  · rw [abs_of_nonneg (by linarith only [h]), max_eq_left h]; linarith only [hb]
+  · rw [abs_of_nonpos (by linarith only [h]), max_eq_right h]; linarith only [ha]
 
 lemma exp_three_halves_le : Real.exp (3/2 : ℝ) ≤ 9/2 := by
   have h := exp_le_taylor13 (3/2) (by norm_num) (by norm_num)
   norm_num at h
-  linarith
+  linarith only [h]
 
 lemma exp_723_le : Real.exp ((723:ℝ)/1000) ≤ 207/100 := by
   have h := exp_le_taylor13 ((723:ℝ)/1000) (by norm_num) (by norm_num)
   norm_num at h
-  linarith
+  linarith only [h]
 
 lemma xyP_moment_two : ∫ u in (0:ℝ)..(3/2), u^2 * xyP u = 1/5 := by
   rw [xyP_moment 2]
@@ -240,16 +240,16 @@ lemma xyW1_bound (lam u : ℝ) (hlam1 : 518/1000 ≤ lam) (hu : u ∈ Set.Icc (0
   have hA : 14900 * Real.exp u ≤ 67050 := by
     have h := Real.exp_le_exp.mpr h1
     have h2 := mul_le_mul_of_nonneg_left (le_trans h exp_three_halves_le) (by norm_num : (0:ℝ) ≤ 14900)
-    linarith
+    linarith only [h2]
   have hB : 30480 * Real.exp ((1-lam)*u) ≤ 67050 := by
-    have h1' : 1 - lam ≤ 482/1000 := by linarith
+    have h1' : 1 - lam ≤ 482/1000 := by linarith only [hlam1]
     have hle : (1-lam)*u ≤ (723:ℝ)/1000 := by
       calc (1-lam)*u ≤ (482/1000)*u := mul_le_mul_of_nonneg_right h1' h0
         _ ≤ (482/1000)*(3/2) := mul_le_mul_of_nonneg_left h1 (by norm_num)
         _ = 723/1000 := by norm_num
     have hexp : Real.exp ((1-lam)*u) ≤ 207/100 := (Real.exp_le_exp.mpr hle).trans exp_723_le
     have h2 := mul_le_mul_of_nonneg_left hexp (by norm_num : (0:ℝ) ≤ 30480)
-    linarith
+    linarith only [hexp]
   have hna : 0 ≤ 14900 * Real.exp u := by positivity
   have hnb : 0 ≤ 30480 * Real.exp ((1-lam)*u) := by positivity
   have habs := abs_sub_le_max_of_nonneg (14900*Real.exp u) (30480*Real.exp ((1-lam)*u)) hna hnb
@@ -267,16 +267,16 @@ lemma xyW2_bound (lam u : ℝ) (hlam1 : 518/1000 ≤ lam) (hu : u ∈ Set.Icc (0
   have hA : 1250 * Real.exp u ≤ 12420 := by
     have h := Real.exp_le_exp.mpr h1
     have h2 := mul_le_mul_of_nonneg_left (le_trans h exp_three_halves_le) (by norm_num : (0:ℝ) ≤ 1250)
-    linarith
+    linarith only [h2]
   have hB : 6000 * Real.exp ((1-lam)*u) ≤ 12420 := by
-    have h1' : 1 - lam ≤ 482/1000 := by linarith
+    have h1' : 1 - lam ≤ 482/1000 := by linarith only [hlam1]
     have hle : (1-lam)*u ≤ (723:ℝ)/1000 := by
       calc (1-lam)*u ≤ (482/1000)*u := mul_le_mul_of_nonneg_right h1' h0
         _ ≤ (482/1000)*(3/2) := mul_le_mul_of_nonneg_left h1 (by norm_num)
         _ = 723/1000 := by norm_num
     have hexp : Real.exp ((1-lam)*u) ≤ 207/100 := (Real.exp_le_exp.mpr hle).trans exp_723_le
     have h2 := mul_le_mul_of_nonneg_left hexp (by norm_num : (0:ℝ) ≤ 6000)
-    linarith
+    linarith only [hexp]
   have hna : 0 ≤ 1250 * Real.exp u := by positivity
   have hnb : 0 ≤ 6000 * Real.exp ((1-lam)*u) := by positivity
   have habs := abs_sub_le_max_of_nonneg (1250*Real.exp u) (6000*Real.exp ((1-lam)*u)) hna hnb
@@ -376,7 +376,7 @@ lemma chord_integral_identity (Φ : ℝ → ℝ → ℝ) (w1 w2 a b lam : ℝ)
 lemma cos_chord_error (c h t u : ℝ) (hh : 0 < h) (hct : c ≤ t) (hth : t ≤ c + h) :
     |Real.cos (t*u) - ((c+h-t)/h * Real.cos (c*u) + (t-c)/h * Real.cos ((c+h)*u))|
       ≤ h^2 * u^2 / 8 := by
-  have hab : c < c + h := by linarith
+  have hab : c < c + h := by linarith only [hh]
   have hx : t ∈ Set.Icc c (c+h) := ⟨hct, hth⟩
   have hd1 : ∀ y ∈ Set.Icc c (c+h),
       HasDerivAt (fun z : ℝ => Real.cos (z*u)) (Real.sin (y*u) * (-u)) y := by
@@ -437,7 +437,7 @@ lemma exp_chord_error (a b lam u : ℝ) (hab : a < b) (hal : a ≤ lam) (hlb : l
   have hb : ∀ y ∈ Set.Icc a b, |(Real.exp ((1-y)*u) * (-u)) * (-u)|
       ≤ u^2 * Real.exp ((1-a)*u) := by
     intro y hy
-    have hle : (1-y)*u ≤ (1-a)*u := mul_le_mul_of_nonneg_right (by linarith [hy.1]) hu
+    have hle : (1-y)*u ≤ (1-a)*u := mul_le_mul_of_nonneg_right (by linarith only [hy.1, hy]) hu
     have hexp : Real.exp ((1-y)*u) ≤ Real.exp ((1-a)*u) := Real.exp_le_exp.mpr hle
     have hu2 : |u| * |u| = u*u := by rw [← sq, sq_abs]; ring
     have h1 : |(Real.exp ((1-y)*u) * (-u)) * (-u)| = Real.exp ((1-y)*u) * (|u| * |u|) := by
@@ -459,8 +459,8 @@ lemma xySup1_t_interp (lam c h t : ℝ) (hlam1 : 518/1000 ≤ lam) (hlam2 : lam 
     xySup1 lam t ≤ max (xySup1 lam c) (xySup1 lam (c+h)) + h^2 * (13970:ℝ)/8 := by
   set w1 : ℝ := (c+h-t)/h with hw1def
   set w2 : ℝ := (t-c)/h with hw2def
-  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith) (le_of_lt hh)
-  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith) (le_of_lt hh)
+  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith only [hth]) (le_of_lt hh)
+  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith only [hct]) (le_of_lt hh)
   have hwsum : w1 + w2 = 1 := by
     rw [hw1def, hw2def, ← add_div, show c + h - t + (t - c) = h by ring, div_self (ne_of_gt hh)]
   have hkey : xySup1 lam t - (w1 * xySup1 lam c + w2 * xySup1 lam (c+h))
@@ -527,16 +527,16 @@ lemma xySup1_t_interp (lam c h t : ℝ) (hlam1 : 518/1000 ≤ lam) (hlam2 : lam 
       _ = max (xySup1 lam c) (xySup1 lam (c+h)) := by rw [hwsum, one_mul]
   have hfin : h^2 * 13410 / 8 ≤ h^2 * (13970:ℝ)/8 := by
     have h := mul_le_mul_of_nonneg_left (by norm_num : (13410:ℝ) ≤ 13970) (sq_nonneg h)
-    linarith
-  linarith [hmain, hchord, hfin]
+    linarith only [h]
+  linarith only [hmain, hchord, hfin]
 
 lemma xySup2_t_interp (lam c h t : ℝ) (hlam1 : 518/1000 ≤ lam) (hlam2 : lam ≤ 628/1000)
     (hh : 0 < h) (hct : c ≤ t) (hth : t ≤ c + h) :
     xySup2 lam t ≤ max (xySup2 lam c) (xySup2 lam (c+h)) + h^2 * (4258:ℝ)/8 := by
   set w1 : ℝ := (c+h-t)/h with hw1def
   set w2 : ℝ := (t-c)/h with hw2def
-  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith) (le_of_lt hh)
-  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith) (le_of_lt hh)
+  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith only [hth]) (le_of_lt hh)
+  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith only [hct]) (le_of_lt hh)
   have hwsum : w1 + w2 = 1 := by
     rw [hw1def, hw2def, ← add_div, show c + h - t + (t - c) = h by ring, div_self (ne_of_gt hh)]
   have hkey : xySup2 lam t - (w1 * xySup2 lam c + w2 * xySup2 lam (c+h))
@@ -603,19 +603,19 @@ lemma xySup2_t_interp (lam c h t : ℝ) (hlam1 : 518/1000 ≤ lam) (hlam2 : lam 
       _ = max (xySup2 lam c) (xySup2 lam (c+h)) := by rw [hwsum, one_mul]
   have hfin : h^2 * 2484 / 8 ≤ h^2 * (4258:ℝ)/8 := by
     have h := mul_le_mul_of_nonneg_left (by norm_num : (2484:ℝ) ≤ 4258) (sq_nonneg h)
-    linarith
-  linarith [hmain, hchord, hfin]
+    linarith only [h]
+  linarith only [hmain, hchord, hfin]
 
 lemma xySup1_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     (hgap : b - a ≤ 37/1000) (hal : a ≤ lam) (hlb : lam ≤ b) :
     xySup1 lam c ≤ max (xySup1 a c) (xySup1 b c) + 11/5 := by
   set w1 : ℝ := (b-lam)/(b-a) with hw1def
   set w2 : ℝ := (lam-a)/(b-a) with hw2def
-  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith) (by linarith)
-  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith) (by linarith)
+  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith only [hlb]) (by linarith only [hab])
+  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith only [hal]) (by linarith only [hab])
   have hwsum : w1 + w2 = 1 := by
     rw [hw1def, hw2def, ← add_div, show b - lam + (lam - a) = b - a by ring]
-    exact div_self (by linarith : b - a ≠ 0)
+    exact div_self (by linarith only [hab] : b - a ≠ 0)
   have hkey : xySup1 lam c - (w1 * xySup1 a c + w2 * xySup1 b c)
       = ∫ u in (0:ℝ)..(3/2),
           Real.cos (c*u) * ((14900*Real.exp u*(1 - w1 - w2)
@@ -633,7 +633,7 @@ lemma xySup1_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     simp only []
     unfold xyW1
     ring
-  have hsub0 : (1 - w1 - w2 : ℝ) = 0 := by linarith
+  have hsub0 : (1 - w1 - w2 : ℝ) = 0 := by linarith only [hwsum]
   have hpt : ∀ u ∈ Set.Icc (0:ℝ) (3/2),
       |Real.cos (c*u) * ((14900*Real.exp u*(1 - w1 - w2)
         - 30480*(Real.exp ((1-lam)*u)
@@ -647,7 +647,7 @@ lemma xySup1_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
       rw [hw1def, hw2def]
       exact exp_chord_error a b lam u hab hal hlb hu.1
     have hexp207 : Real.exp ((1-a)*u) ≤ 207/100 := by
-      have h1a : 1 - a ≤ 482/1000 := by linarith
+      have h1a : 1 - a ≤ 482/1000 := by linarith only [ha]
       have hle : (1-a)*u ≤ (723:ℝ)/1000 := by
         calc (1-a)*u ≤ (482/1000)*u := mul_le_mul_of_nonneg_right h1a hu.1
           _ ≤ (482/1000)*(3/2) := mul_le_mul_of_nonneg_left hu.2 (by norm_num)
@@ -714,9 +714,9 @@ lemma xySup1_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     have hnum : (30480 * (b-a)^2/8 * (207/100)) * (∫ u in (0:ℝ)..(3/2), u^2 * xyP u) ≤ 11/5 := by
       rw [xyP_moment_two]
       have h2 : (b-a)^2 ≤ (37/1000)^2 := by
-        have h1 : 0 ≤ b - a := by linarith
-        nlinarith [hgap, h1]
-      nlinarith [h2]
+        have h1 : 0 ≤ b - a := by linarith only [hab]
+        nlinarith only [hgap, h1, hab]
+      linarith only [h2, hab, hgap]
     exact le_trans (le_abs_self _) (le_trans hbig hnum)
   have hchord : w1 * xySup1 a c + w2 * xySup1 b c ≤ max (xySup1 a c) (xySup1 b c) := by
     have h1 := mul_le_mul_of_nonneg_left (le_max_left (xySup1 a c) (xySup1 b c)) hw1
@@ -726,18 +726,18 @@ lemma xySup1_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
           add_le_add h1 h2
       _ = (w1 + w2) * max (xySup1 a c) (xySup1 b c) := by ring
       _ = max (xySup1 a c) (xySup1 b c) := by rw [hwsum, one_mul]
-  linarith [hmain, hchord]
+  linarith only [hmain, hchord]
 
 lemma xySup2_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     (hgap : b - a ≤ 37/1000) (hal : a ≤ lam) (hlb : lam ≤ b) :
     xySup2 lam c ≤ max (xySup2 a c) (xySup2 b c) + 11/5 := by
   set w1 : ℝ := (b-lam)/(b-a) with hw1def
   set w2 : ℝ := (lam-a)/(b-a) with hw2def
-  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith) (by linarith)
-  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith) (by linarith)
+  have hw1 : 0 ≤ w1 := by rw [hw1def]; exact div_nonneg (by linarith only [hlb]) (by linarith only [hab])
+  have hw2 : 0 ≤ w2 := by rw [hw2def]; exact div_nonneg (by linarith only [hal]) (by linarith only [hab])
   have hwsum : w1 + w2 = 1 := by
     rw [hw1def, hw2def, ← add_div, show b - lam + (lam - a) = b - a by ring]
-    exact div_self (by linarith : b - a ≠ 0)
+    exact div_self (by linarith only [hab] : b - a ≠ 0)
   have hkey : xySup2 lam c - (w1 * xySup2 a c + w2 * xySup2 b c)
       = ∫ u in (0:ℝ)..(3/2),
           Real.cos (c*u) * ((1250*Real.exp u*(1 - w1 - w2)
@@ -755,7 +755,7 @@ lemma xySup2_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     simp only []
     unfold xyW2
     ring
-  have hsub0 : (1 - w1 - w2 : ℝ) = 0 := by linarith
+  have hsub0 : (1 - w1 - w2 : ℝ) = 0 := by linarith only [hwsum]
   have hpt : ∀ u ∈ Set.Icc (0:ℝ) (3/2),
       |Real.cos (c*u) * ((1250*Real.exp u*(1 - w1 - w2)
         - 6000*(Real.exp ((1-lam)*u)
@@ -769,7 +769,7 @@ lemma xySup2_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
       rw [hw1def, hw2def]
       exact exp_chord_error a b lam u hab hal hlb hu.1
     have hexp207 : Real.exp ((1-a)*u) ≤ 207/100 := by
-      have h1a : 1 - a ≤ 482/1000 := by linarith
+      have h1a : 1 - a ≤ 482/1000 := by linarith only [ha]
       have hle : (1-a)*u ≤ (723:ℝ)/1000 := by
         calc (1-a)*u ≤ (482/1000)*u := mul_le_mul_of_nonneg_right h1a hu.1
           _ ≤ (482/1000)*(3/2) := mul_le_mul_of_nonneg_left hu.2 (by norm_num)
@@ -836,9 +836,9 @@ lemma xySup2_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
     have hnum : (6000 * (b-a)^2/8 * (207/100)) * (∫ u in (0:ℝ)..(3/2), u^2 * xyP u) ≤ 11/5 := by
       rw [xyP_moment_two]
       have h2 : (b-a)^2 ≤ (37/1000)^2 := by
-        have h1 : 0 ≤ b - a := by linarith
-        nlinarith [hgap, h1]
-      nlinarith [h2]
+        have h1 : 0 ≤ b - a := by linarith only [hab]
+        nlinarith only [hgap, h1, hab]
+      linarith only [h2, hab, hgap]
     exact le_trans (le_abs_self _) (le_trans hbig hnum)
   have hchord : w1 * xySup2 a c + w2 * xySup2 b c ≤ max (xySup2 a c) (xySup2 b c) := by
     have h1 := mul_le_mul_of_nonneg_left (le_max_left (xySup2 a c) (xySup2 b c)) hw1
@@ -848,7 +848,7 @@ lemma xySup2_lam_interp (a b c lam : ℝ) (ha : 518/1000 ≤ a) (hab : a < b)
           add_le_add h1 h2
       _ = (w1 + w2) * max (xySup2 a c) (xySup2 b c) := by ring
       _ = max (xySup2 a c) (xySup2 b c) := by rw [hwsum, one_mul]
-  linarith [hmain, hchord]
+  linarith only [hmain, hchord]
 
 /-! ## §6  the theorem -/
 
@@ -871,15 +871,15 @@ theorem XySupInterp :
   · intro c lam h1 h2
     by_cases hc1 : lam ≤ 555/1000
     · have h := xySup1_lam_interp (518/1000) (555/1000) c lam (by norm_num) (by norm_num)
-        (by norm_num) (by linarith) hc1
+        (by norm_num) (by linarith only [h1]) hc1
       have hG : max (xySup1 (518/1000) c) (xySup1 ((555:ℝ)/1000) c)
           ≤ max (max (xySup1 (518/1000) c) (xySup1 ((555:ℝ)/1000) c))
               (max (xySup1 ((592:ℝ)/1000) c) (xySup1 ((628:ℝ)/1000) c)) := le_max_left _ _
-      linarith
+      linarith only [h, hG]
     · push_neg at hc1
       by_cases hc2 : lam ≤ 592/1000
       · have h := xySup1_lam_interp (555/1000) (592/1000) c lam (by norm_num) (by norm_num)
-          (by norm_num) (by linarith) hc2
+          (by norm_num) (by linarith only [hc1]) hc2
         have hB : xySup1 ((555:ℝ)/1000) c
             ≤ max (max (xySup1 (518/1000) c) (xySup1 ((555:ℝ)/1000) c))
                 (max (xySup1 ((592:ℝ)/1000) c) (xySup1 ((628:ℝ)/1000) c)) :=
@@ -888,26 +888,26 @@ theorem XySupInterp :
             ≤ max (max (xySup1 (518/1000) c) (xySup1 ((555:ℝ)/1000) c))
                 (max (xySup1 ((592:ℝ)/1000) c) (xySup1 ((628:ℝ)/1000) c)) :=
           le_trans (le_max_left _ _) (le_max_right _ _)
-        linarith [max_le hB hC]
+        linarith only [max_le hB hC, h, hB, hC]
       · push_neg at hc2
         have h := xySup1_lam_interp (592/1000) (628/1000) c lam (by norm_num) (by norm_num)
-          (by norm_num) (by linarith) h2
+          (by norm_num) (by linarith only [hc2]) h2
         have hG : max (xySup1 ((592:ℝ)/1000) c) (xySup1 ((628:ℝ)/1000) c)
             ≤ max (max (xySup1 (518/1000) c) (xySup1 ((555:ℝ)/1000) c))
                 (max (xySup1 ((592:ℝ)/1000) c) (xySup1 ((628:ℝ)/1000) c)) := le_max_right _ _
-        linarith
+        linarith only [h, hG]
   · intro c lam h1 h2
     by_cases hc1 : lam ≤ 555/1000
     · have h := xySup2_lam_interp (518/1000) (555/1000) c lam (by norm_num) (by norm_num)
-        (by norm_num) (by linarith) hc1
+        (by norm_num) (by linarith only [h1]) hc1
       have hG : max (xySup2 (518/1000) c) (xySup2 ((555:ℝ)/1000) c)
           ≤ max (max (xySup2 (518/1000) c) (xySup2 ((555:ℝ)/1000) c))
               (max (xySup2 ((592:ℝ)/1000) c) (xySup2 ((628:ℝ)/1000) c)) := le_max_left _ _
-      linarith
+      linarith only [h, hG]
     · push_neg at hc1
       by_cases hc2 : lam ≤ 592/1000
       · have h := xySup2_lam_interp (555/1000) (592/1000) c lam (by norm_num) (by norm_num)
-          (by norm_num) (by linarith) hc2
+          (by norm_num) (by linarith only [hc1]) hc2
         have hB : xySup2 ((555:ℝ)/1000) c
             ≤ max (max (xySup2 (518/1000) c) (xySup2 ((555:ℝ)/1000) c))
                 (max (xySup2 ((592:ℝ)/1000) c) (xySup2 ((628:ℝ)/1000) c)) :=
@@ -916,13 +916,13 @@ theorem XySupInterp :
             ≤ max (max (xySup2 (518/1000) c) (xySup2 ((555:ℝ)/1000) c))
                 (max (xySup2 ((592:ℝ)/1000) c) (xySup2 ((628:ℝ)/1000) c)) :=
           le_trans (le_max_left _ _) (le_max_right _ _)
-        linarith [max_le hB hC]
+        linarith only [max_le hB hC, h, hB, hC]
       · push_neg at hc2
         have h := xySup2_lam_interp (592/1000) (628/1000) c lam (by norm_num) (by norm_num)
-          (by norm_num) (by linarith) h2
+          (by norm_num) (by linarith only [hc2]) h2
         have hG : max (xySup2 ((592:ℝ)/1000) c) (xySup2 ((628:ℝ)/1000) c)
             ≤ max (max (xySup2 (518/1000) c) (xySup2 ((555:ℝ)/1000) c))
                 (max (xySup2 ((592:ℝ)/1000) c) (xySup2 ((628:ℝ)/1000) c)) := le_max_right _ _
-        linarith
+        linarith only [h, hG]
 
 end Work.ZeroFreeTables.XY

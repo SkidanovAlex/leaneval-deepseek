@@ -40,7 +40,6 @@ and the two renames `PhiSh`/`kappaBz`):
   updated.
 -/
 import Mathlib
-import Submission.Work.LinnikContract2.Contract
 import Submission.Work.LinnikAreas2.D1Final
 import Submission.Work.LinnikAreas2.Kbound_gen
 import Submission.Work.LinnikAreas2.D2Main

@@ -19,7 +19,6 @@ import Submission.Work.ZeroFreeTables.P9.invNearSum_eq_tsum
 import Submission.Work.ZeroFreeTables.P9.pointEngine_prim
 import Submission.Work.ZeroFreeTables.P9.rescale_variants
 import Submission.Work.ZeroFreeTables.P9.trivSeriesBound
-import Submission.Work.ZeroFreeTables.P9.zeroSum_invSq_tsum
 import Submission.Work.ZeroFreeTables.P9.zetaLogDeriv_pole_split
 import Submission.Work.ZeroFreeTables.P9.nearP3sum_ge_kept
 import Submission.Work.ZeroFreeTables.P9.InvNearSum_anti
@@ -31,7 +30,6 @@ import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen
 import Submission.Work.LinnikAreas.area1
 import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
 import Submission.Work.A7.zeroMult_conj_sq_one
-import Submission.Commons.NumberTheory.Linnik.lemma3_1
 import Submission.Commons.NumberTheory.Linnik.zeroSum_invSq_bound
 import Submission.Commons.NumberTheory.Zeta.zeta_zeroFree_near_axis
 import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_near_axis_bound
@@ -887,6 +885,8 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
   set C0c : ℝ := (aup / L) * C₀ with hC0cdef
   set Fc : ℝ := 64 * aup / (δ * L) with hFcdef
   set E : ℝ := C0c + E2c + E3c + Corrc + Fc with hEdef
+  replace hEbound : 2 * (K + 1) ^ 2 * E ≤ a * ε / 2 := hEbound
+  clear_value E Fc C0c Corrc E3c E2c E3z E2z E3 E2 γ β Δ Corr Sp3 Sp2 Sp1 Cj L Λ aup δ Cz Cn Cp ε₁
   have hcE2 : E2 ≤ E2c := by
     rw [hE2def, hE2cdef]
     apply mul_le_mul_of_nonneg_right _ (by positivity)
@@ -1096,6 +1096,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
     set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
     set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
     set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+    clear_value S1 S2 S3 S4 S5 S6 S7 S8
     -- ### point 1 (principal at σ)
     have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
       have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
@@ -1109,7 +1110,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
         rw [zero_mul, PhiG_zero]
       rw [hpole] at hb
-      linarith only [hb, he1def, hE2zdef, hE3zdef]
+      linarith only [hb, hS1', he1def, hE2zdef, hE3zdef]
     -- ### point 2 (χ₁ at σ+iγ₀, kept {ρ₀,ρ₁,ρ̄₁})
     have hS2 : S2 ≤ -P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / (a + (Work.LinnikContract.lamOf q ρ₀))) - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ
         - P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) β + (a + (Work.LinnikContract.lamOf q ρ₁)) * (1 / 6 + ε₁) + e2 := by
@@ -1175,7 +1176,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
       rw [show P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) ((ρ₀.im - ρ₁.im) * L)
             = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) Δ from by
           rw [show (ρ₀.im - ρ₁.im) * L = -Δ by rw [hΔdef]; ring, PhiG_neg']] at hb
-      linarith only [hb, he2def, hE2def, hE3def]
+      linarith only [hb, hS2', he2def, hE2def, hE3def]
     -- ### point 3 (principal at σ+i(γ₁-γ₀))
     have hS3 : S3 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ + e3 := by
       have hcc3 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im - ρ₀.im)
@@ -1190,7 +1191,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
       rw [hpole] at hb
       rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
-      linarith only [hb, he3def, hE2zdef, hE3zdef]
+      linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
     -- ### point 5 (χ₁² = 1, principal at σ+i(γ₁+γ₀))
     have hS5 : S5 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a β + e5 := by
       have hcc5 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (ρ₁.im + ρ₀.im)
@@ -1253,7 +1254,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
       rw [hcard6, hsum, neg_add] at hb
       rw [show (2 * ρ₁.im - ρ₀.im - ρ₁.im) * L = Δ by rw [hΔdef]; ring] at hb
       rw [show (2 * ρ₁.im - ρ₀.im - -ρ₀.im) * L = γ by rw [hγdef]; ring] at hb
-      linarith only [hb, he6def, hE2def, hE3def]
+      linarith only [hb, hS6', he6def, hE2def, hE3def]
     -- ### point 7 (χ₁² = 1, principal at σ+2iγ₁)
     have hS7 : S7 ≤ P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ + e7 := by
       have hcc7 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) (2 * ρ₁.im)
@@ -1344,14 +1345,14 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         + (2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
           + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ) := by
       have h1 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K Δ ha hlam₁nn hlam₁lam₀ hK
-        (side913 ha hK (by linarith) (by linarith) hcond).2.2.1
+        (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
       have h2 := (P9.rescale_variants.1) a (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀) K β ha hlam₁nn hlam₁lam₀ hK
-        (side913 ha hK (by linarith) (by linarith) hcond).2.2.1
+        (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.1
       have h3 : (0 : ℝ) ≤ 2 * K * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₁)) γ
           + (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) γ
           - (1 / 2) * P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a γ := by
         have h := P3.CaseC_D (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam₀ := (Work.LinnikContract.lamOf q ρ₀)) (K := K) (t := γ)
-          ha hK.le hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith) (by linarith) hcond).2.2.2
+          ha hK.le hlam₁nn hlam₁lam₀ (side913 ha hK (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀]) hcond).2.2.2
         have h' : (2 * K * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) + (γ : ℂ) * Complex.I))
             + (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₀) : ℂ)) + (γ : ℂ) * Complex.I))
             - (1 / 2) * P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((a : ℂ) + (γ : ℂ) * Complex.I))).re
@@ -1432,14 +1433,14 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
         rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
         rw [hβΔ]
-        linarith only [hb, he4zdef, hE2def, hE3def]
+        linarith only [hb, hS4', he4zdef, hE2def, hE3def]
       have hE4z : e4z ≤ E := by
         rw [he4zdef]
         exact heE _ (by have h := hcFar 3 (by norm_num); linarith only [h, h1C0, hC0cnn])
       have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
           + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
         have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith) ha hlam₁nn
+          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
         rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
         push_cast at h0
         simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
@@ -1455,7 +1456,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
           have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
           have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
-          nlinarith only [hae, hle]
+          linarith only [hae, hle]
         have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
             ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
           have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
@@ -1560,14 +1561,14 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         rw [show (ρ₁.im - ρ₀.im) * L = Δ by rw [hΔdef]] at hb
         rw [show (ρ₁.im - -ρ₀.im) * L = β by rw [hβdef]; ring] at hb
         rw [show (ρ₁.im - -ρ₁.im) * L = γ by rw [hγdef]; ring] at hb
-        linarith only [hb, he4def, hE2def, hE3def]
+        linarith only [hb, hS4', he4def, hE2def, hE3def]
       have hE4 : e4 ≤ E := by
         rw [he4def]
         exact heE _ (by have h := hcFar 4 (by norm_num); linarith only [h, h1C0, hC0cnn])
       have hcomb : 0 ≤ (K ^ 2 + 1 / 2) * (S1 + S2) + K * (S3 + 2 * S4 + S5)
           + (1 / 4) * (S6 + 2 * S7 + S8) + 0 := by
         have h0 := P9.HbCombinationL_nonneg (q := q) χ₁ K (1 + a / L) ρ₀.im ρ₁.im a (Work.LinnikContract.lamOf q ρ₁)
-          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith) ha hlam₁nn
+          hK.le (by have h : 0 < a / L := div_pos ha hLpos; linarith only [h]) ha hlam₁nn
         rw [Work.ZeroFreeTables.HbCombinationL, ← hLdef] at h0
         push_cast at h0
         simp only [hS1', hS2', hS3', hS4', hS5', hS6', hS7', hS8', sPt, Complex.ofReal_zero,
@@ -1583,7 +1584,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         have hfin : a * ε / 2 + (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * ε := by
           have hae : 0 < a * ε := mul_pos ha ‹0 < ε›
           have hle : 0 ≤ (Work.LinnikContract.lamOf q ρ₁) * ε := mul_nonneg hlam₁nn (le_of_lt ‹0 < ε›)
-          nlinarith only [hae, hle]
+          linarith only [hae, hle]
         have hbud2 : (a + (Work.LinnikContract.lamOf q ρ₁)) * ε₁ * (K ^ 2 + 2 * K + 1)
             ≤ (a + (Work.LinnikContract.lamOf q ρ₁)) * (ε / 4) := by
           have hcoef : K ^ 2 + 2 * K + 1 ≤ K ^ 2 + 3 * K + 3 / 2 := by nlinarith only [hK.le]
@@ -1600,9 +1601,9 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         (corr := 0) hK.le hα0 hS1 hS2 hS3 hS4 hS5 hS6 hS7 hS8 hcomb
         (by
           have h4 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := Δ)
-            (by linarith) (by linarith)
+            (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
           have h5 := P9.PhiG_nonneg (x := a + (Work.LinnikContract.lamOf q ρ₁)) (y := a + (Work.LinnikContract.lamOf q ρ₀)) (t := β)
-            (by linarith) (by linarith)
+            (by linarith only [ha, hlam₁nn, hlam₁lam₀]) (by linarith only [ha, hlam₁nn, hlam₁lam₀])
           linarith only [hExprNon, mul_nonneg hK.le h4, mul_nonneg hK.le h5])
         habs
   · by_cases hB : χ₁ ^ 3 = 1
@@ -1675,6 +1676,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
       set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
       set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
       set S8 : ℝ := SigmaP3L q L (1 : DirichletCharacter ℂ q) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+      clear_value S1 S2 S3 S4 S5 S6 S7 S8
       -- ### point 1
       have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
         have hcc0 := hCcOf (N := 1) (one_dvd q) (1 : DirichletCharacter ℂ 1) 0
@@ -1744,7 +1746,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
           (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
         have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
             = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
-          P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
+          hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
         rw [hpole] at hb
         linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
       -- ### point 4 (χ₁ at σ+iγ₁, kept {ρ₀,ρ₁})
@@ -1781,7 +1783,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
             = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
           rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl]
+            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
         have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
             (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
             = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
@@ -2044,12 +2046,13 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
       set S6 : ℝ := SigmaP3L q L χ₁ (sPt a L (2 * ρ₁.im - ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS6'
       set S7 : ℝ := SigmaP3L q L (χ₁ ^ 2) (sPt a L (2 * ρ₁.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS7'
       set S8 : ℝ := SigmaP3L q L (χ₁ ^ 3) (sPt a L (2 * ρ₁.im + ρ₀.im)) a (Work.LinnikContract.lamOf q ρ₁) with hS8'
+      clear_value S1 S2 S3 S4 S5 S6 S7 S8
       -- ### point 1: the principal character at σ
       have hS1 : S1 ≤ P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) + e1 := by
         have hb := point_bound_principal (q := q) (a := a) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (δ := δ) (L := L)
           (Ct := Ct) (Cz := Cz) (C₀ := C₀) (Cc := Corr) ha hlam₁nn hδpos hδlt1 hLt haδL haL
           hCzZeta hC0b' hnzδ (s := sPt a L 0) (by simp [sPt]) (by simp [sPt])
-          (hSzeta 0).1 (hSzeta 0).2 hcc0
+          (hSzeta 0).1 (hSzeta 0).2 (by rw [hS1'] at hcc0; exact hcc0)
         have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L 0 - 1) * (L : ℂ)))).re
             = P3R ((a + (Work.LinnikContract.lamOf q ρ₁)) / a) := by
           rw [P3_arg_eq_pole_split (a := a) (L := L) (t := 0) (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne]
@@ -2111,7 +2114,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
           (hSzeta (ρ₁.im - ρ₀.im)).1 (hSzeta (ρ₁.im - ρ₀.im)).2 hcc3
         have hpole : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L (ρ₁.im - ρ₀.im) - 1) * (L : ℂ)))).re
             = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) a Δ :=
-          P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im)
+          hΔdef ▸ P3_arg_eq_pole_split (a := a) (L := L) (t := ρ₁.im - ρ₀.im)
             (lam := (Work.LinnikContract.lamOf q ρ₁)) hLne
         rw [hpole] at hb
         linarith only [hb, hS3', he3def, hE2zdef, hE3zdef]
@@ -2149,7 +2152,7 @@ theorem HBLemma9_1_proof : Work.ZeroFreeTables.HBLemma9_1 := by
         have t2 : (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - ρ₀) * (L : ℂ)))).re
             = P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by
           rw [P3_arg_eq_split (a := a) (L := L) (lam₁ := (Work.LinnikContract.lamOf q ρ₁)) (lam := (Work.LinnikContract.lamOf q ρ₀)) (gam := ρ₀.im)
-            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl]
+            (t := ρ₁.im) (ρ := ρ₀) hLne hρ₀re rfl, hΔdef]
         have hsum : (∑ u ∈ ({ρ₀, ρ₁} : Finset ℂ),
             (P3 (((a : ℂ) + ((Work.LinnikContract.lamOf q ρ₁) : ℂ)) / ((sPt a L ρ₁.im - u) * (L : ℂ)))).re)
             = P3R 1 + P9.PhiG (a + (Work.LinnikContract.lamOf q ρ₁)) (a + (Work.LinnikContract.lamOf q ρ₀)) Δ := by

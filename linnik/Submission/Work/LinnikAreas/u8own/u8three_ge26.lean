@@ -9,7 +9,6 @@ import Submission.Work.LinnikBurgess.card_hensel_le
 import Submission.Work.LinnikBurgess.lfSmall.content_dvd_critN
 import Submission.Work.LinnikBurgess.u8three.transfer_three
 import Submission.Work.LinnikBurgess.u8three.lvlSet_card_three
-import Submission.Work.LinnikAreas.u8three.capSet_card_three
 import Submission.Work.LinnikAreas.u8three.capSet_three_bound
 
 open scoped BigOperators

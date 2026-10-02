@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.BzHard.S3Defs
 import Submission.Work.BzHard.Bz_sq_reindex
 
 namespace Work.LinnikAreas.Density4.BzHard

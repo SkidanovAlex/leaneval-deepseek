@@ -59,21 +59,21 @@ private lemma final_arith {L α Amax M0 C ε S1 S2 S3 : ℝ}
   set A2 : ℝ := (Real.log L + 2) ^ 2 with hA2
   set A3 : ℝ := (Real.log L + 2) ^ 3 with hA3
   set A4 : ℝ := (Real.log L + 2) ^ 4 with hA4
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL]
   have hαL0 : 0 ≤ α / L := le_of_lt (div_pos hα hLpos)
-  have hbase : 0 ≤ Real.log L + 2 := by have := Real.log_nonneg hL; linarith
+  have hbase : 0 ≤ Real.log L + 2 := by have := Real.log_nonneg hL; linarith only [this]
   have hA2n : 0 ≤ A2 := by rw [hA2]; positivity
   have hA3n : 0 ≤ A3 := by rw [hA3]; positivity
   have hA4n : 0 ≤ A4 := by rw [hA4]; positivity
   have e1 : (α / L) * (M0 + 2 * S1) ≤ (α / L) * (M0 + 2 * (C * A2)) := by
     apply mul_le_mul_of_nonneg_left _ hαL0
-    linarith [hS1]
+    linarith only [hS1]
   have e2 : (α / L) ^ 2 * (M0 + 4 * S2) ≤ (α / L) ^ 2 * (M0 + 4 * (C * A3)) := by
     apply mul_le_mul_of_nonneg_left _ (pow_nonneg hαL0 2)
-    linarith [hS2]
+    linarith only [hS2]
   have e3 : (1 / 3) * (α / L) ^ 3 * (M0 + 16 * S3) ≤ (1 / 3) * (α / L) ^ 3 * (M0 + 16 * (C * A4)) := by
     apply mul_le_mul_of_nonneg_left _ (mul_nonneg (by norm_num) (pow_nonneg hαL0 3))
-    linarith [hS3]
+    linarith only [hS3]
   have hle1 : (α / L) * (M0 + 2 * (C * A2)) ≤ α * (M0 / L + 2 * (C * A2) / L) :=
     le_of_eq (by ring)
   have hle2 : (α / L) ^ 2 * (M0 + 4 * (C * A3))
@@ -85,7 +85,7 @@ private lemma final_arith {L α Amax M0 C ε S1 S2 S3 : ℝ}
       div_le_div_of_nonneg_right hαA (by positivity)
     have h4 : 0 ≤ M0 + 4 * (C * A3) := by
       have : 0 ≤ C * A3 := mul_nonneg hC hA3n
-      linarith
+      linarith only [hM0, this]
     calc (α / L ^ 2) * (M0 + 4 * (C * A3)) ≤ (Amax / L ^ 2) * (M0 + 4 * (C * A3)) :=
           mul_le_mul_of_nonneg_right h3 h4
       _ = Amax * M0 / L ^ 2 + 4 * Amax * (C * A3) / L ^ 2 := by ring
@@ -99,7 +99,7 @@ private lemma final_arith {L α Amax M0 C ε S1 S2 S3 : ℝ}
       div_le_div_of_nonneg_right (pow_le_pow_left₀ (le_of_lt hα) hαA 2) (by positivity)
     have h4 : 0 ≤ M0 + 16 * (C * A4) := by
       have : 0 ≤ C * A4 := mul_nonneg hC hA4n
-      linarith
+      linarith only [hM0, this]
     calc (1 / 3) * (α ^ 2 / L ^ 3) * (M0 + 16 * (C * A4))
         ≤ (1 / 3) * (Amax ^ 2 / L ^ 3) * (M0 + 16 * (C * A4)) := by
           apply mul_le_mul_of_nonneg_right _ h4
@@ -119,11 +119,11 @@ private lemma final_arith {L α Amax M0 C ε S1 S2 S3 : ℝ}
       + 4 * Amax * C * A3 / L ^ 2 + (16 / 3) * Amax ^ 2 * C * A4 / L ^ 3 ≤ ε := ht
   calc (α / L) * (M0 + 2 * S1) + (α / L) ^ 2 * (M0 + 4 * S2) + (1 / 3) * (α / L) ^ 3 * (M0 + 16 * S3)
       ≤ (α / L) * (M0 + 2 * (C * A2)) + (α / L) ^ 2 * (M0 + 4 * (C * A3))
-          + (1 / 3) * (α / L) ^ 3 * (M0 + 16 * (C * A4)) := by linarith [e1, e2, e3]
+          + (1 / 3) * (α / L) ^ 3 * (M0 + 16 * (C * A4)) := by linarith only [e1, e2, e3]
     _ ≤ α * (M0 / L) + α * (2 * (C * A2) / L) + α * (Amax * M0 / L ^ 2)
           + α * (4 * Amax * (C * A3) / L ^ 2) + α * ((1 / 3) * Amax ^ 2 * M0 / L ^ 3)
           + α * ((16 / 3) * Amax ^ 2 * (C * A4) / L ^ 3) := by
-        linarith [hle1, hle2, hle3, e1', e2', e3']
+        linarith only [hle1, hle2, hle3, e1', e2', e3']
     _ = α * (M0 * (1 + Amax / L + Amax ^ 2 / (3 * L ^ 2)) / L + 2 * C * A2 / L
           + 4 * Amax * C * A3 / L ^ 2 + (16 / 3) * Amax ^ 2 * C * A4 / L ^ 3) := hcomb2
     _ ≤ α * ε := mul_le_mul_of_nonneg_left hW (le_of_lt hα)
@@ -139,7 +139,7 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
   rcases lt_or_ge M 0 with hMneg | hMge
   · refine ⟨0, ?_⟩
     intro L _ q _ _ s _ _ lam₁ h0 hle
-    exact absurd (by linarith : lam₁ < 0) (not_lt.mpr h0)
+    exact absurd (by linarith only [hMneg, h0, hle] : lam₁ < 0) (not_lt.mpr h0)
   obtain ⟨M0, hM0pos, hzB⟩ := zetaSmoothBound
   obtain ⟨C1, hC1pos, hC1⟩ := Work.ZeroFreeTables.P9.primeFactors_logPow_div_le 1 (by norm_num)
   obtain ⟨C2, hC2pos, hC2⟩ := Work.ZeroFreeTables.P9.primeFactors_logPow_div_le 2 (by norm_num)
@@ -149,28 +149,28 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
   have hC1le : C1 ≤ C := le_max_left _ _
   have hC2le : C2 ≤ C := le_trans (le_max_left _ _) (le_max_right _ _)
   have hC3le : C3 ≤ C := le_trans (le_max_right _ _) (le_max_right _ _)
-  obtain ⟨L0, hL01, hL0⟩ := principalArith M0 C (a + M) ε hM0pos hCpos (by linarith) hε
+  obtain ⟨L0, hL01, hL0⟩ := principalArith M0 C (a + M) ε hM0pos hCpos (by linarith only [ha, hMge]) hε
   refine ⟨max (max L0 2) (3 * a), ?_⟩
   intro L hL q hqne hqL s hsre him lam₁ hlam0 hlamM
   have hL0le : L0 ≤ L := le_trans (le_trans (le_max_left L0 2) (le_max_left _ _)) hL
   have hL2 : 2 ≤ L := le_trans (le_trans (le_max_right L0 2) (le_max_left _ _)) hL
   have hL3a : 3 * a ≤ L := le_trans (le_max_right _ _) hL
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [ha, hL3a]
   have hsre1 : 1 < s.re := by
-    rw [hsre]; have : 0 < a / L := div_pos ha hLpos; linarith
+    rw [hsre]; have : 0 < a / L := div_pos ha hLpos; linarith only [this]
   have hsre4 : s.re ≤ 4 := by
     rw [hsre]
-    have h1 : a / L ≤ 1 / 3 := by rw [div_le_iff₀ hLpos]; linarith
-    linarith
-  have him5 : |s.im| ≤ 5 := by linarith
+    have h1 : a / L ≤ 1 / 3 := by rw [div_le_iff₀ hLpos]; linarith only [hL3a]
+    linarith only [h1]
+  have him5 : |s.im| ≤ 5 := by linarith only [him]
   have hq3 : 3 ≤ q := by
     by_contra h
     have hqle : q ≤ 2 := by omega
     have h1 : Real.log (q : ℝ) ≤ Real.log 2 := Real.log_le_log (show (0:ℝ) < (q:ℝ) by exact_mod_cast (NeZero.pos q)) (by exact_mod_cast hqle)
     have h2 : Real.log 2 ≤ 1 := by
-      have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith
+      have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith only [ha, hqL, hL2, hL3a, h1, this]
     rw [hqL] at h1
-    linarith
+    linarith only [ha, hL2, hL3a, h1, h2]
   obtain ⟨hz0, hz1, hz2⟩ := hzB s hsre1 hsre4 him5
   obtain ⟨hE0, hE1, hE2⟩ := eulerFactorBound q (le_of_lt hsre1)
   set Rf : ℂ → ℂ := fun z => ∑ p ∈ q.primeFactors, (Real.log (p : ℝ) : ℂ) / ((p : ℂ) ^ z - 1) with hRfdef
@@ -198,7 +198,7 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
   have hES3 : ‖iteratedDeriv 2 Rf s‖ ≤ 16 * S3 := by
     rw [← hE2sum]
     exact hE2
-  have hlogL : 0 ≤ Real.log L := Real.log_nonneg (by linarith)
+  have hlogL : 0 ≤ Real.log L := Real.log_nonneg (by linarith only [ha, hL2, hL3a])
   have hC1b : S1 ≤ C1 * (Real.log L) ^ 2 := by
     have h := hC1 q hq3
     have e : (Real.log (Real.log (q : ℝ))) ^ (1 + 1) = (Real.log L) ^ 2 := by simp [hqL]
@@ -207,12 +207,12 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     simpa [pow_one] using h
   have hS1b : S1 ≤ C * (Real.log L + 2) ^ 2 := by
     refine le_trans hC1b ?_
-    have hs : (Real.log L) ^ 2 ≤ (Real.log L + 2) ^ 2 := by nlinarith
+    have hs : (Real.log L) ^ 2 ≤ (Real.log L + 2) ^ 2 := by nlinarith only [hlogL]
     have h1 : C1 * (Real.log L) ^ 2 ≤ C1 * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_left hs (le_of_lt hC1pos)
     have h2 : C1 * (Real.log L + 2) ^ 2 ≤ C * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_right hC1le (by positivity)
-    linarith
+    linarith only [h1, h2]
   have hC2b : S2 ≤ C2 * (Real.log L) ^ 3 := by
     have h := hC2 q hq3
     have e : (Real.log (Real.log (q : ℝ))) ^ (2 + 1) = (Real.log L) ^ 3 := by simp [hqL]
@@ -221,12 +221,12 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     simpa using h
   have hS2b : S2 ≤ C * (Real.log L + 2) ^ 3 := by
     refine le_trans hC2b ?_
-    have hs : (Real.log L) ^ 3 ≤ (Real.log L + 2) ^ 3 := by nlinarith
+    have hs : (Real.log L) ^ 3 ≤ (Real.log L + 2) ^ 3 := by nlinarith only [hlogL]
     have h1 : C2 * (Real.log L) ^ 3 ≤ C2 * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_left hs (le_of_lt hC2pos)
     have h2 : C2 * (Real.log L + 2) ^ 3 ≤ C * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_right hC2le (by positivity)
-    linarith
+    linarith only [h1, h2]
   have hC3b : S3 ≤ C3 * (Real.log L) ^ 4 := by
     have h := hC3 q hq3
     have e : (Real.log (Real.log (q : ℝ))) ^ (3 + 1) = (Real.log L) ^ 4 := by simp [hqL]
@@ -240,7 +240,7 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
       mul_le_mul_of_nonneg_left hs (le_of_lt hC3pos)
     have h2 : C3 * (Real.log L + 2) ^ 4 ≤ C * (Real.log L + 2) ^ 4 :=
       mul_le_mul_of_nonneg_right hC3le (by positivity)
-    linarith
+    linarith only [h1, h2]
   have hlog0 : logDeriv (DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q)) s
       = logDeriv riemannZeta s + Rf s := by
     have hd0 := logDerivPrincipalDecomp q 0 (by norm_num) hsre1
@@ -277,10 +277,10 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     rw [h1]
     have hr : |(Rf s).re| ≤ 2 * S1 := by
       have := Complex.abs_re_le_norm (Rf s)
-      linarith [hES1]
+      linarith only [hES1, hE0, hE0sum, this]
     calc |(logDeriv riemannZeta s + 1 / (s - 1)).re + (Rf s).re|
         ≤ |(logDeriv riemannZeta s + 1 / (s - 1)).re| + |(Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 2 * S1 := by linarith [hz0, hr]
+      _ ≤ M0 + 2 * S1 := by linarith only [hz0, hr]
   have hA2 : |A2| ≤ M0 + 4 * S2 := by
     have h1 : A2 = (iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re
         + (iteratedDeriv 1 Rf s).re := by
@@ -290,10 +290,10 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     rw [h1]
     have hr : |(iteratedDeriv 1 Rf s).re| ≤ 4 * S2 := by
       have := Complex.abs_re_le_norm (iteratedDeriv 1 Rf s)
-      linarith [hES2]
+      linarith only [hES2, hE1, hE1sum, this]
     calc |(iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re + (iteratedDeriv 1 Rf s).re|
         ≤ |(iteratedDeriv 1 (logDeriv riemannZeta) s - (1 / (s - 1)) ^ 2).re| + |(iteratedDeriv 1 Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 4 * S2 := by linarith [hz1', hr]
+      _ ≤ M0 + 4 * S2 := by linarith only [hz1', hr]
   have e2c : ((2 : ℂ) * (1 / (s - 1)) ^ 3).re = 2 * ((1 / (s - 1)) ^ 3).re := by
     rw [Complex.mul_re]; simp
   have hA3 : |A3| ≤ M0 + 16 * S3 := by
@@ -306,10 +306,10 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     rw [h1]
     have hr : |(iteratedDeriv 2 Rf s).re| ≤ 16 * S3 := by
       have := Complex.abs_re_le_norm (iteratedDeriv 2 Rf s)
-      linarith [hES3]
+      linarith only [hES3, hE2, hE2sum, this]
     calc |(iteratedDeriv 2 (logDeriv riemannZeta) s + 2 * (1 / (s - 1)) ^ 3).re + (iteratedDeriv 2 Rf s).re|
         ≤ |(iteratedDeriv 2 (logDeriv riemannZeta) s + 2 * (1 / (s - 1)) ^ 3).re| + |(iteratedDeriv 2 Rf s).re| := abs_add_le _ _
-      _ ≤ M0 + 16 * S3 := by linarith [hz2', hr]
+      _ ≤ M0 + 16 * S3 := by linarith only [hz2', hr]
   have hsig := Work.ZeroFreeTables.P9.SigmaP3L_eq_logDeriv_derivs (1 : DirichletCharacter ℂ q) hsre1 a lam₁ L
   have hP3 : (Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - 1) * (L : ℂ)))).re
       = ((a + lam₁) / L) * (1 / (s - 1)).re + ((a + lam₁) / L) ^ 2 * ((1 / (s - 1)) ^ 2).re
@@ -324,7 +324,7 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
     ring
   have hfin : -((a + lam₁) / L) * A1 + ((a + lam₁) / L) ^ 2 * A2
       - (1 / 3) * ((a + lam₁) / L) ^ 3 * A3 ≤ (a + lam₁) * ε := by
-    have hc0 : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith) (le_of_lt hLpos)
+    have hc0 : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith only [ha, hlam0]) (le_of_lt hLpos)
     have h1 : -((a + lam₁) / L) * A1 ≤ ((a + lam₁) / L) * |A1| := by
       have h := mul_le_mul_of_nonneg_left (neg_le_abs A1) hc0
       rw [show -((a + lam₁) / L) * A1 = ((a + lam₁) / L) * (-A1) from by ring]
@@ -346,11 +346,11 @@ theorem principal_bound_clean {a M ε : ℝ} (ha : 0 < a) (hε : 0 < ε) :
       mul_le_mul_of_nonneg_left hA3 (mul_nonneg (by norm_num) (pow_nonneg hc0 3))
     have hkey : ((a + lam₁) / L) * (M0 + 2 * S1) + ((a + lam₁) / L) ^ 2 * (M0 + 4 * S2)
         + (1 / 3) * ((a + lam₁) / L) ^ 3 * (M0 + 16 * S3) ≤ (a + lam₁) * ε :=
-      final_arith (α := a + lam₁) (Amax := a + M) (by linarith : (1:ℝ) ≤ L) (by linarith) (by linarith) hS1b hS2b hS3b
+      final_arith (α := a + lam₁) (Amax := a + M) (by linarith only [ha, hL2, hL3a] : (1:ℝ) ≤ L) (by linarith only [ha, hlam0]) (by linarith only [hlamM]) hS1b hS2b hS3b
         (le_of_lt hM0pos) (le_of_lt hCpos) (hL0 L hL0le)
-    linarith [h1, h2, h3, h4, h5, h6, hkey]
+    linarith only [h1, h2, h3, h4, h5, h6, hkey, hqne]
   rw [hsigA]
-  linarith [hfin]
+  linarith only [hfin, hqne]
 
 
 end Work.ZeroFreeTables.Table4

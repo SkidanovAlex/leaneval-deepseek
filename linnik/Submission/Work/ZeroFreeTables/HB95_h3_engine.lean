@@ -126,7 +126,7 @@ theorem logDerivEighth3 {e : ℝ} (he : 0 < e) :
   have hL0 : 0 ≤ L :=
     le_trans (Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ N))) hlogN
   intro s hs1 hs2 hs3
-  have key := hmain hN3 χ hχ hprim h6 hL hlogN s hs1 hs2 (le_trans hs3 (by linarith))
+  have key := hmain hN3 χ hχ hprim h6 hL hlogN s hs1 hs2 (le_trans hs3 (by linarith only [hL0]))
   have hc : (1 : ℝ) / 4 / 2 + e = 1 / 8 + e := by norm_num
   rw [hc] at key
   simpa only [LogDerivHyp, InvNearSum, pdiv] using key
@@ -168,7 +168,7 @@ theorem HB95_h3_engine :
     have h1 : Real.exp Lreq ≤ (Nat.ceil (Real.exp Lreq) : ℝ) := Nat.le_ceil _
     have h2 : ((Nat.ceil (Real.exp Lreq) + 10 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
     push_cast at h2
-    linarith
+    linarith only [hδ0, hδ1, h1, h2]
   set L : ℝ := Real.log (q : ℝ) with hLdef
   have hLge : Lreq ≤ L := by
     rw [hLdef, ← Real.log_exp Lreq]
@@ -201,7 +201,7 @@ theorem HB95_h3_engine :
   have hγ1 : |ρ₁.im| ≤ 1 := hZisZ.2.2
   have hq2 : 2 ≤ q := two_le_of_ne_one χ₁ hχ1ne
   have hlam0 : 0 ≤ lamOf q ρ₁ := Work.LinnikContract.API.isZ_lambda_nonneg hq2 hZisZ
-  have hlam1 : lamOf q ρ₁ ≤ 1 := by linarith
+  have hlam1 : lamOf q ρ₁ ≤ 1 := by linarith only [hδ0, hδ1, hle]
   have hlamval : lamOf q ρ₁ = (1 - ρ₁.re) * L := by rw [hLdef]; rfl
   -- ## order bookkeeping
   have h3one : χ₁ ^ 3 = 1 := h3_pow_three χ₁ hord
@@ -259,12 +259,12 @@ theorem HB95_h3_engine :
   set S : Finset ℂ := {ρ₁} with hSdef
   set S' : Finset ℂ := {starRingEnd ℂ ρ₁} with hS'def
   have hApos : 0 < A := by rw [hAdef]; norm_num
-  have hαpos : 0 < α := by rw [hαdef, hAdef]; linarith
-  have hαle4 : α ≤ 4 := by rw [hαdef, hAdef]; linarith
+  have hαpos : 0 < α := by rw [hαdef, hAdef]; linarith only [hδ0, hδ1, hlam0]
+  have hαle4 : α ≤ 4 := by rw [hαdef, hAdef]; linarith only [hδ0, hδ1, hle]
   have hσgt : 1 < σ := by
     rw [hσdef]
     have h : 0 < A / L := div_pos hApos hLpos
-    linarith
+    linarith only [h]
   have hLne : L ≠ 0 := hLpos.ne'
   have hLℂ : ((L : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hLne
   have hAlL : A / L ≤ δ / 2 := by
@@ -272,9 +272,9 @@ theorem HB95_h3_engine :
     have h1 : (δ / 2) * (8 / δ) = 4 := by field_simp <;> ring
     have h2 : (4:ℝ) ≤ (δ / 2) * L := by
       have h3 := mul_le_mul_of_nonneg_left h8δ (by positivity : (0:ℝ) ≤ δ / 2)
-      linarith [h3, h1]
+      linarith only [h3, h1]
     have h4 : A ≤ 4 := by rw [hAdef]; norm_num
-    linarith [h2, h4]
+    linarith only [h2, h4, hδ0, hδ1]
   -- ## the denominators
   have hρrepr : ((ρ₁.re : ℂ)) + (ρ₁.im : ℂ) * Complex.I = ρ₁ := Complex.re_add_im ρ₁
   have d0 : ((σ : ℂ) - 1) * (L : ℂ) = ((A : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * Complex.I := by
@@ -314,22 +314,22 @@ theorem HB95_h3_engine :
   have him1 : |s₁.im| ≤ 4 := by
     have h : s₁.im = γ := by rw [hs₁def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre2 : s₂.re = 1 + A / L := by rw [hs₂def]; simp [hσdef]
   have him2 : |s₂.im| ≤ 4 := by
     have h : s₂.im = 2 * γ := by rw [hs₂def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre3 : s₃.re = 1 + A / L := by rw [hs₃def]; simp [hσdef]
   have him3 : |s₃.im| ≤ 4 := by
     have h : s₃.im = 3 * γ := by rw [hs₃def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
   have hre4 : s₄.re = 1 + A / L := by rw [hs₄def]; simp [hσdef]
   have him4 : |s₄.im| ≤ 4 := by
     have h : s₄.im = 4 * γ := by rw [hs₄def]; simp
     rw [h]; rw [abs_le] at hγabs ⊢
-    constructor <;> linarith [hγabs.1, hγabs.2]
+    constructor <;> linarith only [hγabs.1, hγabs.2, hγabs]
   have hre0 : ((σ : ℂ)).re = 1 + A / L := by simp [hσdef]
   have him0 : |((σ : ℂ)).im| ≤ 4 := by simp
   -- ## the principal-character bounds at `σ` and `σ+3iγ`
@@ -391,16 +391,16 @@ theorem HB95_h3_engine :
       · rw [hSdef, Finset.mem_singleton] at hvS
         rw [hvS, ← hγdef]
         rw [abs_le] at hγabs ⊢
-        constructor <;> linarith [hγabs.1, hγabs.2]
+        constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
       · have h2 : |s₁.im - v.im| ≤ 1 := by
           have h3 : |((1 : ℂ) + (s₁.im : ℂ) * Complex.I - v).im| ≤ 1 :=
-            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith [hδ1]))
+            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith only [hδ1]))
           simpa using h3
         have h4 : |s₁.im| ≤ 1 := by
           have h : s₁.im = γ := by rw [hs₁def]; simp
           rw [h]; exact hγabs
         rw [abs_le] at h2 h4 ⊢
-        constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
+        constructor <;> linarith only [h2.1, h2.2, h4.1, h4.2, hδ1, hσdef, hσgt, hAlL, h2, h4]
     have hv' : zeroMult χ₁ v ≠ 0 := by rw [hzm_eq v]; exact hv
     have hmin' := hm1.2 χ₁ v hχ1ne hv' himv
     simpa [Work.LinnikContract.lamOf, hLdef] using hmin'
@@ -413,17 +413,17 @@ theorem HB95_h3_engine :
       · rw [hS'def, Finset.mem_singleton] at hvS
         rw [hvS, Complex.conj_im, abs_neg, ← hγdef]
         rw [abs_le] at hγabs ⊢
-        constructor <;> linarith [hγabs.1, hγabs.2]
+        constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
       · have h2 : |s₂.im - v.im| ≤ 1 := by
           have h3 : |((1 : ℂ) + (s₂.im : ℂ) * Complex.I - v).im| ≤ 1 :=
-            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith [hδ1]))
+            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith only [hδ1]))
           simpa using h3
         have h4 : |s₂.im| ≤ 2 := by
           have h : s₂.im = 2 * γ := by rw [hs₂def]; simp
           rw [h]; rw [abs_le] at hγabs ⊢
-          constructor <;> linarith [hγabs.1, hγabs.2]
+          constructor <;> linarith only [hγabs.1, hγabs.2, hγabs]
         rw [abs_le] at h2 h4 ⊢
-        constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
+        constructor <;> linarith only [h2.1, h2.2, h4.1, h4.2, hδ1, hσdef, hσgt, hAlL, h2, h4]
     have hv' : zeroMult (χ₁ ^ 2) v ≠ 0 := by rw [hzm2_eq v]; exact hv
     have hmin' := hm1.2 (χ₁ ^ 2) v hχ2ne hv' himv
     simpa [Work.LinnikContract.lamOf, hLdef] using hmin'
@@ -436,17 +436,17 @@ theorem HB95_h3_engine :
       · rw [hSdef, Finset.mem_singleton] at hvS
         rw [hvS, ← hγdef]
         rw [abs_le] at hγabs ⊢
-        constructor <;> linarith [hγabs.1, hγabs.2]
+        constructor <;> linarith only [hγabs.1, hγabs.2, hγabs, hδ1, hσdef, hσgt, hAlL]
       · have h2 : |s₄.im - v.im| ≤ 1 := by
           have h3 : |((1 : ℂ) + (s₄.im : ℂ) * Complex.I - v).im| ≤ 1 :=
-            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith [hδ1]))
+            le_trans (Complex.abs_im_le_norm _) (le_trans hvwin (by linarith only [hδ1]))
           simpa using h3
         have h4 : |s₄.im| ≤ 4 := by
           have h : s₄.im = 4 * γ := by rw [hs₄def]; simp
           rw [h]; rw [abs_le] at hγabs ⊢
-          constructor <;> linarith [hγabs.1, hγabs.2]
+          constructor <;> linarith only [hγabs.1, hγabs.2, hγabs]
         rw [abs_le] at h2 h4 ⊢
-        constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
+        constructor <;> linarith only [h2.1, h2.2, h4.1, h4.2, hδ1, hσdef, hσgt, hAlL, h2, h4]
     have hv' : zeroMult χ₁ v ≠ 0 := by rw [hzm_eq v]; exact hv
     have hmin' := hm1.2 χ₁ v hχ1ne hv' himv
     simpa [Work.LinnikContract.lamOf, hLdef] using hmin'
@@ -508,7 +508,7 @@ theorem HB95_h3_engine :
         + (A + lamOf q ρ₁) * (ε / 16)
         + ((A + lamOf q ρ₁) / L) * (∑ u ∈ S, (1 - P9.nearInd s₁ δ u)
             * ((zeroMult (χ₁.primitiveCharacter) u : ℝ) * ((1 / (s₁ - u)).re))) := by
-    linarith [hi1, hm1']
+    linarith only [hi1, hm1', this, hNne]
   have hb2 : SigmaP3L q L (χ₁ ^ 2) s₂ A (lamOf q ρ₁)
       ≤ - Table4.keptP3Sum (χ₁ ^ 2).conductor L ((χ₁ ^ 2).primitiveCharacter) s₂ A
             (lamOf q ρ₁) δ S'
@@ -516,14 +516,14 @@ theorem HB95_h3_engine :
         + (A + lamOf q ρ₁) * (ε / 16)
         + ((A + lamOf q ρ₁) / L) * (∑ u ∈ S', (1 - P9.nearInd s₂ δ u)
             * ((zeroMult ((χ₁ ^ 2).primitiveCharacter) u : ℝ) * ((1 / (s₂ - u)).re))) := by
-    linarith [hi2, hm2']
+    linarith only [hi2, hm2', this, hN2ne]
   have hb4 : SigmaP3L q L χ₁ s₄ A (lamOf q ρ₁)
       ≤ - Table4.keptP3Sum χ₁.conductor L (χ₁.primitiveCharacter) s₄ A (lamOf q ρ₁) δ S
         + (A + lamOf q ρ₁) * (1 / 8 + ε / 16 + ε / 16)
         + (A + lamOf q ρ₁) * (ε / 16)
         + ((A + lamOf q ρ₁) / L) * (∑ u ∈ S, (1 - P9.nearInd s₄ δ u)
             * ((zeroMult (χ₁.primitiveCharacter) u : ℝ) * ((1 / (s₄ - u)).re))) := by
-    linarith [hi4, hm4']
+    linarith only [hi4, hm4', this, hNne]
   -- ## the error (far-zero) terms
   have hExbound : ∀ {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (s u : ℂ),
       s.re = 1 + A / L → |s.im| ≤ 4 →
@@ -537,7 +537,7 @@ theorem HB95_h3_engine :
     by_cases hnear : ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖ ≤ δ
     · rw [P9.nearInd_eq_ite, if_pos hnear]
       simp only [sub_self, zero_mul]
-      exact div_nonneg (by linarith [hm_ge1]) (by positivity)
+      exact div_nonneg (by linarith only [hm_ge1]) (by positivity)
     · rw [P9.nearInd_eq_ite, if_neg hnear, sub_zero, one_mul]
       have hfar : δ < ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖ := lt_of_not_ge hnear
       have hrec := re_inv_le_of_far hδ0 hδ1.le hApos hLpos hAlL hsre hure hfar
@@ -550,8 +550,8 @@ theorem HB95_h3_engine :
       have h3 : m * (8 / δ ^ 2) ≤ 16 * m / δ ^ 2 := by
         rw [show m * (8 / δ ^ 2) = (m * 8) / δ ^ 2 by ring]
         apply div_le_div_of_nonneg_right _ (by positivity)
-        linarith [hm_ge1]
-      linarith [h1, h2, h3]
+        linarith only [hm_ge1]
+      linarith only [h1, h2, h3, _inst]
   have hEx1 : ((A + lamOf q ρ₁) / L) * (∑ u ∈ S, (1 - P9.nearInd s₁ δ u)
         * ((zeroMult (χ₁.primitiveCharacter) u : ℝ) * ((1 / (s₁ - u)).re)))
       ≤ ((A + lamOf q ρ₁) / L) * (16 * m / δ ^ 2) := by
@@ -599,12 +599,12 @@ theorem HB95_h3_engine :
       + 40630 * ((A + lamOf q ρ₁) * (1 / 8 + ε / 16 + ε / 16))
       + 61009 * ((A + lamOf q ρ₁) * (ε / 16))
       + (65280 * (m - 1) + 31738 * (A + lamOf q ρ₁) * ε) := by
-    linarith [hraw, hTbr, hExComb]
+    linarith only [hraw, hTbr, hExComb, hNne, hN2ne]
   rw [← hαdef] at hkey
   have hgoal : 0 ≤ 14379 * P3R (α / A) - 24480 * P3R 1 + 40630 * α * (1 / 8 + ε) := by
     rw [hP1]
     have hαε : 0 ≤ α * ε := mul_nonneg hαpos.le hε.le
-    linarith [hkey, hαε]
+    linarith only [hkey, hαε]
   exact hgoal
 
 end Work.ZeroFreeTables

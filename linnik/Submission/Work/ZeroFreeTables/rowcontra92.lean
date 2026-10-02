@@ -58,8 +58,8 @@ theorem rowcontra_direct
   have hqE' : qE ≤ q := le_trans (le_max_left _ _) hq
   have hqS' : P9F.Qsq ≤ q := le_trans (le_max_right _ _) hq
   have hsq : 2 ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := P9F.sqrt_loglog_ge_two hqS'
-  have h2₁ : lamOf q ρ₁ ≤ 2 := by linarith
-  have h2₂ : lamOf q ρ₂ ≤ 2 := by linarith
+  have h2₁ : lamOf q ρ₁ ≤ 2 := by linarith only [ha2, hle1]
+  have h2₂ : lamOf q ρ₂ ≤ 2 := by linarith only [hc2, hle2]
   have hE := hqE q hqE' χ₁ χ₂ ρ₁ ρ₂ (fun χ _ hχ => hL52 q χ hχ)
     hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h2₁ h2₂ hsq
   rw [P9F.tf71T_F_eq_La θ lam hθ0 hθπ hlam (-(lamOf q ρ₁)),
@@ -70,7 +70,7 @@ theorem rowcontra_direct
   have hcore : 0 ≤ (k ^ 2 + 1 / 2) *
         (P9F.La θ lam (lamOf q ρ₁) - P9F.La θ lam (lamOf q ρ₁ - lamOf q ρ₂))
       - 2 * k * P9F.La θ lam 0 + tf71f θ lam 0 * slack := by
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0, hsl]
   exact hcert hlam1nn hle1 hle2 hcore
 
 /-- The **Lemma 9.2 route** for the Table 10 rows: if the second zero belongs to a character
@@ -108,7 +108,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h2
     have hθ02 : 0 < Real.arctan (24:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ2 : Real.arctan (24:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -124,7 +124,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h3
     have hθ03 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ3 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -140,7 +140,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h4
     have hθ04 : 0 < Real.arctan (24:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ4 : Real.arctan (24:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -156,7 +156,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h5
     have hθ05 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ5 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -172,7 +172,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h6
     have hθ06 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ6 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -188,7 +188,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h7
     have hθ07 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ7 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -204,7 +204,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h8
     have hθ08 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ8 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -220,7 +220,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h9
     have hθ09 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ9 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -236,7 +236,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h10
     have hθ010 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ10 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -252,7 +252,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h11
     have hθ011 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ11 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -268,7 +268,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h12
     have hθ012 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ12 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -284,7 +284,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h13
     have hθ013 : 0 < Real.arctan (15:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ13 : Real.arctan (15:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -300,7 +300,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h14
     have hθ014 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ14 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -316,7 +316,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h15
     have hθ015 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ15 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -332,7 +332,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h16
     have hθ016 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ16 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -348,7 +348,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h17
     have hθ017 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ17 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -364,7 +364,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h18
     have hθ018 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ18 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -380,7 +380,7 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hle1]) (by linarith only [hδ0, hδ1, hle2])
   · subst h19
     have hθ019 : 0 < Real.arctan (25:ℝ) := Real.arctan_pos.mpr (by norm_num)
     have hθπ19 : Real.arctan (25:ℝ) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
@@ -396,6 +396,6 @@ theorem rowcontra92 (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     refine ⟨q₀, ?_⟩
     intro q hq _inst χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE h348 hle1 hle2
     exact hq₀ q hq χ₁ χ₂ ρ₁ ρ₂ hmin hZ₁ hZ₂ hχ₁ hχ₂ hneA hneB hneC hneD hneE
-      (by linarith) (by linarith) (by linarith)
+      (by linarith only [hδ0, hδ1, h348]) (by linarith only [hδ0, hδ1, hle1]) (by linarith only [hδ0, hδ1, hle2])
 
 end Work.ZeroFreeTables

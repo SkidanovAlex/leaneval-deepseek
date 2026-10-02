@@ -44,7 +44,6 @@ import Submission.Work.ZeroFreeTables.P9.invNearSum_eq_tsum
 import Submission.Work.ZeroFreeTables.P9.pointEngine_prim
 import Submission.Work.ZeroFreeTables.P9.rescale_variants
 import Submission.Work.ZeroFreeTables.P9.trivSeriesBound
-import Submission.Work.ZeroFreeTables.P9.zeroSum_invSq_tsum
 import Submission.Work.ZeroFreeTables.P9.zetaLogDeriv_pole_split
 import Submission.Work.ZeroFreeTables.P9.nearP3sum_ge_kept
 import Submission.Work.ZeroFreeTables.P9.InvNearSum_anti
@@ -56,7 +55,6 @@ import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen
 import Submission.Work.LinnikAreas.area1
 import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
 import Submission.Work.A7.zeroMult_conj_sq_one
-import Submission.Commons.NumberTheory.Linnik.lemma3_1
 import Submission.Commons.NumberTheory.Linnik.zeroSum_invSq_bound
 import Submission.Commons.NumberTheory.Zeta.zeta_zeroFree_near_axis
 import Submission.Commons.NumberTheory.Zeta.zeta_logDeriv_near_axis_bound

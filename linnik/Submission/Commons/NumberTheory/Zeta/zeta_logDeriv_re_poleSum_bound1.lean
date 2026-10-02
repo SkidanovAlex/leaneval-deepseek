@@ -4,7 +4,6 @@ import Submission.Commons.NumberTheory.Zeta.zeta_strip_polyGrowth_neg
 import Submission.Commons.NumberTheory.Zeta.zeta_norm_le_const_of_three_le_re
 import Submission.Commons.NumberTheory.Zeta.zeta_lower_re_two
 import Submission.Commons.NumberTheory.Zeta.zetaZeroBall
-import Submission.Commons.NumberTheory.Zeta.zeta1_logDeriv_pole_removal
 import Submission.Commons.NumberTheory.Linnik.goodRadius_pair
 import Submission.Commons.Analysis.Complex.logDeriv_sub_divisor_le
 
@@ -469,7 +468,7 @@ private lemma log_bound_aux (a : ℝ) (ha : 0 < a) :
   have h1 : Real.log (1 + a * M ^ 15) ≤ Real.log ((1 + a) * M ^ 15) := by
     have hle : 1 + a * M ^ 15 ≤ (1 + a) * M ^ 15 := by
       have hone : (1 : ℝ) ≤ M ^ 15 := one_le_pow₀ hM
-      nlinarith [ha, hone]
+      nlinarith only [ha, hone]
     exact Real.log_le_log (by positivity) hle
   have h2 : Real.log ((1 + a) * M ^ 15) = Real.log (1 + a) + Real.log (M ^ 15) := by
     rw [Real.log_mul (ne_of_gt hpos1) (ne_of_gt (pow_pos hMpos 15))]
@@ -784,12 +783,12 @@ theorem zeta1_pole_bound :
     nlinarith [hC2pos]
   have hfin1 : (-Lc).re ≤ -(1 / (x + (1 - β))) + 8 * (C₂ * L) := by
     have hE := htail
-    nlinarith [hstep1, hE, hstep2, hstep3, hlogA_bound]
+    nlinarith only [hstep1, hE, hstep2, hstep3, hlogA_bound]
   have hC1_ge : 8 * (C₂ * L) ≤ C1 * L := by
     dsimp [C1]
-    nlinarith [hLge1, hC2pos]
+    nlinarith only [hLge1, hC2pos]
   have hfin2 : (-Lc).re ≤ -(1 / (x + (1 - β))) + C1 * L := by
-    nlinarith [hfin1, hC1_ge]
+    nlinarith only [hfin1, hC1_ge]
   have hLneg : (-deriv riemannZeta₁ s₀ / riemannZeta₁ s₀) = -Lc := by
     have hring : -deriv riemannZeta₁ s₀ / riemannZeta₁ s₀ = -(deriv riemannZeta₁ s₀ / riemannZeta₁ s₀) := by ring
     rw [hring, ← hL_def]
@@ -927,7 +926,7 @@ theorem zeta_logDeriv_re_poleSum_bound1 :
     have h1 : C1 * (Real.log (|t| + 6) + 1) ≤ C1 * ((1 + Real.log 3) * (Real.log (|t| + 3) + 1)) :=
       mul_le_mul_of_nonneg_left hlog6 (le_of_lt hC1pos)
     dsimp [C]
-    nlinarith [h1, hL3ge1]
+    nlinarith only [h1, hL3ge1]
   calc
     (-deriv riemannZeta s₀ / riemannZeta s₀).re
         ≤ -(1 / (x + (1 - β))) + C1 * (Real.log (|t| + 6) + 1) + 1 := by
@@ -935,6 +934,6 @@ theorem zeta_logDeriv_re_poleSum_bound1 :
       have hr := hrel1
       nlinarith [hmain2]
     _ = -(1 / (x + (1 - β))) + (C1 * (Real.log (|t| + 6) + 1) + 1) := by ring
-    _ ≤ -(1 / (x + (1 - β))) + C * (Real.log (|t| + 3) + 1) := by nlinarith [h2']
+    _ ≤ -(1 / (x + (1 - β))) + C * (Real.log (|t| + 3) + 1) := by nlinarith only [h2']
 
 end Commons.NumberTheory.Zeta

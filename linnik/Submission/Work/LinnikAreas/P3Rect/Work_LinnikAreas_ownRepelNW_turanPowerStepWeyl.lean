@@ -30,7 +30,6 @@ The remaining hypothesis `hdiff` is the target of `ownRepelNW/diffExplicitIneq.l
 delegation), so it is kept as a hypothesis here.
 -/
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_Defs
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_ownRepelNW_kMultWeylBound
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_turanPowerStepConst
 

@@ -1,7 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.zeta_logDeriv_negHalf_bound
-import Submission.Work.LinnikAreas.tentLeftEdgeDeps
 import Submission.Work.LinnikAreas.tentPhi_leftEdge_norm_bound
 import Submission.Work.LinnikAreas.integrable_leftEdge_kernel
 import Submission.Work.LinnikAreas.integral_leftEdge_kernel_le

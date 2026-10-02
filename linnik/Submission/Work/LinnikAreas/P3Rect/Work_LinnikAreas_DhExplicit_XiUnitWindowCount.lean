@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhK_XiAux
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_XiStrip
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_DhExplicit_XiOrdLeZeta1
 import Submission.Work.LinnikAreas.DhExplicit.zeta1_sphere_bound
@@ -64,21 +63,21 @@ lemma xiUnitWindow_jensen_log_bound (M m : ℝ) (hM : 1 ≤ M) (hmlo : (1:ℝ)/4
     have h2 := Real.log_le_sub_one_of_pos (show (0:ℝ) < 23/25 by norm_num)
     have h3 : Real.log (23/25) = - Real.log (25/23) := by
       rw [show (23:ℝ)/25 = (25/23)⁻¹ by norm_num, Real.log_inv]
-    linarith
-  have hpos : 0 < Real.log ((5:ℝ)/2 / (23/10)) := by linarith
+    linarith only [h2, h3]
+  have hpos : 0 < Real.log ((5:ℝ)/2 / (23/10)) := by linarith only [hratio]
   have hK : (1:ℝ) / Real.log ((5:ℝ)/2 / (23/10)) ≤ 25/2 := by
     rw [div_le_iff₀ hpos]
-    linarith
+    linarith only [hratio]
   have hnum : Real.log (M / m) ≤ Real.log M + Real.log 4 := by
     rw [Real.log_div (ne_of_gt hMpos) (ne_of_gt hmp)]
     have h1 : Real.log ((1:ℝ)/4) ≤ Real.log m := Real.log_le_log (by norm_num) hmlo
     have h2 : Real.log ((1:ℝ)/4) = - Real.log 4 := by
       rw [show ((1:ℝ)/4) = (4:ℝ)⁻¹ by norm_num, Real.log_inv]
-    linarith
+    linarith only [h1, h2]
   have hA : 0 ≤ Real.log M + Real.log 4 := by
     have h1 : 0 ≤ Real.log M := Real.log_nonneg hM
     have h2 : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
-    linarith
+    linarith only [h1, h2]
   calc Real.log (M / m) / Real.log ((5:ℝ)/2 / (23/10))
       ≤ (Real.log M + Real.log 4) / Real.log ((5:ℝ)/2 / (23/10)) :=
         div_le_div_of_nonneg_right hnum (le_of_lt hpos)
@@ -94,7 +93,7 @@ theorem XiUnitWindowCount : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, ∀ S : Finset �
   have hKpos : 0 < K := lt_of_lt_of_le zero_lt_one hK1
   have hlogK : 0 ≤ Real.log K := Real.log_nonneg hK1
   have hlog4 : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
-  refine ⟨12.5 * (20 + Real.log K + Real.log 4) + 63, by linarith, ?_⟩
+  refine ⟨12.5 * (20 + Real.log K + Real.log 4) + 63, by linarith only [hlogK, hlog4], ?_⟩
   intro t S hS
   set c : ℂ := (2 : ℂ) + Complex.I * (t : ℂ) with hc
   set S' : Finset ℂ := S.filter (fun u => analyticOrderNatAt Xi u ≠ 0) with hS'
@@ -122,8 +121,8 @@ theorem XiUnitWindowCount : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, ∀ S : Finset �
     have h2 : ‖u - c‖ ^ 2 < (23/10) ^ 2 := by
       rw [hsq]
       have h3 := abs_le.mp him
-      nlinarith [h0, h1, h3.1, h3.2]
-    nlinarith [norm_nonneg (u - c)]
+      nlinarith only [h0, h1, h3.1, h3.2, h3]
+    nlinarith only [norm_nonneg (u - c), h2, h0, h1]
   have hΓlower : (1:ℝ)/4 ≤ ‖riemannZeta₁ c‖ := by
     have h := Commons.NumberTheory.Zeta.zeta1_re_two_lower t
     simpa [hc] using h
@@ -197,8 +196,8 @@ theorem XiUnitWindowCount : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, ∀ S : Finset �
   set M : ℝ := K * (|t| + 9) ^ 5 with hMdef
   have hM1 : 1 ≤ M := by
     rw [hMdef]
-    have h1 : (1:ℝ) ≤ (|t| + 9) ^ 5 := one_le_pow₀ (by linarith [abs_nonneg t])
-    nlinarith [hK1, h1, hKpos]
+    have h1 : (1:ℝ) ≤ (|t| + 9) ^ 5 := one_le_pow₀ (by linarith only [abs_nonneg t])
+    nlinarith only [hK1, h1, hKpos]
   have hbd : ∀ z ∈ Metric.sphere c |(5:ℝ)/2|, ‖riemannZeta₁ z‖ ≤ M := by
     intro z hz
     have hzn : ‖z - c‖ = 5/2 := by
@@ -214,13 +213,13 @@ theorem XiUnitWindowCount : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, ∀ S : Finset �
     push_cast; ring
   set L : ℝ := Real.log (2 + |t|) + 2 with hLdef
   set A : ℝ := 12.5 * (Real.log K + Real.log 4) with hAdef
-  have hA0 : 0 ≤ A := by rw [hAdef]; linarith
+  have hA0 : 0 ≤ A := by rw [hAdef]; linarith only [hlogK, hlog4]
   have hL0 : 0 ≤ L := by
-    rw [hLdef]; have := Real.log_nonneg (by linarith [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|); linarith
+    rw [hLdef]; have := Real.log_nonneg (by linarith only [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|); linarith only [this]
   have hL1 : 1 ≤ L := by
-    rw [hLdef]; have := Real.log_nonneg (by linarith [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|); linarith
+    rw [hLdef]; have := Real.log_nonneg (by linarith only [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|); linarith only [this]
   have hlog93 : Real.log (|t| + 9) ≤ L + 2 := by
-    have hle : |t| + 9 ≤ (2 + |t|) * 9 := by linarith [abs_nonneg t]
+    have hle : |t| + 9 ≤ (2 + |t|) * 9 := by linarith only [abs_nonneg t]
     have h1 : Real.log (|t| + 9) ≤ Real.log ((2 + |t|) * 9) :=
       Real.log_le_log (by positivity) hle
     rw [Real.log_mul (by positivity) (by norm_num)] at h1
@@ -229,22 +228,22 @@ theorem XiUnitWindowCount : ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, ∀ S : Finset �
         rw [show (9:ℝ) = 3 * 3 by norm_num, Real.log_mul (by norm_num) (by norm_num)]
         ring
       have h4 : Real.log 3 ≤ 2 := by
-        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 3 by norm_num); linarith
-      linarith
-    rw [hLdef]; linarith
+        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 3 by norm_num); linarith only [this]
+      linarith only [h3, h4]
+    rw [hLdef]; linarith only [h1, h2]
   have hstep : 12.5 * (Real.log K + 5 * (L + 2) + Real.log 4) = A + 62.5 * L + 125 := by
     rw [hAdef]; ring
   have hgoal : A + 62.5 * L + 125 ≤ (12.5 * (20 + Real.log K + Real.log 4) + 63) * L := by
     have h313 : 12.5 * (20 + Real.log K + Real.log 4) + 63 = A + 313 := by
       rw [hAdef]; ring
     rw [h313]
-    nlinarith [hL1, hA0]
+    nlinarith only [hL1, hA0, hAdef, hlogK, hlog4, hL0]
   calc ∑ u ∈ S', (analyticOrderNatAt Xi u : ℝ)
       ≤ Real.log (M / ‖riemannZeta₁ c‖) / Real.log ((5:ℝ)/2 / (23/10)) := h1
     _ ≤ 12.5 * (Real.log M + Real.log 4) := h2
     _ ≤ 12.5 * (Real.log K + 5 * (L + 2) + Real.log 4) := by
-        have h3 : Real.log M ≤ Real.log K + 5 * (L + 2) := by rw [hlogM]; linarith [hlog93]
-        linarith
+        have h3 : Real.log M ≤ Real.log K + 5 * (L + 2) := by rw [hlogM]; linarith only [hlog93]
+        linarith only [hlogM, hlog93]
     _ = A + 62.5 * L + 125 := hstep
     _ ≤ (12.5 * (20 + Real.log K + Real.log 4) + 63) * L := hgoal
 

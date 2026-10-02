@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_strip_region_bound
 import Submission.Work.LinnikAreas.Zeta1Aux.zeta1_right_halfplane_bound
 

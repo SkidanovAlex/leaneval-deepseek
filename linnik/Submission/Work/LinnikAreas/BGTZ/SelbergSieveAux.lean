@@ -96,10 +96,10 @@ lemma Ssm_ge_one' {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N) (hψ : ψ
       0 ≤ lamR ψ n * (n : ℝ) ^ (-β) * (1 - (n : ℝ) / x) := by
     intro n hn
     have hnx : (n : ℝ) ≤ x := le_trans (by exact_mod_cast (Finset.mem_Icc.mp hn).2)
-      (Nat.floor_le (by linarith))
+      (Nat.floor_le (by linarith only [hx]))
     have h1 : 0 ≤ (n : ℝ) ^ (-β) := Real.rpow_nonneg (by positivity) _
     have h2 : 0 ≤ 1 - (n : ℝ) / x := by
-      rw [sub_nonneg, div_le_one (by linarith)]
+      rw [sub_nonneg, div_le_one (by linarith only [hx])]
       exact hnx
     have h3 : 0 ≤ lamR ψ n := by rw [lamR_apply]; exact hpos n
     positivity
@@ -189,7 +189,7 @@ theorem SsmC_sub_res_eq_critIntegral {N : ℕ} [NeZero N] (ψ : DirichletCharact
   have hUnion : (⋃ T : ℝ, Set.Ioc (-T) T) = Set.univ := by
     ext y
     simp only [Set.mem_iUnion, Set.mem_Ioc, Set.mem_univ, iff_true]
-    exact ⟨|y| + 1, by linarith [neg_abs_le y], by linarith [le_abs_self y]⟩
+    exact ⟨|y| + 1, by linarith only [neg_abs_le y, hβ, hβ1], by linarith only [le_abs_self y, hβ, hβ1]⟩
   have hS : Filter.Tendsto (fun T : ℝ => (1 / (2 * Real.pi)) *
       (∫ y in (-T)..T, Work.LinnikAreas.triFun ψ β x (((1 / 2 - β : ℝ)) + (y : ℂ) * Complex.I)))
       Filter.atTop (nhds ((1 / (2 * Real.pi)) *
@@ -206,7 +206,7 @@ theorem SsmC_sub_res_eq_critIntegral {N : ℕ} [NeZero N] (ψ : DirichletCharact
     refine Filter.Tendsto.congr' ?_ (hscale.comp hmain)
     filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with T hT
     simp only [Function.comp_apply]
-    rw [intervalIntegral.integral_of_le (a := -T) (b := T) (by linarith : -T ≤ T)]
+    rw [intervalIntegral.integral_of_le (a := -T) (b := T) (by linarith only [hT] : -T ≤ T)]
   -- combine
   have hkey : ∀ T : ℝ, 0 < T →
       Work.LinnikAreas.SsmC ψ β x - Work.LinnikAreas.triPerronRes ψ β x
@@ -289,7 +289,7 @@ lemma Ssm_rpow_le_sum {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N) (hψ2
   rw [aCoeff_eq_lamR]
   have hkey : x ^ (β - 1) * (n : ℝ) ^ (-β) * (1 - (n : ℝ) / x) ≤ (n : ℝ)⁻¹ := by
     have hstep1 : x ^ (β - 1) * (n : ℝ) ^ (-β) ≤ (n : ℝ)⁻¹ := by
-      have hexp : 0 ≤ 1 - β := by linarith
+      have hexp : 0 ≤ 1 - β := by linarith only [hβ]
       have hnlx : (n : ℝ) ^ (1 - β) ≤ x ^ (1 - β) :=
         Real.rpow_le_rpow (le_of_lt hn0) hnx hexp
       have hxn : x ^ (β - 1) ≤ (n : ℝ) ^ (β - 1) := by
@@ -307,7 +307,7 @@ lemma Ssm_rpow_le_sum {N : ℕ} [NeZero N] (ψ : DirichletCharacter ℂ N) (hψ2
     calc x ^ (β - 1) * (n : ℝ) ^ (-β) * (1 - (n : ℝ) / x)
         ≤ x ^ (β - 1) * (n : ℝ) ^ (-β) * 1 :=
           mul_le_mul_of_nonneg_left (by
-            have := div_nonneg (Nat.cast_nonneg n) (le_of_lt hx0); linarith) (by positivity)
+            have := div_nonneg (Nat.cast_nonneg n) (le_of_lt hx0); linarith only [this]) (by positivity)
       _ = x ^ (β - 1) * (n : ℝ) ^ (-β) := by ring
       _ ≤ (n : ℝ)⁻¹ := hstep1
   have hgoal : x ^ (β - 1) * (lamR ψ n * (n : ℝ) ^ (-β) * (1 - (n : ℝ) / x))
@@ -406,25 +406,25 @@ theorem selbergSieveMain2_of_bounds
     have h4 : (400000 : ℝ) < (q : ℝ) := by exact_mod_cast hq
     have h3 : Real.exp 1 < 400000 := by
       have h := Real.exp_one_lt_d9
-      linarith
-    exact (Real.le_log_iff_exp_le (by positivity)).mpr (by linarith)
-  have hlogqpos : 0 < Real.log (q : ℝ) := by linarith
+      linarith only [h]
+    exact (Real.le_log_iff_exp_le (by positivity)).mpr (by linarith only [h4, h3])
+  have hlogqpos : 0 < Real.log (q : ℝ) := by linarith only [hlogq1]
   -- consequences of the Siegel-range hypothesis
-  have h1mβ : 1 - β₁ < 1 / (10 * Real.log q) := by linarith
+  have h1mβ : 1 - β₁ < 1 / (10 * Real.log q) := by linarith only [hβ']
   have hβ10 : (1 - β₁) * Real.log q < 1 / 10 := by
     have h := mul_lt_mul_of_pos_right h1mβ hlogqpos
     have h2 : (1 / (10 * Real.log q)) * Real.log q = 1 / 10 := by
       field_simp
-    linarith [h, h2]
+    linarith only [h, h2]
   have hβpos : 0 < β₁ := by
     have h2 : 1 / (10 * Real.log q) ≤ 1 := by
-      rw [div_le_one (by positivity)]; linarith
-    linarith
+      rw [div_le_one (by positivity)]; linarith only [hlogq1]
+    linarith only [hβ', h2]
   have hβ34 : (3 : ℝ) / 4 ≤ β₁ := by
     have h2 : 1 / (10 * Real.log q) ≤ 1 / 4 := by
-      rw [div_le_div_iff₀ (by positivity) (by norm_num)]; linarith
-    linarith
-  have hβhalf : 1 / 2 < β₁ := by linarith
+      rw [div_le_div_iff₀ (by positivity) (by norm_num)]; linarith only [hβ1, hlogq1, hβpos]
+    linarith only [hβ', h2]
+  have hβhalf : 1 / 2 < β₁ := by linarith only [hβ1, hβ34]
   -- the sum is nonnegative
   have hSumNonneg : (0 : ℝ) ≤ ∑ n ∈ Finset.Icc 1 ⌊R⌋₊, aCoeff χ₁ n / (n : ℝ) := by
     apply Finset.sum_nonneg
@@ -437,35 +437,35 @@ theorem selbergSieveMain2_of_bounds
   set δ : ℝ := max 1 (3 * CJ / c + 1) * A * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
       * (q : ℝ) ^ θ / R ^ (1 / 2 : ℝ) with hδdef
   by_cases hcase : (1 : ℝ) ≤ δ
-  · have hfac : 1 - δ ≤ 0 := by linarith
+  · have hfac : 1 - δ ≤ 0 := by linarith only [hcase]
     have hX : 0 ≤ ‖DirichletCharacter.LFunction χ₁ (1 : ℂ)‖ / ((1 - β₁) * (2 - β₁)) := by
       apply div_nonneg (norm_nonneg _)
-      nlinarith
+      nlinarith only [hβ1]
     exact le_trans (mul_nonpos_of_nonneg_of_nonpos hX hfac) hSumNonneg
   · push_neg at hcase
     -- the point `x = ⌊R⌋ + 1/2`
     set x : ℝ := (⌊R⌋₊ : ℝ) + 1 / 2 with hxdef
     have hfloor200 : (200 : ℝ) ≤ (⌊R⌋₊ : ℝ) :=
       by exact_mod_cast (Nat.le_floor (by exact_mod_cast hR) : 200 ≤ ⌊R⌋₊)
-    have hx200 : (200 : ℝ) ≤ x := by rw [hxdef]; push_cast; linarith
-    have hx1 : 1 < x := by linarith
-    have hx0 : 0 < x := by linarith
+    have hx200 : (200 : ℝ) ≤ x := by rw [hxdef]; push_cast; linarith only [hβ1, hβ34, hfloor200]
+    have hx1 : 1 < x := by linarith only [hβ1, hβ34, hxdef, hfloor200]
+    have hx0 : 0 < x := by linarith only [hβ1, hβ34, hxdef, hfloor200]
     have hxnn : ∀ n : ℕ, (n : ℝ) ≠ x := by
       intro n hn
       have h2 : (2 : ℝ) * (n : ℝ) = 2 * (⌊R⌋₊ : ℝ) + 1 := by
         rw [hn, hxdef]; ring
       have h3 : ((2 * n : ℕ) : ℝ) = ((2 * ⌊R⌋₊ + 1 : ℕ) : ℝ) := by
-        push_cast; linarith
+        push_cast; linarith only [hxdef, hn]
       have h4 : 2 * n = 2 * ⌊R⌋₊ + 1 := by exact_mod_cast h3
       omega
     have hxfloor : ⌊x⌋₊ = ⌊R⌋₊ := by
       rw [hxdef]
       apply le_antisymm
-      · have h : ((⌊R⌋₊ : ℝ) + 1 / 2) < ((⌊R⌋₊ + 1 : ℕ) : ℝ) := by push_cast; linarith
+      · have h : ((⌊R⌋₊ : ℝ) + 1 / 2) < ((⌊R⌋₊ + 1 : ℕ) : ℝ) := by push_cast; linarith only [hβ1, hβ34]
         have h2 : ⌊(⌊R⌋₊ : ℝ) + 1 / 2⌋₊ < ⌊R⌋₊ + 1 :=
           (Nat.floor_lt (a := (⌊R⌋₊ : ℝ) + 1 / 2) (by positivity)).mpr h
         omega
-      · exact Nat.le_floor (by push_cast; linarith)
+      · exact Nat.le_floor (by push_cast; linarith only [hβ1, hβ34])
     -- the critical-line integral bound at `x`
     have hJb := hJ q χ₁ hχne hq3 hA hβ34 hβ1 (le_of_lt hx1)
     have hL0 : DirichletCharacter.LFunction χ₁ (β₁ : ℂ) = 0 :=
@@ -512,10 +512,10 @@ theorem selbergSieveMain2_of_bounds
         ≤ ∑ n ∈ Finset.Icc 1 ⌊R⌋₊, aCoeff χ₁ n / (n : ℝ) := by
       rw [← hsimp]; exact hstep1
     -- replace `x^{-1/2}` by `√2 R^{-1/2}`
-    have hRpos : 0 < R := by linarith
+    have hRpos : 0 < R := by linarith only [hβ1, hR, hβ34]
     have hRx2 : R ≤ 2 * x := by
       have hlt : R < (⌊R⌋₊ : ℝ) + 1 := Nat.lt_floor_add_one R
-      rw [hxdef]; linarith
+      rw [hxdef]; linarith only [hβ1, hβ34, hfloor200, hlt]
     have hsqrt2 : Real.sqrt 2 ≤ 3 / 2 := by
       rw [show (3 / 2 : ℝ) = Real.sqrt ((3 / 2) ^ 2) by
         rw [Real.sqrt_sq (by norm_num)]]
@@ -548,23 +548,23 @@ theorem selbergSieveMain2_of_bounds
           ≤ Real.sqrt 2 * CJ * A * (q : ℝ) ^ θ
               * Real.exp ((Real.log q) ^ (3 / 4 : ℝ)) * R ^ (-(1 / 2 : ℝ)) := by
         rw [← h3]; exact h2
-      linarith [h4]
+      linarith only [h4, _inst, h2]
     -- the Hecke-type lower bound for `Re L(1,χ₁)`
     have hratio' := hratio q hq χ₁ hχ2 hχne hβ1 hzm hβ'
-    have h1mβpos : 0 < 1 - β₁ := by linarith
+    have h1mβpos : 0 < 1 - β₁ := by linarith only [hβ1]
     have hLpos : 0 < (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re :=
       lt_of_lt_of_le (mul_pos hc h1mβpos) hratio'
     have hM : c / 2 ≤ (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re / ((1 - β₁) * (2 - β₁)) := by
-      have hden : 0 < (1 - β₁) * (2 - β₁) := by nlinarith
+      have hden : 0 < (1 - β₁) * (2 - β₁) := by nlinarith only [hβ1]
       rw [le_div_iff₀ hden]
       have h1 : c / 2 * ((1 - β₁) * (2 - β₁)) ≤ c * (1 - β₁) := by
-        have h3 : (0 : ℝ) ≤ 1 - β₁ := by linarith
+        have h3 : (0 : ℝ) ≤ 1 - β₁ := by linarith only [hβ1]
         have h5 : (1 - β₁) * (2 - β₁) ≤ (1 - β₁) * 2 :=
-          mul_le_mul_of_nonneg_left (by linarith) h3
+          mul_le_mul_of_nonneg_left (by linarith only [hβ1, hβ34]) h3
         have h6 : c / 2 * ((1 - β₁) * (2 - β₁)) ≤ c / 2 * ((1 - β₁) * 2) :=
           mul_le_mul_of_nonneg_left h5 (by positivity)
         have h7 : c / 2 * ((1 - β₁) * 2) = c * (1 - β₁) := by ring
-        linarith [h6, h7]
+        linarith only [h6, h7]
       exact le_trans h1 hratio'
     have him := im_LFunction_one_eq_zero χ₁ hχne hχ2
     have hnorm : ‖DirichletCharacter.LFunction χ₁ (1 : ℂ)‖
@@ -581,7 +581,7 @@ theorem selbergSieveMain2_of_bounds
         ≤ (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re / ((1 - β₁) * (2 - β₁))
             * max 1 (3 * CJ / c + 1) := by
       have hCge : 3 * CJ / c ≤ max 1 (3 * CJ / c + 1) := by
-        have := le_max_right (1 : ℝ) (3 * CJ / c + 1); linarith
+        have := le_max_right (1 : ℝ) (3 * CJ / c + 1); linarith only [hβ1, hClo, hβ34]
       have hM0 : 0 ≤ (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re / ((1 - β₁) * (2 - β₁)) :=
         le_of_lt (lt_of_lt_of_le (by positivity : (0 : ℝ) < c / 2) hM)
       have h1 : (c / 2) * (3 * CJ / c) = 3 * CJ / 2 := by field_simp
@@ -592,7 +592,7 @@ theorem selbergSieveMain2_of_bounds
                 * (3 * CJ / c) := mul_le_mul_of_nonneg_right hM (by positivity)
           _ ≤ (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re / ((1 - β₁) * (2 - β₁))
                 * max 1 (3 * CJ / c + 1) := mul_le_mul_of_nonneg_left hCge hM0
-      have h3 : Real.sqrt 2 * CJ ≤ 3 * CJ / 2 := by nlinarith [hsqrt2, hCJ]
+      have h3 : Real.sqrt 2 * CJ ≤ 3 * CJ / 2 := by nlinarith only [hsqrt2, hCJ]
       exact le_trans h3 h2
     have herr : Real.sqrt 2 * CJ * A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
         * R ^ (-(1 / 2 : ℝ))
@@ -625,7 +625,7 @@ theorem selbergSieveMain2_of_bounds
         ≤ (DirichletCharacter.LFunction χ₁ (1 : ℂ)).re / ((1 - β₁) * (2 - β₁))
           - Real.sqrt 2 * CJ * A * (q : ℝ) ^ θ * Real.exp ((Real.log q) ^ (3 / 4 : ℝ))
               * R ^ (-(1 / 2 : ℝ)) := by
-      nlinarith [herr]
+      linarith only [herr, _inst]
     exact le_trans hfinal hstep3
 
 end Work.LinnikAreas.BGTZ

@@ -1,7 +1,7 @@
 import Mathlib
 import Submission.Commons.Data.Nat.factorization_prod_prime_pow_apply
 import Submission.Commons.NumberTheory.DirichletCharacter.primitive_factor_coprime
-import Submission.Commons.NumberTheory.DirichletCharacter.char_interval_sum_weyl_bound
+import Submission.Commons.NumberTheory.DirichletCharacter.char_interval_sum_weyl_bound_aux
 
 /-!
 # Burgess's bound for general moduli from the cube-free case
@@ -171,13 +171,13 @@ lemma burgess_Icc_of_hB (hε : 0 < ε) (hk : 2 ≤ k) (hCB : 0 < CB)
   have hb0 : 0 ≤ b := by
     rw [hb]
     have hle : (1 : ℝ) / (k : ℝ) ≤ 1 := by rw [div_le_one hkpos]; exact hk1
-    linarith
+    linarith only [hle]
   have ha0 : 0 ≤ a := by
     rw [ha]
-    have hnum : (0 : ℝ) < (k : ℝ) + 1 := by linarith
+    have hnum : (0 : ℝ) < (k : ℝ) + 1 := by linarith only [hk1]
     have hden : (0 : ℝ) < 4 * (k : ℝ) ^ 2 := by positivity
     have := div_pos hnum hden
-    linarith
+    linarith only [hε, this]
   have hc1 : (1 : ℝ) ≤ (c : ℝ) := by exact_mod_cast hc
   have hUa : (0 : ℝ) ≤ (U : ℝ) ^ a := Real.rpow_nonneg (by positivity) a
   have hcb0 : (0 : ℝ) ≤ (c : ℝ) ^ b := Real.rpow_nonneg (by positivity) b
@@ -200,7 +200,7 @@ lemma burgess_Icc_of_hB (hε : 0 < ε) (hk : 2 ≤ k) (hCB : 0 < CB)
       have hcb1 : (c : ℝ) ^ b = 1 := by rw [← hcv]; simp
       rw [hcb1, mul_one]
       have hbase' : (1 : ℝ) ≤ (U : ℝ) ^ a := by rw [hcb1, mul_one] at hbase; exact hbase
-      nlinarith [hCB, hUa, hbase']
+      nlinarith only [hCB, hUa, hbase']
     · -- c ≥ 2
       have hset : Finset.Icc 1 (1 + c - 1) = insert 1 (Finset.Ioc 1 (1 + (c - 1))) := by
         ext t
@@ -218,16 +218,16 @@ lemma burgess_Icc_of_hB (hε : 0 < ε) (hk : 2 ≤ k) (hCB : 0 < CB)
           ≤ 1 + CB * (U : ℝ) ^ a * ((c - 1 : ℕ) : ℝ) ^ b := by
         refine (norm_add_le _ _).trans ?_
         rw [norm_one]
-        linarith [hBapp]
+        linarith only [hBapp]
       have hstep2 : 1 + CB * (U : ℝ) ^ a * ((c - 1 : ℕ) : ℝ) ^ b
           ≤ 1 + CB * (U : ℝ) ^ a * (c : ℝ) ^ b := by
         have hCBU : (0 : ℝ) ≤ CB * (U : ℝ) ^ a := mul_nonneg hCB.le hUa
         have := mul_le_mul_of_nonneg_left hcb hCBU
-        linarith
+        linarith only [this]
       have hstep3 : 1 + CB * (U : ℝ) ^ a * (c : ℝ) ^ b
           ≤ (1 + CB) * (U : ℝ) ^ a * (c : ℝ) ^ b := by
-        nlinarith [hCB, hUa, hcb0, hbase]
-      linarith [hstep1, hstep2, hstep3]
+        linarith only [hCB, hUa, hcb0, hbase]
+      linarith only [hstep1, hstep2, hstep3, hbase]
   · -- L ≥ 2
     have hset : Finset.Icc L (L + c - 1) = Finset.Ioc (L - 1) (L - 1 + c) := by
       ext t
@@ -235,7 +235,7 @@ lemma burgess_Icc_of_hB (hε : 0 < ε) (hk : 2 ≤ k) (hCB : 0 < CB)
       omega
     rw [hset]
     have hBapp := hB ψ hprim h1 hcube (N := L - 1) (H := c) (by omega) hc (by omega)
-    nlinarith [hBapp, hCB, hUa, hcb0]
+    linarith only [hBapp, hCB, hUa, hcb0, hbase]
 
 /-- Reindexing an `Icc`-sum by a translation. -/
 lemma sum_Icc_add_eq {M : Type*} [AddCommMonoid M] (f : ℕ → M) (L s_lo s_hi : ℕ) :
@@ -434,15 +434,15 @@ lemma card_Icc_div_le {v a N H : ℕ} (hv : 0 < v) (ha : a ≤ v) (hH : 1 ≤ H)
       have h2 : (((H - 1) / v : ℕ) : ℝ) ≤ ((H - 1 : ℕ) : ℝ) / (v : ℝ) := Nat.cast_div_le
       have h3 : ((H - 1 : ℕ) : ℝ) / (v : ℝ) ≤ (H : ℝ) / (v : ℝ) :=
         div_le_div_of_nonneg_right (by exact_mod_cast Nat.sub_le H 1) (by positivity)
-      linarith
+      linarith only [h1, h2, h3]
     rw [hcard]
     push_cast
-    linarith
+    linarith only [hbd']
   · have hz : (Finset.Icc ((N + v - a) / v) ((N + H - a) / v)).card = 0 := by
       rw [Finset.card_eq_zero, Finset.Icc_eq_empty_iff]; omega
     rw [hz]
     have : (0 : ℝ) ≤ (H : ℝ) / v := by positivity
-    linarith
+    linarith only [this]
 
 /-- **Reduction of the general modulus case to the cube-free case** (Heath-Brown, Lemma 2.3).
 
@@ -476,20 +476,20 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
   have hB0 : 0 ≤ B := by
     rw [hB_def]
     have hle : (1 : ℝ) / (k : ℝ) ≤ 1 := by rw [div_le_one hkpos]; exact hk1
-    linarith
+    linarith only [hle]
   have hB1 : B ≤ 1 := by
     rw [hB_def]
     have : (0 : ℝ) ≤ 1 / (k : ℝ) := by positivity
-    linarith
+    linarith only [this]
   have hA0 : 0 ≤ A := by
     rw [hA]
-    have hnum : (0 : ℝ) < (k : ℝ) + 1 := by linarith
+    have hnum : (0 : ℝ) < (k : ℝ) + 1 := by linarith only [hk1]
     have hden : (0 : ℝ) < 4 * (k : ℝ) ^ 2 := by positivity
     have := div_pos hnum hden
-    linarith
+    linarith only [hε, this]
   have hS0 : 0 ≤ S := by
     rw [hS]
-    have hnum : (0 : ℝ) ≤ 3 * (k : ℝ) - 1 := by linarith
+    have hnum : (0 : ℝ) ≤ 3 * (k : ℝ) - 1 := by linarith only [hk1]
     have hden : (0 : ℝ) < 4 * (k : ℝ) ^ 2 := by positivity
     exact div_nonneg hnum hden.le
   have hexp : S + A = 1 / (k : ℝ) + ε := by
@@ -503,7 +503,7 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
     have : (1 : ℕ) ≤ u * v :=
       Nat.one_le_iff_ne_zero.mpr (mul_ne_zero (NeZero.ne u) (NeZero.ne v))
     exact_mod_cast this
-  have hvpos : (0 : ℝ) < (v : ℝ) := by linarith
+  have hvpos : (0 : ℝ) < (v : ℝ) := by linarith only [hv1]
   rcases le_or_gt H v with hHv | hHv
   · -- case A: the interval is short compared to `v`
     have hSbd : ‖∑ n ∈ Finset.Ioc N (N + H), χ n‖ ≤ (H : ℝ) := by
@@ -522,7 +522,7 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
       Real.rpow_le_rpow hHpos.le (by exact_mod_cast hHv) (by positivity)
     have hvv : (v : ℝ) ^ (1 / (k : ℝ)) ≤ (v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A := by
       have h1 : (v : ℝ) ^ (1 / (k : ℝ)) ≤ (v : ℝ) ^ (1 / (k : ℝ) + ε) :=
-        Real.rpow_le_rpow_of_exponent_le hv1 (by linarith)
+        Real.rpow_le_rpow_of_exponent_le hv1 (by linarith only [hε])
       have h2 : (v : ℝ) ^ (1 / (k : ℝ) + ε) = (v : ℝ) ^ S * (v : ℝ) ^ A := by
         rw [← hexp, Real.rpow_add hvpos]
       have h3 : (v : ℝ) ^ S * (v : ℝ) ^ A ≤ (v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A :=
@@ -539,7 +539,7 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
       have hXY : (0 : ℝ) ≤ (v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A * (H : ℝ) ^ B :=
         mul_nonneg (mul_nonneg (Real.rpow_nonneg hvpos.le S)
           (Real.rpow_nonneg (by positivity) A)) hHbb
-      have hC : (1 : ℝ) ≤ 2 * (1 + CB) := by linarith
+      have hC : (1 : ℝ) ≤ 2 * (1 + CB) := by linarith only [hCB]
       calc (v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A * (H : ℝ) ^ B
           ≤ (2 * (1 + CB)) * ((v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A * (H : ℝ) ^ B) :=
             le_mul_of_one_le_left hXY hC
@@ -631,7 +631,7 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
         exact_mod_cast le_of_lt hHv
       have h3 : 2 * (H : ℝ) / (v : ℝ) = 2 * ((H : ℝ) / (v : ℝ)) := by ring
       rw [h3]
-      linarith
+      linarith only [h1, h2]
     have hsum_card : ∑ a ∈ Finset.Icc 1 v,
           ((Finset.Icc ((N + v - a) / v) ((N + H - a) / v)).card : ℝ) ^ B
         ≤ (v : ℝ) * (2 * (H : ℝ) / (v : ℝ)) ^ B := by
@@ -690,11 +690,11 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
       refine (Finset.sum_le_sum hterm).trans ?_
       rw [h1]
       exact mul_le_mul_of_nonneg_left hsum_card
-        (mul_nonneg (by linarith) (Real.rpow_nonneg (by positivity) A))
+        (mul_nonneg (by linarith only [hCB]) (Real.rpow_nonneg (by positivity) A))
     have hvw2 : (1 + CB) * (u : ℝ) ^ A * ((v : ℝ) * (2 * (H : ℝ) / (v : ℝ)) ^ B)
         ≤ (1 + CB) * (u : ℝ) ^ A * (2 * (v : ℝ) ^ (1 / (k : ℝ)) * (H : ℝ) ^ B) :=
       mul_le_mul_of_nonneg_left (hvw.trans (le_of_eq (by ring)))
-        (mul_nonneg (by linarith) (Real.rpow_nonneg (by positivity) A))
+        (mul_nonneg (by linarith only [hCB]) (Real.rpow_nonneg (by positivity) A))
     have hmid : (1 + CB) * (u : ℝ) ^ A * (2 * (v : ℝ) ^ (1 / (k : ℝ)) * (H : ℝ) ^ B)
         = (1 + CB) * ((u : ℝ) ^ A * 2) * (v : ℝ) ^ (1 / (k : ℝ)) * (H : ℝ) ^ B := by ring
     have hmid2 : (1 + CB) * ((u : ℝ) ^ A * 2) * (v : ℝ) ^ (1 / (k : ℝ)) * (H : ℝ) ^ B
@@ -702,14 +702,14 @@ lemma burgess_v_aux {q u v : ℕ} [NeZero q] [NeZero u] [NeZero v]
             * (H : ℝ) ^ B := by
       refine mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg (by positivity) B)
       refine mul_le_mul_of_nonneg_left ?_ (by positivity)
-      exact Real.rpow_le_rpow_of_exponent_le hv1 (by linarith)
+      exact Real.rpow_le_rpow_of_exponent_le hv1 (by linarith only [hε])
     have hfin : (1 + CB) * ((u : ℝ) ^ A * 2) * (v : ℝ) ^ ((1 : ℝ) / (k : ℝ) + ε)
           * (H : ℝ) ^ B
         = (2 * (1 + CB)) * (v : ℝ) ^ S * ((u * v : ℕ) : ℝ) ^ A * (H : ℝ) ^ B := by
       rw [Nat.cast_mul, Real.mul_rpow (by positivity) (by positivity), ← hexp,
         Real.rpow_add hvpos]
       ring
-    linarith [hstep1, hvw2, hmid.le, hmid.ge, hmid2, hfin.le, hfin.ge]
+    linarith only [hstep1, hvw2, hmid.le, hmid.ge, hmid2, hfin.le, hfin.ge, hfin]
 
 
 end Core
@@ -737,7 +737,7 @@ theorem burgess_charSum_v_of_cubefree {ε : ℝ} (hε : 0 < ε) (k : ℕ) (hk : 
                 ^ ((3 * (k : ℝ) - 1) / (4 * (k : ℝ) ^ 2))
             * (q : ℝ) ^ (((k : ℝ) + 1) / (4 * (k : ℝ) ^ 2) + ε)
             * (H : ℝ) ^ (1 - 1 / (k : ℝ)) := by
-  refine ⟨2 * (1 + CB), by linarith, ?_⟩
+  refine ⟨2 * (1 + CB), by linarith only [hCB], ?_⟩
   intro q _ χ hprim hne N H hN hH hHq
   have hq0 : q ≠ 0 := NeZero.ne q
   have hcop : (cubeFreePart q).Coprime (cubefulPart q) :=

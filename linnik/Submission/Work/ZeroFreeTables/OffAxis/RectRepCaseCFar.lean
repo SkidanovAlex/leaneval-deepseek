@@ -24,9 +24,9 @@ private lemma P3_norm_le_of_norm_le_one (w : ℂ) (hw : ‖w‖ ≤ 1) :
   have hw3 : ‖w^3‖ = ‖w‖^3 := norm_pow w 3
   have h1 : ‖Work.ZeroFreeTables.P3 w‖ ≤ ‖w‖ + ‖w‖^2 + (2/3) * ‖w‖^3 := by
     rw [hcoef2, hw3] at hsum
-    linarith
+    linarith only [hsum, hsum2, hw2]
   have h2 : 1 + ‖w‖ + (2/3) * ‖w‖^2 ≤ 8/3 := by
-    nlinarith [norm_nonneg w, hw, sq_nonneg (‖w‖)]
+    nlinarith only [norm_nonneg w, hw, sq_nonneg (‖w‖)]
   have h3 : ‖w‖ + ‖w‖^2 + (2/3) * ‖w‖^3 = ‖w‖ * (1 + ‖w‖ + (2/3) * ‖w‖^2) := by ring
   calc ‖Work.ZeroFreeTables.P3 w‖ ≤ ‖w‖ + ‖w‖^2 + (2/3) * ‖w‖^3 := h1
     _ = ‖w‖ * (1 + ‖w‖ + (2/3) * ‖w‖^2) := h3
@@ -52,22 +52,22 @@ private lemma farNormBound {a δ M L lam γ : ℝ} (ha : 0 < a) (hδ : 0 < δ) (
     have hML : M / L ≤ δ / 2 := by
       have h := (div_le_iff₀ hδ).mp hLM
       rw [div_le_iff₀ hL]
-      linarith
+      linarith only [h]
     have h1 : (M / L) ^ 2 ≤ (δ / 2) ^ 2 := by
       rw [sq_le_sq, abs_of_nonneg (div_nonneg hM hL.le),
-        abs_of_pos (by linarith : (0:ℝ) < δ / 2)]
+        abs_of_pos (by linarith only [hδ] : (0:ℝ) < δ / 2)]
       exact hML
     have h2 : (M / L) ^ 2 = M ^ 2 / L ^ 2 := by rw [div_pow]
     have h3 : (δ / 2) ^ 2 = δ ^ 2 / 4 := by ring
-    linarith
+    linarith only [h1, h2]
   have h4g : δ ^ 2 / 4 < 4 * γ ^ 2 := by
     have h2 : lam ^ 2 / L ^ 2 ≤ M ^ 2 / L ^ 2 := by
       apply div_le_div_of_nonneg_right _ (by positivity : (0:ℝ) ≤ L ^ 2)
-      nlinarith
-    nlinarith [hfar, h2, hMsq, hδ]
+      nlinarith only [hM, hlamM, hlam0]
+    nlinarith only [hfar, h2, hMsq, hδ]
   have h2g : (δ / 2) ^ 2 < (2 * γ) ^ 2 := by
     have h : (2 * γ) ^ 2 = 4 * γ ^ 2 := by ring
-    linarith
+    linarith only [h4g]
   have hden : δ * L / 2 < ‖(a : ℂ) + ((2 * γ * L : ℝ) : ℂ) * Complex.I‖ := by
     rw [Complex.norm_def, Real.lt_sqrt (by positivity : (0:ℝ) ≤ δ * L / 2)]
     rw [Complex.normSq_add_mul_I]
@@ -75,11 +75,11 @@ private lemma farNormBound {a δ M L lam γ : ℝ} (ha : 0 < a) (hδ : 0 < δ) (
     rw [hsq2]
     have hlt : (δ / 2) ^ 2 * L ^ 2 < (2 * γ) ^ 2 * L ^ 2 :=
       mul_lt_mul_of_pos_right h2g (by positivity : (0:ℝ) < L ^ 2)
-    nlinarith [hlt, sq_nonneg a]
-  rw [norm_div, norm_ofReal', abs_of_nonneg (by linarith : (0:ℝ) ≤ a + lam)]
-  have hDpos : 0 < ‖(a : ℂ) + ((2 * γ * L : ℝ) : ℂ) * Complex.I‖ := by linarith [hden, hδL]
+    linarith only [hlt, sq_nonneg a]
+  rw [norm_div, norm_ofReal', abs_of_nonneg (by linarith only [ha, hlam0] : (0:ℝ) ≤ a + lam)]
+  have hDpos : 0 < ‖(a : ℂ) + ((2 * γ * L : ℝ) : ℂ) * Complex.I‖ := by linarith only [hden, hδL]
   rw [div_le_iff₀ hDpos, div_mul_eq_mul_div, le_div_iff₀ hδL]
-  nlinarith [hden, hlam0, hlamM, ha, hδ, hL, hM]
+  nlinarith only [hden, hlam0, hlamM, ha, hδ, hL, hM, hδL]
 
 /-- The `P₃`-value at the far point is at most `e` once `L` dominates the three
 thresholds coming from the bound `B`. -/
@@ -96,17 +96,17 @@ private lemma P3_bound_of_far {a M δ e L : ℝ} (ha : 0 < a) (hδ : 0 < δ)
     have h1 : 2 * (a + M) / (δ * L) ≤ 1 := by
       rw [div_le_one (mul_pos hδ hL)]
       have h := (div_le_iff₀ hδ).mp hLM2
-      linarith
-    linarith [hnorm, h1]
+      linarith only [h]
+    linarith only [hnorm, h1]
   have hP3 : ‖Work.ZeroFreeTables.P3 Z‖ ≤ (8/3) * ‖Z‖ := P3_norm_le_of_norm_le_one Z hXle1
   have hmid : (8/3) * ‖Z‖ ≤ 16 * (a + M) / (3 * δ * L) := by
     have h1 := mul_le_mul_of_nonneg_left hnorm (by norm_num : (0:ℝ) ≤ 8/3)
     have h2 : (8/3) * (2 * (a + M) / (δ * L)) = 16 * (a + M) / (3 * δ * L) := by ring
-    linarith [h1, h2]
+    linarith only [h1, h2, hnorm]
   have hee : 16 * (a + M) / (3 * δ * L) ≤ e := by
     rw [div_le_iff₀ (by positivity : (0:ℝ) < 3 * δ * L)]
     have h := (div_le_iff₀ (by positivity : (0:ℝ) < 3 * δ * e)).mp hLM3
-    nlinarith [h]
+    linarith only [h]
   calc (Work.ZeroFreeTables.P3 Z).re ≤ ‖Work.ZeroFreeTables.P3 Z‖ := Complex.re_le_norm _
     _ ≤ (8/3) * ‖Z‖ := hP3
     _ ≤ 16 * (a + M) / (3 * δ * L) := hmid
@@ -136,21 +136,21 @@ theorem RectRepCaseCFar {a δ e M : ℝ} (ha : 0 < a) (hδ : 0 < δ) (hδ1 : δ 
   have hexp_le : Real.exp B ≤ (q : ℝ) := by
     have h1 : Real.exp B ≤ max 2 (Real.exp B) := le_max_right _ _
     have h2 : (q₀ : ℝ) ≤ (q : ℝ) := by exact_mod_cast hqq
-    linarith
+    linarith only [hq₀, h1, h2]
   have hBle : B ≤ Real.log (q : ℝ) :=
-    (Real.le_log_iff_exp_le (by linarith : (0:ℝ) < (q:ℝ))).mpr hexp_le
+    (Real.le_log_iff_exp_le (by linarith only [hδ, hδ1, hq1] : (0:ℝ) < (q:ℝ))).mpr hexp_le
   have ht1 : 2 * M / δ ≤ Real.log (q : ℝ) := by
     have h2 : 0 ≤ 2 * (a + M) / δ := by positivity
     have h3 : 0 ≤ 16 * (a + M) / (3 * δ * e) := by positivity
-    linarith [hBle, hB, h2, h3]
+    linarith only [hBle, hB, h2, h3, hδ, hδ1]
   have ht2 : 2 * (a + M) / δ ≤ Real.log (q : ℝ) := by
     have h1 : 0 ≤ 2 * M / δ := by positivity
     have h3 : 0 ≤ 16 * (a + M) / (3 * δ * e) := by positivity
-    linarith [hBle, hB, h1, h3]
+    linarith only [hBle, hB, h1, h3, hδ, hδ1]
   have ht3 : 16 * (a + M) / (3 * δ * e) ≤ Real.log (q : ℝ) := by
     have h1 : 0 ≤ 2 * M / δ := by positivity
     have h2 : 0 ≤ 2 * (a + M) / δ := by positivity
-    linarith [hBle, hB, h1, h2]
+    linarith only [hBle, hB, h1, h2, hδ, hδ1]
   have hrel : (1 - ρ₁.re) * Real.log (q : ℝ) = Work.LinnikContract.lamOf q ρ₁ := by
     rw [Work.LinnikContract.lamOf]
   have hlogq : Real.log (q : ℝ) ≠ 0 := ne_of_gt hLpos
@@ -161,8 +161,8 @@ theorem RectRepCaseCFar {a δ e M : ℝ} (ha : 0 < a) (hδ : 0 < δ) (hδ1 : δ 
         = (1 - ρ₁.re) ^ 2 + (2 * ρ₁.im) ^ 2 := by
       rw [Complex.sq_norm, norm_conj_eq, Complex.normSq_add_mul_I]
     have h1 : δ ^ 2 < (1 - ρ₁.re) ^ 2 + (2 * ρ₁.im) ^ 2 := by
-      nlinarith [hδlt, hSsq,
-        norm_nonneg ((1 : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I - (starRingEnd ℂ) ρ₁), hδ]
+      nlinarith only [hδlt, hSsq,
+        norm_nonneg ((1 : ℂ) + ((ρ₁.im : ℝ) : ℂ) * Complex.I - (starRingEnd ℂ) ρ₁), hδ, hfar]
     have h2 : (1 - ρ₁.re) ^ 2 = Work.LinnikContract.lamOf q ρ₁ ^ 2 / (Real.log (q:ℝ)) ^ 2 := by
       have h3 : (1 - ρ₁.re) = Work.LinnikContract.lamOf q ρ₁ / Real.log (q:ℝ) := by
         rw [eq_div_iff hlogq]

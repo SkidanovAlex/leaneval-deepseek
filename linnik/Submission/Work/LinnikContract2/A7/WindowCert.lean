@@ -28,6 +28,11 @@ set_option linter.unusedTactic false
 
 namespace Work.LinnikContract2.A7
 
+private lemma t13_mem {t c t' c' : ℝ} {N : ℕ} (k : ℕ) (hk : k < Work.LinnikContract.table13.length)
+    (hget : Work.LinnikContract.table13[k] = (t', c', N)) (ht : t = t') (hc : c = c') :
+    (t, c, N) ∈ Work.LinnikContract.table13 := by
+  subst ht hc; rw [← hget]; exact List.getElem_mem hk
+
 theorem win_g1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     {χ₁ : DirichletCharacter ℂ q} {ρ₁ : ℂ} {χ₀ : DirichletCharacter ℂ q} {ρ₀ : ℂ}
     (hR : 0 < R) (hRlog : R ≤ Real.log q) (hRmax : R ≤ Work.LinnikContract.lamMax q)
@@ -64,13 +69,13 @@ theorem win_g1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     exact le_trans (by rw [hlam1]; exact hcol) hlamLe
   have hN0 : Work.LinnikContract.Ncount q ((6:ℝ)/5) ≤ 111 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 80 (by decide) rfl (by norm_num) (by norm_num))
   have hN1 : Work.LinnikContract.Ncount q ((47:ℝ)/40) ≤ 73 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 75 (by decide) rfl (by norm_num) (by norm_num))
   have hN2 : Work.LinnikContract.Ncount q ((23:ℝ)/20) ≤ 54 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 70 (by decide) rfl (by norm_num) (by norm_num))
   have hCf_l2 : Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (87/100) ≤ ((39434893533:ℝ)/2500000000000) :=
     Work.LinnikAreas.A7.Cf_le (L := ((6:ℝ)/5)) (x := (87/100)) (r := ((39434893533:ℝ)/2500000000000))
       (v_87_100).1 (v_6_5).2.1 (by norm_num) (v_87_100).2.2.2.1 (by norm_num)
@@ -99,7 +104,8 @@ theorem win_g1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
   have hsum : (∑ j ∈ Finset.range 2, ((Nlist [111, 73, 54] j : ℝ) - (Nlist [111, 73, 54] (j+1) : ℝ))
       * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (((6:ℝ)/5) - (25:ℝ)/1000 * ((j:ℝ)+1)))
       = (38:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((47:ℝ)/40) + (19:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((23:ℝ)/20) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   have hmx : max 0 ((Nlist [111, 73, 54] 2 : ℝ) - 2) = (52:ℝ) := by norm_num [Nlist]
   have hTOT : (Work.LinnikAreas.A7.Phi ((6:ℝ)/5) / Work.LinnikAreas.A7.Wf ((6:ℝ)/5)) * ((67:ℝ)/6 + εw)
       + (2:ℝ) * ((39434893533:ℝ)/2500000000000) + 2 * ((39434893533:ℝ)/2500000000000)
@@ -107,7 +113,7 @@ theorem win_g1 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
       + ∑ j ∈ Finset.range 2, ((Nlist [111, 73, 54] j : ℝ) - (Nlist [111, 73, 54] (j+1) : ℝ))
         * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (((6:ℝ)/5) - (25:ℝ)/1000 * ((j:ℝ)+1)) ≤ (9968:ℝ)/10000 := by
     rw [hsum, hmx, show min ((1134:ℝ)/1000) ((6:ℝ)/5) = (567/500) from by norm_num]
-    linarith [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hN0, hN1, hN2, hETAB]
+    linarith only [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hETAB]
   have hΛ : (0:ℝ) < ((6:ℝ)/5) := by norm_num
   have hlamN : ((870:ℝ)/1000) ≤ lamN := by
     rw [← hlam0]
@@ -216,22 +222,22 @@ theorem win_g2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     exact le_trans (by rw [hlam1]; exact hcol) hlamLe
   have hN0 : Work.LinnikContract.Ncount q ((6:ℝ)/5) ≤ 81 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 81 (by decide) rfl (by norm_num) (by norm_num))
   have hN1 : Work.LinnikContract.Ncount q ((47:ℝ)/40) ≤ 58 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 76 (by decide) rfl (by norm_num) (by norm_num))
   have hN2 : Work.LinnikContract.Ncount q ((23:ℝ)/20) ≤ 45 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 71 (by decide) rfl (by norm_num) (by norm_num))
   have hN3 : Work.LinnikContract.Ncount q ((9:ℝ)/8) ≤ 36 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 66 (by decide) rfl (by norm_num) (by norm_num))
   have hN4 : Work.LinnikContract.Ncount q ((11:ℝ)/10) ≤ 30 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 61 (by decide) rfl (by norm_num) (by norm_num))
   have hN5 : Work.LinnikContract.Ncount q ((43:ℝ)/40) ≤ 26 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 56 (by decide) rfl (by norm_num) (by norm_num))
   have hCf_l2 : Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (841/1000) ≤ ((191735004569:ℝ)/10000000000000) :=
     Work.LinnikAreas.A7.Cf_le (L := ((6:ℝ)/5)) (x := (841/1000)) (r := ((191735004569:ℝ)/10000000000000))
       (v_841_1000).1 (v_6_5).2.1 (by norm_num) (v_841_1000).2.2.2.1 (by norm_num)
@@ -272,7 +278,8 @@ theorem win_g2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
   have hsum : (∑ j ∈ Finset.range 5, ((Nlist [81, 58, 45, 36, 30, 26] j : ℝ) - (Nlist [81, 58, 45, 36, 30, 26] (j+1) : ℝ))
       * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (((6:ℝ)/5) - (25:ℝ)/1000 * ((j:ℝ)+1)))
       = (23:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((47:ℝ)/40) + (13:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((23:ℝ)/20) + (9:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((9:ℝ)/8) + (6:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((11:ℝ)/10) + (4:ℝ) * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) ((43:ℝ)/40) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   have hmx : max 0 ((Nlist [81, 58, 45, 36, 30, 26] 5 : ℝ) - 2) = (24:ℝ) := by norm_num [Nlist]
   have hTOT : (Work.LinnikAreas.A7.Phi ((6:ℝ)/5) / Work.LinnikAreas.A7.Wf ((6:ℝ)/5)) * ((67:ℝ)/6 + εw)
       + (2:ℝ) * ((191735004569:ℝ)/10000000000000) + 2 * ((191735004569:ℝ)/10000000000000)
@@ -280,7 +287,7 @@ theorem win_g2 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
       + ∑ j ∈ Finset.range 5, ((Nlist [81, 58, 45, 36, 30, 26] j : ℝ) - (Nlist [81, 58, 45, 36, 30, 26] (j+1) : ℝ))
         * Work.LinnikAreas.A7.Cf ((6:ℝ)/5) (((6:ℝ)/5) - (25:ℝ)/1000 * ((j:ℝ)+1)) ≤ (9968:ℝ)/10000 := by
     rw [hsum, hmx, show min ((1054:ℝ)/1000) ((6:ℝ)/5) = (527/500) from by norm_num]
-    linarith [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hN0, hN1, hN2, hN3, hN4, hN5, hETAB]
+    linarith only [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hETAB]
   have hΛ : (0:ℝ) < ((6:ℝ)/5) := by norm_num
   have hlamN : ((841:ℝ)/1000) ≤ lamN := by
     rw [← hlam0]
@@ -392,37 +399,37 @@ theorem win_g3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     exact le_trans (by rw [hlam1]; exact hcol) hlamLe
   have hN0 : Work.LinnikContract.Ncount q ((49:ℝ)/40) ≤ 97 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 87 (by decide) rfl (by norm_num) (by norm_num))
   have hN1 : Work.LinnikContract.Ncount q ((6:ℝ)/5) ≤ 67 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 82 (by decide) rfl (by norm_num) (by norm_num))
   have hN2 : Work.LinnikContract.Ncount q ((47:ℝ)/40) ≤ 51 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 77 (by decide) rfl (by norm_num) (by norm_num))
   have hN3 : Work.LinnikContract.Ncount q ((23:ℝ)/20) ≤ 40 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 72 (by decide) rfl (by norm_num) (by norm_num))
   have hN4 : Work.LinnikContract.Ncount q ((9:ℝ)/8) ≤ 33 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 67 (by decide) rfl (by norm_num) (by norm_num))
   have hN5 : Work.LinnikContract.Ncount q ((11:ℝ)/10) ≤ 28 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 62 (by decide) rfl (by norm_num) (by norm_num))
   have hN6 : Work.LinnikContract.Ncount q ((43:ℝ)/40) ≤ 24 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 57 (by decide) rfl (by norm_num) (by norm_num))
   have hN7 : Work.LinnikContract.Ncount q ((21:ℝ)/20) ≤ 21 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 52 (by decide) rfl (by norm_num) (by norm_num))
   have hN8 : Work.LinnikContract.Ncount q ((41:ℝ)/40) ≤ 18 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 47 (by decide) rfl (by norm_num) (by norm_num))
   have hN9 : Work.LinnikContract.Ncount q ((1:ℝ)/1) ≤ 16 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 42 (by decide) rfl (by norm_num) (by norm_num))
   have hN10 : Work.LinnikContract.Ncount q ((39:ℝ)/40) ≤ 15 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 37 (by decide) rfl (by norm_num) (by norm_num))
   have hCf_l2 : Work.LinnikAreas.A7.Cf ((49:ℝ)/40) (401/500) ≤ ((127138903263:ℝ)/5000000000000) :=
     Work.LinnikAreas.A7.Cf_le (L := ((49:ℝ)/40)) (x := (401/500)) (r := ((127138903263:ℝ)/5000000000000))
       (v_401_500).1 (v_49_40).2.1 (by norm_num) (v_401_500).2.2.2.1 (by norm_num)
@@ -483,7 +490,8 @@ theorem win_g3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
   have hsum : (∑ j ∈ Finset.range 10, ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] j : ℝ) - (Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] (j+1) : ℝ))
       * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) (((49:ℝ)/40) - (25:ℝ)/1000 * ((j:ℝ)+1)))
       = (30:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((6:ℝ)/5) + (16:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((47:ℝ)/40) + (11:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((23:ℝ)/20) + (7:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((9:ℝ)/8) + (5:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((11:ℝ)/10) + (4:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((43:ℝ)/40) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((21:ℝ)/20) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((41:ℝ)/40) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((1:ℝ)/1) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) ((39:ℝ)/40) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   have hmx : max 0 ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] 10 : ℝ) - 2) = (13:ℝ) := by norm_num [Nlist]
   have hTOT : (Work.LinnikAreas.A7.Phi ((49:ℝ)/40) / Work.LinnikAreas.A7.Wf ((49:ℝ)/40)) * ((67:ℝ)/6 + εw)
       + (2:ℝ) * ((127138903263:ℝ)/5000000000000) + 2 * ((127138903263:ℝ)/5000000000000)
@@ -491,7 +499,7 @@ theorem win_g3 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
       + ∑ j ∈ Finset.range 10, ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] j : ℝ) - (Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] (j+1) : ℝ))
         * Work.LinnikAreas.A7.Cf ((49:ℝ)/40) (((49:ℝ)/40) - (25:ℝ)/1000 * ((j:ℝ)+1)) ≤ (9968:ℝ)/10000 := by
     rw [hsum, hmx, show min ((951:ℝ)/1000) ((49:ℝ)/40) = (951/1000) from by norm_num]
-    linarith [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hN0, hN1, hN2, hN3, hN4, hN5, hN6, hN7, hN8, hN9, hN10, hETAB]
+    linarith only [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hETAB]
   have hΛ : (0:ℝ) < ((49:ℝ)/40) := by norm_num
   have hlamN : ((401:ℝ)/500) ≤ lamN := by
     rw [← hlam0]
@@ -608,55 +616,55 @@ theorem win_g4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     exact le_trans (by rw [hlam1]; exact hcol) hlamLe
   have hN0 : Work.LinnikContract.Ncount q ((5:ℝ)/4) ≤ 104 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   have hN1 : Work.LinnikContract.Ncount q ((49:ℝ)/40) ≤ 71 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   have hN2 : Work.LinnikContract.Ncount q ((6:ℝ)/5) ≤ 54 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   have hN3 : Work.LinnikContract.Ncount q ((47:ℝ)/40) ≤ 42 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   have hN4 : Work.LinnikContract.Ncount q ((23:ℝ)/20) ≤ 35 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   have hN5 : Work.LinnikContract.Ncount q ((9:ℝ)/8) ≤ 29 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   have hN6 : Work.LinnikContract.Ncount q ((11:ℝ)/10) ≤ 25 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   have hN7 : Work.LinnikContract.Ncount q ((43:ℝ)/40) ≤ 22 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   have hN8 : Work.LinnikContract.Ncount q ((21:ℝ)/20) ≤ 19 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   have hN9 : Work.LinnikContract.Ncount q ((41:ℝ)/40) ≤ 17 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   have hN10 : Work.LinnikContract.Ncount q ((1:ℝ)/1) ≤ 15 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   have hN11 : Work.LinnikContract.Ncount q ((39:ℝ)/40) ≤ 14 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   have hN12 : Work.LinnikContract.Ncount q ((19:ℝ)/20) ≤ 12 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   have hN13 : Work.LinnikContract.Ncount q ((37:ℝ)/40) ≤ 11 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
   have hN14 : Work.LinnikContract.Ncount q ((9:ℝ)/10) ≤ 10 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 23 (by decide) rfl (by norm_num) (by norm_num))
   have hN15 : Work.LinnikContract.Ncount q ((7:ℝ)/8) ≤ 9 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 18 (by decide) rfl (by norm_num) (by norm_num))
   have hN16 : Work.LinnikContract.Ncount q ((17:ℝ)/20) ≤ 9 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 13 (by decide) rfl (by norm_num) (by norm_num))
   have hCf_l2 : Work.LinnikAreas.A7.Cf ((5:ℝ)/4) (379/500) ≤ ((10643898013:ℝ)/312500000000) :=
     Work.LinnikAreas.A7.Cf_le (L := ((5:ℝ)/4)) (x := (379/500)) (r := ((10643898013:ℝ)/312500000000))
       (v_379_500).1 (v_5_4).2.1 (by norm_num) (v_379_500).2.2.2.1 (by norm_num)
@@ -744,7 +752,8 @@ theorem win_g4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9, 9] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9, 9] (j+1) : ℝ))
       * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) (((5:ℝ)/4) - (25:ℝ)/1000 * ((j:ℝ)+1)))
       = (33:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((49:ℝ)/40) + (17:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((6:ℝ)/5) + (12:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((47:ℝ)/40) + (7:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((23:ℝ)/20) + (6:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((9:ℝ)/8) + (4:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((11:ℝ)/10) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((43:ℝ)/40) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((21:ℝ)/20) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((41:ℝ)/40) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((1:ℝ)/1) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((39:ℝ)/40) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((19:ℝ)/20) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((37:ℝ)/40) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((9:ℝ)/10) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((7:ℝ)/8) + (0:ℝ) * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) ((17:ℝ)/20) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   have hmx : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9, 9] 16 : ℝ) - 2) = (7:ℝ) := by norm_num [Nlist]
   have hTOT : (Work.LinnikAreas.A7.Phi ((5:ℝ)/4) / Work.LinnikAreas.A7.Wf ((5:ℝ)/4)) * ((67:ℝ)/6 + εw)
       + (2:ℝ) * ((10643898013:ℝ)/312500000000) + 2 * ((10643898013:ℝ)/312500000000)
@@ -752,7 +761,7 @@ theorem win_g4 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
       + ∑ j ∈ Finset.range 16, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9, 9] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9, 9] (j+1) : ℝ))
         * Work.LinnikAreas.A7.Cf ((5:ℝ)/4) (((5:ℝ)/4) - (25:ℝ)/1000 * ((j:ℝ)+1)) ≤ (9968:ℝ)/10000 := by
     rw [hsum, hmx, show min ((211:ℝ)/250) ((5:ℝ)/4) = (211/250) from by norm_num]
-    linarith [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hCfL11, hCfL12, hCfL13, hCfL14, hCfL15, hCfL16, hN0, hN1, hN2, hN3, hN4, hN5, hN6, hN7, hN8, hN9, hN10, hN11, hN12, hN13, hN14, hN15, hN16, hETAB]
+    linarith only [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hCfL11, hCfL12, hCfL13, hCfL14, hCfL15, hCfL16, hETAB]
   have hΛ : (0:ℝ) < ((5:ℝ)/4) := by norm_num
   have hlamN : ((379:ℝ)/500) ≤ lamN := by
     rw [← hlam0]
@@ -875,61 +884,61 @@ theorem win_g5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
     exact le_trans (by rw [hlam1]; exact hcol) hlamLe
   have hN0 : Work.LinnikContract.Ncount q ((51:ℝ)/40) ≤ 100 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   have hN1 : Work.LinnikContract.Ncount q ((5:ℝ)/4) ≤ 70 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   have hN2 : Work.LinnikContract.Ncount q ((49:ℝ)/40) ≤ 53 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   have hN3 : Work.LinnikContract.Ncount q ((6:ℝ)/5) ≤ 42 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   have hN4 : Work.LinnikContract.Ncount q ((47:ℝ)/40) ≤ 35 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   have hN5 : Work.LinnikContract.Ncount q ((23:ℝ)/20) ≤ 29 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   have hN6 : Work.LinnikContract.Ncount q ((9:ℝ)/8) ≤ 25 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   have hN7 : Work.LinnikContract.Ncount q ((11:ℝ)/10) ≤ 22 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   have hN8 : Work.LinnikContract.Ncount q ((43:ℝ)/40) ≤ 19 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   have hN9 : Work.LinnikContract.Ncount q ((21:ℝ)/20) ≤ 17 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   have hN10 : Work.LinnikContract.Ncount q ((41:ℝ)/40) ≤ 15 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   have hN11 : Work.LinnikContract.Ncount q ((1:ℝ)/1) ≤ 14 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   have hN12 : Work.LinnikContract.Ncount q ((39:ℝ)/40) ≤ 13 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   have hN13 : Work.LinnikContract.Ncount q ((19:ℝ)/20) ≤ 12 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   have hN14 : Work.LinnikContract.Ncount q ((37:ℝ)/40) ≤ 11 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   have hN15 : Work.LinnikContract.Ncount q ((9:ℝ)/10) ≤ 10 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   have hN16 : Work.LinnikContract.Ncount q ((7:ℝ)/8) ≤ 9 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
   have hN17 : Work.LinnikContract.Ncount q ((17:ℝ)/20) ≤ 8 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 14 (by decide) rfl (by norm_num) (by norm_num))
   have hN18 : Work.LinnikContract.Ncount q ((33:ℝ)/40) ≤ 8 :=
     Ncount_le_table_w hnarrow hlam0 hcoln hcol hD2
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 9 (by decide) rfl (by norm_num) (by norm_num))
   have hCf_l2 : Work.LinnikAreas.A7.Cf ((51:ℝ)/40) (187/250) ≤ ((92083822927:ℝ)/2500000000000) :=
     Work.LinnikAreas.A7.Cf_le (L := ((51:ℝ)/40)) (x := (187/250)) (r := ((92083822927:ℝ)/2500000000000))
       (v_187_250).1 (v_51_40).2.1 (by norm_num) (v_187_250).2.2.2.1 (by norm_num)
@@ -1028,7 +1037,8 @@ theorem win_g5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
   have hsum : (∑ j ∈ Finset.range 18, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 8] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 8] (j+1) : ℝ))
       * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) (((51:ℝ)/40) - (25:ℝ)/1000 * ((j:ℝ)+1)))
       = (30:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((5:ℝ)/4) + (17:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((49:ℝ)/40) + (11:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((6:ℝ)/5) + (7:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((47:ℝ)/40) + (6:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((23:ℝ)/20) + (4:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((9:ℝ)/8) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((11:ℝ)/10) + (3:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((43:ℝ)/40) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((21:ℝ)/20) + (2:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((41:ℝ)/40) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((1:ℝ)/1) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((39:ℝ)/40) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((19:ℝ)/20) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((37:ℝ)/40) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((9:ℝ)/10) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((7:ℝ)/8) + (1:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((17:ℝ)/20) + (0:ℝ) * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) ((33:ℝ)/40) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   have hmx : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 8] 18 : ℝ) - 2) = (6:ℝ) := by norm_num [Nlist]
   have hTOT : (Work.LinnikAreas.A7.Phi ((51:ℝ)/40) / Work.LinnikAreas.A7.Wf ((51:ℝ)/40)) * ((67:ℝ)/6 + εw)
       + (2:ℝ) * ((92083822927:ℝ)/2500000000000) + 2 * ((92083822927:ℝ)/2500000000000)
@@ -1036,7 +1046,7 @@ theorem win_g5 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R η εw lam₁ lamN : ℝ}
       + ∑ j ∈ Finset.range 18, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 8] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 8] (j+1) : ℝ))
         * Work.LinnikAreas.A7.Cf ((51:ℝ)/40) (((51:ℝ)/40) - (25:ℝ)/1000 * ((j:ℝ)+1)) ≤ (9968:ℝ)/10000 := by
     rw [hsum, hmx, show min ((163:ℝ)/200) ((51:ℝ)/40) = (163/200) from by norm_num]
-    linarith [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hCfL11, hCfL12, hCfL13, hCfL14, hCfL15, hCfL16, hCfL17, hCfL18, hN0, hN1, hN2, hN3, hN4, hN5, hN6, hN7, hN8, hN9, hN10, hN11, hN12, hN13, hN14, hN15, hN16, hN17, hN18, hETAB]
+    linarith only [htail, hCf_l2, hCf_l3, hCfL1, hCfL2, hCfL3, hCfL4, hCfL5, hCfL6, hCfL7, hCfL8, hCfL9, hCfL10, hCfL11, hCfL12, hCfL13, hCfL14, hCfL15, hCfL16, hCfL17, hCfL18, hETAB]
   have hΛ : (0:ℝ) < ((51:ℝ)/40) := by norm_num
   have hlamN : ((187:ℝ)/250) ≤ lamN := by
     rw [← hlam0]

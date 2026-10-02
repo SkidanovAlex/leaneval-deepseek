@@ -53,26 +53,26 @@ private lemma logx_ge_one {x : ℝ} (hx : 3 ≤ x) : (1 : ℝ) ≤ Real.log x :=
   have h3 : 0 < (3 : ℝ) := by norm_num
   have hle : Real.log (3 : ℝ) ≤ Real.log x := Real.log_le_log h3 hx
   have h1 : (1 : ℝ) < Real.log (3 : ℝ) := log_three_gt_one
-  linarith
+  linarith only [hle, h1]
 
 private lemma logx_pos {x : ℝ} (hx : 3 ≤ x) : (0 : ℝ) < Real.log x := by
-  have := logx_ge_one hx; linarith
+  have := logx_ge_one hx; linarith only [this]
 
 private lemma half_le_log_two : (1 / 2 : ℝ) ≤ Real.log 2 := by
   have h := Real.log_two_gt_d9
   norm_num at h
-  linarith
+  linarith only [h]
 
 private lemma inv_log_two_le_two : (1 / Real.log 2 : ℝ) ≤ 2 := by
   have h : 0 < Real.log 2 := by
     exact lt_of_lt_of_le (by norm_num : (0 : ℝ) < (1 / 2 : ℝ)) half_le_log_two
   rw [div_le_iff₀ h]
-  nlinarith [half_le_log_two]
+  linarith only [half_le_log_two]
 
 private lemma log_two_le_one : Real.log 2 ≤ (1 : ℝ) := by
   have h := Real.log_two_lt_d9
   norm_num at h
-  linarith
+  linarith only [h]
 
 private lemma log_two_mul {x : ℝ} (hx : 0 < x) : Real.log (2 * x) = Real.log 2 + Real.log x := by
   have h2 : (2 : ℝ) ≠ 0 := by norm_num
@@ -80,31 +80,31 @@ private lemma log_two_mul {x : ℝ} (hx : 0 < x) : Real.log (2 * x) = Real.log 2
   rw [Real.log_mul h2 hx0]
 
 private lemma log_two_mul_le_two_log {x : ℝ} (hx : 3 ≤ x) : Real.log (2 * x) ≤ 2 * Real.log x := by
-  have hx0 : 0 < x := by linarith
+  have hx0 : 0 < x := by linarith only [hx]
   calc
     Real.log (2 * x) = Real.log 2 + Real.log x := log_two_mul hx0
-    _ ≤ 1 + Real.log x := by linarith [log_two_le_one]
-    _ ≤ 2 * Real.log x := by linarith [logx_ge_one hx]
+    _ ≤ 1 + Real.log x := by linarith only [log_two_le_one]
+    _ ≤ 2 * Real.log x := by linarith only [logx_ge_one hx, hx]
 
 private lemma u_pos {x : ℝ} (hx : 3 ≤ x) : 0 < 1 / Real.log x := by
   exact one_div_pos.mpr (logx_pos hx)
 
 private lemma u_le_one {x : ℝ} (hx : 3 ≤ x) : 1 / Real.log x ≤ 1 := by
   rw [div_le_iff₀ (logx_pos hx)]
-  nlinarith [logx_ge_one hx]
+  linarith only [logx_ge_one hx, hx]
 
 private lemma c_le_two {x : ℝ} (hx : 3 ≤ x) : 1 + 1 / Real.log x ≤ 2 := by
-  linarith [u_le_one hx]
+  linarith only [u_le_one hx, hx]
 
 private lemma c_pos {x : ℝ} (hx : 3 ≤ x) : 0 < 1 + 1 / Real.log x := by
   have h : 0 < 1 / Real.log x := u_pos hx
-  linarith
+  linarith only [h]
 
 private lemma c_one_le {x : ℝ} (hx : 3 ≤ x) : (1 : ℝ) ≤ 1 + 1 / Real.log x := by
-  linarith [u_pos hx]
+  linarith only [u_pos hx, hx]
 
 private lemma x_rpow_inv_log_le_three {x : ℝ} (hx : 3 ≤ x) : x ^ (1 / Real.log x) ≤ 3 := by
-  have hx0 : 0 < x := by linarith
+  have hx0 : 0 < x := by linarith only [hx]
   have hlog_ne : Real.log x ≠ 0 := ne_of_gt (logx_pos hx)
   have hE : x ^ (1 / Real.log x) = Real.exp (1 : ℝ) := by
     rw [Real.rpow_def_of_pos hx0]
@@ -114,13 +114,13 @@ private lemma x_rpow_inv_log_le_three {x : ℝ} (hx : 3 ≤ x) : x ^ (1 / Real.l
   exact le_of_lt Real.exp_one_lt_three
 
 private lemma x_rpow_c_le_three_mul {x : ℝ} (hx : 3 ≤ x) : x ^ (1 + 1 / Real.log x) ≤ 3 * x := by
-  have hx0 : 0 < x := by linarith
+  have hx0 : 0 < x := by linarith only [hx]
   calc
     x ^ (1 + 1 / Real.log x) = x ^ (1 : ℝ) * x ^ (1 / Real.log x) := by
       rw [Real.rpow_add hx0]
     _ = x * x ^ (1 / Real.log x) := by rw [Real.rpow_one]
     _ ≤ x * 3 := by
-      exact mul_le_mul_of_nonneg_left (x_rpow_inv_log_le_three hx) (by linarith)
+      exact mul_le_mul_of_nonneg_left (x_rpow_inv_log_le_three hx) (by linarith only [hx])
     _ = 3 * x := by ring
 
 /-! ## qn = x^c · d1s and the series bounds -/
@@ -163,12 +163,12 @@ private lemma qn_summable {x : ℝ} (hx : 3 ≤ x) : Summable (qn x) := by
   have hD := d1s_summable_bound hx
   have hscaled : Summable (fun n : ℕ => x ^ (1 + 1 / Real.log x) * d1s (1 / Real.log x) n) :=
     Summable.mul_left (x ^ (1 + 1 / Real.log x)) hD.1
-  exact Summable.congr hscaled (fun n => (qn_eq (by linarith : 0 ≤ x) n).symm)
+  exact Summable.congr hscaled (fun n => (qn_eq (by linarith only [hx] : 0 ≤ x) n).symm)
 
 private lemma qn_tsum_le {x : ℝ} (hx : 3 ≤ x) :
     (∑' n : ℕ, qn x n) ≤ 300 * x * (Real.log x) ^ 2 := by
   have hD := d1s_summable_bound hx
-  have hx0 : 0 ≤ x := by linarith
+  have hx0 : 0 ≤ x := by linarith only [hx]
   calc
     (∑' n : ℕ, qn x n) = ∑' n : ℕ, x ^ (1 + 1 / Real.log x) * d1s (1 / Real.log x) n := by
       apply tsum_congr
@@ -177,7 +177,7 @@ private lemma qn_tsum_le {x : ℝ} (hx : 3 ≤ x) :
     _ = x ^ (1 + 1 / Real.log x) * (∑' n : ℕ, d1s (1 / Real.log x) n) := by
       rw [tsum_mul_left]
     _ ≤ x ^ (1 + 1 / Real.log x) * (100 * (Real.log x) ^ 2) := by
-      exact mul_le_mul_of_nonneg_left hD.2 (Real.rpow_nonneg (by linarith : 0 ≤ x) _)
+      exact mul_le_mul_of_nonneg_left hD.2 (Real.rpow_nonneg (by linarith only [hx] : 0 ≤ x) _)
     _ ≤ (3 * x) * (100 * (Real.log x) ^ 2) := by
       exact mul_le_mul_of_nonneg_right (x_rpow_c_le_three_mul hx) (by positivity)
     _ = 300 * x * (Real.log x) ^ 2 := by ring
@@ -186,20 +186,20 @@ private lemma d1s_nonneg (u : ℝ) (hu : 0 < u) (n : ℕ) : 0 ≤ d1s u n := by
   unfold d1s
   have h1 : 1 ≤ (n + 1 : ℝ) := by
     have h0 : 0 ≤ (n : ℝ) := by positivity
-    nlinarith
+    linarith only []
   have hlog : 0 ≤ Real.log (n + 1 : ℝ) := Real.log_nonneg h1
-  have hpow : 0 < (n + 1 : ℝ) ^ (1 + u) := Real.rpow_pos_of_pos (by linarith) (1 + u)
+  have hpow : 0 < (n + 1 : ℝ) ^ (1 + u) := Real.rpow_pos_of_pos (by linarith only []) (1 + u)
   positivity
 
 private lemma qn_nonneg {x : ℝ} (hx : 0 ≤ x) (n : ℕ) : 0 ≤ qn x n := by
   unfold qn
   have h1 : 1 ≤ (n + 1 : ℝ) := by
     have h0 : 0 ≤ (n : ℝ) := by positivity
-    nlinarith
+    linarith only []
   have hlog : 0 ≤ Real.log (n + 1 : ℝ) := Real.log_nonneg h1
   have hpow : 0 ≤ (x / ((n : ℝ) + 1)) ^ (1 + 1 / Real.log x) :=
     Real.rpow_nonneg (div_nonneg hx (by positivity)) (1 + 1 / Real.log x)
-  nlinarith
+  nlinarith only [hlog, hpow]
 
 
 /-! ## Pointwise facts -/
@@ -215,7 +215,7 @@ private lemma log_natCast_nonneg (n : ℕ) : 0 ≤ Real.log (n : ℝ) := by
 
 private lemma log_add_one_nonneg (n : ℕ) : 0 ≤ Real.log ((n : ℝ) + 1) := by
   have hn0 : 0 ≤ (n : ℝ) := by exact_mod_cast (Nat.zero_le n)
-  have h1 : 1 ≤ (n : ℝ) + 1 := by nlinarith
+  have h1 : 1 ≤ (n : ℝ) + 1 := by linarith only []
   exact Real.log_nonneg h1
 
 private lemma log_add_one_le (n : ℕ) : Real.log (n : ℝ) ≤ Real.log ((n : ℝ) + 1) := by
@@ -223,7 +223,7 @@ private lemma log_add_one_le (n : ℕ) : Real.log (n : ℝ) ≤ Real.log ((n : �
   · subst n
     simp
   · have hn0 : 0 < (n : ℝ) := by exact_mod_cast (Nat.pos_of_ne_zero hn)
-    have hle : (n : ℝ) ≤ (n : ℝ) + 1 := by nlinarith
+    have hle : (n : ℝ) ≤ (n : ℝ) + 1 := by linarith only []
     exact Real.log_le_log hn0 hle
 
 private lemma rp_nonneg {x : ℝ} (hx : 0 ≤ x) (n : ℕ) : 0 ≤ rp x n := by
@@ -248,7 +248,7 @@ private lemma tt_nonneg {x T : ℝ} (hT : 0 ≤ T) (hx0 : 0 ≤ x) (n : ℕ) : 0
 
 private lemma rp_le_four_pb {x : ℝ} (hx : 3 ≤ x) (n : ℕ) :
     rp x n ≤ 4 * (x / ((n : ℝ) + 1)) ^ (1 + 1 / Real.log x) := by
-  have hx0 : 0 ≤ x := by linarith
+  have hx0 : 0 ≤ x := by linarith only [hx]
   by_cases hn : n = 0
   · subst n
     unfold rp
@@ -260,21 +260,21 @@ private lemma rp_le_four_pb {x : ℝ} (hx : 3 ≤ x) (n : ℕ) :
     have hd : 0 < (((0 : ℕ) : ℝ) + 1) := by norm_num
     have hp : 0 ≤ (x / (((0 : ℕ) : ℝ) + 1)) ^ (1 + 1 / Real.log x) :=
       Real.rpow_nonneg (div_nonneg hx0 hd.le) _
-    nlinarith
+    linarith only [hp]
   · have hn1 : (1 : ℕ) ≤ n := Nat.succ_le_iff.mpr (Nat.pos_of_ne_zero hn)
     have hn0 : 0 < (n : ℝ) := by exact_mod_cast (Nat.pos_of_ne_zero hn)
     have hn0le : 0 ≤ (n : ℝ) := le_of_lt hn0
-    have hposn1 : 0 < (n : ℝ) + 1 := by nlinarith
+    have hposn1 : 0 < (n : ℝ) + 1 := by linarith only [hn0]
     have hc0 : 0 ≤ 1 + 1 / Real.log x := by
       have h : 0 < 1 / Real.log x := u_pos hx
-      nlinarith
+      linarith only [h]
     have hc2 : 1 + 1 / Real.log x ≤ 2 := c_le_two hx
     have hbase : x / (n : ℝ) ≤ 2 * (x / ((n : ℝ) + 1)) := by
       field_simp [ne_of_gt hn0, ne_of_gt hposn1]
       have hn1' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn1
       have hm : x ≤ x * (n : ℝ) := by
         simpa using (mul_le_mul_of_nonneg_left hn1' hx0)
-      nlinarith
+      linarith only [hn1']
     have hmono1 : (x / (n : ℝ)) ^ (1 + 1 / Real.log x) ≤
         (2 * (x / ((n : ℝ) + 1))) ^ (1 + 1 / Real.log x) := by
       exact Real.rpow_le_rpow (div_nonneg hx0 hn0le) hbase hc0
@@ -285,7 +285,7 @@ private lemma rp_le_four_pb {x : ℝ} (hx : 3 ≤ x) (n : ℕ) :
       have h2c : (2 : ℝ) ^ (1 + 1 / Real.log x) ≤ (2 : ℝ) ^ (2 : ℝ) := by
         exact Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) hc2
       have h22 : (2 : ℝ) ^ (2 : ℝ) = 4 := by norm_num [Real.rpow_natCast]
-      nlinarith
+      linarith only [h2c]
     calc
       (x / (n : ℝ)) ^ (1 + 1 / Real.log x)
           ≤ (2 * (x / ((n : ℝ) + 1))) ^ (1 + 1 / Real.log x) := hmono1
@@ -296,9 +296,9 @@ private lemma rp_le_four_pb {x : ℝ} (hx : 3 ≤ x) (n : ℕ) :
 private lemma lam_rp_le_four_qn {x : ℝ} (hx : 3 ≤ x) (n : ℕ) : lam n * rp x n ≤ 4 * qn x n := by
   calc
     lam n * rp x n ≤ Real.log (n : ℝ) * rp x n := by
-      exact mul_le_mul_of_nonneg_right (lam_le_log n) (rp_nonneg (by linarith : 0 ≤ x) n)
+      exact mul_le_mul_of_nonneg_right (lam_le_log n) (rp_nonneg (by linarith only [hx] : 0 ≤ x) n)
     _ ≤ Real.log ((n : ℝ) + 1) * rp x n := by
-      exact mul_le_mul_of_nonneg_right (log_add_one_le n) (rp_nonneg (by linarith : 0 ≤ x) n)
+      exact mul_le_mul_of_nonneg_right (log_add_one_le n) (rp_nonneg (by linarith only [hx] : 0 ≤ x) n)
     _ ≤ Real.log ((n : ℝ) + 1) * (4 * (x / ((n : ℝ) + 1)) ^ (1 + 1 / Real.log x)) := by
       exact mul_le_mul_of_nonneg_left (rp_le_four_pb hx n) (log_add_one_nonneg n)
     _ = 4 * qn x n := by
@@ -309,7 +309,7 @@ private lemma tt_le_four_qn {x T : ℝ} (hx : 3 ≤ x) (n : ℕ) : tt x T n ≤ 
   calc
     tt x T n = lam n * rp x n * kern x T n := rfl
     _ ≤ lam n * rp x n * 1 := by
-      exact mul_le_mul_of_nonneg_left (kern_le_one x T n) (mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith : 0 ≤ x) n))
+      exact mul_le_mul_of_nonneg_left (kern_le_one x T n) (mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith only [hx] : 0 ≤ x) n))
     _ = lam n * rp x n := by ring
     _ ≤ 4 * qn x n := lam_rp_le_four_qn hx n
 
@@ -327,20 +327,20 @@ private lemma kern_le_two_div_T {x T : ℝ} (hT : 0 < T) (n : ℕ)
     exact le_trans (min_le_right _ _) h1
   have h3 : 1 / (T * Real.log 2) ≤ 2 / T := by
     field_simp [hT.ne', ne_of_gt hl0]
-    have hm : (1 : ℝ) ≤ 2 * Real.log 2 := by nlinarith [half_le_log_two]
+    have hm : (1 : ℝ) ≤ 2 * Real.log 2 := by linarith only [half_le_log_two]
     have hm2 : T ≤ 2 * T * Real.log 2 := by
       calc
         T = T * 1 := by ring
         _ ≤ T * (2 * Real.log 2) := mul_le_mul_of_nonneg_left hm hT.le
         _ = 2 * T * Real.log 2 := by ring
-    nlinarith
+    linarith only [hm]
   exact le_trans h2 h3
 
 private lemma tt_le_frac_T_mul_qn {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) (n : ℕ)
     (hlog : Real.log 2 ≤ |Real.log (x / (n : ℝ))|) : tt x T n ≤ (8 / T) * qn x n := by
-  have hTpos : 0 < T := by linarith
+  have hTpos : 0 < T := by linarith only [hT]
   have hk : kern x T n ≤ 2 / T := kern_le_two_div_T hTpos n hlog
-  have hA : 0 ≤ lam n * rp x n := mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith : 0 ≤ x) n)
+  have hA : 0 ≤ lam n * rp x n := mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith only [hx] : 0 ≤ x) n)
   calc
     tt x T n = (lam n * rp x n) * kern x T n := by rfl
     _ ≤ (lam n * rp x n) * (2 / T) := by
@@ -394,7 +394,7 @@ private lemma of_mid_mem_two_mul_le {x : ℝ} (hx : 0 ≤ x) {n : ℕ}
 private lemma log_ge_one_sub_inv {t : ℝ} (ht : 0 < t) : 1 - t⁻¹ ≤ Real.log t := by
   have hlog := Real.log_le_sub_one_of_pos (x := t⁻¹) (by positivity : 0 < t⁻¹)
   rw [Real.log_inv t] at hlog
-  linarith
+  linarith only [hlog]
 
 -- n ≤ x: (x−n)/(2x) ≤ log(x/n)
 private lemma log_ge_sub_div_two {x n : ℝ} (hx : 0 < x) (hn : 0 < n) (hnx : n ≤ x) :
@@ -412,12 +412,12 @@ private lemma log_ge_sub_div_two {x n : ℝ} (hx : 0 < x) (hn : 0 < n) (hnx : n 
     field_simp [hx.ne']
   have hmain : (x - n) / x ≤ Real.log (x / n) := by
     rw [hE, hrew]
-    linarith
+    linarith only [hlogs]
   have hsub : 0 ≤ x - n := sub_nonneg.mpr hnx
   have hscale : (x - n) / (2 * x) ≤ (x - n) / x := by
     have h2xn : (2 * x : ℝ) ≠ 0 := by positivity
     field_simp [hx.ne', h2xn]
-    nlinarith [hsub]
+    linarith only [hsub, hnx]
   exact le_trans hscale hmain
 
 -- x < n ≤ 2x: (n−x)/(2x) ≤ log(n/x)
@@ -436,7 +436,7 @@ private lemma log_ge_dist_div_two {x n : ℝ} (hx : 0 < x) (hxn : x < n) (hn2 : 
     have h2xn : (2 * x : ℝ) ≠ 0 := by positivity
     have hnn : n ≠ 0 := ne_of_gt hn
     field_simp [h2xn, hnn]
-    nlinarith [hsub, hn2]
+    nlinarith only [hsub, hn2, hxn]
   exact le_trans hscale hmain
 
 /-- For `1 ≤ n ≤ 2x`, `|log (x/n)| ≥ |x − n|/(2x)`. -/
@@ -484,7 +484,7 @@ private lemma abs_log_ge_log_two_of_le_half {x : ℝ} (hx0 : 0 < x) {n : ℕ}
   have hnpos : 0 < (n : ℝ) := lt_of_lt_of_le (by norm_num) hn1
   have hbig : 2 ≤ x / (n : ℝ) := by
     rw [le_div_iff₀ hnpos]
-    nlinarith
+    linarith only [hn]
   have hlog : Real.log 2 ≤ Real.log (x / (n : ℝ)) := Real.log_le_log (by norm_num : (0 : ℝ) < 2) hbig
   have hnon : 0 ≤ Real.log (x / (n : ℝ)) := le_trans (le_of_lt log_two_pos) hlog
   rw [abs_of_nonneg hnon]
@@ -497,7 +497,7 @@ private lemma abs_log_ge_log_two_of_two_le {x : ℝ} (hx0 : 0 < x) {n : ℕ}
     exact lt_of_lt_of_le h hn
   have hbig : 2 ≤ (n : ℝ) / x := by
     rw [le_div_iff₀ hx0]
-    nlinarith
+    linarith only [hn]
   have hlog : Real.log 2 ≤ Real.log ((n : ℝ) / x) := Real.log_le_log (by norm_num : (0 : ℝ) < 2) hbig
   have hnon : 0 ≤ Real.log ((n : ℝ) / x) := le_trans (le_of_lt log_two_pos) hlog
   have hx0' : x ≠ 0 := ne_of_gt hx0
@@ -547,7 +547,7 @@ private lemma kern_le_dist_kern {x T : ℝ} {n : ℕ} (hx0 : 0 < x) (hT : 0 < T)
         calc
           T * |x - (n : ℝ)| ≤ T * (|Real.log (x / (n : ℝ))| * (2 * x)) := hmul
           _ = (2 * x) * (T * |Real.log (x / (n : ℝ))|) := by ring
-      nlinarith
+      linarith only [hsc]
     have hin2 : min (1 : ℝ) (1 / (T * |Real.log (x / (n : ℝ))|)) ≤
         min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) := by
       exact min_le_min le_rfl hin1
@@ -558,7 +558,7 @@ private lemma kern_le_dist_kern {x T : ℝ} {n : ℕ} (hx0 : 0 < x) (hT : 0 < T)
 private lemma log_nat_le_two_logx {x : ℝ} {n : ℕ} (hx : 3 ≤ x) (hn1 : (1 : ℝ) ≤ (n : ℝ))
     (hn2 : (n : ℝ) ≤ 2 * x) : Real.log (n : ℝ) ≤ 2 * Real.log x := by
   have hnpos : 0 < (n : ℝ) := lt_of_lt_of_le (by norm_num) hn1
-  have hxpos : 0 < x := by linarith
+  have hxpos : 0 < x := by linarith only [hx]
   have h2xpos : 0 < 2 * x := by positivity
   have h1 : Real.log (n : ℝ) ≤ Real.log (2 * x) := Real.log_le_log hnpos hn2
   have h2 : Real.log (2 * x) ≤ 2 * Real.log x := log_two_mul_le_two_log hx
@@ -567,36 +567,36 @@ private lemma log_nat_le_two_logx {x : ℝ} {n : ℕ} (hx : 3 ≤ x) (hn1 : (1 :
 private lemma rp_le_four_of_gt_half {x : ℝ} {n : ℕ} (hx : 3 ≤ x) (hn : x / 2 < (n : ℝ)) :
     rp x n ≤ 4 := by
   have hnpos : 0 < (n : ℝ) := by
-    have h1 : 0 < x / 2 := by linarith
+    have h1 : 0 < x / 2 := by linarith only [hx]
     exact lt_trans h1 hn
-  have hbase_ge : 0 ≤ x / (n : ℝ) := div_nonneg (by linarith : 0 ≤ x) hnpos.le
+  have hbase_ge : 0 ≤ x / (n : ℝ) := div_nonneg (by linarith only [hx] : 0 ≤ x) hnpos.le
   have hbase : x / (n : ℝ) ≤ 2 := by
     rw [div_le_iff₀ hnpos]
-    nlinarith
+    linarith only [hn]
   have hc0 : 0 ≤ 1 + 1 / Real.log x := by
     have h : 0 < 1 / Real.log x := u_pos hx
-    nlinarith
+    linarith only [h]
   have hpow : (x / (n : ℝ)) ^ (1 + 1 / Real.log x) ≤ (2 : ℝ) ^ (1 + 1 / Real.log x) :=
     Real.rpow_le_rpow hbase_ge hbase hc0
   have h2 : (2 : ℝ) ^ (1 + 1 / Real.log x) ≤ 4 := by
     have h2c : (2 : ℝ) ^ (1 + 1 / Real.log x) ≤ (2 : ℝ) ^ (2 : ℝ) := by
       exact Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) (c_le_two hx)
     have h22 : (2 : ℝ) ^ (2 : ℝ) = 4 := by norm_num [Real.rpow_natCast]
-    nlinarith
+    linarith only [h2c]
   unfold rp
   exact le_trans hpow h2
 
 private lemma lam_rp_le_eight_log_of_mid {x : ℝ} {n : ℕ} (hx : 3 ≤ x) (hn1 : (1 : ℝ) ≤ (n : ℝ))
     (hnlo : x / 2 < (n : ℝ)) (hn2 : (n : ℝ) ≤ 2 * x) : lam n * rp x n ≤ 8 * Real.log x := by
   have hL : 0 ≤ Real.log (n : ℝ) := log_natCast_nonneg n
-  have hrp : 0 ≤ rp x n := rp_nonneg (by linarith : 0 ≤ x) n
+  have hrp : 0 ≤ rp x n := rp_nonneg (by linarith only [hx] : 0 ≤ x) n
   calc
     lam n * rp x n ≤ Real.log (n : ℝ) * rp x n := by
       exact mul_le_mul_of_nonneg_right (lam_le_log n) hrp
     _ ≤ (2 * Real.log x) * 4 := by
       have hlogle : Real.log (n : ℝ) ≤ 2 * Real.log x := log_nat_le_two_logx hx hn1 hn2
       have hrple : rp x n ≤ 4 := rp_le_four_of_gt_half hx hnlo
-      have hnonneg : 0 ≤ 2 * Real.log x := by nlinarith [logx_ge_one hx]
+      have hnonneg : 0 ≤ 2 * Real.log x := by linarith only [logx_ge_one hx, hL, hlogle]
       exact mul_le_mul hlogle hrple hrp hnonneg
     _ = 8 * Real.log x := by ring
 
@@ -610,13 +610,13 @@ private lemma dk_nonneg {x T : ℝ} {n : ℕ} (hx : 0 ≤ x) (hT : 0 ≤ T) :
 private lemma tt_le_eight_log_dist {x T : ℝ} {n : ℕ} (hx : 3 ≤ x) (hT : 2 ≤ T)
     (hn1 : (1 : ℝ) ≤ (n : ℝ)) (hnlo : x / 2 < (n : ℝ)) (hn2 : (n : ℝ) ≤ 2 * x) :
     tt x T n ≤ 8 * Real.log x * min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) := by
-  have hxpos : 0 < x := by linarith
-  have hTpos : 0 < T := by linarith
+  have hxpos : 0 < x := by linarith only [hx]
+  have hTpos : 0 < T := by linarith only [hT]
   have hdk' : kern x T n ≤ min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) :=
     kern_le_dist_kern hxpos hTpos hn1 hn2
-  have hA : 0 ≤ lam n * rp x n := mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith : 0 ≤ x) n)
+  have hA : 0 ≤ lam n * rp x n := mul_nonneg (lam_nonneg n) (rp_nonneg (by linarith only [hx] : 0 ≤ x) n)
   have hlr : lam n * rp x n ≤ 8 * Real.log x := lam_rp_le_eight_log_of_mid hx hn1 hnlo hn2
-  have hdk : 0 ≤ min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) := dk_nonneg (by linarith : 0 ≤ x) (by linarith : 0 ≤ T)
+  have hdk : 0 ≤ min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) := dk_nonneg (by linarith only [hx] : 0 ≤ x) (by linarith only [hT] : 0 ≤ T)
   calc
     tt x T n = (lam n * rp x n) * kern x T n := by rfl
     _ ≤ (lam n * rp x n) * min (1 : ℝ) ((2 * x) / (T * |x - (n : ℝ)|)) := by
@@ -648,21 +648,21 @@ private lemma dk_ge_zero {x T : ℝ} {n : ℕ} (hx : 0 ≤ x) (hT : 0 ≤ T) : 0
 private lemma A_ge_one {x : ℝ} (hx : 3 ≤ x) : (1 : ℕ) ≤ Nat.floor (x / 2) := by
   have h : ((1 : ℕ) : ℝ) ≤ x / 2 := by
     norm_num
-    linarith
+    linarith only [hx]
   exact Nat.le_floor h
 
 private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
     Summable (tt x T) ∧
       (∑' n : ℕ, tt x T n) ≤ 8192 * (x * (Real.log x) ^ 2 / T + Real.log x) := by
-  have hx0 : 0 ≤ x := by linarith
-  have hxpos : 0 < x := by linarith
-  have hTpos : 0 < T := by linarith
-  have hT0 : 0 ≤ T := by linarith
-  have hL0 : 0 ≤ Real.log x := by linarith [logx_ge_one hx]
+  have hx0 : 0 ≤ x := by linarith only [hx]
+  have hxpos : 0 < x := by linarith only [hx]
+  have hTpos : 0 < T := by linarith only [hT]
+  have hT0 : 0 ≤ T := by linarith only [hT]
+  have hL0 : 0 ≤ Real.log x := by linarith only [logx_ge_one hx, hx]
   let A : ℕ := Nat.floor (x / 2)
   let B : ℕ := Nat.floor (2 * x)
   have hAB : A ≤ B := by
-    have h : x / 2 ≤ 2 * x := by nlinarith
+    have h : x / 2 ≤ 2 * x := by linarith only [hx]
     exact Nat.floor_mono h
   have hqsum : Summable (qn x) := qn_summable hx
   have hqtsum : (∑' n : ℕ, qn x n) ≤ 300 * x * (Real.log x) ^ 2 := qn_tsum_le hx
@@ -698,7 +698,7 @@ private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
     intro n
     by_cases h : A < n ∧ n ≤ B
     · simp [F2, h]
-      have h8 : 0 ≤ 8 * Real.log x := by nlinarith [hL0]
+      have h8 : 0 ≤ 8 * Real.log x := by linarith only [hL0]
       exact mul_nonneg h8 (dk_ge_zero hx0 hT0)
     · simp [F2, h]
   -- pointwise tt ≤ F1 + F2
@@ -723,7 +723,7 @@ private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
       calc
         tt x T n ≤ 8 * Real.log x * dk x T n := h1
         _ = F2 n := h2
-        _ ≤ F1 n + F2 n := by linarith [h3]
+        _ ≤ F1 n + F2 n := by linarith only [h3]
     · have hFar : n ≤ A ∨ B < n := by
         by_cases h1 : n ≤ A
         · exact Or.inl h1
@@ -794,7 +794,7 @@ private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
       _ ≤ 8 * Real.log x * (100 * (x * Real.log x / T) + 100) := by
         have hm : (∑ n ∈ Finset.Icc (A + 1) B, dk x T n) ≤ 100 * (x * Real.log x / T) + 100 := by
           simpa [dk, A, B] using middleBoundLoc x T hx hT
-        exact mul_le_mul_of_nonneg_left hm (by nlinarith [logx_pos hx])
+        exact mul_le_mul_of_nonneg_left hm (by linarith only [logx_pos hx, hL0])
   have hF2sum : (∑' n : ℕ, F2 n) ≤ 8 * Real.log x * (100 * (x * Real.log x / T) + 100) := by
     rw [hF2eq]
     exact hF2sum'
@@ -814,13 +814,13 @@ private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
       have hT0 : T ≠ 0 := ne_of_gt hTpos
       field_simp [hT0]
       ring_nf
-      nlinarith
+      linarith only []
     have h2 : 8 * Real.log x * (100 * (x * Real.log x / T) + 100)
         ≤ 800 * (x * (Real.log x) ^ 2 / T) + 800 * Real.log x := by
       have hT0 : T ≠ 0 := ne_of_gt hTpos
       field_simp [hT0]
       ring_nf
-      nlinarith
+      linarith only []
     have hfin1 : (8 / T) * (300 * x * (Real.log x) ^ 2) + 8 * Real.log x * (100 * (x * Real.log x / T) + 100)
         ≤ 3200 * (x * (Real.log x) ^ 2 / T) + 800 * Real.log x := by
       calc
@@ -837,7 +837,7 @@ private lemma main_bound {x T : ℝ} (hx : 3 ≤ x) (hT : 2 ≤ T) :
         exact mul_le_mul_of_nonneg_right (by norm_num : (800 : ℝ) ≤ 8192) hL0
       have hc3 : 8192 * (x * (Real.log x) ^ 2 / T + Real.log x) =
           8192 * (x * (Real.log x) ^ 2 / T) + 8192 * Real.log x := by ring
-      nlinarith [hc1, hc2, hc3]
+      linarith only [hc1, hc2, hc3, hL0, hpos1]
     exact le_trans (le_trans htotal hfin1) hfin2
 
 

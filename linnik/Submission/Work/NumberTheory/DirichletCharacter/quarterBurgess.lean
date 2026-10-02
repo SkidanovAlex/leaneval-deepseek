@@ -51,14 +51,14 @@ theorem abel_exp_log {a : ℕ → ℂ} {A : ℝ} (hA : 0 ≤ A)
       _ = A * (M:ℝ)^(θ - s.re) := by
           rw [mul_assoc, ← Real.rpow_add hMpos]; simp only [sub_eq_add_neg]
       _ ≤ A * (Q:ℝ)^(θ - s.re) :=
-          mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_nonpos hQpos hMQ (by linarith)) hA
+          mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_nonpos hQpos hMQ (by linarith only [hσθ])) hA
   -- term 2
   have hT2 : ‖(∑ m ∈ Finset.Icc 1 (Q+1-1), a m) * w (Q+1)‖
       ≤ A * (Q:ℝ)^(θ - s.re) := by
     rw [show (Q+1-1 : ℕ) = Q by omega, norm_mul, hnw (Q+1) (by omega)]
     have h1 := hPre Q le_rfl (by omega)
     have hstep : ((Q+1:ℕ):ℝ)^(-s.re) ≤ (Q:ℝ)^(-s.re) :=
-      Real.rpow_le_rpow_of_nonpos hQpos (by exact_mod_cast (by omega : Q ≤ Q+1)) (by linarith)
+      Real.rpow_le_rpow_of_nonpos hQpos (by exact_mod_cast (by omega : Q ≤ Q+1)) (by linarith only [hσ0])
     calc ‖∑ m ∈ Finset.Icc 1 Q, a m‖ * ((Q+1:ℕ):ℝ)^(-s.re)
         ≤ (A * (Q:ℝ)^(θ)) * ((Q+1:ℕ):ℝ)^(-s.re) :=
           mul_le_mul_of_nonneg_right h1 (Real.rpow_nonneg (by positivity) _)
@@ -108,7 +108,7 @@ theorem abel_exp_log {a : ℕ → ℂ} {A : ℝ} (hA : 0 ≤ A)
             rw [Finset.mem_Ioc] at hn
             have hnpos : (0:ℝ) < (n:ℝ) := by exact_mod_cast (by omega : 0 < n)
             have hle : (n:ℝ)^(θ - s.re) ≤ (Q:ℝ)^(θ - s.re) :=
-              Real.rpow_le_rpow_of_nonpos hQpos (by exact_mod_cast (by omega : Q ≤ n)) (by linarith)
+              Real.rpow_le_rpow_of_nonpos hQpos (by exact_mod_cast (by omega : Q ≤ n)) (by linarith only [hσθ])
             rw [show (n:ℝ)^(θ - s.re - 1) = (n:ℝ)^(θ - s.re) * (n:ℝ)⁻¹ by
               rw [← Real.rpow_neg_one]; rw [← Real.rpow_add hnpos]; ring_nf]
             exact mul_le_mul_of_nonneg_right hle (by positivity)
@@ -160,21 +160,21 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
           ‖DirichletCharacter.LFunction χ ((σ:ℂ)+(t:ℂ)*Complex.I)‖
             ≤ C * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ) * (1 + |t|) := by
   have hkR : (3:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk
-  have hkpos : (0:ℝ) < (k:ℝ) := by linarith
+  have hkpos : (0:ℝ) < (k:ℝ) := by linarith only [hkR]
   have hthnn : (0:ℝ) ≤ 1 - 1/(k:ℝ) := by
     rw [sub_nonneg, div_le_iff₀ (by positivity : (0:ℝ) < (k:ℝ))]
-    linarith [hkR]
+    linarith only [hkR]
   obtain ⟨Clog, hClogpos, hClog⟩ :=
     Commons.Analysis.Real.log_pow_le_mul_rpow (show (0:ℝ) < ε/2 by positivity) 1
   obtain ⟨Clog2, hClog2pos, hClog2⟩ :=
     Commons.Analysis.Real.log_pow_le_mul_rpow (show (0:ℝ) < ε/8 by positivity) 1
   obtain ⟨CPV, hCPVpos, hCPV⟩ := Commons.NumberTheory.DirichletCharacter.polya_vinogradov
-  have hC1pos : (0:ℝ) < 1 + Clog := by linarith
-  have hC2pos : (0:ℝ) < 1 + Clog2 := by linarith
+  have hC1pos : (0:ℝ) < 1 + Clog := by linarith only [hClogpos]
+  have hC2pos : (0:ℝ) < 1 + Clog2 := by linarith only [hClog2pos]
   have hCpos : (0:ℝ) < 3 * (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2)) + 1 := by
-    have h1 : (0:ℝ) < 1 + Clog := by linarith
-    have h2 : (0:ℝ) < 1 + Clog2 := by linarith
-    have h3 : (0:ℝ) < CB + 1 := by linarith
+    have h1 : (0:ℝ) < 1 + Clog := by linarith only [hClogpos]
+    have h2 : (0:ℝ) < 1 + Clog2 := by linarith only [hClog2pos]
+    have h3 : (0:ℝ) < CB + 1 := by linarith only [hCB]
     positivity
   refine ⟨3 * (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2)) + 1, hCpos, ?_⟩
   intro q _inst χ hprim hχ _hord hB σ t hσ1 hσle
@@ -187,10 +187,10 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
   have hθpos : 0 < θ := by rw [hθdef]; positivity
   have hθle : θ ≤ 1/2 := by
     rw [hθdef, div_le_iff₀ (by positivity : (0:ℝ) < 4*(k:ℝ))]
-    linarith [hkR]
-  have hθlt1 : θ ≤ 1 := by linarith
+    linarith only [hkR]
+  have hθlt1 : θ ≤ 1 := by linarith only [hθpos, hθle]
   set μ : ℝ := 1 - σ with hμdef
-  have hμ0 : 0 ≤ μ := by rw [hμdef]; linarith
+  have hμ0 : 0 ≤ μ := by rw [hμdef]; linarith only [hσle]
   have h1k : 1/(k:ℝ) ≤ 1/3 := one_div_le_one_div_of_le (by norm_num : (0:ℝ) < 3) hkR
   set Q : ℕ := Nat.ceil ((q:ℝ)^θ) with hQdef
   have hqR1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast (by omega : 1 ≤ q)
@@ -207,7 +207,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
     rwa [Real.rpow_one] at this
   have hQle : (Q:ℝ) ≤ 2*(q:ℝ)^θ := by
     have h := Nat.ceil_lt_add_one (le_of_lt (Real.rpow_pos_of_pos hqRpos θ))
-    linarith [h, hqpow1]
+    linarith only [h, hqpow1]
   -- prefix bound
   set A : ℝ := (CB+1) * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) with hAdef
   have hApos : 0 < A := by rw [hAdef]; positivity
@@ -231,7 +231,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       have hfin : 1 + CB * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) * (m:ℝ)^((1 - 1/((k:ℝ)))) ≤ A * (m:ℝ)^((1 - 1/((k:ℝ)))) := by
         rw [hAdef]
         have hqnn : (0:ℝ) ≤ (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) := Real.rpow_nonneg (le_of_lt hqRpos) _
-        nlinarith [hA1, hqnn, Real.rpow_nonneg (by positivity : (0:ℝ) ≤ (m:ℝ)) ((1 - 1/((k:ℝ)))), hCB.le]
+        nlinarith only [hA1, hqnn, Real.rpow_nonneg (by positivity : (0:ℝ) ≤ (m:ℝ)) ((1 - 1/((k:ℝ)))), hCB.le]
       calc ‖χ ((1:ℕ):ZMod q) + ∑ n ∈ Finset.Ioc 1 m, χ n‖
           ≤ 1 + CB * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) * ((m-1:ℕ):ℝ)^((1 - 1/((k:ℝ)))) := by
             refine (norm_add_le _ _).trans ?_
@@ -240,7 +240,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
             have hHm : ((m-1:ℕ):ℝ)^((1 - 1/((k:ℝ)))) ≤ (m:ℝ)^((1 - 1/((k:ℝ)))) :=
               Real.rpow_le_rpow (by positivity) (by exact_mod_cast (by omega : m-1 ≤ m)) hthnn
             have hh := mul_le_mul_of_nonneg_left hHm (by positivity : (0:ℝ) ≤ CB * (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2))
-            linarith [hh]
+            linarith only [hh]
         _ ≤ A * (m:ℝ)^((1 - 1/((k:ℝ)))) := hfin
     · have hm1' : m = 1 := by omega
       subst hm1'
@@ -251,25 +251,25 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       rw [show (((1:ℕ):ℝ))^((1 - 1/((k:ℝ)))) = 1 by simp]
       rw [mul_one, hAdef]
       have h1 : (1:ℝ) ≤ (q:ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) := Real.one_le_rpow hqR1 (by positivity)
-      have h2 : (1:ℝ) ≤ CB + 1 := by linarith
-      nlinarith [h1, h2, mul_le_mul h1 (le_refl (1:ℝ)) (by norm_num) (Real.rpow_nonneg (le_of_lt hqRpos) _)]
+      have h2 : (1:ℝ) ≤ CB + 1 := by linarith only [hCB]
+      nlinarith only [h1, h2, mul_le_mul h1 (le_refl (1:ℝ)) (by norm_num) (Real.rpow_nonneg (le_of_lt hqRpos) _), hCB, hθpos, hθle]
   -- s
   set s : ℂ := (σ:ℂ) + (t:ℂ)*Complex.I with hsdef
   have hsre : s.re = σ := by simp [hsdef]
-  have hs0 : 0 < s.re := by rw [hsre]; linarith
+  have hs0 : 0 < s.re := by rw [hsre]; linarith only [hσ1, hθpos, hθle, h1k]
   have hsnorm : ‖s‖ ≤ 2 + |t| := by
     have h := Complex.norm_le_abs_re_add_abs_im s
     rw [hsre] at h
     have h1 : |s.im| = |t| := by simp [hsdef]
-    have h2 : |σ| ≤ 1 := by rw [abs_of_nonneg (by linarith)]; exact hσle
-    rw [h1] at h; linarith
+    have h2 : |σ| ≤ 1 := by rw [abs_of_nonneg (by linarith only [hσ1, hθpos, hθle, h1k])]; exact hσle
+    rw [h1] at h; linarith only [hθpos, hθle, h, h2]
   -- head
   have hQpow : (Q:ℝ)^μ ≤ 2*(q:ℝ)^(θ*μ) := by
     have h1 : (Q:ℝ)^μ ≤ (2*(q:ℝ)^θ)^μ := Real.rpow_le_rpow (by positivity) hQle hμ0
     have h2 : (2*(q:ℝ)^θ)^μ = 2^μ * (q:ℝ)^(θ*μ) := by
       rw [Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_mul (le_of_lt hqRpos)]
     have h3 : (2:ℝ)^μ ≤ 2 := by
-      have := Real.rpow_le_rpow_of_exponent_le (show (1:ℝ) ≤ 2 by norm_num) (show μ ≤ 1 by linarith)
+      have := Real.rpow_le_rpow_of_exponent_le (show (1:ℝ) ≤ 2 by norm_num) (show μ ≤ 1 by linarith only [hσ1, hθpos, hθle, h1k])
       simpa using this
     rw [h2] at h1
     exact h1.trans (mul_le_mul_of_nonneg_right h3 (Real.rpow_nonneg (by positivity) _))
@@ -280,7 +280,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
     have h3 : (1:ℝ) ≤ (q:ℝ)^(ε/2) := Real.one_le_rpow hqR1 (by positivity)
     have h4 : Real.log (Q:ℝ) ≤ Clog * (q:ℝ)^(ε/2) :=
       le_trans h1 (mul_le_mul_of_nonneg_left h2 (le_of_lt hClogpos))
-    nlinarith [h3, h4]
+    nlinarith only [h3, h4]
   have hhead : ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) ≤ (3+2*Clog) * (q:ℝ)^(θ*μ + ε/2) := by
     have h1 := sum_Icc_one_rpow_le hQ1 hμ0
     have hQμ1 : (1:ℝ) ≤ (Q:ℝ)^μ := Real.one_le_rpow (by exact_mod_cast hQ1) hμ0
@@ -298,19 +298,19 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       _ ≤ (3+2*Clog) * (q:ℝ)^(θ*μ + ε/2) := by
           have hqnn : (0:ℝ) ≤ (q:ℝ)^(θ*μ+ε/2) := Real.rpow_nonneg (le_of_lt hqRpos) _
           have hClognn : (0:ℝ) ≤ Clog := le_of_lt hClogpos
-          nlinarith [hqexp, hqnn, hClognn, mul_le_mul_of_nonneg_left hqexp hClognn]
+          nlinarith only [hqexp, hqnn, hClognn, mul_le_mul_of_nonneg_left hqexp hClognn]
   -- Chead
   have hhead2 : ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) ≤ 3*(1+Clog) * (q:ℝ)^(θ*μ + ε/2) := by
     refine hhead.trans ?_
     apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg (le_of_lt hqRpos) _)
-    linarith [hClogpos]
+    linarith only [hClogpos]
   have hqn1 : (0:ℝ) ≤ (q:ℝ) := le_of_lt hqRpos
   have hσeq : σ = 1 - μ := by rw [hμdef]; ring
   have hslack1 : θ*μ + ε/2 ≤ μ*(1+1/(k:ℝ))/4 + ε - δ := by
     have hkey : θ*μ = μ*(1+1/(k:ℝ))/4 := by
       rw [hθdef]; field_simp; try ring
     rw [hkey]
-    linarith [hδε, hδ, hε]
+    linarith only [hδε, hδ, hε]
   have hhead3 : ‖∑ n ∈ Finset.Icc 1 Q, χ n * (n:ℂ)^(-s)‖
       ≤ (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
     have h1 : ‖∑ n ∈ Finset.Icc 1 Q, χ n * (n:ℂ)^(-s)‖ ≤ ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) := by
@@ -322,16 +322,16 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       Real.rpow_le_rpow_of_exponent_le hqR1 hslack1
     have h2 : (3+2*Clog) * (q:ℝ)^(θ*μ+ε/2) ≤ (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4+ε-δ) := by
       have hx : (0:ℝ) ≤ (q:ℝ)^(θ*μ+ε/2) := Real.rpow_nonneg hqn1 _
-      have hcoef : (3+2*Clog) ≤ 3*(1+Clog) := by linarith [hClogpos]
-      have hrhs : (0:ℝ) ≤ 3*(1+Clog) := by linarith [hClogpos]
+      have hcoef : (3+2*Clog) ≤ 3*(1+Clog) := by linarith only [hClogpos]
+      have hrhs : (0:ℝ) ≤ 3*(1+Clog) := by linarith only [hClogpos, hθpos, hθle]
       exact mul_le_mul hcoef hqle1 hx hrhs
-    have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith
+    have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith only [this]
     calc ‖∑ n ∈ Finset.Icc 1 Q, χ n * (n:ℂ)^(-s)‖ ≤ ∑ n ∈ Finset.Icc 1 Q, (n:ℝ)^(-σ) := h1
       _ ≤ (3+2*Clog) * (q:ℝ)^(θ*μ + ε/2) := hhead
       _ ≤ (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) := h2
       _ ≤ (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
           rw [mul_assoc]; exact le_mul_of_one_le_right (by positivity) ht1
-  have hσ23 : (1 - 1/((k:ℝ))) ≤ s.re := by rw [hsre]; linarith [hσ1, hkR]
+  have hσ23 : (1 - 1/((k:ℝ))) ≤ s.re := by rw [hsre]; linarith only [hσ1, hkR]
   have hδ' : (0:ℝ) < (ε/8) := by positivity
   -- middle bound
   have hmid : ∀ R : ℕ, Q+1 ≤ R → R ≤ q →
@@ -340,13 +340,13 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
     intro R hQR hRq
     have hPreR : ∀ m : ℕ, Q ≤ m → m ≤ R → ‖∑ k ∈ Finset.Icc 1 m, χ k‖ ≤ A * (m:ℝ)^((1 - 1/((k:ℝ)))) :=
       fun m hm1 hm2 => hPre m (by omega) (by omega)
-    have hh := abel_exp_log (le_of_lt hApos) (1 - 1/((k:ℝ))) (by linarith [hkR]) hs0
+    have hh := abel_exp_log (le_of_lt hApos) (1 - 1/((k:ℝ))) (by linarith only [hkR, hθpos, hθle, h1k]) hs0
       (by rw [hsre]; exact hσ1) hQ1 hQR
       (a := fun n => χ n) hPreR
     have hQpow : (Q:ℝ)^((1 - 1/((k:ℝ))) - s.re) ≤ (q:ℝ)^(θ*((1 - 1/((k:ℝ))) - σ)) := by
       rw [hsre]
       have hle := Real.rpow_le_rpow_of_nonpos (Real.rpow_pos_of_pos hqRpos θ) hQge
-        (show (1 - 1/((k:ℝ))) - σ ≤ 0 by linarith [hσ23])
+        (show (1 - 1/((k:ℝ))) - σ ≤ 0 by linarith only [hσ23, hσ1])
       rwa [← Real.rpow_mul hqn1] at hle
     have hlogR : (1:ℝ) + Real.log (R:ℝ) ≤ (1+Clog2) * (q:ℝ)^((ε/8)) := by
       have h1 : Real.log (R:ℝ) ≤ Clog2 * (R:ℝ)^((ε/8)) := by
@@ -356,24 +356,24 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       have h3 : (1:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.one_le_rpow hqR1 (le_of_lt hδ')
       have h4 : Real.log (R:ℝ) ≤ Clog2 * (q:ℝ)^((ε/8)) :=
         h1.trans (mul_le_mul_of_nonneg_left h2 (le_of_lt hClog2pos))
-      nlinarith [h3, h4, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8))]
+      nlinarith only [h3, h4, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8))]
     have hY1 : (1:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by
       have h3 : (1:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.one_le_rpow hqR1 (le_of_lt hδ')
-      nlinarith [h3, hClog2pos]
+      nlinarith only [h3, hClog2pos, hθpos, hθle]
     have hY0 : (0:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by positivity
-    have hsn' : ‖s‖ ≤ 2*(1+|t|) := by linarith [hsnorm, abs_nonneg t]
+    have hsn' : ‖s‖ ≤ 2*(1+|t|) := by linarith only [hsnorm, abs_nonneg t]
     have hYbound : (2:ℝ) + ‖s‖*((1+Clog2)*(q:ℝ)^((ε/8)))
         ≤ 4*(1+Clog2)*(q:ℝ)^((ε/8))*(1+|t|) := by
       have h4 : ‖s‖*((1+Clog2)*(q:ℝ)^((ε/8))) ≤ 2*(1+|t|)*((1+Clog2)*(q:ℝ)^((ε/8))) :=
         mul_le_mul_of_nonneg_right hsn' hY0
-      have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith
+      have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith only [this]
       have hY2 : (0:ℝ) ≤ (q:ℝ)^((ε/8)) := Real.rpow_nonneg hqn1 _
-      nlinarith [h4, hY1, hY0, ht1, hsn', hClog2pos, hY2, le_of_lt hδ']
+      nlinarith only [h4, hY1, hY0, ht1, hsn', hClog2pos, hY2, le_of_lt hδ', hθpos, hθle]
     have hE : ((((k:ℝ)+1)/(4*((k:ℝ))^2)) + ε/2) + θ*((1 - 1/((k:ℝ))) - σ) + (ε/8)
         ≤ μ*(1+1/(k:ℝ))/4 + ε - δ := by
       have hkey : ((((k:ℝ)+1)/(4*((k:ℝ))^2))) + θ*((1 - 1/((k:ℝ))) - σ) = μ*(1+1/(k:ℝ))/4 := by
         rw [hσeq, hθdef]; field_simp; ring
-      linarith [hkey, hδε, hδ, hε]
+      linarith only [hkey, hδε, hδ, hε]
     have hcomb : A * (q:ℝ)^(θ*((1 - 1/((k:ℝ))) - σ))
         = (CB+1) * (q:ℝ)^(((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2)+θ*((1 - 1/((k:ℝ)))-σ)) := by
       rw [hAdef, mul_assoc, ← Real.rpow_add hqRpos]
@@ -418,15 +418,15 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
         rw [Finset.mem_range] at h1; rw [Finset.mem_Icc] at h2; omega
       rw [hun, Finset.sum_union hdisj]; ring
     rw [hsplit]
-    exact (norm_sub_le _ _).trans (by linarith [h1, h2])
+    exact (norm_sub_le _ _).trans (by linarith only [h1, h2])
   have hlogqq : Real.log (q:ℝ) ≤ (1+Clog2)*(q:ℝ)^((ε/8)) := by
     have h1 : Real.log (q:ℝ) ≤ Clog2 * (q:ℝ)^((ε/8)) := by simpa using hClog2 (q:ℝ) hqR1
-    nlinarith [h1, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8))]
+    nlinarith only [h1, hClog2pos, Real.rpow_nonneg hqn1 ((ε/8)), hqn1]
   have hσinv : (1:ℝ) + ‖s‖/σ ≤ 4*(1+|t|) := by
     have h2 : ‖s‖/s.re ≤ (2+|t|)/(2/3) :=
-      div_le_div₀ (by positivity) hsnorm (by norm_num) (by linarith [hσ23])
+      div_le_div₀ (by positivity) hsnorm (by norm_num) (by linarith only [hσ23, hσ1, h1k, hsre])
     rw [hsre] at h2
-    nlinarith [h2, hsnorm, abs_nonneg t]
+    nlinarith only [h2, hsnorm, abs_nonneg t]
   have htail : ∀ M : ℕ, q < M →
       ‖∑ n ∈ Finset.Icc (q+1) M, χ n * (n:ℂ)^(-s)‖
         ≤ (14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
@@ -439,12 +439,12 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
     have hstep0 : (2*CPV*Real.sqrt (q:ℝ)*Real.log (q:ℝ)) * ((q+1:ℕ):ℝ)^(-s.re)
         ≤ (2*CPV*Real.sqrt (q:ℝ)*Real.log (q:ℝ)) * (q:ℝ)^(-s.re) :=
       mul_le_mul_of_nonneg_left
-        (Real.rpow_le_rpow_of_nonpos hqRpos (by exact_mod_cast (by omega : q ≤ q+1)) (by rw [hsre]; linarith [hs0])) hBnn
+        (Real.rpow_le_rpow_of_nonpos hqRpos (by exact_mod_cast (by omega : q ≤ q+1)) (by rw [hsre]; linarith only [hs0, hσ1, hθpos, hθle, h1k])) hBnn
     have hexp_t : (1:ℝ)/2 - σ + (ε/8) ≤ μ*(1+1/(k:ℝ))/4 + ε - δ := by
-      have h1 : (1:ℝ)/2 - σ ≤ -1/6 := by linarith [h1k, hσ1]
+      have h1 : (1:ℝ)/2 - σ ≤ -1/6 := by linarith only [h1k, hσ1]
       have h3 : (0:ℝ) ≤ μ*(1+1/(k:ℝ))/4 := by positivity
-      have h4 : ε/2 ≤ ε - δ := by linarith [hδε]
-      linarith [h1, h3, h4, hδ, hε]
+      have h4 : ε/2 ≤ ε - δ := by linarith only [hδε, hδ]
+      linarith only [h1, h3, h4, hδ, hε, hδε, hσ1, hθpos, hθle, h1k]
     have hq3 : (q:ℝ)^((1:ℝ)/2 - σ + (ε/8)) ≤ (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) :=
       Real.rpow_le_rpow_of_exponent_le hqR1 hexp_t
     have hstep1 : (2*CPV*Real.sqrt (q:ℝ)*Real.log (q:ℝ)) * (q:ℝ)^(-s.re) * (1+‖s‖/s.re)
@@ -458,7 +458,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
         mul_le_mul_of_nonneg_right hAq (Real.rpow_nonneg hqn1 _)
       have h6 : (0:ℝ) ≤ 2*CPV*(q:ℝ)^((1:ℝ)/2)*((1+Clog2)*(q:ℝ)^((ε/8)))*(q:ℝ)^(-σ) := by positivity
       have h7 := mul_le_mul h5 hσinv (by
-        have hσpos : (0:ℝ) < σ := by linarith [hσ23]
+        have hσpos : (0:ℝ) < σ := by linarith only [hσ23, hσ1, hθpos, hθle, h1k]
         positivity) h6
       have hrr : (q:ℝ)^((1:ℝ)/2) * (q:ℝ)^((ε/8)) * (q:ℝ)^(-σ)
           = (q:ℝ)^((1:ℝ)/2 - σ + (ε/8)) := by
@@ -478,7 +478,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       _ ≤ (14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by positivity
           have h5 : (8:ℝ)*CPV*(1+Clog2) ≤ 14*CPV*(1+Clog2) := by
-            nlinarith [hCPVpos, hClog2pos]
+            nlinarith only [hCPVpos, hClog2pos]
           calc 8*CPV*(1+Clog2)*(q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)
               = (8*CPV*(1+Clog2)) * ((q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)) := by ring
             _ ≤ (14*CPV*(1+Clog2)) * ((q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)*(1+|t|)) :=
@@ -488,7 +488,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
   have hBig : (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2))
       ≤ 3 * (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2)) + 1 := by
     have h4 : (0:ℝ) ≤ 3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2) := by positivity
-    linarith
+    linarith only [hθpos, hθle, h4]
   have hPerM : ∀ M : ℕ, ‖∑ n ∈ Finset.Icc 1 M, χ n * (n:ℂ)^(-s)‖
       ≤ (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2))
           * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
@@ -514,13 +514,13 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
       refine (h1.trans h2).trans ?_
       have hk1 : (3*(1+Clog)) ≤ 3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2) := by
         have h2 : (0:ℝ) ≤ 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2) := by positivity
-        linarith
+        linarith only [h2]
       calc (3*(1+Clog)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ)
           ≤ (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2)) * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) :=
             mul_le_mul_of_nonneg_right hk1 (Real.rpow_nonneg hqn1 _)
         _ ≤ (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2))
             * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
-            have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith
+            have ht1 : (1:ℝ) ≤ 1+|t| := by have := abs_nonneg t; linarith only [this]
             rw [mul_assoc]; exact le_mul_of_one_le_right (by positivity) ht1
     · have hMQ' : Q ≤ M := le_of_lt (lt_of_not_ge hMQ)
       have hsplit1 : ∑ n ∈ Finset.Icc 1 M, χ n * (n:ℂ)^(-s)
@@ -571,7 +571,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
               add_le_add hhead3 (add_le_add hmid' htail')
         _ ≤ (3*(1+Clog) + 4*(1+Clog2)*(CB+1) + 14*CPV*(1+Clog2))
             * (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by
-              nlinarith [hTpos, hClogpos, hClog2pos, hCPVpos]
+              nlinarith only [hTpos, hClogpos, hClog2pos, hCPVpos]
   have hlim := LSeries_partial_sums_tendsto χ hχ hs0
   have hnormlim : Filter.Tendsto (fun M : ℕ => ‖∑ n ∈ Finset.Icc 1 M, χ n * (n:ℂ)^(-s)‖)
       Filter.atTop (nhds ‖χ.LFunction s‖) := hlim.norm
@@ -580,7 +580,7 @@ theorem primitive_LFunction_bound_quarter (k : ℕ) (hk : 3 ≤ k) (M : ℕ)
     rw [hμdef]; ring]
   refine hfin.trans ?_
   have h4 : (0:ℝ) ≤ (q:ℝ)^(μ*(1+1/(k:ℝ))/4 + ε - δ) * (1+|t|) := by positivity
-  nlinarith [h4, mul_le_mul_of_nonneg_right hBig h4]
+  nlinarith only [h4, mul_le_mul_of_nonneg_right hBig h4, hBig]
 
 set_option maxHeartbeats 2000000
 lemma crude_absorb_quarter {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
@@ -594,7 +594,7 @@ lemma crude_absorb_quarter {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   rcases eq_or_lt_of_le hq1 with hq | hq
   · subst hq
     simp only [Nat.cast_one, Real.log_one, Real.one_rpow, mul_one]
-    nlinarith [hClpos]
+    nlinarith only [hClpos]
   have hqR1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast (le_of_lt hq)
   have hqRpos : (0:ℝ) < (q:ℝ) := by exact_mod_cast (by omega : 0 < q)
   have hlogq0 : (0:ℝ) ≤ Real.log (q:ℝ) := Real.log_nonneg hqR1
@@ -605,26 +605,26 @@ lemma crude_absorb_quarter {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   have hee : (1+1/(k:ℝ))/4 = e := by rw [hedef]; ring
   have hsq : (1 + Real.log (q:ℝ))^3 ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := by
     have h1 : (Real.log (q:ℝ))^3 ≤ Cl * (q:ℝ)^ε := hCl (q:ℝ) hqR1
-    have h2 : (1:ℝ) ≤ 1 + Real.log (q:ℝ) := by linarith
+    have h2 : (1:ℝ) ≤ 1 + Real.log (q:ℝ) := by linarith only [hlogqpos]
     have h3 : (1 + Real.log (q:ℝ))^3 = 1 + 3*Real.log (q:ℝ) + 3*(Real.log (q:ℝ))^2 + (Real.log (q:ℝ))^3 := by ring
     have h4 : 3*Real.log (q:ℝ) + 3*(Real.log (q:ℝ))^2 ≤ 3 + 6*(Real.log (q:ℝ))^2 := by
-      nlinarith [hlogq0, h2, pow_nonneg hlogq0 2, sq_nonneg (Real.log (q:ℝ) - 1)]
-    nlinarith [h1, h4, hlogq0, hqe1, hClpos, Real.rpow_nonneg (by positivity) ε, pow_nonneg hlogq0 2]
+      nlinarith only [hlogq0, h2, pow_nonneg hlogq0 2, sq_nonneg (Real.log (q:ℝ) - 1), hlogqpos]
+    nlinarith only [h1, h4, hlogq0, hqe1, hClpos, Real.rpow_nonneg (by positivity) ε, pow_nonneg hlogq0 2]
   have hloge : (Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^(2:ℕ) := by
     have h1 : (Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^e :=
-      Real.rpow_le_rpow hlogq0 (by linarith) (le_of_lt hepos)
+      Real.rpow_le_rpow hlogq0 (by linarith only []) (le_of_lt hepos)
     have h2 : e ≤ 2 := by
       rw [hedef]
-      have h : (4:ℝ) ≤ 4*(k:ℝ) := by linarith [hkR]
+      have h : (4:ℝ) ≤ 4*(k:ℝ) := by linarith only [hkR]
       have h3 : 1/(4*(k:ℝ)) ≤ 1/4 := one_div_le_one_div_of_le (by norm_num : (0:ℝ)<4) h
-      linarith
+      linarith only [h3]
     have h3 : (1 + Real.log (q:ℝ))^e ≤ (1 + Real.log (q:ℝ))^((2:ℕ):ℝ) :=
       Real.rpow_le_rpow_of_exponent_le (le_add_of_nonneg_right (Real.log_nonneg hqR1)) h2
     exact h1.trans (by simpa only [Real.rpow_natCast] using h3)
   have hprod : (1 + Real.log (q:ℝ)) * (Real.log (q:ℝ))^e ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := by
     calc (1 + Real.log (q:ℝ)) * (Real.log (q:ℝ))^e
         ≤ (1 + Real.log (q:ℝ)) * (1 + Real.log (q:ℝ))^2 :=
-          mul_le_mul_of_nonneg_left hloge (by linarith)
+          mul_le_mul_of_nonneg_left hloge (by linarith only [hlogqpos])
       _ = (1 + Real.log (q:ℝ))^3 := by ring
       _ ≤ (8*(1+Cl)+8) * (q:ℝ)^ε := hsq
   set L : ℝ := Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) with hLdef
@@ -638,10 +638,10 @@ lemma crude_absorb_quarter {k : ℕ} (hk : 3 ≤ k) {ε : ℝ} (hε : 0 < ε) :
   have hqe : (q:ℝ)^ε ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (Real.log (q:ℝ))^e := by
     rw [← hlogeq, ← Real.rpow_add hqRpos]
     apply Real.rpow_le_rpow_of_exponent_le hqR1
-    have h1 : (1:ℝ) - σ + Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) ≥ 0 := by linarith [hσle]
+    have h1 : (1:ℝ) - σ + Real.log (Real.log (q:ℝ))/Real.log (q:ℝ) ≥ 0 := by linarith only [hσle]
     have h2 := mul_le_mul_of_nonneg_left h1 (show (0:ℝ) ≤ 1+1/(k:ℝ) by positivity)
     rw [← hee]
-    nlinarith [h2]
+    nlinarith only [h2]
   have hloge_pos : 0 < (Real.log (q:ℝ))^e := Real.rpow_pos_of_pos hlogqpos e
   have hfinal : (1 + Real.log (q:ℝ)) ≤ (8*(1+Cl)+8) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) := by
     have h1 : (1 + Real.log (q:ℝ)) * (Real.log (q:ℝ))^e
@@ -684,7 +684,7 @@ theorem LFunction_bound_quarter_of_burgess {ε : ℝ} (hε : 0 < ε) (k : ℕ) (
   have hσ12 : (1:ℝ)/2 ≤ σ := by
     have h3k : (3:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk
     have h1k : 1/(k:ℝ) ≤ 1/3 := one_div_le_one_div_of_le (by norm_num : (0:ℝ)<3) h3k
-    linarith
+    linarith only [hσ, h1k]
   by_cases hσ1 : σ ≤ 1
   · have hχprim : χ.primitiveCharacter.IsPrimitive := DirichletCharacter.primitiveCharacter_isPrimitive χ
     have hχprim_ne : χ.primitiveCharacter ≠ 1 := primitiveCharacter_ne_one χ hχ
@@ -703,12 +703,12 @@ theorem LFunction_bound_quarter_of_burgess {ε : ℝ} (hε : 0 < ε) (k : ℕ) (
       intro p hp
       rw [Nat.mem_primeFactors] at hp
       have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp.1.one_le
-      have h := Real.rpow_le_rpow_of_exponent_le hp1 (show -σ ≤ -(1/2:ℝ) by linarith)
-      linarith
+      have h := Real.rpow_le_rpow_of_exponent_le hp1 (show -σ ≤ -(1/2:ℝ) by linarith only [hσ12])
+      linarith only [h]
     have hE0 : 0 ≤ ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ := by
       have : (0:ℝ) ≤ (1-σ)*(1+1/(k:ℝ))/4 := by
-        apply div_nonneg (mul_nonneg (by linarith) (by positivity)) (by norm_num)
-      linarith [hδε, hε]
+        apply div_nonneg (mul_nonneg (by linarith only [hσ1]) (by positivity)) (by norm_num)
+      linarith only [hδε, hε, hδdef, this]
     have hqstar : (χ.conductor : ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ)
         ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ) := by
       apply Real.rpow_le_rpow
@@ -726,15 +726,15 @@ theorem LFunction_bound_quarter_of_burgess {ε : ℝ} (hε : 0 < ε) (k : ℕ) (
           have h3 : (0:ℝ) ≤ (1+|t|) := by positivity
           have h4 := mul_le_mul_of_nonneg_right hqstar h2
           have h5 := mul_le_mul_of_nonneg_right h4 (by positivity : (0:ℝ) ≤ Cp*Cpd*(1+|t|))
-          linarith [h5]
+          linarith only [h5]
       _ = (Cp * Cpd) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by
           rw [← Real.rpow_add (by exact_mod_cast (NeZero.pos q) : (0:ℝ) < (q:ℝ))]
           rw [show ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ + δ = ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε by ring]
       _ ≤ (max (Cp * Cpd) (Cc * Cf) + 1) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by positivity
           have h5 : Cp * Cpd ≤ max (Cp * Cpd) (Cc * Cf) + 1 := by
-            have := le_max_left (Cp*Cpd) (Cc*Cf); linarith
-          nlinarith [h4, h5, hCppos, hCpdpos]
+            have := le_max_left (Cp*Cpd) (Cc*Cf); linarith only [this]
+          nlinarith only [h4, h5, hCppos, hCpdpos]
   · have hσge : 1 ≤ σ := le_of_lt (lt_of_not_ge hσ1)
     have hcb := hCc q χ hχ σ t hσge
     have hca := hCf q (Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)) σ hσge hσle
@@ -747,8 +747,8 @@ theorem LFunction_bound_quarter_of_burgess {ε : ℝ} (hε : 0 < ε) (k : ℕ) (
       _ ≤ (max (Cp * Cpd) (Cc * Cf) + 1) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1 + |t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by positivity
           have h5 : Cc * Cf ≤ max (Cp * Cpd) (Cc * Cf) + 1 := by
-            have := le_max_right (Cp*Cpd) (Cc*Cf); linarith
-          nlinarith [h4, h5, hCcpos, hCfpos]
+            have := le_max_right (Cp*Cpd) (Cc*Cf); linarith only [this]
+          nlinarith only [h4, h5, hCcpos, hCfpos]
 
 
 
@@ -772,7 +772,7 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
         ‖DirichletCharacter.LFunction χ ((σ:ℂ) + (t:ℂ)*Complex.I)‖
           ≤ C * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1 + |t|) := by
   have hkR : (1:ℝ) ≤ (k:ℝ) := by exact_mod_cast (by omega : 1 ≤ k)
-  have hkpos : (0:ℝ) < (k:ℝ) := by linarith
+  have hkpos : (0:ℝ) < (k:ℝ) := by linarith only [hkR]
   set δ : ℝ := ε/4 with hδdef
   have hδ : 0 < δ := by rw [hδdef]; positivity
   have hδε : δ ≤ ε/4 := le_rfl
@@ -792,7 +792,7 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
   have hσ12 : (1:ℝ)/2 ≤ σ := by
     have h3k : (3:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk
     have h1k : 1/(k:ℝ) ≤ 1/3 := one_div_le_one_div_of_le (by norm_num : (0:ℝ)<3) h3k
-    linarith
+    linarith only [hσ, h1k]
   by_cases hσ1 : σ ≤ 1
   · have hχprim : χ.primitiveCharacter.IsPrimitive := DirichletCharacter.primitiveCharacter_isPrimitive χ
     have hχprim_ne : χ.primitiveCharacter ≠ 1 := primitiveCharacter_ne_one χ hχ
@@ -810,7 +810,7 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
         Real.rpow_le_rpow (by positivity) (by exact_mod_cast hord') (by positivity)
       have h3 : (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/4)
           ≤ (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) :=
-        Real.rpow_le_rpow_of_exponent_le hcond1 (by linarith)
+        Real.rpow_le_rpow_of_exponent_le hcond1 (by linarith only [hε])
       have hqnn : (0:ℝ) ≤ (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) :=
         Real.rpow_nonneg (by positivity) _
       have hHnn : (0:ℝ) ≤ (H:ℝ)^(1 - 1/((k:ℝ))) := Real.rpow_nonneg (by positivity) _
@@ -826,7 +826,7 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
               = Co * ((M:ℝ)^((3:ℝ)/(2*(k:ℝ))) * (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2)) by ring]
         exact h6
       have h7 : Co * (M:ℝ)^((3:ℝ)/(2*(k:ℝ))) ≤ CB' := by
-        rw [hCB'def]; linarith
+        rw [hCB'def]; linarith only []
       have h8 : (Co * (M:ℝ)^((3:ℝ)/(2*(k:ℝ)))) * (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2)
           ≤ CB' * (χ.conductor : ℝ)^((((k:ℝ)+1)/(4*((k:ℝ))^2))+ε/2) :=
         mul_le_mul_of_nonneg_right h7 hqnn
@@ -843,12 +843,12 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
       intro p hp
       rw [Nat.mem_primeFactors] at hp
       have hp1 : (1:ℝ) ≤ (p:ℝ) := by exact_mod_cast hp.1.one_le
-      have h := Real.rpow_le_rpow_of_exponent_le hp1 (show -σ ≤ -(1/2:ℝ) by linarith)
-      linarith
+      have h := Real.rpow_le_rpow_of_exponent_le hp1 (show -σ ≤ -(1/2:ℝ) by linarith only [hσ12])
+      linarith only [h]
     have hE0 : 0 ≤ ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ := by
       have : (0:ℝ) ≤ (1-σ)*(1+1/(k:ℝ))/4 := by
-        apply div_nonneg (mul_nonneg (by linarith) (by positivity)) (by norm_num)
-      linarith [hδε, hε]
+        apply div_nonneg (mul_nonneg (by linarith only [hσ1]) (by positivity)) (by norm_num)
+      linarith only [hδε, hε, hδdef, this]
     have hqstar : (χ.conductor : ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ)
         ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ) := by
       apply Real.rpow_le_rpow
@@ -866,15 +866,15 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
           have h3 : (0:ℝ) ≤ (1+|t|) := by positivity
           have h4 := mul_le_mul_of_nonneg_right hqstar h2
           have h5 := mul_le_mul_of_nonneg_right h4 (by positivity : (0:ℝ) ≤ Cp*Cpd*(1+|t|))
-          linarith [h5]
+          linarith only [h5]
       _ = (Cp * Cpd) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by
           rw [← Real.rpow_add (by exact_mod_cast (NeZero.pos q) : (0:ℝ) < (q:ℝ))]
           rw [show ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε - δ + δ = ((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε by ring]
       _ ≤ (max (Cp * Cpd) (Cc * Cf) + 1) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by positivity
           have h5 : Cp * Cpd ≤ max (Cp * Cpd) (Cc * Cf) + 1 := by
-            have := le_max_left (Cp*Cpd) (Cc*Cf); linarith
-          nlinarith [h4, h5, hCppos, hCpdpos]
+            have := le_max_left (Cp*Cpd) (Cc*Cf); linarith only [this]
+          nlinarith only [h4, h5, hCppos, hCpdpos]
   · have hσge : 1 ≤ σ := le_of_lt (lt_of_not_ge hσ1)
     have hcb := hCc q χ hχ σ t hσge
     have hca := hCf q (Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)) σ hσge hσle
@@ -887,8 +887,8 @@ theorem LFunction_bound_quarter_of_bounded_order {ε : ℝ} (hε : 0 < ε) (k : 
       _ ≤ (max (Cp * Cpd) (Cc * Cf) + 1) * (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1 + |t|) := by
           have h4 : (0:ℝ) ≤ (q:ℝ)^(((1:ℝ)/4)*(1-σ)*(1+1/(k:ℝ)) + ε) * (1+|t|) := by positivity
           have h5 : Cc * Cf ≤ max (Cp * Cpd) (Cc * Cf) + 1 := by
-            have := le_max_right (Cp*Cpd) (Cc*Cf); linarith
-          nlinarith [h4, h5, hCcpos, hCfpos]
+            have := le_max_right (Cp*Cpd) (Cc*Cf); linarith only [this]
+          nlinarith only [h4, h5, hCcpos, hCfpos]
 
 
 end Commons.NumberTheory.DirichletCharacter

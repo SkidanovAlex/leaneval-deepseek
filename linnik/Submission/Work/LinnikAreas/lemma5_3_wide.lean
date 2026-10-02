@@ -1965,9 +1965,9 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
       have h1 : A^2 ≤ Real.exp (L*x₀) := by
         rw [hAdef, sq, ← Real.exp_add]
         apply Real.exp_le_exp.mpr
-        nlinarith [hc3]
+        linarith only [hc3]
       have h3 : A + 1 ≤ Real.exp (L*x₀) := by
-        nlinarith [hA2, h1]
+        nlinarith only [hA2, h1]
       have h5 : A ≤ ((⌊Real.exp (L*x₀)⌋₊ : ℕ):ℝ) := by
         have h6 : Real.exp (L*x₀) - 1 < ((⌊Real.exp (L*x₀)⌋₊ : ℕ):ℝ) := by
           have := Nat.lt_floor_add_one (Real.exp (L*x₀)); linarith
@@ -2018,7 +2018,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
         rw [Complex.sq_norm, Complex.normSq_apply]
         have h2 := (abs_le.mp hτ).1
         have h3 := (abs_le.mp hτ).2
-        nlinarith [hσlo, hσhi, h2, h3, hL]
+        nlinarith only [hσlo, hσhi, h2, h3, hL]
       have h2 := sq_le_sq.mp h1
       rwa [abs_of_nonneg (norm_nonneg s), abs_of_nonneg (by linarith : (0:ℝ) ≤ 11*L)] at h2
     have hcondNA : (1 - s.re) * Real.log (NA:ℝ) ≤ 1 := by
@@ -2049,7 +2049,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
         _ ≤ (200 * (Real.log 4 + 5) + 4) * Kf * (1 + Real.log (NA:ℝ)) := by
             linarith [h1, h2]
     have hlogNAbd : 1 + Real.log (NA:ℝ) ≤ (4 + B0) * (Real.log L)^2 := by
-      nlinarith [hlogNAle, hD4]
+      linarith only [hlogNAle, hD4]
     have hp1' : ‖(∑ n ∈ Finset.Icc 1 NA,
           ((ArithmeticFunction.vonMangoldt n : ℝ) : ℂ) * gfun L s f (n:ℝ))
         - (∫ t in (1:ℝ)..(NA:ℝ), gfun L s f t)‖ ≤ A1 * (Real.log L)^2 := by
@@ -2109,11 +2109,11 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
         ≤ A2 * (Real.log L)^2 := by
       rw [hA2def]
       have : (4:ℝ) * (Cc*Kf) * (Real.log L)^2 = 4*(Cc*Kf)*(Real.log L)^2 := by ring
-      nlinarith [hp2, hD4, hCc, hKf0]
+      linarith only [hp2, mul_le_mul_of_nonneg_left hD4 (mul_nonneg hCc.le hKf0)]
     have hp3' : ‖(((Chebyshev.psi (NA:ℝ) - (NA:ℝ) : ℝ)) : ℂ) * gfun L s f (NA:ℝ)‖
         ≤ A2 * (Real.log L)^2 := by
       rw [hA2def]
-      nlinarith [hp3, hD4, hCc, hKf0]
+      linarith only [hp3, mul_le_mul_of_nonneg_left hD4 (mul_nonneg hCc.le hKf0)]
     have hbig_t : ∀ t ∈ Set.Icc (NA:ℝ) (M:ℝ), (4/c) * Real.log L ≤ Real.sqrt (Real.log t) := by
       intro t ht
       have htNA : (NA:ℝ) ≤ t := ht.1
@@ -2124,7 +2124,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
       have h7 : (1/2)*Real.sqrt (B0*(Real.log L)^2) ≤ Real.sqrt (B0*(Real.log L)^2 - 1) := by
         have h8 : ((1/2)*Real.sqrt (B0*(Real.log L)^2))^2 ≤ B0*(Real.log L)^2 - 1 := by
           rw [mul_pow, Real.sq_sqrt (by positivity)]
-          nlinarith [hc6]
+          linarith only [hc6]
         calc (1/2)*Real.sqrt (B0*(Real.log L)^2)
             = Real.sqrt (((1/2)*Real.sqrt (B0*(Real.log L)^2))^2) := by
               rw [Real.sqrt_sq (by positivity)]
@@ -2180,7 +2180,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
       have h3 : (‖s‖*Kf+Kd) * L⁻¹ ≤ 11*Kf + Kd := by
         have h4 : (‖s‖*Kf+Kd) * L⁻¹ = (‖s‖*Kf+Kd) / L := by rw [div_eq_mul_inv]
         rw [h4, div_le_iff₀ hLpos]
-        nlinarith [hAineq, hKf0, hKd0, hL]
+        nlinarith only [hAineq, hKd0, hL]
       calc Cc * (‖s‖*Kf+Kd) * L⁻¹ * x₀ = Cc * ((‖s‖*Kf+Kd) * L⁻¹) * x₀ := by ring
         _ ≤ Cc * (11*Kf+Kd) * x₀ := by
             apply mul_le_mul_of_nonneg_right _ hx₀.le
@@ -2189,7 +2189,8 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
         (((Chebyshev.psi t - t : ℝ)) : ℂ) * deriv (gfun L s f) t‖
         ≤ A3 * (Real.log L)^2 := by
       rw [hA3def]
-      nlinarith [hp4', hD4, hCc, hKf0, hKd0, hx₀]
+      linarith only [hp4', mul_le_mul_of_nonneg_left hD4 (mul_nonneg (mul_nonneg hCc.le
+        (add_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 11) hKf0) hKd0)) hx₀.le)]
     have hp5 : ‖∫ t in (M:ℝ)..Real.exp (L*x₀), gfun L s f t‖ ≤ Kf := by
       have hpt : ∀ᵐ t ∂volume, t ∈ Set.Ioc (M:ℝ) (Real.exp (L*x₀)) →
           ‖gfun L s f t‖ ≤ Kf := by
@@ -2215,7 +2216,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
         _ = Kf := by ring
     have hp5' : ‖∫ t in (M:ℝ)..Real.exp (L*x₀), gfun L s f t‖ ≤ A4 * (Real.log L)^2 := by
       rw [hA4def]
-      nlinarith [hp5, hD4, hKf0]
+      linarith only [hp5, mul_le_mul_of_nonneg_left hD4 hKf0]
     have hdecomp := sum_decomp (M := M) (NA := NA) hx₀ (by linarith : 1 < L) hM1 hNA1 hNAM
       hMM hNAe hcont hf2 (le_of_lt hσpos) hKf hKd
     rw [hdecomp]
@@ -2278,7 +2279,7 @@ private theorem full_sum_bound (x₀ B : ℝ) (hx₀ : 0 < x₀) {f : ℝ → �
       linarith [h1, h2, h3, h4, hp1', hp2', hp3', hp4'', hp5']
     refine le_trans hb1 ?_
     rw [hCdef]
-    nlinarith [hD4, hDnn]
+    linarith only [mul_nonneg (add_nonneg (add_nonneg hA5nn hA6nn) zero_le_one) hDnn]
 
 
 /-- `‖(n^s)^{-1}‖ = n^{-Re s}` for `1 ≤ n`. -/

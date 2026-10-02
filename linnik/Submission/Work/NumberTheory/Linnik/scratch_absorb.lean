@@ -30,11 +30,11 @@ theorem far_absorb {x₀ δ K C ε : ℝ} (hx₀ : 0 < x₀) (hδ : 0 < δ) (hK 
     have h2 : (0:ℝ) ≤ 4 * K / (δ * ε) + 1 := by positivity
     have h3 : (0:ℝ) ≤ (8 * C * C₁ / (δ^2 * ε))^2 + 1 := by positivity
     have h4 : (1:ℝ) ≤ (8 * C * C₁ / (δ^2 * ε))^2 + 1 := by
-      have := sq_nonneg (8 * C * C₁ / (δ^2 * ε)); linarith
-    linarith [le_max_left (Real.exp 1) (max (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1)),
+      have := sq_nonneg (8 * C * C₁ / (δ^2 * ε)); linarith only [this]
+    linarith only [le_max_left (Real.exp 1) (max (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1)),
       le_max_right (Real.exp 1) (max (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1)),
       le_max_left (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1),
-      le_max_right (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1)]
+      le_max_right (4 * K / (δ * ε) + 1) ((8 * C * C₁ / (δ^2 * ε))^2 + 1), h1]
   · intro L hL
     have hLexp : Real.exp 1 ≤ L := le_trans (le_max_left _ _) hL
     have hLK : 4 * K / (δ * ε) + 1 ≤ L :=
@@ -43,7 +43,7 @@ theorem far_absorb {x₀ δ K C ε : ℝ} (hx₀ : 0 < x₀) (hδ : 0 < δ) (hK 
       le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hL)
     have hL1 : 1 ≤ L := by
       have := Real.one_le_exp (show (0:ℝ) ≤ 1 by norm_num)
-      linarith
+      linarith only [hLexp, this]
     have hLpos : 0 < L := lt_of_lt_of_le one_pos hL1
     have hlogL1 : 1 ≤ Real.log L := by
       calc (1:ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
@@ -65,9 +65,9 @@ theorem far_absorb {x₀ δ K C ε : ℝ} (hx₀ : 0 < x₀) (hδ : 0 < δ) (hK 
     -- the first term
     have hterm1 : K / (δ / 2 * L) ≤ ε / 2 := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < δ / 2 * L)]
-      have h4 : 4 * K / (δ * ε) ≤ L := by linarith
+      have h4 : 4 * K / (δ * ε) ≤ L := by linarith only [hLK]
       rw [div_le_iff₀ (by positivity : (0:ℝ) < δ * ε)] at h4
-      nlinarith [h4, hε.le, hδ.le, hLpos.le]
+      linarith only [h4, hε.le, hδ.le, hLpos.le]
     -- the second term
     have hterm2 : C * Real.exp (x₀ * (Real.log (Real.log L) / 3)) / (δ / 2 * L) ^ 2 ≤ ε / 2 := by
       have hnum : C * Real.exp (x₀ * (Real.log (Real.log L) / 3)) ≤ C * (C₁ * Real.sqrt L) :=
@@ -85,17 +85,17 @@ theorem far_absorb {x₀ δ K C ε : ℝ} (hx₀ : 0 < x₀) (hδ : 0 < δ) (hK 
         linear_combination (C * C₁ * δ^2 * L) * hsq
       have h3 : 4 * C * C₁ / (δ^2 * L * Real.sqrt L) ≤ 4 * C * C₁ / (δ^2 * L) := by
         have hpos : 0 < δ^2 * L := by positivity
-        have hle : δ^2 * L ≤ δ^2 * L * Real.sqrt L := by nlinarith [hsqrt1, hpos]
+        have hle : δ^2 * L ≤ δ^2 * L * Real.sqrt L := by nlinarith only [hsqrt1, hpos, hLC]
         exact div_le_div_of_nonneg_left (by positivity) hpos hle
       have h4 : 4 * C * C₁ / (δ^2 * L) ≤ ε / 2 := by
         rw [div_le_iff₀ (by positivity : (0:ℝ) < δ^2 * L)]
         have hLC' : 8 * C * C₁ / (δ^2 * ε) ≤ L := by
           have hc := hLC
           have hs := sq_nonneg (8 * C * C₁ / (δ^2 * ε) - 1)
-          nlinarith [hc, hs]
+          nlinarith only [hc, hs, hLC]
         rw [div_le_iff₀ (by positivity : (0:ℝ) < δ^2 * ε)] at hLC'
-        nlinarith [hLC']
-      linarith [h1, h2, h3, h4]
-    linarith [hterm1, hterm2]
+        linarith only [hLC']
+      linarith only [h1, h2, h3, h4]
+    linarith only [hterm1, hterm2]
 
 end Commons.NumberTheory.Linnik

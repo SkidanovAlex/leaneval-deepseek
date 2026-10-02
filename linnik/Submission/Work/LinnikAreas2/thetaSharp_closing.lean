@@ -140,7 +140,7 @@ private lemma B_rpow_sub_one_le (u L σ : ℝ) (hu : 0 < u) (hL : 1 ≤ L) (hσ 
   have hA : u*(σ*L) ≤ u*((2/3)*Real.log (Real.log L)) := mul_le_mul_of_nonneg_left hσL hu.le
   have hB' : 2*(1-σ)*Real.log L ≤ 2*Real.log L := by
     have hle : (1-σ) ≤ 1 := by linarith
-    nlinarith [hle, hlogpos.le]
+    nlinarith only [hle, hlogpos.le]
   calc (Real.exp (u*L)/L^2)^(σ-1)
       = Real.exp (Real.log (Real.exp (u*L)/L^2) * (σ-1)) := Real.rpow_def_of_pos hB (σ-1)
     _ = Real.exp ((u*L - 2*Real.log L)*(σ-1)) := by rw [hlogB]
@@ -171,7 +171,7 @@ private lemma coef_le (ε C₁ w L : ℝ) (hε : 0 < ε) (hC₁ : 0 < C₁) (hw 
   have h1 : C₁/(w*L)^2 ≤ (C₁/w^2)/L := by
     have h : (C₁/w^2)/L^2 ≤ (C₁/w^2)/L := by
       apply div_le_div_of_nonneg_left (by positivity) hLpos
-      nlinarith [hL, hLpos]
+      nlinarith only [hL, hLpos]
     have he : (C₁/w^2)/L^2 = C₁/(w*L)^2 := by field_simp
     rwa [he] at h
   have h2 : (1+ε/2)/(w*L) = ((1+ε/2)/w)/L := by field_simp
@@ -197,13 +197,13 @@ private lemma gamma_term_le (ε C₁ w u : ℝ) (hε : 0 < ε) (hC₁ : 0 < C₁
   have hlogpos : 0 < Real.log L := lt_of_lt_of_le one_pos hlog1
   have hUpos : 0 < Real.exp (u*L) := Real.exp_pos _
   have hL2pos : 0 < L^2 := by positivity
-  have hL21 : 1 ≤ L^2 := by nlinarith [hL1]
+  have hL21 : 1 ≤ L^2 := by nlinarith only [hL1]
   have hBpos : 0 < Real.exp (u*L)/L^2 := div_pos hUpos hL2pos
   have hΓ : Real.Gamma σ ≤ 1/σ := gamma_le_inv σ hσ hσ1
   have hUB : (Real.exp (u*L)/L^2)^σ ≤ (Real.exp (u*L))^σ := by
     apply Real.rpow_le_rpow hBpos.le _ hσ.le
     rw [div_le_iff₀ hL2pos]
-    nlinarith [hL21, hUpos]
+    nlinarith only [hL21, hUpos]
   have hbracket : (Real.exp (u*L))^σ - (Real.exp (u*L)/L^2)^σ
       ≤ (Real.exp (u*L))^σ * (2*σ*Real.log L) := by
     have h1 : (Real.exp (u*L)/L^2)^σ = (Real.exp (u*L))^σ * (L^2)^(-σ) := by
@@ -273,7 +273,7 @@ private lemma x0_term_le (ε C₁ w u x : ℝ) (hε : 0 < ε) (hC₁ : 0 < C₁)
     rwa [Real.log_exp] at h
   have hlogpos : 0 < Real.log L := lt_of_lt_of_le one_pos hlog1
   have hL2pos : 0 < L^2 := by positivity
-  have hL21 : 1 ≤ L^2 := by nlinarith [hL1]
+  have hL21 : 1 ≤ L^2 := by nlinarith only [hL1]
   have hUpos : 0 < Real.exp (u*L) := Real.exp_pos _
   have hBpos : 0 < Real.exp (u*L)/L^2 := div_pos hUpos hL2pos
   have hApos : 0 < Real.exp (x*L) := Real.exp_pos _
@@ -325,7 +325,7 @@ private lemma x0_term_le (ε C₁ w u x : ℝ) (hε : 0 < ε) (hC₁ : 0 < C₁)
       ≤ L^2 * Real.exp (-(u*L)) * (Real.log L)^(2*x/3) := by
     have hXnn : 0 ≤ L^2 * Real.exp (-(u*L)) * (Real.log L)^(2*x/3) := by positivity
     rw [div_le_iff₀ hLpos]
-    nlinarith [hL1, hXnn]
+    nlinarith only [hL1, hXnn]
   calc 2 * ((1+ε/2)/(w*L) + C₁/(w*L)^2)
         * (x₀^(σ-1) * (1 - Real.exp (-x₀/(Real.exp (u*L)/L^2))))
       ≤ 2 * ((1+ε/2)/(w*L) + C₁/(w*L)^2)
@@ -377,7 +377,7 @@ private lemma head_term_le (ε C₁ w u x : ℝ) (hε : 0 < ε) (hC₁ : 0 < C�
   have hlog1 : 1 ≤ Real.log L := (hL₂ L hA2).2
   have hlogpos : 0 < Real.log L := lt_of_lt_of_le one_pos hlog1
   have hL2pos : 0 < L^2 := by positivity
-  have hL21 : 1 ≤ L^2 := by nlinarith [hL1]
+  have hL21 : 1 ≤ L^2 := by nlinarith only [hL1]
   have hUpos : 0 < Real.exp (u*L) := Real.exp_pos _
   have hApos : 0 < Real.exp (x*L) := Real.exp_pos _
   have hxpos : 0 < x := lt_trans hu hux
@@ -391,7 +391,7 @@ private lemma head_term_le (ε C₁ w u x : ℝ) (hε : 0 < ε) (hC₁ : 0 < C�
     have h1 : (Real.exp (u*L)/L^2)^σ ≤ (Real.exp (u*L))^σ := by
       apply Real.rpow_le_rpow hBpos.le _ hσ.le
       rw [div_le_iff₀ hL2pos]
-      nlinarith [hL21, hUpos]
+      nlinarith only [hL21, hUpos]
     exact le_trans h1 (rpow_exp_le u L σ hu hlog1 hσL)
   have hE2 : ((1+ε/2)/(w*L) + C₁/(w*L)^2) * (Real.exp (u*L)/L^2)^σ ≤ δ/3 := by
     have h1 : ((1+ε/2)/(w*L) + C₁/(w*L)^2) * (Real.exp (u*L)/L^2)^σ
@@ -425,7 +425,7 @@ private lemma head_term_le (ε C₁ w u x : ℝ) (hε : 0 < ε) (hC₁ : 0 < C�
   · subst hK0
     have hz : (1 - Real.exp (-(((0:ℕ):ℝ))/(Real.exp (u*L)/L^2))) = 0 := by simp
     rw [hz]
-    nlinarith [hδ]
+    nlinarith only [hδ]
   · have hKpos' : (0:ℝ) < (K:ℝ) := by exact_mod_cast hKpos
     rcases le_or_gt (K:ℝ) (Real.exp (u*L)/L^2) with hKB | hBK
     · have hnot : 1 - Real.exp (-(K:ℝ)/(Real.exp (u*L)/L^2))
@@ -558,7 +558,7 @@ private lemma exp_surplus {σ u x L : ℝ} (hσ : 0 < σ) (hL : 0 < L) (hu : 0 <
       = Real.exp (u*L*σ) * (Real.exp ((x-u)*L*σ) - 1) := by
     rw [hA, hB]; ring
   rw [hkey]
-  nlinarith [hexp, hUge1, ht]
+  nlinarith only [hexp, hUge1, ht]
 
 theorem thetaSharp_closing {ε C₁ w u x : ℝ} (hε : 0 < ε) (hC₁ : 0 < C₁) (hw : 0 < w)
     (hu : 0 < u) (h2wu : 2*w < u) (hux : u < x) :

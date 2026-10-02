@@ -81,13 +81,13 @@ private lemma zero_mem_upper_disk {u : ℂ} {a b t ρ : ℝ}
   let c : ℂ := (2 : ℂ) + Complex.I * (t : ℂ)
   have htri := Complex.norm_le_abs_re_add_abs_im (u - c)
   have hre : |u.re - 2| ≤ 2 := by
-    have hlt : u.re - 2 < 0 := by linarith
+    have hlt : u.re - 2 < 0 := by linarith only [hre_lo, hre_hi]
     rw [abs_of_neg hlt]
-    linarith
+    linarith only [hre_lo]
   have him : |u.im - t| ≤ (b - a) / 2 := by
     rw [ht]
-    have h1 : u.im - (a + b) / 2 ≤ (b - a) / 2 := by linarith
-    have h2 : -((b - a) / 2) ≤ u.im - (a + b) / 2 := by linarith
+    have h1 : u.im - (a + b) / 2 ≤ (b - a) / 2 := by linarith only [hbim]
+    have h2 : -((b - a) / 2) ≤ u.im - (a + b) / 2 := by linarith only [haim]
     rw [abs_le]
     exact ⟨h2, h1⟩
   calc
@@ -105,13 +105,13 @@ private lemma zero_mem_lower_disk {u : ℂ} {a b t ρ : ℝ}
   let c : ℂ := (2 : ℂ) + Complex.I * ((-t : ℝ) : ℂ)
   have htri := Complex.norm_le_abs_re_add_abs_im (u - c)
   have hre : |u.re - 2| ≤ 2 := by
-    have hlt : u.re - 2 < 0 := by linarith
+    have hlt : u.re - 2 < 0 := by linarith only [hre_lo, hre_hi]
     rw [abs_of_neg hlt]
-    linarith
+    linarith only [hre_lo]
   have him : |u.im + t| ≤ (b - a) / 2 := by
     rw [ht]
-    have h1 : u.im + (a + b) / 2 ≤ (b - a) / 2 := by linarith
-    have h2 : -((b - a) / 2) ≤ u.im + (a + b) / 2 := by linarith
+    have h1 : u.im + (a + b) / 2 ≤ (b - a) / 2 := by linarith only [hhi]
+    have h2 : -((b - a) / 2) ≤ u.im + (a + b) / 2 := by linarith only [hlo]
     rw [abs_le]
     exact ⟨h2, h1⟩
   calc
@@ -126,7 +126,7 @@ private lemma window_split {u : ℂ} {a b : ℝ} (_ha : 1 ≤ a) (h : a ≤ |u.i
   have hb1 : u.im ≤ b := le_trans (le_abs_self u.im) hhi
   have hb2 : -b ≤ u.im := by
     have hneg : -|u.im| ≤ u.im := neg_abs_le u.im
-    exact le_trans (by linarith) hneg
+    exact le_trans (by linarith only [hhi]) hneg
   by_cases hpos : 0 ≤ u.im
   · left
     rw [abs_of_nonneg hpos] at hlo
@@ -134,7 +134,7 @@ private lemma window_split {u : ℂ} {a b : ℝ} (_ha : 1 ≤ a) (h : a ≤ |u.i
   · right
     have : u.im ≤ 0 := le_of_not_ge hpos
     rw [abs_of_nonpos this] at hlo
-    exact ⟨hb2, by linarith⟩
+    exact ⟨hb2, by linarith only [hlo]⟩
 
 -- ============================ the target theorem ============================
 
@@ -206,7 +206,7 @@ theorem windowZeroCountC {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       simp
       by_cases hFz : F u = 0
       · rw [hFz]
-        nlinarith [hGp0 u, hGm0 u]
+        linarith only [hGp0 u, hGm0 u, hGp0, hGm0]
       · have hFne_int : (((MeromorphicOn.divisor Λ (Metric.closedBall (0 : ℂ) (b + 1))) u : ℤ)) ≠ 0 := by
           intro h
           apply hFz
@@ -254,25 +254,25 @@ theorem windowZeroCountC {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
       have hw0 : w u = 0 := by dsimp [w]; rw [if_neg hwin]
       rw [hw0]
       simp
-      nlinarith [hGp0 u, hGm0 u]
+      linarith only [hGp0 u, hGm0 u, hGp0, hGm0]
   have hsum_le : (∑ᶠ u : ℂ, (F * w) u) ≤ (∑ᶠ u : ℂ, Gp u) + (∑ᶠ u : ℂ, Gm u) := by
     have h1 : (∑ᶠ u : ℂ, (F * w) u) ≤ (∑ᶠ u : ℂ, (Gp u + Gm u)) := by
       simpa only [Pi.add_apply] using
         (finsum_le_finsum' hfinFw (Function.HasFiniteSupport.add hfinGp hfinGm) hpoint)
     rwa [finsum_add_distrib hfinGp hfinGm] at h1
   -- geometry and log-facts for the final estimate
-  have hρ2 : 2 ≤ ρ := by dsimp [ρ]; nlinarith [hab]
-  have hρ0 : 0 ≤ ρ := by linarith [hρ2]
+  have hρ2 : 2 ≤ ρ := by dsimp [ρ]; linarith only [hab]
+  have hρ0 : 0 ≤ ρ := by linarith only [hρ2]
   have hb1 : 1 ≤ b := le_trans ha hab
   have hL0 : 0 ≤ L := by
     dsimp [L]
     have h1 : 0 ≤ Real.log (b + 3) := by
       refine Real.log_nonneg ?_
-      linarith
+      linarith only [ha, hab]
     have h2 : 0 ≤ Real.log (N : ℝ) := by
       exact Real.log_nonneg (by exact_mod_cast (Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N))))
-    linarith
-  have hρle : ρ ≤ b - a + 2 := by dsimp [ρ]; nlinarith [hab]
+    linarith only [h1, h2]
+  have hρle : ρ ≤ b - a + 2 := by dsimp [ρ]; linarith only [hab]
   have hc0n0 : 0 ≤ c0n := by dsimp [c0n]; exact le_max_right c0 0
   have hc0n_le : c0 ≤ c0n := by dsimp [c0n]; exact le_max_left c0 0
   have hC4 : 4 * c0n ≤ C := by dsimp [C]; exact le_max_left (4 * c0n) 1
@@ -283,10 +283,10 @@ theorem windowZeroCountC {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have h1 : 0 ≤ Real.log (2 + |t| + ρ) := by
       refine Real.log_nonneg ?_
       have : 0 ≤ |t| := abs_nonneg t
-      linarith
+      linarith only [hρ2, this]
     have h2 : 0 ≤ Real.log (N : ℝ) := by
       exact Real.log_nonneg (by exact_mod_cast (Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N))))
-    linarith
+    linarith only [h1, h2]
   have hbndP : (∑ᶠ u : ℂ, Gp u) ≤ c0 * ρ * LP := by
     have h := hc0 ρ hρ2 t
     simpa [Gp, LP, Λ] using h
@@ -310,30 +310,30 @@ theorem windowZeroCountC {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     have ht_abs : |t| ≤ b := by
       have ht0 : 0 ≤ t := by
         dsimp [t]
-        have ha0 : 0 ≤ a := by linarith
+        have ha0 : 0 ≤ a := by linarith only [ha]
         positivity
       rw [abs_of_nonneg ht0]
       dsimp [t]
-      linarith
+      linarith only [hab]
     have harg_le : 2 + |t| + ρ ≤ 2 * (b + 3) := by
-      have hρ_le' : ρ ≤ b + 3 := by dsimp [ρ]; nlinarith [hab]
-      nlinarith [ht_abs, hρ_le']
+      have hρ_le' : ρ ≤ b + 3 := by dsimp [ρ]; linarith only [hab, ha]
+      linarith only [ht_abs, hρ_le', ha, hρle]
     have harg_pos : 0 < 2 + |t| + ρ := by positivity
     have hlog1 : Real.log (2 + |t| + ρ) ≤ Real.log (2 * (b + 3)) :=
       Real.log_le_log harg_pos harg_le
     have hlog2 : Real.log (2 * (b + 3)) = Real.log 2 + Real.log (b + 3) := by
-      rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith : (b + 3 : ℝ) ≠ 0)]
+      rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith only [ha, hab] : (b + 3 : ℝ) ≠ 0)]
     have hlog2le : Real.log 2 ≤ Real.log (b + 3) := by
-      exact Real.log_le_log (by norm_num) (by linarith : (2 : ℝ) ≤ b + 3)
+      exact Real.log_le_log (by norm_num) (by linarith only [ha, hab] : (2 : ℝ) ≤ b + 3)
     have hsum : Real.log (2 + |t| + ρ) ≤ 2 * Real.log (b + 3) := by
       calc
         Real.log (2 + |t| + ρ) ≤ Real.log (2 * (b + 3)) := hlog1
         _ = Real.log 2 + Real.log (b + 3) := hlog2
-        _ ≤ Real.log (b + 3) + Real.log (b + 3) := by nlinarith [hlog2le]
+        _ ≤ Real.log (b + 3) + Real.log (b + 3) := by linarith only [hlog2le]
         _ = 2 * Real.log (b + 3) := by ring
     have hN0 : 0 ≤ Real.log (N : ℝ) := by
       exact Real.log_nonneg (by exact_mod_cast (Nat.succ_le_of_lt (Nat.pos_of_ne_zero (NeZero.ne N))))
-    nlinarith [hsum, hN0]
+    linarith only [hsum, hN0, hlog1, hlog2, hlog2le]
   have hpos_c0n_rho : 0 ≤ c0n * ρ := mul_nonneg hc0n0 hρ0
   have hstep1 : (∑ᶠ u : ℂ, (F * w) u) ≤ 2 * (c0n * ρ * LP) := by
     calc
@@ -345,7 +345,7 @@ theorem windowZeroCountC {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     exact mul_le_mul_of_nonneg_left hm (by norm_num : (0 : ℝ) ≤ 2)
   have hstep3 : 2 * (c0n * ρ * (2 * L)) = 4 * c0n * ρ * L := by ring
   have h4c0n0 : 0 ≤ 4 * c0n := by positivity
-  have hba20 : 0 ≤ b - a + 2 := by nlinarith
+  have hba20 : 0 ≤ b - a + 2 := by linarith only [hab]
   have hbL0 : 0 ≤ (b - a + 2) * L := mul_nonneg hba20 hL0
   have hstep4 : 4 * c0n * ρ * L ≤ 4 * c0n * (b - a + 2) * L := by
     calc

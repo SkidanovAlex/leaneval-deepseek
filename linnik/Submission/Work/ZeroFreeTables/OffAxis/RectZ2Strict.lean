@@ -537,7 +537,8 @@ theorem RectZ2Strict : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q�
         ≤ 14379 * (11 - (15:ℝ)/2 * ((111:ℝ)/100)) - 24480 * (10 * (1 - ((111:ℝ)/100)/2)^2)
         + 30480 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/8 + 1/1000000)
         + 30529 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/1000) := by
-      nlinarith [hθ_ge, hθ_le]
+      nlinarith only [hθ_ge, hθ_le, sq_nonneg (θ - 111/100),
+        mul_nonneg (sub_nonneg.mpr hθ_ge) (sub_nonneg.mpr hθ_le)]
     have h2 : 14379 * (11 - (15:ℝ)/2 * ((111:ℝ)/100)) - 24480 * (10 * (1 - ((111:ℝ)/100)/2)^2)
         + 30480 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/8 + 1/1000000)
         + 30529 * ((14:ℝ)/5 * ((7:ℝ)/2 * ((111:ℝ)/100) - 3)) * (1/1000) ≤ -495 := by norm_num
@@ -557,7 +558,7 @@ theorem RectZ2Strict : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q�
         - 24480 * (10 * (1 - θ/2)^2) + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000)
       ≤ 14379 * (11 - (15:ℝ)/2 * θ) - 24480 * (10 * (1 - θ/2)^2)
         + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000) := by
-    linarith [hA_le']
+    linarith only [hA_le']
   have hstep1 : 0 ≤ Real.log q * (14379 * (∫ t in (0:ℝ)..x₀,
           Real.exp (Work.LinnikContract.lamOf q ρ₁ * t) * f t)
         - 24480 * (10 * (1 - θ/2)^2) + 30480 * f 0 * (1/8 + 1/1000000) + 30529 * f 0 * (1/1000))
@@ -576,7 +577,7 @@ theorem RectZ2Strict : ∀ L : ℝ, 1 ≤ L → ∃ q₀ : ℕ, ∀ q : ℕ, q�
       ≤ Real.log q * (-495) + 16150 * Cdec :=
     add_le_add (mul_le_mul_of_nonneg_left hPhi hlogq.le) le_rfl
   have hfin : 0 ≤ Real.log q * (-495) + 16150 * Cdec := le_trans hstep1 (le_trans hstep2 hstep3)
-  have hthr : 16150 * Cdec < 495 * Real.log q := by nlinarith [hCLg, hCdecpos]
+  have hthr : 16150 * Cdec < 495 * Real.log q := by linarith only [hCLg]
   linarith
 
 end

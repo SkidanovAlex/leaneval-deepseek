@@ -77,8 +77,8 @@ lemma integrable_naive_line_one (q : ℕ) [NeZero q] (hq : 2 ≤ q) {U V W Y : �
   set DF : ℝ := (V * W) ^ (1 / (1 : ℝ)) * (1 + Real.log (V * W)) ^ 3 with hDFdef
   have hDF0 : 0 ≤ DF := by
     rw [hDFdef]
-    refine mul_nonneg (Real.rpow_nonneg (by nlinarith) _) (pow_nonneg ?_ 3)
-    have : (1 : ℝ) ≤ V * W := by nlinarith
+    refine mul_nonneg (Real.rpow_nonneg (by nlinarith only [hV, hW]) _) (pow_nonneg ?_ 3)
+    have : (1 : ℝ) ≤ V * W := by nlinarith only [hV, hW]
     linarith [Real.log_nonneg this]
   set M : ℝ := 2 * Cg * Y * (Real.log q + 6 + Csig) * DF with hMdef
   have hbase : Integrable (fun t : ℝ => (1 + |t|) ^ (2 : ℝ) * Real.exp (-(Real.pi / 2 * |t|))) :=
@@ -133,10 +133,10 @@ lemma integrable_naive_line_one (q : ℕ) [NeZero q] (hq : 2 ≤ q) {U V W Y : �
       have htri : |σ.im + t| ≤ |σ.im| + |t| := abs_add_le _ _
       linarith
     have h4 : 2 + |σ.im| + |t| ≤ Csig * (2 * (1 + |t|)) := by
-      rw [hCsigdef]; nlinarith [abs_nonneg t, abs_nonneg σ.im]
+      rw [hCsigdef]; nlinarith only [abs_nonneg t, abs_nonneg σ.im]
     have hL0 : 0 ≤ Real.log q + 6 + Csig := by linarith
     have h1t : (1 : ℝ) ≤ 2 * (1 + |t|) := by linarith [abs_nonneg t]
-    have h9 : Real.log q + 6 ≤ (Real.log q + 6) * (2 * (1 + |t|)) := by nlinarith [hL0]
+    have h9 : Real.log q + 6 ≤ (Real.log q + 6) * (2 * (1 + |t|)) := by nlinarith only [hlogq, h1t]
     have hkey : (Real.log q + 6 + Csig) * (2 * (1 + |t|))
         = (Real.log q + 6) * (2 * (1 + |t|)) + Csig * (2 * (1 + |t|)) := by ring
     rw [hkey]; linarith
@@ -321,8 +321,8 @@ lemma norm_Ptw_shifted_pointwise (q : ℕ) [NeZero q] {U V W X Y : ℝ} (hU : 0 
     have h2 : 0 < Y ^ c₁ := Real.rpow_pos_of_pos hY _
     linarith
   have hDF0 : 0 ≤ (V * W) ^ (1 / (k : ℝ)) * (1 + Real.log (V * W)) ^ 3 := by
-    refine mul_nonneg (Real.rpow_nonneg (by nlinarith) _) (pow_nonneg ?_ 3)
-    have : (1 : ℝ) ≤ V * W := by nlinarith
+    refine mul_nonneg (Real.rpow_nonneg (by nlinarith only [hV, hW]) _) (pow_nonneg ?_ 3)
+    have : (1 : ℝ) ≤ V * W := by nlinarith only [hV, hW]
     linarith [Real.log_nonneg this]
   have hL0 : 0 ≤ Cb * (2 + |t|) := by positivity
   have hΓ0 : 0 ≤ ‖Complex.Gamma s‖ := norm_nonneg _
@@ -367,8 +367,8 @@ lemma integrable_Ptw_line_shifted (q : ℕ) [NeZero q] {U V W X Y : ℝ} (hU : 0
     · have h1 : 0 < X ^ c₁ := Real.rpow_pos_of_pos hX _
       have h2 : 0 < Y ^ c₁ := Real.rpow_pos_of_pos hY _
       linarith
-    · refine mul_nonneg (Real.rpow_nonneg (by nlinarith) _) (pow_nonneg ?_ 3)
-      have : (1 : ℝ) ≤ V * W := by nlinarith
+    · refine mul_nonneg (Real.rpow_nonneg (by nlinarith only [hV, hW]) _) (pow_nonneg ?_ 3)
+      have : (1 : ℝ) ≤ V * W := by nlinarith only [hV, hW]
       linarith [Real.log_nonneg this]
   have hmaj : Integrable (fun t : ℝ =>
       K * (‖Complex.Gamma ((c₁ : ℂ) + (t : ℂ) * Complex.I)‖ * (2 + |t|))) := hΓint.const_mul K
@@ -456,7 +456,7 @@ lemma LFunction_segment_bound (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZer
     have hexp : (1 / 3 : ℝ) * (1 - r) * (1 + 1 / (k : ℝ)) + 1
         ≤ (1 / 3 : ℝ) * (1 / (k : ℝ)) * (1 + 1 / (k : ℝ)) + 1 := by
       have hle : 1 - r ≤ 1 / (k : ℝ) := by linarith
-      nlinarith [hkk, hrle, hk0, hle]
+      nlinarith only [hkk, hrle, hk0, hle]
     have hpow : (q : ℝ) ^ ((1 / 3 : ℝ) * (1 - r) * (1 + 1 / (k : ℝ)) + 1)
         ≤ (q : ℝ) ^ ((1 / 3 : ℝ) * (1 / (k : ℝ)) * (1 + 1 / (k : ℝ)) + 1) :=
       Real.rpow_le_rpow_of_exponent_le (by linarith : (1 : ℝ) ≤ (q : ℝ)) hexp
@@ -481,7 +481,7 @@ lemma LFunction_segment_bound (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZer
       have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 + |t| by positivity)
       linarith
     have h7 : Real.log (q : ℝ) + 7 + |t| ≤ (Real.log (q : ℝ) + 8) * (2 + |t|) := by
-      nlinarith [hlog3, habs]
+      nlinarith only [hlog3, habs]
     have h8 : (Real.log (q : ℝ) + 8) * (2 + |t|) ≤ CL * (2 + |t|) :=
       mul_le_mul_of_nonneg_right hCLbig (by linarith)
     linarith
@@ -504,8 +504,8 @@ lemma norm_Ptw_edge (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZero q] (hq :
   set DF : ℝ := (V * W) ^ (1 / (k : ℝ)) * (1 + Real.log (V * W)) ^ 3 with hDFdef
   have hDF0 : 0 ≤ DF := by
     rw [hDFdef]
-    refine mul_nonneg (Real.rpow_nonneg (by nlinarith) _) (pow_nonneg ?_ 3)
-    have : (1 : ℝ) ≤ V * W := by nlinarith
+    refine mul_nonneg (Real.rpow_nonneg (by nlinarith only [hV, hW]) _) (pow_nonneg ?_ 3)
+    have : (1 : ℝ) ≤ V * W := by nlinarith only [hV, hW]
     linarith [Real.log_nonneg this]
   have hX0 : (0 : ℝ) ≤ X := hX.le
   have hY0 : (0 : ℝ) ≤ Y := hY.le
@@ -629,7 +629,7 @@ lemma norm_Ptw_edge (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZero q] (hq :
       have h2 : (2 : ℝ) + |σ.im + ε * T| ≤ (3 + |σ.im|) * T := by
         have hab := abs_add_le σ.im (ε * T)
         rw [hεT] at hab
-        nlinarith [abs_nonneg σ.im, hT]
+        nlinarith only [abs_nonneg σ.im, hT, hab]
       calc CL * (2 + |σ.im + ε * T|) ≤ CL * ((3 + |σ.im|) * T) :=
             mul_le_mul_of_nonneg_left h2 hCL0.le
         _ = CL * (3 + |σ.im|) * T := by ring
@@ -678,7 +678,7 @@ lemma norm_Ptw_edge (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZero q] (hq :
           Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)
         have h2 : (1 + T) ^ (2 : ℝ) = (1 + T) ^ (2 : ℕ) := by
           rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
-        have h3 : (1 + T) ^ (2 : ℕ) ≤ (2 * T) ^ (2 : ℕ) := by nlinarith
+        have h3 : (1 + T) ^ (2 : ℕ) ≤ (2 * T) ^ (2 : ℕ) := by nlinarith only [hT]
         have h4 : (2 * T) ^ (2 : ℕ) = 4 * T ^ 2 := by ring
         have h5 : T ^ 2 ≤ T ^ (4 : ℕ) := pow_le_pow_right₀ hT (by norm_num)
         calc (1 + T) ^ (3 / 2 : ℝ) ≤ (1 + T) ^ (2 : ℝ) := h1
@@ -707,7 +707,7 @@ lemma norm_Ptw_edge (h1 : Work.LinnikContract2.Area1) (q : ℕ) [NeZero q] (hq :
         _ ≤ (Cg * 4 * (max 1 X + max 1 X⁻¹ + (max 1 Y + max 1 Y⁻¹)) * CL * (3 + |σ.im|) * DF + 1)
             * Real.exp (-(Real.pi / 2 * T)) * T ^ 4 := by
             have hT4 : 0 ≤ T ^ (4 : ℕ) := by positivity
-            nlinarith [hA0, hexp0, hT4]
+            linarith only [mul_nonneg hexp0 hT4]
     calc ‖Complex.Gamma s‖ * ‖(X : ℂ) ^ s - (Y : ℂ) ^ s‖
           * ‖DirichletCharacter.LFunction χ (σ + s)‖ * ‖lcmF q U V W χ (σ + s)‖
         ≤ (Cg * (1 + T) ^ (3 / 2 : ℝ) * Real.exp (-(Real.pi / 2 * T)) * T⁻¹
@@ -921,7 +921,7 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
       field_simp; ring
     have h3 : δ / (k : ℝ) = (6 * δ * (k : ℝ)) / (6 * ((k : ℝ)) ^ 2) := by field_simp
     rw [h2, h3, div_lt_div_iff_of_pos_right (by positivity : (0 : ℝ) < 6 * ((k : ℝ)) ^ 2)]
-    nlinarith [hkδ, hδpos]
+    nlinarith only [hkδ, hδpos]
   obtain ⟨Cb0, hCb0pos, hCb0⟩ := LFunction_line_bound h1 k hk3 he
   obtain ⟨CΓ, hCΓpos, hCΓ⟩ := Gamma_line_integral_bound
   have hx0 : 0 ≤ x := by linarith
@@ -959,7 +959,7 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
         have h16' : Real.log 16 = 4 * Real.log 2 := by
           rw [show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num
         rw [h16']
-        nlinarith [Real.log_two_gt_d9, Real.exp_one_lt_d9]
+        linarith only [Real.log_two_gt_d9, Real.exp_one_lt_d9]
       exact le_trans h1 (Real.log_le_log (by norm_num) h16)
     have := Real.log_le_log (Real.exp_pos 1) hexp
     rwa [Real.log_exp] at this
@@ -1052,7 +1052,7 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
       linarith [hσim, abs_nonneg t]
     rw [hCbdef]
     have h4 : 0 ≤ Cb0 * (q : ℝ) ^ E := by positivity
-    nlinarith [h2, h4]
+    nlinarith only [h2, h4, mul_le_mul_of_nonneg_left h2 h4]
   -- ### the shift and the integral bound
   have hshift := Ssm_sub_eq_Ptw_shifted h1 q hq3 1 ((q : ℝ) ^ w) ((q : ℝ) ^ w) ((q : ℝ) ^ x)
     (((q : ℝ) ^ u) / (Real.log q) ^ 2) ψ σ (by norm_num) hW1 hW1 hW1 hX0 hY0 hψ hσ0 hσ1 hk3
@@ -1062,7 +1062,7 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
   have hDF0 : 0 ≤ DF := by
     rw [hDFdef]
     refine mul_nonneg (Real.rpow_nonneg (by positivity) _) (pow_nonneg ?_ 3)
-    have : (1 : ℝ) ≤ ((q : ℝ) ^ w) * ((q : ℝ) ^ w) := by nlinarith
+    have : (1 : ℝ) ≤ ((q : ℝ) ^ w) * ((q : ℝ) ^ w) := by nlinarith only [hW1]
     linarith [Real.log_nonneg this]
   have hDFb2 : DF ≤ (q : ℝ) ^ (2 * w / (k : ℝ)) * ((1 + 2 * w) ^ 3 * (Real.log q) ^ 3) := by
     have hWsq : ((q : ℝ) ^ w) * ((q : ℝ) ^ w) = (q : ℝ) ^ (2 * w) := by
@@ -1078,7 +1078,7 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
     have h2 : 2 * w * (1 / (k : ℝ)) = 2 * w / (k : ℝ) := by ring
     rw [h2]
     have h3 : (1 + 2 * w * Real.log q) ^ 3 ≤ (1 + 2 * w) ^ 3 * (Real.log q) ^ 3 := by
-      have h4 : 1 + 2 * w * Real.log q ≤ (1 + 2 * w) * Real.log q := by nlinarith [hw, hL1]
+      have h4 : 1 + 2 * w * Real.log q ≤ (1 + 2 * w) * Real.log q := by nlinarith only [hw, hL1]
       have h5 : 0 ≤ 1 + 2 * w * Real.log q := by positivity
       calc (1 + 2 * w * Real.log q) ^ 3 ≤ ((1 + 2 * w) * Real.log q) ^ 3 :=
             pow_le_pow_left₀ h5 h4 3
@@ -1324,8 +1324,11 @@ theorem Ssm_diff_bound (h1 : Work.LinnikContract2.Area1) (u w x : ℝ) (hw : 0 <
         have h1 : (1 : ℝ) + Real.log q ≤ 2 * Real.log q := by linarith
         have h2 : 0 ≤ Cll * (1 + 2 * w) ^ 3 * (Real.log q) ^ 4 * (q : ℝ) ^ s0 := by positivity
         have h3 : 0 ≤ Real.log q := hL0
-        nlinarith [h1, h2, h3, hCllpos.le, Real.rpow_nonneg hqpos.le s0,
-          Real.rpow_nonneg (by positivity : (0 : ℝ) ≤ 1 + 2 * w) 3]
+        calc Cll * (1 + 2 * w) ^ 3 * (Real.log q) ^ 4 * ((q : ℝ) ^ s0 + Real.log q * (q : ℝ) ^ s0)
+            = Cll * (1 + 2 * w) ^ 3 * (Real.log q) ^ 4 * (q : ℝ) ^ s0 * (1 + Real.log q) := by ring
+          _ ≤ Cll * (1 + 2 * w) ^ 3 * (Real.log q) ^ 4 * (q : ℝ) ^ s0 * (2 * Real.log q) :=
+            mul_le_mul_of_nonneg_left h1 h2
+          _ = 2 * Cll * (1 + 2 * w) ^ 3 * (Real.log q) ^ 5 * (q : ℝ) ^ s0 := by ring
       linarith [step1, step2, step4, step5]
     have hb1 : 0 ≤ (1 / (2 * Real.pi)) * Cb0 * (2 * (k : ℝ) * CΓ) := by positivity
     calc 2 * ((1 / (2 * Real.pi)) * Cb0 * (2 * (k : ℝ) * CΓ))
@@ -1470,7 +1473,7 @@ theorem hb11_offdiag_pair_bound (h1 : Work.LinnikContract2.Area1) :
       have h1 : (1 - ρ.re) * Real.log q = Work.LinnikContract2.lamOf q ρ := rfl
       have h2 : (1 - ρ'.re) * Real.log q = Work.LinnikContract2.lamOf q ρ' := rfl
       rw [hre]
-      nlinarith [hlam1, hlam2]
+      linarith only [hlam1, hlam2, h1, h2]
     have hb := hC₁ q hqQ (χ * χ'⁻¹) hχχ' (ρ + (starRingEnd ℂ ρ') - 1) hσ1 hσim hσlam
     refine le_trans hb ?_
     rw [div_le_div_iff_of_pos_right hL]

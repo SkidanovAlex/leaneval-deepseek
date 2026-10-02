@@ -40,11 +40,11 @@ lemma Bfun_le {p gl gh r : ℝ} (hp : 0 < p)
     norm_num
   rw [hB]
   have h1 : (1 - Real.exp (-((3:ℝ)/5*p)))/(6*((9:ℝ)/100)*p) ≤ (1-gl)/(6*((9:ℝ)/100)*p) :=
-    div_le_div_of_nonneg_right (by linarith) (by positivity)
+    div_le_div_of_nonneg_right (by linarith only [hgl]) (by positivity)
   have h2 : (2*((3:ℝ)/10)*p - 1 + Real.exp (-((3:ℝ)/5*p)))/(2*((9:ℝ)/100)*p^2)
       ≤ (2*((3:ℝ)/10)*p - 1 + gh)/(2*((9:ℝ)/100)*p^2) :=
-    div_le_div_of_nonneg_right (by linarith) (by positivity)
-  linarith
+    div_le_div_of_nonneg_right (by linarith only [hgh]) (by positivity)
+  linarith only [hr, h1, h2]
 
 lemma Bfun_ge {p gl gh r : ℝ} (hp : 0 < p)
     (hgl : gl ≤ Real.exp (-((3:ℝ)/5*p))) (hgh : Real.exp (-((3:ℝ)/5*p)) ≤ gh)
@@ -57,11 +57,11 @@ lemma Bfun_ge {p gl gh r : ℝ} (hp : 0 < p)
     norm_num
   rw [hB]
   have h1 : (1-gh)/(6*((9:ℝ)/100)*p) ≤ (1 - Real.exp (-((3:ℝ)/5*p)))/(6*((9:ℝ)/100)*p) :=
-    div_le_div_of_nonneg_right (by linarith) (by positivity)
+    div_le_div_of_nonneg_right (by linarith only [hgh]) (by positivity)
   have h2 : (2*((3:ℝ)/10)*p - 1 + gl)/(2*((9:ℝ)/100)*p^2)
       ≤ (2*((3:ℝ)/10)*p - 1 + Real.exp (-((3:ℝ)/5*p)))/(2*((9:ℝ)/100)*p^2) :=
-    div_le_div_of_nonneg_right (by linarith) (by positivity)
-  linarith
+    div_le_div_of_nonneg_right (by linarith only [hgl]) (by positivity)
+  linarith only [hr, h1, h2]
 
 /-! ## `Phi` -/
 
@@ -91,7 +91,7 @@ lemma F2K2_le {p al r : ℝ} (hp : 0 < p) (hal : al ≤ Real.exp (-((3:ℝ)/10*p
     (hr : ((1-al)/p)^2 / ((9:ℝ)/100) ≤ r) :
     ((1-Real.exp (-((3:ℝ)/10*p)))/p)^2 / ((9:ℝ)/100) ≤ r := by
   have h1 : (1 - Real.exp (-((3:ℝ)/10*p)))/p ≤ (1-al)/p :=
-    div_le_div_of_nonneg_right (by linarith) (le_of_lt hp)
+    div_le_div_of_nonneg_right (by linarith only [hal]) (le_of_lt hp)
   have h2 : (0:ℝ) ≤ (1 - Real.exp (-((3:ℝ)/10*p)))/p := by
     apply div_nonneg _ (le_of_lt hp)
     rw [sub_nonneg, Real.exp_le_one_iff]
@@ -119,11 +119,11 @@ lemma Wf_le {p Pu Qu r : ℝ} (hp : 0 ≤ p) (hPu : 0 ≤ Pu)
   rw [Real.exp_neg] at hP
   have hQlt : Real.exp (-((41:ℝ)/30*p)) < 1 := lt_of_le_of_lt hQ hQu
   rw [Wf_eq]
-  have hden : 0 < 1 - Qu := by linarith
-  have hden2 : 0 < 1 - Real.exp (-((41:ℝ)/30*p)) := by linarith
+  have hden : 0 < 1 - Qu := by linarith only [hQu]
+  have hden2 : 0 < 1 - Real.exp (-((41:ℝ)/30*p)) := by linarith only [hQ, hQu]
   have h1 : p/(1 - Real.exp (-((41:ℝ)/30*p))) ≤ p/(1-Qu) := by
     rw [div_le_div_iff₀ hden2 hden]
-    nlinarith
+    nlinarith only [hp, hQ]
   calc (Real.exp ((73:ℝ)/30*p))⁻¹ * (p/(1 - Real.exp (-((41:ℝ)/30*p))))
       ≤ Pu * (p/(1-Qu)) :=
         mul_le_mul hP h1 (div_nonneg hp (le_of_lt hden2)) hPu
@@ -135,13 +135,13 @@ lemma Wf_ge {p Pl Ql r : ℝ} (hp : 0 < p) (hP : Pl ≤ Real.exp (-((73:ℝ)/30*
     (hr : r ≤ Pl*p/(1-Ql)) : r ≤ Wf p := by
   rw [Real.exp_neg] at hP
   have hQlt : Real.exp (-((41:ℝ)/30*p)) < 1 := by
-    rw [Real.exp_lt_one_iff]; nlinarith
+    rw [Real.exp_lt_one_iff]; linarith only [hp]
   rw [Wf_eq]
-  have hden : 0 < 1 - Real.exp (-((41:ℝ)/30*p)) := by linarith
-  have hden2 : 0 < 1 - Ql := by linarith
+  have hden : 0 < 1 - Real.exp (-((41:ℝ)/30*p)) := by linarith only [hQlt]
+  have hden2 : 0 < 1 - Ql := by linarith only [hQl]
   have h1 : p/(1-Ql) ≤ p/(1 - Real.exp (-((41:ℝ)/30*p))) := by
     rw [div_le_div_iff₀ hden2 hden]
-    nlinarith
+    nlinarith only [hp, hQ]
   calc r ≤ Pl*p/(1-Ql) := hr
     _ = Pl * (p/(1-Ql)) := by ring
     _ ≤ (Real.exp ((73:ℝ)/30*p))⁻¹ * (p/(1 - Real.exp (-((41:ℝ)/30*p)))) :=
@@ -163,7 +163,7 @@ lemma Cf_le {L x Px Wxl PL WLu r : ℝ} (hPx : Phi x ≤ Px) (hPL : PL ≤ Phi L
       have h2 : Phi L * Wxl ≤ Phi L * Wf x :=
         mul_le_mul_of_nonneg_left hwx hPLpos
       have h3 : PL * Wxl ≤ Phi L * Wxl := mul_le_mul_of_nonneg_right hPL hwx0
-      linarith
+      linarith only [h2, h3]
     have h4 : WLu⁻¹ ≤ (Wf L)⁻¹ := by
       have h5 : 1 / WLu ≤ 1 / (Wf L) := one_div_le_one_div_of_le hW0 hwL
       simpa [one_div] using h5
@@ -172,7 +172,7 @@ lemma Cf_le {L x Px Wxl PL WLu r : ℝ} (hPx : Phi x ≤ Px) (hPL : PL ≤ Phi L
           mul_le_mul h1 h4 (inv_nonneg.mpr (le_of_lt hWLu0))
             (mul_nonneg hPLpos (le_trans hwx0 hwx))
       _ = Phi L * Wf x / Wf L := by rw [div_eq_mul_inv]
-  have hx : Phi x - Phi L * Wf x / Wf L ≤ Px - PL * Wxl / WLu := by linarith
+  have hx : Phi x - Phi L * Wf x / Wf L ≤ Px - PL * Wxl / WLu := by linarith only [hPx, hstep]
   have hr' : Px - PL * Wxl / WLu ≤ r := le_trans (le_max_right _ _) hr
   exact le_trans hx hr'
 
@@ -180,10 +180,10 @@ lemma Aref_nonneg {c0 p : ℝ} (hpc : p ≤ c0)
     (hBF : ((1-Real.exp (-((3:ℝ)/10*p)))/p)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) p) :
     0 ≤ Aref c0 p := by
   rw [Aref, Kc_eq, K2_eq, ac_eq]
-  apply mul_nonneg _ (by linarith)
+  apply mul_nonneg _ (by linarith only [hBF])
   rw [sub_nonneg]
   apply Real.exp_le_exp.mpr
-  nlinarith
+  linarith only [hpc]
 
 lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
     (hp : 0 < p) (hpc : p ≤ c0) (hBF : ((1-Real.exp (-((3:ℝ)/10*p)))/p)^2/((9:ℝ)/100) ≤ Bfun ((3:ℝ)/10) p)
@@ -203,7 +203,7 @@ lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
     · have hC : max 0 (Phi p - Phi L * Wf p / Wf L) = 0 := max_eq_left h
       rw [hC]
       have h1 : (0:ℝ) ≤ max 0 (Phi p - Aref c0 p - Phi L * Wf p / Wf L) := le_max_left _ _
-      linarith
+      linarith only [hA0, h1]
     · have hpos : 0 < Phi p - Phi L * Wf p / Wf L := not_le.mp h
       have hC : max 0 (Phi p - Phi L * Wf p / Wf L) = Phi p - Phi L * Wf p / Wf L :=
         max_eq_right hpos.le
@@ -211,8 +211,8 @@ lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
       have h1 : Phi p - Phi L * Wf p / Wf L - Aref c0 p
           ≤ max 0 (Phi p - Aref c0 p - Phi L * Wf p / Wf L) := by
         have h2 := le_max_right (0:ℝ) (Phi p - Aref c0 p - Phi L * Wf p / Wf L)
-        linarith
-      linarith
+        linarith only [h2]
+      linarith only [h1]
   have hid : Phi p - Aref c0 p - Phi L * Wf p / Wf L
       = Real.exp (-((49:ℝ)/10*c0)) * Bfun ((3:ℝ)/10) p
         + (Real.exp (-((49:ℝ)/10*p)) - Real.exp (-((49:ℝ)/10*c0)))
@@ -228,9 +228,9 @@ lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
       ≤ max 0 (Ea - Ec0l) * F2a := by
     by_cases h : 0 ≤ Real.exp (-((49:ℝ)/10*p)) - Real.exp (-((49:ℝ)/10*c0))
     · have hle : max 0 (Ea - Ec0l) = Ea - Ec0l := by
-        apply max_eq_right; linarith
+        apply max_eq_right; linarith only [hEc0l, hEp, h]
       rw [hle]
-      exact mul_le_mul (by linarith) hF2p (by positivity) (by linarith)
+      exact mul_le_mul (by linarith only [hEc0l, hEp]) hF2p (by positivity) (by linarith only [hEc0l, hEp, h])
     · have hsq : (0:ℝ) ≤ ((1-Real.exp (-((3:ℝ)/10*p)))/p)^2 := sq_nonneg _
       have hdiv : (0:ℝ) ≤ ((1-Real.exp (-((3:ℝ)/10*p)))/p)^2/((9:ℝ)/100) :=
         div_nonneg hsq (by norm_num)
@@ -240,13 +240,13 @@ lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
       have hle0 : (Real.exp (-((49:ℝ)/10*p)) - Real.exp (-((49:ℝ)/10*c0)))
           * (((1-Real.exp (-((3:ℝ)/10*p)))/p)^2/((9:ℝ)/100)) ≤ 0 :=
         mul_nonpos_of_nonpos_of_nonneg hneg hdiv
-      linarith [hle0, h0]
+      linarith only [hle0, h0]
   have h3 : PLl * Wlb / Wupu ≤ Phi L * Wf p / Wf L := by
     have hPLpos : 0 ≤ Phi L := le_trans hPL0 hPL
     have h1' : PLl * Wlb ≤ Phi L * Wf p := by
       have ha : PLl * Wlb ≤ Phi L * Wlb := mul_le_mul_of_nonneg_right hPL hWlb0
       have hb : Phi L * Wlb ≤ Phi L * Wf p := mul_le_mul_of_nonneg_left hWlb hPLpos
-      linarith
+      linarith only [ha, hb]
     have h4 : Wupu⁻¹ ≤ (Wf L)⁻¹ := by
       have h5 : 1 / Wupu ≤ 1 / (Wf L) := one_div_le_one_div_of_le hW0 hWu
       simpa [one_div] using h5
@@ -257,14 +257,14 @@ lemma Cst1_le {L c0 p a b Ec0u Ec0l Ea Ba F2a PLl Wlb Wupu r : ℝ}
       _ = Phi L * Wf p / Wf L := by rw [div_eq_mul_inv]
   have hstr : Phi p - Aref c0 p - Phi L * Wf p / Wf L
       ≤ Ec0u * Ba + max 0 (Ea - Ec0l) * F2a - PLl * Wlb / Wupu := by
-    rw [hid]; linarith
+    rw [hid]; linarith only [h1, h2, h3]
   have hfin : max 0 (Phi p - Aref c0 p - Phi L * Wf p / Wf L)
       ≤ max 0 (Ec0u * Ba + max 0 (Ea - Ec0l) * F2a - PLl * Wlb / Wupu) := by
     rw [max_le_iff]
     exact ⟨le_max_left _ _, le_trans hstr (le_max_right _ _)⟩
   have hr' : max 0 (Ec0u * Ba + max 0 (Ea - Ec0l) * F2a - PLl * Wlb / Wupu) ≤ r :=
     max_le hr0 hr
-  linarith [hmax, hfin, hr']
+  linarith only [hmax, hfin, hr']
 
 lemma Cst2_le {L p c Pc PLl Wlc WLu r : ℝ}
     (hPc : Phi c ≤ Pc) (hPL : PLl ≤ Phi L) (hPL0 : 0 ≤ PLl)

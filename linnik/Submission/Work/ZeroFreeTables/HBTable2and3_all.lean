@@ -1,12 +1,10 @@
 import Mathlib
 import Submission.Work.ZeroFreeTables.t23Defs
 import Submission.Work.ZeroFreeTables.HB8Defs
-import Submission.Work.ZeroFreeTables.HB8GlueDefs
 import Submission.Work.ZeroFreeTables.RowCert_all
 import Submission.Work.ZeroFreeTables.t23certG
 import Submission.Work.ZeroFreeTables.t23cover
 import Submission.Work.ZeroFreeTables.t23witness
-import Submission.Work.ZeroFreeTables.t23h63
 import Submission.Work.ZeroFreeTables.t23glue
 import Submission.Work.ZeroFreeTables.t23simple
 import Submission.Work.ZeroFreeTables.t23l52

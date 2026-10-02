@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Work.ZeroFreeTables.testFn72_defs
 import Submission.Work.ZeroFreeTables.OffAxis.G72Defs
-import Submission.Work.ZeroFreeTables.OffAxis.G72_ten_eight
 import Submission.Work.ZeroFreeTables.OffAxis.TF72Calc
 import Submission.Work.ZeroFreeTables.OffAxis.G72Base
 import Submission.Work.ZeroFreeTables.OffAxis.G72SmallS
@@ -44,7 +43,7 @@ lemma exp_two_le : Real.exp (2:ℝ) ≤ 7.4 := by
   have h1 : Real.exp (2:ℝ) = Real.exp 1 * Real.exp 1 := by
     rw [show (2:ℝ) = 1 + 1 by norm_num, Real.exp_add]
   rw [h1]
-  nlinarith [Real.exp_one_lt_d9, Real.exp_pos (1:ℝ)]
+  nlinarith only [Real.exp_one_lt_d9, Real.exp_pos (1:ℝ)]
 
 /-- `exp (3/2) ≤ 4.486`. -/
 lemma exp_three_halves_le : Real.exp ((3:ℝ)/2) ≤ 4.486 := by
@@ -54,9 +53,9 @@ lemma exp_three_halves_le : Real.exp ((3:ℝ)/2) ≤ 4.486 := by
     have he : Real.exp (3:ℝ) = Real.exp 1 * Real.exp 1 * Real.exp 1 := by
       rw [show (3:ℝ) = 1 + 1 + 1 by norm_num, Real.exp_add, Real.exp_add]
     rw [he]
-    nlinarith [Real.exp_one_lt_d9, Real.exp_pos (1:ℝ)]
+    nlinarith only [Real.exp_one_lt_d9, Real.exp_pos (1:ℝ)]
   have hpos : 0 < Real.exp ((3:ℝ)/2) := Real.exp_pos _
-  have hx : (Real.exp ((3:ℝ)/2))^2 ≤ ((4.486:ℝ))^2 := by nlinarith [hsq, h3]
+  have hx : (Real.exp ((3:ℝ)/2))^2 ≤ ((4.486:ℝ))^2 := by linarith only [hsq, h3]
   have := abs_le_of_sq_le_sq hx (by norm_num : (0:ℝ) ≤ 4.486)
   rwa [abs_of_pos hpos] at this
 
@@ -65,8 +64,8 @@ lemma exp_mul_sq_le_one (s : ℝ) (_hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
     Real.exp (2*s) * (1-s)^2 ≤ 1 := by
   have h1 : 1 - s ≤ Real.exp (-s) := by
     have := Real.add_one_le_exp (-s)
-    linarith
-  have h2 : 0 ≤ 1 - s := by linarith
+    linarith only [this]
+  have h2 : 0 ≤ 1 - s := by linarith only [hs1]
   have h3 : (1-s)^2 ≤ (Real.exp (-s))^2 := pow_le_pow_left₀ h2 h1 2
   have h4 : (Real.exp (-s))^2 = Real.exp (-(2*s)) := by
     rw [sq, ← Real.exp_add]; congr 1; ring
@@ -82,8 +81,8 @@ lemma exp_mul_sq_le_one (s : ℝ) (_hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
 of `LHSle72`). -/
 lemma Mono72 (s σ : ℝ) (hs : (3:ℝ)/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 ≤ σ) :
     4 * Real.exp (2*s) * σ^2 / (s^2 + σ^2)^3 ≤ 4 * Real.exp (2:ℝ) * σ^2 / (1 + σ^2)^3 := by
-  have hσ0 : 0 < σ := by linarith
-  have hs0 : 0 ≤ s := by linarith
+  have hσ0 : 0 < σ := by linarith only [hσ]
+  have hs0 : 0 ≤ s := by linarith only [hs]
   have hrn : 0 < s^2 + σ^2 := by positivity
   have hr1 : 0 < 1 + σ^2 := by positivity
   have hd1 : (0:ℝ) < (s^2+σ^2)^3 := by positivity
@@ -91,12 +90,12 @@ lemma Mono72 (s σ : ℝ) (hs : (3:ℝ)/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)
   have hu : (1+σ^2)/(s^2+σ^2) = 1 + (1-s^2)/(s^2+σ^2) := by field_simp; ring
   have hwle : (1-s^2)/(s^2+σ^2) ≤ (2/3)*(1-s) := by
     rw [div_le_iff₀ hrn]
-    have h2 : 3*(1+s) ≤ 2*(s^2+σ^2) := by nlinarith
-    nlinarith
+    have h2 : 3*(1+s) ≤ 2*(s^2+σ^2) := by nlinarith only [hs1, hσ]
+    nlinarith only [hs1, h2]
   have hle1 : 1 + (1-s^2)/(s^2+σ^2) ≤ Real.exp ((2/3)*(1-s)) := by
     have h := Real.add_one_le_exp ((1-s^2)/(s^2+σ^2))
     have h2 := Real.exp_le_exp.mpr hwle
-    linarith
+    linarith only [h, h2]
   have hu3 : ((1+σ^2)/(s^2+σ^2))^3 ≤ Real.exp (2:ℝ)/Real.exp (2*s) := by
     rw [hu]
     calc (1 + (1-s^2)/(s^2+σ^2))^3
@@ -115,27 +114,27 @@ lemma Mono72 (s σ : ℝ) (hs : (3:ℝ)/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)
     have hmult := mul_le_mul_of_nonneg_left h4 (Real.exp_pos (2*s)).le
     have heq : Real.exp (2*s) * ((Real.exp (2:ℝ)/Real.exp (2*s)) * (s^2+σ^2)^3)
         = Real.exp (2:ℝ) * (s^2+σ^2)^3 := by rw [← mul_assoc, h5]
-    linarith [hmult, heq]
+    linarith only [hmult, heq]
   have hfin : 4 * σ^2 * (Real.exp (2*s) * (1+σ^2)^3)
       ≤ 4 * σ^2 * (Real.exp (2:ℝ) * (s^2+σ^2)^3) :=
     mul_le_mul_of_nonneg_left hkey (by positivity)
   rw [div_le_div_iff₀ hd1 hd2]
-  nlinarith [hfin]
+  linarith only [hfin]
 
 lemma LHSleA (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1/2) (hσ : (36:ℝ)/10 ≤ σ) :
     -16*s/(15*(s^2+σ^2)) + 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 1/10 := by
-  have hσ0 : (0:ℝ) < σ := by linarith
-  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith
-  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith
+  have hσ0 : (0:ℝ) < σ := by linarith only [hσ]
+  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith only [hσ]
+  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith only [hσ2]
   have hσ6 : (0:ℝ) < σ^6 := by positivity
   have hr : (0:ℝ) < s^2 + σ^2 := by positivity
   have hexp : Real.exp (2*s) ≤ 2.72 := by
-    have hle : 2*s ≤ 1 := by linarith
+    have hle : 2*s ≤ 1 := by linarith only [hs1]
     have h := (Real.exp_le_exp).mpr hle
-    linarith [Real.exp_one_lt_d9]
-  have hnum : (1-s)^2 + σ^2 ≤ 1 + σ^2 := by nlinarith
+    linarith only [Real.exp_one_lt_d9, h]
+  have hnum : (1-s)^2 + σ^2 ≤ 1 + σ^2 := by nlinarith only [hs0, hs1]
   have hden : σ^6 ≤ (s^2+σ^2)^3 := by
-    have h : σ^2 ≤ s^2 + σ^2 := by nlinarith
+    have h : σ^2 ≤ s^2 + σ^2 := by nlinarith only []
     calc σ^6 = (σ^2)^3 := by ring
       _ ≤ (s^2+σ^2)^3 := pow_le_pow_left₀ (by positivity) h 3
   have h1 : 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 4*2.72*(1+σ^2)/σ^6 := by
@@ -145,36 +144,36 @@ lemma LHSleA (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1/2) (hσ : (36:ℝ)/10 �
       div_le_div_iff₀ hr3 hσ6
     rw [hiff]
     have ha : 4*Real.exp (2*s)*((1-s)^2+σ^2) ≤ 4*2.72*(1+σ^2) := by
-      have h4 : 4*Real.exp (2*s) ≤ 4*2.72 := by linarith [hexp]
+      have h4 : 4*Real.exp (2*s) ≤ 4*2.72 := by linarith only [hexp]
       exact mul_le_mul h4 hnum (by positivity) (by norm_num)
     calc 4*Real.exp (2*s)*((1-s)^2+σ^2)*σ^6
         ≤ 4*2.72*(1+σ^2)*σ^6 := mul_le_mul_of_nonneg_right ha (by positivity)
       _ ≤ 4*2.72*(1+σ^2)*(s^2+σ^2)^3 := mul_le_mul_of_nonneg_left hden (by positivity)
   have h2 : 4*2.72*(1+σ^2)/σ^6 ≤ 1/10 := by
     rw [div_le_iff₀ hσ6]
-    have hA : 10.88*(1+σ^2) ≤ 11.72*σ^2 := by nlinarith [hσ2]
-    have hB : (11.72:ℝ) ≤ (1/10)*σ^4 := by nlinarith [hσ4]
-    nlinarith [hA, hB, sq_nonneg σ]
+    have hA : 10.88*(1+σ^2) ≤ 11.72*σ^2 := by linarith only [hσ2]
+    have hB : (11.72:ℝ) ≤ (1/10)*σ^4 := by linarith only [hσ4]
+    nlinarith only [hA, hB, sq_nonneg σ, hσ2, hσ4]
   have hmain : 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 1/10 := le_trans h1 h2
   rw [show (-16*s/(15*(s^2+σ^2))) = -(16*s/(15*(s^2+σ^2))) by ring]
   have hdrop : -(16*s/(15*(s^2+σ^2))) + 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3
       ≤ 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 := by
     have hh : (0:ℝ) ≤ 16*s/(15*(s^2+σ^2)) := by positivity
-    linarith
-  linarith [hdrop, hmain]
+    linarith only [hh]
+  linarith only [hdrop, hmain, h1, h2]
 
 /-- Case `1/2 ≤ s ≤ 3/4`. -/
 lemma LHSleB (s σ : ℝ) (hs0 : 1/2 ≤ s) (hs1 : s ≤ 3/4) (hσ : (36:ℝ)/10 ≤ σ) :
     -16*s/(15*(s^2+σ^2)) + 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 1/10 := by
-  have hσ0 : (0:ℝ) < σ := by linarith
-  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith
-  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith
+  have hσ0 : (0:ℝ) < σ := by linarith only [hσ]
+  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith only [hσ]
+  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith only [hσ2]
   have hσ6 : (0:ℝ) < σ^6 := by positivity
   have hr : (0:ℝ) < s^2 + σ^2 := by positivity
-  have hs0le : 0 ≤ s := by linarith
-  have hs1le : s ≤ 1 := by linarith
+  have hs0le : 0 ≤ s := by linarith only [hs0]
+  have hs1le : s ≤ 1 := by linarith only [hs1]
   have hexp : Real.exp (2*s) ≤ 4.486 := by
-    have hle : 2*s ≤ 3/2 := by linarith
+    have hle : 2*s ≤ 3/2 := by linarith only [hs1]
     calc Real.exp (2*s) ≤ Real.exp ((3:ℝ)/2) := (Real.exp_le_exp).mpr hle
       _ ≤ 4.486 := exp_three_halves_le
   have hsplit : 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3
@@ -185,12 +184,12 @@ lemma LHSleB (s σ : ℝ) (hs0 : 1/2 ≤ s) (hs1 : s ≤ 3/4) (hσ : (36:ℝ)/10
   have hA : -(16*s/(15*(s^2+σ^2))) ≤ -(8/(15*(1+σ^2))) := by
     rw [neg_le_neg_iff]
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    have h3 : s^2+σ^2 ≤ 2*s*(1+σ^2) := by nlinarith [hs0, hs1]
-    nlinarith [h3]
+    have h3 : s^2+σ^2 ≤ 2*s*(1+σ^2) := by nlinarith only [hs0, hs1]
+    linarith only [h3]
   have hB : 4*Real.exp (2*s)*(1-s)^2/(s^2+σ^2)^3 ≤ 4/σ^6 := by
     have hm : Real.exp (2*s)*(1-s)^2 ≤ 1 := exp_mul_sq_le_one s hs0le hs1le
     have hden : σ^6 ≤ (s^2+σ^2)^3 := by
-      have h : σ^2 ≤ s^2 + σ^2 := by nlinarith
+      have h : σ^2 ≤ s^2 + σ^2 := by nlinarith only []
       calc σ^6 = (σ^2)^3 := by ring
         _ ≤ (s^2+σ^2)^3 := pow_le_pow_left₀ (by positivity) h 3
     have hr3 : (0:ℝ) < (s^2+σ^2)^3 := by positivity
@@ -198,7 +197,7 @@ lemma LHSleB (s σ : ℝ) (hs0 : 1/2 ≤ s) (hs1 : s ≤ 3/4) (hσ : (36:ℝ)/10
         ↔ 4*Real.exp (2*s)*(1-s)^2 * σ^6 ≤ 4 * (s^2+σ^2)^3 :=
       div_le_div_iff₀ hr3 hσ6
     rw [hiff]
-    nlinarith [hm, hden]
+    nlinarith only [hm, hden, hσ6]
   have hC : 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3 ≤ 17.944/(σ^2*(σ^2+3/4)) := by
     have hr1 : (0:ℝ) < 1/4 + σ^2 := by positivity
     have h1 : 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3 ≤ 4*4.486*σ^2/(1/4+σ^2)^3 := by
@@ -209,31 +208,31 @@ lemma LHSleB (s σ : ℝ) (hs0 : 1/2 ≤ s) (hs1 : s ≤ 3/4) (hσ : (36:ℝ)/10
         div_le_div_iff₀ hr3 hr1c
       rw [hiff]
       have hden : (1/4+σ^2)^3 ≤ (s^2+σ^2)^3 := by
-        have h : 1/4 + σ^2 ≤ s^2 + σ^2 := by nlinarith
+        have h : 1/4 + σ^2 ≤ s^2 + σ^2 := by nlinarith only [hs0]
         exact pow_le_pow_left₀ (by positivity) h 3
       have ha : 4*Real.exp (2*s)*σ^2 ≤ 4*4.486*σ^2 := by
-        have h4 : 4*Real.exp (2*s) ≤ 4*4.486 := by linarith [hexp]
+        have h4 : 4*Real.exp (2*s) ≤ 4*4.486 := by linarith only [hexp]
         exact mul_le_mul h4 le_rfl (by positivity) (by norm_num)
       calc 4*Real.exp (2*s)*σ^2*(1/4+σ^2)^3
           ≤ 4*4.486*σ^2*(1/4+σ^2)^3 := mul_le_mul_of_nonneg_right ha (by positivity)
         _ ≤ 4*4.486*σ^2*(s^2+σ^2)^3 := mul_le_mul_of_nonneg_left hden (by positivity)
     have h2 : 4*4.486*σ^2/(1/4+σ^2)^3 ≤ 17.944/(σ^2*(σ^2+3/4)) := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
-      nlinarith [sq_nonneg σ]
-    linarith
+      linarith only [sq_nonneg σ, hσ2]
+    linarith only [h1, h2]
   have hb1 : 17.944/(σ^2*(σ^2+3/4)) ≤ (17.944/(324/25+3/4))/σ^2 := by
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [hσ2]
+    nlinarith only [hσ2]
   have hb2 : 4/σ^6 ≤ (4/(324/25)^2)/σ^2 := by
     rw [div_le_div_iff₀ hσ6 (by positivity)]
-    nlinarith [hσ4, sq_nonneg σ]
+    nlinarith only [hσ4, sq_nonneg σ]
   have hb3 : -(8/(15*(1+σ^2))) ≤ -(((8/15)*(324/349))/σ^2) := by
     rw [neg_le_neg_iff]
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [hσ2]
+    linarith only [hσ2]
   have hinv : 1/σ^2 ≤ 25/324 := by
     rw [div_le_iff₀ (by positivity)]
-    nlinarith [hσ2]
+    linarith only [hσ2]
   have hcomb : (17.944/(324/25+3/4))/σ^2 + (4/(324/25)^2)/σ^2 + (-(((8/15)*(324/349))/σ^2))
       = ((17.944:ℝ)/(324/25+3/4) + 4/(324/25)^2 - (8/15)*(324/349))/σ^2 := by ring
   have hfin : -(8/(15*(1+σ^2))) + (4/σ^6 + 17.944/(σ^2*(σ^2+3/4))) ≤ 1/10 := by
@@ -244,22 +243,22 @@ lemma LHSleB (s σ : ℝ) (hs0 : 1/2 ≤ s) (hs1 : s ≤ 3/4) (hσ : (36:ℝ)/10
           = ((17.944:ℝ)/(324/25+3/4) + 4/(324/25)^2 - (8/15)*(324/349)) * (1/σ^2) := by ring
         _ ≤ ((324/25)/10) * (25/324) := mul_le_mul hK hinv (by positivity) (by norm_num)
         _ = 1/10 := by norm_num
-    linarith [hb1, hb2, hb3, hcomb, hfin2]
+    linarith only [hb1, hb2, hb3, hcomb, hfin2]
   have hsum1 : -(16*s/(15*(s^2+σ^2)))
         + (4*Real.exp (2*s)*(1-s)^2/(s^2+σ^2)^3 + 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3)
       ≤ -(8/(15*(1+σ^2))) + (4/σ^6 + 17.944/(σ^2*(σ^2+3/4))) :=
     add_le_add hA (add_le_add hB hC)
-  linarith [hsum1, hfin]
+  linarith only [hsum1, hfin, hA, hB, hC]
 
 /-- Case `3/4 ≤ s ≤ 1`. -/
 lemma LHSleC (s σ : ℝ) (hs0 : 3/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 ≤ σ) :
     -16*s/(15*(s^2+σ^2)) + 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 1/10 := by
-  have hσ0 : (0:ℝ) < σ := by linarith
-  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith
-  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith
+  have hσ0 : (0:ℝ) < σ := by linarith only [hσ]
+  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith only [hσ]
+  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith only [hσ2]
   have hσ6 : (0:ℝ) < σ^6 := by positivity
   have hr : (0:ℝ) < s^2 + σ^2 := by positivity
-  have hs0le : 0 ≤ s := by linarith
+  have hs0le : 0 ≤ s := by linarith only [hs0]
   have hsplit : 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3
       = 4*Real.exp (2*s)*(1-s)^2/(s^2+σ^2)^3 + 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3 := by
     ring
@@ -268,12 +267,12 @@ lemma LHSleC (s σ : ℝ) (hs0 : 3/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 �
   have hA : -(16*s/(15*(s^2+σ^2))) ≤ -(12/(15*(1+σ^2))) := by
     rw [neg_le_neg_iff]
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    have h3 : 3*(s^2+σ^2) ≤ 4*s*(1+σ^2) := by nlinarith [hs0, hs1]
-    nlinarith [h3]
+    have h3 : 3*(s^2+σ^2) ≤ 4*s*(1+σ^2) := by nlinarith only [hs0, hs1]
+    linarith only [h3]
   have hB : 4*Real.exp (2*s)*(1-s)^2/(s^2+σ^2)^3 ≤ 4/σ^6 := by
     have hm : Real.exp (2*s)*(1-s)^2 ≤ 1 := exp_mul_sq_le_one s hs0le hs1
     have hden : σ^6 ≤ (s^2+σ^2)^3 := by
-      have h : σ^2 ≤ s^2 + σ^2 := by nlinarith
+      have h : σ^2 ≤ s^2 + σ^2 := by nlinarith only [hs0]
       calc σ^6 = (σ^2)^3 := by ring
         _ ≤ (s^2+σ^2)^3 := pow_le_pow_left₀ (by positivity) h 3
     have hr3 : (0:ℝ) < (s^2+σ^2)^3 := by positivity
@@ -281,7 +280,7 @@ lemma LHSleC (s σ : ℝ) (hs0 : 3/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 �
         ↔ 4*Real.exp (2*s)*(1-s)^2 * σ^6 ≤ 4 * (s^2+σ^2)^3 :=
       div_le_div_iff₀ hr3 hσ6
     rw [hiff]
-    nlinarith [hm, hden]
+    nlinarith only [hm, hden, hσ6]
   have hC : 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3 ≤ 29.6/(σ^4+3*σ^2) := by
     have hmono : 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3 ≤ 4*Real.exp (2:ℝ)*σ^2/(1+σ^2)^3 :=
       Mono72 s σ hs0 hs1 hσ
@@ -289,22 +288,22 @@ lemma LHSleC (s σ : ℝ) (hs0 : 3/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 �
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
       have he2 : 4*Real.exp (2:ℝ) ≤ 29.6 := by
         have h := exp_two_le
-        linarith
-      nlinarith [he2, sq_nonneg σ]
-    linarith
+        linarith only [h]
+      nlinarith only [he2, sq_nonneg σ, hσ2, hσ4, hσ6]
+    linarith only [hmono, h2]
   have hb1 : 29.6/(σ^4+3*σ^2) ≤ (29.6/(324/25+3))/σ^2 := by
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [hσ2]
+    nlinarith only [hσ2]
   have hb2 : 4/σ^6 ≤ (4/(324/25)^2)/σ^2 := by
     rw [div_le_div_iff₀ hσ6 (by positivity)]
-    nlinarith [hσ4, sq_nonneg σ]
+    nlinarith only [hσ4, sq_nonneg σ]
   have hb3 : -(12/(15*(1+σ^2))) ≤ -(((4/5)*(324/349))/σ^2) := by
     rw [neg_le_neg_iff]
     rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [hσ2]
+    linarith only [hσ2]
   have hinv : 1/σ^2 ≤ 25/324 := by
     rw [div_le_iff₀ (by positivity)]
-    nlinarith [hσ2]
+    linarith only [hσ2]
   have hcomb : (29.6/(324/25+3))/σ^2 + (4/(324/25)^2)/σ^2 + (-(((4/5)*(324/349))/σ^2))
       = ((29.6:ℝ)/(324/25+3) + 4/(324/25)^2 - (4/5)*(324/349))/σ^2 := by ring
   have hfin : -(12/(15*(1+σ^2))) + (4/σ^6 + 29.6/(σ^4+3*σ^2)) ≤ 1/10 := by
@@ -315,12 +314,12 @@ lemma LHSleC (s σ : ℝ) (hs0 : 3/4 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 �
           = ((29.6:ℝ)/(324/25+3) + 4/(324/25)^2 - (4/5)*(324/349)) * (1/σ^2) := by ring
         _ ≤ ((324/25)/10) * (25/324) := mul_le_mul hK hinv (by positivity) (by norm_num)
         _ = 1/10 := by norm_num
-    linarith [hb1, hb2, hb3, hcomb, hfin2]
+    linarith only [hb1, hb2, hb3, hcomb, hfin2]
   have hsum1 : -(16*s/(15*(s^2+σ^2)))
         + (4*Real.exp (2*s)*(1-s)^2/(s^2+σ^2)^3 + 4*Real.exp (2*s)*σ^2/(s^2+σ^2)^3)
       ≤ -(12/(15*(1+σ^2))) + (4/σ^6 + 29.6/(σ^4+3*σ^2)) :=
     add_le_add hA (add_le_add hB hC)
-  linarith [hsum1, hfin]
+  linarith only [hsum1, hfin, hA, hB, hC]
 
 /-- **The `s`-dependent part is at most `1/10`.** -/
 lemma LHSle72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 ≤ σ) :
@@ -333,20 +332,20 @@ lemma LHSle72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 �
 
 /-- The `s`-independent tail: `4/σ⁴ - 12/σ⁶ + 16/σ⁵ ≤ 11/210` for `σ ≥ 18/5`. -/
 lemma tail72 (σ : ℝ) (hσ : (36:ℝ)/10 ≤ σ) : 4/σ^4 - 12/σ^6 + 16/σ^5 ≤ 11/210 := by
-  have hσ0 : (0:ℝ) < σ := by linarith
-  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith
-  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith
+  have hσ0 : (0:ℝ) < σ := by linarith only [hσ]
+  have hσ2 : (324/25 : ℝ) ≤ σ^2 := by nlinarith only [hσ]
+  have hσ4 : (324/25 : ℝ)^2 ≤ σ^4 := by nlinarith only [hσ2]
   have hσ6 : (0:ℝ) < σ^6 := by positivity
   have hmain : 4*σ^2 + 16*σ - 12 ≤ (11/210)*σ^6 := by
-    have h16 : 16*σ ≤ (40/9)*σ^2 := by nlinarith [hσ2]
-    have h4 : (76/9 : ℝ) ≤ (11/210)*σ^4 := by nlinarith [hσ4]
-    nlinarith [h16, h4, sq_nonneg σ, hσ0]
+    have h16 : 16*σ ≤ (40/9)*σ^2 := by nlinarith only [hσ2, hσ]
+    have h4 : (76/9 : ℝ) ≤ (11/210)*σ^4 := by linarith only [hσ4]
+    nlinarith only [h16, h4, sq_nonneg σ, hσ0, hσ2, hσ4]
   have h2 : (4*σ^2 - 12 + 16*σ)/σ^6 ≤ 11/210 := by
     rw [div_le_iff₀ hσ6]
-    nlinarith [hmain]
+    linarith only [hmain]
   have h3 : 4/σ^4 - 12/σ^6 + 16/σ^5 = (4*σ^2 - 12 + 16*σ)/σ^6 := by
     field_simp
-  linarith [h2, h3]
+  linarith only [h2, h3]
 
 /-! ## The rational bound on `RA72` -/
 
@@ -354,53 +353,53 @@ lemma tail72 (σ : ℝ) (hσ : (36:ℝ)/10 ≤ σ) : 4/σ^4 - 12/σ^6 + 16/σ^5 
 `-16s/(15(s²+σ²))` are at most `4/σ⁴ + 4/σ⁶`. -/
 theorem RA72Bound72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 ≤ σ) :
     RA72 s σ ≤ -16*s/(15*(s^2+σ^2)) + 4/σ^4 + 4/σ^6 := by
-  have hσ0 : 0 < σ := by linarith
-  have hs2 : s^2 ≤ 1 := by nlinarith
-  have hσ2 : (324/25:ℝ) ≤ σ^2 := by nlinarith
+  have hσ0 : 0 < σ := by linarith only [hσ]
+  have hs2 : s^2 ≤ 1 := by nlinarith only [hs1, hs0]
+  have hσ2 : (324/25:ℝ) ≤ σ^2 := by nlinarith only [hσ]
   have hA : (0:ℝ) ≤ (8/3)*(3*s*σ^2 - s^3)/(s^2+σ^2)^3 := by
     have h : 0 ≤ 3*s*σ^2 - s^3 := by nlinarith
     positivity
   have hB : 4*(s^4 - 6*s^2*σ^2 + σ^4)/(s^2+σ^2)^4 ≤ 4/σ^4 := by
     rw [div_le_div_iff₀ (by positivity : (0:ℝ) < (s^2+σ^2)^4) (by positivity : (0:ℝ) < σ^4)]
-    have h1 : s^4 - 6*s^2*σ^2 + σ^4 ≤ σ^4 := by nlinarith
+    have h1 : s^4 - 6*s^2*σ^2 + σ^4 ≤ σ^4 := by nlinarith only [hs2, hσ2]
     have h2 : σ^4 * σ^4 ≤ (s^2+σ^2)^4 := by
-      have h3 : σ^2 ≤ s^2+σ^2 := by nlinarith
+      have h3 : σ^2 ≤ s^2+σ^2 := by nlinarith only []
       calc σ^4*σ^4 = (σ^2)^4 := by ring
         _ ≤ (s^2+σ^2)^4 := pow_le_pow_left₀ (by positivity) h3 4
     have h4 : (s^4 - 6*s^2*σ^2 + σ^4)*σ^4 ≤ (s^2+σ^2)^4 :=
       le_trans (mul_le_mul_of_nonneg_right h1 (by positivity)) h2
-    linarith [h4]
+    linarith only [h4]
   have hC : -(4/σ^6) ≤ 4*(s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6)/(s^2+σ^2)^6 := by
     by_cases hNC : (0:ℝ) ≤ s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6
     · have h1 : (0:ℝ) ≤ 4*(s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6)/(s^2+σ^2)^6 := by positivity
       have h2 : (0:ℝ) ≤ 4/σ^6 := by positivity
-      linarith
+      linarith only [h1, h2]
     · have hNC' : s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6 < 0 := lt_of_not_ge hNC
       have hquad : 0 ≤ 15*σ^4 - 15*s^2*σ^2 + s^4 := by
-        have hu : 0 ≤ 15*σ^2*(σ^2 - s^2) := mul_nonneg (by positivity) (by nlinarith)
-        nlinarith [hu]
+        have hu : 0 ≤ 15*σ^2*(σ^2 - s^2) := mul_nonneg (by positivity) (by linarith only [hs2, hσ2])
+        nlinarith only [hu, hσ2, hs2]
       have hN : -σ^6 ≤ s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6 := by
         have hp : 0 ≤ s^2 * (15*σ^4 - 15*s^2*σ^2 + s^4) := mul_nonneg (sq_nonneg s) hquad
-        nlinarith [hp]
+        linarith only [hp]
       have h4 : (0:ℝ) ≤ (s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6)*σ^6 + (s^2+σ^2)^6 := by
         have h5 : -σ^12 ≤ (s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6)*σ^6 := by
           have := mul_le_mul_of_nonneg_right hN (by positivity : (0:ℝ) ≤ σ^6)
-          nlinarith [this]
+          linarith only [this]
         have h6 : σ^12 ≤ (s^2+σ^2)^6 := by
-          have h3 : σ^2 ≤ s^2+σ^2 := by nlinarith
+          have h3 : σ^2 ≤ s^2+σ^2 := by nlinarith only []
           calc σ^12 = (σ^2)^6 := by ring
             _ ≤ (s^2+σ^2)^6 := pow_le_pow_left₀ (by positivity) h3 6
-        linarith
+        linarith only [h5, h6]
       have key : -(4/σ^6) * (s^2+σ^2)^6
           ≤ 4*(s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6) := by
         have h5 : -4*(s^2+σ^2)^6/σ^6 ≤ 4*(s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6) := by
           rw [div_le_iff₀ (by positivity : (0:ℝ) < σ^6)]
-          nlinarith [h4]
+          linarith only [h4]
         calc -(4/σ^6) * (s^2+σ^2)^6 = -4*(s^2+σ^2)^6/σ^6 := by ring
           _ ≤ 4*(s^6 - 15*s^4*σ^2 + 15*s^2*σ^4 - σ^6) := h5
       exact (le_div_iff₀ (by positivity : (0:ℝ) < (s^2+σ^2)^6)).mpr key
   simp only [RA72]
-  linarith [hA, hB, hC]
+  linarith only [hA, hB, hC]
 
 /-! ## The modulus bound for the exponential part -/
 
@@ -414,17 +413,17 @@ theorem TrigBound72 (s σ : ℝ) :
   have hcs : (Real.cos (2*σ))^2 + (Real.sin (2*σ))^2 = 1 := Real.cos_sq_add_sin_sq (2*σ)
   have h1 : (Real.cos (2*σ) * RB72 s σ + Real.sin (2*σ) * RI72 s σ)^2
       ≤ RB72 s σ^2 + RI72 s σ^2 := by
-    nlinarith [sq_nonneg (Real.sin (2*σ) * RB72 s σ - Real.cos (2*σ) * RI72 s σ), hcs]
+    nlinarith only [sq_nonneg (Real.sin (2*σ) * RB72 s σ - Real.cos (2*σ) * RI72 s σ), hcs]
   have h2 : RB72 s σ^2 + RI72 s σ^2 = (4 * ((1-s)^2 + σ^2) / (s^2 + σ^2)^3)^2 := by
     rcases eq_or_ne (s^2+σ^2) 0 with h0 | h0
-    · have hs : s = 0 := by nlinarith [sq_nonneg s, sq_nonneg σ]
-      have hσ : σ = 0 := by nlinarith [sq_nonneg s, sq_nonneg σ]
+    · have hs : s = 0 := by nlinarith only [sq_nonneg s, sq_nonneg σ, h0]
+      have hσ : σ = 0 := by nlinarith only [sq_nonneg s, sq_nonneg σ, h0]
       subst hs; subst hσ; norm_num [RB72, RI72]
     · simp only [RB72, RI72]; field_simp; ring
-  linarith [h1, h2]
+  linarith only [h1, h2]
 theorem LargeSigma72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ)/10 ≤ σ) :
     Work.ZeroFreeTables.OffAxis.Isub s σ ≤ 16/105 := by
-  have hσ0 : (0:ℝ) < σ := by linarith
+  have hσ0 : (0:ℝ) < σ := by linarith only [hσ]
   have hρ : s^2 + σ^2 ≠ 0 := by positivity
   have hlhs : -16*s/(15*(s^2+σ^2)) + 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 ≤ 1/10 :=
     LHSle72 s σ hs0 hs1 hσ
@@ -449,16 +448,16 @@ theorem LargeSigma72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ
             mul_le_mul_of_nonneg_left h1 (Real.exp_pos _).le
         _ = 4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 := by ring
     have ha : (0:ℝ) ≤ 8*(σ^2-1)/σ^6 := by
-      have h1 : (1:ℝ) ≤ σ^2 := by nlinarith
+      have h1 : (1:ℝ) ≤ σ^2 := by nlinarith only [hσ]
       positivity
     have hc : -(8*(σ^2-1)/σ^6)*Real.cos (2*σ) ≤ 8*(σ^2-1)/σ^6 := by
       have h1 := Real.neg_one_le_cos (2*σ)
-      nlinarith [ha, h1]
+      nlinarith only [ha, h1]
     have hs : (16/σ^5)*Real.sin (2*σ) ≤ 16/σ^5 := by
       have h1 := Real.sin_le_one (2*σ)
       have h2 : (0:ℝ) ≤ 16/σ^5 := by positivity
-      nlinarith [h1, h2]
-    linarith
+      nlinarith only [h1, h2]
+    linarith only [hmain, hc, hs]
   have hσne : σ ≠ 0 := ne_of_gt hσ0
   have hkey : (-16*s/(15*(s^2+σ^2)) + 4/σ^4 + 4/σ^6) - 2*(4/σ^4 + 4/σ^6)
       + (4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 + 8*(σ^2-1)/σ^6 + 16/σ^5)
@@ -472,8 +471,8 @@ theorem LargeSigma72 (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : (36:ℝ
         + Real.sin (2*σ)*(Real.exp (2*s)*RI72 s σ + 16/σ^5)
       ≤ ((-16*s/(15*(s^2+σ^2)) + 4/σ^4 + 4/σ^6) - 2*(4/σ^4 + 4/σ^6))
         + (4*Real.exp (2*s)*((1-s)^2+σ^2)/(s^2+σ^2)^3 + 8*(σ^2-1)/σ^6 + 16/σ^5) := by
-    linarith [hra, htrig]
-  linarith [step1, hkey, hlhs, htail]
+    linarith only [hra, htrig]
+  linarith only [step1, hkey, hlhs, htail, hra, htrig]
 
 
 /-! ## Assembly: `Isub s σ ≤ 16/105` for all `s ∈ [0,1]` and all `σ` -/
@@ -487,7 +486,7 @@ theorem Isub_le_nonneg (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : 0 ≤
   by_cases h36 : (36:ℝ)/10 ≤ σ
   · exact LargeSigma72 s σ hs0 hs1 h36
   · have h36' : σ < 36/10 := lt_of_not_ge h36
-    have hσ18 : σ ≤ 18/5 := by norm_num at h36' ⊢; linarith
+    have hσ18 : σ ≤ 18/5 := by norm_num at h36' ⊢; linarith only [h36]
     rcases le_or_gt s (7/25) with h | h
     · exact G72SmallS s σ hs0 h hσ
     · have h725 : 7/25 ≤ s := le_of_lt h
@@ -506,14 +505,14 @@ theorem Isub_le_nonneg (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hσ : 0 ≤
                 · exact B2cell_4 s σ h12 h6 hσ h255
                 · exact B2cell_5 s σ (le_of_lt h6) h2 hσ h255
         · have h255' : 51/20 ≤ σ := le_of_lt (lt_of_not_ge h255)
-          exact grid_main s σ h725 (by linarith) h255' hσ18
+          exact grid_main s σ h725 (by linarith only [h2]) h255' hσ18
       · have h710 : 7/10 ≤ s := le_of_lt h2
         rcases le_or_gt s (4/5) with h3 | h3
         · exact B2cell_6 s σ h710 h3 hσ hσ18
         · have h45 : 4/5 ≤ s := le_of_lt h3
           rcases le_or_gt s (9/10) with h4 | h4
           · exact B2cell_7 s σ h45 h4 hσ hσ18
-          · exact B2cell_8 s σ (le_of_lt h4) (by linarith) hσ hσ18
+          · exact B2cell_8 s σ (le_of_lt h4) (by linarith only [hs1]) hσ hσ18
 
 /-- `Isub s ·` is even. -/
 lemma Isub_even (s σ : ℝ) : Isub s (-σ) = Isub s σ := by
@@ -530,7 +529,7 @@ theorem Isub_le_all (s σ : ℝ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : Isub s σ ≤
   · exact Isub_le_nonneg s σ hs0 hs1 h
   · have h2 : Isub s σ = Isub s (-σ) := (Isub_even s σ).symm
     rw [h2]
-    exact Isub_le_nonneg s (-σ) hs0 hs1 (by linarith)
+    exact Isub_le_nonneg s (-σ) hs0 hs1 (by linarith only [h])
 
 /-! ## Transfer to the `tf72Fc` normalisation -/
 
@@ -568,6 +567,6 @@ theorem TF72Num103a :
       tf72Fc_scale ((6:ℝ)/7) (by norm_num) ((m : ℂ) * Complex.I), hs, hs2,
       tf72Fc_one_eq_G72, tf72Fc_one_eq_G72]
   change Isub (7*a/6) (7*m/6) ≤ 16/105
-  exact Isub_le_all (7*a/6) (7*m/6) (by linarith) (by linarith)
+  exact Isub_le_all (7*a/6) (7*m/6) (by linarith only [ha]) (by linarith only [ham])
 
 end Work.OffAxis

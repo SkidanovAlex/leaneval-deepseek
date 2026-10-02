@@ -29,43 +29,43 @@ theorem LHFGridPoints : ∀ s σ : ℝ, (s = 0 ∨ s = 1/2 ∨ s = 1) → (σ = 
     · have hcl := LHF_eq_closed (s := (1/2 : ℝ)) (σ := (3/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1/2 : ℝ)) (σ := (2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1/2 : ℝ)) (σ := (5/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1/2 : ℝ)) (σ := (3 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1/2 : ℝ)) (σ := (7/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
   · rcases hσ with rfl | rfl | rfl | rfl | rfl
     · have hcl := LHF_eq_closed (s := (1 : ℝ)) (σ := (3/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1 : ℝ)) (σ := (2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1 : ℝ)) (σ := (5/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1 : ℝ)) (σ := (3 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
     · have hcl := LHF_eq_closed (s := (1 : ℝ)) (σ := (7/2 : ℝ)) (by norm_num) (by norm_num)
       rw [hcl]
       norm_num [RA72, RB72, RI72]
-      nlinarith [exp_bounds_e, trig_bounds]
+      nlinarith only [exp_bounds_e, trig_bounds]
 
 end Work.OffAxis

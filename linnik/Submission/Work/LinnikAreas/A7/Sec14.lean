@@ -65,10 +65,10 @@ theorem sec14_bound {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R lamS η εw lam : ℝ
             * ((67:ℝ)/6 + εw) + 1) ≤ 1 - lam/9) :
     ∑ χ ∈ Aset q R, WBox q ((3:ℝ)/10) R χ ≤ ((9:ℝ)/100) * (1 - lam/9) := by
   classical
-  have hlam1 : lam < 1 := by linarith
+  have hlam1 : lam < 1 := by linarith only [hlam0, hlam348]
   have hSle : lamS ≤ lamOf q ρ₁ :=
     Work.A7.box_api7_p4 (q := q) hmin.1.1 hZ1.1 hZ1.2.1 hZ1.2.2.1 hnotSiegel hq
-      (by rw [hlam]; linarith)
+      (by rw [hlam]; linarith only [hlam0, hlam348])
   have hSle' : lamS ≤ lam := by rw [← hlam]; exact hSle
   -- the interface to `core14`
   have hcore : ∀ c : ℝ, 0 < c → Lam0Bound χ₁ ρ₁ c → Lam2Bound χ₁ c →
@@ -87,55 +87,55 @@ theorem sec14_bound {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R lamS η εw lam : ℝ
     simp [Work.LinnikContract.rows14]
   rcases lt_or_ge lam (2/100) with hlt | hge
   · -- repulsion regime: `c = (99/100)·log(1/λ)`
-    obtain ⟨hl0, hl2⟩ := h14repel hSle (by linarith)
+    obtain ⟨hl0, hl2⟩ := h14repel hSle (by linarith only [hlam, hlam0, hlt])
     have hlog : (0:ℝ) < Real.log (1/lam) := by
       rw [one_div, Real.log_inv]
       have h := Real.log_neg hlam0 hlam1
-      linarith
+      linarith only [h]
     have hl0' : Lam0Bound χ₁ ρ₁ (99/100 * Real.log (1/lam)) := by rw [← hlam]; exact hl0
     have hl2' : Lam2Bound χ₁ (99/100 * Real.log (1/lam)) := by rw [← hlam]; exact hl2
     refine hcore _ (mul_pos (show (0:ℝ) < (99:ℝ)/100 by norm_num) hlog) hl0' hl2' ?_
     simp only [core14RHS, Kc, K2, ac] at hnum_repel ⊢
     ring_nf at hnum_repel ⊢
-    linarith
+    linarith only [hnum_repel]
   rcases lt_or_ge lam (25/100) with h2 | h2
   · rcases lt_or_ge lam (2/10) with h3 | h3
     · -- `c = 18/10`
-      obtain ⟨hl0, hl2⟩ := h14rows _ hmem4 hSle (by rw [hlam]; linarith) (by rw [hlam]; linarith)
+      obtain ⟨hl0, hl2⟩ := h14rows _ hmem4 hSle (by rw [hlam]; linarith only [hlam0]) (by rw [hlam]; linarith only [h3])
       refine hcore (18/10) (by norm_num) hl0 hl2 ?_
       have h10 := mul_le_mul_of_nonneg_left
-        (hnum_rows (18/10) (Or.inr (Or.inr (Or.inr ⟨rfl, hge, by linarith⟩))))
+        (hnum_rows (18/10) (Or.inr (Or.inr (Or.inr ⟨rfl, hge, by linarith only [h3]⟩))))
         (show (0:ℝ) ≤ (9:ℝ)/100 by norm_num)
       simp only [core14RHS, Kc, K2, ac] at h10 ⊢
       ring_nf at h10 ⊢
-      linarith
+      linarith only [h10]
     · -- `c = 158/100`
-      obtain ⟨hl0, hl2⟩ := h14rows _ hmem3 hSle (by rw [hlam]; linarith) (by rw [hlam]; linarith)
+      obtain ⟨hl0, hl2⟩ := h14rows _ hmem3 hSle (by rw [hlam]; linarith only [h3]) (by rw [hlam]; linarith only [h2])
       refine hcore (158/100) (by norm_num) hl0 hl2 ?_
       have h10 := mul_le_mul_of_nonneg_left
-        (hnum_rows (158/100) (Or.inr (Or.inr (Or.inl ⟨rfl, h3, by linarith⟩))))
+        (hnum_rows (158/100) (Or.inr (Or.inr (Or.inl ⟨rfl, h3, by linarith only [h2]⟩))))
         (show (0:ℝ) ≤ (9:ℝ)/100 by norm_num)
       simp only [core14RHS, Kc, K2, ac] at h10 ⊢
       ring_nf at h10 ⊢
-      linarith
+      linarith only [h10]
   rcases lt_or_ge lam (3/10) with h1 | h1
   · -- `c = 141/100`
-    obtain ⟨hl0, hl2⟩ := h14rows _ hmem2 hSle (by rw [hlam]; linarith) (by rw [hlam]; linarith)
+    obtain ⟨hl0, hl2⟩ := h14rows _ hmem2 hSle (by rw [hlam]; linarith only [h2]) (by rw [hlam]; linarith only [h1])
     refine hcore (141/100) (by norm_num) hl0 hl2 ?_
     have h10 := mul_le_mul_of_nonneg_left
-      (hnum_rows (141/100) (Or.inr (Or.inl ⟨rfl, h2, by linarith⟩)))
+      (hnum_rows (141/100) (Or.inr (Or.inl ⟨rfl, h2, by linarith only [h1]⟩)))
       (show (0:ℝ) ≤ (9:ℝ)/100 by norm_num)
     simp only [core14RHS, Kc, K2, ac] at h10 ⊢
     ring_nf at h10 ⊢
-    linarith
+    linarith only [h10]
   · -- `c = 127/100`
-    obtain ⟨hl0, hl2⟩ := h14rows _ hmem1 hSle (by rw [hlam]; linarith) (by rw [hlam]; linarith)
+    obtain ⟨hl0, hl2⟩ := h14rows _ hmem1 hSle (by rw [hlam]; linarith only [h1]) (by rw [hlam]; linarith only [hlam348])
     refine hcore (127/100) (by norm_num) hl0 hl2 ?_
     have h10 := mul_le_mul_of_nonneg_left
       (hnum_rows (127/100) (Or.inl ⟨rfl, h1⟩))
       (show (0:ℝ) ≤ (9:ℝ)/100 by norm_num)
     simp only [core14RHS, Kc, K2, ac] at h10 ⊢
     ring_nf at h10 ⊢
-    linarith
+    linarith only [h10]
 
 end Work.LinnikAreas.A7

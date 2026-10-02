@@ -14,12 +14,12 @@ private lemma arctan_lt_self {x : ℝ} (hx : 0 < x) : Real.arctan x < x := by
         have h := (hasDerivAt_id y).sub (Real.hasDerivAt_arctan y)
         exact h.deriv
       rw [hderiv, sub_pos, div_lt_one (by positivity : (0:ℝ) < 1 + y^2)]
-      nlinarith [sq_pos_of_ne_zero hy.ne']
+      linarith only [sq_pos_of_ne_zero hy.ne', hy]
   have h0 : (0:ℝ) ∈ Set.Ici 0 := by simp
   have hx' : x ∈ Set.Ici 0 := le_of_lt hx
   have h := hmono h0 hx' hx
   simp only [Real.arctan_zero, sub_zero] at h
-  linarith
+  linarith only [h]
 
 private def gth (t : ℝ) : ℝ := t * (t^2 + 2) / (2 * (t^2 + 1))
 
@@ -81,8 +81,8 @@ private lemma Fth_strictAntiOn : StrictAntiOn Fth (Set.Ioi 1) := by
   intro x hx
   rw [interior_Ioi, Set.mem_Ioi] at hx
   rw [(Fth_hasDerivAt x).deriv]
-  have hxsq : 1 < x^2 := by nlinarith [hx]
-  exact div_neg_of_neg_of_pos (by nlinarith [hxsq]) (by positivity)
+  have hxsq : 1 < x^2 := by nlinarith only [hx]
+  exact div_neg_of_neg_of_pos (by nlinarith only [hxsq, hx]) (by positivity)
 
 private lemma Fth_T_neg : Fth (Real.sqrt (71/29)) < 0 := by
   set T := Real.sqrt (71/29) with hTdef
@@ -91,39 +91,39 @@ private lemma Fth_T_neg : Fth (Real.sqrt (71/29)) < 0 := by
   have hTgt1 : 1 < T := by
     rw [hTdef, Real.lt_sqrt (by norm_num : (0:ℝ) ≤ 1)]; norm_num
   have hu_lt1 : ((T-1)/(T+1)) < 1 := by
-    rw [div_lt_one (by linarith : (0:ℝ) < T+1)]; linarith
-  have hu_pos : 0 < (T-1)/(T+1) := by apply div_pos <;> linarith
+    rw [div_lt_one (by linarith only [hTgt1] : (0:ℝ) < T+1)]; linarith only []
+  have hu_pos : 0 < (T-1)/(T+1) := by apply div_pos <;> linarith only [hTgt1]
   have hadd : Real.arctan T = Real.pi/4 + Real.arctan ((T-1)/(T+1)) := by
     have h := Real.arctan_add (x := (T-1)/(T+1)) (y := 1) (by rw [mul_one]; exact hu_lt1)
     rw [Real.arctan_one] at h
     have hTu : (((T-1)/(T+1))+1)/(1-((T-1)/(T+1))*1) = T := by
       rw [mul_one]
-      have hT1 : T + 1 ≠ 0 := by linarith
+      have hT1 : T + 1 ≠ 0 := by linarith only [hTgt1, hu_lt1, hu_pos]
       field_simp
       ring
     rw [hTu] at h
-    linarith [h]
+    linarith only [h]
   have hkey : (63/20 : ℝ) < 129*T/50 - 4*((T-1)/(T+1)) := by
     have hTlt : T < 313/200 := by
       rw [hTdef, Real.sqrt_lt (by norm_num : (0:ℝ) ≤ 71/29) (by norm_num)]; norm_num
     have hnum : 0 < 258*T^2 - 457*T + 85 := by
-      rw [hT2]; nlinarith [hTlt]
-    have hden : 0 < 100*(T+1) := by linarith
+      rw [hT2]; linarith only [hTlt, hu_lt1, hu_pos]
+    have hden : 0 < 100*(T+1) := by linarith only [hTgt1, hu_lt1, hu_pos]
     have heq : 258*T^2 - 457*T + 85
         = 100*(T+1)*(129*T/50 - 4*((T-1)/(T+1)) - 63/20) := by
       field_simp
       ring
     have hb : 0 < 129*T/50 - 4*((T-1)/(T+1)) - 63/20 :=
       pos_of_mul_pos_right (by rw [← heq]; exact hnum) (le_of_lt hden)
-    linarith
+    linarith only [hb]
   have hW : Real.pi < 129*T/50 - 4*((T-1)/(T+1)) := by
-    have hpi : Real.pi < 63/20 := by linarith [Real.pi_lt_d2]
-    linarith
+    have hpi : Real.pi < 63/20 := by linarith only [Real.pi_lt_d2]
+    linarith only [hkey, hpi]
   have harctan_u : Real.arctan ((T-1)/(T+1)) < (T-1)/(T+1) := arctan_lt_self hu_pos
   have hmain : Real.arctan T < 129*T/200 := by
     rw [hadd]
-    have : Real.pi/4 + (T-1)/(T+1) < 129*T/200 := by linarith
-    linarith
+    have : Real.pi/4 + (T-1)/(T+1) < 129*T/200 := by linarith only [hW]
+    linarith only [hW, harctan_u]
   have hphi : T * (T^2 + 2) / (2 * (T^2 + 1)) = 129*T/200 := by
     rw [hT2]; ring
   unfold Fth gth
@@ -135,9 +135,9 @@ private lemma Fth_T_neg : Fth (Real.sqrt (71/29)) < 0 := by
 theorem ThetaNumeric (θ : ℝ) (h0 : 3 / 4 < θ) (h1 : θ < Real.pi / 2)
     (heq : Real.sin θ ^ 2 = 2 * (1 - θ * (Real.cos θ / Real.sin θ))) :
     (29 / 100 : ℝ) ≤ Real.cos θ ^ 2 := by
-  have hθpos : 0 < θ := by linarith
-  have hθltpi : θ < Real.pi := by linarith [Real.pi_pos]
-  have hcos_pos : 0 < Real.cos θ := Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], h1⟩
+  have hθpos : 0 < θ := by linarith only [h0]
+  have hθltpi : θ < Real.pi := by linarith only [Real.pi_pos, h0, h1]
+  have hcos_pos : 0 < Real.cos θ := Real.cos_pos_of_mem_Ioo ⟨by linarith only [Real.pi_pos, h0, h1], h1⟩
   have hsin_pos : 0 < Real.sin θ := Real.sin_pos_of_pos_of_lt_pi hθpos hθltpi
   have hcos_ne : Real.cos θ ≠ 0 := ne_of_gt hcos_pos
   have hsin_ne : Real.sin θ ≠ 0 := ne_of_gt hsin_pos
@@ -159,9 +159,9 @@ theorem ThetaNumeric (θ : ℝ) (h0 : 3 / 4 < θ) (h1 : θ < Real.pi / 2)
       rw [inv_div]
     rw [hsin_sq, hcot] at heq
     field_simp at heq ⊢
-    nlinarith [heq]
+    linarith only [heq]
   have hF_t : Fth t = 0 := by
-    have h1' : Real.arctan t = θ := by rw [ht]; exact Real.arctan_tan (by linarith [Real.pi_pos]) h1
+    have h1' : Real.arctan t = θ := by rw [ht]; exact Real.arctan_tan (by linarith only [Real.pi_pos, h0, h1]) h1
     unfold Fth
     rw [h1', hkey.symm]
     ring
@@ -174,12 +174,12 @@ theorem ThetaNumeric (θ : ℝ) (h0 : 3 / 4 < θ) (h1 : θ < Real.pi / 2)
       rw [Set.mem_Ioi]; exact lt_of_lt_of_le hTmem hcon.le
     have hh := Fth_strictAntiOn hTmem htmem hcon
     rw [hF_t] at hh
-    linarith [Fth_T_neg]
+    linarith only [Fth_T_neg, hh]
   have hsqrt2 : (Real.sqrt (71/29))^2 = 71/29 := Real.sq_sqrt (by norm_num)
   have hs : 0 ≤ Real.sqrt (71/29) := Real.sqrt_nonneg _
-  have ht2 : t^2 ≤ 71/29 := by nlinarith [ht_le_T, le_of_lt ht_pos, hsqrt2, hs]
+  have ht2 : t^2 ≤ 71/29 := by nlinarith only [ht_le_T, le_of_lt ht_pos, hsqrt2, hs, ht_pos]
   rw [hcos_sq]
-  have hle : 1 + t^2 ≤ 100/29 := by linarith
+  have hle : 1 + t^2 ≤ 100/29 := by linarith only [ht2]
   have hp : 0 < (1:ℝ) + t^2 := by positivity
   calc (29/100 : ℝ) = 1/(100/29) := by norm_num
     _ ≤ 1/(1+t^2) := one_div_le_one_div_of_le hp hle

@@ -130,7 +130,7 @@ private lemma completedLFunction_inv_ne_zero_of_one_lt {χ : DirichletCharacter 
     (Commons.NumberTheory.DirichletCharacter.isPrimitive_inv hχprim) hz
   have hre : (σ : ℂ).re = σ := rfl
   rw [hre] at hstrip
-  linarith [hstrip.1]
+  linarith only [hstrip.1, hσ, hstrip]
 
 /-- `Λ(χ)` does not vanish at a real point `σ > 1`. -/
 private lemma completedLFunction_ne_zero_of_one_lt {χ : DirichletCharacter ℂ N} (hχ : χ ≠ 1)
@@ -140,7 +140,7 @@ private lemma completedLFunction_ne_zero_of_one_lt {χ : DirichletCharacter ℂ 
   have hstrip := Commons.NumberTheory.Linnik.completedL_zero_strip χ hχ hχprim hz
   have hre : (σ : ℂ).re = σ := rfl
   rw [hre] at hstrip
-  linarith [hstrip.1]
+  linarith only [hstrip.1, hσ, hstrip]
 
 /-- The functional equation, in logarithmic-derivative form, at the real point `1 - σ`. -/
 private lemma logDeriv_completed_fe_real {χ : DirichletCharacter ℂ N} (hχ : χ ≠ 1)
@@ -152,7 +152,7 @@ private lemma logDeriv_completed_fe_real {χ : DirichletCharacter ℂ N} (hχ : 
     have hstrip := Commons.NumberTheory.Linnik.completedL_zero_strip χ hχ hχprim hz
     have hre : (1 - (σ : ℂ)).re = 1 - σ := by simp
     rw [hre] at hstrip
-    linarith [hstrip.1]
+    linarith only [hstrip.1, hσ, hstrip]
   have hinv := completedLFunction_inv_ne_zero_of_one_lt hχ hχprim hσ
   have h1 := completedLogDeriv_fe χ hχprim (1 - (σ : ℂ)) hΛ1σ (by simpa using hinv)
   rw [show (1 : ℂ) - (1 - (σ : ℂ)) = (σ : ℂ) by ring] at h1
@@ -178,7 +178,7 @@ private lemma tendsto_pfSym_re (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
     have hstrip := Commons.NumberTheory.Linnik.completedL_zero_strip χ hχ hχprim hz
     have hre : (1 - (σ : ℂ)).re = 1 - σ := by simp
     rw [hre] at hstrip
-    linarith [hstrip.1]
+    linarith only [hstrip.1, hσ, hstrip]
   have h1 : Tendsto (fun R : ℝ => pfSum χ R (σ : ℂ)) atTop
       (𝓝 (logDeriv (completedLFunction χ) (σ : ℂ) -
         logDeriv (completedLFunction χ) 0)) := by
@@ -250,12 +250,12 @@ private lemma pfSym_term_re_nonneg (χ : DirichletCharacter ℂ N) (hχ : χ ≠
     refine div_nonneg ?_ (Complex.normSq_nonneg _)
     rw [Complex.sub_re]
     simp only [Complex.ofReal_re]
-    linarith [hstrip.2]
+    linarith only [hstrip.2, hσ, hstrip]
   · rw [one_div, Complex.inv_re]
     refine div_nonneg ?_ (Complex.normSq_nonneg _)
     rw [Complex.sub_re, Complex.add_re]
     simp only [Complex.ofReal_re, Complex.one_re]
-    linarith [hstrip.1]
+    linarith only [hstrip.1, hσ, hstrip]
 
 /-- Lower bound for the symmetric partial-fraction summand belonging to a real zero `β`. -/
 private lemma pfSym_term_re_ge_at (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
@@ -275,7 +275,7 @@ private lemma pfSym_term_re_ge_at (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 
   have hβball : (β : ℂ) ∈ Metric.closedBall (0:ℂ) R := by
     rw [Metric.mem_closedBall, dist_eq_norm, sub_zero, Complex.norm_real, Real.norm_eq_abs,
       abs_of_pos hβ0]
-    linarith
+    linarith only [hR, hβ0, hβ1]
   have hdβ : MeromorphicOn.divisor (completedLFunction χ) (Metric.closedBall (0:ℂ) R) (β : ℂ) ≠ 0 :=
     Commons.NumberTheory.Linnik.divisor_ne_zero_of_apply_eq_zero
       (differentiable_completedLFunction hχ) hΛne hβball hz
@@ -305,12 +305,12 @@ private lemma pfSym_term_re_ge_at (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 
     have e2 : (σ : ℂ) + (β : ℂ) - 1 = ((σ + β - 1 : ℝ) : ℂ) := by push_cast; ring
     rw [e1, e2, Complex.add_re, one_div, one_div, Complex.inv_re, Complex.inv_re,
       Complex.normSq_ofReal, Complex.normSq_ofReal, Complex.ofReal_re, Complex.ofReal_re]
-    have h1 : (σ - β) ≠ 0 := by linarith
-    have h2 : (σ + β - 1) ≠ 0 := by linarith
+    have h1 : (σ - β) ≠ 0 := by linarith only [hσ, hβ1]
+    have h2 : (σ + β - 1) ≠ 0 := by linarith only [hσ, hβ0]
     field_simp
   have hpos1 : 0 < 1 / (σ - β) + 1 / (σ + β - 1) := by
-    have h1 : 0 < σ - β := by linarith
-    have h2 : 0 < σ + β - 1 := by linarith
+    have h1 : 0 < σ - β := by linarith only [hσ, hβ1]
+    have h2 : 0 < σ + β - 1 := by linarith only [hσ, hβ0]
     have := one_div_pos.mpr h1
     have := one_div_pos.mpr h2
     linarith
@@ -362,13 +362,13 @@ private lemma LFunction_zero_of_one_sub {χ : DirichletCharacter ℂ N} (hχ : �
   have hγ : gammaFactor χ (1 - (β : ℂ)) ≠ 0 := by
     apply Commons.NumberTheory.DirichletCharacter.gammaFactor_ne_zero_of_re_pos
     simp only [Complex.sub_re, Complex.one_re, Complex.ofReal_re]
-    linarith
+    linarith only [hβ1]
   have hL := DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ (1 - (β : ℂ))
     (Or.inl (by
       intro h
       have hre := congrArg Complex.re h
       simp at hre
-      linarith))
+      linarith only [hβ1, hre]))
   rw [hL, hΛ1β, zero_div]
 
 /-- **Pole bound for `Re((Λ'/Λ)(σ))` above a real zero.**  For a primitive non-trivial `χ` with a
@@ -389,7 +389,7 @@ lemma completedLogDeriv_re_ge_pole (χ : DirichletCharacter ℂ N) (hχ : χ ≠
   have hΛ1β : completedLFunction χ (((1 - β : ℝ)) : ℂ) = 0 := by
     rw [h1β]
     have hfac := Commons.NumberTheory.Linnik.completedLFunction_eq_mul_gammaFactor_re_pos χ
-      (s := (1 - (β : ℂ))) (by simp; linarith)
+      (s := (1 - (β : ℂ))) (by simp; linarith only [hβ1])
     rw [hfac, hL1β, zero_mul]
   intro σ hσ _
   have hlim := tendsto_pfSym_re χ hχ hχprim hσ
@@ -416,7 +416,7 @@ lemma completedLogDeriv_re_ge_pole (χ : DirichletCharacter ℂ N) (hχ : χ ≠
       refine Commons.NumberTheory.Linnik.divisor_ne_zero_of_apply_eq_zero
         (differentiable_completedLFunction hχ) hΛne ?_ hΛ1β
       rw [Metric.mem_closedBall, dist_eq_norm, sub_zero, Complex.norm_real, Real.norm_eq_abs]
-      rw [abs_of_nonneg (by linarith : (0:ℝ) ≤ 1 - β)]
+      rw [abs_of_nonneg (by linarith only [hβ1] : (0:ℝ) ≤ 1 - β)]
       linarith
     have hterm_nonneg : ∀ u ∈ (pf_support_finite χ hχ R).toFinset,
         (0 : ℝ) ≤ (pfW χ R u * (1 / ((σ : ℂ) - u) + 1 / ((σ : ℂ) + u - 1))).re :=
@@ -434,7 +434,7 @@ lemma completedLogDeriv_re_ge_pole (χ : DirichletCharacter ℂ N) (hχ : χ ≠
         intro h
         have hre := congrArg Complex.re h
         simp only [Complex.ofReal_re] at hre
-        exact hβhalf (by linarith)
+        exact hβhalf (by linarith only [hre])
       have hmem1β' : (((1 - β : ℝ)) : ℂ) ∈
           (pf_support_finite χ hχ R).toFinset.erase (β : ℂ) := by
         rw [Finset.mem_erase]
@@ -444,7 +444,7 @@ lemma completedLogDeriv_re_ge_pole (χ : DirichletCharacter ℂ N) (hχ : χ ≠
         (fun u hu => hterm_nonneg u (Finset.mem_of_mem_erase hu)) hmem1β'
       have hgeβ := pfSym_term_re_ge_at χ hχ hχprim hσ hR hβ0 hβ1 hΛβ
       have hge1β := pfSym_term_re_ge_at χ hχ hχprim hσ hR
-        (by linarith : (0:ℝ) < 1 - β) (by linarith : (1 - β : ℝ) < 1) hΛ1β
+        (by linarith only [hβ1] : (0:ℝ) < 1 - β) (by linarith only [hβ0] : (1 - β : ℝ) < 1) hΛ1β
       have hsum2 : (2 : ℝ) / (σ - β)
           ≤ (pfW χ R (β : ℂ) * (1 / ((σ : ℂ) - (β : ℂ)) +
               1 / ((σ : ℂ) + (β : ℂ) - 1))).re
@@ -456,7 +456,7 @@ lemma completedLogDeriv_re_ge_pole (χ : DirichletCharacter ℂ N) (hχ : χ ≠
           ring
         rw [hrw] at h2
         have hpos : 0 < 1 / (σ + β - 1) := by
-          apply one_div_pos.mpr; linarith
+          apply one_div_pos.mpr; linarith only [hβ0, hσ]
         have hsum := add_le_add h1 h2
         have h2' : (2 : ℝ) / (σ - β) = 1 / (σ - β) + 1 / (σ - β) := by ring
         rw [h2']
@@ -511,8 +511,8 @@ private lemma logDeriv_gammaFactor_re_le :
       exact hE.gammaFactor_def z
     rw [hfun]
     refine le_trans (Complex.re_le_norm _) ?_
-    refine le_trans (key σ (by linarith) (by linarith)) ?_
-    linarith
+    refine le_trans (key σ (by linarith only [hσ, hσ5]) (by linarith only [hσ, hσ5])) ?_
+    linarith only [hσ, hσ5]
   · have hfun : gammaFactor χ = (fun z : ℂ => Complex.Gammaℝ (z + 1)) := by
       funext z
       exact hO.gammaFactor_def z
@@ -520,7 +520,7 @@ private lemma logDeriv_gammaFactor_re_le :
     have hldcomp : logDeriv (fun z : ℂ => Complex.Gammaℝ (z + 1)) (σ : ℂ) =
         logDeriv Complex.Gammaℝ ((σ : ℂ) + 1) := by
       have hs1 : 0 < ((σ : ℂ) + 1).re := by
-        rw [Complex.add_re]; simp; linarith
+        rw [Complex.add_re]; simp; linarith only [hσ, hσ5]
       have hf := Commons.NumberTheory.DirichletCharacter.differentiableAt_Gammaℝ ((σ : ℂ) + 1) hs1
       have hg : DifferentiableAt ℂ (fun z : ℂ => z + 1) (σ : ℂ) := by fun_prop
       have h := logDeriv_comp (f := Complex.Gammaℝ) (g := fun z : ℂ => z + 1) (x := (σ : ℂ)) hf hg
@@ -531,8 +531,8 @@ private lemma logDeriv_gammaFactor_re_le :
     have hcast : (((σ + 1 : ℝ)) : ℂ) = (σ : ℂ) + 1 := by push_cast; ring
     rw [← hcast]
     refine le_trans (Complex.re_le_norm _) ?_
-    refine le_trans (key (σ + 1) (by linarith) (by linarith)) ?_
-    linarith
+    refine le_trans (key (σ + 1) (by linarith only [hσ, hσ5]) (by linarith only [hσ, hσ5])) ?_
+    linarith only [hσ, hσ5]
 
 /-- **Uniform lower bound for `Re(L'/L)` on the real axis.**  For a primitive non-trivial `χ`
 modulo `N` and `1 < σ ≤ 5/4`, `Re(L'/L)(σ,χ) ≥ -C (log (2N) + 1)` with an absolute `C`. -/
@@ -546,20 +546,20 @@ lemma logDeriv_LFunction_re_lower_of_primitive :
   set C : ℝ := max Cγ (1 / 2) + 1 with hCdef
   have hCγ' : Cγ ≤ C := by
     have : Cγ ≤ max Cγ (1 / 2) := le_max_left _ _
-    rw [hCdef]; linarith
+    rw [hCdef]; linarith only [hσ, hσ5, this]
   have hChalf : (1 / 2 : ℝ) ≤ C := by
     have : (1 / 2 : ℝ) ≤ max Cγ (1 / 2) := le_max_right _ _
-    rw [hCdef]; linarith
+    rw [hCdef]; linarith only [hσ, hσ5, this]
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   have hlogN : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg hN1
   have hlog2N : 0 ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_nonneg; nlinarith
+    apply Real.log_nonneg; linarith only [hσ, hσ5, hN1]
   have hlogle : Real.log (N : ℝ) ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_le_log (by linarith); nlinarith
-  have hsre : 0 < (σ : ℂ).re := by simp; linarith
+    apply Real.log_le_log (by linarith only [hσ, hσ5, hN1]); linarith only [hσ, hσ5, hN1]
+  have hsre : 0 < (σ : ℂ).re := by simp; linarith only [hσ, hσ5]
   have hLne : LFunction χ (σ : ℂ) ≠ 0 :=
-    DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simp; linarith)
+    DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simp; linarith only [hσ])
   have hdec := logDeriv_completedLFunction_eq_add χ hχ (σ : ℂ) hsre hLne
   have hA := completedLogDeriv_re_ge_neg_half_log χ hχ hχprim σ hσ
   have hγ := hCγ N χ σ hσ hσ5
@@ -587,20 +587,20 @@ lemma logDeriv_LFunction_re_pole_of_real_zero :
   set C : ℝ := max Cγ (1 / 2) + 1 with hCdef
   have hCγ' : Cγ ≤ C := by
     have : Cγ ≤ max Cγ (1 / 2) := le_max_left _ _
-    rw [hCdef]; linarith
+    rw [hCdef]; linarith only [hσ, hσ5, this]
   have hChalf : (1 / 2 : ℝ) ≤ C := by
     have : (1 / 2 : ℝ) ≤ max Cγ (1 / 2) := le_max_right _ _
-    rw [hCdef]; linarith
+    rw [hCdef]; linarith only [hσ, hσ5, this]
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   have hlogN : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg hN1
   have hlog2N : 0 ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_nonneg; nlinarith
+    apply Real.log_nonneg; linarith only [hσ, hσ5, hN1]
   have hlogle : Real.log (N : ℝ) ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_le_log (by linarith); nlinarith
-  have hsre : 0 < (σ : ℂ).re := by simp; linarith
+    apply Real.log_le_log (by linarith only [hσ, hσ5, hN1]); linarith only [hσ, hσ5, hN1]
+  have hsre : 0 < (σ : ℂ).re := by simp; linarith only [hσ, hσ5]
   have hLne : LFunction χ (σ : ℂ) ≠ 0 :=
-    DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simp; linarith)
+    DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simp; linarith only [hσ])
   have hdec := logDeriv_completedLFunction_eq_add χ hχ (σ : ℂ) hsre hLne
   have hA := completedLogDeriv_re_ge_pole χ hχ hχprim hβ0 hβ1 hz σ hσ hσ5
   have hγ := hCγ N χ σ hσ hσ5
@@ -622,7 +622,7 @@ private lemma pointwise_341 (z : ℂ) (hz : ‖z‖ ≤ 1) : 0 ≤ 3 + 4 * z.re 
     rw [pow_two, Complex.mul_re]; ring
   have hnorm : ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2 := by
     rw [Complex.sq_norm, Complex.normSq_apply]; ring
-  nlinarith [sq_nonneg (z.re + 1), norm_nonneg z, hsq, hnorm]
+  nlinarith only [sq_nonneg (z.re + 1), norm_nonneg z, hsq, hnorm, hz]
 
 /-- Summability of the twisted von Mangoldt series on `Re s > 1`. -/
 private lemma summable_twist_vonMangoldt (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : 1 < s.re) :
@@ -785,7 +785,7 @@ private lemma logDeriv_factor_re_ge {p : ℕ} (hp : p.Prime) {c : ℂ} (hc : ‖
         _ ≤ (p : ℝ) ^ σ := Real.rpow_le_rpow_of_exponent_le hp1 hσ
     have h3 : 0 < (p : ℝ) ^ σ := Real.rpow_pos_of_pos hppos _
     rw [inv_le_comm₀ h3 (by norm_num)]
-    linarith
+    linarith only [h2]
   have hcast : (p : ℂ) ^ (-(σ : ℂ)) = ((a : ℝ) : ℂ) := by
     have h := Complex.ofReal_cpow (Nat.cast_nonneg p) (-σ)
     have hexp : ((-σ : ℝ) : ℂ) = -(σ : ℂ) := by push_cast; ring
@@ -818,15 +818,15 @@ private lemma logDeriv_factor_re_ge {p : ℕ} (hp : p.Prime) {c : ℂ} (hc : ‖
   have hden_le : (1 : ℝ) - a ≤ ‖(1 : ℂ) - c * ((a : ℝ) : ℂ)‖ := by
     have h5 : ‖(1 : ℂ)‖ - ‖c * ((a : ℝ) : ℂ)‖ ≤
         |‖(1 : ℂ)‖ - ‖c * ((a : ℝ) : ℂ)‖| := le_abs_self _
-    calc (1 : ℝ) - a ≤ ‖(1 : ℂ)‖ - ‖c * ((a : ℝ) : ℂ)‖ := by rw [norm_one]; linarith
+    calc (1 : ℝ) - a ≤ ‖(1 : ℂ)‖ - ‖c * ((a : ℝ) : ℂ)‖ := by rw [norm_one]; linarith only [hca]
       _ ≤ _ := h5
       _ ≤ ‖(1 : ℂ) - c * ((a : ℝ) : ℂ)‖ := abs_norm_sub_norm_le _ _
-  have hden_pos : 0 < 1 - a := by linarith
+  have hden_pos : 0 < 1 - a := by linarith only [hapos, hahalf]
   have hden_ne : (1 - c * ((a : ℝ) : ℂ)) ≠ 0 := by
     intro h
     have h1 : c * ((a : ℝ) : ℂ) = 1 := (sub_eq_zero.mp h).symm
     have h2 : ‖c * ((a : ℝ) : ℂ)‖ = 1 := by rw [h1]; simp
-    linarith [hahalf, hca, h2]
+    linarith only [hahalf, hca, h2, hapos]
   have hnorm : ‖logDeriv (fun s : ℂ => 1 - c * (p : ℂ) ^ (-s)) (σ : ℂ)‖ ≤
       (Real.log p) * a / (1 - a) := by
     rw [hval]
@@ -838,17 +838,17 @@ private lemma logDeriv_factor_re_ge {p : ℕ} (hp : p.Prime) {c : ℂ} (hc : ‖
           exact mul_le_mul_of_nonneg_right hc hlogp
       _ = Real.log (p : ℝ) * a := by ring
   have hstep : -(Real.log p) ≤ -(Real.log p * a / (1 - a)) := by
-    have h1 : a / (1 - a) ≤ 1 := by rw [div_le_one hden_pos]; linarith
+    have h1 : a / (1 - a) ≤ 1 := by rw [div_le_one hden_pos]; linarith only [hahalf]
     have h2 : Real.log (p : ℝ) * (a / (1 - a)) ≤ Real.log (p : ℝ) * 1 :=
       mul_le_mul_of_nonneg_left h1 hlogp
     have h3 : Real.log (p : ℝ) * a / (1 - a) = Real.log (p : ℝ) * (a / (1 - a)) := by ring
     rw [h3]
-    linarith
+    linarith only [h2]
   calc -(Real.log p) ≤ -(Real.log p * a / (1 - a)) := hstep
     _ ≤ (logDeriv (fun s : ℂ => 1 - c * (p : ℂ) ^ (-s)) (σ : ℂ)).re := by
         have h := Complex.abs_re_le_norm (logDeriv (fun s : ℂ => 1 - c * (p : ℂ) ^ (-s)) (σ : ℂ))
         rw [abs_le] at h
-        linarith [h.1, hnorm]
+        linarith only [h.1, hnorm, h]
 
 
 /-- **Uniform lower bound for `Re(L'/L)` on the real axis, imprimitive case.**  For any
@@ -877,10 +877,10 @@ lemma logDeriv_LFunction_re_lower_of_ne_one :
     have h : 0 < χ.conductor := Nat.pos_of_ne_zero χ.conductor_ne_zero
     exact_mod_cast h
   have hlogc : Real.log (2 * (χ.conductor : ℝ)) ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_le_log (by linarith)
-    linarith
+    apply Real.log_le_log (by linarith only [hcondpos])
+    linarith only [hcle]
   have hlog2N : 0 ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_nonneg; linarith
+    apply Real.log_nonneg; linarith only [hσ, hσ5, hN1]
   have hfun : LFunction χ = fun s : ℂ => LFunction χ.primitiveCharacter s *
       ∏ p ∈ N.primeFactors,
         (1 - ((χ.primitiveCharacter (p : ZMod χ.conductor) : ℂ)) * (p : ℂ) ^ (-s)) := by
@@ -921,13 +921,13 @@ lemma logDeriv_LFunction_re_lower_of_ne_one :
               (Real.rpow_nonneg hpc.le _)
         _ = (p : ℝ) ^ (-σ) := one_mul _
         _ < 1 := hlt
-    linarith
+    linarith only [h1, h2]
   have hprod_ne : (∏ p ∈ N.primeFactors,
       (1 - ((χ.primitiveCharacter (p : ZMod χ.conductor) : ℂ)) * (p : ℂ) ^ (-(σ : ℂ)))) ≠ 0 :=
     Finset.prod_ne_zero_iff.mpr hfactor_ne
   have hψ_ne : LFunction χ.primitiveCharacter (σ : ℂ) ≠ 0 :=
     DirichletCharacter.LFunction_ne_zero_of_one_le_re χ.primitiveCharacter (Or.inl hψne)
-      (by simp; linarith)
+      (by simp; linarith only [hσ])
   have hdiffψ : DifferentiableAt ℂ (LFunction χ.primitiveCharacter) (σ : ℂ) :=
     (DirichletCharacter.differentiable_LFunction hψne) (σ : ℂ)
   have hdiffprod : DifferentiableAt ℂ (fun s : ℂ => ∏ p ∈ N.primeFactors,
@@ -988,9 +988,9 @@ lemma logDeriv_LFunction_re_lower_of_ne_one :
     rw [← hlogprod]
     exact Real.log_le_log hposprod hprod
   have hlogNle : Real.log (N : ℝ) ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_le_log (by linarith); linarith
-  linarith [hψ, hlogc, hsum, hlogsum, hlog2N, hlogNle, hC₁pos,
-    mul_le_mul_of_nonneg_left hlogc hC₁pos.le]
+    apply Real.log_le_log (by linarith only [hσ, hσ5, hN1]); linarith only [hσ, hσ5, hN1]
+  linarith only [hψ, hlogc, hsum, hlogsum, hlog2N, hlogNle, hC₁pos,
+    mul_le_mul_of_nonneg_left hlogc hC₁pos.le, this, hσ, hσ5]
 
 /-! ## The real zero-free region and the main theorem -/
 
@@ -1005,27 +1005,27 @@ private lemma real_zero_far_from_one :
   obtain ⟨Cp, hCppos, hCp⟩ := logDeriv_LFunction_re_pole_of_real_zero
   obtain ⟨Cl, hClpos, hCl⟩ := logDeriv_LFunction_re_lower_of_ne_one
   set K : ℝ := Cζ + Cp + Cl + 1 with hKdef
-  have hKpos : 0 < K := by rw [hKdef]; linarith
-  have hK1 : 1 ≤ K := by rw [hKdef]; linarith
+  have hKpos : 0 < K := by rw [hKdef]; linarith only [hCζpos, hCppos, hClpos]
+  have hK1 : 1 ≤ K := by rw [hKdef]; linarith only [hCζpos, hCppos, hClpos]
   refine ⟨1 / (160 * K), by positivity, ?_⟩
   intro N _ χ hχ hχprim hχ2 β hβ0 hβ1 hz
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   have hLpos : 0 < Real.log (2 * (N : ℝ)) := by
-    apply Real.log_pos; linarith
+    apply Real.log_pos; linarith only [hβ0, hβ1, hN1]
   have hLbig : (11 / 17 : ℝ) ≤ Real.log (2 * (N : ℝ)) := by
     have h2 : Real.log 2 ≤ Real.log (2 * (N : ℝ)) := by
-      apply Real.log_le_log (by norm_num); nlinarith
+      apply Real.log_le_log (by norm_num); linarith only [hN1]
     have h9 := Real.log_two_gt_d9
-    linarith
+    linarith only [hβ0, hβ1, h2, h9]
   set δ : ℝ := 1 / (16 * K * Real.log (2 * (N : ℝ))) with hδdef
   have hδpos : 0 < δ := by rw [hδdef]; positivity
   have hδle : δ ≤ 1 / 4 := by
     rw [hδdef, div_le_iff₀ (by positivity)]
-    nlinarith [hK1, hLbig]
-  have hσ1 : 1 < 1 + δ := by linarith
-  have hσ5 : 1 + δ ≤ 5 / 4 := by linarith
-  have hσ2 : 1 + δ ≤ 2 := by linarith
+    nlinarith only [hK1, hLbig, hβ0, hβ1, hCζpos, hCppos, hClpos, hLpos]
+  have hσ1 : 1 < 1 + δ := by linarith only [hδpos]
+  have hσ5 : 1 + δ ≤ 5 / 4 := by linarith only [hδle]
+  have hσ2 : 1 + δ ≤ 2 := by linarith only [hδpos, hδle]
   have hA := hCζ (1 + δ) hσ1 hσ2
   have hB := hCp N χ hχ hχprim β hβ0 hβ1 hz (1 + δ) hσ1 hσ5
   have hC := hCl N (χ * χ) hχ2 (1 + δ) hσ1 hσ5
@@ -1061,11 +1061,11 @@ private lemma real_zero_far_from_one :
     have h1 : (3 * Cζ + (4 * Cp + Cl) * (Real.log (2 * (N : ℝ)) + 1)) ≤
         4 * K * (Real.log (2 * (N : ℝ)) + 1) := by
       have hKexp : K = Cζ + Cp + Cl + 1 := hKdef
-      have hlog1 : (1 : ℝ) ≤ Real.log (2 * (N : ℝ)) + 1 := by linarith
-      nlinarith [hCζpos, hCppos, hClpos, hK1, hlog1]
+      have hlog1 : (1 : ℝ) ≤ Real.log (2 * (N : ℝ)) + 1 := by linarith only [hLbig, hδpos, hδle]
+      nlinarith only [hCζpos, hCppos, hClpos, hK1, hlog1, hLbig, hδpos, hδle, hβ0, hβ1, hLpos]
     linarith [hstep1, h1]
   have hstep3 : 1 / ((1 + δ) - β) ≤
-      (3 / 4) * (1 / δ) + K * (Real.log (2 * (N : ℝ)) + 1) := by linarith [hstep2]
+      (3 / 4) * (1 / δ) + K * (Real.log (2 * (N : ℝ)) + 1) := by linarith only [hstep2]
   have h3δ : (3 / 4) * (1 / δ) = 12 * K * Real.log (2 * (N : ℝ)) := by
     rw [hδdef]
     field_simp
@@ -1073,14 +1073,14 @@ private lemma real_zero_far_from_one :
   have hstep4 : 1 / ((1 + δ) - β) ≤
       K * (13 * Real.log (2 * (N : ℝ)) + 1) := by
     rw [h3δ] at hstep3
-    nlinarith [hstep3, hKpos, hLpos]
-  have hXpos : 0 < (1 + δ) - β := by linarith
+    linarith only [hstep3, hKpos, hLpos]
+  have hXpos : 0 < (1 + δ) - β := by linarith only [hβ1, hδpos]
   have hYpos : 0 < K * (13 * Real.log (2 * (N : ℝ)) + 1) := by positivity
   have hXge : 1 / (K * (13 * Real.log (2 * (N : ℝ)) + 1)) ≤ (1 + δ) - β := by
     have h1 : (1 : ℝ) ≤ (K * (13 * Real.log (2 * (N : ℝ)) + 1)) * ((1 + δ) - β) :=
       (div_le_iff₀ hXpos).mp hstep4
     rw [div_le_iff₀ hYpos]
-    linarith [h1]
+    linarith only [h1]
   have hfinal : 1 / (160 * K * Real.log (2 * (N : ℝ))) ≤ 1 - β := by
     have h2 : (1 : ℝ) - β = ((1 + δ) - β) - δ := by ring
     rw [h2]
@@ -1088,8 +1088,8 @@ private lemma real_zero_far_from_one :
         1 / (160 * K * Real.log (2 * (N : ℝ))) := by
       rw [hδdef, ge_iff_le]
       field_simp
-      linarith [hLbig, hKpos]
-    linarith [hXge, h3]
+      linarith only [hLbig, hKpos]
+    linarith only [hXge, h3]
   rw [div_div]
   exact hfinal
 
@@ -1103,7 +1103,7 @@ theorem LFunction_zeroFree_uniform_realAxis :
       DirichletCharacter.LFunction χ (σ : ℂ) ≠ 0 := by
   obtain ⟨c₀, hc₀pos, hc₀⟩ := real_zero_far_from_one
   set c : ℝ := min (c₀ / 2) (1 / 2) with hcdef
-  have hcpos : 0 < c := by rw [hcdef]; exact lt_min (by linarith) (by norm_num)
+  have hcpos : 0 < c := by rw [hcdef]; exact lt_min (by linarith only [hc₀pos]) (by norm_num)
   have hcle : c ≤ c₀ / 2 := by rw [hcdef]; exact min_le_left _ _
   have hcle2 : c ≤ 1 / 2 := by rw [hcdef]; exact min_le_right _ _
   refine ⟨c, hcpos, ?_⟩
@@ -1111,9 +1111,9 @@ theorem LFunction_zeroFree_uniform_realAxis :
   have hN1 : (1 : ℝ) ≤ (N : ℝ) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   have hℓpos : 0 < Real.log (2 * (N : ℝ)) := by
-    apply Real.log_pos; linarith
+    apply Real.log_pos; linarith only [hcpos, hcle2, hN1]
   have hℓ2 : Real.log 2 ≤ Real.log (2 * (N : ℝ)) := by
-    apply Real.log_le_log (by norm_num); nlinarith
+    apply Real.log_le_log (by norm_num); linarith only [hN1]
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   by_cases hσ1 : (1 : ℝ) ≤ σ
   · exact DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simpa using hσ1)
@@ -1126,20 +1126,20 @@ theorem LFunction_zeroFree_uniform_realAxis :
       have h3 : c / Real.log (2 * (N : ℝ)) = c * (1 / Real.log (2 * (N : ℝ))) := by ring
       have h4 : (1 / 2) * (1 / Real.log 2) = (1 / 2) / Real.log 2 := by ring
       have h5 : (1 : ℝ) < 2 * Real.log 2 := by
-        have := Real.log_two_gt_d9; linarith
+        have := Real.log_two_gt_d9; linarith only [hcpos, hcle2, this]
       have h6 : (1 / 2) / Real.log 2 < 1 := by
-        rw [div_lt_one hlog2pos]; linarith
-      linarith [hσ, h3, h2, h4, h6]
+        rw [div_lt_one hlog2pos]; linarith only [h5]
+      linarith only [hσ, h3, h2, h4, h6]
     intro hzero
     have hfar := hc₀ N χ hχ hχprim hχ2 σ hσpos hσ1 hzero
-    have hle : 1 - σ ≤ c / Real.log (2 * (N : ℝ)) := by linarith [hσ]
+    have hle : 1 - σ ≤ c / Real.log (2 * (N : ℝ)) := by linarith only [hσ]
     have hmono : c₀ / Real.log (2 * (N : ℝ)) ≤ c / Real.log (2 * (N : ℝ)) :=
       le_trans hfar hle
     have h1 : c₀ ≤ c := by
       have h := (div_le_iff₀ hℓpos).mp hmono
       have h2 : (c / Real.log (2 * (N : ℝ))) * Real.log (2 * (N : ℝ)) = c := by
         field_simp
-      linarith [h, h2]
-    linarith [h1, hcle, hc₀pos]
+      linarith only [h, h2, hcpos, hcle]
+    linarith only [h1, hcle, hc₀pos, hcpos]
 
 end Commons.NumberTheory.DirichletCharacter

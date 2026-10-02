@@ -26,7 +26,6 @@ This module proves all three from the **shared commons**, so none of them is an 
 
 import Mathlib
 import Submission.Work.LinnikAreas.BGTZSetup
-import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_strip_convexity_explicit
 import Submission.Commons.NumberTheory.LSeries.exists_bound_norm_riemannZeta_fractional
 import Submission.Work.LinnikAreas.DhCapped.LFunctionPrimitiveZero
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikBurgess.burgess_lead_defs
-import Submission.Work.LinnikBurgess.twoPow_zmod_kernel
 import Submission.Work.LinnikBurgess.twoPow_kernel_char_sum
 import Submission.Work.LinnikBurgess.twoPow_g_lt_K_unit
 import Submission.Work.LinnikBurgess.twoPow_g_eq_K

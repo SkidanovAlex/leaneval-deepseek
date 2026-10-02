@@ -80,10 +80,10 @@ lemma zero_in_ball_left_le_zero_in_ball_right {N : ℕ} [NeZero N]
     u ∈ Metric.closedBall ((2 : ℂ) + Complex.I * (a.im : ℂ)) (ρ + 2) := by
   have hstrip := completedL_zero_strip_ball χ hχ hχprim hu0
   have hre : |u.re - 2| ≤ 2 := by
-    have h1 : u.re - 2 < 0 := by linarith [hstrip.2]
-    have h2 : -2 ≤ u.re - 2 := by linarith [hstrip.1]
+    have h1 : u.re - 2 < 0 := by linarith only [hstrip.2, hstrip]
+    have h2 : -2 ≤ u.re - 2 := by linarith only [hstrip.1, hstrip]
     rw [abs_of_neg h1]
-    linarith
+    linarith only [hstrip]
   have hdist : ‖u - a‖ ≤ ρ := by simpa [dist_eq_norm] using huB
   have him2 : |u.im - a.im| ≤ ρ := by
     have h := Complex.abs_im_le_norm (u - a)
@@ -217,17 +217,17 @@ theorem completedL_ballZeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter �
   refine ⟨c, ?_⟩
   intro a ρ hρ
   have hnorm : 0 ≤ ‖a‖ := norm_nonneg a
-  have hρ0 : 0 ≤ ρ := by linarith
+  have hρ0 : 0 ≤ ρ := by linarith only [hρ]
   have hρ1 : 1 ≤ ρ := hρ
-  have hX : 2 ≤ ‖a‖ + ρ + 2 := by nlinarith
-  have hXpos : 0 < ‖a‖ + ρ + 2 := by nlinarith
+  have hX : 2 ≤ ‖a‖ + ρ + 2 := by linarith only [hρ, hnorm]
+  have hXpos : 0 < ‖a‖ + ρ + 2 := by linarith only [hρ, hnorm]
   have hlogN0 : (0 : ℝ) ≤ Real.log (N : ℝ) := log_N_nonneg
-  have hXge : 1 ≤ ‖a‖ + ρ + 2 := by nlinarith
+  have hXge : 1 ≤ ‖a‖ + ρ + 2 := by linarith only [hρ, hnorm]
   have hXlog : 0 ≤ Real.log (‖a‖ + ρ + 2) := by
     exact Real.log_nonneg hXge
   -- step 1 + 2: enlarge the disk to centre `2 + I·Im a`, radius `ρ + 2`, then use
   -- the local count bound
-  have h2 := hc0 (ρ + 2) (by linarith : 2 ≤ ρ + 2) a.im
+  have h2 := hc0 (ρ + 2) (by linarith only [hρ] : 2 ≤ ρ + 2) a.im
   have h2log : (2 + |a.im| + (ρ + 2)) = (4 + |a.im| + ρ) := by ring
   have h2' : (∑ᶠ u : ℂ,
         (((MeromorphicOn.divisor Λ (Metric.closedBall ((2 : ℂ) + Complex.I * (a.im : ℂ))
@@ -248,13 +248,13 @@ theorem completedL_ballZeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter �
               simpa [Λ] using h2'
   -- log absorption: log(4 + |a.im| + ρ) ≤ 2·log(‖a‖+ρ+2)
   have hIm : |a.im| ≤ ‖a‖ := Complex.abs_im_le_norm a
-  have hposLog : 0 < 4 + |a.im| + ρ := by nlinarith [abs_nonneg a.im]
+  have hposLog : 0 < 4 + |a.im| + ρ := by linarith only [abs_nonneg a.im, hρ]
   have hleSq : 4 + ‖a‖ + ρ ≤ (‖a‖ + ρ + 2) ^ 2 := by
-    nlinarith [sq_nonneg (‖a‖ + ρ), hnorm]
+    linarith only [sq_nonneg (‖a‖ + ρ), hnorm, hρ]
   have hlog1 : Real.log (4 + |a.im| + ρ) ≤ 2 * Real.log (‖a‖ + ρ + 2) := by
     have hmono : Real.log (4 + |a.im| + ρ) ≤ Real.log (4 + ‖a‖ + ρ) := by
-      exact Real.log_le_log hposLog (by nlinarith)
-    have hpos2 : 0 < 4 + ‖a‖ + ρ := by nlinarith
+      exact Real.log_le_log hposLog (by linarith only [hIm])
+    have hpos2 : 0 < 4 + ‖a‖ + ρ := by linarith only [hρ, hnorm]
     have hlog2 : Real.log (4 + ‖a‖ + ρ) ≤ Real.log ((‖a‖ + ρ + 2) ^ 2) :=
       Real.log_le_log hpos2 hleSq
     have hsq : Real.log ((‖a‖ + ρ + 2) ^ 2) = 2 * Real.log (‖a‖ + ρ + 2) := by
@@ -266,24 +266,24 @@ theorem completedL_ballZeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter �
       _ = 2 * Real.log (‖a‖ + ρ + 2) := hsq
   have hsmall : 2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 ≤
       2 * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by
-    nlinarith [hlogN0, hXlog]
-  have hposT : 0 ≤ Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith
+    linarith only [hlogN0, hXlog]
+  have hposT : 0 ≤ Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith only [hlogN0, hXlog]
   have hposC : 0 ≤ max c0 0 := le_max_right c0 0
   have hRhoFact : (ρ + 2) * (2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) ≤
       4 * (ρ + 1) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by
-    have hρ2 : ρ + 2 ≤ 2 * (ρ + 1) := by nlinarith
-    have hleft : 0 ≤ 2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith
+    have hρ2 : ρ + 2 ≤ 2 * (ρ + 1) := by linarith only [hρ]
+    have hleft : 0 ≤ 2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith only [hlogN0, hXlog]
     calc
       (ρ + 2) * (2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2)
           ≤ (2 * (ρ + 1)) * (2 * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2)) := by
-              exact mul_le_mul hρ2 hsmall hleft (by linarith)
+              exact mul_le_mul hρ2 hsmall hleft (by linarith only [hρ])
       _ = 4 * (ρ + 1) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by ring
   have hposArg : 0 ≤ Real.log (4 + |a.im| + ρ) + Real.log (N : ℝ) + 2 := by
     have h1pos : 0 ≤ Real.log (4 + |a.im| + ρ) := by
       refine Real.log_nonneg ?_
       have h_abs : 0 ≤ |a.im| := abs_nonneg a.im
-      linarith
-    linarith
+      linarith only [hρ, hposLog, h_abs]
+    linarith only [hlogN0, h1pos]
   have hstepA : c0 * (ρ + 2) * (Real.log (4 + |a.im| + ρ) + Real.log (N : ℝ) + 2) ≤
       (max c0 0) * (ρ + 2) * (2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by
     have hle0 : c0 ≤ max c0 0 := le_max_left c0 0
@@ -297,7 +297,7 @@ theorem completedL_ballZeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter �
             exact mul_le_mul_of_nonneg_right hle0 hfact
         _ = (max c0 0) * (ρ + 2) * (Real.log (4 + |a.im| + ρ) + Real.log (N : ℝ) + 2) := by ring
     have hArg : Real.log (4 + |a.im| + ρ) + Real.log (N : ℝ) + 2 ≤
-        2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith [hlog1]
+        2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2 := by linarith only [hlog1]
     have hpos2 : 0 ≤ (max c0 0) * (ρ + 2) := by positivity
     exact le_trans hprod1 (mul_le_mul_of_nonneg_left hArg hpos2)
   have hstepB : (max c0 0) * (ρ + 2) * (2 * Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) ≤
@@ -310,7 +310,7 @@ theorem completedL_ballZeroCount {N : ℕ} [NeZero N] (χ : DirichletCharacter �
       _ = (max c0 0) * (4 * (ρ + 1)) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by ring
   have hfinal : (max c0 0) * (4 * (ρ + 1)) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) ≤
       (4 * max c0 0 + 4) * (ρ + 1) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by
-    have hleC : 4 * max c0 0 ≤ 4 * max c0 0 + 4 := by linarith
+    have hleC : 4 * max c0 0 ≤ 4 * max c0 0 + 4 := by linarith only []
     have hposR : 0 ≤ (ρ + 1) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2) := by positivity
     calc
       (max c0 0) * (4 * (ρ + 1)) * (Real.log (‖a‖ + ρ + 2) + Real.log (N : ℝ) + 2)

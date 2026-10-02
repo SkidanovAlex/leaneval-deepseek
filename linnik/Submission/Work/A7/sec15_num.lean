@@ -11,6 +11,11 @@ open scoped Classical BigOperators
 noncomputable section
 namespace Work.A7
 
+private lemma t13_mem {t c t' c' : ℝ} {N : ℕ} (k : ℕ) (hk : k < Work.LinnikContract.table13.length)
+    (hget : Work.LinnikContract.table13[k] = (t', c', N)) (ht : t = t') (hc : c = c') :
+    (t, c, N) ∈ Work.LinnikContract.table13 := by
+  subst ht hc; rw [← hget]; exact List.getElem_mem hk
+
 open Work.LinnikContract
 open Work.LinnikAreas.A7
 
@@ -36,7 +41,7 @@ theorem total_r0 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
   rw [hmax]
   have hmin : min ((1229:ℝ)/(1000)) (((49:ℝ)/(40))) = ((49:ℝ)/(40)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3]
+  linarith only [htail, hCL3]
 
 lemma cred_r0 :
     Cf (((49:ℝ)/(40))) (((49:ℝ)/(40))) ≤ ((165177:ℝ)/(12500000)) ∧ Cf (((49:ℝ)/(40))) (((451:ℝ)/(500))) ≤ ((165177:ℝ)/(12500000))
@@ -71,7 +76,7 @@ lemma hcount_r0 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((87:ℝ)/(250))) (t := ((49:ℝ)/(40))) (N := 218)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 85 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=6/5 s=0 col=1 n1=2 TA~0.950044
 theorem total_r1 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -95,7 +100,7 @@ theorem total_r1 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
   rw [hmax]
   have hmin : min ((59:ℝ)/(50)) (((6:ℝ)/(5))) = ((59:ℝ)/(50)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3]
+  linarith only [htail, hCL3]
 
 lemma cred_r1 :
     Cf (((6:ℝ)/(5))) (((59:ℝ)/(50))) ≤ ((282441:ℝ)/(20000000)) ∧ Cf (((6:ℝ)/(5))) (((443:ℝ)/(500))) ≤ ((282441:ℝ)/(20000000))
@@ -130,7 +135,7 @@ lemma hcount_r1 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((87:ℝ)/(250))) (t := ((6:ℝ)/(5))) (N := 111)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 80 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=6/5 s=2 col=1 n1=2 TA~0.983278
 theorem total_r2 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -160,14 +165,15 @@ theorem total_r2 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_6_5).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 2, ((Nlist [111, 73, 54] j : ℝ) - (Nlist [111, 73, 54] (j+1) : ℝ)) * Cf (((6:ℝ)/(5))) ((((6:ℝ)/(5))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (38:ℝ) * Cf (((6:ℝ)/(5))) (((47:ℝ)/(40))) + (19:ℝ) * Cf (((6:ℝ)/(5))) (((23:ℝ)/(20))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [111, 73, 54] 2 : ℝ) - 2 - 2) = (50:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((567:ℝ)/(500)) (((6:ℝ)/(5))) = ((567:ℝ)/(500)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1]
+  linarith only [htail, hCL3, hCG0, hCG1]
 
 lemma cred_r2 :
     Cf (((6:ℝ)/(5))) (((567:ℝ)/(500))) ≤ ((394349:ℝ)/(25000000)) ∧ Cf (((6:ℝ)/(5))) (((87:ℝ)/(100))) ≤ ((394349:ℝ)/(25000000))
@@ -202,13 +208,13 @@ lemma hcount_r2 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((87:ℝ)/(250))) (t := ((6:ℝ)/(5))) (N := 111)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 80 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((87:ℝ)/(250))) (t := ((47:ℝ)/(40))) (N := 73)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 75 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((87:ℝ)/(250))) (t := ((23:ℝ)/(20))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 70 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=6/5 s=4 col=2 n1=2 TA~0.974823
 theorem total_r3 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -248,14 +254,15 @@ theorem total_r3 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_6_5).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 4, ((Nlist [81, 58, 45, 36, 30] j : ℝ) - (Nlist [81, 58, 45, 36, 30] (j+1) : ℝ)) * Cf (((6:ℝ)/(5))) ((((6:ℝ)/(5))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (23:ℝ) * Cf (((6:ℝ)/(5))) (((47:ℝ)/(40))) + (13:ℝ) * Cf (((6:ℝ)/(5))) (((23:ℝ)/(20))) + (9:ℝ) * Cf (((6:ℝ)/(5))) (((9:ℝ)/(8))) + (6:ℝ) * Cf (((6:ℝ)/(5))) (((11:ℝ)/(10))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [81, 58, 45, 36, 30] 4 : ℝ) - 2 - 2) = (26:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((1093:ℝ)/(1000)) (((6:ℝ)/(5))) = ((1093:ℝ)/(1000)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3]
 
 lemma cred_r3 :
     Cf (((6:ℝ)/(5))) (((1093:ℝ)/(1000))) ≤ ((436587:ℝ)/(25000000)) ∧ Cf (((6:ℝ)/(5))) (((171:ℝ)/(200))) ≤ ((436587:ℝ)/(25000000))
@@ -290,19 +297,19 @@ lemma hcount_r3 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((6:ℝ)/(5))) (N := 81)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 81 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((47:ℝ)/(40))) (N := 58)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 76 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((23:ℝ)/(20))) (N := 45)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 71 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((9:ℝ)/(8))) (N := 36)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 66 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((11:ℝ)/(10))) (N := 30)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 61 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=6/5 s=5 col=2 n1=2 TA~0.987110
 theorem total_r4 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -347,14 +354,15 @@ theorem total_r4 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_6_5).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 5, ((Nlist [81, 58, 45, 36, 30, 26] j : ℝ) - (Nlist [81, 58, 45, 36, 30, 26] (j+1) : ℝ)) * Cf (((6:ℝ)/(5))) ((((6:ℝ)/(5))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (23:ℝ) * Cf (((6:ℝ)/(5))) (((47:ℝ)/(40))) + (13:ℝ) * Cf (((6:ℝ)/(5))) (((23:ℝ)/(20))) + (9:ℝ) * Cf (((6:ℝ)/(5))) (((9:ℝ)/(8))) + (6:ℝ) * Cf (((6:ℝ)/(5))) (((11:ℝ)/(10))) + (4:ℝ) * Cf (((6:ℝ)/(5))) (((43:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [81, 58, 45, 36, 30, 26] 5 : ℝ) - 2 - 2) = (22:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((527:ℝ)/(500)) (((6:ℝ)/(5))) = ((527:ℝ)/(500)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4]
 
 lemma cred_r4 :
     Cf (((6:ℝ)/(5))) (((527:ℝ)/(500))) ≤ ((1917351:ℝ)/(100000000)) ∧ Cf (((6:ℝ)/(5))) (((841:ℝ)/(1000))) ≤ ((1917351:ℝ)/(100000000))
@@ -389,22 +397,22 @@ lemma hcount_r4 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((6:ℝ)/(5))) (N := 81)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 81 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((47:ℝ)/(40))) (N := 58)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 76 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((23:ℝ)/(20))) (N := 45)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 71 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((9:ℝ)/(8))) (N := 36)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 66 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((11:ℝ)/(10))) (N := 30)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 61 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((2:ℝ)/(5))) (t := ((43:ℝ)/(40))) (N := 26)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 56 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=49/40 s=8 col=3 n1=2 TA~0.973888
 theorem total_r5 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -464,14 +472,15 @@ theorem total_r5 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_49_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 8, ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18] j : ℝ) - (Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18] (j+1) : ℝ)) * Cf (((49:ℝ)/(40))) ((((49:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((49:ℝ)/(40))) (((6:ℝ)/(5))) + (16:ℝ) * Cf (((49:ℝ)/(40))) (((47:ℝ)/(40))) + (11:ℝ) * Cf (((49:ℝ)/(40))) (((23:ℝ)/(20))) + (7:ℝ) * Cf (((49:ℝ)/(40))) (((9:ℝ)/(8))) + (5:ℝ) * Cf (((49:ℝ)/(40))) (((11:ℝ)/(10))) + (4:ℝ) * Cf (((49:ℝ)/(40))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((21:ℝ)/(20))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((41:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18] 8 : ℝ) - 2 - 2) = (14:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((1017:ℝ)/(1000)) (((49:ℝ)/(40))) = ((1017:ℝ)/(1000)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7]
 
 lemma cred_r5 :
     Cf (((49:ℝ)/(40))) (((1017:ℝ)/(1000))) ≤ ((539411:ℝ)/(25000000)) ∧ Cf (((49:ℝ)/(40))) (((207:ℝ)/(250))) ≤ ((539411:ℝ)/(25000000))
@@ -506,31 +515,31 @@ lemma hcount_r5 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((49:ℝ)/(40))) (N := 97)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 87 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((6:ℝ)/(5))) (N := 67)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 82 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((47:ℝ)/(40))) (N := 51)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 77 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((23:ℝ)/(20))) (N := 40)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 72 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((9:ℝ)/(8))) (N := 33)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 67 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((11:ℝ)/(10))) (N := 28)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 62 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((43:ℝ)/(40))) (N := 24)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 57 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((21:ℝ)/(20))) (N := 21)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 52 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((41:ℝ)/(40))) (N := 18)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 47 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=49/40 s=9 col=3 n1=2 TA~0.984125
 theorem total_r6 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -595,14 +604,15 @@ theorem total_r6 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_49_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 9, ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16] j : ℝ) - (Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16] (j+1) : ℝ)) * Cf (((49:ℝ)/(40))) ((((49:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((49:ℝ)/(40))) (((6:ℝ)/(5))) + (16:ℝ) * Cf (((49:ℝ)/(40))) (((47:ℝ)/(40))) + (11:ℝ) * Cf (((49:ℝ)/(40))) (((23:ℝ)/(20))) + (7:ℝ) * Cf (((49:ℝ)/(40))) (((9:ℝ)/(8))) + (5:ℝ) * Cf (((49:ℝ)/(40))) (((11:ℝ)/(10))) + (4:ℝ) * Cf (((49:ℝ)/(40))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((21:ℝ)/(20))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((49:ℝ)/(40))) (((1:ℝ)/(1))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16] 9 : ℝ) - 2 - 2) = (12:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((983:ℝ)/(1000)) (((49:ℝ)/(40))) = ((983:ℝ)/(1000)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8]
 
 lemma cred_r6 :
     Cf (((49:ℝ)/(40))) (((983:ℝ)/(1000))) ≤ ((1171667:ℝ)/(50000000)) ∧ Cf (((49:ℝ)/(40))) (((163:ℝ)/(200))) ≤ ((1171667:ℝ)/(50000000))
@@ -637,34 +647,34 @@ lemma hcount_r6 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((49:ℝ)/(40))) (N := 97)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 87 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((6:ℝ)/(5))) (N := 67)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 82 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((47:ℝ)/(40))) (N := 51)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 77 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((23:ℝ)/(20))) (N := 40)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 72 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((9:ℝ)/(8))) (N := 33)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 67 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((11:ℝ)/(10))) (N := 28)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 62 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((43:ℝ)/(40))) (N := 24)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 57 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((21:ℝ)/(20))) (N := 21)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 52 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((41:ℝ)/(40))) (N := 18)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 47 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := (1:ℝ)) (N := 16)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 42 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=49/40 s=10 col=3 n1=2 TA~0.996673
 theorem total_r7 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -734,14 +744,15 @@ theorem total_r7 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_49_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 10, ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] j : ℝ) - (Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] (j+1) : ℝ)) * Cf (((49:ℝ)/(40))) ((((49:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((49:ℝ)/(40))) (((6:ℝ)/(5))) + (16:ℝ) * Cf (((49:ℝ)/(40))) (((47:ℝ)/(40))) + (11:ℝ) * Cf (((49:ℝ)/(40))) (((23:ℝ)/(20))) + (7:ℝ) * Cf (((49:ℝ)/(40))) (((9:ℝ)/(8))) + (5:ℝ) * Cf (((49:ℝ)/(40))) (((11:ℝ)/(10))) + (4:ℝ) * Cf (((49:ℝ)/(40))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((21:ℝ)/(20))) + (3:ℝ) * Cf (((49:ℝ)/(40))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((49:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((49:ℝ)/(40))) (((39:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [97, 67, 51, 40, 33, 28, 24, 21, 18, 16, 15] 10 : ℝ) - 2 - 2) = (11:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((951:ℝ)/(1000)) (((49:ℝ)/(40))) = ((951:ℝ)/(1000)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9]
 
 lemma cred_r7 :
     Cf (((49:ℝ)/(40))) (((951:ℝ)/(1000))) ≤ ((2542779:ℝ)/(100000000)) ∧ Cf (((49:ℝ)/(40))) (((401:ℝ)/(500))) ≤ ((2542779:ℝ)/(100000000))
@@ -776,37 +787,37 @@ lemma hcount_r7 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((49:ℝ)/(40))) (N := 97)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 87 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((6:ℝ)/(5))) (N := 67)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 82 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((47:ℝ)/(40))) (N := 51)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 77 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((23:ℝ)/(20))) (N := 40)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 72 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((9:ℝ)/(8))) (N := 33)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 67 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((11:ℝ)/(10))) (N := 28)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 62 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((43:ℝ)/(40))) (N := 24)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 57 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((21:ℝ)/(20))) (N := 21)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 52 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((41:ℝ)/(40))) (N := 18)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 47 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := (1:ℝ)) (N := 16)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 42 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((11:ℝ)/(25))) (t := ((39:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 37 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=5/4 s=13 col=4 n1=2 TA~0.967571
 theorem total_r8 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -891,14 +902,15 @@ theorem total_r8 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_5_4).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 13, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11] (j+1) : ℝ)) * Cf (((5:ℝ)/(4))) ((((5:ℝ)/(4))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (33:ℝ) * Cf (((5:ℝ)/(4))) (((49:ℝ)/(40))) + (17:ℝ) * Cf (((5:ℝ)/(4))) (((6:ℝ)/(5))) + (12:ℝ) * Cf (((5:ℝ)/(4))) (((47:ℝ)/(40))) + (7:ℝ) * Cf (((5:ℝ)/(4))) (((23:ℝ)/(20))) + (6:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(8))) + (4:ℝ) * Cf (((5:ℝ)/(4))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((39:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((37:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11] 13 : ℝ) - 2 - 2) = (7:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((921:ℝ)/(1000)) (((5:ℝ)/(4))) = ((921:ℝ)/(1000)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12]
 
 lemma cred_r8 :
     Cf (((5:ℝ)/(4))) (((921:ℝ)/(1000))) ≤ ((702093:ℝ)/(25000000)) ∧ Cf (((5:ℝ)/(4))) (((79:ℝ)/(100))) ≤ ((702093:ℝ)/(25000000))
@@ -933,46 +945,46 @@ lemma hcount_r8 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((5:ℝ)/(4))) (N := 104)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((49:ℝ)/(40))) (N := 71)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((6:ℝ)/(5))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((47:ℝ)/(40))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((23:ℝ)/(20))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(8))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((11:ℝ)/(10))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((43:ℝ)/(40))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((21:ℝ)/(20))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((41:ℝ)/(40))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := (1:ℝ)) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((39:ℝ)/(40))) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=5/4 s=14 col=4 n1=2 TA~0.978821
 theorem total_r9 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -1062,14 +1074,15 @@ theorem total_r9 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_5_4).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 14, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10] (j+1) : ℝ)) * Cf (((5:ℝ)/(4))) ((((5:ℝ)/(4))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (33:ℝ) * Cf (((5:ℝ)/(4))) (((49:ℝ)/(40))) + (17:ℝ) * Cf (((5:ℝ)/(4))) (((6:ℝ)/(5))) + (12:ℝ) * Cf (((5:ℝ)/(4))) (((47:ℝ)/(40))) + (7:ℝ) * Cf (((5:ℝ)/(4))) (((23:ℝ)/(20))) + (6:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(8))) + (4:ℝ) * Cf (((5:ℝ)/(4))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((39:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(10))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10] 14 : ℝ) - 2 - 2) = (6:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((223:ℝ)/(250)) (((5:ℝ)/(4))) = ((223:ℝ)/(250)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13]
 
 lemma cred_r9 :
     Cf (((5:ℝ)/(4))) (((223:ℝ)/(250))) ≤ ((750559:ℝ)/(25000000)) ∧ Cf (((5:ℝ)/(4))) (((779:ℝ)/(1000))) ≤ ((750559:ℝ)/(25000000))
@@ -1104,49 +1117,49 @@ lemma hcount_r9 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((5:ℝ)/(4))) (N := 104)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((49:ℝ)/(40))) (N := 71)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((6:ℝ)/(5))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((47:ℝ)/(40))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((23:ℝ)/(20))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(8))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((11:ℝ)/(10))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((43:ℝ)/(40))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((21:ℝ)/(20))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((41:ℝ)/(40))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := (1:ℝ)) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((39:ℝ)/(40))) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 23 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=5/4 s=15 col=4 n1=2 TA~0.990510
 theorem total_r10 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -1241,14 +1254,15 @@ theorem total_r10 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_5_4).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 15, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((5:ℝ)/(4))) ((((5:ℝ)/(4))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (33:ℝ) * Cf (((5:ℝ)/(4))) (((49:ℝ)/(40))) + (17:ℝ) * Cf (((5:ℝ)/(4))) (((6:ℝ)/(5))) + (12:ℝ) * Cf (((5:ℝ)/(4))) (((47:ℝ)/(40))) + (7:ℝ) * Cf (((5:ℝ)/(4))) (((23:ℝ)/(20))) + (6:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(8))) + (4:ℝ) * Cf (((5:ℝ)/(4))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((39:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] 15 : ℝ) - 2 - 2) = (5:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((173:ℝ)/(200)) (((5:ℝ)/(4))) = ((173:ℝ)/(200)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
 
 lemma cred_r10 :
     Cf (((5:ℝ)/(4))) (((173:ℝ)/(200))) ≤ ((128321:ℝ)/(4000000)) ∧ Cf (((5:ℝ)/(4))) (((96:ℝ)/(125))) ≤ ((128321:ℝ)/(4000000))
@@ -1283,52 +1297,52 @@ lemma hcount_r10 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ 
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((5:ℝ)/(4))) (N := 104)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((49:ℝ)/(40))) (N := 71)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((6:ℝ)/(5))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((47:ℝ)/(40))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((23:ℝ)/(20))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(8))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((11:ℝ)/(10))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((43:ℝ)/(40))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((21:ℝ)/(20))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((41:ℝ)/(40))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := (1:ℝ)) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((39:ℝ)/(40))) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 23 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 18 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=5/4 s=15 col=4 n1=2 TA~0.992926
 theorem total_r11 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -1423,14 +1437,15 @@ theorem total_r11 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_5_4).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 15, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((5:ℝ)/(4))) ((((5:ℝ)/(4))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (33:ℝ) * Cf (((5:ℝ)/(4))) (((49:ℝ)/(40))) + (17:ℝ) * Cf (((5:ℝ)/(4))) (((6:ℝ)/(5))) + (12:ℝ) * Cf (((5:ℝ)/(4))) (((47:ℝ)/(40))) + (7:ℝ) * Cf (((5:ℝ)/(4))) (((23:ℝ)/(20))) + (6:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(8))) + (4:ℝ) * Cf (((5:ℝ)/(4))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((39:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] 15 : ℝ) - 2 - 2) = (5:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((5:ℝ)/(4))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
 
 lemma cred_r11 :
     Cf (((5:ℝ)/(4))) (((107:ℝ)/(125))) ≤ ((106439:ℝ)/(3125000)) ∧ Cf (((5:ℝ)/(4))) (((379:ℝ)/(500))) ≤ ((106439:ℝ)/(3125000))
@@ -1465,52 +1480,52 @@ lemma hcount_r11 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ 
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((5:ℝ)/(4))) (N := 104)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((49:ℝ)/(40))) (N := 71)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((6:ℝ)/(5))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((47:ℝ)/(40))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((23:ℝ)/(20))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(8))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((11:ℝ)/(10))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((43:ℝ)/(40))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((21:ℝ)/(20))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((41:ℝ)/(40))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := (1:ℝ)) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((39:ℝ)/(40))) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 23 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 18 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=51/40 s=16 col=5 n1=2 TA~0.941373
 theorem total_r12 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -1610,14 +1625,15 @@ theorem total_r12 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] 16 : ℝ) - 2 - 2) = (5:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((51:ℝ)/(40))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
 
 lemma cred_r12 :
     Cf (((51:ℝ)/(40))) (((107:ℝ)/(125))) ≤ ((3683353:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((187:ℝ)/(250))) ≤ ((3683353:ℝ)/(100000000))
@@ -1652,55 +1668,55 @@ lemma hcount_r12 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ 
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
 
 -- I : Lam=5/4 s=15 col=4 n1=1 TA~0.994286
 theorem total_r11rc {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -1795,14 +1811,15 @@ theorem total_r11rc {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_5_4).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 15, ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] j : ℝ) - (Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((5:ℝ)/(4))) ((((5:ℝ)/(4))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (33:ℝ) * Cf (((5:ℝ)/(4))) (((49:ℝ)/(40))) + (17:ℝ) * Cf (((5:ℝ)/(4))) (((6:ℝ)/(5))) + (12:ℝ) * Cf (((5:ℝ)/(4))) (((47:ℝ)/(40))) + (7:ℝ) * Cf (((5:ℝ)/(4))) (((23:ℝ)/(20))) + (6:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(8))) + (4:ℝ) * Cf (((5:ℝ)/(4))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((43:ℝ)/(40))) + (3:ℝ) * Cf (((5:ℝ)/(4))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((41:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((39:ℝ)/(40))) + (2:ℝ) * Cf (((5:ℝ)/(4))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((5:ℝ)/(4))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [104, 71, 54, 42, 35, 29, 25, 22, 19, 17, 15, 14, 12, 11, 10, 9] 15 : ℝ) - 1 - 2) = (6:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((5:ℝ)/(4))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
 
 lemma cred_r11rc :
     Cf (((5:ℝ)/(4))) (((107:ℝ)/(125))) ≤ ((106439:ℝ)/(3125000)) ∧ Cf (((5:ℝ)/(4))) (((379:ℝ)/(500))) ≤ ((106439:ℝ)/(3125000))
@@ -1837,52 +1854,52 @@ lemma hcount_r11rc {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((5:ℝ)/(4))) (N := 104)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 93 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((49:ℝ)/(40))) (N := 71)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 88 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((6:ℝ)/(5))) (N := 54)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 83 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((47:ℝ)/(40))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 78 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((23:ℝ)/(20))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 73 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(8))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 68 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((11:ℝ)/(10))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 63 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((43:ℝ)/(40))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 58 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((21:ℝ)/(20))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 53 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((41:ℝ)/(40))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 48 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := (1:ℝ)) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 43 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((39:ℝ)/(40))) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 38 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 33 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 28 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 23 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((1:ℝ)/(2))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 18 (by decide) rfl (by norm_num) (by norm_num))
 
 theorem rowA2_r11rc {p : ℝ} (h1 : ((14:ℝ)/(25)) ≤ p) (h2 : p ≤ ((29:ℝ)/(50)))
     (hBfun_mono : Bfun ((3:ℝ)/10) p ≤ Bfun ((3:ℝ)/10) ((14:ℝ)/(25)))
@@ -2003,14 +2020,15 @@ theorem total_r12rc {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] 16 : ℝ) - 1 - 2) = (6:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((51:ℝ)/(40))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
 
 lemma cred_r12rc :
     Cf (((51:ℝ)/(40))) (((107:ℝ)/(125))) ≤ ((3683353:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((187:ℝ)/(250))) ≤ ((3683353:ℝ)/(100000000))
@@ -2045,55 +2063,55 @@ lemma hcount_r12rc {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
 
 theorem rowA2_r12rc {p : ℝ} (h1 : ((29:ℝ)/(50)) ≤ p) (h2 : p ≤ ((3:ℝ)/(5)))
     (hBfun_mono : Bfun ((3:ℝ)/10) p ≤ Bfun ((3:ℝ)/10) ((29:ℝ)/(50)))
@@ -2214,14 +2232,15 @@ theorem total_u2 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] 16 : ℝ) - 2 - 2) = (5:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((51:ℝ)/(40))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
 
 lemma cred_u2 :
     Cf (((51:ℝ)/(40))) (((107:ℝ)/(125))) ≤ ((100147:ℝ)/(2000000)) ∧ Cf (((51:ℝ)/(40))) (((701:ℝ)/(1000))) ≤ ((100147:ℝ)/(2000000))
@@ -2256,55 +2275,55 @@ lemma hcount_u2 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
 
 -- II : Lam=51/40 s=16 col=5 n1=1 TA~0.958365
 theorem total_u2rc {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -2404,14 +2423,15 @@ theorem total_u2rc {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] 16 : ℝ) - 1 - 2) = (6:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((51:ℝ)/(40))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
 
 lemma cred_u2rc :
     Cf (((51:ℝ)/(40))) (((107:ℝ)/(125))) ≤ ((100147:ℝ)/(2000000)) ∧ Cf (((51:ℝ)/(40))) (((701:ℝ)/(1000))) ≤ ((100147:ℝ)/(2000000))
@@ -2446,55 +2466,55 @@ lemma hcount_u2rc {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
 
 theorem rowA2_u2rc {p : ℝ} (h1 : ((3:ℝ)/(5)) ≤ p) (h2 : p ≤ ((139:ℝ)/(200)))
     (hBfun_mono : Bfun ((3:ℝ)/10) p ≤ Bfun ((3:ℝ)/10) ((3:ℝ)/(5)))
@@ -2615,14 +2635,15 @@ theorem total_u3 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 16, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10, 9] 16 : ℝ) - 2 - 2) = (5:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((107:ℝ)/(125)) (((51:ℝ)/(40))) = ((107:ℝ)/(125)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14, hCG15]
 
 lemma cred_u3 :
     Cf (((51:ℝ)/(40))) (((107:ℝ)/(125))) ≤ ((100147:ℝ)/(2000000)) ∧ Cf (((51:ℝ)/(40))) (((701:ℝ)/(1000))) ≤ ((100147:ℝ)/(2000000))
@@ -2657,55 +2678,55 @@ lemma hcount_u3 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁ :
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((7:ℝ)/(8))) (N := 9)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 19 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=15 col=5 n1=2 TA~0.811828
 theorem total_u4_15 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -2800,14 +2821,15 @@ theorem total_u4_15 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 15, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11, 10] 15 : ℝ) - 2 - 2) = (6:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((7:ℝ)/(8)) (((51:ℝ)/(40))) = ((7:ℝ)/(8)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13, hCG14]
 
 lemma cred_u4_15 :
     Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) ≤ ((1699609:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((7:ℝ)/(8))) ≤ ((1699609:ℝ)/(100000000))
@@ -2842,52 +2864,52 @@ lemma hcount_u4_15 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(10))) (N := 10)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 24 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=14 col=5 n1=2 TA~0.786545
 theorem total_u4_14 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -2977,14 +2999,15 @@ theorem total_u4_14 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 14, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12, 11] 14 : ℝ) - 2 - 2) = (7:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((9:ℝ)/(10)) (((51:ℝ)/(40))) = ((9:ℝ)/(10)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12, hCG13]
 
 lemma cred_u4_14 :
     Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) ≤ ((1446777:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((9:ℝ)/(10))) ≤ ((1446777:ℝ)/(100000000))
@@ -3019,49 +3042,49 @@ lemma hcount_u4_14 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((37:ℝ)/(40))) (N := 11)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 29 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=13 col=5 n1=2 TA~0.762334
 theorem total_u4_13 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3146,14 +3169,15 @@ theorem total_u4_13 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 13, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13, 12] 13 : ℝ) - 2 - 2) = (8:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((37:ℝ)/(40)) (((51:ℝ)/(40))) = ((37:ℝ)/(40)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11, hCG12]
 
 lemma cred_u4_13 :
     Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) ≤ ((1226677:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((37:ℝ)/(40))) ≤ ((1226677:ℝ)/(100000000))
@@ -3188,46 +3212,46 @@ lemma hcount_u4_13 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((19:ℝ)/(20))) (N := 12)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 34 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=12 col=5 n1=2 TA~0.739364
 theorem total_u4_12 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3307,14 +3331,15 @@ theorem total_u4_12 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 12, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14, 13] 12 : ℝ) - 2 - 2) = (9:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((19:ℝ)/(20)) (((51:ℝ)/(40))) = ((19:ℝ)/(20)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10, hCG11]
 
 lemma cred_u4_12 :
     Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) ≤ ((51763:ℝ)/(5000000)) ∧ Cf (((51:ℝ)/(40))) (((19:ℝ)/(20))) ≤ ((51763:ℝ)/(5000000))
@@ -3349,43 +3374,43 @@ lemma hcount_u4_12 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((39:ℝ)/(40))) (N := 13)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 39 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=11 col=5 n1=2 TA~0.717746
 theorem total_u4_11 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3460,14 +3485,15 @@ theorem total_u4_11 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 11, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) + (1:ℝ) * Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15, 14] 11 : ℝ) - 2 - 2) = (10:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((39:ℝ)/(40)) (((51:ℝ)/(40))) = ((39:ℝ)/(40)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9, hCG10]
 
 lemma cred_u4_11 :
     Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) ≤ ((108621:ℝ)/(12500000)) ∧ Cf (((51:ℝ)/(40))) (((39:ℝ)/(40))) ≤ ((108621:ℝ)/(12500000))
@@ -3502,40 +3528,40 @@ lemma hcount_u4_11 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := (1:ℝ)) (N := 14)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 44 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=10 col=5 n1=2 TA~0.697545
 theorem total_u4_10 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3605,14 +3631,15 @@ theorem total_u4_10 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 10, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17, 15] 10 : ℝ) - 2 - 2) = (11:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((1:ℝ)/(1)) (((51:ℝ)/(40))) = ((1:ℝ)/(1)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8, hCG9]
 
 lemma cred_u4_10 :
     Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) ≤ ((724679:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((1:ℝ)/(1))) ≤ ((724679:ℝ)/(100000000))
@@ -3647,37 +3674,37 @@ lemma hcount_u4_10 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ�
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((41:ℝ)/(40))) (N := 15)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 49 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=9 col=5 n1=2 TA~0.678791
 theorem total_u4_9 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3742,14 +3769,15 @@ theorem total_u4_9 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 9, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) + (2:ℝ) * Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19, 17] 9 : ℝ) - 2 - 2) = (13:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((41:ℝ)/(40)) (((51:ℝ)/(40))) = ((41:ℝ)/(40)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7, hCG8]
 
 lemma cred_u4_9 :
     Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) ≤ ((599649:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((41:ℝ)/(40))) ≤ ((599649:ℝ)/(100000000))
@@ -3784,34 +3812,34 @@ lemma hcount_u4_9 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((21:ℝ)/(20))) (N := 17)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 54 (by decide) rfl (by norm_num) (by norm_num))
 
 -- IV : Lam=51/40 s=8 col=5 n1=2 TA~0.660401
 theorem total_u4_8 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
@@ -3871,14 +3899,15 @@ theorem total_u4_8 {εw : ℝ} (hεw0 : 0 ≤ εw) (hεw1 : εw ≤ 1/1000) :
       (v_51_40).2.2.1 (Wf_pos (by norm_num)) (by norm_num) (by norm_num)
 
   have hsum : (∑ j ∈ Finset.range 8, ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19] j : ℝ) - (Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19] (j+1) : ℝ)) * Cf (((51:ℝ)/(40))) ((((51:ℝ)/(40))) - (25:ℝ)/1000 * ((j:ℝ)+1))) = (30:ℝ) * Cf (((51:ℝ)/(40))) (((5:ℝ)/(4))) + (17:ℝ) * Cf (((51:ℝ)/(40))) (((49:ℝ)/(40))) + (11:ℝ) * Cf (((51:ℝ)/(40))) (((6:ℝ)/(5))) + (7:ℝ) * Cf (((51:ℝ)/(40))) (((47:ℝ)/(40))) + (6:ℝ) * Cf (((51:ℝ)/(40))) (((23:ℝ)/(20))) + (4:ℝ) * Cf (((51:ℝ)/(40))) (((9:ℝ)/(8))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((11:ℝ)/(10))) + (3:ℝ) * Cf (((51:ℝ)/(40))) (((43:ℝ)/(40))) := by
-    norm_num [Nlist, Finset.sum_range_succ]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nlist, List.getD_cons_succ, List.getD_cons_zero]
+    norm_num
   rw [hsum]
   have hmax : max 0 ((Nlist [100, 70, 53, 42, 35, 29, 25, 22, 19] 8 : ℝ) - 2 - 2) = (15:ℝ) := by
     norm_num [Nlist]
   rw [hmax]
   have hmin : min ((21:ℝ)/(20)) (((51:ℝ)/(40))) = ((21:ℝ)/(20)) := by norm_num
   rw [hmin]
-  linarith [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7]
+  linarith only [htail, hCL3, hCG0, hCG1, hCG2, hCG3, hCG4, hCG5, hCG6, hCG7]
 
 lemma cred_u4_8 :
     Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) ≤ ((491473:ℝ)/(100000000)) ∧ Cf (((51:ℝ)/(40))) (((21:ℝ)/(20))) ≤ ((491473:ℝ)/(100000000))
@@ -3913,30 +3942,30 @@ lemma hcount_u4_8 {q : ℕ} [NeZero q] {χ₁ : DirichletCharacter ℂ q} {ρ₁
   interval_cases j
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((51:ℝ)/(40))) (N := 100)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 97 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((5:ℝ)/(4))) (N := 70)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 94 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((49:ℝ)/(40))) (N := 53)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 89 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((6:ℝ)/(5))) (N := 42)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 84 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((47:ℝ)/(40))) (N := 35)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 79 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((23:ℝ)/(20))) (N := 29)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 74 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((9:ℝ)/(8))) (N := 25)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 69 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((11:ℝ)/(10))) (N := 22)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 64 (by decide) rfl (by norm_num) (by norm_num))
   · norm_num [Nlist]
     exact_mod_cast Ncount_le_table hmin hlam1 hcol hD2 (c := ((29:ℝ)/(50))) (t := ((43:ℝ)/(40))) (N := 19)
-      (by norm_num [Work.LinnikContract.table13])
+      (t13_mem 59 (by decide) rfl (by norm_num) (by norm_num))
 
 end Work.A7

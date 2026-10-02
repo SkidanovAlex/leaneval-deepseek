@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikAreas.DhRepel.l52Hyp_supply
 import Submission.Work.LinnikAreas.vonMangoldtTsum_eq_neg_zeta_logDeriv_re
 import Submission.Work.LinnikAreas.re_logDeriv_LFunction_le_vonMangoldtTsum
-import Submission.Work.LinnikAreas.OtherCharRepel.gammaFactorLogDerivReLe
 import Submission.Work.ZeroDensity.Jutila.neg_zeta_logDeriv_re_le
 
 namespace Work.ZeroDensity.Jutila

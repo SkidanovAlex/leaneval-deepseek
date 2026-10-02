@@ -43,7 +43,7 @@ private lemma gammaFactor_analyticAt_of_re_pos {N : ℕ} (χ : DirichletCharacte
     rw [hγ]
     change AnalyticAt ℂ (fun s : ℂ => Complex.Gammaℝ (s + 1)) z
     refine AnalyticAt.comp (g := Complex.Gammaℝ) (f := fun s : ℂ => s + 1) (x := z) ?_ ?_
-    · have hz1 : 0 < (z + 1).re := by simp; linarith
+    · have hz1 : 0 < (z + 1).re := by simp; linarith only [hz]
       exact Gammaℝ_analyticAt_of_re_pos hz1
     · fun_prop
 
@@ -53,7 +53,7 @@ private lemma gammaFactor_ne_zero_of_re_pos {N : ℕ} (χ : DirichletCharacter �
   · rw [Even.gammaFactor_def hE]
     exact Complex.Gammaℝ_ne_zero_of_re_pos hz
   · rw [Odd.gammaFactor_def hO]
-    have hz1 : 0 < (z + 1).re := by simp; linarith
+    have hz1 : 0 < (z + 1).re := by simp; linarith only [hz]
     exact Complex.Gammaℝ_ne_zero_of_re_pos hz1
 
 private lemma divisor_completedL_le_divisor_L {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
@@ -151,7 +151,7 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
   let M : ℝ := mc * (1 + |T| + 3) ^ k * (N : ℝ) ^ k
   have hM1 : 1 ≤ M := by
     dsimp [M]
-    have h1a : 1 ≤ (1 + |T| + 3) ^ k := Real.one_le_rpow (by linarith [abs_nonneg T]) hk
+    have h1a : 1 ≤ (1 + |T| + 3) ^ k := Real.one_le_rpow (by linarith only [abs_nonneg T]) hk
     have h1b : 1 ≤ (N : ℝ) ^ k := Real.one_le_rpow hN1 hk
     have h2 : 1 ≤ mc * (1 + |T| + 3) ^ k := by
       calc
@@ -168,7 +168,7 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
     have hz' : ‖L c‖ = 0 := by simp [hz]
     have hlow' : c0 ≤ ‖L c‖ := hlow T
     dsimp [c] at hlow'
-    linarith [hc0, hz']
+    linarith only [hc0, hz', hlow']
   have hfb : ∀ z : ℂ, z ∈ sphere c |3| → ‖L z‖ ≤ M := by
     intro z hz
     have hznorm3 : ‖z - c‖ = 3 := by
@@ -181,7 +181,7 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
           _ ≤ ‖z - c‖ := Complex.abs_re_le_norm (z - c)
           _ = 3 := hznorm3
       have habs := abs_le.mp hre
-      linarith
+      linarith only [habs]
     have hzre_high : z.re ≤ 8 := by
       have hre : |z.re - 2| ≤ 3 := by
         calc
@@ -189,7 +189,7 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
           _ ≤ ‖z - c‖ := Complex.abs_re_le_norm (z - c)
           _ = 3 := hznorm3
       have habs := abs_le.mp hre
-      linarith
+      linarith only [habs]
     have hb := hband z hzre_low hzre_high
     have hzim : |z.im| ≤ |T| + 3 := by
       have him : |z.im - T| ≤ ‖z - c‖ := by
@@ -199,12 +199,12 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
       have hz3 : |z.im - T| ≤ 3 := le_trans him (le_of_eq hznorm3)
       have habs := abs_le.mp hz3
       have hT1 : T ≤ |T| := le_abs_self T
-      have hT2 : -|T| ≤ T := by linarith [neg_le_abs T]
+      have hT2 : -|T| ≤ T := by linarith only [neg_le_abs T]
       apply abs_le.mpr
       constructor
-      · linarith [habs.1, hT2]
-      · linarith [habs.2, hT1]
-    have hb1 : (1 + |z.im|) ≤ (1 + |T| + 3) := by linarith
+      · linarith only [habs.1, hT2, habs]
+      · linarith only [habs.2, hT1, habs]
+    have hb1 : (1 + |z.im|) ≤ (1 + |T| + 3) := by linarith only [hzim]
     have hb1nn : 0 ≤ 1 + |z.im| := by positivity
     have hpow : (1 + |z.im|) ^ k ≤ (1 + |T| + 3) ^ k :=
       Real.rpow_le_rpow hb1nn hb1 hk
@@ -265,13 +265,13 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
     exact Real.log_le_log hc0 (hlow T)
   have hlogM1 : Real.log M - Real.log ‖L c‖ ≤ Real.log M + |Real.log c0| := by
     have h3 : -Real.log c0 ≤ |Real.log c0| := neg_le_abs (Real.log c0)
-    linarith
+    linarith only [hlogc_lower, h3]
   have hle1 : Real.log (1 + |T| + 3) ≤ Real.log (2 + |T|) + Real.log 2 := by
     have hpos1 : 0 < 1 + |T| + 3 := by positivity
-    have hle : 1 + |T| + 3 ≤ (2 + |T|) * 2 := by nlinarith [abs_nonneg T]
+    have hle : 1 + |T| + 3 ≤ (2 + |T|) * 2 := by linarith only [abs_nonneg T]
     have h := Real.log_le_log hpos1 hle
     rw [Real.log_mul (ne_of_gt (by positivity : 0 < 2 + |T|)) (ne_of_gt (by norm_num : 0 < (2 : ℝ)))] at h
-    linarith
+    linarith only [h]
   have hlogM2 : Real.log M ≤ k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + (k * Real.log 2 + |Real.log mc|) := by
     have habsc0 : 0 ≤ |Real.log c0| := abs_nonneg _
 
@@ -284,24 +284,24 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
     calc
       Real.log M = Real.log mc + k * Real.log (1 + |T| + 3) + k * Real.log (N : ℝ) := hlogM
       _ ≤ Real.log mc + (k * Real.log (2 + |T|) + k * Real.log 2) + k * Real.log (N : ℝ) := by
-        nlinarith
+        linarith only [hle2]
       _ = k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + (k * Real.log 2 + Real.log mc) := by
         ring
       _ ≤ k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + (k * Real.log 2 + |Real.log mc|) := by
-        linarith [hmcl]
+        linarith only [hmcl]
   have hLogNn0 : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg hN1
-  have hLogT0 : 0 ≤ Real.log (2 + |T|) := Real.log_nonneg (by linarith [abs_nonneg T])
+  have hLogT0 : 0 ≤ Real.log (2 + |T|) := Real.log_nonneg (by linarith only [abs_nonneg T])
   have hlogM3 : k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + A ≤ (k + A / 2) * X := by
     dsimp [X]
     have hknn : 0 ≤ k := hk
     have hA : 0 ≤ A := by dsimp [A]; positivity
     have hhalf : (1 : ℝ) ≤ (1 / 2) * (Real.log (2 + |T|) + Real.log (N : ℝ) + 2) := by
-      nlinarith [hLogT0, hLogNn0]
+      linarith only [hLogT0, hLogNn0]
     have h1 : k * Real.log (2 + |T|) + k * Real.log (N : ℝ) ≤ k * (Real.log (2 + |T|) + Real.log (N : ℝ) + 2) := by
-      nlinarith
+      linarith only [hk]
     have h2 : A ≤ A * ((1 / 2) * (Real.log (2 + |T|) + Real.log (N : ℝ) + 2)) := by
-      nlinarith
-    nlinarith
+      nlinarith only [hLogNn0, hA, hLogT0]
+    linarith only [hk, h2]
   have hratio : Real.log (M / ‖L c‖) / Real.log (3 / 2.5) ≤ cw * X := by
     have hlg : Real.log (3 / 2.5) = Real.log (6 / 5) := by norm_num
     have hb1 : Real.log (M / ‖L c‖) ≤ (k + A / 2) * X := by
@@ -309,7 +309,7 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
       calc
         Real.log M - Real.log ‖L c‖ ≤ Real.log M + |Real.log c0| := hlogM1
         _ ≤ k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + (k * Real.log 2 + |Real.log mc|) + |Real.log c0| := by
-          nlinarith [hlogM2]
+          linarith only [hlogM2]
         _ = k * Real.log (2 + |T|) + k * Real.log (N : ℝ) + A := by
           dsimp [A]
           ring
@@ -317,11 +317,11 @@ theorem L_window_divisor_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
           have hA2 : A ≤ (A / 2) * X := by
             dsimp [X]
             have hA0 : 0 ≤ A := by dsimp [A]; positivity
-            have hX2 : 2 ≤ Real.log (2 + |T|) + Real.log (N : ℝ) + 2 := by linarith [hLogT0, hLogNn0]
+            have hX2 : 2 ≤ Real.log (2 + |T|) + Real.log (N : ℝ) + 2 := by linarith only [hLogT0, hLogNn0]
             have h12 : (1 : ℝ) ≤ (1 / 2) * (Real.log (2 + |T|) + Real.log (N : ℝ) + 2) := by
-              nlinarith [hLogT0, hLogNn0]
-            nlinarith
-          nlinarith [hlogM3, hA2]
+              linarith only [hLogT0, hLogNn0]
+            nlinarith only [hLogNn0, hA0, hLogT0]
+          linarith only [hlogM3, hA2]
     calc
       Real.log (M / ‖L c‖) / Real.log (3 / 2.5) ≤ (k + A / 2) * X / Real.log (3 / 2.5) := by
         exact div_le_div_of_nonneg_right hb1 (le_of_lt (Real.log_pos (by norm_num : (1 : ℝ) < 3 / 2.5)))

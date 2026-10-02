@@ -344,7 +344,7 @@ theorem hbTheorem1_complex_h4_large
     have h9 : (2 : ℝ) ≤ Real.log 10 := by
       rw [Real.le_log_iff_exp_le (by norm_num : (0 : ℝ) < 10)]
       have he : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-      nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      nlinarith only [he, Real.exp_one_lt_three, Real.exp_pos 1]
     rw [h8] at h7; linarith
   have hsqrtge : (348 : ℝ) / 1000 ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := by
     have h4 : (348 : ℝ) / 1000 ≤ Real.log (Real.log (q : ℝ)) := by
@@ -366,7 +366,7 @@ theorem hbTheorem1_complex_h4_large
       ring
     rw [h2, h1]
     rw [div_le_div_iff₀ hlogq hlogq]
-    nlinarith [hlt, hsqrtge, hlogq]
+    nlinarith only [hlt, hsqrtge, hlogq]
   -- ## order bookkeeping
   have h4one : χ₁ ^ 4 = 1 := by
     have hd : orderOf χ₁ ∣ 4 := hord ▸ dvd_rfl
@@ -426,7 +426,7 @@ theorem hbTheorem1_complex_h4_large
         show (81 : ℝ) = 9 ^ 2 by norm_num, sq_lt_sq,
         abs_of_nonneg (by positivity : (0 : ℝ) ≤ Real.exp 1 ^ 2),
         abs_of_nonneg (by norm_num : (0 : ℝ) ≤ (9 : ℝ))]
-      nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
+      nlinarith only [Real.exp_one_lt_three, Real.exp_pos 1]
     have h1000 : (81 : ℝ) ≤ ((χ₁.conductor : ℕ) : ℝ) := by
       have h1 : (1000 : ℝ) ≤ ((χ₁.conductor : ℕ) : ℝ) := by exact_mod_cast hbig
       linarith
@@ -488,7 +488,7 @@ theorem hbTheorem1_complex_h4_large
     have h2 : 1 - ρ₁.re = Work.LinnikContract.lamOf q ρ₁ / Real.log (q : ℝ) := by
       rw [Work.LinnikContract.lamOf]; field_simp
     rw [h2, div_le_iff₀ hlogq]
-    nlinarith [hlt, hδ4log]
+    nlinarith only [hlt, hδ4log]
   have hwin1 : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₁.primitiveCharacter)
       (Metric.closedBall 0 (|((ρ₁.re : ℂ) + (ρ₁.im : ℂ) * Complex.I).im| + 2))) ρ₁ ≠ 0 :=
     divisor_ne_zero_of_zeroMult_aux χ₁ hχ1 (by simpa using hmem1) hzm1
@@ -529,7 +529,7 @@ theorem hbTheorem1_complex_h4_large
     rw [show Work.LinnikContract.lamOf q u = (1 - u.re) * Real.log (q : ℝ) from rfl,
       show Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * Real.log (q : ℝ) from rfl] at hle
     rw [hsr1]
-    nlinarith [hle, hlogq]
+    nlinarith only [hle, hlogq]
   have hzw2 : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction ((χ₁ ^ 2).primitiveCharacter))
       (Metric.closedBall 0 (|((ρ₁.re : ℂ) + 2 * (ρ₁.im : ℂ) * Complex.I).im| + 2))) u ≠ 0 →
@@ -548,7 +548,7 @@ theorem hbTheorem1_complex_h4_large
     rw [show Work.LinnikContract.lamOf q u = (1 - u.re) * Real.log (q : ℝ) from rfl,
       show Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * Real.log (q : ℝ) from rfl] at hle
     rw [hsr2]
-    nlinarith [hle, hlogq]
+    nlinarith only [hle, hlogq]
   have hzw3 : ∀ u : ℂ, (MeromorphicOn.divisor
       (DirichletCharacter.completedLFunction ((χ₁ ^ 3).primitiveCharacter))
       (Metric.closedBall 0 (|((ρ₁.re : ℂ) + 3 * (ρ₁.im : ℂ) * Complex.I).im| + 2))) u ≠ 0 →
@@ -567,7 +567,7 @@ theorem hbTheorem1_complex_h4_large
     rw [show Work.LinnikContract.lamOf q u = (1 - u.re) * Real.log (q : ℝ) from rfl,
       show Work.LinnikContract.lamOf q ρ₁ = (1 - ρ₁.re) * Real.log (q : ℝ) from rfl] at hle
     rw [hsr3]
-    nlinarith [hle, hlogq]
+    nlinarith only [hle, hlogq]
   have hs_eq : ((ρ₁.re : ℂ) + (ρ₁.im : ℂ) * Complex.I) - ρ₁ = 0 :=
     sub_eq_zero.mpr (Complex.re_add_im ρ₁)
   have hF0c0 : (∫ t in (0 : ℝ)..(8 / 3),
@@ -696,7 +696,7 @@ theorem hbTheorem1_complex_h4_small : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q �
         Real.log_le_log (by positivity) (by linarith [hcondle])
       have hcc : c₂ / Real.log (2 * 999) ≤ c₂ / Real.log (2 * ((χ₁.conductor : ℕ) : ℝ)) := by
         rw [div_le_div_iff₀ (Real.log_pos (by norm_num : (1 : ℝ) < 2 * 999)) hposN]
-        nlinarith [hlogN, hc₂pos]
+        nlinarith only [mul_le_mul_of_nonneg_left hlogN hc₂pos.le]
       by_contra hcon
       have hσ : 1 - c₂ / Real.log (2 * ((χ₁.conductor : ℕ) : ℝ)) ≤ ρ₁.re := by linarith
       have hne := hc₂ χ₁.conductor χ₁.primitiveCharacter
@@ -709,13 +709,13 @@ theorem hbTheorem1_complex_h4_small : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q �
       rw [hρ] at hne
       exact absurd hL0 hne
     · have hposm : 0 < ((χ₁.conductor : ℕ) : ℝ) * (|ρ₁.im| + 2) :=
-        by nlinarith [hcondnn, abs_nonneg ρ₁.im]
+        mul_pos hcondnn (by linarith only [abs_nonneg ρ₁.im])
       have hlogm : Real.log (((χ₁.conductor : ℕ) : ℝ) * (|ρ₁.im| + 2)) ≤ Real.log (999 * 3) :=
-        Real.log_le_log hposm (by nlinarith [hcondle, him1])
+        Real.log_le_log hposm (by nlinarith only [hcondle, him1, hcondnn, abs_nonneg ρ₁.im])
       have hcc : c₁ / Real.log (999 * 3) ≤ c₁ / Real.log (((χ₁.conductor : ℕ) : ℝ) * (|ρ₁.im| + 2)) := by
         rw [div_le_div_iff₀ (Real.log_pos (by norm_num : (1 : ℝ) < 999 * 3))
-          (Real.log_pos (by nlinarith [hcondge1, abs_nonneg ρ₁.im]))]
-        nlinarith [hlogm, hc₁pos]
+          (Real.log_pos (by nlinarith only [hcondge1, abs_nonneg ρ₁.im]))]
+        nlinarith only [mul_le_mul_of_nonneg_left hlogm hc₁pos.le]
       by_contra hcon
       have hσ : 1 - c₁ / Real.log (((χ₁.conductor : ℕ) : ℝ) * (|ρ₁.im| + 2)) ≤ ρ₁.re := by linarith
       have hne := hc₁ χ₁.primitiveCharacter (DirichletCharacter.primitiveCharacter_isPrimitive χ₁)

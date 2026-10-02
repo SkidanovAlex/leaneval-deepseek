@@ -45,14 +45,14 @@ theorem side913 {a lam₁ lam₀ K : ℝ} (ha : 0 < a) (hK : 0 < K) (h₁ : 0 < 
       (div_le_iff₀ ha3).mp h1
     have h3 : (Kond K / (a + lam₁) ^ 3 + 1 / (a + lam₀) ^ 3) * a ^ 3 = Kond K * P + Q := by
       rw [hPdef, hQdef]; field_simp; try ring
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hKadd : Kond K ≤ K + 3 / (4 * K) := min_le_left _ _
   have hK4 : Kond K ≤ 4 * K := min_le_right _ _
   have hKκ : K * Kond K ≤ K ^ 2 + 3/4 := by
     have h4 := mul_le_mul_of_nonneg_left hKadd (le_of_lt hK)
     have h5 : K * (K + 3 / (4 * K)) = K ^ 2 + 3/4 := by
       field_simp; try ring
-    linarith [h4, h5]
+    linarith only [h4, h5]
   have hKQ : K ≤ K * (Kond K * P + Q) := by
     simpa using mul_le_mul_of_nonneg_left hc (le_of_lt hK)
   have hKP : K * Kond K * P ≤ (K ^ 2 + 3/4) * P :=
@@ -60,22 +60,22 @@ theorem side913 {a lam₁ lam₀ K : ℝ} (ha : 0 < a) (hK : 0 < K) (h₁ : 0 < 
   have hKQ2 : K * (Kond K * P + Q) = K * Kond K * P + K * Q := by ring
   have e1 : (K ^ 2 + 3/4) * P + 2 * K * Q ≥ K := by
     have h2 : K * Q ≥ 0 := mul_nonneg (le_of_lt hK) hQ
-    linarith [hKQ, hKQ2, hKP, h2]
-  have e3 : (K ^ 2 + 3/4) * P + K * Q ≥ K := by linarith [hKQ, hKQ2, hKP]
+    linarith only [hKQ, hKQ2, hKP, h2]
+  have e3 : (K ^ 2 + 3/4) * P + K * Q ≥ K := by linarith only [hKQ, hKQ2, hKP]
   have h24 : (1/4) * 1 ≤ (1/4) * (Kond K * P + Q) :=
     mul_le_mul_of_nonneg_left hc (by norm_num : (0:ℝ) ≤ 1/4)
   have hκP : (1/4) * (Kond K * P) ≤ K * P := by
-    have h6 : (1/4) * Kond K ≤ K := by linarith [hK4, hK]
+    have h6 : (1/4) * Kond K ≤ K := by linarith only [hK4, hK]
     calc (1/4) * (Kond K * P) = ((1/4) * Kond K) * P := by ring
       _ ≤ K * P := mul_le_mul_of_nonneg_right h6 hP
-  have e2 : K * P + (1/2) * Q ≥ 1/4 := by nlinarith [h24, hκP, hQ]
+  have e2 : K * P + (1/2) * Q ≥ 1/4 := by linarith only [h24, hκP, hQ, hc]
   have h12 : (1/2) * 1 ≤ (1/2) * (Kond K * P + Q) :=
     mul_le_mul_of_nonneg_left hc (by norm_num : (0:ℝ) ≤ 1/2)
   have hκP2 : (1/2) * (Kond K * P) ≤ 2 * K * P := by
-    have h6 : (1/2) * Kond K ≤ 2 * K := by linarith [hK4, hK]
+    have h6 : (1/2) * Kond K ≤ 2 * K := by linarith only [hK4, hK]
     calc (1/2) * (Kond K * P) = ((1/2) * Kond K) * P := by ring
       _ ≤ (2 * K) * P := mul_le_mul_of_nonneg_right h6 hP
-  have e4 : 2 * K * P + (1/2) * Q ≥ 1/2 := by nlinarith [h12, hκP2, hQ]
+  have e4 : 2 * K * P + (1/2) * Q ≥ 1/2 := by linarith only [h12, hκP2, hQ, hc, hκP]
   have key1 : ((K ^ 2 + 3/4) * P + 2 * K * Q) / a ^ 3
       = (K ^ 2 + 3/4) / (a + lam₁) ^ 3 + 2 * K / (a + lam₀) ^ 3 := by
     rw [hPdef, hQdef]; field_simp; try ring
@@ -89,9 +89,9 @@ theorem side913 {a lam₁ lam₀ K : ℝ} (ha : 0 < a) (hK : 0 < K) (h₁ : 0 < 
       = 2 * K / (a + lam₁) ^ 3 + (1/2) / (a + lam₀) ^ 3 := by
     rw [hPdef, hQdef]; field_simp; try ring
   refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [ge_iff_le, ← key1, div_le_div_iff_of_pos_right ha3]; linarith [e1]
-  · rw [ge_iff_le, ← key2, div_le_div_iff_of_pos_right ha3]; linarith [e2]
-  · rw [ge_iff_le, ← key3, div_le_div_iff_of_pos_right ha3]; linarith [e3]
-  · rw [ge_iff_le, ← key4, div_le_div_iff_of_pos_right ha3]; linarith [e4]
+  · rw [ge_iff_le, ← key1, div_le_div_iff_of_pos_right ha3]; linarith only [e1]
+  · rw [ge_iff_le, ← key2, div_le_div_iff_of_pos_right ha3]; linarith only [e2, hQ, hc, hκP]
+  · rw [ge_iff_le, ← key3, div_le_div_iff_of_pos_right ha3]; linarith only [e3, hKQ, hKP]
+  · rw [ge_iff_le, ← key4, div_le_div_iff_of_pos_right ha3]; linarith only [e4, hc, hκP]
 
 end Work.ZeroFreeTables

@@ -57,7 +57,7 @@ theorem RectRepDiag {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q) (ρ�
       ((((1 + a / Real.log q : ℝ)) : ℂ) + (((2*ρ₁.im : ℝ)) : ℂ) * Complex.I) a lam with hS2def
   set S3 := SigmaP3L q (Real.log q) (χ₁^3)
       ((((1 + a / Real.log q : ℝ)) : ℂ) + (((3*ρ₁.im : ℝ)) : ℂ) * Complex.I) a lam with hS3def
-  have hα : 0 < a + lam := by linarith
+  have hα : 0 < a + lam := by linarith only [ha, hlam]
   have hcomb : 0 ≤ (K^2 + K + 1/2) * S0 + (K^2 + 2*K + 3/4) * S1
       + (K + 1/2) * S2 + (1/4) * S3 := by
     rw [hS0def, hS1def, hS2def, hS3def]
@@ -69,20 +69,20 @@ theorem RectRepDiag {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q) (ρ�
       ≤ (K^2 + 2*K + 3/4) * (-(2 * P3R 1) + (a + lam) * e₁) :=
     mul_le_mul_of_nonneg_left hS1 (by positivity)
   have h3 : (K + 1/2) * S2 ≤ (K + 1/2) * ((a + lam) * e₂) :=
-    mul_le_mul_of_nonneg_left hS2 (by linarith)
+    mul_le_mul_of_nonneg_left hS2 (by linarith only [hK])
   have h4 : (1/4 : ℝ) * S3 ≤ (1/4 : ℝ) * ((a + lam) * e₃) :=
     mul_le_mul_of_nonneg_left hS3 (by norm_num)
   have hkey : 0 ≤ (K^2 + K + 1/2) * (P3R ((a + lam)/a) + (a + lam) * e₀)
       + (K^2 + 2*K + 3/4) * (-(2 * P3R 1) + (a + lam) * e₁)
       + (K + 1/2) * ((a + lam) * e₂) + (1/4 : ℝ) * ((a + lam) * e₃) := by
-    linarith [hcomb, h1, h2, h3, h4]
+    linarith only [hcomb, h1, h2, h3, h4, hS3]
   have heα : (a + lam) * ((K^2 + K + 1/2) * e₀ + (K^2 + 2*K + 3/4) * e₁
         + (K + 1/2) * e₂ + (1/4) * e₃)
       ≤ (a + lam) * (c * (K^2 + 3*K + 3/2)) :=
     mul_le_mul_of_nonneg_left he hα.le
   have hD : 0 ≤ (K^2 + K + 1/2) * P3R ((a + lam)/a) - (2*K^2 + 4*K + 3/2) * P3R 1
       + (a + lam) * c * (K^2 + 3*K + 3/2) := by
-    nlinarith [hkey, heα]
+    linarith only [hkey, heα, hS3, hcomb, h1, h2, h3]
   have hx3 : ((a + lam)/a)^3 ≤ Kond K + 1 := by
     rw [hlamdef]; exact Work.ZeroFreeTables.Rep9.cond913_cube_le ha hlam hcond
   exact Work.ZeroFreeTables.Rep9.ineq913_diag_of_derived ha hK hε hlam hx3 hc hD

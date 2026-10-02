@@ -118,7 +118,7 @@ theorem Ssm_bound_D_gen (p : Work.ZeroDensity.LogFree.Params) (c₀ : ℝ) (hc�
   have h𝓓2 : (2 : ℝ) ≤ 𝓓 := by
     rw [h𝓓eq]
     have hqR : (2 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    nlinarith
+    nlinarith only [hqR, hT]
   have h𝓓pos : (0 : ℝ) < 𝓓 := by linarith
   have h𝓓1 : (1 : ℝ) ≤ 𝓓 := by linarith
   have hLpos : 0 < L := by rw [hLeq]; exact Real.log_pos (by linarith)
@@ -192,12 +192,12 @@ theorem Ssm_bound_D_gen (p : Work.ZeroDensity.LogFree.Params) (c₀ : ℝ) (hc�
       rw [← harg] at hb
       refine le_trans hb ?_
       have h1 : |ρ.im + t| ≤ T + |t| := by
-        have := abs_add_le ρ.im t; linarith [hρim]
+        have := abs_add_le ρ.im t; linarith only [this, hρim]
       have hbase : (q : ℝ) * (1 + |ρ.im + t|) ≤ 𝓓 * (1 + |t|) := by
         rw [h𝓓eq]
         have h3 : 1 + |ρ.im + t| ≤ (T + 2) * (1 + |t|) := by
           have ht0 : (0 : ℝ) ≤ |t| := abs_nonneg t
-          nlinarith [h1, ht0, hT]
+          nlinarith only [h1, ht0, hT, mul_nonneg (by linarith only [hT] : (0 : ℝ) ≤ T) ht0]
         calc (q : ℝ) * (1 + |ρ.im + t|) ≤ (q : ℝ) * ((T + 2) * (1 + |t|)) :=
               mul_le_mul_of_nonneg_left h3 (by positivity)
           _ = (q : ℝ) * (T + 2) * (1 + |t|) := by ring
@@ -218,7 +218,8 @@ theorem Ssm_bound_D_gen (p : Work.ZeroDensity.LogFree.Params) (c₀ : ℝ) (hc�
       exact h
     have hXb : ‖(X : ℂ) ^ s‖ ≤ 𝓓 ^ (-(p.x * p.σ₀)) := by
       rw [Complex.norm_cpow_eq_rpow_re_of_pos hXpos, hsre, hDp_x, ← Real.rpow_mul h𝓓pos.le]
-      exact Real.rpow_le_rpow_of_exponent_le h𝓓1 (by nlinarith)
+      exact Real.rpow_le_rpow_of_exponent_le h𝓓1
+        (by nlinarith only [mul_le_mul_of_nonneg_left hσρ (le_of_lt hxv)])
     have hFb : ‖lcmF q U V W χ (ρ + s)‖
         ≤ 𝓓 ^ (p.v + p.w) * (1 + (p.v + p.w) * L) ^ 3 := by
       have hre : 1 - ((1 : ℕ) : ℝ)⁻¹ ≤ (ρ + s).re := by
@@ -343,12 +344,12 @@ theorem Ssm_bound_D_gen (p : Work.ZeroDensity.LogFree.Params) (c₀ : ℝ) (hc�
       rw [← harg] at hb
       refine le_trans hb ?_
       have h1 : |ρ.im + v| ≤ T + |v| := by
-        have := abs_add_le ρ.im v; linarith [hρim]
+        have := abs_add_le ρ.im v; linarith only [this, hρim]
       have hbase : (q : ℝ) * (2 + |ρ.im + v|) ≤ 𝓓 * (1 + |v|) := by
         rw [h𝓓eq]
         have h3 : 2 + |ρ.im + v| ≤ (T + 2) * (1 + |v|) := by
           have hv0 : (0 : ℝ) ≤ |v| := abs_nonneg v
-          nlinarith [h1, hv0, hT]
+          nlinarith only [h1, hv0, hT, mul_nonneg (by linarith only [hT] : (0 : ℝ) ≤ T) hv0]
         calc (q : ℝ) * (2 + |ρ.im + v|) ≤ (q : ℝ) * ((T + 2) * (1 + |v|)) :=
               mul_le_mul_of_nonneg_left h3 (by positivity)
           _ = (q : ℝ) * (T + 2) * (1 + |v|) := by ring
@@ -512,7 +513,7 @@ theorem Ssm_bound_D_gen (p : Work.ZeroDensity.LogFree.Params) (c₀ : ℝ) (hc�
   have hKcut : (1 / (2 * Real.pi)) * Kint ≤ |Kint| + 1 := by
     have h2 : (0 : ℝ) ≤ 1 / (2 * Real.pi) := by positivity
     have h1 : (1 : ℝ) / (2 * Real.pi) ≤ 1 := by
-      rw [div_le_one (by positivity)]; nlinarith [Real.pi_gt_three]
+      rw [div_le_one (by positivity)]; linarith only [Real.pi_gt_three]
     calc (1 / (2 * Real.pi)) * Kint ≤ (1 / (2 * Real.pi)) * |Kint| :=
           mul_le_mul_of_nonneg_left (le_abs_self Kint) h2
       _ ≤ 1 * |Kint| := mul_le_mul_of_nonneg_right h1 (abs_nonneg Kint)

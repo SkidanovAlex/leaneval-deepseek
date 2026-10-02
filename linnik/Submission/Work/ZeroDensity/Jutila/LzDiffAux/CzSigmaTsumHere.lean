@@ -31,7 +31,7 @@ lemma sqrt_sub_sqrt_le_sqrt_sub {u v : ℝ} (hv : 0 ≤ v) (hvu : v ≤ u) :
   have h3 : (Real.sqrt u - Real.sqrt v) ^ 2 ≤ u - v := by
     have hu' := Real.sq_sqrt (le_trans hv hvu)
     have hv' := Real.sq_sqrt hv
-    nlinarith [Real.sqrt_nonneg u, Real.sqrt_nonneg v]
+    nlinarith only [Real.sqrt_nonneg u, Real.sqrt_nonneg v, hu', hv', h1]
   calc Real.sqrt u - Real.sqrt v = Real.sqrt ((Real.sqrt u - Real.sqrt v) ^ 2) :=
         (Real.sqrt_sq h2).symm
     _ ≤ Real.sqrt (u - v) := Real.sqrt_le_sqrt h3
@@ -43,14 +43,14 @@ lemma sqrt_sub_sqrt_le_div {u v : ℝ} (hv : 0 ≤ v) (hvu : v ≤ u) (hu : 0 < 
   have hkey : (Real.sqrt u - Real.sqrt v) * (Real.sqrt u + Real.sqrt v) = u - v := by
     have hu' := Real.sq_sqrt hu.le
     have hv' := Real.sq_sqrt hv
-    nlinarith [Real.sqrt_nonneg u, Real.sqrt_nonneg v]
+    linarith only [Real.sqrt_nonneg u, Real.sqrt_nonneg v, hu', hv']
   have h2 : (0 : ℝ) ≤ Real.sqrt u - Real.sqrt v := sub_nonneg.mpr (Real.sqrt_le_sqrt hvu)
   calc Real.sqrt u - Real.sqrt v
       = (Real.sqrt u - Real.sqrt v) * 1 := by ring
     _ ≤ (Real.sqrt u - Real.sqrt v) * ((Real.sqrt u + Real.sqrt v) / Real.sqrt u) := by
         apply mul_le_mul_of_nonneg_left _ h2
         rw [le_div_iff₀ hsu]
-        linarith [Real.sqrt_nonneg v]
+        linarith only [Real.sqrt_nonneg v]
     _ = (u - v) / Real.sqrt u := by rw [← hkey]; ring
 
 /-- `exp (log x / 2) = √x` for `x > 0`. -/
@@ -74,7 +74,7 @@ lemma sum_sqrt_div_le_two_mul (T : ℕ) :
     rw [Finset.mem_Icc] at ht
     have ht0 : (0 : ℝ) < (t : ℝ) := by
       have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht.1
-      linarith
+      linarith only [this]
     rw [Real.sqrt_div (by positivity : (0 : ℝ) ≤ (T : ℝ)) (t : ℝ)]
     ring
   rw [h]
@@ -84,7 +84,7 @@ lemma sum_sqrt_div_le_two_mul (T : ℕ) :
         rw [← hIoc]
         exact Work.ZeroDensity.Jutila.sumInvSqrtBound T
     _ = 2 * (T : ℝ) := by
-        nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ (T : ℝ) by positivity),
+        linarith only [Real.sq_sqrt (show (0 : ℝ) ≤ (T : ℝ) by positivity),
           Real.sqrt_nonneg (T : ℝ)]
 
 /-- **The decay sum.** For `c > 0` there is `K > 0` such that for every `a ≥ 1` and `T ≥ 1`,
@@ -100,10 +100,10 @@ theorem DecaySumLe (c : ℝ) (hc : 0 < c) :
   have hT0 : (0 : ℝ) < (T : ℝ) := by exact_mod_cast hT
   have hT1 : (1 : ℝ) ≤ (T : ℝ) := by exact_mod_cast hT
   set U : ℝ := Real.log (a * (T : ℝ)) with hU
-  have hU0 : 0 ≤ U := Real.log_nonneg (by nlinarith)
+  have hU0 : 0 ≤ U := Real.log_nonneg (by nlinarith only [hT1, ha])
   by_cases hcase : 4 * c ^ 2 ≤ U
   · -- **Case 1**: `4c² ≤ log (aT)`.
-    have hUpos : 0 < U := by nlinarith [sq_nonneg c]
+    have hUpos : 0 < U := by nlinarith only [sq_nonneg c, hcase, hc]
     have hUeq : U = Real.log (a * (T : ℝ)) := hU
     have hper : ∀ t ∈ Finset.Icc 1 T,
         Real.exp (-(c * Real.sqrt (Real.log (a * (t : ℝ)))))
@@ -113,28 +113,28 @@ theorem DecaySumLe (c : ℝ) (hc : 0 < c) :
       obtain ⟨ht1, htT⟩ := ht
       have ht1' : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht1
       have htT' : (t : ℝ) ≤ (T : ℝ) := by exact_mod_cast htT
-      have ht0 : (0 : ℝ) < (t : ℝ) := by linarith
+      have ht0 : (0 : ℝ) < (t : ℝ) := by linarith only [ht1']
       set w : ℝ := Real.log ((T : ℝ) / (t : ℝ)) with hw
       have hw0 : 0 ≤ w := by
         rw [hw]
-        exact Real.log_nonneg (by rw [le_div_iff₀ ht0]; linarith)
+        exact Real.log_nonneg (by rw [le_div_iff₀ ht0]; linarith only [htT'])
       have hlogt : Real.log (a * (t : ℝ)) = U - w := by
         rw [hUeq, hw, Real.log_mul ha0.ne' ht0.ne', Real.log_mul ha0.ne' hT0.ne',
           Real.log_div hT0.ne' ht0.ne']
         ring
-      have hlog0 : 0 ≤ Real.log (a * (t : ℝ)) := Real.log_nonneg (by nlinarith)
+      have hlog0 : 0 ≤ Real.log (a * (t : ℝ)) := Real.log_nonneg (by nlinarith only [ht1', ha])
       have hUW0 : 0 ≤ U - w := by rw [← hlogt]; exact hlog0
       -- the exponent difference
       have hdiff : Real.sqrt U - Real.sqrt (U - w) ≤ w / Real.sqrt U := by
-        have := sqrt_sub_sqrt_le_div hUW0 (by linarith) hUpos
+        have := sqrt_sub_sqrt_le_div hUW0 (by linarith only [hw0]) hUpos
         convert this using 2
         ring
       have hcU : c / Real.sqrt U ≤ 1 / 2 := by
         rw [div_le_iff₀ (Real.sqrt_pos.mpr hUpos)]
         have h2c : 2 * c ≤ Real.sqrt U := by
           calc 2 * c = Real.sqrt ((2 * c) ^ 2) := (Real.sqrt_sq (by positivity)).symm
-            _ ≤ Real.sqrt U := Real.sqrt_le_sqrt (by nlinarith [hcase])
-        linarith
+            _ ≤ Real.sqrt U := Real.sqrt_le_sqrt (by linarith only [hcase])
+        linarith only [h2c]
       have hstep : c * (Real.sqrt U - Real.sqrt (U - w)) ≤ w / 2 := by
         calc c * (Real.sqrt U - Real.sqrt (U - w)) ≤ c * (w / Real.sqrt U) :=
               mul_le_mul_of_nonneg_left hdiff hc.le
@@ -167,7 +167,7 @@ theorem DecaySumLe (c : ℝ) (hc : 0 < c) :
           have h2K : (2 : ℝ) ≤ max 2 (Real.exp (2 * c ^ 2)) := le_max_left _ _
           have hTnn : (0 : ℝ) ≤ (T : ℝ) := le_of_lt hT0
           have hexp : (0 : ℝ) ≤ Real.exp (-(c * Real.sqrt U)) := Real.exp_nonneg _
-          nlinarith [mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h2K hTnn) hexp]
+          linarith only [mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h2K hTnn) hexp, h2K, hTnn, hexp]
       _ = max 2 (Real.exp (2 * c ^ 2)) * (T : ℝ)
             * Real.exp (-(c * Real.sqrt (Real.log (a * (T : ℝ))))) := by rw [hUeq]
   · -- **Case 2**: `log (aT) < 4c²`.
@@ -175,13 +175,13 @@ theorem DecaySumLe (c : ℝ) (hc : 0 < c) :
     have hlogT0 : 0 ≤ Real.log (T : ℝ) := Real.log_nonneg hT1
     have hlogTlt : Real.log (T : ℝ) < 4 * c ^ 2 := by
       have : Real.log (T : ℝ) ≤ U := by
-        rw [hU, Real.log_mul ha0.ne' hT0.ne']; linarith [Real.log_nonneg ha1]
-      linarith
+        rw [hU, Real.log_mul ha0.ne' hT0.ne']; linarith only [Real.log_nonneg ha1, ha1]
+      linarith only [hcase, this]
     have hcmp : Real.exp (-(c * Real.sqrt (Real.log a)))
         ≤ max 2 (Real.exp (2 * c ^ 2)) * Real.exp (-(c * Real.sqrt U)) := by
       have hla0 : 0 ≤ Real.log a := Real.log_nonneg ha1
       have hlaU : Real.log a ≤ U := by
-        rw [hU, Real.log_mul ha0.ne' hT0.ne']; linarith [hlogT0]
+        rw [hU, Real.log_mul ha0.ne' hT0.ne']; linarith only [hlogT0]
       have hdiff : Real.sqrt U - Real.sqrt (Real.log a) ≤ Real.sqrt (U - Real.log a) :=
         sqrt_sub_sqrt_le_sqrt_sub hla0 hlaU
       have hUloga : U - Real.log a = Real.log (T : ℝ) := by
@@ -214,12 +214,12 @@ theorem DecaySumLe (c : ℝ) (hc : 0 < c) :
       apply Real.exp_le_exp.mpr
       have ht0 : (0 : ℝ) < (t : ℝ) := by
         have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht.1
-        linarith
+        linarith only [this]
       have hle : Real.log a ≤ Real.log (a * (t : ℝ)) := by
         rw [Real.log_mul ha0.ne' ht0.ne']
-        linarith [Real.log_nonneg (by exact_mod_cast ht.1 : (1 : ℝ) ≤ (t : ℝ))]
+        linarith only [Real.log_nonneg (by exact_mod_cast ht.1 : (1 : ℝ) ≤ (t : ℝ)), ht]
       have := Real.sqrt_le_sqrt hle
-      nlinarith [hc.le]
+      nlinarith only [hc.le, hc, this]
     calc (∑ t ∈ Finset.Icc 1 T, Real.exp (-(c * Real.sqrt (Real.log (a * (t : ℝ))))))
         ≤ ∑ t ∈ Finset.Icc 1 T, Real.exp (-(c * Real.sqrt (Real.log a))) :=
           Finset.sum_le_sum hper2
@@ -302,7 +302,7 @@ theorem CzSigmaTsumHere (c : ℝ) (hc : 0 < c) :
     intro d hd
     obtain ⟨hd1, hdT⟩ := Finset.mem_Icc.mp hd
     have hd1' : (1 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd1
-    have had : (1 : ℝ) ≤ a * (d : ℝ) := by nlinarith
+    have had : (1 : ℝ) ≤ a * (d : ℝ) := by nlinarith only [hd1', ha]
     have hTd1 : 1 ≤ T / d := by
       rw [Nat.le_div_iff_mul_le (by omega : 0 < d)]
       simpa using hdT

@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.A5.Weights
-import Submission.Work.LinnikAreas.A5.f1_data
 import Submission.Work.LinnikAreas.A5.Basic
 import Submission.Work.LinnikAreas.A5.wc_tanh_bound
 import Submission.Work.LinnikAreas.A5.wc_bounds

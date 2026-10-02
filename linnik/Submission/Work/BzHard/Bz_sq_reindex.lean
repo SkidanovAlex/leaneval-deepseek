@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.Density4.LamRDefs
-import Submission.Work.BzHard.moebius_mul_cast_of_coprime
 import Submission.Work.BzHard.moebius_param_mul
 import Submission.Work.BzHard.moebius_param_vanish
 

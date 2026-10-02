@@ -105,21 +105,21 @@ lemma jensen_log_bound (M m : ℝ) (hM : 1 ≤ M) (hmlo : (1:ℝ)/4 ≤ m) :
     have h2 := Real.log_le_sub_one_of_pos (show (0:ℝ) < 23/25 by norm_num)
     have h3 : Real.log (23/25) = - Real.log (25/23) := by
       rw [show (23:ℝ)/25 = (25/23)⁻¹ by norm_num, Real.log_inv]
-    linarith
-  have hpos : 0 < Real.log ((5:ℝ)/2 / (23/10)) := by linarith
+    linarith only [h2, h3]
+  have hpos : 0 < Real.log ((5:ℝ)/2 / (23/10)) := by linarith only [hratio]
   have hK : (1:ℝ) / Real.log ((5:ℝ)/2 / (23/10)) ≤ 25/2 := by
     rw [div_le_iff₀ hpos]
-    linarith
+    linarith only [hratio]
   have hnum : Real.log (M / m) ≤ Real.log M + Real.log 4 := by
     rw [Real.log_div (ne_of_gt hMpos) (ne_of_gt hmp)]
     have h1 : Real.log ((1:ℝ)/4) ≤ Real.log m := Real.log_le_log (by norm_num) hmlo
     have h2 : Real.log ((1:ℝ)/4) = - Real.log 4 := by
       rw [show ((1:ℝ)/4) = (4:ℝ)⁻¹ by norm_num, Real.log_inv]
-    linarith
+    linarith only [h1, h2]
   have hA : 0 ≤ Real.log M + Real.log 4 := by
     have h1 : 0 ≤ Real.log M := Real.log_nonneg hM
     have h2 : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
-    linarith
+    linarith only [h1, h2]
   calc Real.log (M / m) / Real.log ((5:ℝ)/2 / (23/10))
       ≤ (Real.log M + Real.log 4) / Real.log ((5:ℝ)/2 / (23/10)) :=
         div_le_div_of_nonneg_right hnum (le_of_lt hpos)
@@ -146,7 +146,7 @@ lemma window1_count :
   have hlogK1 : 0 ≤ Real.log K1 := Real.log_nonneg hK11
   have hlogB0 : 0 ≤ Real.log B0 := Real.log_nonneg hB01
   have hlog4 : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
-  have hC0pos : 0 < C0 := by rw [hC0def]; linarith
+  have hC0pos : 0 < C0 := by rw [hC0def]; linarith only [hlogK1, hlogB0, hlog4]
   refine ⟨C0, hC0pos, ?_⟩
   intro t S hS
   set c : ℂ := (2 : ℂ) + Complex.I * (t : ℂ) with hc
@@ -176,8 +176,8 @@ lemma window1_count :
     have h2 : ‖u - c‖ ^ 2 < (23/10) ^ 2 := by
       rw [hsq]
       have h3 := abs_le.mp him
-      nlinarith [h0, h1, h3.1, h3.2]
-    nlinarith [norm_nonneg (u - c)]
+      nlinarith only [h0, h1, h3.1, h3.2, h3]
+    nlinarith only [norm_nonneg (u - c), h2, h0, h1]
   have hΓlower : (1:ℝ)/4 ≤ ‖riemannZeta₁ c‖ := by
     have h := Commons.NumberTheory.Zeta.zeta1_re_two_lower t
     simpa [hc] using h
@@ -249,8 +249,8 @@ lemma window1_count :
       (Finset.sum_le_sum_of_subset_of_nonneg hsub hDnn)) (le_trans (le_of_eq hfin_eq) hJ')
   have hone : ∀ t : ℝ, (1:ℝ) ≤ Real.log (2 + |t|) + 2 := by
     intro t
-    have : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
-    linarith
+    have : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
+    linarith only [this]
   refine le_trans ?_ (le_refl (C0 * (Real.log (2 + |t|) + 2)))
   by_cases ht5 : |t| ≤ 5
   · have hbd : ∀ z ∈ Metric.sphere c |(5:ℝ)/2|, ‖riemannZeta₁ z‖ ≤ B0 := by
@@ -265,21 +265,21 @@ lemma window1_count :
           rw [Complex.sq_norm, Complex.normSq_apply]; simp; ring
         have h25 : t ^ 2 ≤ 25 := by
           have hp : (0:ℝ) ≤ (5 - t) * (5 + t) :=
-            mul_nonneg (by linarith [(abs_le.mp ht5).2]) (by linarith [(abs_le.mp ht5).1])
-          nlinarith [hp]
-        nlinarith [hsq, h25, norm_nonneg ((2:ℂ) + Complex.I * (t:ℂ))]
+            mul_nonneg (by linarith only [(abs_le.mp ht5).2, ht5]) (by linarith only [(abs_le.mp ht5).1, ht5])
+          linarith only [hp]
+        nlinarith only [hsq, h25, norm_nonneg ((2:ℂ) + Complex.I * (t:ℂ))]
       have hz10 : ‖z‖ ≤ 10 := by
         calc ‖z‖ = ‖(z - c) + c‖ := by rw [show (z - c) + c = z by ring]
           _ ≤ ‖z - c‖ + ‖c‖ := norm_add_le _ _
-          _ ≤ 5/2 + 6 := by linarith
+          _ ≤ 5/2 + 6 := by linarith only [hzn, hcnorm]
           _ ≤ 10 := by norm_num
       exact hB0 z hz10
     have h1 := hjensen B0 hB01 hbd
     have h2 := jensen_log_bound B0 ‖riemannZeta₁ c‖ hB01 hΓlower
     have h3 : 12.5 * (Real.log B0 + Real.log 4) ≤ C0 * (Real.log (2 + |t|) + 2) := by
-      have h4 : 12.5 * (Real.log B0 + Real.log 4) ≤ C0 := by rw [hC0def]; linarith
-      nlinarith [h4, hC0pos, hone t]
-    linarith
+      have h4 : 12.5 * (Real.log B0 + Real.log 4) ≤ C0 := by rw [hC0def]; linarith only [hlogK1, hlog4]
+      nlinarith only [h4, hC0pos, hone t, hC0def, hlogK1, hlog4, hone, hlogB0]
+    linarith only [h1, h2, h3]
   · have htabs : (5:ℝ) < |t| := lt_of_not_ge ht5
     have hbd : ∀ z ∈ Metric.sphere c |(5:ℝ)/2|, ‖riemannZeta₁ z‖ ≤ K1 * (|t| + 9) ^ 5 := by
       intro z hz
@@ -295,17 +295,17 @@ lemma window1_count :
         have h1 : |(z - c).im| ≤ ‖z - c‖ := Complex.abs_im_le_norm (z - c)
         rw [hzn] at h1
         simpa [hc] using h1
-      have hre_lo : -(1:ℝ) ≤ z.re := by linarith [(abs_le.mp hre).1]
+      have hre_lo : -(1:ℝ) ≤ z.re := by linarith only [(abs_le.mp hre).1, hre]
       have him1 : (1:ℝ) ≤ |z.im| := by
         have h1 : |t| - |z.im| ≤ |t - z.im| := abs_sub_abs_le_abs_sub t z.im
         have h2 : |t - z.im| = |z.im - t| := abs_sub_comm _ _
         have h3 : |z.im - t| ≤ 5/2 := him
-        linarith
+        linarith only [ht5, him, h1, h2]
       have hz1ne : z ≠ 1 := by
         intro h1
         rw [h1] at him
         simp at him
-        linarith
+        linarith only [ht5, him]
       have hz1eq : riemannZeta₁ z = (z - 1) * riemannZeta z := by
         have h := riemannZeta_eq_inv_sub_mul hz1ne
         rw [h, ← mul_assoc, mul_inv_cancel₀ (sub_ne_zero.mpr hz1ne), one_mul]
@@ -313,8 +313,8 @@ lemma window1_count :
         have h2 : |z.im| ≤ |t| + 5/2 := by
           have h := abs_add_le (z.im - t) t
           rw [show (z.im - t) + t = z.im by ring] at h
-          linarith
-        linarith
+          linarith only [him, h]
+        linarith only [h2]
       have hzeta : ‖riemannZeta z‖ ≤ K1 * (|t| + 9) ^ 4 := by
         by_cases h3 : z.re ≤ 3
         · have hb := hCpg z.re z.im hre_lo h3 him1
@@ -329,9 +329,9 @@ lemma window1_count :
                   _ ≤ K1 * (|t| + 9)^4 := mul_le_mul_of_nonneg_left h4 (le_of_lt hK1pos)
         · have h3' : 3 ≤ z.re := le_of_lt (lt_of_not_ge h3)
           have hb := hC3 z h3'
-          have h4 : (1:ℝ) ≤ (|t| + 9)^4 := one_le_pow₀ (by linarith [abs_nonneg t])
+          have h4 : (1:ℝ) ≤ (|t| + 9)^4 := one_le_pow₀ (by linarith only [abs_nonneg t, ht5])
           calc ‖riemannZeta z‖ ≤ C3 := hb
-            _ ≤ K1 * (|t| + 9)^4 := by nlinarith [hC3K, h4, hK1pos]
+            _ ≤ K1 * (|t| + 9)^4 := by nlinarith only [hC3K, h4, hK1pos, hK11]
       have hc1 : ‖c - 1‖ ≤ |t| + 1 := by
         rw [hc]
         have hzz : (2:ℂ) + Complex.I*(t:ℂ) - 1 = (1:ℂ) + Complex.I*(t:ℂ) := by ring
@@ -349,9 +349,9 @@ lemma window1_count :
           have : z - 1 = (z - c) + (c - 1) := by ring
           rw [this]; exact norm_add_le _ _
         rw [hzn] at h1
-        linarith
+        linarith only [hc1, h1]
       have hgle5 : (|t| + 5) * (|t| + 9)^4 ≤ (|t| + 9)^5 := by
-        have h1 : (|t| + 5) ≤ (|t| + 9) := by linarith
+        have h1 : (|t| + 5) ≤ (|t| + 9) := by linarith only []
         nlinarith [h1, pow_pos (by linarith [abs_nonneg t] : (0:ℝ) < |t|+9) 4]
       calc ‖riemannZeta₁ z‖ = ‖(z - 1) * riemannZeta z‖ := by rw [hz1eq]
         _ = ‖z - 1‖ * ‖riemannZeta z‖ := norm_mul _ _
@@ -359,29 +359,29 @@ lemma window1_count :
         _ = K1 * ((|t| + 5) * (|t| + 9)^4) := by ring
         _ ≤ K1 * (|t| + 9)^5 := mul_le_mul_of_nonneg_left hgle5 (le_of_lt hK1pos)
     have hM1 : 1 ≤ K1 * (|t| + 9)^5 := by
-      have h1 : (1:ℝ) ≤ (|t| + 9)^5 := one_le_pow₀ (by linarith [abs_nonneg t])
-      nlinarith [hK11, h1, hK1pos]
+      have h1 : (1:ℝ) ≤ (|t| + 9)^5 := one_le_pow₀ (by linarith only [abs_nonneg t, ht5])
+      nlinarith only [hK11, h1, hK1pos]
     have h1 := hjensen (K1 * (|t| + 9)^5) hM1 hbd
     have h2 := jensen_log_bound (K1 * (|t| + 9)^5) ‖riemannZeta₁ c‖ hM1 hΓlower
     have hlogM : Real.log (K1 * (|t| + 9)^5) = Real.log K1 + 5 * Real.log (|t| + 9) := by
       rw [Real.log_mul (ne_of_gt hK1pos) (by positivity), Real.log_pow]
       push_cast; ring
     have hlog93 : Real.log (|t| + 9) ≤ Real.log (2 + |t|) + 2 := by
-      have hle : |t| + 9 ≤ (2 + |t|) * 3 := by linarith
+      have hle : |t| + 9 ≤ (2 + |t|) * 3 := by linarith only [ht5]
       have h1 : Real.log (|t| + 9) ≤ Real.log ((2 + |t|) * 3) :=
         Real.log_le_log (by positivity) hle
       rw [Real.log_mul (by positivity) (by norm_num)] at h1
       have h2 : Real.log 3 ≤ 2 := by
-        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 3 by norm_num); linarith
-      linarith
+        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 3 by norm_num); linarith only [this]
+      linarith only [h1, h2]
     have h3 : 12.5 * (Real.log (K1 * (|t| + 9)^5) + Real.log 4)
         ≤ C0 * (Real.log (2 + |t|) + 2) := by
       rw [hlogM] at *
-      have hL0 : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+      have hL0 : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t, ht5])
       have hC0ge : 12.5 * (15 + Real.log K1 + Real.log 4) ≤ C0 := by
-        rw [hC0def]; linarith [hlogB0]
-      nlinarith [hC0ge, hL0, hlogK1, hlog4, hC0pos, hone t, hlog93]
-    linarith
+        rw [hC0def]; linarith only [hlogB0, hlog4]
+      nlinarith only [hC0ge, hL0, hlogK1, hlog4, hC0pos, hone t, hlog93, hC0def, hlogB0]
+    linarith only [h1, h2, h3]
 
 /-- Covering of the window `|Im u − t| ≤ h` by unit windows. -/
 lemma window_cover_index {x t h : ℝ} (hx : |x - t| ≤ h) :
@@ -392,23 +392,23 @@ lemma window_cover_index {x t h : ℝ} (hx : |x - t| ≤ h) :
   by_cases htx : t ≤ x
   · left
     refine ⟨⌊(x - t + 1)/2⌋₊, ?_, ?_⟩
-    · have hm : (0:ℝ) ≤ (x - t + 1)/2 := by linarith
+    · have hm : (0:ℝ) ≤ (x - t + 1)/2 := by linarith only [htx]
       have h1 : ((⌊(x - t + 1)/2⌋₊ : ℕ) : ℝ) ≤ (x - t + 1)/2 := Nat.floor_le hm
-      linarith
-    · have hm : (0:ℝ) ≤ (x - t + 1)/2 := by linarith
+      linarith only [hle, h1]
+    · have hm : (0:ℝ) ≤ (x - t + 1)/2 := by linarith only [htx]
       have h1 : ((⌊(x - t + 1)/2⌋₊ : ℕ) : ℝ) ≤ (x - t + 1)/2 := Nat.floor_le hm
       have h2 : (x - t + 1)/2 < ((⌊(x - t + 1)/2⌋₊ : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
-      rw [abs_le]; constructor <;> linarith
+      rw [abs_le]; constructor <;> linarith only [h1, h2]
   · right
     push_neg at htx
     refine ⟨⌊(t - x + 1)/2⌋₊, ?_, ?_⟩
-    · have hm : (0:ℝ) ≤ (t - x + 1)/2 := by linarith
+    · have hm : (0:ℝ) ≤ (t - x + 1)/2 := by linarith only [htx]
       have h1 : ((⌊(t - x + 1)/2⌋₊ : ℕ) : ℝ) ≤ (t - x + 1)/2 := Nat.floor_le hm
-      linarith
-    · have hm : (0:ℝ) ≤ (t - x + 1)/2 := by linarith
+      linarith only [hge, h1]
+    · have hm : (0:ℝ) ≤ (t - x + 1)/2 := by linarith only [htx]
       have h1 : ((⌊(t - x + 1)/2⌋₊ : ℕ) : ℝ) ≤ (t - x + 1)/2 := Nat.floor_le hm
       have h2 : (t - x + 1)/2 < ((⌊(t - x + 1)/2⌋₊ : ℕ) : ℝ) + 1 := Nat.lt_floor_add_one _
-      rw [abs_le]; constructor <;> linarith
+      rw [abs_le]; constructor <;> linarith only [h2, h1]
 
 /-- The general window count. -/
 theorem lamWindowZeroCount :
@@ -427,9 +427,9 @@ theorem lamWindowZeroCount :
   have hm_le : (m:ℝ) ≤ h + 2 := by
     rw [hm]
     have h1 : ((⌊h/2 + 1⌋₊ : ℕ) : ℝ) ≤ h/2 + 1 :=
-      Nat.floor_le (by linarith : (0:ℝ) ≤ h/2 + 1)
+      Nat.floor_le (by linarith only [hh] : (0:ℝ) ≤ h/2 + 1)
     push_cast
-    linarith
+    linarith only [hh, h1]
   have hcover : ∀ u ∈ S, (∑ j ∈ Finset.range m, (if |u.im - (t + 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0))
       + (∑ j ∈ Finset.range m, (if |u.im - (t - 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0)) ≥ 1 := by
     intro u hu
@@ -450,11 +450,11 @@ theorem lamWindowZeroCount :
         have h3 : ∑ i ∈ ({j} : Finset ℕ),
             (if |u.im - (t + 2*(i:ℝ))| ≤ 1 then (1:ℝ) else 0) = 1 := by
           rw [Finset.sum_singleton, if_pos hw]
-        linarith
+        linarith only [h2, h3]
       have h2 : 0 ≤ ∑ j ∈ Finset.range m,
           (if |u.im - (t - 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0) :=
         Finset.sum_nonneg (fun i _ => by positivity)
-      linarith
+      linarith only [h1, h2]
     · have h2 : (1:ℝ) ≤ ∑ j ∈ Finset.range m,
           (if |u.im - (t - 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0) := by
         have hmem : j ∈ Finset.range m := hjm j hj
@@ -466,11 +466,11 @@ theorem lamWindowZeroCount :
         have h5 : ∑ i ∈ ({j} : Finset ℕ),
             (if |u.im - (t - 2*(i:ℝ))| ≤ 1 then (1:ℝ) else 0) = 1 := by
           rw [Finset.sum_singleton, if_pos hw]
-        linarith
+        linarith only [h4, h5]
       have h1 : 0 ≤ ∑ j ∈ Finset.range m,
           (if |u.im - (t + 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0) :=
         Finset.sum_nonneg (fun i _ => by positivity)
-      linarith
+      linarith only [h2, h1]
   have hdistU : ∀ u : ℂ, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) *
         (∑ j ∈ Finset.range m, (if |u.im - (t + 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0))
       = ∑ j ∈ Finset.range m, (if |u.im - (t + 2*(j:ℝ))| ≤ 1
@@ -505,7 +505,7 @@ theorem lamWindowZeroCount :
       apply Finset.sum_le_sum; intro u hu
       have hc := hcover u hu
       have hnn : (0:ℝ) ≤ ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) := by positivity
-      nlinarith
+      nlinarith only [hc]
     calc ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
         ≤ ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) *
             ((∑ j ∈ Finset.range m, (if |u.im - (t + 2*(j:ℝ))| ≤ 1 then (1:ℝ) else 0))
@@ -561,41 +561,41 @@ theorem lamWindowZeroCount :
       rw [hm] at hjm
       have h2 : j ≤ (⌊h/2 + 1⌋₊ : ℕ) := by omega
       exact le_trans (by exact_mod_cast h2 : (j:ℝ) ≤ ((⌊h/2 + 1⌋₊ : ℕ) : ℝ))
-        (Nat.floor_le (by linarith : (0:ℝ) ≤ h/2 + 1))
-    have h2j : 2*(j:ℝ) ≤ h + 2 := by linarith [hjle, hh]
-    have hbase : (0:ℝ) < 2 + |t| + h := by linarith [abs_nonneg t]
-    have h6 : 0 ≤ Real.log (2 + |t| + h) := Real.log_nonneg (by linarith [abs_nonneg t])
+        (Nat.floor_le (by linarith only [hh] : (0:ℝ) ≤ h/2 + 1))
+    have h2j : 2*(j:ℝ) ≤ h + 2 := by linarith only [hjle, hh]
+    have hbase : (0:ℝ) < 2 + |t| + h := by linarith only [abs_nonneg t, hh]
+    have h6 : 0 ≤ Real.log (2 + |t| + h) := Real.log_nonneg (by linarith only [abs_nonneg t, hh, hbase])
     have h5 : Real.log 2 ≤ 1 := by
-      have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith
+      have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith only [this]
     constructor
     · have hle : |t + 2*(j:ℝ)| ≤ |t| + h + 2 := by
         calc |t + 2*(j:ℝ)| ≤ |t| + |2*(j:ℝ)| := abs_add_le _ _
           _ = |t| + 2*(j:ℝ) := by
               rw [abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (j:ℝ))]; norm_num
-          _ ≤ |t| + h + 2 := by linarith
+          _ ≤ |t| + h + 2 := by linarith only [hjle]
       have h1 : Real.log (2 + |t + 2*(j:ℝ)|) ≤ Real.log (2 + |t| + h + 2) :=
-        Real.log_le_log (by positivity) (by linarith)
+        Real.log_le_log (by positivity) (by linarith only [hle])
       have h3 : (2 + |t| + h + 2) ≤ (2 + |t| + h) * 2 := by
-        linarith [abs_nonneg t, hh]
+        linarith only [abs_nonneg t, hh]
       have h4 : Real.log (2 + |t| + h + 2) ≤ Real.log (2 + |t| + h) + Real.log 2 := by
         have := Real.log_le_log (by positivity) h3
         rwa [Real.log_mul (ne_of_gt hbase) (by norm_num)] at this
-      linarith
+      linarith only [h6, h5, h1, h4]
     · have hle : |t - 2*(j:ℝ)| ≤ |t| + h + 2 := by
         calc |t - 2*(j:ℝ)| ≤ |t| + |2*(j:ℝ)| := by
               have h := abs_sub_le t 0 (2*(j:ℝ))
               simpa using h
           _ = |t| + 2*(j:ℝ) := by
               rw [abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (j:ℝ))]; norm_num
-          _ ≤ |t| + h + 2 := by linarith
+          _ ≤ |t| + h + 2 := by linarith only [hjle]
       have h1 : Real.log (2 + |t - 2*(j:ℝ)|) ≤ Real.log (2 + |t| + h + 2) :=
-        Real.log_le_log (by positivity) (by linarith)
+        Real.log_le_log (by positivity) (by linarith only [hle])
       have h3 : (2 + |t| + h + 2) ≤ (2 + |t| + h) * 2 := by
-        linarith [abs_nonneg t, hh]
+        linarith only [abs_nonneg t, hh]
       have h4 : Real.log (2 + |t| + h + 2) ≤ Real.log (2 + |t| + h) + Real.log 2 := by
         have := Real.log_le_log (by positivity) h3
         rwa [Real.log_mul (ne_of_gt hbase) (by norm_num)] at this
-      linarith
+      linarith only [h6, h5, h1, h4]
   have hsumU : ∑ j ∈ Finset.range m,
       (∑ u ∈ S, (if |u.im - (t + 2*(j:ℝ))| ≤ 1
         then ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) else 0))
@@ -623,8 +623,8 @@ theorem lamWindowZeroCount :
       _ = (m:ℝ) * (C0 * (2 * (Real.log (2 + |t| + h) + 2))) := by
           rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   have h7 : 0 ≤ Real.log (2 + |t| + h) + 2 := by
-    have : 0 ≤ Real.log (2 + |t| + h) := Real.log_nonneg (by linarith [abs_nonneg t])
-    linarith
+    have : 0 ≤ Real.log (2 + |t| + h) := Real.log_nonneg (by linarith only [abs_nonneg t, hh])
+    linarith only [this]
   calc ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
       ≤ _ := hdist
     _ ≤ (m:ℝ) * (C0 * (2 * (Real.log (2 + |t| + h) + 2)))
@@ -640,13 +640,13 @@ theorem lamWindowZeroCount :
           positivity
         have h4 : 4 * C0 * (Real.log (2 + |t| + h) + 2) * (h + 2)
             ≤ 50 * C0 * (h + 1) * (Real.log (2 + |t| + h) + 2) := by
-          have h5 : 4 * (h + 2) ≤ 50 * (h + 1) := by linarith
+          have h5 : 4 * (h + 2) ≤ 50 * (h + 1) := by linarith only [hh]
           have h6 := mul_le_mul_of_nonneg_right h5 (mul_nonneg (le_of_lt hC0pos) h7)
           calc 4 * C0 * (Real.log (2 + |t| + h) + 2) * (h + 2)
               = (4 * (h + 2)) * (C0 * (Real.log (2 + |t| + h) + 2)) := by ring
             _ ≤ (50 * (h + 1)) * (C0 * (Real.log (2 + |t| + h) + 2)) := h6
             _ = 50 * C0 * (h + 1) * (Real.log (2 + |t| + h) + 2) := by ring
-        linarith [h3, h4]
+        linarith only [h3, h4]
 
 
 theorem dirichletHalfAux :
@@ -657,7 +657,7 @@ theorem dirichletHalfAux :
         ≤ C * (Real.log (q : ℝ) + Real.log (2 + ‖w‖) + 2) := by
   obtain ⟨cfar, hcfarpos, hfar⟩ :=
     Commons.NumberTheory.DirichletCharacter.far_zero_invSq_sum_uniform_delta
-  refine ⟨cfar + 12, by linarith, ?_⟩
+  refine ⟨cfar + 12, by linarith only [hcfarpos], ?_⟩
   intro q hq _inst χ hχ hprim w hw
   haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
   have hψne : χ.primitiveCharacter ≠ 1 :=
@@ -753,14 +753,14 @@ theorem dirichletHalfAux :
     rw [h1, hdmap]
     have him : |w.im| ≤ ‖w‖ := Complex.abs_im_le_norm w
     have hlog4 : Real.log (2 + |w.im| + 2) ≤ Real.log (2 + ‖w‖) + 2 := by
-      have hle : 2 + |w.im| + 2 ≤ (2 + ‖w‖) * 2 := by linarith [him, norm_nonneg w]
+      have hle : 2 + |w.im| + 2 ≤ (2 + ‖w‖) * 2 := by linarith only [him, norm_nonneg w]
       have h1 : Real.log (2 + |w.im| + 2) ≤ Real.log ((2 + ‖w‖) * 2) :=
         Real.log_le_log (by positivity) hle
       rw [Real.log_mul (by positivity) (by norm_num)] at h1
       have h2 : Real.log 2 ≤ 2 := by
-        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith
-      linarith
-    nlinarith [hd, hlog4]
+        have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith only [this]
+      linarith only [h1, h2]
+    linarith only [hd, hlog4, this]
   have hpt : ∀ u : ℂ, (Work.LinnikContract.zeroMult χ u : ℝ) / (1 + ‖w - u‖ ^ 2)
       ≤ (Work.LinnikContract.zeroMult χ u : ℝ) * (if 1 < ‖P - u‖ then 1 / ‖w - u‖ ^ 2 else 0)
         + (Work.LinnikContract.zeroMult χ u : ℝ) * (if ‖P - u‖ ≤ 1 then 1 else 0) := by
@@ -777,15 +777,15 @@ theorem dirichletHalfAux :
       have hwpos : 0 < ‖w - u‖ := by
         have h1 : |w.re - u.re| ≤ ‖w - u‖ := by
           simpa using Complex.abs_re_le_norm (w - u)
-        have h2 : |w.re - u.re| = w.re - u.re := abs_of_nonneg (by linarith)
+        have h2 : |w.re - u.re| = w.re - u.re := abs_of_nonneg (by linarith only [hw, hre2])
         rw [h2] at h1
-        linarith
+        linarith only [hw, hre2, h1]
       by_cases hfar' : 1 < ‖P - u‖
       · have h2 : (if ‖P - u‖ ≤ 1 then (1:ℝ) else 0) = 0 := if_neg (not_le.mpr hfar')
         have h3 : (if 1 < ‖P - u‖ then (1:ℝ) / ‖w - u‖ ^ 2 else 0) = 1 / ‖w - u‖ ^ 2 :=
           if_pos hfar'
         have hk : (1:ℝ) / (1 + ‖w - u‖ ^ 2) ≤ 1 / ‖w - u‖ ^ 2 :=
-          one_div_le_one_div_of_le (pow_pos hwpos 2) (by nlinarith [norm_nonneg (w - u)])
+          one_div_le_one_div_of_le (pow_pos hwpos 2) (by linarith only [norm_nonneg (w - u), hre1, hre2])
         calc (Work.LinnikContract.zeroMult χ u : ℝ) / (1 + ‖w - u‖ ^ 2)
             = (Work.LinnikContract.zeroMult χ u : ℝ) * (1 / (1 + ‖w - u‖ ^ 2)) :=
               div_eq_mul_one_div _ _
@@ -798,7 +798,7 @@ theorem dirichletHalfAux :
         have h3 : (if ‖P - u‖ ≤ 1 then (1:ℝ) else 0) = 1 := if_pos (le_of_not_gt hfar')
         have hk : (1:ℝ) / (1 + ‖w - u‖ ^ 2) ≤ 1 := by
           rw [div_le_one (by positivity)]
-          nlinarith [norm_nonneg (w - u)]
+          nlinarith only [norm_nonneg (w - u)]
         calc (Work.LinnikContract.zeroMult χ u : ℝ) / (1 + ‖w - u‖ ^ 2)
             = (Work.LinnikContract.zeroMult χ u : ℝ) * (1 / (1 + ‖w - u‖ ^ 2)) :=
               div_eq_mul_one_div _ _
@@ -865,12 +865,12 @@ theorem dirichletHalfAux :
               have h2 : (P - u).im = w.im - u.im := by simp [hPdef]
               rw [h2] at h1
               rw [abs_sub_comm] at h1
-              linarith
+              linarith only [hP1, h1]
             have h2 : ‖u - c₂‖ ^ 2 < (5/2)^2 := by
               rw [hsq]
               have h3 := abs_le.mp him2
-              nlinarith [hstrip.1, hstrip.2, h3.1, h3.2]
-            nlinarith [norm_nonneg (u - c₂)]
+              nlinarith only [hstrip.1, hstrip.2, h3.1, h3.2, hstrip, h3]
+            nlinarith only [norm_nonneg (u - c₂), h2, hstrip]
           have hval : ((MeromorphicOn.divisor (completedLFunction ψ)
               (Metric.closedBall c₂ (5/2))) u : ℤ)
               = (Work.LinnikContract.zeroMult χ u : ℤ) := by
@@ -910,8 +910,8 @@ theorem dirichletHalfAux :
         exact Finset.sum_le_sum_of_subset_of_nonneg
           (fun u hu => (Finset.mem_filter.mp hu).2)
           (fun u _ _ => Int.cast_nonneg (hDnn u))
-      linarith [h8, h9]
-    linarith [h1, h2, h5, hSbound, h11]
+      linarith only [h8, h9, _inst, this]
+    linarith only [h1, h2, h5, hSbound, h11, _inst, this]
   have hnn : ∀ u : ℂ, (0:ℝ) ≤ (Work.LinnikContract.zeroMult χ u : ℝ) / (1 + ‖w - u‖ ^ 2) :=
     fun u => by positivity
   have hCbound : ∀ T : Finset ℂ,
@@ -920,8 +920,8 @@ theorem dirichletHalfAux :
     intro T
     refine le_trans (hkey T) ?_
     have h1 : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q))
-    have h2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-    nlinarith [hcfarpos, h1, h2]
+    have h2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+    linarith only [hcfarpos, h1, h2]
   exact ⟨summable_of_sum_le hnn hCbound, Real.tsum_le_of_sum_le hnn hCbound⟩
 
 
@@ -956,25 +956,25 @@ lemma sum_kp2_half_le (K : ℕ) :
 /-- `log(2+a+2^k) + 2 ≤ (k+2)(log(2+a)+2)` for `a ≥ 0`. -/
 lemma log_add_pow_le (a : ℝ) (ha : 0 ≤ a) (k : ℕ) :
     Real.log (2 + a + (2:ℝ)^k) + 2 ≤ ((k:ℝ) + 2) * (Real.log (2 + a) + 2) := by
-  have hbase : (0:ℝ) < 2 + a := by linarith
+  have hbase : (0:ℝ) < 2 + a := by linarith only [ha]
   have hpow : (0:ℝ) < (2:ℝ)^k := by positivity
   have hle : 2 + a + (2:ℝ)^k ≤ (2 + a) * (2 * (2:ℝ)^k) := by
     rcases Nat.eq_zero_or_pos k with h0 | hpos
-    · subst h0; simp; linarith
+    · subst h0; simp; linarith only [ha]
     · have h2k : (2:ℝ) ≤ (2:ℝ)^k := by
         calc (2:ℝ) = (2:ℝ)^1 := by ring
           _ ≤ (2:ℝ)^k := pow_le_pow_right₀ (by norm_num) hpos
-      nlinarith [ha, h2k]
+      nlinarith only [ha, h2k, hpow]
   have hlog := Real.log_le_log (by positivity) hle
   rw [Real.log_mul (ne_of_gt hbase) (by positivity : (2 * (2:ℝ)^k) ≠ 0),
       Real.log_mul (by norm_num : (2:ℝ) ≠ 0) (ne_of_gt hpow), Real.log_pow] at hlog
   have hlog2 : Real.log 2 ≤ 1 := by
-    have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith
-  have hka : 0 ≤ Real.log (2 + a) := Real.log_nonneg (by linarith)
+    have := Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith only [this]
+  have hka : 0 ≤ Real.log (2 + a) := Real.log_nonneg (by linarith only [ha])
   have hk0 : (0:ℝ) ≤ (k:ℝ) := by positivity
   have h1 : Real.log (2 + a + (2:ℝ)^k) ≤ Real.log (2 + a) + (k:ℝ) + 1 := by
-    nlinarith [hlog, hlog2, hk0]
-  nlinarith [h1, hka, hk0]
+    nlinarith only [hlog, hlog2, hk0]
+  nlinarith only [h1, hka, hk0]
 
 /-- The dyadic arithmetic for the ζ half. -/
 lemma dyadic_arith (t : ℝ) (Cw : ℝ) (hCw : 0 ≤ Cw) (K : ℕ) :
@@ -984,8 +984,8 @@ lemma dyadic_arith (t : ℝ) (Cw : ℝ) (hCw : 0 ≤ Cw) (K : ℕ) :
   set L : ℝ := Real.log (2 + |t|) + 2 with hL
   have hL0 : 0 ≤ L := by
     rw [hL]
-    have : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
-    linarith
+    have : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
+    linarith only [this]
   have hpow : ∀ k : ℕ, (4/(4:ℝ)^k) * ((2:ℝ)^k + 1) = 4 * ((1/2:ℝ)^k + (1/4:ℝ)^k) := by
     intro k
     have h2 : (2:ℝ)^k / (4:ℝ)^k = (1/2:ℝ)^k := by
@@ -1023,10 +1023,10 @@ lemma dyadic_arith (t : ℝ) (Cw : ℝ) (hCw : 0 ≤ Cw) (K : ℕ) :
       have hle : ((1:ℝ)/4)^k ≤ ((1:ℝ)/2)^k := by
         apply pow_le_pow_left₀ (by norm_num) (by norm_num)
       have h2 : (0:ℝ) ≤ (k:ℝ) + 2 := by positivity
-      nlinarith [hle, h2]
+      nlinarith only [hle, h2]
     have h12 := sum_kp2_half_le K
     rw [hsplit]
-    linarith
+    linarith only [h14, h12]
   calc ∑ k ∈ Finset.range (K+1),
         (4/(4:ℝ)^k) * (Cw * ((2:ℝ)^k + 1) * (Real.log (2 + |t| + (2:ℝ)^k) + 2))
       ≤ ∑ k ∈ Finset.range (K+1), Cw * L * ((4 * ((1/2:ℝ)^k + (1/4:ℝ)^k)) * ((k:ℝ) + 2)) :=
@@ -1038,7 +1038,7 @@ lemma dyadic_arith (t : ℝ) (Cw : ℝ) (hCw : 0 ≤ Cw) (K : ℕ) :
         positivity
     _ ≤ 50 * Cw * (Real.log (2 + |t|) + 2) := by
         rw [hL] at *
-        nlinarith [hL0]
+        nlinarith only [hL0, hCw]
 
 /-- The kernel domination `1/(1+‖w-u‖²) ≤ 1/(1+(Im w - Im u)²)`. -/
 lemma inv_one_add_norm_sq_le (w u : ℂ) :
@@ -1050,7 +1050,7 @@ lemma inv_one_add_norm_sq_le (w u : ℂ) :
     rw [hre, him]; ring
   apply one_div_le_one_div_of_le
   · positivity
-  · rw [hsq]; nlinarith [sq_nonneg (w.re - u.re)]
+  · rw [hsq]; linarith only [sq_nonneg (w.re - u.re)]
 
 /-- **Inverse-square kernel bound for the non-trivial zeros of `ζ`.** -/
 theorem zetaHalfKernelBound :
@@ -1075,7 +1075,7 @@ theorem zetaHalfKernelBound :
         refine ⟨K, fun u hu => ?_⟩
         have hle : |u.im - t| + 1 ≤ ∑ v ∈ S, (|v.im - t| + 1) :=
           Finset.single_le_sum (f := fun v => |v.im - t| + 1) (fun v _ => by positivity) hu
-        linarith
+        linarith only [hK, hle]
     have hstep : ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) * (1 / (1 + ‖w - u‖ ^ 2))
         ≤ ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) *
             (∑ k ∈ Finset.range (K+1), (if |u.im - t| ≤ (2:ℝ)^k then 4/(4:ℝ)^k else 0)) := by
@@ -1133,16 +1133,16 @@ theorem zetaHalfKernelBound :
     have : |t| ≤ ‖w‖ := by
       have h := Complex.abs_im_le_norm w
       simpa [ht] using h
-    linarith
+    linarith only [this]
   have hfin : ∀ S : Finset ℂ,
       ∑ u ∈ S, ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) * (1 / (1 + ‖w - u‖ ^ 2))
         ≤ 50 * Cw * (Real.log (2 + ‖w‖) + 2) := by
     intro S
     refine le_trans (key S) ?_
     have h2 : 0 ≤ Real.log (2 + ‖w‖) + 2 := by
-      have : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-      linarith
-    nlinarith [hle_t, h2, hCw0]
+      have : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+      linarith only [this]
+    nlinarith only [hle_t, h2, hCw0, hCwpos]
   exact ⟨summable_of_sum_le (f := fun u : ℂ =>
       ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) * (1 / (1 + ‖w - u‖ ^ 2)))
       (fun u => by positivity) hfin,
@@ -1162,10 +1162,10 @@ theorem zeroSumInvSqBound :
           ≤ C * (Real.log (q : ℝ) + Real.log (2 + ‖w‖) + 2) := by
   obtain ⟨Cz, hCzpos, hCz⟩ := zetaHalfKernelBound
   obtain ⟨Cl, hClpos, hCl⟩ := dirichletHalfAux
-  refine ⟨5 * (Cz + Cl) + 1, by linarith, ?_⟩
+  refine ⟨5 * (Cz + Cl) + 1, by linarith only [hCzpos, hClpos], ?_⟩
   intro q hq _inst χ hχ hprim w hw
   obtain ⟨hsumZ, hbndZ⟩ := hCz w
-  obtain ⟨hsumL, hbndL⟩ := hCl q hq χ hχ hprim w (by linarith)
+  obtain ⟨hsumL, hbndL⟩ := hCl q hq χ hχ hprim w (by linarith only [hw])
   have hsumL' : Summable (fun u : ℂ =>
       (Work.LinnikContract.zeroMult χ u : ℝ) * (1 / (1 + ‖w - u‖ ^ 2))) :=
     hsumL.congr (fun u => by rw [mul_one_div])
@@ -1195,21 +1195,21 @@ theorem zeroSumInvSqBound :
           exact le_of_lt (Work.LinnikAreas.completedRiemannZeta_zero_strip hΛ).2
         · have hb2 : 0 < (Work.LinnikContract.zeroMult χ u : ℝ) := by
             have h2 : 0 ≤ ((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ) := by positivity
-            linarith
+            linarith only [_inst, hpos, h1]
           have hz : Work.LinnikContract.zeroMult χ u ≠ 0 := by
             intro h0; rw [h0] at hb2; simp at hb2
           exact le_of_lt (Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq hχ hz).2.1
       have hdist : (1/2:ℝ) ≤ ‖w - u‖ := by
         have h1 : |w.re - u.re| ≤ ‖w - u‖ := by
           simpa using Complex.abs_re_le_norm (w - u)
-        have h2 : |w.re - u.re| = w.re - u.re := abs_of_nonneg (by linarith)
+        have h2 : |w.re - u.re| = w.re - u.re := abs_of_nonneg (by linarith only [hw, hle1])
         rw [h2] at h1
-        linarith
-      have h4 : (1:ℝ) ≤ 4 * ‖w - u‖ ^ 2 := by nlinarith [hdist, sq_nonneg ‖w - u‖]
+        linarith only [hw, hle1, h1]
+      have h4 : (1:ℝ) ≤ 4 * ‖w - u‖ ^ 2 := by nlinarith only [hdist, sq_nonneg ‖w - u‖]
       have hk : (1:ℝ) / ‖w - u‖ ^ 2 ≤ 5 * (1 / (1 + ‖w - u‖ ^ 2)) := by
         rw [show (5:ℝ) * (1 / (1 + ‖w - u‖ ^ 2)) = 5 / (1 + ‖w - u‖ ^ 2) by ring]
         rw [div_le_div_iff₀ (by positivity) (by positivity)]
-        nlinarith [h4]
+        linarith only [h4]
       have h1 : ((((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
             + (Work.LinnikContract.zeroMult χ u : ℝ)) / ‖w - u‖ ^ 2)
           = (((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
@@ -1248,8 +1248,8 @@ theorem zeroSumInvSqBound :
     apply tsum_congr; intro u; ring
   have hqlog : 0 ≤ Real.log (q:ℝ) := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q))
   have h2w : 0 ≤ Real.log (2 + ‖w‖) + 2 := by
-    have : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-    linarith
+    have : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+    linarith only [this]
   calc (∑' u : ℂ, (((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
         + (Work.LinnikContract.zeroMult χ u : ℝ)) / ‖w - u‖ ^ 2)
       ≤ ∑' u : ℂ, 5 * ((((analyticOrderNatAt completedRiemannZeta u : ℕ) : ℝ)
@@ -1262,9 +1262,9 @@ theorem zeroSumInvSqBound :
         rw [hsplit]
     _ ≤ 5 * (Cz * (Real.log (2 + ‖w‖) + 2) + Cl * (Real.log (q:ℝ) + Real.log (2 + ‖w‖) + 2)) := by
         apply mul_le_mul_of_nonneg_left _ (by norm_num)
-        linarith [hbndZ, hbndL']
+        linarith only [hbndZ, hbndL', _inst]
     _ ≤ (5 * (Cz + Cl) + 1) * (Real.log (q:ℝ) + Real.log (2 + ‖w‖) + 2) := by
-        nlinarith [hqlog, h2w, hCzpos, hClpos]
+        nlinarith only [hqlog, h2w, hCzpos, hClpos]
 
 
 

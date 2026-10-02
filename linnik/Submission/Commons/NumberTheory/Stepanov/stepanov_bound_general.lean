@@ -8,7 +8,6 @@ import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.TotallySplit
 import Submission.Commons.NumberTheory.Stepanov.kopparty_sq_nonvanishing
 import Submission.Commons.NumberTheory.Stepanov.ncard_points_superelliptic
-import Submission.Commons.NumberTheory.Stepanov.char_sum_eq_ncard_sub_card
 import Submission.Commons.NumberTheory.Stepanov.hasseDeriv_eval_X_pow_card
 
 namespace Commons.NumberTheory.Stepanov
@@ -528,7 +527,7 @@ lemma eval_Xq_natDegree_le (P : Polynomial (Polynomial F)) (A B q : ℕ)
     _ ≤ A + q * B := by
         have hi' : i ≤ P.natDegree := by rw [Finset.mem_range] at hi; omega
         have := hcoeff i
-        nlinarith [hdeg, hi']  -- hmm
+        nlinarith only [hdeg, hi', this]  -- hmm
 
 /-! ## Counting roots with multiplicity -/
 
@@ -802,7 +801,7 @@ private lemma hdim_arith (q s d A B : ℕ) (hs : s * s ≤ q)
   have hB3q : (s:ℚ) + 2*d + 4 ≤ 2*(B:ℚ) + 2 := by exact_mod_cast hB3
   have hgoalq : (s:ℚ)*((A:ℚ)+(B:ℚ)+1) + (d:ℚ)*(s:ℚ)*(s:ℚ)
       < 2*(((A:ℚ)+1)*((B:ℚ)+1)) := by
-    nlinarith [hsq, hsdq, hA2q, hA3q, hB2q, hB3q]
+    nlinarith only [hsq, hsdq, hA2q, hA3q, hB2q, hB3q]
   exact_mod_cast hgoalq
 
 /-- Elementary real arithmetic for the final bound: with `s = ⌊√q⌋` and the Stepanov parameters,
@@ -842,18 +841,18 @@ private lemma final_arith (q s d A B : ℕ) (hq1 : 1 ≤ q) (hsq : s*s ≤ q) (h
   have hC' : (((q-1)/2:ℕ):ℝ)*(d:ℝ) ≤ (q:ℝ)*d/2 := by
     have h0 : 2*((q-1)/2) ≤ q := le_trans (Nat.mul_div_le (q-1) 2) (Nat.sub_le q 1)
     have h0R : (2:ℝ)*(((q-1)/2:ℕ):ℝ) ≤ (q:ℝ) := by exact_mod_cast h0
-    nlinarith [h0R]
+    linarith only [mul_le_mul_of_nonneg_right h0R (Nat.cast_nonneg (α := ℝ) d)]
   have hN : (A:ℝ) + (q:ℝ)*B + (((q-1)/2:ℕ):ℝ)*d
       ≤ (q:ℝ)/2 + (q:ℝ)*((s:ℝ)/2 + d + 2) + (q:ℝ)*d/2 := by
     have hq0 : (0:ℝ) ≤ q := by positivity
-    nlinarith [hA', hB', hC', hq0]
+    nlinarith only [hA', hB', hC', hq0]
   have hstep : 2*((A:ℝ) + (q:ℝ)*B + (((q-1)/2:ℕ):ℝ)*d) - ((q:ℝ)-(d:ℝ))*s
       ≤ 5*(q:ℝ) + 3*(q:ℝ)*d + (d:ℝ)*s := by
     have hq0 : (0:ℝ) ≤ q := by positivity
-    nlinarith [hN, hq0]
+    linarith only [hN, hq0]
   have hstep2 : 5*(q:ℝ) + 3*(q:ℝ)*d + (d:ℝ)*s
       ≤ ((3*(d:ℝ)+5)*s + 7*(d:ℝ)+10)*s := by
-    nlinarith [hq2R, hs0]
+    nlinarith only [hq2R, hs0]
   have hstep3 : ((3*(d:ℝ)+5)*s + 7*(d:ℝ)+10)*s
       ≤ (17*(d:ℝ)+22)*Real.sqrt (q:ℝ)*s := by
     have hs0' : (0:ℝ) ≤ s := le_of_lt hs0
@@ -861,13 +860,13 @@ private lemma final_arith (q s d A B : ℕ) (hq1 : 1 ≤ q) (hsq : s*s ≤ q) (h
     have h4 : (3*(d:ℝ)+5)*s ≤ (3*(d:ℝ)+5)*Real.sqrt q :=
       mul_le_mul_of_nonneg_left hs_sqrt h3
     have h5 : (7:ℝ)*(d:ℝ)+10 ≤ (14*(d:ℝ)+17)*Real.sqrt q := by
-      nlinarith [h1le, show (0:ℝ) ≤ d by positivity]
+      nlinarith only [h1le, show (0:ℝ) ≤ d by positivity]
     have h6 : (3*(d:ℝ)+5)*Real.sqrt q + (14*(d:ℝ)+17)*Real.sqrt q
         = (17*(d:ℝ)+22)*Real.sqrt q := by ring
-    nlinarith [h4, h5, hs0', h6]
+    nlinarith only [h4, h5, hs0', h6]
   have hfinal := le_trans hstep (le_trans hstep2 hstep3)
   rw [div_le_iff₀ hs0]
-  linarith [hfinal]
+  linarith only [hfinal]
 
 /-- **Main quantitative input**: for `#F ≥ Qnat (deg g)` the quadratic character sum of a separable
 `g` of degree `≥ 1` is bounded by `(17 deg g + 22) √(#F)`.  (Assembled from `stepanov_count`.) -/
@@ -886,16 +885,16 @@ theorem stepanov_char_sum {F : Type*} [Field F] [Fintype F] [DecidableEq F]
     have hd0 : d = 0 := by rw [hd_def, h0]; simp
     omega
   have hQbig : 1000*(d+1)^2 + 1000 ≤ q := hQ
-  have hq1 : 1 ≤ q := by nlinarith [hQbig]
+  have hq1 : 1 ≤ q := le_trans (by norm_num : 1 ≤ 1000) (le_trans (Nat.le_add_left 1000 _) hQbig)
   have hs_sq : s*s ≤ q := Nat.sqrt_le q
   have hq_lt : q < (s+1)*(s+1) := Nat.lt_succ_sqrt q
   have hs20 : 20*(d+1) ≤ s := by
     rw [Nat.le_sqrt]
-    nlinarith [hQbig]
-  have hs1 : 1 ≤ s := by nlinarith [hs20]
+    linarith only [hQbig]
+  have hs1 : 1 ≤ s := by linarith only [hs20]
   have h2d4 : 2*d + 4 ≤ q := by
     have h1 : (20*(d+1))*(20*(d+1)) ≤ s*s := Nat.mul_le_mul hs20 hs20
-    nlinarith [h1, hs_sq]
+    nlinarith only [h1, hs_sq]
   have hqodd : Odd q := Nat.odd_iff.mpr (FiniteField.odd_card_of_char_ne_two hF)
   have hqdiv : q/2 = (q-1)/2 := by obtain ⟨k,hk⟩ := hqodd; omega
   have hu1 : 1 ≤ (q-1)/2 := by omega
@@ -953,10 +952,10 @@ theorem stepanov_char_sum {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   have hBh : B < Fintype.card F := by
     rw [hB_def]
     have h1 : 2*(s/2) ≤ s := Nat.mul_div_le s 2
-    have h2 : s ≤ q := by nlinarith [hs_sq, hs1]
+    have h2 : s ≤ q := le_trans (Nat.le_mul_of_pos_left s hs1) hs_sq
     omega
   have hMh : M ≤ (Fintype.card F - 1)/2 + 1 := by
-    have h2 : 2*s ≤ q + 1 := by nlinarith [hs_sq, hs1]
+    have h2 : 2*s ≤ q + 1 := by nlinarith only [hs_sq, hs1]
     omega
   have hdim : M*(A+B+1) + g.natDegree*M*M < 2*((A+1)*(B+1)) := by
     have h := hdim_arith q s d A B hs_sq ?_ ?_ ?_ ?_ hs20
@@ -1017,9 +1016,9 @@ theorem stepanov_char_sum {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   have hxR : (Sg.ncard : ℝ) * (M:ℝ) ≤ (X:ℝ) := by exact_mod_cast hcount_g
   have hyR : (Sa.ncard : ℝ) * (M:ℝ) ≤ (X:ℝ) := by exact_mod_cast hcount_α
   have hx : (Sg.ncard : ℝ) ≤ (X:ℝ) / (M:ℝ) := by
-    rw [le_div_iff₀ hMpos]; linarith [hxR]
+    rw [le_div_iff₀ hMpos]; linarith only [hxR]
   have hy : (Sa.ncard : ℝ) ≤ (X:ℝ) / (M:ℝ) := by
-    rw [le_div_iff₀ hMpos]; linarith [hyR]
+    rw [le_div_iff₀ hMpos]; linarith only [hyR]
   have hxyR : ((q:ℝ) - (d:ℝ)) ≤ (Sg.ncard : ℝ) + (Sa.ncard : ℝ) := by
     have h := Nat.cast_le (α := ℝ).mpr hxynat
     have h1 : ((q - d : ℕ) : ℝ) = (q:ℝ) - (d:ℝ) := by
@@ -1047,11 +1046,11 @@ theorem stepanov_char_sum {F : Type*} [Field F] [Fintype F] [DecidableEq F]
     rw [hXc, hM_eq]
     exact harith
   have hupper : (Sg.ncard:ℝ) - (Sa.ncard:ℝ) ≤ 2*((X:ℝ)/(M:ℝ)) - (q:ℝ) + (d:ℝ) := by
-    linarith [hx, hy, hxyR]
+    linarith only [hx, hy, hxyR]
   have hlower : -((Sg.ncard:ℝ) - (Sa.ncard:ℝ)) ≤ 2*((X:ℝ)/(M:ℝ)) - (q:ℝ) + (d:ℝ) := by
-    linarith [hx, hy, hxyR]
+    linarith only [hx, hy, hxyR]
   have h1 : |(Sg.ncard:ℝ) - (Sa.ncard:ℝ)| ≤ 2*((X:ℝ)/(M:ℝ)) - (q:ℝ) + (d:ℝ) :=
-    abs_le.mpr ⟨by linarith [hlower], hupper⟩
+    abs_le.mpr ⟨by linarith only [hlower], hupper⟩
   have h2 : 2*((X:ℝ)/(M:ℝ)) - (q:ℝ) + (d:ℝ)
       = (2*(X:ℝ) - ((q:ℝ)-(d:ℝ))*(M:ℝ))/(M:ℝ) := by
     field_simp

@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
+import Submission.Commons.NumberTheory.Linnik.divisor_eq_closedBall_subset
 
 namespace Work.LinnikAreas.Zeta1Aux
 

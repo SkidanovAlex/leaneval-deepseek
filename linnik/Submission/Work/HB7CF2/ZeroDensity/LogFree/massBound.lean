@@ -2,9 +2,9 @@ import Mathlib
 import Submission.Work.ZeroDensity.LogFree.RouteDefs
 import Submission.Work.LinnikAreas.Density4.psiM_divisor_sum_zero
 import Submission.Work.ZeroDensity.Jutila.bvDefs
-import Submission.Work.HB7CF2.ZeroDensity.Jutila.LzSqIntGood
 import Submission.Work.HB7CF2.ZeroDensity.Jutila.LzSqHard
 import Submission.Work.ZeroDensity.LogFree.gfunWeightFacts
+import Submission.Work.ZeroDensity.Jutila.LzSqIntGood
 
 /-!
 # `Work.ZeroDensity.LogFree.massBound`
@@ -487,11 +487,11 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
   set S : ℝ := max (max 1 (1 / (p.v - p.u))) (max (Real.log 2 / p.u) (16 / (p.x - p.u) ^ 2)) with hSdef
   have hK₁0 : 0 ≤ K₁ := by
     rw [hK₁def]
-    exact div_nonneg (by nlinarith [hpu, huv]) (le_of_lt hvu)
+    exact div_nonneg (by linarith only [hpu, huv]) (le_of_lt hvu)
   have hK₂0 : 0 ≤ K₂ := by rw [hK₂def]; positivity
   have hK₃0 : 0 ≤ K₃ := by
     rw [hK₃def]
-    exact div_nonneg (by nlinarith [hpu, huv]) (by positivity)
+    exact div_nonneg (by positivity) (by positivity)
   have hA1 : 0 ≤ K₁ * (p.x + 3) / (p.v - p.u) :=
     div_nonneg (mul_nonneg hK₁0 hpx3) (le_of_lt hvu)
   have hA2 : 0 ≤ K₂ * (p.x + 3) / (p.v - p.u) ^ 2 :=
@@ -547,14 +547,15 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
   have hXpos : 0 < X := by rw [hXexp]; positivity
   have hUV : U < V := by
     rw [hUexp, hVexp]
-    exact Real.exp_lt_exp.mpr (by nlinarith)
+    exact Real.exp_lt_exp.mpr (mul_lt_mul_of_pos_right huv hLpos)
   have hUppos : 0 < Up := by rw [hUpdef]; positivity
   have hlog2L : Real.log 2 ≤ p.u * L := by
     have h2 : Real.log 2 / p.u ≤ L := le_trans hSlog hSle
     calc Real.log 2 = (Real.log 2 / p.u) * p.u := by field_simp
       _ ≤ L * p.u := mul_le_mul_of_nonneg_right h2 (le_of_lt hpu)
       _ = p.u * L := by ring
-  have hlog2Lv : Real.log 2 ≤ p.v * L := by nlinarith [hlog2L, hL1, hpu, huv]
+  have hlog2Lv : Real.log 2 ≤ p.v * L :=
+    le_trans hlog2L (mul_le_mul_of_nonneg_right huv.le hLpos.le)
   have hU2 : 2 ≤ U := by
     rw [hUexp]
     calc (2 : ℝ) = Real.exp (Real.log 2) := (Real.exp_log (by norm_num)).symm
@@ -595,7 +596,7 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
       have h10 : Real.sqrt L * Real.sqrt L = L := by
         rw [← sq]
         exact Real.sq_sqrt (le_of_lt hLpos)
-      nlinarith [h9, h10]
+      exact h9.trans_eq (by rw [mul_assoc, h10])
     have hlogL0 : 0 ≤ Real.log L := Real.log_nonneg hL1
     have hlog : Real.log Up ≤ Real.log X := by
       rw [hUpdef, Real.log_div (ne_of_gt hUpos) (by positivity), hlogU, hlogX, Real.log_pow]
@@ -606,7 +607,7 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
     exact (Real.log_le_log_iff hUppos hXpos).mp hlog
   have hX1 : 1 ≤ X := by
     rw [hXexp]
-    exact Real.one_le_exp (by nlinarith [hvx, hpu, hL1])
+    exact Real.one_le_exp (mul_nonneg (by linarith only [hvx, hpu, huv]) hLpos.le)
   obtain ⟨hgf0, hgf1, hgf2⟩ := gfunWeightFacts X Up hUppos hX1 hUpX
   set b : ℕ → ℝ := fun n => (psiSum U V n) ^ 2 with hbdef
   set w : ℕ → ℝ := fun n => gfun X Up n / (n : ℝ) with hwdef
@@ -638,7 +639,7 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
     have hsq : ∀ m : ℕ, (Work.ZeroDensity.Jutila.Lz V m - Work.ZeroDensity.Jutila.Lz U m) ^ 2
         ≤ 2 * (Work.ZeroDensity.Jutila.Lz V m) ^ 2 + 2 * (Work.ZeroDensity.Jutila.Lz U m) ^ 2 := by
       intro m
-      nlinarith [sq_nonneg (Work.ZeroDensity.Jutila.Lz V m + Work.ZeroDensity.Jutila.Lz U m)]
+      nlinarith only [sq_nonneg (Work.ZeroDensity.Jutila.Lz V m + Work.ZeroDensity.Jutila.Lz U m)]
     have hsumsq : (∑ m ∈ Finset.Icc 1 n,
           (Work.ZeroDensity.Jutila.Lz V m - Work.ZeroDensity.Jutila.Lz U m) ^ 2)
         ≤ 2 * (∑ m ∈ Finset.Icc 1 n, (Work.ZeroDensity.Jutila.Lz V m) ^ 2)
@@ -718,14 +719,14 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
     rw [hsumw']
     refine le_trans (hgf2 N) ?_
     rw [hlog2X]
-    nlinarith [hL1, hlog2le, hvx, hpu]
+    nlinarith only [hL1, hlog2le, hvx, hpu]
   have hKb : K₁ / Real.log (V / U) + K₂ / (Real.log (V / U)) ^ 2 ≤ K₁ + K₂ := by
     have h1 : K₁ / Real.log (V / U) ≤ K₁ := by
-      rw [div_le_iff₀ hLampos]; nlinarith [hK₁0, hLam1]
+      rw [div_le_iff₀ hLampos]; nlinarith only [mul_le_mul_of_nonneg_left hLam1 hK₁0]
     have h2 : K₂ / (Real.log (V / U)) ^ 2 ≤ K₂ := by
       rw [div_le_iff₀ (by positivity)]
-      have : 1 ≤ (Real.log (V / U)) ^ 2 := by nlinarith [hLam1]
-      nlinarith [hK₂0, this]
+      have : 1 ≤ (Real.log (V / U)) ^ 2 := one_le_pow₀ hLam1
+      nlinarith only [mul_le_mul_of_nonneg_left this hK₂0]
     linarith
   have hfinal : (K₁ / Real.log (V / U) + K₂ / (Real.log (V / U)) ^ 2)
         * (∑ n ∈ Finset.Icc 1 N, w n)
@@ -757,7 +758,7 @@ theorem massBoundCF (p : Work.ZeroDensity.LogFree.Params) : ∃ C_A : ℝ, 0 < C
             = K₂ * (p.x + 3) / ((p.v - p.u) ^ 2 * L) := by
               field_simp
           _ ≤ K₂ * (p.x + 3) / (p.v - p.u) ^ 2 :=
-              div_le_div_of_nonneg_left (by positivity) hden (by nlinarith [hL1, hvu])
+              div_le_div_of_nonneg_left (by positivity) hden (le_mul_of_one_le_right hden.le hL1)
       linarith [e1, e2]
     linarith [h1, h2, h3]
 

@@ -268,7 +268,7 @@ private lemma xiF_goodRadius :
       rw [div_lt_iff₀ hL2pos]
       simpa [mul_assoc] using hmainAux
     have hcard'' : (centres.card : ℝ) * (2 / L ^ 2) < 2 * A - A := by
-      nlinarith [hcard']
+      nlinarith only [hcard']
     have hw : 0 < 2 / L ^ 2 := by
       exact div_pos (by norm_num) hL2pos
     have hab : A ≤ 2 * A := by linarith
@@ -297,7 +297,7 @@ private lemma xiF_goodRadius :
         have hbig : (2 : ℝ) ≤ ‖u‖ - T := by
           have hBT : (2 : ℝ) ≤ B - T := by
             dsimp [B]
-            nlinarith [hT2]
+            nlinarith only [hT2]
           have h1 : B - T < ‖u‖ - T := sub_lt_sub_right hBlt T
           linarith
         have hd2 : (1 : ℝ) / L ^ 2 ≤ 2 := by
@@ -1140,7 +1140,7 @@ lemma pf_logDeriv_sub_of_sup {g : ℂ → ℂ} {R : ℝ} (hR : 0 < R)
       (c := z) (R := r) hr hdiffCl (by intro w hw; simpa using hC w hw)
     have hzR : z ∈ ball (0 : ℂ) R := by
       rw [mem_ball_zero_iff]
-      nlinarith [hz, show 0 < R from hR]
+      nlinarith only [hz, show 0 < R from hR]
     have hfder : deriv (fun w : ℂ => F w - F 0) z = deriv F z := by
       have hFdz : DifferentiableAt ℂ F z := hFdiff.differentiableAt (isOpen_ball.mem_nhds hzR)
       calc
@@ -1508,7 +1508,7 @@ lemma xiF_P_ne_zero_circle
   rcases factorization_open (f := Λ) (R := T) hTpos hΛdiff hΛ0 hcirc with ⟨g, ε, hε, hg_an, hg_nz, hfac⟩
   have hζε : ζ ∈ ball (0 : ℂ) (T + ε) := by
     rw [mem_ball_zero_iff]
-    nlinarith [hζ, hε]
+    nlinarith only [hζ, hε]
   have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
   have hfacζ := hfac ζ hζε
   have hΛζ : Λ ζ ≠ 0 := by simpa [Λ] using hcirc ζ hζ
@@ -1832,16 +1832,16 @@ lemma xi_cofactor_bound
     positivity
   have hQ1Q2_le_M0 : Q1 + Q2 ≤ M0 := by
     dsimp [M0]
-    nlinarith [hQ3, hQ4]
+    nlinarith only [hQ3, hQ4]
   have hQ34_le_M0 : Q3 + Q4 ≤ M0 := by
     dsimp [M0]
-    nlinarith [hQ1, hQ2]
+    nlinarith only [hQ1, hQ2]
   -- boundary bound on the sphere
   have hbnd_ζ : ∀ ζ : ℂ, ‖ζ‖ = T → Real.log ‖g ζ‖ ≤ Q1 + Q2 := by
     intro ζ hζ
     have hζε : ζ ∈ ball 0 (T + ε) := by
       rw [mem_ball_zero_iff]
-      nlinarith [hζ, hε]
+      nlinarith only [hζ, hε]
     have hΛζ : Λc ζ ≠ 0 := hcirc ζ hζ
     have hPζ : xiP  T ζ ≠ 0 := xiF_P_ne_zero_circle  hTpos (by intro u hu; simpa [Λc] using hcirc u hu) (hζ := hζ)
     have hgζ : g ζ ≠ 0 := hg_nz ζ hζε
@@ -1902,7 +1902,7 @@ lemma xi_cofactor_bound
       have hb := hbnd_ζ ζ hζ
       have hleM : Real.log ‖g ζ‖ ≤ M0 := le_trans hb hQ1Q2_le_M0
       have hgζnz : g ζ ≠ 0 := by
-        have hζε : ζ ∈ ball 0 (T + ε) := by rw [mem_ball_zero_iff]; nlinarith [hζ, hε]
+        have hζε : ζ ∈ ball 0 (T + ε) := by rw [mem_ball_zero_iff]; nlinarith only [hζ, hε]
         exact hg_nz ζ hζε
       have hnormpos : 0 < ‖g ζ‖ := norm_pos_iff.mpr hgζnz
       calc
@@ -2071,10 +2071,10 @@ lemma xi_M0_le
       have h4gcA0 : 0 ≤ gc * (4 * A * LA) := by positivity
       exact le_mul_of_one_le_right h4gcA0 hLA1
     dsimp [LA] at h2
-    nlinarith [h1, h2]
+    nlinarith only [h1, h2]
   have hterm2 : 2 * Real.log (xiL A) * zc * T * xiL T ≤ 8 * zc * A * (xiL A) ^ 2 := by
     have hzcT : zc * (T * xiL T) ≤ zc * (4 * A * LA) := mul_le_mul_of_nonneg_left hTL4 hzc0
-    have hlog2 : (2 * Real.log (xiL A)) ≤ (2 * LA) := by nlinarith [hlogLAle]
+    have hlog2 : (2 * Real.log (xiL A)) ≤ (2 * LA) := by nlinarith only [hlogLAle]
     have hpart : (2 * LA) * (zc * (4 * A * LA)) ≤ 8 * zc * A * LA ^ 2 := by
       have h1 : 0 ≤ 2 * LA := by positivity
       have h2 : 0 ≤ zc * (4 * A * LA) := by positivity
@@ -2084,7 +2084,7 @@ lemma xi_M0_le
     have hprod : (2 * Real.log (xiL A)) * (zc * (T * xiL T)) ≤ (2 * LA) * (zc * (4 * A * LA)) :=
       mul_le_mul hlog2 hzcT hzcT0 h2LA0
     dsimp [LA] at hpart
-    nlinarith [hprod, hpart]
+    nlinarith only [hprod, hpart]
   have hterm4 : zc * T * xiL T * (Real.log T + |Real.log del|)
       ≤ 4 * zc * (2 + |Real.log del|) * A * (xiL A) ^ 2 := by
     have hzcT : zc * (T * xiL T) ≤ zc * (4 * A * LA) := mul_le_mul_of_nonneg_left hTL4 hzc0
@@ -2104,7 +2104,7 @@ lemma xi_M0_le
       have hA0' : 0 ≤ A := hA0
       rw [heq]
     dsimp [LA] at h2
-    nlinarith [h1, h2]
+    nlinarith only [h1, h2]
   have hq3 : |Real.log ‖xiF 0‖| ≤
       |Real.log ‖xiF 0‖| := le_rfl
   calc
@@ -2118,7 +2118,7 @@ lemma xi_M0_le
     _ ≤ 4 * gc * A * LA ^ 2 + 8 * zc * A * LA ^ 2
             + |Real.log ‖xiF 0‖|
             + 4 * zc * (2 + |Real.log del|) * A * LA ^ 2 + 1 := by
-            nlinarith [hterm1, hterm2, hterm4]
+            nlinarith only [hterm1, hterm2, hterm4]
     _ ≤ xi_C0  * A * (xiL A) ^ 2 + xi_C1  := by
             dsimp [xi_C0, xi_C1, gc, zc, del]
             nlinarith
@@ -2322,7 +2322,7 @@ lemma xiF_goodRadius :
       rw [div_lt_iff₀ hL2pos]
       simpa [mul_assoc] using hmainAux
     have hcard'' : (centres.card : ℝ) * (2 / L ^ 2) < 2 * A - A := by
-      nlinarith [hcard']
+      nlinarith only [hcard']
     have hw : 0 < 2 / L ^ 2 := by
       exact div_pos (by norm_num) hL2pos
     have hab : A ≤ 2 * A := by linarith
@@ -2351,7 +2351,7 @@ lemma xiF_goodRadius :
         have hbig : (2 : ℝ) ≤ ‖u‖ - T := by
           have hBT : (2 : ℝ) ≤ B - T := by
             dsimp [B]
-            nlinarith [hT2]
+            nlinarith only [hT2]
           have h1 : B - T < ‖u‖ - T := sub_lt_sub_right hBlt T
           linarith
         have hd2 : (1 : ℝ) / L ^ 2 ≤ 2 := by
@@ -3025,13 +3025,13 @@ lemma xi_pf_tendsto
     have hdec_s := logDeriv_decompose (f := Λc) (g := g) (R := T) (ε := ε) hΛdiff hfac_sT
       (x := s) (hx := by
         rw [mem_ball_zero_iff]
-        have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
+        have hsT' : ‖s‖ < T := by nlinarith only [hsT, show 0 < T from hTpos]
         nlinarith [hε]) hΛs' (hg_an s (by
           rw [mem_ball_zero_iff]
-          have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
+          have hsT' : ‖s‖ < T := by nlinarith only [hsT, show 0 < T from hTpos]
           nlinarith [hε])).differentiableAt (hg_nz s (by
             rw [mem_ball_zero_iff]
-            have hsT' : ‖s‖ < T := by nlinarith [hsT, show 0 < T from hTpos]
+            have hsT' : ‖s‖ < T := by nlinarith only [hsT, show 0 < T from hTpos]
             nlinarith [hε]))
     have hdec_0 := logDeriv_decompose (f := Λc) (g := g) (R := T) (ε := ε) hΛdiff hfac_sT
       (x := 0) (hx := by rw [mem_ball_zero_iff]; simp; positivity) hΛ0
@@ -3156,7 +3156,7 @@ lemma xi_pf_tendsto
           have hT0' : 0 ≤ T := le_of_lt hTpos
           linarith
         have hprod : 0 ≤ (T - A) * (T + A) := mul_nonneg hTmA hTpA
-        nlinarith [hprod]
+        nlinarith only [hprod]
       have hdenpos : 0 < A ^ 2 := by positivity
       have hdenpos' : 0 < T ^ 2 := by positivity
       have hnumle : (xi_M0  A T + 1) / T ^ 2 ≤

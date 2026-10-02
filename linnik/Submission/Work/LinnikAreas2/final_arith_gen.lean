@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.final_arith
 import Submission.Work.LinnikAreas.Density4.cube_mul_exp_neg_le
 
 namespace Work.LinnikAreas2

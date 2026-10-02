@@ -32,7 +32,6 @@ whence `Σ_j w_j ≤ (1+O(ε))67/30`, i.e. `Σ_χ 2w·wHB(λ^{(χ)}) ≤ (1+O(ε
 finally `Σ_χ wHB(λ^{(χ)}) ≤ 67/6 + ε` (HB's step (VI)).
 -/
 import Mathlib
-import Submission.Work.LinnikContract2.Contract
 import Submission.Work.LinnikAreas2.D1Assembly
 import Submission.Work.LinnikAreas2.d1_of_area1
 import Submission.Work.LinnikAreas2.hb15_operator_bound
@@ -40,6 +39,7 @@ import Submission.Work.LinnikAreas2.duality_tsum
 import Submission.Work.LinnikAreas2.hb11_offdiag_pair_bound
 import Submission.Work.LinnikAreas.Density4.zero_detector
 import Submission.Work.A7.lamChar_api
+import Submission.Work.LinnikContract2.A7.WindowAssembly
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators
@@ -94,13 +94,13 @@ lemma WT_nonneg {q : ℕ} (hq : 3 ≤ q) (n : ℕ) : 0 ≤ WT q (8/15) (73/60) n
   have hL1 : (1:ℝ) ≤ Real.log q := by
     rw [Real.le_log_iff_exp_le (by positivity)]
     have : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq
-    linarith [Real.exp_one_lt_three]
+    linarith only [Real.exp_one_lt_three, this]
   have hXpos : (0:ℝ) < (q:ℝ)^((73:ℝ)/60) := Real.rpow_pos_of_pos hqpos _
   have hUpos : (0:ℝ) < (q:ℝ)^((8:ℝ)/15) := Real.rpow_pos_of_pos hqpos _
   have hcase : (q:ℝ)^((8:ℝ)/15) ≤ (Real.log q)^2 * (q:ℝ)^((73:ℝ)/60) := by
     have h1 : (q:ℝ)^((8:ℝ)/15) ≤ (q:ℝ)^((73:ℝ)/60) :=
       Real.rpow_le_rpow_of_exponent_le hq1 (by norm_num)
-    have h2 : (1:ℝ) ≤ (Real.log q)^2 := by nlinarith
+    have h2 : (1:ℝ) ≤ (Real.log q)^2 := by nlinarith only [hL1]
     calc (q:ℝ)^((8:ℝ)/15) ≤ (q:ℝ)^((73:ℝ)/60) := h1
       _ = 1 * (q:ℝ)^((73:ℝ)/60) := by ring
       _ ≤ (Real.log q)^2 * (q:ℝ)^((73:ℝ)/60) := mul_le_mul_of_nonneg_right h2 hXpos.le
@@ -131,7 +131,7 @@ lemma norm_bcoef_sq_le {q : ℕ} [NeZero q] (u v x : ℝ) (n : ℕ) :
       · rw [Real.sq_sqrt h, WT, wt]; exact wt_le_exp n
       · rw [Real.sqrt_eq_zero_of_nonpos (le_of_not_ge h)]; simp; positivity
     have h1 : |psiS ((q:ℝ)^u) ((q:ℝ)^v) n| ^ 2 ≤ (n:ℝ)^2 := by
-      nlinarith [abs_nonneg (psiS ((q:ℝ)^u) ((q:ℝ)^v) n), hpsi]
+      nlinarith only [abs_nonneg (psiS ((q:ℝ)^u) ((q:ℝ)^v) n), hpsi]
     rw [hnorm, mul_pow, mul_pow, hcp]
     calc |psiS ((q:ℝ)^u) ((q:ℝ)^v) n| ^ 2 * (n:ℝ)^(-1:ℝ) * (Real.sqrt (WT q u x n)) ^ 2
         ≤ ((n:ℝ)^2 * (n:ℝ)^(-1:ℝ)) * Real.exp (-(n:ℝ)/(q:ℝ)^x) :=
@@ -284,8 +284,8 @@ lemma wHB_le_one {lam : ℝ} (hlam : 0 ≤ lam) : Work.LinnikContract2.wHB lam �
   rcases eq_or_lt_of_le hlam with h0 | hpos
   · rw [← h0]; norm_num
   · have hden : 0 < Real.exp (73/30*lam) - Real.exp (16/15*lam) := by
-      have h1 : (16/15:ℝ) * lam < (73/30) * lam := by nlinarith
-      linarith [Real.exp_lt_exp.mpr h1]
+      have h1 : (16/15:ℝ) * lam < (73/30) * lam := by linarith only [hpos]
+      linarith only [Real.exp_lt_exp.mpr h1, h1]
     rw [div_le_one hden]
     have h3 : Real.exp (73/30*lam) - Real.exp (16/15*lam)
         = Real.exp (16/15*lam) * (Real.exp ((73/30-16/15)*lam) - 1) := by
@@ -295,16 +295,16 @@ lemma wHB_le_one {lam : ℝ} (hlam : 0 ≤ lam) : Work.LinnikContract2.wHB lam �
     have h5 : (73/30-16/15:ℝ) * lam = (41/30) * lam := by ring
     have hexp : (41/30) * lam ≤ Real.exp ((41/30)*lam) - 1 := by
       have := Real.add_one_le_exp ((41/30)*lam)
-      linarith
+      linarith only [this]
     have h6 : (1:ℝ) ≤ Real.exp (16/15*lam) := Real.one_le_exp (by positivity)
-    have h7 : lam ≤ (41/30:ℝ) * lam := by nlinarith
+    have h7 : lam ≤ (41/30:ℝ) * lam := by linarith only [hpos]
     rw [h3, h5]
     have h8 : (41/30:ℝ) * lam ≤ Real.exp (16/15*lam) * (Real.exp ((41/30)*lam) - 1) := by
       calc (41/30:ℝ) * lam ≤ 1 * (Real.exp ((41/30)*lam) - 1) := by
             rw [one_mul]; exact hexp
         _ ≤ Real.exp (16/15*lam) * (Real.exp ((41/30)*lam) - 1) :=
-            mul_le_mul_of_nonneg_right h6 (by linarith)
-    linarith
+            mul_le_mul_of_nonneg_right h6 (by linarith only [hpos, hexp])
+    linarith only [hpos, h8]
 
 /-! ## 6. Instantiating the two analytic inputs at the contract's parameters -/
 
@@ -354,9 +354,9 @@ lemma exp_rpow (a b : ℝ) : (Real.exp a) ^ b = Real.exp (a*b) := by
 theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
     ∀ δ : ℝ, 0 < δ → δ < 1/10 → ThetaBound δ := by
   intro δ hδ0 hδ10 c1 hc1
-  obtain ⟨C₁, hC₁pos, hG⟩ := hgraham (c1/4) (by linarith)
+  obtain ⟨C₁, hC₁pos, hG⟩ := hgraham (c1/4) (by linarith only [hc1])
   obtain ⟨L₀, C₂, hL₀pos, hC₂pos, hmain⟩ :=
-    hsharp (c1/2) (by linarith) (8/15) (1/10-δ) (73/60) (by linarith) (by linarith)
+    hsharp (c1/2) (by linarith only [hc1]) (8/15) (1/10-δ) (73/60) (by linarith only [hδ10]) (by linarith only [hδ0, hδ10])
       (by norm_num) C₁ hC₁pos
   obtain ⟨Q, hQ⟩ : ∃ Q : ℕ, 0 < Q ∧ ∀ q : ℕ, Q ≤ q →
       max L₀ (max (10*C₂/c1) 40) ≤ Real.log q := by
@@ -367,7 +367,7 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
     have h3 : Real.exp (max L₀ (max (10*C₂/c1) 40))
         ≤ ((⌈Real.exp (max L₀ (max (10*C₂/c1) 40))⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     push_cast at h2
-    linarith
+    linarith only [hδ0, hδ10, h3, h2]
   refine ⟨max 3 Q, fun q hq _ χ ρ hZ hlam => ?_⟩
   have hq3 : 3 ≤ q := le_trans (le_max_left _ _) hq
   have hqQ : Q ≤ q := le_trans (le_max_right _ _) hq
@@ -378,23 +378,23 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
     le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hLlarge
   have hL40 : 40 ≤ Real.log q :=
     le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hLlarge
-  have hLpos : 0 < Real.log q := by linarith
+  have hLpos : 0 < Real.log q := by linarith only [hδ0, hδ10, hL40]
   have hlamle : (1-ρ.re)*Real.log q ≤ Real.log (Real.log (Real.log q))/3 := by
     have h := hlam
     rw [Work.LinnikContract2.lamMax] at h
     exact h
   have hbetal : (1/2:ℝ) ≤ ρ.re := by
     have h2 : Real.log (Real.log (Real.log q))/3 ≤ Real.log q/2 := by
-      have ht1 : (1:ℝ) ≤ Real.log q := by linarith
+      have ht1 : (1:ℝ) ≤ Real.log q := by linarith only [hδ0, hδ10, hL40]
       have hlt : Real.log (Real.log (Real.log q)) ≤ Real.log q := by
         have h3 : Real.log (Real.log (Real.log q)) ≤ Real.log (Real.log q) - 1 :=
-          Real.log_le_sub_one_of_pos (Real.log_pos (by linarith : (1:ℝ) < Real.log q))
-        have h4 : Real.log (Real.log q) ≤ Real.log q := Real.log_le_self (by linarith)
-        linarith
-      linarith
-    have h3 : (1-ρ.re)*Real.log q ≤ (1/2)*Real.log q := by linarith
+          Real.log_le_sub_one_of_pos (Real.log_pos (by linarith only [hδ0, hδ10, hL40] : (1:ℝ) < Real.log q))
+        have h4 : Real.log (Real.log q) ≤ Real.log q := Real.log_le_self (by linarith only [hδ0, hδ10, hL40])
+        linarith only [hδ0, hδ10, h3, h4]
+      linarith only [hδ0, hδ10, hL40, hlt]
+    have h3 : (1-ρ.re)*Real.log q ≤ (1/2)*Real.log q := by linarith only [hlamle, h2]
     have h4 : (1-ρ.re) ≤ 1/2 := (mul_le_mul_iff_of_pos_right hLpos).mp h3
-    linarith
+    linarith only [h4]
   have hbetalt : ρ.re < 1 := by
     by_contra hcon
     push_neg at hcon
@@ -402,7 +402,7 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
     exact (DirichletCharacter.LFunction_ne_zero_of_one_le_re (χ := χ) (s := ρ)
       (Or.inl hZ.1) hcon) hz
   -- Graham's `θ` bounds, rewritten in the sharp lemma's normalisation
-  have hG' := hG (1/10-δ) (Real.log q) (by linarith) hLpos
+  have hG' := hG (1/10-δ) (Real.log q) (by linarith only [hδ10]) hLpos
   rw [Real.log_exp] at hG'
   have h1' : ∀ N : ℕ, 1 ≤ N → (N:ℝ) ≤ Real.exp ((1/10-δ)*Real.log q) →
       (∑ n ∈ Finset.Icc 1 N, (∑ d ∈ n.divisors,
@@ -444,12 +444,12 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
   -- the weight is positive and the cancellation `wHB lam · (e^{2xλ}-e^{2uλ})/λ = 1`
   set E1 : ℝ := (Real.exp ((73/60)*Real.log q))^(2-2*ρ.re) with hE1
   set E2 : ℝ := (Real.exp ((8/15)*Real.log q))^(2-2*ρ.re) with hE2
-  have hlampo : 0 < (1-ρ.re)*Real.log q := by nlinarith
+  have hlampo : 0 < (1-ρ.re)*Real.log q := by nlinarith only [hL₀pos, hbetalt, hL₀]
   have hlamne : (1-ρ.re)*Real.log q ≠ 0 := ne_of_gt hlampo
   have hden : Real.exp (73/30*((1-ρ.re)*Real.log q)) - Real.exp (16/15*((1-ρ.re)*Real.log q)) ≠ 0 := by
     have h1 : (16/15:ℝ) * ((1-ρ.re)*Real.log q) < (73/30) * ((1-ρ.re)*Real.log q) := by
-      nlinarith
-    linarith [Real.exp_lt_exp.mpr h1]
+      linarith only [hlampo]
+    linarith only [Real.exp_lt_exp.mpr h1, h1]
   have hA : E1 = Real.exp (73/30*((1-ρ.re)*Real.log q)) := by
     rw [hE1, exp_rpow]; congr 1; ring
   have hB : E2 = Real.exp (16/15*((1-ρ.re)*Real.log q)) := by
@@ -463,14 +463,14 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
     rw [Work.LinnikContract2.lamOf]
   rw [hwc_eq]
   have hwcpos : 0 ≤ 2*(1/10-δ)*Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q) :=
-    mul_nonneg (by linarith) (wHB_nonneg _)
+    mul_nonneg (by linarith only [hδ10]) (wHB_nonneg _)
   have hLne : Real.log q ≠ 0 := ne_of_gt hLpos
   have h1rne : (1-ρ.re) ≠ 0 := by
     intro h0
     rw [h0, zero_mul] at hlampo
     exact absurd hlampo (lt_irrefl 0)
-  have h2wne : (2*(1/10-δ)) ≠ 0 := by linarith
-  have h10δ : (1 - 10*δ) ≠ 0 := by linarith
+  have h2wne : (2*(1/10-δ)) ≠ 0 := by linarith only [hδ10]
+  have h10δ : (1 - 10*δ) ≠ 0 := by linarith only [hδ10]
   calc 2*(1/10-δ)*Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q)
         * (∑' n : ℕ, (∑ d ∈ n.divisors, Work.LinnikAreas.Density4.thetaM
             (Real.exp ((1/10-δ)*Real.log q)) d)^2 * (n:ℝ)^(1-2*ρ.re)
@@ -493,24 +493,24 @@ theorem thetaBound_of_sharp (hgraham : GrahamTheta) (hsharp : ThetaSharp) :
         have hwb : Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q) ≤ 1 :=
           wHB_le_one hlampo.le
         have hwb0 : 0 ≤ Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q) := wHB_nonneg _
-        have h2w : 2*(1/10-δ) ≤ 1 := by linarith
-        have h2w0 : 0 ≤ 2*(1/10-δ) := by linarith
+        have h2w : 2*(1/10-δ) ≤ 1 := by linarith only [hδ0, hδ10]
+        have h2w0 : 0 ≤ 2*(1/10-δ) := by linarith only [hδ10]
         have hC₂div : 0 ≤ C₂/Real.log q := div_nonneg hC₂pos.le hLpos.le
         have hprod : (2*(1/10-δ)) * Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q) ≤ 1 := by
-          nlinarith [hwb, hwb0, h2w, h2w0]
+          nlinarith only [hwb, hwb0, h2w, h2w0, hδ10, hδ0]
         have : (2*(1/10-δ)*Work.LinnikContract2.wHB ((1-ρ.re)*Real.log q))
             * (C₂/Real.log q) ≤ 1 * (C₂/Real.log q) :=
           mul_le_mul_of_nonneg_right hprod hC₂div
-        linarith
+        linarith only [this]
     _ ≤ 1 + c1 := by
         have h10 : 10*C₂ ≤ c1 * Real.log q := by
           have := hL5
           rw [div_le_iff₀ hc1] at this
-          linarith [this]
+          linarith only [this]
         have : C₂/Real.log q ≤ c1/2 := by
           rw [div_le_iff₀ hLpos]
-          nlinarith [h10]
-        linarith
+          linarith only [h10, hC₂pos]
+        linarith only [this]
 
 
 /-- **The `ψ`-side of the `(D1)` assembly**: given Graham's `ψ`-sieve estimate and HB (11.14) with
@@ -518,9 +518,9 @@ a general constant, the norm bound `PsiBound ε` of the assembly holds. -/
 theorem psiBound_of_graham (hgraham : GrahamPsiSieve) (hgen : PsiWeightedGen) :
     ∀ ε : ℝ, 0 < ε → PsiBound ε := by
   intro ε hε
-  obtain ⟨C₁, hC₁pos, hG⟩ := hgraham (ε/2) (by linarith) (8/15) (47/60)
+  obtain ⟨C₁, hC₁pos, hG⟩ := hgraham (ε/2) (by linarith only [hε]) (8/15) (47/60)
     (by norm_num) (by norm_num)
-  obtain ⟨C₂, hC₂pos, hmain⟩ := hgen (ε/2) (by linarith) (8/15) (47/60) (73/60)
+  obtain ⟨C₂, hC₂pos, hmain⟩ := hgen (ε/2) (by linarith only [hε]) (8/15) (47/60) (73/60)
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) C₁ hC₁pos
   -- `(log x)² ≤ (ε/2) x^{8/15}` eventually
   have hbound : ∀ᶠ x : ℝ in Filter.atTop, (Real.log x)^2 ≤ (ε/2) * x^((8:ℝ)/15) := by
@@ -551,7 +551,7 @@ theorem psiBound_of_graham (hgraham : GrahamPsiSieve) (hgen : PsiWeightedGen) :
     have h1 : ⌈max a 1⌉₊ ≤ q := by omega
     have h2 : max a 1 ≤ ((⌈max a 1⌉₊ : ℕ) : ℝ) := Nat.le_ceil (max a 1)
     have h3 : ((⌈max a 1⌉₊ : ℕ) : ℝ) ≤ (q:ℝ) := by exact_mod_cast h1
-    linarith [le_max_left a 1]
+    linarith only [le_max_left a 1, h2, h3]
   have hLs : (Real.log q)^2 ≤ (ε/2) * (q:ℝ)^((8:ℝ)/15) := ha (q:ℝ) hAa
   -- the `ψ`-side estimate
   have hVe : (q:ℝ)^((47:ℝ)/60) = Real.exp ((47/60)*Real.log q) :=
@@ -587,12 +587,12 @@ theorem psiBound_of_graham (hgraham : GrahamPsiSieve) (hgen : PsiWeightedGen) :
     have h4 : 60*C₂/(67*ε) ≤ Real.log q := by
       rw [Real.le_log_iff_exp_le (by positivity)]
       push_cast at h2
-      linarith
+      linarith only [h3, h2]
     have h4' : 60*C₂ ≤ 67*ε*Real.log q := by
       have := (div_le_iff₀ (by positivity : (0:ℝ) < 67*ε)).mp h4
-      linarith [this]
-    nlinarith [h4']
-  linarith [hconcl', hlast]
+      linarith only [this]
+    linarith only [h4']
+  linarith only [hconcl', hlast]
 
 
 /-! ## 4. The assembly of `(D1)` -/
@@ -610,7 +610,7 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
   have hδ0 : 0 < δ := by rw [hδ]; exact lt_min (by positivity) (by norm_num)
   have hδ10 : δ < 1/10 := by
     have h' : δ ≤ 1/1000 := hδ.le.trans (min_le_right _ _)
-    linarith
+    linarith only [hδ0, h']
   have ha_le1 : a ≤ ε/10^4 := ha.le.trans (min_le_left _ _)
   have ha_le2 : a ≤ 1/1000 := ha.le.trans (min_le_right _ _)
   have hδ_le : δ ≤ ε/10^6 := hδ.le.trans (min_le_left _ _)
@@ -618,12 +618,12 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
   obtain ⟨qpsi, hqpsi⟩ := hpsi a ha0
   obtain ⟨qthe, hqthe⟩ := htheta δ hδ0 hδ10 a ha0
   obtain ⟨Cd, hCdpos, hCd⟩ := zero_detector h1 (8/15) (47/60) (1/10-δ) (73/60)
-    (by linarith) (by linarith) (by norm_num) (by norm_num) (by linarith) (by linarith)
+    (by linarith only [hδ10]) (by linarith only [hδ0]) (by norm_num) (by norm_num) (by linarith only [hδ0]) (by linarith only [hδ0])
   obtain ⟨Cf, hCfpos, hCf⟩ := hb11_offdiag_pair_bound h1 (8/15) (1/10-δ) (73/60)
-    (by linarith) (by linarith) (by norm_num) (by linarith)
+    (by linarith only [hδ10]) (by linarith only [hδ0]) (by norm_num) (by linarith only [hδ0])
   set M : ℝ := 2*Cd + Cf*(1+a)*(67/30) with hM
   have hMpos : 0 < M := by rw [hM]; positivity
-  have hMge : 2*Cd ≤ M := by rw [hM]; nlinarith [hCfpos, hCdpos, ha0]
+  have hMge : 2*Cd ≤ M := by rw [hM]; nlinarith only [hCfpos, hCdpos, ha0]
   refine ⟨max (max qpsi qthe) (max 3 (⌈Real.exp (2*M/a)⌉₊ + 1)), fun q hq _ => ?_⟩
   have hq3 : 3 ≤ q := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hq
   have hqpsi_le : qpsi ≤ q := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hq
@@ -634,22 +634,22 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
   have hLpos : 0 < Real.log q := by
     apply Real.log_pos
     have : (3:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq3
-    linarith
+    linarith only [this]
   have hlog_large : 2*M ≤ a * Real.log q := by
     have h1 : 2*M/a ≤ Real.log q := by
       rw [Real.le_log_iff_exp_le (by positivity)]
       have h2 : ((⌈Real.exp (2*M/a)⌉₊ + 1 : ℕ) : ℝ) ≤ (q:ℝ) := by exact_mod_cast hqexp
       have h3 : Real.exp (2*M/a) ≤ ((⌈Real.exp (2*M/a)⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
       push_cast at h2
-      linarith
+      linarith only [h3, h2]
     rw [div_le_iff₀ ha0] at h1
-    linarith [h1]
+    linarith only [h1]
   have hCdL : Cd / Real.log q ≤ 1 := by
     rw [div_le_one hLpos]
-    have hCa : Cd * a ≤ M := by nlinarith [hMge, ha_le2, ha0, hCdpos]
-    have h2 : a * (2*Cd) ≤ a * Real.log q := by nlinarith [hlog_large, hCa]
+    have hCa : Cd * a ≤ M := by nlinarith only [hMge, ha_le2, ha0, hCdpos, hM, hCfpos, hδ0, hδ10]
+    have h2 : a * (2*Cd) ≤ a * Real.log q := by linarith only [hlog_large, hCa]
     have h3 : 2*Cd ≤ Real.log q := (mul_le_mul_iff_of_pos_left ha0).mp h2
-    linarith
+    linarith only [hCdpos, h3]
   -- the character set, enumerated by minimising zeros
   obtain ⟨chi, rho, hchi_inj, hchi_mem, hchiZ, hrho_lam⟩ :=
     exists_enum_min (q := q) (hbSet q) (fun χ hχ => by
@@ -661,7 +661,7 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
     rw [hrho_lam j]
     exact le_trans (lamChar_le_of_isZ hq2 hZ') hle'
   -- the weights
-  have hw'pos : (0:ℝ) < 1/10 - δ := by linarith
+  have hw'pos : (0:ℝ) < 1/10 - δ := by linarith only [hδ10]
   set wc : Fin (hbSet q).card → ℝ :=
     fun j => 2*(1/10-δ)*Work.LinnikContract2.wHB (Work.LinnikContract2.lamOf q (rho j)) with hwc
   have hwc_nonneg : ∀ j, 0 ≤ wc j := by
@@ -827,7 +827,7 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
     have h2 : (Real.sqrt (wc j) * (1 - Cd / Real.log q))^2
         ≤ (Real.sqrt (wc j) * ‖detSum q ((q:ℝ)^((8:ℝ)/15)) ((q:ℝ)^((47:ℝ)/60))
             ((q:ℝ)^(1/10-δ)) ((q:ℝ)^((73:ℝ)/60)) (Real.log q) (chi j) (rho j)‖)^2 :=
-      pow_le_pow_left₀ (mul_nonneg (Real.sqrt_nonneg _) (by linarith [hCdL])) h1 2
+      pow_le_pow_left₀ (mul_nonneg (Real.sqrt_nonneg _) (by linarith only [hCdL])) h1 2
     rw [mul_pow, hsq]
     rw [mul_pow, mul_pow, hsq] at h2
     exact h2
@@ -840,7 +840,7 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
       rw [Finset.mul_sum]
       refine Finset.sum_le_sum (fun j _ => ?_)
       have hx : (1 - 2 * (Cd / Real.log q)) ≤ (1 - Cd / Real.log q)^2 := by
-        nlinarith [sq_nonneg (Cd / Real.log q)]
+        linarith only [sq_nonneg (Cd / Real.log q)]
       have hy : 1 - 2 * Cd / Real.log q = 1 - 2 * (Cd / Real.log q) := by ring
       rw [hy]
       calc (1 - 2 * (Cd / Real.log q)) * wc j ≤ (1 - Cd / Real.log q)^2 * wc j :=
@@ -857,7 +857,7 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
     hqpsi q hqpsi_le
   have hML : M / Real.log q ≤ a / 2 := by
     rw [div_le_iff₀ hLpos]
-    nlinarith [hlog_large]
+    linarith only [hlog_large]
   have hWbound : (∑ j : Fin (hbSet q).card, wc j) ≤ (1 + 4*a) * (67/30) := by
     have h3 : ((1 + a) + (Cf / Real.log q) * (∑ j : Fin (hbSet q).card, wc j))
         * (∑' n : ℕ, ‖bcoef q (8/15) (47/60) (73/60) n‖^2)
@@ -883,11 +883,11 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
               - (2 * Cd / Real.log q) * (∑ j : Fin (hbSet q).card, wc j) := hexp
       nlinarith [h4, hML, hTnn]
     have ha4 : (1+a)^2 * (67/30) / (1 - a/2) ≤ (1 + 4*a) * (67/30) := by
-      rw [div_le_iff₀ (by linarith : (0:ℝ) < 1 - a/2)]
-      nlinarith [ha_le2, ha0, sq_nonneg a, sq_nonneg (1+a), sq_nonneg ((1+a)^2)]
+      rw [div_le_iff₀ (by linarith only [ha_le2] : (0:ℝ) < 1 - a/2)]
+      nlinarith only [ha_le2, ha0, sq_nonneg a, sq_nonneg (1+a), sq_nonneg ((1+a)^2), hδ0, hδ10]
     calc (∑ j : Fin (hbSet q).card, wc j)
         ≤ (1+a)^2 * (67/30) / (1 - a/2) := by
-          rw [le_div_iff₀ (by linarith : (0:ℝ) < 1 - a/2)]
+          rw [le_div_iff₀ (by linarith only [ha_le2] : (0:ℝ) < 1 - a/2)]
           linarith [hstep]
       _ ≤ (1 + 4*a) * (67/30) := ha4
   -- final bookkeeping (HB step (VI))
@@ -900,24 +900,24 @@ theorem d1_of_pieces (h1 : Work.LinnikContract2.Area1)
           = wc j / (2*(1/10-δ)) := by
       intro j
       rw [← hrho_lam j, hwc,
-        mul_div_cancel_left₀ _ (ne_of_gt (by linarith : (0:ℝ) < 2*(1/10-δ)))]
+        mul_div_cancel_left₀ _ (ne_of_gt (by linarith only [hδ10] : (0:ℝ) < 2*(1/10-δ)))]
     rw [Finset.sum_congr rfl (fun j _ => hcongr j), ← Finset.sum_div]
-    have h2w : (0:ℝ) < 2*(1/10-δ) := by linarith
+    have h2w : (0:ℝ) < 2*(1/10-δ) := by linarith only [hδ10]
     have harith : (1 + 4*a) * (67/30) / (2*(1/10-δ)) ≤ 67/6 + ε := by
       have h1 : (1 + 4*a) * (67/30) / (2*(1/10-δ)) = (67/6) * ((1+4*a) / (1-10*δ)) := by
         field_simp
         ring
       rw [h1]
       have hδsmall : (1+4*a) / (1 - 10*δ) ≤ 1 + 6*ε/67 := by
-        rw [div_le_iff₀ (by linarith)]
+        rw [div_le_iff₀ (by linarith only [hδ10])]
         have h4 : (1+4*a) * (1+20*δ) ≤ 1 + 6*ε/67 := by
           by_cases hε1 : ε ≤ 1
-          · nlinarith [ha_le1, hδ_le, hε, ha0, hδ0]
+          · nlinarith only [ha_le1, hδ_le, hε, ha0, hδ0, hδ10]
           · push_neg at hε1
-            nlinarith [ha_le2, hδ_le2, hε1, ha0, hδ0]
-        have h5 : (1:ℝ) ≤ (1+20*δ) * (1-10*δ) := by nlinarith [hδ_le2, hδ0]
-        have h6 : (0:ℝ) ≤ 1 - 10*δ := by linarith
-        nlinarith [h4, h5, h6, ha0, hδ0]
+            nlinarith only [ha_le2, hδ_le2, hε1, ha0, hδ0, ha_le1, hδ_le, hδ10]
+        have h5 : (1:ℝ) ≤ (1+20*δ) * (1-10*δ) := by nlinarith only [hδ_le2, hδ0, ha0, ha_le2]
+        have h6 : (0:ℝ) ≤ 1 - 10*δ := by linarith only [hδ10]
+        nlinarith only [h4, h5, h6, ha0, hδ0, ha_le1, hδ_le, hε, hδ_le2]
       calc (67/6 : ℝ) * ((1+4*a) / (1-10*δ))
           ≤ (67/6) * (1 + 6*ε/67) := mul_le_mul_of_nonneg_left hδsmall (by norm_num)
         _ = 67/6 + ε := by ring

@@ -1,6 +1,6 @@
 import Mathlib
 import Submission.Work.LinnikBurgess.burgess_lead_defs
-import Submission.Work.LinnikBurgess.commons_cube_api
+import Submission.Commons.NumberTheory.DirichletCharacter.charCorrelation6_cube_local
 
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

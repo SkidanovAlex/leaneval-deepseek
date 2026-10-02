@@ -37,7 +37,7 @@ Deuring–Heilbronn range `λ₁ < 0.348`.  The provenance of every entry is pro
 import Mathlib
 import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikContract.Areas
-import Submission.Work.LinnikContract2.Contract
+import Submission.Work.LinnikContract2.Defs
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

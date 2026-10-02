@@ -32,10 +32,10 @@ import Mathlib
 import Submission.Work.ZeroFreeTables.t23Defs
 import Submission.Work.LinnikAreas.boxMaxZeroH
 import Submission.Work.LinnikAreas.DhRepel.countOfLogFree
-import Submission.Work.LinnikAreas.offAxisConstWide
-import Submission.Work.LinnikAreas.realZeroLambdaCountLinear
 import Submission.Work.LinnikAreas.exists_minLam_zero
 import Submission.Work.ZeroFreeTables.t23NearLineCount
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
+import Submission.Work.LinnikAreas.DhRepel.farZeroLambdaLower
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

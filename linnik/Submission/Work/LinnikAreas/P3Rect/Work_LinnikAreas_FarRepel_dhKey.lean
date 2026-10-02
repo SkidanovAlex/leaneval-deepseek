@@ -127,7 +127,7 @@ private lemma arithTwoPoint_nonneg_aux {q : ℕ} [NeZero q] (χ : DirichletChara
         (mul_nonneg ArithmeticFunction.vonMangoldt_nonneg
           (pow_nonneg (Real.log_natCast_nonneg n) _))
         (Real.rpow_nonneg (Nat.cast_nonneg n) c)
-      linarith
+      linarith only [h1]
     have h1 : ‖B n‖ = ‖A n‖ * |Real.cos (γ' * Real.log (n : ℝ))| := by
       simp only [hBn n, Real.norm_eq_abs, abs_mul]
     have h2 : ‖A n‖ * |Real.cos (γ' * Real.log (n : ℝ))|
@@ -153,7 +153,7 @@ private lemma arithTwoPoint_nonneg_aux {q : ℕ} [NeZero q] (χ : DirichletChara
   have h1c : 0 ≤ 1 + (χ ((n : ℕ) : ZMod q)).re := by
     rcases charValue_sq_one χ hχ2 ((n : ℕ) : ZMod q) with h | h | h <;> rw [h] <;> norm_num
   have hcos : 0 ≤ 1 + Real.cos (γ' * Real.log (n : ℝ)) := by
-    linarith [Real.neg_one_le_cos (γ' * Real.log (n : ℝ))]
+    linarith only [Real.neg_one_le_cos (γ' * Real.log (n : ℝ))]
   rw [hBn n, hAn n]
   have hAB : (ArithmeticFunction.vonMangoldt n : ℝ) * (1 + (χ ((n : ℕ) : ZMod q)).re)
         * (Real.log (n : ℝ)) ^ (2 * j - 1) * (n : ℝ) ^ (-c)
@@ -250,8 +250,8 @@ theorem dhKey {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠
     rw [hU0, hU1, ← mul_add]
     exact mul_nonneg (by positivity) (arithTwoPoint_nonneg_aux χ hχ hχ2 j hj hc)
   have htriv : 0 ≤ (Tzs0.re + Tls0.re) + (Tzs1.re + Tls1.re) := by
-    have h2 := trivSeries_nonneg (c := c) (γ' := γ') (j := j) (by linarith : 0 < c) hj 2
-    have ha := trivSeries_nonneg (c := c) (γ' := γ') (j := j) (by linarith : 0 < c) hj a
+    have h2 := trivSeries_nonneg (c := c) (γ' := γ') (j := j) (by linarith only [hc] : 0 < c) hj 2
+    have ha := trivSeries_nonneg (c := c) (γ' := γ') (j := j) (by linarith only [hc] : 0 < c) hj a
     have e0 : Tzs0.re
         = (∑' n : ℕ, (1 / ((c : ℂ) + ((2 + 2 * n : ℕ) : ℂ))) ^ (2 * j)).re := by
       rw [hTzs0]
@@ -264,7 +264,7 @@ theorem dhKey {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠
       exact congrArg Complex.re (tsum_congr (fun n => by
         rw [show (2 * (n + 1) : ℕ) = 2 + 2 * n from by omega]))
     rw [e0, e1]
-    linarith
+    linarith only [h2, ha]
   have hs0 : Summable (fun u : ℂ => (multZ χ u : ℝ) * ((1 / ((c : ℂ) - u)) ^ (2 * j)).re) := by
     refine (hsum0.map Complex.reCLM Complex.reCLM.continuous).congr (fun u => ?_)
     simp only [Function.comp_apply, Complex.reCLM_apply]
@@ -295,8 +295,8 @@ theorem dhKey {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠
   calc (∑' u : ℂ, (multZ χ u : ℝ) * Wt c γ' j u)
       = Zs0.re + Zs1.re := hWt
     _ = P0.re + P1.re - (U0 + U1) - ((Tzs0.re + Tls0.re) + (Tzs1.re + Tls1.re)) := by
-        linarith [h0, h1]
-    _ ≤ P0.re + P1.re := by linarith [hU, htriv]
+        linarith only [h0, h1, h0raw, h1raw]
+    _ ≤ P0.re + P1.re := by linarith only [hU, htriv]
     _ = 1 / (c - 1) ^ (2 * j)
           + ((1 / ((c : ℂ) + Complex.I * (γ' : ℂ) - 1)) ^ (2 * j)).re := by
         rw [hP0re, hP1re]

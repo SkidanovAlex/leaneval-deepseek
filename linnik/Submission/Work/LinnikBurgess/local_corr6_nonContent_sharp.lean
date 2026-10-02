@@ -1,9 +1,9 @@
 import Mathlib
 import Submission.Work.LinnikBurgess.burgess_lead_defs
-import Submission.Work.LinnikBurgess.commons_cube_api
 import Submission.Work.LinnikBurgess.dd_criticalSumBound
 import Submission.Work.LinnikBurgess.castHom_ddDefectK_three
 import Submission.Work.LinnikBurgess.dvd_contAB_of_IsDD_three
+import Submission.Commons.NumberTheory.DirichletCharacter.charCorrelation6_primePow_local
 
 open scoped BigOperators
 

@@ -1,10 +1,10 @@
 import Submission.Work.LinnikContract2.Compose
 import Submission.Work.LinnikContract2.Bridge
-import Submission.Work.LinnikContract2.CarryOver
+import Submission.Work.LinnikContract2.CarryOver_area5
 import Submission.Work.LinnikContract2.A7.Area7Final
 import Submission.Work.LinnikAreas.area1
 import Submission.Work.LinnikAreas.area2
-import Submission.Work.LinnikAreas.area6
+import Submission.Work.LinnikAreas.area6_core
 import Submission.Work.LinnikAreas2.area4_r2
 import Submission.Work.ZeroFreeTables.Main
 

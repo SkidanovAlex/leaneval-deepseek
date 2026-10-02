@@ -95,7 +95,7 @@ theorem hbound_quarter_real :
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by
     have h : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
     exact_mod_cast h
-  have hNpos : (0:ℝ) < (N:ℝ) := by linarith
+  have hNpos : (0:ℝ) < (N:ℝ) := by linarith only [hN1]
   by_cases hN : 8 ≤ N
   · -- `N ≥ 8`: the order hypothesis of `LBoundSmall_holds` is available
     have hord2 : orderOf χ ≤ 2 := by
@@ -107,13 +107,13 @@ theorem hbound_quarter_real :
         norm_num
       rw [h]
       have := Real.log_two_gt_d9
-      linarith
+      linarith only [this]
     have hlogN : (2:ℝ) ≤ Real.log (N:ℝ) := by
       have h8 : (8:ℝ) ≤ (N:ℝ) := by exact_mod_cast hN
       exact le_trans hlog8 (Real.log_le_log (by norm_num) h8)
     have hord : (orderOf χ : ℝ) ≤ Real.log (N:ℝ) := by
       have h2 : (orderOf χ : ℝ) ≤ 2 := by exact_mod_cast hord2
-      linarith
+      linarith only [hlogN, h2]
     have h := hb₁ χ hχ hord σ t hσ hσle
     refine h.trans ?_
     exact mul_le_mul_of_nonneg_right
@@ -123,26 +123,26 @@ theorem hbound_quarter_real :
     have hNle7 : N ≤ 7 := by omega
     have hNR : (N:ℝ) ≤ 7 := by exact_mod_cast hNle7
     have hk3 : (3:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk
-    have h1σ : (1:ℝ) - σ ≤ 1/(k:ℝ) := by linarith
+    have h1σ : (1:ℝ) - σ ≤ 1/(k:ℝ) := by linarith only [hσ]
     have hprod : (1 - σ) * (1 + 1/(k:ℝ)) ≤ 4/9 := by
       by_cases hσ1 : 0 ≤ 1 - σ
       · have h2 : (1:ℝ) + 1/(k:ℝ) ≤ 4/3 := by
           have h : 1/(k:ℝ) ≤ 1/3 := by
             rw [div_le_div_iff₀ hkpos (by norm_num : (0:ℝ) < 3)]
-            linarith
-          linarith
+            linarith only [hk3]
+          linarith only [h]
         have h3 : (1:ℝ)/(k:ℝ) ≤ 1/3 := by
           rw [div_le_div_iff₀ hkpos (by norm_num : (0:ℝ) < 3)]
-          linarith
+          linarith only [hk3]
         have hp : (1 - σ) * (1 + 1/(k:ℝ)) ≤ (1/(k:ℝ)) * (4/3) :=
           mul_le_mul h1σ h2 (by positivity) (by positivity)
-        nlinarith [hp, h3]
-      · have h : (1:ℝ) - σ < 0 := by linarith
+        linarith only [hp, h3, h2]
+      · have h : (1:ℝ) - σ < 0 := by linarith only [hσ1]
         have hpos : (0:ℝ) < 1 + 1/(k:ℝ) := by positivity
         have hneg : (1 - σ) * (1 + 1/(k:ℝ)) < 0 := mul_neg_of_neg_of_pos h hpos
-        linarith
+        linarith only [hneg]
     have hE1 : ((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) ≤ 1/9 := by
-      nlinarith [hprod]
+      linarith only [hprod]
     have hfac : (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ))) ≤ (7:ℝ) ^ ((1:ℝ)/9) := by
       have h1 : (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ))) ≤ (N:ℝ) ^ ((1:ℝ)/9) :=
         Real.rpow_le_rpow_of_exponent_le hN1 hE1
@@ -172,7 +172,7 @@ theorem hbound_quarter_real :
             mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hfac hC₂nn) hz
         _ ≤ (C₂ * 7 ^ ((1:ℝ)/9) * 2)
             * (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) + ε') :=
-            mul_le_mul_of_nonneg_right (by nlinarith [mul_nonneg hC₂nn h7]) hz
+            mul_le_mul_of_nonneg_right (by linarith only [mul_nonneg hC₂nn h7, hC₂nn, h7]) hz
         _ ≤ (max C₁ (C₂ * 7 ^ ((1:ℝ)/9) * 2))
             * (N:ℝ) ^ (((1:ℝ)/4) * (1 - σ) * (1 + 1/(k:ℝ)) + ε') :=
             mul_le_mul_of_nonneg_right (le_max_right _ _) hz
@@ -206,9 +206,9 @@ theorem L52HypEighth_delta {ε : ℝ} (hε : 0 < ε) :
   have hconle : χ.conductor ≤ q := Nat.le_of_dvd hqpos χ.conductor_dvd_level
   have hexp_le : Real.exp L₀ ≤ (q : ℝ) := by
     have h1 : Real.exp L₀ ≤ (⌈Real.exp L₀⌉₊ : ℝ) := Nat.le_ceil _
-    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith
+    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith only [hδ0, hδ1]
     have h3 : ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hL₀le : L₀ ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp L₀]
     exact Real.log_le_log (Real.exp_pos L₀) hexp_le
@@ -255,9 +255,9 @@ theorem L52HypEighth_fixedDelta :
   have hconle : χ.conductor ≤ q := Nat.le_of_dvd hqpos χ.conductor_dvd_level
   have hexp_le : Real.exp L₀ ≤ (q : ℝ) := by
     have h1 : Real.exp L₀ ≤ (⌈Real.exp L₀⌉₊ : ℝ) := Nat.le_ceil _
-    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith
+    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith only [hδ0, hδ1]
     have h3 : ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hL₀le : L₀ ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp L₀]
     exact Real.log_le_log (Real.exp_pos L₀) hexp_le

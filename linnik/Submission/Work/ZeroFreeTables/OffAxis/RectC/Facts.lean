@@ -4,6 +4,8 @@
 import Mathlib
 import Submission.Work.ZeroFreeTables.OffAxis.RectC.Tiny
 import Submission.Work.LinnikAreas.FarRepel.zeroMult_eq_analyticOrderNatAt_of_isPrimitive
+import Submission.Commons.Analysis.Complex.exterior_jensen_multiplicity
+import Submission.Commons.Analysis.Complex.circleLogDerivContour_bound
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

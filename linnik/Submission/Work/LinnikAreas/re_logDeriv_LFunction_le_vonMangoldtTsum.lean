@@ -1,5 +1,5 @@
 import Mathlib
-import Submission.Work.LinnikAreas.szPrelude
+import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_logDeriv_eq_neg_LSeries_vonMangoldt
 
 open scoped LSeries.notation
 

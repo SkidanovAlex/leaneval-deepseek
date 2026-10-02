@@ -43,7 +43,7 @@ private lemma exists_deriv_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) {f : ℝ → 
     (hf2 : ContDiffOn ℝ 2 f (Set.Ioo 0 x₀))
     (hBnd : ∀ t ∈ Set.Ioo (0:ℝ) x₀, ‖iteratedDeriv 2 f t‖ ≤ B) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ t ∈ Set.Ioo (0:ℝ) x₀, |deriv f t| ≤ K := by
-  have ht₀ : x₀/2 ∈ Set.Ioo (0:ℝ) x₀ := ⟨by linarith, by linarith⟩
+  have ht₀ : x₀/2 ∈ Set.Ioo (0:ℝ) x₀ := ⟨by linarith only [hx₀], by linarith only [hx₀]⟩
   have hB : 0 ≤ B := le_trans (norm_nonneg _) (hBnd (x₀/2) ht₀)
   have hderiv2 : ∀ s ∈ Set.Ioo (0:ℝ) x₀, HasDerivAt (deriv f) (iteratedDeriv 2 f s) s := by
     intro s hs
@@ -64,9 +64,9 @@ private lemma exists_deriv_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) {f : ℝ → 
   have h1 := hlip (x₀/2) ht₀ t ht
   have h2 : ‖t - x₀/2‖ ≤ x₀ := by
     rw [Real.norm_eq_abs, abs_le]
-    constructor <;> linarith [ht.1, ht.2, hx₀]
+    constructor <;> linarith only [ht.1, ht.2, hx₀, ht]
   have h3 : ‖deriv f t - deriv f (x₀/2)‖ ≤ B * x₀ :=
-    le_trans h1 (by nlinarith [hB, h2])
+    le_trans h1 (by nlinarith only [hB, h2])
   have h5 : |deriv f t| ≤ |deriv f (x₀/2)| + B*x₀ := by
     have h6 : |deriv f t| = ‖deriv f t‖ := rfl
     rw [h6]
@@ -77,7 +77,7 @@ private lemma exists_deriv_bound {x₀ B : ℝ} (hx₀ : 0 < x₀) {f : ℝ → 
       _ ≤ B*x₀ + |deriv f (x₀/2)| := by
           rw [Real.norm_eq_abs]; exact add_le_add h3 le_rfl
       _ = |deriv f (x₀/2)| + B*x₀ := by ring
-  linarith
+  linarith only [h5]
 
 /-- `ContDiffOn ℝ 2` on an open interval gives a two-sided derivative at every
 interior point. -/
@@ -116,14 +116,14 @@ private lemma KsumRe {q : ℕ} [NeZero q] {f : ℝ → ℝ} {L x₀ : ℝ} (hL :
     have h2 : ⌊Real.exp (L*x₀)⌋₊ + 1 ≤ n := by omega
     have h1 : ((⌊Real.exp (L*x₀)⌋₊ : ℕ) : ℝ) + 1 ≤ (n:ℝ) := by exact_mod_cast h2
     have h3 := Nat.lt_floor_add_one (Real.exp (L*x₀))
-    have hexp : Real.exp (L*x₀) < (n:ℝ) := by linarith
-    have hnpos : (0:ℝ) < n := by linarith
+    have hexp : Real.exp (L*x₀) < (n:ℝ) := by linarith only [h1, h3]
+    have hnpos : (0:ℝ) < n := by linarith only [h1]
     have h4 : L * x₀ < Real.log (n:ℝ) := by
       rw [← Real.log_exp (L*x₀)]
       exact Real.log_lt_log (Real.exp_pos _) hexp
     apply hsupp
     rw [le_div_iff₀ hL]
-    linarith
+    linarith only [h4]
   have hzero_r : ∀ n : ℕ, n ∉ Finset.Icc 1 N →
       (ArithmeticFunction.vonMangoldt n : ℝ) *
         (((1 : DirichletCharacter ℂ q) (n : ZMod q) / (n : ℂ) ^ s).re) *
@@ -202,7 +202,7 @@ private lemma card_primeFactors_le_add_log {b q : ℕ} (hb : 1 < b) (hq : q ≠ 
         intro x hx
         rw [Finset.mem_sdiff] at hx
         exact Nat.Prime.one_le (Nat.prime_of_mem_primeFactors hx.1)
-      nlinarith
+      nlinarith only [hsplit2, hqeq, hone]
     exact le_trans hle1 hle2
   omega
 
@@ -217,8 +217,8 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have hle : Real.exp (8/δ) ≤ (b : ℝ) := by
       have h1 : Real.exp (8/δ) ≤ ((⌈Real.exp (8/δ)⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
       have h2 : ((⌈Real.exp (8/δ)⌉₊ : ℕ) : ℝ) ≤ (b : ℝ) := by
-        rw [hbdef]; push_cast; linarith
-      linarith
+        rw [hbdef]; push_cast; linarith only []
+      linarith only [h1, h2]
     calc 8 / δ = Real.log (Real.exp (8/δ)) := (Real.log_exp _).symm
       _ ≤ Real.log b := Real.log_le_log (Real.exp_pos _) hle
   refine ⟨⌈Real.exp (4 * (b : ℝ) / δ)⌉₊ + 1, ?_⟩
@@ -233,7 +233,7 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have hle : Real.exp (4 * (b:ℝ) / δ) ≤ (q : ℝ) := by
       have h1 : Real.exp (4 * (b:ℝ) / δ) ≤ ((⌈Real.exp (4 * (b:ℝ) / δ)⌉₊ : ℕ) : ℝ) :=
         Nat.le_ceil _
-      linarith
+      linarith only [hceilq, h1]
     calc 4 * (b:ℝ) / δ = Real.log (Real.exp (4 * (b:ℝ) / δ)) := (Real.log_exp _).symm
       _ ≤ Real.log q := Real.log_le_log (Real.exp_pos _) hle
   have hlogqnonneg : 0 ≤ Real.log (q : ℝ) := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q))
@@ -246,21 +246,21 @@ private theorem primeFactors_card_le_eps_log (δ : ℝ) (hδ : 0 < δ) :
     have h1 : Real.log ((b:ℝ) ^ Nat.log b q) ≤ Real.log q :=
       Real.log_le_log (by positivity) hcast
     rw [Real.log_pow] at h1
-    rw [le_div_iff₀ (by linarith : (0:ℝ) < Real.log b)]
-    linarith
+    rw [le_div_iff₀ (by linarith only [h8, hlogb] : (0:ℝ) < Real.log b)]
+    linarith only [h1]
   have hstep1 : Real.log (q:ℝ) / Real.log b ≤ (δ/8) * Real.log (q:ℝ) := by
-    rw [div_le_iff₀ (by linarith : (0:ℝ) < Real.log b)]
+    rw [div_le_iff₀ (by linarith only [h8, hlogb] : (0:ℝ) < Real.log b)]
     have hprod : (δ/8) * (8/δ) = (1:ℝ) := by field_simp
     have h1 : (δ/8) * (8/δ) ≤ (δ/8) * Real.log b :=
       mul_le_mul_of_nonneg_left hlogb (by positivity)
     rw [hprod] at h1
-    nlinarith
+    nlinarith only [hlogqnonneg, h1]
   have hstep2 : (b:ℝ) ≤ (δ/4) * Real.log (q:ℝ) := by
     have h1 : (δ/4) * (4 * (b:ℝ)/δ) ≤ (δ/4) * Real.log q :=
       mul_le_mul_of_nonneg_left hlogq (by positivity)
     have h2 : (δ/4) * (4 * (b:ℝ)/δ) = (b:ℝ) := by field_simp
-    linarith
-  nlinarith [hcastcard, hlogbq, hstep1, hstep2, hlogqnonneg]
+    linarith only [h1, h2]
+  linarith only [hcastcard, hlogbq, hstep1, hstep2, hlogqnonneg]
 
 /-- `ω(q) + (log log q)² = o(log q)`: the error term of HB Lemma 5.3 is absorbed in
 `ε log q` for large `q`. -/
@@ -283,15 +283,15 @@ private theorem AbsorbOmega (C ε : ℝ) (hC : 0 < C) (hε : 0 < ε) :
     have h2 : ((⌈Real.exp (T^2+1)⌉₊ : ℕ) : ℝ) < (q:ℝ) := by
       have h3 : ⌈Real.exp (T^2+1)⌉₊ < q := by omega
       exact_mod_cast h3
-    linarith
+    linarith only [h1, h2]
   have hlogq : T^2 + 1 ≤ Real.log (q:ℝ) := by
     calc T^2 + 1 = Real.log (Real.exp (T^2+1)) := (Real.log_exp _).symm
       _ ≤ Real.log q := Real.log_le_log (Real.exp_pos _) hceil
-  have hlogq1 : 1 ≤ Real.log (q:ℝ) := by nlinarith [hlogq, sq_nonneg T]
-  have hlogqpos : 0 < Real.log (q:ℝ) := by linarith
+  have hlogq1 : 1 ≤ Real.log (q:ℝ) := by linarith only [hlogq, sq_nonneg T]
+  have hlogqpos : 0 < Real.log (q:ℝ) := by linarith only [hlogq1]
   have hTle : T ≤ Real.sqrt (Real.log (q:ℝ)) := by
     have h1 : Real.sqrt (T^2) ≤ Real.sqrt (Real.log q) :=
-      Real.sqrt_le_sqrt (by nlinarith [hlogq])
+      Real.sqrt_le_sqrt (by linarith only [hlogq])
     rwa [Real.sqrt_sq (le_of_lt hTpos)] at h1
   have h16 : 16 * Real.sqrt (Real.log (q:ℝ)) ≤ δ * Real.log (q:ℝ) := by
     have hδT : δ * T = 16 := by rw [hTdef]; field_simp
@@ -309,7 +309,7 @@ private theorem AbsorbOmega (C ε : ℝ) (hC : 0 < C) (hε : 0 < ε) :
       have h1 : Real.log (Real.log (q:ℝ)) ≤ (Real.log (q:ℝ))^(1/4:ℝ) / (1/4) :=
         Real.log_le_rpow_div (le_of_lt hlogqpos) (by norm_num)
       have h3 : (Real.log (q:ℝ))^(1/4:ℝ) / (1/4) = 4 * (Real.log (q:ℝ))^(1/4:ℝ) := by ring
-      linarith [h1, h3]
+      linarith only [h1, h3]
     have hrpow : (Real.log (q:ℝ))^(1/4:ℝ) = Real.sqrt (Real.sqrt (Real.log (q:ℝ))) := by
       rw [Real.sqrt_eq_rpow, Real.sqrt_eq_rpow, ← Real.rpow_mul (le_of_lt hlogqpos)]
       norm_num
@@ -317,18 +317,18 @@ private theorem AbsorbOmega (C ε : ℝ) (hC : 0 < C) (hε : 0 < ε) :
       rw [hrpow, mul_pow, Real.sq_sqrt (Real.sqrt_nonneg _)]
       ring
     have h5 : (Real.log (Real.log (q:ℝ)))^2 ≤ (4 * (Real.log (q:ℝ))^(1/4:ℝ))^2 := by
-      nlinarith [hloglog, hll, Real.rpow_nonneg (le_of_lt hlogqpos) (1/4:ℝ)]
+      nlinarith only [hloglog, hll, Real.rpow_nonneg (le_of_lt hlogqpos) (1/4:ℝ)]
     rw [h4] at h5
-    linarith [h5, h16]
+    linarith only [h5, h16]
   have hsum : (q.primeFactors.card : ℝ) + (Real.log (Real.log (q:ℝ)))^2
-      ≤ 2 * δ * Real.log (q:ℝ) := by linarith [hω, hsq]
+      ≤ 2 * δ * Real.log (q:ℝ) := by linarith only [hω, hsq]
   have hfinal : C * (2 * δ * Real.log (q:ℝ)) = (ε/2) * Real.log (q:ℝ) := by
     rw [hδdef]; field_simp; ring
   have hLnn : 0 ≤ Real.log (q:ℝ) := le_of_lt hlogqpos
   calc C * ((q.primeFactors.card : ℝ) + (Real.log (Real.log (q:ℝ)))^2)
       ≤ C * (2 * δ * Real.log (q:ℝ)) := mul_le_mul_of_nonneg_left hsum (le_of_lt hC)
     _ = (ε/2) * Real.log (q:ℝ) := hfinal
-    _ ≤ ε * Real.log (q:ℝ) := by nlinarith [hLnn, hε]
+    _ ≤ ε * Real.log (q:ℝ) := by nlinarith only [hLnn, hε, hfinal, hC, hω]
 
 /-! ### The subpolynomial threshold -/
 
@@ -339,7 +339,7 @@ private theorem ThresholdExpSqrtLog (A x₀ ε : ℝ) (hA : 0 ≤ A) (hx₀ : 0 
       A * (1 + Real.sqrt (Real.log L)) * Real.exp (Real.sqrt (Real.log L) * x₀) ≤ ε * L := by
   rcases eq_or_lt_of_le hA with hA0 | hApos
   · refine ⟨1, fun L hL => ?_⟩
-    have hL0 : 0 ≤ L := by linarith
+    have hL0 : 0 ≤ L := by linarith only [hL]
     simp only [← hA0, zero_mul]
     exact mul_nonneg hε.le hL0
   · set u₀ : ℝ := max 4 (max (x₀ + 2) (|Real.log A| + |Real.log ε| + 1)) with hu₀def
@@ -352,7 +352,7 @@ private theorem ThresholdExpSqrtLog (A x₀ ε : ℝ) (hA : 0 ≤ A) (hx₀ : 0 
     have hlogL : u₀^2 ≤ Real.log L := by
       rw [← Real.log_exp (u₀^2)]
       exact Real.log_le_log (Real.exp_pos _) hL
-    have hlogLnn : 0 ≤ Real.log L := by nlinarith [sq_nonneg u₀, hlogL]
+    have hlogLnn : 0 ≤ Real.log L := by linarith only [sq_nonneg u₀, hlogL]
     set u : ℝ := Real.sqrt (Real.log L) with hu
     have hu_nonneg : 0 ≤ u := Real.sqrt_nonneg _
     have hu2 : u^2 = Real.log L := Real.sq_sqrt hlogLnn
@@ -363,19 +363,19 @@ private theorem ThresholdExpSqrtLog (A x₀ ε : ℝ) (hA : 0 ≤ A) (hx₀ : 0 
     have hux₀ : x₀ + 2 ≤ u := le_trans hx0u huu₀
     have hulog : |Real.log A| + |Real.log ε| + 1 ≤ u := le_trans hlogu huu₀
     have hkey1 : Real.log (1 + u) ≤ u := by
-      have h1 : (0:ℝ) < 1 + u := by linarith
+      have h1 : (0:ℝ) < 1 + u := by linarith only [h4, huu₀]
       have h2 := Real.log_le_sub_one_of_pos h1
-      linarith
+      linarith only [h2]
     have hkey2 : Real.log A - Real.log ε ≤ u := by
       have h1 : Real.log A ≤ |Real.log A| := le_abs_self _
       have h2 : -|Real.log ε| ≤ Real.log ε := neg_abs_le _
-      linarith
+      linarith only [hlogu, huu₀, h1, h2]
     have hkey3 : Real.log A - Real.log ε ≤ u * (u - x₀ - 1) := by
-      have h3 : 1 ≤ u - x₀ - 1 := by linarith
-      nlinarith [hkey2, hu_nonneg, h3]
+      have h3 : 1 ≤ u - x₀ - 1 := by linarith only [hx0u, huu₀]
+      nlinarith only [hkey2, hu_nonneg, h3, hx0u, huu₀]
     have hkey : Real.log A + Real.log (1 + u) + u * x₀ ≤ Real.log ε + u^2 := by
-      nlinarith [hkey1, hkey3]
-    have h1u : (0:ℝ) < 1 + u := by linarith
+      linarith only [hkey1, hkey3]
+    have h1u : (0:ℝ) < 1 + u := by linarith only [h4, huu₀]
     have hexp1 : Real.exp (Real.log A + Real.log (1 + u) + u * x₀)
         = A * (1 + u) * Real.exp (u * x₀) := by
       rw [Real.exp_add, Real.exp_add, Real.exp_log hApos, Real.exp_log h1u] <;> ring
@@ -427,7 +427,7 @@ private lemma IntegralBound {x₀ : ℝ} (hx₀ : 0 < x₀) {f : ℝ → ℝ} {z
     intro h
     rw [h] at hz
     simp at hz
-    linarith
+    linarith only [hz]
   -- interval-integrability of the complexified derivative
   have hderiv_int : IntervalIntegrable (fun t : ℝ => ((deriv f t : ℝ) : ℂ)) volume (0:ℝ) x₀ := by
     rw [intervalIntegrable_iff]
@@ -609,7 +609,7 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     · rw [← h1]
       exact le_trans (le_max_left (|deriv f 0|) (|deriv f x₀|)) (le_max_right Kd₀ _)
   obtain ⟨C, hCpos, hCbd⟩ := Work.LinnikAreas.lemma5_3_wide x₀ B hx₀ hB hcont hsupp hf2 hBnd
-  have hε2 : 0 < ε / 2 := by linarith
+  have hε2 : 0 < ε / 2 := by linarith only [hε]
   obtain ⟨q₁, hq₁⟩ := AbsorbOmega C (ε/2) hCpos hε2
   obtain ⟨L₀, hL₀⟩ := ThresholdExpSqrtLog (Kf + x₀ * Kd) x₀ (ε/2) (by positivity) hx₀.le hε2
   refine ⟨max q₁ (max (⌈Real.exp L₀⌉₊ + 1) 8), ?_⟩
@@ -628,14 +628,14 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     rw [h3] at h1
     have h4 : (2:ℝ) < 3 * Real.log 2 := by
       have := Real.log_two_gt_d9
-      linarith
-    linarith
-  have hLpos : 0 < L := by linarith
+      linarith only [this]
+    linarith only [h1, h4]
+  have hLpos : 0 < L := by linarith only [hL2]
   have hL₀le : L₀ ≤ L := by
     have h1 : Real.exp L₀ < (q : ℝ) := by
       have h2 : Real.exp L₀ ≤ ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
       have h3 : ((⌈Real.exp L₀⌉₊ : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by exact_mod_cast hqAle
-      linarith
+      linarith only [h2, h3]
     rw [hLdef, ← Real.log_exp L₀]
     exact Real.log_le_log (Real.exp_pos L₀) h1.le
   set s : ℂ := (β : ℂ) + (τ : ℂ) * Complex.I with hsdef
@@ -677,7 +677,7 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     exact h1
   have hzim_ge : 1 ≤ |((s - 1) * L).im| := by
     rw [hzim, abs_mul, abs_of_pos hLpos]
-    nlinarith [hτ1, hL2]
+    nlinarith only [hτ1, hL2, hτ10]
   have hIntB := IntegralBound (x₀ := x₀) hx₀ (f := f) (z := (s - 1) * L)
     (hcont.mono Set.Icc_subset_Ici_self) (hasDerivAt_of_contDiffOn hf2)
     (hsupp x₀ le_rfl) hKf0 hKd0 (hKf 0 le_rfl) hKdIcc hzim_ge
@@ -695,7 +695,7 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       have h2 : Real.exp (|((s - 1) * L).re| * x₀) * (x₀ * Kd)
           ≤ Real.exp (Real.sqrt (Real.log L) * x₀) * (x₀ * Kd) :=
         mul_le_mul_of_nonneg_right hexp_le (by positivity)
-      linarith
+      linarith only [h2]
     rw [hzim] at h1
     have h1' : ‖M‖ ≤ (Kf + Real.exp (|((s - 1) * L).re| * x₀) * (x₀ * Kd)) / |τ * L| := h1
     have h2 : |τ * L| = |τ| * L := by rw [abs_mul, abs_of_pos hLpos]
@@ -719,8 +719,8 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       rw [div_le_iff₀ hτpos]
       have h6 : 0 ≤ Kf + Real.exp (Real.sqrt (Real.log L) * x₀) * (x₀ * Kd) := by
         have h7 : 0 ≤ Real.exp (Real.sqrt (Real.log L) * x₀) * (x₀ * Kd) := by positivity
-        linarith
-      nlinarith [h6, hτ1]
+        linarith only [hKf0, h7]
+      nlinarith only [h6, hτ1]
     have h6 : Kf + Real.exp (Real.sqrt (Real.log L) * x₀) * (x₀ * Kd)
         ≤ (Kf + x₀ * Kd) * (1 + Real.sqrt (Real.log L))
             * Real.exp (Real.sqrt (Real.log L) * x₀) := by
@@ -729,20 +729,20 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       have hS0 : 0 ≤ S := Real.sqrt_nonneg _
       have hE1 : 1 ≤ E := by
         rw [hEdef, ← Real.exp_zero]
-        exact Real.exp_le_exp.mpr (by nlinarith [hS0, hx₀])
+        exact Real.exp_le_exp.mpr (by nlinarith only [hS0, hx₀])
       have hE0 : 0 ≤ E := le_trans zero_le_one hE1
       have hxKd : 0 ≤ x₀ * Kd := by positivity
-      have hbig : 1 ≤ (1 + S) * E := by nlinarith [hS0, hE1]
-      have h21 : Kf ≤ Kf * ((1 + S) * E) := by nlinarith [hKf0, hbig]
+      have hbig : 1 ≤ (1 + S) * E := by nlinarith only [hS0, hE1]
+      have h21 : Kf ≤ Kf * ((1 + S) * E) := by nlinarith only [hKf0, hbig]
       have hterm : (x₀ * Kd) * E ≤ (x₀ * Kd) * ((1 + S) * E) := by
-        have h5' : E ≤ (1 + S) * E := by nlinarith [hE0, hS0, hE1]
+        have h5' : E ≤ (1 + S) * E := by nlinarith only [hE0, hS0, hE1]
         exact mul_le_mul_of_nonneg_left h5' hxKd
       calc Kf + Real.exp (S * x₀) * (x₀ * Kd) = Kf + (x₀ * Kd) * E := by
             rw [hEdef]; ring
-        _ ≤ Kf * ((1 + S) * E) + (x₀ * Kd) * ((1 + S) * E) := by linarith
+        _ ≤ Kf * ((1 + S) * E) + (x₀ * Kd) * ((1 + S) * E) := by linarith only [h21, hterm]
         _ = (Kf + x₀ * Kd) * (1 + S) * E := by ring
     have h7 := hL₀ L hL₀le
-    linarith
+    linarith only [h2, h3, h4, h5, h6, h7]
   -- the error term is o(log q)
   have hErr : ((∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℂ) *
         (((1 : DirichletCharacter ℂ q) (n : ZMod q) : ℂ)) / (n : ℂ) ^ s *
@@ -757,7 +757,7 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
       have h3 : Real.log L = Real.log (Real.log (q:ℝ)) := by rw [hLdef]
       rw [h3, hLdef]
       exact hq₁ q hq₁le
-    linarith
+    linarith only [h5, h1, h2]
   -- assembly
   rw [hKsum]
   have hsplit : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℂ) *
@@ -769,6 +769,6 @@ theorem PrincipalHeight (x₀ B : ℝ) (hx₀ : 0 < x₀) (hB : 0 ≤ B) :
     rw [Complex.sub_re, Complex.re_ofReal_mul]
     ring
   rw [hsplit]
-  linarith [hLM, hErr]
+  linarith only [hLM, hErr]
 
 end Work.ZeroFreeTables.OffAxis.RectC

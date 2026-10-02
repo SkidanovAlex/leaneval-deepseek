@@ -174,7 +174,7 @@ theorem sum_div_Syl_lt (m : ℕ) (hm : 1 ≤ m) :
           have hlt : 1 - 1 / ((Syl (idxNat m) - 1 : ℕ) : ℝ) < 1 := by
             rw [sub_lt_self_iff]
             positivity
-          nlinarith
+          nlinarith only [hmr, hlt]
 
 /-- integer form: sum of quotients is at most m - 1 -/
 theorem sum_div_Syl_le_sub_one (m : ℕ) (hm : 1 ≤ m) :
@@ -537,16 +537,16 @@ theorem sylR_two_le (i : ℕ) : 2 ≤ sylR i := by
 
 /-- 1 + (1+t)⁻¹ style: t/(1+t) ≤ log(1+t) for t ≥ 0 -/
 theorem log_one_add_ge_div (t : ℝ) (ht : 0 ≤ t) : t / (1 + t) ≤ Real.log (1 + t) := by
-  have hp : 0 < 1 + t := by nlinarith
+  have hp : 0 < 1 + t := by linarith only [ht]
   have h := Real.one_sub_inv_le_log_of_pos hp
   have hiden : 1 - (1 + t)⁻¹ = t / (1 + t) := by
-    have hden : 1 + t ≠ 0 := by linarith
+    have hden : 1 + t ≠ 0 := by linarith only [ht]
     field_simp [hden] <;> try ring
   rwa [hiden] at h
 
 /-- log(1+t) ≤ t for t > -1 -/
 theorem log_one_add_le_self (t : ℝ) (ht : -1 < t) : Real.log (1 + t) ≤ t := by
-  have hp : 0 < 1 + t := by linarith
+  have hp : 0 < 1 + t := by linarith only [ht]
   have h := Real.log_le_sub_one_of_pos hp
   have h' : 1 + t - 1 = t := by ring
   rwa [h'] at h
@@ -561,11 +561,11 @@ theorem log_one_sub_ge_neg (y : ℝ) (hy0 : 0 < y) (hy1 : y < 1) :
   let w : ℝ := y / (1 - y)
   have hident : (1 - y)⁻¹ - 1 = w := by
     dsimp [w]
-    have hden : 1 - y ≠ 0 := by linarith
+    have hden : 1 - y ≠ 0 := by linarith only [hy1]
     field_simp [hden] <;> try ring
   have hmain' : -Real.log (1 - y) ≤ w := by rwa [hident] at hmain
-  have hflip : -w ≤ Real.log (1 - y) := by linarith
-  have hne : 1 - y ≠ 0 := by linarith
+  have hflip : -w ≤ Real.log (1 - y) := by linarith only [hle, hrewrite, hident]
+  have hne : 1 - y ≠ 0 := by linarith only [hy1]
   simpa [w, neg_div, hne] using hflip
 
 /-- log n ≤ (n : ℝ) − 1 for n ≥ 1 (real n) -/
@@ -587,7 +587,7 @@ theorem log_factorial_ge_hLog (q : ℕ) (hq : 1 ≤ q) :
     rw [Real.log_mul (by positivity : (2:ℝ) * Real.pi ≠ 0) (by exact_mod_cast hq0)]
     ring
   rw [this]
-  linarith
+  linarith only [h]
 
 /-- log n! ≤ A(n) for n ≥ 1 (Stirling upper via stirlingSeq antitone). -/
 theorem log_factorial_le_ALog (n : ℕ) (hn : 1 ≤ n) :
@@ -598,7 +598,7 @@ theorem log_factorial_le_ALog (n : ℕ) (hn : 1 ≤ n) :
   have hid : Real.log (n.factorial : ℝ) =
       Real.log (Stirling.stirlingSeq n) + 1 / 2 * Real.log (2 * (n : ℝ)) +
         (n : ℝ) * Real.log ((n : ℝ) / Real.exp 1) := by
-    nlinarith
+    linarith only [hls]
   -- antitone bound
   have hant := Stirling.log_stirlingSeq'_antitone
   have h01 : 0 ≤ n - 1 := by omega
@@ -623,7 +623,7 @@ theorem log_factorial_le_ALog (n : ℕ) (hn : 1 ≤ n) :
           calc
             Real.log (Stirling.stirlingSeq n) ≤ Real.log (Stirling.stirlingSeq 1) := hseq
             _ = 1 - Real.log 2 / 2 := hseq1
-        nlinarith
+        linarith only [hseq, hseq1]
     _ = ALog n := by
         dsimp [ALog]
         have hmul : Real.log (2 * (n : ℝ)) = Real.log (n : ℝ) + Real.log 2 := by
@@ -640,8 +640,8 @@ theorem log_factorial_le_ALog (n : ℕ) (hn : 1 ≤ n) :
 /-- log(b/a) ≥ (b-a)/b for 1 ≤ a ≤ b -/
 theorem log_ratio_ge (a b : ℝ) (ha : 1 ≤ a) (hab : a ≤ b) :
     (b - a) / b ≤ Real.log (b / a) := by
-  have ha0 : 0 < a := by linarith
-  have hb0 : 0 < b := by linarith
+  have ha0 : 0 < a := by linarith only [ha]
+  have hb0 : 0 < b := by linarith only [ha, hab]
   have ht0 : 0 ≤ (b - a) / a := by positivity
   have hlog := log_one_add_ge_div ((b - a) / a) ht0
   have hident : 1 + (b - a) / a = b / a := by
@@ -655,27 +655,27 @@ theorem log_ratio_ge (a b : ℝ) (ha : 1 ≤ a) (hab : a ≤ b) :
 
 /-- hLog is increasing on [1, ∞) -/
 theorem hLog_mono (a b : ℝ) (ha : 1 ≤ a) (hab : a ≤ b) : hLog a ≤ hLog b := by
-  have hb0 : 0 < b := by linarith
-  have ha0 : 0 < a := by linarith
+  have hb0 : 0 < b := by linarith only [ha, hab]
+  have ha0 : 0 < a := by linarith only [ha]
   have h1 := log_ratio_ge a b ha hab
   have hlogb : 1 - 1 / b ≤ Real.log b := by
-    have hlg := log_ratio_ge 1 b (by norm_num) (by linarith)
+    have hlg := log_ratio_ge 1 b (by norm_num) (by linarith only [ha, hab])
     have hident : (b - 1) / b = 1 - 1 / b := by field_simp [hb0.ne'] <;> try ring
     simpa [hident] using hlg
   have hsplit : hLog b - hLog a =
       (b - a) * (Real.log b - 1) + (a + 1 / 2) * Real.log (b / a) := by
     dsimp [hLog]
-    rw [Real.log_mul (by positivity : (2:ℝ) * Real.pi ≠ 0) (by linarith : b ≠ 0)]
-    rw [Real.log_mul (by positivity : (2:ℝ) * Real.pi ≠ 0) (by linarith : a ≠ 0)]
-    rw [Real.log_div (by linarith : b ≠ 0) (by linarith : a ≠ 0)]
+    rw [Real.log_mul (by positivity : (2:ℝ) * Real.pi ≠ 0) (by linarith only [ha, hab] : b ≠ 0)]
+    rw [Real.log_mul (by positivity : (2:ℝ) * Real.pi ≠ 0) (by linarith only [ha] : a ≠ 0)]
+    rw [Real.log_div (by linarith only [ha, hab] : b ≠ 0) (by linarith only [ha] : a ≠ 0)]
     ring
   have hZ : (Real.log b - 1) + (a + 1 / 2) / b ≥ ((1 - 1 / b) - 1) + (3 / 2) / b := by
     have hdiv : (a + 1 / 2) / b ≥ (3 / 2) / b := by
-      exact div_le_div_of_nonneg_right (by linarith : 3 / 2 ≤ a + 1 / 2) hb0.le
+      exact div_le_div_of_nonneg_right (by linarith only [ha] : 3 / 2 ≤ a + 1 / 2) hb0.le
     have hh2 : 1 - 1 / b ≤ Real.log b := hlogb
-    nlinarith
+    linarith only [hlogb, hdiv]
   have hW : (a + 1 / 2) * ((b - a) / b) ≤ (a + 1 / 2) * Real.log (b / a) := by
-    exact mul_le_mul_of_nonneg_left h1 (by linarith : 0 ≤ a + 1 / 2)
+    exact mul_le_mul_of_nonneg_left h1 (by linarith only [ha] : 0 ≤ a + 1 / 2)
   have hnonneg : 0 ≤ hLog b - hLog a := by
     calc
       0 ≤ (b - a) * (((1 - 1 / b) - 1) + (3 / 2) / b) := by
@@ -684,15 +684,15 @@ theorem hLog_mono (a b : ℝ) (ha : 1 ≤ a) (hab : a ≤ b) : hLog a ≤ hLog b
         rw [hz0]
         positivity
       _ ≤ (b - a) * ((Real.log b - 1) + (a + 1 / 2) / b) := by
-        exact mul_le_mul_of_nonneg_left hZ (by linarith : 0 ≤ b - a)
+        exact mul_le_mul_of_nonneg_left hZ (by linarith only [hab] : 0 ≤ b - a)
       _ = (b - a) * (Real.log b - 1) + (a + 1 / 2) * (b - a) / b := by
         field_simp [hb0.ne'] <;> try ring
       _ ≤ (b - a) * (Real.log b - 1) + (a + 1 / 2) * Real.log (b / a) := by
         have hW' : (a + 1 / 2) * (b - a) / b ≤ (a + 1 / 2) * Real.log (b / a) := by
           simpa [div_eq_mul_inv, mul_assoc] using hW
-        nlinarith [hW']
+        linarith only [hW']
       _ = hLog b - hLog a := hsplit.symm
-  linarith
+  linarith only [hnonneg]
 
 
 /-! ### log of Cn : pointwise bound  log(Cn n) ≤ Ulog n -/
@@ -759,7 +759,7 @@ theorem sub_one_le_quot_real (n a : ℕ) (ha : 0 < a) :
     have hreal : (n : ℝ) < (a : ℝ) * (((n / a : ℕ) : ℝ) + 1) := by exact_mod_cast hn
     rw [div_lt_iff₀ haR]
     simpa [mul_comm] using hreal
-  linarith
+  linarith only [hlt]
 
 /-- for an active index: 1 ≤ x_i - 1 and x_i - 1 ≤ q_i -/
 theorem active_bounds (n i : ℕ) (hi : i < mact n) :
@@ -776,7 +776,7 @@ theorem active_bounds (n i : ℕ) (hi : i < mact n) :
     rw [le_div_iff₀ hsyl]
     simpa [mul_comm] using hcast
   constructor
-  · linarith
+  · linarith only [hge]
   · exact sub_one_le_quot_real n (Syl i) (Syl_pos i)
 
 /-- mact n ≤ idxNat n -/
@@ -834,7 +834,7 @@ theorem log_Cn_le_Ulog (n : ℕ) (hn : 1 ≤ n) : Real.log (Cn n : ℝ) ≤ Ulog
   have hcalc : Real.log (n.factorial : ℝ) - (∑ i ∈ range (idxNat n), f i)
       ≤ ALog n - (∑ i ∈ range (mact n), g i) := by
     -- log n! - F ≤ A - G  ⟸  log n! ≤ A  ∧  G ≤ F
-    nlinarith [hA, hsum]
+    linarith only [hA, hsum]
   simpa [Ulog, g, f] using hcalc
 
 
@@ -849,7 +849,7 @@ theorem ALog_eq_AReal (n : ℕ) : ALog n = AReal (n : ℝ) := by
 /-- AReal increment: AReal(x+1) − AReal x ≤ log(x+1) + 1/(2x) for x ≥ 1 -/
 theorem AReal_inc_le (x : ℝ) (hx1 : 1 ≤ x) :
     AReal (x + 1) - AReal x ≤ Real.log (x + 1) + 1 / (2 * x) := by
-  have hx0 : 0 < x := by linarith
+  have hx0 : 0 < x := by linarith only [hx1]
   have hx1n : x + 1 ≠ 0 := by positivity
   have hdiv : Real.log (x + 1) - Real.log x = Real.log ((x + 1) / x) := by
     rw [Real.log_div hx1n hx0.ne']
@@ -868,20 +868,20 @@ theorem AReal_inc_le (x : ℝ) (hx1 : 1 ≤ x) :
     have hlg1 : Real.log (1 + 1 / x) ≤ 1 / x := by
       apply log_one_add_le_self
       have hxinv : 0 ≤ 1 / x := by positivity
-      linarith
+      linarith only [hxinv]
     have hident : 1 + 1 / x = (x + 1) / x := by field_simp [hx0.ne'] <;> try ring
     rw [← hident]
     exact hlg1
   have hA : x * Real.log ((x + 1) / x) ≤ 1 := by
     calc
-      x * Real.log ((x + 1) / x) ≤ x * (1 / x) := mul_le_mul_of_nonneg_left hlg (by linarith : 0 ≤ x)
+      x * Real.log ((x + 1) / x) ≤ x * (1 / x) := mul_le_mul_of_nonneg_left hlg (by linarith only [hx1] : 0 ≤ x)
       _ = 1 := by field_simp [hx0.ne'] <;> try ring
   have hB : Real.log ((x + 1) / x) / 2 ≤ 1 / (2 * x) := by
     have hq := div_le_div_of_nonneg_right hlg (by norm_num : (0:ℝ) ≤ 2)
     have hnorm : (1 / x) / 2 = 1 / (2 * x) := by field_simp [hx0.ne'] <;> try ring
     rw [hnorm] at hq
     exact hq
-  linarith
+  linarith only [hA, hB]
 
 /-- ALog increment ≤ log(n+1) + 1/(2n) -/
 theorem ALog_inc_le (n : ℕ) (hn : 1 ≤ n) :
@@ -902,8 +902,8 @@ theorem ALog_inc_le (n : ℕ) (hn : 1 ≤ n) :
 /-- h(x+δ) − h(x) ≥ δ log x for x ≥ 1, 0 < δ ≤ 1/2 -/
 theorem hLog_inc_ge (x δ : ℝ) (hx : 1 ≤ x) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1 / 2) :
     δ * Real.log x ≤ hLog (x + δ) - hLog x := by
-  have hx0 : 0 < x := by linarith
-  have hxd : 0 < x + δ := by linarith
+  have hx0 : 0 < x := by linarith only [hx, hδ0, hδ1]
+  have hxd : 0 < x + δ := by linarith only [hx, hδ0, hδ1]
   have h1px : 0 < 1 + δ / x := by positivity
   have hz1 : (2 : ℝ) * Real.pi * (x + δ) ≠ 0 := by positivity
   have hz2 : (2 : ℝ) * Real.pi * x ≠ 0 := by positivity
@@ -938,15 +938,15 @@ theorem hLog_inc_ge (x δ : ℝ) (hx : 1 ≤ x) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1
     rw [← hident]
     exact hlg
   have hbig : (x + 1 / 2 + δ) * (δ / (x + δ)) ≤ (x + 1 / 2 + δ) * Real.log (1 + δ / x) :=
-    mul_le_mul_of_nonneg_left hlg' (by linarith : 0 ≤ x + 1 / 2 + δ)
+    mul_le_mul_of_nonneg_left hlg' (by linarith only [hx, hδ0, hδ1] : 0 ≤ x + 1 / 2 + δ)
   have hge_d : δ ≤ (x + 1 / 2 + δ) * (δ / (x + δ)) := by
-    have hcmp : x + δ ≤ x + 1 / 2 + δ := by linarith
+    have hcmp : x + δ ≤ x + 1 / 2 + δ := by linarith only [hδ0, hδ1]
     have hδpos : 0 ≤ δ / (x + δ) := by positivity
     have hm := mul_le_mul_of_nonneg_right hcmp hδpos
     have hcancel : (x + δ) * (δ / (x + δ)) = δ := by field_simp [hxd.ne'] <;> try ring
     rwa [hcancel] at hm
   have hge : δ ≤ (x + 1 / 2 + δ) * Real.log (1 + δ / x) := le_trans hge_d hbig
-  linarith
+  linarith only [hbig, hge_d]
 
 
 /-! ### sum over Sylvester indices of log quotients -/
@@ -970,12 +970,12 @@ theorem term_log_bound_inner (n i : ℕ) (hact : 2 * Syl i ≤ n) :
   have hsyl0 : 0 < (Syl i : ℝ) := by exact_mod_cast (Syl_pos i)
   have hnR : 0 < (n : ℝ) := by
     have hc0 : (2 : ℝ) * (Syl i : ℝ) ≤ (n : ℝ) := by exact_mod_cast hact
-    nlinarith
+    linarith only [hsyl0, hc0]
   have hA0 : 0 < A := by simpa [A] using hsyl0
   have hN0 : 0 < N := by simpa [N] using hnR
   have hc : (2 : ℝ) * A ≤ N := by
     simpa [A, N] using (by exact_mod_cast hact : (2 : ℝ) * (Syl i : ℝ) ≤ (n : ℝ))
-  have hA_lt_N : A < N := by nlinarith
+  have hA_lt_N : A < N := by linarith only [hsyl0, hc]
   have hA_N0 : 0 < A / N := by positivity
   have hA_N1 : A / N < 1 := by
     rw [div_lt_one hN0]
@@ -993,7 +993,7 @@ theorem term_log_bound_inner (n i : ℕ) (hact : 2 * Syl i ≤ n) :
     rw [← hprod]
     exact hlogm
   have hld : Real.log (N / A - 1) = Real.log (N - A) - Real.log A := by
-    have hNA : N - A ≠ 0 := by linarith
+    have hNA : N - A ≠ 0 := by linarith only [hsyl0, hc]
     have hdiv : Real.log ((N - A) / A) = Real.log (N - A) - Real.log A :=
       Real.log_div hNA hA0.ne'
     have hquot : (N - A) / A = N / A - 1 := by field_simp [hA0.ne'] <;> try ring
@@ -1007,13 +1007,13 @@ theorem term_log_bound_inner (n i : ℕ) (hact : 2 * Syl i ≤ n) :
     simpa [w] using this
   have hlin : Real.log N - w ≤ Real.log (N - A) := by
     rw [hid2]
-    linarith
+    linarith only [hw']
   have hfin : Real.log N - A / (N - A) - Real.log A ≤ Real.log (N - A) - Real.log A := by
     simpa [w] using (sub_le_sub_right hlin (Real.log A))
   have hgoal : Real.log N - A / (N - A) - Real.log A ≤ Real.log (N / A - 1) := by
     rw [hld]
     exact hfin
-  linarith
+  linarith only [hid2, hw']
 
 /-- per-term: (1/a_i) log(n/a_i - 1) ≥ log n/a_i - 1/(n-a_i) - log a_i/a_i -/
 theorem term_log_split (n i : ℕ) (hact : 2 * Syl i ≤ n) :
@@ -1066,11 +1066,11 @@ theorem xquot_ge_one_of_active (n i : ℕ) (hact : 2 * Syl i ≤ n) : 1 ≤ xquo
   have : 2 ≤ (n : ℝ) / (Syl i : ℝ) := by
     rw [le_div_iff₀ hs]
     simpa [mul_comm] using hc
-  linarith
+  linarith only [this]
 
 theorem xquot_pos_of_active (n i : ℕ) (hact : 2 * Syl i ≤ n) : 0 < xquot n i := by
   have h1 := xquot_ge_one_of_active n i hact
-  linarith
+  linarith only [h1]
 
 /-- δ = 1/a_i ≤ 1/2 -/
 theorem inv_syl_le_half (i : ℕ) : 1 / (Syl i : ℝ) ≤ 1 / 2 := by
@@ -1173,11 +1173,11 @@ theorem sum_inv_diff_le (n m : ℕ) (hn0 : 0 < n) (h : ∀ i < m, 2 * Syl i ≤ 
     have hc0 : (2 : ℝ) * (Syl i : ℝ) ≤ (n : ℝ) := by exact_mod_cast hact
     have hdiff0 : 0 < (n : ℝ) - (Syl i : ℝ) := by
       have ha0 : 0 ≤ (Syl i : ℝ) := by positivity
-      have : (Syl i : ℝ) < (n : ℝ) := by nlinarith
-      linarith
+      have : (Syl i : ℝ) < (n : ℝ) := by linarith only [hnR, hc0]
+      linarith only [hnR, hc0]
     have hcore : 1 / ((n : ℝ) - (Syl i : ℝ)) ≤ 2 / (n : ℝ) := by
       rw [div_le_div_iff₀ hdiff0 hnR]
-      nlinarith
+      linarith only [hc0]
     exact hcore
   have hsum : (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ)))
       ≤ ∑ i ∈ range m, 2 / (n : ℝ) := by
@@ -1201,7 +1201,7 @@ theorem log_succ_sub_le (n : ℕ) (hn0 : 0 < n) :
   rw [hident]
   apply log_one_add_le_self
   have hx : 0 ≤ 1 / (n : ℝ) := by positivity
-  linarith
+  linarith only [hx]
 
 /-- per-term increment lower bound in the Ulog difference -/
 theorem term_inc_lower (n i : ℕ) (hi : i < mact n) :
@@ -1256,14 +1256,14 @@ theorem Ulog_inc_nonact_bound (n : ℕ) (hn : 2500 ≤ n) (h : ∀ j : ℕ, n + 
     rw [hΔeq]
     have hUU : (ALog (n + 1) - ALog n) - (∑ i ∈ range m, (hLog (xquot (n + 1) i) - hLog (xquot n i)))
         ≤ (ALog (n + 1) - ALog n) - (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := by
-      linarith [hT]
+      linarith only [hT]
     exact hUU
   have h2 : Ulog (n + 1) - Ulog n ≤
       (Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)))
         - (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := by
     have hDA : ALog (n + 1) - ALog n ≤ Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)) :=
       ALog_inc_le n hn1
-    linarith [h1, hDA]
+    linarith only [h1, hDA, hΔeq, hT]
   have hTL := sum_term_lower n m hma
   have hS1 : 1 - (∑ i ∈ range m, 1 / (Syl i : ℝ)) = 1 / (((Syl m - 1 : ℕ) : ℝ)) := by
     dsimp [m]
@@ -1305,14 +1305,14 @@ theorem Ulog_inc_nonact_bound (n : ℕ) (hn : 2500 ≤ n) (h : ∀ j : ℕ, n + 
                 rw [hS1']
         _ ≤ 1 / (n : ℝ) + Real.log (n : ℝ) / (((Syl m - 1 : ℕ) : ℝ))
                 + (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) + 1 / (2 * (n : ℝ)) + Slog m := by
-                linarith [hLogLe, hE]
+                linarith only [hLogLe, hE]
         _ ≤ Slog m + Real.log (n : ℝ) / (((Syl m - 1 : ℕ) : ℝ))
                 + (2 * (m : ℝ) + 3 / 2) / (n : ℝ) := by
                 have hS2' : (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) ≤ (2 * (m : ℝ)) / (n : ℝ) := hS2
                 have heq : 1 / (n : ℝ) + (2 * (m : ℝ)) / (n : ℝ) + 1 / (2 * (n : ℝ))
                     = (2 * (m : ℝ) + 3 / 2) / (n : ℝ) := by
                   field_simp [hnR] <;> ring
-                linarith [hLogLe, hS2', heq]
+                linarith only [hLogLe, hS2', heq, hS2]
     have hTlower : (Real.log (n : ℝ) * (∑ i ∈ range m, 1 / (Syl i : ℝ))
             - (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) - Slog m)
         ≤ (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := hTL
@@ -1320,8 +1320,8 @@ theorem Ulog_inc_nonact_bound (n : ℕ) (hn : 2500 ≤ n) (h : ∀ j : ℕ, n + 
         (Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)))
           - (Real.log (n : ℝ) * (∑ i ∈ range m, 1 / (Syl i : ℝ))
             - (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) - Slog m) := by
-      linarith [h2, hTlower]
-    linarith [h2', hA]
+      linarith only [h2, hTlower, hTL]
+    linarith only [h2', hA, h2, hTL]
   dsimp [m] at h3
   simpa using h3
 
@@ -1408,7 +1408,7 @@ theorem log_Syl_double (m : ℕ) (hm : 5 ≤ m) :
 theorem log_ratio_lower (x : ℝ) (n : ℕ) (h0 : 0 ≤ x) (h1 : x < 1) :
     2 * (∑ i ∈ range n, x ^ (2 * i + 1) / (2 * i + 1)) ≤ Real.log ((1 + x) / (1 - x)) := by
   have hlow := Real.sum_range_le_log_div (x := x) h0 h1 n
-  nlinarith
+  linarith only [hlow]
 
 /-- log((1+x)/(1−x)) ≤ 2·Σ_{i<n} x^{2i+1}/(2i+1) + 2·x^{2n+1}/(1−x²) for 0 ≤ x < 1 -/
 theorem log_ratio_upper (x : ℝ) (n : ℕ) (h0 : 0 ≤ x) (h1 : x < 1) :
@@ -1426,31 +1426,31 @@ theorem log_ratio_upper (x : ℝ) (n : ℕ) (h0 : 0 ≤ x) (h1 : x < 1) :
 theorem log2_le_num : Real.log 2 ≤ 69316 / 100000 := by
   have h := Real.log_two_lt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 /-- wrapper: 69314/100000 ≤ log 2 -/
 theorem log2_ge_num : 69314 / 100000 ≤ Real.log 2 := by
   have h := Real.log_two_gt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 /-- wrapper: log 3 ≤ 109863/100000 -/
 theorem log3_le_num : Real.log 3 ≤ 109863 / 100000 := by
   have h := Real.log_three_lt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 /-- wrapper: 109860/100000 ≤ log 3 -/
 theorem log3_ge_num : 109860 / 100000 ≤ Real.log 3 := by
   have h := Real.log_three_gt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 /-- wrapper: log 2 ≤ 1 -/
 theorem log2_le_one : Real.log 2 ≤ 1 := by
   have h := Real.log_two_lt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 
 /-- log q = k·log2 + log(q/2^k) -/
@@ -1481,7 +1481,7 @@ theorem log43_upper : Real.log ((43 : ℕ) : ℝ) ≤ 3763 / 1000 := by
   have hsub : 2 * (∑ i ∈ range 3, ((11 : ℝ) / 75) ^ (2 * i + 1) / (2 * ↑i + 1)) + 2 * ((11 : ℝ) / 75) ^ (2 * 3 + 1) / (1 - ((11 : ℝ) / 75) ^ 2) ≤ 2960 / 10000 := by
     norm_num [Finset.sum_range_succ]
   have hmain : (5 : ℝ) * Real.log 2 + Real.log ((43 : ℝ) / ((2 : ℝ) ^ 5)) ≤ 3763 / 1000 := by
-    linarith
+    linarith only [hup, hk]
   exact hmain
 
 /-- log 1249 ≥ 7126/1000 -/
@@ -1496,7 +1496,7 @@ theorem log1249_lower : 7126 / 1000 ≤ Real.log ((1249 : ℕ) : ℝ) := by
   have hk : (10 : ℝ) * (69314 / 100000) ≤ (10 : ℝ) * Real.log 2 := mul_le_mul_of_nonneg_left log2_ge_num (by norm_num)
   have hsum : 7126 / 1000 ≤ (10 : ℝ) * (69314 / 100000) + 2 * (∑ i ∈ range 3, ((225 : ℝ) / 2273) ^ (2 * i + 1) / (2 * ↑i + 1)) := by
     norm_num [Finset.sum_range_succ]
-  linarith
+  linarith only [hlo, hk]
 
 /-- log 2497 ≥ 7818/1000 -/
 theorem log2497_lower : 7818 / 1000 ≤ Real.log ((2497 : ℕ) : ℝ) := by
@@ -1510,7 +1510,7 @@ theorem log2497_lower : 7818 / 1000 ≤ Real.log ((2497 : ℕ) : ℝ) := by
   have hk : (11 : ℝ) * (69314 / 100000) ≤ (11 : ℝ) * Real.log 2 := mul_le_mul_of_nonneg_left log2_ge_num (by norm_num)
   have hsum : 7818 / 1000 ≤ (11 : ℝ) * (69314 / 100000) + 2 * (∑ i ∈ range 3, ((449 : ℝ) / 4545) ^ (2 * i + 1) / (2 * ↑i + 1)) := by
     norm_num [Finset.sum_range_succ]
-  linarith
+  linarith only [hlo, hk]
 
 /-- log 2493 ≥ 7816/1000 -/
 theorem log2493_lower : 7816 / 1000 ≤ Real.log ((2493 : ℕ) : ℝ) := by
@@ -1524,7 +1524,7 @@ theorem log2493_lower : 7816 / 1000 ≤ Real.log ((2493 : ℕ) : ℝ) := by
   have hk : (11 : ℝ) * (69314 / 100000) ≤ (11 : ℝ) * Real.log 2 := mul_le_mul_of_nonneg_left log2_ge_num (by norm_num)
   have hsum : 7816 / 1000 ≤ (11 : ℝ) * (69314 / 100000) + 2 * (∑ i ∈ range 3, ((445 : ℝ) / 4541) ^ (2 * i + 1) / (2 * ↑i + 1)) := by
     norm_num [Finset.sum_range_succ]
-  linarith
+  linarith only [hlo, hk]
 
 /-- log 2457 ≥ 7804/1000 -/
 theorem log2457_lower : 7804 / 1000 ≤ Real.log ((2457 : ℕ) : ℝ) := by
@@ -1538,7 +1538,7 @@ theorem log2457_lower : 7804 / 1000 ≤ Real.log ((2457 : ℕ) : ℝ) := by
   have hk : (11 : ℝ) * (69314 / 100000) ≤ (11 : ℝ) * Real.log 2 := mul_le_mul_of_nonneg_left log2_ge_num (by norm_num)
   have hsum : 7804 / 1000 ≤ (11 : ℝ) * (69314 / 100000) + 2 * (∑ i ∈ range 3, ((409 : ℝ) / 4505) ^ (2 * i + 1) / (2 * ↑i + 1)) := by
     norm_num [Finset.sum_range_succ]
-  linarith
+  linarith only [hlo, hk]
 
 /-- log 7 ≤ 1947/1000 -/
 theorem log7_upper : Real.log ((7 : ℕ) : ℝ) ≤ 1947 / 1000 := by
@@ -1553,7 +1553,7 @@ theorem log7_upper : Real.log ((7 : ℕ) : ℝ) ≤ 1947 / 1000 := by
   have hsub : 2 * (∑ i ∈ range 3, ((3 : ℝ) / 11) ^ (2 * i + 1) / (2 * ↑i + 1)) + 2 * ((3 : ℝ) / 11) ^ 7 / (1 - ((3 : ℝ) / 11) ^ 2) ≤ 56 / 100 := by
     norm_num [Finset.sum_range_succ]
   have hmain : (2 : ℝ) * Real.log 2 + Real.log ((7 : ℝ) / ((2 : ℝ) ^ 2)) ≤ 1947 / 1000 := by
-    linarith
+    linarith only [hup, hk]
   exact hmain
 
 
@@ -1578,7 +1578,7 @@ theorem Slog4_le : Slog 4 ≤ 5393 / 5000 := by
     have hl : Real.log (43 : ℝ) ≤ 3763 / 1000 := by simpa using log43_upper
     exact div_le_div_of_nonneg_right hl (by norm_num)
   norm_num at h1 h2 h3 h4 ⊢
-  linarith
+  linarith only [h1, h2, h3, h4]
 
 /-- log q ≤ k·log 2 when q < 2^k -/
 theorem log_nat_le_mul_log_two {q k : ℕ} (hq : 0 < q) (h : q < 2 ^ k) :
@@ -1607,7 +1607,7 @@ theorem log_a5_le : Real.log ((Syl 5 : ℕ) : ℝ) ≤ 16 := by
   have h22 : 22 * Real.log 2 ≤ 22 * (69316 / 100000) :=
     mul_le_mul_of_nonneg_left log2_le_num (by norm_num)
   have hnum : 22 * (69316 / 100000) ≤ 16 := by norm_num
-  linarith
+  linarith only [hb, h22]
 
 /-- Slog 5 = Slog 4 + ln1807/1807 -/
 theorem Slog5_eval : Slog 5 = Slog 4 + Real.log 1807 / 1807 := by
@@ -1621,7 +1621,7 @@ theorem Slog5_le : Slog 5 ≤ 5393 / 5000 + 11 * Real.log 2 / 1807 := by
     simpa using log1807_le
   have hdiv : Real.log 1807 / 1807 ≤ (11 * Real.log 2) / 1807 :=
     div_le_div_of_nonneg_right hlog (by norm_num)
-  linarith
+  linarith only [h4, hlog]
 
 /-- geometric half sum bound -/
 theorem geom_half_sum_le (N : ℕ) : (∑ i ∈ range N, ((1 : ℝ) / 2) ^ i) ≤ 2 := by
@@ -1632,7 +1632,7 @@ theorem geom_half_sum_le (N : ℕ) : (∑ i ∈ range N, ((1 : ℝ) / 2) ^ i) �
         rw [sum_range_succ]
         calc
           (∑ i ∈ range N, ((1 : ℝ) / 2) ^ i) + ((1 : ℝ) / 2) ^ N ≤ 2 * (1 - ((1 : ℝ) / 2) ^ N) + ((1 : ℝ) / 2) ^ N := by
-            nlinarith [ih]
+            linarith only [ih]
           _ = 2 * (1 - ((1 : ℝ) / 2) ^ (N + 1)) := by
             let r : ℝ := (1 : ℝ) / 2
             change 2 * (1 - r ^ N) + r ^ N = 2 * (1 - r ^ (N + 1))
@@ -1648,7 +1648,7 @@ theorem geom_half_sum_le (N : ℕ) : (∑ i ∈ range N, ((1 : ℝ) / 2) ^ i) �
   have hpos : 0 ≤ ((1 : ℝ) / 2) ^ N := by positivity
   calc
     (∑ i ∈ range N, ((1 : ℝ) / 2) ^ i) ≤ 2 * (1 - ((1 : ℝ) / 2) ^ N) := hmain
-    _ ≤ 2 := by nlinarith
+    _ ≤ 2 := by linarith only [hpos]
 
 
 /-- Slog(a+1) = Slog a + ln a_a/a_a -/
@@ -1765,11 +1765,11 @@ theorem Slog_tail_le (d : ℕ) :
     have hm := mul_le_mul_of_nonneg_left hgeom hc0
     simpa [mul_comm, mul_left_comm, mul_assoc] using hm
   calc
-    Slog (5 + d) = Slog 5 + (∑ j ∈ range d, Real.log ((Syl (5 + j) : ℕ) : ℝ) / (Syl (5 + j) : ℝ)) := by linarith [hdiff]
+    Slog (5 + d) = Slog 5 + (∑ j ∈ range d, Real.log ((Syl (5 + j) : ℕ) : ℝ) / (Syl (5 + j) : ℝ)) := by linarith only [hdiff]
     _ ≤ Slog 5 + (Real.log ((Syl 5 : ℕ) : ℝ) / (Syl 5 : ℝ)) * (∑ j ∈ range d, ((1 : ℝ) / 2) ^ j) := by
-        linarith [hterms]
+        linarith only [hterms]
     _ ≤ Slog 5 + 2 * (Real.log ((Syl 5 : ℕ) : ℝ) / (Syl 5 : ℝ)) := by
-        linarith [hfin]
+        linarith only [hfin]
 
 
 /-- log a_5 / a_5 ≤ 16/3263443 -/
@@ -1793,14 +1793,14 @@ theorem Slog_ge5_le (m : ℕ) (hm : 5 ≤ m) : Slog m ≤ 1083 / 1000 := by
   have hA : 5393 / 5000 + 11 * Real.log 2 / 1807 ≤ 5393 / 5000 + 11 * (69316 / 100000) / 1807 := by
     have hd : 11 * Real.log 2 / 1807 ≤ 11 * (69316 / 100000) / 1807 :=
       div_le_div_of_nonneg_right h11 (by norm_num)
-    linarith
+    linarith only [h11]
   have hB : 2 * (Real.log ((Syl 5 : ℕ) : ℝ) / (Syl 5 : ℝ)) ≤ 2 * (16 / 3263443) := by
     have hf := log_a5_div_le
     exact mul_le_mul_of_nonneg_left hf (by norm_num)
   have hnum : 5393 / 5000 + 11 * (69316 / 100000) / 1807 + 2 * (16 / 3263443) ≤ 1083 / 1000 := by
     norm_num
   have h2 : Slog 5 + 2 * (Real.log ((Syl 5 : ℕ) : ℝ) / (Syl 5 : ℝ)) ≤ 1083 / 1000 := by
-    linarith
+    linarith only [h1, h11, hB]
   calc
     Slog (5 + (m - 5)) ≤ Slog 5 + 2 * (Real.log ((Syl 5 : ℕ) : ℝ) / (Syl 5 : ℝ)) := htail
     _ ≤ 1083 / 1000 := h2
@@ -1849,15 +1849,15 @@ theorem ln_n_le_17_of_mact {n m : ℕ} (hm : 5 ≤ m) (h : mact n = m) (hn0 : 0 
         pow_le_pow_left₀ (by norm_num : 0 ≤ (1 : ℝ)) (by norm_num : 1 ≤ (2 : ℝ)) (m - 5)
       simpa using hmono
     calc
-      Real.log 2 + Real.log ((Syl m : ℕ) : ℝ) ≤ 1 + (2 : ℝ) ^ (m - 5) * Real.log ((Syl 5 : ℕ) : ℝ) := by linarith
+      Real.log 2 + Real.log ((Syl m : ℕ) : ℝ) ≤ 1 + (2 : ℝ) ^ (m - 5) * Real.log ((Syl 5 : ℕ) : ℝ) := by linarith only [hlog2, hlogm]
       _ ≤ 1 + (2 : ℝ) ^ (m - 5) * 16 := by
           have hmul : (2 : ℝ) ^ (m - 5) * Real.log ((Syl 5 : ℕ) : ℝ) ≤ (2 : ℝ) ^ (m - 5) * 16 := by
             exact mul_le_mul_of_nonneg_left hlog5 (by positivity : 0 ≤ (2 : ℝ) ^ (m - 5))
-          linarith
+          linarith only [hmul]
       _ ≤ 17 * (2 : ℝ) ^ (m - 5) := by
           -- 1 + x·16 ≤ 17 x  ⟺ 1 ≤ x
           have hx : 1 ≤ (2 : ℝ) ^ (m - 5) := hpow
-          nlinarith
+          linarith only [hpow]
   exact le_trans hlg1 hlg2
 
 /-- TermA for m ≥ 5: ln n/(a_m−1) ≤ 34/3263443 -/
@@ -1877,7 +1877,7 @@ theorem termA_ge5 (n m : ℕ) (hm : 5 ≤ m) (h : mact n = m) (hn0 : 0 < n) :
       norm_num
     rw [hc]
     have h2 : 2 ≤ (Syl m : ℝ) := by exact_mod_cast (Syl_two_le m)
-    nlinarith
+    linarith only [h2]
   have hD : ((Syl 5 : ℝ) * (6 : ℝ) ^ (m - 5)) / 2 ≤ ((Syl m - 1 : ℕ) : ℝ) := by
     have h3 : ((Syl 5 : ℝ) * (6 : ℝ) ^ (m - 5)) / 2 ≤ (Syl m : ℝ) / 2 := by
       exact div_le_div_of_nonneg_right hgrowth (by norm_num : 0 ≤ (2 : ℝ))
@@ -1949,10 +1949,10 @@ theorem termB_ge5 (m : ℕ) (hm : 5 ≤ m) :
         rw [div_le_div_iff₀ (by positivity : 0 < 2 * (Syl m : ℝ)) (by positivity : 0 < 2 * (Syl (m - 1) : ℝ))]
         have hm1 : (2 * ((m + 1 : ℕ) : ℝ) + 3 / 2) ≤ 6 * (2 * (m : ℝ) + 3 / 2) := by
           rw [hcast]
-          nlinarith
+          linarith only []
         have hx : 12 * (Syl (m - 1) : ℝ) ≤ 2 * (Syl m : ℝ) := by
           have h6 : 6 * (Syl (m - 1) : ℝ) ≤ (Syl m : ℝ) := hsix'
-          nlinarith
+          linarith only [hsix']
         calc
           (2 * ((m + 1 : ℕ) : ℝ) + 3 / 2) * (2 * (Syl (m - 1) : ℝ))
               ≤ (6 * (2 * (m : ℝ) + 3 / 2)) * (2 * (Syl (m - 1) : ℝ)) := by
@@ -1999,11 +1999,11 @@ theorem Ulog_symbolic_bound_le (n : ℕ) (hn : 2500 ≤ n) :
         have hn2500 : (2500 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
         have hmul2 : (19 / 2) / (n : ℝ) ≤ (19 / 2) / 2500 := by
           rw [div_le_div_iff₀ hposn (by norm_num : (0 : ℝ) < 2500)]
-          nlinarith
+          linarith only [hn2500]
         exact hmul2
       have hnum : 5393 / 5000 + (12 * (69316 / 100000)) / 1806 + (19 / 2) / 2500 ≤ 109 / 100 := by
         norm_num
-      linarith [hS, hlogd, hd12', hfrac, hnum]
+      linarith only [hS, hlogd, hd12', hfrac, hnum, hlog1, hd12]
     have hrew : Slog (mact n) + Real.log ((n : ℕ) : ℝ) / (((Syl (mact n) - 1 : ℕ) : ℝ))
           + (2 * (mact n : ℝ) + 3 / 2) / (n : ℝ)
         = Slog 4 + Real.log ((n : ℕ) : ℝ) / 1806 + (19 / 2) / (n : ℝ) := by
@@ -2032,14 +2032,14 @@ theorem Ulog_symbolic_bound_le (n : ℕ) (hn : 2500 ≤ n) :
       termB_ge5 (mact n) hm5
     have hB : (2 * ((mact n : ℕ) : ℝ) + 3 / 2) / (n : ℝ) ≤ 23 / 7228 := le_trans hB0 hB1
     have hnum : 1083 / 1000 + 34 / 3263443 + 23 / 7228 ≤ 109 / 100 := by norm_num
-    linarith
+    linarith only [hg5, hA, hB0, hB1]
 
 /-- non-activation increments ≤ 109/100 -/
 theorem Ulog_inc_nonact_le (n : ℕ) (hn : 2500 ≤ n) (h : ∀ j : ℕ, n + 1 ≠ 2 * Syl j) :
     Ulog (n + 1) - Ulog n ≤ 109 / 100 := by
   have hb := Ulog_inc_nonact_bound n hn h
   have hle := Ulog_symbolic_bound_le n hn
-  linarith
+  linarith only [hb, hle]
 
 /-- idxNat (a_j − 1) = j for j ≥ 1 -/
 theorem idxNat_sub_one (j : ℕ) (hj : 1 ≤ j) : idxNat (Syl j - 1) = j := by
@@ -2110,13 +2110,13 @@ theorem ALog_minus_sum_bound (n : ℕ) (hn : 2500 ≤ n) :
     exact term_inc_lower n i hi'
   have h1 : (ALog (n + 1) - ALog n) - (∑ i ∈ range m, (hLog (xquot (n + 1) i) - hLog (xquot n i)))
       ≤ (ALog (n + 1) - ALog n) - (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := by
-    linarith [hT]
+    linarith only [hT]
   have h2 : (ALog (n + 1) - ALog n) - (∑ i ∈ range m, (hLog (xquot (n + 1) i) - hLog (xquot n i)))
       ≤ (Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)))
         - (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := by
     have hDA : ALog (n + 1) - ALog n ≤ Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)) :=
       ALog_inc_le n hn1
-    linarith [h1, hDA]
+    linarith only [h1, hDA, hT]
   have hTL := sum_term_lower n m hma
   have hS1 : 1 - (∑ i ∈ range m, 1 / (Syl i : ℝ)) = 1 / (((Syl m - 1 : ℕ) : ℝ)) := by
     dsimp [m]
@@ -2156,13 +2156,13 @@ theorem ALog_minus_sum_bound (n : ℕ) (hn : 2500 ≤ n) :
               rw [hS1', one_div, ← div_eq_mul_inv]
       _ ≤ 1 / (n : ℝ) + Real.log (n : ℝ) / (((Syl m - 1 : ℕ) : ℝ))
               + (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) + 1 / (2 * (n : ℝ)) + Slog m := by
-              linarith [hLogLe]
+              linarith only [hLogLe]
       _ ≤ Slog m + Real.log (n : ℝ) / (((Syl m - 1 : ℕ) : ℝ)) + (2 * (m : ℝ) + 3 / 2) / (n : ℝ) := by
               have hS2' : (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) ≤ (2 * (m : ℝ)) / (n : ℝ) := hS2
               have heq : 1 / (n : ℝ) + (2 * (m : ℝ)) / (n : ℝ) + 1 / (2 * (n : ℝ))
                   = (2 * (m : ℝ) + 3 / 2) / (n : ℝ) := by
                 field_simp [hnR] <;> ring
-              linarith [hLogLe, hS2', heq]
+              linarith only [hLogLe, hS2', heq, hS2]
   have hTlower : (Real.log (n : ℝ) * (∑ i ∈ range m, 1 / (Syl i : ℝ))
           - (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) - Slog m)
       ≤ (∑ i ∈ range m, (1 / (Syl i : ℝ)) * Real.log (xquot n i)) := hTL
@@ -2170,8 +2170,8 @@ theorem ALog_minus_sum_bound (n : ℕ) (hn : 2500 ≤ n) :
       ≤ (Real.log ((n + 1 : ℕ) : ℝ) + 1 / (2 * (n : ℝ)))
         - (Real.log (n : ℝ) * (∑ i ∈ range m, 1 / (Syl i : ℝ))
           - (∑ i ∈ range m, 1 / ((n : ℝ) - (Syl i : ℝ))) - Slog m) := by
-    linarith [h2, hTlower]
-  linarith [h2', hA]
+    linarith only [h2, hTlower, hTL]
+  linarith only [h2', hA, h2, hTL]
 
 
 /-- activation increments ≤ 209/100 -/
@@ -2189,7 +2189,7 @@ theorem Ulog_inc_act_le (n j : ℕ) (hn : 2500 ≤ n) (hj : 1 ≤ j) (hact : n +
   have hpart : (ALog (n + 1) - ALog n) - (∑ i ∈ range (mact n), (hLog (xquot (n + 1) i) - hLog (xquot n i))) ≤ 109 / 100 := by
     have hb := ALog_minus_sum_bound n hn
     have hle := Ulog_symbolic_bound_le n hn
-    linarith
+    linarith only [hb, hle]
   have hms := mact_succ_activation n j hj hact
   have hsp : (∑ i ∈ range (mact n + 1), hLog ((((n + 1 : ℕ) : ℝ) / (Syl i : ℝ)) - 1)) =
       (∑ i ∈ range (mact n), hLog ((((n + 1 : ℕ) : ℝ) / (Syl i : ℝ)) - 1)) + hLog ((((n + 1 : ℕ) : ℝ) / (Syl (mact n) : ℝ)) - 1) := by
@@ -2229,14 +2229,14 @@ theorem Ulog_inc_act_le (n j : ℕ) (hn : 2500 ≤ n) (hj : 1 ≤ j) (hact : n +
     have hge1 : 1 ≤ 2 * Real.pi := by
       have h3 : 3 < Real.pi := Real.pi_gt_three
       norm_num
-      linarith
+      linarith only [h3]
     have hlog : 0 ≤ Real.log (2 * Real.pi) := Real.log_nonneg hge1
-    nlinarith
-  have hneg : -hLog 1 ≤ 1 := by linarith
+    linarith only [hlog]
+  have hneg : -hLog 1 ≤ 1 := by linarith only [hlog1]
   calc
     (ALog (n + 1) - ALog n) - (∑ i ∈ range (mact n), (hLog (xquot (n + 1) i) - hLog (xquot n i))) - hLog 1
-        ≤ 109 / 100 - hLog 1 := by linarith [hpart]
-    _ ≤ 209 / 100 := by linarith [hneg]
+        ≤ 109 / 100 - hLog 1 := by linarith only [hpart]
+    _ ≤ 209 / 100 := by linarith only [hneg, hlog1]
 
 
 /-! ### slack increments and event machinery -/
@@ -2296,7 +2296,7 @@ theorem slack_step_nonact (n : ℕ) (hn : 2500 ≤ n) (h : ∀ j : ℕ, n + 1 �
   -- slack(n+1) − slack n = log3 − (U(n+1) − U(n))
   have hval : (1 / 200 : ℝ) ≤ Real.log 3 - (Ulog (n + 1) - Ulog n) := by
     have hA : (109860 / 100000 : ℝ) - 109 / 100 ≥ 1 / 200 := by norm_num
-    nlinarith [h3, hinc, hA]
+    linarith only [h3, hinc, hA]
   -- algebra: slack(n+1) − slack n = ((n+1)·log3 − U(n+1)) − (n·log3 − U(n)) = log3 − (U(n+1)−U(n)):
   have halg : slack (n + 1) - slack n = Real.log 3 - (Ulog (n + 1) - Ulog n) := by
     dsimp [slack]
@@ -2313,7 +2313,7 @@ theorem slack_step_act (n j : ℕ) (hn : 2500 ≤ n) (hj : 1 ≤ j) (hact : n + 
   have h3 : (109860 / 100000 : ℝ) ≤ Real.log 3 := log3_ge_num
   have hval : -1 ≤ Real.log 3 - (Ulog (n + 1) - Ulog n) := by
     have hA : (109860 / 100000 : ℝ) - 209 / 100 ≥ -1 := by norm_num
-    nlinarith [h3, hinc, hA]
+    linarith only [h3, hinc, hA]
   have halg : slack (n + 1) - slack n = Real.log 3 - (Ulog (n + 1) - Ulog n) := by
     dsimp [slack]
     rw [show (((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1) by norm_num]
@@ -2361,7 +2361,7 @@ theorem slack_nonact_run (a b : ℕ) (ha : 2500 ≤ a) (hab : a ≤ b)
   | base => rfl
   | succ b hb ih =>
       have hstep := slack_step_nonact b (by omega : 2500 ≤ b) (h b hb (by omega : b < b + 1))
-      have hgain : slack b ≤ slack (b + 1) := by linarith [hstep]
+      have hgain : slack b ≤ slack (b + 1) := by linarith only [hstep]
       exact le_trans (ih (fun n hn1 hn2 j => h n hn1 (by omega) j)) hgain
 
 /-- quantitative slack gain along a run of non-activation steps -/
@@ -2380,8 +2380,8 @@ theorem slack_nonact_run_gain (a b : ℕ) (ha : 2500 ≤ a) (hab : a ≤ b)
         have hnat : b + 1 - a = (b - a) + 1 := by omega
         rw [hnat]
         norm_num
-      have hq : slack a + ((b - a : ℕ) : ℝ) / 200 + 1 / 200 ≤ slack (b + 1) := by linarith [ihb, hstep]
-      nlinarith [hq, hcast]
+      have hq : slack a + ((b - a : ℕ) : ℝ) / 200 + 1 / 200 ≤ slack (b + 1) := by linarith only [ihb, hstep]
+      linarith only [hq, hcast, ihb, hstep]
 
 /-- steps with n+1 < ev 0 are non-activation -/
 theorem nonact_below_ev0 (n : ℕ) (h2500 : 2500 ≤ n) (hn : n + 1 < ev 0) :
@@ -2475,9 +2475,9 @@ theorem slack_ev_ge_ev0 (k : ℕ) : slack (ev 0) ≤ slack (ev k) := by
         rw [hpeq] at hg
         exact hg
       have hstep : slack (ev (k + 1) - 1) - 1 ≤ slack (ev (k + 1)) := by
-        linarith [hg']
+        linarith only [hg']
       have hnet : slack (ev k) ≤ slack (ev (k + 1)) := by
-        linarith [hrun, hstep, hX]
+        linarith only [hrun, hstep, hX, hgap, hg']
       exact le_trans ih hnet
 
 /-! ### base-point check : slack 2500 ≥ 1 -/
@@ -2486,7 +2486,7 @@ theorem slack_ev_ge_ev0 (k : ℕ) : slack (ev 0) ≤ slack (ev k) := by
 theorem log5_le_num : Real.log 5 ≤ 160944 / 100000 := by
   have h := Real.log_five_lt_d9
   norm_num at h ⊢
-  linarith
+  linarith only [h]
 
 /-- log 2500 = 2 log 2 + 4 log 5 -/
 theorem log2500_eq : Real.log (2500 : ℝ) = 2 * Real.log 2 + 4 * Real.log 5 := by
@@ -2501,7 +2501,7 @@ theorem log_pi_ge_num : 109860 / 100000 ≤ Real.log Real.pi := by
   have h3 : (3 : ℝ) < Real.pi := Real.pi_gt_three
   have hlog3 : (109860 / 100000 : ℝ) ≤ Real.log (3 : ℝ) := log3_ge_num
   have hle : Real.log (3 : ℝ) ≤ Real.log Real.pi := Real.log_le_log (by norm_num) (le_of_lt h3)
-  linarith
+  linarith only [hlog3, hle]
 
 /-- idxNat 1250 = 4 -/
 theorem idxNat_1250 : idxNat 1250 = 4 := by
@@ -2527,8 +2527,8 @@ theorem mact_2500 : mact 2500 = 4 := by
 /-- generic lower bound for hLog x in terms of a lower bound of log x -/
 theorem hLog_lower_gen (x L : ℝ) (hx1 : 1 ≤ x) (hL : L ≤ Real.log x) :
     (x + 1 / 2) * L - x + 1 / 2 * (69314 / 100000) + 1 / 2 * (109860 / 100000) ≤ hLog x := by
-  have hx0 : 0 < x := by linarith
-  have hcoef : 0 ≤ x + 1 / 2 := by linarith
+  have hx0 : 0 < x := by linarith only [hx1]
+  have hcoef : 0 ≤ x + 1 / 2 := by linarith only [hx1]
   have hmul : (x + 1 / 2) * L ≤ (x + 1 / 2) * Real.log x := mul_le_mul_of_nonneg_left hL hcoef
   have hsplit : hLog x = (x + 1 / 2) * Real.log x - x + 1 / 2 * Real.log 2 + 1 / 2 * Real.log Real.pi := by
     dsimp [hLog]
@@ -2545,7 +2545,7 @@ theorem hLog_lower_gen (x L : ℝ) (hx1 : 1 ≤ x) (hL : L ≤ Real.log x) :
     exact mul_le_mul_of_nonneg_left h2 (by norm_num)
   have hhalfp : 1 / 2 * (109860 / 100000) ≤ 1 / 2 * Real.log Real.pi := by
     exact mul_le_mul_of_nonneg_left hp (by norm_num)
-  nlinarith
+  linarith only [hmul, h2, hp]
 
 /-- log(2497/3) ≥ 7818/1000 − 109863/100000 -/
 theorem log_2497div3_lower : (7818 / 1000 : ℝ) - 109863 / 100000 ≤ Real.log ((2497 : ℝ) / 3) := by
@@ -2556,7 +2556,7 @@ theorem log_2497div3_lower : (7818 / 1000 : ℝ) - 109863 / 100000 ≤ Real.log 
   have hlogd : Real.log ((2497 : ℝ) / 3) = Real.log (2497 : ℝ) - Real.log 3 := by
     rw [Real.log_div (by norm_num : (2497 : ℝ) ≠ 0) (by norm_num : (3 : ℝ) ≠ 0)]
   rw [hlogd]
-  linarith
+  linarith only [hl, h3u]
 
 /-- log(2493/7) ≥ 7816/1000 − 1947/1000 -/
 theorem log_2493div7_lower : (7816 / 1000 : ℝ) - 1947 / 1000 ≤ Real.log ((2493 : ℝ) / 7) := by
@@ -2569,7 +2569,7 @@ theorem log_2493div7_lower : (7816 / 1000 : ℝ) - 1947 / 1000 ≤ Real.log ((24
   have hlogd : Real.log ((2493 : ℝ) / 7) = Real.log (2493 : ℝ) - Real.log 7 := by
     rw [Real.log_div (by norm_num : (2493 : ℝ) ≠ 0) (by norm_num : (7 : ℝ) ≠ 0)]
   rw [hlogd]
-  linarith
+  linarith only [hl, h7u]
 
 /-- log(2457/43) ≥ 7804/1000 − 3763/1000 -/
 theorem log_2457div43_lower : (7804 / 1000 : ℝ) - 3763 / 1000 ≤ Real.log ((2457 : ℝ) / 43) := by
@@ -2582,7 +2582,7 @@ theorem log_2457div43_lower : (7804 / 1000 : ℝ) - 3763 / 1000 ≤ Real.log ((2
   have hlogd : Real.log ((2457 : ℝ) / 43) = Real.log (2457 : ℝ) - Real.log 43 := by
     rw [Real.log_div (by norm_num : (2457 : ℝ) ≠ 0) (by norm_num : (43 : ℝ) ≠ 0)]
   rw [hlogd]
-  linarith
+  linarith only [hl, h43u]
 
 /-- the four active hLog terms at n=2500, lower bounded -/
 theorem slack2500_terms :
@@ -2627,7 +2627,7 @@ theorem slack2500_terms :
       dsimp [xquot]
       norm_num [Syl]
     simpa [← heq] using hcore
-  nlinarith
+  linarith only [h0, h1, h2, h3]
 
 /-- slack 2500 ≥ 1 -/
 theorem slack2500_ge_one : 1 ≤ slack 2500 := by
@@ -2647,7 +2647,7 @@ theorem slack2500_ge_one : 1 ≤ slack 2500 := by
     rw [hA, log2500_eq]
     have h2 : Real.log 2 ≤ 69316 / 100000 := log2_le_num
     have h5 : Real.log 5 ≤ 160944 / 100000 := log5_le_num
-    nlinarith
+    linarith only [h2, h5]
   have h3l : (2500 : ℝ) * (109860 / 100000) ≤ 2500 * Real.log 3 := by
     have h3 : (109860 / 100000 : ℝ) ≤ Real.log 3 := log3_ge_num
     exact mul_le_mul_of_nonneg_left h3 (by norm_num)
@@ -2660,7 +2660,7 @@ theorem slack2500_ge_one : 1 ≤ slack 2500 := by
       + ((2457 / 43 + 1 / 2) * ((7804 / 1000) - 3763 / 1000) - 2457 / 43)
       + 2 * ((1 / 2) * (69314 / 100000) + (1 / 2) * (109860 / 100000)) := by
     norm_num
-  nlinarith
+  linarith only [hAlog, h3l, hterms]
 
 
 /-- slack is nonnegative for every n ≥ 2500 -/
@@ -2675,7 +2675,7 @@ theorem slack_nonneg_of_2500 (n : ℕ) (hn : 2500 ≤ n) : 0 ≤ slack n := by
         omega
       exact nonact_below_ev0 m (by omega) hnext j
     have hb := slack2500_ge_one
-    linarith
+    linarith only [hrun, hb]
   · have hrun : slack (ev k) ≤ slack n := by
       apply slack_nonact_run (ev k) n (ev_ge_2500 k) (by omega)
       intro m hm1 hm2 j
@@ -2709,10 +2709,10 @@ theorem slack_nonneg_of_2500 (n : ℕ) (hn : 2500 ≤ n) : 0 ≤ slack n := by
         have hg' : -1 ≤ slack (ev 0) - slack (ev 0 - 1) := by
           rw [hpeq0] at hg
           exact hg
-        linarith [hg']
+        linarith only [hg']
       have hb := slack2500_ge_one
-      linarith
-    linarith
+      linarith only [hrun0, hstep, hb]
+    linarith only [hrun, hfl, hbase]
 
 
 /-- log (3^n) = n log 3 -/
@@ -2733,7 +2733,7 @@ theorem lcmUpto_le_three_pow (n : ℕ) : Nat.lcmUpto n ≤ 3 ^ n := by
     have hslack : Ulog n ≤ (n : ℝ) * Real.log 3 := by
       have hs : 0 ≤ slack n := slack_nonneg_of_2500 n hn2500
       dsimp [slack] at hs
-      linarith
+      linarith only [hs]
     have hlog : Real.log (Cn n : ℝ) ≤ (n : ℝ) * Real.log 3 := le_trans hlog1 hslack
     have hx : 0 < (Cn n : ℝ) := by exact_mod_cast (Cn_pos n)
     have hy : 0 < (((3 ^ n : ℕ) : ℝ)) := by positivity

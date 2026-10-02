@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Linnik.tentWeight_spec
-import Submission.Commons.NumberTheory.Linnik.tentWeight_area
 import Submission.Commons.NumberTheory.Linnik.tentWeight_bounds
 import Submission.Commons.NumberTheory.ArithmeticFunction.sum_vonMangoldt_div_sub_log_bounded
 import Submission.Commons.Analysis.Integral.finset_layerCake

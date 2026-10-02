@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.Stepanov.superelliptic_char_sum_bound
 import Submission.Commons.FieldTheory.FiniteField.pow_card_sub_one_div_eq_one_iff
-import Submission.Commons.FieldTheory.FiniteField.units_quotient_pow_card
 import Submission.Commons.NumberTheory.CharacterSum.superelliptic_point_card
 import Submission.Commons.FieldTheory.FiniteField.not_const_mul_pow_map
 
@@ -187,7 +186,7 @@ lemma norm_ofReal_eq_abs (r : ℝ) : ‖(r : ℂ)‖ = |r| := by
     rw [← Complex.normSq_eq_norm_sq, Complex.normSq_ofReal]
     ring
   have h2 : |r| ^ 2 = r ^ 2 := sq_abs r
-  nlinarith [norm_nonneg ((r : ℝ) : ℂ), abs_nonneg r, h1, h2]
+  nlinarith only [norm_nonneg ((r : ℝ) : ℂ), abs_nonneg r, h1, h2]
 
 theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ d) :
     ∃ C : ℝ, 0 < C ∧
@@ -208,9 +207,9 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
   have hCpos : 0 < (e : ℝ) * (d : ℝ) + (e : ℝ) * ((e : ℝ) - 1) * C₀ := by
     have heR : (2 : ℝ) ≤ e := by exact_mod_cast he
     have hdR : (1 : ℝ) ≤ d := by exact_mod_cast hd
-    have h1 : (0 : ℝ) < (e : ℝ) := by linarith
-    have h2 : (0 : ℝ) < (e : ℝ) - 1 := by linarith
-    have h3 : (0 : ℝ) < (d : ℝ) := by linarith
+    have h1 : (0 : ℝ) < (e : ℝ) := by linarith only [heR]
+    have h2 : (0 : ℝ) < (e : ℝ) - 1 := by linarith only [heR]
+    have h3 : (0 : ℝ) < (d : ℝ) := by linarith only [hdR]
     positivity
   refine ⟨(e : ℝ) * (d : ℝ) + (e : ℝ) * ((e : ℝ) - 1) * C₀, hCpos, ?_⟩
   intro F _ _ _ hdiv χ hχ hord f hfdeg hfnd n hn E _ _ _ _ _ _ hfin
@@ -538,15 +537,15 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
       (Finset.mem_univ j)
     have hTj : (T j : ℝ) = ((N - Z : ℕ) : ℝ) - ∑ k ∈ Finset.univ.erase j, (T k : ℝ) := by
       rw [← hsumZ]
-      linarith [hsplit]
+      linarith only [hsplit]
     have hZN' : ((N - Z : ℕ) : ℝ) = (N : ℝ) - (Z : ℝ) := Nat.cast_sub hZN
-    have heRpos : (0 : ℝ) < e := by linarith
+    have heRpos : (0 : ℝ) < e := by linarith only [heR]
     rw [abs_le]
     constructor
     · -- lower bound
       have hZle' : ((e : ℝ) - 1) * (Z : ℝ) / e ≤ (Z : ℝ) := by
         rw [div_le_iff₀ heRpos]
-        nlinarith [heR, hZR]
+        linarith only [heR, hZR]
       have h6 : -((Z : ℝ) + ((e : ℝ) - 1) * C₀ * Real.sqrt (N : ℝ))
           ≤ ((N : ℝ) - (Z : ℝ)) - ((e : ℝ) - 1) * ((N : ℝ) / e + C₀ * Real.sqrt (N : ℝ))
             - ((N : ℝ) - (Z : ℝ)) / e := by
@@ -556,14 +555,14 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
           field_simp
           ring
         rw [hkey]
-        linarith [hZle']
+        linarith only [hZle']
       have h5 : ((N : ℝ) - (Z : ℝ)) - ((e : ℝ) - 1) * ((N : ℝ) / e + C₀ * Real.sqrt (N : ℝ))
           - ((N : ℝ) - (Z : ℝ)) / e
           ≤ ((N : ℝ) - (Z : ℝ)) - (∑ k ∈ Finset.univ.erase j, (T k : ℝ))
             - ((N : ℝ) - (Z : ℝ)) / e := by
-        linarith [hcompl']
+        linarith only [hcompl', hcompl]
       rw [hTj, hZN']
-      linarith [h5, h6]
+      linarith only [h5, h6, hcompl]
     · -- upper bound
       have h7 : ((N : ℝ) / e + C₀ * Real.sqrt (N : ℝ)) - ((N : ℝ) - (Z : ℝ)) / e
           = (Z : ℝ) / e + C₀ * Real.sqrt (N : ℝ) := by
@@ -573,15 +572,15 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
           ≤ (Z : ℝ) + ((e : ℝ) - 1) * C₀ * Real.sqrt (N : ℝ) := by
         have h9 : (Z : ℝ) / e ≤ (Z : ℝ) := by
           rw [div_le_iff₀ heRpos]
-          nlinarith [heR, hZR]
+          nlinarith only [heR, hZR]
         have h10 : C₀ * Real.sqrt (N : ℝ) ≤ ((e : ℝ) - 1) * (C₀ * Real.sqrt (N : ℝ)) := by
-          have h11 : (1 : ℝ) ≤ (e : ℝ) - 1 := by linarith
+          have h11 : (1 : ℝ) ≤ (e : ℝ) - 1 := by linarith only [heR]
           calc C₀ * Real.sqrt (N : ℝ) = 1 * (C₀ * Real.sqrt (N : ℝ)) := (one_mul _).symm
             _ ≤ ((e : ℝ) - 1) * (C₀ * Real.sqrt (N : ℝ)) :=
                 mul_le_mul_of_nonneg_right h11 (mul_nonneg (le_of_lt hC₀pos) (Real.sqrt_nonneg _))
-        linarith [h9, h10]
+        linarith only [h9, h10]
       rw [hTj, hZN']
-      linarith [hup, h7, h8, hTj]
+      linarith only [hup, h7, h8, hTj, hsumZ, hsplit, hZN']
   -- put everything together
   have hmain : ‖∑ a : E, ψ (fE.eval a)‖
       ≤ ((e : ℝ) * (d : ℝ) + (e : ℝ) * ((e : ℝ) - 1) * C₀) * Real.sqrt (N : ℝ) := by
@@ -607,7 +606,7 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
       _ ≤ ((e : ℝ) * (d : ℝ) + (e : ℝ) * ((e : ℝ) - 1) * C₀) * Real.sqrt (N : ℝ) := by
           have heR : (2 : ℝ) ≤ e := by exact_mod_cast he
           have hdR : (0 : ℝ) ≤ d := by exact_mod_cast (by omega : 0 ≤ d)
-          have heRpos : (0 : ℝ) < e := by linarith
+          have heRpos : (0 : ℝ) < e := by linarith only [heR]
           have hZN'' : (Z : ℝ) ≤ (d : ℝ) := by exact_mod_cast hZle
           have hsqrt1 : (1 : ℝ) ≤ Real.sqrt (N : ℝ) := by
             rw [Real.one_le_sqrt]; exact_mod_cast (by omega : 1 ≤ N)
@@ -624,7 +623,7 @@ theorem mulchar_char_sum_extension_bound (e d : ℕ) (he : 2 ≤ e) (hd : 1 ≤ 
               = (e : ℝ) * ((d : ℝ) * Real.sqrt (N : ℝ))
                 + ((e : ℝ) * ((e : ℝ) - 1) * C₀) * Real.sqrt (N : ℝ) := by ring
           rw [hgoal, hgoal2]
-          linarith [h3]
+          linarith only [h3]
   rw [← hsqrtN]
   calc ‖∑ a : E, χ (Algebra.norm F (fE.eval a))‖
       = ‖∑ a : E, ψ (fE.eval a)‖ := by

@@ -2,6 +2,9 @@ import Mathlib
 import Submission.Work.LinnikContract.Defs
 import Submission.Work.LinnikAreas.siegelZeroSimple_ldUpper
 import Submission.Commons.Analysis.Complex.exterior_jensen_multiplicity
+import Submission.Commons.NumberTheory.Linnik.completedL_zero_strip
+import Submission.Commons.NumberTheory.DirichletCharacter.zerosInStrip
+import Submission.Commons.NumberTheory.DirichletCharacter.finsum_divisor_re_inv_sub_le
 
 open scoped BigOperators
 

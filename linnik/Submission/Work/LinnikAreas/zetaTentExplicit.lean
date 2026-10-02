@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikAreas.ZetaPrincipalDefs
-import Submission.Work.LinnikAreas.ZetaTentPrelude
 import Submission.Work.LinnikAreas.zeta_perron_tent
 import Submission.Work.LinnikAreas.rectInt_logDeriv_entire_mul
 import Submission.Work.LinnikAreas.rectInt_logDeriv_completedRiemannZeta

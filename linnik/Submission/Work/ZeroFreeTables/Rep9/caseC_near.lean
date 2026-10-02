@@ -6,6 +6,8 @@ import Submission.Work.A7.zeroMult_conj_inv
 import Submission.Work.A7.zeroMult_conj_sq_one
 import Submission.Work.ZeroFreeTables.P3.P3Bounds
 import Submission.Work.LinnikAreas.boxMaxZero
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
+import Submission.Work.LinnikAreas.A5.boxAbs_le_deltaSum
 
 namespace Work.ZeroFreeTables.Rep9
 

@@ -11,7 +11,6 @@ import Submission.Work.LinnikAreas.BGTZ.DetectorChain
 import Submission.Work.LinnikAreas.BGTZArith.RepulsionSizesReal
 import Submission.Work.LinnikAreas.BGTZArith.RepulsionSizesC
 import Submission.Work.LinnikAreas.BGTZArith.RepulsionSizesD
-import Submission.Work.LinnikAreas.BGTZ.PrincipalNoRealZero
 import Submission.Work.LinnikAreas.BGTZ.DetectorEDefs
 import Submission.Work.LinnikAreas.BGTZ.E.RepulsionSizesE
 import Submission.Work.LinnikAreas.BGTZ.E.caseC_bound_far
@@ -172,48 +171,48 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
   have hL0le : L0 ≤ Real.log (q : ℝ) := by
     have h1 : Real.exp L0 ≤ ((⌈Real.exp L0⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((⌈Real.exp L0⌉₊ : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by exact_mod_cast hceil
-    have h3 : Real.exp L0 < (q : ℝ) := by linarith
+    have h3 : Real.exp L0 < (q : ℝ) := by linarith only [h1, h2]
     have h4 : Real.log (Real.exp L0) < Real.log (q : ℝ) :=
       Real.log_lt_log (Real.exp_pos L0) h3
     rw [Real.log_exp] at h4
-    linarith
+    linarith only [h4]
   have hL0big : (1000000000 : ℝ) ≤ L0 := by
     rw [hL0def]
     have h1 : 0 ≤ |Real.log A| := abs_nonneg _
     have h2 : 0 ≤ |Real.log B| := abs_nonneg _
     have h3 : 0 ≤ |Real.log Cd| := abs_nonneg _
     have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-    linarith
-  have h𝓛8 : (100000000 : ℝ) ≤ Real.log (q : ℝ) := by linarith
-  have h𝓛big : (1000 : ℝ) ≤ Real.log (q : ℝ) := by linarith
-  have h𝓛big2 : (2000 : ℝ) ≤ Real.log (q : ℝ) := by linarith
+    linarith only [h1, h2, h3, h4]
+  have h𝓛8 : (100000000 : ℝ) ≤ Real.log (q : ℝ) := by linarith only [hL0le, hL0big]
+  have h𝓛big : (1000 : ℝ) ≤ Real.log (q : ℝ) := by linarith only [hL0le, hL0big]
+  have h𝓛big2 : (2000 : ℝ) ≤ Real.log (q : ℝ) := by linarith only [hL0le, hL0big]
   have hlogA : Real.log A ≤ Real.log (q : ℝ) / 1000 := by
     have h1 : 1000 * |Real.log A| ≤ L0 := by
       rw [hL0def]
       have h2 : 0 ≤ |Real.log B| := abs_nonneg _
       have h3 : 0 ≤ |Real.log Cd| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log A ≤ |Real.log A| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hlogB : Real.log B ≤ Real.log (q : ℝ) / 1000 := by
     have h1 : 1000 * |Real.log B| ≤ L0 := by
       rw [hL0def]
       have h2 : 0 ≤ |Real.log A| := abs_nonneg _
       have h3 : 0 ≤ |Real.log Cd| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log B ≤ |Real.log B| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hlogCd : Real.log Cd ≤ Real.log (q : ℝ) / 1000 := by
     have h1 : 1000 * |Real.log Cd| ≤ L0 := by
       rw [hL0def]
       have h2 : 0 ≤ |Real.log A| := abs_nonneg _
       have h3 : 0 ≤ |Real.log B| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log Cd ≤ |Real.log Cd| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hAinst : Work.LinnikAreas.BGTZ.HypA A (1 / 4 + 1 / 100) := by
     refine ⟨hApos, by norm_num, le_rfl, ?_⟩
     intro N _ ψ hψprim hψ1 t
@@ -239,8 +238,8 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
     have h1 : 0 ≤ (11 / 10) * (Real.log (5 + |ρ.im|) / 𝓛) := by
       refine mul_nonneg (by norm_num) ?_
       refine div_nonneg ?_ h𝓛pos.le
-      exact Real.log_nonneg (by linarith [abs_nonneg ρ.im])
-    linarith
+      exact Real.log_nonneg (by linarith only [abs_nonneg ρ.im])
+    linarith only [h1]
   have hUpos : 0 < U := lt_of_lt_of_le (by norm_num : (0:ℝ) < 11 / 5) hU1
   have hPpos : 0 < P := by
     have h1 : 0 < 1 / ((q : ℝ) ^ (1 / 100 : ℝ) * 𝓛) := by
@@ -256,37 +255,37 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
       have hCU2200 : 2200 ≤ C₀ * U := by
         have h := mul_le_mul hC₀1000 hU1 (by norm_num : (0:ℝ) ≤ 11 / 5) hC₀pos.le
         norm_num at h
-        linarith
+        linarith only [h]
       have hCUpos : 0 < C₀ * U := mul_pos hC₀pos hUpos
       have hP2200 : P < 1 / 2200 := by
         have h1 : P < 1 / (C₀ * U) := by
           rw [lt_div_iff₀ hCUpos]
-          nlinarith [hI]
+          linarith only [hI]
         have h2 : 1 / (C₀ * U) ≤ 1 / 2200 :=
           one_div_le_one_div_of_le (by norm_num) hCU2200
-        linarith
+        linarith only [h1, h2]
       have hδlt : 1 - β₁ < 1 / (2200 * 𝓛) := by
         have h1 : (1 - β₁) * 𝓛 < 1 / 2200 := by
           rw [← hPreal]; exact hP2200
         have h2 : 1 - β₁ < (1 / 2200) / 𝓛 := by
           rw [lt_div_iff₀ h𝓛pos]
-          linarith [h1]
+          linarith only [h1]
         have h3 : (1 / 2200 : ℝ) / 𝓛 = 1 / (2200 * 𝓛) := by field_simp
-        linarith [h2, h3.le, h3.ge]
+        linarith only [h2, h3.le, h3.ge]
       have hβ1big : 1 - 1 / (10 * 𝓛) < β₁ := by
-        have ha : 0 < 10 * 𝓛 := by linarith
+        have ha : 0 < 10 * 𝓛 := by linarith only [h𝓛pos]
         have h1 : 1 / (2200 * 𝓛) ≤ 1 / (10 * 𝓛) := by
           refine one_div_le_one_div_of_le ha ?_
-          linarith
-        linarith
+          linarith only [h𝓛pos]
+        linarith only [hδlt, h1]
       have h1β1pos : 0 < 1 - β₁ := by
         have h1 : 0 < 1 / (2200 * 𝓛) := by positivity
-        linarith
+        linarith only [hβ₁lt]
       have hβ1half : (1 / 2 : ℝ) < β₁ := by
         have h1 : 1 / (10 * 𝓛) ≤ 1 / 10000 := by
           refine one_div_le_one_div_of_le (by norm_num) ?_
-          linarith
-        linarith
+          linarith only [h𝓛big]
+        linarith only [hβ1big, h1]
       by_cases hρβ : ρ = (β₁ : ℂ)
       · -- (a) the shared exceptional zero
         have hχne₁ : χ ≠ χ₁ := by
@@ -308,9 +307,9 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
           have h3 : ((min cZ 1 / 2200) * (11 / 5)) * C₀ ≤ (P * U) * C₀ :=
             mul_le_mul_of_nonneg_right h2 hC₀pos.le
           have h4 : ((min cZ 1 / 2200) * (11 / 5)) * C₀ = (C₀ * min cZ 1) / 1000 := by ring
-          have h5 : (1 : ℝ) ≤ (C₀ * min cZ 1) / 1000 := by linarith
+          have h5 : (1 : ℝ) ≤ (C₀ * min cZ 1) / 1000 := by linarith only [hC0min]
           have h6 : (P * U) * C₀ = P * C₀ * U := by ring
-          linarith [h3, h4, h5, h6]
+          linarith only [h3, h4, h5, h6]
         exact one_le_mul_exp_of h1 (mul_nonneg hLpos.le hUpos.le)
       · by_cases hρre : ρ.re = β₁
         · -- (b) same real part, nonzero imaginary part
@@ -324,7 +323,7 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
             refine Real.log_pos ?_
             have hm : (1 : ℝ) < max 4 |ρ.im| :=
               lt_of_lt_of_le (by norm_num) (le_max_left _ _)
-            nlinarith
+            nlinarith only [hq1R, hm]
           have hzfr2 : cZ ≤ (P / 𝓛) * Real.log ((q : ℝ) * max 4 |ρ.im|) := by
             have h1 : 1 - ρ.re = P / 𝓛 := by
               rw [hρre, hPreal]
@@ -335,7 +334,7 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
             rw [hUdef]
             have hTle : Real.log (max 4 |ρ.im|) ≤ Real.log 4 + Real.log (5 + |ρ.im|) := by
               have h1 : max 4 |ρ.im| ≤ 4 * (5 + |ρ.im|) := by
-                refine max_le ?_ ?_ <;> nlinarith [abs_nonneg ρ.im]
+                refine max_le ?_ ?_ <;> linarith only [abs_nonneg ρ.im]
               have h4 : 0 < max 4 |ρ.im| :=
                 lt_of_lt_of_le (by norm_num) (le_max_left _ _)
               calc Real.log (max 4 |ρ.im|) ≤ Real.log (4 * (5 + |ρ.im|)) :=
@@ -358,8 +357,8 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
           · -- (c) far to the left
             have hL49 : (49 / 100) * 𝓛 ≤ L := by
               rw [hLreal]
-              have h1 : (49 / 100 : ℝ) ≤ 1 - ρ.re := by linarith
-              nlinarith [h𝓛pos, h1]
+              have h1 : (49 / 100 : ℝ) ≤ 1 - ρ.re := by linarith only [hc]
+              exact mul_le_mul_of_nonneg_right h1 h𝓛pos.le
             have hc1 := Work.LinnikAreas.BGTZArith.caseC_bound (q := q) (cZ := cZ)
               (Lq := 𝓛) (U := U) (P := P) (L := L) hq1R h𝓛def h𝓛big hU1 hlamlow hL49
             rw [hC₀def]
@@ -369,10 +368,11 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
             have hρre_le_β₁ : ρ.re ≤ β₁ := by
               have h1 : (1 - β₁) * 𝓛 ≤ (1 - ρ.re) * 𝓛 := by
                 rw [← hPreal, ← hLreal]; exact hle
-              nlinarith [h𝓛pos, h1]
+              have h2 := le_of_mul_le_mul_right h1 h𝓛pos
+              linarith only [h2]
             have hρβ1lt : ρ.re < β₁ := lt_of_le_of_ne hρre_le_β₁ hρre
-            have hT4 : (4 : ℝ) ≤ 5 + |ρ.im| := by linarith [abs_nonneg ρ.im]
-            have hγT : |ρ.im| ≤ 5 + |ρ.im| := by linarith
+            have hT4 : (4 : ℝ) ≤ 5 + |ρ.im| := by linarith only [abs_nonneg ρ.im]
+            have hγT : |ρ.im| ≤ 5 + |ρ.im| := by linarith only [abs_nonneg ρ.im]
             have hSiegel : B / ((q : ℝ) ^ (1 / 100 : ℝ) * (Real.log (q : ℝ)) ^ 2) < 1 - β₁ := by
               have hden : 0 < (q : ℝ) ^ (1 / 100 : ℝ) * (Real.log (q : ℝ)) ^ 2 :=
                 mul_pos (Real.rpow_pos_of_pos (by linarith) _) (pow_pos h𝓛pos 2)
@@ -420,7 +420,7 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
               rw [Real.log_mul (by linarith) (ne_of_gt hmpos)]
               have h2 : 0 ≤ Real.log (max 4 |ρ.im|) :=
                 Real.log_nonneg (le_trans (by norm_num : (1 : ℝ) ≤ 4) (le_max_left _ _))
-              linarith
+              linarith only [h2, h𝓛big]
             have hX0 : 0 ≤ Real.log ((q : ℝ) * max 4 |ρ.im|) := le_trans zero_le_one hX1
             have hZFRρ : cZ / Real.log ((q : ℝ) * max 4 |ρ.im|) ≤ 1 - ρ.re :=
               hZFR₀ q hqZ χ₁ β₁ hχ₁ hsq hβ₁lt hz₁ hβ1big χ ρ (Or.inl hLzρ)
@@ -437,12 +437,12 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
               rw [Real.log_mul (by linarith) (ne_of_gt hmpos)]
               have h1 : Real.log (max 4 |ρ.im|) ≤ Real.log 4 + Real.log (5 + |ρ.im|) := by
                 have h2 : max 4 |ρ.im| ≤ 4 * (5 + |ρ.im|) := by
-                  refine max_le ?_ ?_ <;> nlinarith [abs_nonneg ρ.im]
+                  refine max_le ?_ ?_ <;> linarith only [abs_nonneg ρ.im]
                 calc Real.log (max 4 |ρ.im|) ≤ Real.log (4 * (5 + |ρ.im|)) :=
                       Real.log_le_log hmpos h2
                   _ = Real.log 4 + Real.log (5 + |ρ.im|) :=
                       Real.log_mul (by norm_num) (by positivity)
-              linarith [h1]
+              linarith only [h1]
             set Φ : ℝ := 1.01 * (Real.log ((q : ℝ) * max 4 |ρ.im|) / cZ) + 𝓛 * U + 106 with hΦdef
             have hΦb : Φ * Real.exp 1 ≤ C₀ * U * 𝓛 := by
               rw [hΦdef, hC₀def]
@@ -455,7 +455,7 @@ theorem RepulsionFromPiecesC2_aux (cZ : ℝ) (hcZ : 0 < cZ)
               have h2 : 0 < 𝓛 * U := mul_pos h𝓛pos hUpos
               have h3 : 0 ≤ 1.01 * (Real.log ((q : ℝ) * max 4 |ρ.im|) / cZ) :=
                 mul_nonneg (by norm_num) (div_nonneg hX0 hcZ.le)
-              linarith
+              linarith only [h2, h3]
             have hstep := Work.LinnikAreas.BGTZArith.detector_step (Lq := 𝓛) (σ := ρ.re)
               (β₁ := β₁) (U := U) (P := P) (L := L) (N := (N : ℝ)) (Φ := Φ) (C₀ := C₀)
               h𝓛pos hUpos hΦpos hLpos hLreal hPreal hβ₁lt hN2R hlogNmax hchain hΦb
@@ -525,18 +525,18 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
   have hL0le : L0 ≤ Real.log (q : ℝ) := by
     have h1 : Real.exp L0 ≤ ((⌈Real.exp L0⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     have h2 : ((⌈Real.exp L0⌉₊ : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by exact_mod_cast hceil
-    have h3 : Real.exp L0 < (q : ℝ) := by linarith
+    have h3 : Real.exp L0 < (q : ℝ) := by linarith only [h1, h2]
     have h4 : Real.log (Real.exp L0) < Real.log (q : ℝ) :=
       Real.log_lt_log (Real.exp_pos L0) h3
     rw [Real.log_exp] at h4
-    linarith
+    linarith only [h4]
   have hL0big : ((10 : ℝ) ^ 12) ≤ L0 := by
     rw [hL0def]
     have h1 : 0 ≤ |Real.log A| := abs_nonneg _
     have h2 : 0 ≤ |Real.log CR| := abs_nonneg _
     have h3 : 0 ≤ |Real.log CN| := abs_nonneg _
     have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-    linarith
+    linarith only [h1, h2, h3, h4]
   have hL12 : (10 : ℝ) ^ 12 ≤ Real.log (q : ℝ) := le_trans hL0big hL0le
   have hL8 : (100000000 : ℝ) ≤ Real.log (q : ℝ) := le_trans (by norm_num) hL12
   have hLbig : (1000 : ℝ) ≤ Real.log (q : ℝ) := le_trans (by norm_num) hL12
@@ -547,27 +547,27 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
       have h2 : 0 ≤ |Real.log CR| := abs_nonneg _
       have h3 : 0 ≤ |Real.log CN| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log A ≤ |Real.log A| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hlogCR : Real.log CR ≤ Real.log (q : ℝ) / 10000 := by
     have h1 : 10000 * |Real.log CR| ≤ L0 := by
       rw [hL0def]
       have h2 : 0 ≤ |Real.log A| := abs_nonneg _
       have h3 : 0 ≤ |Real.log CN| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log CR ≤ |Real.log CR| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hlogCN : Real.log CN ≤ Real.log (q : ℝ) / 10000 := by
     have h1 : 10000 * |Real.log CN| ≤ L0 := by
       rw [hL0def]
       have h2 : 0 ≤ |Real.log A| := abs_nonneg _
       have h3 : 0 ≤ |Real.log CR| := abs_nonneg _
       have h4 : 0 ≤ |Real.log cZ| := abs_nonneg _
-      linarith
+      linarith only [h2, h3, h4]
     have h2 : Real.log CN ≤ |Real.log CN| := le_abs_self _
-    linarith
+    linarith only [h1, h2, hL0le]
   have hAinst : Work.LinnikAreas.BGTZ.HypA A (1 / 4 + 1 / 100) := by
     refine ⟨hApos, by norm_num, le_rfl, ?_⟩
     intro N _ ψ hψprim hψ1 t
@@ -594,8 +594,8 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
     have h1 : 0 ≤ (11 / 10) * (Real.log (5 + |ρ.im|) / Lq) := by
       refine mul_nonneg (by norm_num) ?_
       refine div_nonneg ?_ hLqpos.le
-      exact Real.log_nonneg (by linarith [abs_nonneg ρ.im])
-    linarith
+      exact Real.log_nonneg (by linarith only [abs_nonneg ρ.im])
+    linarith only [h1]
   have hUpos : 0 < U := lt_of_lt_of_le (by norm_num : (0:ℝ) < 11 / 5) hU1
   have hPpos : 0 < P := by
     have h1 : 0 < 1 / ((q : ℝ) ^ (1 / 100 : ℝ) * Lq) := by
@@ -611,37 +611,37 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
       have hCU2200 : 2200 ≤ C₀ * U := by
         have h := mul_le_mul hC₀1000 hU1 (by norm_num : (0:ℝ) ≤ 11 / 5) hC₀pos.le
         norm_num at h
-        linarith
+        linarith only [h]
       have hCUpos : 0 < C₀ * U := mul_pos hC₀pos hUpos
       have hP2200 : P < 1 / 2200 := by
         have h1 : P < 1 / (C₀ * U) := by
           rw [lt_div_iff₀ hCUpos]
-          nlinarith [hI]
+          linarith only [hI]
         have h2 : 1 / (C₀ * U) ≤ 1 / 2200 :=
           one_div_le_one_div_of_le (by norm_num) hCU2200
-        linarith
+        linarith only [h1, h2]
       have hb1dlt : 1 - β₁ < 1 / (2200 * Lq) := by
         have h1 : (1 - β₁) * Lq < 1 / 2200 := by
           rw [← hPreal]; exact hP2200
         have h2 : 1 - β₁ < (1 / 2200) / Lq := by
           rw [lt_div_iff₀ hLqpos]
-          linarith [h1]
+          linarith only [h1]
         have h3 : (1 / 2200 : ℝ) / Lq = 1 / (2200 * Lq) := by field_simp
-        linarith [h2, h3.le, h3.ge]
+        linarith only [h2, h3.le, h3.ge]
       have hb1big : 1 - 1 / (10 * Lq) < β₁ := by
-        have ha : 0 < 10 * Lq := by linarith
+        have ha : 0 < 10 * Lq := by linarith only [hLqpos]
         have h1 : 1 / (2200 * Lq) ≤ 1 / (10 * Lq) := by
           refine one_div_le_one_div_of_le ha ?_
-          linarith
-        linarith
+          linarith only [hLqpos]
+        linarith only [hb1dlt, h1]
       have h1b1pos : 0 < 1 - β₁ := by
         have h1 : 0 < 1 / (2200 * Lq) := by positivity
-        linarith
+        linarith only [hβ₁lt]
       have hb1half : (1 / 2 : ℝ) < β₁ := by
         have h1 : 1 / (10 * Lq) ≤ 1 / 10000 := by
           refine one_div_le_one_div_of_le (by norm_num) ?_
-          linarith
-        linarith
+          linarith only [hLbig]
+        linarith only [hb1big, h1]
       by_cases hrb : ρ = (β₁ : ℂ)
       · -- (a) the shared exceptional zero
         have hχne₁ : χ ≠ χ₁ := by
@@ -663,9 +663,9 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
           have h3 : ((min cZ 1 / 2200) * (11 / 5)) * C₀ ≤ (P * U) * C₀ :=
             mul_le_mul_of_nonneg_right h2 hC₀pos.le
           have h4 : ((min cZ 1 / 2200) * (11 / 5)) * C₀ = (C₀ * min cZ 1) / 1000 := by ring
-          have h5 : (1 : ℝ) ≤ (C₀ * min cZ 1) / 1000 := by linarith
+          have h5 : (1 : ℝ) ≤ (C₀ * min cZ 1) / 1000 := by linarith only [hC0min]
           have h6 : (P * U) * C₀ = P * C₀ * U := by ring
-          linarith [h3, h4, h5, h6]
+          linarith only [h3, h4, h5, h6]
         exact one_le_mul_exp_of h1 (mul_nonneg hLpos.le hUpos.le)
 
       · by_cases hρre : ρ.re = β₁
@@ -680,7 +680,7 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
             refine Real.log_pos ?_
             have hm : (1 : ℝ) < max 4 |ρ.im| :=
               lt_of_lt_of_le (by norm_num) (le_max_left _ _)
-            nlinarith
+            nlinarith only [hq1R, hm]
           have hzfr2 : cZ ≤ (P / Lq) * Real.log ((q : ℝ) * max 4 |ρ.im|) := by
             have h1 : 1 - ρ.re = P / Lq := by
               rw [hρre, hPreal]
@@ -691,7 +691,7 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
             rw [hUdef]
             have hTle : Real.log (max 4 |ρ.im|) ≤ Real.log 4 + Real.log (5 + |ρ.im|) := by
               have h1 : max 4 |ρ.im| ≤ 4 * (5 + |ρ.im|) := by
-                refine max_le ?_ ?_ <;> nlinarith [abs_nonneg ρ.im]
+                refine max_le ?_ ?_ <;> linarith only [abs_nonneg ρ.im]
               have h4 : 0 < max 4 |ρ.im| :=
                 lt_of_lt_of_le (by norm_num) (le_max_left _ _)
               calc Real.log (max 4 |ρ.im|) ≤ Real.log (4 * (5 + |ρ.im|)) :=
@@ -714,8 +714,9 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
           · -- (c) far to the left of the detector range
             have hL200 : Lq / 200 ≤ L := by
               rw [hLreal]
-              have h1 : (1 / 200 : ℝ) ≤ 1 - ρ.re := by linarith
-              nlinarith [hLqpos, h1]
+              have h1 : (1 / 200 : ℝ) ≤ 1 - ρ.re := by linarith only [hc]
+              have h2 := mul_le_mul_of_nonneg_right h1 hLqpos.le
+              linarith only [h2]
             have hc1 := Work.LinnikAreas.BGTZ.E.caseC_bound_far (q := q) (cZ := cZ)
               (Lq := Lq) (U := U) (P := P) (L := L) hq1R hLqdef hLbig hU1 hlamlow hL200
             rw [hC₀def]
@@ -726,15 +727,16 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
             have hρre_le_β₁ : ρ.re ≤ β₁ := by
               have h1 : (1 - β₁) * Lq ≤ (1 - ρ.re) * Lq := by
                 rw [← hPreal, ← hLreal]; exact hle
-              nlinarith [hLqpos, h1]
+              have h2 := le_of_mul_le_mul_right h1 hLqpos
+              linarith only [h2]
             have hρβ1lt : ρ.re < β₁ := lt_of_le_of_ne hρre_le_β₁ hρre
-            have hT4 : (4 : ℝ) ≤ 5 + |ρ.im| := by linarith [abs_nonneg ρ.im]
-            have h1γ : 1 + |ρ.im| ≤ 5 + |ρ.im| := by linarith
+            have hT4 : (4 : ℝ) ≤ 5 + |ρ.im| := by linarith only [abs_nonneg ρ.im]
+            have h1γ : 1 + |ρ.im| ≤ 5 + |ρ.im| := by linarith only []
             have hb34 : (3 / 4 : ℝ) ≤ β₁ := by
               have h1 : 1 / (10 * Lq) ≤ 1 / 4 := by
                 refine one_div_le_one_div_of_le (by norm_num) ?_
-                linarith
-              linarith
+                linarith only [hLbig]
+              linarith only [hb1big, h1]
             obtain ⟨R, N, hR200, hN2, hNδ, hRlo, hRhi, hNsize, hlogNmax⟩ :=
               Work.LinnikAreas.BGTZ.E.RepulsionSizesE (q := q) (A := A) (CR := CR) (CN := CN)
                 (β₁ := β₁) (γ := ρ.im) hA1 hCR1 hCNpos hβ₁lt hb1big hlamlow hL12 hlogA hlogCR
@@ -762,7 +764,7 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
               rw [Real.log_mul (by linarith) (ne_of_gt hmpos)]
               have h2 : 0 ≤ Real.log (max 4 |ρ.im|) :=
                 Real.log_nonneg (le_trans (by norm_num : (1 : ℝ) ≤ 4) (le_max_left _ _))
-              linarith
+              linarith only [h2, hLbig]
             have hX0 : 0 ≤ Real.log ((q : ℝ) * max 4 |ρ.im|) := le_trans zero_le_one hX1
             have hZFRr : cZ / Real.log ((q : ℝ) * max 4 |ρ.im|) ≤ 1 - ρ.re :=
               hZFR₀ q hqZ χ₁ β₁ hχ₁ hsq hβ₁lt hz₁ hb1big χ ρ (Or.inl hLzρ)
@@ -780,12 +782,12 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
               rw [Real.log_mul (by linarith) (ne_of_gt hmpos)]
               have h1 : Real.log (max 4 |ρ.im|) ≤ Real.log 4 + Real.log (5 + |ρ.im|) := by
                 have h2 : max 4 |ρ.im| ≤ 4 * (5 + |ρ.im|) := by
-                  refine max_le ?_ ?_ <;> nlinarith [abs_nonneg ρ.im]
+                  refine max_le ?_ ?_ <;> linarith only [abs_nonneg ρ.im]
                 calc Real.log (max 4 |ρ.im|) ≤ Real.log (4 * (5 + |ρ.im|)) :=
                       Real.log_le_log hmpos h2
                   _ = Real.log 4 + Real.log (5 + |ρ.im|) :=
                       Real.log_mul (by norm_num) (by positivity)
-              linarith [h1]
+              linarith only [h1]
             set Φ : ℝ := 1.01 * (Real.log ((q : ℝ) * max 4 |ρ.im|) / cZ) + Lq * U + 106 with hΦdef
             have hΦb : Φ * Real.exp 1 ≤ C₀ * U * Lq := by
               rw [hΦdef, hC₀def]
@@ -798,7 +800,7 @@ theorem RepulsionFromPiecesC2E_aux (cZ : ℝ) (hcZ : 0 < cZ)
               have h2 : 0 < Lq * U := mul_pos hLqpos hUpos
               have h3 : 0 ≤ 1.01 * (Real.log ((q : ℝ) * max 4 |ρ.im|) / cZ) :=
                 mul_nonneg (by norm_num) (div_nonneg hX0 hcZ.le)
-              linarith
+              linarith only [h2, h3]
             have hstep := Work.LinnikAreas.BGTZArith.detector_step (Lq := Lq) (σ := ρ.re)
               (β₁ := β₁) (U := U) (P := P) (L := L) (N := (N : ℝ)) (Φ := Φ) (C₀ := C₀)
               hLqpos hUpos hΦpos hLpos hLreal hPreal hβ₁lt hN2R hlogNmax hchain hΦb

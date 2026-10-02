@@ -15,7 +15,7 @@ open Work.LinnikAreas.A7
 /-- `e^{-a c} ≤ 1` for `c ≥ 0`. -/
 private lemma exp_neg_ac_le_one {c : ℝ} (hc : 0 ≤ c) : Real.exp (-(ac * c)) ≤ 1 := by
   rw [Real.exp_le_one_iff]
-  nlinarith [ac_pos, hc]
+  nlinarith only [ac_pos, hc]
 
 theorem chi1_refined2_le {q : ℕ} [NeZero q] {R Λ c₀ η lam CST1 : ℝ}
     {χ : DirichletCharacter ℂ q} {ρ : ℂ}
@@ -40,16 +40,16 @@ theorem chi1_refined2_le {q : ℕ} [NeZero q] {R Λ c₀ η lam CST1 : ℝ}
     simp only [Wf]
   -- Hence `Φ(lam) - Aref2 c₀ lam ≤ CST1 + (Φ Λ / Wf Λ) · wHB lam`.
   have hkey : Phi lam - Aref2 c₀ lam ≤ CST1 + (Phi Λ / Wf Λ) * Work.LinnikContract.wHB lam := by
-    linarith [hrowA]
+    linarith only [hrowA, hΦ]
   -- And `e^{-a c₀} η ≤ η` since `c₀ ≥ lam > 0` and `η ≥ 0`.
   have hc0 : 0 ≤ c₀ := le_trans hlam0.le hlamc
   have hexp_le : Real.exp (-(ac * c₀)) ≤ 1 := exp_neg_ac_le_one hc0
   have hexpη : Real.exp (-(ac * c₀)) * η ≤ η := by
-    nlinarith [hexp_le, hη]
+    nlinarith only [hexp_le, hη]
   -- Combine.
   have hfinal : (9/100) * (Phi lam - Aref2 c₀ lam) + (9/100) * Real.exp (-(ac * c₀)) * η
       ≤ (9/100) * (CST1 + (Phi Λ / Wf Λ) * Work.LinnikContract.wHB lam + η) := by
-    nlinarith [hkey, hexpη]
+    linarith only [hkey, hexpη, hrowA, hΦ]
   linarith [hW, hfinal]
 
 end

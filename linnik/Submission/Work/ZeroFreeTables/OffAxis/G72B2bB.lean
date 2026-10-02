@@ -71,10 +71,10 @@ theorem G72B2b (s σ a b Y : ℝ) (ha : 0 < a) (hY0 : 0 ≤ Y) (hY2 : Y ≤ 2)
       have h3 : a*u ≤ a*Y := mul_le_mul_of_nonneg_left hu.2 (le_of_lt ha)
       have h4 : 0 ≤ a*u := mul_nonneg (le_of_lt ha) hu.1
       have h2 : 0 ≤ (a*Y)^2 - (a*u)^2 := by
-        have hx : 0 ≤ a*Y - a*u := by linarith
-        have hy : 0 ≤ a*Y + a*u := by linarith
-        nlinarith [mul_nonneg hx hy]
-      nlinarith [hfac, h2, h3]
+        have hx : 0 ≤ a*Y - a*u := by linarith only [h3]
+        have hy : 0 ≤ a*Y + a*u := by linarith only [h3, h4]
+        linarith only [mul_nonneg hx hy, hx, hy]
+      linarith only [hfac, h2, h3]
     have hg : 0 ≤ g72 u := g72_nonneg hu.1 (le_trans hu.2 hY2)
     show 0 ≤ H u
     rw [hH]
@@ -95,21 +95,21 @@ theorem G72B2b (s σ a b Y : ℝ) (ha : 0 < a) (hY0 : 0 ≤ Y) (hY2 : Y ≤ 2)
       have h := Real.sum_le_exp_of_nonneg hsy_nonneg 3
       simp only [Finset.sum_range_succ, Finset.sum_range_zero] at h
       norm_num at h
-      linarith [h]
+      linarith only [h]
     have hquad : 2 - Real.exp (s*y) ≤ 1 - a*y - (a*y)^2/2 := by
       have hay : a*y ≤ s*y := mul_le_mul_of_nonneg_right hs hyn
       have hay0 : 0 ≤ a*y := mul_nonneg (le_of_lt ha) hyn
-      have h1 : 2 - Real.exp (s*y) ≤ 1 - s*y - (s*y)^2/2 := by linarith [htaylor]
+      have h1 : 2 - Real.exp (s*y) ≤ 1 - s*y - (s*y)^2/2 := by linarith only [htaylor]
       have h2 : 1 - s*y - (s*y)^2/2 ≤ 1 - a*y - (a*y)^2/2 := by
         have hp : 0 ≤ (s*y - a*y)*(2 + s*y + a*y) :=
-          mul_nonneg (sub_nonneg.mpr hay) (by linarith [hay0, hsy_nonneg])
-        nlinarith [hp]
-      linarith [h1, h2]
+          mul_nonneg (sub_nonneg.mpr hay) (by linarith only [hay0, hsy_nonneg])
+        linarith only [hp]
+      linarith only [h1, h2, htaylor]
     have hcos : 1 - Real.cos (σ*y) ≤ (σ*y)^2/2 := by
       have h := Real.one_sub_sq_div_two_le_cos (x := σ*y)
-      linarith [h]
-    have h2e : 0 ≤ 2 - Real.exp (s*y) := by linarith [hexp_le2]
-    have hsiny : Real.exp (s*y) ≤ Real.exp (b*y) := Real.exp_le_exp.mpr (by nlinarith)
+      linarith only [h]
+    have h2e : 0 ≤ 2 - Real.exp (s*y) := by linarith only [hexp_le2]
+    have hsiny : Real.exp (s*y) ≤ Real.exp (b*y) := Real.exp_le_exp.mpr (by nlinarith only [hsb, hyn])
     have hsq : (0:ℝ) ≤ (σ*y)^2/2 := by positivity
     have hp : (Real.exp (s*y) - 2) * Real.cos (σ*y)
         ≤ (Real.exp (b*y) - 2) + (σ^2/2) * (1 - a*y - (a*y)^2/2) * y^2 := by
@@ -120,7 +120,7 @@ theorem G72B2b (s σ a b Y : ℝ) (ha : 0 < a) (hY0 : 0 ≤ Y) (hY2 : Y ≤ 2)
           ≤ (2 - Real.exp (s*y)) * ((σ*y)^2/2) := mul_le_mul_of_nonneg_left hcos h2e
       have step2 : (2 - Real.exp (s*y)) * ((σ*y)^2/2)
           ≤ (1 - a*y - (a*y)^2/2) * ((σ*y)^2/2) := mul_le_mul_of_nonneg_right hquad hsq
-      linarith [step1, step2, hsiny]
+      linarith only [step1, step2, hsiny]
     show f y ≤ F y + (σ^2/2) * H y
     rw [hf, hF, hH]
     calc (Real.exp (s*y) - 2) * Real.cos (σ*y) * g72 y
@@ -145,13 +145,13 @@ theorem G72B2b (s σ a b Y : ℝ) (ha : 0 < a) (hY0 : 0 ≤ Y) (hY2 : Y ≤ 2)
       have he2 : (2:ℝ) ≤ Real.exp (s*y) := by
         have h : Real.exp (Real.log 2) ≤ Real.exp (s*y) := Real.exp_le_exp.mpr hly
         rwa [Real.exp_log (by norm_num)] at h
-      have hpos : 0 ≤ Real.exp (s*y) - 2 := by linarith
+      have hpos : 0 ≤ Real.exp (s*y) - 2 := by linarith only [he2]
       have hcos : Real.cos (σ*y) ≤ 1 := Real.cos_le_one _
       have h1 : (Real.exp (s*y) - 2) * Real.cos (σ*y) ≤ (Real.exp (s*y) - 2) * 1 :=
         mul_le_mul_of_nonneg_left hcos hpos
-      have hsiny : Real.exp (s*y) ≤ Real.exp (b*y) := Real.exp_le_exp.mpr (by nlinarith)
+      have hsiny : Real.exp (s*y) ≤ Real.exp (b*y) := Real.exp_le_exp.mpr (by nlinarith only [hsb, hyn])
       have hp : (Real.exp (s*y) - 2) * Real.cos (σ*y) ≤ Real.exp (b*y) - 2 := by
-        linarith [h1, hsiny]
+        linarith only [h1, hsiny]
       show f y ≤ F y
       rw [hf, hF]
       calc (Real.exp (s*y) - 2) * Real.cos (σ*y) * g72 y

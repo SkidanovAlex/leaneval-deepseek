@@ -30,7 +30,7 @@ lemma czEpsR_anti {c : ℝ} (hc : 0 ≤ c) {x y : ℝ} (hx : 0 < x) (hxy : x ≤
   have hsqrt : Real.sqrt (Real.log x) ≤ Real.sqrt (Real.log y) := Real.sqrt_le_sqrt hlog
   have h2 : c * Real.sqrt (Real.log x) ≤ c * Real.sqrt (Real.log y) :=
     mul_le_mul_of_nonneg_left hsqrt hc
-  linarith
+  linarith only [h2]
 
 lemma czEpsR_one {c : ℝ} {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1) : czEpsR c x = 1 := by
   rw [czEpsR]
@@ -44,30 +44,30 @@ lemma sqrt_add_le (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
   have hsq : (Real.sqrt a + Real.sqrt b) ^ 2 = a + b + 2 * (Real.sqrt a * Real.sqrt b) := by
     rw [add_sq, Real.sq_sqrt ha, Real.sq_sqrt hb]; ring
   rw [hsq]
-  nlinarith [Real.sqrt_nonneg a, Real.sqrt_nonneg b]
+  nlinarith only [Real.sqrt_nonneg a, Real.sqrt_nonneg b]
 
 lemma sqrt_le_sqrt_add {x y : ℝ} (h : y ≤ x) :
     Real.sqrt x ≤ Real.sqrt y + Real.sqrt (x - y) := by
   rcases le_total 0 y with hy | hy
-  · have hxy : 0 ≤ x - y := by linarith
+  · have hxy : 0 ≤ x - y := by linarith only [h]
     have h2 := sqrt_add_le (x - y) y hxy hy
     rw [show x - y + y = x by ring] at h2
-    linarith [h2]
-  · have h1 : Real.sqrt x ≤ Real.sqrt (x - y) := Real.sqrt_le_sqrt (by linarith)
+    linarith only [h2]
+  · have h1 : Real.sqrt x ≤ Real.sqrt (x - y) := Real.sqrt_le_sqrt (by linarith only [hy])
     rw [Real.sqrt_eq_zero_of_nonpos hy, zero_add]
     exact h1
 
 lemma Dc_floor_le_epsR_half {c : ℝ} (hc : 0 ≤ c) {x : ℝ} (hx : 0 ≤ x) :
     Dc c ⌊x⌋₊ ≤ czEpsR c (x / 2) := by
   by_cases h : x ≤ 2
-  · rw [czEpsR_one (by linarith : (0:ℝ) ≤ x / 2) (by linarith : x / 2 ≤ 1)]
+  · rw [czEpsR_one (by linarith only [hx] : (0:ℝ) ≤ x / 2) (by linarith only [h] : x / 2 ≤ 1)]
     exact Dc_le_one hc _
   · push Not at h
-    have hx2 : 0 < x / 2 := by linarith
+    have hx2 : 0 < x / 2 := by linarith only [h]
     have hge : x / 2 ≤ (⌊x⌋₊ : ℝ) := by
       have hlt : x < (⌊x⌋₊ : ℝ) + 1 := Nat.lt_floor_add_one x
-      have h2 : x / 2 < x - 1 := by linarith
-      linarith
+      have h2 : x / 2 < x - 1 := by linarith only [h]
+      linarith only [h, hlt]
     have hmono := czEpsR_anti hc hx2 hge
     rw [← Dc_eq_epsR c ⌊x⌋₊] at hmono
     exact hmono
@@ -124,15 +124,15 @@ theorem czGeomDecay :
         ≤ K * (2 : ℝ) ^ n * czEpsR 1 (a * 2 ^ n) := by
   set γ : ℝ := Real.sqrt (Real.log 2) with hγ
   have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hlog2le1 : Real.log 2 ≤ 1 := by linarith [Real.log_two_lt_d9]
+  have hlog2le1 : Real.log 2 ≤ 1 := by linarith only [Real.log_two_lt_d9]
   have hγ0 : 0 ≤ γ := by rw [hγ]; exact Real.sqrt_nonneg _
   have hγle1 : γ ≤ 1 := by
     rw [hγ]
     calc Real.sqrt (Real.log 2) ≤ Real.sqrt 1 := Real.sqrt_le_sqrt hlog2le1
       _ = 1 := Real.sqrt_one
   have hγhalf : γ / 2 < Real.log 2 := by
-    have h : (1 : ℝ) / 2 < Real.log 2 := by linarith [Real.log_two_gt_d9]
-    linarith
+    have h : (1 : ℝ) / 2 < Real.log 2 := by linarith only [Real.log_two_gt_d9, hlog2]
+    linarith only [hγle1, h]
   set ρ : ℝ := Real.exp (γ / 2) / 2 with hρ
   have hρ0 : 0 < ρ := by rw [hρ]; positivity
   have hρ1 : ρ < 1 := by
@@ -174,12 +174,12 @@ theorem czGeomDecay :
           = γ * Real.sqrt (((n - j : ℕ)) : ℝ) := by
         rw [Real.sqrt_mul (by positivity), hγ]; ring
       rw [h2] at h1
-      linarith [h1]
+      linarith only [h1]
     have henv : czEpsR 1 (a * 2 ^ j)
         ≤ czEpsR 1 (a * 2 ^ n) * Real.exp (γ * Real.sqrt (((n - j : ℕ)) : ℝ)) := by
       rw [czEpsR, czEpsR, ← Real.exp_add]
       apply Real.exp_le_exp.mpr
-      linarith [hsub]
+      linarith only [hsub]
     calc (2 : ℝ) ^ j * czEpsR 1 (a * 2 ^ j)
         = (2 : ℝ) ^ n * (1 / 2 : ℝ) ^ (n - j) * czEpsR 1 (a * 2 ^ j) := by rw [hpow]
       _ ≤ (2 : ℝ) ^ n * (1 / 2 : ℝ) ^ (n - j)
@@ -194,12 +194,12 @@ theorem czGeomDecay :
     have hsqrt : Real.sqrt ((m : ℕ) : ℝ) ≤ ((m : ℝ) + 1) / 2 := by
       rw [Real.sqrt_le_iff]
       refine ⟨by positivity, ?_⟩
-      nlinarith [sq_nonneg (Real.sqrt ((m:ℕ):ℝ) - 1), Real.sq_sqrt hm0, Real.sqrt_nonneg ((m:ℕ):ℝ)]
+      nlinarith only [sq_nonneg (Real.sqrt ((m:ℕ):ℝ) - 1), Real.sq_sqrt hm0, Real.sqrt_nonneg ((m:ℕ):ℝ), hm0]
     have hexp : Real.exp (γ * Real.sqrt ((m : ℕ) : ℝ))
         ≤ Real.exp (γ / 2) * Real.exp (γ / 2) ^ m := by
       rw [← Real.exp_nat_mul, ← Real.exp_add]
       apply Real.exp_le_exp.mpr
-      nlinarith [hsqrt, hγ0]
+      nlinarith only [hsqrt, hγ0]
     calc (1 / 2 : ℝ) ^ m * Real.exp (γ * Real.sqrt ((m : ℕ) : ℝ))
         ≤ (1 / 2 : ℝ) ^ m * (Real.exp (γ / 2) * Real.exp (γ / 2) ^ m) :=
           mul_le_mul_of_nonneg_left hexp (by positivity)
@@ -248,29 +248,29 @@ lemma Dc_czTmax_le {w y : ℝ} {r : ℕ} (hw : 0 < w) (hwy : w ≤ y) (hr : 1 �
     (hry : (r : ℝ) < y) :
     Dc 1 ⌊w / ((⌊y / (r : ℝ)⌋₊ : ℝ) + 1)⌋₊ ≤ czEpsR 1 (w / (4 * y) * (r : ℝ)) := by
   have hr0 : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (by omega : 0 < r)
-  have hy0 : (0 : ℝ) < y := by linarith
+  have hy0 : (0 : ℝ) < y := by linarith only [hry, hr0]
   by_cases hbig : 4 * y / w ≤ (r : ℝ)
   · have hden : (⌊y / (r : ℝ)⌋₊ : ℝ) + 1 ≤ 2 * y / (r : ℝ) := by
       have h1 : (⌊y / (r : ℝ)⌋₊ : ℝ) ≤ y / (r : ℝ) := Nat.floor_le (div_nonneg hy0.le hr0.le)
-      have h2 : (1 : ℝ) ≤ y / (r : ℝ) := by rw [le_div_iff₀ hr0]; linarith
+      have h2 : (1 : ℝ) ≤ y / (r : ℝ) := by rw [le_div_iff₀ hr0]; linarith only [hry]
       have h3 : y / (r : ℝ) + y / (r : ℝ) = 2 * y / (r : ℝ) := by ring
-      linarith [h1, h2, h3]
+      linarith only [h1, h2, h3]
     have hdiv : w / (2 * y / (r : ℝ)) ≤ w / ((⌊y / (r : ℝ)⌋₊ : ℝ) + 1) :=
       div_le_div_of_nonneg_left hw.le (by positivity) hden
     have hwr : w / (2 * y / (r : ℝ)) = w * (r : ℝ) / (2 * y) := by field_simp; try ring
     rw [hwr] at hdiv
     have hfloor : w * (r : ℝ) / (2 * y) - 1 < (⌊w / ((⌊y / (r : ℝ)⌋₊ : ℝ) + 1)⌋₊ : ℝ) := by
       have h := Nat.lt_floor_add_one (w / ((⌊y / (r : ℝ)⌋₊ : ℝ) + 1))
-      linarith
+      linarith only [hdiv, h]
     have hβr : w / (4 * y) * (r : ℝ) ≤ w * (r : ℝ) / (2 * y) - 1 := by
       have h1 : (1 : ℝ) ≤ w * (r : ℝ) / (4 * y) := by
         rw [le_div_iff₀ (by positivity)]
         have h2 := mul_le_mul_of_nonneg_right hbig hw.le
         rw [div_mul_cancel₀ _ (ne_of_gt hw)] at h2
-        nlinarith [h2]
+        linarith only [h2]
       have h3 : w / (4 * y) * (r : ℝ) = w * (r : ℝ) / (4 * y) := by ring
       have h4 : w * (r : ℝ) / (2 * y) = 2 * (w * (r : ℝ) / (4 * y)) := by ring
-      rw [h3, h4]; linarith
+      rw [h3, h4]; linarith only [h1]
     rw [Dc_eq_epsR]
     exact czEpsR_anti (by norm_num : (0:ℝ) ≤ 1) (by positivity)
       (le_of_lt (lt_of_le_of_lt hβr hfloor))
@@ -280,7 +280,7 @@ lemma Dc_czTmax_le {w y : ℝ} {r : ℕ} (hw : 0 < w) (hwy : w ≤ y) (hr : 1 �
       rw [h1, div_lt_one (by positivity)]
       have h2 := mul_lt_mul_of_pos_right hbig hw
       rw [div_mul_cancel₀ _ (ne_of_gt hw)] at h2
-      linarith [h2]
+      linarith only [h2]
     rw [czEpsR_one (by positivity : (0:ℝ) ≤ w / (4*y) * (r:ℝ)) hβr1.le]
     exact Dc_le_one (by norm_num) _
 
@@ -289,8 +289,8 @@ theorem czEpsScaleBound :
       czEpsR 1 (w * (czR w N q : ℝ) / (4 * y)) ≤ K * Dc 1 (czT y N q) := by
   refine ⟨Real.exp (Real.sqrt (Real.log 8)), Real.exp_pos _, ?_⟩
   intro w y N q hw hwy
-  have hw0 : (0 : ℝ) < w := by linarith
-  have hy0 : (0 : ℝ) < y := by linarith
+  have hw0 : (0 : ℝ) < w := by linarith only [hw]
+  have hy0 : (0 : ℝ) < y := by linarith only [hw, hwy]
   rcases Nat.eq_zero_or_pos q with hq0 | hq1
   · subst hq0
     have hR : czR w N 0 = 0 := by simp [czR]
@@ -313,7 +313,7 @@ theorem czEpsScaleBound :
     have hRge : (N : ℝ) / ((q : ℝ) * w) - 1 ≤ (czR w N q : ℝ) := by
       have h := Nat.lt_floor_add_one ((N : ℝ) / ((q : ℝ) * w))
       have he : (⌊(N : ℝ) / ((q : ℝ) * w)⌋₊ : ℝ) = (czR w N q : ℝ) := rfl
-      rw [he] at h; linarith
+      rw [he] at h; linarith only [h]
     have hkey : ((czT y N q : ℝ) - w / y) / 4 ≤ w * (czR w N q : ℝ) / (4 * y) := by
       have h2 : w * ((N : ℝ) / ((q : ℝ) * w) - 1) / (4 * y)
           ≤ w * (czR w N q : ℝ) / (4 * y) := by
@@ -323,24 +323,24 @@ theorem czEpsScaleBound :
           = (N : ℝ) / ((q : ℝ) * y) / 4 - w / (4 * y) := by
         field_simp; try ring
       have e1 : (czT y N q : ℝ) - w / y ≤ (N : ℝ) / ((q : ℝ) * y) - w / y := by
-        linarith [hTle]
+        linarith only [hTle]
       have e4 : ((N : ℝ) / ((q : ℝ) * y) - w / y) / 4
           = (N : ℝ) / ((q : ℝ) * y) / 4 - w / (4 * y) := by ring
-      linarith [h2, h3, e1, e4]
+      linarith only [h2, h3, e1, e4, hTle]
     by_cases hcase : (4:ℝ) ≤ (czT y N q : ℝ)
     · have hA : (czT y N q : ℝ) / 8 ≤ w * (czR w N q : ℝ) / (4 * y) := by
         have h5 : (czT y N q : ℝ) / 8 ≤ ((czT y N q : ℝ) - w / y) / 4 := by
           have h6 : w / y ≤ (czT y N q : ℝ) / 2 := by
             have hwy1 : w / y ≤ 1 := by rw [div_le_one hy0]; exact hwy
-            linarith
-          linarith
-        linarith [hkey, h5]
-      have hT8 : (0:ℝ) < (czT y N q : ℝ)/8 := by linarith
+            linarith only [hcase, hwy1]
+          linarith only [h6]
+        linarith only [hkey, h5]
+      have hT8 : (0:ℝ) < (czT y N q : ℝ)/8 := by linarith only [hcase]
       have hmono : czEpsR 1 (w * (czR w N q : ℝ) / (4 * y))
           ≤ czEpsR 1 ((czT y N q : ℝ) / 8) :=
         czEpsR_anti (by norm_num : (0:ℝ) ≤ 1) hT8 hA
       refine hmono.trans ?_
-      have hTpos : (0:ℝ) < (czT y N q : ℝ) := by linarith
+      have hTpos : (0:ℝ) < (czT y N q : ℝ) := by linarith only [hcase]
       have hsplit : Real.sqrt (Real.log (czT y N q : ℝ))
           - Real.sqrt (Real.log ((czT y N q : ℝ) / 8)) ≤ Real.sqrt (Real.log 8) := by
         have hlog8 : Real.log ((czT y N q : ℝ)) - Real.log ((czT y N q : ℝ) / 8) = Real.log 8 := by
@@ -348,12 +348,12 @@ theorem czEpsScaleBound :
           congr 1
           field_simp
         have hloglt : Real.log ((czT y N q : ℝ) / 8) ≤ Real.log (czT y N q : ℝ) :=
-          Real.log_le_log (by positivity) (by linarith)
+          Real.log_le_log (by positivity) (by linarith only [hcase])
         have h1 := sqrt_le_sqrt_add hloglt
         rw [hlog8] at h1
-        linarith [h1]
+        linarith only [h1]
       rw [czEpsR, Dc_eq_epsR, czEpsR, ← Real.exp_add, Real.exp_le_exp]
-      linarith [hsplit]
+      linarith only [hsplit]
     · push Not at hcase
       have hcT4 : czT y N q < 4 := by exact_mod_cast hcase
       have hT3 : (czT y N q : ℝ) ≤ 3 := by
@@ -375,7 +375,7 @@ theorem czEpsScaleBound :
       rw [Dc_eq_epsR, czEpsR, ← Real.exp_add]
       calc (1:ℝ) = Real.exp 0 := (Real.exp_zero).symm
         _ ≤ Real.exp (Real.sqrt (Real.log 8) + -(1 * Real.sqrt (Real.log (czT y N q : ℝ)))) :=
-            Real.exp_le_exp.mpr (by linarith [hle2, h38])
+            Real.exp_le_exp.mpr (by linarith only [hle2, h38])
 
 /-! ## The `σ`-weighted dyadic sum -/
 
@@ -478,7 +478,7 @@ lemma czSigEpsSum {Kg β Ksig : ℝ} (hKg : 0 < Kg) (hβ : 0 < β) (hKsig : 0 �
           · intro j hj; rw [Finset.mem_range] at hj ⊢; omega
           · intro j _ _; exact mul_nonneg (by positivity) (czEpsR_nonneg 1 _)
         have h := hgeom β J hβ
-        linarith [h1, h]
+        linarith only [h1, h]
       calc Ksig * 2 * (∑ j ∈ Finset.range J, (2:ℝ)^j * czEpsR 1 (β * ((2:ℝ)^j)))
           ≤ Ksig * 2 * (Kg * (2:ℝ)^J * czEpsR 1 (β * ((2:ℝ)^J))) :=
             mul_le_mul_of_nonneg_left hg (by positivity)
@@ -497,7 +497,7 @@ lemma czSigEpsSum {Kg β Ksig : ℝ} (hKg : 0 < Kg) (hβ : 0 < β) (hKsig : 0 �
       have hstep : ((2:ℝ)^J) * czEpsR 1 (β * ((2:ℝ)^J))
           ≤ (2 * (R:ℝ)) * czEpsR 1 (β * (R:ℝ)) :=
         mul_le_mul hle2 hmono (Real.exp_nonneg _) (by positivity)
-      nlinarith [hstep]
+      linarith only [hstep]
     have hfin : (∑ j ∈ Finset.range J,
           ∑ r ∈ Finset.Ioc ((2:ℕ) ^ j) ((2:ℕ) ^ (j + 1)),
             (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ)) * czEpsR 1 (β * (r : ℝ)))
@@ -507,8 +507,8 @@ lemma czSigEpsSum {Kg β Ksig : ℝ} (hKg : 0 < Kg) (hβ : 0 < β) (hKsig : 0 �
         mul_le_mul_of_nonneg_left hrel (by positivity)
       have h3 : (2 * Ksig * Kg) * (2 * ((R:ℝ) * czEpsR 1 (β * (R:ℝ))))
           = 4 * Ksig * Kg * ((R:ℝ) * czEpsR 1 (β * (R:ℝ))) := by ring
-      linarith [hblocks, h2, h3]
-    linarith [h1term, hfin]
+      linarith only [hblocks, h2, h3]
+    linarith only [h1term, hfin]
 
 /-! ## The three sum estimates -/
 
@@ -518,18 +518,18 @@ theorem claim1 :
   obtain ⟨C, hC, hCd⟩ := Work.ZeroDensity.Jutila.LzDiffAux.CzHarmDecayHere 1 one_pos
   refine ⟨C, hC, ?_⟩
   intro w y N hw hwy hyN hNwy
-  have hw0 : (0:ℝ) < w := by linarith
-  have hy0 : (0:ℝ) < y := by linarith
+  have hw0 : (0:ℝ) < w := by linarith only [hw]
+  have hy0 : (0:ℝ) < y := by linarith only [hw, hwy]
   set A : ℝ := (N:ℝ) / w with hA
   have hNpos : (0:ℝ) < (N:ℝ) := by
     have h1 : (1:ℝ) ≤ (N:ℝ) := le_trans (le_trans hw hwy) hyN
-    linarith
+    linarith only [hw, hwy, hyN]
   have hApos : 0 < A := by rw [hA]; exact div_pos hNpos hw0
   have hQA : ((czQ y N : ℕ) : ℝ) ≤ A := by
     have h1 : ((czQ y N : ℕ) : ℝ) ≤ (N:ℝ) / y := by
       rw [czQ]; exact Nat.floor_le (div_nonneg (Nat.cast_nonneg N) hy0.le)
     have h2 : (N:ℝ) / y ≤ (N:ℝ) / w := div_le_div_of_nonneg_left (Nat.cast_nonneg N) hw0 hwy
-    rw [hA]; linarith
+    rw [hA]; linarith only [h1, h2]
   have hpt : ∀ q ∈ Finset.Icc (1:ℕ) (czQ y N),
       (1 : ℝ) / q * Dc 1 (czR w N q) ≤ (1 : ℝ) / q * czEpsR 1 ((A / 2) / q) := by
     intro q hq
@@ -549,7 +549,7 @@ theorem claim1 :
   calc (∑ q ∈ Finset.Icc (1:ℕ) (czQ y N), (1 : ℝ) / q * Dc 1 (czR w N q))
       ≤ ∑ q ∈ Finset.Icc (1:ℕ) (czQ y N), (1 : ℝ) / q * czEpsR 1 ((A / 2) / q) :=
         Finset.sum_le_sum hpt
-    _ ≤ C := hCd (A / 2) (czQ y N) (by positivity) (by linarith [hQA])
+    _ ≤ C := hCd (A / 2) (czQ y N) (by positivity) (by linarith only [hQA])
 
 theorem claim2 :
     ∃ C : ℝ, 0 < C ∧ ∀ (w y : ℝ) (N : ℕ) (q : ℕ), 1 ≤ w → w ≤ y → (N : ℝ) < w * y →
@@ -565,8 +565,8 @@ theorem claim2 :
     fun n => hsig0 n
   refine ⟨Kσ + 4 * Kσ * Kg * Ks + 1, by positivity, ?_⟩
   intro w y N q hw hwy hNwy
-  have hw0 : (0:ℝ) < w := by linarith
-  have hy0 : (0:ℝ) < y := by linarith
+  have hw0 : (0:ℝ) < w := by linarith only [hw]
+  have hy0 : (0:ℝ) < y := by linarith only [hw, hwy]
   by_cases hq0 : q = 0
   · subst hq0
     have hR : czR w N 0 = 0 := by simp [czR]
@@ -575,7 +575,7 @@ theorem claim2 :
       add_nonneg (div_nonneg hy0.le hw0.le) (by simp)
     have : (0:ℝ) ≤ (Kσ + 4 * Kσ * Kg * Ks + 1) * (y / w + (0 : ℝ) * Dc 1 (czT y N 0)) :=
       mul_nonneg (by positivity) hnn
-    linarith
+    linarith only [this]
   · have hq1 : 1 ≤ q := by omega
     have hq0' : (0:ℝ) < (q:ℝ) := by exact_mod_cast (by omega : 0 < q)
     set β : ℝ := w / (4 * y) with hβdef
@@ -592,8 +592,8 @@ theorem claim2 :
           have hh := mul_le_mul_of_nonneg_left hq1' (Nat.cast_nonneg N)
           simpa using hh
         have hB := mul_lt_mul_of_pos_right hNwy hq0'
-        nlinarith [hA, hB]
-      linarith
+        linarith only [hA, hB]
+      linarith only [h1, h2]
     have hpt : ∀ r ∈ Finset.Icc (1:ℕ) (czR w N q),
         (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ)) * Dc 1 (czTmax w y N q r)
           ≤ (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ))
@@ -649,7 +649,7 @@ theorem claim2 :
             * (y / w + (czR w N q : ℝ) * Dc 1 (czT y N q)) := by
           have hDcT : 0 ≤ Dc 1 (czT y N q) := (Dc_pos 1 _).le
           have hRnn : (0:ℝ) ≤ (czR w N q : ℝ) := Nat.cast_nonneg _
-          have hyw : 1 ≤ y / w := by rw [le_div_iff₀ hw0]; linarith
+          have hyw : 1 ≤ y / w := by rw [le_div_iff₀ hw0]; linarith only [hwy]
           have h1 : Dc 1 (czT y N q)
               * (∑ r ∈ Finset.Icc (1:ℕ) (czR w N q), ∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ))
               ≤ Dc 1 (czT y N q) * (Kσ * (czR w N q : ℝ)) :=
@@ -675,15 +675,15 @@ theorem claim2 :
             rw [hexp, hL]
             have hb4 : (0:ℝ) ≤ 4 * Kσ * Kg * Ks :=
               mul_nonneg (mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 4) hKσ.le) hKg.le) hKs.le
-            have hbig : (0:ℝ) ≤ Kσ + 4 * Kσ * Kg * Ks := by linarith [hb4, hKσ.le]
-            have hby : (1:ℝ) ≤ (Kσ + 4 * Kσ * Kg * Ks + 1) * (y / w) := by nlinarith [hyw, hbig]
+            have hbig : (0:ℝ) ≤ Kσ + 4 * Kσ * Kg * Ks := by linarith only [hb4, hKσ.le, hKσ]
+            have hby : (1:ℝ) ≤ (Kσ + 4 * Kσ * Kg * Ks + 1) * (y / w) := by nlinarith only [hyw, hbig, hKσ, hb4]
             have h2 : (0:ℝ) ≤ (Kσ + 4 * Kσ * Kg * Ks + 1) * ((czR w N q : ℝ) * Dc 1 (czT y N q)) :=
-              mul_nonneg (by linarith) hRD
+              mul_nonneg (by linarith only [hKσ, hb4]) hRD
             have h3 : (Kσ + 4 * Kσ * Kg * Ks) * ((czR w N q : ℝ) * Dc 1 (czT y N q))
                 ≤ (Kσ + 4 * Kσ * Kg * Ks + 1) * ((czR w N q : ℝ) * Dc 1 (czT y N q)) :=
-              mul_le_mul_of_nonneg_right (by linarith) hRD
-            linarith [hby, h2, h3]
-          linarith [h1, hsum2, hmul2, hmid]
+              mul_le_mul_of_nonneg_right (by linarith only []) hRD
+            linarith only [hby, h2, h3, hRD]
+          linarith only [h1, hsum2, hmul2, hmid]
 
 theorem claim3 :
     ∃ C : ℝ, 0 < C ∧ ∀ (w y : ℝ) (N : ℕ) (q : ℕ), 1 ≤ w → w ≤ y → (N : ℝ) < w * y →
@@ -693,8 +693,8 @@ theorem claim3 :
         ≤ C * ((czR w N q : ℝ) ^ 3 / y ^ 2) := by
   refine ⟨6, by norm_num, ?_⟩
   intro w y N q hw hwy hNwy
-  have hw0 : (0:ℝ) < w := by linarith
-  have hy0 : (0:ℝ) < y := by linarith
+  have hw0 : (0:ℝ) < w := by linarith only [hw]
+  have hy0 : (0:ℝ) < y := by linarith only [hw, hwy]
   have hsigSq : (∑ r ∈ Finset.Icc (1:ℕ) (czR w N q),
         (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ)) * (r:ℝ)^2)
       ≤ 6 * ((czR w N q : ℝ))^3 := by
@@ -765,26 +765,26 @@ theorem claim3 :
       have h3 : w / ((⌊y / (r:ℝ)⌋₊ : ℝ) + 1) ≤ w * (r:ℝ) / y := by
         have hden : y / (r:ℝ) ≤ (⌊y / (r:ℝ)⌋₊ : ℝ) + 1 := by
           have hh := Nat.lt_floor_add_one (y / (r:ℝ))
-          linarith
+          linarith only [hh]
         have hdenpos : 0 < (⌊y / (r:ℝ)⌋₊ : ℝ) + 1 := by positivity
         rw [div_le_div_iff₀ hdenpos hy0]
         have h4 : y ≤ ((⌊y / (r:ℝ)⌋₊ : ℝ) + 1) * (r:ℝ) := by
           have h5 := mul_le_mul_of_nonneg_right hden hr0.le
           rw [div_mul_cancel₀] at h5
-          · linarith [h5]
+          · linarith only [h5]
           · exact ne_of_gt hr0
-        nlinarith [h4, hw0.le]
-      linarith
+        nlinarith only [h4, hw0.le, hw]
+      linarith only [h1, h2, h3]
     have hTy : (czTmax w y N q r : ℝ) * y ≤ w * (r:ℝ) := by
       have hh := mul_le_mul_of_nonneg_right hTle hy0.le
       rw [div_mul_cancel₀ _ (ne_of_gt hy0)] at hh
-      linarith [hh]
+      linarith only [hh]
     have hle : ((czTmax w y N q r : ℝ) / w) ^ 2 ≤ ((r:ℝ) / y) ^ 2 := by
       have h1 : (czTmax w y N q r : ℝ) / w ≤ (r:ℝ) / y := by
-        rw [div_le_div_iff₀ hw0 hy0]; linarith [hTy]
+        rw [div_le_div_iff₀ hw0 hy0]; linarith only [hTy]
       have h2 : (0:ℝ) ≤ (czTmax w y N q r : ℝ) / w := by positivity
       have h3 : (0:ℝ) ≤ (r:ℝ) / y := by positivity
-      nlinarith [h1, h2, h3]
+      nlinarith only [h1, h2, h3]
     exact mul_le_mul_of_nonneg_left hle (Finset.sum_nonneg (fun d _ => by positivity))
   calc (∑ r ∈ Finset.Icc (1:ℕ) (czR w N q),
         (∑ d ∈ r.divisors, 1 / Real.sqrt (d : ℝ)) * (((czTmax w y N q r : ℝ) / w) ^ 2))
@@ -825,23 +825,23 @@ theorem czRII_aux_bounds :
     refine le_trans (h1 w y N hw hwy hyN hNwy) ?_
     have hC1le : C1 ≤ max (max C1 C2) C3 + 1 := by
       have hh : C1 ≤ max (max C1 C2) C3 := le_trans (le_max_left C1 C2) (le_max_left _ C3)
-      linarith
-    linarith [hC1le]
+      linarith only [hh]
+    linarith only [hC1le]
   · intro w y N q hw hwy hNwy
     refine le_trans (h2 w y N q hw hwy hNwy) ?_
     have hnn : (0:ℝ) ≤ y/w + (czR w N q : ℝ) * Dc 1 (czT y N q) :=
-      add_nonneg (div_nonneg (by linarith : (0:ℝ) ≤ y) (by linarith : (0:ℝ) ≤ w))
+      add_nonneg (div_nonneg (by linarith only [hw, hwy] : (0:ℝ) ≤ y) (by linarith only [hw] : (0:ℝ) ≤ w))
         (mul_nonneg (Nat.cast_nonneg _) (Dc_pos 1 _).le)
     have hC2le : C2 ≤ max (max C1 C2) C3 + 1 := by
       have hh : C2 ≤ max (max C1 C2) C3 := le_trans (le_max_right C1 C2) (le_max_left _ C3)
-      linarith
+      linarith only [hh]
     exact mul_le_mul_of_nonneg_right hC2le hnn
   · intro w y N q hw hwy hNwy
     refine le_trans (h3 w y N q hw hwy hNwy) ?_
     have hnn : (0:ℝ) ≤ ((czR w N q : ℝ) ^ 3 / y ^ 2) := by positivity
     have hC3le : C3 ≤ max (max C1 C2) C3 + 1 := by
       have hh : C3 ≤ max (max C1 C2) C3 := le_max_right _ C3
-      linarith
+      linarith only [hh]
     exact mul_le_mul_of_nonneg_right hC3le hnn
 
 end

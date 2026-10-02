@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.OtherCharRepel.cosPolyDecent
 
 namespace Work.LinnikAreas.OtherCharRepel
 

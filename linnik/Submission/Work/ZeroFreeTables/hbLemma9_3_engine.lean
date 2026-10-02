@@ -6,8 +6,8 @@ import Submission.Work.ZeroFreeTables.TestFn_F_nonneg
 import Submission.Work.LinnikAreas.DhRepel.lemma8_5
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi
 import Submission.Commons.NumberTheory.Linnik.Ksum_principal_le
-import Submission.Work.LinnikAreas.le_re_of_LFunction_primitive_eq_zero
 import Submission.Commons.Analysis.Complex.exterior_jensen_multiplicity
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open scoped BigOperators
 open Commons.NumberTheory.Linnik (re_div_cpow_eq mul_re_mul_re star_apply_eq_inv star_cpow_ofReal_neg)

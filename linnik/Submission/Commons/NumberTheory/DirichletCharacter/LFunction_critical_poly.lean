@@ -6,7 +6,6 @@ import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Topology.Separation.CompletelyRegular
 import Submission.Commons.NumberTheory.DirichletCharacter.completedLFunction_eq
-import Submission.Commons.NumberTheory.DirichletCharacter.norm_LFunction_vertical
 
 open Complex DirichletCharacter
 open scoped Real
@@ -4920,7 +4919,7 @@ theorem gammaℝ_norm_upper (a : ℝ) (ha : 0 < a) :
   have hAbs : |t / 2| ≤ |t| := by
     rw [hAbsDiv]
     have ht : 0 ≤ |t| := abs_nonneg t
-    nlinarith
+    linarith only [ht]
   have hpoly : (1 + |t / 2|) ^ (a / 2) ≤ (1 + |t|) ^ (a / 2) := by
     refine Real.rpow_le_rpow ?_ ?_ ?_
     · positivity
@@ -4984,9 +4983,9 @@ theorem gammaℝ_norm_lower (a : ℝ) (ha0 : 0 < a) (ha2 : a < 2) :
   have hAbs : |t / 2| ≤ |t| := by
     rw [hAbsDiv]
     have ht : 0 ≤ |t| := abs_nonneg t
-    nlinarith
-  have hbases : 1 + |t / 2| ≤ 1 + |t| := by linarith
-  have hp : a / 2 - 1 ≤ 0 := by nlinarith
+    linarith only [ht]
+  have hbases : 1 + |t / 2| ≤ 1 + |t| := by linarith only [hAbs]
+  have hp : a / 2 - 1 ≤ 0 := by linarith only [ha2]
   have hpoly : (1 + |t|) ^ (a / 2 - 1) ≤ (1 + |t / 2|) ^ (a / 2 - 1) := by
     exact Real.rpow_le_rpow_of_nonpos (by positivity : 0 < 1 + |t / 2|) hbases hp
   have harg : ((a : ℂ) + I * (t : ℂ)) / 2 = ((a / 2 : ℝ) : ℂ) + I * (((t / 2 : ℝ) : ℂ)) := by
@@ -5850,26 +5849,28 @@ lemma norm_cpow_lineLeft (x : ℝ) (hx : 0 < x) (y : ℝ) :
 lemma norm_inv_one_add_mul_I_le (t : ℝ) : ‖(1 + I * (t : ℂ))⁻¹‖ ≤ 1 := by
   rw [norm_inv]
   have hsq : ‖1 + I * (t : ℂ)‖ ^ 2 = 1 + t ^ 2 := by
-    rw [← Complex.normSq_eq_norm_sq]
-    simpa [pow_two, mul_comm, add_comm, add_left_comm, add_assoc] using
-      (Complex.normSq_add_mul_I (1 : ℝ) t)
+    rw [← Complex.normSq_eq_norm_sq,
+      show (1 + I * (t : ℂ)) = ((1 : ℝ) : ℂ) + (t : ℂ) * I by push_cast; ring,
+      Complex.normSq_add_mul_I]
+    norm_num
   have hnn : 0 ≤ ‖1 + I * (t : ℂ)‖ := norm_nonneg _
   have hbig : 1 ≤ ‖1 + I * (t : ℂ)‖ := by
     rw [← sq_le_sq₀ (by norm_num) hnn]
-    nlinarith [hsq, sq_nonneg t]
+    linarith only [hsq, sq_nonneg t]
   exact (inv_le_one₀ (lt_of_lt_of_le (by norm_num) hbig)).mpr hbig
 
 /-- `‖(x+iy)⁻¹‖ ≤ 1` for real part of modulus 1: `|x| = 1` handled through `normSq = 1 + y²`. -/
 lemma norm_inv_lineLeft_le (t : ℝ) : ‖(-1 + I * (t : ℂ))⁻¹‖ ≤ 1 := by
   rw [norm_inv]
   have hsq : ‖-1 + I * (t : ℂ)‖ ^ 2 = 1 + t ^ 2 := by
-    rw [← Complex.normSq_eq_norm_sq]
-    simpa [pow_two, mul_comm, add_comm, add_left_comm, add_assoc] using
-      (Complex.normSq_add_mul_I (-1 : ℝ) t)
+    rw [← Complex.normSq_eq_norm_sq,
+      show (-1 + I * (t : ℂ)) = ((-1 : ℝ) : ℂ) + (t : ℂ) * I by push_cast; ring,
+      Complex.normSq_add_mul_I]
+    norm_num
   have hnn : 0 ≤ ‖-1 + I * (t : ℂ)‖ := norm_nonneg _
   have hbig : 1 ≤ ‖-1 + I * (t : ℂ)‖ := by
     rw [← sq_le_sq₀ (by norm_num) hnn]
-    nlinarith [hsq, sq_nonneg t]
+    linarith only [hsq, sq_nonneg t]
   exact (inv_le_one₀ (lt_of_lt_of_le (by norm_num) hbig)).mpr hbig
 
 /-- Pointwise domination of the right-line integrand by a Gaussian. -/
@@ -6020,7 +6021,7 @@ lemma integrable_lineRight (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) {s :
   rcases lineRight_norm_le χ hs0 hx with ⟨A, hApos, hAbound⟩
   have hg : Integrable (fun y : ℝ => A * Real.exp (-(y ^ 2))) := by
     have hbase : Integrable (fun y : ℝ => Real.exp (-(y ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun y : ℝ => Real.exp (-(1 : ℝ) * y ^ 2))
     exact hbase.const_mul A
   have hmeas : AEStronglyMeasurable (fun y : ℝ => lineRight χ s x y) :=
@@ -6036,7 +6037,7 @@ lemma integrable_lineLeft {χ : DirichletCharacter ℂ N} (hχ : χ ≠ 1) (hpri
   rcases lineLeft_norm_le hprim hs1 hx with ⟨A, hApos, hAbound⟩
   have hg : Integrable (fun y : ℝ => A * Real.exp (-(y ^ 2))) := by
     have hbase : Integrable (fun y : ℝ => Real.exp (-(y ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun y : ℝ => Real.exp (-(1 : ℝ) * y ^ 2))
     exact hbase.const_mul A
   have hmeas : AEStronglyMeasurable (fun y : ℝ => lineLeft χ s x y) :=
@@ -6414,13 +6415,14 @@ lemma norm_cexp_sq (t : ℝ) : ‖cexp ((1 + I * (t : ℂ)) ^ 2)‖ = Real.exp (
 lemma norm_inv_one_add_mul_I_le (t : ℝ) : ‖(1 + I * (t : ℂ))⁻¹‖ ≤ 1 := by
   rw [norm_inv]
   have hsq : ‖1 + I * (t : ℂ)‖ ^ 2 = 1 + t ^ 2 := by
-    rw [← Complex.normSq_eq_norm_sq]
-    simpa [pow_two, mul_comm, add_comm, add_left_comm, add_assoc] using
-      (Complex.normSq_add_mul_I (1 : ℝ) t)
+    rw [← Complex.normSq_eq_norm_sq,
+      show (1 + I * (t : ℂ)) = ((1 : ℝ) : ℂ) + (t : ℂ) * I by push_cast; ring,
+      Complex.normSq_add_mul_I]
+    norm_num
   have hnn : 0 ≤ ‖1 + I * (t : ℂ)‖ := norm_nonneg _
   have hbig : 1 ≤ ‖1 + I * (t : ℂ)‖ := by
     rw [← sq_le_sq₀ (by norm_num) hnn]
-    nlinarith [hsq, sq_nonneg t]
+    linarith only [hsq, sq_nonneg t]
   exact (inv_le_one₀ (lt_of_lt_of_le (by norm_num) hbig)).mpr hbig
 
 /-- Pointwise domination of the integrand's modulus by a multiple of `exp (-t²)`. -/
@@ -6497,7 +6499,7 @@ theorem weightIntegrand_integrable (z : ℂ) (hz : 0 < z.re) {x : ℝ} (hx : 0 <
   rcases weightIntegrand_norm_le z hz hx with ⟨A, hApos, hAbound⟩
   have hg : Integrable (fun t : ℝ => A * Real.exp (-(t ^ 2))) := by
     have hbase : Integrable (fun t : ℝ => Real.exp (-(t ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun t : ℝ => Real.exp (-(1 : ℝ) * t ^ 2))
     exact hbase.const_mul A
   have hmeas : AEStronglyMeasurable (fun t : ℝ => weightIntegrand z x t) :=
@@ -6598,13 +6600,14 @@ lemma norm_cexp_sq (t : ℝ) : ‖cexp ((1 + I * (t : ℂ)) ^ 2)‖ = Real.exp (
 lemma norm_inv_one_add_mul_I_le (t : ℝ) : ‖(1 + I * (t : ℂ))⁻¹‖ ≤ 1 := by
   rw [norm_inv]
   have hsq : ‖1 + I * (t : ℂ)‖ ^ 2 = 1 + t ^ 2 := by
-    rw [← Complex.normSq_eq_norm_sq]
-    simpa [pow_two, mul_comm, add_comm, add_left_comm, add_assoc] using
-      (Complex.normSq_add_mul_I (1 : ℝ) t)
+    rw [← Complex.normSq_eq_norm_sq,
+      show (1 + I * (t : ℂ)) = ((1 : ℝ) : ℂ) + (t : ℂ) * I by push_cast; ring,
+      Complex.normSq_add_mul_I]
+    norm_num
   have hnn : 0 ≤ ‖1 + I * (t : ℂ)‖ := norm_nonneg _
   have hbig : 1 ≤ ‖1 + I * (t : ℂ)‖ := by
     rw [← sq_le_sq₀ (by norm_num) hnn]
-    nlinarith [hsq, sq_nonneg t]
+    linarith only [hsq, sq_nonneg t]
   exact (inv_le_one₀ (lt_of_lt_of_le (by norm_num) hbig)).mpr hbig
 
 /-- Pointwise domination of the integrand's modulus by a multiple of `exp (-t²)`. -/
@@ -6686,7 +6689,7 @@ theorem weightIntegrandOdd_integrable (z : ℂ) (hz : 0 < z.re) {x : ℝ} (hx : 
   rcases weightIntegrandOdd_norm_le z hz hx with ⟨A, hApos, hAbound⟩
   have hg : Integrable (fun t : ℝ => A * Real.exp (-(t ^ 2))) := by
     have hbase : Integrable (fun t : ℝ => Real.exp (-(t ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun t : ℝ => Real.exp (-(1 : ℝ) * t ^ 2))
     exact hbase.const_mul A
   have hmeas : AEStronglyMeasurable (fun t : ℝ => weightIntegrandOdd z x t) :=
@@ -6857,7 +6860,7 @@ theorem even_weight_afe_norm_le_exists (z : ℂ) (hz : 0 < z.re) :
   have hf : Integrable (fun t : ℝ => ‖weightEven z (1 + I * (t : ℂ))‖) := weightEven_vertical_abs_integrable z hz
   have hg : Integrable (fun t : ℝ => A * Real.exp (-(t ^ 2))) := by
     have hbase : Integrable (fun t : ℝ => Real.exp (-(t ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun t : ℝ => Real.exp (-(1 : ℝ) * t ^ 2))
     exact hbase.const_mul A
   have hle : ∀ᵐ t : ℝ ∂(volume : Measure ℝ), ‖weightEven z (1 + I * (t : ℂ))‖ ≤ A * Real.exp (-(t ^ 2)) := by
@@ -6904,7 +6907,7 @@ theorem odd_weight_afe_norm_le_exists (z : ℂ) (hz : 0 < z.re) :
   have hf : Integrable (fun t : ℝ => ‖weightOdd z (1 + I * (t : ℂ))‖) := weightOdd_vertical_abs_integrable z hz
   have hg : Integrable (fun t : ℝ => A * Real.exp (-(t ^ 2))) := by
     have hbase : Integrable (fun t : ℝ => Real.exp (-(t ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun t : ℝ => Real.exp (-(1 : ℝ) * t ^ 2))
     exact hbase.const_mul A
   have hle : ∀ᵐ t : ℝ ∂(volume : Measure ℝ), ‖weightOdd z (1 + I * (t : ℂ))‖ ≤ A * Real.exp (-(t ^ 2)) := by
@@ -6996,7 +6999,7 @@ theorem summable_smooth_evenWeight (g : ℕ → ℂ) (hg : ∀ n : ℕ, ‖g n�
       have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) := by
         exact Real.summable_nat_rpow.mpr (by linarith)
       have hbase' : Summable (fun m : ℕ => ((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) := by
-        exact (summable_nat_add_iff 1).2 hbase
+        exact (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) 1).2 hbase
       dsimp [b]
       exact hbase'.mul_left (C * Real.sqrt (N : ℝ))
     refine Summable.of_nonneg_of_le (fun m => norm_nonneg _) ?_ hbs
@@ -7050,7 +7053,7 @@ theorem summable_smooth_oddWeight (g : ℕ → ℂ) (hg : ∀ n : ℕ, ‖g n‖
       have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) := by
         exact Real.summable_nat_rpow.mpr (by linarith)
       have hbase' : Summable (fun m : ℕ => ((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) := by
-        exact (summable_nat_add_iff 1).2 hbase
+        exact (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) 1).2 hbase
       dsimp [b]
       exact hbase'.mul_left (C * Real.sqrt (N : ℝ))
     refine Summable.of_nonneg_of_le (fun m => norm_nonneg _) ?_ hbs
@@ -7400,7 +7403,7 @@ theorem W_abs_integrable (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s.
   rcases exists_W_abs_bound χ hs0 with ⟨A, hApos, hAb⟩
   have hg : Integrable (fun y : ℝ => A * Real.exp (-(y ^ 2))) := by
     have hbase : Integrable (fun y : ℝ => Real.exp (-(y ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun y : ℝ => Real.exp (-(1 : ℝ) * y ^ 2))
     exact hbase.const_mul A
   refine Integrable.mono hg ?_ ?_
@@ -7540,7 +7543,7 @@ lemma F_integrable (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s.re) (n
   have hg : Integrable (fun y : ℝ => (1 / (2 * Real.pi)) * Real.sqrt (N : ℝ)
       * ((n : ℝ) ^ (-(1 + s.re))) * A * Real.exp (-(y ^ 2))) := by
     have hbase : Integrable (fun y : ℝ => Real.exp (-(y ^ 2))) := by
-      simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+      simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
         Integrable fun y : ℝ => Real.exp (-(1 : ℝ) * y ^ 2))
     exact hbase.const_mul ((1 / (2 * Real.pi)) * Real.sqrt (N : ℝ) * ((n : ℝ) ^ (-(1 + s.re))) * A)
   refine Integrable.mono hg ?_ ?_
@@ -7569,7 +7572,7 @@ lemma F_int_norm_summable (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s
     have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) := by
       exact Real.summable_nat_rpow.mpr (by linarith)
     have hbase' : Summable (fun m : ℕ => ((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) := by
-      exact (summable_nat_add_iff 1).2 hbase
+      exact (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) 1).2 hbase
     have hbs : Summable (fun m : ℕ =>
         (1 / (2 * Real.pi)) * Real.sqrt (N : ℝ) * (((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) * A
           * (∫ y : ℝ, Real.exp (-(y ^ 2)))) := by
@@ -7589,7 +7592,7 @@ lemma F_int_norm_summable (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s
     have hg : Integrable (fun y : ℝ => ((1 / (2 * Real.pi)) * Real.sqrt (N : ℝ)
         * (((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) * A * Real.exp (-(y ^ 2)))) := by
       have hbase : Integrable (fun y : ℝ => Real.exp (-(y ^ 2))) := by
-        simpa using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
+        simpa only [neg_mul, one_mul] using (integrable_exp_neg_mul_sq (b := (1 : ℝ)) (by norm_num) :
           Integrable fun y : ℝ => Real.exp (-(1 : ℝ) * y ^ 2))
       exact hbase.const_mul ((1 / (2 * Real.pi)) * Real.sqrt (N : ℝ) * (((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) * A)
     have hpoint : ∀ᵐ y ∂(volume : Measure ℝ),
@@ -7656,7 +7659,7 @@ lemma F_summable_at_y (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s.re)
     have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) := by
       exact Real.summable_nat_rpow.mpr (by linarith)
     have hbase' : Summable (fun m : ℕ => ((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) := by
-      exact (summable_nat_add_iff 1).2 hbase
+      exact (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-(1 + s.re))) 1).2 hbase
     have hbs : Summable (fun m : ℕ =>
         (1 / (2 * Real.pi)) * Real.sqrt (N : ℝ) * (((m + 1 : ℕ) : ℝ) ^ (-(1 + s.re))) * A * Real.exp (-(y ^ 2))) := by
       have hcong : (fun m : ℕ =>
@@ -7732,7 +7735,7 @@ lemma sum_F_eq_completed (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s.
           ring
     _ = cTwoPi * (χ.gammaFactor s)⁻¹ * (χ.gammaFactor (s + 1 + I * (y : ℂ)) * DirichletCharacter.LFunction χ (s + 1 + I * (y : ℂ)))
           * ((Real.sqrt (N : ℝ) : ℂ) ^ (1 + I * (y : ℂ))) * smoothingFunction (1 + I * (y : ℂ)) / (1 + I * (y : ℂ)) := by
-          field_simp [hg]
+          ring
     _ = cTwoPi * (χ.gammaFactor s)⁻¹ * DirichletCharacter.completedLFunction χ (s + 1 + I * (y : ℂ))
           * ((Real.sqrt (N : ℝ) : ℂ) ^ (1 + I * (y : ℂ))) * smoothingFunction (1 + I * (y : ℂ)) / (1 + I * (y : ℂ)) := by
           rw [hc]
@@ -7766,11 +7769,11 @@ lemma term_integral (χ : DirichletCharacter ℂ N) {s : ℂ} (hs0 : 0 < s.re) (
         = cTwoPi * (χ n * (n : ℂ) ^ (-s) * ∫ y : ℝ, ((afeScale N n : ℝ) : ℂ) ^ (-(1 + I * (y : ℂ))) * Q (1 + I * (y : ℂ))) := by
           ring
     _ = cTwoPi * ∫ y : ℝ, χ n * (n : ℂ) ^ (-s) * (((afeScale N n : ℝ) : ℂ) ^ (-(1 + I * (y : ℂ))) * Q (1 + I * (y : ℂ))) := by
-          congr 1
+          refine congrArg (fun z => cTwoPi * z) ?_
           exact (MeasureTheory.integral_const_mul (L := ℂ) (r := χ n * (n : ℂ) ^ (-s))
             (f := fun y : ℝ => ((afeScale N n : ℝ) : ℂ) ^ (-(1 + I * (y : ℂ))) * Q (1 + I * (y : ℂ)))).symm
     _ = cTwoPi * ∫ y : ℝ, χ n * (n : ℂ) ^ (-s) * (((afeScale N n : ℝ) : ℂ) ^ (-(1 + I * (y : ℂ))) * W χ s y) := by
-          congr 1
+          refine congrArg (fun z => cTwoPi * z) ?_
           apply MeasureTheory.integral_congr_ae
           filter_upwards with y
           rw [hW y]
@@ -8174,7 +8177,8 @@ lemma lineLeft_neg (χ : DirichletCharacter ℂ N) (hprim : χ.IsPrimitive) (s :
   rw [mul_assoc, mul_assoc, mul_assoc]
   rw [scale_cpow_mul s y
     (χ.rootNumber * (DirichletCharacter.completedLFunction (χ⁻¹) (2 - s + I * (y : ℂ)) * smoothingFunction (1 + I * (y : ℂ))))]
-  field_simp
+  rw [div_neg]
+  ring
 
 /-- The left-line integral transforms into the dual Mellin integral:
 `∫ lineLeft = −ε(χ)·N^(1/2−s)·∫ dualIntegrand`. -/
@@ -8556,7 +8560,7 @@ lemma gammaℝ_ratio_poly_any (a : ℝ) (ha : 0 < a) :
   have hM : M ≤ B * D := by
     dsimp [M, B, D]
     have htri : |T + t| ≤ |T| + |t| := abs_add_le T t
-    nlinarith [mul_nonneg (abs_nonneg T) (abs_nonneg t)]
+    linarith only [htri, mul_nonneg (abs_nonneg T) (abs_nonneg t)]
   have hMp_le : M ^ p ≤ B ^ p * D ^ p := by
     have h1 : M ^ p ≤ (B * D) ^ p := Real.rpow_le_rpow (by positivity : 0 ≤ M) hM hp0
     have h2 : (B * D) ^ p = B ^ p * D ^ p := Real.mul_rpow (le_of_lt hBpos) (le_of_lt hDpos)
@@ -8578,7 +8582,7 @@ lemma gammaℝ_ratio_poly_any (a : ℝ) (ha : 0 < a) :
       exact mul_le_mul hMq hExp1 (by positivity : 0 ≤ eN / eD)
         (div_nonneg (mul_nonneg hBp (Real.rpow_nonneg (le_of_lt hDpos) p)) hBq)
     have hsplit : (M ^ p * eN) / (B ^ q * eD) = (M ^ p / B ^ q) * (eN / eD) := by
-      field_simp [ne_of_gt (Real.rpow_pos_of_pos hBpos q), ne_of_gt (Real.exp_pos _)]
+      exact mul_div_mul_comm _ _ _ _
     rw [hsplit]
     exact hquad
   have hcomb : B ^ p * D ^ p / B ^ q = D ^ p * B ^ (p - q) := by
@@ -9034,7 +9038,7 @@ theorem sum_g_poly_bound (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ)
   have hZsum : Summable (fun m : ℕ => (((m + 1 : ℕ) : ℝ) ^ (-(1 + σ)))) := by
     have hbase : Summable (fun n : ℕ => (n : ℝ) ^ (-(1 + σ))) := by
       exact Real.summable_nat_rpow.mpr (by linarith)
-    exact (summable_nat_add_iff 1).2 hbase
+    exact (summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-(1 + σ))) 1).2 hbase
   refine ⟨Cw * (ζ + 1), kw, mul_pos hCw (by positivity), hkw, ?_⟩
   intro T
   let s : ℂ := (σ : ℂ) + I * (T : ℂ)

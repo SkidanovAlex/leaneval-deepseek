@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.BGTZ.sum_divisors_card_div_le
 import Submission.Work.LinnikAreas.harmonic_sum_le_one_add_log
 
 namespace Work.LinnikAreas.BGTZ.E

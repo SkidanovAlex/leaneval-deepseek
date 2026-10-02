@@ -65,24 +65,24 @@ lemma sqrt_inv_step (n : ℕ) (hn : 2 ≤ n) :
   have hnR : (2:ℝ) ≤ (n:ℝ) := by exact_mod_cast hn
   have hn1R : ((n-1:ℕ):ℝ) = (n:ℝ) - 1 := by
     rw [Nat.cast_sub (by omega : 1 ≤ n)]; norm_num
-  have hn1pos : (0:ℝ) < ((n-1:ℕ):ℝ) := by rw [hn1R]; linarith
+  have hn1pos : (0:ℝ) < ((n-1:ℕ):ℝ) := by rw [hn1R]; linarith only [hnR]
   set a : ℝ := Real.sqrt (((n-1:ℕ):ℝ)) with ha
   set b : ℝ := Real.sqrt (n:ℝ) with hb
   have hapos : 0 < a := Real.sqrt_pos.mpr hn1pos
-  have hbpos : 0 < b := Real.sqrt_pos.mpr (by linarith)
+  have hbpos : 0 < b := Real.sqrt_pos.mpr (by linarith only [hnR])
   have ha2 : a^2 = ((n-1:ℕ):ℝ) := Real.sq_sqrt hn1pos.le
   have hb2 : b^2 = (n:ℝ) := Real.sq_sqrt (by positivity)
-  have hsum : 0 < a + b := by linarith
+  have hsum : 0 < a + b := by linarith only [hapos, hbpos]
   have hab : a*b ≤ (n:ℝ) + 1 := by
     have hsq : (a*b)^2 ≤ ((n:ℝ)+1)^2 := by
       rw [mul_pow, ha2, hb2, hn1R]
-      nlinarith
-    nlinarith [hsq, mul_nonneg hapos.le hbpos.le, hnR]
+      linarith only [hnR]
+    nlinarith only [hsq, mul_nonneg hapos.le hbpos.le, hnR, hapos, hbpos, hn1R, hb2, ha2]
   have hkey : a*(a+b) ≤ 2*b^2 := by
-    nlinarith [ha2, hb2, hn1R, hab]
+    linarith only [ha2, hb2, hn1R, hab]
   have hba : b - a = 1/(a+b) := by
     rw [eq_div_iff (ne_of_gt hsum)]
-    nlinarith [ha2, hb2, hn1R]
+    linarith only [ha2, hb2, hn1R]
   have hL : (1:ℝ)/((n:ℝ) * b) = 1/b^3 := by rw [← hb2]; field_simp
   rw [hL]
   have h1 : (1:ℝ)/a - (1:ℝ)/b = (b-a)/(a*b) := by field_simp
@@ -90,7 +90,7 @@ lemma sqrt_inv_step (n : ℕ) (hn : 2 ≤ n) :
   rw [show (2:ℝ) * (1/(a+b)/(a*b)) = 2/((a+b)*(a*b)) by field_simp]
   rw [div_le_iff₀ (by positivity : (0:ℝ) < b^3)]
   rw [div_mul_eq_mul_div, le_div_iff₀ (by positivity : (0:ℝ) < (a+b)*(a*b))]
-  nlinarith [hkey]
+  nlinarith only [hkey, hn1R, hbpos, ha2, hb2, hab]
 
 lemma telescope_inv_sqrt (N M : ℕ) (hN : 1 ≤ N) (hNM : N ≤ M) :
     (∑ n ∈ Finset.Icc (N+1) M,
@@ -128,7 +128,7 @@ lemma sum_inv_sqrt_mul_tail (N M : ℕ) (hN : 1 ≤ N) :
           have h2 : 2 / Real.sqrt (N:ℝ) = 2 * (1/Real.sqrt (N:ℝ)) := by
             rw [div_eq_mul_one_div]
           rw [mul_sub, h2]
-          linarith
+          linarith only [h1]
 
 lemma sum_inv_sqrt_mul_le (M : ℕ) :
     (∑ d ∈ Finset.Icc 1 M, (1:ℝ)/((d:ℝ) * Real.sqrt (d:ℝ))) ≤ 3 := by
@@ -143,7 +143,7 @@ lemma sum_inv_sqrt_mul_le (M : ℕ) :
     rw [hsplit, Finset.sum_insert (by simp)]
     have hval : (1:ℝ)/(((1:ℕ):ℝ) * Real.sqrt (((1:ℕ):ℝ))) = 1 := by norm_num
     rw [hval]
-    linarith
+    linarith only [h1]
 
 lemma w_sHalf_le (d : ℕ) (hd : 1 ≤ d) :
     mobKappaW d * Work.LinnikAreas.Density4.sHalf d
@@ -171,7 +171,7 @@ lemma w_sHalf_le (d : ℕ) (hd : 1 ≤ d) :
           Finset.sum_le_sum hterm
       _ = ((d.divisors.card : ℕ) : ℝ) := by simp
       _ ≤ 2 * (Nat.sqrt d : ℝ) + 1 := hcard
-      _ ≤ 3 * Real.sqrt (d:ℝ) := by linarith
+      _ ≤ 3 * Real.sqrt (d:ℝ) := by linarith only [hsqrtle, hspos1]
   have hmk : mobKappaW d ≤ 1/((d:ℝ)^2) := mobKappaW_le_inv_sq hd
   have hsnn : 0 ≤ Work.LinnikAreas.Density4.sHalf d := Work.LinnikAreas.Density4.sHalf_nonneg d
   calc mobKappaW d * Work.LinnikAreas.Density4.sHalf d
@@ -197,7 +197,7 @@ lemma sum_w_sHalf_le (M : ℕ) :
         rw [div_eq_mul_one_div]
     _ ≤ 3 * 3 := by
         have := sum_inv_sqrt_mul_le M
-        linarith
+        linarith only [this]
     _ = 9 := by norm_num
 
 end
@@ -209,7 +209,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
           * (Real.log (2 + z / (d : ℝ))) ^ (-B))
         ≤ K * (Real.log (2 + z)) ^ (-B) := by
   obtain ⟨Ks, hKspos, hlogbound⟩ :=
-    Work.LinnikAreas.Density4.KappaSum.log_pow_le_const_mul_sqrt (2*B) (by linarith)
+    Work.LinnikAreas.Density4.KappaSum.log_pow_le_const_mul_sqrt (2*B) (by linarith only [hB])
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hlog2nonneg : 0 ≤ Real.log 2 := hlog2pos.le
   have hK2pos : 0 < (Real.log 2) ^ (-B) * 6 * Real.sqrt 2 * Real.sqrt Ks := by positivity
@@ -217,14 +217,14 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
   intro z M hz
   have hz0 : 0 < z := lt_of_lt_of_le zero_lt_one hz
   have hsqrtz1 : 1 ≤ Real.sqrt z := by
-    rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt (by linarith)
+    rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt (by linarith only [hz])
   set N : ℕ := ⌊Real.sqrt z⌋₊ with hNdef
   have hN1 : 1 ≤ N := Nat.le_floor (by exact_mod_cast hsqrtz1)
   have hNpos : (0:ℝ) < (N:ℝ) := by exact_mod_cast (by omega : 0 < N)
   have hNz : (N:ℝ) ≤ Real.sqrt z := Nat.floor_le (Real.sqrt_nonneg z)
   have hNz2 : Real.sqrt z < (N:ℝ) + 1 := Nat.lt_floor_add_one _
-  have hlog2zpos : 0 < Real.log (2 + z) := Real.log_pos (by linarith)
-  have hlogszpos : 0 < Real.log (2 + Real.sqrt z) := Real.log_pos (by linarith [Real.sqrt_nonneg z])
+  have hlog2zpos : 0 < Real.log (2 + z) := Real.log_pos (by linarith only [hz])
+  have hlogszpos : 0 < Real.log (2 + Real.sqrt z) := Real.log_pos (by linarith only [Real.sqrt_nonneg z, hsqrtz1])
   -- ## part 1 : `d ≤ N`
   have hpart1 : (∑ d ∈ (Finset.Icc 1 M).filter (fun d => d ≤ N),
         mobKappaW d * Work.LinnikAreas.Density4.sHalf d
@@ -244,10 +244,10 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
         rw [le_div_iff₀ hdR]
         have hsq : Real.sqrt z * Real.sqrt z = z := by
           rw [← sq, Real.sq_sqrt (le_of_lt hz0)]
-        nlinarith [hdle', Real.sqrt_nonneg z]
+        nlinarith only [hdle', Real.sqrt_nonneg z, hsq, hsqrtz1]
       have hlog : Real.log (2 + Real.sqrt z) ≤ Real.log (2 + z/(d:ℝ)) :=
-        Real.log_le_log (by linarith [Real.sqrt_nonneg z]) (by linarith)
-      have hrp := Real.rpow_le_rpow_of_nonpos hlogszpos hlog (by linarith : -B ≤ 0)
+        Real.log_le_log (by linarith only [Real.sqrt_nonneg z, hsqrtz1]) (by linarith only [hzd])
+      have hrp := Real.rpow_le_rpow_of_nonpos hlogszpos hlog (by linarith only [hB] : -B ≤ 0)
       exact mul_le_mul_of_nonneg_left hrp
         (mul_nonneg (mobKappaW_nonneg d) (Work.LinnikAreas.Density4.sHalf_nonneg d))
     calc (∑ d ∈ (Finset.Icc 1 M).filter (fun d => d ≤ N),
@@ -285,8 +285,8 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
       obtain ⟨⟨hd1, hdM⟩, hdN⟩ := hd
       have hzdnn : 0 ≤ z / (d:ℝ) := div_nonneg hz0.le (Nat.cast_nonneg d)
       have hlog : Real.log 2 ≤ Real.log (2 + z/(d:ℝ)) :=
-        Real.log_le_log (by norm_num) (by linarith)
-      have hrp := Real.rpow_le_rpow_of_nonpos hlog2pos hlog (by linarith : -B ≤ 0)
+        Real.log_le_log (by norm_num) (by linarith only [hzdnn])
+      have hrp := Real.rpow_le_rpow_of_nonpos hlog2pos hlog (by linarith only [hB] : -B ≤ 0)
       have hb := w_sHalf_le d hd1
       have hdR : (0:ℝ) < (d:ℝ) := by exact_mod_cast (by omega : 0 < d)
       have hbnonneg : 0 ≤ 3 / ((d:ℝ) * Real.sqrt (d:ℝ)) :=
@@ -295,7 +295,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
             * (Real.log (2 + z / (d : ℝ))) ^ (-B)
           ≤ (3 / ((d:ℝ) * Real.sqrt (d:ℝ))) * (Real.log 2) ^ (-B) :=
             mul_le_mul hb hrp
-              (Real.rpow_nonneg (Real.log_nonneg (by linarith [hzdnn])) _) hbnonneg
+              (Real.rpow_nonneg (Real.log_nonneg (by linarith only [hzdnn])) _) hbnonneg
         _ = (Real.log 2) ^ (-B) * (3 / ((d:ℝ) * Real.sqrt (d:ℝ))) := by ring
     calc (∑ d ∈ (Finset.Icc 1 M).filter (fun d => ¬ d ≤ N),
           mobKappaW d * Work.LinnikAreas.Density4.sHalf d
@@ -326,7 +326,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
                   rw [div_eq_mul_one_div]
               _ ≤ 3 * (2 / Real.sqrt (N:ℝ)) := by
                   have := sum_inv_sqrt_mul_tail N M hN1
-                  linarith
+                  linarith only [this]
               _ = 6 / Real.sqrt (N:ℝ) := by ring
   -- ## combine
   have hcombined : (∑ d ∈ Finset.Icc 1 M, mobKappaW d * Work.LinnikAreas.Density4.sHalf d
@@ -345,23 +345,23 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
       rw [h2]
       apply Real.log_le_log (by positivity)
       have hsq : Real.sqrt z ^ 2 = z := Real.sq_sqrt (le_of_lt hz0)
-      nlinarith [Real.sqrt_nonneg z, hz]
-    have hhalf : Real.log (2+z)/2 ≤ Real.log (2 + Real.sqrt z) := by linarith
+      linarith only [Real.sqrt_nonneg z, hz, hsqrtz1, hsq]
+    have hhalf : Real.log (2+z)/2 ≤ Real.log (2 + Real.sqrt z) := by linarith only [hlogle]
     have hp : (Real.log (2 + Real.sqrt z))^(-B) ≤ (Real.log (2+z)/2)^(-B) :=
-      Real.rpow_le_rpow_of_nonpos (by positivity) hhalf (by linarith)
+      Real.rpow_le_rpow_of_nonpos (by positivity) hhalf (by linarith only [hB])
     have heq : (Real.log (2+z)/2)^(-B) = 2 ^ B * (Real.log (2+z)) ^ (-B) := by
       rw [Real.div_rpow hlog2zpos.le (by norm_num : (0:ℝ) ≤ 2),
         Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2)]
       field_simp
     rw [heq] at hp
-    nlinarith [hp]
+    linarith only [hp]
   have hinvN : 1 / Real.sqrt (N:ℝ) ≤ Real.sqrt 2 / Real.sqrt (Real.sqrt z) := by
     rw [div_le_div_iff₀ (Real.sqrt_pos.mpr hNpos)
       (Real.sqrt_pos.mpr (Real.sqrt_pos.mpr hz0))]
     have hN2 : (N:ℝ) + 1 ≤ 2 * (N:ℝ) := by exact_mod_cast (by omega : N + 1 ≤ 2*N)
     have h1 : Real.sqrt (Real.sqrt z) ≤ Real.sqrt (2 * (N:ℝ)) := by
       apply Real.sqrt_le_sqrt
-      linarith
+      linarith only [hNz2, hN2]
     have h2 : Real.sqrt (2 * (N:ℝ)) = Real.sqrt 2 * Real.sqrt (N:ℝ) :=
       Real.sqrt_mul (by norm_num) (N:ℝ)
     rw [one_mul, ← h2]
@@ -374,7 +374,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
       Real.sqrt_mul_self hL
     have hmm := Real.sqrt_le_sqrt h
     rw [h2, Real.sqrt_mul hKspos.le] at hmm
-    linarith [hmm]
+    linarith only [hmm]
   have hsqrt_neg : 1 / Real.sqrt (Real.sqrt z) ≤ Real.sqrt Ks * (Real.log (2+z)) ^ (-B) := by
     rw [div_le_iff₀ (Real.sqrt_pos.mpr (Real.sqrt_pos.mpr hz0))]
     have hL : 0 < (Real.log (2+z))^B := Real.rpow_pos_of_pos hlog2zpos B
@@ -404,7 +404,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
               mul_le_mul_of_nonneg_left hsqrt_neg hnn
         _ = (Real.log 2) ^ (-B) * 6 * Real.sqrt 2 * Real.sqrt Ks * (Real.log (2+z)) ^ (-B) := by
               ring
-    linarith [h1, h2]
+    linarith only [h1, h2]
   refine le_trans hcombined ?_
   have : 9 * (Real.log (2 + Real.sqrt z)) ^ (-B)
         + (Real.log 2) ^ (-B) * (6 / Real.sqrt (N:ℝ))
@@ -418,7 +418,7 @@ theorem kappaAbsorb (B : ℝ) (hB : 0 < B) :
         * (Real.log (2+z)) ^ (-B) := by ring
   rw [hfinal]
   have hL : 0 ≤ (Real.log (2+z)) ^ (-B) := Real.rpow_nonneg hlog2zpos.le _
-  nlinarith [hL]
+  linarith only [hL]
 
 
 
@@ -458,7 +458,7 @@ theorem kappaLogSum_err (B : ℝ) (hB : 0 < B) :
     have hshnn : 0 ≤ Work.LinnikAreas.Density4.sHalf d := Work.LinnikAreas.Density4.sHalf_nonneg d
     have hshnnr : 0 ≤ Work.LinnikAreas.Density4.sHalf r := Work.LinnikAreas.Density4.sHalf_nonneg r
     have hlogpos : 0 < Real.log (2 + z/(d:ℝ)) :=
-      Real.log_pos (by linarith [div_nonneg hz0 hd0.le])
+      Real.log_pos (by linarith only [div_nonneg hz0 hd0.le, hz0, hd0])
     have hLnn : 0 ≤ (Real.log (2 + z/(d:ℝ)))^(-B) := Real.rpow_nonneg hlogpos.le _
     by_cases hdle : d ≤ ⌊z⌋₊
     · have hzd1 : 1 ≤ z/(d:ℝ) := by
@@ -487,13 +487,13 @@ theorem kappaLogSum_err (B : ℝ) (hB : 0 < B) :
         rw [div_lt_one hd0]
         have h2 : (⌊z⌋₊ : ℝ) + 1 ≤ (d:ℝ) := by exact_mod_cast (by omega : ⌊z⌋₊ + 1 ≤ d)
         have h3 := Nat.lt_floor_add_one z
-        linarith
+        linarith only [h2, h3]
       have hsel : Work.LinnikAreas.Density4.selTheta (z/(d:ℝ)) (d*r) = 0 :=
         Work.LinnikAreas.Density4.selTheta_eq_zero_of_lt_one hzdlt _
       have hdiv := Work.LinnikAreas.Density4.KappaSum.div_totient_le_two_mul_sHalf (d*r) hdr1
       have hmain_nonneg : 0 ≤ ((d*r:ℕ):ℝ)/(Nat.totient (d*r):ℝ) := by positivity
       have hlog3 : Real.log (2 + z/(d:ℝ)) ≤ Real.log 3 :=
-        Real.log_le_log (by linarith [div_nonneg hz0 hd0.le]) (by linarith)
+        Real.log_le_log (by linarith only [div_nonneg hz0 hd0.le, hz0, hd0]) (by linarith only [hzdlt])
       have hone : 1 ≤ (Real.log 3)^B * (Real.log (2 + z/(d:ℝ)))^(-B) := by
         have h1 : (Real.log (2 + z/(d:ℝ)))^B ≤ (Real.log 3)^B :=
           Real.rpow_le_rpow hlogpos.le hlog3 hB.le
@@ -521,7 +521,7 @@ theorem kappaLogSum_err (B : ℝ) (hB : 0 < B) :
                 ≤ (2 * (Real.log 3)^B * (Real.log (2 + z/(d:ℝ)))^(-B))
                   * (Work.LinnikAreas.Density4.sHalf d
                     * Work.LinnikAreas.Density4.sHalf r) := by
-              nlinarith [hone, hnn]
+              nlinarith only [hone, hnn]
             refine le_trans h1 ?_
             have h2ΘL : 2 * (Real.log 3)^B * (Real.log (2 + z/(d:ℝ)))^(-B)
                 ≤ KΘ * (Real.log (2 + z/(d:ℝ)))^(-B) :=
@@ -573,7 +573,7 @@ theorem kappaLogSum_err (B : ℝ) (hB : 0 < B) :
             (fun i _ _ => mul_nonneg (mul_nonneg (mobKappaW_nonneg i)
               (Work.LinnikAreas.Density4.sHalf_nonneg i))
               (Real.rpow_nonneg (Real.log_nonneg (by
-                have h : 0 ≤ z/(i:ℝ) := div_nonneg hz0 (Nat.cast_nonneg i); linarith)) _))
+                have h : 0 ≤ z/(i:ℝ) := div_nonneg hz0 (Nat.cast_nonneg i); linarith only [h])) _))
     _ ≤ KΘ * Work.LinnikAreas.Density4.sHalf r *
           (Ka * (Real.log (2+z))^(-B)) := by
           apply mul_le_mul_of_nonneg_left _
@@ -622,7 +622,7 @@ lemma sum_Icc_log_sub_tele {N M : ℕ} (hN : 1 ≤ N) (hNM : N ≤ M) :
           omega,
         ih]
       have hM1 : (1 : ℝ) ≤ (M : ℝ) := by exact_mod_cast (by omega : 1 ≤ M)
-      have hMpos : (0 : ℝ) < (M : ℝ) := by linarith
+      have hMpos : (0 : ℝ) < (M : ℝ) := by linarith only [hM1]
       push_cast
       ring_nf
 
@@ -637,7 +637,7 @@ lemma sum_Icc_inv_le_log_div {N M : ℕ} (hN : 1 ≤ N) (hNM : N ≤ M) :
     have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
     have hm1pos : (0 : ℝ) < (n : ℝ) - 1 := by
       have : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn2
-      linarith
+      linarith only [this]
     have h := Real.one_sub_inv_le_log_of_pos (div_pos hnpos hm1pos)
     have heq : 1 - ((n : ℝ) / ((n : ℝ) - 1))⁻¹ = 1 / (n : ℝ) := by
       rw [inv_div]
@@ -665,7 +665,7 @@ lemma kappaSum_c_trick (z c : ℝ) (hz : 1 ≤ z) (hc : 1 < c) (r : ℕ) :
   have hcpos : 0 < c := lt_trans zero_lt_one hc
   have hzpos : 0 < z := lt_of_lt_of_le zero_lt_one hz
   have hN1 : 1 ≤ ⌊z⌋₊ := Nat.le_floor (by exact_mod_cast hz)
-  have hNM : ⌊z⌋₊ ≤ ⌊z * c⌋₊ := Nat.floor_mono (by nlinarith [hz, hc])
+  have hNM : ⌊z⌋₊ ≤ ⌊z * c⌋₊ := Nat.floor_mono (by nlinarith only [hz, hc])
   have hsplit := sum_filter_Icc_split
     (fun n => (ArithmeticFunction.moebius n : ℝ) / Work.LinnikAreas.Density4.kappaR n * Real.log (z * c / (n : ℝ)))
     (fun n => Nat.Coprime n r) (a := 1) (N := ⌊z⌋₊) (B := ⌊z * c⌋₊) hN1 hNM
@@ -715,7 +715,7 @@ lemma kappaSum_window_bound (z c : ℝ) (hz : 1 ≤ z) (hc : 1 < c) (r : ℕ) :
   have hcpos : 0 < c := lt_trans zero_lt_one hc
   have hzpos : 0 < z := lt_of_lt_of_le zero_lt_one hz
   have hN1 : 1 ≤ ⌊z⌋₊ := Nat.le_floor (by exact_mod_cast hz)
-  have hNM : ⌊z⌋₊ ≤ ⌊z * c⌋₊ := Nat.floor_mono (by nlinarith [hz, hc])
+  have hNM : ⌊z⌋₊ ≤ ⌊z * c⌋₊ := Nat.floor_mono (by nlinarith only [hz, hc])
   have hzcpos : (0 : ℝ) < z * c := mul_pos hzpos hcpos
   have hlogc : 0 ≤ Real.log c := Real.log_nonneg hc.le
   have hterm : ∀ n ∈ (Finset.Icc (⌊z⌋₊ + 1) ⌊z * c⌋₊).filter (fun n => Nat.Coprime n r),
@@ -730,17 +730,17 @@ lemma kappaSum_window_bound (z c : ℝ) (hz : 1 ≤ z) (hc : 1 < c) (r : ℕ) :
     have hzlt : z < (n : ℝ) := by
       have h2 : (⌊z⌋₊ : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast hnlo
       have h3 : z < (⌊z⌋₊ : ℝ) + 1 := Nat.lt_floor_add_one z
-      linarith
+      linarith only [h2, h3]
     have hnle : (n : ℝ) ≤ z * c := by
       have h2 : (n : ℝ) ≤ (⌊z * c⌋₊ : ℝ) := by exact_mod_cast hnhi
       have h3 : ((⌊z * c⌋₊ : ℕ) : ℝ) ≤ z * c := Nat.floor_le hzcpos.le
-      linarith
+      linarith only [h2, h3]
     have hlog1 : Real.log (z * c / (n : ℝ)) ≤ Real.log c := by
       apply Real.log_le_log (by positivity)
       rw [div_le_iff₀ hnpos]
-      nlinarith [hzlt]
+      nlinarith only [hzlt, hc]
     have hlog0 : 0 ≤ Real.log (z * c / (n : ℝ)) :=
-      Real.log_nonneg (by rw [le_div_iff₀ hnpos]; linarith)
+      Real.log_nonneg (by rw [le_div_iff₀ hnpos]; linarith only [hnle])
     have hmu : |(ArithmeticFunction.moebius n : ℝ)| ≤ 1 :=
       Commons.NumberTheory.Moebius.moebius_abs_le_one n
     have h1 : |(ArithmeticFunction.moebius n : ℝ) / Work.LinnikAreas.Density4.kappaR n| ≤ 1 / (n : ℝ) := by
@@ -782,15 +782,15 @@ theorem kappaLogSum_diff (B : ℝ) (hB : 0 < B) :
   refine ⟨2 * K0, by positivity, ?_⟩
   intro z z' r hz hz' hr
   have hmin1 : 1 ≤ min z z' := le_min hz hz'
-  have hlogmin : 0 < Real.log (2 + min z z') := Real.log_pos (by linarith)
+  have hlogmin : 0 < Real.log (2 + min z z') := Real.log_pos (by linarith only [hmin1])
   have e1 : (Real.log (2 + z))^(-B) ≤ (Real.log (2 + min z z'))^(-B) :=
     Real.rpow_le_rpow_of_nonpos hlogmin
-      (Real.log_le_log (by linarith) (by linarith [min_le_left z z']))
-      (by linarith)
+      (Real.log_le_log (by linarith only [hmin1]) (by linarith only [min_le_left z z']))
+      (by linarith only [hB])
   have e2 : (Real.log (2 + z'))^(-B) ≤ (Real.log (2 + min z z'))^(-B) :=
     Real.rpow_le_rpow_of_nonpos hlogmin
-      (Real.log_le_log (by linarith) (by linarith [min_le_right z z']))
-      (by linarith)
+      (Real.log_le_log (by linarith only [hmin1]) (by linarith only [min_le_right z z']))
+      (by linarith only [hB])
   have hshnn : 0 ≤ Work.LinnikAreas.Density4.sHalf r := Work.LinnikAreas.Density4.sHalf_nonneg r
   set M : ℕ := max ⌊z⌋₊ ⌊z'⌋₊ with hMdef
   have hzM : ⌊z⌋₊ ≤ M := by rw [hMdef]; exact le_max_left _ _
@@ -831,13 +831,13 @@ theorem kappaLogSum_diff (B : ℝ) (hB : 0 < B) :
 lemma inv_pred_le_log_rpow (E : ℝ) (hE : 0 < E) :
     ∃ K : ℝ, 0 < K ∧ ∀ Q : ℝ, 2 ≤ Q → 1/(Q-1) ≤ K * (Real.log (2+Q))^(-E) := by
   obtain ⟨K4, hK4pos, hK4⟩ :=
-    Work.LinnikAreas.Density4.KappaSum.log_pow_le_const_mul_sqrt (4*E) (by linarith)
+    Work.LinnikAreas.Density4.KappaSum.log_pow_le_const_mul_sqrt (4*E) (by linarith only [hE])
   refine ⟨2 * K4 ^ ((1:ℝ)/4), by positivity, ?_⟩
   intro Q hQ
-  have hQ0 : 0 < Q := by linarith
-  have hlogpos : 0 < Real.log (2 + Q) := Real.log_pos (by linarith)
+  have hQ0 : 0 < Q := by linarith only [hQ]
+  have hlogpos : 0 < Real.log (2 + Q) := Real.log_pos (by linarith only [hQ])
   have hEQ : (Real.log (2+Q))^E ≤ K4 ^ ((1:ℝ)/4) * Q := by
-    have h4 := hK4 Q (by linarith)
+    have h4 := hK4 Q (by linarith only [hQ])
     have hEq : (Real.log (2+Q))^E = ((Real.log (2+Q))^(4*E)) ^ ((1:ℝ)/4) := by
       rw [← Real.rpow_mul hlogpos.le]
       congr 1
@@ -851,7 +851,7 @@ lemma inv_pred_le_log_rpow (E : ℝ) (hE : 0 < E) :
       _ ≤ K4 ^ ((1:ℝ)/4) * Q := by
           apply mul_le_mul_of_nonneg_left _ (Real.rpow_nonneg hK4pos.le _)
           rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (le_of_lt hQ0) ((1:ℝ)/2) ((1:ℝ)/4)]
-          simpa using Real.rpow_le_rpow_of_exponent_le (by linarith : (1:ℝ) ≤ Q)
+          simpa using Real.rpow_le_rpow_of_exponent_le (by linarith only [hQ] : (1:ℝ) ≤ Q)
             (by norm_num : ((1:ℝ)/2) * (1/4) ≤ 1)
   have hL : 0 < (Real.log (2+Q))^E := Real.rpow_pos_of_pos hlogpos E
   have h2 : 1/Q ≤ K4 ^ ((1:ℝ)/4) * (Real.log (2+Q))^(-E) := by
@@ -862,13 +862,13 @@ lemma inv_pred_le_log_rpow (E : ℝ) (hE : 0 < E) :
     rw [heq]
     exact (one_le_div hL).mpr hEQ
   have h1 : 1/(Q-1) ≤ 2/Q := by
-    rw [div_le_div_iff₀ (by linarith : (0:ℝ) < Q-1) hQ0]
-    linarith
+    rw [div_le_div_iff₀ (by linarith only [hQ] : (0:ℝ) < Q-1) hQ0]
+    linarith only [hQ]
   have h3 : 2/Q ≤ 2 * (K4 ^ ((1:ℝ)/4) * (Real.log (2+Q))^(-E)) := by
     rw [show (2:ℝ)/Q = 2 * (1/Q) by ring]
     exact mul_le_mul_of_nonneg_left h2 (by norm_num)
   have h4 : 2 * (K4 ^ ((1:ℝ)/4) * (Real.log (2+Q))^(-E))
       = 2 * K4 ^ ((1:ℝ)/4) * (Real.log (2+Q))^(-E) := by ring
-  linarith [h1, h3, h4]
+  linarith only [h1, h3, h4]
 
 end Work.LinnikAreas.JutilaPieces

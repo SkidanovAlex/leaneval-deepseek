@@ -1,7 +1,6 @@
 import Mathlib
 import Submission.Commons.NumberTheory.DirichletCharacter.chebyshevPsiChi_explicit_formula_mult
 import Submission.Commons.NumberTheory.Linnik.tentMellin_bridge_scale
-import Submission.Commons.Analysis.Integral.norm_intervalIntegral_mul_le_gen
 
 open Complex DirichletCharacter MeasureTheory intervalIntegral Filter
 open scoped Real Topology BigOperators

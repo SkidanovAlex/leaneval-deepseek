@@ -76,7 +76,7 @@ private lemma summable_parity (par : ℕ) {s : ℂ} (hs : 1 < s.re) (k : ℕ) (h
   have hs' : 1 < (s + (par : ℂ)).re := by
     rw [Complex.add_re, Complex.natCast_re]
     have : (0 : ℝ) ≤ (par : ℝ) := Nat.cast_nonneg par
-    linarith
+    linarith only [hs]
   have h := (Work.ZeroFreeTables.P9.tsum_inv_add_two_shift k hk (s := s + (par : ℂ)) hs').1
   refine h.congr (fun n => ?_)
   have hh : (s + (par : ℂ)) + ((2 * n : ℕ) : ℂ) = s + ((par + 2 * n : ℕ) : ℂ) := by
@@ -102,18 +102,18 @@ theorem engine8 {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
             * ((1 + 4 / δ ^ 2) * Work.ZeroFreeTables.P9.invSqSum N χ s + Ct)
         + (2 / 3) * ((a + lam₁) ^ 3 / L ^ 3)
             * ((2 / δ) * (1 + 4 / δ ^ 2) * Work.ZeroFreeTables.P9.invSqSum N χ s + Ct) := by
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hδ, hδ1, hLt]
   have hs_gt : 1 < s.re := by
     rw [hsre]
     have : 0 < a / L := div_pos ha hLpos
-    linarith
+    linarith only [this]
   have hsδ : s.re ≤ 1 + δ / 2 := by
     rw [hsre]
     have h1 : a / L ≤ δ / 2 := by
       rw [div_le_iff₀ hLpos]
-      nlinarith [haδL]
-    linarith
-  have haL_nonneg : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith) (le_of_lt hLpos)
+      linarith only [haδL]
+    linarith only [h1]
+  have haL_nonneg : 0 ≤ (a + lam₁) / L := div_nonneg (by linarith only [ha, hlam₁]) (le_of_lt hLpos)
   obtain ⟨hsum2, hform2⟩ := P9.lDiffExplicit_gen χ hχ hprim 1 (by norm_num) par hpar0 hpar1 hs_gt
   obtain ⟨hsum3, hform3⟩ := P9.lDiffExplicit_gen χ hχ hprim 2 (by norm_num) par hpar0 hpar1 hs_gt
   have hF2 : (∑' u : ℂ, (Work.LinnikContract.zeroMult χ u : ℂ) * (1 / (s - u)) ^ 2)
@@ -209,7 +209,7 @@ theorem engine8 {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
     have h1 := mul_le_mul_of_nonneg_left hquad ht2
     have h2 := mul_le_mul_of_nonneg_left hb2ge ht2
     rw [hM1rel]
-    linarith [h1, h2]
+    linarith only [h1, h2]
   have hstep3 : - (1 / 3) * ((a + lam₁) / L) ^ 3 * M2
       ≤ (2 / 3) * ((a + lam₁) / L) ^ 3 * (-C3)
         + (2 / 3) * ((a + lam₁) / L) ^ 3 * (2 / δ) * (1 + 4 / δ ^ 2) * J
@@ -219,7 +219,7 @@ theorem engine8 {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
     have h1 := mul_le_mul_of_nonneg_left hcub ht3
     have h2 := mul_le_mul_of_nonneg_left hb3ge ht3
     rw [hM2rel]
-    linarith [h1, h2]
+    linarith only [h1, h2]
   have hsplit : P3S = ((a + lam₁) / L) * NI + ((a + lam₁) / L) ^ 2 * Q
       + (2 / 3) * ((a + lam₁) / L) ^ 3 * C3 := by
     have h := Work.ZeroFreeTables.P9.prim.nearP3sum_split (a := a) (lam₁ := lam₁) (L := L)
@@ -234,7 +234,7 @@ theorem engine8 {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ �
           + ((2 / 3) * ((a + lam₁) / L) ^ 3 * (-C3)
               + (2 / 3) * ((a + lam₁) / L) ^ 3 * (2 / δ) * (1 + 4 / δ ^ 2) * J
               + (2 / 3) * ((a + lam₁) / L) ^ 3 * Ct) := by
-        linarith [hstep1, hstep2, hstep3]
+        linarith only [hstep1, hstep2, hstep3]
     _ = - P3S + (a + lam₁) * c
           + ((a + lam₁) / L) ^ 2 * ((1 + 4 / δ ^ 2) * J + Ct)
           + (2 / 3) * ((a + lam₁) / L) ^ 3 * ((2 / δ) * (1 + 4 / δ ^ 2) * J + Ct) := by
@@ -253,7 +253,7 @@ theorem P3term_abs_le_of_far {a lam₁ L δ : ℝ} (hL : 0 < L) (ha : 0 < a) (hl
     (hsre : s.re = 1 + a / L)
     (hfar : δ < ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖) :
     |(Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - u) * (L : ℂ)))).re| ≤ 8 * (a + lam₁) / (δ * L) := by
-  have hα : 0 ≤ a + lam₁ := by linarith
+  have hα : 0 ≤ a + lam₁ := by linarith only [ha, hlam₁]
   have hδL : 0 < δ * L := mul_pos hδ hL
   have hsd : s - u = ((1 : ℂ) + (s.im : ℂ) * Complex.I - u) + (((s.re - 1 : ℝ)) : ℂ) := by
     apply Complex.ext <;> simp <;> ring
@@ -279,18 +279,18 @@ theorem P3term_abs_le_of_far {a lam₁ L δ : ℝ} (hL : 0 < L) (ha : 0 < a) (hl
     have h3 : ‖(((a : ℝ)) : ℂ)‖ = a :=
       (RCLike.norm_ofReal a).trans (abs_of_pos ha)
     rw [h3] at h
-    nlinarith [h, hfar]
-  have hhalf : δ * L / 2 ≤ ‖(s - u) * (L : ℂ)‖ := by linarith [hnorm, haδ]
-  have hpos : 0 < ‖(s - u) * (L : ℂ)‖ := by linarith [hhalf, hδL]
+    nlinarith only [h, hfar, hL]
+  have hhalf : δ * L / 2 ≤ ‖(s - u) * (L : ℂ)‖ := by linarith only [hnorm, haδ]
+  have hpos : 0 < ‖(s - u) * (L : ℂ)‖ := by linarith only [hhalf, hδL, ha, haδ, hnorm]
   set w : ℝ := (a + lam₁) / ‖(s - u) * (L : ℂ)‖ with hw
   have hw0 : 0 ≤ w := div_nonneg hα hpos.le
   have hw1 : w ≤ 1 := by
     rw [hw, div_le_one hpos]
-    linarith [hhalf, hαδ]
+    linarith only [hhalf, hαδ, haδ, hnorm]
   have hw2 : w ≤ 2 * (a + lam₁) / (δ * L) := by
     rw [hw, div_le_div_iff₀ hpos hδL]
-    have h2 : δ * L ≤ 2 * ‖(s - u) * (L : ℂ)‖ := by linarith [hhalf]
-    nlinarith [hα, h2]
+    have h2 : δ * L ≤ 2 * ‖(s - u) * (L : ℂ)‖ := by linarith only [hhalf, haδ, hnorm]
+    nlinarith only [hα, h2, ha, haδ, hnorm, hlam₁]
   have harg : ‖(a + lam₁) / ((s - u) * (L : ℂ))‖ = w := by
     rw [hw, norm_div, ← Complex.ofReal_add]
     rw [show ‖(((a + lam₁ : ℝ)) : ℂ)‖ = a + lam₁ from
@@ -311,14 +311,14 @@ theorem P3term_abs_le_of_far {a lam₁ L δ : ℝ} (hL : 0 < L) (ha : 0 < a) (hl
           (abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2 / 3))]
       have hw3 : w ^ 3 ≤ w := by
         calc w ^ 3 = w ^ 2 * w := by ring
-          _ ≤ 1 * w := mul_le_mul_of_nonneg_right (by nlinarith [hw0, hw1]) hw0
+          _ ≤ 1 * w := mul_le_mul_of_nonneg_right (by nlinarith only [hw0, hw1]) hw0
           _ = w := by ring
-      nlinarith [hw3, hw0]
+      linarith only [hw3, hw0]
     calc ‖Work.ZeroFreeTables.P3 z‖ = ‖z + z ^ 2 + (2 / 3) * z ^ 3‖ := by
           rw [Work.ZeroFreeTables.P3]
       _ ≤ ‖z + z ^ 2‖ + ‖(2 / 3) * z ^ 3‖ := norm_add_le _ _
-      _ ≤ (‖z‖ + ‖z ^ 2‖) + ‖(2 / 3) * z ^ 3‖ := by linarith [norm_add_le z (z ^ 2)]
-      _ ≤ (w + w) + (2 / 3) * w := by linarith [h1, h2, h3]
+      _ ≤ (‖z‖ + ‖z ^ 2‖) + ‖(2 / 3) * z ^ 3‖ := by linarith only [norm_add_le z (z ^ 2)]
+      _ ≤ (w + w) + (2 / 3) * w := by linarith only [h1, h2, h3, harg]
       _ = (8 / 3) * w := by ring
   have hfinal : (8 / 3) * w ≤ 8 * (a + lam₁) / (δ * L) := by
     have h1 : (8 / 3) * w ≤ (8 / 3) * (2 * (a + lam₁) / (δ * L)) :=
@@ -330,7 +330,7 @@ theorem P3term_abs_le_of_far {a lam₁ L δ : ℝ} (hL : 0 < L) (ha : 0 < a) (hl
       calc (16 / 3) * (a + lam₁) / (δ * L) = (16 / 3) * ((a + lam₁) / (δ * L)) := by ring
         _ ≤ 8 * ((a + lam₁) / (δ * L)) := mul_le_mul_of_nonneg_right h5 h4
         _ = 8 * (a + lam₁) / (δ * L) := by ring
-    linarith [h1, h2, h3]
+    linarith only [h1, h2, h3, hw2]
   calc |(Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - u) * (L : ℂ)))).re|
       ≤ ‖Work.ZeroFreeTables.P3 ((a + lam₁) / ((s - u) * (L : ℂ)))‖ := Complex.abs_re_le_norm _
     _ ≤ 8 * (a + lam₁) / (δ * L) := le_trans hP3 hfinal
@@ -352,8 +352,8 @@ private lemma mem_closedBall_of_near {s u : ℂ} {δ : ℝ} (hδ1 : δ ≤ 1)
         simpa using hh
     _ = ‖(1 : ℂ) + (s.im : ℂ) * Complex.I - u‖
               + ‖(1 : ℂ) + (s.im : ℂ) * Complex.I‖ := by rw [norm_sub_rev]
-    _ ≤ δ + (1 + |s.im|) := by linarith
-    _ ≤ 1 + (1 + |s.im|) := by linarith
+    _ ≤ δ + (1 + |s.im|) := by linarith only [hnear, h3]
+    _ ≤ 1 + (1 + |s.im|) := by linarith only [hδ1]
     _ = |s.im| + 2 := by ring
 
 /-- The near `P₃` summand is summable: its support lies in the ball in which the divisor of
@@ -463,7 +463,7 @@ theorem nearP3sum_ge_P3term_sub {N : ℕ} [NeZero N] (χ : DirichletCharacter �
       have h3 : |u.im| ≤ |s.im| + |s.im - u.im| := by
         calc |u.im| = |s.im - (s.im - u.im)| := by congr 1; ring
           _ ≤ |s.im| + |s.im - u.im| := abs_sub _ _
-      linarith
+      linarith only [hδ, hδ1, hsim, h1, h3]
     have hlu : lam₁ ≤ (1 - u.re) * L := hmin u hzu him
     have h1 := nearP3sum_ge_P3term χ hχ hprim hL ha hlam₁ hδ hδ1 hsre hsim hmin hzu hlu hwin
     have h2 : (0 : ℝ) ≤ 8 * (a + lam₁) / (δ * L) := by positivity

@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Density4.Udecay.mellin_defs
 import Submission.Work.LinnikAreas.Density4.Udecay.abel_sum_by_parts
 import Submission.Work.LinnikAreas.Density4.Udecay.muRecipSum_eq_sum_range
 

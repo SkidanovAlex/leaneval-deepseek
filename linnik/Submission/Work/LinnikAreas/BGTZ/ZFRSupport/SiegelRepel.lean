@@ -285,9 +285,9 @@ theorem siegelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero
   have hexp_le : Real.exp (1 / C) ≤ (q : ℝ) := by
     have h1 : Real.exp (1 / C) ≤ (⌈Real.exp (1 / C)⌉₊ : ℝ) := Nat.le_ceil _
     have h2 : (⌈Real.exp (1 / C)⌉₊ : ℝ) ≤ ((⌈Real.exp (1 / C)⌉₊ + 2 : ℕ) : ℝ) := by
-      push_cast; linarith
+      push_cast; linarith only []
     have h3 : ((⌈Real.exp (1 / C)⌉₊ + 2 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hCq : 1 ≤ C * Real.log q := by
     have h1 : 1 / C ≤ Real.log q := by
       have h := Real.log_le_log (Real.exp_pos (1 / C)) hexp_le
@@ -318,8 +318,8 @@ theorem siegelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero
   have hlogprod : 0 ≤ Real.log C + Real.log (Real.log q) := by
     have h1 : Real.log 1 ≤ Real.log (C * Real.log q) := Real.log_le_log (by norm_num) hCq
     rw [Real.log_one, Real.log_mul (ne_of_gt hCpos) (ne_of_gt hlogq)] at h1
-    linarith
-  linarith [hstep2, hval, hlogprod]
+    linarith only [h1]
+  linarith only [hstep2, hval, hlogprod]
 
 /-- **The large-`λ` case of the target.**  If `ρ₀` is a real zero (`ρ₀.im = 0`) of a real
 character `χ₀` and `λ(ρ) ≥ (log q)/2`, then `log(1/λ(ρ₀)) ≤ λ(ρ)` — i.e. the requested repulsion
@@ -339,7 +339,7 @@ theorem largeLambdaRepel : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZe
   have hβ : ρ₀.re < 1 := (re_mem_strip_of_zeroMult hχ₀ hz).2
   have hS := hq₀ q hq' χ₀ ρ₀.re hχ₀ hsq hβ hz'
   rw [← hρ] at hS
-  linarith [hS, hlam]
+  linarith only [hS, hlam]
 
 
 /-! ## §1ter.  The Deuring–Heilbronn engine, and the arithmetic extraction
@@ -368,7 +368,7 @@ private lemma log_sixtyFour_thirds_le_four : Real.log ((64 : ℝ) / 3) ≤ 4 := 
   have hpow : (2.7182818283 : ℝ) ^ 4 < Real.exp 1 ^ 4 :=
     pow_lt_pow_left₀ Real.exp_one_gt_d9 (by norm_num) (by norm_num)
   have hnum : ((64 : ℝ) / 3) < (2.7182818283 : ℝ) ^ 4 := by norm_num
-  linarith
+  linarith only [hpow]
 
 /-- **Numeric extraction from the §8 engine.**  If `0 < λ₀ ≤ 1/100`, `0 < λ₂` and
 `256 ≤ λ₀ · ∫₀³² t(32-t) e^{λ₂t} dt`, then `(1/128)·log(1/λ₀) ≤ λ₂`. -/
@@ -377,7 +377,7 @@ theorem engineExtract {lam₀ lam₂ : ℝ} (h₀ : 0 < lam₀) (h₁ : lam₀ �
     (1 / 128) * Real.log (1 / lam₀) ≤ lam₂ := by
   set G : ℝ := ∫ t in (0:ℝ)..32, t * (32 - t) * Real.exp (lam₂ * t) with hG
   have h256 : (256 : ℝ) ≤ lam₀ * G := h
-  have hGge : 25600 ≤ G := by nlinarith [h256, h₁, h₀]
+  have hGge : 25600 ≤ G := by nlinarith only [h256, h₁, h₀, h]
   -- the upper bound `G ≤ (16384/3) e^{32λ₂}`
   have hGle : G ≤ (16384 / 3) * Real.exp (32 * lam₂) := by
     have hpt : ∀ t ∈ Set.Icc (0:ℝ) 32,
@@ -385,8 +385,8 @@ theorem engineExtract {lam₀ lam₂ : ℝ} (h₀ : 0 < lam₀) (h₁ : lam₀ �
       intro t ht
       have hexp : Real.exp (lam₂ * t) ≤ Real.exp (32 * lam₂) := by
         apply Real.exp_le_exp.mpr
-        nlinarith [ht.1, ht.2, h₂]
-      exact mul_le_mul_of_nonneg_left hexp (by nlinarith [ht.1, ht.2])
+        nlinarith only [ht.1, ht.2, h₂, h₀, h₁, ht]
+      exact mul_le_mul_of_nonneg_left hexp (by nlinarith only [ht.1, ht.2, h₀, h₁, ht])
     have hmono := intervalIntegral.integral_mono_on (μ := MeasureTheory.volume)
       (a := (0:ℝ)) (b := 32) (by norm_num)
       (by apply Continuous.intervalIntegrable; fun_prop)
@@ -408,17 +408,17 @@ theorem engineExtract {lam₀ lam₂ : ℝ} (h₀ : 0 < lam₀) (h₁ : lam₀ �
     have h1 : (25600 : ℝ) ≤ (16384 / 3) * Real.exp (32 * lam₂) := le_trans hGge hGle
     have h2 : (25600 : ℝ) / (16384 / 3) ≤ Real.exp (32 * lam₂) := by
       rw [div_le_iff₀ (by norm_num : (0:ℝ) < 16384 / 3)]
-      linarith
+      linarith only [hGge, hGle]
     have h3 : (4 : ℝ) ≤ 25600 / (16384 / 3) := by norm_num
-    linarith
+    linarith only [h₀, h₁, hGge, hGle]
   have hlog4 : Real.log 4 ≤ 32 * lam₂ := by
     rw [Real.log_le_iff_le_exp (by norm_num : (0:ℝ) < 4)]
     exact h4
   have hlog4' : (1.38 : ℝ) ≤ Real.log 4 := by
     have h2 : Real.log 4 = 2 * Real.log 2 := by
       rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num
-    rw [h2]; linarith [Real.log_two_gt_d9]
-  have hlam : (0.043 : ℝ) ≤ lam₂ := by linarith [hlog4, hlog4']
+    rw [h2]; linarith only [Real.log_two_gt_d9, h₀, h₁]
+  have hlam : (0.043 : ℝ) ≤ lam₂ := by linarith only [hlog4, hlog4', h₀, h₁]
   -- the main estimate
   have hGpos : 0 < G := lt_of_lt_of_le (by norm_num) hGge
   have hlog256 : Real.log (256 : ℝ) ≤ Real.log (lam₀ * G) := Real.log_le_log (by norm_num) h256
@@ -429,19 +429,19 @@ theorem engineExtract {lam₀ lam₂ : ℝ} (h₀ : 0 < lam₀) (h₁ : lam₀ �
         Real.log_le_log hGpos hGle
       rw [Real.log_mul (by norm_num : (16384:ℝ) / 3 ≠ 0) (ne_of_gt (Real.exp_pos _)),
         Real.log_exp] at h1
-      linarith
+      linarith only [h1]
     have h2 : Real.log ((16384 : ℝ) / 3) = Real.log ((64 : ℝ) / 3) + Real.log 256 := by
       rw [show (16384 : ℝ) / 3 = (64 / 3) * 256 by norm_num,
         Real.log_mul (by norm_num : (64:ℝ)/3 ≠ 0) (by norm_num : (256:ℝ) ≠ 0)]
     have hloginv : Real.log (1 / lam₀) = -Real.log lam₀ := by rw [one_div, Real.log_inv]
     have h3 := log_sixtyFour_thirds_le_four
     rw [hloginv]
-    linarith
-  have habs : (4 : ℝ) ≤ 96 * lam₂ := by linarith [hlam]
+    linarith only [hlog256, hGu, h2, h3]
+  have habs : (4 : ℝ) ≤ 96 * lam₂ := by linarith only [hlam, h₀, h₁, hlog4, hlog4']
   calc (1 / 128) * Real.log (1 / lam₀)
       ≤ (1 / 128) * (32 * lam₂ + 4) := by
         exact mul_le_mul_of_nonneg_left hbound (by norm_num)
-    _ ≤ lam₂ := by linarith [habs]
+    _ ≤ lam₂ := by linarith only [habs, h₀, h₁, hlog4, hlog4']
 
 /-- A non-principal character of level `q ≠ 0` forces `2 ≤ q`. -/
 private lemma two_le_of_ne_one_level {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
@@ -489,7 +489,7 @@ theorem otherCharRepelSiegel_engine : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q �
     (OtherCharRepel.zeroMultStripPos hq2 hχ₂1 hzm₂).2.2
   have h := hE q hq χ₀ ρ₀ χ₂ ρ₂ hmin hsq him hlam hχ₂χ₀ hχ₂1 hzm₂ him₂ hle0 hcap hminimal
   have hext := engineExtract hlam0pos hlam hlam2pos h
-  linarith [hext, hle1]
+  linarith only [hext, hle1]
 
 
 /-- **The target's conclusion from the *ball*-minimal engine pair.**
@@ -527,7 +527,7 @@ theorem otherCharRepelSiegel_engineBall : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ 
     (OtherCharRepel.zeroMultStripPos hq2 hχ₂1 hzm₂).2.2
   have h := hE q hq χ₀ ρ₀ χ₂ ρ₂ hmin hsq him hlam hχ₂χ₀ hχ₂1 hzm₂ hle0 hcap hguard hminimal
   have hext := engineExtract hlam0pos hlam hlam2pos h
-  linarith [hext, hle1]
+  linarith only [hext, hle1]
 
 /-! ## §1quinquies.  The Turán/Hadamard route to the *uncapped* repulsion
 
@@ -546,7 +546,7 @@ private lemma log_105_le_five : Real.log (105 : ℝ) ≤ 5 := by
   have hpow : (2.7182818283 : ℝ) ^ 5 < Real.exp 1 ^ 5 :=
     pow_lt_pow_left₀ Real.exp_one_gt_d9 (by norm_num) (by norm_num)
   have hnum : (105 : ℝ) < (2.7182818283 : ℝ) ^ 5 := by norm_num
-  linarith
+  linarith only [hpow]
 
 /-- **The twisted mass bound from the single-character mass bound.**
 
@@ -578,7 +578,7 @@ theorem twMassCore_of_single
   haveI : NeZero q := hqinst
   set s : ℂ := 1 + (α : ℂ) with hsdef
   set c : ℂ := Complex.I * (γ : ℂ) with hcdef
-  have hsre : (3 / 2 : ℝ) ≤ s.re := by rw [hsdef]; simp; linarith
+  have hsre : (3 / 2 : ℝ) ≤ s.re := by rw [hsdef]; simp; linarith only [hα1]
   have hcre : c.re = 0 := by rw [hcdef]; simp
   have hscre : (3 / 2 : ℝ) ≤ (s + c).re := by
     rw [Complex.add_re, hcre, add_zero]; exact hsre
@@ -594,14 +594,14 @@ theorem twMassCore_of_single
     rw [add_div]
     have h1 : 0 ≤ (TuranOther.multZeta v : ℝ) / ‖s + c - v‖ ^ 2 :=
       div_nonneg (Nat.cast_nonneg _) (sq_nonneg _)
-    linarith
+    linarith only [this, h1]
   have hleχχ : ∀ v : ℂ, (TuranOther.multL (χ₀ * χ) v : ℝ) / ‖s + c - v‖ ^ 2
       ≤ ((TuranOther.multZeta v : ℝ) + (TuranOther.multL (χ₀ * χ) v : ℝ)) / ‖s + c - v‖ ^ 2 := by
     intro v
     rw [add_div]
     have h1 : 0 ≤ (TuranOther.multZeta v : ℝ) / ‖s + c - v‖ ^ 2 :=
       div_nonneg (Nat.cast_nonneg _) (sq_nonneg _)
-    linarith
+    linarith only [this, h1]
   have hsumχL : Summable (fun v : ℂ => (TuranOther.multL χ v : ℝ) / ‖s + c - v‖ ^ 2) :=
     Summable.of_nonneg_of_le (fun v => div_nonneg (Nat.cast_nonneg _) (sq_nonneg _)) hleχ hsumχ
   have hsumχχL : Summable (fun v : ℂ => (TuranOther.multL (χ₀ * χ) v : ℝ) / ‖s + c - v‖ ^ 2) :=
@@ -658,10 +658,10 @@ theorem twMassCore_of_single
       have hcdef' : u + Complex.I * (γ : ℂ) = u + c := by rw [hcdef]
       by_cases hu : u = 0 ∨ u = (β₀ : ℂ)
       · rw [if_pos hu, hcdef', Nat.cast_zero]
-        linarith
+        linarith only [this]
       · rw [if_neg hu, hcdef']
         simp only [Nat.cast_add]
-        linarith
+        linarith only [this]
     calc ((TuranOther.twMult χ₀ χ β₀ γ u : ℕ) : ℝ) / ‖s - u‖ ^ 2
         ≤ (((TuranOther.multZeta u : ℝ) + (TuranOther.multL χ₀ u : ℝ))
             + ((TuranOther.multL χ (u + c) : ℝ)
@@ -685,22 +685,22 @@ theorem twMassCore_of_single
     have h2 : s.im = 0 := by rw [hsdef]; simp
     have h4 := Complex.norm_le_abs_re_add_abs_im s
     rw [h1, h2, abs_zero, add_zero] at h4
-    rw [abs_of_nonneg (by linarith : (0:ℝ) ≤ 1 + α)] at h4
-    linarith
+    rw [abs_of_nonneg (by linarith only [hα1] : (0:ℝ) ≤ 1 + α)] at h4
+    linarith only [hα100, h4]
   have hscnorm : ‖s + c‖ ≤ 103 := by
     have h1 : ‖s + c‖ ≤ ‖s‖ + ‖c‖ := norm_add_le _ _
     rw [hcnorm] at h1
     have h4 : |γ| ≤ 2 := hγ
-    linarith [hsnorm]
+    linarith only [hsnorm, hγ, h1]
   have hlog1 : Real.log (2 + ‖s‖) ≤ 5 := by
-    have h1 : 2 + ‖s‖ ≤ 105 := by linarith
-    linarith [Real.log_le_log (by positivity) h1, log_105_le_five]
+    have h1 : 2 + ‖s‖ ≤ 105 := by linarith only [hsnorm]
+    linarith only [Real.log_le_log (by positivity) h1, log_105_le_five, h1]
   have hlog2 : Real.log (2 + ‖s + c‖) ≤ 5 := by
-    have h1 : 2 + ‖s + c‖ ≤ 105 := by linarith
-    linarith [Real.log_le_log (by positivity) h1, log_105_le_five]
+    have h1 : 2 + ‖s + c‖ ≤ 105 := by linarith only [hscnorm]
+    linarith only [Real.log_le_log (by positivity) h1, log_105_le_five, h1]
   have hlq : 1 ≤ Real.log (q : ℝ) := by
     have h1 : Real.log 3 ≤ Real.log (q : ℝ) := Real.log_le_log (by norm_num) (by exact_mod_cast hq3)
-    linarith [Real.log_three_gt_d9]
+    linarith only [Real.log_three_gt_d9, h1]
   calc (∑' u : ℂ, ((TuranOther.twMult χ₀ χ β₀ γ u : ℕ) : ℝ) / ‖s - u‖ ^ 2)
       ≤ (∑' u : ℂ, ((TuranOther.multZeta u : ℝ) + (TuranOther.multL χ₀ u : ℝ)) / ‖s - u‖ ^ 2)
         + ((∑' v : ℂ, (TuranOther.multL χ v : ℝ) / ‖s + c - v‖ ^ 2)
@@ -710,7 +710,7 @@ theorem twMassCore_of_single
             + C * (Real.log (q : ℝ) + Real.log (2 + ‖s + c‖) + 2)) :=
         add_le_add hbnd1 (add_le_add hbndχL hbndχχL)
     _ ≤ (24 * C + 100) * (Real.log (q : ℝ) + 1) := by
-        nlinarith [hlq, hlog1, hlog2, hCpos]
+        nlinarith only [hlq, hlog1, hlog2, hCpos]
 
 /-- **The Turán/Hadamard assembly: the target from the single-character mass bound.**
 
@@ -756,7 +756,7 @@ theorem otherCharRepelSiegel_of_mass
   have hθpos : 0 < θ := by rw [hθdef]; exact lt_min (by norm_num) (by positivity)
   have hθlt1 : θ < 1 := by
     have h1 : θ ≤ 1 / 2 := le_trans (min_le_left _ _) le_rfl
-    linarith
+    linarith only [hθpos, h1]
   have hc1pos : 0 < c₁' := lt_min hcOpos (by norm_num)
   have hc1lt1 : c₁' < 1 := lt_of_le_of_lt (min_le_right _ _) (by norm_num)
   have hlogc1pos : 0 < Real.log (1 / c₁') := by
@@ -781,17 +781,17 @@ theorem otherCharRepelSiegel_of_mass
   have hlogq0 : 0 < Real.log (q : ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < q))
   have hlogq1 : 1 ≤ Real.log (q : ℝ) := by
     have h1 : Real.log 3 ≤ Real.log (q : ℝ) := Real.log_le_log (by norm_num) (by exact_mod_cast hq3)
-    linarith [Real.log_three_gt_d9]
+    linarith only [Real.log_three_gt_d9, hθpos, hθlt1, h1]
   have hχ₀ne1 : χ₀ ≠ 1 := hmin.1.1
   have hz0 : Work.LinnikContract.zeroMult χ₀ ρ₀ ≠ 0 := hmin.1.2.1
   have hstrip0 : 0 < ρ₀.re ∧ ρ₀.re < 1 := re_mem_strip_of_zeroMult hχ₀ne1 hz0
   have hstrip : 0 < ρ.re ∧ ρ.re < 1 := re_mem_strip_of_zeroMult hχ1 hzm
   have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by
-    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith [hstrip0.2]) hlogq0
+    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith only [hstrip0.2, hstrip0]) hlogq0
   have hlognn : 0 ≤ Real.log (1 / Work.LinnikContract.lamOf q ρ₀) := by
     apply Real.log_nonneg
     rw [one_div]
-    exact (one_le_inv₀ hlam0pos).mpr (by linarith [hlam0])
+    exact (one_le_inv₀ hlam0pos).mpr (by linarith only [hlam0, hlam0pos])
   have hminimal : Work.LinnikContract.lamOf q ρ₀ ≤ Work.LinnikContract.lamOf q ρ :=
     hmin.2 χ ρ ⟨hχ1, hzm, himρ⟩
   by_cases hcase : ρ.re = ρ₀.re
@@ -799,7 +799,7 @@ theorem otherCharRepelSiegel_of_mass
     have himne : ρ.im ≠ 0 := by
       intro h0
       exact hneρ (Complex.ext hcase (by rw [h0, him0]))
-    have himle : |ρ.im| ≤ 10 * Real.log (q : ℝ) := by linarith [himρ, hlogq1]
+    have himle : |ρ.im| ≤ 10 * Real.log (q : ℝ) := by linarith only [himρ, hlogq1, hlam0, hlam0pos]
     have hoff : cO ≤ Work.LinnikContract.lamOf q ρ := hOFF q hqO χ ρ hχ1 hzm himne himle
     have hlam_eq : Work.LinnikContract.lamOf q ρ = Work.LinnikContract.lamOf q ρ₀ := by
       simp only [Work.LinnikContract.lamOf]; rw [hcase]
@@ -872,11 +872,11 @@ theorem otherCharRepelSiegel_of_mass
           ≤ Work.LinnikContract.lamOf q ρ := by
         have h := hstep
         simp only [Work.LinnikContract.lamOf, hAdef, hBldef, hJBdef] at h ⊢
-        linarith
+        linarith only [hstep]
       have hrepel : c₃' * Real.log (1 / Work.LinnikContract.lamOf q ρ₀)
           ≤ Work.LinnikContract.lamOf q ρ := by
         rw [hc3def]
-        exact repelArith hApos hlam0pos (by linarith [hlam0]) hminimal hmain
+        exact repelArith hApos hlam0pos (by linarith only [hlam0, hlam0pos]) hminimal hmain
       exact le_trans (mul_le_mul_of_nonneg_right
         (le_trans (min_le_left _ _) (min_le_right _ _)) hlognn) hrepel
 
@@ -905,11 +905,11 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
   have hstrip := re_mem_strip_of_zeroMult hχne1 hz
   have hlogq : 0 < Real.log q := Real.log_pos (by exact_mod_cast (by omega : 1 < q))
   have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by
-    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith [hstrip0.2]) hlogq
+    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith only [hstrip0.2, hstrip0]) hlogq
   have hlampos : 0 < Work.LinnikContract.lamOf q ρ := by
-    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith [hstrip.2]) hlogq
+    rw [Work.LinnikContract.lamOf]; exact mul_pos (by linarith only [hstrip.2, hstrip]) hlogq
   have hlamle : Work.LinnikContract.lamOf q ρ ≤ Real.log q := by
-    rw [Work.LinnikContract.lamOf]; nlinarith [hstrip.1, hlogq]
+    rw [Work.LinnikContract.lamOf]; nlinarith only [hstrip.1, hlogq, hstrip0, hstrip]
   -- minimality of `λ(ρ₀)` (this is what lets us treat the moderate range without any
   -- zero-free region or constant bound)
   have hmin1 : Work.LinnikContract.lamOf q ρ₀ ≤ Work.LinnikContract.lamOf q ρ :=
@@ -917,11 +917,11 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
   have hLpos : 0 < Real.log (1 / Work.LinnikContract.lamOf q ρ₀) := by
     apply Real.log_pos
     have h := one_div_lt_one_div_of_lt hlam0pos
-      (by linarith [hlam0] : Work.LinnikContract.lamOf q ρ₀ < 1)
+      (by linarith only [hlam0, hlam0pos] : Work.LinnikContract.lamOf q ρ₀ < 1)
     simpa using h
   have hLge : Real.log 100 ≤ Real.log (1 / Work.LinnikContract.lamOf q ρ₀) := by
     refine Real.log_le_log (by norm_num) ?_
-    rw [le_div_iff₀ hlam0pos]; linarith [hlam0]
+    rw [le_div_iff₀ hlam0pos]; linarith only [hlam0]
   -- the density input, at `t = λ(ρ)`, applied to the singleton `{(χ, ρ)}`
   have hden : (1:ℝ)
       ≤ C * Work.LinnikContract.lamOf q ρ₀ * Real.exp (cD * Work.LinnikContract.lamOf q ρ) := by
@@ -936,7 +936,7 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
       simpa using hsum
     have h1 : (1:ℝ) ≤ (Work.LinnikContract.zeroMult χ ρ : ℝ) := by
       exact_mod_cast Nat.one_le_iff_ne_zero.mpr hz
-    linarith
+    linarith only [hqne, hsum', h1]
   have hkey : Real.log (1 / Work.LinnikContract.lamOf q ρ₀) - Real.log C
       ≤ cD * Work.LinnikContract.lamOf q ρ := by
     have hlog : Real.log (C * Work.LinnikContract.lamOf q ρ₀
@@ -954,11 +954,11 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
         + cD * Work.LinnikContract.lamOf q ρ := by
       have h3 := Real.log_le_log (by norm_num : (0:ℝ) < 1) hden
       rw [Real.log_one, hlog] at h3
-      linarith
+      linarith only [h3]
     have h3 : Real.log (Work.LinnikContract.lamOf q ρ₀)
         = -Real.log (1 / Work.LinnikContract.lamOf q ρ₀) := by
       rw [one_div, Real.log_inv]; ring
-    linarith [h2, h3]
+    linarith only [h2, h3]
   by_cases hcase : 2 * Real.log C ≤ Real.log (1 / Work.LinnikContract.lamOf q ρ₀)
   · -- small `λ(ρ₀)`: the density estimate alone already gives the logarithm
     have h2 : c₁ ≤ 1 / (2 * cD) := by rw [hc₁def]; exact min_le_left _ _
@@ -970,12 +970,12 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
     have h5 : Real.log (1 / Work.LinnikContract.lamOf q ρ₀) / (2 * cD)
         ≤ Work.LinnikContract.lamOf q ρ := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < 2 * cD)]
-      linarith [hkey, hcase]
-    linarith [h3, h5]
+      linarith only [hkey, hcase]
+    linarith only [h3, h5, h4]
   · -- moderate `λ(ρ₀)`: `λ(ρ) ≥ λ(ρ₀)` and `λ(ρ₀) > e^{-2K}` settle it
     push Not at hcase
     have h2 : c₁ ≤ Real.exp (-(2 * K)) / (2 * K) := by rw [hc₁def]; exact min_le_right _ _
-    have h3 : Real.log (1 / Work.LinnikContract.lamOf q ρ₀) ≤ 2 * K := by linarith [hcase, hKC]
+    have h3 : Real.log (1 / Work.LinnikContract.lamOf q ρ₀) ≤ 2 * K := by linarith only [hcase, hKC]
     have h5 : 1 / Work.LinnikContract.lamOf q ρ₀ ≤ Real.exp (2 * K) := by
       rw [← Real.exp_log (by positivity : (0:ℝ) < 1 / Work.LinnikContract.lamOf q ρ₀)]
       exact Real.exp_le_exp.mpr h3
@@ -984,13 +984,13 @@ theorem otherCharRepelSiegel : ∃ c : ℝ, 0 < c ∧ ∃ q₀ : ℕ, ∀ q : �
         rw [Real.exp_neg, one_div]
       rw [h7, div_le_iff₀ (Real.exp_pos _)]
       rw [div_le_iff₀ hlam0pos] at h5
-      linarith [h5]
+      linarith only [h5]
     have h7 : c₁ * Real.log (1 / Work.LinnikContract.lamOf q ρ₀) ≤ Real.exp (-(2 * K)) := by
       calc c₁ * Real.log (1 / Work.LinnikContract.lamOf q ρ₀)
           ≤ (Real.exp (-(2 * K)) / (2 * K)) * (2 * K) :=
             mul_le_mul h2 h3 hLpos.le (by positivity)
         _ = Real.exp (-(2 * K)) := by
             rw [div_mul_cancel₀ _ (by positivity : (2:ℝ) * K ≠ 0)]
-    linarith [h7, h6, hmin1]
+    linarith only [h7, h6, hmin1]
 
 end Work.LinnikAreas

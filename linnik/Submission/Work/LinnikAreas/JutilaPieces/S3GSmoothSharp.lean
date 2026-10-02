@@ -9,7 +9,7 @@ private lemma log_sub_log_bounds {m : ℕ} (hm : 1 ≤ m) :
     1 / ((m : ℝ) + 1) ≤ Real.log ((m : ℝ) + 1) - Real.log (m : ℝ)
       ∧ Real.log ((m : ℝ) + 1) - Real.log (m : ℝ) ≤ 1 / (m : ℝ) := by
   have hmpos : (0 : ℝ) < (m : ℝ) := by exact_mod_cast hm
-  have hP : (0 : ℝ) < (m : ℝ) + 1 := by linarith
+  have hP : (0 : ℝ) < (m : ℝ) + 1 := by linarith only [hmpos]
   have hlog : Real.log ((m : ℝ) + 1) - Real.log (m : ℝ) = Real.log (1 + 1 / (m : ℝ)) := by
     rw [← Real.log_div (x := (m : ℝ) + 1) (y := (m : ℝ)) (ne_of_gt hP) (ne_of_gt hmpos)]
     congr 1
@@ -22,10 +22,10 @@ private lemma log_sub_log_bounds {m : ℕ} (hm : 1 ≤ m) :
     have hsub : (m : ℝ) / ((m : ℝ) + 1) - 1 = -(1 / ((m : ℝ) + 1)) := by
       field_simp
       ring
-    linarith
+    linarith only [hle, hsub]
   · rw [hlog]
     have hle := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 1 + 1 / (m : ℝ) by positivity)
-    linarith
+    linarith only [hle]
 
 /-! ## `log x ≤ 4 x^{1/4}` and a corollary -/
 
@@ -38,12 +38,12 @@ private lemma LogFourRpow' (x : ℝ) (hx : 1 ≤ x) : Real.log x ≤ 4 * x ^ (1 
   have h1 := Real.log_le_sub_one_of_pos hypos
   have h2 := Real.log_rpow hxpos (1 / 4 : ℝ)
   rw [h2] at h1
-  linarith
+  linarith only [h1]
 
 private lemma log2X_sq_le (X : ℕ) (hX : 1 ≤ X) :
     (Real.log (2 * (X : ℝ)) + 1) ^ 2 ≤ 81 * Real.sqrt (X : ℝ) := by
   have hX1R : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX
-  have h2X1 : (1 : ℝ) ≤ 2 * (X : ℝ) := by linarith
+  have h2X1 : (1 : ℝ) ≤ 2 * (X : ℝ) := by linarith only [hX1R]
   have hlog := LogFourRpow' (2 * (X : ℝ)) h2X1
   have hmul : (2 * (X : ℝ)) ^ (1 / 4 : ℝ) = (2 : ℝ) ^ (1 / 4 : ℝ) * (X : ℝ) ^ (1 / 4 : ℝ) := by
     rw [Real.mul_rpow (by norm_num) (by positivity)]
@@ -59,10 +59,10 @@ private lemma log2X_sq_le (X : ℕ) (hX : 1 ≤ X) :
     mul_le_mul_of_nonneg_right h2q hX4n
   rw [hmul] at hlog
   have hbig : Real.log (2 * (X : ℝ)) + 1 ≤ 9 * (X : ℝ) ^ (1 / 4 : ℝ) := by
-    nlinarith [hlog, hstep, hX4_1]
+    linarith only [hlog, hstep, hX4_1]
   have hnonneg : 0 ≤ Real.log (2 * (X : ℝ)) + 1 := by
     have : 0 ≤ Real.log (2 * (X : ℝ)) := Real.log_nonneg h2X1
-    linarith
+    linarith only [this]
   have hsq : (Real.log (2 * (X : ℝ)) + 1) ^ 2 ≤ (9 * (X : ℝ) ^ (1 / 4 : ℝ)) ^ 2 := by
     have h := mul_self_le_mul_self hnonneg hbig
     simpa [pow_two] using h
@@ -131,7 +131,7 @@ private lemma eta_bound (α β : ℝ) {m : ℕ} (hm : 1 ≤ m) :
           - (m : ℝ) * ((Real.log (m : ℝ) - α - 1) * (Real.log (m : ℝ) - β - 1) + 1))|
     ≤ (|Real.log ((m : ℝ) + 1) - α| + |Real.log (m : ℝ) - β| + 1) / (m : ℝ) := by
   have hmpos : (0 : ℝ) < (m : ℝ) := by exact_mod_cast hm
-  have hm1pos : (0 : ℝ) < (m : ℝ) + 1 := by linarith
+  have hm1pos : (0 : ℝ) < (m : ℝ) + 1 := by linarith only [hmpos]
   obtain ⟨hlo, hhi⟩ := log_sub_log_bounds hm
   rw [eta_identity α β (m : ℝ)]
   set A : ℝ := Real.log ((m : ℝ) + 1) with hA
@@ -148,29 +148,29 @@ private lemma eta_bound (α β : ℝ) {m : ℕ} (hm : 1 ≤ m) :
           rw [mul_add, mul_one, div_mul_cancel₀ (1 : ℝ) (ne_of_gt hmpos)]
         rw [h4] at h
         exact h
-      linarith
+      linarith only [hle]
     · have hge : 1 ≤ d * ((m : ℝ) + 1) := by
         calc (1 : ℝ) = (1 / ((m : ℝ) + 1)) * ((m : ℝ) + 1) :=
               (div_mul_cancel₀ (1 : ℝ) (by positivity : ((m : ℝ) + 1) ≠ 0)).symm
           _ ≤ d * ((m : ℝ) + 1) := mul_le_mul_of_nonneg_right hdlo (le_of_lt hm1pos)
       have hpos : 0 < 1 / (m : ℝ) := by positivity
-      linarith
+      linarith only [hge, hpos]
   have h2 : |d * (2 * (m : ℝ) + 1) - 2| ≤ 1 / (m : ℝ) := by
     rw [abs_le]
     constructor
     · have hge : (1 / ((m : ℝ) + 1)) * (2 * (m : ℝ) + 1) ≤ d * (2 * (m : ℝ) + 1) :=
-        mul_le_mul_of_nonneg_right hdlo (by linarith : (0 : ℝ) ≤ 2 * (m : ℝ) + 1)
+        mul_le_mul_of_nonneg_right hdlo (by linarith only [hmpos] : (0 : ℝ) ≤ 2 * (m : ℝ) + 1)
       have h5 : (1 / ((m : ℝ) + 1)) * (2 * (m : ℝ) + 1) = 2 - 1 / ((m : ℝ) + 1) := by
         field_simp
         ring
       have h6 : 1 / ((m : ℝ) + 1) ≤ 1 / (m : ℝ) :=
-        one_div_le_one_div_of_le hmpos (by linarith)
-      linarith
+        one_div_le_one_div_of_le hmpos (by linarith only [])
+      linarith only [hlo, hhi, hge, h5]
     · have hle : d * (2 * (m : ℝ) + 1) ≤ (1 / (m : ℝ)) * (2 * (m : ℝ) + 1) :=
-        mul_le_mul_of_nonneg_right hdhi (by linarith : (0 : ℝ) ≤ 2 * (m : ℝ) + 1)
+        mul_le_mul_of_nonneg_right hdhi (by linarith only [hmpos] : (0 : ℝ) ≤ 2 * (m : ℝ) + 1)
       have h7 : (1 / (m : ℝ)) * (2 * (m : ℝ) + 1) = 2 + 1 / (m : ℝ) := by field_simp
       rw [h7] at hle
-      linarith
+      linarith only [hle]
   calc |(A + B - α - β) * (1 - d * ((m : ℝ) + 1)) + (d * (2 * (m : ℝ) + 1) - 2)|
       ≤ |(A + B - α - β) * (1 - d * ((m : ℝ) + 1))| + |d * (2 * (m : ℝ) + 1) - 2| :=
         abs_add_le _ _
@@ -184,7 +184,7 @@ private lemma eta_bound (α β : ℝ) {m : ℕ} (hm : 1 ≤ m) :
             _ ≤ |A - α| + |B - β| := abs_add_le _ _
         have h4 : |A + B - α - β| * (1 / (m : ℝ)) ≤ (|A - α| + |B - β|) * (1 / (m : ℝ)) :=
           mul_le_mul_of_nonneg_right h3 (by positivity)
-        linarith
+        linarith only [h4]
     _ = (|A - α| + |B - β| + 1) / (m : ℝ) := by ring
 
 /-! ## The final numerical assembly -/
@@ -194,9 +194,9 @@ private lemma sqrt_le_mul_self {A Z : ℝ} (hA : 1 ≤ A) (hZ : 1 ≤ Z) :
   have hZ0 : 0 ≤ Z := le_trans zero_le_one hZ
   have hsZ1 : 1 ≤ Real.sqrt Z := Real.one_le_sqrt.mpr hZ
   have hs : Real.sqrt Z * Real.sqrt Z = Z := by simpa [pow_two] using Real.sq_sqrt hZ0
-  have hsZ2 : Real.sqrt Z ≤ Z := by nlinarith [hsZ1, hs, Real.sqrt_nonneg Z]
-  have hAZ : Z ≤ A * Z := by nlinarith [hA, hZ0]
-  linarith
+  have hsZ2 : Real.sqrt Z ≤ Z := by nlinarith only [hsZ1, hs, Real.sqrt_nonneg Z, hZ]
+  have hAZ : Z ≤ A * Z := by nlinarith only [hA, hZ0, hZ]
+  linarith only [hsZ2, hAZ]
 
 private lemma final_numeric {A B L Z C : ℝ}
     (hA : 1 ≤ A) (hB : 1 ≤ B) (hZ : 1 ≤ Z)
@@ -206,24 +206,24 @@ private lemma final_numeric {A B L Z C : ℝ}
   have hA0 : 0 ≤ A := le_trans zero_le_one hA
   have hB0 : 0 ≤ B := le_trans zero_le_one hB
   have hZ0 : 0 ≤ Z := le_trans zero_le_one hZ
-  have hAB : 1 ≤ A * B := by nlinarith [hA, hB]
-  have hABZ : 1 ≤ A * B * Z := by nlinarith [hAB, hZ]
+  have hAB : 1 ≤ A * B := by nlinarith only [hA, hB]
+  have hABZ : 1 ≤ A * B * Z := by nlinarith only [hAB, hZ]
   have hCL1 : C * L ≤ (A + B + 2 * L) * L := mul_le_mul_of_nonneg_right hC hL0
   have hAL : A * L ≤ 5 * (A * B * Z) := by
     have h1 : A * L ≤ A * (5 * Real.sqrt Z) := mul_le_mul_of_nonneg_left hL hA0
     have h2 : Real.sqrt Z ≤ B * Z := sqrt_le_mul_self hB hZ
-    nlinarith [h1, h2, hA0]
+    nlinarith only [h1, h2, hA0, hA]
   have hBL : B * L ≤ 5 * (A * B * Z) := by
     have h1 : B * L ≤ B * (5 * Real.sqrt Z) := mul_le_mul_of_nonneg_left hL hB0
     have h2 : Real.sqrt Z ≤ A * Z := sqrt_le_mul_self hA hZ
-    nlinarith [h1, h2, hB0]
+    nlinarith only [h1, h2, hB0, hB]
   have hL2 : 2 * L ^ 2 ≤ 50 * (A * B * Z) := by
     have hs : Real.sqrt Z * Real.sqrt Z = Z := by simpa [pow_two] using Real.sq_sqrt hZ0
-    have h1 : L ^ 2 ≤ 25 * Z := by nlinarith [hL, hL0, hs, Real.sqrt_nonneg Z]
-    nlinarith [h1, hABZ, hZ0]
-  have hCLE : C * L ≤ 60 * (A * B * Z) := by nlinarith [hCL1, hAL, hBL, hL2]
-  have hAB_le : A * B ≤ A * B * Z := by nlinarith [hAB, hZ]
-  nlinarith [hCLE, hAB_le, hABZ]
+    have h1 : L ^ 2 ≤ 25 * Z := by nlinarith only [hL, hL0, hs, Real.sqrt_nonneg Z]
+    nlinarith only [h1, hABZ, hZ0, hAB, hZ]
+  have hCLE : C * L ≤ 60 * (A * B * Z) := by linarith only [hCL1, hAL, hBL, hL2]
+  have hAB_le : A * B ≤ A * B * Z := by nlinarith only [hAB, hZ]
+  linarith only [hCLE, hAB_le, hABZ, hCL1, hAL, hBL, hL2]
 
 /-- **Smooth-weight main term of the `S₃` assembly** (re-homing of
 `Work.ZeroDensity.Jutila.S3GSmoothSharp`, importable from here; with
@@ -251,7 +251,7 @@ theorem S3GSmoothSharp :
   intro X α β hX hα hβ
   have hX1 : 1 ≤ X := by omega
   have hX1R : (1 : ℝ) ≤ (X : ℝ) := by exact_mod_cast hX1
-  have hXpos : (0 : ℝ) < (X : ℝ) := by linarith
+  have hXpos : (0 : ℝ) < (X : ℝ) := by linarith only [hX1R]
   have hlogX0 : 0 ≤ Real.log (X : ℝ) := Real.log_nonneg hX1R
   let F : ℝ → ℝ := fun t => t * ((Real.log t - α - 1) * (Real.log t - β - 1) + 1)
   let g : ℝ → ℝ := fun t => (Real.log t - α) * (Real.log t - β)
@@ -259,14 +259,14 @@ theorem S3GSmoothSharp :
   set B' : ℝ := 1 + |Real.log (2 * (X : ℝ)) - β| with hB'def
   change |(∑ m ∈ Finset.Icc 1 X, g (m : ℝ)) - F (X : ℝ)| ≤ 1000 * A' * B' * Real.sqrt (X : ℝ)
   have hA'1 : 1 ≤ A' := by
-    rw [hA'def]; linarith [abs_nonneg (Real.log (2 * (X : ℝ)) - α)]
+    rw [hA'def]; linarith only [abs_nonneg (Real.log (2 * (X : ℝ)) - α)]
   have hB'1 : 1 ≤ B' := by
-    rw [hB'def]; linarith [abs_nonneg (Real.log (2 * (X : ℝ)) - β)]
+    rw [hB'def]; linarith only [abs_nonneg (Real.log (2 * (X : ℝ)) - β)]
   have hlog2X : Real.log (2 * (X : ℝ)) = Real.log 2 + Real.log (X : ℝ) :=
     Real.log_mul (by norm_num) (ne_of_gt hXpos)
   have hlog2l1 : Real.log 2 ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
-    linarith
+    linarith only [this]
   have hAX : |Real.log (X : ℝ) - α| ≤ A' := by
     rw [hA'def]
     have hd : Real.log (X : ℝ) - Real.log (2 * (X : ℝ)) = -Real.log 2 := by rw [hlog2X]; ring
@@ -277,7 +277,7 @@ theorem S3GSmoothSharp :
           abs_add_le _ _
       _ = Real.log 2 + |Real.log (2 * (X : ℝ)) - α| := by
           rw [hd, abs_neg, abs_of_nonneg (Real.log_nonneg (by norm_num : (1 : ℝ) ≤ 2))]
-      _ ≤ 1 + |Real.log (2 * (X : ℝ)) - α| := by linarith
+      _ ≤ 1 + |Real.log (2 * (X : ℝ)) - α| := by linarith only [hlog2l1]
   have hBX : |Real.log (X : ℝ) - β| ≤ B' := by
     rw [hB'def]
     have hd : Real.log (X : ℝ) - Real.log (2 * (X : ℝ)) = -Real.log 2 := by rw [hlog2X]; ring
@@ -288,7 +288,7 @@ theorem S3GSmoothSharp :
           abs_add_le _ _
       _ = Real.log 2 + |Real.log (2 * (X : ℝ)) - β| := by
           rw [hd, abs_neg, abs_of_nonneg (Real.log_nonneg (by norm_num : (1 : ℝ) ≤ 2))]
-      _ ≤ 1 + |Real.log (2 * (X : ℝ)) - β| := by linarith
+      _ ≤ 1 + |Real.log (2 * (X : ℝ)) - β| := by linarith only [hlog2l1]
   have hterm : ∀ m ∈ Finset.Icc 1 (X - 1),
       |g (m : ℝ) - (F ((m : ℝ) + 1) - F (m : ℝ))|
         ≤ (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1) / (m : ℝ) := by
@@ -303,29 +303,29 @@ theorem S3GSmoothSharp :
     have hmX1 : m + 1 ≤ X := by omega
     have hlogm1_le : Real.log (m : ℝ) ≤ Real.log (X : ℝ) := Real.log_le_log hmpos hmX
     have hlogm0 : 0 ≤ Real.log (m : ℝ) := Real.log_nonneg (by exact_mod_cast hm1)
-    have hlogm1p0 : 0 ≤ Real.log ((m : ℝ) + 1) := Real.log_nonneg (by linarith)
+    have hlogm1p0 : 0 ≤ Real.log ((m : ℝ) + 1) := Real.log_nonneg (by linarith only [hmpos])
     have hlogm1X : Real.log ((m : ℝ) + 1) ≤ Real.log (X : ℝ) := by
-      refine Real.log_le_log (by linarith) ?_
+      refine Real.log_le_log (by linarith only [hmpos]) ?_
       exact_mod_cast hmX1
     have hA : |Real.log ((m : ℝ) + 1) - α| ≤ |Real.log (X : ℝ) - α| + Real.log (X : ℝ) := by
       rw [abs_le]
       refine ⟨?_, ?_⟩
       · have h1 : -(Real.log (X : ℝ) - α) ≤ |Real.log (X : ℝ) - α| := neg_le_abs _
-        linarith [hlogm1p0]
+        linarith only [hlogm1p0, h1]
       · have h1 : Real.log (X : ℝ) - α ≤ |Real.log (X : ℝ) - α| := le_abs_self _
-        linarith [hlogm1X, hlogX0]
+        linarith only [hlogm1X, hlogX0, h1]
     have hB : |Real.log (m : ℝ) - β| ≤ |Real.log (X : ℝ) - β| + Real.log (X : ℝ) := by
       rw [abs_le]
       refine ⟨?_, ?_⟩
       · have h1 : -(Real.log (X : ℝ) - β) ≤ |Real.log (X : ℝ) - β| := neg_le_abs _
-        linarith [hlogm0, hlogX0]
+        linarith only [hlogm0, hlogX0, h1]
       · have h1 : Real.log (X : ℝ) - β ≤ |Real.log (X : ℝ) - β| := le_abs_self _
-        linarith [hlogm1_le, hlogX0]
+        linarith only [hlogm1_le, hlogX0, h1]
     have hstep :
         (|Real.log ((m : ℝ) + 1) - α| + |Real.log (m : ℝ) - β| + 1) / (m : ℝ)
           ≤ (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1) / (m : ℝ) := by
       apply div_le_div_of_nonneg_right _ (le_of_lt hmpos)
-      linarith [hA, hB]
+      linarith only [hA, hB]
     exact hbase.trans hstep
   have hC0 : 0 ≤ |Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1 := by
     positivity
@@ -349,7 +349,7 @@ theorem S3GSmoothSharp :
       have h4 : Real.log (((X - 1 : ℕ)) : ℝ) ≤ Real.log (X : ℝ) := by
         refine Real.log_le_log (by exact_mod_cast (by omega : 0 < X - 1)) ?_
         exact_mod_cast Nat.sub_le X 1
-      linarith
+      linarith only [h, h4]
     calc (∑ m ∈ Finset.Icc 1 (X - 1), |g (m : ℝ) - (F ((m : ℝ) + 1) - F (m : ℝ))|)
         ≤ _ := h1
       _ = _ := h2
@@ -359,7 +359,7 @@ theorem S3GSmoothSharp :
     exact mul_le_mul hAX hBX (abs_nonneg _) (le_trans zero_le_one hA'1)
   have hF1 : |F 1| ≤ 82 * (A' * B' * Real.sqrt (X : ℝ)) := by
     have hL2nn : 0 ≤ Real.log (2 * (X : ℝ)) :=
-      Real.log_nonneg (by linarith : (1 : ℝ) ≤ 2 * (X : ℝ))
+      Real.log_nonneg (by linarith only [hX1R] : (1 : ℝ) ≤ 2 * (X : ℝ))
     have hval : F 1 = (α + 1) * (β + 1) + 1 := by
       simp only [F]
       rw [Real.log_one]
@@ -371,36 +371,36 @@ theorem S3GSmoothSharp :
       rw [hA'def]
       have hAbs : 0 ≤ |Real.log (2 * (X : ℝ)) - α| := abs_nonneg _
       have h1 : α ≤ Real.log (2 * (X : ℝ)) + |Real.log (2 * (X : ℝ)) - α| := by
-        have hh := neg_le_abs (Real.log (2 * (X : ℝ)) - α); linarith
+        have hh := neg_le_abs (Real.log (2 * (X : ℝ)) - α); linarith only [hh]
       have hprod : 0 ≤ Real.log (2 * (X : ℝ)) * |Real.log (2 * (X : ℝ)) - α| :=
         mul_nonneg hL2nn hAbs
       have hexp : (Real.log (2 * (X : ℝ)) + 1) * (1 + |Real.log (2 * (X : ℝ)) - α|)
           = Real.log (2 * (X : ℝ)) + Real.log (2 * (X : ℝ)) * |Real.log (2 * (X : ℝ)) - α|
             + 1 + |Real.log (2 * (X : ℝ)) - α| := by ring
       rw [hexp]
-      linarith
+      linarith only [h1, hprod]
     have hB1 : β + 1 ≤ (Real.log (2 * (X : ℝ)) + 1) * B' := by
       rw [hB'def]
       have hAbs : 0 ≤ |Real.log (2 * (X : ℝ)) - β| := abs_nonneg _
       have h1 : β ≤ Real.log (2 * (X : ℝ)) + |Real.log (2 * (X : ℝ)) - β| := by
-        have hh := neg_le_abs (Real.log (2 * (X : ℝ)) - β); linarith
+        have hh := neg_le_abs (Real.log (2 * (X : ℝ)) - β); linarith only [hh]
       have hprod : 0 ≤ Real.log (2 * (X : ℝ)) * |Real.log (2 * (X : ℝ)) - β| :=
         mul_nonneg hL2nn hAbs
       have hexp : (Real.log (2 * (X : ℝ)) + 1) * (1 + |Real.log (2 * (X : ℝ)) - β|)
           = Real.log (2 * (X : ℝ)) + Real.log (2 * (X : ℝ)) * |Real.log (2 * (X : ℝ)) - β|
             + 1 + |Real.log (2 * (X : ℝ)) - β| := by ring
       rw [hexp]
-      linarith
+      linarith only [h1, hprod]
     have hsq : (Real.log (2 * (X : ℝ)) + 1) ^ 2 ≤ 81 * Real.sqrt (X : ℝ) := log2X_sq_le X hX1
     have hAB : (α + 1) * (β + 1) ≤ (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (A' * B') := by
-      have h := mul_le_mul hA1 hB1 (by linarith : (0 : ℝ) ≤ β + 1)
+      have h := mul_le_mul hA1 hB1 (by linarith only [hβ] : (0 : ℝ) ≤ β + 1)
         (by positivity : (0 : ℝ) ≤ (Real.log (2 * (X : ℝ)) + 1) * A')
       calc (α + 1) * (β + 1)
           ≤ ((Real.log (2 * (X : ℝ)) + 1) * A') * ((Real.log (2 * (X : ℝ)) + 1) * B') := h
         _ = (Real.log (2 * (X : ℝ)) + 1) ^ 2 * (A' * B') := by ring
     have hsqrt1 : 1 ≤ Real.sqrt (X : ℝ) := by rw [Real.one_le_sqrt]; exact hX1R
-    have hAB1 : 1 ≤ A' * B' := by nlinarith [hA'1, hB'1]
-    nlinarith [hAB, hsq, hAB1, hsqrt1, Real.sqrt_nonneg (X : ℝ),
+    have hAB1 : 1 ≤ A' * B' := by nlinarith only [hA'1, hB'1]
+    nlinarith only [hAB, hsq, hAB1, hsqrt1, Real.sqrt_nonneg (X : ℝ),
       sq_nonneg (Real.log (2 * (X : ℝ)) + 1)]
   have step1 : |(∑ m ∈ Finset.Icc 1 X, g (m : ℝ)) - F (X : ℝ)|
       ≤ (∑ m ∈ Finset.Icc 1 (X - 1), |g (m : ℝ) - (F ((m : ℝ) + 1) - F (m : ℝ))|)
@@ -422,7 +422,7 @@ theorem S3GSmoothSharp :
       ≤ (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1)
           * (1 + Real.log (X : ℝ)) + A' * B' + 82 * (A' * B' * Real.sqrt (X : ℝ)) := by
     have h := add_le_add (add_le_add hsum hgX) hF1
-    linarith [h]
+    linarith only [h, hsum, hgX, hF1]
   have hL_le : 1 + Real.log (X : ℝ) ≤ 5 * Real.sqrt (Real.sqrt (X : ℝ)) := by
     have h4 := LogFourRpow' (X : ℝ) hX1R
     have h41 : (1 : ℝ) ≤ (X : ℝ) ^ (1 / 4 : ℝ) := by
@@ -432,10 +432,10 @@ theorem S3GSmoothSharp :
       rw [Real.sqrt_eq_rpow, Real.sqrt_eq_rpow, ← Real.rpow_mul (le_of_lt hXpos)]
       norm_num
     rw [hsqrt]
-    linarith
+    linarith only [h4, h41]
   have hCle : (|Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1)
       ≤ A' + B' + 2 * (1 + Real.log (X : ℝ)) := by
-    linarith [hAX, hBX]
+    linarith only [hAX, hBX]
   have step3 := final_numeric (A := A') (B := B') (L := 1 + Real.log (X : ℝ))
     (Z := Real.sqrt (X : ℝ))
     (C := |Real.log (X : ℝ) - α| + |Real.log (X : ℝ) - β| + 2 * Real.log (X : ℝ) + 1)

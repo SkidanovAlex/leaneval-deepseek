@@ -415,7 +415,7 @@ lemma prime_good {p : ℕ} [Fact p.Prime] (χ : DirichletCharacter ℂ p) (hχ :
   have hd : 1 ≤ F.natDegree := by
     rw [hF, Polynomial.natDegree_mul hA0 (pow_ne_zero _ hB0), Polynomial.natDegree_pow,
       hdegA, hdegB]
-    nlinarith [hm1]
+    linarith only [hm1]
   have hb := weil_bound_poly p χ hχ F hF0 hd hnd
   have hcard : (F.rootSet (AlgebraicClosure (ZMod p))).ncard ≤ 4 := by
     have h := ncard_rootSet_mul_pow_le p A B (m - 1) (by omega)
@@ -604,7 +604,7 @@ theorem composite_weil : ∀ q : ℕ, Squarefree q → ∀ [NeZero q] (χ : Diri
           ≤ 4 * Real.sqrt (q:ℝ) := hb
         _ ≤ 4 ^ (q.primeFactors.card) * Real.sqrt (q:ℝ) * WL q a b c d := by
             rw [hprime.primeFactors, Finset.card_singleton, pow_one]
-            nlinarith [Real.sqrt_nonneg (q:ℝ), hW1]
+            nlinarith only [Real.sqrt_nonneg (q:ℝ), hW1]
     · push_neg at hgood
       obtain ⟨c₀, Q, hQ⟩ := hgood
       have hdiv := prime_bad χ hne (le_of_lt hm2) (dvd_refl (orderOf χ)) (dvd_refl q) a b c d
@@ -635,7 +635,7 @@ theorem composite_weil : ∀ q : ℕ, Squarefree q → ∀ [NeZero q] (χ : Diri
             rw [hW, hprime.primeFactors, Finset.card_singleton, pow_one]
             have hsq : Real.sqrt (q:ℝ) * Real.sqrt (q:ℝ) = (q:ℝ) := by
               rw [← pow_two, Real.sq_sqrt (Nat.cast_nonneg q)]
-            nlinarith [hsq, (Nat.cast_nonneg q : (0:ℝ) ≤ (q:ℝ))]
+            linarith only [hsq, (Nat.cast_nonneg q : (0:ℝ) ≤ (q:ℝ))]
   · have hqpos : 0 < q := Nat.pos_of_neZero q
     have hminprime : (q.minFac).Prime := Nat.minFac_prime hq1
     have hminmul : q.minFac * (q / q.minFac) = q := Nat.mul_div_cancel' (Nat.minFac_dvd q)
@@ -826,7 +826,7 @@ theorem four_pow_primeFactors_card_le {ε : ℝ} (hε : 0 < ε) :
       have h4K : (4:ℝ) ≤ K := by
         rw [hKdef]
         have : (1:ℝ) ≤ (4:ℝ)^((4:ℝ)/ε) := Real.one_le_rpow (by norm_num) (by positivity)
-        linarith
+        linarith only [this]
       have : (4:ℝ) ≤ (k:ℝ) := le_trans h4K hkR
       exact_mod_cast this
     have hfact : Nat.factorial k ≤ q := by
@@ -866,7 +866,7 @@ theorem four_pow_primeFactors_card_le {ε : ℝ} (hε : 0 < ε) :
       have hm2 : (2:ℝ) ≤ (m:ℝ) := by
         have : 2 ≤ m := by omega
         exact_mod_cast this
-      rw [hk1]; linarith
+      rw [hk1]; linarith only [hmod, hm2]
     have hmpos : (0:ℝ) < (m:ℝ) := by
       have : 0 < m := by omega
       exact_mod_cast this
@@ -875,13 +875,13 @@ theorem four_pow_primeFactors_card_le {ε : ℝ} (hε : 0 < ε) :
     have hlog4pos : (0:ℝ) ≤ Real.log ((k:ℝ)/4) := by
       apply Real.log_nonneg
       have : (4:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk4
-      linarith
+      linarith only [this]
     have hkey : (k:ℝ) * Real.log 4 ≤ ε * ((m:ℝ) * Real.log (m:ℝ)) := by
       have h1 : ((k:ℝ)/4) * Real.log ((k:ℝ)/4) ≤ (m:ℝ) * Real.log (m:ℝ) :=
         mul_le_mul hmge hlogm hlog4pos (by positivity)
       have h2 : (4:ℝ)/ε * Real.log 4 ≤ Real.log ((k:ℝ)/4) := by
         have h3 : (4:ℝ)^((4:ℝ)/ε) ≤ (k:ℝ)/4 := by
-          have := hkR; rw [hKdef] at this; nlinarith
+          have := hkR; rw [hKdef] at this; linarith only [hlarge]
         calc (4:ℝ)/ε * Real.log 4 = Real.log ((4:ℝ)^((4:ℝ)/ε)) := by
               rw [Real.log_rpow (by norm_num : (0:ℝ) < 4)]
           _ ≤ Real.log ((k:ℝ)/4) := Real.log_le_log (by positivity) h3
@@ -1000,8 +1000,8 @@ theorem burgess_moment_squarefree_r2_aux
       ∀ (χ : DirichletCharacter ℂ q), χ.IsPrimitive → χ ≠ 1 → ∀ H : ℕ, H ≤ q →
         ∑ m ∈ Finset.range q, ‖∑ h ∈ Finset.Ioc m (m + H), χ (h : ZMod q)‖ ^ 4
           ≤ C * (q : ℝ) ^ ε * ((q : ℝ) * (H : ℝ) ^ 2 + (H : ℝ) ^ 4 * Real.sqrt (q : ℝ)) := by
-  obtain ⟨C1, hC1pos, hC1⟩ := hcount (ε := ε/2) (by linarith)
-  obtain ⟨C2, hC2pos, hC2⟩ := four_pow_primeFactors_card_le (ε := ε/2) (by linarith)
+  obtain ⟨C1, hC1pos, hC1⟩ := hcount (ε := ε/2) (by linarith only [hε])
+  obtain ⟨C2, hC2pos, hC2⟩ := four_pow_primeFactors_card_le (ε := ε/2) (by linarith only [hε])
   refine ⟨2 * (C1 * C2 + 1), by positivity, ?_⟩
   intro q _inst hsq χ hprim hne H hHq
   rcases Nat.eq_zero_or_pos H with hH0 | hHpos
@@ -1052,7 +1052,7 @@ theorem burgess_moment_squarefree_r2_aux
         = (H:ℝ)^4 * Real.sqrt (q:ℝ) + (H:ℝ)^2 * (q:ℝ) := by
       have hss : Real.sqrt (q:ℝ) * Real.sqrt (q:ℝ) = (q:ℝ) := by
         rw [← pow_two, Real.sq_sqrt hqR0.le]
-      nlinarith [hss]
+      nlinarith only [hss]
     have hfinal : (4:ℝ)^(q.primeFactors.card) * Real.sqrt (q:ℝ) *
           (C1 * (q:ℝ)^(ε/2) * ((H:ℝ)^4 + (H:ℝ)^2 * Real.sqrt (q:ℝ)))
         ≤ (2 * (C1 * C2 + 1)) * (q:ℝ)^ε *
@@ -1073,7 +1073,7 @@ theorem burgess_moment_squarefree_r2_aux
       have e1 : (H:ℝ)^4 * Real.sqrt (q:ℝ) + (H:ℝ)^2 * (q:ℝ)
           ≤ 2 * ((q:ℝ) * (H:ℝ)^2 + (H:ℝ)^4 * Real.sqrt (q:ℝ)) := by
         have := mul_comm ((H:ℝ)^2) ((q:ℝ))
-        nlinarith [hs0, this]
+        nlinarith only [hs0, this, hsq, hX0]
       have s4 : C1 * C2 * (q:ℝ)^ε *
             ((H:ℝ)^4 * Real.sqrt (q:ℝ) + (H:ℝ)^2 * (q:ℝ))
           ≤ (2 * (C1 * C2 + 1)) * (q:ℝ)^ε *
@@ -1088,7 +1088,7 @@ theorem burgess_moment_squarefree_r2_aux
                 ((q:ℝ) * (H:ℝ)^2 + (H:ℝ)^4 * Real.sqrt (q:ℝ)) := by ring
           _ ≤ (2 * (C1 * C2 + 1)) * (q:ℝ)^ε *
                 ((q:ℝ) * (H:ℝ)^2 + (H:ℝ)^4 * Real.sqrt (q:ℝ)) :=
-              mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (by linarith) hqpe) hY0
+              mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (by linarith only []) hqpe) hY0
       calc (4:ℝ)^(q.primeFactors.card) * Real.sqrt (q:ℝ) *
             (C1 * (q:ℝ)^(ε/2) * ((H:ℝ)^4 + (H:ℝ)^2 * Real.sqrt (q:ℝ)))
           = (4:ℝ)^(q.primeFactors.card) * (Real.sqrt (q:ℝ) * (C1 * (q:ℝ)^(ε/2) *

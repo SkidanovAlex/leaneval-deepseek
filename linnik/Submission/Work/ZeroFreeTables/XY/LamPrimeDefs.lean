@@ -31,10 +31,8 @@ import Submission.Work.ZeroFreeTables.HBProps
 import Submission.Work.ZeroFreeTables.TestFn_F_eq_integral
 import Submission.Work.ZeroFreeTables.TestFn_F_antitone
 import Submission.Work.ZeroFreeTables.testFn72_defs
-import Submission.Commons.NumberTheory.Linnik.lemma5_2_of_logDeriv_bound_param_imprim
 import Submission.Commons.NumberTheory.Linnik.lemma5_3
 import Submission.Commons.NumberTheory.Linnik.le_windowSum_of_mem
-import Submission.Commons.NumberTheory.Linnik.lemma3_1
 import Submission.Commons.NumberTheory.Linnik.le_windowSum_of_mem_ne
 import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 

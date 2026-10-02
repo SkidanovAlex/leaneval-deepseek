@@ -151,13 +151,13 @@ private lemma delta_bound (P p : ℕ) (N : ℤ) (h : ℕ) (hp : 0 < p)
       have hle : |R*(l':ℤ) - R'*(l:ℤ)| ≤ R*(l':ℤ) + R'*(l:ℤ) := by
         rw [abs_le]
         constructor
-        · nlinarith [mul_nonneg hR0 (le_of_lt hlz0'), mul_nonneg hR'0 (le_of_lt hlz0)]
-        · nlinarith [mul_nonneg hR0 (le_of_lt hlz0'), mul_nonneg hR'0 (le_of_lt hlz0)]
+        · linarith only [mul_nonneg hR0 (le_of_lt hlz0'), mul_nonneg hR'0 (le_of_lt hlz0)]
+        · linarith only [mul_nonneg hR0 (le_of_lt hlz0'), mul_nonneg hR'0 (le_of_lt hlz0)]
       have hRle : R ≤ (l:ℤ) := le_of_lt hR1
       have hR'le : R' ≤ (l':ℤ) := le_of_lt hR'1
       have ha : R*(l':ℤ) ≤ (l:ℤ)*(l':ℤ) := mul_le_mul_of_nonneg_right hRle (le_of_lt hlz0')
       have hb : R'*(l:ℤ) ≤ (l':ℤ)*(l:ℤ) := mul_le_mul_of_nonneg_right hR'le (le_of_lt hlz0)
-      nlinarith [hle, ha, hb]
+      linarith only [hle, ha, hb]
     calc |A * (l':ℤ) - A' * (l:ℤ)|
         = |(l:ℤ)*(l':ℤ)*(Q - Q') + (R*(l':ℤ) - R'*(l:ℤ))| := by rw [hdec]
       _ ≤ |(l:ℤ)*(l':ℤ)*(Q - Q')| + |R*(l':ℤ) - R'*(l:ℤ)| := abs_add_le _ _
@@ -200,7 +200,8 @@ private lemma delta_bound (P p : ℕ) (N : ℤ) (h : ℕ) (hp : 0 < p)
   have hl0 : (0:ℝ) ≤ (l:ℝ) := by positivity
   have hl0' : (0:ℝ) ≤ (l':ℝ) := by positivity
   have hh2 : (0:ℝ) ≤ (h:ℝ)+2 := by positivity
-  have hmul : (l:ℝ)*(l':ℝ) ≤ (2*(P:ℝ))^2 := by nlinarith [hlR, hlR', hl0, hl0']
+  have hmul : (l:ℝ)*(l':ℝ) ≤ (2*(P:ℝ))^2 := by
+    nlinarith only [mul_le_mul hlR hlR' hl0' (by linarith only [hl0, hlR])]
   calc |(((N - (a:ℤ)*(p:ℤ))*(l':ℤ) - (N - (a':ℤ)*(p:ℤ))*(l:ℤ) : ℤ) : ℝ)|
       ≤ (l:ℝ)*(l':ℝ)*((h:ℝ)+2) := hUreal
     _ ≤ (2*(P:ℝ))^2*((h:ℝ)+2) := mul_le_mul_of_nonneg_right hmul hh2

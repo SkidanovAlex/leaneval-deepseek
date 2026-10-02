@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.OffAxis.Tf72One.Box
 import Submission.Work.OffAxis.Tf72One.corner_low
 import Submission.Work.OffAxis.Tf72One.corner_mid
 import Submission.Work.OffAxis.Tf72One.Cell2Interp

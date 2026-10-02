@@ -66,8 +66,8 @@ lemma loglog_pow_le {q : ℕ} (hq : 3 ≤ q) {k : ℕ} (hk : k ≤ 4) :
   have hlogq_gt1 : 1 < Real.log (q : ℝ) :=
     lt_of_lt_of_le h1 (Real.log_le_log (by norm_num) hq3)
   have hu_gt0 : 0 < Real.log (Real.log (q : ℝ)) := Real.log_pos hlogq_gt1
-  have hmono : Real.log (Real.log (q : ℝ)) ≤ Real.log (Real.log (q : ℝ)) + 2 := by linarith
-  have hu2 : (1 : ℝ) ≤ Real.log (Real.log (q : ℝ)) + 2 := by linarith
+  have hmono : Real.log (Real.log (q : ℝ)) ≤ Real.log (Real.log (q : ℝ)) + 2 := by linarith only []
+  have hu2 : (1 : ℝ) ≤ Real.log (Real.log (q : ℝ)) + 2 := by linarith only [hu_gt0]
   calc (Real.log (Real.log (q : ℝ))) ^ k
       ≤ (Real.log (Real.log (q : ℝ)) + 2) ^ k := pow_le_pow_left₀ hu_gt0.le hmono k
     _ ≤ (Real.log (Real.log (q : ℝ)) + 2) ^ 4 := pow_le_pow_right₀ hu2 hk
@@ -86,7 +86,7 @@ lemma error_bound {q : ℕ} {L α Z : ℝ} (hL : 1 ≤ L) (hα : 0 ≤ α)
       ≤ Cd * (C1 + C2 + C3) * (α + α ^ 2 + α ^ 3) * Z ^ 4 / L := by
   have hLpos : 0 < L := lt_of_lt_of_le zero_lt_one hL
   have hLinv : L⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hL
-  have hL2inv : (L ^ 2)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by nlinarith : (1:ℝ) ≤ L ^ 2)
+  have hL2inv : (L ^ 2)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by nlinarith only [hL] : (1:ℝ) ≤ L ^ 2)
   have hZ4nn : (0 : ℝ) ≤ Z ^ 4 := by positivity
   have key1 : α * (∑ p ∈ q.primeFactors, Real.log (p : ℝ) / (p : ℝ)) ≤ α * (C1 * Z ^ 4) :=
     mul_le_mul_of_nonneg_left hS1 hα
@@ -116,15 +116,15 @@ lemma error_bound {q : ℕ} {L α Z : ℝ} (hL : 1 ≤ L) (hα : 0 ≤ α)
         + α ^ 2 / L * (∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 2 / (p : ℝ))
         + α ^ 3 / L ^ 2 * (∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 3 / (p : ℝ))
       ≤ (α * C1 + α ^ 2 * C2 + α ^ 3 * C3) * Z ^ 4 := by
-    nlinarith [key1, key2, key3]
+    linarith only [key1, key2, key3]
   have hcoef : α * C1 + α ^ 2 * C2 + α ^ 3 * C3 ≤ (C1 + C2 + C3) * (α + α ^ 2 + α ^ 3) := by
-    have hs : α ≤ α + α ^ 2 + α ^ 3 := by nlinarith [hα]
-    have hs2 : α ^ 2 ≤ α + α ^ 2 + α ^ 3 := by nlinarith [hα]
-    have hs3 : α ^ 3 ≤ α + α ^ 2 + α ^ 3 := by nlinarith [hα]
+    have hs : α ≤ α + α ^ 2 + α ^ 3 := by nlinarith only [hα]
+    have hs2 : α ^ 2 ≤ α + α ^ 2 + α ^ 3 := by nlinarith only [hα]
+    have hs3 : α ^ 3 ≤ α + α ^ 2 + α ^ 3 := by nlinarith only [hα]
     have f1 : C1 * α ≤ C1 * (α + α ^ 2 + α ^ 3) := mul_le_mul_of_nonneg_left hs hC1.le
     have f2 : C2 * α ^ 2 ≤ C2 * (α + α ^ 2 + α ^ 3) := mul_le_mul_of_nonneg_left hs2 hC2.le
     have f3 : C3 * α ^ 3 ≤ C3 * (α + α ^ 2 + α ^ 3) := mul_le_mul_of_nonneg_left hs3 hC3.le
-    nlinarith [f1, f2, f3]
+    linarith only [f1, f2, f3]
   have hCL : (0 : ℝ) ≤ Cd / L := by positivity
   calc Cd / L * (α * (∑ p ∈ q.primeFactors, Real.log (p : ℝ) / (p : ℝ))
         + α ^ 2 / L * (∑ p ∈ q.primeFactors, (Real.log (p : ℝ)) ^ 2 / (p : ℝ))

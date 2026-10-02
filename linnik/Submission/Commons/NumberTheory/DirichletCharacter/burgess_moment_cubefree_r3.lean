@@ -147,7 +147,7 @@ lemma r3_gcd_shift_sum_le {q H : ℕ} (u : Fin H) :
   rw [h1, hsplit, Finset.sum_union hdisj]
   have a := r3_gcd_sum_lt_le (q := q) u
   have b := r3_gcd_sum_gt_le (q := q) u
-  linarith
+  linarith only [a, b]
 
 theorem r3_sum_prod_gcd_diff_le {q H : ℕ} (hq : q ≠ 0) (i : Fin 6) :
     (∑ w : Fin 6 → Fin H, ∏ j ∈ Finset.univ.erase i,
@@ -379,15 +379,15 @@ theorem burgess_moment_cubefree_r3 {ε : ℝ} (hε : 0 < ε) :
   classical
   obtain ⟨C6, hC6pos, hC6⟩ :=
     Commons.NumberTheory.DirichletSeries.pow_card_primeFactors_le_const_mul_rpow 6 (ε/2)
-      (by norm_num) (by linarith)
+      (by norm_num) (by linarith only [hε])
   obtain ⟨Cd, hCdpos, hCd⟩ :=
-    Commons.NumberTheory.DivisorBound.card_divisors_le_rpow (ε/10) (by linarith)
+    Commons.NumberTheory.DivisorBound.card_divisors_le_rpow (ε/10) (by linarith only [hε])
   refine ⟨2916 + 192 * C6 * Cd ^ 5 + 1, by positivity, ?_⟩
   intro q _inst hcube χ hprim hne H hH6
   have hq0 : q ≠ 0 := NeZero.ne q
   have hq1 : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr hq0
   have hqR : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq1
-  have hqRpos : (0:ℝ) < (q:ℝ) := by linarith
+  have hqRpos : (0:ℝ) < (q:ℝ) := by linarith only [hqR]
   have hqe1 : (1:ℝ) ≤ (q:ℝ)^ε := Real.one_le_rpow hqR hε.le
   set B : ℝ := (6:ℝ)^(q.primeFactors.card) * Real.sqrt (q:ℝ) with hBdef
   set τ : ℝ := ((q.divisors.card : ℕ) : ℝ) with hτdef
@@ -449,7 +449,7 @@ theorem burgess_moment_cubefree_r3 {ε : ℝ} (hε : 0 < ε) :
         by_cases h : UniqIdx p.1 p.2 i
         · rw [if_pos h]; exact Wgt_nonneg q p.1 p.2 i
         · rw [if_neg h]
-      linarith
+      linarith only [_inst, hb, hnn]
   refine (Finset.sum_le_sum (fun p _ => hpoint p)).trans ?_
   -- split the sum
   have hsplit : (∑ p : (Fin 3 → Fin H) × (Fin 3 → Fin H),
@@ -587,7 +587,7 @@ theorem burgess_moment_cubefree_r3 {ε : ℝ} (hε : 0 < ε) :
     rw [hcast]
     have hle : (q:ℝ) ≤ (q:ℝ)^ε * (q:ℝ) :=
       le_mul_of_one_le_left (by positivity : (0:ℝ) ≤ (q:ℝ)) hqe1
-    nlinarith [hle, hqe1, hqR, pow_nonneg (by positivity : (0:ℝ) ≤ (H:ℝ)) 3, hqRpos]
+    nlinarith only [hle, hqe1, hqR, pow_nonneg (by positivity : (0:ℝ) ≤ (H:ℝ)) 3, hqRpos, hcast]
   calc (q:ℝ) * ((2916 * H ^ 3 : ℕ) : ℝ)
         + B * (192 * (H:ℝ) ^ 6 * τ ^ 5)
       ≤ 2916 * (q:ℝ)^ε * (q:ℝ) * (H:ℝ)^3
@@ -601,7 +601,7 @@ theorem burgess_moment_cubefree_r3 {ε : ℝ} (hε : 0 < ε) :
         have hB : 0 ≤ (H:ℝ)^6 * Real.sqrt (q:ℝ) := mul_nonneg (by positivity) (Real.sqrt_nonneg _)
         have hcore : (2916:ℝ) * ((q:ℝ) * (H:ℝ)^3) + D * ((H:ℝ)^6 * Real.sqrt (q:ℝ))
             ≤ (2916 + D + 1) * ((q:ℝ) * (H:ℝ)^3 + (H:ℝ)^6 * Real.sqrt (q:ℝ)) := by
-          nlinarith [hDnn, hA, hB, mul_nonneg hDnn hA, mul_nonneg hDnn hB]
+          linarith only [hDnn, hA, hB, mul_nonneg hDnn hA, mul_nonneg hDnn hB]
         have hmul := mul_le_mul_of_nonneg_left hcore hpe
         calc 2916 * (q:ℝ)^ε * (q:ℝ) * (H:ℝ)^3
               + 192 * C6 * Cd^5 * (q:ℝ)^ε * (H:ℝ)^6 * Real.sqrt (q:ℝ)

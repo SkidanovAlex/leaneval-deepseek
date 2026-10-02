@@ -24,11 +24,9 @@ import Mathlib
 import Submission.Work.LinnikContract2.Defs
 import Submission.Work.LinnikContract2.API
 import Submission.Work.LinnikContract2.Areas
-import Submission.Work.LinnikContract2.Spec
 import Submission.Work.LinnikContract2.Bridge
 import Submission.Work.LinnikContract2.Numbering
 import Submission.Work.LinnikContract2.A7.table13_col_le
-import Submission.Work.LinnikContract2.A7.sec15_caseB_large
 import Submission.Work.A7.sec15_uniform
 import Submission.Work.A7.sec14_uniform
 import Submission.Work.LinnikAreas.A7.WBox

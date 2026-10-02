@@ -46,7 +46,6 @@ import Submission.Work.ZeroFreeTables.OtherLamCountLeK_all
 import Submission.Work.ZeroFreeTables.row_contra_degenerate_weak
 import Submission.Work.ZeroFreeTables.L52HypBoth
 import Submission.Work.ZeroFreeTables.T7Cert
-import Submission.Work.ZeroFreeTables.TentFmEq
 import Submission.Work.ZeroFreeTables.TentExtract
 import Submission.Work.ZeroFreeTables.TentFiveEngine
 import Submission.Work.ZeroFreeTables.TentRowCerts
@@ -54,7 +53,6 @@ import Submission.Work.ZeroFreeTables.TentRowCover
 import Submission.Work.ZeroFreeTables.Table7RowCover
 import Submission.Work.ZeroFreeTables.maximalityAt
 import Submission.Work.ZeroFreeTables.TentRowsProps
-import Submission.Work.ZeroFreeTables.HB88DyadicArith
 import Submission.Work.ZeroFreeTables.HB88DyadicArith_proof
 import Submission.Work.LinnikAreas.LFunction_eq_zero_of_zeroMult
 import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultStripPos

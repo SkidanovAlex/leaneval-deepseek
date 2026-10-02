@@ -60,7 +60,7 @@ lemma half_rpow_le_four {x : ℝ} (hx : 0 < x) :
       Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
     rw [Real.rpow_two] at h3
     norm_num at h3
-    linarith
+    linarith only [h3]
   exact mul_le_mul_of_nonneg_right h2 (Real.rpow_nonneg (le_of_lt hx) _)
 
 /-- `1/x ≤ x^{-1/3}` for `x ≥ 1`. -/
@@ -95,12 +95,12 @@ theorem perron_triangle_error_decay :
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   refine ⟨D * (Z / Real.log 2 + 2 * Z + 150), ?_, ?_⟩
   · have h1 : 0 ≤ Z / Real.log 2 := div_nonneg hZnn hlog2pos.le
-    nlinarith [hDpos, h1, hZnn]
+    nlinarith only [hDpos, h1, hZnn]
   · intro N _ ψ β x T hψ hβ1 hβ2 hx hT
-    have hxpos : (0:ℝ) < x := by linarith
+    have hxpos : (0:ℝ) < x := by linarith only [hx]
     have hx2pos : (0:ℝ) < x ^ 2 := pow_pos hxpos 2
     have hT0 : (0:ℝ) ≤ T := le_trans hx2pos.le hT
-    have hTpos : (0:ℝ) < T := by linarith
+    have hTpos : (0:ℝ) < T := by linarith only [hT, hx2pos]
     set w : ℕ → ℝ := fun n => min 1 (1 / (T * |Real.log (x / (n : ℝ))|)) with hwdef
     have hw0 : ∀ n, 0 ≤ w n := fun n => by
       rw [hwdef]
@@ -139,7 +139,7 @@ theorem perron_triangle_error_decay :
           le_trans (abs_lamR_le_card_divisors ψ n) (hD n)
         have h2 : (n : ℝ) ^ ((1:ℝ)/4) * (n : ℝ) ^ (-(1 + β)) ≤ (n : ℝ) ^ (-(3/2:ℝ)) := by
           rw [← Real.rpow_add hnpos]
-          exact Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)
+          exact Real.rpow_le_rpow_of_exponent_le hn1 (by linarith only [hβ1])
         have h3 : |term n| = |lamR ψ n| * (n : ℝ) ^ (-(1 + β)) * w n := by
           rw [htermdef, abs_mul, abs_mul,
             abs_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) _), abs_of_nonneg (hw0 n)]
@@ -162,11 +162,11 @@ theorem perron_triangle_error_decay :
         _ = D * (∑' n : ℕ, G n) := tsum_mul_left
     set M : ℕ := ⌊2 * x⌋₊ with hMdef
     set M1 : ℕ := ⌊x / 2⌋₊ with hM1def
-    have hMle : (M : ℝ) ≤ 2 * x := by rw [hMdef]; exact Nat.floor_le (by linarith)
-    have hM1le : (M1 : ℝ) ≤ x / 2 := by rw [hM1def]; exact Nat.floor_le (by linarith)
+    have hMle : (M : ℝ) ≤ 2 * x := by rw [hMdef]; exact Nat.floor_le (by linarith only [hx])
+    have hM1le : (M1 : ℝ) ≤ x / 2 := by rw [hM1def]; exact Nat.floor_le (by linarith only [hx])
     have hM1M : M1 ≤ M := by
       rw [hMdef, hM1def]
-      exact Nat.floor_mono (by linarith)
+      exact Nat.floor_mono (by linarith only [hx])
     have htail : (∑' i : ℕ, G (i + (M + 1))) ≤ (2 / x ^ 2) * Z := by
       have hpt' : ∀ i : ℕ,
           G (i + (M + 1)) ≤ (2 / x ^ 2) * ((i + (M + 1) : ℕ) : ℝ) ^ (-(3/2:ℝ)) := by
@@ -176,10 +176,10 @@ theorem perron_triangle_error_decay :
             have hlt := Nat.lt_floor_add_one (2 * x)
             rw [← hMdef] at hlt
             push_cast
-            linarith
+            linarith only [hlt]
           have h2 : ((M + 1 : ℕ) : ℝ) ≤ ((i + (M + 1) : ℕ) : ℝ) := by
             exact_mod_cast Nat.le_add_left (M + 1) i
-          linarith
+          linarith only [h1, h2]
         have hwj : w (i + (M + 1)) ≤ 2 / x ^ 2 := perron_weight_far x T (i + (M + 1)) hx hT hj
         rw [hGdef]
         calc ((i + (M + 1) : ℕ) : ℝ) ^ (-(3/2:ℝ)) * w (i + (M + 1))
@@ -207,7 +207,7 @@ theorem perron_triangle_error_decay :
           apply rpow_neg_three_halves_antitone
           · positivity
           · push_cast
-            linarith [Nat.zero_le M]
+            linarith only [Nat.zero_le M]
         calc (∑' i : ℕ, ((i + (M + 1) : ℕ) : ℝ) ^ (-(3/2:ℝ)))
             ≤ ∑' i : ℕ, ((i + 1 : ℕ) : ℝ) ^ (-(3/2:ℝ)) :=
               Summable.tsum_le_tsum hle
@@ -230,10 +230,10 @@ theorem perron_triangle_error_decay :
           have hnpos : (0:ℝ) < (n : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hn0
           have hnle : (n : ℝ) ≤ x / 2 := by
             have h2 : (n : ℝ) ≤ ((M1 : ℕ) : ℝ) := by exact_mod_cast hn.2
-            linarith
+            linarith only [hM1le, h2]
           have hxn : (2:ℝ) ≤ x / (n : ℝ) := by
             rw [le_div_iff₀ hnpos]
-            linarith
+            linarith only [hnle]
           have hlog : Real.log 2 ≤ |Real.log (x / (n : ℝ))| :=
             le_trans (Real.log_le_log (by norm_num) hxn) (le_abs_self _)
           have hwle : w n ≤ 1 / (x ^ 2 * Real.log 2) := by
@@ -248,7 +248,7 @@ theorem perron_triangle_error_decay :
               apply one_div_le_one_div_of_le
               · exact mul_pos (pow_pos hxpos 2) hlog2pos
               · exact mul_le_mul_of_nonneg_right hT hlog2pos.le
-            linarith
+            linarith only [h1, h2, h3]
           calc (n : ℝ) ^ (-(3/2:ℝ)) * w n
               ≤ (n : ℝ) ^ (-(3/2:ℝ)) * (1 / (x ^ 2 * Real.log 2)) :=
                 mul_le_mul_of_nonneg_left hwle (Real.rpow_nonneg (Nat.cast_nonneg n) _)
@@ -277,12 +277,12 @@ theorem perron_triangle_error_decay :
             have h3 : ((M1 + 1 : ℕ) : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn.1
             push_cast at h3
             exact h3
-          linarith
+          linarith only [hfl, h2]
         have hn2 : (n : ℝ) ≤ 2 * x := by
           have h2 : (n : ℝ) ≤ ((M : ℕ) : ℝ) := by exact_mod_cast hn.2
-          linarith
+          linarith only [hMle, h2]
         have hr : (n : ℝ) ^ (-(3/2:ℝ)) ≤ 4 * x ^ (-(3/2:ℝ)) :=
-          le_trans (rpow_neg_three_halves_antitone (by linarith) hn1.le)
+          le_trans (rpow_neg_three_halves_antitone (by linarith only [hx]) hn1.le)
             (half_rpow_le_four hxpos)
         rw [hGdef]
         calc (n : ℝ) ^ (-(3/2:ℝ)) * w n
@@ -302,7 +302,7 @@ theorem perron_triangle_error_decay :
           omega
         have h2 : ((M + 1 : ℕ) : ℝ) ≤ 3 * x := by
           push_cast
-          linarith
+          linarith only [hx, hMle]
         calc (((Finset.Icc (M1 + 1) M).card : ℕ) : ℝ) ≤ ((M + 1 : ℕ) : ℝ) := by
               exact_mod_cast h1
           _ ≤ 3 * x := h2
@@ -337,14 +337,14 @@ theorem perron_triangle_error_decay :
             rw [hc]
             have hc2 : (((Finset.Icc (M1 + 1) M).card : ℕ) : ℝ) * (2 / x ^ 2) ≤ 3 * x * (2 / x ^ 2) :=
               mul_le_mul_of_nonneg_right hcard (by positivity)
-            linarith [hmin]
+            linarith only [hmin, hc2]
         _ ≤ 150 * x ^ (-(3/2:ℝ)) := by
             have hb : 3 * x * (2 / x ^ 2) + 30 ≤ 36 := by
               rw [show 3 * x * (2 / x ^ 2) = 6 / x by field_simp; ring]
               have h2 : 6 / x ≤ 6 := by
                 rw [div_le_iff₀ hxpos]
-                linarith
-              linarith
+                linarith only [hx]
+              linarith only [h2]
             calc 4 * x ^ (-(3/2:ℝ)) * (3 * x * (2 / x ^ 2) + 30)
                 ≤ 4 * x ^ (-(3/2:ℝ)) * 36 := mul_le_mul_of_nonneg_left hb (by positivity)
               _ = 144 * x ^ (-(3/2:ℝ)) := by ring
@@ -364,7 +364,7 @@ theorem perron_triangle_error_decay :
           rw [Finset.disjoint_left]; intro n h1 h2
           simp only [Finset.mem_Icc] at h1 h2; omega
         rw [hunion, Finset.sum_union hdisj]
-        linarith [hA, hB]
+        linarith only [hA, hB]
       calc (∑' n : ℕ, G n)
           = (∑ i ∈ Finset.range (M + 1), G i) + ∑' i : ℕ, G (i + (M + 1)) := hsplit.symm
         _ ≤ (Z / (x ^ 2 * Real.log 2) + 150 * x ^ (-(3/2:ℝ))) + (2 / x ^ 2) * Z :=
@@ -373,7 +373,7 @@ theorem perron_triangle_error_decay :
     have hfinal : x * (Z / (x ^ 2 * Real.log 2) + 150 * x ^ (-(3/2:ℝ)) + 2 * Z / x ^ 2)
         ≤ (Z / Real.log 2 + 2 * Z + 150) * x ^ (-(1/3:ℝ)) := by
       have hZlog : 0 ≤ Z / Real.log 2 := div_nonneg hZnn hlog2pos.le
-      have hZnn' : 0 ≤ 2 * Z := by linarith
+      have hZnn' : 0 ≤ 2 * Z := by linarith only [hZnn]
       have t1 : x * (Z / (x ^ 2 * Real.log 2)) ≤ (Z / Real.log 2) * x ^ (-(1/3:ℝ)) := by
         rw [show x * (Z / (x ^ 2 * Real.log 2)) = (Z / Real.log 2) * x⁻¹ by field_simp]
         exact mul_le_mul_of_nonneg_left (inv_le_rpow_neg_third hx) hZlog
@@ -395,7 +395,7 @@ theorem perron_triangle_error_decay :
           = (Z / Real.log 2) * x ^ (-(1/3:ℝ)) + 150 * x ^ (-(1/3:ℝ))
             + (2 * Z) * x ^ (-(1/3:ℝ)) := by ring
       rw [hsum]
-      linarith [t1, t2, t3]
+      linarith only [t1, t2, t3]
     calc x * (∑' n : ℕ, term n) ≤ x * (D * (∑' n : ℕ, G n)) :=
           mul_le_mul_of_nonneg_left hSle hxpos.le
       _ = D * (x * (∑' n : ℕ, G n)) := by ring

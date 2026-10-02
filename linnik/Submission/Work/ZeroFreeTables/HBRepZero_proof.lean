@@ -32,9 +32,7 @@ import Submission.Work.ZeroFreeTables.EngineRoadmap
 import Submission.Work.ZeroFreeTables.HBRepZero_red
 import Submission.Work.ZeroFreeTables.testFn7_2
 import Submission.Work.ZeroFreeTables.TestFn_F_antitone
-import Submission.Work.LinnikAreas.lemma6_3_wide
 import Submission.Work.LinnikAreas.principalKsumWide
-import Submission.Work.LinnikAreas.l52HypReal
 import Submission.Work.LinnikAreas.boxMaxZero
 import Submission.Work.ZeroFreeTables.winSum_two_mul
 import Submission.Work.ZeroFreeTables.hb6Repeated
@@ -43,6 +41,7 @@ import Submission.Work.ZeroFreeTables.tf72_arith_false
 import Submission.Work.NumberTheory.Linnik.scratch_kpos_real
 import Submission.Work.NumberTheory.Linnik.scratch_l63
 import Submission.Commons.NumberTheory.Linnik.le_windowSum_of_mem
+import Submission.Work.LinnikContract.API.isZ_lambda_nonneg
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

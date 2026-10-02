@@ -84,7 +84,7 @@ private lemma R_le_log_and_lamMax {q : ℕ} (_hq : 2 ≤ q) {R : ℝ} (hR : 0 < 
     have h1 := Nat.le_ceil (Real.exp (Real.exp (Real.exp (3 * R))))
     have h2 : (Nat.ceil (Real.exp (Real.exp (Real.exp (3 * R)))) : ℝ) + 2 ≤ (q : ℝ) := by
       exact_mod_cast h
-    linarith
+    linarith only [h1, h2]
   have hlogq : Real.exp (Real.exp (3 * R)) ≤ Real.log (q : ℝ) := by
     have h2 := Real.log_le_log (Real.exp_pos _) hx
     rwa [Real.log_exp] at h2
@@ -92,7 +92,7 @@ private lemma R_le_log_and_lamMax {q : ℕ} (_hq : 2 ≤ q) {R : ℝ} (hR : 0 < 
     have h1 : 3 * R + 1 ≤ Real.exp (3 * R) := by
       simpa using Real.add_one_le_exp (3 * R)
     have h2 : Real.exp (3 * R) + 1 ≤ Real.exp (Real.exp (3 * R)) := Real.add_one_le_exp _
-    linarith
+    linarith only [hR, h1, h2]
   have hRlogq : R ≤ Real.log (q : ℝ) := le_trans hexp3 hlogq
   have hllq : Real.exp (3 * R) ≤ Real.log (Real.log (q : ℝ)) := by
     have h2 := Real.log_le_log (Real.exp_pos (Real.exp (3 * R))) hlogq
@@ -100,7 +100,7 @@ private lemma R_le_log_and_lamMax {q : ℕ} (_hq : 2 ≤ q) {R : ℝ} (hR : 0 < 
   have h3 : 3 * R ≤ Real.log (Real.log (Real.log (q : ℝ))) := by
     have h2 := Real.log_le_log (Real.exp_pos (3 * R)) hllq
     rwa [Real.log_exp] at h2
-  exact ⟨hRlogq, by rw [lamMax]; linarith⟩
+  exact ⟨hRlogq, by rw [lamMax]; linarith only [h3]⟩
 
 /-! ## AREA 7, Case A -/
 
@@ -147,7 +147,7 @@ theorem area7_of_isZ
   rw [hK]
   refine lt_of_le_of_lt hsigned ?_
   by_cases hAe : Work.LinnikAreas.A7.Aset q R = ∅
-  · have h0 : (0:ℝ) < (9:ℝ)/100 - ηf := by linarith
+  · have h0 : (0:ℝ) < (9:ℝ)/100 - ηf := by linarith only [hηpow, hη1, hfin1]
     simpa [hAe] using h0
   · obtain ⟨χ₀, hχ₀⟩ := Finset.nonempty_iff_ne_empty.mpr hAe
     obtain ⟨hχ₀ne, ρ₀, hρ₀box, hρ₀zm⟩ := Work.LinnikAreas.A7.mem_Aset.mp hχ₀
@@ -208,10 +208,10 @@ theorem area7_of_isZ
         hqe2 hR hRlog hRmax hη0 (by norm_num) le_rfl hminN hlam₁ h348 hZ2'
         hZ3' hZ4 hD2narrow hS hSiff hD1' hPC'
       refine lt_of_le_of_lt h15 ?_
-      have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by nlinarith [hη0, hη1]
+      have hb : (9:ℝ)/100*η*1000 ≤ (9:ℝ)/100*(1/100000000)*1000 := by linarith only [hη0, hη1]
       have hc : (9:ℝ)/100*((9968:ℝ)/10000) + (9:ℝ)/100*(1/100000000)*1000
           < (9:ℝ)/100 - 1/5000 := by norm_num
-      linarith
+      linarith only [hηpow, hη1, hfin1]
     · -- ## §14
       have h348lt : lam₁ < (348:ℝ)/1000 := lt_of_not_ge h348
       have hc348 : (0.348 : ℝ) = (348:ℝ)/1000 := by norm_num
@@ -225,7 +225,7 @@ theorem area7_of_isZ
         rw [← hlam₁]
         refine Work.A7.box_api7_p4 hmin.1.1 hZ1'.1 hZ1'.2.1 hZ1'.2.2.1 hnotSiegel hqe2 ?_
         show lamOf q ρ₁ < 1
-        rw [hlam₁]; linarith
+        rw [hlam₁]; linarith only [hηpow, hη1, h348]
       have h14 := Work.A7.sec14_uniform (q := q) (R := R) (lamS := lamS) (η := η)
         (εw := 1/1000) (lam₁ := lam₁) (χ₁ := χ₁) (ρ₁ := ρ₁)
         hqe2 hR hRlog hRmax hη0 hη1 hη2 (by norm_num) le_rfl hlamS hnotSiegel
@@ -233,8 +233,8 @@ theorem area7_of_isZ
       refine lt_of_le_of_lt h14 ?_
       have hpos : 0 < lam₁ := lt_of_lt_of_le hlamS hSle
       have hlt : ηf < lam₁/100 := by
-        have h1 : ηf ≤ lam₁/200 := by linarith
-        linarith
-      linarith
+        have h1 : ηf ≤ lam₁/200 := by linarith only [hfin2, hSle]
+        linarith only [hlamS, hfin2, hSle]
+      linarith only [hlamS, hfin2, hSle]
 
 end Work.LinnikContract2

@@ -376,7 +376,7 @@ theorem core15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R Λ η εw lam₁ CST1 CST2
       have h2 : 0 ≤ Work.LinnikAreas.A7.Wf lam₁ := le_of_lt hWlam1
       have h3 : 0 ≤ SB2 := by
         rw [hSB2]; exact Finset.sum_nonneg (fun χ _ => Wf_nonneg_of_nonneg (lamChar_nonneg_of_hq hq χ))
-      have h4 : 0 ≤ kR := by rw [hkR]; positivity
+      have h4 : 0 ≤ kR := by rw [hkR]; exact Nat.cast_nonneg _
       linarith [mul_nonneg h4 h2]
     linarith [hSbudget]
   have hetabudget : kR + (B2.card : ℝ) ≤ (N 0 : ℝ) := by
@@ -586,7 +586,7 @@ theorem core15 {q : ℕ} [NeZero q] (hq : 2 ≤ q) {R Λ η εw lam₁ CST1 CST2
       have h1 := mul_le_mul_of_nonneg_left hcq ha
       have h2 := mul_le_mul_of_nonneg_left hcq hb
       have h3 : ((n₁:ℝ) - kR) * CST2 ≤ ((n₁:ℝ) - kR) * CST1 := mul_le_mul_of_nonneg_left hcred12 ha
-      nlinarith [h1, h2, h3]
+      linarith only [h1, h2, h3]
     linarith [hA', hB']
   have hp3 : kR * CST1 + CfB2 ≤ (n₁:ℝ) * CST1 + 2 * CST2 + max 0 ((N s : ℝ) - (n₁:ℝ) - 2) * q0 + Dsum := by
     linarith [hCsum, hcredit]

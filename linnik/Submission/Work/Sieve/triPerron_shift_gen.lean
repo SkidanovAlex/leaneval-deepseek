@@ -2,8 +2,8 @@ import Mathlib
 import Submission.Work.LinnikAreas.triPerronDefs
 import Submission.Work.LinnikAreas.triFun_residue_decomp
 import Submission.Work.LinnikAreas.triPerron_dslope_diff
-import Submission.Work.LinnikAreas.triPerron_shift
 import Submission.Work.Sieve.perronShift_topEdge_solve
+import Submission.Commons.NumberTheory.DirichletCharacter.chebyshevPsiChi_explicit_formula_mult
 
 /-!
 # The Perron contour shift for the triangle kernel with a general left edge

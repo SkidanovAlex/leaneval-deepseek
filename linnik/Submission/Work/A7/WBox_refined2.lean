@@ -2,7 +2,6 @@ import Mathlib
 import Submission.Work.LinnikAreas.A7.Aref2
 import Submission.Work.LinnikAreas.A7.WBox
 import Submission.Work.A7.zeroMult_conj_inv
-import Submission.Work.A7.F2_norm_ofReal
 import Submission.Work.A7.zeroMult_conj_sq_one
 import Submission.Work.A7.bfun_le_F2r
 

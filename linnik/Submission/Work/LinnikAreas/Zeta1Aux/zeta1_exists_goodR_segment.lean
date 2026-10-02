@@ -1,5 +1,6 @@
 import Mathlib
-import Submission.Work.LinnikAreas.Zeta1Aux.CommonsImports
+import Submission.Commons.NumberTheory.Linnik.goodRadius_pair
+import Submission.Commons.NumberTheory.Zeta.zetaZeroBall
 
 namespace Work.LinnikAreas.Zeta1Aux
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_vertical_exp_decay_explicit
-import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_one_lower
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.gamma_one_add_mul_I_prod_norm
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.norm_Gamma_lower_strip
 import Submission.Commons.Analysis.SpecialFunctions.Gamma.log_Gamma_le

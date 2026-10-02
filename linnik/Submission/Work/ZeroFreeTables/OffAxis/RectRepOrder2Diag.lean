@@ -336,7 +336,7 @@ theorem RectRepOrder2Diag {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 
       have h2 : 48*K*((K^2+K+1/2)*e0) = 24*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0v.le (show (0:ℝ) ≤ 48*K by positivity)
         have h' := mul_le_mul_of_nonneg_left he0v.ge (show (0:ℝ) ≤ 48*K by positivity)
-        linarith [h, h']
+        linarith only [h, h']
       have h3 : 48*K*((K^2+2*K+3/4)*(1/6+e))
           = 8*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e) := by ring
       have h4 : 48*K*((K+1/2)*e0) ≤ 48*K*(e*S) :=
@@ -345,7 +345,7 @@ theorem RectRepOrder2Diag {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 
       have hslack : 3*S/32 + (K^2+2*K+3/4)/16 + 1/64
           + (8*K*(K^2+2*K+3/4) + 2*K) ≤ 12*K*S + S/2 := by
         rw [hSdef]
-        nlinarith [sq_nonneg K, hK.le, sq_nonneg (K+1)]
+        nlinarith only [sq_nonneg K, hK.le, mul_nonneg hK.le (sq_nonneg K)]
       have hexp : C2*(48*K) = 48*K*((K^2+K+1/2)*e0) + 48*K*((K^2+2*K+3/4)*(1/6+e))
           + 48*K*((K+1/2)*e0) + 48*K*((1/4)*(1/6+e)) := by rw [hC2def]; ring
       rw [hexp]
@@ -405,7 +405,7 @@ theorem RectRepOrder2Diag {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 
       have h2 : 48*K*((K^2+K+1/2)*e0) = 24*K*e*S := by
         have h := mul_le_mul_of_nonneg_left he0v.le (show (0:ℝ) ≤ 48*K by positivity)
         have h' := mul_le_mul_of_nonneg_left he0v.ge (show (0:ℝ) ≤ 48*K by positivity)
-        linarith [h, h']
+        linarith only [h, h']
       have h3 : 48*K*((K^2+2*K+3/4)*(1/6+e))
           = 8*K*(K^2+2*K+3/4) + 48*K*((K^2+2*K+3/4)*e) := by ring
       have h4 : 48*K*((K+1/2)*e0) ≤ 48*K*(e*S) :=
@@ -414,7 +414,7 @@ theorem RectRepOrder2Diag {a K ε H W : ℝ} (ha : 0 < a) (hK : 0 < K) (hε : 0 
       have hslack : 3*S/32 + (K^2+2*K+3/4)/16 + 1/64
           + (8*K*(K^2+2*K+3/4) + 2*K) ≤ 12*K*S + S/2 := by
         rw [hSdef]
-        nlinarith [sq_nonneg K, hK.le, sq_nonneg (K+1)]
+        nlinarith only [sq_nonneg K, hK.le, mul_nonneg hK.le (sq_nonneg K)]
       have hexp : C2*(48*K) = 48*K*((K^2+K+1/2)*e0) + 48*K*((K^2+2*K+3/4)*(1/6+e))
           + 48*K*((K+1/2)*e0) + 48*K*((1/4)*(1/6+e)) := by rw [hC2def]; ring
       rw [hexp]

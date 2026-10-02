@@ -23,6 +23,7 @@ import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultTransfer
 import Submission.Work.LinnikAreas.OtherCharRepel.zeroMultStripPos
 import Submission.Work.LinnikAreas.DhRepel.sameCharRepelNear
 import Submission.Work.LinnikAreas.log_unbounded_nat
+import Submission.Work.LinnikAreas.A5.boxAbs_le_deltaSum
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

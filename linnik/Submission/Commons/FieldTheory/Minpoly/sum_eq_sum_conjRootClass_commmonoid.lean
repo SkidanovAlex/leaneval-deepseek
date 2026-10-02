@@ -1,5 +1,4 @@
 import Mathlib.FieldTheory.Minpoly.ConjRootClass
-import Submission.Commons.FieldTheory.Minpoly.sum_eq_sum_conjRootClass
 
 namespace Commons.FieldTheory.Minpoly
 

@@ -52,10 +52,10 @@ theorem zeta_strip_polyGrowth_neg :
   let s : ℂ := (σ : ℂ) + I * (t : ℂ)
   let u : ℝ := 1 - σ
   let w : ℂ := 1 - s
-  have hu_pos : 0 < u := by dsimp [u]; linarith
-  have hu6 : u ≤ 6 := by dsimp [u]; linarith
-  have hu_lo : -1 ≤ u := by dsimp [u]; linarith
-  have hu_le3 : u ≤ 3 := by dsimp [u]; linarith
+  have hu_pos : 0 < u := by dsimp [u]; linarith only [hσhi]
+  have hu6 : u ≤ 6 := by dsimp [u]; linarith only [hσlo]
+  have hu_lo : -1 ≤ u := by dsimp [u]; linarith only [hσhi]
+  have hu_le3 : u ≤ 3 := by dsimp [u]; linarith only [hσlo]
   have ht_ne : t ≠ 0 := by
     intro h
     rw [h] at ht
@@ -66,7 +66,7 @@ theorem zeta_strip_polyGrowth_neg :
     have him := congrArg Complex.im hn
     rw [hwim] at him
     simp at him
-    have ht0 : t = 0 := by linarith
+    have ht0 : t = 0 := by linarith only [him]
     rw [ht0] at ht
     norm_num at ht
   have hw1 : w ≠ 1 := by
@@ -74,7 +74,7 @@ theorem zeta_strip_polyGrowth_neg :
     have him := congrArg Complex.im h1
     rw [hwim] at him
     simp at him
-    have ht0 : t = 0 := by linarith
+    have ht0 : t = 0 := by linarith only [him]
     rw [ht0] at ht
     norm_num at ht
   have hFE0 := riemannZeta_one_sub (s := w) hw_ne hw1
@@ -100,8 +100,8 @@ theorem zeta_strip_polyGrowth_neg :
     rw [hpow2]
     have hx : 1 ≤ 2 * Real.pi := by
       have hpi : (2 : ℝ) ≤ Real.pi := Real.two_le_pi
-      nlinarith
-    have hle : σ - 1 ≤ 0 := by linarith
+      linarith only [hpi]
+    have hle : σ - 1 ≤ 0 := by linarith only [hσhi]
     calc
       (2 * Real.pi : ℝ) ^ (σ - 1) ≤ (2 * Real.pi : ℝ) ^ (0 : ℝ) := by
         exact Real.rpow_le_rpow_of_exponent_le hx hle
@@ -156,12 +156,12 @@ theorem zeta_strip_polyGrowth_neg :
       _ ≤ 2 * K6 * Cps * ((|t| + 3) ^ 6 * (|t| + 3) ^ 4) := by
         have hq : (1 + |t|) ^ 6 ≤ (|t| + 3) ^ 6 := by
           exact pow_le_pow_left₀ (by positivity : 0 ≤ 1 + |t|)
-            (by nlinarith : 1 + |t| ≤ |t| + 3) 6
+            (by linarith only [] : 1 + |t| ≤ |t| + 3) 6
         have hq4 : 0 ≤ (|t| + 3) ^ 4 := by positivity
         exact mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hq hq4) hconst0
       _ = (2 * K6 * Cps) * (|t| + 3) ^ 10 := by
         rw [← pow_add]
-  have ht13 : 1 ≤ |t| + 3 := by nlinarith [ht]
+  have ht13 : 1 ≤ |t| + 3 := by linarith only [ht]
   have hfin : ‖riemannZeta s‖ ≤ (2 * K6 * Cps) * (|t| + 3) ^ 12 := by
     calc
       ‖riemannZeta s‖ ≤ (2 * K6 * Cps) * (|t| + 3) ^ 10 := hmain10

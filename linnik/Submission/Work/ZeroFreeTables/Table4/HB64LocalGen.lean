@@ -1,5 +1,4 @@
 import Mathlib
-import Submission.Work.NumberTheory.Linnik.scratch_l64
 import Submission.Work.LinnikAreas.OtherCharRepel.dhTrianglePtLocal
 import Submission.Work.ZeroFreeTables.Table4.windowSumGe
 

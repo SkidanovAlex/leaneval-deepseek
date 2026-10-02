@@ -15,8 +15,8 @@ lemma x_nonneg {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 ≤ x := le_of_lt (x_pos h
 lemma log_ge_16 {x : ℝ} (hx : Real.exp 16 ≤ x) : (16 : ℝ) ≤ Real.log x := by
   have h := Real.log_le_log (Real.exp_pos 16) hx
   simpa [Real.log_exp] using h
-lemma log_pos {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 < Real.log x := by linarith [log_ge_16 hx]
-lemma log_ge_one {x : ℝ} (hx : Real.exp 16 ≤ x) : (1 : ℝ) ≤ Real.log x := by linarith [log_ge_16 hx]
+lemma log_pos {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 < Real.log x := by linarith only [log_ge_16 hx]
+lemma log_ge_one {x : ℝ} (hx : Real.exp 16 ≤ x) : (1 : ℝ) ≤ Real.log x := by linarith only [log_ge_16 hx]
 lemma log_nonneg {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 ≤ Real.log x := le_of_lt (log_pos hx)
 lemma sqrt_pos {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 < Real.sqrt x := Real.sqrt_pos.2 (x_pos hx)
 lemma sqrt_ge_three {x : ℝ} (hx : Real.exp 16 ≤ x) : (3 : ℝ) ≤ Real.sqrt x := by
@@ -24,29 +24,29 @@ lemma sqrt_ge_three {x : ℝ} (hx : Real.exp 16 ≤ x) : (3 : ℝ) ≤ Real.sqrt
     have h := Real.two_mul_le_exp (x := (16 : ℝ))
     norm_num at h
     exact h
-  have hx9 : (9 : ℝ) ≤ x := by nlinarith
+  have hx9 : (9 : ℝ) ≤ x := by linarith
   have hs := Real.sqrt_le_sqrt hx9
   norm_num [Real.sqrt_sq_eq_abs] at hs
   exact hs
-lemma sqrt_ge_one {x : ℝ} (hx : Real.exp 16 ≤ x) : (1 : ℝ) ≤ Real.sqrt x := by linarith [sqrt_ge_three hx]
+lemma sqrt_ge_one {x : ℝ} (hx : Real.exp 16 ≤ x) : (1 : ℝ) ≤ Real.sqrt x := by linarith only [sqrt_ge_three hx]
 lemma sqrt_nonneg {x : ℝ} (hx : Real.exp 16 ≤ x) : 0 ≤ Real.sqrt x := le_of_lt (sqrt_pos hx)
 
 lemma cube_one_add_log_le {x : ℝ} (hx : Real.exp 16 ≤ x) :
     (1 + Real.log x) ^ 3 ≤ 8 * (Real.log x) ^ 3 := by
-  have hsum : 1 + Real.log x ≤ 2 * Real.log x := by linarith [log_ge_one hx]
+  have hsum : 1 + Real.log x ≤ 2 * Real.log x := by linarith only [log_ge_one hx]
   have hcube : (1 + Real.log x) ^ 3 ≤ (2 * Real.log x) ^ 3 :=
-    pow_le_pow_left₀ (by linarith [log_nonneg hx] : 0 ≤ 1 + Real.log x) hsum 3
-  nlinarith [hcube]
+    pow_le_pow_left₀ (by linarith only [log_nonneg hx] : 0 ≤ 1 + Real.log x) hsum 3
+  linarith only [hcube]
 
 lemma L1_le_one_add_log {x : ℝ} (hx : Real.exp 16 ≤ x) :
     Real.log (Real.sqrt x + 3) + 1 ≤ 1 + Real.log x := by
   have hs0 : 0 ≤ Real.sqrt x := sqrt_nonneg hx
   have hpos : 0 < Real.sqrt x + 3 := by linarith
   have h2s_le : 2 * Real.sqrt x ≤ Real.sqrt x * Real.sqrt x := by
-    exact mul_le_mul_of_nonneg_right (by linarith [sqrt_ge_three hx] : (2 : ℝ) ≤ Real.sqrt x) hs0
+    exact mul_le_mul_of_nonneg_right (by linarith only [sqrt_ge_three hx] : (2 : ℝ) ≤ Real.sqrt x) hs0
   have hs3_le : Real.sqrt x + 3 ≤ x := by
     calc
-      Real.sqrt x + 3 ≤ 2 * Real.sqrt x := by linarith [sqrt_ge_three hx]
+      Real.sqrt x + 3 ≤ 2 * Real.sqrt x := by linarith only [sqrt_ge_three hx]
       _ ≤ Real.sqrt x * Real.sqrt x := h2s_le
       _ = x := Real.mul_self_sqrt (x_nonneg hx)
   have hlog := Real.log_le_log hpos hs3_le
@@ -54,7 +54,7 @@ lemma L1_le_one_add_log {x : ℝ} (hx : Real.exp 16 ≤ x) :
 
 lemma L1_nonneg {x : ℝ} (hx : Real.exp 16 ≤ x) :
     0 ≤ Real.log (Real.sqrt x + 3) + 1 := by
-  have h : 1 ≤ Real.sqrt x + 3 := by linarith [sqrt_nonneg hx]
+  have h : 1 ≤ Real.sqrt x + 3 := by linarith only [sqrt_nonneg hx]
   have hlg : 0 ≤ Real.log (Real.sqrt x + 3) := Real.log_nonneg h
   linarith
 
@@ -69,7 +69,7 @@ lemma L2_le_one_add_log {x : ℝ} (hx : Real.exp 16 ≤ x) :
     linarith
   have hs0 : 0 ≤ Real.sqrt x := sqrt_nonneg hx
   have h2s_le : 2 * Real.sqrt x ≤ Real.sqrt x * Real.sqrt x := by
-    exact mul_le_mul_of_nonneg_right (by linarith [sqrt_ge_three hx] : (2 : ℝ) ≤ Real.sqrt x) hs0
+    exact mul_le_mul_of_nonneg_right (by linarith only [sqrt_ge_three hx] : (2 : ℝ) ≤ Real.sqrt x) hs0
   have h1m : 1 ≤ 2 * d := by
     have hm := mul_le_mul_of_nonneg_left hd_ge (by norm_num : (0 : ℝ) ≤ 2)
     norm_num at hm
@@ -99,7 +99,7 @@ lemma L2_nonneg {x : ℝ} (hx : Real.exp 16 ≤ x) :
     have hd_le : d ≤ 1 := by
       dsimp [d]
       have h : 1 / Real.log x ≤ 1 / 2 := by
-        exact one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) (by linarith [log_ge_16 hx] : (2 : ℝ) ≤ Real.log x)
+        exact one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) (by linarith only [log_ge_16 hx] : (2 : ℝ) ≤ Real.log x)
       linarith
     have hsge : 1 ≤ Real.sqrt x := sqrt_ge_one hx
     have htp : 0 < Real.log x := log_pos hx
@@ -161,29 +161,29 @@ lemma prod_bound (s t : ℝ) (ht1 : 1 ≤ t)
     have hsum : 1 + t ≤ 2 * t := by linarith
     have hcube : (1 + t) ^ 3 ≤ (2 * t) ^ 3 :=
       pow_le_pow_left₀ (by linarith : 0 ≤ 1 + t) hsum 3
-    nlinarith [hcube]
+    linarith only [hcube]
   have ht3 : t ≤ t ^ 3 := by
     have h := pow_le_pow_right₀ ht1 (by norm_num : (1 : ℕ) ≤ 3)
     simpa using h
   have h8L2 : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t ^ 3 := by
     have h1 : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t := by
       have hm := mul_le_mul_of_nonneg_left hL2le (by norm_num : (0 : ℝ) ≤ 8)
-      nlinarith [hm]
+      linarith only [hm]
     have h2 : 24 * t ≤ 24 * t ^ 3 := by
       exact mul_le_mul_of_nonneg_left ht3 (by norm_num)
     exact le_trans h1 h2
   have hsum : (Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 32 * t ^ 3 := by
     have h8L2' : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t ^ 3 := h8L2
-    nlinarith [hL1c, h8L2']
+    linarith only [hL1c, h8L2']
   have hBn : 0 ≤ (Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) := by
     have h1 : 0 ≤ (Real.log (s + 3) + 1) ^ 3 := pow_nonneg hL1n 3
     have h2 : 0 ≤ 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) := mul_nonneg (by norm_num) hL2n
-    nlinarith
+    linarith
   have hb8n : 0 ≤ 8 * t ^ 3 := by
     have ht0 : 0 ≤ t := by linarith
     exact mul_nonneg (by norm_num : (0 : ℝ) ≤ 8) (pow_nonneg ht0 3)
   have hmul := mul_le_mul h1t3 hsum hBn hb8n
-  nlinarith [hmul]
+  linarith only [hmul]
 
 end CBDev
 
@@ -218,7 +218,7 @@ lemma cb_unit_aux {x s t : ℝ} (hx : Real.exp 16 ≤ x) (hs : s = Real.sqrt x)
   have hBig0 : 0 ≤ (Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) := by
     have h1 : 0 ≤ (Real.log (s + 3) + 1) ^ 3 := pow_nonneg hL1n 3
     have h2 : 0 ≤ 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) := mul_nonneg (by norm_num) hL2n
-    nlinarith
+    linarith
   have hAn : 0 ≤ (1 + t) ^ 3 := pow_nonneg (by linarith : 0 ≤ 1 + t) 3
   have hC0 : 0 ≤ Real.exp 1 * s * (1 + t) ^ 3 *
       ((Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1)) := by
@@ -238,7 +238,7 @@ lemma cb_unit_aux {x s t : ℝ} (hx : Real.exp 16 ≤ x) (hs : s = Real.sqrt x)
   have hone : (1 / (2 * Real.pi)) ≤ 1 := by
     have hpi2 : (1 : ℝ) ≤ 2 * Real.pi := by
       have h := Real.pi_gt_three
-      nlinarith
+      linarith
     exact (div_le_iff₀ hpi0).2 (by simpa using hpi2)
   calc
     (1 / (2 * Real.pi)) *
@@ -255,18 +255,18 @@ lemma cb_unit_aux {x s t : ℝ} (hx : Real.exp 16 ≤ x) (hs : s = Real.sqrt x)
             have hsum : 1 + t ≤ 2 * t := by linarith
             have hcube : (1 + t) ^ 3 ≤ (2 * t) ^ 3 :=
               pow_le_pow_left₀ (by linarith : 0 ≤ 1 + t) hsum 3
-            nlinarith [hcube]
+            linarith only [hcube]
           have hL1p8 : (Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 32 * t ^ 3 := by
             have h8L2 : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t ^ 3 := by
               have h1 : 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1) ≤ 24 * t := by
                 have hm := mul_le_mul_of_nonneg_left hL2le3 (by norm_num : (0 : ℝ) ≤ 8)
-                nlinarith [hm]
+                linarith only [hm]
               have ht3 : t ≤ t ^ 3 := by
                 have h := pow_le_pow_right₀ ht1 (by norm_num : (1 : ℕ) ≤ 3)
                 simpa using h
               have h2 : 24 * t ≤ 24 * t ^ 3 := mul_le_mul_of_nonneg_left ht3 (by norm_num)
               exact le_trans h1 h2
-            nlinarith [hL1c, h8L2]
+            linarith only [hL1c, h8L2]
           have hb8n : 0 ≤ 8 * t ^ 3 := mul_nonneg (by norm_num) (pow_nonneg ht0 3)
           have h1 : Real.exp 1 * s * (1 + t) ^ 3 *
               ((Real.log (s + 3) + 1) ^ 3 + 8 * (Real.log (s / (1 / 2 + 1 / t)) + 1)) ≤
@@ -339,14 +339,14 @@ lemma cb_A_le_R0 {x : ℝ} (hx : Real.exp 16 ≤ x) :
   have htwo : x * (Real.log x) ^ 2 / Real.sqrt x + Real.log x ≤
       2 * Real.sqrt x * (Real.log x) ^ 2 := by
     have h := add_le_add hpart1 hpart2
-    nlinarith
+    linarith
   calc
     x * (Real.log x) ^ 2 / Real.sqrt x + Real.log x ≤
         2 * Real.sqrt x * (Real.log x) ^ 2 := htwo
     _ = (2 * Real.sqrt x) * (Real.log x) ^ 2 := by ring
     _ ≤ (2 * Real.sqrt x) * (Real.log x) ^ 10 := by
       exact mul_le_mul_of_nonneg_left
-        (pow_le_pow_right₀ ht1 (by norm_num : (2 : ℕ) ≤ 10)) (by nlinarith)
+        (pow_le_pow_right₀ ht1 (by norm_num : (2 : ℕ) ≤ 10)) (by linarith)
     _ = 2 * Real.sqrt x * (Real.log x) ^ 10 := by ring
     _ ≤ 1000000 * Real.sqrt x * (Real.log x) ^ 10 := by
       have hstn : 0 ≤ Real.sqrt x * (Real.log x) ^ 10 :=

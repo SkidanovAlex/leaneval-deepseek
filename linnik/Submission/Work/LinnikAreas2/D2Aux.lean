@@ -6,7 +6,6 @@ positivity/monotonicity of the Laplace transform for the §7 test function, the 
 characters carrying a box zero, the logarithmic thresholds, and the two `K`-sum identifications.
 -/
 import Mathlib
-import Submission.Work.LinnikContract2.Contract
 import Submission.Work.LinnikContract2.Bridge
 import Submission.Work.LinnikAreas.Density4.hb_lemma12_1
 import Submission.Work.LinnikAreas.Density4.Kbound_discharge
@@ -14,10 +13,10 @@ import Submission.Work.LinnikAreas.Density4.fTregular
 import Submission.Work.LinnikAreas.Density4.fTcond2
 import Submission.Work.LinnikAreas.Density4.testfun_basic
 import Submission.Work.LinnikAreas.Density4.Parent
-import Submission.Work.LinnikAreas.Density4.table13_cert
 import Submission.Commons.NumberTheory.Linnik.Ksum_principal_le
 import Submission.Work.NumberTheory.Linnik.scratch_l62app_phi
 import Submission.Work.LinnikAreas.l31free.lemma3_1_free_gen
+import Submission.Work.LinnikContract2.A7.Area7
 
 open DirichletCharacter Complex
 open scoped Classical BigOperators

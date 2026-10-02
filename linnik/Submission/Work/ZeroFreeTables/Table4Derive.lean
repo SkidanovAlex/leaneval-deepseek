@@ -272,1347 +272,1347 @@ theorem t4_cover (h83 : HBLemma8_3) (h82 : HBLemma8_2) :
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
-        · linarith [h2, hL]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
+        · linarith only [h2, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
-        · linarith [h3, hL]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
+        · linarith only [h3, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
-        · linarith [h4, hL]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
+        · linarith only [h4, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
-        · linarith [h5, hL]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
+        · linarith only [h5, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
-        · linarith [h6, hL]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
+        · linarith only [h6, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
-        · linarith [h7, hL]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
+        · linarith only [h7, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
-        · linarith [h8, hL]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
+        · linarith only [h8, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
-        · linarith [h9, hL]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
+        · linarith only [h9, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
-        · linarith [h10, hL]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
+        · linarith only [h10, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
-        · linarith [h11, hL]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
+        · linarith only [h11, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
-        · linarith [h12, hL]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
+        · linarith only [h12, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
-        · linarith [h13, hL]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
+        · linarith only [h13, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
-        · linarith [h14, hL]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
+        · linarith only [h14, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
-        · linarith [h15, hL]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
+        · linarith only [h15, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
-        · linarith [h16, hL]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
+        · linarith only [h16, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
-        · linarith [h17, hL]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
+        · linarith only [h17, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
-        · linarith [h18, hL]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
+        · linarith only [h18, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
-        · linarith [h19, hL]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
+        · linarith only [h19, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
-        · linarith [h20, hL]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
+        · linarith only [h20, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
         by_cases h21 : lamOf q ρ₁ ≤ (12/10 : ℝ)
         · have hstep : T4v ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith [h20]) h21
-          linarith [hstep, hule]
-        · linarith [h21, hL]
+            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith only [h20]) h21
+          linarith only [hstep, hule]
+        · linarith only [h21, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
         by_cases h21 : lamOf q ρ₁ ≤ (12/10 : ℝ)
         · have hstep : T4v ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith [h20]) h21
-          linarith [hstep, hule]
+            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith only [h20]) h21
+          linarith only [hstep, hule]
         by_cases h22 : lamOf q ρ₁ ≤ (1225/1000 : ℝ)
         · have hstep : T4v ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith [h21]) h22
-          linarith [hstep, hule]
-        · linarith [h22, hL]
+            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith only [h21]) h22
+          linarith only [hstep, hule]
+        · linarith only [h22, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
         by_cases h21 : lamOf q ρ₁ ≤ (12/10 : ℝ)
         · have hstep : T4v ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith [h20]) h21
-          linarith [hstep, hule]
+            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith only [h20]) h21
+          linarith only [hstep, hule]
         by_cases h22 : lamOf q ρ₁ ≤ (1225/1000 : ℝ)
         · have hstep : T4v ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith [h21]) h22
-          linarith [hstep, hule]
+            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith only [h21]) h22
+          linarith only [hstep, hule]
         by_cases h23 : lamOf q ρ₁ ≤ (125/100 : ℝ)
         · have hstep : T4v ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith [h22]) h23
-          linarith [hstep, hule]
-        · linarith [h23, hL]
+            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith only [h22]) h23
+          linarith only [hstep, hule]
+        · linarith only [h23, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
         by_cases h21 : lamOf q ρ₁ ≤ (12/10 : ℝ)
         · have hstep : T4v ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith [h20]) h21
-          linarith [hstep, hule]
+            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith only [h20]) h21
+          linarith only [hstep, hule]
         by_cases h22 : lamOf q ρ₁ ≤ (1225/1000 : ℝ)
         · have hstep : T4v ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith [h21]) h22
-          linarith [hstep, hule]
+            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith only [h21]) h22
+          linarith only [hstep, hule]
         by_cases h23 : lamOf q ρ₁ ≤ (125/100 : ℝ)
         · have hstep : T4v ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith [h22]) h23
-          linarith [hstep, hule]
+            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith only [h22]) h23
+          linarith only [hstep, hule]
         by_cases h24 : lamOf q ρ₁ ≤ (1275/1000 : ℝ)
         · have hstep : T4v ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_24 (by linarith [h23]) h24
-          linarith [hstep, hule]
-        · linarith [h24, hL]
+            step ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_24 (by linarith only [h23]) h24
+          linarith only [hstep, hule]
+        · linarith only [h24, hL]
       · rw [h] at hL ⊢
         by_cases h1 : lamOf q ρ₁ ≤ (26/100 : ℝ)
         · have hstep : T4v ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith [hL0]) h1
-          linarith [hstep, hule]
+            step ⟨(0 : ℝ), (26/100 : ℝ), (2293/1000 : ℝ), (41/10 : ℝ), (116/100 : ℝ)⟩ memT4_1 (by linarith only [hL0]) h1
+          linarith only [hstep, hule]
         by_cases h2 : lamOf q ρ₁ ≤ (3/10 : ℝ)
         · have hstep : T4v ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith [h1]) h2
-          linarith [hstep, hule]
+            step ⟨(26/100 : ℝ), (3/10 : ℝ), (2293/1000 : ℝ), (19/5 : ℝ), (22/25 : ℝ)⟩ memT4_2 (by linarith only [h1]) h2
+          linarith only [hstep, hule]
         by_cases h3 : lamOf q ρ₁ ≤ (35/100 : ℝ)
         · have hstep : T4v ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith [h2]) h3
-          linarith [hstep, hule]
+            step ⟨(3/10 : ℝ), (35/100 : ℝ), (2195/1000 : ℝ), (4 : ℝ), (88/100 : ℝ)⟩ memT4_3 (by linarith only [h2]) h3
+          linarith only [hstep, hule]
         by_cases h4 : lamOf q ρ₁ ≤ (4/10 : ℝ)
         · have hstep : T4v ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith [h3]) h4
-          linarith [hstep, hule]
+            step ⟨(35/100 : ℝ), (4/10 : ℝ), (2108/1000 : ℝ), (41/10 : ℝ), (88/100 : ℝ)⟩ memT4_4 (by linarith only [h3]) h4
+          linarith only [hstep, hule]
         by_cases h5 : lamOf q ρ₁ ≤ (45/100 : ℝ)
         · have hstep : T4v ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith [h4]) h5
-          linarith [hstep, hule]
+            step ⟨(4/10 : ℝ), (45/100 : ℝ), (2030/1000 : ℝ), (42/10 : ℝ), (87/100 : ℝ)⟩ memT4_5 (by linarith only [h4]) h5
+          linarith only [hstep, hule]
         by_cases h6 : lamOf q ρ₁ ≤ (5/10 : ℝ)
         · have hstep : T4v ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith [h5]) h6
-          linarith [hstep, hule]
+            step ⟨(45/100 : ℝ), (5/10 : ℝ), (1958/1000 : ℝ), (43/10 : ℝ), (87/100 : ℝ)⟩ memT4_6 (by linarith only [h5]) h6
+          linarith only [hstep, hule]
         by_cases h7 : lamOf q ρ₁ ≤ (55/100 : ℝ)
         · have hstep : T4v ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith [h6]) h7
-          linarith [hstep, hule]
+            step ⟨(5/10 : ℝ), (55/100 : ℝ), (1893/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_7 (by linarith only [h6]) h7
+          linarith only [hstep, hule]
         by_cases h8 : lamOf q ρ₁ ≤ (6/10 : ℝ)
         · have hstep : T4v ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith [h7]) h8
-          linarith [hstep, hule]
+            step ⟨(55/100 : ℝ), (6/10 : ℝ), (1832/1000 : ℝ), (44/10 : ℝ), (86/100 : ℝ)⟩ memT4_8 (by linarith only [h7]) h8
+          linarith only [hstep, hule]
         by_cases h9 : lamOf q ρ₁ ≤ (65/100 : ℝ)
         · have hstep : T4v ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith [h8]) h9
-          linarith [hstep, hule]
+            step ⟨(6/10 : ℝ), (65/100 : ℝ), (1776/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_9 (by linarith only [h8]) h9
+          linarith only [hstep, hule]
         by_cases h10 : lamOf q ρ₁ ≤ (7/10 : ℝ)
         · have hstep : T4v ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith [h9]) h10
-          linarith [hstep, hule]
+            step ⟨(65/100 : ℝ), (7/10 : ℝ), (1724/1000 : ℝ), (45/10 : ℝ), (85/100 : ℝ)⟩ memT4_10 (by linarith only [h9]) h10
+          linarith only [hstep, hule]
         by_cases h11 : lamOf q ρ₁ ≤ (75/100 : ℝ)
         · have hstep : T4v ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith [h10]) h11
-          linarith [hstep, hule]
+            step ⟨(7/10 : ℝ), (75/100 : ℝ), (1676/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_11 (by linarith only [h10]) h11
+          linarith only [hstep, hule]
         by_cases h12 : lamOf q ρ₁ ≤ (8/10 : ℝ)
         · have hstep : T4v ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith [h11]) h12
-          linarith [hstep, hule]
+            step ⟨(75/100 : ℝ), (8/10 : ℝ), (1630/1000 : ℝ), (46/10 : ℝ), (84/100 : ℝ)⟩ memT4_12 (by linarith only [h11]) h12
+          linarith only [hstep, hule]
         by_cases h13 : lamOf q ρ₁ ≤ (85/100 : ℝ)
         · have hstep : T4v ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith [h12]) h13
-          linarith [hstep, hule]
+            step ⟨(8/10 : ℝ), (85/100 : ℝ), (1587/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_13 (by linarith only [h12]) h13
+          linarith only [hstep, hule]
         by_cases h14 : lamOf q ρ₁ ≤ (9/10 : ℝ)
         · have hstep : T4v ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith [h13]) h14
-          linarith [hstep, hule]
+            step ⟨(85/100 : ℝ), (9/10 : ℝ), (1547/1000 : ℝ), (47/10 : ℝ), (84/100 : ℝ)⟩ memT4_14 (by linarith only [h13]) h14
+          linarith only [hstep, hule]
         by_cases h15 : lamOf q ρ₁ ≤ (95/100 : ℝ)
         · have hstep : T4v ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith [h14]) h15
-          linarith [hstep, hule]
+            step ⟨(9/10 : ℝ), (95/100 : ℝ), (1509/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_15 (by linarith only [h14]) h15
+          linarith only [hstep, hule]
         by_cases h16 : lamOf q ρ₁ ≤ (1 : ℝ)
         · have hstep : T4v ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith [h15]) h16
-          linarith [hstep, hule]
+            step ⟨(95/100 : ℝ), (1 : ℝ), (1473/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_16 (by linarith only [h15]) h16
+          linarith only [hstep, hule]
         by_cases h17 : lamOf q ρ₁ ≤ (105/100 : ℝ)
         · have hstep : T4v ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith [h16]) h17
-          linarith [hstep, hule]
+            step ⟨(1 : ℝ), (105/100 : ℝ), (1439/1000 : ℝ), (48/10 : ℝ), (83/100 : ℝ)⟩ memT4_17 (by linarith only [h16]) h17
+          linarith only [hstep, hule]
         by_cases h18 : lamOf q ρ₁ ≤ (11/10 : ℝ)
         · have hstep : T4v ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith [h17]) h18
-          linarith [hstep, hule]
+            step ⟨(105/100 : ℝ), (11/10 : ℝ), (1406/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_18 (by linarith only [h17]) h18
+          linarith only [hstep, hule]
         by_cases h19 : lamOf q ρ₁ ≤ (115/100 : ℝ)
         · have hstep : T4v ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith [h18]) h19
-          linarith [hstep, hule]
+            step ⟨(11/10 : ℝ), (115/100 : ℝ), (1375/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_19 (by linarith only [h18]) h19
+          linarith only [hstep, hule]
         by_cases h20 : lamOf q ρ₁ ≤ (1175/1000 : ℝ)
         · have hstep : T4v ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith [h19]) h20
-          linarith [hstep, hule]
+            step ⟨(115/100 : ℝ), (1175/1000 : ℝ), (1360/1000 : ℝ), (49/10 : ℝ), (83/100 : ℝ)⟩ memT4_20 (by linarith only [h19]) h20
+          linarith only [hstep, hule]
         by_cases h21 : lamOf q ρ₁ ≤ (12/10 : ℝ)
         · have hstep : T4v ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith [h20]) h21
-          linarith [hstep, hule]
+            step ⟨(1175/1000 : ℝ), (12/10 : ℝ), (1346/1000 : ℝ), (495/100 : ℝ), (83/100 : ℝ)⟩ memT4_21 (by linarith only [h20]) h21
+          linarith only [hstep, hule]
         by_cases h22 : lamOf q ρ₁ ≤ (1225/1000 : ℝ)
         · have hstep : T4v ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith [h21]) h22
-          linarith [hstep, hule]
+            step ⟨(12/10 : ℝ), (1225/1000 : ℝ), (1331/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_22 (by linarith only [h21]) h22
+          linarith only [hstep, hule]
         by_cases h23 : lamOf q ρ₁ ≤ (125/100 : ℝ)
         · have hstep : T4v ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith [h22]) h23
-          linarith [hstep, hule]
+            step ⟨(1225/1000 : ℝ), (125/100 : ℝ), (1318/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_23 (by linarith only [h22]) h23
+          linarith only [hstep, hule]
         by_cases h24 : lamOf q ρ₁ ≤ (1275/1000 : ℝ)
         · have hstep : T4v ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_24 (by linarith [h23]) h24
-          linarith [hstep, hule]
+            step ⟨(125/100 : ℝ), (1275/1000 : ℝ), (1304/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_24 (by linarith only [h23]) h24
+          linarith only [hstep, hule]
         by_cases h25 : lamOf q ρ₁ ≤ (1294/1000 : ℝ)
         · have hstep : T4v ⟨(1275/1000 : ℝ), (1294/1000 : ℝ), (1294/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ ≤ lamOf q u :=
-            step ⟨(1275/1000 : ℝ), (1294/1000 : ℝ), (1294/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_25 (by linarith [h24]) h25
-          linarith [hstep, hule]
-        · linarith [h25, hL]
+            step ⟨(1275/1000 : ℝ), (1294/1000 : ℝ), (1294/1000 : ℝ), (5 : ℝ), (83/100 : ℝ)⟩ memT4_25 (by linarith only [h24]) h25
+          linarith only [hstep, hule]
+        · linarith only [h25, hL]
 /-! ## HB Table 4 -/
 
 /-- **HB Table 4** from the two engine inequalities. -/

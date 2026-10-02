@@ -1,5 +1,7 @@
 import Mathlib
-import Submission.Work.LinnikAreas.CorrAllR.Prelude
+import Submission.Work.LinnikAreas.CorrAllR.Defs
+import Submission.Commons.NumberTheory.DirichletCharacter.primitive_factor_coprime
+import Submission.Commons.NumberTheory.DirichletCharacter.burgess_moment_squarefree_r2
 
 open Finset
 open scoped BigOperators

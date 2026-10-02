@@ -319,7 +319,7 @@ theorem recip_perron_error_sum_le :
       push_cast at hfloor hcast ⊢
       linarith
     have hs1 : Summable (fun i => ((i + (N2+1):ℕ):ℝ)^(-(1+σ))) :=
-      (summable_nat_add_iff (N2+1)).mpr hsp
+      (summable_nat_add_iff (f := fun n : ℕ => (n:ℝ)^(-(1+σ))) (N2+1)).mpr hsp
     have hrhs : Summable (fun i => x^σ * ((i + (N2+1):ℕ):ℝ)^(-(1+σ)) * (1/(T*Real.log 2))) := by
       have := hs1.mul_left (x^σ * (1/(T*Real.log 2)))
       simpa only [mul_assoc, mul_comm, mul_left_comm] using this
@@ -334,7 +334,8 @@ theorem recip_perron_error_sum_le :
           apply tsum_congr; intro i; ring]
       rw [tsum_mul_left]
     have hshift_le : (∑' i, ((i + (N2+1):ℕ):ℝ)^(-(1+σ))) ≤ 1 + 1/σ := by
-      have hbase : Summable (fun i : ℕ => ((i + 1:ℕ):ℝ)^(-(1+σ))) := (summable_nat_add_iff 1).mpr hsp
+      have hbase : Summable (fun i : ℕ => ((i + 1:ℕ):ℝ)^(-(1+σ))) :=
+        (summable_nat_add_iff (f := fun n : ℕ => (n:ℝ)^(-(1+σ))) 1).mpr hsp
       have hle1 : (∑' i, ((i + (N2+1):ℕ):ℝ)^(-(1+σ))) ≤ ∑' i, ((i + 1:ℕ):ℝ)^(-(1+σ)) := by
         apply Summable.tsum_le_tsum
         · intro i
@@ -384,7 +385,7 @@ theorem recip_perron_error_sum_le :
   have hA : x^σ*(1+1/σ)*(1/(T*Real.log 2)) ≤ 2 * (x^σ*(1+1/σ))/T := by
     have hlog : 1/(T*Real.log 2) ≤ 2/T := by
       rw [div_le_div_iff₀ (by positivity : 0 < T*Real.log 2) (by linarith : 0 < T)]
-      nlinarith
+      nlinarith only [mul_le_mul_of_nonneg_left hlog2half hT0.le]
     have hc : 0 ≤ x^σ*(1+1/σ) := mul_nonneg hxσ_nn hb_nn
     calc x^σ*(1+1/σ)*(1/(T*Real.log 2)) = (x^σ*(1+1/σ)) * (1/(T*Real.log 2)) := by ring
       _ ≤ (x^σ*(1+1/σ)) * (2/T) := mul_le_mul_of_nonneg_left hlog hc
@@ -402,7 +403,7 @@ theorem recip_perron_error_sum_le :
     have h2 : 400/x ≤ 400/T := div_le_div_of_nonneg_left (by norm_num) hT0 hTle
     have h3 : (400:ℝ)/T ≤ 400 * (x^σ*(1+1/σ)+1)/T := by
       apply div_le_div_of_nonneg_right _ (le_of_lt hT0)
-      nlinarith [hQ1]
+      linarith only [hQ1]
     have h4 : 400 * (x^σ*(1+1/σ))/T ≤ 400 * (x^σ*(1+1/σ)+1)/T := by
       apply div_le_div_of_nonneg_right _ (le_of_lt hT0)
       linarith
@@ -429,8 +430,8 @@ theorem recip_perron_error_sum_le :
       rw [show 4 * (x^σ*(1+1/σ)+1)/T + 800 * (x^σ*(1+1/σ)+1)/T
             = 804 * (x^σ*(1+1/σ)+1)/T by ring]
       apply div_le_div_of_nonneg_right _ (le_of_lt hT0)
-      have : (0:ℝ) ≤ x^σ*(1+1/σ)+1 := by linarith [hQ1]
-      nlinarith
+      have : (0:ℝ) ≤ x^σ*(1+1/σ)+1 := by linarith only [hQ1]
+      linarith only [this]
     have e : x^σ*(1+1/σ)*(1/(T*Real.log 2)) + (4/x)*(100*(x*Real.log x/T)+100)
         + x^σ*(1+1/σ)*(1/(T*Real.log 2))
         = 2 * (x^σ*(1+1/σ)*(1/(T*Real.log 2))) + (4/x)*(100*(x*Real.log x/T)+100) := by ring

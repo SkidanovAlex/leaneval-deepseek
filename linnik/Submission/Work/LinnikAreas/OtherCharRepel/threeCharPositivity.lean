@@ -1,8 +1,8 @@
 import Mathlib
 import Submission.Work.LinnikContract.Defs
-import Submission.Work.LinnikAreas.OtherCharRepel.Prelude
 import Submission.Work.LinnikAreas.OtherCharRepel.LFunctionLogDerivReEqTsum
 import Submission.Work.LinnikAreas.OtherCharRepel.summableVonMangoldtReCharMulRpow
+import Submission.Work.LinnikAreas.vonMangoldtTsum_eq_neg_zeta_logDeriv_re
 
 /-!
 # Landau positivity for three real characters and `ζ`

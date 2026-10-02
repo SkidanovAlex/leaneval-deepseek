@@ -168,7 +168,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
         nlinarith [Real.exp_one_lt_three, Real.exp_pos 1]
       have hlog10 : 2 ≤ Real.log 10 := (Real.le_log_iff_exp_le (by norm_num)).mpr hexp2
       push_cast
-      nlinarith
+      linarith
     linarith
   have hlogL1 : 1 ≤ Real.log L := by
     have he : Real.exp 1 < L := lt_of_lt_of_le Real.exp_one_lt_three (by linarith)
@@ -186,7 +186,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     nlinarith [hLpos]
   have hrre_pos : 0 < ρ₁.re := by
     have h1 : (1 - ρ₁.re) * L ≤ 628/1000 := by rw [← hlamEq ρ₁]; exact hlam_hi
-    have h2 : (0:ℝ) ≤ 1 - ρ₁.re := by linarith [hrre_lt]
+    have h2 : (0:ℝ) ≤ 1 - ρ₁.re := by linarith only [hrre_lt]
     nlinarith [h1, h2, hL6]
   have hgabs : |γ| ≤ 1 := by rw [hgammaDef]; exact hgabs1
   have hgne : γ ≠ 0 := by rw [hgammaDef]; exact him
@@ -195,7 +195,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     have h3 : ρ₁.re ^ 2 ≤ 1 := by nlinarith [hrre_pos, hrre_lt]
     have h1 : ‖ρ₁‖ ^ 2 ≤ (|γ| + 2) ^ 2 := by
       rw [Complex.sq_norm, Complex.normSq_apply, h2]
-      nlinarith [sq_nonneg γ, abs_nonneg γ, h3, sq_abs γ]
+      linarith only [sq_nonneg γ, abs_nonneg γ, h3, sq_abs γ]
     have h4 : 0 ≤ ‖ρ₁‖ := norm_nonneg _
     have h5 : 0 ≤ |γ| + 2 := by positivity
     by_contra hcon
@@ -328,11 +328,11 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
   have htau2 : |2 * γ| ≤ Real.log (q : ℝ) := by
     rw [← hLdef]
     have h2 : |2 * γ| = 2 * |γ| := by rw [abs_mul]; norm_num
-    rw [h2]; linarith [hgabs, hL6]
+    rw [h2]; linarith only [hgabs, hL6]
   have htau4 : |4 * γ| ≤ Real.log (q : ℝ) := by
     rw [← hLdef]
     have h2 : |4 * γ| = 4 * |γ| := by rw [abs_mul]; norm_num
-    rw [h2]; linarith [hgabs, hL6]
+    rw [h2]; linarith only [hgabs, hL6]
   have hIntI : ∀ v : ℝ, (∫ t in (0:ℝ)..xyT.x₀,
         Real.cos (v * Real.log (q : ℝ) * t) *
           (Real.exp (-((β - 1) * Real.log (q : ℝ) * t)) * xyT.f t)) = xyRe (-1) (v * L) := by
@@ -372,7 +372,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
   have hzabs : |(1 - ρ₁.re) * L - 1| ≤ 1 := by
     have h1 : (1 - ρ₁.re) * L = Work.LinnikContract.lamOf q ρ₁ := (hlamEq ρ₁).symm
     rw [h1, abs_le]
-    constructor <;> linarith [hlam_lo, hlam_hi]
+    constructor <;> linarith only [hlam_lo, hlam_hi]
   have hH : Commons.NumberTheory.Linnik.L52Hyp χ₁ (1/8) (1/10000/2) δ :=
     hL52 q hqL χ₁ hchi1ne hsq' (1/10000/2) (by norm_num) (by norm_num)
   -- ===== b2: the χ₁-sum at s = β + iγ =====
@@ -402,16 +402,16 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
       rw [fmo2_integral_re, hz2re, hz2im]
     have hball : ρ₁ ∈ Metric.closedBall 0 (|(((β : ℂ) + (γ : ℂ) * Complex.I)).im| + 2) := by
       rw [hsim γ, Metric.mem_closedBall, dist_zero_right]
-      linarith [hnorm]
+      linarith only [hnorm]
     have hballc : ((starRingEnd ℂ) ρ₁) ∈
         Metric.closedBall 0 (|(((β : ℂ) + (γ : ℂ) * Complex.I)).im| + 2) := by
       rw [hsim γ, Metric.mem_closedBall, dist_zero_right]
-      linarith [hnormc]
+      linarith only [hnormc]
     have hreg1 : |(((β : ℂ) + (γ : ℂ) * Complex.I)).re - 1|
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
       rw [hsre γ]; exact hsig1
     have hreg2 : |(((β : ℂ) + (γ : ℂ) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
-      rw [hsim γ, ← hLdef]; linarith [hgabs, hL6]
+      rw [hsim γ, ← hLdef]; linarith only [hgabs, hL6]
     have hreg3 : 1 - Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ)
         ≤ (((β : ℂ) + (γ : ℂ) * Complex.I)).re := by
       rw [hsre γ]; exact hsig2
@@ -444,7 +444,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
         * ((Real.log (q : ℝ) : ℝ) : ℂ)).re| ≤ 1 := by
       rw [← hLdef, ← hz2, hz2re, hlamEq ρ₁]
       exact hzabs
-    have honly := honly_gen γ (by linarith [hgabs] : |γ| ≤ 3)
+    have honly := honly_gen γ (by linarith only [hgabs] : |γ| ≤ 3)
     have h := hW hqW χ₁ hchi1ne (s := (β : ℂ) + (γ : ℂ) * Complex.I)
       (ρ := ρ₁) (ρ' := starRingEnd ℂ ρ₁)
       hreg1 hreg2 hreg3 hH hd1 hd2 hne hlt1 hlt2 hm1 hm2 hzr1 hzr2 honly
@@ -452,7 +452,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     rw [← Kxy_eq_tsum] at h
     rw [← hz1, ← hz2] at h
     rw [hordEq _ hball, hInt1, hordEqc _ hballc, hInt2] at h
-    linarith [h]
+    linarith only [h]
   -- ===== b4: the χ₁-sum at s = β + 3iγ =====
   have b4 : Kxy xyT.f L β (3 * γ) χ₁ ≤
       -(L * xyRe (Work.LinnikContract.lamOf q ρ₁ - 1) (2 * γ * L))
@@ -490,16 +490,16 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
       rw [fmo2_integral_re, hz2re, hz2im]
     have hball : ρ₁ ∈ Metric.closedBall 0 (|(((β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).im| + 2) := by
       rw [hi3, Metric.mem_closedBall, dist_zero_right, hb4]
-      linarith [hnorm, abs_nonneg γ]
+      linarith only [hnorm, abs_nonneg γ]
     have hballc : ((starRingEnd ℂ) ρ₁) ∈
         Metric.closedBall 0 (|(((β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).im| + 2) := by
       rw [hi3, Metric.mem_closedBall, dist_zero_right, hb4]
-      linarith [hnormc, abs_nonneg γ]
+      linarith only [hnormc, abs_nonneg γ]
     have hreg1 : |(((β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).re - 1|
         ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
       rw [hs3]; exact hsig1
     have hreg2 : |(((β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).im| ≤ 10 * Real.log (q : ℝ) := by
-      rw [hi3, hb4, ← hLdef]; linarith [hgabs, hL6]
+      rw [hi3, hb4, ← hLdef]; linarith only [hgabs, hL6]
     have hreg3 : 1 - Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ)
         ≤ (((β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)).re := by
       rw [hs3]; exact hsig2
@@ -534,7 +534,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
         * ((Real.log (q : ℝ) : ℝ) : ℂ)).re| ≤ 1 := by
       rw [← hLdef, ← hz2, hz2re, hlamEq ρ₁]
       exact hzabs
-    have honly := honly_gen (3 * γ) (by rw [hb4]; linarith [hgabs])
+    have honly := honly_gen (3 * γ) (by rw [hb4]; linarith only [hgabs])
     have h := hW hqW χ₁ hchi1ne (s := (β : ℂ) + ((3 * γ : ℝ) : ℂ) * Complex.I)
       (ρ := ρ₁) (ρ' := starRingEnd ℂ ρ₁)
       hreg1 hreg2 hreg3 hH hd1 hd2 hne hlt1 hlt2 hm1 hm2 hzr1 hzr2 honly
@@ -542,7 +542,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
     rw [← Kxy_eq_tsum] at h
     rw [← hz1, ← hz2] at h
     rw [hordEq _ hball, hInt1, hordEqc _ hballc, hInt2] at h
-    linarith [h]
+    linarith only [h]
   -- ===== the five-term combination =====
   have hpos := KsumFiveNonneg (q := q) (f := xyT.f) (fun t => xyT.f_nonneg t) (x₀ := xyT.x₀)
     (L := L) (β := β) (γ := γ) xyT.x₀_pos hLpos xyT.f_supp χ₁ hsq
@@ -579,7 +579,7 @@ theorem FMethodOrd2 : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
           - L * xyRe (Work.LinnikContract.lamOf q ρ₁ - 1) (4 * γ * L)
           + xyT.f 0 * (1/8 + 1/10000) * L)
       + 1250 * (L * xyRe (-1) (4 * γ * L) + xyT.f 0 * (1 / 10000) * L) := by
-    linarith [h1, h2, h3, h4, h5]
+    linarith only [h1, h2, h3, h4, h5]
   have hcomb : 0 ≤ L * (xyMain (Work.LinnikContract.lamOf q ρ₁)
         + xySup1 (Work.LinnikContract.lamOf q ρ₁) (2 * γ * L)
         + xySup2 (Work.LinnikContract.lamOf q ρ₁) (4 * γ * L))

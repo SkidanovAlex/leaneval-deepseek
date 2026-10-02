@@ -4,7 +4,6 @@ import Submission.Work.LinnikAreas.TuranOther.orderZeta_eq_orderLambda_add_invGa
 import Submission.Work.LinnikAreas.TuranOther.orderInvGammaR_eq_indicator
 import Submission.Work.LinnikAreas.TuranOther.levelFactorZeroSumSummable
 import Submission.Work.LinnikAreas.TuranOther.lFunction_eq_completed_mul_invGamma
-import Submission.Work.LinnikAreas.TuranOther.tsum_eq_tsum_of_supported
 import Submission.Work.LinnikAreas.OtherCharRepel.LFunction_eq_primitiveCharacter_mul
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_TuranOther_lFunctionOrderAddInvGammaR
 import Submission.Work.LinnikAreas.P3Rect.Work_LinnikAreas_TuranOther_pfUncompleted
@@ -124,7 +123,7 @@ lemma ord_finsetProd_le (s : Finset ℕ) (f : ℕ → ℂ → ℂ) (u : ℂ)
         ih (fun p hp => hf p (Finset.mem_insert_of_mem hp))
       have h4 := analyticOrderNatAt_mul_le (f := f a) (g := s.prod f) h1 h2
       rw [Finset.prod_insert ha, Finset.sum_insert ha]
-      linarith
+      linarith only [h3, h4]
 
 /-- Summability and the total sum of a finite sum of summable families. -/
 lemma summable_finset_sum_tsum {ι : Type*} (s : Finset ι) (g : ι → ℂ → ℝ)
@@ -266,7 +265,7 @@ lemma lvlEMass :
             (analyticOrderNatAt (Work.LinnikAreas.TuranOther.lvlE p c) u : ℝ) / ‖w - u‖ ^ 2)
             ≤ C * (1 + Real.log p) := by
   obtain ⟨C1, hC1pos, hC1⟩ := Work.LinnikAreas.TwMass.latticeInvSqSumLe
-  refine ⟨C1 + 1, by linarith, ?_⟩
+  refine ⟨C1 + 1, by linarith only [hC1pos], ?_⟩
   intro p hp c hc w hw
   obtain ⟨hord1, hord0⟩ := lvlE_order_support hp hc
   have hφinj : Function.Injective (Work.LinnikAreas.TuranOther.lvlZero p c) :=
@@ -276,7 +275,7 @@ lemma lvlEMass :
     rw [hhdef]
     exact div_pos (by positivity) (Work.LinnikAreas.TuranOther.lvlL_pos hp)
   set B : ℝ := w.im - (Work.LinnikAreas.TuranOther.lvlRoot p c).im with hBdef
-  have hA1 : 1 ≤ w.re ^ 2 := by nlinarith [hw]
+  have hA1 : 1 ≤ w.re ^ 2 := by nlinarith only [hw]
   have hkey : ∀ n : ℤ, ‖w - Work.LinnikAreas.TuranOther.lvlZero p c n‖ ^ 2
       = w.re ^ 2 + (B - (n : ℝ) * h) ^ 2 := by
     intro n
@@ -286,7 +285,7 @@ lemma lvlEMass :
   have hsqrt1 : 1 ≤ Real.sqrt (w.re ^ 2) := by
     rw [Real.sqrt_sq_eq_abs]
     have habs : |w.re| ^ 2 = w.re ^ 2 := sq_abs w.re
-    nlinarith [hA1, abs_nonneg w.re, habs]
+    nlinarith only [hA1, abs_nonneg w.re, habs, hw]
   have hsqrtle : 1 / (h * Real.sqrt (w.re ^ 2)) ≤ 1 / h := by
     refine one_div_le_one_div_of_le hhpos ?_
     calc h = h * 1 := (mul_one h).symm
@@ -324,17 +323,17 @@ lemma lvlEMass :
   have hlogp : 0 ≤ Real.log p :=
     Real.log_nonneg (by exact_mod_cast hp.one_le)
   have hAinv : (1 : ℝ) / w.re ^ 2 ≤ 1 := by
-    rw [div_le_one (by positivity)]; linarith
+    rw [div_le_one (by positivity)]; linarith only [hA1]
   have h1h : (1 : ℝ) / h ≤ Real.log p := by
     rw [hhdef, Work.LinnikAreas.TuranOther.lvlL, one_div_div,
       div_le_iff₀ (by positivity : (0 : ℝ) < 2 * Real.pi)]
-    nlinarith [Real.pi_gt_three, hlogp]
+    nlinarith only [Real.pi_gt_three, hlogp]
   calc C1 * (1 / w.re ^ 2 + 1 / (h * Real.sqrt (w.re ^ 2)))
       ≤ C1 * (1 / w.re ^ 2 + 1 / h) :=
-        mul_le_mul_of_nonneg_left (by linarith [hsqrtle]) hC1pos.le
+        mul_le_mul_of_nonneg_left (by linarith only [hsqrtle]) hC1pos.le
     _ ≤ C1 * (1 + Real.log p) :=
-        mul_le_mul_of_nonneg_left (by linarith [hAinv, h1h]) hC1pos.le
-    _ ≤ (C1 + 1) * (1 + Real.log p) := by nlinarith [hC1pos, hlogp]
+        mul_le_mul_of_nonneg_left (by linarith only [hAinv, h1h]) hC1pos.le
+    _ ≤ (C1 + 1) * (1 + Real.log p) := by linarith only [hC1pos, hlogp]
 
 /-- **Mass of a level-correction product** `∏_{p ∣ q} (1 - χ(p) p^{-s})`: the inverse-square
 multiplicity-weighted zero sum is `O(log q)`, uniformly in the modulus `d` of `χ` and in
@@ -350,7 +349,7 @@ lemma levelProdMass :
             (1 - χ (p : ZMod d) * (p : ℂ) ^ (-s))) u : ℝ) / ‖w - u‖ ^ 2)
           ≤ C * (Real.log (q : ℝ) + 1) := by
   obtain ⟨C0, hC0pos, hC0⟩ := lvlEMass
-  refine ⟨3 * C0 + 1, by linarith, ?_⟩
+  refine ⟨3 * C0 + 1, by linarith only [hC0pos], ?_⟩
   intro q d _inst χ w hw
   by_cases hq : q = 0
   · subst hq
@@ -362,7 +361,7 @@ lemma levelProdMass :
     rw [hz]
     refine ⟨summable_zero, ?_⟩
     rw [tsum_zero]
-    have h0 : (0:ℝ) ≤ 3 * C0 + 1 := by linarith
+    have h0 : (0:ℝ) ≤ 3 * C0 + 1 := by linarith only [hC0pos]
     simpa using h0
   · set f : ℕ → ℂ → ℂ := fun p s => 1 - χ (p : ZMod d) * (p : ℂ) ^ (-s) with hf
     have hf_an : ∀ p : ℕ, p.Prime → Differentiable ℂ (f p) := fun p hp =>
@@ -393,7 +392,7 @@ lemma levelProdMass :
         refine ⟨summable_zero, ?_⟩
         rw [tsum_zero]
         have hlogp : 0 ≤ Real.log p := Real.log_nonneg (by exact_mod_cast hp.one_le)
-        nlinarith [hC0pos, hlogp]
+        nlinarith only [hC0pos, hlogp]
       · have hc : ‖χ (p : ZMod d)‖ = 1 :=
           Work.LinnikAreas.TuranOther.norm_apply_eq_one_of_isUnit χ
             ((ZMod.isUnit_iff_coprime p d).mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hpd))
@@ -454,11 +453,11 @@ lemma levelProdMass :
           Real.log_le_log (by positivity) hp2R
         rw [Real.log_pow] at hlog2'
         have hlog2pos : (1:ℝ) / 2 ≤ Real.log 2 := by
-          have := Real.log_two_gt_d9; linarith
+          have := Real.log_two_gt_d9; linarith only [this]
         have hcardnn : (0:ℝ) ≤ ((q.primeFactors.card : ℕ) : ℝ) := Nat.cast_nonneg _
         have hstep := mul_le_mul_of_nonneg_left hlog2pos hcardnn
         push_cast at hlog2' hstep ⊢
-        linarith [hlog2', hlogprodle]
+        linarith only [hlog2', hlogprodle, hstep]
       have hsum1 : ∑ p ∈ q.primeFactors, (1 + Real.log (p : ℝ))
           = ((q.primeFactors.card : ℕ) : ℝ) + ∑ p ∈ q.primeFactors, Real.log (p : ℝ) := by
         rw [Finset.sum_add_distrib]
@@ -466,10 +465,10 @@ lemma levelProdMass :
         simp [Finset.sum_const, nsmul_eq_mul]
       have hsum2 : ∑ p ∈ q.primeFactors, (1 + Real.log (p : ℝ)) ≤ 3 * Real.log (q : ℝ) := by
         rw [hsum1, hlogprod]
-        linarith [hcard, hlogprodle]
+        linarith only [hcard, hlogprodle]
       rw [← Finset.mul_sum]
       have hmu := mul_le_mul_of_nonneg_left hsum2 hC0pos.le
-      nlinarith [hmu, hC0pos, hlogq]
+      linarith only [hmu, hC0pos, hlogq]
     have hfe : q.primeFactors.prod f
         = fun s : ℂ => ∏ p ∈ q.primeFactors, (1 - χ (p : ZMod d) * (p : ℂ) ^ (-s)) := by
       funext s
@@ -486,7 +485,7 @@ lemma zetaMass_le :
           ≤ C * (Real.log (2 + ‖w‖) + 2) := by
   obtain ⟨CA, hCApos, hCA⟩ := completedZetaInvSq
   obtain ⟨CB, hCBpos, hCB⟩ := gammaRShiftInvSq
-  refine ⟨CA + CB, by linarith, ?_⟩
+  refine ⟨CA + CB, by linarith only [hCApos, hCBpos], ?_⟩
   intro w hw
   obtain ⟨hAs, hAb⟩ := hCA w hw
   obtain ⟨hBs, hBb⟩ := hCB 0 w hw
@@ -511,8 +510,8 @@ lemma zetaMass_le :
   have hle := Summable.tsum_le_tsum hpt hZs hsum
   rw [Summable.tsum_add hAs hBs] at hle
   refine hle.trans ?_
-  have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-  nlinarith [hAb, hBb, hCApos, hCBpos, hL2]
+  have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+  nlinarith only [hAb, hBb, hCApos, hCBpos, hL2]
 
 /-- **The `L`-half of the mass bound.** -/
 lemma lMass_le :
@@ -525,7 +524,7 @@ lemma lMass_le :
   obtain ⟨CE, hCEpos, hCE⟩ := levelProdMass
   obtain ⟨CL, hCLpos, hCL⟩ := completedLInvSq
   obtain ⟨CB, hCBpos, hCB⟩ := gammaRShiftInvSq
-  refine ⟨Cz + CE + CL + CB, by linarith, ?_⟩
+  refine ⟨Cz + CE + CL + CB, by linarith only [hCzpos, hCEpos, hCLpos, hCBpos], ?_⟩
   intro q _inst ψ w hw
   by_cases hψ : ψ = 1
   · subst ψ
@@ -573,8 +572,8 @@ lemma lMass_le :
     refine hle.trans ?_
     have hlogq : 0 ≤ Real.log (q : ℝ) :=
       Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q))
-    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-    nlinarith [hZb, hEb, hCzpos, hCEpos, hL2, hlogq]
+    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+    nlinarith only [hZb, hEb, hCzpos, hCEpos, hL2, hlogq, hCLpos, hCBpos]
   · letI : NeZero ψ.conductor := ⟨ψ.conductor_ne_zero⟩
     obtain ⟨a, ha0, ha1, -⟩ :=
       Work.LinnikAreas.TuranOther.lFunction_eq_completed_mul_invGamma ψ hψ
@@ -627,7 +626,7 @@ lemma lMass_le :
         simp only [multL]
         rw [h1]
         push_cast
-        linarith
+        linarith only [_inst, this, h2R]
       rw [show (analyticOrderNatAt (DirichletCharacter.completedLFunction ψ.primitiveCharacter) u : ℝ)
               / ‖w - u‖ ^ 2
           + (analyticOrderNatAt E u : ℝ) / ‖w - u‖ ^ 2
@@ -652,11 +651,11 @@ lemma lMass_le :
     refine hle.trans ?_
     have hlogq : 0 ≤ Real.log (q : ℝ) :=
       Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q))
-    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
+    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
     have hlogd : Real.log (ψ.conductor : ℝ) ≤ Real.log (q : ℝ) :=
       Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero hne0)
         (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne q)) hdvd)
-    nlinarith [hLb, hEb, hGb, hlogd, hL2, hlogq, hCLpos, hCEpos, hCBpos, hCzpos]
+    nlinarith only [hLb, hEb, hGb, hlogd, hL2, hlogq, hCLpos, hCEpos, hCBpos, hCzpos, this]
 
 theorem lMultMassRect : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (ψ : DirichletCharacter ℂ q) (w : ℂ),
     (3 / 2 : ℝ) ≤ w.re →
@@ -665,7 +664,7 @@ theorem lMultMassRect : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (ψ : Di
         ≤ C * (Real.log (q : ℝ) + Real.log (2 + ‖w‖) + 2) := by
   obtain ⟨Cz, hCzpos, hCz⟩ := zetaMass_le
   obtain ⟨Cl, hClpos, hCl⟩ := lMass_le
-  refine ⟨Cz + Cl, by linarith, ?_⟩
+  refine ⟨Cz + Cl, by linarith only [hCzpos, hClpos], ?_⟩
   intro q _inst ψ w hw
   obtain ⟨hZs, hZb⟩ := hCz w hw
   obtain ⟨hLs, hLb⟩ := hCl q ψ w hw
@@ -679,7 +678,7 @@ theorem lMultMassRect : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (ψ : Di
   · rw [hpt, Summable.tsum_add hZs hLs]
     have hlogq : 0 ≤ Real.log (q : ℝ) :=
       Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q))
-    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith [norm_nonneg w])
-    nlinarith [hZb, hLb, hCzpos, hClpos, hlogq, hL2]
+    have hL2 : 0 ≤ Real.log (2 + ‖w‖) := Real.log_nonneg (by linarith only [norm_nonneg w])
+    nlinarith only [hZb, hLb, hCzpos, hClpos, hlogq, hL2, _inst]
 
 end Work.LinnikAreas.turanAux2

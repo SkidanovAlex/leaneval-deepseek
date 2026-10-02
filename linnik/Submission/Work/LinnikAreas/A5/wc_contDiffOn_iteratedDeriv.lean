@@ -1,7 +1,7 @@
 import Mathlib
 import Submission.Work.LinnikAreas.A5.Weights
-import Submission.Work.LinnikAreas.A5.f1_data
 import Submission.Work.LinnikAreas.A5.Basic
+import Submission.Work.LinnikAreas.A5.f1_iteratedDeriv_two
 
 open scoped Topology
 

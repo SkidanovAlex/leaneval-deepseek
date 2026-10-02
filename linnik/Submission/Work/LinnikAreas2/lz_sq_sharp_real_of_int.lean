@@ -30,7 +30,7 @@ private lemma Lz_eq_sum_shift {k : ℕ} {z : ℝ} (hz1 : (k:ℝ) ≤ z) (hz2 : z
     have hzpos : 0 < z := by
       have h1 : (1:ℝ) ≤ (d:ℝ) := by exact_mod_cast hd1
       have h2 : (1:ℝ) ≤ (k:ℝ) := by exact_mod_cast (le_trans hd1 hdk)
-      linarith
+      linarith only [hz1, h2]
     rw [Real.log_div (ne_of_gt hzpos) (by exact_mod_cast hdne), mul_sub]
   · intro d _
     constructor
@@ -40,7 +40,7 @@ private lemma Lz_eq_sum_shift {k : ℕ} {z : ℝ} (hz1 : (k:ℝ) ≤ z) (hz2 : z
       omega
     · intro hd
       have h : (d:ℝ) ≤ (k:ℝ) := by exact_mod_cast hd
-      linarith
+      linarith only [hz1, h]
 
 /-- The sum over the divisors `≤ k+1` collapses to the sum over those `≤ k` when the term at
 `k+1` vanishes. -/
@@ -103,10 +103,10 @@ private lemma Lz_affine_interp (k : ℕ) (hk : 1 ≤ k) (z : ℝ) (hz1 : (k:ℝ)
     Lz_eq_sum_shift hz1 hz2 n
   have hk : Lz (k:ℝ) n = ∑ d ∈ n.divisors.filter (fun d : ℕ => d ≤ k),
       (ArithmeticFunction.moebius d : ℝ) * (Real.log (k:ℝ) - Real.log d) :=
-    Lz_eq_sum_shift (k := k) (z := (k:ℝ)) le_rfl (by push_cast; linarith) n
+    Lz_eq_sum_shift (k := k) (z := (k:ℝ)) le_rfl (by push_cast; linarith only []) n
   have hk1 : Lz ((k+1:ℕ):ℝ) n = ∑ d ∈ n.divisors.filter (fun d : ℕ => d ≤ k),
       (ArithmeticFunction.moebius d : ℝ) * (Real.log ((k+1:ℕ):ℝ) - Real.log d) := by
-    have hz2' : ((k+1:ℕ):ℝ) < (((k+1)+1:ℕ):ℝ) := by push_cast; linarith
+    have hz2' : ((k+1:ℕ):ℝ) < (((k+1)+1:ℕ):ℝ) := by push_cast; linarith only []
     rw [Lz_eq_sum_shift (k := k+1) (z := ((k+1:ℕ):ℝ)) le_rfl hz2']
     exact sum_filter_succ_eq k n _ (by
       show (ArithmeticFunction.moebius (k+1) : ℝ) *
@@ -114,15 +114,15 @@ private lemma Lz_affine_interp (k : ℕ) (hk : 1 ≤ k) (z : ℝ) (hz1 : (k:ℝ)
       rw [sub_self, mul_zero])
   have hAB : Real.log ((k+1:ℕ):ℝ) - Real.log (k:ℝ) ≠ 0 := by
     have h : Real.log (k:ℝ) < Real.log ((k+1:ℕ):ℝ) :=
-      Real.log_lt_log (by exact_mod_cast (by omega : 0 < k)) (by push_cast; linarith)
-    linarith
+      Real.log_lt_log (by exact_mod_cast (by omega : 0 < k)) (by push_cast; linarith only [])
+    linarith only [h]
   rw [hz, hk, hk1]
   exact affine_comb_sums _ _ _ hAB
 
 /-- Convexity of the square at a convex combination. -/
 private lemma sq_le_convex_comb {θ ψ a b : ℝ} (h0 : 0 ≤ θ) (h1 : 0 ≤ ψ) (hs : θ + ψ = 1) :
     (θ * a + ψ * b) ^ 2 ≤ θ * a ^ 2 + ψ * b ^ 2 := by
-  have hψ : ψ = 1 - θ := by linarith
+  have hψ : ψ = 1 - θ := by linarith only [hs]
   rw [hψ]
   nlinarith [mul_nonneg h0 (by linarith : (0:ℝ) ≤ 1 - θ), sq_nonneg (a - b)]
 
@@ -155,31 +155,31 @@ theorem lz_sq_sharp_real_of_int
     · have hb := hE' z N hz hzN h
       have hle : CE * (N : ℝ) ≤ max CE CH * (N : ℝ) :=
         mul_le_mul_of_nonneg_right (le_max_left _ _) (Nat.cast_nonneg N)
-      linarith
+      linarith only [hb, hle]
     · have hb := hH' z N hz hzN h
       have hle : CH * (N : ℝ) ≤ max CE CH * (N : ℝ) :=
         mul_le_mul_of_nonneg_right (le_max_right _ _) (Nat.cast_nonneg N)
-      linarith
+      linarith only [hb, hle]
   intro z hz N hzN
   set k := ⌊z⌋₊ with hkdef
   have hk2 : 2 ≤ k := Nat.le_floor (by exact_mod_cast hz)
-  have hkz : (k:ℝ) ≤ z := Nat.floor_le (by linarith)
+  have hkz : (k:ℝ) ≤ z := Nat.floor_le (by linarith only [hz])
   have hzk1 : z < ((k+1:ℕ):ℝ) := by
     have h := Nat.lt_floor_add_one z
     rw [← hkdef] at h
     push_cast
-    linarith
+    linarith only [h]
   have hk1 : 1 ≤ k := by omega
   set A : ℝ := Real.log (k:ℝ) with hA
   set B : ℝ := Real.log ((k+1:ℕ):ℝ) with hB
   set α : ℝ := Real.log z with hα
   have hkpos : (0:ℝ) < (k:ℝ) := by exact_mod_cast (by omega : 0 < k)
-  have hzpos : (0:ℝ) < z := by linarith
+  have hzpos : (0:ℝ) < z := by linarith only [hz]
   have hAα : A ≤ α := by rw [hA, hα]; exact Real.log_le_log hkpos hkz
   have hαB : α < B := by rw [hα, hB]; exact Real.log_lt_log hzpos hzk1
-  have hAB : 0 < B - A := by linarith
-  have hθ0 : 0 ≤ (B - α) / (B - A) := div_nonneg (by linarith) (le_of_lt hAB)
-  have hψ0 : 0 ≤ (α - A) / (B - A) := div_nonneg (by linarith) (le_of_lt hAB)
+  have hAB : 0 < B - A := by linarith only [hAα, hαB]
+  have hθ0 : 0 ≤ (B - α) / (B - A) := div_nonneg (by linarith only [hαB]) (le_of_lt hAB)
+  have hψ0 : 0 ≤ (α - A) / (B - A) := div_nonneg (by linarith only [hAα]) (le_of_lt hAB)
   have hsumθ : (B - α) / (B - A) + (α - A) / (B - A) = 1 := by field_simp; ring
   have hcomb : ((B - α) / (B - A)) * A + ((α - A) / (B - A)) * B = α := by
     field_simp; ring
@@ -230,7 +230,7 @@ theorem lz_sq_sharp_real_of_int
         + ((α - A) / (B - A)) * ((N:ℝ) * Real.log ((k+1:ℕ):ℝ) + max CE CH * (N:ℝ))
         = (N:ℝ) * Real.log z + max CE CH * (N:ℝ) := by
       linear_combination (N:ℝ) * hcomb' + (max CE CH * (N:ℝ)) * hsumθ
-    nlinarith [hsumle, hb1, hb2, e]
+    linarith only [hsumle, hb1, hb2, e]
 
 end
 

@@ -44,7 +44,7 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
   have hC₁le : C₁ ≤ C := le_max_left _ _
   have hC₂le : C₂ ≤ C := le_trans (le_max_left _ _) (le_max_right _ _)
   have hC₃le : C₃ ≤ C := le_trans (le_max_right _ _) (le_max_right _ _)
-  have hA0 : (0 : ℝ) ≤ 18 / 7 + M := by linarith
+  have hA0 : (0 : ℝ) ≤ 18 / 7 + M := by linarith only [hM]
   obtain ⟨L₀, hL₀1, hL₀bd⟩ :=
     Work.ZeroFreeTables.Table4.principalArith M₀ C (18 / 7 + M) ε hM₀pos hCpos hA0 hε
   refine ⟨max 3 (⌈Real.exp (max L₀ 2)⌉₊ + 1), fun q hq hNe lam₁ s hlam0 hlamM hre him => ?_⟩
@@ -55,7 +55,7 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
     have h2 : Real.exp (max L₀ 2) ≤ ((⌈Real.exp (max L₀ 2)⌉₊ : ℕ) : ℝ) := Nat.le_ceil _
     have h3 : (((⌈Real.exp (max L₀ 2)⌉₊ + 1 : ℕ)) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hqexp
     push_cast at h3
-    linarith
+    linarith only [h2, h3]
   set L : ℝ := Real.log (q : ℝ) with hLdef
   have hLge' : max L₀ 2 ≤ L := by
     rw [hLdef]
@@ -64,19 +64,19 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
   have hLge : L₀ ≤ L := le_trans (le_max_left _ _) hLge'
   have hL2 : (2 : ℝ) ≤ L := le_trans (le_max_right _ _) hLge'
   have hL1 : 1 ≤ L := le_trans hL₀1 hLge
-  have hLpos : 0 < L := by linarith
+  have hLpos : 0 < L := by linarith only [hL2]
   have hlogL0 : 0 ≤ Real.log L := Real.log_nonneg hL1
   have hsre1 : 1 < s.re := by
     rw [hre]
     have h : 0 < (18 : ℝ) / 7 / L := div_pos (by norm_num) hLpos
-    linarith
+    linarith only [h]
   have hsre4 : s.re ≤ 4 := by
     rw [hre]
     have h : (18 : ℝ) / 7 / L ≤ 3 := by
       rw [div_le_iff₀ hLpos]
-      linarith
-    linarith
-  have him5 : |s.im| ≤ 5 := by linarith [him]
+      linarith only [hL2]
+    linarith only [h]
+  have him5 : |s.im| ≤ 5 := by linarith only [him]
   obtain ⟨hz0, hz1, hz2⟩ := hzB s hsre1 hsre4 him5
   obtain ⟨hE0, hE1, hE2⟩ :=
     Work.ZeroFreeTables.XY.PrincipalSigma.EulerFactorBounds q (le_of_lt hsre1)
@@ -97,12 +97,12 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
       simpa only [pow_one, ← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 2 ≤ (Real.log L + 2) ^ 2 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 2
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 2
     have h2 : C₁ * (Real.log L) ^ 2 ≤ C₁ * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₁pos)
     have h3 : C₁ * (Real.log L + 2) ^ 2 ≤ C * (Real.log L + 2) ^ 2 :=
       mul_le_mul_of_nonneg_right hC₁le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₂bd : S₂ ≤ C * (Real.log L + 2) ^ 3 := by
     have h := hC₂ q hq3
     have h' : S₂ ≤ C₂ * (Real.log L) ^ 3 := by
@@ -110,12 +110,12 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
       simpa only [← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 3 ≤ (Real.log L + 2) ^ 3 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 3
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 3
     have h2 : C₂ * (Real.log L) ^ 3 ≤ C₂ * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₂pos)
     have h3 : C₂ * (Real.log L + 2) ^ 3 ≤ C * (Real.log L + 2) ^ 3 :=
       mul_le_mul_of_nonneg_right hC₂le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₃bd : S₃ ≤ C * (Real.log L + 2) ^ 4 := by
     have h := hC₃ q hq3
     have h' : S₃ ≤ C₃ * (Real.log L) ^ 4 := by
@@ -123,12 +123,12 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
       simpa only [← hLdef] using h
     refine le_trans h' ?_
     have h1 : (Real.log L) ^ 4 ≤ (Real.log L + 2) ^ 4 :=
-      pow_le_pow_left₀ hlogL0 (by linarith) 4
+      pow_le_pow_left₀ hlogL0 (by linarith only []) 4
     have h2 : C₃ * (Real.log L) ^ 4 ≤ C₃ * (Real.log L + 2) ^ 4 :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hC₃pos)
     have h3 : C₃ * (Real.log L + 2) ^ 4 ≤ C * (Real.log L + 2) ^ 4 :=
       mul_le_mul_of_nonneg_right hC₃le (by positivity)
-    linarith [h2, h3]
+    linarith only [h2, h3]
   have hS₁0 : 0 ≤ S₁ := by
     rw [hS₁def]
     refine Finset.sum_nonneg fun p hp => div_nonneg ?_ (Nat.cast_nonneg p)
@@ -171,14 +171,14 @@ theorem PrincipalSigmaBound_18_7 (M ε : ℝ) (hM : 0 < M) (hε : 0 < ε) :
       + (((18 : ℝ) / 7 + lam₁) / L) ^ 2 * (4 * S₂)
       + (1 / 3) * (((18 : ℝ) / 7 + lam₁) / L) ^ 3 * (16 * S₃) ≤ ((18 : ℝ) / 7 + lam₁) * ε :=
     Work.ZeroFreeTables.XY.errorBracket_le (M₀ := M₀) (C := C) (A := 18 / 7 + M) (ε := ε)
-      (α := (18 : ℝ) / 7 + lam₁) (S₁ := S₁) (S₂ := S₂) (S₃ := S₃) hL1 (by linarith)
-      (by linarith) hA0 (le_of_lt hM₀pos) (le_of_lt hCpos) hS₁bd hS₂bd hS₃bd hS₁0 hS₂0 hS₃0
+      (α := (18 : ℝ) / 7 + lam₁) (S₁ := S₁) (S₂ := S₂) (S₃ := S₃) hL1 (by linarith only [hlam0])
+      (by linarith only [hlamM]) hA0 (le_of_lt hM₀pos) (le_of_lt hCpos) hS₁bd hS₂bd hS₃bd hS₁0 hS₂0 hS₃0
       (hL₀bd L hLge)
   have hfin : Work.ZeroFreeTables.SigmaP3L q L (1 : DirichletCharacter ℂ q) s (18 / 7) lam₁
       ≤ (Work.ZeroFreeTables.P3 ((((18/7 : ℝ) + lam₁) : ℂ)
             / ((s - 1) * ((L : ℝ) : ℂ)))).re + (18 / 7 + lam₁) * ε := by
     refine le_trans hm ?_
-    linarith [hbr]
+    linarith only [hbr]
   simpa only [hLdef] using hfin
 
 end
