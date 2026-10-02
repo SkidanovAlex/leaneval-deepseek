@@ -51,15 +51,15 @@ theorem sqrt_loglog_ge_two {q : ℕ} (hq : Qsq ≤ q) :
       Nat.le_ceil _
     have h3 : ((Nat.ceil (Real.exp (Real.exp 4)) : ℕ) : ℝ) + 1 ≤ (q : ℝ) := by
       exact_mod_cast hq
-    linarith
+    linarith only [h2, h3]
   have h4 : Real.exp 4 ≤ Real.log (q : ℝ) := by
     have := Real.log_le_log (Real.exp_pos (Real.exp 4)) h1
     rwa [Real.log_exp] at this
   have h5 : (4 : ℝ) ≤ Real.log (Real.log (q : ℝ)) := by
     have := Real.log_le_log (Real.exp_pos 4) h4
     rwa [Real.log_exp] at this
-  rw [Real.le_sqrt (by norm_num) (by linarith)]
-  linarith
+  rw [Real.le_sqrt (by norm_num) (by linarith only [h5])]
+  linarith only [h5]
 
 /-- **The bridge between the engine's `T.F` and the real-axis Laplace transform `La`** of
 Lemma 7.1's test function: `T.F x = La θ lam (−x)`. -/
@@ -122,7 +122,7 @@ theorem row_034_1283 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -130,13 +130,13 @@ theorem row_034_1283 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (21/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((81/100:ℝ) ^ 2 + 4 * (81/100:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (4496782761/5000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_034_1283 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((34/100 : ℚ) : ℝ) = (17/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1283/1000 : ℚ) : ℝ) = (1283/1000 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 36/100 ⟹ λ_j ≥ 1230/1000`.** -/
@@ -168,7 +168,7 @@ theorem row_036_123 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (21/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -176,13 +176,13 @@ theorem row_036_123 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (21/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((407/500:ℝ) ^ 2 + 4 * (407/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (338664717947/375000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_036_123 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((36/100 : ℚ) : ℝ) = (9/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1230/1000 : ℚ) : ℝ) = (123/100 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 38/100 ⟹ λ_j ≥ 1181/1000`.** -/
@@ -214,7 +214,7 @@ theorem row_038_1181 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (24:ℝ)) (9/200:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (24:ℝ)) (9/200:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (24:ℝ)) (9/200:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -222,13 +222,13 @@ theorem row_038_1181 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (24:ℝ)) (9/200:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((817/1000:ℝ) ^ 2 + 4 * (817/1000:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (1358882154467/1500000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_038_1181 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((38/100 : ℚ) : ℝ) = (19/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1181/1000 : ℚ) : ℝ) = (1181/1000 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 40/100 ⟹ λ_j ≥ 1135/1000`.** -/
@@ -260,7 +260,7 @@ theorem row_04_1135 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (11/250:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (11/250:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (11/250:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -268,13 +268,13 @@ theorem row_04_1135 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (11/250:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((41/50:ℝ) ^ 2 + 4 * (41/50:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (3407774843/3750000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_04_1135 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((40/100 : ℚ) : ℝ) = (2/5 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1135/1000 : ℚ) : ℝ) = (227/200 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 42/100 ⟹ λ_j ≥ 1094/1000`.** -/
@@ -306,7 +306,7 @@ theorem row_042_1094 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (24:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (24:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (24:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -314,13 +314,13 @@ theorem row_042_1094 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (24:ℝ)) (23/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((411/500:ℝ) ^ 2 + 4 * (411/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (113827579921/125000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_042_1094 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((42/100 : ℚ) : ℝ) = (21/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1094/1000 : ℚ) : ℝ) = (547/500 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 44/100 ⟹ λ_j ≥ 1055/1000`.** -/
@@ -352,7 +352,7 @@ theorem row_044_1055 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -360,13 +360,13 @@ theorem row_044_1055 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (23/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((33/40:ℝ) ^ 2 + 4 * (33/40:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (730755329/800000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_044_1055 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((44/100 : ℚ) : ℝ) = (11/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1055/1000 : ℚ) : ℝ) = (211/200 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 46/100 ⟹ λ_j ≥ 1018/1000`.** -/
@@ -398,7 +398,7 @@ theorem row_046_1018 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (23/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -406,13 +406,13 @@ theorem row_046_1018 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (23/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((207/250:ℝ) ^ 2 + 4 * (207/250:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (28633458849/31250000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_046_1018 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((46/100 : ℚ) : ℝ) = (23/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((1018/1000 : ℚ) : ℝ) = (509/500 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 48/100 ⟹ λ_j ≥ 984/1000`.** -/
@@ -444,7 +444,7 @@ theorem row_048_0984 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (47/1000:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (47/1000:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (47/1000:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -452,13 +452,13 @@ theorem row_048_0984 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (47/1000:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((104/125:ℝ) ^ 2 + 4 * (104/125:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (21563532323/23437500000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_048_0984 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((48/100 : ℚ) : ℝ) = (12/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((984/1000 : ℚ) : ℝ) = (123/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 50/100 ⟹ λ_j ≥ 952/1000`.** -/
@@ -490,7 +490,7 @@ theorem row_05_0952 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -498,13 +498,13 @@ theorem row_05_0952 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (6/125:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((417/500:ℝ) ^ 2 + 4 * (417/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (115241590889/125000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_05_0952 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((50/100 : ℚ) : ℝ) = (1/2 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((952/1000 : ℚ) : ℝ) = (119/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 52/100 ⟹ λ_j ≥ 922/1000`.** -/
@@ -536,7 +536,7 @@ theorem row_052_0922 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -544,13 +544,13 @@ theorem row_052_0922 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (6/125:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((209/250:ℝ) ^ 2 + 4 * (209/250:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (28869460681/31250000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_052_0922 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((52/100 : ℚ) : ℝ) = (13/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((922/1000 : ℚ) : ℝ) = (461/500 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 54/100 ⟹ λ_j ≥ 893/1000`.** -/
@@ -582,7 +582,7 @@ theorem row_054_0893 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (6/125:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -590,13 +590,13 @@ theorem row_054_0893 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (6/125:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((419/500:ℝ) ^ 2 + 4 * (419/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (347142783683/375000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_054_0893 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((54/100 : ℚ) : ℝ) = (27/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((893/1000 : ℚ) : ℝ) = (893/1000 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 56/100 ⟹ λ_j ≥ 866/1000`.** -/
@@ -628,7 +628,7 @@ theorem row_056_0866 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (49/1000:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (49/1000:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (49/1000:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -636,13 +636,13 @@ theorem row_056_0866 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (49/1000:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((21/25:ℝ) ^ 2 + 4 * (21/25:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (72469279/78125000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_056_0866 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((56/100 : ℚ) : ℝ) = (14/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((866/1000 : ℚ) : ℝ) = (433/500 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 58/100 ⟹ λ_j ≥ 840/1000`.** -/
@@ -674,7 +674,7 @@ theorem row_058_084 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -682,13 +682,13 @@ theorem row_058_084 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (1/20:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((421/500:ℝ) ^ 2 + 4 * (421/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (116187598241/125000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_058_084 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((58/100 : ℚ) : ℝ) = (29/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((840/1000 : ℚ) : ℝ) = (21/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 60/100 ⟹ λ_j ≥ 816/1000`.** -/
@@ -720,7 +720,7 @@ theorem row_06_0816 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (15:ℝ)) (41/500:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (15:ℝ)) (41/500:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (15:ℝ)) (41/500:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -728,13 +728,13 @@ theorem row_06_0816 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (15:ℝ)) (41/500:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((211/250:ℝ) ^ 2 + 4 * (211/250:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (87318387563/93750000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_06_0816 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((60/100 : ℚ) : ℝ) = (3/5 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((816/1000 : ℚ) : ℝ) = (102/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 62/100 ⟹ λ_j ≥ 792/1000`.** -/
@@ -766,7 +766,7 @@ theorem row_062_0792 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (1/20:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -774,13 +774,13 @@ theorem row_062_0792 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (1/20:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((847/1000:ℝ) ^ 2 + 4 * (847/1000:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (1401362484227/1500000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_062_0792 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((62/100 : ℚ) : ℝ) = (31/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((792/1000 : ℚ) : ℝ) = (99/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 64/100 ⟹ λ_j ≥ 770/1000`.** -/
@@ -812,7 +812,7 @@ theorem row_064_077 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (51/1000:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (51/1000:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (51/1000:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -820,13 +820,13 @@ theorem row_064_077 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (51/1000:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((849/1000:ℝ) ^ 2 + 4 * (849/1000:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (468070168801/500000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_064_077 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((64/100 : ℚ) : ℝ) = (16/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((770/1000 : ℚ) : ℝ) = (77/100 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 66/100 ⟹ λ_j ≥ 748/1000`.** -/
@@ -858,7 +858,7 @@ theorem row_066_0748 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -866,13 +866,13 @@ theorem row_066_0748 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (13/250:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((213/250:ℝ) ^ 2 + 4 * (213/250:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (29343464369/31250000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_066_0748 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((66/100 : ℚ) : ℝ) = (33/50 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((748/1000 : ℚ) : ℝ) = (187/250 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 68/100 ⟹ λ_j ≥ 728/1000`.** -/
@@ -904,7 +904,7 @@ theorem row_068_0728 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -912,13 +912,13 @@ theorem row_068_0728 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (13/250:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((427/500:ℝ) ^ 2 + 4 * (427/500:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (117611609329/125000000000:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_068_0728 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((68/100 : ℚ) : ℝ) = (17/25 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((728/1000 : ℚ) : ℝ) = (91/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 70/100 ⟹ λ_j ≥ 708/1000`.** -/
@@ -950,7 +950,7 @@ theorem row_07_0708 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -958,13 +958,13 @@ theorem row_07_0708 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (13/250:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((107/125:ℝ) ^ 2 + 4 * (107/125:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (2762098309/2929687500:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_07_0708 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((70/100 : ℚ) : ℝ) = (7/10 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((708/1000 : ℚ) : ℝ) = (177/250 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9, row `λ₁ ≤ 704/1000 ⟹ λ_j ≥ 704/1000`.** -/
@@ -996,7 +996,7 @@ theorem row_0704_0704 (Q : ℕ) (hsup : L52Supply) :
     have hE := hqE q hqE' χ₁ χj ρ₁ ρj
       (fun χ _ hχ => hA q hqA' χ hχ (1/1000000000000) (by norm_num))
       hmin hmin.1.1 hZj hmin.1.1.1 hZj.1 hne1 hne2 hcplx h3 h4
-      (by linarith [hlam1]) (by linarith [hlaj]) hsq
+      (by linarith only [hlam1, hδ0, hδ1]) (by linarith only [hlaj, hδ0, hδ1]) hsq
     rw [tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (-(lamOf q ρ₁)),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos (lamOf q ρj - lamOf q ρ₁),
         tf71T_F_eq_La (Real.arctan (25:ℝ)) (13/250:ℝ) hθ0 hθπ hlampos 0] at hE
@@ -1004,13 +1004,13 @@ theorem row_0704_0704 (Q : ℕ) (hsup : L52Supply) :
     have hf0 : 0 ≤ tf71f (Real.arctan (25:ℝ)) (13/250:ℝ) 0 := tf71f_nonneg _ _ hθ0 hθπ hlampos 0
     have hsl : ((107/125:ℝ) ^ 2 + 4 * (107/125:ℝ) + 3/2) * (1/6 + 1/1000000 + 1/1000000000000)
         ≤ (2762098309/2929687500:ℝ) := by norm_num
-    linarith [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl)]
+    linarith only [hE, mul_nonneg hf0 (sub_nonneg.mpr hsl), hf0]
   · intro la1 laj h0 h1 h2 hineq
     refine rowcontra_0704_0704 hθlo hθhi htanθ h0 ?_ ?_ hineq
     · have h' : ((704/1000 : ℚ) : ℝ) = (88/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h1]
     · have h' : ((704/1000 : ℚ) : ℝ) = (88/125 : ℝ) := by norm_num
-      linarith
+      linarith only [h2]
 
 
 /-- **HB Table 9 from the analytic input.**  The full Table 9 statement

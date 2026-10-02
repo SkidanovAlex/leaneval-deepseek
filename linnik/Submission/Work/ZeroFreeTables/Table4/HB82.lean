@@ -128,9 +128,9 @@ theorem l52HypRealQuarter : ∃ c : ℝ, 0 < c ∧ c ≤ 1 / 8 + 1 / 1000000 ∧
   intro s hs1 hs2 hs3
   have hexp_le : Real.exp L₀ ≤ (q : ℝ) := by
     have h1 : Real.exp L₀ ≤ (⌈Real.exp L₀⌉₊ : ℝ) := Nat.le_ceil _
-    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith
+    have h2 : (⌈Real.exp L₀⌉₊ : ℝ) ≤ ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) := by push_cast; linarith only [hδ0, hδ1]
     have h3 : ((⌈Real.exp L₀⌉₊ + 3 : ℕ) : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-    linarith
+    linarith only [h1, h2, h3]
   have hL₀le : L₀ ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp L₀]
     exact Real.log_le_log (Real.exp_pos L₀) hexp_le
@@ -201,7 +201,7 @@ theorem maxOfMinOr {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q) (hχ 
     · have hZ : IsZ χ₁ u := ⟨hχ, h, him⟩
       have hle := hmin u hZ huu
       rw [lamOf, lamOf] at hle
-      exact Or.inr (by nlinarith [hle, hLpos])
+      exact Or.inr (by nlinarith only [hle, hLpos])
   · exact Or.inr (le_trans h hρ₀pos.le)
 
 open Work.LinnikContract in
@@ -231,7 +231,7 @@ theorem maxOfMinLe {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q) (hχ 
   · have hZ : IsZ χ₁ u := ⟨hχ, h, him⟩
     have hle := hmin u hZ
     rw [lamOf, lamOf] at hle
-    nlinarith [hle, hLpos]
+    nlinarith only [hle, hLpos]
   · exact le_trans h hρ₁pos.le
 
 open Work.LinnikContract in
@@ -265,10 +265,10 @@ theorem realZeroData {q : ℕ} [NeZero q] (χ₁ : DirichletCharacter ℂ q) (h�
     have hmem : ((ρ.re : ℝ) : ℂ) ∈ Metric.closedBall (0:ℂ) 2 := by
       rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs,
         abs_of_pos hstrip.1]
-      linarith [hstrip.2]
+      linarith only [hstrip.2, hstrip]
     rw [Commons.Analysis.Complex.divisor_eq_analyticOrderNatAt_cast han hmem]
     rfl
-  exact ⟨hstrip, heq, rfl, mul_pos (by linarith [hstrip.2]) hLpos, hdiv⟩
+  exact ⟨hstrip, heq, rfl, mul_pos (by linarith only [hstrip.2, hstrip]) hLpos, hdiv⟩
 
 /-! ## The five-term monotonicity -/
 
@@ -291,25 +291,25 @@ theorem fiveTerm_mono {x₀ : ℝ} (hx₀ : 0 ≤ x₀) {f : ℝ → ℝ}
   have h1 : (∫ t in (0:ℝ)..x₀, Real.exp (b * t) * f t)
       ≤ (∫ t in (0:ℝ)..x₀, Real.exp (L * t) * f t) := by
     refine integral_mono_on hx₀ (hint b) (hint L) (fun t ht => ?_)
-    exact mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (by nlinarith [ht.1, hbL])) (hf t ht)
+    exact mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (by nlinarith only [ht.1, hbL, ht])) (hf t ht)
   have h2' : (∫ t in (0:ℝ)..x₀, Real.exp (0 * t) * f t)
       ≤ (∫ t in (0:ℝ)..x₀, Real.exp ((b - a) * t) * f t) := by
     refine integral_mono_on hx₀ (by simpa using hint 0) (hint (b - a)) (fun t ht => ?_)
-    exact mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (by nlinarith [ht.1, hab])) (hf t ht)
+    exact mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (by nlinarith only [ht.1, hab, ht])) (hf t ht)
   have h2 : (∫ t in (0:ℝ)..x₀, f t) ≤ (∫ t in (0:ℝ)..x₀, Real.exp ((b - a) * t) * f t) := by
     rw [show (∫ t in (0:ℝ)..x₀, f t) = ∫ t in (0:ℝ)..x₀, Real.exp (0 * t) * f t from by
       apply intervalIntegral.integral_congr
       intro t _
       simp]
     exact h2'
-  linarith
+  linarith only [h1, h2]
 
 /-! ## The assembly -/
 
 theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
   obtain ⟨c, hcpos, hcle, δ, hδ0, hδ1, qc, hc⟩ := l52HypRealQuarter
   obtain ⟨θ, hθ34, hθ1, heq⟩ := Work.LinnikAreas.DhRepel.thetaTwo
-  have hθ0 : 0 < θ := by linarith
+  have hθ0 : 0 < θ := by linarith only [hcpos, hcle, hθ34]
   have hκge : (29 / 100 : ℝ) ≤ Real.cos θ ^ 2 := ThetaNumeric θ hθ34 hθ1 heq
   set lamS : ℝ := 2293 / 1000 with hlamSdef
   have hlamSpos : 0 < lamS := by rw [hlamSdef]; norm_num
@@ -321,7 +321,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
   have hx₀pos : 0 < x₀ := by
     rw [hx₀def]
     have := Work.LinnikAreas.DhRepel.gammaF_pos hθ0 hθ1 hlamSpos
-    linarith
+    linarith only [this]
   have hx₀nn : 0 ≤ x₀ := le_of_lt hx₀pos
   have hf0 : 0 < f 0 :=
     Work.LinnikAreas.DhRepel.extCosF_zero_pos hθ0 hθ1 hlamSpos hθ34 heq
@@ -360,7 +360,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
     intro z hz
     have hx₀' : 0 < 2 * Work.LinnikAreas.DhRepel.gammaF θ lamS := by
       have := Work.LinnikAreas.DhRepel.gammaF_pos hθ0 hθ1 hlamSpos
-      linarith
+      linarith only [this]
     have hcont' : ContinuousOn
         (fun t : ℝ => ((Commons.NumberTheory.Linnik.extCosF θ lamS t : ℝ) : ℂ))
         (Set.Icc 0 (2 * Work.LinnikAreas.DhRepel.gammaF θ lamS)) :=
@@ -411,7 +411,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
     intro lam1 lam2 h1 h2 h3 hineq
     have hmono := fiveTerm_mono hx₀nn (fun t _ => hfnn t) hcont h2 h3
     have hineq' : 0 ≤ (∫ t in (0:ℝ)..x₀, Real.exp (lamS * t) * f t)
-        - 2 * (∫ t in (0:ℝ)..x₀, f t) + f 0 * (c + 2 * eps) := by linarith
+        - 2 * (∫ t in (0:ℝ)..x₀, f t) + f 0 * (c + 2 * eps) := by linarith only [hineq, hmono]
     have hzero : (∫ t in (0:ℝ)..(2 * Work.LinnikAreas.DhRepel.gammaF θ lamS),
         Real.exp ((lamS - lamS) * t) * Commons.NumberTheory.Linnik.extCosF θ lamS t)
         = (∫ t in (0:ℝ)..(2 * Work.LinnikAreas.DhRepel.gammaF θ lamS),
@@ -436,7 +436,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
     have hA' : lamS * (c + 2 * eps) < 29 / 100 := by
       rw [hepsdef] at hcle
       rw [hlamSdef, hepsdef]
-      nlinarith [hcle]
+      linarith only [hcle, hcpos]
     exact absurd (lt_of_le_of_lt hκ hA') (not_lt.mpr hκge)
   obtain ⟨qRep, hRep⟩ := HB64Repeated x₀ B c hx₀pos hBnn (f := f) hcont hsupp hf2 hBnd hf0
     hfnn hFnn hepspos hδ0 hδ1
@@ -464,7 +464,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
   have hδL : lamS ≤ Real.log q * δ := by
     have h := hLgeδ
     rw [div_le_iff₀ hδ0] at h
-    linarith
+    linarith only [h]
   have hloglog : lamS ^ 2 ≤ Real.log (Real.log q) := by
     have h := Real.log_le_log (Real.exp_pos (lamS ^ 2)) hLgeexp
     simpa [Real.log_exp] using h
@@ -481,7 +481,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
       exact (mul_div_cancel_right₀ (1 - β) (ne_of_gt hLpos)).symm
     rw [h1, abs_of_nonneg (div_nonneg hnn (le_of_lt hLpos))]
     rw [div_le_iff₀ hLpos]
-    linarith [hle, hδL]
+    linarith only [hle, hδL]
   have hpt : ∀ {β : ℝ} {lam : ℝ}, lam = (1 - β) * Real.log q → 0 ≤ lam → lam ≤ lamS →
       |1 - β| ≤ Real.sqrt (Real.log (Real.log q)) / Real.log q := by
     intro β lam hlam hnn hle
@@ -490,7 +490,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
       exact (mul_div_cancel_right₀ (1 - β) (ne_of_gt hLpos)).symm
     rw [h1, abs_of_nonneg (div_nonneg hnn (le_of_lt hLpos))]
     rw [div_le_div_iff_of_pos_right hLpos]
-    linarith [hle, hsqrt]
+    linarith only [hle, hsqrt]
   constructor
   · -- ### first conjunct: the zero `ρ₁` is repeated
     intro hmult
@@ -521,7 +521,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
     rw [harg] at hineq
     have hineq2 : 0 ≤ (∫ t in (0:ℝ)..x₀, Real.exp (Work.LinnikContract.lamOf q ρ₁ * t) * f t)
         - 2 * (∫ t in (0:ℝ)..x₀, f t) + f 0 * (c + 2 * eps) := by
-      nlinarith [hineq, hf0, hepspos, hcpos]
+      linarith only [hineq, hf0, hepspos, hcpos]
     refine key (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₁)
       (le_of_lt hlam₁pos) le_rfl hle ?_
     have hz : (∫ t in (0:ℝ)..x₀,
@@ -531,7 +531,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
       intro t _
       simp
     rw [hz]
-    linarith [hineq2]
+    linarith only [hineq2, hineq]
   · -- ### second conjunct: a second real zero `ρ₀`
     intro ρ₀ hZ₀ hne₀ hρ₀im hminρ₀
     by_contra hcon
@@ -555,7 +555,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
       hmin1.2 χ₁ ρ₀ hZ₀
     have hβ'β₁ : ρ₀.re ≤ ρ₁.re := by
       rw [hlam₀, Work.LinnikContract.lamOf] at hlamle
-      nlinarith [hlamle, hLpos]
+      nlinarith only [hlamle, hLpos]
     obtain ⟨⟨h0β, h1β⟩, hβeq, hlam₁, hlam₁pos, hdiv₁⟩ := realZeroData χ₁ hne1 hρ₁im hρ₁Z.2.1
     have hb₁ : |1 - ρ₁.re| ≤ δ := hbnd hlam₁ (le_of_lt hlam₁pos) (le_trans hlamle hle)
     have hb₁le : ρ₁.re ≤ 1 := le_of_lt h1β
@@ -587,7 +587,7 @@ theorem HB82 : Work.ZeroFreeTables.HBLemma8_2 := by
         - (∫ t in (0:ℝ)..x₀,
             Real.exp ((Work.LinnikContract.lamOf q ρ₀ - Work.LinnikContract.lamOf q ρ₁) * t) * f t)
         - (∫ t in (0:ℝ)..x₀, f t) + f 0 * (c + 2 * eps) := by
-      nlinarith [hineq, hf0, hepspos, hcpos]
+      linarith only [hineq, hf0, hepspos, hcpos]
     exact key (Work.LinnikContract.lamOf q ρ₁) (Work.LinnikContract.lamOf q ρ₀)
       (le_of_lt hlam₁pos) hlamle hle hineq2
 

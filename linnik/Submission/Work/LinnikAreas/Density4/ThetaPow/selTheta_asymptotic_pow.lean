@@ -15,7 +15,7 @@ def LpowA (A Q : ℝ) : ℝ := (Real.log (2 + Q)) ^ (-A)
 
 lemma LpowA_pos {A Q : ℝ} (hQ : 1 ≤ Q) : 0 < LpowA A Q := by
   rw [LpowA]
-  exact Real.rpow_pos_of_pos (Real.log_pos (by linarith)) _
+  exact Real.rpow_pos_of_pos (Real.log_pos (by linarith only [hQ])) _
 
 /-- Base case at exponent `A`: the exponential decay of `selU` (`selberg_U_decay`)
 beats every power of `log`, so `|selU Q - 1| ≤ c (log(2+Q))^{-A}` for every `A > 0`. -/
@@ -28,14 +28,14 @@ theorem selU_pow_bound (A : ℝ) (_hA : 0 < A) :
     refine le_trans (hb3 Q hQ) ?_
     apply mul_le_mul_of_nonneg_left _ hc3.le
     have hlog1 : (1:ℝ) ≤ Real.log (2 + Q) := by
-      have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith)
+      have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith only [hQ])
       have h5 : (1:ℝ) ≤ Real.log 3 :=
         (Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three.le
-      linarith
+      linarith only [h4, h5]
     rw [← Real.rpow_intCast (Real.log (2 + Q)) (-3)]
     apply Real.rpow_le_rpow_of_exponent_le hlog1
     push_cast
-    linarith
+    linarith only [hA3]
   · push_neg at hA3
     obtain ⟨c3, hc3, hb3⟩ := selU_sub_one_bound
     obtain ⟨c, C, hc, hC, hdec⟩ := selberg_U_decay
@@ -49,42 +49,42 @@ theorem selU_pow_bound (A : ℝ) (_hA : 0 < A) :
       positivity
     refine ⟨max (c3 * (Real.log 4) ^ (A - 3)) B, lt_max_of_lt_right hBpos, fun Q hQ => ?_⟩
     have hlog1 : (1:ℝ) ≤ Real.log (2 + Q) := by
-      have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith)
+      have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith only [hQ])
       have h5 : (1:ℝ) ≤ Real.log 3 :=
         (Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three.le
-      linarith
+      linarith only [h4, h5]
     rcases lt_or_ge Q 2 with hQ2 | hQ2
-    · have hlog4 : Real.log (2 + Q) ≤ Real.log 4 := Real.log_le_log (by linarith) (by linarith)
+    · have hlog4 : Real.log (2 + Q) ≤ Real.log 4 := Real.log_le_log (by linarith only [hQ]) (by linarith only [hQ2])
       have hsplit : (Real.log (2+Q)) ^ (-3:ℤ)
           = (Real.log (2+Q)) ^ (-A) * (Real.log (2+Q)) ^ (A-3) := by
         rw [← Real.rpow_intCast (Real.log (2+Q)) (-3),
-            ← Real.rpow_add (Real.log_pos (by linarith))]
+            ← Real.rpow_add (Real.log_pos (by linarith only [hQ]))]
         congr 1; push_cast; ring
       have hb3' : (Real.log (2+Q)) ^ (A-3) ≤ (Real.log 4)^(A-3) :=
-        Real.rpow_le_rpow (Real.log_nonneg (by linarith)) hlog4 (by linarith)
+        Real.rpow_le_rpow (Real.log_nonneg (by linarith only [hQ])) hlog4 (by linarith only [hA3])
       calc |selU Q - 1|
           ≤ c3 * (Real.log (2+Q)) ^ (-3:ℤ) := hb3 Q hQ
         _ = c3 * ((Real.log (2+Q)) ^ (-A) * (Real.log (2+Q)) ^ (A-3)) := by rw [hsplit]
         _ ≤ c3 * ((Real.log (2+Q)) ^ (-A) * (Real.log 4)^(A-3)) := by
               apply mul_le_mul_of_nonneg_left _ hc3.le
-              exact mul_le_mul_of_nonneg_left hb3' (Real.rpow_nonneg (Real.log_nonneg (by linarith)) _)
+              exact mul_le_mul_of_nonneg_left hb3' (Real.rpow_nonneg (Real.log_nonneg (by linarith only [hQ])) _)
         _ = (c3 * (Real.log 4)^(A-3)) * (Real.log (2+Q))^(-A) := by ring
         _ ≤ max (c3 * (Real.log 4)^(A-3)) B * (Real.log (2+Q))^(-A) :=
               mul_le_mul_of_nonneg_right (le_max_left _ _)
-                (Real.rpow_nonneg (Real.log_nonneg (by linarith)) _)
+                (Real.rpow_nonneg (Real.log_nonneg (by linarith only [hQ])) _)
     · have hQpos : 0 < Q := lt_of_lt_of_le zero_lt_one hQ
-      have hlogQ : 0 < Real.log Q := Real.log_pos (by linarith)
+      have hlogQ : 0 < Real.log Q := Real.log_pos (by linarith only [hQ2])
       set s : ℝ := Real.sqrt (Real.log Q) with hs
       have hs0 : 0 ≤ s := Real.sqrt_nonneg _
       have hs2 : s^2 = Real.log Q := Real.sq_sqrt hlogQ.le
       have hs2' : s ^ (2:ℝ) = Real.log Q := by
         rw [show (2:ℝ) = ((2:ℕ):ℝ) by norm_num, Real.rpow_natCast, hs2]
-      have hlog2Q0 : 0 ≤ Real.log (2 + Q) := Real.log_nonneg (by linarith)
+      have hlog2Q0 : 0 ≤ Real.log (2 + Q) := Real.log_nonneg (by linarith only [hQ2])
       have hlog2Q_le : Real.log (2 + Q) ≤ 2 * Real.log Q :=
         log_add_two_le_two_mul_log Q hQ2
       have hpow_le : (Real.log (2 + Q))^A ≤ (2:ℝ)^A * s^(2*A) := by
         calc (Real.log (2 + Q))^A ≤ (2 * Real.log Q)^A :=
-              Real.rpow_le_rpow hlog2Q0 hlog2Q_le (by linarith)
+              Real.rpow_le_rpow hlog2Q0 hlog2Q_le (by linarith only [hA3])
           _ = (2:ℝ)^A * (Real.log Q)^A := Real.mul_rpow (by norm_num) hlogQ.le
           _ = (2:ℝ)^A * s^(2*A) := by rw [← hs2', ← Real.rpow_mul hs0]
       have hbound : C * (1 + s) * Real.exp (-(c*s)) * ((2:ℝ)^A * s^(2*A)) ≤ B := by
@@ -92,16 +92,16 @@ theorem selU_pow_bound (A : ℝ) (_hA : 0 < A) :
           rcases lt_or_ge s 1 with hs1 | hs1
           · have hs2A : s^(2*A) ≤ 1 := Real.rpow_le_one hs0 (le_of_lt hs1) (by positivity)
             have he : Real.exp (-(c*s)) ≤ 1 :=
-              Real.exp_le_one_iff.mpr (by nlinarith [hc.le, hs0])
+              Real.exp_le_one_iff.mpr (by nlinarith only [hc.le, hs0, hc])
             have h2A_nn : 0 ≤ s^(2*A) := Real.rpow_nonneg hs0 _
             calc (1 + s) * s^(2*A) * Real.exp (-(c*s)) ≤ 2 * 1 * 1 := by
-                  apply mul_le_mul (mul_le_mul (by linarith) hs2A h2A_nn (by norm_num)) he
+                  apply mul_le_mul (mul_le_mul (by linarith only [hs1]) hs2A h2A_nn (by norm_num)) he
                     (Real.exp_pos _).le (by norm_num)
               _ = 2 := by norm_num
               _ ≤ 2 * max 1 ((n.factorial:ℝ)/c^n) := by
                   have h1 : (1:ℝ) ≤ max 1 ((n.factorial:ℝ)/c^n) := le_max_left _ _
-                  nlinarith
-          · have hs1pos : 0 < s := by linarith
+                  linarith only [h1]
+          · have hs1pos : 0 < s := by linarith only [hs1]
             have hsm : s * s^(2*A) = s^(2*A+1) := by
               have hh := Real.rpow_add hs1pos (1:ℝ) (2*A)
               rw [Real.rpow_one, show (1:ℝ) + 2*A = 2*A + 1 by ring] at hh
@@ -124,13 +124,13 @@ theorem selU_pow_bound (A : ℝ) (_hA : 0 < A) :
                     apply mul_le_mul_of_nonneg_left _ (by positivity)
                     apply Real.rpow_le_one_of_one_le_of_nonpos hs1
                     have hle : (2*A+1) ≤ (n:ℝ) := by rw [hn]; exact Nat.le_ceil (2*A+1)
-                    linarith
+                    linarith only [hle]
                 _ = (n.factorial:ℝ)/c^n := by ring
             calc (1 + s) * s^(2*A) * Real.exp (-(c*s))
                 ≤ (2 * s) * s^(2*A) * Real.exp (-(c*s)) := by
                   apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
                   apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hs0 _)
-                  linarith
+                  linarith only [hs1]
               _ = 2 * (s * s^(2*A)) * Real.exp (-(c*s)) := by ring
               _ = 2 * (s^(2*A+1) * Real.exp (-(c*s))) := by rw [hsm]; ring
               _ ≤ 2 * ((n.factorial:ℝ)/c^n) := mul_le_mul_of_nonneg_left hkey (by norm_num)
@@ -144,7 +144,7 @@ theorem selU_pow_bound (A : ℝ) (_hA : 0 < A) :
           _ = B := by rw [hB]; ring
       calc |selU Q - 1|
           = |selU Q - 1| * (Real.log (2+Q))^A * ((Real.log (2+Q))^A)⁻¹ := by
-              rw [mul_assoc, mul_inv_cancel₀ (ne_of_gt (Real.rpow_pos_of_pos (Real.log_pos (by linarith)) A)), mul_one]
+              rw [mul_assoc, mul_inv_cancel₀ (ne_of_gt (Real.rpow_pos_of_pos (Real.log_pos (by linarith only [hQ2])) A)), mul_one]
         _ ≤ (C * (1+s) * Real.exp (-(c*s)) * ((2:ℝ)^A * s^(2*A))) * ((Real.log (2+Q))^A)⁻¹ := by
               apply mul_le_mul_of_nonneg_right _ (inv_nonneg.mpr (Real.rpow_nonneg hlog2Q0 A))
               calc |selU Q - 1| * (Real.log (2+Q))^A
@@ -172,7 +172,7 @@ lemma exists_split_M (A : ℝ) (hA : 0 < A) :
     rw [hcdef, ← Real.rpow_mul (by norm_num : (0:ℝ) ≤ 10/9)]
     rw [show 1/A * A = 1 by field_simp]
     rw [Real.rpow_one]
-  have hdelta : 0 < c - 1 := by linarith
+  have hdelta : 0 < c - 1 := by linarith only [hc_gt1]
   obtain ⟨N, hN⟩ := exists_nat_gt (1 / (c - 1))
   have hNpos : 0 < N := by
     have h1 : (0:ℝ) < 1/(c-1) := by positivity
@@ -182,9 +182,9 @@ lemma exists_split_M (A : ℝ) (hA : 0 < A) :
   have hkey : 1 / (N:ℝ) < c - 1 := by
     rw [div_lt_iff₀ hNR]
     rw [div_lt_iff₀ hdelta] at hN
-    linarith
-  have hratio : 1 + 1/(N:ℝ) < c := by linarith
-  refine ⟨(N:ℝ) + 1, by linarith, ?_⟩
+    linarith only [hN]
+  have hratio : 1 + 1/(N:ℝ) < c := by linarith only [hkey]
+  refine ⟨(N:ℝ) + 1, by linarith only [hNR], ?_⟩
   have hMsimp : 1 - 1/((N:ℝ)+1) = (N:ℝ)/((N:ℝ)+1) := by
     field_simp
     ring
@@ -218,42 +218,42 @@ lemma window_bound (A M : ℝ) (hM : 1 < M) (hA : 0 < A) :
       Q ^ (-(1/(2*M))) *
         (1000 + Real.log (2 + Q ^ ((M-1)/M)) * (1 + Real.log (2 + Q ^ ((M-1)/M))))
         * (Real.log (2 + Q)) ^ A ≤ Kw := by
-  obtain ⟨K1, hK1pos, hK1⟩ := rpow_neg_mul_log_rpow_bounded (1/(2*M)) (A+2) (by positivity) (by linarith)
+  obtain ⟨K1, hK1pos, hK1⟩ := rpow_neg_mul_log_rpow_bounded (1/(2*M)) (A+2) (by positivity) (by linarith only [hA])
   obtain ⟨K2, hK2pos, hK2⟩ := rpow_neg_mul_log_rpow_bounded (1/(2*M)) A (by positivity) hA.le
   refine ⟨1002*K1 + 1000*K2 + 1, by positivity, ?_⟩
   intro Q hQ
   have hQpos : 0 < Q := lt_of_lt_of_le zero_lt_one hQ
   set Ml : ℝ := Real.log (2 + Q) with hMldef
   set L : ℝ := Real.log (2 + Q ^ ((M-1)/M)) with hLdef
-  have hMpos : 0 < M := by linarith
-  have hMl_pos : 0 < Ml := by rw [hMldef]; exact Real.log_pos (by linarith)
+  have hMpos : 0 < M := by linarith only [hM]
+  have hMl_pos : 0 < Ml := by rw [hMldef]; exact Real.log_pos (by linarith only [hQ])
   have hMl_ge1 : 1 ≤ Ml := by
     rw [hMldef]
-    have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith)
+    have h4 : Real.log 3 ≤ Real.log (2 + Q) := Real.log_le_log (by norm_num) (by linarith only [hQ])
     have h5 : (1:ℝ) ≤ Real.log 3 :=
       (Real.le_log_iff_exp_le (by norm_num : (0:ℝ) < 3)).mpr Real.exp_one_lt_three.le
-    linarith
+    linarith only [h4, h5]
   have hLnn : 0 ≤ L := by
     rw [hLdef]
     apply Real.log_nonneg
     have h1 : (1:ℝ) ≤ Q ^ ((M-1)/M) :=
-      Real.one_le_rpow hQ (div_nonneg (by linarith) hMpos.le)
-    linarith
+      Real.one_le_rpow hQ (div_nonneg (by linarith only [hM]) hMpos.le)
+    linarith only [h1]
   have hLle : L ≤ Ml := by
     rw [hLdef, hMldef]
-    apply Real.log_le_log (by have hpp := Real.rpow_nonneg hQpos.le ((M-1)/M); linarith)
+    apply Real.log_le_log (by have hpp := Real.rpow_nonneg hQpos.le ((M-1)/M); linarith only [hpp])
     have h1 : Q ^ ((M-1)/M) ≤ Q := by
-      have hExp : (M-1)/M ≤ 1 := by rw [div_le_one hMpos]; linarith
+      have hExp : (M-1)/M ≤ 1 := by rw [div_le_one hMpos]; linarith only []
       have hle := Real.rpow_le_rpow_of_exponent_le hQ hExp
       rwa [Real.rpow_one] at hle
-    linarith
+    linarith only [h1]
   have hbracket : 1000 + L * (1 + L) ≤ 1002 * Ml^2 := by
     have h1 : L * (1 + L) ≤ Ml * (1 + Ml) :=
-      mul_le_mul hLle (by linarith) (by linarith) hMl_pos.le
+      mul_le_mul hLle (by linarith only [hLle]) (by linarith only [hLnn]) hMl_pos.le
     have h2 : 1000 + Ml * (1 + Ml) ≤ 1002 * Ml^2 := by
-      nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ Ml - 1)
+      linarith only [mul_nonneg (by linarith : (0:ℝ) ≤ Ml - 1)
         (by linarith : (0:ℝ) ≤ 1001 * Ml + 1000)]
-    linarith
+    linarith only [h1, h2]
   have h2A : Ml ^ 2 * Ml ^ A = Ml ^ (A + 2) := by
     rw [← Real.rpow_natCast Ml 2, mul_comm, ← Real.rpow_add hMl_pos]
     norm_num
@@ -267,7 +267,7 @@ lemma window_bound (A M : ℝ) (hM : 1 < M) (hA : 0 < A) :
     _ ≤ 1002 * K1 := by
         refine mul_le_mul_of_nonneg_left ?_ (by norm_num)
         simpa [hMldef] using hK1 Q hQ
-    _ ≤ 1002 * K1 + 1000 * K2 + 1 := by linarith [hK2pos.le]
+    _ ≤ 1002 * K1 + 1000 * K2 + 1 := by linarith only [hK2pos.le, hK2pos]
 
 /-- The `d > Q^{1/M}` piece of the recursion, bounded with the trivial estimate for `T_d`. -/
 lemma window_part_bound_gen {Q : ℝ} (hQ : 1 ≤ Q) {r : ℕ} (hr : 1 ≤ r) {Kw LY M A : ℝ}
@@ -294,10 +294,10 @@ lemma window_part_bound_gen {Q : ℝ} (hQ : 1 ≤ Q) {r : ℕ} (hr : 1 ≤ r) {K
       = sHalf r * (1000 * Q ^ (-(1/(2*M)))) := by rw [hB]; ring
   have hsHalf : 0 ≤ sHalf r := sHalf_nonneg r
   have h3 : (0:ℝ) < (Real.log (2 + Q)) ^ A :=
-    Real.rpow_pos_of_pos (Real.log_pos (by linarith)) A
+    Real.rpow_pos_of_pos (Real.log_pos (by linarith only [hQ])) A
   have hkey : Q ^ (-(1/(2*M))) * (1000 + LY) ≤ Kw * LpowA A Q := by
     have hLpow : LpowA A Q = ((Real.log (2+Q)) ^ A)⁻¹ := by
-      rw [LpowA]; exact Real.rpow_neg (Real.log_nonneg (by linarith)) A
+      rw [LpowA]; exact Real.rpow_neg (Real.log_nonneg (by linarith only [hQ])) A
     rw [hLpow]
     calc Q ^ (-(1/(2*M))) * (1000 + LY)
         = (Q ^ (-(1/(2*M))) * (1000 + LY) * (Real.log (2+Q))^A) * ((Real.log (2+Q))^A)⁻¹ := by
@@ -322,12 +322,12 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
     ∃ K : ℝ, 0 < K ∧ ∀ Q : ℝ, 1 ≤ Q → ∀ r : ℕ, 1 ≤ r →
       |Tsel r Q| ≤ K * sHalf r * LpowA A Q := by
   obtain ⟨M, hM1, hMr⟩ := exists_split_M A hA
-  have hMpos : 0 < M := by linarith
+  have hMpos : 0 < M := by linarith only [hM1]
   have h1M : 0 < 1 - 1/M := by
     rw [sub_pos, div_lt_one hMpos]; exact hM1
   set lam : ℝ := (1 - 1/M) ^ (-A) with hlamdef
   have hlampos : 0 < lam := by rw [hlamdef]; exact Real.rpow_pos_of_pos h1M _
-  have hden : 0 < 1 - (9/10) * lam := by rw [hlamdef]; linarith [hMr]
+  have hden : 0 < 1 - (9/10) * lam := by rw [hlamdef]; linarith only [hMr]
   obtain ⟨c1, hc1pos, hbase⟩ := Tsel_one_bound_pow A hA
   obtain ⟨Kw, hKwpos, hwin⟩ := window_bound A M hM1 hA
   set K : ℝ := max 1 (max c1 ((c1 + Kw) / (1 - (9/10) * lam))) with hKdef
@@ -339,7 +339,7 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
     have h1 : (1 - (9/10) * lam) * ((c1 + Kw) / (1 - (9/10) * lam)) ≤ (1 - (9/10) * lam) * K :=
       mul_le_mul_of_nonneg_left hKbig hden.le
     rw [mul_div_cancel₀ _ (ne_of_gt hden)] at h1
-    linarith
+    linarith only [h1]
   refine ⟨K, hKpos, ?_⟩
   have key : ∀ N : ℕ, ∀ r : ℕ, ∀ Q : ℝ, 1 ≤ Q → Nat.ceil Q ≤ N → 1 ≤ r →
       |Tsel r Q| ≤ K * sHalf r * LpowA A Q := by
@@ -347,7 +347,7 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
     induction N with
     | zero =>
       intro r Q hQ hN hr
-      have hpos : 0 < Nat.ceil Q := Nat.ceil_pos.mpr (by linarith)
+      have hpos : 0 < Nat.ceil Q := Nat.ceil_pos.mpr (by linarith only [hQ])
       omega
     | succ N ih =>
       intro r Q hQ hN hr
@@ -365,7 +365,7 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
           have hXleQ : X ≤ Q := by
             rw [hXeq]
             calc Q ^ ((1:ℝ)/M) ≤ Q ^ (1:ℝ) :=
-                  Real.rpow_le_rpow_of_exponent_le hQ (by rw [div_le_one hMpos]; linarith)
+                  Real.rpow_le_rpow_of_exponent_le hQ (by rw [div_le_one hMpos]; linarith only [hM1])
               _ = Q := Real.rpow_one Q
           set LY : ℝ := Real.log (2 + Q ^ ((M-1)/M)) *
             (1 + Real.log (2 + Q ^ ((M-1)/M))) with hLYeq
@@ -373,9 +373,9 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
             rw [hLYeq]
             have h2' : (1:ℝ) ≤ 2 + Q ^ ((M-1)/M) := by
               have hpp := Real.rpow_pos_of_pos hQpos ((M-1)/M)
-              linarith
+              linarith only [hpp]
             have hlog2 : 0 ≤ Real.log (2 + Q ^ ((M-1)/M)) := Real.log_nonneg h2'
-            exact mul_nonneg hlog2 (by linarith)
+            exact mul_nonneg hlog2 (by linarith only [hlog2])
           rw [Tsel_recursion Q r hr]
           refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
           have hsplit : (∑ d ∈ r.divisors,
@@ -451,15 +451,15 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
                 have hNd1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast hN1
                 have hmul : (N:ℝ) * 2 ≤ (N:ℝ) * (d:ℝ) :=
                   mul_le_mul_of_nonneg_left h2' (by positivity)
-                nlinarith [h1, hmul, hNd1]
+                linarith only [h1, hmul, hNd1, hQge2]
               have hih := ih d (Q/(d:ℝ)) hdiv1 hceil' (by omega : 1 ≤ d)
               have hlam : LpowA A (Q/(d:ℝ)) ≤ lam * LpowA A Q := by
                 have hlogr := log_ratio_gen hQ (by omega : 1 ≤ d) hM1.le hdle
-                have hb : 0 < Real.log (2 + Q) := Real.log_pos (by linarith)
+                have hb : 0 < Real.log (2 + Q) := Real.log_pos (by linarith only [hQge2])
                 have hb' : 0 < (1 - 1/M) * Real.log (2 + Q) := mul_pos h1M hb
                 rw [LpowA, LpowA, hlamdef]
                 rw [← Real.mul_rpow h1M.le hb.le]
-                exact Real.rpow_le_rpow_of_nonpos hb' hlogr (by linarith)
+                exact Real.rpow_le_rpow_of_nonpos hb' hlogr (by linarith only [hA])
               calc |((ArithmeticFunction.moebius d : ℝ))^2 / (d:ℝ) * Tsel d (Q/(d:ℝ))|
                   = ((ArithmeticFunction.moebius d : ℝ))^2 / (d:ℝ) * |Tsel d (Q/(d:ℝ))| := by
                     rw [abs_mul, abs_of_nonneg hw]
@@ -525,17 +525,17 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
                   _ ≤ Q ^ ((M-1)/M) * (d:ℝ) :=
                       mul_le_mul_of_nonneg_left hXlt.le (Real.rpow_nonneg hQpos.le _)
               have hlogle : Real.log (2 + Q/(d:ℝ)) ≤ Real.log (2 + Q ^ ((M-1)/M)) :=
-                Real.log_le_log (by linarith) (by linarith)
+                Real.log_le_log (by linarith only [hqnn]) (by linarith only [hqle])
               have hLYlog : Real.log (2 + Q/(d:ℝ)) * (1 + Real.log (2 + Q/(d:ℝ))) ≤ LY := by
                 rw [hLYeq]
-                have h0 : 0 ≤ Real.log (2 + Q/(d:ℝ)) := Real.log_nonneg (by linarith)
+                have h0 : 0 ≤ Real.log (2 + Q/(d:ℝ)) := Real.log_nonneg (by linarith only [hqnn])
                 have h2' : 0 ≤ Real.log (2 + Q ^ ((M-1)/M)) := by
                   apply Real.log_nonneg
                   have hpp := Real.rpow_pos_of_pos hQpos ((M-1)/M)
-                  linarith
+                  linarith only [hpp]
                 have h4 : (1:ℝ) + Real.log (2 + Q/(d:ℝ))
-                    ≤ 1 + Real.log (2 + Q ^ ((M-1)/M)) := by linarith
-                exact mul_le_mul hlogle h4 (by linarith) h2'
+                    ≤ 1 + Real.log (2 + Q ^ ((M-1)/M)) := by linarith only [hlogle]
+                exact mul_le_mul hlogle h4 (by linarith only [h0]) h2'
               have htot : ((ArithmeticFunction.moebius d : ℝ))^2 / (d:ℝ) *
                     ((d:ℝ)/(Nat.totient d : ℝ) + LY)
                   = ((ArithmeticFunction.moebius d : ℝ))^2 / (Nat.totient d : ℝ)
@@ -555,7 +555,7 @@ theorem Tsel_bound_pow (A : ℝ) (hA : 0 < A) :
                 _ ≤ ((ArithmeticFunction.moebius d : ℝ))^2 / (d:ℝ) *
                       ((d:ℝ)/(Nat.totient d : ℝ) + LY) := by
                     apply mul_le_mul_of_nonneg_left _ hw
-                    linarith
+                    linarith only [hLYlog]
                 _ = ((ArithmeticFunction.moebius d : ℝ))^2 / (Nat.totient d : ℝ)
                       + ((ArithmeticFunction.moebius d : ℝ))^2 * LY / (d:ℝ) := htot
             have hsub : r.divisors.filter (fun d : ℕ => d ≠ 1 ∧ X < (d:ℝ))

@@ -76,7 +76,7 @@ theorem xyRe_neg_lam_eq (lam t : ℝ) :
   have hR : (xyT.Fc (((lam : ℝ) : ℂ) + ((-t : ℝ) : ℂ) * Complex.I)).re = xyRe lam (-t) := rfl
   rw [hL, hR, xyRe_neg lam t] at hsum
   have hsub := xyRe_sub_lam lam t
-  linarith
+  linarith only [hsum, hsub]
 
 /-- The exact form of `xyRe 0 t`. -/
 theorem xyRe_zero_eq (t : ℝ) : xyRe 0 t = 2*(Cc t)^2 := by
@@ -104,27 +104,27 @@ theorem Hfun_eq (lam t : ℝ) :
 
 /-- The Taylor polynomial `12/35 - t²/14 + 9t⁴/2112` is nonnegative. -/
 lemma ytay_nonneg (t : ℝ) : 0 ≤ 12/35 - t^2/14 + 9*t^4/2112 := by
-  nlinarith [sq_nonneg (t^2 - 176/21), sq_nonneg t]
+  linarith only [sq_nonneg (t^2 - 176/21), sq_nonneg t]
 
 /-- Region `|t| ≤ 3`: the `S`-term is controlled by the Taylor polynomial. -/
 lemma ytay_quad (t : ℝ) (h : t^2 ≤ 9) :
     -(3/2)*(2/3 - 3*t^2/80)^2 + (12/35 - t^2/14 + 9*t^4/2112) ≤ -1/10 := by
-  nlinarith [h, sq_nonneg t, sq_nonneg (t^2 - 9), sq_nonneg (t^2 - 8),
+  linarith only [h, sq_nonneg t, sq_nonneg (t^2 - 9), sq_nonneg (t^2 - 8),
     mul_nonneg (sub_nonneg.mpr h) (by positivity : (0:ℝ) ≤ t^2 + 9)]
 
 lemma ytay_quad2 (t : ℝ) (h : t^2 ≤ 9) :
     -3*(2/3 - 3*t^2/80)^2 + (12/35 - t^2/14 + 9*t^4/2112) ≤ -1/4 := by
-  nlinarith [h, sq_nonneg t, sq_nonneg (t^2 - 9), sq_nonneg (t^2 - 8),
+  linarith only [h, sq_nonneg t, sq_nonneg (t^2 - 9), sq_nonneg (t^2 - 8),
     mul_nonneg (sub_nonneg.mpr h) (by positivity : (0:ℝ) ≤ t^2 + 9)]
 
 /-- Region `|t| ≤ 3` for `Gfun`. -/
 lemma Gfun_le_small (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : |t| ≤ 3) :
     Gfun 1 lam t ≤ 1/25 := by
   have hτ : t^2 ≤ 9 := by
-    have := abs_le.mp h; nlinarith [this.2, neg_le.mp this.1]
+    have := abs_le.mp h; nlinarith only [this.2, neg_le.mp this.1, this]
   have hC1 : 2/3 - 3*t^2/80 ≤ Cc t := (SupCfun t).1
   have hC2 : |Cc t| ≤ 2/3 := (SupCfun t).2
-  have hCn : 0 ≤ 2/3 - 3*t^2/80 := by nlinarith [hτ]
+  have hCn : 0 ≤ 2/3 - 3*t^2/80 := by linarith only [hτ]
   have hE0 : E0c lam ≤ 3/200 := SupE0 h0 h1
   have hEabs : |Ec lam t| ≤ E0c lam := SupEcAbs lam t h0
   have hE3 : |Ec lam t| ≤ 3/200 := le_trans hEabs hE0
@@ -134,21 +134,21 @@ lemma Gfun_le_small (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 
   have hYmax : max (Yc t) 0 ≤ 12/35 - t^2/14 + 9*t^4/2112 := max_le hYt hYnn
   have hS : Sc lam t ≤ max (Yc t) 0 + Esc lam := by
     have hSc := SupScLe lam t h0
-    have hlam1 : lam ≤ 1 := by linarith
+    have hlam1 : lam ≤ 1 := by linarith only [h1]
     have hmax0 : 0 ≤ max (Yc t) 0 := le_max_right _ _
-    nlinarith
+    nlinarith only [hSc, hmax0, h1]
   have hCsq : (2/3 - 3*t^2/80)^2 ≤ (Cc t)^2 := by
-    nlinarith [hC1, hCn, sq_nonneg (Cc t + (2/3 - 3*t^2/80))]
+    nlinarith only [hC1, hCn, sq_nonneg (Cc t + (2/3 - 3*t^2/80)), hτ]
   have hCE : Cc t * Ec lam t ≤ (2/3)*(3/200) := by
-    nlinarith [hC2, hE3, abs_nonneg (Cc t), abs_nonneg (Ec lam t),
-      le_abs_self (Cc t * Ec lam t), abs_mul (Cc t) (Ec lam t)]
+    nlinarith only [hC2, hE3, abs_nonneg (Cc t), abs_nonneg (Ec lam t),
+      le_abs_self (Cc t * Ec lam t), abs_mul (Cc t) (Ec lam t), hE0, hEabs]
   have hq := ytay_quad t hτ
-  have h1' : -(3/2)*(Cc t)^2 ≤ -(3/2)*(2/3 - 3*t^2/80)^2 := by linarith
-  have h2' : 4*(Cc t)*(Ec lam t) ≤ 4*((2/3)*(3/200)) := by linarith
-  have h3' : 2*(Ec lam t)^2 ≤ 2*(3/200)^2 := by nlinarith [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t)]
-  have h4' : Sc lam t ≤ (12/35 - t^2/14 + 9*t^4/2112) + 3/500 := by linarith
+  have h1' : -(3/2)*(Cc t)^2 ≤ -(3/2)*(2/3 - 3*t^2/80)^2 := by linarith only [hCsq]
+  have h2' : 4*(Cc t)*(Ec lam t) ≤ 4*((2/3)*(3/200)) := by linarith only [hCE]
+  have h3' : 2*(Ec lam t)^2 ≤ 2*(3/200)^2 := by nlinarith only [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t), hE0, hEabs]
+  have h4' : Sc lam t ≤ (12/35 - t^2/14 + 9*t^4/2112) + 3/500 := by linarith only [hEsc, hYmax, hS]
   rw [Gfun_eq]
-  linarith [h1', h2', h3', h4', hq, sq_nonneg (Bc lam t)]
+  linarith only [h1', h2', h3', h4', hq, sq_nonneg (Bc lam t), hEsc, hYmax, hS, hCsq, hCE]
 
 /-- Region `|t| ≥ 3` for `Gfun`. -/
 lemma Gfun_le_large (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 3 ≤ |t|) :
@@ -161,22 +161,22 @@ lemma Gfun_le_large (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 
   have hYmax : max (Yc t) 0 ≤ 0 := max_le hYt le_rfl
   have hS : Sc lam t ≤ 3/500 := by
     have hSc := SupScLe lam t h0
-    have hlam1 : lam ≤ 1 := by linarith
-    nlinarith
-  have hE2 : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t)]
+    have hlam1 : lam ≤ 1 := by linarith only [h1]
+    nlinarith only [hEsc, hSc, h0, hYmax]
+  have hE2 : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith only [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t), hE0, hEabs]
   have hCE : Cc t * Ec lam t ≤ (1/2)*(3/200)^2 + (1/2)*(Cc t)^2 := by
-    nlinarith [sq_nonneg (Cc t - Ec lam t), hE2]
+    linarith only [sq_nonneg (Cc t - Ec lam t), hE2]
   rw [Gfun_eq]
-  nlinarith [hE2, hEsc, hS, sq_nonneg (Bc lam t), sq_nonneg (Cc t + (4/3)*Ec lam t)]
+  nlinarith only [hE2, hEsc, hS, sq_nonneg (Bc lam t), sq_nonneg (Cc t + (4/3)*Ec lam t), hCE]
 
 /-- Region `|t| ≤ 3` for `Hfun`. -/
 lemma Hfun_le_small (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : |t| ≤ 3) :
     Hfun 1 lam t ≤ 1/25 := by
   have hτ : t^2 ≤ 9 := by
-    have := abs_le.mp h; nlinarith [this.2, neg_le.mp this.1]
+    have := abs_le.mp h; nlinarith only [this.2, neg_le.mp this.1, this]
   have hC1 : 2/3 - 3*t^2/80 ≤ Cc t := (SupCfun t).1
   have hC2 : |Cc t| ≤ 2/3 := (SupCfun t).2
-  have hCn : 0 ≤ 2/3 - 3*t^2/80 := by nlinarith [hτ]
+  have hCn : 0 ≤ 2/3 - 3*t^2/80 := by linarith only [hτ]
   have hE0 : E0c lam ≤ 3/200 := SupE0 h0 h1
   have hEabs : |Ec lam t| ≤ E0c lam := SupEcAbs lam t h0
   have hE3 : |Ec lam t| ≤ 3/200 := le_trans hEabs hE0
@@ -186,21 +186,21 @@ lemma Hfun_le_small (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 
   have hYmax : max (Yc t) 0 ≤ 12/35 - t^2/14 + 9*t^4/2112 := max_le hYt hYnn
   have hS : Sc lam t ≤ max (Yc t) 0 + Esc lam := by
     have hSc := SupScLe lam t h0
-    have hlam1 : lam ≤ 1 := by linarith
+    have hlam1 : lam ≤ 1 := by linarith only [h1]
     have hmax0 : 0 ≤ max (Yc t) 0 := le_max_right _ _
-    nlinarith
+    nlinarith only [hSc, hmax0, h1]
   have hCsq : (2/3 - 3*t^2/80)^2 ≤ (Cc t)^2 := by
-    nlinarith [hC1, hCn, sq_nonneg (Cc t + (2/3 - 3*t^2/80))]
+    nlinarith only [hC1, hCn, sq_nonneg (Cc t + (2/3 - 3*t^2/80)), hτ]
   have hCE : Cc t * Ec lam t ≤ (2/3)*(3/200) := by
-    nlinarith [hC2, hE3, abs_nonneg (Cc t), abs_nonneg (Ec lam t),
-      le_abs_self (Cc t * Ec lam t), abs_mul (Cc t) (Ec lam t)]
+    nlinarith only [hC2, hE3, abs_nonneg (Cc t), abs_nonneg (Ec lam t),
+      le_abs_self (Cc t * Ec lam t), abs_mul (Cc t) (Ec lam t), hE0, hEabs]
   have hq := ytay_quad2 t hτ
-  have h1' : -3*(Cc t)^2 ≤ -3*(2/3 - 3*t^2/80)^2 := by linarith
-  have h2' : 2*(Cc t)*(Ec lam t) ≤ 2*((2/3)*(3/200)) := by linarith
-  have h3' : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t)]
-  have h4' : (1/2)*Sc lam t ≤ (1/2)*((12/35 - t^2/14 + 9*t^4/2112) + 3/500) := by linarith
+  have h1' : -3*(Cc t)^2 ≤ -3*(2/3 - 3*t^2/80)^2 := by linarith only [hCsq]
+  have h2' : 2*(Cc t)*(Ec lam t) ≤ 2*((2/3)*(3/200)) := by linarith only [hCE]
+  have h3' : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith only [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t), hE0, hEabs]
+  have h4' : (1/2)*Sc lam t ≤ (1/2)*((12/35 - t^2/14 + 9*t^4/2112) + 3/500) := by linarith only [hEsc, hYmax, hS]
   rw [Hfun_eq]
-  linarith [h1', h2', h3', h4', hq, sq_nonneg (Bc lam t)]
+  linarith only [h1', h2', h3', h4', hq, sq_nonneg (Bc lam t), hτ, hEsc, hYnn, hYmax, hS, hCsq, hCE]
 
 /-- Region `|t| ≥ 3` for `Hfun`. -/
 lemma Hfun_le_large (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 3 ≤ |t|) :
@@ -213,13 +213,13 @@ lemma Hfun_le_large (lam t : ℝ) (h0 : 0 ≤ lam) (h1 : lam ≤ 628/1000) (h : 
   have hYmax : max (Yc t) 0 ≤ 0 := max_le hYt le_rfl
   have hS : Sc lam t ≤ 3/500 := by
     have hSc := SupScLe lam t h0
-    have hlam1 : lam ≤ 1 := by linarith
-    nlinarith
-  have hE2 : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t)]
+    have hlam1 : lam ≤ 1 := by linarith only [h1]
+    nlinarith only [hEsc, hSc, h0, hYmax]
+  have hE2 : (Ec lam t)^2 ≤ (3/200)^2 := by nlinarith only [hE3, abs_nonneg (Ec lam t), sq_abs (Ec lam t), hE0, hEabs]
   have hCE : Cc t * Ec lam t ≤ (3/200)^2/2 + (Cc t)^2/2 := by
-    nlinarith [sq_nonneg (Cc t - Ec lam t), hE2]
+    linarith only [sq_nonneg (Cc t - Ec lam t), hE2]
   rw [Hfun_eq]
-  nlinarith [hE2, hEsc, hS, sq_nonneg (Bc lam t), sq_nonneg (Cc t + Ec lam t)]
+  linarith only [hE2, hEsc, hS, sq_nonneg (Bc lam t), sq_nonneg (Cc t + Ec lam t), hCE]
 
 theorem LamPrimeSup :
     (∀ lam : ℝ, 0 ≤ lam → lam ≤ 628/1000 → ∀ t : ℝ, Gfun 1 lam t ≤ 1/25) ∧

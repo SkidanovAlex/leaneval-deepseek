@@ -41,8 +41,8 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
   set ep : ℝ := ε / 2 with hep
   set cK : ℝ := c + ε / 8 with hcK
   set e0 : ℝ := ε / 4 with he0
-  have hep0 : 0 < ep := by rw [hep]; linarith
-  have he00 : 0 < e0 := by rw [he0]; linarith
+  have hep0 : 0 < ep := by rw [hep]; linarith only [hε]
+  have he00 : 0 < e0 := by rw [he0]; linarith only [hε]
   have hcKep : cK + ep / 4 = c + ε / 4 := by rw [hcK, hep]; ring
   obtain ⟨q₀p, hq₀p⟩ := Commons.NumberTheory.Linnik.Ksum_principal_le T.x₀ B T.x₀_pos hB0
     T.f_cont T.f_supp T.f_diff hBnd he00 T.f0_pos
@@ -82,13 +82,13 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
     rwa [Real.log_exp] at h
   have hLpos : 0 < L := lt_of_lt_of_le (Real.exp_pos (max 1 (1/δ))) hLge
   have hTle : max 1 (1/δ) ≤ Real.exp (max 1 (1/δ)) := by
-    linarith [Real.add_one_le_exp (max 1 (1/δ))]
+    linarith only [Real.add_one_le_exp (max 1 (1/δ)), hδ0, hδ1]
   have hLgeT : max 1 (1/δ) ≤ L := le_trans hTle hLge
   have hL1 : 1 ≤ L := le_trans hT1 hLgeT
   have hlogLge1 : 1 ≤ Real.log L := by
     have h := Real.log_le_log (Real.exp_pos (max 1 (1/δ))) hLge
     rw [Real.log_exp] at h
-    linarith [hT1, h]
+    linarith only [hT1, h]
   have hsqrt_ge1 : 1 ≤ Real.sqrt (Real.log L) := by
     rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt hlogLge1
   have hLnn : 0 ≤ Real.log (q : ℝ) := by rw [← hLdef]; exact hLpos.le
@@ -111,7 +111,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
   have hLposq : 0 < Real.log (q : ℝ) := by rw [← hLdef]; exact hLpos
   have habsβ₁ : |β₁ - 1| ≤ Real.sqrt (Real.log L) / L := by
     have h1 : 1 - β₁ = Lam1 / L := by rw [hLam1eq, mul_div_cancel_right₀ _ hLpos.ne']
-    rw [abs_of_neg (by linarith : β₁ - 1 < 0), neg_sub, h1]
+    rw [abs_of_neg (by linarith only [hstrip₁] : β₁ - 1 < 0), neg_sub, h1]
     exact div_le_div_of_nonneg_right (le_trans hLam1' hsqrt_ge1) hLpos.le
   have habsβ₁' : |β₁ - 1| ≤
       Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
@@ -120,7 +120,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
     have h1 : 1 - β₁ = Lam1 / L := by rw [hLam1eq, mul_div_cancel_right₀ _ hLpos.ne']
     have h2 : Lam1 / L ≤ Real.sqrt (Real.log L) / L :=
       div_le_div_of_nonneg_right (le_trans hLam1' hsqrt_ge1) hLpos.le
-    linarith
+    linarith only [h1, h2]
   set s₁ : ℂ := (β₁ : ℂ) + (γ₁ : ℂ) * Complex.I with hs₁
   set s₂ : ℂ := (β₁ : ℂ) + (γ₂ : ℂ) * Complex.I with hs₂
   set s₃ : ℂ := (β₁ : ℂ) + ((γ₁ : ℂ) + (γ₂ : ℂ)) * Complex.I with hs₃
@@ -141,12 +141,12 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
   have hre₁ : ((β₁ : ℂ) + (γ₁ : ℂ) * Complex.I).re = β₁ := by simp
   have hre₂ : ((β₂ : ℂ) + (γ₂ : ℂ) * Complex.I).re = β₂ := by simp
   have hmem₁ : s₁ ∈ Metric.closedBall (0:ℂ) (|s₁.im| + 2) :=
-    mem_closedBall_of_absre_le_one_v2 (by rw [hs₁, hre₁, abs_of_pos hβ₁pos]; linarith)
+    mem_closedBall_of_absre_le_one_v2 (by rw [hs₁, hre₁, abs_of_pos hβ₁pos]; linarith only [hstrip₁])
   have hmem₂ : ((β₂ : ℂ) + (γ₂ : ℂ) * Complex.I) ∈
       Metric.closedBall (0:ℂ) (|s₂.im| + 2) := by
     have hzi : ((β₂ : ℂ) + (γ₂ : ℂ) * Complex.I).im = s₂.im := by simp [hs₂]
     rw [← hzi]
-    exact mem_closedBall_of_absre_le_one_v2 (by rw [hre₂, abs_of_pos hβ₂pos]; linarith)
+    exact mem_closedBall_of_absre_le_one_v2 (by rw [hre₂, abs_of_pos hβ₂pos]; linarith only [hstrip₂])
   have hL52K₁ : Commons.NumberTheory.Linnik.L52Hyp χ₁ cK ep δ := by
     intro s h1 h2 h3
     have h := hL52₁ s h1 h2 h3
@@ -163,14 +163,14 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
     intro s h1 h2 h3
     have h := hL52B s h1 h2 h3
     simpa only [hcKep] using h
-  have hIm₁ : |s₁.im| + δ ≤ 10 := by rw [hs₁im]; linarith [hγ₁le, hδ1]
-  have hIm₂ : |s₂.im| + δ ≤ 10 := by rw [hs₂im]; linarith [hγ₂le, hδ1]
+  have hIm₁ : |s₁.im| + δ ≤ 10 := by rw [hs₁im]; linarith only [hγ₁le, hδ1, hδ0]
+  have hIm₂ : |s₂.im| + δ ≤ 10 := by rw [hs₂im]; linarith only [hγ₂le, hδ1, hδ0, hγ₂wide]
   have hIm₃ : |s₃.im| + δ ≤ 10 := by
-    rw [hs₃im]; have h := abs_add_le γ₁ γ₂; linarith [h, hγ₁le, hγ₂le, hδ1]
+    rw [hs₃im]; have h := abs_add_le γ₁ γ₂; linarith only [h, hγ₁le, hγ₂le, hδ1, hγ₂wide]
   have hIm₄ : |s₄.im| + δ ≤ 10 := by
     rw [hs₄im]; have h : |γ₁ - γ₂| ≤ |γ₁| + |γ₂| := by
       simpa [sub_eq_add_neg] using abs_add_le γ₁ (-γ₂)
-    linarith [h, hγ₁le, hγ₂le, hδ1]
+    linarith only [h, hγ₁le, hγ₂le, hδ1, hγ₂wide]
   have h0 : (∑' n : ℕ, (ArithmeticFunction.vonMangoldt n : ℝ) *
             ((1 : DirichletCharacter ℂ q) (n : ZMod q) / (n : ℂ) ^ (β₁ : ℂ)).re
               * T.f (Real.log n / L))
@@ -184,7 +184,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
           ≤ -L * (∫ t in (0:ℝ)..T.x₀, T.f t) + T.f 0 * (cK + ep) * L := by
     have hb := hq₀b (q := q) (s := s₁) (ρ := s₁) hq0b χ₁ hχ₁
       (by rw [hs₁re]; exact habsβ₁')
-      (by rw [hs₁im, ← hLdef]; linarith [hγ₁le, hL1])
+      (by rw [hs₁im, ← hLdef]; linarith only [hγ₁le, hL1, hδ0, hδ1, hT1, hLge, hTle])
       (by rw [hs₁re, ← hLdef]; exact hβ₁ge)
       hL52K₁
       (divisor_ne_zero_of_zeroMult_v2 χ₁ hχ₁ hmem₁ (by rw [hs₁eq]; exact hzm₁))
@@ -192,10 +192,10 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
         have hc : (1:ℂ) + (s₁.im : ℂ) * Complex.I - s₁ = ((1 - β₁ : ℝ) : ℂ) := by
           rw [hs₁im, hs₁]; push_cast; ring
         rw [hc, Complex.norm_real, Real.norm_eq_abs,
-          abs_of_pos (by linarith : (0:ℝ) < 1 - β₁)]
+          abs_of_pos (by linarith only [hstrip₁] : (0:ℝ) < 1 - β₁)]
         have h1e : 1 - β₁ = Lam1 / L := by rw [hLam1eq, mul_div_cancel_right₀ _ hLpos.ne']
         rw [h1e, div_le_iff₀ hLpos]
-        linarith [hLam1', hδL])
+        linarith only [hLam1', hδL, hLm1])
       (by
         intro u hdiv hwin
         have h := hmin.hzw_of_window_v2 (s := s₁) (δ := δ) hLposq χ₁ hχ₁ hIm₁ u hdiv hwin
@@ -218,7 +218,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
               + T.f 0 * (cK + ep) * L := by
     have hb := hq₀b (q := q) (s := s₂) (ρ := ((β₂ : ℂ) + (γ₂ : ℂ) * Complex.I)) hq0b χ₂ hχ₂
       (by rw [hs₂re]; exact habsβ₁')
-      (by rw [hs₂im, ← hLdef]; linarith [hγ₂le, hL1])
+      (by rw [hs₂im, ← hLdef]; linarith only [hγ₂le, hL1, hδ0, hδ1, hγ₂wide, hT1, hLge, hTle])
       (by rw [hs₂re, ← hLdef]; exact hβ₁ge)
       hL52K₂
       (divisor_ne_zero_of_zeroMult_v2 χ₂ hχ₂ hmem₂ (by rw [hρ₂eq]; exact hzm₂))
@@ -226,10 +226,10 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
         have hc : (1:ℂ) + (s₂.im : ℂ) * Complex.I - ((β₂ : ℂ) + (γ₂ : ℂ) * Complex.I)
             = ((1 - β₂ : ℝ) : ℂ) := by rw [hs₂im]; push_cast; ring
         rw [hc, Complex.norm_real, Real.norm_eq_abs,
-          abs_of_pos (by linarith : (0:ℝ) < 1 - β₂)]
+          abs_of_pos (by linarith only [hstrip₂] : (0:ℝ) < 1 - β₂)]
         have h1e : 1 - β₂ = Lam2 / L := by rw [hLam2eq, mul_div_cancel_right₀ _ hLpos.ne']
         rw [h1e, div_le_iff₀ hLpos]
-        linarith [hLam2', hδL])
+        linarith only [hLam2', hδL, hLm2])
       (by
         intro u hdiv hwin
         have h := hmin.hzw_of_window_v2 (s := s₂) (δ := δ) hLposq χ₂ hχ₂ hIm₂ u hdiv hwin
@@ -260,7 +260,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
     have hb := hq₀a (q := q) (s := s₃) hq0a (χ₁ * χ₂) hneA
       (by rw [hs₃re]; exact habsβ₁')
       (by rw [hs₃im, ← hLdef]
-          have h := abs_add_le γ₁ γ₂; linarith [h, hγ₁le, hγ₂le, hL1])
+          have h := abs_add_le γ₁ γ₂; linarith only [h, hγ₁le, hγ₂le, hL1, hδ0, hδ1, hγ₂wide, hT1, hLge, hTle])
       (by rw [hs₃re, ← hLdef]; exact hβ₁ge)
       hL52KA
       (by
@@ -279,7 +279,7 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
       (by rw [hs₄im, ← hLdef]
           have h : |γ₁ - γ₂| ≤ |γ₁| + |γ₂| := by
             simpa [sub_eq_add_neg] using abs_add_le γ₁ (-γ₂)
-          linarith [h, hγ₁le, hγ₂le, hL1])
+          linarith only [h, hγ₁le, hγ₂le, hL1, hδ0, hδ1, hγ₂wide, hT1, hLge, hTle])
       (by rw [hs₄re, ← hLdef]; exact hβ₁ge)
       hL52KB
       (by
@@ -316,9 +316,9 @@ theorem hbLemma6_2_engine_wide (T : Work.ZeroFreeTables.TestFn) (c ε δ : ℝ)
     exact key
   have hcoef : T.f 0 * (3 * cK + 3 * ep + e0) ≤ T.f 0 * (3 * (c + ε)) := by
     apply mul_le_mul_of_nonneg_left _ T.f0_pos.le
-    rw [hcK, hep, he0]; linarith
+    rw [hcK, hep, he0]; linarith only [he0, he00]
   have key'' : 0 ≤ T.F (-Lam1) - T.F 0 - T.F (Lam2 - Lam1) + T.f 0 * (3 * (c + ε)) := by
-    linarith [key', hcoef]
+    linarith only [key', hcoef, key, hF1, hF0I, hF2I]
   rw [hLam1def, hLam2def] at key''
   exact key''
 end Work.ZeroFreeTables.HB94

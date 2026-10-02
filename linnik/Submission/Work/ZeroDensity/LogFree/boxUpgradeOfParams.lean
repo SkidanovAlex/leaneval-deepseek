@@ -42,12 +42,12 @@ lemma two_le_abs_sub_of_dvd {a b : ℤ} (h2 : (2 : ℤ) ∣ (a - b)) (hne : a �
     intro h0
     apply hne
     have : a - b = 0 := by rw [hc, h0]; ring
-    linarith
+    linarith only [hc, h0]
   have h1 : (1 : ℤ) ≤ |c| := by
     have := abs_pos.mpr hc0
     omega
   calc (2 : ℤ) = 2 * 1 := by ring
-    _ ≤ 2 * |c| := by linarith [h1]
+    _ ≤ 2 * |c| := by linarith only [h1]
     _ = |a - b| := by rw [hc, abs_mul]; norm_num
 
 lemma even_two_dvd {a b : ℤ} (ha : Even a) (hb : Even b) : (2 : ℤ) ∣ (a - b) := by
@@ -129,10 +129,10 @@ lemma abs_im_sub_ge_of_boxes {Δ : ℝ} (hΔ : 0 < Δ) {ρ ρ' : ℂ} {k k' : �
         calc (k : ℝ) * Δ + 2 * Δ = ((k : ℝ) + 2) * Δ := by ring
           _ ≤ (k' : ℝ) * Δ := h1
           _ ≤ ρ'.im := hb1'
-      have h3 : ρ.im < (k : ℝ) * Δ + Δ := by nlinarith [hb2]
-      nlinarith [h2', h3]
-    rw [abs_sub_comm, abs_of_pos (by linarith : 0 < ρ'.im - ρ.im)]
-    linarith
+      have h3 : ρ.im < (k : ℝ) * Δ + Δ := by linarith only [hb2]
+      linarith only [h2', h3, hb2, hb1', h1]
+    rw [abs_sub_comm, abs_of_pos (by linarith only [hΔ, hstep] : 0 < ρ'.im - ρ.im)]
+    linarith only [hstep]
   · have hrel : (2 : ℤ) ≤ k - k' := by
       have : |k - k'| = k - k' := by rw [abs_of_pos (by omega : 0 < k - k')]
       rw [← this]; exact h2
@@ -143,10 +143,10 @@ lemma abs_im_sub_ge_of_boxes {Δ : ℝ} (hΔ : 0 < Δ) {ρ ρ' : ℂ} {k k' : �
         calc (k' : ℝ) * Δ + 2 * Δ = ((k' : ℝ) + 2) * Δ := by ring
           _ ≤ (k : ℝ) * Δ := h1
           _ ≤ ρ.im := hb1
-      have h3 : ρ'.im < (k' : ℝ) * Δ + Δ := by nlinarith [hb2']
-      nlinarith [h2', h3]
-    rw [abs_of_pos (by linarith : 0 < ρ.im - ρ'.im)]
-    linarith
+      have h3 : ρ'.im < (k' : ℝ) * Δ + Δ := by linarith only [hb2']
+      linarith only [h2', h3, hb1, hb2', h1]
+    rw [abs_of_pos (by linarith only [hΔ, hstep] : 0 < ρ.im - ρ'.im)]
+    linarith only [hstep]
 
 lemma boxPar_sep (S : Finset ℂ) (Δ : ℝ) (hΔ : 0 < Δ) {ρ ρ' : ℂ} {k k' : ℤ}
     (hk : k ∈ boxPar S Δ) (hk' : k' ∈ boxPar S Δ) (hρ : boxIdx Δ ρ = k)
@@ -174,61 +174,61 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
     rw [Lscale, scale]
     have h6 : (6 : ℝ) ≤ (q : ℝ) * (T + 2) := by
       have h2 : (2 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq
-      have h3 : (3 : ℝ) ≤ T + 2 := by linarith
-      nlinarith
+      have h3 : (3 : ℝ) ≤ T + 2 := by linarith only [hT]
+      nlinarith only [h2, hT]
     have hlog6 : (1 : ℝ) ≤ Real.log 6 := by
-      have h1 : Real.exp 1 ≤ (6 : ℝ) := by have he := Real.exp_one_lt_three; linarith
+      have h1 : Real.exp 1 ≤ (6 : ℝ) := by have he := Real.exp_one_lt_three; linarith only [he]
       have h2 : Real.log (Real.exp 1) ≤ Real.log 6 := Real.log_le_log (Real.exp_pos 1) h1
       have h3 : Real.log (Real.exp 1) = 1 := Real.log_exp 1
-      linarith
+      linarith only [h2, h3]
     exact le_trans hlog6 (Real.log_le_log (by norm_num) h6)
   have hLpos : 0 < Lscale q T := lt_of_lt_of_le one_pos hL1
   set Δ : ℝ := 1 / Lscale q T with hΔdef
   have hΔpos : 0 < Δ := by rw [hΔdef]; exact one_div_pos.mpr hLpos
   have hΔle1 : Δ ≤ 1 := by rw [hΔdef]; exact (div_le_one hLpos).mpr hL1
   set σL : ℝ := min σ (1 - Δ) with hσLdef
-  have hσL0 : 0 ≤ σL := by rw [hσLdef]; apply le_min <;> linarith
+  have hσL0 : 0 ≤ σL := by rw [hσLdef]; apply le_min <;> linarith only [hσpos, hΔle1]
   have hσLσ : σL ≤ σ := by rw [hσLdef]; exact min_le_left _ _
   have hΔleσL : Δ ≤ 1 - σL := by
-    have h := min_le_right σ (1 - Δ); rw [← hσLdef] at h; linarith
+    have h := min_le_right σ (1 - Δ); rw [← hσLdef] at h; linarith only [h]
   -- ## the logarithmic factor
   have hlog_le : Real.log ((q : ℝ) * (T + 1)) ≤ Lscale q T := by
     rw [Lscale, scale]
     apply Real.log_le_log (by positivity)
-    nlinarith
+    linarith only []
   have hinner : (1 - σL) * Real.log ((q : ℝ) * (T + 1)) + 1
       ≤ 6 * ((1 - σ) * Lscale q T + 1) := by
     have honeσL : 1 - σL = max (1 - σ) Δ := by
       have key : ∀ a b : ℝ, 1 - min a b = max (1 - a) (1 - b) := by
         intro a b
         rcases le_total a b with hab | hab
-        · rw [min_eq_left hab, max_eq_left (by linarith : 1 - b ≤ 1 - a)]
-        · rw [min_eq_right hab, max_eq_right (by linarith : 1 - a ≤ 1 - b)]
+        · rw [min_eq_left hab, max_eq_left (by linarith only [hab] : 1 - b ≤ 1 - a)]
+        · rw [min_eq_right hab, max_eq_right (by linarith only [hab] : 1 - a ≤ 1 - b)]
       rw [hσLdef, key, show (1 : ℝ) - (1 - Δ) = Δ from by ring]
     have hle1 : (1 - σ) * Real.log ((q : ℝ) * (T + 1)) ≤ (1 - σ) * Lscale q T :=
-      mul_le_mul_of_nonneg_left hlog_le (by linarith)
+      mul_le_mul_of_nonneg_left hlog_le (by linarith only [hσ1])
     have hle2 : Δ * Real.log ((q : ℝ) * (T + 1)) ≤ 1 := by
       have h' : Δ * Real.log ((q : ℝ) * (T + 1)) ≤ Δ * Lscale q T :=
         mul_le_mul_of_nonneg_left hlog_le hΔpos.le
       have h'' : Δ * Lscale q T = 1 := by rw [hΔdef]; field_simp
-      linarith
+      linarith only [h', h'']
     have hmax : (1 - σL) * Real.log ((q : ℝ) * (T + 1)) ≤ max ((1 - σ) * Lscale q T) 1 := by
       rw [honeσL]
       by_cases h : (1 - σ) ≤ Δ
       · rw [max_eq_right h]; exact le_trans hle2 (le_max_right _ _)
       · push Not at h; rw [max_eq_left h.le]; exact le_trans hle1 (le_max_left _ _)
     have hfin : max ((1 - σ) * Lscale q T) 1 + 1 ≤ 6 * ((1 - σ) * Lscale q T + 1) := by
-      have h0 : 0 ≤ (1 - σ) * Lscale q T := mul_nonneg (by linarith) hLpos.le
+      have h0 : 0 ≤ (1 - σ) * Lscale q T := mul_nonneg (by linarith only [hσ1]) hLpos.le
       have : max ((1 - σ) * Lscale q T) 1 ≤ (1 - σ) * Lscale q T + 1 :=
-        max_le (by linarith) (by linarith)
-      linarith
-    linarith
+        max_le (by linarith only []) (by linarith only [h0])
+      linarith only [h0, this]
+    linarith only [hmax, hfin]
   set B : ℝ := 6 * Cbox * ((1 - σ) * Lscale q T + 1) with hBdef
   have hB0 : 0 ≤ B := by
     rw [hBdef]
     have h0 : (0 : ℝ) ≤ (1 - σ) * Lscale q T + 1 := by
-      have := mul_nonneg (by linarith : (0:ℝ) ≤ 1 - σ) hLpos.le; linarith
-    have h1 := hCboxpos.le; nlinarith
+      have := mul_nonneg (by linarith only [hσ1] : (0:ℝ) ≤ 1 - σ) hLpos.le; linarith only [this]
+    have h1 := hCboxpos.le; nlinarith only [hCboxpos, h0]
   -- ## the box decomposition
   set S : DirichletCharacter ℂ q → Finset ℂ :=
     fun χ => Set.Finite.toFinset (zeroSupport_finite χ σ T) with hSdef
@@ -258,7 +258,7 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
     have hχ1 : χ ≠ 1 := (Finset.mem_erase.mp hχ).1
     refine le_trans (sum_filter_boxIdx_le_boxMass χ σ T Δ (S χ) (hS χ hχ) k) ?_
     refine le_trans (hCbox q hq χ hχ1 σL σ T Δ hσL0 hσLσ hσ1 hT hΔpos hΔleσL k) ?_
-    rw [hBdef]; nlinarith [hCboxpos, hinner]
+    rw [hBdef]; nlinarith only [hCboxpos, hinner]
   have hsplit := erase_zeroCountIn_le_two_mul_paritySplit σ T Δ B hB0 S hS hbox
   -- ## one zero per box of the larger parity class
   set Gp : Finset (DirichletCharacter ℂ q × ℤ) :=
@@ -374,7 +374,7 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
       obtain ⟨χ, k, hχ, hp, hk, hmem, hidx⟩ := hSel_extract p hpSel
       obtain ⟨-, -, -, h4, h5⟩ := hSel_cond p hpSel
       have hlt' : (1 - (selZero χ k).re) * Lscale q T < cB := by
-        rw [hp] at hlt; linarith [hlt, hc₀B]
+        rw [hp] at hlt; linarith only [hlt, hc₀B]
       have h5' : Work.LinnikContract.zeroMult χ (selZero χ k) ≠ 0 := by
         rw [hp] at h5; exact h5
       have him0 : (selZero χ k).im = 0 :=
@@ -459,7 +459,7 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
     have hcs : (Sel.card : ℝ) = (SelN.card : ℝ) + (SelE.card : ℝ) := by
       rw [hcard_split]; push_cast; ring
     rw [hcs]
-    linarith [hSelN_le, hSelE_le]
+    linarith only [hSelN_le, hSelE_le]
   -- ## assembly
   calc famCountNP q σ T
       = ∑ χ ∈ Finset.univ.erase (1 : DirichletCharacter ℂ q),
@@ -468,15 +468,15 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
     _ ≤ 2 * B * ∑ χ ∈ Finset.univ.erase (1 : DirichletCharacter ℂ q),
           ((max (boxEven (S χ) Δ).card (boxOdd (S χ) Δ).card : ℕ) : ℝ) := by
           simpa only [boxEven, boxOdd] using hsplit
-    _ ≤ 2 * B * (M + (Kob : ℝ)) := mul_le_mul_of_nonneg_left hJbound (by linarith [hB0])
+    _ ≤ 2 * B * (M + (Kob : ℝ)) := mul_le_mul_of_nonneg_left hJbound (by linarith only [hB0])
     _ ≤ 12 * Cbox * ((Kob : ℝ) + 1) * ((1 + (1 - σ) * Lscale q T) * (M + 1) + 1) := by
           rw [hBdef]
           have hKob0 : (0 : ℝ) ≤ (Kob : ℝ) := Nat.cast_nonneg _
           have h4 : (0 : ℝ) ≤ (1 - σ) * Lscale q T + 1 := by
-            have := mul_nonneg (by linarith : (0:ℝ) ≤ 1 - σ) hLpos.le; linarith
-          have h2 : M + (Kob : ℝ) ≤ ((Kob : ℝ) + 1) * (M + 1) := by nlinarith [hM, hKob0]
+            have := mul_nonneg (by linarith only [hσ1] : (0:ℝ) ≤ 1 - σ) hLpos.le; linarith only [this]
+          have h2 : M + (Kob : ℝ) ≤ ((Kob : ℝ) + 1) * (M + 1) := by nlinarith only [hM, hKob0]
           have h3 : (0 : ℝ) ≤ 2 * (6 * Cbox * ((1 - σ) * Lscale q T + 1)) := by
-            rw [← hBdef]; linarith [hB0]
+            rw [← hBdef]; linarith only [hB0]
           calc 2 * (6 * Cbox * ((1 - σ) * Lscale q T + 1)) * (M + (Kob : ℝ))
               ≤ 2 * (6 * Cbox * ((1 - σ) * Lscale q T + 1)) * (((Kob : ℝ) + 1) * (M + 1)) :=
                 mul_le_mul_of_nonneg_left h2 h3
@@ -487,7 +487,7 @@ theorem boxUpgradeOfParams (p : Work.ZeroDensity.LogFree.Params) :
                   · exact mul_nonneg (by norm_num) hCboxpos.le
                   · positivity
                 have h6 : ((1 - σ) * Lscale q T + 1) * (M + 1)
-                    ≤ (1 + (1 - σ) * Lscale q T) * (M + 1) + 1 := by nlinarith
+                    ≤ (1 + (1 - σ) * Lscale q T) * (M + 1) + 1 := by linarith only []
                 exact mul_le_mul_of_nonneg_left h6 h5
 
 end Work.ZeroDensity.LogFree

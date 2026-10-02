@@ -55,11 +55,11 @@ theorem window_hzero_of_Lzero_local {q : ℕ} [NeZero q] (χ : DirichletCharacte
         have hre : ((-(2 * (n : ℂ)) : ℂ)).re = -(2 * (n : ℝ)) := by simp
         rw [hre] at hz
         have h2 : (0 : ℝ) ≤ 2 * (n : ℝ) := by positivity
-        linarith
+        linarith only [hz]
       unfold DirichletCharacter.gammaFactor
       split_ifs with h
       · exact key u hure
-      · exact key (u + 1) (by rw [Complex.add_re, Complex.one_re]; linarith)
+      · exact key (u + 1) (by rw [Complex.add_re, Complex.one_re]; linarith only [hure])
     have hune : u ≠ 0 := fun h => by rw [h] at hure; simp at hure
     have h0 := DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ u (Or.inl hune)
     have hprod : DirichletCharacter.completedLFunction χ u =
@@ -146,7 +146,7 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
   have hlogq1 : (1 : ℝ) ≤ Real.log (q : ℝ) := by
     rw [Real.le_log_iff_exp_le (by positivity)]
     have h3 : (3 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq3
-    linarith [Real.exp_one_lt_three]
+    linarith only [Real.exp_one_lt_three, h3]
   have hLfar_le : Lfar ≤ Real.log (q : ℝ) := by
     rw [← Real.log_exp Lfar]
     refine Real.log_le_log (Real.exp_pos Lfar) ?_
@@ -162,21 +162,21 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
     apply hχ
     rw [← DirichletCharacter.changeLevel_primitiveCharacter χ, h]
     exact DirichletCharacter.changeLevel_one χ.conductor_dvd_level
-  have hβ₁lo : 1 - δ ≤ β₁ := by have := (abs_le.mp hβ₁).2; linarith
-  have hβ₁hi : β₁ ≤ 1 + δ := by have := (abs_le.mp hβ₁).1; linarith
-  have hβ'lo : 1 - δ ≤ β' := by have := (abs_le.mp hβ').2; linarith
-  have hβ'hi : β' ≤ 1 + δ := by have := (abs_le.mp hβ').1; linarith
-  have hβ₁pos : 0 < β₁ := by linarith
-  have hβ'pos : 0 < β' := by linarith
+  have hβ₁lo : 1 - δ ≤ β₁ := by have := (abs_le.mp hβ₁).2; linarith only [this]
+  have hβ₁hi : β₁ ≤ 1 + δ := by have := (abs_le.mp hβ₁).1; linarith only [hδ0, hβ₁le]
+  have hβ'lo : 1 - δ ≤ β' := by have := (abs_le.mp hβ').2; linarith only [this]
+  have hβ'hi : β' ≤ 1 + δ := by have := (abs_le.mp hβ').1; linarith only [hδ0, hβ'β₁, hβ₁le]
+  have hβ₁pos : 0 < β₁ := by linarith only [hδ1, hβ₁lo]
+  have hβ'pos : 0 < β' := by linarith only [hδ1, hβ'lo]
   have himρ : (((β' : ℂ) + (γ' : ℂ) * Complex.I)).im = γ' := by simp
   have hmem₂ : (β₁ : ℂ) ∈ Metric.closedBall (0 : ℂ) (|((β' : ℂ)).im| + 2) := by
     have him0 : ((β' : ℂ)).im = 0 := by simp
     rw [Metric.mem_closedBall, dist_zero_right, him0, abs_zero, zero_add,
       Complex.norm_real, Real.norm_eq_abs, abs_le]
-    exact ⟨by linarith, by linarith⟩
+    exact ⟨by linarith only [hδ0, hδ1, hβ₁lo], by linarith only [hδ0, hδ1, hβ₁le]⟩
   have hmemR : (β₁ : ℂ) ∈ Metric.closedBall (0 : ℂ) (|γ'| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_le]
-    exact ⟨by linarith [abs_nonneg γ'], by linarith [abs_nonneg γ']⟩
+    exact ⟨by linarith only [abs_nonneg γ', hδ0, hδ1, hβ₁lo], by linarith only [abs_nonneg γ', hδ0, hδ1, hβ₁le]⟩
   have han : ∀ z : ℂ, AnalyticAt ℂ (DirichletCharacter.completedLFunction χ.primitiveCharacter) z :=
     fun z => (DirichletCharacter.differentiable_completedLFunction hχ').analyticAt z
   have hdiv₁₂ : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ.primitiveCharacter)
@@ -197,8 +197,8 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
             Complex.norm_real, Real.norm_eq_abs]
       _ ≤ |γ'| + 2 := by
           have h2 : |β'| ≤ 2 := by
-            rw [abs_le]; exact ⟨by linarith, by linarith⟩
-          linarith [abs_nonneg γ']
+            rw [abs_le]; exact ⟨by linarith only [hδ0, hδ1, hβ'lo], by linarith only [hδ0, hδ1, hβ'β₁, hβ₁le]⟩
+          linarith only [abs_nonneg γ', h2]
   have hzero₁' : DirichletCharacter.LFunction χ.primitiveCharacter (β₁ : ℂ) = 0 :=
     LFunction_eq_zero_of_divisor_completedL_ne_zero
       χ.primitiveCharacter hχ' (a := 0) (ρ := |γ'| + 2) hmemR (by simpa using hβ₁pos) hdiv₁
@@ -215,10 +215,10 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
   have hwinK₁ : |((β' : ℂ)).im| + δ ≤ |γ'| + 1 := by
     have him0 : ((β' : ℂ)).im = 0 := by simp
     rw [him0, abs_zero, zero_add]
-    linarith [hδ1, abs_nonneg γ']
+    linarith only [hδ1, abs_nonneg γ']
   have hwinK' : |(((β' : ℂ) + (γ' : ℂ) * Complex.I)).im| + δ ≤ |γ'| + 1 := by
     rw [himρ]
-    linarith [hδ1]
+    linarith only [hδ1]
   have hzw1 : ∀ u : ℂ, (MeromorphicOn.divisor
         (DirichletCharacter.completedLFunction χ.primitiveCharacter)
         (Metric.closedBall 0 (|((β' : ℂ)).im| + 2))) u ≠ 0 →
@@ -274,10 +274,10 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
           (lam₁ := Real.log (q : ℝ) * (1 - β₁)) (L := Real.log (q : ℝ)) hlogq ?_ ?_ ?_
         · have h1 : Real.log (q : ℝ) * (1 - β₁) / Real.log (q : ℝ) = 1 - β₁ := by
             field_simp
-          rw [h1, abs_of_nonneg (by linarith : (0:ℝ) ≤ 1 - β₁)]
+          rw [h1, abs_of_nonneg (by linarith only [hβ₁le] : (0:ℝ) ≤ 1 - β₁)]
         · refine le_trans hrect₁ ?_
           have h := hthr (Real.log (q : ℝ)) hLthr_le
-          linarith
+          linarith only [h]
         · have h' : (1:ℂ) - (β₁ : ℂ) + (γ' : ℂ) * Complex.I
               = (1:ℂ) + (((β' : ℂ) + (γ' : ℂ) * Complex.I).im : ℂ) * Complex.I - (β₁ : ℂ) := by
             rw [himρ]; ring
@@ -290,12 +290,12 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
           rw [abs_mul, abs_of_pos hlogq]
           have h2 : β₁ - β' ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 / Real.log (q : ℝ) := by
             rw [le_div_iff₀ hlogq]
-            nlinarith [hrect']
-          rw [abs_of_nonpos (by linarith : β' - β₁ ≤ 0)]
-          nlinarith [h2, hlogq])
+            nlinarith only [hrect', hδ0, hδ1, hβ₁le, hlogq]
+          rw [abs_of_nonpos (by linarith only [hβ'β₁] : β' - β₁ ≤ 0)]
+          nlinarith only [h2, hlogq, hrect', hδ0, hδ1, hβ₁le])
         (by
           rw [abs_mul, abs_of_pos hlogq]
-          nlinarith [hfar1, hlogq])
+          nlinarith only [hfar1, hlogq, hδ0, hδ1])
       have heqint : (∫ t in (0:ℝ)..x₀,
             Complex.exp (-(((((β' : ℂ) + (γ' : ℂ) * Complex.I) - (β₁ : ℂ)) *
               (Real.log (q : ℝ))) * (t : ℂ))) * ((f t : ℝ) : ℂ))
@@ -333,7 +333,7 @@ theorem lemma6_3_fullLocal (x₀ B : ℝ) (c : ℝ) (hx₀ : 0 < x₀) (hB : 0 �
     simpa only [winSum] using windowSum_ge_pair χ.primitiveCharacter hχ'
       (f := f) (x₀ := x₀) hx₀ hfnn' hFnn (L := Real.log (q : ℝ)) hLnn hε.le hβ' hne hf0.le
       hdiv₁q hdivq hmult₁q h0nn h614 hzw2
-  have hγ10 : |γ'| ≤ 10 * Real.log (q : ℝ) := by linarith [hγ', hlogq1]
+  have hγ10 : |γ'| ≤ 10 * Real.log (q : ℝ) := by linarith only [hγ', hlogq1, hδ0, hδ1]
   exact hq₀ hqq₀ χ hχ hreal hβ₁ hβ' hβ'β₁ hβ₁le hβ'le hγ10 hβ₁pt hβ'pt hzero₁ hzero'
     H hw13 hw15
 
@@ -364,7 +364,7 @@ private lemma iteratedDeriv_two_tent {x t : ℝ} (ht : t ∈ Set.Ioo (0:ℝ) x) 
     iteratedDeriv 2 (fun s : ℝ => max (x - s) 0) t = 0 := by
   have hcongr : Set.EqOn (fun s : ℝ => max (x - s) 0) (fun s : ℝ => x - s)
       (Set.Ioo (0:ℝ) x) :=
-    fun s hs => max_eq_left (by linarith [hs.2])
+    fun s hs => max_eq_left (by linarith only [hs.2, hs])
   have h1 := Set.EqOn.iteratedDeriv_of_isOpen hcongr isOpen_Ioo 2 ht
   rw [h1]
   simp [iteratedDeriv_succ, iteratedDeriv_const, iteratedDeriv_id]
@@ -376,7 +376,7 @@ private lemma integral_tent (x : ℝ) (hx : 0 ≤ x) :
     apply intervalIntegral.integral_congr
     intro t ht
     rw [Set.uIcc_of_le hx] at ht
-    exact max_eq_left (by linarith [ht.2])
+    exact max_eq_left (by linarith only [ht.2, ht])
   rw [hcongr]
   have hsub : (∫ t in (0:ℝ)..x, (x - t))
       = (∫ t in (0:ℝ)..x, (fun _ : ℝ => x) t) - ∫ t in (0:ℝ)..x, t :=
@@ -423,11 +423,11 @@ theorem dhTrianglePtLocal :
   obtain ⟨q₀, hq₀⟩ := Commons.NumberTheory.Linnik.lemma6_3_fullLocal x 0 c hx le_rfl
     (f := fun t : ℝ => max (x - t) 0)
     (by fun_prop)
-    (fun t ht => max_eq_right (by linarith [ht]))
+    (fun t ht => max_eq_right (by linarith only [ht]))
     (by
       have haff : ContDiffOn ℝ 2 (fun t : ℝ => x - t) (Set.Ioo 0 x) :=
         (contDiffOn_const (c := x)).sub contDiffOn_id
-      exact haff.congr (fun t ht => max_eq_left (by linarith [ht.2])))
+      exact haff.congr (fun t ht => max_eq_left (by linarith only [ht.2, ht])))
     (fun t ht => by rw [iteratedDeriv_two_tent ht]; norm_num)
     (by rw [sub_zero, max_eq_left hx.le]; exact hx)
     (fun t => le_max_right _ _)
@@ -438,20 +438,20 @@ theorem dhTrianglePtLocal :
     hrect₁ hrect' H
   have hχ' : χ.primitiveCharacter ≠ 1 := primitiveCharacter_ne_one' hχ
   -- the two `re < 1` facts for the zeros, via the critical strip
-  have hβ₁lo : 1 - δ ≤ β₁ := by have := (abs_le.mp hβ₁).2; linarith
-  have hβ₁hi : β₁ ≤ 1 + δ := by have := (abs_le.mp hβ₁).1; linarith
-  have hβ₁pos : 0 < β₁ := by linarith
-  have hβ'lo : 1 - δ ≤ ρ'.re := by have := (abs_le.mp hβ').2; linarith
-  have hρ'pos : 0 < ρ'.re := by linarith
+  have hβ₁lo : 1 - δ ≤ β₁ := by have := (abs_le.mp hβ₁).2; linarith only [this]
+  have hβ₁hi : β₁ ≤ 1 + δ := by have := (abs_le.mp hβ₁).1; linarith only [this]
+  have hβ₁pos : 0 < β₁ := by linarith only [hδ1, hβ₁lo]
+  have hβ'lo : 1 - δ ≤ ρ'.re := by have := (abs_le.mp hβ').2; linarith only [this]
+  have hρ'pos : 0 < ρ'.re := by linarith only [hδ1, hβ'lo]
   have hmem₁ : (β₁ : ℂ) ∈ Metric.closedBall (0 : ℂ) (|ρ'.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_le]
-    constructor <;> [linarith [abs_nonneg ρ'.im]; linarith [abs_nonneg ρ'.im]]
+    constructor <;> [linarith only [abs_nonneg ρ'.im, hδ0, hδ1, hβ₁lo]; linarith only [abs_nonneg ρ'.im, hδ1, hβ₁hi]]
   have hmem' : ρ' ∈ Metric.closedBall (0 : ℂ) (|ρ'.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right]
     refine le_trans (Complex.norm_le_abs_re_add_abs_im ρ') ?_
     have h1 : |ρ'.re| ≤ 2 := by
-      rw [abs_le]; constructor <;> linarith [abs_nonneg ρ'.im]
-    linarith [abs_nonneg ρ'.im]
+      rw [abs_le]; constructor <;> linarith only [abs_nonneg ρ'.im, hδ0, hδ1, hβ'lo, hβ'β₁, hβ₁hi]
+    linarith only [abs_nonneg ρ'.im, h1]
   have hL₁ : DirichletCharacter.LFunction χ.primitiveCharacter (β₁ : ℂ) = 0 :=
     Commons.NumberTheory.Linnik.LFunction_eq_zero_of_divisor_completedL_ne_zero
       χ.primitiveCharacter hχ' hmem₁ (by simpa using hβ₁pos) hdiv₁
@@ -476,7 +476,7 @@ theorem dhTrianglePtLocal :
   have hF : ∀ t ∈ Set.uIcc (0:ℝ) x, max (x - t) 0 = x - t := by
     intro t ht
     rw [Set.uIcc_of_le hx.le] at ht
-    exact max_eq_left (by linarith [ht.2])
+    exact max_eq_left (by linarith only [ht.2, ht])
   have heq1 : (∫ t in (0:ℝ)..x,
         Real.exp (Real.log (q : ℝ) * (1 - ρ'.re) * t) * max (x - t) 0)
       = ∫ t in (0:ℝ)..x, Real.exp ((Work.LinnikContract.lamOf q ρ') * t) * (x - t) := by

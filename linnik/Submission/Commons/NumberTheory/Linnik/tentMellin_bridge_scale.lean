@@ -85,18 +85,18 @@ lemma tentWeight_eq_relu {L K : ℝ} (hK : 0 ≤ K) (x : ℝ) :
     tentWeight L K x = max (L - 2 * K - x) 0 - 2 * max (L - K - x) 0 + max (L - x) 0 := by
   rw [tentWeight_spec]
   by_cases h1 : x ≤ L - 2 * K
-  · rw [if_pos h1, max_eq_left (by linarith), max_eq_left (by linarith),
-      max_eq_left (by linarith)]
+  · rw [if_pos h1, max_eq_left (by linarith only [h1]), max_eq_left (by linarith only [hK, h1]),
+      max_eq_left (by linarith only [hK, h1])]
     ring
-  · rw [if_neg h1, max_eq_right (by linarith)]
+  · rw [if_neg h1, max_eq_right (by linarith only [h1])]
     by_cases h2 : x ≤ L - K
-    · rw [if_pos h2, max_eq_left (by linarith), max_eq_left (by linarith)]
+    · rw [if_pos h2, max_eq_left (by linarith only [h2]), max_eq_left (by linarith only [h1, h2])]
       ring
-    · rw [if_neg h2, max_eq_right (by linarith)]
+    · rw [if_neg h2, max_eq_right (by linarith only [h2])]
       by_cases h3 : x ≤ L
-      · rw [if_pos h3, max_eq_left (by linarith)]
+      · rw [if_pos h3, max_eq_left (by linarith only [h3])]
         ring
-      · rw [if_neg h3, max_eq_right (by linarith)]
+      · rw [if_neg h3, max_eq_right (by linarith only [h3])]
         ring
 
 /-! ## The kernel as a finite combination of exponentials -/
@@ -776,7 +776,7 @@ lemma norm_tentK_left {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} (hQ :
       rw [Complex.normSq_apply]
       simp only [Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im,
         Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_zero, sub_zero]
-      nlinarith [sq_nonneg t]
+      linarith only [sq_nonneg t]
     have hn2 : Complex.normSq lq = (Real.log (Q : ℝ)) ^ 2 := by
       rw [Complex.normSq_apply, hre_lq, him_lq]; ring
     rw [hn2]
@@ -795,10 +795,10 @@ lemma norm_tentK_left {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} (hQ :
         ≤ ‖(1 : ℂ)‖ + ‖Complex.exp (-(((K : ℝ) : ℂ) * z))‖ := norm_sub_le _ _
       _ ≤ 1 + 1 := by
           rw [Complex.norm_exp, h1, norm_one]
-          exact add_le_add le_rfl (Real.exp_le_one_iff.mpr (by nlinarith [mul_pos hK hlogQ]))
+          exact add_le_add le_rfl (Real.exp_le_one_iff.mpr (by linarith only [mul_pos hK hlogQ, hK, hlogQ]))
       _ = 2 := by norm_num
   have hnum2 : ‖1 - Complex.exp (-(((K : ℝ) : ℂ) * z))‖ ^ 2 ≤ 4 := by
-    nlinarith [norm_nonneg (1 - Complex.exp (-(((K : ℝ) : ℂ) * z))), hnum]
+    nlinarith only [norm_nonneg (1 - Complex.exp (-(((K : ℝ) : ℂ) * z))), hnum]
   have h2 : (‖1 - Complex.exp (-(((K : ℝ) : ℂ) * z))‖ / ‖z‖) ^ 2
       ≤ 4 * (((1 + t ^ 2) * (Real.log (Q : ℝ)) ^ 2))⁻¹ := by
     rw [div_pow, show ‖z‖ ^ 2 = Complex.normSq z from Complex.sq_norm z, div_eq_mul_inv]
@@ -848,12 +848,12 @@ lemma norm_tentK_zero {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} (hQ :
         ≤ ‖(1 : ℂ)‖ + ‖Complex.exp (-(((K : ℝ) : ℂ) * lq))‖ := norm_sub_le _ _
       _ ≤ 1 + 1 := by
           rw [Complex.norm_exp, h1, norm_one]
-          exact add_le_add le_rfl (Real.exp_le_one_iff.mpr (by nlinarith [mul_pos hK hlogQ]))
+          exact add_le_add le_rfl (Real.exp_le_one_iff.mpr (by linarith only [mul_pos hK hlogQ, hK, hlogQ]))
       _ = 2 := by norm_num
   have hnum2 : ‖1 - Complex.exp (-(((K : ℝ) : ℂ) * lq))‖ ^ 2 ≤ 4 := by
-    nlinarith [norm_nonneg (1 - Complex.exp (-(((K : ℝ) : ℂ) * lq))), hnum]
+    nlinarith only [norm_nonneg (1 - Complex.exp (-(((K : ℝ) : ℂ) * lq))), hnum]
   have hnormz : (Real.log (Q : ℝ)) ^ 2 ≤ Complex.normSq lq := by
-    rw [Complex.normSq_apply, hre_lq, him_lq]; nlinarith [sq_nonneg (Real.log (Q : ℝ))]
+    rw [Complex.normSq_apply, hre_lq, him_lq]; linarith only [sq_nonneg (Real.log (Q : ℝ))]
   have h2 : (‖1 - Complex.exp (-(((K : ℝ) : ℂ) * lq))‖ / ‖lq‖) ^ 2
       ≤ 4 * (((Real.log (Q : ℝ)) ^ 2))⁻¹ := by
     rw [div_pow, show ‖lq‖ ^ 2 = Complex.normSq lq from Complex.sq_norm lq, div_eq_mul_inv]
@@ -881,10 +881,10 @@ lemma norm_tentK_strip {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {z : ℂ} (hz 
     simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]
     ring
   rw [h1]
-  have hLnn : 0 ≤ L - 2 * K := by linarith
+  have hLnn : 0 ≤ L - 2 * K := by linarith only [h2K]
   have he : Real.exp (-(L - 2 * K) * z.re) ≤ 1 := by
     rw [Real.exp_le_one_iff]
-    nlinarith [mul_nonneg hLnn hzre]
+    linarith only [mul_nonneg hLnn hzre, hLnn, hzre]
   have h2 : ‖1 - Complex.exp (-(((K : ℝ) : ℂ) * z))‖ ≤ 2 := by
     have hre : (-(((K : ℝ) : ℂ) * z)).re = -K * z.re := by
       rw [Complex.neg_re, Complex.mul_re]
@@ -896,8 +896,8 @@ lemma norm_tentK_strip {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {z : ℂ} (hz 
     rw [Complex.norm_exp, hre]
     have hexp : Real.exp (-K * z.re) ≤ 1 := by
       rw [Real.exp_le_one_iff]
-      nlinarith [mul_nonneg (le_of_lt hK) hzre]
-    linarith
+      linarith only [mul_nonneg (le_of_lt hK) hzre, hK, hzre]
+    linarith only [hexp]
   rw [Complex.norm_pow, norm_div]
   have hzpos : 0 < ‖z‖ := norm_pos_iff.mpr hz
   have h2' : (‖1 - Complex.exp (-(((K : ℝ) : ℂ) * z))‖ / ‖z‖) ^ 2 ≤ (2 / ‖z‖) ^ 2 := by
@@ -926,7 +926,7 @@ lemma norm_tentK_of_re_ge {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} (
       (1 + Real.exp (K * Real.log (Q : ℝ))) ^ 2 / ‖z‖ ^ 2 := by
   have hQ1 : (1 : ℝ) < (Q : ℝ) := by exact_mod_cast (by omega : 1 < Q)
   have hlogQ : 0 < Real.log (Q : ℝ) := Real.log_pos hQ1
-  have hLnn : 0 ≤ L - 2 * K := by linarith
+  have hLnn : 0 ≤ L - 2 * K := by linarith only [h2K]
   rw [tentK_eq_closed L K z hz, norm_mul, Complex.norm_exp, Complex.norm_pow, norm_div]
   have hexp : (-(((L - 2 * K : ℝ) : ℂ) * z)).re = -(L - 2 * K) * z.re := by
     rw [Complex.neg_re, Complex.mul_re]
@@ -947,7 +947,7 @@ lemma norm_tentK_of_re_ge {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} (
     have h1' := norm_sub_le (1 : ℂ) (Complex.exp (-(((K : ℝ) : ℂ) * z)))
     simp only [norm_one] at h1'
     rw [Complex.norm_exp, hre] at h1'
-    linarith
+    linarith only [hle, h1']
   have hzpos : 0 < ‖z‖ := norm_pos_iff.mpr hz
   have h2' : (‖1 - Complex.exp (-(((K : ℝ) : ℂ) * z))‖ / ‖z‖) ^ 2 ≤
       ((1 + Real.exp (K * Real.log (Q : ℝ))) / ‖z‖) ^ 2 := by
@@ -977,21 +977,21 @@ lemma exists_norm_tentPhi_bound {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : 
   intro u hu
   set M : ℝ := 5 * A + 8 * (E / (Real.log (Q : ℝ)) ^ 2) + 1 with hM
   have hM5 : 5 * A ≤ M := by
-    rw [hM]; nlinarith [hA0, div_nonneg hE0 (by positivity : (0:ℝ) ≤ (Real.log (Q : ℝ)) ^ 2)]
+    rw [hM]; linarith only [hA0, div_nonneg hE0 (by positivity : (0:ℝ) ≤ (Real.log (Q : ℝ)) ^ 2), hE0, hlogQ]
   have hM8 : 8 * (E / (Real.log (Q : ℝ)) ^ 2) ≤ M := by
-    rw [hM]; nlinarith [hA0, div_nonneg hE0 (by positivity : (0:ℝ) ≤ (Real.log (Q : ℝ)) ^ 2)]
+    rw [hM]; linarith only [hA0, div_nonneg hE0 (by positivity : (0:ℝ) ≤ (Real.log (Q : ℝ)) ^ 2)]
   have hMpos : 0 < M := by
     rw [hM]
     have h2 : (0:ℝ) ≤ 8 * (E / (Real.log (Q : ℝ)) ^ 2) :=
       mul_nonneg (by norm_num) (div_nonneg hE0 (by positivity))
-    linarith [hA0]
+    linarith only [hA0, h2]
   have hparts : E ≤ M * (Real.log (Q : ℝ)) ^ 2 / 8 := by
     have h2 : 0 < (Real.log (Q : ℝ)) ^ 2 := by positivity
     have h8 : (8 : ℝ) * (E / (Real.log (Q : ℝ)) ^ 2) = 8 * E / (Real.log (Q : ℝ)) ^ 2 := by ring
     rw [h8] at hM8
     rw [div_le_iff₀ h2] at hM8
     rw [le_div_iff₀ (by norm_num : (0 : ℝ) < 8)]
-    linarith
+    linarith only [hM8]
   by_cases hu2 : ‖u‖ ≤ 2
   · have humem : u ∈ Metric.closedBall (0 : ℂ) (2 : ℝ) := by
       rw [Metric.mem_closedBall, dist_eq_norm, sub_zero]; exact hu2
@@ -1000,10 +1000,10 @@ lemma exists_norm_tentPhi_bound {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : 
       rw [le_div_iff₀ (by positivity : 0 < 1 + ‖u‖ ^ 2)]
       have h5 : 1 + ‖u‖ ^ 2 ≤ 5 := by
         have hh := pow_le_pow_left₀ (norm_nonneg u) hu2 2
-        linarith
+        linarith only [hh]
       have hm := mul_le_mul_of_nonneg_left h5 hA0
-      nlinarith [hm, hM5]
-    linarith
+      linarith only [hm, hM5]
+    linarith only [h1, h2]
   · have hnorm2 : 2 < ‖u‖ := not_le.mp hu2
     have h1u : ‖u‖ / 2 ≤ ‖1 - u‖ := by
       have h3 : ‖u‖ ≤ ‖u - 1‖ + 1 := by
@@ -1012,8 +1012,8 @@ lemma exists_norm_tentPhi_bound {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : 
           _ = ‖u - 1‖ + 1 := by rw [norm_one]
       have : ‖u - 1‖ = ‖1 - u‖ := by rw [show u - 1 = -(1 - u) by ring, norm_neg]
       rw [this] at h3
-      linarith
-    have h1upos : 0 < ‖1 - u‖ := by linarith
+      linarith only [hu2, h3]
+    have h1upos : 0 < ‖1 - u‖ := by linarith only [hu2, h1u]
     have h1une : 1 - u ≠ 0 := norm_ne_zero_iff.mp (ne_of_gt h1upos)
     set ql : ℂ := ((Real.log (Q : ℝ) : ℝ) : ℂ) with hql
     have hqlne : ql ≠ 0 := by
@@ -1026,26 +1026,26 @@ lemma exists_norm_tentPhi_bound {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : 
       rw [Complex.mul_re, hql]
       simp only [Complex.sub_re, Complex.one_re, Complex.ofReal_re, Complex.ofReal_im,
         Complex.sub_im, Complex.one_im, mul_zero, sub_zero]
-      nlinarith [hu, hlogQ]
+      nlinarith only [hu, hlogQ]
     have hzne : (1 - u) * ql ≠ 0 := mul_ne_zero h1une hqlne
     have hb := norm_tentK_of_re_ge hK h2K hQ hzne hzre
     have hnormz : ‖(1 - u) * ql‖ = ‖1 - u‖ * Real.log (Q : ℝ) := by
       rw [norm_mul, hql, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hlogQ]
     rw [hnormz, ← hE] at hb
     have hden : 0 < (‖1 - u‖ * Real.log (Q : ℝ)) ^ 2 := by positivity
-    have hu2sq : ‖u‖ ^ 2 ≤ 4 * ‖1 - u‖ ^ 2 := by nlinarith [h1u, norm_nonneg (1 - u)]
+    have hu2sq : ‖u‖ ^ 2 ≤ 4 * ‖1 - u‖ ^ 2 := by nlinarith only [h1u, norm_nonneg (1 - u), hu2]
     refine le_trans hb ?_
     rw [div_le_div_iff₀ hden (by positivity : 0 < 1 + ‖u‖ ^ 2)]
-    have h1' : 1 + ‖u‖ ^ 2 ≤ 2 * ‖u‖ ^ 2 := by nlinarith [hnorm2, sq_nonneg ‖u‖]
+    have h1' : 1 + ‖u‖ ^ 2 ≤ 2 * ‖u‖ ^ 2 := by nlinarith only [hnorm2, sq_nonneg ‖u‖, hu2]
     have hmul1 : E * (1 + ‖u‖ ^ 2) ≤ E * (2 * ‖u‖ ^ 2) := mul_le_mul_of_nonneg_left h1' hE0
     have hmul2 : E * (2 * ‖u‖ ^ 2) ≤ E * (2 * (4 * ‖1 - u‖ ^ 2)) :=
-      mul_le_mul_of_nonneg_left (by linarith [hu2sq]) hE0
-    have hstep : E * (1 + ‖u‖ ^ 2) ≤ 8 * E * ‖1 - u‖ ^ 2 := by nlinarith [hmul1, hmul2]
+      mul_le_mul_of_nonneg_left (by linarith only [hu2sq]) hE0
+    have hstep : E * (1 + ‖u‖ ^ 2) ≤ 8 * E * ‖1 - u‖ ^ 2 := by linarith only [hmul1, hmul2]
     have hstep2 : 8 * E * ‖1 - u‖ ^ 2 ≤ M * (‖1 - u‖ * Real.log (Q : ℝ)) ^ 2 := by
       rw [mul_pow]
       have h4 := mul_le_mul_of_nonneg_right hparts (show (0:ℝ) ≤ ‖1 - u‖ ^ 2 by positivity)
-      nlinarith [h4]
-    linarith [hstep, hstep2]
+      linarith only [h4]
+    linarith only [hstep, hstep2, hmul1, hmul2]
 /-! ## Uniform bounds for the logarithmic derivatives on the left edge -/
 
 /-- The gamma factor never vanishes on the line `Re s = -1/2`. -/
@@ -1059,8 +1059,8 @@ lemma gammaFactor_ne_zero_of_re_eq_neg_half {N : ℕ} [NeZero N] (χ : Dirichlet
     have hre := congrArg Complex.re hn
     rw [hs] at hre
     simp at hre
-    have h2 : (n : ℝ) = 1 / 4 := by linarith
-    have h4 : ((4 * n : ℕ) : ℝ) = 1 := by push_cast; linarith
+    have h2 : (n : ℝ) = 1 / 4 := by linarith only [hre]
+    have h4 : ((4 * n : ℕ) : ℝ) = 1 := by push_cast; linarith only [hre]
     have h4' : 4 * n = 1 := by exact_mod_cast h4
     omega
   · rw [hO.gammaFactor_def]
@@ -1083,16 +1083,16 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
     rw [hsre] at this; simp at this
   have hsrel : (-1 : ℝ) < s.re := by rw [hsre]; norm_num
   have hnorm_logpi : ‖-(Complex.log (Real.pi : ℂ)) / 2‖ = Real.log Real.pi / 2 := by
-    have hlogpi_nn : (0 : ℝ) ≤ Real.log Real.pi := Real.log_nonneg (by linarith [Real.pi_gt_three])
+    have hlogpi_nn : (0 : ℝ) ≤ Real.log Real.pi := Real.log_nonneg (by linarith only [Real.pi_gt_three])
     rw [norm_div, norm_neg, ← Complex.ofReal_log (le_of_lt Real.pi_pos),
       Complex.norm_of_nonneg hlogpi_nn, norm_ofNat]
   have hlogpi : Real.log Real.pi / 2 ≤ 2 := by
     have h := Real.log_le_sub_one_of_pos Real.pi_pos
-    linarith [Real.pi_lt_four]
+    linarith only [Real.pi_lt_four, h]
   have hlogT : Real.log (2 + |-(T / 2)|) ≤ Real.log (2 + |T|) := by
     apply Real.log_le_log (by positivity)
     have h2 : |-(T / 2)| = |T| / 2 := by rw [abs_neg, abs_div]; norm_num
-    rw [h2]; linarith [abs_nonneg T]
+    rw [h2]; linarith only [abs_nonneg T]
   have hinv' : ‖(1 : ℂ) / s‖ ≤ 2 / 3 := by
     have hlow : (3 / 2 : ℝ) ≤ ‖s‖ := by
       have h := Complex.abs_re_le_norm s
@@ -1116,7 +1116,7 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
     have hdg := Commons.Analysis.SpecialFunctions.Gamma.digamma_vertical_bound (7 / 4) (-(T / 2))
       (by norm_num) (by norm_num)
     have hbound : ‖Complex.digamma (((7 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I)‖ ≤
-        Real.log (2 + |T|) + 8 := le_trans hdg (by linarith [hlogT])
+        Real.log (2 + |T|) + 8 := le_trans hdg (by linarith only [hlogT])
     have hfinal : ‖-(Complex.log (Real.pi : ℂ)) / 2 +
         Complex.digamma (((7 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I) / 2‖ ≤
         Real.log (2 + |T|) / 2 + 13 := by
@@ -1130,8 +1130,8 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
             have h2n : ‖(2 : ℂ)‖ = 2 := by norm_num
             rw [h2n]
             have h := hbound
-            linarith
-        _ ≤ Real.log (2 + |T|) / 2 + 13 := by linarith
+            linarith only [hlogT, hdg]
+        _ ≤ Real.log (2 + |T|) / 2 + 13 := by linarith only [hlogpi]
     have hL : logDeriv Complex.Gammaℝ s =
         -1 / s + (-(Complex.log (Real.pi : ℂ)) / 2 +
           Complex.digamma (((7 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I) / 2) := by
@@ -1147,7 +1147,7 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
           refine add_le_add ?_ hfinal
           rw [show (-1 : ℂ) / s = -(1 / s) by ring, norm_neg]
           exact hinv'
-      _ ≤ Real.log (2 + |T|) / 2 + 14 := by linarith
+      _ ≤ Real.log (2 + |T|) / 2 + 14 := by linarith only []
   · have hfun : gammaFactor χ = (fun w : ℂ => Complex.Gammaℝ (w + 1)) := funext hO.gammaFactor_def
     rw [hfun]
     have hcomp : logDeriv (fun w : ℂ => Complex.Gammaℝ (w + 1)) s =
@@ -1175,7 +1175,7 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
     have hdg := Commons.Analysis.SpecialFunctions.Gamma.digamma_vertical_bound (9 / 4) (-(T / 2))
       (by norm_num) (by norm_num)
     have hbound : ‖Complex.digamma (((9 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I)‖ ≤
-        Real.log (2 + |T|) + 8 := le_trans hdg (by linarith [hlogT])
+        Real.log (2 + |T|) + 8 := le_trans hdg (by linarith only [hlogT])
     have hfinal : ‖-(Complex.log (Real.pi : ℂ)) / 2 +
         Complex.digamma (((9 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I) / 2‖ ≤
         Real.log (2 + |T|) / 2 + 13 := by
@@ -1188,8 +1188,8 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
             rw [hnorm_logpi, norm_div]
             have h2n : ‖(2 : ℂ)‖ = 2 := by norm_num
             rw [h2n]
-            linarith [hbound]
-        _ ≤ Real.log (2 + |T|) / 2 + 13 := by linarith
+            linarith only [hbound, hlogT, hdg]
+        _ ≤ Real.log (2 + |T|) / 2 + 13 := by linarith only [hlogpi]
     have hL : logDeriv Complex.Gammaℝ (s + 1) =
         -1 / (s + 1) + (-(Complex.log (Real.pi : ℂ)) / 2 +
           Complex.digamma (((9 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I) / 2) := by
@@ -1211,7 +1211,7 @@ lemma norm_logDeriv_gammaFactor_at_three_halves {N : ℕ} [NeZero N] (χ : Diric
             Complex.digamma (((9 / 4 : ℝ) : ℂ) + ((-(T / 2) : ℝ) : ℂ) * Complex.I) / 2‖ :=
           norm_add_le _ _
       _ ≤ 2 / 3 + (Real.log (2 + |T|) / 2 + 13) := add_le_add hinv2 hfinal
-      _ ≤ Real.log (2 + |T|) / 2 + 14 := by linarith
+      _ ≤ Real.log (2 + |T|) / 2 + 14 := by linarith only []
 /-- The gamma factor is complex-differentiable on the line `Re s = -1/2`. -/
 lemma differentiableAt_gammaFactor_at_neg_half {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) (T : ℝ) :
@@ -1226,7 +1226,7 @@ lemma differentiableAt_gammaFactor_at_neg_half {N : ℕ} [NeZero N]
       have := congrArg Complex.re hm
       rw [hre] at this
       simp at this
-      linarith
+      linarith only [this]
     have h4 : ((4 * m : ℕ) : ℝ) = 1 := by
       have hc : ((4 * m : ℕ) : ℝ) = 4 * (m : ℝ) := by push_cast; ring
       rw [hc, h2]; norm_num
@@ -1264,7 +1264,7 @@ theorem logDeriv_LFunction_leftEdge_uniform {N : ℕ} [NeZero N] (χ : Dirichlet
   have hN2 : 2 ≤ N := by have h1 : 1 ≤ N := NeZero.one_le; omega
   have hNge1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast (show 1 ≤ N by omega)
   have hlogN : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg hNge1
-  have hlog2 : 0 ≤ Real.log (2 + |T|) := Real.log_nonneg (by linarith [abs_nonneg T])
+  have hlog2 : 0 ≤ Real.log (2 + |T|) := Real.log_nonneg (by linarith only [abs_nonneg T])
   have hχinv : χ⁻¹ ≠ 1 := by
     intro h
     apply hχ
@@ -1318,10 +1318,10 @@ theorem logDeriv_LFunction_leftEdge_uniform {N : ℕ} [NeZero N] (χ : Dirichlet
         Real.log (2 + |T|) / 2 + 14 := by
       have hp : Real.log Real.pi / 2 ≤ 2 := by
         have h' := Real.log_le_sub_one_of_pos Real.pi_pos
-        linarith [Real.pi_lt_four]
-      linarith
+        linarith only [Real.pi_lt_four, h']
+      linarith only [hp]
     rw [hsdef]
-    linarith [h, hbound]
+    linarith only [h, hbound]
   have hlogNeq : ‖-(Real.log (N : ℝ) : ℂ)‖ = Real.log (N : ℝ) := by
     rw [norm_neg, Complex.norm_of_nonneg hlogN]
   have hkey : ‖logDeriv (DirichletCharacter.LFunction χ) s‖ ≤
@@ -1353,7 +1353,7 @@ theorem logDeriv_LFunction_leftEdge_uniform {N : ℕ} [NeZero N] (χ : Dirichlet
   have hfin : Real.log (N : ℝ) + 20 + (Real.log (2 + |T|) / 2 + 14) +
         (Real.log (2 + |T|) / 2 + 14) ≤
       100 * (Real.log (N : ℝ) + Real.log (2 + |T|) + 1) := by
-    nlinarith [hlogN, hlog2]
+    linarith only [hlogN, hlog2]
   rw [hsdef] at hkey
   exact hkey.trans hfin
 /-! ## The left-edge integral of the `L`-log-derivative -/
@@ -1373,24 +1373,24 @@ private lemma inv_mul_sqrt_eq_rpow' (u : ℝ) (hu : 0 < u) :
 lemma log_weight_le_rpow (t : ℝ) :
     (Real.log (2 + |t|) + 1) / (1 + t ^ 2) ≤ 8 * (1 + |t|) ^ (-(3 / 2 : ℝ)) := by
   have hlog1 : Real.log (2 + |t|) ≤ 2 * Real.sqrt (2 + |t|) := by
-    have h := Real.log_le_rpow_div (by linarith [abs_nonneg t] : (0:ℝ) ≤ 2 + |t|)
+    have h := Real.log_le_rpow_div (by linarith only [abs_nonneg t] : (0:ℝ) ≤ 2 + |t|)
       (by norm_num : (0:ℝ) < 1/2)
     have h2 : (2 + |t|) ^ ((1:ℝ)/2) / ((1:ℝ)/2) = 2 * Real.sqrt (2 + |t|) := by
       rw [Real.sqrt_eq_rpow]; ring
     rwa [h2] at h
   have hsq : Real.sqrt (2 + |t|) ≤ Real.sqrt 2 * Real.sqrt (1 + |t|) := by
     rw [← Real.sqrt_mul (by norm_num : (0:ℝ) ≤ 2)]
-    exact Real.sqrt_le_sqrt (by linarith [abs_nonneg t])
+    exact Real.sqrt_le_sqrt (by linarith only [abs_nonneg t])
   have h3 : (2:ℝ) * Real.sqrt 2 ≤ 3 := by
     have hsq2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    nlinarith [Real.sqrt_nonneg 2, sq_nonneg (Real.sqrt 2 - 1)]
+    linarith only [Real.sqrt_nonneg 2, sq_nonneg (Real.sqrt 2 - 1), hsq2]
   have hs1 : (1:ℝ) ≤ Real.sqrt (1 + |t|) := by
-    rw [Real.le_sqrt (by norm_num) (by linarith [abs_nonneg t])]; linarith [abs_nonneg t]
+    rw [Real.le_sqrt (by norm_num) (by linarith only [abs_nonneg t])]; linarith only [abs_nonneg t]
   have hs1nn : 0 ≤ Real.sqrt (1 + |t|) := Real.sqrt_nonneg _
   have hlog2 : Real.log (2 + |t|) + 1 ≤ 4 * Real.sqrt (1 + |t|) := by
     have hb : Real.log (2 + |t|) ≤ 2 * (Real.sqrt 2 * Real.sqrt (1 + |t|)) :=
-      le_trans hlog1 (by linarith [hsq])
-    nlinarith [hb, h3, hs1nn, hs1]
+      le_trans hlog1 (by linarith only [hsq])
+    nlinarith only [hb, h3, hs1nn, hs1, hlog1, hsq]
   have hden : (0:ℝ) < 1 + t ^ 2 := by positivity
   have hu : (0:ℝ) < 1 + |t| := by positivity
   have hkey : 4 * Real.sqrt (1 + |t|) / (1 + t ^ 2) ≤
@@ -1398,7 +1398,7 @@ lemma log_weight_le_rpow (t : ℝ) :
     rw [div_le_div_iff₀ hden (by positivity)]
     have hsu : Real.sqrt (1 + |t|) ^ 2 = 1 + |t| := Real.sq_sqrt hu.le
     have habs : |t| ^ 2 = t ^ 2 := sq_abs t
-    nlinarith [sq_nonneg (|t| - 1), hsu, Real.sqrt_nonneg (1 + |t|), habs]
+    nlinarith only [sq_nonneg (|t| - 1), hsu, Real.sqrt_nonneg (1 + |t|), habs]
   calc (Real.log (2 + |t|) + 1) / (1 + t ^ 2)
       ≤ 4 * Real.sqrt (1 + |t|) / (1 + t ^ 2) := div_le_div_of_nonneg_right hlog2 hden.le
     _ ≤ 8 / ((1 + |t|) * Real.sqrt (1 + |t|)) := hkey
@@ -1412,7 +1412,7 @@ private lemma integral_one_add_rpow_Ioi' :
       HasDerivAt (fun x : ℝ => -2 * (1 + x) ^ (-((1:ℝ)/2))) ((1 + x) ^ (-((3:ℝ)/2))) x := by
     intro x hx
     have hx0 : (0:ℝ) ≤ x := hx
-    have hpos : (0:ℝ) < 1 + x := by linarith
+    have hpos : (0:ℝ) < 1 + x := by linarith only [hx0]
     have hbase : HasDerivAt (fun y : ℝ => 1 + y) 1 x := by
       simpa using (hasDerivAt_id x).const_add 1
     have hrp : HasDerivAt (fun y : ℝ => (1 + y) ^ (-((1:ℝ)/2)))
@@ -1503,8 +1503,8 @@ lemma leftEdge_L_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ
         4 * E * (((1 + t ^ 2) * (Real.log (Q : ℝ)) ^ 2))⁻¹ := by
       rw [hE]; exact h2
     have hb : 0 ≤ 100 * (Real.log (N : ℝ) + Real.log (2 + |t|) + 1) := by
-      have h := Real.log_nonneg (by linarith [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|)
-      linarith [hlogN, h]
+      have h := Real.log_nonneg (by linarith only [abs_nonneg t] : (1:ℝ) ≤ 2 + |t|)
+      linarith only [hlogN, h]
     calc ‖logDeriv (DirichletCharacter.LFunction χ)
             (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖ *
           ‖tentK L K (((((3 : ℝ) / 2 : ℝ) : ℂ) - (t : ℂ) * Complex.I) *
@@ -1527,21 +1527,21 @@ lemma leftEdge_L_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ
       ≤ (400 * E / (Real.log (Q : ℝ)) ^ 2) * ((Real.log (Q : ℝ) + 1) *
         (8 * (1 + |t|) ^ (-((3:ℝ)/2)))) := by
     intro t
-    have hlog2nn : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+    have hlog2nn : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
     have hnum : Real.log (N : ℝ) + Real.log (2 + |t|) + 1 ≤
         (Real.log (Q : ℝ) + 1) * (Real.log (2 + |t|) + 1) := by
       have hprod : 0 ≤ Real.log (Q : ℝ) * Real.log (2 + |t|) := mul_nonneg hlogQnn hlog2nn
       have hlogNnn : 0 ≤ Real.log (N : ℝ) := hlogN
       have h1 : Real.log (N : ℝ) ≤ Real.log (Q : ℝ) + Real.log (Q : ℝ) * Real.log (2 + |t|) := by
-        linarith [hlogNle, hprod]
-      nlinarith [h1, hlog2nn]
+        linarith only [hlogNle, hprod]
+      linarith only [h1, hlog2nn, hlogNle, hprod]
     have hdenpos : (0:ℝ) < 1 + t ^ 2 := by positivity
     have hdiv : (Real.log (N : ℝ) + Real.log (2 + |t|) + 1) / (1 + t ^ 2) ≤
         (Real.log (Q : ℝ) + 1) * ((Real.log (2 + |t|) + 1) / (1 + t ^ 2)) := by
       rw [div_eq_mul_inv, div_eq_mul_inv, ← mul_assoc]
       exact mul_le_mul_of_nonneg_right hnum (inv_nonneg.mpr hdenpos.le)
     have hlogwl := log_weight_le_rpow t
-    have hQ1nn : (0:ℝ) ≤ Real.log (Q : ℝ) + 1 := by linarith
+    have hQ1nn : (0:ℝ) ≤ Real.log (Q : ℝ) + 1 := by linarith only [hlogQ]
     exact mul_le_mul_of_nonneg_left (le_trans hdiv (mul_le_mul_of_nonneg_left hlogwl hQ1nn))
       hcoef
   have hmain : ‖(1 / (2 * (Real.pi : ℂ))) * ∫ t : ℝ,
@@ -1590,10 +1590,10 @@ lemma leftEdge_L_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ
     rw [heq1, heq2]
     have hle : 6400 / Real.pi ≤ 4000 := by
       rw [div_le_iff₀ (by positivity : (0:ℝ) < Real.pi)]
-      nlinarith [Real.pi_gt_three]
+      linarith only [Real.pi_gt_three]
     have hE1 : 0 ≤ E * (1 + Real.log (Q : ℝ)) / (Real.log (Q : ℝ)) ^ 2 := by positivity
     exact mul_le_mul_of_nonneg_right hle hE1
-  linarith [htarget]
+  linarith only [htarget]
 /-! ## The limit of the rectangle integral along a vertical strip -/
 
 /-- As `T → ∞`, the rectangle integral over `[-1/2 - iT, 2 + iT]` tends to the difference of the
@@ -1616,7 +1616,7 @@ lemma rectInt_tendsto_vertical {F : ℂ → ℂ}
     rw [Filter.tendsto_atBot]
     intro a
     filter_upwards [Filter.eventually_ge_atTop (-a)] with T hT
-    linarith
+    linarith only [hT]
   have hC : Tendsto (fun T : ℝ => ∫ y : ℝ in (-T)..T, F ((2 : ℂ) + (y : ℂ) * Complex.I)) atTop
       (nhds (∫ t : ℝ, F ((2 : ℂ) + (t : ℂ) * Complex.I))) :=
     MeasureTheory.intervalIntegral_tendsto_integral h2 hnegtop tendsto_id
@@ -1770,13 +1770,13 @@ lemma integrable_mul_tentPhi_of_bound {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
       rw [hnorm] at h
       refine le_trans h ?_
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
-      nlinarith [sq_nonneg σ]
+      nlinarith only [sq_nonneg σ, hM0]
     calc ‖F ((σ : ℂ) + (t : ℂ) * Complex.I)‖ * ‖tentPhi L K Q ((σ : ℂ) + (t : ℂ) * Complex.I)‖
         ≤ (C * (Real.log (2 + |t|) + 1)) * (M / (1 + t ^ 2)) :=
           mul_le_mul (hb t) hΦ (norm_nonneg _)
             (mul_nonneg hC (by
-              have h := Real.log_nonneg (show (1:ℝ) ≤ 2 + |t| by linarith [abs_nonneg t])
-              linarith))
+              have h := Real.log_nonneg (show (1:ℝ) ≤ 2 + |t| by linarith only [abs_nonneg t])
+              linarith only [h]))
       _ = (C * M) * (Real.log (2 + |t|) + 1) / (1 + t ^ 2) := by ring
 
 /-- The logarithmic bound for `logDeriv γ` on `Re s = 2`. -/
@@ -1785,22 +1785,22 @@ lemma norm_logDeriv_gammaFactor_two {N : ℕ} [NeZero N] (χ : DirichletCharacte
       13 * (Real.log (2 + |t|) + 1) := by
   have h := Commons.NumberTheory.DirichletCharacter.norm_logDeriv_gammaFactor_le χ t
   rw [show (2 : ℂ) + (t : ℂ) * Complex.I = (2 : ℂ) + Complex.I * (t : ℂ) by ring]
-  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
   have hpi : Real.log Real.pi / 2 ≤ 2 := by
     have h' := Real.log_le_sub_one_of_pos Real.pi_pos
-    linarith [Real.pi_lt_four]
-  linarith [h, hlog, hpi]
+    linarith only [Real.pi_lt_four, h']
+  linarith only [h, hlog, hpi]
 
 /-- The logarithmic bound for `logDeriv γ` on `Re s = -1/2`. -/
 lemma norm_logDeriv_gammaFactor_left {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (t : ℝ) :
     ‖logDeriv (gammaFactor χ) (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I)‖ ≤
       13 * (Real.log (2 + |t|) + 1) := by
   have h := Commons.NumberTheory.DirichletCharacter.norm_logDeriv_gammaFactor_leftEdge χ t
-  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
   have hpi : Real.log Real.pi / 2 ≤ 2 := by
     have h' := Real.log_le_sub_one_of_pos Real.pi_pos
-    linarith [Real.pi_lt_four]
-  linarith [h, hlog, hpi]
+    linarith only [Real.pi_lt_four, h']
+  linarith only [h, hlog, hpi]
 
 /-- Integrability of `logDeriv γ · Φ` on `Re s = 2`. -/
 lemma integrable_logDeriv_gammaFactor_mul_tentPhi_two {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
@@ -1827,7 +1827,7 @@ lemma norm_logDeriv_completedL_two {N : ℕ} [NeZero N] (χ : DirichletCharacter
     ‖logDeriv (DirichletCharacter.completedLFunction χ) ((2 : ℂ) + (t : ℂ) * Complex.I)‖ ≤
       21 * (Real.log (N : ℝ) + 1) * (Real.log (2 + |t|) + 1) := by
   have h := Commons.NumberTheory.DirichletCharacter.completedLogDeriv_two_le χ hχ t
-  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+  have hlog : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
   have hlogN : 0 ≤ Real.log (N : ℝ) :=
     Real.log_nonneg (by exact_mod_cast (NeZero.one_le (n := N)))
   rw [show (2 : ℂ) + (t : ℂ) * Complex.I = (2 : ℂ) + Complex.I * (t : ℂ) by ring]
@@ -1874,10 +1874,10 @@ lemma norm_logDeriv_completedL_left {N : ℕ} [NeZero N] (χ : DirichletCharacte
         hΛne hγne ((DirichletCharacter.differentiable_completedLFunction hχ) s)
         (by rw [hsdef]; exact differentiableAt_gammaFactor_at_neg_half χ t)
     rw [h1]; ring
-  have hlog2nn : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith [abs_nonneg t])
+  have hlog2nn : 0 ≤ Real.log (2 + |t|) := Real.log_nonneg (by linarith only [abs_nonneg t])
   have hlogNnn : 0 ≤ Real.log (N : ℝ) :=
     Real.log_nonneg (by exact_mod_cast (NeZero.one_le (n := N)))
-  have hlogN1 : 1 ≤ Real.log (N : ℝ) + 1 := by linarith
+  have hlogN1 : 1 ≤ Real.log (N : ℝ) + 1 := by linarith only [hlogNnn]
   rw [hsplit]
   calc ‖logDeriv (DirichletCharacter.LFunction χ) s + logDeriv (gammaFactor χ) s‖
       ≤ ‖logDeriv (DirichletCharacter.LFunction χ) s‖ + ‖logDeriv (gammaFactor χ) s‖ :=
@@ -1885,7 +1885,7 @@ lemma norm_logDeriv_completedL_left {N : ℕ} [NeZero N] (χ : DirichletCharacte
     _ ≤ 100 * (Real.log (N : ℝ) + Real.log (2 + |t|) + 1) +
           13 * (Real.log (2 + |t|) + 1) := add_le_add hL' hγ'
     _ ≤ 300 * (Real.log (N : ℝ) + 1) * (Real.log (2 + |t|) + 1) := by
-        nlinarith [hlog2nn, hlogN1, hlogNnn,
+        linarith only [hlog2nn, hlogN1, hlogNnn,
           mul_nonneg (by linarith : (0:ℝ) ≤ Real.log (N : ℝ) + 1) hlog2nn,
           mul_nonneg hlogNnn hlog2nn]
 
@@ -1897,7 +1897,7 @@ lemma integrable_logDeriv_completedL_mul_tentPhi_two {L K : ℝ} (hK : 0 < K) (h
   have hlogN : 0 ≤ (Real.log (N : ℝ) + 1) := by
     have h : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast (NeZero.one_le (n := N))
     have h2 : (0 : ℝ) ≤ Real.log (N : ℝ) := Real.log_nonneg h
-    linarith
+    linarith only [h2]
   refine integrable_mul_tentPhi_of_bound hK h2K hQ (σ := 2) (by norm_num)
     (measurable_logDeriv_completedL_line χ hχ 2) (C := 21 * (Real.log (N : ℝ) + 1))
     (by positivity) ?_
@@ -1914,7 +1914,7 @@ lemma integrable_logDeriv_completedL_mul_tentPhi_left {L K : ℝ} (hK : 0 < K) (
   have hlogN : 0 ≤ (Real.log (N : ℝ) + 1) := by
     have h : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast (NeZero.one_le (n := N))
     have h2 : (0 : ℝ) ≤ Real.log (N : ℝ) := Real.log_nonneg h
-    linarith
+    linarith only [h2]
   refine integrable_mul_tentPhi_of_bound hK h2K hQ (σ := -1 / 2) (by norm_num)
     (measurable_logDeriv_completedL_line χ hχ (-1 / 2)) (C := 300 * (Real.log (N : ℝ) + 1))
     (by positivity) ?_
@@ -1930,24 +1930,24 @@ lemma tendsto_log_mul_div_sq {a : ℝ} (ha : 1 ≤ a) :
     simpa using tendsto_inv_atTop_zero.const_mul (Real.log a + 3)
   refine squeeze_zero' ?_ ?_ hbdd
   · filter_upwards [eventually_ge_atTop (0:ℝ)] with T hT
-    have h1 : 1 ≤ a * (T + 3) := by nlinarith
-    have h2 : 0 < 1 + T ^ 2 := by nlinarith
+    have h1 : 1 ≤ a * (T + 3) := by nlinarith only [ha, hT]
+    have h2 : 0 < 1 + T ^ 2 := by nlinarith only []
     exact div_nonneg (Real.log_nonneg h1) h2.le
   · filter_upwards [eventually_ge_atTop (1:ℝ)] with T hT
-    have h3 : 0 < 1 + T ^ 2 := by nlinarith
-    have hT3 : 0 < T + 3 := by linarith
-    have hTpos : 0 < T := by linarith
+    have h3 : 0 < 1 + T ^ 2 := by nlinarith only []
+    have hT3 : 0 < T + 3 := by linarith only [hT]
+    have hTpos : 0 < T := by linarith only [hT]
     have hlog : Real.log (a * (T + 3)) = Real.log a + Real.log (T + 3) :=
       Real.log_mul ha0.ne' hT3.ne'
     have hsub : Real.log (T + 3) ≤ T + 2 := by
-      have := Real.log_le_sub_one_of_pos hT3; linarith
-    have hA : Real.log (a * (T + 3)) ≤ Real.log a + (T + 2) := by rw [hlog]; linarith
+      have := Real.log_le_sub_one_of_pos hT3; linarith only [this]
+    have hA : Real.log (a * (T + 3)) ≤ Real.log a + (T + 2) := by rw [hlog]; linarith only [hsub]
     have hla : 0 ≤ Real.log a := Real.log_nonneg ha
-    have hTle : T ≤ T ^ 2 := by nlinarith
+    have hTle : T ≤ T ^ 2 := by nlinarith only [hT]
     have hmain : (Real.log a + (T + 2)) * T ≤ (Real.log a + 3) * (1 + T ^ 2) := by
       have h1 : Real.log a * T ≤ Real.log a * T ^ 2 := mul_le_mul_of_nonneg_left hTle hla
-      have h2 : T ^ 2 + 2 * T ≤ 3 * T ^ 2 := by nlinarith
-      nlinarith [h1, h2, hla, sq_nonneg T]
+      have h2 : T ^ 2 + 2 * T ≤ 3 * T ^ 2 := by linarith only [hTle]
+      linarith only [h1, h2, hla, sq_nonneg T, hTle]
     calc Real.log (a * (T + 3)) / (1 + T ^ 2)
         ≤ (Real.log a + (T + 2)) / (1 + T ^ 2) :=
           div_le_div_of_nonneg_right hA h3.le
@@ -1970,31 +1970,31 @@ lemma tendsto_log_add_div_sqrt (b : ℝ) :
   · filter_upwards [eventually_ge_atTop (max 1 (|b| + 2))] with T hT
     have hbT2 : |b| + 2 ≤ T := le_trans (le_max_right (1:ℝ) (|b| + 2)) hT
     have h2 : 0 < Real.sqrt (1 + T ^ 2) := Real.sqrt_pos.mpr (by positivity)
-    exact div_nonneg (Real.log_nonneg (by linarith [neg_le_abs b, hbT2])) h2.le
+    exact div_nonneg (Real.log_nonneg (by linarith only [neg_le_abs b, hbT2])) h2.le
   · filter_upwards [eventually_ge_atTop (max 1 (|b| + 2))] with T hT
     have hT1 : 1 ≤ T := le_trans (le_max_left _ _) hT
-    have hT0 : 0 < T := by linarith
+    have hT0 : 0 < T := by linarith only [hT1]
     have hbT2 : |b| + 2 ≤ T := le_trans (le_max_right (1:ℝ) (|b| + 2)) hT
-    have hb : 0 ≤ T + b := by linarith [neg_le_abs b]
-    have hTb1 : 1 ≤ T + b := by linarith [neg_le_abs b]
+    have hb : 0 ≤ T + b := by linarith only [neg_le_abs b, hbT2]
+    have hTb1 : 1 ≤ T + b := by linarith only [neg_le_abs b, hbT2]
     have hlog : Real.log (T + b) ≤ 4 * (T + b) ^ ((1:ℝ)/4) := by
       have h := Real.log_le_rpow_div hb (by norm_num : (0:ℝ) < (1:ℝ)/4)
       rw [div_eq_mul_inv, show ((1:ℝ)/4)⁻¹ = (4:ℝ) by norm_num] at h
-      linarith
-    have hb2 : T + b ≤ 2 * T := by linarith [le_abs_self b]
+      linarith only [h]
+    have hb2 : T + b ≤ 2 * T := by linarith only [le_abs_self b, hbT2]
     have hpow : (T + b) ^ ((1:ℝ)/4) ≤ (2 * T) ^ ((1:ℝ)/4) :=
       Real.rpow_le_rpow hb hb2 (by norm_num)
     have h2T : (2 * T) ^ ((1:ℝ)/4) = 2 ^ ((1:ℝ)/4) * T ^ ((1:ℝ)/4) :=
       Real.mul_rpow (by norm_num) hT0.le
     have hsqrt : T ≤ Real.sqrt (1 + T ^ 2) := by
       rw [Real.le_sqrt hT0.le (by positivity)]
-      nlinarith
+      linarith only []
     have hstep : Real.log (T + b) / Real.sqrt (1 + T ^ 2)
         ≤ 4 * (2 ^ ((1:ℝ)/4) * T ^ ((1:ℝ)/4)) / T := by
       apply div_le_div₀ ?_ ?_ hT0 hsqrt
       · positivity
       · calc Real.log (T + b) ≤ 4 * (T + b) ^ ((1:ℝ)/4) := hlog
-          _ ≤ 4 * (2 * T) ^ ((1:ℝ)/4) := by linarith
+          _ ≤ 4 * (2 * T) ^ ((1:ℝ)/4) := by linarith only [hpow]
           _ = 4 * (2 ^ ((1:ℝ)/4) * T ^ ((1:ℝ)/4)) := by rw [h2T]
     have hTp : T ^ ((1:ℝ)/4) / T = T ^ (-((3:ℝ)/4)) := by
       rw [div_eq_mul_inv, ← Real.rpow_neg_one T, ← Real.rpow_add hT0]
@@ -2016,7 +2016,7 @@ lemma tendsto_one_add_log_sq_div (b : ℝ) :
       have h1 : T ≤ |T| := le_abs_self T
       have h2 : |T| = Real.sqrt (T ^ 2) := (Real.sqrt_sq_eq_abs T).symm
       rw [h2] at h1
-      exact le_trans h1 (Real.sqrt_le_sqrt (by nlinarith [sq_nonneg T]))
+      exact le_trans h1 (Real.sqrt_le_sqrt (by linarith only [sq_nonneg T]))
     have hinv := tendsto_inv_atTop_zero.comp hsqrt
     simpa [one_div, Function.comp_def] using hinv
   have h3 : Tendsto (fun T : ℝ => (1 + Real.log (T + b)) / Real.sqrt (1 + T ^ 2))
@@ -2055,13 +2055,13 @@ lemma continuousOn_logDeriv_gammaFactor_segment {N : ℕ} [NeZero N]
       rw [Set.uIcc_of_le (by norm_num : (-1/2 : ℝ) ≤ 2)] at hx
       have hre : (((x : ℂ) + (v : ℂ) * Complex.I)).re = x := by simp
       have him : (((x : ℂ) + (v : ℂ) * Complex.I)).im = v := by simp
-      refine ⟨by rw [hre]; linarith [hx.1], ?_⟩
+      refine ⟨by rw [hre]; linarith only [hx.1, hx], ?_⟩
       intro h0
       have h2 : (((x : ℂ) + (v : ℂ) * Complex.I)).im = (0 : ℂ).im := by
         simpa only using congrArg Complex.im h0
       rw [him, Complex.zero_im] at h2
       rw [h2, abs_zero] at hv
-      linarith)
+      linarith only [hv])
   simpa [Function.comp_def] using h
 
 /-- Interval integrability of `‖logDeriv (gammaFactor χ)‖` along a horizontal segment. -/
@@ -2129,13 +2129,13 @@ lemma horizontal_gamma_vanishing {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
   · refine tendsto_zero_iff_norm_tendsto_zero.mpr ?_
     refine squeeze_zero' (Filter.Eventually.of_forall (fun T => norm_nonneg _)) ?_ hlim
     filter_upwards [eventually_ge_atTop (2:ℝ)] with T hT
-    have h0 : (0:ℝ) ≤ T := by linarith
-    simpa [abs_of_nonneg h0] using hkey T (by rw [abs_of_nonneg h0]; linarith)
+    have h0 : (0:ℝ) ≤ T := by linarith only [hT]
+    simpa [abs_of_nonneg h0] using hkey T (by rw [abs_of_nonneg h0]; linarith only [hT])
   · refine tendsto_zero_iff_norm_tendsto_zero.mpr ?_
     refine squeeze_zero' (Filter.Eventually.of_forall (fun T => norm_nonneg _)) ?_ hlim
     filter_upwards [eventually_ge_atTop (2:ℝ)] with T hT
-    have h0 : (0:ℝ) ≤ T := by linarith
-    have h := hkey (-T) (by rw [abs_neg, abs_of_nonneg h0]; linarith)
+    have h0 : (0:ℝ) ≤ T := by linarith only [hT]
+    have h := hkey (-T) (by rw [abs_neg, abs_of_nonneg h0]; linarith only [hT])
     simpa [abs_neg, abs_of_nonneg h0, Complex.ofReal_neg, neg_mul, sub_eq_add_neg, neg_sq] using h
 
 /-- Continuity of `logDeriv Λ` along a horizontal segment avoiding the zeros of `Λ`. -/
@@ -2151,7 +2151,7 @@ lemma continuousOn_logDeriv_completedL_segment {N : ℕ} [NeZero N]
 lemma tendsto_log_N_sq_div {N : ℕ} [NeZero N] :
     Tendsto (fun s : ℝ => (Real.log ((N:ℝ) * (s + 3)))^2 / (1 + s^2)) atTop (nhds 0) := by
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast (NeZero.one_le (n := N))
-  have hNpos : 0 < (N:ℝ) := by linarith
+  have hNpos : 0 < (N:ℝ) := by linarith only [hN1]
   have hb : Tendsto (fun s : ℝ => (1 + Real.log (N:ℝ))^2 *
       ((1 + Real.log (s + 3))^2 / (1 + s^2))) atTop (nhds 0) := by
     simpa using (tendsto_one_add_log_sq_div 3).const_mul ((1 + Real.log (N:ℝ))^2)
@@ -2159,15 +2159,15 @@ lemma tendsto_log_N_sq_div {N : ℕ} [NeZero N] :
   · filter_upwards with s
     exact div_nonneg (sq_nonneg _) (by positivity)
   · filter_upwards [eventually_ge_atTop (0:ℝ)] with s hs
-    have hs3 : 0 < s + 3 := by linarith
+    have hs3 : 0 < s + 3 := by linarith only [hs]
     have hlogN : 0 ≤ Real.log (N:ℝ) := Real.log_nonneg hN1
-    have hlog3 : 0 ≤ Real.log (s+3) := Real.log_nonneg (by linarith)
+    have hlog3 : 0 ≤ Real.log (s+3) := Real.log_nonneg (by linarith only [hs])
     have hlog : Real.log ((N:ℝ)*(s+3)) = Real.log (N:ℝ) + Real.log (s+3) :=
       Real.log_mul hNpos.ne' hs3.ne'
     rw [hlog]
     have hle : Real.log (N:ℝ) + Real.log (s+3) ≤ (1 + Real.log (N:ℝ)) * (1 + Real.log (s+3)) := by
-      nlinarith
-    have h2 : 0 ≤ Real.log (N:ℝ) + Real.log (s+3) := by linarith
+      nlinarith only [hlogN, hlog3]
+    have h2 : 0 ≤ Real.log (N:ℝ) + Real.log (s+3) := by linarith only [hlogN, hlog3]
     have hp := pow_le_pow_left₀ h2 hle 2
     have h4 : 0 < 1 + s^2 := by positivity
     calc (Real.log (N:ℝ) + Real.log (s+3))^2 / (1 + s^2)
@@ -2193,12 +2193,12 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
   obtain ⟨M, hM0, hMb⟩ := exists_norm_tentPhi_bound (L := L) (K := K) hK h2K (Q := Q) hQ
   obtain ⟨C, hC0, hCb⟩ := exists_bound_integral_logDeriv_completedL_horizontal χ hχ hχprim
   have hN1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast (NeZero.one_le (n := N))
-  have hNpos : 0 < (N:ℝ) := by linarith
+  have hNpos : 0 < (N:ℝ) := by linarith only [hN1]
   have hT'tend : Tendsto T' atTop atTop := by
     rw [Filter.tendsto_atTop]
     intro b
     filter_upwards [eventually_ge_atTop (1:ℝ), eventually_ge_atTop (b - 1)] with T h1 h2
-    exact le_trans (by linarith) (hT' T h1)
+    exact le_trans (by linarith only [h2]) (hT' T h1)
   have hlim : Tendsto (fun T : ℝ => (M * C * (2 + |Real.log c|)) *
       ((Real.log ((N:ℝ) * (T' T + 3)))^2 / (1 + (T' T)^2))) atTop (nhds 0) := by
     simpa using ((tendsto_log_N_sq_div (N := N)).comp hT'tend).const_mul
@@ -2213,7 +2213,7 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
     filter_upwards [hlogtend.eventually (eventually_ge_atTop c), eventually_ge_atTop (1:ℝ)]
       with T h1 h2
     refine le_trans h1 (Real.log_le_log (by positivity) ?_)
-    have h3 : T + 4 ≤ T' T + 3 := by have := hT' T h2; linarith
+    have h3 : T + 4 ≤ T' T + 3 := by have := hT' T h2; linarith only [this]
     exact mul_le_mul_of_nonneg_left h3 (by positivity)
   have hkey : ∀ v : ℝ, 2 ≤ |v| → c ≤ Real.log ((N:ℝ) * (|v| + 3)) →
       (∀ ρ : ℂ, completedLFunction χ ρ = 0 →
@@ -2227,7 +2227,7 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
     intro v hv hcl hs1 hs2
     have hLpos : 0 < Real.log ((N:ℝ) * (|v| + 3)) := by
       apply Real.log_pos
-      nlinarith [hN1, abs_nonneg v]
+      nlinarith only [hN1, abs_nonneg v, hv]
     have hδ0 : 0 < c / Real.log ((N:ℝ) * (|v| + 3)) := div_pos hc hLpos
     have hδ1 : c / Real.log ((N:ℝ) * (|v| + 3)) ≤ 1 := by
       rw [div_le_one hLpos]; exact hcl
@@ -2241,13 +2241,13 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
         rw [him] at h1
         have hz : |v - (|v|)| = 0 := by rw [abs_of_nonneg hv0, sub_self, abs_zero]
         rw [hz] at h1
-        linarith
+        linarith only [hδ0, h1]
       · have hvneg : v < 0 := not_le.mp hv0
         have h1 := hs2 _ h0
         rw [him] at h1
         have hz : |v + (|v|)| = 0 := by rw [abs_of_neg hvneg, add_neg_cancel, abs_zero]
         rw [hz] at h1
-        linarith
+        linarith only [hδ0, h1]
     -- the norm-integral bound on the line `Im = v`
     have hIb : (∫ x : ℝ in (-1/2)..2, ‖logDeriv (completedLFunction χ)
         ((x : ℂ) + (v : ℂ) * Complex.I)‖) ≤
@@ -2268,8 +2268,8 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
           ContinuousOn (fun x : ℝ => (x : ℂ) + (v : ℂ) * Complex.I)
             (Set.uIcc (-1/2 : ℝ) 2)))).intervalIntegrable)
     have hLv1 : 1 ≤ Real.log ((N:ℝ) * (|v| + 3)) := by
-      have h5 : (5:ℝ) ≤ (N:ℝ) * (|v| + 3) := by nlinarith [hN1, abs_nonneg v]
-      have he : Real.exp 1 ≤ 5 := by linarith [Real.exp_one_lt_d9]
+      have h5 : (5:ℝ) ≤ (N:ℝ) * (|v| + 3) := by nlinarith only [hN1, abs_nonneg v, hv]
+      have he : Real.exp 1 ≤ 5 := by linarith only [Real.exp_one_lt_d9]
       calc (1:ℝ) ≤ Real.log 5 := by
             rw [Real.le_log_iff_exp_le (by norm_num)]; exact he
         _ ≤ Real.log ((N:ℝ) * (|v| + 3)) := Real.log_le_log (by norm_num) h5
@@ -2282,9 +2282,9 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
       rw [h1, Real.log_div hLne hc.ne']
       have h2 : Real.log (Real.log ((N:ℝ) * (|v| + 3))) ≤ Real.log ((N:ℝ) * (|v| + 3)) := by
         have := Real.log_le_sub_one_of_pos hLpos
-        linarith
+        linarith only [this]
       have h3 : - Real.log c ≤ |Real.log c| := neg_le_abs _
-      linarith
+      linarith only [h2, h3]
     have hD : 0 < 1 + v ^ 2 := by positivity
     have hstep : (M / (1 + v ^ 2)) * (C * Real.log ((N:ℝ) * (|v| + 3)) *
         (Real.log ((N:ℝ) * (|v| + 3)) +
@@ -2296,14 +2296,14 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
           Real.log (1 / (c / Real.log ((N:ℝ) * (|v| + 3)))))
           ≤ (2 + |Real.log c|) * (Real.log ((N:ℝ) * (|v| + 3)))^2 := by
         have h2 : Real.log ((N:ℝ) * (|v| + 3)) ≤ (Real.log ((N:ℝ) * (|v| + 3)))^2 := by
-          nlinarith [hLv1]
+          nlinarith only [hLv1, hc, hcl]
         have h4 : 0 ≤ |Real.log c| := abs_nonneg _
-        nlinarith [hlogδ, h2, h4, hLv1, hLpos]
+        nlinarith only [hlogδ, h2, h4, hLv1, hLpos, hc, hcl]
       have hmain := mul_le_mul_of_nonneg_left hZ (le_of_lt (mul_pos hM0 hC0))
       have hkey2 : M * (C * Real.log ((N:ℝ) * (|v| + 3)) * (Real.log ((N:ℝ) * (|v| + 3)) +
             Real.log (1 / (c / Real.log ((N:ℝ) * (|v| + 3)))))) / (1 + v ^ 2)
           ≤ (M * C * (2 + |Real.log c|) * (Real.log ((N:ℝ) * (|v| + 3)))^2) / (1 + v ^ 2) :=
-        (div_le_div_iff_of_pos_right hD).mpr (by linarith [hmain])
+        (div_le_div_iff_of_pos_right hD).mpr (by linarith only [hmain])
       calc (M / (1 + v ^ 2)) * (C * Real.log ((N:ℝ) * (|v| + 3)) *
               (Real.log ((N:ℝ) * (|v| + 3)) +
                 Real.log (1 / (c / Real.log ((N:ℝ) * (|v| + 3))))))
@@ -2324,13 +2324,13 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
             ((Real.log ((N:ℝ) * (|v| + 3)))^2 / (1 + v ^ 2)) := hstep
   have hT'2 : ∀ T : ℝ, 1 ≤ T → 2 ≤ |T' T| := by
     intro T hT
-    rw [abs_of_nonneg (by linarith [hT' T hT])]
-    linarith [hT' T hT]
+    rw [abs_of_nonneg (by linarith only [hT' T hT, hT, hT'])]
+    linarith only [hT' T hT, hT, hT']
   constructor
   · refine tendsto_zero_iff_norm_tendsto_zero.mpr ?_
     refine squeeze_zero' (Filter.Eventually.of_forall (fun T => norm_nonneg _)) ?_ hlim
     filter_upwards [eventually_ge_atTop (1:ℝ), hlarge] with T h1 h2
-    have habs : |T' T| = T' T := abs_of_nonneg (by linarith [hT' T h1])
+    have habs : |T' T| = T' T := abs_of_nonneg (by linarith only [hT' T h1, h1, hT'])
     have hs1 : ∀ ρ : ℂ, completedLFunction χ ρ = 0 →
         c / Real.log ((N:ℝ) * (|T' T| + 3)) ≤ |ρ.im - (|T' T|)| := by
       intro ρ hρ; rw [habs]; exact hsep T h1 ρ hρ
@@ -2342,7 +2342,7 @@ lemma horizontal_completedL_tendsto {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
   · refine tendsto_zero_iff_norm_tendsto_zero.mpr ?_
     refine squeeze_zero' (Filter.Eventually.of_forall (fun T => norm_nonneg _)) ?_ hlim
     filter_upwards [eventually_ge_atTop (1:ℝ), hlarge] with T h1 h2
-    have habs : |T' T| = T' T := abs_of_nonneg (by linarith [hT' T h1])
+    have habs : |T' T| = T' T := abs_of_nonneg (by linarith only [hT' T h1, h1, hT'])
     have habs2 : |-(T' T)| = T' T := by rw [abs_neg, habs]
     have hs1 : ∀ ρ : ℂ, completedLFunction χ ρ = 0 →
         c / Real.log ((N:ℝ) * (|-(T' T)| + 3)) ≤ |ρ.im - (|-(T' T)|)| := by
@@ -2365,7 +2365,7 @@ lemma rectInt_logDeriv_gammaFactor_mul_eq_odd {N : ℕ} [NeZero N] (χ : Dirichl
     intro s hs
     obtain ⟨hre, -⟩ := Complex.mem_reProdIm.mp hs
     rw [Set.uIcc_of_le (le_of_lt hzre)] at hre
-    linarith [hre.1, hz1]
+    linarith only [hre.1, hz1, hre]
   have hgf : DirichletCharacter.gammaFactor χ = fun s => Complex.Gammaℝ (s + 1) :=
     funext hO.gammaFactor_def
   rw [hgf]
@@ -2383,7 +2383,7 @@ lemma rectInt_logDeriv_gammaFactor_mul_eq_odd {N : ℕ} [NeZero N] (χ : Dirichl
     have hsre : -(1 : ℝ) < s.re := hre_ge s (rectBoundary_subset_rectSet hzre hzim hs)
     have h1 : 0 < (s + 1).re := by
       have h2 : (s + 1).re = s.re + 1 := by simp
-      rw [h2]; linarith
+      rw [h2]; linarith only [hsre]
     have hcomp : logDeriv (fun s : ℂ => Complex.Gammaℝ (s + 1)) s =
         logDeriv Complex.Gammaℝ (s + 1) := by
       have h := logDeriv_comp (f := Complex.Gammaℝ) (g := fun s : ℂ => s + 1) (x := s)
@@ -2434,7 +2434,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
             (((2 : ℂ) + (T : ℂ) * Complex.I)).im := by
           rw [show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).im = -T by simp,
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).im = T by simp]
-          linarith
+          linarith only [hT]
         have hz1 : -(1 : ℝ) < (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).re := by
           rw [show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).re = -1/2 by simp]
           norm_num
@@ -2446,7 +2446,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).re = 2 by simp,
             show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).im = -T by simp,
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).im = T by simp]
-          exact ⟨by norm_num, by norm_num, by linarith, by linarith⟩
+          exact ⟨by norm_num, by norm_num, by linarith only [hT], by linarith only [hT]⟩
         have h := rectInt_logDeriv_gammaFactor_mul_eq (N := N) χ (G := tentPhi L K Q)
           (hG := tentPhi_diff L K Q) (z := (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I))
           (w := ((2 : ℂ) + (T : ℂ) * Complex.I)) hzre hzim hz1 h0in hE
@@ -2456,7 +2456,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
           (nhds (-(2 * (Real.pi : ℂ) * Complex.I) * tentPhi L K Q 0)) := by
         refine tendsto_const_nhds.congr' ?_
         filter_upwards [eventually_ge_atTop (1:ℝ)] with T hT
-        exact (hconst T (by linarith)).symm
+        exact (hconst T (by linarith only [hT])).symm
       have huniq := tendsto_nhds_unique hlim1 hlim2
       apply mul_left_cancel₀ Complex.I_ne_zero
       rw [huniq]
@@ -2474,7 +2474,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
             (((2 : ℂ) + (T : ℂ) * Complex.I)).im := by
           rw [show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).im = -T by simp,
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).im = T by simp]
-          linarith
+          linarith only [hT]
         have hz1 : -(1 : ℝ) < (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).re := by
           rw [show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).re = -1/2 by simp]
           norm_num
@@ -2486,7 +2486,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).re = 2 by simp,
             show (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I).im = -T by simp,
             show (((2 : ℂ) + (T : ℂ) * Complex.I)).im = T by simp]
-          exact ⟨by norm_num, by norm_num, by linarith, by linarith⟩
+          exact ⟨by norm_num, by norm_num, by linarith only [hT], by linarith only [hT]⟩
         have h := rectInt_logDeriv_gammaFactor_mul_eq_odd (N := N) χ (G := tentPhi L K Q)
           (hG := tentPhi_diff L K Q) (z := (((-1 / 2 : ℝ) : ℂ) - (T : ℂ) * Complex.I))
           (w := ((2 : ℂ) + (T : ℂ) * Complex.I)) hzre hzim hz1 h0in hO
@@ -2495,7 +2495,7 @@ lemma gammaFactor_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
           ((2 : ℂ) + (T : ℂ) * Complex.I) F) atTop (nhds 0) := by
         refine tendsto_const_nhds.congr' ?_
         filter_upwards [eventually_ge_atTop (1:ℝ)] with T hT
-        exact (hconst T (by linarith)).symm
+        exact (hconst T (by linarith only [hT])).symm
       have huniq := tendsto_nhds_unique hlim1 hlim2
       exact mul_left_cancel₀ Complex.I_ne_zero (by rw [huniq, mul_zero])
   change (1 / (2 * (Real.pi : ℂ))) * ((∫ t : ℝ, F ((2 : ℂ) + (t : ℂ) * Complex.I)) -
@@ -2528,7 +2528,7 @@ lemma norm_tentPhi_zero_le {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} 
         Complex.sub_im, Complex.one_im]
       ring
     rw [hres]
-    have hh : 0 ≤ 1 - u.re := by linarith
+    have hh : 0 ≤ 1 - u.re := by linarith only [h2]
     positivity
   have hb := norm_tentK_strip (L := L) (K := K) hK h2K hz hzre
   have hnormz : ‖(1 - u) * ((Real.log (Q:ℝ) : ℝ) : ℂ)‖ = ‖1 - u‖ * Real.log (Q:ℝ) := by
@@ -2538,19 +2538,19 @@ lemma norm_tentPhi_zero_le {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) {Q : ℕ} 
       calc ‖u‖ = ‖(u - 1) + 1‖ := by ring_nf
         _ ≤ ‖u - 1‖ + ‖(1:ℂ)‖ := norm_add_le _ _
         _ = ‖1 - u‖ + 1 := by rw [show (1:ℂ) - u = -(u - 1) by ring, norm_neg, norm_one]
-    linarith
-  have hnormu : 0 < ‖u‖ := by linarith
-  have h1upos : 0 < ‖1 - u‖ := by nlinarith [h1u, hnormu]
+    linarith only [h3, h]
+  have hnormu : 0 < ‖u‖ := by linarith only [h1, h2, h3]
+  have h1upos : 0 < ‖1 - u‖ := by linarith only [h1u, hnormu, h1, h2, h3]
   calc ‖tentPhi L K Q u‖ = ‖tentK L K ((1 - u) * ((Real.log (Q:ℝ) : ℝ) : ℂ))‖ := rfl
     _ ≤ 4 / (‖1 - u‖ * Real.log (Q:ℝ)) ^ 2 := by rw [← hnormz]; exact hb
     _ = 4 / (‖1 - u‖ ^ 2 * (Real.log (Q:ℝ)) ^ 2) := by ring
     _ ≤ 16 / ((Real.log (Q:ℝ)) ^ 2 * ‖u‖ ^ 2) := by
         have h4 : ‖u‖ ^ 2 ≤ 4 * ‖1 - u‖ ^ 2 := by
           have := pow_le_pow_left₀ (norm_nonneg u) h1u 2
-          nlinarith [this]
+          linarith only [this]
         rw [div_le_iff₀ (by positivity : 0 < ‖1 - u‖ ^ 2 * (Real.log (Q:ℝ)) ^ 2),
           div_mul_eq_mul_div, le_div_iff₀ (by positivity : 0 < (Real.log (Q:ℝ)) ^ 2 * ‖u‖ ^ 2)]
-        nlinarith [h4, sq_nonneg (Real.log (Q:ℝ))]
+        nlinarith only [h4, sq_nonneg (Real.log (Q:ℝ))]
     _ = (16 / (Real.log (Q:ℝ)) ^ 2) / ‖u‖ ^ 2 := by
         rw [div_div]
 
@@ -2614,7 +2614,7 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
     rw [Filter.tendsto_atTop]
     intro b
     filter_upwards [eventually_ge_atTop (1:ℝ), eventually_ge_atTop (b - 1)] with T h1 h2
-    exact le_trans (by linarith) ((hT' T h1).1)
+    exact le_trans (by linarith only [h2]) ((hT' T h1).1)
   set F : ℂ → ℂ := fun u => logDeriv (DirichletCharacter.completedLFunction χ) u *
     tentPhi L K Q u with hF
   have h2int : Integrable (fun t : ℝ => F ((2:ℂ) + (t:ℂ)*Complex.I)) volume := by
@@ -2644,11 +2644,11 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
     have hT'1 : T + 1 ≤ T' T := (hT' T hT).1
     have hsep1 := (hT' T hT).2.2.1
     have hsep2 := (hT' T hT).2.2.2
-    have hpos : 0 < T' T := by linarith
+    have hpos : 0 < T' T := by linarith only [hT, hT'1]
     have hN1 : (1:ℝ) ≤ (N:ℝ) := by exact_mod_cast (NeZero.one_le (n := N))
     have hlogNpos : 0 < Real.log ((N : ℝ) * (T' T + 3)) := by
       apply Real.log_pos
-      nlinarith
+      nlinarith only [hN1, hT, hT'1]
     have hδpos : 0 < c / Real.log ((N : ℝ) * (T' T + 3)) := div_pos hc0 hlogNpos
     obtain ⟨M0, hM00, hMb0⟩ := exists_norm_tentPhi_bound (L:=L) (K:=K) hK h2K (Q:=Q) hQ
     have hM0 : ∀ s ∈ rectSet (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I)
@@ -2662,7 +2662,7 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
       calc ‖tentPhi L K Q s‖ ≤ M0 / (1 + ‖s‖ ^ 2) := hMb0 s h2s
         _ ≤ M0 := by
             rw [div_le_iff₀ (by positivity : (0:ℝ) < 1 + ‖s‖ ^ 2)]
-            nlinarith [hM00, norm_nonneg s]
+            nlinarith only [hM00, norm_nonneg s]
     have hzre : (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).re <
         (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re := by
       rw [show (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).re = -1/2 by simp,
@@ -2672,7 +2672,7 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
         (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).im := by
       rw [show (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).im = -T' T by simp,
         show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).im = T' T by simp]
-      linarith
+      linarith only [hT, hT'1]
     have h0in : (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).re < 0 ∧
         0 < (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re ∧
         (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).im < 0 ∧
@@ -2681,7 +2681,7 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
         show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re = 2 by simp,
         show (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).im = -T' T by simp,
         show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).im = T' T by simp]
-      exact ⟨by norm_num, by norm_num, by linarith, by linarith⟩
+      exact ⟨by norm_num, by norm_num, by linarith only [hT, hT'1], by linarith only [hT, hT'1]⟩
     have hins : ∀ ρ : ℂ, DirichletCharacter.completedLFunction χ ρ = 0 →
         (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).re < ρ.re ∧
         ρ.re < (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re := by
@@ -2689,7 +2689,7 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
       have hs := completedL_zero_strip χ hχ hχprim hρ
       rw [show (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I).re = -1/2 by simp,
         show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re = 2 by simp]
-      exact ⟨by linarith [hs.1], by linarith [hs.2]⟩
+      exact ⟨by linarith only [hs.1, hs], by linarith only [hs.2, hs]⟩
     have hnz : ∀ s ∈ rectBoundary (((-1/2:ℝ):ℂ) - ((T' T:ℝ):ℂ)*Complex.I)
         ((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I),
         DirichletCharacter.completedLFunction χ s ≠ 0 := by
@@ -2700,13 +2700,13 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
         rw [him] at h2
         have hz0 : |-(T' T) + T' T| = 0 := by rw [neg_add_cancel, abs_zero]
         rw [hz0] at h2
-        linarith
+        linarith only [hδpos, h2]
       · have h2 := hsep1 s h0
         rw [show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).im = T' T by simp] at him
         rw [him] at h2
         have hz0 : |T' T - T' T| = 0 := by rw [sub_self, abs_zero]
         rw [hz0] at h2
-        linarith
+        linarith only [hδpos, h2]
       · have hre' : s.re = -1/2 := by
           rw [hre]; simp
         have hsform : s = (((-1/2 : ℝ) : ℂ) + (s.im : ℂ) * Complex.I) := by
@@ -2748,10 +2748,10 @@ lemma completedL_shift_identity {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L)
           show (((2:ℂ) + ((T' T:ℝ):ℂ)*Complex.I)).re = 2 by simp] at hzw
         constructor
         · intro hc
-          exact abs_lt.mpr ⟨by linarith [hc.2.2.1], by linarith [hc.2.2.2]⟩
+          exact abs_lt.mpr ⟨by linarith only [hc.2.2.1, hc], by linarith only [hc.2.2.2, hc]⟩
         · intro hc
-          exact ⟨by linarith [hzw.1], by linarith [hzw.2],
-            by linarith [(abs_lt.mp hc).1], by linarith [(abs_lt.mp hc).2]⟩
+          exact ⟨by linarith only [hzw.1, hzw], by linarith only [hzw.2, hzw],
+            by linarith only [(abs_lt.mp hc).1, hc], by linarith only [(abs_lt.mp hc).2, hc]⟩
       exact if_congr hcond rfl rfl
     · have hord : analyticOrderNatAt (DirichletCharacter.completedLFunction χ) ρ = 0 := by
         simp [analyticOrderNatAt, analyticOrderAt_eq_zero.mpr (Or.inr hz)]
@@ -2824,16 +2824,16 @@ private lemma norm_le_of_zero_im_lt_priv {N : ℕ} [NeZero N] (χ : DirichletCha
     (him : |u.im| < T) :
     ‖u‖ ≤ T + 1 := by
   have hstrip := completedL_zero_strip χ hχ hχprim hu
-  have hre2 : u.re ^ 2 < 1 := by nlinarith [hstrip.1, hstrip.2]
+  have hre2 : u.re ^ 2 < 1 := by nlinarith only [hstrip.1, hstrip.2, hstrip]
   have him2 : u.im ^ 2 < T ^ 2 := by
     rw [sq_lt_sq]
     rwa [abs_of_nonneg hT]
   have hns : ‖u‖ ^ 2 = u.re ^ 2 + u.im ^ 2 := by
     rw [Complex.sq_norm, Complex.normSq_apply]; ring
   have hsu : ‖u‖ ^ 2 < (T + 1) ^ 2 := by
-    rw [hns]; nlinarith
+    rw [hns]; linarith only [hT, hre2, him2]
   have h1 : 0 ≤ ‖u‖ := norm_nonneg u
-  have h2 : 0 ≤ T + 1 := by linarith
+  have h2 : 0 ≤ T + 1 := by linarith only [hT, hstrip]
   exact le_of_lt ((sq_lt_sq₀ h1 h2).mp hsu)
 
 private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
@@ -2932,11 +2932,11 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
         ≤ c0 * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2) := by
       simpa [Λ] using hc0 R hR
     rw [hfinsumD R] at h1
-    have hR0 : 0 ≤ R := by linarith
+    have hR0 : 0 ≤ R := by linarith only [hR]
     have hlog0 : 0 ≤ Real.log (R + 2) + Real.log (N : ℝ) + 2 := by
-      have h2 : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith)
+      have h2 : 0 ≤ Real.log (R + 2) := Real.log_nonneg (by linarith only [hR])
       have h3 : 0 ≤ Real.log (N : ℝ) := logN_nonneg
-      linarith
+      linarith only [h2, h3]
     have h2 : c0 * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2)
         ≤ Cc * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2) := by
       have hc0le : c0 ≤ Cc := le_max_left c0 1
@@ -2946,7 +2946,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
         _ ≤ Cc * (R * (Real.log (R + 2) + Real.log (N : ℝ) + 2)) :=
               mul_le_mul_of_nonneg_right hc0le hfac
         _ = Cc * R * (Real.log (R + 2) + Real.log (N : ℝ) + 2) := by ring
-    linarith
+    linarith only [h1, h2]
   -- Strip sum rewritten as a finite sum over the divisor support filtered by `|Im| < T`
   have hW1 : ∀ T : ℝ, 0 ≤ T → W T = ∑ u ∈ (D (T + 1)).filter (fun u => |u.im| < T), g u := by
     intro T hT
@@ -2983,7 +2983,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
   have hstep : ∀ T : ℝ, 2 ≤ T → ‖W T - B (T + 1)‖
       ≤ Cc * A * (T + 1) * (Real.log (T + 1 + 2) + Real.log (N : ℝ) + 2) / T ^ 2 := by
     intro T hT
-    have hTpos : 0 < T := by linarith
+    have hTpos : 0 < T := by linarith only [hT]
     have hT0 : 0 ≤ T := le_of_lt hTpos
     have hpart := Finset.sum_filter_add_sum_filter_not (D (T + 1)) (fun u => |u.im| < T) g
     have hWB : W T - B (T + 1)
@@ -3035,7 +3035,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
                 (fun u _ _ => Nat.cast_nonneg _)
     have hfin : ∑ u ∈ D (T + 1), ((analyticOrderNatAt Λ u : ℕ) : ℝ)
         ≤ Cc * (T + 1) * (Real.log ((T + 1) + 2) + Real.log (N : ℝ) + 2) :=
-      hcountD (T + 1) (by linarith)
+      hcountD (T + 1) (by linarith only [hT])
     calc ‖W T - B (T + 1)‖
         ≤ ∑ u ∈ (D (T + 1)).filter (fun u => ¬ (|u.im| < T)),
             ((analyticOrderNatAt Λ u : ℕ) : ℝ) * (A / T ^ 2) := hkey
@@ -3055,35 +3055,35 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
     refine squeeze_zero' ?_ ?_ hg
     · filter_upwards [eventually_ge_atTop (0 : ℝ)] with T hT
       have hnum : 0 ≤ Cc * A * (T + 1) * (Real.log (T + 1 + 2) + Real.log (N : ℝ) + 2) := by
-        have h1 : 0 ≤ Real.log (T + 1 + 2) := Real.log_nonneg (by linarith)
+        have h1 : 0 ≤ Real.log (T + 1 + 2) := Real.log_nonneg (by linarith only [hT])
         have h2 : 0 ≤ Real.log (N : ℝ) := logN_nonneg
         have h3 : 0 ≤ Cc * A := mul_nonneg (le_of_lt hCc_pos) (le_of_lt hA)
-        have h4 : 0 ≤ T + 1 := by linarith
-        have h5 : 0 ≤ Real.log (T + 1 + 2) + Real.log (N : ℝ) + 2 := by linarith
+        have h4 : 0 ≤ T + 1 := by linarith only [hT]
+        have h5 : 0 ≤ Real.log (T + 1 + 2) + Real.log (N : ℝ) + 2 := by linarith only [h1, h2]
         positivity
       exact div_nonneg hnum (sq_nonneg T)
     · filter_upwards [eventually_ge_atTop (1 : ℝ)] with T hT
-      have hTpos : 0 < T := by linarith
+      have hTpos : 0 < T := by linarith only [hT]
       have hCcA : 0 ≤ Cc * A := mul_nonneg (le_of_lt hCc_pos) (le_of_lt hA)
       have hlog_ge : 0 ≤ Real.log (T + 3) + Real.log (N : ℝ) + 2 := by
-        have h1 : 0 ≤ Real.log (T + 3) := Real.log_nonneg (by linarith)
+        have h1 : 0 ≤ Real.log (T + 3) := Real.log_nonneg (by linarith only [hT])
         have h2 : 0 ≤ Real.log (N : ℝ) := logN_nonneg
-        linarith
+        linarith only [h1, h2]
       have hlog_le : Real.log (T + 3) ≤ Real.log (T + 2) + Real.log 2 := by
-        have hle : T + 3 ≤ 2 * (T + 2) := by linarith
-        have h := Real.log_le_log (by linarith : 0 < T + 3) hle
-        rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith : (T + 2) ≠ 0)] at h
-        linarith
+        have hle : T + 3 ≤ 2 * (T + 2) := by linarith only [hT]
+        have h := Real.log_le_log (by linarith only [hT] : 0 < T + 3) hle
+        rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (by linarith only [hT] : (T + 2) ≠ 0)] at h
+        linarith only [h]
       have hcore : (T + 1) * (Real.log (T + 3) + Real.log (N : ℝ) + 2)
           ≤ 2 * T * (Real.log (T + 2) + (Real.log (N : ℝ) + 2 + Real.log 2)) := by
-        have hT1 : T + 1 ≤ 2 * T := by linarith
+        have hT1 : T + 1 ≤ 2 * T := by linarith only [hT]
         have hL : Real.log (T + 3) + Real.log (N : ℝ) + 2
-            ≤ Real.log (T + 2) + (Real.log (N : ℝ) + 2 + Real.log 2) := by linarith
+            ≤ Real.log (T + 2) + (Real.log (N : ℝ) + 2 + Real.log 2) := by linarith only [hlog_le]
         calc (T + 1) * (Real.log (T + 3) + Real.log (N : ℝ) + 2)
             ≤ (2 * T) * (Real.log (T + 3) + Real.log (N : ℝ) + 2) :=
               mul_le_mul_of_nonneg_right hT1 hlog_ge
           _ ≤ (2 * T) * (Real.log (T + 2) + (Real.log (N : ℝ) + 2 + Real.log 2)) :=
-              mul_le_mul_of_nonneg_left hL (by linarith)
+              mul_le_mul_of_nonneg_left hL (by linarith only [hT])
       have hb : Cc * A * (T + 1) * (Real.log (T + 1 + 2) + Real.log (N : ℝ) + 2) / T ^ 2
           ≤ 2 * (Cc * A) * ((Real.log (T + 2) + (Real.log (N : ℝ) + 2 + Real.log 2)) / T) := by
         rw [div_le_iff₀ (by positivity : 0 < T ^ 2)]
@@ -3102,7 +3102,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
   have hWtend : Tendsto W atTop (nhds Z) := by
     rw [Metric.tendsto_atTop]
     intro ε hε
-    have hε2 : 0 < ε / 2 := by linarith
+    have hε2 : 0 < ε / 2 := by linarith only [hε]
     obtain ⟨R₀, hR₀⟩ : ∃ R₀ : ℝ, ∀ R : ℝ, R₀ ≤ R → dist (B R) Z < ε / 2 := by
       obtain ⟨R₀, hR₀⟩ := eventually_atTop.mp ((Metric.tendsto_nhds.mp hZ') (ε / 2) hε2)
       exact ⟨R₀, hR₀⟩
@@ -3118,7 +3118,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
       le_trans (le_trans (le_max_right 2 T₁) (le_max_left (max 2 T₁) (R₀ - 1))) hT
     have hTR₀ : R₀ ≤ T + 1 := by
       have hle : R₀ - 1 ≤ T := le_trans (le_max_right (max 2 T₁) (R₀ - 1)) hT
-      linarith
+      linarith only [hle]
     rw [dist_eq_norm]
     have htri : ‖W T - Z‖ ≤ ‖W T - B (T + 1)‖ + ‖B (T + 1) - Z‖ := by
       calc ‖W T - Z‖ = ‖(W T - B (T + 1)) + (B (T + 1) - Z)‖ := by ring_nf
@@ -3127,7 +3127,7 @@ private theorem stripSum_tendsto_ball_private {N : ℕ} [NeZero N]
     have hgood := hR₀ (T + 1) hTR₀
     rw [dist_eq_norm] at hgood
     have hbad' := hT₁ T hTT₁
-    linarith
+    linarith only [htri, hbad, hgood, hbad']
   simpa [W, Λ] using hWtend
 
 
@@ -3319,14 +3319,14 @@ theorem tentMellin_bridge_scale {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) :
   have hlq5 : (1:ℝ) / 5 ≤ Real.log (Q:ℝ) := by
     have h2' : (1:ℝ) / 5 ≤ Real.log 2 := by
       have := Real.log_two_gt_d9
-      linarith
+      linarith only [this]
     exact le_trans h2' (Real.log_le_log (by norm_num) (by exact_mod_cast hQ2))
   have hlqinv : (Real.log (Q:ℝ))⁻¹ ≤ 5 := by
     rw [inv_le_comm₀ hlqpos (by norm_num : (0:ℝ) < 5)]
     simpa using hlq5
   have hE1nn : 0 ≤ Real.exp (-(L - 2*K) * Real.log (Q:ℝ)) := Real.exp_nonneg _
   have hE2nn : 0 ≤ Real.exp (-(3/2) * (L - 2*K) * Real.log (Q:ℝ)) := Real.exp_nonneg _
-  have h1lq : 0 ≤ 1 + Real.log (Q:ℝ) := by linarith
+  have h1lq : 0 ≤ 1 + Real.log (Q:ℝ) := by linarith only [hlqpos]
   have hnum : 4 * Real.exp (-(L - 2*K) * Real.log (Q:ℝ)) * ((Real.log (Q:ℝ)) ^ 2)⁻¹ +
         4000 * ((Real.log (Q:ℝ))⁻¹ * (Real.exp (-(3/2) * (L - 2 * K) * Real.log (Q:ℝ)) *
           (Real.log (Q:ℝ))⁻¹ * (1 + Real.log (Q:ℝ))))
@@ -3337,8 +3337,8 @@ theorem tentMellin_bridge_scale {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) :
         ≤ 20000 * Real.exp (-(L - 2*K) * Real.log (Q:ℝ)) := by
       have hsq : ((Real.log (Q:ℝ)) ^ 2)⁻¹ ≤ 25 := by
         rw [inv_le_comm₀ (by positivity : (0:ℝ) < (Real.log (Q:ℝ))^2) (by norm_num : (0:ℝ) < 25)]
-        nlinarith [hlq5]
-      nlinarith [hE1nn, hsq]
+        nlinarith only [hlq5, hlqpos]
+      nlinarith only [hE1nn, hsq]
     have hb2 : 4000 * ((Real.log (Q:ℝ))⁻¹ * (Real.exp (-(3/2) * (L - 2 * K) * Real.log (Q:ℝ)) *
           (Real.log (Q:ℝ))⁻¹ * (1 + Real.log (Q:ℝ))))
         ≤ 20000 * ((Real.log (Q:ℝ))⁻¹ * Real.exp (-(3/2) * (L - 2*K) * Real.log (Q:ℝ)) *
@@ -3346,7 +3346,7 @@ theorem tentMellin_bridge_scale {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) :
       have hposinv : 0 < (Real.log (Q:ℝ))⁻¹ := inv_pos.mpr hlqpos
       have hstep : 4000 * ((Real.log (Q:ℝ))⁻¹ * (Real.log (Q:ℝ))⁻¹)
           ≤ 20000 * (Real.log (Q:ℝ))⁻¹ := by
-        nlinarith [hlqinv, hlqpos, hposinv]
+        nlinarith only [hlqinv, hlqpos, hposinv]
       have hfac : 0 ≤ Real.exp (-(3/2) * (L - 2*K) * Real.log (Q:ℝ)) * (1 + Real.log (Q:ℝ)) :=
         mul_nonneg hE2nn h1lq
       calc 4000 * ((Real.log (Q:ℝ))⁻¹ * (Real.exp (-(3/2) * (L - 2 * K) * Real.log (Q:ℝ)) *
@@ -3358,7 +3358,7 @@ theorem tentMellin_bridge_scale {L K : ℝ} (hK : 0 < K) (h2K : 2 * K < L) :
             mul_le_mul_of_nonneg_right hstep hfac
         _ = 20000 * ((Real.log (Q:ℝ))⁻¹ * Real.exp (-(3/2) * (L - 2*K) * Real.log (Q:ℝ)) *
               (1 + Real.log (Q:ℝ))) := by ring
-    linarith [hb1, hb2]
+    linarith only [hb1, hb2]
   rw [hAZ]
   calc ‖-(if χ.Even then tentPhi L K Q 0 else 0)
         - (1 / (2 * (Real.pi : ℂ))) * (∫ t : ℝ, logDeriv (DirichletCharacter.LFunction χ)

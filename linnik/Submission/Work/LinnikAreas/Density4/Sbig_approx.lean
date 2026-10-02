@@ -39,7 +39,7 @@ lemma summable_cube_exp {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
     Summable (fun k : ℕ => (((k:ℝ) + c)^3) * Real.exp (-(a * ((k:ℝ) + c)))) := by
   have hr : ‖Real.exp (-a)‖ < 1 := by
     rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_pos _).le, Real.exp_lt_one_iff]
-    linarith
+    linarith only [ha]
   have hmaj : Summable (fun k : ℕ => Real.exp (-(a*c)) * (8*(k:ℝ)^3 + 8*c^3) * Real.exp (-a)^k) := by
     have h1 : Summable (fun k : ℕ => (k:ℝ)^3 * Real.exp (-a)^k) :=
       (summable_norm_pow_mul_geometric_of_norm_lt_one (R := ℝ) 3 hr).of_norm
@@ -54,18 +54,18 @@ lemma summable_cube_exp {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
     have hkc : ((k:ℝ) + c)^3 ≤ 8*((k:ℝ)^3 + c^3) := by
       have h1 : ((k:ℝ) + c) ≤ 2 * max (k:ℝ) c := by
         rcases le_total (k:ℝ) c with h | h
-        · rw [max_eq_right h]; linarith
-        · rw [max_eq_left h]; linarith
+        · rw [max_eq_right h]; linarith only [h]
+        · rw [max_eq_left h]; linarith only [h]
       have h2 : (0:ℝ) ≤ 2 * max (k:ℝ) c := by
-        have := le_max_left (k:ℝ) c; linarith
+        have := le_max_left (k:ℝ) c; linarith only [hc, h1]
       have h3 : ((k:ℝ) + c)^3 ≤ (2 * max (k:ℝ) c)^3 := by
-        exact pow_le_pow_left₀ (by linarith) h1 3
+        exact pow_le_pow_left₀ (by linarith only [hc]) h1 3
       have h4 : (2 * max (k:ℝ) c)^3 = 8 * max (k:ℝ) c ^ 3 := by ring
       have h5 : max (k:ℝ) c ^ 3 ≤ (k:ℝ)^3 + c^3 := by
         rcases le_total (k:ℝ) c with h | h
-        · rw [max_eq_right h]; linarith [pow_nonneg hk 3, pow_nonneg hc 3]
-        · rw [max_eq_left h]; linarith [pow_nonneg hk 3, pow_nonneg hc 3]
-      linarith [h4]
+        · rw [max_eq_right h]; linarith only [pow_nonneg hk 3, pow_nonneg hc 3, hk]
+        · rw [max_eq_left h]; linarith only [pow_nonneg hk 3, pow_nonneg hc 3, hc]
+      linarith only [h4, h3, h5]
     have hexp : Real.exp (-(a * ((k:ℝ) + c))) = Real.exp (-(a*c)) * Real.exp (-a)^k := by
       rw [show -(a * ((k:ℝ)+c)) = -(a*c) + (k:ℝ)*(-a) by ring, Real.exp_add]
       congr 1
@@ -87,24 +87,24 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
       ≤ Real.exp (-(a*c)) * ((1 + 1/a) * c^3 + (6*c^2/a + 24*c/a^2 + 48/a^3) * (1 + 2/a)) := by
   have hhalf : {t : ℝ} → 0 < t → 1 / (1 - Real.exp (-t)) ≤ 1 + 1/t := by
     intro t ht
-    have h1t : (0:ℝ) < 1 + t := by linarith
+    have h1t : (0:ℝ) < 1 + t := by linarith only [ht]
     have hexp : Real.exp (-t) ≤ 1/(1+t) := by
       rw [Real.exp_neg, one_div, inv_le_inv₀ (Real.exp_pos t) h1t]
-      linarith [Real.add_one_le_exp t]
+      linarith only [Real.add_one_le_exp t]
     have hpos : 0 < 1 - Real.exp (-t) := by
-      have := Real.exp_lt_one_iff.mpr (by linarith : -t < 0); linarith
+      have := Real.exp_lt_one_iff.mpr (by linarith only [ht] : -t < 0); linarith only [this]
     have hpos' : 0 < t/(1+t) := by positivity
     have hden : t/(1+t) ≤ 1 - Real.exp (-t) := by
       have h2 : t/(1+t) = 1 - 1/(1+t) := by field_simp; ring
-      linarith
+      linarith only [hexp, h2]
     calc 1 / (1 - Real.exp (-t)) ≤ 1 / (t/(1+t)) := one_div_le_one_div_of_le hpos' hden
       _ = 1 + 1/t := by field_simp; ring
   set r : ℝ := Real.exp (-a) with hr
   set s : ℝ := Real.exp (-(a/2)) with hs
   have hr0 : 0 < r := by rw [hr]; exact Real.exp_pos _
-  have hr1 : r < 1 := by rw [hr]; exact Real.exp_lt_one_iff.mpr (by linarith)
+  have hr1 : r < 1 := by rw [hr]; exact Real.exp_lt_one_iff.mpr (by linarith only [ha])
   have hs0 : 0 < s := by rw [hs]; exact Real.exp_pos _
-  have hs1 : s < 1 := by rw [hs]; exact Real.exp_lt_one_iff.mpr (by linarith)
+  have hs1 : s < 1 := by rw [hs]; exact Real.exp_lt_one_iff.mpr (by linarith only [ha])
   have hrsum : (∑' k : ℕ, r^k) = (1-r)⁻¹ := tsum_geometric_of_lt_one hr0.le hr1
   have hssum : (∑' k : ℕ, s^k) = (1-s)⁻¹ := tsum_geometric_of_lt_one hs0.le hs1
   have hrsq : r = s^2 := by rw [hr, hs, sq, ← Real.exp_add]; congr 1; ring
@@ -124,7 +124,7 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
       have h2 : (2/a) * ((a*(k:ℝ))/2) = (k:ℝ) := by field_simp
       calc (k:ℝ) = (2/a) * ((a*(k:ℝ))/2) := h2.symm
         _ ≤ (2/a) * Real.exp ((a*(k:ℝ))/2) :=
-            mul_le_mul_of_nonneg_left (by linarith [Real.add_one_le_exp ((a*(k:ℝ))/2)]) (by positivity)
+            mul_le_mul_of_nonneg_left (by linarith only [Real.add_one_le_exp ((a*(k:ℝ))/2), hr0, hr1]) (by positivity)
     calc (k:ℝ) * s^k ≤ ((2/a) * Real.exp ((a*(k:ℝ))/2)) * s^k :=
           mul_le_mul_of_nonneg_right hle (by positivity)
       _ = (2/a) * (Real.exp ((a*(k:ℝ))/2) * s^k) := by ring
@@ -134,7 +134,7 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
     intro k
     have hx : 0 ≤ (a*(k:ℝ))/2 := by positivity
     have hle : ((a*(k:ℝ))/2)^2/2 ≤ Real.exp ((a*(k:ℝ))/2) := by
-      have := Real.quadratic_le_exp_of_nonneg hx; linarith
+      have := Real.quadratic_le_exp_of_nonneg hx; linarith only [hr0, hr1, hx, this]
     have hle2 : (k:ℝ)^2 ≤ (8/a^2) * Real.exp ((a*(k:ℝ))/2) := by
       have h3 : ((a*(k:ℝ))/2)^2/2 = a^2*(k:ℝ)^2/8 := by ring
       rw [h3] at hle
@@ -156,7 +156,7 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
     rw [h2] at h
     have hle : ((a*(k:ℝ))/2)^3/6 ≤ Real.exp ((a*(k:ℝ))/2) := by
       have hnn : 0 ≤ 1 + (a*(k:ℝ))/2 + ((a*(k:ℝ))/2)^2/2 := by positivity
-      linarith
+      linarith only [h, hnn]
     have hle2 : (k:ℝ)^3 ≤ (48/a^3) * Real.exp ((a*(k:ℝ))/2) := by
       have h3 : ((a*(k:ℝ))/2)^3/6 = a^3*(k:ℝ)^3/48 := by ring
       rw [h3] at hle
@@ -196,7 +196,7 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
     have h2 := mul_le_mul_of_nonneg_left hk2r (by positivity : (0:ℝ) ≤ 3*c)
     have h4 : 3*c^2 * ((2/a)*s^k) + 3*c*((8/a^2)*s^k) + (48/a^3)*s^k
         = (6*c^2/a + 24*c/a^2 + 48/a^3)*s^k := by ring
-    linarith [h1, h2, hk3r, h4]
+    linarith only [h1, h2, hk3r, h4]
   have hs1' : Summable (fun k : ℕ => c^3 * r^k) := (summable_geometric_of_lt_one hr0.le hr1).mul_left _
   have hs2' : Summable (fun k : ℕ => (6*c^2/a + 24*c/a^2 + 48/a^3) * s^k) :=
     (summable_geometric_of_lt_one hs0.le hs1).mul_left _
@@ -215,7 +215,7 @@ private lemma cube_exp_tsum_bound {a c : ℝ} (ha : 0 < a) (hc : 0 ≤ c) :
           rw [one_div, ← hr] at h
           exact h
         have h2 : (1-s)⁻¹ ≤ 1 + 2/a := by
-          have h := hhalf (by linarith : (0:ℝ) < a/2)
+          have h := hhalf (by linarith only [ha] : (0:ℝ) < a/2)
           rw [one_div, ← hs, show (1:ℝ)/(a/2) = 2/a by ring] at h
           exact h
         have hc3 : (0:ℝ) ≤ c^3 := by positivity
@@ -245,7 +245,7 @@ theorem Sbig_approx :
   set W : ℝ := (q:ℝ)^w with hWdef
   set a : ℝ := L^2/U with hadef
   have hqR : (2:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq
-  have hq1 : (1:ℝ) < (q:ℝ) := by linarith
+  have hq1 : (1:ℝ) < (q:ℝ) := by linarith only [hqR]
   have hL : 0 < L := by rw [hLdef]; exact Real.log_pos hq1
   have hL2 : Real.log 2 ≤ L := by
     rw [hLdef]; exact Real.log_le_log (by norm_num) hqR
@@ -260,7 +260,7 @@ theorem Sbig_approx :
     congr 1; ring
   have ha : 0 < a := by rw [hadef]; exact div_pos (pow_pos hL 2) hUpos
   have hstrip : 0 < ρ.re ∧ ρ.re < 1 := re_strip_of_isZ hZ
-  have hre : |ρ.re| ≤ 1 := abs_le.mpr ⟨by linarith [hstrip.1], by linarith [hstrip.2]⟩
+  have hre : |ρ.re| ≤ 1 := abs_le.mpr ⟨by linarith only [hstrip.1, hstrip], by linarith only [hstrip.2, hstrip]⟩
   -- the summand
   set F : ℕ → ℂ := fun n => detCoeff q U V W χ ρ n * ((Real.exp (-(n:ℝ)*a) : ℝ) : ℂ) with hFdef
   have hSbig : Sbig q U V W L χ ρ = ∑' n, F n := by
@@ -295,12 +295,12 @@ theorem Sbig_approx :
     rw [hNdef]
     have := Nat.lt_floor_add_one U
     push_cast
-    linarith
+    linarith only [this]
   have hNle : (N:ℝ) ≤ U + 1 := by
     rw [hNdef]
     have := Nat.floor_le (a := U) hUpos.le
     push_cast
-    linarith
+    linarith only [this]
   have hN0 : (0:ℝ) ≤ (N:ℝ) := by positivity
   have hsumN : (∑ i ∈ Finset.range N, F i) = ((Real.exp (-a) : ℝ) : ℂ) := by
     rw [Finset.sum_eq_single (1 : ℕ)]
@@ -311,7 +311,7 @@ theorem Sbig_approx :
       have hbU : (b:ℝ) ≤ U := by
         have h1 : (b:ℝ) ≤ ((Nat.floor U : ℕ) : ℝ) := by exact_mod_cast hbN
         have h2 : ((Nat.floor U : ℕ) : ℝ) ≤ U := Nat.floor_le (a := U) hUpos.le
-        linarith
+        linarith only [h1, h2]
       rcases Nat.eq_zero_or_pos b with h0 | h0
       · subst h0; exact hF0
       · exact hFzero b (by omega) hbU
@@ -358,10 +358,10 @@ theorem Sbig_approx :
   have hexp_le : Real.exp (-(a * (N:ℝ))) ≤ Real.exp (-(L^2)) := by
     apply Real.exp_le_exp.mpr
     have h1 : a * (N:ℝ) = L^2 * ((N:ℝ)/U) := by rw [hadef]; ring
-    have h2 : 1 ≤ (N:ℝ)/U := (le_div_iff₀ hUpos).mpr (by linarith [hNU.le])
-    have h3 : L^2 ≤ L^2 * ((N:ℝ)/U) := by nlinarith [pow_pos hL 2]
+    have h2 : 1 ≤ (N:ℝ)/U := (le_div_iff₀ hUpos).mpr (by linarith only [hNU.le, hNU])
+    have h3 : L^2 ≤ L^2 * ((N:ℝ)/U) := by nlinarith only [pow_pos hL 2, h2]
     rw [h1]
-    linarith
+    linarith only [h3]
   have hbracket_nonneg : 0 ≤ (1 + 1/a) * (N:ℝ)^3 + (6*(N:ℝ)^2/a + 24*(N:ℝ)/a^2 + 48/a^3) * (1 + 2/a) := by
     have h1 : 0 < 1 + 1/a := by positivity
     have h2 : 0 ≤ (N:ℝ)^3 := by positivity
@@ -389,6 +389,6 @@ theorem Sbig_approx :
     _ ≤ Real.exp (-(L^2)) * ((1 + 1/a) * (N:ℝ)^3 + (6*(N:ℝ)^2/a + 24*(N:ℝ)/a^2 + 48/a^3) * (1 + 2/a)) := hle3
     _ ≤ 1000000 * Real.exp (8*u^2) / L := hle4
     _ ≤ (1000000 * Real.exp (8*u^2) + 1) / L := by
-        apply div_le_div_of_nonneg_right (by linarith [Real.exp_pos (8*u^2)]) hL.le
+        apply div_le_div_of_nonneg_right (by linarith only [Real.exp_pos (8*u^2), hstrip]) hL.le
 
 end Work.LinnikAreas.Density4

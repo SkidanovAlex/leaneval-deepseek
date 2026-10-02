@@ -136,7 +136,7 @@ private theorem hb7fi_expansion {ι : Type*} [Fintype ι] (a γ : ι → ℝ) (�
 private lemma hb7fi_cont_cpow {w : ℂ} {η : ℝ} (hη : 0 ≤ η) :
     ContinuousOn (fun t : ℝ => (t : ℂ) ^ w) (Set.uIcc (Real.exp (-η)) 1) := by
   intro x hx
-  rw [Set.uIcc_of_le (Real.exp_le_one_iff.mpr (by linarith))] at hx
+  rw [Set.uIcc_of_le (Real.exp_le_one_iff.mpr (by linarith only [hη]))] at hx
   exact (Complex.continuousAt_ofReal_cpow_const x w
     (Or.inr (ne_of_gt (lt_of_lt_of_le (Real.exp_pos _) hx.1)))).continuousWithinAt
 
@@ -146,7 +146,7 @@ private theorem hb7fi_level {C : ℝ} (hC : 0 ≤ C) (hMVT : MvtMul C)
     (∫ t in Real.exp (-η)..1,
         ‖∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I)‖ ^ 2 / t)
       ≤ (η + C / δ) * ∑ i, ‖ζ i‖ ^ 2 := by
-  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith)
+  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith only [hη])
   have hcont_big : ContinuousOn (fun t : ℝ =>
       ‖∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I)‖ ^ 2 / t)
       (Set.uIcc (Real.exp (-η)) 1) := by
@@ -202,7 +202,7 @@ private theorem hb7fi_level {C : ℝ} (hC : 0 ≤ C) (hMVT : MvtMul C)
         _ = _ := one_mul _
     have h2 : ‖∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I)‖ ^ 2
         ≤ ‖∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((-(γ i : ℂ)) * Complex.I)‖ ^ 2 := by
-      nlinarith [norm_nonneg (∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I)),
+      nlinarith only [norm_nonneg (∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I)),
         norm_nonneg (∑ i, (if b ≤ a i then ζ i else 0) * (t : ℂ) ^ ((-(γ i : ℂ)) * Complex.I)), hnorm]
     exact div_le_div_of_nonneg_right h2 ht0.le
   have hmono : (∫ t in Real.exp (-η)..1,
@@ -242,7 +242,7 @@ private lemma hb7fi_setIntegral_const_Ioc (A c : ℝ) (hA : 0 ≤ A) :
   rw [h1, smul_eq_mul]
 
 private lemma hb7fi_sq_le_sq {x y : ℝ} (hx : 0 ≤ x) (h : x ≤ y) : x ^ 2 ≤ y ^ 2 := by
-  nlinarith [hx, h]
+  nlinarith only [hx, h]
 
 private lemma hb7fi_intervalInt_bdd {E : Type*} [NormedAddCommGroup E] {f : ℝ → E} {a b C : ℝ}
     (hab : a ≤ b)
@@ -274,9 +274,9 @@ private lemma hb7fi_sq_integral_le {A : ℝ} (hA : 0 ≤ A) {φ : ℝ → ℝ}
     have key : P ^ 2 ≤ A * Q := by
       have h1 : Q - 2 * (P / A) * P + (P / A) ^ 2 * A = Q - P^2 / A := by
         field_simp; ring
-      have h2 : P ^ 2 / A ≤ Q := by linarith [hnn, h1]
+      have h2 : P ^ 2 / A ≤ Q := by linarith only [hnn, h1]
       have h3 := (div_le_iff₀ hApos).mp h2
-      linarith [h3, mul_comm Q A]
+      linarith only [h3, mul_comm Q A]
     exact key
   · rw [← hA0, intervalIntegral.integral_same, intervalIntegral.integral_same]
     simp
@@ -305,7 +305,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
       (t : ℂ) ^ ((b : ℂ) - (γ i : ℂ) * Complex.I) with hH
   set F : ℝ → ℝ → ℝ := fun t b => (Real.log t) ^ 2 / t * ‖H b t‖ ^ 2 with hF
   have hM' : ∀ b ∈ Set.Icc (0:ℝ) A, (∫ t in Real.exp (-η)..1, ‖H b t‖ ^ 2 / t) ≤ M := hM
-  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith)
+  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith only [hη])
   have hpm : MeasurableSet (Set.uIoc (Real.exp (-η)) 1 ×ˢ Set.uIoc 0 A) :=
     measurableSet_uIoc.prod measurableSet_uIoc
   have hcpow (i : ι) : ContinuousOn
@@ -375,7 +375,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
         have := Real.log_le_log (Real.exp_pos (-η)) hp.1.1.le
         rwa [Real.log_exp] at this
       have h2 : Real.log p.1 ≤ 0 := Real.log_nonpos hp1pos.le hp1le
-      nlinarith [h1, h2, hη]
+      nlinarith only [h1, h2, hη]
     have hinv : p.1⁻¹ ≤ Real.exp η := by
       rw [inv_le_comm₀ hp1pos (Real.exp_pos η), ← Real.exp_neg]
       exact hp.1.1.le
@@ -383,7 +383,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
       rw [div_eq_mul_inv]
       exact mul_le_mul hlog hinv (by positivity) (sq_nonneg η)
     have hH2 : ‖H p.2 p.1‖ ^ 2 ≤ (∑ i, ‖ζ i‖) ^ 2 := by
-      nlinarith [hHbd p hp1pos hp1le hp2ge, norm_nonneg (H p.2 p.1), hS0]
+      nlinarith only [hHbd p hp1pos hp1le hp2ge, norm_nonneg (H p.2 p.1), hS0, hHbd, hp1pos, hp1le, hp2ge]
     have huncur : ‖Function.uncurry F p‖
         = (Real.log p.1) ^ 2 / p.1 * ‖H p.2 p.1‖ ^ 2 := by
       have hnn : 0 ≤ Function.uncurry F p := by
@@ -542,7 +542,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
           have := Real.log_le_log (Real.exp_pos (-η)) ht.1.le
           rwa [Real.log_exp] at this
         have h2 : Real.log t ≤ 0 := Real.log_nonpos ht0.le ht1
-        nlinarith [h1, h2, hη]
+        nlinarith only [h1, h2, hη]
       have hinv : t⁻¹ ≤ Real.exp η := by
         rw [inv_le_comm₀ ht0 (Real.exp_pos η), ← Real.exp_neg]
         exact ht.1.le
@@ -579,7 +579,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
             have := Real.log_le_log (Real.exp_pos (-η)) ht.1.le
             rwa [Real.log_exp] at this
           have h2 : Real.log t ≤ 0 := Real.log_nonpos ht0.le ht1
-          nlinarith [h1, h2, hη]
+          nlinarith only [h1, h2, hη]
         have hinv : t⁻¹ ≤ Real.exp η := by
           rw [inv_le_comm₀ ht0 (Real.exp_pos η), ← Real.exp_neg]
           exact ht.1.le
@@ -626,7 +626,7 @@ private theorem hb7fi_swap {ι : Type*} [Fintype ι] {η A M : ℝ} (hη : 0 ≤
             have := Real.log_le_log (Real.exp_pos (-η)) ht.1
             rwa [Real.log_exp] at this
           have h2 : Real.log t ≤ 0 := Real.log_nonpos ht0.le ht.2
-          nlinarith [h1, h2, hη]
+          nlinarith only [h1, h2, hη]
         have hnn : 0 ≤ ‖H b t‖ ^ 2 / t := by positivity
         simp only [hF]
         calc (Real.log t) ^ 2 / t * ‖H b t‖ ^ 2
@@ -672,7 +672,7 @@ theorem HB7FreezeInterval {C : ℝ} (hMVT : Work.ZeroDensity.LogFree.MvtMul C)
     (∫ t in Real.exp (-η)..1,
         ‖∑ i, ζ i * (t : ℂ) ^ ((a i : ℂ) - (γ i : ℂ) * Complex.I)‖ ^ 2 / t)
       ≤ 16 * (η + C / δ) * ∑ i, ‖ζ i‖ ^ 2 := by
-  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith)
+  have hle1 : Real.exp (-η) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith only [hη])
   have hC : 0 ≤ C := by
     have h := hMVT 1 one_pos 1 (fun _ => (0:ℝ)) (fun _ => (1:ℂ)) 1 1 (by norm_num) le_rfl
       (by intro i j hij; exact absurd (Subsingleton.elim i j) hij)
@@ -729,7 +729,7 @@ theorem HB7FreezeInterval {C : ℝ} (hMVT : Work.ZeroDensity.LogFree.MvtMul C)
       have h3 := norm_nonneg (((Real.log t : ℝ) : ℂ) * (∫ b in (0)..A, H b t))
       have h4 := norm_nonneg (Gg t + (((Real.log t : ℝ) : ℂ) * (∫ b in (0)..A, H b t)))
       have h5 := hb7fi_sq_le_sq h4 h
-      nlinarith [h5, h1, h3, sq_nonneg (‖Gg t‖ - ‖(((Real.log t : ℝ) : ℂ) * (∫ b in (0)..A, H b t))‖)]
+      linarith only [h5, h1, h3, sq_nonneg (‖Gg t‖ - ‖(((Real.log t : ℝ) : ℂ) * (∫ b in (0)..A, H b t))‖)]
     have h3 : ‖((Real.log t : ℝ) : ℂ) * (∫ b in (0)..A, H b t)‖ ^ 2
         = (Real.log t) ^ 2 * ‖∫ b in (0)..A, H b t‖ ^ 2 := by
       rw [norm_mul, show ‖((Real.log t : ℝ) : ℂ)‖ = |Real.log t| from by simp, mul_pow, sq_abs]
@@ -769,13 +769,13 @@ theorem HB7FreezeInterval {C : ℝ} (hMVT : Work.ZeroDensity.LogFree.MvtMul C)
       have hsq : η ^ 2 * A ^ 2 ≤ 1 := by
         have h0 : 0 ≤ η * A := mul_nonneg hη hA
         have h1 : η * A * (η * A) ≤ 1 * 1 := mul_le_mul hηA hηA h0 (by norm_num)
-        nlinarith [h1]
+        linarith only [h1]
       have hkey : 2 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2)
           + 2 * (η ^ 2 * A ^ 2 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2))
           ≤ 16 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2) := by
         have h2 : η ^ 2 * A ^ 2 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2)
             ≤ 1 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2) := mul_le_mul_of_nonneg_right hsq hp
-        nlinarith [hp, h2]
+        linarith only [hp, h2]
       calc 2 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2)
             + 2 * (η ^ 2 * A ^ 2 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2))
           ≤ 16 * ((η + C / δ) * ∑ i, ‖ζ i‖ ^ 2) := hkey

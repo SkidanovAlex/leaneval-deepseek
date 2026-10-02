@@ -20,18 +20,18 @@ theorem LogFloorGap (N z : ℕ) (hz : 2 ≤ z) (hzN : z ≤ N) :
   have hdecomp : (N : ℝ) = (z : ℝ) * (q : ℝ) + ((N % z : ℕ) : ℝ) := by
     have h : ((z * q + N % z : ℕ) : ℝ) = (N : ℝ) := by rw [hdecomp_nat]
     push_cast at h
-    linarith [h]
+    linarith only [h]
   have hrnn : (0 : ℝ) ≤ ((N % z : ℕ) : ℝ) := Nat.cast_nonneg _
   have hrlt : ((N % z : ℕ) : ℝ) < (z : ℝ) := by exact_mod_cast hmodlt
   have hqz1 : (z : ℝ) ≤ (q : ℝ) * (z : ℝ) := by
     have h1 : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq1
-    nlinarith [hzpos]
+    nlinarith only [hzpos, h1]
   have hlower : (q : ℝ) ≤ (N : ℝ) / (z : ℝ) := by
     rw [le_div_iff₀ hzpos]
-    nlinarith [hdecomp, hrnn]
+    linarith only [hdecomp, hrnn]
   have hupper : (N : ℝ) / (z : ℝ) ≤ 2 * (q : ℝ) := by
     rw [div_le_iff₀ hzpos]
-    nlinarith [hdecomp, hrlt, hqz1]
+    linarith only [hdecomp, hrlt, hqz1]
   have hXpos : 0 < (N : ℝ) / (z : ℝ) := div_pos hNpos hzpos
   have hle1 : Real.log (q : ℝ) ≤ Real.log ((N : ℝ) / (z : ℝ)) :=
     Real.log_le_log hqpos hlower
@@ -41,6 +41,6 @@ theorem LogFloorGap (N z : ℕ) (hz : 2 ≤ z) (hzN : z ≤ N) :
     rw [Real.log_mul (by norm_num) (ne_of_gt hqpos)]
   have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   rw [abs_le]
-  constructor <;> linarith
+  constructor <;> linarith only [hle1, hlog2pos, hle2, hlog2q]
 
 end Work.LinnikAreas.JutilaPieces

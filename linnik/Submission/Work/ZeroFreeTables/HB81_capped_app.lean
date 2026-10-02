@@ -40,15 +40,15 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     have hχ1 : χ₁ ≠ 1 := hmin.1.1.1
     have hzm1 : Work.LinnikContract.zeroMult χ₁ ρ₁ ≠ 0 := hmin.1.1.2.1
     obtain ⟨-, -, hlam1pos⟩ := Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq hχ1 hzm1
-    have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith [h4e, Real.exp_pos 1]
+    have hlam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith only [h4e, Real.exp_pos 1]
     have hLpos : 0 < Real.log (1 / Work.LinnikContract.lamOf q ρ₁) := by
       apply Real.log_pos
       rw [one_div, one_lt_inv₀ hlam1pos]
-      linarith [h15]
-    exact le_trans (mul_nonpos_of_nonpos_of_nonneg (by linarith) hLpos.le) hlam0pos.le
+      linarith only [h15, hlam1pos]
+    exact le_trans (mul_nonpos_of_nonpos_of_nonneg (by linarith only [hε2]) hLpos.le) hlam0pos.le
   · push_neg at hε2
     have hec0 : (0 : ℝ) ≤ ec := by rw [hec]; positivity
-    have hsmall4 : 4 * (2 - ε) * ec ≤ ε := by linarith [hsmall]
+    have hsmall4 : 4 * (2 - ε) * ec ≤ ε := by linarith only [hsmall, hε]
     obtain ⟨N, hN⟩ := exists_nat_ge (8 / ε)
     set K : ℕ := N + 1 with hKdef
     have hexp1 : (1 : ℝ) ≤ Real.exp 1 := by
@@ -61,13 +61,13 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
         calc (2 : ℝ) ^ N ≤ (2 : ℝ) ^ N * 2 :=
               le_mul_of_one_le_right (by positivity) (by norm_num)
           _ = (2 : ℝ) ^ (N + 1) := by ring
-      have h8 : 8 / ε ≤ (2 : ℝ) ^ (N + 1) := by linarith [hN, h2, hmono]
+      have h8 : 8 / ε ≤ (2 : ℝ) ^ (N + 1) := by linarith only [hN, h2, hmono]
       have h4' : 4 * (2 - ε) / ε ≤ 8 / ε := by
         apply div_le_div_of_nonneg_right _ hε.le
-        nlinarith [hε2.le]
+        linarith only [hε2.le, hε]
       have hpos : (0 : ℝ) < 2 ^ (N + 1) := by positivity
-      have hle : 8 / ε ≤ 4 * Real.exp 1 * 2 ^ (N + 1) := by nlinarith [h8, hexp1, hpos]
-      linarith [h4', hle]
+      have hle : 8 / ε ≤ 4 * Real.exp 1 * 2 ^ (N + 1) := by nlinarith only [h8, hexp1, hpos, hN, h2, hmono, hδ0, hδ1]
+      linarith only [h4', hle]
     let xOf : ℕ → ℝ := fun k => 1 / 2 + 1 / (4 * Real.exp 1 * 2 ^ k) + 2 * ec
     have hxOf : ∀ k, 0 < xOf k := fun k => by simp only [xOf]; positivity
     have hTgen : ∀ k : ℕ, ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q →
@@ -95,7 +95,7 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
     have hzm1 : Work.LinnikContract.zeroMult χ₁ ρ₁ ≠ 0 := hmin.1.1.2.1
     obtain ⟨-, -, hlam1pos⟩ := Work.LinnikAreas.OtherCharRepel.zeroMultStripPos hq2 hχ1 hzm1
     by_cases h100 : Work.LinnikContract.lamOf q ρ₁ < 1 / 100
-    · have hLam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith [h4e, Real.exp_pos 1]
+    · have hLam0pos : 0 < Work.LinnikContract.lamOf q ρ₀ := by linarith only [h4e, Real.exp_pos 1, hexp1, hlam1pos, h100]
       rcases HB81_cover (Work.LinnikContract.lamOf q ρ₀) h4e K with ⟨k, hkK, hk1, hk2⟩ | hKle
       · have hkk : k < K + 1 := by omega
         have hqk : qT k ≤ q := le_trans (Finset.le_sup (Finset.mem_range.mpr hkk))
@@ -109,11 +109,11 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
         have hk2' : Work.LinnikContract.lamOf q ρ₀ ≤ 2 * (4 * Real.exp 1 * 2 ^ k) := by
           have heq : (4 : ℝ) * Real.exp 1 * 2 ^ (k + 1) = 2 * (4 * Real.exp 1 * 2 ^ k) := by
             rw [pow_succ]; ring
-          linarith [hk2, heq]
+          linarith only [hk2, heq]
         exact HB81_cell_arith ε ec hε hε2.le hec0 hsmall4 (4 * Real.exp 1 * 2 ^ k)
           (by have hk' : (1 : ℝ) ≤ (2 : ℝ) ^ k := by
                 exact_mod_cast (Nat.one_le_two_pow (n := k))
-              nlinarith [hk', Real.exp_pos 1])
+              nlinarith only [hk', Real.exp_pos 1, hδ0, hδ1, hexp1])
           (Work.LinnikContract.lamOf q ρ₀) (Work.LinnikContract.lamOf q ρ₁)
           hk1 hk2' hlam1pos (by simpa only [xOf] using hbk)
       · have hkk : K < K + 1 := by omega
@@ -128,17 +128,17 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
         exact HB81_tail_arith ε ec hε hε2.le hec0 hsmall (4 * Real.exp 1 * 2 ^ K)
           (by have hk' : (1 : ℝ) ≤ (2 : ℝ) ^ K := by
                 exact_mod_cast (Nat.one_le_two_pow (n := K))
-              nlinarith [hk', Real.exp_pos 1])
+              nlinarith only [hk', Real.exp_pos 1, hδ0, hδ1, hexp1])
           hXK (Work.LinnikContract.lamOf q ρ₀) (Work.LinnikContract.lamOf q ρ₁)
           hKle hlam1pos (by simpa only [xOf] using hbk)
     · -- `1/100 ≤ λ₁`: the log is bounded by `5`, while `λ₀ ≥ 4e > 10`
       push_neg at h100
       have hLle : Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ Real.log 100 := by
         apply Real.log_le_log (by positivity)
-        rw [div_le_iff₀ hlam1pos]; linarith [h100]
+        rw [div_le_iff₀ hlam1pos]; linarith only [h100]
       have hLnn : 0 ≤ Real.log (1 / Work.LinnikContract.lamOf q ρ₁) := by
         apply Real.log_nonneg
-        rw [one_div, one_le_inv₀ hlam1pos]; linarith [h15]
+        rw [one_div, one_le_inv₀ hlam1pos]; linarith only [h15, hlam1pos]
       have h5 : Real.log 100 ≤ 5 := by
         rw [Real.log_le_iff_le_exp (by norm_num)]
         have he5 : Real.exp 5 = (Real.exp 1) ^ 5 := by
@@ -146,15 +146,15 @@ theorem HB81_capped_app (δ ec εs εL : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1)
         rw [he5]
         calc (100 : ℝ) ≤ (2.7182818283) ^ 5 := by norm_num
           _ ≤ (Real.exp 1) ^ 5 := pow_le_pow_left₀ (by norm_num) (le_of_lt Real.exp_one_gt_d9) 5
-      have h10 : (10 : ℝ) ≤ 4 * Real.exp 1 := by nlinarith [Real.exp_one_gt_d9]
+      have h10 : (10 : ℝ) ≤ 4 * Real.exp 1 := by linarith only [Real.exp_one_gt_d9, h15, hlam1pos]
       have h1 : (2 - ε) * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ 2 * Real.log 100 := by
         have h2 : (2 - ε) * Real.log (1 / Work.LinnikContract.lamOf q ρ₁)
             ≤ 2 * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) :=
-          mul_le_mul_of_nonneg_right (by linarith [hε]) hLnn
+          mul_le_mul_of_nonneg_right (by linarith only [hε]) hLnn
         have h3 : 2 * Real.log (1 / Work.LinnikContract.lamOf q ρ₁) ≤ 2 * Real.log 100 :=
           mul_le_mul_of_nonneg_left hLle (by norm_num)
-        linarith [h2, h3]
-      linarith [h1, h5, h10, h4e]
+        linarith only [h2, h3, hLle]
+      linarith only [h1, h5, h10, h4e]
 
 end
 

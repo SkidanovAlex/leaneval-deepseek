@@ -104,7 +104,7 @@ lemma floor_log_defect (M : ℝ) (hM : 1 ≤ M) :
     rw [div_le_iff₀ hmR]
     have : (1 + 1 / (m : ℝ)) * (m : ℝ) = (m : ℝ) + 1 := by
       field_simp
-    rw [this]; linarith
+    rw [this]; linarith only [hlt]
   have hr1 : 1 ≤ M / (m : ℝ) := (one_le_div hmR).mpr hle
   have hlog : |Real.log ((m : ℝ) / M)| ≤ 1 / (m : ℝ) := by
     have h1 : Real.log ((m : ℝ) / M) = -Real.log (M / (m : ℝ)) := by
@@ -116,7 +116,7 @@ lemma floor_log_defect (M : ℝ) (hM : 1 ≤ M) :
     have h3 : Real.log (M / (m : ℝ)) ≤ 1 / (m : ℝ) := by
       calc Real.log (M / (m : ℝ)) ≤ M / (m : ℝ) - 1 :=
             Real.log_le_sub_one_of_pos (by positivity)
-        _ ≤ 1 / (m : ℝ) := by linarith
+        _ ≤ 1 / (m : ℝ) := by linarith only [hr]
     exact h3
   calc ((m : ℕ) : ℝ) * |Real.log (((m : ℕ) : ℝ) / M)| ≤ (m : ℝ) * (1 / (m : ℝ)) :=
         mul_le_mul_of_nonneg_left hlog (le_of_lt hmR)
@@ -158,7 +158,7 @@ lemma s3floor_pointwise (z N q r t : ℕ) (hq : q ≠ 0) (hr : r ≠ 0) (ht : t 
     rw [le_div_iff₀ (by positivity)]
     have hcast : (((q * r * t : ℕ)) : ℝ) ≤ (N : ℝ) := by exact_mod_cast hqrt
     push_cast at hcast ⊢
-    nlinarith
+    linarith only [hcast]
   have hmfpos : 0 < mf := by
     rw [hmf]; exact_mod_cast (Nat.floor_pos.mpr hM1)
   have hz0 : (z : ℝ) ≠ 0 := ne_of_gt hzR
@@ -211,26 +211,26 @@ lemma s3floor_pointwise (z N q r t : ℕ) (hq : q ≠ 0) (hr : r ≠ 0) (ht : t 
   have hG2 : (((Real.log (M * (t : ℝ) / (z : ℝ)) - 1) * (Real.log (M * (r : ℝ) / (z : ℝ)) - 1) + 1))
       = (A - 1) * (B - 1) + 1 := by rw [hmlog1, hmlog2, hAdef, hBdef]
   rw [hG1, hG2]
-  have hmle : mf - M ≤ 1 := by linarith [Nat.floor_le (le_of_lt hMpos), hmf]
-  have hMle : M - mf ≤ 1 := by linarith [Nat.lt_floor_add_one M, hmf]
-  have habs1 : |mf - M| ≤ 1 := abs_le.mpr ⟨by linarith, hmle⟩
+  have hmle : mf - M ≤ 1 := by linarith only [Nat.floor_le (le_of_lt hMpos), hmf, hMpos]
+  have hMle : M - mf ≤ 1 := by linarith only [Nat.lt_floor_add_one M, hmf]
+  have habs1 : |mf - M| ≤ 1 := abs_le.mpr ⟨by linarith only [hMle], hmle⟩
   have hkey : mf * ((A + δ - 1) * (B + δ - 1) + 1) - M * ((A - 1) * (B - 1) + 1)
       = (mf - M) * ((A - 1) * (B - 1) + 1) + mf * δ * ((A - 1) + (B - 1)) + mf * δ ^ 2 := by
     ring
   rw [hkey]
   have h1 : |(A - 1) * (B - 1) + 1| ≤ (1 + A) * (1 + B) + 1 := by
     rw [abs_le]
-    constructor <;> nlinarith [hA, hB, mul_nonneg hA hB]
+    constructor <;> linarith only [hA, hB, mul_nonneg hA hB]
   have h2 : |mf * δ * ((A - 1) + (B - 1))| ≤ (1 + A) + (1 + B) := by
     rw [abs_mul, abs_mul, abs_of_nonneg (le_of_lt hmfpos)]
     have h4 : |(A - 1) + (B - 1)| ≤ (1 + A) + (1 + B) := by
-      rw [abs_le]; constructor <;> nlinarith [hA, hB]
+      rw [abs_le]; constructor <;> linarith only [hA, hB]
     calc mf * |δ| * |(A - 1) + (B - 1)| ≤ 1 * ((1 + A) + (1 + B)) := by
           apply mul_le_mul hδbound h4 (abs_nonneg _) (by norm_num)
       _ = (1 + A) + (1 + B) := by ring
   have h5 : |mf * δ ^ 2| ≤ 1 := by
     rw [abs_mul, abs_pow, abs_of_nonneg (le_of_lt hmfpos)]
-    have h6 : |δ| ^ 2 ≤ |δ| := by nlinarith [hδabs, abs_nonneg δ]
+    have h6 : |δ| ^ 2 ≤ |δ| := by nlinarith only [hδabs, abs_nonneg δ]
     calc mf * |δ| ^ 2 ≤ mf * |δ| := mul_le_mul_of_nonneg_left h6 (le_of_lt hmfpos)
       _ ≤ 1 := hδbound
   have hsum := abs_add_le ((mf - M) * ((A - 1) * (B - 1) + 1))
@@ -257,7 +257,7 @@ lemma s3floor_pointwise (z N q r t : ℕ) (hq : q ≠ 0) (hr : r ≠ 0) (ht : t 
       _ ≤ (((1 + A) * (1 + B) + 1) + ((1 + A) + (1 + B))) + 1 := add_le_add hsum1 h5
   calc |(mf - M) * ((A - 1) * (B - 1) + 1) + mf * δ * ((A - 1) + (B - 1)) + mf * δ ^ 2|
       ≤ ((1 + A) * (1 + B) + 1) + ((1 + A) + (1 + B)) + 1 := htot
-    _ ≤ 6 * (1 + A) * (1 + B) := by nlinarith [hA, hB, mul_nonneg hA hB]
+    _ ≤ 6 * (1 + A) * (1 + B) := by linarith only [hA, hB, mul_nonneg hA hB]
 
 end
 

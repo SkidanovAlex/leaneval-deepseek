@@ -57,8 +57,8 @@ private def softG (w y : ℝ) (N q r t : ℕ) : ℝ :=
 private lemma softCut_le_N (a : ℝ) (N : ℕ) (ha : 1 ≤ a) : ⌊(N : ℝ) / a⌋₊ ≤ N := by
   have h0 : (0 : ℝ) ≤ (N : ℝ) := by positivity
   have hle : (N : ℝ) / a ≤ (N : ℝ) := by
-    rw [div_le_iff₀ (by linarith : (0 : ℝ) < a)]
-    nlinarith
+    rw [div_le_iff₀ (by linarith only [ha] : (0 : ℝ) < a)]
+    nlinarith only [ha]
   calc ⌊(N : ℝ) / a⌋₊ ≤ ⌊(N : ℝ)⌋₊ := Nat.floor_mono hle
     _ = N := Nat.floor_natCast N
 
@@ -104,8 +104,8 @@ theorem czCross_eq_soft (w y : ℝ) (N : ℕ) (hw : 1 ≤ w) (hwy : w ≤ y) (hy
       rw [Finset.mem_Icc] at hn
       have h2 : ¬ (2 ≤ n) := fun h => hn2 (Finset.mem_Icc.mpr ⟨h, hn.2⟩)
       have hn1 : n = 1 := by omega
-      have hBw : Bz w 1 = 0 := Bz_eq_zero_of_le (z := w) (n := 1) (by linarith) (by simpa using hw)
-      have hBy : Bz y 1 = 0 := Bz_eq_zero_of_le (z := y) (n := 1) (by linarith) (by simpa using hy1)
+      have hBw : Bz w 1 = 0 := Bz_eq_zero_of_le (z := w) (n := 1) (by linarith only [hw]) (by simpa using hw)
+      have hBy : Bz y 1 = 0 := Bz_eq_zero_of_le (z := y) (n := 1) (by linarith only [hw, hwy]) (by simpa using hy1)
       rw [hn1, hBw, hBy, mul_zero]
   -- Two-sided reindexing with the packaged inner sum `softG`.
   have hstep2 : (∑ n ∈ Finset.Icc 2 N, Bz w n * Bz y n)
@@ -139,7 +139,7 @@ theorem czCross_eq_soft (w y : ℝ) (N : ℕ) (hw : 1 ≤ w) (hwy : w ≤ y) (hy
     have hq1 : 1 ≤ q := (Finset.mem_Icc.mp hq).1
     have hX1N : czR w N q ≤ N := by
       have h1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq1
-      exact softCut_le_N ((q:ℝ) * w) N (by nlinarith)
+      exact softCut_le_N ((q:ℝ) * w) N (by nlinarith only [h1, hw])
     refine soft_sum_Icc_eq_of_eq_zero N (czR w N q) hX1N
       (fun r => ∑ t ∈ Finset.Icc 1 N, softG w y N q r t) ?_
     intro r hr hrN
@@ -161,7 +161,7 @@ theorem czCross_eq_soft (w y : ℝ) (N : ℕ) (hw : 1 ≤ w) (hwy : w ≤ y) (hy
     have hr1 : 1 ≤ r := (Finset.mem_Icc.mp hr).1
     have hX2N : czT y N q ≤ N := by
       have h1 : (1:ℝ) ≤ (q:ℝ) := by exact_mod_cast hq1
-      exact softCut_le_N ((q:ℝ) * y) N (by nlinarith)
+      exact softCut_le_N ((q:ℝ) * y) N (by nlinarith only [h1, hw, hwy])
     refine soft_sum_Icc_eq_of_eq_zero N (czT y N q) hX2N (fun t => softG w y N q r t) ?_
     intro t ht htN
     have ht1 : 1 ≤ t := Nat.succ_le_of_lt (lt_of_le_of_lt (Nat.zero_le _) ht)
@@ -202,21 +202,21 @@ private lemma soft_log_mul_le {w y : ℝ} {N : ℕ} (hw : 1 ≤ w) (hwy : w ≤ 
   have hNpos : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
   have hlogw : 0 ≤ Real.log w := Real.log_nonneg hw
   have hlogy : 0 ≤ Real.log y := Real.log_nonneg hy1
-  have hwpos : 0 < w := by linarith
-  have hypos : 0 < y := by linarith
+  have hwpos : 0 < w := by linarith only [hw]
+  have hypos : 0 < y := by linarith only [hw, hwy]
   have hwl : Real.log w ≤ Real.log (N : ℝ) := Real.log_le_log hwpos (le_trans hwy hyN)
   have hyl : Real.log y ≤ Real.log (N : ℝ) := Real.log_le_log hypos hyN
   have hlogN : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg (by exact_mod_cast hN1)
   have hsq : (Real.log (N : ℝ)) ^ 2 ≤ 4 * (N : ℝ) :=
     Work.ZeroDensity.Jutila.log_sq_le_four_mul N hN1
-  nlinarith [hlogw, hlogy, hwl, hyl, hsq, hlogN]
+  nlinarith only [hlogw, hlogy, hwl, hyl, hsq, hlogN]
 
 /-- `|a − b − c − d − e| ≤ |a| + |b| + |c| + |d| + |e|`. -/
 private lemma soft_abs_chain (a b c d e : ℝ) :
     |a - b - c - d - e| ≤ |a| + |b| + |c| + |d| + |e| := by
   rw [abs_le]
   constructor <;>
-    linarith [le_abs_self a, neg_abs_le a, le_abs_self b, neg_abs_le b, le_abs_self c,
+    linarith only [le_abs_self a, neg_abs_le a, le_abs_self b, neg_abs_le b, le_abs_self c,
       neg_abs_le c, le_abs_self d, neg_abs_le d, le_abs_self e, neg_abs_le e]
 
 /-- **The `w·y ≤ N` case of the two-sided Graham `S₃` estimate.**  The pointwise splitting
@@ -233,14 +233,14 @@ private theorem czBz_soft_bound :
   obtain ⟨C₁, hC₁, hG⟩ := Work.ZeroDensity.Jutila.LzAux.HEasyReal
   obtain ⟨C₂, hC₂, hQ⟩ := Work.ZeroDensity.Jutila.vonMangoldtSqEval_here
   obtain ⟨C₃, hC₃, hP⟩ := Work.ZeroDensity.Jutila.MulBzAux
-  refine ⟨2 * C₁ + C₂ + 2 * C₃ + 4, by linarith, ?_⟩
+  refine ⟨2 * C₁ + C₂ + 2 * C₃ + 4, by linarith only [hC₁, hC₂, hC₃], ?_⟩
   intro w y N hw hwy hyN hwyN
   have hy1 : 1 ≤ y := le_trans hw hwy
   have hN1 : 1 ≤ N := by
     have : (1 : ℝ) ≤ (N : ℝ) := le_trans hy1 hyN
     exact_mod_cast this
   have hNpos : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
-  have hypos : 0 < y := by linarith
+  have hypos : 0 < y := by linarith only [hw, hwy]
   have hwN : w ≤ (N : ℝ) := le_trans hwy hyN
   have hlogmul : Real.log w * Real.log y ≤ 4 * (N : ℝ) := soft_log_mul_le hw hwy hyN
   have hA := hG w y hw hwy N hyN
@@ -249,7 +249,7 @@ private theorem czBz_soft_bound :
   have hD := hP y hy1 N hyN
   have hid := Work.ZeroDensity.Jutila.cross_eq_split hw hy1 hN1
   have hdivw : Real.log ((N : ℝ) / w) = Real.log (N : ℝ) - Real.log w :=
-    Real.log_div (ne_of_gt hNpos) (by linarith : w ≠ 0)
+    Real.log_div (ne_of_gt hNpos) (by linarith only [hw] : w ≠ 0)
   have hdivy : Real.log ((N : ℝ) / y) = Real.log (N : ℝ) - Real.log y :=
     Real.log_div (ne_of_gt hNpos) (ne_of_gt hypos)
   have hkey : (∑ n ∈ Finset.Icc 1 N, Bz w n * Bz y n) - (N : ℝ) * Real.log ((N : ℝ) / y)
@@ -270,8 +270,8 @@ private theorem czBz_soft_bound :
   have hlogmul_nn : 0 ≤ Real.log w * Real.log y :=
     mul_nonneg (Real.log_nonneg hw) (Real.log_nonneg hy1)
   have hwy2 : C₁ * ((N : ℝ) + w * y) ≤ 2 * C₁ * (N : ℝ) := by
-    have h : (N : ℝ) + w * y ≤ 2 * (N : ℝ) := by linarith
-    nlinarith [mul_le_mul_of_nonneg_left h hC₁.le]
+    have h : (N : ℝ) + w * y ≤ 2 * (N : ℝ) := by linarith only [hwyN]
+    linarith only [mul_le_mul_of_nonneg_left h hC₁.le, h, hC₁]
   set A : ℝ := (∑ n ∈ Finset.Icc 1 N, Lz w n * Lz y n) - (N : ℝ) * Real.log w with hAdef
   set B : ℝ := (∑ n ∈ Finset.Icc 1 N, ArithmeticFunction.vonMangoldt n ^ 2)
       - (N : ℝ) * Real.log (N : ℝ) with hBdef
@@ -281,7 +281,7 @@ private theorem czBz_soft_bound :
       + (N : ℝ) * Real.log ((N : ℝ) / y) with hDdef
   set E : ℝ := Real.log w * Real.log y with hEdef
   have hbA : |A| ≤ 2 * C₁ * (N : ℝ) := by
-    rw [hAdef]; exact abs_le.mpr ⟨by linarith [h1.1, hwy2], by linarith [h1.2, hwy2]⟩
+    rw [hAdef]; exact abs_le.mpr ⟨by linarith only [h1.1, hwy2, h1], by linarith only [h1.2, hwy2, h1]⟩
   have hbB : |B| ≤ C₂ * (N : ℝ) := by rw [hBdef]; exact hB
   have hbC : |C| ≤ C₃ * (N : ℝ) := by rw [hCdef]; exact hC
   have hbD : |D| ≤ C₃ * (N : ℝ) := by rw [hDdef]; exact hD
@@ -295,7 +295,7 @@ private theorem czBz_soft_bound :
   have hsum : |A| + |B| + |C| + |D| + |E|
       ≤ (2 * C₁ + C₂ + 2 * C₃ + 4) * (N : ℝ) := by
     have hNnn : (0 : ℝ) ≤ (N : ℝ) := hNpos.le
-    linarith [hbA, hbB, hbC, hbD, hbE]
+    linarith only [hbA, hbB, hbC, hbD, hbE, hwy2, hA, hB, hC, hD]
   exact hsum
 
 /-! ## The target -/

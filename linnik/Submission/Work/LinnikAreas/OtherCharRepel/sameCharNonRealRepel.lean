@@ -31,7 +31,7 @@ private lemma arith_repel25 {a b : ℝ} (ha0 : 0 < a) (ha : a ≤ 1 / 100)
   have hsplit : Real.log 100 - Real.log (64 / 3) = Real.log (75 / 16) := by
     rw [← Real.log_div (by norm_num : (100:ℝ) ≠ 0) (by norm_num : (64/3:ℝ) ≠ 0)]
     norm_num
-  linarith [hlog100, h, h75, hsplit]
+  linarith only [hlog100, h, h75, hsplit]
 
 /-- **Logarithmic same-character repulsion at a given second zero.** -/
 private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [NeZero q]
@@ -58,7 +58,7 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
   have hqT : qT ≤ q := by omega
   have hqL : qL ≤ q := by omega
   have hlogq : (100 : ℝ) ≤ Real.log (q : ℝ) := hL q hqL
-  have hlogq0 : (0 : ℝ) < Real.log (q : ℝ) := by linarith
+  have hlogq0 : (0 : ℝ) < Real.log (q : ℝ) := by linarith only [hlogq]
   have hq2 : 2 ≤ q := by omega
   have hχ0 : χ₀ ≠ 1 := hmin.1.1
   have hzm0 : Work.LinnikContract.zeroMult χ₀ ρ₀ ≠ 0 := hmin.1.2.1
@@ -72,7 +72,7 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
   have hβ'β₁ : ρ'.re ≤ ρ₀.re := by
     have h := hρ0le
     rw [Work.LinnikContract.lamOf, Work.LinnikContract.lamOf] at h
-    nlinarith [h, hlogq0]
+    nlinarith only [h, hlogq0, hlogq]
   have hL3' : Work.LinnikContract.lamOf q ρ' ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 :=
     hcap
   have hloglog1 : (1 : ℝ) ≤ Real.log (Real.log (q : ℝ)) := by
@@ -82,7 +82,7 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
       rw [Real.le_log_iff_exp_le (by norm_num)]
       calc Real.exp 1 ≤ (2.7182818286 : ℝ) := le_of_lt Real.exp_one_lt_d9
         _ ≤ 100 := by norm_num
-    linarith
+    linarith only [h1, h2]
   have hloglog4 : (4 : ℝ) ≤ Real.log (Real.log (q : ℝ)) := by
     have h1 : Real.log 100 ≤ Real.log (Real.log (q : ℝ)) := Real.log_le_log (by norm_num) hlogq
     have h2 : (4 : ℝ) ≤ Real.log 100 := by
@@ -93,25 +93,25 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
       calc (Real.exp 1) ^ 4 ≤ (2.7182818286 : ℝ) ^ 4 :=
             pow_le_pow_left₀ (Real.exp_pos 1).le (le_of_lt Real.exp_one_lt_d9) 4
         _ ≤ 100 := by norm_num
-    linarith
+    linarith only [h1, h2]
   have hL3_sqrt : Real.log (Real.log (Real.log (q : ℝ))) / 3
       ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) := by
     have h1 : Real.log (Real.log (Real.log (q : ℝ)))
         ≤ 2 * Real.sqrt (Real.log (Real.log (q : ℝ))) := by
       have h := Real.log_le_rpow_div (x := Real.log (Real.log (q : ℝ))) (ε := (1:ℝ)/2)
-        (by linarith [hloglog1]) (by norm_num)
+        (by linarith only [hloglog1, h100, hlam0pos, hloglog4]) (by norm_num)
       have h2 : Real.log (Real.log (q : ℝ)) ^ ((1:ℝ)/2) / ((1:ℝ)/2)
           = 2 * Real.sqrt (Real.log (Real.log (q : ℝ))) := by
         rw [Real.sqrt_eq_rpow, div_eq_mul_inv, show ((1:ℝ)/2)⁻¹ = 2 by norm_num, mul_comm]
-      linarith [h, h2.le, h2.ge]
-    linarith [h1]
+      linarith only [h, h2.le, h2.ge, h2]
+    linarith only [h1, hcap, hlam0pos, hρ0le]
   have hL3_le : Work.LinnikContract.lamOf q ρ' ≤ Real.log (q : ℝ) / 2 := by
     have h1 : Real.log (Real.log (Real.log (q : ℝ))) ≤ Real.log (q : ℝ) := by
       have ha : Real.log (Real.log (Real.log (q : ℝ))) ≤ Real.log (Real.log (q : ℝ)) :=
         Real.log_le_self (le_trans (by norm_num) hloglog1)
       have hb : Real.log (Real.log (q : ℝ)) ≤ Real.log (q : ℝ) := Real.log_le_self hlogq0.le
-      linarith
-    linarith [hL3', h1]
+      linarith only [ha, hb]
+    linarith only [hL3', h1, h100, hcap, hlogq, hlam0pos]
   have hL3_big : (1 / 100 : ℝ) ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 := by
     have h1 : Real.log 4 ≤ Real.log (Real.log (Real.log (q : ℝ))) :=
       Real.log_le_log (by norm_num) hloglog4
@@ -119,7 +119,7 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
       rw [Real.le_log_iff_exp_le (by norm_num)]
       calc Real.exp 1 ≤ (2.7182818286 : ℝ) := le_of_lt Real.exp_one_lt_d9
         _ ≤ 4 := by norm_num
-    linarith
+    linarith only [h100, hlam0pos, h1, h2]
   have hmax' : ∀ u : ℂ, Work.LinnikContract.zeroMult χ₀ u ≠ 0 → |u.im| ≤ |ρ'.im| + 1 →
       u = ρ₀ ∨ Work.LinnikContract.lamOf q ρ' ≤ Work.LinnikContract.lamOf q u := by
     intro u hzmu himu
@@ -149,11 +149,11 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
     refine le_trans (Complex.norm_le_abs_re_add_abs_im ρ') ?_
     have h1 : |ρ'.re| ≤ 2 := by
       rw [abs_le]
-      exact ⟨by linarith [hρ're0], by linarith [hρ're1]⟩
-    linarith [abs_nonneg ρ'.im]
+      exact ⟨by linarith only [hρ're0, h100, hlam0pos], by linarith only [hρ're1, h100, hρ0re1, hlam0pos, hβ'β₁]⟩
+    linarith only [abs_nonneg ρ'.im, h1]
   have hball1 : ((ρ₀.re : ℝ) : ℂ) ∈ Metric.closedBall (0 : ℂ) (|ρ'.im| + 2) := by
     rw [Metric.mem_closedBall, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_le]
-    constructor <;> [linarith [abs_nonneg ρ'.im, hρ0re0]; linarith [abs_nonneg ρ'.im, hρ0re1]]
+    constructor <;> [linarith only [abs_nonneg ρ'.im, hρ0re0, h100, hlam0pos]; linarith only [abs_nonneg ρ'.im, hρ0re1, h100, hlam0pos]]
   have hdiv' : (MeromorphicOn.divisor (DirichletCharacter.completedLFunction χ₀.primitiveCharacter)
       (Metric.closedBall 0 (|ρ'.im| + 2))) ρ' ≠ 0 :=
     (Work.LinnikAreas.OtherCharRepel.zeroMultTransfer χ₀ hχ0).2.1 ρ' (|ρ'.im| + 2) hzm hball'
@@ -177,18 +177,18 @@ private theorem sameCharRepelLogBound : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q 
       simpa only [Work.LinnikContract.zeroMult] using h
     rw [hord]; rfl
   have hβ1 : |1 - ρ₀.re| ≤ (1 / 2 : ℝ) := by
-    rw [abs_of_nonneg (by linarith [hρ0re1])]
+    rw [abs_of_nonneg (by linarith only [hρ0re1])]
     rw [hb1, div_le_iff₀ hlogq0]
-    linarith
+    linarith only [h100, hlogq, hlam0pos]
   have hβ' : |1 - ρ'.re| ≤ (1 / 2 : ℝ) := by
-    rw [abs_of_nonneg (by linarith [hρ're1])]
+    rw [abs_of_nonneg (by linarith only [hρ're1, hρ0re1, hβ'β₁])]
     rw [hb2, div_le_iff₀ hlogq0]
-    linarith
+    linarith only [hL3_le]
   have hβ1pt : |1 - ρ₀.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
-    rw [abs_of_nonneg (by linarith [hρ0re1]), hb1, div_le_div_iff_of_pos_right hlogq0]
-    linarith [Real.one_le_sqrt.mpr hloglog1]
+    rw [abs_of_nonneg (by linarith only [hρ0re1]), hb1, div_le_div_iff_of_pos_right hlogq0]
+    linarith only [Real.one_le_sqrt.mpr hloglog1, hcap, hρ0le, hL3_sqrt]
   have hρ'pt : |1 - ρ'.re| ≤ Real.sqrt (Real.log (Real.log (q : ℝ))) / Real.log (q : ℝ) := by
-    rw [abs_of_nonneg (by linarith [hρ're1]), hb2, div_le_div_iff_of_pos_right hlogq0]
+    rw [abs_of_nonneg (by linarith only [hρ're1, hρ0re1, hβ'β₁]), hb2, div_le_div_iff_of_pos_right hlogq0]
     exact le_trans hL3' hL3_sqrt
   have hrect1 : Work.LinnikContract.lamOf q ((ρ₀.re : ℝ) : ℂ)
       ≤ Real.log (Real.log (Real.log (q : ℝ))) / 3 := by
@@ -238,14 +238,14 @@ theorem sameCharNonRealRepel : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ [
       have hM : Real.exp (Real.exp (3 / 25)) ≤ Real.log (q : ℝ) := hL q hqL
       have hlogq0 : (0 : ℝ) < Real.log (q : ℝ) := by
         have : (0 : ℝ) < Real.exp (Real.exp (3 / 25)) := Real.exp_pos _
-        linarith
+        linarith only [hM, this]
       have hll : Real.exp (3 / 25) ≤ Real.log (Real.log (q : ℝ)) := by
         have h := Real.log_le_log (Real.exp_pos (Real.exp (3 / 25))) hM
         rwa [Real.log_exp] at h
       have hlll' : (3 : ℝ) / 25 ≤ Real.log (Real.log (Real.log (q : ℝ))) := by
         have h := Real.log_le_log (Real.exp_pos (3 / 25)) hll
         rwa [Real.log_exp] at h
-      linarith
-    linarith
+      linarith only [hlll']
+    linarith only [hcap, hlll]
 
 end Work.LinnikAreas.OtherCharRepel
