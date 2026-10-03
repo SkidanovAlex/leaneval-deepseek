@@ -1,0 +1,154 @@
+import Mathlib
+import Submission.Work.OROneRel.HNNStep
+import Submission.Work.OROneRel.letters_closure_iff
+import Submission.Work.OROneRel.zeta_mk_eq_expand
+import Submission.Work.OROneRel.mk_eq_expand_rewriteAux
+import Submission.Work.OROneRel.rewrite_isCyclicallyReduced_of_expsum_zero
+import Submission.Work.OROneRel.magnusSubgroupOf_equiv_freeGroup
+import Submission.Work.OROneRel.presentedGroupMap_injective_mono
+import Submission.Work.OROneRel.range_presentedGroupMap
+import Submission.Work.OROneRel.mmStepData_of_expsum_zero
+import Submission.Work.OROneRel.rho_magRew
+
+/-!
+# `zero_expsum_t_not_mem` -- the `t ∉ T` case of the exponent-sum-zero step
+
+Setting: `r` is a cyclically reduced relator whose generator `t` has exponent sum zero
+(`sigma t r = 1` in the multiplicative notation of `FreeGroup.lift`), the letter `t` is *not*
+in the generating set `T`, and `r` is not a word in `T`.  Then the Freiheitssatz holds:
+the canonical map `F(T) →* ⟨α | r⟩` is injective.
+
+The proof is the HNN argument of Magnus (as in McCool--Schupp / Putman).  Write
+`r' = magRewRel t r ∈ F((α \ {t}) × ℤ)` for the Magnus rewriting of `r`; the HNN step
+`HNNStepCore r t x i j` exhibits `⟨α | r⟩` as an HNN extension with base
+`G' = ⟨(α \ {t}) × ℤ | r'⟩` and stable letter `t`, via the injective map `θ`, and
+`θ (of s) = of ((s,0))` for `s ≠ t`.
+
+Because `t ∉ T`, the composite `θ ∘ presentedGroupMap r T` sends every generator of `F(T)`
+into the *base* of the HNN extension:
+
+* `θ ∘ presentedGroupMap r T = HNNExtension.of ∘ base`, where `base : F(T) →* G'`
+  sends `s` to the generator `(s,0)` of `G'` (this is `hfac` below);
+* `HNNExtension.of` and `θ` are injective, so it suffices that `base` is injective;
+* `base = presentedGroupMap r' S ∘ ψ` with `S = {(s,0) : s ∈ T} ⊆ (α\{t}) × ℤ`
+  and `ψ : F(T) →* F(S)` induced by `s ↦ (s,0)`, which is injective;
+* `presentedGroupMap r' S` is injective by the Freiheitssatz at the *shorter* relator `r'`,
+  which is exactly the induction hypothesis `IH` at `β = (α \ {t}) × ℤ`
+  (this is why `IH` must be available at the universe `u` of `α` -- the HNN base lives in
+  `Type u`), provided `r' ∉ ⟨S⟩`; the latter follows from `r ∉ ⟨T⟩` by applying the
+  injective Magnus map `rho t` (`rho t (of (s,0)) = of s`, and `rho t r' = r` since
+  `sigma t r = 1`).
+
+The recorded statement of `Work.OROneRel.zero_expsum_t_not_mem` does not bind `α` and the
+universe `u` of its induction hypothesis (the workspace sets `autoImplicit = false`), so the
+universe `u` and the generating type `α` are declared here; apart from that the statement is
+the one requested, with `IH` given exactly in the unfolded form of
+`FreiheitssatzBelow.{u} (relatorNorm (magRewRel t r) + 1)`.
+-/
+
+namespace Work.OROneRel
+
+universe u
+
+variable {α : Type u}
+
+theorem zero_expsum_t_not_mem (r : FreeGroup α) (T : Set α) (t x : α) (i j : ℤ)
+    (hcyc : Work.OROneRel.IsCyclicallyReducedRelator r)
+    (ht : t ∈ Work.OROneRel.relatorLetters r) (hx : x ∈ Work.OROneRel.relatorLetters r)
+    (htx : x ≠ t) (ht0 : Work.OROneRel.sigma t r = 1) (htT : t ∉ T)
+    (hT : r ∉ Subgroup.closure (FreeGroup.of '' T))
+    (d : Work.OROneRel.HNNStepCore r t x i j)
+    (IH : ∀ (β : Type u) (s : FreeGroup β),
+      Work.OROneRel.relatorNorm s < Work.OROneRel.relatorNorm (Work.OROneRel.magRewRel t r) + 1 →
+      Work.OROneRel.FreiheitssatzAt s) :
+    Function.Injective (Work.OROneRel.presentedGroupMap r T) := by
+  classical
+  have ht0' : t ∉ T := htT
+  -- the exponent sum of `t` in `r` is zero
+  have heps : eps t r = 0 := (eps_eq_zero_iff_sigma_eq_one t r).mpr ht0
+  -- `rho t` sends the Magnus rewriting of `r` back to `r`
+  have hrho : rho t (magRewRel t r) = r := by
+    have hmain := rho_magRew t 0 r.toWord
+    rw [show wordEps t r.toWord = 0 from heps, add_zero] at hmain
+    rw [magRewRel, ← magRew_zero_eq_rewrite, hmain, zpow_zero, one_mul, neg_zero, zpow_zero,
+      mul_one]
+    exact FreeGroup.mk_toWord
+  -- the Magnus rewriting of `r` is again a cyclically reduced relator
+  have hcyc' : IsCyclicallyReducedRelator (magRewRel t r) := by
+    letI : DecidableEq ({a : α // a ≠ t} × ℤ) := Classical.decEq _
+    have hcw : FreeGroup.IsCyclicallyReduced (rewrite t r.toWord) :=
+      isCyclicallyReducedRelator_rewrite_toWord t hcyc heps
+    rw [IsCyclicallyReducedRelator, magRewRel, FreeGroup.toWord_mk, hcw.isReduced.reduce_eq]
+    exact hcw
+  -- the generators of the base group that the image of `F(T)` occupies
+  let hst : (s : T) → (s : α) ≠ t := fun s h => ht0' (h ▸ s.2)
+  let phi : T → ({a : α // a ≠ t} × ℤ) := fun s => (⟨(s : α), hst s⟩, 0)
+  let S : Set ({a : α // a ≠ t} × ℤ) := Set.range phi
+  let psi : T → S := fun s => ⟨phi s, ⟨s, rfl⟩⟩
+  have hpsi_inj : Function.Injective psi := by
+    intro s1 s2 h
+    have hphi : phi s1 = phi s2 :=
+      congrArg (fun z : S => (z : ({a : α // a ≠ t} × ℤ))) h
+    have hv : (s1 : α) = (s2 : α) :=
+      congrArg (fun p : ({a : α // a ≠ t} × ℤ) => (p.1 : α)) hphi
+    exact Subtype.ext hv
+  -- `r'` does not lie in the subgroup generated by the relevant generators of the base
+  have hnotmem : magRewRel t r ∉ Subgroup.closure (FreeGroup.of '' S) := by
+    intro hmem
+    apply hT
+    have hmap : rho t (magRewRel t r) ∈
+        Subgroup.map (rho t) (Subgroup.closure (FreeGroup.of '' S)) :=
+      Subgroup.mem_map_of_mem (rho t) hmem
+    rw [MonoidHom.map_closure] at hmap
+    rw [hrho] at hmap
+    refine Subgroup.closure_mono ?_ hmap
+    rintro y hy
+    obtain ⟨z, hz, rfl⟩ := hy
+    obtain ⟨q, hq, rfl⟩ := hz
+    obtain ⟨s, hs⟩ := hq
+    subst hs
+    refine ⟨(s : α), s.2, ?_⟩
+    have hrho_gen : rho t (FreeGroup.of (phi s)) = FreeGroup.of (s : α) := by
+      simp [rho, phi]
+    exact hrho_gen.symm
+  -- the Freiheitssatz at the (shorter) rewritten relator
+  have ihm : FreiheitssatzAt (magRewRel t r) :=
+    IH ({a : α // a ≠ t} × ℤ) (magRewRel t r) (by omega)
+  -- the map on the base group, which is injective
+  let base : FreeGroup T →* HNNBase r t :=
+    (presentedGroupMap (magRewRel t r) S).comp (FreeGroup.map psi)
+  have hbase_inj : Function.Injective base := by
+    have h := (ihm hcyc' S hnotmem).comp (FreeGroup.map_injective hpsi_inj)
+    intro u v huv
+    exact h huv
+  -- the composite with the HNN projection factors through `base`
+  have hfac : (HNNExtension.of : HNNBase r t →*
+        HNNExtension (HNNBase r t) d.A d.B d.phi).comp base
+      = d.theta.comp (presentedGroupMap r T) := by
+    apply FreeGroup.ext_hom
+    intro s
+    show HNNExtension.of (base (FreeGroup.of s)) =
+      d.theta (presentedGroupMap r T (FreeGroup.of s))
+    have hb : base (FreeGroup.of s) = PresentedGroup.of (phi s) := by
+      dsimp only [base]
+      rw [MonoidHom.comp_apply, FreeGroup.map.of, presentedGroupMap_of_apply]
+    rw [hb, presentedGroupMap_of_apply s]
+    show (HNNExtension.of : HNNBase r t →*
+        HNNExtension (HNNBase r t) d.A d.B d.phi)
+        (PresentedGroup.of ((⟨(s : α), hst s⟩, (0 : ℤ)) : ({a : α // a ≠ t} × ℤ))) =
+      d.theta (PresentedGroup.of (s : α))
+    exact (d.theta_of (s : α) (hst s)).symm
+  intro a b hab
+  have h1 : base a = base b := by
+    have h2 : (HNNExtension.of : HNNBase r t →*
+          HNNExtension (HNNBase r t) d.A d.B d.phi) (base a) =
+        (HNNExtension.of : HNNBase r t →*
+          HNNExtension (HNNBase r t) d.A d.B d.phi) (base b) := by
+      have ha := DFunLike.congr_fun hfac a
+      have hb := DFunLike.congr_fun hfac b
+      simp only [MonoidHom.comp_apply] at ha hb
+      rw [ha, hb, hab]
+    exact (HNNExtension.of_injective (A := d.A) (B := d.B) (φ := d.phi) : _) h2
+  exact hbase_inj h1
+
+end Work.OROneRel
