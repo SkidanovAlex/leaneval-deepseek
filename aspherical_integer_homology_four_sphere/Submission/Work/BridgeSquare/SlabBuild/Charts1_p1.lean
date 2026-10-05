@@ -1,9 +1,0 @@
-import Mathlib
-import Submission.Work.BridgeSquare.SlabCore
-import Submission.Work.BridgeSquare.denseSimplex3
-import Submission.Work.BridgeSquare.Psi1Defs
-import Submission.Work.BridgeSquare.SlabBuild.Charts1_p1_p1
-import Submission.Work.BridgeSquare.SlabBuild.Charts1_p1_p2
-import Submission.Work.BridgeSquare.SlabBuild.Charts1_p1_p3
-import Submission.Work.BridgeSquare.SlabBuild.Charts1_p1_p4
-import Submission.Work.BridgeSquare.SlabBuild.Charts1_p1_p5
