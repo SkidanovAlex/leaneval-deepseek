@@ -1,0 +1,72 @@
+import Mathlib
+import ChallengeDeps
+import Submission.Work.RPB.Port.Geometry
+
+open Manifold Real MeasureTheory
+open scoped ContDiff ENNReal
+
+set_option autoImplicit false
+noncomputable section
+
+namespace Work.RPB.Port.Collision
+
+/-- The doubled (undirected) direction of a vector of `ℝ × ℝ`, as an element of `ℝ/ℤ`: the class of
+`arg / π`, where `(x,y)` is identified with the complex number `x + y i`. -/
+def dirC (p : ℝ × ℝ) : UnitAddCircle := ((Complex.arg ⟨p.1, p.2⟩ / Real.pi : ℝ) : UnitAddCircle)
+
+lemma normC_eq_eucNorm (p : ℝ × ℝ) : ‖(⟨p.1, p.2⟩ : ℂ)‖ = Geometry.eucNorm p := by
+  rw [Complex.norm_def, Complex.normSq_apply, Geometry.eucNorm, Geometry.eucDot]
+
+/-- Given two vectors of `ℝ × ℝ` of equal Euclidean norm whose doubled directions `arg / π ∈ ℝ/ℤ`
+differ by `θ/(2π)`, there is an angle `φ` with `w = ‖v‖ • (cos φ, sin φ)` and
+`v = ± ‖v‖ • (cos (φ - θ/2), sin (φ - θ/2))`. -/
+theorem exists_angle_of_dir_eq {v w : ℝ × ℝ} {θ : ℝ}
+    (hn : ‖(⟨v.1, v.2⟩ : ℂ)‖ = ‖(⟨w.1, w.2⟩ : ℂ)‖)
+    (hdir : dirC w = dirC v + ((θ / (2 * Real.pi) : ℝ) : UnitAddCircle)) :
+    ∃ φ : ℝ, w = (‖(⟨v.1, v.2⟩ : ℂ)‖) • (Real.cos φ, Real.sin φ) ∧
+      (v = (‖(⟨v.1, v.2⟩ : ℂ)‖) • (Real.cos (φ - θ / 2), Real.sin (φ - θ / 2)) ∨
+       -v = (‖(⟨v.1, v.2⟩ : ℂ)‖) • (Real.cos (φ - θ / 2), Real.sin (φ - θ / 2))) := by
+  set z : ℂ := ⟨v.1, v.2⟩ with hz
+  set ζ : ℂ := ⟨w.1, w.2⟩ with hζ
+  have hdir' : ((ζ.arg / Real.pi : ℝ) : UnitAddCircle)
+      = ((z.arg / Real.pi + θ / (2 * Real.pi) : ℝ) : UnitAddCircle) := by
+    rw [AddCircle.coe_add]
+    exact hdir
+  have hzero : (↑(ζ.arg / Real.pi - (z.arg / Real.pi + θ / (2 * Real.pi)) : ℝ) :
+      UnitAddCircle) = 0 := by
+    rw [AddCircle.coe_sub, hdir', sub_self]
+  obtain ⟨k, hk⟩ := (AddCircle.coe_eq_zero_iff (1 : ℝ)).mp hzero
+  rw [zsmul_one] at hk
+  have harg : z.arg = ζ.arg - θ / 2 - k * Real.pi := by
+    have h := hk
+    field_simp at h
+    linarith
+  refine ⟨ζ.arg, ?_, ?_⟩
+  · have h2 : ζ.re = w.1 := by rw [hζ]
+    have h3 : ζ.im = w.2 := by rw [hζ]
+    have hre : w.1 = ‖z‖ * Real.cos ζ.arg := by
+      rw [← h2, ← Complex.norm_mul_cos_arg ζ, hn]
+    have him : w.2 = ‖z‖ * Real.sin ζ.arg := by
+      rw [← h3, ← Complex.norm_mul_sin_arg ζ, hn]
+    ext <;> simp [hre, him]
+  · have h4 : z.re = v.1 := by rw [hz]
+    have h5 : z.im = v.2 := by rw [hz]
+    have hzre : v.1 = ‖z‖ * Real.cos z.arg := by
+      rw [← h4, ← Complex.norm_mul_cos_arg z]
+    have hzim : v.2 = ‖z‖ * Real.sin z.arg := by
+      rw [← h5, ← Complex.norm_mul_sin_arg z]
+    have hcos : Real.cos z.arg = (-1) ^ k * Real.cos (ζ.arg - θ / 2) := by
+      rw [harg, Real.cos_sub_int_mul_pi]
+    have hsin : Real.sin z.arg = (-1) ^ k * Real.sin (ζ.arg - θ / 2) := by
+      rw [harg, Real.sin_sub_int_mul_pi]
+    rcases Int.even_or_odd k with hk | hk
+    · left
+      rw [hcos, hk.neg_one_zpow, one_mul] at hzre
+      rw [hsin, hk.neg_one_zpow, one_mul] at hzim
+      ext <;> simp [hzre, hzim]
+    · right
+      rw [hcos, hk.neg_one_zpow] at hzre
+      rw [hsin, hk.neg_one_zpow] at hzim
+      ext <;> simp [hzre, hzim]
+
+end Work.RPB.Port.Collision
