@@ -1,0 +1,125 @@
+import Submission.Work.PGroup.Basic
+import Submission.Work.PGroup.CommClosure
+import Submission.Work.PGroup.CriticalInternal
+import Submission.Work.PGroup.Omega1
+import Submission.Work.PGroup.Symplectic.Basic
+import Submission.Work.PGroup.Symplectic.Main
+import Submission.Work.PGroup.Symplectic.allAbelianCharCyclic_subtype
+import Submission.Work.PGroup.Symplectic.card_eq_pow_even_of_nondegenerate_alt
+import Submission.Work.PGroup.Symplectic.card_quotient_center_pow_even
+import Submission.Work.PGroup.Symplectic.centralProduct_of_structure
+import Submission.Work.PGroup.Symplectic.centralizer_agemo_le_zpowers_sup
+import Submission.Work.PGroup.Symplectic.centralizes_of_pow_mem_zpowers
+import Submission.Work.PGroup.Symplectic.class_two_of_allAbelianCharCyclic
+import Submission.Work.PGroup.Symplectic.commutator_mem_zpowers_of_normal_form
+import Submission.Work.PGroup.Symplectic.commutator_top_closure_omega_le
+import Submission.Work.PGroup.Symplectic.conclusion_map_subtype
+import Submission.Work.PGroup.Symplectic.critical_subgroup_decomposition
+import Submission.Work.PGroup.Symplectic.dvd_of_dvd_mul_of_pow_dvd
+import Submission.Work.PGroup.Symplectic.dvd_sub_one_of_dvd_pow_sub_one
+import Submission.Work.PGroup.Symplectic.dvd_sub_one_of_pow_eq_one
+import Submission.Work.PGroup.Symplectic.eq_of_le_zpowers_of_card_eq
+import Submission.Work.PGroup.Symplectic.exists_centralProduct_of_class_two
+import Submission.Work.PGroup.Symplectic.exists_centralizer_agemo_generator
+import Submission.Work.PGroup.Symplectic.exists_mul_pow_eq_one_of_conj
+import Submission.Work.PGroup.Symplectic.exists_notMem_zpowers_pow_mem
+import Submission.Work.PGroup.Symplectic.exists_order_p_conj
+import Submission.Work.PGroup.Symplectic.exists_pow_eq_one_add_mul_p
+import Submission.Work.PGroup.Symplectic.extraspecial_centralizer
+import Submission.Work.PGroup.Symplectic.extraspecial_of_exponent_p_sq
+import Submission.Work.PGroup.Symplectic.false_of_cyclic_char_selfcentralizing
+import Submission.Work.PGroup.Symplectic.false_of_three_le_of_allAbelianCharCyclic
+import Submission.Work.PGroup.Symplectic.isExtraspecial_sup_of_center_eq
+import Submission.Work.PGroup.Symplectic.isMulCommutative_of_isMulCommutative_omega1
+import Submission.Work.PGroup.Symplectic.mul_pow_eq_one_of_pow_eq_one
+import Submission.Work.PGroup.Symplectic.of_characteristic
+import Submission.Work.PGroup.Symplectic.omega1_eq_pow_eq_one_of_class_two
+import Submission.Work.PGroup.Symplectic.omega_one_structure_of_class_two
+import Submission.Work.PGroup.Symplectic.orderOf_pow_eq_of_not_dvd
+import Submission.Work.PGroup.Symplectic.p_pow_pred_dvd_sub_one_of_pow_dvd
+import Submission.Work.PGroup.Symplectic.pow_eq_of_conj_eq
+import Submission.Work.PGroup.Symplectic.prime_pow_dvd_pow_pred_one_iff
+import Submission.Work.PGroup.Symplectic.sq_card_quotient_center_of_class_two
+import Submission.Work.PGroup.Symplectic.structure_of_cyclic_index_p
+import Submission.Work.PGroup.Symplectic.top_transfer
+import Submission.Work.PGroup.Symplectic.zpowers_pow_eq_closure
+import Submission.Work.PGroup.ZJ_characteristic
+import Submission.Work.PGroup.ZJ_eq_of_commutative
+import Submission.Work.PGroup.ZJ_map_of_ker_inf_eq_bot
+import Submission.Work.PGroup.agemo_conj
+import Submission.Work.PGroup.agemo_isPGroup
+import Submission.Work.PGroup.agemo_mono_index
+import Submission.Work.PGroup.aut_faithful_of_isCriticalSubgroup
+import Submission.Work.PGroup.card_extraspecial
+import Submission.Work.PGroup.card_sup_mul_card_inf
+import Submission.Work.PGroup.card_sup_mul_card_inf_of_le_centralizer
+import Submission.Work.PGroup.card_sup_mul_card_inf_of_le_normalizer
+import Submission.Work.PGroup.centerIn_le_ZJ
+import Submission.Work.PGroup.centerIn_le_thompsonJ
+import Submission.Work.PGroup.centerIn_map_of_ker_inf_eq_bot
+import Submission.Work.PGroup.center_eq_centralizer_of_isCriticalSubgroup
+import Submission.Work.PGroup.center_eq_commutator_of_isExtraspecial
+import Submission.Work.PGroup.center_eq_frattini_of_isExtraspecial
+import Submission.Work.PGroup.centralizer_eq_of_maximal_normal_abelian
+import Submission.Work.PGroup.centralizer_inf_eq_of_maxAbelianOrder
+import Submission.Work.PGroup.centralizer_inf_eq_of_maxAbelianOrder_comm
+import Submission.Work.PGroup.centralizer_inf_eq_of_maximal_abelian
+import Submission.Work.PGroup.centralizer_inf_eq_of_maximal_normal_abelian
+import Submission.Work.PGroup.centralizes_of_isCriticalSubgroup
+import Submission.Work.PGroup.class_two_of_isCriticalSubgroup
+import Submission.Work.PGroup.commutator_le_frattiniIn
+import Submission.Work.PGroup.eq_of_sup_frattiniIn_eq
+import Submission.Work.PGroup.exists_centralProduct_cyclic_extraspecial
+import Submission.Work.PGroup.exists_isCoatom_notMem_of_normal
+import Submission.Work.PGroup.exists_isCriticalSubgroup
+import Submission.Work.PGroup.exists_mem_notMem_commutator_le
+import Submission.Work.PGroup.exists_rank_eq_mRank
+import Submission.Work.PGroup.frattini_eq_agemo_sup_commutator
+import Submission.Work.PGroup.frattini_quotient_elementary
+import Submission.Work.PGroup.inf_centralizer_ne_bot_of_isPGroup
+import Submission.Work.PGroup.isCoatom_index_eq_prime
+import Submission.Work.PGroup.isElementaryAbelian_iff_exponent
+import Submission.Work.PGroup.isPGroup_of_isExtraspecial
+import Submission.Work.PGroup.isPGroup_of_isSpecial
+import Submission.Work.PGroup.le_maxAbelianOrder
+import Submission.Work.PGroup.lt_normalizer_inf
+import Submission.Work.PGroup.mRank_eq_rank_of_isElementaryAbelian
+import Submission.Work.PGroup.mRank_le_log_card
+import Submission.Work.PGroup.mRank_mono
+import Submission.Work.PGroup.maxAbelianOrder_attained
+import Submission.Work.PGroup.maxAbelianOrder_map_of_ker_inf_eq_bot
+import Submission.Work.PGroup.omega_conj
+import Submission.Work.PGroup.omega_eq_self_of_exponent_dvd
+import Submission.Work.PGroup.omega_isPGroup
+import Submission.Work.PGroup.omega_mono_index
+import Submission.Work.PGroup.omega_one_eq_omega1
+import Submission.Work.PGroup.pow_mem_center_of_isCriticalSubgroup
+import Submission.Work.PGroup.pow_mem_frattiniIn
+import Submission.Work.PGroup.rank_eq_log_card_of_isElementaryAbelian
+import Submission.Work.PGroup.rank_eq_rank_frattini
+import Submission.Work.PGroup.rank_le_mRank
+import Submission.Work.PGroup.thompsonJ_characteristic
+import Submission.Work.PGroup.thompsonJ_eq_of_commutative
+import Submission.Work.PGroup.thompsonJ_isPGroup
+import Submission.Work.PGroup.thompsonJ_le_normalizer
+import Submission.Work.PGroup.thompsonJ_map_of_injective
+import Submission.Work.PGroup.thompsonJ_map_of_ker_inf_eq_bot
+import Submission.Work.PGroup.thompson_product_centralizer
+import Submission.Work.PGroup.thompson_replacement
+
+-- ftport:v435-opts-begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- ftport:v435-opts-end
+
+/-!
+# Area A4: the p-group toolkit of the Feit–Thompson drive
+
+This module collects every file of `Submission/Work/PGroup/` (including the `Symplectic/`
+sub-development for P. Hall's theorem, FT 3.5), so that a caller can obtain the whole p-group
+toolkit with the single import `Submission.Work.PGroup.All`.
+
+Conventions are documented in `Submission/Work/PGroup/Basic.lean` and
+`Submission/Work/PGroup/NOTES.md`.
+-/
