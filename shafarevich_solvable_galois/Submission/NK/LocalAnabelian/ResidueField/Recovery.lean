@@ -1,0 +1,159 @@
+/-
+Copyright (c) 2025. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+
+# Recovering the residue field cardinality from the Frobenius
+
+This file completes part (C): the residue field cardinality `q` of a `p`-adic field
+is visible from `Gal(κ̄/κ)` through the action of the Frobenius on the roots of unity
+of order prime to `p`.
+
+Contents:
+
+* `actsAsFrobenius_unique_mod_inertiaSubgroup`: the Frobenius element is well defined
+  modulo the inertia subgroup — two elements acting by `ζ ↦ ζ^q` differ by an inertia
+  element.  (So the *canonical* Frobenius is a coset of `I`, i.e. an element of the
+  unramified quotient, as it should be.)
+* `residueCard_eq_of_actsAsFrobenius`: a single element determines `q` (this is
+  `eq_of_actsAsFrobenius` read as a statement about the residue field).
+* `ResidueCardInput`: the arithmetic input saying that `κ` has a Frobenius element, i.e.
+  that `Gal(κ^ur/κ)` has a canonical topological generator whose action on the prime-to-`p`
+  roots of unity is `ζ ↦ ζ^q` (for which it suffices that `Gal(κ^ur/κ) ≅ Gal(𝔽̄_q/𝔽_q)` and
+  `κ^ur = κ(μ_{p'})`, the latter being `unramifiedClosure`).
+
+The remaining arithmetic statement — that `Gal(κ^ur/κ)` is the profinite completion of
+`ℤ`, i.e. `Ẑ`, with generator the Frobenius — is *not* proved here; only the group-theoretic
+part (the unramified quotient is `Gal(K'/κ)/I`, computed in
+`quotient_inertiaSubgroup_mulEquiv_unramifiedClosure`) is.
+-/
+import Submission.NK.LocalAnabelian.ResidueField.Defs
+import Submission.NK.LocalAnabelian.ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+-- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- PORT435-END
+
+open scoped Classical
+open IntermediateField
+open CategoryTheory
+
+namespace NK.LocalAnabelian
+
+universe u
+
+noncomputable section
+
+variable {κ K' : Type*} [Field κ] [Field K'] [Algebra κ K']
+
+/-- The inertia subgroup is the kernel of the action on prime-to-`p` roots of unity,
+i.e. an element lies in the inertia subgroup exactly when it acts trivially on them. -/
+theorem mem_inertiaSubgroup_iff_acts_trivially (p : ℕ) (σ : Gal(K'/κ)) :
+    σ ∈ inertiaSubgroup (κ := κ) (K' := K') p ↔
+      ∀ n : ℕ, ¬ p ∣ n → ∀ ζ : K', IsPrimitiveRoot ζ n → σ ζ = ζ :=
+  Iff.rfl
+
+/-- **The Frobenius is well defined modulo inertia.**  Two elements of `Gal(K'/κ)` whose
+action on the prime-to-`p` roots of unity is the `q`-power map differ by an element of
+the inertia subgroup.  Equivalently, the Frobenius is a well-defined element of the
+unramified quotient `Gal(κ̄/κ)/I`. -/
+theorem actsAsFrobenius_unique_mod_inertiaSubgroup {p q : ℕ} {σ σ' : Gal(K'/κ)}
+    (h : ActsAsFrobenius (κ := κ) (K' := K') p q σ)
+    (h' : ActsAsFrobenius (κ := κ) (K' := K') p q σ') :
+    σ * σ'⁻¹ ∈ inertiaSubgroup (κ := κ) (K' := K') p := by
+  intro n hn ζ hζ
+  have hζ' : IsPrimitiveRoot (σ'.symm ζ) n := hζ.map_of_injective σ'.symm.injective
+  calc (σ * σ'⁻¹) ζ = σ (σ'.symm ζ) := rfl
+    _ = (σ'.symm ζ) ^ q := h n hn (σ'.symm ζ) hζ'
+    _ = σ' (σ'.symm ζ) := (h' n hn (σ'.symm ζ) hζ').symm
+    _ = ζ := AlgEquiv.apply_symm_apply σ' ζ
+
+/-- **Part (C): the residue field cardinality is determined by the Frobenius action.**
+A single element of `Gal(K'/κ)` cannot be a Frobenius for two different residue field
+cardinalities. -/
+theorem residueCard_eq_of_actsAsFrobenius {p q q' : ℕ} {σ : Gal(K'/κ)} (hp : p.Prime)
+    (hroot : ∀ n : ℕ, ¬ p ∣ n → ∃ ζ : K', IsPrimitiveRoot ζ n)
+    (h : ActsAsFrobenius (κ := κ) (K' := K') p q σ)
+    (h' : ActsAsFrobenius (κ := κ) (K' := K') p q' σ) : q = q' :=
+  eq_of_actsAsFrobenius hp hroot h h'
+
+/-- `σ` is a Frobenius element for the residue field cardinality `q`: it lies outside the
+inertia subgroup and acts on prime-to-`p` roots of unity by `ζ ↦ ζ ^ q`. -/
+def IsFrobeniusFor (p q : ℕ) (σ : Gal(K'/κ)) : Prop :=
+  σ ∉ inertiaSubgroup (κ := κ) (K' := K') p ∧
+    ActsAsFrobenius (κ := κ) (K' := K') p q σ
+
+/-- **Part (C), final form.**  The residue field cardinality is determined by the Frobenius
+*coset* modulo the inertia subgroup: if `σ` and `σ'` are Frobenius elements whose cosets
+modulo `I` coincide, then their exponents `q` and `q'` agree. -/
+theorem eq_of_isFrobeniusFor_of_mem_inertia {p q q' : ℕ} {σ σ' : Gal(K'/κ)} (hp : p.Prime)
+    (hroot : ∀ n : ℕ, ¬ p ∣ n → ∃ ζ : K', IsPrimitiveRoot ζ n)
+    (h : IsFrobeniusFor (κ := κ) (K' := K') p q σ)
+    (h' : IsFrobeniusFor (κ := κ) (K' := K') p q' σ')
+    (hι : σ' * σ⁻¹ ∈ inertiaSubgroup (κ := κ) (K' := K') p) : q = q' := by
+  have hq : ActsAsFrobenius (κ := κ) (K' := K') p q σ' := by
+    intro n hn ζ hζ
+    have h1 : σ' = (σ' * σ⁻¹) * σ := by group
+    rw [h1, AlgEquiv.mul_apply, hι n hn (σ ζ) ((hζ).map_of_injective σ.injective),
+      h.2 n hn ζ hζ]
+  exact eq_of_actsAsFrobenius hp hroot hq h'.2
+
+/-- The profinite integers `Ẑ`, presented as the profinite completion of `ℤ`. -/
+abbrev Zhat : Type :=
+  ((ProfiniteGrp.ProfiniteCompletion.completion (GrpCat.of (Multiplicative ℤ))).toProfinite.toTop)
+
+/-- **The local input `Gal(κ^ur/κ) ≅ Ẑ`.**  The maximal unramified extension of a `p`-adic
+field has residue field `𝔽̄_q` and `Gal(𝔽̄_q/𝔽_q) ≅ Ẑ`; since an unramified extension is
+determined by its residue field extension, the unramified quotient of `Gal(κ̄/κ)` (i.e. the
+quotient by the inertia subgroup) is the profinite completion of `ℤ`, topologically
+generated by the Frobenius. -/
+structure UnramifiedQuotientInput (p : ℕ) (κ K' : Type*) [Field κ] [Field K'] [Algebra κ K']
+    [IsSepClosure κ K'] : Prop where
+  hp : p.Prime
+  iso : Nonempty (Gal(K'/κ) ⧸ inertiaSubgroup (κ := κ) (K' := K') p ≃* Zhat)
+
+/-- **`Gal(κ^ur/κ) ≅ Ẑ`.** -/
+theorem unramifiedClosure_galoisGroup_mulEquiv_zhat {p : ℕ} {κ K' : Type*} [Field κ]
+    [Field K'] [Algebra κ K'] [IsSepClosure κ K'] (h : UnramifiedQuotientInput p κ K')
+    (hgal : IsGalois κ (unramifiedClosure (κ := κ) (K' := K') p)) :
+    Nonempty ((↥(unramifiedClosure (κ := κ) (K' := K') p) ≃ₐ[κ]
+      ↥(unramifiedClosure (κ := κ) (K' := K') p)) ≃* Zhat) := by
+  obtain ⟨e⟩ := h.iso
+  obtain ⟨e'⟩ :=
+    ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure (κ := κ) (K' := K') p hgal
+  exact ⟨e'.symm.trans e⟩
+
+/-- **The local input of part (C).**  `κ` is a `p`-adic field with residue field of
+cardinality `q`, and `frob` is the canonical Frobenius: it lies outside the inertia
+subgroup (it generates the unramified quotient `Gal(κ^ur/κ) ≅ Ẑ`) and acts on the roots of
+unity of order prime to `p` by `ζ ↦ ζ ^ q`.
+
+For a `p`-adic field this follows from `κ^ur = κ(μ_{p'})` (so that the inertia subgroup is
+`Gal(κ̄/κ(μ_{p'}))`) together with `Gal(κ^ur/κ) ≅ Gal(𝔽̄_q/𝔽_q) ≅ Ẑ`: the unramified extension
+of degree `n` has residue field `𝔽_{q^n}`, and Frobenius raises residue field elements to
+the `q`-th power, which on the prime-to-`p` roots of unity reads `ζ ↦ ζ^q`. -/
+structure ResidueCardInput (p q : ℕ) (κ K' : Type*) [Field κ] [Field K'] [Algebra κ K']
+    [IsSepClosure κ K'] where
+  hp : p.Prime
+  /-- the canonical Frobenius element of the unramified quotient `Gal(κ^ur/κ) ≅ Ẑ` -/
+  frob : Gal(K'/κ)
+  /-- it is not in the inertia subgroup -/
+  frob_notMem_inertia : frob ∉ inertiaSubgroup (κ := κ) (K' := K') p
+  /-- Frobenius normalisation: `frob` acts on prime-to-`p` roots of unity by `ζ ↦ ζ ^ q` -/
+  actsAsFrobenius : ActsAsFrobenius (κ := κ) (K' := K') p q frob
+
+/-- **The residue field cardinality is an invariant of the inertia coset of the
+Frobenius.**  Two `ResidueCardInput`s whose Frobenius elements agree modulo inertia force
+the same `q`. -/
+theorem residueCard_eq_of_inputs {p q q' : ℕ} {κ K' : Type*} [Field κ] [Field K']
+    [Algebra κ K'] [IsSepClosure κ K'] (h : ResidueCardInput p q κ K')
+    (h' : ResidueCardInput p q' κ K')
+    (hroot : ∀ n : ℕ, ¬ p ∣ n → ∃ ζ : K', IsPrimitiveRoot ζ n)
+    (hι : h'.frob * h.frob⁻¹ ∈ inertiaSubgroup (κ := κ) (K' := K') p) : q = q' :=
+  eq_of_isFrobeniusFor_of_mem_inertia h.hp hroot
+    ⟨h.frob_notMem_inertia, h.actsAsFrobenius⟩ ⟨h'.frob_notMem_inertia, h'.actsAsFrobenius⟩ hι
+
+end
+
+end NK.LocalAnabelian

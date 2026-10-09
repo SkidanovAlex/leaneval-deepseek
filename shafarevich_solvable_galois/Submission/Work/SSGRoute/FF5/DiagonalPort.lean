@@ -1,0 +1,341 @@
+import Mathlib
+import Submission.Work.SSGRoute.gradedStep_diagonal
+import Submission.Work.SSGRoute.UnivPortCore
+import Submission.Work.SSGRoute.pSeries_inter_lcs_general
+import Submission.Work.SSGRoute.dswClashFree
+import Submission.Work.SSGRoute.lieSpanNested
+import Submission.Work.SSGRoute.wordBarDefs
+import Submission.Work.SSGRoute.freeLie_regular_odd
+import Submission.Work.SSGRoute.FF5.EIso
+import Submission.Work.SSGRoute.wordInvolution_ker_eq_im
+import Submission.Work.SSGRoute.EKerDefs
+import Submission.Work.SSGRoute.prop5.lowerCentralSeries_le_closure_commWord
+import Submission.Work.SSGRoute.prop5.lie_relations_hold_mod_lcs
+-- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- PORT435-END
+
+set_option maxHeartbeats 1000000
+
+namespace Work.SSGRoute
+
+open Work.CohomologicalShrinking
+
+/-! ## Status and mathematical route for the odd-`j` half of `DiagonalCore`
+
+The target below is *equivalent* (for odd `j`) to the statement that the graded piece
+`E(j,j) = ker(Q_{(j+1,1)} → Q_{(j,j)})` is `δ`-regular: the anti-fixed part equals the image of
+`1 + δ` (the kernel is central and of exponent `2`, so anti-fixed = fixed).
+
+**What is proved here and in the companion modules.**
+
+* `SSGRoute/freeLie_regular_odd.lean` (`Work.SSGRoute.freeLie_regular_odd`): the degree-`j` part
+  `barLie X j` of the free `𝔽₂`-Lie algebra on a type `X` with a fixed-point-free involution `σ`
+  is `σ`-regular for odd `j`.  The proof is the retraction argument: the left-normed bracket map
+  `Λ` (`Λ w = lnMon w`) is a `σ`-equivariant idempotent of the degree-`j` word space with image
+  `barLie X j` (the Dynkin/Specht–Wever identity `Λ x = j • x` on the Lie part, with `j ≡ 1` mod
+  `2`), and a direct summand of a regular `𝔽₂[C₂]`-module is regular.
+* `orbitSum_mul_mem` below: the orbit sums of the commutator words generate the whole
+  `(1+δ)`-image of `E(j,j)`.
+* `diagonalCore_odd_of_iso` below: given the (still to be established, delegated as
+  `Work.SSGRoute.E_iso_barLie`) identification of `E(j,j)` with `barLie (Fin n × G) j`, compatible
+  with the `δ`-actions, the target follows.
+
+**The remaining gap** is exactly the identification `E(j,j) ≃ barLie (Fin n × G) j` of the graded
+piece of the `2`-central refinement with the mod-`2` free Lie algebra: `E(j,j) ≅ Λ_j/2Λ_j` with
+`Λ_j = γ_j/γ_{j+1}` (second isomorphism theorem plus `pSeries_inter_lcs_general`:
+`γ_j ∩ P_{j+1} = γ_j²γ_{j+1}`), and `Λ_j ≅ lieSpan X j` (Magnus/Witt, available in `UnivPortCore`
+via `MbarQ`, `gen_span`, `magnusCore_aux`), and `lieSpan X j / 2 ≅ barLie X j` (saturation, from
+`hallSpan_saturated`). -/
+
+
+/-! ## The assembly of the target from the two ingredients -/
+
+/-- The class of the `j`-fold commutator word `commWord j x` in `Q_{(j+1,1)}`. -/
+noncomputable def cwCls (G : Type*) [Group G] (n j : ℕ)
+    (x : Fin j → Work.Shrinking.freeOperatorGroup G n) :
+    flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2 :=
+  QuotientGroup.mk' ((flowTerm 2 G n (tauSucc j j).1 (tauSucc j j).2).subgroupOf ⊤)
+    ⟨prop5.commWord j x, Subgroup.mem_top _⟩
+
+theorem smul_commWord_action' (G : Type*) [Group G] (n : ℕ) (δ : G) (j : ℕ)
+    (x : Fin j → Work.Shrinking.freeOperatorGroup G n) :
+    δ • prop5.commWord j x = prop5.commWord j (fun i => δ • x i) := by
+  have h := prop5.commWord_map (Work.Shrinking.freeOperatorActionHom (G := G) n δ).toMonoidHom j x
+  simpa [Work.Shrinking.smul_freeOperatorGroup_eq] using h.symm
+
+/-- The `δ`-image of the class of a commutator word is the class of the `δ`-transported word. -/
+theorem flowAction_cwCls (G : Type*) [Group G] (n : ℕ) (δ : G) (j : ℕ)
+    (x : Fin j → Work.Shrinking.freeOperatorGroup G n) :
+    flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ (cwCls G n j x)
+      = cwCls G n j (fun i => δ • x i) := by
+  rw [cwCls, cwCls, flowAction_mk_top, smul_commWord_action']
+
+/-- The commutator-word classes lie in the graded piece `E(j,j)`. -/
+theorem cwCls_mem_ker (G : Type*) [Group G] (n j : ℕ) (hj : 1 ≤ j)
+    (x : Fin j → Work.Shrinking.freeOperatorGroup G n) :
+    cwCls G n j x ∈ (flowQuotSucc 2 G n j j).ker := by
+  have hmem : prop5.commWord j x ∈ refinedTerm 2 (Work.Shrinking.freeOperatorGroup G n) j j := by
+    rw [refinedTerm]
+    refine Subgroup.mem_sup_left ⟨?_, prop5.commWord_mem_lowerCentralSeries j x⟩
+    have h := prop5.pow_mem_pSeries 2 j 0 hj (prop5.commWord j x)
+      (prop5.commWord_mem_lowerCentralSeries j x)
+    simpa using h
+  have hm : (QuotientGroup.mk' ((flowTerm 2 G n j j).subgroupOf ⊤)
+      ⟨prop5.commWord j x, Subgroup.mem_top _⟩ : flowQuotient 2 G n j j) = 1 := by
+    rw [QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]
+    exact hmem
+  rw [cwCls, MonoidHom.mem_ker, flowQuotSucc_mk]
+  exact hm
+
+/-- The graded piece is generated by the commutator-word classes. -/
+theorem ker_le_closure_cwCls (G : Type*) [Group G] (n j : ℕ) (hj : 1 ≤ j) :
+    (flowQuotSucc 2 G n j j).ker ≤ Subgroup.closure (Set.range (cwCls G n j)) := by
+  intro g hg
+  obtain ⟨y, hy⟩ := QuotientGroup.mk'_surjective
+    ((flowTerm 2 G n (tauSucc j j).1 (tauSucc j j).2).subgroupOf
+      (⊤ : Subgroup (Work.Shrinking.freeOperatorGroup G n))) g
+  have hmem : (y : Work.Shrinking.freeOperatorGroup G n) ∈
+      refinedTerm 2 (Work.Shrinking.freeOperatorGroup G n) j j := by
+    have h' : flowQuotSucc 2 G n j j (QuotientGroup.mk' _ y) = 1 := by rw [hy]; exact hg
+    rw [flowQuotSucc_mk] at h'
+    exact Subgroup.mem_subgroupOf.mp ((QuotientGroup.eq_one_iff y).mp h')
+  rw [refinedTerm] at hmem
+  obtain ⟨a, ha, b, hb, hab⟩ :=
+    Subgroup.mem_sup_of_normal_right.mp hmem
+  have hb1 : (QuotientGroup.mk' _ ⟨b, Subgroup.mem_top _⟩ :
+      flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2) = 1 := by
+    rw [QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]
+    rw [show flowTerm 2 G n (tauSucc j j).1 (tauSucc j j).2
+        = pSeries 2 (Work.Shrinking.freeOperatorGroup G n) (j + 1) from by
+      rw [tauSucc_of_le (le_refl j), flowTerm, refinedTerm_one]]
+    exact hb
+  have hyaeq : y = (⟨a, Subgroup.mem_top _⟩ : ↥(⊤ : Subgroup (Work.Shrinking.freeOperatorGroup G n)))
+      * ⟨b, Subgroup.mem_top _⟩ := by
+    apply Subtype.ext
+    exact hab.symm
+  have hyeq : g = QuotientGroup.mk' _ ⟨a, Subgroup.mem_top _⟩ := by
+    rw [← hy, hyaeq, map_mul, hb1, mul_one]
+  rw [hyeq]
+  have hcl : a ∈ Subgroup.closure {y : Work.Shrinking.freeOperatorGroup G n |
+      ∃ x : Fin j → Work.Shrinking.freeOperatorGroup G n, y = prop5.commWord j x} :=
+    prop5.lowerCentralSeries_le_closure_commWord (j := j) hj ha.2
+  have hcl' : ∀ c ∈ Subgroup.closure {y : Work.Shrinking.freeOperatorGroup G n |
+        ∃ x : Fin j → Work.Shrinking.freeOperatorGroup G n, y = prop5.commWord j x},
+      (⟨c, Subgroup.mem_top c⟩ : ↥(⊤ : Subgroup (Work.Shrinking.freeOperatorGroup G n)))
+        ∈ Subgroup.closure {y : ↥(⊤ : Subgroup (Work.Shrinking.freeOperatorGroup G n)) |
+            ∃ x : Fin j → Work.Shrinking.freeOperatorGroup G n,
+              y = ⟨prop5.commWord j x, Subgroup.mem_top _⟩} := by
+    intro c hc
+    induction hc using Subgroup.closure_induction with
+    | mem z hz =>
+        obtain ⟨x, rfl⟩ := hz
+        exact Subgroup.subset_closure ⟨x, rfl⟩
+    | one => exact Subgroup.one_mem _
+    | mul y z hy hz ihy ihz => exact Subgroup.mul_mem _ ihy ihz
+    | inv y hy ihy => exact Subgroup.inv_mem _ ihy
+  have hcl'a := hcl' a hcl
+  have h2 := Subgroup.mem_map_of_mem
+    (QuotientGroup.mk' ((flowTerm 2 G n (tauSucc j j).1 (tauSucc j j).2).subgroupOf
+      (⊤ : Subgroup (Work.Shrinking.freeOperatorGroup G n)))) hcl'a
+  rw [MonoidHom.map_closure] at h2
+  refine Subgroup.closure_mono (fun z hz => ?_) h2
+  obtain ⟨z', hz', rfl⟩ := hz
+  obtain ⟨x, rfl⟩ := hz'
+  exact ⟨x, rfl⟩
+
+/-- The graded piece is abelian (it is central). -/
+theorem ker_mul_comm (G : Type*) [Group G] (n j : ℕ)
+    (a b : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+    (ha : a ∈ (flowQuotSucc 2 G n j j).ker) (hb : b ∈ (flowQuotSucc 2 G n j j).ker) :
+    a * b = b * a := by
+  have h := flowQuotSucc_ker_central 2 G n j j b a ha
+  calc a * b = (b * a * b⁻¹) * b := by rw [h]
+    _ = b * a := by group
+
+/-- `δ` preserves the graded piece. -/
+theorem flowAction_mem_ker' (G : Type*) [Group G] (n j : ℕ) (δ : G)
+    {a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2}
+    (ha : a ∈ (flowQuotSucc 2 G n j j).ker) :
+    flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ a ∈ (flowQuotSucc 2 G n j j).ker := by
+  rw [MonoidHom.mem_ker]
+  show flowQuotSucc 2 G n j j (δ • a) = 1
+  rw [flowQuotSucc_smul, ha, smul_one]
+/-- Reassociation using the commutation of `b` with `dA`. -/
+theorem mul_swap_aux {Q : Type*} [Group Q] {a b dA dB : Q} (h : b * dA = dA * b) :
+    a * b * (dA * dB) = a * dA * (b * dB) := by
+  rw [mul_assoc, ← mul_assoc b dA dB, h, mul_assoc, ← mul_assoc]
+
+/-- **The orbit sums generate the `(1+δ)`-image of the graded piece.** -/
+theorem orbitSum_mul_mem (G : Type*) [Group G] (n j : ℕ) (δ : G) (hj : 1 ≤ j) :
+    ∀ g ∈ (flowQuotSucc 2 G n j j).ker,
+      (g : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+        * flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+            (g : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+      ∈ Subgroup.closure (orbitSumFamily G n j δ) := by
+  intro g hg
+  have hsub : Subgroup.closure (Set.range (cwCls G n j)) ≤ (flowQuotSucc 2 G n j j).ker :=
+    (Subgroup.closure_le _).mpr (fun z hz => by
+      obtain ⟨x, rfl⟩ := hz
+      exact cwCls_mem_ker G n j hj x)
+  have key : ∀ u ∈ Subgroup.closure (Set.range (cwCls G n j)),
+      (u : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+        * flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+            (u : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+      ∈ Subgroup.closure (orbitSumFamily G n j δ) := by
+    intro u hu
+    induction hu using Subgroup.closure_induction with
+    | mem y hy =>
+        obtain ⟨x, rfl⟩ := hy
+        have hk := cwCls_mem_ker G n j hj x
+        have hkδ := flowAction_mem_ker' G n j δ hk
+        rw [ker_mul_comm G n j _ _ hk hkδ]
+        rw [flowAction_cwCls]
+        exact Subgroup.subset_closure ⟨x, by rw [cwCls, cwCls]⟩
+    | one => simp
+    | mul a b ha hb iha ihb =>
+        have hka := hsub ha
+        have hkb := hsub hb
+        have hkδa := flowAction_mem_ker' G n j δ hka
+        have hcomm : (b : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+            * flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+            = flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+              * b := ker_mul_comm G n j _ _ hkb hkδa
+        rw [map_mul, mul_swap_aux hcomm]
+        exact Subgroup.mul_mem _ iha ihb
+    | inv a ha iha =>
+        have hka := hsub ha
+        have hkδa := flowAction_mem_ker' G n j δ hka
+        have hcomm : ((a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2))⁻¹
+            * (flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2))⁻¹
+            = (flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2))⁻¹
+              * (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)⁻¹ :=
+          ker_mul_comm G n j _ _ (Subgroup.inv_mem _ hka) (Subgroup.inv_mem _ hkδa)
+        rw [map_inv]
+        rw [show (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)⁻¹
+              * (flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                  (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2))⁻¹
+            = ((a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+                * flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+                    (a : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2))⁻¹ from by
+          rw [mul_inv_rev, hcomm]]
+        exact Subgroup.inv_mem _ iha
+  exact key g (ker_le_closure_cwCls G n j hj hg)
+
+/-- **The target from the Lie-part isomorphism.**  Assuming the (still to be established)
+identification of the graded piece `E(j,j)` with the degree-`j` part of the free `𝔽₂`-Lie algebra
+on `Fin n × G`, compatible with the `δ`-actions, the odd-`j` half of `DiagonalCore` follows from
+`freeLie_regular_odd` and the fact that the orbit sums generate the `(1+δ)`-image of `E(j,j)`. -/
+theorem diagonalCore_odd_of_iso (G : Type*) [Group G] (n : ℕ) (δ : G) (hδ : δ * δ = 1)
+    (hδ1 : δ ≠ 1)
+    (hiso : ∀ j : ℕ, 1 ≤ j →
+      ∃ e : ↥(flowQuotSucc 2 G n j j).ker ≃* Multiplicative ↥(barLie (Fin n × G) j),
+        ∀ c : ↥(flowQuotSucc 2 G n j j).ker,
+          ((Multiplicative.toAdd (e (flowKerSmul G n j δ c)) : ↥(barLie (Fin n × G) j)) :
+              WordBar (Fin n × G))
+            = wordBarσ (Fin n × G) (basisPerm G n δ)
+                ((Multiplicative.toAdd (e c) : ↥(barLie (Fin n × G) j)) :
+                  WordBar (Fin n × G)))
+    (j : ℕ) (hj : Odd j) :
+    ∀ c : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2,
+      flowQuotSucc 2 G n j j c = 1 →
+      flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ c = c⁻¹ →
+      c ∈ Subgroup.closure (orbitSumFamily G n j δ) := by
+  intro c hc hanti
+  have hj1 : 1 ≤ j := by rcases hj with ⟨k, rfl⟩; omega
+  obtain ⟨e, he⟩ := hiso j hj1
+  set c' : ↥(flowQuotSucc 2 G n j j).ker := ⟨c, hc⟩ with hc'def
+  set v : ↥(barLie (Fin n × G) j) := Multiplicative.toAdd (e c') with hvdef
+  have hfix : (v : WordBar (Fin n × G))
+      + wordBarσ (Fin n × G) (basisPerm G n δ) (v : WordBar (Fin n × G)) = 0 := by
+    have h2 : flowKerSmul G n j δ c' = c'⁻¹ := by
+      apply Subtype.ext
+      rw [flowKerSmul_coe]
+      exact hanti
+    have h1 := he c'
+    rw [h2, map_inv] at h1
+    have hneg : Multiplicative.toAdd ((e c')⁻¹) = -v := by
+      show -Multiplicative.toAdd (e c') = -v
+      rw [hvdef]
+    rw [hneg] at h1
+    have hcoe : ((-v : ↥(barLie (Fin n × G) j)) : WordBar (Fin n × G))
+        = -((v : ↥(barLie (Fin n × G) j)) : WordBar (Fin n × G)) := rfl
+    rw [hcoe] at h1
+    rw [← h1]
+    abel
+  obtain ⟨w, hwmem, hw⟩ := freeLie_regular_odd (Fin n × G) (basisPerm G n δ)
+    (basisPerm_involutive G n δ hδ) (basisPerm_ne_self G n δ hδ1) j hj hj1
+    (v : WordBar (Fin n × G)) v.2 hfix
+  have hσwmem : wordBarσ (Fin n × G) (basisPerm G n δ) w ∈ barLie (Fin n × G) j :=
+    barLie_wordBarσ_mem (basisPerm G n δ) hwmem
+  set g : ↥(flowQuotSucc 2 G n j j).ker :=
+    e.symm (Multiplicative.ofAdd (⟨w, hwmem⟩ : ↥(barLie (Fin n × G) j))) with hgdef
+  have hgc : c' = g * flowKerSmul G n j δ g := by
+    have hwv : (v : WordBar (Fin n × G)) = w + wordBarσ (Fin n × G) (basisPerm G n δ) w := hw
+    have hvadd : v = (⟨w, hwmem⟩ : ↥(barLie (Fin n × G) j))
+        + ⟨wordBarσ (Fin n × G) (basisPerm G n δ) w, hσwmem⟩ := by
+      apply Subtype.ext
+      exact hwv
+    have heg : e g = Multiplicative.ofAdd (⟨w, hwmem⟩ : ↥(barLie (Fin n × G) j)) :=
+      e.apply_symm_apply _
+    have hσg : e (flowKerSmul G n j δ g)
+        = Multiplicative.ofAdd (⟨wordBarσ (Fin n × G) (basisPerm G n δ) w, hσwmem⟩ :
+            ↥(barLie (Fin n × G) j)) := by
+      have h1 := he g
+      rw [heg] at h1
+      rw [show e (flowKerSmul G n j δ g)
+          = Multiplicative.ofAdd (Multiplicative.toAdd (e (flowKerSmul G n j δ g))) from rfl]
+      congr 1
+      apply Subtype.ext
+      simpa using h1
+    have key : e c' = e (g * flowKerSmul G n j δ g) := by
+      have h1 : Multiplicative.ofAdd v = e c' := by rw [hvdef]; rfl
+      rw [← h1, hvadd, map_mul, heg, hσg]
+      rfl
+    exact e.injective key
+  have hcg : c = (g : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)
+      * flowAction 2 G n (tauSucc j j).1 (tauSucc j j).2 δ
+          (g : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2) := by
+    have := congrArg (fun z : ↥(flowQuotSucc 2 G n j j).ker =>
+      (z : flowQuotient 2 G n (tauSucc j j).1 (tauSucc j j).2)) hgc
+    simpa [hc'def, flowKerSmul_coe] using this
+  rw [hcg]
+  exact orbitSum_mul_mem G n j δ hj1 g g.2
+
+/-- **The odd-`j` half of `DiagonalCore`.**  For odd `j`, the orbit sums of the weight-`j`
+commutator monomials already generate the anti-fixed part of the graded piece
+`E(j,j) = ker(Q_{(j+1,1)} → Q_{(j,j)})`: every `c ∈ E(j,j)` with `flowAction … δ c = c⁻¹` lies in
+the subgroup generated by `orbitSumFamily G n j δ`.
+
+Mathematical route.  `E(j,j) ≅ γ_j/(γ_j²γ_{j+1}) = (γ_j/γ_{j+1}) ⊗ 𝔽₂ =: L_j` is the degree-`j` part
+of the free `𝔽₂`-Lie algebra on `X = Fin n × G`, on which `δ` acts through the fixed-point-free
+involution `(a,g) ↦ (a, δg)` of `X`; `orbitSumFamily` generates `im(1+δ)`.  For odd `j`,
+`ker(1+δ) = im(1+δ)` on `L_j`: `L_j` has the (mod `2` reduction of the) Hall basis of
+`γ_j/γ_{j+1}`, and `σ` permutes that basis without fixed points, because a `σ`-fixed Hall tree
+would have a `σ`-invariant leaf multiset all of whose orbits have size two, hence an even number
+of leaves.
+
+(Verified by explicit `𝔽₂`-linear algebra on `L_j` for `j = 3` with `2` and `4` generators and
+`j = 5` with `2` generators: `rank(1+δ) = dim ker(1+δ)` in each case.) -/
+theorem diagonalCore_odd (G : Type*) [Group G] (n : ℕ) (δ : G) (hδ : δ * δ = 1)
+    (hδ1 : δ ≠ 1) :
+    ∀ j : ℕ, Odd j →
+      ∀ c : Work.CohomologicalShrinking.flowQuotient 2 G n
+          (Work.CohomologicalShrinking.tauSucc j j).1
+          (Work.CohomologicalShrinking.tauSucc j j).2,
+        Work.SSGRoute.flowQuotSucc 2 G n j j c = 1 →
+        Work.CohomologicalShrinking.flowAction 2 G n
+            (Work.CohomologicalShrinking.tauSucc j j).1
+            (Work.CohomologicalShrinking.tauSucc j j).2 δ c = c⁻¹ →
+        c ∈ Subgroup.closure (Work.SSGRoute.orbitSumFamily G n j δ) := by
+  intro j hj
+  exact diagonalCore_odd_of_iso G n δ hδ hδ1
+    (fun j' hj' => E_iso_barLie G n δ hδ hδ1 j' hj') j hj
+
+end Work.SSGRoute
