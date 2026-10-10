@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.HilbertSymbolGeneral.Gens
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

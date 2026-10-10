@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.Kummer
-import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
-import Submission.NK.TameStructureDeep.Tame.layerDegree
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Tame.kummerLayer_fixedField_pow
+import Submission.NK.TameStructureDeep.Tame.layerDegree
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

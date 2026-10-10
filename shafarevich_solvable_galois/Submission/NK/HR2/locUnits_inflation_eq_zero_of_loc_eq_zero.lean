@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.HR.TransferSupport
-import Submission.NK.HassePrinciple.LocalUnits
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,9 +1,15 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Basic.Complex.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.archFamilyLocal
-import Submission.Work.SSGRoute.PT.archPairLocal
-import Submission.Work.SSGRoute.PT.archPairValueZ_add_left
 import Submission.Work.SSGRoute.PT.archPairLocal_coboundary
-import Submission.Work.SSGRoute.E7Arch.oddPrime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

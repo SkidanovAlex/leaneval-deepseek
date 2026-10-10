@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.localSumDecomposition
-import Submission.Work.SSGRoute.E9c.Core
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.glue_helpers
+import Submission.Work.SSGRoute.localSumDecomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

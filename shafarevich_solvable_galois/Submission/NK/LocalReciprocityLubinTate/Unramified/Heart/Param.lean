@@ -1,10 +1,4 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isFrobeniusPower_integers
-import Submission.NK.LocalReciprocityLubinTate.Unramified.NormOp
-import Submission.NK.LocalReciprocityLubinTate.Unramified.LTGain
-import Submission.NK.LocalReciprocityLubinTate.Unramified.GainAux
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
 import Submission.NK.LocalReciprocityLubinTate.Unramified.gainPoly_sCoeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

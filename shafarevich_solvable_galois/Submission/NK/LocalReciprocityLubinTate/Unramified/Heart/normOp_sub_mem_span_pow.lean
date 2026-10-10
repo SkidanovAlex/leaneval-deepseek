@@ -1,14 +1,10 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
-import Submission.NK.LocalReciprocityLubinTate.Unramified.NormOp
-import Submission.NK.LocalReciprocityLubinTate.Unramified.resultant_normOp
-import Submission.NK.LocalReciprocityLubinTate.Unramified.resultant_X_pow_sub_C_X
-import Submission.NK.LocalReciprocityLubinTate.Unramified.LTGain
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Heart.Param
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Heart.paramNormOp_sCoeff
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Polynomial.Degree.IsMonicOfDegree
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Heart.map_evalRingHom_sub_mem_span
+import Submission.NK.LocalReciprocityLubinTate.Unramified.Heart.paramNormOp_sCoeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

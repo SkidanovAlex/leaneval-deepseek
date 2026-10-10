@@ -1,20 +1,28 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.prop5Data_exists
-import Submission.Work.SSGRoute.FlowGroupSuccDefs
-import Submission.Work.SSGRoute.two_torsion_lift_odd
-import Submission.Work.SSGRoute.local_factorisation
-import Submission.Work.SSGRoute.local_clause_conj_transfer
-import Submission.Work.SSGRoute.kerSuccCocycle_transport_mem_Z2
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.UnivPort
+import Submission.Work.SSGRoute.dswClashFree
 import Submission.Work.SSGRoute.exists_localCocycle
-import Submission.Work.SSGRoute.exists_shapiro_packaging
-import Submission.Work.SSGRoute.ramifiedPlaces_finite
-import Submission.Work.SSGRoute.isT1Place_of_isConjPlace
-import Submission.Work.SSGRoute.ShapiroNaturalDefs
-import Submission.Work.SSGRoute.two_torsion_lift_two
-import Submission.Work.SSGRoute.shapiro_packaging_natural
-import Submission.Work.SSGRoute.two_torsion_bridge
+import Submission.Work.SSGRoute.freeAssocMap_mem_nestedSpan
+import Submission.Work.SSGRoute.freeAssocMap_mem_wordSpan
 import Submission.Work.SSGRoute.involutions_eq_one_or_conjugate
+import Submission.Work.SSGRoute.isT1Place_of_isConjPlace
+import Submission.Work.SSGRoute.local_clause_conj_transfer
+import Submission.Work.SSGRoute.pCentralSeries_two_eq_bot_of_exponent_four
+import Submission.Work.SSGRoute.prop5.magnusAux.leadMap
+import Submission.Work.SSGRoute.prop5.pCentralSeries_le_pow_sup_commutator
+import Submission.Work.SSGRoute.prop5Data_exists
+import Submission.Work.SSGRoute.ramifiedPlaces_finite
+import Submission.Work.SSGRoute.shapiro_packaging_natural
+import Submission.Work.SSGRoute.two_torsion_lift_odd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -462,7 +470,8 @@ theorem kerIso_conjKernelMul (p : ℕ) (K : IntermediateField ℚ SSGRoute.QBar)
       (tauSucc i j).1 (tauSucc i j).2) = y := rfl
   rw [← hy, kerSucc_conj_eq_mk_one p (K ≃ₐ[ℚ] K) i j m y.left y.right x]
   have hright : (flowGroupSucc p (K ≃ₐ[ℚ] K) m i j (⟨y.left, y.right⟩ : flowGroup p
-      (K ≃ₐ[ℚ] K) m (tauSucc i j).1 (tauSucc i j).2)).right = y.right := rfl
+      (K ≃ₐ[ℚ] K) m (tauSucc i j).1 (tauSucc i j).2)).right = y.right :=
+    flowGroupSucc_right p (K ≃ₐ[ℚ] K) m i j _
   rw [hright]
   exact kerIso_equivariant_ofMul p K i j m y.right x
 

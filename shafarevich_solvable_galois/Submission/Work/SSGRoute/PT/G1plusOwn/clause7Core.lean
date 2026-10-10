@@ -1,12 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.G1plusOwn.reciprocityAux
-import Submission.Work.SSGRoute.PT.G1plusOwn.sum_pair_zero_of_placeFormula
-import Submission.Work.SSGRoute.PT.G1plusOwn.extLocVanishing
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusOwn.extHRestrict_infinite_eq_zero
-import Submission.Work.SSGRoute.PT.vf_transverse
+import Submission.Work.SSGRoute.PT.G1plusOwn.extLocVanishing
+import Submission.Work.SSGRoute.PT.G1plusOwn.reciprocityAux
+import Submission.Work.SSGRoute.PT.classFormation_reciprocity_allPlaces
 import Submission.Work.SSGRoute.PT.glue_realiser_abstract
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.decomp_injective_of_finPlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

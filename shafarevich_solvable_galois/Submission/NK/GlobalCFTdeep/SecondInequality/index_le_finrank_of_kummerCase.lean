@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.GaloisIdeles
-import Submission.NK.GlobalCFT.H0Computation
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.Cohomology
+import Mathlib.FieldTheory.LinearDisjoint
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.FieldTheory.Galois.le_finrank_of_coprime_intermediate
 import Submission.NK.GlobalCFTdeep.Herbrand.CyclicHerbrandQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

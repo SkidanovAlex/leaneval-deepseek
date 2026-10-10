@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.Analysis.Polynomial.exists_root_close_with_delta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

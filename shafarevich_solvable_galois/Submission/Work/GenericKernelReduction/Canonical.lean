@@ -1,37 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The canonical form of a solution of a split embedding problem in the closure
-
-`Work.GenericKernelReduction.SplitEmbeddingSolvedInClosure` bundles a solution of a split
-embedding problem `1 → N → N ⋊[φ] Gal(L/ℚ) → Gal(L/ℚ) → 1` over `ℚ` inside the fixed algebraic
-closure `AlgebraicClosure ℚ`.  Its `↥L`-algebra structure on the field `↥M` is *existential*, so a
-solution may be presented with a "twisted" algebra structure: any `ℚ`-embedding
-`↥L → ↥M ⊆ AlgebraicClosure ℚ` is allowed in principle, and the compatibility condition
-`e g (algebraMap x) = algebraMap (rightHom g x)` is stated relatively to it.
-
-When solutions belonging to different kernels are combined (the step from the Sylow subgroups of a
-finite nilpotent kernel to the kernel itself, `splitEmbeddingSolvedInClosure_pi`) the individual
-solutions have to be *pinned down* to the canonical algebra structure, i.e. the inclusion
-`↥L ↪ ↥M ⊆ AlgebraicClosure ℚ`, so that the Galois-theoretic restriction maps used to build the
-compositum are the honest restriction maps.
-
-This file introduces `CanonicalSplitEmbeddingSolvedInClosure`, the refinement of
-`SplitEmbeddingSolvedInClosure` in which the `↥L`-algebra structure is required to be the
-inclusion (equivalently: `(algebraMap ↥L ↥M x : AlgebraicClosure ℚ) = x` for all `x`).
-
-## Main definitions
-
-* `Work.GenericKernelReduction.CanonicalSplitEmbeddingSolvedInClosure`
-
-## Main results
-
-* `Work.GenericKernelReduction.splitEmbeddingSolvedInClosure_of_canonical`: forgetting the
-  canonicality one recovers an ordinary solution in the closure.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

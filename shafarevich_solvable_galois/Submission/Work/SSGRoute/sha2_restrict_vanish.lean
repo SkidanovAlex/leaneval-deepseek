@@ -1,6 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.sha2_restrict_aux
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.sha2_restrict_assemble
 import Submission.Work.SSGRoute.sha2_trivial_vanish
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

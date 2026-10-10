@@ -1,35 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The abelian rank from local reciprocity (route (b))
-
-The abelian-rank input of `NK.LocalInputs.Inputs`
-(`LocalGaloisInputs.abelian_rank`: `NK.LocalAnabelian.HasAbelianFrattiniRank p (d+1+δ) (Gal(K'/κ))`)
-is the classical local-class-field-theory computation
-
-  `G_κ^{ab} ≅ κˣ^{∧} ≅ Ẑ × μ_κ × ℤ_p^{[κ:ℚ_p]}`,
-
-i.e. the maximal elementary abelian `p`-quotient of `G_κ^{ab}` is `(ℤ/p)^{d+1+δ}` (there are
-`(p^{d+1+δ}-1)/(p-1)` *cyclic* degree-`p` extensions of `κ`).
-
-This file reduces the input to two clearly delimited pieces:
-
-* the Lubin–Tate / existence input of local class field theory, isolated by the sibling area as
-  `NK.LocalReciprocity.LocalReciprocityDatum` / `NK.LocalReciprocity.LubinTateInput`;
-* the `p`-Frattini rank of the profinite completion of `κˣ`,
-  `NK.LocalAnabelian.HasFrattiniRank p r (NK.LocalReciprocity.completionUnits κ)` — a purely
-  *unit-group* statement (the arithmetic of `κˣ`), which for `κ = K_𝔭` is equivalent to the
-  power-class count `|κˣ/(κˣ)^p| = p^r` (see `NK.LocalInputs.PowerQuotient`).
-
-The transfer along the reciprocity isomorphism is
-`NK.LocalReciprocity.hasFrattiniRank_maxAbelian_of_datum` (`Submission/Work/LocalReciprocity/Invariants.lean`),
-and the passage from the maximal abelian subextension to the abelianisation of `Gal(K'/κ)` is
-`NK.LocalInputs.AbelianRank.hasAbelianFrattiniRank_of_maxAbelian`.
--/
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalInputs.AbelianRank.hasAbelianFrattiniRank_of_maxAbelian_of_isOpen
-import Submission.NK.LocalReciprocity.Invariants
-import Submission.NK.LocalReciprocity.LubinTate
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

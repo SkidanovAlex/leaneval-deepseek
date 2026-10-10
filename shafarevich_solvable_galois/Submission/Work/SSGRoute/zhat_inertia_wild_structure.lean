@@ -1,22 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.InertiaArithImports
-import Submission.Work.SSGRoute.LevelInertiaProEll.Defs
-import Submission.Work.SSGRoute.levelInertiaNormalProEll
-import Submission.Work.SSGRoute.levelInertiaCardGrowth
-import Submission.Work.SSGRoute.levelSub_commutator_and_generator
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Star.Basic
+import Submission.Work.SSGRoute.LevelInertiaProEll.stabilizerValuationSubringAtPrime
+import Submission.Work.SSGRoute.PT.inertia_power_quotients
+import Submission.Work.SSGRoute.PT.inertia_wild_exists
+import Submission.Work.SSGRoute.SSGIW.levelBasic
 import Submission.Work.SSGRoute.exists_level_inertiaDeg_mul_dvd
 import Submission.Work.SSGRoute.mem_levelSub_iff_mem_inertia
-import Submission.Work.SSGRoute.levelInertia_defs
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Work.SSGRoute.SSGIW.Basic
-import Submission.Work.SSGRoute.SSGIW.levelBasic
-import Submission.Work.SSGRoute.PT.inertia_wild_exists
-import Submission.Work.SSGRoute.PT.inertia_power_quotients
-import Submission.NK.LocalTame.Basic
-import Submission.NK.LocalTame.All
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

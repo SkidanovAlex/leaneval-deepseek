@@ -1,23 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.E6Calc.extCor_levelPair
-import Submission.Work.SSGRoute.extCor_yoneda_comp
-import Submission.Work.SSGRoute.Z8.SylowSetup
-import Submission.Work.SSGRoute.Z8.levelPair_vanish_of_vanish_closure
-import Submission.Work.SSGRoute.Z8.localUnits_extH_pTorsion_card_gcd
-import Submission.Work.SSGRoute.Z8.extCor_injective_pTorsion_gcd
-import Submission.Work.SSGRoute.E7bZ8Step1
-import Submission.Work.SSGRoute.exists_galoisClosure_level
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.detectAbove_pgroup
-import Submission.Work.SSGRoute.extRes_injective_of_index
-import Submission.Work.SSGRoute.exists_localZetaCoeff
-import Submission.Work.SSGRoute.pgroup_fixes_primitiveRoot
-import Submission.Work.SSGRoute.localAlgebraMapUnits_self
 import Submission.Work.SSGRoute.local_duality_ext_detect_h
-import Submission.Work.SSGRoute.levelPair_baseChange_in
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.localUnitsMap_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

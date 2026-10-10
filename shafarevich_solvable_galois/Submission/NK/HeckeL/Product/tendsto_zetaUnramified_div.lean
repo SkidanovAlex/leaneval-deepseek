@@ -1,36 +1,6 @@
-/-
-The analytic comparison of the two *truncated* Euler products which occur in the Čebotarev
-chapter: `NK.HeckeL.zetaUnramified K L S` (the Euler product of `L` over the primes that do not
-lie over the modulus `S`) and `NK.HeckeL.zetaUnramifiedK K S` (the Euler product of `K` over the
-primes outside `S`).  We prove that their quotient has a *limit* as `s → 1⁺`, and that the limit is
-a positive real number.
-
-The value of the limit is **not** `Res_{s=1} ζ_L / Res_{s=1} ζ_K`: deleting the Euler factors at
-`S` on both sides changes the limit by the finite correction
-`∏_{𝔭 ∈ S} (1 - N𝔭^{-1})^{-1} / ∏_{𝔮 | S} (1 - N𝔮^{-1})^{-1}`,
-which need not be `1`.  Only the *existence* of a positive limit is needed, and that is what we
-prove.
-
-The argument is the standard one.
-
-* On `s > 1` both truncated products are the full Euler product of the corresponding Dedekind zeta
-  function divided by the *finite* product of the factors that were deleted
-  (`zetaEulerFactor_prod_mul_zetaUnramified`, `zetaEulerFactor_prod_mul_zetaUnramifiedK`); the
-  product identities for the full Euler products are the proved Euler products
-  `dedekindZeta_eulerProduct` of the chapter.
-* Hence the quotient is `(ζ_L(s)/ζ_K(s)) · (finite correction)`.
-* `(s - 1) ζ_K(s)` tends to the (positive) residue of `ζ_K` at `s = 1`
-  (`NumberField.tendsto_sub_one_mul_dedekindZeta_nhdsGT`), so `ζ_L(s)/ζ_K(s)` tends to
-  `Res_{s=1} ζ_L / Res_{s=1} ζ_K > 0`.
-* The correction is a finite product of continuous functions, so it tends to its value at `s = 1`,
-  which is a positive real number.
-* The product of the two limits is the required positive `c`.
-
-The hypothesis `hS` of the statement (that `S` contains the ramified primes) is *not* used: the
-existence of the limit holds for every finite `S`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.DedekindZeta
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Submission.NK.HeckeL.Product.dedekindZeta_eulerProduct
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

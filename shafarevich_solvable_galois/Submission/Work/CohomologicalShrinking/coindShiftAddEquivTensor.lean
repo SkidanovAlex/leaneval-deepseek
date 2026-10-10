@@ -1,51 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The natural equivariant equivalence `A^* = Coind(A)/A ≃+ A ⊗ I_G^{-1}`
-
-The paper's dimension shifting `Ĥ^k(G, M) ≅ Ĥ^{-1}(G, M ⊗ A_k)`, `A_k = I_G^{-(k+1)}`, is
-proved here from the short exact sequence `0 → A → Coind(A) → A^* → 0` (`Work.Tate.coindSES`)
-together with the identification
-
-`A^* = Coind(A)/A ≃+ A ⊗ I_G^{-1}`,  `I_G^{-1} = Hom_{𝔽_p}(I_G, 𝔽_p)`
-
-of the right hand module with the twist by the dual of the augmentation ideal.  This file
-constructs that identification, canonically (no choices of bases beyond the group basis of
-`𝔽_p[G]`), and proves that it is
-
-* `G`-**equivariant** (`coindShiftDualEquiv_equivariant`), and
-* **natural** in the coefficient module: for a `G`-equivariant `φ : A → B` and *any* additive
-  `ψ : A^* → B^*` compatible with `coindMap φ` under the projections, the square with
-  `rTensor φ : A ⊗ I_G^{-1} → B ⊗ I_G^{-1}` commutes (`coindShiftDualEquiv_natural`).
-
-## The construction
-
-Writing `dGen z : I_G^{-1}` for the restriction to `I_G` of the coefficient functional at `z`,
-and `augGen u = u - 1 ∈ I_G`, the two maps are
-
-* `dPhi : A ⊗ I_G^{-1} → Coind(A)`, `a ⊗ f ↦ (z ↦ f (z⁻¹ - 1) • (z • a))`,
-* `dPsiTilde : Coind(A) → A ⊗ I_G^{-1}`, `x ↦ ∑_u (u • x u⁻¹) ⊗ dGen u`.
-
-The second one kills the diagonal `A ⊆ Coind(A)` — this is where `∑_u dGen u = 0`
-(`sum_dGen`) enters — hence descends to `dPsiBar : A^* → A ⊗ I_G^{-1}`; the first one
-descends by construction, `dPhiBar`.  The two are inverse: on pure tensors one uses
-`∑_u f (augGen u) • dGen u = f` (`sum_dGen_augGen`, the "dual basis" relation for the basis
-`{augGen u | u ≠ 1}` of `I_G`), and on `A^*` one uses
-`dPhi (dPsiTilde x) = x - (z ↦ z • x 1) ∈ x + diag`.
-
-Everything is `𝔽_p`-linear, and the equivariance of `dPsiTilde`
-(`∑_u (u • x (u⁻¹δ)) ⊗ dGen u = δ • ∑_u (u • x u⁻¹) ⊗ dGen u`) uses `γ • dGen u = dGen (γ u)`.
-
-This is the module `Submission.Work.CohomologicalShrinking.coindShiftAddEquivTensor`, whose
-main theorem `coindShiftAddEquivTensor` packages the equivalence, its equivariance and its
-naturality as required by the dimension shift `Ĥ²(G,A) ≅ Ĥ^{-1}(G, A ⊗ A_2)`.
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Models
-import Submission.Work.CohomologicalShrinking.Levels
-import Submission.Work.Tate.DimensionShiftH
+import Mathlib.Algebra.Algebra.Basic
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.MonoidAlgebra.Module
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.CohomologicalShrinking.coindUpAddEquivTensor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

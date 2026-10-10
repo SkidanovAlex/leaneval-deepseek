@@ -1,35 +1,6 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The section of the orbit localisation `A_O ⟶ Coind_{Γ_w}^{Γ} L_wˣ`
-
-This module provides the explicit left inverse of the Shapiro map
-`NK.HassePrinciple.orbitCoindMapA`; the use of it is in
-`NK.HassePrinciple.orbitCoindMapA_split`.
-
-For a finite Galois extension `L/K` of number fields, a place `w` of `L`, the decomposition group
-`Γ_w = MulAction.stabilizer (L ≃ₐ[K] L) w` and the orbit `O = Gal(L/K)·w`, the map
-`orbitCoindMapA K L w : A_O ⟶ Coind_{Γ_w}^{Γ} L_wˣ` is the adjunction transpose of the evaluation
-at `w`; on elements it is `(t x) γ = (γ • x) w`.
-
-The left inverse `s` is defined on `f` in the coinduced module by choosing, for every place
-`v ∈ O`, an element `orbitRepr w v hv : Gal(L/K)` with `orbitRepr w v hv • v = w`, and setting
-
-  `(s f) v = (γ⁻¹ • onePlace w (f γ)) v`,   `γ = orbitRepr w v hv`,
-
-and `(s f) v = 1` for `v ∉ O`.  Here `onePlace w u` is the idèle which is `u` at `w` and `1`
-elsewhere, and `γ⁻¹ • ·` is the action of `Gal(L/K)` on the idèles; the point of writing the
-definition this way (rather than through the local field isomorphism `L_v ≃+* L_w`) is that the
-dependent transports are handled by the idèle group action, see
-`NK.HassePrinciple.smul_coindSection_apply`.
-
-Since `A_O` and the coinduced module are `Additive`-wrapped groups, the file also provides the
-coercions `mulToSupported` and `supportedToMul` (and the section `coindSectionAdd`) which let the
-later arguments stay at the level of the multiplicative idèle group.
--/
-
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.IdeleOrbitCoind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

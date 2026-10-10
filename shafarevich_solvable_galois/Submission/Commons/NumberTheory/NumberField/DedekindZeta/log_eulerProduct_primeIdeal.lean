@@ -1,11 +1,17 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
-import Submission.Commons.Analysis.SpecialFunctions.Log.log_eq_tsum_log_of_hasProd
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.EulerProduct.Basic
+import Mathlib.NumberTheory.NumberField.DedekindZeta
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Submission.Commons.Analysis.ExpLog.log_inv_one_sub_le_two
-import Submission.Commons.NumberTheory.NumberField.ideal_card_norm_le_tupleFinset
-import Submission.Commons.NumberTheory.NumberField.tsum_prime_pow_card_mul_pow
+import Submission.Commons.Analysis.SpecialFunctions.Log.log_eq_tsum_log_of_hasProd
+import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
 import Submission.Commons.NumberTheory.NumberField.card_ideals_absNorm_mul
+import Submission.Commons.NumberTheory.NumberField.ideal_card_norm_le_tupleFinset
 import Submission.Commons.NumberTheory.NumberField.natCard_quotient_eq_pow_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.tsum_prime_pow_card_mul_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

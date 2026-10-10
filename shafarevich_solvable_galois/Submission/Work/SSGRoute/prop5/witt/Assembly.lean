@@ -1,19 +1,6 @@
-/-
-# Assembly of Witt's theorem from the Hall-set pieces
-
-Given the four Hall-set inputs
-* `hall_foliage_lt_right` : the foliages of Hall trees are smaller than their right subtrees,
-* `hall_spanning` : the Hall bracketings span the free Lie algebra,
-* `leading_term_coeff` : the foliage of a Hall tree is the leading word of its bracket
-  evaluation, with coefficient `1`,
-* `foliage_injective` : the foliage determines a Hall tree,
-we prove that the canonical Lie homomorphism from the free Lie ring on `X` (over `ℤ`) to the
-free associative ring is injective.
--/
-import Mathlib
-import Submission.Work.SSGRoute.prop5.witt.Basic
-import Submission.Work.SSGRoute.prop5.witt.Vocab
+import Mathlib.Algebra.Lie.Free
 import Submission.Work.SSGRoute.prop5.witt.Swap
+import Submission.Work.SSGRoute.prop5.witt.Vocab
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

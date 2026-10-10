@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.GlobalCFT.Place
-import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

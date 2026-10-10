@@ -1,9 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.FlowGroupSuccDefs
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Submission.Work.SSGRoute.ProperStageDefs
 import Submission.Work.SSGRoute.kerSucc_conj_eq_mk_one
-import Submission.Work.CohomologicalShrinking.flow.flowQuotMap_smul
-import Submission.Work.CohomologicalShrinking.functorial.gradedMapAdd_smul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.pt_char_pTorsion
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.extH_classesK_two_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

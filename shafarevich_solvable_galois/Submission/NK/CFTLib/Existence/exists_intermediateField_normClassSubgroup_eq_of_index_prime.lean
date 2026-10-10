@@ -1,10 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Existence.artinKernel
-import Submission.NK.CFTLib.Existence.artinMapOfARL
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
-import Submission.NK.GlobalCFT.NormGroup.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

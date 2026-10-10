@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaArithImports
-import Submission.Work.SSGRoute.subgroup_eq_of_index_eq_of_isProCyclicQuotients
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KrullTopology
+import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Submission.NK.TameStructureDeep.Tame.Unconditional
+import Submission.Work.SSGRoute.InertiaDefs
+import Submission.Work.SSGRoute.LTDDefs.Basic
+import Submission.Work.SSGRoute.PTW.Prelude
 import Submission.Work.SSGRoute.finite_homs_of_unique_index
 import Submission.Work.SSGRoute.natCard_eq_prime_pow_of_module_zmod
+import Submission.Work.SSGRoute.subgroup_eq_of_index_eq_of_isProCyclicQuotients
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

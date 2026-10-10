@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Algebra.Basic
+import Mathlib.Data.ZMod.Basic
+import Mathlib.LinearAlgebra.Dual.Defs
+import Mathlib.LinearAlgebra.Quotient.Defs
 import Submission.Work.SSGRoute.TateDual.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

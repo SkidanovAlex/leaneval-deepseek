@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.DivisionPoints
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

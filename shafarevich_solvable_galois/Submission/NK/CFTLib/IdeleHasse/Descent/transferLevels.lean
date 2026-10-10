@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
+import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

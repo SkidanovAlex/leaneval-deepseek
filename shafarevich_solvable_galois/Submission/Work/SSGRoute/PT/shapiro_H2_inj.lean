@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.ClassFormation
+import Mathlib.GroupTheory.Index
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Group
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.shapiro_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,20 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Shared
-import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
-import Submission.NK.GlobalCFTdeep.Herbrand.StableRep
-import Submission.NK.GlobalCFTdeep.Herbrand.DescentSetup
-import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
-import Submission.NK.GlobalCFTdeep.LogLattice.logVec_smul_apply
-import Submission.NK.GlobalCFTdeep.LogLattice.sum_logVec_eq_zero
-import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
-import Submission.NK.GlobalCFTdeep.LogLattice.span_logVecLin_oneVec
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.LogLattice.finrank_lattices
-import Submission.NK.GlobalCFTdeep.LogLattice.herbrandEq_divisorLatticeRep_iff
-import Submission.NK.GlobalCFTdeep.LogLattice.herbrandEq_iff_of_span_eq_top
 import Submission.NK.GlobalCFTdeep.LogLattice.hZero_mul_hOne_logLattice
 import Submission.NK.GlobalCFTdeep.LogLattice.hZero_mul_hOne_unitLattice
+import Submission.NK.GlobalCFTdeep.LogLattice.herbrandEq_divisorLatticeRep_iff
+import Submission.NK.GlobalCFTdeep.LogLattice.herbrandEq_iff_of_span_eq_top
 import Submission.NK.GlobalCFTdeep.PlacePerm.herbrandEq_placeFunRep
-import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

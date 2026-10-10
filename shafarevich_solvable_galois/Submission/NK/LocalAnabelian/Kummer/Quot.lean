@@ -1,14 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer field as a function on the class group `kˣ/(kˣ)^p`
-
-The Kummer field of an element `a` of `kˣ` depends only on the class of `a` in
-`kˣ/(kˣ)^p`.  This file introduces the resulting function on the class group;
-the well-definedness proof is `NK.LocalAnabelian.kummerField_eq_of_div_mem_powSubgroup`
-and is imported in `Submission.NK.LocalAnabelian.Kummer.QuotAPI`.
--/
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.GroupTheory.Coset.Defs
 import Submission.NK.LocalAnabelian.Kummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

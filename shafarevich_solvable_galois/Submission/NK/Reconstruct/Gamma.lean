@@ -1,8 +1,8 @@
-import Mathlib
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Module.Submodule.Union
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.Basic
-import Submission.NeukirchUchida.PlaceSystem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

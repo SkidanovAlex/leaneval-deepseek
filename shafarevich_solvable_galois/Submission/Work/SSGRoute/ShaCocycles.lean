@@ -1,29 +1,5 @@
-/-
-# The Tate--Shafarevich groups `Ш¹(k,M)` and `Ш²(k,E)` in cocycle form
-
-This file provides the shared vocabulary in which the Tate--Poitou duality statement
-`Work.SSGRoute.tatePoitou_sha2_image` — the arithmetic input of the present route (the node
-`Work.SSGRoute.sha2_image_of_Hm2` and its sibling `Work.SSGRoute.coker_obstruction`) — is phrased:
-
-* `Work.SSGRoute.Z1loc` / `Work.SSGRoute.Z2loc` — the locally trivial continuous `1`- and
-  `2`-cocycles `G_k = Ω ≃ₐ[k] Ω → M` with values in a finite `𝔽_p[Gal(K/k)]`-module: the cocycle
-  conditions of `SSGRoute.Interfaces` together with the local conditions of the theorems (a
-  coboundary on the decomposition group of every finite place of `Ω` and on `⟨σ⟩` for every
-  involution `σ` of `G_k`);
-* `Work.SSGRoute.B1top` / `Work.SSGRoute.B2top` — the continuous coboundaries;
-* `Work.SSGRoute.Sha1` / `Work.SSGRoute.Sha2` — the quotients `Z¹_loc/B¹` and `Z²_loc/B²`, i.e. the
-  Tate--Shafarevich groups;
-* `Work.SSGRoute.sha2Class` — the class of a cocycle in `Ш²`, with
-  `Work.SSGRoute.sha2Class_eq_zero_iff`: it vanishes exactly when the cocycle is a global
-  coboundary;
-* `Work.SSGRoute.Sha2Map` — functoriality of `Ш²` in the coefficient module `M` (push-forward of
-  cocycles), with `Sha2Map_mk` computing it on representatives.
-
-All the elementary closure properties (additivity, negation, `𝔽_p`-scalar multiplication, and
-push-forward along a `G`-equivariant additive map) of the six cochain conditions are proved here;
-they are what make `Z1loc`, `Z2loc`, `B1top` and `B2top` submodules.
--/
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

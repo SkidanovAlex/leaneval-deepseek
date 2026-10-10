@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_mem_integers_iff
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

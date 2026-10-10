@@ -1,26 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The tame inertia is pro-prime-to-`p`
-
-Let `V ⊴ G` be the *maximal* normal pro-`p` subgroup of a profinite group `G` (in the sense that
-`V` is pro-`p` and contains every normal pro-`p` subgroup), let `I ⊴ G` be a closed normal subgroup
-with `V ≤ I`, and suppose the image `H = I/V` of `I` in `G ⧸ V` is pro-cyclic
-(`NK.LocalTame.IsProCyclic`).  Then `H` is **pro-prime-to-`p`**.
-
-The proof: a pro-cyclic profinite group which is not pro-prime-to-`p` has a nontrivial
-*characteristic* pro-`p` subgroup
-(`NK.TameStructure.ProCyclic.exists_characteristic_proP_of_not_isProPrimeToP`); being
-characteristic in `H` and `H` normal in `G ⧸ V`, its image in `G ⧸ V` is normal there, and its
-preimage in `G` is a normal pro-`p` subgroup strictly containing `V`, contradicting maximality.
-
-This derives the field `isProPrimeToP_tameInertia` of `NK.TameData.TameInertiaInput`
-(NSW, *Cohomology of Number Fields*, (7.5.11)) from the maximality of the wild inertia.
--/
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Topology.Algebra.ProperAction.Basic
+import Submission.NK.ProfiniteP.ProPCore.totallyDisconnectedSpace_quotient
 import Submission.NK.TameStructure.ProCyclic.exists_characteristic_proP_of_not_isProPrimeToP
 import Submission.NK.TameStructure.ProfiniteAux.isProP_of_normal_of_quotient
-import Submission.NK.ProfiniteP.ProPCore.totallyDisconnectedSpace_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

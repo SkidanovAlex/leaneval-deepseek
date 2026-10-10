@@ -1,4 +1,3 @@
-import Mathlib
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_abelian_local_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.NUV2.ArtinBridge.continuous_algebraNorm
-import Submission.NK.GlobalCFT.Norm.globalCFT_localAbs_localNormInfinite
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_prod_smul_eq_inclusion_normIdeleHom
+import Submission.NK.NUV2.ArtinBridge.continuous_algebraNorm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

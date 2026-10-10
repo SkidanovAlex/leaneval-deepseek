@@ -1,5 +1,7 @@
-import Submission.NK.LocalReciprocityLubinTate.Tower
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalArtin.Reduction.kernelCondition_toReciprocityMap
+import Submission.NK.LocalReciprocityLubinTate.Tower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

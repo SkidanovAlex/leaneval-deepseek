@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.FundamentalCone
 import Submission.NK.NUV2.RouteB.CongCount.CongConeSetup
 import Submission.NK.NUV2.RouteB.CongCount.finite_cosetConeSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

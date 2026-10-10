@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.galToGamma
 import Submission.NK.Reconstruct.gammaBaseChange
-import Submission.NK.Reconstruct.GammaObject
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Cohomology
+import Mathlib.RepresentationTheory.Invariants
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFT.Cohomology.globalCFT_H0Computation_of_invariants
 import Submission.NK.GlobalCFT.NormGroup.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

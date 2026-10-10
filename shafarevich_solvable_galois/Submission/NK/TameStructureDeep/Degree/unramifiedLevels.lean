@@ -1,24 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The cyclotomic (unramified) levels of `κ = K_𝔭` inside `κ(μ_{p'})`
-
-For a number field `K`, a finite place `𝔭` and `κ = K_𝔭`, the maximal unramified extension
-`κ^ur = κ(μ_{p'})` (realised in a separable closure `K'` as
-`NK.LocalAnabelian.unramifiedClosure p`) is the union of the cyclotomic extensions
-`κ(ζ_{q^d - 1})`, `q = NK.LocalStructure.residueCard K 𝔭`, which are unramified of degree `d`.
-
-This file sets up that tower: the orders `levelN d = q ^ d - 1`, a chosen primitive root
-`levelRoot d`, the level fields `levelField d = κ⟮levelRoot d⟯`, the containment
-`levelField d ≤ unramifiedClosure p`, and the divisibility of the level orders.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Degree.zhatComponents
-import Submission.NK.TameStructureDeep.Degree.Equality
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
-import Submission.NK.Mine.ResidueCharAutomatic
+import Submission.NK.TameStructureDeep.Degree.zhatComponents
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

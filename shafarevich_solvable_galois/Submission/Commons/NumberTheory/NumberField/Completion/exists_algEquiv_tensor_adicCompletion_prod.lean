@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.exists_surjective_ringHom_tensor_completion_canon
-import Submission.Commons.NumberTheory.NumberField.Completion.sum_finrank_adicCompletion_eq_finrank
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_ringEquiv_tensor_adicCompletion_prod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

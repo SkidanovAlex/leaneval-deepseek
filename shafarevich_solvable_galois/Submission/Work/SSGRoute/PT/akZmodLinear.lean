@@ -1,8 +1,10 @@
-import Mathlib
+import Mathlib.Algebra.Exact.Basic
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.alphaOneLayer
 import Submission.Work.SSGRoute.PT.ker_le_range_precompHom
 import Submission.Work.SSGRoute.PTembedding.localKummer_base
-import Submission.Work.AbsoluteKummer.SES.range_mapH1_eq_ker_mapH1
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

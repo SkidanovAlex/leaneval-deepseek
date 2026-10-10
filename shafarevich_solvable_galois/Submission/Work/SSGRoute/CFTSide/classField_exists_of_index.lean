@@ -1,17 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.NKExistenceImport
-import Submission.Work.SSGRoute.classField_exists_ramified
-import Submission.Work.SSGRoute.CFTSide.exists_intermediateField_normClassSubgroup_eq_of_index
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Work.SSGRoute.CFTSide.exists_abelian_subextension_normClassSubgroup_le
+import Submission.Work.SSGRoute.CFTSide.exists_intermediateField_normClassSubgroup_eq_of_index
+import Submission.Work.SSGRoute.classField_exists_ramified
 import Submission.Work.SSGRoute.exists_level_normGroup_not_mem_of_not_pthPower
-import Submission.NK.GlobalCFT.NormGroup.globalCFT_normClassHom_trans
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.NK.GlobalCFTdeep.Audit.index_normClassSubgroup_self
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # The existence theorem of global class field theory at arbitrary index
@@ -133,8 +131,6 @@ private theorem exists_classField_of_index_aux :
       obtain ⟨K', hFK', hNK', hAK', hfdK', hGalK', hNormK', _hdegK'⟩ :=
         classField_exists_ramified NK.CFTLib.artinReciprocityIdeal_proved
           NK.CFTLib.fundamentalClassElement (K := K) p W hWfin hWopen hWidx
-      letI : Field K' := hFK'
-      letI : NumberField K' := hNK'
       letI : Algebra K K' := hAK'
       letI : FiniteDimensional K K' := hfdK'
       -- the pullback of `V` to `C_{K'}`
@@ -161,8 +157,6 @@ private theorem exists_classField_of_index_aux :
       -- the induction hypothesis over `K'`
       obtain ⟨M, hFM, hNM, hAM, hfdM, hGalM, hNormM, _⟩ :=
         ih U'.index hU'lt (K := K') U' hU'fin hU'open rfl
-      letI : Field M := hFM
-      letI : NumberField M := hNM
       letI : Algebra K' M := hAM
       letI : FiniteDimensional K' M := hfdM
       -- the `K`-algebra structure on `M` through `K'`

@@ -1,19 +1,6 @@
-/-
-# Injectivity of `Hⁿ(G, ∏ᶜ M) ⟶ ∏ᶜ Hⁿ(G, M i)`
-
-We prove that the family of maps on group cohomology induced by the projections of a
-categorical product `∏ᶜ M` of representations of a group `G` is jointly injective,
-i.e. that `Hⁿ(G, ∏ᶜ M i)` is (up to isomorphism) the product of the `Hⁿ(G, M i)`.
-
-The proof proceeds by transporting along the canonical isomorphism between `∏ᶜ M` and
-the "pointwise" product representation `piRep M` (whose underlying module is
-`∀ i, (M i).V` with componentwise action), and then computing at the level of
-inhomogeneous cochains: a cocycle of the pointwise product whose components are
-coboundaries is itself a coboundary.
-
--/
-
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 namespace NK.RepresentationTheory.GroupCohomology
 

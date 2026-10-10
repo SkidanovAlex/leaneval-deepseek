@@ -1,15 +1,15 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_artinMap_of_abelian_local
 import Submission.NK.LocalReciprocityLubinTate.Target
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
-import Submission.NK.NUV2.QuadFaithful.Defs
+import Submission.NK.NUV2.LC.quadraticLevel
 import Submission.NK.NUV2.QuadFaithful.core
 import Submission.NK.NUV2.QuadFaithful.quadraticLevel
-import Submission.NK.NUV2.LC.quadraticLevel
-import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_artinMap_of_abelian_local
-import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
 
 set_option maxHeartbeats 1600000
 set_option linter.style.haveILetI false

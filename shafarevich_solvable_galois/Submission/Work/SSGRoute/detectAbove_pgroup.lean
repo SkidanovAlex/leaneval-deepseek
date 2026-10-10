@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.phi1_mono_base
-import Submission.Work.SSGRoute.natCard_cokernel_lt
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.detectAbove_trivial
-import Submission.Work.SSGRoute.detectAbove_sub_step
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

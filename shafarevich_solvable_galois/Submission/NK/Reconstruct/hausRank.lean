@@ -1,8 +1,7 @@
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.hausPi
-import Submission.NK.Reconstruct.frobLevelInf
-import Submission.NK.Reconstruct.torsionFreeGamma
-import Submission.NK.Reconstruct.rankLemmas
-import Submission.NK.Reconstruct.NumFieldIn
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

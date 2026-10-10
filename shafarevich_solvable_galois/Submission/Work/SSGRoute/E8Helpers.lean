@@ -1,18 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Helper lemmas for `Work.SSGRoute.brauer_single_place` (E8')
-
-The stabiliser/decomposition-group bridges that the E8' development (and its delegated pieces)
-share.  Everything here is sorry-free.
--/
-import Mathlib
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.E8Defs
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.GlobalCFT.GaloisAction
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

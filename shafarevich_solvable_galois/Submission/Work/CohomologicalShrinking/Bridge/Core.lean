@@ -1,16 +1,5 @@
-/-
-# The identification `H₁(G, M) ≅ Ĥ⁻¹(G, M^♯)` (the `I_G`-twist)
-
-This file builds the classical identification of group homology with Tate cohomology,
-`H₁(G, M) ≅ Ĥ⁻²(G, M) ≅ Ĥ⁻¹(G, M ⊗ I_G) ≅ Ĥ⁻¹(G, M^♯)`, for a finite group `G` and a
-`G`-module `M`, in the explicit model `M^♯ = Work.Tate.coindUp G M = ker (∑ x⁻¹ • _)`.
-
-The isomorphism is the connecting map of the short exact sequence
-`0 → M^♯ → Coind(M) → M → 0`, written out concretely as `θ x = x - single 1 (∑_g x g)`, i.e. as
-the map `Θ : Z₁(G,M) → ker(N_{M^♯}) ⊆ M^♯` which is a bijection onto `ker N_{M^♯}` and induces
-`Z₁/B₁ ≅ ker N/I_G·M^♯`.
--/
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.Tate.CoindUp
 import Submission.Work.Tate.coind_norm_eq_const
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,18 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Invariants and inflation
-
-For a normal subgroup `N ◁ G` and a `G`-module `A`, the invariants `A^N` carry an action of the
-quotient `G ⧸ N` (the action of `G` on `A^N` factors through `N`, since `N` acts trivially on
-`A^N`).  This gives the *inflation* maps `Hⁿ(G ⧸ N, A^N) → Hⁿ(G, A)`, `n = 1, 2`.
-
-## Main definitions
-
-* `Work.GroupCohomology.invariants`
-* `Work.GroupCohomology.quotientEnd`, `Work.GroupCohomology.quotientDistribMulAction`
-* `Work.GroupCohomology.infH1`, `Work.GroupCohomology.infH2`
--/
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Hom.End
+import Mathlib.Algebra.Group.Subgroup.Actions
 import Submission.Work.GroupCohomology.Functoriality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

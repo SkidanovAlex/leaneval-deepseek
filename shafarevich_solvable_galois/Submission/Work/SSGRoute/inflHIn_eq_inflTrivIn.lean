@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.PTDefsOmega
 
 /-!

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.NK.CFTLib.RouteB.IdeleCongr.PlaceCongr
 import Submission.NK.GlobalCFTdeep.Transport.NormTransportAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

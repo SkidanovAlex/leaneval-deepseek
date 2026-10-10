@@ -1,25 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map `H⁰(G,P) → H¹(G,M)` of a short exact sequence of discrete modules
-
-For a short exact sequence `0 → M --ι--> N --π--> P → 0` of discrete `G`-modules, there is a
-connecting homomorphism `δ : H⁰(G,P) → H¹(G,M)` of the long exact sequence in continuous
-cohomology, exact at `H⁰(G,P)` and at `H¹(G,M)`:
-
-`range (H⁰(π)) = ker δ` and `range δ = ker (H¹(ι))`.
-
-The connecting map itself, together with the two inclusions proved here, are built in
-`Submission/Work/AbsoluteKummer/SES/Connecting.lean`
-(`Work.AbsoluteKummer.ShortExactSeq.delta`, `S.range_mapH0_le_ker_delta`,
-`S.range_delta_le_ker_mapH1`); the two reverse inclusions are
-`Work.AbsoluteKummer.SES.ker_le_range_mapH0` and `Work.AbsoluteKummer.SES.ker_mapH1_le_range_delta`.
--/
-import Mathlib
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.AbsoluteKummer.Defs
-import Submission.Work.AbsoluteKummer.SES.Connecting
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.ker_le_range_mapH0
 import Submission.Work.AbsoluteKummer.SES.ker_mapH1_le_range_delta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

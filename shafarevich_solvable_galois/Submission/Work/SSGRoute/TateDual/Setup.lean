@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.Algebra.Algebra.Basic
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.LinearAlgebra.Quotient.Defs
+import Mathlib.Algebra.BigOperators.GroupWithZero.Action
+import Mathlib.Algebra.Module.Submodule.Range
 import Submission.Work.SSGRoute.TateDual.Basic
-import Submission.Work.Tate.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

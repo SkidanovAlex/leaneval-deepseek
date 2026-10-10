@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.NK.Reconstruct.frobElementAt
-import Submission.NK.Reconstruct.galToGamma
+import Mathlib.RingTheory.Frobenius
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Chebotarev.IsFrobAtConj
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
 import Submission.NK.Reconstruct.inertia_ellPart_pow_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

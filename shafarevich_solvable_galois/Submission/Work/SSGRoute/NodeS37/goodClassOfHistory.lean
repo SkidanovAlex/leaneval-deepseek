@@ -1,29 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.inv
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.defs
-import Submission.Work.SSGRoute.ZDataTwo.pigeonhole_three_minimal
-import Submission.Work.SSGRoute.ZDataTwo.blocks_of_prVal
-import Submission.Work.SSGRoute.ZDataTwo.SWFourTwo
-import Submission.Work.SSGRoute.ZDataTwo.crossedValueTwoProof
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.crossTwoChainCore
-import Submission.Work.SSGRoute.NodeS37.defs
-import Submission.Work.SSGRoute.H9.swPairingValueFrob
-import Submission.Work.SSGRoute.NodeS37.tblockBasics
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.NodeS37.claimOfPreTwoConfined.claimOfPreTwoConfined
+import Submission.Work.SSGRoute.NodeS37.pinValue_of_pinnedAtLevel
+import Submission.Work.SSGRoute.NodeS37.preTwo_siblingValue
+import Submission.Work.SSGRoute.ZDataTwo.SWFourTwo
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.pinValue_cross_two
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.pinValue_self_symm
-import Submission.Work.SSGRoute.H9.swPromotionLevel
-import Submission.Work.SSGRoute.H9.swPinnedFrob_exists
-import Submission.Work.SSGRoute.H9.swPinnedFrob_sublevel
-import Submission.Work.SSGRoute.H9.swIsUnramifiedIn_hLevel_of_kills_inertia
-import Submission.Work.SSGRoute.H9.swKummerCochar_kills_levelKernel
-import Submission.Work.SSGRoute.H9.swCrossedValueTwoHelpers
-import Submission.Work.SSGRoute.ZDataMup.mupOddAux
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.SupStructure
-import Submission.Work.SSGRoute.NodeS35.swPinFamily
-import Submission.Work.SSGRoute.NodeS35.isUnramifiedIn_sup_hLevel
-import Submission.Work.SSGRoute.NodeS37.preTwo_siblingValue
-import Submission.Work.SSGRoute.NodeS37.pinValue_of_pinnedAtLevel
+import Submission.Work.SSGRoute.ZDataTwo.pigeonhole_three_minimal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,32 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# `G ≃* Gal(ℚ̄^{ker ψ}/ℚ)` for a surjection `ψ : G_ℚ ↠ G` with open kernel
-
-Let `ψ : G_ℚ →* G` be a surjective homomorphism from the absolute Galois group of `ℚ` onto a group
-`G`, whose kernel is open in the Krull topology on `G_ℚ`.  Then the fixed field
-`F = ℚ̄^{ker ψ}` of the kernel is Galois over `ℚ`, and every element of `G` acts as a
-`ℚ`-automorphism of `F`: choosing a lift `σ ∈ G_ℚ` of `g ∈ G`, the automorphism of `F` is the
-restriction of `σ`, and this is independent of the lift because `ker ψ` fixes `F`.
-
-Formally this is the composite
-
-`G ≃* G_ℚ ⧸ ker ψ ≃* Gal(ℚ̄^{ker ψ}/ℚ)`,
-
-the first isomorphism being that induced by `ψ` (a surjection with the right kernel) and the second
-the infinite Galois correspondence for a *normal closed* subgroup
-(`InfiniteGalois.normalAutEquivQuotient`), applied to the closed subgroup `ker ψ`.  The kernel is
-open by hypothesis and hence closed: `G_ℚ` carries a group topology, so the quotient by an open
-subgroup is discrete and the kernel is the preimage of a closed point.
-
-Being an isomorphism of the form `g ↦ (σ ↦ σ|_F)`, it satisfies by construction
-`e (ψ σ) x = σ x` for `σ ∈ G_ℚ` and `x ∈ F`.
-
-## Main declaration
-
-* `Work.AbsoluteGalois.fixedField_ker_autEquiv`
--/
-import Mathlib
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Infinite
 import Submission.Work.AbsoluteGalois.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

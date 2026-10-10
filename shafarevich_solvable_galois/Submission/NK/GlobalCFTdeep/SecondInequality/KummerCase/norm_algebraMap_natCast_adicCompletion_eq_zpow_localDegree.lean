@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.GlobalCFTdeep.SecondInequality.adicAbv_prime_eq_zpow_localDegree
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

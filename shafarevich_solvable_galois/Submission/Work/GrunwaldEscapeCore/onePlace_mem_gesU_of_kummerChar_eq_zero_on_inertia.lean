@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.InertiaCriterionImports
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.exists_pow_mul_mem_localUnits_of_dvd_log
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
 import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerChar_zero_on_inertia_imp_mem_unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,3 +1,5 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.RankTheoryDeep.IdeleRankDefs
 import Submission.NK.RankTheoryDeep.rank_hausQuot_le_rank_dual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,12 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_invariants_ideleClassGroup
-import Submission.NK.CFTLib.normClassSubgroup_closure_normClassHom_eq_one
-import Submission.NK.CFTLib.mem_sup_fixedPoints_of_prime_card
-import Submission.NK.CFTLib.smul_mul_inv_mem_normClassSubgroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.exists_addOrderOf_eq_card_of_cyclic_normClassQuotient
+import Submission.NK.CFTLib.mem_sup_fixedPoints_of_prime_card
+import Submission.NK.CFTLib.normClassSubgroup_closure_normClassHom_eq_one
+import Submission.NK.CFTLib.smul_mul_inv_mem_normClassSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

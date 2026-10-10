@@ -1,7 +1,12 @@
-import Mathlib
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.AbsoluteKummer
-import Submission.Work.SSGRoute.PT.H1Transfer
 import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Submission.Work.SSGRoute.PT.H1Transfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,53 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The degree of the minimal polynomial of a root of unity over a `p`-adic field
-
-For a number field `K`, a finite place `𝔭`, `κ = K_𝔭` and a separable closure `K'` of `κ`, and for
-`n` prime to the residue characteristic of `κ`, every primitive `n`-th root of unity `ζ ∈ K'` has
-
-`[κ(ζ) : κ] = deg (minpoly κ ζ) ≤ ord_n(q)`,  where `q = residueCard K 𝔭 = #(𝒪_κ/𝔪_κ)`
-
-is the residue cardinality (`NK.TameStructureDeep.Degree.natDegree_minpoly_le_orderOf`).  This is
-the degree statement singled out in `Submission/Work/TameStructureDeep/README.md` §3.2.1 as the
-missing input for `Gal(κ(μ_{p'})/κ) ≅ Ẑ`; the classical proof is:
-
-* `n` is prime to the residue characteristic `p`, so `q = p ^ f` is coprime to `n`;
-* `n` divides `q ^ d - 1` where `d = ord_n(q) = orderOf (q : ZMod n)` (Fermat–Euler);
-* by `NK.TameStructureDeep.Degree.exists_unramified_extension_of_inertiaDeg'` there is a number
-  field `K₂ / K` with a place `𝔮 | 𝔭` such that the local extension `κ₂ = (K₂)_𝔮 / κ` is
-  unramified of degree `d` (`e = 1`, `f = d`, `[K₂ : K] = d`);
-* the residue field of `κ₂` has `q ^ d` elements, so it contains a primitive `n`-th root of unity
-  (`n ∣ q ^ d - 1`), which lifts to `κ₂` by Hensel
-  (`NK.TameStructureDeep.Degree.exists_isPrimitiveRoot_adicCompletion_of_dvd`);
-* `κ₂ / κ` is a finite separable extension of degree `d` containing a primitive `n`-th root of
-  unity, so every primitive `n`-th root of unity in the separable closure has degree at most `d`
-  (`NK.TameStructureDeep.Degree.primitiveRoot_natDegree_le_finrank`).
-
-The conclusion is the inequality `≤`; the reverse inequality is the residue-field argument
-(`μ_n ⊆ (𝒪_κ/𝔪_κ)^×` forces `f ≥ d`), which is not needed here.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalStructure.Main
-import Submission.NK.LocalInputs.All
-import Submission.NK.LocalAnabelian.All
-import Submission.NK.TameStructureDeep.Degree.unramifiedExtensionGeneral
-import Submission.NK.TameStructureDeep.Degree.primitiveRoot_natDegree_le_finrank
+import Submission.NK.Mine.ResidueCharAutomatic
 import Submission.NK.TameStructureDeep.Degree.dvd_pow_orderOf_sub_one
 import Submission.NK.TameStructureDeep.Degree.exists_isPrimitiveRoot_adicCompletion_of_dvd
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_residueField_adicCompletion_eq_pow_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.FieldTheory.SeparableClosure.nonempty_algHom_of_isSepClosure
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
-import Submission.NK.Mine.ResidueCharAutomatic
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.TameStructureDeep.Degree.primitiveRoot_natDegree_le_finrank
+import Submission.NK.TameStructureDeep.Degree.unramifiedExtensionGeneral
 
 open scoped Classical IntermediateField
 open Polynomial
@@ -82,8 +43,6 @@ theorem natDegree_minpoly_le_orderOf {K : Type*} [Field K] [NumberField K]
   obtain ⟨K₂, hK₂F, hK₂NF, hK₂A, 𝔮, hLies, he, hf, hfr⟩ :=
     exists_unramified_extension_of_inertiaDeg' (L := K) 𝔭
       (orderOf (NK.LocalStructure.residueCard K 𝔭 : ZMod n)) hdpos
-  letI : Field K₂ := hK₂F
-  letI : NumberField K₂ := hK₂NF
   letI : Algebra K K₂ := hK₂A
   haveI hFDK : FiniteDimensional K K₂ :=
     FiniteDimensional.of_finrank_pos (by rw [hfr]; exact hdpos)

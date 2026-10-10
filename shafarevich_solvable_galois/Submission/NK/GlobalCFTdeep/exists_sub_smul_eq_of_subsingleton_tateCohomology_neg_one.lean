@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.FiniteCyclic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_one_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

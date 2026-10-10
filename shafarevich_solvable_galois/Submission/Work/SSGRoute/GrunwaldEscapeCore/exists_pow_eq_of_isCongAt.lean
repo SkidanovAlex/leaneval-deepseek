@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.NKRayClassImports
-import Submission.Work.SSGRoute.adicCompletion_pow_of_deep_principalUnit
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.CFTLib.ARLTransfer.kernelLe_of_auxField
+import Submission.NK.NUV2.ARL.Gap.langCyclicRelIndex
+import Submission.NK.NUV2.ARL.abelianWeakToStrong
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
 import Submission.Work.SSGRoute.adicCompletion_units_mul_pow
+import Submission.Work.SSGRoute.ssg8Chebotarev
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

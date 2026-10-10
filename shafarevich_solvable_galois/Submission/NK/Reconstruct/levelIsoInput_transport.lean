@@ -1,3 +1,5 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.exists_frobeniusCorrespondence_transport
 import Submission.NK.ReconstructField.LevelCandidate
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

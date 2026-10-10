@@ -1,12 +1,10 @@
-import Mathlib
-import Submission.NK.Reconstruct.GammaModule
-import Submission.NK.Reconstruct.GammaObject
-import Submission.NK.Reconstruct.Gamma
-import Submission.NK.Reconstruct.proj_surjective
-import Submission.NK.Reconstruct.ellRestrict_surjective
-import Submission.NK.Reconstruct.GammaSup
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.ProperSpace
+import Mathlib.Topology.Instances.ZMod
 import Submission.NK.Reconstruct.continuous_toZModPow
 import Submission.NK.Reconstruct.exists_closure_eq_top_of_log_ellTorsion_le
+import Submission.NK.Reconstruct.proj_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

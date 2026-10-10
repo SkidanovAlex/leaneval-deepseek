@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.UniqueFactorizationDomain.Multiplicity
+import Mathlib.RingTheory.UniqueFactorizationDomain.Nat
+import Mathlib.Tactic.NormNum.Eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

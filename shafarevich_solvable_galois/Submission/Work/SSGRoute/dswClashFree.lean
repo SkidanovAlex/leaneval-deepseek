@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.Algebra.Opposite
+import Mathlib.Algebra.MonoidAlgebra.Basic
+import Mathlib.GroupTheory.GroupAction.Ring
 import Submission.Work.SSGRoute.prop5.nestedLieDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

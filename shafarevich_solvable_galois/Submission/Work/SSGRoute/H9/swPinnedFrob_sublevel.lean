@@ -1,4 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.H9.swPinnedFrob_exists
 import Submission.Work.SSGRoute.ZConstruction.hLevel_sup_structure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

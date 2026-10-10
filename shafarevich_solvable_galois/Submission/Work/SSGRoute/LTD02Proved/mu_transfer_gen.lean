@@ -1,15 +1,13 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.LTD02Proved.comap_index_iso
-import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.PT.resH2
 import Submission.Work.SSGRoute.PT.resH2_eq_zero_of_index_nsmul_eq_zero
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.All
 import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_addEquiv_adjoinLocalEquiv_general
 import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_autCongr_equiv
-import Submission.Work.SSGRoute.PTembedding.mup_kummer_defs
-import Submission.NK.Mine.AdjoinLocalGalois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

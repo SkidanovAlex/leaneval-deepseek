@@ -1,5 +1,7 @@
-import Submission.NK.NUV2.LC.adjoinSq_normal_finrank_le
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
+import Submission.NK.NUV2.LC.adjoinSq_normal_finrank_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,25 +1,7 @@
-/-
-# Homology of the pointwise product complex
-
-The pointwise product complex `piCplx R C` of a family `C : ι → CochainComplex (ModuleCat R) ℤ`
-is (up to the canonical identification) the categorical product of the complexes `C i`, and
-homology — computed as `cycles / boundaries` — commutes with products of modules.  Here we
-prove the resulting statement: for every degree `n`,
-
-  `(piCplx R C).homology n ≅ ModuleCat.of R (∀ i, (C i).homology n)`.
-
-The proof proceeds in three steps, each of which is a separate lemma below:
-
-* `linHom f g` is the concrete description `ker g / im f` of the homology of a short complex
-  `X₁ --f--> X₂ --g--> X₃` of `R`-modules; `shortComplex_homology_iso` identifies it with
-  Mathlib's categorical `ShortComplex.homology` (via `ShortComplex.moduleCatLeftHomologyData`);
-* `piMap_linHom_equiv` computes `linHom` of the product of two families of linear maps as the
-  product of the `linHom`'s (`ker` and `range` commute with products, and quotients of products
-  by products of submodules are products of quotients);
-* the degreewise identification of the differentials of `piCplx R C` with the product of the
-  differentials of the `C i` finishes the argument.
--/
-import Mathlib
+import Mathlib.CategoryTheory.ExtremalEpi
+import Mathlib.CategoryTheory.EffectiveEpi.Comp
+import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Submission.NK.GlobalCFTdeep.Herbrand.PiCplxDefs
 import Submission.NK.GlobalCFTdeep.Herbrand.PiDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

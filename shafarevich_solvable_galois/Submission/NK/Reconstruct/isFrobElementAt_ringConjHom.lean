@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.frobElementAt
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.conjLevel
+import Submission.NK.Reconstruct.frobElementAt
 import Submission.NK.Reconstruct.isFrobAt_primeTransport_iff
-import Submission.NK.Chebotarev.IsFrobAtConj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

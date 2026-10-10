@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.NK.NUV2.RouteB.RayModulus.Defs
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Basic.ideleOfIdeal_mul
-import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.Tactic.Have
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
+import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
+import Submission.NK.HeckeL.Basic.ideleOfIdeal_mul
 import Submission.NK.NUV2.RouteB.RayModulus.exists_mem_fractionalIdeal_cong_pos
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

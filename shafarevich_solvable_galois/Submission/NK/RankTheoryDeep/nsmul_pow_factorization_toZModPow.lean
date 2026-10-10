@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.Reconstruct.card_dvd_of_isPGroup_quotient_adicUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

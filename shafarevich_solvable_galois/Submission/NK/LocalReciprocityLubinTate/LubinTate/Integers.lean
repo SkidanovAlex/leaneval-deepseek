@@ -1,7 +1,12 @@
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.nonempty_lubinTateModule
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isLubinTateSeries_piXAddXq
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isLubinTateCoeff_integers
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.isFrobeniusPower_integers
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.isLubinTateCoeff_integers
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.isLubinTateSeries_piXAddXq
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.nonempty_lubinTateModule
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

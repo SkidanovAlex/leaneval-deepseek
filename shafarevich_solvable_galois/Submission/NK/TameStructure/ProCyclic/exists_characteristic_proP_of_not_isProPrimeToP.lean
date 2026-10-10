@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.NK.LocalTame.Basic
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.GroupTheory.Perm.Cycle.Type
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.NK.LocalStructure.Tame.commute_of_isProCyclic_of_profinite
-import Submission.NK.TameStructure.ProCyclic.Defs
 import Submission.NK.TameStructure.ProCyclic.exists_continuous_surjective_zhat_of_isProCyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

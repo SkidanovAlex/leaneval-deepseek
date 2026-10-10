@@ -1,6 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.detector_of_submodule
+import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

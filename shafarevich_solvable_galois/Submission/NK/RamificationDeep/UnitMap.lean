@@ -1,20 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The embedding `G_0/G_1 ↪ (A/𝔪_A)^×`
-
-For a discretely valued extension with uniformizer `π`
-(`NK.RamificationDeep.UniformizerData`), the classical map `σ ↦ σ(π)/π` gives, for `i = 0`
-this time, a homomorphism `G_0 → (A/𝔪_A)^×` with kernel `G_1`.  Consequently
-`#(G_0/G_1) ∣ #(A/𝔪_A)^× = q - 1`; in particular, if the residue field has `p^f` elements then
-`G_0/G_1` has order prime to `p`.
-
-Formalisation: for `σ ∈ G_0` the element `σ π - π` lies in `𝔪_A = (π)`, so
-`σ π - π = π b_σ`; then `σ ↦ 1 + b_σ` is multiplicative modulo `𝔪_A`
-(`unitCoord_mul_sub_mem`) and its kernel is `G_1` (`unitHom_ker`).
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.RamificationDeep.QuotientEmbed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

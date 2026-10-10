@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.LogLattice.InfSumZero
+import Mathlib.RingTheory.Henselian
+import Mathlib.AlgebraicTopology.SimplicialSet.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
+import Submission.NK.GlobalCFTdeep.LogLattice.InfSumZero
 import Submission.NK.GlobalCFTdeep.LogLattice.sum_logVec_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

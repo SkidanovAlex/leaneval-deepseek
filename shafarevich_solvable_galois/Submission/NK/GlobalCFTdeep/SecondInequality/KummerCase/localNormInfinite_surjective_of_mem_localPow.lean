@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
 

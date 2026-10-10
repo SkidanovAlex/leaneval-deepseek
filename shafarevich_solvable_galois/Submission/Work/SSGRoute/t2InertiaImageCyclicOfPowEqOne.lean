@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.Work.SSGRoute.step4_local_target
-import Submission.Work.SSGRoute.local_tame_defs
-import Submission.Work.SSGRoute.inertia_map_eq_of_isCyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

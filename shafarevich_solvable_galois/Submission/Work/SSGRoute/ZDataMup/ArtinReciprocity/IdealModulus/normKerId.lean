@@ -1,34 +1,4 @@
-/-
-# The ideal Artin symbol kills the norm ray `𝔑(𝔪)` of an ideal modulus
-
-For a finite abelian Galois extension `L / K` of number fields and an ideal modulus
-`𝔪 : Ideal (𝓞 K)` whose support contains every prime of `K` ramified in `L / K`
-(`ContainsRamified 𝔪`), the Artin symbol `NK.CFTLib.Arl.artinSym` of every fractional ideal in the
-norm group `normRayId 𝔪 = 𝔑(𝔪)` is trivial.
-
-This is Lang, *Algebraic Number Theory*, Chapter X §2, property **A4** ("norms are killed by the
-Artin symbol") in the ideal-modulus form; it is the exact analogue of
-`NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer` for a modulus which is an *ideal* rather than a
-natural number.  The latter is indispensable here because the conductor of `L/K` is supported on
-the ramified primes only, whereas a natural-number modulus `(m)` cuts out full fibres of primes of
-`K` (`supp(m)` is a union of sets `{𝔮 : 𝔮 | p}`), so an unramified prime can never be avoided.
-
-The mathematical content is the classical fact that the Artin symbol of a relative norm
-`N_{L/K} 𝔟` is trivial (at a prime `𝔓 | 𝔭` one has `N 𝔓 = 𝔭 ^ f(𝔓|𝔭)` and the Frobenius at an
-unramified `𝔭` has order exactly the inertia degree `f(𝔓|𝔭)`), together with the observation that
-the coprimality of `𝔟` to `𝔪 𝓞 L` together with `ContainsRamified 𝔪` forces every prime of `L`
-dividing `𝔟` to be unramified over `K`: if `𝔭 := 𝔓 ∩ 𝓞 K` were ramified then `𝔪 ⊆ 𝔭` by
-`ContainsRamified`, whence `𝔪 𝓞 L ⊆ 𝔓`, contradicting coprimality.
-
-## Main results
-
-* `artinSymFrac_relNorm_eq_one_of_unramified` — the Artin symbol of the relative norm of an ideal
-  all of whose primes are unramified is trivial;
-* `normKerId` — the target: `𝔑(𝔪) ⊆ ker Ψ`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.artinSym_relNorm_prime_eq_one
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.isUnramified_of_fracCoprimeId
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

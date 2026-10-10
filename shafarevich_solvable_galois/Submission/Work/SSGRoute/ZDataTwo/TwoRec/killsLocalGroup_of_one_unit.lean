@@ -1,12 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataTwo.LocalCongruence
-import Submission.Work.SSGRoute.ZDataTwo.AdicBridge
-import Submission.Work.SSGRoute.ZConstruction.LocalSquares
-import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
-import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.Work.SSGRoute.ges_readoff
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.PlaceValBridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

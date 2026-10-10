@@ -1,23 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The cardinality of the inertia subgroup
-
-For a finite Galois extension `L/K` of number fields and a finite prime `w` of `L` lying over a
-finite prime `v` of `K`, the inertia subgroup `I_w ≤ D_w` has cardinality equal to the
-ramification index of `v` in `L`:
-`#I_w = e(w/v)`.
-
-This is the standard exact sequence
-`1 → I_w → D_w → Gal(κ_w/κ_v) → 1`
-together with `#D_w = e · f` and `#Gal(κ_w/κ_v) = f`.  Formally it is an immediate consequence of
-Mathlib's `Ideal.card_inertia_eq_ramificationIdxIn` (applied to the extension of rings of integers
-`𝓞 K → 𝓞 L`) together with the fact that `I_w` is computed inside `D_w` as the inertia subgroup of
-`w` in `Gal(L/K)`.
--/
-import Mathlib
-import Submission.Work.LocalFields.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Work.LocalFields.Decomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

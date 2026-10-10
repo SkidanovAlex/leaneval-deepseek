@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalStructure.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

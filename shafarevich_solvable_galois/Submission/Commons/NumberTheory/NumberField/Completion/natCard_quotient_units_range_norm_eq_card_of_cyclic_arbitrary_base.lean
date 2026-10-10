@@ -1,12 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_cyclic
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 open IsDedekindDomain.HeightOneSpectrum
 
@@ -45,8 +39,6 @@ theorem natCard_quotient_units_range_norm_eq_card_of_cyclic_arbitrary_base
   -- Realize the arbitrary finite extension `B / F` as the completion of a number field.
   obtain ⟨L : Type u, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ :=
     exists_algEquiv_adicCompletion_of_finiteDimensional (Q := Q) (B := B)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   -- Transport the `B`-algebra structure on `B₁` along `e : B ≃ₐ[F] q.adicCompletion L`.

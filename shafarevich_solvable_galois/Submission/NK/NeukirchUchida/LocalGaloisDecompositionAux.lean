@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.NK.Mine.CompletionAPI
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.UniformSpace.Uniformizable
 import Submission.NK.NeukirchUchida.LocalGaloisCompletion
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.InfiniteDecomposition
-import Submission.NeukirchUchida.Local.ValuedCompletion
-import Submission.Commons.RingTheory.Valuation.val_eq_of_algEquiv_of_comap_eq
 
 /-!
 # Auxiliary facts for the decomposition group of a place

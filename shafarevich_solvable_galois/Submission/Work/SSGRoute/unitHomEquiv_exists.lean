@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.homRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

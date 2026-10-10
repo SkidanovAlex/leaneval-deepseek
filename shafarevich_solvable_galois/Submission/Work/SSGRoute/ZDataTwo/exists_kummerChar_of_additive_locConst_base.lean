@@ -1,4 +1,17 @@
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.HilbertSymbolGeneral.canonicalAPI
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
+import Submission.Work.SSGRoute.ZDataTwo.Mu2InvolutionForm
+import Submission.Work.SSGRoute.ZDataTwo.exists_level_localNormSubgroup_eq
+import Submission.Work.SSGRoute.ZDataTwo.mem_fixingSubgroup_adjoin_simple
+import Submission.Work.SSGRoute.exists_kummerChar_of_additive_locConst
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

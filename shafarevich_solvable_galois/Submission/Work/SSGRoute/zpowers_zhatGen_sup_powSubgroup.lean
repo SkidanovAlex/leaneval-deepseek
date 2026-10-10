@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.local_tame_defs
-import Submission.NK.TameStructureDeep.Degree.zhat_eq_top_of_isClosed_of_compHomZMod_image_eq_univ
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.NK.CFTLib.ArtinIdeal
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

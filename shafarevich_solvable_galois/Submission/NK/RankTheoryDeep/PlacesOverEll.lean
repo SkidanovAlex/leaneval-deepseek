@@ -1,7 +1,11 @@
-import Submission.NK.RankTheoryDeep.IdeleRankDefs
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.RankTheoryDeep.LocalDegree
-import Submission.NK.RankTheoryDeep.dual_localUnits_infinite_eq_zero
 import Submission.NK.RankTheoryDeep.dual_localUnits_eq_zero_of_residueChar_ne
+import Submission.NK.RankTheoryDeep.dual_localUnits_infinite_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

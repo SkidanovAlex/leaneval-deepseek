@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.Sha2Lib.indLevelDatum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

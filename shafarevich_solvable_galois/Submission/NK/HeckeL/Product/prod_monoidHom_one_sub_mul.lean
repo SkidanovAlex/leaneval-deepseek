@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.GroupTheory.FiniteAbelian.Duality
+import Mathlib.RingTheory.RootsOfUnity.Complex
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.HeckeL.Product.prod_comp_eq_pow_card_ker
 import Submission.NK.HeckeL.Product.prod_nthRootsFinset_one_sub_mul
+import Submission.NK.HeckeL.Zeta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

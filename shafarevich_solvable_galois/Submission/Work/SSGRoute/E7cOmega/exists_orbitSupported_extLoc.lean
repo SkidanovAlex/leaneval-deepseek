@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ext_idele_shapiro
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.e9c_extLoc_conj_zero
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.exists_transversal_mem_of_mulAction
+import Submission.Work.SSGRoute.e9c_extLoc_conj_zero
+import Submission.Work.SSGRoute.ext_idele_shapiro
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

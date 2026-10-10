@@ -1,9 +1,18 @@
-import Mathlib
-/- Lead-installed 10-07 (design _lead_design/ssg_natwit_0820.md): per-place reduction of localDictionary_natural_family_arch. Built on globalDictionaryCanonDefs, NOT on the leaf (avoids an import cycle). -/
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.MapBijective
 import Submission.Work.SSGRoute.ArchNat.archUniformNatural
-import Submission.Work.SSGRoute.ext_res_mulEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

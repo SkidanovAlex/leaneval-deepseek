@@ -1,35 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Naturality of the square `F(m)/F(m)^2 ≅ N/N^p[N,N]`
-
-This file proves the naturality of the identification `flowNormalSquareEquiv` of
-`Submission.Work.CohomologicalShrinking.flow.flowNormalSquareEquiv`: the "square quotient"
-`F(d)/F(d)^2` for the rank-change map `Φ : F(m) ⇢ F(n)` computes the same map on the bottom
-`p`-central quotients of the normal subgroups `N_m = F(m)/F(m)^{(ν)}` whether one goes through
-`F(m)/F(m)^2 → N_m/N_m^p[N_m,N_m]` first and then applies `Φ`, or applies `Φ` on the square
-quotients first and then uses the identification for `n`.
-
-Concretely, both composites fit into the commuting square
-
-  `F(m) --Φ.toHom--> F(n)`
-  `  | flowNormalSurj    | flowNormalSurj`
-  `  v                   v`
-  `N_m --flowNormalSubMap--> N_n`
-
-of group homomorphisms (`flowNormalSurj_sq`), and the induced `𝔽_p`-linear maps on the bottom
-`p`-central quotients commute by the general naturality `pQMapLin_square`.
-
-## Main results
-
-* `quotMapLin_eq_pQMapLin` : the two definitions of the induced map on `F(d)/F(d)^2`
-  (`quotMapLin` of `Functorial.lean`, resp. `pQMapLin` of `Defs.lean`) agree;
-* `flowNormalSurj_sq` : the group-level square commutes;
-* `sqLin_natural` : the target statement.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.CohomologicalShrinking.naturalAlpha.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

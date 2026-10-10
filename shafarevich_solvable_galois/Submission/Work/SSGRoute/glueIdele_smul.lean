@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ext_idele_defs
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.level_decomp_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

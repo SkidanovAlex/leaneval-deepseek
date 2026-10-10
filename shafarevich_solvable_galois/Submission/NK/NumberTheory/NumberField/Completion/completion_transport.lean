@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.NumberTheory.NumberField.Completion.place_transport
 
 /-!

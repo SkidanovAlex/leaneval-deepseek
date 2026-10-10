@@ -1,7 +1,7 @@
-/-
-Copyright: no copyright.
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+import Mathlib.Topology.Algebra.ProperAction.Basic
 import Submission.NK.LocalTame.cruxCompactExpPrimeFinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

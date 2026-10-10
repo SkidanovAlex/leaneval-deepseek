@@ -1,10 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ExtChain.decompField_aux
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.place_comap_valuationSubringAtPrime
 import Submission.Work.SSGRoute.PT.completionFixedField
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
+import Submission.Work.SSGRoute.place_comap_valuationSubringAtPrime
 
 namespace Work.SSGRoute.E1aClean
 

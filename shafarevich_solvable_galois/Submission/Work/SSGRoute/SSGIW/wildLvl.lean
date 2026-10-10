@@ -1,8 +1,13 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.PTWild.WildLevelStructure
 import Submission.Work.SSGRoute.SSGIW.Basic
 import Submission.Work.SSGRoute.SSGIW.coprime_card_sup
-import Submission.Work.SSGRoute.PTWild.WildLevelStructure
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,22 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The induced module from the trivial subgroup, and low-degree Shapiro
-
-For any group `G` and additive commutative group `A`, `Ind G A := G → A` with the "shift" action
-`(g • f) x = f (x * g)` is the module induced from the trivial subgroup
-(`Ind G A ≅ ℤ[G] ⊗_ℤ A`).  We prove the two low-degree cases of Shapiro's lemma in the form used
-for dimension shifting:
-
-* `H¹(G, Ind G A) = 0`, with the explicit formula `a x = f x 1` for the coboundary `a`;
-* `H²(G, Ind G A) = 0`, with the explicit formula `f g x = c (x, g) 1`.
-
-The proofs are the usual contracting-homotopy computations and use no finiteness of `G`.
--/
+import Mathlib.Tactic.Abel
+import Mathlib.Data.FunLike.IsApply
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.InducedModules
-import Submission.Work.GroupCohomology.Basic
-import Submission.Work.GroupCohomology.H1_induction_on
-import Submission.Work.GroupCohomology.H2_induction_on
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

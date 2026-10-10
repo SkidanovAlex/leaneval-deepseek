@@ -1,10 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.localPairing_surjective_dual
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_perfect_left
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_perfect_right
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.NodeShim.g1FinHalfPairClauses
 import Submission.Work.SSGRoute.PT.exists_finite_spanning_locCocycles
+import Submission.Work.SSGRoute.PT.localPairing_surjective_dual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

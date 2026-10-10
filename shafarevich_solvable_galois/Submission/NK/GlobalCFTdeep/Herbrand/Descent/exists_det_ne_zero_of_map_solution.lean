@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.MvPolynomial.Funext
+import Mathlib.Analysis.RCLike.Basic
+import Mathlib.Data.Rat.Star
+import Mathlib.LinearAlgebra.TensorProduct.Pi
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.DescentSetup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

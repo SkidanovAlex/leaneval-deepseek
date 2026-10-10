@@ -1,8 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTdualControl.C6_of_rankOneBrick
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RepresentationTheory.Induced
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.TatePoitouRoute.rankOneBrick_of_levelCocycleDatum
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

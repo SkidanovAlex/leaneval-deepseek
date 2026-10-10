@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Unramified.NormCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

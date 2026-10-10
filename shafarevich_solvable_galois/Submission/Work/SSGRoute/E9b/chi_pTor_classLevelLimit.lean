@@ -1,8 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.pTorsion_classLevelLimit
-import Submission.Work.SSGRoute.phi0_defs
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.phi1_level_index
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

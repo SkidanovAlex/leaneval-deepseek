@@ -1,9 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.local_lifting_setup
-import Submission.NK.TameStructure.ProCyclic.Defs
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_residueClass
-import Submission.Commons.NumberTheory.NumberField.residueCard_adicCompletion_eq_absNorm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

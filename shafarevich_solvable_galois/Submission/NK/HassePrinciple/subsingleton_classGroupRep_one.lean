@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.HassePrinciple.CyclicBase
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.NK.HassePrinciple.IdelesLevel
 import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_ideleClassGroup_all
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

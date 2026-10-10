@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.grunwald_kummer_idx
-import Submission.Work.SSGRoute.GrunwaldTwoDefs
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
-import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
-import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
-import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
-import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_bot_of_mem_powSubgroup
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
+import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
+import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
+import Submission.Work.SSGRoute.GrunwaldTwoDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

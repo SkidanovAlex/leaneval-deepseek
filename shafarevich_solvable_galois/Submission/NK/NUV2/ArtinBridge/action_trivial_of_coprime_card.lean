@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Finite.Basic
 import Submission.NK.GlobalCFTdeep.H1All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

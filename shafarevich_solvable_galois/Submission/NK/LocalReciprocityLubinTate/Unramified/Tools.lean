@@ -1,10 +1,15 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Valuation.Discrete.Basic
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTLevel_commutative
 import Submission.NK.LocalReciprocityLubinTate.Units.higherUnits_cofinal
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_sup_higherUnits
+import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
 import Submission.NK.Unramified.exists_unramified_level_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTLevel_commutative
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

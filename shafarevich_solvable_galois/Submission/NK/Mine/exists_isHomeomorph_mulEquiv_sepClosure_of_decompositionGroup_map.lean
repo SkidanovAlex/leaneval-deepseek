@@ -1,14 +1,16 @@
-import Mathlib
-import Submission.NK.LocalInputs.Global
-import Submission.NK.LocalInputs.Global.nonempty_mulEquiv_sepClosure_of_decompositionGroup_map
-import Submission.NK.PTorsionTop.All
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Submission.NK.LocalCFT.Completion.exists_mulEquiv_unitsCompletion
+import Submission.NK.LocalInputs.PowerQuotient.localFieldInputs_of_prime
 import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace NK.Mine
 

@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_exists_finset_isBoundedIntegral
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.normIdeleHom_ideleOfPrime_div_mem_integralIdeles
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

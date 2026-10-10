@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.naturalAlpha.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,9 +1,13 @@
-import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.Extension
 import Mathlib.RingTheory.Valuation.LocalSubring
-import Submission.Commons.RingTheory.Valuation.val_ringEquiv_eq_of_comap_eq
-import Submission.Commons.RingTheory.Valuation.hasExtension_comap_of_comap_eq
 import Submission.Commons.RingTheory.Valuation.ValuationSubring.isUnit_iff_val_eq_one
+import Submission.Commons.RingTheory.Valuation.hasExtension_comap_of_comap_eq
+import Submission.Commons.RingTheory.Valuation.val_ringEquiv_eq_of_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

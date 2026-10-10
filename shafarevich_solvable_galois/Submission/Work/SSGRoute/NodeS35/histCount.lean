@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.H9.swHistK
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.H9.swCount_eq_zero
+import Submission.Work.SSGRoute.H9.swHistK
 import Submission.Work.SSGRoute.H9.swIsUnramifiedIn_hLevel_of_kills_inertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.local_lifting_setup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.Work.SSGRoute.exists_div_of_char_killing_level
-import Submission.Work.SSGRoute.exists_kummerCharacter_of_zmod
 import Submission.Work.SSGRoute.exists_finiteDimensional_normal_fixingSubgroup_le
+import Submission.Work.SSGRoute.exists_kummerCharacter_of_zmod
 import Submission.Work.SSGRoute.isOpen_map_fixingSubgroupEquiv
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
+import Submission.Work.SSGRoute.local_lifting_setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,42 +1,15 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The augmentation ideal `I_G` and the cases `k = 2`, `k = -2` of the shrinking lemma
-
-Schmidt–Wingberg's Proposition 6 is stated for all `k ∈ ℤ`, and the paper reduces it to the case
-`k = -1` by dimension shifting `Ĥ^k(G, X) ≅ Ĥ⁻¹(G, X ⊗ A_k)` with `A_k = I_G^{-(k+1)}`, where
-`I_G ⊆ 𝔽_p[G]` is the augmentation ideal and `I_G^{-s} = Hom_{𝔽_p}(I_G^s, 𝔽_p)`.
-
-This file provides, for a finite group `G`:
-
-* the **augmentation ideal** `I_G` (`Work.CohomologicalShrinking.augIdeal`) as a finitely
-  generated `𝔽_p[G]`-module for the left regular action of `G` on `𝔽_p[G]` — this is the
-  paper's `A_{-2}`;
-* its `𝔽_p`-**dual** `igDual` (the paper's `I_G^{-1}`) with the natural `G`-action, and the
-  paper's `A_2 = I_G^{-3}` (`A2`);
-* the two cases of Proposition 6 in these models, obtained from the case `k = -1`
-  (`exists_shrinking_Hm1_of_mult`) by the paper's reduction "since `T` was arbitrary, we may restrict to
-  `k = -1`":
-  - `exists_shrinking_Hm2IG_of_mult` : classes in `Ĥ⁻²(G, E(m,τ) ⊗ T)`, modelled as
-    `Ĥ⁻¹(G, E(m,τ) ⊗ (T ⊗ I_G))` (equivalently `H₁`),
-  - `exists_shrinking_H2IG_of_mult` : classes in `Ĥ²(G, E(m,τ) ⊗ T)`, modelled as
-    `Ĥ⁻¹(G, E(m,τ) ⊗ (T ⊗ A₂))`.
-
-Both are **unconditional** apart from `Prop5Data` (Proposition 5): the user supplies no Tate
-data.
-
-The identification of these models with `GroupCohomology.H2` and `Work.Tate.Hm2` (equivalently
-`H₁`) is the standard dimension shifting `Ĥ^k(G, X) ≅ Ĥ⁻¹(G, X ⊗ A_k)`; it is *not* formalized
-here (see `NOTES.md`), exactly as the paper leaves it to the reader.  What is formalized is the
-case `k = -1` and these two models of `k = ±2`, in which the shrinking statements are the ones
-used in steps 1, 3 and 4 of the proof of Theorem 15.
-
-The model of `𝔽_p`-duals used for `A₂` is the tensor power `(I_G^{-1})^{⊗3}`, canonically
-isomorphic to `I_G^{-3} = Hom(I_G^3, 𝔽_p)` for finite-dimensional `I_G`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.LinearAlgebra.PiTensorProduct.Finite
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.CohomologicalShrinking.Shrinking
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

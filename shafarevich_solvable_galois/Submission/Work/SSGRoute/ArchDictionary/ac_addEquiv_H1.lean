@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.ArchDictionary.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

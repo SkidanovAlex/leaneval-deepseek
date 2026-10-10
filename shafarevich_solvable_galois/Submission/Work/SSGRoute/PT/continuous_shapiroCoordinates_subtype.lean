@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.shapiro_defs
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.PT.isOpen_setOf_inv_smul_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

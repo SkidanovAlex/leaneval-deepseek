@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.QuadraticLocalGlobal.Defs
+import Mathlib.NumberTheory.Padics.RingHoms
 import Submission.Work.QuadraticLocalGlobal.isSquare_padic_iff
 import Submission.Work.QuadraticLocalGlobal.legendreUnit_eq_one_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

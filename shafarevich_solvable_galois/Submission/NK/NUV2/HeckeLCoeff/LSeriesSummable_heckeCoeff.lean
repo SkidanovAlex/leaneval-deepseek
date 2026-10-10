@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.NumberTheory.LSeries.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Basic
-import Submission.Commons.NumberTheory.NumberField.DedekindZeta.log_eulerProduct_primeIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

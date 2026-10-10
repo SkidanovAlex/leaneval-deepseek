@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.NK.Reconstruct.proj_surjective
-import Submission.NK.Reconstruct.GammaObject
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.Reconstruct.ellRestrict_surjective
+import Submission.NK.Reconstruct.proj_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

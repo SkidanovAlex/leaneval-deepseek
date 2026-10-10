@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.EnoughInjectives
 import Submission.Work.SSGRoute.rightDetect_quotient_step
-import Submission.Work.SSGRoute.rightDetect_fixed_functional
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_finite
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

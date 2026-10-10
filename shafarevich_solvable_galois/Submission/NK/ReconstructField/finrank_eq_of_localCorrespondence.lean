@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.ReconstructField.Basic
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.LocalInputs.Degree.finrank_eq_of_localDegree_eq
+import Submission.NK.ReconstructField.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

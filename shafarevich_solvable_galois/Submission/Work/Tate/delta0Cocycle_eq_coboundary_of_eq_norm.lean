@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Uniform
 import Submission.Work.Tate.Delta0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

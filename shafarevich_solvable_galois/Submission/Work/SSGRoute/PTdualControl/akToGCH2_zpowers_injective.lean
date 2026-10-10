@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.e1aBetaCan_aux
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Connected
 import Submission.Work.SSGRoute.Sha2Lib.akToGCH2_discrete
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

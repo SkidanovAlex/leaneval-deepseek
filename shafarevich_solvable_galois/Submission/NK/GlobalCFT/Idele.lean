@@ -1,11 +1,12 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.Place
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
-import Submission.NK.GlobalCFT.LocalField.Topology
+import Submission.NK.GlobalCFT.LocalField.globalCFT_localFieldUnits_locallyCompactSpace
+import Submission.NK.GlobalCFT.LocalField.globalCFT_localUnits_isCompact_eventually
+import Submission.NK.GlobalCFT.LocalField.globalCFT_localUnits_isCompact_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

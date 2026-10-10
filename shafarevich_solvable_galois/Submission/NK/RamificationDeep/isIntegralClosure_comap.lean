@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.NK.RamificationDeep.MonoDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

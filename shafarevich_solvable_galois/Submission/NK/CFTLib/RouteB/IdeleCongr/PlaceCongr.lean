@@ -1,14 +1,7 @@
-/-
-Transport of places and local fields along an isomorphism of number fields.
-
-For `e : L ≃ₐ[K] L'` (an isomorphism of `K`-algebras) we construct the induced
-equivalence `Place.congr e : Place L ≃ Place L'` of places, and record its
-compatibility with the Galois actions: the transport of places is equivariant
-for the isomorphism `AlgEquiv.autCongr e : Gal(L/K) ≃* Gal(L'/K)`.
--/
-import Mathlib
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.GaloisIdeles
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.BaseChangeAggregator
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.E7bZ8Step2Aux2
 import Submission.Work.SSGRoute.LPBCDefs
 import Submission.Work.SSGRoute.Y3DevData
-import Submission.Work.SSGRoute.E7bZ8Step2Aux2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -213,17 +216,12 @@ theorem levelPair_baseChange_in (p : ℕ) [Fact p.Prime] (k k' K : Type) [Field 
       (Rep.resMap j.toMonoidHom ι₂') ι' hcompat z
       (Work.SSGRoute.LPBC.extHMapEquiv j A₂' 1 h)
     have hA' := Work.SSGRoute.LPBC.levelPair_Hstep j (f.subgroupComap S) ι₂' eB0 z h
-    rw [show TB (SSGRoute.PTExt.levelPair (A := A₂) (B := B₂') (f.subgroupComap S) ι₂' z h)
-        = Work.SSGRoute.LPBC.extCongrIso (Iso.refl (SSGRoute.PTExt.unitRep
-            (MulAction.stabilizer (L ≃ₐ[k'] L) w'))) eB0 2
-            (Work.SSGRoute.LPBC.extHMapEquiv j B₂' 2
-              (SSGRoute.PTExt.levelPair (A := A₂) (B := B₂') (f.subgroupComap S) ι₂' z h)) from rfl]
-    rw [hA']
-    rw [← hB]
-    rw [Work.SSGRoute.LPBC.extCongrIso_refl_apply]
-    rw [show eH h = Work.SSGRoute.LPBC.extCongrIso (Iso.refl (SSGRoute.PTExt.unitRep
-        (MulAction.stabilizer (L ≃ₐ[k'] L) w'))) eMg 1
-        (Work.SSGRoute.LPBC.extHMapEquiv j A₂' 1 h) from rfl]
-    congr 1
+    -- term-mode chain (the `rw` chain over `Abelian.Ext` cost ~180 CPU-s in `kabstract`)
+    have hz : Work.SSGRoute.LPBC.extResEquiv e M₂ A₂ 1 z
+        = Work.SSGRoute.LPBC.extCongrIso (Iso.refl (Rep.res e.toMonoidHom M₂))
+            (Iso.refl (Rep.res e.toMonoidHom A₂)) 1 (SSGRoute.PTExt.extRes e.toMonoidHom z) :=
+      (Work.SSGRoute.LPBC.extCongrIso_refl_apply 1 _).symm
+    exact (congrArg (fun t => SSGRoute.PTExt.levelPair f' ι' t (eH h)) hz).trans
+      (hB.trans hA'.symm)
 
 end Work.SSGRoute

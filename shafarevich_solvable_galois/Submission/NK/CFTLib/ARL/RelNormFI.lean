@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ARL.Cyclic
 import Submission.NK.CFTLib.ARL.count_idealOf_normIdeleHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.Tate.CoindUp
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.CohomologicalShrinking.tate.Hm1Map_comp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

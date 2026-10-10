@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.archPairData_exists
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Separation.Connected
+import Submission.Work.SSGRoute.PT.archSwapHalf
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

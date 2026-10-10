@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.NK.RamificationAdic.exists_valuationRingData
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.TameStructureDeep.Tame.TameClosure
 import Submission.NK.TameStructureDeep.Tame.exists_valuationRing_henselian
-import Submission.NK.Ramification.Defs
-import Submission.NK.LocalAnabelian.ResidueField.Defs
-import Submission.NK.TameStructureDeep.Tame.Defs
 import Submission.NK.TameStructureDeep.Tame.isPrimitiveRoot_residue
-import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
-import Submission.NK.TameStructureDeep.Tame.isUnit_natCast_of_card_eq_prime_pow
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.Commons.RingTheory.Henselian.kummer_root_lift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

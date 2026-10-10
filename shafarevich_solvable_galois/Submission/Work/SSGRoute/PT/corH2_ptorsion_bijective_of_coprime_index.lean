@@ -1,9 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.mkb_ld02_defs
-import Submission.Work.SSGRoute.PT.corH2_resH2_eq_index
-import Submission.Work.SSGRoute.PT.corH2_ptorsion_bij
-import Submission.Work.SSGRoute.Nakayama.br_pTorsion
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.cardH2_units_openSubgroup_decomp
+import Submission.Work.SSGRoute.PT.corH2_ptorsion_bij
+import Submission.Work.SSGRoute.PT.corH2_resH2_eq_index
+import Submission.Work.SSGRoute.PT.mkb_ld02_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

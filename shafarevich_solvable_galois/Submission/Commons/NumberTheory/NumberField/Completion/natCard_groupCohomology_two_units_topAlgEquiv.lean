@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_res_mulEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

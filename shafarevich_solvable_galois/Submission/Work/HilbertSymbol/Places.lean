@@ -1,16 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Places of `ℚ` and the finiteness of the set of places with `(a,b)_v ≠ 1`
-
-For `a b : ℚˣ` the Hilbert symbol `(a,b)_v` is `1` at all places `v` except possibly the
-archimedean place and the primes dividing `2 a b`.  This file packages that finite set of places
-and the corresponding (finite) product of the Hilbert symbols.
--/
+import Mathlib.Algebra.Ring.Rat
+import Mathlib.Data.Nat.PrimeFin
+import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 import Submission.Work.HilbertSymbol.Basic
-import Submission.Work.HilbertSymbol.padicVal_eq_zero_iff
-import Submission.Work.HilbertSymbol.hilbertSymbolOdd_eq_one_of_padicVal_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

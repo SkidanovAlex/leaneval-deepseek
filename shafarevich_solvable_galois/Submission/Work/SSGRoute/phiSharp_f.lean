@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.CategoryTheory.Abelian.Projective.Extend
 import Submission.Work.SSGRoute.MapExtAuxDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

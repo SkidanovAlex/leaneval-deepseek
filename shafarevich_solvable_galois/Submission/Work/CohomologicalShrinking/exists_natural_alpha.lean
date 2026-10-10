@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.SemidirectData
-import Submission.Work.CohomologicalShrinking.naturalAlpha.Defs
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
+import Submission.Work.CohomologicalShrinking.naturalAlpha.cores_natural
 import Submission.Work.CohomologicalShrinking.naturalAlpha.exists_psiLin
 import Submission.Work.CohomologicalShrinking.naturalAlpha.psiLin_natural
 import Submission.Work.CohomologicalShrinking.naturalAlpha.sqLin_natural
-import Submission.Work.CohomologicalShrinking.naturalAlpha.cores_natural
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.GlobalCFTdeep.Transport.PlaceDefs
 import Submission.NK.NumberTheory.NumberField.Completion.place_transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

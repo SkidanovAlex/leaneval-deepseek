@@ -1,28 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# A finite subextension of `κ^tr / κ^ur` has degree prime to `p`
-
-Let `κ = K_𝔭` be a `p`-adic field (`p = resCharAt 𝔭` its residue characteristic), `K'` a separable
-closure of `κ`, `U₀ = κ^{ur}` the maximal unramified extension (`unramifiedClosure p`) and
-`T = κ^{tr} = κ^{ur}(π^{1/n} : (n,p) = 1)` the maximal tamely ramified extension
-(`tameClosure p π`), for a uniformiser `π` of `κ`.
-
-The main result of this file is `coprime_finrank_of_le_tameClosure`: **every finite subextension
-`L/κ^{ur}` of `κ^{tr}/κ^{ur}` has degree prime to `p`**.  This is the arithmetic input of the
-pro-prime-to-`p`-ness of the tame inertia `I_κ/V_κ = Gal(κ^{tr}/κ^{ur})`
-(`isProPrimeToP_of_openNormal_index`).
-
-The proof: by the primitive element theorem, `L = κ^{ur}⟮α⟯` for a single `α`, and
-`exists_kummerLayer_of_mem_tameClosure` puts `α` inside a Kummer layer `κ^{ur} ⊔ κ⟮β⟯` with
-`β ^ n = π` and `p ∤ n`.  Hence `[L : κ^{ur}] ∣ [κ^{ur}⟮β⟯ : κ^{ur}]`, and the Kummer-degree bound
-`[κ^{ur}⟮β⟯ : κ^{ur}] ∣ n` (the auxiliary lemma `kummer_finrank_dvd` below, proved by the classical
-Kummer pairing `σ ↦ σβ/β ∈ μ_n`) gives `[L : κ^{ur}] ∣ n`, whence the coprimality with `p`.
-
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameInertiaAux
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index_prime
+import Submission.NK.TameStructureDeep.Tame.exists_kummerLayer_of_mem_tameClosure
+import Submission.NK.TameStructureDeep.Tame.isGalois_tameClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.PrimesCongruentOne
+import Mathlib.GroupTheory.FiniteAbelian.Basic
+import Mathlib.RingTheory.ZMod.UnitsCyclic
+import Mathlib.Algebra.Group.Pi.Units
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

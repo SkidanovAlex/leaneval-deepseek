@@ -1,8 +1,16 @@
-import Mathlib
-import Submission.Work.GenericKernelReduction.Defs
-import Submission.Work.GenericKernelReduction.Canonical
-import Submission.Work.GenericKernelReduction.canonical_of_splitEmbeddingSolvable
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.GenericKernelReduction.algEquiv_eq_one_of_fixes_iSup
+import Submission.Work.GenericKernelReduction.canonical_of_splitEmbeddingSolvable
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

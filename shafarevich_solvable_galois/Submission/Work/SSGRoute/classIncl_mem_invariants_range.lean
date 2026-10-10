@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.SSGRoute.classIncl_isCanonical
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_invariants_ideleClassGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

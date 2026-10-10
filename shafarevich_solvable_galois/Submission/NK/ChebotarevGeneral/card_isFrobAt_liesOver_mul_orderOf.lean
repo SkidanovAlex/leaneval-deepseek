@@ -1,25 +1,7 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The number of primes above an unramified prime at which `σ` is a Frobenius
-
-Let `N/K` be a finite Galois extension of number fields, `𝔭` a prime of `K` unramified in `N` and
-`σ ∈ Gal(N/K)` an element which is a Frobenius element at some prime of `𝓞 N` above `𝔭`.  The
-primes of `𝓞 N` above `𝔭` at which `σ` is a Frobenius element are then the `⟨σ⟩`-orbit of a single
-one of them, so their number is `|C_G(σ)| / ord(σ)`:
-
-`card_isFrobAt_liesOver_mul_orderOf`.
-
-The proof is orbit–stabiliser for the action of the centraliser `C_G(σ)` on the primes above `𝔭`,
-together with the two classical facts that the action of `Gal(N/K)` on the primes above `𝔭` is
-transitive and that the Frobenius element at an unramified prime is unique.
--/
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Defs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt
-import Submission.NK.Chebotarev.IsFrobAtConj
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
-import Submission.Commons.NumberTheory.RamificationInertia.exists_map_galRestrict_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

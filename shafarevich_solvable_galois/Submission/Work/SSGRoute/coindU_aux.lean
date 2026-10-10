@@ -1,36 +1,11 @@
-/-
-Auxiliary results for `Work.SSGRoute.coindU_H1_subsingleton`.
-
-The target is `Subsingleton (H¹(Gal(Ω/k), Maps(Gal(K/k), Ωˣ)))` for `K/k` finite Galois and `Ω` an
-algebraic closure of `k`.  The proof is Shapiro's lemma together with Hilbert 90 for the subgroup
-`Gal(Ω/K) ≤ Gal(Ω/k)`; the pieces gathered here are:
-
-* `fixedField_expChar_pow` — the fixed field of `Aut(Ω/M)` is the relative perfect closure of `M`
-  (Artin's theorem in the inseparable case, in the `p`-power form, and valid in all
-  characteristics since `ringExpChar` is `1` in characteristic zero);
-* `exists_fixingSubgroup_subset`, `locconst_fixingSubgroupEquiv_symm` — the subspace topology on
-  the fixing subgroup of a finite subextension is the Krull topology of that subextension, so
-  local constancy is preserved by the identification;
-* `expChar_pow_eq_one` — `p`-power roots of unity are trivial in characteristic `p`;
-* `hilbert90_isAlgClosure` — **Hilbert 90 for the absolute Galois group** of a field `k`: every
-  locally constant crossed homomorphism `Gal(Ω/k) → Ωˣ` is a coboundary, for *any* field `k` (in
-  particular in characteristic `p`, where `Ω/k` need not be separable);
-* `exists_div_fixingSubgroup` — the same statement for the fixing subgroup of a finite
-  intermediate field, which is the input to Shapiro's lemma.
-
-## Note on the shared dependency
-
-This file (and the target `coindU_H1_subsingleton`) imports
-`Submission/Work/SSGRoute/ext_h1_bridge.lean`, the shared file defining `CoindU`, `res` and `umap`.
-That file had been left in a non-compiling state by another agent: the proof of
-`Work.SSGRoute.isDiscreteModule_pi_coindU` used `rfl` where the coherence lemma `one_smul` is
-required, so the whole import chain failed to build.  That single tactic has been repaired
-(`rfl` → `one_smul _ _`); no statement, definition or other proof was touched, and a copy of the
-file as found is kept at `_dep_backup_ext_h1_bridge_A.lean` in the workspace root.
--/
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.PurelyInseparable.PerfectClosure
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.homCoindDefs
-import Submission.Work.AbsoluteKummer.All
 import Submission.Work.SSGRoute.isOpen_map_fixingSubgroupEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

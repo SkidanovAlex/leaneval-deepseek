@@ -1,5 +1,6 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Reconstruct.exists_sigma_of_localCorrespondence
-import Submission.NeukirchUchida.Core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

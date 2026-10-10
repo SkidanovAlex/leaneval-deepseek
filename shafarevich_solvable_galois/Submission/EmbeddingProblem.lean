@@ -1,26 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Embedding problems
-
-The classical formulation of Shafarevich's theorem is in terms of *embedding problems*:
-given a finite Galois extension `L/k` with group `H` and a surjection `π : G → H` of finite
-groups (so that `1 → A → G → H → 1` is exact with `A = ker π`), one asks for a finite Galois
-extension `L'/k` containing `L` such that `Gal(L'/k) ≅ G` compatibly with `π`.
-
-This file defines the data and the notion of a solution, together with the trivial
-consequences:
-* a solution makes `G` realizable over `k` (`EmbeddingProblem.isSolvable_realizable`),
-* every embedding problem with trivial kernel is solvable
-  (`EmbeddingProblem.isSolvable_of_injective`).
--/
-import Mathlib
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Realization
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Submission
 
@@ -66,7 +47,6 @@ def IsSolvable : Prop :=
 /-- A solution of an embedding problem realizes its group. -/
 theorem isSolvable_realizable (h : E.IsSolvable) : RealizableOver k E.G := by
   obtain ⟨L', hF, hA, hFD, hGal, hA2, hST, hFD2, hGal2, e, he⟩ := h
-  letI : Field L' := hF
   letI : Algebra k L' := hA
   letI : FiniteDimensional k L' := hFD
   letI : IsGalois k L' := hGal

@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Setup
+import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.Step
 import Submission.NK.LocalReciprocityLubinTate.ModPi.coeff_Dsub_mem_span
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

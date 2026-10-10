@@ -1,6 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
 import Submission.Work.SSGRoute.glue_fin_decomp_ex
 import Submission.Work.SSGRoute.glue_infinite_place
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,34 +1,22 @@
-/-
-# A finite normal level of `Ω` realising local degree `≥ 3` at a finite place
-
-This file proves `exists_level_localDegree_ge_three`, the remaining arithmetic obligation of
-`Work.SSGRoute.E7Arch.g1Assembly` (through `levelInterface.lean`): for a finite place `A` of `Ω` over
-`k` there is a finite normal level `L ⊆ Ω` whose decomposition group at the place below `A` has at
-least three elements.
-
-## The construction
-
-Let `𝔭` be the prime of `k` below `A` and `n := #κ(𝔭)` the cardinality of its residue field.  Take an
-**odd** prime `q` dividing `n ^ 2 + 1` (it exists for `n ≥ 2`: `n ^ 2 + 1` is not a power of `2`,
-since `n` odd and `n ^ 2 + 1 = 2 ^ k` with `k ≥ 3` would give `n ^ 2 ≡ 7 (mod 8)`) and the level
-
-  `L := k⟮ζ_q⟯`   (a finite normal intermediate field of `Ω`).
-
-Then `n ^ 2 ≡ -1 (mod q)`, so `n` has order `4` in `(ℤ/q)^×`: the hypothesis `4 ∣ orderOf (n mod q)`
-of the general theorem `NK.CFTLib.IdeleHasse.Descent.dvd_localDegree_of_isPrimitiveRoot` holds for the
-level `M = L`, the place `w = A ∩ L` of `L` over `𝔭`, and a primitive `q`-th root of unity in `𝓞 L`.
-That theorem gives `4 ∣ e(w|𝔭) · f(w|𝔭)`, and hence `e · f ≥ 4 ≥ 3`, i.e.
-`LevelHasLocalDegreeGeThree k Ω A hA L`.
-
-This is the *general-base* form of the argument of
-`Submission/Work/SSGRoute/exists_level_residueDeg.lean` (there over `ℚ`, with `m = p ^ d - 1`); using
-the NK-lane theorem avoids re-proving the residue-field/root-of-unity computation.
--/
-import Mathlib
-import Submission.Work.SSGRoute.E7Arch.levelInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.CFTLib.IdeleHasse.Descent.dvd_localDegree_of_isPrimitiveRoot
-import Submission.NK.LocalAnabelian.All
+import Submission.NK.LocalAnabelian.Counting.natCard_indexP_subgroups_of_exp_p
+import Submission.NK.LocalAnabelian.Kummer.kummerCorrespondence
+import Submission.NK.LocalAnabelian.PadicField.FrattiniRank
+import Submission.NK.LocalAnabelian.PadicField.RatAdic
+import Submission.NK.LocalAnabelian.ResidueField.Recovery
+import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 import Submission.Work.SSGRoute.E7Arch.g1Assembly
+import Submission.Work.SSGRoute.E7Arch.levelInterface
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
-import Submission.Work.SSGRoute.ZDataTwo.Mu2FiniteForm
-import Submission.Work.SSGRoute.kummerChar_eq_zero_of_isInertia_of_unit
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.H9.swIsUnramifiedIn_hLevel_of_kills_inertia
-import Submission.Work.SSGRoute.ZDataTwo.finPairEqZeroOfKillsInertia
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.PlaceValBridge
-import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
+import Submission.Work.SSGRoute.ZDataTwo.finPairEqZeroOfKillsInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

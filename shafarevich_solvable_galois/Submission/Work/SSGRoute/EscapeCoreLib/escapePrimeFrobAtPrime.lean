@@ -1,8 +1,24 @@
-import Mathlib
-import Submission.Work.SSGRoute.EscapeCoreLib.placeFrobenius_of_compat
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.EscapeImports
-import Submission.Work.SSGRoute.ZDataTwo.chebotarev_frobenius_split
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Invariant.Galois
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Submission.Work.SSGRoute.EscapeCoreLib.algEquiv_extend_compositum
+import Submission.Work.SSGRoute.EscapeCoreLib.baseChange_over_K
 import Submission.Work.SSGRoute.EscapeCoreLib.card_residue_eq_of_isFrobAt_one
+import Submission.Work.SSGRoute.EscapeCoreLib.exists_finiteDimensional_galois_superset
+import Submission.Work.SSGRoute.EscapeCoreLib.isGalois_comap
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
+import Submission.Work.SSGRoute.kummerCharZ_eq_zero_of_isInertia_of_valuation_dvd
+import Submission.Work.SSGRoute.ssg8Chebotarev
+import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
 
 /-!
 # The escape prime with a prescribed Frobenius, at the prime of `↥K` below it

@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.HeckeL.Artin
-import Submission.NK.HeckeL.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.LSeries.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.NUV2.HeckeLAbel.tendsto_LSeries_of_partial_sum_bound
 import Submission.NK.NUV2.HeckeLCoeff.LSeriesSummable_heckeCoeff
 import Submission.NK.NUV2.HeckeLCoeff.heckeLSeries_eq_LSeries_heckeCoeff

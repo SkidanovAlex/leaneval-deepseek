@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
-import Submission.NK.LocalReciprocityLubinTate.Unramified.TowerSymbol
-import Submission.NK.LocalReciprocityLubinTate.Units.higherUnits_cofinal
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_level_ge_of_symbolTower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

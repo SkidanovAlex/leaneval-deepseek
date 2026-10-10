@@ -1,5 +1,5 @@
-import Mathlib
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # The level inflation maps (Route C copy of the abstract local level theory)

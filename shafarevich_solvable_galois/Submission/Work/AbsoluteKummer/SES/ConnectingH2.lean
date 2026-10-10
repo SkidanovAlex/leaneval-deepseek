@@ -1,30 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map `H¹(G,P) → H²(G,M)` of a short exact sequence of discrete modules
-
-For a short exact sequence `0 → M --ι--> N --π--> P → 0` of discrete `G`-modules, this file builds
-the connecting homomorphism of the long exact sequence in continuous cohomology
-
-`H¹(G,P) --δ--> H²(G,M)`.
-
-The construction is the classical one: a locally constant `1`-cocycle `c : G → P` is lifted along
-the surjection `π` to a locally constant cochain `b : G → N` (using a set-theoretic section of
-`π`, so that `b = sect ∘ c` is locally constant); `d¹ b` then takes values in `ker π = range ι`,
-and pulling it back along `ι` (with `ι⁻¹ = ShortExactSeq.iotaInv`) produces a locally constant
-`2`-cocycle with values in `M`.
-
-## Main definitions
-
-* `ShortExactSeq.sect`, `ShortExactSeq.liftCochainC`
-* `ShortExactSeq.deltaCocycleC : Z¹(G,P) → Z²(G,M)`
-* `ShortExactSeq.deltaZC : Z¹(G,P) →+ H²(G,M)`
-* `ShortExactSeq.deltaH2 : H¹(G,P) →+ H²(G,M)`, characterised by `deltaH2_H1π`.
--/
-import Mathlib
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.AbsoluteKummer.Defs
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.Connecting
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

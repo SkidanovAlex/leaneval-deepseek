@@ -1,13 +1,15 @@
-import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
+import Mathlib.RingTheory.Henselian
 import Mathlib.Data.Int.Star
-import Mathlib.NumberTheory.NumberField.Ideal.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

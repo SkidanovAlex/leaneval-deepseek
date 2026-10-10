@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

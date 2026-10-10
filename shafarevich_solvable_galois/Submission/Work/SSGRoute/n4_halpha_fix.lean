@@ -1,13 +1,35 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.ZDataMup.ideleArtin_frobAtPrime_unramifiedLane
+import Mathlib.Control.Fix
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.CFTLib.Existence.exists_galois_normClassSubgroup_eq_of_cyclotomic_descent_deg
+import Submission.NK.CFTLib.Existence.exists_galois_normClassSubgroup_le_of_kummer
+import Submission.NK.CFTLib.Existence.index_comap_normClassHom_eq_prime
+import Submission.NK.CFTLib.fundamentalClassElement
+import Submission.NK.NUV2.ArtinBridge.isOpen_comap_normClassHom
+import Submission.NK.NUV2.kernelCondition_all
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.cycloPrincipalId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.exists_idealModulus_of_natModulus
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.indexLeId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.langCyclicRelIndexId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.normKerId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.transfer.fracCoprimeId_relNormUnit
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.transfer.normRayId_map_relNormUnit_le
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.transfer.pow_finrank_mem_normRayId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.productFormula_cyclotomic
+import Submission.Work.SSGRoute.ZDataMup.IdealModulusContainmentProved
+import Submission.Work.SSGRoute.ZDataMup.IdealModulusKernel.CycloPrincipalId
+import Submission.Work.SSGRoute.ZDataMup.IdealModulusKernel.IndexLeIdId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.AuxId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.DescentId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.LImageId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.RestrictArtinId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.RestrictId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.ThetaKerId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.TransportId
+import Submission.Work.SSGRoute.ZDataMup.abelian_of_cyclicCase
 import Submission.Work.SSGRoute.ZDataMup.ideleArtin_restrictNormalHom
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.CFTLib.ArtinReciprocityIdealProved
+import Submission.Work.SSGRoute.ZDataMup.mRam_ramifiedSupport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

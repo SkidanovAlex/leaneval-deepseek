@@ -1,57 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The shrinking lemmas at every level `m ≥ m₀`
-
-The paper states its shrinking results (Proposition 6, Proposition 7) in the form
-
-> there is `m₀ ≥ n` such that for **all** `m ≥ m₀`: given `x₁, …, x_t` at level `m` there is a
-> surjective `G`-operator homomorphism `F(m) ⇢ F(n)` killing them,
-
-and the proof of Proposition 7 (i) and step 4 of the proof of Theorem 15 use exactly this shape:
-the level `m` is chosen by the user (as large as needed), and the shrinking map is then found.
-
-The proofs of `Shrinking.lean`, `Corollaries.lean`, `Models.lean` and `Prop7Uncond.lean` deliver
-the same statement only at the levels `m = r·n` (`_of_mult` in their names), because Proposition 2
-of the paper (`Work.Shrinking.exists_forall_foldMap_rTensor_tensorPower_eq_zero`) is applied to
-`M^r` with `M = F(n)/F(n)²` and hence produces maps out of `F(r·n)`.
-
-This file removes that restriction.  If the classes at a level `m` are to be killed, first apply
-*any* surjective `G`-operator homomorphism `F(m) ⇢ F(r₀·n)` (which exists because `r₀·n ≤ m`, see
-`OperatorMap.ofLe` / `exists_operatorMap_of_le`), then use the `r₀·n`-version of the shrinking
-lemma on the images, and compose.  The composition law for the induced maps is
-`operator.hm1Map_comp` (resp. `operator.h1Map_comp`).
-
-Thus every shrinking statement of the chapter is available in the paper's own "for all `m ≥ m₀`"
-form; the names `exists_shrinking_Hm1`, `exists_shrinking_Hm2IG`, `exists_shrinking_H2IG`,
-`exists_shrinking_H1` of this file are the *primary* interface.
-
-## Main results
-
-* `Work.CohomologicalShrinking.exists_shrinking_Hm1` : Proposition 6, `k = -1`, all levels.
-* `Work.CohomologicalShrinking.exists_shrinking_Hm2IG` : Proposition 6, `k = -2`
-  (`A_{-2} = I_G`), all levels.
-* `Work.CohomologicalShrinking.exists_shrinking_H2IG` : Proposition 6, `k = 2`
-  (`A_2 = I_G^{-3}`), all levels.
-* `Work.CohomologicalShrinking.exists_shrinking_H1` : Proposition 7 (ii), all levels.
-* `Work.CohomologicalShrinking.exists_shrinking_Hm2_of_shift`,
-  `Work.CohomologicalShrinking.exists_shrinking_H2_of_shift` : the cases `k = -2`, `k = 2` with a
-  *generic* dimension-shifting isomorphism as an explicit hypothesis, all levels.
-
-Everything here is proved from `Prop5Data` (Proposition 5) only; see `NOTES.md`.
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Shrinking
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.MonoidAlgebra.Module
+import Mathlib.LinearAlgebra.TensorProduct.Basic
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.Models
 import Submission.Work.CohomologicalShrinking.Prop7Uncond
-import Submission.Work.CohomologicalShrinking.OperatorMap
-import Submission.Work.CohomologicalShrinking.Corollaries
-import Submission.Work.CohomologicalShrinking.operator.hm1Map_comp
 import Submission.Work.CohomologicalShrinking.operator.h1Map_comp
-import Submission.Work.CohomologicalShrinking.operator.hm2Map_comp
 import Submission.Work.CohomologicalShrinking.operator.h2Map_comp
+import Submission.Work.CohomologicalShrinking.operator.hm2Map_comp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

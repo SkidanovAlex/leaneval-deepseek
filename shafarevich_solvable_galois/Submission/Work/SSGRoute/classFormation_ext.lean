@@ -1,9 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.phi1_ext_cor_transfer
-import Submission.Work.SSGRoute.e0b_bridge
-import Submission.NK.NUV2.LC.unitsLevelH2_addOrderOf_realization
-import Submission.NK.CFTLib.fundamentalClassElement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

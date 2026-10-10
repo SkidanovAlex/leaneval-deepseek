@@ -1,25 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTdualControl.C6_rankOneBrick
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.coind_res_mackey
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.C6Detector.block_iff_of_concentrated
 import Submission.Work.SSGRoute.C6Detector.exists_leftCosetRepresentative
-import Submission.Work.SSGRoute.TPatom.levelCocycleDatum_of_blockData
-import Submission.Work.SSGRoute.TPatom.orbitBlockSystem
+import Submission.Work.SSGRoute.Sha2Lib.noninvariantLevelApi
 import Submission.Work.SSGRoute.TPatom.blockSystemTransversal
+import Submission.Work.SSGRoute.TPatom.levelCocycleDatum_of_blockData
 import Submission.Work.SSGRoute.TPatom.noninvariantLevelDefs
 import Submission.Work.SSGcrux.mackeyInvDirac
 import Submission.Work.SSGcrux.muDirac_ne_zero_of_doubleCoset
 import Submission.Work.SSGcrux.zmodAddHom_ne_zero
-import Submission.Work.SSGRoute.Sha2Lib.noninvariantLevelApi
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.decompK_restrict_surjective
-import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Work.SSGRoute.C6Detector.block_iff_of_concentrated
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # Wiring the concentrated level data into the level-cocycle datum
@@ -273,7 +266,6 @@ theorem levelCocycleDatum_of_concentrated (p : ℕ) [Fact p.Prime] (k K : Type) 
   classical
   obtain ⟨L, hnfL, hfdL, hgalL, q', hq', hcop, d, f, hdH, y, hdmem, hf, hdgen, hfmin, hinert,
     hconcc⟩ := hconc
-  letI : NumberField ↥L := hnfL
   letI : FiniteDimensional k ↥L := hfdL
   letI : IsGalois k ↥L := hgalL
   haveI hFinL : Fintype (↥L ≃ₐ[k] ↥L) := Fintype.ofFinite _

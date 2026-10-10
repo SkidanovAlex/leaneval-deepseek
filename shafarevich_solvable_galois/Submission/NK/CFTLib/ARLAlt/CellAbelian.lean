@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.cyclotomicKernelLe
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

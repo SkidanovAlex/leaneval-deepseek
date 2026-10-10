@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
 import Submission.NK.GlobalCFTdeep.Herbrand.TUnitsRank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

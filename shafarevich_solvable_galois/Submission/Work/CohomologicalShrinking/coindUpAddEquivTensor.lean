@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Models
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.MonoidAlgebra.Basic
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.CohomologicalShrinking.Levels
-import Submission.Work.Tate.CoindUp
 import Submission.Work.CohomologicalShrinking.augIdeal_coeff_sum
-import Submission.Work.CohomologicalShrinking.eq_sum_coeff_smul_single
 import Submission.Work.CohomologicalShrinking.coeff_smul_monoidAlgebra
+import Submission.Work.CohomologicalShrinking.eq_sum_coeff_smul_single
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

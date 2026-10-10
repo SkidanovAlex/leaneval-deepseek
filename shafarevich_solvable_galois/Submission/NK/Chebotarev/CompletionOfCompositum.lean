@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

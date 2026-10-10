@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.witt.Basic
+import Mathlib.Algebra.Group.Commutator
+import Mathlib.Algebra.Lie.Basic
+import Mathlib.LinearAlgebra.Span.Defs
+import Mathlib.Algebra.Order.Ring.Nat
 import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

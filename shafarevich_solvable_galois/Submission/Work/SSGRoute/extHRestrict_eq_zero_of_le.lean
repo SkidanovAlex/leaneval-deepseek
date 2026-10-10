@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.Sha2Lib.isLocTrivialLevel_inflH
-import Submission.Work.SSGRoute.ext_corestriction
 
 namespace Work.SSGRoute
 

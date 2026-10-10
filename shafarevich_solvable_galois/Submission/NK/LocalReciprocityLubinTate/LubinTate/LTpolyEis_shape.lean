@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Polynomial.Monic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTpolyIter_monic_degree
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

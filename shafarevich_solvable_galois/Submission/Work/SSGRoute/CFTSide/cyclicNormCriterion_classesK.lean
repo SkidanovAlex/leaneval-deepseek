@@ -1,3 +1,7 @@
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_kills_norms
 import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_transgression
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

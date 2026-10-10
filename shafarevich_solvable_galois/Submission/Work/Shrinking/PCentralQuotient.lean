@@ -1,45 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The subquotients of the descending `p`-central series as `𝔽_p[G]`-modules
-
-The quotients `P_i/P_{i+1}` of the descending `p`-central series of a `p`-group are
-elementary abelian `p`-groups (Schmidt–Wingberg, Section 2, after Definition 3), hence
-`𝔽_p`-vector spaces; the modules of Proposition 5 of the paper are these quotients.  If a
-group `G` acts on `P` by automorphisms, the action descends to each quotient, so that the
-quotients are `𝔽_p[G]`-modules.
-
-## Main results
-
-* `Work.Shrinking.isMulCommutative_pCentralQuotient` : `P_n/P_{n+1}` is commutative.
-* `Work.Shrinking.pow_eq_one_pCentralQuotient` : every element of `P_n/P_{n+1}` has order
-  dividing `p`.
-* `Work.Shrinking.instModuleZModPCentralQuotient` : the induced `𝔽_p`-vector space structure
-  on `Additive (P_n/P_{n+1})` (`AddCommGroup.zmodModule`).
-* `Work.Shrinking.quotActionHom`, `Work.Shrinking.instMulDistribMulActionPCentralQuotient` :
-  the induced action of `G` on `P_n/P_{n+1}`.
-* `Work.Shrinking.instDistribMulActionAdditivePCentralQuotient`,
-  `Work.Shrinking.instSMulCommClassPCentralQuotient` : the resulting `𝔽_p[G]`-module
-  structure: the action of `G` is by `𝔽_p`-linear maps.
-
-Note on the `Additive` wrapper: `Module (ZMod p) M` requires an *additive* commutative group,
-so the `𝔽_p`-vector space of a multiplicative abelian quotient `Q` is `Additive Q`.  The
-`AddCommGroup (Additive Q)` instance requires `CommGroup Q`, which is obtained from
-`IsMulCommutative Q` through the scoped instance `open scoped IsMulCommutative`; this file
-provides dedicated (non-scoped) instances for the series quotients so that a caller does not
-have to open the scope.
--/
-
-import Mathlib
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.Shrinking.pCentralSeries_normal
-import Submission.Work.Shrinking.pCentralSeries_characteristic
-import Submission.Work.Shrinking.pCentralSeries_le_succ
-import Submission.Work.Shrinking.pow_mem_pCentralSeries_succ
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.Shrinking.commutator_le_pCentralSeries_succ
 import Submission.Work.Shrinking.isMulCommutative_subquotient
+import Submission.Work.Shrinking.pCentralSeries_characteristic
+import Submission.Work.Shrinking.pCentralSeries_normal
 import Submission.Work.Shrinking.pow_eq_one_subquotient
+import Submission.Work.Shrinking.pow_mem_pCentralSeries_succ
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

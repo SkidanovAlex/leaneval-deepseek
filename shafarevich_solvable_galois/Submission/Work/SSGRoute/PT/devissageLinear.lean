@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Topology.Algebra.Group.Defs
+import Submission.Work.SSGRoute.PT.DevissageSESDiscrete
 import Submission.Work.SSGRoute.PT.akSESLinear
-import Submission.Work.SSGRoute.PT.DevissageSESFinal
+import Submission.Work.SSGRoute.PT.isDiscreteModule_coind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

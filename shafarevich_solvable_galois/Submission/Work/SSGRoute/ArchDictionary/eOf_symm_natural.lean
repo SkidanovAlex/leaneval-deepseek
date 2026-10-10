@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Algebra.Module.Injective
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,11 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_cyclic
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option linter.style.haveILetI false
 
@@ -35,8 +29,6 @@ theorem natCard_quotient_units_range_norm_eq_card_of_cyclic_tower
       Nat.card (E ≃ₐ[M] E) := by
   -- Realize `M` as the completion of a number field `L` at a place `q` over `Q`.
   obtain ⟨L, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ := exists_realization (Q := Q) (E := M)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   -- Transport the `M`-algebra structure on `E` along `e : M ≃ₐ[F] q.adicCompletion L`.

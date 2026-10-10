@@ -1,25 +1,9 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_le_finrank_of_abelian
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_eq_card_of_cyclic_arbitrary_base
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_baseRingEquiv
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_units_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.isCyclic_algEquiv_adicCompletion_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
 import Submission.Commons.NumberTheory.NumberField.Completion.ge_finrank_adicCompletion_of_galois
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_topAlgEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_baseRingEquiv
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_restriction_exact_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_nsmul_H2_eq_zero
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # The lower bound `[E : F] ≤ #H²(Gal(E/F), Eˣ)` for local fields
@@ -90,8 +74,6 @@ theorem groupCohomology_two_units_ge_finrank
   obtain ⟨L : Type, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
       (Q := Q) (B := F)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   -- ## Step 2: transport the `F`-algebra structure on `E` to `q.adicCompletion L`
@@ -110,8 +92,6 @@ theorem groupCohomology_two_units_ge_finrank
   obtain ⟨L' : Type, hL'f, hL'n, hL'a, q', hq', hgal', ⟨e'⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
       (Q := q) (B := E)
-  letI : Field L' := hL'f
-  letI : NumberField L' := hL'n
   letI : Algebra L L' := hL'a
   letI : Algebra (q.adicCompletion L) (q'.adicCompletion L') :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap q q' hq')

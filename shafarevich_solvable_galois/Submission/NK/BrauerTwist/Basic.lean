@@ -1,69 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The cyclotomic twist: `μ_p`-coefficients for the Brauer / Hasse / Neukirch chain
-
-This is the coefficient layer of `Submission/Work/BrauerTwist/`.  The sibling area
-`Submission/Work/BrauerHasse/` develops the Brauer / Hasse-principle / Neukirch-criterion chain with
-the **trivial** coefficient module `NK.BrauerHasse.Coeff p = Z/p`, i.e. it computes
-`H²(G_κ, Z/p)`.  The classical input of the classical proof of Neukirch–Uchida is however
-
-  `H²(G_κ, μ_p) = Br(κ)[p] ≅ Z/p`,
-
-with `μ_p = Z/p(1)` the module of `p`-th roots of unity, on which `G_κ` acts through the cyclotomic
-character.  The two differ: with trivial coefficients local Tate duality gives
-`H²(G_κ, Z/p) ≅ Hom(μ_p(κ), Q/Z)`, which *vanishes* whenever `μ_p ⊄ κ` — e.g. for `κ = Q_p`,
-`p` odd.  See `Submission/Work/LocalCFT/README.md` §11 and
-`Submission/Work/LocalCFT/Brauer/Twist.lean`.  This file replaces the coefficient module by the
-correct one.
-
-## Contents
-
-* `NK.BrauerTwist.CoeffInt` — the coefficient ring: `Z` lifted into the universe of the fields
-  (Mathlib's group cohomology requires the coefficient ring and the group to live in the same
-  universe).  `Z` is the right ring here because the `p`-th roots of unity form a cyclic group of
-  order `p`, hence are a `Z`-module *canonically* (`n • x = x ^ n`), with no choice of generator.
-* `NK.BrauerTwist.muLevel p L` — for a finite Galois level `L` of `K'/K`, the `p`-th roots of
-  unity in `L`, realised inside `rootsOfUnity p K'` as the fixed points of `Gal(K'/L)`, together
-  with the coefficients inclusions `muIncl`, `muInclAddHom`, `muInclLinearMap`, `muIncl_smul`.
-* `NK.BrauerTwist.muRep p L` — the representation of the level group
-  `Gal(K'/K) ⧸ Gal(K'/L) = Gal(L/K)` on `μ_p(L)`; this is the cyclotomic twist `Z/p(1)`.
-* `NK.BrauerTwist.levelGroupHom`, `NK.BrauerTwist.levelRep p U L`, `LevelH2 p U L` — the level
-  cohomology `H²(U ⧸ (U ∩ Gal(K'/L)), μ_p(L))` of a closed subgroup `U ≤ Gal(K'/K)`.
-* `NK.BrauerTwist.levelMap` — the transition (inflation + coefficient inclusion) between levels,
-  with its computation rule `levelMap_apply`.
-* `NK.BrauerTwist.localLevelRep`, `LocalLevelH2`, `locCoeff`, `locLevel`, `localLevelMap` — the
-  local level cohomology at a place and the level-wise localisation map.
-
-## Conventions
-
-* `K'` is a separable closure of `K`; every intermediate field considered is a
-  `FiniteGaloisIntermediateField K K'`, i.e. finite Galois over `K`.  These are directed under
-  inclusion (`⊔`), which is what makes the filtered colimit of `Profinite.lean` work.
-* For a level `L`, `N_L := L.fixingSubgroup = Gal(K'/L) ◁ Gal(K'/K)`, and
-  `NK.BrauerHasse.LevelGroup U L = U ⧸ (N_L.subgroupOf U)` is the *level group* of `U`.
-* The coefficient module at level `L` is `muLevel p L`, the *fixed points* of `N_L` acting on
-  `rootsOfUnity p K'`.  Since `L/K` is Galois, `N_L` is normal, so `muLevel p L` is a
-  `Gal(K'/K)`-submodule of `μ_p(K')`; it is (canonically) the group of `p`-th roots of unity
-  *of `L`*.  For `L ≤ L'` we have `N_{L'} ≤ N_L`, hence `muLevel p L ≤ muLevel p L'`, and since
-  `N_L` acts trivially, `muLevel p L` is a module for the level group.
-* **The level cohomology is the cohomology of the level *group*, not of the profinite group `U`:**
-
-  `LevelH2 p U L = H²(LevelGroup U L, μ_p(L))`.
-
-  This is the classical presentation of the continuous cohomology as
-  `H²(U, μ_p) = colim_L H²(U ⧸ (U ∩ Gal(K'/L)), μ_p(L))` (Serre, *Galois Cohomology*, I.2.2,
-  Prop. 8).  Taking instead `H²(U, μ_p(L))` — the abstract cohomology of the profinite group `U` —
-  would be *wrong*: for `U = Z_p` and `p` odd the abstract `H²(U, Z/p)` vanishes while the
-  continuous group is `Z/p`.  See `README.md` §1.
-* The group-level maps (`LevelGroup`, `levelQuotHom`, `localInclHom`, `localLevelQuotHom`,
-  `LocalLevelGroup`) are coefficient-generic and are reused from
-  `Submission/Work/BrauerHasse/Profinite.lean`.
--/
-
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.GroupTheory.GroupAction.OfQuotient
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.BrauerHasse.Profinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

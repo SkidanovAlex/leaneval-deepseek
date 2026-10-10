@@ -1,44 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The concrete model of `H₁(F(m)/F(m)^{(ν)} ⋊ G, E(m,τ) ⊗ T)`
-
-This file instantiates the abstract Hochschild–Serre data
-`Work.CohomologicalShrinking.SemidirectShrinkingData` of Schmidt–Wingberg's Proposition 7 (i) at
-the paper's *own* group and coefficients:
-
-* `Z m := groupHomology.H1 (flowRep p G m i j T)`, the group homology of the semidirect product
-  `Γ_m = F(m)/F(m)^{(i,j)} ⋊ G` (`Semidirect.lean`) with coefficients in `E(m,τ) ⊗ T`;
-* `zMap Φ := flowZMap Φ T`, the map induced by an operator map (functorial by
-  `flow.flowZMap_comp`);
-* `β m := γ m ∘ β₀ m`, where `β₀ m` is the second map of the homological Hochschild–Serre
-  sequence `H₁(Γ_m, E⊗T) → H₁(Γ_m/N_m, E⊗T) = H₁(G, E⊗T)` (Mathlib's coinflation, transported
-  along `Γ_m ⧸ N_m ≃* G` by `hochschildSerre.flowQuotH1Equiv`), and `γ` is the paper's recalled
-  identification `H₁ = Ĥ^{-2}`, `Ĥ^{-2}(G, E⊗T) = Ĥ^{-1}(G, E⊗T ⊗ I_G) = Work.Tate.Hm1 …`;
-* `α m`, a map `F(m)/F(m)² ⊗ E(m,τ) ⊗ T →+ H₁(Γ_m, E⊗T)` whose image is the image of the
-  corestriction `H₁(F(m)/ν, E⊗T) → H₁(Γ_m, E⊗T)` — the paper's `α`.
-
-**Proved outright here:** the exactness `range α = ker β` and the surjectivity of `β` (both
-transported from Mathlib's `groupHomology.H1CoresCoinfOfTrivial_exact` and `…_g_epi`, see
-`hochschildSerre.flowHSExact`), and the functoriality `zMap (Ψ ∘ Φ) = zMap Ψ ∘ zMap Φ`
-(`flow.flowZMap_comp`).
-
-**Taken as input** (explicit hypotheses of `semidirectShrinkingData_of`, never `sorry`s): the
-identification of the image of the paper's `α` with the image of the corestriction, the
-naturality in the rank of `α` and of `β`, and the identification `H₁(G, ·) = Ĥ^{-2}(G, ·)` (the
-paper's "recall that `H^{-2} = H_1`", written as an isomorphism `γ` with its injectivity and
-surjectivity).
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.FlowGroupMap
-import Submission.Work.CohomologicalShrinking.OperatorMap
-import Submission.Work.CohomologicalShrinking.flow.flowNormalSquareEquiv
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.Prop7i
+import Submission.Work.CohomologicalShrinking.flow.flowNormalSquareEquiv
 import Submission.Work.CohomologicalShrinking.flow.flowZMap_comp
-import Submission.Work.CohomologicalShrinking.flow.flowGroupMap_comp
-import Submission.Work.CohomologicalShrinking.hochschildSerre.flowQuotH1Equiv
 import Submission.Work.CohomologicalShrinking.hochschildSerre.flowHSExact
 import Submission.Work.CohomologicalShrinking.universalCoefficient.h1AddEquivPQuotientSub
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

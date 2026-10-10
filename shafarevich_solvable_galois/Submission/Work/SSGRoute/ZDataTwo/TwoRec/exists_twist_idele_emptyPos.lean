@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_prime_mem_rayClass
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.PinnedTwin.twistIdeleExists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

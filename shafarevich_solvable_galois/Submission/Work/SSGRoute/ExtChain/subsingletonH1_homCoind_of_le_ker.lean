@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.homCoind_H1_free
 import Submission.Work.SSGRoute.PT.br_pTorsion_openSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Complex.Convex
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.NUV2.RouteB.RayModulus.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

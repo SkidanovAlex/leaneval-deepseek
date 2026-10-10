@@ -1,3 +1,5 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.FrobeniusBridge.Tame
 import Submission.NK.FrobeniusBridge.isTrivialOnResidueAtLevel_mul_inv_of_frobAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

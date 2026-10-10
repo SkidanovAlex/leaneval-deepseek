@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Group.Subgroup.Map
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

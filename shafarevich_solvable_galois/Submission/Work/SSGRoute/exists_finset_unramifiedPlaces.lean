@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.finite_not_isUnramifiedAt_primes
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.ShimizuRank.ComplexPlace.nrComplexPlaces_lt_of_finrank_lt
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
 import Submission.NK.ShimizuRank.Basic
+import Submission.NK.ShimizuRank.ComplexPlace.nrComplexPlaces_lt_of_finrank_lt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Group.Nat.Defs
+import Mathlib.Algebra.Group.Subgroup.Map
 import Submission.NK.Reconstruct.ellPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

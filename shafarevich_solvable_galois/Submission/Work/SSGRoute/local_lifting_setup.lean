@@ -1,14 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.NK.ResidueFrob.Main
-import Submission.NK.FrobeniusBridge.Main
-import Submission.NK.LocalTame.Inputs
-import Submission.NK.TameStructureDeep.Tame.Unconditional
-import Submission.NK.TameData.Main
-import Submission.NK.LocalKW.Setup
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
+import Submission.NK.TameStructureDeep.Tame.Unconditional
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

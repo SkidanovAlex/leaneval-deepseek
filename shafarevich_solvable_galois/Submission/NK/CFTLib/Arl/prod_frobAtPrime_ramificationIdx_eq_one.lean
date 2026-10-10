@@ -1,8 +1,16 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.Chebotarev.FrobRestriction
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.Arl.isFrobAt_of_isFrobAt_any_primeOver
 import Submission.NK.CFTLib.Arl.sum_ramificationIdx_mul_inertiaDeg_primesOverFinite
+import Submission.NK.Chebotarev.FrobRestriction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

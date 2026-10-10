@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.GlobalCFTdeep.PlacePerm.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

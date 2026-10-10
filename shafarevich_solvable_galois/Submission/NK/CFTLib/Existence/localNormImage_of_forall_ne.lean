@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.hilbertReciprocity_cyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

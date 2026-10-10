@@ -1,31 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The structure theorem at the completions of a number field
-
-This file instantiates the assembled structure theorem (`NK.TameData.Main`) at a `p`-adic field
-presented as the `𝔭`-adic completion of a number field `K` — the form in which the local input of
-the Neukirch–Uchida endgame is consumed.  The residue field cardinality is
-`NK.LocalStructure.residueCard K 𝔭 = #(𝓞 K ⧸ 𝔭) = 𝔭.asIdeal.absNorm`
-(`NK.LocalStructure.residueCard_eq_absNorm`).
-
-The three reduced inputs at the completion are
-
-* `NK.LocalStructure.TameCore p K 𝔭 K'` — the structure of the tame quotient (NSW (7.5.7)
-  Corollary, (7.5.11); Iwasawa), from `Submission/Work/LocalStructure/`;
-* `TameAbelianisationInput p (residueCard K 𝔭) (𝔭.adicCompletion K) K'` — Shimizu
-  (arXiv:2009.10431) 2.1 via local class field theory, from `Submission/Work/TameData/`;
-* `NK.LocalStructure.TameFrobeniusCore p (residueCard K 𝔭) (𝔭.adicCompletion K) K'` — NSW
-  (12.1.8), Iwasawa, from `Submission/Work/LocalStructure/`.
-
-For the second input the literal form `TameTorsionInput` (the torsion of `G_κ^{tr,ab}` is cyclic
-of order `q - 1`) can be used instead, at the price of stating the torsion directly; see
-`NK.TameData.tameData_adicCompletion_of_torsionInput`.
--/
-import Submission.NK.TameData.Main
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalStructure.Main
-import Submission.NK.LocalStructure.Frobenius.frobeniusLiftCharacterisation_of_core
+import Submission.NK.TameData.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

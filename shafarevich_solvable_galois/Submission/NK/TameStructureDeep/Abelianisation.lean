@@ -1,22 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The abelianised tame quotient, from the residual of `NK.TameStructureDeep`
-
-This file turns the abelianisation field of `NK.TameStructureDeep.TameRamificationCore` — the
-classical splitting `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}` of Shimizu (arXiv:2009.10431, Lemma 2.1, via local
-class field theory) — into the structures
-
-* `NK.TameData.TameAbelianisationInput p q κ K'` (the splitting; `q_eq` supplied separately, and
-  *proved* from the arithmetic of the completion when `κ = K_𝔭` and `q = residueCard K 𝔭`), and
-* `NK.TameData.TameTorsionInput p q κ K'` (Shimizu's literal statement: the torsion of
-  `G_κ^{tr,ab}` is cyclic of order `q - 1`), via
-  `NK.TameData.TameAbelianisationInput.toTorsionInput`.
--/
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.TameData.Abelianisation
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

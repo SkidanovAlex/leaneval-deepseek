@@ -1,8 +1,6 @@
-import Submission.NK.ResidueFrob.LevelOfLocal
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.ResidueFrob.ExistsFrob
-import Submission.NK.ResidueFrob.Inertia
 import Submission.NK.ResidueFrob.levelInertiaCovered_of_tameData
-import Submission.NK.LocalTame.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

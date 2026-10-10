@@ -1,23 +1,19 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinIdeal
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.NK.CFTLib.Arl.prod_frobAtPrime_ramificationIdx_eq_one
-import Submission.NK.CFTLib.Existence.ideleInclusion_congruenceSubgroup
-import Submission.NK.CFTLib.Existence.count_idealOf_ideleInclusion
+import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
 import Submission.NK.CFTLib.Existence.artinSym_map_eq_one_of_unramified
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_idele_smul_eq_self_iff
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_invariants_ideleClassGroup
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
+import Submission.NK.CFTLib.Existence.count_idealOf_ideleInclusion
+import Submission.NK.CFTLib.Existence.ideleInclusion_congruenceSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

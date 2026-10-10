@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
-import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
-import Submission.Work.SSGRoute.exists_finiteDimensional_normal_fixingSubgroup_le
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.NeukirchUchida.Local.PlaceFromValuation
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.ResidueFrob.primeOfLevel_liesOver
 import Submission.Work.LocalFields.finite_ramified_primes_extension
-import Submission.Work.LocalFields.isUnramifiedAt_iff_ramificationIdxIn_eq_one
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.Work.SSGRoute.exists_finiteDimensional_normal_fixingSubgroup_le
+import Submission.Work.SSGRoute.place_basics
+import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,18 +1,10 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexPrincipalRaySupNormRayLe
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.CyclotomicSubextension
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.NK.CFTLib.Arl.prod_frobAtPrime_ramificationIdx_eq_one
-import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.Arl.isFrobAt_of_isFrobAt_any_primeOver
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.restrictNormalHom_frobAtPrime_eq_pow
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.auxFieldExists
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.transferOfAuxField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.CFTLib.RouteB.plan
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.fundamentalClassInputs
-import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

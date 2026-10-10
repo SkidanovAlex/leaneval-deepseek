@@ -1,17 +1,8 @@
-/-
-# Gateway: the library surface the `sha2_hasse` local-condition lemmas are stated in
-
-Re-exports the (already proved) parts of the library that the statements of the
-`Work.SSGRoute.sha2_hasse` local-condition lemmas mention, so that the statements can be
-elaborated in a small environment.
--/
-import Submission.Work.SSGRoute.sha2_hasse.Defs
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
-import Submission.NeukirchUchida.Local.Transitivity
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
-import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
 import Submission.Work.SSGRoute.exists_finiteDimensional_normal_fixingSubgroup_le
+import Submission.Work.SSGRoute.sha2_hasse.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,13 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.NormGroup.globalCFT_normClassHom_trans
-import Submission.NK.GlobalCFT.NormFunctorial
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.secondInequality_of_isCyclic_prime
 import Submission.NK.GlobalCFTdeep.exists_normal_subgroup_index_eq_prime_of_solvable
 import Submission.NK.GlobalCFTdeep.index_normClassSubgroup_le_mul_index
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

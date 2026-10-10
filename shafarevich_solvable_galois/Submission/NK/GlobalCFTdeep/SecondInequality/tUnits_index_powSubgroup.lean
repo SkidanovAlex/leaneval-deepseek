@@ -1,9 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: The GlobalCFTdeep team
--/
-import Mathlib
+import Mathlib.GroupTheory.FiniteAbelian.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.LinearAlgebra.Dimension.Torsion.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
 import Submission.NK.GroupTheory.Abelian.card_quot_lsmul_range_of_finite
 import Submission.NK.GroupTheory.Abelian.card_quot_lsmul_range_of_free

@@ -1,42 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Dimension shifting for Tate cohomology in low degrees
-
-Let `0 → A --f--> B --g--> C → 0` be a short exact sequence of `G`-modules with `B`
-*cohomologically trivial in degrees `-1, 0`*, i.e. `Ĥ⁻¹(G, B) = Ĥ⁰(G, B) = 0`.  Then the
-connecting map of the six-term exact sequence
-
-`Ĥ⁻¹(G, A) → Ĥ⁻¹(G, B) → Ĥ⁻¹(G, C) --δ--> Ĥ⁰(G, A) → Ĥ⁰(G, B) → Ĥ⁰(G, C)`
-
-has vanishing kernel and full range, hence is an isomorphism
-
-`δ : Ĥ⁻¹(G, C) ≅ Ĥ⁰(G, A)`.
-
-This is *dimension shifting*: it moves classes from degree `0` to degree `-1` (or back),
-at the cost of twisting the coefficients by the kernel of the shift.
-
-The standard instantiation is the sequence `0 → A → Coind(A) → A^* → 0`, where
-`Coind(A) = (G → A)` is the coinduced module (acyclic in all degrees by Shapiro's lemma) and
-`A^* = Coind(A)/A`; it is provided here as
-
-* `Work.Tate.coindShift` : the shifted module `A^* = Coind(A)/A`;
-* `Work.Tate.coindSES` : the short exact sequence, in `Work.Tate.SES` form;
-* `Work.Tate.dimensionShiftCoind : Ĥ⁻¹(G, A^*) ≃+ Ĥ⁰(G, A)`.
-
-In the notation of Shafarevich's shrinking procedure, `A^*` plays the role of the `I_G`-twist:
-`A^* ≅ A ⊗ I_G^*` where `I_G^* = Hom(I_G, 𝔽_p)`, so `Ĥ⁰(G, M) ≅ Ĥ⁻¹(G, M ⊗ I_G^*)` is the
-`k = 0` case of `Ĥ^k(G, M) ≅ Ĥ⁻¹(G, M ⊗ A_k)`, `A_k = I_G^{-(k+1)}`.
--/
-import Mathlib
-import Submission.Work.Tate.Delta
-import Submission.Work.Tate.ker_Hm1g_eq_range_Hm1f
-import Submission.Work.Tate.ker_delta_eq_range_Hm1g
-import Submission.Work.Tate.range_delta_eq_ker_H0f
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.Shift
 import Submission.Work.Tate.coind_H0_subsingleton
 import Submission.Work.Tate.coind_Hm1_subsingleton
+import Submission.Work.Tate.ker_delta_eq_range_Hm1g
+import Submission.Work.Tate.range_delta_eq_ker_H0f
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

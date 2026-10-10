@@ -1,44 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# A profinite group with cyclic finite quotients is abelian
-
-This file proves `NK.LocalStructure.Tame.commute_of_isProCyclic_of_profinite`: a compact totally
-disconnected topological group `H` all of whose finite quotients are cyclic
-(`NK.LocalTame.IsProCyclic H`) is abelian.
-
-## The mathematics
-
-Let `N ⊴ H` have finite index.  By hypothesis the quotient `H ⧸ N` is cyclic, hence commutative,
-so the commutator `x * y * x⁻¹ * y⁻¹` of two elements of `H` is trivial in `H ⧸ N`, i.e. it lies
-in `N`.  As `x`, `y` are arbitrary, the commutator lies in *every* finite-index normal subgroup,
-and a fortiori in every *open* normal subgroup.
-
-The open normal subgroups of a profinite group have trivial intersection: if `z ≠ 1`, then `{z}` is
-closed, so `{z}ᶜ` is an open neighbourhood of `1`, and in a compact totally disconnected group an
-open neighbourhood of `1` contains an open normal subgroup
-(`ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one`, whose hypothesis
-`TotallyDisconnectedSpace` supplies the Hausdorff separation needed to separate the points `1`
-and `z`).  That subgroup does not contain `z`, so `z` is not in the intersection.
-
-Consequently the commutator of any two elements of `H` is `1`.
-
-This is exactly the group-theoretic step by which the pro-cyclicity of the tame inertia `I_κ/V_κ`
-yields its commutativity, hence `[I_κ, I_κ] ≤ V_κ` — the field
-`NK.LocalStructure.TameCore.tameInertia_commutator_mem` of the local structure theory.  Indeed
-`V_κ` is open normal in `G_κ`, so `I_κ/V_κ` is again a compact totally disconnected topological
-group, and by `TameCore.isTameInertia` it is pro-cyclic in the sense of
-`NK.LocalTame.IsProCyclic`; the lemma below then makes it abelian.  (What remains to be supplied
-at the point of use is the transportation of the topological group structure to the quotient
-`I_κ/V_κ`.)
-
-## Main result
-
-* `NK.LocalStructure.Tame.commute_of_isProCyclic_of_profinite`
--/
-import Mathlib
+import Mathlib.Tactic.Group
 import Mathlib.Topology.Algebra.ClopenNhdofOne
+import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 import Submission.NK.LocalStructure.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

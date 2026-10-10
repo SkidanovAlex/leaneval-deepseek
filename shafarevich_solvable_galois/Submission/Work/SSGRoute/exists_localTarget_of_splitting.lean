@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.twistLayer
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.SSGRoute
 
@@ -28,10 +24,13 @@ theorem localTargetOfSplitting_flowEKer_eq_range_gradeInl (p : ℕ) (G : Type*) 
     rw [MonoidHom.mem_ker] at hx
     have hleft : flowQuotientProj p G n i j x.left = 1 := by
       have h := congrArg SemidirectProduct.left hx
-      simpa [flowGroupProj] using h
+      simpa only [flowGroupProj, SemidirectProduct.map_left, SemidirectProduct.one_left] using h
     have hright : x.right = 1 := by
+      -- `simp only`: the full `simp` set produced a proof whose kernel check took ~4 CPU-min
       have h := congrArg SemidirectProduct.right hx
-      simpa [flowGroupProj] using h
+      have h2 := (SemidirectProduct.map_right _ _ _ x).symm.trans h
+      rw [SemidirectProduct.one_right] at h2
+      exact h2
     have hmem : x.left ∈ (stageProjQuotient p G n i j).ker := hleft
     rw [stageProjQuotient_ker] at hmem
     obtain ⟨v, hv⟩ := hmem

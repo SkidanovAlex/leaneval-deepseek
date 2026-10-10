@@ -1,37 +1,12 @@
-/-
-# The Lubin–Tate addition formula on torsion points, without the module structure
-
-The `𝒪[F]`-action on `Λ_n` (`Eval/TorsionAction.lean`, `smulDiv`) is not obviously additive:
-the missing axiom of the `𝒪[F]`-**module** structure on `Λ_n` is the distributivity law
-
-  `(b + d) · x = b · x ⊕ d · x`
-
-where `⊕` is the Lubin–Tate group law.  Evaluating the group law at a pair of torsion points is
-what the chapter's `T_n`-based design has to make precise — and it can be done *without* any
-topological completion, by using the factorisation of the group law by its second variable.
-
-Since a formal group law satisfies `F(X,Y) = X + Y·Θ(X,Y)` with `Θ` a *unit* of the power series
-ring (`FormalGroup.exists_unit_factorization`), substituting the multiplication series
-`![[b],[d]]` into it and applying Milne's evaluation `evalTau` gives the addition formula
-
-  `(b + d) · x = b · x + (d · x) · H,     H ≠ 0`,
-
-for a fixed nonzero scalar `H ∈ F(x)`.  The factor `H ≠ 0` is what replaces the missing
-module/discussion of the group law: it says that the "correction term" is *invertible*, i.e. that
-`(b + d) · x = b · x` holds exactly when `d · x = 0`.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_add_formula`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_add_of_eq_zero`
-  (the action of `d` is periodic with period the annihilator of `x`);
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_one_add_eq_self_iff`
-  (the stabiliser of `x` under the unit group: `(1+c)·x = x ↔ c·x = 0`).
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Eval.actionTau_add
 import Submission.NK.LocalReciprocityLubinTate.Eval.law_factorization
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

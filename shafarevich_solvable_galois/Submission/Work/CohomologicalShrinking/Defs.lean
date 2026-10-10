@@ -1,41 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Cohomological shrinking: the refined `p`-central filtration and its graded pieces
-
-This is the first file of the chapter `Work.CohomologicalShrinking`, which formalizes
-§2 of A. Schmidt and K. Wingberg, *Šafarevič's theorem on solvable groups as Galois groups*
-(arXiv:math/9809211): Definition 3, Lemma 4, Proposition 5, Proposition 6 and Proposition 7.
-
-The mathematical content of §2 is pure algebra: finite groups, `𝔽_p[G]`-modules and group
-cohomology.  Nothing in this chapter uses class field theory or number theory.
-
-## Conventions (see `NOTES.md` for the full dictionary with the paper)
-
-* `p` is a natural number used as a prime (`[Fact p.Prime]` where needed), `G` a group.
-* `Work.Shrinking.pCentralSeries p P n` is the descending `p`-central series **0-indexed**,
-  so that `pCentralSeries p P n` is the paper's `P_{n+1}`; `pSeries p P i` denotes the paper's
-  `P_i`, i.e. `pSeries p P i = pCentralSeries p P (i-1)`.
-* `centralSeries P j` is the paper's `P^j`, the *descending central series* (lower central
-  series): `P^1 = P`, `P^{j+1} = [P^j, P]`.  In Mathlib this is
-  `(⊤ : Subgroup P).lowerCentralSeries (j-1)`.
-* `refinedTerm p P i j` is the paper's `P_{(i,j)} = (P_i ∩ P^j) P_{i+1}`.
-* `tauSucc i j` is the paper's `τ + 1`: `(i, j+1)` if `i > j`, and `(i+1, 1)` if `i = j`.
-* `refinedQuotient p P i j` is the graded piece `P_{(i,j)}/P_{(i,j)+1}`.
-* `E p G d i j` is that graded piece for `P = F(d)`, the free `G`-operator group of rank `d`
-  (`Work.Shrinking.freeOperatorGroup G d`), written as an `𝔽_p`-vector space
-  (`Additive` of the multiplicative quotient).  It is the paper's `E(d,τ)`.
-* `squareQuotient p G d` is the paper's `F(d)/F(d)^2 = F(d)/F(d)_2` (`F(d)_2 = F(d)^p[F(d),F(d)]`),
-  the source of Proposition 5.
--/
-
-import Mathlib
-import Submission.Work.Shrinking.Basic
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.Shrinking.PCentralQuotient
-import Submission.Work.Shrinking.Refined
+import Mathlib.GroupTheory.Nilpotent
 import Submission.Work.Shrinking.FreeOperator
+import Submission.Work.Shrinking.PCentralQuotient
+import Submission.Work.Shrinking.pCentralSeries_antitone
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

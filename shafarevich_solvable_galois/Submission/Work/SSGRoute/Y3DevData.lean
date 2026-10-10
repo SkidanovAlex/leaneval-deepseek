@@ -1,8 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.E7bDefs
 import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.localUnitsMap_exists
 import Submission.Work.SSGRoute.ext_corestriction
+import Submission.Work.SSGRoute.localUnitsMap_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

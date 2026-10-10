@@ -1,26 +1,7 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The level `𝕀_L^S` of the idèles and its decomposition
-
-This module provides the *bookkeeping* layer of `NK.HassePrinciple.hbnIdele`: the level
-subgroups of the idèle group on which the argument is carried out, and the maps between them.
-
-* `NK.HassePrinciple.restrictTo` — the idèle `x` with all components outside `S` replaced by `1`;
-* `NK.HassePrinciple.GStableSet.compl` — the complement of a `Gal(L/K)`-stable set of places;
-* `NK.HassePrinciple.outsideUnitsRep` — the idèles supported outside `S` whose components are
-  local units (`∏_{v ∉ S} 𝒪_vˣ`) as a representation;
-* `NK.HassePrinciple.levelToSupported`, `...levelToOutside` — the two projections
-  `𝕀_L^S ⟶ ∏_{v ∈ S} L_vˣ` and `𝕀_L^S ⟶ ∏_{v ∉ S} 𝒪_vˣ` (`x ↦ x·(x|_S)⁻¹`) as morphisms of
-  representations;
-* `NK.HassePrinciple.projSupported`, `...projOrbitUnits` — the projections of an idèle supported
-  on a stable set onto the part supported on a stable subset;
-* `NK.HassePrinciple.levelIncl` — the inclusion `𝕀_L^S ⟶ 𝕀_L`.
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.IdeleOrbit
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.HassePrinciple.IdeleOrbitCoind
 import Submission.NK.HassePrinciple.RepOfMonoidHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

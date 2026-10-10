@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
 import Submission.NK.NUV2.Geom.volume_cthickening_frontier_normLeOne
 import Submission.NK.NUV2.Minkowski.volume_thickening_unitBox_image_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameData.Definitions
 import Submission.NK.TameData.Zhat.dvd_of_dvd_chain
 import Submission.NK.TameData.Zhat.dvd_of_prime_pow_factorization_dvd

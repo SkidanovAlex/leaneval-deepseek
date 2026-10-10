@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Defs
+import Mathlib.CategoryTheory.Action.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.ChebotarevGeneral.card_isFrobAt_liesOver_mul_orderOf
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,29 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The residue field of a completion
-
-For a finite prime `v` of a number field `K`, the residue field `κ_v = 𝒪_v/𝔪_v` of the
-`v`-adic completion is canonically the residue field of `𝓞 K` at `v`, hence finite.  This file
-sets up the reduction map and the induced isomorphism; the two facts about the reduction map
-(surjectivity and kernel) are proven in the sibling files and give
-`Work.LocalFields.instIsLocalFieldCompletion`.
-
-## Main definitions
-
-* `Work.LocalFields.residueMap` : the reduction map `𝓞 K →+* κ_v`.
-* `Work.LocalFields.residueMap_apply` : its computation rule.
-
-## Main results
-
-* `Work.LocalFields.residueMap_surjective` (file `LocalFields/residueMap_surjective.lean`)
-* `Work.LocalFields.residueMap_ker` (file `LocalFields/residueMap_ker.lean`)
-* `Work.LocalFields.residueEquiv` : the induced isomorphism `𝓞 K ⧸ v ≃+* κ_v`.
-* `Work.LocalFields.Finite_residueFieldOf`,
-  `Work.LocalFields.instIsLocalFieldCompletion`
-  (file `LocalFields/CompletionLocalField.lean`)
--/
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.LocalFields.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

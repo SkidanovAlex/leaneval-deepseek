@@ -1,23 +1,9 @@
-/-
-Transport of the idèle group along a `K`-algebra isomorphism `e : L ≃ₐ[K] L'` of number fields.
-
-Given a compatible family of local field isomorphisms `Φ v : L_v ≃+* L'_{congr e v}` (carrying
-local units onto local units, and continuous), we build the induced isomorphism
-`𝕀 L ≃* 𝕀 L'` and show that it commutes with the Galois actions
-(`σ` on the left, `AlgEquiv.autCongr e σ` on the right) and carries principal idèles to principal
-idèles.
-
-The key point is that the hypotheses on `Φ` (compatibility with the embeddings of `L`, and
-continuity) determine `Φ` uniquely, so that the local field isomorphisms `Φ v` automatically
-intertwine the canonical local isomorphisms `Place.localRingEquiv` attached to the Galois actions.
-This is proved by the density of `L` in `L_v` (`NK.GlobalCFT.Galois.denseRange_algebraMap_localField`).
--/
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Metrizable.Uniformity
+import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.RouteB.IdeleCongr.PlaceCongr
 import Submission.NK.GlobalCFTdeep.Transport.IdeleTransport
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_comp
-import Submission.NK.GlobalCFT.Galois.globalCFT_mul_smul_idele
-import Submission.NK.GlobalCFT.Galois.globalCFT_smul_place_smul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

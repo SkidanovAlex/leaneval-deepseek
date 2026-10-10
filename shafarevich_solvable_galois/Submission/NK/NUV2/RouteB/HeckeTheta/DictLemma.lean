@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.NUV2.HeckeAnalytic.Dict
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.FundamentalCone
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.NUV2.HeckeAnalytic.CountDefs
 import Submission.NK.NUV2.RouteB.CongCount.CongConeCoset
-import Submission.NK.NUV2.RouteB.CongCount.CongConeSetup
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.Commons.Analysis.Polynomial.eval_prod_X_sub_C
 import Submission.Commons.Analysis.Polynomial.norm_multiset_prod
 import Submission.Commons.Analysis.Polynomial.norm_prod_sub_ge

@@ -1,8 +1,6 @@
-import Mathlib
+import Mathlib.Topology.Algebra.ClopenNhdofOne
+import Mathlib.GroupTheory.Perm.Cycle.Type
 import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.LocalTame.Basic
-import Submission.NK.TameStructureDeep.Support.eq_one_of_hom_zmod_of_openNormal_index
-import Submission.NK.TameStructureDeep.Support.commutative_topologicalClosure_zpowers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

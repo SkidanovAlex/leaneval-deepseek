@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.LocalInputs.PowerQuotient.natCard_quot_maximalIdeal_pow
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
+import Submission.NK.LocalInputs.PowerQuotient.natCard_quot_maximalIdeal_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

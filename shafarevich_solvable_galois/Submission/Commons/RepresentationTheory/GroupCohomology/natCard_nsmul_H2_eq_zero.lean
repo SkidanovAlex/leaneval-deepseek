@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.Commons.RepresentationTheory.GroupCohomology.isZero_iff_subsingleton_moduleCat
+import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

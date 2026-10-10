@@ -1,30 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Kummer theory over the maximal unramified extension
-
-From the Kummer input `NK.TameStructureDeep.Tame.UnramifiedNoPow` — *a uniformiser of `κ = K_𝔭`
-has no `n`-th root in `κ^{ur}` for `n ≥ 2` prime to `p`* — this file derives the Kummer-theoretic
-form of the tamely ramified structure theorem over the **unramified** base `κ^{ur}`:
-
-* `NK.TameStructureDeep.Tame.irreducible_X_pow_sub_C_unramifiedClosure`: for every prime
-  `ℓ ≠ p`, the polynomial `X ^ ℓ - C π` is irreducible over `κ^{ur}` (Mathlib's
-  `Polynomial.X_pow_sub_C_irreducible_of_prime`);
-
-so that `κ^{ur}(π^{1/ℓ})` is a cyclic extension of `κ^{ur}` of degree `ℓ`, with Galois group
-`μ_ℓ` under the Kummer pairing `σ ↦ σ(π^{1/ℓ})/π^{1/ℓ}` (Mathlib's
-`IsSplittingField.autEquivRootsOfUnity`, `… .autEquivZmod`,
-`… .finrank_of_isSplittingField_X_pow_sub_C`).
-
-This is the *only* place where the classical input enters the tamely ramified layer: everything
-downstream (`Gal(κ^{tr}/κ^{ur}) ≅ ∏_{ℓ ≠ p} ℤ_ℓ`, its pro-cyclicity and pro-prime-to-`p`-ness, the
-`q`-power action of the Frobenius) is Kummer theory over `κ^{ur}` plus the cyclotomic computation
-`κ^{ur} = κ(μ_{p'})` of `NK.TameStructureDeep.Degree`.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

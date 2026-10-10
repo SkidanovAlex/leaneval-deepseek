@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.homRepFormulaAux
-import Submission.Work.SSGRoute.homRep_unitsK_formula_natural
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PT.e1a_can_aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

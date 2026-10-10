@@ -1,4 +1,3 @@
-import Mathlib.Algebra.GCDMonoid.Basic
 import Mathlib.Algebra.Order.GroupWithZero.Canonical
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

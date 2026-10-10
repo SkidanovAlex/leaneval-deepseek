@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.RamificationDeep.MonoDefs
 import Submission.NK.RamificationDeep.isNoetherianRing_restrictRing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

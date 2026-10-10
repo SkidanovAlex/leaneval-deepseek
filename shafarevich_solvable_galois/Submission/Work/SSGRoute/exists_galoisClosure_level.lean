@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.phi1_level_naturality
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
+import Submission.Work.SSGRoute.phi1_level_naturality
 
 /-!
 # Plumbing: `IsScalarTower` and finiteness across a non-linear tower

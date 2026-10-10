@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.splitFrobeniusBase
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.Reconstruct.Transport
+import Submission.NK.Reconstruct.splitFrobeniusBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

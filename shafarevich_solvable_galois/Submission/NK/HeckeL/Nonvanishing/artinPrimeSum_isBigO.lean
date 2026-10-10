@@ -1,29 +1,12 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-The character-twisted prime sum `∑_𝔭 χ(Frob_𝔭) N𝔭^{-s}` of a *non-trivial* character is bounded as
-`s → 1⁺`.  This is the "Euler-product form" of the non-vanishing `L(1,χ) ≠ 0`:
-
-* `artinLogEulerProduct` differs from `artinPrimeSum` by an `O(1)` term
-  (`NK.HeckeL.Series.artinPrimeSum_sub_artinLogEulerProduct_isBigO`), and
-* `artinLogEulerProduct` is a continuous branch of the logarithm of `artinLSeries`, whose limit at
-  `1⁺` is non-zero (the non-vanishing input), so it is bounded.
-
-The auxiliary analytic fact used here is that a continuous branch of the logarithm of a function
-tending to a *non-zero* limit is bounded (`isBigO_of_tendsto_exp_ne_zero`).
-
-The non-vanishing is proved here, as `lSeries_value_ne_zero_of_regular`, from the Euler
-factorisation `∏_χ L_S(s,χ) = ζ_L^S(s)` over the characters of the abelian group `Gal(L/K)` and the
-existence of a positive limit of `ζ_L^S(s)/ζ_K^S(s)`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Zeta
-import Submission.NK.HeckeL.Series.exp_artinLogEulerProduct
-import Submission.NK.HeckeL.Series.continuousOn_artinLogEulerProduct
-import Submission.NK.HeckeL.Series.artinPrimeSum_sub_artinLogEulerProduct_isBigO
-import Submission.NK.HeckeL.Product.artinLSeries_one
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Data.FunLike.Fintype
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Submission.NK.HeckeL.Product.prod_artinLSeries_eq_aux
 import Submission.NK.HeckeL.Product.tendsto_zetaUnramified_div
+import Submission.NK.HeckeL.Series.artinPrimeSum_sub_artinLogEulerProduct_isBigO
+import Submission.NK.HeckeL.Series.continuousOn_artinLogEulerProduct
+import Submission.NK.HeckeL.Series.exp_artinLogEulerProduct
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.PTDefs
 import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.EulerProduct.ExpLog
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Zeta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

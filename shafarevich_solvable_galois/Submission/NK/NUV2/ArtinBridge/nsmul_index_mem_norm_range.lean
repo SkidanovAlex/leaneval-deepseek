@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Complement
+import Mathlib.RepresentationTheory.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.pow_index_mem_normHom_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

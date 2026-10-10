@@ -1,42 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Lifts along a surjection with abelian kernel and the vanishing of the pulled back class
-
-Let `π : G →* Q` be a surjection (`hs : ∀ q, π (s q) = q` for a set-theoretic section `s`) with
-**abelian** kernel `A = ker π`.  Conjugation by a section defines a `Q`-module structure on `A`
-(`kernelAction`), and the section produces the `2`-cocycle
-`s (q) * s (r) * (s (q * r))⁻¹` (`sectionCocycle`), whose class in `H²(Q, A)` is the extension
-class of `π`.
-
-For a homomorphism `ρ : H →* Q`, this file proves that `π` *lifts* `ρ` — i.e. there is a
-homomorphism `ψ : H →* G` with `π ∘ ψ = ρ` — if and only if the pullback of the section cocycle
-along `ρ` is a **coboundary**:
-
-`(∃ ψ : H →* G, π.comp ψ = ρ) ↔ pullbackCocycle ρ (sectionCocycle π s hs) ∈ B²(H, A)`.
-
-The two directions are the two halves of the same explicit computation.  Writing
-`Ψ(f)(h) = (toMul (f h))⁻¹ * s (ρ h)` for a cochain `f : H → A`,
-
-`Ψ(f) (h * h') = Ψ(f) h * Ψ(f) h'  ⟺  d¹ f = pullbackCocycle ρ (sectionCocycle π s hs)`
-
-(the twisted product of two lifts is again a lift precisely when the pullback of the class is a
-coboundary), and every lift `ψ` of `ρ` is of the form `Ψ(f)`.  The elementary algebra underlying
-this equivalence is isolated in the auxiliary lemma `twist_algebra` below: for `q₁, q₂, q_r ∈ G`
-and `A, B, D ∈ ker π` with `γ = q₁ B q₁⁻¹` and `C = q₁ q₂ qᵣ⁻¹` (both in `ker π`),
-
-`D⁻¹ * q_r = A⁻¹ * q₁ * B⁻¹ * q₂  ⟺  γ * D⁻¹ * A = C`,
-
-which uses the commutativity of `ker π` to reorder the elements of the kernel.
-
-## Main declarations
-
-* `Work.AbsoluteGalois.exists_hom_lift_iff_pullbackCocycle_mem_B2`
--/
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.End
 import Submission.Work.AbsoluteGalois.Cohomology
 import Submission.Work.AbsoluteGalois.Obstruction
-import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

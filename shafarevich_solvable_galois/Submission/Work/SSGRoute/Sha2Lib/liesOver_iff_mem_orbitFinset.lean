@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.HSRow.SplitPlaceSetup
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.GlobalCFT.Galois.globalCFT_place_smul_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

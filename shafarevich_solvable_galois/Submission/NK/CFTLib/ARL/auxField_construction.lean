@@ -1,12 +1,17 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Frobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.ZMod.Units
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 import Submission.NK.CFTLib.ARL.AuxField
-import Submission.NK.CFTLib.ARL.autToPow_eq_of_pow_eq
-import Submission.NK.CFTLib.ARL.isGalois_cyclotomicField_over_base
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
 import Submission.NK.CFTLib.ARL.disjoint_restrictScalars_adjoin_zeta
 import Submission.NK.CFTLib.ARL.inertiaDeg_one_isFrobAtPrime_one
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
+import Submission.NK.CFTLib.ARL.isGalois_cyclotomicField_over_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

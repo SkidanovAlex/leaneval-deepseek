@@ -1,11 +1,10 @@
-import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.Order.Ring.Star
-import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RingTheory.RamificationInertia.Inertia
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

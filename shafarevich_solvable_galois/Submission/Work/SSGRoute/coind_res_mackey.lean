@@ -1,6 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.ext_coind_exact
+import Mathlib.RepresentationTheory.Coinduced
 import Submission.Work.SSGRoute.mackey_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

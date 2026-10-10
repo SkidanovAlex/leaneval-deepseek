@@ -1,6 +1,8 @@
-import Submission.NK.EndgameRepair.ExistsSigma
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
 import Submission.NK.LocalReciprocityLubinTate.Target
+import Submission.NK.RankTheoryDeep.CorrectedResidualsDerived
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

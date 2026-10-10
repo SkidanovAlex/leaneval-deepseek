@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Group.Integral
+import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Basic
 import Submission.Work.SSGRoute.PTW.RegularRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

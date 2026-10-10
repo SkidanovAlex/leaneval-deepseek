@@ -1,9 +1,11 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Mathlib
+import Mathlib.RingTheory.Frobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.exists_frobenius_galRestrict
-import Submission.Commons.NumberTheory.NumberField.frobenius_eq_of_commute
 import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

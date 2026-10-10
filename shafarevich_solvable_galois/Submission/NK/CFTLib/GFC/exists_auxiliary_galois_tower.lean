@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.NK.CFTLib.RouteB.plan
-import Submission.NK.CFTLib.fundamentalClassInputs
-import Submission.NK.CFTLib.RouteB.intersect_cyclotomic_eq_bot
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LSeries.PrimesInAP
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.NK.CFTLib.RouteB.exists_cyclic_subfield_of_isCyclotomic
+import Submission.NK.CFTLib.RouteB.intersect_cyclotomic_eq_bot
+import Submission.NK.CFTLib.fundamentalClassInputs
 
 /-!
 # The auxiliary Galois tower (Route B, lemma 1)

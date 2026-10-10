@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.Decomposition
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.Work.LocalFields.isUnramifiedAt_iff_ramificationIdxIn_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,12 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.GlueSetup
-import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
-import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.RingTheory.Valuation.mem_stabilizer_valuationSubring_iff
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.RingTheory.DedekindDomain.valuation_map_of_map_eq
+import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
+import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
+import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
+import Submission.Commons.RingTheory.Valuation.mem_stabilizer_valuationSubring_iff
+import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
+import Submission.NK.GlobalCFT.Galois.exists_stabilizer_isConj_of_isReal_isComplex
+import Submission.NK.GlobalCFT.GaloisAction
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

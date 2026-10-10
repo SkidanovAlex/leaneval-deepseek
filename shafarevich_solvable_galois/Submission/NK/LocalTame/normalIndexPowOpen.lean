@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.LocalTame.lFrattini_isOpen
-import Submission.NK.LocalTame.normalIndexPrimeOpen_of_openNormal
+import Mathlib.GroupTheory.Index
+import Mathlib.Tactic.NormNum.Ineq
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.NK.LocalTame.exists_normal_le_index_prime
+import Submission.NK.LocalTame.normalIndexPrimeOpen_of_openNormal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

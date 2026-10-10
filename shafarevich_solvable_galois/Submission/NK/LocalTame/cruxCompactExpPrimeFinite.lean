@@ -1,7 +1,11 @@
-/-
-Copyright: no copyright.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.Algebra.Module.StablyFree.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

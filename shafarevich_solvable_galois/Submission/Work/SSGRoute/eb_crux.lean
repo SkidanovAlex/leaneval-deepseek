@@ -1,14 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E8Helpers
-import Submission.Work.SSGRoute.E8Defs
-import Submission.Work.SSGRoute.eb_loc_card
-import Submission.Work.SSGRoute.eb_locUnits_resToGal
-import Submission.Work.SSGRoute.eb_local_range
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
-import Submission.NK.NUV2.LC.unitsLevelH2_addOrderOf_realization
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Work.SSGRoute.eb_crux_ncard_eq_ef
 import Submission.Work.SSGRoute.eb_crux_index_eq_ef
+import Submission.Work.SSGRoute.eb_crux_ncard_eq_ef
+import Submission.Work.SSGRoute.eb_locUnits_resToGal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

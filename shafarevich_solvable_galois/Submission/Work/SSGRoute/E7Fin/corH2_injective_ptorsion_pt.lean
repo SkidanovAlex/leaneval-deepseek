@@ -1,12 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Work.SSGRoute.E7Fin.resH2_mu_eq_zero_decomp_pt
-import Submission.Work.SSGRoute.E7Fin.kummerUnitsTransfer
-import Submission.Work.SSGRoute.PT.exists_kummerSES_units
 import Submission.Work.SSGRoute.PT.H2_decomp_p_divisible
 import Submission.Work.SSGRoute.PT.cardH2_units_openSubgroup_decomp
-import Submission.Work.SSGRoute.PT.corH2_resH2_eq_index
-import Submission.Work.SSGRoute.Nakayama.br_pTorsion
+import Submission.Work.SSGRoute.PT.exists_kummerSES_units
 import Submission.Work.SSGRoute.zmultiples_eq_top_of_card_le_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

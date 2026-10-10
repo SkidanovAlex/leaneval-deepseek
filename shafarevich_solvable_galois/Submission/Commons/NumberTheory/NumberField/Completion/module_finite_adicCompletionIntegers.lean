@@ -1,9 +1,10 @@
 import Mathlib.RingTheory.PicardGroup
 import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
 import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

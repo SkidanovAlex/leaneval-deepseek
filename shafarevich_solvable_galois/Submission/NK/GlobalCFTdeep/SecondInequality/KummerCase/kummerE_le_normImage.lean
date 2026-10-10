@@ -1,15 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.pow_mem_normGroup_adicCompletion
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_units_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_adicCompletionIntegers_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_range_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.NK.GlobalCFT.Norm.NormTransAux
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.localPow_mem_localNormFinite
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.localPow_mem_localNormInfinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

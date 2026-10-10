@@ -1,14 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTCore.RootsOfUnityInstances
-import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.PTembedding.kbdDefs
-import Submission.Work.SSGRoute.PTembedding.kummer_decomp
-import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_autCongr_equiv
-import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_addEquiv_adjoinLocalEquiv
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.LTDDefs.H2locEquivH2
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Submission.Work.SSGRoute.PT.H2Transfer
+import Submission.Work.SSGRoute.PTCore.RootsOfUnityInstances
+import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_addEquiv_adjoinLocalEquiv
+import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_autCongr_equiv
 
 namespace Work.SSGRoute.PTCore
 

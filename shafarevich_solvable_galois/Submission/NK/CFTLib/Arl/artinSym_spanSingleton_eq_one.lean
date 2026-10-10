@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_integral
 import Submission.NK.CFTLib.Arl.exists_denominator_ideal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

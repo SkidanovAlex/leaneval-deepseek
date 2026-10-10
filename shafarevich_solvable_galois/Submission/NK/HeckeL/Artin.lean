@@ -1,15 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-The Hecke `L`-series of a character of a ray class group agrees, under Artin reciprocity, with the
-Artin `L`-series of the corresponding character of the Galois group.  On the Galois side the
-`L`-series is an honest Euler product over the primes of the base field, which is what all the
-analytic work of this chapter uses.  This file sets up that side and the dictionary between the
-two, together with the two *named classical inputs* of the chapter:
-
-* `NK.HeckeL.HeckeLRegularAtOne` — Hecke's theorem that the `L`-series of a non-trivial ray
-  class character converges at `s = 1`;
--/
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

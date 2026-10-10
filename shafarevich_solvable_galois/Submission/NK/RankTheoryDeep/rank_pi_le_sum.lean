@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Dimension.Localization
 import Submission.NK.RankTheoryDeep.IdeleRankDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

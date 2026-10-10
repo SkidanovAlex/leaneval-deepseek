@@ -1,7 +1,6 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.RankTheoryDeep.IdeleFinal
-import Submission.NK.RankTheoryDeep.InvisibleRefuted
-import Submission.NK.ShimizuRank.Basic
-import Submission.NK.Reconstruct.hausRank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,21 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
-
-The main result of this file is `NK.Chebotarev.CyclotomicFrobDensity`: for a cyclotomic
-extension `F/ℚ` of conductor `n` and every `σ : Gal(F/ℚ)`, the set of rational primes whose
-Frobenius is `σ` has Dirichlet density `1/φ(n)`.  Equivalently (up to the finitely many primes
-dividing `n`) the Frobenius at `p` is determined by the residue class of `p` modulo `n`, and the
-claim is Dirichlet's theorem on primes in arithmetic progressions
-(`Commons.NumberTheory.NumberField.Set.hasDirichletDensity_residueClass`).
-
-The key input is the cyclotomic reciprocity law in its "Frobenius" form: if `P` is a prime of
-`𝓞 F` above a rational prime `p ∤ n`, then the Frobenius at `P` acts on a primitive `n`-th root of
-unity `ζ` by `ζ ↦ ζ^p`.  The formal engine is `AlgHom.IsArithFrobAt.apply_of_pow_eq_one`, which
-turns the Frobenius congruence into an action on roots of unity, together with the identification
-`Gal(ℚ(ζₙ)/ℚ) ≃ (ℤ/nℤ)ˣ` of `IsCyclotomicExtension.Rat.galEquivZMod`.
--/
-import Mathlib
-import Submission.NK.Chebotarev.Density
+import Mathlib.RingTheory.Frobenius
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,8 @@
--- Re-exports of the completion/decomposition-group API of the `Submission.NeukirchUchida`
--- development and the commons, so that lemmas delegated into `Submission/Work/` can be stated
--- in its vocabulary (`adicCompletionAlgebra`, `placeOf`, the local Galois group of a completion).
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.Transitivity
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.NeukirchUchida.Local.Transitivity
 import Submission.NeukirchUchida.PlaceSystem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

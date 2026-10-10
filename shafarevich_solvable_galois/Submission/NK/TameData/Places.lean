@@ -1,26 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The structure theorem in the vocabulary of the places of a number field
-
-This file states the deliverable of `Submission/Work/TameData/` in the place vocabulary of
-`Submission/Work/FrobeniusBridge/Basic.lean`: for a number field `K`, a place `A` of a separable
-closure `K'` over `K` (a `FinitePlaceOf K K'`) and the prime `𝔭` of `K` below it, the local field
-is `NK.FrobeniusBridge.localField A = K_𝔭` and its separable closure is
-`NK.FrobeniusBridge.localClosure A`; the chapter provides
-
-  `TameData p q (localField A) (localClosure A)`  with `q = #(𝓞 K ⧸ 𝔭)`
-
-from the three reduced inputs at the completion `K_𝔭`.
-
-**Import note.**  This module is deliberately *not* imported by `NK.TameData.All`: it depends on
-`Submission.NK.FrobeniusBridge.Basic`, and importing it back from `NK.FrobeniusBridge` would
-create a cycle.  Consumers of the place vocabulary import it explicitly
-(`import Submission.NK.TameData.Places`).
--/
-import Submission.NK.TameData.Adic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.FrobeniusBridge.Basic
+import Submission.NK.TameData.Adic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

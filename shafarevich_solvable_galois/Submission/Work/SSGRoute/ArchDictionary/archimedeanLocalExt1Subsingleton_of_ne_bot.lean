@@ -1,8 +1,8 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.ArchLocPrep
-import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
 import Submission.Work.SSGRoute.SSGStage.archimedeanLocalDictionary
-import Submission.Work.GroupCohomology.Vanishing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

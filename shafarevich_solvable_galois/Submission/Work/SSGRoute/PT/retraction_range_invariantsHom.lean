@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Submodule.Defs
 import Submission.Work.SSGRoute.PT.AlphaPairing
 import Submission.Work.SSGRoute.PT.submodule_retraction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

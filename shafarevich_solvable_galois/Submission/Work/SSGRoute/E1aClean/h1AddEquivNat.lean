@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.SSGRoute.h1_equiv_of_equiv
-import Submission.Work.AbsoluteKummer.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

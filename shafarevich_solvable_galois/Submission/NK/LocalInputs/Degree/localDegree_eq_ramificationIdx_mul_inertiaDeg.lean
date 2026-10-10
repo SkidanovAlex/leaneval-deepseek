@@ -1,28 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The absolute local degree is `e · f`
-
-For a number field `K` and a finite prime `𝔭` of `K`, the absolute degree of the completion,
-`[K_𝔭 : ℚ_p]`, is the product of the ramification index and the inertia degree of `𝔭` over `ℤ`:
-
-  `localDegree K 𝔭 = 𝔭.asIdeal.ramificationIdx ℤ * 𝔭.asIdeal.inertiaDeg ℤ`.
-
-The commons already contains the general identity
-
-  `Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg`
-
-which compares the degree of `L_q / K_Q` with the ramification index and inertia degree of `q`
-over the *ring of integers* `𝓞 K` of the base field.  Applying it with base field `ℚ` therefore
-gives the identity with `𝔭` measured over `𝓞 ℚ` rather than over `ℤ`.  Since `𝓞 ℚ ≃+* ℤ` via
-`Rat.ringOfIntegersEquiv`, and since the algebra structure `𝓞 ℚ → 𝓞 K` is
-`(ℤ → 𝓞 K) ∘ Rat.ringOfIntegersEquiv`, the two invariants coincide: this file proves that
-transport (`ramificationIdx_rat_eq`, `inertiaDeg_rat_eq`) and concludes.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.LocalInputs.Inputs
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

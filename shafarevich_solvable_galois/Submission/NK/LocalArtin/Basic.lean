@@ -1,5 +1,14 @@
-import Mathlib
-import Submission.NK.LocalCFT.All
+import Mathlib.FieldTheory.Galois.Basic
+import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
+import Submission.NK.BrauerHasse.Profinite
+import Submission.NK.LocalCFT.Completion.exists_mulEquiv_unitsCompletion
+import Submission.NK.LocalCFT.Functoriality.levelMulEquiv_restrict
+import Submission.NK.LocalCFT.Instance.artinReciprocity_complex
+import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_le_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_sup_eq_inf
+import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
+import Submission.NK.LocalInputs.CommGroupRank.hasFrattiniRank_of_natCard_quot_powSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

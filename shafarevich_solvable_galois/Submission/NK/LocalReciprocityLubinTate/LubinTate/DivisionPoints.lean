@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.Integral
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.card_rootSet_LTpolyIter
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.irreducible_LTpolyFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

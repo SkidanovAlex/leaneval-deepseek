@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.e0b_bridge
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.NK.GlobalCFTdeep.HasseNormTheorem
+import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
 import Submission.Work.SSGRoute.E0bBarChange
 import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.HassePrinciple.subsingleton_classGroupRep_one
-import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
+import Submission.Work.SSGRoute.e0b_bridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

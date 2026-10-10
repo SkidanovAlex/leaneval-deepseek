@@ -1,19 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.ExtH1
-import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.Work.SSGRoute.sha1_descent_H1
-import Submission.Work.SSGRoute.sha1_descent_range
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.augSES_shortExact
-import Submission.Work.SSGRoute.glue_fin_decomp
-import Submission.Work.SSGRoute.glue_fin_decomp_ex
-import Submission.Work.SSGRoute.glue_involution_place
-import Submission.Work.SSGRoute.glue_infinite_place
-import Submission.Work.SSGRoute.glue_local_of_sha1_conditions
 import Submission.Work.SSGRoute.extHRestrict_gammaHom_eq_zero_iff
 import Submission.Work.SSGRoute.gammaHom_natural_coeff
+import Submission.Work.SSGRoute.glue_fin_decomp
+import Submission.Work.SSGRoute.glue_involution_place
+import Submission.Work.SSGRoute.glue_local_of_sha1_conditions
+import Submission.Work.SSGRoute.sha1_descent_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

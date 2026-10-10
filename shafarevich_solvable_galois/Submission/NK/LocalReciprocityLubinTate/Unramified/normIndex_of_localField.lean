@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.LocalArtin.Basic
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
 import Submission.NK.LocalReciprocityLubinTate.Unramified.padicAlgebra_finiteDimensional_of_localField
-import Submission.Commons.NumberTheory.NumberField.Completion.abelian_local_norm_index_at_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

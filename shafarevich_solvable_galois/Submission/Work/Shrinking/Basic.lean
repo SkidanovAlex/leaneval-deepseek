@@ -1,39 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The algebraic skeleton of Shafarevich's shrinking procedure: basics
-
-This file sets up the linear algebra used by Shafarevich's *shrinking procedure*
-(Proposition 2 of A. Schmidt and K. Wingberg, *Šafarevič's theorem on solvable groups
-as Galois groups*, arXiv:math/9809211, Section 2).
-
-The setting is that of `𝔽_p[G]`-modules: `𝔽_p`-vector spaces with a `G`-action by
-`𝔽_p`-linear maps.  Formally an "`𝔽_p[G]`-module structure" on `M` is the data
-
-* `[AddCommGroup M]`, `[Module (ZMod p) M]` (the additive group and `𝔽_p`-structure),
-* `[DistribMulAction G M]` (the `G`-action),
-* `[SMulCommClass G (ZMod p) M]`, i.e. `g • (c • m) = c • (g • m)` (`G` acts by linear maps).
-
-This is equivalent to a `Module (MonoidAlgebra (ZMod p) G) M` structure; we use the
-former formulation because it is more convenient for tensor products and Pi types, and
-we record the MonoidAlgebra bridge at the end of the file.
-
-## Main definitions
-
-* `Work.Shrinking.IsFpGModule` : the abbreviation for the class `SMulCommClass G (ZMod p) M`.
-* `Work.Shrinking.foldMap a` : the folding map `φ_a : (Fin r → M) →ₗ[𝔽_p] M`, `x ↦ ∑ i, a i • x i`.
-
-## Main results
-
-* `Work.Shrinking.surjective_foldMap_iff` : `φ_a` is surjective iff `a ≠ 0` (for `M ≠ 0`).
-* `Work.Shrinking.foldMap_equivariant` : `φ_a` is `G`-equivariant.
-* diagonal `G`-actions on tensor products and tensor powers, with the module diamonds ruled out
-  by the fact that `SMul`/`DistribMulAction` instances for these actions are constructed here.
-* dimension and finiteness statements: `finrank_tensorPower`, `finite_of_moduleFinite`, ...
--/
-
-import Mathlib
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.LinearAlgebra.PiTensorProduct.Basis
+import Mathlib.LinearAlgebra.PiTensorProduct.Finite
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

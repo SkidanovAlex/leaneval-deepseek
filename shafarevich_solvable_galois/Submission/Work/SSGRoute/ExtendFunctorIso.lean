@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Homology.Embedding.Extend
 
 /-!
 # An additive functor commutes with `HomologicalComplex.extend`

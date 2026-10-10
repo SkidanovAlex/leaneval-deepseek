@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.Reconstruct.Transport
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
+import Submission.NK.Reconstruct.Transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.GapDefs
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.Existence.congruenceUnits_le_normImage
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
+import Submission.NK.Existence.congruenceUnits_le_normImage
+import Submission.NK.NUV2.ARL.GapDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

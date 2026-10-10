@@ -1,14 +1,9 @@
-import Mathlib
-import Submission.Commons.FieldTheory.Galois.natCard_quotient_units_range_norm_eq_of_ringEquiv
-import Submission.Commons.FieldTheory.Galois.isGalois_of_ringEquiv
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.Algebra.Module.moduleFinite_of_ringEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
+import Submission.Commons.FieldTheory.Galois.isGalois_of_ringEquiv
+import Submission.Commons.FieldTheory.Galois.natCard_quotient_units_range_norm_eq_of_ringEquiv
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_adicCompletion_ringEquiv_type_zero
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
 
 set_option maxHeartbeats 800000
 set_option linter.unusedVariables false
@@ -173,8 +168,6 @@ theorem natCard_quotient_units_range_norm_pgroup_intermediate_field_of_type_zero
   -- ## Step 1: shrink the number field `K` and transport the completion `Q.adicCompletion K`.
   obtain ⟨K₀, hK₀f, hK₀nf, Q₀, ⟨Φ⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_adicCompletion_ringEquiv_type_zero K Q
-  letI : Field K₀ := hK₀f
-  letI : NumberField K₀ := hK₀nf
   -- ## Step 2: transport the base `B` to a `Q₀.adicCompletion K₀`-algebra, then shrink it.
   let gB : Q₀.adicCompletion K₀ →+* B :=
     (algebraMap (Q.adicCompletion K) B).comp Φ.symm.toRingHom
@@ -193,7 +186,6 @@ theorem natCard_quotient_units_range_norm_pgroup_intermediate_field_of_type_zero
   obtain ⟨B₀, hB₀f, hB₀a, hB₀fd, ⟨eB⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
       (F := Q₀.adicCompletion K₀) (E := B)
-  letI : Field B₀ := hB₀f
   letI : Algebra (Q₀.adicCompletion K₀) B₀ := hB₀a
   letI : FiniteDimensional (Q₀.adicCompletion K₀) B₀ := hB₀fd
   -- ## Step 3: transport the intermediate field `M` along `eB` and shrink it.
@@ -215,7 +207,6 @@ theorem natCard_quotient_units_range_norm_pgroup_intermediate_field_of_type_zero
   obtain ⟨M₁, hM₁f, hM₁a, hM₁fd, ⟨eM⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
       (F := B₀) (E := ↥M)
-  letI : Field M₁ := hM₁f
   letI : Algebra B₀ M₁ := hM₁a
   letI : FiniteDimensional B₀ M₁ := hM₁fd
   haveI hGalB₀M₁ : IsGalois B₀ M₁ := IsGalois.of_algEquiv eM

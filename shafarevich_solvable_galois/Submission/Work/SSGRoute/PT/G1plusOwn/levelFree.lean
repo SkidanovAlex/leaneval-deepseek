@@ -1,8 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.g1plus_finHalf
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusLevel.finAtLevel_add_right
-import Submission.Work.SSGRoute.PT.pairAlgebra
-import Submission.Work.SSGRoute.PT.G1plusLevelClauses
 import Submission.Work.SSGRoute.PT.G1plusLevel.finAtValue_coboundary_right
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

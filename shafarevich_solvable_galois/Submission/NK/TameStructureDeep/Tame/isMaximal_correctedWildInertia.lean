@@ -1,13 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.CorrectedResidual
-import Submission.NK.TameStructureDeep.Tame.isProCyclic_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.exists_kummerLayer_of_mem_tameClosure
 import Submission.NK.TameStructureDeep.Tame.exists_level_of_notMem_inertia
 import Submission.NK.TameStructureDeep.Tame.exists_smul_root_unramifiedClosure
-import Submission.NK.TameStructureDeep.Support.quotientImage_normal_iff
-import Submission.NK.TameStructureDeep.Support.isProCyclic_quotientImage_iff
-import Submission.NK.LocalTame.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

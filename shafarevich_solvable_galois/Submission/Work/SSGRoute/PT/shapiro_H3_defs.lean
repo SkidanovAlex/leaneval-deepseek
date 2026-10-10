@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.shapiro_defs
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.Topology.Constructions.SumProd
 import Submission.Work.SSGRoute.PT.shapiro_H2_lift_defs
 import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

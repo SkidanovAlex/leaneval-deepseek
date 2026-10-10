@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.NormImageKAggregator
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.CFTLib.IdeleHasse.Descent.exists_localAlgebraMapUnits_eq_of_ker_fixed
 import Submission.NK.CFTLib.IdeleHasse.Descent.stabRestrict_surjective
-import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
+import Submission.Work.SSGRoute.decompK_restrict_surjective
+import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
+import Submission.Work.SSGRoute.localUnitsMap_exists
+import Submission.Work.SSGRoute.normImage_at_level_proper
+import Submission.Work.SSGRoute.phi1_level_naturality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

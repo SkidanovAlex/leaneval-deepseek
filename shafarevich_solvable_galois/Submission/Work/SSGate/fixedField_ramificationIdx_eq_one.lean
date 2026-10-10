@@ -1,8 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.E9Nodes.e9_baseS
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Work.SSGRoute.TPatom.fixedField_inertia_eq_bot
-import Submission.Work.Sha2Lib.inertia_map_galRes_eq
-import Submission.Work.SSGRoute.decompK_restrict_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,16 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataTwo.Mu2FiniteForm
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
-import Submission.Work.SSGRoute.ZDataTwo.Mu2Reciprocity
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
-import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
-import Submission.NK.NumberTheory.NumberField.Completion.completion_transport
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.Work.SSGRoute.ZDataTwo.Mu2Reciprocity
 import Submission.Work.SSGRoute.ZDataTwo.ramificationIdx_levelPrime_eq_one_of_not_isRamifiedIn
-import Submission.NK.NUV2.LC.adjoinSq_normal_finrank_le
-import Submission.Work.SSGRoute.ZDataTwo.mem_fixingSubgroup_adjoin_simple
 import Submission.Work.SSGRoute.ZDataTwo.two_dvd_ramificationIdx_of_odd_valuation
+import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

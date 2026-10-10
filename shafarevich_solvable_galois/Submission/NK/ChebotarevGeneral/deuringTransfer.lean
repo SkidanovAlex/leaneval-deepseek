@@ -1,50 +1,12 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The density form of the transfer step (Deuring)
-
-The main theorem of this file is `NK.ChebotarevGeneral.deuringTransfer`, the analytic transfer
-step of Deuring's proof of Čebotarev's density theorem: the cyclic (abelian) case of Čebotarev
-implies the general case.
-
-The proof is the classical one.  Let `N/K` be a finite Galois extension of number fields,
-`σ : Gal(N/K)`, `H = ⟨σ⟩` and `M = N^H`.  Write
-
-* `SM` for the set of primes of `M` at which `σ` is a Frobenius element of `N/M` (whose Dirichlet
-  density `1/|H|` is the hypothesis),
-* `Su ⊆ SM` for the subset of those primes of residue degree one over the prime of `K` below, lying
-  over a prime of `K` unramified in `N`,
-* `T` for the set of primes of `K` at which `σ` is a Frobenius element of `N/K`, and
-  `Tu = T ∩ {unramified}`.
-
-Then
-
-* each `𝔭 ∈ Tu` has exactly `|C_G(σ)|/ord(σ)` primes of `Su` above it
-  (`card_fibre_frobSetSub_mul_orderOf`), and no prime outside `Tu` has one
-  (`card_fibre_frobSetSub_eq_zero_of_not`), so `Z(Su) * ord(σ) = |C_G(σ)| * Z(Tu)` for the partial
-  Dirichlet series (`primeIdealZetaSum_mul_of_fibre_card`);
-* `SM ∖ Su` contributes a bounded amount, being contained in the primes of residue degree at least
-  two together with the primes above the finitely many ramified primes
-  (`exists_bound_primeIdealZetaSum_of_inertiaDeg_or_mem_finite`);
-* hence the series `Z(Su)/log (1/(s-1))` still tends to `1/|H|`, and therefore
-  `Z(Tu)/log (1/(s-1)) → 1/|C_G(σ)|`; this is the Dirichlet density of `Tu`
-  (`hasDirichletDensity_of_tendsto_primeIdealZetaSum_div_log`);
-* finally `Tu` differs from `T` by the finitely many primes ramified in `N`, so `T` has the same
-  density (`NK.Chebotarev.HasDirichletDensitySensitivity`).
--/
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Defs
-import Submission.NK.ChebotarevGeneral.DensityAux
-import Submission.NK.ChebotarevGeneral.card_fibre_eq_frobCount
-import Submission.NK.ChebotarevGeneral.card_isFrobAt_liesOver_mul_orderOf
-import Submission.NK.ChebotarevGeneral.exists_isFrobAt_liesOver_of_isFrobAtPrime_under
-import Submission.NK.ChebotarevGeneral.isFrobAtPrime_under_of_isFrobAt
-import Submission.NK.ChebotarevGeneral.summable_zetaWeight_of_inertiaDeg_ge_two
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Submission.NK.ChebotarevGeneral.Infinity
-import Submission.NK.ChebotarevGeneral.primeIdealZetaSum_mul_of_fibre_card
+import Submission.NK.ChebotarevGeneral.card_fibre_eq_frobCount
+import Submission.NK.ChebotarevGeneral.card_fibre_frobSetSub_eq_zero_of_not
 import Submission.NK.ChebotarevGeneral.exists_bound_primeIdealZetaSum_of_inertiaDeg_or_mem_finite
 import Submission.NK.ChebotarevGeneral.hasDirichletDensity_of_tendsto_primeIdealZetaSum_div_log
-import Submission.NK.ChebotarevGeneral.card_fibre_frobSetSub_eq_zero_of_not
+import Submission.NK.ChebotarevGeneral.primeIdealZetaSum_mul_of_fibre_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

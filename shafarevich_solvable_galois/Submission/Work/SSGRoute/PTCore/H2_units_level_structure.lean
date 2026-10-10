@@ -1,11 +1,10 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.cocycles_iso_Z2
-import Submission.Work.SSGRoute.groupCohomology_two_iso_cocycles
-import Submission.Work.SSGRoute.PTCore.H2_level_pieces
-import Submission.Work.SSGRoute.PTCore.H2_level_mono
 import Submission.Work.SSGRoute.PTCore.H2_level_cover_alt
+import Submission.Work.SSGRoute.PTCore.H2_level_mono
+import Submission.Work.SSGRoute.PTCore.H2_level_pieces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

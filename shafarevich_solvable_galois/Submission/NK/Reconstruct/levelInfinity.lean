@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Reconstruct.galToGamma_continuous
-import Submission.NK.Reconstruct.GammaObject
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.Reconstruct.NumFieldIn
+import Submission.NK.Reconstruct.gammaHaus
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

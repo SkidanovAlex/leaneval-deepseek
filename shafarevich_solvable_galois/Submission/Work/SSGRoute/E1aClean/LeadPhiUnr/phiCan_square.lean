@@ -1,18 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.phiUnrU1
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_algebraMap
-import Submission.Work.SSGRoute.E1aClean.finPlaceSquare
-import Submission.Work.SSGRoute.E1aClean.transferNatCoeff
-import Submission.Work.SSGRoute.E1aClean.e1cMap_hensel_cocycle_formula
-import Submission.Work.SSGRoute.E1aClean.levelTwoDatum
-import Submission.Work.SSGRoute.ValuationSES.C1
-import Submission.Work.SSGRoute.E1aClean.h1locToClassRes
-import Submission.Work.SSGRoute.E1aClean.levelChange_lift_transport
-import Submission.Work.SSGRoute.PT.E1aFinBox.levelChangeTransfer_e1cMap_eq_hensel
-import Submission.Work.SSGRoute.ExtChain.exists_khLift_of_extToIdeles_eq_zero
-import Submission.Work.SSGRoute.PT.E1aFinBox.freeCoverCompat_comp_hom
-import Submission.Work.SSGRoute.PT.PhiEgen_compat
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.phiCan_square_scaffold
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

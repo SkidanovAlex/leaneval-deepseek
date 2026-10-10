@@ -1,7 +1,11 @@
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.FrobeniusBridge.Core
 import Submission.NK.ResidueFrob.decompositionToAdjoin_bijective
 import Submission.NK.ResidueFrob.isSepClosure_adjoinPlaceCompletion
-import Submission.NK.FrobeniusBridge.Core
-import Submission.NK.LocalTame.Global
 
 /-!
 # The residue-field dictionary at a place: the identification of the decomposition group

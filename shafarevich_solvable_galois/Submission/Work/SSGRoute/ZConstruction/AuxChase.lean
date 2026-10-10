@@ -1,8 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.AuxInterface
-import Submission.Work.SSGRoute.ZConstruction.ZDataAux
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_ramifiedPlaces
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.exists_finset_KConj_cover
 import Submission.Work.SSGRoute.ZDataMup.LocalData
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

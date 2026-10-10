@@ -1,10 +1,9 @@
-import Submission.NK.Reconstruct.PlaceCorrespondence
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Reconstruct.NumFieldIn
+import Submission.NK.Reconstruct.PlaceCorrespondence
+import Submission.NK.Reconstruct.exists_tauStar
 import Submission.NK.Reconstruct.gammaBaseChange
-import Submission.NK.Reconstruct.baseChange
-import Submission.NK.Reconstruct.exists_tauStar
-import Submission.NK.Reconstruct.exists_tauStar
-import Submission.NK.Reconstruct.exists_gammaEquivOfPhi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

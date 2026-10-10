@@ -1,5 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.diagonal_global
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.Kummer.exists_algEquiv_apply_eq_mul_of_pow_eq
+import Submission.Work.Kummer.norm_eq_primRoot_pow_mul_of_kummer_generator
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.mem_localNormSubgroup_algebra_norm
+import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerCharZMod_eq_zero_iff_apply_sqrt
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_ideleOfPrime_of_unramified
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_restrictNormalHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

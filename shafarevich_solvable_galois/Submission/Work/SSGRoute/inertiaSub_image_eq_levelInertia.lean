@@ -1,13 +1,16 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.H2locAux.Defs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.InertiaDefs
 import Submission.Work.SSGRoute.levelInertia_defs
 import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
-import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
 import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
-import Submission.NK.ResidueFrob.exists_inertia_of_isTrivialOnResidueAtLevel
-import Submission.NK.ResidueFrob.exists_mem_decompositionGroup_restrictNormalHom_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

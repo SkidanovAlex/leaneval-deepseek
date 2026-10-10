@@ -1,12 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.homCoindDefs
-import Submission.Work.AbsoluteKummer.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PT.resH2
 import Submission.Work.SSGRoute.PTembedding.h3_decomp_subsingleton
 import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
-import Submission.Work.SSGRoute.range_mapH2_eq_ker_deltaH3
-import Submission.Work.SSGRoute.adjoin_primitiveRoot_isGalois_coprime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

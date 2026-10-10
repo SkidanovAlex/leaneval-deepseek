@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.isIntegralClosure_adicCompletionIntegers_extension
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

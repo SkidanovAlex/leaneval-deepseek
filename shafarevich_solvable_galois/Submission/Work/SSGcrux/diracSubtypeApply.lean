@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Group
 import Submission.Work.SSGRoute.C6ValueFormula.coset_sum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

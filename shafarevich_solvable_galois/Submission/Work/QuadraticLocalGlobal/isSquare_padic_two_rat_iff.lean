@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.QuadraticLocalGlobal.Defs
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.QuadraticLocalGlobal.isSquare_padic_two_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

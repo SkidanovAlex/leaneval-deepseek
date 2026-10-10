@@ -1,13 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_idele
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.Galois.globalCFT_mul_smul_idele
+import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_idele
 import Submission.NK.GlobalCFT.Galois.globalCFT_smul_idele_mul
 import Submission.NK.GlobalCFT.Galois.globalCFT_smul_principalIdele
-import Submission.NK.GlobalCFT.IdeleClassGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

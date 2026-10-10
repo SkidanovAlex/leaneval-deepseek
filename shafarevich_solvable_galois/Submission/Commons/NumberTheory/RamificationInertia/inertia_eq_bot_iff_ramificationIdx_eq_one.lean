@@ -1,6 +1,4 @@
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.NumberTheory.RamificationInertia.Galois
-import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

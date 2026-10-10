@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.kummerBase_euler_h3loc
-import Submission.Work.SSGRoute.LTDDefs.H3locEquivH3
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.HS.Setup
+import Submission.Work.SSGRoute.LTDDefs.H3locEquivH3
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

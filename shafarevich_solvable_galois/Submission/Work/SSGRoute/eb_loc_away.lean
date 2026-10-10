@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.E8Shim
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Submission.NK.CFTLib.HR.TransferAux.descent
+import Submission.NK.HR2.locUnits_inflation_eq_zero_iff
+import Submission.NK.HR2.locUnits_inflation_eq_zero_of_loc_eq_zero
+import Submission.Work.SSGRoute.eb_locUnits_resToGal
+import Submission.Work.SSGRoute.phi1_level_naturality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

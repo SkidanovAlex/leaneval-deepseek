@@ -1,7 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.SSGRoute.ZConstruction.kummerCharZMod_fixingSubgroup_mul_pow
-import Submission.Work.SSGRoute.grunwald_kummer_idx
 import Submission.Work.SSGRoute.localKummerReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,11 +1,6 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.DivisionPoints
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.finiteDimensional_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.normal_LTLevel
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.isGalois_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.finrank_LTLevel_ge
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.finrank_adjoin_root_LTpolyEis
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

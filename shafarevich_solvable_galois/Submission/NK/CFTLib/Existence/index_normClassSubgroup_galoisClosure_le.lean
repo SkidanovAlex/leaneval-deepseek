@@ -1,13 +1,18 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.IdeleClassGroupExact
-import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.NK.NUV2.ArtinBridge.index_eq_card_abelianization_of_fundamentalClassElement
-import Submission.NK.CFTLib.Existence.KummerCountNotes
-import Submission.NK.CFTLib.Existence.natCard_abelianization_le_of_kummer_orbit
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.Existence.cyclotomicExtension_galois_cyclic
 import Submission.NK.CFTLib.Existence.kummerOrbitHelpers
+import Submission.NK.CFTLib.Existence.natCard_abelianization_le_of_kummer_orbit
+import Submission.NK.NUV2.ArtinBridge.index_eq_card_abelianization_of_fundamentalClassElement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

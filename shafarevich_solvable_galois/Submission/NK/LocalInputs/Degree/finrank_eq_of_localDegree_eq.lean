@@ -1,23 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# From the local degrees to the global degree
-
-This file contains the last bookkeeping step which turns the *local* input of
-Neukirch–Uchida — the preservation of `[K_𝔭 : ℚ_p]` for corresponding places — into the equality
-of the global degrees `[K₁ : ℚ] = [K₂ : ℚ]`, which is what the Čebotarev reconstruction consumes.
-
-Given a prime `p` of `ℚ`, a bijection `e` between the primes of `K₁` above `p` and the primes of
-`K₂` above `p`, and the pointwise equality of the local degrees along `e`, the global degrees are
-equal.  The proof is the additivity of the local degrees
-(`NK.LocalInputs.Degree.sum_localDegree_eq_finrank`) plus the reindexing of the sum along `e`.
-
-The bijection `e` in the application is the one produced by the local correspondence
-(`Submission.NeukirchUchida/PrimeCorrespondence.lean`, `primeMap`), and the pointwise equality of
-the local degrees is
-`NK.LocalInputs.residueChar_and_localDegree_eq_of_decompositionGroup`.
--/
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.LocalInputs.Degree.sum_localDegree_eq_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

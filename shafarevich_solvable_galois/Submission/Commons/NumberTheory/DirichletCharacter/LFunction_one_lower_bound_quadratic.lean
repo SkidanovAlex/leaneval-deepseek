@@ -1,18 +1,30 @@
-import Mathlib
+import Mathlib.Analysis.SumIntegralComparisons
+import Mathlib.Computability.Reduce
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Cases
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Data.Int.Star
+import Mathlib.Data.Rat.Star
+import Mathlib.NumberTheory.LSeries.Nonvanishing
+import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
+import Mathlib.NumberTheory.NumberField.DedekindZeta
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Data.Nat.Choose.Dvd
+import Submission.Commons.FieldTheory.Discriminant.discr_powerBasis_X_sq_sub_C
 import Submission.Commons.NumberTheory.DirichletCharacter.gaussSum_norm_sq_of_isPrimitive
 import Submission.Commons.NumberTheory.DirichletCharacter.isPrimitive_inv
 import Submission.Commons.NumberTheory.JacobiSymbol.modEight_of_selfRelation
-import Submission.Commons.NumberTheory.NumberField.discr_padicValNat_eq_sum_over_p_count_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.no_inertiaDeg_one_two_of_mod
-import Submission.Commons.NumberTheory.NumberField.torsionOrder_le_six_of_finrank_two
-import Submission.Commons.NumberTheory.NumberField.exists_regulator_lower_bound_of_finrank_two
 import Submission.Commons.NumberTheory.NumberField.discr_dvd_of_isIntegral_basis
-import Submission.Commons.FieldTheory.Discriminant.discr_powerBasis_quadratic
-import Submission.Commons.FieldTheory.Discriminant.discr_powerBasis_X_sq_sub_C
-import Submission.Commons.NumberTheory.QuadraticExtension.numberField_adjoinRoot_X_sq_sub_C
+import Submission.Commons.NumberTheory.NumberField.discr_padicValNat_eq_sum_over_p_count_mul_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.exists_mod_eight_one_of_split_two
+import Submission.Commons.NumberTheory.NumberField.exists_regulator_lower_bound_of_finrank_two
+import Submission.Commons.NumberTheory.NumberField.torsionOrder_le_six_of_finrank_two
 import Submission.Commons.NumberTheory.QuadraticExtension.finrank_adjoinRoot_X_sq_sub_C
 import Submission.Commons.NumberTheory.QuadraticExtension.irreducible_X_sq_sub_C_iff_not_square
-import Submission.Commons.NumberTheory.NumberField.exists_mod_eight_one_of_split_two
+import Submission.Commons.NumberTheory.QuadraticExtension.numberField_adjoinRoot_X_sq_sub_C
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

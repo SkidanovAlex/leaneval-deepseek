@@ -1,18 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesEscapePrimeSplit
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.EscapeImports
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.EscapeCoreLib.escapePrimeFrobAtPrime
 import Submission.Work.SSGRoute.EscapeCoreLib.memGesUOfIsFrobAtPrime
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesEscapePrimeSplit
 import Submission.Work.SSGRoute.n4_halpha_fix
-import Submission.Work.SSGRoute.step4_y_escape_v2.RayClass
-import Submission.Work.SSGRoute.ssg8Chebotarev
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.SSGRoute.GrunwaldEscapeCore
 
@@ -157,6 +154,7 @@ theorem escape_prime_orthogonality
       map_zero' := Subtype.ext rfl
       map_add' := fun a b => Subtype.ext rfl }
   letI : Algebra ↥E' ↥N' := emb.toAlgebra
+  letI : SMul ↥E' ↥N' := Algebra.toSMul
   haveI htowE'N' : IsScalarTower ↥K ↥E' ↥N' :=
     IsScalarTower.of_algebraMap_eq (fun z => Subtype.ext (by
       show ((algebraMap ↥K ↥E' z : ↥E') : Ω) = ((algebraMap ↥K ↥N' z : ↥N') : Ω)
@@ -268,11 +266,13 @@ theorem escape_prime_orthogonality
     IntermediateField.coe_restrictScalars k (E := M)
   have hMLset : (M : Set Ω) ⊆ (L : Set Ω) := fun z hz => hMLk (hMk.ge hz)
   letI : Algebra ↥K ↥L := (Subsemiring.inclusion hKLset).toAlgebra
+  letI : SMul ↥K ↥L := Algebra.toSMul
   haveI htowKLk : IsScalarTower k ↥K ↥L := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI htowKLΩ : IsScalarTower ↥K ↥L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI hfdKL : FiniteDimensional ↥K ↥L := Module.Finite.of_restrictScalars_finite k ↥K ↥L
   haveI hgalKL : IsGalois ↥K ↥L := IsGalois.tower_top_of_isGalois k ↥K ↥L
   letI : Algebra ↥M ↥L := (Subsemiring.inclusion hMLset).toAlgebra
+  letI : SMul ↥M ↥L := Algebra.toSMul
   haveI htowMLΩ : IsScalarTower ↥M ↥L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI htowkML : IsScalarTower k ↥M ↥L := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI htowKML : IsScalarTower ↥K ↥M ↥L := IsScalarTower.of_algebraMap_eq fun _ => rfl
@@ -372,6 +372,7 @@ theorem escape_prime_orthogonality
   have hQfin : SSGRoute.IsFinPlace k Q :=
     Work.SSGRoute.FrobBelow.isFinPlace_of_comap_valuationSubringAtPrime (k := k) K Q 𝔮 hQcomapK
   letI : Algebra ↥N ↥L := (Subsemiring.inclusion hNLset).toAlgebra
+  letI : SMul ↥N ↥L := Algebra.toSMul
   haveI htowNLk : IsScalarTower k ↥N ↥L := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI htowNLΩ : IsScalarTower ↥N ↥L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI hfdNL : FiniteDimensional ↥N ↥L := Module.Finite.of_restrictScalars_finite k ↥N ↥L

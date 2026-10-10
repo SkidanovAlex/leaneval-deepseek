@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Pi
 import Submission.Work.AbsoluteKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocity.LocalSetup
 
 open scoped NumberField

@@ -1,14 +1,12 @@
-/-
-# The Galois group of `Ω = L(ζ_M)`: the pairing `Γ → Gal(A/K) × (ℤ/M)ˣ`
-
-For `Ω = CyclotomicField M L`, `A` the image of `L` in `Ω` and `ζ = ζ_M`, the map
-`γ ↦ (γ|_A, χ(γ))` (with `χ(γ)` the exponent by which `γ` acts on `ζ`) is an
-isomorphism `Gal(Ω/K) ≃* Gal(A/K) × (ℤ/M)ˣ`, provided no prime divisor of `M`
-divides `discr L` (which makes `A` and `B = K(ζ_M)` linearly disjoint over `K`).
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.ZMod.Units
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.NK.NUV2.ARL.Gap.conductor_crux.AuxSetup
-import Submission.NK.CFTLib.ARL.isGalois_cyclotomicField_over_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

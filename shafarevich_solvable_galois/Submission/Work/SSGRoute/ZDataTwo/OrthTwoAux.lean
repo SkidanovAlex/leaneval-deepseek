@@ -1,12 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.N2v2.exists_artinMap_with_decompLift
-import Submission.Work.SSGRoute.sha2_restrict_aux
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.mem_localNormSubgroup_algebra_norm
-import Submission.Work.SSGRoute.grunwald_kummer_idx
-import Submission.Work.SSGRoute.ZDataTwo.RealPlaceInvolution
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.localImageAt_ofInfinite_mem_localNormSubgroup_of_pos
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSG8Escape.artin_reduces_to_local_product
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.mem_localNormSubgroup_algebra_norm
+import Submission.Work.SSGRoute.N2v2.exists_artinMap_with_decompLift
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.localImageAt_ofInfinite_mem_localNormSubgroup_of_pos
+import Submission.Work.SSGRoute.ZDataTwo.RealPlaceInvolution
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.CohomologicallyTrivial.pgroup_invariants_ne_bot
+import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

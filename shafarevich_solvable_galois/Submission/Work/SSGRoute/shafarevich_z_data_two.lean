@@ -1,24 +1,33 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.Reduction
-import Submission.Work.SSGRoute.ZConstruction.ZDataGlue
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.Commons.RingTheory.Valuation.exists_smul_eq_of_comap_eq
-import Submission.Work.SSGRoute.decomp_mod_inertia_cyclic_over_K
-import Submission.Work.SSGRoute.grunwald_surjective_two
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.grunwald_setup
-import Submission.Work.SSGRoute.kummerChar_eq_zero_of_isInertia_of_unit
-import Submission.Work.SSGRoute.exists_kummerChar_of_additive_locConst
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.LTDArch.Defs
 import Submission.Work.SSGRoute.ZDataTwo.ArchKummer
-import Submission.Work.SSGRoute.ZDataTwo.archPair_two_kummer_eq_zero_iff
 import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 namespace Work.SSGRoute
 

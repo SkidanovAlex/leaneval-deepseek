@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

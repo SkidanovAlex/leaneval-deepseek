@@ -1,4 +1,3 @@
-import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

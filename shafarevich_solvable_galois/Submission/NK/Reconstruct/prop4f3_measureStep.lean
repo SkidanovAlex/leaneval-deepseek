@@ -1,3 +1,8 @@
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Submission.NK.Reconstruct.frobElementAt
 import Submission.NK.Reconstruct.not_isOpen_ker_of_infinite_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

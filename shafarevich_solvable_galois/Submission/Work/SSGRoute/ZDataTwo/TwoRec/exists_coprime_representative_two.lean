@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.H9.swCount_conjUnit
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_prime_mem_rayClass
-import Submission.Work.SSGRoute.NodeS37.divisorOfClassRepresentative
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.exists_prime_in_class_not_fixed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

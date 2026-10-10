@@ -1,41 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The relative Hasse–Brauer–Noether theorem from the licensed cyclic input
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §13.3, §13.4).
-
-This module assembles the **relative Hasse–Brauer–Noether theorem**
-`NK.HassePrinciple.HBNUnits K L` from the *licensed cyclic input*
-`NK.HassePrinciple.CyclicHasseInput` (the Hasse norm theorem for cyclic extensions of number
-fields together with the Herbrand quotient of the idèle class group for cyclic extensions).  The
-chain is
-
-```
-  CyclicHasseInput
-    ⟹ H¹(Γ, C_E) = 0                       (`subsingleton_classGroupRep_one`, in this chapter's
-                                             coefficient ring `CoeffInt = ULift ℤ`, from the
-                                             `ℤ`-linear `subsingleton_groupCohomology_one_ideleClassGroup_all`)
-    ⟹ H²(Γ, Lˣ) ↪ H²(Γ, 𝕀_L)              (long exact sequence of `0 → Lˣ → 𝕀_L → C_L → 0`,
-                                             `injective_h2_units_of_subsingleton_h1_classGroupRep`)
-    ⟹ H²(Γ, Lˣ) ↪ ∏_w H²(Γ_w, L_wˣ)        (Shapiro for the idèles, `hbnIdele`, together with
-                                             `locUnits_compatible`)
-    = HBNUnits K L.
-```
-
-This is Milne, *CFT*, VII.7.1 (the Hasse principle / Hasse–Brauer–Noether theorem for a finite
-Galois extension of number fields), with the Hasse norm theorem for cyclic extensions and the
-Herbrand quotient as its only inputs.
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.HassePrinciple.CyclicBase
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.HassePrinciple.hbnIdele
 import Submission.NK.HassePrinciple.locUnits_compatible
 import Submission.NK.HassePrinciple.subsingleton_classGroupRep_one
-import Submission.NK.HassePrinciple.injective_h2_units_of_subsingleton_h1_classGroupRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

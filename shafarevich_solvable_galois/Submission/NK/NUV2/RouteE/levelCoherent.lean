@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.NUV2.RouteC.LevelInf
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

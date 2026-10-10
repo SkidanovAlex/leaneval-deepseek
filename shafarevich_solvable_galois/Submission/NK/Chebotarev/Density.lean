@@ -1,14 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Submission.NK.Chebotarev.Basic
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_disjoint
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_finite
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_residueClass
+import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_finite
+import Submission.NK.Chebotarev.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

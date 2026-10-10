@@ -1,7 +1,8 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.Work.SSGRoute.H9.NarrowMu2
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.finiteIndex_gesU
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

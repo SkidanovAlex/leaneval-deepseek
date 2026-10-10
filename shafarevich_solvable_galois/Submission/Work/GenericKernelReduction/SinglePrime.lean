@@ -1,33 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The single-prime step of the reduction of Theorem 14
-
-Schmidt–Wingberg, arXiv:math/9809211, §5:
-
-> Since a finite nilpotent group is the direct product of its `p`-Sylow subgroups and since every
-> finite `G`-operator `p`-group is a quotient of `F^(n)/F^(n)(ν)` for some `n, ν`, it suffices to
-> show [the generic kernel statement] for every prime `p`.
-
-This file proves the "quotient" half of that sentence: from the generic-kernel hypothesis for a
-single prime `p` (`GenericKernelSolvableInClosure`, see `Defs.lean`) one obtains a proper solution
-of *every* split embedding problem over `ℚ` with kernel a finite `G`-operator `p`-group.
-
-The two inputs are
-
-* `Work.GenericKernelReduction.exists_equivariant_quotient_freePQuotient`: every finite
-  `G`-operator `p`-group `N` is a `G`-equivariant quotient `F^(n)/F^(n)(ν) ↠ N` of a generic
-  kernel (`Work.ProP`, the `G`-operator refinement of the generic-kernel corollary), and
-* `Work.GenericKernelReduction.inClosure_of_surjective`: a solution of the embedding problem with
-  kernel `A` descends to a solution of the embedding problem with any quotient kernel
-  `A ⋊ G ↠ N ⋊ G` of it that is a map of extensions over `G` (take the fixed field of the kernel).
-
-Together they say: solve the problem for the generic kernel `F^(n)/F^(n)(ν)` (the hypothesis) and
-push down to the arbitrarily given `p`-group `N`.
--/
-
-import Submission.Work.GenericKernelReduction.Defs
+import Mathlib.GroupTheory.PGroup
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.exists_equivariant_quotient_freePQuotient
 import Submission.Work.GenericKernelReduction.inClosure_of_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

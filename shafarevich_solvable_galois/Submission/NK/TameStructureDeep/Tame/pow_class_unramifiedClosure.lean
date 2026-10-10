@@ -1,32 +1,17 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.exists_adjoin_primitiveRoot_of_mem_unramifiedClosure
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Degree.Equality
-import Submission.NK.TameStructureDeep.Degree.unramifiedExtensionGeneral
-import Submission.NK.TameStructureDeep.Degree.dvd_pow_orderOf_sub_one
-import Submission.NK.TameStructureDeep.Degree.primitiveRoot_natDegree_le_finrank
 import Submission.NK.TameStructureDeep.Degree.orderOf_residueCard_pow_sub_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_residueField_adicCompletion_eq_pow_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
-import Submission.Commons.NumberTheory.NumberField.Completion.isScalarTower_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.FieldTheory.SeparableClosure.nonempty_algHom_of_isSepClosure
-import Submission.NK.TameStructureDeep.Tame.ell_mul_pow_sub_one_dvd
-import Submission.NK.TameStructureDeep.Tame.exists_pow_eq_of_pow_card_div_eq_one
-import Submission.NK.TameStructureDeep.Tame.isPrimitiveRoot_residue
+import Submission.NK.TameStructureDeep.Tame.exists_adjoin_primitiveRoot_of_mem_unramifiedClosure
 import Submission.NK.TameStructureDeep.Tame.exists_pow_eq_unit_adicCompletion_tower
 import Submission.NK.TameStructureDeep.Tame.exists_units_mul_zpow_adicCompletionMap_uniformizer
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.TameStructureDeep.Tame.isPrimitiveRoot_residue
 
 open scoped Classical
 open IsDedekindDomain IntermediateField
@@ -152,8 +137,6 @@ theorem pow_class_unramifiedClosure {K : Type*} [Field K] [NumberField K]
   -- (3) the tower of global fields and primes
   obtain ⟨L₁, hF₁, hNF₁, hA₁, 𝔮₁, hlies₁, he₁, hf₁, hfr₁⟩ :=
     NK.TameStructureDeep.Degree.exists_unramified_extension_of_inertiaDeg' (L := K) 𝔭 d hdpos'
-  letI : Field L₁ := hF₁
-  letI : NumberField L₁ := hNF₁
   letI : Algebra K L₁ := hA₁
   haveI hFD₁ : FiniteDimensional K L₁ := FiniteDimensional.of_finrank_pos (by rw [hfr₁]; exact hdpos')
   obtain ⟨L₂, hF₂, hNF₂, hA₂, 𝔮₂, hlies₂, he₂, hf₂, hfr₂⟩ :=
@@ -161,8 +144,6 @@ theorem pow_class_unramifiedClosure {K : Type*} [Field K] [NumberField K]
       (L := L₁) 𝔮₁ (ℓ * (ℓ - 1)) (by
         have h2 : 1 ≤ ℓ - 1 := by have := hℓ.two_le; omega
         exact Nat.mul_pos hℓ.pos (by omega))
-  letI : Field L₂ := hF₂
-  letI : NumberField L₂ := hNF₂
   letI : Algebra L₁ L₂ := hA₂
   have hposk : 0 < ℓ * (ℓ - 1) := by
     have h2 : 1 ≤ ℓ - 1 := by have := hℓ.two_le; omega

@@ -1,7 +1,12 @@
-import Mathlib
-import Submission.NK.Mine.Generation
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
+import Submission.NK.Mine.Generation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

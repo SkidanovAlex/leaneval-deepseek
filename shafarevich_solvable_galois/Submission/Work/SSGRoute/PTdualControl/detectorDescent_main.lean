@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTdualControl.detectorDescent
-import Submission.Work.SSGRoute.PTdualControl.detectorDescent_algebra
-import Submission.Work.SSGRoute.PTdualControl.place_ramification_descent
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTdualControl.baseChange_detectsAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

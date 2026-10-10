@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.UchidaKummer.SplitPrimes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
+import Submission.NK.UchidaKummer.SplitPrimes
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

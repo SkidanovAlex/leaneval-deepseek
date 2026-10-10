@@ -1,16 +1,10 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
-import Submission.NK.GlobalCFT.Cohomology
-import Submission.NK.NUV2.ArtinBridge.nsmul_index_mem_norm_range
 import Submission.NK.NUV2.ArtinBridge.eq_zero_of_forall_prime_exists_nsmul_eq_zero
 import Submission.NK.NUV2.ArtinBridge.index_eq_card_abelianization_universe_bridge
-import Submission.NK.GlobalCFT.Reciprocity
-import Submission.NK.GlobalCFTdeep.SecondInequality.normClassSubgroup_index_eq_natCard_H0
-import Submission.NK.GlobalCFTdeep.HasseNormTheoremUniverse
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_eq_of_ringEquiv
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_two_iso_abelianization
-import Submission.Commons.RepresentationTheory.TateCohomology.subsingleton_tateCohomology_of_subsingleton_H1_H2_of_solvable
+import Submission.NK.NUV2.ArtinBridge.nsmul_index_mem_norm_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

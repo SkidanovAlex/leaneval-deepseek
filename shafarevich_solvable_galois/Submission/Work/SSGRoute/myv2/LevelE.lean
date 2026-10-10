@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.Work.SSGRoute.myv2.sup_isMulCommutative
 import Submission.Work.SSGRoute.myv2.sup_pow_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

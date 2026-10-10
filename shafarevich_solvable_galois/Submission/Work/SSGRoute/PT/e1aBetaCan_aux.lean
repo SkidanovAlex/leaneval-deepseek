@@ -1,8 +1,14 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.e1a_beta_can
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.GroupCohomology.Functoriality
-import Submission.Work.SSGRoute.sha2ToH2_restrict_eq_zero
+import Submission.Work.SSGRoute.sha2_restrict_vanish
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

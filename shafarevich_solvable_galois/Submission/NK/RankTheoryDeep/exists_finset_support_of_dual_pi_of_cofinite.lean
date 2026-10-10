@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Analysis.Normed.Group.Ultra
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.Reconstruct.GammaDual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

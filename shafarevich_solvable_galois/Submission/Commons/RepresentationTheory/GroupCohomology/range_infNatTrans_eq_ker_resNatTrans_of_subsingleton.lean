@@ -1,11 +1,11 @@
-import Mathlib.Algebra.Order.Ring.Star
-import Mathlib.CategoryTheory.EffectiveEpi.Comp
 import Mathlib.CategoryTheory.ExtremalEpi
+import Mathlib.CategoryTheory.EffectiveEpi.Comp
 import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
-import Submission.Commons.RepresentationTheory.GroupCohomology.isZero_groupCohomology_coind_bot
 import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
+import Submission.Commons.RepresentationTheory.GroupCohomology.isZero_groupCohomology_coind_bot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

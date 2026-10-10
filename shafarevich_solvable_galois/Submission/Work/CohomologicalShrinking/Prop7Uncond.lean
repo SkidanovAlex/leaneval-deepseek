@@ -1,31 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 7 (ii) without hypotheses: the `H₁`-variant of the shrinking lemma
-
-`Work.CohomologicalShrinking.exists_shrinking_H1_of_sigma` (`Prop7.lean`) is Proposition 7 (ii) of
-Schmidt–Wingberg, derived from the `k = -1` shrinking lemma plus two hypotheses: the existence of
-the surjection
-
-`σ(m) : (F(m)/F(m)²)^{⊗(j+1)} ⊗ T ↠ F(m)/F(m)² ⊗ (E(m,τ) ⊗ T)`
-
-(universal coefficient formula + Proposition 5 + associativity of the tensor power) and its
-naturality in the rank.
-
-The module `Submission.Work.CohomologicalShrinking.prop7.exists_h1Sigma` *constructs* that `σ`
-together with its naturality from `Prop5Data`, so the hypotheses can be discharged.  This file
-does exactly that: it restates Proposition 7 (ii) with `Prop5Data` as the only unproved input.
-
-## Main result
-
-* `Work.CohomologicalShrinking.exists_shrinking_H1_of_mult` : Proposition 7 (ii) at the levels
-  `r·n`, conditional only on `Prop5Data` (Proposition 5).  The form at every level `m ≥ m₀` is
-  `Work.CohomologicalShrinking.exists_shrinking_H1` in `Levels.lean`.
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Prop7
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.PiTensorProduct.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Map
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.prop7.exists_h1Sigma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

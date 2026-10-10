@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.GroupTheory.GroupAction.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.SSGRoute.PT.AlphaTwoKummer
-import Submission.Work.AbsoluteKummer.SES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

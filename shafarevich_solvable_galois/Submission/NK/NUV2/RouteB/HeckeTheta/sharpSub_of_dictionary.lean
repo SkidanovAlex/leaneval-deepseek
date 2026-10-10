@@ -1,22 +1,13 @@
-/-
-# The sharp ray-class count for a congruence subgroup, from the dictionary identity
-
-The dictionary identity (`NK.NUV2.RouteB.HeckeTheta.rayClassCnt_eq_coset_sum`) expresses the
-number of ideals in a ray class of the congruence subgroup `U(𝔪)` as a sum of lattice-coset counts
-`cosetConeCnt` over a transversal of the units modulo `congUnit 𝔪`.  The lattice-coset counts are
-asymptotic to `t · vol(sign region)/covol` with a power-saving error
-(`NK.NUV2.RouteB.HeckeTheta.cosetConeCnt_sharp`, in `DictTools`).
-
-This file sums those asymptotics over the finitely many ray classes.  The main terms are independent
-of the class because `N𝔡 · covol(𝔪𝔡⁻¹)` is (`absNorm_mul_dictCovol`), so the main terms cancel in
-the difference of two class counts, leaving `O(X^{1-1/[K:ℚ]})`.  This is the statement `SharpSub`
-consumed by `NK.NUV2.RouteB.uniform_of_sharp_aux`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+import Submission.NK.NUV2.HeckeAnalytic.finite_congSubgroup_rayClassGroup
 import Submission.NK.NUV2.RouteB.HeckeTheta.DictTools
 import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
-import Submission.NK.NUV2.HeckeAnalytic.finite_congSubgroup_rayClassGroup
 import Submission.NK.NUV2.RouteB.Unif.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

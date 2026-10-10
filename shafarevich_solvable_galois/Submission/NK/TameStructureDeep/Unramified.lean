@@ -1,24 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The unramified quotient of a `𝔭`-adic field is `Ẑ`
-
-`NK.TameStructureDeep.unramifiedQuotient_adicCompletion`: for every number field `K`, every
-finite prime `𝔭` and every separable closure `K'` of `κ = K_𝔭`,
-
-  `G_κ ⧸ I_κ ≅ Gal(κ^ur/κ) ≅ Ẑ`.
-
-This is the field `unramifiedQuotient` of the residual `NK.TameStructureDeep.TameRamificationCore`,
-*proved*: the arithmetic content `Gal(κ^ur/κ) ≅ Ẑ` is
-`NK.TameStructureDeep.Degree.galoisGroup_unramifiedClosure_mulEquiv` (from the cyclotomic
-computation `[κ(ζ_n) : κ] = ord_n(q)` of `Degree/`), and the Galois-correspondence bridge
-`NK.LocalAnabelian.ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure` is the
-proved identification of `G_κ ⧸ I_κ` with `Gal(κ(μ_{p'})/κ)`.
--/
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Degree.galoisGroup_unramifiedClosure_mulEquiv
-import Submission.NK.LocalAnabelian.ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

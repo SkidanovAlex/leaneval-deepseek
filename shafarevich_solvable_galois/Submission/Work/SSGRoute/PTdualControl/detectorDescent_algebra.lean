@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.E7cOmega.functional_of_ext_nonzero
 import Submission.Work.SSGRoute.sylow_descend
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

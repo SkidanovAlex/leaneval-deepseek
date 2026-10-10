@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7bDefs
 import Submission.Work.SSGRoute.phiAt_level_infl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

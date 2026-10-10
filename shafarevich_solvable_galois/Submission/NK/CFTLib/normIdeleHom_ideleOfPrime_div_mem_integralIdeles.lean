@@ -1,11 +1,11 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.GlobalCFT.NormFunctorial
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.exp_normIdeleHom_eq_sum
+import Submission.NK.HeckeL.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

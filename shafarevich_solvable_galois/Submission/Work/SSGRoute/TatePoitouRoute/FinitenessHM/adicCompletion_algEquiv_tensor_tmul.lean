@@ -1,16 +1,9 @@
-/-
-# The Chinese-remainder algebra equivalence `K ⊗[ℚ] ℚ_p ≅ ∏_{Q | Q₀} K_Q`, with its formula
-
-This is the `z ↦ (z_Q)_Q` clause of the standard isomorphism, which the library lemma
-`Commons.…Completion.exists_algEquiv_tensor_adicCompletion_prod` produces only as an abstract
-`Nonempty`.
-
-Together with `trace_tensorProduct_tmul` and `trace_pi_apply` it gives the local–global trace
-identity `∑_Q Tr_{K_Q/ℚ_p}(z) = Tr_{K/ℚ}(z)`
-(`FinitenessHM/sum_trace_adicCompletion_eq_trace.lean`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.completionSetup
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.trace_tensorProduct_tmul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

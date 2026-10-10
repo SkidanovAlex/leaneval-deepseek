@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.Ideal.Span
+import Mathlib.Algebra.Polynomial.Eval.Coeff
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.NK.LocalReciprocityLubinTate.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

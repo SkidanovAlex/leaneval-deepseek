@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.HassePrinciple.UnitsLevel
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.HassePrinciple.unitsIncl_smul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

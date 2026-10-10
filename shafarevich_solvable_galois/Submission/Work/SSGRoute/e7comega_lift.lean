@@ -1,14 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ec_defs
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.classLocIncl_injective_clean
-import Submission.Work.SSGRoute.extH_classesK_two_card
-import Submission.Work.SSGRoute.classFormation_ext
-import Submission.Work.SSGRoute.eb_loc_card
-import Submission.Work.SSGRoute.ext_idele_shapiro
-import Submission.Work.SSGRoute.extToIdeles_eq_zero_iff_extLoc
 import Submission.Work.SSGRoute.exists_orbit_supported_inclusion
-import Submission.Work.SSGRoute.natCard_extH_orbitSupportedRep
+import Submission.Work.SSGRoute.extH_classesK_two_card
+import Submission.Work.SSGRoute.extToIdeles_eq_zero_iff_extLoc
 import Submission.Work.SSGRoute.natCard_extH_orbitSupportedRep_inf
 import Submission.Work.SSGRoute.ptorsion_mem_of_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

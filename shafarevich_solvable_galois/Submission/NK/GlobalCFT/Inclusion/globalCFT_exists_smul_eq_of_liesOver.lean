@@ -1,6 +1,11 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Commons.NumberTheory.RamificationInertia.exists_map_galRestrict_eq
+import Submission.NK.GlobalCFT.Inclusion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

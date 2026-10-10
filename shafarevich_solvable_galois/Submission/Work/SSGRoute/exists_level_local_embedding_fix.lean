@@ -1,24 +1,13 @@
-/-
-`Work.SSGRoute.exists_level_local_embedding_fix`.
-
-A prescribed finite Galois extension `F / k_Q` of a local field `k_Q = Q.adicCompletion k` is
-realised as follows: there is a global level `L` with `k ⊆ K ⊆ L`, `L/k` finite Galois, and a place
-`q'` of `L` lying over both `q` (the given place of `K`) and `Q`, such that `F` embeds into the
-local field `L_{q'}` as a `k_Q`-algebra.
-
-This is the standalone version of `Work.SSGRoute.exists_level_local_embedding` (same statement).
-The sibling module currently fails to elaborate for a purely notational reason -- the `𝓞`
-notation used for `NumberField.RingOfIntegers` has to be activated with `open scoped NumberField`,
-which that file does not do -- so the proof is reproduced here, self-contained, with the notation
-scope open.  Nothing mathematical is imported from the sibling module.
--/
-import Mathlib
-import Submission.Work.SSGRoute.QLImports
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
+import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
 
 namespace Work.SSGRoute
 
@@ -67,8 +56,6 @@ theorem exists_level_local_embedding_fix
   -- ## Step 1: realise the local Galois extension `F / k_Q` over `k` at `Q`.
   obtain ⟨L₀, hL₀f, hL₀nf, hL₀a, q₀, hq₀, hgal₀, hne⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_realization (K := k) Q (E := F)
-  letI : Field L₀ := hL₀f
-  letI : NumberField L₀ := hL₀nf
   letI : Algebra k L₀ := hL₀a
   haveI : IsGalois k L₀ := hgal₀
   haveI hfdL₀k : FiniteDimensional k L₀ := Module.Finite.right ℚ k L₀

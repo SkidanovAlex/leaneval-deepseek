@@ -1,10 +1,18 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Shared
-import Submission.NK.NumberTheory.NumberField.Completion.H2_units_ringOfIntegers_unramified
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_addOrderOf_eq_finrank_groupCohomology_two_units
+import Submission.NK.GlobalCFTdeep.Audit.index_normClassSubgroup_self
+import Submission.NK.GlobalCFTdeep.Corollaries.HasseInput
+import Submission.NK.GlobalCFTdeep.Herbrand.Assembly
+import Submission.NK.GlobalCFTdeep.Herbrand.FiberAll
+import Submission.NK.GlobalCFTdeep.Herbrand.exists_finset_TIdeles_surjective
+import Submission.NK.GlobalCFTdeep.Herbrand.fiberUnitsRep_iso_coind
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_finite_quotient
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_ind_iff
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitSubRep_ofFinite
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tIdeles_mul_eq_unitIdeles
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_supportedIdelesRep
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_unitIdelesOutsideRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,25 +1,12 @@
-/-
-The factorisation `∏_χ L(s, χ) = ζ_L^S(s)` of the Dedekind zeta function of an abelian extension
-`L / K` as the product of the Artin `L`-series over all complex characters of `Gal(L/K)`.
-
-The proof is the classical local computation, done prime by prime:
-
-* the products over the primes and over the (finite) character group commute;
-* at an unramified prime `𝔭` the character product `∏_χ (1 - χ(Frob_𝔭) N𝔭^{-s})⁻¹` equals
-  `∏_{𝔮 | 𝔭} (1 - N𝔮^{-s})⁻¹`; this is the orthogonality identity
-  `∏_χ (1 - χ(σ) x) = (1 - x ^ orderOf σ) ^ (|G| / orderOf σ)` together with the fundamental
-  identity `#(𝔮 | 𝔭) · f(𝔮 | 𝔭) = [L : K]` of ramification theory;
-* the primes of `L` not lying over the modulus `S` are exactly the disjoint union over the primes
-  `𝔭 ∉ S` of the primes above `𝔭`, which is the fibre decomposition
-  `NK.HeckeL.Product.zetaUnramified_eq_tprod_fiber` of the Dedekind Euler product.
--/
-import Mathlib
-import Submission.NK.HeckeL.Zeta
-import Submission.NK.HeckeL.Product.prod_monoidHom_one_sub_mul
-import Submission.NK.HeckeL.Product.artinLSeries_one
-import Submission.NK.HeckeL.Series.hasProd_artinEulerFactor
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
+import Submission.NK.HeckeL.Product.artinLSeries_one
+import Submission.NK.HeckeL.Product.prod_monoidHom_one_sub_mul
 import Submission.NK.HeckeL.Product.zetaUnramified_eq_tprod_fiber
+import Submission.NK.HeckeL.Series.hasProd_artinEulerFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

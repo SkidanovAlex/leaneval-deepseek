@@ -1,11 +1,14 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.exists_frobenius_galRestrict
-import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.frobenius_eq_of_commute
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_unramified_extension_tower
 
 open scoped IntermediateField NumberField

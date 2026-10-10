@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_algebraMap
 import Submission.Work.SSGRoute.ExtChain.exists_khLift_of_extToIdeles_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

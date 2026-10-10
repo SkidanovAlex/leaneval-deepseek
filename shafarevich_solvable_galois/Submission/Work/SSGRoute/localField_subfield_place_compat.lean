@@ -1,19 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField
-import Submission.Work.SSGRoute.exists_localField_subfield
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Work.SSGRoute.localAutHom_bijective
-import Submission.Work.SSGRoute.LiftImports
-import Submission.Work.SSGRoute.place_comap_valuationSubringAtPrime
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Work.SSGRoute.adicCompletionToPlaceCompletion_comp
 import Submission.Work.SSGRoute.exists_algHom_adicCompletion_adjoinPlaceCompletion
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField_pointwise
-import Submission.Work.SSGRoute.localGaloisEquiv_adjoin_coInAdjoin_compat
 import Submission.Work.SSGRoute.isHomeomorph_localGaloisEquiv
+import Submission.Work.SSGRoute.localGaloisEquiv_adjoin_coInAdjoin_compat
+import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField_pointwise
+import Submission.Work.SSGRoute.place_comap_valuationSubringAtPrime
 set_option synthInstance.maxHeartbeats 400000
 
 namespace Work.SSGRoute

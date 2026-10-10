@@ -1,17 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.exists_frobenius_complement
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.HS.Setup
-import Submission.Work.SSGRoute.levelSub_commutator_and_generator
-import Submission.Work.SSGRoute.exists_level_inertiaDeg_mul_dvd
-import Submission.Work.SSGRoute.levelSub_comap_index_eq_inertiaDeg
-import Submission.Work.SSGRoute.finite_H1loc_inertia
+import Submission.Work.SSGRoute.exists_frobenius_complement
 import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
-import Submission.Work.SSGRoute.zhat_inertia_wild_structure
+import Submission.Work.SSGRoute.finite_H1loc_inertia
 import Submission.Work.SSGRoute.zhat_descent_proPrimeToP_proCyclicGrowth
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.Work.SSGRoute.zhat_inertia_wild_structure
 
 /-!
 # The inertia structure of a finite place, with `Ẑ`-quotients
@@ -111,7 +112,6 @@ theorem zhat_surjection_of_level
     exists_level_inertiaDeg_mul_dvd k Ω A hA (⊥ : IntermediateField k Ω) n hn.ne'
   letI : FiniteDimensional k M' := hM'fd
   letI : Normal k M' := hM'norm
-  letI : NumberField ↥M' := hM'nf
   have hdiv : n ∣ (levelPrime k Ω A hA M').asIdeal.inertiaDeg (NumberField.RingOfIntegers k) :=
     dvd_trans (dvd_mul_right n _) hdvd
   -- the level subgroup inside the decomposition group and its index

@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LiftImports
-import Submission.Work.SSGRoute.exists_localField_subfield
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.LocalFields.completion_algebraMap_continuous
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
+import Submission.Work.SSGRoute.isUnit_natCast_of_not_dvd_resCharAt
 import Submission.Work.SSGRoute.separableClosure_le_adjoinPlaceCompletion
 
 namespace Work.SSGRoute

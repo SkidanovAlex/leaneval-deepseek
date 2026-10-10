@@ -1,15 +1,15 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_add
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_level
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_compat
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Eval.evMap_mem_adjoin_singleton
 import Submission.NK.LocalReciprocityLubinTate.Eval.law_factorization_lubinTate
-import Submission.NK.LocalReciprocityLubinTate.Audit.natCard_quotient_maximalIdeal_pow
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_add
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_compat
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_level
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.LevelSimplicity
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.ncard_fiber_LTdivisionSet
 import Submission.NK.LocalReciprocityLubinTate.Units.unitsQuotPrincipalUnitsEquiv
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_units_quot_pow_maximalIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

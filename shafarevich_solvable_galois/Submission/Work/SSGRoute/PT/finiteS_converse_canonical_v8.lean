@@ -1,15 +1,23 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.LeadC8
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E0bDefs
 import Submission.Work.SSGRoute.PT.glue_realiser_arch_v4
 import Submission.Work.SSGRoute.PT.valueFormula_arch_own_v2
 import Submission.Work.SSGRoute.phi1_mono_sylow_in
-import Submission.Work.SSGRoute.PT.pt_extSegment_exact
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.PT.pairAlgebra
-import Submission.Work.SSGRoute.E9c.isUnramifiedExt_extLoc_conj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,19 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
-import Submission.Work.AbsoluteKummer.Hilbert90.H1_eq_zero
-import Submission.Work.SSGRoute.kummerBase_euler_h2transport
-import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
-import Submission.Work.SSGRoute.PTCore.RootsOfUnityInstances
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.Work.SSGRoute.PTCore.H2_level_defs
+import Submission.Work.SSGRoute.PTCore.card_eq_prime_of_pairwise_dependent
+import Submission.Work.SSGRoute.PTCore.h2loc_equiv_localGal_mup
 import Submission.Work.SSGRoute.PTCore.level_units_H2_cyclic
 import Submission.Work.SSGRoute.PTCore.local_exists_degree_p_level
-import Submission.Work.SSGRoute.PTCore.card_eq_prime_of_pairwise_dependent
 import Submission.Work.SSGRoute.PTCore.zmultiples_pTorsion_int_dependent
-import Submission.Work.SSGRoute.PTCore.h2loc_equiv_localGal_mup
+import Submission.Work.SSGRoute.kummerBase_euler_h2transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

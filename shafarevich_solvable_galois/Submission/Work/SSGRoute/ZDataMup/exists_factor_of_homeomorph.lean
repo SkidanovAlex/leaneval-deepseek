@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mupLocalVocab
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.SSGRoute.ZDataMup.exists_factor_restrictNormalHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

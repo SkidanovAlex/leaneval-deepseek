@@ -1,12 +1,10 @@
-import Mathlib
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.ProP.lowerCentralSeries_le_pCentralSeries
-import Submission.Work.SSGRoute.prop5.pow_mem_pCentralSeries
-import Submission.Work.Shrinking.pCentralSeries_antitone
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
-import Submission.Work.SSGRoute.prop5.adjacent.magnus_image_saturated
-import Submission.Work.SSGRoute.prop5.lowerCentralSeriesCore
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.oneStep.magLead_pSeries_divisible
+import Submission.Work.SSGRoute.prop5.adjacent.magnus_image_saturated
+import Submission.Work.SSGRoute.prop5.pow_mem_pCentralSeries
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

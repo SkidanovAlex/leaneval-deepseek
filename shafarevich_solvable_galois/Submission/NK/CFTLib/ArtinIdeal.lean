@@ -1,4 +1,5 @@
-import Submission.NK.Chebotarev.Basic
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

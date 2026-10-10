@@ -1,32 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Torsion of an abelian group, and its cardinality
-
-The residue field cardinality `q` of a `p`-adic field `κ` is recovered from its absolute Galois
-group through the *torsion* of the abelianised tame quotient `G_κ^{tr,ab} = (G_κ/V_κ)^{ab}`:
-Shimizu (arXiv:2009.10431, Lemma 2.1, via local class field theory) shows
-
-  `(G_κ^{tr,ab})_{tor} ≅ μ_{q-1}`,
-
-so that `#(G_κ^{tr,ab})_{tor} = q - 1`.  The recovery is used through `Nat.card`, so this file
-collects the `Nat.card` bookkeeping for torsion subgroups that the recovery needs, in the form in
-which it is applied in `Submission/Work/TameData/Abelianisation.lean`:
-
-* `Nat.card` of a torsion subgroup is the `Nat.card` of the type of elements of finite order
-  (`natCard_torsion_eq_natCard_isOfFinOrder`);
-* the elements of finite order in a product are the pairs of torsion elements
-  (`natCard_isOfFinOrder_prod`);
-* a torsion-free group contributes exactly `1` (`natCard_isOfFinOrder_eq_one`, using Mathlib's
-  `IsMulTorsionFree`);
-* a finite cyclic group contributes its order (`natCard_isOfFinOrder_multiplicative_zmod`).
-
-Nothing here is specific to number theory; the arithmetic content of the residue-cardinality
-recovery is in `NK.TameData.TameAbelianisationStructure` and in the torsion-freeness of `Ẑ`
-(`NK.TameData.isMulTorsionFree_zhat`).
--/
-import Mathlib
+import Mathlib.GroupTheory.Torsion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

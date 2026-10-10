@@ -1,19 +1,13 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleHom_trans
-import Submission.NK.NUV2.ArtinBridge.normClassSubgroup_isOpen_aux
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
 import Submission.NK.NUV2.ArtinBridge.exists_isOpen_subgroup_le_localNormFinite_range
 import Submission.NK.NUV2.ArtinBridge.exists_isOpen_subgroup_le_localNormInfinite_range
-import Submission.NK.GlobalCFTdeep.NormIndex.exists_good_S
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
+import Submission.NK.NUV2.ArtinBridge.normClassSubgroup_isOpen_aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

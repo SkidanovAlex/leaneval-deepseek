@@ -1,29 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Group cohomology in low degrees, with additive coefficients
-
-Inhomogeneous cochain complex of a group `G` with coefficients in an additive commutative group
-`A` carrying a `DistribMulAction G A` (equivalently a module over `ℤ[G]`).  Universe-polymorphic:
-`G` and `A` may live in any universes.
-
-* `C⁰(G, A) = A`, `C¹(G, A) = (G → A)`, `C²(G, A) = (G × G → A)`, `C³(G, A) = (G × G × G → A)`
-* `d⁰ a g = g • a - a`
-* `d¹ f (g, h) = g • f h - f (g * h) + f g`
-* `d² c (g, h, k) = g • c (h, k) - c (g * h, k) + c (g, h * k) - c (g, h)`
-
-hence the cocycle conditions in their conventional form
-
-* `f ∈ Z¹ ↔ ∀ g h, f (g * h) = g • f h + f g`
-* `c ∈ Z² ↔ ∀ g h k, c (g * h, k) + c (g, h) = g • c (h, k) + c (g, h * k)`
-
-and `H¹ = Z¹/B¹`, `H² = Z²/B²` as additive groups.
-
-NOTE.  Mathlib's `groupCohomology` (for `Rep ℤ G`) contains the same constructions, but its API
-requires `G`, the coefficients and the base ring to live in the *same* universe, so it does not
-apply to `G : Type u` with `u ≠ 0`.  The present development is self-contained.
--/
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

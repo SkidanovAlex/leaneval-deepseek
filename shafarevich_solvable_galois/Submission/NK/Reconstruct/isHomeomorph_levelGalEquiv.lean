@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.ReconstructField.LevelCandidate
-import Submission.NK.Reconstruct.LevelMap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

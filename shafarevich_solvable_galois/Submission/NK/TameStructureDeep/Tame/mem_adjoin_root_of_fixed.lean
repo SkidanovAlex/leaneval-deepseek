@@ -1,13 +1,10 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.primeToPart
-import Submission.NK.TameStructureDeep.Tame.CorrectedInterface
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.inertiaQuotient
-import Submission.NK.TameStructureDeep.Tame.exists_kummerLayer_of_mem_tameClosure
-import Submission.NK.TameStructureDeep.Tame.UnramifiedNoPow
-import Submission.NK.TameStructureDeep.Tame.layerDegree
 import Submission.NK.TameStructureDeep.Tame.mem_adjoin_pow_div_gcd_of_fixed
-import Submission.NK.LocalTame.All
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
+import Submission.NK.TameStructureDeep.Tame.primeToPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,12 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.phi1_level_index
-import Submission.Work.SSGRoute.inflCIn_trans
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.inflCIn_refl
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.inflCIn_trans
+import Submission.Work.SSGRoute.phi1_level_index
 
 /-! Guidance from the project lead (the requester): read `DESIGN_FIX.md` §1 and the "colimit step"
 section of `PHI1_PGROUP_STATUS.md`.
@@ -78,6 +75,18 @@ instance classDirectedSystem :
   map_map := fun {kt jt it} (hij : it ≤ jt) (hjk : jt ≤ kt) (y : ClassLevel it) =>
     classLevelMap_map (k := k) it jt kt hij hjk y
 
+/-! v4.35 build-speed: the `DirectLimit` API searches `∀ i j, i ≤ j → ZeroHomClass (…)` etc.; give
+the `ClassLevel` transition-map classes directly so that search is immediate. -/
+local instance (priority := high) classLevel_zeroHomClass (i j : Lvl k K Ω) :
+    ZeroHomClass (ClassLevel (k := k) (K := K) (Ω := Ω) i →+ ClassLevel j) (ClassLevel i)
+      (ClassLevel j) :=
+  AddMonoidHomClass.toZeroHomClass
+
+local instance (priority := high) classLevel_addHomClass (i j : Lvl k K Ω) :
+    AddHomClass (ClassLevel (k := k) (K := K) (Ω := Ω) i →+ ClassLevel j) (ClassLevel i)
+      (ClassLevel j) :=
+  AddMonoidHomClass.toAddHomClass
+
 /-- **`A = colim_{L} H²(Gal(L/k), C_L)`**, the class-group direct limit. -/
 abbrev ClassLevelLimit : Type _ :=
   DirectLimit (ClassLevel (k := k) (K := K) (Ω := Ω))
@@ -115,9 +124,7 @@ theorem ClassLevelLimit.of_eq_zero_iff (L : Lvl k K Ω) (y : ClassLevel L) :
       exact hy
     obtain ⟨j, hy', hz', heq'⟩ := Quotient.exact heq
     refine ⟨j, hy', ?_⟩
-    have : classLevelMap (k := k) L₀ j hz' (0 : ClassLevel L₀) = 0 := map_zero _
-    rw [this] at heq'
-    exact heq'
+    exact heq'.trans (map_zero (classLevelMap (k := k) L₀ j hz'))
   · rintro ⟨L', h, hz⟩
     rw [← ClassLevelLimit.of_levelMap (k := k) (K := K) (Ω := Ω) h y, hz]
     exact ClassLevelLimit.of_zero (k := k) (K := K) (Ω := Ω) L'

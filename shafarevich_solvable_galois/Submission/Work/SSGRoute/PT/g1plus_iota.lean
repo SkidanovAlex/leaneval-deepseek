@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7cOmega.exists_orbitSupported_extLoc
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.eq_of_extLoc_eq_of_orbitSupported
+import Submission.Work.SSGRoute.E7cOmega.exists_orbitSupported_extLoc
 import Submission.Work.SSGRoute.PT.pt_orbitIdele_H2_eq_zero
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

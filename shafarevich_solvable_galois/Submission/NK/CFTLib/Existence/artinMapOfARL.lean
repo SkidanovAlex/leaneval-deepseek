@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinIdeal
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
 import Submission.NK.NUV2.ARL.normAdjustment
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.E9c.TransportDefs
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
 import Submission.Work.SSGRoute.SSGStage.exists_regularModule_inert_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

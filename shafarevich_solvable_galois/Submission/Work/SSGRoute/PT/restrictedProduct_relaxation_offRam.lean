@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.restrictedProduct_relaxation
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Topology.Order
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Work.SSGRoute.PT.pt_fun_vanishing_relaxation_offRam
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

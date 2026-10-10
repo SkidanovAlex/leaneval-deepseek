@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.PowClassDeps
-import Submission.NK.TameStructureDeep.Tame.units_mem_pow_of_residue_pow_eq_one
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Tame.residue_adicCompletionMap_pow_card_eq_self
+import Submission.NK.TameStructureDeep.Tame.units_mem_pow_of_residue_pow_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

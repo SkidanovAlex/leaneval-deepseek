@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.CategoryTheory.Abelian.ShortExact
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Submission.Work.SSGRoute.H1Dual.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

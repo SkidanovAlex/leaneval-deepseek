@@ -1,31 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Component 2: the residue field order from the abelianised tame quotient
-
-The residue field cardinality `q` of a `p`-adic field `κ` is recovered from `G_κ` through the
-*torsion* of the abelianised tame quotient `G_κ^{tr,ab} = (G_κ/V_κ)^{ab}` (Shimizu,
-arXiv:2009.10431, Lemma 2.1, via local class field theory):
-
-  `#(G_κ^{tr,ab})_{tor} = q - 1`.
-
-Two routes are provided, matching the two forms of the input (the second, the classical local
-class field theory statement, implies the first — see
-`NK.TameData.TameAbelianisationInput.toTorsionInput`):
-
-* from **Shimizu's torsion statement** `TameTorsionInput`: the torsion is cyclic of order `q - 1`
-  (`ResidueCardRecovery.of_torsionInput`) — a two-line computation of `Nat.card`;
-* from the **splitting** `TameAbelianisationInput`, `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}`
-  (`ResidueCardRecovery.of_abelianisation`): the torsion of the product is the product of the
-  torsions, `Ẑ` is torsion-free (`NK.TameData.isMulTorsionFree_zhat`) and `μ_{q-1}` has `q - 1`
-  elements.
-
-The `Nat.card` bookkeeping for the second route is in `NK.TameData.Torsion`.
--/
-import Submission.NK.TameData.Definitions
-import Submission.NK.TameData.Torsion
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.GroupTheory.Torsion
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameData.Abelianisation.torsion_mulEquiv_zmod
+import Submission.NK.TameData.Torsion
 import Submission.NK.TameData.Zhat.isMulTorsionFree_zhat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

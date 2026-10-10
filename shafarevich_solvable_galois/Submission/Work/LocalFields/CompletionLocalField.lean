@@ -1,24 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The completion of a number field is a local field
-
-Combining the two facts about the reduction map `𝓞 K → κ_v` (`residueMap_surjective` and
-`residueMap_ker`) we obtain the canonical isomorphism `𝓞 K ⧸ v ≃+* κ_v`, finiteness of the
-residue field `κ_v`, and hence that the `v`-adic completion `K_v` is a non-archimedean local
-field in the sense of `Work.LocalFields.IsLocalField`.
-
-## Main results
-
-* `Work.LocalFields.residueEquiv` : `𝓞 K ⧸ v ≃+* κ_v`.
-* `Work.LocalFields.Finite_residueFieldOf` : `κ_v` is finite.
-* `Work.LocalFields.instIsLocalFieldCompletion` : `IsLocalField K_v`.
-* `Work.LocalFields.natCard_residueFieldOf` : `#κ_v = N(v)`.
--/
-import Submission.Work.LocalFields.Residue
-import Submission.Work.LocalFields.residueMap_surjective
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
+import Mathlib.Topology.Algebra.Valued.LocallyCompact
 import Submission.Work.LocalFields.residueMap_ker
+import Submission.Work.LocalFields.residueMap_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

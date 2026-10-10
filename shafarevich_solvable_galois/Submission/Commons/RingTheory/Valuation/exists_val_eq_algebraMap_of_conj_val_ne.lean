@@ -1,6 +1,7 @@
-import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.NewtonPolygon.exists_coeff_score_eq_of_unique_val
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

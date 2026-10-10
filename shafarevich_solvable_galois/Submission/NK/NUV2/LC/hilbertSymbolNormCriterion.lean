@@ -1,4 +1,6 @@
-import Submission.NK.NUV2.LC.hilbertSymbol
+import Mathlib.Computability.Language
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Algebra.Field.ZMod
 import Submission.NK.NUV2.LC.hilbertSymbolAt_independent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

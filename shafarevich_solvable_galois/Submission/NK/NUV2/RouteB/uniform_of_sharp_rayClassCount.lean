@@ -1,29 +1,14 @@
-/-
-# From the sharp ray-class count (for moduli containing the primes of `𝔪`) to the uniform
-# power-saving bound for an arbitrary finite set of primes
-
-`rayClassCount_sub_isBigO` with the *sharp* exponent `1 - 1/[K:ℚ]` is false for an arbitrary set
-`S` of primes (the counterexample is `K = ℚ`, `S = ∅`, where the count difference grows like
-`log X`), while the *uniform* statement with some exponent `θ < 1` is true and is what the
-analytic applications use.  This file performs the passage:
-
-* `rayCnt_eq_sum_fibers` — the Euler-factor decomposition: for `S ⊆ S'`, the ideals coprime to `S`
-  are obtained by multiplying the ideals coprime to `S'` by the ideals supported on `S'∖S`, so the
-  count for `S` is the sum of the counts for `S'` over those finitely many factors, with the norm
-  bound divided by the norm of the factor;
-* the sum is controlled by the number of factors supported on the finite set `S'∖S` of norm `≤ N`,
-  which is `O(N^ε)` for every `ε > 0`.
-
-Everything is packaged in `uniform_of_sharp_aux`, and the theorem
-`uniform_of_sharp_rayClassCount` applies it with `S' = S ∪ {𝔭 : 𝔭 ∣ 𝔪}`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Basic.classOfIdeal_mul
-import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
-import Submission.NK.NUV2.RouteB.Unif.Defs
-import Submission.NK.NUV2.RouteB.Unif.primeFactorsFinset
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.NUV2.RouteB.Unif.card_supported_le
+import Submission.NK.NUV2.RouteB.Unif.primeFactorsFinset
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

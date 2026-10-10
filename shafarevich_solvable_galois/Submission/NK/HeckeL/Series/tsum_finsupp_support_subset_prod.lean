@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.SpecificLimits.Normed
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Topology.Separation.CompletelyRegular
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

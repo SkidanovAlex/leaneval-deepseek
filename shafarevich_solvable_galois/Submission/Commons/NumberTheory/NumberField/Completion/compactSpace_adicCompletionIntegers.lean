@@ -1,6 +1,7 @@
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Topology.Algebra.Valued.LocallyCompact
 import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.Algebra.Valued.LocallyCompact
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

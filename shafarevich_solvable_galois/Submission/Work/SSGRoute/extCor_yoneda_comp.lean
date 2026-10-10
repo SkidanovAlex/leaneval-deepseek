@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.ext_corestriction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,18 +1,16 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
-import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_finite
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.NK.ChebotarevGeneral.summable_zetaWeight_of_inertiaDeg_ge_two
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.NumberTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.ChebotarevGeneral.exists_bound_primeIdealZetaSum_of_inertiaDeg_or_mem_finite
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
+import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
+import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
+import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

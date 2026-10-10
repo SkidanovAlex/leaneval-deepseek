@@ -1,8 +1,12 @@
-import Mathlib
-import Submission.NK.NUV2.RouteB.RayModulus.Defs
+import Mathlib.Data.Int.Star
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_uniformizer_val_eq_exp_neg_one
-import Submission.NK.NUV2.RouteB.RayModulus.real_pos_mem_closure_of_isOpen
 import Submission.NK.NUV2.RouteB.RayModulus.complex_closure_of_isOpen_eq_top
+import Submission.NK.NUV2.RouteB.RayModulus.real_pos_mem_closure_of_isOpen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

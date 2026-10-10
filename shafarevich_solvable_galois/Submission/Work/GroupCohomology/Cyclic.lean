@@ -1,17 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Cyclic groups and the trivial module
-
-Two ingredients for the Kummer-theoretic computation of `H²` of a cyclic group:
-
-* `TrivMod G A`: the additive commutative group `A` equipped with the *trivial* action of `G`,
-  as a type synonym (so that it does not clash with any pre-existing action on `A`);
-* `nsmulRange n A`: the subgroup `nA = {n • a | a : A}` of an additive commutative group.
-
-The computation itself, `H²(ℤ/n, A) ≅ A/nA` for the trivial action, is
-`Work.GroupCohomology.H2_cyclic_trivial` (proved in `Submission/Work/GroupCohomology/H2_cyclic_trivial.lean`).
--/
+import Mathlib.Algebra.Module.NatInt
+import Mathlib.Algebra.Group.Subgroup.Ker
 import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

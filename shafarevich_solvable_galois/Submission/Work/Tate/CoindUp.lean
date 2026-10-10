@@ -1,40 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The `I_G`-twist `A^♯ ≅ A ⊗ I_G` and the sequence `0 → A^♯ → Coind(A) → A → 0`
-
-Dimension shifting *upwards* in degree uses the short exact sequence
-
-`0 → I_G·𝔽_p[G] ⊗ A → 𝔽_p[G] ⊗ A → A → 0`, i.e. (for finite `G`, identifying the free module
-`𝔽_p[G] ⊗ A` with `Coind(A) = (G → A)`)
-
-`0 → A^♯ --f--> Coind(A) --φ--> A → 0`,
-
-where the equivariant surjection is the *twisted norm*
-
-`φ f = ∑_{x : G} x⁻¹ • f x`
-
-(it is `G`-equivariant for the coinduced action `(γ • f) x = f (x * γ)`, unlike the ordinary norm
-`f ↦ ∑ f x`), and `A^♯ = ker φ` is a concrete model of the twist `A ⊗ I_G`.
-
-Applying the general measurement shift to this sequence, whose middle term is coinduced (hence
-acyclic), gives
-
-`Work.Tate.dimensionShiftCoindUp : Ĥ⁻¹(G, A) ≃+ Ĥ⁰(G, A^♯)`,
-
-i.e. the upward shift one degree.  Iterating the pattern one step further gives the paper's
-
-`Ĥ⁻²(G, A) ≅ Ĥ⁻¹(G, A ⊗ I_G) = Ĥ⁻¹(G, A^♯)`,
-
-which is how `Work.Tate.Hm2` — the (−2)-nd Tate group in this development — is defined (see the
-discussion of `Hm2` below).
--/
-import Mathlib
-import Submission.Work.Tate.CoindModule
-import Submission.Work.Tate.coind_H0_subsingleton
-import Submission.Work.Tate.coind_Hm1_subsingleton
-import Submission.Work.Tate.SES
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Submission.Work.Tate.DimensionShift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

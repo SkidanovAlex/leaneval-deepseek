@@ -1,29 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Frobenius normalisation on the Kummer layers, arbitrary exponent
-
-`NK.TameStructureDeep.Tame.kummer_tateTwist` proves the Tate twist
-
-  `(F σ F⁻¹) β / β = (σ β / β) ^ q`
-
-for `β` an `ℓ`-th root of `a ∈ κ` with `ℓ` prime to the residue characteristic `p`.  Here we
-record the same statement for an **arbitrary** exponent `n` prime to `p`: only the fact that the
-Kummer character `γ = σ β / β` (and `δ = F⁻¹β / β`) is a root of unity of order dividing `n`,
-hence of order prime to `p`, is used.  This is what makes the argument independent of the
-primality of the exponent, and it is needed for Kummer layers `κ^{ur}(β)` of degree dividing a
-composite number.
-
-The proof is verbatim the classical one, with `orderOf` replacing primality: `γ` and `δ` are
-roots of unity of order dividing `n`, so their orders are also prime to `p`; `δ ∈ κ^{ur}` is
-therefore fixed by `σ`, and `F γ = γ ^ q` because `F` acts on all prime-to-`p` roots of unity by
-the `q`-th power map.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.kummer_tateTwist
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalAnabelian.ResidueField.Recovery
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
+import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

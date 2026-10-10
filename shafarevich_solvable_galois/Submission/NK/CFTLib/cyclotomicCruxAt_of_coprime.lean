@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.HR.isCyclotomic_onePlace_unramified
-import Submission.NK.NUV2.ARL.localImage_mem_localNormSubgroup_of_isCyclotomic_of_real
 import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinMap_exists
+import Submission.NK.NUV2.ARL.localImage_mem_localNormSubgroup_of_isCyclotomic_of_real
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

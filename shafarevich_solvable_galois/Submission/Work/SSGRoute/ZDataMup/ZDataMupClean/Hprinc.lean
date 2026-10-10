@@ -1,35 +1,13 @@
-/-
-# `hprinc` at the ideal modulus supported on the ramified primes
-
-This file assembles, from the two inputs of the ideal-modulus lane (Lang's crux `hkerId` and the
-norm-index inequality `hidxId`), the *conductor drop at an ideal modulus*:
-
-* an ideal modulus `𝔪 ≠ ⊥` supported **exactly** on the ramified primes of `L/K`, and
-* the vanishing of the Artin symbol on the whole principal ray `P(𝔪)`:  for every `b : Kˣ` with
-  `b ≡ 1 mod* 𝔪` (and `b` totally positive at the real places) the Artin symbol of the principal
-  ideal `(b)` is trivial.
-
-The last statement is the `mod*` (ray) form — the form in which the idèlic construction of
-`Work.SSGRoute.ZDataMup.Cycle` (`Cycle.localGlobalMap_productFormula_of_cycleDrop`) consumes the
-conductor drop, and the reason why an *ideal* modulus is needed at all: an `ℕ`-modulus always has
-its support saturated above the rational primes (`NOTE_conductorDrop_obstruction.md`, finding (B)).
-
-The ingredients:
-
-* `NK.CFTLib.ArtinReciprocityIdeal.ramificationIdxIn_eq_one_of_isUnramifiedIn_clean` — the bridge between
-  the two forms of unramifiedness;
-* `principalRayId_le_ker_artinSymFracHom_clean` — the kernel/index computation of
-  `artinSymbolKillsPrincipal_ideal`, in the `mod*` (principal-ray) form;
-* `exists_idealModulus_of_natModulus` (`ramifiedPart` + `dictionary_ramifiedPart`) — the passage
-  from the natural-number modulus `mRam · 2` of finding (A) to the ideal modulus `𝔪`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mRam_ramifiedSupport
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ZDataMupClean.SurjId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.exists_idealModulus_of_natModulus
-import Submission.Work.SSGRoute.ZDataMup.ZDataMupClean.UnramifiedBridge
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId
+import Submission.Work.SSGRoute.ZDataMup.ZDataMupClean.SurjId
+import Submission.Work.SSGRoute.ZDataMup.mRam_ramifiedSupport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

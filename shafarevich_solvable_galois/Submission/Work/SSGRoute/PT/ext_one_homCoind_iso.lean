@@ -1,12 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homCoindDefs
-import Submission.Work.SSGRoute.homRep_unitsK_formula
-import Submission.Work.SSGRoute.homCoind_H0_restrict_ker_conj
-import Submission.Work.SSGRoute.homCoind_H1_free_conj_v2
-import Submission.Work.SSGRoute.ext_level_lift
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.CategoryTheory.Abelian.Exact
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.ext_h1_bridge
-import Submission.Work.AbsoluteKummer.All
+import Submission.Work.SSGRoute.ext_level_lift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

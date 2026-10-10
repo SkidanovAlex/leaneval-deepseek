@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.Sha2Lib.coindValueFormula_orbits
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Group
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Submission.Work.Sha2Lib.coindValueFormula_singleOrbit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

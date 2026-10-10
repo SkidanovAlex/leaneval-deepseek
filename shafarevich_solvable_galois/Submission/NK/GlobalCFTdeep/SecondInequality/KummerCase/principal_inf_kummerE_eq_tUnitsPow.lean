@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_eq_one_of_le_normImage
-import Submission.NK.GlobalCFTdeep.SecondInequality.pow_mem_normGroup_adicCompletion
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.NK.GlobalCFT.Place
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage_of_kummerData
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_eq_one_of_le_normImage
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

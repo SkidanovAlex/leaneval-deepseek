@@ -1,18 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.NodeS35.swPinFamily
-import Submission.Work.SSGRoute.NodeS35.swHchainBasic
-import Submission.Work.SSGRoute.ZDataTwo.crossedValueTwoProof
-import Submission.Work.SSGRoute.H9.swChainConjDefs
-import Submission.Work.SSGRoute.H9.swCount_conjUnit
-import Submission.Work.SSGRoute.NodeS35.kills_inertia_conjUnit
-import Submission.Work.SSGRoute.H9.swTwoPlacePairingTwo
-import Submission.Work.SSGRoute.H9.oPairAt_swapTwo
-import Submission.Work.SSGRoute.H9.swCrossedValueTwoHelpers
-import Submission.Work.SSGRoute.H9.swIsUnramifiedIn_hLevel_of_kills_inertia
-import Submission.Work.SSGRoute.P2Core.siblingPlace
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
-import Submission.Work.SSGRoute.ZDataMup.OddForm.oTheta_eq_one_of_ne_oddPrime
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.crossTwoChainCore
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.not_gesKConj_swap_sibling
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

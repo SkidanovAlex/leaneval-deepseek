@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.AbelianReduction
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinKillsPrincipal_cyclic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymbolKillsPrincipal_cyclic
+import Submission.NK.CFTLib.RouteB.intersect_cyclotomic_eq_bot
+import Submission.NK.NUV2.ARL.transferSelfContained
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

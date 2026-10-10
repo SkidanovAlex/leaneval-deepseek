@@ -1,15 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.naturality_gluing
-import Submission.Work.SSGRoute.coker_aux
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.h1_bridge
-import Submission.Work.SSGRoute.H1Pair.omega_contra
-import Submission.Work.SSGRoute.H1Pair.exists_x
-import Submission.Work.SSGRoute.H1Pair.DualRestrict
-import Submission.Work.SSGRoute.h1_finite_stage
-import Submission.Work.SSGRoute.selmer_dual_inflated
-import Submission.Work.SSGRoute.coker_assembly
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.canonical_localPairing_with_reciprocity
 import Submission.Work.SSGRoute.pt_selmer_relaxed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

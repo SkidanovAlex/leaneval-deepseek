@@ -1,12 +1,18 @@
-import Submission.NeukirchUchida.Local.LocalTransfer
-import Submission.NeukirchUchida.Local.InfiniteDecomposition
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_valuationSubring
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.FieldTheory.Galois.mem_stabilizer_valuationSubring_iff_forall_restrict
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.RingTheory.Valuation.comap_inclusion_comap_eq
+import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_valuationSubring
 import Submission.Commons.RingTheory.Valuation.algebraMap_mem_valuationSubringAtPrime
+import Submission.Commons.RingTheory.Valuation.comap_inclusion_comap_eq
+import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
+import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
+import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.NeukirchUchida.Local.InfiniteDecomposition
+import Submission.NeukirchUchida.Local.LocalTransfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

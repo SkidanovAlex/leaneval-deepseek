@@ -1,26 +1,23 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.ValuationSES.C1
-import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.E7cC.exists_level_unramified_p_dvd_inertiaDeg
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.e9_caseB_cocycle
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.eCoh_map
-import Submission.Work.SSGRoute.SSGStage.detectorFixedAux
-import Submission.Work.SSGRoute.SSGStage.mem_cocycles_coordKer
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
-import Submission.Work.SSGRoute.Sha2Lib.indLevelDatum
-import Submission.Work.SSGRoute.E7cC.detectingFunctional_indDatum
-import Submission.Work.SSGRoute.E7cOmega.exists_level_detecting_functional
+import Mathlib.RepresentationTheory.Induced
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.E7cOmega.levelPair_ratDivSES_extClass_eq_zero_iff
 import Submission.Work.E7cOmega.subsingleton_ext_unitRep_ratRep
-import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
+import Submission.Work.SSGRoute.E7cC.detectingFunctional_indDatum
+import Submission.Work.SSGRoute.E7cOmega.exists_level_detecting_functional
+import Submission.Work.SSGRoute.SSGStage.detectorFixedAux
+import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Submission.Work.SSGRoute.ValuationSES.C1
+import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
+import Submission.Work.SSGRoute.local_duality_ext
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

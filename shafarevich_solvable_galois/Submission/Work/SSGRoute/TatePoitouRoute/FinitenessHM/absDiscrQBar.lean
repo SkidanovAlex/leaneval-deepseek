@@ -1,13 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
-import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
-import Submission.Work.SSGRoute.place_basics
-import Submission.Commons.NumberTheory.NumberField.discr_padicValNat_eq_sum_over_p_count_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.RamificationInertia.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.differentIdeal_count_le_clean_bound
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.isRamifiedIn_of_dvd_discr_natAbs_proved
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.isRamifiedIn_comap_algEquiv_proved
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.isRamifiedIn_of_dvd_discr_natAbs_proved
+import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

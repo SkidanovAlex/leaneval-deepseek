@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.ReconstructField.LevelCandidate
-import Submission.NK.ReconstructField.LevelPrime
-import Submission.NK.ReconstructField.LevelPrimeBijective
+import Submission.NK.ReconstructField.comap_eq_of_primeOfLevel_placeMap_eq
 import Submission.NK.ReconstructField.primeOfLevel_placeMap_eq_of_comap_eq_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

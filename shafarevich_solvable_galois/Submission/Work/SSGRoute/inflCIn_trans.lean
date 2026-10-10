@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.inflTrivIn_trans
 import Submission.Work.SSGRoute.phi1_classIncl_compat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

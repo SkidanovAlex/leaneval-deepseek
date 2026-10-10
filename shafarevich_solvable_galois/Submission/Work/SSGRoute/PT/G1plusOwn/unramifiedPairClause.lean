@@ -1,18 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.PT.G1plusOwn.inertiaSub_normalClosure_inf_decomp
 import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
 import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.PT.exists_finiteNormal_fixingSubgroup_le_of_isOpen
-import Submission.Work.SSGRoute.PTDefs
 import Submission.Work.SSGRoute.unramifiedLevelFactorsAux
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Work.SSGRoute.PT.G1plusOwn.inertiaSub_normalClosure_inf_decomp
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 open scoped TensorProduct Pointwise Topology
 open Filter
@@ -381,7 +383,6 @@ theorem unramifiedPairClause
   letI : Normal k L := hLnorm
   haveI : IsGalois k L :=
     Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero (F := k) (E := ↥L)
-  letI : NumberField ↥L := hLnf
   letI : Algebra ↥K ↥L := (IntermediateField.inclusion hKL).toAlgebra
   haveI : IsScalarTower k ↥K ↥L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
   haveI : IsScalarTower ↥K ↥L Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)

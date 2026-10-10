@@ -1,11 +1,8 @@
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
-import Submission.NK.GlobalCFT.Galois.completionMap_surjective_of_isComplex_under
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.GlobalCFT.Galois.exists_stabilizer_isConj_of_isReal_isComplex
-import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleFun_principalIdele
+import Submission.NK.HassePrinciple.LocalUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

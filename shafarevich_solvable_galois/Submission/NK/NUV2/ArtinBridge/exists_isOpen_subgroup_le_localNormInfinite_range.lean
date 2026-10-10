@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleFun_principalIdele
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

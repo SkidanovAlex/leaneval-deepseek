@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
-import Submission.Work.SSGRoute.place_basics
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.Work.SSGRoute.ZPlace
+import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
 import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.Work.SSGRoute.H2locAux.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

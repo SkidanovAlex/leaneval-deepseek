@@ -1,32 +1,33 @@
-import Mathlib
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.flowEKer_comm
-import Submission.Work.SSGRoute.twistLayer
-import Submission.Work.SSGRoute.gradedMapMul_surjective
-import Submission.Work.SSGRoute.local_tame_defs
-import Submission.Work.Properness.Defs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.t0Generation
-import Submission.Work.SSGRoute.flowEKer_equiv_refinedQuotient
-import Submission.Work.SSGRoute.no_two_torsion_fixingSubgroup
-import Submission.Work.SSGRoute.involutions_eq_one_or_conjugate
-import Submission.Work.SSGRoute.stage3Shrinking_i_one
-import Submission.Work.SSGRoute.stage3T2LocalTarget
-import Submission.Work.SSGRoute.stage3KillInertiaTarget
-import Submission.Work.SSGRoute.prop5Data_exists
-import Submission.Work.SSGRoute.coker_obstruction
--- The assembly uses `Work.SSGRoute.coker_obstruction` (the shared `G1`-based form): it consumes
--- `Work.SSGRoute.canonical_localPairing_with_reciprocity` (`G1`) and only clauses (1)–(5), (7) of
--- the pairing, not the extra clause (8) of `PT.canonical_localPairing_reciprocity_converse`
--- (`G1⁺`).  See `PING_weakNondeg_and_NK_pillars.md` §4/§6: for odd `p` the live route is
--- `G1 ⟸ h4 ⟸ {hcyc, hdim, WeakHcan}`.
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.isT1Place_of_isConjPlace
-import Submission.Work.SSGRoute.exists_finiteDimensional_normal_fixingSubgroup_le
-import Submission.Work.SSGRoute.ramifiedPlaces_finite
-import Submission.Work.SSGRoute.stage3T0Data
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.clauseData_conj_transfer_T1
-import Submission.Work.SSGRoute.HRec.HrecDefs
+import Submission.Work.SSGRoute.coker_obstruction
+import Submission.Work.SSGRoute.evCupFun_isCocycle2On
+import Submission.Work.SSGRoute.flowEKer_equiv_refinedQuotient
+import Submission.Work.SSGRoute.gradedMapMul_surjective
+import Submission.Work.SSGRoute.involutions_eq_one_or_conjugate
+import Submission.Work.SSGRoute.prop5Data_exists
+import Submission.Work.SSGRoute.ramifiedPlaces_finite
+import Submission.Work.SSGRoute.stage3KillInertiaTarget
+import Submission.Work.SSGRoute.stage3Shrinking_i_one
+import Submission.Work.SSGRoute.stage3T0Data
+import Submission.Work.SSGRoute.stage3T2LocalTarget
+import Submission.Work.SSGRoute.t0Generation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -202,8 +203,8 @@ theorem flowEKer_le_flowNormal (p : ℕ) (G : Type*) [Group G] (m i j : ℕ) :
   rw [flowNormal, MonoidHom.mem_range]
   have hright : x.right = 1 := by
     have h1 := congrArg SemidirectProduct.right hx
-    simp only [flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply] at h1
-    exact h1
+    rwa [flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply,
+      SemidirectProduct.one_right] at h1
   exact ⟨x.left, SemidirectProduct.ext rfl hright.symm⟩
 
 /-- If two elements of the flow groups have the same projection, they are related by `LiftsFlowAt`. -/
@@ -213,8 +214,7 @@ theorem liftsFlowAt_of_flowGroupProj_eq (p : ℕ) (K : IntermediateField ℚ SSG
     (x : flowGroup p (K ≃ₐ[ℚ] K) m i j)
     (h : flowGroupProj p (K ≃ₐ[ℚ] K) m i j y = x) : SSGRoute.LiftsFlowAt y x := by
   refine ⟨?_, ?_⟩
-  · rw [← h]
-    simp only [flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply]
+  · rw [← h, flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply]
   · obtain ⟨z, hz⟩ := QuotientGroup.mk'_surjective
       ((flowTerm p (K ≃ₐ[ℚ] K) m (tauSucc i j).1 (tauSucc i j).2).subgroupOf
         (⊤ : Subgroup (Work.Shrinking.freeOperatorGroup (K ≃ₐ[ℚ] K) m))) y.left
@@ -1138,10 +1138,11 @@ theorem flowEKer_eq_range_gradeInl (p : ℕ) (G : Type*) [Group G] (n i j : ℕ)
     rw [MonoidHom.mem_ker] at hx
     have hleft : flowQuotientProj p G n i j x.left = 1 := by
       have h := congrArg SemidirectProduct.left hx
-      simpa [flowGroupProj] using h
+      rwa [flowGroupProj, SemidirectProduct.map_left, SemidirectProduct.one_left] at h
     have hright : x.right = 1 := by
       have h := congrArg SemidirectProduct.right hx
-      simpa [flowGroupProj] using h
+      rwa [flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply,
+        SemidirectProduct.one_right] at h
     have hmem : x.left ∈ (stageProjQuotient p G n i j).ker := hleft
     rw [stageProjQuotient_ker] at hmem
     obtain ⟨v, hv⟩ := hmem
@@ -1344,6 +1345,14 @@ whose local class at `A` agrees with `gradedMapLin Φ (α_A)` kills the whole de
 `D_A` (`SSGRoute.flowTwistE_eq_one_of_gradeInl_eq_inv`).  At the `T³` places this is what removes
 the ramification introduced by the level-`m` lift. -/
 
+/-- (speed) `flowQuot` after the level projection, proved once for an abstract group: the concrete
+instances of the callers made the kernel check of the inline `rfl` slow. -/
+theorem flowQuot_flowGroupProj_psad (p : ℕ) (G : Type*) [Group G] (m i j : ℕ)
+    (y : flowGroup p G m (tauSucc i j).1 (tauSucc i j).2) :
+    flowQuot p G m (tauSucc i j).1 (tauSucc i j).2 y = flowQuot p G m i j (flowGroupProj p G m i j y) := by
+  rw [flowQuot, flowQuot, SemidirectProduct.rightHom_eq_right, SemidirectProduct.rightHom_eq_right,
+    flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply]
+
 /-- **Existence of the `T³` local target.**  If `ψm` is a lift of the level-`τ` solution `φm` with
 open kernel and `φm` is trivial on the decomposition group of `A` (so that `ψm` maps `D_A` into the
 copy `flowEKer = E(m,τ)` of the graded piece), then there is an `E(m,τ)`-valued function `α` on
@@ -1371,7 +1380,8 @@ theorem exists_localTarget_of_proj_eq_one (p : ℕ) [Fact p.Prime]
       (tauSucc i j).1 (tauSucc i j).2 (ψm σ) = Work.SSGRoute.restrict K σ := by
     intro σ
     have h1 : flowQuot p (K ≃ₐ[ℚ] K) m (tauSucc i j).1 (tauSucc i j).2 (ψm σ) =
-        flowQuot p (K ≃ₐ[ℚ] K) m i j (flowGroupProj p (K ≃ₐ[ℚ] K) m i j (ψm σ)) := rfl
+        flowQuot p (K ≃ₐ[ℚ] K) m i j (flowGroupProj p (K ≃ₐ[ℚ] K) m i j (ψm σ)) :=
+      flowQuot_flowGroupProj_psad p (K ≃ₐ[ℚ] K) m i j (ψm σ)
     rw [h1, hproj σ, hflowm σ]
   have hval : ∀ σ : ↥(SSGRoute.decomp ℚ A),
       ∃ v : E p (K ≃ₐ[ℚ] K) m i j,
@@ -2187,7 +2197,8 @@ theorem flowQuot_of_liftsFlow {p : ℕ} {K : IntermediateField ℚ SSGRoute.QBar
       = Work.SSGRoute.restrict K σ := by
   intro σ
   have h1 : flowQuot p (K ≃ₐ[ℚ] K) n (tauSucc i j).1 (tauSucc i j).2 (ψ σ)
-      = flowQuot p (K ≃ₐ[ℚ] K) n i j (flowGroupProj p (K ≃ₐ[ℚ] K) n i j (ψ σ)) := rfl
+      = flowQuot p (K ≃ₐ[ℚ] K) n i j (flowGroupProj p (K ≃ₐ[ℚ] K) n i j (ψ σ)) :=
+    flowQuot_flowGroupProj_psad p (K ≃ₐ[ℚ] K) n i j (ψ σ)
   rw [h1, hproj σ, hflow σ]
 
 /-- **The specification of the local target `α_A` at level `m`.**  The arithmetic core

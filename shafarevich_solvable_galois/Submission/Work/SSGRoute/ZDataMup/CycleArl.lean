@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZDataMup.CycleAux
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.CFTLib.Arl.isFrobAt_of_isFrobAt_any_primeOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.e0b_bridge
-import Submission.NK.NUV2.LC.unitsLevelH2_addOrderOf_realization
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.NK.CFTLib.fundamentalClassElement
-import Submission.NK.GlobalCFTdeep.SecondInequality.FundamentalClass
+import Submission.NK.NUV2.LC.unitsLevelH2_addOrderOf_realization
+import Submission.Work.SSGRoute.e0b_bridge
 import Submission.Work.SSGRoute.pTorsion_zmod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

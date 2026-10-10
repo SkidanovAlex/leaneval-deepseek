@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7cOmega.exists_level_p_dvd_decomp
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.E7cOmega.card_stab_eq_of_liesOver
-import Submission.Work.SSGRoute.E7cOmega.card_stab_dvd_of_tower
-import Submission.Work.SSGRoute.PT.finHalfData
 import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_p_dvd_stab
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

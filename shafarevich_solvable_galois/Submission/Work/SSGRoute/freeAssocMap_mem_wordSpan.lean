@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.freeAssocMap
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.LinearAlgebra.Span.Defs
+import Mathlib.Algebra.Module.Submodule.Map
 import Submission.Work.SSGRoute.freeAssocMap_wordEl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

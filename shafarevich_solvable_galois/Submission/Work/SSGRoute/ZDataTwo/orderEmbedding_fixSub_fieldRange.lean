@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.InvAux
-import Submission.Work.SSGRoute.InvAux.exists_orderEmbedding
-import Submission.Work.SSGRoute.InvAux.exists_nat_ge_of_aeval_eq_zero
-import Submission.Work.SSGRoute.InvAux.irreducible_natDegree_le_two
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.Algebra.Order.Field.Subfield
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Submission.Work.SSGRoute.InvAux.fixedFields_ringEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

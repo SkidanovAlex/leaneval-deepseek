@@ -1,23 +1,5 @@
-/-
-# The factorisation of a formal group law by its second variable
-
-Every formal group law satisfies `F(X,0) = X` (Mathlib's `FormalGroup.Xzero_eq_X`), hence
-`F(X,Y) - X` is divisible by `Y`; by the definitional normalisation of a formal group law the
-quotient `Θ` has constant coefficient `1`, i.e. it is a **unit** of the power series ring.
-
-This unit is what makes the Lubin–Tate addition computationally accessible: for the
-`𝒪[F]`-action on the torsion points `Λ_n` it produces the "sum formula"
-
-  `(b + d) · x = b · x + (d · x) · H`,   `H ≠ 0`,
-
-of `Eval/smulDiv_add.lean`, which is the substitute for the missing `𝒪[F]`-module structure on
-`Λ_n` (see `README.md`).
-
-## Main result
-
-* `NK.LocalReciprocityLubinTate.Eval.FormalGroup.exists_unit_factorization`.
--/
-import Mathlib
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.RingTheory.MvPowerSeries.Inverse
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

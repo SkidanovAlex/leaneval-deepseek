@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
-import Submission.NK.GlobalCFTdeep.natCard_groupCohomology_two_le_card
-import Submission.NK.GlobalCFTdeep.H1All
-import Submission.NK.GlobalCFTdeep.Brauer.isCyclic_normQuotient_of_primePower
-import Submission.NK.CFTLib.exists_addOrderOf_eq_card_of_cyclic_normClassQuotient
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.isCyclic_normClassQuotient_of_primePower
+import Submission.NK.GlobalCFTdeep.Brauer.isCyclic_normQuotient_of_primePower
+import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

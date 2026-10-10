@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
 
 /-!
 # The canonical embedding of the henselisation into the completion, as a `def`

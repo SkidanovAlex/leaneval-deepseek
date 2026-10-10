@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletion_intCast_eq_padicValInt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

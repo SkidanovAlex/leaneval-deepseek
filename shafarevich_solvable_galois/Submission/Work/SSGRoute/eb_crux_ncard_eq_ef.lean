@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Work.SSGRoute.eb_loc_card
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

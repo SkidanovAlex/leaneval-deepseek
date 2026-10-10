@@ -1,27 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The coefficient module `E(m,τ) ⊗ T` as a representation of `F(m)/F(m)^{(ν)} ⋊ G`
-
-Schmidt–Wingberg's Proposition 7 (i) concerns the group cohomology of `Γ = F(m)/F(m)^{(ν)} ⋊ G`
-with coefficients in `E(m,τ) ⊗ T`, where `F(m)/F(m)^{(ν)}` acts **trivially** and `G` acts
-through the operator action on `E(m,τ) = F(m)^{(ν)}/F(m)^{(ν+1)}` and the given action on `T`.
-
-This file builds that representation (as an object of `Rep (ZMod p) Γ`, the coefficient category
-of `Mathlib.RepresentationTheory.Homological.GroupHomology`), together with the fact that
-`F(m)/F(m)^{(ν)}` acts trivially on it — the hypothesis of the corestriction–coinflation sequence
-`groupHomology.H1CoresCoinfOfTrivial`.
-
-## Main definitions
-
-* `Work.CohomologicalShrinking.flowRep` : `E(m,τ) ⊗ T` as a `ZMod p`-linear representation of
-  `Γ = F(m)/F(m)^{(ν)} ⋊ G`;
-* `Work.CohomologicalShrinking.flowRep_isTrivial` : the normal subgroup `F(m)/F(m)^{(ν)}` acts
-  trivially.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.CohomologicalShrinking.Semidirect
 
 attribute [local instance] Classical.decEq

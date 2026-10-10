@@ -1,28 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `G_1` is pro-`p` and `G_0/G_1` has order prime to `p`
-
-Two consequences of the embeddings of `NK.RamificationDeep.QuotientEmbed` and
-`NK.RamificationDeep.UnitMap`:
-
-* `#(G_i/G_{i+1}) ∣ q` for `i ≥ 1`, where `q = #(A/𝔪_A)`; hence if `q = p^f` and the filtration
-  terminates (`G_N = ⊥` for some `N`) then `#G_1` is a power of `p`, i.e. `G_1` is a pro-`p`
-  group (`isProP_ramificationSubgroup_one`);
-* `#(G_0/G_1) ∣ q - 1`, hence `p ∤ #(G_0/G_1)` (`coprime_quotient_zero`).
-
-Together these are precisely the two inputs of
-`NK.Ramification.isWildInertia_ramificationSubgroup_one`, so that theorem can now be invoked
-with no hypotheses beyond `q = p^f`, `p` prime and the termination of the filtration: see
-`isWildInertia_ramificationSubgroup_one_of_residue` below.  For a finite Galois extension of
-`p`-adic fields the filtration always terminates (`NK.Ramification.exists_ramificationSubgroup_eq_bot`)
-and the residue field has `p^f` elements, so in that setting `G_1` *is* the wild inertia.
--/
-import Mathlib
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.UnitMap
-import Submission.NK.Ramification.isWildInertia_ramificationSubgroup_one
-import Submission.NK.Ramification.isProP_of_natCard_eq_prime_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,31 +1,14 @@
-/-
-# Vocabulary for the *naturality* of the degree `-2` Tate duality
-
-`Work.SSGRoute.TateDual.dual_coindUp_coindShift` states the duality of the shift sequence
-`Coind(M)/M ≅ Dual(coindUp G (M^∨))` as an existence statement.  For the naturality of the
-degree `(-2)` Tate duality `Ĥ⁻²(G, M^∨) ≅ H¹(G, M)^∨` one needs the *canonical* such
-isomorphism, i.e. the one induced by the explicit pairing
-
-`⟨f, g⟩ = ∑ x : G, (g x) (f x)`,  `f : G → M`,  `g ∈ coindUp G (M^∨)`
-
-of `Work.SSGRoute.TateDual.pairLin`.  This file only provides the two maps that have to be
-tracked in order to speak about naturality:
-
-* `coindUpMapLin` — the induced map `coindUp G A → coindUp G B` of an equivariant `𝔽_p`-linear
-  `f : A → B`, as an `𝔽_p`-linear map (the `Work.Tate` version is only additive);
-* `shiftDual` — the canonical pairing, as an `𝔽_p`-linear map
-  `coindShift G M →ₗ Dual(coindUp G (M^∨))`: the pairing `pairLin` descended along
-  `(pairLin).ker = coindDiagSub` (`pairLin_ker`).
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.SSGRoute.TateDual.Defs
-import Submission.Work.SSGRoute.TateDual.Setup
-import Submission.Work.SSGRoute.TateDual.pairLin_ker
-import Submission.Work.SSGRoute.TateDual.pairLin_equiv
 import Submission.Work.SSGRoute.TateDual.finrank_coindShift_eq_finrank_dual_coindUp
-import Submission.Work.Tate.CoindUp
-import Submission.Work.Tate.Shift
-import Submission.Work.SSGRoute.DualMod.Main
+import Submission.Work.SSGRoute.TateDual.pairLin_equiv
+import Submission.Work.SSGRoute.TateDual.pairLin_ker
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

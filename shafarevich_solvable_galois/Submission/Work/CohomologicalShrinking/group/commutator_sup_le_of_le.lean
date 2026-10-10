@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Commutator.Basic
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 
 namespace Work.CohomologicalShrinking.group
 

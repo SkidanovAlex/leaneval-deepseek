@@ -1,40 +1,22 @@
-/-
-# The inputs of the coprime-index case of local Tate duality in degrees `0`/`2`
-
-`Submission/Work/SSGRoute/PT/mkb_ld02_core_of_h3.lean` assembles Milne's `α²`-dévissage
-(`ADT`, Thm I.1.8 at `r = 2`) as `mkb_alphaTwo_bijective_of_inputs`, whose remaining hypotheses are
-
-* `hc` — the corestriction `cor : H²(U,Ωˣ) → H²(D_A,Ωˣ)` is bijective on the `p`-torsion
-  (Milne (1.1b)); available for `p ∤ [D_A : U]` (`corH2_ptorsion_bijective_of_coprime_index`);
-* `hbase` — the trivial-action base case `α²(U, N)`;
-* `hbase₁` — the base case `α²(U, N₁)` for the cokernel `N₁ = Coind_U^{D_A} N ⧸ N`;
-* `hDN`, `hDco`, `hDm1` — discreteness of the three `Hom_ℤ(-,Ωˣ)`-modules occurring in the dual
-  coefficient sequence;
-* `hhtop` — `H³(D_A, Hom_ℤ(N₁,Ωˣ)) = 0` (the arithmetic input `cd_p ≤ 2` for the finite module
-  `N₁`; the remaining arithmetic piece).
-
-This file supplies the *formal* inputs (`hbase`, `hbase₁`, `hDN`, `hDco`, `hDm1`) for an arbitrary
-`U ≤ D_A`, and, for `U = levelFixSub k Ω A K`, also `hc` (the coprime-index corestriction).  The
-mathematical content is that `Coind_U^{D_A} M` and its cokernel are *finite* (a `Coind`-element is
-determined by its values on a finite set of coset representatives), that a normal `U` acting
-trivially on `M` acts trivially on `Coind_U^{D_A} M` and on its cokernel, and that `α²(U,-)` is
-bijective for finite trivial-action coefficients (Kummer + Hilbert 90 at the open subgroup).
--/
-import Mathlib
-import Submission.Work.SSGRoute.PT.DevissageSESFinal
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.CategoryTheory.Shift.Basic
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Topology.Connected.Separation
+import Submission.Work.SSGRoute.PT.alphaTwo_trivAction_of_trivMod
+import Submission.Work.SSGRoute.PT.brOpenSubgroupDefs
+import Submission.Work.SSGRoute.PT.br_pTorsion_openSubgroup
+import Submission.Work.SSGRoute.PT.corH2_ptorsion_bijective_of_coprime_index
 import Submission.Work.SSGRoute.PT.devissageLinear
 import Submission.Work.SSGRoute.PT.isDiscreteModule_conjHom
-import Submission.Work.SSGRoute.PT.isDiscreteModule_coind
-import Submission.Work.SSGRoute.PT.alphaTwo_trivAction_of_trivMod
-import Submission.Work.SSGRoute.PT.AlphaTwoTrivModSurj
 import Submission.Work.SSGRoute.PT.kummerSES
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PT.br_pTorsion_openSubgroup
-import Submission.Work.SSGRoute.PT.brOpenSubgroupDefs
-import Submission.Work.SSGRoute.PT.corH2_ptorsion_bijective_of_coprime_index
-import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
 import Submission.Work.SSGRoute.PTUr.hdiv_addUnits
-import Submission.Work.SSGRoute.PTUr.subgroupAction_discrete
+import Submission.Work.SSGRoute.kummerBase_euler_ses_decomp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

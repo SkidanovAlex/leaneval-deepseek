@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.LTDDefs.Basic
 import Submission.Work.SSGRoute.PT.KrullCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

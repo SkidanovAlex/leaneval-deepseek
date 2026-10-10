@@ -1,19 +1,34 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archPairLocalClauses
-import Submission.Work.SSGRoute.PT.archPairGuard_coefficient
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusOwn.naturalityBricks
-import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
-import Submission.Work.SSGRoute.local_duality_ext_detect_h
-import Submission.Work.SSGRoute.PT.bDaux_natural
 import Submission.Work.SSGRoute.PT.archPairAbstract
 import Submission.Work.SSGRoute.PT.archPairLocal_add_right
 import Submission.Work.SSGRoute.PT.archPairLocal_coboundary
 import Submission.Work.SSGRoute.PT.archPair_level_independent
+import Submission.Work.SSGRoute.PT.bDaux_natural
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 namespace Work.SSGRoute.PT
 

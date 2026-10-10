@@ -1,8 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.H9.swHistChi_aux
-import Submission.Work.SSGRoute.H9.histChi_zero_at_T0
-import Submission.Work.SSGRoute.H9.histChi_sibling_escape
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.H9.histChi_conj_transport
+import Submission.Work.SSGRoute.H9.histChi_sibling_escape
+import Submission.Work.SSGRoute.H9.histChi_zero_at_T0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

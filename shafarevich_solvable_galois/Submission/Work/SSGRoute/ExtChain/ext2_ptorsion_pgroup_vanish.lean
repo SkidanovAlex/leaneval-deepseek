@@ -1,16 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.phi1_defs
-import Submission.Work.SSGRoute.powHomRepDefs
-import Submission.Work.CohomologicallyTrivial.pgroup_invariants_ne_bot_int
-import Submission.Work.CohomologicallyTrivial.pShortComplex_shortExact
-import Submission.Work.CohomologicallyTrivial.SubQuotDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.CohomologicallyTrivial.shortComplexOfStableSubmodule_shortExact
 import Submission.Work.SSGRoute.ExtChain.ext2_zmod_trivial
 import Submission.Work.SSGRoute.ExtChain.ext_iso_subsingleton
-import Submission.Work.SSGRoute.ExtChain.pgroup_invariants_coeff_rep
-import Submission.Work.SSGRoute.ExtChain.annihilator_dvd
 import Submission.Work.SSGRoute.ExtChain.finite_ptorsion_module
+import Submission.Work.SSGRoute.ExtChain.pgroup_invariants_coeff_rep
+import Submission.Work.SSGRoute.powHomRepDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

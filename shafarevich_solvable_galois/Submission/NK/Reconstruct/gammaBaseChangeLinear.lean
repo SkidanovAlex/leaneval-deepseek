@@ -1,5 +1,7 @@
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
 import Submission.NK.Reconstruct.gammaBaseChange
-import Submission.NK.Reconstruct.GammaModule
 import Submission.NK.Reconstruct.moduleFinite_gamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_mulEquiv_artinMap_of_commute
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

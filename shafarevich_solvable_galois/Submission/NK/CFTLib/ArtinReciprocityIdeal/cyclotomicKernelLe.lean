@@ -1,16 +1,15 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
+import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one_of_mem_congruence
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.CyclotomicSubextension
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexPrincipalRaySupNormRayLe
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one_of_mem_congruence
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

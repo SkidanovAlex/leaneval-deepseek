@@ -1,6 +1,7 @@
-import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_defs
-import Submission.NK.RepresentationTheory.GroupCohomology.key_chain_identity_counit
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 import Submission.NK.RepresentationTheory.GroupCohomology.coindIso_hom_eq
+import Submission.NK.RepresentationTheory.GroupCohomology.key_chain_identity_counit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

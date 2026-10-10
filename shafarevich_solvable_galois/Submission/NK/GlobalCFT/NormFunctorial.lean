@@ -1,10 +1,8 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFT.NormGroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.Norm.globalCFT_eventually_normIdeleFun_mem
 import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleFun_principalIdele
+import Submission.NK.GlobalCFT.NormGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

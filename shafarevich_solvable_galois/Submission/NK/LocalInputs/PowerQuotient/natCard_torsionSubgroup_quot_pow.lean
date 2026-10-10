@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.LocalInputs.PowerQuotient.Setup
 import Submission.NK.LocalInputs.PowerQuotient.exists_powTorsion_exponent
 import Submission.NK.LocalInputs.PowerQuotient.natCard_powTorsion_quot_pow

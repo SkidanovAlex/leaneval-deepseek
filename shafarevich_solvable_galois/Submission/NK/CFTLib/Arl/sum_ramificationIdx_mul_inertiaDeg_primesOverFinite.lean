@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.RamificationInertia.Basic
 import Submission.NK.CFTLib.Arl.Defs
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

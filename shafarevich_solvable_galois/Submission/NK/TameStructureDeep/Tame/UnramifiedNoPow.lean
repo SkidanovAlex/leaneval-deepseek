@@ -1,33 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer input is a theorem
-
-`NK.TameStructureDeep.Tame.UnramifiedNoPow` (`Tame/Defs.lean`) was the single arithmetic input of
-the tamely ramified layer: *a uniformiser `π` of `κ = K_𝔭` has no `n`-th root in `κ^{ur}` for
-`n ≥ 2` prime to `p`*.
-
-This file **discharges it at every place**:
-
-* `NK.TameStructureDeep.Tame.no_pow_root_adjoin_primitiveRoot` gives the input in its
-  primitive-root form: `π` has no `n`-th root in `κ⟮ζ⟯` for a primitive `m`-th root of unity `ζ`
-  with `p ∤ m` (proved by the valuation-theoretic argument: `κ(ζ_{q^d - 1})` is unramified of
-  degree `d`, so the uniformiser still has valuation `exp (-1)`, which no `n`-th power can have for
-  `n ≥ 2`);
-* `NK.TameStructureDeep.Tame.exists_adjoin_primitiveRoot_of_mem_unramifiedClosure` reduces a
-  general `α ∈ κ^{ur}` to a single primitive-root layer;
-* a uniformiser of `𝒪_κ` exists because `𝔭.adicCompletionIntegers K` is a discrete valuation ring.
-
-Hence `NK.TameStructureDeep.Tame.unramifiedNoPow_adicCompletion`: **the input holds at every
-place of every number field**, with no hypothesis.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.no_pow_root_adjoin_primitiveRoot
-import Submission.NK.TameStructureDeep.Tame.exists_adjoin_primitiveRoot_of_mem_unramifiedClosure
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.Kummer
-import Submission.NK.Mine.ResidueCharAutomatic
+import Submission.NK.TameStructureDeep.Tame.exists_adjoin_primitiveRoot_of_mem_unramifiedClosure
+import Submission.NK.TameStructureDeep.Tame.no_pow_root_adjoin_primitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

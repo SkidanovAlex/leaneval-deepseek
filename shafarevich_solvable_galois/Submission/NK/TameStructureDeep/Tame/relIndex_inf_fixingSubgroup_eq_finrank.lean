@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameClosure
+import Mathlib.FieldTheory.Galois.Infinite
 import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

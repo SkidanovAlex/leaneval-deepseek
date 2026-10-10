@@ -1,61 +1,10 @@
-/-
-# The core of the Magnus embedding theorem, assembled
-
-The "core" statement used to prove `lowerCentralSeries_torsionFree` is the hard half of the Magnus
-embedding theorem:
-
-if `y ∈ γ_k` (Mathlib: `(⊤ : Subgroup (FreeGroup X)).lowerCentralSeries (k-1)`) and the Magnus
-leading term of `y` vanishes modulo the degree `k+1` part of the truncated free associative algebra
-`FreeAssoc X ⧸ fil X (k+1)`, then `y ∈ γ_{k+1}`.
-
-## Route
-
-Let `F = FreeGroup X`, `A = FreeAssoc X = ℤ[FreeMonoid X]` and `Λ_q = γ_q/γ_{q+1}` (Mathlib
-indexing).  For a binary tree `c` let `monGrp c ∈ F` be the group commutator monomial, `monLie c`
-the Lie bracket monomial in `L = FreeLieAlgebra ℤ X` and `monBrk c` the ring commutator monomial
-in `A`.
-
-* `core.gen_span` writes the class of `y ∈ γ_k` in `Λ_{k-1}` as a `ℤ`-linear combination
-  `Σ_c μ_c [monGrp c]` of the commutator monomials of the trees of size `k`.
-* The Magnus leading term is additive on `γ_k` (modulo the degree-`k` piece), so it factors through
-  the class map; this gives the homomorphism `Mbar : Λ_{k-1} → (filq X (k+1) k, +)` whose
-  compositition with the inclusion of `filq X (k+1) k` is `Theta`.  Hence the *vanishing* of the
-  leading term of `y` says that `Σ_c μ_c monBrk c ∈ fil X (k+1)`.
-* Each `monBrk c` is a combination of words of length exactly `size c = k`, so `Σ_c μ_c monBrk c`
-  lies in the degree-`k` part `wordSpan X k`; intersecting with `fil X (k+1)` gives zero.
-* Transporting along `FreeAlgebra.equivMonoidAlgebraFreeMonoid` and applying Witt's theorem
-  (`Phi_injective`, the faithfulness of the free Lie ring) yields `Σ_c μ_c monLie c = 0` in `L`.
-* The graded Lie map `core.rzPsi` sends `monLie c` to the class of `monGrp c` in `Λ_{k-1}`; since
-  the inclusions `Λ_{k-1} → Λbar` are injective (`core.rz_lofL_injective`) this gives
-  `Σ_c μ_c [monGrp c] = 0` in `Λ_{k-1}`.
-* By `core.gen_span` again, `cls y = 0`, i.e. `y ∈ γ_{k+1}` by `core.cls_eq_zero_iff`.
-
-The file is a self-contained assembly: it only imports materials that are already proved in the
-workspace, and avoids both `magnusLieDefs`/`witt.Defs` clashes (the Hall-set inputs used for
-Witt's theorem are those of `witt/hall_spanning.lean`, which does not reach `witt/Defs.lean`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnusFramework
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
-import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
-import Submission.Work.SSGRoute.prop5.coreGraded
-import Submission.Work.SSGRoute.prop5.coreLieBar
-import Submission.Work.SSGRoute.prop5.gradedCast
-import Submission.Work.SSGRoute.prop5.bracketBar_axioms
-import Submission.Work.SSGRoute.prop5.witt.Basic
-import Submission.Work.SSGRoute.prop5.witt.Vocab
-import Submission.Work.SSGRoute.prop5.witt.Assembly
-import Submission.Work.SSGRoute.prop5.witt.Swap
-import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
-import Submission.Work.SSGRoute.prop5.witt.hall_spanning
-import Submission.Work.SSGRoute.prop5.witt.leading_term_coeff
-import Submission.Work.SSGRoute.prop5.magnusBase
-import Submission.Work.SSGRoute.prop5.core.Defs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Lie.Free
 import Submission.Work.SSGRoute.prop5.core.gen_span
 import Submission.Work.SSGRoute.prop5.core.magLeadLemmas
 import Submission.Work.SSGRoute.prop5.core.relations_zero
 import Submission.Work.SSGRoute.prop5.magLead_mem_nestedImage
+import Submission.Work.SSGRoute.prop5.magnusBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

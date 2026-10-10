@@ -1,5 +1,5 @@
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.ellRestrict_comp
-import Submission.NK.Reconstruct.GammaSup
 import Submission.NK.Reconstruct.proj_surjective
 import Submission.NK.Reconstruct.torsionFreeGamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

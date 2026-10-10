@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.extH_congr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

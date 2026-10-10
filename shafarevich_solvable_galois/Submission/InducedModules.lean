@@ -1,42 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Acyclicity of coinduced (free) modules
-
-The cohomological input "`H²(G, A) = 0`" of Shafarevich's theorem on embedding problems with an
-*induced / free* abelian kernel (Proposition 11 of A. Schmidt and K. Wingberg, *Šafarevič's
-theorem on solvable groups as Galois groups*, arXiv:math/9211001):
-
-> Let `K/k` be a finite Galois extension of global fields with Galois group `G = G(K/k)` and let
-> `A = 𝔽_p[G]^n`.  Then the embedding problem ... is properly solvable.
-> Proof:  Since `H²(G, A) = 0`, the embedding problem has a solution `ψ₀`.
-
-Here we prove the group-cohomological input, in the self-contained `H¹`/`H²` vocabulary of
-`Submission/Work/GroupCohomology/Basic.lean` (inhomogeneous cochains, cocycles `Z¹`, `Z²`,
-coboundaries `B¹`, `B²` and the quotients `H¹`, `H²`):
-
-* `Z1_le_B1_coind`, `Z2_le_B2_coind` : the **coinduced** module `G → R`, with
-  `(g • f) x = f (x * g)`, has no `H¹` and no `H²`; the explicit primitives are
-  `a g = f g 1` and `f g x = c (x, g) 1` respectively (this is the trivial-subgroup case of
-  Shapiro's lemma: `H^i(G, Coind_1^G R) = H^i(1, R) = 0` for `i ≥ 1`).
-* `subsingleton_H1_of_le`, `subsingleton_H2_of_le` : the triviality of the cohomology groups.
-* `Z2_le_B2_pi_of_le`, `subsingleton_H2_pi_of_le` : vanishing is inherited by products of copies
-  of the coefficient module (the cocycle conditions are pointwise).
-* `subsingleton_H2_free` : **`H²(G, 𝔽_p[G]^r) = 0`** in the form needed by the proposition:
-  `(Fin r → (G → 𝔽_p))` with the componentwise coinduced action is the `r`-fold product of the
-  regular module `𝔽_p[G]`.
-
-For a *finite* group `G` the coinduced module `G → 𝔽_p` is the regular module `𝔽_p[G]` (the basis
-`δ_g` corresponds to the function `x ↦ δ_{x, g}`; the left regular action becomes the action
-`(g • f) x = f (x * g)` after composing with inversion), so the last statement is exactly
-`H²(G, 𝔽_p[G]^r) = 0`.
--/
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
-import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
-import Submission.Work.GroupCohomology.H2_induction_on
-import Submission.Work.GroupCohomology.H1pi_eq_zero_iff
+import Mathlib.Tactic.Abel
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Pi
 import Submission.Work.GroupCohomology.H1_induction_on
+import Submission.Work.GroupCohomology.H1pi_eq_zero_iff
+import Submission.Work.GroupCohomology.H2_induction_on
+import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

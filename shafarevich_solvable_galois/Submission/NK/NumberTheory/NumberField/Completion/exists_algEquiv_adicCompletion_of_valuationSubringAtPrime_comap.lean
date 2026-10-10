@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.NK.Mine.CompletionAPI
-import Submission.NK.NumberTheory.NumberField.Completion.place_transport
-import Submission.NK.NumberTheory.NumberField.Completion.completion_transport
+import Mathlib.Tactic.Have
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_withVal_of_valuation_eq_of_cofinal
+import Submission.NK.Mine.CompletionAPI
+import Submission.NK.NumberTheory.NumberField.Completion.completion_transport
 
 /-!
 # The local isomorphism induced by a global one

@@ -1,5 +1,6 @@
-import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

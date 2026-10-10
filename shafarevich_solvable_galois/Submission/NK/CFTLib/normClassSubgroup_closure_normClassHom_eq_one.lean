@@ -1,12 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup.globalCFT_normClassHom_trans
-import Submission.NK.GlobalCFT.H0Computation
-import Submission.NK.CFTLib.subsingleton_tateCohomology_neg_one_of_cover
-import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
-import Submission.NK.CFTLib.inclusion_smul_of_tower
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.H1All
 import Submission.NK.GlobalCFTdeep.exists_sub_smul_eq_of_subsingleton_tateCohomology_neg_one
-import Submission.NK.GlobalCFTdeep.subsingleton_tateCohomology_neg_one_of_subsingleton_groupCohomology_one_cyclic
+import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

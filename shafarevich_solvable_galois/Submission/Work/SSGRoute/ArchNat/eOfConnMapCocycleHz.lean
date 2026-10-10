@@ -1,9 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.freeLift_id_epi
-import Submission.Work.SSGRoute.ArchDictionary.extOneDictNatAux
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
-import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

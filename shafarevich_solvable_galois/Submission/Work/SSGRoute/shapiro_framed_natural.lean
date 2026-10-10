@@ -1,32 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Shapiro induction on an abstract framed `G`-set, with naturality in the coefficients
-
-`ShapiroSetup` and `ShapiroInduced` build, for an abstract *framed* `G`-set `X` (a `G`-set with a
-base point `x₀` fixed by `H` and a "section" `s : X → G` satisfying `(s x)⁻¹ * g * s (g⁻¹ • x) ∈ H`
-and `s x₀ = 1`), the `H`-coordinates `AX`, the permutation module `𝔽_p[X]` and the function
-`funCX`.  The purpose of the present file is to package these into the full "half of Shapiro"
-statement for the *fixed* coefficient module `M ⊗ 𝔽_p[X]`:
-
-* a `2`-cocycle `C` on `G` with values in `M ⊗ 𝔽_p[X]` whose values on `H × H`, read off at the
-  base point, reproduce a prescribed `2`-cocycle `c` on `H`;
-* the evaluation `ev : M ⊗ 𝔽_p[X] → M` is the coefficient at `x₀`, and it is `H`-equivariant;
-* (`shapiro_framed_natural`) the whole construction is *natural* in the coefficient module: for a
-  `G`-equivariant `𝔽_p`-linear `θ : M → M'`, the evaluation for `M'` intertwines `θ.rTensor 𝔽_p[X]`
-  with `θ` itself.  This is the property that lets two Shapiro frames be compared after changing
-  the coefficients.
-
-The naturality is an immediate consequence of `permEquivX_rTensor` below: the identification
-`M ⊗ 𝔽_p[X] ≃ (X → M)` is natural in `M`.
--/
-
-import Mathlib
-import Submission.Work.SSGRoute.ShapiroSetup
-import Submission.Work.SSGRoute.ShapiroInduced
+import Mathlib.LinearAlgebra.DFinsupp
+import Mathlib.Tactic.Have
+import Mathlib.Data.ZMod.Defs
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.GroupCohomology.Basic
-import Submission.Work.Shrinking.Basic
+import Submission.Work.SSGRoute.ShapiroInduced
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,23 +1,22 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.NodeShim.perfectRightBricks
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_p_dvd_stab
 import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_ge_p_dvd_stab
 import Submission.Work.SSGRoute.local_duality_ext_in
-import Submission.Work.SSGRoute.local_duality_ext_detect_h
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.g1plus_finHalf
-import Submission.Work.SSGRoute.PT.G1plusLevelClauses
-import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.Work.SSGRoute.E7cOmega.exists_level_p_dvd_decomp
-import Submission.Work.SSGRoute.E7cOmega.card_stab_eq_of_liesOver
-import Submission.Work.SSGRoute.E7cOmega.card_stab_dvd_of_tower
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # Clause (4)-right of `G1⁺`: perfectness of the finite half in the second variable
@@ -337,7 +336,6 @@ theorem g1FinHalf_perfect_right
     Work.SSGRoute.PT.G1plusOwn.exists_level_ge_p_dvd_stab p k Ω K A hA L₀ hKL₀
   letI : FiniteDimensional k L := hfdL
   letI : IsGalois k L := hgalL
-  letI : NumberField L := hnfL
   have hKL : K ≤ L := le_trans hKL₀ hL₀L
   letI : Algebra ↥K ↥L := (IntermediateField.inclusion hKL).toAlgebra
   haveI hst1 : IsScalarTower k ↥K ↥L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)

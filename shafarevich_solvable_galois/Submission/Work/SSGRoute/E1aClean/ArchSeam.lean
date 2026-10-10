@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.PT.e1a_beta_can
 import Submission.Work.sha2_hasse.exists_norm_witness_infinitePlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

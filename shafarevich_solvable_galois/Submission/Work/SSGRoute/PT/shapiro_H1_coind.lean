@@ -1,4 +1,7 @@
-import Submission.Work.SSGRoute.PT.shapiro_defs
+import Mathlib.GroupTheory.Index
+import Mathlib.Tactic.Group
+import Mathlib.Topology.Constructions
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.coindCocycle_crossed
 import Submission.Work.SSGRoute.PT.coindCocycle_eventually_zero
 import Submission.Work.SSGRoute.PT.mem_B1_of_val_one_eq_zero

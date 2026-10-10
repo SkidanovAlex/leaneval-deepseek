@@ -1,14 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_unramified_mul_dvd
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.PT.G1plusOwn.mem_inertia_of_fixes_levels
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.PT.G1plusOwn.exists_factors_of_vanishing_level
 import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_unramified_le_of_isOpen
 import Submission.Work.SSGRoute.PT.G1plusOwn.isInertiaAt_finQW_eq_one
-import Submission.Work.SSGRoute.PT.G1plusOwn.exists_factors_of_vanishing_level
+import Submission.Work.SSGRoute.PT.G1plusOwn.mem_inertia_of_fixes_levels
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

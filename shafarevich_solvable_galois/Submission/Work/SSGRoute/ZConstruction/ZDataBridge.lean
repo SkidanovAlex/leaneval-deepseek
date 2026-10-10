@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.ZConstruction.Reduction
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.SWData
 import Submission.Work.SSGRoute.cyclic_transfer_of_vanishing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

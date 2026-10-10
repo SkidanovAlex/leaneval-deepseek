@@ -1,13 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.normImage_at_level_proper
-import Submission.Work.SSGRoute.nonempty_extGroupCohomologyBridge
-import Submission.Work.SSGRoute.powHomRepDefs
-import Submission.Work.SSGRoute.cyclic_quotient_of_H1_ne_zero
-import Submission.NK.CFTLib.IdeleHasse.Descent.exists_localAlgebraMapUnits_eq_of_ker_fixed
-import Submission.NK.CFTLib.IdeleHasse.Descent.stabRestrict_surjective
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

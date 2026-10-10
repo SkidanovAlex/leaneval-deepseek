@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.FiberUnitsLocal
-import Submission.NK.GlobalCFTdeep.Herbrand.tateCohomology_mul_eq_of_shortExact_noFin
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.CoindHerbrand
+import Submission.NK.GlobalCFTdeep.Herbrand.FiberUnitsLocal
 import Submission.NK.GlobalCFTdeep.Herbrand.FiniteIndex
+import Submission.NK.GlobalCFTdeep.Herbrand.tateCohomology_mul_eq_of_shortExact_noFin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

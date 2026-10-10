@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.mem_ker_units_residue_adicCompletion_iff
-import Submission.Commons.NumberTheory.NumberField.Completion.surjective_units_residue_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

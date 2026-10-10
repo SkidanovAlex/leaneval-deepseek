@@ -1,11 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.step4_y_escape_v2.localFactor_productFormula_clean
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.GrunwaldEscapeCore.L1Korth.idele_decomposition_tFreePart
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm_of_finiteDimensional
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
-import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinSetup
 import Submission.Work.SSG8Escape.localField_not_real_of_no_involutions
+import Submission.Work.SSGRoute.SSG8Escape.Setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

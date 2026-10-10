@@ -1,18 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Combining realizations
-
-Two ways of combining Galois realizations are needed when building a field with a prescribed
-solvable Galois group:
-
-* moving a realization into a fixed algebraic closure, so that composita and intersections make
-  sense (`RealizableOver.toClosure`);
-* the Galois group of a compositum of two *linearly disjoint* Galois extensions is the product of
-  the Galois groups (`Submission/Work/FieldTheory/gal_sup_prod`), whence a product of realizable
-  groups whose realizations can be chosen linearly disjoint is realizable.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Realization
 import Submission.Work.FieldTheory.gal_sup_prod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

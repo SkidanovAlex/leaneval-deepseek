@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.pTorsion_zmod
-import Submission.Work.SSGRoute.ext_localUnits_pTorsion
-import Submission.Work.SSGRoute.localUnits_extH_natCard_eq_ofFinite
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.local_pTorsion_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

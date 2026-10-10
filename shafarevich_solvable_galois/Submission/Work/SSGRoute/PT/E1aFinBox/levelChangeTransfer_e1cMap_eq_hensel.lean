@@ -1,10 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.phiCanDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.finPlaceSquare
-import Submission.Work.SSGRoute.E1aClean.restrictScalarsContinuous
 import Submission.Work.SSGRoute.E1aClean.levelTwoCocycleAgrees
-import Submission.Work.SSGRoute.E1aClean.e1cMap_hensel_cocycle_formula
-import Submission.Work.SSGRoute.E1aClean.levelChange_lift_transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

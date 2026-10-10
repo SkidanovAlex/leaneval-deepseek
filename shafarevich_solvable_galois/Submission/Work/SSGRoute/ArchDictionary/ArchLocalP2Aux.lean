@@ -1,10 +1,16 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.ArchDictionary.Defs
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.E1aClean.ArchSeam
 import Submission.Work.SSGRoute.ArchDictionary.placeLocalFieldComplex
-import Submission.Work.SSGRoute.ExtChain.resH1_e1cMap_eq_zero_of_invariant_lift
-import Submission.Work.SSGRoute.ExtChain.ext_push_engine
+import Submission.Work.SSGRoute.ExtChain.resH2_zpowers_e1aChainH_eq_zero_of_extRes_zpowers_eq_zero
+import Submission.Work.SSGRoute.PT.decompK_linked
 import Submission.Work.SSGRoute.PTdualControl.archimedeanLocalPush
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

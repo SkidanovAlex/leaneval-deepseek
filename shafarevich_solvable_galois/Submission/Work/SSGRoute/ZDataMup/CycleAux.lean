@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleCongr
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Mathlib.Data.Int.Star
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
+import Submission.Work.SSGRoute.ZDataMup.CycleCongr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

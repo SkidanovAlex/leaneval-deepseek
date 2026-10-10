@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.NormIndex.Defs
-import Submission.NK.GlobalCFTdeep.Herbrand.top_eq_principal_sup_TIdeles
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.exists_finset_TIdeles_surjective
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
+import Submission.NK.GlobalCFTdeep.Herbrand.top_eq_principal_sup_TIdeles
+import Submission.NK.GlobalCFTdeep.NormIndex.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

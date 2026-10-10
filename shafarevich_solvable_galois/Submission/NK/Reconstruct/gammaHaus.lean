@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.Padics.MahlerBasis
 import Submission.NK.Reconstruct.GammaDual
-import Submission.NK.Reconstruct.galToGamma
 import Submission.NK.Reconstruct.galToGamma_continuous
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

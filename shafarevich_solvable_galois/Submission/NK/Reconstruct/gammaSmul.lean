@@ -1,7 +1,12 @@
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.Reconstruct.GammaModule
-import Submission.NK.Reconstruct.GammaDual
-import Submission.NK.Reconstruct.gammaHaus
 import Submission.NK.Reconstruct.continuous_toZModPow
+import Submission.NK.Reconstruct.gammaHaus
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

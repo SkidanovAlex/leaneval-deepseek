@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Minpoly.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Commons.RingTheory.Henselian.coeff_mem_of_irreducible_of_henselian_alt
 import Submission.Commons.RingTheory.Polynomial.minpoly_inv_eq_reverse
 import Submission.Commons.RingTheory.Valuation.exists_pow_eq_algebraMap_of_isAlgebraic

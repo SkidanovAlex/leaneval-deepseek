@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Group.Subgroup.Ker
 import Submission.Work.AbsoluteGalois.Cohomology
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

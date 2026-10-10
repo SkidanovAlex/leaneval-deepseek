@@ -1,14 +1,13 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.RamificationInertia.Inertia
 import Submission.NK.Reconstruct.ambient4f3
-import Submission.NK.Reconstruct.tauStarDef
-import Submission.NK.Reconstruct.exists_algEquiv_primeTransport_eq
-import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.Chebotarev.IsFrobAtConj
-import Submission.NK.Reconstruct.gammaBaseChangeHom_galToGamma
-import Submission.NK.Reconstruct.isFrobElementAt_ringConjHom
 import Submission.NK.Reconstruct.exists_galois_primeTransport_under_eq
-import Submission.NK.Reconstruct.splitsCompletelyOverRat_primeTransport
+import Submission.NK.Reconstruct.gammaBaseChangeHom_galToGamma
 import Submission.NK.Reconstruct.isFrobElementAt_restrictScalars_of_inertiaDeg_eq_one
+import Submission.NK.Reconstruct.isFrobElementAt_ringConjHom
+import Submission.NK.Reconstruct.splitsCompletelyOverRat_primeTransport
+import Submission.NK.Reconstruct.tauStarDef
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

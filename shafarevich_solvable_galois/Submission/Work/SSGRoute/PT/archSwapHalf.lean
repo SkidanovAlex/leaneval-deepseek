@@ -1,18 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.PT.extLoc_yonedaPair
-import Submission.Work.SSGRoute.E1aClean.localDictionary_natural_family
-import Submission.Work.SSGRoute.PT.archWDef
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.archYoneda_perfect
 import Submission.Work.SSGRoute.PT.classFormation_reciprocity_allPlaces
-import Submission.Work.SSGRoute.PT.finHalfData
 import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.e7comega_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

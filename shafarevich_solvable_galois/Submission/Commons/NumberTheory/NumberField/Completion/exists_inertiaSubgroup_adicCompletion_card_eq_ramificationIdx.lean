@@ -1,10 +1,7 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_inertiaSubgroup_adicCompletion
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

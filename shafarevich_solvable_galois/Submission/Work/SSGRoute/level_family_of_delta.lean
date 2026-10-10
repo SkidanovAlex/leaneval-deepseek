@@ -1,20 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_lambda_defs
-import Submission.Work.SSGRoute.phi1_level_index
-import Submission.Work.SSGRoute.phi1_level_system
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.phi1_lambda_compat
-import Submission.Work.SSGRoute.phi1_level_trivial_two
-import Submission.Work.SSGRoute.addHom_extend_of_exponent
-import Submission.Work.SSGRoute.pt_char_pTorsion
-import Submission.Work.SSGRoute.E4R3.inflC_injective
-import Submission.Work.SSGRoute.phi1_wcolim
-import Submission.Work.SSGRoute.phi1_glue
-import Submission.Work.SSGRoute.phi0_realization_in
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.LF.Conj
 import Submission.Work.SSGRoute.LF.Descent
+import Submission.Work.SSGRoute.phi1_glue
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

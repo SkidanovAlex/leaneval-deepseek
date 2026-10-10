@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.All
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
+import Submission.Work.CohomologicalShrinking.Prop7iConcrete
+import Submission.Work.CohomologicalShrinking.TateShifts
+import Submission.Work.CohomologicalShrinking.exists_shrinking_Hm2_tate
+import Submission.Work.CohomologicalShrinking.flow.finite_refinedQuotient
+import Submission.Work.CohomologicalShrinking.nonempty_prop5Data_one_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

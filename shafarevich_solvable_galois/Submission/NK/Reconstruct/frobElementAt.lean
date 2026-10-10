@@ -1,7 +1,13 @@
-import Submission.NK.Reconstruct.galToGamma
-import Submission.NK.Reconstruct.galToGamma_continuous
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.denseRange_galToGamma
 import Submission.NK.Reconstruct.denseSet_avoidClosedSubgroups
+import Submission.NK.Reconstruct.galToGamma_continuous
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

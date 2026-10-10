@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFT.GaloisClassGroup
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_smul
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_idele_smul_eq_self_iff
 import Submission.NK.GlobalCFT.Inclusion.hilbert90_cocycle
-import Submission.NK.GlobalCFT.GaloisClassGroup
-import Submission.NK.GlobalCFT.GaloisIdelesAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.UchidaKummer.Differentiation.exists_kummerField_localDeg_eq_of_surjective
 import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

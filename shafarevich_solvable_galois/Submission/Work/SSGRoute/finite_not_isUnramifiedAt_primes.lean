@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.Work.LocalFields.finite_ramified_primes_extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

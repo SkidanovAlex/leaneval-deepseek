@@ -1,7 +1,14 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
+import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Submission.NK.NUV2.Geom.latticeCosetCount_sub_volume_isBigO
 import Submission.NK.NUV2.Minkowski.frontier_thickening_normLeOne
-import Submission.NK.NUV2.Minkowski.frontier_thickening_expMapBasis_paramSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

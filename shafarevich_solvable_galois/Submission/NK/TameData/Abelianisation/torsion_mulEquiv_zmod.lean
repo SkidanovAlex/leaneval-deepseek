@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.GroupTheory.Torsion
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameData.Definitions
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

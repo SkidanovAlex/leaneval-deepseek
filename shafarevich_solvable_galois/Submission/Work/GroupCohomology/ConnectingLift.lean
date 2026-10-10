@@ -1,30 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map computed from an arbitrary lift
-
-In `Submission/Work/GroupCohomology/Connecting.lean` the connecting map
-`δ : Z¹(G, C) → Z²(G, A)` of a short exact sequence `0 → A --iota--> B --pi--> C → 0` of
-`G`-modules is defined by choosing, for a `1`-cocycle `c : G → C`, the particular lift
-`S.liftCochain c` of `c` along `pi` (chosen by `Classical.choose`).
-
-For the exactness statements of the long exact sequence one must be able to use *any* lift: this
-file introduces `ShortExactSeq.deltaCocycleOf c b hb` for a cochain `b : G → B` with
-`pi ∘ b = c` and proves
-
-* `ShortExactSeq.iota_deltaCocycleOf` : `iota (δc (g,h)) = d¹ b (g,h)`;
-* `ShortExactSeq.deltaCocycleOf_self` : for the canonical lift, `deltaCocycleOf` agrees with
-  `deltaCocycle` (as classes, hence as cocycles);
-* `ShortExactSeq.deltaCocycleOf_eq_of_pi_eq` : two lifts of the same cocycle define the same class
-  in `H²(G, A)`.
-
-## Main definitions and results
-
-* `Work.GroupCohomology.ShortExactSeq.deltaCocycleOf`
-* `Work.GroupCohomology.ShortExactSeq.iota_deltaCocycleOf`
-* `Work.GroupCohomology.ShortExactSeq.deltaCocycleOf_eq_of_pi_eq`
-* `Work.GroupCohomology.ShortExactSeq.deltaCocycle_eq_of_lift`
--/
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Connecting
 import Submission.Work.GroupCohomology.H2pi_eq_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

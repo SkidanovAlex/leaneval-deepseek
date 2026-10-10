@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Series
+import Mathlib.Tactic.IntervalCases
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.FormalGroup
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.existsUnique_lubinTate_solution
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

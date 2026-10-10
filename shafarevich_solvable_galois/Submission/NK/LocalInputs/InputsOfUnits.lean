@@ -1,39 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Galois inputs of a `p`-adic completion, with the abelian rank *derived*
-
-`NK.LocalInputs.LocalGaloisInputs` (module `Inputs`) assumes the abelianised pro-`p` rank
-`HasAbelianFrattiniRank p (d+1+δ) (Gal(K'/κ))` of part (3) of the deliverable.  This module shows
-that this field is *not* an independent assumption: it is derived from
-
-* the Lubin–Tate / existence theorem of local class field theory (the input
-  `NK.LocalReciprocity.LubinTateInput` isolated by the sibling area
-  `Submission/Work/LocalReciprocity/`);
-* the fact that index-`p` normal subgroups of `Gal(K'/κ)` are open (Nikolov–Segal: true because
-  `Gal(κ̄/κ)` is topologically finitely generated for `p`-adic `κ`);
-* **the power-class count of part (1)** (`LocalFieldInputs.principal_units_card`), via
-  `NK.LocalInputs.hasFrattiniRank_units_adicCompletion` (`HasFrattiniRank p (d+1+δ) κˣ`) and the
-  profinite-completion invariance of the index-`p` count
-  (`NK.LocalInputs.CommGroupRank.numIndexSubgroups_profiniteCompletion`).
-  No separate hypothesis on the unit group is needed: the `p`-Frattini rank of `κˣ^{∧}` is
-  *derived* (`NK.LocalInputs.hasFrattiniRank_completionUnits_adicCompletion`).
-
-This is route (b) of the deliverable, formalised: `LocalGaloisInputsOfUnits` collects exactly
-those inputs, and `localGaloisInputs_of_units` / `padicGaloisInputs_of_units` derive
-`LocalGaloisInputs` and the instantiation `PadicGaloisInputs` from them.
-
-In the complementary case `δ = 1` (`ζ_p ∈ κ`, e.g. `κ = ℚ_p(ζ_p)`) there is a second route which
-does not need Lubin–Tate at all: the Kummer bridge of the sibling chapter
-(`NK.LocalAnabelian.hasAbelianFrattiniRank_of_isPrimitiveRoot`) computes the abelian rank from the
-power-class count alone, cf. `hasAbelianFrattiniRank_of_isPrimitiveRoot_adicCompletion` below.
--/
-import Submission.NK.LocalInputs.Instantiation
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalInputs.AbelianRank.of_lubinTate
 import Submission.NK.LocalInputs.CommGroupRank.numIndexSubgroups_profiniteCompletion
 import Submission.NK.LocalInputs.PowerQuotient.hasFrattiniRank_units_adicCompletion
-import Submission.NK.LocalAnabelian.PadicField.FrattiniRank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

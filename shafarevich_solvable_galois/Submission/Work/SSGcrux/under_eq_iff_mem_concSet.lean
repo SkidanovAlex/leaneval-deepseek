@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGcrux.galRes_mem_concSet_iff
 import Submission.Work.SSGcrux.under_smul_eq_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

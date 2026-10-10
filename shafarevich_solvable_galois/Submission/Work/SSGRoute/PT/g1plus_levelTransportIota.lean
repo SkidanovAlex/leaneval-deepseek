@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.g1plus_levelTransport
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.decompK_restrict_exists
+import Submission.Work.SSGRoute.PT.g1plus_levelTransport
 
 /-!
 # Level transport of the orbit-placement lift `iotaLift`

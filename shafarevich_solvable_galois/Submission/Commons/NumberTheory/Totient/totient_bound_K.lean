@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.Tactic.IntervalCases
+import Mathlib.Data.Int.Star
+import Mathlib.Data.Nat.Totient
+import Mathlib.Tactic.Linarith.Frontend
+import Mathlib.Tactic.NormNum.BigOperators
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

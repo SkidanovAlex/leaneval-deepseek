@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.NK.Reconstruct.GammaObject
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Submission.NK.Chebotarev.ConjugacyOfFrobenius
+import Submission.NK.Chebotarev.Corollaries
+import Submission.NK.Chebotarev.FrobeniusOne
+import Submission.NK.Chebotarev.IsFrobAtStabilizes
 import Submission.NK.Reconstruct.GammaSup
-import Submission.NK.Reconstruct.Gamma
 import Submission.NK.Reconstruct.exists_pow_projection_ellPart
-import Submission.NK.Chebotarev.All
-import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquivSameBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

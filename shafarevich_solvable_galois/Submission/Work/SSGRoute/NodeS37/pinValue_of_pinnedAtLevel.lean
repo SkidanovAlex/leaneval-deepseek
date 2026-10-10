@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.NodeS35.swPinFamily
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.H9.swPromotionLevel
-import Submission.Work.SSGRoute.H9.swPinnedFrob_sublevel
-import Submission.Work.SSGRoute.H9.swIsUnramifiedIn_hLevel_of_kills_inertia
+import Submission.Work.SSGRoute.NodeS35.swPinFamily
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

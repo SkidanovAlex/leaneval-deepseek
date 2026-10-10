@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.NK.CFTLib.HR.TransferAux.towerAux
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_idele_smul_eq_self_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

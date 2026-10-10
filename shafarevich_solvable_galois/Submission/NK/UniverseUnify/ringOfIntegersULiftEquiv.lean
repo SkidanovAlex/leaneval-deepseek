@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Field.ULift
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.UniverseUnify.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

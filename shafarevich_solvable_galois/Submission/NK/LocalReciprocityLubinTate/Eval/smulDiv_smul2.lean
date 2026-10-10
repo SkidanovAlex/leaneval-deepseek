@@ -1,46 +1,9 @@
-/-
-# Functoriality of the Lubin–Tate `𝒪[F]`-action on the torsion points
-
-Milne, *Classical Field Theory*, §I.3: the action of `a ∈ 𝒪[F]` on the `π^n`-torsion points `Λ_n`
-of the Lubin–Tate group of `π` is `a · x = [a](x)`, the evaluation of the `a`-multiplication
-series `[a]` at `x` (`Eval/TorsionAction.lean`).  This file proves that it is an action of the
-multiplicative monoid `𝒪[F]`:
-
-  `a · (b · x) = (a * b) · x`     (`smulDiv_smul2`),
-
-which, together with `1 · x = x` (`smulDiv_one`), gives the first two axioms of Milne's
-`𝒪[F]/π^n`-module structure on `Λ_n ≅ (𝒪[F]/π^n)^+` (Milne, *CFT*, Theorem I.3.1).
-
-## The proof
-
-Everything happens in the finite ring `T_n = 𝒪[F][T]/(f^{(n)}(T))` of `Eval/TorsionRing.lean`
-with its class `τ` and its `𝒪[F]`-algebra homomorphism `evMap x : T_n → F̄` for `x ∈ Λ_n`.
-
-Write `c = [b]_n = E [b] ∈ T_n` for the class of the `b`-multiplication series at `τ` (where
-`E = evalTau`), and `y = evMap x c = b · x`.  The main point is that the evaluation at the *point*
-`y` can be computed inside `T_n` by the substitution `τ ↦ c`:
-
-* `c` is again a `π^n`-torsion class of `T_n`, i.e. `f^{(n)}(c) = 0`
-  (`sD_aeval_actionTau_LTpolyIter`: the bridge `f^{(k)}(E ψ) = E (ψ ∘ [π^k])` of
-  `Eval/smulDiv_mem.lean` at `ψ = [b]`), so the substitution
-  `Sub = AdjoinRoot.lift (algebraMap (O F) T_n) c` is a ring homomorphism `T_n →+* T_n` with
-  `Sub τ = c`;
-* `evMap y = evMap x ∘ Sub` (`evMap_Sub`): by `AdjoinRoot.ringHom_ext`, since both sides are
-  `𝒪[F]`-algebra maps `T_n → F̄` sending `τ` to `y = evMap x c`;
-* `Sub (E f) = eval₂ ![c] f` (`SubEval`): both sides are continuous and agree on polynomials, and
-  `𝒪[F][X]` is dense in `𝒪[F]⟦X⟧` (`MvPowerSeries.eval₂_unique`).  Continuity of `Sub` is the
-  adic-topology criterion `continuous_ringHom_adicTopology_of_map_le`, and continuity of `E` is
-  Milne's evaluation of a power series at a topologically nilpotent point.
-
-The goal then follows from the multiplication rule `[a * b] = [a] ∘ [b]` read at `τ`
-(`actionTau_mul`, `MvPowerSeries.eval₂_subst`):
-
-  `a · (b · x) = evMap y ([a]_n) = evMap x (Sub [a]_n) = evMap x ([a ∘ b]_n) = (a * b) · x`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Substitution
+import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 import Submission.NK.LocalReciprocityLubinTate.Eval.actionTau_mul
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
 
 namespace NK.LocalReciprocityLubinTate.Eval
 

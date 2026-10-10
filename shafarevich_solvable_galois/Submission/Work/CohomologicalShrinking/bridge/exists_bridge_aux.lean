@@ -1,14 +1,12 @@
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.Bridge.Final
-import Submission.Work.CohomologicalShrinking.Bridge.Psi
-import Submission.Work.CohomologicalShrinking.tate.Hm1Map_comp
-import Submission.Work.CohomologicalShrinking.bridge.Psi_ker
-import Submission.Work.CohomologicalShrinking.bridge.Psi_surjective
-import Submission.Work.CohomologicalShrinking.bridge.exists_eps
-import Submission.Work.CohomologicalShrinking.bridge.ThetaOn_surjective
 import Submission.Work.CohomologicalShrinking.bridge.ThetaOn_augmentation_of_mem_boundaries
-import Submission.Work.CohomologicalShrinking.bridge.augmentation_le_ThetaOn_boundaries
 import Submission.Work.CohomologicalShrinking.bridge.ThetaOn_eq_zero_mem_boundaries
+import Submission.Work.CohomologicalShrinking.bridge.ThetaOn_surjective
+import Submission.Work.CohomologicalShrinking.bridge.augmentation_le_ThetaOn_boundaries
+import Submission.Work.CohomologicalShrinking.bridge.exists_eps
 
 set_option linter.unusedSectionVars false
 open scoped TensorProduct

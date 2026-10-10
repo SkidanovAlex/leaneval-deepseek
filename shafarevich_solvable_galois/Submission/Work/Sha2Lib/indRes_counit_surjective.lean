@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RepresentationTheory.FiniteIndex
 import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

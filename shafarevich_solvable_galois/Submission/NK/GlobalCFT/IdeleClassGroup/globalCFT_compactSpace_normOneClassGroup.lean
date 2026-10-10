@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFT.IdeleClassGroup.CompactDefs
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_isCompact_normOneBounded
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_exists_finset_isBoundedIntegral
 import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_exists_unit_archimedean
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_isCompact_normOneBounded
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

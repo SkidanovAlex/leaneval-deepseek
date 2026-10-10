@@ -1,37 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer local surjection from weak approximation
-
-Reference: Neukirch–Schmidt–Wingberg, *Cohomology of Number Fields*, and the §5 Proposition
-`K^x/K^ell local surjection` of the pro-`ℓ`-by-cyclotomic / tamely ramified Neukirch–Uchida
-literature.
-
-For a number field `K`, a set `S` of finite primes and a natural number `ℓ`, the diagonal map
-
-`Kˣ / (Kˣ)^ℓ ⟶ ∏_{𝔮 ∈ S} K_𝔮ˣ / (K_𝔮ˣ)^ℓ`
-
-is surjective.  In the source this is deduced from the weak approximation theorem (the image of
-`K` in `∏_{𝔮 ∈ S} K_𝔮` is dense — Neukirch, *Algebraic Number Theory*, Chap. II, 5.7) together
-with the fact that the `ℓ`-th power subgroups `(K_𝔮ˣ)^ℓ` are **open**.
-
-The mathematical content is the classical Chinese-remainder argument:
-
-* `(K_𝔮ˣ)^ℓ` open in `K_𝔮ˣ`, and `K_𝔮ˣ` open in `K_𝔮`, so every coset `u_𝔮 · (K_𝔮ˣ)^ℓ` is
-  an open subset of `K_𝔮`;
-* a product of finitely many of these is open in the product topology, and hence meets the
-  dense diagonal image of `K`;
-* the resulting global element `a ∈ K` has `a ≡ u_𝔮 mod (K_𝔮ˣ)^ℓ` at every `𝔮 ∈ S`, so its
-  class in `Kˣ/(Kˣ)^ℓ` maps to the prescribed tuple.
-
-The two ingredients are isolated below: `exists_forall_mem_open_of_isWeakApproximation` (the
-density statement in the form actually used) and
-`isOpen_unitsVal_image_smul_subgroup` (the openness of a coset of an open subgroup of the unit
-group, transported into the ambient topological division ring).
--/
-
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.IsOpenUnits
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.UchidaKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.NK.LocalReciprocity.Reciprocity
-import Submission.NK.LocalReciprocity.commutator_gal_maxAbelianSubext
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.MaxAbelianSetup
-import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalReciprocity.exists_levelMap_normGroup_le
 
 universe u v

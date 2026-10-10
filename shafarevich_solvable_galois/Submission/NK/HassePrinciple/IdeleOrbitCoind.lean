@@ -1,27 +1,7 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The orbit of a place and its coinduced model
-
-This module carries out the *geometric* step of `NK.HassePrinciple.hbnIdele`: the idèles
-supported on the `Gal(L/K)`-orbit of a place `w`, and those supported there with local-unit
-components, are the coinduced modules `Coind_{Γ_w}^{Γ}(L_wˣ)` and `Coind_{Γ_w}^{Γ}(𝒪_wˣ)`
-(`Γ_w = MulAction.stabilizer (L ≃ₐ[K] L) w`).
-
-* `NK.HassePrinciple.orbitStable` — the orbit of `w` as a `Gal(L/K)`-stable set of places;
-* `NK.HassePrinciple.orbitEvalA`, `...orbitEvalU` — the "coordinate at `w`" of an idèle
-  supported on the orbit, as a monoid homomorphism;
-* `NK.HassePrinciple.orbitCoordA`, `...orbitCoordU` — the same coordinate as a map of
-  `Γ_w`-representations;
-* `NK.HassePrinciple.orbitCoindMapA`, `...orbitCoindMapU` — its adjunction transpose, a map of
-  `Γ`-representations into the coinduced module.  It is the map whose composition with Shapiro's
-  isomorphism `groupCohomology.coindIso` is the localisation at `w`.
--/
-
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.IdeleOrbit
-import Submission.NK.HassePrinciple.LocalUnitsSub
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

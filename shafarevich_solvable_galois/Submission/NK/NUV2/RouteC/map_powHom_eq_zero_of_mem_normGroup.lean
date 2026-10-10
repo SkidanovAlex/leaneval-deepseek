@@ -1,9 +1,11 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 import Submission.NK.NUV2.RouteC.cup_pow
 import Submission.NK.NUV2.RouteC.delta_qmodz
 import Submission.NK.NUV2.RouteC.map_norm_eq_zero
-import Submission.Commons.RepresentationTheory.GroupCohomology.subsingleton_groupCohomology_coind_bot
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,21 +1,11 @@
-/-
-# Non-degeneracy of the canonical Tate pairing `H₁(G, A) × H¹(G, A^∨) → k`
-
-`Work.SSGRoute.H1Pair.tatePairLin A : H₁(G, A) →ₗ (H¹(G, A^∨))^∨` is the explicit evaluation
-pairing of the bar complex, with computation rule `tatePairLin A (H1π c) (H1π θ) = ∑_g θ g (c g)`.
-
-This file proves that the pairing is non-degenerate:
-* `tatePairLin_injective`: an element of `H₁(G, A)` pairing to zero against everything is zero;
-* `tatePairLin_bijective`: over `𝔽_p`, for finite `G` and finite `A`, it is an isomorphism
-  (Tate duality `H₁ ≅ H¹(A^∨)^∨`).
-
-The injectivity argument is the concrete universal-coefficient computation.  Writing
-`V = G →₀ A` for the 1-chains and `Ξ = Finsupp.lsum k : (G → A^∨) ≅ V^∨` for the curried pairing,
-the identity `pairFun_d₂₁` says `Ξ ∘ d₁₂ = (d₂₁)^∨ ∘ Ξ`; hence `Ξ(ker d₁₂) = (im d₂₁)^⊥`.  If
-`[c] ∈ H₁` pairs to zero against every cocycle, then `Dual.eval c` kills `(im d₂₁)^⊥`, so
-`c ∈ (im d₂₁)^{⊥⊥} = im d₂₁ = B₁`, i.e. `[c] = 0`.  (`Subspace.dualAnnihilator_dualAnnihilator_eq`,
-`Module.mapEvalEquiv_apply`, `Module.evalEquiv`.)
--/
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.SSGRoute.H1Pair.Pairing
 import Submission.Work.SSGRoute.H1_tateDual_clean
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

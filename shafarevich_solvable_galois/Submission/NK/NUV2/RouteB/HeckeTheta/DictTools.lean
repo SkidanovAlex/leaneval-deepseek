@@ -1,23 +1,7 @@
-/-
-# Tools for the ray-class/lattice dictionary (self-contained copy)
-
-This file develops, in a self-contained way, the small amount of vocabulary and geometry needed to
-pass from the lattice-coset counts `cosetConeCnt` of `NK.NUV2.HeckeAnalytic.Dict` to the
-ray-class counts `rayClassCnt` of the congruence subgroups `U(𝔪)`:
-
-* `PosPlace 𝔪` — the real infinite places at which the modulus `𝔪` imposes positivity;
-* `sgnRegion 𝔪 γ` — the part of the fundamental cone whose real coordinates have the same signs as
-  those of `γ` at the places of `𝔪.pos`;
-* `sgnRegionVol 𝔪 γ` — its volume, truncated by the norm ball of radius one;
-* `dictCovol 𝔪 𝔡` — the covolume of the lattice `𝔪·𝔡⁻¹`;
-* `cosetConeCnt_sharp` — the sharp (`1 - 1/[K:ℚ]`) asymptotic of `cosetConeCnt` (the half-space
-  lattice point count `NK.NUV2.RouteB.Sharp3.halfspaceCosetCount_sharp`);
-* `absNorm_mul_dictCovol` — the product `N𝔡 · covol(𝔪𝔡⁻¹)` is independent of `𝔡`;
-* `instFintypeQuotCongUnit` — finiteness of the unit quotient `(𝓞 K)ˣ ⧸ congUnit 𝔪`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.NUV2.RouteB.RayModulus.CosetCountDefs
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Algebra.Order.Ring.Units
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
+import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Submission.NK.NUV2.HeckeAnalytic.Dict
 import Submission.NK.NUV2.RouteB.Sharp3.halfspaceCosetCount_sharp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

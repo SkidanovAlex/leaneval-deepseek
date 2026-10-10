@@ -1,13 +1,12 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFTdeep.Shared
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.Prop27Unramified
 import Submission.NK.GlobalCFTdeep.Herbrand.exists_T_unramifiedOutside_surjective
+import Submission.NK.GlobalCFTdeep.Herbrand.finite_T_of_liesOver_finset
 import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
 import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
-import Submission.NK.GlobalCFTdeep.Herbrand.finite_T_of_liesOver_finset
 import Submission.NK.GlobalCFTdeep.Herbrand.isInfinite_mem_of_liesOver_finset
 import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_one_tIdelesRep_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

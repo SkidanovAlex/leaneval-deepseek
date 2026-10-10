@@ -1,13 +1,16 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.GaloisIdeles
-import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_comp
-import Submission.NK.GlobalCFT.Galois.globalCFT_exists_localRingEquiv_smul
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_injective
 import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
+import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

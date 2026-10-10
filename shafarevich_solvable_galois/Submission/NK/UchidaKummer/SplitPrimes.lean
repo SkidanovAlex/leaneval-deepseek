@@ -1,41 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Completely split primes and freeness of the Galois action
-
-Reference: the LaTeX sources of arXiv:2601.01251, §5 (*Full Neukirch–Uchida*), where the passage
-from a prime-level statement ("`σ` matches `α` on the primes of a full-density set") to a
-group-level statement ("`σ` matches `α` on the Galois group") is made with the help of a prime
-which splits completely in the relevant finite Galois level, and the observation that the Galois
-group acts *freely* on the primes above such a prime.
-
-The results here are unconditional: the existence of completely split primes is
-`Commons.NumberTheory.NumberField.exists_prime_splitsCompletely`, obtained from the Dirichlet
-density `1 / [L : K]` of the completely split primes
-(`Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely`), together with
-the fact that a finite set of primes has Dirichlet density `0`.
-
-## Main results
-
-* `exists_splitsCompletely_notMem` — a completely split prime outside a prescribed finite set;
-* `exists_splitsCompletely_mem_of_hasFullDensity` — a completely split prime inside a prescribed
-  full-density set (and outside a finite set): this is the form in which §5 uses it;
-* `eq_one_of_smul_eq_of_splitsCompletely` — **freeness**: if `p` splits completely in the finite
-  Galois extension `L / K`, then the only element of `Gal(L/K)` fixing a prime above `p` is the
-  identity;
-* `eq_of_forall_smul_eq_of_splitsCompletely` — two elements of `Gal(L/K)` agreeing on all primes
-  above a completely split prime are equal.
--/
-
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.UchidaKummer.Defs
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_disjoint
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_eq_finrank_iff_splitCompletely
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

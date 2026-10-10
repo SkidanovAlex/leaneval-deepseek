@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataTwo.kummerCochar_ne_zero_of_val_not_sq
-import Submission.Work.SSGRoute.shafarevich_z_data_two
 import Submission.Work.SSGRoute.ZSplit.BaseChange
+import Submission.Work.SSGRoute.shafarevich_z_data_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

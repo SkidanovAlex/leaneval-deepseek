@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.primeCard_homs_finite
+import Mathlib.Data.ZMod.QuotientGroup
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.GroupTheory.Perm.Cycle.Type
 import Submission.Work.SSGRoute.fiber_finite_of_quotient
+import Submission.Work.SSGRoute.primeCard_homs_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

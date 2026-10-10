@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.NK.Reconstruct.gammaBaseChange
-import Submission.NK.Reconstruct.proj_surjective
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.LevelInclExact.ker_proj_le_range_gammaBaseChangeHom
 import Submission.NK.Reconstruct.LevelInclExact.range_gammaBaseChangeHom_le_ker_proj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

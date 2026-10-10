@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Commons.RingTheory.Valuation.isSepClosed_of_two_independent_henselian
-import Submission.Commons.RingTheory.Valuation.henselianLocalRing_of_unique_extension
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.NumberTheory.NumberField.Valuation.le_eq_top_of_comap_ne_top_of_ne
+import Submission.Commons.RingTheory.Valuation.isSepClosed_of_two_independent_henselian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

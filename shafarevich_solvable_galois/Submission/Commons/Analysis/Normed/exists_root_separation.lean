@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Polynomial.Roots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.Commons.Analysis.Normed.exists_separation_of_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

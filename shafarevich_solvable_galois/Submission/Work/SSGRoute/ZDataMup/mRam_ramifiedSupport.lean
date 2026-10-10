@@ -1,34 +1,14 @@
-/-
-# Finding (A): the optimal `ℕ`-modulus supported on the ramified primes
-
-Let `L / K` be a finite Galois extension of number fields.  This file constructs the *optimal*
-natural-number modulus supported on the ramified primes,
-
-  `mRam := (∏_{Q ∈ ramPrimes} N Q) ^ ramExp`,  `ramExp := (sup_{Q ∈ ramPrimes} levelQ Q) + 1`,
-
-where `ramPrimes` is the set of primes of `K` below a ramified prime of `L` and `levelQ Q` is the
-local congruence level of `exists_admissible`, and proves that it
-
-* is positive,
-* is *admissible* (`IsAdmissible K L mRam`),
-* has **strong support** (`p` ramified ⟹ `(mRam : 𝓞 K) ∈ p`),
-* satisfies the reciprocity product condition `hprinc` at `mRam` for **cyclic** `L/K`.
-
-The point: `hprinc` at `mRam` is obtained by running the *existing* Lang machinery
-(`kernelLe_of_auxField`, `langCyclicRelIndex`, `artinSymbol_span_eq_one_of_kernelLe_of_relIndex`)
-at the modulus `mRam` — no conductor-support theorem is needed on the ramification side — while the
-*explicit shape* of `mRam` (a pure power of `∏ N Q`) gives the sharp support bound recorded in
-`mRam_support_bound`: every prime dividing `(mRam)` has its rational prime below a ramified prime.
-This pins the residual gap of the `ℕ`-framework exactly at the unramified primes over a rational
-prime that is below some *other* ramified prime.
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.MyImports
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.exists_admissible
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.langCyclicKernelLe_byArtinLemma
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymbol_span_eq_one_of_kernelLe_of_relIndex
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinKillsPrincipal_cyclic
+import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
+import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
+import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
 import Submission.NK.NUV2.ARL.Gap.langCyclicRelIndex
+import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
+import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
+import Submission.NK.NUV2.LC.localNormFinite_range_iff_val_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

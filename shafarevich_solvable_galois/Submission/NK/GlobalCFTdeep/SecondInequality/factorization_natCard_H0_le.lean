@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.AbstractH0
-import Submission.NK.GlobalCFTdeep.SecondInequality.normHom_range_le_of_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.pow_index_mem_normHom_range
+import Mathlib.GroupTheory.Index
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Analysis.Normed.Ring.Basic
+import Mathlib.Data.Nat.Factorization.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.card_quotient_comap_dvd
 import Submission.NK.GlobalCFTdeep.SecondInequality.factorization_natCard_eq_zero_of_pow_eq_one
+import Submission.NK.GlobalCFTdeep.SecondInequality.normHom_range_le_of_le
+import Submission.NK.GlobalCFTdeep.SecondInequality.pow_index_mem_normHom_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

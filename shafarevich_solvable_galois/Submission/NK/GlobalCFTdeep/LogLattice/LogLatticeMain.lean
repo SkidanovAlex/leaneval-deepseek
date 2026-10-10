@@ -1,12 +1,13 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.StableRep
+import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
 import Submission.NK.GlobalCFTdeep.LogLattice.logVec_smul_apply
 import Submission.NK.GlobalCFTdeep.LogLattice.sum_logVec_eq_zero
-import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

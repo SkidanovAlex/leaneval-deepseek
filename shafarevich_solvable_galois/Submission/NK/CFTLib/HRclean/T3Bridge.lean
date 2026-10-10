@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.NK.CFTLib.HRclean.ARLClean
-import Submission.NK.CFTLib.HRclean.chebTransferCopy
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.CFTLib.HRclean.locUnitsInflationCopy
-import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.Existence.unitsRep_fixedPoints_eq_range_algebraMap
-import Submission.NK.CFTLib.HR.TransferAux.Setup
-import Submission.Commons.RepresentationTheory.GroupCohomology.range_infNatTrans_eq_ker_resNatTrans_of_subsingleton
+import Submission.NK.CFTLib.HRclean.chebTransferCopy
+import Submission.NK.CFTLib.HRclean.locUnitsInflationCopy
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

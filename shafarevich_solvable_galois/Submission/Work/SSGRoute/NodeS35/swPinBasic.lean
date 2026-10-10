@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.NodeS34.swFrobLift
-import Submission.Work.SSGRoute.NodeS35.kills_inertia_conjUnit
-import Submission.Work.SSGRoute.NodeS35.isUnramifiedIn_sup_hLevel
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.H9.swHistChi_confinement_proved
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
+import Submission.Work.SSGRoute.NodeS34.swFrobLift
+import Submission.Work.SSGRoute.NodeS35.isUnramifiedIn_sup_hLevel
+import Submission.Work.SSGRoute.NodeS35.kills_inertia_conjUnit
 import Submission.Work.SSGRoute.ZDataMup.hChar_hLocalFactor_tower
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

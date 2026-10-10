@@ -1,9 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleDefs
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.Work.SSGRoute.ZDataMup.CycleCongr
-import Submission.NK.CFTLib.ARL.Cyclic
-import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
-import Submission.NK.CFTLib.ARL.RelNormFI
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

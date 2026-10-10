@@ -1,16 +1,20 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.EscapeCoreLib.classField_stable_open_finiteIndex
-import Submission.Work.SSGRoute.ZDataMup.mup_localArtin_productFormula
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.finiteIndex_gesU
 import Submission.Work.SSGRoute.ZConstruction.exists_abelianArtin_localFactors
-import Submission.Work.SSGRoute.step4_y_escape_v2.localFactor_productFormula_clean
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.localImageAt_ofInfinite_mem_localNormSubgroup_of_pos
+import Submission.Work.SSGRoute.ZDataMup.IdealModulusKernel.CycloPrincipalId
+import Submission.Work.SSGRoute.ZDataMup.IdealModulusKernel.IndexLeIdId
+import Submission.Work.SSGRoute.ZDataMup.MupAux.ThetaKerId
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_restrictNormalHom
+import Submission.Work.SSGRoute.ZDataMup.localFactor_unramified_eq_frob_pow
+import Submission.Work.SSGRoute.ZDataMup.nonempty_artinReciprocity_of_abelian
+import Submission.Work.SSGRoute.ZDataMup.weakApprox_pos_numberField
 
 /-!
 # The class-field data for the escape step of the Shafarevich route (`p`-th power version)
@@ -71,8 +75,6 @@ theorem exists_abelian_classField_open {k Ω : Type} [Field k] [NumberField k] [
   -- the abstract class field `L / ↥K` of `U`
   obtain ⟨L, hFL, hNL, hAL, hfdL, hGalL, hNormL, _⟩ :=
     Work.SSGRoute.CFTSide.classField_exists_of_index (K := ↥K) U.index hidxpos U hUfin hUopen rfl
-  letI : Field L := hFL
-  letI : NumberField L := hNL
   letI : Algebra ↥K L := hAL
   letI : FiniteDimensional ↥K L := hfdL
   haveI : IsGalois ↥K L := hGalL

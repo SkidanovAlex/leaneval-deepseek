@@ -1,36 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Functoriality of the refined filtration and its graded pieces
-
-Schmidt–Wingberg's Proposition 5 says that the canonical maps
-`θ_τ(d) : (F(d)/F(d)^2)^{⊗j} ↠ E(d,τ)` are *natural in `d`*: for a **surjective** `G`-operator
-homomorphism `ψ : F(m) → F(n)` the induced map on the graded pieces satisfies
-`θ_τ(m) ≫ ψ_* = (ψ̄^{⊗j}) ≫ θ_τ(n)`.  This file provides the induced maps `ψ_*`
-(`gradedMap`) and `ψ̄` (`quotMap`).
-
-Only *surjective* homomorphisms of groups are treated (that is the case used by the shrinking
-procedure); then `ψ(P_{(i,j)}) = Q_{(i,j)}`, because the descending `p`-central series and the
-descending central series are both preserved by surjections.
-
-## Main results
-
-* `Work.CohomologicalShrinking.map_refinedTerm_eq_of_surjective` :
-  `ψ(P_{(i,j)}) = Q_{(i,j)}` for surjective `ψ`.
-* `Work.CohomologicalShrinking.gradedMapMul` / `gradedMapAdd` / `gradedMapLin` : the induced
-  maps on the graded pieces (`→*`, `→+`, `→ₗ[𝔽_p]`).
-* `Work.CohomologicalShrinking.pCentralMapMul` / `quotMapMul` and the `𝔽_p`-linear
-  `quotMapLin` : the induced maps `F(m)/F(m)^2 → F(n)/F(n)^2`.
-* `Work.CohomologicalShrinking.gradedMapMul_smul`, `gradedMapAdd_smul` : these maps commute with
-  the actions of `G` when `ψ` does.
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Defs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Module.ZMod
 import Submission.Work.CohomologicalShrinking.ModSquare
 import Submission.Work.CohomologicalShrinking.Refined
-import Submission.Work.Shrinking.map_pCentralSeries_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

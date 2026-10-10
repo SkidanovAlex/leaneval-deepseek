@@ -1,14 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.E7Fin.rootsOfUnity_adjoinLocalEquiv_any
-import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_autCongr_equiv
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E7Fin.kummerUnitsTransfer
-import Submission.Work.SSGRoute.PT.resH2_eq_zero_of_index_nsmul_eq_zero
-import Submission.Work.SSGRoute.PTembedding.hilbert90_decomp
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.PT.H2Transfer
+import Submission.Work.SSGRoute.E7Fin.rootsOfUnity_adjoinLocalEquiv_any
 import Submission.Work.SSGRoute.LTD02Proved.comap_index_iso
+import Submission.Work.SSGRoute.PT.resH2_eq_zero_of_index_nsmul_eq_zero
 import Submission.Work.SSGRoute.PTCore.h2loc_equiv_localGal_mup
 
 /-!

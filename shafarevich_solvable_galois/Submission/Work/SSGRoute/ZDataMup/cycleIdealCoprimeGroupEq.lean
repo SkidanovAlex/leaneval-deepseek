@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.FractionalIdeal.Basic
 import Submission.Work.SSGRoute.ZDataMup.LT_CyclePort
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

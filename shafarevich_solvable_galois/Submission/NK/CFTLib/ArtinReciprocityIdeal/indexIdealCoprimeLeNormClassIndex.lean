@@ -1,17 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.ARL.count_idealOf_normIdeleHom
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
-import Submission.NK.CFTLib.ARL.Cyclic
-import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ARL.idealOf_mem_principalRay_sup_normIdeals
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
-import Submission.NK.GlobalCFTdeep.secondInequality_unconditional
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

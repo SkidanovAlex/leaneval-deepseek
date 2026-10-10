@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.ext_idele_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Data.ZMod.Defs
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Associator
 import Submission.Work.CohomologicalShrinking.Models
-import Submission.Work.Shrinking.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

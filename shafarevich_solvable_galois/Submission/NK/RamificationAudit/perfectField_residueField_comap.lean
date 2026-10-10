@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationAudit.exists_mul_mem_and_valuation_eq_one
 import Submission.NK.RamificationAudit.perfectField_of_forall_monic_aeval_eq_zero_natDegree_le
 

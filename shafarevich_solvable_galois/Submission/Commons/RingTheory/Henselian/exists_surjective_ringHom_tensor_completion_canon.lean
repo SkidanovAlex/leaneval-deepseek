@@ -1,8 +1,8 @@
-import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Submission.Commons.RingTheory.Henselian.exists_surjective_ringHom_tensor_completion
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers_of_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

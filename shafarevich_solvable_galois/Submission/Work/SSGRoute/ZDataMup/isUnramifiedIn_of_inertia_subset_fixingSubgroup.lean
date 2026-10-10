@@ -1,12 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataMup.mupOddAux
-import Submission.Work.SSGRoute.levelInertia_defs
 import Submission.Work.SSGRoute.mem_levelSub_iff_mem_inertia
-import Submission.Work.LocalFields.isUnramifiedAt_iff_ramificationIdxIn_eq_one
-import Submission.Work.LocalFields.unramifiedAt_iff_inertia_eq_bot
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

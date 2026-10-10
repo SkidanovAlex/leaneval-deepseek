@@ -1,6 +1,12 @@
-import Submission.NK.RankTheoryDeep.IdeleRank
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.RankTheoryDeep.RankTop
+import Submission.NK.Reconstruct.denseChebotarev
+import Submission.NK.Reconstruct.exists_sigma_of_localCorrespondence
 import Submission.NK.ShimizuRank.ComplexPlace.rComplex_lt_of_lt
+import Submission.NK.UchidaKummer.Embedding.KummerSup
+import Submission.NK.UchidaKummer.Embedding.transfer_ellPow_adicCompletion
+import Submission.NK.UchidaKummer.Uchida.ArithmeticEquivalent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

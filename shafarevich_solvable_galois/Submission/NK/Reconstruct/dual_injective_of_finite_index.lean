@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Flat.TorsionFree
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

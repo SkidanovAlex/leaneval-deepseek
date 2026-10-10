@@ -1,46 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The abelianised Frattini rank from the maximal abelian subextension (with openness)
-
-The sibling file `hasAbelianFrattiniRank_of_maxAbelian.lean` states the transfer
-
-  `HasFrattiniRank p r (maxAbelianSubext κ K' ≃ₐ[κ] maxAbelianSubext κ K')`
-    `→ HasAbelianFrattiniRank p r (Gal(K'/κ))`
-
-**without** any hypothesis on the Krull topology of `Gal(K'/κ)`, and that statement is
-*false*: with `G := Gal(K'/κ)` and `S := commutator G` (the *algebraic* commutator
-subgroup), `Gal(maxAbelianSubext κ K'/κ) ≃* G ⧸ S.topologicalClosure` — the *topological*
-abelianisation — whereas `HasAbelianFrattiniRank p r G` speaks about the *abstract*
-abelianisation `Abelianization G = G ⧸ S`.  The natural surjection
-`G ⧸ S ↠ G ⧸ S.topologicalClosure` need not be injective; see `Hints.lean` in this
-directory for the counterexample (`G = (∏_ℤ ℤ/2) ⋊ ℤ/2` over a PAC field, where the
-hypothesis holds with `p = 2`, `r = 2` while `numIndexSubgroups 2 (Abelianization G) = 0`).
-
-The transfer becomes a theorem as soon as one assumes that index-`p` *normal* subgroups of
-`Gal(K'/κ)` are open — equivalently closed — which is exactly the structural input used
-elsewhere in the workspace (`NK.LocalAnabelian.PadicField.FrattiniRank.lean`,
-`NK.LocalAnabelian.GaloisCorrespondence.IndexP.lean`,
-`.../numIndexSubgroups_abelianization_eq_natCard_galois.lean`).  For `κ` a `p`-adic field
-this holds because `Gal(κ̄/κ)` is topologically finitely generated and hence every
-finite-index subgroup is open (Nikolov–Segal).
-
-The main theorem of this file is `hasAbelianFrattiniRank_of_maxAbelian_of_isOpen`, the
-corrected statement.  It is proved from two reusable ingredients:
-
-* `numIndexSubgroups_eq_natCard_comap`: for a surjective `f : G →* H`, subgroups of index
-  `n` of `H` are the subgroups `M` of `G` with `f.ker ≤ M` and `[G : M] = n`;
-* `numIndexSubgroups_quotient_commutator_eq_topologicalClosure`: under the openness
-  hypothesis, `numIndexSubgroups n (G ⧸ commutator G) = numIndexSubgroups n
-  (G ⧸ (commutator G).topologicalClosure)`.
-
-The structural Galois-theoretic input
-`(fixedField H).fixingSubgroup = H.topologicalClosure` is in the sibling file
-`fixingSubgroup_fixedField_eq_topologicalClosure.lean`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocity.All
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
 import Submission.NK.LocalInputs.AbelianRank.fixingSubgroup_fixedField_eq_topologicalClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

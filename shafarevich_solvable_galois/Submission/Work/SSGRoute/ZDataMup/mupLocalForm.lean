@@ -1,10 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mupLocalVocab
-import Submission.Work.SSGRoute.ZDataMup.mupKummerDictionary
-import Submission.Work.SSGRoute.ZDataMup.mupH1locLcHoms
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.LocallyConstant.Basic
+import Submission.Work.SSGRoute.ZDataMup.eq_one_of_forall_artin_eq_one
 import Submission.Work.SSGRoute.ZDataMup.exists_factor_of_homeomorph
 import Submission.Work.SSGRoute.ZDataMup.isLocallyConstant_factor_restrictNormalHom
-import Submission.Work.SSGRoute.ZDataMup.eq_one_of_forall_artin_eq_one
+import Submission.Work.SSGRoute.ZDataMup.mupH1locLcHoms
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

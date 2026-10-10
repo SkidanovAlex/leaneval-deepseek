@@ -1,19 +1,7 @@
-/-
-# The local pairing clauses, in exactly the shape of the arithmetic input
-
-`Work.SSGRoute.pt_selmer_relaxed` (Poitou–Tate at `H¹`) is stated for an arbitrary family of local
-pairings `pair` subject to a hypothesis `hloc` (additive in each variable on locally constant
-cocycles, vanishing when an argument is a coboundary, perfect on both sides) and a reciprocity
-hypothesis `hrec`.  `Work.SSGRoute.PTembedding.localTatePairing_canonical` (G1) supplies such a
-family together with the *naturality* clause in the coefficient module.
-
-This file names those clauses once, in the *same textual form* as `pt_selmer_relaxed`'s `hloc`, so
-that a hypothesis of type `IsLocalGroup k H → PairClauses … H` can be instantiated verbatim with
-`pt_selmer_relaxed`'s `hloc` argument (definitional unfolding of the `def`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.DualMod.Main
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

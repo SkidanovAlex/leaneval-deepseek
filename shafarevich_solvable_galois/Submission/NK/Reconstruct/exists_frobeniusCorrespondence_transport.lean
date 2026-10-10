@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.Reconstruct.PlaceCorrespondence
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.Reconstruct.exists_localCorrespondence_transport
-import Submission.NK.Reconstruct.isFrobAt_primeTransport_iff
 import Submission.NK.Reconstruct.frobeniusCorrespondence_of_place
+import Submission.NK.Reconstruct.isFrobAt_primeTransport_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

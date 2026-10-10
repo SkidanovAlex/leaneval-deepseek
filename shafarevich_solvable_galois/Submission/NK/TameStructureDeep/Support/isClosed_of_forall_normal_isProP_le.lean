@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

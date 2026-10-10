@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.NK.Ramification.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.TameStructureDeep.Tame.InertiaFieldAux
-import Submission.NK.TameStructureDeep.Tame.isUnit_natCast_of_card_eq_prime_pow
-import Submission.NK.TameStructureDeep.Tame.isUnit_natCast_of_prime_not_dvd_card_residueField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,42 +1,11 @@
-/-
-# The annihilator of a Lubin–Tate torsion point
-
-This file computes, for a **primitive** torsion point `x ∈ Λ_n ∖ Λ_{n-1}` of the standard
-Lubin–Tate group of a uniformiser `π`, the annihilator of `x` under the `𝒪[F]`-action of
-`Eval/TorsionAction.lean`:
-
-  `{a ∈ 𝒪[F] : a · x = 0} = (π^n)`.
-
-This is the first half of Milne, *Classical Field Theory*, Theorem I.3.1 (the statement that `Λ_n`
-is a free `𝒪[F]/π^n`-module of rank one) — the half that only needs the *polynomial* structure of
-the action and the fact that `𝒪[F]` is a discrete valuation ring, not the group law.
-
-## The proof
-
-Write `f(T) = πT + T^q` for the standard Lubin–Tate series.  The bridge
-`smulDiv_pi_pow` (`Eval/smulDiv_mem.lean`) evaluates the `π^m`-powers of the action:
-
-  `π^m · x = f^{(m)}(x)`,
-
-so for `m ≤ n`, `π^m · x = 0` if and only if `x ∈ Λ_m` (and if `m < n` this contradicts the
-primitivity of `x`).  Writing an arbitrary `a ≠ 0` as `a = u π^j` with `u` a unit
-(`IsDiscreteValuationRing.eq_unit_mul_pow_irreducible`) and using `a · x = u · (π^j · x)`
-(`smulDiv_smul2`) together with the injectivity of the action of a *unit* on `Λ_n` (which is
-`smulDiv_one` + `smulDiv_smul2`), one gets `a · x = 0 ⟹ x ∈ Λ_j ⟹ n ≤ j ⟹ a ∈ (π^n)`.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_congr`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_zero`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_unit_eq_zero`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_eq_zero_iff`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.LocalReciprocityLubinTate.Audit.natCard_quotient_maximalIdeal_pow
 import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_one
 import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.TorsionCardinality
-import Submission.NK.LocalReciprocityLubinTate.Audit.natCard_quotient_maximalIdeal_pow
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

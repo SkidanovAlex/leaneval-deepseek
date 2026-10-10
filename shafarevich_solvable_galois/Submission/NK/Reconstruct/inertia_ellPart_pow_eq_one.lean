@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.NK.Reconstruct.galToGamma
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.NK.Reconstruct.frobElementAt
-import Submission.NK.Chebotarev.Basic
-import Submission.NeukirchUchida.Local.Restriction
 import Submission.NK.Reconstruct.padicValNat_ramificationIdx_le
+import Submission.NeukirchUchida.Local.Restriction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.alphaTwo_evalHom
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Torsion.Basic
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.Functoriality
 import Submission.Work.AbsoluteKummer.SES.deltaH2_exact
+import Submission.Work.SSGRoute.PT.alphaTwo_evalHom
 import Submission.Work.SSGRoute.range_mapH2_eq_ker_mapH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

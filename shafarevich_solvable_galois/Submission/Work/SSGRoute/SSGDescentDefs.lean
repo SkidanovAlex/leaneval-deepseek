@@ -1,20 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Vocabulary for the continuous descent `Ext¹_{ℤ[Q]}(X, Kˣ) ≅ H¹_cont(G, Hom_ℤ(infl X, Mˣ))`
-
-Shared definitions for the pieces of `Work.SSGRoute.ext_continuous_descent`:
-`L` a field, `M` an algebraic closure of `L`, `K ⊆ M` a finite Galois intermediate field,
-`Q = Gal(K/L)` (finite), `G = Gal(M/L)` (profinite, Krull topology).
-
-The definitions are written in the *unfolded* shape used by the target statement
-(`ext_continuous_descent.lean`), so that consumers can `exact` results stated with these
-abbreviations.
--/
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.AbsoluteKummer.Defs
+import Submission.Work.SSGRoute.homRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

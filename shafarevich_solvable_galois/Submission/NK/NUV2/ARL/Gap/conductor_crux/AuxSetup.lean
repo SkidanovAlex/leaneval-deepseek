@@ -1,18 +1,11 @@
-/-
-# Setup for the single-prime Artin lemma (`exists_auxiliary_field_single`)
-
-This module fixes the objects used in the proof of
-`NK.NUV2.ARL.Gap.conductor_crux.exists_auxiliary_field_single`: the cyclotomic
-field `Ω = CyclotomicField M L`, the primitive `M`-th root of unity `ζ`, the image
-`A` of `L` in `Ω` and the cyclotomic subfield `B = K(ζ)`.
-
-`A` carries the "`G = Gal(L/K)`" part and `B` the "`(ℤ/M)ˣ`" part of `Gal(Ω/K)`.
--/
-import Mathlib
-import Submission.NK.NUV2.ARL.Gap.conductor_crux.AuxCyclotomic
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
 import Submission.NK.CFTLib.ARL.disjoint_restrictScalars_adjoin_zeta
+import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
 import Submission.NK.CFTLib.ARL.isGalois_cyclotomicField_over_base
+import Submission.NK.NUV2.ARL.Gap.conductor_crux.AuxCyclotomic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

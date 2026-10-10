@@ -1,22 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Cohomology of the trivial group
-
-For the trivial group (any group `G` with `Subsingleton G`), every `1`-cocycle is zero and every
-`2`-cocycle is a coboundary, so `H¹(G, A) = H²(G, A) = 0` for every coefficient module `A`.
-This is the `U = 1` vertex of Shapiro's lemma (`H^n(1, A) = 0` for `n ≥ 1`), in the additive
-inhomogeneous setting.
-
-## Main results
-
-* `Work.GroupCohomology.Z1_eq_bot_of_subsingleton`
-* `Work.GroupCohomology.Z2_le_B2_of_subsingleton`
-* `Work.GroupCohomology.H1_subsingleton_of_subsingleton`,
-  `Work.GroupCohomology.H2_subsingleton_of_subsingleton`
--/
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.Group.Subgroup.Lattice
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.InducedModules
-import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

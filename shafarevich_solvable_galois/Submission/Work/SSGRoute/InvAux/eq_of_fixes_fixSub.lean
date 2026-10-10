@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Algebra.Rat
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.InvAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

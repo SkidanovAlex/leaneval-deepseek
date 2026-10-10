@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.Mul
-import Submission.NK.GlobalCFTdeep.Herbrand.hZero_trivial
-import Submission.NK.GlobalCFTdeep.Herbrand.hOne_trivial
 import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
+import Submission.NK.GlobalCFTdeep.Herbrand.hOne_trivial
+import Submission.NK.GlobalCFTdeep.Herbrand.hZero_trivial
+import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

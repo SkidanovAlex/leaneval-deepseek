@@ -1,49 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The edge map `H²(Γ, Lˣ) → H²(Γ, 𝕀_L)` is injective when `H¹(Γ, C_L) = 0`
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4 item 2, §12.4).
-
-Let `L/K` be a finite Galois extension of number fields with group `Γ = Gal(L/K)`.  The sequence
-of `CoeffInt`-linear `Γ`-representations
-
-  `0 ⟶ Lˣ --ideleIncl--> 𝕀_L --classGroupMap--> C_L ⟶ 0`
-
-(principal idèles, idèles, idèles modulo principal idèles) is short exact.  The long exact
-cohomology sequence attached to it reads
-
-  `H¹(Γ, C_L) --δ--> H²(Γ, Lˣ) --H²(ideleIncl)--> H²(Γ, 𝕀_L)`,
-
-so that `H²(ideleIncl)` has kernel the image of the connecting homomorphism `δ`.  Consequently, if
-`H¹(Γ, C_L) = 0`, then `H²(Γ, Lˣ) → H²(Γ, 𝕀_L)` is injective.
-
-This is the algebraic form of the *relative Hasse–Brauer–Noether theorem*: with Shapiro's lemma for
-the idèles, `H²(Γ, 𝕀_L) ≅ ∏_w H²(Γ_w, L_wˣ)`, so the injectivity of this edge map is exactly the
-statement that `H²(Γ, Lˣ) = Br(L/K)` embeds into the product of the local Brauer groups
-(README §12.3, item (e)).  The hypothesis `H¹(Γ, C_L) = 0` holds, in particular, for `p`-group
-level groups by `NK.HassePrinciple.subsingleton_groupCohomology_one_ideleClassGroup_of_isPGroup`.
-
-## Contents
-
-* `NK.HassePrinciple.ideleShortComplex` — the short complex `Lˣ ⟶ 𝕀_L ⟶ C_L` of
-  `CoeffInt`-linear representations;
-* `NK.HassePrinciple.ideleShortComplex_shortExact` — it is short exact;
-* `NK.HassePrinciple.injective_h2_units_of_subsingleton_h1_classGroupRep` — the injectivity of
-  the edge map on `H²`.
-
-## Implementation note
-
-The coefficient ring is `CoeffInt = ULift ℤ`, whose generic `ULift.module` instance competes with
-the module structure stored in a representation `A : Rep CoeffInt Γ`; as in
-`Submission/Work/HassePrinciple/kummerMap_injective_of_pdivisible.lean` we give `Rep.hV1` and
-`Rep.hV2` a higher local instance priority so that the `Rep`-machinery
-(`forget₂ (Rep k G) (ModuleCat k)` and the reflection of exactness
-`Functor.reflects_exact_of_faithful`) applies.
--/
-
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.HassePrinciple.IdelesLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

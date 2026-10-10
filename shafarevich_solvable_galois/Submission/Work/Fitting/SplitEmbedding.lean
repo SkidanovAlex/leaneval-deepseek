@@ -1,43 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Ore's reduction of Shafarevich's theorem to split embedding problems
-
-This file contains the *group-theoretic* deduction of Shafarevich's theorem from the solvability
-of *split* embedding problems with finite nilpotent kernel (Ore 1939; Shafarevich 1954;
-Schmidt–Wingberg, arXiv:math/9809211, §5; Huppert, *Endliche Gruppen I*, III.3.2 and III.4.2).
-
-## The reduction
-
-Let `F = F(G)` be the Fitting subgroup of a nontrivial finite solvable group `G`.  Then
-
-* `F ≠ 1` (`fitting_ne_bot`), `F` is nilpotent (`fitting_nilpotent`) and `Φ(G) < F`
-  (`frattini_lt_fitting`), so by the supplement lemma
-  (`exists_supplement_of_not_le_frattini`) there is a proper subgroup `U < G` with `G = F·U`;
-* `U` is a proper subgroup, hence solvable of smaller order, so by induction `U ≅ Gal(L/ℚ)` for a
-  finite Galois subextension `L ⊆ AlgebraicClosure ℚ`;
-* the conjugation action of `U` on the normal subgroup `F` makes `F` a `U`-module, transported
-  through `U ≅ Gal(L/ℚ)` to a homomorphism `φ : Gal(L/ℚ) →* MulAut F`;
-* the *split* embedding problem with kernel `F` and quotient `Gal(L/ℚ)`, i.e.
-  `1 → F → F ⋊[φ] Gal(L/ℚ) → Gal(L/ℚ) → 1`, is solvable by hypothesis: there is a finite Galois
-  `L'/ℚ` with `Gal(L'/ℚ) ≅ F ⋊[φ] Gal(L/ℚ)`;
-* finally `F ⋊[ψ] U → G`, `(x,u) ↦ x·u` is a surjective homomorphism (because `F ◁ G` and
-  `F ⊔ U = ⊤`), and `F ⋊[ψ] U ≅ F ⋊[φ] Gal(L/ℚ)` via `U ≅ Gal(L/ℚ)`; realizability passes to
-  quotients (`RealizableOver.of_surjective`).
-
-## Main definitions and results
-
-* `SplitEmbeddingProblem L N φ` : the embedding problem `1 → N → N ⋊[φ] Gal(L/ℚ) → Gal(L/ℚ) → 1`;
-* `realizable_of_solvable_of_split_embedding` : the reduction above, conditional on the hypothesis
-  that every split embedding problem over `ℚ` with finite nilpotent kernel is solvable (Theorem 14
-  of Schmidt–Wingberg for the base field `ℚ`).
--/
-import Mathlib
-import Submission.EmbeddingProblem
+import Mathlib.GroupTheory.Frattini
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Combine
 import Submission.Shafarevich
-import Submission.Work.Fitting.Basic
-import Submission.Work.Fitting.FittingEqPCore
 import Submission.Work.Fitting.FrattiniLtFitting
 import Submission.Work.Fitting.exists_supplement_of_not_le_frattini
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

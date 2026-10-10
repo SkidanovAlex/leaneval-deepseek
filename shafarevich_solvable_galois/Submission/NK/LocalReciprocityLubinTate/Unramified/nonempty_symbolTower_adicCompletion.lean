@@ -1,17 +1,19 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.FieldTheory.Galois.exists_prod_restrictNormalHom_of_card
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltSymbol_family
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_symbol_family_map_algEquiv
+import Submission.NK.LocalReciprocityLubinTate.Units.inf_sup_zpowers_pow_eq_gen
+import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits_gen
 import Submission.NK.LocalReciprocityLubinTate.Unramified.TowerSymbol
 import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_nested_unramified_levels
 import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_unramifiedSymbol_family
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltSymbol_family
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_lubinTateTower_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits_gen
 import Submission.NK.LocalReciprocityLubinTate.Unramified.hondaReciprocity
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.nonempty_lubinTateModule
-import Submission.NK.LocalReciprocityLubinTate.Units.inf_sup_zpowers_pow_eq_gen
-import Submission.NK.FieldTheory.Galois.exists_prod_restrictNormalHom_of_card
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_symbol_family_map_algEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

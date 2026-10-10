@@ -1,5 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.OrthL2KImports
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.GrunwaldEscapeCore.L1Korth.idele_decomposition_tFreePart
+import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.ZConstruction.levelK_kummerCharHom_dictionary
+import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
+import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_isSplitIn
 import Submission.Work.SSGRoute.ZSplit.BaseChange
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

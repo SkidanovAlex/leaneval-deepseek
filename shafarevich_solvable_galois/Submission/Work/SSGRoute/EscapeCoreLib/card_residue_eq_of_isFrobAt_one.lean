@@ -1,5 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.chebotarev_frobenius_split
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
+import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
+import Submission.NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt
+import Submission.Work.SSGRoute.ZPlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

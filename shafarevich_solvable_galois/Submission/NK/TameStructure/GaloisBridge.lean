@@ -1,23 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Galois-correspondence bridge for the inertia subgroup
-
-`NK.LocalAnabelian.inertiaSubgroup p` is defined as the fixing subgroup of
-`κ(μ_{p'}) = NK.LocalAnabelian.unramifiedClosure p`, so the Galois correspondence gives
-
-  `Gal(K'/κ) ⧸ I_κ ≅ Gal(κ(μ_{p'})/κ)`.
-
-This file proves that identification (`quotient_inertiaSubgroup_mulEquiv_unramifiedClosure`), for
-an arbitrary Galois extension `K'/κ` — no arithmetic hypothesis is used.  It is the bridge that
-turns the classical input `NK.TameStructure.UnramifiedZhat` (`Gal(κ(μ_{p'})/κ) ≅ Ẑ`, NSW
-(7.5.6)) into the field `unramifiedQuotient` of `NK.TameData.TameInertiaInput`
-(`Gal(K'/κ) ⧸ I_κ ≅ Ẑ`).
--/
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
 import Submission.NK.TameStructure.Defs
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

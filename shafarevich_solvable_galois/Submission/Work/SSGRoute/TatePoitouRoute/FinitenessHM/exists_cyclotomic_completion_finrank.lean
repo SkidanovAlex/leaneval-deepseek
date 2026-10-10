@@ -1,12 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.myIFImports
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Submission.Commons.NumberTheory.NumberField.Completion.card_residueField_adicCompletionIntegers_eq_pow_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_unramified_extension_tower
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_ringEquiv_adicCompletion_of_residue_ringEquiv
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Commons.NumberTheory.NumberField.Completion.liesOver_maximalIdeal_adicCompletionIntegers
+import Submission.NK.NumberTheory.NumberField.Completion.exists_galois_unramified_extension_of_inertiaDeg
 
 /-!
 # The unramified extension of `ℚ_p` of degree `f`, via a cyclotomic generator
@@ -51,8 +53,6 @@ theorem exists_cyclotomic_completion_finrank (p f : ℕ) [Fact p.Prime] (hf : 0 
     rw [hQ0]; exact Ideal.mem_span_singleton_self _
   obtain ⟨L, hLf, hLnf, hLalg, q, hq, he, hfdeg, _hfr⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg Q0 f hf
-  letI : Field L := hLf
-  letI : NumberField L := hLnf
   letI : Algebra ℚ L := hLalg
   letI : Algebra (Q0.adicCompletion ℚ) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q0 q hq)

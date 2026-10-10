@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.Tactic.Abel
+import Mathlib.Algebra.Group.Subgroup.Defs
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,20 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `A` is integral over `A ∩ K` when `A` is Galois stable
-
-Let `K ⊆ L` be a finite Galois extension and `A` a valuation subring of `L` whose decomposition
-subgroup is all of `Gal(L/K)` (i.e. `A` is stable under every `K`-automorphism of `L`).  Write
-`𝔬 = A.comap (algebraMap K L) = A ∩ K`.  Then every element of `A` is integral over `𝔬`.
-
-The proof is the classical one: for `y ∈ A` the conjugates `σ y` (`σ ∈ Gal(L/K)`) all lie in `A`,
-so the product `Π_σ (X - σ y)` — equivalently, since `L/K` is separable, the image in `L[X]` of
-the minimal polynomial `minpoly K y` — has all its coefficients in `A`.  Those coefficients lie in
-`K`, hence in `𝔬`, and `minpoly K y` is monic of which `y` is a root; this transfers back through
-`MonoDefs`'s `𝔬 → A` to integrality of `y` over `𝔬`.
--/
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.FieldTheory.Minpoly.ConjRootClass
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.MonoDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

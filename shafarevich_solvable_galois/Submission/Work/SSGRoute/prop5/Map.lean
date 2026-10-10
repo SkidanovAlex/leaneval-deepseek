@@ -1,31 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 5 of Schmidt–Wingberg: packaging the raw value map into the linear map `θ`
-
-`Basic.lean` defines the raw value map `valFn` of Proposition 5.  This file does the formal
-packaging:
-
-* `slotFn` : the `k`-th slot map of `valFn`;
-* `slotHom` : that slot map as a homomorphism `F(d) →* Multiplicative E(d,(i,j))`, given
-  additivity in each slot (this additivity is `valFn_update_mul`);
-* `slotHom_ker` / `slotHomDesc` : it kills the second `p`-central term `P₂ = F(d)^p[F(d),F(d)]`,
-  given that it kills `p`-th powers and commutators (`valFn_update_pow`,
-  `valFn_update_commutator`), hence descends to `F(d)/P₂ = F(d)/F(d)²`;
-* `thetaMul` / `theta` : the resulting multilinear map and the `𝔽_p`-linear map
-  `θ_d : (F(d)/F(d)²)^{⊗j} → E(d,(i,j))`.
-
-The three well-definedness inputs are taken as explicit hypotheses so that this file is
-independent of the (nontrivial) commutator calculus that proves them.
-
-**Status.** `slotFn`, `slotHom`, `slotHom_ker`, `slotHomDesc` are proved.  The remaining
-statements (`thetaMul`, `theta`, naturality, equivariance, surjectivity) are the ongoing work.
--/
-
-import Mathlib
-import Submission.Work.SSGRoute.prop5.Basic
+import Mathlib.Algebra.Group.Commutator
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.CohomologicalShrinking.Functorial
+import Submission.Work.SSGRoute.prop5.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

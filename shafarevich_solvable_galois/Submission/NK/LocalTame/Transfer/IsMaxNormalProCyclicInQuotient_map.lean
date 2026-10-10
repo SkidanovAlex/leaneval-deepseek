@@ -1,30 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.LocalTame.Transfer.IsMaxNormalProCyclicInQuotient_map`
-
-The notion `IsMaxNormalProCyclicInQuotient V I` of `NK.LocalTame.Basic` ("`I/V` is the maximal
-closed normal pro-cyclic subgroup of `G/V`") is expressed entirely in terms of
-* subgroups containing `V`,
-* normality in the quotient `G/V`, and
-* pro-cyclicity of the quotient subgroups `J/V`,
-
-so it is an invariant of the abstract group `G`; this file records its invariance under an
-arbitrary group isomorphism `e : G ≃* H`.  This is what allows a group-theoretic statement about
-`G_κ` (a statement about the pair `(V_κ, I_κ)` inside `G_κ`) to be transported to an isomorphic
-copy of `G_κ`.
-
-The natural isomorphism of quotients is `QuotientGroup.congr V V' e hV : G ⧸ V ≃* H ⧸ V'`, and the
-transport of the quotient-subgroups `quotientImage V J` is the computation
-`(quotientImage V J).map (QuotientGroup.congr V V' e hV) = quotientImage V' (J.map e)`, which holds
-because `QuotientGroup.congr` is induced by `e`.
-
-The hypothesis `hV : V.map e = V'` (together with the two normality instances) is exactly what is
-needed: no compatibility of `I` with `e` is assumed, since the statement *concludes* that the
-image `I.map e` is again the maximal normal pro-cyclic subgroup attached to `V'`.
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

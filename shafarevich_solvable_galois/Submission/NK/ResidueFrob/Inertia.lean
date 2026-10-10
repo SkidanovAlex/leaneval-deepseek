@@ -1,6 +1,8 @@
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
 import Submission.NK.ResidueFrob.Basic
-import Submission.NK.ResidueFrob.mem_inertiaSubgroup_of_fixes_rootsOfUnity
 import Submission.NK.ResidueFrob.exists_mem_decompositionGroup_restrictNormalHom_eq
+import Submission.NK.ResidueFrob.mem_inertiaSubgroup_of_fixes_rootsOfUnity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

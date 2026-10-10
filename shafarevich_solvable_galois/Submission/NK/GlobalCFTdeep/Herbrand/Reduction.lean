@@ -1,7 +1,8 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.CoCore.Reciprocity
 import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
 import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_mul_of_shortExact

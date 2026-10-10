@@ -1,22 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Auxiliary lemmas for the local class-formation data at a finite place
-
-Self-contained copies of the decomposition-group lemmas used by
-`Work.SSGRoute.eb_loc_card` and `Work.SSGRoute.eb_loc_rep_addEquiv`, so that the latter two do not
-depend on a file that is being edited concurrently:
-
-* `Work.SSGRoute.eb_stab_eq_decomp_aux` — the stabiliser of a finite place is its decomposition
-  group (`Work.SSGRoute.EB_StabEqDecomp`);
-* `Work.SSGRoute.eb_stab_card_aux` — that stabiliser has cardinality the local degree.
--/
-
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.E8Defs
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

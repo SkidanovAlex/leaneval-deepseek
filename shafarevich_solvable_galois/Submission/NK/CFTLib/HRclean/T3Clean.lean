@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.CFTLib.HRclean.T3Bridge
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
-import Submission.NK.CFTLib.Existence.unitsRep_fixedPoints_eq_range_algebraMap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

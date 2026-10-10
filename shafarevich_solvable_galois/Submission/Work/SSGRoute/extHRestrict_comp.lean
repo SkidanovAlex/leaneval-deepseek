@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.ext_corestriction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

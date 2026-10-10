@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
 import Submission.NK.CFTLib.ARL.RelNormFI
 import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup

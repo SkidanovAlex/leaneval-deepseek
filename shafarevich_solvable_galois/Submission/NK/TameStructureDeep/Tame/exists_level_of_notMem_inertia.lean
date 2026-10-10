@@ -1,35 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The level of a non-inertia element
-
-Let `κ` be a field, `K'` a separably closed field extension of characteristic `0`
-(in the application `κ = K_𝔭` is a `p`-adic field and `K' = κ̄`), `p` a prime and
-`σ ∈ Gal(K'/κ)`.  Write `I = inertiaSubgroup p` for the subgroup of `Gal(K'/κ)`
-consisting of the automorphisms acting trivially on every root of unity of order
-prime to `p`.
-
-The main result `exists_level_of_notMem_inertia` says that an element `σ ∉ I` is
-already detected at the level `n` of a *root of unity* `ζ` of order `n`: there is
-`n > 1` with `p ∤ n`, a primitive `n`-th root of unity `ζ` moved by `σ`, and an
-integer `a` with `σ ζ = ζ ^ a`, such that moreover
-
-  `n ∤ (a - 1)`   and   `n ∤ (a - 1) ^ 2`.
-
-The first non-divisibility just says `σ ζ ≠ ζ`; the second says that the level `n`
-is *large compared with* the `ℓ`-adic valuation of `a - 1` for some prime `ℓ ∣ n`,
-which is what makes the level a genuine (non-trivial) Kummer level in the tamely
-ramified structure theory.  The proof takes `n = m ^ 2`, where `m` is any level at
-which `σ` is already nontrivial: the exponent of `σ` at the level `m ^ 2` reduces
-modulo `m` to the exponent at the level `m`, and squaring the level dominates the
-valuation of `a - 1` at a prime `ℓ ∣ m` for which `ℓ ^ (v_ℓ m) ∤ (a - 1)`.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.LocalAnabelian.ResidueField.Defs
-import Submission.NK.TameStructureDeep.Tame.prime_pow_dvd_of_pow_dvd_sq
-import Submission.NK.TameStructureDeep.Tame.exists_prime_pow_not_dvd_of_not_dvd
 import Submission.NK.TameStructureDeep.Tame.dvd_sub_of_sq_action
+import Submission.NK.TameStructureDeep.Tame.exists_prime_pow_not_dvd_of_not_dvd
+import Submission.NK.TameStructureDeep.Tame.prime_pow_dvd_of_pow_dvd_sq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,7 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.ReconstructField.LevelCandidate
 import Submission.NK.ReconstructField.Lift
-import Submission.NeukirchUchida.Conjugation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

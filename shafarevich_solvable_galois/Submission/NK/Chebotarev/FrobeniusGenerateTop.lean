@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.NK.Chebotarev.Density
-import Submission.NK.Chebotarev.IsFrobAtConj
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
-import Submission.NK.Chebotarev.ExistsUnramifiedPrimeNotSplit
-import Submission.NK.Mine.Generation
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.liesOver_map_galRestrict
+import Submission.NK.Chebotarev.Density
+import Submission.NK.Chebotarev.ExistsUnramifiedPrimeNotSplit
+import Submission.NK.Chebotarev.IsFrobAtConj
+import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
+import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

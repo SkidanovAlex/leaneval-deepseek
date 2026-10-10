@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.Tactic.Group
+import Mathlib.Data.Nat.ModEq
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Tactic.Positivity.Core
+import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic
 import Submission.Work.SSGRoute.TPatom.orbitBlockSystem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

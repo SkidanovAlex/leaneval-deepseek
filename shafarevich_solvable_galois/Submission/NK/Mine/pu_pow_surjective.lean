@@ -1,6 +1,9 @@
-import Mathlib
-import Submission.NK.LocalInputs.PowerQuotient.LamIndex
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.RingTheory.Henselian.kummer_root_lift
+import Submission.NK.LocalInputs.PowerQuotient.LamIndex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

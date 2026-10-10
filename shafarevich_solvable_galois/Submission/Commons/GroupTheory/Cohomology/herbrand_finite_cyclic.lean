@@ -1,7 +1,7 @@
-import Mathlib.Algebra.Group.Subgroup.Finite
 import Mathlib.Algebra.Torsor.Defs
 import Mathlib.GroupTheory.Coset.Card
 import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.Algebra.Group.Subgroup.Finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

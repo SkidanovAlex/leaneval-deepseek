@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ext_corestriction
 import Submission.Work.SSGRoute.ext_one_iso_lattice_cohomology
-import Submission.Work.GroupCohomology.TrivialGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

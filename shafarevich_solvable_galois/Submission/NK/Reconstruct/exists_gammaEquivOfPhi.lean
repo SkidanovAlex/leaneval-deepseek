@@ -1,8 +1,12 @@
-import Mathlib
-import Submission.NK.Reconstruct.galToGamma
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Submission.NK.Reconstruct.LevelMap
 import Submission.NK.Reconstruct.denseRange_galToGamma
-import Submission.NK.Reconstruct.proj_surjective
 import Submission.NK.Reconstruct.galToGamma_continuous
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

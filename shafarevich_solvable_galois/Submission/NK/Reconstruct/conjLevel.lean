@@ -1,7 +1,8 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Algebra.Hom.Rat
 import Submission.NK.Reconstruct.galToGamma
 import Submission.NK.Reconstruct.ringConjHom
-import Submission.NK.Reconstruct.galToGamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

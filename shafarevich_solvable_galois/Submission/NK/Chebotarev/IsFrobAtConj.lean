@@ -1,7 +1,7 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Mathlib
+import Mathlib.RingTheory.Frobenius
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Invariant.Galois
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Chebotarev.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

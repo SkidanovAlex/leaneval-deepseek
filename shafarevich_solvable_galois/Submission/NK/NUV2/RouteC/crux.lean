@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.NUV2.RouteC.CommonsUnramified
-import Submission.NK.NUV2.RouteC.unramified_invariant_iso
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.NUV2.RouteC.val_sequence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

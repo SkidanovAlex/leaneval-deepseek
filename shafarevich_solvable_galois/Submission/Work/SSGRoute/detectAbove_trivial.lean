@@ -1,20 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.exists_level_normGroup_not_mem_of_not_pthPower
-import Submission.Work.SSGRoute.exists_level_local_embedding_fix
-import Submission.Work.SSGRoute.norm_fail_of_local_embedding
-import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
-import Submission.Work.SSGRoute.localAlgebraMapUnits_self
-import Submission.Work.SSGRoute.phi1_level_naturality
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
-import Submission.Work.SSGRoute.arch_quotientNorm_avoids
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-! Guidance from the project lead (the requester):
 
@@ -519,8 +514,6 @@ theorem detectAbove_finite_quotientNorm_avoids
       exists_level_normGroup_not_mem_of_not_pthPower Qk p a₀ hnotpow
     obtain ⟨L, hLf, hLn, hLk, hLL₀, hST, hLfd, hLgal, q', hq', hq'Q, hne⟩ :=
       exists_level_local_embedding_fix k L₀ q₀ Qk hq₀Q E
-    letI : Field L := hLf
-    letI : NumberField L := hLn
     letI : Algebra k L := hLk
     letI : Algebra L₀ L := hLL₀
     letI : IsScalarTower k L₀ L := hST
@@ -619,8 +612,6 @@ theorem detectAbove_trivial (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [Num
       rcases w with u | qw
       · exact arch_quotientNorm_avoids p k K u a hafix ha L₀ w₀ hw₀
       · exact detectAbove_finite_quotientNorm_avoids p k K qw a hafix ha L₀ w₀ hw₀)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra k L := hAL
   letI : Algebra L₀ L := hAL₀
   letI : IsScalarTower k L₀ L := hSTL

@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.Work.ProP.Defs
+import Mathlib.GroupTheory.Nilpotent
 import Submission.Work.ProP.finite_of_fg_of_finite_exponent
 import Submission.Work.ProP.lowerCentralSeries_le_pCentralSeries
-import Submission.Work.ProP.powSubgroup_mul_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

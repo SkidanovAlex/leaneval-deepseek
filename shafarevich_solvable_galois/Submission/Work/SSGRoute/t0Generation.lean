@@ -1,15 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Submission.NK.CFTLib.fundamentalClassElement
+import Submission.NK.NUV2.chebotarev_all0
 import Submission.Work.SSGRoute.bauer_of_chebotarev
 import Submission.Work.SSGRoute.flowKernel_fixedField
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NK.WeakNU.decompositionSubgroup_eq_zpowers_of_isFrobAt
-import Submission.NK.Reconstruct.Basic
-import Submission.NK.NUV2.chebotarev_all0
-import Submission.NK.CFTLib.fundamentalClassElement
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
-import Submission.Commons.FieldTheory.Galois.mem_stabilizer_valuationSubring_iff_forall_restrict
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,12 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Normed.Field.Approximation
+import Mathlib.Analysis.Normed.Field.Krasner
+import Mathlib.Topology.Algebra.Valued.NormedValued
+import Mathlib.Topology.Algebra.Valued.ValuedField
 import Submission.NK.NeukirchUchida.exists_monic_separable_approx
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.LocalCFTAggregatorDefs
-import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
-import Submission.NK.LocalArtin.Reduction.kernelCondition_toReciprocityMap
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.NUV2.Final.Assembly
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

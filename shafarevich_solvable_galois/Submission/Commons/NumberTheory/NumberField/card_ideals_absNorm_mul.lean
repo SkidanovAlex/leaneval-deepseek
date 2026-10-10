@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_one_lower_bound_quadratic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

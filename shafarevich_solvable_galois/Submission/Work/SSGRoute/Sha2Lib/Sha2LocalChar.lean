@@ -1,16 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.InfInertiaClosureDefs
-import Submission.Work.SSGRoute.levelSub_comap_index_eq_inertiaDeg
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.inertiaSub_frobenius_complement_inf_free
-import Submission.Work.SSGRoute.exists_isFrobLift
-import Submission.Work.SSGRoute.exists_level_inertiaDeg_mul_dvd
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Work.SSGRoute.InfInertiaClosureDefs
-import Submission.Work.SSGRoute.levelSub_comap_index_eq_inertiaDeg
-import Submission.Work.SSGRoute.inertiaSub_frobenius_complement_inf_free
-import Submission.Work.SSGRoute.exists_isFrobLift
-import Submission.Work.SSGRoute.exists_level_inertiaDeg_mul_dvd
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -67,7 +66,6 @@ theorem localUnramChar (p : ℕ) [Fact p.Prime]
       (show p ≠ 0 from (Fact.out : p.Prime).ne_zero)
   letI : FiniteDimensional k L := hLfd
   letI : Normal k L := hLnorm
-  letI : NumberField ↥L := hLnf
   have hpdvd : p ∣ (Work.SSGRoute.levelPrime k Ω A hA L).asIdeal.inertiaDeg
       (NumberField.RingOfIntegers k) := dvd_trans (dvd_mul_right p _) hLdvd
   -- ## 2. the level quotient `levelDecompAt ⧸ levelInertiaInDecompAt` is cyclic of order `f_L`

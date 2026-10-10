@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletion_intCast_eq_padicValInt
 import Submission.NK.TameStructureDeep.Tame.primitiveRoots_finrank_of_dvd_card_residueField_sub_one

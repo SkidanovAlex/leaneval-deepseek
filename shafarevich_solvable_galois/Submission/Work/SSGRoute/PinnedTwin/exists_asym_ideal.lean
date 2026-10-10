@@ -1,11 +1,17 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
 import Submission.Work.SSGRoute.PinnedTwin.Basic
-import Submission.Work.SSGRoute.PinnedTwin.Shim
 import Submission.Work.SSGRoute.PinnedTwin.exists_primes_not_conj_avoid
 import Submission.Work.SSGRoute.PinnedTwin.exists_signPattern_notMem_range
-import Submission.Work.SSGRoute.PinnedTwin.card_twoTorsion_range_le
 import Submission.Work.SSGRoute.ZDataMup.weakApprox_pos_numberField
-import Submission.NK.UchidaKummer.SplitPrimes
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

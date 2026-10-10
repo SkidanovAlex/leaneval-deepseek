@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.decompK_restrict_exists
 import Submission.Work.SSGRoute.localUnitsMap_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,9 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.ArchDictionary.ArchLocalP2Aux
-import Submission.Work.SSGRoute.PT.gcH1Transfer_exists
 import Submission.Work.SSGRoute.ArchDictionary.archAcH1Natural
-import Submission.Work.GroupCohomology.H1_induction_on
-import Submission.Work.GroupCohomology.Functoriality
+import Submission.Work.SSGRoute.PT.gcH1Transfer_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

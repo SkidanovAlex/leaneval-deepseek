@@ -1,37 +1,9 @@
-/-
-# The pointwise product complex, and product-compatibility of linear algebra
-
-This file contains the definitions used in the proof that the Tate cohomology of a
-pointwise product representation `piRep M` is the product of the Tate cohomologies of
-the factors `M i`.
-
-The main definition is `piCplx C`: the cochain complex whose degree `n` part is the
-*Pi type* `∀ i, ↥((C i).X n)` and whose differential is the componentwise product
-`LinearMap.piMap` of the differentials of the `C i`.  This is (up to the canonical
-isomorphism `ModuleCat.piIsoPi`) the categorical product of the complexes `C i`.
-
-We also provide the two "currying" linear equivalences that identify the terms of the
-inhomogeneous (co)chain complexes of `piRep M` with products of those of the `M i`,
-and the general linear-algebra lemma that a quotient of a product is the product of
-the quotients.
-
-**Note for users of this file.**  Everything here is stated over a *variable* commutative
-ring `R`, never over `ℤ` directly.  This is deliberate: for `R = ℤ` the type class search
-for the `ℤ`-module structure on a Pi type is ambiguous (`Pi.module` versus the generic
-`AddCommGroup.toIntModule`), and the two structures are not syntactically equal, which
-makes `rfl`/`simp` fail in confusing ways.  With `R` a variable there is no such
-ambiguity.  Lemmas proved here therefore instantiate cleanly at `R = ℤ`.
-
-When working with this file it is recommended to put
-
-```
-set_option backward.isDefEq.respectTransparency false
-```
-
-at the top of the file: some of the proofs below rely on it (it makes the coercion
-`↥(piCplxX R C n)` and the Pi type `∀ i, ↥((C i).X n)` interchangeable for rewriting).
--/
-import Mathlib
+import Mathlib.LinearAlgebra.DFinsupp
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Homology.HomologicalComplex
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.LinearAlgebra.Quotient.Basic
+import Mathlib.Algebra.Category.ModuleCat.Basic
 import Submission.NK.RepresentationTheory.GroupCohomology.piCohomology_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

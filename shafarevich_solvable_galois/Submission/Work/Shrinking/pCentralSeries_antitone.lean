@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.Shrinking.PCentral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

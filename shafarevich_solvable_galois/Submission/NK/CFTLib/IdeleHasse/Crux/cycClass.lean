@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
 import Submission.NK.CFTLib.IdeleHasse.Crux.zpowersSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

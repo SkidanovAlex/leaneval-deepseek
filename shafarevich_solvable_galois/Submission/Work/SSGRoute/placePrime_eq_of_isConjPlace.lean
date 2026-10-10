@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Submission.Work.SSGRoute.RamifiedPlacesAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,9 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.BaseChangeSquareStep3
-import Submission.Work.SSGRoute.ext_h1_bridge
-import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
-import Submission.Work.SSGRoute.E1aClean.Transport
-import Submission.Work.SSGRoute.PT.e1a_coverSES
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
+import Submission.Work.SSGRoute.E1aClean.PhiERules
+import Submission.Work.SSGRoute.PT.delta_restrictSES
+import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
+import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
+import Submission.Work.SSGRoute.localGaloisEquiv_coInAdjoin_compat_general
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

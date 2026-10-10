@@ -1,5 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.QLImports
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
+import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
 import Submission.Work.SSGRoute.normImage_at_level_proper
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

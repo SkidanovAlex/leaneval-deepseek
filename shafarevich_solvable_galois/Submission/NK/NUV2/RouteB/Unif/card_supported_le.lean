@@ -1,17 +1,11 @@
-/-
-# Ideals supported on a finite set of primes: a polynomial-in-`log` count
-
-Let `K` be a number field, `E` a finite set of primes of `𝓞 K` and `ε > 0`.  This file proves
-that the number of nonzero ideals `𝔟` of `𝓞 K` all of whose prime divisors lie in `E` and with
-`absNorm 𝔟 ≤ N` is bounded by `C · N ^ ε` with a constant `C` independent of `N`.
-
-The proof is elementary: such an ideal is `∏_{𝔭 ∈ E} 𝔭 ^ e 𝔭`, its norm is
-`∏_{𝔭 ∈ E} N𝔭 ^ e 𝔭 ≥ 2 ^ (∑ e 𝔭)`, so `∑ e 𝔭 ≤ log₂ N`; hence the exponent vector lies in
-`∏_{𝔭 ∈ E} {0, …, ⌊log₂ N⌋}`, of cardinality `(⌊log₂ N⌋ + 1) ^ #E`.  Since a power of a logarithm
-grows more slowly than `N ^ ε`, this gives the claim.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.SpecialFunctions.Log.Base
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.NUV2.RouteB.Unif.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

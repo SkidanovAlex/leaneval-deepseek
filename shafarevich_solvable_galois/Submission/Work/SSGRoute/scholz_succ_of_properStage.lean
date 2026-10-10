@@ -1,16 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.inertia_map_eq_of_isCyclic
-import Submission.Work.SSGRoute.t0Generation_cyclic
-import Submission.Work.SSGRoute.twistLayer
-import Submission.Work.SSGRoute.stage3Defs
-import Submission.Work.SSGRoute.isProperStageData_pushdown
-import Submission.Work.SSGRoute.step4CokerSideDefs
-import Submission.Work.SSGRoute.step4_bundle_assembly
-import Submission.Work.SSGRoute.step4CokerSide_proved
-import Submission.Work.SSGRoute.step4Helpers
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.scholz_two_one
+import Submission.Work.SSGRoute.step4CokerSide_proved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

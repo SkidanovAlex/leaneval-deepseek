@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.CFTLib.ARLAlt.Setup
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.ARLAlt.CellAbelian
+import Submission.NK.CFTLib.ARLAlt.Setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 import Submission.NK.TameStructureDeep.Tame.Defs
 import Submission.NK.TameStructureDeep.Units.isProP_principalUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

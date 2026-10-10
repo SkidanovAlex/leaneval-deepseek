@@ -1,9 +1,10 @@
-import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Henselian
 import Mathlib.Data.Rat.Star
 import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Units.Regulator
 import Submission.Commons.NumberTheory.NumberField.regulator_eq_one_of_rank_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

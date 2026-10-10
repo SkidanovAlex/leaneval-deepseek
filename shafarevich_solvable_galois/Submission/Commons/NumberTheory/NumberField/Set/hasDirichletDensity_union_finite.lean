@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
+import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

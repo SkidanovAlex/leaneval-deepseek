@@ -1,11 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PinnedTwin.Shim
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.PinnedTwin.ideleOfIdeal_smul_cong
 import Submission.Work.SSGRoute.PinnedTwin.rhoStableCongSubgroup
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_prime_mem_rayClass
-import Submission.Work.SSGRoute.NodeS37.divisorOfClassRepresentative
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.exists_coprime_representative_two
-import Submission.Work.SSGRoute.PinnedTwin.twistIdeleExists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

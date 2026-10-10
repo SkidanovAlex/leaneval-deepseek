@@ -1,10 +1,11 @@
-import Mathlib
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.Analysis.Polynomial.aeval_bound_at_root
 import Submission.Commons.Analysis.Polynomial.norm_coeff_ge_sub_supNorm
-import Submission.Commons.FieldTheory.Polynomial.natDegree_eq_of_supNorm_lt
+import Submission.Commons.Analysis.Polynomial.supNorm_neg
 import Submission.Commons.Analysis.Real.exists_eps_lt_mul_pow
 import Submission.Commons.Analysis.Real.mul_le_mul_pow_of_le
-import Submission.Commons.Analysis.Polynomial.supNorm_neg
+import Submission.Commons.FieldTheory.Polynomial.natDegree_eq_of_supNorm_lt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

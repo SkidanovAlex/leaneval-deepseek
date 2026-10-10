@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.local_lifting_setup
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

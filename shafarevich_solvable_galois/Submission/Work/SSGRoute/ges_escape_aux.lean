@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Idele
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.NK.GlobalCFT.IdeleClassGroup
 import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

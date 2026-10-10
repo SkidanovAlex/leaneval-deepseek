@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.Module.NatInt
+import Mathlib.Data.Int.GCD
+import Mathlib.Tactic.Ring.RingNF
+import Mathlib.Algebra.Ring.Divisibility.Basic
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

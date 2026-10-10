@@ -1,18 +1,15 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.levelPair_baseChange_key
-import Submission.Work.SSGRoute.inflTrivIn_trans
-import Submission.Work.SSGRoute.extHRestrict_inflHIn_eq_zero_of_forall
-import Submission.Work.SSGRoute.Sha2Lib.isInertiaAt_map_algEquiv
 import Submission.Work.SSGRoute.Sha2Lib.galRes_autCongr_symm
+import Submission.Work.SSGRoute.Sha2Lib.isInertiaAt_map_algEquiv
+import Submission.Work.SSGRoute.extHRestrict_inflHIn_eq_zero_of_forall
 import Submission.Work.SSGRoute.extRes_injective_of_mulEquiv
-import Submission.Work.SSGRoute.e6_util
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.levelPair_baseChange_key
 
 /-!
 # Independence of the unramified detector of the ambient algebraically closed field

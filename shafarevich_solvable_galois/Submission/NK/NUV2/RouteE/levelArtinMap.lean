@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalReciprocityLubinTate.Target
 import Submission.NK.NUV2.RouteC.delta_qmodz
-import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

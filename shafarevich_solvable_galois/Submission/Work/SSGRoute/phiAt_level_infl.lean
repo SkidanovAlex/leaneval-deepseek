@@ -1,46 +1,11 @@
-/-
-# Level naturality of the pairing `phiAt` under inflation along `L ≤ L'`
-
-Target: `Work.SSGRoute.phiAt_level_infl` (node `E6Ω`/`E5s` coherence).
-
-`inflCIn hLL (phiAt_L y h) = phiAt_{L'} y (inflHIn hLL h)` for finite Galois levels
-`K ≤ L ≤ L' ≤ Ω`.
-
-The proof is a two-step computation with the `Ext`-calculus of `PTDefs`:
-
-* `PhiAtInfl.levelPair_restrict'` (the restriction-companion of `levelPair`, the statement of
-  `Work.SSGRoute.SylowIn.levelPair_restrict` re-proved here) rewrites the inflated level-`L` value
-  as the level-`L'` value at the *composite* group homomorphism
-  `(galRes k K L).comp (galRes k L L')`, with the coefficient morphism
-  `Rep.resMap (galRes k L L') (classIncl k K L) ≫ classIncl k L L'`;
-* `PhiAtInfl.levelPair_transport` is a purely formal `Ext`-identity comparing the pairing at two
-  propositionally equal group homomorphisms, given the transports of the coefficient morphism, of
-  the cohomology class and of `extRes` (`PhiAtInfl.extRes_transport`);
-* the transports are the canonical ones: `resResHom` for the coefficient module and for the
-  `M`-module (`PhiAtInfl.resResHom_eq_eqToHom`, `PhiAtInfl.resResHom_comp_eqToHom`), the composite
-  coefficient morphism is identified with the one-step one by `PhiAtInfl.classIncl_compat'`
-  (morphism-level form of `Work.SSGRoute.classIncl_compat_apply`), and the cohomology class is
-  transported by `PhiAtInfl.extHMap_comp_id_coeff`.
-
-## Import note
-
-The import list of the original skeleton included
-`Submission.Work.SSGRoute.local_duality_ext` (through `phi1_mono_sylow_in`) *and*
-`Submission.Work.SSGRoute.phi_pair_natural` (through `phi1_classIncl_compat`); the two are
-inconsistent in the current workspace, since both `local_duality_ext` and `phiPushClass` declare
-`Work.SSGRoute.pushClass` (importing both makes any module that needs them unloadable).  Likewise
-`Submission.Work.SSGRoute.phi1_classIncl_compat_morph` has no compiled `.olean` in the workspace.
-The ingredients those modules provide and that are used here (`levelPair_restrict`,
-`comp_assoc_of_first_deg_zero`, the morphism-level `classIncl_compat`) are therefore re-proved below
-in the auxiliary namespace `Work.SSGRoute.PhiAtInfl`.
--/
-
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
+import Submission.Work.SSGRoute.inflTrivIn_trans
 import Submission.Work.SSGRoute.phi1_classIncl_compat
 import Submission.Work.SSGRoute.sylow_descend
-import Submission.Work.SSGRoute.inflTrivIn_trans
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

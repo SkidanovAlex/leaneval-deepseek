@@ -1,6 +1,8 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.FieldTheory.Galois.iSup_decompositionSubgroup_eq_top
 import Submission.NK.Reconstruct.LevelMap
 import Submission.NK.Reconstruct.Transport
-import Submission.NeukirchUchida.Detection
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,12 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.E7cC.exists_unramifiedDetector
-import Submission.Work.SSGRoute.E7cOmega.exists_level_detecting_functional
-import Submission.Work.Sha2Lib.shapiroCocycle_mem
-import Submission.Work.SSGRoute.Sha2Lib.detectorInvariantCaseExtZ
-import Submission.Work.SSGRoute.E7cOmega.levelPair_ratDivSES_mk0_ne_zero_iff
-import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
 import Submission.Work.SSGRoute.SSGStage.levelPair_eCoh_cocycles_ne_zero
+import Submission.Work.SSGRoute.Sha2Lib.detectorInvariantCaseExtZ
+import Submission.Work.Sha2Lib.shapiroCocycle_mem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -457,7 +461,6 @@ theorem detectsAt_of_levelCocycleDatum (p : ℕ) [Fact p.Prime] (k K : Type) [Fi
             (G := SSGRoute.PTExt.decompK (k := k) (K := K) w))) (zero_add 1)) := by
   classical
   obtain ⟨L, hnfL, hfdL, hgalL, q', hq'lies, hcop, z, hzit, d, hdmem, hdval⟩ := h
-  letI : NumberField ↥L := hnfL
   letI : FiniteDimensional k ↥L := hfdL
   letI : IsGalois k ↥L := hgalL
   have hq' : NK.GlobalCFT.Place.LiesOver (NK.GlobalCFT.Place.ofFinite q') w := hq'lies

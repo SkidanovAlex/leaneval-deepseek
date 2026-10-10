@@ -1,16 +1,28 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.EscapeImports
-import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
-import Submission.Work.SSGRoute.ZConstruction.kummerChar_eq_of_localPowClass_eq
-import Submission.Work.SSGRoute.ZConstruction.levelK_kummerCharHom_dictionary
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.grunwald_escape_correction
-import Submission.Work.SSGRoute.ZSplit.BaseChange
-import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.exists_pow_mul_mem_localUnits_of_dvd_log
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
-import Submission.Work.SSGRoute.EscapeCoreLib.powMulUnit_of_dvd_log
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Submission.Work.SSGRoute.EscapeCoreLib.algEquiv_extend_compositum
 import Submission.Work.SSGRoute.EscapeCoreLib.count_spanSingleton_mul_inv
+import Submission.Work.SSGRoute.EscapeCoreLib.exists_finiteDimensional_galois_superset
+import Submission.Work.SSGRoute.EscapeCoreLib.powMulUnit_of_dvd_log
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.grunwald_escape_correction
+import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Submission.Work.SSGRoute.ZConstruction.kummerCharMonoidHom
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
+import Submission.Work.SSGRoute.ZSplit.BaseChange
+import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
+import Submission.Work.SSGRoute.kummerCharZ_eq_zero_of_isInertia_of_valuation_dvd
+import Submission.Work.SSGRoute.ssg8Chebotarev
+import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,11 @@
-import Mathlib
-import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
-import Submission.NK.GlobalCFTdeep.Audit.cohomologicalFieldAxiom_self
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.GlobalCFTdeep.CoCore.FundamentalClass
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

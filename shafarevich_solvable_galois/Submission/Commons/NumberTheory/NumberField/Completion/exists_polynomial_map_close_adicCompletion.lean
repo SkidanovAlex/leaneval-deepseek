@@ -1,4 +1,3 @@
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Analysis.Polynomial.Norm
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers

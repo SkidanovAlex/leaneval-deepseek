@@ -1,4 +1,5 @@
 import Mathlib.FieldTheory.Separable
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.FieldTheory.Polynomial.rootSet_map_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

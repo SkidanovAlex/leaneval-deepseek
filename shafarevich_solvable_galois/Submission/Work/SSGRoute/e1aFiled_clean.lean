@@ -1,24 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.G5Core
-import Submission.Work.SSGRoute.PT.e1a_assembly
-import Submission.Work.SSGRoute.PT.e1a_sha2_mem_range_chainC
-import Submission.Work.SSGRoute.PT.e1a_beta_can
-import Submission.Work.SSGRoute.PT.e1aBetaCan_splitPlaces
-import Submission.Work.SSGRoute.PT.e1aChainC_localComparison
-import Submission.Work.SSGRoute.PTdualControl.extExact
-import Submission.Work.SSGRoute.Sha2Lib.pt_core_assembly
-import Submission.Work.SSGRoute.PT.e1aBetaCan_le_ker
--- The landing clause, assembled *sorry-free* from the two named local dictionaries
--- (`SSGStage.e1aLandingFinCompat`, `SSGStage.e1aLandingInfLocal`) rather than from the orphan
--- `sorry` of `PT/e1aBetaCan_le_ker.lean` (which nothing points at).  See
--- `E1aClean/NOTE_session13_route_blocked.md` §0.
-import Submission.Work.SSGRoute.Sha2Lib.e1a_landing_via_dictionary
-import Submission.Work.SSGRoute.E1aClean.ArchimedeanOdd
-import Submission.Work.SSGRoute.E1aClean.ArchimedeanOddLanding
--- The landing clause with the *proved* seam-carrying archimedean leaf
--- (`E1aClean.archimedeanKillClauseLinked` + `PTdualControl.glue_infinite_place_with_link`) and the
--- finite leaf wired to the local criterion (`E1aClean.finLocalCriterion`).
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.e1aBetaCan_le_ker_clean
+import Submission.Work.SSGRoute.PT.e1aBetaCan_le_ker
+import Submission.Work.SSGRoute.PTembedding.G5Core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

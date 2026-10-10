@@ -1,46 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The corrected tamely ramified structure theorem, assembled
-
-For `κ = K_𝔭` and the *corrected* wild inertia `V_κ = Gal(K'/κ^{tr})`
-(`NK.TameStructureDeep.Tame.correctedWildInertia`, i.e. the fixing subgroup of the maximal tamely
-ramified extension `Tame.tameClosure`), this file assembles everything the local structure theorem
-needs about the tame inertia.  Every field below is a **theorem** of this chapter:
-
-* `correctedWildInertia_le_inertia` — `V_κ ≤ I_κ` (`Tame/TameClosure.lean`);
-* `correctedWildInertia_normal` — `V_κ ◁ G_κ` (`Tame/CorrectedInterface.lean`);
-* `isProCyclic_correctedWildInertia` — `I_κ/V_κ` is pro-cyclic;
-* `isProPrimeToP_correctedWildInertia` — `I_κ/V_κ` is pro-prime-to-`p`;
-* `commutator_mem_correctedWildInertia` — `[I_κ, I_κ] ≤ V_κ` (`Tame/inertiaQuotient.lean`);
-* `exists_frobenius_adicCompletion` — the normalised Frobenius exists (`Core.lean`);
-* `isFrobeniusFor_iff_isTameFrobeniusLift` — **the Frobenius normalisation**: a normalised
-  Frobenius is exactly a tame Frobenius lift, i.e. `frobenius_iff` for the corrected `V_κ`,
-  assembled from `Tame/kummer_tateTwist_of_pow_eq.lean`
-  (`IsFrobeniusFor ⟹ IsTameFrobeniusLift`) and
-  `Tame/actsAsFrobenius_of_isTameFrobeniusLift.lean` (the converse, via the Kummer pairing);
-* `unramifiedQuotient_adicCompletion` — `G_κ ⧸ I_κ ≅ Ẑ` (`Unramified.lean`).
-
-What is *not* here: the maximality clause of `NK.LocalTame.IsMaxNormalProCyclicInQuotient`,
-i.e. that every normal pro-cyclic subgroup `J/V_κ ≤ G_κ/V_κ` lies in `I_κ/V_κ`.  Per README §7.2
-(corrected four times) this clause is **TRUE** — the cyclotomic character on the tame inertia is
-faithful, `ker χ = ⋂_{ℓ≠p,n} ord_{ℓ^n}(q) Ẑ = 0`, which is the formalised `κ^ur = κ(μ_{p'})` — but it
-is not yet *proved* in the workspace's vocabulary; see
-`NK.TameStructureDeep.Tame.isMaximal_correctedWildInertia`.  Also not here: Shimizu's lemma
-(local class field theory) for the abelianisation.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.CorrectedInterface
-import Submission.NK.TameStructureDeep.Tame.isProCyclic_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.isTameFrobeniusLift_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.actsAsFrobenius_of_isTameFrobeniusLift
-import Submission.NK.TameStructureDeep.Tame.inertiaQuotient
-import Submission.NK.TameStructureDeep.Tame.UnramifiedNoPow
-import Submission.NK.TameStructureDeep.Unramified
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Core
 import Submission.NK.TameStructureDeep.Support.quotientImage_normal_iff
+import Submission.NK.TameStructureDeep.Tame.actsAsFrobenius_of_isTameFrobeniusLift
+import Submission.NK.TameStructureDeep.Tame.isProCyclic_correctedWildInertia
+import Submission.NK.TameStructureDeep.Unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

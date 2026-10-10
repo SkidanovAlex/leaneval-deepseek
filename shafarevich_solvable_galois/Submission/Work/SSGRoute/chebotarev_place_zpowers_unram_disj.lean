@@ -1,13 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.DisjPrelim
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
-import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
-import Submission.Work.SSGRoute.ZPlace
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
-import Submission.NeukirchUchida.Local.LocalGalois
+import Submission.Work.SSGRoute.ZPlace
+import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
+import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

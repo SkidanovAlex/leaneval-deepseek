@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.SSGStage.extRatRep_vanish
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.E7cOmega.subsingleton_ext_one_ratRep
 import Submission.Work.Ext.extClass_postcomp_bijective_Rep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

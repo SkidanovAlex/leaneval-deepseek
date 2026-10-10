@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.e0b_bridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

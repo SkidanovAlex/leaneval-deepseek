@@ -1,15 +1,13 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFT.GlobalCFT
-import Mathlib.Algebra.Homology.ShortComplex.ShortExact
+import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_two_iso_abelianization
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_two_eq_natCard_tateCohomology_zero_of_cyclic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_mulEquiv_artinMap_of_commute
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.H0Computation
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_compactSpace_normOneClassGroup
+import Submission.NK.GlobalCFT.IdeleClassGroupExact
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

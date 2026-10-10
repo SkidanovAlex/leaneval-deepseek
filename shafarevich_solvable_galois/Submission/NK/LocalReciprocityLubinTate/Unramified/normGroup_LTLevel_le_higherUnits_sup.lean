@@ -1,19 +1,23 @@
-import Mathlib
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.DivisionPoints
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTpolyEis_shape
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.norm_root_LTpolyEis
-import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.Extension
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
+import Mathlib.RingTheory.Valuation.Discrete.Basic
 import Submission.NK.LocalReciprocityLubinTate.Eval.exists_valuation_extension_finite
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_sup_higherUnits
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.norm_root_LTpolyEis
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.NK.LocalReciprocityLubinTate.Unramified.norm_adjoinRoot_eq_resultant
 import Submission.NK.LocalReciprocityLubinTate.Unramified.coeff_LTpolyEis_mem_span_lower
-import Submission.NK.LocalReciprocityLubinTate.Unramified.valuation_root_pow_eq
-import Submission.NK.LocalReciprocityLubinTate.Unramified.valuation_aeval_eq_zpow
+import Submission.NK.LocalReciprocityLubinTate.Unramified.norm_adjoinRoot_eq_resultant
 import Submission.NK.LocalReciprocityLubinTate.Unramified.resultant_LTpolyEis_heart
+import Submission.NK.LocalReciprocityLubinTate.Unramified.valuation_aeval_eq_zpow
+import Submission.NK.LocalReciprocityLubinTate.Unramified.valuation_root_pow_eq
 
 namespace NK.LocalReciprocityLubinTate.Unramified
 

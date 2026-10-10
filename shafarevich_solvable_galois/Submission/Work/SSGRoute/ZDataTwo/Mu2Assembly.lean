@@ -1,10 +1,14 @@
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZDataTwo.Mu2Reciprocity
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
 import Submission.Work.SSGRoute.ZDataTwo.isLocalNorm_ofInfinite_of_isComplex
-import Submission.Commons.FieldTheory.Galois.exists_smul_eq_of_comap_eq
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

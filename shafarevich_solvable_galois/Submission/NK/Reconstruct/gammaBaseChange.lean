@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.Topology.Constructions
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.baseChange
-import Submission.NK.Reconstruct.GammaSup
-import Submission.NK.Reconstruct.ellIncl_ellRestrict
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

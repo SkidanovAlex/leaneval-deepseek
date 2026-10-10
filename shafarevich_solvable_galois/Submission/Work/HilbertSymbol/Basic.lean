@@ -1,20 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Hilbert symbol over `ℚ`: definitions
-
-This file sets up the Hilbert symbol `(a,b)_v` for `a b : ℚˣ` and a place `v` of `ℚ`.
-
-* for the archimedean place `v = ∞` we use `ℝ`, and the classical criterion
-  `(a,b)_∞ = -1 ↔ a < 0 ∧ b < 0`;
-* for a finite place `v = p` the completion is `ℚ_[p] = Padic p`, the ring of integers is `ℤ_[p]`,
-  and we use the classical explicit formulas in terms of the Legendre symbol of the `p`-adic unit
-  parts of `a` and `b` and the parities of the valuations.
-
-Everything lives in the namespace `Work.HilbertSymbol`.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.LegendreSymbol.QuadraticChar.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

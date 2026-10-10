@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_pow_eq_algebraMap_of_isAlgebraic
 import Submission.Commons.RingTheory.Valuation.exists_separator_of_pairwise_independent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

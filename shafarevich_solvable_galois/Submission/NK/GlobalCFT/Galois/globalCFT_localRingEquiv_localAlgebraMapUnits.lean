@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.GaloisIdeles
-import Submission.NK.GlobalCFT.GaloisIdelesAction
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
+import Submission.NK.GlobalCFT.GaloisIdelesAction
+import Submission.NK.GlobalCFT.Inclusion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

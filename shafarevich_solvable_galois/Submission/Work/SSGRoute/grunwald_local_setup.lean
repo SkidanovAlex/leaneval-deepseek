@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.grunwald_kummer_idx
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
+import Submission.Work.SSGRoute.grunwald_kummer_idx
 
 /-!
 # The local Kummer setup for the Grünwald surjectivity lemma

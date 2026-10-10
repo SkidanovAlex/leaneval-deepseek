@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.Reconstruct.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Reconstruct.GammaObject
 import Submission.NK.Reconstruct.comap_placeMap_eq_of_realizesPlaceMap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

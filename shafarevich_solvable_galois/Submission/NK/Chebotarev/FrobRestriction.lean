@@ -1,12 +1,10 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Mathlib
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
 import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
+import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

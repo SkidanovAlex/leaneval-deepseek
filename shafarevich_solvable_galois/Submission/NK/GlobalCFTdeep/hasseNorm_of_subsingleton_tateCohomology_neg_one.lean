@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.exists_sub_smul_eq_of_subsingleton_tateCohomology_neg_one
 import Submission.NK.GlobalCFTdeep.prod_smul_mk_eq_one_of_normIdeleHom_eq
 import Submission.NK.GlobalCFTdeep.prod_smul_mul_principalIdele_eq

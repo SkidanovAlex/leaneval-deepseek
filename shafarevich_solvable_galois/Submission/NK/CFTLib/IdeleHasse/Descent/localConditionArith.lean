@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.GroupTheory.OrderOfElement
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.auxiliaryPrimeOrder
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

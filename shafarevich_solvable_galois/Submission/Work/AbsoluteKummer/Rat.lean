@@ -1,20 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The Kummer isomorphism over `ℚ`
-
-For `k = ℚ` and `n = 2` (so that `μ₂ = {±1} ⊆ ℚ`), the Kummer isomorphism of
-`Submission/Work/AbsoluteKummer/Kummer.lean` specialises to
-
-`ℚˣ/(ℚˣ)² ≃* H¹(G_ℚ, μ₂)`   (`Work.AbsoluteKummer.kummerEquivRatTwo`),
-
-the arithmetic shadow of the quadratic (degree-`2`) local–global theory of
-`Submission/Work/QuadraticLocalGlobal`.
--/
-import Submission.Work.AbsoluteKummer.Kummer
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.AbsoluteGalois.Basic
 import Submission.Work.AbsoluteKummer.Kummer.kummerMap_injective
 import Submission.Work.AbsoluteKummer.Kummer.kummerMap_surjective
-import Submission.Work.AbsoluteGalois.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

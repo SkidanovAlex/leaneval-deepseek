@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Submission.NK.CFTLib.ARL.exists_mod_order_independent
-import Submission.NK.CFTLib.ARL.exists_prime_units_order
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

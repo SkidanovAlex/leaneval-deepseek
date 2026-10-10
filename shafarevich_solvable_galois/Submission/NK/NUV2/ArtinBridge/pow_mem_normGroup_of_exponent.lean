@@ -1,10 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_artinMap_of_abelian_local
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
-import Submission.NK.LocalCFT.Basic
-import Submission.NK.LocalReciprocityLubinTate.Target
 import Submission.NK.GlobalCFTdeep.SecondInequality.pow_mem_normGroup_adicCompletion
+import Submission.NK.LocalReciprocityLubinTate.Target
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

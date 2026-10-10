@@ -1,15 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
+import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
+import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
 import Submission.NK.Mine.Generation
 import Submission.NeukirchUchida.Local.Transitivity
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
-import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

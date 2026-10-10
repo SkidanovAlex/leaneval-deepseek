@@ -1,10 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.exists_admissible
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSym_restrict_relNorm
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.norm_principalRay_le
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.auxField_exists
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.exists_admissible
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.kernelLe_of_auxField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

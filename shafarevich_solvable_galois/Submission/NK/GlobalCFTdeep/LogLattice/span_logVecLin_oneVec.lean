@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
-import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
-import Submission.NK.GlobalCFTdeep.LogLattice.InfSumZero
-import Submission.NK.GlobalCFTdeep.LogLattice.sum_logVec_eq_zero
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
 import Submission.NK.GlobalCFTdeep.LogLattice.span_unitsToTUnits_logVecLin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

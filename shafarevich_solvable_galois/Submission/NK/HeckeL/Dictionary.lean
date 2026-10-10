@@ -1,13 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-The dictionary between the characters of a ray class group and the characters of the Galois group
-of the corresponding abelian extension, via Artin reciprocity.  This is the only file of the
-chapter which imports the reciprocity input `NK.GlobalCFT.ArtinReciprocity`; the analytic
-development below (`Series`, `Product`, `Nonvanishing`) is independent of it.
--/
-import Submission.NK.HeckeL.Artin
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.GlobalCFT.Reciprocity
+import Submission.NK.HeckeL.Artin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

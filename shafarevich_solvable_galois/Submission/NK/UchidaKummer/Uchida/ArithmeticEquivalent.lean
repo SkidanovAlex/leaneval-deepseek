@@ -1,19 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Arithmetic equivalence of number fields
-
-Reference: arXiv:2601.01251, §6, `cor:arith equiv` and the citation *arithmetic equivalence by
-number of primes*: two number fields are **arithmetically equivalent** iff they have the same number
-of primes above `p` for all but finitely many rational primes `p` (equivalently, iff their Dedekind
-zeta functions coincide).
-
-This is the number-theoretic hypothesis of the Perlis/Gassmann input of §6
-(`NK.UchidaKummer.PerlisGassmannInput`).
--/
-
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Chebotarev.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

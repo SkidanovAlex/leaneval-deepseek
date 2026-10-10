@@ -1,9 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.RamificationAdic.exists_valuationRingData
-import Submission.NK.Ramification.exists_valuationSubring_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

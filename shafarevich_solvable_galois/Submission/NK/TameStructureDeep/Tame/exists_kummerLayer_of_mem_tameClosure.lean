@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameClosure
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.TameStructureDeep.Tame.exists_root_capturing_pair
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

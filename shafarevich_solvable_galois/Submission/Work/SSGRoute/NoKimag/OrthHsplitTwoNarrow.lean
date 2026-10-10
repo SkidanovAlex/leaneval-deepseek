@@ -1,8 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.N2v2.orthogonality_hsplit_proved
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.H9Narrow.orthogonality_narrow_L2K
-import Submission.Work.SSGRoute.ZDataTwo.OrthTwoAux
-import Submission.Work.SSGRoute.ZDataTwo.OrthTwoArchIn
 import Submission.Work.SSGRoute.NoKimag.HeartLocalSumNarrow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

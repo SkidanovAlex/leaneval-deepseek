@@ -1,27 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The components of `Ẑ = lim_n ℤ ⧸ nℤ`
-
-`Ẑ = NK.LocalAnabelian.Zhat` is the profinite completion of `ℤ`, i.e. the limit of the
-finite quotients `ℤ ⧸ H` over the finite index normal subgroups `H ≤ ℤ`.  A finite index
-subgroup of `ℤ` is `nℤ` for a unique `n ≥ 1`
-(`NK.TameStructure.ProCyclic.mZ n hn`), and the corresponding finite quotient is
-`ℤ ⧸ nℤ ≅ ℤ/nℤ` — this is the *`n`-th component* of `Ẑ`.
-
-This file provides the two objects used throughout `galoisGroup_unramifiedClosure_mulEquiv`:
-
-* `toZModHom d : Multiplicative ℤ →* Multiplicative (ZMod d)`, the reduction map;
-* `zmodQuotEquiv d hd : (Multiplicative ℤ ⧸ (mZ d hd)) ≃* Multiplicative (ZMod d)`, its
-  factorisation through the `d`-th component, so that the `d`-th component of `Ẑ` can be read
-  as an element of `Multiplicative (ZMod d)`;
-* `compHomZMod d hd : Ẑ →* Multiplicative (ZMod d)`, the composite;
-* `mZ_le_mZ`, the containment of the index subgroups of the completion diagram.
--/
-import Mathlib
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructure.ProCyclic.Defs
-import Submission.NK.LocalAnabelian.ResidueField.Recovery
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

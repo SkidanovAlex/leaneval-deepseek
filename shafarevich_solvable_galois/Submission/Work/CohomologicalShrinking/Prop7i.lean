@@ -1,54 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 7 (i) of Schmidt–Wingberg: the semidirect-product variant
-
-Schmidt–Wingberg's **Proposition 7 (i)** is the variant of the shrinking lemma that is used in
-step 4 of the proof of Theorem 15:
-
-> for given elements `x₁, …, x_t ∈ H^{-2}(F(m)/F(m)^{(ν)} ⋊ G, E(m,τ) ⊗ T)` there exists `m₀ ≥ n`
-> such that for all `m ≥ m₀` there is a surjective `G`-operator homomorphism `F(m) ⇢ F(n)` whose
-> induced homomorphism kills all the `x_i`.
-
-Its proof in the paper runs through the homological Hochschild–Serre exact sequence
-(`H⁻² = H₁`)
-
-`H₁(F(m)/ν, E⊗T) --α--> H₁(F(m)/ν ⋊ G, E⊗T) --β--> H₁(G, E⊗T) --→ 0`,
-
-in which:
-
-* `F(m)/ν` acts trivially on `E(m,τ) ⊗ T`, so by the universal coefficient formula the first
-  term is `F(m)/F(m)² ⊗ E(m,τ) ⊗ T` (the model of Proposition 7 (ii) used in `Prop7.lean`);
-* `α` is (the composite of) the surjections of Proposition 5 plus `F(m)/F(m)²`;
-
-and the shrinking is a two-step diagram chase:
-
-1. use Proposition 7 (ii) with target `ℓ` (or rather the `k = -2` case of Proposition 6, in the
-   `I_G`-model `H₁(G, X) ≅ Ĥ⁻¹(G, X ⊗ I_G)`) with `ℓ₀` a fixed admissible level to find `m ≥ ℓ₀`
-   and `Φ₁ : F(m) ⇢ F(ℓ₀)` killing `β(x_i)`;
-2. exactness at the middle term shows `zMap Φ₁ (x_i) = α(u_i)` for some `u_i`, and Proposition
-   7 (ii) for the target `n` provides `Φ₂ : F(ℓ₀) ⇢ F(n)` killing the `u_i`;
-3. the composite `Φ₂ ∘ Φ₁` then kills the `x_i`, because `α` is natural in the rank.
-
-Only the two structural inputs of this argument are *not* formalized in this workspace: the
-homological Hochschild–Serre sequence for `F(m)/ν ⋊ G` (in particular the exactness
-`range α = ker β` and the surjectivity of `β`), and the universal coefficient formula
-`H₁(F(m)/ν, E⊗T) ≅ F(m)/F(m)² ⊗ E(m,τ) ⊗ T` (there is no `H₁` of a group in this workspace; see
-`Work.Tate`'s `NOTES.md` §6).  They are therefore isolated here as the fields of the structure
-`SemidirectShrinkingData`: a type family `Z m` modelling `H₁(F(m)/ν ⋊ G, E(m,τ) ⊗ T)` together
-with `α`, `β`, their exactness, their naturality in the rank and the functoriality of the maps
-`zMap Φ` induced by operator maps.  Given that data, the paper's chase is carried out here and
-Prop 7 (i) follows — so the *mathematical* content of the paper's proof is proved, and the
-isolated hypothesis is exactly the Hochschild–Serre bookkeeping.
-
-## Main results
-
-* `Work.CohomologicalShrinking.SemidirectShrinkingData` : the Hochschild–Serre data.
-* `Work.CohomologicalShrinking.exists_shrinking_H1_semidirect` : Proposition 7 (i).
--/
-
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.MonoidAlgebra.Module
+import Mathlib.LinearAlgebra.TensorProduct.Basic
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.Levels
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

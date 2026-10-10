@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Sylow
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.Work.SSGRoute.E7bDefs
 import Submission.Work.SSGRoute.sylow_in_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

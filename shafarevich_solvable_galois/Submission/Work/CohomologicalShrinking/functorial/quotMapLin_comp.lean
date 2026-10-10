@@ -1,24 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Composition compatibility of the induced map `F(m)/F(m)² → F(n)/F(n)²`
-
-For surjective `G`-operator homomorphisms `Φ : F(m) ⇢ F(n)` and `Ψ : F(n) ⇢ F(l)` the
-induced `𝔽_p`-linear maps `quotMapLin` on `F(-)/F(-)²` are compatible with composition:
-
-`quotMapLin (Ψ ∘ Φ) = quotMapLin Ψ ∘ quotMapLin Φ`.
-
-This is the `τ = (1,1)` case of the functoriality of Schmidt–Wingberg's Proposition 5 and is
-used to transport the shrinking procedure through compositions of operator maps.
-
-The proof reduces to the corresponding statement for the induced maps
-`pCentralMapMul : P_n/P_{n+1} → Q_n/Q_{n+1}` on the subquotients of the descending `p`-central
-series, which is checked on a representative (`QuotientGroup.map_mk'`).
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Functorial
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Submission.Work.CohomologicalShrinking.OperatorMap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,6 @@
+import Mathlib.RingTheory.Henselian
 import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,44 +1,8 @@
-/-
-# The `𝒪[F]`-action on the torsion points is compatible with the level
-
-Milne, *Classical Field Theory*, §I.3: for `x ∈ Λ_n` (the `π^n`-torsion points of the Lubin–Tate
-group of `π`) and `a ∈ 𝒪[F]`, the point `a · x = [a](x)` is computed through the `𝒪[F]`-algebra
-homomorphism `evMap x : T_n = 𝒪[F][T]/(f^{(n)}(T)) → F̄` (`Eval/TorsionAction.lean`).
-
-Here we prove that this value does not depend on the level `n` at which it is computed: if
-`x ∈ Λ_N ∩ Λ_m` with `m ≤ N` then
-
-  `a · x` computed in `T_N`  =  `a · x` computed in `T_m`.
-
-The two computations both evaluate the `a`-multiplication series `[a]` at the point `x`; the point
-of the proof is that the *definition* of `T_N` is redundant once `x` is a `π^m`-torsion point.
-
-## The proof
-
-Since `f^{(m)} ∣ f^{(N)}` (`f^{(N)} = (f^{(N-m)} ∘ f^{(m)})`, hence `f^{(N)}(τ_m) = f^{(N-m)}(0) = 0`
-in `T_m`), there is an `𝒪[F]`-algebra homomorphism
-
-  `Sub : T_N →+* T_m`,  `τ_N ↦ τ_m`,
-
-the quotient map of the inclusion `(f^{(N)}) ⊆ (f^{(m)})`.  The development follows the pattern of
-`Eval/smulDiv_smul2.lean`:
-
-* `evMap_Sub` — evaluation at `x` at level `N` factors through `Sub`: for `x ∈ Λ_N ∩ Λ_m`,
-  `evMap_m x ∘ Sub = evMap_N x` (both sides are `𝒪[F]`-algebra maps out of `T_N` sending `τ_N` to
-  `x`);
-* `SubEval` — `Sub` commutes with Milne's evaluation at `τ`: `Sub (E_N ψ) = E_m ψ`, since both
-  sides are continuous ring homomorphisms of the power series ring agreeing on polynomials
-  (`MvPowerSeries.eval₂_unique`).
-
-The theorem is then `smulDiv … N … a = evMap_N x (E_N [a]) = evMap_m x (Sub (E_N [a]))
-= evMap_m x (E_m [a]) = smulDiv … m … a`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionRing
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.Eval.evMap_tau
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Evaluation
 import Submission.NK.LocalReciprocityLubinTate.Eval.evalTau_subst
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,8 @@
-import Submission.NK.Reconstruct.hausMk_galToGamma_iff_general
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Submission.NK.Reconstruct.lemma4f4
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

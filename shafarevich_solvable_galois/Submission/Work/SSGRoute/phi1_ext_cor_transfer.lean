@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.ext_corestriction
 import Submission.Work.SSGRoute.pt_char_pTorsion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

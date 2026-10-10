@@ -1,20 +1,4 @@
-/-
-# The kernel of the dimension-shift map `Θ` on 1-cycles lies in the 1-boundaries
-
-The dimension-shift map of `Work.Bridge.Core`,
-`Θ : Z₁(G, M) → K = ker(N_{M^♯}) ⊆ M^♯`, is `Θ x = x - single 1 (∑ x)` (as a function
-`G → M`, i.e. `thetaFun`).  This file proves the "injectivity on homology" half of the
-identification `Z₁/B₁ ≅ K/I`: an element of `Z₁(G, M)` killed by `Θ` is a boundary.
-
-The argument is completely explicit.  If `thetaFun z = 0`, then for every `g`
-```
-z g = (d1 (coeffSum z)) g = if g = 1 then coeffSum z else 0 ,
-```
-so `z` is supported at `1`: `z = single 1 (z 1)`.  And `single 1 m` is always a 1-boundary,
-because `d₂₁ (single (1, 1) m) = single 1 m`.  Note that in fact no use is made of the cycle
-condition `z ∈ Z₁(G, M)`; the statement holds for every `z ∈ G →₀ M`.
--/
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.Bridge.Core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

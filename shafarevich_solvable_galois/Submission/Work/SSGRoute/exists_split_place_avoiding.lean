@@ -1,13 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.place_basics
-import Submission.NK.UchidaKummer.SplitPrimes
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.NK.UchidaKummer.SplitPrimes
+import Submission.Work.SSGRoute.place_basics
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

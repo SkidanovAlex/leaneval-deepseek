@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Basic.Complex.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
 import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

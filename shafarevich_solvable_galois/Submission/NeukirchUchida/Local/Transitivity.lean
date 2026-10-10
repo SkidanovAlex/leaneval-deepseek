@@ -1,18 +1,7 @@
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.Topology.Compactness.Compact
-import Submission.Commons.RingTheory.Valuation.ValuationSubring.smul_eq_comap_symm
-import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
-import Submission.Commons.NumberTheory.RamificationInertia.exists_map_galRestrict_eq
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_eq_of_comap_eq_of_finite
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
-import Submission.Commons.FieldTheory.Galois.eq_of_comap_eq_forall_finite_normal
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.Commons.FieldTheory.Galois.restrictNormal_symm_eq
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.FieldTheory.Galois.exists_smul_eq_of_comap_eq
+import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
+import Submission.NeukirchUchida.Local.PlaceFromValuation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

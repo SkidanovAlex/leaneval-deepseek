@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.normImage_at_level_proper
 
 set_option autoImplicit false

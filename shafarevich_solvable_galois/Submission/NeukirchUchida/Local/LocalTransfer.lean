@@ -1,5 +1,8 @@
-import Submission.NeukirchUchida.Local.Restriction
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NeukirchUchida.Local.LocalGalois
+import Submission.NeukirchUchida.Local.Restriction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

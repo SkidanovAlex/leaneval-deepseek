@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.NK.Reconstruct.GammaObject
+import Mathlib.Topology.NoetherianSpace
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.Reconstruct.GammaSup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

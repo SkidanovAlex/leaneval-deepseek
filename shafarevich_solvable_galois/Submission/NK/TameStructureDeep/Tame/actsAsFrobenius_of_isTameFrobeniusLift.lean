@@ -1,16 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Minpoly.IsConjRoot
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.CorrectedInterface
-import Submission.NK.TameStructureDeep.Tame.exists_smul_root_of_notMem_unramifiedClosure
-import Submission.NK.TameStructureDeep.Tame.exists_smul_root_of_notMem_unramifiedClosure_odd_prime_pow
-import Submission.NK.TameStructureDeep.Tame.kummer_tateTwist_of_pow_eq
-import Submission.NK.TameStructureDeep.Tame.irreducible_X_pow_sub_C_unramifiedClosure_odd
-import Submission.NK.TameStructureDeep.Tame.layerDegree
 import Submission.NK.TameStructureDeep.Tame.exists_kummerLayer_of_mem_tameClosure
 import Submission.NK.TameStructureDeep.Tame.exists_root_primeToPart
-import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.LocalTame.All
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
+import Submission.NK.TameStructureDeep.Tame.layerDegree
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

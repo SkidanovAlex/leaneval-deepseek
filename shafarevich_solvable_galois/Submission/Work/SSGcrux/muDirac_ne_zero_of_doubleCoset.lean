@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.C6ValueFormula.coset_sum
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 import Submission.Work.Sha2Lib.coindValueFormula_singleOrbit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

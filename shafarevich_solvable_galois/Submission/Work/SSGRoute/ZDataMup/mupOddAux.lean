@@ -1,12 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mupOddChar
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.hLevel_mul_le
-import Submission.Work.SSGRoute.ZDataMup.ramificationIdx_eq_one_of_localNormSubgroup_eq_top
 import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_isSplitIn
-import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_split
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerCharZMod_eq_zero_iff_apply_sqrt
-import Submission.Work.SSGRoute.ZDataTwo.mem_fixingSubgroup_adjoin_simple
+import Submission.Work.SSGRoute.ZDataMup.mupOddChar
+import Submission.Work.SSGRoute.ZDataMup.ramificationIdx_eq_one_of_localNormSubgroup_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,13 +1,15 @@
-import Mathlib
-import Submission.NK.CFTLib.ARL.AuxField
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.CFTLib.ARL.auxField_arith
-import Submission.NK.CFTLib.ARL.AuxFieldBase
-import Submission.NK.CFTLib.ARL.inertiaDeg_one_isFrobAtPrime_one
-import Submission.NK.CFTLib.ARL.disjoint_restrictScalars_adjoin_zeta
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
 import Submission.NK.CFTLib.ARL.auxField_construction
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
 import Submission.NK.FieldTheory.Galois.exists_prod_restrictNormalHom_of_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

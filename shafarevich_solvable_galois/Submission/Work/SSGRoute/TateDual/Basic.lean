@@ -1,28 +1,5 @@
-/-
-# Vocabulary for finite-group Tate duality in the `Work.Tate` models
-
-This file collects the small amount of `𝔽_p`-module vocabulary needed to state (and to apply)
-the finite-group Tate duality
-
-`Ĥ⁻²(G, M^*) ≅ H¹(G, M)^∨`,   `M^* = Hom(M, 𝔽_p)`,
-
-in the models of `Submission/Work/Tate`:
-
-* the *twisted norm* `Work.Tate.coindAug : (G → A) →+ A` is `𝔽_p`-linear when `A` is a
-  `𝔽_p[G]`-module;
-* the `I_G`-twist `Work.Tate.coindUp G A = ker (coindAug)` therefore carries an `𝔽_p`-module
-  structure (inherited from the pointwise structure on `G → A`), compatible with the
-  coinduced `G`-action (`SMulCommClass`), so that `DualMod p ↥(coindUp G A)` — the dual of the
-  `I_G`-twist — makes sense.
-
-The reason this vocabulary is needed is the following dictionary, which is the bridge between
-the `I_G`-twist (`Ĥ⁻²`-side) and the shift `Coind(M)/M` (`H¹`-side): dualising the defining
-short exact sequence `0 → M → Coind(M) → Coind(M)/M → 0` gives
-`(Coind(M)/M)^∨ ≅ ker(coindAug : Coind(M^∨) → M^∨) = coindUp G (M^∨)`.
--/
-import Mathlib
-import Submission.Work.Tate.CoindUp
-import Submission.Work.Tate.Shift
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 import Submission.Work.SSGRoute.DualMod.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

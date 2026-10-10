@@ -1,11 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.twistLayer
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.local_transport
 import Submission.Work.SSGRoute.step4_local_cyclic_bridge
 import Submission.Work.SSGRoute.twist_cyclic_of_psi_trivial
-import Submission.Work.CohomologicalShrinking.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

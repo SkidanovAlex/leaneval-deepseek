@@ -1,38 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The kernel copy `E p G m i j` of a graded piece is abelian
-
-In Schmidt–Wingberg's Step 3 of Theorem 15 the level projection
-
-`flowGroupProj p G m i j : F(m)/F(m)^{(τ+1)} ⋊ G →* F(m)/F(m)^{(τ)} ⋊ G`
-
-has as its kernel `flowEKer p G m i j` the copy of the graded piece `E p G m i j` inside the
-level-`τ+1` group.  The graded pieces of the refined `p`-central filtration are elementary
-abelian `p`-groups (`Work.CohomologicalShrinking.commutator_refinedTerm_le`, Lemma 4 of the
-paper), so this kernel is commutative; here we prove that fact, which is what makes
-`flowEKer` an `𝔽_p[G]`-module and what the Scholz-property arguments use.
-
-The proof is a three-step reduction:
-
-* the kernel of a semidirect-product map with the identity on the right factor is (the image
-  under `inl` of) the kernel of the map on the left factor (`flowEKer_eq_map_ker`);
-* `flowQuotientProj` is `QuotientGroup.map` of the inclusion
-  `F(m)^{(τ+1)}/… → F(m)^{(τ)}/…`, whose kernel is the image of
-  `F(m)^{(τ)}` inside `F(m)/F(m)^{(τ+1)}` (`flowQuotientProj_ker_eq`);
-* such a subgroup image is commutative as soon as `⁅M, M⁆ ≤ S`, which is exactly Lemma 4
-  (`commutator_refinedTerm_le`).
--/
-
-import Mathlib
-import Submission.Work.SSGRoute.ProperStageDefs
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.SSGRoute.Interfaces
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.ProperStageDefs
 
 namespace Work.SSGRoute
 
@@ -133,10 +103,11 @@ theorem flowEKer_eq_map_ker (p : ℕ) (G : Type*) [Group G] (m i j : ℕ) :
     have hx1 : flowGroupProj p G m i j x = 1 := hx
     have hleft : flowQuotientProj p G m i j x.left = 1 := by
       have h := congrArg SemidirectProduct.left hx1
-      simpa [flowGroupProj] using h
+      rwa [flowGroupProj, SemidirectProduct.map_left, SemidirectProduct.one_left] at h
     have hright : x.right = 1 := by
       have h := congrArg SemidirectProduct.right hx1
-      simpa [flowGroupProj, SemidirectProduct.rightHom_comp_map, MonoidHom.comp_apply] using h
+      rwa [flowGroupProj, SemidirectProduct.map_right, MonoidHom.id_apply,
+        SemidirectProduct.one_right] at h
     rw [Subgroup.mem_map]
     refine ⟨x.left, hleft, ?_⟩
     conv_rhs => rw [← SemidirectProduct.inl_left_mul_inr_right x]

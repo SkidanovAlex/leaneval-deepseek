@@ -1,30 +1,7 @@
-/-
-# Leading words of Lie polynomials: shared vocabulary
-
-The target `Work.SSGRoute.prop5.minWord_isLyndon` states that the lexicographically smallest word
-occurring in a nonzero element of the degree-`j` Lie span `lieSpan X j ⊆ ℤ[FreeMonoid X]` is a
-Lyndon word.
-
-The route taken here is through the **Hall basis**: the Hall bracket monomials span the Lie span
-gradedly (`VspanSize`), the foliage of a Hall tree is the smallest word of its bracket monomial
-with coefficient `1` (`Work.SSGRoute.prop5.witt.leading_term_coeff`), distinct Hall trees have
-distinct foliages (`Work.SSGRoute.prop5.witt.hall_foliage_injective_aux`), and the foliage of a
-Hall tree is Lyndon-like (`Work.SSGRoute.prop5.witt.hall_lyndonLike`).
-
-This file collects the definitions and the two immediate bridges:
-
-* `VspanSize ψ n` — the `ℤ`-span of the values `ψ h` on Hall trees `h` of size `n`;
-* `brkMon_eq_monBrk` — the bracket monomial of `nestedLieDefs` is the `monBrk` of the Witt
-  development;
-* `hlead_monBrk` — the leading term of the bracketed monomial of a Hall tree (the `hswap`
-  hypothesis of `witt.leading_term_coeff` discharged by `witt.hall_foliage_lt_right`).
--/
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
 import Submission.Work.SSGRoute.prop5.nestedLieDefs
-import Submission.Work.SSGRoute.prop5.witt.Vocab
 import Submission.Work.SSGRoute.prop5.witt.Swap
 import Submission.Work.SSGRoute.prop5.witt.hall_spanning
-import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
 import Submission.Work.SSGRoute.prop5.witt.leading_term_coeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

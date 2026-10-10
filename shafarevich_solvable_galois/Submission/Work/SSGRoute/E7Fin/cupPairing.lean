@@ -1,32 +1,6 @@
-/-
-# The cup-product local pairing with a fixed invariant: the construction behind `E7`
-
-`Work.SSGRoute.PTembedding.localTatePairing_canonical` (node `E7`/`G1`) asks for a family of local
-pairings `pair M H a b ∈ 𝔽_p` on the locally constant `1`-cocycles of a local group `H ≤ G_k`, with
-clauses (1)–(6).  A pairing produced from a dimension count (as in `E7Fin/pairClauses_of_euler02`)
-satisfies (1)–(4), but **cannot** satisfy the naturality clause (5): the clauses (1)–(4) only
-determine the pairing up to a place-dependent rescaling, and a rescaling destroys naturality in the
-coefficient module.  The only known way to get (5) is to build the pairing *explicitly* as
-`inv ∘ cup`, with a *single* invariant functional `inv` per local group — and then (5) is a
-pointwise identity between two `DualMod p T`-valued cochains, which is purely formal.
-
-This file provides that construction:
-
-* `evLin` — the coefficient map `M ⊗ Hom(M ⊗ T, 𝔽_p) → Hom(T, 𝔽_p)`, `x ⊗ φ ↦ (t ↦ φ (x ⊗ t))`;
-* `evCupFun` — the naive cup product evaluated into `DualMod p T ≅ μ_p`,
-  `(g,h) ↦ evLin (a g ⊗ (g • b h))`;
-* `pairOfInv inv` — the pairing `(a,b) ↦ inv (evCupFun a b)`, guarded by the cocycle conditions
-  (so that it is defined on all cochains, as the clause list of `E7` requires).
-
-The clause lemmas for `pairOfInv` — bilinearity, vanishing on coboundaries, *naturality* in the
-coefficient module, and orthogonality on unramified classes at good places — are the subject of the
-companion files; each of them is a computation with the two inputs `inv` and the diagonal action on
-`M ⊗ T`, and none of them uses arithmetic of local fields.  The only clause that is *not* formal is
-perfectness (clause (4)), which is exactly local Tate duality.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.DualMod.Main
+import Submission.Work.SSGRoute.Interfaces
 
 open SSGRoute
 open scoped TensorProduct

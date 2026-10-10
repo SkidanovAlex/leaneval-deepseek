@@ -1,31 +1,11 @@
-/-
-# The glued family with an abstract archimedean half
-
-This file is the *constructional core* of `Work.SSGRoute.PT.glueOfTwoHalves`: the same glued family
-as `Work.SSGRoute.E7Arch.pairGlue` (`Submission/Work/SSGRoute/E7Arch/g1Assembly.lean`), but with the
-archimedean half `pairArchFamily` replaced by an **abstract** half
-`arch M : Subgroup (Ω ≃ₐ[k] Ω) → ((Ω ≃ₐ[k] Ω) → M) → ((Ω ≃ₐ[k] Ω) → DualMod p (M ⊗ T)) → ZMod p`.
-
-The concrete case `arch = pairArchFamily p k Ω K ζ hζ hζK T hT` recovers
-`Work.SSGRoute.E7Arch.pairGlue` verbatim (see `pairGlueArch_pairArchFamily` below); the abstract
-case is what `glueOfTwoHalves` needs, because a caller may supply a different archimedean half.
-
-The three lemmas here (`pairGlueArch_arch`, `pairGlueArch_fin`, `pairGlueArch_decomp`) are the
-definitional unfolding of the glued family; everything else about it
-(`pairGlueArch_pairClauses`, `pairGlueArch_naturality`, `pairGlueArch_orth`,
-`pairGlueArch_reciprocity`) is proved in the sibling files under `Submission/Work/SSGRoute/PT/glueAux/`,
-by transcribing the corresponding argument of `g1Assembly.lean` with `pairArchFamily … M` replaced
-by `arch M`.
-
-The signature of `pairGlueArch` is written out with **explicit binders** rather than section
-variables, so that its argument list is stable and unambiguous (section variables that do not occur
-in the body are dropped by Lean, which would otherwise reorder the arguments).
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.H1Pair.Clauses
-import Submission.Work.SSGRoute.E7Arch.pairFamily
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.E7Arch.g1Assembly
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

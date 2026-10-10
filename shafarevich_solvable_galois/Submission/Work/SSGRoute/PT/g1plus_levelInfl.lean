@@ -1,8 +1,10 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.PT.pt_pairing_ext
+import Submission.Work.SSGRoute.PTDefsOmega
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

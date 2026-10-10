@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.Sha2Lib.inertia_map_galRes_eq
-import Submission.Work.SSGRoute.TPatom.inertia_le_fixingSubgroup_of_ramificationIdx_eq_one
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Work.SSGRoute.Sha2Lib.smulHeightOneSpectrum_inv_liesOver
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
+import Submission.Work.SSGRoute.TPatom.inertia_le_fixingSubgroup_of_ramificationIdx_eq_one
+import Submission.Work.Sha2Lib.inertia_map_galRes_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

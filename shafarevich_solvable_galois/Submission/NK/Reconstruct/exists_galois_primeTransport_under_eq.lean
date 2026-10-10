@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.NK.Reconstruct.frobElementAt
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Submission.NK.Reconstruct.NumFieldIn
 import Submission.NK.Reconstruct.exists_algEquiv_primeTransport_eq
 import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.Reconstruct.NumFieldIn
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.NUV2.RouteC.val_sequence
 
 /-!

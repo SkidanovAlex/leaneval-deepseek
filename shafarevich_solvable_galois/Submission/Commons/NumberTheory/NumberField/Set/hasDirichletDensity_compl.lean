@@ -1,5 +1,6 @@
-import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Tactic.Have
 import Mathlib.NumberTheory.LSeries.SumCoeff
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Mathlib.NumberTheory.NumberField.Ideal.Asymptotics
 import Submission.Commons.NumberTheory.NumberField.Set.primeIdealZetaSum_union_of_disjoint
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

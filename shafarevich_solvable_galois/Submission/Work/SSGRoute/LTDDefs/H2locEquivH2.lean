@@ -1,12 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
-import Submission.Work.SSGRoute.LTDDefs.H2locAux
-import Submission.Work.SSGRoute.LTDDefs.H2loc.restrictFun2_mem_Z2
-import Submission.Work.SSGRoute.LTDDefs.H2loc.restrictFun2_mem_B2
-import Submission.Work.SSGRoute.LTDDefs.H2loc.extendFun2_mem_lcCocycles2
 import Submission.Work.SSGRoute.LTDDefs.H2loc.extendFun2_mem_coboundaries2
-import Submission.Work.AbsoluteKummer.Defs
+import Submission.Work.SSGRoute.LTDDefs.H2loc.extendFun2_mem_lcCocycles2
+import Submission.Work.SSGRoute.LTDDefs.H2loc.restrictFun2_mem_B2
+import Submission.Work.SSGRoute.LTDDefs.H2loc.restrictFun2_mem_Z2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Countable
+import Mathlib.Algebra.Field.Shrink
+import Mathlib.Algebra.Ring.Shrink
+import Mathlib.Data.Rat.Encodable
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFTdeep.hasseNorm_index_eq_universe
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_eq_of_ringEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

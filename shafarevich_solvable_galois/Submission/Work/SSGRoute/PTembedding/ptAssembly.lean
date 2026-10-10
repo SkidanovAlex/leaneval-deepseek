@@ -1,15 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.ext_sha1_bridge
-import Submission.Work.SSGRoute.pt_char_pTorsion
-import Submission.Work.SSGRoute.local_phi_realization_in
-import Submission.Work.SSGRoute.PTdualControl.extExact
-import Submission.Work.SSGRoute.Sha2Lib.pt_core_assembly
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.PTembedding.tatePoitouEmbedding_alt
-import Submission.Work.SSGRoute.PTembedding.modRepHom_exists
-import Submission.Work.SSGRoute.PTembedding.no_pTorsion_extH_classesK_two
-import Submission.Work.SSGRoute.PTembedding.extDelta_exact_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

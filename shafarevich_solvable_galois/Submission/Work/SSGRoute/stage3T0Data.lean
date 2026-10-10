@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.exists_cocycle_at_frob_of_split
 import Submission.Work.SSGRoute.exists_split_places_avoiding
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

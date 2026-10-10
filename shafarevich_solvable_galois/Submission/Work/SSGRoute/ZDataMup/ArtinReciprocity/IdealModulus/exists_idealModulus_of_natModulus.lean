@@ -1,18 +1,7 @@
-/-
-# From a natural-number modulus to the ideal modulus supported on the ramified primes
-
-Composition of `ramifiedPart` (for `M > 1` unramified outside `(M)`, produce the ideal
-`𝔪 = ∏_{𝔭 ramified} 𝔭^{v_𝔭(M)}`, whose prime support is *exactly* the ramified primes and whose
-`𝔭`-adic valuations agree with `(M)`) with `dictionary_ramifiedPart` (that `𝔪` is admissible for the
-ideal modulus, and the congruence at the ramified primes at level `M` gives `CongrOneId 𝔪`).
-
-This is the bridge from finding (A) — `mRam`, its admissibility and strong support — to the
-ideal-modulus lane, where the idèlic construction is Frobenius-normalised at *every* prime not
-dividing `𝔪`, i.e. at every unramified prime.
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ramifiedPart
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.dictionary_ramifiedPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

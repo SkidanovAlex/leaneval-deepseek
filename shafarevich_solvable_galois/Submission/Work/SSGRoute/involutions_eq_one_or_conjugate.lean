@@ -1,10 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.InvAux
-import Submission.Work.SSGRoute.InvAux.exists_orderEmbedding
-import Submission.Work.SSGRoute.InvAux.irreducible_natDegree_le_two
-import Submission.Work.SSGRoute.InvAux.fixedFields_ringEquiv
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Submission.Work.SSGRoute.InvAux.conjugate_of_ringEquiv
+import Submission.Work.SSGRoute.InvAux.fixedFields_ringEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,13 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Inequalities
-import Submission.NK.GlobalCFTdeep.AbstractH0
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.factorization_natCard_H0_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.natCard_H0_eq_of_mulEquiv
-import Submission.NK.GlobalCFTdeep.SecondInequality.normClassSubgroup_index_eq_natCard_H0
 import Submission.NK.GlobalCFTdeep.SecondInequality.normClassSubgroup_fixedField_index_eq_natCard_H0
+import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

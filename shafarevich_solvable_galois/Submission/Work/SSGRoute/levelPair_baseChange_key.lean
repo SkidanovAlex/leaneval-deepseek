@@ -1,10 +1,9 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.baseChangeDefs
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option maxHeartbeats 8000000
 set_option backward.isDefEq.respectTransparency false
@@ -115,6 +114,15 @@ theorem levelPair_extRes_extRes {G G' G'' : Type} [Group G] [Group G'] [Group G'
 
 end Y3Key
 
+/-- `eqToHom` along an equality of restriction maps acts as the identity on the underlying
+module (build-speed helper: proved once by `subst`, instead of a `rfl` that makes the elaborator
+and the kernel compare the two homomorphisms by unfolding). -/
+theorem Y3Key.eqToHom_res_hom_apply {G H : Type} [Group G] [Group H] (A : Rep Coeff G)
+    {f g : H →* G} (h : f = g) (y : (Rep.res f A).V) :
+    (Rep.Hom.hom (eqToHom (congrArg (fun t => Rep.res t A) h))) y = y := by
+  subst h
+  rfl
+
 theorem levelPair_baseChange_key (k k' K : Type) [Field k] [NumberField k] [Field k']
     [NumberField k'] [Field K] [NumberField K] [Algebra k K] [Algebra k' K] [Algebra k k']
     [IsScalarTower k k' K] [FiniteDimensional k K] [IsGalois k K] [FiniteDimensional k' K]
@@ -209,7 +217,6 @@ theorem levelPair_baseChange_key (k k' K : Type) [Field k] [NumberField k] [Fiel
     Y3Key.levelPair_restrict' (f := γ) (g := lamT) (ι := ιg) (ιg := iY.hom)
       (ι' := Rep.resMap lamT ιg ≫ iY.hom) (x := z) (h := h) rfl
   let h₁ : extH (Rep.res f₁ X) 1 := extHMap lamT (𝟙 (Rep.res lamT (Rep.res γ X))) h
-  have hmk : Abelian.Ext.mk₀ iX.hom = Abelian.Ext.mk₀ ρM := rfl
   have hh₁ : h₁ = extRes lamT h := by
     rw [show h₁ = extHMap lamT (𝟙 (Rep.res lamT (Rep.res γ X))) h from rfl,
       Y3Key.extHMap_eq_comp lamT (𝟙 (Rep.res lamT (Rep.res γ X))) h,
@@ -231,9 +238,7 @@ theorem levelPair_baseChange_key (k k' K : Type) [Field k] [NumberField k] [Fiel
     rfl
   have hρA_c : ∀ y : (Rep.res f₁ Ak).V, ρA.hom.toLinearMap y = y := by
     intro y
-    change (eqToHom (congrArg (fun t => Rep.res t Ak) hcomm)).hom.toLinearMap y = y
-    exact Work.SSGRoute.Y3Test.eqToHom_hom_eq_self
-      (congrArg (fun t => Rep.res t Ak) hcomm) y rfl (Subsingleton.elim _ _)
+    exact Y3Key.eqToHom_res_hom_apply Ak hcomm y
   have hι_lin : ∀ u : (NK.GlobalCFT.Place.localField K w)ˣ,
       ι.hom.toLinearMap (Additive.ofMul u)
         = Additive.ofMul (NK.GlobalCFT.Place.localAlgebraMapUnits w' w hw' u) := by

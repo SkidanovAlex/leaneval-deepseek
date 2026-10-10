@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.CompletionLocalField
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.Valued.ValuedField
 import Submission.Work.LocalFields.isAdicComplete_maximalIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

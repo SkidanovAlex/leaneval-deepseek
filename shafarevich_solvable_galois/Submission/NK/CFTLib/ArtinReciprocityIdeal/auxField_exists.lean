@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ARL.AuxField
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ARL.auxiliary_field_single
-import Submission.NK.CFTLib.ARL.exists_mod_order_independent
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.CFTLib.ARL.auxField_exists_B
+import Submission.NK.Chebotarev.FrobeniusOne
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,30 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The local structure theorem at every place, unconditionally
-
-The last unproved field of the local structure residual was `abelianisation`
-(`G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}`).  It is now a theorem
-(`NK.TameStructureDeep.Tame.tameAbelianization_mulEquiv_zhat_mul_mu`), proved *group-theoretically*
-from the Tate twist and the single Kummer layer `κ^{ur}(π^{1/(q-1)})` — no local class field theory.
-Consequently the whole residual is a theorem at every `𝔭`-adic completion:
-
-* `NK.TameStructureDeep.Tame.tameRamificationResidual_adicCompletion_residueChar`;
-* `NK.TameStructureDeep.Tame.tameRamificationCore_adicCompletion_residueChar`;
-
-and so are the structures of the input catalogue `Submission/Work/TameData/Definitions.lean`:
-
-* `NK.TameStructureDeep.Tame.tameAbelianisationInput_adicCompletion_residueChar`;
-* `NK.TameStructureDeep.Tame.tameTorsionInput_adicCompletion_residueChar`;
-* `NK.TameStructureDeep.Tame.tameDataInput_adicCompletion_residueChar`.
-
-Everything is `Type*`-polymorphic in `K'`.
--/
-import Submission.NK.TameStructureDeep.Tame.tameAbelianization_mulEquiv_zhat_mul_mu
-import Submission.NK.TameStructureDeep.Tame.TameQuotientKummer
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Assembly
-import Submission.NK.TameStructureDeep.Data
+import Submission.NK.TameStructureDeep.Tame.tameAbelianization_mulEquiv_zhat_mul_mu
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

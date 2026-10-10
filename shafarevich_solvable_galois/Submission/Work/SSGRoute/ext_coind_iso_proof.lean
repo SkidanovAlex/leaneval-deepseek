@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.CategoryTheory.Abelian.Projective.Resolution
 import Submission.Work.SSGRoute.ext_coind_defs
+import Submission.Work.SSGRoute.homRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,28 +1,25 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.step4_y_escape_v2.ChebotarevSplit
-import Submission.Work.SSGRoute.ZDataTwo.chebotarev_frobenius_split
-import Submission.Work.SSGRoute.exists_mem_closure_decomp_mul_mem_fixingSubgroup
-import Submission.Work.SSGRoute.step4_y_escape_v2.RayClass
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.finiteIndex_gesU
-import Submission.Work.SSGRoute.EscapeCoreLib.classField_stable_open_finiteIndex
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
 import Submission.Work.SSGRoute.EscapeCoreLib.baseChange_over_K
 import Submission.Work.SSGRoute.EscapeCoreLib.isGalois_comap
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Submission.Work.SSGRoute.ZPlace
+import Submission.Work.SSGRoute.exists_mem_closure_decomp_mul_mem_fixingSubgroup
+import Submission.Work.SSGRoute.finiteIndex_gesU
 import Submission.Work.SSGRoute.frobeniusClass_realisation_below
 import Submission.Work.SSGRoute.ssg8Chebotarev
-import Submission.NK.CFTLib.ArtinReciprocityIdealProved
-import Submission.NK.CFTLib.Existence.artinMapOfARL
-import Submission.NK.CFTLib.Arl.prod_frobAtPrime_ramificationIdx_eq_one
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
-import Submission.NK.Chebotarev.FrobRestriction
-import Submission.NK.Chebotarev.FrobeniusOne
-import Submission.Work.SSGRoute.place_basics
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option maxHeartbeats 1200000
 set_option synthInstance.maxHeartbeats 800000
@@ -55,8 +52,6 @@ theorem exists_abelian_classField_inside
   have hpos : 0 < U.index := Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero
   obtain ⟨L, hFL, hNL, hAL, hfdL, hgalL, hNormL, _hdegL⟩ :=
     Work.SSGRoute.CFTSide.classField_exists_of_index (K := ↥K) U.index hpos U hUfin hUopen rfl
-  letI : Field L := hFL
-  letI : NumberField L := hNL
   letI : Algebra ↥K L := hAL
   letI : FiniteDimensional ↥K L := hfdL
   haveI : IsGalois ↥K L := hgalL

@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.ExtChain.FreeCover
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.Defs
 import Submission.Work.SSGRoute.ArchDictionary_aux.SettingLemmas
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

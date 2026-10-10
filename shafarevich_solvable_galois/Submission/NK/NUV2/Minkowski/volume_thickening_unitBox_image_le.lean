@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.NK.NUV2.Minkowski.volume_thickening_box_image_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

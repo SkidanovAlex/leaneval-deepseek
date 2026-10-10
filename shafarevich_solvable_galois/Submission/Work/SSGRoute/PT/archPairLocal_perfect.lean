@@ -1,20 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archPairLocalClauses
-import Submission.Work.SSGRoute.PT.archPair_level_independent
-import Submission.Work.SSGRoute.PT.archPairLocal_add_right
-import Submission.Work.SSGRoute.PT.archPairLocal_coboundary
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.NodeShim.perfectRightBricks
 import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_perfect_left
 import Submission.Work.SSGRoute.PT.archLevelPair_injective
-import Submission.Work.SSGRoute.NodeShim.perfectRightBricks
-import Submission.Work.SSGRoute.local_duality_ext_detect_h
-import Submission.Work.SSGRoute.local_duality_ext_detect_levels
+import Submission.Work.SSGRoute.PT.archPairLocal_natural
 import Submission.Work.SSGRoute.PT.zLocal_surjective
 import Submission.Work.SSGRoute.PT.zLocal_zero_imp_coboundary
-import Submission.Work.SSGRoute.PT.archPairAbstract
-import Submission.Work.SSGRoute.PT.archPairLocal_natural
-import Submission.Work.SSGRoute.PT.archLevelPair_decomposition
-import Submission.Work.SSGRoute.PT.localUnitsMap_injective
-import Submission.Work.SSGRoute.PT.localUnitsMap_invariants
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

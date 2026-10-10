@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.HassePrinciple.MuColimit
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.HassePrinciple.hilbert90_levelGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

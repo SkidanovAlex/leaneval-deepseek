@@ -1,9 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.extHMap_id
-import Submission.Work.SSGRoute.classIncl_isCanonical
 import Submission.Work.SSGRoute.localAlgebraMapUnits_self
-import Submission.Work.SSGRoute.phi1_level_naturality
 import Submission.Work.SSGRoute.phi1_classIncl_compat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

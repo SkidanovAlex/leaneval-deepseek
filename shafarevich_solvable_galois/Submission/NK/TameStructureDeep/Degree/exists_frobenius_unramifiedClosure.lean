@@ -1,36 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Frobenius of the maximal unramified extension `κ^ur = κ(μ_{p'})`
-
-For a number field `K`, a finite place `𝔭`, `κ = K_𝔭` its `𝔭`-adic completion, `p` the residue
-characteristic, `q = residueCard K 𝔭` the residue field cardinality and `K'` a separable closure
-of `κ`, the maximal unramified extension `L = unramifiedClosure p = κ(μ_{p'}) ⊆ K'` carries a
-**Frobenius element**: an automorphism `F` of `L/κ` acting on the prime-to-`p` roots of unity by
-
-  `ζ ↦ ζ ^ q`.
-
-This is the classical normalisation of the Frobenius of the unramified extension `κ^ur/κ`
-(NSW (7.5.6)); it is the "action on the prime-to-`p` roots of unity" half of
-`NK.LocalAnabelian.IsFrobeniusFor`, made unconditional for the unramified quotient.
-
-The proof is a compactness argument in the profinite group `Gal(K'/κ)`: for each `n` prime to `p`
-the set `frobSet n` of elements acting on the primitive `n`-th roots of unity by the `q`-th power
-map is nonempty (this is the finite-level Frobenius,
-`NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow`, transported to `K'`
-along the surjection `Gal(K'/κ) → Gal(κ⟮ζ_n⟯/κ)`) and closed (the condition depends only on the
-restriction to the finite Galois field `κ⟮ζ_n⟯`), and the family is directed downwards by
-divisibility (`μ_n ⊆ μ_{nm}`).  The finite intersection property in the compact group
-`Gal(K'/κ)` produces a single element `F' ∈ Gal(K'/κ)` acting by `ζ ↦ ζ ^ q` on the roots of unity
-of *every* order prime to `p`; restricting `F'` along the normal intermediate field `L` gives the
-required `F`.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.NK.CFTLib.HRclean.ARLLocal
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.HRclean.ARLDescentAux
+import Submission.NK.CFTLib.HRclean.ARLLocal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

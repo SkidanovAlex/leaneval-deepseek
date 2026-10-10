@@ -1,16 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Functoriality of `H¹` and `H²` (identity and composition)
-
-`Submission/Work/AbsoluteKummer/Basic.lean` constructs `mapH1` and `mapH2` (the maps induced on
-continuous cohomology by an equivariant additive map of discrete modules) and proves
-`mapH1_H1π`, `mapH2_H2π`, `mapH1_id_H1π`, `mapH1_comp_H1π`.  This file adds the corresponding
-statements for `H²`:
-
-* `Work.AbsoluteKummer.mapH2_id_H2π` — the identity map of coefficients induces the identity;
-* `Work.AbsoluteKummer.mapH2_comp_H2π` — `mapH2` is compatible with composition.
--/
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Order.Filter.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.AbsoluteKummer.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

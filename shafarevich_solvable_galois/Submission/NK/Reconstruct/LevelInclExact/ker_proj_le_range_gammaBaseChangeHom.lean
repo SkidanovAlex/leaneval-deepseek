@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.NK.Reconstruct.gammaBaseChange
-import Submission.NK.Reconstruct.proj_surjective
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Submission.NK.Reconstruct.LevelInclExact.ellIncl_range_eq_ker_ellRestrict
+import Submission.NK.Reconstruct.gammaBaseChange
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

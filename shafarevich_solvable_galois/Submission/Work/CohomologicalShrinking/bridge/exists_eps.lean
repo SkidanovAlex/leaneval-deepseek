@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Bridge.Psi
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.bridge.Psi_ker
 import Submission.Work.CohomologicalShrinking.bridge.Psi_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

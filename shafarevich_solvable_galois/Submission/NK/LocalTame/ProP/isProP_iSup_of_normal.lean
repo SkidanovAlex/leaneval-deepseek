@@ -1,28 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Joins of normal pro-`p` subgroups are pro-`p`
-
-`NK.LocalTame.IsProP p G` says that every normal subgroup of `G` of finite index has index a
-power of `p` (`Submission/Work/LocalTame/Basic.lean`).  This file shows that the class of
-pro-`p` groups is closed under joins of normal subgroups:
-
-* `isProP_sup_of_normal_aux` : the binary case `IsProP p H → IsProP p K → IsProP p (H ⊔ K)`
-  for `K` normal;
-* `isProP_iSup_of_normal` : the general case `IsProP p (⨆ i, N i)` for `N i` normal and pro-`p`.
-
-The mathematical content is the classical "product of two normal `p`-subgroups" argument, in the
-finite-quotient formulation: if `H, K ⊴ G` and `R ≤ H ⊔ K` is normal of finite index, then
-`[H ⊔ K : R] = [H ⊔ K : R ⊔ K] · [R ⊔ K : R]`, the two factors being `[H : H ⊓ (R ⊔ K)]` and
-`[K : K ⊓ R]` by the second isomorphism theorem, hence both powers of `p`.
-
-For the infinite join one first reduces to the quotient `S/M` (`M ⊴ ⨆ i, N i` of finite index),
-where only finitely many of the `N i` matter: the images `P i` of the `N i` generate the finite
-group `S/M`, so some finite set of indices already has join `⊤`, and the binary case applied
-along the finite set finishes the job.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Data.SetLike.Fintype
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

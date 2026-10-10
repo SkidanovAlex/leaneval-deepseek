@@ -1,62 +1,16 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The cohomological shrinking lemma (Proposition 6 of Schmidt–Wingberg)
-
-This file contains the *technical heart* of §2 of A. Schmidt and K. Wingberg,
-*Šafarevič's theorem on solvable groups as Galois groups* (arXiv:math/9809211):
-the shrinking lemma for Tate cohomology, in the form in which the paper's proof of Theorem 15
-uses it.
-
-## The statement
-
-Let `G` be a finite group, `p` a prime, `τ = (i,j)` a pair with `j ≥ 1`, `N` a finitely
-generated `𝔽_p[G]`-module, `t, n ∈ ℕ`.  Then there is `r₀` such that for all `r ≥ r₀`: given
-`t` elements `x_1, …, x_t` of `Ĥ⁻¹(G, E(r·n,τ) ⊗ N)` there is a *surjective* `G`-equivariant
-homomorphism `Φ : F(r·n) → F(n)` of free `G`-operator groups whose induced map on
-`Ĥ⁻¹(G, E(-,τ) ⊗ N)` kills all the `x_i`.
-
-This is Proposition 6 for `k = -1`; the paper observes ("since `T` was arbitrary, we may
-restrict to the case `k = -1`") that dimension shifting reduces the general degree to this one,
-and the cases `k = 2`, `k = -2` actually used in Theorem 15 are obtained from it in
-`Work.CohomologicalShrinking.Corollaries`.
-
-## The proof
-
-Following the paper:
-
-* `Ĥ⁻¹(G, A) ↪ A_G = A/I_G A` (`Work.Tate.Hm1ToCoinv`, injective), so it suffices to kill the
-  images in the coinvariants `(E(r·n,τ) ⊗ N)_G`;
-* by Proposition 5 the coefficient module `E(r·n,τ) ⊗ N` is a quotient of
-  `(F(r·n)/F(r·n)^2)^{⊗j} ⊗ N`, so the classes lift to `(F(r·n)/F(r·n)^2)^{⊗j} ⊗ N`;
-* identifying `F(r·n)/F(r·n)^2 ≅ (F(n)/F(n)^2)^r` (the coordinate equivalence, which is a
-  canonical datum produced by `exists_foldOperator`), the shrinking lemma **Proposition 2**
-  (`Work.Shrinking.exists_forall_foldMap_rTensor_tensorPower_eq_zero`) produces
-  `a ∈ 𝔽_p^r`, `a ≠ 0`, such that the folding map `φ_a` is surjective and kills the lifted
-  elements;
-* after rescaling `a` so that one of its coordinates is `1`, the folding map is induced on
-  `F(r·n)/F(r·n)^2` by a *surjective* `G`-equivariant homomorphism `Φ : F(r·n) → F(n)`
-  (`exists_foldOperator`), and naturality of `θ_τ` (`Prop5Data.θ_natural`) finishes the proof.
-
-## What is assumed
-
-Everything here is proved from the named hypothesis `Prop5Data` (Proposition 5, see
-`Work.CohomologicalShrinking.Prop5` and `NOTES.md`) and the results of `Work.Shrinking`,
-`Work.Tate` and `Work.GroupCohomology`.  There is no `sorry` in this file.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.CohomologicalShrinking.Prop5
-import Submission.Work.CohomologicalShrinking.Functorial
 import Submission.Work.CohomologicalShrinking.functorial.gradedMapAdd_smul
-import Submission.Work.Tate.Coinvariants
-import Submission.Work.Tate.Hm1ToCoinv_injective
-import Submission.Work.Shrinking.Shrinking
-import Submission.Work.CohomologicalShrinking.modsquare.squareQuotientToFun_bijective
 import Submission.Work.CohomologicalShrinking.operator.exists_foldOperator
 import Submission.Work.CohomologicalShrinking.operator.exists_foldOperator_of_basis
 import Submission.Work.CohomologicalShrinking.shrinking.rTensor_map_foldMap_smul
+import Submission.Work.Shrinking.Shrinking
+import Submission.Work.Tate.Hm1ToCoinv_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

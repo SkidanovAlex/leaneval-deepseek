@@ -1,4 +1,6 @@
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

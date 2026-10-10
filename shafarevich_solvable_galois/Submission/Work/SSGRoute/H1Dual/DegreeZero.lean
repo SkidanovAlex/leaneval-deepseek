@@ -1,16 +1,5 @@
-/-
-# The degree-`0` evaluation pairing `H₀(G, N) × H⁰(G, N^∨) → k`
-
-For a `k`-linear representation `N` of a group `G`, the evaluation `(n, ψ) ↦ ψ n` induces a
-perfect pairing between the coinvariants `N_G = H₀(G,N)` and the invariants of the dual
-`(N^∨)^G = Hom_G(N,k)`, i.e. an isomorphism
-
-`(H₀(G,N))^∨ ≅ H⁰(G, N^∨)`.
-
-This file defines the map `H0DualMap` implementing this pairing, via
-`groupCohomology.H0Iso` and `groupHomology.H0Iso`.
--/
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.SSGRoute.H1Dual.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,34 +1,12 @@
-/-
-# The finite-place half of `G1` from the Euler characteristic and the degree `0`/`2` duality
-
-This file *completes* the reduction stated in
-`Submission/Work/SSGRoute/E7Fin/localPairing_of_euler02.lean`: it glues the two proved pieces
-
-* `Work.SSGRoute.finrank_H1loc_eq_finrank_H1loc_tateDual` — the dimension form of local Tate
-  duality at a finite place,
-  `dim H¹(D_A, M) = dim H¹(D_A, M^∨(1))` (`M^∨(1) = DualMod p (M ⊗ T)`), proved there from the two
-  arithmetic inputs `hE` (the local Euler characteristic, `local_tate_duality_euler`) and `h02`
-  (Tate duality in degrees `0` and `2`, `local_tate_duality_02`);
-* `Work.SSGRoute.E7Fin.pairClauses_of_perfect_pairing` — a perfect pairing of the two local
-  `H¹`-spaces (`B` with trivial left and right kernels) packages, through the class map `toClass`,
-  into the clause bundle `H1Pair.PairClauses` at the decomposition group.
-
-Together they give, at every finite place `A` and every finite coefficient module `M`, a pairing on
-locally constant cochains at `D_A` satisfying clauses (1)–(4) of `G1` (additivity in each variable,
-vanishing on coboundaries, perfectness on both sides), *conditionally on* `(E)` and `(02)`.
-
-## What is deliberately *not* claimed here
-
-The pairing produced by `exists_perfect_pairing` is the linear-algebra pairing obtained from
-`LinearEquiv.ofFinrankEq`; it depends on the dimension-equality proof, not on the arithmetic of the
-place.  Such a pairing has no reason to be **natural** in the coefficient module (clause (5) of
-`G1`, the `hnat` slot of the global assembly): naturality is a property of the canonical
-construction `inv ∘ cup` (`Work.SSGRoute.H1Pair.pairFromCup`), and it is precisely the reason the
-design (`DESIGN_PT.md`) rejects the manufactured pairing for the *global* family.  So the statement
-below is the honest per-module content of the finite-place half: clause (5), orthogonality (6) and
-reciprocity (7) stay with the canonical construction.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.E7Fin.localPairing_of_euler02
 import Submission.Work.SSGRoute.E7Fin.pairClauses_of_perfect_pairing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

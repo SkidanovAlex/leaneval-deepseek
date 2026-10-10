@@ -1,28 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The local action of the decomposition group on `L_wˣ`
-
-This module sets up the local vocabulary needed for
-`NK.HassePrinciple.subsingleton_groupCohomology_one_ideleRep`:
-
-* `onePlace w u` — the idèle which is `u` at the place `w` and `1` elsewhere;
-* `actVal g w u` — the image of a local unit `u` at `w` under the action of `g`, as a local unit
-  at `g • w`, i.e. `u` transported by the canonical isomorphism `L_w ≃+* L_{g w}`;
-* `localAut w σ` — for `σ` in the stabiliser `H_w` of `w`, the resulting automorphism of the local
-  field `L_w`, and `localAutHom w : H_w →* (L_w ≃+* L_w)` — the faithful action of `H_w` on `L_w`
-  by field automorphisms.
-
-The comparison with the action on idèles is `smul_apply_smul_place`: the value of a translate at
-the translated place is the image of the original component.
--/
-
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.HassePrinciple.IdelesLevel
-import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_idele
-import Submission.NK.GlobalCFT.Galois.globalCFT_mul_smul_idele
-import Submission.NK.GlobalCFT.Galois.globalCFT_smul_principalIdele
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

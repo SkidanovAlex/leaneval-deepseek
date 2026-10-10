@@ -1,12 +1,8 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_units_of_normIndex
 import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_zero_units
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

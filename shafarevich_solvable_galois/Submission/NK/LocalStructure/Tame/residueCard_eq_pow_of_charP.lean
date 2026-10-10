@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.NK.LocalStructure.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

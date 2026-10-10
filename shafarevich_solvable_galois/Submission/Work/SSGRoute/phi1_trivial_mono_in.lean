@@ -1,16 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_defs
-import Submission.Work.SSGRoute.e3_ext_spine
-import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_classesK
-import Submission.Work.SSGRoute.CFTSide.exists_cyclic_prime_notMem_normClassSubgroup
-import Submission.Work.SSGRoute.classIncl_isCanonical
-import Submission.Work.SSGRoute.phi1_classIncl_compat
-import Submission.Work.SSGRoute.E3In.phi1_trivial_mono_in_of_inputs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E3In.normCriterion_general
-import Submission.Work.SSGRoute.extH_groupCohomology_bridge_nonempty
+import Submission.Work.SSGRoute.E3In.phi1_trivial_mono_in_of_inputs
 import Submission.Work.SSGRoute.PTW.mem_pthPower_in
+import Submission.Work.SSGRoute.extH_groupCohomology_bridge_nonempty
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

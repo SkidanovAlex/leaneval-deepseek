@@ -1,10 +1,7 @@
-import Mathlib
-import Submission.NK.ReconstructField.LevelPrime
-import Submission.NK.Reconstruct.Basic
-import Submission.NK.ReconstructField.levelPrimeMap_liesOver
-import Submission.NK.LocalInputs.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Submission.NK.LocalInputs.ResidueChar.primeBelow_eq_of_liesOver
-import Submission.NK.ReconstructField.finrank_eq_of_localCorrespondence
+import Submission.NK.ReconstructField.levelPrimeMap_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

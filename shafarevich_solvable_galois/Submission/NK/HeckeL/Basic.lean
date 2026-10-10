@@ -1,11 +1,9 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-This file lays down the *vocabulary* of the chapter: characters of a ray class group, the
-attached Hecke / Artin `L`-series (as a Dirichlet series over ideals and as an Euler product), and
-the comparison map between the two descriptions.  No theorem here is deep: the file is a
-dictionary.
--/
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.Chebotarev.AbelianChebotarevOfLFunctions
 import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

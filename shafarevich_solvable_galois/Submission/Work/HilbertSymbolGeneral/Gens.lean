@@ -1,5 +1,14 @@
-import Mathlib
-import Submission.Work.HilbertSymbolGeneral.Defs
+import Mathlib.FieldTheory.Galois.Basic
+import Submission.NK.CFTLib.Existence.isUnramified_of_normClassSubgroup_le_integralIdeles_two
+import Submission.Work.HilbertSymbol.Criterion
+import Submission.Work.HilbertSymbol.epsZ_primeUnit
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_mul_left
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_mul_right
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_neg_self
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_sq_right
+import Submission.Work.HilbertSymbol.intUnit_num_den_mul_sq
+import Submission.Work.HilbertSymbol.legendreOf_intUnit
+import Submission.Work.HilbertSymbol.omegaZ_primeUnit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

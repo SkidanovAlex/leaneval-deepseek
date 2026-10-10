@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Levels
-import Submission.Work.CohomologicalShrinking.Corollaries
+import Mathlib.LinearAlgebra.DFinsupp
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.MonoidAlgebra.Module
+import Mathlib.LinearAlgebra.TensorProduct.Associator
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.coindUpAddEquivTensor
-import Submission.Work.CohomologicalShrinking.tate.Hm1Map_comp
-import Submission.Work.Tate.Equivs
 
 namespace Work.CohomologicalShrinking
 

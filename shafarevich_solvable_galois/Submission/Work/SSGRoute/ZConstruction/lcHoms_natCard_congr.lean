@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.localKummerReciprocity
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.SSGRoute.ZConstruction.levelK_kummerCharHom_dictionary
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phiAt_level_infl
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.pt_pairing_ext
 import Submission.Work.SSGRoute.bridgeE_map_group
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
+import Submission.Work.SSGRoute.phiAt_level_infl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

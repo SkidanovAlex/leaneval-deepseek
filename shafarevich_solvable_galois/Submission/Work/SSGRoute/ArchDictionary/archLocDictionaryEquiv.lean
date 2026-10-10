@@ -1,14 +1,23 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.Defs
-import Submission.Work.SSGRoute.ArchDictionary.ArchLocPrep
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.AcOdd
 import Submission.Work.SSGRoute.ArchDictionary.ac_addEquiv_H1
 import Submission.Work.SSGRoute.ArchDictionary.archimedeanLocalExt1Subsingleton_of_ne_bot
-import Submission.Work.SSGRoute.PT.gcH1Transfer_exists
-import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
-import Submission.Work.SSGRoute.PTdualControl.archimedeanLambda_injective_exists
 import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.SSGStage.archimedeanLocalDictionary
+import Submission.Work.SSGRoute.PT.gcH1Transfer_exists
+import Submission.Work.SSGRoute.PTdualControl.archimedeanLambda_injective_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

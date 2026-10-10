@@ -1,36 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Herbrand function and the upper numbering of the ramification filtration
-
-For a finite Galois extension `L/K` of local fields with valuation ring `A ⊆ L`, the *lower
-numbering* of the ramification filtration is `G_i = {σ | ∀ x ∈ A, σ x ≡ x mod 𝔪_A^{i+1}}`
-(`NK.Ramification.ramificationSubgroup`).  The *upper numbering* `G^v` is obtained from the
-lower one through the **Herbrand function**
-
-  `φ(u) = ∫_0^u dt / [G_0 : G_t]`,
-
-which in the integer-indexed form used here reads
-
-  `φ(n) = (g_0 + g_1 + ⋯ + g_{n-1}) / g_0`,   `g_i = #G_i`.
-
-Since `G_t` is constant on `[i, i+1)`, the piecewise-linear function `φ` is determined by the
-integer values `φ(n)`, and this is the form formalised below: `NK.Ramification.herbrand`.
-
-The inverse function `ψ = φ^{-1}` is `NK.Ramification.herbrandInv`, and the upper-numbered
-filtration is `NK.Ramification.upperRamificationSubgroup v = G_{ψ(v)}`.
-
-The two structural facts recorded here are
-
-* the **rationality** of the breaks: `g_0 * φ(n) ∈ ℤ` is an integer, so the jumps of the upper
-  filtration lie in `(1/g_0)ℤ` (`herbrand_mul_lowerIndex_zero`,
-  `herbrand_mul_lowerIndex_zero_nat`); and
-* the **Hasse–Arf theorem** (`NK.Ramification.HasseArf`): the jumps of the upper filtration
-  are in fact *integral*, i.e. `φ(j) ∈ ℤ` at every lower break `j`.  In the tamely ramified case
-  this is elementary and is proved here (`hasseArf_of_tame`); the general case is the classical
-  Hasse–Arf theorem and is recorded as the named statement `HasseArf`.
--/
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.Ramification.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

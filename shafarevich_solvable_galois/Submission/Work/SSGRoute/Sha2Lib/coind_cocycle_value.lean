@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,37 +1,13 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-**The Artin factorization of the unramified Dedekind zeta product.**  For an abelian Galois
-extension `L/K` of number fields, a finite set `S` of primes of `K` containing every prime which
-ramifies in `L`, and a real `s > 1`, the product of the Artin `L`-series of all the characters of
-`Gal(L/K)` equals the Euler product of the Dedekind zeta function of `L` with the Euler factors at
-the primes above `S` deleted:
-
-`∏_χ L(s, χ) = ∏_{𝔮 not over S} (1 - N𝔮^{-s})⁻¹`.
-
-The proof is the classical computation of the local factors.  Both sides are rewritten as Euler
-products over the primes `𝔭 ∉ S` of `K`:
-
-* on the Artin side one interchanges the finite product over the characters with the Euler product
-  and uses the orthogonality identity
-  `∏_χ (1 - χ(σ) x)⁻¹ = ((1 - x ^ orderOf σ)⁻¹) ^ (|G| / orderOf σ)`
-  (`prod_char_inv_one_sub_mul`, from `NK.HeckeL.Product.prod_monoidHom_one_sub_mul`);
-* on the zeta side one groups the places of `L` by the place of `K` below them
-  (`NK.HeckeL.Product.zetaUnramified_eq_tprod_fiber`, a lemma of the shared library).
-
-At a prime `𝔭 ∉ S` the two local factors agree: `𝔭` is unramified, every prime of `L` above it has
-inertia degree `f = orderOf (frobAtPrime 𝔭)`, so `N𝔮 = N𝔭 ^ f`, and the fundamental identity
-`g · f = [L : K] = |Gal(L/K)|` identifies the number `g` of primes above `𝔭` with the exponent
-`|Gal(L/K)| / f` (`NK.HeckeL.Product.zeta_eulerFactor_liesOver`).
-
-The two explicitly used results of the shared library are those named above, together with
-`NK.HeckeL.Series.hasProd_artinEulerFactor` (absolutely convergent Artin Euler products).
--/
-import Mathlib
-import Submission.NK.HeckeL.Product.prod_monoidHom_one_sub_mul
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Product.artinLSeries_one
-import Submission.NK.HeckeL.Product.zeta_eulerFactor_liesOver
+import Submission.NK.HeckeL.Product.prod_monoidHom_one_sub_mul
 import Submission.NK.HeckeL.Product.zetaUnramified_eq_tprod_fiber
+import Submission.NK.HeckeL.Product.zeta_eulerFactor_liesOver
 import Submission.NK.HeckeL.Series.hasProd_artinEulerFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

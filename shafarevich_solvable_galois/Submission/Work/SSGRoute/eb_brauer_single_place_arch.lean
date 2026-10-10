@@ -1,19 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.E8Helpers
-import Submission.Work.SSGRoute.E8Defs
-import Submission.Work.SSGRoute.eb_loc_card
-import Submission.Work.SSGRoute.eb_locUnits_resToGal
-import Submission.Work.SSGRoute.eb_local_range
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.Work.SSGRoute.eb_arch_aux
 import Submission.Work.SSGRoute.eb_arch_beta_local
+import Submission.Work.SSGRoute.eb_arch_cyclic
 import Submission.Work.SSGRoute.eb_arch_gamma_local
 import Submission.Work.SSGRoute.eb_arch_infl_injective
-import Submission.Work.SSGRoute.eb_arch_cyclic
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.eb_loc_card
 
 namespace Work.SSGRoute
 
@@ -23,10 +18,6 @@ theorem eb_brauer_single_place_arch (k L : Type) [Field k] [NumberField k] [Fiel
   -- the auxiliary cyclic cyclotomic tower `k ⊆ L ⊆ E`, `k ⊆ M ⊆ E` with `M = k(ζ_3)`
   obtain ⟨M, E, hMf, hMN, hEf, hEN, hkM, hkE, hLE, hME, hstLE, hstME, hfdM, hfdE, hgalM, hgalE,
     hcycM, hcycExt, hgen, hMcomplex⟩ := eb_arch_aux k L 3 (by norm_num) (by norm_num)
-  letI : Field M := hMf
-  letI : NumberField M := hMN
-  letI : Field E := hEf
-  letI : NumberField E := hEN
   letI : Algebra k M := hkM
   letI : Algebra k E := hkE
   letI : Algebra L E := hLE

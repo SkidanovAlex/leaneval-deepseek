@@ -1,10 +1,5 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.langCyclicRelIndex_proved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

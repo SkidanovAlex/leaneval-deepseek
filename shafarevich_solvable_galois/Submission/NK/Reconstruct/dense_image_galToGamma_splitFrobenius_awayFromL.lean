@@ -1,7 +1,8 @@
-import Mathlib
+import Mathlib.Topology.Constructions
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.LocalInputs.Defs
 import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup
-import Submission.NK.Reconstruct.galToGamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,21 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
-import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
-import Submission.Work.SSGRoute.prop5.magLead_mem_nestedImage
-import Submission.Work.SSGRoute.prop5.coreGraded
-import Submission.Work.SSGRoute.prop5.coreLieBar
-import Submission.Work.SSGRoute.prop5.gradedCast
-import Submission.Work.SSGRoute.prop5.bracketBar_axioms
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.Lie.Free
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.prop5.core.relations_zero
-import Submission.Work.SSGRoute.prop5.witt.Basic
-import Submission.Work.SSGRoute.prop5.witt.Vocab
+import Submission.Work.SSGRoute.prop5.magLead_mem_nestedImage
 import Submission.Work.SSGRoute.prop5.witt.Swap
-import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
 import Submission.Work.SSGRoute.prop5.witt.hall_spanning
 import Submission.Work.SSGRoute.prop5.witt.leading_term_coeff
-import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
-import Submission.Work.SSGRoute.prop5.magnusFramework
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,5 @@
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.HassePrinciple.LocalUnitsSub
-import Submission.NK.HassePrinciple.IdelesLevel
-import Submission.NK.HassePrinciple.IdeleCocycle
+import Mathlib.RepresentationTheory.Basic
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.HBNIdeleProof
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

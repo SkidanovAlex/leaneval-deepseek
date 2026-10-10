@@ -1,26 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The reduced input catalogue and the local structure core, from the residual
-
-This file assembles, from the single residual `NK.TameStructureDeep.TameRamificationCore`, the
-structures of the reduced input catalogue at a genuine local field `κ = K_𝔭`:
-
-* `NK.LocalStructure.TameCore p K 𝔭 K'` (the core of the tame structure theorem),
-* `NK.TameData.TameDataInput p (residueCard K 𝔭) (K_𝔭) K'` (the bundle),
-* `NK.LocalTame.TameData p (residueCard K 𝔭) (K_𝔭) K'` (the packaged structure theorem),
-* `NK.TameData.TameInertiaInput`, `NK.TameData.TameAbelianisationInput`,
-  `NK.TameData.TameTorsionInput`, `NK.LocalStructure.TameFrobeniusCore`,
-
-and the compatibility theorem `tameStructureInputs_of_core`, showing that the residual implies the
-*whole* named-input list `NK.TameStructure.TameStructureInputs` of the sibling chapter — so this
-chapter strictly subsumes `Submission/Work/TameStructure/`.
--/
-import Submission.NK.TameStructureDeep.Inertia
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Abelianisation
 import Submission.NK.TameStructureDeep.Frobenius
-import Submission.NK.TameStructure.Defs
+import Submission.NK.TameStructureDeep.Inertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

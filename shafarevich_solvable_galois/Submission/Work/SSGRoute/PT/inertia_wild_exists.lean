@@ -1,17 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.H2locAux.Defs
-import Submission.Work.SSGRoute.InertiaArithImports
-import Submission.Work.SSGRoute.mem_localInertia_iff_isInertia
-import Submission.Work.SSGRoute.isInertia_of_fixes_rootsOfUnity_gen
-import Submission.Work.SSGRoute.isUnit_natCast_iff_not_dvd_resCharAt
-import Submission.Work.SSGRoute.charP_residueField_isFinPlace
 import Submission.Work.SSGRoute.PT.inertia_wild_defs
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.isInertia_of_fixes_rootsOfUnity_gen
+import Submission.Work.SSGRoute.mem_localInertia_iff_isInertia
 
 set_option linter.unusedSectionVars false
 set_option maxHeartbeats 8000000

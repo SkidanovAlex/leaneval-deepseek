@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
+import Mathlib.Computability.Reduce
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Eval
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

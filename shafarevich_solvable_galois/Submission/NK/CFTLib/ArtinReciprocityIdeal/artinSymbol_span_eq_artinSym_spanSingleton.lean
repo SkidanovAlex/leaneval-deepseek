@@ -1,8 +1,12 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_integral_of_hprinc
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_integral_of_hprinc
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

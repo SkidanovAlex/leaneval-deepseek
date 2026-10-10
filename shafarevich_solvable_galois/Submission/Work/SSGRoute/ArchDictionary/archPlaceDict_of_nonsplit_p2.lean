@@ -1,17 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.LeadNatWit
-import Submission.Work.SSGRoute.ArchDictionary.archPhiP2
-import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
-import Submission.Work.SSGRoute.ArchDictionary.p2Link
-import Submission.Work.SSGRoute.ArchDictionary.archAcH1Natural
-import Submission.Work.SSGRoute.ArchDictionary.placeLocalFieldComplex
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.ArchDictionary.archSeamDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.archPhiSeam_square2
-import Submission.Work.SSGRoute.ArchDictionary.archPhiOf_natural
 import Submission.Work.SSGRoute.ArchDictionary.seamCoeffLoc_bijective
 import Submission.Work.SSGRoute.ArchDictionary.seamCoeffLoc_isEquivariant
 import Submission.Work.SSGRoute.ArchDictionary.seamCoeffLoc_natural
+import Submission.Work.SSGRoute.E1aClean.LeadNatWit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

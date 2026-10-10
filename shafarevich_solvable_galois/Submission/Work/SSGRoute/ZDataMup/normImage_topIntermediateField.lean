@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.NK.GlobalCFTdeep.Transport.ideleEquiv_normIdeleHom
-import Submission.NK.GlobalCFTdeep.Transport.NormGroupTransport
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
+import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
+import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
+import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
+import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
+import Submission.NK.NUV2.LC.localNormFinite_range_iff_val_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,11 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.EscapeCoreLib.placeFrobenius_of_compat
-import Submission.Work.SSGRoute.EscapeCoreLib.memGesUOfIsFrobAtPrime
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.EscapeCoreLib.escapePrimeFrobAtPrime
-import Submission.Work.SSGRoute.EscapeCoreLib.card_residue_eq_of_isFrobAt_one
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
+import Submission.Work.SSGRoute.SSG8Escape.Setup
 
 open scoped Pointwise
 open NumberField IsDedekindDomain

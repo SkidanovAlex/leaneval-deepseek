@@ -1,26 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.eCoh_map
-import Submission.Work.SSGRoute.E7cC.exists_level_unramified_p_dvd_inertiaDeg
-import Submission.Work.SSGRoute.E7cC.exists_unramifiedDetector_ExtZ_trivial
-import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.E7cOmega.extClass_comp_injective
-import Submission.Work.SSGRoute.E7cOmega.levelPair_ratDivSES_extClass
-import Submission.Work.SSGRoute.E7cOmega.extH_unitRep_one_subsingleton
-import Submission.Work.E7cOmega.ext_one_unitRep_iso_divRep
-import Submission.Work.E7cOmega.levelPair_ratDivSES_extClass_eq_zero_iff
-import Submission.Work.E7cOmega.subsingleton_ext_unitRep_ratRep
-import Submission.Work.E7cOmega.functional_of_ext_nonzero
-import Submission.Work.SSGRoute.e9_caseB_cocycle
-import Submission.Work.SSGRoute.SSGStage.exists_regularModule_inert_level
-import Submission.Work.SSGRoute.SSGStage.mem_cocycles_coordKer
-import Submission.Work.SSGRoute.SSGStage.detectorFixedAux
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.Sha2Lib.unramifiedDetector
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

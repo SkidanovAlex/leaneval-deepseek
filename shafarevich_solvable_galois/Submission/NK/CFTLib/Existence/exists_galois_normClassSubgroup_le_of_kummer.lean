@@ -1,22 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.ArtinIdeal
 import Submission.NK.CFTLib.Existence.index_kummerE_sup_principal
-import Submission.NK.NUV2.ArtinBridge.exists_kummerField_kummerE_le_normImage
-import Submission.NK.GlobalCFT.ClassFormation
-import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
-import Submission.NK.NUV2.ArtinBridge.kummerE_le_of_open_le
-import Submission.NK.NUV2.ArtinBridge.exists_finset_forall_localUnits_imp_mem
-import Submission.NK.GlobalCFTdeep.Herbrand.top_eq_principal_sup_TIdeles
 import Submission.NK.GlobalCFTdeep.SecondInequality.exists_finset_place_idealClassMap
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_goodS
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.NUV2.ArtinBridge.exists_kummerField_kummerE_le_normImage
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_of_open_le
 
 /-!
 # The key case of the existence theorem (Milne, *CFT*, 9.3)
@@ -136,8 +126,6 @@ theorem exists_galois_normClassSubgroup_le_of_kummer
   obtain ⟨L, hFL, hNL, hAL, hfdL, hGalL, hcommL, hfrL, hLE⟩ :=
     NK.NUV2.ArtinBridge.exists_kummerField_kummerE_le_normImage (K := K) hp hζ S hSinf hSp
   refine ⟨L, hFL, hNL, hAL, hfdL, hGalL, hcommL, ?_⟩
-  letI : Field L := hFL
-  letI : NumberField L := hNL
   letI : Algebra K L := hAL
   letI : FiniteDimensional K L := hfdL
   letI : IsGalois K L := hGalL

@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleDefs
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.ZDataMup.CycleCongr
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.cyclotomicKernelLe
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

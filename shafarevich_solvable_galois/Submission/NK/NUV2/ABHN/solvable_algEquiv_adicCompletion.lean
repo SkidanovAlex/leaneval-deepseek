@@ -1,43 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The local Galois group of an adic completion is solvable
-
-For `L / K` a finite Galois extension of number fields, `Q` a height one prime of `𝓞 K` and `q` a
-height one prime of `𝓞 L` lying over `Q`, the local Galois group
-`Gal(L_q / K_Q) = (q.adicCompletion L ≃ₐ[Q.adicCompletion K] q.adicCompletion L)` is **solvable**.
-
-This is the local input of the Albert–Brauer–Hasse–Noether computation
-(`NK.NUV2.ABHN.unitsLevelH2_card`): the dévissage of the local fundamental class
-`H²(Gal(L_q/K_Q), L_qˣ)` requires the Galois group to be solvable, since it peels a normal subgroup
-of prime index and uses Shapiro's lemma.
-
-## The proof
-
-The solvability is read off from the **higher ramification subgroups**
-`Gs n = {σ | σ x ≡ x mod 𝔪^{n+1} for all x ∈ 𝒪_{L_q}}` supplied by
-`exists_ramificationSubgroups_adicCompletion`, whose intersection is trivial.  Writing
-
-`Gd 0 = ⊤`, `Gd (k+1) = Gs k`,
-
-one shows `⁅Gd k, Gd k⁆ ≤ Gd (k+1)` for every `k`, i.e. that `Gd` is a descending central
-filtration (the derived series refines it): the commutator of the congruence subgroups
-`Gs i, Gs j` lies in `Gs (i+j)` (a general congruence computation), the commutator of the
-inertia subgroup `Gs 0` with itself lies in `Gs 1` (via the cyclic action on the uniformiser,
-which is the classical Kummer pairing computation), and `⁅⊤, ⊤⁆ ≤ Gs 0` because the
-unramified quotient is the cyclic residue Galois group.  Since `⨅ Gs n = ⊥`, the derived series
-reaches `⊥` in finitely many steps.
-
-The proof is a re-run of the private proof in
-`Submission/Commons/NumberTheory/NumberField/Completion/finite_groupCohomology_two_units_adicCompletion_of_isGalois.lean`,
-where the statement is a `private` auxiliary theorem (hence not importable), with the public
-congruence lemmas `sub_mem_pow_of_ringEquiv`, `commutator_sub_mem_pow`,
-`exists_eq_bot_of_iInf_eq_bot_of_antitone`, `eq_one_of_pow_eq_one_of_sub_mem_maximalIdeal` and
-`sub_sq_mem_of_uniformizer_congruence` of that file reused as they stand.
--/
-import Mathlib
-import Submission.NK.NUV2.ABHN.CommonsImports
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_addOrderOf_eq_finrank_groupCohomology_two_units_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

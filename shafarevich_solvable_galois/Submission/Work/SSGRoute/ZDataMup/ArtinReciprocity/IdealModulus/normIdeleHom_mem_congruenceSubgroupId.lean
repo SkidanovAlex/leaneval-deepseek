@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.localNormFinite_sub_one_le_of_val
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.count_map_eq_ramificationIdx_mul_count
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_uniformizer_val_eq_exp_neg_one
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.count_map_eq_ramificationIdx_mul_count
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.localNormFinite_sub_one_le_of_val
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

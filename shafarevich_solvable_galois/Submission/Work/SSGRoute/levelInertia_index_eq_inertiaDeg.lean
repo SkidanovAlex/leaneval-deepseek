@@ -1,8 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.InfInertiaClosureDefs
 import Submission.Work.SSGRoute.levelIndex
 import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
-import Submission.NK.ResidueFrob.primeOfLevel_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

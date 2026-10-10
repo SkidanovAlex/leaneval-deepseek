@@ -1,7 +1,13 @@
-import Mathlib
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.RamificationInertia.Basic
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Topology.MetricSpace.Pseudo.Defs
 import Submission.Commons.NumberTheory.DirichletCharacter.LFunction_one_lower_bound_quadratic
-import Submission.Commons.RingTheory.DedekindDomain.pow_dvd_iff_normalizedFactors_count_le
 import Submission.Commons.NumberTheory.EulerProduct.tsum_card_expVec_mul_pow
+import Submission.Commons.RingTheory.DedekindDomain.pow_dvd_iff_normalizedFactors_count_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

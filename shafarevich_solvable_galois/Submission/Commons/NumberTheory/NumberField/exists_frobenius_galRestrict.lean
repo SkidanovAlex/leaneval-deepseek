@@ -1,7 +1,9 @@
 import Mathlib.RingTheory.Frobenius
+import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RingTheory.Invariant.Galois
-import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,13 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.N2v2.heart_chi1_part
-import Submission.Work.SSGRoute.N2v2.char_eq_neg_localSum
-import Submission.Work.SSGRoute.glue_fin_decomp_ex
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerChar_zero_on_inertia_imp_mem_unramified
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

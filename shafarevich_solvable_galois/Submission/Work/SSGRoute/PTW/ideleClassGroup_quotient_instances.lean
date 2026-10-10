@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.logSectionDefs
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.Work.SSGRoute.PTW.Prelude
+import Submission.Work.SSGRoute.PTW.abs_ideleClassGroup_pow_surjective
 import Submission.Work.SSGRoute.PTW.archDefs
 import Submission.Work.SSGRoute.PTW.compactSpace_ker_abs
-import Submission.Work.SSGRoute.PTW.abs_ideleClassGroup_pow_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

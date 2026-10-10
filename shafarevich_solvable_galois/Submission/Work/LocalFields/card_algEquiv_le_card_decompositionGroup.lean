@@ -1,6 +1,9 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.Decomposition
+import Mathlib.Tactic.Have
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Work.LocalFields.CompletionLocalField
 import Submission.Work.LocalFields.valuation_smul_of_mem_stabilizer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

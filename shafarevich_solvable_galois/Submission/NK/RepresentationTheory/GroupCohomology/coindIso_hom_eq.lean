@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 import Submission.Commons.Algebra.Homology.homologyUnop_hom_naturality
 import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

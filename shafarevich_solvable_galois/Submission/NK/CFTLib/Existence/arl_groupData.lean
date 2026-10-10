@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.CFTLib.ArtinIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

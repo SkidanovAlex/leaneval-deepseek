@@ -1,19 +1,36 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.Work.SSGRoute.Nakayama.br_pTorsion
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
-import Submission.Work.SSGRoute.PTembedding.hilbert90_decomp
-import Submission.Work.SSGRoute.PT.AlphaTwoKummer
-import Submission.Work.SSGRoute.PTCore.h2loc_equiv_localGal_mup
-import Submission.Work.SSGRoute.PTdualControl.h2loc_mup_finrank_alt
-import Submission.Work.SSGRoute.PTfin.levelH2_cyclic_finiteExtension
+import Submission.Work.SSGRoute.PT.h2_equiv_of_equiv
+import Submission.Work.SSGRoute.PT.isSolvable_algEquiv_of_finiteDimensional
 import Submission.Work.SSGRoute.PTfin.exists_superlevel_p_dvd_index_finiteExtension
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.Work.SSGRoute.PTfin.p_dvd_H2_units_finiteExtension
+import Submission.Work.SSGRoute.PTfin.levelH2_cyclic_finiteExtension
 
 namespace Work.SSGRoute.PT
+
+
+/-- Build-speed: `IsAlgClosure k Ω` in the `variable` lines below needs
+`Module.IsTorsionFree k Ω`, and the variables are re-elaborated for every declaration (about 2 s of
+instance search each time). This file-local instance answers it directly. -/
+private theorem file_isTorsionFree_fast {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] file_isTorsionFree_fast
+
 
 open Work.AbsoluteKummer
 

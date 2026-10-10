@@ -1,9 +1,8 @@
-import Submission.NK.ReconstructField.LevelCandidate
-import Submission.NK.ReconstructField.LevelMatch
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Submission.NK.ReconstructField.compactness_conjHomEquiv
 import Submission.NK.ReconstructField.exists_level_galois_image
 import Submission.NK.ReconstructField.exists_sigma_levelMatch_of_levelPrimeIdentification
-import Submission.NK.ReconstructField.compactness_conjHomEquiv
-import Submission.NK.ReconstructField.Weak
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

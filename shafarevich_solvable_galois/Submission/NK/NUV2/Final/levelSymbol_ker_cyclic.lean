@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.NK.NUV2.RouteE.levelSymbol
-import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_iff_of_isCyclic
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.LocalReciprocity.NormGroup
+import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_iff_of_isCyclic
+import Submission.NK.NUV2.RouteE.levelSymbol
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

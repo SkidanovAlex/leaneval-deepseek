@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.LocalStructure.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalStructure.Power.natCard_pRootsOfUnity_eq_pow_zetaIndicator
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

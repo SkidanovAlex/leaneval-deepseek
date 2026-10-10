@@ -1,5 +1,15 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.AdicCompletion.Noetherian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Algebra.Module.Compact
+import Mathlib.Topology.Algebra.Valued.NormedValued
+import Mathlib.Topology.Algebra.Valued.ValuedField
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Work.LocalFields.CompletionLocalField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

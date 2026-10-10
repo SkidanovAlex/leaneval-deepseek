@@ -1,6 +1,8 @@
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Algebra.Module.Torsion.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.GammaModule
-import Submission.NK.Reconstruct.GammaObject
-import Submission.NK.Reconstruct.Gamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

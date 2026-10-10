@@ -1,11 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.ProfiniteP.Basic
-import Submission.Commons.GroupTheory.PGroup.frattini_eq_pow_sup_commutator
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.Module.ZMod
-import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Topology.Algebra.Group.Subgroup
+import Submission.Commons.GroupTheory.PGroup.frattini_eq_pow_sup_commutator
+import Submission.NK.ProfiniteP.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

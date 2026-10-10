@@ -1,11 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.logSectionDefs
-import Submission.Work.SSGRoute.PTW.archDefs
-import Submission.Work.SSGRoute.PTW.compact_connected_abelian_pow_surjective
-import Submission.Work.SSGRoute.PTW.compactSpace_ker_abs
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Work.SSGRoute.PTW.abs_ideleClassGroup_pow_surjective
-import Submission.NK.GlobalCFT.IdeleClassGroup.isClosed_normOne
-import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
+import Submission.Work.SSGRoute.PTW.archDefs
+import Submission.Work.SSGRoute.PTW.compactSpace_ker_abs
+import Submission.Work.SSGRoute.PTW.compact_connected_abelian_pow_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

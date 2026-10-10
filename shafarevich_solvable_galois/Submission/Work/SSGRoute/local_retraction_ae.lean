@@ -1,14 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ext_idele_defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
 import Submission.NK.HassePrinciple.localUnits_h2_injective
-import Submission.NK.HassePrinciple.exists_fixed_uniformizer_localAutHom
-import Submission.Work.LocalFields.isUnramifiedAt_iff_ramificationIdxIn_eq_one
 import Submission.Work.SSGRoute.finite_not_isUnramifiedAt_primes
 import Submission.Work.SSGRoute.hasLocalRetraction_ofInfinite
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_uniformizer_val_eq_exp_neg_one
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
 import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.TateDual.Basic
-import Submission.Work.SSGRoute.TateDual.Setup
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Submission.Work.SSGRoute.TateDual.finrank_coindShift_eq_finrank_dual_coindUp
 import Submission.Work.SSGRoute.TateDual.pairLin_equiv
 import Submission.Work.SSGRoute.TateDual.pairLin_ker
-import Submission.Work.SSGRoute.TateDual.finrank_coindShift_eq_finrank_dual_coindUp
-import Submission.Work.Tate.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.PowClassDeps
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
+import Submission.NK.TameStructureDeep.Tame.Defs
+import Submission.NK.TameStructureDeep.Tame.ell_mul_pow_sub_one_dvd
+import Submission.NK.TameStructureDeep.Tame.exists_pow_eq_of_pow_card_div_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

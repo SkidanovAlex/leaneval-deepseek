@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.Work.SSGRoute.exists_level_normGroup_eq_of_index_prime
-import Submission.Work.SSGRoute.LocalCFTAggregatorDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

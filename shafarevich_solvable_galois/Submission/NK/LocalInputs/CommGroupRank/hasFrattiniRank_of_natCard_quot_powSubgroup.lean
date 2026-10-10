@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.NK.LocalAnabelian.All
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.Algebra.Order.Star.Basic
+import Submission.NK.LocalAnabelian.Counting.natCard_indexP_subgroups_of_exp_p
+import Submission.NK.LocalAnabelian.Kummer.kummerCorrespondence
+import Submission.NK.LocalAnabelian.PadicField.FrattiniRank
+import Submission.NK.LocalAnabelian.PadicField.RatAdic
+import Submission.NK.LocalAnabelian.ResidueField.Recovery
+import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

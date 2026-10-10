@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.Work.SSGRoute.zmod_roots_of_unity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

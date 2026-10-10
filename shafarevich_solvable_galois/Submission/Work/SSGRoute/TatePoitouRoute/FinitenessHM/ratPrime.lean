@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletion_intCast_eq_padicValInt
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.phi0_defs
-import Submission.Work.SSGRoute.phi0_muClassHom_pairing
-import Submission.Work.SSGRoute.extHRestrict_comp
-import Submission.Work.SSGRoute.extIdele_localisation_injective
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.e6_util
 import Submission.Work.SSGRoute.eq_zero_of_isUnramifiedExt_of_unramified
 import Submission.Work.SSGRoute.exists_finset_unramifiedPlaces
-import Submission.Work.SSGRoute.exists_zetaCoeff
-import Submission.Work.SSGRoute.e6_util
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.extIdele_localisation_injective
+import Submission.Work.SSGRoute.phi0_defs
+import Submission.Work.SSGRoute.phi0_muClassHom_pairing
 
 namespace Work.SSGRoute.E5Route
 
@@ -146,7 +146,9 @@ theorem pairing_formula (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [NumberF
   set κ : SSGRoute.PTExt.extH (SSGRoute.PTExt.unitsK k ↥L.1) 2 :=
     h.comp (CategoryTheory.Abelian.Ext.mk₀ z) (add_zero 2) with hκdef
   obtain ⟨T, hT⟩ := kummerLocSupport_finite (k := k) (K := K) (Ω := Ω) p ζ hζ L.1 z hz1 h
-  rw [← hκdef] at hT
+  change ∀ w ∉ T, (SSGRoute.PTExt.extHRestrict (MulAction.stabilizer (↥L.1 ≃ₐ[k] ↥L.1) w) κ).comp
+      (CategoryTheory.Abelian.Ext.mk₀ (NK.HassePrinciple.unitsToLocalUnits k ↥L.1 w))
+      (add_zero 2) = 0 at hT
   set s : NK.GlobalCFT.Place ↥L.1 → NK.GlobalCFT.Place k :=
     fun w => Work.SSGRoute.Phi0.placeUnder (k := k) (K := K) (e5LevelPlaceUnder (K := K) L.1 w)
     with hsdef

@@ -1,10 +1,8 @@
-import Mathlib
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
 import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
 import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_algEquiv
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isGalois_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.map_mem_LTdivisionSet_of_algEquiv
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.ext_of_eqOn_LTdivisionSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Polynomial.Degree.Defs
+import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.Commons.Analysis.Polynomial.eval_norm_ge_of_factorization_far
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

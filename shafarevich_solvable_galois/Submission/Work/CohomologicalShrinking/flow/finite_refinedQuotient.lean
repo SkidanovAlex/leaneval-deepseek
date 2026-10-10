@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.CohomologicalShrinking.Semidirect
-import Submission.Work.ProP.All
+import Submission.Work.ProP.API
+import Submission.Work.ProP.exists_freePQuotientAction
+import Submission.Work.ProP.exists_surjective_freePQuotient_equivariant
 import Submission.Work.Shrinking.finite_freeGroup_quotient_pCentralSeries
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

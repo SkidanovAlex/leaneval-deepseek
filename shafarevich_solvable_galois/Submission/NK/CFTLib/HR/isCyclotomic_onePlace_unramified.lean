@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
-import Submission.NK.NUV2.ARL.unifUnit_pow_mem_localNormSubgroup
-import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm_of_finiteDimensional
 import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
+import Submission.NK.NUV2.ARL.unifUnit_pow_mem_localNormSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LevelSimplicity
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.finrank_adjoin_root_LTpolyEis
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.DivisionPoints
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTpolyEis_shape
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.LevelSimplicity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

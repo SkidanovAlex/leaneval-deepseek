@@ -1,10 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.HRclean.infiniteDictCopy
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
 import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

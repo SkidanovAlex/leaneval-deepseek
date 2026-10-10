@@ -1,7 +1,13 @@
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.H0Computation
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_compactSpace_normOneClassGroup
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
 import Submission.NK.RankTheoryDeep.CharModule
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.GlobalCFT.IdeleClassGroupExact
-import Submission.NK.Reconstruct.GammaObject
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

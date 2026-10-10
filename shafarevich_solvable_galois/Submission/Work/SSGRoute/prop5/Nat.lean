@@ -1,19 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Naturality and `G`-equivariance of `θ`
-
-* `valFn_smul` : the value map is `G`-equivariant;
-* `thetaLin_smul` : `θ` is `G`-equivariant;
-* `valFn_map` (in `valFn_map.lean`) : naturality of the value map in the rank;
-* `thetaLin_natural` : naturality of `θ` in the rank along surjective operator homomorphisms.
--/
-
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorPower.Basic
 import Submission.Work.SSGRoute.prop5.Theta
-import Submission.Work.SSGRoute.prop5.valFn_map
 import Submission.Work.SSGRoute.prop5.lowerCentralSeries_le_closure_commWord
+import Submission.Work.SSGRoute.prop5.valFn_map
 import Submission.Work.Shrinking.TensorPower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

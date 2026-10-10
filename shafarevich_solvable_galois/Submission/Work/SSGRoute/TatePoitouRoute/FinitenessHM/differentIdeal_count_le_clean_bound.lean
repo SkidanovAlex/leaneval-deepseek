@@ -1,25 +1,26 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpBoundByRamification
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ramificationIdx_under_ringOfIntegers_rat
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ratPrime
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicExp_le_iff_trace_mem
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.sum_trace_adicCompletion_eq_trace
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.count_different_le_count_different_of_algebra
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.exists_mem_adicExp_eq_fractionalIdeal_count
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ValExp
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.exists_cyclotomic_completion_finrank
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.residueField_pow_generated_by_residue
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.NumberTheory.NumberField.finite_primesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
-import Submission.Commons.NumberTheory.NumberField.Completion.isIntegralClosure_adicCompletionIntegers_extension
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_ringEquiv_tensor_adicCompletion_prod
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicExp_le_iff_trace_mem
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpBoundByRamification
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.exists_cyclotomic_completion_finrank
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.exists_mem_adicExp_eq_fractionalIdeal_count
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ramificationIdx_under_ringOfIntegers_rat
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.residueField_pow_generated_by_residue
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.sum_trace_adicCompletion_eq_trace
 
 /-!
 # The exponent of a rational prime in the different of a number field
@@ -443,7 +444,6 @@ private theorem inertiaField_finrank_clean {K : Type*} [Field K] [NumberField K]
   -- ## The upper bound `[ℚ_p(ζ) : ℚ_p] ≤ f`
   obtain ⟨M, hMf, hMA, hMfin, w, hwprim, hwfin⟩ :=
     exists_cyclotomic_completion_finrank p f hfpos Q0 hQ0
-  letI : Field M := hMf
   letI : Algebra (Q0.adicCompletion ℚ) M := hMA
   haveI : Module.Finite (Q0.adicCompletion ℚ) M := hMfin
   haveI : Algebra.IsIntegral (Q0.adicCompletion ℚ) M :=

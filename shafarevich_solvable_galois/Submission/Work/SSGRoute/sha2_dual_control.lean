@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.sha1_descent_H1
-import Submission.Work.SSGRoute.bauer_of_chebotarev
-import Submission.Commons.RingTheory.Valuation.exists_smul_eq_of_comap_eq
-import Submission.Work.SSGRoute.fixedField_of_le_fixingSubgroup
-import Submission.Work.CohomologicalShrinking.All
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.Work.SSGRoute.tatePoitouEmbedding
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

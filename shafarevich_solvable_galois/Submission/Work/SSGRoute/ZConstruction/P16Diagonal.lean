@@ -1,13 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.inv
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.preTwoExists
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_dictionary
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_squareAtSBlock
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_localNormalise
-import Submission.Work.SSGRoute.H9.swTwoPlacePairingTwo
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.NodeS37.claimOfPreTwo
-import Submission.Work.SSGRoute.ZConstruction.HilbertSymbolTransitivity
-import Submission.Work.SSGRoute.ZConstruction.LocalSquares
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.pinnedValue_diagonal_proved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E7cOmega.glueSetup
 import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.Core
 import Submission.Work.SSGRoute.e9c_transport_unram
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

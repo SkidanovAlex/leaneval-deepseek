@@ -1,11 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.frobElementAt
-import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.Chebotarev.FrobRestriction
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
 import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
-import Submission.NK.Chebotarev.GalRestrictCompat
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
 import Submission.NK.Reconstruct.NumFieldIn
+import Submission.NK.Reconstruct.splitFrobeniusBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

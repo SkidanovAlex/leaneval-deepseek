@@ -1,11 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Group.ConjFinite
+import Mathlib.CategoryTheory.Action.Concrete
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Work.SSGRoute.ssg8Chebotarev
-import Submission.NK.Chebotarev.ConjugacyOfFrobenius
-import Submission.NK.Chebotarev.FrobeniusGenerateTop
-import Submission.NK.Chebotarev.AbelianChebotarevOfLFunctions
-import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
-import Submission.NK.NUV2.ChebAux.kernelLe_of_auxField
-import Submission.NK.Reconstruct.denseChebotarev
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

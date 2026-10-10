@@ -1,20 +1,9 @@
-/-
-Work of the Neukirch–Uchida team: the fibre decomposition of the truncated Euler product.
-
-`NK.HeckeL.zetaUnramified K L S s` is the Euler product of `L` over the finite places of `L`
-which do not lie over any place of the modulus `S`.  Grouping those places by the place of `K`
-below them turns it into an *iterated* product over the places of `K` outside `S` of the (finite)
-products over the fibres:
-
-`∏_{𝔮 ∉ S} (1 - N𝔮^{-s})⁻¹ = ∏_{𝔭 ∉ S} ∏_{P | 𝔭} (1 - N P^{-s})⁻¹`.
-
-The content of the lemma is (i) the bijection between the places of `L` outside `S` and the pairs
-(place of `K` outside `S`, place of `L` above it), and (ii) the rearrangement of the infinite
-product into an iterated one, which uses the convergence of the full Dedekind Euler product.
--/
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Zeta
-import Submission.Commons.NumberTheory.NumberField.DedekindZeta.log_eulerProduct_primeIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

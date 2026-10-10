@@ -1,54 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The level dictionary: level groups are Galois groups of number-field extensions
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4 item 3, §8.7).
-
-This module performs **item 3 of README §8.4**: it identifies the finite levels of the profinite
-cohomology `NK.BrauerHasse.H2Profinite` used by the Neukirch–Uchida development with Galois
-groups of *finite extensions of number fields*.
-
-Recall (`Submission/Work/BrauerHasse/Profinite.lean`) that for a closed subgroup
-`U ≤ Gal(K'/K)` and a finite Galois intermediate field `L` of `K'/K` the level group is
-
-`LevelGroup U L = U ⧸ (U ⊓ Gal(K'/L)) = U ⧸ L.fixingSubgroup.subgroupOf U`.
-
-The results below show, for `V ≤ Gal(K'/K)`:
-
-* `NK.HassePrinciple.levelGroupMulEquivSup` — Noether's second isomorphism theorem:
-  `LevelGroup V L ≃* (V ⊔ Gal(K'/L)) ⧸ Gal(K'/L)`; this is the first (purely group-theoretic)
-  half of the dictionary, valid for *every* subgroup `V`;
-* `NK.HassePrinciple.sup_fixingSubgroup_eq_fixingSubgroup_inf` — for `V` **closed**,
-  `V ⊔ Gal(K'/L) = Gal(K'/(L ⊓ K'^V))`: the level group is a quotient of the Galois group of the
-  *number-field* extension `K'/(L ⊓ K'^V)`, whose base field `L ⊓ K'^V` contains `K` and is finite
-  over it;
-* `NK.HassePrinciple.levelGroupMulEquivFixingSubgroup` — the combination:
-  `LevelGroup V L ≃* Gal(K'/(L ⊓ K'^V)) ⧸ Gal(K'/L)`;
-* `NK.HassePrinciple.levelGroupMulEquivLevelGalois` — the arithmetic form: the level group is the
-  Galois group of the finite extension `L/(L ⊓ K'^V)` of number fields,
-  `LevelGroup V L ≃* Gal(L/(L ⊓ K'^V))`,
-  realised as the image of `V` under the restriction map `Gal(K'/K) →* Gal(L/K)`;
-* `NK.HassePrinciple.lift_fixedField_map_restrictNormalHom` — the identification
-  `L ⊓ K'^V = L ⊓ fixedField V` of the two descriptions of the base field of the level extension.
-
-Consequently every statement about `LevelGroup V L` (in particular `LevelH2 p V L = H²(LevelGroup V L, Z/p)`
-and the level-wise localisation `locLevel`) is a statement about a finite Galois extension of number
-fields and its local decomposition groups — the vocabulary in which the classical
-Hasse–Brauer–Noether / Hasse-norm-theorem transport (README §8) has to be carried out.
-
-## Conventions
-
-`K K' : Type u` live in one universe (the universe discipline of `NK.BrauerHasse`), `K'` is a
-separable closure of `K`, and `V, W ≤ Gal(K'/K)` are subgroups; when `V` has to be *closed* this is
-an explicit hypothesis `IsClosed (V : Set Gal(K'/K))`, as in the rest of the chapter.
--/
-
-import Submission.NK.BrauerHasse.Profinite
+import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.NumberTheory.NumberField.Basic
+import Submission.NK.BrauerHasse.Profinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

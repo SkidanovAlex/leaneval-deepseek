@@ -1,26 +1,5 @@
-/-
-# The chain level identity expressing the restriction–coind counit
-
-This file proves the chain level identity
-
-`ι_{coind A} ≫ λ⁻¹ ≫ ψ = cochainsMap S.subtype (counit.app A) ≫ ι_A`
-
-where
-
-* `ι_A : inhomogeneousCochains A ≅ Hom(bar_S, A)` is the comparison isomorphism of
-  inhomogeneous cochains with `Hom(bar, -)` (`groupCohomology.inhomogeneousCochainsIso`),
-* `λ : Hom(Res(bar_G), A) ≅ Hom(bar_G, coind A)` is the isomorphism underlying Shapiro's lemma
-  (`NK.RepresentationTheory.GroupCohomology.lambdaIso`),
-* `ψ : Hom(Res(bar_G), A) ⟶ Hom(bar_S, A)` is induced by the canonical chain map
-  `bar_S ⟶ Res(bar_G)` (`NK.RepresentationTheory.GroupCohomology.psiMap`),
-* and the counit of the restriction–coind adjunction is the comparison on the other side.
-
-Writing `M = coind S.subtype A`, both sides are maps `C•(G, M) ⟶ Hom(bar_S, A)`.  On the level of
-elements the identity is the tautology `(z (S.subtype ∘ x)) 1 = (z (S.subtype ∘ x)) 1`: the left
-hand side is the value of `ψ ∘ λ⁻¹ ∘ ι` at a cochain, and the two auxiliary lemmas below compute
-each of the two composites at the basis element `single x (single 1 1)` of the `i`-th chains of `S`.
--/
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,12 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_level_index
-import Submission.Work.SSGRoute.phi1_level_system
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.phi1_level_trivial_two
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.phi0_realization_in
-import Submission.Work.SSGRoute.pt_char_pTorsion
 set_option synthInstance.maxHeartbeats 400000
 
 /-!

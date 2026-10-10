@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.RouteB.RayModulus.Defs
-import Submission.NK.NUV2.RouteB.CongClassSetup
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.FundamentalCone
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.NUV2.RouteB.Dict.latticeCosetCount_halfspaces_isBigO
 import Submission.NK.NUV2.RouteB.RayModulus.CosetCountDefs
 import Submission.NK.NUV2.RouteB.latticeCosetCount_cone_isBigO
-import Submission.NK.NUV2.RouteB.Dict.latticeCosetCount_halfspaces_isBigO
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

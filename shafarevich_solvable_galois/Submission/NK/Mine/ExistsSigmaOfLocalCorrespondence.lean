@@ -1,3 +1,9 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Mine.exists_sigma_of_frobeniusCorrespondence
 import Submission.NK.ReconstructField.weakNeukirchUchida
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

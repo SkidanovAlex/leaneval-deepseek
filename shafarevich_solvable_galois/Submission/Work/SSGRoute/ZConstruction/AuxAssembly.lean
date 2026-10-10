@@ -1,13 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.AuxInterface
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZConstruction.AuxChase
-import Submission.Work.SSGRoute.ZConstruction.ZDataAux
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_KConj_cover
 import Submission.Work.SSGRoute.ZConstruction.exists_KConj_reps
 import Submission.Work.SSGRoute.ZConstruction.kConj_of_local_agree
-import Submission.Work.SSGRoute.ZDataMup.Defs
-import Submission.Work.SSGRoute.ZDataMup.LocalData
 import Submission.Work.SSGRoute.eq_one_of_mul_self_eq_one_of_fixes_primitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

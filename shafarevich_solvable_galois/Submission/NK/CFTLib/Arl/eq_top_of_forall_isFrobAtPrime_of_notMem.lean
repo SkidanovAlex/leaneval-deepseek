@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.NK.Chebotarev.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Mine.FrobeniusGenerateTopUnramified
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

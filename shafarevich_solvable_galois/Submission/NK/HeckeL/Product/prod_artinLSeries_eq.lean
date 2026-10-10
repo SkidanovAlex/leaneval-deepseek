@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Product.prod_monoidHom_one_sub_mul
-import Submission.NK.HeckeL.Series.hasProd_artinEulerFactor
 import Submission.NK.HeckeL.Product.zetaUnramified_eq_tprod_fiber
 import Submission.NK.HeckeL.Product.zeta_eulerFactor_liesOver
+import Submission.NK.HeckeL.Series.hasProd_artinEulerFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

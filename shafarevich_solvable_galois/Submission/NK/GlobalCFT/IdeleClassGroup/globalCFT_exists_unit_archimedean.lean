@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFT.IdeleClassGroup.CompactDefs
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_exists_unit_logEmbedding_bound
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_unitLattice_approx
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_principalIdele_unit_ofFinite_norm_one
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_normOne_archimedean_sum
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_principalIdele_unit_ofFinite_norm_one
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_unitLattice_approx
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

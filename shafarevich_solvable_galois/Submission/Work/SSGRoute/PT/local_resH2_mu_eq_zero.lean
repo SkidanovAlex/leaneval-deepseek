@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 import Submission.Work.SSGRoute.PT.resH2_eq_zero_of_index_nsmul_eq_zero
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

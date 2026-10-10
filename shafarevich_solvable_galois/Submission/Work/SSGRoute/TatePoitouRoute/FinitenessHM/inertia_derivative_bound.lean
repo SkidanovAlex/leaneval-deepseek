@@ -1,9 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpInertia
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ordAt_sum_le
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.aeval_derivative_sum
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.helpersTotallyRamified
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExp_le
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.liesOver_maximalIdeal_adicCompletionIntegers
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.finrank_le_natDegree_of_aeval_eq_zero
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertiaRing_span_p_isMaximal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

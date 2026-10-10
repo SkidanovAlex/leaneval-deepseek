@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LiftImports
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.UniformSpace.Uniformizable
 import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
 
 namespace Work.SSGRoute

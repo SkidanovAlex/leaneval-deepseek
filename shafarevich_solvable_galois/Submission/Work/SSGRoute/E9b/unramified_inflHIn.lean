@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Work.SSGRoute.extHRestrict_inflHIn_eq_zero_of_forall
-import Submission.Work.SSGRoute.decompK_restrict_exists
 import Submission.Work.SSGRoute.extHRestrict_eq_zero_of_le
+import Submission.Work.SSGRoute.extHRestrict_inflHIn_eq_zero_of_forall
 import Submission.Work.SSGRoute.place_basics
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

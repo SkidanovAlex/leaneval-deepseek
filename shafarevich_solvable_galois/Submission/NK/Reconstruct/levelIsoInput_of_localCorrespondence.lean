@@ -1,24 +1,13 @@
-import Mathlib
-import Submission.NK.Reconstruct.levelPairData
-import Submission.NK.Reconstruct.levelIsoInput_of_localCorrespondence_complexPrime
-import Submission.NK.Reconstruct.assemblyGen
-import Submission.NK.Reconstruct.fourf5Gen
-import Submission.NK.Reconstruct.topologicalClosure_isFrobElement_eq_top
-import Submission.NK.Reconstruct.prop4f3AwayFromL
-import Submission.NK.Reconstruct.generalBaseChange_galToGamma
-import Submission.NK.Reconstruct.generalDescent
-import Submission.NK.Reconstruct.generalBaseChange
-import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Reconstruct.frobCorrespondenceGammaHaus_levelSplit
-import Submission.NK.Reconstruct.exists_gammaEquivOfPhi_continuous
-import Submission.NK.Reconstruct.NumFieldInSup
-import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup_awayFromL
-import Submission.NK.Reconstruct.chebotarevInput_of_artinReciprocity
-import Submission.NK.Reconstruct.levelMap_inf
-import Submission.NK.Reconstruct.levelMap_sup
-import Submission.NK.Reconstruct.gammaHausMk_eq_one_of_continuous
-import Submission.NK.Reconstruct.exists_theta_of_prop4f3_data_gen_awayFromL_fixed
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.exists_aux_imaginary_level_gen
+import Submission.NK.Reconstruct.exists_theta_of_prop4f3_data_gen_awayFromL_fixed
+import Submission.NK.Reconstruct.levelIsoInput_of_localCorrespondence_complexPrime
+import Submission.NK.Reconstruct.levelMap_inf
+import Submission.NK.Reconstruct.topologicalClosure_isFrobElement_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

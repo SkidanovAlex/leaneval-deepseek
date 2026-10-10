@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.NK.Chebotarev.Density
-import Submission.NK.Chebotarev.IsFrobAtConj
 import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
+import Submission.NK.Chebotarev.IsFrobAtConj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

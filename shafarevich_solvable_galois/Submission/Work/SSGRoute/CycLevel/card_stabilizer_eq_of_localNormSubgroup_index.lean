@@ -1,9 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.CycLevel.GrunwaldImports
-import Submission.Work.SSGRoute.CycLevel.localNormSubgroup_eq_preimage_normClass
-import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
-import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Submission.Work.SSGRoute.ZDataMup.onePlace_mem_normImage_of_mem_sup_abelian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

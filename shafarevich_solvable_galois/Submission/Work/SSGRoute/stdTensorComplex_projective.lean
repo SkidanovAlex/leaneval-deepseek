@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Homology.HomologicalComplex
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
 import Submission.Work.SSGRoute.ext2_iso_cohomology_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

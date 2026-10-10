@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Submission.Work.CohomologicalShrinking.Functorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

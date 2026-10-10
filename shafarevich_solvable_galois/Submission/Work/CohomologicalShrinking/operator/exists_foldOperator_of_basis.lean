@@ -1,38 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The folding operator from a basis
-
-Schmidt–Wingberg's shrinking lemma (arXiv:math/9809211, Section 2, proof of Proposition 6)
-needs, for `a : Fin r → 𝔽_p` with `a k₀ = 1`, a *surjective* `G`-operator homomorphism
-
-`ψ : F(r·n) ⟶ F(n)`,  `x_{(k,j),g} ↦ x_{(j,g)}^{a_k}`
-
-of free `G`-operator groups, whose induced map `ψ̄ : F(r·n)/F(r·n)² → F(n)/F(n)²` realises the
-folding map `φ_a : (F(n)/F(n)²)^r → F(n)/F(n)²` (`Work.Shrinking.foldMap`), `x ↦ ∑_k a_k • x_k`,
-under the canonical identification `e : (F(n)/F(n)²)^r ≅ F(r·n)/F(r·n)²` of the two sides.
-
-`Work.CohomologicalShrinking.operator.exists_foldOperator` produces one such `e` (namely
-`foldEquiv`) together with `ψ`.  The present file proves the *basis form* of the statement:
-whenever a linear equivalence `e` is given which is described on the standard basis vectors
-`Pi.single k (genMk p G n (j,g))` by `e (Pi.single k (genMk p G n (j,g)))
-= genMk p G (r·n) (finProdFinEquiv (k,j), g)`, the *same* `ψ` realises the fold with respect to
-*that* `e`.  This is what makes the shrinking step independent of the particular isomorphism `e`
-chosen: any two such `e` agree on a spanning set, hence are equal.
-
-## Main results
-
-* `Work.CohomologicalShrinking.operator.FoldOperatorOfBasis.psi` : the homomorphism `ψ` whose
-  value on the free generator `x_{(k,j),g}` is `x_{(j,g)}^{a_k}`.
-* `Work.CohomologicalShrinking.operator.FoldOperatorOfBasis.psi_surj`,
-  `...psi_smul` : it is onto (`k₀` with `a k₀ = 1` provides the generators) and `G`-equivariant.
-* `Work.CohomologicalShrinking.operator.FoldOperatorOfBasis.quotMapLin_genMk` : `ψ̄` on the class
-  of a free generator.
-* `Work.CohomologicalShrinking.operator.exists_foldOperator_of_basis` : the target.
--/
-
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.CategoryTheory.Abelian.Ext
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.CohomologicalShrinking.Functorial
 import Submission.Work.CohomologicalShrinking.modsquare.squareQuotientToFun_bijective
 import Submission.Work.CohomologicalShrinking.modsquare.squareQuotientToFun_smul

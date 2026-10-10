@@ -1,11 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.N2v2.heart_chi1_part
-import Submission.Work.SSGRoute.N2v2.heart_chi2_part
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.H9.two_heart
+import Submission.Work.SSGRoute.N2v2.exists_kummerChar_level
 import Submission.Work.SSGRoute.N2v2.heart_gsum_vanishes
 import Submission.Work.SSGRoute.NoKimag.HeartGsumNarrow
-import Submission.Work.SSGRoute.H9.two_heart
 import Submission.Work.SSGRoute.ZDataTwo.OrthTwoArchIn
-import Submission.Work.SSGRoute.N2v2.exists_kummerChar_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

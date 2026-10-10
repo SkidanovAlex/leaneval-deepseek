@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
-import Submission.NK.Chebotarev.ConjugacyOfFrobenius
 import Submission.NK.CFTLib.Arl.isFrobAt_of_isFrobAt_any_primeOver
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
+import Submission.NK.Chebotarev.ConjugacyOfFrobenius
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

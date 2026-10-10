@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.NK.CFTLib.Arl.prod_frobAtPrime_ramificationIdx_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

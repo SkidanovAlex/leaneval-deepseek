@@ -1,11 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFTdeep.Herbrand.top_eq_principal_sup_TIdeles
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

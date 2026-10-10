@@ -1,8 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.FractionalIdeal.Basic
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.step4_y_escape_v2.Orthogonality
-import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
 import Submission.Work.SSGRoute.ZDataTwo.SignAdjustment
+import Submission.Work.SSGRoute.step4_y_escape_v2.Orthogonality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

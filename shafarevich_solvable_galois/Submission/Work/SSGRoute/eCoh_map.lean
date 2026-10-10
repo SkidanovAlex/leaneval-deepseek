@@ -1,11 +1,10 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E0bBarChange
 import Submission.Work.SSGRoute.cochainsMap_inhomogeneousCochainsIso_comm
-import Submission.Work.SSGRoute.MapExtAuxDefs
 import Submission.Work.SSGRoute.mapExtAddHom_extMk_gen
-import Submission.Commons.RepresentationTheory.GroupCohomology.inhomogeneousCochainsIso_apply
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

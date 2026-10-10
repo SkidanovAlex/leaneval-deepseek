@@ -1,19 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.NK.GlobalCFTdeep.NormIndex.GaloisCase
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.NK.LocalAnabelian.Kummer.Defs
-import Submission.NK.NUV2.ArtinBridge.pow_mem_normGroup_of_exponent
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.integralIdelesLeNormImage
-import Submission.NK.NUV2.ArtinBridge.KummerSUnitField
+import Submission.NK.GlobalCFTdeep.NormIndex.GaloisCase
 import Submission.NK.NUV2.ArtinBridge.KummerSUnitFieldInfinite
-import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
-import Submission.NK.NUV2.ArtinBridge.finrank_kummerSUnitField
 import Submission.NK.NUV2.ArtinBridge.finiteDimensional_kummerSUnitField
+import Submission.NK.NUV2.ArtinBridge.finrank_kummerSUnitField
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
 import Submission.NK.NUV2.ArtinBridge.ramificationIdx_eq_one_kummerSUnitField
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

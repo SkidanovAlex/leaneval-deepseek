@@ -1,19 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Basic API for non-archimedean local fields
-
-Small consequences of `Work.LocalFields.IsLocalField`: uniformizers, the maximal ideal,
-finiteness of the quotients `𝒪/𝔪ⁿ`, and the specialisation to completions of number fields.
-
-## Main results
-
-* `Work.LocalFields.IsLocalField.uniformizer`, `maximalIdeal_eq_span_uniformizer`.
-* `Work.LocalFields.IsLocalField.finite_quotient_maximalIdeal_pow`.
-* `Work.LocalFields.completion_uniformizer`, `completion_maximalIdeal_eq_span_uniformizer`.
--/
-import Submission.Work.LocalFields.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.LocalRing.Quotient
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.LocalFields.CompletionLocalField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

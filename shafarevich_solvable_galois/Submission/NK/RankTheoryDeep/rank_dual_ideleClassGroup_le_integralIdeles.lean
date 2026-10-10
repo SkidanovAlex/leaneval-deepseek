@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.RankTheoryDeep.IdeleRankDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

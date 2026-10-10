@@ -1,46 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The reduced input catalogue for `NK.LocalTame.TameData`
-
-The deliverable asks for the classical structure theorem of the absolute Galois group `G_κ` of a
-`p`-adic field `κ` in the packaged form
-
-  `NK.LocalTame.TameData p q κ K'  =  TameStructureInput ∧ ResidueCardRecovery ∧
-     FrobeniusLiftCharacterisation`.
-
-The three components are theorems of the classical theory (NSW, *Cohomology of Number Fields*,
-(7.5.7), (7.5.11) and (12.1.8); Iwasawa, *On Galois groups of local fields*; Shimizu,
-arXiv:2009.10431, Lemma 2.1), none of which is available in Mathlib.  This file records the
-*reduced* input statements — one per component, each strictly weaker than the component it
-implies, each with its reference — together with the assembled catalogue `TameDataInput`.
-
-| reduced input | implies | reference |
-|---|---|---|
-| `TameInertiaInput p κ K'` | `TameStructureInput p q κ K'` | NSW (7.5.7) Cor., (7.5.11); Iwasawa |
-| `TameAbelianisationInput p q κ K'` | `ResidueCardRecovery p q κ K'` | Shimizu Lemma 2.1 (local CFT) |
-| `NK.LocalStructure.TameFrobeniusCore p q κ K'` | `FrobeniusLiftCharacterisation p q κ K'` | NSW (12.1.8); Iwasawa |
-
-The derivations are in `NK.TameData.Inertia`, `NK.TameData.Abelianisation` and
-`NK.LocalStructure.Frobenius` respectively; the assembly is `NK.TameData.Main`.
-
-## What is *not* an input here
-
-`TameStructureInput` has eight fields, of which two are *proved* from the other six in this
-development: `exists_frobeniusLift` follows from `unramifiedQuotient` and the non-triviality of
-`Ẑ` (`NK.LocalStructure.Tame.exists_notMem_inertiaSubgroup_of_unramifiedQuotient`), and
-`wildInertia_le_inertia` is the first component of `IsMaxNormalProCyclicInQuotient`.  `TameInertiaInput`
-therefore carries only the arithmetic content of NSW (7.5.7)/(7.5.11).
-
-Likewise `ResidueCardRecovery` has three fields, of which `hp` and `q_eq` are part of the
-statement that `q` is the residue field order; `TameAbelianisationInput` records the classical
-splitting `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}` from which the third field (`card_torsion`) is *derived*
-(`NK.TameData.Abelianisation`), using the torsion-freeness of `Ẑ`
-(`NK.TameData.isMulTorsionFree_zhat`).
--/
-import Mathlib
-import Submission.NK.LocalTame.All
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalStructure.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

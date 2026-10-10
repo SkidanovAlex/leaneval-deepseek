@@ -1,11 +1,7 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_archimedean
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

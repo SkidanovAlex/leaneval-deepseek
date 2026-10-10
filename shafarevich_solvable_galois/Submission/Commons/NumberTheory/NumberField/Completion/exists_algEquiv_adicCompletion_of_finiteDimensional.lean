@@ -1,15 +1,22 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_polynomial_map_close_adicCompletion
-import Submission.Commons.FieldTheory.Polynomial.mem_adjoin_of_close
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.countable
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.Shrink
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Normed.Algebra.Ultra
+import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.Algebra.Field.exists_algEquiv_factor_of_surjective_pi
 import Submission.Commons.Analysis.Normed.exists_root_separation
 import Submission.Commons.Analysis.Polynomial.exists_eps_forall_root_close
-import Submission.Commons.FieldTheory.Polynomial.natDegree_eq_of_supNorm_lt
-import Submission.Commons.Algebra.Field.exists_algEquiv_factor_of_surjective_pi
+import Submission.Commons.FieldTheory.Polynomial.mem_adjoin_of_close
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_polynomial_map_close_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.countable
+import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.Interfaces
 import Submission.Work.SSGRoute.exists_finite_stable_submodule_family
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

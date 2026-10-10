@@ -1,21 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The Fitting and Frattini subgroups of a quotient
-
-For a normal subgroup `M ◁ G` with `M ≤ Φ(G)`:
-* `frattini_map_le` : `Φ(G)M/M ≤ Φ(G/M)` (valid for *every* normal `M`);
-* `fitting_map_quotient` : `F(G)M/M = F(G/M)`, i.e. `F(G/M)` is the image of `F(G)`.
-
-The second identity is the key step in the standard proof that `Φ(G) < F(G)` for a nontrivial
-finite solvable group `G` (Huppert, *Endliche Gruppen I*, III.4.2).  Its content is the lemma
-`Work.Fitting.isNilpotent_of_isNilpotent_map_quotient`
-(`Submission/Work/Fitting/isNilpotent_of_isNilpotent_map_quotient.lean`): if `M ≤ Φ(G)` and
-`H/M` is nilpotent then `H` is nilpotent.
--/
-import Mathlib
-import Submission.Work.Fitting.Basic
-import Submission.Work.Fitting.PCore
+import Mathlib.GroupTheory.Frattini
 import Submission.Work.Fitting.FittingEqPCore
 import Submission.Work.Fitting.isNilpotent_of_isNilpotent_map_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

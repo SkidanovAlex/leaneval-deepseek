@@ -1,10 +1,15 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.eb_loc_card
 import Submission.Work.SSGRoute.e0b_bridge
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_fiberIdeles_ofInfinite
-import Submission.NK.GlobalCFTdeep.Herbrand.hOne_fiberIdelesRep_eq_one
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_two_eq_natCard_tateCohomology_zero_of_cyclic
+import Submission.Work.SSGRoute.eb_loc_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

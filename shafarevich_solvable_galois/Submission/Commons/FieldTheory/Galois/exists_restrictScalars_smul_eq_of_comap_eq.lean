@@ -1,9 +1,9 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.FieldTheory.Galois.exists_smul_eq_of_comap_eq
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.Commons.FieldTheory.Galois.eq_of_comap_eq_forall_finite_normal
 import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
-import Submission.Commons.RingTheory.Valuation.comap_inclusion_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

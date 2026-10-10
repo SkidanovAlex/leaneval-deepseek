@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.Defs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.AbelianReduction
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.iInf_subgroup_isCyclic_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

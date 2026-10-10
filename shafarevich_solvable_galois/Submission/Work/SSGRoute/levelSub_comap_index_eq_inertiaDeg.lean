@@ -1,15 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.levelInertia_defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.levelSub_commutator_and_generator
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
 import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
-import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Work.LocalFields.Decomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

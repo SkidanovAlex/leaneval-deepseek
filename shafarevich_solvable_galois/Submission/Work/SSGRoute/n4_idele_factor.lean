@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.PrimeIdeles
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

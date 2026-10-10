@@ -1,11 +1,14 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Work.SSGRoute.ZDataTwo.AdicBridge
-import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
 import Submission.Work.SSGRoute.ZDataTwo.LocalCongruence
 import Submission.Work.SSGRoute.ZDataTwo.TotallyPositive
-import Submission.Work.SSGRoute.ZDataTwo.Mu2EscapeStep
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
-import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

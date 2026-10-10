@@ -1,48 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The structure theorem for `G_κ`, assembled
-
-This is the assembly module of the chapter: `NK.TameData.TameDataInput` (the reduced input
-catalogue of `Definitions.lean`) is turned into the packaged statement
-
-  `NK.LocalTame.TameData p q κ K' = TameStructureInput p q κ K' ∧ ResidueCardRecovery p q κ K'
-     ∧ FrobeniusLiftCharacterisation p q κ K'`
-
-which is what `Submission/Work/LocalTame/` and `Submission/Work/FrobeniusBridge/` consume.
-
-Two entry points are provided, according to which form of the residue-cardinality input is
-available:
-
-* `NK.TameData.TameDataInput.toTameData` from the splitting `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}`
-  (Shimizu, arXiv:2009.10431, 2.1, via local class field theory) — the classical form;
-* `NK.TameData.tameData_of_torsionInput` from the literal statement that the torsion of
-  `G_κ^{tr,ab}` is cyclic of order `q - 1` — this route needs no property of `Ẑ` at all.
-
-The components themselves are derived in `NK.TameData.Inertia` (component 1),
-`NK.TameData.Abelianisation` (component 2) and `NK.LocalStructure.Frobenius` (component 3,
-imported).
-
-## Consequences of `TameData`
-
-Everything `TameData` bundles is available field by field, and the chapter records the following
-consequences in the vocabulary of `NK.LocalTame`, for consumers who would rather not unfold the
-structure:
-
-* `NK.TameData.le_inertia_of_tameData` — `V_κ ≤ I_κ`;
-* `NK.TameData.exists_frobeniusLift_of_tameData` — there is an element outside `I_κ`;
-* `NK.TameData.card_torsion_of_tameData` — `#(G_κ^{tr,ab})_{tor} = q - 1`;
-* `NK.TameData.isFrobeniusFor_iff_of_tameData` — the Frobenius normalisation (NSW (12.1.8));
-* `NK.TameData.residueCard_eq_of_tameData` — two `TameData` at the *same* `p` over the same
-  field force the same `q` (the cross-field version is `NK.LocalTame.residueCard_eq_of_tameData`,
-  which uses the induced isomorphism `G_κ^{tr,ab} ≃* G_{κ₂}^{tr,ab}`).
--/
-import Submission.NK.TameData.Definitions
-import Submission.NK.TameData.Inertia
-import Submission.NK.TameData.Abelianisation
+import Mathlib.FieldTheory.IsSepClosed
 import Submission.NK.LocalStructure.Frobenius.frobeniusLiftCharacterisation_of_core
+import Submission.NK.TameData.Abelianisation
 import Submission.NK.TameData.Arithmetic.eq_of_prime_pow_eq_prime_pow
+import Submission.NK.TameData.Inertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

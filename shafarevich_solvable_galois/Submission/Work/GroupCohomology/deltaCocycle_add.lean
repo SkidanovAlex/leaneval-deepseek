@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Connecting
-import Submission.Work.GroupCohomology.ShortExact
 import Submission.Work.GroupCohomology.H2pi_eq_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

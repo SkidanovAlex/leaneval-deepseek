@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.RegularRep
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.InnerProductSpace.Defs
+import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Basic
 import Submission.Work.SSGRoute.PTW.AvgOpNeZero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

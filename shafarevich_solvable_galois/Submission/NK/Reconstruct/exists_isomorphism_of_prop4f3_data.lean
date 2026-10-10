@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.NK.Reconstruct.prop4f3
-import Submission.NK.Reconstruct.fourf5Input
-import Submission.NK.Reconstruct.lemma4f4
-import Submission.NK.Reconstruct.thetaGammaTransport
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.exists_thetaLevel
+import Submission.NK.Reconstruct.fourf5Input
+import Submission.NK.Reconstruct.prop4f3
+import Submission.NK.Reconstruct.thetaGammaTransport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

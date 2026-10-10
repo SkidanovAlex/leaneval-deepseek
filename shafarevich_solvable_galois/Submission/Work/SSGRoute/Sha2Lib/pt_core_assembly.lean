@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.Sha2Lib.yonedaPair_extToClasses_eq_zero_of_locTrivial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

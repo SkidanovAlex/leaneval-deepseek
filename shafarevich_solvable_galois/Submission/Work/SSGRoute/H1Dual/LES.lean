@@ -1,20 +1,9 @@
-/-
-# The two dimension shifts for `H₁(G,M) ≅ H¹(G,M^∨)^∨`
-
-Using the short exact sequence `0 → M' → Coind(M) → M → 0` (see `H1Dual.Defs`) and its dual
-`0 → M^∨ → Coind(M)^∨ → (M')^∨ → 0`, the long exact sequences of group homology and cohomology
-give
-
-* `H₁(G,M) ≅ ker (H₀(G,M') → H₀(G,Coind M))`, and
-* `H¹(G,M^∨) ≅ coker (H⁰(G,Coind(M)^∨) → H⁰(G,(M')^∨))`,
-
-the middle terms being acyclic (`H₁` resp. `H¹` vanishing).
--/
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LongExactSequence
 import Submission.Work.SSGRoute.H1Dual.Defs
-import Submission.Work.SSGRoute.H1Dual.kerExtract
 import Submission.Work.SSGRoute.H1Dual.cokerExtract
 import Submission.Work.SSGRoute.H1Dual.dualCoker
+import Submission.Work.SSGRoute.H1Dual.kerExtract
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

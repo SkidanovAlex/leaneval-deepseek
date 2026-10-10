@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.ReconstructField.LevelMatch
-import Submission.NK.ReconstructField.LevelPrimeBijective
 import Submission.NK.ReconstructField.exists_ringEquiv_mapsBase_of_mapsBaseLevel
 import Submission.NK.ReconstructField.levelPrimeMap_smul_of_lift
 import Submission.NK.UchidaKummer.SplitPrimes

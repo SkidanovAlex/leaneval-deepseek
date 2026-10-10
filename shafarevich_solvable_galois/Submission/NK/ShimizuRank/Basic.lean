@@ -1,11 +1,8 @@
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Algebra.Module.Torsion.Basic
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
+import Submission.NK.Reconstruct.exists_isomorphism_of_prop4f3_data
 import Submission.NK.Reconstruct.fourf5Gen
-import Submission.NK.Reconstruct.fourf5Rank
-import Submission.NK.Reconstruct.torsionFreeGamma
-import Submission.NK.Reconstruct.hausPi
-import Submission.NK.Reconstruct.gammaSmul
-import Submission.NK.Reconstruct.NumFieldIn
-import Submission.NK.Reconstruct.NumFieldInSup
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

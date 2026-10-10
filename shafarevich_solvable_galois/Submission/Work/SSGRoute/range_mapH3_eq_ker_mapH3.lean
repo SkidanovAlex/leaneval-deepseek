@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.H3Map.mapC3c_mem_Z3_mem_B3
-import Submission.Work.SSGRoute.kummerBase_euler_connectingH3_descent
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
+import Submission.Work.SSGRoute.iotaInv_comp_mem_Z3
 import Submission.Work.SSGRoute.range_deltaH3_eq_ker_mapH3
 import Submission.Work.SSGRoute.sub_d2_liftCochain2_mem_Z3_and_ker
-import Submission.Work.SSGRoute.iotaInv_comp_mem_Z3
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

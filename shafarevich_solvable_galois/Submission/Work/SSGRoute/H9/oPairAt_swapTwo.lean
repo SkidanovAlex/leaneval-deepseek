@@ -1,10 +1,17 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.H9.swCrossedValueTwoHelpers
 import Submission.Work.SSGRoute.H9.swDictionaryKills
-import Submission.Work.SSGRoute.H9.swOoPairAt_add_swap
 import Submission.Work.ZDataTwo.localNormSubgroup_eq_normGroup_quadLevel
-import Submission.Work.HilbertSymbolGeneral.hilbertSymbol_comm
-import Submission.Work.HilbertSymbolGeneral.exists_sq_sub_mul_sq_comm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

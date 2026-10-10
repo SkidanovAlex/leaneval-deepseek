@@ -1,16 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# API for the generic kernel quotients and the pro-`p`-completion
-
-Convenience results about `Work.ProP.FreePQuotient p n ν = F^(n)/F^(n)(ν)` and the pro-`p`
-completion `Work.ProP.proPCompletion p n`, complementing `Submission/Work/ProP/Defs.lean`.
--/
-
-import Mathlib
-import Submission.Work.ProP.Defs
-import Submission.Work.ProP.pCentralStep_mono
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.ProP.finite_freePQuotient
 import Submission.Work.ProP.isPGroup_freePQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

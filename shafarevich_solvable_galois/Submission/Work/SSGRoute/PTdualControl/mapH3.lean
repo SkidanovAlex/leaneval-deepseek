@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Constructions.SumProd
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.SSGRoute.kummerBase_euler_connectingH3
-import Submission.Work.AbsoluteKummer.SES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

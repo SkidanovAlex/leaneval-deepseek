@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.extH_groupCohomology_iso
-import Submission.Work.SSGRoute.phi1_defs
 import Submission.Work.SSGRoute.mapExactFunctor_id
+import Submission.Work.SSGRoute.phi1_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

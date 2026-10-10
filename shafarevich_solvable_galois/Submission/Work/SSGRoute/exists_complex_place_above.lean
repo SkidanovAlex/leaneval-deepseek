@@ -1,10 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Submission.Work.SSGRoute.eb_arch_aux
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option linter.unusedVariables false
 set_option linter.unusedSectionVars false
@@ -29,14 +30,11 @@ theorem exists_complex_place_above (k L₀ : Type) [Field k] [NumberField k] [Fi
   obtain ⟨M, E, hMf, hMNF, hEf, hENF, hkM, hkE, hL₀E, hME, hstLE, hstME, hfdM, hfdE,
     hgalM, hgalE, hcyc, hcycE, hadjoin, hcomp⟩ :=
       eb_arch_aux k L₀ 3 (by norm_num) (by norm_num)
-  letI : Field E := hEf
-  letI : NumberField E := hENF
   letI : Algebra k E := hkE
   letI : Algebra L₀ E := hL₀E
   letI : IsScalarTower k L₀ E := hstLE
   letI : FiniteDimensional k E := hfdE
   letI : IsGalois k E := hgalE
-  letI : Field M := hMf
   letI : Algebra k M := hkM
   letI : Algebra M E := hME
   letI : IsScalarTower k M E := hstME

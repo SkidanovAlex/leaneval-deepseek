@@ -1,15 +1,11 @@
-/-
-# Acyclicity of the coinduced representation
-
-`Coind_1^G V = (G → V)` is induced (it is `Ind_1^G V`, via `coindRepIsoCoind` and
-`Rep.indCoindIso`), hence acyclic: `H₁(G, Coind V) = 0` and `H¹(G, Coind V) = 0`, by Shapiro's
-lemma and the vanishing of the homology and cohomology of the trivial group.
--/
-import Mathlib
-import Submission.Work.SSGRoute.H1Dual.Defs
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Shapiro
+import Submission.Work.SSGRoute.H1Dual.LES
 import Submission.Work.SSGRoute.H1Dual.coindRepIsoCoind
 import Submission.Work.SSGRoute.H1Dual.dualCoindRep
-import Submission.Work.SSGRoute.H1Dual.LES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

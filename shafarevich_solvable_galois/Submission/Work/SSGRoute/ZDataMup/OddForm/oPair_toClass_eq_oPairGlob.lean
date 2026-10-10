@@ -1,10 +1,13 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataMup.mupOddPairLin
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.ZDataMup.mupLocalForm
-import Submission.Work.SSGRoute.ZConstruction.localKummerLift
-import Submission.Work.SSGRoute.ZConstruction.kummerCharMonoidHom
-import Submission.Work.SSGRoute.ZDataMup.KummerSurjectivity.kummerCharZMod_surjective_levelK
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

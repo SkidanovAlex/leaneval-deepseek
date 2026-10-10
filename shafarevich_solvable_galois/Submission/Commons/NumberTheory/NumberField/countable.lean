@@ -1,5 +1,5 @@
-import Mathlib.Data.Rat.Encodable
 import Mathlib.LinearAlgebra.Countable
+import Mathlib.Data.Rat.Encodable
 import Mathlib.NumberTheory.NumberField.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

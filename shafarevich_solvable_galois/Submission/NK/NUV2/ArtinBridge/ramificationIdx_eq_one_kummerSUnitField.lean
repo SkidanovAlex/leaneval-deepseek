@@ -1,10 +1,21 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_unit_adicCompletionIntegers_of_mem_localUnits
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.le_inertiaDeg_of_pow_eq_adicCompletionIntegers
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.mem_adicCompletionIntegers_of_pow_eq_unit
 import Submission.NK.NUV2.ArtinBridge.KummerSUnitField
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerField_ramificationIdx_eq_one_of_unit
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
 import Submission.NK.NUV2.ArtinBridge.galRestrict_restrictNormalHom_mem_under
 import Submission.NK.NUV2.ArtinBridge.ramificationIdx_eq_one_of_algEquiv
+import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

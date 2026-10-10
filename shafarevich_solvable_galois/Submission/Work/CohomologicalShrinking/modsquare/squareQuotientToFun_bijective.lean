@@ -1,38 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `F(d)/F(d)^2 ≅ 𝔽_p[G]^d`: the canonical map is bijective
-
-This file proves `Work.CohomologicalShrinking.squareQuotientToFun_bijective`, the
-identification, used silently by Schmidt–Wingberg in the proof of Proposition 6 of
-arXiv:math/9809211, of the quotient `F(d)/F(d)^2 = F(d)/F(d)^p[F(d),F(d)]` of the free
-`G`-operator group of rank `d` with the free `𝔽_p[G]`-module `𝔽_p[G]^d`
-(realised as `Fin d × G → 𝔽_p` with the left regular action on the second factor).
-
-The canonical map `squareQuotientToFun p G d : F(d)/F(d)^2 → (Fin d × G → 𝔽_p)` sends the
-class `genMk p G d x` of the free generator `x_{i,g}` to the coordinate function at `(i,g)`
-(lemma `squareQuotientToFun_genMk`).  We exhibit an explicit two-sided inverse
-
-* `funToSquareQuotient p G d : (Fin d × G → 𝔽_p) →ₗ[𝔽_p] F(d)/F(d)^2`,
-  `f ↦ ∑ x, f x • genMk p G d x`,
-
-and show that the two composites are the identities
-(`squareQuotientToFun_funToSquareQuotient`, `funToSquareQuotient_squareQuotientToFun`).
-
-The second composite is the substantive one: writing an element of the quotient as the class
-`squareQuotientClass p G d w` of a word `w` in the free group (which is possible because the
-quotient map is surjective), one inducts on `w` using the multiplicativity of the class map
-(`squareQuotientClass_one`, `_mul`, `_inv`); no structure theory of free abelian groups is
-needed.
-
-## Main results
-
-* `Work.CohomologicalShrinking.modsquare.funToSquareQuotient` : the explicit inverse map.
-* `Work.CohomologicalShrinking.modsquare.squareQuotientToFun_bijective` : the target.
--/
-
-import Mathlib
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Module.Pi
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.SetTheory.ZFC.Class
+import Mathlib.Algebra.BigOperators.GroupWithZero.Action
 import Submission.Work.CohomologicalShrinking.ModSquare
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

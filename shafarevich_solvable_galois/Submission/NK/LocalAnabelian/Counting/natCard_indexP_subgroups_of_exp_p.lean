@@ -1,17 +1,12 @@
-/-
-# Counting subgroups of index `p` in a finite abelian group of exponent `p`
-
-If `A` is a finite abelian group with `a ^ p = 1` for every `a` and `p` is prime, then `A`
-is an elementary abelian `p`-group, i.e. a vector space over `F_p = ZMod p`, and the number
-of subgroups of index `p` is `(Nat.card A - 1) / (p - 1)`.
-
-The proof goes through the `F_p`-vector space structure.  Subgroups of index `p` of `A`
-correspond to codimension-one submodules of `Additive A`, which are exactly the kernels of
-the nonzero elements of the dual `Module.Dual (ZMod p) (Additive A)`.  A finite module over
-a finite field is equinumerous with its dual, so that dual has `Nat.card A` elements, hence
-`Nat.card A - 1` nonzero ones; each kernel arises from exactly `p - 1` of them.
--/
-import Mathlib
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.NK.LocalAnabelian.Counting.natCard_eq_mul_card_of_fiber_natCard
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

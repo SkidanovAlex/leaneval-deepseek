@@ -1,11 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E9c.TransportDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.localUnitsMap_exists
 import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

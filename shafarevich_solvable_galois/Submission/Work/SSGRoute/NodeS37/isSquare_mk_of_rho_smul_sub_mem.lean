@@ -1,15 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.H9.swChainConjDefs
-import Submission.Work.SSGRoute.ZDataTwo.ramificationIdx_levelPrime_eq_one_of_not_isRamifiedIn
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.NumberTheory.NumberField.Completion.card_decompositionSubgroup_under_mul_card_ker
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
 import Submission.Work.SSGRoute.NodeS37.isSquare_of_fixed_of_involution
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

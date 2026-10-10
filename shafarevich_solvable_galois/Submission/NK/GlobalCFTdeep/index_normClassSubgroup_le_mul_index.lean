@@ -1,8 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.NormGroup.globalCFT_normClassHom_trans
-import Submission.NK.GlobalCFT.NormFunctorial
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
 
 namespace NK.GlobalCFTdeep

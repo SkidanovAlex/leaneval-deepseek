@@ -1,38 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Instantiating `PadicGaloisInputs` for a `p`-adic completion
-
-This is the point of the `NK.LocalInputs` area: the sibling chapter
-`Submission/Work/LocalAnabelian/` proves its local invariance results *conditionally* on
-`NK.LocalAnabelian.PadicGaloisInputs p d δ κ K'`, and that structure was never instantiated.
-Here it is instantiated for a genuine `p`-adic field, namely
-
-  `κ = 𝔭.adicCompletion K`
-
-for a number field `K` and a finite prime `𝔭`, with `K'` a separable closure of `κ`, with
-
-* `d = localDegree K 𝔭 = [κ : ℚ_p]` (the absolute degree, computed as a `ℚ_p`-dimension), and
-* `δ = zetaIndicator p κ ∈ {0,1}`, the indicator of `ζ_p ∈ κ`.
-
-The hypotheses are the explicitly named classical inputs of `NK.LocalInputs.Inputs`:
-`LocalFieldInputs K 𝔭 p` (the residue characteristic `p` and the structure of the principal units
-`U¹ = 1 + 𝔪`) and `LocalGaloisInputs K 𝔭 K' p` (Ivanov's detection of the residue characteristic
-and the local-reciprocity computation of `G_κ^{ab}`).  Both are discharged classically; see the
-docstrings there.  Everything *else* is proved here, in particular the power-class count
-`|κˣ/(κˣ)^p| = p^{d+1+δ}` (from the principal units and the residue field), which is the
-"missing case `ζ_p ∉ κ`" of the commons.
-
-The main consequences (`Submission/NeukirchUchida/Reduction.lean`,
-`Submission/NeukirchUchida/LocalSubgroup.lean`):
-
-* `NK.LocalAnabelian.residueChar_and_degree_eq_of_padicGaloisInputs` now applies to genuine
-  `p`-adic fields of number fields (see `NK.LocalInputs.Global`);
-* conversely, the local invariants of a `p`-adic field of a number field are recovered from the
-  abstract group `Gal(κ̄/κ)`.
--/
-import Submission.NK.LocalInputs.Inputs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalInputs.PowerQuotient.natCard_KummerGroup_eq_pow_of_principalUnits
 import Submission.NK.LocalInputs.PowerQuotient.natCard_residueUnits_quot_pow_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

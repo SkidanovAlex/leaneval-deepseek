@@ -1,7 +1,12 @@
-import Mathlib.Analysis.Normed.Field.Lemmas
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Data.Int.Star
 import Mathlib.RingTheory.DedekindDomain.Factorization
 import Mathlib.RingTheory.RamificationInertia.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.Normed.Field.Lemmas
 import Submission.Commons.NumberTheory.NumberField.no_inertiaDeg_one_two_of_mod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

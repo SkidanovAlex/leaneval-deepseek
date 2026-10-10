@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 
 open IsDedekindDomain.HeightOneSpectrum

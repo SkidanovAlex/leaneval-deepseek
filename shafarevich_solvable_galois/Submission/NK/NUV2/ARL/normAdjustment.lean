@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.GlobalCFT.NormGroup
 import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_archimedean
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

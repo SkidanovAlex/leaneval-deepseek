@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
-import Submission.Work.SSGRoute.prop5.magnusLieDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
+import Submission.Work.SSGRoute.prop5.magnusLieDefs
+import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

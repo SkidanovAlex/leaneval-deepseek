@@ -1,50 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 5 of Schmidt–Wingberg, as a structured hypothesis
-
-Schmidt–Wingberg (arXiv:math/9809211, §2) prove
-
-> **Proposition 5.** For every `τ = (i,j)` the `𝔽_p`-vector space homomorphism
-> `φ_τ : (P/P^2)^{⊗j} → P_{(i,j)}/P_{(i,j)+1}`,
-> `x₁ ⊗ ⋯ ⊗ x_j ↦ ([x₁,[x₂,[…,x_j]]])^{p^{i-j}} mod P_{(i,j)+1}`
-> is well-defined and surjective.
-
-and observe that, for `P = F(d)` (the free `G`-operator group of rank `d`), the map is
-`G`-invariant and natural in `d`.
-
-Note that `Prop5Data` is *weaker* than Proposition 5 in one respect and *stronger* in none:
-it does not require `θ_τ(d)` to be the paper's specific commutator map
-`x₁ ⊗ ⋯ ⊗ x_j ↦ ([x₁,[x₂,[…,x_j]]])^{p^{i-j}}`, only that *some* `G`-equivariant surjection exists
-with the naturality of the family.  Every property that `Prop5Data` demands of `θ_τ` is a property
-that the paper's map has, so Proposition 5 implies `Prop5Data` (i.e. `Prop5Data` is the exact
-extraction of Proposition 5 used by the shrinking procedure).  The converse is not needed.
-
-The proof of Proposition 5 is the only place in §2 of the paper where the commutator calculus
-of **Lemma 4** — `(xy)^a ≡ x^a y^a (y,x)^{a(a-1)/2}` modulo higher `p`-central terms and
-`[x^a,y] ≡ [x,y]^a [[x,y],x]^{a(a-1)/2}`, together with the Hall–Petrescu type structure
-statement `F_i ∩ F^j = (F^j)^{p^{i-j}} … F^i` for a free `p`-group — is used.  That calculus is
-*not* formalized here (see `NOTES.md` for the precise statement of what is missing); instead the
-whole of Proposition 5 is isolated as the named hypothesis `Prop5Data` below, and Propositions 6
-and 7 are *derived* from it.
-
-Nothing else in this chapter depends on unproved input.
-
-## Main definitions
-
-* `Work.CohomologicalShrinking.Prop5Data` : the data of Proposition 5 for one fixed pair
-  `τ = (i,j)` — the maps `θ_τ(d)`, their `G`-equivariance, surjectivity and naturality in `d`.
-
-The case `τ = (1,1)` of the hypothesis is trivially satisfied: then
-`F(d)_{(1,1)}/F(d)_{(1,2)} = F(d)/F(d)^2`, so that `θ` may be taken to be the canonical
-identification `(F(d)/F(d)^2)^{⊗1} ≅ F(d)/F(d)^2`.  Hence `Prop5Data` is not a vacuous
-assumption.
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Defs
-import Submission.Work.CohomologicalShrinking.Refined
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.LinearAlgebra.TensorPower.Basic
 import Submission.Work.CohomologicalShrinking.Functorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

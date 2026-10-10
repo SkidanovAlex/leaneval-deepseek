@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.e9_caseB_descent
 import Submission.Work.SSGRoute.e9_witness_of_classGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

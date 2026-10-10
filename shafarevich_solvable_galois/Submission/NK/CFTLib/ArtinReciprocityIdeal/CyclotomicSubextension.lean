@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.AbelianReduction
-import Submission.NK.Chebotarev.exists_restrictNormalHom_eq_and_isFrobAtPrime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,5 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.Reduction
 import Submission.NK.GlobalCFTdeep.Herbrand.hZero_eq_hOne_of_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

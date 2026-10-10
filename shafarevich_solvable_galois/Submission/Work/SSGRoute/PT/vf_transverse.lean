@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.vf_aux
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.PT.exists_smul_ofFinite_finQW_eq
-import Submission.Work.SSGRoute.glue_fin_decomp_ex
-import Submission.Work.SSGRoute.exists_smul_eq_of_liesOver_under
-import Submission.Work.SSGRoute.E7cOmega.exists_transversal_containing
-import Submission.Work.SSGRoute.place_basics
+import Submission.Work.SSGRoute.Sha2Lib.yonedaPair_extToClasses_eq_zero_of_locTrivial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

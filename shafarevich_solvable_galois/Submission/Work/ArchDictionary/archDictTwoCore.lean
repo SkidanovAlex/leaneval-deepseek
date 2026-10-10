@@ -1,14 +1,24 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.Defs
-import Submission.Work.SSGRoute.ArchDictionary.placeLocalFieldComplex
-import Submission.Work.SSGRoute.E1aClean.archimedeanComparisonSES_proved
-import Submission.Work.SSGRoute.ArchDictionary_aux.psiEMap_sub_betaRaw_mem_range
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.coeff_two_coboundary_iff
-import Submission.Work.SSGRoute.PT.decompK_linked
+import Submission.Work.SSGRoute.ArchDictionary.placeLocalFieldComplex
+import Submission.Work.SSGRoute.ArchDictionary_aux.psiEMap_sub_betaRaw_mem_range
+import Submission.Work.SSGRoute.E1aClean.ArchCompare
 import Submission.Work.SSGRoute.ExtChain.exists_lift_of_extRes_comp_eq_zero
-import Submission.Work.SSGRoute.ExtChain.himgLeafCore
+import Submission.Work.SSGRoute.PT.decompK_linked
+import Submission.Work.SSGRoute.PT.freeCoverCompatKernel
 import Submission.Work.SSGRoute.PTdualControl.archimedeanLocalPush
-import Submission.Work.SSGRoute.E1aClean.ArchSeam
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

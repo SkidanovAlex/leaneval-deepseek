@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.Units.unitsQuotPrincipalUnitsEquiv
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Valuation.Discrete.Basic
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_units_quot_pow_maximalIdeal
+import Submission.NK.LocalReciprocityLubinTate.Units.unitsQuotPrincipalUnitsEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

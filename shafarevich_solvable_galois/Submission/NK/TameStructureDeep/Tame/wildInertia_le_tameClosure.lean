@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.LocalAnabelian.ResidueField.Defs
-import Submission.NK.Ramification.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.TameStructureDeep.Tame.dvr_comap_eq_adicCompletionIntegers
-import Submission.NK.TameStructureDeep.Tame.exists_valuationRing_henselian
-import Submission.NK.TameStructureDeep.Tame.inertiaFixedField_le_unramifiedClosure
 import Submission.NK.TameStructureDeep.Tame.fixedField_wildInertia_le_tameClosure_of_inertia_le_unramified
-import Submission.Commons.RingTheory.Valuation.eq_of_comap_eq_of_isAlgebraic
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.NK.TameStructureDeep.Tame.inertiaFixedField_le_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

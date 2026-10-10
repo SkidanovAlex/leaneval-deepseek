@@ -1,6 +1,13 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.PT.e1a_shift
 import Submission.Work.SSGRoute.PT.e1a_coverSES
 import Submission.Work.SSGRoute.PT.e1a_deltaH1_natural
 import Submission.Work.SSGRoute.PT.e1a_toCoindH0_natural

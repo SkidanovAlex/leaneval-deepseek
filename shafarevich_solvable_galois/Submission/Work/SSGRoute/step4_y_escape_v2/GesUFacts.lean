@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.finiteIndex_gesU
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
 import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.finiteIndex_gesU
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,13 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.ZDataGeneral
-import Submission.Work.SSGRoute.ZConstruction.AuxTwoOfRealisation
-import Submission.Work.SSGRoute.ZConstruction.OrthHsplitBridge
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.MupCoreKummer
 import Submission.Work.SSGRoute.ZConstruction.MupCoreTwo
-import Submission.Work.SSGRoute.NoKimag.OrthHsplitTwoNarrow
-import Submission.Work.SSGRoute.z_data_mup_core
-import Submission.Work.SSGRoute.shafarevich_z_data_two
+import Submission.Work.SSGRoute.ZConstruction.OrthHsplitBridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

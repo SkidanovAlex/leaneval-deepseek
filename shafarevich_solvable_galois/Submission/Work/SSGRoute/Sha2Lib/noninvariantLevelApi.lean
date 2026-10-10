@@ -1,10 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Work.SSGRoute.CycLevel.stabilizer_ofFinite_eq_decompositionSubgroup
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_mem_decompositionSubgroup_restrictNormalHom_eq
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Commons.NumberTheory.NumberField.Completion.card_decompositionSubgroup_under_mul_card_ker
+import Submission.Work.SSGRoute.CycLevel.stabilizer_ofFinite_eq_decompositionSubgroup
+import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Basic.Complex.Basic
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
 import Submission.Work.SSGRoute.HRec.exists_sq_eq_of_ne_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

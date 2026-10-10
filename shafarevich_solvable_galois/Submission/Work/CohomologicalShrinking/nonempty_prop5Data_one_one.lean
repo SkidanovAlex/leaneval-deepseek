@@ -1,32 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The case `τ = (1,1)` of Proposition 5 (`Prop5Data p G 1 1`)
-
-Schmidt–Wingberg isolate (Proposition 5 of arXiv:math/9809211) the canonical `G`-equivariant
-`𝔽_p`-linear surjection `θ_τ(d) : (F(d)/F(d)^2)^{⊗j} ↠ E(d,τ)` together with its naturality in
-the rank `d`; this data is the structure `Work.CohomologicalShrinking.Prop5Data p G i j` of
-`Prop5.lean`.  For `τ = (1,1)` the graded piece is `F(d)_{(1,1)}/F(d)_{(1,2)} = F(d)/F(d)^2`,
-so `θ` is the canonical identification `(F(d)/F(d)^2)^{⊗1} ≅ F(d)/F(d)^2` and the data is
-unconditional.  This file constructs it.
-
-The only subtlety is that `E p G d 1 1` is a subquotient of `F(d)` that is *propositionally*
-(not definitionally) the quotient `F(d)/F(d)^2 = squareQuotient p G d`; the canonical
-isomorphism `e := eLin p G d` between the two, its naturality along surjective operator
-homomorphisms, and its `G`-equivariance are established below, and `θ` is
-`e ∘ (canonical iso (⨂^1 M ≅ M))`, the latter being the tensor power of the identity factor.
-
-## Main result
-
-* `Work.CohomologicalShrinking.nonempty_prop5Data_one_one` : `Prop5Data p G 1 1` is inhabited.
--/
-
-import Mathlib
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.TensorPower.Basic
 import Submission.Work.CohomologicalShrinking.Prop5
-import Submission.Work.CohomologicalShrinking.Defs
-import Submission.Work.CohomologicalShrinking.ModSquare
-import Submission.Work.CohomologicalShrinking.Functorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,20 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
-import Submission.Work.SSGRoute.ZDataTwo.SignAdjustment
-import Submission.Work.SSGRoute.ZDataTwo.Mu2EscapeStep
-import Submission.Work.SSGRoute.ZDataTwo.firstElementTotallyPositive
-import Submission.Work.SSGRoute.H9.NarrowReadOff
-import Submission.Work.SSGRoute.H9.NarrowCorrection
-import Submission.Work.SSGRoute.H9.NarrowMu2
-import Submission.Work.SSGRoute.H9.NarrowFiniteIndex
-import Submission.Work.SSGRoute.step4_y_escape_v2.GesUFacts
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_prime_orthogonality
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesCorrectionFromPrime
-import Submission.Work.SSGRoute.ZConstruction.TwoFieldOrthogonality
-import Submission.Work.SSGRoute.ZDataTwo.mu2KummerFirstElement
-import Submission.Work.SSGRoute.EscapeCoreLib.memGesUOfIsFrobAtPrime
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSG8Escape.escape_prime_ssg8
+import Submission.Work.SSGRoute.ZConstruction.TwoFieldOrthogonality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

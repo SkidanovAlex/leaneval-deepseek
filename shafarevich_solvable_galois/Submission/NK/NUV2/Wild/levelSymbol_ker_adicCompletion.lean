@@ -1,13 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.RouteE.levelCompat
-import Submission.NK.NUV2.RouteE.levelH2
-import Submission.NK.NUV2.RouteF.transition
-import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_iff_of_isCyclic
-import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_of_mem_normGroup
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.LocalReciprocityLubinTate.GroupTheory.subgroup_eq_of_forall_map_eq_of_isCyclic_quotient
-import Submission.Commons.NumberTheory.NumberField.Completion.abelian_local_norm_index_at_base
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_finrank_of_abelian_local
-import Submission.Commons.NumberTheory.NumberField.Completion.finite_groupCohomology_two_units_of_solvable
+import Submission.NK.NUV2.RouteE.levelCompat
+import Submission.NK.NUV2.RouteF.transition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

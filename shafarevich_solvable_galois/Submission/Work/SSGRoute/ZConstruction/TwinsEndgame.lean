@@ -1,27 +1,18 @@
-/-
-# The twins endgame (session 30)
-
-The node `Work.SSGRoute.shafarevich_z_construction` needs the two `mu_p` cores.  The fleet has
-"twins" of both, proved / being proved in the lanes' own files:
-
-* `Work.SSGRoute.H9.sw_odd_kummer_core_proved`  (`H9/sw_odd_kummer_core_proved.lean`)  -- the odd-`p`
-  Kummer core, with the same statement as `Work.SSGRoute.sw_odd_kummer_core`
-  (`z_data_mup_odd_of_grunwald.lean`);
-* `Work.SSGRoute.H9.shafarevich_z_data_two_kummerCore_proved`
-  (`H9/shafarevich_z_data_two_kummerCore_proved.lean`) -- the `p = 2` Kummer core, with the same
-  statement as `Work.SSGRoute.shafarevich_z_data_two_kummerCore`.
-
-The lanes' own files still route through their own `sorry`-carrying copies, so *nothing is gained
-automatically*.  This module converts the twins into the two cores **in the node's own lane**, so
-that the node closes as soon as the twins are sorry-free -- no edit to any other lane's file.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.z_data_mup_odd_of_grunwald
-import Submission.Work.SSGRoute.shafarevich_z_data_two
-import Submission.Work.SSGRoute.H9.sw_odd_kummer_core_proved
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.H9.shafarevich_z_data_two_kummerCore_proved
-import Submission.Work.SSGRoute.ZConstruction.ZDataReduction
+import Submission.Work.SSGRoute.H9.sw_odd_kummer_core_proved
+import Submission.Work.SSGRoute.z_data_mup_odd_of_grunwald
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

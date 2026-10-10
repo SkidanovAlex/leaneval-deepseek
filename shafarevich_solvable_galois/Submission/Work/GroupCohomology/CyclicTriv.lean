@@ -1,28 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The transgression for cyclic groups with trivial coefficients
-
-For `G = Multiplicative (ZMod n)` and coefficients `A` with the trivial action (`TrivMod G A`),
-we set up the transgression
-
-`trivT : C²(G, A) →+ A`,   `trivT c = ∑_{x : ZMod n} c (ofAdd x, s)`,
-
-where `s = cycGen n = ofAdd 1` is the standard generator of `G`.
-
-The two structural facts proved here are
-
-* `trivT_d1 : trivT (d¹ f) = n • f s` (so `trivT` kills `B²` modulo `n • A`), whence the induced
-  map `trivH2Map : H²(ℤ/n, A) →+ A/nA` (`trivH2Map`), the map that is proved to be an
-  isomorphism in `Submission/Work/GroupCohomology/H2_cyclic_trivial.lean`;
-* `trivT_eq_sum_range` and `sum_univ_zmod_eq_sum_range`, reindexing `∑_{x : ZMod n}` as a sum over
-  `Finset.range n` (this is what makes the cocycle recursion of the companion file usable).
-
-* `genSlice c x = c (x, s)`: the "generator slice" of a `2`-cochain; a `2`-cocycle with trivial
-  coefficients is determined by its generator slice (`Work.GroupCohomology.eq_of_genSlice_eq`).
--/
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.Tactic.Abel
+import Mathlib.Data.ZMod.Basic
 import Submission.Work.GroupCohomology.Cyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

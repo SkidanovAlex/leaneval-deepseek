@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.NUV2.RouteE.levelSymbol
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.RouteE.cupNaturality
-import Submission.NK.NUV2.RouteC.LevelInf
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDRefs.levelK_finite
-import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.PTembedding.lcHoms_localUnits
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_mem
 import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_notMem
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Work.SSGRoute.ZConstruction.LocalCountDeps
+import Submission.Work.SSGRoute.LTDRefs.levelK_finite
+import Submission.Work.SSGRoute.PTembedding.lcHoms_localUnits
 import Submission.Work.SSGRoute.ZConstruction.even_localDegree_levelK_residueChar
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.Shrinking.PCentral
+import Mathlib.GroupTheory.Nilpotent
 import Submission.Work.ProP.lowerCentralSeries_le_pCentralSeries
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleDefs
-import Submission.Work.SSGRoute.ZDataMup.CycleCongr
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.ZDataMup.CycleAuxField
 import Submission.Work.SSGRoute.ZDataMup.CycleIdele
 import Submission.Work.SSGRoute.ZDataMup.cyclotomicKernelLeCycle

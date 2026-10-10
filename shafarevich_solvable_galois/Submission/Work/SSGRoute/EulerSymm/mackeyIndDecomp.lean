@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.EulerSymm.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.EulerSymm.indCyclicSubModel
 import Submission.Work.SSGRoute.artinInduced
-import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

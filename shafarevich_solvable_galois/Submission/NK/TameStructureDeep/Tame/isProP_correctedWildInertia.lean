@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.WildInertiaAux
-import Submission.NK.RamificationAdic.exists_valuationRingData
-import Submission.NK.TameStructureDeep.Tame.isProP_fixingSubgroup_of_relIndex_prime_pow
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Tame.relIndex_wildInertia_prime_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

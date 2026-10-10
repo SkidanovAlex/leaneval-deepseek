@@ -1,11 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
+import Submission.Work.E7cOmega.functional_of_ext_nonzero
 import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_hom
 import Submission.Work.SSGRoute.Sha2Lib.ext_comp_mk0_ne_zero_of_section
-import Submission.Work.SSGRoute.Sha2Lib.detectorInvariantCaseExtZ
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
-import Submission.Work.E7cOmega.functional_of_ext_nonzero
-import Submission.Work.E7cOmega.ext_one_unitRep_iso_divRep
 import Submission.Work.Sha2Lib.rankOneLevelCocycleRoute
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
 import Submission.Work.SSGRoute.dvd_discr_of_isRamifiedIn
+import Submission.Work.SSGRoute.placePrime_eq_of_val_lt_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

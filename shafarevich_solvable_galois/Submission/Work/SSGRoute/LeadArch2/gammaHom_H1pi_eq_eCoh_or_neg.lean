@@ -1,11 +1,11 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
+import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
 import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.ExtChain.FreeCover
 import Submission.Work.SSGRoute.ExtH1Iso
 import Submission.Work.SSGRoute.augSES_shortExact
-import Submission.Work.SSGRoute.E0bDefs
 import Submission.Work.SSGRoute.eCoh_delta
-import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

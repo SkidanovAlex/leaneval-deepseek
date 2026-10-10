@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.primeToPart
-import Submission.NK.TameStructureDeep.Tame.CorrectedInterface
-import Submission.NK.TameStructureDeep.Tame.powSpanCyclic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.TameStructureDeep.Support.isProCyclic_quotientImage_iff
 import Submission.NK.TameStructureDeep.Tame.exists_root_primeToPart
 import Submission.NK.TameStructureDeep.Tame.isProCyclic_quotient_of_forall_isCyclic_powSpan
-import Submission.NK.TameStructureDeep.Support.isProCyclic_quotientImage_iff
-import Submission.NK.LocalTame.All
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
+import Submission.NK.TameStructureDeep.Tame.powSpanCyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

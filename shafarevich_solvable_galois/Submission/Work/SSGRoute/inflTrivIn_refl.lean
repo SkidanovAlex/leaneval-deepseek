@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.mapExactFunctor_id
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

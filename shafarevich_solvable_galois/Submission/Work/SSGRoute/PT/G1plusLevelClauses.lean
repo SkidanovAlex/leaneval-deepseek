@@ -1,40 +1,17 @@
-/-
-# `G1⁺`'s finite-half clauses, at a *fixed* level, from the proved local inputs
-
-The finite-place half of `Work.SSGRoute.PT.canonical_localPairing_reciprocity_converse` (`G1⁺`) is
-
-  `pair M (decomp k A) a b = χ L hKL (ι_w (levelPair f ι (βl a) [b]_L))`
-
-at a level `L` chosen by `Classical.choose` (the choice depends on `b` only, never on `a`), and its
-clauses (1)–(4) (`H1Pair.PairClauses`) are statements about `PT.finAtValue` — hence about
-`PT.finAtLevel` at the chosen level.
-
-This file proves the parts of the clause bundle that are **level-explicit**: they hold at *every*
-fixed admissible level, with the given `b₀`/`hb₀` factorisation data.  Clause (1) is *already
-level-free* because the level chosen by `PT.finAtValue` depends only on `b`: for
-`a`, `a'`, `a + a'` the same `Classical.choose` is used, so the identity transfers verbatim.  The
-other clauses additionally need level-independence (`CokerPT.finAtLevelFix_eq_of_le`; the PT lane's
-`PT.finAtLevel_eq_of_le` is *false* as stated — `χ` must satisfy the inflation coherence of S1).
-
-Proved here:
-
-* `finAtLevel_add_left`  — clause (1): additivity in the first variable;
-* `finAtLevel_add_right` — clause (2): additivity in the second variable;
-* `finAtLevel_coboundary_left`  — clause (3): vanishing when the first variable is a coboundary;
-* `finAtLevel_coboundary_right` — clause (3): vanishing when the second variable is a coboundary.
-
-The `p`-torsion bookkeeping needed to apply `χ`'s additivity on `p`-torsion (S1) is discharged by
-`iota_ptorsion` (`p • ι_w z = 0` for `p`-torsion `z`) together with the `nsmul`-compatibility of the
-local dictionary `βl` (`local_ext_h1_bridge`): the cochain is pointwise `p`-torsion because `M` and
-the coefficients `M^∨(1) = DualMod p (M ⊗ T)` are `ZMod p`-modules.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PT.g1plus_finHalf
-import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.PT.levelPair_functoriality
-import Submission.Work.SSGRoute.local_ext_h1_bridge
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.CokerPT.LevelClass
 
 set_option maxHeartbeats 2000000

@@ -1,4 +1,11 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.Int.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.LocalAnabelian.Kummer.Quot
 import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_of_div_mem_powSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

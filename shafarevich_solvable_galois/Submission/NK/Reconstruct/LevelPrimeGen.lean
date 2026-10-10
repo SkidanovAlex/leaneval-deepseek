@@ -1,7 +1,6 @@
-import Submission.NK.ReconstructField.LevelPrime
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Submission.NK.ReconstructField.primeBelowNat_levelPrimeMap
-import Submission.NK.ReconstructField.exists_finitePlace_of_prime_level
-import Submission.NK.ReconstructField.primeOfLevel_placeMap_eq_of_comap_eq
 import Submission.NK.ReconstructField.primeOfLevel_placeMap_eq_of_comap_eq_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

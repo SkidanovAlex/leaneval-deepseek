@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.HilbertSymbol.Basic
+import Mathlib.Analysis.Normed.Ring.Lemmas
 import Submission.Work.HilbertSymbol.Places
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

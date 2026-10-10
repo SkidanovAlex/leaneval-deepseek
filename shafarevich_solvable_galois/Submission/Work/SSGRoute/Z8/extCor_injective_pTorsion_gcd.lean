@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.ext_corestriction
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.extCor_two_injective_pTorsion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

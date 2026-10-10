@@ -1,25 +1,6 @@
-/-
-# The comparison between the bar resolution of `S` and the restriction of the bar resolution of `G`
-
-This file supplies, over an arbitrary commutative ring `k`, the chain-level machinery comparing
-the bar resolution of `k` as a trivial `k[S]`-representation with the restriction to `S` of the
-bar resolution of `k` as a trivial `k[G]`-representation, for a subgroup `S ≤ G`.
-
-It is the `k`-general counterpart of the `ℤ`-case developed in
-`Commons.RepresentationTheory.GroupCohomology.unit_coindIso_eq_resNatTrans`, where this machinery
-is used to identify the unit of the restriction–coind adjunction followed by Shapiro's isomorphism
-with the restriction map on group cohomology.
-
-Main definitions here:
-
-* `barResMap k G S n` : the `n`-th component of the natural chain map
-  `barComplex k S ⟶ Res(barComplex k G)`;
-* `barResChain k G S` : the induced chain map of projective resolutions;
-* `psiMap k G S A` : the induced chain map `Hom(Res(barComplex k G), A) ⟶ Hom(barComplex k S, A)`.
-
-The computations below are direct transcriptions of the `ℤ`-case.
--/
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 import Submission.Commons.RepresentationTheory.GroupCohomology.barComplex_res_comp_pi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

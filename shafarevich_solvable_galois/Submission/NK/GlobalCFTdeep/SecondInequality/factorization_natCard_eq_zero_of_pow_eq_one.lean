@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.GroupTheory.Perm.Cycle.Type
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,16 +1,5 @@
-/-
-Work of the Neukirch–Uchida team.
-
-# Elementary ideal-theoretic helpers of the transfer
-
-* `Frac_eq_prod_primeUnit` — a fractional ideal is the product of its prime factors, to the powers
-  given by `FractionalIdeal.count`;
-* `pow_finrank_mem_normRay` — the `[L:K]`-th power of a fractional ideal of `K` coprime to `(m)`
-  lies in the norm ray `𝔑_{L/K}(m)` (it is the norm of the base change of `A` to `L`).
--/
-import Mathlib
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

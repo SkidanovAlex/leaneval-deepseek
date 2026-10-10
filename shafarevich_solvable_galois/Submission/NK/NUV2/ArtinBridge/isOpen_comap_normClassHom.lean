@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.Norm.globalCFT_localNorm_mem_localUnits
 import Submission.NK.NUV2.ArtinBridge.continuous_localNormFinite
 import Submission.NK.NUV2.ArtinBridge.continuous_localNormInfinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

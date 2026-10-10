@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.adicCompletionIntegers_maximalIdeal_eq_map
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
 import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

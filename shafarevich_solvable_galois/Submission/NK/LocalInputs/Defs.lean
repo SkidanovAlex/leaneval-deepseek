@@ -1,38 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.LocalInputs`: the vocabulary of the local arithmetic inputs
-
-This file fixes the vocabulary in which the local arithmetic inputs of the
-Neukirch–Uchida local-invariance chapter are stated.
-
-Throughout, `K` is a number field, `𝔭` a finite prime of `K`, and
-
-  `κ = 𝔭.adicCompletion K`
-
-the corresponding `p`-adic field (with `p` the residue characteristic of `𝔭`).  The
-definitions here are
-
-* `primeBelow K 𝔭` — the rational prime `𝔭 ∩ ℤ`, as a height-one prime of `𝓞 ℚ`;
-* `localDegree K 𝔭` — the absolute degree `[κ : ℚ_p]` of the completion, computed as the
-  `ℚ_p`-dimension of `κ` (i.e. `Module.finrank` over the `p`-adic field `(primeBelow K 𝔭).adicCompletion ℚ`,
-  with the algebra structure induced by `adicCompletionMap`);
-* `principalUnits K 𝔭` — the group `U¹ = 1 + 𝔪` of principal units of `κ`, as the kernel of the
-  residue map on `𝒪_κˣ`;
-* `zetaIndicator p κ` — the indicator `δ ∈ {0,1}` of "`ζ_p ∈ κ`".
-
-The definitions are chosen so that the *statements* of the arithmetic inputs (see
-`NK.LocalInputs.Inputs`) are unconditional propositions about these objects, with no
-`p`-adic field structure theory assumed anywhere.
--/
-import Mathlib
-import Submission.NK.LocalAnabelian.All
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.mem_ker_units_residue_adicCompletion_iff
-import Submission.Commons.NumberTheory.NumberField.Completion.surjective_units_residue_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_powerQuotient_adicCompletion_rat_units
-import Submission.Commons.NumberTheory.NumberField.residueCard_adicCompletion_eq_absNorm
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Submission.NK.LocalAnabelian.Counting.natCard_indexP_subgroups_of_exp_p
+import Submission.NK.LocalAnabelian.Kummer.kummerCorrespondence
+import Submission.NK.LocalAnabelian.PadicField.FrattiniRank
+import Submission.NK.LocalAnabelian.PadicField.RatAdic
+import Submission.NK.LocalAnabelian.ResidueField.Recovery
+import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

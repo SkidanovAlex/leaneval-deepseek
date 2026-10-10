@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.shapiro_H2_lift_defs
-import Submission.Work.SSGRoute.PT.isOpen_setOf_inv_smul_eq
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.continuous_shapiroCoordinates_subtype
+import Submission.Work.SSGRoute.PT.shapiro_H2_lift_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

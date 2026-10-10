@@ -1,11 +1,12 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
--/
-import Submission.NK.ChebotarevGeneral.Defs
-import Submission.NK.Chebotarev.IsFrobAtConj
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
+import Submission.NK.ChebotarevGeneral.Defs
 import Submission.NK.WeakNU.primeCountAbove_under_eq_primesOverRat
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.phiUnrU1
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.LinearAlgebra.TensorProduct.Defs
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.decompFieldHenselEmb_units_mem_localUnits_iff
 import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.henselUnit_pow_mul_localUnits_of_inertiaFixedRoot
-import Submission.Work.SSGRoute.E1aClean.transferNatCoeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

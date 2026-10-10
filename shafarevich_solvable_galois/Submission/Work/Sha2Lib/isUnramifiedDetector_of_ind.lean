@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_coeff_surjection
 import Submission.Work.Sha2Lib.ext_comp_mk0_ne_zero_of_surjective
 import Submission.Work.Sha2Lib.indRes_counit_surjective

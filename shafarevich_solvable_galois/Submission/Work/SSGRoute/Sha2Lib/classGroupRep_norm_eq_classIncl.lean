@@ -1,25 +1,9 @@
-/-
-The statement of this lemma mentions only `classesK`/`classIncl` (`SSGRoute.PTExt`, from
-`Submission.Work.SSGRoute.PTDefs`) and `NK.GlobalCFT.IdeleClassGroup.normClassHom`, so the original
-`import Submission.Work.SSGRoute.Sha2Lib.Sha2Shim` (whose closure is a large part of the
-`SSGRoute` development) is not needed.  The two ingredients used are
-
-* `Work.SSGRoute.classIncl_isCanonical` — the canonical inclusion `C_k → C_F` is induced by an idèle
-  inclusion `φ : 𝕀_k →* 𝕀_F` whose `w`-components are the local embeddings;
-* `NK.GlobalCFT.globalCFT_normClassHom_eq_prod_smul` (`Submission.NK.GlobalCFT.H0Computation`) — the
-  `H⁰`-computation: the global norm followed by the inclusion is the product of the Galois
-  conjugates.
-
-The mathematical content is the identity `∏_{σ ∈ Gal(F/k)} σ·q = incl(N_{F/k} q)` in `C_F`.  The
-left-hand side is the norm endomorphism `Rep.norm` of the representation `C_F`, which is the sum
-`∑_σ ρ(σ)` of the Galois action; by `NK.GlobalCFT.globalCFT_normClassHom_eq_prod_smul` the product
-of the conjugates is `ψ(N_{F/k} q)` for the group homomorphism `ψ : C_k →* C_F` induced by the idèle
-inclusion `φ`, and `ψ` agrees with `classIncl k k F` on the image of `𝕀_k` (which is all of `C_k`),
-giving the right-hand side of the statement.
--/
-import Mathlib
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.SSGRoute.classIncl_isCanonical
-import Submission.NK.GlobalCFT.H0Computation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

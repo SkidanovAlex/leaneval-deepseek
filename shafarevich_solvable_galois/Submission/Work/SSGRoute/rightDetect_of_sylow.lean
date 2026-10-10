@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.rdos_levelPair_extCor_comap
-import Submission.Work.SSGRoute.extCor_two_injective_pTorsion
-import Submission.Work.SSGRoute.sylow_descend
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.e6_util
+import Submission.Work.SSGRoute.extCor_two_injective_pTorsion
+import Submission.Work.SSGRoute.rdos_levelPair_extCor_comap
+import Submission.Work.SSGRoute.sylow_descend
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

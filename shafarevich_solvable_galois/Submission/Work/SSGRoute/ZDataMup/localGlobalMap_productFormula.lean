@@ -1,16 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.CFTLib.ArtinReciprocityIdealProved
 import Submission.Work.SSGRoute.ZDataMup.CycleArl
-import Submission.Work.SSGRoute.ZDataMup.CycleAuxField
 import Submission.Work.SSGRoute.ZDataMup.CycleBaseChangeExists
-import Submission.Work.SSGRoute.ZDataMup.cruxLang_cycleIndexInequality
 import Submission.Work.SSGRoute.ZDataMup.CycleConductorDropOfIndex
+import Submission.Work.SSGRoute.ZDataMup.cruxLang_cycleIndexInequality
 import Submission.Work.SSGRoute.ZDataMup.cycleKernelLe_of_cycle
 import Submission.Work.SSGRoute.ZDataMup.isAdmissible_of_artinKillsPrincipal
-import Submission.NK.CFTLib.exists_congruenceSubgroup_le_normImage
-import Submission.NK.CFTLib.ArtinReciprocityIdealProved
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

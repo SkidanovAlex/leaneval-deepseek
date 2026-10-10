@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_restrictNormalHom_eq_abelian
-import Submission.Work.SSGRoute.ZConstruction.hLocalFactor_restrictNormalHom_eq
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.EscapeCoreLib.isGalois_comap
 import Submission.Work.SSGRoute.N2v2.isUnramifiedIn_of_algEquiv
 import Submission.Work.SSGRoute.Sha2Lib.ideleClassEquiv_refl
+import Submission.Work.SSGRoute.ZConstruction.hLocalFactor_restrictNormalHom_eq
 import Submission.Work.SSGRoute.ZDataMup.normImage_topIntermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

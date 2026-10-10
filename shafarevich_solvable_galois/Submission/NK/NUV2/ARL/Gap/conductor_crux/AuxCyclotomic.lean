@@ -1,14 +1,5 @@
-/-
-# Two cyclotomic compositum lemmas, local copies
-
-The lemmas proved here (`Aux_adjoin_zeta_eq_top`,
-`Aux_sup_restrictScalars_adjoin_zeta_eq_top`) are the two facts about
-`Ω = CyclotomicField M L = L(ζ_M)` needed by `AuxSetup`.  They are stated and
-proved here (with an `Aux` prefix) so that the present development does not
-depend on `Submission.NK.CFTLib.ARL.auxiliary_field_single`, which is being
-modified concurrently.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

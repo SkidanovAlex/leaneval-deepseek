@@ -1,8 +1,8 @@
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalReciprocityLubinTate.Reciprocity
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_lubinTateTower_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Unramified.hondaReciprocity
 import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_isUniformizer
+import Submission.NK.LocalReciprocityLubinTate.Unramified.hondaReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

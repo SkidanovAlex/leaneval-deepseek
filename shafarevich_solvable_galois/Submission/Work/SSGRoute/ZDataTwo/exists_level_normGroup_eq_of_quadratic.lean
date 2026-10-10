@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
-import Submission.NK.LocalReciprocity.NormGroup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.NUV2.LC.quadraticLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,50 +1,6 @@
-/-
-# The `𝒪[F]`-action on the Lubin–Tate torsion points `Λ_n`
-
-Milne, *Classical Field Theory*, §I.3: for `a ∈ 𝒪[F]` and a `π^n`-torsion point `x` of the
-Lubin–Tate group of `π`, the point `a · x = [a](x)` is again `π^n`-torsion.  This is what makes
-`Λ_n` an `𝒪[F]`-module — with the Lubin–Tate group law as addition and the `a`-multiplication
-series `[a]` as scalar multiplication — and it is the input to the isomorphism
-`Λ_n ≅ (𝒪[F]/π^n)^+` of Milne's Theorem I.3.1.
-
-This file proves `NK.LocalReciprocityLubinTate.Eval.smulDiv_mem`: for `x ∈ Λ_n` and `a ∈ 𝒪[F]`,
-the point `a · x = evMap x ([a]_n)` of `Eval/TorsionAction.lean` again lies in `Λ_n`, i.e.
-`f^{(n)}(a · x) = 0` for the standard series `f(T) = πT + T^q`.
-
-## The proof
-
-Everything happens in the finite ring `T_n = 𝒪[F][T]/(f^{(n)}(T))` of `Eval/TorsionRing.lean`.
-Write `E = evalTau : 𝒪[F]⟦X⟧ →+* T_n` for Milne's evaluation at `τ` and
-
-`Φ_k = M.action (π^k) = [π^k] ∈ 𝒪[F]⟦X⟧`
-
-for the `π^k`-multiplication series of the Lubin–Tate module.  The core statement is the
-**bridge**
-
-  `f^{(k)}(E ψ) = E (ψ ∘ Φ_k)`     (`ψ` of zero constant coefficient),
-
-identifying the polynomial iterate `f^{(k)}` of `f = πX + X^q` with the substituted multiplication
-series `Φ_k`.  It is proved by induction on `k`: the successor step is the compatibility of
-substitution with the polynomial composition `f^{(k+1)} = f^{(k)} ∘ f` (`LTpolyIter_succ`,
-`Polynomial.aeval_comp`) and the equation `subst1 ψ [π] = π·ψ + ψ^q` in which the hypothesis
-`M.toLaw.piEndo = πX + X^q` is used.  The induction is closed by Milne's substitution rule
-
-  `E (ψ ∘ φ) = eval₂ ![E ψ] φ`     (`MvPowerSeries.eval₂_subst`),
-
-i.e. `evalTau_subst'` below.
-
-Two inputs complete the argument:
-
-* `E Φ_n = f^{(n)}(τ) = 0`, i.e. `τ` is a `π^n`-torsion point (`LTtorsionRing.tau_spec`);
-* the `𝒪[F]`-module axiom `[a] ∘ [π^n] = [π^n] ∘ [a] = [a π^n]` (`M.action_mul`) together with the
-  classical computation rule for evaluating a power series at `0`: a series of zero constant
-  coefficient takes the value `0` at `0` (`eval₂_zero_eq`).
-
-Finally, `evMap x` transports the identity from `T_n` to the algebraic closure, which is the
-naturality `Polynomial.hom_eval₂` of polynomial evaluation under a ring homomorphism
-(`aeval_evMap`).
--/
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.ModuleAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

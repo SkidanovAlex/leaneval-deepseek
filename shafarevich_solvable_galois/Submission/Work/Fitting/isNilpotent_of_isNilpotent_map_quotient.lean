@@ -1,31 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Nilpotency of a normal subgroup modulo its Frattini-containing part
-
-Let `G` be a finite group, `M ◁ G` a normal subgroup contained in the Frattini subgroup
-`Φ(G) = frattini G`, and let `H ◁ G` be a normal subgroup with `M ≤ H`.  If `H/M` is nilpotent
-then `H` is nilpotent.
-
-This is the group-theoretic input behind `F(G/M) = F(G)M/M` for `M ≤ Φ(G)`
-(`Work.Fitting.fitting_map_quotient`).  The proof is the classical Frattini argument:
-
-* if `P ≤ H` is a Sylow `p`-subgroup of `H`, then `PM ◁ H` because `PM/M` is the (unique) Sylow
-  `p`-subgroup of the nilpotent group `H/M`;
-* the Frattini argument inside `H` gives `H = PM · N_H(P)`, whence `H ≤ M · N_G(P)`;
-* the Frattini argument inside `G` (for the normal subgroup `H`) gives `G = H · N_G(P)`, so
-  `G = M · N_G(P)`;
-* since `M ≤ Φ(G)` the non-generating property of the Frattini subgroup yields `N_G(P) = G`,
-  i.e. every Sylow subgroup of `H` is normal, so `H` is nilpotent.
-
-## Main results
-
-* `subgroupOf_map_subtype_eq` : an auxiliary isomorphism bookkeeping lemma;
-* `sylow_sup_subgroupOf_normal` : `PM ◁ H` (the first bullet);
-* `sylow_map_normal_of_le_frattini` : the Frattini/non-generating step;
-* `isNilpotent_of_isNilpotent_map_quotient` : the target statement.
--/
-import Mathlib
+import Mathlib.GroupTheory.Frattini
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
 
 set_option maxHeartbeats 2000000
 set_option linter.style.haveILetI false

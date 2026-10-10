@@ -1,22 +1,4 @@
-/-
-Work of the Neukirch–Uchida team: the Kummer method (`NK.UchidaKummer`).
-
-# A local element which is not an `ℓ`-th power
-
-For a number field `K`, a prime `ℓ` and a finite prime `𝔮` of `K`, the unit group of the completion
-`K_𝔮` contains an element which is not an `ℓ`-th power.
-
-Note that `(𝔮.adicCompletion K)ˣ` is the unit group of the *field* `K_𝔮`, i.e. the group of all
-nonzero elements of the completion; the statement is therefore about the multiplicative group
-`K_𝔮^× = 𝔮^ℤ × U¹ × μ`.  The witness is simply a uniformizer: if `π` has valuation `exp (-1)`,
-then `v (x ^ ℓ) = v x ^ ℓ` cannot equal `exp (-1)`, since the value group of the completion is
-`ℤᵐ⁰ = WithZero (Multiplicative ℤ)` and `-1` is not divisible by `ℓ ≥ 2`.
-
-This is the local input recorded in `NK.UchidaKummer.HasKummerMachinery` ("a local unit at each
-prime of `E` which is not an `ℓ`-th power"), used to separate the primes in the differentiation
-lemma of §5 of the paper.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.UchidaKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

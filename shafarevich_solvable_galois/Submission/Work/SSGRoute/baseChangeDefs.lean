@@ -1,15 +1,15 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.MapBijective
 import Submission.Work.SSGRoute.E7bDefs
 import Submission.Work.SSGRoute.decompK_restrict_exists
 import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.ext_res_mulEquiv
 import Submission.Work.SSGRoute.nonempty_extH_addEquiv_mulEquiv
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 
 open SSGRoute.PTExt CategoryTheory
@@ -21,6 +21,13 @@ set_option autoImplicit false
 set_option linter.unusedSectionVars false
 
 namespace Work.SSGRoute.Y3Test
+
+/-- `AddEquiv.ofBijective` with bundled `AddCommGroup` instances (build-speed: at `Abelian.Ext` the
+unbundled `Add` instances were unified through two projection paths of
+`Abelian.Ext.instAddCommGroup`). -/
+private noncomputable def bcdAddEquivOfBij {M N : Type} [AddCommGroup M] [AddCommGroup N]
+    (f : M →+ N) (hf : Function.Bijective f) : M ≃+ N :=
+  AddEquiv.ofBijective f hf
 
 variable (k k' K : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] [Field K]
   [NumberField K] [Algebra k K] [Algebra k' K] [Algebra k k'] [IsScalarTower k k' K]
@@ -311,7 +318,7 @@ noncomputable def eEdef (w : NK.GlobalCFT.Place K) (M : Rep Coeff (K ≃ₐ[k] K
         (localUnitsK (k := k') w) 1 := by
   haveI : (Rep.resFunctor (baseChangeMulEquiv k k' K w).toMonoidHom).IsEquivalence :=
     Work.SSGRoute.resFunctor_isEquivalence_toMonoidHom _
-  exact AddEquiv.ofBijective
+  exact bcdAddEquivOfBij
     ((Rep.resFunctor (baseChangeMulEquiv k k' K w).toMonoidHom).mapExtAddHom
       (Rep.res (baseChangeSubgroup k k' K w).subtype (Rep.res (decompK (k := k) w).subtype M))
       (Rep.res (baseChangeSubgroup k k' K w).subtype (localUnitsK (k := k) w)) 1)

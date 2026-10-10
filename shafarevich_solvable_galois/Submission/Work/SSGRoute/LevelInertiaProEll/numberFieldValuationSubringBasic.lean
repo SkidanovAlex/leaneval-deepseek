@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Submission.Work.SSGRoute.finite_card_residueField_comap_bot
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

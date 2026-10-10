@@ -1,16 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
-import Submission.Work.SSGRoute.local_tate_duality_finite
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Work.SSGRoute.InertiaArithImports
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
 import Submission.Work.SSGRoute.finite_homs_local_inertia
-import Submission.Work.SSGRoute.mem_localInertia_iff_isInertia
-import Submission.Work.SSGRoute.isUnit_natCast_of_not_dvd_resCharAt
-import Submission.Work.SSGRoute.isUnit_natCast_iff_not_dvd_resCharAt
 import Submission.Work.SSGRoute.isClosed_inertiaSub_kernel
+import Submission.Work.SSGRoute.isUnit_natCast_iff_not_dvd_resCharAt
+import Submission.Work.SSGRoute.isUnit_natCast_of_not_dvd_resCharAt
+import Submission.Work.SSGRoute.local_tate_duality_finite
+import Submission.Work.SSGRoute.mem_localInertia_iff_isInertia
 
 /-!
 # Finiteness of the local `H¹` of the inertia subgroup (residue characteristic ≠ `p`)

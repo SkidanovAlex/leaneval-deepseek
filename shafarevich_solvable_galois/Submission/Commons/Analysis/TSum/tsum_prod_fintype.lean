@@ -1,12 +1,7 @@
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 
 set_option maxHeartbeats 1600000
 
@@ -40,10 +35,12 @@ private lemma summable_pi_prod_of_nonneg (n : ℕ) (u : Fin n → ℕ → ℝ)
   | succ n ih =>
     have htail : Summable (fun τ : Fin n → ℕ => ∏ i, u i.succ (τ i)) :=
       ih (fun i => u i.succ) (fun i m => h0 i.succ m) (fun i => h i.succ)
-    have hmain : Summable
-        (fun p : ℕ × (Fin n → ℕ) => u 0 p.1 * ∏ i, u i.succ (p.2 i)) :=
-      Summable.mul_of_nonneg (h 0) htail (fun m => h0 0 m)
+    -- elaborated without the expected type: propagating it made `Summable.mul_of_nonneg` try (and
+    -- fail) to unfold `Summable`/`HasSum` to filters first (~200 CPU-s)
+    have hmain0 := Summable.mul_of_nonneg (h 0) htail (fun m => h0 0 m)
         (fun τ => Finset.prod_nonneg (fun i _ => h0 i.succ (τ i)))
+    have hmain : Summable
+        (fun p : ℕ × (Fin n → ℕ) => u 0 p.1 * ∏ i, u i.succ (p.2 i)) := hmain0
     have hcongr : ((fun σ : Fin (n + 1) → ℕ => ∏ j, u j (σ j)) ∘ (finSuccPiEquiv n).symm)
         = fun p : ℕ × (Fin n → ℕ) => u 0 p.1 * ∏ i, u i.succ (p.2 i) := by
       funext p

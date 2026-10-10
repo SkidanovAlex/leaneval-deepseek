@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
-import Submission.Commons.NumberTheory.NumberField.differentIdeal_eq_top_of_ramificationIdx
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

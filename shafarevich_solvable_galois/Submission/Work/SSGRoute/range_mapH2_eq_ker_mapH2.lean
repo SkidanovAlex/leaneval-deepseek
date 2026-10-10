@@ -1,7 +1,11 @@
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.deltaH2_forward
-import Submission.Work.AbsoluteKummer.SES.range_mapH1_eq_ker_mapH1
-import Submission.Work.GroupCohomology.range_mapH2_eq_ker_mapH2
+import Submission.Work.GroupCohomology.H2pi_eq_iff
+import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

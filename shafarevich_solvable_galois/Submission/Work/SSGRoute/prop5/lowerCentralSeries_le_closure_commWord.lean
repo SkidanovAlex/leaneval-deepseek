@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.prop5.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

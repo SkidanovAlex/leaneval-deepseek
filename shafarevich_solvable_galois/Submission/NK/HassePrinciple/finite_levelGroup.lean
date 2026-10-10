@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.NK.BrauerHasse.All
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
+import Submission.NK.BrauerHasse.Profinite
+import Submission.NeukirchUchida.Local.PlaceFromValuation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

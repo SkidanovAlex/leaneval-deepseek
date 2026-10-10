@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.isUnramifiedExt_of_levelPair_unramified
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.pt_core_via_c6
-import Submission.Work.SSGRoute.PTdualControl.C6_of_rankOneBrick
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

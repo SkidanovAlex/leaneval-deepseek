@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.LinearMap.End
+import Mathlib.Algebra.Module.Submodule.Defs
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.PT.FixedPointsAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

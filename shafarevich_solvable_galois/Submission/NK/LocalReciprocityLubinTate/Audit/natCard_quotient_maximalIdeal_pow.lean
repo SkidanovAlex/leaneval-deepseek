@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_units_quot_pow_maximalIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

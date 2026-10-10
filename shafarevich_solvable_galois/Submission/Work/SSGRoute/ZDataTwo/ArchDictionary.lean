@@ -1,19 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
-import Submission.Work.SSGRoute.ZDataTwo.not_isLocalNorm_ofInfinite_iff
-import Submission.Work.SSGRoute.ZDataTwo.exists_orderEmbedding_fixSub
-import Submission.Work.SSGRoute.ZDataTwo.orderEmbedding_ext
-import Submission.Work.SSGRoute.ZDataTwo.orderEmbedding_fixSub_fieldRange
-import Submission.Work.SSGRoute.ZDataTwo.exists_conjInv_kummerChar_eq_zero_iff
-import Submission.Work.SSGRoute.ZDataTwo.eq_of_isNegAt_iff
-import Submission.Work.SSGRoute.InvAux
-import Submission.Work.SSGRoute.InvAux.exists_orderEmbedding
-import Submission.Work.SSGRoute.InvAux.exists_nat_ge_of_aeval_eq_zero
-import Submission.Work.SSGRoute.InvAux.irreducible_natDegree_le_two
-import Submission.Work.SSGRoute.InvAux.fixedFields_ringEquiv
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.InvAux.conjugate_of_ringEquiv
-import Submission.Work.SSGRoute.InvAux.eq_of_fixes_fixSub
-import Submission.Work.SSGRoute.TwoTorsion.neg_one_notMem_normSet
+import Submission.Work.SSGRoute.ZDataTwo.exists_conjInv_kummerChar_eq_zero_iff
+import Submission.Work.SSGRoute.ZDataTwo.exists_orderEmbedding_fixSub
+import Submission.Work.SSGRoute.ZDataTwo.not_isLocalNorm_ofInfinite_iff
+import Submission.Work.SSGRoute.ZDataTwo.orderEmbedding_fixSub_fieldRange
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

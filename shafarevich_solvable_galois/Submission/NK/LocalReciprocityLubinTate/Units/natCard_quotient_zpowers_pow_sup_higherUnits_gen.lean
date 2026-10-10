@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

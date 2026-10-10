@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.CoindHerbrand
-import Submission.NK.GlobalCFTdeep.Herbrand.hZero_coind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

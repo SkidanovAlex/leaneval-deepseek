@@ -1,8 +1,12 @@
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.NK.FrobeniusBridge.Core
-import Submission.NK.LocalAnabelian.ResidueField.Defs
-import Submission.NK.ResidueFrob.residue_injective_on_torsion
 import Submission.NK.ResidueFrob.isPrimitiveRoot_residue
 import Submission.NK.ResidueFrob.map_eq_pow_of_primitiveRoot
+import Submission.NK.ResidueFrob.residue_injective_on_torsion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

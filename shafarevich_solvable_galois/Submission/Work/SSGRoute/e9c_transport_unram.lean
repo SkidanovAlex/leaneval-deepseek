@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_fixed_idele_mem_range
+import Submission.Work.SSGRoute.E9c.TransportDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

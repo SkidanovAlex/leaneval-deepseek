@@ -1,13 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.ReconstructField.MainWeakNU
-import Submission.NK.ReconstructField.eq_of_isNormal_of_algEquiv
-import Submission.NK.ReconstructField.localDegree_primeTransport
-import Submission.NK.ReconstructField.primeOfLevel_placeMap_eq_of_comap_eq_gen
-import Submission.NK.ReconstructField.ncard_primesOver_levelPrimeMapGen
-import Submission.NK.ReconstructField.LevelPrimeBijective
-import Submission.NK.ReconstructField.compactness_conjHomEquiv
-import Submission.NK.UchidaKummer.Differentiation.isDifferentiable_of_kummerMachinery
-import Submission.NK.UchidaKummer.Kummer.machinery_of_isPrimitiveRoot
 import Submission.NK.ReconstructField.key_finite_prime_match
 import Submission.NK.ReconstructField.primeTransport_eq_levelPrimeMap_imp_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

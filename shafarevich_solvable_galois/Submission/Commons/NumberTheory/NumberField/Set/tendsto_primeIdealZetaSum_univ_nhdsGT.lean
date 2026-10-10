@@ -1,8 +1,8 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.DedekindZeta
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.Commons.NumberTheory.NumberField.DedekindZeta.log_eulerProduct_primeIdeal
 import Submission.Commons.NumberTheory.NumberField.DedekindZeta.tendsto_re_nhdsGT_atTop
 import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
-import Submission.Commons.Analysis.ExpLog.log_inv_one_sub_le_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

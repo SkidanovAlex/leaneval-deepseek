@@ -1,20 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.NK.LocalCFT.NormGroup.normGroup_sup_eq_inf
-import Submission.NK.LocalCFT.NormGroup.normGroup_le_iff
-import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
-import Submission.NK.LocalCFT.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
+import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
+import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
+import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
+import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
 import Submission.NK.NUV2.Final.Assembly
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.LocalArtin.Reduction.kernelCondition_toReciprocityMap
-import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.MaxAbelianSetup
-import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
-import Submission.NeukirchUchida.Local.PlaceUnder
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.NK.NUV2.LC.localNormFinite_range_iff_val_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

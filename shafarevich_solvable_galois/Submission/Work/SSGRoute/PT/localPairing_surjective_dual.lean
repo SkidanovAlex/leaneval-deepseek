@@ -1,11 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.pt_localPairingDual
-import Submission.Work.SSGRoute.PT.LocalPairingSpaces
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.LocalPairingAux
-import Submission.Work.SSGRoute.ZConstruction.levelK_pairing_productFormula
+import Submission.Work.SSGRoute.PTDefs
+import Submission.Work.SSGRoute.ZConstruction.AuxInterface
+import Submission.Work.SSGRoute.ZConstruction.auxPairingGate_odd_aux
+import Submission.Work.SSGRoute.ZConstruction.even_finrank_H1loc_levelK
+import Submission.Work.SSGRoute.ZDataMup.OddForm.oPairForm_sum_attach_eq_zero_of_outside
+import Submission.Work.SSGRoute.ZDataMup.OddForm.oTheta_eq_one_of_ne_oddPrime
+import Submission.Work.SSGRoute.ZSplit.KTransport.isLocConstOn_mapFix_iff
+import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

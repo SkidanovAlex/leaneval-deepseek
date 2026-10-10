@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Group.Basic
+import Mathlib.Data.Set.Operations
+import Mathlib.Algebra.Group.Action.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

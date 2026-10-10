@@ -1,26 +1,14 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
-
-For a cyclotomic extension `F/ℚ` of conductor `n` and an intermediate field `E`, the primes whose
-Frobenius in `E` is a prescribed element `σ ∈ Gal(E/ℚ)` have Dirichlet density `1/[E:ℚ]`.  This is
-Čebotarev for the abelian number field `E`.
-
-The proof reduces to `NK.Chebotarev.CyclotomicFrobDensity` for `F` itself.  The restriction
-`Gal(F/ℚ) → Gal(E/ℚ)`, `τ ↦ τ|_E`, is surjective with fibres in bijection with its kernel
-`Gal(F/E)`, of order `[F:E]` (`fiberCard_restrictNormalHom`).  For all but finitely many primes
-(the ramified ones) Frobenius elements are unique, so the preimage of `σ` is an `[F:E]`-element
-coset of `Gal(F/ℚ)`, and the Frobenius set of `σ` in `E` is the union of the `[F:E]` disjoint
-Frobenius sets of that coset in `F`.  Hence its density is
-`[F:E] · (1/φ(n)) = [F:E]/[F:ℚ] = 1/[E:ℚ]`.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 import Submission.NK.Chebotarev.CyclotomicFrobDensity
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.NK.Chebotarev.HasDirichletDensityIUnionFinset
-import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
 import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
+import Submission.NK.Chebotarev.HasDirichletDensityIUnionFinset
+import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

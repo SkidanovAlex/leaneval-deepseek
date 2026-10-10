@@ -1,31 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The `(q-1)`-torsion of a `𝔭`-adic local field and of its extensions
-
-Let `K` be a number field, `𝔭` a finite prime, `κ = K_𝔭` the `𝔭`-adic completion and
-`q = NK.LocalStructure.residueCard K 𝔭 = #k_κ` the cardinality of its residue field.  The
-multiplicative group `k_κ^×` is cyclic of order `q - 1`, and since `q - 1` is prime to the residue
-characteristic, Hensel's lemma (`Commons.RingTheory.Henselian.kummer_root_lift`, applied through
-`Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB`)
-lifts a generator of `k_κ^×` to a *primitive* `(q-1)`-st root of unity `ζ ∈ κ` — the Teichmüller
-representative of the generator, `NK.TameStructureDeep.Tame.exists_isPrimitiveRoot_adicCompletion_self`.
-
-Consequently the group `μ_{q-1}(κ)` of `(q-1)`-st roots of unity in `κ` has exactly `q - 1`
-elements, and a field extension `K' ⊇ κ` (no further hypothesis: not even separability is used)
-contains *no more* `(q-1)`-st roots of unity than `κ` does: `x ^ (q-1) - 1` has at most `q - 1`
-roots in the field `K'`, and the `q - 1` elements `ζ^i` already realise that maximum.  Hence
-`μ_{q-1}(K') = μ_{q-1}(κ)` inside `K'`, and every `κ`-algebra automorphism of `K'` fixes
-`μ_{q-1}(K')` pointwise.  This is the local structure theory input "the tame torsion is
-unramified": `NK.LocalTame.TameData`/`TameStructureInput` use `μ_{q-1} ≅ Multiplicative
-(ZMod (q-1))` as the torsion part of the abelianised tame quotient, and the present file records
-that it is a subfield-of-definition
-(`NK.TameStructureDeep.Tame.mu_residueCard_sub_one`).
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.Polynomial.UniversalFactorizationRing
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalStructure.Main
-import Submission.NK.TameStructureDeep.Tame.exists_rootOfUnity_unit_zpow
+import Submission.NK.TameStructureDeep.Tame.units_mem_pow_of_residue_pow_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Series
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.FormalGroup
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.existsUnique_lubinTate_solution
+import Mathlib.RingTheory.MvPowerSeries.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.ModuleStructure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

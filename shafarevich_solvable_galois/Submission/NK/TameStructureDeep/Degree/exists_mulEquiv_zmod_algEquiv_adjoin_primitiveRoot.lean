@@ -1,37 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `Gal(κ⟮ζ⟯/κ) ≅ ℤ/d` **with its action** on a primitive `(q ^ d - 1)`-th root of unity
-
-For a number field `K`, a finite place `𝔭`, `κ = K_𝔭` the `𝔭`-adic completion, `q = residueCard K 𝔭`
-the residue cardinality, `d ≠ 0`, and `ζ` a primitive `(q ^ d - 1)`-th root of unity in a separable
-closure `K'` of `κ`, the extension `κ⟮ζ⟯/κ` is cyclic of order `d`, and the isomorphism
-`ℤ/d ≅ Gal(κ⟮ζ⟯/κ)` can be **normalised by the action on `ζ`**:
-
-  `T a (ζ) = ζ ^ (q ^ a)`.
-
-This is the "cyclotomic character" form of `Gal(κ(μ_{q^d-1})/κ) ≅ ℤ/d`: the chosen generator
-`σ` (acting as `ζ ↦ ζ ^ q`) is the Frobenius, and `a ↦ σ ^ a` transports `ℤ/d` to the Galois
-group.  The result is the exponent-precise strengthening of
-`NK.TameStructureDeep.Degree.galoisGroup_adjoin_primitiveRoot_mulEquiv`, which only produces a
-non-canonical isomorphism.
-
-The proof splits into two parts, exactly along the natural boundary:
-
-* `exists_mulEquiv_zmod_gal_adjoin_of_frobenius` — pure group theory: given *some*
-  `σ : Gal(κ⟮ζ⟯/κ)` with `σ ζ = ζ ^ q`, the cardinality `d` of the Galois group, and
-  `1 < q`, the map `a ↦ σ ^ a` is a group isomorphism onto `Gal(κ⟮ζ⟯/κ)` and has the required
-  action.  (Injectivity is where `ζ`'s being a primitive `(q ^ d - 1)`-th root enters: if
-  `σ ^ a` acts trivially then `q ^ a ≡ 1 (mod q ^ d - 1)`, forcing `a = 0`.)
-* the arithmetic inputs, all of which are already in the chapter:
-  `NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow` for the Frobenius `σ`,
-  `NK.TameStructureDeep.Degree.finrank_adjoin_eq_orderOf` for the degree, and the elementary
-  `orderOf_residueCard_zmod_pow_sub_one` for `ord_{q^d-1}(q) = d`.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow
-import Submission.NK.TameStructureDeep.Degree.Equality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,15 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinIdeal
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.NumberTheory.NumberField.Norm
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+import Submission.NK.CFTLib.ARL.autToPow_eq_of_pow_eq
+import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
 import Submission.NK.CFTLib.ARL.norm_pos_of_totallyPositive
 import Submission.NK.CFTLib.ARL.norm_sub_one_mem_span
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
-import Submission.NK.CFTLib.ARL.autToPow_eq_of_pow_eq
+import Submission.NK.CFTLib.ArtinIdeal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.HR.TransferAux.Setup
 import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

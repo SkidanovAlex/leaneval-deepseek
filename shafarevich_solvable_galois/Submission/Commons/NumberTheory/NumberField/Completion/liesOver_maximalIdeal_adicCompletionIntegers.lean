@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

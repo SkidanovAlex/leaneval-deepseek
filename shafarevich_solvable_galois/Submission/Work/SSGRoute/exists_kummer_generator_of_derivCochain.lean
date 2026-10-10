@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummer_level_defs
-import Submission.Work.SSGRoute.ExtH1Iso
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.AbsoluteKummer.Basic
+import Submission.Work.SSGRoute.kummer_level_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

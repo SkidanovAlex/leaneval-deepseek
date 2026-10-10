@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
 import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers_of_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

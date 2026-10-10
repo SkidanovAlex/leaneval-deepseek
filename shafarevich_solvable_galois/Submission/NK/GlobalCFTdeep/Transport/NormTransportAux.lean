@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Transport.PlaceDefs
-import Submission.NK.GlobalCFTdeep.Transport.valuation_mapRingEquiv
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Transport.liesOver_placeEquiv
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_withVal_of_valuation_eq_of_cofinal
+import Submission.NK.GlobalCFTdeep.Transport.valuation_mapRingEquiv
 
 /-!
 # The local field transport along a ring equivalence of number fields

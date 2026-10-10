@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.ProP.Defs
+import Mathlib.GroupTheory.PGroup
 import Submission.Work.ProP.exists_pCentralSeries_le_ker
 import Submission.Work.Shrinking.PCentralQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

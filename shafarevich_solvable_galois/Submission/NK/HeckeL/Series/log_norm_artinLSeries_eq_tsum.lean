@@ -1,13 +1,9 @@
-/-
-The logarithm of the Artin `L`-series is the sum of the logarithms of its Euler factors.
-
-`log ‖∏_𝔭 f 𝔭‖ = ∑_𝔭 log ‖f 𝔭‖` for an Euler product `∏_𝔭 f 𝔭` whose factors are `1 + o(1)`
-with `∑ ‖f 𝔭 - 1‖ < ∞`; the factors here are `artinEulerFactor χ s 𝔭 = (1 - χ(Frob_𝔭) N𝔭^{-s})⁻¹`
-and `∑_𝔭 ‖χ(Frob_𝔭) N𝔭^{-s}‖ = ∑_𝔭 N𝔭^{-s} < ∞` for `s > 1`.
--/
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Zeta
-import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,31 +1,17 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.Sha2Lib.noninvariantLevelApi
 import Submission.Work.SSGRoute.TPatom.levelCocycleDatum_of_blockData
 import Submission.Work.SSGRoute.TPatom.noninvariantLevelDatum
 import Submission.Work.SSGcrux.concentratedLevelDataExists
-import Submission.Work.SSGRoute.TPatom.blockSystemTransversal
-import Submission.Work.SSGRoute.TPatom.orbitBlockSystem
-import Submission.Work.SSGRoute.TPatom.detectionSingleBlock
-import Submission.Work.SSGRoute.TPatom.valueFormulaDirac
-import Submission.Work.SSGRoute.TPatom.shapiroTransport
-import Submission.Work.SSGRoute.TPatom.exists_concentratedLevelData
-import Submission.Work.SSGRoute.TatePoitouRoute.exists_shapiro_c
-import Submission.Work.SSGRoute.Sha2Lib.levelCocycleDatum_of_components
-import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Work.SSGRoute.E9Nodes.e9_baseS
-import Submission.Work.SSGRoute.C6ValueFormula.coset_sum
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.CycLevel.stabilizer_ofFinite_eq_decompositionSubgroup
-import Submission.Work.SSGcrux.mackeyInvDirac
 import Submission.Work.SSGcrux.diracSubtypeApply
-import Submission.Work.SSGcrux.zmodAddHom_ne_zero
-import Submission.Work.SSGcrux.muDirac_ne_zero_of_doubleCoset
 import Submission.Work.SSGcrux.eq_of_mem_block
-import Submission.Work.SSGRoute.coind_res_mackey
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.decompK_restrict_surjective
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_mem_decompositionSubgroup_restrictNormalHom_eq
-import Submission.Commons.NumberTheory.NumberField.Completion.card_decompositionSubgroup_under_mul_card_ker
+import Submission.Work.SSGcrux.mackeyInvDirac
+import Submission.Work.SSGcrux.muDirac_ne_zero_of_doubleCoset
+import Submission.Work.SSGcrux.zmodAddHom_ne_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

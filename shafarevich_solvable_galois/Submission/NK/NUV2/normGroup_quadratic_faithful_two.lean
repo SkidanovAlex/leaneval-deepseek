@@ -1,12 +1,11 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.MaxAbelianSetup
-import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
-import Submission.NK.NUV2.QuadFaithful.Defs
-import Submission.NK.NUV2.QuadFaithful.core
-import Submission.NK.NUV2.QuadFaithful.quadraticLevel
-import Submission.NK.NUV2.LC.quadraticLevel
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Norm.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.NUV2.QuadFaithful2_Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,29 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The order of the residue cardinality in `ZMod (q ^ m - 1)`
-
-Let `K` be a number field, `𝔭` a finite prime of `K` and `q = residueCard K 𝔭 = #(𝒪_κ/𝔪_κ)` the
-cardinality of the residue field of the `𝔭`-adic completion `κ = K_𝔭`.  This file proves that the
-image of `q` in `ZMod (q ^ m - 1)` has multiplicative order exactly `m`:
-
-`NK.TameStructureDeep.Degree.orderOf_residueCard_pow_sub_one`.
-
-The content is elementary: `q` is a unit modulo `q ^ m - 1` (indeed `q ^ m ≡ 1`), and no smaller
-positive power of `q` is `1`, because for `0 < d < m` one has `0 < q ^ d - 1 < q ^ m - 1`, so
-`q ^ m - 1` cannot divide `q ^ d - 1`.  The only arithmetic input is `q ≥ 2`, which holds because
-the residue field is a finite field of prime characteristic `p` and `q = p ^ f` with `f ≥ 1`.
-
-This is the order-theoretic heart of the identification
-`Gal(κ^{ur}/κ) ≅ Ẑ`, `Frob ↦ 1`: the Frobenius acts on `μ_n`, `(n, p) = 1`, by `ζ ↦ ζ ^ q`, so the
-`n`-th cyclotomic extension of `κ` has degree `ord_n(q)` (see
-`NK.TameStructureDeep.Degree.natDegree_minpoly_le_orderOf` and
-`...orderOf_dvd_natDegree_minpoly`), and hence the unramified extension of degree `m` is
-`κ(μ_{q ^ m - 1})`.
--/
-import Mathlib
-import Submission.NK.LocalStructure.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
 import Submission.NK.Mine.ResidueCharAutomatic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

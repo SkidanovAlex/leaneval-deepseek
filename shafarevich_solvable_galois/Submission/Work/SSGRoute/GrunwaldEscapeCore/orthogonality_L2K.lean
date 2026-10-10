@@ -1,19 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.OrthL2KImports
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.CommonsValuationImports
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesCorrectionFromPrime
-import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
-import Submission.Work.SSGRoute.n4_char_separation
-import Submission.Work.SSGRoute.hLocalFactor_infinite_noReal
-import Submission.Work.SSGRoute.step4_y_escape_v2.GesUFacts
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.ZSplit.BaseChange
-import Submission.Work.SSGRoute.ZDataMup.KummerSurjectivity.kummerCharZMod_surjective_levelK
-import Submission.Work.GrunwaldEscapeCore.onePlace_mem_gesU_of_kummerChar_eq_zero_on_inertia
-import Submission.Work.GrunwaldEscapeCore.prod_localFactor_eq_one_of_comm
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Submission.Work.GrunwaldEscapeCore.exists_pow_eq_localImageAt_of_kummerChar_eq_on_decomp
 import Submission.Work.GrunwaldEscapeCore.mk_onePlace_mem_normClassSubgroup_of_isSplitIn
+import Submission.Work.GrunwaldEscapeCore.onePlace_mem_gesU_of_kummerChar_eq_zero_on_inertia
+import Submission.Work.GrunwaldEscapeCore.prod_localFactor_eq_one_of_comm
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesCorrectionFromPrime
+import Submission.Work.SSGRoute.ZDataMup.KummerSurjectivity.kummerCharZMod_surjective_levelK
+import Submission.Work.SSGRoute.n4_char_separation
+import Submission.Work.SSGRoute.step4_y_escape_v2.GesUFacts
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

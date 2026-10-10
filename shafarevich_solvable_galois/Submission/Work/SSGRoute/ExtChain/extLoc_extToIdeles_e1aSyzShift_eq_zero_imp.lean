@@ -1,4 +1,11 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.PT.e1a_beta_can
 import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

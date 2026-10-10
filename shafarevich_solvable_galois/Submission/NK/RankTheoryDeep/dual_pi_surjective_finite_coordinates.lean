@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Analysis.Normed.Group.Ultra
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.RankTheoryDeep.IdeleRankDefs
 import Submission.NK.RankTheoryDeep.exists_finset_support_of_dual_pi_of_cofinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

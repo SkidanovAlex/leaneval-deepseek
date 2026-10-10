@@ -1,19 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Finiteness of `FreeGroup α ⧸ P_ν` for a finite generating set `α`
-
-The generic kernels `F^(n)/F^(n)(ν)` of Schmidt–Wingberg are the quotients of the free group
-on `n` generators by the `ν`-th term of its descending `p`-central series; these are finite
-(`Work.ProP.finite_freePQuotient`).  Here we record that the same holds for a free group on an
-arbitrary *finite* generating set `α`: the quotient only depends on the cardinality of `α` up
-to isomorphism, and an equivalence `α ≃ Fin (Fintype.card α)` induces an isomorphism of the
-free groups carrying the `p`-central series onto the `p`-central series (the series is
-functorial for surjective homomorphisms, `Work.Shrinking.map_pCentralSeries_surjective`).
--/
-
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.ProP.finite_freePQuotient
 import Submission.Work.Shrinking.map_pCentralSeries_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

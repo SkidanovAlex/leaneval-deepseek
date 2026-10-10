@@ -1,10 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchNat.eOfConnMapCocycleHz
-import Submission.Work.SSGRoute.ArchNat.eCohZeroUnitHomSign
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Algebra.Module.Injective
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.ArchDictionary.eOfConnMap
-import Submission.Work.SSGRoute.eCoh_delta
+import Submission.Work.SSGRoute.ArchNat.eCohZeroUnitHomSign
+import Submission.Work.SSGRoute.ArchNat.eOfConnMapCocycleHz
 import Submission.Work.SSGRoute.PT.gammaHom_H1pi_eq_eCoh_or_neg
-import Submission.Work.SSGRoute.ext_one_homRepFree_subsingleton
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

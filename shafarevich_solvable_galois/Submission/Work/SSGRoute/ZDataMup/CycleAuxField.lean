@@ -1,8 +1,14 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Work.SSGRoute.ZDataMup.CycleDefs
-import Submission.NK.CFTLib.ARL.auxField_exists_B
-import Submission.NK.CFTLib.ARL.auxField_construction
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.kernelLe_of_auxField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

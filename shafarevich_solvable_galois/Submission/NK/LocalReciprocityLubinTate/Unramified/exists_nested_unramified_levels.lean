@@ -1,16 +1,19 @@
-import Mathlib
-import Submission.NK.Unramified.exists_unramified_level_adicCompletion
-import Submission.NK.Unramified.normGroup_eq_unramifiedNormGroup
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.Polynomial.UniversalFactorizationRing
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_residueField_adicCompletion_eq_pow_inertiaDeg
-import Submission.NK.TameStructureDeep.Degree.unramifiedLevels
-import Submission.NK.TameStructureDeep.Degree.Equality
-import Submission.NK.TameStructureDeep.Degree.orderOf_residueCard_pow_sub_one
 import Submission.NK.TameStructureDeep.Degree.galoisGroup_unramifiedClosure_mulEquiv
 import Submission.NK.TameStructureDeep.Tame.finrank_levelField
+import Submission.NK.Unramified.normGroup_eq_unramifiedNormGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

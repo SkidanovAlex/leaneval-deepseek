@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Actions
 import Submission.Work.SSGRoute.PT.DevissageSES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

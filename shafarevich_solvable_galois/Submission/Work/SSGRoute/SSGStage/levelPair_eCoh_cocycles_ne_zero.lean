@@ -1,14 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.eCoh_map
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.E7cOmega.levelPair_ratDivSES_mk0_ne_zero_iff
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.E7cOmega.subsingleton_ext_unitRep_ratRep
-import Submission.Work.SSGRoute.SSGStage.detectorFixedAux
+import Submission.Work.SSGRoute.E7cOmega.levelPair_ratDivSES_mk0_ne_zero_iff
 import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
+import Submission.Work.SSGRoute.SSGStage.detectorFixedAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

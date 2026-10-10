@@ -1,3 +1,6 @@
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.Work.SSGRoute.sha2_hasse.Gateway
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.isCyclic_normClassQuotient_of_three_le
 import Submission.NK.CFTLib.isCyclic_normClassQuotient_prime_sq
-import Submission.NK.GroupTheory.Cyclic.isCyclic_of_cyclic_of_index_prime_quotient_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

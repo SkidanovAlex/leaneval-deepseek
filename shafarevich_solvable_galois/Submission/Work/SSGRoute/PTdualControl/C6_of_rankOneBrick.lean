@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_of_indNormal
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_indNormal_of_rankOne
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Induced
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.PTdualControl.zetaAdjoinDescent
+import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_indNormal_of_rankOne
 import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_indNormal_rankOne
+import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_of_indNormal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

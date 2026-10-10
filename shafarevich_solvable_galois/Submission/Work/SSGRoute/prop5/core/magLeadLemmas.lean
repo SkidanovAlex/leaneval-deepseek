@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.MonoidAlgebra.Support
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.RingTheory.Ideal.Maps
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.core.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

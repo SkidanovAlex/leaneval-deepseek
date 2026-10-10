@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.All
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
 import Submission.Work.SSGRoute.step4_local_target
-import Submission.Work.ProP.isPGroup_freePQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

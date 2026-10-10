@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.IdeleOrbitCoind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

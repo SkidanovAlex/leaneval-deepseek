@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mupOddLevel
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
 import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.SupStructure
+import Submission.Work.SSGRoute.ZDataMup.mupOddLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

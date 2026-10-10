@@ -1,23 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.G1plusOwn.extHRestrict_infinite_eq_zero
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.E7cOmega.mem_orbit_of_liesOver_conj
 import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_factors_unramified_v2
+import Submission.Work.SSGRoute.PT.G1plusOwn.extHRestrict_infinite_eq_zero
+import Submission.Work.SSGRoute.PT.G1plusOwn.goodPlaceUnder_finQW
+import Submission.Work.SSGRoute.PT.G1plusOwn.isConjPlace_of_finQW_conj
 import Submission.Work.SSGRoute.PT.G1plusOwn.sum_iota_eq_zero_of_extToClasses_zero
 import Submission.Work.SSGRoute.PT.G1plusOwn.unramifiedPairClause
-import Submission.Work.SSGRoute.PT.G1plusOwn.isConjPlace_of_finQW_conj
-import Submission.Work.SSGRoute.PT.G1plusOwn.goodPlaceUnder_finQW
-import Submission.Work.SSGRoute.PT.vf_local_compare
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.PT.place_glue_level
-import Submission.Work.SSGRoute.CokerPT.IotaAlgebra
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.E9c.Core
-import Submission.Work.SSGRoute.e9c_extLoc_conj_zero
-import Submission.Work.SSGRoute.E7cOmega.zfun_pairing_extLoc
-import Submission.Work.SSGRoute.localSumDecomposition
-import Submission.Work.SSGRoute.PT.phiAt_orbit_eq_iota_v2
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

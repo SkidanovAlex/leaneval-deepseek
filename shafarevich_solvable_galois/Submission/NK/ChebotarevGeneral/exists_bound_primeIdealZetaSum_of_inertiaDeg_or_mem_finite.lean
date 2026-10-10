@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Submission.NK.ChebotarevGeneral.Basic
 import Submission.NK.ChebotarevGeneral.summable_zetaWeight_of_inertiaDeg_ge_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

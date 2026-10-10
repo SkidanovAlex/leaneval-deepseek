@@ -1,43 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Reduction of Shafarevich's theorem to the embedding step
-
-Shafarevich's theorem states that every finite solvable group is the Galois group of a finite
-Galois extension of `ℚ`.  The proof is by induction on `|G|`: a nontrivial finite solvable
-group has a nontrivial *minimal normal* subgroup `A`, the quotient `G/A` is solvable of smaller
-order, hence realizable by induction, and one is left with Shafarevich's theorem on the
-solvability of *embedding problems* with abelian kernel: if `G/A` is realizable and `A ◁ G` is a
-nontrivial minimal normal subgroup, then `G` is realizable.
-
-This file proves everything except the last (deep) step, and it *minimises* that step:
-
-* `realizableOver_of_subsingleton`: the trivial group is realizable (`ℚ/ℚ`);
-* `card_quotient_lt`: `|G/A| < |G|` for `A ≠ ⊥`;
-* `exists_minimal_normal`: every nontrivial finite group has a minimal nontrivial normal subgroup;
-* `MinimalNormalKernelStep` : **the deep input**, the induction step in the weakest form needed —
-  *finite solvable `G`, `A ◁ G` nontrivial minimal normal, `G ⧸ A` realizable over `ℚ` ⟹ `G`
-  realizable over `ℚ`*;
-* `ElementaryAbelianKernelStep` : the same statement without the minimality hypothesis, only
-  assuming that `A` is elementary abelian of exponent a prime `p` — the classical form of
-  Shafarevich's theorem on embedding problems with abelian kernel;
-* `elementaryAbelianKernelStep_implies_minimalNormal` : the classical form implies the minimal
-  form, because a nontrivial minimal normal subgroup of a finite solvable group is elementary
-  abelian (`Work.GroupTheory.isElementaryAbelian_of_minimal_normal`);
-* `realizable_of_minimal_normal_of`, `realizable_of_solvable_of`: the whole reduction with the
-  deep input as a *hypothesis* (hence unconditional theorems);
-* `realizable_of_elementary_abelian_kernel`: the classical embedding step, *proved* from the
-  target theorem (so no separate gap);
-* `realizable_of_solvable`: **Shafarevich's theorem**, from the deep input;
-* `realizable_of_solvable_iff`: the target theorem is *equivalent* to the classical
-  `ElementaryAbelianKernelStep` — a certificate (with no further gap) that the reduction loses nothing.
-
-The classical (Schmidt–Wingberg) proof of the deep input needs global class field theory:
-Hasse's theorem on the Brauer group, the local–global principle for embedding problems,
-Grunwald–Wang and Shafarevich's shrinking procedure.  See `Submission/NOTES.md`.
--/
-import Mathlib
-import Submission.Realization
+import Mathlib.GroupTheory.Index
+import Mathlib.GroupTheory.Solvable
+import Mathlib.Algebra.Field.Rat
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Abelian
 import Submission.EmbeddingProblem
 import Submission.Work.GroupTheory.isElementaryAbelian_of_minimal_normal

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
 import Submission.NK.CFTLib.exists_congruenceSubgroup_le_normImage
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

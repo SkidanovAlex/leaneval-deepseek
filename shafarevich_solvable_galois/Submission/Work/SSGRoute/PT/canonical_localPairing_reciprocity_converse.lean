@@ -1,52 +1,31 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.pt_coherent_pTorsion_invariant
-import Submission.Work.SSGRoute.PT.pt_orbitIdele_H2_eq_zero
-import Submission.Work.SSGRoute.E1aClean.localDictionary_natural_family
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.PT.exists_level_localBrauer_pTorsion_ne_zero
-import Submission.Work.SSGRoute.PT.pt_extSegment_exact
-import Submission.Work.SSGRoute.local_duality_ext_in
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.NodeShim.coherentPTorsionKx
-import Submission.Work.SSGRoute.E7Arch.g1Assembly
-import Submission.Work.SSGRoute.E7Arch.reciprocity
-import Submission.Work.SSGRoute.E7Arch.glueCocycle
-import Submission.Work.SSGRoute.PT.g1plus_placeGlue
-import Submission.Work.SSGRoute.PT.localLevelExistence
-import Submission.Work.SSGRoute.E7Arch.exists_level_localDegree_ge_three
-import Submission.Work.SSGRoute.PT.g1plus_finHalf
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.G1plusOwn.naturalityBricks
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_hpair
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_perfect_left
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_perfect_right
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_unramified
-import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.PT.exists_place_under_isFinPlace
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Work.SSGRoute.PT.glueOfTwoHalves
-import Submission.Work.SSGRoute.PT.archFamilyClauses
-import Submission.Work.SSGRoute.PT.hrecJoint_archFamily
-import Submission.Work.SSGRoute.ArchPlace.linkedPlaceOfInvolution
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.PT.archβcClauses
-import Submission.Work.SSGRoute.PT.archPairLocal_add_right
-import Submission.Work.SSGRoute.PT.localPairing_surjective_dual
-import Submission.Work.SSGRoute.PT.exists_finite_spanning_locCocycles
-import Submission.Work.SSGRoute.PT.LeadC8
 import Submission.Work.SSGRoute.PT.LeadC8.finrank_H0loc_le_unrClasses
 import Submission.Work.SSGRoute.PT.LeadC8.hreal_unr_of_unrCount
-import Submission.Work.SSGRoute.PT.relaxed_converse_of_finiteS_v3
+import Submission.Work.SSGRoute.PT.archFamilyClauses
 import Submission.Work.SSGRoute.PT.finiteS_converse_canonical_v8
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.PT.glueOfTwoHalves
+import Submission.Work.SSGRoute.PT.hrecJoint_archFamily
+import Submission.Work.SSGRoute.PT.localLevelExistence
+import Submission.Work.SSGRoute.PT.relaxed_converse_of_finiteS_v3
 
 /-! Guidance from the project lead (the requester):
 
@@ -752,7 +731,6 @@ theorem canonical_localPairing_reciprocity_converse
               (Work.SSGRoute.PT.finZI hKL A hA) (βlG M A hA a)
               (Work.SSGRoute.PT.finZH p K T M L hKL A hA b hb b₀ hb₀))) := by
       intro M _ _ _ _ _ A hA a b hla hlb hb L hN hFD hGal hKL hAlg hS1 hS2 b₀ hb₀
-      letI : NumberField ↥L := hN
       letI : FiniteDimensional k ↥L := hFD
       letI : IsGalois k ↥L := hGal
       letI : Algebra ↥K ↥L := hAlg
@@ -1135,7 +1113,6 @@ theorem canonical_localPairing_reciprocity_converse
             archβc_square p k Ω K ζ hζ hζK T hT M c hc2 hc1 (φcTot c)
               (hφcTot_seam c hc2 hc1) b hb hl)
           (hpairArch := fun c hc2 hc1 a b ha L hN hFD hGal hKL hAlg hS1 hS2 u hu hus ψ hψ hres => by
-            letI : NumberField ↥L := hN
             letI : FiniteDimensional k ↥L := hFD
             letI : IsGalois k ↥L := hGal
             letI : Algebra ↥K ↥L := hAlg

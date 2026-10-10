@@ -1,13 +1,4 @@
-/-
-# The trace on a finite product of algebras
-
-`Algebra.trace R (∀ i, B i) x = ∑ i, Algebra.trace R (B i) (x i)`.
-
-This is the finite-family version of Mathlib's `Algebra.trace_prod_apply` (binary products).  It is
-needed to compute the trace on `∏_{Q | Q₀} K_Q` in the local–global trace identity
-(`FinitenessHM/sum_trace_adicCompletion_eq_trace.lean`).
--/
-import Mathlib
+import Mathlib.RingTheory.Trace.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

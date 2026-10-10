@@ -1,10 +1,12 @@
-import Mathlib
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.HassePrinciple.exists_units_div_of_isMulCocycle_ringEquiv
 import Submission.NK.HassePrinciple.subsingleton_classGroupRep_one
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
+import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

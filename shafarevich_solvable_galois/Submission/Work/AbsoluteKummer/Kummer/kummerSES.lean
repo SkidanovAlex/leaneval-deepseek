@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteKummer.Coefficients
 import Submission.Work.AbsoluteKummer.SES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

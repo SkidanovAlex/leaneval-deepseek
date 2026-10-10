@@ -1,20 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map `H¹(G, C) → H²(G, A)` of a short exact sequence
-
-For a short exact sequence of `G`-modules `0 → A --iota--> B --pi--> C → 0`, the connecting map
-in degrees `1 → 2` is defined as follows: lift a `1`-cocycle `c : G → C` to a cochain
-`b : G → B` along the surjective `pi`; then `d¹ b` takes values in `ker pi = im iota`, so it
-pulls back (uniquely, using injectivity of `iota`) to a `2`-cochain with values in `A`, which is a
-`2`-cocycle because `d² ∘ d¹ = 0` and `iota` is injective.
-
-## Main definitions
-
-* `Work.GroupCohomology.ShortExactSeq.liftCochain`
-* `Work.GroupCohomology.ShortExactSeq.preimage`
-* `Work.GroupCohomology.ShortExactSeq.deltaCocycle : Z¹(G, C) → Z²(G, A)`
--/
+import Mathlib.Tactic.Abel
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.ShortExact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

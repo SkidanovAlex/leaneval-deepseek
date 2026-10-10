@@ -1,27 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Squares in `ℚ_[p]` for odd `p`
-
-This file proves `Work.QuadraticLocalGlobal.isSquare_padic_iff`: for an odd prime `p`
-and a nonzero `p`-adic number `x`, the following are equivalent
-
-* `x` is a square in `ℚ_[p]`;
-* the valuation of `x` is even and the residue class of the unit part
-  `padicUnitOf p x hx : ℤ_[p]ˣ` is a square in `ZMod p`.
-
-The proof rests on the following two ingredients.
-
-* `padic_eq_pow_valuation_mul_unit`: every nonzero `x` factors as
-  `x = p ^ x.valuation * (padicUnitOf p x hx)`, i.e. the unit part carries the whole
-  square class information once the valuation is known.
-* `isSquare_padicInt_of_norm_one`: a `p`-adic integer of norm `1` (a unit) is a square in
-  `ℤ_[p]` if and only if its residue class in `ZMod p` is a square. This is Hensel's
-  lemma applied to `X ^ 2 - u`; the hypothesis `p ≠ 2` is used exactly so that the
-  derivative `2 * a₀` at the lifted residue class is a unit.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.NumberTheory.Padics.Hensel
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.QuadraticLocalGlobal.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

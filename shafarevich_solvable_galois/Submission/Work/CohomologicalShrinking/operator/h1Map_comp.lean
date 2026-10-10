@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.OperatorMap
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.CohomologicalShrinking.Prop7
 import Submission.Work.CohomologicalShrinking.functorial.gradedMapLin_comp
 import Submission.Work.CohomologicalShrinking.functorial.quotMapLin_comp

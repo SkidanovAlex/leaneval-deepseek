@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.HRec.exists_sq_eq_of_ne_zero
 import Submission.Work.SSGRoute.HRec.star_eq_self_of_mul_self_eq_ofReal
+import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

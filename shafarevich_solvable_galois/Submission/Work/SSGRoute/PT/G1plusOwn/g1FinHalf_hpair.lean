@@ -1,31 +1,16 @@
-/-
-**Certification status of `g1FinHalf_hpair` (measured 2026-10-05).**
-
-The statement is *mathematically proved* below (the file builds, `sorry`-free), but the declaration
-can never be `declare_proven`-clean while `E1aClean.localDictionary_natural_family` is open, because
-the *statement* mentions `Work.SSGRoute.PT.finZB` in its type and
-
-* `PT.finZB` (`PT/finHalfData.lean:287`) is
-  `Classical.choose (… E1aClean.localDictionary_natural_family …) M A (finQ K A hA)`, and
-* `E1aClean.localDictionary_natural_family`
-  (`E1aClean/localDictionary_natural_family.lean:340`) is derived from
-  `localDictionary_natural_family_arch`, which is still `:= by sorry` (line 312).
-
-`#print axioms` traverses the type telescope, so any declaration *mentioning* `finZB` already
-carries `sorryAx`; measured:
-
-`#print axioms Work.SSGRoute.PT.finZB = [propext, sorryAx, Classical.choice, Quot.sound]`
-`#print axioms Work.SSGRoute.PT.G1plusOwn.g1FinHalf_hpair = [propext, sorryAx, Classical.choice, Quot.sound]`
-
-The same obstruction (with `natFamβl`) is recorded in
-`E1aClean/NOTE_natFam_unramified_converse_verdict.md`; the fix is to re-point `finZB` to a proved
-family (`E1aClean.localDictFamilyNatural'` + `E1aClean.localDictFromFamily.beta_l_spec` are clean) or
-to prove the family — see `CokerPT/ACTION_hub_finZB_sits_on_sorried_S6.md`.
--/
-
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.finHalfData
 import Submission.Work.SSGRoute.decomp_injective_of_finPlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

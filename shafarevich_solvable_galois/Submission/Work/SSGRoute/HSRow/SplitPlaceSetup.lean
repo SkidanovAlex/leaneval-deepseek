@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.LocalAnabelian.Kummer.Defs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.UchidaKummer.Embedding.KummerSup
+import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

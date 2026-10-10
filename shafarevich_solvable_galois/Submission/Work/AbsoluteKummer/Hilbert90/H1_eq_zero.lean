@@ -1,18 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Hilbert 90 for the absolute Galois group, in the form `H¹(G_k, k̄ˣ) = 0`
-
-`Submission/Work/AbsoluteKummer/Hilbert90/exists_div_of_isCrossedHom.lean` states Hilbert 90 in the
-classical form: every locally constant crossed homomorphism `G_k → k̄ˣ` is of the shape
-`σ ↦ σ b / b`.  Here that statement is transported to the cohomology group of this chapter:
-
-* `Work.AbsoluteKummer.Hilbert90.H1_eq_zero` — **`H¹(G_k, k̄ˣ)` is the trivial group** (and
-  `H1_eq_zero_absolute` for the `Field.absoluteGaloisGroup k` spelling).
-
-This is the input (the Kummer sequence `1 → μ_n → k̄ˣ → k̄ˣ → 1` has vanishing `H¹(k̄ˣ)`) that
-identifies the cokernel of `kˣ → kˣ`, `x ↦ xⁿ` with `H¹(G_k, μ_n)`.
--/
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.AbsoluteKummer.Hilbert90.exists_div_of_isCrossedHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.Commons.NumberTheory.NumberField.mem_of_primesEquiv_eq
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
+import Submission.NK.Reconstruct.PlaceCorrespondence
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

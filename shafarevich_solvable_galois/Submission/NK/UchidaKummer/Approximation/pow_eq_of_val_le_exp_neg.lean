@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.InfiniteSum.Defs
 import Submission.Commons.Analysis.Nonarchimedean.exists_exp_log_adicCompletion_log_val_eq
 import Submission.Commons.Analysis.Nonarchimedean.val_pow_sub_one_le_exp_neg
+import Submission.NK.UchidaKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

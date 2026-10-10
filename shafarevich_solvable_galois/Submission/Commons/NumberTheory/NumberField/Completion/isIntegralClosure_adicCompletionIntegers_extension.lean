@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.Commons.Algebra.Module.range_sum_eq_span
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.Valuation.Integral
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.Algebra.Module.mem_span_iff_exists_sum
 import Submission.Commons.Algebra.Module.span_subset_span_of_isScalarTower
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
 import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

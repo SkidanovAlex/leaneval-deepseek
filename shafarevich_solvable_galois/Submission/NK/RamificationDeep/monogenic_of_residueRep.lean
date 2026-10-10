@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.RamificationDeep.InertiaField
-import Submission.NK.RamificationDeep.MonoDefs
-import Submission.NK.RamificationDeep.isNoetherianRing_restrictRing
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.RamificationDeep.moduleFinite_inertiaField_comap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

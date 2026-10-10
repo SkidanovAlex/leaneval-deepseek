@@ -1,5 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZConstruction.localGaloisEquiv_decomp
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.ZConstruction.lcHoms_natCard_congr
+import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
 
 /-!
 # The level-`K` local Galois identification, pinned to the canonical prime

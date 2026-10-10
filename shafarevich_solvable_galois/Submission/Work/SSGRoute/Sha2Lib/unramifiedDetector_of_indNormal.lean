@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.Work.Sha2Lib.ext_comp_mk0_ne_zero_of_surjective
-import Submission.Work.Sha2Lib.indRes_counit_surjective
-import Submission.Work.Sha2Lib.normalClosure_inertia_acts_trivially
-import Submission.Work.SSGRoute.PT.inertia_fixes_zeta
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
-import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_coeff_surjection
+import Mathlib.RepresentationTheory.Induced
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Submission.NK.TameStructureDeep.Tame.InertiaFieldAux
+import Submission.Work.SSGRoute.InertiaDefs
+import Submission.Work.SSGRoute.LTDDefs.Basic
 import Submission.Work.Sha2Lib.isUnramifiedDetector_of_ind
+import Submission.Work.Sha2Lib.normalClosure_inertia_acts_trivially
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

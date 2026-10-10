@@ -1,21 +1,12 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-/-
-# Local units and `p`-th powers at completely split primes
-
-* `units_eq_unitGroup`: for a valuation subring, the units of the ring are the elements of
-  valuation `1`;
-* `exists_unit_pow_eq_of_splitsCompletely`: if a prime `q` of `K` splits completely in `L` and
-  `a = α ^ p` with `α ∈ L` is a local unit at `q`, then `a` is a `p`-th power of a unit of `𝒪_q`.
--/
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.TUnitsPow
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.isScalarTower_adicCompletion
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.TUnitsPow
 
 open scoped NumberField RestrictedProduct
 open IntermediateField

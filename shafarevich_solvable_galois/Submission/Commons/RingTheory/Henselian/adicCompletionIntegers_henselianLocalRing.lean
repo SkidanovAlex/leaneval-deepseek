@@ -1,10 +1,11 @@
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.AdicCompletion.Noetherian
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
-import Mathlib.RingTheory.AdicCompletion.Noetherian
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.RegularLocalRing.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

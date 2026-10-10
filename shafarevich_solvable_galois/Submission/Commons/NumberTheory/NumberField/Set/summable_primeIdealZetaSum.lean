@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

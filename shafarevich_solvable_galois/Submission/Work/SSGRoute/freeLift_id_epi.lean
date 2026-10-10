@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.ext_level_lift
 
 /-!

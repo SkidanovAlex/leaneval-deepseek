@@ -1,32 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.homRep_dualMod_units_localClosure
-import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.E1aClean.Transport
-import Submission.Work.SSGRoute.localField_subfield_place_compat
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.PT.e1a_coeff_iso_natural
-import Submission.Work.SSGRoute.E1aClean.coeffIsoNatural_generic
-import Submission.Work.SSGRoute.E1aClean.h1locCoeffNatural
-import Submission.Work.SSGRoute.E1aClean.LocalData
-import Submission.Work.SSGRoute.E1aClean.localClosureCyclotomicDual
-import Submission.Work.SSGRoute.E1aClean.h1AddEquivNat
-import Submission.Work.SSGRoute.E1aClean.localExtTransportEquiv
-import Submission.Work.SSGRoute.E1aClean.h1contIsoNamed
-import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
-import Submission.Work.SSGRoute.E1aClean.LocalExtensionAux
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
-import Submission.Work.SSGRoute.E1aClean.unitsQuotient_pow_bijective_fixed
-import Submission.Work.SSGRoute.ext_res_mulEquiv
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.E1aClean.LeadNatWit
-import Submission.Work.SSGRoute.E1aClean.finPlaceDictHolds
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.archimedeanDictionaryCanon
+import Submission.Work.SSGRoute.E1aClean.finPlaceDictHolds
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

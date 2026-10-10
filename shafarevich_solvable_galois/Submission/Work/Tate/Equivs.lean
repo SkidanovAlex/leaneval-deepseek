@@ -1,15 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Transport of Tate cohomology along isomorphisms of `G`-modules
-
-A `G`-equivariant additive bijection `f : A →+ B` induces isomorphisms
-`Ĥ⁰(G, A) ≃+ Ĥ⁰(G, B)` and `Ĥ⁻¹(G, A) ≃+ Ĥ⁻¹(G, B)`, so that the two Tate groups only depend on
-the isomorphism class of the coefficient module.
--/
-import Mathlib
-import Submission.Work.Tate.Basic
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.H0Map_bijective
 import Submission.Work.Tate.Hm1Map_bijective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

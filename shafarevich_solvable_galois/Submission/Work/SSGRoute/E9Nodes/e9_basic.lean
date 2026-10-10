@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_level_trivial_two
-import Submission.Work.SSGRoute.phi1_lambda_defs
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.phi0_pTor_scalar
-import Submission.Work.SSGRoute.extH_natCard_smul_eq_zero
+import Submission.Work.SSGRoute.phi1_lambda_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

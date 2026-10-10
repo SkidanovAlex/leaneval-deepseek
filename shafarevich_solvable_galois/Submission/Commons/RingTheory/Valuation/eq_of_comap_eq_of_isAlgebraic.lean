@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Commons.RingTheory.Valuation.isIntegral_of_mem_of_henselian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

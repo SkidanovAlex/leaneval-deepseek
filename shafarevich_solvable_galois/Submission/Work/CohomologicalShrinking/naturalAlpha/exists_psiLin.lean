@@ -1,30 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The linear surrogate `ψ` for the naturality of `α` (Proposition 7 (i))
-
-This file proves `Work.CohomologicalShrinking.naturalAlpha.exists_psiLin`: for a prime `p`, a
-group `N` and an `𝔽_p`-linear representation `A` of `N` whose action is trivial, there is a
-*surjective* additive map
-
-`ψ : 𝔽_p[N/N^p[N,N]] ⊗_{𝔽_p} A → H₁(N, A)`
-
-sending the generator `mk' x ⊗ a` to the homology class of the `1`-cycle `single x a`.
-
-The construction goes through the `ℤ`-tensor product:
-
-* `psiLin_pQuotSection` exhibits the canonical *section* `N/N^p[N,N] → A → Nᵃᵇ ⊗_ℤ A`,
-  which is well defined because an element of `N^p[N,N]` has abelianization class divisible
-  by `p` (it lies in `p · Nᵃᵇ`), and `A` is an `𝔽_p`-module;
-* `TensorProduct.liftAddHom` turns it into a surjective additive map
-  `𝔽_p[N/N^p[N,N]] ⊗_{𝔽_p} A → Nᵃᵇ ⊗_ℤ A`;
-* Mathlib's `groupHomology.H1AddEquivOfIsTrivial` identifies `Nᵃᵇ ⊗_ℤ A ≅ H₁(N, A)`.
--/
-
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.naturalAlpha.Defs
-import Submission.Work.CohomologicalShrinking.universalCoefficient.h1AddEquivPQuotientSub
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,11 +1,15 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LocalFieldAPI
-import Submission.Work.SSGRoute.finite_powClass_localField
 import Submission.Work.SSGRoute.finite_galoisFields_of_finite_kummer
-import Submission.Work.SSGRoute.finite_homs_of_prime_homs
 import Submission.Work.SSGRoute.finite_homs_of_finite_galoisFields
+import Submission.Work.SSGRoute.finite_homs_of_prime_homs
 import Submission.Work.SSGRoute.finite_homs_of_restriction
+import Submission.Work.SSGRoute.finite_powClass_localField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

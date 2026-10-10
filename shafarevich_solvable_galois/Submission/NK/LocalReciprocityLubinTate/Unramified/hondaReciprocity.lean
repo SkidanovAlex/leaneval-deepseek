@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Unramified.higherUnits_le_normGroup_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.Unramified.mem_normGroup_LTLevel_uniformizer
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

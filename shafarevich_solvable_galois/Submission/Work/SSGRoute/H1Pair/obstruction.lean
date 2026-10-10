@@ -1,26 +1,19 @@
-/-
-# The cokernel obstruction class of the local data
-
-Steps 1–2 of the assembly of `Work.SSGRoute.coker_obstruction`:
-
-* the form `Φ = ω_N` on the `1`-cocycles `Gal(N/k) → E^∨(1)` given by the sum of the local pairings
-  of the data `(α, β)` (`Work.SSGRoute.H1Pair.omega_functional_contra`);
-* the class `X ∈ H₁(Gal(N/k), E ⊗ T)` which represents `Φ` under the canonical Tate pairing
-  (`Work.SSGRoute.H1Pair.exists_x_of_Phi`).
-
-The pairings enter only through the *local* clauses (additivity on locally constant cocycles,
-vanishing on coboundaries) at the module `E`; no arithmetic input is needed here.  The class `X` is
-the "cokernel obstruction" of the level-`N` data: the vanishing of its image at a level `N₂ ≤ N` is
-what forces the pushed data to glue (the remaining steps, which do use Poitou–Tate).
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.H1Pair.Pairing
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.SSGRoute.H1Pair.Stage
-import Submission.Work.SSGRoute.H1Pair.Clauses
-import Submission.Work.SSGRoute.H1Pair.omega_contra
 import Submission.Work.SSGRoute.H1Pair.exists_x
+import Submission.Work.SSGRoute.H1Pair.omega_contra
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

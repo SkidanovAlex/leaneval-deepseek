@@ -1,23 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map `H¹(G, C) → H²(G, A)` is well defined
-
-For a short exact sequence of `G`-modules `0 → A --iota--> B --pi--> C → 0`, the connecting map in
-degrees `1 → 2` is defined on cocycles by `S.deltaCocycle : Z¹(G, C) → Z²(G, A)`
-(`Work.GroupCohomology.ShortExactSeq.deltaCocycle`).  This file shows that it is constant on
-cohomology classes, hence descends to the connecting homomorphism
-`H¹(G, C) → H²(G, A)`.
-
-The proof is the standard one: if `c - c' ∈ B¹(G, C)`, say `c g - c' g = g • a - a`, then for
-lifts `L`, `L'` of `c`, `c'` along `pi` and a lift `b` of `a`, the cochain
-`m g = L g - L' g - (g • b - b)` takes values in `ker pi = im iota`; writing `m = iota ∘ k`, one
-computes `iota (d¹ k) = d¹ m = d¹ L - d¹ L' = iota (δc - δc')`, so `δc - δc' = d¹ k ∈ B²(G, A)`.
--/
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Connecting
-import Submission.Work.GroupCohomology.ShortExact
 import Submission.Work.GroupCohomology.H1pi_eq_iff
 import Submission.Work.GroupCohomology.H2pi_eq_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

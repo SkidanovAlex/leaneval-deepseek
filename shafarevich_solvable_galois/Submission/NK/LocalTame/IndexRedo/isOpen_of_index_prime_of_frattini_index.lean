@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Topology.Baire.LocallyCompactRegular
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Topology.Algebra.Group.Torsor
 import Submission.NK.LocalTame.IndexPrime.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

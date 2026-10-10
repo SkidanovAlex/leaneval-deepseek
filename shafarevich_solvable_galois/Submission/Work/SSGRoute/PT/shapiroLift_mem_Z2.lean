@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.Topology.Defs.Induced
 import Submission.Work.SSGRoute.PT.shapiro_H2_lift_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,14 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelRealization
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusOwn.finZH_surjective_own
+import Submission.Work.SSGRoute.PT.G1plusOwn.levelRealization
 import Submission.Work.SSGRoute.local_duality_ext_in
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.Z8.levelPair_vanish_of_vanish_closure
-import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusLevelClauses
-import Submission.Work.SSGRoute.PT.g1plus_finHalf
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,23 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.ext_two_iso_divisible_cohomology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Prime
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.localDictionary_fin_injective
-import Submission.Work.SSGRoute.PTembedding.homRep_dualMod_units_of_isCyclotomicDual
+import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.SSGStage.archimedeanLocalExt2Subsingleton
-import Submission.Work.SSGRoute.dualUnits_linearEquiv
-import Submission.Work.SSGRoute.homRep
 import Submission.Work.Shrinking.finite_tensorProduct_of_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

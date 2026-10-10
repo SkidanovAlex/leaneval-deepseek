@@ -1,9 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.UnitIdelesDefs
-import Submission.NK.RepresentationTheory.GroupCohomology.piCohomology_injective
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
 import Submission.NK.GlobalCFTdeep.Herbrand.tateCohomology_piRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

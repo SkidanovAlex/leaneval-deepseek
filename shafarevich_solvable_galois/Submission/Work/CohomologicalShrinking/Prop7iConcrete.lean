@@ -1,27 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 7 (i) for the paper's own group `F(m)/F(m)^{(ν)} ⋊ G`
-
-This is the end point of the concrete construction in `SemidirectData.lean`: Schmidt–Wingberg's
-Proposition 7 (i) for the cohomology of the paper's own group
-`Γ_m = F(m)/F(m)^{(i,j)} ⋊ G` with coefficients in `E(m,τ) ⊗ T`, where `E(m,τ)` is the graded
-piece `F(m)^{(i,j)}/F(m)^{(i,j)+1}` and `T` is an `𝔽_p[G]`-module.
-
-Unlike `Work.CohomologicalShrinking.exists_shrinking_H1_semidirect` (which is stated for an
-abstract model `Z m` of `H₁(Γ_m, E⊗T)`), the group `Z m` here *is* the group homology of the
-semidirect product built in this chapter, the exactness and the surjectivity of the
-Hochschild–Serre sequence are *proved* (`SemidirectData.semidirectShrinkingData_of`), and the
-operator maps produced are the paper's `Φ : F(m) ⇢ F(n)` acting on that homology via `flowZMap`.
-
-The remaining inputs are the ones isolated in `semidirectShrinkingData_of`: the identification of
-the image of the paper's `α` with the image of the corestriction, the naturality in the rank of
-`α` and `β`, and the paper's recalled `H^{-2} = H₁` (as an isomorphism `γ`).
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.SemidirectData
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.exists_bridge
 import Submission.Work.CohomologicalShrinking.exists_natural_alpha
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

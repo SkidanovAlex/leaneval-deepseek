@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.NK.CFTLib.Arl.Defs
 import Submission.NK.Chebotarev.IsFrobAtConj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

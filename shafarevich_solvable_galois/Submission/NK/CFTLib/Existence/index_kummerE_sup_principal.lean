@@ -1,11 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.index_kummerE_tIdeles
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.principal_inf_kummerE_eq_tUnitsPow
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.prod_localPow_eq_pow
 import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.principal_inf_kummerE_eq_tUnitsPow
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

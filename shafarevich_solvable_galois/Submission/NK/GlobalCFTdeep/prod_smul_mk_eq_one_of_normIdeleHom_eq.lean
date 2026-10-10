@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.NumberTheory.NumberField.Basic
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.H0Computation
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_compactSpace_normOneClassGroup
+import Submission.NK.GlobalCFT.IdeleClassGroupExact
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

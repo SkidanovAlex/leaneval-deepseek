@@ -1,18 +1,19 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.HR.isCyclotomic_onePlace_unramified
-import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
-import Submission.NK.CFTLib.ARL.autToPow_eq_of_pow_eq
-import Submission.NK.CFTLib.ARL.norm_sub_one_mem_span
-import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one
-import Submission.NK.NUV2.ARL.norm_neg_of_one_negative_real_place
-import Submission.NK.NUV2.ARL.cyclotomic_isComplex
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
 import Submission.NK.NUV2.ARL.autToPow_artinSym_spanSingleton_natAbs
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm_of_finiteDimensional
+import Submission.NK.NUV2.ARL.cyclotomic_isComplex
+import Submission.NK.NUV2.ARL.norm_neg_of_one_negative_real_place
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Commons.RingTheory.Valuation.unique_extension_of_henselian_finite
-import Submission.Commons.RingTheory.Valuation.two_extensions_of_independent_henselian
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.FieldTheory.isSepClosed_of_no_finite_separable_extension
+import Submission.Commons.RingTheory.Valuation.two_extensions_of_independent_henselian
+import Submission.Commons.RingTheory.Valuation.unique_extension_of_henselian_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.DualMod.Main
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+import Mathlib.LinearAlgebra.TensorProduct.Basic
 import Submission.Work.SSGRoute.LTDDefs.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

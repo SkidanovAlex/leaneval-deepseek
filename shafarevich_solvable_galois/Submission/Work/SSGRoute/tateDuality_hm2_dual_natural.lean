@@ -1,13 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.tateDuality_hm2_dual
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.GroupCohomology.Functoriality
-import Submission.Work.Tate.All
-import Submission.Work.SSGRoute.TateDual.NatPrep
-import Submission.Work.SSGRoute.TateDual.pairQ_natural
-import Submission.Work.SSGRoute.TateDual.pairQ_isPerfPair
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.PerfectPairing.Basic
 import Submission.Work.CohomologicalShrinking.shiftH2Family
-import Submission.Work.CohomologicalShrinking.tate.dimensionShiftH1H0_natural
+import Submission.Work.SSGRoute.TateDual.NatPrep
+import Submission.Work.SSGRoute.TateDual.pairQ_isPerfPair
+import Submission.Work.SSGRoute.TateDual.pairQ_natural
+import Submission.Work.SSGRoute.tateDuality_hm2_dual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
-import Submission.NK.GlobalCFT.IdeleNorm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

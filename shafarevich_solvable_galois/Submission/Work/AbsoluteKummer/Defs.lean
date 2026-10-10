@@ -1,38 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Continuous cohomology in low degrees (definitions)
-
-This file sets up *continuous* group cohomology in degrees `0, 1, 2` for a topological group `G`
-and a coefficient module `M` on which `G` acts "continuously for the discrete topology of `M`".
-
-Since the coefficient modules of this chapter (roots of unity, units of a field, finite Galois
-modules) all carry the discrete topology, and since several of them (e.g. `(k̄)ˣ`) have no
-canonical `TopologicalSpace` instance in Mathlib, continuity into a discrete module is recorded
-*internally* as **local constancy**:
-
-* `Work.AbsoluteKummer.IsLocallyConstant f` — every point has an open neighbourhood on which `f`
-  is constant.  For a map into a discrete space this is exactly continuity
-  (`Work.AbsoluteKummer.isLocallyConstant_iff_continuous`).
-
-The continuity of the *action* is recorded as
-
-* `Work.AbsoluteKummer.IsDiscreteModule G M` — every `m : M` has an open stabiliser.  When `M` is
-  discrete this is exactly the continuity of the map `G × M → M`, `(g, m) ↦ g • m`
-  (`Work.AbsoluteKummer.isDiscreteModule_iff_continuous_smul`).
-
-## Main definitions
-
-* `C1c`, `C2c` — locally constant `1`- and `2`-cochains;
-* `Z1`, `B1`, `Z2`, `B2` — continuous cocycles and coboundaries;
-* `H0`, `H1`, `H2` — the cohomology groups `H⁰(G,M) = M^G`, `H¹ = Z¹/B¹`, `H² = Z²/B²`;
-* `H1π`, `H2π` — the quotient maps.
-
-The underlying *algebraic* cochain complex (`d0`, `d1`, `d2`, `Z1`, `B1`, `Z2`, `B2` for arbitrary
-cochains) is `Submission.Work.GroupCohomology`; this file only adds the topological condition.
--/
-import Mathlib
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.GroupCohomology.Inflation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

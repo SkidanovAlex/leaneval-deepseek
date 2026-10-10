@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.isLocalNorm_mul_of_localPowClass_eq_one
-import Submission.Work.SSGRoute.ZDataTwo.exists_level_normGroup_eq_of_quadratic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.HilbertSymbolGeneral.hilbertReciprocityTwo
 import Submission.Work.HilbertSymbolGeneral.hilbertSymbol_comm
-import Submission.NeukirchUchida.Local.LocalGalois
-import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_le_finrank
-import Submission.NK.Chebotarev.Basic
+import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
+import Submission.Work.SSGRoute.ZDataTwo.exists_level_normGroup_eq_of_quadratic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.NodeS37.crossedValue
-import Submission.Work.SSGRoute.H9.swTwoPlacePairingTwo
-import Submission.Work.SSGRoute.H9.oPairAt_swapTwo
-import Submission.Work.SSGRoute.H9.swCrossedValueTwoHelpers
-import Submission.Work.SSGRoute.H9.swChainConjDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.H9.lPinned_eq_kummerPinnedValue
+import Submission.Work.SSGRoute.H9.swPinnedFrob_exists
+import Submission.Work.SSGRoute.NodeS35.swHchainBasic
+import Submission.Work.SSGRoute.NodeS37.evenCountOfKillsInertia
+import Submission.Work.SSGRoute.NodeS37.oPairAt_smul_conj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

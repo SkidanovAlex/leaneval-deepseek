@@ -1,6 +1,9 @@
-import Mathlib.Algebra.Module.StablyFree.Basic
-import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

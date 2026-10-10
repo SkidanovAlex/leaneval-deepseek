@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Norm.Basic
 import Submission.NK.GlobalCFT.Place
 import Submission.NK.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_valuationSubringAtPrime_comap
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
-import Submission.NeukirchUchida.Local.PlaceFromValuation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

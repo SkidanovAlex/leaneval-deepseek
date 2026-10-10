@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.AdjoinRoot
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

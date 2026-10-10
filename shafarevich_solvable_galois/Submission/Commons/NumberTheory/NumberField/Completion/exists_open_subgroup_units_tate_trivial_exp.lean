@@ -1,14 +1,19 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
-import Submission.Commons.NumberTheory.NumberField.Completion.val_le_exp_neg_iff_mem_maximalIdeal_pow
-import Submission.Commons.FieldTheory.Galois.exists_normalBasis_trace_eq_one
-import Submission.Commons.Analysis.Nonarchimedean.exp_map_ringEquiv
-import Submission.Commons.NumberTheory.NumberField.continuous_algEquiv_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.Analysis.Nonarchimedean.exists_exp_adicCompletion
+import Submission.Commons.Analysis.Nonarchimedean.exp_map_ringEquiv
+import Submission.Commons.FieldTheory.Galois.exists_normalBasis_trace_eq_one
+import Submission.Commons.NumberTheory.NumberField.Completion.val_le_exp_neg_iff_mem_maximalIdeal_pow
+import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
+import Submission.Commons.NumberTheory.NumberField.continuous_algEquiv_adicCompletion
+import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

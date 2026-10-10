@@ -1,26 +1,8 @@
-/-
-# Evaluation of power series at the class of `T` in `𝒪[F][T]/(f^{(n)}(T))`
-
-Milne, *Classical Field Theory*, §I.3 evaluates the Lubin–Tate series `[a]` at torsion points by
-substituting a topologically nilpotent element into a power series.  Here the torsion point is
-replaced by the class `τ = tau` of `T` in the finite ring
-`T_n = 𝒪[F][T] / (f^{(n)}(T))`, `f(T) = πT + T^q`, and one has to check Milne's two hypotheses on
-the family `(τ) : Fin 1 → T_n`:
-
-* `τ` is topologically nilpotent for the `𝔪[F]`-adic topology of `T_n`.  This is where the
-  congruence `f^{(n)}(X) ≡ X ^ (q ^ n) (mod π)` is used: it gives `τ ^ (q ^ n) ∈ (π)`, and an
-  element whose positive power lies in the defining ideal is topologically nilpotent.
-* the family tends to `0` along the cofinite filter — automatic for the one-point index type
-  `Fin 1`.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.hasEval_ltTorsionRing` — `MvPowerSeries.HasEval` for `τ`;
-* `NK.LocalReciprocityLubinTate.Eval.isTopologicallyNilpotent_adicTopology_of_pow_mem` — the
-  general criterion for the `I`-adic topology used above.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionRing
+import Mathlib.Algebra.Polynomial.AlgebraMap
+import Mathlib.RingTheory.MvPowerSeries.Evaluation
+import Mathlib.RingTheory.Valuation.Integers
+import Mathlib.RingTheory.Valuation.ValuativeRel.Basic
+import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 import Submission.NK.LocalReciprocityLubinTate.Eval.ltpolyIter_sub_X_pow_mem_span
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

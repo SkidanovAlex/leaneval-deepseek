@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.GlobalCFTdeep.Herbrand.exists_finset_TIdeles_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

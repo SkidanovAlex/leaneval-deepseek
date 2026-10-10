@@ -1,23 +1,7 @@
-/-
-# Surjectivity of the ideal Artin symbol on `I(𝔪)`  (adapter 1 of the ideal-modulus assembly)
-
-The ideal-modulus form of the surjectivity half of Lang's Chapter X Theorem 1: for a finite abelian
-extension `L / K` and an ideal modulus `𝔪 ≠ ⊥` containing all ramified primes, every
-`σ : Gal(L/K)` is the Artin symbol of a fractional ideal coprime to `𝔪`.
-
-This is `NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime` (the proved natural-number
-modulus version) with the single change
-
-  `primesDividing K m`  ↦  `{p : 𝔭 | DvdPrime 𝔪 𝔭}`,
-
-finiteness of that set coming from `Ideal.finite_factors` applied to `𝔪 ≠ ⊥`, and the
-"`p ∤ 𝔪` ⟹ `p` unramified" step from `ContainsRamified 𝔪`.
--/
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
 import Submission.Work.SSGRoute.ZDataMup.ZDataMupClean.UnramifiedBridge
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

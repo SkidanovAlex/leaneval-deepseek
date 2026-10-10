@@ -1,25 +1,14 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple_of_fibre
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_algEquiv
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_level
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_add
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_one
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
-import Submission.NK.LocalReciprocityLubinTate.Eval.law_factorization_lubinTate
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LevelSimplicity
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isGalois_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.finiteDimensional_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.normal_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.ext_of_eqOn_LTdivisionSet
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.map_mem_LTdivisionSet_of_algEquiv
+import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_algEquiv
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_primitive_LTdivisionSet
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.smulDiv_eq_iff_sub_mem
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_unit_smulDiv_eq_of_primitive
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_units_quot_pow_maximalIdeal
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.ext_of_eqOn_LTdivisionSet
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.smulDiv_eq_iff_sub_mem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

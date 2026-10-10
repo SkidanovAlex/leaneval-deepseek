@@ -1,25 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Interface definitions for the deeper ramification theory
-
-This file collects the *data* under which the classical arguments about the deeper structure of
-the higher ramification filtration (the uniformizer criterion, the embedding
-`G_i/G_{i+1} ↪ 𝔪^i/𝔪^{i+1}`, the tower compatibilities) run, and the vocabulary in which the
-results of this directory are stated.
-
-* `NK.RamificationDeep.UniformizerData A π E` — the hypotheses of Serre IV §2 Prop. 4:
-  `𝔪_A = (π)`, `E` is the fixed field of `G_0`, and `A = (A ∩ E)[π]`.
-* `NK.RamificationDeep.HasseArfShifted A` — the Hasse–Arf condition in the *correct*
-  normalisation relative to `NK.Ramification.herbrand` (see the README, and
-  `NK.RamificationDeep.HasseArfAudit`): at a lower break `i` (`G_i ≠ G_{i+1}`) the value
-  `φ(i+1)` — not `φ(i)` — is an integer.  For an abelian extension this is the classical
-  Hasse–Arf theorem; for a general finite Galois extension it is *false* (Serre's `Q_8`
-  example), which is why the present chapter states it for abelian extensions only.
--/
-import Mathlib
-import Submission.NK.Ramification.All
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Submission.NK.LocalStructure.Defs
+import Submission.NK.Ramification.Herbrand
+import Submission.NK.Ramification.exists_ramificationSubgroup_eq_bot
+import Submission.NK.Ramification.isProP_of_natCard_eq_prime_pow
+import Submission.NK.Ramification.isWildInertia_ramificationSubgroup_one
+import Submission.NK.Ramification.ramificationSubgroup_map_conj
+import Submission.NK.Ramification.ramificationSubgroup_succ_eq_of_uniformizer
+import Submission.NK.Ramification.smul_sub_mem_maximalIdeal_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

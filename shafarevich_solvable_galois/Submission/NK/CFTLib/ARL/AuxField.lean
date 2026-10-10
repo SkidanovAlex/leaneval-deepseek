@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.CyclotomicSubextension
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.cyclotomicKernelLe
-import Submission.NK.CFTLib.ARL.Cyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

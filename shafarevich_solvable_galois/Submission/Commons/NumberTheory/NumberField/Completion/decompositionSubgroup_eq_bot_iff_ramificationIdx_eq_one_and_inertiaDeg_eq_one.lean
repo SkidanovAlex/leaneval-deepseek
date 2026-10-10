@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

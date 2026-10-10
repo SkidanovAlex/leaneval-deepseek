@@ -1,35 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The valuation at a prime is invariant under its decomposition group
-
-Let `L/K` be a finite Galois extension of number fields and `w` a finite prime of `L`
-(a nonzero prime ideal of `𝓞 L`).  The decomposition group `D_w = stabilizer Gal(L/K) w.asIdeal`
-acts on `L` by `K`-algebra automorphisms, and the `w`-adic valuation `w.valuation L` is
-invariant under this action:
-
-`Work.LocalFields.valuation_smul_of_mem_stabilizer`.
-
-The proof proceeds in three steps, each of independent interest.
-
-* `Work.LocalFields.exists_exp_neg_of_ne_zero_of_le_one` and
-  `Work.LocalFields.eq_of_forall_le_exp_neg` : an element of `ℤᵐ⁰ = WithZero (Multiplicative ℤ)`
-  which is nonzero and `≤ 1` is of the form `exp (-n)` for a unique `n : ℕ`, so an element of
-  `ℤᵐ⁰` in this range is determined by the set of `n` with `a ≤ exp (-n)`.
-
-* `Work.LocalFields.intValuation_map_ringEquiv` : for a Dedekind domain `R`, a prime
-  `w : HeightOneSpectrum R` and a ring automorphism `e` of `R` preserving `w`, the `w`-adic
-  integer valuation is invariant: `w.intValuation (e a) = w.intValuation a`.  This is a
-  consequence of `intValuation_le_pow_iff_mem` and the fact that `Ideal.map e` commutes with
-  powers and preserves `w.asIdeal`.
-
-* the reduction to `𝓞 L`: an element `x : L` is a fraction `a / s` of elements of `𝓞 L`
-  (`IsLocalization.mk'`), and both the automorphism and the valuation are compatible with this
-  description.
--/
-import Mathlib
-import Submission.Work.LocalFields.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.LocalFields.Decomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

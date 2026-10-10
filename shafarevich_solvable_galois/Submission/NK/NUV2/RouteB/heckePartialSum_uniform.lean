@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Artin
 import Submission.NK.NUV2.HeckeLCoeff.heckeCoeff_partial_sum_bound
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,27 +1,12 @@
-import Mathlib
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.CFTLib.HRclean.T3Clean
 import Submission.NK.CFTLib.HRclean.T4Clean
+import Submission.NK.CFTLib.HRclean.existsCycClassOfEqCopy
 import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrimeOdd
 import Submission.NK.CFTLib.cyclotomicCruxAt_of_coprime
-import Submission.NK.CFTLib.HRclean.ARLClean
-import Submission.NK.CFTLib.HRclean.chebTransferCopy
 import Submission.NK.NUV2.ChebAux.Transfer.PlaceAux
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
-import Submission.NK.CFTLib.HRclean.infiniteDictCopy
-import Submission.NK.NUV2.ChebAux.isCyclic_gal_of_compositum
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
-import Submission.NK.CFTLib.HRclean.existsCycClassOfEqCopy
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
-import Submission.NK.CFTLib.HRclean.locUnitsInflationCopy
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # CLEAN ASSEMBLY (agent H-): the Brauer transfer and Hilbert reciprocity, cycle-free
@@ -334,10 +319,6 @@ theorem hilbertReciprocityOnePlace_main : NK.CFTLib.HilbertReciprocityOnePlace :
   obtain ⟨M, E, hFM, hNFM, hFE, hNFE, hAKM, hAKE, hALE, hAME, hTLE, hTME, hFDM, hFDE,
       hGalM, hGalE, hCycM, m, hm, hm2, hCycl, hgen, hcop, hloc⟩ :=
     NK.CFTLib.HRdescent.localConditionCyclotomicPrimeOdd (K := K) (L := L) (inferInstance) v₀
-  letI : Field M := hFM
-  letI : NumberField M := hNFM
-  letI : Field E := hFE
-  letI : NumberField E := hNFE
   letI : Algebra K M := hAKM
   letI : Algebra K E := hAKE
   letI : Algebra L E := hALE

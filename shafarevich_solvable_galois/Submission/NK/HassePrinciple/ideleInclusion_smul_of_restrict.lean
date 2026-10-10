@@ -1,13 +1,8 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.GaloisIdeles
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.classField_exists_ramified
-import Submission.NK.CFTLib.ArtinReciprocityIdealProved
-import Submission.NK.CFTLib.fundamentalClassElement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

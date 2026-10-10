@@ -1,24 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The kernel of the residue map is the prime `v`
-
-For a finite prime `v` of a number field `K`, the reduction map
-`Work.LocalFields.residueMap v : 𝓞 K →+* κ_v` (reduce in `𝒪_v` and then modulo the maximal
-ideal) has kernel exactly `v.asIdeal`.
-
-Indeed, an integral element `x : 𝓞 K` maps to `0` in the residue field `κ_v = 𝒪_v/𝔪_v` iff its
-image in `𝒪_v` is not a unit, i.e. iff its `v`-adic valuation is `< 1`; and by
-`IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem` this happens exactly when
-`x ∈ v.asIdeal`.
-
-Together with `Work.LocalFields.residueMap_surjective` this gives the canonical isomorphism
-`𝓞 K ⧸ v ≃+* κ_v` (`Work.LocalFields.residueEquiv`) and hence the finiteness of the residue
-field of the completion.
--/
-import Mathlib
-import Submission.Work.LocalFields.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.LocalFields.Residue
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

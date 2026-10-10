@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.StableRep
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.Descent.exists_det_ne_zero_of_map_solution
-import Submission.NK.GlobalCFTdeep.Herbrand.Mul
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_finite_quotient
 import Submission.NK.GlobalCFTdeep.Herbrand.RepIso
-import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
-import Submission.NK.GlobalCFTdeep.LogLattice.realBasis_of_full_lattice
 import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_full_lattices
+import Submission.NK.GlobalCFTdeep.LogLattice.realBasis_of_full_lattice
 
 set_option autoImplicit false
 set_option linter.unusedSectionVars false

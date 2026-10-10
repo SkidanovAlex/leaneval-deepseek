@@ -1,12 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataMup.Defs
-import Submission.Work.SSGRoute.ZDataMup.LocalData
-import Submission.Work.SSGRoute.ZDataMup.finrank_lcCocycleImage_eq_H1loc
-import Submission.Work.SSGRoute.ZDataMup.finrank_localDataSpace_quotient
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.BilinearForm.Orthogonal
+import Mathlib.LinearAlgebra.Quotient.Bilinear
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.LevelKRealisationCounting
 import Submission.Work.SSGRoute.ZConstruction.even_finrank_H1loc_levelK
 import Submission.Work.SSGRoute.ZDataMup.exists_nonsplit_place_of_selmer_proj
+import Submission.Work.SSGRoute.ZDataMup.finrank_localDataSpace_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

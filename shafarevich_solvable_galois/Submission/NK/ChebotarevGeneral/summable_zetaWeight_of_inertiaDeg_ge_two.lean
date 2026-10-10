@@ -1,8 +1,10 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.RamificationInertia.Inertia
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.NK.ChebotarevGeneral.Defs
 import Submission.NK.HeckeL.Nonvanishing.primeFiber
-import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_le_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

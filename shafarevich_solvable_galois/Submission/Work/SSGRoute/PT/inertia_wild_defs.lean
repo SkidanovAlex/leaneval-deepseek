@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Submission.NK.TameStructureDeep.Tame.Unconditional
 import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.InertiaArithImports
+import Submission.Work.SSGRoute.LTDDefs.Basic
+import Submission.Work.SSGRoute.PTW.Prelude
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

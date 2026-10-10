@@ -1,13 +1,17 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Topology.Connected.Separation
 import Submission.Work.SSGRoute.Nakayama.br_pTorsion
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PTembedding.hilbert90_decomp
-import Submission.Work.SSGRoute.mup_local_defs
+import Submission.Work.SSGRoute.PT.cardH2Aux
 import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
 import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.PT.cardH2Aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

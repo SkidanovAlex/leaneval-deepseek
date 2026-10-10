@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ArchDictionary.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

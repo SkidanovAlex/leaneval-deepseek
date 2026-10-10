@@ -1,17 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.Work.LocalFields.completion_algebraMap_continuous
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
 import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField
 import Submission.Work.SSGRoute.localAutHom_bijective
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Work.SSGRoute.LiftImports
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option maxHeartbeats 3200000
 set_option synthInstance.maxHeartbeats 800000
@@ -112,11 +104,9 @@ theorem localUnitsK_iso_intermediateField_pointwise (k Ω : Type) [Field k] [Num
         rfl
       have h2 : (SSGRoute.PTExt.modRep (K' ≃ₐ[Work.SSGRoute.localFieldAt k A hA] K')
           (Additive (Units ↥K'))).ρ (eG g) (Φ w)
-          = Additive.ofMul (Units.map (eG g : ↥K' →* ↥K') (Ψ (Additive.toMul w))) := by
-        rw [show Φ w = Additive.ofMul (Ψ (Additive.toMul w)) from rfl]
-        rw [hρY]
-        rfl
-      rw [h1, h2]
+          = Additive.ofMul (Units.map (eG g : ↥K' →* ↥K') (Ψ (Additive.toMul w))) :=
+        hρY (eG g) (Φ w)
+      refine h1.trans (Eq.trans ?_ h2.symm)
       apply Additive.ofMul.injective
       apply Units.ext
       have hL : Units.val (Ψ (NK.HassePrinciple.localUnitsEquiv (K := k) (L := ↥K)

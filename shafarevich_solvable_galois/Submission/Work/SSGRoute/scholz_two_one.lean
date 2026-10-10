@@ -1,23 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.twistLayer
-import Submission.Work.SSGRoute.scholz_one_one
-import Submission.Work.SSGRoute.no_two_torsion_fixingSubgroup
-import Submission.Work.SSGRoute.step4Helpers
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.local_transport
-import Submission.Work.SSGRoute.step4_y_clauses
-import Submission.Work.SSGRoute.step4_y_localdata
-import Submission.Work.SSGRoute.isLocConstOn_patchFun
-import Submission.Work.SSGRoute.step4_grunwald_over_K
-import Submission.Work.SSGRoute.exists_cocycle_at_frob_of_split
-import Submission.Work.SSGRoute.ramifiedPlaces_finite
-import Submission.Work.SSGRoute.exists_split_place_avoiding
-import Submission.Work.SSGRoute.exists_split_places_avoiding
-import Submission.Work.SSGRoute.step4_tool_S_exists
-import Submission.Work.SSGRoute.grunwald_escape_support_E
-import Submission.Work.SSGRoute.shafarevich_existence
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.N5.theorem13_clean
+import Submission.Work.SSGRoute.grunwald_escape_support_E
+import Submission.Work.SSGRoute.isLocConstOn_patchFun
+import Submission.Work.SSGRoute.scholz_one_one
+import Submission.Work.SSGRoute.shafarevich_existence
+import Submission.Work.SSGRoute.step4Helpers
+import Submission.Work.SSGRoute.step4_tool_S_exists
+import Submission.Work.SSGRoute.step4_y_localdata
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

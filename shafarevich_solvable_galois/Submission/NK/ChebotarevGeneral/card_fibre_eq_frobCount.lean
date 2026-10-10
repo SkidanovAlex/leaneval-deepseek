@@ -1,29 +1,10 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The fibre count of the transfer step
-
-Let `N/K` be a finite Galois extension of number fields, `σ : Gal(N/K)`, `H = ⟨σ⟩` and
-`M = N^H`.  For a prime `𝔭` of `K` unramified in `N`, the primes `𝒬` of `𝓞 M` above `𝔭` of residue
-degree one over `𝔭` at which the image of `σ` in `Gal(N/M)` is a Frobenius element are exactly the
-primes `P ∩ 𝓞 M` for `P` a prime of `𝓞 N` above `𝔭` at which `σ` is a Frobenius element of `N/K`:
-
-`Nat.card {𝒬 | …} = Nat.card {P | …}`.
-
-The two directions are the descent
-`NK.ChebotarevGeneral.isFrobAtPrime_under_of_isFrobAt` (`P ↦ P ∩ 𝓞 M`) and the ascent
-`NK.ChebotarevGeneral.exists_isFrobAt_liesOver_of_isFrobAtPrime_under` (a prime `P` above `𝒬`);
-the descent is injective because its image determines the prime and `H = ⟨σ⟩ = D_P` fixes `P`
-(`NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt`,
-`NK.ChebotarevGeneral.exists_mem_fixingSubgroup_smul_eq_of_under_eq`), and the ascent is
-surjective.
--/
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.ChebotarevGeneral.Basic
-import Submission.NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt
-import Submission.NK.ChebotarevGeneral.isFrobAtPrime_under_of_isFrobAt
 import Submission.NK.ChebotarevGeneral.exists_isFrobAt_liesOver_of_isFrobAtPrime_under
 import Submission.NK.ChebotarevGeneral.exists_mem_fixingSubgroup_smul_eq_of_under_eq
+import Submission.NK.ChebotarevGeneral.isFrobAtPrime_under_of_isFrobAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

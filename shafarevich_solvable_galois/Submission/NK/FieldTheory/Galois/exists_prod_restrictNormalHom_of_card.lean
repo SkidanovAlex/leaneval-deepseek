@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.NK.Mine.galoisGroup_sup_prod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,12 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.NKExistenceImport
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Topology.Algebra.Group.Quotient
+import Submission.NK.CFTLib.ArtinReciprocityIdealProved
+import Submission.NK.CFTLib.Existence.exists_galois_normClassSubgroup_eq_of_cyclotomic_descent_deg
 import Submission.NK.CFTLib.Existence.exists_galois_normClassSubgroup_le_of_kummer
-import Submission.NK.CFTLib.Existence.exists_intermediateField_normClassSubgroup_eq_of_index_prime
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.CFTLib.Existence.index_comap_normClassHom_eq_prime
+import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
+import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
+import Submission.NK.CFTLib.fundamentalClassElement
+import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
+import Submission.NK.NUV2.ArtinBridge.isOpen_comap_normClassHom
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
+import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
+import Submission.NK.NUV2.LC.localNormFinite_range_iff_val_pow
+import Submission.NK.NUV2.kernelCondition_all
 
 set_option linter.style.haveILetI false
 set_option linter.unusedSectionVars false
@@ -38,8 +45,6 @@ theorem exists_normClassSubgroup_eq_of_kummer
   obtain ⟨L₀, hF₀, hN₀, hA₀, hfd₀, hgal₀, hcomm₀, hle₀⟩ :=
     NK.CFTLib.Existence.exists_galois_normClassSubgroup_le_of_kummer (K := K) hARL hFC p hζ V hV
       hopen hidx
-  letI : Field L₀ := hF₀
-  letI : NumberField L₀ := hN₀
   letI : Algebra K L₀ := hA₀
   letI : FiniteDimensional K L₀ := hfd₀
   haveI : IsGalois K L₀ := hgal₀

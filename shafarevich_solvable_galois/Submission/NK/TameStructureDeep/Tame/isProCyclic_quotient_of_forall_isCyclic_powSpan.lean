@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.LocalTame.Basic
+import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 import Submission.NK.TameStructureDeep.Tame.inertiaQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

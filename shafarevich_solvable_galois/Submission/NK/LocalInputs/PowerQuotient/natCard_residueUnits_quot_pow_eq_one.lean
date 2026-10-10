@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalInputs.Inputs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

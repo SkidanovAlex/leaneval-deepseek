@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.TameStructureDeep.Tame.pow_class_unramifiedClosure_pow
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.exists_kummerLayer_of_mem_tameClosure
+import Submission.NK.TameStructureDeep.Tame.pow_class_unramifiedClosure_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

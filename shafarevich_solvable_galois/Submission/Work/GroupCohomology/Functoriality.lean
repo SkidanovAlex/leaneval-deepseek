@@ -1,19 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Functoriality of `H¹` and `H²`
-
-* An additive map `φ : A →+ B` between `G`-modules that is `G`-equivariant
-  (`φ (g • a) = g • φ a`) induces maps `H¹(G, A) → H¹(G, B)`, `H²(G, A) → H²(G, B)`.
-* A subgroup `H ≤ G` gives restriction maps `H¹(G, A) → H¹(H, A)`, `H²(G, A) → H²(H, A)`.
-
-## Main definitions
-
-* `Work.GroupCohomology.IsEquivariant`
-* `Work.GroupCohomology.mapH1`, `Work.GroupCohomology.mapH2`
-* `Work.GroupCohomology.resH1`, `Work.GroupCohomology.resH2`
--/
-import Submission.Work.GroupCohomology.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Actions
 import Submission.Work.GroupCohomology.H1_induction_on
 import Submission.Work.GroupCohomology.H2_induction_on
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

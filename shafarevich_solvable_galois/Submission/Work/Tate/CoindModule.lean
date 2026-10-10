@@ -1,21 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The coinduced module `G → R`
-
-This module re-exports the coinduced module structure on function spaces,
-`(g • f) x = f (x * g)`, from `Submission.InducedModules`, together with the basic API of
-`Submission/Work/Tate/Basic.lean`, so that the vanishing results for Tate cohomology of
-coinduced modules (`Work.Tate.H0_coind_subsingleton`, `Work.Tate.Hm1_coind_subsingleton`)
-can be stated in this vocabulary.
-
-The action is registered as a global instance by `Submission.InducedModules`
-(`Submission.instSMulCoind`, `Submission.instDistribMulActionCoind`), so importing the present
-module is enough to make `G → R` a `G`-module in the coinduced way.
--/
-import Submission.Work.Tate.Basic
+import Mathlib.Algebra.Group.Basic
+import Mathlib.Algebra.Notation.Pi.Defs
 import Submission.InducedModules
+import Submission.Work.Tate.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

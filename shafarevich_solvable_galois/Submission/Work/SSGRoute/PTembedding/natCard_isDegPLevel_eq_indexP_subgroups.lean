@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.LocalCFTImports
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Submission.NK.NUV2.kernelCondition_all
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Tactic.Group
+import Mathlib.CategoryTheory.Shift.Basic
+import Mathlib.Topology.Algebra.OpenSubgroup
 import Submission.Work.SSGRoute.PT.ClassFormation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

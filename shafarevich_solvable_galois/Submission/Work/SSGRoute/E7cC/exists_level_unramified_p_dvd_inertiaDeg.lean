@@ -1,12 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.brauer_single_place
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.exists_level_residueDeg
+import Submission.Work.SSGRoute.exists_galois_level_p_dvd
 import Submission.Work.SSGRoute.exists_level_inertiaDeg_mul_dvd
-import Submission.Work.SSGRoute.level_residueDeg_dvd_general
-import Submission.Work.SSGRoute.E7cOmega.exists_level_p_dvd_decomp
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

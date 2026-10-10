@@ -1,25 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Galois realizability of finite groups
-
-This file sets up the basic API for the inverse Galois problem: a group `G` is
-*realizable over a field `k`* if there is a finite Galois extension `K/k` with
-`Gal(K/k) ≃* G`.
-
-The main results here are:
-
-* `RealizableOver.of_surjective`: a quotient of a realizable group is realizable
-  (via the Galois correspondence: take the fixed field of the kernel).
-* the reduction of Shafarevich's theorem to the *embedding step* for abelian
-  kernels (see `Submission/Shafarevich.lean`).
--/
-import Mathlib
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Mathlib.FieldTheory.Galois.Basic
 
 namespace Submission
 
@@ -42,7 +21,6 @@ theorem RealizableOver.of_surjective {k : Type*} [Field k] {G H : Type*} [Group 
     (f : G →* H) (hf : Function.Surjective f) (h : RealizableOver k G) :
     RealizableOver k H := by
   obtain ⟨K, hKf, hKa, hKfd, hKg, ⟨e⟩⟩ := h
-  letI : Field K := hKf
   letI : Algebra k K := hKa
   letI : FiniteDimensional k K := hKfd
   letI : IsGalois k K := hKg

@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
 import Submission.NK.Reconstruct.lemma4f4_defs
-import Submission.NK.Reconstruct.finite_coker_gammaBaseChangeHom
-import Submission.NK.Reconstruct.galToGamma
-import Submission.NK.Reconstruct.NumFieldIn
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

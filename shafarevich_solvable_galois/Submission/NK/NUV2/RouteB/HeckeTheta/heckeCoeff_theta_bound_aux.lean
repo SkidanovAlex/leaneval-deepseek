@@ -1,48 +1,15 @@
-/-
-# The Hecke partial-sum bound for a non-trivial ray class character
-
-This is the analytic heart of the Hecke-theta route to `NK.NUV2.RouteB.heckeCoeff_theta_bound`:
-for an *open* subgroup `U ≤ 𝕀 K` with finite ray class group, a finite set `S` of primes and a
-ray class character `χ ≠ 1`, the partial sums of the coefficients `heckeCoeff K U S χ` of the Hecke
-`L`-series of `χ` are `O(N^θ)` for some `θ < 1`.
-
-The proof is the classical equidistribution argument, assembled from the following pieces.
-
-* `NK.NUV2.RouteB.RayModulus.exists_modulus_le`: an open `U` contains a congruence subgroup
-  `U(𝔪)`; enlarging the modulus by the primes of `S` (so that its support contains `S`) keeps this
-  inclusion (`enlargeMod` below).
-* `NK.NUV2.RouteB.HeckeTheta.sharpSub_of_dictionary` (this repository): the *sharp* ray-class
-  count for a congruence subgroup — the dictionary identity
-  `NK.NUV2.RouteB.HeckeTheta.rayClassCnt_eq_coset_sum` together with the sharp lattice-coset
-  count `NK.NUV2.RouteB.HeckeTheta.cosetConeCnt_sharp` — gives
-  `|A_{c₁}(X) - A_{c₂}(X)| ≤ C X^{1-1/[K:ℚ]}` for ideals coprime to the support of `𝔪`.
-  The main terms cancel because `N𝔡 · covol(𝔪𝔡⁻¹)` does not depend on `𝔡`.
-* `NK.NUV2.RouteB.SharpCount.of_le` (proved): a power-saving bound for a *finer* subgroup
-  transfers to any coarser subgroup, since the class counts are sums over the fibres of a surjection
-  of finite groups, whose fibres all have the same cardinality.
-* `NK.NUV2.RouteB.uniform_of_sharp_aux` (proved): the passage from the sharp bound for a set `S'`
-  containing `S` to a power saving for an arbitrary finite set `S` (the Euler factors supported on
-  `S'∖S` cost at most `N^ε`, absorbed by lowering the exponent).
-* `NK.NUV2.RouteB.heckePartialSum_of_uniformCount` (proved): the equidistribution of ideals in the
-  ray classes of `U` implies the partial-sum bound, by grouping the coefficients by ray class and
-  using `∑_c χ(c) = 0` for `χ ≠ 1`.
-
-The hypotheses `𝔪`, `hcong` and `hprime` of the statement are not needed by this route (the
-existence of a modulus for `U` and the non-triviality of `χ` suffice); they are kept so that the
-statement can be used exactly as requested.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.NUV2.RouteB.HeckeTheta.Defs
-import Submission.NK.NUV2.RouteB.HeckeTheta.DictTools
-import Submission.NK.NUV2.RouteB.HeckeTheta.sharpSub_of_dictionary
 import Submission.NK.NUV2.RouteB.HeckeTheta.rayClassCnt_eq_coset_sum
+import Submission.NK.NUV2.RouteB.HeckeTheta.sharpSub_of_dictionary
 import Submission.NK.NUV2.RouteB.RayModulus.exists_modulus_le
-import Submission.NK.NUV2.HeckeAnalytic.Transfer
-import Submission.NK.NUV2.HeckeAnalytic.finite_congSubgroup_rayClassGroup
-import Submission.NK.NUV2.RouteB.uniform_of_sharp_rayClassCount
 import Submission.NK.NUV2.RouteB.heckePartialSum_uniform
-import Submission.NK.NUV2.RouteB.CongCount.CongRayAux
+import Submission.NK.NUV2.RouteB.uniform_of_sharp_rayClassCount
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_val_lt_gt_of_independent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

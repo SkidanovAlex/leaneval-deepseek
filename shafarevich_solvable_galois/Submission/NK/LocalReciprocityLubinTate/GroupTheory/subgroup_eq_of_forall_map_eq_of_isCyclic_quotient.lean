@@ -1,14 +1,4 @@
-/-
-Helper lemma for the group-theoretic detection of subgroups of a finite abelian group by
-their images in cyclic quotients.
-
-The key input is: given a finite abelian group `G`, a subgroup `A`, and an element
-`g ∉ A`, there is a subgroup `H ⊇ A` with `G ⧸ H` cyclic and `g ∉ H`.  This is proved
-by writing `G ⧸ A` as a product of cyclic groups (Mathlib's
-`CommGroup.equiv_prod_multiplicative_zmod_of_finite`) and projecting to a cyclic factor
-in which the image of `g` is nontrivial.
--/
-import Mathlib
+import Mathlib.GroupTheory.FiniteAbelian.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

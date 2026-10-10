@@ -1,46 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The cases `k = 2` and `k = -2` of the cohomological shrinking lemma
-
-Schmidt–Wingberg's Proposition 6 is stated for all `k ∈ ℤ`:
-
-> for given `x₁, …, x_t ∈ Ĥ^k(G, E(m,τ) ⊗ T)` there is a surjective `G`-operator homomorphism
-> `F(m) → F(n)` killing all the `x_i`,
-
-and the paper observes that "since `T` was arbitrary, we may restrict to the case `k = -1`":
-dimension shifting gives a natural isomorphism `Ĥ^k(G, X) ≅ Ĥ⁻¹(G, X ⊗ A_k)` with
-`A_k = I_G^{-(k+1)}`, and the shrinking lemma for `k = -1` applied to the coefficient module
-`T ⊗ A_k` does the rest.
-
-The two degrees actually used in the proof of Theorem 15 are `k = 2` (step 1, with `G` a
-decomposition group and `T = Ind_{G_p}^G 𝔽_p`) and `k = -2` (`= H₁`, used in the proof of
-Proposition 7).
-
-`Work.CohomologicalShrinking.exists_shrinking_Hm1_of_mult` is the case `k = -1`.  In this file we
-*derive* the cases `k = 2` and `k = -2` from it, taking the dimension-shifting isomorphism as an
-explicit hypothesis: the hypothesis `shift` below is the map
-`Ĥ^k(G, E(m,τ) ⊗ T) ≅ Ĥ⁻¹(G, E(m,τ) ⊗ (T ⊗ A_k))`, and `hshift` records that it is compatible
-with the maps induced by `G`-operator homomorphisms (which is the naturality of the dimension
-shift in the coefficients `E(m,τ) ⊗ T`).
-
-For `k = -2` the cohomology group used is `Work.Tate.Hm2` (the `I_G`-twist model of `Ĥ⁻²`,
-`Hm2 G X = Ĥ⁻¹(G, coindUp G X)`) and for `k = 2` it is `GroupCohomology.H2`; the identification
-of these with the `A_k`-twisted `Ĥ⁻¹` is precisely the hypothesis.  See `NOTES.md` for what is
-missing to discharge it unconditionally.
-
-## Main results
-
-* `Work.CohomologicalShrinking.exists_shrinking_Hm1_of_mult` : the case `k = -1` (in `Shrinking.lean`).
-* `Work.CohomologicalShrinking.exists_shrinking_Hm2_of_shift_mult` : the case `k = -2`.
-* `Work.CohomologicalShrinking.exists_shrinking_H2_of_shift_mult` : the case `k = 2`.
--/
-
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.TensorProduct.Finite
 import Submission.Work.CohomologicalShrinking.Shrinking
-import Submission.Work.GroupCohomology.All
+import Submission.Work.GroupCohomology.ConnectingLift
+import Submission.Work.GroupCohomology.CyclicTriv
+import Submission.Work.GroupCohomology.Shapiro
+import Submission.Work.GroupCohomology.TrivialGroup
+import Submission.Work.GroupCohomology.Vanishing
 import Submission.Work.Tate.CoindUp
+import Submission.Work.Tate.ker_deltaH1_eq_range_mapH1
+import Submission.Work.Tate.range_deltaH1_eq_ker_mapH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

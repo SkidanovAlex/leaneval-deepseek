@@ -1,30 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The section cocycle of an abelian-kernel extension is a `2`-cocycle
-
-For a surjection `π : G →* Q` whose kernel `A = ker π` is abelian, the conjugation action of `Q`
-on `A` (via a normalized section `s : Q → G`, see `Work.AbsoluteGalois.kernelAction`) makes the
-cochain
-
-`c (q, r) = s q * s r * (s (q * r))⁻¹ ∈ A`
-
-into a `2`-cocycle: the extension class of `1 → A → G → Q → 1`.
-
-The cocycle identity is the multiplicative relation
-`c (q, r) * c (q * r, t) = (s q) c (r, t) (s q)⁻¹ * c (q, r * t)` in the abelian group `A`; in
-additive notation (with the `kernelAction`-module structure) this is the `Z²`-condition
-`c (q * r, t) + c (q, r) = q • c (r, t) + c (q, r * t)`, because `A` is commutative.
-
-## Main declarations
-
-* `Work.AbsoluteGalois.kernelAction_smul_toMul` — the `Q`-action computes as conjugation;
-* `Work.AbsoluteGalois.sectionCocycle_mul_eq` — the cocycle identity in multiplicative form;
-* `Work.AbsoluteGalois.sectionCocycle_mem_Z2` — `sectionCocycle` is a `2`-cocycle.
--/
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.AbsoluteGalois.Cohomology
-import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

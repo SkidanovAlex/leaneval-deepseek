@@ -1,9 +1,9 @@
 import Mathlib.Algebra.BigOperators.Associated
 import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Algebra.Order.Archimedean.Real.Basic
-import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

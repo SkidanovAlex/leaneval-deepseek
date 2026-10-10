@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.AlphaTwoKummer
+import Mathlib.Algebra.Module.NatInt
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.SSGRoute.PT.mapH2_zsmulHomEnd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

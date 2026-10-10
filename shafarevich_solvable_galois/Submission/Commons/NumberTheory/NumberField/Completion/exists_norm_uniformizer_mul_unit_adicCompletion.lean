@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
-import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
+import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
+import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

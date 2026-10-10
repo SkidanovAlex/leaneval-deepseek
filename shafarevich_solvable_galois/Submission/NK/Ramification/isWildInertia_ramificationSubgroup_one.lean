@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.Ramification.Defs
 import Submission.NK.Ramification.le_subgroup_of_isProP_of_coprime_quotient
-import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

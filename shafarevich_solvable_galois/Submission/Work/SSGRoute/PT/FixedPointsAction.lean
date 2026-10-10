@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Submodule.LinearMap
 import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

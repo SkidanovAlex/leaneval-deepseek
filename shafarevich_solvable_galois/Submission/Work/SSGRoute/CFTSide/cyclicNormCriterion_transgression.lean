@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.Work.SSGRoute.phi1_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

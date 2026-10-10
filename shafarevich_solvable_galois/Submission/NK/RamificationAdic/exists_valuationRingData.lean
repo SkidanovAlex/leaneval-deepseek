@@ -1,12 +1,10 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.Ramification.exists_valuationSubring_finiteDimensional
-import Submission.NK.Ramification.ramificationSubgroup_map_conj
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.RamificationDeep.uniformizerData_of_isGalois
-import Submission.NK.Ramification.exists_ramificationSubgroup_eq_bot
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.LocalInputs.ResidueChar.primesEquiv_primeBelow
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.NK.TameStructureDeep.Tame.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

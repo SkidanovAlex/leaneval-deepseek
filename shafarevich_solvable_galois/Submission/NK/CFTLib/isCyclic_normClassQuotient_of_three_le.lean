@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
 import Submission.NK.GroupTheory.Cyclic.isCyclic_of_cyclic_of_index_prime_quotient_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

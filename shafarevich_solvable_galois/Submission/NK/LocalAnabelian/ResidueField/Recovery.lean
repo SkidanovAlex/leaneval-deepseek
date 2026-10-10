@@ -1,34 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Recovering the residue field cardinality from the Frobenius
-
-This file completes part (C): the residue field cardinality `q` of a `p`-adic field
-is visible from `Gal(κ̄/κ)` through the action of the Frobenius on the roots of unity
-of order prime to `p`.
-
-Contents:
-
-* `actsAsFrobenius_unique_mod_inertiaSubgroup`: the Frobenius element is well defined
-  modulo the inertia subgroup — two elements acting by `ζ ↦ ζ^q` differ by an inertia
-  element.  (So the *canonical* Frobenius is a coset of `I`, i.e. an element of the
-  unramified quotient, as it should be.)
-* `residueCard_eq_of_actsAsFrobenius`: a single element determines `q` (this is
-  `eq_of_actsAsFrobenius` read as a statement about the residue field).
-* `ResidueCardInput`: the arithmetic input saying that `κ` has a Frobenius element, i.e.
-  that `Gal(κ^ur/κ)` has a canonical topological generator whose action on the prime-to-`p`
-  roots of unity is `ζ ↦ ζ^q` (for which it suffices that `Gal(κ^ur/κ) ≅ Gal(𝔽̄_q/𝔽_q)` and
-  `κ^ur = κ(μ_{p'})`, the latter being `unramifiedClosure`).
-
-The remaining arithmetic statement — that `Gal(κ^ur/κ)` is the profinite completion of
-`ℤ`, i.e. `Ẑ`, with generator the Frobenius — is *not* proved here; only the group-theoretic
-part (the unramified quotient is `Gal(K'/κ)/I`, computed in
-`quotient_inertiaSubgroup_mulEquiv_unramifiedClosure`) is.
--/
-import Submission.NK.LocalAnabelian.ResidueField.Defs
-import Submission.NK.LocalAnabelian.ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+import Submission.NK.LocalAnabelian.ResidueField.quotient_inertiaSubgroup_mulEquiv_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

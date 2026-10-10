@@ -1,27 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The extension class of an abelian-kernel extension as an explicit `2`-cocycle
-
-For a surjection `π : G →* Q` with **abelian** kernel `A = ker π`, the conjugation action of `Q`
-on `A` makes `A` a `Q`-module (`kernelAction`): it is well defined because inner conjugation by an
-element of an abelian group is trivial.  Choosing a normalized set-theoretic section `s : Q → G`
-of `π`, the assignment
-
-`c (q, r) = s q * s r * (s (q * r))⁻¹ ∈ ker π`
-
-is a `2`-cocycle (`sectionCocycle`); its class in `H²(Q, A)` is the **extension class** of the
-extension `1 → A → G → Q → 1`, i.e. the class of the embedding problem in the obstruction
-calculus.
-
-## Main declarations
-
-* `Work.AbsoluteGalois.conjKernelMul` — conjugation by an element of `G` inside `ker π`;
-* `Work.AbsoluteGalois.kernelAction` — the conjugation action of `Q` on `ker π`;
-* `Work.AbsoluteGalois.sectionCocycle` — the `2`-cochain of a section;
-* `Work.AbsoluteGalois.sectionCocycle_mem_Z2` — it is a `2`-cocycle.
--/
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

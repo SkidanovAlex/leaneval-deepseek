@@ -1,3 +1,5 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Transport.IdeleClassEquiv
 import Submission.NK.GlobalCFTdeep.Transport.ideleEquiv_normIdeleHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

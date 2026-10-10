@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.exists_T0_split_generating
-import Submission.Work.SSGRoute.t0Generation_cyclic
-import Submission.Work.SSGRoute.RamifiedPlacesAux
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.chebotarev_place_zpowers_unram_disj
+import Submission.Work.SSGRoute.exists_T0_split_generating
 import Submission.Work.SSGRoute.placePrime_eq_of_isConjPlace
-import Submission.NK.NUV2.chebotarev_all0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

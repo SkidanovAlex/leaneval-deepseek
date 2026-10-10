@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.NK.LocalReciprocity.Reciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

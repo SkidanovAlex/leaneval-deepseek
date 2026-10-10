@@ -1,33 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Cohomologous `2`-cocycles define equivalent extensions
-
-The extension `Extension.ofCocycle Q A c` attached to a `2`-cocycle `c` depends, up to
-isomorphism of extensions of `Q` by `A`, only on the cohomology class of `c`:
-
-`ofCocycle_equiv_of_eq_class` : if `H2π c = H2π c'` in `H²(Q, A)`, then the two extensions
-`ofCocycle Q A c` and `ofCocycle Q A c'` are equivalent.
-
-## Strategy
-
-* `c - c' ∈ B²(Q, A)`, say `c - c' = d¹ f` for a `1`-cochain `f`.
-* For the normalizations `nc = normCocycle c`, `nc' = normCocycle c'` one computes
-  `nc - nc' = d¹ g` with `g q = f q - f 1` (and `g 1 = 0`).
-* If two *normalized* cocycles `c`, `c'` satisfy `c - c' = d¹ g` with `g 1 = 0`, the map
-  `(a, q) ↦ (a + g q, q)` is an isomorphism of the twisted groups `twGroup Q A c ≃* twGroup Q A c'`
-  fixing `A × 1` pointwise and commuting with the projections to `Q`; hence it is an
-  equivalence of the associated extensions.  This is `ofNormalized_equiv_of_d1`.
-
-## Main results
-
-* `Work.GroupCohomology.ofNormalized_twistMulEquiv` : the twisted groups `twGroup Q A c` and
-  `twGroup Q A c'` are isomorphic when `c - c' = d¹ g`.
-* `Work.GroupCohomology.ofNormalized_equiv_of_d1` : the corresponding equivalence of extensions.
-* `Work.GroupCohomology.ofCocycle_equiv_of_eq_class` : cohomologous cocycles give equivalent
-  extensions, the statement requested.
--/
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.GroupCohomology.Extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

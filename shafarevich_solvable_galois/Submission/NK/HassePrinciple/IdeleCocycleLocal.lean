@@ -1,22 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Local solutions of the idèle cocycle at the places
-
-For a `1`-cocycle `c : Gal(L/K) → 𝕀_L` and a place `w` of `L`, the components
-`σ ↦ c σ w` (`σ` in the stabiliser `H_w` of `w`) form a `1`-cocycle for the action of `H_w` on
-`L_wˣ` by field automorphisms (`local_cocycle`), so Hilbert 90 produces a local solution `u` with
-`c σ w = σ • u / u`.  At places outside the finite "bad set" (`badSet`, the places where some
-`c g` is not a local unit together with the ramified places) the solution can be chosen to be a
-local unit, by `exists_mem_localUnits_div_of_forall_eq_div`.
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.IdeleCocycle
-import Submission.NK.HassePrinciple.exists_units_div_of_isMulCocycle_ringEquiv
-import Submission.NK.HassePrinciple.exists_mem_localUnits_div_of_forall_eq_div
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.HassePrinciple.exists_fixed_uniformizer_localAutHom
+import Submission.NK.HassePrinciple.exists_mem_localUnits_div_of_forall_eq_div
+import Submission.NK.HassePrinciple.exists_units_div_of_isMulCocycle_ringEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

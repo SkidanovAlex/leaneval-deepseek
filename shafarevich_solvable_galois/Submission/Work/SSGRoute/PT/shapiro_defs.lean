@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.GroupAction.Quotient
 import Submission.Work.SSGRoute.PT.ClassFormation
 import Submission.Work.SSGRoute.ShapiroSetup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

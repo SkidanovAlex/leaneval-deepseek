@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.Reconstruct.LevelPrimeGen
 import Submission.NK.ReconstructField.exists_level_galois_image
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

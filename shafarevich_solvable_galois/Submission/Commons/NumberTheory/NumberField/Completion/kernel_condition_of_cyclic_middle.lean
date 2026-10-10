@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.FieldTheory.Galois.ker_le_range_of_natCard_quotient_units_range_norm_eq_mul
 import Submission.Commons.NumberTheory.NumberField.Completion.abelian_local_norm_index_at_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

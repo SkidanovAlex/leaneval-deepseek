@@ -1,7 +1,16 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpInertia
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocVal
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.helpersTotallyRamified
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicValExp_mem_eZ_of_mem_adjoin_lift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

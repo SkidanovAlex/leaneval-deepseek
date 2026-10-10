@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.Geom.exists_mem_frontier_dist_le
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Module.ZLattice.Covolume
+import Mathlib.Dynamics.Ergodic.Action.Regular
 import Submission.NK.NUV2.Geom.cthickening_vadd_smul_subset
+import Submission.NK.NUV2.Geom.exists_mem_frontier_dist_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

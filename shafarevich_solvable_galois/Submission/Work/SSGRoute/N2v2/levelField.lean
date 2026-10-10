@@ -1,13 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.step4_y_escape_v2.Orthogonality
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.CFTSide.exists_abelian_subextension_normClassSubgroup_le
-import Submission.Work.SSGRoute.CFTSide.exists_intermediateField_normClassSubgroup_eq_of_index
-import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Submission.Work.SSGRoute.SSG8Escape.Setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

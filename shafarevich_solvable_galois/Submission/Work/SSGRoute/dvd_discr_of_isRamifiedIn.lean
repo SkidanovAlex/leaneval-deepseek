@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Work.LocalFields.Decomposition
-import Submission.Work.LocalFields.unramifiedAt_iff_inertia_eq_bot
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.Work.LocalFields.finite_ramified_primes_extension
+import Submission.Work.LocalFields.unramifiedAt_iff_inertia_eq_bot
+import Submission.Work.SSGRoute.RamifiedPlacesAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

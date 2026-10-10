@@ -1,13 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.PT.e1a_can_chain
-import Submission.Work.SSGRoute.PT.resH2
-import Submission.Work.SSGRoute.PT.e1a_shift
-import Submission.Work.SSGRoute.ExtChain.homCoindFreeT_H1_subgroup
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.ExtChain.ext_shift_natural_res
+import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
+import Submission.Work.SSGRoute.ExtChain.homCoindFreeT_H1_subgroup
+import Submission.Work.SSGRoute.PT.e1a_can_chain
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

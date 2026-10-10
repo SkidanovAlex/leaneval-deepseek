@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.CategoryTheory.Abelian.Exact
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.phi_pairing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

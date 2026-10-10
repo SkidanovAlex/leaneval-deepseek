@@ -1,28 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Group extensions and `H²`
-
-This file sets up the construction of a group extension `1 → A → E → Q → 1` from a `2`-cocycle
-`c : Z²(Q, A)`: the underlying set is `A × Q` with the twisted multiplication
-
-`(a, q) * (b, r) = (a + q • b + c (q, r), q * r)`,
-
-which is associative and unital precisely when `c` is a cocycle, and whose conjugation action on
-`A × {1} ≅ A` is the given action of `Q` on `A`.
-
-For an arbitrary cocycle `c` one first replaces it by the *normalized* cocycle
-`normCocycle c (q, r) = c (q, r) - c (q, 1)`, which is cohomologous to `c` and satisfies
-`normCocycle c (1, 1) = 0`; this is why the twisted product has `(0, 1)` as its identity.
-
-## Main definitions
-
-* `Work.GroupCohomology.twMul`, `.twInv`, `.twOne`, `.twGroup` : the twisted product on `A × Q`
-* `Work.GroupCohomology.normCocycle` : the normalization of a `2`-cocycle
-* `Work.GroupCohomology.Extension` : a group extension `1 → A → E → Q → 1` whose conjugation
-  action on `A` is the prescribed one
-* `Work.GroupCohomology.Extension.ofCocycle` : the extension attached to a `2`-cocycle
--/
+import Mathlib.Tactic.Abel
+import Mathlib.Algebra.Group.MinimalAxioms
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.GroupCohomology.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

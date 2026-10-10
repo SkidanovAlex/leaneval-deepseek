@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
 import Submission.NK.GlobalCFT.Place
 import Submission.NK.NUV2.ArtinBridge.continuous_algebraNorm
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

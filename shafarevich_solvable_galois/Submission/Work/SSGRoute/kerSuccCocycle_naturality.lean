@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.SSGRoute.FlowGroupSuccDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

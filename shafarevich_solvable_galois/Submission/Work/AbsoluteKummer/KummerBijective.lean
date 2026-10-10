@@ -1,18 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The Kummer isomorphism (packaged)
-
-The two halves proved in `Submission/Work/AbsoluteKummer/Kummer/` assemble into the headline
-statement of this chapter: for a field `k` and `n > 0` with a primitive `n`-th root of unity
-`ζ ∈ k`,
-
-`kˣ/(kˣ)^n ≃* H¹(G_k, μ_n)`   (`Work.AbsoluteKummer.kummerEquiv`),
-
-the class of `x : kˣ` corresponding to the crossed homomorphism `σ ↦ σ α/α` for any `n`-th root
-`α ∈ k̄ˣ` of `x` (`Work.AbsoluteKummer.kummerEquiv_mk`).
--/
-import Submission.Work.AbsoluteKummer.Kummer
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteKummer.Kummer.kummerMap_injective
 import Submission.Work.AbsoluteKummer.Kummer.kummerMap_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

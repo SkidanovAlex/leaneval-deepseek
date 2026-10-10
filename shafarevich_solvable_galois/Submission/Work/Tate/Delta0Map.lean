@@ -1,32 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The connecting map `δ₀ : Ĥ⁰(G, C) → H¹(G, A)`
-
-This file assembles the cocycle construction of `Submission/Work/Tate/Delta0.lean` into the
-connecting homomorphism
-
-`S.delta0 : Ĥ⁰(G, C) →+ H¹(G, A)`
-
-of a short exact sequence of `G`-modules `S : SES G A B C`.  Here `Ĥ⁰(G,C) = C^G/N(C)` is the
-Tate group `Work.Tate.H0 G C` and `H¹(G,A)` is the inhomogeneous first cohomology group
-`Work.GroupCohomology.H1 G A` (so that `δ₀` is the map of the Tate long exact sequence
-`Ĥ⁻¹(C) → Ĥ⁰(A) → Ĥ⁰(B) → Ĥ⁰(C) --δ₀--> H¹(A) → H¹(B) → H¹(C) → H²(A) → …`).
-
-The defining formula is `S.delta0 (H0π c) = H1π (S.delta0Cocycle c)`, i.e. on a fixed point `c`
-
-`δ₀(c) = [γ ↦ f⁻¹(γ • b - b)]`
-
-for any lift `b ∈ B` of `c` (lift independence: `delta0CocycleOf_sub_eq`).
--/
-import Mathlib
-import Submission.Work.Tate.Delta0
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.H1pi_eq_iff
 import Submission.Work.GroupCohomology.H1pi_eq_zero_iff
+import Submission.Work.Tate.delta0CocycleOf_add
 import Submission.Work.Tate.delta0CocycleOf_mem_Z1
 import Submission.Work.Tate.delta0CocycleOf_sub_eq
-import Submission.Work.Tate.delta0CocycleOf_add
 import Submission.Work.Tate.delta0Cocycle_eq_coboundary_of_eq_norm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

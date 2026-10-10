@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.TameStructureDeep.Tame.isGalois_tameClosure
-import Submission.NK.LocalTame.Basic
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.TameStructureDeep.Tame.isProP_correctedWildInertia_indep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Group.Subgroup.Defs
 import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

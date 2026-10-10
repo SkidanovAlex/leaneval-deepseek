@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

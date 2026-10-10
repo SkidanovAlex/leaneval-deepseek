@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Defs.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.AbsoluteKummer.Functoriality
-import Submission.Work.SSGRoute.PT.AlphaPairing
 import Submission.Work.SSGRoute.PT.alphaTwo_naturality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

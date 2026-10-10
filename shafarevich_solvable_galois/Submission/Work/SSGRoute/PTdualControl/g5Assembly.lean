@@ -1,20 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.ext_sha1_bridge
-import Submission.Work.SSGRoute.pt_char_pTorsion
-import Submission.Work.SSGRoute.Sha2Lib.pt_core_assembly
-import Submission.Work.SSGRoute.Sha2Lib.yonedaPair_extToClasses_eq_zero_of_locTrivial
 import Submission.Work.SSGRoute.PTdualControl.charPTorsionLevel
 import Submission.Work.SSGRoute.PTdualControl.extExact
 import Submission.Work.SSGRoute.PTdualControl.subsingleton_sha2_of_not_dvd_finrank
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.Sha2Lib.pt_core_assembly
+import Submission.Work.SSGRoute.ext_sha1_bridge
 
 /-!
 # `G5`: the assembly of `tatePoitouEmbedding` from `E1a` and `E9`
@@ -45,6 +47,21 @@ open scoped TensorProduct
 namespace Work.SSGRoute.PTdualControl
 
 open SSGRoute.PTExt
+
+
+section FastShaInstances
+/-! Build-speed: the additive monoid on `Sha1`, stated once. Each occurrence otherwise re-runs the
+search through the quotient of the submodule `Z1loc` (several seconds each, mostly a failing
+`AddCommGroup ↥(Z1loc …)` attempt). The value is the instance the search finds. -/
+variable {p : ℕ} {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {K : IntermediateField k Ω}
+  [Normal k K] {M : Type} [AddCommGroup M] [Module (ZMod p) M] [DistribMulAction (K ≃ₐ[k] K) M]
+  [SMulCommClass (K ≃ₐ[k] K) (ZMod p) M]
+
+instance (priority := high) instAddCommMonoidSha1Fast : AddCommMonoid (Work.SSGRoute.Sha1 p k Ω K M) :=
+  Submodule.Quotient.addCommMonoid _
+
+end FastShaInstances
+
 
 /-! ## Auxiliary linear algebra: `𝔽_p`-linear maps as `Coeff`-linear and as `Rep`-morphisms -/
 

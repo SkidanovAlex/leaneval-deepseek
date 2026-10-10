@@ -1,7 +1,5 @@
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Normal.Closure
-import Mathlib.RingTheory.Valuation.RamificationGroup
-import Mathlib.RingTheory.Algebraic.Integral
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

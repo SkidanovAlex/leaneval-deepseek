@@ -1,6 +1,11 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ArchDictionary.Defs
-import Submission.Work.SSGRoute.LTDDefs.Basic
 import Submission.Work.SSGRoute.E7Arch.finrank_H1loc_zpowers_eq
 import Submission.Work.SSGRoute.H1Pair.omega_functional
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

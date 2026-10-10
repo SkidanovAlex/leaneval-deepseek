@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.All
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.ProP.lowerCentralSeries_le_pCentralSeries
-import Submission.Work.SSGRoute.pSeries_inter_centralSeries_pow
 import Submission.Work.SSGRoute.UnivPort
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

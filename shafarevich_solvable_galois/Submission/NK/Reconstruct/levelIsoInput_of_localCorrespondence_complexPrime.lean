@@ -1,18 +1,12 @@
-
-import Mathlib
-import Submission.NK.Reconstruct.levelPairData
-import Submission.NK.Reconstruct.assemblyGen
-import Submission.NK.Reconstruct.fourf5Gen
-import Submission.NK.Reconstruct.prop4f3AwayFromL
-import Submission.NK.Reconstruct.frobCorrespondenceGammaHaus_levelSplit
-import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup_awayFromL
-import Submission.NK.Reconstruct.exists_ringEquiv_extends
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.exists_gammaEquivOfPhi_continuous
-import Submission.NK.Reconstruct.NumFieldInSup
-import Submission.NK.ReconstructField.LevelCandidate
-import Submission.NK.ReconstructField.exists_finitePlace_of_prime_level
-import Submission.NK.ReconstructField.primeBelowNat_levelPrimeMap
+import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup_awayFromL
+import Submission.NK.Reconstruct.frobCorrespondenceGammaHaus_levelSplit
 import Submission.NK.Reconstruct.isHomeomorph_levelGalEquiv
+import Submission.NK.Reconstruct.levelPairData
+import Submission.NK.Reconstruct.prop4f3AwayFromL
 import Submission.NK.ReconstructField.levelPrimeMapGen_bijective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

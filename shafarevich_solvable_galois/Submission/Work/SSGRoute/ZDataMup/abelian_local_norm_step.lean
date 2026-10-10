@@ -1,13 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux
-import Submission.Work.SSGRoute.ZDataMup.ssg_cyclic_quotient_separates
-import Submission.NK.NUV2.ARL.HR.CyclotomicTransferAux
-import Submission.NeukirchUchida.Local.LocalTransfer
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_injective
-import Submission.Work.SSGRoute.ZDataMup.normGroup_eq_iInf_of_iSup_eq_top
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.Work.SSGRoute.ZDataMup.exists_isCyclic_fixingSubgroup_notMem
 import Submission.Work.SSGRoute.ZDataMup.mem_fixingSubgroup_of_mem_localFieldImage
+import Submission.Work.SSGRoute.ZDataMup.normGroup_eq_iInf_of_iSup_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

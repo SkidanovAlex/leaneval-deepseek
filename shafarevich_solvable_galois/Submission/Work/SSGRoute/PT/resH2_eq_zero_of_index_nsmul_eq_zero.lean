@@ -1,15 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PT.resH2
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.PT.corH2_resH2_eq_index
-import Submission.Work.SSGRoute.PT.H2Transfer
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PTCore.H2_level_defs
-import Submission.Work.SSGRoute.PTCore.H2_units_infl
-import Submission.Work.SSGRoute.PTCore.H2_level_mono
 import Submission.Work.SSGRoute.PTfin.levelH2_cyclic_finiteExtension
-import Submission.Work.SSGRoute.PTCore.H2_level_card_adicCompletion
-import Submission.Work.SSGRoute.homCoindDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.phi1_defs
+import Mathlib.Computability.Reduce
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Data.Int.Star
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Linear
 import Submission.Work.SSGRoute.E7cOmega.extH_unitRep_one_subsingleton
 import Submission.Work.SSGRoute.ext_zmod_prime_iso_corrected
 

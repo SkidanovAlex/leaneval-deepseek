@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

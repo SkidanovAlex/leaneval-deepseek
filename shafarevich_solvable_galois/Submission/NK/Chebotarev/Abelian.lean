@@ -1,9 +1,7 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Submission.NK.Chebotarev.KroneckerWeber
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.NK.Chebotarev.CyclotomicIntermediateFieldDensity
 import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquiv
+import Submission.NK.Chebotarev.KroneckerWeber
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

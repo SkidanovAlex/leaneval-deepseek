@@ -1,9 +1,8 @@
-import Submission.NK.Reconstruct.GammaObject
-import Submission.NK.Reconstruct.GammaSup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.Reconstruct.dual_injective_of_finite_index
-import Submission.NK.Reconstruct.finite_of_fg_torsion
-import Submission.NK.Reconstruct.proj_surjective
 import Submission.NK.Reconstruct.ellRestrict_surjective
+import Submission.NK.Reconstruct.proj_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

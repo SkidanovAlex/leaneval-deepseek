@@ -1,20 +1,24 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.PT.glue_realiser_abstract
-import Submission.Work.SSGRoute.PT.glue_helpers
-import Submission.Work.SSGRoute.PT.wc_orbit_injective
-import Submission.Work.SSGRoute.PT.liesOver_linked
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.PT.exists_level_factors_locConstOnTwo
-import Submission.Work.SSGRoute.e9_local_decomposition
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.PT.levelClassOf_add
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.exists_transversal_places_wc
+import Submission.Work.SSGRoute.PT.levelClassOf_add
+import Submission.Work.SSGRoute.PT.liesOver_linked
+import Submission.Work.SSGRoute.e9_local_decomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.GroupTheory.FiniteAbelian.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

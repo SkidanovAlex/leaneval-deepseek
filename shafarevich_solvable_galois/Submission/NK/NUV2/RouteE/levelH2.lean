@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.NK.NUV2.RouteC.crux
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_addOrderOf_eq_finrank_groupCohomology_two_units
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_mulEquiv_artinMap_of_commute
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_le_finrank_of_abelian
-import Submission.Commons.NumberTheory.NumberField.Completion.groupCohomology_two_units_ge_finrank
+import Submission.NK.NUV2.RouteC.crux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

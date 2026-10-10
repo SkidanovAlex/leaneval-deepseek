@@ -1,23 +1,14 @@
-import Mathlib
-import Submission.NK.CFTLib.ARL.AuxField
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.cyclotomicKernelLe
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.relNormUnit_trans
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.norm_principalRay_le
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ARL.kernelLe_of_auxField_B
-import Submission.NK.CFTLib.ARL.cyclotomicCellKernelLe_B
-import Submission.NK.CFTLib.ARLAlt.CellAbelian
-import Submission.NK.CFTLib.ARLAlt.AuxLocal
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
-import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquivSameBase
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
 import Submission.NK.CFTLib.ARLAlt.Descent
-import Submission.NK.CFTLib.ARLAlt.CellAtAux
 import Submission.NK.Existence.ArtinLemma.helpers
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

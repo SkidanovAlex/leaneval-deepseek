@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.DualMod.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

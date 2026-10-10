@@ -1,15 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archFamilyLocal
-import Submission.Work.SSGRoute.PT.liesOver_linked
-import Submission.Work.SSGRoute.PT.decompK_linked
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Submission.Work.SSGRoute.ArchPlace.linkedPlaceOfInvolution
-import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.PT.wc_orbit_injective
-import Submission.Work.SSGRoute.PT.archYoneda_perfect
-import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
-import Submission.Work.SSGRoute.ZDataTwo.ArchDictionary
 import Submission.Work.SSGRoute.HRec.exists_conjInv_kummerChar_eq_zero_iff
 import Submission.Work.SSGRoute.HRec.realPlace_eq_of_isNegAt_iff
+import Submission.Work.SSGRoute.PT.archFamilyLocal
+import Submission.Work.SSGRoute.PT.wc_orbit_injective
+import Submission.Work.SSGRoute.ZDataTwo.ArchDictionary
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_split
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Work.SSGRoute.CycLevel.card_stabilizer_eq_of_localNormSubgroup_index
+import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_split
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

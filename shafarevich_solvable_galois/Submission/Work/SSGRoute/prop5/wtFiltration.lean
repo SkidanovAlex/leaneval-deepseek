@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.lowerCentralSeries_torsionFree
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
+import Mathlib.Algebra.MonoidAlgebra.Basic
+import Mathlib.RingTheory.Ideal.Operations
+import Submission.Work.SSGRoute.prop5.lowerCentralSeriesCore
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

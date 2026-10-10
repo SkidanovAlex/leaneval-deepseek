@@ -1,14 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFTdeep.Shared
-import Submission.NK.GlobalCFTdeep.Herbrand.Prop27Unramified
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.Milne43ModuloProp31
 import Submission.NK.GlobalCFTdeep.Herbrand.prop31
-import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
-import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
-import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_one_tIdelesRep_eq_one
 import Submission.NK.GlobalCFTdeep.finiteTate_three_of_shortComplex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

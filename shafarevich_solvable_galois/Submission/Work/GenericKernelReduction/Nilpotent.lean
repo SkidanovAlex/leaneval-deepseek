@@ -1,33 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# From a single prime to a finite nilpotent kernel
-
-Schmidt–Wingberg, arXiv:math/9809211, §5: a finite nilpotent group is the direct product of its
-Sylow subgroups, and these are *characteristic* (in a nilpotent group every Sylow subgroup is
-normal, hence the unique Sylow subgroup for its prime), so the decomposition is compatible with
-any operator action.  Combining the single-prime solutions for the Sylow subgroups — they are
-automatically *linearly disjoint over `L`*, because the relative Galois group of the intersection
-of the two realizations injects into both a `p`-group and a `q`-group — yields a solution for the
-whole nilpotent kernel.
-
-The inputs are
-
-* `Work.GenericKernelReduction.sylow_decomposition_equivariant`: the Sylow decomposition of a
-  finite nilpotent group, compatibly with an arbitrary action `φ : G →* MulAut N`;
-* `Work.GenericKernelReduction.splitEmbeddingSolvedInClosure_pi`: the combination of solutions
-  with pairwise coprime kernels over the common base field `L` (the compositum is the fibre
-  product of the individual solutions over `Gal(L/ℚ)`);
-* `Work.GenericKernelReduction.splitEmbeddingSolvedInClosure_of_mulEquiv`: transport along a
-  `G`-equivariant isomorphism of kernels.
--/
-
-import Submission.Work.GenericKernelReduction.Defs
-import Submission.Work.GenericKernelReduction.Transport
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.SinglePrime
-import Submission.Work.GenericKernelReduction.sylow_decomposition_equivariant
+import Submission.Work.GenericKernelReduction.Transport
 import Submission.Work.GenericKernelReduction.splitEmbeddingSolvedInClosure_pi
+import Submission.Work.GenericKernelReduction.sylow_decomposition_equivariant
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

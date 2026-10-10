@@ -1,7 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.coherent_pTorsion_chi
 import Submission.Work.SSGRoute.PT.g1plus_levelInfl
-import Submission.Work.SSGRoute.PT.pt_coherent_pTorsion_invariant
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -83,25 +89,24 @@ theorem coherent_pTorsion_chi_k_of_KΩ (p : ℕ) [Fact p.Prime] (k Ω : Type) [F
     letI : FiniteDimensional k (kLevelUp K L hKL) := hFD
     letI : IsGalois k (kLevelUp K L hKL) := hGal
     exact χ (kLevelUp K L hKL)
-  · intro L hNF hFD hGal hKL u v hu hv
+  · intro L hNF hFD hGal hKL
     letI : NumberField (kLevelUp K L hKL) := hNF
     letI : FiniteDimensional k (kLevelUp K L hKL) := hFD
     letI : IsGalois k (kLevelUp K L hKL) := hGal
-    exact h1 (kLevelUp K L hKL) u v hu hv
-  · intro L hNF hFD hGal hKL u hu h0
+    exact h1 (kLevelUp K L hKL)
+  · intro L hNF hFD hGal hKL
     letI : NumberField (kLevelUp K L hKL) := hNF
     letI : FiniteDimensional k (kLevelUp K L hKL) := hFD
     letI : IsGalois k (kLevelUp K L hKL) := hGal
-    exact h2 (kLevelUp K L hKL) u hu h0
-  · intro L hNF hFD hGal hKL L' hNF' hFD' hGal' hKL' hLL u hu
+    exact h2 (kLevelUp K L hKL)
+  · intro L hNF hFD hGal hKL L' hNF' hFD' hGal' hKL' hLL
     letI : NumberField (kLevelUp K L hKL) := hNF
     letI : FiniteDimensional k (kLevelUp K L hKL) := hFD
     letI : IsGalois k (kLevelUp K L hKL) := hGal
     letI : NumberField (kLevelUp K L' hKL') := hNF'
     letI : FiniteDimensional k (kLevelUp K L' hKL') := hFD'
     letI : IsGalois k (kLevelUp K L' hKL') := hGal'
-    exact h3 (kLevelUp K L hKL) (kLevelUp K L' hKL')
-      (fun x hx => hLL hx) u hu
+    exact h3 (kLevelUp K L hKL) (kLevelUp K L' hKL') (fun x hx => hLL hx)
 
 end
 

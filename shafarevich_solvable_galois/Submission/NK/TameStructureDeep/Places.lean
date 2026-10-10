@@ -1,28 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The boundary of the chapter: `NK.ResidueFrob.LocalStructureData` at every place
-
-This is the *usable* boundary of `NK.TameStructureDeep`: the hypotheses of the place-level
-theorems of `Submission/Work/ResidueFrob/` — `NK.ResidueFrob.LocalStructureData` and
-`NK.ResidueFrob.TameDataInputs` — are produced from the single residual
-`NK.TameStructureDeep.TameRamificationCore` at each place together with the residue-character
-detector `NK.LocalTame.Zl2ResidueChar` (which the sibling theorem
-`NK.Mine.zl2ResidueChar_adicCompletion` discharges from local class field theory; see
-`localStructureData_of_zl2ResidueChar` below).
-
-Nothing else is assumed: the residue characteristic `p` is a parameter pinned by `CharP` of the
-residue field (`NK.Mine.charP_ringChar_residueField_adicCompletion` fixes the *canonical*
-choice `p = ringChar`), the residue cardinality is `NK.LocalStructure.residueCard K 𝔭` and is
-*proved* to be a power of `p` (`NK.TameStructureDeep.q_eq_of_charP`), and every other field of
-`NK.LocalStructure.TameCore`, `NK.TameData.TameAbelianisationInput`,
-`NK.TameData.TameTorsionInput` and `NK.LocalStructure.TameFrobeniusCore` is a theorem.
--/
-import Submission.NK.TameStructureDeep.Data
-import Submission.NK.ResidueFrob.LocalStructureInputs
-import Submission.NK.Mine.zl2ResidueChar_adicCompletion
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.Mine.ResidueCharAutomatic
+import Submission.NK.Mine.zl2ResidueChar_adicCompletion
+import Submission.NK.ResidueFrob.LocalStructureInputs
+import Submission.NK.TameStructureDeep.Data
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

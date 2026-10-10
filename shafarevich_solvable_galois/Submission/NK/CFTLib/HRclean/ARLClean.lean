@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.HR.TransferAux.Setup
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
+import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
 import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

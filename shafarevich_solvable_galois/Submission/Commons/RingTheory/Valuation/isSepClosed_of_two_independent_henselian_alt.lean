@@ -1,10 +1,16 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Commons.RingTheory.Valuation.close_coeffs_adjoin_le3
 import Submission.Commons.RingTheory.Valuation.exists_le_algebra
 import Submission.Commons.RingTheory.Valuation.exists_monic_close_coeffs
-import Submission.Commons.RingTheory.Valuation.valuation_le_iff_comap_eq
 import Submission.Commons.RingTheory.Valuation.exists_monic_splits_separable_valuation
 import Submission.Commons.RingTheory.Valuation.rootSet_subset_range_of_splits
-import Submission.Commons.RingTheory.Valuation.close_coeffs_adjoin_le3
+import Submission.Commons.RingTheory.Valuation.valuation_le_iff_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

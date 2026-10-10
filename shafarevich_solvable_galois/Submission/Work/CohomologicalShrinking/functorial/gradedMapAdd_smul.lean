@@ -1,21 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Naturality of the induced graded map with respect to the `G`-action
-
-Schmidt–Wingberg's Proposition 5 induces, for a surjective `G`-operator homomorphism
-`ψ : F(m) → F(n)`, a map `ψ_* : E(m,τ) → E(n,τ)` on the graded pieces of the refined
-`p`-central filtration (`Work.CohomologicalShrinking.gradedMapMul`, resp. its additive form
-`gradedMapAdd`).  This file shows that `ψ_*` is `G`-equivariant as soon as `ψ` is.
-
-The proof reduces the statement about `gradedMapAdd` to the corresponding statement about
-`gradedMapMul` (both are the same map, `Additive.ofMul`-conjugated), and then computes
-directly on a representative `y ∈ P_{(i,j)}`: the descended action on the subquotient is
-`Work.Shrinking.quotAut`, and both sides map to `ψ (g • y) = g • ψ y`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Action.End
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.CohomologicalShrinking.Functorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

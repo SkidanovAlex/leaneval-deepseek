@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
-import Submission.Work.SSGRoute.PTembedding.mup_kummer_defs
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
+import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

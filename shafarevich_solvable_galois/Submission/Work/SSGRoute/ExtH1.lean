@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.ExtH1Defs
 
 /-!

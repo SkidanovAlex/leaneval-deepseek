@@ -1,34 +1,8 @@
-/-
-# `magnusBase`: shared vocabulary for the Magnus core theorem
-
-This module collects the definitions that the proof of `magnusCore` (`prop5/magnusCore.lean`)
-needs, and which the downstream files (lemmas about the commutator monomials, delegated to
-colleagues) refer to:
-
-* `monGrp X : Magma X → FreeGroup X`, the commutator monomial in the free group, of weight
-  `Magma.size c` (i.e. lying in `γ_{size c - 1}` in Mathlib's indexing);
-* `Phi X : FreeLieAlgebra ℤ X →ₗ⁅ℤ⁆ FreeAssoc X`, the canonical Lie homomorphism, whose
-  injectivity is Witt's theorem (`Phi_injective`, deduced from the team's Witt development).
-
-The Lie-evaluation `monLie` and the bracket evaluation `monBrk` of a binary tree are imported from
-`witt/Vocab` (identical definitions, kept in one place so that the hypothesis of `magnusCore` and
-the leading-term lemmas of `witt/*` speak the same language).
-
-Witt's theorem is assembled here (rather than imported from `witt/Main.lean`) because `witt/Main`
-reaches `witt/Defs.lean`, whose `IsLyndon` clashes with the `IsLyndon` of `magnusLieDefs.lean`,
-which is needed by the graded theory of `core/`.  The Hall-set inputs used here
-(`witt/hall_spanning.lean`, `witt/leading_term_coeff.lean`, `witt/hall_foliage_lt_right.lean`,
-`witt/Swap.lean`, `witt/Assembly.lean`) are all independent of `witt/Defs.lean`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnusFramework
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Lie.Free
 import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
-import Submission.Work.SSGRoute.prop5.witt.Basic
-import Submission.Work.SSGRoute.prop5.witt.Vocab
+import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
 import Submission.Work.SSGRoute.prop5.witt.Assembly
-import Submission.Work.SSGRoute.prop5.witt.Swap
-import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
 import Submission.Work.SSGRoute.prop5.witt.hall_spanning
 import Submission.Work.SSGRoute.prop5.witt.leading_term_coeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

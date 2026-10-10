@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.Mine.PrimeCorrespondenceAPI
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NeukirchUchida.PrimeCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
