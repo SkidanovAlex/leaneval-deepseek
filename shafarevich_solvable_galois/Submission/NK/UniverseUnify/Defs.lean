@@ -1,31 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Universe unification for the Neukirch–Uchida endgame — the `ULift` interface
-
-`Submission.neukirch_uchida` (`Challenge.lean`) is stated with `{K₁ K₂ K₁' K₂' : Type*}`, i.e. it
-is polymorphic in **four independent universes**.  Every chapter of this workspace, however, states
-its endgame capstones for fields in a **single** universe
-(`NK.EndgameRepair.ClassicalChaptersRepaired (K₁ K₂ K₁' K₂' : Type u)`,
-`NK.EndgameRepair.challenge_of_repairedChapters`, …), and a single-universe statement cannot be
-applied to the challenge's data.
-
-This directory removes that gap by transporting everything along `ULift`.  This first module builds
-the interface:
-
-* the `ULift` structure instances needed to phrase the wall at the lifted types —
-  `Algebra (ULift K) (ULift L)`, `NumberField (ULift K)`, `IsSepClosure (ULift K) (ULift L)`;
-* the comparison isomorphism `NK.UniverseUnify.uliftGalEquiv K L`, a *topological* group
-  isomorphism `Gal(ULift L / ULift K) ≃* Gal(L/K)` (Krull topologies), and the induced transport
-  `NK.UniverseUnify.transportGalEquiv` of a group isomorphism of absolute Galois groups to the
-  lifted types.
-
-Nothing here mentions any hypothesis of the wall; the transport of the *endgame* (σ and `∃!`) is in
-`Submission/Work/UniverseUnify/Transport.lean`.
--/
-
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Field.ULift
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.NeukirchUchida.isHomeomorph_conjHomEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

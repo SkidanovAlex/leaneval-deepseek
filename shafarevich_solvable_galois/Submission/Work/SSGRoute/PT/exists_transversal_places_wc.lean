@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.wc_orbit_injective
-import Submission.Work.SSGRoute.PT.glue_helpers
-import Submission.Work.SSGRoute.PT.finHalfData
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.PT.glue_realiser_abstract
-import Submission.Work.SSGRoute.PT.vf_aux
+import Submission.Work.SSGRoute.PT.wc_orbit_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

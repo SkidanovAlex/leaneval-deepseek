@@ -1,5 +1,12 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.ZMod.UnitsCyclic
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.langX2KernelLe
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

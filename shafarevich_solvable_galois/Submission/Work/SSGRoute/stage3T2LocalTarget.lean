@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.twistLayer
-import Submission.Work.SSGRoute.step4_local_target
-import Submission.Work.SSGRoute.localZhatHom_ker
-import Submission.Work.SSGRoute.local_tame_lifting
-import Submission.Work.SSGRoute.local_tame_defs
-import Submission.Work.SSGRoute.inertia_map_eq_of_isCyclic
-import Submission.Work.SSGRoute.t2PowPowEqOneFlowQuotient
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.t2InertiaImageCyclicOfPowEqOne
+import Submission.Work.SSGRoute.t2PowPowEqOneFlowQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

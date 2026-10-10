@@ -1,42 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Dimension shifting in degrees `2 → 1 → 0 → -1`
-
-This file extends the dimension shift `Ĥ⁻¹(G, A^*) ≅ Ĥ⁰(G, A)` of
-`Submission/Work/Tate/DimensionShift.lean` one and two degrees upward, using the inhomogeneous
-cohomology groups `H¹`, `H²` of `Submission/Work/GroupCohomology/`.
-
-For the shift sequence `0 → A → Coind(A) → A^* → 0` (whose middle term is coinduced, hence
-acyclic in degrees `0`, `1`, `2` by Shapiro's lemma) the connecting maps give
-
-* `Work.Tate.dimensionShiftH2H1 : H²(G, A) ≃+ H¹(G, A^*)`   (from
-  `ShortExactSeq.deltaH1`, with the exactness lemmas `ker_deltaH1_eq_range_mapH1`,
-  `range_deltaH1_eq_ker_mapH2`);
-* `Work.Tate.dimensionShiftH1H0 : H¹(G, A) ≃+ Ĥ⁰(G, A^*)`   (from the new connecting map
-  `SES.delta0`, with `ker_delta0_eq_range_H0g`, `range_delta0_eq_ker_mapH1`);
-* `Work.Tate.dimensionShiftH1 : Ĥ¹(G, A) ≃+ Ĥ⁻¹(G, A^{**})`;
-* **`Work.Tate.dimensionShiftH2 : Ĥ²(G, A) ≃+ Ĥ⁻¹(G, A^{***})`**,
-
-where `A^* = Coind(A)/A` and `A^{***} = ((A^*)^*)^*`.  Since `A^* ≅ A ⊗ I_G^{-1}`, this is the
-paper's dimension shifting
-
-`Ĥ^k(G, M) ≅ Ĥ⁻¹(G, M ⊗ A_k)`,  `A_k = I_G^{-(k+1)}`,
-
-for `k = 0` (`Work.Tate.dimensionShiftCoind`), `k = 1` and `k = 2` (`A_1 = I_G^{-2}`,
-`A_2 = I_G^{-3}`); the case `k = -1` is the identity, and `k = -2` is
-`Work.Tate.dimensionShiftCoindUp` / `Work.Tate.Hm2` (the `I_G`-twist).
--/
-import Mathlib
-import Submission.InducedModules
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.CoindUp
-import Submission.Work.Tate.Delta0Map
 import Submission.Work.Tate.ker_delta0_eq_range_H0g
-import Submission.Work.Tate.range_delta0_eq_ker_mapH1
 import Submission.Work.Tate.ker_deltaH1_eq_range_mapH1
+import Submission.Work.Tate.range_delta0_eq_ker_mapH1
 import Submission.Work.Tate.range_deltaH1_eq_ker_mapH2
-import Submission.Work.Tate.DimensionShift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

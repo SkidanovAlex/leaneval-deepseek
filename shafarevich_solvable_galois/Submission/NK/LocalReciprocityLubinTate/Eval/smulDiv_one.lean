@@ -1,24 +1,6 @@
-/-
-# The Lubin–Tate `𝒪[F]`-action at the unit `1`
-
-Milne, *Classical Field Theory*, §I.3: the action of `a ∈ 𝒪[F]` on the `π^n`-torsion points
-`Λ_n` of the Lubin–Tate group of `π` is `a · x = [a](x)`, evaluated in the ambient ring
-`T_n = 𝒪[F][T]/(f^{(n)}(T))` through the `𝒪[F]`-algebra homomorphism `evMap x : T_n → F̄`
-of `Eval/TorsionRing.lean`.  Since `[1] = X` (`LubinTateModule.action_one`), the action of the
-unit `1` is the identity:
-
-  `1 · x = x`.
-
-This file records the two formal ingredients:
-
-* `evalTau_X` — Milne's evaluation `evalTau` of the power series `X` at the class `τ` of `T`
-  is `τ` itself (the defining property of evaluation, `MvPowerSeries.eval₂_X`);
-* `actionTau_one` — hence `[1]_n = τ`.
-
-The target identity `smulDiv π hπ q n hq M hx 1 = x` then follows from `evMap_tau`, the defining
-property of the `𝒪[F]`-algebra map `evMap x`.
--/
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Evaluation
 import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

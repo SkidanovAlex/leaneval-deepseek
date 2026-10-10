@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.LinearAlgebra.TensorProduct.RightExactness
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.Prop7
-import Submission.Work.CohomologicalShrinking.Prop5
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

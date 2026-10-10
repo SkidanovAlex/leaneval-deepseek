@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.LevelInertiaProEll.Defs
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.DecompositionGroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.RamificationAudit.Vocab
+import Submission.NK.RamificationDeep.isCyclic_quotient_ramificationSubgroup
+import Submission.NK.RamificationDeep.uniformizerData_of_isGalois
+import Submission.Work.SSGRoute.H2locAux.Defs
+import Submission.Work.SSGRoute.levelInertia_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

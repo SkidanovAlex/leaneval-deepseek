@@ -1,25 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Classification of group extensions by `H²`
-
-Let `Q` be a group and `A` an additive commutative group with a `DistribMulAction Q A`.  The
-constructions in `Submission/Work/GroupCohomology/Extension.lean` attach to a `2`-cocycle `c` an
-extension `E_c` of `Q` by `A` with the prescribed action.  Here we assemble the classification:
-
-* `ofCocycle_equiv_iff` : `E_c ≅ E_{c'}` (as extensions of `Q` by `A`) iff `c` and `c'` have the
-  same class in `H²(Q, A)`;
-* `exists_cocycle_equiv` (in the module of the same name) : every extension of `Q` by `A` with the
-  prescribed action is isomorphic to `E_c` for some `2`-cocycle `c`;
-* `ofCocycle_splits_iff` : `E_c` splits iff the class of `c` is `0`;
-* `exists_splitting_of_subsingleton_H2` : if `H²(Q, A) = 0`, every extension of `Q` by `A` splits.
--/
-import Submission.Work.GroupCohomology.Extension
-import Submission.Work.GroupCohomology.eq_ofCocycle_of_equiv
-import Submission.Work.GroupCohomology.ofCocycle_equiv_of_eq_class
-import Submission.Work.GroupCohomology.exists_cocycle_equiv
-import Submission.Work.GroupCohomology.ofCocycle_splits_of_class_zero
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.GroupCohomology.class_zero_of_splits_ofCocycle
+import Submission.Work.GroupCohomology.eq_ofCocycle_of_equiv
+import Submission.Work.GroupCohomology.exists_cocycle_equiv
+import Submission.Work.GroupCohomology.ofCocycle_equiv_of_eq_class
+import Submission.Work.GroupCohomology.ofCocycle_splits_of_class_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

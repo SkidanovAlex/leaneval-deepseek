@@ -1,7 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.LocalTame.Basic
-import Submission.NK.TameData.Inertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

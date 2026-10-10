@@ -1,5 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.completionSetup
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.module_free_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ValExp
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

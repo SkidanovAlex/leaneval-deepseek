@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Shared
-import Submission.NK.NumberTheory.NumberField.Completion.H2_units_ringOfIntegers_unramified
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.localUnitsUnitsEquiv
 import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_zero_of_mulEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,13 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
-import Submission.Work.SSGRoute.PTembedding.hilbert90_decomp
-import Submission.Work.SSGRoute.PTembedding.kummerUnits_decomp_eq_local
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.Nakayama.kummerH2
-import Submission.Work.SSGRoute.PT.AlphaTwoKummer
-import Submission.Work.SSGRoute.Nakayama.ptorsion_nested_cyclic
 import Submission.Work.SSGRoute.PT.HomFormReduction
-import Submission.Work.SSGRoute.PTCore.h2loc_equiv_localGal_mup
 import Submission.Work.SSGRoute.PTCore.h2loc_mup_finrank
+import Submission.Work.SSGRoute.PTembedding.kummerUnits_decomp_eq_local
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

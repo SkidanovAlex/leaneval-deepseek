@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.Wall
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.ABHN.unitsLevelH2_card
-import Submission.NK.HassePrinciple.MuColimit
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.NUV2.Wall
 
 /-!
 # The local fundamental class at the level of `UnitsLevelH2`, in the `NK.NUV2.Wall` world
@@ -223,8 +219,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units_local
   obtain ⟨L : Type, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
       (Q := Q) (B := F)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   letI : Algebra (q.adicCompletion L) E := ((algebraMap F E).comp e.symm.toRingHom).toAlgebra
@@ -240,8 +234,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units_local
   obtain ⟨L' : Type, hL'f, hL'n, hL'a, q', hq', hgal', ⟨e'⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
       (Q := q) (B := E)
-  letI : Field L' := hL'f
-  letI : NumberField L' := hL'n
   letI : Algebra L L' := hL'a
   letI : Algebra (q.adicCompletion L) (q'.adicCompletion L') :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap q q' hq')

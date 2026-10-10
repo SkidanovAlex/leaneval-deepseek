@@ -1,14 +1,10 @@
-import Mathlib
-import Submission.NeukirchUchida.FieldTransport
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.Reconstruct.PlaceCorrespondence
 import Submission.NK.Reconstruct.comap_placeMap_eq_of_realizesPlaceMap
 import Submission.NK.Reconstruct.finiteDimensional_sigmaLevel
 import Submission.NK.Reconstruct.normal_sigmaLevel
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_eq_finrank_iff_splitCompletely
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

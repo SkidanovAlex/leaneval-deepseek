@@ -1,17 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Transporting solutions of split embedding problems along equivariant isomorphisms
-
-The reduction of Theorem 14 manipulates the kernel of a split embedding problem in two ways: it
-replaces a finite `G`-operator `p`-group by an equivariant quotient of a generic kernel
-(`inClosure_of_surjective`), and it identifies a finite nilpotent `G`-operator group with the
-product of its Sylow subgroups (`sylow_decomposition_equivariant`).  Both are isomorphisms
-(respectively surjections) of `G`-operator groups, and this file records that the property of
-having a solution inside `AlgebraicClosure ℚ` is invariant under such an identification.
--/
-
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

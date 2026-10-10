@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E9c.Core
-import Submission.Work.SSGRoute.ext_idele_defs
-import Submission.Work.SSGRoute.level_decomp_bij
 import Submission.Work.SSGRoute.ext_idele_shapiro
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,18 +1,14 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.TUnitsPow
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.KummerLocalUnit
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_goodS
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_place_notMem_of_notMem_Lpow
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.principal_inf_kummerE_eq_tUnitsPow
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_kummerT_data
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_place_notMem_of_notMem_Lpow
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_tUnits_surj
-import Submission.NK.GlobalCFTdeep.Herbrand.top_eq_principal_sup_TIdeles
-import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_eq_one_of_le_normImage
-import Submission.NK.GlobalCFTdeep.SecondInequality.pow_mem_normGroup_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_eq_finrank_iff_splitCompletely
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.principal_inf_kummerE_eq_tUnitsPow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

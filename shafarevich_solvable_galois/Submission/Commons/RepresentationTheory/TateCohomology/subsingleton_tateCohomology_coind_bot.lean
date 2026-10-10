@@ -1,8 +1,10 @@
+import Mathlib.Computability.Reduce
 import Mathlib.RepresentationTheory.FiniteIndex
 import Mathlib.RepresentationTheory.Homological.GroupHomology.Shapiro
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_one_iso
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.RepresentationTheory.GroupCohomology.subsingleton_groupCohomology_coind_bot
+import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_one_iso
+import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

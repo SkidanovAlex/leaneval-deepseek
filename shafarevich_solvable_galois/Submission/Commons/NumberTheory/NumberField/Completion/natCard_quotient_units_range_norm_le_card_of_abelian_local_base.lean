@@ -1,11 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Commons.NumberTheory.NumberField.Completion
 
@@ -61,8 +56,6 @@ private theorem base_aux
   obtain ⟨L, hLf, hLn, hLa, q, hq, hφ⟩ :=
     exists_algEquiv_adicCompletion_of_finiteDimensional_aux.{uK, uB, uB} (Q := Q) (B := B)
   obtain ⟨φ⟩ := hφ
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   obtain ⟨eφ, mulφ, addφ, commφ⟩ := φ
   -- The `F`-algebra isomorphism `B ≃ₐ[F] q.adicCompletion L` as a ring isomorphism.
   let rφ : B ≃+* (q.adicCompletion L) := RingEquiv.mk eφ mulφ addφ

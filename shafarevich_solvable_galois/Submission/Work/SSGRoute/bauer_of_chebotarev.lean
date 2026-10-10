@@ -1,14 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
-import Submission.NK.Reconstruct.eq_of_splitPrimes_eq
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_valuationSubring_at_prime
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.NK.Reconstruct.eq_of_splitPrimes_eq
+import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

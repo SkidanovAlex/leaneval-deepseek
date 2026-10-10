@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormGroup.Basic
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFTdeep.Transport.NormGroupTransport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,6 @@
+import Mathlib.Tactic.Have
 import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
 import Submission.Commons.RepresentationTheory.GroupCohomology.descent_to_quotient_of_invariant
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

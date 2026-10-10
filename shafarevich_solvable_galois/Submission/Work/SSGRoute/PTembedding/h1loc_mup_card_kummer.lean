@@ -1,15 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.mup_local_defs
-import Submission.Work.SSGRoute.PTembedding.localKummer_base
-import Submission.Work.SSGRoute.PTembedding.mup_kummer_defs
-import Submission.Work.SSGRoute.PTembedding.homeomorph_fixedField_fixingSubgroup
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PTembedding.dualMod_rootsOfUnity_equiv
+import Submission.Work.SSGRoute.PTembedding.homeomorph_fixedField_fixingSubgroup
 import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_autCongr_equiv
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

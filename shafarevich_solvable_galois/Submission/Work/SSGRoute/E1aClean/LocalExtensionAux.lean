@@ -1,14 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.localField_subfield_place_compat
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField_pointwise
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Work.SSGRoute.E1aClean.BaseChangeSquareStep3
-import Submission.Work.SSGRoute.localAutHom_bijective
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.E1aClean.PhiERules
+import Submission.Work.SSGRoute.PT.delta_restrictSES
+import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
+import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
+import Submission.Work.SSGRoute.localGaloisEquiv_coInAdjoin_compat_general
 import Submission.Work.SSGRoute.map_restrictNormalHom_decomp_eq
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Work.SSGRoute.place_comap_valuationSubringAtPrime
-import Submission.Work.SSGRoute.PT.exists_localField_place_data
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

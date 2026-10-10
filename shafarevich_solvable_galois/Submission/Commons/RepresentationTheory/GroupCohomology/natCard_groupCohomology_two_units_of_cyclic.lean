@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_two_eq_tateCohomology_zero_cyclic
 import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_zero_units
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

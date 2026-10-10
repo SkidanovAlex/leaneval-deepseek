@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.Topology.Constructions
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.tauStarDef
-import Submission.NK.Reconstruct.galToGamma_continuous
-import Submission.NK.Reconstruct.exists_gammaEquivOfPhi
-import Submission.NK.Reconstruct.conjLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

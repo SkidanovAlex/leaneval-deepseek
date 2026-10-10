@@ -1,5 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.OrthImports
+import Mathlib.FieldTheory.KummerExtension
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Submission.Work.SSGRoute.ZDataMup.KummerSurjectivity.kummerCharZMod_surjective_levelK
+import Submission.Work.SSGRoute.ZDataMup.LTRecFamCrux.ideleArtin_ideleOfPrime_of_unramified
+import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
+import Submission.Work.SSGRoute.n4_halpha_fix
+import Submission.Work.SSGRoute.ssg8Chebotarev
+import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

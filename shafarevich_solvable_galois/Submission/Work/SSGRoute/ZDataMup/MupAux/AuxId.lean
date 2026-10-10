@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
 import Submission.Work.SSGRoute.ZDataMup.CycleAuxField
-import Submission.NK.NUV2.ARL.transferSelfContained
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

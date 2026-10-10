@@ -1,22 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The shrinking maps on tensor powers
-
-This file contains the maps appearing in Proposition 2 of Schmidt–Wingberg
-(arXiv:math/9809211):
-
-* the `e`-th coordinate projection `tensorExpand e : (⨂^s (Fin r → M)) →ₗ ⨂^s M`,
-  `⊗_j x_j ↦ ⊗_j x_j (e j)`;
-* the tensor power of a folding map, `TensorPower.map (fun _ => foldMap a)`, and the
-  fundamental identity expressing it as a *homogeneous polynomial map of degree `s`* in `a`:
-  `map_foldMap_eq_sum : PiTensorProduct.map (fun _ => foldMap a) = ∑ e, (∏ j, a (e j)) • tensorExpand e`;
-* the same identity after tensoring with the identity on `N`, which is the form in which
-  Chevalley–Warning is applied;
-* `G`-equivariance of all these maps for the diagonal actions from `Work.Shrinking.Basic`.
--/
-
+import Mathlib.Data.ZMod.Defs
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.Shrinking.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,29 +1,13 @@
-/-
-# A clash-free copy of the ideal-modulus `θ`-chain, for the cyclotomic cell
-
-See the companion note in `CycloPrincipalId.lean`: the natural-number-modulus `adjId` collides with
-the ideal-modulus one, so the ideal `θ`-chain (proved in `AdjustId`/`ThetaRange`) cannot be combined
-with the cyclotomic machinery.  This file is a verbatim copy of
-
-* `.../IdealModulus/exists_idealOf_eq_of_mem_idealCoprimeGroupId.lean`,
-* `.../IdealModulus/normIdeleHom_mem_congruenceSubgroupId.lean`,
-* `.../IdealModulus/idealOf_mem_principalRayId_sup_normRayId.lean`,
-* `.../IdealModulus/ThetaRange.lean`,
-
-with the `θ`-vocabulary redirected to the renamed copies of `IdPort/Adjust.lean`, and it ends with
-`indexLeIdId` (the ideal-modulus index inequality).
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
-import Submission.Work.SSGRoute.ZDataMup.IdPort.Adjust
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
+import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.count_map_eq_ramificationIdx_mul_count
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.localNormFinite_sub_one_le_of_val
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId_iff
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.spanUnit_mem_principalRayId_of_mem_congruenceSubgroupId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.localNormFinite_sub_one_le_of_val
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.count_map_eq_ramificationIdx_mul_count
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
+import Submission.Work.SSGRoute.ZDataMup.IdPort.Adjust
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

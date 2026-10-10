@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
+import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinMap_exists
-import Submission.NK.NUV2.ArtinBridge.exists_isOpen_subgroup_le_localNormInfinite_range
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

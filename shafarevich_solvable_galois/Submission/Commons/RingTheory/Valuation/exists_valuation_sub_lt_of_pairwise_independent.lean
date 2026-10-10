@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Field
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_separator_of_pairwise_independent
 import Submission.Commons.RingTheory.Valuation.valuation_sum_eq_of_unique_max
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

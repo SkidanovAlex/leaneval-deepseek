@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.LocalFields.Ramification
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.LocalFields.exists_pow_eq_residueFrobenius
 import Submission.Work.LocalFields.frobenius_spec
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

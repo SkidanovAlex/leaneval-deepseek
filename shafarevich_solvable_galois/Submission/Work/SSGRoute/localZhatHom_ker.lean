@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.local_tame_defs
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.inertia_of_isInertia
 import Submission.Work.SSGRoute.isInertia_of_mem_inertia
+import Submission.Work.SSGRoute.local_tame_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

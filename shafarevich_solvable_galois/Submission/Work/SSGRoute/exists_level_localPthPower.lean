@@ -1,15 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.adicCompletion_units_mul_pow
-import Submission.Work.SSGRoute.infinitePlace_units_mul_pow
-import Submission.Work.SSGRoute.exists_level_globalUnit_pthPower
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
 import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.PTDefs
+import Submission.Work.SSGRoute.adicCompletion_units_mul_pow
+import Submission.Work.SSGRoute.exists_level_globalUnit_pthPower
+import Submission.Work.SSGRoute.infinitePlace_units_mul_pow
 
 set_option linter.style.haveILetI false
 
@@ -45,8 +41,6 @@ theorem exists_level_localPthPower (p : ℕ) [Fact p.Prime] (k K : Type) [Field 
     -- a level on which the global unit `β` becomes a `p`-th power
     obtain ⟨L, hFL, hNFL, hAkL, hAKL, hSTL, hFDL, hGalL, c, hc⟩ :=
       exists_level_globalUnit_pthPower p k K β
-    letI : Field L := hFL
-    letI : NumberField L := hNFL
     letI : Algebra k L := hAkL
     letI : Algebra K L := hAKL
     letI : IsScalarTower k K L := hSTL

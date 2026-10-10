@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Topology.Separation.CompletelyRegular
 import Submission.Commons.Analysis.SpecialFunctions.tsum_pi_geometric_prod
-import Submission.Commons.Analysis.TSum.summable_mul_multiIndex_geometric
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalReciprocityLubinTate.Unramified.adicResidual
-import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_level_ge_of_towerCover
-import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_reciprocityLaw_of_symbolTower
-import Submission.NK.LocalReciprocityLubinTate.Unramified.existenceTheorem_of_symbolTower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

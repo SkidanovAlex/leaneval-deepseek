@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.RepresentationTheory.Homological.Resolution
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Commons.RepresentationTheory.GroupCohomology.barComplex_res_comp_pi
 
 /-!

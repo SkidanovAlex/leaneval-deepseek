@@ -1,14 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E1aClean.natFamilyClauses
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.ZConstruction.levelK_completion_iso_of_localGroup_eq
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.G1plusOwn.exists_unramified_level_factors
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.ZConstruction.levelK_canonicalPairing
 
 namespace Work.SSGRoute.PT.G1plusOwn
 
@@ -110,7 +113,6 @@ theorem g1FinHalf_unramified (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [N
   obtain ⟨L, hLnf, hLfd, hLgal, hKL, hunr, b₀, hb₀⟩ :=
     exists_unramified_level_factors p k Ω K T M A hA hramA b hb.1 hb.2
       (fun σ hσ => (hiner σ hσ).2)
-  letI : NumberField ↥L := hLnf
   letI : FiniteDimensional k L := hLfd
   letI : IsGalois k L := hLgal
   letI : Algebra ↥K ↥L := (IntermediateField.inclusion hKL).toAlgebra

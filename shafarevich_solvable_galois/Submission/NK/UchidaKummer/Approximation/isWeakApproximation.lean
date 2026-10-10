@@ -1,43 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Weak approximation for a number field at a finite set of finite primes
-
-Let `K` be a number field and `S` a finite set of finite primes of `K`.  **Weak approximation**
-(Neukirch, *Algebraic Number Theory*, Chap. II, 5.7; the "Chinese remainder theorem" quoted in the
-proof of §5's Proposition `K^x/K^ell local surjection`, see
-`Submission/Work/UchidaKummer/Defs.lean`) says that the diagonal image of `K` in the product
-`∏_{𝔮 ∈ S} K_𝔮` of the completions at the primes of `S` is dense:
-
-`NK.UchidaKummer.IsWeakApproximation K S`.
-
-The proof has three ingredients.
-
-* **Simultaneous approximation (the CRT step).**  For a pairwise independent family of valuation
-  subrings `A i` of a field and arbitrary targets `a i` and radii `γ i > 0`, there is `x` with
-  `(A i).valuation (x - a i) < γ i`
-  (`Commons.RingTheory.Valuation.exists_valuation_sub_lt_of_pairwise_independent`).  The hypothesis
-  of pairwise independence holds for the valuation rings `valuationSubringAtPrime K 𝔮` at distinct
-  primes `𝔮`: as soon as `A ≠ B` are valuation subrings and `A` has Krull dimension `≤ 1`
-  (true for the localisation of the ring of integers at a prime), `A ⊔ B = ⊤`
-  (`sup_valuationSubringAtPrime_eq_top`, via `ValuationSubring.eq_self_or_eq_top_of_le`).
-* **Passing from `A.valuation` to the global prime valuation.**  The valuation of
-  `valuationSubringAtPrime K 𝔮` is equivalent to `𝔮.valuation K`
-  (`valuationSubringAtPrime_valuation_lt_iff`), so the radii can be prescribed as the `𝔮`-adic
-  values `exp n` of the discrete value group `Zstar0 = WithZero (Multiplicative ℤ)`.
-* **Topology of the completion.**  Every neighbourhood of a point of `𝔮.adicCompletion K` contains
-  an `exp`-ball (`exists_exp_ball_subset`), and the diagonal map is continuous, so the levelwise
-  statement upgrades to density in the product.
-
--/
-
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.UchidaKummer.Defs
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.RingTheory.Valuation.exists_valuation_sub_lt_of_pairwise_independent
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

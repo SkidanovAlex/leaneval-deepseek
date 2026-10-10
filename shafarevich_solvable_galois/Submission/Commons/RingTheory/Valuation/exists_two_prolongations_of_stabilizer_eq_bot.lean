@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_smul_eq_of_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

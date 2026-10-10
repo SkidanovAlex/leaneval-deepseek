@@ -1,15 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.isCoboundary2On_top_of_isProPrimeToP
-import Submission.Work.SSGRoute.isCoboundary2On_top_of_procyclicGrowth
-import Submission.Work.SSGRoute.descentInflationFinite
-import Submission.Work.SSGRoute.H2locAux.Defs
-import Submission.Work.SSGRoute.PT.exists_primitive_vanishing_on_proPrimeToP
-import Submission.Work.SSGRoute.PT.FixedPointsAction
-import Submission.Work.SSGRoute.coboundary2_top_of_coboundary2_on_coprime_index
-import Submission.Work.SSGRoute.PT.quotient_proCyclicGrowth
-import Submission.Work.SSGRoute.PT.exists_primitive_vanishing_on_normal_both_vars
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Algebra.Module.LinearMap.End
+import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Submission.Work.SSGRoute.PT.exists_cocycle_on_quotient_of_vanishing_on_both_vars
+import Submission.Work.SSGRoute.PT.exists_primitive_vanishing_on_normal_both_vars
+import Submission.Work.SSGRoute.PT.exists_primitive_vanishing_on_proPrimeToP
+import Submission.Work.SSGRoute.PT.quotient_proCyclicGrowth
+import Submission.Work.SSGRoute.isCoboundary2On_top_of_procyclicGrowth
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

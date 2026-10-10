@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Topology.Metrizable.Uniformity
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.Work.SSGRoute.E9cConj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

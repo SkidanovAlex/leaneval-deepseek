@@ -1,8 +1,11 @@
-import Submission.NK.Reconstruct.phiTauDef
-import Submission.NK.Reconstruct.splitFrobeniusBase
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup
-import Submission.NK.Reconstruct.not_isOpen_ker_of_continuous_to_gammaHaus
 import Submission.NK.Reconstruct.exists_tau_gammaHausMk_eq_of_isFrobElementAt
+import Submission.NK.Reconstruct.not_isOpen_ker_of_continuous_to_gammaHaus
+import Submission.NK.Reconstruct.phiTauDef
 import Submission.NK.Reconstruct.prop4f3_measureStep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

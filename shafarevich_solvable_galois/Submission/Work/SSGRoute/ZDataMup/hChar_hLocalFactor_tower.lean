@@ -1,18 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZDataMup.mupOddChar
-import Submission.Work.SSGRoute.ZDataMup.mupOddLevel
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
-import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_restrictNormalHom_eq_abelian
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.surjective_of_frobAtPrime_unramified
-import Submission.NK.NUV2.ARL.isOpenNorm
-import Submission.NK.Chebotarev.FrobRestriction
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.NK.Chebotarev.LFunctions
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.CFTLib.exists_congruenceSubgroup_le_normImage
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleHom_trans
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.NK.LocalReciprocity.MaxAbelianSetup
-import Submission.NK.TameStructureDeep.Tame.Unconditional
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
+import Mathlib.FieldTheory.KummerExtension
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Summary.NUV2.normGroup_coprime
-import Submission.NK.LocalAnabelian.Kummer.Bridge
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits
-import Submission.NK.LocalReciprocityLubinTate.Units.higherUnits_cofinal
-import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_isUniformizer
+import Submission.NK.TameStructureDeep.Tame.Unconditional
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

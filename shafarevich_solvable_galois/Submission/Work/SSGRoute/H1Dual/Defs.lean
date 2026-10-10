@@ -1,18 +1,7 @@
-/-
-# The coinduced resolution used for `H₁(G,M) ≅ H¹(G,M^∨)^∨`
-
-This file sets up the concrete coinduced representation
-`coindRep k G V = (G → V)`, `(g • φ) x = φ (x * g)`, together with
-
-* the augmentation `coindAugHom M : coindRep k G M.V ⟶ M`, `φ ↦ ∑ x, x⁻¹ • φ x`,
-  which is a surjection with kernel `M'`;
-* the resulting short exact sequence `0 → M' → coindRep k G M.V → M → 0`;
-* the kernel of a representation morphism, and the contragredient of a morphism.
-
-Everything here is concrete: the underlying types are the function space `G → V`
-and submodules of it.
--/
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

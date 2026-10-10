@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.InvAux
+import Mathlib.Analysis.RCLike.Basic
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Field.Subfield
+import Mathlib.Algebra.Order.Star.Real
 import Submission.Work.SSGRoute.InvAux.exists_orderEmbedding
 import Submission.Work.SSGRoute.InvAux.irreducible_natDegree_le_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

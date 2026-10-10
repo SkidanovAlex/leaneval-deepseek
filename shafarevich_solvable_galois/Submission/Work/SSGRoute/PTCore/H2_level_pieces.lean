@@ -1,8 +1,14 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Submission.Work.SSGRoute.PT.KrullCorrespondence
 import Submission.Work.SSGRoute.PTCore.H2_level_defs
 import Submission.Work.SSGRoute.coindU_aux
-import Submission.Work.SSGRoute.PT.KrullCorrespondence
-import Submission.Work.SSGRoute.PT.H1Transfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

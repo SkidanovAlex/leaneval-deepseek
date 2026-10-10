@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.C6Detector.detector_algClosedExt
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.C6Detector.rankOneBrick_of_datum_and_transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

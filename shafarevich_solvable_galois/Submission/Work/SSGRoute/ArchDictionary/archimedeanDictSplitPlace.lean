@@ -1,14 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.DualMod.Main
--- import cut: this file only uses `E1aClean.globalDictionaryCanon`, which lives leaf-free in
--- `globalDictionaryCanonDefs`.  See the docstring below (which used to explain the leaf import).
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.ArchDictionary_aux.SettingLemmas
-import Submission.Work.SSGRoute.PT.prime_eq_two_of_decompK_eq_bot
-import Submission.Work.SSGRoute.ArchSplit2.ell_bot_family
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.ArchSplit2.archSplit2_square_sign
+import Submission.Work.SSGRoute.ArchSplit2.ell_bot_family
+import Submission.Work.SSGRoute.PT.prime_eq_two_of_decompK_eq_bot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

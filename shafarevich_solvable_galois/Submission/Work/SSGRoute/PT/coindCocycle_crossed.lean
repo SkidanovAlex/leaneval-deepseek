@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.GroupTheory.GroupAction.Quotient
 import Submission.Work.SSGRoute.PT.shapiro_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

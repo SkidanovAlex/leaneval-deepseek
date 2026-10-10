@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Algebra.DirectSum.Module
 import Submission.Work.SSGRoute.prop5.gradedCast
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

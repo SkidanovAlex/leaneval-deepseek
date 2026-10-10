@@ -1,7 +1,6 @@
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Algebra.CharZero.Infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

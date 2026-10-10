@@ -1,10 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.P2Close.Defs
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.defs
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.inv
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.NodeS37.tblockBasics
-import Submission.Work.SSGRoute.ZDataTwo.confinement_on_conj_blocks
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
+import Submission.Work.SSGRoute.P2Close.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

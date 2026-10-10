@@ -1,15 +1,11 @@
-import Mathlib
-import Submission.NK.GFC.exists_auxiliary_galois_tower_cyclotomic
-import Submission.NK.CFTLib.GFC.exists_element_of_order_card_of_auxiliary
+import Mathlib.GroupTheory.Complement
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.GFC.exists_addOrderOf_eq_card_of_auxiliary
+import Submission.NK.CFTLib.GFC.exists_element_of_order_card_of_auxiliary
 import Submission.NK.CFTLib.Translation.inf_range_le_ker_res_of_norm
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.CFTLib.fundamentalClassInputs
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.GFC.exists_auxiliary_galois_tower_cyclotomic
 
 set_option linter.style.haveILetI false
 set_option linter.unusedVariables false
@@ -65,12 +61,9 @@ theorem fundamentalClassElement_of_cyclotomicTower (hpp : NK.CFTLib.PrimePowerRe
   obtain ⟨E, hfE, hnfE, halgE, hfdE, hgalE, L₀, M, he, hgalM, hcycM, hcardM, hdisj, hsup,
     Ω, hfΩ, halgΩ, halgLΩ, htowerΩ, hfdΩ, q, hq, hcycΩ, φ, hφ⟩ :=
     exists_auxiliary_galois_tower_cyclotomic K L
-  letI : Field E := hfE
-  letI : NumberField E := hnfE
   letI : Algebra K E := halgE
   letI : FiniteDimensional K E := hfdE
   letI : IsGalois K E := hgalE
-  letI : Field Ω := hfΩ
   letI : Algebra K Ω := halgΩ
   letI : Algebra ↥L₀ Ω := halgLΩ
   letI : IsScalarTower K ↥L₀ Ω := htowerΩ

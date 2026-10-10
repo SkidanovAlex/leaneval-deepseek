@@ -1,34 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Composition compatibility of `OperatorMap.hm2Map`
-
-`Work.CohomologicalShrinking.OperatorMap.hm2Map` is the map induced on the Tate cohomology
-group `Ĥ⁻²(G, E(-,τ) ⊗ T)` (modelled, following `Work.Tate.Hm2`, as `Ĥ⁻¹` of the `I_G`-twist)
-by a surjective `G`-equivariant homomorphism `F(m) ⇢ F(n)` of free `G`-operator groups.
-
-This file records that it is compatible with composition of operator maps: the induced map of
-`Ψ.comp Φ` is the composite of the induced maps of `Φ` and `Ψ`.  The proof is the same pattern
-as for `Ĥ⁻¹` (`operator.hm1Map_comp`): it suffices to know that the `𝔽_p`-linear map
-`E(m,τ) ⊗ T → E(l,τ) ⊗ T` induced by `Ψ.comp Φ` is the composite of the maps induced by `Φ`
-and by `Ψ` — which is `gradedMapLin_comp` together with `LinearMap.rTensor_comp` — and then to
-apply the functoriality of `Ĥ⁻²`, `Work.CohomologicalShrinking.tate.Hm2Map_comp`.
-
-## Main results
-
-* `Work.CohomologicalShrinking.operator.Hm2Map_congr` : the induced map on `Ĥ⁻²` only depends
-  on the underlying map, not on the proof of equivariance.
-* `Work.CohomologicalShrinking.operator.hm2Map_comp` :
-  `hm2Map (Ψ.comp Φ) = hm2Map Ψ ∘ hm2Map Φ`.
--/
-
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.CohomologicalShrinking.Corollaries
-import Submission.Work.CohomologicalShrinking.OperatorMap
-import Submission.Work.CohomologicalShrinking.functorial.gradedMapLin_comp
-import Submission.Work.CohomologicalShrinking.tate.Hm2Map_comp
 import Submission.Work.CohomologicalShrinking.operator.hm1Map_comp
+import Submission.Work.CohomologicalShrinking.tate.Hm2Map_comp
 
 open scoped TensorProduct
 

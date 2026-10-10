@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Target
-import Submission.NK.LocalReciprocityLubinTate.Unramified.adicResidual
-import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_symbolTower_adicCompletion
-import Submission.NK.Summary.NUV2.CanonicalTowerResidue
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.NUV2.Final.Assembly
+import Submission.NK.Summary.NUV2.CanonicalTowerResidue
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,11 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.HRclean.ARLClean
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.HassePrinciple.localRingEquiv_localAlgebraMapUnits_of_restrict
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.Existence.normIdeleHom_coset_aux
+import Submission.NK.CFTLib.HRclean.ARLClean
 import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

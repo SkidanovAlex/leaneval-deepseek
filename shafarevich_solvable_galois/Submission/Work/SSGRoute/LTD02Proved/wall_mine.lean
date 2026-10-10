@@ -1,19 +1,15 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.E7Fin.corH2_injective_ptorsion_pt
 import Submission.Work.SSGRoute.LTD02Proved.mu_transfer_gen
 import Submission.Work.SSGRoute.PT.akH2Setup
-import Submission.Work.SSGRoute.PT.corH2_injective_on_ptorsion_localTransport
-import Submission.Work.SSGRoute.PT.local_resH2_mu_eq_zero
-import Submission.Work.SSGRoute.E7Fin.corH2_injective_ptorsion_pt
-import Submission.Work.SSGRoute.PT.exists_kummerSES_units
-import Submission.Work.SSGRoute.PT.kummerSES
-import Submission.Work.SSGRoute.Nakayama.br_pTorsion
-import Submission.Work.SSGRoute.PT.cardH2_units_openSubgroup_decomp
 import Submission.Work.SSGRoute.PT.corH2_bijective_units_openSubgroup
-import Submission.Work.SSGRoute.PT.corH2_resH2_eq_index
-import Submission.Work.SSGRoute.PTembedding.mup_kummer_defs
-import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
-import Submission.Work.SSGRoute.PTembedding.dualMod_rootsOfUnity_equiv
-import Submission.Work.SSGRoute.zmultiples_eq_top_of_card_le_prime
+import Submission.Work.SSGRoute.PT.kummerSES
+import Submission.Work.SSGRoute.PT.local_resH2_mu_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

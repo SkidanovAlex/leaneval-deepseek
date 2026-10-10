@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Data.Fintype.Defs
+import Mathlib.Algebra.Group.Subgroup.Defs
 import Submission.Work.SSGRoute.TPatom.blockSystemTransversal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

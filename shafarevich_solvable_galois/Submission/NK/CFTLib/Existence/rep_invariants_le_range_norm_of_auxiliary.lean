@@ -1,15 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinIdeal
-import Submission.NK.GlobalCFT.Cohomology
-import Submission.NK.CFTLib.Existence.notes_rep_invariants
-import Submission.NK.CFTLib.Existence.arl_normClass_inclusion_core
-import Submission.NK.CFTLib.Existence.exists_ideleInclusion_data
-import Submission.NK.CFTLib.Existence.res_subtype_eq_rep_fixedField
-import Submission.NK.CFTLib.Existence.arl_groupData
-import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
-import Submission.NK.CFTLib.Arl.All
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
-import Submission.NK.GlobalCFT.H0Computation
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RepresentationTheory.Invariants
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.CFTLib.Existence.arl_invariants_via_core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.Work.SSGRoute.ZDataMup.CycleIdele
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

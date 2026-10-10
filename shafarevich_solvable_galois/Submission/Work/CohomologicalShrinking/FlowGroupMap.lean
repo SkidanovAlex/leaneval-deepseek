@@ -1,23 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Rank change for the semidirect products `F(m)/F(m)^{(ν)} ⋊ G`
-
-A surjective `G`-operator homomorphism `Φ : F(m) ⇢ F(n)` induces
-
-* a homomorphism `flowGroupMap Φ : F(m)/F(m)^{(ν)} ⋊ G →* F(n)/F(n)^{(ν)} ⋊ G` (`i,j` fixed),
-* hence a map `flowZMap Φ : H₁(Γ_m, E(m,τ)⊗T) →+ H₁(Γ_n, E(n,τ)⊗T)` on group homology,
-
-which is the `zMap` of `Work.CohomologicalShrinking.SemidirectShrinkingData`.  (The morphism of
-coefficient representations `flowRepMap Φ` and the equivariance facts are in `FlowMap.lean`.)
-
-**Universe restriction.**  Mathlib's group homology requires the coefficient ring, the group and
-the module to live in one universe; since `ZMod p : Type`, `flowZMap` is stated for `G : Type` and
-`T : Type`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.FlowMap
 import Submission.Work.CohomologicalShrinking.flow.flowQuotMap_smul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

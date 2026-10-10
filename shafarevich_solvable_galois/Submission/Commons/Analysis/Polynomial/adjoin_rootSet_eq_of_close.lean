@@ -1,14 +1,16 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Normed.Algebra.Ultra
+import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+import Submission.Commons.Analysis.Normed.eq_of_close
+import Submission.Commons.Analysis.Normed.exists_root_separation
+import Submission.Commons.Analysis.Normed.norm_sub_eq_of_close
 import Submission.Commons.Analysis.Polynomial.exists_eps_forall_root_close
 import Submission.Commons.FieldTheory.Polynomial.mem_adjoin_of_close
-import Submission.Commons.FieldTheory.Polynomial.mem_adjoin_rootSet_of_mem_adjoin
-import Submission.Commons.Analysis.Normed.eq_of_close
-import Submission.Commons.Analysis.Normed.norm_sub_eq_of_close
-import Submission.Commons.Analysis.Normed.exists_root_separation
-import Submission.Commons.FieldTheory.Polynomial.natDegree_eq_of_supNorm_lt
-import Submission.Commons.FieldTheory.Polynomial.mem_roots_map_of_mem_rootSet
 import Submission.Commons.FieldTheory.Polynomial.mem_rootSet_of_mem_roots_map
-import Submission.Commons.Analysis.Polynomial.supNorm_neg
+import Submission.Commons.FieldTheory.Polynomial.mem_roots_map_of_mem_rootSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

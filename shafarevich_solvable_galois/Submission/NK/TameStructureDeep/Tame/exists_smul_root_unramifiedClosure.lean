@@ -1,34 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer pairing over `κ^{ur}` is onto `μ_n`, for every `n` prime to the residue characteristic
-
-Let `κ = K_𝔭` be the completion of a number field at a finite place, `π` a uniformiser of `κ`, and
-`K'` a separable closure of `κ`.  Write `κ^{ur} = κ(μ_{p'})` for the maximal unramified extension
-of `κ` inside `K'`, realised as `NK.LocalAnabelian.unramifiedClosure` of the residue
-characteristic `p`.
-
-The arithmetic input of the tamely ramified structure theorem
-(`Tame/layerDegree.lean`, `Tame/UnramifiedNoPow.lean`) is that `π` has no `n`-th root in `κ^{ur}`
-for `n ≥ 2` prime to `p`.  Consequently `κ^{ur}(β)` has degree exactly `n` over `κ^{ur}` for any
-`β` with `β ^ n = π` (`NK.TameStructureDeep.Tame.finrank_adjoin_urCl`).  Hence `X ^ n - C π` *is*
-the minimal polynomial of `β` over `κ^{ur}`: no irreducibility input (Capelli's theorem) is needed,
-the degree statement is available.
-
-From this the Kummer pairing `σ ↦ σ β / β : Gal(K'/κ^{ur}) → μ_n` is onto: every `n`-th root of
-unity `ζ` is a conjugate of `β` (`ζ β` is another root of the minimal polynomial), and normality
-of `K'/κ^{ur}` realises conjugate roots by automorphisms.
-
-The main result is `exists_smul_root_unramifiedClosure`: for a *primitive* `n`-th root of unity `ζ`
-there is `τ ∈ Gal(K'/κ^{ur})` with `τ β = ζ β` and `τ ζ = ζ`.  The second condition is automatic,
-`ζ` lying in `κ^{ur}` because `(n, p) = 1`; it is recorded because the tamely ramified structure
-theorem uses the twist of the Kummer pairing by the action of `τ` on roots of unity.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Minpoly.IsConjRoot
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Tame.layerDegree
-import Submission.NK.LocalAnabelian.ResidueField.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

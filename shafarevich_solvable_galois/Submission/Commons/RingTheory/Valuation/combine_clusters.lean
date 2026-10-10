@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Commons.RingTheory.Valuation.exists_valuation_sub_lt_of_pairwise_independent
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.ValuationSubring.le_iff_forall_valuation_lt_one
+import Submission.Commons.RingTheory.Valuation.exists_valuation_sub_lt_of_pairwise_independent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

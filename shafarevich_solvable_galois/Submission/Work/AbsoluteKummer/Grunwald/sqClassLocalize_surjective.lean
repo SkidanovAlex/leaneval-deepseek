@@ -1,23 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Surjectivity of the localisation map on square classes
-
-The arithmetic content of Grünwald's theorem in degree `2`
-(`Work.QuadraticLocalGlobal.grunwald_degree_two`) is that for finitely many **distinct** primes
-`q i` and prescribed local square classes `c i` there is a global rational square class `x`
-whose localisations are the `c i`.  This file restates that in the vocabulary of
-`Work.AbsoluteKummer.SqClass`:
-
-`sqClassLocalize_surjective`: the product of the localisation maps
-`SqClass ℚ → ∏ i, SqClass ℚ_[q i]` is surjective.
-
-The only point to check is that the definition of `sqClassLocalize` — a map induced on the
-quotient `ℚˣ/(ℚˣ)²` by the localisation homomorphism `ℚˣ → ℚ_[p]ˣ` — computes the local square
-class of the image, and that `SameSquare` is exactly the statement that two units of `ℚ_[p]`
-have the same class in `SqClass ℚ_[p]`.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Padics.PadicNumbers
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteKummer.SqClass
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

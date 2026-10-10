@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.Arl.Defs
 import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

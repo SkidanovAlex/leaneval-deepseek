@@ -1,32 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The inertia subgroup, the Frobenius, and the residue field cardinality
-
-This file sets up part (C) of the `NK.LocalAnabelian` chapter: the recovery of
-the residue field cardinality `q` of a `p`-adic field `κ` from `Gal(κ̄/κ)`.
-
-The one classical identification used is
-
-  `κ^ur = κ(μ_{p'})`,  the maximal unramified extension of `κ` is obtained by
-  adjoining all roots of unity of order prime to `p` (an unramified extension is
-  determined by its residue field, and `[κ(ζ_n) : κ] = ord_n(q)` for `(n,p) = 1`).
-
-Consequently
-
-* the **inertia subgroup** `I = Gal(κ̄/κ^ur)` is the kernel of the action of
-  `Gal(κ̄/κ)` on the roots of unity of order prime to `p`, and
-* the **Frobenius** is the action `ζ ↦ ζ^q`, which makes `q` visible from the
-  group alone.
-
-`unramifiedClosure` is `κ(μ_{p'})` realised inside the separable closure `K'`,
-`inertiaSubgroup` is its fixing subgroup (equivalently, the cyclotomic kernel), and
-`ActsAsFrobenius p q σ` says that `σ` acts on prime-to-`p` roots of unity by the
-`q`-power map.  The main unconditional result is `eq_of_actsAsFrobenius`: a single
-such element determines `q`.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

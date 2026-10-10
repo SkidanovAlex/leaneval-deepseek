@@ -1,7 +1,11 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
+import Submission.NK.FrobeniusBridge.Endgame
 import Submission.NK.ResidueFrob.Core
-import Submission.NK.ResidueFrob.Main
 import Submission.NK.TameData.Places
-import Submission.NK.LocalStructure.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

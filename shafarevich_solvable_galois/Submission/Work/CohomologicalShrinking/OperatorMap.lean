@@ -1,28 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The category of free `G`-operator groups of finite rank
-
-`Work.CohomologicalShrinking.OperatorMap G m n` is a surjective `G`-equivariant homomorphism
-`F(m) → F(n)` of free `G`-operator groups (the paper's "surjective pro-`p` `G`-operator
-homomorphism `F(m) ⇢ F(n)`").
-
-The shrinking procedure composes such maps (`F(m) ⇢ F(r) ⇢ F(n)`), so we record here the
-category structure: the identity, the composition, and the fact that `OperatorMap G m n` is
-inhabited as soon as `n ≤ m` (retracting the extra generators, `freeOperatorRetract` of
-`Work.Shrinking.FreeOperator`).
-
-## Main results
-
-* `Work.CohomologicalShrinking.OperatorMap.id`
-* `Work.CohomologicalShrinking.OperatorMap.comp` (`(Ψ.comp Φ).toHom = Ψ.toHom.comp Φ.toHom`)
-* `Work.CohomologicalShrinking.OperatorMap.comp_assoc`, `id_comp`, `comp_id`
-* `Work.CohomologicalShrinking.OperatorMap.ofLe` : `n ≤ m` gives `F(m) ⇢ F(n)`
-* `Work.CohomologicalShrinking.exists_operatorMap_of_le` : the same as a `Nonempty`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Defs
 import Submission.Work.CohomologicalShrinking.Shrinking
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

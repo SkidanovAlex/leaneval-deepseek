@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.phiUnrU1
-import Submission.Work.SSGRoute.E1aClean.phiUnrHelpers
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.henselUnit_pow_mul_localUnits_of_inertiaFixedRoot
-import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.decompFieldHenselEmb_units_mem_localUnits_iff
-import Submission.Work.SSGRoute.E1aClean.transferNatCoeff
-import Submission.Work.SSGRoute.ValuationSES.C1
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E1aClean.LeadPhiUnr.e1cHensel_comp_val_eq_zero_of_unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

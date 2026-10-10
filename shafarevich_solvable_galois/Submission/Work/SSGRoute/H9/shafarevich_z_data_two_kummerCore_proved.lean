@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
-import Submission.Work.SSGRoute.ZDataTwo.ArchKummer
-import Submission.Work.SSGRoute.ZDataTwo.archPair_two_kummer_eq_zero_iff
-import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
-import Submission.Work.SSGRoute.grunwald_surjective_two
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.N2v2.orthogonality_hsplit_proved
-import Submission.Work.SSGRoute.kummerChar_eq_zero_of_isInertia_of_unit
-import Submission.Work.SSGRoute.exists_kummerChar_of_additive_locConst
-import Submission.Work.SSGRoute.ZDataTwo.mu2ThreeHalves
-import Submission.Work.SSGRoute.ZDataTwo.mu2EscapeRealisationHKfresh
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.NodeS37.mu2ThreeHalvesProved
+import Submission.Work.SSGRoute.ZDataTwo.mu2ThreeHalves
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

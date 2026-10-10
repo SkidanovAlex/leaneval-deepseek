@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.g1plus_iota
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.CokerPT.IotaAlgebra
 import Submission.Work.SSGRoute.localSumDecomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

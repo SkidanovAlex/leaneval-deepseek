@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
-import Submission.Work.SSGRoute.NKGlobalImport
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localUnits_iff_localAlgebraMapUnits
+import Submission.NK.HassePrinciple.LocalUnits
+import Submission.NK.HassePrinciple.ideleInclusion_smul_of_restrict
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

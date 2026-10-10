@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.ProP.Defs
+import Mathlib.GroupTheory.PGroup
 import Submission.Work.ProP.card_quotient_lt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

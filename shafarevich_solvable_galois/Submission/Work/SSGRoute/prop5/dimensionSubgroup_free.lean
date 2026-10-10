@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.dimensionSubgroup_conv
 import Submission.Work.SSGRoute.prop5.magnusCore_instance
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

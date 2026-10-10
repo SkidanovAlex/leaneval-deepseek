@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.RegularRep
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Basic
 import Submission.Work.SSGRoute.PTW.AvgOpNeZero
 import Submission.Work.SSGRoute.PTW.avgOp_regRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

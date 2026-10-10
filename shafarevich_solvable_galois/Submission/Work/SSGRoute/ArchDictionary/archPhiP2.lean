@@ -1,10 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.archCoeffP2
-import Submission.Work.SSGRoute.ArchDictionary.localCoeffP2IsEquivariant
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
-import Submission.Work.SSGRoute.ArchDictionary.p2Link
-import Submission.Work.SSGRoute.ArchDictionary.archAcH1Natural
-import Submission.Work.SSGRoute.PTdualControl.archimedeanLambda_injective_exists
+import Submission.Work.SSGRoute.ArchDictionary.localCoeffP2IsEquivariant
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

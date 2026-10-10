@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.GroupTheory.FiniteAbelian.Basic
 import Submission.NK.LocalTame.IndexPrime.Basic
 import Submission.NK.LocalTame.IndexPrime.sub_one_pow_prime_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.CFTLib.HRclean.transferMainClean
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.extOneDictNatAux
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Algebra.Module.Injective
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
-import Submission.Work.SSGRoute.ext_one_homRepFree_subsingleton
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

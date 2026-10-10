@@ -1,20 +1,5 @@
-/-
-# The foliage of a composite Hall tree is smaller than the foliage of its right factor
-
-For a Hall tree `mul a b` (Viennot's Hall set on the free magma over a linearly ordered
-alphabet), the word `foliage (mul a b) = foliage a ++ foliage b` is lexicographically smaller
-than `foliage b`.  Equivalently, `foliage b` is a Lyndon word and `foliage a < foliage b`.
-
-The proof rests on the following chain of facts, all established here:
-
-* the foliage of any Hall tree is *Lyndon-like*: it is strictly smaller (lexicographically)
-  than each of its proper nonempty suffixes (`hall_lyndonLike`);
-* for a Lyndon-like word `v` and a nonempty word `u < v`, one has `u ++ v < v`
-  (`lyndon_like_append`);
-* two purely combinatorial facts about the lexicographic order on lists
-  (`lex_append_of_not_prefix`, `lex_append_append_of_length_le`).
--/
-import Mathlib
+import Mathlib.Data.List.Lex
+import Mathlib.Algebra.Order.Ring.Nat
 import Submission.Work.SSGRoute.prop5.witt.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

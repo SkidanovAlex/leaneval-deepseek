@@ -1,4 +1,5 @@
-import Submission.Work.HilbertSymbolGeneral.Defs
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Algebra.Field.ZMod
 import Submission.Work.HilbertSymbolGeneral.hilbertSymbol_comm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

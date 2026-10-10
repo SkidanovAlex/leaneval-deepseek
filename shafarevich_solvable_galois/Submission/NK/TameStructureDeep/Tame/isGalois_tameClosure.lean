@@ -1,34 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `κ^{tr}` is Galois over `κ`
-
-For a field `κ`, a prime `p` and `π ≠ 0`, the maximal tamely ramified extension realised inside a
-separable closure `K'` of `κ` is
-
-  `κ^{tr} = κ^{ur} ⊔ κ(π^{1/n} : n prime to p)`
-
-(`NK.TameStructureDeep.Tame.tameClosure`).  This file proves that it is **Galois** over `κ`.
-
-The argument uses normality via stability under the Galois group: since `K'` is a separable
-closure of `κ`, the extension `K'/κ` is Galois, and an intermediate field `E` is normal over `κ`
-exactly when `σ(E) = E` for every `σ ∈ Gal(K'/κ)` (`IntermediateField.normal_iff_forall_map_eq'`).
-Both pieces of the compositum are stable:
-
-* `κ^{ur} = κ(μ_{p'})` is Galois over `κ` by `isGalois_unramifiedClosure`, hence stable
-  (`map_unramifiedClosure`);
-* the generating set of `κ(π^{1/n} : n prime to p)` is permuted by `Gal(K'/κ)`: if `α ^ n = π`
-  then `(σ α) ^ n = σ π = π` because `σ` is `κ`-linear, so `σ` maps `tameRootSet p π` onto
-  itself (`map_tameRootSet`), and `adjoin_map` gives the stability of the generated field
-  (`map_adjoin_tameRootSet`).
-
-Separability is inherited from `K'/κ` (`Algebra.isSeparable_tower_bot_of_isSeparable`), and
-`IsGalois` is separability plus normality (`isGalois_iff`).
--/
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

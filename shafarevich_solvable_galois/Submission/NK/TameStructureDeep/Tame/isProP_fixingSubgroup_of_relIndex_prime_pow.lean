@@ -1,8 +1,14 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
-import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
 import Submission.NK.TameStructureDeep.Support.wildInertiaSubgroup_isClosed
+import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

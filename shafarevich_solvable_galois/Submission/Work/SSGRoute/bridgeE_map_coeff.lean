@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.Phi0Aux
 import Submission.Work.SSGRoute.mapExactFunctor_id
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

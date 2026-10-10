@@ -1,11 +1,9 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltSymbol_ker_eq
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_compat
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.ext_of_eqOn_LTdivisionSet
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTLevel_commutative
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.nonempty_lubinTateModule
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltLevel_action
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.comap_unitPartHom_principalUnits
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltLevel_action
 
 namespace NK.LocalReciprocityLubinTate.LubinTate
 

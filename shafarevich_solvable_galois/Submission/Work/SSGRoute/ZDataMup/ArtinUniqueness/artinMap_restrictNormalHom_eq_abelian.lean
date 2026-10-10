@@ -1,10 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_restrictNormalHom_eq
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.surjective_of_frobAtPrime_unramified
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.NK.NUV2.ARL.isOpenNorm
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,12 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangAux
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.FractionalIdeal.Basic
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFT.Idele
-import Submission.NK.GlobalCFTdeep.SecondInequality.Unconditional
-import Submission.NK.GlobalCFTdeep.secondInequality_unconditional
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

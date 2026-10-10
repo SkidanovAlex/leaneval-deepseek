@@ -1,19 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZSplit.exists_kummerCocharZMod_of_additive_locConst
-import Submission.Work.SSGRoute.ZDataTwo.KummerCocharBase
-import Submission.Work.SSGRoute.ZDataTwo.mu2EscapeRealisationH
-import Submission.Work.SSGRoute.ZDataTwo.ThreeHalves
-import Submission.Work.SSGRoute.ZDataTwo.SWFourTwo
-import Submission.Work.SSGRoute.ZDataTwo.pigeonhole_three
-import Submission.Work.SSGRoute.ZDataTwo.map_decomp_res_eq_zpowers_of_isFrobAtPrime
-import Submission.Work.SSGRoute.ZDataTwo.firstEscape_two
-import Submission.Work.SSGRoute.NodeS37.twoRecExists
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.NodeS37.claimOfPreTwo
 import Submission.Work.SSGRoute.NodeS37.goodClassOfHistory
-import Submission.Work.SSGRoute.NodeS37.reduce
-import Submission.Work.SSGRoute.P2Close.claimOfPinnedZero
+import Submission.Work.SSGRoute.NodeS37.twoRecExists
+import Submission.Work.SSGRoute.ZDataTwo.mu2EscapeRealisationH
 import Submission.Work.SSGRoute.ZDataTwo.mu2PinnedValueDiagonal
+import Submission.Work.SSGRoute.ZSplit.exists_kummerCocharZMod_of_additive_locConst
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

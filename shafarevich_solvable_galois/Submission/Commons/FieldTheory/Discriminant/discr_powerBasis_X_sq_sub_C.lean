@@ -1,5 +1,7 @@
+import Mathlib.RingTheory.Discriminant
 import Mathlib.NumberTheory.NumberField.Basic
-import Submission.Commons.FieldTheory.Discriminant.discr_powerBasis_quadratic
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
+import Submission.Commons.FieldTheory.Discriminant.discr_powerBasis_eq_discr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

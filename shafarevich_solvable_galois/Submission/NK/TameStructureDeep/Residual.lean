@@ -1,40 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The *reduced* residual of `NK.TameStructureDeep`
-
-`NK.TameStructureDeep.TameRamificationCore` (`Defs.lean`) is the classical local structure
-theorem for `G_κ` stated as a single structure with six fields.  Two of its fields are *proved*
-unconditionally in this chapter, at every `𝔭`-adic completion `κ = K_𝔭`:
-
-* `unramifiedQuotient` — `G_κ ⧸ I_κ ≅ Ẑ`
-  (`NK.TameStructureDeep.unramifiedQuotient_adicCompletion`, `Core.lean`);
-* `exists_frobenius` — the existence of an element outside `I_κ` acting on the prime-to-`p` roots
-  of unity by `ζ ↦ ζ ^ q`
-  (`NK.TameStructureDeep.exists_frobenius_adicCompletion`, `Core.lean`).
-
-Both use the cyclotomic computation `[κ(ζ_n) : κ] = ord_n(q)` of `Degree/`: the group
-`Gal(κ^ur/κ) = Gal(κ(μ_{p'})/κ)` is the inverse limit of the cyclic groups
-`Gal(κ⟮ζ_n⟯/κ) ≅ ℤ/ord_n(q)` (with `n = q^m - 1` giving every `ℤ/m`), so it is `Ẑ`, and the
-Frobenius — the compatible system `ζ_n ↦ ζ_n^q` — is the element corresponding to `1 ∈ Ẑ`.
-
-This file records the **reduced residual** with the remaining four fields, and the passage
-`TameRamificationResidual → TameRamificationCore` at a completion.  The four remaining fields are
-exactly the Kummer-theoretic content of the tame structure theorem (NSW, *Cohomology of Number
-Fields*, (7.5.7) Corollary, (7.5.11) and (12.1.8) Lemma) together with the local-CFT computation
-of the abelianised tame quotient (Shimizu, arXiv:2009.10431, Lemma 2.1):
-
-* `isTameInertia` — `I_κ/V_κ` is the maximal closed normal pro-cyclic subgroup of `G_κ^{tr}`;
-  equivalently `κ^{tr} = κ^ur(π^{1/n} : (n,p) = 1)` for a uniformiser `π`, so that
-  `I_κ/V_κ ≅ ∏_{ℓ ≠ p} ℤ_ℓ` (Kummer theory over the unramified base `κ^ur`, which contains all
-  prime-to-`p` roots of unity);
-* `frobenius_iff` — the Frobenius normalisation: `ζ ↦ ζ^q` on `μ_{p'}` if and only if the `q`-th
-  power map on `I_κ/V_κ` (the Tate twist `I_κ/V_κ ≅ ∏_{ℓ ≠ p} ℤ_ℓ(1)`);
-* `abelianisation` — `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}`: local reciprocity `κˣ^{∧} ≅ G_κ^{ab}`, the
-  unit filtration `κˣ ≅ ℤ × μ_{q-1} × U¹` with `U¹` pro-`p`, and the identification of the image of
-  the wild inertia with `U¹` (the ramification filtration of local class field theory).
--/
+import Mathlib.FieldTheory.Galois.Notation
+import Mathlib.GroupTheory.Abelianization.Defs
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,19 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Kummer theory: the vocabulary
-
-This file fixes the definitions used by the `NK.LocalAnabelian` Kummer bridge:
-the class group `kˣ/(kˣ)^p`, and the Kummer field `k(a^{1/p})` of a class `a`,
-realised inside a fixed separable closure `K'` of `k` as the subfield generated
-by *all* the `p`-th roots of `a`.
-
-Everything downstream (degree-`p` Galois extensions of `k` versus index-`p`
-subgroups of `kˣ/(kˣ)^p`, and the count of the former) is stated in terms of
-these.
--/
-import Mathlib
+import Mathlib.GroupTheory.Coset.Defs
+import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

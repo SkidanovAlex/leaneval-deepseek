@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.ValuationSubring.exists_unit_at_index_nonunit_else
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

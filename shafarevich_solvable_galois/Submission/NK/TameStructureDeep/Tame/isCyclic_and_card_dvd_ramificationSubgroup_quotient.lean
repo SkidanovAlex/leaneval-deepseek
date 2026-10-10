@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.NK.Ramification.Defs
-import Submission.NK.RamificationDeep.UnitMap
-import Submission.NK.RamificationDeep.WildInertiaUnconditional
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.isCyclic_quotient_ramificationSubgroup
-import Submission.NK.RamificationDeep.natCard_units_residueField
 import Submission.NK.RamificationDeep.uniformizerData_of_isGalois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,13 +1,10 @@
-import Mathlib
+import Mathlib.GroupTheory.Sylow
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.H1All
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
 import Submission.NK.GlobalCFTdeep.SecondInequalityFinal
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_restriction_exact_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_nsmul_H2_eq_zero
-import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
-import Submission.NK.HassePrinciple.exists_normal_subgroup_index_eq_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

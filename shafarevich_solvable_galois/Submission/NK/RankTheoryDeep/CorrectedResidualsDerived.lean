@@ -1,5 +1,14 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Submission.NK.BrauerTwist.Basic
+import Submission.NK.ChebotarevGeneral.Main
+import Submission.NK.HassePrinciple.Norm
+import Submission.NK.HassePrinciple.finite_levelGroup
+import Submission.NK.Mine.ResidueCharAutomatic
+import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
 import Submission.NK.RankTheoryDeep.CorrectedPackage
-import Submission.NK.Mine.NeukirchUchidaOfResiduals
+import Submission.NK.ReconstructEndgame.Basic
+import Submission.NK.ResidueFrob.LocalStructureInputs
+import Submission.NK.WeakNU.decompositionSubgroup_eq_zpowers_of_isFrobAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

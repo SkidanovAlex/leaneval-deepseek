@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Group.Commutator
+import Mathlib.Algebra.Lie.Basic
+import Mathlib.LinearAlgebra.Span.Defs
 import Submission.Work.SSGRoute.prop5.mw.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

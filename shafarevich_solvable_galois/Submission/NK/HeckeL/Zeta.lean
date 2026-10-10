@@ -1,10 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-The Dedekind zeta functions of `L` and of `K`, with the primes over a modulus removed.  These are
-the two "unramified" Euler products which occur in the factorisation
-`∏_χ L(s, χ) = ζ_L(s)/ζ_K(s) · (finite correction)`.
--/
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Artin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

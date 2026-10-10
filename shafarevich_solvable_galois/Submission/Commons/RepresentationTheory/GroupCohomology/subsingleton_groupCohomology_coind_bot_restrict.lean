@@ -1,3 +1,4 @@
+import Mathlib.RepresentationTheory.Coinduced
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.Commons.RepresentationTheory.GroupCohomology.subsingleton_groupCohomology_coind_bot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

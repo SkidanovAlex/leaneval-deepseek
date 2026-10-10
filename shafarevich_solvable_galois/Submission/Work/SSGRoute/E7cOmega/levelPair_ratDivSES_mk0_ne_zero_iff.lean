@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.E7cOmega.extClass_comp_injective
 import Submission.Work.SSGRoute.E7cOmega.levelPair_ratDivSES_extClass
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

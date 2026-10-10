@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchNat.archUniformNatural
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.ArchDictionary.ac_addEquiv_H1
+import Submission.Work.SSGRoute.ArchNat.archUniformNatural
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

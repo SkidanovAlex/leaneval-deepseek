@@ -1,6 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.HSRow.CokerZr2
-import Submission.Work.SSGRoute.HSRow.CokerDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.HSRow.CokerFz
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

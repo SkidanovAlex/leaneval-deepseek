@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.galToGamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

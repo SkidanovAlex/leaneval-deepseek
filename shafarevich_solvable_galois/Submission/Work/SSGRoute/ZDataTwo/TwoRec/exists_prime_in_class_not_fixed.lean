@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.H9.swCount_conjUnit
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_prime_mem_rayClass
 import Submission.Work.SSGRoute.NodeS37.divisorOfClassRepresentative
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.exists_twist_idele_emptyPos
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.smul_ideleOfIdeal_cong

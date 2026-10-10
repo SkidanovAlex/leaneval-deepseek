@@ -1,17 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.NodeS37.localDichotomy
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.RamificationInertia.Valuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.NodeS37.henselUnitSquare
-import Submission.Work.SSGRoute.NodeS37.finiteFieldQuadraticSquares
-import Submission.Work.SSGRoute.NodeS37.isSquare_residue_of_isSquare_mk
 import Submission.Work.SSGRoute.NodeS37.isSquare_mk_of_rho_smul_sub_mem
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
-import Submission.Work.SSGRoute.H9.swChainConjDefs
-import Submission.Work.SSGRoute.ZDataTwo.ramificationIdx_levelPrime_eq_one_of_not_isRamifiedIn
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Submission.Work.SSGRoute.NodeS37.isSquare_residue_of_isSquare_mk
+import Submission.Work.SSGRoute.NodeS37.localDichotomy
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

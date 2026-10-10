@@ -1,8 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.inv
-import Submission.Work.SSGRoute.NodeS35.swPinFamily
-import Submission.Work.SSGRoute.NodeS37.pinnedValueOfHistoryOfInertSquare
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.oPairAt_sum_attach_eq_zero_of_kills
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.P2Close.claimOfPinnedZero
 import Submission.Work.SSGRoute.ZDataTwo.TwoRec.pinnedValue_diagonal_proved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,31 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The fixing subgroup of the fixed field of a subgroup is its closure
-
-For a Galois extension `E/F` and an *arbitrary* subgroup `H ≤ Gal(E/F)` of the Galois
-group (with the Krull topology, `Mathlib/FieldTheory/KrullTopology.lean`),
-
-  `(IntermediateField.fixedField H).fixingSubgroup = H.topologicalClosure`.
-
-Mathlib has this statement only for *closed* subgroups
-(`InfiniteGalois.fixingSubgroup_fixedField`, `FieldTheory/Galois/Infinite.lean:146`).
-The general case is the one needed in `NK.LocalInputs.AbelianRank`
-(see `Hints.lean` in this directory): for `H = commutator Gal(K'/κ)`, whose algebraic
-commutator subgroup need not be closed in the Krull topology, it identifies
-`Gal(maxAbelianSubext κ K'/κ)` with `Gal(K'/κ) ⧸ (commutator Gal(K'/κ)).topologicalClosure`
-— the *topological* (not the abstract) abelianisation of `Gal(K'/κ)`.
-
-The proof is short and does not need the continuity of the action: `H` is contained in
-`(fixedField H).fixingSubgroup`, which is closed, giving `≥`; for `≤` note that
-`fixedField H.topologicalClosure ≤ fixedField H`, so by contravariance of `fixingSubgroup`
-the group `(fixedField H).fixingSubgroup` is contained in
-`(fixedField H.topologicalClosure).fixingSubgroup`, and this is `H.topologicalClosure` by
-the closed case of the Galois correspondence.
--/
-import Mathlib
-import Submission.NK.LocalReciprocity.All
+import Mathlib.FieldTheory.Galois.Infinite
+import Submission.NK.LocalReciprocity.Invariants
+import Submission.NK.LocalReciprocity.LubinTate
+import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

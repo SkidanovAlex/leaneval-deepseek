@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Homeomorph.Lemmas
 import Submission.Work.SSGRoute.PT.H2Transfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,9 +1,8 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.Reconstruct.ambient4f3
-import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Reconstruct.tauStarDef
 import Submission.NK.Reconstruct.continuous_tauStar
 import Submission.NK.Reconstruct.denseSet_avoidClosedSubgroups
-import Submission.NK.Reconstruct.gammaBaseChange
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

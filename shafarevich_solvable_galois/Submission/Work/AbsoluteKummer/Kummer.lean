@@ -1,28 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Kummer theory in the absolute-Galois language
-
-For a field `k` and `n > 0` with a primitive `n`-th root of unity `ζ ∈ k`, the Kummer sequence
-
-`1 → μ_n(k̄) → k̄ˣ →^{n} k̄ˣ → 1`
-
-gives a canonical isomorphism `kˣ/(kˣ)^n ≃ H¹(G_k, μ_n)`; the class of `x : kˣ` corresponds to the
-crossed homomorphism `σ ↦ σ α / α`, where `α ∈ k̄ˣ` is any `n`-th root of `x`.
-
-## Main definitions
-
-* `Work.AbsoluteKummer.kummerRootUnit x : k̄ˣ` — a choice of `n`-th root of `x`
-  (`Work.AbsoluteKummer.kummerRootUnit_pow`);
-* `Work.AbsoluteKummer.kummerCocycleFun hζ x` — the `1`-cochain `σ ↦ σ α/α` with values in `μ_n`.
-
-The cocycle properties, the induced map `kˣ/(kˣ)^n → H¹(G_k, μ_n)` and its bijectivity are
-`Work.AbsoluteKummer.Kummer.kummerMap_bijective` (in `Submission/Work/AbsoluteKummer/Kummer/`).
--/
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.AbsoluteKummer.Coefficients
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.Kummer.All
+import Submission.Work.Kummer.exists_algEquiv_apply_eq_mul_of_pow_eq
+import Submission.Work.Kummer.kummerCharacter_eq_iff_div_mem
+import Submission.Work.Kummer.norm_eq_primRoot_pow_mul_of_kummer_generator
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

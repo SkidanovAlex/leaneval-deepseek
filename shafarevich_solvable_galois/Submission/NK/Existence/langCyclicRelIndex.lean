@@ -1,16 +1,12 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.exists_admissible
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexPrincipalRaySupNormRayLe
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.mem_idealCoprimeGroup_iff
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.CFTLib.ARL.IdeleCongruenceLift
-import Submission.NK.CFTLib.ARL.RelNormFI
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.exists_admissible
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexPrincipalRaySupNormRayLe
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
 import Submission.NK.Existence.congruenceUnits_le_normImage
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

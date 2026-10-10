@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.Defs
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.GlobalCFTdeep.SecondInequality.log_norm_eulerProduct_eq_tsum
 import Submission.NK.GlobalCFTdeep.SecondInequality.tsum_log_norm_eulerFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

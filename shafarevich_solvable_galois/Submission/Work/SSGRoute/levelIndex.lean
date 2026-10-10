@@ -1,11 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.pointwiseInstances
-import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.DecompositionGroup
-import Submission.NeukirchUchida.Local.Transitivity
+import Mathlib.RingTheory.Henselian
 import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.RamifiedPlacesAux
+import Submission.Work.SSGRoute.local_tame_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

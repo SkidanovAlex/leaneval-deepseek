@@ -1,21 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.ext_localUnits_pTorsion
-import Submission.Work.SSGRoute.local_pTorsion_card
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.decompK_restrict_exists
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
+import Submission.Work.SSGRoute.E7bZ8Step2Aux2
+import Submission.Work.SSGRoute.detectAbove_kummer
 import Submission.Work.SSGRoute.levelPair_comp_extHMap
 import Submission.Work.SSGRoute.localUnits_infl_injective
-import Submission.Work.SSGRoute.E7bZ8Step2Aux2
-import Submission.Work.SSGRoute.phi1_level_naturality
-import Submission.Work.SSGRoute.detectAbove_kummer
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.local_pTorsion_card
 
 /-!
 # Z6 (`Work.SSGRoute.detectAbove_sub_step`), clause (i), sub-`𝔽_p` orientation
@@ -504,8 +499,6 @@ theorem dass_E_zero_of_Z_zero (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [N
   obtain ⟨L', hF', hN', hAK', hAL', hST', hFD', hGal', w'', hw'', g₀, hg₀, hz4⟩ :=
     dass_kummer_step p k K w z hz S hS e L w' hw'K (f₀.comp g) hf (Rep.resMap g ι₀ ≫ ι₁) hιL
       h hx
-  letI : Field L' := hF'
-  letI : NumberField L' := hN'
   letI : Algebra k L' := hAK'
   letI : Algebra L L' := hAL'
   letI : IsScalarTower k L L' := hST'
@@ -661,8 +654,6 @@ theorem detectAbove_sub_step (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [Nu
       levelPair (f₀.comp g₁) (Rep.resMap g₁ ι₀ ≫ ι₁) (dassW hS e z) h₁ ≠ 0
   · -- ## Case A: a level above `λ₀` detects `dassW hS e z`.
     obtain ⟨L₁, hF₁, hN₁, hA₁, hA₀₁, hST₁, hFD₁, hGal₁, w₁, hw₁, g₁, hg₁, ι₁, hι₁, h₁, hne⟩ := hwit
-    letI : Field L₁ := hF₁
-    letI : NumberField L₁ := hN₁
     letI : Algebra k L₁ := hA₁
     letI : Algebra L₀ L₁ := hA₀₁
     letI : IsScalarTower k L₀ L₁ := hST₁
@@ -719,8 +710,6 @@ theorem detectAbove_sub_step (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [Nu
     have hvan : VanishesAbove k K (y'' - a • dassW hS e z) L₁ w₁ (f₀.comp g₁)
         (Rep.resMap g₁ ι₀ ≫ ι₁) := by
       intro L hF hN hA hAL₁ hSTt hFD hGal w' hw' g hg ι₂ hι₂ h
-      letI : Field L := hF
-      letI : NumberField L := hN
       letI : Algebra k L := hA
       letI : Algebra L₁ L := hAL₁
       letI : IsScalarTower k L₁ L := hSTt
@@ -864,8 +853,6 @@ theorem detectAbove_sub_step (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [Nu
     rw [zero_smul]
     have hvan : VanishesAbove k K y'' L₀ w₀ f₀ ι₀ := by
       intro L hF hN hA hAL₀ hSTt hFD hGal w' hw' g hg ι₂ hι₂ h
-      letI : Field L := hF
-      letI : NumberField L := hN
       letI : Algebra k L := hA
       letI : Algebra L₀ L := hAL₀
       letI : IsScalarTower k L₀ L := hSTt

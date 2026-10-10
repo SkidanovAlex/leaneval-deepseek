@@ -1,26 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The connecting map `δ : Ĥ⁻¹(G, C) → Ĥ⁰(G, A)`
-
-For a short exact sequence of `G`-modules `0 → A --f--> B --g--> C → 0` (a `Work.Tate.SES`)
-the connecting homomorphism
-
-`δ : Ĥ⁻¹(G, C) → Ĥ⁰(G, A)`
-
-is defined on a class represented by `c ∈ ker N_C` by lifting `c` to `b ∈ B`, observing that
-`N_B b ∈ ker g = im f`, writing `N_B b = f a` and taking the class of `a ∈ A^G` in `A^G/N(A)`.
-
-This file packages the explicit construction `Work.Tate.SES.deltaLiftFun` into an additive
-homomorphism `Work.Tate.SES.deltaLift` on the kernel of `N_C` and into the connecting map
-`Work.Tate.SES.delta` on `Ĥ⁻¹(G, C)`.
--/
-import Mathlib
-import Submission.Work.Tate.SES
-import Submission.Work.Tate.deltaLiftFun_zero
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.deltaLiftFun_add
 import Submission.Work.Tate.deltaLiftFun_eq_zero_of_mem_augmentation
+import Submission.Work.Tate.deltaLiftFun_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

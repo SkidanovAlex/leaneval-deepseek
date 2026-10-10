@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.NK.LocalCFT.Basic
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Submission.NK.LocalCFT.Instance.intermediateField_eq_bot_or_top
-import Submission.NK.LocalCFT.Instance.posSubgroup_le_of_finiteIndex
 import Submission.NK.LocalCFT.Instance.normGroup_real_complex
+import Submission.NK.LocalCFT.Instance.posSubgroup_le_of_finiteIndex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,13 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_character_with_p_dvd_residueDeg
-import Submission.Work.SSGRoute.Sha2Lib.H1pi_character_ne_zero
-import Submission.Work.SSGRoute.E7cOmega.comp_intSES_extClass_ne_zero
-import Submission.Work.SSGRoute.E7cOmega.extH_unitRep_one_subsingleton
-import Submission.Work.SSGRoute.ext_zmod_prime_iso_corrected
 import Submission.Work.SSGRoute.Sha2Lib.coeffSES_extClass_generator
+import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_character_with_p_dvd_residueDeg
 import Submission.Work.SSGRoute.Sha2Lib.extH_class_of_character
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

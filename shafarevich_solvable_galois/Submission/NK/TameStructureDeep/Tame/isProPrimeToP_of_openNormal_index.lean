@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.LocalTame.Basic
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

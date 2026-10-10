@@ -1,51 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Profinite Galois cohomology `H²(U, Z/p)` for closed subgroups of `G_K`
-
-This file implements the *colimit definition* of the second cohomology of a closed subgroup
-`U ≤ Gal(K'/K)` of an absolute Galois group:
-
-`H2Profinite p U = colim_{L} H²(U / (U ∩ Gal(K'/L)), Z/p)`,
-
-the colimit running over the finite Galois intermediate fields `L` of `K'` over `K`
-(Mathlib's `FiniteGaloisIntermediateField`), with the *inflation* maps of the finite quotients as
-transition maps.  For `U = ⊤` this is the usual `H²(G_K, Z/p) = colim_L H²(Gal(L/K), Z/p)`.
-
-The colimit is implemented by hand, as the quotient of the disjoint union of the level
-cohomologies by the equivalence relation *generated* by the inflation maps.  Consequently
-
-* every element comes from a finite level (`H2Profinite.ofLevel_surjective`);
-* an element of a smaller level and its inflation are equal (`H2Profinite.ofLevel_levelMap`);
-* maps out of the colimit are given by compatible families of maps on the levels
-  (`H2Profinite.lift`), and they are determined by their values on the levels
-  (`H2Profinite.lift_unique`).
-
-For a place `A` of `K'` over a finite prime of `K` we also construct the *local* cohomology
-
-`LocalH2 p U A = colim_L H²((U ∩ D_A) / ((U ∩ D_A) ∩ Gal(K'/L)), Z/p)`
-
-(`D_A` the decomposition group of `A`, i.e. its stabiliser in `Gal(K'/K)`), and the
-*localisation map* `H2Profinite.loc` from the global cohomology to the product of the local ones
-over all places of `K'` above a finite prime of `K`.  These localisation maps are the input of the
-Hasse principle, see `Submission/Work/BrauerHasse/Hasse.lean`.
-
-## Main definitions
-
-* `NK.BrauerHasse.LevelGroup`, `NK.BrauerHasse.LevelH2` — the finite levels;
-* `NK.BrauerHasse.levelMap` — inflation between levels;
-* `NK.BrauerHasse.H2Profinite p U` — the profinite `H²(U, Z/p)`;
-* `NK.BrauerHasse.H2Profinite.ofLevel`, `.lift` — the structure map and universal property;
-* `NK.BrauerHasse.LocalH2`, `NK.BrauerHasse.stabSubgroup` — local cohomology and the
-  decomposition group of a place;
-* `NK.BrauerHasse.H2Profinite.loc` — the localisation map.
--/
-
-import Submission.NK.BrauerHasse.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
 import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.GaloisClosure
 import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Category.ModuleCat.Basic
+import Submission.NK.BrauerHasse.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

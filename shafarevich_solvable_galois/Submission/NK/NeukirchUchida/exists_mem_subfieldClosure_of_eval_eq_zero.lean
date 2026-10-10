@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Minpoly.IsConjRoot
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.NeukirchUchida.LocalGaloisCompletion
 import Submission.NK.RingTheory.Valuation.krasner_valuation_of_isSepClosed
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
 
 /-!
 # The algebraic elements of a place completion lie in a simple extension of the base

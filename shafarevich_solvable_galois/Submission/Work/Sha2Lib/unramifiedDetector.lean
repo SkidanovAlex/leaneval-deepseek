@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.Sha2Lib.unramifiedDetectorProved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

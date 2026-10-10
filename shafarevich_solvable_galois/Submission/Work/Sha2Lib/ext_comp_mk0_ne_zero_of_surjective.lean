@@ -1,9 +1,10 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Submission.Work.SSGRoute.SSGStage.divRep_detecting_class
 import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
 import Submission.Work.SSGRoute.Sha2Lib.detector_of_submodule
-import Submission.Work.SSGRoute.SSGStage.divRep_detecting_class
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.SSGStage.extRatRep_vanish
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

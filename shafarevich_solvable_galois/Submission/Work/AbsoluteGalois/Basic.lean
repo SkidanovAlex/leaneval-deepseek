@@ -1,49 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The absolute Galois group of `ℚ` and restriction to intermediate fields
-
-This file sets up the vocabulary for working with `G_ℚ := Field.absoluteGaloisGroup ℚ` as a
-topological (profinite) group acting on `ℚ̄ = AlgebraicClosure ℚ`, and for the *restriction map*
-
-`restrictHom L : G_ℚ →* Gal(L/ℚ)`,   `σ ↦ σ|_L`
-
-from the absolute Galois group to the Galois group of an intermediate field `L ⊆ ℚ̄` which is
-normal over `ℚ` (in particular finite Galois, in the applications).
-
-## Main declarations
-
-* `Work.AbsoluteGalois.restrictHom` — the restriction homomorphism;
-* `restrictHom_apply`, `restrictHom_ker`, `restrictHom_surjective`, `restrictHom_continuous`;
-* `restrictHom_inclusion` — compatibility with the inclusions of intermediate fields;
-* `restrictHom_ker_isOpen` — the kernel is an open subgroup when `L/ℚ` is finite.
-
-## Implementation notes
-
-Two technical points, both important for callers.
-
-* `IsAlgClosure ℚ (AlgebraicClosure ℚ)` is *re-registered* below.  Mathlib's instance
-  `AlgebraicClosure.instIsAlgClosure` is elaborated with a transparency option that makes it
-  invisible to type class search in the current toolchain, and as a consequence
-  `Normal ℚ (AlgebraicClosure ℚ)`, `IsGalois ℚ (AlgebraicClosure ℚ)`, ... are not found either.
-  Registering the instance for `ℚ` explicitly repairs this (it is needed, e.g., for the
-  fundamental theorem of infinite Galois theory at `K = ℚ̄`).
-
-* `Field.absoluteGaloisGroup K` is a `def`, so type class search does *not* see it as a function
-  type and `σ x` fails to elaborate for `σ : Field.absoluteGaloisGroup K`.  The `FunLike`
-  instance registered below repairs that.
-
-* As warned in the development notes, `IntermediateField ℚ (AlgebraicClosure ℚ)` carries several
-  non-definitionally-equal instance paths, so *implicit* type class arguments of the shape
-  `[Normal ℚ ↥L]` are frequently not found when the goal still contains metavariables.  The
-  reliable pattern, used throughout this development, is to *name* the instance hypotheses
-  (`[hL : Normal ℚ L]`) and to pass them explicitly to the Mathlib lemma that is applied
-  (`@AlgEquiv.restrictNormalHom_apply ℚ _ (AlgebraicClosure ℚ) _ _ L hL σ x`).
--/
-import Mathlib
-import Submission.Realization
-import Submission.EmbeddingProblem
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Combine
+import Submission.EmbeddingProblem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

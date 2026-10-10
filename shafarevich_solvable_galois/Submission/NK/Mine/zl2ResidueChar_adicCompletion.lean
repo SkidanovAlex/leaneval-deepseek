@@ -1,8 +1,20 @@
-import Mathlib
-import Submission.NK.LocalTame.Inputs
-import Submission.NK.LocalTame.Basic
-import Submission.NK.LocalCFT.All
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
+import Submission.NK.BrauerHasse.Profinite
+import Submission.NK.LocalCFT.Completion.exists_mulEquiv_unitsCompletion
+import Submission.NK.LocalCFT.Functoriality.levelMulEquiv_restrict
+import Submission.NK.LocalCFT.Instance.artinReciprocity_complex
+import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_le_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_sup_eq_inf
+import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
 import Submission.NK.LocalInputs.AbelianRank.fixingSubgroup_fixedField_eq_topologicalClosure
+import Submission.NK.LocalInputs.CommGroupRank.hasFrattiniRank_of_natCard_quot_powSubgroup
+import Submission.NK.LocalTame.Inputs
 import Submission.NK.LocalTame.zl2QuotientTransfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

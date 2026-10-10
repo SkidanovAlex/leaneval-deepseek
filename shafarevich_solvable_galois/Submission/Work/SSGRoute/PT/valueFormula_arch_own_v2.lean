@@ -1,27 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.PT.vf_transverse
-import Submission.Work.SSGRoute.PT.vf_local_compare
-import Submission.Work.SSGRoute.PT.vf_bad_finset
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.PT.liesOver_linked
-import Submission.Work.SSGRoute.PT.wc_orbit_injective
-import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
-import Submission.Work.SSGRoute.localSumDecomposition
-import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
-import Submission.Work.SSGRoute.E9c.Core
--- import Submission.Work.SSGRoute.E9c.Lift  -- clashes with E9c.Core
-import Submission.Work.SSGRoute.E7cOmega.zfun_pairing_extLoc
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.mem_orbit_of_liesOver_conj
-import Submission.Work.SSGRoute.PT.exists_finiteNormal_fixingSubgroup_le_of_isOpen
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
-import Submission.Work.SSGRoute.primeOfLevel_mem_iff_k
+import Submission.Work.SSGRoute.PT.levelPair_unramified_eq_zero
+import Submission.Work.SSGRoute.PT.liesOver_linked
+import Submission.Work.SSGRoute.PT.vf_bad_finset
+import Submission.Work.SSGRoute.PT.vf_local_compare
+import Submission.Work.SSGRoute.PT.vf_transverse
+import Submission.Work.SSGRoute.PT.wc_orbit_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

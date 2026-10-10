@@ -1,19 +1,13 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.DvrPow
-import Submission.NK.TameStructureDeep.Degree.unramifiedExtensionGeneral
+import Mathlib.Tactic.Have
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
 import Submission.NK.TameStructureDeep.Degree.dvd_pow_orderOf_sub_one
 import Submission.NK.TameStructureDeep.Degree.exists_isPrimitiveRoot_adicCompletion_of_dvd
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_residueField_adicCompletion_eq_pow_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.TameStructureDeep.Degree.unramifiedExtensionGeneral
+import Submission.NK.TameStructureDeep.Tame.Defs
 
 set_option maxHeartbeats 1000000
 set_option linter.style.haveILetI false
@@ -103,8 +97,6 @@ theorem no_pow_root_adjoin_primitiveRoot {K : Type*} [Field K] [NumberField K]
   obtain ⟨K₂, hK₂F, hK₂NF, hK₂A, 𝔮, hLies, he, hf, hfr⟩ :=
     NK.TameStructureDeep.Degree.exists_unramified_extension_of_inertiaDeg' (L := K) 𝔭
       (orderOf (NK.LocalStructure.residueCard K 𝔭 : ZMod m)) hdpos
-  letI : Field K₂ := hK₂F
-  letI : NumberField K₂ := hK₂NF
   letI : Algebra K K₂ := hK₂A
   haveI hFDK : FiniteDimensional K K₂ :=
     FiniteDimensional.of_finrank_pos (by rw [hfr]; exact hdpos)

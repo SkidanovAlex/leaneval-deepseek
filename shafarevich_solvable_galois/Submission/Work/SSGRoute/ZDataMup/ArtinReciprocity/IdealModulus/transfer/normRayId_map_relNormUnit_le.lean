@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.fracCoprimeId_relNorm
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.relNormUnit_trans
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.fracCoprimeId_relNorm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

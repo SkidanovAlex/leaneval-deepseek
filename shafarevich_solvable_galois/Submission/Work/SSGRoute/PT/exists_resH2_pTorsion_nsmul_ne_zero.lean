@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.alphaTwo_beta
-import Submission.Work.SSGRoute.Nakayama.br_pTorsion
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Work.SSGRoute.PT.H2_decomp_p_divisible
+import Submission.Work.SSGRoute.PT.alphaTwo_beta
 import Submission.Work.SSGRoute.PT.resH2_kill_index_torsion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

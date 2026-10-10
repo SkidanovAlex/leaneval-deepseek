@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.vdwPrimeExistsProved
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Eval
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

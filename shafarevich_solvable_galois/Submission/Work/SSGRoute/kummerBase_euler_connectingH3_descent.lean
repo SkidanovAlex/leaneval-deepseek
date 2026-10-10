@@ -1,9 +1,8 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.SES.Connecting
-import Submission.Work.AbsoluteKummer.SES.ConnectingH2
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
+import Mathlib.Tactic.Abel
+import Mathlib.Algebra.Module.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.kummerBase_euler_connectingH3
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

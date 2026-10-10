@@ -1,17 +1,15 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary
-import Submission.NK.CFTLib.HR.isTotallyComplex_cyclotomic
-import Submission.NK.CFTLib.IdeleHasse.Descent.localConditionArith
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.NK.CFTLib.HR.isCyclotomic_onePlace_real
 import Submission.NK.CFTLib.IdeleHasse.Descent.cyclotomicLocalDegree
+import Submission.NK.CFTLib.IdeleHasse.Descent.localConditionArith
 import Submission.NK.CFTLib.IdeleHasse.HilbertReciprocityCyclicProof.localCondition_exists_infinite
 import Submission.NK.KC.localBaseChangeInput_of_kc
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # The local condition at a prescribed place, at a cyclotomic prime level
@@ -176,10 +174,6 @@ theorem localConditionCyclotomicPrime {K L : Type} [Field K] [NumberField K] [Fi
     obtain ⟨M, E, hMf, hMN, hEf, hEN, hKM, hKE, hLE, hME, hstLE, hstME, hfdM, hfdE, hgalM,
       hgalE, hcycM, hcycExt, hgen, heridiv⟩ :=
       NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary (K := K) (L := L) l hl Q hcop
-    letI : Field M := hMf
-    letI : NumberField M := hMN
-    letI : Field E := hEf
-    letI : NumberField E := hEN
     letI : Algebra K M := hKM
     letI : Algebra K E := hKE
     letI : Algebra L E := hLE

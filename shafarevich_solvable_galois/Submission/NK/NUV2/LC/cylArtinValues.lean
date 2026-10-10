@@ -1,6 +1,15 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.All
-import Submission.NK.LocalReciprocity.NormGroup
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.NK.LocalReciprocityLubinTate.Eval.exists_isNonarchimedeanLocalField_intermediateField
+import Submission.NK.LocalReciprocityLubinTate.GroupTheory.subgroup_eq_of_forall_map_eq_of_isCyclic_quotient
+import Submission.NK.LocalReciprocityLubinTate.Unramified.artinReciprocity_adicCompletion_of_towerCover
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

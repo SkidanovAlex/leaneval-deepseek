@@ -1,15 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.lde_stabIncl
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.MapBijective
 import Submission.Work.SSGRoute.local_detect_h_pgroup
-import Submission.Work.SSGRoute.decompK_restrict_surjective
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.ext_res_mulEquiv
-import Submission.Work.SSGRoute.E8Helpers
-import Submission.Work.SSGRoute.local_pTorsion_card
-import Submission.Work.SSGRoute.sylow_in_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,8 @@
-import Mathlib.Analysis.Normed.Field.Krasner
-import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Normed.Field.Krasner
 import Submission.Commons.FieldTheory.IntegralClosure.isIntegral_of_aeval_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

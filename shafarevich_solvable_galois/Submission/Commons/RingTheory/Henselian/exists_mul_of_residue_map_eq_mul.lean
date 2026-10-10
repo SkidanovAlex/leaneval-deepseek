@@ -1,5 +1,7 @@
-import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Unramified.LocalStructure
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
 import Submission.Commons.RingTheory.Henselian.exists_monic_mul_of_map_eq_mul
 
 set_option maxHeartbeats 3200000

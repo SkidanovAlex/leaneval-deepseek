@@ -1,12 +1,8 @@
-import Mathlib.Algebra.Algebra.Hom.Rat
 import Mathlib.Algebra.Field.Shrink
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Algebra.Hom.Rat
 import Submission.Commons.Algebra.Module.small_of_finiteDimensional
 import Submission.Commons.NumberTheory.NumberField.completion_ringEquiv_of_algEquiv
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 open scoped NumberField
 
@@ -29,7 +25,6 @@ theorem exists_adicCompletion_ringEquiv_type_zero
       (Q₀ : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K₀)),
       Nonempty ((Q.adicCompletion K) ≃+* (Q₀.adicCompletion K₀)) := by
   obtain ⟨K₀, hK₀f, ⟨eKr⟩⟩ := exists_shrink_field_ringEquiv K
-  letI : Field K₀ := hK₀f
   -- The canonical `ℚ`-algebra structure on `K₀`, through which `eKr` becomes `ℚ`-linear.
   haveI : CharZero K₀ :=
     CharZero.of_addMonoidHom (eKr : K →+* K₀).toAddMonoidHom (by simp) eKr.injective

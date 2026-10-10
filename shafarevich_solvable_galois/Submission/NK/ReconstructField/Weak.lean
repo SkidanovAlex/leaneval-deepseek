@@ -1,9 +1,11 @@
-import Submission.NK.ReconstructField.GaloisCase
-import Submission.NK.ReconstructField.exists_twist_of_mapsBase
-import Submission.NK.ReconstructField.Rigidity
-import Submission.NK.Reconstruct.frobeniusCorrespondence_conjHomEquiv
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Reconstruct.PlaceRigidity
 import Submission.NK.Reconstruct.comap_placeMap_eq_of_conjugates
+import Submission.NK.Reconstruct.frobeniusCorrespondence_conjHomEquiv
+import Submission.NK.ReconstructField.GaloisCase
+import Submission.NK.ReconstructField.exists_twist_of_mapsBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

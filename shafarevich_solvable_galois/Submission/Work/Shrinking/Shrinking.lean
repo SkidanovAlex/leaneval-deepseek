@@ -1,35 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Shafarevich's shrinking lemma (Proposition 2 of Schmidt–Wingberg)
-
-This file states and proves the *algebraic skeleton* of Shafarevich's shrinking procedure,
-Proposition 2 of A. Schmidt and K. Wingberg, *Šafarevič's theorem on solvable groups as
-Galois groups*, arXiv:math/9809211, Section 2.
-
-In the paper: let `G` be a finite group, `M` and `N` finitely generated `𝔽_p[G]`-modules,
-`s, t ∈ ℕ`.  For large enough `r`, given `z_1, …, z_t ∈ (M^r)^{⊗s} ⊗ N` there is
-`a ∈ 𝔽_p^r`, `a ≠ 0`, such that the folding map `φ_a : M^r → M`, `(x_i) ↦ ∑ a_i x_i`, is a
-surjective `𝔽_p[G]`-homomorphism and `(φ_a^{⊗s}) ⊗ id_N` kills all the `z_i`.
-
-We formalise this for `𝔽_p[G]`-modules presented as `𝔽_p`-vector spaces with a `G`-action
-by `𝔽_p`-linear maps (`Work.Shrinking.IsFpGModule`), with the diagonal action on tensor
-powers and tensor products (`Work.Shrinking.TensorPower`).  The proof is the paper's:
-the solution set `V = {a | ∀ i, (φ_a^{⊗s} ⊗ id)(z_i) = 0}` is the common zero set of
-`t * dim(M^{⊗s} ⊗ N)` polynomials of degree `s` (via `rTensor_map_foldMap_apply`), contains
-`0`, and `r > t * s * dim` forces a nonzero solution by Chevalley–Warning
-(`Work.Shrinking.exists_ne_zero_of_polyMap_eq_zero`).
-
-## Main results
-
-* `Work.Shrinking.exists_foldMap_rTensor_tensorPower_eq_zero` : the shrunk version with the
-  explicit dimension count `t * s * finrank ((⨂^s M) ⊗ N) < r`.
-* `Work.Shrinking.exists_forall_foldMap_rTensor_tensorPower_eq_zero` : the paper's "for all
-  large enough `r`" form.
--/
-
-import Submission.Work.Shrinking.Basic
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.RingTheory.TensorProduct.Finite
 import Submission.Work.Shrinking.TensorPower
 import Submission.Work.Shrinking.exists_ne_zero_of_polyMap_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTdualControl.C6_rankOneBrick
-import Submission.Work.SSGRoute.Sha2Lib.levelCocycleDatum_of_components
-import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_character_with_p_dvd_residueDeg
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.Sha2Lib.detectorInvariantCase
+import Submission.Work.SSGRoute.Sha2Lib.levelCocycleDatum_of_components
 import Submission.Work.Sha2Lib.rankOneLevelCocycleRoute
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

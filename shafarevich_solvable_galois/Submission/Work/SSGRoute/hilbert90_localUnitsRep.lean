@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.GlobalCFTdeep.Herbrand.hOne_fiberIdelesRep_eq_one
 import Submission.NK.HassePrinciple.subsingleton_classGroupRep_one
+import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

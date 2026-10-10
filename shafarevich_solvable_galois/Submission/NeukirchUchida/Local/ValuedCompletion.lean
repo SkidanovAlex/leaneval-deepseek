@@ -1,6 +1,4 @@
 import Mathlib.Topology.Algebra.Valued.WithVal
-import Mathlib.Topology.Algebra.UniformRing
-import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_of_valuation_comp_eq
 import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_of_withVal_valuation_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

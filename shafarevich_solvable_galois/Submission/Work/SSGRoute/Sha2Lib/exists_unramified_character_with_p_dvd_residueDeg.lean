@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E7cC.exists_level_unramified_p_dvd_inertiaDeg
-import Submission.Work.SSGRoute.e9_caseB_descent
-import Submission.Work.SSGRoute.Sha2Lib.restrictNormalHom_eq_one_of_isInertiaAt
-import Submission.Work.SSGRoute.Sha2Lib.inertia_eq_bot_of_sup
 import Submission.Work.SSGRoute.Sha2Lib.exists_mem_stabilizer_restrictNormalHom_eq
 import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_inert_cyclic_level
+import Submission.Work.SSGRoute.Sha2Lib.inertia_eq_bot_of_sup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

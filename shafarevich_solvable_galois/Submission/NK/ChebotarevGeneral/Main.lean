@@ -1,24 +1,5 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The Čebotarev input of the Neukirch–Uchida development
-
-This file assembles the chapter into the form consumed by
-`Submission/Work/WeakNU/Defs.lean`:
-
-* `NK.ChebotarevGeneral.chebotarevFrobeniusInput_of_infinite` — the existence form
-  `ChebotarevInfinite` gives `NK.WeakNU.ChebotarevFrobeniusInput`;
-* `NK.ChebotarevGeneral.chebotarevFrobeniusInput_of_abelian` — the abelian case of Čebotarev in
-  density form over an arbitrary number field base gives `NK.WeakNU.ChebotarevFrobeniusInput`;
-* `NK.ChebotarevGeneral.chebotarevFrobeniusInput_of_lfunctions` — the same, starting from the
-  Hecke `L`-function input `NK.Chebotarev.AbelianLFunctions` of every abelian extension.
--/
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Infinity
-import Submission.NK.ChebotarevGeneral.RatLevel
-import Submission.NK.ChebotarevGeneral.card_isFrobAt_liesOver_mul_orderOf
-import Submission.NK.ChebotarevGeneral.decompositionSubgroup_eq_zpowers_of_isFrobAt
-import Submission.NK.ChebotarevGeneral.isFrobAtPrime_under_of_isFrobAt
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.ChebotarevGeneral.deuringTransfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

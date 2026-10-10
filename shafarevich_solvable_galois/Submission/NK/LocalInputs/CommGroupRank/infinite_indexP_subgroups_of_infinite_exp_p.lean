@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.NK.ProfiniteP.LinearAlgebra.natCard_indexP_submodule_general
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+import Mathlib.LinearAlgebra.FreeModule.StrongRankCondition
+import Mathlib.Algebra.Order.Star.Basic
+import Submission.NK.ProfiniteP.Frattini
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

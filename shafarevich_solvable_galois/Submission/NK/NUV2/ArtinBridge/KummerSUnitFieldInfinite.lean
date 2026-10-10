@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.Ramification
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.NUV2.ArtinBridge.KummerSUnitField
-import Submission.NK.GlobalCFTdeep.Herbrand.index_normGroup_completion_eq_finrank
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.no_isReal_of_isPrimitiveRoot_ne_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

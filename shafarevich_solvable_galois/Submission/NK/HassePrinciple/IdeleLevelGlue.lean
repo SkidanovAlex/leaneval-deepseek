@@ -1,17 +1,6 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The glue between the localisation at a place and the coinduced model
-
-* `NK.HassePrinciple.res_coindToHom_counit` — the triangle identity of the
-  restriction–coinduction adjunction: restricting the adjunction transpose of a `Γ_w`-map to `Γ_w`
-  and composing with the counit gives back the map;
-* `NK.HassePrinciple.res_levelIncl_comp_A`, `..._U` — the factorisation of "evaluate at `w`"
-  along the level inclusion through the two projections of the level and the coordinate at `w`.
--/
-
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.IdeleLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

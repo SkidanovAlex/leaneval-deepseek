@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Uniform
 import Submission.Work.Tate.Delta
-import Submission.Work.Tate.ker_Hm1g_eq_range_Hm1f
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

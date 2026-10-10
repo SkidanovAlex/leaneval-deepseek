@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.Basic
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.SSGRoute.prop5.valFn_update_mul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

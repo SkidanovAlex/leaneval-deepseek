@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

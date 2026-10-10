@@ -1,29 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The residue characteristic is an invariant of the absolute Galois group
-
-This file records the local input needed for part (B) of the `NK.LocalAnabelian`
-chapter — the recovery of the residue characteristic of a `p`-adic field `κ` from
-`Gal(κ̄/κ)` — in the precise group-theoretic form in which it is used, and proves
-the *reduction*: once one knows that for a `p`-adic field the unique prime `ℓ` at
-which the rank of `Gal(κ̄/κ)` grows unboundedly along the `ℓ`-tower is the residue
-characteristic, the residue characteristic is an isomorphism invariant.
-
-The mathematical input is Ivanov, *On the structure of the Galois group of a
-local field* (arXiv:1309.3046), Lemma 3.12: for `κ` a `p`-adic field,
-`dim_{F_ℓ} H¹(V, ℤ/ℓ)` is unbounded as `V` runs over the open subgroups of
-`Gal(κ̄/κ)` with `Gal(κ̄/κ)/V` a pro-`ℓ` group, for `ℓ = p` and for no other `ℓ`.
-Equivalently (which is the form used here, avoiding any cohomology):
-`numIndexSubgroups ℓ V` is unbounded for `ℓ = p` and bounded for `ℓ ≠ p`.
-
-A by-product of the definition is the unconditional observation that this
-predicate cannot hold for a finite group, i.e. a group with unbounded `ℓ`-tower
-rank is infinite; see `not_hasUnboundedTowerRank_of_finite`.
--/
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Data.SetLike.Fintype
 import Submission.NK.LocalAnabelian.Basic
-import Submission.NK.LocalAnabelian.ResidueChar.residueCharDetectedBy_of_unique
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

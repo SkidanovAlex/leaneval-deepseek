@@ -1,13 +1,20 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.MapBijective
+import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_relAlgClosed
 import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
+import Submission.Work.SSGRoute.E1aClean.henselUnits_push_iso
 import Submission.Work.SSGRoute.E1aClean.levelTwoDatum
 import Submission.Work.SSGRoute.E1aClean.resH1LevelChange
-import Submission.Work.SSGRoute.E1aClean.henselUnits_push_iso
-import Submission.Work.SSGRoute.E1aClean.e1cMap_hensel_cocycle_formula
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
-import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_relAlgClosed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

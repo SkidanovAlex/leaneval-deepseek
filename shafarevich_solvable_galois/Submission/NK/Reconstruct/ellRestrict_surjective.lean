@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.Reconstruct.GammaObject
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.GroupTheory.Abelianization.Finite
 import Submission.NK.Reconstruct.GammaSup
-import Submission.NK.Reconstruct.ellPart_map_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

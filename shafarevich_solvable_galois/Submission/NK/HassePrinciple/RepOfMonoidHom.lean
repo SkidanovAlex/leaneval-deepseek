@@ -1,19 +1,5 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Representation morphisms from equivariant monoid homomorphisms
-
-Let `M`, `N` be commutative groups with `MulDistribMulAction`s of a group `Γ`.  A monoid
-homomorphism `f : M →* N` which is `Γ`-equivariant (`f (σ • x) = σ • f x` for all `σ`, `x`)
-induces a morphism of `CoeffInt`-linear `Γ`-representations
-`Additive M ⟶ Additive N`.
-
-This is the boilerplate that turns each of the subgroup projections of the idèle group used in
-`NK.HassePrinciple.hbnIdele` into a morphism of representations.
--/
-
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.HassePrinciple.IdelesLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

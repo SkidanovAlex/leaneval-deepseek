@@ -1,9 +1,16 @@
-import Mathlib
-import Submission.NK.Chebotarev.LFunctions
-import Submission.NK.Chebotarev.Density
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.NK.Chebotarev.charPrimeSum_one_eq
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Data.FunLike.Fintype
+import Mathlib.GroupTheory.FiniteAbelian.Duality
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Complex.Polynomial.Basic
 import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
+import Submission.NK.Chebotarev.charPrimeSum_one_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

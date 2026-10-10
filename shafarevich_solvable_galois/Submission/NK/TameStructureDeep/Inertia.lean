@@ -1,30 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The tame inertia, from the residual of `NK.TameStructureDeep`
-
-This file proves, from the single residual `NK.TameStructureDeep.TameRamificationCore`, the
-whole of `NK.TameData.TameInertiaInput p κ K'` (NSW, *Cohomology of Number Fields*, (7.5.7)
-Corollary and (7.5.11); Iwasawa, *On Galois groups of local fields*) except the group-theoretic
-superstructure, together with the two auxiliary facts that the sibling chapters carried as
-*inputs*:
-
-* `NK.TameStructureDeep.inertiaSubgroup_isClosed` — `I_κ` is closed in the Krull topology (it is
-  a fixing subgroup, and a separable closure is integral over `κ`);
-* `NK.TameStructureDeep.isProPrimeToP_tameInertia` — `I_κ/V_κ` is pro-prime-to-`p`.  This is
-  *derived* from the maximality of the wild inertia: a pro-cyclic profinite group which is not
-  pro-prime-to-`p` has a nontrivial characteristic pro-`p` subgroup, whose preimage in `G_κ` would
-  be a normal pro-`p` subgroup strictly containing `V_κ`.
-* `NK.TameStructureDeep.tameInertia_commutator_mem` — `[I_κ, I_κ] ≤ V_κ`, derived from the
-  maximality of `I_κ/V_κ` alone, using that a pro-cyclic profinite group is abelian.
-* `NK.TameStructureDeep.tameInertiaInput_of_core` — the reduced input catalogue
-  `NK.TameData.TameInertiaInput`.
--/
-import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.TameStructure.ProfiniteAux.isProPrimeToP_of_maxNormalProP
-import Submission.NK.TameStructure.ProfiniteAux.commutator_mem_of_isMaxNormalProCyclicInQuotient
-import Submission.NK.TameStructure.ProfiniteAux.fixingSubgroup_isClosed_of_isIntegral
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Connected.Separation
 import Submission.NK.TameStructureDeep.Support.wildInertiaSubgroup_isClosed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

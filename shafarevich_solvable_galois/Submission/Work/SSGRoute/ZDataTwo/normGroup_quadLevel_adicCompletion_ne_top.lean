@@ -1,4 +1,10 @@
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.Work.HilbertSymbolGeneral.canonicalAPI
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
+import Submission.Work.SSGRoute.ZDataTwo.Mu2InvolutionForm
+import Submission.Work.SSGRoute.ZDataTwo.exists_level_localNormSubgroup_eq
+import Submission.Work.SSGRoute.ZDataTwo.mem_fixingSubgroup_adjoin_simple
+import Submission.Work.SSGRoute.exists_kummerChar_of_additive_locConst
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

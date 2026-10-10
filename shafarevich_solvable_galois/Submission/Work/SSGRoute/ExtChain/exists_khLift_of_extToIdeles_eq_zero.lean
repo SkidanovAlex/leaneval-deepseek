@@ -1,23 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.ExtChain.ext_push_engine
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
-import Submission.Work.SSGRoute.E1aClean.unitsQuotient_pow_bijective
-import Submission.Work.SSGRoute.E1aClean.unitsQuotient_pow_bijective_fixed
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
+import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_relAlgClosed
 import Submission.Work.SSGRoute.E1aClean.decompField_hensel_groupIso
 import Submission.Work.SSGRoute.E1aClean.henselEmb_equivariant
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_fixes_decomp
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_relAlgClosed
-import Submission.Work.SSGRoute.PT.e1aBetaCan_hAq_decomp_map
+import Submission.Work.SSGRoute.E1aClean.unitsQuotient_pow_bijective_fixed
 import Submission.Work.SSGRoute.ExtChain.exists_primeUnder_hAq
-import Submission.Work.SSGRoute.ExtChain.extLoc_extToIdeles_e1aSyzShift_eq_zero_imp
-import Submission.Work.CohomologicallyTrivial.SubQuotDefs
-import Submission.Work.SSGRoute.ExtChain.push_injective_syzygy
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
 import Submission.Work.SSGRoute.ExtChain.ext1_p_divisible
+import Submission.Work.SSGRoute.ExtChain.extLoc_extToIdeles_e1aSyzShift_eq_zero_imp
+import Submission.Work.SSGRoute.ExtChain.push_injective_syzygy
+import Submission.Work.SSGRoute.PT.e1aBetaCan_hAq_decomp_map
+import Submission.Work.SSGRoute.PT.pt_pairing_ext
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

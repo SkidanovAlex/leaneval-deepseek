@@ -1,31 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Rank change for the semidirect products `F(m)/F(m)^{(ν)} ⋊ G`
-
-A surjective `G`-operator homomorphism `Φ : F(m) ⇢ F(n)` induces
-
-* a rank-change map `flowNormalSubMap Φ` on the normal subgroups `F(m)/F(m)^{(ν)}`,
-* a morphism of coefficient representations `flowRepMap Φ`, together with the intertwining
-  identity `flowRepG_isIntertwining` behind it.
-
-The companion module `FlowGroupMap.lean` builds from these the homomorphism
-`flowGroupMap Φ : F(m)/F(m)^{(ν)} ⋊ G →* F(n)/F(n)^{(ν)} ⋊ G` and the map `flowZMap Φ` on group
-homology, which is the `zMap` of `Work.CohomologicalShrinking.SemidirectShrinkingData`;
-functoriality (`flow.flowZMap_comp`) is `groupHomology.map_comp`.
-
-**Universe restriction.**  Mathlib's `Mathlib.RepresentationTheory.Homological.GroupHomology`
-requires the coefficient ring, the group and the module to live in one universe
-(`groupHomology.map : {k G H : Type u} … {A : Rep.{u,u,u} k G}`).  Since `ZMod p : Type`, the
-statements about group homology below are therefore stated for `G : Type` and `T : Type`; the
-group-theoretic constructions themselves (`flowGroupMap`, `flowNormalSubMap`, `flowRepMap`) remain
-universe-polymorphic.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.CohomologicalShrinking.FlowRep
-import Submission.Work.CohomologicalShrinking.flow.flowNormalMap_smul
 
 attribute [local instance] Classical.decEq
 

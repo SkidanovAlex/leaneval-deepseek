@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.NK.NUV2.RouteE.carry
-import Submission.NK.NUV2.RouteE.levelH2
-import Submission.NK.NUV2.RouteC.doubleDual_surjective
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.RouteC.Invariant
-import Submission.NK.NUV2.RouteC.cup_pow
-import Submission.NK.NUV2.RouteC.delta_qmodz
+import Submission.NK.NUV2.RouteC.doubleDual_surjective
 import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_of_mem_normGroup
+import Submission.NK.NUV2.RouteE.levelH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

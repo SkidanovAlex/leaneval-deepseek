@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.phi0_defs
-import Submission.Work.SSGRoute.classFormation_ext
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.pt_char_pTorsion
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.LF.classLevelMap_pTorsion_surj
+import Submission.Work.SSGRoute.classFormation_ext
 import Submission.Work.SSGRoute.exists_galois_level_p_dvd
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.phi0_defs
 
 namespace Work.SSGRoute
 

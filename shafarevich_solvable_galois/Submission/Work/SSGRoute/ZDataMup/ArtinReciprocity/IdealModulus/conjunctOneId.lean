@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId_iff
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.fracCoprimeId_spanUnit
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.fracCoprimeId_relNorm
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.fracCoprimeId_spanUnit
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_idealCoprimeGroupId_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

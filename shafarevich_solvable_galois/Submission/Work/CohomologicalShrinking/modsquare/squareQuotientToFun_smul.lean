@@ -1,26 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `G`-equivariance of the identification `F(d)/F(d)² ≅ 𝔽_p[G]^d`
-
-This file proves that the canonical `𝔽_p`-linear isomorphism
-`squareQuotientToFun : F(d)/F(d)^2 →ₗ[ZMod p] (Fin d × G → ZMod p)` of
-`Submission.Work.CohomologicalShrinking.ModSquare` is `G`-equivariant, where the action on
-the quotient is the one descended from the free `G`-operator structure of `F(d)` and the
-action on `Fin d × G → ZMod p` is the left regular representation
-`(h • f) (i,g) = f (i, h⁻¹ * g)`.
-
-The proof is a direct computation:
-
-* On the level of the free group `F(d) = FreeGroup (Fin d × G)`, the homomorphism
-  `freeToFun` is `G`-equivariant; both sides are monoid homomorphisms out of a free group,
-  and they agree on the free generators because `g • Pi.single x 1 = Pi.single (x.1, g * x.2) 1`.
-* Passing to the quotient `F(d)/F(d)^2` is legitimate because the `G`-action on the quotient
-  sends the class of `x` to the class of `subAut g x`, whose underlying element is `g • x`.
--/
-
-import Mathlib
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Action.End
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Submission.Work.CohomologicalShrinking.ModSquare
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

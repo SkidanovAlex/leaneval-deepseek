@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.exists_surjective_ringHom_tensor_completion_canon
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.LinearAlgebra.Dimension.tensor_field_baseChange_finrank
 import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_kernels_coprime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

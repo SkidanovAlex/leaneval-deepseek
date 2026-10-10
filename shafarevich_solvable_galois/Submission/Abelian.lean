@@ -1,26 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Realizing finite abelian groups over `ℚ`
-
-The abelian case of the inverse Galois problem over `ℚ`: every finite abelian group
-occurs as the Galois group of a finite Galois extension of `ℚ`.
-
-The construction is the classical one via cyclotomic fields:
-
-* `ℚ(ζ_N)` has Galois group `(ZMod N)ˣ` over `ℚ`
-  (`IsCyclotomicExtension.autEquivPow`),
-* `(ZMod N)ˣ` is cyclic of order `N - 1` when `N` is prime, and by the Chinese
-  remainder theorem `(ZMod N)ˣ` is the product of the `(ZMod p)ˣ` for `p` running
-  over the primes dividing `N`,
-* choosing distinct primes `p_i ≡ 1 mod n_i` (Dirichlet's theorem) makes every
-  finite product `∏ Multiplicative (ZMod n_i)` a quotient of a suitable `(ZMod N)ˣ`,
-* and any quotient of a realizable group is realizable, by taking a fixed field.
-
-The group-theoretic input `exists_surjective_units_zmod` is proved in
-`Submission/Work/GroupTheory/UnitsQuotient.lean`.
--/
-import Mathlib
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Realization
 import Submission.Work.GroupTheory.exists_surjective_units_zmod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

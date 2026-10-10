@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.SES.ConnectingH2
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Algebra.Group.Subgroup
 import Submission.Work.SSGRoute.PT.akH2Setup
 import Submission.Work.SSGRoute.PT.resH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

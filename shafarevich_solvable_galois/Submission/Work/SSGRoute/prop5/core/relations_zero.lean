@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.core.Defs
-import Submission.Work.SSGRoute.prop5.coreGraded
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Lie.Free
 import Submission.Work.SSGRoute.prop5.bracketBar_axioms
-import Submission.Work.SSGRoute.prop5.witt.Vocab
+import Submission.Work.SSGRoute.prop5.core.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

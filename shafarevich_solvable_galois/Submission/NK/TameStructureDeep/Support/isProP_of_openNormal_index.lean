@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.TameStructureDeep.Support.commutative_topologicalClosure_zpowers
-import Submission.NK.TameStructureDeep.Support.eq_one_of_hom_zmod_of_openNormal_index
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

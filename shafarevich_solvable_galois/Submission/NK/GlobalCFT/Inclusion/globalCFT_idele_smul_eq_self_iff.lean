@@ -1,19 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.Idele
-import Submission.NK.GlobalCFT.GaloisIdeles
-import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_smul
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAlgebraMapUnits_mem_localUnits
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_comp
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_finite
 import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_mem_integers_iff
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_smul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

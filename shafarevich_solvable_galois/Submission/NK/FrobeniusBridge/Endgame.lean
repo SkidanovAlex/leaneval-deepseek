@@ -1,3 +1,6 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.FrobeniusBridge.Tame
 import Submission.NeukirchUchida.Endgame
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

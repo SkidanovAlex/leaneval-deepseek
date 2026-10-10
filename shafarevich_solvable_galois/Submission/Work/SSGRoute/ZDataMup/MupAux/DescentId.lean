@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.normIdeleHom_mem_congruenceSubgroupId
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.FractionalIdeal.Basic
 import Submission.NK.CFTLib.ARLAlt.Descent
 import Submission.NK.CFTLib.ARLAlt.Setup
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.normIdeleHom_mem_congruenceSubgroupId
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

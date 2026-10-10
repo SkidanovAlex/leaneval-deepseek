@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.NK.Reconstruct.LevelPrimeGen
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.ReconstructField.ncard_primesOver_levelPrimeMapGen_gen
-import Submission.NK.ReconstructField.levelPrimeMap_surjective
-import Submission.NK.ReconstructField.exists_finitePlace_of_prime_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

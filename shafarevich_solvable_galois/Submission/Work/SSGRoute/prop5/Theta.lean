@@ -1,26 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 5 of Schmidt–Wingberg: constructing the map `θ`
-
-This file packages the raw value map `valFn` of `Basic.lean` into the `𝔽_p`-linear map
-`θ_τ(d) : (F(d)/F(d)²)^{⊗j} → E(d,τ)` of Proposition 5, together with its naturality,
-`G`-equivariance and surjectivity.
-
-The three well-definedness inputs are `valFn_update_mul`, `valFn_update_pow` and
-`valFn_update_commutator`: the raw map `a ↦ valFn (update x k a)` is additive in `a` and kills
-`p`-th powers and commutators, i.e. it factors through `F(d)/F(d)^p[F(d),F(d)]`.
--/
-
-import Mathlib
-import Submission.Work.SSGRoute.prop5.Map
-import Submission.Work.SSGRoute.prop5.valFn_update_mul
-import Submission.Work.SSGRoute.prop5.valFn_update_pow
-import Submission.Work.SSGRoute.prop5.valFn_update_commutator
-import Submission.Work.CohomologicalShrinking.Prop5
-import Submission.Work.CohomologicalShrinking.ModSquare
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorPower.Basic
 import Submission.Work.CohomologicalShrinking.nonempty_prop5Data_one_one
+import Submission.Work.SSGRoute.prop5.Map
+import Submission.Work.SSGRoute.prop5.valFn_update_commutator
+import Submission.Work.SSGRoute.prop5.valFn_update_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

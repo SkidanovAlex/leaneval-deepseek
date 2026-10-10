@@ -1,11 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.TUnitsRank
 import Submission.NK.GlobalCFTdeep.Herbrand.index_normGroup_completion_eq_finrank
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.no_isReal_of_isPrimitiveRoot_ne_two
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.ZDataMup.onePlace_mem_normImage_of_mem_sup_abelian
-import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux
-import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux2
-import Submission.Work.SSGRoute.ZDataMup.normGroup_eq_iInf_of_iSup_eq_top
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.NUV2.kernelCondition_all
-import Submission.NK.LocalReciprocityLubinTate.Target
-import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NeukirchUchida.Local.LocalGalois
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.GlobalCFT.Norm.NormTransAux
-import Submission.NK.NUV2.ArtinBridge.exists_isOpen_subgroup_le_localNormInfinite_range
+import Submission.Work.SSGRoute.ZDataMup.onePlace_mem_normImage_of_mem_sup_abelian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

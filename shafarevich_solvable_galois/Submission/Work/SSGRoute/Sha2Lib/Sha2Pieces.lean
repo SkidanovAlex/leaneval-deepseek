@@ -1,26 +1,20 @@
-/-
-# Helper pieces copied from `Submission/Work/HRec/exists_cyclic_level_of_prime_dvd_localDegree.lean`
-
-These are the (proved) helper lemmas of the `Work.HRec` Gruenwald-Wang route which the
-`Sha2Lib.exists_unramified_inert_cyclic_level` development needs (the cyclic-level packaging, the
-stabiliser bridge, the place bookkeeping and the `Gal`-conjugation average).  They are copied here
-verbatim (with the same names, in the namespace `Work.SSGRoute.Sha2Lib`) so that this development
-does not depend on the sibling module, which is still under construction.
-
-Nothing in this file is new mathematics.
--/
-import Mathlib
-import Submission.Work.SSGRoute.HRecNKImports
-import Submission.Work.SSGRoute.grunwald_surjective_odd
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.E7cOmega.card_stab_eq_of_liesOver
-import Submission.Work.HRec.grunwald_surjective_odd_over_same
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
 import Submission.Work.HRec.exists_inflated_of_invariant
-import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
-import Submission.Commons.RingTheory.Valuation.exists_smul_eq_of_comap_eq
-import Submission.Work.SSGRoute.ZConstruction.exists_KConj_reps
-import Submission.NK.LocalAnabelian.ResidueField.Defs
+import Submission.Work.HRec.grunwald_surjective_odd_over_same
+import Submission.Work.SSGRoute.E7cOmega.card_stab_eq_of_liesOver
 import Submission.Work.SSGRoute.LevelInertiaProEll.stabilizerValuationSubringAtPrime
+import Submission.Work.SSGRoute.ZConstruction.exists_KConj_reps
+import Submission.Work.SSGRoute.grunwald_surjective_odd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

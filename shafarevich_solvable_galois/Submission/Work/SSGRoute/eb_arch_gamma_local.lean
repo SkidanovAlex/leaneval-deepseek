@@ -1,4 +1,10 @@
-import Submission.Work.SSGRoute.eb_arch_imports
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Submission.NK.CFTLib.HR.isCyclotomic_onePlace_real
+import Submission.NK.HR2.transferStepOnePlace
+import Submission.Work.SSGRoute.eb_arch_crux
+import Submission.Work.SSGRoute.eb_locUnits_resToGal
+import Submission.Work.SSGRoute.phi1_level_naturality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

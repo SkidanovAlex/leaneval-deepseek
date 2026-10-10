@@ -1,10 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
-import Submission.Work.SSGRoute.ExtOneAux
-import Submission.Work.SSGRoute.homRep
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Analysis.Normed.Field.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.SSGStage.extRatRep_vanish
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

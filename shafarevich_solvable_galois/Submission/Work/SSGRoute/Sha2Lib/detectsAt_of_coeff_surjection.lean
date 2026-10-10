@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
 import Submission.Work.SSGRoute.Sha2Lib.detector_of_submodule
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

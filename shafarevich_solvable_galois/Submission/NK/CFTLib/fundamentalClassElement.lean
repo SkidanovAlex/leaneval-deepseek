@@ -1,16 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.FundamentalClassReduction
-import Submission.NK.CFTLib.fundamentalClassInputs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.GFC.exists_auxiliary_galois_tower
-import Submission.NK.CFTLib.GFC.exists_element_of_order_card_of_auxiliary
-import Submission.NK.CFTLib.GFC.exists_addOrderOf_eq_card_of_auxiliary
 import Submission.NK.GFC.fundamentalClassElement_of_cyclotomicTower
 import Submission.NK.GFC.normImage_of_auxiliary_cyclotomic
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-! # The global fundamental class (Milne, *Class Field Theory*, VIII.4 Theorem 4.7)
 
@@ -186,8 +180,6 @@ theorem fundamentalClassElement_of_arithmeticInput (hpp : NK.CFTLib.PrimePowerRe
   classical
   obtain ⟨E, hfE, hnfE, halgE, hfdE, hgalE, L₀, Mid, he, hgalM, hcycM, hcardM, hdisj, hsup⟩ :=
     NK.CFTLib.GFC.exists_auxiliary_galois_tower K L
-  letI : Field E := hfE
-  letI : NumberField E := hnfE
   letI : Algebra K E := halgE
   letI : FiniteDimensional K E := hfdE
   letI : IsGalois K E := hgalE

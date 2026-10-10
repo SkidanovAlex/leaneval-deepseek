@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.pt_restrictedPairing
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
+import Submission.Work.SSGRoute.PT.pt_isCompact_separation
 import Submission.Work.SSGRoute.PT.pt_localPairingDual
 import Submission.Work.SSGRoute.PT.pt_piPairingDual
-import Submission.Work.SSGRoute.PT.pt_isCompact_separation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

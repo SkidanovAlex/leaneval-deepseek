@@ -1,6 +1,6 @@
-import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Int.Star
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
+import Mathlib.Algebra.Order.Ring.Star
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

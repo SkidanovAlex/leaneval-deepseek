@@ -1,39 +1,23 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.phi1_level_index
-import Submission.Work.SSGRoute.phi1_wcolim
-import Submission.Work.SSGRoute.phi1_lambda_defs
-import Submission.Work.SSGRoute.phiAt_level_infl
-import Submission.Work.SSGRoute.inflHIn_refl
-import Submission.Work.SSGRoute.inflHIn_trans
-import Submission.Work.SSGRoute.inflHIn_add
-import Submission.Work.SSGRoute.pTorsion_classLevelLimit
-import Submission.Work.SSGRoute.pt_char_pTorsion
-import Submission.Work.SSGRoute.phi0_pTor_scalar
-import Submission.Work.SSGRoute.phi0_defs
-import Submission.Work.SSGRoute.local_duality_ext_extH_finite
-import Submission.Work.SSGRoute.extHRestrict_inflHIn_eq_zero_of_forall
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E9Nodes.e9_basic
 import Submission.Work.SSGRoute.E9Nodes.e9_unramified_all_but_finite
-import Submission.Work.SSGRoute.E9Nodes.e9_baseS
-import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.extHRestrict_eq_zero_of_le
-import Submission.Work.SSGRoute.lam_local_determination
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.phi1_level_naturality
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_fixed_idele_mem_range
 import Submission.Work.SSGRoute.E9b.chi_pTor_classLevelLimit
+import Submission.Work.SSGRoute.E9b.isUnramifiedClassAt_conj
+import Submission.Work.SSGRoute.E9b.locTriv_subset_unram
 import Submission.Work.SSGRoute.E9b.pTor_classLevel_card
 import Submission.Work.SSGRoute.E9b.unramified_inflHIn
-import Submission.Work.SSGRoute.E9b.locTriv_subset_unram
-import Submission.Work.SSGRoute.E9b.isUnramifiedClassAt_conj
+import Submission.Work.SSGRoute.local_duality_ext_extH_finite
+import Submission.Work.SSGRoute.phi1_wcolim
 set_option synthInstance.maxHeartbeats 400000
 
 open SSGRoute.PTExt CategoryTheory
@@ -208,6 +192,17 @@ instance altDirectedSystem (M : Rep.{0} Coeff (K ≃ₐ[k] K)) :
   map_map := fun {kt jt it} (hij : it ≤ jt) (hjk : jt ≤ kt) (y : AltLeaf M it) =>
     altMap_map M it jt kt hij hjk y
 
+/-- The `ZeroHomClass` instance used by `DirectLimit` for the level transition maps, stated
+directly (build speed: the generic family search explores unrelated morphism classes). -/
+instance altZeroHomClass (M : Rep.{0} Coeff (K ≃ₐ[k] K)) (L L' : Lvl k K Ω) :
+    ZeroHomClass (AltLeaf M L →+ AltLeaf M L') (AltLeaf M L) (AltLeaf M L') :=
+  AddMonoidHomClass.toZeroHomClass
+
+/-- The `AddHomClass` instance used by `DirectLimit` (see `altZeroHomClass`). -/
+instance altAddHomClass (M : Rep.{0} Coeff (K ≃ₐ[k] K)) (L L' : Lvl k K Ω) :
+    AddHomClass (AltLeaf M L →+ AltLeaf M L') (AltLeaf M L) (AltLeaf M L') :=
+  AddMonoidHomClass.toAddHomClass
+
 /-- **`V = colim_L H¹(Gal(L/k), M)`**. -/
 abbrev AltLim (M : Rep.{0} Coeff (K ≃ₐ[k] K)) : Type _ :=
   DirectLimit (fun L : Lvl k K Ω => AltLeaf M L)
@@ -225,7 +220,7 @@ def AltLim.of (M : Rep.{0} Coeff (K ≃ₐ[k] K)) (L : Lvl k K Ω) : AltLeaf M L
 /-- The colimit relation. -/
 theorem AltLim.of_altMap (M : Rep.{0} Coeff (K ≃ₐ[k] K)) {L L' : Lvl k K Ω} (h : L ≤ L')
     (y : AltLeaf M L) : AltLim.of M L' (altMap M L L' h y) = AltLim.of M L y :=
-  DirectLimit.mk_apply (f := fun (L L' : Lvl k K Ω) (h : L ≤ L') => altMap M L L' h) L L' y h
+  Quotient.sound ⟨L', le_rfl, h, altMap_self M L' (altMap M L L' h y)⟩
 
 /-- Induction on `V`. -/
 protected theorem AltLim.induction (M : Rep.{0} Coeff (K ≃ₐ[k] K)) {C : AltLim (Ω := Ω) M → Prop}
@@ -308,6 +303,21 @@ def extHRestrictHomAdd {G : Type} [Group G] (D : Subgroup G) {A : Rep.{0} Coeff 
   map_zero' := E6Util.extHMap_zero D.subtype (𝟙 (Rep.res D.subtype A))
   map_add' a b := extHRestrict_add D a b
 
+/-- Membership in an intersection of kernels indexed by a subtype (build speed: proved once
+for abstract data; `mem_KlLoc` instantiates it). -/
+private theorem mem_iInf_ker_subtype_iff {A : Type*} [AddGroup A] {ι : Type*} {B : ι → Type*}
+    [∀ i, AddGroup (B i)] (P : ι → Prop) (f : ∀ i, A →+ B i) (x : A) :
+    x ∈ ⨅ w : {i // P i}, (f w.1).ker ↔ ∀ i, P i → f i x = 0 := by
+  simp only [AddSubgroup.mem_iInf, AddMonoidHom.mem_ker, Subtype.forall]
+
+/-- The doubly indexed version of `mem_iInf_ker_subtype_iff` (for `mem_KlUnram`). -/
+private theorem mem_iInf_iInf_ker_subtype_iff {A : Type*} [AddGroup A] {ι κ : Type*}
+    {B : κ → Type*} [∀ D, AddGroup (B D)] (P : ι → Prop) (R : ι → κ → Prop)
+    (f : ∀ D, A →+ B D) (x : A) :
+    x ∈ ⨅ q : {q // P q}, ⨅ D : {D // R q.1 D}, (f D.1).ker ↔
+      ∀ q, P q → ∀ D, R q D → f D x = 0 := by
+  simp only [AddSubgroup.mem_iInf, AddMonoidHom.mem_ker, Subtype.forall]
+
 section Local
 
 variable (M : Rep.{0} Coeff (K ≃ₐ[k] K))
@@ -324,17 +334,10 @@ theorem mem_KlLoc (v : NK.GlobalCFT.Place K) (L : Lvl k K Ω)
     (h : extH (Rep.res (galRes k K L.1) M) 1) :
     h ∈ KlLoc M v L ↔
       ∀ (w : NK.GlobalCFT.Place ↥L.1), NK.GlobalCFT.Place.LiesOver w v →
-        extHRestrict (MulAction.stabilizer (↥L.1 ≃ₐ[k] ↥L.1) w) h = 0 := by
-  constructor
-  · intro hh w hw
-    unfold KlLoc at hh
-    rw [AddSubgroup.mem_iInf] at hh
-    exact AddMonoidHom.mem_ker.mp (hh ⟨w, hw⟩)
-  · intro hh
-    unfold KlLoc
-    rw [AddSubgroup.mem_iInf]
-    intro w
-    exact AddMonoidHom.mem_ker.mpr (hh w.1 w.2)
+        extHRestrict (MulAction.stabilizer (↥L.1 ≃ₐ[k] ↥L.1) w) h = 0 :=
+  mem_iInf_ker_subtype_iff (fun w : NK.GlobalCFT.Place ↥L.1 => NK.GlobalCFT.Place.LiesOver w v)
+    (fun w => extHRestrictHomAdd (G := ↥L.1 ≃ₐ[k] ↥L.1) (A := Rep.res (galRes k K L.1) M)
+      (MulAction.stabilizer (↥L.1 ≃ₐ[k] ↥L.1) w) 1) h
 
 /-- Unramifiedness at every finite place over `v`. -/
 noncomputable def KlUnram (v : NK.GlobalCFT.Place K) (L : Lvl k K Ω) :
@@ -350,19 +353,12 @@ theorem mem_KlUnram (v : NK.GlobalCFT.Place K) (L : Lvl k K Ω)
     h ∈ KlUnram M v L ↔
       ∀ (q : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥L.1)),
         NK.GlobalCFT.Place.LiesOver (NK.GlobalCFT.Place.ofFinite q) v →
-        IsUnramifiedClassAt q h := by
-  constructor
-  · intro hh q hq D hD
-    unfold KlUnram at hh
-    rw [AddSubgroup.mem_iInf] at hh
-    exact AddMonoidHom.mem_ker.mp (AddSubgroup.mem_iInf.mp (hh ⟨q, hq⟩) ⟨D, hD⟩)
-  · intro hh
-    unfold KlUnram
-    rw [AddSubgroup.mem_iInf]
-    intro q
-    rw [AddSubgroup.mem_iInf]
-    intro D
-    exact AddMonoidHom.mem_ker.mpr (hh q.1 q.2 D.1 D.2)
+        IsUnramifiedClassAt q h :=
+  mem_iInf_iInf_ker_subtype_iff
+    (fun q : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥L.1) =>
+      NK.GlobalCFT.Place.LiesOver (NK.GlobalCFT.Place.ofFinite q) v)
+    (fun q (D : Subgroup (↥L.1 ≃ₐ[k] ↥L.1)) => ∀ σ ∈ D, IsInertiaAt q σ)
+    (fun D => extHRestrictHomAdd (G := ↥L.1 ≃ₐ[k] ↥L.1) (A := Rep.res (galRes k K L.1) M) D 1) h
 
 /-- **The local submodule at `(v, L)`**: locally trivial at every place over `v` when `v ∈ S`
 (so that clause (3) holds), and unramified at every finite place over `v` when `v ∉ S` (so that
@@ -763,7 +759,9 @@ theorem e9_local_decomposition (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [
       map_zero' := by apply Subtype.ext; simp
       map_add' := fun a b => by apply Subtype.ext; simp }
   obtain ⟨f, hfker, hffin, hfsum⟩ :=
-    exists_finsupp_decomposition_aux p (fun v : R => Uv M S v.1) hfin
+    exists_finsupp_decomposition_aux (V := AltLim (Ω := Ω) M)
+      (X := ↥(pTor p (ClassLevelLimit (k := k) (K := K) (Ω := Ω)))) (ι := R)
+      p (fun v : R => Uv M S v.1) hfin
       (AddMonoidHom.toZModLinearMap p ψp)
       (fun y hy => Subtype.ext (hker y hy))
   let pTorToA : ∀ (L : Lvl k K Ω),
@@ -818,14 +816,19 @@ theorem e9_local_decomposition (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [
         { toFun := fun h => ((chiLe L hp).symm (χ (f v (AltLim.of M L h)))).1,
           map_zero' := by
             show ((chiLe L hp).symm (χ (f v (AltLim.of M L 0)))).1 = 0
-            rw [AltLim.of_zero, map_zero (f v), map_zero χ, map_zero ((chiLe L hp).symm)]
-            rfl,
+            exact (congrArg (fun s => ((chiLe L hp).symm (χ (f v s))).1) (AltLim.of_zero M L)).trans
+              ((congrArg (fun s => ((chiLe L hp).symm (χ s)).1) (map_zero (f v))).trans
+                ((congrArg (fun s => ((chiLe L hp).symm s).1) (map_zero χ)).trans
+                  (congrArg Subtype.val (map_zero (chiLe L hp).symm)))),
           map_add' := fun a b => by
             show ((chiLe L hp).symm (χ (f v (AltLim.of M L (a + b))))).1
                 = ((chiLe L hp).symm (χ (f v (AltLim.of M L a)))).1
                   + ((chiLe L hp).symm (χ (f v (AltLim.of M L b)))).1
-            rw [map_add (AltLim.of M L), map_add (f v), map_add χ, map_add ((chiLe L hp).symm)]
-            rfl }
+            exact (congrArg (fun s => ((chiLe L hp).symm (χ (f v s))).1)
+                (map_add (AltLim.of M L) a b)).trans
+              ((congrArg (fun s => ((chiLe L hp).symm (χ s)).1) (map_add (f v) _ _)).trans
+                ((congrArg (fun s => ((chiLe L hp).symm s).1) (map_add χ _ _)).trans
+                  (congrArg Subtype.val (map_add (chiLe L hp).symm _ _)))) }
       else 0
   have hkey : ∀ (L : Lvl k K Ω) (h : AltLeaf M L) (v : R),
       ClassLevelLimit.of (k := k) (K := K) (Ω := Ω) L (lamLvl v L h)

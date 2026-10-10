@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.RingTheory.RootsOfUnity.Complex
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
 import Submission.NK.NUV2.RouteC.delta_qmodz
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

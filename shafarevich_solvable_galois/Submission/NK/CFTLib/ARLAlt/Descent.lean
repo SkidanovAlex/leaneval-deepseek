@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ARL.RelNormFI
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.relNormUnit_trans
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.NUV2.ArtinBridge.spanUnit_norm_mem_principalRay_of_congrOne
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

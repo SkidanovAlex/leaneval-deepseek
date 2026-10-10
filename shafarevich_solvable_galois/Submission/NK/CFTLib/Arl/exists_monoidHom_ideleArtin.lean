@@ -1,12 +1,16 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.CFTLib.ArtinIdeal
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one
 import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
-import Submission.NK.HeckeL.Basic
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
+import Submission.NK.CFTLib.ArtinIdeal
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

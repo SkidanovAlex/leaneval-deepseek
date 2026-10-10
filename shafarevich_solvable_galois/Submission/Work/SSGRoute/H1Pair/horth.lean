@@ -1,20 +1,15 @@
-/-
-# Poitou–Tate orthogonality: from the level-`N₂` vanishing to the `horth` of `pt_selmer_relaxed`
-
-Step 6 of the assembly of `Work.SSGRoute.coker_obstruction`.  `H1Pair.transfer_sum_eq_zero` proves
-that the level-`N₂` functional vanishes on every `1`-cocycle of `Gal(N₂/k)` with values in
-`M₂^∨(1)`.  The arithmetic input `Work.SSGRoute.selmer_dual_inflated` (Bauer/Chebotarev for the dual
-Selmer group) writes every global cocycle `b` satisfying the *Selmer* conditions of level `N₂` as
-`b = b₀ ∘ res k N₂` with `b₀` a `1`-cocycle of `Gal(N₂/k)`.  Hence the local pairing sum of `b` is
-the level-`N₂` functional evaluated at `[b₀]`, i.e. zero — which is exactly the `horth` hypothesis of
-`Work.SSGRoute.pt_selmer_relaxed`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.selmer_dual_inflated
-import Submission.Work.SSGRoute.H1Pair.Pairing
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.H1Pair.transfer
+import Submission.Work.SSGRoute.selmer_dual_inflated
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

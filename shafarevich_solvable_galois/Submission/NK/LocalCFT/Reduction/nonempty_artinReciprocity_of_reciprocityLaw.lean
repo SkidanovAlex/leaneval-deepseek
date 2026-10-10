@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.LocalCFT.Basic
+import Mathlib.FieldTheory.Galois.Profinite
 import Submission.NK.LocalCFT.Reduction.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

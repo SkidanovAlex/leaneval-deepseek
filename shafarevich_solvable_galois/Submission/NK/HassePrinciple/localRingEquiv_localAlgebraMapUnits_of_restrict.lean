@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.GaloisIdeles
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_comp
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
-import Submission.NK.GlobalCFT.Galois.globalCFT_exists_localRingEquiv_smul
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
 
 /-!

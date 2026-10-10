@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.primeToPart
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Tame.TameClosure
 import Submission.NK.TameStructureDeep.Tame.UnramifiedNoPow
+import Submission.NK.TameStructureDeep.Tame.primeToPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

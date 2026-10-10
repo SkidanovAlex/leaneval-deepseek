@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Norm.Defs
 import Submission.Commons.FieldTheory.Galois.natCard_quotient_units_range_norm_le_mul_tower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

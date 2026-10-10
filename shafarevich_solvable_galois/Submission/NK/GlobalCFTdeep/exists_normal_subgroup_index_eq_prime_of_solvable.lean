@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Solvable
+import Mathlib.Data.SetLike.Fintype
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

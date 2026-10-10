@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Uniform
 import Submission.Work.Tate.SES
 import Submission.Work.Tate.map_augmentation_eq_of_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

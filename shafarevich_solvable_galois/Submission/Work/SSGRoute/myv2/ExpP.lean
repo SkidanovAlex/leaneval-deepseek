@@ -1,11 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
+import Mathlib.RingTheory.Henselian
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSG8Escape.correction_ssg8
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.NK.Chebotarev.LFunctions
-import Submission.NK.CFTLib.ArtinReciprocityIdealProved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

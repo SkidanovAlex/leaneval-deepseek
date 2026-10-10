@@ -1,8 +1,5 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Series
+import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.FormalGroup
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Setup
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Step
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.existsUnique_lubinTate_solution
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

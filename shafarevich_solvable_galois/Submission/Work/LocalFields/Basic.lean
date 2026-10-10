@@ -1,26 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The arithmetic of local fields: vocabulary
-
-This is the entry point of the `Work.LocalFields` chapter.  It sets up the vocabulary used
-throughout: finite primes of a number field, the completion at a finite prime, its ring of
-integers, its residue field and its valuation; and a bundled notion of "non-archimedean local
-field".
-
-## Main definitions
-
-* `Work.LocalFields.FinitePrime K` : the finite primes of a number field `K`, i.e. the
-  nonzero prime ideals of `𝓞 K` (Mathlib's `IsDedekindDomain.HeightOneSpectrum`).
-* `Work.LocalFields.Completion K v` : the `v`-adic completion `K_v`.
-* `Work.LocalFields.intRing K v` : the ring of integers `𝒪_v` of `K_v`.
-* `Work.LocalFields.residueFieldOf K v` : the residue field `κ_v` of `K_v`.
-* `Work.LocalFields.IsLocalField k` : non-archimedean local fields (rank one, compact ring of
-  integers), which is equivalent to the classical "complete discretely valued with finite
-  residue field".
--/
-import Mathlib
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
+import Mathlib.Topology.Algebra.Valued.LocallyCompact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

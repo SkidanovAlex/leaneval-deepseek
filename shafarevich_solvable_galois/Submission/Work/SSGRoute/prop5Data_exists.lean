@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.Theta
-import Submission.Work.SSGRoute.prop5.Surj
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.Work.SSGRoute.prop5.Nat
+import Submission.Work.SSGRoute.prop5.Surj
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

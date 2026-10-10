@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.Work.SSGRoute.ZDataMup.CycleAux
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
-import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_archimedean
+import Submission.Work.SSGRoute.ZDataMup.CycleIdele
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.glue_fin_decomp_ex
-import Submission.Work.SSGRoute.RamifiedPlacesAux
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.frobeniusClass_realisation_below
+import Submission.Work.SSGRoute.glue_fin_decomp_ex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

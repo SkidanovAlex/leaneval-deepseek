@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.NK.CFTLib.pClassField_exists
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Submission.NK.CFTLib.ARLTransfer.kernelLe_of_auxField
+import Submission.NK.CFTLib.ClassChar
+import Submission.NK.NUV2.ARL.Gap.langCyclicRelIndex
+import Submission.NK.NUV2.ARL.abelianWeakToStrong
 import Submission.Work.SSGRoute.ZDataMup.nonempty_artinReciprocity_of_abelian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,11 +1,12 @@
-import Submission.NK.Reconstruct.Basic
-import Submission.NK.Reconstruct.Transport
-import Submission.NK.Reconstruct.finiteDimensional_sigmaLevel
-import Submission.NK.Reconstruct.normal_sigmaLevel
-import Submission.NK.Reconstruct.mapsBaseLevel_sigmaLevelEquiv
-import Submission.NK.Reconstruct.isFrobAt_primeTransport_iff_inv
-import Submission.NK.Reconstruct.restrictNormalHom_conjHomEquiv
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Reconstruct.eq_of_restrictNormalHom_eq
+import Submission.NK.Reconstruct.finiteDimensional_sigmaLevel
+import Submission.NK.Reconstruct.isFrobAt_primeTransport_iff_inv
+import Submission.NK.Reconstruct.mapsBaseLevel_sigmaLevelEquiv
+import Submission.NK.Reconstruct.normal_sigmaLevel
+import Submission.NK.Reconstruct.restrictNormalHom_conjHomEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

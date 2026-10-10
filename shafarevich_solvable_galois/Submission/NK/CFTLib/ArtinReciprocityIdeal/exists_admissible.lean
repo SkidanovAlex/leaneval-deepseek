@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_finite
 import Submission.NK.CFTLib.exists_congruenceSubgroup_le_normImage
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

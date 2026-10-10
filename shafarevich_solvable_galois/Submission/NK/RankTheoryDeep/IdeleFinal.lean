@@ -1,8 +1,8 @@
-import Submission.NK.RankTheoryDeep.IdeleRankDefs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Submission.NK.RankTheoryDeep.CorrectedRank
 import Submission.NK.RankTheoryDeep.IdeleAssembly
 import Submission.NK.RankTheoryDeep.rank_dual_ideleClassGroup_le_integralIdeles
-import Submission.NK.RankTheoryDeep.CorrectedRank
-import Submission.NK.RankTheoryDeep.RankTop
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

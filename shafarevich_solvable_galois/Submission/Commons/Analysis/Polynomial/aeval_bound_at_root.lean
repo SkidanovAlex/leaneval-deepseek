@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Analysis.Polynomial.Norm
 import Submission.Commons.Analysis.Polynomial.aeval_norm_le
 import Submission.Commons.Analysis.Polynomial.root_norm_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,13 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Work.LocalFields.exists_monic_irreducible_reduction
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.LocalFields.LocalFieldAPI
 import Submission.Work.SSGRoute.level_residueDeg_dvd_general
-import Submission.NK.FrobeniusBridge.Descent
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # Increasing the inertia degree at a finite place by passing to a larger normal level
@@ -93,7 +93,6 @@ theorem exists_level_inertiaDeg_mul_dvd
       (N * (levelPrime k Ω A hA M).asIdeal.inertiaDeg (NumberField.RingOfIntegers k)) hdpos
   letI : FiniteDimensional k L := hLfin
   letI : Normal k L := hLnorm
-  letI : NumberField ↥L := hLnf
   -- the compositum `M ⊔ L`, which is again finite, normal and a number field over `k`
   let M' : IntermediateField k Ω := M ⊔ L
   have hMle : M ≤ M' := le_sup_left

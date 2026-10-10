@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.homRep
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.LocalFields.completion_algebraMap_continuous
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
 import Submission.Work.SSGRoute.ext_congr_right
 import Submission.Work.SSGRoute.ext_res_mulEquiv
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.homRep
+import Submission.Work.SSGRoute.localAutHom_bijective
 
 namespace Work.SSGRoute
 
@@ -18,6 +16,11 @@ open SSGRoute.PTExt CategoryTheory
 open scoped TensorProduct
 
 set_option maxHeartbeats 800000
+
+/- Without the v4.35 `respectTransparency` options, `AddCommGroup (DualMod p M)` is not found by
+unfolding the `abbrev`; supply it explicitly (it is `LinearMap.addCommGroup`, as before). -/
+local instance extLUQ_dualAddCommGroup (p : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod p) M] :
+    AddCommGroup (DualMod p M) := LinearMap.addCommGroup
 
 /-! ## Two elementary identities, proved generically (cheap) -/
 
@@ -82,12 +85,14 @@ theorem ext_localUnits_iso_Q (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [N
         (modRep (K' ≃ₐ[Work.SSGRoute.localFieldAt k A hA] K')
           (Additive (Units ↥K'))) 1) := by
   obtain ⟨iso⟩ := hRep
-  exact ext_coeff_change (G := ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)))
+  -- elaborated without the expected type (its propagation re-unified the `Ext` group instances)
+  have h := ext_coeff_change (G := ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)))
     (G' := K' ≃ₐ[Work.SSGRoute.localFieldAt k A hA] K') eG
     (Rep.res (decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)).subtype
       (modRep (K ≃ₐ[k] K) (DualMod p (E ⊗[ZMod p] T))))
     (localUnitsK (k := k) (NK.GlobalCFT.Place.ofFinite q))
     (modRep (K' ≃ₐ[Work.SSGRoute.localFieldAt k A hA] K') (Additive (Units ↥K')))
     iso
+  exact h
 
 end Work.SSGRoute

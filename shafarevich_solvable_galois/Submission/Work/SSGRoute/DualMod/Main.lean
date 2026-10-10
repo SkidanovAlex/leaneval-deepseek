@@ -1,6 +1,16 @@
-import Mathlib
-import Submission.Work.Tate.All
-import Submission.Work.GroupCohomology.All
+import Mathlib.Algebra.Algebra.Basic
+import Mathlib.Data.ZMod.Defs
+import Mathlib.GroupTheory.GroupAction.Ring
+import Submission.Work.GroupCohomology.ConnectingLift
+import Submission.Work.GroupCohomology.CyclicTriv
+import Submission.Work.GroupCohomology.Shapiro
+import Submission.Work.GroupCohomology.TrivialGroup
+import Submission.Work.GroupCohomology.Vanishing
+import Submission.Work.Tate.DimensionShiftH
+import Submission.Work.Tate.Equivs
+import Submission.Work.Tate.Hm1ToCoinv_injective
+import Submission.Work.Tate.coind_augmentation_eq_ker_norm
+import Submission.Work.Tate.coind_norm_eq_const
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

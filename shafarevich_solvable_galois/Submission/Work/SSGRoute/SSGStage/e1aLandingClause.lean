@@ -1,17 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.e1a_beta_can
-import Submission.Work.SSGRoute.PT.e1aBetaCan_aux
-import Submission.Work.SSGRoute.PT.e1aBetaCan_splitPlaces
-import Submission.Work.SSGRoute.PT.e1aBetaCan_placeExists
-import Submission.Work.SSGRoute.PT.e1aBetaCan_localDictionary_fin_compat
-import Submission.Work.SSGRoute.PT.e1a_sha2_mem_range_chainC
-import Submission.Work.SSGRoute.extToIdeles_eq_zero_iff_extLoc
-import Submission.Work.SSGRoute.glue_infinite_place
-import Submission.Work.SSGRoute.PT.extRes_e1cEquiv_eq_zero_of_resH1_e1cEquiv_eq_zero
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ExtChain.e1aLandingFinCompat_via_cruxA
-import Submission.Work.SSGRoute.PTdualControl.archimedeanReduction_via_cruxA
-import Submission.Work.SSGRoute.PTdualControl.glue_infinite_place_with_link
+import Submission.Work.SSGRoute.PT.e1a_sha2_mem_range_chainC
 import Submission.Work.SSGRoute.PTdualControl.archimedeanCruxA
+import Submission.Work.SSGRoute.extToIdeles_eq_zero_iff_extLoc
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

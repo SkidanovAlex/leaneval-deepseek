@@ -1,20 +1,8 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The rational level: from the density theorem to `NK.WeakNU.ChebotarevFrobeniusInput`
-
-This file converts the Dirichlet-density form of Čebotarev's theorem (`ChebotarevDensity`) into the
-existence form consumed by the Neukirch–Uchida development
-(`NK.WeakNU.ChebotarevFrobeniusInput`), and draws the consequences of the reduction of the
-general case to the abelian case.
-
-The conversion uses that the finite places of `ℚ` are in bijection with the rational primes via the
-absolute norm of the contraction to `ℤ` (`ratPrimeOf`), so that an infinite set of prime ideals of
-`𝓞 ℚ` gives infinitely many rational primes.
--/
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.ChebotarevGeneral.Basic
-import Submission.NK.Chebotarev.HasDirichletDensitySensitivity
-import Submission.NK.WeakNU.primeCountAbove_under_eq_primesOverRat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

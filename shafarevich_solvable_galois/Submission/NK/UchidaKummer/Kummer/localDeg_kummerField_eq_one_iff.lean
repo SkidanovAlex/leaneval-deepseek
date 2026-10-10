@@ -1,11 +1,16 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.LocalAnabelian.Kummer.Defs
-import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.NumberTheory.NumberField.Completion.isScalarTower_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
+import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
+import Submission.NK.UchidaKummer.Defs
 
 open Polynomial IntermediateField
 open scoped Valued NumberField

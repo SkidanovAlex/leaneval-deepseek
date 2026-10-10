@@ -1,18 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesEscapePrimeSplit
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.EscapeImports
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.EscapeCoreLib.escapePrimeFrobAtPrime
 import Submission.Work.SSGRoute.EscapeCoreLib.memGesUOfIsFrobAtPrime
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesEscapePrimeSplit
 import Submission.Work.SSGRoute.n4_halpha_fix
-import Submission.Work.SSGRoute.step4_y_escape_v2.RayClass
-import Submission.Work.SSGRoute.ssg8Chebotarev
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.SSGRoute.ZDataTwo
 

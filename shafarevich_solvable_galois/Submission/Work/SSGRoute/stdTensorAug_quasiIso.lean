@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.RepresentationTheory.Homological.Resolution
+import Mathlib.RingTheory.Flat.CategoryTheory
+import Mathlib.CategoryTheory.Monoidal.Closed.Braided
 import Submission.Work.SSGRoute.ext2_iso_cohomology_defs
 import Submission.Work.SSGRoute.module_free_ulift_int
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

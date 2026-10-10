@@ -1,6 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.kummer_decomp
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PTembedding.dualMod_rootsOfUnity_equiv
+import Submission.Work.SSGRoute.PTembedding.kummer_decomp
 import Submission.Work.SSGRoute.homCoindDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

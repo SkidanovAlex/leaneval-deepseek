@@ -1,41 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The order of `H²(U, Lˣ)` at the top level: `|H²(Gal(L/K), Lˣ)| = [L : K]`
-
-Umbrella development: `Submission/Work/NUV2/ABHN/`.
-
-The target of this file is
-
-`NK.NUV2.ABHN.unitsLevelH2_card`:
-`|H²(Gal(L/K_𝔮), Lˣ)| = [L : K_𝔮]`
-
-for `K` a number field, `𝔮` a finite place of `K` and `L` a finite Galois intermediate field of the
-separable closure of the `𝔮`-adic completion `K_𝔮` of `K`.  This is the classical local reciprocity
-statement `H²(Gal(L/K_𝔮), Lˣ) ≅ ℤ ⧸ [L : K_𝔮]` (the relative Brauer group of a local extension is
-cyclic of order the degree), in the cardinality form needed by the place correspondence.
-
-The proof combines three independent pieces:
-
-* **the level dictionary**: for `V = ⊤` the level group `LevelGroup ⊤ L` is the full Galois group
-  `Gal(↥L/K_𝔮)` and the level representation is the units of `↥L`, so
-  `UnitsLevelH2 ⊤ L = H²(Gal(↥L/K_𝔮), ↥Lˣ)` (`natCard_unitsLevelH2_top_eq`);
-* **the coefficient-ring transfer**: `NK.HassePrinciple` computes its level cohomology over
-  `CoeffInt = ULift ℤ`, while the local reciprocity machinery of `Submission/Commons/` works over
-  `ℤ`; the two computations agree because `H²` only depends on the underlying additive group and
-  the `G`-action (`natCard_groupCohomology_two_coeffTransfer`);
-* **local reciprocity for completions of number fields**: every finite Galois extension of `K_𝔮`
-  is the completion of a *Galois* extension of number fields (`exists_galois_realization`), where
-  the fundamental class (`exists_addOrderOf_eq_finrank_groupCohomology_two_units_adicCompletion`,
-  giving `[L : K_𝔮] ∣ |H²|`) and the solvable dévissage
-  (`natCard_groupCohomology_two_units_le_finrank_of_solvable`, giving `|H²| ≤ [L : K_𝔮]`) combine
-  to the equality.
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.MuColimit
-import Submission.NK.NUV2.ABHN.CommonsImports
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Submission.NK.HassePrinciple.exists_unitsLevelMapCoeff
 import Submission.NK.NUV2.ABHN.solvable_algEquiv_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_disjoint
 import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

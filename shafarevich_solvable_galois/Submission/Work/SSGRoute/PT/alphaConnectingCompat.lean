@@ -1,6 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.AlphaPairing
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Constructions.SumProd
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.AbsoluteKummer.SES
+import Submission.Work.SSGRoute.PT.AlphaPairing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

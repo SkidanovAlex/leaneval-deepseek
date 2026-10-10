@@ -1,7 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.LTDDefs.DecompAction
-import Submission.Work.SSGRoute.DualMod.Main
 import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

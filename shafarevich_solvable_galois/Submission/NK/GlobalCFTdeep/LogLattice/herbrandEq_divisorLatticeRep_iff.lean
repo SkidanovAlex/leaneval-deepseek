@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.RepIso
-import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
+import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

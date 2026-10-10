@@ -1,29 +1,16 @@
-/-
-# The transfer of the level-`N` obstruction to an intermediate level
-
-Step 3–4 of the assembly of `Work.SSGRoute.coker_obstruction`: if the obstruction class `X` (built by
-`H1Pair.exists_obstruction_class` from the local data at level `N`) dies at the level `N₂ ≤ N` with
-finite coefficients `M₂ ⊇ f₀(E)` — i.e. `(groupHomology.map q F₀ 1) X = 0` — then the level-`N₂`
-functional `ω_{N₂}` (the local data `(f₀ ∘ α, f₀ ∘ β)` paired with `M₂`) **vanishes on all of**
-`H¹(Gal(N₂/k), M₂^∨(1))`.
-
-The two ingredients are
-
-* the representative-level identity for `groupCohomology.map`
-  (`H1π_comp_map_apply`, `coe_mapCocycles₁`, `cochainsMap₁_apply`), and
-* the **naturality of the local pairings in the coefficient module** (clause (4) of the canonical
-  local Tate pairing, `Work.SSGRoute.PTembedding.localTatePairing_canonical`), applied at every local
-  group of `S` and `C`.
-
-The vanishing is exactly the hypothesis `horth` of `Work.SSGRoute.pt_selmer_relaxed` (Poitou–Tate at
-`H¹`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.H1Pair.Pairing
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.H1Pair.Natural
-import Submission.Work.SSGRoute.H1Pair.Clauses
 import Submission.Work.SSGRoute.H1Pair.obstruction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

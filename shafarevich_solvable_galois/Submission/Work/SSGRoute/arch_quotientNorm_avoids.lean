@@ -1,21 +1,19 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.normImage_at_level_proper
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
-import Submission.Work.SSGRoute.localAlgebraMapUnits_self
-import Submission.Work.SSGRoute.phi1_level_naturality
-import Submission.Work.SSGRoute.infinitePlace_units_mul_pow
-import Submission.Work.SSGRoute.real_units_not_pow
 import Submission.Work.SSGRoute.exists_complex_place_above
+import Submission.Work.SSGRoute.infinitePlace_units_mul_pow
+import Submission.Work.SSGRoute.localAlgebraMapUnits_self
+import Submission.Work.SSGRoute.localUnitsEquiv_fixed_iff_ringEquiv_fixed
 import Submission.Work.SSGRoute.not_norm_complex_place
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.real_units_not_pow
 
 namespace Work.SSGRoute
 
@@ -309,8 +307,6 @@ theorem arch_quotientNorm_avoids
     · -- `u₀` real: enlarge `L₀` so that a place above it becomes complex
       obtain ⟨L, hLf, hLn, hLk, hLL₀, hST, hLfd, hLgal, u', hu'Lies, hu'C⟩ :=
         exists_complex_place_above k L₀ u₀ hu₀real
-      letI : Field L := hLf
-      letI : NumberField L := hLn
       letI : Algebra k L := hLk
       letI : Algebra L₀ L := hLL₀
       letI : IsScalarTower k L₀ L := hST

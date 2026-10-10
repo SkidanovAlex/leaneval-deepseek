@@ -1,11 +1,17 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.cyclotomicOnePlace_unramified
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm_of_finiteDimensional
+import Submission.NK.NUV2.ARL.autToPow_artinSym_spanSingleton_natAbs
 import Submission.NK.NUV2.ARL.cyclotomic_isComplex
 import Submission.NK.NUV2.ARL.norm_neg_of_one_negative_real_place
-import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
-import Submission.NK.CFTLib.ARL.norm_sub_one_mem_span
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
-import Submission.NK.NUV2.ARL.autToPow_artinSym_spanSingleton_natAbs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,10 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFTdeep.NormIndex.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_archimedean
 import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

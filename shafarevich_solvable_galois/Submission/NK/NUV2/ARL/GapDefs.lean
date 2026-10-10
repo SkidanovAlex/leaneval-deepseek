@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

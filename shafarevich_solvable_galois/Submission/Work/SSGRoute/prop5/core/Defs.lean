@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.prop5.coreGraded
-import Submission.Work.SSGRoute.prop5.witt.Basic
+import Submission.Work.SSGRoute.prop5.magnusGroupPart
 import Submission.Work.SSGRoute.prop5.witt.Vocab
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

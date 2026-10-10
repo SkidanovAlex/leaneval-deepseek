@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Analysis.Normed.Field.Lemmas
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
 import Submission.Work.SSGRoute.e0b_bridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

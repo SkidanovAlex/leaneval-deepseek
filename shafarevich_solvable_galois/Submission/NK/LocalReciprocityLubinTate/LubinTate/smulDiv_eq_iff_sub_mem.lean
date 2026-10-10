@@ -1,35 +1,9 @@
-/-
-# The `𝒪[F]`-orbit of a primitive torsion point
-
-Milne, *Classical Field Theory*, Theorem I.3.1: the level `Λ_n` of `π^n`-torsion points of the
-Lubin–Tate group of `π` is a free `𝒪[F]/π^n`-module of rank one.  This file records the
-consequence of that statement which the local reciprocity law consumes: for a **primitive** point
-`y ∈ Λ_n ∖ Λ_{n-1}` (hence a generator of the rank-one module), two multipliers `a b ∈ 𝒪[F]` give
-the same point exactly when they agree modulo `π^n`:
-
-  `a · y = b · y  ↔  a - b ∈ 𝔪[F]^n`.
-
-Equivalently, the map `a ↦ a · y` induces an isomorphism `𝒪[F]/π^n ≅ Λ_n`.
-
-## The proof
-
-The kernel of `a ↦ a · y` is `(π^n)` — this is `Eval.smulDiv_eq_zero_iff` (the annihilator of a
-primitive point), and the ideal `(π^n)` is the `n`-th power of the maximal ideal because `π` is a
-uniformiser (`Irreducible.maximalIdeal_eq`).  It remains to see that `a · y = b · y` is *equivalent*
-to `(a - b) · y = 0`.  The action `a ↦ a · y` is **not** additive in `a` (the addition law of the
-Lubin–Tate group law is not the addition of `F`), so this needs the corrected addition formula of
-`Eval/smulDiv_add.lean`: writing `a = b + (a - b)`,
-
-  `a · y = b · y + ((a - b) · y) · H`
-
-with `H ≠ 0`, which gives both directions at once.
--/
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple_of_fibre
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_add
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_level
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

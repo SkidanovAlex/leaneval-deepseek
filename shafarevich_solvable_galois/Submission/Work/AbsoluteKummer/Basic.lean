@@ -1,19 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Continuous cohomology in low degrees (basic API)
-
-* `B1 ≤ Z1` and `B2 ≤ Z2`: the continuous coboundaries are continuous cocycles
-  (`Work.AbsoluteKummer.B1_le_Z1`, `Work.AbsoluteKummer.B2_le_Z2`);
-* the elementary consequences of being a continuous `1`-cocycle (`Z1.map_one`, `Z1.map_inv`);
-* **functoriality in the coefficients**: an equivariant additive map `φ : M →+ N` of discrete
-  `G`-modules induces `H¹(G,M) → H¹(G,N)` (`Work.AbsoluteKummer.mapH1`);
-* a locally constant function on a compact space has finite image
-  (`Work.AbsoluteKummer.finite_image_of_isLocallyConstant`);
-* **finite Hilbert 90** (Noether's form), `Work.AbsoluteKummer.exists_algEquiv_div_of_isCrossedHom`,
-  a wrapper around Mathlib's `groupCohomology.Hilbert90.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units`.
--/
-import Mathlib
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

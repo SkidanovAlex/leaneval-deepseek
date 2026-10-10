@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.Prelude
-import Submission.Work.SSGRoute.PTW.exists_open_index_p_notMem_of_totallyDisconnected_exponent
-import Submission.Work.SSGRoute.PTW.connectedComponentOfOne_le_of_isOpen_subgroup
-import Submission.Work.SSGRoute.PTW.logSectionDefs
-import Submission.Work.SSGRoute.PTW.abs_ideleClassGroup_pow_surjective
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.ProperAction.Basic
 import Submission.Work.SSGRoute.PTW.connectedComponent_pow_surjective
+import Submission.Work.SSGRoute.PTW.exists_open_index_p_notMem_of_totallyDisconnected_exponent
 import Submission.Work.SSGRoute.PTW.ideleClassGroup_quotient_instances
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

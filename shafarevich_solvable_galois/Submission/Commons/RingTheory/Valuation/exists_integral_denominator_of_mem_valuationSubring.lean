@@ -1,7 +1,4 @@
 import Mathlib.FieldTheory.Minpoly.Basic
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.Valuation.Extension
 import Mathlib.RingTheory.Valuation.LocalSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

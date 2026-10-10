@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Submission.Work.SSGRoute.InvAux
 import Submission.Work.SSGRoute.InvAux.exists_nat_ge_of_aeval_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

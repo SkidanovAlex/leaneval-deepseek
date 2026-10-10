@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Kummer
-import Submission.Work.AbsoluteKummer.Coefficients
-import Submission.Work.AbsoluteKummer.Factorisation.exists_finiteGalois_le_ker
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteKummer.Hilbert90.exists_div_of_isCrossedHom
-import Submission.Work.Kummer.All
+import Submission.Work.AbsoluteKummer.Kummer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

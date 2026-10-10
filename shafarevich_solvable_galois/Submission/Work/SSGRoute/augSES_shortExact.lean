@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.ShortComplex.ShortExact
 import Submission.Work.SSGRoute.ExtH1
-import Submission.Commons.RepresentationTheory.GroupCohomology.groupCohomology_two_int_iso_one_qmodz
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

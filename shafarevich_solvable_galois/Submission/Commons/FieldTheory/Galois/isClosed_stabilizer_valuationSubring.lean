@@ -1,7 +1,6 @@
 import Mathlib.FieldTheory.KrullTopology
 import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.FieldTheory.Galois.mem_stabilizer_valuationSubring_iff_forall_restrict
-import Submission.Commons.Topology.Profinite.continuous_of_open_ker
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

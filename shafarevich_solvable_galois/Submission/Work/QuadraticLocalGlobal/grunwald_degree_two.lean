@@ -1,18 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Grünwald's theorem in degree `2` (weak approximation for square classes)
-
-For every finite set of places `S` of `ℚ`, the map `ℚˣ/(ℚˣ)² → ∏_{v ∈ S} ℚ_vˣ/(ℚ_vˣ)²` is
-surjective.  Because `S` may contain the archimedean place, whose local square class is the sign,
-the statement is formulated with a prescribed sign `ε`; the finite places are indexed by an
-injective family of primes (`Function.Injective q` is what makes the indexing a *set* of primes).
--/
-import Submission.Work.QuadraticLocalGlobal.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.Padics.PadicNumbers
 import Submission.Work.QuadraticLocalGlobal.grunwald_degree_two_with_sign
-import Submission.Work.QuadraticLocalGlobal.isSquare_padic_rat_iff
-import Submission.Work.QuadraticLocalGlobal.isSquare_padic_two_rat_iff
 import Submission.Work.QuadraticLocalGlobal.isSquare_rat_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

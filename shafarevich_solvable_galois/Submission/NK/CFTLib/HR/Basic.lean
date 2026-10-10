@@ -1,13 +1,16 @@
-import Mathlib
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
+import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
+import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.AbelianReduction
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
-import Submission.NK.GlobalCFT.Place
+import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

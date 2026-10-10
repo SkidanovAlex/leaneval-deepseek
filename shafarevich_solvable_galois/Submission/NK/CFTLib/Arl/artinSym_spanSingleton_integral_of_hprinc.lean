@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_integral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

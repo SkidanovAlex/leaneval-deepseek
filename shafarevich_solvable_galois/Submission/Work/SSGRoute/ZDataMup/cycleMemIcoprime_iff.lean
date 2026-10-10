@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
+import Mathlib.Tactic.Have
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.ZDataMup.CycleAux
 import Submission.Work.SSGRoute.ZDataMup.LT_CyclePort
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

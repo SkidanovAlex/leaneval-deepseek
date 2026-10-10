@@ -1,12 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3loc
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.DualMod.Main
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.LTDDefs.DecompAction
 import Submission.Work.SSGRoute.PT.AlphaPairing
-import Submission.Work.AbsoluteKummer.Coefficients
 import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
+import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
+import Submission.Work.SSGRoute.kummerBase_euler_h3loc
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

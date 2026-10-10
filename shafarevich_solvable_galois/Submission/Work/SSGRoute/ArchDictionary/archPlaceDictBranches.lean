@@ -1,11 +1,24 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.AcOdd
 import Submission.Work.SSGRoute.ArchDictionary.archimedeanLocalExt1Subsingleton_of_ne_bot
-import Submission.Work.SSGRoute.PT.prime_eq_two_of_decompK_eq_bot
-import Submission.Work.SSGRoute.ArchSplit2.archSplit2_canonical
 import Submission.Work.SSGRoute.ArchSplit2.archPlaceDict_of_psi
+import Submission.Work.SSGRoute.ArchSplit2.archSplit2_canonical
 import Submission.Work.SSGRoute.E1aClean.LeadNatWit
+import Submission.Work.SSGRoute.PT.prime_eq_two_of_decompK_eq_bot
 import Submission.Work.Shrinking.finite_tensorProduct_of_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

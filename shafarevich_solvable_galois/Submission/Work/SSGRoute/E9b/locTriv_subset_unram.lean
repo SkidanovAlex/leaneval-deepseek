@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.E9Nodes.e9_baseS
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E9b.isInertiaAt_mem_stabilizer_ofFinite
-import Submission.Work.SSGRoute.lam_local_determination
 import Submission.Work.SSGRoute.extHRestrict_eq_zero_of_le
-import Submission.Work.SSGRoute.isInertiaAt_mem_stabilizer
+import Submission.Work.SSGRoute.lam_local_determination
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

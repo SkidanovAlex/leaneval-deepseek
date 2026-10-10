@@ -1,14 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_lambda_defs
-import Submission.Work.SSGRoute.phi1_lambda_compat
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.deltaHom_inflHIn
-import Submission.Work.SSGRoute.inflHIn_refl
-import Submission.Work.SSGRoute.inflHIn_trans
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.inflHIn_add
 import Submission.Work.SSGRoute.inflHIn_eq_inflTrivIn
+import Submission.Work.SSGRoute.inflHIn_refl
+import Submission.Work.SSGRoute.inflHIn_trans
+import Submission.Work.SSGRoute.phi1_class_level
+import Submission.Work.SSGRoute.phi1_level_limit
+import Submission.Work.SSGRoute.phiAt_level_infl
 
 /-! Guidance: read `PHI1_REALIZATION_STATUS.md` (this lane) and `DESIGN_FIX.md` §1.
 
@@ -141,6 +143,36 @@ instance wDirectedSystem :
   map_map := fun {kt jt it} (hij : it ≤ jt) (hjk : jt ≤ kt) (w : Wsys p M M₂ i π hh hS it) =>
     wStep_map p M M₂ i π hh hS it jt kt hij hjk w
 
+/-- The transition maps of the `W`-system are additive homomorphisms: the `ZeroHomClass` instance
+used by `DirectLimit`, stated directly (build speed: the generic search over `∀ L L', L ≤ L' → …`
+explores unrelated morphism classes for minutes). -/
+instance wZeroHomClass (L L' : Lvl k K Ω) :
+    ZeroHomClass (Wsys p M M₂ i π hh hS L →+ Wsys p M M₂ i π hh hS L')
+      (Wsys p M M₂ i π hh hS L) (Wsys p M M₂ i π hh hS L') :=
+  AddMonoidHomClass.toZeroHomClass
+
+/-- The `AddHomClass` instance used by `DirectLimit` (see `wZeroHomClass`). -/
+instance wAddHomClass (L L' : Lvl k K Ω) :
+    AddHomClass (Wsys p M M₂ i π hh hS L →+ Wsys p M M₂ i π hh hS L')
+      (Wsys p M M₂ i π hh hS L) (Wsys p M M₂ i π hh hS L') :=
+  AddMonoidHomClass.toAddHomClass
+
+/-- The `FunLike` instance of the transition maps, stated directly (see `wZeroHomClass`). -/
+instance wFunLike (L L' : Lvl k K Ω) :
+    FunLike (Wsys p M M₂ i π hh hS L →+ Wsys p M M₂ i π hh hS L')
+      (Wsys p M M₂ i π hh hS L) (Wsys p M M₂ i π hh hS L') :=
+  AddMonoidHom.instFunLike
+
+/-- The `ZeroHomClass` instance of additive maps out of a component (used by `DirectLimit.lift`). -/
+instance wZeroHomClassTo {A : Type} [AddCommMonoid A] (L : Lvl k K Ω) :
+    ZeroHomClass (Wsys p M M₂ i π hh hS L →+ A) (Wsys p M M₂ i π hh hS L) A :=
+  AddMonoidHomClass.toZeroHomClass
+
+/-- The `AddHomClass` instance of additive maps out of a component (used by `DirectLimit.lift`). -/
+instance wAddHomClassTo {A : Type} [AddCommMonoid A] (L : Lvl k K Ω) :
+    AddHomClass (Wsys p M M₂ i π hh hS L →+ A) (Wsys p M M₂ i π hh hS L) A :=
+  AddMonoidHomClass.toAddHomClass
+
 /-- **`Wcolim = colim_L W_L`**, the direct limit of the `δ`-images. -/
 abbrev Wcolim : Type _ :=
   DirectLimit (fun L : Lvl k K Ω => Wsys p M M₂ i π hh hS L)
@@ -160,7 +192,8 @@ def Wcolim.of (L : Lvl k K Ω) :
 theorem Wcolim.of_wStep {L L' : Lvl k K Ω} (h : L ≤ L') (w : Wsys p M M₂ i π hh hS L) :
     Wcolim.of (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L' (wStep p M M₂ i π hh hS L L' h w)
       = Wcolim.of (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L w :=
-  DirectLimit.mk_apply (f := fun L L' h => wStep p M M₂ i π hh hS L L' h) L L' w h
+  Quotient.sound ⟨L', le_rfl, h,
+    wStep_self p M M₂ i π hh hS L' (wStep p M M₂ i π hh hS L L' h w)⟩
 
 /-- An element of `Wcolim` vanishes iff it vanishes at a higher level. -/
 theorem Wcolim.of_eq_zero_iff (L : Lvl k K Ω) (w : Wsys p M M₂ i π hh hS L) :
@@ -168,20 +201,11 @@ theorem Wcolim.of_eq_zero_iff (L : Lvl k K Ω) (w : Wsys p M M₂ i π hh hS L) 
       ↔ ∃ (L' : Lvl k K Ω) (h : L ≤ L'), wStep p M M₂ i π hh hS L L' h w = 0 := by
   constructor
   · intro hw
-    set L₀ : Lvl k K Ω := Classical.arbitrary (Lvl k K Ω) with hL₀
-    have h0 : (0 : Wcolim (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS)
-        = (⟦⟨L₀, (0 : Wsys p M M₂ i π hh hS L₀)⟩⟧ : Wcolim (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS) :=
-      DirectLimit.zero_def L₀
     have heq : (⟦⟨L, w⟩⟧ : Wcolim (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS)
-        = (⟦⟨L₀, (0 : Wsys p M M₂ i π hh hS L₀)⟩⟧ : Wcolim (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS) := by
-      rw [← h0]
-      exact hw
+        = ⟦⟨L, (0 : Wsys p M M₂ i π hh hS L)⟩⟧ :=
+      hw.trans (Wcolim.of_zero (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L).symm
     obtain ⟨j, hw', hz', heq'⟩ := Quotient.exact heq
-    refine ⟨j, hw', ?_⟩
-    have hzer : wStep p M M₂ i π hh hS L₀ j hz' (0 : Wsys p M M₂ i π hh hS L₀) = 0 :=
-      map_zero _
-    rw [hzer] at heq'
-    exact heq'
+    exact ⟨j, hw', heq'.trans (map_zero (wStep p M M₂ i π hh hS L j hz'))⟩
   · rintro ⟨L', h, hz⟩
     rw [← Wcolim.of_wStep (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS h w, hz]
     exact Wcolim.of_zero (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L'
@@ -257,8 +281,8 @@ is killed by the transition map of the `W`-system, hence is zero in `Wcolim`. -/
 theorem iota_injective :
     Function.Injective (iota (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS) := by
   intro u v huv
-  have hz : iota (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS (u - v) = 0 := by
-    rw [map_sub, huv, sub_self]
+  have hz : iota (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS (u - v) = 0 :=
+    (map_sub _ u v).trans (sub_eq_zero.mpr huv)
   have hzero : u - v = 0 := by
     -- reduce to a statement about components
     refine Wcolim.induction (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS
@@ -275,8 +299,9 @@ theorem iota_injective :
       rw [wStep_apply (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L L' hLL' w]
       erw [inflHIn_eq_inflTrivIn (k := k) (K := K) p (show L.1 ≤ L'.1 from hLL')]
       exact hmap
-    rw [← Wcolim.of_wStep (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS hLL' w, hw',
-      Wcolim.of_zero]
+    exact (Wcolim.of_wStep (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS hLL' w).symm.trans
+      ((congrArg (Wcolim.of (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L') hw').trans
+        (Wcolim.of_zero (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L'))
   exact sub_eq_zero.mp hzero
 
 end WSys

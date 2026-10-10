@@ -1,20 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `G`-equivariance of the rank-change map `flowQuotMap`
-
-`flowQuotMap` is the map `F(m)/F(m)^{(i,j)} →* F(n)/F(n)^{(i,j)}` induced by a surjective
-`G`-operator homomorphism `F(m) ⇢ F(n)` (`Work.CohomologicalShrinking.flowQuotMap`).  This file
-records that it is `G`-equivariant for the descended action of `G` on the quotients
-`F(m)/F(m)^{(i,j)}` (`Work.CohomologicalShrinking.flowAction`).
-
-The proof computes on a representative `y ∈ F(m)`: the descended action is
-`Work.Shrinking.quotAut`, so both sides map to the class of `Φ (g • y)` resp. `g • Φ y`, which
-agree because `Φ` is `G`-equivariant.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Action.End
+import Mathlib.Algebra.Group.Subgroup.Basic
 import Submission.Work.CohomologicalShrinking.Semidirect
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

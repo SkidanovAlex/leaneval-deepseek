@@ -1,31 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The normalised Frobenius, unconditionally, at a `𝔭`-adic completion
-
-`NK.TameStructureDeep.exists_frobenius_adicCompletion`: for every number field `K`, every finite
-prime `𝔭` (with `κ = K_𝔭`, residue characteristic `p`, residue cardinality `q`) and every
-separable closure `K'` of `κ`, there is an element of `G_κ = Gal(K'/κ)` which
-
-* lies outside the inertia subgroup `I_κ` (`NK.LocalAnabelian.inertiaSubgroup p`), and
-* acts on the prime-to-`p` roots of unity by `ζ ↦ ζ^q`
-
-— the classical normalised (arithmetic) Frobenius, NSW (7.5.6).  This is the field
-`exists_frobenius` of the residual `NK.TameStructureDeep.TameRamificationCore`, *proved*.
-
-The proof takes the Frobenius `F` of the maximal unramified extension
-(`NK.TameStructureDeep.Degree.exists_frobenius_unramifiedClosure`), lifts it to `K'` along the
-surjection `Gal(K'/κ) → Gal(κ^ur/κ)` (`AlgEquiv.liftNormal`), and shows that the lift is outside
-`I_κ`: it acts on a primitive `ℓ`-th root of unity (ℓ a prime larger than `q`) by `ζ ↦ ζ^q ≠ ζ`,
-since `q < ℓ` forces `q ≠ 1`.
--/
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.TameStructureDeep.Degree.exists_frobenius_unramifiedClosure
 import Submission.NK.TameStructureDeep.Residual
 import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
-import Submission.NK.TameStructureDeep.Degree.exists_frobenius_unramifiedClosure
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

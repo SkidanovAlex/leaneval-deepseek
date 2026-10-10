@@ -1,26 +1,6 @@
-/-
-# The canonical coinflation `H₁(F(m)/F(m)^{(ν)} ⋊ G, E(m,τ)⊗T) → H₁(G, E(m,τ)⊗T)` is surjective
-
-Schmidt–Wingberg's `Ψ` is the map on group homology induced by the projection
-`Γ = F(m)/F(m)^{(ν)} ⋊ G →* G` together with the identity coefficient morphism (the coefficient
-module `E(m,τ)⊗T` is pulled back from `G` to `Γ` along that projection).  Since the projection is
-surjective, `Ψ` is surjective — this is the "`H₁(G, E⊗T) → 0` is exact" part of the homological
-Hochschild–Serre sequence of Proposition 7 (i).
-
-The mathematical content is proved here in the general form in which it holds:
-
-**if `φ : Γ →* X` is a surjective group homomorphism and `B` is an `X`-representation, then the
-map `H₁(Γ, Res(φ)(B)) → H₁(X, B)` induced by `φ` and the identity coefficient morphism is
-surjective.**
-
-Indeed, choose a section `s` of `φ`.  A `1`-cycle `c ∈ Z₁(X, B)` lifts along `s` to the `1`-cycle
-`c' = ∑ₓ c(x)·s(x) ∈ Z₁(Γ, Res(φ)(B))`: the cycle identity `∑ₓ ρ(x⁻¹)c(x) = ∑ₓ c(x)` for `c`
-turns into `∑_γ ρ_Γ(γ⁻¹)c'(γ) = ∑_γ c'(γ)` because `s` restricts to a bijection on each fibre of
-`φ`, so that both sums are `∑ₓ c(x)`; and pushing `c'` forward along `φ` returns `c`.  Since
-`H₁π : Z₁ → H₁` is onto and is compatible with `map` (`H1π_comp_map`), surjectivity on cycles
-implies surjectivity on `H₁`.
--/
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.Bridge.Psi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

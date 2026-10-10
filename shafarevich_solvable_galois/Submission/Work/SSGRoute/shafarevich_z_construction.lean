@@ -1,52 +1,32 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.exists_corestriction
-import Submission.Work.SSGRoute.exists_split_place_avoiding
-import Submission.Work.SSGRoute.ZConstruction.Reduction
-import Submission.Work.SSGRoute.ZConstruction.SWData
-import Submission.Work.SSGRoute.ZConstruction.ZDataBridge
-import Submission.Work.SSGRoute.ZConstruction.ZDataGeneral
-import Submission.Work.SSGRoute.ZConstruction.ZDataFinal
-import Submission.Work.SSGRoute.ZConstruction.ZDataGlue
-import Submission.Work.SSGRoute.ZConstruction.LevelExistence
-import Submission.Work.SSGRoute.ZConstruction.ZDataLevelStep
-import Submission.Work.SSGRoute.ZConstruction.ZDataReduction
-import Submission.Work.SSGRoute.ZConstruction.ZDataAux
-import Submission.Work.SSGRoute.cyclic_transfer_of_vanishing
-import Submission.Work.SSGRoute.grunwald_surjective_odd
-import Submission.Work.SSGRoute.ZConstruction.AuxInterface
-import Submission.Work.SSGRoute.ZConstruction.AuxHorth
-import Submission.Work.SSGRoute.ZDataMup.LocalData
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_KConj_cover
-import Submission.Work.SSGRoute.ZConstruction.AuxChase
-
-import Submission.Work.SSGRoute.ZConstruction.AuxAssembly
-import Submission.Work.SSGRoute.ZConstruction.AuxChaseVacuity
-
-import Submission.Work.SSGRoute.ZConstruction.AuxRealisationHonest
-
-import Submission.Work.SSGRoute.ZConstruction.exists_KConj_reps
-import Submission.Work.SSGRoute.ZConstruction.RamificationConfinement
-import Submission.Work.SSGRoute.ZConstruction.LevelKVocab
-import Submission.Work.SSGRoute.ZConstruction.AuxRealisationLevel
-import Submission.Work.SSGRoute.ZConstruction.NOTE_session17
-import Submission.Work.SSGRoute.ZConstruction.relaxedSum_pair_eq_zero
-import Submission.Work.SSGRoute.ZConstruction.auxDatum_orthogonal_relaxed_noGap
-import Submission.Work.SSGRoute.ZConstruction.AuxExistsUnmixed
-import Submission.Work.SSGRoute.ZConstruction.TransferReduction
-import Submission.Work.SSGRoute.ZConstruction.LineAndZeroWitness
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.AuxExistsGapInduction
-import Submission.Work.SSGRoute.ZConstruction.TransferLevel
-import Submission.Work.SSGRoute.ZConstruction.ZSection4
-import Submission.Work.SSGRoute.ZConstruction.mupGate_iff_isMupZData
-import Submission.Work.SSGRoute.ZConstruction.MupAuxWire
 import Submission.Work.SSGRoute.ZConstruction.ClauseSixKillLambda
+import Submission.Work.SSGRoute.ZConstruction.LineAndZeroWitness
 import Submission.Work.SSGRoute.ZConstruction.TwinsEndgame
+import Submission.Work.SSGRoute.ZConstruction.ZDataFinal
+import Submission.Work.SSGRoute.ZConstruction.mupGate_iff_isMupZData
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 /-!
 

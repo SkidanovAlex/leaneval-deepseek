@@ -1,9 +1,25 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.OrthL2KImports
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.CommonsValuationImports
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.Work.GrunwaldEscapeCore.mk_onePlace_mem_normClassSubgroup_of_isSplitIn
+import Submission.Work.GrunwaldEscapeCore.onePlace_mem_gesU_of_kummerChar_eq_zero_on_inertia
+import Submission.Work.GrunwaldEscapeCore.prod_localFactor_eq_one_of_comm
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesCorrectionFromPrime
 import Submission.Work.SSGRoute.H9.NarrowMu2
-import Submission.Work.SSGRoute.H9.two_core
+import Submission.Work.SSGRoute.H9.two_heart
+import Submission.Work.SSGRoute.N2v2.kummerCharZMod_surjective_openKernel
+import Submission.Work.SSGRoute.ZDataTwo.OrthTwoArchIn
+import Submission.Work.SSGRoute.ZDataTwo.OrthTwoLevelField
+import Submission.Work.SSGRoute.ZDataTwo.artinFixes_localFactors_two
+import Submission.Work.SSGRoute.ZDataTwo.exists_levelCharacter_of_classCharacter
+import Submission.Work.SSGRoute.n4_char_separation
+import Submission.Work.SSGRoute.step4_y_escape_v2.GesUFacts
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

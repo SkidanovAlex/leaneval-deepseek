@@ -1,7 +1,12 @@
-import Mathlib
-import Submission.Commons.RingTheory.Valuation.krasner_valuation
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.FieldTheory.Minpoly.IsConjRoot
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.FieldTheory.Polynomial.separable_of_natDegree_le_card_rootSet
-import Submission.Commons.FieldTheory.Polynomial.rootSet_map_eq
+import Submission.Commons.RingTheory.Valuation.krasner_valuation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,27 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The wild inertia subgroup and the tame quotient of `G_κ`
-
-For `κ` a field, `K'` an algebra over it and `p : ℕ`, this file defines
-
-* `wildInertiaSubgroup p`, the **wild inertia** `V_κ = V_p`: the join of all normal pro-`p`
-  subgroups of `Gal(K'/κ)` — for a `p`-adic field `κ` this is the maximal closed normal pro-`p`
-  subgroup, equivalently the fixing subgroup of the maximal tame extension of `κ`
-  (NSW, *Cohomology of Number Fields*, (7.5.7) Corollary);
-* `tameQuotient p = G_κ/V_κ`, the **tame quotient** `G_κ^{tr}`;
-* `tameInertiaSubgroup p = V_κ`-`I_κ`, i.e. the inertia subgroup of `NK.LocalAnabelian` viewed
-  as a subgroup of the tame quotient: `I_κ/V_κ`.
-
-The only unconditional results here are the ones that need no local field theory: the wild
-inertia is normal, it contains every normal pro-`p` subgroup, and it is the unique maximal
-closed normal pro-`p` subgroup *provided* it is itself pro-`p` (which is a theorem about joins of
-pro-`p` groups, `NK.LocalTame.isProP_iSup_of_normal`).  The arithmetic content — that
-`wildInertiaSubgroup p` really is the wild inertia of a `p`-adic field, and everything about
-`I_κ/V_κ` — is isolated in the input structures of `NK.LocalTame.TameStructure`.
--/
-import Submission.NK.LocalAnabelian.All
+import Mathlib.GroupTheory.Torsion
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
+import Submission.NK.LocalAnabelian.Counting.natCard_indexP_subgroups_of_exp_p
+import Submission.NK.LocalAnabelian.Kummer.kummerCorrespondence
+import Submission.NK.LocalAnabelian.PadicField.FrattiniRank
+import Submission.NK.LocalAnabelian.PadicField.RatAdic
+import Submission.NK.LocalAnabelian.ResidueField.Recovery
+import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
 import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

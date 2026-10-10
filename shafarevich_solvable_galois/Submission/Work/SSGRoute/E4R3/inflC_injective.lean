@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.E0bClean.eBridge_natural
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.classIncl_inflation_injective
-import Submission.Work.SSGRoute.E0bClean.eBridge_natural
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

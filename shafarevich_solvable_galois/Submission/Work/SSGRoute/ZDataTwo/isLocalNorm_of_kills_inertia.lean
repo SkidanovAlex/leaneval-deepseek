@@ -1,11 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataTwo.InertiaCriterion
-import Submission.Work.SSGRoute.ZDataTwo.FiniteReciprocity
-import Submission.Work.ZDataTwo.localNormSubgroup_eq_normGroup_quadLevel
 import Submission.Work.SSGRoute.ZDataTwo.Mu2Assembly
 import Submission.Work.SSGRoute.ZDataTwo.ramificationIdx_levelPrime_eq_one_of_not_isRamifiedIn
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

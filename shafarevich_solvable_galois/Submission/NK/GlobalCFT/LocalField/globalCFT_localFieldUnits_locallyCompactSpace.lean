@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.Group.Units
+import Mathlib.Topology.Algebra.Valued.LocallyCompact
 import Submission.NK.GlobalCFT.Place
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

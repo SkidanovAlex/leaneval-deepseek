@@ -1,4 +1,4 @@
-import Submission.NeukirchUchida.PlaceSystem
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_localGalois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

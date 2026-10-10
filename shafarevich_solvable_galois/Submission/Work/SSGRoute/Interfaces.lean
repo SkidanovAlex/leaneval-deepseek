@@ -1,8 +1,15 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.All
-import Submission.Work.GenericKernelReduction.All
-import Submission.Work.Tate.All
-import Submission.Shafarevich
+import Mathlib.Dynamics.Flow
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.CohomologicalShrinking.Prop7iConcrete
+import Submission.Work.CohomologicalShrinking.TateShifts
+import Submission.Work.CohomologicalShrinking.exists_shrinking_Hm2_tate
+import Submission.Work.CohomologicalShrinking.flow.finite_refinedQuotient
+import Submission.Work.CohomologicalShrinking.nonempty_prop5Data_one_one
+import Submission.Work.GenericKernelReduction.Main
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

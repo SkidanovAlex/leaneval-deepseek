@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

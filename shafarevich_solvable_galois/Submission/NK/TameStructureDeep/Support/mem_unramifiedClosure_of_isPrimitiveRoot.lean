@@ -1,13 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Membership in `κ(μ_{p'})` for prime-to-`p` roots of unity
-
-`NK.LocalAnabelian.unramifiedClosure p = ⨆ κ⟮ζ⟯` over all primitive `n`-th roots of unity with
-`¬ p ∣ n`.  This file records the immediate membership criterion: every root of unity of order
-prime to `p` lies in the closure.  It is the basic API lemma for the unramified closure.
--/
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Submission.NK.LocalAnabelian.ResidueField.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

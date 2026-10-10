@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Algebra.Group.Subgroup.Order
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_sup_mul_index_inf
-import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.extHMap_id
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

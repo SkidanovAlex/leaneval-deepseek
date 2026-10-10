@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.AlphaTwoKummer
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.AlphaTwoTrivMod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

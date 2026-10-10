@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.theorem15_scholz
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.GroupTheory.Solvable
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Submission.Work.SSGRoute.genericKernelSolvable_of_flowSolutions
 import Submission.Work.SSGRoute.minimalNormalKernelStep_of_genericKernelSolvable
+import Submission.Work.SSGRoute.theorem15_scholz
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

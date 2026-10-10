@@ -1,18 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
-import Submission.Work.SSGRoute.Sha2Lib.isUnramifiedDetector_of_induced
-import Submission.Work.SSGRoute.Sha2Lib.detector_of_submodule
-import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_coeff_surjection
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.detectAbove_pgroup
-import Submission.Work.SSGRoute.rightDetect_of_sylow
-import Submission.Work.Sha2Lib.inertiaDeg_cyclotomic_level
-import Submission.Work.Sha2Lib.residueField_cyclotomic_generated
-import Submission.Work.Sha2Lib.nkCyclotomicClosed
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_of_indNormal
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_indNormal_of_rankOne
-import Submission.Work.SSGRoute.PTdualControl.zetaAdjoinDescent
-import Submission.Work.SSGRoute.PTdualControl.C6_of_rankOneBrick
 import Submission.Work.Sha2Lib.rankOneBrickViaDatum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

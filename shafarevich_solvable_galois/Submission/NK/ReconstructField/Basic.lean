@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.NK.Reconstruct.LevelMap
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.frobeniusCorrespondence_of_place
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Mine.NeukirchUchidaAPI
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

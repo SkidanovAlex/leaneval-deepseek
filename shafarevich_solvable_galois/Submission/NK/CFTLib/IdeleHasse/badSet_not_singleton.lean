@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.hilbertReciprocity_cyclic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

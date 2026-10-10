@@ -1,33 +1,37 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.hassePrinciple_h1_cocycles
-import Submission.Work.SSGRoute.tateDuality_hm2_dual
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.sha2_image_of_Hm2_fin
-import Submission.Work.SSGRoute.hm2Map_finite_factor
-import Submission.Work.SSGRoute.tatePoitouEmbedding
-import Submission.Work.SSGRoute.PTembedding.tatePoitouEmbedding_alt
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTembedding.ptAssembly
--- The *live* route to the node (2026-09-30): the two arithmetic inputs that the fleet is closing,
--- `PT.e1aBetaCan_le_ker` (node `E1a`) and `pt_sha2_core` (node `E9`), feed the node directly,
--- without going through the atom `tatePoitouEmbedding` (whose proof is written nowhere).
-import Submission.Work.SSGRoute.PT.e1a_assembly
-import Submission.Work.SSGRoute.PT.e1a_sha2_mem_range_chainC
-import Submission.Work.SSGRoute.PT.e1aBetaCan_le_ker
-import Submission.Work.SSGRoute.PTdualControl.extExact
-import Submission.Work.SSGRoute.pt_sha2_core
--- The E9 core re-routed off the orphan `sorry` of `local_phi_realization_in.lean`: `pt_sha2_core`
--- depends on the *proved* unramified clause `Work.SSGRoute.isUnramifiedExt_of_levelPair_unramified`
--- (`Sha2Lib/pt_core_via_c6.lean`), whose only input is the named detector `C6`
--- (`E7cOmega.exists_level_unramified_detecting_class`) — the bottleneck every E7b/E7cΩ/E9 consumer
--- shares.  This file still imports `pt_sha2_core` for its assembly helpers, but the node below uses
--- the clean re-route, so its E9 taint is exactly `C6`, not an unwired `sorry`.
 import Submission.Work.SSGRoute.Sha2Lib.pt_core_via_c6
+import Submission.Work.SSGRoute.hm2Map_finite_factor
+import Submission.Work.SSGRoute.sha2_image_of_Hm2_of_dualControl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 -- (A parallel assembly of the E1a landing clause from the two named dictionaries,
 -- `SSGStage.e1aBetaCan_le_ker_via_landing`, is available in
 -- `Sha2Lib/e1a_landing_via_dictionary.lean`; the node below does *not* use it — see the comment at

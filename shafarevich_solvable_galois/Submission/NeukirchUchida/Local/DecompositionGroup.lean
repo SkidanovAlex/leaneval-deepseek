@@ -1,11 +1,11 @@
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Invariant.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
-import Mathlib.NumberTheory.RamificationInertia.Galois
-import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
-import Mathlib.FieldTheory.Galois.Infinite
-import Submission.Commons.RingTheory.DedekindDomain.valuation_map_of_map_eq
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 import Submission.Commons.NumberTheory.NumberField.liesOver_map_galRestrict
+import Submission.Commons.RingTheory.DedekindDomain.valuation_map_of_map_eq
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 import Submission.NeukirchUchida.Local.ValuedCompletion
 
 /-!

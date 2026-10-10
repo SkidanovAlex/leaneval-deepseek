@@ -1,11 +1,9 @@
-/-
-The Hecke `L`-series of a ray class character, written as a Dirichlet series over the ideals
-coprime to the modulus, agrees with the `L`-series of the norm-indexed coefficient sequence
-`heckeCoeff`.  This is a reindexing of an absolutely convergent sum along the fibres of the
-absolute norm.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.LSeries.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Series.heckeLSeries_eq_heckeEulerProduct
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

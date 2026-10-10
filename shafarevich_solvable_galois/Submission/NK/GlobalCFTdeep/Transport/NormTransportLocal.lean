@@ -1,5 +1,10 @@
-import Submission.NK.GlobalCFTdeep.Transport.NormTransportAux
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.GlobalCFTdeep.Transport.IdeleTransport
+import Submission.NK.GlobalCFTdeep.Transport.NormTransportAux
 import Submission.NK.GlobalCFTdeep.Transport.fiberInfinite_map_placeEquiv
 import Submission.NK.GlobalCFTdeep.Transport.primesOverFinite_map_placeEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,3 +1,6 @@
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.Constructions
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.hausPi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

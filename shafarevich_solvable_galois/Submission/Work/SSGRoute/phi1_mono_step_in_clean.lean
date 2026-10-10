@@ -1,15 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_mono_base
-import Submission.Work.SSGRoute.phi1_lambda_defs
-import Submission.Work.SSGRoute.phi1_trivial_mono_in
-import Submission.Work.SSGRoute.E5Route.pairing_formula
-import Submission.Work.SSGRoute.phi0_trivial_epi_in
-import Submission.Work.SSGRoute.phi0_lamV_separates
-import Submission.Work.SSGRoute.phi0_pTor_scalar
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.level_family_of_delta
-import Submission.Work.SSGRoute.phiTriv_mk0_eq
-import Submission.Work.SSGRoute.phi_pair_natural
+import Submission.Work.SSGRoute.phi1_mono_base
+import Submission.Work.SSGRoute.phi1_trivial_mono_in
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.PT.g1plus_levelIndepSpine
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.nsmul_phiAt_extToClasses_eq_zero
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.PT.vfShared
 
 set_option autoImplicit false
 set_option maxHeartbeats 8000000
@@ -324,45 +323,8 @@ theorem archPair_level_independent_loc (p : ℕ) [Fact p.Prime] (k Ω : Type) [F
             (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
         ((groupCohomology.H1π _).hom z)))) := by
     intro n
-    induction n with
-    | zero => rw [zero_smul, zero_smul, Work.SSGRoute.PT.iota_zero]
-    | succ n ih =>
-        have h1 : (n + 1) • Work.SSGRoute.PT.iota (k := k) (L := ↥L) u (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z)))
-            = Work.SSGRoute.PT.iota (k := k) (L := ↥L) u (n • (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z))))
-              + Work.SSGRoute.PT.iota (k := k) (L := ↥L) u (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z))) := by
-          rw [add_nsmul, one_nsmul, ih]
-        have h2 : (n + 1) • (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z))) = n • (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z))) + (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
-      (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
-      (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))
-        (Rep.res (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu) (Rep.res (SSGRoute.PTExt.decompK (k := k) w).subtype
-            (SSGRoute.PTExt.modRep (↥K ≃ₐ[k] ↥K) (Work.SSGRoute.PT.VFcoef p M T))))
-        ((groupCohomology.H1π _).hom z))) := by rw [add_nsmul, one_nsmul]
-        rw [h1, h2, Work.SSGRoute.PT.iota_add]
+    exact (map_nsmul (AddMonoidHom.mk' (Work.SSGRoute.PT.iota (k := k) (L := ↥L) u)
+      (Work.SSGRoute.PT.iota_add (k := k) (L := ↥L) u)) n _).symm
   have hptor' : p • Work.SSGRoute.PT.iota (k := k) (L := ↥L) u (SSGRoute.PTExt.levelPair (Work.SSGRoute.decompKRestrict k ↥K ↥L w u hu)
       (Work.SSGRoute.localUnitsMap k ↥K ↥L w u hu) x
       (SSGRoute.PTExt.eCoh 1 (↥(SSGRoute.PTExt.decompK (k := k) u))

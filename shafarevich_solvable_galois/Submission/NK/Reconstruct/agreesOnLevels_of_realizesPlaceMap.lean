@@ -1,5 +1,6 @@
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.NK.Reconstruct.comap_placeMap_eq_of_realizesPlaceMap
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Reconstruct.agreesOnLevels_of_map_decompositionGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

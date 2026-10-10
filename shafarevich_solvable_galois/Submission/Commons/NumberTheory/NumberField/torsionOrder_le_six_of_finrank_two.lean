@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.RootsOfUnity.Minpoly
+import Mathlib.NumberTheory.NumberField.Units.Basic
 import Submission.Commons.NumberTheory.Totient.totient_bound_K
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

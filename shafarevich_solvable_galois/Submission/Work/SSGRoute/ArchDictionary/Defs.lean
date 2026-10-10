@@ -1,9 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.DualMod.Main
--- (cut 1 of `ACTION_leaf_endgame_cycles_and_cut_list.md`): this import was DEAD (0 leaf decls used);
--- redirected to the leaf-free module that holds `globalDictionaryCanon`/`globalDictEquivCanon`.
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

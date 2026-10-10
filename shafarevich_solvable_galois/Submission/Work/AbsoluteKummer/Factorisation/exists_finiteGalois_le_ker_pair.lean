@@ -1,8 +1,5 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
-import Submission.Work.AbsoluteKummer.Basic
+import Mathlib.FieldTheory.Galois.Profinite
 import Submission.Work.AbsoluteKummer.Coefficients
-import Submission.Work.AbsoluteKummer.Factorisation.exists_finiteGalois_le_ker
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

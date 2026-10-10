@@ -1,17 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.grunwald_kummer_idx
-import Submission.Work.SSGRoute.grunwald_setup
-import Submission.Work.SSGRoute.grunwald_local_setup
-import Submission.Work.SSGRoute.grunwald_local_realization
-import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
-import Submission.Work.SSGRoute.GrunwaldTwoDefs
-import Submission.NK.Mine.AdjoinLocalGalois
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Prime
 import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
 import Submission.NK.UchidaKummer.Approximation.isKummerSurjective_of_weakApproximation
 import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
 import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
+import Submission.Work.SSGRoute.GrunwaldTwoDefs
+import Submission.Work.SSGRoute.grunwald_local_realization
+import Submission.Work.SSGRoute.grunwald_local_setup
+import Submission.Work.SSGRoute.grunwald_setup
+import Submission.Work.SSGRoute.ringOfIntegers_mem_of_isFinPlace_k
 
 namespace Work.SSGRoute
 

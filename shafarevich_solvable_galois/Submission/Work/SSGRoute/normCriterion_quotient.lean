@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.powHomRepDefs
-import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_classesK
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.Work.SSGRoute.cyclicNormCriterion_rep
 import Submission.Work.SSGRoute.groupCohomology_levelInf_nat
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

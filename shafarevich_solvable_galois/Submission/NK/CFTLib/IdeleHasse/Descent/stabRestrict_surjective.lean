@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
 import Submission.NK.NUV2.ARL.HR.transferDescentAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

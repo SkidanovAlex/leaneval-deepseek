@@ -1,6 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataMup.Defs
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.SSGRoute.ZDataMup.LocalData
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

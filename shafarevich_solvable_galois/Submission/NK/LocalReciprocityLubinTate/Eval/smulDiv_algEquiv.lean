@@ -1,29 +1,5 @@
-/-
-# Galois-equivariance of the `𝒪[F]`-action on the Lubin–Tate torsion points
-
-The `𝒪[F]`-action on the `π^n`-division points `Λ_n` of the Lubin–Tate group of `π`
-(`Eval/TorsionAction.lean`) is *algebraic*: if `x ∈ Λ_n` and `σ` is an `F`-algebra
-automorphism of `AlgebraicClosure F`, then
-
-  `σ (a · x) = a · (σ x)`     for all `a ∈ 𝒪[F]`,
-
-i.e. `σ` is `𝒪[F]`-semilinear (here: linear, since `σ` fixes `F`).
-
-The point is that the ambient ring `T_n = 𝒪[F][T]/(f^{(n)}(T))` of
-`Eval/TorsionRing.lean` has, for each torsion point `x`, a *unique* `𝒪[F]`-algebra
-homomorphism `evMap x : T_n → F̄` sending the class `τ` of `T` to `x`
-(`AdjoinRoot.lift`).  Since `σ` is `𝒪[F]`-linear and fixes `F` (hence the coefficients),
-the composite `σ ∘ evMap x` is again an `𝒪[F]`-algebra homomorphism, and it sends `τ ↦ σ x`;
-by uniqueness (`AdjoinRoot.ringHom_ext`) it *is* `evMap (σ x)`.  Evaluating at the class
-`[a]_n = evalTau (M.action a)` of the `a`-multiplication series gives the statement.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.evMap_comp_algEquiv` — naturality of `evMap` under
-  `F`-algebra automorphisms of `AlgebraicClosure F`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_algEquiv` — `σ` commutes with `a • -`.
--/
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

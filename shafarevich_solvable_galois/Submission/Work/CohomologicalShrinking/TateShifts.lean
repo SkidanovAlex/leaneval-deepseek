@@ -1,45 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The shrinking lemmas over the cohomology objects of `Work.Tate` and `Work.GroupCohomology`
-
-The paper's Proposition 6 is stated for `Ĥ^k(G, E(m,τ) ⊗ T)`.  The primary statements of this
-chapter (`Levels.lean`, `Models.lean`) put the degrees `k = ±2` in the *models* of `Ĥ²` and
-`Ĥ^{-2}` given by the dimension shift `Ĥ^k(G,X) ≅ Ĥ⁻¹(G, X ⊗ A_k)`, `A_k = I_G^{-(k+1)}`
-(`A_{-2} = I_G = augIdeal`, `A_2 = I_G^{-3} = A2`), which is where the shrinking argument takes
-place.  This file removes the last step for a consumer: it restates the same results over the
-cohomology groups themselves,
-
-* `Work.GroupCohomology.H2 G (E(m,τ) ⊗ T)` (the `k = 2` case, used in steps 1 and 3 of
-  Theorem 15), and
-* `Work.Tate.Hm2 G (E(m,τ) ⊗ T) = Ĥ⁻¹(G, coindUp G (E(m,τ) ⊗ T))` (the `k = -2` case, used in
-  Proposition 7 and in step 4 of Theorem 15),
-
-so that a caller can feed in classes of `Ĥ²`/`Ĥ^{-2}` directly and get a `G`-operator
-homomorphism `F(m) ⇢ F(n)` whose *induced map on those groups* kills them.
-
-Both restatements are unconditional apart from `Prop5Data` (Proposition 5): they use
-
-* `coindUpAddEquivTensor` — the natural equivariant equivalence
-  `coindUp G A ≃+ A ⊗ I_G` (the paper's `A^♯ ≅ A ⊗ I_G`),
-* `coindShiftAddEquivTensor` — the natural equivariant equivalence
-  `coindShift G A ≃+ A ⊗ I_G^{-1}` (the paper's `A^* ≅ A ⊗ I_G^{-1}`),
-* `shiftH2Family` — the dimension shift `Ĥ²(G,X) ≅ Ĥ⁻¹(G, X ⊗ A_2)` as a natural family,
-  assembled from `Work.Tate`'s connecting maps and the naturality lemmas
-  `tate.dimensionShiftH2H1_natural`, `tate.dimensionShiftH1H0_natural`,
-  `tate.dimensionShiftCoind_natural`.
-
-## Main results
-
-* `Work.CohomologicalShrinking.exists_shrinking_H2_tate` : Proposition 6, `k = 2`, for classes in
-  `GroupCohomology.H2`.
-* `Work.CohomologicalShrinking.exists_shrinking_Hm2_tate` : Proposition 6, `k = -2`, for classes
-  in `Work.Tate.Hm2` (module `Submission.Work.CohomologicalShrinking.exists_shrinking_Hm2_tate`).
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Levels
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.TensorProduct.Basic
+import Mathlib.RingTheory.Finiteness.Defs
 import Submission.Work.CohomologicalShrinking.shiftH2Family
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

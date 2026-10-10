@@ -1,10 +1,13 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.E1aClean.ArchCompare
-import Submission.Work.SSGRoute.E1aClean.ArchSeam
-import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
-import Submission.Work.SSGRoute.E1cGeneric.freeCoverCompat_comp
-import Submission.Work.SSGRoute.E1cGeneric.freeCoverCompat_single
 import Submission.Work.SSGRoute.PT.freeCoverCompatKernel
 import Submission.Work.SSGRoute.PT.freeCoverSES_res_comparison
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

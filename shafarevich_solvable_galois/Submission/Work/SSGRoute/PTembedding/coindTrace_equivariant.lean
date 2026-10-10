@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.Algebra.BigOperators.GroupWithZero.Action
 import Submission.Work.SSGRoute.PTembedding.CoindTransfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

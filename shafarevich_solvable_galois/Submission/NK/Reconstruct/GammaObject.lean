@@ -1,7 +1,12 @@
-import Submission.NK.Reconstruct.ellPart
-import Submission.NK.Reconstruct.ellPart_map_le
-import Submission.NK.Reconstruct.normal_restrictLevelTo
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.NoetherianSpace
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
+import Submission.NK.Reconstruct.ellPart_map_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

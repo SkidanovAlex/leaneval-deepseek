@@ -1,31 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The primes above a finite place as a Galois set
-
-This file provides the vocabulary with which the input `NK.WeakNU.PrimeCountOrbitInput` is
-attacked, namely
-
-* `NK.WeakNU.placeAct`: the action of `Gal(N/ℚ)` on the finite places of `N`
-  (`NK.NeukirchUchida.Local.placeSmul`), which preserves the primes above a fixed place `𝔭` of
-  `ℚ` (`NK.WeakNU.liesOver_placeAct`);
-* `NK.WeakNU.primeOrbitSetoid H 𝔭`: the orbit relation of a subgroup `H ≤ Gal(N/ℚ)` on the
-  primes of `𝓞 N` above `𝔭`;
-* `NK.WeakNU.primeOrbitCount H 𝔭`: the number of such orbits;
-* `NK.WeakNU.primeCountAbove M 𝔭`: the number of primes of an intermediate field `M ⊆ N` above
-  `𝔭`.
-
-The classical statement whose formalisation would remove `NK.WeakNU.PrimeCountOrbitInput` from the
-residual catalogue of this chapter is
-`NK.WeakNU.primeCountAbove_eq_primeOrbitCount` (the two counts above), together with the
-identification of `primeOrbitCount H 𝔭` with `orbitCount σ (Gal(N/ℚ) ⧸ H)` for a Frobenius `σ` at a
-prime above `𝔭`; see `README.md` for the roadmap and the references.
--/
-
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.WeakNU.Defs
-import Submission.NK.Chebotarev.Basic
-import Submission.NeukirchUchida.Local.DecompositionGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

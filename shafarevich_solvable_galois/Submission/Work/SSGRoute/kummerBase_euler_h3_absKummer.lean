@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
+import Mathlib.Tactic.Abel
+import Mathlib.Algebra.Module.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

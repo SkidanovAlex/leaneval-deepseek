@@ -1,53 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.LocalTame.Global`: the Frobenius correspondence at corresponding places
-
-This file delivers the **global corollary** consumed by the Neukirch–Uchida endgame: at
-places `A` of `K₁'` and `B` of `K₂'` that correspond under an isomorphism `Φ` of absolute Galois
-groups of number fields (`Φ(D_A) = D_B`, the local correspondence of CoNF (12.1.9)), the
-*Frobenius elements* of `D_A` are matched with the Frobenius elements of `D_B`.
-
-## The form in which the statement is delivered
-
-The decomposition group `D_A` of a place `A` over a finite prime `𝔭₁` of `K₁` is the absolute
-Galois group of the local field `κ₁ = K₁_{𝔭₁}` in the sense that there is an isomorphism
-`eA : D_A ≃* Gal(κ₁̄/κ₁)` (`NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_localGalois`,
-whose statement is also packaged as `Submission.NeukirchUchida.isLocalGalois_decompositionGroup`).
-We therefore define
-
-* `IsFrobeniusLiftOfDecomposition p q e τ` — `τ ∈ D_A` is a Frobenius element of `D_A` if its
-  image under the identification `e` is a Frobenius lift for the local field, i.e. acts on the
-  prime-to-`p` roots of unity of `κ₁̄` by `ζ ↦ ζ^q`.
-
-This is the "local fields via the identifications of `D_A` with the local Galois groups" form of
-the deliverable.  It is *canonical*, in the sense that it does not depend on the chosen
-identification `e` — this is `isFrobeniusLiftOfDecomposition_iff_of_localIso`, a corollary of the
-local Frobenius correspondence of `NK.LocalTame.Main`.
-
-**Connection with `NK.Chebotarev.IsFrobAt`.**  A reader coming from the Čebotarev vocabulary
-should read `IsFrobeniusLiftOfDecomposition p q e τ` as "`τ` restricts, at every finite level, to
-an element acting on the residue field of `A` by `x ↦ x^q`", i.e. as the infinite-place version of
-`NK.Chebotarev.IsFrobAt`.  The bridge between the residue-field formulation (`IsFrobAt`) and the
-root-of-unity formulation used here (`IsFrobeniusFor`, hence `ActsAsFrobenius`) is the *Frobenius
-normalisation* of local class field theory — the statement that the canonical generator of
-`Gal(κ^ur/κ) ≅ Gal(𝔽̄_q/𝔽_q) ≅ Ẑ` acts by `x ↦ x^q` on the residue field and by `ζ ↦ ζ^q` on the
-prime-to-`p` roots of unity.  In this development that normalisation is the named input
-`NK.LocalTame.FrobeniusLiftCharacterisation` (NSW (12.1.8) Lemma, Iwasawa); a matching in the
-strict vocabulary of `NK.Chebotarev.MatchesFrobeniusAt φ P₁ P₂` (which is a statement about the
-*residue-field* action at finite primes `P₁`, `P₂`) is obtained from
-`frobenius_matching_at_corresponding_places` below by supplying the residue-field form of that
-same normalisation.  What is *delivered* here, unconditionally modulo the named inputs, is the
-element-wise matching of Frobenius elements, in the form `∀ τ, IsFrobeniusLiftOfDecomposition
-p₁ q₁ eA τ ↔ IsFrobeniusLiftOfDecomposition p₂ q₂ eB (hAB τ)`, together with the fact that the
-residue characteristics and the cardinalities of the residue fields at corresponding places
-coincide.
--/
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquivSameBase
 import Submission.NK.LocalTame.Main
-import Submission.NeukirchUchida.PlaceSystem
 import Submission.NeukirchUchida.LocalSubgroup
-import Submission.NK.Chebotarev.FrobeniusCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Heart.Param
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

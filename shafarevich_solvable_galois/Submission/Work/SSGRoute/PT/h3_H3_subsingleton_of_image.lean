@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3loc
-import Submission.Work.SSGRoute.PTCore.h3loc_decomp_subsingleton
-import Submission.Work.SSGRoute.LTDDefs.Basic
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.EulerSymm.mackeyIndDecomp
+import Submission.Work.SSGRoute.PTCore.h3loc_decomp_subsingleton
 import Submission.Work.SSGRoute.PTembedding.h3_triv_subsingleton_of_units_divisible
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

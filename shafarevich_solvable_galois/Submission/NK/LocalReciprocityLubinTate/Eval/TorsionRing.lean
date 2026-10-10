@@ -1,34 +1,14 @@
-/-
-# The ambient ring of the Lubin–Tate torsion-point evaluation
-
-Milne, *Classical Field Theory*, §I.3, evaluates the Lubin–Tate series `[a]` at the `π^n`-torsion
-points `Λ_n`, which live in the completion of the algebraic closure of `F`.  This file replaces the
-completion of the algebraic closure by a *finite, explicit* complete ring, in which exactly the same
-identities hold:
-
-`T_n := 𝒪[F][T] / (f^{(n)}(T))`,   `f(T) = πT + T^q`,
-
-a free `𝒪[F]`-module of rank `q^n`, equipped with the `𝔪[F]`-adic topology.  Its class
-`τ = tau` satisfies `f^{(n)}(τ) = 0`, so `τ` is topologically nilpotent, and Milne's evaluation
-`eval₂` of a power series at `τ` converges.  For every `π^n`-torsion point `x ∈ Λ_n ⊆ K_n`
-(`K_n = F(Λ_n)` the `n`-th Lubin–Tate level in `AlgebraicClosure F`) the `𝒪[F]`-algebra
-homomorphism `evMap x : T_n → AlgebraicClosure F` with `τ ↦ x` is well defined, and the action of
-`𝒪[F]` on `Λ_n` is `a • x = evMap x ([a]_n)`, where `[a]_n = eval₂ (action a) τ`.
-
-## Main definitions
-
-* `NK.LocalReciprocityLubinTate.Eval.LTtorsionRing` — the ring `𝒪[F][T]/(f^{(n)}(T))`;
-* `NK.LocalReciprocityLubinTate.Eval.LTtorsionRing.tau` — the class of `T`;
-* `NK.LocalReciprocityLubinTate.Eval.LTtorsionRing.piT` — the image of `π`;
-* `NK.LocalReciprocityLubinTate.Eval.LTtorsionRing.evMap` — the evaluation at a torsion point.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuativeRel.Basic
+import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.DivisionPoints
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTpolyEis_shape
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.EisFactor
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.finiteDimensional_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LTpolyIter_monic_degree
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.card_rootSet_LTpolyIter
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

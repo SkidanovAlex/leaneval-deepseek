@@ -1,18 +1,6 @@
-/-
-# Interface definitions for the `Sha2Lib` unramified–inert cyclic level development
-
-The target lemma `Work.SSGRoute.Sha2Lib.exists_unramified_inert_cyclic_level` is proved by the
-Grünwald–Wang route: work over the cyclotomic level `K = k(ζ_p)` inside an algebraic closure `Ω`,
-prescribe at the places of `K` above the given place `l` a *local character* which is trivial on the
-inertia and non-trivial on the decomposition group, glue it by Grünwald's theorem
-(`Work.HRec.grunwald_surjective_odd_over_same`), average over `Gal(K/k)` and inflate
-(`Work.HRec.exists_inflated_of_invariant`) to a global character `η : G_k → ZMod p`, and take the
-fixed field of `ker η`.
-
-This file contains only the interface: the structure `UnramLocalDatum` describing the local datum
-at a single place `P` of `Ω` relative to the cyclotomic level `K`.  It proves nothing.
--/
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

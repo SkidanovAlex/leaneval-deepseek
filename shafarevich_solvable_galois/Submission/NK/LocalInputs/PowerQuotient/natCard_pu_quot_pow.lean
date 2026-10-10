@@ -1,12 +1,6 @@
-import Mathlib
-import Submission.NK.LocalInputs.PowerQuotient.Setup
-import Submission.NK.LocalInputs.PowerQuotient.Lam
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalInputs.PowerQuotient.LamIndex
 import Submission.NK.LocalInputs.PowerQuotient.natCard_torsionSubgroup_quot_pow
-import Submission.NK.LocalInputs.PowerQuotient.exists_powTorsion_exponent
-import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_powerQuotient_adicCompletion_rat_units
-import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

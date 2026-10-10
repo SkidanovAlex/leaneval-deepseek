@@ -1,37 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The units level system: `H²(U ⧸ (U ⊓ Gal(K'/L)), Lˣ)` and its transition maps
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4 item 1, §10.4).
-
-The Kummer identification of README §8.4 item 1 lives at the level of the **units**: the inclusion
-`μ_p(L) ↪ Lˣ` is a morphism of level representations and `NK.HassePrinciple.kummerMap` is the
-induced map `H²(G, μ_p(L)) → H²(G, Lˣ)`.  To take the *limit* over the finite Galois levels — which is
-where the Kummer injection actually holds (the `μ_p`-analogue is `NK.BrauerTwist.LevelH2`, whose
-colimit is the classical `H²(U, μ_p)`) — one needs the same level system with coefficients in the
-units, i.e. the filtered colimit of `H²(LevelGroup U L, Lˣ)`.
-
-This file builds that level system, mirroring `Submission/Work/BrauerTwist/Basic.lean` (which does it
-for `μ_p`):
-
-* `NK.HassePrinciple.levelGroupRestrictHom` — the descent of the restriction map,
-  `LevelGroup U L →* Gal(L/K)`;
-* `NK.HassePrinciple.unitsLevelRep` — the representation of `LevelGroup U L` on `Lˣ`;
-* `NK.HassePrinciple.UnitsLevelH2` — the level cohomology `H²(LevelGroup U L, Lˣ)`;
-* `NK.HassePrinciple.unitsInclLinearMap` — the unit inclusion `Lˣ → L'ˣ` as a morphism of
-  `CoeffInt`-modules.
-
-The equivariance of `unitsInclLinearMap` (with respect to the restriction actions), the transition
-morphism `unitsLevelMap` of the level system, the coherence laws (`map_refl`, `map_comp`), the
-colimit (the coefficient-generic `NK.BrauerTwist.LevelSystem`) and the induced Kummer map are
-described at the end of this file and in README §10.4; they are the immediate follow-up.
--/
-
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.HassePrinciple.LevelDictionary
 import Submission.NK.HassePrinciple.Mu
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,13 +1,18 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.FieldTheory.Norm.norm_map_algEquiv
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
+import Submission.Commons.Algebra.Field.exists_algEquiv_factor_of_surjective_pi
 import Submission.Commons.Analysis.Polynomial.adjoin_rootSet_eq_of_close
 import Submission.Commons.Analysis.Polynomial.supNorm_lt_iff
-import Submission.Commons.Algebra.Field.exists_algEquiv_factor_of_surjective_pi
+import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
+import Submission.Commons.FieldTheory.Norm.norm_map_algEquiv
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_adicCompletion_eq_natCard_abelianization_of_isCyclic
+import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

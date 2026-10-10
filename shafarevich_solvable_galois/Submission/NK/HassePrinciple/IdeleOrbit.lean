@@ -1,35 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The orbit layer of the idèles: `Γ`-stable subgroups of `𝕀_L` as `CoeffInt`-representations
-
-This module builds the coefficient layer of `NK.HassePrinciple.hbnIdele` (Shapiro's lemma for
-the idèles): the `Gal(L/K)`-stable subgroups of the idèle group `𝕀_L` that occur in the proof,
-together with their `CoeffInt`-linear representation structure.
-
-* `NK.HassePrinciple.unitySubgroup` — the idèles all of whose components are local units
-  (`∏_v 𝒪_vˣ`);
-* `NK.HassePrinciple.supportedSubgroup O` — the idèles supported on a set `O` of places;
-* `NK.HassePrinciple.levelSubgroup S` — the level `𝕀_L^S` of idèles that are local units outside
-  `S`;
-* `NK.HassePrinciple.orbitUnitsSubgroup O` — their intersection: the idèles supported on `O`
-  whose components are local units (`∏_{v ∈ O} 𝒪_vˣ`).
-
-Each of them is `Gal(L/K)`-stable as soon as the underlying set of places is, and the action of
-`Gal(L/K)` on the ambient idèle group restricts to a `MulDistribMulAction` on the subgroup; hence
-`Rep.ofDistribMulAction` endows each of them with the structure of a `CoeffInt`-linear
-representation of `Gal(L/K)`.
--/
-
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.HassePrinciple.LocalUnitsSub
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.HassePrinciple.IdelesLevel
-import Submission.NK.HassePrinciple.IdeleCocycle
 import Submission.NK.HassePrinciple.exists_idele_coboundary_of_isMulCocycle
-import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_eq_coindIso
 import Submission.NK.RepresentationTheory.GroupCohomology.piCohomology_injective
+import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_eq_coindIso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.grunwald_kummer_idx
-import Submission.Work.SSGRoute.grunwald_local_setup
-import Submission.Work.SSGRoute.grunwald_local_realization
-import Submission.Work.SSGRoute.grunwald_setup
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
 import Submission.NK.UchidaKummer.Approximation.isKummerSurjective_of_weakApproximation
-import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
 import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
+import Submission.Work.SSGRoute.grunwald_local_realization
+import Submission.Work.SSGRoute.grunwald_local_setup
+import Submission.Work.SSGRoute.grunwald_setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

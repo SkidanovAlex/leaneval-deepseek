@@ -1,34 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The connecting map `δ₀ : Ĥ⁰(G, C) → H¹(G, A)`
-
-For a short exact sequence of `G`-modules `0 → A --f--> B --g--> C → 0` (a `Work.Tate.SES`),
-the next connecting map of the Tate long exact sequence is
-
-`δ₀ : Ĥ⁰(G, C) = C^G/N(C) → H¹(G, A)`,
-
-the *Tate* version of the usual connecting map `H⁰(G,C) = C^G → H¹(G,A)`.  Explicitly, for a
-fixed point `c ∈ C^G` one lifts `c` to `b ∈ B`; then `γ • b - b ∈ ker g = im f` for every
-`γ : G`, and
-
-`γ ↦ f⁻¹(γ • b - b)`
-
-is a `1`-cocycle of `A`; the class of this cocycle in `H¹(G,A)` is independent of the lift `b`
-and kills `N(C) ⊆ C^G`, so it descends to `Ĥ⁰(G,C)`.
-
-This file provides the cocycle-level construction:
-
-* `Work.Tate.SES.toShortExactSeq` : the same data as a
-  `Work.GroupCohomology.ShortExactSeq` (bridge to the inhomogeneous `H¹`/`H²` API);
-* `Work.Tate.SES.delta0CocycleOf`, `Work.Tate.SES.delta0Cocycle` : the cocycles above,
-  with `S.f (S.delta0CocycleOf b hb γ) = γ • b - b`.
-
-The construction of the map `S.delta0 : Ĥ⁰(G,C) →+ H¹(G,A)` and its exactness live in
-`Submission/Work/Tate/Delta0Map.lean`.
--/
-import Mathlib
+import Mathlib.Data.Fintype.Defs
+import Mathlib.Algebra.Group.Subgroup.Defs
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.ShortExact
 import Submission.Work.Tate.SES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

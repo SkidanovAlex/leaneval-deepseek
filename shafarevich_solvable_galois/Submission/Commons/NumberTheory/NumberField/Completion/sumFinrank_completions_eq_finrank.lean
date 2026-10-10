@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.ef_le_finrank_adicCompletion
 import Submission.Commons.NumberTheory.NumberField.Completion.sumFinrank_adicCompletion_le_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

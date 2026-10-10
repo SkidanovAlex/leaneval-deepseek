@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Algebra.Group.Int.TypeTags
 import Submission.Commons.GroupTheory.Subgroup.index_eq_of_ker_le_of_map_eq_zpowers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

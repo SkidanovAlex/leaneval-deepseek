@@ -1,10 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.AbelianReduction
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.CyclotomicSubextension
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
+import Mathlib.Basic.Real.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymbol_span_eq_one_of_kernelLe_of_relIndex
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.langCyclicKernelLe_byArtinLemma
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.langCyclicRelIndex

@@ -1,13 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.PT.localCocycle_descent_exists
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.PT.liesOver_linked
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.exists_level_res_ne_one
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
+import Submission.Work.SSGRoute.PT.liesOver_linked
+import Submission.Work.SSGRoute.PT.localCocycle_descent_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

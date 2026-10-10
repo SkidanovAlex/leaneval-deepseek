@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.eCoh_delta
-import Submission.Work.SSGRoute.E7cOmega.unramifiedDetector_dwQuotient
-import Submission.Work.SSGRoute.LeadArch2.gammaHom_H1pi_eq_eCoh_or_neg
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ExtOneAux
+import Submission.Work.SSGRoute.LeadArch2.gammaHom_H1pi_eq_eCoh_or_neg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

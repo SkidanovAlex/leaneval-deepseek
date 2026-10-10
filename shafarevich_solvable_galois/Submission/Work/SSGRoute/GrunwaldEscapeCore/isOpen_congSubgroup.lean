@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.TopologySetup
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
+import Submission.NK.NUV2.RouteB.CongCount.finite_rayClassGroup_congSubgroup
+import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
+import Submission.NK.NUV2.RouteB.RayModulus.exists_modulus_le
 import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

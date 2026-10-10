@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Data.ZMod.Defs
+import Mathlib.LinearAlgebra.PiTensorProduct.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Map
 import Submission.Work.Shrinking.TensorPower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

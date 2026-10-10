@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.place_basics
 import Submission.Work.SSGRoute.isT1Place_of_isConjPlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

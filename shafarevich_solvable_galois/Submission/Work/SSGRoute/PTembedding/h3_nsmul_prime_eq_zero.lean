@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Topology.Defs.Basic
 import Submission.Work.SSGRoute.H3Map.mapC3c_mem_Z3_mem_B3
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

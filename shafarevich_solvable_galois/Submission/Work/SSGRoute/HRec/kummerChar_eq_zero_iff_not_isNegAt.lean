@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.ArchDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.HRec.mem_normSet_of_not_isNegAt
 import Submission.Work.SSGRoute.HRec.not_isNegAt_of_mem_normSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

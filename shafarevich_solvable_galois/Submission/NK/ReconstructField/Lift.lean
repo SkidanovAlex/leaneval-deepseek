@@ -1,3 +1,4 @@
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.ReconstructField.Basic
 import Submission.NK.ReconstructField.exists_ringEquiv_mapsBase_of_ringEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

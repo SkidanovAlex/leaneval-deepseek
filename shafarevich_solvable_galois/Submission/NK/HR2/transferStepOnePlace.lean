@@ -1,21 +1,11 @@
-import Mathlib
-import Submission.NK.NUV2.ChebAux.Transfer.Defs
-import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
-import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
-import Submission.NK.NUV2.ChebAux.Transfer.PlaceAux
-import Submission.NK.NUV2.ChebAux.isCyclic_gal_of_compositum
-import Submission.NK.CFTLib.HR.TransferAux.FinalStep
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_infinite
-import Submission.NK.HR2.locUnits_inflation_eq_zero_of_loc_eq_zero
-import Submission.NK.HR2.locUnits_inflation_eq_zero_iff
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.HR2.exists_cycClassOf_of_res_eq_zero
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Submission.NK.GlobalCFT.Norm.NormTransAux
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
-import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
+import Submission.NK.HR2.locUnits_inflation_eq_zero_iff
+import Submission.NK.HR2.locUnits_inflation_eq_zero_of_loc_eq_zero
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

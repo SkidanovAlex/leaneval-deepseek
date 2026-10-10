@@ -1,34 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The maximal tamely ramified extension of a `p`-adic field
-
-For a uniformiser `π` of `κ = K_𝔭` and a separable closure `K'` of `κ`, the *maximal tamely
-ramified extension* of `κ` is
-
-  `κ^{tr} = κ^{ur}(π^{1/n} : n prime to p)`,
-
-realised in `K'` as `tameClosure π` below: the compositum of the maximal unramified extension
-`κ^{ur} = unramifiedClosure p` with the Kummer fields `κ^{ur}(π^{1/n})`, i.e. with all `κ⟮α⟯` for
-`α ^ n = π` and `p ∤ n`.
-
-The tamely ramified layer of `G_κ` is the quotient `Gal(κ^{tr}/κ^{ur}) = I_κ/V_κ`; its finite
-quotients are `Gal(κ^{ur}(π^{1/n})/κ^{ur})` by the directedness of the compositum, and each of these
-is `ℤ/n` for `n` prime to `p` (`Tame/Kummer.lean` + Mathlib's Kummer theory).  Consequently every
-finite quotient of `Gal(κ^{tr}/κ^{ur})` is cyclic of order prime to `p`, which is the pro-cyclicity
-`IsProCyclic` and the pro-prime-to-`p`-ness `IsProPrimeToP` of the tame inertia.
-
-The fixing subgroup of `κ^{tr}` is `V_κ := Gal(K'/κ^{tr})`, and by
-`Submission/Work/TameStructureDeep/README.md` §7.2 (corrected four times: the cyclotomic character
-on the tame inertia is faithful) it **coincides** with the join `NK.LocalTame.wildInertiaSubgroup`
-of the normal pro-`p` subgroups of `G_κ`; see
-`NK.TameStructureDeep.Tame.wildInertiaSubgroup_eq_correctedWildInertia`.
--/
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
 import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
+import Submission.NK.TameStructureDeep.Tame.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

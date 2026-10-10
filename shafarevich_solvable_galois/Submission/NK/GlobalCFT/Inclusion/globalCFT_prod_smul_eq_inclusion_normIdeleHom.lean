@@ -1,20 +1,23 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NeukirchUchida.Local.LocalGalois
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Submission.NK.GlobalCFT.Galois.completionMap_surjective_of_isComplex_under
 import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_localAlgebraMapUnits
 import Submission.NK.GlobalCFT.Galois.globalCFT_mul_smul_idele
-import Submission.NK.GlobalCFT.Galois.globalCFT_smul_principalIdele
 import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_idele
-import Submission.Commons.NumberTheory.NumberField.liesOver_map_galRestrict
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
+import Submission.NK.GlobalCFT.Galois.globalCFT_smul_principalIdele
 import Submission.NK.GlobalCFT.Galois.range_completionMap_of_isReal_under
-import Submission.NK.GlobalCFT.Galois.completionMap_surjective_of_isComplex_under
-import Submission.NK.GlobalCFT.Galois.globalCFT_place_smul_liesOver
-import Submission.Commons.FieldTheory.Galois.natCard_algEquiv_le_finrank
-import Submission.NK.GlobalCFT.Galois.globalCFT_smul_place_smul
-import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_place
+import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
+import Submission.NeukirchUchida.Local.LocalGalois
 
 open Classical
 open scoped NumberField RestrictedProduct NumberField.LiesOver

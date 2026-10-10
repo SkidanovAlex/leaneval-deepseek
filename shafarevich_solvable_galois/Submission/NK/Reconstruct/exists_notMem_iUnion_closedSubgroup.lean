@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Topology.Baire.LocallyCompactRegular
+import Mathlib.Topology.Algebra.Group.Torsor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

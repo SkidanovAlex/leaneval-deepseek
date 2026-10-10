@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LiftImports
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.localGaloisEquiv_adjoin_coInAdjoin_compat
 
 /-!

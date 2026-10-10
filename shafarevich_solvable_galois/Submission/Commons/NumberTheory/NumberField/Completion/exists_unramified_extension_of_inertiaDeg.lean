@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_le_finrank
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.FieldTheory.Polynomial.exists_monic_irreducible_of_natDegree
 import Submission.Commons.LinearAlgebra.FiniteDimensional.natDegree_minpoly_le_finrank
+import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_le_finrank
+import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
+import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
 import Submission.Commons.RingTheory.Polynomial.exists_monic_lift_of_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

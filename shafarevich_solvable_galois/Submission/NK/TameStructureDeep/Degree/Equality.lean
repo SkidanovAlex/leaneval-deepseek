@@ -1,32 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `[κ(μ_n) : κ] = ord_n(q)` for `n` prime to `p`
-
-For a `p`-adic field `κ = K_𝔭` with residue field of `q = p^f` elements and `n` prime to `p`, the
-cyclotomic extension `κ(μ_n)` is **unramified of degree `ord_n(q)`**:
-
-  `[κ(ζ_n) : κ] = ord_n(q)`,  equivalently  `Gal(κ(μ_n)/κ) ≅ ℤ/ord_n(q)`.
-
-This is the classical statement that makes `κ^ur = κ(μ_{p'})` and hence
-`Gal(κ^ur/κ) ≅ Gal(𝔽̄_q/𝔽_q) ≅ Ẑ` — the field `unramifiedQuotient` of
-`NK.TameStructureDeep.TameRamificationCore`.
-
-It is assembled here from the two inequalities:
-
-* `NK.TameStructureDeep.Degree.natDegree_minpoly_le_orderOf` — the upper bound: `μ_n` is contained
-  in the unramified extension of degree `ord_n(q)` (Teichmüller lift of a primitive `n`-th root of
-  the residue field `𝔽_{q^{ord_n(q)}}`), so `κ(μ_n)` has degree at most `ord_n(q)`;
-* `NK.TameStructureDeep.Degree.orderOf_dvd_natDegree_minpoly` — the lower bound: the reduction
-  map is injective on the `n`-th roots of unity of `κ(μ_n)` (as `n` is prime to the residue
-  characteristic), so `n ∣ q^{[κ(μ_n):κ]} - 1` and `ord_n(q)` divides the degree.
-
-The degree is `(minpoly κ ζ).natDegree` for any primitive `n`-th root `ζ`.
--/
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.ZMod.Units
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.TameStructureDeep.Degree.natDegree_minpoly_le_orderOf
 import Submission.NK.TameStructureDeep.Degree.orderOf_dvd_natDegree_minpoly
-import Submission.NK.Mine.ResidueCharAutomatic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

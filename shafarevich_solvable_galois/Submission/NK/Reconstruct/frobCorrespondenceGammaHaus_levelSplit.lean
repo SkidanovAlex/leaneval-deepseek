@@ -1,21 +1,18 @@
-import Mathlib
-import Submission.NK.Reconstruct.LevelPrimeGen
-import Submission.NK.Reconstruct.frobUniquenessAwayFromL
-import Submission.NK.Reconstruct.frobCorrespondenceGammaHaus
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.NK.ReconstructField.LevelCandidate
-import Submission.NK.Reconstruct.isFrobElementAt_restrictScalars
-import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.ReconstructField.exists_level_galois_image
-import Submission.NK.ReconstructField.ncard_primesOver_levelPrimeMapGen_gen
-import Submission.NK.ReconstructField.levelPrimeMap_localDegree_eq
-import Submission.NK.UchidaKummer.API.localDeg_tower
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.LocalInputs.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
-import Submission.Commons.FieldTheory.Galois.isGalois_of_normal_of_charZero
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.NK.Reconstruct.exists_gammaEquivOfPhi
+import Submission.NK.Reconstruct.frobUniquenessAwayFromL
+import Submission.NK.Reconstruct.isFrobElementAt_restrictScalars
+import Submission.NK.ReconstructField.levelPrimeMap_localDegree_eq
+import Submission.NK.ReconstructField.ncard_primesOver_levelPrimeMapGen_gen
+import Submission.NK.ResidueFrob.primeOfLevel_liesOver
+import Submission.NK.UchidaKummer.API.localDeg_tower
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

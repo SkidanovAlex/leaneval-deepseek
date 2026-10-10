@@ -1,14 +1,12 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
-import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferCore
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.IdeleHasse.Crux.cycClass
-import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
-import Submission.NK.CFTLib.IdeleHasse.Crux.zpowersSubgroup
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
+import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
+import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
+import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
+import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

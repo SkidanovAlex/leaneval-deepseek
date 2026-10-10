@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
-import Submission.Work.SSGRoute.H9.swChainConjDefs
-import Submission.Work.SSGRoute.NodeS37.localDichotomy
-import Submission.Work.SSGRoute.NodeS37.henselUnitSquare
-import Submission.Work.SSGRoute.NodeS37.isSquare_residue_of_isSquare_mk
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.PlaceValBridge
-import Submission.Work.SSGRoute.ZDataTwo.AdicBridge
-import Submission.Work.SSGRoute.P2Close.rhoValuationTransport
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.P2Close.residueInvolution
+import Submission.Work.SSGRoute.ZDataTwo.TwoRec.PlaceValBridge
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

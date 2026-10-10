@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.LinearAlgebra.DFinsupp
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.CohomologicalShrinking.Functorial
 import Submission.Work.CohomologicalShrinking.modsquare.squareQuotientToFun_bijective
 import Submission.Work.CohomologicalShrinking.modsquare.squareQuotientToFun_smul

@@ -1,16 +1,9 @@
-/-
-Helper material for `NK.NUV2.RouteB.uniform_of_sharp_rayClassCount`.
-
-For two finite sets of primes `S ⊆ S'`, every ideal `𝔞 ≠ 0` coprime to `S` factors as
-`partAt (S'∖S) 𝔞 * partAway S' 𝔞`, where the first factor is supported on `S'∖S` and the second is
-coprime to `S'`.  Summing the sharp ray-class count for `S'` over the finitely many possibilities
-for the first factor turns the sharp bound (exponent `1 - 1/[K:ℚ]`) into a uniform bound (some
-exponent `< 1`) for `S`.  This file contains the definitions and their elementary counting
-properties; the count identity and the analytic summation live in
-`NK.NUV2.RouteB.uniform_of_sharp_rayClassCount`.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Submission.NK.HeckeL.Basic.classOfIdeal_mul
 import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Galois.completionMap_isometry
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

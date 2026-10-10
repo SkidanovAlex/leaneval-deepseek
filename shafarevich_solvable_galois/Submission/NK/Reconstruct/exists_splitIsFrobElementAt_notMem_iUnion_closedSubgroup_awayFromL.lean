@@ -1,21 +1,18 @@
-import Mathlib
-import Submission.NK.Reconstruct.exists_splitIsFrobElementAt_notMem_iUnion_closedSubgroup
-import Submission.NK.Reconstruct.exists_split_frobAt_unramified
-import Submission.NK.Reconstruct.exists_isFrobElementAt_split_of_restrict
-import Submission.NK.Reconstruct.frobElementAt
-import Submission.NK.LocalInputs.Defs
-import Submission.NK.Reconstruct.infinite_gamma
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.NK.Chebotarev.ExistsFrobeniusOfRestriction
-import Submission.NK.Chebotarev.FrobeniusOne
-import Submission.NK.Reconstruct.frobAt_descend_of_galRestrict_commutes
-import Submission.NK.Reconstruct.ramificationIdx_under_eq_one_and_eq_one
-import Submission.NK.Reconstruct.restrictNormalHom_eq_one_of_commutes
-import Submission.NK.Reconstruct.galRestrict_commutes_of_field_commutes
-import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.ReconstructField.finrank_eq_of_localCorrespondence
-import Submission.NK.Reconstruct.exists_isFrobElementAt_split_awayFromL
+import Mathlib.RingTheory.Henselian
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Ideal
 import Submission.NK.Reconstruct.dense_image_galToGamma_splitFrobenius_awayFromL
+import Submission.NK.Reconstruct.exists_isFrobElementAt_split_awayFromL
+import Submission.NK.Reconstruct.infinite_gamma
+import Submission.NK.ReconstructField.finrank_eq_of_localCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

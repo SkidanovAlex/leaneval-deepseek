@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
-import Submission.NK.GlobalCFTdeep.Herbrand.Mul
-import Submission.NK.GlobalCFTdeep.Herbrand.FiniteIndex
-import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
-import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.Basic.Real.Basic
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.FiberUnitsLocal
+import Submission.NK.GlobalCFTdeep.Herbrand.FiniteIndex
+import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
+import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

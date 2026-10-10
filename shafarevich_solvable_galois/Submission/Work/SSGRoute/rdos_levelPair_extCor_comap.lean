@@ -1,9 +1,10 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.ext_corestriction
+import Submission.Work.SSGRoute.comp_extCor
 import Submission.Work.SSGRoute.extCor_yoneda_comp
 import Submission.Work.SSGRoute.rdos_mackey_formula
-import Submission.Work.SSGRoute.comp_extCor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,15 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.Finiteness.exists_openSubgroup_factors_of_mem_lcCocycles
 import Submission.Work.SSGRoute.PTCore.X1_submodule
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.hm_clean
-import Submission.Work.SSGRoute.Finiteness.exists_openSubgroup_factors_of_mem_lcCocycles
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

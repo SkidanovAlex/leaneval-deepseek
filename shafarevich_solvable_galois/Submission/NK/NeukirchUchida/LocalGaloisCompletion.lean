@@ -1,9 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RankOne
 import Submission.NK.Mine.CompletionAPI
 import Submission.NK.NeukirchUchida.exists_ringHom_adicCompletion_placeCompletion
 import Submission.NK.NeukirchUchida.isSepClosed_completion
-import Submission.NK.NeukirchUchida.rankOne_valuationSubringAtPrime_sepClosure
 import Submission.NK.NeukirchUchida.rankOne_extensionValuation_completion
+import Submission.NK.NeukirchUchida.rankOne_valuationSubringAtPrime_sepClosure
 
 /-!
 # The completion of a separable closure at a place: setup

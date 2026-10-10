@@ -1,7 +1,12 @@
-import Mathlib
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Submission.Work.AbsoluteKummer.H1Pi.nonempty_h1_pi_equiv
 import Submission.Work.SSGRoute.PT.AlphaTwoTrivModSurj
 import Submission.Work.SSGRoute.PT.alphaTwo_naturality
-import Submission.Work.AbsoluteKummer.H2Pi.nonempty_h2_pi_equiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

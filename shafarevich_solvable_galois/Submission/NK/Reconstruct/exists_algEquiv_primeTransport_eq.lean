@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.Reconstruct.Transport
 import Submission.NK.Reconstruct.exists_frobElement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,29 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# A cocycle whose extension splits is a coboundary
-
-The inverse of `ofCocycle_splits_of_class_zero`: if the group extension
-
-`1 → A → E → Q → 1`
-
-attached to a `2`-cocycle `c ∈ Z²(Q, A)` admits a homomorphic section (a splitting), then `c`
-is a `2`-coboundary, i.e. its class in `H²(Q, A)` vanishes.
-
-The argument is the classical one.  The extension is built from the *normalized* cocycle
-`normCocycle c (q, r) = c (q, r) - c (q, 1)`, and `c` differs from `normCocycle c` by the
-coboundary `(q, r) ↦ c (q, 1)` (a rotated `1`-coboundary).  A splitting `s` of the extension is a
-monoid homomorphism `Q →* A × Q` whose second component is the identity; writing
-`s q = (f q, q)`, multiplicativity reads
-
-`normCocycle c (q, r) = f (q * r) - q • f r - f q = -(d¹ f) (q, r)`,
-
-so `normCocycle c` is a coboundary and hence so is `c`.
--/
-import Mathlib
-import Submission.Work.GroupCohomology.Extension
-import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.AbsoluteGalois.twisted_splitting_iff_mem_B2
+import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

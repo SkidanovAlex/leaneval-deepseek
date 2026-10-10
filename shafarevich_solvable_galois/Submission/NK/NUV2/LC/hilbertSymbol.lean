@@ -1,5 +1,13 @@
-import Submission.NK.NUV2.LC.quadraticLevel
+import Mathlib.Computability.Language
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.Complex.Polynomial.Basic
 import Submission.NK.NUV2.LC.invariantMap
+import Submission.NK.NUV2.LC.quadraticLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

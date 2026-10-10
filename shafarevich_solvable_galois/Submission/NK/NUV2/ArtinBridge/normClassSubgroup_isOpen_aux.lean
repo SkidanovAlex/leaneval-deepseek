@@ -1,21 +1,17 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFT.Norm.globalCFT_localNorm_mem_localUnits
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.GlobalCFT.Norm.NormTransAux
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
+import Submission.Commons.NumberTheory.NumberField.Completion.norm_units_surjective_of_ramificationIdx_eq_one
 import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
 import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_units_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Submission.NK.GlobalCFT.Norm.NormTransAux
+import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

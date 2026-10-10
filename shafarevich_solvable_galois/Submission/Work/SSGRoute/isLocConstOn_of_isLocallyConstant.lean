@@ -1,6 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.AbsoluteKummer.All
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.AbsoluteGalois.exists_hom_lift_iff_pullbackCocycle_mem_B2
+import Submission.Work.AbsoluteGalois.sectionCocycle_mem_Z2
+import Submission.Work.AbsoluteKummer.Factorisation.exists_finiteGalois_le_ker_pair
+import Submission.Work.AbsoluteKummer.Functoriality
+import Submission.Work.AbsoluteKummer.Grunwald.sqClassLocalize_surjective
+import Submission.Work.AbsoluteKummer.H1Pi.nonempty_h1_pi_equiv
+import Submission.Work.AbsoluteKummer.Kummer.kummerQuotientEquiv
+import Submission.Work.AbsoluteKummer.Kummer.nonempty_h0_addUnits_equiv
+import Submission.Work.AbsoluteKummer.KummerBijective
+import Submission.Work.AbsoluteKummer.Rat
+import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
+import Submission.Work.Properness.Defs
 import Submission.Work.SSGRoute.LTDDefs.H2locAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

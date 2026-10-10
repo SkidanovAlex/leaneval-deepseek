@@ -1,36 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The dimension shift `Ĥ²(G, X) ≅ Ĥ⁻¹(G, X ⊗ A₂)` as a natural family
-
-`Work.CohomologicalShrinking.shiftH2Family` produces, for every coefficient module `T` over
-`𝔽_p = ZMod p`, a family of additive isomorphisms
-
-`s m : H²(G, E(m,τ) ⊗ T) ≃+ Ĥ⁻¹(G, E(m,τ) ⊗ (T ⊗ A₂))`
-
-which is *natural* in the level `m`: for every surjective `G`-operator homomorphism
-`Φ : F(m) ⇢ F(n)` the corresponding square commutes.  This is the dimension shift
-`Ĥ²(G, X) ≅ Ĥ⁻¹(G, X ⊗ I_G^{-3})` of Schmidt–Wingberg's Proposition 6, in the form needed to
-feed the shrinking statement `exists_shrinking_H2_of_shift`.
-
-The chain is the paper's
-
-`H²(G, X) ≅ H¹(G, X^*) ≅ Ĥ⁰(G, X^{**}) ≅ Ĥ⁻¹(G, X^{***})`
-
-with `X^* = Coind(X)/X ≅ X ⊗ I_G^{-1}`, and the composites are natural by
-`tate.dimensionShiftH2H1_natural`, `tate.dimensionShiftH1H0_natural` and
-`tate.dimensionShiftCoind_natural`, transported along the coefficient isomorphisms.
--/
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Levels
-import Submission.Work.CohomologicalShrinking.Corollaries
+import Mathlib.Algebra.MonoidAlgebra.Module
+import Mathlib.Data.ZMod.Basic
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Associator
 import Submission.Work.CohomologicalShrinking.coindShiftAddEquivTensor
 import Submission.Work.CohomologicalShrinking.shiftTensor.assocTripleTensorGen
-import Submission.Work.CohomologicalShrinking.tate.dimensionShiftH2H1_natural
-import Submission.Work.CohomologicalShrinking.tate.dimensionShiftH1H0_natural
 import Submission.Work.CohomologicalShrinking.tate.dimensionShiftCoind_natural
-import Submission.Work.GroupCohomology.All
+import Submission.Work.CohomologicalShrinking.tate.dimensionShiftH1H0_natural
+import Submission.Work.CohomologicalShrinking.tate.dimensionShiftH2H1_natural
 
 namespace Work.CohomologicalShrinking
 
@@ -622,7 +599,7 @@ theorem shiftH2Family_of_data (p : ℕ) [NeZero p] (G : Type u) [Group G] [Finty
           (L ((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)).toAddMonoidHom
           (L_equiv ((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G))
           f4.toAddMonoidHom (fun γ a => hf4 γ a) γ a
-      exact (Work.CohomologicalShrinking.tate.Hm1Map_comp (G := G)
+      have hfin_ := (Work.CohomologicalShrinking.tate.Hm1Map_comp (G := G)
           (A := Work.Tate.coindShift G ((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G))
           (B := Work.Tate.coindShift G ((Y ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G))
           (C := ((Y ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)
@@ -657,6 +634,7 @@ theorem shiftH2Family_of_data (p : ℕ) [NeZero p] (G : Type u) [Group G] [Finty
                 (L ((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)).toAddMonoidHom) a
             exact hL5b γ a)))
 
+      exact hfin_
     have h6 : (c6 Y).comp L6 = L7.comp (c6 X) := by
       simp only [c6, L6, L7, f4]
       have hL6a : ∀ (γ : G) (a : (((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)),
@@ -675,7 +653,7 @@ theorem shiftH2Family_of_data (p : ℕ) [NeZero p] (G : Type u) [Group G] [Finty
           (B := X ⊗[ZMod p] A2 p G)
           (C := Y ⊗[ZMod p] A2 p G)
           (R X).toAddMonoidHom (R_equiv X) f5.toAddMonoidHom (fun γ a => hf5 γ a) γ a
-      exact (Work.CohomologicalShrinking.tate.Hm1Map_comp (G := G)
+      have hfin_ := (Work.CohomologicalShrinking.tate.Hm1Map_comp (G := G)
           (A := ((X ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)
           (B := ((Y ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G) ⊗[ZMod p] igDual p G)
           (C := Y ⊗[ZMod p] A2 p G)
@@ -702,6 +680,7 @@ theorem shiftH2Family_of_data (p : ℕ) [NeZero p] (G : Type u) [Group G] [Finty
               = γ • (f5.toAddMonoidHom.comp (R X).toAddMonoidHom) a
             exact hL6b γ a)))
 
+      exact hfin_
     -- pasting the ladder
     have hp1 : ((c1 Y).comp (c0 Y)).comp L0 = L2.comp ((c1 X).comp (c0 X)) := by
       rw [AddMonoidHom.comp_assoc, h0, ← AddMonoidHom.comp_assoc, h1, AddMonoidHom.comp_assoc]

@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RepresentationTheory.Induced
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.TatePoitouRoute.rankOneBrick_of_levelCocycleDatum
 import Submission.Work.Sha2Lib.rankOneLevelDatumExists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

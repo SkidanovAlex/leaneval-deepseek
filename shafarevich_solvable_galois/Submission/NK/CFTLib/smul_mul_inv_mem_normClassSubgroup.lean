@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.CFTLib.normClassSubgroup_smul_mem
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
 import Submission.NK.NUV2.ArtinBridge.action_trivial_of_coprime_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

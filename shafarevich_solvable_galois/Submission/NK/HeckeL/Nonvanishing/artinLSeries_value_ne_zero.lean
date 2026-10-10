@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Data.FunLike.Fintype
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.GDelta.MetrizableSpace
 import Submission.NK.HeckeL.Product.artinLSeries_one
 import Submission.NK.HeckeL.Product.prod_artinLSeries_eq
 import Submission.NK.HeckeL.Product.tendsto_zetaUnramified_div

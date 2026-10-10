@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Basic.ideleOfFun_add
+import Mathlib.Basic.Complex.Basic
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HeckeL.Basic.classOfIdeal_mul
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

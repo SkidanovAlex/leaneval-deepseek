@@ -1,18 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The induced 2-cocycle on a framed `G`-set
-
-This file proves the three technical facts needed to assemble the "half of Shapiro" map for
-2-cocycles on an abstract framed `G`-set (see `ShapiroSetup` for the definitions):
-
-* `permEquivX_smul` : the identification `M ⊗ 𝔽_p[X] ≃ (X → M)` is compatible with the diagonal
-  `G`-action on the left and the displayed `G`-action on the right;
-* `funCX_base` : at the base point, `funCX` reproduces `c` on pairs from `H`;
-* `funCX_add_eq` : the pointwise 2-cocycle identity for `funCX`.
--/
-
+import Mathlib.LinearAlgebra.DFinsupp
+import Mathlib.Data.ZMod.Defs
+import Mathlib.LinearAlgebra.TensorProduct.Defs
 import Submission.Work.SSGRoute.ShapiroSetup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,17 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.RegularRep
-import Submission.Work.SSGRoute.PTW.avgOp_regRep
-import Submission.Work.SSGRoute.PTW.AvgOpNeZero
-import Submission.Work.SSGRoute.PTW.Spectral
-import Submission.Work.SSGRoute.PTW.NontrivialEigenspace
-import Submission.Work.SSGRoute.PTW.RestrictRep
-import Submission.Work.SSGRoute.PTW.avgOp_isSymmetric
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Submission.Work.SSGRoute.PTW.avgOp_isCompact
+import Submission.Work.SSGRoute.PTW.avgOp_isSymmetric
 import Submission.Work.SSGRoute.PTW.avgOp_ker_le_orthogonal_orbit
 import Submission.Work.SSGRoute.PTW.avgOp_range_le_closure_nonzero_eigenspaces
 import Submission.Work.SSGRoute.PTW.exists_character_of_finiteDim_regRep_submodule
-import Submission.Work.SSGRoute.PTW.exists_regRep_ne_self
 import Submission.Work.SSGRoute.PTW.exists_open_index_p_notMem_ker_of_character
+import Submission.Work.SSGRoute.PTW.exists_regRep_ne_self
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

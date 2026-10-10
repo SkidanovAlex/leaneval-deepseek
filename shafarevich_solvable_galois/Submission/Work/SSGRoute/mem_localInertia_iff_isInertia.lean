@@ -1,12 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaArithImports
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_isInertia
 import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_localInertia
-import Submission.Work.SSGRoute.finite_card_residueField_comap_bot
 import Submission.Work.SSGRoute.pow_exists_eq_one_of_isIntegral_finite_base_pow
-import Submission.NK.RamificationAudit.perfectField_residueField_comap
-import Submission.Commons.NumberTheory.NumberField.residueCard_adicCompletion_eq_absNorm
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

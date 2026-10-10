@@ -1,27 +1,7 @@
-/-
-# Boundary layer of the frontier of the truncated fundamental cone, cut by half-spaces
-
-This file proves `NK.NUV2.Geom.volume_cthickening_frontier_normLeOne_inter_halfspaces`: the
-`ε`-thickening of the frontier of
-`fundamentalCone.normLeOne K ∩ {x | ∀ i, f i x < 0}`
-has volume `O(ε)`.  This is the Minkowski-content (boundary-layer) input of the lattice-point
-asymptotics `NK.NUV2.Geom.latticeCount_sub_volume_isBigO`.
-
-The set is the intersection of the truncated fundamental cone with the open cone cut out by
-finitely many continuous linear functionals `f i`, so its frontier is contained in the union of
-the frontier of the truncated cone and of the finitely many hyperplanes `f i = 0`:
-
-* the cone part is bounded by `normLeOne_frontier_cthickening_volume`;
-* each hyperplane part is bounded by `volume_cthickening_hyperplane_le`, the standard
-  "slab" bound `vol(cthickening ε (ker g) ∩ B(0,R)) ≤ C ε` for a nonzero continuous linear
-  functional `g`.
-
-Both inputs are proved elsewhere in the workspace
-(`Submission/Work/NUV2/Geom/normLeOne_frontier_cthickening_volume.lean` and
-`Submission/Work/NUV2/Geom/volume_cthickening_hyperplane_le.lean`).
--/
-import Mathlib
-import Submission.NK.NUV2.Geom.TubeDefs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
 import Submission.NK.NUV2.Geom.volume_cthickening_frontier_normLeOne
 import Submission.NK.NUV2.Geom.volume_cthickening_hyperplane_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,3 +1,8 @@
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.Bridge.Core
 import Submission.Work.CohomologicalShrinking.SemidirectData
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

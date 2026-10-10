@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.ReconstructField.LevelPrimeBijective
-import Submission.NK.ReconstructField.ncard_primesOver_levelMap
-import Submission.NeukirchUchida.GaloisIso
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Submission.NK.ReconstructField.LevelPrime
+import Submission.NK.ReconstructField.comap_eq_of_primeOfLevel_placeMap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

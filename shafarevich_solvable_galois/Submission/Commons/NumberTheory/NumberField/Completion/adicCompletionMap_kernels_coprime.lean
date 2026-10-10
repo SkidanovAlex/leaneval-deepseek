@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.exists_surjective_ringHom_tensor_completion_canon
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.UniformSpace.Uniformizable
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.RingTheory.Henselian.exists_surjective_ringHom_tensor_completion_canon
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

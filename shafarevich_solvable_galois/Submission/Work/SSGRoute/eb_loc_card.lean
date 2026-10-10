@@ -1,13 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.E8Defs
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.eb_loc_aux
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.GlobalCFTdeep.Herbrand.fiberIdelesRep_iso_coind
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
-import Submission.NK.NUV2.LC.natCard_groupCohomology_two_units_local_eq_finrank
-import Submission.NK.NUV2.LC.unitsLevelH2_addOrderOf_realization
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.Bridge.Core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

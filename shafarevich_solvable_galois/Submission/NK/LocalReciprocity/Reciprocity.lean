@@ -1,5 +1,10 @@
-import Submission.NK.LocalReciprocity.Prelude
+import Mathlib.FieldTheory.Galois.Basic
+import Submission.Commons.NumberTheory.NumberField.Completion.card_residueField_adicCompletionIntegers_eq_pow_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_mulEquiv_artinMap_of_commute
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_finrank_of_abelian_local
+import Submission.NK.LocalAnabelian.Basic
 import Submission.NK.LocalReciprocity.NormGroup
+import Submission.NeukirchUchida.Local.LocalTransfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

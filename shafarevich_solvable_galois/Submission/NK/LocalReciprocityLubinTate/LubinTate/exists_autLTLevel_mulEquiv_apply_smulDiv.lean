@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.nonempty_autLTLevel_mulEquiv_units
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

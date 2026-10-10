@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.CyclicHerbrandQuotient
-import Submission.NK.GlobalCFTdeep.SecondInequality.secondInequality_of_isCyclic_prime_kummerCase
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.index_le_finrank_of_kummerCase
-import Submission.NK.GlobalCFTdeep.SecondInequality.milneE
+import Submission.NK.GlobalCFTdeep.SecondInequality.secondInequality_of_isCyclic_prime_kummerCase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

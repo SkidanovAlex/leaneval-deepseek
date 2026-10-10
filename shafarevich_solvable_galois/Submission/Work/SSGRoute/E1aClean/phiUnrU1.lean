@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.phiCanDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.E1aClean.LeadNatWit
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
-import Submission.Work.SSGRoute.E1aClean.e1cMapCocycleFormula
+import Submission.Work.SSGRoute.E1aClean.phiCanDefs
 import Submission.Work.SSGRoute.ValuationSES.C1
 import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerChar_zero_on_inertia_imp_mem_unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,46 +1,32 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_adicCompletionIntegers_eq_top
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_units_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.norm_adicCompletionIntegers_surjective_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_units_mul_norm_eq_uniformizer_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_realization
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
-import Submission.Commons.RepresentationTheory.GroupCohomology.exists_addOrderOf_eq_card_of_cyclic_norm_quotient
-import Submission.Commons.NumberTheory.NumberField.Completion.isCyclic_algEquiv_adicCompletion_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_units_adicCompletion_eq_pow_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_two_eq_natCard_tateCohomology_zero_of_cyclic
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_zero_units
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_injective
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_le_finrank_of_abelian
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_eq_card_of_cyclic_arbitrary_base
-import Submission.Commons.RepresentationTheory.GroupCohomology.res_comp_inf_eq_zero_of_ord
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_restriction_exact_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_injective_of_subsingleton_H1
-import Submission.Commons.RepresentationTheory.GroupCohomology.mono_map_of_isZero_kernel
-import Submission.Commons.RepresentationTheory.GroupCohomology.groupCohomology_two_int_iso_one_qmodz
-import Submission.Commons.RepresentationTheory.GroupCohomology.isZero_iff_subsingleton_moduleCat
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_nsmul_H2_eq_zero
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_unramified_tower_with_subfield
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_topAlgEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.finite_groupCohomology_two_units_adicCompletion_of_isGalois
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_adicCompletion_eq_mul_of_exists_open_subgroup_units_tate_trivial
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_quotientToInvariants_le_of_twist
-import Submission.Commons.RepresentationTheory.GroupCohomology.H2_inflation_restriction_comp_zero
-import Submission.Commons.RepresentationTheory.GroupCohomology.exists_addOrderOf_eq_of_inf_range_le_ker_res
-import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_topAlgEquiv
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_quotientToInvariants_units
 import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_baseRingEquiv
+import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_topAlgEquiv
+import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
+import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_adicCompletionIntegers_eq_top
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_realization
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_unramified_tower_with_subfield
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_units_mul_norm_eq_uniformizer_pow
+import Submission.Commons.NumberTheory.NumberField.Completion.finite_groupCohomology_two_units_adicCompletion_of_isGalois
+import Submission.Commons.NumberTheory.NumberField.Completion.isCyclic_algEquiv_adicCompletion_of_ramificationIdx_eq_one
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_eq_card_of_cyclic_arbitrary_base
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_topAlgEquiv
+import Submission.Commons.NumberTheory.NumberField.Completion.norm_adicCompletionIntegers_surjective_of_ramificationIdx_eq_one
+import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_units_adicCompletion_eq_pow_inertiaDeg
+import Submission.Commons.RepresentationTheory.GroupCohomology.exists_addOrderOf_eq_card_of_cyclic_norm_quotient
+import Submission.Commons.RepresentationTheory.GroupCohomology.exists_addOrderOf_eq_of_inf_range_le_ker_res
+import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_quotientToInvariants_le_of_twist
+import Submission.Commons.RepresentationTheory.GroupCohomology.res_comp_inf_eq_zero_of_ord
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -631,8 +617,6 @@ theorem exists_addOrderOf_eq_finrank_adicCompletion_of_galois
       L₁, hL₁f, hL₁n, hAlg₁, hfd₁, hgal₁, hAlg₁'', hST₁, hfd₁'', hgal₁'', q₁, hq₁lies, hq₁lies'',
       he₁, hf₁⟩ :=
     exists_galois_unramified_tower_with_subfield (L := L) (L' := L') q q' hq e0 he0pos
-  letI : Field L'' := hL''f
-  letI : NumberField L'' := hL''n
   letI : Algebra L L'' := hAlgL
   letI : Algebra L' L'' := hAlgL'
   letI : IsScalarTower L L' L'' := hST
@@ -640,8 +624,6 @@ theorem exists_addOrderOf_eq_finrank_adicCompletion_of_galois
   letI : FiniteDimensional L' L'' := hfdL'
   letI : IsGalois L L'' := hgalL
   letI : IsGalois L' L'' := hgalL'
-  letI : Field L₁ := hL₁f
-  letI : NumberField L₁ := hL₁n
   letI : Algebra L L₁ := hAlg₁
   letI : FiniteDimensional L L₁ := hfd₁
   letI : IsGalois L L₁ := hgal₁
@@ -1362,8 +1344,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units
   obtain ⟨L, hLf, hLn, hLa, q, hq, ⟨eF⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
       (Q := Q) (B := F)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   -- Transport the `F`-algebra structure on `E` along `eF` to a `q.adicCompletion L`-algebra
@@ -1382,8 +1362,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units
   obtain ⟨L', hL'f, hL'n, hL'a, q', hq', hgalL', ⟨eE⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_realization
       (K := L) (Q := q) (E := E)
-  letI : Field L' := hL'f
-  letI : NumberField L' := hL'n
   letI : Algebra (q.adicCompletion L) (q'.adicCompletion L') :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap q q' hq')
   -- The number-field case.

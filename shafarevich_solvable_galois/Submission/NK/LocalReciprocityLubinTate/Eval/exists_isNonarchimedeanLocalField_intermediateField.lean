@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Valuation.Extension
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalReciprocityLubinTate.Eval.exists_valuation_extension_finite
-import Submission.NK.LocalReciprocityLubinTate.Unramified.isNonarchimedeanLocalField_adicCompletion
 import Submission.NK.LocalReciprocityLubinTate.Unramified.Instance
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

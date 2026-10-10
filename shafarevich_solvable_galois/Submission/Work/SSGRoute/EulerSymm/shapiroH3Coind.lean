@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.shapiro_H3_defs
-import Submission.Work.SSGRoute.PT.shapiro_H2_coind
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.shapiro_H3_coind
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

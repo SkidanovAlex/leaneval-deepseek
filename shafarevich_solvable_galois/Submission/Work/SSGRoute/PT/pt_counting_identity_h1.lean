@@ -1,24 +1,45 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.pt_canonical_assembly
-import Submission.Work.SSGRoute.PT.restrictedProduct_relaxation_offRam
-import Submission.Work.SSGRoute.PT.finite_H1loc
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
+import Submission.Work.SSGRoute.E7Fin.canonLogData
+import Submission.Work.SSGRoute.PT.canonical_localPairing_reciprocity_converse
+import Submission.Work.SSGRoute.PT.converseRepr
 import Submission.Work.SSGRoute.PT.finite_primalClasses_general
-import Submission.Work.SSGRoute.PT.finite_dualMod_tensor
-import Submission.Work.SSGRoute.PT.pt_selmer_counting_identity
+import Submission.Work.SSGRoute.PT.pt_counting_identity_aux
 import Submission.Work.SSGRoute.PT.pt_e7Inputs
 import Submission.Work.SSGRoute.PT.pt_localisationRestricted
 import Submission.Work.SSGRoute.PT.restrictedProduct_relaxation_of_dualPair
-import Submission.Work.SSGRoute.PT.restrictedProduct_relaxation
-import Submission.Work.SSGRoute.h1loc_conjLinearMap
-import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.PT.converseRepr
-import Submission.Work.SSGRoute.PT.canonical_localPairing_reciprocity_converse
+import Submission.Work.SSGRoute.PT.restrictedProduct_relaxation_offRam
+import Submission.Work.SSGRoute.coker_assembly
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 set_option maxHeartbeats 2000000
 

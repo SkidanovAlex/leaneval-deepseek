@@ -1,25 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.SSG8Escape.Setup
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.kummerChar_antisymm
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.norm_kummerRoot
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.localArtinFamily
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.diagonal_global
-import Submission.Work.SSGRoute.step4_y_escape_v2.Orthogonality
-import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.EscapeCoreLib.baseChange_over_K
-import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_isSplitIn
-import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
-import Submission.Work.SSGRoute.ZDataMup.isComplex_infinitePlace_of_isPrimitiveRoot
-import Submission.Work.SSGRoute.n4_halpha_fix
-import Submission.Work.SSGRoute.EscapeCoreLib.isGalois_comap
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.GrunwaldEscapeCore.L1Korth.idele_decomposition_tFreePart
+import Submission.Work.Kummer.exists_algEquiv_apply_eq_mul_of_pow_eq
+import Submission.Work.Kummer.norm_eq_primRoot_pow_mul_of_kummer_generator
+import Submission.Work.SSGRoute.EscapeCoreLib.charSeparation
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.mem_localNormSubgroup_algebra_norm
+import Submission.Work.SSGRoute.SSG8Escape.Setup
+import Submission.Work.SSGRoute.ZConstruction.kummerCharZModAdd
+import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerCharZMod_eq_zero_iff_apply_sqrt
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_ideleOfPrime_of_unramified
+import Submission.Work.SSGRoute.ZDataMup.localNormSubgroup_eq_top_of_isSplitIn
+import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
+import Submission.Work.SSGRoute.n4_halpha_fix
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

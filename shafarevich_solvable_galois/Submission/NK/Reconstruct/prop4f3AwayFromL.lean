@@ -1,5 +1,14 @@
-import Submission.NK.Reconstruct.exists_tau_gammaHausMk_eq_of_isFrobElementAt
-import Submission.NK.Reconstruct.assemblyGen
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.NK.Reconstruct.exists_isomorphism_of_prop4f3_data
+import Submission.NK.Reconstruct.fourf5Gen
+import Submission.NK.Reconstruct.thetaGammaTransport_gen
 import Submission.NK.ReconstructField.primeBelowNat_levelPrimeMap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.NumberTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.GlobalCFT.Inclusion
-import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

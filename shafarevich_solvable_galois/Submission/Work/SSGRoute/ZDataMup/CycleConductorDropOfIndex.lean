@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleDefs
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
-import Submission.Work.SSGRoute.ZDataMup.CycleCongr
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZDataMup.LT_CyclePort
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

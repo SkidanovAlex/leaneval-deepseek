@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Algebra.Module.Submodule.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

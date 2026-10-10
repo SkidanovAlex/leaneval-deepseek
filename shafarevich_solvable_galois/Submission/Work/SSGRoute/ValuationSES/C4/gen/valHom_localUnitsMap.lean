@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.e7comega_defs
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.ValuationSES.C1
-import Submission.Work.SSGRoute.ValuationSES.C4a.valHom_localUnitsMap_of_ramificationIdx_eq_one
+import Submission.Work.SSGRoute.e7comega_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

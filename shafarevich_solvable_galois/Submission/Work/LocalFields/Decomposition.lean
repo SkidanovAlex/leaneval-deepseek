@@ -1,27 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Decomposition and inertia groups of a Galois extension of number fields
-
-For a finite Galois extension `L/K` of number fields and a finite prime `w` of `L`, this file
-introduces the decomposition group `D_w ≤ Gal(L/K)` (the stabilizer of the prime ideal `w`) and
-the inertia subgroup `I_w ◁ D_w` (the kernel of the action of `D_w` on the residue field),
-together with their basic API and the arithmetic predicates attached to them.
-
-Because `K` is not determined by a prime `w` of `L`, the definition takes `K` as an explicit
-argument: `decompositionGroup K w`.
-
-The deeper results (`card_decompositionGroup`, `card_inertiaSubgroup`, the exact sequence
-`decompQuotientInertiaEquiv`, the Frobenius element) live in sibling files.
-
-## Main definitions
-
-* `Work.LocalFields.decompositionGroup K w` : `D_w ≤ Gal(L/K)`, the stabilizer of `w`.
-* `Work.LocalFields.inertiaSubgroup K w` : `I_w ◁ D_w`, the inertia subgroup.
-* `Work.LocalFields.IsUnramifiedAt K w` : `I_w = ⊥`.
-* `Work.LocalFields.IsTotallyRamifiedAt K w` : `I_w = ⊤`.
--/
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.Valued.ValuationTopology
 import Submission.Work.LocalFields.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

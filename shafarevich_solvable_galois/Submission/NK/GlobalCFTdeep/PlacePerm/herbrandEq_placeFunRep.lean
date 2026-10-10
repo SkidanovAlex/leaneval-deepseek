@@ -1,13 +1,20 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.PlacePerm.Defs
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Submission.NK.GlobalCFTdeep.Audit.index_normClassSubgroup_self
+import Submission.NK.GlobalCFTdeep.Corollaries.HasseInput
+import Submission.NK.GlobalCFTdeep.Herbrand.Assembly
+import Submission.NK.GlobalCFTdeep.Herbrand.FiberAll
+import Submission.NK.GlobalCFTdeep.Herbrand.exists_finset_TIdeles_surjective
+import Submission.NK.GlobalCFTdeep.Herbrand.fiberUnitsRep_iso_coind
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_finite_quotient
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_ind_iff
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitSubRep_ofFinite
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tIdeles_mul_eq_unitIdeles
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_supportedIdelesRep
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_unitIdelesOutsideRep
 import Submission.NK.GlobalCFTdeep.PlacePerm.fibreRep_iso_coind
 import Submission.NK.GlobalCFTdeep.PlacePerm.placeFunRep_piRep_iso
-import Submission.NK.GlobalCFTdeep.Herbrand.LogDefs
-import Submission.NK.GlobalCFTdeep.Herbrand.Fiber
-import Submission.NK.GlobalCFTdeep.Shared
-import Submission.NK.GlobalCFTdeep.Herbrand.Mul
-import Submission.NK.GlobalCFTdeep.Herbrand.CoindHerbrand
-import Submission.NK.GlobalCFTdeep.Herbrand.tateCohomology_piRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

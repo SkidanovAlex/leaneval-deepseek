@@ -1,3 +1,6 @@
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.Bridge.Psi
 import Submission.Work.CohomologicalShrinking.coindUpAddEquivTensor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

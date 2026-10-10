@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.HSConj
-import Submission.Work.SSGRoute.HS.Basic
-import Submission.Work.SSGRoute.HSTwoRow.procyclic_hypotheses
-import Submission.Work.SSGRoute.HSTwoRow.finrank_H1loc_decomp
-import Submission.Work.SSGRoute.HSRow.Coords
-import Submission.Work.SSGRoute.HSRow.CokerZr2
-import Submission.Work.SSGRoute.HSRow.CokerFz
-import Submission.Work.SSGRoute.HSRow.slice_mem_lcCocycles
-import Submission.Work.SSGRoute.HSRow.NormalFormDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.HSRow.Fzext_mem_lcCocycles2
 import Submission.Work.SSGRoute.HSRow.exists_crossedHom_Phi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

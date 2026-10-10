@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_mem_stabilizer_restrictNormalHom_eq_of_isGalois
 import Submission.Commons.RingTheory.Valuation.exists_val_eq_algebraMap_of_mem_fixedField_stabilizer
-import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

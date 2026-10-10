@@ -1,3 +1,5 @@
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalReciprocityLubinTate.Unramified.isNonarchimedeanLocalField_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,28 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.homRep_dualMod_units_localClosure
-import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.E1aClean.Transport
-import Submission.Work.SSGRoute.localField_subfield_place_compat
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.PT.e1a_coeff_iso_natural
-import Submission.Work.SSGRoute.E1aClean.coeffIsoNatural_generic
-import Submission.Work.SSGRoute.E1aClean.h1locCoeffNatural
-import Submission.Work.SSGRoute.E1aClean.LocalData
-import Submission.Work.SSGRoute.E1aClean.localClosureCyclotomicDual
-import Submission.Work.SSGRoute.E1aClean.h1AddEquivNat
-import Submission.Work.SSGRoute.E1aClean.localExtTransportEquiv
-import Submission.Work.SSGRoute.E1aClean.h1contIsoNamed
-import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.LocalExtensionAux
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
+import Submission.Work.SSGRoute.E1aClean.coeffIsoNatural_generic
+import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
+import Submission.Work.SSGRoute.E1aClean.h1AddEquivNat
+import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
 import Submission.Work.SSGRoute.E1aClean.unitsQuotient_pow_bijective_fixed
-import Submission.Work.SSGRoute.ext_res_mulEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

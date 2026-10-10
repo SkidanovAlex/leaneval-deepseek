@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.Analysis.CStarAlgebra.Module.Constructions
+import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Continuous
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

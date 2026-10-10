@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.core.Assembly
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,27 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The refined `p`-central filtration: normality and the graded pieces as `𝔽_p[G]`-modules
-
-Schmidt–Wingberg's graded pieces `E(d,τ) = F(d)_{(i,j)}/F(d)_{(i,j)+1}` of the refined
-`p`-central filtration are elementary abelian `p`-groups on which `G` acts by `𝔽_p`-linear maps,
-hence `𝔽_p[G]`-modules.  This file establishes
-
-* every term `P_{(i,j)}` of the refinement is normal and characteristic (hence invariant under
-  every automorphism of `P`, in particular under the action of `G`);
-* `⁅P_{(i,j)}, P_{(i,j)}⁆ ≤ P_{(i,j)+1}` and `x ^ p ∈ P_{(i,j)+1}` for `x ∈ P_{(i,j)}`
-  (Lemma 4 of the paper, in the form actually needed);
-* the induced `𝔽_p[G]`-module structure on `Additive (refinedQuotient p P i j)`, i.e. on
-  `E p G d i j`.
-
-The two commutator/power statements are proved from the two abstract group-theoretic lemmas
-`Work.CohomologicalShrinking.group.commutator_sup_le_of_le` and
-`Work.CohomologicalShrinking.group.pow_sup_le_of_le`; the key point is that `P_{(i,j)+1}`
-always contains `P_{i+1}`, which contains all commutators and `p`-th powers of `P_{(i,j)}`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.CategoryTheory.Action.Basic
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.CohomologicalShrinking.Defs
 import Submission.Work.CohomologicalShrinking.group.commutator_sup_le_of_le
 import Submission.Work.CohomologicalShrinking.group.pow_sup_le_of_le

@@ -1,7 +1,8 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.ReconstructField.Main
 import Submission.NK.ReconstructField.exists_ringEquiv_of_isGalois_of_splitsCompletely_iff
 import Submission.NK.ReconstructField.splitsCompletely_rat_iff_of_localCorrespondence
-import Submission.NK.ReconstructField.primeTransport_eq_primeMap_of_realizesPlaceCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

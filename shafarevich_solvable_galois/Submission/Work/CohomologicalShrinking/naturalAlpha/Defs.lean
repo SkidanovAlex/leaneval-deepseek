@@ -1,28 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Naturality of the paper's `α` for Proposition 7 (i): auxiliary constructions
-
-This file supplies the *canonical* constructions used in
-`Work.CohomologicalShrinking.exists_natural_alpha`:
-
-* `pQMapLin` — the functoriality of the bottom of the descending `p`-central quotient
-  `P/P^p[P,P]` (`Additive (pCentralQuotient p P 0)`), with its computation rule on the
-  canonical generators `QuotientGroup.mk' x` and its naturality on a commuting square;
-* `coresH` — the corestriction `H₁(N, E⊗T) → H₁(Γ, E⊗T)` of the Hochschild–Serre sequence,
-  definitionally the first map of `groupHomology.H1CoresCoinfOfTrivial` (the chosen map
-  `flowHSα` of `SemidirectData.lean` is equal to it, `flowHSα_eq_coresH`);
-* `flowRepMapN` / `mapNormal` — the restriction of the coefficient morphism `flowRepMap Φ T`
-  to the normal subgroups `F(m)/F(m)^{(ν)}` and the induced map on group homology.
-
-The naturality statements themselves (the shrinking of `ψ`, of the square `F/F² ≅ N/N^p[N,N]`,
-of the corestriction) are separate files, delegated in parallel.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.SemidirectData
-import Submission.Work.CohomologicalShrinking.Functorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

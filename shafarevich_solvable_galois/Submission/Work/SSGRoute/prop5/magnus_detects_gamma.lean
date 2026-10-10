@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnusFramework
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.dimensionSubgroup_free
 import Submission.Work.SSGRoute.prop5.magnus_filtration_correspondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

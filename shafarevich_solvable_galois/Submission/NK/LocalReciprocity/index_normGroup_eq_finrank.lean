@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_finrank_of_abelian_local
 import Submission.NK.LocalReciprocity.LocalSetup
 import Submission.NK.LocalReciprocity.NormGroup
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_finrank_of_abelian_local
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
 import Submission.NeukirchUchida.Local.LocalGalois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

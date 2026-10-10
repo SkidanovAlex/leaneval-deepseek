@@ -1,13 +1,17 @@
-
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_cyclic
 import Submission.Commons.NumberTheory.NumberField.Completion.finite_quotient_units_range_norm_of_isGalois
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_cyclic
 
 open scoped NumberField WithZero Valued
 open IsDedekindDomain.HeightOneSpectrum
@@ -359,8 +363,6 @@ theorem main_aux : ∀ n : ℕ, ∀ (K : Type u) [Field K] [NumberField K]
         have hx := congr_fun (congrArg (fun g : E ≃ₐ[F] E => (g : E → E)) h) x
         simpa [AlgEquiv.mul_apply] using hx
       obtain ⟨L', hLf, hLn, hLa, q', hq', ⟨φ⟩⟩ := exists_realization (Q := Q) (E := M)
-      letI : Field L' := hLf
-      letI : NumberField L' := hLn
       letI : Algebra (Q.adicCompletion K) (q'.adicCompletion L') :=
         RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q' hq')
       -- new base algebra structure on `E`

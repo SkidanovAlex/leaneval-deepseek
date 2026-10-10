@@ -1,4 +1,5 @@
-import Submission.Work.SSGRoute.sha2_hasse.Gateway
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.sha2_hasse.exists_section_of_decomp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

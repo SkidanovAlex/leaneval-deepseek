@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.exists_irreducible_factor_of_residue_root
 import Submission.Commons.RingTheory.Valuation.natDegree_map_eq_one_of_irreducible_of_unique_extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

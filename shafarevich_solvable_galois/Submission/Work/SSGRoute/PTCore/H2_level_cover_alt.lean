@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTCore.H2_level_defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.Nakayama.exists_level_of_locallyConstant_isGalois
+import Submission.Work.SSGRoute.PTCore.H2_level_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

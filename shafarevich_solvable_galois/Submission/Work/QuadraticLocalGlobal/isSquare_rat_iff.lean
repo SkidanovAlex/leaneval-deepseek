@@ -1,20 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# A rational number is a square iff it is positive and all `p`-adic valuations are even
-
-`isSquare_rat_iff` characterises the squares of `ℚ` among the units: `x : ℚˣ` is a square
-(rather, its image in `ℚ` is) if and only if `x > 0` and `v_p(x)` is even for every prime `p`.
-
-The forward implication is immediate from the multiplicativity of `v_p`.  For the converse we
-write `x = A · s²` with `A` a squarefree integer (`exists_squarefree_rep`); then `v_p(x)` and
-`v_p(A)` have the same parity, so `v_p(A)` is even for every prime, whence `A.natAbs = 1`
-(because `v_p(A) = 1 \neq 2ℤ` for every prime `p ∣ A.natAbs`, `padicVal_intUnit_eq_one_of_squarefree`),
-and positivity forces `A = 1`.  Thus `x = s²` is a square.
--/
-import Mathlib
-import Submission.Work.QuadraticLocalGlobal.Defs
+import Mathlib.Data.Nat.Squarefree
+import Mathlib.Data.Rat.Star
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Work.QuadraticLocalGlobal.exists_squarefree_rep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

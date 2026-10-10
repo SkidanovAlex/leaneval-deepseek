@@ -1,13 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
-import Submission.Work.AbsoluteKummer.Hilbert90.H1_eq_zero
-import Submission.Work.SSGRoute.kummerBase_euler_h2transport
-import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
-import Submission.Work.SSGRoute.PTCore.RootsOfUnityInstances
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PTCore.H2_units_level_structure
 import Submission.Work.SSGRoute.PTdualControl.h2loc_mup_finrank_alt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

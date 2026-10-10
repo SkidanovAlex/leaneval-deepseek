@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
 import Submission.NK.FrobeniusBridge.Core
-import Submission.Commons.FieldTheory.Galois.exists_mem_stabilizer_restrictNormalHom_eq
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

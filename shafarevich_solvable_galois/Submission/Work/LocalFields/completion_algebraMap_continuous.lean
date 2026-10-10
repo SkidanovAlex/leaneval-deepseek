@@ -1,6 +1,9 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.CompletionLocalField
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Work.LocalFields.LocalFieldAPI
 import Submission.Work.LocalFields.exists_pow_eq_of_one_sub_lt_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

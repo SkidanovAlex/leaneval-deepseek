@@ -1,20 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
-import Submission.Work.SSGRoute.H9.swHistK
-import Submission.Work.SSGRoute.H9.swHistChi_confinement_proved
-import Submission.Work.SSGRoute.H9.swHistChi_presc_proved
-import Submission.Work.SSGRoute.H9.swCount_conjUnit
-import Submission.Work.SSGRoute.ZDataMup.swTriggerPlace
-import Submission.Work.SSGRoute.NodeS35.swPinFamily
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.NodeS35.swHchainBasic
-import Submission.Work.SSGRoute.NodeS35.swChainValueH9_modp
-import Submission.Work.SSGRoute.NodeS35.histCount
-import Submission.Work.SSGRoute.NodeS35.kills_inertia_conjUnit
-import Submission.Work.SSGRoute.NodeS35.isUnramifiedIn_sup_hLevel
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.SupStructure
 import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.galois_sup_structure
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.HonestPairing
+import Submission.Work.SSGRoute.ZDataMup.swTriggerPlace
 
 namespace Work.SSGRoute.ZDataMup
 

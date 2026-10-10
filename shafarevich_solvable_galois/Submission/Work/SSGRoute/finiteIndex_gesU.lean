@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ges_escape_aux
-import Submission.Work.SSGRoute.finiteIndex_localUnits_ellPow
-import Submission.Work.SSGRoute.finiteIndex_integralIdeles_powTIdeles
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
+import Submission.Work.SSGRoute.finiteIndex_integralIdeles_powTIdeles
+import Submission.Work.SSGRoute.finiteIndex_localUnits_ellPow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,31 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The vocabulary of the Kummer / tamely ramified layer
-
-This file fixes the vocabulary of the chapter `Submission/Work/TameStructureDeep/Tame/`, whose
-goal is the *tamely ramified structure theorem* for the absolute Galois group of a `p`-adic field:
-
-  `κ^{tr} = κ^{ur}(π^{1/n} : (n, p) = 1)`  for a uniformiser `π` of `κ = K_𝔭`,
-
-so that `Gal(κ^{tr}/κ^{ur}) ≅ limₙ μ_n = ∏_{ℓ ≠ p} ℤ_ℓ` — pro-cyclic and pro-prime-to-`p` — and
-the Frobenius acts on it by the `q`-power (cyclotomic) action.
-
-The single classical input from which the whole layer is derived is `UnramifiedNoPow`:
-
-> a uniformiser `π` of `κ` has no `n`-th root in `κ^{ur}` for `n ≥ 2` prime to `p`.
-
-Everything else (Kummer theory over `κ^{ur}`, the structure of `Gal(κ^{tr}/κ^{ur})`, the Frobenius
-normalisation, pro-cyclicity and pro-prime-to-`p`-ness, `[I, I] ≤ V`) is derived from it.
-
-The mathematical content of `UnramifiedNoPow` is the classical statement
-*"`κ^{ur}/κ` is unramified, hence linearly disjoint from the totally ramified `κ(π^{1/n})`"*; its
-arithmetic half — *"in a discrete valuation ring, a uniformiser has no `n`-th root in the fraction
-field for `n ≥ 2`"* — is proved in `NK.TameStructureDeep.Tame.DvrPow`.
--/
-import Mathlib
-import Submission.NK.LocalAnabelian.ResidueField.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.Mine.ResidueCharAutomatic
 import Submission.NK.TameStructureDeep.Support.mem_unramifiedClosure_of_isPrimitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.MvPowerSeries.Expand
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.Setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,8 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_primes_splitsCompletely
 import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_compl
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_le_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

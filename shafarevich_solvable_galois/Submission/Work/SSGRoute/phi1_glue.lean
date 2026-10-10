@@ -1,15 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_wcolim
-import Submission.Work.SSGRoute.phi1_lambda_compat
-import Submission.Work.SSGRoute.phiAt_level_infl
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.addHom_extend_of_exponent
 import Submission.Work.SSGRoute.phi1_level_trivial_two
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.phi1_wcolim
 
 /-! Guidance: read `PHI1_REALIZATION_STATUS.md` (this lane) and `DESIGN_FIX.md` §1.
 
@@ -152,16 +149,14 @@ theorem lambdaColim_eq_zero_of_iota_eq_zero (z : Wcolim (k := k) (K := K) (Ω :=
     (AddSubgroup.subtype (wc_Wsub p M M₂ i π hh hS L) w)).mp hw
   have hmap' : inflTrivIn (k := k) (show L.1 ≤ L'.1 from hLL') (ZMod p)
       (AddSubgroup.subtype (wc_Wsub p M M₂ i π hh hS L) w) = 0 := by
-    rw [← levelMap_apply (k := k) p L L' hLL'
-      (AddSubgroup.subtype (wc_Wsub p M M₂ i π hh hS L) w)]
-    exact hmap
+    exact (levelMap_apply (k := k) p L L' hLL'
+      (AddSubgroup.subtype (wc_Wsub p M M₂ i π hh hS L) w)).symm.trans hmap
   have hw0 : wStep p M M₂ i π hh hS L L' hLL' w = 0 := by
     apply Subtype.ext
     show AddSubgroup.subtype (wc_Wsub p M M₂ i π hh hS L')
       (wStep p M M₂ i π hh hS L L' hLL' w) = 0
     rw [wStep_apply (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS L L' hLL' w]
-    rw [inflHIn_eq_inflTrivIn (k := k) (K := K) p (show L.1 ≤ L'.1 from hLL')]
-    exact hmap'
+    exact (inflHIn_eq_inflTrivIn (k := k) (K := K) p (show L.1 ≤ L'.1 from hLL') _).trans hmap'
   rw [← Wcolim.of_wStep (k := k) (K := K) (Ω := Ω) p M M₂ i π hh hS hLL' w, hw0,
     Wcolim.of_zero]
   exact map_zero _

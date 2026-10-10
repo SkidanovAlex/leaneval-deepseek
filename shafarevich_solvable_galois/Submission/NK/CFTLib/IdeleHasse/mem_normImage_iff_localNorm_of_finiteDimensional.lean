@@ -1,10 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.Norm.globalCFT_localNorm_mem_localUnits
-import Submission.NK.GlobalCFT.Norm.globalCFT_abs_normIdeleHom
-import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
 
 /-!
 # The local–global principle for norms of idèles, without Galois hypotheses

@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.NUV2.RouteB.RayModulus.Defs
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
-import Submission.Work.SSGRoute.ges_escape_aux
 import Submission.Work.SSGRoute.finiteIndex_gesU
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

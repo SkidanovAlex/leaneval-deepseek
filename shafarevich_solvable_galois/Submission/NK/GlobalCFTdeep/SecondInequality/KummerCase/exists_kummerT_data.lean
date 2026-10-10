@@ -1,11 +1,17 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_notMem
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_adicCompletion_units_pow_eq_of_splitsCompletely
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.exists_prime_splitsCompletely_notMem
+import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_notMem
+import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

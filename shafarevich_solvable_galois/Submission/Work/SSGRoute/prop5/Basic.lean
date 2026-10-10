@@ -1,21 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 5 of Schmidt–Wingberg: the commutator word and the value map
-
-This file sets up the *raw* data of Proposition 5 of Schmidt–Wingberg (arXiv:math/9809211, §2):
-
-* `commWord j x` : the `j`-fold left-normed commutator `⁅x₀, ⁅x₁, ⋯ ⁅x_{j-2}, x_{j-1}⋯⁆⁆`
-  (in Mathlib's commutator convention `⁅a,b⁆ = a b a⁻¹ b⁻¹`);
-* the value map `valFn p G i j d` on `j`-tuples of elements of the free `G`-operator group
-  `F(d)`, whose value is the class of `(commWord j x) ^ (p ^ (i-j))` in the graded piece
-  `E(d,(i,j)) = F(d)^{(i,j)}/F(d)^{(i,j)+1}`.
-
-Everything here is elementary; the only group-theoretic input is `pow_mem_pSeries` below.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.CohomologicalShrinking.Refined
 import Submission.Work.ProP.lowerCentralSeries_le_pCentralSeries
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

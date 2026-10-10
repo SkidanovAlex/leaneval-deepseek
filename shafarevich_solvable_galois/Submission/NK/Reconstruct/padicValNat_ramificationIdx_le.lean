@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.card_dvd_of_isPGroup_quotient_adicUnits
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_adicCompletion_of_commute
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_abelian_pgroup_base
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.GroupTheory.exists_subgroup_card_quotient_eq_pow_factorization
 import Submission.NK.NumberTheory.NumberField.Completion.normIndex_val_splitting
+import Submission.NK.Reconstruct.card_dvd_of_isPGroup_quotient_adicUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

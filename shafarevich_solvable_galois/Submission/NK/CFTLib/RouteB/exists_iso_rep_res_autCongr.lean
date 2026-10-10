@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.NK.CFTLib.RouteB.plan
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.CFTLib.RouteB.IdeleCongr.PlaceCongr
-import Submission.NK.CFTLib.RouteB.IdeleCongr.localFieldCongr
-import Submission.NK.CFTLib.RouteB.IdeleCongr.ideleCongr
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Analysis.Normed.Field.Basic
 import Submission.NK.CFTLib.RouteB.IdeleCongr.Assembly
+import Submission.NK.CFTLib.RouteB.IdeleCongr.ideleCongr
+import Submission.NK.CFTLib.RouteB.IdeleCongr.localFieldCongr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

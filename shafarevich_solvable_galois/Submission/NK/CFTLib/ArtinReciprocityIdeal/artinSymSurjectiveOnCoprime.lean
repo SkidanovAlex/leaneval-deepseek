@@ -1,9 +1,8 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.LangDefs
 import Submission.NK.CFTLib.ArtinReciprocityIdeal.frobAtPrime_prod_relNorm_eq_one
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
-import Submission.NK.CFTLib.Arl.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

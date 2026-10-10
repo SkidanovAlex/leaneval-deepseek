@@ -1,35 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `F(d)/F(d)^2 ≅ 𝔽_p[G]^d`
-
-This file contains the identification that Schmidt–Wingberg use silently in the proof of
-Proposition 6: the quotient `F(d)/F(d)^2 = F(d)/F(d)^p[F(d),F(d)]` of the free `G`-operator
-group of rank `d` is, as an `𝔽_p[G]`-module, the free module `𝔽_p[G]^d`: the images of the free
-generators `x_{i,g}` (`i : Fin d`, `g : G`) form a basis, and `G` permutes them according to the
-left regular representation.
-
-The model of `𝔽_p[G]^d` used here is `Fin d × G → 𝔽_p` with the action
-`(h • f) (i,g) = f (i, h⁻¹ * g)`, i.e. the left regular representation on the second factor;
-this is exactly `(𝔽_p[G])^d` with `𝔽_p[G] = ⨁_{g : G} 𝔽_p · ε_g` and `h • ε_g = ε_{h g}`.
-
-## Main definitions
-
-* `Work.CohomologicalShrinking.genMk` : the image of the free generator `x_{i,g}` in
-  `F(d)/F(d)^2`.
-* `Work.CohomologicalShrinking.squareQuotientToFun` : the canonical `𝔽_p`-linear map
-  `F(d)/F(d)^2 → (Fin d × G → 𝔽_p)`, `x_{i,g} ↦` the coordinate function at `(i,g)`.
-
-## Main results
-
-* `Work.CohomologicalShrinking.squareQuotientToFun_genMk` : the value on the generators.
-* `Work.CohomologicalShrinking.squareQuotientToFun_bijective` : the canonical map is bijective,
-  i.e. `F(d)/F(d)^2 ≅ 𝔽_p[G]^d` (in `Submission.Work.CohomologicalShrinking.ModSquareBijective`).
-* `Work.CohomologicalShrinking.squareQuotientToFun_smul` : the canonical map is `G`-equivariant.
--/
-
-import Mathlib
+import Mathlib.Algebra.Module.ZMod
 import Submission.Work.CohomologicalShrinking.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,6 @@
-import Submission.NK.Reconstruct.PlaceCorrespondence
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalTame.Global
-import Submission.NK.Chebotarev.FrobRestriction
-import Submission.NeukirchUchida.Local.InfiniteDecomposition
+import Submission.NK.Reconstruct.PlaceCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

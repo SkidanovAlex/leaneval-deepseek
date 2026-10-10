@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.conjLevel
 import Submission.NK.Reconstruct.exists_gammaEquivOfPhi
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

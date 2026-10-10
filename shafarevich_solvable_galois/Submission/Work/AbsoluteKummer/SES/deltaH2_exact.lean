@@ -1,19 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Exactness of the long exact sequence at `H¹(G,P)` and `H²(G,M)`
-
-For a short exact sequence `0 → M --ι--> N --π--> P → 0` of discrete `G`-modules, the connecting
-map `δ : H¹(G,P) → H²(G,M)` of `Submission.Work.AbsoluteKummer.SES.ConnectingH2` makes
-
-`H¹(G,N) --H¹(π)--> H¹(G,P) --δ--> H²(G,M) --H²(ι)--> H²(G,N)`
-
-exact at `H¹(G,P)` and at `H²(G,M)`:
-
-* `range_mapH1_eq_ker_deltaH2` : `range (H¹(π)) = ker δ`,
-* `range_deltaH2_eq_ker_mapH2` : `range δ = ker (H²(ι))`.
--/
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.deltaH2_forward
 import Submission.Work.AbsoluteKummer.SES.ker_deltaH2_le_range_mapH1
 import Submission.Work.AbsoluteKummer.SES.ker_mapH2_le_range_deltaH2

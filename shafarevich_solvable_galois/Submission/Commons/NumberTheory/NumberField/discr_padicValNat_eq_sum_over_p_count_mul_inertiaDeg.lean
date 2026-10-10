@@ -1,4 +1,11 @@
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.Different
 import Mathlib.RingTheory.KrullDimension.PID
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Commons.NumberTheory.NumberField.discriminant_valuation_sum
 import Submission.Commons.NumberTheory.NumberField.padicValNat_absNorm_prime_eq_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

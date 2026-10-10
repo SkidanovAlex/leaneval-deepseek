@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.frobenius_eq_of_commute
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

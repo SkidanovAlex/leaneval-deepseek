@@ -1,9 +1,10 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.classIncl_isCanonical
 import Submission.Work.SSGRoute.phi_pair_natural
-import Submission.NK.GlobalCFT.Norm.NormTransAux
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

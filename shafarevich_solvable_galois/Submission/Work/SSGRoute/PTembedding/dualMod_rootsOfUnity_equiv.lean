@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.mup_kummer_defs
-import Submission.Work.SSGRoute.DualMod.Main
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

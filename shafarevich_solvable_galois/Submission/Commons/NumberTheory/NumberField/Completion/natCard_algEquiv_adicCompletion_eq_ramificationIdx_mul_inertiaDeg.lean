@@ -1,14 +1,15 @@
-import Mathlib
-import Submission.Commons.FieldTheory.Galois.card_algEquiv_le_finrank
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.FieldTheory.Galois.natCard_algEquiv_le_finrank
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
 import Submission.Commons.NumberTheory.NumberField.liesOver_map_galRestrict
 import Submission.Commons.RingTheory.DedekindDomain.valuation_map_of_map_eq
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_of_valuation_comp_eq
 import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_of_withVal_valuation_eq
 
 /-!

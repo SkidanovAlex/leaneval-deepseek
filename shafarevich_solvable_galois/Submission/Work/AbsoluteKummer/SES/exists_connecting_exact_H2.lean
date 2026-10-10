@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.SES.Connecting
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.deltaH2_exact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,12 +1,14 @@
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.HeckeL.Basic.classOfIdeal_mul
 import Submission.NK.NUV2.RouteB.HeckeTheta.Defs
-import Submission.NK.NUV2.RouteB.RayModulus.Defs
-import Submission.NK.NUV2.RouteB.RayModulus.exists_modulus_le
-import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
 import Submission.NK.NUV2.RouteB.RayModulus.classOfIdeal_eq_iff
+import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
+import Submission.NK.NUV2.RouteB.RayModulus.exists_modulus_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

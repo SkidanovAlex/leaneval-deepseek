@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZConstruction.LocalCountDeps
-import Submission.NK.LocalInputs.ResidueChar.primesEquiv_primeBelow
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
 import Submission.NK.NUV2.LC.cylArtinValues
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

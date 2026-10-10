@@ -1,20 +1,8 @@
-/-
-Assembly of the transport of the idèle class group, and of its Galois representation,
-from a per-place transport of local fields.
-
-Given a family `Φ` of ring isomorphisms `L_v ≃+* L'_{φ v}` (compatible with the
-embeddings of `L`, preserving local units and continuous) we obtain
-
-* `exists_classGroupCongr`: a group isomorphism `C_L ≃* C_{L'}` intertwining the
-  Galois actions via `AlgEquiv.autCongr e`;
-* `rep_iso_of_classGroupCongr`: the resulting isomorphism of `ℤ[Gal(L/K)]`-modules
-  `Rep.res (autCongr e) (rep K L') ≅ rep K L`.
--/
-import Mathlib
-import Submission.NK.CFTLib.RouteB.IdeleCongr.PlaceCongr
-import Submission.NK.GlobalCFT.GaloisClassGroup
-import Submission.NK.GlobalCFT.Cohomology
+import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.CFTLib.RouteB.IdeleCongr.PlaceCongr
+import Submission.NK.GlobalCFT.Cohomology
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

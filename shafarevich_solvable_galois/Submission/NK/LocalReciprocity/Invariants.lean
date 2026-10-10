@@ -1,5 +1,5 @@
-import Submission.NK.LocalReciprocity.Prelude
-import Submission.NK.LocalReciprocity.Reciprocity
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalReciprocity.exists_mulEquiv_completion_maxAbelian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

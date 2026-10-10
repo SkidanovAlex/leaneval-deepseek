@@ -1,5 +1,6 @@
-import Submission.NK.Reconstruct.GammaDual
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.GlobalCFT.IdeleClassGroupExact
+import Submission.NK.Reconstruct.GammaDual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

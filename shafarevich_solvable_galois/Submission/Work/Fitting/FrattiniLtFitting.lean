@@ -1,24 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The Frattini subgroup is properly contained in the Fitting subgroup
-
-For a nontrivial finite solvable group `G` we prove `Φ(G) < F(G)` (Huppert, *Endliche Gruppen
-I*, III.4.2(c); Schmidt–Wingberg, Proposition 17).
-
-Together with the supplement lemma (`exists_supplement_of_not_le_frattini`, Huppert III.3.2(b),
-Schmidt–Wingberg Proposition 16) this gives the group-theoretic input of Ore's proof of
-Shafarevich's theorem: `F(G)` has a proper supplement `U < G` with `F(G)·U = G`.
-
-## Main results
-
-* `card_quotient_lt` : `|G ⧸ A| < |G|` for `A ≠ ⊥`;
-* `frattini_lt_fitting` : `Φ(G) < F(G)` for finite solvable nontrivial `G`.
--/
-import Mathlib
-import Submission.Work.Fitting.Basic
-import Submission.Work.Fitting.PCore
-import Submission.Work.Fitting.FittingEqPCore
+import Mathlib.GroupTheory.Frattini
 import Submission.Work.Fitting.FittingQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

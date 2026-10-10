@@ -1,20 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The two "forward" exactness inclusions for the connecting map `H¹(G,P) → H²(G,M)`
-
-For a short exact sequence `0 → M → N → P → 0` of discrete `G`-modules and the connecting map
-`δ : H¹(G,P) → H²(G,M)` of `Submission.Work.AbsoluteKummer.SES.ConnectingH2`, this file proves
-
-* `range_mapH1_le_ker_deltaH2` : `range (H¹(π)) ≤ ker δ`,
-* `range_deltaH2_le_ker_mapH2` : `range δ ≤ ker (H²(ι))`.
-
-Both are immediate from the definition of `δ` on cocycles.
--/
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.AbsoluteKummer.SES.ConnectingH2
 import Submission.Work.AbsoluteKummer.SES.range_mapH1_eq_ker_mapH1
-import Submission.Work.AbsoluteKummer.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

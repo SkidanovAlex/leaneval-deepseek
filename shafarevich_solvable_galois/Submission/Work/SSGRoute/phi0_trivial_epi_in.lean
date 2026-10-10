@@ -1,28 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.zeta_idele_class_pairing
-import Submission.Work.SSGRoute.ext_idele_shapiro
-import Submission.Work.SSGRoute.brauer_single_place
-import Submission.Work.SSGRoute.phi_pair_natural
-import Submission.Work.SSGRoute.phi1_classIncl_compat
-import Submission.Work.SSGRoute.phiTriv_mk0_eq
-import Submission.Work.SSGRoute.phiPushClass
-import Submission.Work.SSGRoute.addHom_extend_of_exponent
-import Submission.Work.SSGRoute.E4R3.inflC_injective
-import Submission.Work.SSGRoute.E4R3.kummer_dies_at_higher_level_clean
-import Submission.NK.GlobalCFT.GaloisAction
-import Submission.Work.SSGRoute.phi1_level_trivial_two
-import Submission.Work.SSGRoute.phi0_defs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.E5Route.pairing_formula
 import Submission.Work.SSGRoute.phi0_lamV_separates
 import Submission.Work.SSGRoute.phi0_pTor_scalar
-import Submission.Work.SSGRoute.E5Route.pairing_formula
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-! Guidance from the project lead (the requester):
 
@@ -325,7 +310,7 @@ theorem Phi0.phi0_of_pieces (p : ℕ) [Fact p.Prime] (ζ : k) (hζ : IsPrimitive
       (Phi0.cOfFun (k := k) (K := K) p ζ hζ f) Lv h]
     rw [hmain]
     dsimp only [Λ]
-    rw [lamColim_of]
+    exact lamColim_of (k := k) (K := K) (Ω := Ω) p lam hcompat Lv h
   exact Phi0.ClassLevelLimit_of_injective Lv key
 
 end Assembly

@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.Tate.All
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.RingTheory.Flat.Basic
 import Submission.Work.CohomologicalShrinking.Shrinking
 import Submission.Work.SSGRoute.augmentation_eq_sum
 import Submission.Work.SSGRoute.exists_finite_stable_submodule_family
+import Submission.Work.Tate.DimensionShiftH
+import Submission.Work.Tate.Equivs
+import Submission.Work.Tate.coind_augmentation_eq_ker_norm
+import Submission.Work.Tate.coind_norm_eq_const
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

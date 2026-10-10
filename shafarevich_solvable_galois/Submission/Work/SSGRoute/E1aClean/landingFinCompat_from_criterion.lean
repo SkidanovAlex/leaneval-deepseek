@@ -1,9 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.finLocalCriterion
-import Submission.Work.SSGRoute.SSGStage.e1aLandingFinCompat
-import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
-import Submission.Work.SSGRoute.ExtChain.freeCoverSES_lattice
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTdualControl.extExact
+import Submission.Work.SSGRoute.SSGStage.e1aLandingFinCompat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

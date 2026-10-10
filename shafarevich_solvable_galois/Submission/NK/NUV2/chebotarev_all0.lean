@@ -1,30 +1,17 @@
-import Mathlib
-import Submission.NK.NUV2.Wall
-import Submission.NK.ChebotarevGeneral.Main
-import Submission.NK.ReconstructEndgame.chebotarevInput_congr
-import Submission.NK.HeckeL.Consequences.primeSum_isBigO
-import Submission.NK.HeckeL.Consequences.abelianLFunctions
-import Submission.NK.HeckeL.Basic.finite_setOf_not_isUnramifiedIn
-import Submission.NK.GlobalCFTdeep.SecondInequality.frobeniusGenerateTop_of_notMem
-import Submission.NK.NUV2.RouteB.heckeInput_build
-import Submission.NK.CFTLib.ARL.AuxField
-import Submission.NK.CFTLib.ARL.kernelLe_of_auxField_B
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.Assembly
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinKillsPrincipal_cyclic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinConductor_cyclic
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymbol_span_eq_one_of_kernelLe_of_relIndex
-import Submission.NK.Existence.langCyclicRelIndex
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinSymSurjectiveOnCoprime
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
-import Submission.NK.NUV2.ARL.isOpenNorm
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.Assembly
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.artinConductor_cyclic
+import Submission.NK.Existence.langCyclicRelIndex
 import Submission.NK.GlobalCFTdeep.SecondInequality.PrimeIdeles
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
+import Submission.NK.NUV2.ARL.isOpenNorm
 import Submission.NK.NUV2.ChebAux.kernelLe_of_auxField
+import Submission.NK.NUV2.RouteB.heckeInput_build
+import Submission.NK.NUV2.Wall
+import Submission.NK.ReconstructEndgame.chebotarevInput_congr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

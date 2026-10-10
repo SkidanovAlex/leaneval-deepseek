@@ -1,24 +1,11 @@
-/-
-# Assembly of Tate duality in degrees `-2` and `1` for a finite group
-
-Given a finite group `G` and a finite-dimensional `k`-linear `G`-representation `M` (`k` a field),
-we prove `H₁(G,M) ≅ H¹(G,M^∨)^∨`.
-
-The proof combines
-
-* the two dimension shifts `H1_ker_H0` and `H1_dual_coker` of `H1Dual.LES`, applied to the
-  coinduced resolution `0 → M' → Coind(M) → M → 0` (and its dual),
-* the acyclicity of `Coind(M)` (`H1Dual.Vanish`),
-* the degree-`0` evaluation pairing `(H₀(G,N))^∨ ≅ H⁰(G,N^∨)` (`H1Dual.DegreeZero`) and its
-  naturality,
-* the identification `coker(g^∨) ≅ (ker g)^∨` (`H1Dual.dualCoker`) and the double dual.
--/
-import Mathlib
-import Submission.Work.SSGRoute.H1Dual.Defs
-import Submission.Work.SSGRoute.H1Dual.DegreeZero
-import Submission.Work.SSGRoute.H1Dual.LES
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LongExactSequence
 import Submission.Work.SSGRoute.H1Dual.Vanish
-import Submission.Work.SSGRoute.H1Dual.dualCoker
 import Submission.Work.SSGRoute.H1Dual.degreeZeroBijective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

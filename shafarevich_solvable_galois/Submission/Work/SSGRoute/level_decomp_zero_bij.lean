@@ -1,3 +1,7 @@
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.level_zero_from_hom
 import Submission.Work.SSGRoute.thetaL0Map_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

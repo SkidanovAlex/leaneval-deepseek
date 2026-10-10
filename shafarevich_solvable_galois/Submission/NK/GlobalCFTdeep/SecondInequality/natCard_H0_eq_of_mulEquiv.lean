@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Coset.Defs
+import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib.Algebra.Group.Action.End
+import Mathlib.Algebra.Group.Subgroup.Ker
 import Submission.NK.GlobalCFTdeep.AbstractH0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

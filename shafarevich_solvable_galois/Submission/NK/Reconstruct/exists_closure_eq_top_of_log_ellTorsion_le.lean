@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Data.ZMod.QuotientGroup
 import Submission.NK.Reconstruct.GammaModule
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

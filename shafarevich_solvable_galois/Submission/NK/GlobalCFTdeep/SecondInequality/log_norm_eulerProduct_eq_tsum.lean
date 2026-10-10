@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.GlobalCFTdeep.SecondInequality.Defs
-import Submission.NK.HeckeL.Series.log_norm_artinLSeries_eq_tsum
-import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

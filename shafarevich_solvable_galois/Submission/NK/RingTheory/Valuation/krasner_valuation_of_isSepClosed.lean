@@ -1,8 +1,12 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Minpoly.IsConjRoot
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.henselianLocalRing_of_isAlgebraic
-import Submission.Commons.RingTheory.Valuation.comap_eq_self_iff_val_eq_of_isAlgebraic
 import Submission.Commons.RingTheory.Valuation.krasner_valuation
-import Submission.NK.RingTheory.Valuation.comap_valuation_le
 import Submission.NK.RingTheory.Valuation.valuation_eq_of_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

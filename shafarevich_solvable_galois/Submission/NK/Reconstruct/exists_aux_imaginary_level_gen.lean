@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.NK.Reconstruct.exists_prime_not_sq
-import Submission.NK.Reconstruct.quadraticAux
-import Submission.NK.Reconstruct.NumFieldIn
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Reconstruct.exists_aux_imaginary_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

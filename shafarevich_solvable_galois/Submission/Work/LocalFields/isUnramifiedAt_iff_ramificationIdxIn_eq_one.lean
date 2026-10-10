@@ -1,6 +1,4 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.Decomposition
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.Work.LocalFields.card_inertiaSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

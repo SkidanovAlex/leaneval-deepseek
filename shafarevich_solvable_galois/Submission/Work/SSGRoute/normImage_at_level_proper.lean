@@ -1,11 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_injective
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_cyclic_arbitrary_base
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_finite
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
+import Submission.Work.SSGRoute.PTDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.phi1_defs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_classesK
-import Submission.Work.SSGRoute.classIncl_isCanonical
-import Submission.Work.SSGRoute.groupCohomology_levelInf_nat
-import Submission.Work.SSGRoute.classIncl_inflation_injective
+import Submission.Work.SSGRoute.Sha2Lib.H1pi_character_ne_zero
 import Submission.Work.SSGRoute.Sha2Lib.character_factors
 import Submission.Work.SSGRoute.Sha2Lib.exists_classIncl_preimage_fixed
-import Submission.Work.SSGRoute.Sha2Lib.H1pi_character_ne_zero
 import Submission.Work.SSGRoute.Sha2Lib.galF_cyclic_card
+import Submission.Work.SSGRoute.classIncl_inflation_injective
+import Submission.Work.SSGRoute.groupCohomology_levelInf_nat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

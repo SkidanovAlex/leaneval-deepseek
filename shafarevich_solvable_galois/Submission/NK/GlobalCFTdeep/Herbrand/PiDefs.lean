@@ -1,9 +1,7 @@
-/-
-Auxiliary definitions and lemmas for the proof that homology commutes with products
-of cochain complexes of modules (used for `NK.GlobalCFTdeep.Herbrand.homology_prod_iso`).
--/
-
-import Mathlib
+import Mathlib.Algebra.Homology.HomologicalComplexLimits
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Algebra.Category.ModuleCat.Products
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

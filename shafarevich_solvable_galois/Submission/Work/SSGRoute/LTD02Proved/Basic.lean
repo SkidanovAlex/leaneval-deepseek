@@ -1,28 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.DualMod.Main
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.localDuality02
-import Submission.Work.SSGRoute.PT.finrank_eq_of_alphaTwo_bijective
-import Submission.Work.SSGRoute.PT.mkb_ld02_core_of_h3
-import Submission.Work.SSGRoute.PT.devissageLinear
-import Submission.Work.SSGRoute.PT.HomFormReduction
-import Submission.Work.SSGRoute.PT.conjHomSES_maps
-import Submission.Work.SSGRoute.PT.isDiscreteModule_conjHom
-import Submission.Work.SSGRoute.PT.decompK_subgroupOf_facts
-import Submission.Work.SSGRoute.PT.brOpenSubgroupDefs
-import Submission.Work.SSGRoute.PT.DevissageSESFinal
-import Submission.Work.SSGRoute.PT.DevissageSESDiscrete
-import Submission.Work.SSGRoute.PT.retraction_invariantsHom
-import Submission.Work.SSGRoute.PT.retraction_range_invariantsHom
-import Submission.Work.SSGRoute.PT.range_invariantsHom_eq_ker
-import Submission.Work.SSGRoute.PT.ker_le_range_precompHom
-import Submission.Work.SSGRoute.PT.AlphaTwoDevissageAux
-import Submission.Work.SSGRoute.PT.alphaTwo_coind_bijective_of_cor
-import Submission.Work.SSGRoute.PTUr.mkb_core_inputs
-import Submission.Work.SSGRoute.kummerBase_euler_ses_decomp
-import Submission.Work.SSGRoute.PTembedding.h3_decomp_subsingleton
-import Submission.Work.SSGRoute.EulerSymm.h3loc_subsingleton
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

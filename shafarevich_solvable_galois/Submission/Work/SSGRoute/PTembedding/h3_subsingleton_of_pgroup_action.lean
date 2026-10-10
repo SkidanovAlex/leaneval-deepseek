@@ -1,12 +1,12 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.range_mapH3_eq_ker_mapH3
-import Submission.Work.SSGRoute.H3Map.mapC3c_mem_Z3_mem_B3
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.GroupTheory.PGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Dimension.Localization
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.Topology.Algebra.OpenSubgroup
 import Submission.Work.SSGRoute.PTembedding.h3_devissage_shortExactSeq
-import Submission.Work.SSGRoute.PTembedding.pgroup_fixed_vector
 import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_finrank_eq_one
+import Submission.Work.SSGRoute.PTembedding.pgroup_fixed_vector
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Artin
-import Submission.NK.NUV2.RouteB.HeckeTheta.Defs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.NUV2.RouteB.HeckeTheta.exists_modulus_and_closure
 import Submission.NK.NUV2.RouteB.HeckeTheta.heckeCoeff_theta_bound_aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

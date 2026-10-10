@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Commons.RingTheory.Valuation.mem_iff_exists_mul_mem_integralClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,20 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.phi0_defs
-import Submission.Work.SSGRoute.zeta_idele_class_pairing
-import Submission.Work.SSGRoute.brauer_single_place
-import Submission.Work.SSGRoute.E4R3.kummer_dies_at_higher_level_clean
-import Submission.Work.SSGRoute.phi0_muClassHom_pairing
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.PTembedding.localGlobal_compat
-import Submission.Work.SSGRoute.hbn_ext_units
+import Submission.Work.SSGRoute.phi0_defs
 import Submission.Work.SSGRoute.phi0_family_vanish_of_local
-import Submission.Work.SSGRoute.extHRestrict_comp
-import Submission.Work.SSGRoute.extHRestrict_comp_mk0
-import Submission.Work.SSGRoute.exists_zetaCoeff
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.phi0_muClassHom_pairing
 
 namespace Work.SSGRoute
 
@@ -168,13 +163,14 @@ theorem phi0_lamV_separates (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [Num
     intro hk0
     obtain ⟨L', hNF, hFD, hGal, hLL, hzero⟩ :=
       E4R3.kummer_dies_at_higher_level_clean p k K Ω ζ hζ L.1 z hz1 h
-        (by rw [← hκ]; exact hk0)
+        hk0
     let L'v : Lvl k K Ω := ⟨L', hNF, hFD, hGal⟩
     have hLLv : L ≤ L'v := hLL
     have hx0 : x = 0 := by
       rw [← hLh, ← LevelCohLimit.of_levelMap (k := k) (K := K) (Ω := Ω) p hLLv h,
-        levelMap_apply, hzero]
-      exact LevelCohLimit.of_zero (k := k) (K := K) (Ω := Ω) p L'v
+        levelMap_apply]
+      exact (congrArg (LevelCohLimit.of (k := k) (K := K) (Ω := Ω) p L'v) hzero).trans
+        (LevelCohLimit.of_zero (k := k) (K := K) (Ω := Ω) p L'v)
     exact hx hx0
   -- Step 4: some place of `L` has a non-zero localisation of `κ` (Hasse–Brauer–Noether)
   obtain ⟨w, hw⟩ : ∃ w : NK.GlobalCFT.Place ↥L.1,

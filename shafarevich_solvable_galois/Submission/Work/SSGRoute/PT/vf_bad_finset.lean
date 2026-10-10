@@ -1,9 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PT.finHalfData
 import Submission.Work.SSGRoute.ZPlace
-import Submission.Work.SSGRoute.finite_not_isUnramifiedAt_primes
 import Submission.Work.SSGRoute.exists_finset_unramifiedPlaces
-import Submission.Work.SSGRoute.place_basics
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,12 @@
-import Mathlib
-import Submission.NK.Ramification.Defs
-import Submission.NK.RamificationDeep.UnitMap
-import Submission.NK.RamificationDeep.RamificationDeterminesSubfields
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Submission.NK.RamificationAudit.Vocab
+import Submission.NK.RamificationAudit.perfectField_residueField_comap
+import Submission.NK.RamificationDeep.algebra_isIntegral_comap
 import Submission.NK.RamificationDeep.isCyclic_quotient_ramificationSubgroup
+import Submission.NK.RamificationDeep.isIntegralClosure_comap
+import Submission.NK.RamificationDeep.isNoetherianRing_comap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

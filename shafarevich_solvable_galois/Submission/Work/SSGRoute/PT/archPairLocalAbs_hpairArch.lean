@@ -1,9 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archPairAbstract
-import Submission.Work.SSGRoute.PT.archPair_level_independent
-import Submission.Work.SSGRoute.PT.extHRestrict_levelClassOf_eq_of_eqOn
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.PT.archPairLocal_natural
-import Submission.Work.SSGRoute.LeadArch2.gammaHom_H1pi_eq_eCoh_or_neg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

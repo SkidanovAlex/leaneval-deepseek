@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.NK.LocalReciprocityLubinTate.Unramified.mem_normGroup_LTLevel_uniformizer
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_ltSymbol_ker_eq
-import Submission.NK.LocalReciprocityLubinTate.Unramified.normIndex_of_localField
+import Submission.NK.LocalReciprocityLubinTate.Unramified.mem_normGroup_LTLevel_uniformizer
 import Submission.NK.LocalReciprocityLubinTate.Unramified.normGroup_LTLevel_le_higherUnits_sup
+import Submission.NK.LocalReciprocityLubinTate.Unramified.normIndex_of_localField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.NK.RamificationDeep.UnitMap
-import Submission.NK.RamificationDeep.WildInertiaUnconditional
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Submission.NK.RamificationDeep.WildInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

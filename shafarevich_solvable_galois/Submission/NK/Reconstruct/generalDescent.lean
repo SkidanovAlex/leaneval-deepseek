@@ -1,5 +1,8 @@
-import Submission.NK.Reconstruct.generalBaseChange_galToGamma
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
 import Submission.NK.Reconstruct.NumFieldInSup
+import Submission.NK.Reconstruct.generalBaseChange_galToGamma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

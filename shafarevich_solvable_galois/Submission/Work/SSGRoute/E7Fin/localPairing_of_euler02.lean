@@ -1,29 +1,14 @@
-/-
-# Local Tate duality in degree one from the Euler characteristic and the degree `0`/`2` duality
-
-The `LTDDefs`/`PTembedding` lanes lost their assembly from the tree: the two arithmetic inputs are
-*stated* (`Work.SSGRoute.local_tate_duality_euler`, `Work.SSGRoute.local_tate_duality_02`), but the
-reduction "Euler characteristic + duality in degrees 0 and 2 ⟹ the local Tate pairing in degree 1" is
-no longer in the source tree (only references to the missing declarations
-`Work.SSGRoute.hasPerfectLocalPairing_of_inputs`, `Work.SSGRoute.local_tate_duality_of_inputs`
-survive).
-
-This file restates the dimension step of that assembly:
-
-1. `finrank_H1loc_eq_finrank_H1loc_tateDual`: `dim H¹(D_A, M) = dim H¹(D_A, M^∨(1))`.  Apply the
-   Euler characteristic (with a *single* constant `ε`, as in `local_tate_duality_euler`) at `M` and at
-   `M^∨(1)`; the degree `0`/`2` duality (as in `local_tate_duality_02`) identifies `h²(M)` with
-   `h⁰(M^∨(1))` and `h²(M^∨(1))` with `h⁰(M)`, and `IsCyclotomicDual` makes `dim M^∨(1) = dim M`.
-
-The companion clause-bundle lemma `pairClauses_of_perfect_pairing` used to be restated (unproved) in
-this file; the *proved* copy lives in
-`Submission/Work/SSGRoute/E7Fin/pairClauses_of_perfect_pairing.lean` (namespace
-`Work.SSGRoute.E7Fin`), and `Submission/Work/SSGRoute/E7Fin/pairClauses_of_euler02.lean` assembles it
-with the dimension equality below into the finite-place half of `G1`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.LTDDefs.Basic
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.H1Pair.Clauses
+import Submission.Work.SSGRoute.LTDDefs.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

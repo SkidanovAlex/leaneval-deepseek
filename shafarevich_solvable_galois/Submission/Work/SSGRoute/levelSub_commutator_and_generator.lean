@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.levelInertia_defs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
-import Submission.Work.LocalFields.All
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.LocalFields.completion_algebraMap_continuous
 import Submission.Work.LocalFields.exists_generator_mod_inertia
-import Submission.NK.ResidueFrob.primeOfLevel_liesOver
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.DecompositionGroup
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
+import Submission.Work.LocalFields.finite_ramified_primes_extension
+import Submission.Work.LocalFields.finrank_completion_eq_card_decompositionGroup
+import Submission.Work.LocalFields.unramifiedAt_iff_inertia_eq_bot
+import Submission.Work.SSGRoute.levelInertia_defs
+import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

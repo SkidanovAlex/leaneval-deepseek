@@ -1,10 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archYoneda_perfect
-import Submission.Work.GroupCohomology.Vanishing
-import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.Work.SSGRoute.augSES_shortExact
-import Submission.Work.SSGRoute.extH_natCard_smul_eq_zero
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.lam_zero_of_no_p_dvd_level
+import Submission.Work.SSGRoute.PT.archYoneda_perfect
+import Submission.Work.SSGRoute.augSES_shortExact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

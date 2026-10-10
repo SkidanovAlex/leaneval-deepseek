@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.Projectivization.Cardinality
 import Submission.Work.SSGRoute.PTembedding.natCard_dual_eq_natCard
-import Submission.Work.SSGRoute.PTembedding.submodule_index_p_equiv_projectivization
 import Submission.Work.SSGRoute.PTembedding.subgroup_index_p_equiv_addSubgroup
+import Submission.Work.SSGRoute.PTembedding.submodule_index_p_equiv_projectivization
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,16 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.NKExistenceImport
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.exists_normClassSubgroup_eq_of_kummer
-import Submission.NK.CFTLib.Existence.exists_galois_normClassSubgroup_eq_of_cyclotomic_descent_deg
-import Submission.NK.CFTLib.Existence.cyclotomicExtension_galois_cyclic
-import Submission.NK.CFTLib.Existence.index_comap_normClassHom_eq_prime
-import Submission.NK.NUV2.ArtinBridge.isOpen_comap_normClassHom
-import Submission.NK.GlobalCFT.ClassFormation
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # Existence of the class field of an arbitrary open subgroup of prime index
@@ -73,8 +66,6 @@ theorem classField_exists_ramified (hARL : NK.CFTLib.ArtinReciprocityIdeal)
       exact h ⟨-1, hp ▸ IsPrimitiveRoot.neg_one (R := K) 0 (by norm_num)⟩
     obtain ⟨K', hFK', hNK', hAK', hfdK', ζ, hζ, hgalK', hcommK', hcycK', hcop⟩ :=
       NK.CFTLib.Existence.exists_cyclotomicExtension_galois_isCyclic K p h
-    letI : Field K' := hFK'
-    letI : NumberField K' := hNK'
     letI : Algebra K K' := hAK'
     letI : FiniteDimensional K K' := hfdK'
     haveI : IsGalois K K' := hgalK'
@@ -99,8 +90,6 @@ theorem classField_exists_ramified (hARL : NK.CFTLib.ArtinReciprocityIdeal)
     obtain ⟨M, hFM, hNM, hAM, hfdM, hgalM, hnormM, hdegM⟩ :=
       exists_normClassSubgroup_eq_of_kummer (K := K') hARL hFC p hζ
         (V.comap (NK.GlobalCFT.IdeleClassGroup.normClassHom K K')) hV'fin hV'open hV'index
-    letI : Field M := hFM
-    letI : NumberField M := hNM
     letI : Algebra K' M := hAM
     letI : FiniteDimensional K' M := hfdM
     haveI : IsGalois K' M := hgalM

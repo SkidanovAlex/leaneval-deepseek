@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Submission.NK.NUV2.RouteC.delta_qmodz
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

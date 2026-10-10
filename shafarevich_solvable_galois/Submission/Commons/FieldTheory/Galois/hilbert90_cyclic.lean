@@ -1,6 +1,6 @@
+import Mathlib.RingTheory.Henselian
 import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Norm.Transitivity
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal

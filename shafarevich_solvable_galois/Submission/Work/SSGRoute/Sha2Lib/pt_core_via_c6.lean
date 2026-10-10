@@ -1,10 +1,8 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.pt_sha2_core
-import Submission.Work.SSGRoute.isUnramifiedExt_of_levelPair_unramified
--- `Sha2Lib/clause3_of_detector.lean` contains the same clause with the detector `C6` *abstracted*
--- (`isUnramifiedExt_of_levelPair_unramified_of_detector`), so that the provider can be swapped;
--- it is not needed below.
-import Submission.Work.SSGRoute.Sha2Lib.clause3_of_detector
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

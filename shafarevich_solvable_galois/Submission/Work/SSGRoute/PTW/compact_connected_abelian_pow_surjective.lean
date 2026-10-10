@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Topology.Algebra.ProperAction.Basic
 import Submission.Work.SSGRoute.PTW.CompactAbelianExponentP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

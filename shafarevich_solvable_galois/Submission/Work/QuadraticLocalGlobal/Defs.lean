@@ -1,22 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The quadratic local–global principles over `ℚ`
-
-This file sets up the vocabulary of the area `Submission/Work/QuadraticLocalGlobal/`:
-
-* the *norm form* condition `IsNorm d x` — "`x` is a norm from `ℚ(√d)`", i.e. `x = p² - d q²`;
-* the *isotropy* of the ternary form `x² - a y² - b z²` over `ℚ` (the library's `Isotropic ℚ`);
-* the measure `meas a b` used for the descent proof of the Hasse norm theorem;
-* the local square-class relations used for Grünwald's theorem in degree `2`;
-* the squarefree-part machinery (`sqfreePart`), and the "uniqueness of the local square class"
-  interface.
-
-Everything lives in the namespace `Work.QuadraticLocalGlobal` and reuses the conventions of
-`Work.HilbertSymbol` (`Place := Option ℕ`, `ℚ_[p] = Padic p`).
--/
-import Submission.Work.HilbertSymbol.All
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Submission.Work.HilbertSymbol.Criterion
+import Submission.Work.HilbertSymbol.epsZ_primeUnit
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_mul_left
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_mul_right
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_neg_self
+import Submission.Work.HilbertSymbol.hilbertSymbolTwo_sq_right
+import Submission.Work.HilbertSymbol.intUnit_num_den_mul_sq
+import Submission.Work.HilbertSymbol.legendreOf_intUnit
+import Submission.Work.HilbertSymbol.omegaZ_primeUnit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

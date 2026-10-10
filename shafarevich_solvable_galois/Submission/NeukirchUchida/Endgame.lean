@@ -1,9 +1,11 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.Mine.exists_sigma_of_frobeniusCorrespondence
 import Submission.NK.Reconstruct.Assembly
-import Submission.NK.Reconstruct.agreesOnLevels_of_map_decompositionGroup
-import Submission.NK.Reconstruct.frobeniusCorrespondence_of_place
 import Submission.NK.ReconstructField.Main
-import Submission.NeukirchUchida.Reduction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

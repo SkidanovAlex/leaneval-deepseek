@@ -1,15 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaArithImports
-import Submission.Work.SSGRoute.residueField_residue_pow_eq_one_gen
-import Submission.Work.SSGRoute.finite_homs_local_inertia
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
 import Submission.Work.SSGRoute.finite_H1loc_inertia
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
-import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_localInertia
-import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_isInertia
 import Submission.Work.SSGRoute.isInertia_of_fixes_rootsOfUnity_gen
-import Submission.Work.SSGRoute.charP_residueField_isFinPlace
-import Submission.Work.SSGRoute.isUnit_natCast_of_not_dvd_resCharAt
-import Submission.Work.SSGRoute.isUnit_natCast_iff_not_dvd_resCharAt
 
 namespace Work.SSGRoute
 

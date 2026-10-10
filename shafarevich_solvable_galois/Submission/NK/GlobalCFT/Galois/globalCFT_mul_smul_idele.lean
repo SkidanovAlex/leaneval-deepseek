@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Metrizable.Uniformity
+import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFT.GaloisIdelesAction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

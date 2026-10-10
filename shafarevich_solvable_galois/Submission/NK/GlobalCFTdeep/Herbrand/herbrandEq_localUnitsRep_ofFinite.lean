@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.LocalUnits
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_units_adicCompletion_of_abelian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_units_adicCompletion_of_abelian
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

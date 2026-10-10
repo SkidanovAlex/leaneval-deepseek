@@ -1,34 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The residual, reduced: the local structure theorem at a place, from four fields
-
-This file assembles the *proved* fields of the local structure theorem
-
-* `NK.TameStructureDeep.unramifiedQuotient_adicCompletion` — `G_κ ⧸ I_κ ≅ Ẑ`,
-* `NK.TameStructureDeep.exists_frobenius_adicCompletion` — the normalised Frobenius exists,
-
-with the *reduced residual* `NK.TameStructureDeep.TameRamificationResidual` (the four remaining
-fields `hp`, `isTameInertia`, `frobenius_iff`, `abelianisation`) into the full residual
-`NK.TameStructureDeep.TameRamificationCore`, and hence into the boundary structures of the
-Neukirch–Uchida endgame at every place.
-
-Before this file, the endgame's input (iii) was the six-field `TameRamificationCore` at every
-place; after it, the per-place hypothesis is the four-field `TameRamificationResidual`.  The two
-discharged fields are the arithmetic of the unramified extension `κ^ur = κ(μ_{p'})`: its Galois
-group is `Ẑ` and its (arithmetic) Frobenius `ζ ↦ ζ^q` exists.
-
-## Main results
-
-* `NK.TameStructureDeep.tameRamificationCore_adicCompletion`;
-* `NK.TameStructureDeep.tameRamificationCore_adicCompletion_of_charP`;
-* `NK.TameStructureDeep.localStructureData_of_residual`;
-* `NK.TameStructureDeep.localStructureData_of_residuals`.
--/
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Core
-import Submission.NK.TameStructureDeep.Unramified
 import Submission.NK.TameStructureDeep.Places
+import Submission.NK.TameStructureDeep.Unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,73 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.TameStructureDeep`: the local structure theorem of `G_κ`, deeper than `NK.TameStructure`
-
-This chapter is the *deep* layer of the local structure theory of the absolute Galois group
-`G_κ = Gal(K'/κ)` of a `p`-adic field `κ`: it turns the input catalogue
-`Submission/Work/TameData/Definitions.lean` (`TameInertiaInput`, `TameAbelianisationInput`,
-`TameTorsionInput`, `NK.LocalStructure.TameFrobeniusCore`) into theorems, at every place of
-every number field, in the sense required by `NK.ResidueFrob.LocalStructureData`.
-
-The sibling chapter `Submission/Work/TameStructure/` already reduced the catalogue to a list of
-*named classical inputs* (`UnramifiedZhat`, `TameInertiaStructure`, `FrobeniusNormalisation`,
-`TameAbelianisationStructure`).  This chapter goes one layer down: it introduces a **single**
-residual structure `TameRamificationCore` for the classical local structure theorem
-
-  `G_κ^{tr} = G_κ/V_κ ≅ Ẑ ⋉ ∏_{ℓ ≠ p} ℤ_ℓ(1)`
-
-(NSW, *Cohomology of Number Fields*, (7.5.6), (7.5.7) Corollary, (7.5.11), (12.1.8); Iwasawa,
-*On Galois groups of local fields*; Shimizu, arXiv:2009.10431, Lemma 2.1), states each of its
-components in the workspace's own vocabulary with its reference, and *proves* every consequence
-used by the endgame from it.  The residual is *strictly weaker* than the previous list: the fields
-`isProPrimeToP_tameInertia` and `tameInertia_commutator_mem` (which `NK.LocalStructure.TameCore`
-and `NK.TameData.TameInertiaInput` carry as inputs) are *derived* here, as is the arithmetic
-`q = p ^ f` of the residue cardinality, and the existence of the Frobenius and its normalisation
-are fused into a single equivalence.
-
-## What is in the residual, and why
-
-| field | content | reference |
-|---|---|---|
-| `hp` | `p` is prime | — |
-| `unramifiedQuotient` | `G_κ ⧸ I_κ ≅ Ẑ` | NSW (7.5.6), (7.5.7) Cor. |
-| `isTameInertia` | `I_κ/V_κ` is the maximal closed normal pro-cyclic subgroup of `G_κ ⧸ V_κ` | NSW (7.5.7) Cor.; Iwasawa |
-| `exists_frobenius` | there is `x ∈ G_κ` outside `I_κ` acting on `μ_{p'}` by `ζ ↦ ζ^q` | NSW (7.5.6) |
-| `frobenius_iff` | `ζ ↦ ζ^q` on `μ_{p'}` ⟺ the `q`-th power map on `I_κ/V_κ` | NSW (12.1.8); Iwasawa |
-| `abelianisation` | `G_κ^{tr,ab} ≅ Ẑ × μ_{q-1}` | Shimizu 2.1 (local CFT) |
-
-Everything else — the commutator relation `[I_κ, I_κ] ≤ V_κ`, the pro-prime-to-`p`-ness of
-`I_κ/V_κ`, the closedness of `V_κ` (`TameRamificationCore.wildInertia_closed`, see
-`Submission/Work/TameStructureDeep/Support/wildInertiaSubgroup_isClosed.lean`), the residue
-cardinality `q = p^f`, the Frobenius normalisation core, the torsion of `G_κ^{tr,ab}`,
-`NK.LocalStructure.TameCore`, `NK.TameData.TameDataInput` and
-`NK.ResidueFrob.LocalStructureData` — is proved *from* this residual, in the sibling modules of
-this directory.
-
-## The vocabulary
-
-The residual is expressed in the vocabulary of `Submission/Work/LocalTame/`,
-`Submission/Work/LocalAnabelian/` and `Submission/Work/LocalStructure/`; the notational
-dictionary is
-
-* `V_κ = NK.LocalTame.wildInertiaSubgroup p` — the join of the normal pro-`p` subgroups of
-  `G_κ` (`NK.LocalTame.wildInertiaSubgroup_isProP` shows it is pro-`p`, hence the maximal closed
-  normal pro-`p` subgroup once it is known to be closed),
-* `I_κ = NK.LocalAnabelian.inertiaSubgroup p` — the kernel of the action on the roots of unity
-  of order prime to `p` (equivalently the fixing subgroup of `κ^ur = κ(μ_{p'})`),
-* `κ(μ_{p'}) = NK.LocalAnabelian.unramifiedClosure p`,
-* `Ẑ = NK.LocalAnabelian.Zhat` — the profinite completion of `ℤ`,
-* `G_κ^{tr} = NK.LocalTame.tameQuotient p = G_κ ⧸ V_κ`,
-* `I_κ/V_κ = NK.LocalTame.tameInertiaSubgroup p`,
-* `G_κ^{tr,ab} = NK.LocalTame.tameAbelianization p = (G_κ ⧸ V_κ)^{ab}`,
-* `μ_{q-1} = Multiplicative (ZMod (q-1))`,
-* `IsFrobeniusFor p q x` — `x ∉ I_κ` and `x` acts on `μ_{p'}` by `ζ ↦ ζ^q`,
-* `IsTameFrobeniusLift q V I x` — `x ∉ I` and `x y x⁻¹ ≡ y^q (mod V)` for `y ∈ I`.
--/
-import Submission.NK.TameStructure.All
-import Submission.NK.TameData.All
-import Submission.NK.LocalStructure.Main
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+import Submission.NK.TameStructure.GaloisBridge
+import Submission.NK.TameStructure.ProfiniteAux.commutator_mem_of_isMaxNormalProCyclicInQuotient
+import Submission.NK.TameStructure.ProfiniteAux.fixingSubgroup_isClosed_of_isIntegral
+import Submission.NK.TameStructure.ProfiniteAux.isProPrimeToP_of_maxNormalProP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

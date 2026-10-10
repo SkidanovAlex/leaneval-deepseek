@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.E1aClean.ArchSeam
 import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
+import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

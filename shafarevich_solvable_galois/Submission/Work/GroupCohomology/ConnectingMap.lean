@@ -1,19 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The connecting map `δ : H¹(G, C) → H²(G, A)`
-
-This file assembles the connecting map of a short exact sequence of `G`-modules
-`0 → A --iota--> B --pi--> C → 0` from the cocycle-level construction of
-`Submission/Work/GroupCohomology/Connecting.lean`:
-
-* `ShortExactSeq.deltaCocycle_zero`, `ShortExactSeq.deltaZ` : `Z¹(G,C) →+ H²(G,A)`;
-* `ShortExactSeq.deltaH1` : the connecting map `H¹(G,C) →+ H²(G,A)`, characterised by
-  `deltaH1_H1π`.
--/
-import Submission.Work.GroupCohomology.Connecting
-import Submission.Work.GroupCohomology.deltaCocycle_eq_class
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.deltaCocycle_add
+import Submission.Work.GroupCohomology.deltaCocycle_eq_class
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

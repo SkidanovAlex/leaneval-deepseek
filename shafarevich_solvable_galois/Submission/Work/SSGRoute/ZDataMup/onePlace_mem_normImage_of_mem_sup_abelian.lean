@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm_of_finiteDimensional
-import Submission.NK.CFTLib.hilbertReciprocityCyclicAux
-import Submission.NK.CFTLib.hilbertReciprocity_cyclic
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.NUV2.ARL.isOpenNorm
 import Submission.Work.SSGRoute.ZDataMup.abelian_local_norm_step
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

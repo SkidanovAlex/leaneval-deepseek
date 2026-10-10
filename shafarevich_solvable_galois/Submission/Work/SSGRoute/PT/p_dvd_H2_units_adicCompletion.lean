@@ -1,33 +1,15 @@
-/-
-# `p`-divisibility of `H²(G_F, F̄ˣ)` for `F = K_Q` a `Q`-adic completion
-
-`Work.SSGRoute.PT.p_dvd_H2_units_adicCompletion`: for `K` a number field, `Q` a finite place of `K`,
-`F = K_Q` the `Q`-adic completion and `p` a prime, multiplication by `p` is **surjective** on the
-continuous cohomology `H²(G_F, F̄ˣ)`.  Equivalently, every class has a `p`-th root: the local
-Brauer group `H²(G_F, F̄ˣ) ≅ ℚ/ℤ` is divisible (Shafarevich's `p = 2` correction is exactly the
-statement that the relevant local cohomology groups are divisible, see
-A. Schmidt and K. Wingberg, *Šafarevič's theorem on solvable groups as Galois groups*, §1).
-
-## The argument
-
-The group `H²(G_F, F̄ˣ)` is the union of the images of the finite Galois levels
-`H²(Gal(L/F), Lˣ) → H²(G_F, F̄ˣ)` (`Work.SSGRoute.PTCore.psiTilde`), the level maps being injective
-(`psiTilde_injective`) with nested ranges (`psiTilde_range_mono`) and covering (`psiTilde_range_cover`).
-Every level group is **cyclic of order `[L : F]`** (`levelH2_cyclic`, from local class field theory
-on disk: the fundamental class plus `#H² = [L : F]`), and — the arithmetic input — every level has a
-finite Galois **enlargement** `L' ⊇ L` with `p * [L : F] ∣ [L' : F]` (`exists_level_p_dvd_index`,
-built from the splitting fields of `X ^ (p ^ s) - π` for a uniformizer `π` of `F`).
-
-The abstract group-theoretic step (`surjective_nsmul_of_cover_cyclic`) is: if an abelian group is
-covered by nested cyclic groups `A i` of order `n i`, and every `i` has `j` with
-`n i * p ∣ n j`, then `p •` is surjective.  Indeed, a class `x = φ i a` is also `φ j b` for such a
-`j`; `b` lies in the transition image of `A i`, so `addOrderOf b ∣ n i`; writing `b = k • u` for a
-generator `u` of `A j` gives `n j ∣ n i * k`, and `n i * p ∣ n j` with `n i ≠ 0` forces `p ∣ k`,
-so `b = p • (k' • u)` is divisible by `p`.
--/
-
-import Mathlib
-import Submission.Work.AbsoluteKummer.Coefficients
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.FieldTheory.KummerExtension
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.Int.Star
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.Work.SSGRoute.PTCore.H2_units_infl
 import Submission.Work.SSGRoute.PTCore.H2_units_level_structure
 import Submission.Work.SSGRoute.PTCore.level_units_H2_cyclic

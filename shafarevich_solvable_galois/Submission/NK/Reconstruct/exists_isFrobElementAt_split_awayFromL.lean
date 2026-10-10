@@ -1,8 +1,9 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.LocalInputs.Defs
 import Submission.NK.Reconstruct.exists_isFrobElementAt_split_of_restrict
 import Submission.NK.Reconstruct.exists_split_frobAt_unramified
-import Submission.NK.Reconstruct.frobElementAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,40 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The idèles as a Galois representation; the principal idèles and the class-group quotient
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4 item 2, §12.4).
-
-This file provides the *coefficient* layer of item 2 of README §8.4 (Shapiro's lemma for the
-idèles) in this chapter's universe and coefficient conventions (`CoeffInt = ULift ℤ`, matching
-`NK.HassePrinciple.muRep`/`unitsRep`):
-
-* `NK.HassePrinciple.ideleRep` — the idèle group `𝕀_L` as a `CoeffInt`-linear representation of
-  `Gal(L/K)`, with the computation rule `ideleRep_ρ_apply`;
-* `NK.HassePrinciple.classGroupRep` — the idèle class group `C_L` likewise;
-* `NK.HassePrinciple.ideleIncl` and `NK.HassePrinciple.classGroupMap` — the principal idèles
-  `Lˣ ↪ 𝕀_L` and the quotient `𝕀_L ↠ C_L` as morphisms of `CoeffInt`-linear representations, with
-  `ideleIncl_comp_classGroupMap : ideleIncl ≫ classGroupMap = 0`;
-* (next stretch) the short exactness of `0 → Lˣ → 𝕀_L → C_L → 0` and the long exact sequence
-  consequence `H¹(Γ, C_L) = 0 ⟹ H²(Γ, Lˣ) ↪ H²(Γ, 𝕀_L)`.
-
-The two statements of item 2 that are built on this layer are
-
-* `NK.HassePrinciple.subsingleton_groupCohomology_one_ideleRep` — `H¹(Gal(L/K), 𝕀_L) = 0`
-  (Shapiro's lemma for the idèles together with Hilbert 90 at the places);
-* `NK.HassePrinciple.injective_h2_units_ideleRep_of_subsingleton_h1` — the edge map
-  `H²(Gal(L/K), Lˣ) → H²(Gal(L/K), 𝕀_L)` is injective as soon as `H¹(Gal(L/K), C_L) = 0` (the long
-  exact sequence of `0 → Lˣ → 𝕀_L → C_L → 0`); the hypothesis holds for `p`-group level groups by
-  `NK.HassePrinciple.subsingleton_groupCohomology_one_ideleClassGroup_of_isPGroup`.
-
-Together with the idèle localisation `H^n(Γ, 𝕀_L) ≅ ∏_w H^n(Γ_w, L_wˣ)` this yields the *relative*
-Hasse–Brauer–Noether theorem `H²(Γ, Lˣ) ↪ ∏_w H²(Γ_w, L_wˣ)`, i.e. the form of the Hasse principle
-that the classical theory produces from the Hasse norm theorem (README §12.3, item (e)).
--/
-
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.H0Computation
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_compactSpace_normOneClassGroup
+import Submission.NK.GlobalCFT.IdeleClassGroupExact
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
 import Submission.NK.HassePrinciple.Mu
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,5 @@
-import Mathlib.Algebra.Order.Ring.Star
-import Mathlib.Data.Int.ConditionallyCompleteOrder
 import Mathlib.Data.Int.Star
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Topology.Algebra.Valued.ValuationTopology
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

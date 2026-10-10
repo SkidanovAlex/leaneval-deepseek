@@ -1,11 +1,8 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.ChebAux.Transfer.Defs
-import Submission.NK.NUV2.ARL.HR.TransferSupport
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.HassePrinciple.localRingEquiv_localAlgebraMapUnits_of_restrict
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

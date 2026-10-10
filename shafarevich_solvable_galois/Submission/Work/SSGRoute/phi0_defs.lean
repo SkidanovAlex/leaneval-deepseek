@@ -1,24 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.zeta_idele_class_pairing
-import Submission.Work.SSGRoute.ext_idele_shapiro
-import Submission.Work.SSGRoute.brauer_single_place
-import Submission.Work.SSGRoute.phi_pair_natural
-import Submission.Work.SSGRoute.phi1_classIncl_compat
-import Submission.Work.SSGRoute.phiTriv_mk0_eq
-import Submission.Work.SSGRoute.phiPushClass
-import Submission.Work.SSGRoute.addHom_extend_of_exponent
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E4R3.inflC_injective
 import Submission.Work.SSGRoute.E4R3.kummer_dies_at_higher_level_clean
-import Submission.NK.GlobalCFT.GaloisAction
+import Submission.Work.SSGRoute.addHom_extend_of_exponent
+import Submission.Work.SSGRoute.brauer_single_place
+import Submission.Work.SSGRoute.ext_idele_shapiro
+import Submission.Work.SSGRoute.phi1_class_level
+import Submission.Work.SSGRoute.phi1_level_limit
 import Submission.Work.SSGRoute.phi1_level_trivial_two
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.zeta_idele_class_pairing
 
 /-! Guidance from the project lead (the requester):
 
@@ -212,7 +208,8 @@ theorem phiColim_add (p : ℕ) [Fact p.Prime]
   apply AddMonoidHom.ext
   intro h
   simp only [AddMonoidHom.comp_apply, AddMonoidHom.add_apply, phiColim_of]
-  rw [phiTriv_mk₀_add, map_add]
+  have h2 := phiTriv_mk₀_add (k := k) (K := K) (L := L.1) p c c' h
+  rw [h2, map_add]
 
 end Phi0
 

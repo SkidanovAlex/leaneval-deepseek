@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.NK.Reconstruct.Transport
-import Submission.NK.Mine.PlaceCorrespondenceArithmetic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Submission.NK.FrobeniusBridge.Endgame
+import Submission.NK.LocalCFT.Completion.exists_mulEquiv_unitsCompletion
+import Submission.NK.LocalCFT.Functoriality.levelMulEquiv_restrict
+import Submission.NK.LocalCFT.Instance.artinReciprocity_complex
+import Submission.NK.LocalCFT.NormGroup.normGroup_eq_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_le_iff
+import Submission.NK.LocalCFT.NormGroup.normGroup_sup_eq_inf
+import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
+import Submission.NK.LocalInputs.PowerQuotient.localFieldInputs_of_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,29 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Exactness at `Ĥ⁰(G, A)`: `range δ = ker H0f`
-
-For a short exact sequence of `G`-modules `0 → A --f--> B --g--> C → 0` and a finite group `G`
-the connecting homomorphism
-
-`δ : Ĥ⁻¹(G, C) → Ĥ⁰(G, A)`
-
-sits in the long Tate cohomology exact sequence
-
-`Ĥ⁻¹(G, A) → Ĥ⁻¹(G, B) → Ĥ⁻¹(G, C) --δ--> Ĥ⁰(G, A) --H0f--> Ĥ⁰(G, B) → Ĥ⁰(G, C)`,
-
-and the exactness at `Ĥ⁰(G, A)` says `range δ = ker H0f`.
-
-Concretely, using `δ (Hm1π c) = H0π ⟨preimage c⟩` for `c ∈ ker N_C`:
-
-* `δ ∘ H0f = 0`: `H0f (H0π ⟨preimage c⟩) = H0π ⟨f (preimage c)⟩ = H0π ⟨N_B (sec c)⟩`, and the
-  latter is a norm, hence vanishes in `Ĥ⁰(G, B) = B^G / N(B)`.
-* `ker H0f ⊆ range δ`: if `H0π ⟨a⟩` dies in `Ĥ⁰(G, B)` then `f a = N_B b` for some `b : B`.
-  The element `c = g b` lies in `ker N_C`, and `b - sec (g b) ∈ ker g = range f` is `f a₀` for
-  some `a₀`; applying `N_B` shows `preimage c = a - N_A a₀`, so `H0π ⟨a⟩ = δ (Hm1π c)`.
--/
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Uniform
 import Submission.Work.Tate.Delta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb_fixes_decomp
-import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
 
 namespace Work.SSGRoute.E1aClean
 

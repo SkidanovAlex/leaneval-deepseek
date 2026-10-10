@@ -1,13 +1,16 @@
-import Mathlib
-import Submission.NK.LocalInputs.Inputs
-import Submission.NK.LocalInputs.Defs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Topology.Algebra.InfiniteSum.Defs
 import Submission.NK.LocalInputs.Degree.localDegree_eq_ramificationIdx_mul_inertiaDeg
 import Submission.NK.LocalInputs.PowerQuotient.pow_mem_maximalIdeal_pow
-import Submission.NK.LocalInputs.PowerQuotient.val_prime_adicCompletion
 import Submission.NK.LocalInputs.PowerQuotient.relIndex_maximalIdeal_pow
+import Submission.NK.LocalInputs.PowerQuotient.val_prime_adicCompletion
 import Submission.NK.LocalInputs.ResidueChar.primesEquiv_primeBelow
-import Submission.Commons.Analysis.Nonarchimedean.exists_exp_log_adicCompletion_log_val_eq
-import Submission.Commons.NumberTheory.NumberField.Completion.val_le_exp_neg_iff_mem_maximalIdeal_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

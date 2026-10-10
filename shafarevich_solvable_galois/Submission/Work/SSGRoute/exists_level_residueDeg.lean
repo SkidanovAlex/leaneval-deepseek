@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.local_lifting_setup
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.IdeleHasse.Descent.dvd_localDegree_of_isPrimitiveRoot
 import Submission.Work.SSGRoute.RamifiedPlacesAux
 import Submission.Work.SSGRoute.isPrimitiveRoot_quotient_mk
-import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
-import Submission.NK.CFTLib.IdeleHasse.Descent.dvd_localDegree_of_isPrimitiveRoot
+import Submission.Work.SSGRoute.local_lifting_setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

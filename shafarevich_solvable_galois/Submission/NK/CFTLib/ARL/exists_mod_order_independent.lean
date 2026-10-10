@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.ARL.exists_prime_dvd_orderOf_not_modEq_one
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Tactic.NormNum.Prime
 import Submission.NK.CFTLib.ARL.exists_prime_dvd_orderOf_modEq_one_odd
+import Submission.NK.CFTLib.ARL.exists_prime_dvd_orderOf_not_modEq_one
 import Submission.NK.CFTLib.ARL.exists_prime_dvd_orderOf_two
 import Submission.NK.CFTLib.ARL.exists_prime_units_order
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.ProdFormulaImports
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

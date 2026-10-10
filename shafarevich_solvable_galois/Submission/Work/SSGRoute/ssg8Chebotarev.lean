@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.NK.NUV2.chebotarev_all0
-import Submission.NK.ChebotarevGeneral.Main
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.NK.CFTLib.ArtinReciprocityIdealProved
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.sha2_hasse.Gateway
-import Submission.Work.SSGRoute.sha2_hasse.place_dictionary
-import Submission.Work.SSGRoute.sha2_hasse.exists_section_of_decomp
-import Submission.Work.SSGRoute.sha2_hasse.locUnits_levelClass_eq_zero_of_section
-import Submission.Work.SSGRoute.sha2_hasse.unitsLevelMapTower_levelClass_eq
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Submission.Work.SSGRoute.sha2_hasse.exists_level_values_and_invariance
+import Submission.Work.SSGRoute.sha2_hasse.locUnits_levelClass_eq_zero_of_section
+import Submission.Work.SSGRoute.sha2_hasse.place_dictionary
+import Submission.Work.SSGRoute.sha2_hasse.unitsLevelMapTower_levelClass_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

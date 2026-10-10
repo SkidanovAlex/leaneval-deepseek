@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.LocalFields.Basic
-import Submission.Work.LocalFields.Decomposition
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.UniformSpace.Uniformizable
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Work.LocalFields.valuation_smul_of_mem_stabilizer
 
 namespace Work.LocalFields

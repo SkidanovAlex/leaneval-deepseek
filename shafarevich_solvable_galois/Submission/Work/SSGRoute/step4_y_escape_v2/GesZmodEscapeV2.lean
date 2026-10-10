@@ -1,15 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.overK
-import Submission.Work.SSGRoute.step4_grunwald_over_K
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.ZSplit.exists_kummerCocharZMod_of_additive_locConst
-import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.grunwald_distinct_defs
 import Submission.Work.SSGRoute.grunwald_escape_support_E
-import Submission.Work.GrunwaldEscapeCore.L1Korth.alpha_fixes_L1K
-import Submission.Work.GrunwaldEscapeCore.grunwald_escape_relative_L1K
-import Submission.Work.SSG8Escape.class_field_data_ssg8
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.grunwald_kummer_first_element
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

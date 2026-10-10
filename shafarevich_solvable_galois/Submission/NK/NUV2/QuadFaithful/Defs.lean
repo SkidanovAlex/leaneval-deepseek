@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Field.Defs
+import Mathlib.Algebra.Group.Even
+import Mathlib.Algebra.Ring.Nat
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Units.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

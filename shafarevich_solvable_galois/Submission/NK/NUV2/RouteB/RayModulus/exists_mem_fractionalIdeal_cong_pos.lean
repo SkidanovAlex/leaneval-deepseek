@@ -1,8 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
 import Submission.NK.NUV2.RouteB.RayModulus.Defs
 import Submission.NK.NUV2.RouteB.Sharp.exists_mem_fractionalIdeal_congr
-import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,16 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.GrunwaldEscapeCore.L1KAssembly
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.grunwald_escape_relative_v2
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.grunwald_kummer_first_element
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesCorrectionFromPrime
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.ZSplit.FrobeniusValue
-import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
-import Submission.Work.SSG8Escape.class_field_data_ssg8
-import Submission.Work.SSG8Escape.escape_prime_ssg8
-import Submission.Work.SSG8Escape.correction_ssg8
-import Submission.Work.SSGRoute.SSG8Escape.ChebotarevDensityInput
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

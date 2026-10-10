@@ -1,17 +1,9 @@
-import Mathlib
-import Submission.NK.Mine.CompletionAPI
-import Submission.NK.NeukirchUchida.LocalGaloisCompletion
-import Submission.NK.NeukirchUchida.exists_mem_subfieldClosure_of_eval_eq_zero
-import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
-import Submission.NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_adjoin
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.FieldTheory.Galois.nonempty_mulEquiv_algEquiv_of_isSepClosure
-import Submission.NK.NeukirchUchida.LocalGaloisDecompositionAux
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NeukirchUchida.Local.InfiniteDecomposition
-import Submission.NeukirchUchida.Local.ValuedCompletion
-import Submission.Commons.RingTheory.Valuation.val_eq_of_algEquiv_of_comap_eq
-import Submission.Commons.RingTheory.Valuation.eq_of_comap_eq_of_isAlgebraic
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_adjoin
 
 /-!
 # The decomposition group of a place is the absolute Galois group of the completion

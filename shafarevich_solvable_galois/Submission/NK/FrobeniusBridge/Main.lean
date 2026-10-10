@@ -1,3 +1,7 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.FrobeniusBridge.Bridge
 import Submission.NK.FrobeniusBridge.LevelAPI
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

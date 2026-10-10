@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.step4_y_escape_v2.RayClass
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.EscapeImports
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
+import Submission.Work.SSGRoute.EscapeCoreLib.algEquiv_extend_compositum
+import Submission.Work.SSGRoute.EscapeCoreLib.exists_finiteDimensional_galois_superset
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.escape_vocab
+import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
+import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
+import Submission.Work.SSGRoute.kummerCharZ_eq_zero_of_isInertia_of_valuation_dvd
+import Submission.Work.SSGRoute.ssg8Chebotarev
+import Submission.Work.SSGRoute.step4_y_escape_v2.ReadOff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

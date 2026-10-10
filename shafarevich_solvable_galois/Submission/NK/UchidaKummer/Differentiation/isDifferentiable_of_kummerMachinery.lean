@@ -1,11 +1,12 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.UchidaKummer.Differentiation.exists_kummerField_localDeg_eq_of_surjective
-import Submission.NK.UchidaKummer.Differentiation.kummerStep_multiPrime
-import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
-import Submission.NK.UchidaKummer.API.localDeg_tower
-import Submission.NK.UchidaKummer.API.isKummerSurjective_mono
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_bot_of_mem_powSubgroup
+import Submission.NK.UchidaKummer.API.localDeg_tower
+import Submission.NK.UchidaKummer.Differentiation.kummerStep_multiPrime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.Work.SSGRoute.PTdualControl.detectorDescent_algebra
 import Submission.Work.SSGRoute.PTdualControl.place_ramification_descent
+import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
 import Submission.Work.SSGRoute.sylow_in_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

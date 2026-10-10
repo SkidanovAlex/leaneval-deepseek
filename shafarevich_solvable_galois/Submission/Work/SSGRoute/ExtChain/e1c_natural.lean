@@ -1,16 +1,29 @@
-import Mathlib
-import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.h1_ssgHom_free_subsingleton
-import Submission.Work.SSGRoute.homRep_unitsK_formula_natural
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExtClass
 import Submission.Work.SSGRoute.PT.e1a_E1c_steps
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.h1_ssgHom_free_subsingleton
 
 set_option maxHeartbeats 8000000
 set_option synthInstance.maxHeartbeats 4000000
+
+
+/-- Build-speed: `IsAlgClosure k Ω` in the `variable` lines below needs
+`Module.IsTorsionFree k Ω`, and the variables are re-elaborated for every declaration (about 2 s of
+instance search each time). This file-local instance answers it directly. -/
+private theorem e1cNatural_isTorsionFree_fast {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] e1cNatural_isTorsionFree_fast
+
 
 namespace Work.SSGRoute.ExtChain
 

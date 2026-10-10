@@ -1,4 +1,6 @@
-import Submission.NK.ReconstructField.MainWeakNU
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.ReconstructField.levelPrimeIdentification
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

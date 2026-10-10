@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.Ramification.Defs
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.Defs
-import Submission.NK.Ramification.ramificationSubgroup_succ_eq_of_uniformizer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

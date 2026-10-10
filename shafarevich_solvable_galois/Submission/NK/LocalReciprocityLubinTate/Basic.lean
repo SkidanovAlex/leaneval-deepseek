@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.LocalCFT.All
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Valuation.Discrete.Basic
 import Submission.NK.LocalArtin.Basic
-import Submission.NK.LocalReciprocity.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

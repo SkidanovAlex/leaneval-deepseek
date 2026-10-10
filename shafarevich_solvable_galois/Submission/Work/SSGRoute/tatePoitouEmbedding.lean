@@ -1,7 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTembedding.G5Core
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.e1aFiled_clean
 import Submission.Work.SSGRoute.pt_sha2_core
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

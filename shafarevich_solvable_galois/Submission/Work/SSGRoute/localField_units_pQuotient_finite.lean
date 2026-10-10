@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ELFArithImports
+import Mathlib.Algebra.Order.Ring.Units
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Submission.NK.GlobalCFT.Place
+import Submission.Work.SSGRoute.LocalFieldArith.finite_units_quotient_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

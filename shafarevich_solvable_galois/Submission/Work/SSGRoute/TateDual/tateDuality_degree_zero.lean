@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.Tate.All
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.LinearAlgebra.PerfectPairing.Basic
 import Submission.Work.SSGRoute.TateDual.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

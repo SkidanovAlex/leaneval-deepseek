@@ -1,8 +1,12 @@
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
-import Submission.Commons.RingTheory.Henselian.kummer_root_lift
-import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
+import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
 
 set_option maxHeartbeats 1000000
 set_option linter.style.haveILetI false

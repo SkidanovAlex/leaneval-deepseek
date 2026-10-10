@@ -1,6 +1,13 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.Minpoly
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
 import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.E7cOmega.exists_level_p_dvd_decomp
+import Submission.Work.SSGRoute.exists_galois_level_p_dvd
+import Submission.Work.SSGRoute.exists_level_residueDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

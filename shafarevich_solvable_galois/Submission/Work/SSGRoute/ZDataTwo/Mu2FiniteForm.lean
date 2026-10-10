@@ -1,13 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.Mu2ArithDeps
-import Submission.Work.SSGRoute.ZDataTwo.Mu2InvolutionForm
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.ZDataTwo.ArchKummer
 import Submission.Work.SSGRoute.ZDataTwo.exists_kummerChar_agreeing_on_decomp
-import Submission.Work.ZDataTwo.kummerChar_eq_zero_iff_isSquare_completion
-import Submission.Work.SSGRoute.ZDataTwo.normGroup_quadLevel_adicCompletion_ne_top
 import Submission.Work.SSGRoute.ZDataTwo.exists_localPowClass_eq
-import Submission.Work.HilbertSymbolGeneral.canonicalAPI
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
+import Submission.Work.SSGRoute.ZDataTwo.normGroup_quadLevel_adicCompletion_ne_top
+import Submission.Work.ZDataTwo.kummerChar_eq_zero_iff_isSquare_completion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

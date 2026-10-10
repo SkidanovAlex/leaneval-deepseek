@@ -1,21 +1,6 @@
-/-
-# `H¹` commutes with finite products of coefficient modules
-
-For a topological group `G` and a finite family `(M i)` of additive commutative groups with a
-`G`-action, first continuous cohomology commutes with the product of the coefficients:
-
-  `H¹(G, ∏ᵢ Mᵢ) ≃+ ∏ᵢ H¹(G, Mᵢ)`.
-
-The proof splits into three independent pieces.
-
-* Locally constant functions into a product are exactly the tuples of locally constant functions
-  (`Fintype ι` is used through the finiteness of the intersection of the open sets).
-* Consequently the *currying* map `(G → ∏ᵢ Mᵢ) → (∏ᵢ (G → Mᵢ))` restricts to an isomorphism of
-  subgroups `Z¹(G, ∏ᵢ Mᵢ) ≃+ ∏ᵢ Z¹(G, Mᵢ)`, and carries the `1`-coboundaries onto the tuples of
-  `1`-coboundaries.
-* A quotient of a product by a product of subgroups is the product of the quotients.
--/
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Pi
 import Submission.Work.AbsoluteKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

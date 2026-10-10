@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.mackey_iso_explicit
 import Submission.Work.SSGRoute.natTrans_mapExactFunctor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

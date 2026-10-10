@@ -1,25 +1,7 @@
-/-
-Copyright (c) 2024. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Kummer theory: the basic definitions
-
-This file sets up the vocabulary of Kummer theory over a field `K` containing a primitive
-`n`-th root of unity `ζ`, for an extension `L/K`:
-
-* `nthPowerSubgroup n G` : the subgroup `G^n` of `n`-th powers of a commutative group `G`.
-* `kummerSubgroup n K L` : the Kummer subgroup `Kˣ ∩ (Lˣ)^n`, i.e. the `a : Kˣ` that become an
-  `n`-th power in `Lˣ`.
-* `kummerRoot` : a choice of `α : Lˣ` with `α ^ n = a` for `a` in the Kummer subgroup.
-* `kummerRatio` : the ratio `σ α / α`, for `σ : Gal(L/K)`; it is an `n`-th root of unity which
-  only depends on `α ^ n`.
-* `kummerCharacter` : the Kummer pairing `Gal(L/K) × (Kˣ ∩ (Lˣ)^n) → μ_n`, `(σ, a) ↦ σ α / α`.
-* `kummerSubfield n K L` : the intermediate field generated over `K` by all `n`-th roots of
-  elements of `K` inside `L`, and `IsKummerExtension n K L` saying it is all of `L`.
--/
-import Mathlib.FieldTheory.KummerExtension
-import Mathlib.FieldTheory.KummerPolynomial
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+import Mathlib.CategoryTheory.Abelian.Ext
+import Mathlib.FieldTheory.Galois.Notation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

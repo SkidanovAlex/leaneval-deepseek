@@ -1,40 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Pro-cyclic profinite groups: the `Ẑ`-components
-
-This file sets up the technical device by which a continuous surjection `Ẑ ↠ H` is produced
-for a pro-cyclic profinite group `H` (`NK.LocalTame.IsProCyclic H`).
-
-Write `Ẑ = NK.LocalAnabelian.Zhat` for the profinite completion of `ℤ`, i.e.
-`Ẑ = limit (diagram (GrpCat.of (Multiplicative ℤ)))`, the limit of the finite quotients
-`ℤ ⧸ mℤ`.  Its elements are compatible families `z.val mℤ`, and the projections
-`z ↦ z.val mℤ` are the *components* of `Ẑ`:
-
-* `mZ m hm` — the finite index normal subgroup `mℤ` of `Multiplicative ℤ`, i.e. an object of the
-  index category of the completion (the same subgroup as `NK.TameData.Zhat.mZ`);
-* `compHom d hd` — the continuous homomorphism `Ẑ →* ℤ ⧸ dℤ` given by the `d`-th component;
-* `quotHom x` — for `x` in a finite group `Q`, the unique homomorphism `ℤ ⧸ dℤ →* Q` (`d` the
-  order of `x`) with `1 ↦ x`, obtained by factoring `k ↦ x ^ k` through `dℤ`;
-* `famHom g N` — the composite `Ẑ →* H ⧸ N` for an open normal subgroup `N ≤ H`, given by
-  `z ↦ (gN) ^ k` on the dense copy of `ℤ` inside `Ẑ`.
-
-The key point of the whole construction is that these component maps are *canonical enough* to
-be compatible: `famHom g N` depends only on the coset `gN` of a single element `g`, so the
-transition maps `H ⧸ M → H ⧸ N` for `M ≤ N` match the two component maps
-(`famHom_compat` in the main file), which is what allows them to be glued into a map `Ẑ →* H`.
-
-## Main definitions
-
-* `NK.TameStructure.ProCyclic.mZ`
-* `NK.TameStructure.ProCyclic.compHom`
-* `NK.TameStructure.ProCyclic.quotHom`
-* `NK.TameStructure.ProCyclic.famHom`
--/
-import Mathlib
-import Submission.NK.LocalTame.Basic
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Analysis.Normed.Group.Quotient
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalAnabelian.ResidueField.Recovery
+import Submission.NK.LocalTame.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

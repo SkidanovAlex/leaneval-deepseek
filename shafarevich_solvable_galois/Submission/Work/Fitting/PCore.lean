@@ -1,23 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The `p`-core of a group
-
-For a prime `p`, the `p`-core `O_p(G) = pCore p G` is the largest normal `p`-subgroup of `G`,
-realised here as the supremum of all normal `p`-subgroups.  For a finite group this supremum is
-itself a normal `p`-subgroup, and the Fitting subgroup is the join of the `p`-cores
-(`fitting_eq_iSup_pCore` in `Submission/Work/Fitting/Join.lean`).
-
-## Main results
-
-* `pCore`, `le_pCore` : definition and universal property;
-* `pCore_normal`, `pCore_isPGroup`, `pCore_nilpotent` : `O_p(G)` is a normal `p`-subgroup,
-  hence nilpotent (for finite `G`);
-* `pCore_le_fitting` : `O_p(G) ≤ F(G)`;
-* `Subgroup.map_subtype_normal_of_characteristic` : a characteristic subgroup of a normal
-  subgroup is normal.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.Fitting.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

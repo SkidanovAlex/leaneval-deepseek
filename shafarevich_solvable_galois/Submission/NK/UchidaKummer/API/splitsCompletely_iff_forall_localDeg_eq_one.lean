@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
 import Submission.NK.UchidaKummer.Defs
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_eq_finrank_iff_splitCompletely
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

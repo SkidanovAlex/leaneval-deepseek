@@ -1,29 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer bridge: degree-`p` Galois extensions versus `kˣ/(kˣ)^p`
-
-This is part (A) of the `NK.LocalAnabelian` chapter, and it uses *no* class field
-theory.  For a field `k` containing a primitive `p`-th root of unity `ζ` (`p` prime)
-and a separable closure `K'` of `k` we prove
-
-  `#{L : k ⊆ L ⊆ K', L/k Galois of degree p} = (|kˣ/(kˣ)^p| - 1) / (p - 1)`.
-
-The proof is the standard one: the Kummer field `k(a^{1/p})` of a nontrivial class `a`
-is a degree-`p` cyclic extension, every degree-`p` Galois extension arises this way
-(`exists_kummerFieldQuot_eq_of_isGalois`), two classes give the same field exactly when
-they generate the same cyclic subgroup of `kˣ/(kˣ)^p` (the two "fibre" lemmas), and the
-groups `⟨a⟩ \ {1}` have `p - 1` elements each.
--/
-import Submission.NK.LocalAnabelian.Kummer.QuotAPI
-import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
-import Submission.NK.LocalAnabelian.Kummer.exists_kummerFieldQuot_eq_of_isGalois
-import Submission.NK.LocalAnabelian.Kummer.mem_zpowers_of_kummerFieldQuot_eq
-import Submission.NK.LocalAnabelian.Kummer.kummerFieldQuot_eq_of_mem_zpowers
-import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_bot_of_mem_powSubgroup
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.LocalAnabelian.Counting.natCard_eq_mul_card_of_fiber_natCard
 import Submission.NK.LocalAnabelian.Counting.natCard_subtype_ne_one
+import Submission.NK.LocalAnabelian.Kummer.QuotAPI
+import Submission.NK.LocalAnabelian.Kummer.exists_kummerFieldQuot_eq_of_isGalois
+import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
+import Submission.NK.LocalAnabelian.Kummer.kummerFieldQuot_eq_of_mem_zpowers
+import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_bot_of_mem_powSubgroup
+import Submission.NK.LocalAnabelian.Kummer.mem_zpowers_of_kummerFieldQuot_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

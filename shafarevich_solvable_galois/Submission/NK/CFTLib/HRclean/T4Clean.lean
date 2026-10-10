@@ -1,16 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.HRclean.ARLClean
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.HassePrinciple.subsingleton_groupCohomology_one_unitsRep
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
-import Submission.NK.CFTLib.HRclean.ARLLocal
-import Submission.NK.NUV2.ABHN.unitsLevelMap_injective
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_smul_eq_of_liesOver
-import Submission.NK.HassePrinciple.exists_units_div_of_isMulCocycle_ringEquiv
-import Submission.NK.FieldTheory.Galois.exists_liesOver_and_lift_decompSubgroup
-import Submission.NK.CFTLib.HRclean.StabRestrictSurj
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.CFTLib.HRclean.LocalUnitsDescent
+import Submission.NK.CFTLib.HRclean.StabRestrictSurj
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_localFixed_all
+import Submission.NK.NUV2.ABHN.unitsLevelMap_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

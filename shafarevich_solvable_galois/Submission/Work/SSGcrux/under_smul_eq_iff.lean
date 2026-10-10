@@ -1,6 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.under_smul_heightOneSpectrum
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.Sha2Lib.liesOver_iff_mem_orbitFinset
+import Submission.Work.SSGRoute.Sha2Lib.under_smul_heightOneSpectrum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

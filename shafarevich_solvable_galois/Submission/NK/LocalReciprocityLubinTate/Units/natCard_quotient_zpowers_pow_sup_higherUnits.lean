@@ -1,7 +1,5 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Basic
-import Submission.NK.LocalReciprocityLubinTate.Units.unitsQuotPrincipalUnitsEquiv
-import Submission.NK.LocalReciprocityLubinTate.Units.natCard_units_quot_pow_maximalIdeal
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_sup_higherUnits
 import Submission.NK.LocalReciprocityLubinTate.Units.relIndex_zpowers_pow_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

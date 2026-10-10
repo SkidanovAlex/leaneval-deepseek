@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.kummerChar_eq_zero_of_isInertia_of_unit
-import Submission.Work.SSGRoute.ZConstruction.kummerCharZMod_fixingSubgroup_mul_pow
-import Submission.Work.SSGRoute.grunwald_kummer_idx
-import Submission.Work.SSGRoute.place_basics
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.NK.TameStructureDeep.Tame.InertiaFieldAux
+import Submission.Work.SSGRoute.ZConstruction.kummerCharZMod_fixingSubgroup_mul_pow
+import Submission.Work.SSGRoute.kummerChar_eq_zero_of_isInertia_of_unit
+import Submission.Work.SSGRoute.place_basics
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

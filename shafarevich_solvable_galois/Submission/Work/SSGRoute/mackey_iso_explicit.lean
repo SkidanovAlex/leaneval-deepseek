@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Group
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.GroupTheory.Coset.Card
 import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.ext_coind_exact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

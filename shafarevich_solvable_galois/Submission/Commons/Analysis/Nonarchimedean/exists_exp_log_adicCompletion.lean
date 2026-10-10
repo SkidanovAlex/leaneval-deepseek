@@ -1,4 +1,17 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Contracting
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 
 open scoped NumberField WithZero
 open IsDedekindDomain

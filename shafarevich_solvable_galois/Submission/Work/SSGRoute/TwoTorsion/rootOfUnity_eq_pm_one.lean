@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.TwoTorsion.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

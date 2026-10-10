@@ -1,6 +1,5 @@
-import Submission.NK.Reconstruct.GammaObject
-import Submission.NK.Reconstruct.ellPart
-import Submission.NK.Reconstruct.GammaSup
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.ellRestrict_comp
 import Submission.NK.Reconstruct.exists_frobElement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

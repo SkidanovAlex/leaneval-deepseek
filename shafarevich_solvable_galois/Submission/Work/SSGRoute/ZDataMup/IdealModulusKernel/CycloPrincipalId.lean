@@ -1,35 +1,10 @@
-/-
-# The principal ray of an ideal modulus is killed in a cyclotomic extension
-
-`CycloPrincipalId`: for a cyclotomic extension `Ω = k(ζ_n)` of a number field `k`, an ideal modulus
-`𝔪` whose support contains the prime divisors of `(n)` (`hsupp`) and whose levels dominate those of
-`(n)` at those primes (`hlev`), the ideal-theoretic Artin symbol of `Ω/k` kills the whole principal
-ray `P(𝔪) = principalRayId 𝔪`.
-
-This is the cyclotomic case of Lang's Theorem 2 (the "cyclotomic base case" of Artin reciprocity),
-in the ideal-modulus form.  The proof is the transfer of the natural-number-modulus statement
-`NK.CFTLib.Arl.artinSym_spanSingleton_eq_one_of_congr_pos` at modulus `n`, whose inputs are
-supplied from `𝔪`:
-
-* *The cyclotomic reciprocity law* at `n`: `NK.CFTLib.ARL.artinReciprocity_cyclotomic`.
-* *Unramifiedness off `n`*: `NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension` (relative form) —
-  a prime `𝔭 ∤ (n)` is unramified in `Ω/k`, whence `ramificationIdxIn 𝔭 (𝓞 Ω) = 1`; this is the
-  `hram` hypothesis of the natural-number statement at `m = n`.
-* *The congruence at `(n)`*: if `(n) ∈ 𝔭` then `𝔪 ≤ 𝔭` (`hsupp`), and the `𝔭`-adic level of `(n)`
-  is at most that of `𝔪` (`hlev`, converted through
-  `val_natCast_adicCompletion_eq_exp_neg_count_span`), so `CongrOneId 𝔪 b` at `b` implies the
-  natural-number congruence `b ≡ 1 mod (n)`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.kernelLe_of_auxField
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.dictionary_ramifiedPart
 import Submission.Work.SSGRoute.ZDataMup.MupAux.Base
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
-import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
-import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one_of_mem_congruence
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.cyclotomicKernelLe
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.kernelLe_of_auxField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

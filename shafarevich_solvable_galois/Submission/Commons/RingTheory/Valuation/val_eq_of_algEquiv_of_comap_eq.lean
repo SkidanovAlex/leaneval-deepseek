@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Valuation.Extension
 import Submission.Commons.RingTheory.Valuation.exists_pow_eq_of_isIntegral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

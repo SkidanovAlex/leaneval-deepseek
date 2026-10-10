@@ -1,11 +1,12 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.NK.LocalReciprocityLubinTate.Unramified.unramifiedNormGroup_eq_zpowers_sup
-import Submission.NK.Unramified.exists_unramified_level_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Unramified.isGalois_sup_of_commutative
-import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits
+import Submission.NK.LocalReciprocityLubinTate.Unramified.isGalois_sup_of_commutative
+import Submission.NK.LocalReciprocityLubinTate.Unramified.unramifiedNormGroup_eq_zpowers_sup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

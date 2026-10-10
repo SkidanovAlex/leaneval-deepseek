@@ -1,12 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.NK.GlobalCFTdeep.Herbrand.hOne_localUnitSubRep_of_ramificationIdx_eq_one
+import Submission.NK.GlobalCFTdeep.Herbrand.localUnitsUnitsEquiv
+import Submission.Work.SSGRoute.H2_coeff_transfer
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.e0b_bridge
-import Submission.Work.SSGRoute.H2_coeff_transfer
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_addOrderOf_eq_finrank_groupCohomology_two_units
-import Submission.NK.GlobalCFTdeep.Herbrand.localUnitsUnitsEquiv
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
-import Submission.NK.GlobalCFTdeep.Herbrand.hOne_localUnitSubRep_of_ramificationIdx_eq_one
-import Submission.NK.GlobalCFTdeep.Herbrand.fiberIdelesRep_iso_coind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Step4CokerData
-import Submission.Work.SSGRoute.stage3Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.properStageAssemblyData
-import Submission.Work.SSGRoute.flowEKer_equiv_refinedQuotient
-import Submission.Work.SSGRoute.flowEKer_comm
-import Submission.Work.SSGRoute.local_transport
-import Submission.Work.SSGRoute.overK
-import Submission.Work.SSGRoute.step4_y_localdata
 import Submission.Work.SSGRoute.step4_tool_S_exists
-import Submission.Work.SSGRoute.grunwald_escape_support_E
 import Submission.Work.SSGRoute.step4_y_escape_v2.GesEFromZmodV2
-import Submission.Work.SSGRoute.grunwald_distinct_defs
-import Submission.Work.SSGRoute.no_two_torsion_fixingSubgroup
+import Submission.Work.SSGRoute.step4_y_localdata
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

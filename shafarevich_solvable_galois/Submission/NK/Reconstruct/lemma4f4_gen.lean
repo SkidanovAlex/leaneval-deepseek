@@ -1,3 +1,5 @@
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
 import Submission.NK.Reconstruct.generalDescent
 import Submission.NK.Reconstruct.lemma4f4_of_criterion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

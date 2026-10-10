@@ -1,21 +1,10 @@
-/-
-# The Magnus leading term as a map on the graded pieces
-
-`lamLead X k hk : Λ (k-1) = γ_{k-1}/γ_k → (1 + filq X (k+1) k)` is the map induced by the Magnus
-leading term `magLead (k+1)`.  The point of the construction is the compatibility
-
-`lamLead (cls y) = magLead (k+1) y`   (`lamLead_cls`)
-
-and its linear version on the span of the commutator monomials of the trees of size `k`
-
-`lamLead (treeToLam μ) = mk (Σ μ c • monBrk c)`   (`lamLead_treeToLam`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnusBase
-import Submission.Work.SSGRoute.prop5.core.Defs
-import Submission.Work.SSGRoute.prop5.core.relations_zero
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.core.magLeadLemmas
+import Submission.Work.SSGRoute.prop5.core.relations_zero
 import Submission.Work.SSGRoute.prop5.magLead_mem_nestedImage
+import Submission.Work.SSGRoute.prop5.magnusBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

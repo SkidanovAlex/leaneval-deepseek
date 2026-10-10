@@ -1,17 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.sylow_in_defs
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.decompK_restrict_surjective
-import Submission.Work.SSGRoute.lde_stabIncl
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.rightDetect_sylowLevelStabIncl
-import Submission.Work.SSGRoute.pTorsion_card_sylowLevel
-import Submission.Work.SSGRoute.local_pTorsion_card
-import Submission.Work.SSGRoute.local_detect_h_pgroup
-import Submission.Work.SSGRoute.rightDetect_of_sylow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

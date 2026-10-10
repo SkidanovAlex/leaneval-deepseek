@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.archPhiP2
-import Submission.Work.SSGRoute.ArchDictionary.extOneDictNaturalH1
-import Submission.Work.SSGRoute.ArchDictionary.p2Link
-import Submission.Work.SSGRoute.ArchDictionary.archAcH1Natural
-import Submission.Work.SSGRoute.ArchDictionary.placeLocalFieldComplex
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.ArchDictionary.archSeamDefs
 import Submission.Work.SSGRoute.ArchDictionary.postcompUnitsBijective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

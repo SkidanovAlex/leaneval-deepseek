@@ -1,43 +1,9 @@
-/-
-# Tate duality in degrees `-2` and `1`: `H₁(G,M) ≅ H¹(G,M^∨)^∨`
-
-For a finite group `G`, a prime `p` and a finite `𝔽_p[G]`-module `M`, the first homology of `G`
-with coefficients in `M` is the `𝔽_p`-dual of the first cohomology of `G` with coefficients in the
-contragredient module `M^∨ = Hom_{𝔽_p}(M, 𝔽_p)`:
-
-`H₁(G, M) ≅ H¹(G, M^∨)^∨`.
-
-This is the standard perfect Tate pairing `Ĥ^i(G, A) × Ĥ^{-1-i}(G, A^∨) → ℚ/ℤ` at `i = -2`, using
-`H₁ = Ĥ^{-2}` and `H¹ = Ĥ¹` (see `Submission.Work.SSGRoute.H1Dual.tateDual_main`).
-
-The proof in this file consists of two parts:
-
-* **The naturality of the degree-`0` evaluation pairing** `(H₀(G,N))^∨ ≅ H⁰(G,N^∨)` in the
-  coefficient module `N` (`H0DualMap_naturality` below). This is the one ingredient that
-  `H1Dual.tateDual_main` takes as a hypothesis: the assembly there must be able to identify the
-  transpose of the map `H₀(G,M') → H₀(G,Coind(M))` with the map
-  `H⁰(G,Coind(M)^∨) → H⁰(G,(M')^∨)`.
-  It is proved by combining the three naturality statements
-  * `H0DualAux_natural`: the auxiliary pairing `(N_G)^∨ → (N^∨)^G`, `l ↦ l ∘ mk`, is natural;
-  * `H0Iso_natural_hom`: the isomorphism `H₀(G,N) ≅ N_G` is natural (`groupHomology`
-    `map_id_comp_H0Iso_hom`);
-  * `H0Iso_natural_coh`: the isomorphism `H⁰(G,N) ≅ N^G` is natural (`groupCohomology`
-    `map_id_comp_H0Iso_hom`).
-
-* **The assembly** `H1_tateDual_clean`, which feeds this naturality to `tateDual_main`.
-
-## References
-
-* `Submission.Work.SSGRoute.H1Dual.Defs`: the coinduced resolution `0 → M' → Coind(M) → M → 0`
-  and the contragredient.
-* `Submission.Work.SSGRoute.H1Dual.LES`: the two dimension shifts.
-* `Submission.Work.SSGRoute.H1Dual.Vanish`: acyclicity of `Coind(M)` and `Coind(M)^∨`.
-* `Submission.Work.SSGRoute.H1Dual.DegreeZero`: the degree-`0` pairing `H0DualMap`.
-* `Submission.Work.SSGRoute.H1Dual.Main`: the assembly `tateDual_main`.
--/
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.H1Dual.Main
-import Submission.Work.SSGRoute.H1Dual.degreeZeroBijective
 import Submission.Work.SSGRoute.H1Dual.dualSES_shortExact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

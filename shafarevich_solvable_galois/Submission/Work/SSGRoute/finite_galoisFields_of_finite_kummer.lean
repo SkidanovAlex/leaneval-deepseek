@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.LocalFieldAPI
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Submission.NK.LocalReciprocityLubinTate.Eval.exists_isNonarchimedeanLocalField_intermediateField
+import Submission.NK.LocalReciprocityLubinTate.Units.higherUnits_cofinal
+import Submission.NK.LocalReciprocityLubinTate.Units.natCard_quotient_zpowers_pow_sup_higherUnits_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,11 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Prelude
+import Mathlib.NumberTheory.RamificationInertia.Valuation
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.isScalarTower_adicCompletion
+import Submission.Commons.NumberTheory.NumberField.Completion.liesOver_maximalIdeal_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_residueField_adicCompletion_eq_pow_inertiaDeg
+import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
+import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

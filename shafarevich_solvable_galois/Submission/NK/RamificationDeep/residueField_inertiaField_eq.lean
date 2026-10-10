@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.InertiaField
 import Submission.NK.RamificationDeep.subring_eq_top_of_coeff_mem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

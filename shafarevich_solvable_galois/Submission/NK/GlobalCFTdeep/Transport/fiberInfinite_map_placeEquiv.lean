@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Transport.PlaceDefs
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Submission.NK.GlobalCFTdeep.Transport.liesOver_placeEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

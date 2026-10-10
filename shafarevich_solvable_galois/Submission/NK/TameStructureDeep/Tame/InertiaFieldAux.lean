@@ -1,8 +1,14 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Submission.Commons.RingTheory.Henselian.kummer_root_lift
+import Submission.NK.Ramification.Defs
 import Submission.NK.TameStructureDeep.Tame.Defs
 import Submission.NK.TameStructureDeep.Tame.isPrimitiveRoot_residue
-import Submission.NK.Ramification.Defs
-import Submission.Commons.RingTheory.Henselian.kummer_root_lift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

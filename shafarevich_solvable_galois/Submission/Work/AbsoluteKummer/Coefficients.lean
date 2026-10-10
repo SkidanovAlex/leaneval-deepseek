@@ -1,31 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Coefficients for the absolute Galois group
-
-The absolute Galois group of `k` is
-
-* `Work.AbsoluteKummer.G k` — the group `Gal(k̄/k) = (AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k)`,
-  definitionally equal to `Field.absoluteGaloisGroup k`
-  (`Work.AbsoluteKummer.G_eq_absoluteGaloisGroup`).
-
-The coefficient modules used in this chapter are
-
-* `Additive (AlgebraicClosure k)ˣ` — the units of the algebraic closure (`k̄ˣ`), with the Galois
-  action;
-* `Additive (rootsOfUnity n (AlgebraicClosure k))` — the group `μ_n(k̄)` of `n`-th roots of unity.
-
-Both are **discrete modules** for `G k` in the sense of `Work.AbsoluteKummer.IsDiscreteModule`
-(`Work.AbsoluteKummer.isDiscreteModule_addUnits`, `..._addRootsOfUnity`), and when `k` contains a
-primitive `n`-th root of unity the action on `μ_n` is trivial
-(`Work.AbsoluteKummer.smul_rootsOfUnity`), so that
-
-* `Work.AbsoluteKummer.B1_rootsOfUnity_eq_bot` — `B¹(G_k, μ_n) = 0`, and
-* `Work.AbsoluteKummer.H1π_rootsOfUnity_injective` — `Z¹ → H¹` is injective for the trivial
-  module `μ_n`.
--/
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.Work.AbsoluteKummer.Basic
 import Submission.Work.Kummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

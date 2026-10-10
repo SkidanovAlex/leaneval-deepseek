@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinSetup
-import Submission.NK.CFTLib.exp_normIdeleHom_eq_sum
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.HR.Basic
-import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
-import Submission.NK.CFTLib.IdeleHasse.exists_localMap_ofFinite
 import Submission.NK.CFTLib.NormPrincipal.localNormFinite_range_iff_inertiaDeg_dvd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

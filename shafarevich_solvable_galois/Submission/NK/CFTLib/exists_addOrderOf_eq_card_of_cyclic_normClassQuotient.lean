@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Cohomology
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.H0Computation
-import Submission.NK.GlobalCFT.Cohomology.globalCFT_H0Computation_of_invariants_and_norm
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_nsmul_H2_eq_zero
+import Submission.NK.GlobalCFT.H0Computation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

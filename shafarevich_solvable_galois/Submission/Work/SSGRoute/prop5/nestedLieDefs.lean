@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.LinearAlgebra.Span.Defs
 import Submission.Work.SSGRoute.prop5.magnusLieDefs
 import Submission.Work.SSGRoute.prop5.witt.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

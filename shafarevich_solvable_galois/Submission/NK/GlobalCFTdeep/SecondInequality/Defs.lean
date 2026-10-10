@@ -1,10 +1,14 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Submission.NK.Chebotarev.Corollaries
 import Submission.NK.GlobalCFTdeep.Basic
-import Submission.NK.HeckeL.All
-import Submission.NK.Chebotarev.Density
+import Submission.NK.HeckeL.Basic.finite_setOf_not_isUnramifiedIn
+import Submission.NK.HeckeL.Basic.ideleOfIdeal_mul
+import Submission.NK.HeckeL.Consequences.abelianLFunctions
+import Submission.NK.HeckeL.Consequences.primeSum_isBigO
+import Submission.NK.HeckeL.Nonvanishing.primeFiber
+import Submission.NK.HeckeL.Nonvanishing.prod_artinLSeries_eq_zetaUnramified
+import Submission.NK.HeckeL.Series.log_norm_artinLSeries_eq_tsum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

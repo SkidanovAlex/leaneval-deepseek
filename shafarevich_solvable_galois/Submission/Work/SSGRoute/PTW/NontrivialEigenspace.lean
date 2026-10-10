@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.RegularRep
-import Submission.Work.SSGRoute.PTW.avgOp_regRep
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Basic
 import Submission.Work.SSGRoute.PTW.Spectral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

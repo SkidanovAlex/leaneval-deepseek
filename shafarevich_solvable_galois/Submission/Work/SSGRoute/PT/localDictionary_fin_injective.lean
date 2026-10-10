@@ -1,27 +1,22 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.e1aBetaCan_localAPI
-import Submission.Work.SSGRoute.PT.e1aBetaCan_aux
-import Submission.Work.SSGRoute.localField_subfield_place_compat
-import Submission.Work.SSGRoute.hom_dualMod_local_units
-import Submission.Work.SSGRoute.ext_continuous_descent_fg
-import Submission.Work.SSGRoute.PT.e1aBetaLocalChain.ext_two_local_descent_injective
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.ext_one_iso_lattice_cohomology
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.GroupCohomology.Inflation
-import Submission.Work.GroupCohomology.ConnectingMap
-import Submission.Work.GroupCohomology.range_mapH1_eq_ker_deltaH1
-import Submission.Work.GroupCohomology.range_infH1_eq_ker_resH1
-import Submission.Work.GroupCohomology.ker_infH1_eq_bot
-import Submission.Work.GroupCohomology.Shapiro
-import Submission.Work.GroupCohomology.ShortExact
-import Submission.Work.GroupCohomology.H2pi_eq_zero_iff
+import Submission.Work.SSGRoute.PT.decompK_subgroupOf_facts
 import Submission.Work.SSGRoute.PT.devissageLinear
-import Submission.Work.SSGRoute.PT.AlphaPairing
+import Submission.Work.SSGRoute.PT.e1aBetaCan_aux
+import Submission.Work.SSGRoute.PT.frobenius_coindAux
 import Submission.Work.SSGRoute.PT.h3_H3_subsingleton_of_image
 import Submission.Work.SSGRoute.PT.mkb_ld02_defs
-import Submission.Work.SSGRoute.PT.decompK_subgroupOf_facts
-import Submission.Work.SSGRoute.PT.frobenius_coindAux
+import Submission.Work.SSGRoute.ext_one_iso_lattice_cohomology
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

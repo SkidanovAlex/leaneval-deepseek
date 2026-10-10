@@ -1,15 +1,13 @@
-import Mathlib
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.MaxAbelianSetup
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.TameStructureDeep.Tame.Unconditional
-import Submission.NK.TameStructureDeep.Degree.galoisGroup_unramifiedClosure_mulEquiv
-import Submission.NK.Summary.NUV2.normGroup_coprime
-import Submission.NK.Summary.NUV2.normGroup_quadratic_faithful
-import Submission.NK.NUV2.LC.normGroupDeterminesLevel
-import Submission.NK.LocalAnabelian.ResidueField.inertiaSubgroup_eq_fixingSubgroup_unramifiedClosure
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+import Submission.NK.NUV2.LC.hilbertSymbolNormCriterion
 import Submission.NK.NUV2.TamePrimeLevel.index_range_powMonoidHom_le_sq
 import Submission.NK.NUV2.TamePrimeLevel.normGroup_ne_of_prime_dvd_residueCard_sub_one
+import Submission.NK.Summary.NUV2.normGroup_quadratic_faithful
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

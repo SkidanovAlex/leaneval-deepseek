@@ -1,17 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.TPatom.noninvariantLevelDefs
-import Submission.Work.SSGRoute.CycLevel.stabilizer_ofFinite_eq_decompositionSubgroup
-import Submission.Work.SSGRoute.TatePoitouRoute.exists_shapiro_c
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ramificationIdx_inertiaDeg_map_eq_of_ringEquiv
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.TPatom.inertia_le_fixingSubgroup_of_ramificationIdx_eq_one
-import Submission.Work.SSGRoute.Sha2Lib.smulHeightOneSpectrum_inv_liesOver
-import Submission.Work.SSGRoute.Sha2Lib.under_smul_heightOneSpectrum
-import Submission.Work.SSGcrux.zpowers_sup_inertia_eq_decomp_proved
+import Submission.Work.SSGRoute.TPatom.noninvariantLevelDefs
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ramificationIdx_inertiaDeg_map_eq_of_ringEquiv
 import Submission.Work.SSGcrux.under_smul_eq_iff
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroup_eq_bot_iff_ramificationIdx_eq_one_and_inertiaDeg_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_mem_decompositionSubgroup_restrictNormalHom_eq
-import Submission.Commons.NumberTheory.NumberField.Completion.card_decompositionSubgroup_under_mul_card_ker
+import Submission.Work.SSGcrux.zpowers_sup_inertia_eq_decomp_proved
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

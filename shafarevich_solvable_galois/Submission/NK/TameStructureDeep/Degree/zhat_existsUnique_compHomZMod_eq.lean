@@ -1,33 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The universal property of `Ẑ = lim_n ℤ ⧸ nℤ`
-
-`Ẑ = NK.LocalAnabelian.Zhat` is the limit of the finite quotients `ℤ ⧸ dℤ` of `ℤ`,
-and `compHomZMod d hd : Ẑ →* Multiplicative (ZMod d)` is the `d`-th component map.
-
-The initial statement of the file is the *universal property* of this limit: every
-compatible family of elements `c d ∈ ℤ/dℤ` (compatible meaning that `c e` is the
-reduction of `c d` whenever `e ∣ d`) is the family of components of a unique `z : Ẑ`.
-
-The proof goes through the compactness of `Ẑ`:
-
-* every component map `compHomZMod d hd` is surjective (it is hit by the dense copy of `ℤ`),
-* the fibres `{z | compHomZMod d hd z = c d hd}` are closed, and any finite intersection
-  of them contains a point, namely a preimage of `c N` for `N` the product of the levels
-  involved (compatibility of the family `c` and of the component maps does the rest);
-* a compact space in which a family of closed sets has the finite intersection property
-  has nonempty intersection.
-
-Uniqueness follows because the component maps separate points: an element of `Ẑ` is
-determined by its components on the `mZ d` (`d ≥ 1`), and every finite index subgroup of
-`ℤ` contains some `dℤ`.
-
-Everything is stated with the explicit definitions from
-`Submission.NK.TameStructureDeep.Degree.zhatComponents`.
--/
-import Mathlib
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Analysis.Normed.Group.Quotient
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Degree.zhatComponents
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

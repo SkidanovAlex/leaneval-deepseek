@@ -1,7 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.alphaTwo_base_case
 import Submission.Work.SSGRoute.PT.resH2
-import Submission.Work.AbsoluteKummer.SES.ConnectingH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

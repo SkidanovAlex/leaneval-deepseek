@@ -1,27 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Vocabulary for `Work.SSGRoute.brauer_single_place` (E8')
-
-This module collects the `Prop`-valued wrappers used to delegate the two large structural inputs of
-`brauer_single_place`:
-
-* `Work.SSGRoute.EB_AuxFinite` — the auxiliary cyclic cyclotomic level with prescribed local degree
-  at a finite place (the non-archimedean auxiliary of
-  `NK.CFTLib.HRdescent.localConditionCyclotomicPrimeOdd`, with the cyclicity hypothesis on `L/k`
-  removed);
-* `Work.SSGRoute.EB_Crux` — the local degree step: in the tower `k ⊆ L, M ⊆ E` with `E = L·M`, the
-  restriction of the inflation of a class of `H²(Gal(L/k), Lˣ)` to `Gal(E/M)` is locally trivial at
-  every place of `E` above a finite place `v₀` of `k`, provided the local degree at `v₀` of `M`
-  is divisible by the local degree of `L`.
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrimeOdd
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.NUV2.ChebAux.Transfer.Defs
-import Submission.NK.NUV2.ARL.HR.TransferSupport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

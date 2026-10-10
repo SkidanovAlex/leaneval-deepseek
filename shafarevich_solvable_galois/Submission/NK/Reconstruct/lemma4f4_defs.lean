@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.NK.Reconstruct.levelInfinity
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.Topology.GDelta.MetrizableSpace
 import Submission.NK.Reconstruct.ambient4f3
-import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Reconstruct.gammaBaseChangeHom_galToGamma
 import Submission.NK.Reconstruct.finite_coker_gammaBaseChangeHom
-import Submission.NK.Reconstruct.NumFieldIn
+import Submission.NK.Reconstruct.gammaBaseChangeHom_galToGamma
+import Submission.NK.Reconstruct.levelInfinity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

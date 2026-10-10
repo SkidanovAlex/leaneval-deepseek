@@ -1,18 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `primeBelow` is determined by the primes lying over it
-
-If a finite prime `𝔮` of a number field `K` lies over the height-one prime `P` of
-`𝓞 ℚ = ℤ`, then `P` is the rational prime `𝔮 ∩ ℤ` below `𝔮`, i.e.
-`primeBelow K 𝔮 = P`.
-
-Both sides are height-one spectra, so it suffices to compare their underlying ideals:
-`(primeBelow K 𝔮).asIdeal = 𝔮.asIdeal.under (𝓞 ℚ)` by definition, and the hypothesis
-`𝔮.asIdeal.LiesOver P.asIdeal` says exactly `P.asIdeal = 𝔮.asIdeal.under (𝓞 ℚ)`.
--/
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.LocalInputs.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

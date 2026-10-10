@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
 import Submission.Work.SSGRoute.PTdualControl.detectorDescent_main
+import Submission.Work.SSGRoute.PTdualControl.isCyclotomicExtension_adjoin_isPrimitiveRoot
 import Submission.Work.SSGRoute.PTdualControl.isGalois_adjoin_isPrimitiveRoot
 import Submission.Work.SSGRoute.PTdualControl.not_dvd_finrank_adjoin_isPrimitiveRoot
-import Submission.Work.SSGRoute.PTdualControl.isCyclotomicExtension_adjoin_isPrimitiveRoot
-import Submission.Work.SSGRoute.E9Nodes.e9_inertia_restrict
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

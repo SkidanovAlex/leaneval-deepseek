@@ -1,5 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_additive_loc
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.AbsoluteKummer.SES.ker_le_range_mapH0
+import Submission.Work.AbsoluteKummer.SES.ker_mapH1_le_range_delta
+import Submission.Work.SSGRoute.LTDDefs.H2locEquivH2
+import Submission.Work.SSGRoute.range_mapH2_eq_ker_deltaH3
+import Submission.Work.SSGRoute.range_mapH2_eq_ker_mapH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

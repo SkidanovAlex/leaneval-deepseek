@@ -1,26 +1,28 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.N2v2.artin_fixes_of_local_factors
 import Submission.Work.SSGRoute.N2v2.artin_lifts_zdata
 import Submission.Work.SSGRoute.N2v2.exists_artinMap_with_decompLift
-import Submission.Work.SSGRoute.N2v2.heart_chi1_part
-import Submission.Work.SSGRoute.N2v2.char_eq_neg_localSum
-import Submission.Work.SSGRoute.N2v2.isUnramifiedIn_of_notMem_Tprime
 import Submission.Work.SSGRoute.N2v2.exists_kummerChar_level
-import Submission.Work.SSGRoute.N2v2.kummerSplit_of_hsplit
-import Submission.Work.SSGRoute.N2v2.artin_fixes_of_local_factors
 import Submission.Work.SSGRoute.ZDataMup.localFaithful_abelian
-import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
 import Submission.Work.SSGRoute.ZSplit.exists_kummerCocharZMod_of_additive_locConst
-import Submission.Work.SSGRoute.ZSplit.FrobeniusValue
-import Submission.Work.SSGRoute.myv2.KummerSep
-import Submission.Work.SSGRoute.myv2.KummerFieldInst
-import Submission.Work.SSGRoute.myv2.Hdiag
-import Submission.Work.SSGRoute.myv2.Hdata
-import Submission.Work.SSGRoute.myv2.LevelE
 import Submission.Work.SSGRoute.myv2.ExpP
+import Submission.Work.SSGRoute.myv2.Hdata
+import Submission.Work.SSGRoute.myv2.KummerFieldInst
+import Submission.Work.SSGRoute.myv2.KummerSep
+import Submission.Work.SSGRoute.myv2.LevelE
+import Submission.Work.SSGRoute.myv2.gsum_vanishes
 import Submission.Work.SSGRoute.myv2.localFactor_archimedean_eq_one
 import Submission.Work.SSGRoute.myv2.transfer_of_le
-import Submission.Work.SSGRoute.myv2.gsum_vanishes
-import Submission.Work.SSGRoute.EscapeCoreLib.baseChange_over_K
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.NK.Reconstruct.baseChange
-import Submission.NK.Reconstruct.proj_surjective
-import Submission.NK.Reconstruct.abelianization_range_inclusion_eq_ker_quotient
-import Submission.NK.Reconstruct.exists_pow_projection_ellPart
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.LevelInclExact.levelInclHom_range_eq_ker_levelRestrictHom
+import Submission.NK.Reconstruct.exists_pow_projection_ellPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

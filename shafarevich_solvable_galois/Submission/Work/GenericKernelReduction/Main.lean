@@ -1,42 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The reduction of Theorem 14 to the generic-kernel hypothesis
-
-A. Schmidt and K. Wingberg, *Šafarevič's theorem on solvable groups as Galois groups*,
-arXiv:math/9809211, §5:
-
-> **Theorem 14.** Let `K/k` be a finite Galois extension of the global field `k` and let
-> `φ : G_k ↠ G(K/k) = G`.  Then every split embedding problem
-> `1 → H → G ⋊ H → G → 1` over `G_k` with finite nilpotent kernel `H` has a proper solution.
->
-> Since a finite nilpotent group is the direct product of its `p`-Sylow subgroups and since every
-> finite `G`-operator `p`-group is a quotient of `F^(n) = F^(n)(ν)` for some `n, ν`, it suffices
-> to show the following assertion: for every prime number `p`, all `n ∈ ℕ` and all `ν` the split
-> embedding problem `1 → F^(n)/F^(n)(ν) → F^(n)/F^(n)(ν) ⋊ G → G → 1` over `k` has a proper
-> solution.
-
-This file carries out that reduction over the base field `ℚ` with the generic-kernel hypothesis
-`Work.GenericKernelReduction.GenericKernelSolvable` as the only input:
-
-* `genericKernelSolvableInClosure`: the hypothesis in the closure form used by the argument
-  (a solution of an embedding problem over `ℚ` can be realised inside `AlgebraicClosure ℚ`);
-* `splitEmbeddingTheoremOverRat_of_genericKernel`: **`GenericKernelSolvable →
-  Submission.SplitEmbeddingTheoremOverRat`** (Theorem 14 of Schmidt–Wingberg over `ℚ`);
-* `realizable_of_genericKernel`: composing with Ore's reduction
-  (`Submission.realizable_of_solvable_of_split` from `Submission/ClassicalRoute.lean`), the
-  generic-kernel hypothesis implies that every finite solvable group is a Galois group over `ℚ`;
-* `minimalNormalKernelStep_of_genericKernel`: the same hypothesis implies the single deep input
-  `Submission.MinimalNormalKernelStep` of the development.
--/
-
-import Submission.Work.GenericKernelReduction.Defs
-import Submission.Work.GenericKernelReduction.Transport
-import Submission.Work.GenericKernelReduction.SinglePrime
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.Nilpotent
-import Submission.Work.GenericKernelReduction.inClosure_of_splitEmbeddingSolvable
-import Submission.ClassicalRoute
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

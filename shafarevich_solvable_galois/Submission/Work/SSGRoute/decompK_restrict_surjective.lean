@@ -1,6 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
+import Submission.Work.SSGRoute.E7bDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

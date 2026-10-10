@@ -1,8 +1,14 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.N2v2.heart_chi1_part
 import Submission.Work.SSGRoute.myv2.sup_isMulCommutative
 import Submission.Work.SSGRoute.myv2.sup_pow_eq_one
-import Submission.Work.SSGRoute.N2v2.heart_chi1_part
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

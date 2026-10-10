@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
 import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
 
 namespace Work.SSGRoute.E1aClean

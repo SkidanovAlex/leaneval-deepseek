@@ -1,25 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The exact sequence of ramification theory and the Frobenius
-
-For a finite Galois extension `L/K` of number fields and a prime `w` of `L` with `v` the prime of
-`K` below it, this file provides
-
-* `ramificationExactSequence`: the canonical isomorphism
-  `D_w ⧸ I_w ≃* Gal(κ_w / κ_v)`;
-* `residueFrobenius`: the Frobenius of the residue field extension `κ_w/κ_v`, i.e. the `q`-power
-  map with `q = #κ_v`;
-* `frobenius`: an element of `D_w` lifting `residueFrobenius`, i.e. a Frobenius at `w`
-  (well defined modulo `I_w`).
-
-## Main definitions
-
-* `Work.LocalFields.ramificationExactSequence`
-* `Work.LocalFields.residueFrobenius`, `Work.LocalFields.residueFrobenius_apply`
-* `Work.LocalFields.frobeniusClass`, `Work.LocalFields.frobenius`
--/
+import Mathlib.NumberTheory.NumberField.Ideal.Basic
 import Submission.Work.LocalFields.Decomposition
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

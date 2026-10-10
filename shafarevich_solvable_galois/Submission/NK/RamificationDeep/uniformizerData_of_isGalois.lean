@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.Ramification.Defs
-import Submission.NK.RamificationDeep.Defs
-import Submission.NK.RamificationDeep.InertiaField
-import Submission.NK.RamificationDeep.residueField_inertiaField_eq
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.monogenic_of_residueRep
-import Submission.NK.Ramification.ramificationSubgroup_succ_eq_of_uniformizer
+import Submission.NK.RamificationDeep.residueField_inertiaField_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

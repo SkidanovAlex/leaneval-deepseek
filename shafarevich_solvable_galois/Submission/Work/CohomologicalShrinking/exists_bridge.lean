@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.CohomologicalShrinking.SemidirectData
-import Submission.Work.CohomologicalShrinking.Bridge.Final
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.CohomologicalShrinking.bridge.exists_bridge_aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

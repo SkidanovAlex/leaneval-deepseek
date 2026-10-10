@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.Data.Finsupp.SMulWithZero
+import Mathlib.GroupTheory.Commutator.Basic
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.LinearAlgebra.Span.Defs
+import Mathlib.Algebra.Module.Submodule.Range
 import Submission.Work.SSGRoute.prop5.core.Defs
-import Submission.Work.SSGRoute.prop5.coreGraded
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

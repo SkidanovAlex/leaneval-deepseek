@@ -1,15 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The base ring `𝔬 = A ∩ K` of a Galois-stable discrete valuation ring
-
-Let `K ⊆ L` be fields, `A` a valuation subring of `L` and `𝔬 := A.comap (algebraMap K L)`, i.e.
-`𝔬 = A ∩ K` viewed as a valuation subring of `K`.  This file collects the two ring homomorphisms
-`𝔬 → A` and `𝔬 → L` which make `A` and `L` into `𝔬`-algebras, together with `IsScalarTower`
-instances and the basic `simp` lemmas recording their behaviour on elements.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

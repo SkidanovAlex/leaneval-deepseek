@@ -1,14 +1,15 @@
-/-
-# Trace of a base-changed element
-
-`Tr_{K ⊗[ℚ] F / F}(z ⊗ s) = s * (Tr_{K/ℚ} z)`.
-
-This is the trace-compatibility of the base change `K ↦ K ⊗[ℚ] F`, and one of the two inputs of the
-local–global trace identity `∑_{Q | p} Tr_{K_Q/ℚ_p}(z) = Tr_{K/ℚ}(z)`
-(`FinitenessHM/sum_trace_adicCompletion_eq_trace.lean`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.completionSetup
+import Mathlib.RingTheory.Henselian
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Trace.Basic
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.module_free_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ValExp
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

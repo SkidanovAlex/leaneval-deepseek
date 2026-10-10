@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.H3Map.mapC3c_mem_Z3_mem_B3
-import Submission.Work.SSGRoute.PT.ClassFormation
-import Submission.Work.SSGRoute.PTembedding.CoindTransfer
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PTembedding.coindTrace_equivariant
 import Submission.Work.SSGRoute.PTembedding.h3_nsmul_prime_eq_zero
+import Submission.Work.SSGRoute.sha2_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

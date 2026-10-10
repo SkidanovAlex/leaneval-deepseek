@@ -1,10 +1,9 @@
-import Mathlib
-import Submission.NK.RamificationDeep.InertiaField
-import Submission.NK.RamificationDeep.MonoDefs
-import Submission.NK.RamificationDeep.isNoetherianRing_restrictRing
-import Submission.NK.RamificationDeep.algebra_isIntegral_inertiaField_comap
-import Submission.NK.RamificationDeep.isIntegralClosure_comap
+import Mathlib.RingTheory.DedekindDomain.IntegralClosure
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.RamificationDeep.algebra_isIntegral_comap
+import Submission.NK.RamificationDeep.isIntegralClosure_comap
 import Submission.NK.RamificationDeep.isNoetherianRing_comap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

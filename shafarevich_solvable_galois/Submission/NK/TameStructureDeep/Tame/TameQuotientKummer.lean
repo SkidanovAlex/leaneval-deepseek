@@ -1,28 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `TameQuotientKummer` at every place, unconditionally
-
-The first named classical input of the local-structure residual,
-`NK.TameStructureDeep.TameQuotientKummer p q κ K'` (`Residual.lean`), is the pair
-
-* `isTameInertia` — NSW (7.5.7) Corollary, Iwasawa: `I_κ/V_κ` is the maximal closed normal
-  pro-cyclic subgroup of `G_κ^{tr}`, and
-* `frobenius_iff` — NSW (12.1.8) Lemma, Iwasawa: a normalised Frobenius is exactly a tame
-  Frobenius lift.
-
-Both are **theorems** of this chapter at every place (`p = ringChar` of the residue field,
-`q = residueCard K 𝔭`), so `TameQuotientKummer` needs no hypothesis.  With this, the reduced
-residual of the chapter has exactly one unproved field, `abelianisation` (Shimizu's lemma, i.e.
-local class field theory); see `NK.TameStructureDeep.Tame.tameQuotientKummer_adicCompletion_residueChar`.
--/
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Tame.tameInertiaInput_adicCompletion_residueChar
-import Submission.NK.TameStructureDeep.Tame.wildInertiaSubgroup_eq_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.CorrectedResidual
-import Submission.NK.TameStructureDeep.Residual
-import Submission.NK.LocalTame.All
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

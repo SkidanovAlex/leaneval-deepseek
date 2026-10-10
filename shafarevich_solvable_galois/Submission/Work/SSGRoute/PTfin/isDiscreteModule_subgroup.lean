@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Topology.Constructions
+import Mathlib.GroupTheory.GroupAction.Defs
+import Mathlib.Algebra.GroupWithZero.Action.End
 import Submission.Work.AbsoluteKummer.Coefficients
-import Submission.Work.AbsoluteKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

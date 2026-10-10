@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.SSGRoute.prop5.pow_mem_pCentralSeries
-import Submission.Work.SSGRoute.prop5.mul_pow_mem_lowerCentralSeries
-import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
-import Submission.Work.SSGRoute.prop5.wtFiltration
-import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
-import Submission.Work.SSGRoute.prop5.adjacent.magnus_kernel_detects
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.MonoidAlgebra.Basic
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.adjacent.magnus_image_saturated
+import Submission.Work.SSGRoute.prop5.adjacent.magnus_kernel_detects
+import Submission.Work.SSGRoute.prop5.mul_pow_mem_lowerCentralSeries
+import Submission.Work.SSGRoute.prop5.pow_mem_pCentralSeries
+import Submission.Work.SSGRoute.prop5.wtFiltration
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,14 @@
-import Mathlib
-import Submission.NK.ResidueFrob.Inertia
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Invariant.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.ResidueFrob.inertia_of_levels_of_tameData
-import Submission.NK.ResidueFrob.primeOfLevel_liesOver
-import Submission.NK.ResidueFrob.isTrivialOnResidueAtLevel_of_le
 import Submission.NK.ResidueFrob.isClosed_setOf_isTrivialOnResidueAtLevel
-import Submission.NK.FrobeniusBridge.Descent
+import Submission.NK.ResidueFrob.isTrivialOnResidueAtLevel_of_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

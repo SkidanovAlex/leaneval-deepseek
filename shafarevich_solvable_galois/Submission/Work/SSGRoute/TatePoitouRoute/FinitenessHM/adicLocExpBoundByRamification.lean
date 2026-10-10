@@ -1,21 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocVal
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpInertia
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.aeval_derivative_sum
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ordAt_sum_le
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.helpersTotallyRamified
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExp_le
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertiaField_finrank
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.differentIdeal_inertiaRing_eq_top
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertiaRing_span_p_isMaximal
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertia_ordAt_natCast
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertia_ordAt_algebraMap
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertia_derivative_bound
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_isPrimitiveRoot_lift_adicCompletionB
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_uniformizer_val_eq_exp_neg_one
-import Submission.Commons.NumberTheory.NumberField.Completion.card_residueField_adicCompletionIntegers_eq_pow_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertia_ordAt_algebraMap
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertia_ordAt_natCast
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

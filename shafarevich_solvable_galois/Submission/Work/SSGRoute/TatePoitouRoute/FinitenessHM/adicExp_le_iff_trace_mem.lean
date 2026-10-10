@@ -1,7 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.completionSetup
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.count_different_le_count_different_of_algebra
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_tensor_adicCompletion_prod
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_uniformizer_val_eq_exp_neg_one
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.module_free_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.ValExp
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletionExp
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.count_different_le_count_different_of_algebra
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

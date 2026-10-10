@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.Algebra.Order.pow_mul_right_injective_of_lt_one
 import Submission.Commons.RingTheory.Valuation.exists_mem_fixedField_stabilizer_val_eq_one_val_lt_one
 import Submission.Commons.RingTheory.Valuation.exists_val_eq_algebraMap_of_conj_val_ne

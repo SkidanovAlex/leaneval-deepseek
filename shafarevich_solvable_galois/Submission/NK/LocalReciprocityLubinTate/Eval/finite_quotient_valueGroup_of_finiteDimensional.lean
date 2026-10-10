@@ -1,31 +1,9 @@
-/-
-# Finiteness and cardinality bound for the quotient of value groups
-
-For a finite extension `K ⊆ L` of fields and a valuation subring `W` of `L` (so that `W.valuation`
-is a valuation of `L` whose value group is `W.ValueGroup`), the value group of `L` modulo the value
-group of `K` is finite, of cardinality at most `[L : K]`.
-
-This is the classical bound `e ≤ n` for the ramification index of an arbitrary (not necessarily
-complete or Henselian) valued field extension, in the form needed by the local reciprocity chapter.
-
-The proof is the standard one: the chosen representatives in `Lˣ` of the cosets of the value group
-of `K` inside the value group of `L` are pairwise of distinct valuation modulo `v(Kˣ)`, hence
-`K`-linearly independent (choose an element of maximal valuation in a putative relation and apply
-the ultrametric inequality `Valuation.map_sum_lt`), and a linearly independent family in a finite
-dimensional vector space is both finite and of size at most the dimension.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.unitsVal` : the value group functor on units,
-  `v ↦ (x ↦ Units.mk0 (v x) _)`.
-* `NK.LocalReciprocityLubinTate.Eval.valueGroup_eq_range_unitsVal` : for a monoid-with-zero
-  homomorphism `f` out of a group with zero, `f.valueGroup` is the range of `unitsVal f`.
-* `NK.LocalReciprocityLubinTate.Eval.finite_quotient_valueGroup_of_finiteDimensional_general` :
-  the general statement for an arbitrary surjective valuation `L → Γ`.
-* `NK.LocalReciprocityLubinTate.Eval.finite_quotient_valueGroup_of_finiteDimensional` :
-  the statement for a valuation subring `W` of `L`.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

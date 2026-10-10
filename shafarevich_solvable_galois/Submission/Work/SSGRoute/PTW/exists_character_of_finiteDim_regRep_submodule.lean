@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.RegularRep
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Analysis.InnerProductSpace.JointEigenspace
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.CStarAlgebra.Module.Constructions
 import Submission.Work.SSGRoute.PTW.RestrictRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

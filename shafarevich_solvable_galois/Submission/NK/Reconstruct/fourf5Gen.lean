@@ -1,7 +1,11 @@
-import Submission.NK.Reconstruct.lemma4f4_gen
-import Submission.NK.Reconstruct.hausRank
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Submission.NK.Reconstruct.fourf5Input
-import Submission.NK.Reconstruct.NumFieldInSup
+import Submission.NK.Reconstruct.hausRank
+import Submission.NK.Reconstruct.lemma4f4_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_prime_mem_rayClass
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.gesChebotarev_rayClass
-import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
-import Submission.NK.NUV2.RouteB.RayModulus.classOfIdeal_eq_iff
-import Submission.NK.GlobalCFT.GaloisClassGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_idealClassMap_exists
-import Submission.Work.SSGRoute.PinnedTwin.Basic
-import Submission.Work.SSGRoute.PinnedTwin.ideleOfIdeal_smul_cong
-import Submission.Work.SSGRoute.PinnedTwin.rhoIdeal_smul_cong
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.PinnedTwin.congSubgroup_smul_mem
 import Submission.Work.SSGRoute.PinnedTwin.exists_asym_ideal
+import Submission.Work.SSGRoute.PinnedTwin.ideleOfIdeal_smul_cong
+import Submission.Work.SSGRoute.PinnedTwin.rhoIdeal_smul_cong
+import Submission.Work.SSGRoute.ges_escape_aux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

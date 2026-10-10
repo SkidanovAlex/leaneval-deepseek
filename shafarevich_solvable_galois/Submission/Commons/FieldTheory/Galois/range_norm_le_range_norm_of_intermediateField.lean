@@ -1,11 +1,8 @@
-import Mathlib.Algebra.Algebra.IsSimpleRing
-import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
 import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Norm.Transitivity
-import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

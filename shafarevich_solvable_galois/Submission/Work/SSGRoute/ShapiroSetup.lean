@@ -1,30 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Setup for the Shapiro ("induction of 2-cocycles") construction
-
-Given a finite group `G`, a subgroup `H ≤ G` and an `𝔽_p[G]`-module `M`, we want to turn a
-2-cocycle `c` on `H` with values in `M` into a 2-cocycle `C` on `G` with values in the induced
-module `M ⊗ 𝔽_p[X]` for a suitable `G`-set `X`, in such a way that evaluating `C` at the pair
-`(h,h')` and extracting the coefficient at a base point returns `c (h,h')`.
-
-The construction is carried out for an abstract *framed* `G`-set: a `G`-set `X` with a point `x₀`
-fixed by `H` and a map `s : X → G` such that `s x` is "compatible" with `x` in the sense that
-`(s x)⁻¹ * g * s (g⁻¹ • x) ∈ H` for all `g, x` and `s x₀ = 1`.  (For `X = G ⧸ H` and `s` a
-section of the coset projection these are exactly the properties one checks at hand.)
-
-This file contains:
-
-* the coset space `G ⧸ H` with a set-theoretic section `sec` sending the base point to `1` and
-  the associated `H`-coordinates `A g x = (sec x)⁻¹ * g * sec (g⁻¹ • x)`; these provide the
-  framed `G`-set used to instantiate the construction;
-* for an abstract framed `G`-set, the `H`-coordinates `AX`, the permutation module
-  `PermModX p X = 𝔽_p[X]` with its `𝔽_p[G]`-module structure, the identification
-  `permEquivX : M ⊗ 𝔽_p[X] ≃ (X → M)` and the function `funCX`.
--/
-
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.LinearAlgebra.TensorProduct.Pi
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.Shrinking.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

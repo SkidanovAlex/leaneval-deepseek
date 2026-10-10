@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Algebra.Rat
+import Mathlib.Algebra.Polynomial.AlgebraMap
+import Mathlib.Data.Rat.Star
+import Mathlib.Algebra.Order.Archimedean.Basic
+import Mathlib.Algebra.Order.Ring.Star
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

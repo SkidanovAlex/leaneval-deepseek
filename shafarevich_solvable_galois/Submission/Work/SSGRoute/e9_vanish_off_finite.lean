@@ -1,17 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.E9Nodes.e9_baseS
 import Submission.Work.SSGRoute.Sha2Lib.exists_isLocTrivial_inflH
 import Submission.Work.SSGRoute.Sha2Lib.phiAt_inflH
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.local_duality_ext_extH_finite
-import Submission.Work.SSGRoute.E9Nodes.e9_baseS
-import Submission.Work.SSGRoute.e9_nonsplit_place
-import Submission.Work.SSGRoute.e9_inflation_descent
-import Submission.Work.SSGRoute.e9_infl_local_compat
-import Submission.Work.SSGRoute.e9_witness_of_classGroup
 import Submission.Work.SSGRoute.e9_caseB_descent_wide
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Submission.Work.SSGRoute.e9_infl_local_compat
+import Submission.Work.SSGRoute.e9_inflation_descent
+import Submission.Work.SSGRoute.local_duality_ext_extH_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

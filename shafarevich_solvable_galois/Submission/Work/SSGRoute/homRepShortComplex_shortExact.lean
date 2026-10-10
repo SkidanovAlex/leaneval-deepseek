@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.ExtOnePre
+import Mathlib.Algebra.Module.Injective
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Submission.Work.SSGRoute.ExtOneSES
-import Submission.Work.SSGRoute.ExtOneDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

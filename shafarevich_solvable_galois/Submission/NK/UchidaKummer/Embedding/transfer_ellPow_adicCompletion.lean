@@ -1,8 +1,11 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.Completion.isScalarTower_adicCompletion
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
+import Submission.NK.UchidaKummer.Defs
 
 set_option linter.style.haveILetI false
 

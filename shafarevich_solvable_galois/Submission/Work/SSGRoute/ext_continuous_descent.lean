@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.homRep
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
-import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
-import Submission.Work.SSGRoute.local_kummer_reciprocity
 import Submission.Work.SSGRoute.ext_continuous_descent_fg
+import Submission.Work.SSGRoute.localKummerReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

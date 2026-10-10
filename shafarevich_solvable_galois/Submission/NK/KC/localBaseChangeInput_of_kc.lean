@@ -1,15 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.Existence.hilbertReciprocityInputs
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
-import Submission.NK.LocalReciprocity.NormGroup
-import Submission.NK.LocalReciprocity.NormLimitationAdic
-import Submission.Commons.NumberTheory.NumberField.Completion.isCyclic_algEquiv_adicCompletion_of_ramificationIdx_eq_one
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_artinMap_of_abelian_local
-import Submission.Commons.NumberTheory.NumberField.Completion.adicCompletionMap_comp
-import Submission.NK.Summary.NUV2.Tame.nonempty_algEquiv_of_inertiaDeg_eq_one
-import Submission.NK.Chebotarev.Basic
 import Submission.NK.KC.localGaloisPackageAux
+import Submission.NK.LocalReciprocity.NormLimitationAdic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

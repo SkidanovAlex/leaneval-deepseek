@@ -1,16 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.E7Fin.cupPairing
-import Submission.Work.SSGRoute.E7Fin.cupLcCocycles
-import Submission.Work.SSGRoute.evCupFun_isCocycle2On
-import Submission.Work.SSGRoute.HRecNKImports
-import Submission.Work.AbsoluteKummer.All
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.Work.SSGRoute.PTembedding.KummerMuDefs
-import Submission.Work.SSGRoute.sha2_hasse.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Submission.Work.SSGRoute.HSRow.Coords
+import Submission.Work.SSGRoute.HSTwoRow.finrank_H1loc_decomp
 import Submission.Work.SSGRoute.Nakayama.kummerH2
+import Submission.Work.SSGRoute.evCupFun_isCocycle2On
 import Submission.Work.SSGRoute.sha2_hasse.locUnits_mkClass_apply
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.LocalTame.lFrattini_isOpen
-import Submission.NK.LocalTame.cruxCompactExpPrimeFinite
-import Submission.NK.LocalTame.IndexPrime.Basic
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Data.Nat.Prime.Defs
 import Submission.NK.LocalTame.IndexRedo.frattini_index_ne_zero_index_eq_prime
 import Submission.NK.LocalTame.IndexRedo.isOpen_of_index_prime_of_frattini_index
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,17 +1,19 @@
-import Mathlib
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.FieldTheory.Finite.GaloisField
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Trace.Quotient
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Commons.NumberTheory.NumberField.Completion.liesOver_maximalIdeal_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
+import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.module_free_adicCompletionIntegers
+import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
 import Submission.Commons.RingTheory.Henselian.uniformizer_valuation_eq_exp_neg_one
 import Submission.Commons.RingTheory.Norm.residue_norm_eq
-import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
-import Submission.Commons.NumberTheory.NumberField.Completion.module_free_adicCompletionIntegers
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletionIntegers
-import Submission.Commons.NumberTheory.NumberField.Completion.isIntegralClosure_adicCompletionIntegers_extension
-import Submission.Commons.NumberTheory.NumberField.Completion.liesOver_maximalIdeal_adicCompletionIntegers
-import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
-import Submission.Commons.NumberTheory.NumberField.Completion.val_norm_adicCompletion_eq_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,19 +1,8 @@
-/-
-# The unit factorisation of the Lubin–Tate group law, unconditionally
-
-`Eval/law_factorization.lean` proves that a formal group law whose `F(X,Y) - X` is divisible by `Y`
-factors as `F(X,Y) = X + Y·Θ` with `Θ` a unit; `Eval/X_one_dvd_law_sub_X_zero.lean` proves the
-divisibility for *every* formal group law.  This file puts the two together for the group law of a
-`LubinTateModule`, which is the form in which `Eval/smulDiv_add.lean` consumes the factorisation.
-
-## Main result
-
-* `NK.LocalReciprocityLubinTate.Eval.LubinTateModule.exists_unit_factorization`.
--/
-import Mathlib
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.FormalGroup.Basic
+import Submission.NK.LocalReciprocityLubinTate.Eval.X_one_dvd_law_sub_X_zero
 import Submission.NK.LocalReciprocityLubinTate.Eval.law_factorization
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.FormalGroup
-import Submission.NK.LocalReciprocityLubinTate.Eval.X_one_dvd_law_sub_X_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

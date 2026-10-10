@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.UchidaKummer.Kummer.localDeg_kummerField_eq_one_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

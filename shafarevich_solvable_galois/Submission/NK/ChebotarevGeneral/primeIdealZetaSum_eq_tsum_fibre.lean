@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Defs
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Inertia
+import Mathlib.Topology.GDelta.MetrizableSpace
+import Mathlib.Topology.Separation.CompletelyRegular
 import Submission.NK.ChebotarevGeneral.Basic
-import Submission.Commons.NumberTheory.NumberField.Set.summable_primeIdealZetaSum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.H2locAux.Defs
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Submission.Work.SSGRoute.PT.isCoboundaryOn_top_of_isProPrimeToP
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

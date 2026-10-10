@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.Coefficients
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
 import Submission.Work.SSGRoute.PTfin.isDiscreteModule_subgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

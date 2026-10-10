@@ -1,11 +1,8 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Mathlib
+import Mathlib.Topology.Algebra.IsOpenUnits
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
 import Submission.Commons.NumberTheory.NumberField.finite_primesOver
 import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

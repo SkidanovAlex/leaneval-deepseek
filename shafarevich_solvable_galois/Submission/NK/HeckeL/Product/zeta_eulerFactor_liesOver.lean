@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
+import Submission.NK.HeckeL.Zeta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,14 +1,9 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_exists
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFT.Cohomology.globalCFT_H0Computation_of_invariants_and_norm
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_invariants_ideleClassGroup
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_prod_smul_eq_inclusion_normIdeleHom
-import Submission.NK.GlobalCFT.Cohomology.globalCFT_H0Computation_of_invariants_and_norm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

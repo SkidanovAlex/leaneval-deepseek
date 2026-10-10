@@ -1,30 +1,28 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.hom_dualMod_local_units
-import Submission.Work.SSGRoute.ext_congr_right
-import Submission.Work.SSGRoute.ext_res_mulEquiv
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.EnoughProjectives
 import Submission.Work.SSGRoute.ext_continuous_descent
-import Submission.Work.SSGRoute.localUnitsK_iso_intermediateField
-import Submission.Work.SSGRoute.exists_localField_subfield
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Work.SSGRoute.localAutHom_bijective
-import Submission.Work.SSGRoute.h1cont_iso_H1loc
-import Submission.Work.SSGRoute.PT.H1Transfer
-import Submission.Work.SSGRoute.local_ext_h1_assembly
-import Submission.Work.SSGRoute.localField_subfield_place_compat
-import Submission.Work.SSGRoute.homRep_dualMod_units_localClosure
 import Submission.Work.SSGRoute.ext_localUnits_iso_Q
 import Submission.Work.SSGRoute.h1_coeff_transfer_localClosure
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.h1cont_iso_H1loc
+import Submission.Work.SSGRoute.localField_subfield_place_compat
+import Submission.Work.SSGRoute.local_ext_h1_assembly
 
 /-! Guidance from the project lead (the requester):
 
@@ -778,9 +776,12 @@ theorem local_ext_h1_bridge (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [Nu
     refine ⟨hT.1, ?_⟩
     intro γ c hc t
     have hkey : (act γ) ζi = ζi ^ c := by
-      set τ : ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)) :=
+      let τ : ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)) :=
         eG.symm (AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)
-          (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' γ) with hτ
+          (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' γ)
+      have hτ : τ =
+        eG.symm (AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)
+          (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' γ) := rfl
       have hactγ : act γ = (decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)).subtype τ := rfl
       have heGτ : eG τ = AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)
           (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' γ := by
@@ -887,9 +888,12 @@ theorem local_ext_h1_bridge (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [Nu
       act (Φ σ) = SSGRoute.res k K (σ : Ω ≃ₐ[k] Ω) := by
     intro σ
     refine AlgEquiv.ext fun x => ?_
-    set τ : ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)) :=
+    let τ : ↥(decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)) :=
       eG.symm (AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)
-        (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' (Φ σ)) with hτ
+        (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' (Φ σ))
+    have hτ : τ =
+      eG.symm (AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)
+        (K₁ := Work.SSGRoute.localClosureAt k A hA) ↥K' (Φ σ)) := rfl
     have hactσ : act (Φ σ) =
         (decompK (k := k) (NK.GlobalCFT.Place.ofFinite q)).subtype τ := rfl
     have heGτ : eG τ = AlgEquiv.restrictNormalHom (F := Work.SSGRoute.localFieldAt k A hA)

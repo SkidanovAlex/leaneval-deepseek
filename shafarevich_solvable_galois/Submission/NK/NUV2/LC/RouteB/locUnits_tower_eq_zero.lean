@@ -1,11 +1,9 @@
-import Mathlib
-import Submission.NK.NUV2.LC.LocalLevelSystem
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.NUV2.LC.localLevelMap
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.HassePrinciple.liesOver_smul_of_restrict
-import Submission.NK.HassePrinciple.localRingEquiv_localAlgebraMapUnits_of_restrict
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
+import Submission.NK.NUV2.LC.LocalLevelSystem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

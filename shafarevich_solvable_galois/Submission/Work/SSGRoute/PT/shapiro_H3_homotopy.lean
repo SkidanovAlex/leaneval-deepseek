@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.Topology.Defs.Basic
 import Submission.Work.SSGRoute.PT.shapiro_H3_defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

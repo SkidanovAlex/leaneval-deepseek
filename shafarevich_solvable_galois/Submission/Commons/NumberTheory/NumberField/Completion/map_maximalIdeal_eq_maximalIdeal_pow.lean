@@ -1,7 +1,7 @@
-import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Data.Int.Star
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
-import Submission.Commons.RingTheory.Henselian.valuation_completion_liesOver
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.Completion.val_adicCompletionMap_eq_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

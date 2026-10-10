@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.AbstractH0
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.GlobalCFT.H0Computation
-import Submission.NK.GlobalCFTdeep.SecondInequality.normClassSubgroup_index_eq_natCard_H0
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.natCard_H0_eq_of_mulEquiv
+import Submission.NK.GlobalCFTdeep.SecondInequality.normClassSubgroup_index_eq_natCard_H0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,7 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.Chebotarev.ExistsFrobeniusOfRestriction
-import Submission.NK.Chebotarev.Infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

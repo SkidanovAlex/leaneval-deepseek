@@ -1,20 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer field of a `p`-th power is trivial
-
-If `a = c ^ p` is a `p`-th power in `kˣ`, then every `p`-th root `α` of `a` in
-`K'` differs from the element `c ∈ k` by a `p`-th root of unity.  When `k`
-contains a *primitive* `p`-th root of unity `ζ`, the group `μ_p(K')` of `p`-th
-roots of unity in `K'` has at most `p` elements and contains `⟨ζ⟩`, so it equals
-`⟨ζ⟩ ⊆ k`.  Hence `α ∈ k` and `k(a^{1/p}) = k`, i.e. `kummerField p a = ⊥`.
-
-This is the degenerate case of Kummer theory: `k(a^{1/p}) = k` exactly when `a`
-is already a `p`-th power, which is what makes `a ↦ k(a^{1/p})` a well defined
-injection on `kˣ/(kˣ)^p` with image the set of cyclic degree-`p` extensions.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Submission.NK.LocalAnabelian.Kummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

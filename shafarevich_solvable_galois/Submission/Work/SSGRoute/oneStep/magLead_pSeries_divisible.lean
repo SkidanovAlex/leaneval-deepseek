@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.SSGRoute.prop5.magnusFramework
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
-import Submission.Work.SSGRoute.prop5.magnusGroupPart
-import Submission.Work.SSGRoute.prop5.lowerCentralSeries_torsionFree
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.wtz_filz_exists_pow
+import Submission.Work.Shrinking.PCentral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

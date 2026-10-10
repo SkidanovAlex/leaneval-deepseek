@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.GroupTheory.GroupAction.Ring
+import Mathlib.RingTheory.Ideal.Quotient.Defs
 import Submission.Work.SSGRoute.prop5.magnus_leadingTerm
 import Submission.Work.SSGRoute.wtz_filz_exists_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

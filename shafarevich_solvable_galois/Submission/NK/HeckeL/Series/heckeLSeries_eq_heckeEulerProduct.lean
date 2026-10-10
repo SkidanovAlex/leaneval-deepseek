@@ -1,14 +1,14 @@
-/-
-The Hecke `L`-series of a ray class character, written as a Dirichlet series over the ideals
-coprime to the modulus, equals its Euler product over the primes outside the modulus.
--/
-import Mathlib
-import Submission.NK.HeckeL.Basic
-import Submission.NK.HeckeL.Basic.rayChar_atIdeal_mul
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Basic.ideal_eq_prod_finsupp
-import Submission.NK.HeckeL.Series.tsum_finsupp_support_subset_prod
+import Submission.NK.HeckeL.Basic.rayChar_atIdeal_mul
 import Submission.NK.HeckeL.Series.summable_finsupp_prod_pow
 import Submission.NK.HeckeL.Series.tendsto_tsum_subtype_of_cofinal
+import Submission.NK.HeckeL.Series.tsum_finsupp_support_subset_prod
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

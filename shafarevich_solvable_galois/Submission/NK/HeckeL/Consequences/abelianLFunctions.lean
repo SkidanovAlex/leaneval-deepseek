@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.HeckeL.Nonvanishing.artinPrimeSum_isBigO
 import Submission.NK.HeckeL.Series.charPrimeSum_eq_sum_add_artinPrimeSum
 import Submission.NK.HeckeL.Series.exists_units_factor_ne_one

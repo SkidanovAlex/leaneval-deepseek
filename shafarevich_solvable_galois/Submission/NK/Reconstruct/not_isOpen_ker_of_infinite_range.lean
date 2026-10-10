@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.Topology.Algebra.Group.Quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

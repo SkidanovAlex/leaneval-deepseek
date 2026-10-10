@@ -1,43 +1,6 @@
-/-
-# The Tate complex of the pointwise product representation, as a pointwise product
-
-For a family of `R`-linear representations `M : ι → Rep R G` of a finite group `G`, let
-`piRep M` be the pointwise product representation (`G` acting componentwise on `∀ i, (M i).V`).
-This file identifies the Tate complex of `piRep M` with the *explicit* pointwise product complex
-`piCplx R (fun i => tateComplex (M i))` of the Tate complexes of the factors.
-
-Concretely, `tateComplex (piRep M)` is the cochain complex obtained by connecting, via the norm
-map, the inhomogeneous chain complex and the inhomogeneous cochain complex of `piRep M`:
-
-* in degree `k ≥ 0` it is `(Fin k → G) → (∀ i, (M i).V)` (inhomogeneous `k`-cochains),
-* in degree `-(k+1)` it is `(Fin k → G) →₀ (∀ i, (M i).V)` (inhomogeneous `k`-chains),
-
-while `piCplx R (fun i => tateComplex (M i))` has in degree `n` the product `∀ i, ((tateComplex
-(M i)).X n)`.  The degreewise identification is *currying*:
-
-* in degree `k ≥ 0`, `(Fin k → G) → (∀ i, M i) ≃ (∀ i, (Fin k → G) → M i)` (`piRepPosEquiv`),
-* in degree `-(k+1)`, `(Fin k → G) →₀ (∀ i, M i) ≃ (∀ i, (Fin k → G) →₀ M i)`
-  (`piRepNegEquiv`, built from `finsuppPiEquiv`; here `Fin k → G` is finite, as `G` is, so a
-  finitely supported function into a product is a family of finitely supported functions).
-
-The correctness of the differentials is *not* checked by unwinding the formulas for the
-differentials: instead, the isomorphism is built out of the chain maps
-`tateComplex.map (piRepEval M i) : tateComplex (piRep M) ⟶ tateComplex (M i)`, one for each `i`.
-Since each of those is a chain map, the induced "product" map
-
-`tateComplex (piRep M) ⟶ piCplx R (fun i => tateComplex (M i))`,  `x ↦ fun i => (piRepEval M i) x`
-
-commutes with the differentials automatically, and the two lemmas `tateComplex_map_piRepEval_ofNat`
-and `tateComplex_map_piRepEval_negSucc` identify this map degreewise with the currying equivalences
-above, which are isomorphisms.
-
-## Main result
-
-* `tateComplex_piRep_piCplx_iso`: `tateComplex (piRep M) ≅ piCplx R (fun i => tateComplex (M i))`.
--/
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.PiCplxDefs
-import Submission.NK.RepresentationTheory.GroupCohomology.piCohomology_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

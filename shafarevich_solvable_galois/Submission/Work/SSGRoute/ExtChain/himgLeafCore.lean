@@ -1,20 +1,25 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.e1a_beta_can
-import Submission.Work.SSGRoute.PT.sha2_range_iff
-import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
-import Submission.Work.SSGRoute.SSGStage.e1aLandingFinCompat
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restrictSES_e1aSES_injective
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
-import Submission.Work.SSGRoute.E1aClean.Transport
-import Submission.Work.SSGRoute.E1aClean.LocalData
-import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
-import Submission.Work.SSGRoute.ExtChain.carrier_hact
-import Submission.Work.SSGRoute.localGaloisEquiv_coInAdjoin_compat_general
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Topology.Separation.Connected
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ExtChain.extLoc_extToIdeles_e1aSyzShift_eq_zero_imp
-import Submission.Work.SSGRoute.ExtChain.subsingletonH1_homCoind_of_le_ker
 import Submission.Work.SSGRoute.ExtChain.subsingletonH1_homCoind_of_trivial_action
-import Submission.Work.SSGRoute.PT.delta_restrictSES
+import Submission.Work.SSGRoute.PT.sha2_range_iff
 import Submission.Work.SSGRoute.PTdualControl.extExact
+import Submission.Work.SSGRoute.SSGStage.e1aLandingFinCompat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

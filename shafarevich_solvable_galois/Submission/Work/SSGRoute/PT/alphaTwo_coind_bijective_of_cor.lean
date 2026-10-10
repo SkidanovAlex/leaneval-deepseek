@@ -1,9 +1,6 @@
-import Mathlib
+import Mathlib.FieldTheory.Perfect
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.alphaTwo_base_case
-import Submission.Work.SSGRoute.PT.AlphaPairing
-import Submission.Work.SSGRoute.PT.alphaTwo_evalHom
-import Submission.Work.SSGRoute.PT.frobenius_coindAux
-import Submission.Work.SSGRoute.PT.shapiro_H0_coind
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

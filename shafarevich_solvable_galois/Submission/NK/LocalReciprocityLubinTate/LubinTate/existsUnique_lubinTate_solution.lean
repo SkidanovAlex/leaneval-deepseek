@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Series
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Setup
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.Step
+import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.Existence
 import Submission.NK.LocalReciprocityLubinTate.Uniqueness.eq_of_Dsub_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

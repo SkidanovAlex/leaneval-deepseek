@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.GaloisIdelesAction
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_prod_smul_eq_inclusion_normIdeleHom
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,8 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
-import Submission.Work.SSGRoute.E1aClean.extendScalars_finDimensional_of_ker
 import Submission.Work.SSGRoute.E1aClean.extendScalars_isGalois_of_normal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

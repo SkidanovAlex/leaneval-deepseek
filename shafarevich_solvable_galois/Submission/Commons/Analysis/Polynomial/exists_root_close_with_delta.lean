@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.Polynomial.Norm
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Commons.Analysis.Polynomial.exists_root_close_of_eval_lt
 import Submission.Commons.Analysis.Polynomial.value_lt_leadingCoeff_mul_pow
 import Submission.Commons.FieldTheory.Polynomial.factorization_of_splits
-import Submission.Commons.Analysis.Polynomial.exists_root_close_of_eval_lt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

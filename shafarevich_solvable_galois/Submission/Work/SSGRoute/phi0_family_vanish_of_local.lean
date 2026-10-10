@@ -1,15 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.Phi0Aux
-import Submission.Work.SSGRoute.hbn_ext_units
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Phi0Kummer
 import Submission.Work.SSGRoute.classIncl_inflation_injective
 import Submission.Work.SSGRoute.e6_util
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.hbn_ext_units
 
 /-! Guidance from the project lead (the requester):
 
@@ -133,7 +132,6 @@ theorem phi0_family_vanish_of_local (p : ℕ) [Fact p.Prime] (k K : Type) [Field
   -- **Step 2 (Kummer theory).**  A class killed by the Kummer map dies at a bigger level.
   obtain ⟨L', hNF, hfd, hgal, hLL, hzero⟩ :=
     Phi0Kummer.kummer_dies_at_higher_level p k K Ω ζ hζ L z hz h hk
-  letI : NumberField L' := hNF
   letI : FiniteDimensional k L' := hfd
   letI : IsGalois k L' := hgal
   letI : Algebra L L' := (IntermediateField.inclusion hLL).toAlgebra

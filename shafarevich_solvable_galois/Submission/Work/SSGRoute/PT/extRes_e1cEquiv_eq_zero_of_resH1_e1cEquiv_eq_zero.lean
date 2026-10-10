@@ -1,27 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.ExtChain.ChainGamma
-import Submission.Work.SSGRoute.PT.e1a_can_chain
-import Submission.Work.SSGRoute.PT.e1a_localComparison_bricks
-import Submission.Work.SSGRoute.PT.akH2Setup
-import Submission.Work.SSGRoute.PT.exists_localField_place_data
-import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
-import Submission.Work.SSGRoute.PT.homCoindFreeT_H1_subgroup
-import Submission.Work.SSGRoute.PT.e1a_seam
-import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.E1cGeneric.ext_localUnits_iso_Q_general
-import Submission.Work.SSGRoute.E1cGeneric.ext_res_mulEquiv_n_rules
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
-import Submission.Work.SSGRoute.ExtChain.e1aDelta_natural
-import Submission.Work.SSGRoute.PT.H1Transfer
-import Submission.Work.SSGRoute.localGaloisEquiv_coInAdjoin_compat_general
-import Submission.Work.SSGRoute.E1aClean.Transport
-import Submission.Work.SSGRoute.E1aClean.LocalData
-import Submission.Work.SSGRoute.E1aClean.exists_localData_with_seam
-import Submission.Work.SSGRoute.HomCoindSubgroup.homCoindFreeT_H1_subgroup_inf
-import Submission.Work.SSGRoute.PT.h1TransferAddHom_delta
-import Submission.Work.SSGRoute.PT.e1a_deltaH1_natural
-import Submission.Work.SSGRoute.E1aClean.PhiERules
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.finLocalCriterion
+import Submission.Work.SSGRoute.ExtChain.homCoindFreeT_H1_subgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

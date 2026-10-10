@@ -1,5 +1,3 @@
-import Mathlib.Algebra.Algebra.IsSimpleRing
-import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal

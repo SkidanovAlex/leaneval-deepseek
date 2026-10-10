@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.HassePrinciple.IdeleCocycle
-import Submission.NK.GlobalCFT.NormGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

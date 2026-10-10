@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.NK.NUV2.RouteE.levelCoherent
-import Submission.NK.NUV2.RouteD.LevelDescent
-import Submission.NK.NUV2.RouteE.levelH2
+import Mathlib.CategoryTheory.CofilteredSystem
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.RouteD.LevelTransition
-import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
-import Submission.Commons.NumberTheory.NumberField.Completion.finite_groupCohomology_two_units_of_solvable
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.NUV2.RouteE.levelCoherent
+import Submission.NK.NUV2.RouteE.levelH2
 
 /-!
 # A compatible family of fundamental classes (Route E, step L3)
@@ -96,6 +98,7 @@ lemma lvlExists (L E : Lvl Q) (h : L ≤ E) (u : lvlGen Q E) :
         = ((lvlRatio Q L E : ℕ) : ℤ) • (u : lvlCoh Q E) := by
   letI : Algebra ↥L ↥E :=
     RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff L E).mp h))
+  letI : SMul ↥L ↥E := Algebra.toSMul
   letI : IsScalarTower (Q.adicCompletion K) ↥L ↥E :=
     IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥L) (A := ↥E) (fun _ => rfl)
   obtain ⟨v, hv, hmap⟩ := NK.NUV2.RouteD.exists_transition
@@ -121,8 +124,10 @@ noncomputable def lvlTrans (L E : Lvl Q) (h : L ≤ E) (u : lvlGen Q E) : lvlGen
 lemma lvlTrans_spec (L E : Lvl Q) (h : L ≤ E) (hne : L ≠ E) (u : lvlGen Q E) :
     (NK.NUV2.RouteE.levelInfHom L E h) (lvlTrans Q L E h u : lvlCoh Q L)
       = ((lvlRatio Q L E : ℕ) : ℤ) • (u : lvlCoh Q E) := by
-  rw [lvlTrans, dif_neg hne]
-  exact (Classical.choose_spec (lvlExists Q L E h u)).2
+  unfold lvlTrans
+  split_ifs with h'
+  · exact absurd h' hne
+  · exact (Classical.choose_spec (lvlExists Q L E h u)).2
 
 /-- The transition at a level with itself is the identity. -/
 lemma lvlTrans_self (L : Lvl Q) (h : L ≤ L) (u : lvlGen Q L) :
@@ -134,6 +139,7 @@ lemma levelInfHom_injective (L E : Lvl Q) (h : L ≤ E) :
     Function.Injective (NK.NUV2.RouteE.levelInfHom L E h) := by
   letI : Algebra ↥L ↥E :=
     RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff L E).mp h))
+  letI : SMul ↥L ↥E := Algebra.toSMul
   letI : IsScalarTower (Q.adicCompletion K) ↥L ↥E :=
     IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥L) (A := ↥E) (fun _ => rfl)
   intro x y hxy
@@ -145,8 +151,11 @@ lemma levelInfHom_comp (R E P : Lvl Q) (hRE : R ≤ E) (hEP : E ≤ P) :
     (NK.NUV2.RouteE.levelInfHom R P (le_trans hRE hEP))
       = (NK.NUV2.RouteE.levelInfHom E P hEP).comp (NK.NUV2.RouteE.levelInfHom R E hRE) := by
   letI : Algebra ↥R ↥E := RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff R E).mp hRE))
+  letI : SMul ↥R ↥E := Algebra.toSMul
   letI : Algebra ↥E ↥P := RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff E P).mp hEP))
+  letI : SMul ↥E ↥P := Algebra.toSMul
   letI : Algebra ↥R ↥P := RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff R P).mp (le_trans hRE hEP)))
+  letI : SMul ↥R ↥P := Algebra.toSMul
   haveI : IsScalarTower (Q.adicCompletion K) ↥R ↥E := IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥R) (A := ↥E) (fun _ => rfl)
   haveI : IsScalarTower (Q.adicCompletion K) ↥E ↥P := IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥E) (A := ↥P) (fun _ => rfl)
   haveI : IsScalarTower (Q.adicCompletion K) ↥R ↥P := IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥R) (A := ↥P) (fun _ => rfl)
@@ -167,6 +176,7 @@ lemma lvlDeg_pos (L : Lvl Q) : 0 < lvlDeg Q L := by
 lemma lvlDeg_dvd (L E : Lvl Q) (h : L ≤ E) : lvlDeg Q L ∣ lvlDeg Q E := by
   letI : Algebra ↥L ↥E :=
     RingHom.toAlgebra (Subsemiring.inclusion ((FiniteGaloisIntermediateField.le_iff L E).mp h))
+  letI : SMul ↥L ↥E := Algebra.toSMul
   letI : IsScalarTower (Q.adicCompletion K) ↥L ↥E :=
     IsScalarTower.of_algebraMap_eq (R := Q.adicCompletion K) (S := ↥L) (A := ↥E) (fun _ => rfl)
   have hL : lvlDeg Q L = Module.finrank (Q.adicCompletion K) ↥L := IsGalois.card_aut_eq_finrank _ _

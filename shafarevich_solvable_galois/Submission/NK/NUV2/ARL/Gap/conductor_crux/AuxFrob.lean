@@ -1,17 +1,9 @@
-/-
-# The Frobenius at a prime acts on `ζ_M` by the norm
-
-Two auxiliary facts used in the construction of the auxiliary field:
-
-* `AuxZeta_frob_pow`: an arithmetic Frobenius at a prime `𝔓 | 𝔭` of `Ω = L(ζ_M)` raises the
-  primitive `M`-th root of unity `ζ_M` to the `N𝔭`-th power (this is the cyclotomic
-  reciprocity law; the key point is that `M ∉ 𝔓`, which follows from the coprimality of `M`
-  with `N𝔭`);
-* `AuxChi_eq_absNorm`: the corresponding statement for the cyclotomic character `χ`.
--/
-import Mathlib
+import Mathlib.RingTheory.Frobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 import Submission.NK.NUV2.ARL.Gap.conductor_crux.AuxGalois
-import Submission.NK.CFTLib.ARL.isFrobAtPrime_zeta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

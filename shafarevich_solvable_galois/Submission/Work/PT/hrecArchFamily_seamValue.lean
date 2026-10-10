@@ -1,16 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archFamilyLocal
-import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.E9c.Core
-import Submission.Work.SSGRoute.E7cOmega.zfun_pairing_extLoc
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.PT.archβcClauses
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelPairPushLocal
-import Submission.Work.SSGRoute.PT.archPairAbstract
-import Submission.Work.SSGRoute.PT.archPairLocalAbs_hpairArch
-import Submission.Work.SSGRoute.PT.archPairLocal_coboundary
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.PT.archFamily_zpowers_eq_zero_of_ne_two
+import Submission.Work.SSGRoute.PT.G1plusOwn.levelPairPushLocal
+import Submission.Work.SSGRoute.PT.archPairLocalAbs_hpairArch
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,17 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.DualMod.Main
--- (cut 2 of `ACTION_leaf_endgame_cycles_and_cut_list.md`): only the module docstring mentioned the
--- leaf; redirected to the leaf-free module that holds `globalDictionaryCanon`.
-import Submission.Work.SSGRoute.E1aClean.globalDictionaryCanonDefs
-import Submission.Work.SSGRoute.ExtChain.ext_push_engine
-import Submission.Work.SSGRoute.E1cGeneric.Canonical
-import Submission.Work.SSGRoute.E1aClean.LeadNatWit
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ArchDictionary.archPlaceDictBranches
-import Submission.Work.SSGRoute.ArchDictionary.archPlaceDictP2
-import Submission.Work.SSGRoute.ArchDictionary.archimedeanDictSplitPlace
+import Submission.Work.SSGRoute.ArchDictionary.archPlaceDict_of_nonsplit_p2
 import Submission.Work.SSGRoute.ArchDictionary.archimedeanDictNonsplit
+import Submission.Work.SSGRoute.ArchDictionary.archimedeanDictSplitPlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

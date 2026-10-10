@@ -1,5 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.LocalData
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Submission.Work.SSGRoute.PT.e1a_beta_can
 import Submission.Work.SSGRoute.localGaloisEquiv_coInAdjoin_compat_general
 
 namespace Work.SSGRoute.E1aClean

@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PTembedding.rootsOfUnity_addEquiv_adjoinLocalEquiv
-import Submission.Work.SSGRoute.PTembedding.kummer_decomp
-import Submission.Work.SSGRoute.PTembedding.kbdDefs
 
 /-!
 # The local/global identification is compatible with the `n`-th roots of unity (general `n`)

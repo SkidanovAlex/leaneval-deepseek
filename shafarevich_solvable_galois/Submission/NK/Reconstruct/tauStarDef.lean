@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.exists_tauStar
 import Submission.NK.Reconstruct.gammaHaus
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

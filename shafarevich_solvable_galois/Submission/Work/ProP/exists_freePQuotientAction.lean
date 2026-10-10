@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Algebra.Group.End
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
 import Submission.Work.ProP.Defs
 import Submission.Work.Shrinking.PCentralQuotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

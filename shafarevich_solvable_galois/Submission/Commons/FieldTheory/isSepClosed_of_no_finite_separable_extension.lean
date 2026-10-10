@@ -1,6 +1,7 @@
 import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.IsAdjoinRoot
+import Mathlib.Tactic.Have
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

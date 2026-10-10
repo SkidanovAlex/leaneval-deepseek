@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Data.Rat.Star
+import Mathlib.NumberTheory.LegendreSymbol.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.QuadraticLocalGlobal.GrunwaldPrelim
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

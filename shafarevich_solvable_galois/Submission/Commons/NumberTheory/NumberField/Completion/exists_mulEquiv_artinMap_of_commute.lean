@@ -1,52 +1,13 @@
-/-
-# The local Artin map of an abelian extension of number fields
-
-For a finite **abelian** Galois extension `L / K` of number fields, a finite place `Q` of `K` and a
-place `q` of `L` lying over `Q`, this file constructs a surjective group homomorphism
-`Φ : (K_Q)ˣ →* Gal(L_q / K_Q)` with `ker Φ = N_{L_q/K_Q}(L_qˣ)`, the local Artin (reciprocity)
-map of local class field theory.
-
-## The route
-
-Everything is reduced to the cohomological form of Tate's theorem.
-
-* `addEquiv_tateCohomology_of_fundamental_class` (Tate's theorem, isomorphism form): for a finite
-  solvable `G`, a `ℤ[G]`-module `C` with `H¹(H, C) = 0` and `|H²(H, C)| = |H|` for all subgroups
-  `H ≤ G`, and a class `α ∈ H²(G, C)` of order `|G|` (a *fundamental class*), the groups
-  `Ĥ^{-2}(G, ℤ)` and `Ĥ⁰(G, C)` are isomorphic.  (The cardinality form is in the commons as
-  `natCard_tateCohomology_eq_of_fundamental_class`; this file keeps the isomorphism.)
-* `Commons.RepresentationTheory.TateCohomology.nonempty_mulEquiv_quotient_units_range_norm_tateCohomology_zero`
-  identifies `Bˣ ⧸ N_{E/B}(Eˣ)` with `Ĥ⁰(Gal(E/B), Eˣ)`, and
-  `nonempty_mulEquiv_tateCohomology_neg_two` identifies `Ĥ^{-2}(G, ℤ)` with `Gᵃᵇ = G` for
-  commutative `G`.  Composing gives the reciprocity isomorphism
-  `Bˣ ⧸ N_{E/B}(Eˣ) ≃* Gal(E/B)` (`exists_mulEquiv_quotient_units_range_norm_of_fundamental_class`).
-* The fundamental class in the local case is `exists_addOrderOf_eq_finrank_groupCohomology_two_units`
-  (Milne, *CFT*, III.2), and Hilbert 90 plus the norm index theorem supply the remaining
-  hypotheses; this yields the Artin map for an arbitrary finite abelian extension of `K_Q`
-  (`exists_surjective_ker_norm_of_fundamental_class`).
-* `exists_surjective_ker_norm_of_ringEquiv` transports the statement along compatible ring
-  isomorphisms, and `exists_surjective_artinMap_of_abelian_local_universe_bridge` uses it to remove
-  the universe restriction imposed by group cohomology.
-* Finally `exists_mulEquiv_artinMap_of_commute` specialises to `E = L_q`, using
-  `localCommute_of_commute` (the local Galois group is the decomposition subgroup of the abelian
-  `Gal(L/K)`).
--/
-import Mathlib
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_two_iso_abelianization
-import Submission.Commons.RepresentationTheory.TateCohomology.nonempty_mulEquiv_quotient_units_range_norm_tateCohomology_zero
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_pgroup_intermediate_field_of_type_zero
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Norm.Transitivity
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_adicCompletion_of_commute
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_baseRingEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.addEquiv_groupCohomology_two_units_topAlgEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_pgroup_intermediate_field
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Commons.RepresentationTheory.TateCohomology.nonempty_mulEquiv_quotient_units_range_norm_tateCohomology_zero
 
 open CategoryTheory Representation
 
@@ -311,8 +272,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units_aux
   obtain ⟨L : Type, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
       (Q := Q) (B := F)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   letI : Algebra (q.adicCompletion L) E := ((algebraMap F E).comp e.symm.toRingHom).toAlgebra
@@ -328,8 +287,6 @@ theorem exists_addOrderOf_eq_finrank_groupCohomology_two_units_aux
   obtain ⟨L' : Type, hL'f, hL'n, hL'a, q', hq', hgal', ⟨e'⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
       (Q := q) (B := E)
-  letI : Field L' := hL'f
-  letI : NumberField L' := hL'n
   letI : Algebra L L' := hL'a
   letI : Algebra (q.adicCompletion L) (q'.adicCompletion L') :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap q q' hq')
@@ -376,7 +333,6 @@ theorem exists_surjective_artinMap_of_abelian_local_universe_bridge
   -- (1) a `Type 0` model `K₀` of the number field, with its canonical `ℚ`-algebra structure
   obtain ⟨K₀, hK₀f, ⟨eKr⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.S31.exists_typeZero_field_ringEquiv K
-  letI : Field K₀ := hK₀f
   haveI : CharZero K₀ := by
     refine ⟨fun m n hmn => ?_⟩
     have h2 : ((m : K)) = ((n : K)) := by
@@ -413,7 +369,6 @@ theorem exists_surjective_artinMap_of_abelian_local_universe_bridge
   obtain ⟨E₀, hE₀f, hE₀a, hE₀fd, ⟨eE⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
       (F := Q₀.adicCompletion K₀) (E := E)
-  letI : Field E₀ := hE₀f
   letI : Algebra (Q₀.adicCompletion K₀) E₀ := hE₀a
   letI : FiniteDimensional (Q₀.adicCompletion K₀) E₀ := hE₀fd
   haveI hgalE₀ : IsGalois (Q₀.adicCompletion K₀) E₀ := IsGalois.of_algEquiv eE

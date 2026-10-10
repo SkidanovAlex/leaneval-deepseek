@@ -1,46 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The free pro-`p`-completion of finite rank: the generic kernels
-
-This file sets up the group-theoretic machinery by which A. Schmidt and K. Wingberg's proof
-of Shafarevich's theorem (*Šafarevič's theorem on solvable groups as Galois groups*,
-arXiv:math/9809211, §2 and §5) replaces a general finite nilpotent kernel of an embedding
-problem by a single *generic* kernel.
-
-The paper works with `F^(n)`, a free pro-`p`-`G`-operator group of rank `n`, and a filtration
-`F^(n)(ν)` refining the descending `p`-central series; the generic kernels are the finite
-quotients `F^(n)/F^(n)(ν)`.  In this file we work with the *discrete* model: the free group
-`FreeGroup (Fin n)` on `n` generators and its descending `p`-central series
-`Work.Shrinking.pCentralSeries p (FreeGroup (Fin n))` (Definition 3 of Schmidt–Wingberg;
-note `pCentralSeries p P 0 = ⊤` and `pCentralSeries p P (n+1) = (pCentralSeries p P n)^p
-[pCentralSeries p P n, P]`, so `pCentralSeries p P n` is the paper's `P_{n+1}`).
-
-## Main definitions
-
-* `Work.ProP.FreePQuotient p n ν`: the finite quotient `F^(n)/F^(n)(ν)` of the free group on
-  `n` generators by the `ν`-th term of its descending `p`-central series.
-* `Work.ProP.freePQuotientMk p n ν`: the projection `F^(n) → F^(n)/F^(n)(ν)`.
-* `Work.ProP.freePQuotientProj p n h`: the projection `F^(n)/F^(n)(μ) → F^(n)/F^(n)(ν)` for
-  `ν ≤ μ`.
-* `Work.ProP.proPCompletion p n`: the pro-`p`-completion of `F^(n)`, realized as the inverse
-  limit `lim_ν F^(n)/F^(n)(ν)` inside the product `∀ ν, F^(n)/F^(n)(ν)`.
-* `Work.ProP.proPCompletion.canonical p n : F^(n) →* proPCompletion p n`: the canonical map.
-
-## Main results
-
-See `Submission/Work/ProP/NOTES.md` for the list of results and what is left out.
--/
-
-import Mathlib
-import Submission.Work.Shrinking.PCentral
-import Submission.Work.Shrinking.pCentralSeries_normal
-import Submission.Work.Shrinking.pCentralSeries_antitone
-import Submission.Work.Shrinking.pCentralSeries_le_succ
-import Submission.Work.Shrinking.pCentralSeries_characteristic
-import Submission.Work.Shrinking.pow_mem_pCentralSeries_succ
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.Shrinking.commutator_le_pCentralSeries_succ
+import Submission.Work.Shrinking.pCentralSeries_antitone
+import Submission.Work.Shrinking.pCentralSeries_characteristic
+import Submission.Work.Shrinking.pCentralSeries_normal
+import Submission.Work.Shrinking.pow_mem_pCentralSeries_succ
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

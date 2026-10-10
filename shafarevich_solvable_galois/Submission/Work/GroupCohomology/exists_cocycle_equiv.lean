@@ -1,20 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Every extension comes from a `2`-cocycle
-
-Given a group extension `1 → A → E → Q → 1` of `Q` by an abelian group `A` (with the prescribed
-conjugation action of `Q` on `A`), the extension is equivalent to the extension
-`Extension.ofCocycle Q A c` constructed from a suitable `2`-cocycle `c ∈ Z²(Q, A)`.
-
-The cocycle is obtained from a set-theoretic section `σ : Q → E` of the projection, normalized so
-that `σ 1 = 1`: writing every `e : E` uniquely as `inl (ofAdd (α e)) * σ (rightHom e)` with
-`α e ∈ A`, the cocycle is `c q r = α (σ q * σ r)`.  It satisfies `c (q, 1) = 0` for all `q`, so it
-agrees with its normalization `normCocycle c`, and the map `e ↦ (α e, rightHom e)` is an
-equivalence of extensions onto the twisted product `A × Q` with multiplication
-`(a, q) * (b, r) = (a + q • b + c (q, r), q * r)`.
--/
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.GroupCohomology.Extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

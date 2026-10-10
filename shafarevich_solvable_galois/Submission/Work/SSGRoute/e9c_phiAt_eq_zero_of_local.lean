@@ -1,12 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E9c.Core
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E9c.Unram
 import Submission.Work.SSGRoute.e9c_transport_zero
 import Submission.Work.SSGRoute.e9c_unram_pairing
-import Submission.Work.SSGRoute.extIdele_localisation_injective
 import Submission.Work.SSGRoute.eq_zero_of_isUnramifiedExt_of_unramified
-import Submission.Work.SSGRoute.decompK_restrict_exists
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
+import Submission.Work.SSGRoute.extIdele_localisation_injective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

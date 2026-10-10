@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.extH_groupCohomology_addEquiv
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.extHRestrict_comp_mk0
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
+import Submission.Work.SSGRoute.extH_groupCohomology_addEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

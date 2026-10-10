@@ -1,15 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.eb_loc_card
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Work.SSGRoute.PT.localCohomologicalFieldAxiom_units
-import Submission.NK.NUV2.ABHN.solvable_algEquiv_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 4000000
@@ -40,8 +30,6 @@ theorem isSolvable_algEquiv_of_finiteDimensional {K : Type} [Field K] [NumberFie
   obtain ⟨L : Type, hLf, hLn, hLa, q, hq, ⟨e⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
       (Q := Q) (B := F)
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   letI : Algebra (Q.adicCompletion K) (q.adicCompletion L) :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap Q q hq)
   -- ## Step 2: transport the `F`-algebra structure on `E` to `q.adicCompletion L`
@@ -60,8 +48,6 @@ theorem isSolvable_algEquiv_of_finiteDimensional {K : Type} [Field K] [NumberFie
   obtain ⟨L' : Type, hL'f, hL'n, hL'a, q', hq', hgal', ⟨e'⟩⟩ :=
     Commons.NumberTheory.NumberField.Completion.exists_galois_adicCompletion_of_finiteDimensional
       (Q := q) (B := E)
-  letI : Field L' := hL'f
-  letI : NumberField L' := hL'n
   letI : Algebra L L' := hL'a
   letI : Algebra (q.adicCompletion L) (q'.adicCompletion L') :=
     RingHom.toAlgebra (Commons.RingTheory.Henselian.adicCompletionMap q q' hq')

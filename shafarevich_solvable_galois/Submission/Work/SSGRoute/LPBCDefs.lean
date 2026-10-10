@@ -1,7 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.BaseChangeAggregator
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.sylow_descend
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.MapBijective
+import Submission.Work.SSGRoute.E7bDefs
+import Submission.Work.SSGRoute.decompK_restrict_exists
+import Submission.Work.SSGRoute.ext_res_mulEquiv
+import Submission.Work.SSGRoute.localAlgebraMapUnits_self
+import Submission.Work.SSGRoute.localUnitsMap_exists
 import Submission.Work.SSGRoute.sylow_in_defs
 
 /-!

@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.decompK_restrict_surjective
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.PTdualControl.C6_rankOneBrick
 import Submission.Work.Sha2Lib.inertia_map_galRes_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

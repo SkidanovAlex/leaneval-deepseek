@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Measure.Haar.Unique
 import Submission.Work.SSGRoute.PTW.RegularRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

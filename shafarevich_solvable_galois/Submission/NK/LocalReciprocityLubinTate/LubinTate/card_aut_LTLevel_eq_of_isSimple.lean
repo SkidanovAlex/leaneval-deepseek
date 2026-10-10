@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.LevelSimplicity
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.finrank_LTLevel_eq_of_isSimple
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.isGalois_LTLevel
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.finiteDimensional_LTLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

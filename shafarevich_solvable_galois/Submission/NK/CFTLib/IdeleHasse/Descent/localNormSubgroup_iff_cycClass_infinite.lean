@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
-import Submission.NK.CFTLib.IdeleHasse.Descent.localDictionaryAux
-import Submission.NK.CFTLib.IdeleHasse.Crux.zpowersSubgroup
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.CFTLib.Existence.mem_range_norm_localUnitsRep_infinite
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.CFTLib.Existence.isUnramified_of_normClassSubgroup_le_integralIdeles_two
-import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

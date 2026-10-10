@@ -1,9 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.mupOddRecipAux
-import Submission.Work.SSGRoute.ZDataMup.mupOddPairLin
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZDataMup.OddForm.oPair_toClass_eq_oPairGlob
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.ZDataMup.mupOddLevel
+import Submission.Work.SSGRoute.ZDataMup.mupOddRecipAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

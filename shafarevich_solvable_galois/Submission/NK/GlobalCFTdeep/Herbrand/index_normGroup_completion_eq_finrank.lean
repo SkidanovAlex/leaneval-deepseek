@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Algebra.Order.Ring.Units
+import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_prod_smul_eq_inclusion_normIdeleHom
-import Submission.NK.LocalReciprocity.NormGroup
 import Submission.NK.LocalCFT.Instance.normGroup_real_complex
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

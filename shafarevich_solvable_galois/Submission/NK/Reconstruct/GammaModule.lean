@@ -1,5 +1,7 @@
-import Submission.NK.Reconstruct.GammaObject
-import Submission.NK.Reconstruct.GammaSup
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
 import Submission.NK.Reconstruct.ellRestrict_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.SSGRoute.finite_homs_of_finite_galoisFields
-import Submission.Work.SSGRoute.PTembedding.natCard_homs_primeCard
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,14 @@
-import Mathlib
-import Submission.NK.LocalAnabelian.Basic
-import Submission.NK.ProfiniteP.Frattini
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.LinearAlgebra.Projectivization.Cardinality
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.NK.LocalAnabelian.GaloisCorrespondence.numIndexSubgroups_abelianization_eq_natCard_galois
+import Submission.NK.ProfiniteP.Frattini
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

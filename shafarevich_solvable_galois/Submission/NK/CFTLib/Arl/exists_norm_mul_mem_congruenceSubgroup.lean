@@ -1,5 +1,6 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
 import Submission.NK.CFTLib.Arl.posAtReal_localNormInfinite
 import Submission.NK.CFTLib.Arl.val_norm_one_add_le

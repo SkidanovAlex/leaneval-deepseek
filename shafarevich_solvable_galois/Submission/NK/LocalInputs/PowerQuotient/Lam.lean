@@ -1,5 +1,7 @@
+import Mathlib.Data.Int.Star
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalInputs.PowerQuotient.Setup
-import Submission.NK.LocalInputs.ResidueChar.primesEquiv_primeBelow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

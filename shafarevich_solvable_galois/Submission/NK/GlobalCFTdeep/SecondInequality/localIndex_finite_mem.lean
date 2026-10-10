@@ -1,8 +1,7 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.LocalInputs.PowerQuotient.localFieldInputs_of_prime
-import Submission.NK.LocalInputs.Instantiation
 import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

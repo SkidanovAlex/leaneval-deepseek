@@ -1,15 +1,18 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.Chebotarev.Abelian
-import Submission.NK.Chebotarev.FrobeniusGenerateTop
-import Submission.NK.Chebotarev.EquivDeterminedByFrobenius
-import Submission.NK.Chebotarev.Infinite
 import Submission.NK.Chebotarev.AbelianChebotarevOfLFunctions
-import Submission.NK.Chebotarev.HasDirichletDensityFrobClassOfCharacterData
-import Submission.NK.Chebotarev.AbelianChebotarevOfArtinReciprocity
+import Submission.NK.Chebotarev.ArtinReciprocity
 import Submission.NK.Chebotarev.DenseFrobeniusSet
-import Submission.NK.Chebotarev.FrobeniusCorrespondence
+import Submission.NK.Chebotarev.FrobeniusGenerateTop
+import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquivSameBase
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

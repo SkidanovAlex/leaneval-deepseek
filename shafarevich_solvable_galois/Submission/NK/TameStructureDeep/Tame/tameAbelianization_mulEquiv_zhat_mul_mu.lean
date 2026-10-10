@@ -1,17 +1,12 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.powSpanCyclic
-import Submission.NK.TameStructureDeep.Tame.layerDegree
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Tame.TameQuotientKummer
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.TameStructureDeep.Tame.isGalois_tameClosure
-import Submission.NK.TameStructureDeep.Tame.isTameFrobeniusLift_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.wildInertiaSubgroup_eq_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.exists_root_primeToPart
-import Submission.NK.TameStructureDeep.Degree.galoisGroup_unramifiedClosure_mulEquiv
-import Submission.NK.TameStructureDeep.Units.residueUnits_quot_principalUnits_mulEquiv
-import Submission.NK.TameStructureDeep.Core
-import Submission.NK.TameStructureDeep.Tame.mu_residueCard_sub_one
 import Submission.NK.TameStructureDeep.Tame.closure_pow_mem_abelianization_ker
+import Submission.NK.TameStructureDeep.Tame.mu_residueCard_sub_one
 import Submission.NK.TameStructureDeep.Tame.natCard_quotient_fixingSubgroup_eq_finrank
 
 open scoped Classical

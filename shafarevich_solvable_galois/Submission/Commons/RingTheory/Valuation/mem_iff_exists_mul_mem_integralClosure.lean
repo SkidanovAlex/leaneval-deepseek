@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Commons.RingTheory.Valuation.exists_integral_denominator_of_mem_valuationSubring
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

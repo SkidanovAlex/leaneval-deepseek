@@ -1,11 +1,11 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Submission.NK.Reconstruct.ambient4f3
-import Submission.NK.Reconstruct.tauStarDef
-import Submission.NK.Reconstruct.conjLevel
 import Submission.NK.Reconstruct.gammaBaseChangeHom_galToGamma
-import Submission.NK.Reconstruct.exists_gammaEquivOfPhi
-import Submission.NK.Reconstruct.galToGamma_continuous
-import Submission.NK.NeukirchUchida.isHomeomorph_conjHomEquiv
+import Submission.NK.Reconstruct.tauStarDef
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

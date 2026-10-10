@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.BigOperators.Pi
+import Mathlib.Algebra.Group.Subgroup.Finite
 import Submission.Work.Tate.CoindModule
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

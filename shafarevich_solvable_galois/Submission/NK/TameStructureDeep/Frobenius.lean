@@ -1,21 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Frobenius normalisation, from the residual of `NK.TameStructureDeep`
-
-This file turns the Frobenius fields of `NK.TameStructureDeep.TameRamificationCore` — the
-existence of the normalised Frobenius (NSW (7.5.6)) and the two directions of the Frobenius
-normalisation (NSW (12.1.8) Lemma; Iwasawa) — into
-
-* `NK.LocalStructure.TameFrobeniusCore p q κ K'`,
-* `NK.LocalTame.FrobeniusLiftCharacterisation p q κ K'`,
-* `NK.LocalAnabelian.ResidueCardInput p q κ K'` (the data-carrying form of the existence of
-  the Frobenius).
--/
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Defs
-import Submission.NK.LocalStructure.Defs
-import Submission.NK.LocalTame.Inputs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

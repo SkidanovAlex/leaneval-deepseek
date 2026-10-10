@@ -1,21 +1,10 @@
-import Mathlib
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_abelian_local
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_liesOver
-import Submission.Commons.NumberTheory.NumberField.completion_ringEquiv_of_algEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_type_zero_field_of_finiteDimensional
-import Submission.Commons.FieldTheory.Galois.isGalois_of_ringEquiv
-import Submission.Commons.Algebra.Module.moduleFinite_of_ringEquiv
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_groupCohomology_two_units_le_finrank_of_abelian
-import Submission.Commons.NumberTheory.NumberField.Completion.subsingleton_groupCohomology_one_res_units
-import Submission.Commons.NumberTheory.NumberField.Completion.groupCohomology_two_units_ge_finrank
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_eq_of_fundamental_class
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_zero_units
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_neg_two_of_commutative
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # The abelian case of the local norm index theorem (Neukirch–Uchida, local input)
@@ -637,7 +626,6 @@ theorem natCard_quotient_units_range_norm_eq_card_of_abelian_local_universe_brid
   classical
   -- (1) a `Type 0` model `K₀` of the number field, with its canonical `ℚ`-algebra structure
   obtain ⟨K₀, hK₀f, ⟨eKr⟩⟩ := exists_typeZero_field_ringEquiv K
-  letI : Field K₀ := hK₀f
   haveI : CharZero K₀ := by
     refine ⟨fun m n hmn => ?_⟩
     have h2 : ((m : K)) = ((n : K)) := by
@@ -674,7 +662,6 @@ theorem natCard_quotient_units_range_norm_eq_card_of_abelian_local_universe_brid
   obtain ⟨E₀, hE₀f, hE₀a, hE₀fd, ⟨eE⟩⟩ :=
     exists_type_zero_field_of_finiteDimensional
       (F := Q₀.adicCompletion K₀) (E := E)
-  letI : Field E₀ := hE₀f
   letI : Algebra (Q₀.adicCompletion K₀) E₀ := hE₀a
   letI : FiniteDimensional (Q₀.adicCompletion K₀) E₀ := hE₀fd
   haveI hgalE₀ : IsGalois (Q₀.adicCompletion K₀) E₀ := IsGalois.of_algEquiv eE

@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
+import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

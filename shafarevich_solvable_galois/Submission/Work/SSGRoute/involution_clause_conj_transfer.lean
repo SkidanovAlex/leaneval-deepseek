@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Submission.Work.SSGRoute.stage_local_shrinking
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

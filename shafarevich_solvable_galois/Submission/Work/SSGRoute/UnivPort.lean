@@ -1,9 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.pSeries_inter_centralSeries_pow
-import Submission.Work.SSGRoute.hallSpan_saturated
+import Mathlib.Computability.Reduce
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Analysis.Normed.Ring.Lemmas
 import Submission.Work.SSGRoute.UnivPortCore
+import Submission.Work.SSGRoute.magLT_pSeries_divisible
 import Submission.Work.SSGRoute.prop5.lctf.coreDefs
-import Submission.Work.SSGRoute.prop5.lctf.mltMonGrp
+import Submission.Work.SSGRoute.prop5.mw.psi_mem_VspanSize
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

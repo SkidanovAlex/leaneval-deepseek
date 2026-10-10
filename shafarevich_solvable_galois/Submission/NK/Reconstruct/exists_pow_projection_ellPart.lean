@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.Reconstruct.ellPart
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

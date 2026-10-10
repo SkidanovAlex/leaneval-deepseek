@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Frattini
+import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Submission.Commons.GroupTheory.PGroup.frattini_eq_pow_sup_commutator
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertiaRing_adicLemmas
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicLocExpInertia
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Work.SSGRoute.Finiteness.inertiaRingLocal
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.inertiaRing_adicLemmas
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

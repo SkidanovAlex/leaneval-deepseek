@@ -1,18 +1,17 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Degree.galoisGroup_adjoin_primitiveRoot_mulEquiv
-import Submission.NK.TameStructureDeep.Degree.exists_algEquiv_adjoin_primitiveRoot_pow
-import Submission.NK.TameStructureDeep.Degree.Equality
-import Submission.NK.LocalAnabelian.ResidueField.isGalois_unramifiedClosure
-import Submission.NK.LocalAnabelian.ResidueField.Recovery
-import Submission.NK.TameStructure.ProCyclic.Defs
-import Submission.NK.Mine.ResidueCharAutomatic
-import Submission.NK.TameStructureDeep.Degree.unramifiedLevels
-import Submission.NK.TameStructureDeep.Degree.zhat_existsUnique_compHomZMod_eq
-import Submission.NK.TameStructureDeep.Degree.zhat_eq_top_of_isClosed_of_compHomZMod_image_eq_univ
-import Submission.NK.TameStructureDeep.Degree.orderOf_residueCard_pow_sub_one
-import Submission.NK.TameStructureDeep.Degree.exists_mulEquiv_zmod_algEquiv_adjoin_primitiveRoot
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.TameStructureDeep.Degree.continuous_of_continuous_compHomZMod
+import Submission.NK.TameStructureDeep.Degree.exists_mulEquiv_zmod_algEquiv_adjoin_primitiveRoot
 import Submission.NK.TameStructureDeep.Degree.iSup_adjoin_primitiveRoot_eq_top
+import Submission.NK.TameStructureDeep.Degree.orderOf_residueCard_pow_sub_one
+import Submission.NK.TameStructureDeep.Degree.zhat_eq_top_of_isClosed_of_compHomZMod_image_eq_univ
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

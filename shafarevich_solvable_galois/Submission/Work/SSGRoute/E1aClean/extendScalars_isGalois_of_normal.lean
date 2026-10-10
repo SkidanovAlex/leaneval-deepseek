@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Infinite
 import Submission.Work.SSGRoute.E1aClean.extendScalars_finDimensional_of_ker
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

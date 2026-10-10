@@ -1,13 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.finrank_lcCocycleImage_eq_H1loc
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.PTembedding.kbdDefs
-import Submission.Work.SSGRoute.ZConstruction.natCard_lcHoms_levelK_localGroup
-import Submission.Work.SSGRoute.ZDataMup.LocalData
-import Submission.Work.SSGRoute.ZDataMup.localCocycle_eq_of_instances
-import Submission.Work.SSGRoute.ZDataMup.finite_lcCocycleImage
-import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_notMem
+import Submission.Work.SSGRoute.LTDDefs.H1loc_iso_H1cont
+import Submission.Work.SSGRoute.ZConstruction.natCard_lcHoms_levelK_localGroup
+import Submission.Work.SSGRoute.ZDataMup.finite_lcCocycleImage
+import Submission.Work.SSGRoute.ZDataMup.finrank_lcCocycleImage_eq_H1loc
 import Submission.Work.SSGRoute.isUnit_natCast_iff_not_dvd_resCharAt
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

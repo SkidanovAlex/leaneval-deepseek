@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.NK.ReconstructField.LevelPrimeBijective
-import Submission.Commons.FieldTheory.Galois.comap_smul_eq_restrictNormalHom_smul
-import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.ReconstructField.LevelPrime
+import Submission.NK.ReconstructField.comap_eq_of_primeOfLevel_placeMap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

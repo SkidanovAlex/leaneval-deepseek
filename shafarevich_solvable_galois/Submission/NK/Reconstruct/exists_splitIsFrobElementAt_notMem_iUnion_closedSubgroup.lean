@@ -1,15 +1,13 @@
-import Mathlib
-import Submission.NK.Reconstruct.splitFrobeniusBase
-import Submission.NK.Reconstruct.frobElementAt
-import Submission.NK.Reconstruct.galToGamma
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHomType
 import Submission.NK.Reconstruct.baseChange
-import Submission.NK.Reconstruct.denseSet_avoidClosedSubgroups
-import Submission.NK.Chebotarev.ExistsFrobeniusOfRestriction
-import Submission.NK.Chebotarev.DenseFrobeniusSet
-import Submission.NK.Chebotarev.FrobeniusOne
-import Submission.NK.Reconstruct.exists_split_frobAt
-import Submission.NK.Reconstruct.exists_split_frobAt_unramified
 import Submission.NK.Reconstruct.exists_isFrobElementAt_split_of_restrict
+import Submission.NK.Reconstruct.exists_split_frobAt_unramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

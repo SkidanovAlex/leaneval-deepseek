@@ -1,14 +1,6 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.Defs
-import Submission.NK.TameStructureDeep.Tame.TameClosure
-import Submission.NK.TameStructureDeep.Tame.isProP_le_inertiaSubgroup
-import Submission.NK.TameStructureDeep.Tame.WildInertiaAux
-import Submission.NK.RamificationAdic.exists_valuationRingData
-import Submission.NK.RamificationDeep.UnitMap
-import Submission.NK.RamificationDeep.RamificationDeterminesSubfields
-import Submission.NK.TameStructureDeep.Tame.pow_class_unramifiedClosure
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Tame.isProP_fixingSubgroup_of_relIndex_prime_pow
-import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
+import Submission.NK.TameStructureDeep.Tame.isProP_le_inertiaSubgroup
 import Submission.NK.TameStructureDeep.Tame.relIndex_inf_fixingSubgroup_eq_finrank
 import Submission.NK.TameStructureDeep.Tame.tameClosure_inf_finrank_prime_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

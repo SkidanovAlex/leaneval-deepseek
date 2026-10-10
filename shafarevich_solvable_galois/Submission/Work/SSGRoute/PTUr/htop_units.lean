@@ -1,30 +1,11 @@
-/-
-# The `p`-torsion of `Ωˣ` and the triviality of the level-`K` subgroup on `Hom_ℤ(N₁,Ωˣ)`
-
-The remaining bookkeeping input `hhtop` of the coprime case of local Tate duality in degrees `0`/`2`
-(`Submussion/Work/SSGRoute/PT/mkb_ld02_core_of_h3.lean`'s `mkb_alphaTwo_bijective_of_inputs`,
-`PTUr/NOTE_E7_h02_frontier_measured.md` §3, §7) is
-
-  `Subsingleton (H³(D_A, Hom_ℤ(N₁, Ωˣ)))`,  `N₁ = Coind_U^{D_A} N ⧸ N`,
-
-deduced from `cd_p(D_A) ≤ 2` (the hypothesis `h3`) through
-`Work.SSGRoute.PT.h3_H3_subsingleton_of_image`.  The latter needs a `↥(im(res k K))`-action on
-`V = Hom_ℤ(N₁,Ωˣ)` compatible with the `D_A`-action; such an action can be *transported along*
-`D_A ↠ G/U ≅ im(res k K)` precisely because `U = levelFixSub k Ω A K` acts **trivially** on `V`.
-
-This file supplies the mathematical content of that triviality:
-
-* `ptu_units_eq_pow_of_pow_eq_one` — a `p`-th root of unity is a power of a fixed primitive root;
-* `ptu_ptorsion_units_smul_eq` — the `p`-torsion `Ωˣ[p] = μ_p` of `Ωˣ` is fixed by every element
-  of `K.fixingSubgroup`, because `μ_p ⊆ K` (given a primitive `p`-th root in `K`);
-* `ptu_ptorsion_units_finite` — `Ωˣ[p]` is finite;
-* `ptu_conjHom_units_sub_smul_eq` — consequently `U` acts trivially on `Hom_ℤ(N₁,Ωˣ)`, which is
-  the well-definedness input of the transported `↥(im)`-action.
--/
-import Mathlib
-import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
-import Submission.Work.SSGRoute.PT.DevissageSESFinal
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PT.AlphaPairing
+import Submission.Work.SSGRoute.PT.DevissageSESDiscrete
+import Submission.Work.SSGRoute.PT.Hilbert90IsAlgClosure
+import Submission.Work.SSGRoute.PT.isDiscreteModule_coind
 
 set_option linter.style.haveILetI false
 set_option linter.unusedSectionVars false

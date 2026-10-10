@@ -1,10 +1,12 @@
-import Mathlib
-import Submission.NK.CFTLib.Existence.ConductorNotes
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Existence.isUnramified_of_normClassSubgroup_le_integralIdeles_kummer
-import Submission.NK.CFTLib.Existence.localNormImage_of_forall_ne
-import Submission.NK.CFTLib.Existence.localUnits_le_range_localNorm_of_integralIdeles
 import Submission.NK.CFTLib.IdeleHasse.badSet_not_singleton
-import Submission.NK.CFTLib.Existence.ramificationIdx_eq_one_of_localUnits_le_localNorm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

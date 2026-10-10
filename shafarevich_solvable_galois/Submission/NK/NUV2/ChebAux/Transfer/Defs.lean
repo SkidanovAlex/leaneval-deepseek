@@ -1,11 +1,5 @@
-import Mathlib
-import Submission.NK.CFTLib.HR.TransferAux.Defs
-import Submission.NK.CFTLib.HR.transferAt
-import Submission.NK.CFTLib.IdeleHasse.Descent.transferLevels
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_finite
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSubgroup_iff_cycClass_infinite
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.NUV2.ARL.HR.TransferSupport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

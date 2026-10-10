@@ -1,13 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The basic API of the Kummer field on the class group
-
-`kummerFieldQuot p x` is defined by choosing a representative of the class `x` of
-`kˣ/(kˣ)^p`; this file proves that the value is independent of that choice, i.e.
-that `kummerFieldQuot p (mk a) = kummerField p a`.
--/
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.GroupTheory.QuotientGroup.Defs
 import Submission.NK.LocalAnabelian.Kummer.Quot
 import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_of_div_mem_powSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,29 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Component 1: the structure of the tame quotient
-
-This file derives `NK.LocalTame.TameStructureInput p q κ K'` — the structure of the tame
-quotient `G_κ^{tr} = G_κ/V_κ` of a `p`-adic field (NSW, *Cohomology of Number Fields*, (7.5.7)
-Corollary and (7.5.11); Iwasawa, *On Galois groups of local fields*) — from the reduced input
-`NK.TameData.TameInertiaInput p κ K'` and the arithmetic of `q`.
-
-Two of the eight fields of `TameStructureInput` are *proved* rather than assumed:
-
-* `wildInertia_le_inertia` is the first component of `IsMaxNormalProCyclicInQuotient`
-  (`TameInertiaInput.isTameInertia`);
-* `exists_frobeniusLift` follows from the unramified quotient `G_κ/I_κ ≅ Ẑ` and the
-  non-triviality of `Ẑ`
-  (`NK.LocalStructure.Tame.exists_notMem_inertiaSubgroup_of_unramifiedQuotient`): `Ẑ` surjects
-  onto `ℤ/2`, so it is not the trivial group, and the inertia subgroup is therefore proper.
-
-Also recorded here: the *normality* of the image of the inertia subgroup in the tame quotient,
-which is what makes `TameInertiaInput.isTameInertia` a condition on the *abelian* pair
-`(V_κ/V_κ, I_κ/V_κ)` rather than on the pair of subgroups alone.
--/
-import Submission.NK.TameData.Definitions
+import Mathlib.FieldTheory.IsSepClosed
 import Submission.NK.LocalStructure.Tame.exists_notMem_inertiaSubgroup_of_unramifiedQuotient
+import Submission.NK.TameData.Definitions
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,6 @@
-import Mathlib
-import Submission.NK.NUV2.ArtinBridge.KummerSUnitField
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_sup_mul_index_inf
+import Submission.NK.NUV2.ArtinBridge.KummerSUnitField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

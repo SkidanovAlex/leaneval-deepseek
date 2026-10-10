@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.NK.NUV2.RouteC.LevelInf
-import Submission.NK.NUV2.RouteC.delta_qmodz
-import Submission.NK.NUV2.RouteC.cup_pow
 import Submission.NK.NUV2.RouteC.map_powHom_eq_zero_iff_of_isCyclic
 import Submission.NK.NUV2.RouteE.levelSymbol
 

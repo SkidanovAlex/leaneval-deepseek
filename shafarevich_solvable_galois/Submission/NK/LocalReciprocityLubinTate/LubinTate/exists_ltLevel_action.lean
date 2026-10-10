@@ -1,8 +1,9 @@
-import Mathlib
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_autLTLevel_mulEquiv_apply_smulDiv
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_algEquiv
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple_of_fibre
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

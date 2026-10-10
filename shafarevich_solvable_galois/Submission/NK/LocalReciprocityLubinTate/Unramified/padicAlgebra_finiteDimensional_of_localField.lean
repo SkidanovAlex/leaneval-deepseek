@@ -1,6 +1,9 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.ratCast_veq_pow_padicValRat
+import Mathlib.Computability.Reduce
+import Mathlib.NumberTheory.Padics.LocalField
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Submission.NK.LocalReciprocityLubinTate.Unramified.exists_prime_vlt_one
+import Submission.NK.LocalReciprocityLubinTate.Unramified.ratCast_veq_pow_padicValRat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

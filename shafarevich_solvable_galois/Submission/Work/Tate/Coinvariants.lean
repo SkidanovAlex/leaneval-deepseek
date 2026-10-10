@@ -1,34 +1,7 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Tate sequence `0 → Ĥ⁻¹(G, A) → A_G → A^G → Ĥ⁰(G, A) → 0`
-
-Besides the connecting maps between different coefficient modules, the two low-degree Tate
-groups are related to the fixed points `A^G = H⁰(G, A)` and the coinvariants
-`A_G = A/I_G·A = H₀(G, A)` by the classical exact sequence
-
-`0 → Ĥ⁻¹(G, A) → A_G --N--> A^G → Ĥ⁰(G, A) → 0`,
-
-in which `Ĥ⁻¹(G, A) = ker(N : A_G → A^G)` is the kernel of the norm on the coinvariants and
-`Ĥ⁰(G, A) = A^G/N(A)` is its cokernel.  In particular `Ĥ⁻¹` is naturally identified with a
-subgroup of `H₀(G, A)` and `Ĥ⁰` with a quotient of `H⁰(G, A)`.
-
-## Main definitions
-
-* `Work.Tate.coinvariants` : the coinvariants `A_G = A/I_G·A`;
-* `Work.Tate.coinvMk` : the quotient map `A → A_G`;
-* `Work.Tate.normCoinv` : the norm as a map `A_G → A^G` (well defined because `N` kills
-  the augmentation submodule);
-* `Work.Tate.Hm1ToCoinv` : the inclusion `Ĥ⁻¹(G, A) → A_G`.
-
-## Main results
-
-* `Work.Tate.range_normCoinv_eq_ker_H0π` : `im(N : A_G → A^G) = ker(A^G → Ĥ⁰(G, A))`;
-* `Work.Tate.range_Hm1ToCoinv_eq_ker_normCoinv` : `im(Ĥ⁻¹(G, A) → A_G) = ker(N : A_G → A^G)`;
-* `Work.Tate.Hm1ToCoinv_injective` : `Ĥ⁻¹(G, A) → A_G` is injective.
--/
-import Mathlib
+import Mathlib.Data.Fintype.Defs
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

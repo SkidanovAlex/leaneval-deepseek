@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.surjective_of_frobAtPrime_unramified
-import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_unique
-import Submission.NK.Chebotarev.ExistsUniqueIsFrobAtPrime
-import Submission.NK.Chebotarev.IsFrobAtRestrictNormalHom
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.NUV2.ARL.isOpenNorm
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
+import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_unique
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

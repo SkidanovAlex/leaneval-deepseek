@@ -1,20 +1,10 @@
-/-
-Work of the Neukirch–Uchida team: the analytic input of Čebotarev's theorem.
-
-The vocabulary of the *fibration* of the finite places of `L` over the finite places of `K`: the
-prime `underPrime 𝔮` of `𝓞 K` below a prime `𝔮` of `𝓞 L`, the type `primesOverPrime K L 𝔭` of the
-primes of `𝓞 L` above a fixed `𝔭`, and the identification of the primes of `L` avoiding a modulus
-`S` of primes of `K` with the disjoint union, over the primes of `K` outside `S`, of the fibres
-`primesOverPrime K L 𝔭`.
-
-This is the bookkeeping which turns the Euler product of `ζ_L` (indexed by the places of `L`) into
-an Euler product indexed by the places of `K`, each factor being the product, over the places of
-`L` above it, of the corresponding local factor.
--/
-import Mathlib
-import Submission.NK.HeckeL.Zeta
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
-import Submission.Commons.NumberTheory.NumberField.ncard_primesOver_le_finrank
+import Submission.NK.HeckeL.Zeta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

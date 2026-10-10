@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.ext_idele_shapiro
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

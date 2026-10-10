@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.core.Defs
-import Submission.Work.SSGRoute.prop5.coreGraded
-import Submission.Work.SSGRoute.prop5.commutator_lowerCentralSeries_le
+import Mathlib.Algebra.Group.Finsupp
+import Mathlib.GroupTheory.FreeGroup.Basic
+import Mathlib.Algebra.Module.Submodule.Range
 import Submission.Work.SSGRoute.prop5.core.gen_span
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,28 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The shifted module `A^* = Coind(A)/A` and the exact sequence `0 → A → Coind(A) → A^* → 0`
-
-Dimension shifting for Tate cohomology uses the short exact sequence of `G`-modules
-
-`0 → A --f--> Coind(A) --g--> A^* → 0`
-
-where `Coind(A) = (G → A)` is the coinduced module, `f a = (x ↦ x • a)` is the "diagonal"
-inclusion and `A^* = Coind(A)/f(A)`.
-
-This file constructs
-
-* `Work.Tate.coindDiag` : the diagonal submodule `f(A) ⊆ (G → A)`;
-* the induced `G`-action on the quotient `(G → A) ⧸ coindDiag G A`
-  (`Work.Tate.instSMulQuotDiag`, `Work.Tate.instDistribMulActionQuotDiag`);
-* `Work.Tate.coindShift G A` : the shifted module `A^*`;
-* `Work.Tate.coindSES` : the short exact sequence above, as a `Work.Tate.SES`.
-
-The coinduced action on `G → A` used throughout is the one registered by
-`Submission.InducedModules`, `(γ • φ) x = φ (x * γ)`.
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.Tate.CoindModule
 import Submission.Work.Tate.SES
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

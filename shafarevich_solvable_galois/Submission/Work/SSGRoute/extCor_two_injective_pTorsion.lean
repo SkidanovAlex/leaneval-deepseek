@@ -1,6 +1,8 @@
-import Mathlib
+import Mathlib.Data.Int.Star
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E7bDefs
-import Submission.Work.SSGRoute.ext_corestriction
 import Submission.Work.SSGRoute.phi1_ext_cor_transfer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

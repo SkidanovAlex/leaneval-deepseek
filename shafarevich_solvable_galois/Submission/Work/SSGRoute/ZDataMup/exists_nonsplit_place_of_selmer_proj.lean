@@ -1,17 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.finrank_lcCocycleImage_eq_one_of_not_residueChar_proj
-import Submission.Work.SSGRoute.exists_mem_closure_decomp_mul_mem_fixingSubgroup
-import Submission.Work.SSGRoute.ZDataMup.LocalData
-import Submission.Work.SSGRoute.LTDDefs.Basic
-import Submission.Work.SSGRoute.PTembedding.kbdDefs
-import Submission.Work.SSGRoute.adjoin_primitiveRoot_isGalois_coprime
-import Submission.Work.SSGRoute.frobeniusClass_realisation_below
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZConstruction.exists_finset_ramifiedPlaces
-import Submission.NK.LocalInputs.Defs
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.NeukirchUchida.nonempty_mulEquiv_decompositionGroupOf_adjoin
-import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
-import Submission.NeukirchUchida.PrimeCorrespondence
+import Submission.Work.SSGRoute.ZDataMup.finrank_lcCocycleImage_eq_one_of_not_residueChar_proj
+import Submission.Work.SSGRoute.adjoin_primitiveRoot_isGalois_coprime
+import Submission.Work.SSGRoute.exists_mem_closure_decomp_mul_mem_fixingSubgroup
+import Submission.Work.SSGRoute.frobeniusClass_realisation_below
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

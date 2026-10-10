@@ -1,11 +1,5 @@
-/-
-# The "swap" inequality for Hall foliages
-
-If `u` is a nonempty word and `u ++ v < v` (lexicographically), then `u ++ v < v ++ u`.
-This is applied to `u = foliage a`, `v = foliage b` for a Hall tree `mul a b`, for which the
-combinatorial input `hall_foliage_lt_right` supplies `u ++ v < v`.
--/
-import Mathlib
+import Mathlib.Order.Lattice
+import Mathlib.Data.List.Lex
 import Submission.Work.SSGRoute.prop5.witt.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

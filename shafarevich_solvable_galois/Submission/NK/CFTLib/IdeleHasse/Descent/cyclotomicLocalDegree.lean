@@ -1,10 +1,13 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.Descent.cyclotomicOrderArith
-import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
+import Mathlib.RingTheory.Frobenius
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.FieldTheory.Galois.IsGaloisGroup
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.exists_frobenius_galRestrict
-import Submission.Commons.NumberTheory.NumberField.frobenius_eq_of_commute
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
+import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
 import Submission.NK.CFTLib.ARL.autToPow_eq_of_pow_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

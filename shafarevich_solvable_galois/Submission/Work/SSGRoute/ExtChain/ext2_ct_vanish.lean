@@ -1,15 +1,19 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.ext_level_lift
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.ext_one_iso_lattice_cohomology
-import Submission.Work.SSGRoute.ext_two_iso_cohomology_of_presentation
-import Submission.Work.GroupCohomology.TrivialGroup
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.CategoryTheory.Abelian.Exact
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ExtChain.FreeCover
-import Submission.Work.SSGRoute.ExtChain.ext2_ptorsion_pgroup_vanish
-import Submission.Work.SSGRoute.ExtChain.ext1_p_divisible
 import Submission.Work.SSGRoute.ExtChain.ext1_bot_and_natCard_smul
+import Submission.Work.SSGRoute.ExtChain.ext1_p_divisible
+import Submission.Work.SSGRoute.ExtChain.ext2_ptorsion_pgroup_vanish
 import Submission.Work.SSGRoute.ExtChain.smul_eq_zero_of_sylow
+import Submission.Work.SSGRoute.ext_two_iso_cohomology_of_presentation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

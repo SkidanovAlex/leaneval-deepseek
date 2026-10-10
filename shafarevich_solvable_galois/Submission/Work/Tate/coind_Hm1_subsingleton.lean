@@ -1,38 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Vanishing of `Ĥ⁻¹` for the coinduced module
-
-For a finite group `G` and an additive commutative group `R`, the coinduced module `G → R`
-(with `(g • f) x = f (x * g)`) satisfies
-
-* `Work.Tate.augmentation G (G → R) = (norm G (G → R)).ker`,
-
-equivalently: the augmentation submodule `I_G · (G → R)` coincides with the kernel of the norm.
-Hence the Tate group `Ĥ⁻¹(G, G → R) = ker N / I_G·(G → R)` is trivial:
-
-* `Work.Tate.coind_Hm1_subsingleton : Subsingleton (Ĥ⁻¹(G, G → R))`.
-
-This is the degree `-1` counterpart of the acyclicity of coinduced modules; it is the
-cohomological input used when an embedding problem has a *free* abelian kernel.
-
-## Proof sketch
-
-The module `G → R` is the permutation module on the regular `G`-set, i.e. a product of copies of
-`R` indexed by `G`, and `G` acts by permuting the coordinates.  Every function `f : G → R` can be
-written as a sum of "point masses" `pt h (f h)`, where `pt h r` is the function that is `r` at `h`
-and `0` elsewhere.  The point masses all lie in a single `G`-orbit up to scalar
-(`g • pt h r = pt (h * g⁻¹) r`), so every difference `pt h r - pt 1 r` belongs to the
-augmentation submodule.  If moreover `f ∈ ker N`, i.e. `∑_h f h = 0`, then
-
-`f = ∑_h (pt h (f h) - pt 1 (f h))`
-
-because `∑_h pt 1 (f h) = pt 1 (∑_h f h) = 0`.  Hence `ker N ⊆ I_G·(G → R)`, and the reverse
-inclusion is `augmentation_le_ker_norm`.
--/
-
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.BigOperators.Pi
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Finite
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.CoindModule
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

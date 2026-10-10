@@ -1,7 +1,10 @@
-import Mathlib
-import Submission.NK.Reconstruct.gammaHaus
-import Submission.NK.Reconstruct.Gamma
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
 import Submission.NK.Reconstruct.NumFieldIn
+import Submission.NK.Reconstruct.gammaHaus
 
 /-!
 # The invisible subgroup is transported by a continuous isomorphism `Γ_{K₁} ≃* Γ_{K₂}`

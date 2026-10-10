@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
-import Submission.NK.GlobalCFT.Norm.NormTransAux
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

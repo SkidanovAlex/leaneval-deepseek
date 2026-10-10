@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Topology.Constructions.SumProd
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.SSGRoute.PT.H2Transfer
 import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

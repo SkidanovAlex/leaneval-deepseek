@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.NK.LocalTame.Basic
-import Submission.NK.LocalTame.Galois
+import Mathlib.Tactic.Group
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.NK.LocalStructure.Tame.commute_of_isProCyclic_of_profinite
 import Submission.NK.ProfiniteP.ProPCore.totallyDisconnectedSpace_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

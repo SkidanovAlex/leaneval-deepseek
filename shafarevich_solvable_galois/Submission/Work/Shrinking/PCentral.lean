@@ -1,42 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The descending `p`-central series and its refinement
-
-This file formalizes Definition 3 of A. Schmidt and K. Wingberg, *Šafarevič's theorem on
-solvable groups as Galois groups* (arXiv:math/9809211):
-
-* the descending `p`-central series of a group `P`,
-  `P₁ = P`, `P_{i+1} = (P_i)^p [P_i, P]`;
-* the descending central series `P₁ = P`, `P_{i+1} = [P_i, P]` (the special case `p = 1`
-  of the `p`-central series up to the generated powers; we only record the `p`-central
-  series here);
-* the refinement `P_{(i,j)} = (P_i ∩ P_j) P_{i+1}`, `i, j ≥ 1`, ordered lexicographically,
-  with `τ + 1 = (i, j+1)` for `i > j` and `τ + 1 = (i+1, 1)` for `τ = (i, i)`.
-
-## Indexing conventions
-
-The paper's series starts at `P₁ = P`.  We index by `ℕ` starting at `0`, so that
-`pCentralSeries p P 0 = ⊤` and `pCentralSeries p P (n+1) = pCentralStep p (pCentralSeries p P n)`.
-Thus **`pCentralSeries p P n` is the paper's `P_{n+1}`**.
-
-The refinement `pCentralRefined p P i j` is indexed by the paper's indices `i, j ≥ 1`, i.e.
-`pCentralRefined p P i j = (P_i ∩ P_j) P_{i+1}`.
-
-## Main results
-
-* `Work.Shrinking.pCentralSeries_le_succ`, `Work.Shrinking.pCentralSeries_antitone` : the
-  series is descending.
-* `Work.Shrinking.pCentralSeries_normal`, `Work.Shrinking.pCentralSeries_characteristic` :
-  every term is normal, indeed characteristic.
-* `Work.Shrinking.pow_mem_pCentralSeries_succ`, `Work.Shrinking.commutator_le_pCentralSeries_succ` :
-  the defining properties of the next term.
-* `Work.Shrinking.pCentralRefined_one`, `Work.Shrinking.pCentralRefined_eq_succ` : the
-  refinement has the properties `P_{(i,1)} = P_i` and `P_{(i,j)} = P_{i+1}` for `j > i`.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.Commutator.Basic
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Submission.Work.Shrinking.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Submission.Commons.NumberTheory.NumberField.perfectField_residueField_heightOneSpectrum
 import Submission.Commons.NumberTheory.RamificationInertia.exists_map_galRestrict_eq
 import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

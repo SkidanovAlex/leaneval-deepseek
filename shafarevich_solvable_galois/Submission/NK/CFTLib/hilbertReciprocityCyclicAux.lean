@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.onePlace_localNorm
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinSetup
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
+import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinSetup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

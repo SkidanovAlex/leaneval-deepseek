@@ -1,19 +1,10 @@
-/-
-# The local–global trace identity
-
-`∑_{Q | Q₀} Tr_{K_Q/ℚ_p}(z) = Tr_{K/ℚ}(z)` in `ℚ_p`.
-
-Obtained by transporting the trace through the Chinese-remainder algebra equivalence
-`K ⊗[ℚ] ℚ_p ≅ ∏_{Q | Q₀} K_Q`
-(`FinitenessHM/adicCompletion_algEquiv_tensor_tmul.lean`), whose `z ⊗ 1 ↦ (z_Q)_Q` clause is
-exactly what is needed, together with `trace_tensorProduct_tmul` (trace of a base-changed element)
-and `trace_pi_apply` (trace on a finite product).
--/
-import Mathlib
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.completionSetup
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.trace_tensorProduct_tmul
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.trace_pi_apply
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.adicCompletion_algEquiv_tensor_tmul
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.trace_pi_apply
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

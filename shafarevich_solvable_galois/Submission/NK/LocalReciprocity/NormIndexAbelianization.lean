@@ -1,15 +1,16 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Countable
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.Shrink
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.Rat.Encodable
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Submission.NK.GlobalCFTdeep.HasseIndex.LocalFieldTransport
 import Submission.NK.NUV2.ArtinBridge.index_eq_card_abelianization_of_fundamentalClassElement
 import Submission.NK.NUV2.LC.natCard_groupCohomology_two_units_local_eq_finrank
-import Submission.Commons.RepresentationTheory.TateCohomology.natCard_tateCohomology_zero_units
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_neg_two_iso_abelianization
-import Submission.Commons.NumberTheory.NumberField.Completion.subsingleton_groupCohomology_one_res_units
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_addOrderOf_eq_finrank_groupCohomology_two_units_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
-import Submission.Commons.FieldTheory.Galois.natCard_quotient_units_range_norm_eq_of_ringEquiv
-import Submission.NK.GlobalCFTdeep.HasseIndex.LocalFieldTransport
-import Submission.NK.LocalAnabelian.Basic
-import Submission.NeukirchUchida.Conjugation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

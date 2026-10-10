@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Norm.Transitivity
 import Submission.NK.GlobalCFTdeep.Herbrand.fiberIdelesRep_iso_coind
-import Submission.NeukirchUchida.Local.LocalGalois
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

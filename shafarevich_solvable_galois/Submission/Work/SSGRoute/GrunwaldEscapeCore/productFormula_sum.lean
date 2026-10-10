@@ -1,7 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Submission.Work.Kummer.exists_algEquiv_apply_eq_mul_of_pow_eq
+import Submission.Work.Kummer.norm_eq_primRoot_pow_mul_of_kummer_generator
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.mem_localNormSubgroup_algebra_norm
 import Submission.Work.SSGRoute.ZDataMup.ideleArtin_ideleOfPrime_of_unramified
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.localArtinFamily
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_restrictNormalHom
+import Submission.Work.SSGRoute.ZDataMup.localFactorProductFormulaAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

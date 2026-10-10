@@ -1,7 +1,11 @@
-import Mathlib
-import Submission.NK.UchidaKummer.Defs
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.Commons.NumberTheory.NumberField.Completion.map_maximalIdeal_eq_maximalIdeal_pow
-import Submission.Commons.Analysis.Nonarchimedean.val_pow_sub_one_le_exp_neg
 import Submission.NK.UchidaKummer.Approximation.pow_eq_of_val_le_exp_neg
 import Submission.NK.UchidaKummer.Approximation.pow_eq_of_val_sub_one_lt_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

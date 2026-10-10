@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.Commutator.Basic
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Submission.Work.Shrinking.PCentral
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

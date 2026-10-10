@@ -1,22 +1,8 @@
-/-
-# The level of `a · x` and the annihilator at a lower level
-
-`Eval/smulDiv_ann.lean` computes the annihilator of a torsion point `x ∈ Λ_n ∖ Λ_{n-1}` *at its own
-level*: `{a : a · x = 0} = (π^n)`.  This file generalises both the annihilator statement and its
-consequence to an element `z ∈ Λ_N` of *level* `m ≤ N`, with the action taken at level `N`:
-
-  `{a : a · z = 0} = (π^m)`   and   `a · z ∈ Λ_j ↔ a ∈ (π^{m-j})`  (`j ≤ m`).
-
-These are the statements the induction of `Eval/ltLevelIsSimple.lean` uses to convert the
-`𝒪[F]`-orbit of a primitive point into its *unit* orbit: if `c = b · π x` is primitive of level `n`
-then `n = n - v(b)`, so `b` is a unit.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_eq_zero_iff_of_mem` (annihilator at level `N`);
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv_mem_iff_mem_span` (the level of `a · z`).
--/
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

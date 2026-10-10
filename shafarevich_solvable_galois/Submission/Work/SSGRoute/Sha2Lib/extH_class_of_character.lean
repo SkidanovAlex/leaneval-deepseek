@@ -1,9 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.extH_groupCohomology_iso
-import Submission.Work.SSGRoute.groupCohomology_res_injective_of_pSylow
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.Interfaces
 import Submission.Work.SSGRoute.Sha2Lib.H1pi_character_ne_zero
 import Submission.Work.SSGRoute.e9_caseB_cocycle
+import Submission.Work.SSGRoute.extH_groupCohomology_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

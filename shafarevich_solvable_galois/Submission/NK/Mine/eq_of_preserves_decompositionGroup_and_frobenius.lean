@@ -1,13 +1,12 @@
-import Mathlib
-import Submission.NK.Mine.CompletionAPI
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.Chebotarev.FrobeniusOne
-import Submission.NK.Chebotarev.FrobeniusGenerateTop
-import Submission.NK.Mine.FrobeniusGenerateTopUnramified
-import Submission.NK.FieldTheory.Galois.stabilizer_iSup_eq_top
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.RamificationInertia.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Commons.NumberTheory.NumberField.exists_prime_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
-import Submission.Commons.FieldTheory.Galois.exists_finite_galois_containing
+import Submission.NK.Chebotarev.FrobeniusOne
+import Submission.NK.FieldTheory.Galois.iSup_decompositionSubgroup_eq_top
+import Submission.NK.Mine.CompletionAPI
+import Submission.NK.Mine.FrobeniusGenerateTopUnramified
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

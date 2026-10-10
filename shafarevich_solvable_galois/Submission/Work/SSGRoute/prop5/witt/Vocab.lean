@@ -1,17 +1,5 @@
-/-
-# Witt's theorem: the evaluation maps and the coefficient functional
-
-* `monLie X : Magma X → FreeLieAlgebra ℤ X` : the Lie-bracket evaluation of a tree;
-* `monBrkA X : Magma X → FreeAlgebra ℤ X` : the commutator evaluation in the free associative
-  algebra;
-* `monBrk X : Magma X → MonoidAlgebra ℤ (FreeMonoid X)` : the commutator evaluation in the free
-  monoid algebra, i.e. `monBrkA` transported across `FreeAlgebra.equivMonoidAlgebraFreeMonoid`;
-* `coeffF` : the coefficient of a word in an element of `MonoidAlgebra ℤ (FreeMonoid X)`.
-
-The point of the last two is that the coefficients of the *words* in `monBrk c` for a Hall tree
-`c` are accessible; the leading one is `foliage c` (with coefficient `1`).
--/
-import Mathlib
+import Mathlib.Algebra.Lie.Free
+import Mathlib.Algebra.MvPolynomial.Equiv
 import Submission.Work.SSGRoute.prop5.witt.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

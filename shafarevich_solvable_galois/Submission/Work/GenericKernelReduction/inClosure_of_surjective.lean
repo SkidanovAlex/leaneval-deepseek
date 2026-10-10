@@ -1,32 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Quotients of solutions of a split embedding problem inside a fixed algebraic closure
-
-Let `L ⊆ ℚ̄ = AlgebraicClosure ℚ` be a finite Galois extension and let
-`G = Gal(L/ℚ) = L ≃ₐ[ℚ] L`.  For a finite `G`-operator group `A` with action `Φ`, a *solution*
-of the split embedding problem with kernel `A` inside `ℚ̄` is a finite Galois extension
-`M ⊇ L` inside `ℚ̄` together with an isomorphism `A ⋊[Φ] G ≃* Gal(M/ℚ)` which restricts along
-`Gal(M/ℚ) → Gal(L/ℚ)` to the canonical projection `SemidirectProduct.rightHom`
-(`Work.GenericKernelReduction.SplitEmbeddingSolvedInClosure`).
-
-The present file shows that solutions pass to *equivariant quotients of the kernel*: if
-`f : A ⋊[Φ] G →* N ⋊[φ] G` is a surjective homomorphism commuting with the projections to `G`,
-then a solution for `A` yields one for `N`.
-
-The construction is the standard one: the kernel `ker f` is a `G`-stable normal subgroup of `A`
-(its elements project to `1` in `G`), its image `H = e (ker f)` under the isomorphism `e` is a
-normal subgroup of `Gal(M/ℚ)`, and the required field is the fixed field `M^H` of `H`, viewed
-inside `ℚ̄`.  The Galois group of `M^H/ℚ` is `Gal(M/ℚ)/H ≅ (A ⋊[Φ] G)/ker f ≅ N ⋊[φ] G`, and
-the compatibility with the projection onto `Gal(L/ℚ)` follows from the corresponding
-compatibility for `e`, using that `hproj` forces `ker f` to act trivially on (the image of) `L`.
-
-## Main result
-
-* `Work.GenericKernelReduction.inClosure_of_surjective`
--/
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Work.GenericKernelReduction.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

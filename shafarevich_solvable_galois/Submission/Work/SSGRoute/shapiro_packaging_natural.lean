@@ -1,7 +1,16 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Pi
+import Mathlib.GroupTheory.Coset.Card
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.LinearAlgebra.TensorProduct.Map
+import Submission.Work.GroupCohomology.ConnectingLift
+import Submission.Work.GroupCohomology.CyclicTriv
+import Submission.Work.GroupCohomology.Shapiro
+import Submission.Work.GroupCohomology.TrivialGroup
+import Submission.Work.GroupCohomology.Vanishing
 import Submission.Work.SSGRoute.ShapiroNaturalDefs
-import Submission.Work.GroupCohomology.All
 import Submission.Work.SSGRoute.shapiro_framed_natural
+import Submission.Work.Tate.ker_deltaH1_eq_range_mapH1
+import Submission.Work.Tate.range_deltaH1_eq_ker_mapH2
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

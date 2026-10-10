@@ -1,7 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalInputs.PowerQuotient.localFieldInputs_of_prime
-import Submission.NK.LocalInputs.Instantiation
-import Submission.NK.LocalInputs.Degree.localDegree_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

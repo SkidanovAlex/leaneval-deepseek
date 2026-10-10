@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.IdeleClassGroup
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_invariants_ideleClassGroup
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Data.Int.Star
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.CFTLib.normClassSubgroup_sup_range_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

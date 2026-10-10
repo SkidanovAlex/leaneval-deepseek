@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.local_lifting_setup
-import Submission.NK.RamificationAudit.perfectField_residueField_comap
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.finite_card_residueField_comap_bot
 import Submission.Work.SSGRoute.pow_exists_eq_one_of_isIntegral_finite_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

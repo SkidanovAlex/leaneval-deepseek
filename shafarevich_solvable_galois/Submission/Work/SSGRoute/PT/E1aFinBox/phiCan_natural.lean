@@ -1,11 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.finPlaceDict
-import Submission.Work.SSGRoute.E1aClean.phiCanDefs
-import Submission.Work.SSGRoute.E1aClean.localDictFromFamily
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E1aClean.finPlaceSquare
-import Submission.Work.SSGRoute.PT.E1aFinBox.mapExtAddHom_mk0_comp
-import Submission.Work.SSGRoute.PT.E1aFinBox.extResEquivExplicit_natural
 import Submission.Work.SSGRoute.PT.E1aFinBox.e1cEquiv_symm_mapH1
+import Submission.Work.SSGRoute.PT.E1aFinBox.extResEquivExplicit_natural
 import Submission.Work.SSGRoute.PT.E1aFinBox.levelChangeTransferD_natural
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
@@ -447,6 +456,6 @@ theorem phiCan_natural (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberF
   -- ## the chain chase
   unfold Work.SSGRoute.E1aClean.phiCan
   simp only [AddEquiv.trans_apply]
-  rw [hsq₁, hsq₂, hsq₃, hsq₄, hsq₅, hsq₆, hsq₇, hsq₈]
+  simp (config := { zetaDelta := true }) only [hsq₁, hsq₂, hsq₃, hsq₄, hsq₅, hsq₆, hsq₇, hsq₈]
 
 end Work.SSGRoute.PT.E1aFinBox

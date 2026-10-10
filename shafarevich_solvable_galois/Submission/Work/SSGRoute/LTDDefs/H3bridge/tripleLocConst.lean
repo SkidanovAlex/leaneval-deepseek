@@ -1,24 +1,10 @@
-/-
-# Uniform local constancy in three variables on a closed subgroup of `G_k`
-
-This file proves `Work.SSGRoute.LTDDefs.H3bridge.tripleLocConst`, the degree-`3` analogue of
-`Work.SSGRoute.exists_openSubgroup_pair_mul_eq_of_isLocallyConstant`
-(`Submission/Work/SSGRoute/LTDDefs/H2locAux.lean`): a locally constant function on the third power
-of a closed subgroup `H ≤ G_k = Ω ≃ₐ[k] Ω` is right invariant, uniformly in the base point, under a
-single open subgroup `U ≤ G_k`.
-
-The proof is a direct application of the general uniform-local-constancy theorem
-`Work.SSGRoute.exists_openSubgroup_forall_mul_eq` to the product group `↥H × ↥H × ↥H`, combined with
-`Work.SSGRoute.exists_openSubgroup_inter_subset_of_isOpen`, which produces the open subgroup of the
-ambient group `G_k` out of an open subgroup of `↥H`.  The only extra ingredient is the standard
-"diagonal" construction: from an open subgroup `W` of the product group one obtains an open
-subgroup `V ≤ ↥H` consisting of the elements `u` with `(u, 1)`, `(1, (u, 1))` and `(1, (1, u))`
-all in `W`; then `(u, v, w) ∈ W` for all `u, v, w ∈ V`, because `(u, (v, w))` is the product of
-those three elements.
--/
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.LTDDefs.H2locAux
-import Submission.Work.AbsoluteKummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

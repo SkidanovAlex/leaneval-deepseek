@@ -1,12 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.ArchDictionary.assemblyOfSquare
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.ArchDictionary.archAcEquivH1loc
 import Submission.Work.SSGRoute.ArchDictionary.AcOdd
 import Submission.Work.SSGRoute.ArchDictionary.ArchLinAlg
-import Submission.Work.SSGRoute.LTDDefs.Basic
+import Submission.Work.SSGRoute.ArchDictionary.assemblyOfSquare
 import Submission.Work.SSGRoute.PT.pt_counting_assembly
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
-import Submission.Work.SSGRoute.H1Pair.omega_functional
-import Submission.Work.ArchDictionary.archAcEquivH1loc
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

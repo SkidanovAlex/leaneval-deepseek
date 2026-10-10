@@ -1,21 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Short exact sequences of `G`-modules and the connecting map
-
-For the six-term exact sequence of Tate cohomology in degrees `-1, 0` one needs a short exact
-sequence of `G`-modules
-
-`0 → A --f--> B --g--> C → 0`
-
-with `G`-equivariant maps, `f` injective, `g` surjective and `f.range = g.ker`.
-
-This file sets up the structure `Work.Tate.SES`, the set-theoretic section of `g`, and the
-auxiliary element `deltaLiftFun` whose class is the image of a class in `Ĥ⁻¹(G, C)` under the
-connecting map `Ĥ⁻¹(G, C) → Ĥ⁰(G, A)`.
--/
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Uniform
 import Submission.Work.Tate.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

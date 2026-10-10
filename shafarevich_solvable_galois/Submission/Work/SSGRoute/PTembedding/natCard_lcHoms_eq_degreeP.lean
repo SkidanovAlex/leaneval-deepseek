@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.localKummerReciprocity
-import Submission.Work.SSGRoute.finite_homs_of_finite_galoisFields
-import Submission.Work.SSGRoute.PTembedding.natCard_homs_primeCard
-import Submission.Work.SSGRoute.PTembedding.natCard_nontrivHoms_primeCard
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.Topology.LocallyConstant.Basic
 import Submission.Work.SSGRoute.PTembedding.natCard_mid_eq_quotientHoms
+import Submission.Work.SSGRoute.PTembedding.natCard_nontrivHoms_primeCard
+import Submission.Work.SSGRoute.localKummerReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

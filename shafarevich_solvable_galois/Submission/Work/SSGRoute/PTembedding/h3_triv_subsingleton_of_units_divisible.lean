@@ -1,10 +1,11 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
-import Submission.Work.SSGRoute.range_mapH2_eq_ker_deltaH3
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.range_deltaH3_eq_ker_mapH3
+import Submission.Work.SSGRoute.range_mapH2_eq_ker_deltaH3
 import Submission.Work.SSGRoute.sha2_transport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

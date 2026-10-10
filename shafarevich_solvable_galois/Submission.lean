@@ -2,11 +2,6 @@ import Mathlib
 import Lake.Toml
 import Lake.Util.Message
 import Lean
-import Submission.Helpers
-import Submission.Shafarevich
-import Submission.Crossing
-import Submission.CoprimeProduct
-import Submission.ClassicalRoute
 import Submission.Work.SSGRoute.ZConstruction.genericKernelSolvable
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

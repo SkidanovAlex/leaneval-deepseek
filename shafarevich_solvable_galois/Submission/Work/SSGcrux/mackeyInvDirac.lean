@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Group
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 import Submission.Work.SSGRoute.coind_res_mackey
 import Submission.Work.Sha2Lib.coindValueFormula_singleOrbit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

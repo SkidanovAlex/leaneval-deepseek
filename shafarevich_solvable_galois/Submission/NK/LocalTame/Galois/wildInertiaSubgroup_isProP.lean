@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.GroupTheory.IsPerfect
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.GroupTheory.SpecificGroups.ZGroup
 import Submission.NK.LocalTame.Galois
 import Submission.NK.LocalTame.ProP.isProP_sup_of_normal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

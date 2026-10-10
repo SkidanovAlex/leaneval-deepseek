@@ -1,6 +1,7 @@
-import Submission.NK.LocalReciprocity.Reciprocity
-import Submission.NK.LocalReciprocity.Frobenius
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.LocalReciprocity.ArtinUnramified
+import Submission.NK.LocalReciprocity.Reciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

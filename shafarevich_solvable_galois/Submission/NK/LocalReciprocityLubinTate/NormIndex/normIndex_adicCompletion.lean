@@ -1,6 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalArtin.Basic
-import Submission.Commons.NumberTheory.NumberField.Completion.abelian_local_norm_index_at_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

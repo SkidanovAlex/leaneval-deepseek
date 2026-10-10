@@ -1,3 +1,5 @@
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Transport.IdeleTransport
 import Submission.NK.GlobalCFTdeep.Transport.NormTransportAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

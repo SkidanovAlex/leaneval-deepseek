@@ -1,16 +1,5 @@
-/-
-# The descended pairing `H₁(G, A) →ₗ (H¹(G, A^∨))^∨`
-
-The evaluation pairing of `Submission/Work/SSGRoute/H1Pair/Basic.lean` is compatible with the
-differentials of the bar complex (`pairFun_d₂₁`, `pairFun_d₀₁`, both direct computations on
-`Finsupp.single`).  Consequently it descends to the homology and cohomology:
-
-`tatePairLin : H₁(G, A) →ₗ[k] Module.Dual k (H¹(G, A^∨))`.
-
-The descent is formal: `H1π` presents `H₁(G,A)` as a quotient of the 1-cycles and `H¹(G,A^∨)` as a
-quotient of the 1-cocycles, so it suffices to kill boundaries in the first variable
-(`phiLin_boundaries`) and coboundaries in the second (`phiLin_coboundaries`).
--/
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.SSGRoute.H1Pair.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

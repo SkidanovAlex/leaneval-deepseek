@@ -1,31 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.LocalStructure.Main`: the reduced inputs, assembled into the vocabulary of the consumers
-
-This file contains the *assembly* results of the chapter: it turns the reduced input catalogue
-(`NK.LocalStructure.TameCore`, `TameFrobeniusCore`, `PrincipalUnitsCore`, `TowerRankCore`) into
-the exact structures the Neukirch–Uchida development consumes
-(`NK.LocalTame.TameStructureInput`, `NK.LocalTame.FrobeniusLiftCharacterisation`,
-`NK.LocalInputs.LocalFieldInputs`, `NK.LocalInputs.LocalGaloisInputsOfUnits`,
-`NK.LocalAnabelian.PadicGaloisInputs`).
-
-The reductions themselves are proved in the sibling files of this directory (one lemma per file);
-this file is only the glue that a caller imports.
--/
-import Submission.NK.LocalStructure.Defs
-import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
-import Submission.NK.LocalStructure.Tame.exists_notMem_inertiaSubgroup_of_unramifiedQuotient
-import Submission.NK.LocalStructure.Tame.tameStructureInput_of_core
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Submission.NK.LocalStructure.Frobenius.frobeniusLiftCharacterisation_of_core
-import Submission.NK.LocalStructure.Power.natCard_pRootsOfUnity_eq_pow_zetaIndicator
 import Submission.NK.LocalStructure.Power.principalUnits_card_of_core
-import Submission.NK.LocalStructure.Tower.le_numIndexSubgroups_of_hasAbelianFrattiniRank
-import Submission.NK.LocalStructure.Tower.hasUnboundedTowerRank_of_numIndexSubgroups_tower
-import Submission.NK.LocalStructure.Tower.not_hasUnboundedTowerRank_of_card_extensions_le
-import Submission.NK.LocalStructure.Tower.proP_unbounded_of_towerCore
+import Submission.NK.LocalStructure.Tame.exists_notMem_inertiaSubgroup_of_unramifiedQuotient
+import Submission.NK.LocalStructure.Tame.residueCard_eq_pow_of_charP
+import Submission.NK.LocalStructure.Tame.tameStructureInput_of_core
 import Submission.NK.LocalStructure.Tower.other_bounded_of_towerCore
+import Submission.NK.LocalStructure.Tower.proP_unbounded_of_towerCore
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

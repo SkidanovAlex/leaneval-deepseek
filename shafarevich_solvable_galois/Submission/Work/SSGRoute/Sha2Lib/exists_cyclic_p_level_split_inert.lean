@@ -1,7 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_inert_cyclic_level
-import Submission.Work.SSGRoute.grunwald_surjective_two
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.Sha2Lib.split_inert_level_of_character
+import Submission.Work.SSGRoute.grunwald_surjective_two
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -287,7 +298,7 @@ theorem exists_char_split_inert_aux
         map_mul' := fun a b => by group }
     have hcg_cont : Continuous (cg : (Ω ≃ₐ[k] Ω) → (Ω ≃ₐ[k] Ω)) := by
       show Continuous (fun x : Ω ≃ₐ[k] Ω => d.u P * x * (d.u P)⁻¹)
-      continuity
+      exact (continuous_const.mul continuous_id).mul continuous_const
     have hpre_open : IsOpen ((Subgroup.comap cg U : Subgroup (Ω ≃ₐ[k] Ω)) :
         Set (Ω ≃ₐ[k] Ω)) := by
       rw [Subgroup.coe_comap]
@@ -367,7 +378,7 @@ theorem exists_char_split_inert_aux
           MulAut.conjNormal g x) := by
         refine Continuous.subtype_mk ?_ _
         show Continuous (fun x : ↥(K.fixingSubgroup) => g * (x : Ω ≃ₐ[k] Ω) * g⁻¹)
-        continuity
+        exact (continuous_const.mul continuous_subtype_val).mul continuous_const
       have hbase_open : IsOpen ((Subgroup.comap (Subgroup.subtype K.fixingSubgroup) U :
           Subgroup ↥(K.fixingSubgroup)) : Set ↥(K.fixingSubgroup)) := by
         rw [Subgroup.coe_comap]

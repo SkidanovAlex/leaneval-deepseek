@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.IdeleClassGroup.CompactDefs
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.NK.GlobalCFT.IdeleClassGroup.CompactPieces
-import Submission.NK.GlobalCFT.IdeleClassGroup.isCompact_annulus_infinite
-import Submission.NK.GlobalCFT.IdeleClassGroup.isCompact_annulus_finite
 import Submission.NK.GlobalCFT.IdeleClassGroup.isClosed_normOne
+import Submission.NK.GlobalCFT.IdeleClassGroup.isCompact_annulus_finite
+import Submission.NK.GlobalCFT.IdeleClassGroup.isCompact_annulus_infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

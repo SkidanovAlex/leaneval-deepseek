@@ -1,9 +1,16 @@
-import Mathlib
-import Submission.NK.CFTLib.Arl.Defs
-import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
-import Submission.Commons.NumberTheory.NumberField.Completion.ringOfIntegers_dense_in_adicIntegers
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.Commons.NumberTheory.NumberField.charZero_adicCompletion
 import Submission.NK.CFTLib.Arl.exists_integral_sign_adjust
+import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

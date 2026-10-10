@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.Abelianization.Finite
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.Lemmas
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.Reconstruct.levelPairData
 import Submission.NK.Reconstruct.prop4f3AwayFromL
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,27 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Equivalent extensions have equal classes in `H²`
-
-This file proves that two `2`-cocycles `c`, `c'` whose associated group extensions
-`Extension.ofCocycle Q A c` and `Extension.ofCocycle Q A c'` are isomorphic (as extensions of `Q`
-by `A` with the prescribed action) define the same class in `H²(Q, A)`.
-
-The mathematical content is the classical computation: an equivalence `φ` of the two extensions
-is a group isomorphism `A × Q ≅ A × Q` (the twisted products) which is the identity on `A ⊂ A × Q`
-and compatible with the projections to `Q`; writing `φ (a, q) = (a + F q, q)` the multiplicativity
-of `φ` says precisely that `normCocycle c' - normCocycle c = -d¹ F`, hence the two (normalized)
-cocycles differ by a coboundary.  Since `c - normCocycle c` and `c' - normCocycle c'` are also
-coboundaries (namely `d¹ (fun q => c (q, 1))` and so on), `c - c'` is a coboundary, i.e. the
-classes of `c` and `c'` in `H²` coincide.
-
-## Main results
-
-* `Work.GroupCohomology.sub_mem_B2_of_map` : the coordinate computation
-* `Work.GroupCohomology.sub_mem_B2_of_equiv_ofNormalized` : the same for an extension equivalence
-* `Work.GroupCohomology.eq_ofCocycle_of_equiv` : the statement of the file
--/
-import Mathlib
+import Mathlib.Tactic.Abel
+import Mathlib.GroupTheory.GroupExtension.Defs
 import Submission.Work.GroupCohomology.Extension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

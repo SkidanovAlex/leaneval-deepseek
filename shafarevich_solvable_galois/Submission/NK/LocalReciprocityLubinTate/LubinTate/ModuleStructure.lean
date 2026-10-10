@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.FormalGroup.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.ModuleAux
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.existsUnique_lubinTate_groupLaw
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

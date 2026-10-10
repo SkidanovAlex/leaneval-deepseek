@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.Commons.RingTheory.Valuation.mem_stabilizer_valuationSubring_iff
-import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.FieldTheory.Galois.exists_restrictScalars_smul_eq_of_comap_eq
+import Submission.Commons.FieldTheory.Galois.isClosed_stabilizer_valuationSubring
 import Submission.Commons.NumberTheory.NumberField.Valuation.atMostOne_indecomposable_prime
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,16 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleCongr
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
-import Submission.Work.SSGRoute.ZDataMup.CycleAux
-import Submission.Work.SSGRoute.ZDataMup.LT_CyclePort
-import Submission.Work.SSGRoute.ZDataMup.cycleMemIcoprime_iff
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZDataMup.cycleIdealCoprimeGroupEq
-import Submission.Work.SSGRoute.ZDataMup.cycleMemNormGroupOf_iff
-import Submission.Work.SSGRoute.ZDataMup.cycleMemNormImageOfCongr
 import Submission.Work.SSGRoute.ZDataMup.cycleIdealOfMemRaySupNorm
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.CFTLib.ARL.RelNormFI
+import Submission.Work.SSGRoute.ZDataMup.cycleMemIcoprime_iff
+import Submission.Work.SSGRoute.ZDataMup.cycleMemNormImageOfCongr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

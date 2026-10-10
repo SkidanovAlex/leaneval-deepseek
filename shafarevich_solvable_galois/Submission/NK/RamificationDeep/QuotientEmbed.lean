@@ -1,37 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The embedding `G_i/G_{i+1} ↪ 𝔪_A^i/𝔪_A^{i+1}` and the structure of `G_1`
-
-For a discretely valued extension `L/K` with valuation ring `A` of uniformizer `π`
-(`NK.RamificationDeep.UniformizerData`), Serre (*Local Fields*, IV §2, Cor. 2) proves that for
-`i ≥ 1` the map
-
-  `σ ↦ σ(π)/π = 1 + b_σ`,   where `σ π - π = π^{i+1} b_σ`,
-
-induces a **group homomorphism** `G_i → 𝔪_A^i/𝔪_A^{i+1}` with kernel `G_{i+1}`; since
-`𝔪_A^i/𝔪_A^{i+1} ≅ A/𝔪_A` has `q = #(A/𝔪_A)` elements, this gives `#(G_i/G_{i+1}) ∣ q`.
-
-The formalisation below avoids the identification `𝔪_A^i/𝔪_A^{i+1} ≅ A/𝔪_A` by landing the map
-directly in the additive group of the *residue ring*: the coordinate `b_σ` is defined from
-`σ π - π ∈ 𝔪_A^{i+1} = (π^{i+1})` as `σ π - π = π^{i+1} b_σ`, and the map is `σ ↦ b_σ mod 𝔪_A`.
-Its additivity is the congruence
-
-  `b_{στ} - b_σ - b_τ ∈ 𝔪_A`,
-
-which follows from `(σ τ) π - π = σ(τ π - π) + (σ π - π)` together with
-`σ x - x ∈ 𝔪_A^{i+j}` for `x ∈ 𝔪_A^j`, `i ≥ 1`
-(`NK.Ramification.smul_sub_mem_maximalIdeal_pow`), and its kernel is `G_{i+1}` by the
-uniformizer criterion (`NK.Ramification.ramificationSubgroup_succ_eq_of_uniformizer`).
-
-The same construction with `i = 0` and the multiplicative target `(A/𝔪_A)^×` gives the embedding
-`G_0/G_1 ↪ (A/𝔪_A)^×` (`unitMap`, `natCard_quotient_zero_dvd_units`), whence `G_0/G_1` has order
-prime to `p` when the residue field has `p^f` elements.
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.DiscreteValuationRing.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.RamificationGroup
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.RamificationDeep.Defs
-import Submission.NK.Ramification.smul_sub_mem_maximalIdeal_pow
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

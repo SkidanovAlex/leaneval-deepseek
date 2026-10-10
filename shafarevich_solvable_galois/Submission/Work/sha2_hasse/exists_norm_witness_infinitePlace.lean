@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.Work.SSGRoute.sha2_hasse.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

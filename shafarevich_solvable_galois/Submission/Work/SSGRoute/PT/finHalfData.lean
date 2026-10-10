@@ -1,32 +1,36 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.PT.g1plus_iota
-import Submission.Work.SSGRoute.PT.exists_level_factors_locConstOnTwo
-import Submission.Work.SSGRoute.PT.g1plus_level
-import Submission.Work.SSGRoute.PT.exists_place_under_isFinPlace
-import Submission.Work.SSGRoute.localUnitsMap_exists
-import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.Work.SSGRoute.augSES_shortExact
-import Submission.Work.SSGRoute.PT.g1plus_levelInfl
-import Submission.Work.SSGRoute.PT.place_glue_level
-import Submission.Work.SSGRoute.PT.factorised_isCrossedHom
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.PT.levelPair_functoriality
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.CokerPT.IotaAlgebra
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.PT.g1plus_levelTransportIota
-import Submission.Work.SSGRoute.levelPair_comp_extHMap
-import Submission.Work.SSGRoute.phi1_level_naturality
 import Submission.Work.SSGRoute.E1aClean.localDictionary_natural_family
+import Submission.Work.SSGRoute.PT.factorised_isCrossedHom
+import Submission.Work.SSGRoute.PT.g1plus_level
+import Submission.Work.SSGRoute.PT.g1plus_levelInfl
+import Submission.Work.SSGRoute.PT.g1plus_levelTransportIota
+import Submission.Work.SSGRoute.PT.levelPair_functoriality
+import Submission.Work.SSGRoute.PT.place_glue_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 /-!
 # `G1⁺`: the level data of the finite-place half `fin` (definitions and level relations)

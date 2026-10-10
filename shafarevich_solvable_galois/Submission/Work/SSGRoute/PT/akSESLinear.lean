@@ -1,6 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Exact.Basic
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.akZmodLinear
-import Submission.Work.AbsoluteKummer.SES.Connecting
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

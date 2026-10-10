@@ -1,13 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.magnus_mem_one_add
+import Mathlib.Computability.Reduce
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Algebra.MonoidAlgebra.Basic
+import Mathlib.GroupTheory.GroupAction.Ring
 import Submission.Work.SSGRoute.prop5.magnusGroupPart
-import Submission.Work.SSGRoute.prop5.magnusLieDefs
-import Submission.Work.SSGRoute.prop5.magnus_unitCongr_isolated
+import Submission.Work.SSGRoute.prop5.witt.Swap
 import Submission.Work.SSGRoute.prop5.witt.hall_spanning
 import Submission.Work.SSGRoute.prop5.witt.leading_term_coeff
-import Submission.Work.SSGRoute.prop5.witt.hall_foliage_lt_right
-import Submission.Work.SSGRoute.prop5.witt.Vocab
-import Submission.Work.SSGRoute.prop5.witt.Swap
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

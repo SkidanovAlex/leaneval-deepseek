@@ -1,9 +1,14 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.NUV2.ARL.abelianWeakToStrong
 import Submission.Work.SSGRoute.ZDataMup.CyclicCaseStatement
 import Submission.Work.SSGRoute.ZDataMup.exists_isCyclic_fixingSubgroup_notMem
-import Submission.NK.NUV2.ARL.abelianWeakToStrong
-import Submission.NK.CFTLib.Arl.exists_denominator_ideal
-import Submission.NK.GlobalCFT.IdeleClassGroup.count_spanSingleton_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

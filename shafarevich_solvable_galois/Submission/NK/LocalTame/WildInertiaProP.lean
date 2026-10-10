@@ -1,17 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The wild inertia subgroup is pro-`p`
-
-`wildInertiaSubgroup p` is by definition the join of all normal pro-`p` subgroups of
-`Gal(K'/κ)`.  This file records that the join is again pro-`p`
-(`NK.LocalTame.ProP.isProP_iSup_of_normal`), so that `wildInertiaSubgroup p` really is the
-*maximal* closed normal pro-`p` subgroup (`NK.LocalTame.isWildInertia_wildInertiaSubgroup`)
-— with no arithmetic input required.  What remains as an arithmetic input about the wild inertia
-is only that it is contained in the inertia subgroup (`NK.LocalTame.TameStructureInput`).
--/
-import Submission.NK.LocalTame.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Notation
 import Submission.NK.LocalTame.Galois
 import Submission.NK.LocalTame.ProP.isProP_iSup_of_normal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

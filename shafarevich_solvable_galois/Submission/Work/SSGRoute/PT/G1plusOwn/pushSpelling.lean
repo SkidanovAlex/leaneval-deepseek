@@ -1,12 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.place_glue_level
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.PT.finZZ_eq
-import Submission.Work.SSGRoute.extHMap_gammaHom_eq
-import Submission.Work.SSGRoute.PT.finZH_levelChange_fix
-import Submission.Work.SSGRoute.PT.gammaZ1_transport
 import Submission.Work.SSGRoute.PT.vf_transverse
 import Submission.Work.SSGRoute.local_phi_realization_in
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

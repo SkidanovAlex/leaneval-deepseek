@@ -1,7 +1,11 @@
-import Submission.Work.SSGRoute.sylow_in_defs
-import Submission.Work.SSGRoute.phi1_sylow_level
-import Submission.Work.SSGRoute.sylow_infl_injective
+import Mathlib.GroupTheory.PGroup
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.phi1_mono_pgroup_in
+import Submission.Work.SSGRoute.phi1_sylow_level
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

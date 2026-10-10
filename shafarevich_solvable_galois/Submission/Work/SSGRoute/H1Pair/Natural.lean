@@ -1,20 +1,6 @@
-/-
-# Naturality of the canonical Tate pairing `H₁(G, M) × H¹(G, M^∨) → k`
-
-`Work.SSGRoute.H1Pair.tatePairLin` is the explicit pairing of the bar complex, with computation
-rule `tatePairLin M (H1π c) (H1π θ) = ∑_g θ g (c g)` (`tatePairLin_apply_mk`).  As an explicit
-formula on the inhomogeneous chains and cochains it is natural in `(G, M)`: for a group
-homomorphism `φ : G₁ →* G₂` and an equivariant `F : M₁ ⟶ Rep.res φ M₂` with transpose
-`F' : Rep.res φ (M₂^∨) ⟶ M₁^∨`,
-
-`⟨map φ F 1 x, y⟩₂ = ⟨x, map φ F' 1 y⟩₁`.
-
-The naturality of `groupHomology.map` and `groupCohomology.map` on representatives
-(`groupHomology.H1π_comp_map_apply`, `groupHomology.coe_mapCycles₁`,
-`groupCohomology.H1π_comp_map_apply`, `groupCohomology.coe_mapCocycles₁`) reduces this to the
-identity `∑_g θ (φ g) (F (c g)) = ∑_g (F' (θ (φ g))) (c g)`, which is the transpose property of
-`F'`.
--/
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.SSGRoute.H1Pair.Pairing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

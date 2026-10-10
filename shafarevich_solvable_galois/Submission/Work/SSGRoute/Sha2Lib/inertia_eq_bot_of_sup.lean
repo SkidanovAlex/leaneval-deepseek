@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.e9_caseB_descent
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.Work.SSGRoute.Sha2Lib.restrictNormalHom_eq_one_of_isInertiaAt
+import Submission.Work.SSGRoute.e9_caseB_descent
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

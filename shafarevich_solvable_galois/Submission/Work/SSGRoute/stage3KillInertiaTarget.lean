@@ -1,16 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ProperStageDefs
-import Submission.Work.SSGRoute.twistLayer
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.exists_localTarget_of_splitting
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.local_tame_lifting
-import Submission.Work.SSGRoute.localZhatHom_ker
 import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
+import Submission.Work.SSGRoute.place_basics
 import Submission.Work.SSGRoute.step4_local_target
-import Submission.Work.SSGRoute.zhat_le_of_index
-import Submission.Work.SSGRoute.zpowers_zhatGen_sup_powSubgroup
-import Submission.Commons.RingTheory.Valuation.ValuationSubring.eq_top_of_comap_algebraMap_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.GlobalCFTdeep.Transport.PlaceDefs
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.GlobalCFTdeep.Transport.valuation_mapRingEquiv
-import Submission.Commons.Topology.Algebra.Valued.uniformContinuous_withVal_of_valuation_eq_of_cofinal
 
 /-!
 # Transport of the local fields along a ring equivalence of number fields

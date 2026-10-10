@@ -1,6 +1,4 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_eq_card_of_abelian_of_prime_power
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_card_of_abelian_local_base
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_pgroup_intermediate_field
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

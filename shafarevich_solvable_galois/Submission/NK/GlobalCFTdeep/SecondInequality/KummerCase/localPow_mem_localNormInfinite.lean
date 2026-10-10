@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
-import Submission.NK.GlobalCFTdeep.Herbrand.index_normGroup_completion_eq_finrank
+import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Submission.NK.GlobalCFT.Galois.exists_stabilizer_isConj_of_isReal_isComplex
+import Submission.NK.GlobalCFTdeep.Herbrand.index_normGroup_completion_eq_finrank
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.absDiscrQBar
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.PlaceBelow
+import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.absDiscrQBar
 import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.prime_dvd_discr_of_isRamifiedIn_algebraicClosure
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.localizationExp
-import Submission.Work.SSGRoute.TatePoitouRoute.FinitenessHM.differentIdeal_count_le_clean_bound
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

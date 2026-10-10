@@ -1,5 +1,5 @@
-import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 import Submission.Commons.RepresentationTheory.GroupCohomology.subsingleton_groupCohomology_trivial_rat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

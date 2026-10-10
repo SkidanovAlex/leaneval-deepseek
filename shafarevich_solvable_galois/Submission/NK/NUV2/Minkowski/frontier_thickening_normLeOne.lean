@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
 import Submission.NK.NUV2.Minkowski.frontier_thickening_expMapBasis_paramSet
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

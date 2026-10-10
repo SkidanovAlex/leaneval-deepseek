@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.InertiaArithImports
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
+import Submission.NK.TameStructureDeep.Tame.Unconditional
+import Submission.Work.SSGRoute.InertiaDefs
+import Submission.Work.SSGRoute.LTDDefs.Basic
+import Submission.Work.SSGRoute.PTW.Prelude
 import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Commons.NumberTheory.NumberField.adicCompletion_residueField_equiv_exists
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,28 +1,11 @@
-/-
-# Evaluation of the Lubin–Tate module at the torsion class `τ`
-
-Milne, *Classical Field Theory*, §I.3: for `a ∈ 𝒪[F]` and a `π^n`-torsion point `x` of the
-Lubin–Tate group of `π`, the point `a · x = [a](x)` is again `π^n`-torsion, and this makes `Λ_n`
-into an `𝒪[F]/π^n`-module whose Galois action is `𝒪[F]`-linear.
-
-This file sets up the evaluation at the class `τ` of `T` in the ambient ring
-`T_n = 𝒪[F][T]/(f^{(n)}(T))` (`Eval/TorsionRing.lean`) and the induced `𝒪[F]`-action on the
-torsion points.
-
-## Main definitions
-
-* `NK.LocalReciprocityLubinTate.Eval.evalTau` — a power series over `𝒪[F]` evaluated at `τ`,
-  through Milne's `MvPowerSeries.eval₂Hom`;
-* `NK.LocalReciprocityLubinTate.Eval.actionTau` — the `a`-multiplication series `[a]` evaluated at
-  `τ`;
-* `NK.LocalReciprocityLubinTate.Eval.smulDiv` — the induced action `a • x` on `Λ_n`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionRing
+import Mathlib.CategoryTheory.Action.Basic
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Evaluation
 import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionInstances
-import Submission.NK.LocalReciprocityLubinTate.Eval.hasEval_ltTorsionRing
-import Submission.NK.LocalReciprocityLubinTate.Eval.evMap_tau
 import Submission.NK.LocalReciprocityLubinTate.Eval.continuous_algebraMap_ltTorsionRing
+import Submission.NK.LocalReciprocityLubinTate.Eval.evMap_tau
+import Submission.NK.LocalReciprocityLubinTate.Eval.hasEval_ltTorsionRing
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.FormalGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

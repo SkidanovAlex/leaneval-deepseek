@@ -1,47 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The named inputs: the local structure theory of `G_κ`
-
-This file collects, as explicit `structure`s, the *arithmetic* inputs of the theory: the
-classical structure theorems about the absolute Galois group `G_κ = Gal(κ̄/κ)` of a `p`-adic
-field `κ` that cannot be proved from the group theory of `NK.LocalTame.Basic` alone.  Each
-structure carries the exact reference to the literature; everything *derived* from them is
-proved in `NK.LocalTame.Main` and `NK.LocalTame.Global`.
-
-Throughout, `κ` is a `p`-adic field (concretely `κ = K_𝔭`, the `𝔭`-adic completion of a number
-field `K`), `K'` is a separable closure of `κ`, and `q` is the cardinality of the residue field
-of `κ`.
-
-The four inputs are
-
-* `TameStructureInput p q κ K'` — the structure of the tame quotient `G_κ^{tr} = G_κ/V_κ`
-  (NSW, *Cohomology of Number Fields*, (7.5.7) Corollary and (7.5.11); Iwasawa, *On Galois
-  groups of local fields*): `V_κ` is the maximal closed normal pro-`p` subgroup, it lies in the
-  inertia subgroup `I_κ`, and `I_κ/V_κ` is the maximal closed normal pro-cyclic subgroup of
-  `G_κ^{tr}`; the latter is pro-prime-to-`p`, and the quotient `G_κ^{tr}/(I_κ/V_κ) = G_κ/I_κ`
-  is `Ẑ`.
-* `ResidueCardRecovery p q κ K'` — the recovery of `q` from the torsion of the abelianised tame
-  quotient (Shimizu, arXiv:2009.10431, Lemma 2.1, via local class field theory).  The classical
-  statement is `q = #((G_κ^{tr,ab})_{tor}/(G_κ^{tr,ab})[p^∞]) + 1`; since `q` is a power of `p`
-  the `p`-primary part of the torsion is trivial and this is the statement recorded here.
-* `FrobeniusLiftCharacterisation p q κ K'` — the classical Frobenius normalisation: the
-  elements of `G_κ` acting on the prime-to-`p` roots of unity by `ζ ↦ ζ^q` are exactly the
-  elements lying outside `I_κ` whose conjugation action on the tame inertia `I_κ/V_κ` is the
-  `q`-th power map.  This is the statement that `Ẑ` acts on the tame inertia through the
-  cyclotomic character, and that this action determines the coset of the Frobenius
-  (NSW (12.1.8) Lemma; Iwasawa).
-* `Zl2ResidueChar p κ K'` — Shimizu's characterisation of the residue characteristic: `p` is the
-  unique prime `ℓ` such that `G_κ` admits a surjection onto `ℤ_ℓ²` (equivalently: has
-  `ℓ`-cohomological dimension `2` with a free `ℤ_ℓ²`-quotient).  Here this is phrased in finite
-  quotients as: `G_κ ↠ (ℤ/ℓ^n)²` for all `n ≥ 1`.  Proof (Shimizu, Lemma 2.1, from local class
-  field theory): for `ℓ = p`, `G_κ^{(p)}` is a Demushkin group of rank `[κ:ℚ_p] + 2 ≥ 3`
-  (NSW (7.5.11)), whose abelianisation is free of rank `≥ 2` over `ℤ_p`; for `ℓ ≠ p` the maximal
-  pro-`ℓ` quotient of `G_κ` is pro-cyclic, namely `ℤ_ℓ`.
--/
-import Submission.NK.LocalAnabelian.All
-import Submission.NK.LocalTame.Basic
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.NK.LocalTame.Galois
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

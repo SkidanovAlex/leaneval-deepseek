@@ -1,14 +1,17 @@
-import Mathlib
-import Submission.NK.ReconstructField.conjRingEquiv_eq_levelMapEquiv_of_primeTransport_eq
-import Submission.NK.ReconstructField.mapsBaseLevel_of_conjRingEquiv_eq
-import Submission.NK.ReconstructField.localDegree_primeTransport
-import Submission.NK.ReconstructField.levelPrimeMap_liesOver
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.UchidaKummer.SplitPrimes
-import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.exists_prime_splitsCompletely
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
+import Submission.NK.ReconstructField.conjRingEquiv_eq_levelMapEquiv_of_primeTransport_eq
+import Submission.NK.ReconstructField.levelPrimeMap_liesOver
+import Submission.NK.ReconstructField.localDegree_primeTransport
+import Submission.NK.ReconstructField.mapsBaseLevel_of_conjRingEquiv_eq
+import Submission.NK.UchidaKummer.API.splitsCompletely_iff_forall_localDeg_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

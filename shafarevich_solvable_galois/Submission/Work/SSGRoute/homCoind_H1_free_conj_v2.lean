@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.coindU_H1_subsingleton_v2
 import Submission.Work.SSGRoute.homCoind_H1_free
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

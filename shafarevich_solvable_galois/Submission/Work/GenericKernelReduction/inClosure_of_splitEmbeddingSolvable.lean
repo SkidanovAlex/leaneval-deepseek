@@ -1,10 +1,10 @@
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.GenericKernelReduction.Defs
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.GenericKernelReduction
 
@@ -29,7 +29,6 @@ theorem inClosure_of_splitEmbeddingSolvable {L : IntermediateField ℚ (Algebrai
     Work.GenericKernelReduction.SplitEmbeddingSolvedInClosure L N φ := by
   classical
   obtain ⟨L', hF, hA, hFD, hG, hA2, hST, hFD2, hG2, e, he⟩ := h
-  letI : Field L' := hF
   letI : Algebra ℚ L' := hA
   letI : Algebra ↥L L' := hA2
   letI : IsScalarTower ℚ ↥L L' := hST

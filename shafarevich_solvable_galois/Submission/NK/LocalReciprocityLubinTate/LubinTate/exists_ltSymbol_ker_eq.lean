@@ -1,6 +1,10 @@
-import Mathlib
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.Discrete.Basic
 import Submission.NK.LocalReciprocityLubinTate.LubinTate.exists_autLTLevel_mulEquiv_apply_smulDiv
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Herbrand.StableRep
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.GroupTheory.FiniteAbelian.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.FiniteIndex
+import Submission.NK.GlobalCFTdeep.Herbrand.StableRep
+import Submission.NK.GlobalCFTdeep.Herbrand.exists_nat_smul_mem_of_span_eq_top
 import Submission.NK.GlobalCFTdeep.Herbrand.finite_tateCohomology_of_moduleFinite
 import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_finite_quotient
-import Submission.NK.GlobalCFTdeep.Herbrand.exists_nat_smul_mem_of_span_eq_top
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,5 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.TameInertiaCorrected
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.TameStructureDeep.Tame.wildInertiaSubgroup_eq_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.isProPrimeToP_correctedWildInertia
-import Submission.NK.TameStructureDeep.Tame.inertiaQuotient
-import Submission.NK.TameStructureDeep.Unramified
-import Submission.NK.TameData.Definitions
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

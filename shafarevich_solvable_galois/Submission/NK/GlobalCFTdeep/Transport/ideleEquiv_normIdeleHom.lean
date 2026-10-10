@@ -1,9 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Transport.IdeleEquiv
 import Submission.NK.GlobalCFTdeep.Transport.NormTransportLocal
-import Submission.NK.GlobalCFTdeep.Transport.liesOver_placeEquiv
-import Submission.NK.GlobalCFTdeep.Transport.fiberInfinite_map_placeEquiv
-import Submission.NK.GlobalCFTdeep.Transport.primesOverFinite_map_placeEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

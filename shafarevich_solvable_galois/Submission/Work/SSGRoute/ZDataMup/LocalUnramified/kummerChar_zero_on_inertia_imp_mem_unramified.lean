@@ -1,23 +1,26 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.localKummerDictionary
-import Submission.Work.SSGRoute.ZDataMup.NKArtinUmbrella
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.CFTLib.HR.TransferAux.localLevelMap_injective_vanishing
+import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
+import Submission.NK.NUV2.ARL.HR.locUnits_inflation_eq_zero_iff
+import Submission.NK.NUV2.ArtinBridge.kummerE_le_normImage_of_isGalois_exp
+import Submission.NK.NUV2.ChebAux.Transfer.cycClassOf_translation
+import Submission.NK.NUV2.ChebAux.Transfer.locUnits_res_inflation_eq_zero
+import Submission.NK.NUV2.LC.localNormFinite_range_iff_val_pow
 import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.dvd_ramificationIdx_of_val_log_notMem_pow
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerCharZMod_eq_zero_iff_apply_sqrt
 import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.exists_pow_mul_mem_localUnits_of_dvd_log
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
+import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerCharZMod_eq_zero_iff_apply_sqrt
 import Submission.Work.SSGRoute.ZDataTwo.mem_fixingSubgroup_adjoin_simple
-import Submission.Work.SSGRoute.ZDataTwo.kummerCochar_conjElem
 import Submission.Work.SSGRoute.ZSplit.BaseChange
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.NK.Reconstruct.PlaceCorrespondence
-import Submission.NK.ResidueFrob.primeOfLevel_liesOver
-import Submission.NK.LocalAnabelian.Kummer.kummerField_eq_bot_of_mem_powSubgroup
-import Submission.NK.LocalAnabelian.Kummer.isGalois_kummerField_and_finrank
-import Submission.NK.GlobalCFTdeep.SecondInequality.finrank_kummerAdjoin
+import Submission.Work.SSGRoute.inertiaSub_image_eq_levelInertia
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.Tate.CoindModule
+import Mathlib.Algebra.BigOperators.Pi
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Units.Equiv
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.Tate.coind_fixed_iff_const
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

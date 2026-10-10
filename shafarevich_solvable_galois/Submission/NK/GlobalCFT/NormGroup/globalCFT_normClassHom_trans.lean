@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.NK.GlobalCFT.NormFunctorial
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.GlobalCFT.Norm.globalCFT_normIdeleHom_trans
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

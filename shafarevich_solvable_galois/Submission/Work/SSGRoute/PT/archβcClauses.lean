@@ -1,8 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.PTDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.E1aClean.localDictionary_natural_family
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -38,6 +46,27 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 4000000
 
+/-- `archβc` unfolded, stated once (speed: lets the clause accessors below match the projected
+witness syntactically instead of re-checking two elaborations of the same `Classical.choose`). -/
+theorem archβc_unfold_clauses (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberField k] [Field Ω]
+    [Algebra k Ω] [IsAlgClosure k Ω] (K : IntermediateField k Ω) [FiniteDimensional k K]
+    [IsGalois k K] (ζ : Ω) (hζ : IsPrimitiveRoot ζ p) (hζK : ζ ∈ K)
+    (T : Type) [AddCommGroup T] [Module (ZMod p) T] [DistribMulAction (K ≃ₐ[k] K) T]
+    [SMulCommClass (K ≃ₐ[k] K) (ZMod p) T]
+    (hT : SSGRoute.IsCyclotomicDual p (T := T) (SSGRoute.res k K) ζ) :
+    archβc p k Ω K ζ hζ hζK T hT = Classical.choose (Classical.choose_spec (Classical.choose_spec
+      (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) := rfl
+
+/-- `archβg` unfolded (same purpose as `archβc_unfold_clauses`). -/
+theorem archβg_unfold_clauses (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberField k] [Field Ω]
+    [Algebra k Ω] [IsAlgClosure k Ω] (K : IntermediateField k Ω) [FiniteDimensional k K]
+    [IsGalois k K] (ζ : Ω) (hζ : IsPrimitiveRoot ζ p) (hζK : ζ ∈ K)
+    (T : Type) [AddCommGroup T] [Module (ZMod p) T] [DistribMulAction (K ≃ₐ[k] K) T]
+    [SMulCommClass (K ≃ₐ[k] K) (ZMod p) T]
+    (hT : SSGRoute.IsCyclotomicDual p (T := T) (SSGRoute.res k K) ζ) :
+    archβg p k Ω K ζ hζ hζK T hT = Classical.choose (Classical.choose_spec
+      (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT)) := rfl
+
 /-- **Additivity of `βc`** at the seam place, on cocycles of `⟨c⟩`. -/
 theorem archβc_add (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberField k] [Field Ω]
     [Algebra k Ω] [IsAlgClosure k Ω] (K : IntermediateField k Ω) [FiniteDimensional k K]
@@ -54,8 +83,9 @@ theorem archβc_add (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberFiel
     (hb' : SSGRoute.IsCocycleOn (SSGRoute.res k K) (Subgroup.zpowers c) b') :
     archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) (b + b')
       = archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b
-        + archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b' :=
-  (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
+        + archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b' := by
+  rw [archβc_unfold_clauses]
+  exact (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
     (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) E).1
       c hc2 hc1 φ hφ).1) b b' hb hb'
 
@@ -73,8 +103,9 @@ theorem archβc_eq_zero_iff (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [Nu
     (b : (Ω ≃ₐ[k] Ω) → E)
     (hb : SSGRoute.IsCocycleOn (SSGRoute.res k K) (Subgroup.zpowers c) b) :
     (archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b = 0 ↔
-      SSGRoute.IsCoboundaryOn (SSGRoute.res k K) (Subgroup.zpowers c) b) :=
-  (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
+      SSGRoute.IsCoboundaryOn (SSGRoute.res k K) (Subgroup.zpowers c) b) := by
+  rw [archβc_unfold_clauses]
+  exact (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
     (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) E).1
       c hc2 hc1 φ hφ).2.1) b hb
 
@@ -94,8 +125,9 @@ theorem archβc_surjective (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [Num
       (SSGRoute.PTExt.localUnitsK (k := k) (K := ↥K) (archW k Ω K φ)) 1) :
     ∃ b : (Ω ≃ₐ[k] Ω) → E,
       SSGRoute.IsCocycleOn (SSGRoute.res k K) (Subgroup.zpowers c) b ∧
-      archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b = y :=
-  (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
+      archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b = y := by
+  rw [archβc_unfold_clauses]
+  exact (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
     (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) E).1
       c hc2 hc1 φ hφ).2.2.1) y
 
@@ -114,8 +146,9 @@ theorem archβc_square (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [NumberF
     (hb : SSGRoute.IsCocycleOn (SSGRoute.res k K) ⊤ b) (hl : SSGRoute.IsLocConstOn ⊤ b) :
     SSGRoute.PTExt.extLoc (k := k) (archW k Ω K φ)
         (SSGRoute.PTExt.extToIdeles (k := k) (archβg p k Ω K ζ hζ hζK T hT E b))
-      = archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b :=
-  (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
+      = archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b := by
+  rw [archβc_unfold_clauses, archβg_unfold_clauses]
+  exact (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
     (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) E).1
       c hc2 hc1 φ hφ).2.2.2.1) b hb hl
 
@@ -144,8 +177,9 @@ theorem archβc_natural (p : ℕ) [Fact p.Prime] (k Ω : Type) [Field k] [Number
     archβc p k Ω K ζ hζ hζK T hT E2 c (archW k Ω K φ) (fun σ => f (b σ)) =
       (CategoryTheory.Abelian.Ext.mk₀
         (Rep.resMap (SSGRoute.PTExt.decompK (k := k) (archW k Ω K φ)).subtype F')).comp
-        (archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b) (zero_add 1) :=
-  (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
+        (archβc p k Ω K ζ hζ hζK T hT E c (archW k Ω K φ) b) (zero_add 1) := by
+  rw [archβc_unfold_clauses]
+  exact (((Classical.choose_spec (Classical.choose_spec (Classical.choose_spec
     (Work.SSGRoute.E1aClean.localDictionary_natural_family_arch p k Ω K ζ hζ hζK T hT))) E).1
       c hc2 hc1 φ hφ).2.2.2.2) E2 f hf F' hF' b hb
 

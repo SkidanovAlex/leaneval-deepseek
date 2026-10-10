@@ -1,14 +1,24 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.SSGRoute.CycLevel.card_stabilizer_eq_of_localNormSubgroup_index
+import Submission.Work.SSGRoute.PTW.compact_connected_abelian_pow_surjective
+import Submission.Work.SSGRoute.PTW.ideleClassGroup_quotient_instances
 import Submission.Work.SSGRoute.Sha2Lib.Sha2Interface
 import Submission.Work.SSGRoute.Sha2Lib.Sha2LocalChar
-import Submission.Work.SSGRoute.Sha2Lib.aux_unramified_inert_level_of_character
 import Submission.Work.SSGRoute.Sha2Lib.Sha2Pieces
+import Submission.Work.SSGRoute.Sha2Lib.aux_unramified_inert_level_of_character
 import Submission.Work.SSGRoute.Sha2Lib.cyclic_degree_two_unramified_inert_at_place
-import Submission.Work.SSGRoute.Sha2Lib.cyclic_degree_p_unramified_inert_at_place_not_pth_power
-import Submission.Work.SSGRoute.grunwald_surjective_odd
-import Submission.Work.HRec.exists_inflated_of_invariant
-import Submission.Work.SSGRoute.CycLevel.prime_level_single_place
-import Submission.Work.SSGRoute.classField_exists_ramified
+import Submission.Work.SSGRoute.glue_involution_place
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -247,7 +257,7 @@ theorem exists_unramified_inert_cyclic_level_of_algClosure (p : ℕ) [Fact p.Pri
         map_mul' := fun a b => by group }
     have hcg_cont : Continuous (cg : (Ω ≃ₐ[k] Ω) → (Ω ≃ₐ[k] Ω)) := by
       show Continuous (fun x : Ω ≃ₐ[k] Ω => d.u P * x * (d.u P)⁻¹)
-      continuity
+      exact (continuous_const.mul continuous_id).mul continuous_const
     have hpre_open : IsOpen ((Subgroup.comap cg U : Subgroup (Ω ≃ₐ[k] Ω)) :
         Set (Ω ≃ₐ[k] Ω)) := by
       rw [Subgroup.coe_comap]
@@ -328,7 +338,7 @@ theorem exists_unramified_inert_cyclic_level_of_algClosure (p : ℕ) [Fact p.Pri
           MulAut.conjNormal g x) := by
         refine Continuous.subtype_mk ?_ _
         show Continuous (fun x : ↥(K.fixingSubgroup) => g * (x : Ω ≃ₐ[k] Ω) * g⁻¹)
-        continuity
+        exact (continuous_const.mul continuous_subtype_val).mul continuous_const
       have hbase_open : IsOpen ((Subgroup.comap (Subgroup.subtype K.fixingSubgroup) U :
           Subgroup ↥(K.fixingSubgroup)) : Set ↥(K.fixingSubgroup)) := by
         rw [Subgroup.coe_comap]

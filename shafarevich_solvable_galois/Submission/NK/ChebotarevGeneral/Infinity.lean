@@ -1,33 +1,9 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# The existence form of Čebotarev's theorem
-
-This file proves the existence form `ChebotarevInfinite` of Čebotarev's theorem from its abelian
-case `AbelianChebotarevDensity` and the *ascent* half of the transfer step
-(`NK.ChebotarevGeneral.exists_isFrobAt_of_isFrobAtPrime_under`) together with the analytic
-fact that the primes of a number field of residue degree at least two contribute a bounded
-amount to the Dirichlet series (`NK.ChebotarevGeneral.summable_zetaWeight_of_inertiaDeg_ge_two`).
-
-The argument is Deuring's transfer, but only in the *existence* form, which avoids the exact
-fibre count of the transfer:  let `N/K` be finite Galois, `σ : Gal(N/K)`, `H = ⟨σ⟩` and
-`M = N^H`.  The abelian case applied to the cyclic extension `N/M` gives a set `S` of primes of
-`M` of Dirichlet density `1/|H| > 0`, namely those at which `σ` is a Frobenius element of `N/M`;
-in particular the partial Dirichlet series over `S` tends to `+∞`.  If the Frobenius set of `σ`
-in `K` (the set `T` of primes of `K` at which `σ` is a Frobenius element of `N/K`) were finite,
-then every prime of `M` above a prime outside `T` would have residue degree at least two over `K`
-(by the ascent lemma), so the primes of `M` above primes outside `T` would contribute a bounded
-amount; the finitely many primes of `M` above primes in `T` also contribute a bounded amount.
-That would make the partial Dirichlet series over `S` bounded, a contradiction.
--/
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Basic
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Submission.NK.ChebotarevGeneral.RatLevel
 import Submission.NK.ChebotarevGeneral.exists_isFrobAt_of_isFrobAtPrime_under
 import Submission.NK.ChebotarevGeneral.summable_zetaWeight_of_inertiaDeg_ge_two
-import Submission.Commons.NumberTheory.NumberField.finite_primesOver
-import Submission.Commons.NumberTheory.NumberField.Set.primeIdealZetaSum_union_of_disjoint
-import Submission.Commons.NumberTheory.NumberField.Set.tendsto_primeIdealZetaSum_univ_nhdsGT
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

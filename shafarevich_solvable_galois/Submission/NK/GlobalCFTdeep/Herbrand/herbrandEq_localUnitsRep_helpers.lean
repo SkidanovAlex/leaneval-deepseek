@@ -1,13 +1,9 @@
-/-
-Helper lemmas for `herbrandEq_localUnitsRep_ofFinite`.
--/
-import Mathlib
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.NK.GlobalCFTdeep.Herbrand.LocalUnits
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.NeukirchUchida.Local.LocalGalois
 import Submission.NK.LocalReciprocity.LocalSetup
-import Submission.Commons.RepresentationTheory.GroupCohomology.natCard_groupCohomology_res_mulEquiv
-import Submission.Commons.RepresentationTheory.TateCohomology.tateCohomology_zero_iso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

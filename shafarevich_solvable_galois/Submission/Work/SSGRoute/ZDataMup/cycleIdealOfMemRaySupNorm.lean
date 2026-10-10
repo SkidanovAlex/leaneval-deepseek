@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.CycleIdele
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
 import Submission.Work.SSGRoute.ZDataMup.cycleMemNormGroupOf_iff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

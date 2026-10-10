@@ -1,8 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.ClassFormation
-import Submission.Work.SSGRoute.ShapiroSetup
-import Submission.Work.SSGRoute.PT.shapiro_H2_lift
+import Mathlib.GroupTheory.Index
+import Mathlib.Topology.Constructions
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.shapiro_H2_inj
+import Submission.Work.SSGRoute.PT.shapiro_H2_lift
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

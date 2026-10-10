@@ -1,35 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Hilbert 90 for the level group: `H¹(LevelGroup V L, Lˣ) = 0`
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4, §10.4).
-
-The level group `NK.BrauerHasse.LevelGroup V L = V ⧸ (V ⊓ Gal(K'/L))` acts on the units `Lˣ`
-of the finite Galois level `L` through the restriction map
-
-`NK.HassePrinciple.levelGroupRestrictHom V L : LevelGroup V L →* Gal(L/K)`,
-
-which is **injective**: its kernel is exactly the subgroup `V ⊓ Gal(K'/L)` that is divided out
-(`NK.HassePrinciple.levelGroupRestrictHom_injective`).  Consequently every crossed
-homomorphism `f : LevelGroup V L → Lˣ` for this action is a coboundary — Noether's form of
-Hilbert's theorem 90 for the (not necessarily surjective) image of the level group in `Gal(L/K)`.
-
-The general statement is proved first in the form in which it is used
-(`NK.HassePrinciple.hilbert90_injective`): for *any* group `G` mapping injectively into
-`Gal(L/K)` by `ψ` and any `f : G → Lˣ` with `f (g * h) = ψ g (f h) * f g`, there is `x : Lˣ`
-with `ψ g x / x = f g`.
-
-The proof is the classical one, done with Dedekind's linear independence of characters: the
-linear combination `∑_g f(g)⁻¹ · ψ(g)` is nonzero on `L`, so some `z` has
-`Y := ∑_g (f g)⁻¹ * ψ(g) z ≠ 0`; the cocycle identity gives `ψ t Y = f t * Y`, whence `x = Y`
-is the required element.  (Injectivity of `ψ` is what makes Dedekind's argument apply; for a
-non-injective `ψ` the statement is false.)
--/
-
-import Mathlib
-import Submission.NK.HassePrinciple.MuColimit
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.HassePrinciple.exists_unitsLevelMapCoeff
 import Submission.NK.HassePrinciple.finite_levelGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

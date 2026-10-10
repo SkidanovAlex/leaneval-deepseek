@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.LocalAnabelian.ResidueField.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

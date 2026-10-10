@@ -1,12 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.InertiaDefs
-import Submission.Work.SSGRoute.decomp_inertia_quotient_cyclic
-import Submission.Work.SSGRoute.isInertia_of_fixes_rootsOfUnity_gen
-import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_isInertia
-import Submission.Work.SSGRoute.charP_residueField_isFinPlace
-import Submission.Work.SSGRoute.isUnit_natCast_of_not_dvd_resCharAt
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E7cC.exists_level_unramified_p_dvd_inertiaDeg
+import Submission.Work.SSGRoute.decomp_inertia_quotient_cyclic
+import Submission.Work.SSGRoute.fixes_rootsOfUnity_of_isInertia
+import Submission.Work.SSGRoute.isInertia_of_fixes_rootsOfUnity_gen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

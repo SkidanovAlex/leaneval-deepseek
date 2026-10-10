@@ -1,30 +1,11 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Kummer field `k(a^{1/p})` is Galois of degree `p` over `k`
-
-Let `k` be a field containing a primitive `p`-th root of unity `ζ` (`p` a prime), let
-`K'` be a separable closure of `k`, and let `a ∈ kˣ` be an element which is not a `p`-th
-power.  Then the Kummer field
-
-  `kummerField p a = k(α : α ^ p = a) ⊆ K'`
-
-is a Galois extension of `k` of degree `p`.
-
-The two mathematical inputs are:
-
-* `p ≠ ringChar k`: a primitive `p`-th root of unity cannot exist in characteristic `p`,
-  since in characteristic `p` one has `(ζ - 1) ^ p = ζ ^ p - 1 = 0`, forcing `ζ = 1`;
-* the polynomial `X ^ p - a` is irreducible over `k` (Mathlib's
-  `X_pow_sub_C_irreducible_of_prime`) and separable, has a root `α` in `K'`, and all its
-  roots are of the form `ζ ^ i * α` with `ζ ^ i ∈ k`; hence every root lies in `k⟮α⟯` and
-  `kummerField p a = k⟮α⟯`, whose `k`-dimension is `deg (minpoly k α) = p`.
-
-Consequently `kummerField p a` is the splitting field of the separable polynomial
-`X ^ p - a`, so it is Galois over `k`.
--/
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KummerExtension
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalAnabelian.Kummer.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

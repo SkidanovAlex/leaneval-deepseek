@@ -1,7 +1,10 @@
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.Work.SSGRoute.ExtChain.FreeCover
 import Submission.Work.SSGRoute.PT.e1a_chain
 import Submission.Work.SSGRoute.PT.e1a_shift
-import Submission.Work.SSGRoute.ExtChain.FreeCover
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

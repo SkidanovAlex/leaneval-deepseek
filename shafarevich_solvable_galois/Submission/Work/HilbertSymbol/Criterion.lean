@@ -1,21 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The norm-form (quaternionic) criterion for the Hilbert symbol
-
-Mathematically, the Hilbert symbol `(a,b)_v` is *defined* by the requirement that
-`(a,b)_v = 1` if and only if the ternary quadratic form `x² - a y² - b z²` has a nontrivial
-zero over the local field `ℚ_v` (equivalently: the quaternion algebra `(a,b)` splits).
-
-For `ℚ_v = ℝ` this is proved here (`hilbertSymbolReal_isotropic_iff`, in the module
-`Submission.Work.HilbertSymbol.hilbertSymbolReal_isotropic_iff`; the `Prop` below records it).
-For `ℚ_v = ℚ_p` the explicit formula of `Basic.lean` is used instead, because the formula is what
-the local computations and the reciprocity law act on; the equivalence with the norm-form
-criterion is the classical local theory of quadratic forms and is *not* formalised here.  The
-`Prop`-valued definition `HilbertSymbolCriterionAtPrime` records the content of the missing
-equivalence precisely.
--/
+import Mathlib.NumberTheory.Padics.PadicNumbers
 import Submission.Work.HilbertSymbol.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

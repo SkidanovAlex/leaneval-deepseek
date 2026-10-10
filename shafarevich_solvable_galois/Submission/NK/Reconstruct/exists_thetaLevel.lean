@@ -1,7 +1,5 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
 import Submission.NK.Reconstruct.ambient4f3
-import Submission.NK.Reconstruct.conjLevel
-import Submission.NK.Reconstruct.PlaceCorrespondence
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

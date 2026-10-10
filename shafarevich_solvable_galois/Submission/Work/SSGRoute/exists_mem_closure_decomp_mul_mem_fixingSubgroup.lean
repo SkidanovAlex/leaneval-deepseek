@@ -1,17 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.SplitOverSubbase
-import Submission.Work.SSGRoute.glue_involution_place
+import Submission.Work.SSGRoute.decomp_closure_normal
 import Submission.Work.SSGRoute.glue_fin_decomp
 import Submission.Work.SSGRoute.glue_fin_decomp_ex
+import Submission.Work.SSGRoute.glue_involution_place
 import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.decomp_closure_normal
-import Submission.Work.SSGRoute.E6Calc.exists_normalClosure_level
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # The sub-base Fourth Step generation of Schmidt--Wingberg
@@ -112,11 +112,12 @@ theorem decomp_map_le_stabilizer_of_comap_eq (k Ω : Type) [Field k] [NumberFiel
       (SSGRoute.res k K σ)
       (by
         rw [NK.GlobalCFT.Place.smulHeightOneSpectrum_asIdeal]
-        exact congrArg
+        have hmap := congrArg
           (fun e : NumberField.RingOfIntegers ↥K ≃+* NumberField.RingOfIntegers ↥K =>
             Ideal.map (e : NumberField.RingOfIntegers ↥K →+* NumberField.RingOfIntegers ↥K)
               q.asIdeal)
-          (NK.GlobalCFT.Galois.ringOfIntegersEquiv_eq_galRestrict (SSGRoute.res k K σ)))
+          (NK.GlobalCFT.Galois.ringOfIntegersEquiv_eq_galRestrict (SSGRoute.res k K σ))
+        exact hmap)
   rw [hsmul.symm]
   exact hval
 

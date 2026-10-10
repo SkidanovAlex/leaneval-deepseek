@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.TateDual.Basic
-import Submission.Work.Tate.DimensionShiftH
-import Submission.Work.SSGRoute.TateDual.tateDuality_degree_zero
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
 import Submission.Work.SSGRoute.TateDual.dual_coindUp_coindShift
+import Submission.Work.SSGRoute.TateDual.tateDuality_degree_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.Descent.exists_cyclotomic_cyclic_localDegree_dvd
-import Submission.NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Submission.NK.CFTLib.HRdescent.localBaseChangeCyclotomicUnramified
+import Submission.NK.CFTLib.IdeleHasse.Descent.dvd_localDegree_of_isPrimitiveRoot
 import Submission.NK.CFTLib.IdeleHasse.Descent.localConditionArith
 import Submission.NK.CFTLib.IdeleHasse.HilbertReciprocityCyclicProof.localCondition_exists_infinite
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
-import Submission.NK.CFTLib.HRdescent.localBaseChangeCyclotomicUnramified
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 set_option autoImplicit false
 set_option linter.unusedSectionVars false
@@ -108,10 +106,6 @@ theorem localConditionCyclotomicPrimeOdd {K L : Type} [Field K] [NumberField K] 
     obtain ⟨M, E, hMf, hMN, hEf, hEN, hKM, hKE, hLE, hME, hstLE, hstME, hfdM, hfdE,
       hgalM, hgalE, hcycM, hcycExt, hgen, heridiv⟩ :=
       NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary (K := K) (L := L) l hl Q hcop
-    letI : Field M := hMf
-    letI : NumberField M := hMN
-    letI : Field E := hEf
-    letI : NumberField E := hEN
     letI : Algebra K M := hKM
     letI : Algebra K E := hKE
     letI : Algebra L E := hLE

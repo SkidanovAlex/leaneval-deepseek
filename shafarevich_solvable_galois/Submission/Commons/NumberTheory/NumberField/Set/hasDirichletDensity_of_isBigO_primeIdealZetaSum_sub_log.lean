@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Set.isBigO_primeIdealZetaSum_sub_log
-import Submission.Commons.NumberTheory.NumberField.Set.tendsto_primeIdealZetaSum_univ_nhdsGT
+import Mathlib.Analysis.Asymptotics.TVS
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.Commons.NumberTheory.NumberField.Set.tendsto_primeIdealZetaSum_div_log
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

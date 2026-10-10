@@ -1,7 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.LT_LocalCFTUmbrella
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Topology.Connected.Separation
+import Submission.NK.NUV2.kernelCondition_all
 import Submission.Work.SSGRoute.localKummerReciprocity
-import Submission.Work.SSGRoute.ZDataMup.LT_localArtinPairing
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

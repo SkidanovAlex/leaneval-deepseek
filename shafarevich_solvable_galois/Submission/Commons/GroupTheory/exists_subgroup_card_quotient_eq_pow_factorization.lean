@@ -1,6 +1,7 @@
-import Mathlib.Algebra.Order.Star.Basic
-import Mathlib.Algebra.Torsor.Defs
 import Mathlib.GroupTheory.Sylow
+import Mathlib.Algebra.Torsor.Defs
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Algebra.Order.Star.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

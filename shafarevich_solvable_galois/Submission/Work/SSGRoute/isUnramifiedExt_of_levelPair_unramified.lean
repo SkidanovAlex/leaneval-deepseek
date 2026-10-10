@@ -1,16 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.localUnitsMap_exists
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
+import Submission.Work.SSGRoute.E7cOmega.exists_level_unramified_detecting_class
+import Submission.Work.SSGRoute.ValuationSES.C4.gen.valHom_localUnitsMap
 import Submission.Work.SSGRoute.e9c_transport_zero
 import Submission.Work.SSGRoute.eq_zero_of_isUnramifiedExt_of_unramified
-import Submission.Work.SSGRoute.E7cOmega.exists_level_p_dvd_decomp
 import Submission.Work.SSGRoute.local_duality_ext_detect_h
-import Submission.Work.SSGRoute.ssg_levelNorm_valuation
-import Submission.NK.HassePrinciple.localUnits_h2_injective
-import Submission.Work.SSGRoute.ValuationSES.C4.gen.valHom_localUnitsMap
-import Submission.Work.SSGRoute.E7cOmega.exists_level_unramified_detecting_class
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

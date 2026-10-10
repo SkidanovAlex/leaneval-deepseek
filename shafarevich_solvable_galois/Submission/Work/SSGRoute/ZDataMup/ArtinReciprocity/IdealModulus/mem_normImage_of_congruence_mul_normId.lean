@@ -1,11 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
-import Submission.NK.GlobalCFT.NormFunctorial
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinMap_exists
-import Submission.NK.CFTLib.IdeleHasse.exists_localMap_ofFinite
-import Submission.NK.GlobalCFTdeep.NormIndex.localNorm_finiteIndex_archimedean
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.kummerE_le_normImage
+import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

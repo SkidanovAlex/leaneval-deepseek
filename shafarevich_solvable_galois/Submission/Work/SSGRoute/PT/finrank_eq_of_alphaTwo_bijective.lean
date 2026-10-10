@@ -1,11 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.natCard_addHom_of_card_prime
-import Submission.Work.SSGRoute.PT.mkb_ld02_defs
-import Submission.Work.SSGRoute.PT.HomFormReduction
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.Work.SSGRoute.Nakayama.br_pTorsion
-import Submission.Work.SSGRoute.hom_dualMod_local_units
-import Submission.Work.SSGRoute.dualPairingEquiv
 import Submission.Work.SSGRoute.PT.alphaTwo_trivAction_of_trivMod
+import Submission.Work.SSGRoute.PT.mkb_ld02_defs
+import Submission.Work.SSGRoute.PT.natCard_addHom_of_card_prime
+import Submission.Work.SSGRoute.dualPairingEquiv
+import Submission.Work.SSGRoute.dualUnits_linearEquiv
+import Submission.Work.SSGRoute.homRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

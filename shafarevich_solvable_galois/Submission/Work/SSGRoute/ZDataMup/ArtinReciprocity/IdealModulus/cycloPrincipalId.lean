@@ -1,6 +1,16 @@
-import Mathlib
+import Mathlib.Computability.Reduce
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Submission.NK.CFTLib.ARL.artinReciprocity_cyclotomic
+import Submission.NK.CFTLib.Arl.artinSym_spanSingleton_eq_one_of_mem_congruence
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.Conductor
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.normRayLeKer
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ArlImports
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

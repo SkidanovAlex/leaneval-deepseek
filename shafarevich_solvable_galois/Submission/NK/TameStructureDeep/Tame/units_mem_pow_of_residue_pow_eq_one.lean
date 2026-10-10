@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.IntegralDomain
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.RingTheory.Henselian.units_mem_pow_of_residue_mem_pow
 import Submission.NK.TameStructureDeep.Tame.exists_pow_eq_of_pow_card_div_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

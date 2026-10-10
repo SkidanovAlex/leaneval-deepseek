@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Data.Nat.Prime.Basic
 import Submission.Work.SSGRoute.exists_sign_mul_pow_eq_real
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

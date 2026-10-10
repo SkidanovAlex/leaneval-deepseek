@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Commons.RingTheory.Valuation.ValuationSubring.exists_separator_lt_one_of_pairwise_incomparable
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,10 +1,17 @@
-import Mathlib
-import Submission.Work.HilbertSymbolGeneral.Defs
-import Submission.Work.HilbertSymbolGeneral.Gens
-import Submission.NK.NUV2.QuadFaithful.core
-import Submission.Work.HilbertSymbolGeneral.quadLevel_finrank_eq_two_of_notMem
-import Submission.Work.HilbertSymbolGeneral.exists_sq_sub_mul_sq_comm
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Algebra.IsSimpleRing
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.PurelyInseparable.Basic
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Norm.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.HilbertSymbolGeneral.exists_eq_add_mul_quadGen
+import Submission.Work.HilbertSymbolGeneral.exists_sq_sub_mul_sq_comm
+import Submission.Work.HilbertSymbolGeneral.quadLevel_finrank_eq_two_of_notMem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

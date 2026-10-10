@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
-import Submission.NK.HassePrinciple.LocalUnits
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.CFTLib.IdeleHasse.Crux.localNormRep
+import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
+import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
 import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

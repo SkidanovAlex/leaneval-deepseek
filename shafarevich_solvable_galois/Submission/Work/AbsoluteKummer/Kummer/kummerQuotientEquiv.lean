@@ -1,11 +1,8 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.Defs
-import Submission.Work.AbsoluteKummer.Basic
-import Submission.Work.AbsoluteKummer.Coefficients
-import Submission.Work.AbsoluteKummer.SES
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact
-import Submission.Work.AbsoluteKummer.Kummer.kummerSES
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteKummer.Hilbert90.H1_eq_zero
+import Submission.Work.AbsoluteKummer.Kummer.kummerSES
+import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

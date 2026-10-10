@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.Commons.FieldTheory.Galois.div_mem_range_norm_of_prime_quotient_coprime_of_isGalois_tower
 import Submission.Commons.FieldTheory.Galois.ker_norm_le_range_of_cyclic_of_div_mem_range_norm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

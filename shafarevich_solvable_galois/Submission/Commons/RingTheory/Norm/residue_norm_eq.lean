@@ -1,5 +1,5 @@
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import Mathlib.RingTheory.Norm.Basic
+import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import Submission.Commons.RingTheory.Norm.norm_quotient_mk
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

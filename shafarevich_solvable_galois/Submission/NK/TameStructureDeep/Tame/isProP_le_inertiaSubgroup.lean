@@ -1,9 +1,9 @@
-import Mathlib
-import Submission.NK.TameStructureDeep.Tame.WildInertiaAux
-import Submission.NK.TameStructureDeep.Support.wildInertiaSubgroup_isClosed
-import Submission.NK.TameStructureDeep.Support.isProP_of_openNormal_index
-import Submission.NK.LocalTame.ProP.isProP_iSup_of_normal
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.ClopenNhdofOne
+import Mathlib.Topology.Connected.Separation
 import Submission.NK.TameStructureDeep.Inertia
+import Submission.NK.TameStructureDeep.Tame.WildInertiaAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

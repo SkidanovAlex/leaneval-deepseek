@@ -1,11 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.detectorInterface
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.FiniteIndex
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_coeff_surjection
-import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
 import Submission.Work.SSGRoute.Sha2Lib.detectsAt_of_hom
 import Submission.Work.SSGRoute.Sha2Lib.rankOneDescentAux
-import Submission.Work.SSGRoute.rightDetect_quotient_step
+import Submission.Work.SSGRoute.Sha2Lib.unramifiedDetector_trivial
 import Submission.Work.SSGRoute.local_duality_ext_realization_of_detection
+import Submission.Work.SSGRoute.rightDetect_quotient_step
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

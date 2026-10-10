@@ -1,4 +1,11 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.NormLeOne
 import Submission.NK.NUV2.Geom.latticeCosetCount_sub_volume_isBigO
 import Submission.NK.NUV2.Geom.volume_cthickening_frontier_normLeOne_inter_halfspaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

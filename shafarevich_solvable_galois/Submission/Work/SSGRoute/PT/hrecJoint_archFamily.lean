@@ -1,34 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.archFamilyLocal
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Basic.Complex.Basic
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.hrecJoint_p2
-import Submission.Work.SSGRoute.PT.classFormation_reciprocity_allPlaces
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_hpair
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_unramified
-import Submission.Work.SSGRoute.PT.G1plusOwn.g1FinHalf_reciprocity_v2
-import Submission.Work.SSGRoute.PT.G1plusOwn.clause7Core
-import Submission.Work.SSGRoute.PT.G1plusOwn.exists_level_factors_unramified_v2
-import Submission.Work.SSGRoute.PT.G1plusOwn.sum_iota_eq_zero_of_extToClasses_zero
-import Submission.Work.SSGRoute.PT.G1plusOwn.isConjPlace_of_finQW_conj
-import Submission.Work.SSGRoute.PT.G1plusOwn.goodPlaceUnder_finQW
-import Submission.Work.SSGRoute.PT.archPairLocal_hpairArch
-import Submission.Work.SSGRoute.PT.archSwapHalf
-import Submission.Work.SSGRoute.PT.vf_local_compare
-import Submission.Work.SSGRoute.PT.decompK_linked
-import Submission.Work.SSGRoute.PT.liesOver_linked
-import Submission.Work.SSGRoute.PT.levelPair_functoriality
-import Submission.Work.SSGRoute.E9Nodes.e9_unramified_all_but_finite
-import Submission.Work.SSGRoute.E9c.Core
-import Submission.Work.SSGRoute.E7cOmega.zfun_pairing_extLoc
-import Submission.Work.SSGRoute.CokerPT.IotaAlgebra
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.PT.archFamily_zpowers_eq_zero_of_ne_two
-import Submission.Work.PT.hrecArchFamily_seamValue
-import Submission.Work.PT.seamPlace_orbit_theory
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.SSGRoute.PT
 
@@ -109,7 +91,6 @@ theorem hrecJoint_g1FinHalf_finite_sum_eq_zero_of_ne_two
       finZB_unramified p k Ω K ζ hζ hζK T hT M A hA hpA hramA b hb hlb hiner)
     (fun H a b => G1pOwn.g1FinHalf p k Ω K ζ hζ hζK T hT χ M H a b)
     (fun A hA a b hla hlb hb L hN hFD hGal hKL hAlg hS1 hS2 b₀ hb₀ => by
-      letI : NumberField ↥L := hN
       letI : FiniteDimensional k ↥L := hFD
       letI : IsGalois k ↥L := hGal
       letI : Algebra ↥K ↥L := hAlg
@@ -128,7 +109,6 @@ theorem hrecJoint_g1FinHalf_finite_sum_eq_zero_of_ne_two
           finZB_unramified p k Ω K ζ hζ hζK T hT M A hA hpA hramA b hb hlb hiner)
         (fun H a b => G1pOwn.g1FinHalf p k Ω K ζ hζ hζK T hT χ M H a b)
         (fun A hA a b hla hlb hb L hN hFD hGal hKL hAlg hS1 hS2 b₀ hb₀ => by
-          letI : NumberField ↥L := hN
           letI : FiniteDimensional k ↥L := hFD
           letI : IsGalois k ↥L := hGal
           letI : Algebra ↥K ↥L := hAlg

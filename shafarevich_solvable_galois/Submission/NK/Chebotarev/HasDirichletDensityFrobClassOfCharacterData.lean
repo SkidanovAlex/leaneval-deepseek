@@ -1,11 +1,10 @@
-/-
-Work of the Neukirch–Uchida team: the Čebotarev density theorem.
--/
-import Mathlib
-import Submission.NK.Chebotarev.LFunctions
+import Mathlib.Algebra.Group.ConjFinite
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.DirichletDensity
 import Submission.NK.Chebotarev.Density
-import Submission.NK.Chebotarev.SumChiMulStarChiEq
+import Submission.NK.Chebotarev.LFunctions
 import Submission.NK.Chebotarev.NatCardConjClassMulNatCardCentralizer
+import Submission.NK.Chebotarev.SumChiMulStarChiEq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

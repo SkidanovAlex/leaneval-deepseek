@@ -1,33 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Equivariance of the units inclusion under the restriction action
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §8.4 item 1, §10.4).
-
-For a level inclusion `L ≤ L'` of finite Galois intermediate fields of `K'/K`, the unit inclusion
-`unitsInclLinearMap L L' h : Additive (↥L)ˣ →ₗ[CoeffInt] Additive (↥L')ˣ` (the `CoeffInt`-linear
-form of `Lˣ ↪ L'ˣ`, `Submission/Work/HassePrinciple/UnitsLevel.lean`) is **equivariant** for the
-actions of `Gal(K'/K)` on the two levels, given by restriction along
-`levelRestrict L : Gal(K'/K) →* Gal(↥L/K)`:
-
-`unitsInclLinearMap L L' h ((levelRestrict L σ) • x) =
-  (levelRestrict L' σ) • unitsInclLinearMap L L' h x`   for `σ : Gal(K'/K)`, `x : Additive (↥L)ˣ`.
-
-Both sides are `Additive`-wrapped units of `L'`, and both have underlying element `σ (↑x)` in `K'`:
-the restriction `levelRestrict L σ` acts on `↥L` as `σ` does on `K'` (`AlgEquiv.restrictNormalHom_apply`)
-and the inclusion `↥L ↪ ↥L'` is the identity on underlying elements of `K'`
-(`IntermediateField.coe_inclusion`).
-
-This is the equivariance needed to build the coefficient morphism
-`unitsLevelMapCoeff h : Rep.res (levelQuotHom h) (unitsLevelRep V L) ⟶ unitsLevelRep V L'`
-of the units level system, exactly as `NK.BrauerTwist.muIncl_smul` is used for `μ_p`; see the
-module docstring of `Submission/Work/HassePrinciple/UnitsLevel.lean`.
--/
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.GaloisClosure
 import Submission.NK.HassePrinciple.UnitsLevel
-import Submission.NK.HassePrinciple.LevelDictionary
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

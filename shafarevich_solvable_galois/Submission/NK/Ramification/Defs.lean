@@ -1,38 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The higher ramification filtration in lower numbering
-
-Mathlib defines, for a field extension `L/K` and a valuation subring `A` of `L`, the
-*decomposition subgroup* `A.decompositionSubgroup K ≤ L ≃ₐ[K] L` and the *inertia subgroup*
-`A.inertiaSubgroup K` (the kernel of the action on the residue field of `A`), and records
-`TODO: Define higher ramification groups in lower numbering`.
-
-This file supplies that missing definition and its elementary theory.  For `i : ℕ` the `i`-th
-higher ramification subgroup is
-
-  `G_i = { σ ∈ A.decompositionSubgroup K | ∀ x : A, σ • x - x ∈ 𝔪_A ^ (i+1) }`,
-
-where `𝔪_A` is the maximal ideal of `A`.  Equivalently — and this is the classical definition —
-`G_i` consists of the `σ` acting trivially on `A/𝔪_A^{i+1}`.
-
-The classical dictionary (for `L/K` a finite Galois extension of local fields and `A` the
-valuation ring, which is `Galois`-stable) is
-
-* `G_{-1} = Gal(L/K)` (not formalised here, we index from `0`);
-* `G_0 = I` — the inertia subgroup (`ramificationSubgroup_zero`);
-* `G_1 = V` — the wild inertia, the maximal pro-`p` subgroup;
-* the `G_i` are normal in the decomposition subgroup, decrease with `i`, and become trivial
-  for `i` large (`iInf_ramificationSubgroup_eq_bot`, `exists_ramificationSubgroup_eq_bot`).
-
-The chapter continues in `NK.Ramification.Herbrand` (the Herbrand function and the upper
-numbering), `NK.Ramification.Tower` (multiplicativity in towers), `NK.Ramification.Adic`
-(the `p`-adic case, reconciliation with the infinite-level vocabulary of
-`NK.LocalTame`/`NK.LocalAnabelian`) and `NK.Ramification.Determined` (what the filtration
-determines).
--/
-import Mathlib
+import Mathlib.FieldTheory.Normal.Defs
 import Mathlib.RingTheory.Valuation.RamificationGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

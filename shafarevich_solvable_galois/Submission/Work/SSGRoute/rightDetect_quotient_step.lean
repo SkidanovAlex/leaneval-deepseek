@@ -1,11 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.E7bDefs
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.local_duality_ext
-import Submission.Work.SSGRoute.exists_section_of_fixed_generator
-import Submission.Work.SSGRoute.exists_fixed_element_of_connecting_eq_zero
-import Submission.Work.SSGRoute.exists_smul_eq_of_annihilator
-import Submission.Work.SSGRoute.powHomRepDefs
-import Submission.Work.SSGRoute.local_duality_ext_extH_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

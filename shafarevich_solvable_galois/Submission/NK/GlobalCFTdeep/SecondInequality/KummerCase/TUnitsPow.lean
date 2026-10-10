@@ -1,25 +1,13 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-/-
-# `S`-units, their `p`-th powers, and the Kummer class `H₀ = ⟨a⟩ · U(S)^p`
-
-Vocabulary and elementary lemmas shared by the Kummer case of the second inequality
-(Milne, *Class Field Theory*, VII §6):
-
-* `tUnitsPow p S` — the `p`-th powers of the `S`-units, as a subgroup of `Kˣ`;
-* `kummerH0 p S u` — Milne's `H₀ = ⟨u⟩ · U(S)^p`;
-* `mem_kummerH0_of_exists_pow_eq` (**Claim A**): an `S`-unit which is a `p`-th power in
-  `L = K(a^{1/p})` lies in `H₀`.
--/
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.tUnits_index_powSubgroup
-import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
-import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.Idele
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

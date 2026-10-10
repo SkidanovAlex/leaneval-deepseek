@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_mono_sylow_in
-import Submission.Work.SSGRoute.local_phi_realization_in
-import Submission.Work.SSGRoute.e9_vanish_off_finite
-import Submission.Work.SSGRoute.e9_local_decomposition
-import Submission.Work.SSGRoute.e9_glue_phiAt
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PT.exists_glue_extLoc
-import Submission.Work.SSGRoute.isUnramifiedExt_of_levelPair_unramified
+import Submission.Work.SSGRoute.e9_glue_phiAt
+import Submission.Work.SSGRoute.e9_local_decomposition
+import Submission.Work.SSGRoute.e9_vanish_off_finite
+import Submission.Work.SSGRoute.local_phi_realization_in
+import Submission.Work.SSGRoute.phi1_mono_sylow_in
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

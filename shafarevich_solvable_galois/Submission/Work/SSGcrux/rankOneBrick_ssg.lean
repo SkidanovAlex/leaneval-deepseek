@@ -1,14 +1,14 @@
-import Mathlib
-import Submission.Work.SSGcrux.noninvariantLevelDatum
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 import Submission.Work.SSGRoute.PTdualControl.C6_of_rankOneBrick
-import Submission.Work.SSGRoute.PTdualControl.C6_rankOneBrick
-import Submission.Work.SSGRoute.Sha2Lib.detectorInvariantCaseExtZ
-import Submission.Work.E7cOmega.subsingleton_ext_one_ratRep
-import Submission.Work.Sha2Lib.rankOneBrickWork
-import Submission.Work.Sha2Lib.rankOneLevelCocycleRoute
-import Submission.Work.E7cOmega.functional_of_ext_nonzero
-import Submission.Work.SSGRoute.E7cOmega.ratDivSES
-import Submission.Work.SSGRoute.SSGStage.extRatRep_vanish
+import Submission.Work.SSGcrux.noninvariantLevelDatum
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

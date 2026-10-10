@@ -1,17 +1,7 @@
-/-
-# The dual of a restricted representation is the restriction of the `DualMod` representation
-
-For a `Gal(K/k)`-module `M`, the contragredient of the restriction of `M` to `Gal(N/k)` (through
-`πN`) is the restriction of the contragredient `DualMod p M` (whose action is `(g • f) m = f (g⁻¹ • m)`,
-`Work.SSGRoute.DualMod.dualSMul`) — both have `DualMod p M` as underlying module and the same action,
-`Module.Dual.transpose (ρ g⁻¹)` against `DualMod.dualSMul g`.
-
-This is the bookkeeping that lets the assembly consume `tatePairLin` (whose cohomological side is
-`Rep.of A.ρ.dual`) and `omega_functional` (whose cohomological side is the `DualMod` representation).
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.FieldTheory.IntermediateField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.DualMod.Main
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

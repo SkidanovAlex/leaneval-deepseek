@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.Sha2Lib.indLevelDatum
-import Submission.Work.SSGRoute.PTdualControl.detectingFunctional_of_regularModuleLevel
-import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
-import Submission.Work.SSGRoute.SSGStage.exists_regularModule_inert_level
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.E7cC.exists_equivariant_of_fixed_vector
+import Submission.Work.SSGRoute.PTdualControl.detectingFunctional_of_regularModuleLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

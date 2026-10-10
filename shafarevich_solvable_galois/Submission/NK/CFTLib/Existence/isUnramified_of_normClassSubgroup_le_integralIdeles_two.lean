@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.NUV2.LC.hilbertReciprocity
-import Submission.NK.CFTLib.IdeleHasse.mem_normImage_iff_localNorm
-import Submission.NK.CFTLib.IdeleHasse.range_localNormFinite_eq_of_liesOver
-import Submission.NK.CFTLib.IdeleHasse.onePlace_localNorm
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.CFTLib.Existence.isUnramified_of_normClassSubgroup_le_integralIdeles
+import Submission.NK.NUV2.LC.hilbertReciprocity
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,7 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZConstruction.auxDatum_realisation_of_counting
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Submission.Work.SSGRoute.ZConstruction.AuxAssembly
 import Submission.Work.SSGRoute.ZConstruction.AuxDatumZHyp
-import Submission.Work.SSGRoute.ZConstruction.AuxRealisationHonest
+import Submission.Work.SSGRoute.ZConstruction.sdiff_not_mem_cs
+import Submission.Work.SSGRoute.ZDataMup.tatePoitou_h1_realisation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

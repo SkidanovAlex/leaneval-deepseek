@@ -1,12 +1,11 @@
-import Mathlib
-import Submission.NK.NUV2.RouteB.RayModulus.CosetCountDefs
-import Submission.NK.NUV2.RouteB.RayModulus.classOfIdeal_eq_iff
-import Submission.NK.NUV2.RouteB.RayModulus.exists_ideal_of_class
-import Submission.NK.NUV2.HeckeAnalytic.Dict
-import Submission.NK.NUV2.HeckeAnalytic.CountDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.FundamentalCone
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.NUV2.RouteB.CongCount.CongConeCount
-import Submission.NK.NUV2.RouteB.CongCount.CongConeCoset
-import Submission.NK.NUV2.RouteB.CongCount.CongConeSetup
 import Submission.NK.NUV2.RouteB.HeckeTheta.DictLemma
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

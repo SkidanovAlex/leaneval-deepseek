@@ -1,9 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.LevelLocTrivial
-import Submission.Work.SSGRoute.eCoh_map
-import Submission.Work.SSGRoute.Sha2Lib.chebotarev_element_stabilizer
 import Submission.Work.SSGRoute.Sha2Lib.Sha2InflHelpers
+import Submission.Work.SSGRoute.Sha2Lib.chebotarev_element_stabilizer
+import Submission.Work.SSGRoute.eCoh_map
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,45 +1,25 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.ZPlace
-import Submission.Work.SSGRoute.ZSolves
-import Submission.Work.SSGRoute.ZVocab
-import Submission.Work.SSGRoute.corestriction_hom_on_fixingSubgroup
-import Submission.Work.SSGRoute.corestriction_vanishes_on_inertia
-import Submission.Work.SSGRoute.isLocConstOn_corestriction
-import Submission.Work.SSGRoute.exists_corestriction
-import Submission.Work.SSGRoute.odd_involution_coboundary
-import Submission.Work.SSGRoute.decomp_mod_inertia_cyclic
-import Submission.Work.SSGRoute.exists_cyclic_quotient_subgroup_vanishing
-import Submission.Work.SSGRoute.exists_cyclic_quotient_subgroup_of_cyclic_image
-import Submission.Work.SSGRoute.PT.pairAlgebra
-import Submission.Work.SSGRoute.ZConstruction.Reduction
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.shafarevich_z_construction
-import Submission.NK.Reconstruct.denseChebotarev
-import Submission.NK.Reconstruct.restrictNormalHom_smul_valuationSubringAtPrime
-import Submission.NeukirchUchida.PrimeCorrespondence
-import Submission.NeukirchUchida.Local.Transitivity
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.NK.Reconstruct.stabilizer_le_fixingSubgroup_iff_splitCompletely
-import Submission.Work.SSGRoute.levelInertia_defs
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
-import Submission.Commons.NumberTheory.NumberField.finite_setOf_ramificationIdx_ne_one
-import Submission.Commons.RingTheory.Valuation.comap_valuationSubringAtPrime
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_ne_top
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.Valuation.centralizer_stabilizer_valuationSubring_sepClosure
-import Submission.Work.SSGRoute.exists_levelSub_le_of_isOpen
-import Submission.Commons.NumberTheory.RamificationInertia.inertia_eq_bot_iff_ramificationIdx_eq_one
-import Submission.NK.ResidueFrob.primeOfLevel_liesOver
-import Submission.NK.Chebotarev.FrobRestriction
-import Submission.NK.Chebotarev.FrobeniusOne
-import Submission.NK.Chebotarev.IsFrobAtStabilizes
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
 set_option backward.isDefEq.respectTransparency.types false
 -- PORT435-END
+-- TF-FAST (IsTorsionFree local instance)
+/-- Build-speed: `IsAlgClosure k Ω` needs `Module.IsTorsionFree k Ω`, which is otherwise
+re-synthesized (about 2 s) at every occurrence. File-local, Prop-valued. -/
+private theorem tfFast_isTorsionFree {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω] :
+    Module.IsTorsionFree k Ω :=
+  inferInstance
+
+attribute [local instance] tfFast_isTorsionFree
+-- TF-FAST-END
 
 namespace Work.SSGRoute
 

@@ -1,25 +1,4 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Noether's generalisation of Hilbert's Theorem 90 in the `ULift ℤ` coefficient world
-
-Mathlib proves Hilbert 90 in the form
-`groupCohomology.H1ofAutOnUnitsUnique : Unique (H1 (Rep.ofAlgebraAutOnUnits K L))`,
-i.e. `H¹(Gal(L/K), Lˣ) = 0` for a finite extension `L/K`, with coefficients in the `ℤ`-representation
-`Rep.ofMulDistribMulAction (L ≃ₐ[K] L) Lˣ`.
-
-The Kummer layer of this development (`Submission/Work/HassePrinciple/Mu.lean`) needs the same
-vanishing for the `CoeffInt = ULift ℤ`-linear representation `unitsRep K L`; this file supplies it,
-by redoing the Artin/Dedekind linear-independence argument of
-`Mathlib/RepresentationTheory/Homological/GroupCohomology/Hilbert90.lean` with the coefficient ring
-`CoeffInt`.  Concretely, the low-degree API (`H1_induction_on`, `H1π_eq_zero_iff`) is
-coefficient-agnostic, and the cocycle-level input is the multiplicative statement
-`groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units`, which only uses the Galois
-action on `Lˣ`; the only work is bookkeeping the two representations `Additive Lˣ`.
--/
-
-import Mathlib
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 import Submission.NK.HassePrinciple.Mu
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

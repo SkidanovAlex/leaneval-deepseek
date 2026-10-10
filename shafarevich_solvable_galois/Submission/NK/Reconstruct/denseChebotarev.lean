@@ -1,10 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.Basic
-import Submission.NK.Reconstruct.Reconstruction
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.Chebotarev.ArtinReciprocity
-import Submission.NK.Chebotarev.IsFrobAtConj
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_union_of_density_zero
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_zero_of_finite
+import Submission.NK.Reconstruct.Reconstruction
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

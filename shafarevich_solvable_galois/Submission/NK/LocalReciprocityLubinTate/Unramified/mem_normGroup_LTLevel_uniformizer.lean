@@ -1,6 +1,14 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Tools
-import Submission.NK.LocalReciprocityLubinTate.Unramified.normGroup_LTLevel_one_adicCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Norm.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Commons.RingTheory.Valuation.eq_of_comap_eq_of_isAlgebraic
+import Submission.Commons.RingTheory.Valuation.val_eq_of_algEquiv_of_comap_eq
+import Submission.NK.LocalReciprocityLubinTate.LubinTate.norm_root_LTpolyEis
+import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_lubinTateTower_adicCompletion
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.WeakNU.PrimeOrbit
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.Chebotarev.IsFrobAtStabilizes
-import Submission.NK.Chebotarev.IsFrobAtOrderOfEqInertiaDeg
-import Submission.NeukirchUchida.Local.LocalGalois
+import Submission.NK.WeakNU.PrimeOrbit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,10 +1,12 @@
-import Submission.NeukirchUchida.Local.DecompositionGroup
-import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.Commons.NumberTheory.NumberField.Completion.module_finite_adicCompletion
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.FieldTheory.Galois.card_algEquiv_le_finrank
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.FieldTheory.Galois.natCard_algEquiv_le_finrank
-import Mathlib.RingTheory.Flat.Basic
+import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
+import Submission.Commons.NumberTheory.NumberField.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.NeukirchUchida.Local.DecompositionGroup
 
 /-!
 # The decomposition group is the local Galois group

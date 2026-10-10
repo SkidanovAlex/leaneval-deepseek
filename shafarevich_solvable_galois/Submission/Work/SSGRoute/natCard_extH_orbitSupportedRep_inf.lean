@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.ec_defs
-import Submission.Work.SSGRoute.natCard_extH_orbitSupportedRep
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.ext_localUnits_pTorsion
-import Submission.Work.SSGRoute.e0b_bridge
+import Submission.Work.SSGRoute.natCard_extH_orbitSupportedRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

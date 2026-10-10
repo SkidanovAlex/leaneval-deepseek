@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.completion_quotient_uniqueDivisible
 import Submission.Work.SSGRoute.ExtChain.ext_push_engine
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,36 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Free `G`-operator groups and the shrinking retraction (discrete version)
-
-In the shrinking procedure (Schmidt–Wingberg, Section 2) one uses the free pro-`p`
-`G`-operator group `F(d) = G ⋉ F_d` of rank `d`: a free pro-`p` group with a continuous
-action of the finite group `G`, with a basis `x_{i,g}` on which `G` acts by
-`g' • x_{i,g} = x_{i,g' g}`.  The key point of the procedure is that for `m ≥ n` there is a
-surjective `G`-operator homomorphism `F(m) → F(n)`, and the shrinking lemma lets one choose
-this map so that all obstructions for the `ν`-th induction step vanish.
-
-This file provides the *discrete* analogue: the free group on `Fin d × G` with the `G`-action
-permuting the generators, together with the `G`-equivariant surjection `F(m) → F(n)` for
-`n ≤ m` which kills the generators `x_{i,g}` for `n ≤ i`.  (The pro-`p` version would
-additionally require the pro-`p` completion; it is not formalized here.)
-
-## Main results
-
-* `Work.Shrinking.freeOperatorGroup` : the discrete free `G`-operator group of rank `d`.
-* `Work.Shrinking.instMulDistribMulActionFreeOperatorGroup` : the `G`-action permuting the
-  generators, `g • x_{i,g'} = x_{i,g * g'}`.
-* `Work.Shrinking.freeOperatorRetract` : for `n ≤ m`, the homomorphism
-  `F(m) → F(n)` killing the generators of index `≥ n`.
-* `Work.Shrinking.freeOperatorRetract_surjective`,
-  `Work.Shrinking.freeOperatorRetract_smul` : it is surjective and `G`-equivariant.
-* `Work.Shrinking.map_pCentralSeries_retract` : it maps the `ν`-th term of the descending
-  `p`-central series onto the corresponding term (functoriality).
--/
-
-import Mathlib
-import Submission.Work.Shrinking.PCentral
+import Mathlib.Algebra.Group.End
+import Mathlib.GroupTheory.FreeGroup.Basic
 import Submission.Work.Shrinking.map_pCentralSeries_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

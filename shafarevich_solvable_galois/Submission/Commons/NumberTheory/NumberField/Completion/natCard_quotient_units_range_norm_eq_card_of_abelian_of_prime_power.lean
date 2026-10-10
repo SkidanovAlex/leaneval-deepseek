@@ -1,16 +1,10 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_card_of_abelian_local_base
-import Submission.Commons.NumberTheory.NumberField.Completion.exists_algEquiv_adicCompletion_of_finiteDimensional
-import Submission.Commons.NumberTheory.NumberField.Completion.finite_quotient_units_range_norm_of_isGalois
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_finrank_of_abelian_local
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
+import Mathlib.Algebra.Order.Star.Basic
+import Submission.Commons.FieldTheory.Galois.range_norm_le_range_norm_of_intermediateField
 import Submission.Commons.GroupTheory.Subgroup.index_iInf_eq_prod_of_pairwise_coprime_index
 import Submission.Commons.GroupTheory.exists_subgroup_card_quotient_eq_pow_factorization
-import Submission.Commons.FieldTheory.Galois.range_norm_le_range_norm_of_intermediateField
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Commons.NumberTheory.NumberField.Completion.natCard_quotient_units_range_norm_le_card_of_abelian_local_base
 
 set_option linter.style.haveILetI false
 set_option linter.unusedSectionVars false
@@ -46,8 +40,6 @@ theorem finiteIndex_range_norm_units_of_finiteDimensional
   obtain ⟨L, hLf, hLn, hLa, q, hq, hφ⟩ :=
     exists_algEquiv_adicCompletion_of_finiteDimensional_aux.{uK, uB, uB} (Q := Q) (B := B)
   obtain ⟨φ⟩ := hφ
-  letI : Field L := hLf
-  letI : NumberField L := hLn
   obtain ⟨eφ, mulφ, addφ, commφ⟩ := φ
   let rφ : B ≃+* (q.adicCompletion L) := RingEquiv.mk eφ mulφ addφ
   let f : (q.adicCompletion L) →+* E := (algebraMap B E).comp rφ.symm.toRingHom

@@ -1,26 +1,8 @@
-/-
-# Finite stages of a `Gal`-module, and the elementary finiteness facts of the assembly
-
-The assembly of `Work.SSGRoute.coker_obstruction` has to apply the arithmetic input (Poitou–Tate
-at `H¹`, which is stated only for **finite** coefficient modules) to an *arbitrary*
-`Gal(K/k)`-module `E₂`: the local data `(f ∘ α, f ∘ β)` takes values in `f(E)`, which is finite
-because `E` is, so it really lives in a finite submodule.  The reduction is the *finite stage*:
-
-* `Stage p G E E₂ f` packages a finite `G`-stable submodule `W ⊆ E₂` (as an abstract finite
-  `G`-module with an equivariant injection `i` into `E₂`), together with an equivariant
-  factorization `f = i ∘ f₀` through it;
-* `finite_stage_factor` (delegated, in `H1Pair/finite_stage.lean`) produces such a stage through
-  which the coefficient morphism `F` factors, on which the given homology class still dies.  The
-  marked-up design, including the one subtlety (the stage must be chosen *after* a bounding
-  `2`-chain for the class, because `H₁` is only right exact), is in
-  `Submission/Work/SSGRoute/H1Pair/FINITE_STAGE_DESIGN.md`.
-
-This file only holds the vocabulary and the two finiteness facts (`E ⊗ T` is finite-dimensional
-over `𝔽_p`, and a line is finite-dimensional) that the assembly uses.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.RingTheory.TensorProduct.Finite
 import Submission.Work.SSGRoute.DualMod.Main
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

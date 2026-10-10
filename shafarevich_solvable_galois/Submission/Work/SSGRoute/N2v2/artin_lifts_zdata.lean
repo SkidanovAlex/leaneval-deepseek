@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.Vocab
-import Submission.Work.SSGRoute.step4_y_escape_v2.localFactor_productFormula_clean
-import Submission.Work.SSGRoute.ZDataMup.localGlobalArtinMap_exists_comm
-import Submission.Work.SSGRoute.ZDataMup.AbelianOnePlaceAux4
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.N2v2.isUnramifiedIn_of_notMem_Tprime
-import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_restrictNormalHom_eq_abelian
+import Submission.Work.SSGRoute.Sha2Lib.ideleClassEquiv_refl
 import Submission.Work.SSGRoute.ZConstruction.exists_abelianArtin_localFactors
 import Submission.Work.SSGRoute.ZDataMup.isUnramifiedIn_of_inertia_subset_fixingSubgroup
-import Submission.Work.SSGRoute.ZDataMup.LocalUnramified.kummerChar_zero_on_inertia_imp_mem_unramified
 import Submission.Work.SSGRoute.ZDataMup.normImage_topIntermediateField
-import Submission.Work.SSGRoute.Sha2Lib.ideleClassEquiv_refl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

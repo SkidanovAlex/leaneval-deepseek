@@ -1,11 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.GlueSetup
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
-import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
 import Submission.Commons.NumberTheory.RamificationInertia.exists_smul_valuationSubringAtPrime_eq
-import Submission.NK.Reconstruct.restrictNormalHom_smul_valuationSubringAtPrime
+import Submission.Commons.RingTheory.Valuation.valuationSubringAtPrime_injective
+import Submission.NK.GlobalCFT.Galois.exists_stabilizer_isConj_of_isReal_isComplex
 import Submission.NK.GlobalCFT.Galois.globalCFT_localFixed_finite
+import Submission.NK.Reconstruct.restrictNormalHom_smul_valuationSubringAtPrime
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
@@ -90,11 +95,12 @@ theorem glue_fin_decomp (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Alge
       (SSGRoute.res k K σ)
       (by
         rw [NK.GlobalCFT.Place.smulHeightOneSpectrum_asIdeal]
-        exact congrArg
+        have he := congrArg
           (fun e : NumberField.RingOfIntegers ↥K ≃+* NumberField.RingOfIntegers ↥K =>
             Ideal.map (e : NumberField.RingOfIntegers ↥K →+* NumberField.RingOfIntegers ↥K)
               q.asIdeal)
-          (NK.GlobalCFT.Galois.ringOfIntegersEquiv_eq_galRestrict (SSGRoute.res k K σ)))
+          (NK.GlobalCFT.Galois.ringOfIntegersEquiv_eq_galRestrict (SSGRoute.res k K σ))
+        exact he)
   rw [hsmul.symm]
   exact hval
 

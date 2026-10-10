@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.Reconstruct.LevelMap
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Galois.Infinite
 import Submission.NK.Reconstruct.levelPairData
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

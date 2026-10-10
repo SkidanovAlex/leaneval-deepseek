@@ -1,18 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
-import Submission.Work.SSGRoute.PT.G1plusOwn.levelFree
-import Submission.Work.SSGRoute.E0bDefs
-import Submission.Work.SSGRoute.PT.vfShared
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.E9c.TransportDefs
-import Submission.Work.SSGRoute.extRes_injective_of_mulEquiv
-import Submission.Work.SSGRoute.PT.archYoneda_perfect
-import Submission.Work.SSGRoute.PT.pushClass_transport_vanishing
-import Submission.Work.SSGRoute.PT.localUnitsMap_retraction_of_ne_bot
-import Submission.Work.SSGRoute.PT.levelTransport_injective_of_components
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.PT.archLevelPair_decomposition
+import Submission.Work.SSGRoute.PT.levelTransport_injective_of_components
 import Submission.Work.SSGRoute.PT.localUnitsMap_injective
 import Submission.Work.SSGRoute.PT.localUnitsMap_invariants
+import Submission.Work.SSGRoute.PT.localUnitsMap_retraction_of_ne_bot
+import Submission.Work.SSGRoute.PT.pushClass_transport_vanishing
+import Submission.Work.SSGRoute.PT.vfShared
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

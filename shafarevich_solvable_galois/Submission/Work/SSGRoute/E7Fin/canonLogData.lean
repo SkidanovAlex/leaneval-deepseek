@@ -1,6 +1,8 @@
-import Mathlib
-import Submission.NK.LocalInputs.PowerQuotient.Setup
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Submission.Commons.Analysis.Nonarchimedean.exp_map_ringEquiv
+import Submission.NK.LocalInputs.PowerQuotient.Setup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

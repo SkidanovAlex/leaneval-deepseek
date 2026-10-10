@@ -1,9 +1,10 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.ReconstructField.MainFinal
-import Submission.NK.ReconstructField.key_finite_prime_match
-import Submission.NK.ReconstructField.exists_level_galois_image
-import Submission.NK.ReconstructField.levelPrimeMap_liesOver
-import Submission.NK.ReconstructField.localDegree_primeTransport
-import Submission.NK.ReconstructField.primeTransport_eq_levelPrimeMap_imp_base
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

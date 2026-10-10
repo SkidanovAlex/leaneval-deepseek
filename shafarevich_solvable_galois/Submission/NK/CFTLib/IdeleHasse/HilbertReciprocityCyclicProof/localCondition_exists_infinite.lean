@@ -1,9 +1,14 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
-import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Submission.NK.CFTLib.HR.localNormSubgroup_ofInfinite_eq_top
-import Submission.NK.CFTLib.IdeleHasse.cyclotomicLocalNorm_infinite
 import Submission.NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary
+import Submission.NK.CFTLib.IdeleHasse.cyclotomicLocalNorm_infinite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

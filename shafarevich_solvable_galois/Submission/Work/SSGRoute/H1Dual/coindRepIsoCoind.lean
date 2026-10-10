@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.RepresentationTheory.Coinduced
 import Submission.Work.SSGRoute.H1Dual.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

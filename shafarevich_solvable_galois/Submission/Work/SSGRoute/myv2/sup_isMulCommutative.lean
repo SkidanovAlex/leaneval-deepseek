@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # The compositum of two abelian Galois extensions is abelian

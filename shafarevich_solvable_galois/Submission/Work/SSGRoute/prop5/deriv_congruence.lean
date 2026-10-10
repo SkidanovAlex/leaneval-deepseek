@@ -1,6 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.GroupTheory.Commutator.Basic
 import Submission.Work.SSGRoute.prop5.coreGraded
-import Submission.Work.SSGRoute.prop5.gamma_commutator_jacobi_mem
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

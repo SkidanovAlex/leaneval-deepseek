@@ -1,5 +1,13 @@
-import Mathlib
-import Submission.NK.NUV2.RouteD.LevelSetup
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Submission.Commons.NumberTheory.NumberField.Completion.exists_artinMap_of_abelian_local
+import Submission.NK.LocalReciprocityLubinTate.Target
+import Submission.NK.LocalReciprocityLubinTate.Unramified.nonempty_kernelCondition_of_reciprocityLaw
+import Submission.NK.NUV2.RouteC.cup_pow
+import Submission.NK.NUV2.RouteC.doubleDual_surjective
+import Submission.NK.NUV2.RouteC.inf_injective_range_eq
+import Submission.NK.NUV2.RouteC.map_norm_eq_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

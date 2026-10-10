@@ -1,7 +1,6 @@
-import Mathlib
-import Submission.NK.GlobalCFT.Place
-import Submission.NK.GlobalCFT.Idele
-import Submission.NK.GlobalCFT.NormGroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.SIdeles
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

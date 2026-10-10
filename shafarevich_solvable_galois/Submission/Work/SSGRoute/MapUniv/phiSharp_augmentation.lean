@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.CategoryTheory.Abelian.Projective.Extend
 import Submission.Work.SSGRoute.MapUnivDefs
 import Submission.Work.SSGRoute.phiSharp_f
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.QuadraticLocalGlobal.Defs
-import Submission.Work.QuadraticLocalGlobal.GrunwaldPrelim
+import Mathlib.Data.Rat.Star
+import Mathlib.NumberTheory.Padics.PadicNumbers
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.QuadraticLocalGlobal.exists_local_parity_sameSquare
 import Submission.Work.QuadraticLocalGlobal.exists_rat_unit_sameSquare_of_local_data
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

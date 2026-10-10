@@ -1,10 +1,12 @@
-import Mathlib
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.Step4CokerData
-import Submission.Work.SSGRoute.flowKernel_fixedField
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.RamifiedPlacesAux
-import Submission.Work.SSGRoute.ramifiedPlaces_finite
 import Submission.Work.SSGRoute.exists_T0_split_generating_disj
+import Submission.Work.SSGRoute.ramifiedPlaces_finite
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

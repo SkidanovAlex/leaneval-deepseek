@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.GroupTheory.Coset.Card
+import Mathlib.Analysis.Normed.Ring.Basic
 import Submission.NK.GlobalCFTdeep.AbstractH0
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

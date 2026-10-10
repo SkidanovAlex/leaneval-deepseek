@@ -1,12 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.NUV2.Final.Wiring
 import Submission.NK.NUV2.RouteE.exists_compatible_fundamentalClasses
 import Submission.NK.NUV2.Wild.levelSymbol_ker_adicCompletion
-import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
-import Submission.NK.LocalCFT.NormGroup.normGroup_sup_eq_inf
-import Submission.NK.LocalArtin.Reduction.kernelCondition_toReciprocityMap
-import Submission.NK.LocalReciprocityLubinTate.NormIndex.normIndex_adicCompletion
-import Submission.NK.LocalReciprocityLubinTate.Target
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

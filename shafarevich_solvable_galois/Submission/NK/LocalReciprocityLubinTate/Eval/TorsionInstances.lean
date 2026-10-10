@@ -1,20 +1,8 @@
-/-
-# The ambient ring of the torsion evaluation is complete and Hausdorff
-
-The `𝔪[F]`-adic topology on `T_n = 𝒪[F][T]/(f^{(n)}(T))` is the topology of a *finite free*
-`𝒪[F]`-module; since `𝒪[F]` is `𝔪[F]`-adically complete and Hausdorff, so is `T_n`.  This file
-collects the consequences: `T_n` is a complete Hausdorff topological ring with the adic topology
-attached to the ideal `(π)`, which is what `MvPowerSeries.eval₂Hom` and Milne's evaluation of the
-Lubin–Tate series at `τ` require.
-
-## Main results
-
-* `NK.LocalReciprocityLubinTate.Eval.isAdicComplete_ltTorsionRing`;
-* `NK.LocalReciprocityLubinTate.Eval.completeSpace_ltTorsionRing`;
-* `NK.LocalReciprocityLubinTate.Eval.t2Space_ltTorsionRing`.
--/
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.TorsionRing
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.AdicCompletion.Topology
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocityLubinTate.Eval.isAdicComplete_adjoinRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

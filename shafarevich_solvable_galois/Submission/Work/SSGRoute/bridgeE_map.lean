@@ -1,8 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.Phi0Aux
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.CategoryTheory.Abelian.Projective.Ext
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.extH_groupCohomology_addEquiv
 import Submission.Work.SSGRoute.mapExtAddHom_extMk_univ
-import Submission.Work.SSGRoute.bridgeE_map_coeff
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

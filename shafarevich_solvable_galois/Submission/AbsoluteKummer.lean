@@ -1,34 +1,19 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Kummer theory in the absolute-Galois language
-
-`Submission/Work/AbsoluteKummer/` builds the continuous cohomology `H⁰`, `H¹`, `H²` of the absolute
-Galois group `G_k = Field.absoluteGaloisGroup k` with coefficients in a discrete module, **Hilbert 90**
-for `G_k`, and the **Kummer isomorphism** `kˣ/(kˣ)ⁿ ≅ H¹(G_k, μₙ)`.  This is the bridge between the
-arithmetic results of `Submission/Work/QuadraticLocalGlobal` (Grünwald in degree `2`, the Hasse norm
-theorem, Hasse–Brauer–Noether) and the embedding-problem machinery of
-`Submission/Work/Properness` / `Submission/Work/AbsoluteGalois` (where the obstruction of an
-embedding problem with abelian kernel is a class in `H²`).
-
-## Main results
-
-* `Submission.kummerEquiv` — the Kummer isomorphism `kˣ/(kˣ)ⁿ ≃* H¹(G_k, μₙ)` for `μ_n ⊆ k`
-  (values: `σ ↦ σ(α)/α` for any `α` with `αⁿ = x`);
-* `Submission.kummerEquivRatTwo` — the case `k = ℚ`, `n = 2`: **`ℚˣ/(ℚˣ)² ≃* H¹(G_ℚ, μ₂)`**;
-* `Submission.hilbert90_H1_eq_zero` — **Hilbert 90 for `G_k`**: `H¹(G_k, k̄ˣ) = 0`;
-* `Submission.grunwald_sqClassLocalize_surjective` — **Grünwald's theorem in degree 2** (from
-  `Work/QuadraticLocalGlobal`), i.e. the localisation map `ℚˣ/(ℚˣ)² → ∏_i ℚ_{q_i}ˣ/(ℚ_{q_i}ˣ)²` is
-  surjective for finitely many distinct primes `q i`; its `H¹` form (conditional only on the
-  *local* Kummer identifications) is `Work.AbsoluteKummer.grunwald_h1_surjective(_pi)`, and
-  `Work.AbsoluteKummer.sqClassLocalize_surjective_pi` is the coefficient-module version.
-
-The finite-level (inflation) description of the cohomology of `G_k`, the low-degree exact sequences,
-and the dictionary with `Work.Properness`'s embedding problems live in the same directory; see
-`Submission/Work/AbsoluteKummer/NOTES.md`.
--/
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.NumberTheory.Padics.PadicNumbers
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Submission.Work.AbsoluteGalois.exists_hom_lift_iff_pullbackCocycle_mem_B2
+import Submission.Work.AbsoluteGalois.sectionCocycle_mem_Z2
+import Submission.Work.AbsoluteGalois.twisted_splitting_iff_mem_B2
+import Submission.Work.AbsoluteKummer.Factorisation.exists_finiteGalois_le_ker_pair
+import Submission.Work.AbsoluteKummer.Functoriality
+import Submission.Work.AbsoluteKummer.Grunwald.sqClassLocalize_surjective
+import Submission.Work.AbsoluteKummer.H1Pi.nonempty_h1_pi_equiv
+import Submission.Work.AbsoluteKummer.Kummer.kummerQuotientEquiv
+import Submission.Work.AbsoluteKummer.Kummer.nonempty_h0_addUnits_equiv
+import Submission.Work.AbsoluteKummer.KummerBijective
+import Submission.Work.AbsoluteKummer.Rat
+import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
+import Submission.Work.Properness.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

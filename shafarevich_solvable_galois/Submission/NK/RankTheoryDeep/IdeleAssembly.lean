@@ -1,3 +1,10 @@
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.NK.RankTheoryDeep.PlacesOverEll
 import Submission.NK.RankTheoryDeep.dual_pi_surjective_finite_coordinates
 import Submission.NK.RankTheoryDeep.rank_dual_integralIdeles_le_pi

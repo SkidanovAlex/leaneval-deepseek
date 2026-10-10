@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Commons.Analysis.TSum.tsum_prod_fintype
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.SpecificLimits.Normed
 import Submission.Commons.Analysis.TSum.summable_mul_multiIndex_geometric
+import Submission.Commons.Analysis.TSum.tsum_prod_fintype
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

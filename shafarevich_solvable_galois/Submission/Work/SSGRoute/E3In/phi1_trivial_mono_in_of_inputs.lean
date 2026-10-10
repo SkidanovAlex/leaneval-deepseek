@@ -1,21 +1,25 @@
-import Mathlib
-import Submission.Work.SSGRoute.e3_ext_spine
-import Submission.Work.SSGRoute.classIncl_mem_invariants_range
-import Submission.Work.SSGRoute.CFTSide.exists_cyclic_prime_notMem_normClassSubgroup
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.CFTSide.cyclicNormCriterion_classesK
-import Submission.Work.SSGRoute.phi1_classIncl_compat
+import Submission.Work.SSGRoute.CFTSide.exists_cyclic_prime_notMem_normClassSubgroup
 import Submission.Work.SSGRoute.PT.e3_exists_level_of_cyclic
 import Submission.Work.SSGRoute.PT.e3_level_comparison
-import Submission.Work.SSGRoute.Sha2Lib.classIncl_hom_fixed
 import Submission.Work.SSGRoute.Sha2Lib.classGroupRep_norm_eq_classIncl
+import Submission.Work.SSGRoute.Sha2Lib.classIncl_hom_fixed
 import Submission.Work.SSGRoute.Sha2Lib.exists_addHom_ker_fixingSubgroup
 import Submission.Work.SSGRoute.Sha2Lib.mem_normClassSubgroup_iff_of_algEquiv
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.classIncl_mem_invariants_range
+import Submission.Work.SSGRoute.e3_ext_spine
+import Submission.Work.SSGRoute.phi1_classIncl_compat
 
 /-!
 # `E3Ω` from its three named inputs (node `E3In`)
@@ -262,8 +266,6 @@ theorem phi1_trivial_mono_in_of_inputs (p : ℕ) [Fact p.Prime] (k K Ω : Type) 
   by_contra hnot
   obtain ⟨E, hFE, hNE, hAE, hfdE, hgalE, hdegE, hnotnorm⟩ :=
     exists_cyclic_prime_notMem_normClassSubgroup k p (Additive.toMul a₀) hPTW hnot
-  letI : Field E := hFE
-  letI : NumberField E := hNE
   letI : Algebra k E := hAE
   letI : FiniteDimensional k E := hfdE
   haveI : IsGalois k E := hgalE

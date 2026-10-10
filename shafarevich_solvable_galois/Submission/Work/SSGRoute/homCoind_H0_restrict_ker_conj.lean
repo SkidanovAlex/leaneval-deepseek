@@ -1,10 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.homCoindDefs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.addUnits_injective
 import Submission.Work.SSGRoute.isDiscreteModule_homCoind
 import Submission.Work.SSGRoute.isDiscreteModule_of_injective_addHom
 import Submission.Work.SSGRoute.ker_hom_eq_range_kernel_iota
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact
 
 open CategoryTheory
 

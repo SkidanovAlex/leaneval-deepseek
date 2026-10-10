@@ -1,9 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
-import Submission.Work.SSGRoute.PTembedding.hilbert90_decomp
-import Submission.Work.AbsoluteKummer.SES.ker_mapH2_le_range_deltaH2
-import Submission.Work.SSGRoute.range_mapH2_eq_ker_mapH2
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.PT.AlphaTwoKummer
+import Submission.Work.SSGRoute.PTembedding.kummer_ses_decomp
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

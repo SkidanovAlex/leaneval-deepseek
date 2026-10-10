@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.Work.SSGRoute.ZDataMup.mupLocalVocab
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZDataMup.mupLocalForm
-import Submission.Work.SSGRoute.finite_openKernel_homs_decomp_kernel
 
 /-!
 # The "bad case" of the norm localisation: an element of `K'` that is a `p`-th power in the

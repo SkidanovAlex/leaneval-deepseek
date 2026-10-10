@@ -1,14 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.phi1_level_limit
-import Submission.Work.SSGRoute.phi1_class_level
-import Submission.Work.SSGRoute.E4R3.inflC_injective
-import Submission.Work.SSGRoute.phi_pair_natural
-import Submission.Work.SSGRoute.phiPushClass
-import Submission.Work.SSGRoute.phiAt_level_infl
-import Submission.Work.SSGRoute.phi0_pairing_infl_eq_zero
-import Submission.Work.SSGRoute.zeta_idele_class_pairing
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.phi0_trivial_epi_in
+import Submission.Work.SSGRoute.phiAt_level_infl
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

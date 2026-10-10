@@ -1,4 +1,8 @@
-import Submission.NK.LocalReciprocity.All
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.FieldTheory.Galois.Basic
+import Submission.NK.LocalReciprocity.Invariants
+import Submission.NK.LocalReciprocity.LubinTate
+import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

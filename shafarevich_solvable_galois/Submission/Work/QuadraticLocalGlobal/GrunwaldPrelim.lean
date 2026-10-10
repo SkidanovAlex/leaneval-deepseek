@@ -1,24 +1,12 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Preliminary lemmas for Grünwald's theorem in degree two
-
-Small structural lemmas used in `Work.QuadraticLocalGlobal.grunwald_degree_two_with_sign`:
-
-* `SameSquare` is an equivalence relation on nonzero `p`-adic numbers;
-* divisibility/multiplicativity bookkeeping for `padicVal` and `legendreOf`;
-* the `legendreOf` of an integral unit depends only on its residue class mod `p`;
-* the `2`-adic square criterion in the `toZModPow 3` form;
-* a Chinese-remainder statement for a finite family of pairwise coprime moduli, giving a
-  *positive* integer with prescribed residues.
--/
-import Mathlib
-import Submission.Work.QuadraticLocalGlobal.Defs
+import Mathlib.Computability.Reduce
+import Mathlib.Data.Int.Star
+import Mathlib.Data.Nat.ChineseRemainder
+import Mathlib.NumberTheory.LegendreSymbol.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.QuadraticLocalGlobal.isSquare_padic_rat_iff
 import Submission.Work.QuadraticLocalGlobal.isSquare_padic_two_rat_iff
 import Submission.Work.QuadraticLocalGlobal.toZModPow_intCast
-import Submission.Work.HilbertSymbol.legendreOf_intUnit
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

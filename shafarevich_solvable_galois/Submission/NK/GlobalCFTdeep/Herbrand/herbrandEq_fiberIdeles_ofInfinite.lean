@@ -1,12 +1,10 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.Herbrand.FiberValue
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
-import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_units_of_normIndex
-import Submission.NK.GlobalCFTdeep.Herbrand.natCard_algEquiv_completion_eq_finrank
 import Submission.NK.GlobalCFTdeep.Herbrand.index_normGroup_completion_eq_finrank
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_algEquiv_completion_eq_finrank
 import Submission.NK.GlobalCFTdeep.Herbrand.natCard_decompositionSubgroup_ofInfinite_eq_finrank
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_prod_smul_eq_inclusion_normIdeleHom
-import Submission.NK.LocalReciprocity.NormGroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

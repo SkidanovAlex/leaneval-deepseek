@@ -1,5 +1,5 @@
-import Mathlib.FieldTheory.Finite.Extension
 import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Finite.Extension
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

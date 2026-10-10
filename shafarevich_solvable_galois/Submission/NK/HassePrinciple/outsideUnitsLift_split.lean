@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.NK.HassePrinciple.IdeleLevel
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 import Submission.NK.HassePrinciple.supportedLift_split
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

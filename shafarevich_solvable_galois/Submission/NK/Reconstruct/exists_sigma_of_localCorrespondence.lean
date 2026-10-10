@@ -1,17 +1,18 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.NK.Mine.ExistsSigmaOfLocalCorrespondence
+import Submission.NK.Reconstruct.charP_quotient_primeTransport
+import Submission.NK.Reconstruct.exists_algebra_isSepClosure
 import Submission.NK.Reconstruct.levelIsoInput_of_localCorrespondence
 import Submission.NK.Reconstruct.levelIsoInput_transport
-import Submission.NK.Reconstruct.exists_localCorrespondence_transport
-import Submission.NK.Reconstruct.exists_frobeniusCorrespondence_transport
-import Submission.NK.Reconstruct.exists_sigma_of_levelPrimeIdentification
-import Submission.NK.Reconstruct.exists_algebra_isSepClosure
-import Submission.NK.Reconstruct.fourf5Gen
-import Submission.NK.Reconstruct.levelPairData
-import Submission.NK.Mine.ExistsSigmaOfLocalCorrespondence
-import Submission.NK.ReconstructField.primeOf_comap_eq_primeTransport
-import Submission.NK.NeukirchUchida.isHomeomorph_conjHomEquiv
-import Submission.NK.Reconstruct.charP_quotient_primeTransport
 import Submission.NK.Reconstruct.localDegree_primeTransport_of_ringEquiv
+import Submission.NK.ReconstructField.eq_of_primeTransport_eq
+import Submission.NK.ReconstructField.primeOf_comap_eq_primeTransport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

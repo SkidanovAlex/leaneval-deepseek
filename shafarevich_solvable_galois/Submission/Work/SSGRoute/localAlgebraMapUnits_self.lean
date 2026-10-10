@@ -1,5 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.PlaceLocalEmbeddingDefs
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.Inclusion
+import Submission.NK.LocalInputs.Inputs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

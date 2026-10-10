@@ -1,32 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The local invariants of a `p`-adic field
-
-This is the conclusion (A) of the `NK.LocalAnabelian` chapter, in the form in which it
-is actually true (see the discussion in `PadicField/Defs.lean`):
-
-  the abelianised pro-`p` part of `Gal(κ̄/κ)` is `ℤ_p^d × (ℤ/p)^δ`, i.e. the number of
-  **cyclic** degree-`p` extensions of `κ` is `(p^{[κ:ℚ_p]+1+δ} - 1)/(p-1)`, and hence
-  `frattiniRank p (Gal(κ^{(p)}/κ)) = 1 + [κ:ℚ_p] + δ`.
-
-`hasAbelianFrattiniRank_of_inputs` draws this from the bundled local inputs
-(`PadicGaloisInputs`).  The `ζ_p ∈ κ` (`δ = 1`) case is then derived from the two
-primitive arithmetic inputs — the power class count `|κˣ/(κˣ)^p| = p^{d+2}` and the
-Kummer bridge `natCard_galois_finrank_eq_p` — by
-`hasAbelianFrattiniRank_of_isPrimitiveRoot`; for `δ = 0` the corresponding statement is
-the genuine additional input (Kummer theory over `κ(ζ_p)` plus Galois descent).
-
-The non-abelian count (all degree-`p` extensions, not only the cyclic ones) is a
-different number when `δ = 0`; the two coincide for `δ = 1` provided every degree-`p`
-extension is Galois, which is the content of `hasFrattiniRank_of_isPrimitiveRoot`.
--/
-import Submission.NK.LocalAnabelian.PadicField.Defs
-import Submission.NK.LocalAnabelian.Kummer.Bridge
-import Submission.NK.LocalAnabelian.GaloisCorrespondence.IndexP
-import Submission.NK.LocalAnabelian.GaloisCorrespondence.numIndexSubgroups_abelianization_eq_natCard_galois
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Submission.NK.LocalAnabelian.Bridge.frattiniRank_eq_of_hasAbelianFrattiniRank
+import Submission.NK.LocalAnabelian.GaloisCorrespondence.IndexP
+import Submission.NK.LocalAnabelian.Kummer.Bridge
+import Submission.NK.LocalAnabelian.PadicField.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

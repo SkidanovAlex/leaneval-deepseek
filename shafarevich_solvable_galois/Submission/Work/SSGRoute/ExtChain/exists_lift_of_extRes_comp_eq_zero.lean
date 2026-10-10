@@ -1,6 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.ExtChain.himgIdelesInput_fin_leaf
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.E1aClean.unitsPushTarget
+import Submission.Work.SSGRoute.ExtChain.exists_khLift_of_extToIdeles_eq_zero
+import Submission.Work.SSGRoute.ExtChain.himgLeafCore
+import Submission.Work.SSGRoute.ExtChain.resH2_zpowers_e1aChainH_eq_zero_of_extRes_zpowers_eq_zero
+import Submission.Work.SSGRoute.ExtChain.shift_symm_extToIdeles_eq_zero_gen
+import Submission.Work.SSGRoute.PTdualControl.exists_invariant_extension_of_resH1_e1cMap_eq_zero_inf
+import Submission.Work.SSGRoute.extToIdeles_eq_zero_iff_extLoc
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,18 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3loc
-import Submission.Work.SSGRoute.PTCore.h3loc_decomp_subsingleton
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
-import Submission.Work.SSGRoute.PT.H3Transfer
-import Submission.Work.SSGRoute.PT.shapiro_H3_coind
-import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_finiteIndex_subgroup
-import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_pgroup_action
-import Submission.Work.SSGRoute.PTfin.subsingleton_H3_of_isPGroup_action
-import Submission.Work.SSGRoute.HS.Setup
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.EulerSymm.h3triv_fixingSubgroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.EulerSymm.sylow_datum
+import Submission.Work.SSGRoute.PT.shapiro_H3_coind
+import Submission.Work.SSGRoute.PTCore.h3loc_decomp_subsingleton
+import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_finiteIndex_subgroup
+import Submission.Work.SSGRoute.PTfin.subsingleton_H3_of_isPGroup_action
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

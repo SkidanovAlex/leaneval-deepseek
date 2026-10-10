@@ -1,6 +1,7 @@
-import Mathlib
-import Submission.Work.LocalFields.card_inertiaSubgroup
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.Different
 import Submission.Commons.NumberTheory.NumberField.differentIdeal_eq_top_of_ramificationIdx
+import Submission.Work.LocalFields.card_inertiaSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

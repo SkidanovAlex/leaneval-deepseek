@@ -1,13 +1,12 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.E1aClean.decompFieldHenselEmb
-import Submission.Work.SSGRoute.E1aClean.decompDatum
-import Submission.Work.SSGRoute.E1aClean.decompDatumFacts
-import Submission.Work.SSGRoute.E1aClean.decompField_embeds_completion
-import Submission.Work.SSGRoute.localAutHom_bijective
 import Submission.Work.SSGRoute.adicCompletionToPlaceCompletion_comp
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
-import Submission.Commons.NumberTheory.NumberField.Completion.natCard_algEquiv_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
-import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
+import Submission.Work.SSGRoute.localAutHom_bijective
 
 /-!
 # The henselisation embedding fixes the decomposition field under the local action

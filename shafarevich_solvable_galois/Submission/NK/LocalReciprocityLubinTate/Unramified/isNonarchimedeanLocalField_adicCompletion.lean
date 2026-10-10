@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.Basic
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.LocalField.globalCFT_localField_locallyCompactSpace
-import Submission.Commons.NumberTheory.NumberField.Completion.compactSpace_adicCompletionIntegers
+import Submission.NK.LocalReciprocityLubinTate.Unramified.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

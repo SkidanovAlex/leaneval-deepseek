@@ -1,27 +1,6 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# The Fitting subgroup
-
-This file gives the definition of the **Fitting subgroup** `F(G) = fitting G` of a group `G`:
-the largest normal nilpotent subgroup of `G`.  It is defined as the supremum of the set of
-all normal nilpotent subgroups.
-
-## Main results
-
-* `fitting_normal`, `fitting_characteristic` : `F(G)` is normal (indeed characteristic) in `G`;
-* `le_fitting` : every normal nilpotent subgroup is contained in `F(G)`;
-* `fitting_le_iff` : the universal property of `F(G)`;
-* `fitting_eq_top` : `F(G) = ⊤` for a nilpotent group;
-* `frattini_le_fitting` : `Φ(G) ≤ F(G)` for finite `G` (the Frattini subgroup is nilpotent);
-* `frattini_ne_top` : `Φ(G) ≠ ⊤` for a nontrivial finite group;
-* `fitting_ne_bot` : `F(G) ≠ ⊥` for a nontrivial finite solvable group;
-* `exists_minimal_normal` (reproved here to keep this file self-contained).
-
-The nilpotency of `F(G)` itself (the join of two normal nilpotent subgroups is nilpotent) is
-proved in `Submission/Work/Fitting/Join.lean`.
--/
-import Mathlib
+import Mathlib.GroupTheory.Frattini
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.FieldTheory.Normal.Defs
 import Submission.Work.GroupTheory.isElementaryAbelian_of_minimal_normal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

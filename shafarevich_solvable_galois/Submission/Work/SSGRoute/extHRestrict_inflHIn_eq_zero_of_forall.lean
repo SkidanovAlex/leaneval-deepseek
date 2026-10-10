@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.Sha2Lib.isLocTrivialLevel_inflH
 import Submission.Work.SSGRoute.phi1_level_naturality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

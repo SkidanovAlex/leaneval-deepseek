@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.freeCoverCompat
-import Submission.Work.SSGRoute.E1cGeneric.freeCoverCompat_single
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
 import Submission.Work.SSGRoute.E1cGeneric.freeCoverCompat_comp
+import Submission.Work.SSGRoute.E1cGeneric.freeCoverCompat_single
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

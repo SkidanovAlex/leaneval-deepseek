@@ -1,18 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Short exact sequences of `G`-modules
-
-A short exact sequence `0 → A --iota--> B --pi--> C → 0` of `G`-modules (all maps equivariant)
-gives a long exact sequence in low degrees
-
-`0 → H⁰(G,A) → H⁰(G,B) → H⁰(G,C) --δ⁰--> H¹(G,A) → H¹(G,B) → H¹(G,C) --δ¹--> H²(G,A) → H²(G,B) → …`
-
-This file provides the basic data (`ShortExactSeq`, `H0`, `mapH0`) and the exactness statements at
-`H¹(G,B)` and `H²(G,B)`, which need no connecting map:
-`Work.GroupCohomology.range_mapH1_eq_ker_mapH1`, `Work.GroupCohomology.range_mapH2_eq_ker_mapH2`.
--/
-import Submission.Work.GroupCohomology.Functoriality
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Algebra.GroupWithZero.Action.Defs
 import Submission.Work.GroupCohomology.Inflation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

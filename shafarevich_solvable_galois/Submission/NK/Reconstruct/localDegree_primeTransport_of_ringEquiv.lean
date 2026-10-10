@@ -1,7 +1,8 @@
-import Mathlib
-import Submission.NK.Reconstruct.Transport
-import Submission.NK.ReconstructField.localDegree_primeTransport
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
 import Submission.NK.LocalInputs.Degree.localDegree_eq_ramificationIdx_mul_inertiaDeg
+import Submission.NK.ReconstructField.localDegree_primeTransport
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

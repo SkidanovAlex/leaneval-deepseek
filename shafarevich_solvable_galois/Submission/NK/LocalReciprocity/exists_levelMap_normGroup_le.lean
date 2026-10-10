@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.FiniteIndexNormalSubgroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.LocalReciprocity.MaxAbelianSetup
 import Submission.NK.LocalReciprocity.le_maxAbelianSubext_of_commutative
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

@@ -1,40 +1,13 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `NK.LocalStructure`: the structure theory of the absolute Galois group of a `p`-adic field
-
-This chapter is the *local structure theory* of the absolute Galois group `G_κ = Gal(κ̄/κ)` of a
-`p`-adic field `κ = K_𝔭`, in the form in which the Neukirch–Uchida development consumes it.  It
-discharges (or reduces to strictly smaller classical statements) the six named inputs listed in
-the deliverable
-
-1. `NK.LocalTame.TameStructureInput` — the tame structure theorem (NSW (7.5.7), (7.5.11));
-2. `NK.LocalTame.FrobeniusLiftCharacterisation` — the Frobenius normalisation (NSW (12.1.8));
-3. `NK.LocalInputs.LocalFieldInputs.principal_units_card` — the `p`-power class count
-   `|κˣ/(κˣ)^p| = p^{[κ:ℚ_p]+1+δ}` (Serre, *Local Fields* II §5);
-4. `NK.LocalInputs.LocalGaloisInputsOfUnits.proP_unbounded`, `other_bounded` — the pro-`p`
-   tower ranks (Ivanov, arXiv:1309.3046, Lemma 3.12; NSW (7.5.11));
-5. `NK.BrauerHasse.LocalDecompositionCriterion` — Neukirch's local characterisation of
-   decomposition subgroups (Neukirch, Invent. Math. 6 (1969), Theorem 1; CoNF (12.1.9));
-6. the local Neukirch–Uchida theorem (Neukirch, Invent. Math. 6 (1969); CoNF (12.1.4)–(12.1.6)).
-
-## Conventions
-
-`κ = 𝔭.adicCompletion K` is the `𝔭`-adic completion of a number field `K` at a finite prime `𝔭`
-(`𝔭 : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)`), and `K'` is a
-separable closure of `κ` (`[Algebra (𝔭.adicCompletion K) K'] [IsSepClosure (𝔭.adicCompletion K) K']`).
-`q` is the residue field cardinality `residueCard K 𝔭` of `κ`, `d = localDegree K 𝔭` is the
-absolute degree `[κ : ℚ_p]`, and `δ = zetaIndicator p κ` is the indicator of `ζ_p ∈ κ`.
-
-The *reduced inputs* are bundled in the structures below; the imports of this chapter show what
-each one is reduced *to*.
--/
-import Submission.NK.LocalTame.All
-import Submission.NK.LocalInputs.All
-import Submission.NK.BrauerHasse.All
-import Submission.NK.Mine.CommonsAdicSumAPI
-import Submission.NeukirchUchida.Conjugation
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+import Submission.NK.BrauerHasse.Profinite
+import Submission.NK.LocalInputs.Degree.finrank_eq_of_localDegree_eq
+import Submission.NK.LocalInputs.InputsOfUnits
+import Submission.NK.LocalInputs.ResidueChar.primeBelow_eq_of_liesOver
+import Submission.NK.LocalInputs.ResidueChar.primesEquiv_primeBelow
+import Submission.NK.LocalTame.Galois.wildInertiaSubgroup_isProP
+import Submission.NK.LocalTame.Global
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

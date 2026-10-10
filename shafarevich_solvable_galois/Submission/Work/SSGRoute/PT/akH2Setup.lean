@@ -1,31 +1,12 @@
-/-
-# Setup for `ak_h2_finite_of_openNormal`
-
-Shared vocabulary for the Hochschild–Serre finiteness step: for a topological group `Γ`, an open
-normal subgroup `N` of finite index, and a finite discrete `Γ`-module `M` on which `N` acts
-trivially, finiteness of `H²(N,M)` and of `H¹(N,M)` implies finiteness of `H²(Γ,M)`.
-
-This file builds the *coind module* `C = Coind_N^Γ M` (the model of the induced module the Shapiro
-isomorphisms are proved for) together with
-
-* the `Γ`-equivariant injection `iotaMap : M →+ C`, `m ↦ (g ↦ g⁻¹ • m)`;
-* the quotient `QuotMod = C ⧸ iotaMap.range`, with its `Γ`-action, `π = piMap : C →+ QuotMod`;
-* the discreteness of the actions on `C` and on `QuotMod`;
-* the restriction map `resH1 : H¹(Γ,P) →+ H¹(N,P)` for a `Γ`-module `P`;
-* `H¹`/`H²` transfer along an equivariant additive equivalence of coefficients.
-
-The remaining pieces (the connecting map of the short exact sequence and its exactness, Shapiro's
-lemma, and the two finiteness arguments) are assembled in
-`Submission/Work/SSGRoute/PT/ak_h2_finite_of_openNormal.lean`.
--/
-import Mathlib
-import Submission.Work.SSGRoute.PT.ClassFormation
+import Mathlib.Tactic.Group
+import Mathlib.Topology.Constructions
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Algebra.Group.Subgroup.Actions
+import Mathlib.Topology.Algebra.Group.Defs
+import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
+import Submission.Work.SSGRoute.PT.isDiscreteModule_coind
 import Submission.Work.SSGRoute.PT.shapiro_H1_coind
 import Submission.Work.SSGRoute.PT.shapiro_H2_coind
-import Submission.Work.SSGRoute.H2locFin.coind_isFinite
-import Submission.Work.SSGRoute.PT.isDiscreteModule_coind
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
-import Submission.Work.GroupCohomology.Inflation
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

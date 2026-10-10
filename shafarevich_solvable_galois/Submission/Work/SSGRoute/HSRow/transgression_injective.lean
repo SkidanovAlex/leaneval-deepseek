@@ -1,20 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.HSConj
-import Submission.Work.SSGRoute.HSRestrict
-import Submission.Work.SSGRoute.HS.Setup
-import Submission.Work.SSGRoute.HS.Basic
-import Submission.Work.SSGRoute.isCoboundary2On_top_of_procyclicGrowth
-import Submission.Work.SSGRoute.HSRow.Coords
-import Submission.Work.SSGRoute.HSRow.TransgressionDefs
-import Submission.Work.SSGRoute.HSRow.normC_mem_lcCocycles2
-import Submission.Work.SSGRoute.HSRow.normC_coboundary
-import Submission.Work.SSGRoute.HSRow.tprim_primitive
-import Submission.Work.SSGRoute.HSRow.tcoch_isLocConstOn
-import Submission.Work.SSGRoute.HSRow.exists_linear_primitive
-import Submission.Work.SSGRoute.HSRow.tcoch_mem_range_conj1_of_coboundary
-import Submission.Work.SSGRoute.HSRow.tcoch_gauge_shift
-import Submission.Work.SSGRoute.HSRow.exists_coboundary_of_gauge
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.HSRow.exists_chi
+import Submission.Work.SSGRoute.HSRow.exists_coboundary_of_gauge
+import Submission.Work.SSGRoute.HSRow.exists_linear_primitive
+import Submission.Work.SSGRoute.HSRow.normC_coboundary
+import Submission.Work.SSGRoute.HSRow.normC_mem_lcCocycles2
+import Submission.Work.SSGRoute.HSRow.tcoch_gauge_shift
+import Submission.Work.SSGRoute.HSRow.tcoch_isLocConstOn
+import Submission.Work.SSGRoute.HSRow.tcoch_mem_range_conj1_of_coboundary
+import Submission.Work.SSGRoute.HSRow.tprim_primitive
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

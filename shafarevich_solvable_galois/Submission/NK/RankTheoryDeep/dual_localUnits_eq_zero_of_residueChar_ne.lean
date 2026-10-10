@@ -1,8 +1,9 @@
-import Mathlib
-import Submission.NK.Reconstruct.GammaDual
+import Mathlib.NumberTheory.Padics.RingHoms
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
 import Submission.NK.GlobalCFT.Place
-import Submission.NK.Reconstruct.card_dvd_of_isPGroup_quotient_adicUnits
 import Submission.NK.RankTheoryDeep.nsmul_pow_factorization_toZModPow
+import Submission.NK.Reconstruct.GammaDual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

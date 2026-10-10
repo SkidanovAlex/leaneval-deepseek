@@ -1,12 +1,12 @@
-import Mathlib
+import Mathlib.Topology.Connected.Separation
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
+import Submission.NK.GlobalCFT.GaloisIdelesAction
 import Submission.NK.GlobalCFT.Inclusion
 import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.GlobalCFT.GaloisIdelesAction
-import Submission.NK.GlobalCFT.Galois.globalCFT_localRingEquiv_comp
-import Submission.NK.GlobalCFT.Galois.globalCFT_place_smul_liesOver
-import Submission.NK.GlobalCFT.Galois.globalCFT_smul_place_smul
-import Submission.NK.GlobalCFT.Galois.globalCFT_one_smul_place
-import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

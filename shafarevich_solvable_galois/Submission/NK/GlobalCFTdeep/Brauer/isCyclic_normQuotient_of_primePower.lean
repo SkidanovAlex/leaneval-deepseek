@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.NK.GlobalCFT.GlobalCFT
-import Submission.NK.GlobalCFT.NormGroup.globalCFT_normClassHom_trans
-import Submission.NK.GlobalCFTdeep.HasseNormTheoremUniverse
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Star.Basic
+import Submission.NK.GlobalCFTdeep.HasseNormTheorem
+import Submission.NK.GlobalCFTdeep.hasseNorm_index_eq_universe
 import Submission.NK.GroupTheory.Cyclic.isCyclic_of_cyclic_subgroup_cyclic_quotient
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

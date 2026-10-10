@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.NK.CFTLib.HR.TransferAux.Setup
+import Mathlib.RepresentationTheory.Invariants
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.CFTLib.HR.TransferAux.h1ResUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

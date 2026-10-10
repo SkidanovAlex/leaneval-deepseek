@@ -1,15 +1,16 @@
-import Mathlib
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.N2v2.heart_chi2_part
-import Submission.Work.SSGRoute.N2v2.kummerField_le_of_vanishes_on_fixingSubgroup
-import Submission.Work.SSGRoute.N2v2.inertia_kummer_aux
-import Submission.Work.SSGRoute.myv2.Corr
-import Submission.Work.SSGRoute.ZDataMup.KummerSurjectivity.kummerCharZMod_surjective_levelK
 import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.hLevel_mul_le
-import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinSetup
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.localFactor_unramified_eq_frob_zpow
 import Submission.Work.SSGRoute.glue_fin_decomp_ex
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.OrthImports
-import Submission.Work.SSGRoute.EscapeCoreLib.baseChange_over_K
+import Submission.Work.SSGRoute.myv2.Corr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

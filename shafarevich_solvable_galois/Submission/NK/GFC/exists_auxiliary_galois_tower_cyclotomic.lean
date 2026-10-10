@@ -1,12 +1,13 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.LSeries.PrimesInAP
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.NK.CFTLib.RouteB.intersect_cyclotomic_eq_bot
 import Submission.NK.CFTLib.RouteB.exists_cyclic_subfield_of_isCyclotomic
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.NK.CFTLib.RouteB.intersect_cyclotomic_eq_bot
 
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 1000000
@@ -406,6 +407,9 @@ theorem exists_auxiliary_galois_tower_cyclotomic (K L : Type) [Field K] [NumberF
     rfl
   let Ω : IntermediateField ↥L0' Ωb :=
     IntermediateField.adjoin ↥L0' {b : Ωb | ∃ n ∈ ({q} : Set ℕ), n ≠ 0 ∧ b ^ n = 1}
+  -- the `↥L0'`-algebra structure of `↥Ω`, given explicitly (its search tries
+  -- `IsScalarTower ↥L0' ↥L0' _` paths first; ~60 CPU-s per use)
+  letI algL0Ω : Algebra ↥L0' ↥Ω := Ω.toSubalgebra.algebra
   haveI hCycΩ : IsCyclotomicExtension {q} ↥L0' Ω :=
     IntermediateField.isCyclotomicExtension_adjoin_of_exists_isPrimitiveRoot ({q} : Set ℕ)
       ↥L0' Ωb (fun n hn _ => by
@@ -415,7 +419,6 @@ theorem exists_auxiliary_galois_tower_cyclotomic (K L : Type) [Field K] [NumberF
     IsCyclotomicExtension.finiteDimensional ({q} : Set ℕ) ↥L0' Ω
   letI instKΩ : Algebra K Ω := Algebra.compHom Ω (algebraMap K ↥L0')
   haveI towerKΩ : IsScalarTower K ↥L0' Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
-  letI algL0Ω : Algebra ↥L0' ↥Ω := inferInstance
   -- the algebra maps `↥L0' → Ωb` and `↥L0' → ↥Ω` agree on underlying elements
   have hcoord (x : ↥L0') : algebraMap ↥L0' Ωb x = (↑↑x : Ωb) := rfl
   have key (c : ↥L0') :

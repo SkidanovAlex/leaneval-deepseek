@@ -1,6 +1,7 @@
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.ReconstructField.exists_finitePlace_of_prime_level
 import Submission.NK.ReconstructField.primeOfLevel_placeMap_eq_of_comap_eq
-import Submission.NK.ReconstructField.exists_place_comap_eq_of_liesOver
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

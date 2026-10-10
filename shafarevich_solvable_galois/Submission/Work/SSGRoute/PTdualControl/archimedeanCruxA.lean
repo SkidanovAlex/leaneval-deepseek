@@ -1,10 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTdualControl.archimedeanReduction_via_cruxA
-import Submission.Work.SSGRoute.PTdualControl.glue_infinite_place_with_link
-import Submission.Work.SSGRoute.PT.delta_restrictSES
-import Submission.Work.SSGRoute.PTdualControl.exists_invariant_extension_of_resH1_e1cMap_eq_zero_inf
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RepresentationTheory.Coinduced
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTdualControl.archimedeanLocalPush
-import Submission.Work.SSGRoute.E1aClean.extResCompOfExtension
+import Submission.Work.SSGRoute.PTdualControl.exists_invariant_extension_of_resH1_e1cMap_eq_zero_inf
+import Submission.Work.SSGRoute.PTdualControl.glue_infinite_place_with_link
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

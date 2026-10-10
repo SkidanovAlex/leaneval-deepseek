@@ -1,22 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.e7comega_defs
-import Submission.Work.SSGRoute.e7comega_lift
-import Submission.Work.SSGRoute.classLocIncl_injective_clean
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.eq_of_extLoc_eq_of_orbitSupported
 import Submission.Work.SSGRoute.E7cOmega.exists_transversal_mem_of_mulAction
+import Submission.Work.SSGRoute.e7comega_defs
+import Submission.Work.SSGRoute.e7comega_lift
 import Submission.Work.SSGRoute.e9c_phiAt_eq_zero_of_local
-import Submission.Work.SSGRoute.e9c_extLoc_conj_zero
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
-import Submission.Work.SSGRoute.E9c.Core
+import Submission.Work.SSGRoute.lam_local_determination
 import Submission.Work.SSGRoute.local_duality_ext_detect_h
 import Submission.Work.SSGRoute.local_duality_ext_realization_of_detection
-import Submission.Work.SSGRoute.iInter_nonempty_of_directed_finite
-import Submission.Work.SSGRoute.ext_units_single_place
-import Submission.Work.SSGRoute.ext_idele_shapiro
-import Submission.Work.SSGRoute.lam_local_determination
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.extH_classesK_two_card
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

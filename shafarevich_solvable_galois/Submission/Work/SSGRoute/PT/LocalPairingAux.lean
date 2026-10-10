@@ -1,5 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.Quotient.Basic
+import Mathlib.Topology.Defs.Basic
 import Submission.Work.SSGRoute.PT.LocalPairingSpaces
 import Submission.Work.SSGRoute.PT.pt_localPairingDual
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

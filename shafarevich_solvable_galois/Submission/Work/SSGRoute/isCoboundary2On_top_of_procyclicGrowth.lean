@@ -1,6 +1,9 @@
-import Mathlib
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Submission.Work.SSGRoute.H2locAux.Defs
-import Submission.Work.SSGRoute.Interfaces
 import Submission.Work.SSGRoute.coboundary2_top_of_coboundary2_on_coprime_index
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

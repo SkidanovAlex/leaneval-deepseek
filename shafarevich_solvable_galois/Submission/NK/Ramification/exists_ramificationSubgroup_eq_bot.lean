@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.Filtration
+import Mathlib.RingTheory.Valuation.RamificationGroup
 import Submission.NK.Ramification.Defs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

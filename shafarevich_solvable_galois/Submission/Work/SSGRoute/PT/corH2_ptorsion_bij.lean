@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.GroupTheory.Index
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.Work.SSGRoute.PT.alphaTwo_beta
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,33 +1,14 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# `HasKummerMachinery` from `μ_ℓ ⊆ K`, and the differentiation lemma from `μ_ℓ ⊆ K`
-
-The Kummer machinery of §5 (`NK.UchidaKummer.HasKummerMachinery`) bundles four inputs over every
-finite intermediate field `E` of `K'/K`:
-
-1. `μ_ℓ ⊆ E`;
-2. the local Kummer surjection `IsKummerSurjective E ℓ S` for every finite `S` — §5 Prop.
-   `K^x/K^ell local surjection`, proved here from weak approximation
-   (`Approximation/isWeakApproximation`, Neukirch II.5.7) and the openness of the `ℓ`-th power
-   subgroups (`Approximation/isOpenEllPowSubgroup`);
-3. a local unit at each prime of `E` which is not an `ℓ`-th power
-   (`Approximation/exists_not_ellPow_unit_adicCompletion`);
-4. the local Kummer dichotomy (`Kummer/localDeg_kummerField_eq_one_iff`).
-
-Components 2–4 are now **unconditional**, so the machinery reduces to `μ_ℓ ⊆ K`: every finite
-intermediate field `E` of `K'/K` contains `μ_ℓ` as soon as `K` does.  Composing with
-`NK.UchidaKummer.Differentiation.isDifferentiable_of_kummerMachinery` gives the differentiation
-lemma of §5 from `μ_ℓ ⊆ K` alone.
--/
-import Submission.NK.UchidaKummer.Defs
-import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
-import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
-import Submission.NK.UchidaKummer.Approximation.isKummerSurjective_of_weakApproximation
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.NK.UchidaKummer.Approximation.exists_not_ellPow_unit_adicCompletion
-import Submission.NK.UchidaKummer.Kummer.isKummerLocalDichotomy_of_exists_isPrimitiveRoot
+import Submission.NK.UchidaKummer.Approximation.isKummerSurjective_of_weakApproximation
+import Submission.NK.UchidaKummer.Approximation.isOpenEllPowSubgroup
+import Submission.NK.UchidaKummer.Approximation.isWeakApproximation
 import Submission.NK.UchidaKummer.Differentiation.isDifferentiable_of_kummerMachinery
+import Submission.NK.UchidaKummer.Kummer.isKummerLocalDichotomy_of_exists_isPrimitiveRoot
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

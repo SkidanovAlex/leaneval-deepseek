@@ -1,7 +1,7 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Unramified.TowerSymbol
-import Submission.NK.LocalCFT.Reduction.Defs
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.NumberTheory.LocalField.Basic
 import Submission.NK.LocalReciprocityLubinTate.Tower
+import Submission.NK.LocalReciprocityLubinTate.Unramified.TowerSymbol
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

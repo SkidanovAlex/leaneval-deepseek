@@ -1,7 +1,8 @@
-import Mathlib
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.LinearAlgebra.Dimension.Torsion.Finite
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.LogLattice.LogLatticeMain
-import Submission.NK.GlobalCFTdeep.Herbrand.finrank_tUnits
-import Submission.NK.GlobalCFTdeep.LogLattice.finite_ker_logVecLin
 import Submission.NK.GlobalCFTdeep.LogLattice.span_logVecLin_oneVec
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

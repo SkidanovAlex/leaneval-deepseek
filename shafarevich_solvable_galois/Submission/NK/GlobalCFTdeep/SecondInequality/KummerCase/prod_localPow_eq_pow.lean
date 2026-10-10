@@ -1,15 +1,20 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.Defs
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.complexUnits_quot_pow
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.realUnits_quot_pow_two
-import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.units_quot_pow_of_ringEquiv
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.no_isReal_of_isPrimitiveRoot_ne_two
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.norm_algebraMap_natCast_adicCompletion_eq_one_of_notMem
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.norm_algebraMap_natCast_adicCompletion_eq_zpow_localDegree
 import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.norm_algebraMap_natCast_infinitePlace
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.realUnits_quot_pow_two
+import Submission.NK.GlobalCFTdeep.SecondInequality.KummerCase.units_quot_pow_of_ringEquiv
 import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_mem
 import Submission.NK.GlobalCFTdeep.SecondInequality.localIndex_finite_notMem
-import Submission.NK.GlobalCFT.IdeleNorm.globalCFT_abs_principalIdele
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

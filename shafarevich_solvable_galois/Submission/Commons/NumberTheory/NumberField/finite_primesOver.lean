@@ -1,4 +1,3 @@
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.RingTheory.QuasiFinite.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

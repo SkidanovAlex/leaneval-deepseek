@@ -1,24 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The unramified extension of prescribed degree, at an arbitrary universe
-
-`Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg` is stated
-for a number field `L : Type` (universe `0`) and produces `L' : Type`.  The Neukirch–Uchida
-development needs the same construction for `L : Type u` and `L' : Type u`, so that the local
-extension `L'_{q'} / L_q` can be embedded into a separable closure of `L_q` (`L_q : Type u`).
-The proof is the proof of the original lemma, verbatim.
--/
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.finite_quotient_heightOneSpectrum
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.Commons.NumberTheory.NumberField.exists_heightOneSpectrum_liesOver
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_le_finrank
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Commons.NumberTheory.NumberField.Completion.exists_unramified_extension_of_inertiaDeg
-import Submission.Commons.FieldTheory.Polynomial.exists_monic_irreducible_of_natDegree
-import Submission.Commons.RingTheory.Polynomial.exists_monic_lift_of_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

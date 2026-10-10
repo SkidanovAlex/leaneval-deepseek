@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.ProP.All
+import Mathlib.GroupTheory.PGroup
+import Submission.Work.ProP.API
+import Submission.Work.ProP.exists_freePQuotientAction
+import Submission.Work.ProP.exists_surjective_freePQuotient_equivariant
+import Submission.Work.Shrinking.map_pCentralSeries_surjective
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

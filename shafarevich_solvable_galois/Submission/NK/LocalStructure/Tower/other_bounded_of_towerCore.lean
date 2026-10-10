@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.NK.LocalStructure.Defs
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.LocalStructure.Tower.not_hasUnboundedTowerRank_of_card_extensions_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

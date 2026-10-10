@@ -1,25 +1,10 @@
-/-
-# Step 2 of the assembly of `coker_obstruction`: the element `x = pad⁻¹(ω)` of `H₁`
-
-Given a linear form `Φ` on the `1`-cocycles of the contragredient representation `M^∨` which kills
-the `1`-coboundaries, there is `x ∈ H₁(G, M)` such that the canonical Tate pairing with `x` computes
-`Φ` on every cocycle:
-
-  `tatePairLin M x (H1π b₀) = Φ b₀`   for every cocycle `b₀ : G → M^∨`.
-
-The proof is: descend `Φ` to `H¹(G, M^∨)` (`exists_lift_of_kills_coboundaries`, the general form of
-the third clause of `Work.SSGRoute.h1_bridge`), and invert the bijective Tate pairing
-(`H1Pair.tatePairLin_bijective`: Tate duality over `𝔽_p`).
-
-The representation `contra M = Rep.of M.ρ.dual` is the one for which `tatePairLin` is *defined*, and
-it is exactly the representation on which `Work.SSGRoute.H1Pair.omega_functional_contra` produces the
-form `ω` — so no transport of representations occurs anywhere in this step.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.H1Pair.Pairing
 import Submission.Work.SSGRoute.H1Pair.Bijective
+import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,6 +1,4 @@
-import Mathlib
-import Submission.Commons.NumberTheory.NumberField.Valuation.eq_one_of_comap_eq_of_comap_eq
-import Submission.Commons.NumberTheory.NumberField.Valuation.exists_ne_one_comap_eq_of_comap_ne_top
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.NumberTheory.NumberField.Valuation.centralizer_stabilizer_valuationSubring_sepClosure
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

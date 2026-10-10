@@ -1,5 +1,5 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Polynomial.UniversalFactorizationRing
 import Submission.Work.SSGRoute.E9Nodes.e9_baseS
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

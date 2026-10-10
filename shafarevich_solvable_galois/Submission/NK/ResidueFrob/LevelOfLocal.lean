@@ -1,8 +1,11 @@
-import Submission.NK.ResidueFrob.Setup
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.NK.ResidueFrob.Basic
+import Submission.NK.ResidueFrob.Setup
 import Submission.NK.ResidueFrob.frobAtLevel_of_primitiveRoot_action
 import Submission.NK.ResidueFrob.primeOfLevel_liesOver
-import Submission.Commons.NumberTheory.NumberField.orderOf_frobenius_eq_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

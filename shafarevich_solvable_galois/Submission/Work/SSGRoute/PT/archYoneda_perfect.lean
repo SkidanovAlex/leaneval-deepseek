@@ -1,17 +1,20 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.local_detect_h_pgroup
-import Submission.Work.SSGRoute.ext_one_iso_divisible_cohomology
-import Submission.Work.SSGRoute.SSGStage.archimedeanLocalDictionary
-import Submission.Work.SSGRoute.extH_natCard_smul_eq_zero
-import Submission.Work.SSGRoute.local_pTorsion_card
-import Submission.Work.SSGRoute.e6_util
-import Submission.Work.SSGRoute.homRep
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.SSGRoute.localAlgebraMapUnits_self
-import Submission.Work.SSGRoute.local_duality_ext_in
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Data.Int.Star
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.pt_pairing_ext
-import Submission.Work.SSGRoute.ext_localUnits_pTorsion
+import Submission.Work.SSGRoute.SSGStage.archimedeanLocalDictionary
+import Submission.Work.SSGRoute.local_duality_ext_in
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

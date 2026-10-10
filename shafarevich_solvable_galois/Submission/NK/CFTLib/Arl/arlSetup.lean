@@ -1,14 +1,14 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Submission.NK.CFTLib.Existence.arl_dev
-import Submission.NK.CFTLib.Existence.arl_groupData
-import Submission.NK.CFTLib.Existence.res_inf_le_ker_res_of_auxiliary
-import Submission.NK.CFTLib.Existence.ideleInclusion_congruenceSubgroup
-import Submission.NK.CFTLib.Arl.exists_monoidHom_ideleArtin
-import Submission.NK.CFTLib.Arl.exists_isCongruenceSubgroup_and_adjust
-import Submission.NK.CFTLib.Arl.normIdeles_mem_ker_of_ideleArtin
-import Submission.NK.NUV2.ARL.normAdjustment
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleInclusion_exists
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

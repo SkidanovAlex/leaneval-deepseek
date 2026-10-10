@@ -1,9 +1,11 @@
-import Mathlib
+import Mathlib.FieldTheory.Separable
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.Valuation.Extension
 import Submission.Commons.RingTheory.Valuation.exists_valuationSubring_comap_eq
 import Submission.Commons.RingTheory.Valuation.hasExtension_comap_of_comap_eq
-import Submission.NK.LocalReciprocityLubinTate.Eval.nonempty_orderIso_valueGroupZero_of_localField
-import Submission.NK.LocalReciprocityLubinTate.Eval.nonempty_orderIso_of_finite_quotient
 import Submission.NK.LocalReciprocityLubinTate.Eval.finite_quotient_valueGroup_of_finiteDimensional
+import Submission.NK.LocalReciprocityLubinTate.Eval.nonempty_orderIso_of_finite_quotient
+import Submission.NK.LocalReciprocityLubinTate.Eval.nonempty_orderIso_valueGroupZero_of_localField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

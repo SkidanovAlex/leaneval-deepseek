@@ -1,7 +1,6 @@
-import Mathlib
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.FractionalIdeal.Basic
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ThetaRange
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
-import Submission.NK.GlobalCFTdeep.normClassSubgroup_index_ne_zero
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

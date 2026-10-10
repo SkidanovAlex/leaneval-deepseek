@@ -1,38 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The localisation of `H^n(Γ, Lˣ)` at a place: the relative Hasse–Brauer–Noether layer
-
-Umbrella development: `Submission/Work/HassePrinciple/` (README §12.3 item (e), §12.5).
-
-This module provides the *local coefficient layer* of the relative Hasse–Brauer–Noether theorem,
-i.e. of the localisation
-
-  `H²(Gal(L/K), Lˣ) ⟶ ∏_{w : Place L} H²(Γ_w, L_wˣ)`,   `Γ_w = MulAction.stabilizer (L ≃ₐ[K] L) w`,
-
-which is the map that the classical proof (Milne, *CFT*, VII.7.1) uses.
-
-* `NK.HassePrinciple.localUnitsEquiv`, `...instMulDistribMulActionLocalUnits` — the action of the
-  decomposition group `Γ_w` on the local units `L_wˣ`, transported along `localAutHom w`;
-* `NK.HassePrinciple.localUnitsRep` — `L_wˣ` as a `CoeffInt`-linear representation of `Γ_w`;
-* `NK.HassePrinciple.unitsToLocalUnitsHom`, `...unitsToLocalUnits` — the embedding `Lˣ ↪ L_wˣ` as
-  a morphism of `Γ_w`-representations (equivariance: `localAut_algebraMap`);
-* `NK.HassePrinciple.locUnits` — the localisation `H²(Γ, Lˣ) → H²(Γ_w, L_wˣ)`, the composite of
-  the restriction to `Γ_w` and the coefficient map;
-* `NK.HassePrinciple.locUnitsTrivial`, `...HBNUnits` — local triviality and the **relative
-  Hasse–Brauer–Noether theorem** in the form the chapter consumes;
-* `NK.HassePrinciple.ideleToLocalUnits`, `...ideleLoc`, `...HBNIdele` — the same layer for the
-  idèles `𝕀_L`, which is what Shapiro's lemma computes (`H²(Γ, 𝕀_L) ≅ ∏_w H²(Γ_w, L_wˣ)`);
-* `NK.HassePrinciple.locUnits_comp_ideleIncl` — the compatibility of the two localisations with
-  the principal idèles `Lˣ ↪ 𝕀_L`.
--/
-
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Submission.NK.HassePrinciple.IdeleCocycle
-import Submission.NK.HassePrinciple.IdelesLevel
 import Submission.NK.HassePrinciple.injective_h2_units_of_subsingleton_h1_classGroupRep
-import Submission.NK.GlobalCFT.GlobalCFT
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

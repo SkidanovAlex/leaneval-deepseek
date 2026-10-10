@@ -1,17 +1,5 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# An extension of a pro-`p` group by a pro-`p` group is pro-`p`
-
-`NK.LocalTame.IsProP p` is the finite-quotient formulation of "pro-`p`".  This file records
-that the class is closed under extensions: if `N ⊴ G` is pro-`p` and `G ⧸ N` is pro-`p` then `G`
-is pro-`p`.  The proof is the classical index computation
-
-  `[G : M] = [G : M ⊔ N] · [M ⊔ N : M] = [G ⧸ N : (M ⊔ N) ⧸ N] · [N : M ⊓ N]`.
--/
-import Mathlib
-import Submission.NK.LocalTame.Basic
+import Mathlib.GroupTheory.Index
+import Mathlib.Tactic.Group
 import Submission.NK.LocalTame.ProP.isProP_iSup_of_normal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

@@ -1,11 +1,7 @@
-import Mathlib
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.Chebotarev.CompletionOfCompositum
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.LocalReciprocity.index_normGroup_eq_finrank
 import Submission.NK.NUV2.ChebAux.isCyclic_gal_of_compositum
-import Submission.NeukirchUchida.Local.LocalGalois
-import Submission.NeukirchUchida.Local.Restriction
-import Submission.Commons.NumberTheory.NumberField.Completion.isCyclic_algEquiv_adicCompletion_of_ramificationIdx_eq_one
 import Submission.NK.Summary.NUV2.Tame.nonempty_algEquiv_of_inertiaDeg_eq_one
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

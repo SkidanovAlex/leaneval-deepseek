@@ -1,32 +1,8 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Functoriality of the rank-change map `flowZMap` on group homology
-
-For a surjective `G`-operator homomorphism `Φ : F(m) ⇢ F(n)` the rank-change homomorphism
-`flowGroupMap Φ : F(m)/F(m)^{(ν)} ⋊ G →* F(n)/F(n)^{(ν)} ⋊ G` and the morphism of coefficient
-representations `flowRepMap Φ : E(m,τ)⊗T ⟶ Res(flowGroupMap Φ)(E(n,τ)⊗T)` combine into
-
-`flowZMap Φ : H₁(F(m)/F(m)^{(ν)}⋊G, E(m,τ)⊗T) →+ H₁(F(n)/F(n)^{(ν)}⋊G, E(n,τ)⊗T)`,
-
-the `zMap` of Schmidt–Wingberg's shrinking data.  This file proves that it is a functor:
-
-`flowZMap (Ψ.comp Φ) = (flowZMap Ψ).comp (flowZMap Φ)`.
-
-The proof is `groupHomology.map_comp` (`Hₙ` is a functor on the category of pairs
-`(group, representation morphism)`), together with the two composition compatibilities
-`flowGroupMap_comp` and `flowRepMap_comp`.  Those are stated below under the suffixed names
-`flowGroupMap_comp_aux` / `flowRepMap_comp_aux`, so that this file is self-contained and does
-not depend on the standalone files proving the same facts under their canonical names.
-
-The only technical point is a `def`-equal but not syntactically equal bookkeeping of the
-codomain of the composite coefficient morphism: `Res(f₁)(Res(f₂)(E))` versus
-`Res(f₂ ∘ f₁)(E)`.  The abbreviation `flowRepMapComp` writes the composite in the flattened form
-so that `groupHomology.map_congr` can be applied without an expensive `Res`-unification.
--/
-
-import Mathlib
+import Mathlib.GroupTheory.SemidirectProduct
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Homological.GroupHomology.Functoriality
 import Submission.Work.CohomologicalShrinking.FlowGroupMap
 import Submission.Work.CohomologicalShrinking.OperatorMap
 import Submission.Work.CohomologicalShrinking.functorial.gradedMapLin_comp

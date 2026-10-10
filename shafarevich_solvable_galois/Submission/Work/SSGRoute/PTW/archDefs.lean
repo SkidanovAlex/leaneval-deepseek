@@ -1,6 +1,10 @@
-import Mathlib
-import Submission.NK.GlobalCFT.IdeleNorm
-import Submission.NK.GlobalCFT.GlobalCFT
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.Group.Units
+import Mathlib.Topology.Algebra.RestrictedProduct.TopologicalSpace
 import Submission.Work.SSGRoute.PTW.localContentSection
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

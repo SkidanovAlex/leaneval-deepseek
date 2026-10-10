@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.NKRayClassImports
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.isOpen_congSubgroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Submission.NK.CFTLib.ARLTransfer.kernelLe_of_auxField
+import Submission.NK.NUV2.ARL.Gap.langCyclicRelIndex
+import Submission.NK.NUV2.ARL.abelianWeakToStrong
 import Submission.Work.SSGRoute.GrunwaldEscapeCore.exists_abelian_classField
-import Submission.NK.CFTLib.Existence.artinMapOfARL
-import Submission.NK.CFTLib.Existence.artinKernel
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.GrunwaldEscapeCore.isOpen_congSubgroup
+import Submission.Work.SSGRoute.ssg8Chebotarev
 
 /-!
 # Čebotarev for the ray class group of a modulus: every ray class contains a prime
@@ -127,8 +124,6 @@ theorem exists_prime_mem_rayClass {K : Type} [Field K] [NumberField K]
   -- ## 2. The abelian class field `L` of `V`
   obtain ⟨L, hFL, hNL, hAL, hFDL, hGalL, hCommL, hNormL⟩ :=
     exists_abelian_classField (K := K) V hVfin hVopen
-  letI : Field L := hFL
-  letI : NumberField L := hNL
   letI : Algebra K L := hAL
   letI : FiniteDimensional K L := hFDL
   haveI : IsGalois K L := hGalL

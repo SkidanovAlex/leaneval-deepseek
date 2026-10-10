@@ -1,15 +1,6 @@
-/-
-Work of the Neukirch–Uchida team: the general Čebotarev density theorem.
-
-# Auxiliary lemmas for the density form of the transfer
-
-* the primes of an intermediate field have residue degree at least one over the prime below;
-* the fibre decomposition of a Dirichlet series in the set-builder form used by the transfer.
--/
-import Mathlib
-import Submission.NK.ChebotarevGeneral.Basic
+import Mathlib.NumberTheory.NumberField.DirichletDensity
+import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Submission.NK.ChebotarevGeneral.primeIdealZetaSum_eq_tsum_fibre
-import Submission.Commons.NumberTheory.NumberField.Set.hasDirichletDensity_of_isBigO_primeIdealZetaSum_sub_log
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

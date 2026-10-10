@@ -1,16 +1,18 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.ExtH1Iso
-import Submission.Work.SSGRoute.augSES_shortExact
-import Submission.Work.SSGRoute.kummer_level_defs
-import Submission.Work.SSGRoute.exists_zetaCoeff
-import Submission.Work.SSGRoute.gammaHom_natural_coeff
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.exists_factorisation_of_kummer_data
 import Submission.Work.SSGRoute.exists_kummer_generator_of_derivCochain
 import Submission.Work.SSGRoute.exists_level_pthRoot
 import Submission.Work.SSGRoute.exists_pthResIncl
+import Submission.Work.SSGRoute.exists_zetaCoeff
+import Submission.Work.SSGRoute.gammaHom_natural_coeff
 import Submission.Work.SSGRoute.kummerSES_extClass_naturality
-import Submission.Work.AbsoluteKummer.Basic
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

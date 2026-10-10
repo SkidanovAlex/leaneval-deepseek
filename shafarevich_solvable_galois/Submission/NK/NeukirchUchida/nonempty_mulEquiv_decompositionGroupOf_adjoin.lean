@@ -1,9 +1,12 @@
-import Mathlib
-import Submission.NK.NeukirchUchida.LocalGaloisCompletion
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.UniformSpace.Uniformizable
+import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 import Submission.NK.NeukirchUchida.LocalGaloisDecompositionAux
-import Submission.NK.NeukirchUchida.exists_mem_subfieldClosure_of_eval_eq_zero
 import Submission.NK.NeukirchUchida.comap_adicCompletionToPlaceCompletion_eq_adicCompletionIntegers
-import Submission.Commons.RingTheory.Henselian.adicCompletionIntegers_henselianLocalRing
+import Submission.NK.NeukirchUchida.exists_mem_subfieldClosure_of_eval_eq_zero
 
 /-!
 # The decomposition group of a place is the automorphism group of the adjoined field

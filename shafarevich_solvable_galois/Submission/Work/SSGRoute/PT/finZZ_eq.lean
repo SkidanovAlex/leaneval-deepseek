@@ -1,11 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.finHalfData
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.finZH_levelChange
-import Submission.Work.SSGRoute.extHMap_gammaHom_eq
-import Submission.Work.SSGRoute.gammaHom_natural_coeff
-import Submission.Work.SSGRoute.levelPair_comp_extHMap
 import Submission.Work.SSGRoute.levelPair_baseChange_key
-import Submission.Work.SSGRoute.baseChangeDefs
 
 namespace Work.SSGRoute.PT
 

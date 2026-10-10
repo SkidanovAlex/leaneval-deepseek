@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Topology.Separation.Hausdorff
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Topology.Algebra.Group.Defs
 import Submission.NK.Reconstruct.exists_notMem_iUnion_closedSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

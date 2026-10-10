@@ -1,11 +1,18 @@
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RepresentationTheory.Invariants
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.CFTLib.Existence.arl_groupData
 import Submission.NK.CFTLib.Existence.arl_normClass_inclusion_core
 import Submission.NK.CFTLib.Existence.exists_ideleInclusion_data
 import Submission.NK.CFTLib.Existence.res_subtype_eq_rep_fixedField
-import Submission.NK.CFTLib.Existence.arl_groupData
-import Submission.NK.GlobalCFT.H0Computation
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_ideleClassGroup_inclusion_injective
-import Submission.NK.HassePrinciple.repIso_quotientToInvariants_fixedField
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

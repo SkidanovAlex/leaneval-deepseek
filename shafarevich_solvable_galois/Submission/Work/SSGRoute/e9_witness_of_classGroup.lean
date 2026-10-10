@@ -1,7 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.DedekindDomain.Different
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Submission.Work.SSGRoute.E9Nodes.e9_abelian_wide_witness
 import Submission.Work.SSGRoute.E9Nodes.e9_classGroup_generators
+import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.glue_involution_place
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

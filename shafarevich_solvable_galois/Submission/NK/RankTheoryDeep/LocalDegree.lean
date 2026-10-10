@@ -1,7 +1,9 @@
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+import Mathlib.RingTheory.Ideal.Int
+import Mathlib.RingTheory.RamificationInertia.Basic
 import Submission.NK.RankTheoryDeep.IdeleRankDefs
 import Submission.NK.ReconstructField.finrank_eq_of_localCorrespondence
-import Submission.NK.LocalInputs.Defs
-import Submission.Commons.NumberTheory.NumberField.Completion.sumFinrank_completions_eq_finrank
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

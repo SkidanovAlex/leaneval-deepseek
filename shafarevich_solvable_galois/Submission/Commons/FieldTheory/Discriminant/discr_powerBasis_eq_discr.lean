@@ -1,8 +1,8 @@
 import Mathlib.RingTheory.Discriminant
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Polynomial.Resultant.Basic
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Polynomial.Resultant.Basic
 
 open Polynomial Matrix
 open scoped BigOperators Matrix

@@ -1,9 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.E7aAux
-import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitsRep_helpers
+import Submission.Work.SSGRoute.exists_adicCompletion_algebra_compat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

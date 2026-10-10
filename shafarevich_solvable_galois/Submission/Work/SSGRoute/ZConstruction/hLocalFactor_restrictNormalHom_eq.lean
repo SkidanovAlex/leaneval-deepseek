@@ -1,15 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
-import Submission.Work.SSGRoute.ZDataMup.ArtinUniqueness.artinMap_restrictNormalHom_eq_abelian
-import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.TowerTransport
-import Submission.NK.NUV2.ARL.transferSelfContained
-import Submission.NK.Chebotarev.IsFrobAtPrimeAlgEquivSameBase
-import Submission.Commons.NumberTheory.NumberField.numberField_of_intermediateField
-import Submission.NK.CFTLib.Arl.eq_top_of_forall_isFrobAtPrime_of_notMem
-import Submission.NK.CFTLib.exists_congruenceSubgroup_le_normImage
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.surjective_of_frobAtPrime_unramified
-import Submission.Work.SSGRoute.ZConstruction.HFactorHelpers
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.ZConstruction.restrictMol_frobAtPrime
+import Submission.Work.SSGRoute.ZDataMup.LTRecFamHonest.LocalFactor
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

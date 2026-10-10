@@ -1,14 +1,11 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.E9c.Core
-import Submission.Work.SSGRoute.E9c.Unram
-import Submission.Work.SSGRoute.e9c_transport_zero
-import Submission.Work.SSGRoute.e9c_transport_unram
-import Submission.Work.SSGRoute.e9c_unram_pairing
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Map
 import Submission.Work.SSGRoute.e9c_extLoc_conj_zero
 import Submission.Work.SSGRoute.e9c_phiAt_eq_zero_of_local
+import Submission.Work.SSGRoute.e9c_transport_unram
 import Submission.Work.SSGRoute.exists_finset_unramifiedPlaces
-import Submission.Work.SSGRoute.PT.pt_pairing_ext
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

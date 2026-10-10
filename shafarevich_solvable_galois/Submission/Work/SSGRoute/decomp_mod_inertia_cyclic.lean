@@ -1,16 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.place_basics
-import Submission.Work.SSGRoute.inertiaAtLevelDefs
-import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
-import Submission.NK.ResidueFrob.exists_inertia_of_isTrivialOnResidueAtLevel
-import Submission.Work.LocalFields.Ramification
-import Submission.Work.LocalFields.exists_pow_eq_residueFrobenius
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.IntegralClosure.IntegralRestrict
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.LocalFields.exists_generator_mod_inertia
-import Submission.NeukirchUchida.Local.PlaceFromValuation
-import Submission.Commons.RingTheory.Valuation.exists_heightOneSpectrum_eq_valuationSubringAtPrime
-import Submission.Commons.NumberTheory.NumberField.ringOfIntegers_le_of_ne_top
-import Submission.Commons.FieldTheory.Galois.exists_mem_stabilizer_restrictNormalHom_eq
+import Submission.Work.SSGRoute.place_basics
+import Submission.Work.SSGRoute.valuation_sub_lt_one_of_isTrivialAtLevel
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

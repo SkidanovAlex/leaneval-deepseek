@@ -1,9 +1,7 @@
-import Mathlib
-import Submission.NK.NUV2.ARL.HR.CyclotomicTransferAux
-import Submission.NK.CFTLib.IdeleHasse.Descent.localNormSandwich
-import Submission.NK.LocalReciprocity.NormGroupTower
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.NK.KC.localBaseChangeInput_of_kc
-import Submission.Commons.NumberTheory.NumberField.Completion.finrank_adicCompletion_eq_ramificationIdx_mul_inertiaDeg
+import Submission.NK.NUV2.ARL.HR.CyclotomicTransferAux
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

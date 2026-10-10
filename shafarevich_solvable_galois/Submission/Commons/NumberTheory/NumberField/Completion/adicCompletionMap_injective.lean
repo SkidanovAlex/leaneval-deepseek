@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
 import Submission.Commons.RingTheory.Henselian.adicCompletionMap_mem_integers
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

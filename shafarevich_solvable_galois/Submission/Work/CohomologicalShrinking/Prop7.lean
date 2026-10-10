@@ -1,49 +1,9 @@
-/-
-Copyright (c) 2025. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# Proposition 7 of Schmidt–Wingberg: the `H₁`-variant of the shrinking lemma
-
-Schmidt–Wingberg's **Proposition 7** is the variant of Proposition 6 in degree `H^{-2} = H₁`
-("which goes back to an idea of V. V. Išhanov"), needed in step 4 of the proof of Theorem 15:
-
-> for given elements `x₁, …, x_t ∈ H^{-2}(F(m)/F(m)^(ν), E(m,τ) ⊗ T)` there exists a surjective
-> pro-`p` `G`-operator homomorphism `F(m) → F(n)` killing all the `x_i`.
-
-Its proof in the paper is:
-
-* the universal coefficient formula gives `H₁(F(n)/ν, E(n,τ) ⊗ T) ≅ F(n)/F(n)^2 ⊗ E(n,τ) ⊗ T`
-  (`F(n)/ν` acts trivially on `E(n,τ) ⊗ T`);
-* Proposition 5 implies a `G`-invariant surjection
-  `(F(n)/F(n)^2)^{⊗(j+1)} ⊗ T ↠ H₁(F(n)/ν, E(n,τ) ⊗ T)` (the extra tensor factor is
-  `F(n)/F(n)^2` itself);
-* Proposition 2 applied with `s = j + 1` then produces the folding map, which is lifted to a
-  surjective `G`-operator homomorphism exactly as in Proposition 6.
-
-We state and prove this in the model
-
-`Ĥ^{-2}(F(m)/ν, E(m,τ) ⊗ T) := squareQuotient p G m ⊗ (E p G m i j ⊗ T)`
-
-(that is `F(m)/F(m)^2 ⊗ E(m,τ) ⊗ T`, the paper's model), with the map induced by an operator
-map `Φ` being `Φ.h1Map = quotMap Φ ⊗ (gradedMap Φ ⊗ id)`.
-
-The only unproved input is the surjection `σ` together with its naturality `hσnat`, which
-encodes (i) the universal coefficient formula and Proposition 5 and (ii) the identification
-`Q ⊗ ((⨂^j Q) ⊗ T) ≅ (⨂^{j+1} Q) ⊗ T` (associativity of the tensor power, `TensorPower.mulEquiv`)
-together with the naturality of that identification; see `NOTES.md` §6.
-
-Everything else in the derivation is proved here from the `k = -1` shrinking lemma of
-`Shrinking.lean` / `Corollaries.lean` and Proposition 2 of `Work.Shrinking`.
-
-## Main results
-
-* `Work.CohomologicalShrinking.OperatorMap.h1Map` : the induced map on
-  `F/F^2 ⊗ E ⊗ T`.
-* `Work.CohomologicalShrinking.exists_shrinking_H1_of_sigma` : Proposition 7 (ii).
--/
-
-import Mathlib
-import Submission.Work.CohomologicalShrinking.Shrinking
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+import Mathlib.LinearAlgebra.TensorPower.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Submission.Work.CohomologicalShrinking.Corollaries
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

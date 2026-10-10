@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PTDefsOmega
 import Submission.Work.SSGRoute.exists_galois_level_p_dvd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

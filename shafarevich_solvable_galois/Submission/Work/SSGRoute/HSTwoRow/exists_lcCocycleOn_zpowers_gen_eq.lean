@@ -1,10 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
-import Submission.Work.SSGRoute.zhat_le_of_index
-import Submission.Work.SSGRoute.map_topologicalClosure_zpowers_subtype
-import Submission.Work.SSGRoute.HSTwoRow.ZhatImports
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.Instances.ZMod
+import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
 import Submission.Work.SSGRoute.HSTwoRow.exists_zmodN_cocycle
+import Submission.Work.SSGRoute.exists_openSubgroup_comap_le
+import Submission.Work.SSGRoute.map_topologicalClosure_zpowers_subtype
+import Submission.Work.SSGRoute.zhat_le_of_index
 
 /-!
 # A locally constant `1`-cocycle on `C = closure (zpowers σ)` with prescribed value at `σ`

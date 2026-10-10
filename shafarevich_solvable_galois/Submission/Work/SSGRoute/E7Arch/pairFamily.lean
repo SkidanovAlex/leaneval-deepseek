@@ -1,43 +1,14 @@
-/-
-# The archimedean (real-place) half of `G1` as a *family* in the coefficient module
-
-`Work.SSGRoute.local_tate_duality_archimedean` proves local Tate duality at an involution `c`
-(`c ^ 2 = 1`, the real-place case): there is a pairing on `H¹(⟨c⟩, M) × H¹(⟨c⟩, M^∨(1))` with
-clauses (1),(2) (additivity), (3) (zero on a coboundary) and (4) (perfectness), *for a single
-coefficient module* `M`; and `Work.SSGRoute.archPair_nondegenerate` reproves the perfectness clauses
-for the *explicit* pairing `Ach.archPair`.
-
-The consumers (`Work.SSGRoute.PTembedding.localTatePairing_canonical` = node `E7`,
-`Work.SSGRoute.canonical_localPairing_with_reciprocity` = node `G1`, consumed by
-`Work.SSGRoute.coker_obstruction`) need more: a *single* family `pair M H a b` over **all** finite
-`𝔽_p[Gal(K/k)]`-modules `M`, satisfying the clauses (1)–(4) at every local group **and** the
-naturality clause (5) `pair M₂ H (f ∘ a) b = pair M H a (f' ∘ b)` in the coefficient module (`f`
-equivariant, `f'` the transpose of `f ⊗ id_T`).  Clause (5) is what makes the obstruction class
-universal: it is the `hnat` slot of `H1Pair.glueable_of_inputs` and the identity used by
-`H1Pair.transfer_sum_eq_zero`, so a per-module `∃` does not suffice.
-
-This file supplies exactly that at the involution groups:
-
-* `pairArchFamily` — the family `M ↦ (H ↦ archPair …)` cut down to the involution groups (it is `0`
-  off them, where its values are never used);
-* `cup_*` — clauses (1)–(3) and (5) for the explicit `archPair`, recomputed from its formula as in
-  the proof of `local_tate_duality_archimedean`;
-* `pairArchFamily_pairClauses` — the bundle (1)–(4) for the family, in the shape of the `hloc`
-  hypothesis of `Work.SSGRoute.pt_selmer_relaxed` (`H1Pair.PairClauses`), with perfectness from
-  `archPair_nondegenerate`;
-* `pairArchFamily_naturality` — clause (5) at the involution groups.
-
-Clause (6) (orthogonality at an unramified place) is a finite-place clause and does not apply here;
-reciprocity (clause (7)) is not a consequence of the clauses and remains a separate input.
--/
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.LTDArch.Defs
-import Submission.Work.SSGRoute.LTDArch.AuxLemmas
-import Submission.Work.SSGRoute.local_tate_duality_archimedean
-import Submission.Work.SSGRoute.archPair_nondegenerate
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.H1Pair.Clauses
+import Submission.Work.SSGRoute.archPair_nondegenerate
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

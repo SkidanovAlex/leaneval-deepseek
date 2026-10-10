@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.Extension
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Submission.Commons.RingTheory.Valuation.eq_of_comap_eq_of_center_eq
 import Submission.Commons.RingTheory.Valuation.hasExtension_comap_of_comap_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

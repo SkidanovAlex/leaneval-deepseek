@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ThetaRange
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.mem_normImage_of_congruence_mul_normId
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.normIdeleHom_mem_congruenceSubgroupId

@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.RingTheory.FiniteType
+import Mathlib.Basic.Real.Basic
+import Mathlib.LinearAlgebra.Dimension.OrzechProperty
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,34 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.E8Defs
-import Submission.Work.SSGRoute.E8Helpers
-import Submission.Work.SSGRoute.eb_locUnits_resToGal
-import Submission.Work.SSGRoute.eb_local_range
-import Submission.Work.SSGRoute.eb_loc_card
-import Submission.Work.SSGRoute.eb_crux
-import Submission.Work.SSGRoute.eb_brauer_single_place_arch
-import Submission.Work.SSGRoute.eb_arch_infl_injective
-import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
-import Submission.Work.SSGRoute.eb_loc_away
-import Submission.NK.GlobalCFTdeep.NormIndex.localNormAt
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_exists_placeUnder
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_liesOver_unique
-import Submission.NK.HR2.locUnits_inflation_eq_zero_iff
-import Submission.NK.HassePrinciple.LocalUnits
-import Submission.NK.CFTLib.hilbertReciprocity_cyclic
-import Submission.NK.HR2.exists_cycClassOf_of_res_eq_zero
-import Submission.NK.HR2.transferStepOnePlace
+import Mathlib.RingTheory.Henselian
+import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.RamificationInertia.Galois
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Submission.NK.CFTLib.HRdescent.localConditionCyclotomicPrime
-import Submission.NK.NUV2.ARL.Gap.isUnramified_cyclotomicExtension
-import Submission.NK.Chebotarev.Basic
-import Submission.NK.GlobalCFT.GaloisAction
-import Submission.NK.GlobalCFT.Inclusion.globalCFT_localAction
-import Submission.Commons.NumberTheory.NumberField.Completion.decompositionSubgroupMulEquivLocalGalois_coe
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
+import Submission.Work.SSGRoute.eb_brauer_single_place_arch
+import Submission.Work.SSGRoute.eb_crux
+import Submission.Work.SSGRoute.eb_loc_away
+import Submission.Work.SSGRoute.ramificationIdx_mul_inertiaDeg_dvd_finrank
 
 /-! Guidance from the project lead (the requester):
 
@@ -84,10 +65,6 @@ theorem eb_aux_finite (k L : Type) [Field k] [NumberField k] [Field L] [NumberFi
   obtain ⟨M, E, hMf, hMN, hEf, hEN, hkM, hkE, hLE, hME, hstLE, hstME, hfdM, hfdE, hgalM,
     hgalE, hcycM, hcycExt, hgen, heridiv⟩ :=
     NK.CFTLib.IdeleHasse.Crux.cyclotomicAuxiliary (K := k) (L := L) l hl v₀ hcop
-  letI : Field M := hMf
-  letI : NumberField M := hMN
-  letI : Field E := hEf
-  letI : NumberField E := hEN
   letI : Algebra k M := hkM
   letI : Algebra k E := hkE
   letI : Algebra L E := hLE
@@ -224,10 +201,6 @@ theorem brauer_single_place_finite (k L : Type) [Field k] [NumberField k] [Field
   -- the auxiliary cyclic cyclotomic tower
   obtain ⟨M, E, hMf, hMN, hEf, hEN, hkM, hkE, hLE, hME, hstLE, hstME, hfdM, hfdE, hgalM, hgalE,
     hcycM, hgen, heridiv⟩ := eb_aux_finite k L v₀ N hN
-  letI : Field M := hMf
-  letI : NumberField M := hMN
-  letI : Field E := hEf
-  letI : NumberField E := hEN
   letI : Algebra k M := hkM
   letI : Algebra k E := hkE
   letI : Algebra L E := hLE

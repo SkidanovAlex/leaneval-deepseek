@@ -1,5 +1,16 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTW.logSectionDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Topology.Algebra.Group.Units
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFT.ClassFormation.globalCFT_fieldAxiom_self
+import Submission.NK.GlobalCFT.H0Computation
+import Submission.NK.GlobalCFT.IdeleClassGroup.globalCFT_compactSpace_normOneClassGroup
+import Submission.NK.GlobalCFT.IdeleClassGroupExact
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalIdele_injective
+import Submission.NK.GlobalCFT.Ideles.globalCFT_principalSubgroup_isClosed
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,5 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.LTDArch.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Algebra.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.LTDArch.AuxLemmas
 import Submission.Work.SSGRoute.local_tate_duality_archimedean
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

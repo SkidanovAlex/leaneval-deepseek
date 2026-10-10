@@ -1,15 +1,17 @@
-import Mathlib
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.LTDDefs.DecompAction
-import Submission.Work.SSGRoute.PTembedding.h3_triv_subsingleton_of_units_divisible
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.PT.H3Transfer
 import Submission.Work.SSGRoute.PT.h3_units_adicCompletion_eq_zero
 import Submission.Work.SSGRoute.PT.p_dvd_H2_units_adicCompletion
+import Submission.Work.SSGRoute.PTembedding.h3_triv_subsingleton_of_units_divisible
 import Submission.Work.SSGRoute.isHomeomorph_localGaloisEquiv
-import Submission.NK.Mine.AdjoinLocalGalois
-import Submission.NK.Mine.exists_isHomeomorph_mulEquiv_sepClosure_of_decompositionGroup_map
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

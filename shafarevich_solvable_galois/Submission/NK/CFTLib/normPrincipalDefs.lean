@@ -1,9 +1,10 @@
-import Mathlib
-import Submission.NK.CFTLib.roquetteDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFT.Inclusion.globalCFT_fixed_idele_mem_range
 import Submission.NK.GlobalCFTdeep.Herbrand.TUnitsRank
-import Submission.NK.GlobalCFT.NormGroup
-import Submission.NK.GlobalCFT.Place
-import Submission.Commons.NumberTheory.NumberField.val_algebraMap_adicCompletion_eq
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

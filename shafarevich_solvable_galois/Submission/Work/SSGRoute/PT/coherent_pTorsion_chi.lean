@@ -1,10 +1,7 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
-import Submission.Work.SSGRoute.pt_char_pTorsion
-import Submission.Work.SSGRoute.sylow_infl_injective
-import Submission.Work.SSGRoute.inflCIn_trans
-import Submission.Work.SSGRoute.phi1_level_index
-import Submission.Work.SSGRoute.phi1_class_level
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.LF.classLevelMap_pTorsion_surj
 import Submission.Work.SSGRoute.PT.exists_level_p_dvd
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

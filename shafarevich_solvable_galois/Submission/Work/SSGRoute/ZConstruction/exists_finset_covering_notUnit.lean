@@ -1,5 +1,9 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_KConj_cover
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.SSGRoute.ZConstruction.exists_KConj_reps
 import Submission.Work.SSGRoute.ZDataMup.swCoreDefs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

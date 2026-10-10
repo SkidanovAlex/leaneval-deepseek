@@ -1,12 +1,21 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefsOmega
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
 import Submission.Work.SSGRoute.classIncl_isCanonical
-import Submission.Work.SSGRoute.ext_corestriction
-import Submission.Work.SSGRoute.NKGlobalImport
-import Submission.Work.SSGRoute.unitsMap_mem_localUnits
 import Submission.Work.SSGRoute.extHRestrict_comp
 import Submission.Work.SSGRoute.phiTriv_mk0_eq
-import Submission.NK.NUV2.LC.RouteB.locUnits_tower_eq_zero
+import Submission.Work.SSGRoute.unitsMap_mem_localUnits
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

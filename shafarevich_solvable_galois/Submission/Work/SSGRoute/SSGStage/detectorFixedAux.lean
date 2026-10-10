@@ -1,14 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.e9_caseB_cocycle
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.RamificationInertia.Inertia
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.E7cOmega.ratDivDefs
 import Submission.Work.SSGRoute.E9c.TransportDefs
 import Submission.Work.SSGRoute.Sha2Lib.exists_unramified_character_with_p_dvd_residueDeg
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 /-!
 # Bookkeeping for the fixed-part case of the unramified detector
@@ -190,7 +188,6 @@ theorem detector_of_fixedPart (p : ℕ) [Fact p.Prime] (k K : Type) [Field k] [N
   obtain ⟨m, hmfix, hmne⟩ := hm
   obtain ⟨L, hLnf, hLfd, hLgal, q', hq'lies, hram, _hfdvd, χ, hχinert, hχnon⟩ :=
     Work.SSGRoute.Sha2Lib.exists_unramified_character_with_p_dvd_residueDeg p k K Ω q
-  letI : NumberField ↥L := hLnf
   letI : FiniteDimensional k ↥L := hLfd
   letI : IsGalois k ↥L := hLgal
   obtain ⟨σ₀, hσ₀D, hσ₀χ⟩ := hχnon

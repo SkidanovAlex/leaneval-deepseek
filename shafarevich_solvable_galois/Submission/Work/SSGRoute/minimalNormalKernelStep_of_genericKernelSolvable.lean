@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.GroupTheory.Solvable
+import Mathlib.Algebra.Field.Rat
+import Mathlib.Algebra.Group.Shrink
+import Mathlib.Data.Fintype.Shrink
+import Mathlib.SetTheory.Cardinal.NatCard
 import Submission.Work.SSGRoute.Interfaces
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

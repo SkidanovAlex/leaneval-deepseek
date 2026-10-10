@@ -1,15 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.ZConstruction.ZDataReduction
-import Submission.Work.SSGRoute.ZConstruction.ZDataLevelStep
-import Submission.Work.SSGRoute.ZConstruction.ZDataInduction
-import Submission.Work.SSGRoute.ZConstruction.ZDataAux
-import Submission.Work.SSGRoute.ZConstruction.AuxExistsUnmixed
-import Submission.Work.SSGRoute.ZConstruction.auxGapDecomposition
-import Submission.Work.SSGRoute.ZConstruction.exists_junkSpan_complement
-import Submission.Work.SSGRoute.ZConstruction.auxExistsGap_of_pairing_and_unmixed
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_ramifiedPlaces
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.ZConstruction.TransferReduction
+import Submission.Work.SSGRoute.ZConstruction.exists_junkSpan_complement
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

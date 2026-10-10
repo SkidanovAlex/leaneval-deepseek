@@ -1,12 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.E1aClean.ArchSeam
-import Submission.Work.SSGRoute.PT.e1cDelta_beta_relation_gen
-import Submission.Work.SSGRoute.ExtChain.deltaH2_restriction
-import Submission.Work.SSGRoute.PTdualControl.archimedeanLambda_injective_exists
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.RepresentationTheory.Rep.Res
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PTdualControl.archimedeanCruxA
-import Submission.Work.SSGRoute.PTdualControl.archimedeanLocalPush
-import Submission.Work.SSGRoute.PTdualControl.exists_invariant_extension_of_resH1_e1cMap_eq_zero_inf
-import Submission.Work.SSGRoute.E1aClean.extResCompOfExtension
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

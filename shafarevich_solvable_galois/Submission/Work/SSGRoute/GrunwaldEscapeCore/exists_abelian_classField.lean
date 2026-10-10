@@ -1,13 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.TopologySetup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Topology.Algebra.Group.Quotient
 import Submission.Work.SSGRoute.CFTSide.classField_exists_of_index
-import Submission.Work.SSGRoute.CFTSide.exists_abelian_subextension_normClassSubgroup_le
-import Submission.Work.SSGRoute.CFTSide.exists_intermediateField_normClassSubgroup_eq_of_index
--- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
--- PORT435-END
 
 namespace Work.SSGRoute.GrunwaldEscapeCore
 
@@ -45,8 +38,6 @@ theorem exists_abelian_classField {K : Type} [Field K] [NumberField K]
   obtain ⟨L, hFL, hNL, hAL, hfdL, _hGalL, hNormL, _hdegL⟩ :=
     Work.SSGRoute.CFTSide.classField_exists_of_index (K := K) V.index
       (Nat.pos_of_ne_zero hVne) V hfin hopen rfl
-  letI : Field L := hFL
-  letI : NumberField L := hNL
   letI : Algebra K L := hAL
   letI : FiniteDimensional K L := hfdL
   -- ## Step 2: the maximal abelian subextension `A ≤ L`

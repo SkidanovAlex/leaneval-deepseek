@@ -1,7 +1,15 @@
-import Mathlib
-import Submission.Work.SSGRoute.Interfaces
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.HS.Setup
-import Submission.Work.SSGRoute.PT.H3Transfer
 import Submission.Work.SSGRoute.PTembedding.h3_triv_subsingleton_decomp
 import Submission.Work.SSGRoute.PTembedding.homeomorph_fixedField_fixingSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

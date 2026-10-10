@@ -1,8 +1,13 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.Mu2EscapeStep
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Submission.Work.SSGRoute.HRec.archLevelAux
-import Submission.Work.SSGRoute.GrunwaldTwoDefs
-import Submission.Work.SSGRoute.grunwald_kummer_idx
+import Submission.Work.SSGRoute.ZDataTwo.mu2KummerFirstElement
+import Submission.Work.SSGRoute.ZSplit.SWFourOddKummer
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

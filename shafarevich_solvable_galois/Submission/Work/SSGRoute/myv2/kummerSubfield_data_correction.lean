@@ -1,7 +1,14 @@
-import Mathlib
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.kummerSubfield_data
-import Submission.Work.SSGRoute.GrunwaldEscapeCore.norm_kummerRoot
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.FieldTheory.Galois.Abelian
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.GrunwaldEscapeCore.isGalois_adjoin_kummerRoot
+import Submission.Work.SSGRoute.ZDataMup.ideleArtin_ideleOfPrime_of_unramified
 import Submission.Work.SSGRoute.myv2.NormCorr
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

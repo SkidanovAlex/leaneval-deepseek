@@ -1,5 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.sha2_hasse.Gateway
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.sha2_hasse.locUnits_mkClass_apply
 import Submission.Work.sha2_hasse.exists_involution_extension
 import Submission.Work.sha2_hasse.exists_norm_witness_infinitePlace

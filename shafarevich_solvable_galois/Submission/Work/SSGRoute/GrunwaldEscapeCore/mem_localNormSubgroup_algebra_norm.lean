@@ -1,8 +1,7 @@
-import Mathlib
-import Submission.NK.CFTLib.IdeleHasse.localNormSubgroup
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.CFTLib.IdeleHasse.localFaithfulDefs
 import Submission.NK.CFTLib.IdeleHasse.localGlobalArtinMap_exists
-import Submission.NK.GlobalCFT.NormFunctorial
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

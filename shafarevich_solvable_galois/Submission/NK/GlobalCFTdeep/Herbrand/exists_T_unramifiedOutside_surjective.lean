@@ -1,5 +1,19 @@
-import Mathlib
-import Submission.NK.GlobalCFTdeep.Shared
+import Mathlib.RingTheory.ClassGroup.Basic
+import Mathlib.RingTheory.RamificationInertia.Ramification
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+import Submission.NK.GlobalCFTdeep.Audit.index_normClassSubgroup_self
+import Submission.NK.GlobalCFTdeep.Corollaries.HasseInput
+import Submission.NK.GlobalCFTdeep.Herbrand.Assembly
+import Submission.NK.GlobalCFTdeep.Herbrand.FiberAll
+import Submission.NK.GlobalCFTdeep.Herbrand.exists_finset_TIdeles_surjective
+import Submission.NK.GlobalCFTdeep.Herbrand.fiberUnitsRep_iso_coind
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_iff_of_finite_quotient
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_ind_iff
+import Submission.NK.GlobalCFTdeep.Herbrand.herbrandEq_localUnitSubRep_ofFinite
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tIdeles_mul_eq_unitIdeles
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_supportedIdelesRep
+import Submission.NK.GlobalCFTdeep.Herbrand.natCard_tateCohomology_unitIdelesOutsideRep
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

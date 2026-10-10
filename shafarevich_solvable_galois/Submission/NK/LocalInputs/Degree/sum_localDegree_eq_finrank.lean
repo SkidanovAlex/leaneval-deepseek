@@ -1,6 +1,5 @@
-import Mathlib
-import Submission.NK.Mine.CommonsAdicSumAPI
-import Submission.NK.LocalInputs.Defs
+import Mathlib.RingTheory.RamificationInertia.Basic
+import Submission.Commons.NumberTheory.NumberField.Completion.sum_finrank_adicCompletion_eq_finrank
 import Submission.NK.LocalInputs.Degree.localDegree_eq_ramificationIdx_mul_inertiaDeg
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

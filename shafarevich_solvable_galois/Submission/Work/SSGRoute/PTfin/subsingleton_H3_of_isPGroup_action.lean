@@ -1,10 +1,10 @@
-import Mathlib
-import Submission.Work.SSGRoute.kummerBase_euler_h3_absKummer
-import Submission.Work.SSGRoute.range_mapH3_eq_ker_mapH3
-import Submission.Work.SSGRoute.H3Map.mapC3c_mem_Z3_mem_B3
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.SSGRoute.PTembedding.h3_devissage_shortExactSeq
-import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_finrank_eq_one
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Submission.Work.SSGRoute.PTembedding.h3_subsingleton_of_pgroup_action
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

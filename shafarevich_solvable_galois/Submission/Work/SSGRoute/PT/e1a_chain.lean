@@ -1,17 +1,24 @@
-import Mathlib
-import Submission.Work.SSGRoute.PTDefs
-import Submission.Work.SSGRoute.Interfaces
-import Submission.Work.SSGRoute.DualMod.Main
-import Submission.Work.SSGRoute.ShaCocycles
-import Submission.Work.SSGRoute.PT.homCoind_SES
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.CategoryTheory.Abelian.Exact
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Rep.Iso
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import Submission.Work.SSGRoute.PT.ext_one_homCoind_iso
-import Submission.Work.SSGRoute.PT.h2_equiv_of_equiv
-import Submission.Work.SSGRoute.homCoind_H1_free_conj_v2
-import Submission.Work.SSGRoute.local_ext_h1_bridge
-import Submission.Work.AbsoluteKummer.SES.exists_connecting_exact_H2
-import Submission.Work.SSGRoute.sha2_coeff.mapH2_injective_of_addEquiv
 import Submission.Work.SSGRoute.PT.finite_dualMod_tensor
+import Submission.Work.SSGRoute.PT.h2_equiv_of_equiv
+import Submission.Work.SSGRoute.PT.homCoind_SES
 import Submission.Work.SSGRoute.PT.sha2_to_H2AK
+import Submission.Work.SSGRoute.local_ext_h1_bridge
+import Submission.Work.SSGRoute.sha2_coeff.mapH2_injective_of_addEquiv
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

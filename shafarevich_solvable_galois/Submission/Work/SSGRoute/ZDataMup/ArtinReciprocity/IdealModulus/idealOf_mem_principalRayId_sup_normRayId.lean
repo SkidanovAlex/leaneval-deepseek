@@ -1,7 +1,9 @@
-import Mathlib
+import Mathlib.Tactic.Have
+import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.RingTheory.Ideal.Norm.RelNorm
+import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.spanUnit_mem_principalRayId_of_mem_congruenceSubgroupId
-import Submission.NK.CFTLib.Arl.exists_norm_mul_mem_congruenceSubgroup
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

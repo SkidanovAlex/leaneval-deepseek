@@ -1,49 +1,10 @@
-/-
-Copyright (c) 2025. All rights reserved.
-
-# Embedding problems inside a fixed algebraic closure, and lifts of `G_ℚ`
-
-An embedding problem `E : Submission.EmbeddingProblem ℚ` over `ℚ` has an *abstract* base field
-`E.L` (finite Galois over `ℚ`).  Shafarevich's theorem, and the classical obstruction calculus
-(`H²`-classes), are stated in the fixed algebraic closure: the base field is a *subfield* of `ℚ̄`
-and a solution is a *larger* subfield.  This file provides the bridge.
-
-* `Submission.EmbeddingProblem.ClosureModel E` — a *closure model* of `E`: an identification of
-  `E.L` with an intermediate field `L ⊆ ℚ̄` (which is then automatically finite dimensional and
-  Galois over `ℚ`).  Such a model always exists (`EmbeddingProblem.nonempty_closureModel`).
-
-* `ClosureModel.HasSurjectiveLift M` — the *lifting* formulation of the embedding problem:
-  a surjective `ψ : G_ℚ →* E.G` with open kernel whose composite with `E.π` agrees with the
-  restriction map `G_ℚ →* Gal(M.L/ℚ)` under the identification `M.e`.
-
-* `Work.AbsoluteGalois.HasSurjectiveLift E := ∃ M : E.ClosureModel, M.HasSurjectiveLift`.
-
-The main theorem `Work.AbsoluteGalois.isSolvable_iff_hasSurjectiveLift` (in
-`Submission/Work/AbsoluteGalois/Lift.lean`) says that a solution of the embedding problem and a
-surjective lift of the projection are the same thing.  This is the form in which Shafarevich's
-theorem ("every finite solvable group is a Galois group over `ℚ`") and the obstruction calculus
-are classically stated: the obstruction to solving `E` is a class in `H²(Gal(E.L/ℚ), ker π)`
-which vanishes if and only if `E.π` lifts to a *continuous* (equivalently, open-kernel) surjection
-`G_ℚ →* E.G`.
-
-## Main declarations
-
-* `ClosureModel`, `ClosureModel.e`, `ClosureModel.finiteDimensional`, `ClosureModel.isGalois`;
-* `ClosureModel.autCongr`, `ClosureModel.HasSurjectiveLift`,
-  `ClosureModel.hasSurjectiveLift_iff_composite`;
-* `EmbeddingProblem.nonempty_closureModel`;
-* `Work.AbsoluteGalois.HasSurjectiveLift`, `hasSurjectiveLift_iff_hasSurjectiveLift_closure`.
-
-## Implementation note
-
-`HasSurjectiveLift` is phrased with `IsOpen ψ.ker` rather than with `Continuous ψ`, because
-`E.G` carries no topology; the two are equivalent for the discrete topology
-(`hasSurjectiveLift_iff_continuous`).
--/
-import Mathlib
-import Submission.EmbeddingProblem
+import Mathlib.FieldTheory.AbsoluteGaloisGroup
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.CharP.IntermediateField
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Submission.Work.AbsoluteGalois.Basic
-import Submission.Work.AbsoluteGalois.Realization
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

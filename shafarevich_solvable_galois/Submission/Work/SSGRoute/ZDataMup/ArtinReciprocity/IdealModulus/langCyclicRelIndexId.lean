@@ -1,12 +1,8 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.Defs
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.CoreId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.AdjustId
-import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ThetaRange
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.FractionalIdeal.Basic
+import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.ThetaKer
 import Submission.Work.SSGRoute.ZDataMup.ArtinReciprocity.IdealModulus.conjunctOneId
-import Submission.NK.CFTLib.ArtinReciprocityIdeal.indexIdealCoprimeLeNormClassIndex
-import Submission.NK.GlobalCFTdeep.SecondInequalitySolvable
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

@@ -1,40 +1,15 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-
-# The Hasse principle for the idèles: `NK.HassePrinciple.hbnIdele`
-
-This module assembles the proof of `NK.HassePrinciple.HBNIdele K L`: the localisation
-`H²(Gal(L/K), 𝕀_L) ⟶ ∏_w H²(Γ_w, L_wˣ)` is injective.
-
-The argument runs on the filtered system of the finite `Gal(L/K)`-stable sets `S` of places
-(`NK.HassePrinciple.levelRep K L S = 𝕀_L^S`):
-
-* every class of `H²(Γ, 𝕀_L)` comes from a level (`exists_level_of_h2`);
-* on a level, the localisation at a place `w` factors through the projection onto the summand of
-  the decomposition `𝕀_L^S = A_S × U_S` (`A_S = ∏_{v ∈ S} L_vˣ`, `U_S = ∏_{v ∉ S} 𝒪_vˣ`)
-  corresponding to the orbit of `w`: for `w ∈ S` through `A_S` (`ideleLoc_level_comp`), and for
-  `w ∉ S` through `U_S` (`ideleLoc_level_comp_U`, using the injectivity of `H²(Γ_w, 𝒪_wˣ) →
-  H²(Γ_w, L_wˣ)` of `localUnits_h2_injective`);
-* together with Shapiro's isomorphism and its splitting (`orbitCoindMapA_split`,
-  `orbitCoindMapU_split`) this shows that every orbit component of both projections of a level class
-  vanishes, so that the orbit decompositions (`supportedLift_split`, `outsideUnitsLift_split`)
-  together with `piRep_injective` give `π_A a_S = 0` (`level_proj_zero`) and `π_U a_S = 0`
-  (`level_outside_zero`);
-* finally `π_A ≫ i_A + π_U ≫ i_U = 𝟙` (`level_decomposition`) and the additivity of `h2map`
-  (`h2map_add`) exhibit `a_S` as the sum of the two projections, so `a_S = 0` -- and hence so is the
-  original class.
--/
-
-import Mathlib
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Have
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 import Submission.NK.HassePrinciple.IdeleLevelGlue
-import Submission.NK.HassePrinciple.orbitCoindMapA_split
-import Submission.NK.HassePrinciple.supportedLift_split
 import Submission.NK.HassePrinciple.exists_level_of_h2
+import Submission.NK.HassePrinciple.localUnits_h2_injective
+import Submission.NK.HassePrinciple.orbitCoindMapA_split
 import Submission.NK.HassePrinciple.orbitCoindMapU_split
 import Submission.NK.HassePrinciple.outsideUnitsLift_split
-import Submission.NK.HassePrinciple.localUnits_h2_injective
-import Submission.NK.RepresentationTheory.GroupCohomology.res_counit_eq_coindIso
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

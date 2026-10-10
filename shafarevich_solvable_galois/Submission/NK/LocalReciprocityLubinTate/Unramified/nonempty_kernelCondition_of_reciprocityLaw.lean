@@ -1,7 +1,4 @@
-import Mathlib
-import Submission.NK.LocalCFT.Reduction.nonempty_artinReciprocity_of_reciprocityLaw
-import Submission.NK.LocalArtin.Basic
-import Submission.NK.LocalCFT.Reduction.Defs
+import Mathlib.FieldTheory.Galois.Basic
 import Submission.NK.LocalArtin.Reduction.reciprocityMap_of_reciprocityLaw
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false

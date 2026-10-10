@@ -1,17 +1,16 @@
-/-
-Copyright (c) 2026. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
--/
-import Submission.NK.GlobalCFTdeep.SecondInequality.Defs
-import Submission.NK.GlobalCFTdeep.SecondInequality.mul_trivialClassSum_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.log_norm_eulerProduct_one_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.sum_log_norm_eulerProduct_nontrivial_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.card_le_finrank_of_bound
-import Submission.NK.GlobalCFTdeep.SecondInequality.primeClass_eq_one_of_splitsCompletely_of_le
-import Submission.NK.GlobalCFTdeep.SecondInequality.primeClass_eq_one_of_splitsCompletely
-import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Data.FunLike.Fintype
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.NK.GlobalCFTdeep.Inequalities
-import Submission.NK.HeckeL.Series.heckeLSeries_eq_heckeEulerProduct
+import Submission.NK.GlobalCFTdeep.SecondInequality.card_le_finrank_of_bound
+import Submission.NK.GlobalCFTdeep.SecondInequality.index_normClassSubgroup_eq_card_rayClassGroup
+import Submission.NK.GlobalCFTdeep.SecondInequality.log_norm_eulerProduct_one_le
+import Submission.NK.GlobalCFTdeep.SecondInequality.mul_trivialClassSum_le
+import Submission.NK.GlobalCFTdeep.SecondInequality.primeClass_eq_one_of_splitsCompletely
+import Submission.NK.GlobalCFTdeep.SecondInequality.primeClass_eq_one_of_splitsCompletely_of_le
+import Submission.NK.GlobalCFTdeep.SecondInequality.sum_log_norm_eulerProduct_nontrivial_le
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

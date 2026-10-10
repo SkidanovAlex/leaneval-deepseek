@@ -1,35 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_diagonal
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.antiInvariantPairingAux
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Data.Int.Star
+import Mathlib.RingTheory.DedekindDomain.AdicValuation
+import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.Order.Ring.Star
 import Submission.Work.SSGRoute.NodeS37.pinnedValueOfHistoryOfInertSquare
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.antiInvariantDichotomy
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.exists_coprime_representative_two
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.oPairAt_sum_attach_eq_zero_of_kills
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.oPairAt_eq_zero_of_killsLocalGroup
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.oPairAt_eq_zero_of_killsLocalGroup_right
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.killsInertia_of_unit_notTwo
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_squareAtSBlock
-import Submission.Work.SSGRoute.ZDataTwo.TwoRec.killsLocalGroup_of_one_unit
-import Submission.Work.SSGRoute.NodeS37.divisorOfClassRepresentative
-import Submission.Work.SSGRoute.NodeS37.evenCountAtNonEscapePrime
-import Submission.Work.SSGRoute.NodeS37.oddCountAtEscape
-import Submission.Work.SSGRoute.NodeS37.killsLocalGroupAtSBlockConj
-import Submission.Work.SSGRoute.NodeS37.oPairAt_eq_zero_of_even_count
-import Submission.Work.SSGRoute.NodeS37.localDichotomy
-import Submission.Work.SSGRoute.ZConstruction.OThetaLocalNorm
-import Submission.Work.SSGRoute.ZConstruction.LocalSquares
-import Submission.Work.SSGRoute.ZConstruction.UnramifiedLocalNorm
-import Submission.Work.SSGRoute.ZConstruction.DichotomyKills
-import Submission.Work.SSGRoute.ZConstruction.HCharMulSq
-import Submission.Work.SSGRoute.ZConstruction.exists_finset_covering_notUnit
-import Submission.Work.SSGRoute.ZConstruction.isSquare_adicCompletion_of_inert
-import Submission.Work.SSGRoute.PinnedTwin.oPairAtPairEqZero
-import Submission.Work.SSGRoute.PinnedTwin.divisorRepresentative
 import Submission.Work.SSGRoute.ZConstruction.twinDivisorConsequences
-import Submission.Work.SSGRoute.H9.oPairAt_swapTwo
-import Submission.Work.SSGRoute.NodeS37.oPairAt_smul_conj
-import Submission.Work.SSGRoute.P2Nat.oPairAt_smul_conj
-import Submission.Work.SSGRoute.H9.swCount_conjUnit
+import Submission.Work.SSGRoute.ZDataTwo.TwoRec.claimOfPreTwo_diagonal
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

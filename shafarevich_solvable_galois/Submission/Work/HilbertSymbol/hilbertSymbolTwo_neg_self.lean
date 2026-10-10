@@ -1,5 +1,4 @@
-import Mathlib
-import Submission.Work.HilbertSymbol.Basic
+import Mathlib.NumberTheory.Padics.RingHoms
 import Submission.Work.HilbertSymbol.epsZ_mul
 import Submission.Work.HilbertSymbol.omegaZ_mul
 

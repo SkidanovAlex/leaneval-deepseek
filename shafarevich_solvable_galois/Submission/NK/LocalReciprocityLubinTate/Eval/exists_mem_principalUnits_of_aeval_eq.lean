@@ -1,13 +1,10 @@
-import Mathlib
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_add
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_level
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_ann
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_mem
-import Submission.NK.LocalReciprocityLubinTate.Eval.smulDiv_smul2
-import Submission.NK.LocalReciprocityLubinTate.Eval.natCard_principalUnits_quotient
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.NumberTheory.LocalField.Basic
+import Mathlib.RingTheory.FormalGroup.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Submission.NK.LocalReciprocityLubinTate.Eval.ltLevelIsSimple_of_fibre
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.ncard_fiber_LTdivisionSet
-import Submission.NK.LocalReciprocityLubinTate.LubinTate.TorsionCardinality
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

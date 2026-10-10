@@ -1,10 +1,5 @@
-/-
-# Witt's theorem: the free Lie ring embeds in the free associative ring
-
-Infrastructure: the free magma over an alphabet, its foliage (the word obtained by erasing
-brackets), the lexicographic order on foliages, and Viennot's recursion defining the **Hall set**.
--/
-import Mathlib
+import Mathlib.Data.Nat.SuccPred
+import Mathlib.Algebra.Order.Ring.Nat
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

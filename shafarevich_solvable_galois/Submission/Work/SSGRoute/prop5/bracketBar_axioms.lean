@@ -1,6 +1,6 @@
-import Mathlib
-import Submission.Work.SSGRoute.prop5.coreLieBar
-import Submission.Work.SSGRoute.prop5.gradedCast
+import Mathlib.Tactic.Group
+import Mathlib.Algebra.DirectSum.Module
+import Mathlib.GroupTheory.QuotientGroup.Defs
 import Submission.Work.SSGRoute.prop5.bracketBar_add_swap
 import Submission.Work.SSGRoute.prop5.bracketBar_deriv_of_lof
 import Submission.Work.SSGRoute.prop5.deriv_congruence

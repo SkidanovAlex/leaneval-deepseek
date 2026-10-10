@@ -1,28 +1,9 @@
-/-
-# Hasse's theorem for the Brauer group in the `D_A`-form: `Work.SSGRoute.HasseUnits`
-
-The arithmetic core of the `Ш²(k,M)` development: a continuous `2`-cocycle on `G_k = k̄ ≃ₐ[k] k̄`
-with values in `k̄ˣ` which is a coboundary on the decomposition group of every finite place of `k̄`
-and on `⟨σ⟩` for every involution `σ` is a coboundary.
-
-The proof is the classical one, organised through the *finite levels*:
-
-1. `Work.SSGRoute.sha2_level.exists_level_of_locallyConstant` factors `d` through a finite Galois
-   level `L/k` with values in `Lˣ`; `levelCocycle` descends `d` to a `2`-cocycle on `Gal(L/k)` with
-   values in `Lˣ` (`levelCocycle_value`, `levelCocycle_isCocycle`);
-2. the `D_A`- and involution-conditions show that this level class is locally trivial at every
-   place of `L` (`locUnits_levelClass_eq_zero_finitePlace`,
-   `locUnits_levelClass_eq_zero_infinitePlace`);
-3. relative Hasse–Brauer–Noether (`NK.GlobalCFTdeep.hbnUnits`) makes the level class zero
-   (`exists_levelCoboundary_of_locUnits_vanishing`);
-4. the level coboundary lifts to a global one (`mem_B2_of_levelCoboundary`).
--/
-import Mathlib
-import Submission.Work.SSGRoute.sha2_defs
-import Submission.Work.AbsoluteKummer.All
-import Submission.Work.SSGRoute.sha2_level.exists_level_of_locallyConstant
-import Submission.NK.GlobalCFTdeep.HasseNormTheorem
-import Submission.Work.SSGRoute.sha2_hasse.Defs
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.FieldTheory.Galois.GaloisClosure
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Submission.Work.SSGRoute.sha2_hasse.locUnits_levelClass_eq_zero_finitePlace
 import Submission.Work.SSGRoute.sha2_hasse.locUnits_levelClass_eq_zero_infinitePlace
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)

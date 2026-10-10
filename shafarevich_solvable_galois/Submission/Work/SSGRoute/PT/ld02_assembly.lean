@@ -1,14 +1,17 @@
-import Mathlib
-import Submission.Work.SSGRoute.PT.mkb_ld02_core_of_h3
-import Submission.Work.SSGRoute.LTD02Proved.wall_mine
-import Submission.Work.SSGRoute.PTUr.mkb_core_inputs
-import Submission.Work.SSGRoute.PT.isDiscreteModule_conjHom
-import Submission.Work.SSGRoute.kummerBase_euler_ses_decomp
-import Submission.Work.SSGRoute.PT.h3loc_decomp_subsingleton
-import Submission.Work.SSGRoute.PT.HomFormReduction
-import Submission.Work.SSGRoute.PTUr.htop_units
-import Submission.Work.SSGRoute.PT.brOpenSubgroupDefs
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Galois.Infinite
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.SSGRoute.EulerSymm.h3loc_subsingleton
+import Submission.Work.SSGRoute.LTD02Proved.wall_mine
+import Submission.Work.SSGRoute.PT.mkb_ld02_core_of_h3
+import Submission.Work.SSGRoute.PTUr.htop_units
+import Submission.Work.SSGRoute.PTUr.mkb_core_inputs
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

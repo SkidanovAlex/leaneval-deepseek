@@ -1,10 +1,14 @@
-import Mathlib
-import Submission.NK.LocalTame.IndexPrime.Basic
-import Submission.NK.LocalTame.lFrattini_isOpen
-import Submission.NK.LocalTame.cruxCompactExpPrimeFinite
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.FieldTheory.Normal.Defs
+import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.Topology.Algebra.OpenSubgroup
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Star.Basic
 import Submission.NK.LocalTame.IndexRedo.exists_hom_extend_of_index_prime
 import Submission.NK.LocalTame.IndexRedo.frattini_index_ne_zero_of_sup_zpowers_commutator
 import Submission.NK.LocalTame.IndexRedo.relIndex_sup_zpowers_ne_zero
+import Submission.NK.LocalTame.lFrattini_isOpen
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
 set_option backward.isDefEq.respectTransparency.instanceSearchTypes false

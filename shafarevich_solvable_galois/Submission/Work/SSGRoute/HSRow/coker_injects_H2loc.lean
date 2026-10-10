@@ -1,14 +1,12 @@
-import Mathlib
-import Submission.Work.SSGRoute.HSConj
-import Submission.Work.SSGRoute.HSRestrict
-import Submission.Work.SSGRoute.HS.Setup
-import Submission.Work.SSGRoute.HS.Basic
-import Submission.Work.SSGRoute.isCoboundary2On_top_of_procyclicGrowth
-import Submission.Work.SSGRoute.HSRow.Coords
-import Submission.Work.PTCore.slice_mem_lcCocycles
+import Mathlib.FieldTheory.KrullTopology
+import Mathlib.RingTheory.Henselian
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.ValuationSubring
 import Submission.Work.PTCore.toClass_slice_mem_range_conj1
-import Submission.Work.SSGRoute.HSTwoRow.procyclic_hypotheses
-import Submission.Work.SSGRoute.HSTwoRow.finrank_H1loc_decomp
 import Submission.Work.SSGRoute.HSRow.exists_lcCocycles2_normalForm
 -- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
 set_option backward.isDefEq.respectTransparency false
