@@ -1,9 +1,0 @@
-import Submission.Work.ORCoherence.Defs
-import Submission.Work.ORCoherence.Map
-import Submission.Work.ORCoherence.GlobalDim
-import Mathlib.Algebra.Category.ModuleCat.Adjunctions
-import Mathlib.Algebra.Category.ModuleCat.Projective
-import Mathlib.Algebra.Homology.ShortComplex.Exact
-import Mathlib.Algebra.Module.FinitePresentation
-import Mathlib.RingTheory.Finiteness.Defs
-import Mathlib.CategoryTheory.Abelian.LeftDerived
