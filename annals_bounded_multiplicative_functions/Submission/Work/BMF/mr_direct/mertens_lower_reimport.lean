@@ -1,5 +1,0 @@
-import Submission.Commons.NumberTheory.Mertens.mertens_lower
-
-set_option backward.isDefEq.respectTransparency false
-set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
-set_option backward.isDefEq.respectTransparency.types false
