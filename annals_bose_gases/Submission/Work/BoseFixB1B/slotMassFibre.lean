@@ -1,0 +1,295 @@
+import ChallengeDeps
+import Mathlib.CategoryTheory.Countable
+import Mathlib.Algebra.Order.Star.Real
+import Submission.Work.BoseFixB1B.sectorCountBoxAux
+-- PORT435-BEGIN (v4.35 isDefEq respectTransparency compat)
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- PORT435-END
+
+/-!
+# `Submission.Work.BoseFixB1B.slotMassFibre`
+
+**The mass/bookkeeping side of the per-slot assembly**: the real slot mass of a box state is the
+integral of the real fibre mass of the slot piece, that integrand is Bochner-integrable, and a.e.
+the fibre mass of the slot piece is the box mass of the *sharp* (`1_{B^{|S|}}`-truncated) fibre
+state.
+
+All three conjuncts are read at FS's frozen data `L = PBℓ v μ`, `B = PBB v μ u = dlBox L d u`:
+
+1. `slotMass L B S Φ = ∫_{y ∈ slotOutside L B S} slotFibreMassReal B S (slotPiece B S Φ) y` —
+   this is `Work.SlotWord.integral_slotFibreMassReal_piece_eq_slotMass` (the `toReal` form of the
+   Fubini identity `Work.PerSector.slotMassENN_eq_fibre`);
+2. the integrand is `Integrable` on `slotOutside L B S` —
+   `Work.SlotWord.integrable_slotFibreMassReal_piece`;
+3. a.e. on `slotOutside L B S`,
+
+       slotFibreMassReal B S (slotPiece B S Φ) y = ∫_{abox |S| L} (sharpBoxState B (fibre_y))² ,
+
+   where the sharp state is the fibre of `Φ` (the slot piece and the sharp truncation implement the
+   same two conditions — "the in-box slots lie in `B`" and "the outside slots lie outside `B`").
+
+Conjunct 3 is the point of this file.  On `slotOutside L B S` every outside coordinate lies outside
+`B`, so for `z ∈ B^{S}` the reassembled configuration `slotComb S z y` lies in the slot set
+`slotSet B S` and the slot piece agrees with `Φ` there; `∫ x in abox |S| L, (sharpBoxState B ψ x)²`
+keeps exactly the in-box coordinates of `ψ` and, since `B ⊆ acube L`, its integration region is
+`slotBox B`; and the reindexing of the fibre along the bijection `e : SlotIn N S ≃ Fin |S|` is a
+measure-preserving change of variables on the slot box (`lintegral_slotBox_comp_equiv`, the
+generalisation to an arbitrary `e` of the canonical reindexing of
+`Work.BoseKinLoc.Sector.lintegral_slotBox_slotIso`).  Together these give that both sides equal
+`(∫⁻_{z ∈ B^{S}} (Φ (slotComb S z y))²).toReal`.
+-/
+
+noncomputable section
+
+open MeasureTheory Metric Filter
+open scoped ContDiff Topology Real BigOperators ENNReal
+
+namespace Work.BoseFixB1B
+
+-- (ℝ³ is already in scope from the corpus)
+
+open Submission.BoseGases
+open Classical
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1000000
+
+/-! ## 0. Slot-box bookkeeping -/
+
+/-- The slot box is monotone in the underlying set. -/
+theorem slotBox_mono_B1B {ι : Type*} {A C : Set ℝ³} (h : A ⊆ C) :
+    Work.PerSector.slotBox (ι := ι) A ⊆ Work.PerSector.slotBox (ι := ι) C :=
+  fun _ hz i => h (hz i)
+
+/-- The slot box of a measurable set is measurable. -/
+theorem slotBox_measurable_B1B {ι : Type*} [Fintype ι] {A : Set ℝ³} (h : MeasurableSet A) :
+    MeasurableSet (Work.PerSector.slotBox (ι := ι) A) := by
+  have hset : Work.PerSector.slotBox (ι := ι) A
+      = ⋂ i : ι, (fun z : ι → ℝ³ => z i) ⁻¹' A := by
+    ext z; simp [Work.PerSector.slotBox]
+  rw [hset]
+  exact MeasurableSet.iInter (fun i => (measurable_pi_apply i) h)
+
+/-- The corpus box `abox k L` is the slot box over `acube L`. -/
+theorem abox_eq_slotBox_B1B (k : ℕ) (L : ℝ) :
+    Submission.BoseGases.abox k L
+      = Work.PerSector.slotBox (ι := Fin k) (Submission.BoseGases.acube L) := rfl
+
+/-- The outside configurations form a measurable set. -/
+theorem measurableSet_slotOutside_B1B {N : ℕ} (L : ℝ) {B : Set ℝ³} (hB : MeasurableSet B)
+    (S : Finset (Fin N)) :
+    MeasurableSet (Work.PerSector.slotOutside L B S) := by
+  have h : MeasurableSet (Submission.BoseGases.acube L ∩ Bᶜ) :=
+    (Submission.BoseGases.acube_measurable L).inter hB.compl
+  have hset : Work.PerSector.slotOutside L B S
+      = ⋂ j : Work.PerSector.SlotOut N S,
+          (fun y : Work.PerSector.SlotOut N S → ℝ³ => y j) ⁻¹'
+            (Submission.BoseGases.acube L ∩ Bᶜ) := by
+    ext y; simp [Work.PerSector.slotOutside, Work.PerSector.slotBox]
+  rw [hset]
+  exact MeasurableSet.iInter (fun j => (measurable_pi_apply j) h)
+
+/-! ## 1. Reindexing the fibre along a bijection of the slots -/
+
+/-- **Reindexing a slot-box integral along an arbitrary bijection of the slots.**  For any
+equivalence `e : SlotIn N S ≃ Fin |S|` and any nonnegative integrand `f` on the slot
+configurations, the integral over the in-box configurations `B^{Fin |S|}` of `f (x ∘ e)` equals the
+integral over `B^{SlotIn N S}` of `f`.  (Generalisation of the canonical-order version
+`Work.BoseKinLoc.Sector.lintegral_slotBox_slotIso` to an arbitrary bijection: the change of
+variables is the measurable equivalence `MeasurableEquiv.piCongrLeft` generated by `e.symm`, which
+preserves the product measure and maps the box `B^{Fin |S|}` onto `B^{SlotIn N S}`.) -/
+theorem lintegral_slotBox_comp_equiv {N : ℕ} {S : Finset (Fin N)}
+    (e : Work.PerSector.SlotIn N S ≃ Fin S.card) {B : Set ℝ³}
+    (f : (Work.PerSector.SlotIn N S → ℝ³) → ℝ≥0∞) :
+    (∫⁻ x in Work.PerSector.slotBox (ι := Fin S.card) B,
+        f (fun i : Work.PerSector.SlotIn N S => x (e i)))
+      = ∫⁻ z in Work.PerSector.slotBox (ι := Work.PerSector.SlotIn N S) B, f z := by
+  classical
+  let Φ : (Fin S.card → ℝ³) ≃ᵐ (Work.PerSector.SlotIn N S → ℝ³) :=
+    MeasurableEquiv.piCongrLeft (fun _ : Work.PerSector.SlotIn N S => ℝ³) e.symm
+  have hΦ : ∀ (x : Fin S.card → ℝ³) (i : Work.PerSector.SlotIn N S), Φ x i = x (e i) := by
+    intro x i
+    have h1 : Φ x (e.symm (e i)) = x (e i) :=
+      Equiv.piCongrLeft_apply_apply (P := fun _ : Work.PerSector.SlotIn N S => ℝ³)
+        (e := e.symm) x (e i)
+    rwa [Equiv.symm_apply_apply] at h1
+  have hmp : MeasurePreserving Φ volume volume :=
+    volume_measurePreserving_piCongrLeft (fun _ : Work.PerSector.SlotIn N S => ℝ³) e.symm
+  have himg : Φ '' (Work.PerSector.slotBox (ι := Fin S.card) B)
+      = Work.PerSector.slotBox (ι := Work.PerSector.SlotIn N S) B := by
+    ext z
+    constructor
+    · rintro ⟨x, hx, rfl⟩ i
+      rw [hΦ x i]
+      exact hx (e i)
+    · intro hz
+      refine ⟨fun j : Fin S.card => z (e.symm j), fun j => hz (e.symm j), ?_⟩
+      funext i
+      rw [hΦ _ i, Equiv.symm_apply_apply]
+  have key := hmp.setLIntegral_comp_emb Φ.measurableEmbedding f
+    (Work.PerSector.slotBox (ι := Fin S.card) B)
+  rw [himg] at key
+  rw [← key]
+  refine lintegral_congr fun x => ?_
+  congr 1
+  exact funext fun i => (hΦ x i).symm
+
+/-! ## 2. The sharp box state: from the real box integral to the fibre `lintegral` -/
+
+/-- **The square of a sharp box state is an indicator of the slot box.** -/
+theorem ofReal_sharpBoxState_sq_eq_indicator {k : ℕ} (B : Set ℝ³) (ψ : X k → ℝ) (x : X k) :
+    ENNReal.ofReal ((sharpBoxState B ψ x) ^ 2)
+      = (Work.PerSector.slotBox (ι := Fin k) B).indicator
+          (fun x => ENNReal.ofReal ((ψ x) ^ 2)) x := by
+  by_cases h : x ∈ Work.PerSector.slotBox (ι := Fin k) B
+  · simp only [sharpBoxState, Set.indicator_of_mem h]
+  · simp only [sharpBoxState, Set.indicator_of_notMem h]
+    simp
+
+/-- **The box mass of a sharp in-box state is the `toReal` of the fibre `lintegral`.**  For a
+measurable box `B ⊆ acube L` and a measurable state `ψ`, the real integral over the corpus box
+`abox k L` of `(1_{B^k}·ψ)²` equals the `toReal` of the `ENNReal`-integral of `ψ²` over the slot
+box `B^k`.  The sharp state is supported on `B^k ⊆ abox k L`, so the real box integral is the
+`lintegral` of `ofReal (ψ²)` over `B^k`. -/
+theorem integral_sharpBoxState_sq_eq_lintegral {k : ℕ} (L : ℝ) {B : Set ℝ³}
+    (hBL : B ⊆ Submission.BoseGases.acube L) (hB : MeasurableSet B)
+    {ψ : X k → ℝ} (hψ : Measurable ψ) :
+    (∫ x in Submission.BoseGases.abox k L, (sharpBoxState B ψ x) ^ 2)
+      = (∫⁻ x in Work.PerSector.slotBox (ι := Fin k) B,
+          ENNReal.ofReal ((ψ x) ^ 2)).toReal := by
+  have hBk : MeasurableSet (Work.PerSector.slotBox (ι := Fin k) B) :=
+    slotBox_measurable_B1B hB
+  have hmeas : AEStronglyMeasurable (fun x : X k => (sharpBoxState B ψ x) ^ 2)
+      ((volume : Measure (X k)).restrict (Submission.BoseGases.abox k L)) :=
+    ((hψ.indicator hBk).pow_const 2).aestronglyMeasurable
+  rw [integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall (fun x => sq_nonneg _)) hmeas]
+  congr 1
+  rw [show (fun x : X k => ENNReal.ofReal ((sharpBoxState B ψ x) ^ 2))
+      = fun x => (Work.PerSector.slotBox (ι := Fin k) B).indicator
+          (fun x => ENNReal.ofReal ((ψ x) ^ 2)) x from
+    funext fun x => ofReal_sharpBoxState_sq_eq_indicator B ψ x]
+  rw [Work.PerSector.Work.PerSector.setLIntegral_indicator_eq volume hBk]
+  rw [show Submission.BoseGases.abox k L ∩ Work.PerSector.slotBox (ι := Fin k) B
+      = Work.PerSector.slotBox (ι := Fin k) B from by
+    rw [abox_eq_slotBox_B1B]
+    exact Set.inter_eq_right.mpr (slotBox_mono_B1B hBL)]
+
+/-! ## 3. The fibre mass of the slot piece -/
+
+/-- **The fibre mass of a slot piece is the fibre mass of the state**, on the outside
+configurations.  On `slotOutside L B S` every outside coordinate lies outside `B`, so for
+`z ∈ B^{S}` the reassembled configuration lies in the slot set and `slotPiece B S Φ` agrees there
+with `Φ`. -/
+theorem slotFibreMass_slotPiece_of_mem_slotOutside {N : ℕ} {L : ℝ} {B : Set ℝ³}
+    (hB : MeasurableSet B) (S : Finset (Fin N)) {Φ : X N → ℝ}
+    {y : Work.PerSector.SlotOut N S → ℝ³} (hy : y ∈ Work.PerSector.slotOutside L B S) :
+    Work.PerSector.slotFibreMass B S (Work.PerSector.slotPiece B S Φ) y
+      = ∫⁻ z in Work.PerSector.slotBox (ι := Work.PerSector.SlotIn N S) B,
+          ENNReal.ofReal ((Φ (Work.PerSector.slotComb S z y)) ^ 2) := by
+  have hBk : MeasurableSet (Work.PerSector.slotBox (ι := Work.PerSector.SlotIn N S) B) :=
+    slotBox_measurable_B1B hB
+  have hy' : ∀ j : Work.PerSector.SlotOut N S, y j ∉ B :=
+    (Work.PerSector.mem_slotOutside_iff.mp hy).2
+  rw [Work.PerSector.slotFibreMass]
+  refine lintegral_congr_ae ?_
+  filter_upwards [MeasureTheory.ae_restrict_mem hBk] with z hz
+  rw [Work.PerSector.slotPiece,
+    Set.indicator_of_mem
+      ((Work.PerSector.slotComb_mem_slotSet_iff B S z y).mpr ⟨fun i => hz i, hy'⟩)]
+
+/-! ## 4. The a.e. identity of the third conjunct -/
+
+/-- **The a.e. fibre identity.**  On the outside configurations of the slot set `S`, the real box
+mass of the slot piece's fibre is the box mass of the *sharp* fibre of `Φ`:
+
+    slotFibreMassReal B S (slotPiece B S Φ) y
+      = ∫ x in abox |S| L, (sharpBoxState B (slotFibreState S e Φ y) x)² .
+
+Both sides compute `(∫⁻_{z ∈ B^{S}} (Φ (slotComb S z y))²).toReal`: the left by
+`slotFibreMass_slotPiece_of_mem_slotOutside`, the right by
+`integral_sharpBoxState_sq_eq_lintegral` followed by the measure-preserving reindexing
+`lintegral_slotBox_comp_equiv` of the fibre along `e : SlotIn N S ≃ Fin |S|`. -/
+theorem ae_slotFibreMassReal_slotPiece_eq_sharp {N : ℕ} (L : ℝ) {B : Set ℝ³}
+    (hBL : B ⊆ Submission.BoseGases.acube L) (hB : MeasurableSet B) {S : Finset (Fin N)}
+    {Φ : X N → ℝ} (hΦ : Measurable Φ) (e : Work.PerSector.SlotIn N S ≃ Fin S.card) :
+    ∀ᵐ y ∂((volume : Measure (Work.PerSector.SlotOut N S → ℝ³)).restrict
+        (Work.PerSector.slotOutside L B S)),
+      Work.PerSector.slotFibreMassReal B S (Work.PerSector.slotPiece B S Φ) y
+        = ∫ x in Submission.BoseGases.abox S.card L,
+            (sharpBoxState B (Work.PerSector.slotFibreState S e Φ y) x) ^ 2 := by
+  have hs : MeasurableSet (Work.PerSector.slotOutside L B S) :=
+    measurableSet_slotOutside_B1B L hB S
+  filter_upwards [MeasureTheory.ae_restrict_mem hs] with y hy
+  have hψ : Measurable (Work.PerSector.slotFibreState S e Φ y) := by
+    rw [show Work.PerSector.slotFibreState S e Φ y
+        = fun x : X S.card => Φ (Work.PerSector.slotComb S (fun i => x (e i)) y) from rfl]
+    have hz : Measurable (fun x : X S.card => fun i : Work.PerSector.SlotIn N S => x (e i)) :=
+      Measurable.of_eval (fun i => measurable_pi_apply (e i))
+    have hpair : Measurable (fun x : X S.card =>
+        ((fun i : Work.PerSector.SlotIn N S => x (e i)), y)) := hz.prod measurable_const
+    exact (Work.PerSector.measurable_slotFibre_pair S hΦ).comp hpair
+  rw [Work.PerSector.slotFibreMassReal, slotFibreMass_slotPiece_of_mem_slotOutside hB S hy,
+    integral_sharpBoxState_sq_eq_lintegral L hBL hB hψ]
+  congr 1
+  exact (lintegral_slotBox_comp_equiv e
+    (fun z => ENNReal.ofReal ((Φ (Work.PerSector.slotComb S z y)) ^ 2))).symm
+
+/-! ## 5. The target -/
+
+theorem slotMassFibre {v : EuclideanSpace ℝ (Fin 3) → ℝ} (h : Work.UBB.ScatSol v)
+    (hv : 0 ≤ v) (hv1 : MeasureTheory.MemLp v 1) (hvrad : _root_.BoseGases.IsRadial v) {R : ℝ}
+    (hR : 0 < R) (hv_supp : tsupport v ⊆ Metric.ball (0 : EuclideanSpace ℝ (Fin 3)) R)
+    (hav : 0 < _root_.BoseGases.a v)
+    {ε₀ c C : ℝ} (hε₀ : 0 < ε₀) {μ : ℝ} (hμ : Work.BoseBoxFix.Adm v ε₀ μ)
+    {u : EuclideanSpace ℝ (Fin 3)}
+    (hu : u ∈ Work.SmallBoxSliding.goodSet (Work.BoseFixB1B.PBℓ v μ) (Work.BoseFixB1B.PBd v μ) μ)
+    {n : ℕ} (Φ : Work.BoseKinLoc.BoxState n (Work.BoseFixB1B.PBℓ v μ)) :
+    ∀ S : Finset (Fin n), ∀ e : Work.PerSector.SlotIn n S ≃ Fin S.card,
+      Work.PerSector.slotMass (Work.BoseFixB1B.PBℓ v μ) (Work.BoseFixB1B.PBB v μ u) S
+          (Φ : Submission.BoseGases.X n → ℝ)
+        = ∫ y in Work.PerSector.slotOutside (Work.BoseFixB1B.PBℓ v μ) (Work.BoseFixB1B.PBB v μ u) S,
+            Work.PerSector.slotFibreMassReal (Work.BoseFixB1B.PBB v μ u) S
+              (Work.PerSector.slotPiece (Work.BoseFixB1B.PBB v μ u) S
+                (Φ : Submission.BoseGases.X n → ℝ)) y
+      ∧ MeasureTheory.Integrable
+          (fun y : Work.PerSector.SlotOut n S → EuclideanSpace ℝ (Fin 3) =>
+            Work.PerSector.slotFibreMassReal (Work.BoseFixB1B.PBB v μ u) S
+              (Work.PerSector.slotPiece (Work.BoseFixB1B.PBB v μ u) S
+                (Φ : Submission.BoseGases.X n → ℝ)) y)
+          ((MeasureTheory.volume : MeasureTheory.Measure
+            (Work.PerSector.SlotOut n S → EuclideanSpace ℝ (Fin 3))).restrict
+            (Work.PerSector.slotOutside (Work.BoseFixB1B.PBℓ v μ) (Work.BoseFixB1B.PBB v μ u) S))
+      ∧ (∀ᵐ y ∂((MeasureTheory.volume : MeasureTheory.Measure
+            (Work.PerSector.SlotOut n S → EuclideanSpace ℝ (Fin 3))).restrict
+            (Work.PerSector.slotOutside (Work.BoseFixB1B.PBℓ v μ) (Work.BoseFixB1B.PBB v μ u) S)),
+            Work.PerSector.slotFibreMassReal (Work.BoseFixB1B.PBB v μ u) S
+              (Work.PerSector.slotPiece (Work.BoseFixB1B.PBB v μ u) S
+                (Φ : Submission.BoseGases.X n → ℝ)) y
+            = ∫ x in Submission.BoseGases.abox S.card (Work.BoseFixB1B.PBℓ v μ),
+                (Work.BoseFixB1B.sharpBoxState (Work.BoseFixB1B.PBB v μ u)
+                  (Work.PerSector.slotFibreState S e
+                    (Φ : Submission.BoseGases.X n → ℝ) y) x) ^ 2) := by
+  intro S e
+  have hBL : Work.BoseFixB1B.PBB v μ u ⊆ Submission.BoseGases.acube (Work.BoseFixB1B.PBℓ v μ) :=
+    Work.SmallBoxSliding.dlBox_subset_acube (Work.BoseFixB1B.PBℓ v μ)
+      (Work.BoseFixB1B.PBd v μ) u
+  have hB : MeasurableSet (Work.BoseFixB1B.PBB v μ u) :=
+    Work.SmallBoxSliding.measurableSet_dlBox (Work.BoseFixB1B.PBℓ v μ)
+      (Work.BoseFixB1B.PBd v μ) u
+  have hΦ : Measurable (Φ : Submission.BoseGases.X n → ℝ) :=
+    Φ.contDiff.continuous.measurable
+  have hfin : (∫⁻ x in Submission.BoseGases.abox n (Work.BoseFixB1B.PBℓ v μ),
+      ENNReal.ofReal (((Φ : Submission.BoseGases.X n → ℝ) x) ^ 2)) ≠ ⊤ :=
+    Work.FockBridge.sectorMassENN_ne_top_of_continuous (N := n)
+      (L := Work.BoseFixB1B.PBℓ v μ) Φ.contDiff.continuous
+  refine ⟨?_, ?_, ?_⟩
+  · exact (Work.SlotWord.integral_slotFibreMassReal_piece_eq_slotMass
+      (Work.BoseFixB1B.PBℓ v μ) S hBL hB hΦ hfin).symm
+  · exact Work.SlotWord.integrable_slotFibreMassReal_piece
+      (Work.BoseFixB1B.PBℓ v μ) S hBL hB hΦ hfin
+  · exact ae_slotFibreMassReal_slotPiece_eq_sharp (Work.BoseFixB1B.PBℓ v μ) hBL hB hΦ e
+
+end Work.BoseFixB1B
