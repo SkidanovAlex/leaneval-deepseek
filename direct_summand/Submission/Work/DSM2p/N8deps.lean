@@ -1,0 +1,17 @@
+import Mathlib
+import Submission.Work.DSM2p.LamOne
+import Submission.Work.DSM2p.N8a_CSAlgOne_eq_iSup
+import Submission.Work.DSM2p.N6_pIntClosure_eq
+import Submission.Work.DSM2p.N7_flat_iSup_adjoin
+import Submission.Work.DSM2p.N7b_toSubring_iSup
+import Submission.Work.DSM2p.N2b_flat_presentation
+import Submission.Work.DSM2p.N3_ker_aeval
+import Submission.Work.DSM2p.N4a_isPIntegrallyClosed_of_frobInj
+import Submission.Work.DSM2p.N4P_isPIntegrallyClosed_iSup
+import Submission.Work.DSM2p.N5_AAL_Lam
+import Submission.Work.DSM2p.N5a_PERFD_Lam1_Q
+import Submission.Work.DSM2p.N5d_frobInj_scaled
+import Submission.Work.DSM2p.pIntClosure_iSup
+import Submission.Work.DSM2p.flat_iSup_subring_of_flat
+import Submission.Work.DSM2p.N7a_flat_adjoin_of_flat_quot
+import Submission.Work.DSM2p.N1_monic_isSMulRegular_quot
