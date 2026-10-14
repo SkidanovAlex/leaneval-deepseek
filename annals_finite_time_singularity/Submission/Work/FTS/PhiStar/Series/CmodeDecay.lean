@@ -1,43 +1,150 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Work.FTS.PhiStar.Series.CmodeDecay`
-
-The mode coefficients `cmode m (fun _ θ => ψ θ) 0` of the angular model decay like
-`1/(lam m · √(2m+1))`, uniformly in `α ∈ (0, 1/5]` and in the model `ψ`.
-
-**Route.**  `cmode m F z` is the `e_m`-coefficient of the slice `F z ·` in the self-adjoint
-weight `cos θ dθ`, so `cmode m F z · cmdD m = ∫_{Iθ} F z θ · e_m θ · cos θ`
-(`cmode_mul_cmdD`, `cmdD m = ∫_{Iθ} e_m² cos`).  Since `ψ` solves `Lzero1 ψ = Γ̄`
-(`AngModel.eq`) and `Lzero1 e_m = lam m · e_m` (`eFam_Lzero`), the self-adjointness of
-`Lzero1` in the weight `cos θ` (`pairing_core`) turns the moment of `ψ` into the moment of the
-*source*:
-
-  `lam m · ∫_{Iθ} ψ e_m cos = ∫_{Iθ} Γ̄ e_m cos`.
-
-The right-hand side is bounded by `(1/c + 5/4)·∫_{Iθ} |e_m| cos ≤ (23/2)·√(cmdD m)` by
-Cauchy–Schwarz (proved here with the optimal AM–GM parameter, `l1_eFam_le_sqrt`), and
-`cmdD m = (2m+2)(2m+3)/(4m+5)` (`eFam_norm_fts`) is `≥ (2m+1)/4` for `m ≥ 1`.  Assembling
-gives the statement with the universal constant `C = 23`.
-
-The self-adjointness computation integrates the pointwise identity
-
-  `(d/dθ)(-(ψ e_m' - ψ' e_m) cos θ) = (ψ · Lzero1 e_m - (Lzero1 ψ) · e_m) · cos θ`
-
-over `Iθ`; the boundary terms vanish because `ψ` and `e_m` both vanish at `θ = 0, π/2` and `ψ'`
-is bounded on `(0, π/2)`, so `ψ' e_m cos → 0` at both ends.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Data.Int.Star
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Defs
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
 import Submission.Work.FTS.PhiStar.Gegenbauer.FamNormValue
-import Submission.Work.FTS.PhiStar.Psi0_exists
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.PhiStar.FlatWAux.QmDeriv.Basic =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology BigOperators
+
+namespace Work.FTS.PhiStar.FlatWAux
+
+set_option autoImplicit false
+
+open Set Filter MeasureTheory
+
+lemma famC_nonneg (k : ℤ) : 0 ≤ Work.FTS.PhiStar.famC k := by
+  unfold Work.FTS.PhiStar.famC
+  split_ifs with h
+  · apply div_nonneg
+    · refine Finset.prod_nonneg (fun i _ => ?_)
+      have : (0 : ℝ) ≤ (i : ℝ) := Nat.cast_nonneg i
+      linarith
+    · exact Nat.cast_nonneg _
+  · exact le_refl 0
+
+lemma cast_two_mul_add_one (m : ℕ) : (((2 * m + 1 : ℕ) : ℝ)) = 2 * (m : ℝ) + 1 := by
+  push_cast
+  ring
+
+theorem Qm_eq {m : ℕ} {θ : ℝ} (hθ : θ ∈ Ioo 0 (Real.pi / 2)) :
+    Qm m θ = Work.FTS.PhiStar.Gegenbauer.gC (2 * m + 1) (Real.sin θ) / (2 * Real.sin θ) := by
+  have hcos : Real.cos θ ≠ 0 :=
+    ne_of_gt (Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos, hθ.1], hθ.2⟩)
+  have hsin : Real.sin θ ≠ 0 :=
+    ne_of_gt (Real.sin_pos_of_pos_of_lt_pi hθ.1 (by linarith [hθ.2, Real.pi_pos]))
+  rw [Qm, Work.FTS.PhiStar.Gegenbauer.eFam, Work.Construction.s2_eq, Real.sin_two_mul]
+  field_simp
+
+end Work.FTS.PhiStar.FlatWAux
+end
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.FlatWAux.famTrig_shift =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.PhiStar.FlatWAux
+
+open Finset
+
+/-- `famC k = 0` for `k < 0`: the coefficient sequence is extended by `0` to the
+negative integers. -/
+private lemma famC_eq_zero_of_neg {k : ℤ} (hk : k < 0) : Work.FTS.PhiStar.famC k = 0 := by
+  rw [Work.FTS.PhiStar.famC]
+  split_ifs with h
+  · exact absurd h (by omega)
+  · rfl
+
+/-- The `j`-th summand of `famTrig n ψ`. -/
+private noncomputable def famBase (n : ℕ) (ψ : ℝ) (j : ℕ) : ℝ :=
+  Work.FTS.PhiStar.famC (j : ℤ) * Work.FTS.PhiStar.famC ((n : ℤ) - (j : ℤ))
+    * Real.cos ((2 * (j : ℝ) - (n : ℝ)) * ψ)
+
+/-- The `j`-th summand of the `(n+3)`-term sum of `famTrig_shift`. -/
+private noncomputable def famShift (n : ℕ) (ψ : ℝ) (j : ℕ) : ℝ :=
+  Work.FTS.PhiStar.famC ((j : ℤ) - 1) * Work.FTS.PhiStar.famC ((n : ℤ) + 1 - (j : ℤ))
+    * Real.cos ((2 * (j : ℝ) - ((n : ℝ) + 2)) * ψ)
+
+private lemma famShift_zero (n : ℕ) (ψ : ℝ) : famShift n ψ 0 = 0 := by
+  have h : ((0 : ℕ) : ℤ) - 1 = (-1 : ℤ) := by norm_num
+  simp only [famShift, h, famC_eq_zero_of_neg (show (-1 : ℤ) < 0 by norm_num), zero_mul]
+
+private lemma famShift_last (n : ℕ) (ψ : ℝ) : famShift n ψ (n + 2) = 0 := by
+  have h : (n : ℤ) + 1 - (((n + 2 : ℕ)) : ℤ) = (-1 : ℤ) := by push_cast; ring
+  simp only [famShift, h, famC_eq_zero_of_neg (show (-1 : ℤ) < 0 by norm_num), zero_mul,
+    mul_zero]
+
+private lemma famShift_succ (n : ℕ) (ψ : ℝ) (j : ℕ) :
+    famShift n ψ (j + 1) = famBase n ψ j := by
+  have h1 : (((j + 1 : ℕ)) : ℤ) - 1 = (j : ℤ) := by push_cast; ring
+  have h2 : (n : ℤ) + 1 - (((j + 1 : ℕ)) : ℤ) = (n : ℤ) - (j : ℤ) := by push_cast; ring
+  have h3 : (2 * (((j + 1 : ℕ)) : ℝ) - ((n : ℝ) + 2)) = (2 * (j : ℝ) - (n : ℝ)) := by
+    push_cast; ring
+  simp only [famShift, famBase, h1, h2, h3]
+
+/-- Shifting a summation range: if `f 0 = 0` then `∑_{j<N} f (j+1) = ∑_{i<N+1} f i`. -/
+private lemma shift_one (f : ℕ → ℝ) (hf : f 0 = 0) (N : ℕ) :
+    (∑ j ∈ Finset.range N, f (j + 1)) = ∑ i ∈ Finset.range (N + 1), f i := by
+  rw [Finset.sum_range_succ' f N, hf, add_zero]
+
+private lemma famShift_sum (n : ℕ) (ψ : ℝ) :
+    (∑ j ∈ Finset.range (n + 3), famShift n ψ j)
+      = ∑ j ∈ Finset.range (n + 1), famBase n ψ j := by
+  have h1 : (∑ j ∈ Finset.range (n + 3), famShift n ψ j)
+      = (∑ j ∈ Finset.range (n + 2), famShift n ψ j) + famShift n ψ (n + 2) := by
+    have hn : n + 3 = (n + 2) + 1 := by omega
+    rw [hn]
+    exact Finset.sum_range_succ (famShift n ψ) (n + 2)
+  have h3 : (∑ j ∈ Finset.range (n + 2), famShift n ψ j)
+      = ∑ j ∈ Finset.range (n + 1), famShift n ψ (j + 1) :=
+    (shift_one (famShift n ψ) (famShift_zero n ψ) (n + 1)).symm
+  calc (∑ j ∈ Finset.range (n + 3), famShift n ψ j)
+      = (∑ j ∈ Finset.range (n + 2), famShift n ψ j) + famShift n ψ (n + 2) := h1
+    _ = ∑ j ∈ Finset.range (n + 2), famShift n ψ j := by
+        rw [famShift_last n ψ, add_zero]
+    _ = ∑ j ∈ Finset.range (n + 1), famShift n ψ (j + 1) := h3
+    _ = ∑ j ∈ Finset.range (n + 1), famBase n ψ j :=
+        Finset.sum_congr rfl (fun j _ => famShift_succ n ψ j)
+
+theorem famTrig_shift (n : ℕ) (ψ : ℝ) :
+    Work.FTS.PhiStar.famTrig n ψ
+      = ∑ j ∈ Finset.range (n + 3),
+          Work.FTS.PhiStar.famC ((j : ℤ) - 1) * Work.FTS.PhiStar.famC ((n : ℤ) + 1 - (j : ℤ))
+            * Real.cos ((2 * (j : ℝ) - ((n : ℝ) + 2)) * ψ) := by
+  rw [Work.FTS.PhiStar.famTrig]
+  change (∑ j ∈ Finset.range (n + 1), famBase n ψ j)
+    = ∑ j ∈ Finset.range (n + 3), famShift n ψ j
+  exact (famShift_sum n ψ).symm
+
+end Work.FTS.PhiStar.FlatWAux
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.Series.CmodeDecay =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -119,7 +226,7 @@ private theorem cmode_mul_cmdD (m : ℕ) (F : ℝ → ℝ → ℝ) (z : ℝ) :
 /-! ## Pointwise facts about the modes -/
 
 /-- `gC (2m+1) 0 = 0` (the odd Gegenbauer polynomials vanish at the origin). -/
-private theorem gC_odd_zero (m : ℕ) : Work.FTS.PhiStar.Gegenbauer.gC (2 * m + 1) 0 = 0 := by
+private theorem gC_odd_zero_prv (m : ℕ) : Work.FTS.PhiStar.Gegenbauer.gC (2 * m + 1) 0 = 0 := by
   induction m with
   | zero =>
       rw [show Work.FTS.PhiStar.Gegenbauer.gC 1 = (fun x : ℝ => 3 * x) from rfl]
@@ -136,17 +243,17 @@ private theorem gC_odd_zero (m : ℕ) : Work.FTS.PhiStar.Gegenbauer.gC (2 * m + 
       have hne : (((2 * m + 1 : ℕ) : ℝ) + 2) ≠ 0 := by positivity
       exact (mul_eq_zero.mp h).resolve_left hne
 
-private theorem eF_zero (m : ℕ) : eF m 0 = 0 := by
+private theorem eF_zero_prv (m : ℕ) : eF m 0 = 0 := by
   change Work.FTS.PhiStar.Gegenbauer.eFam m 0 = 0
   rw [Work.FTS.PhiStar.Gegenbauer.eFam]
   simp only [Real.cos_zero, Real.sin_zero, one_mul]
-  exact gC_odd_zero m
+  exact gC_odd_zero_prv m
 
 private theorem eF_pi_half (m : ℕ) : eF m (Real.pi / 2) = 0 := by
   change Work.FTS.PhiStar.Gegenbauer.eFam m (Real.pi / 2) = 0
   rw [Work.FTS.PhiStar.Gegenbauer.eFam, Real.cos_pi_div_two, zero_mul]
 
-private theorem continuous_eFam (m : ℕ) : Continuous (eF m) :=
+private theorem continuous_eFam_prv (m : ℕ) : Continuous (eF m) :=
   Real.continuous_cos.mul
     (((Work.FTS.PhiStar.Gegenbauer.contDiff_gC (2 * m + 1)).continuous).comp Real.continuous_sin)
 
@@ -229,12 +336,12 @@ private theorem l1_eFam_le_sqrt (m : ℕ) :
   -- integrate
   have hint1 : IntegrableOn (fun θ => |eF m θ| * Real.cos θ) Iθ :=
     integrableOn_Iθ_of_continuousOn
-      (((continuous_eFam m).continuousOn.abs).mul Real.continuous_cos.continuousOn)
+      (((continuous_eFam_prv m).continuousOn.abs).mul Real.continuous_cos.continuousOn)
   have hcont2 : ContinuousOn (fun θ => (1 / (2 * sA)) * (eF m θ ^ 2 * Real.cos θ)
       + (sA / 2) * Real.cos θ) (Set.Icc (0 : ℝ) (Real.pi / 2)) := by
     refine ((continuousOn_const.mul ?_).add (continuousOn_const.mul
       Real.continuous_cos.continuousOn))
-    exact ((continuous_eFam m).continuousOn.pow 2).mul Real.continuous_cos.continuousOn
+    exact ((continuous_eFam_prv m).continuousOn.pow 2).mul Real.continuous_cos.continuousOn
   have hint2 : IntegrableOn (fun θ => (1 / (2 * sA)) * (eF m θ ^ 2 * Real.cos θ)
       + (sA / 2) * Real.cos θ) Iθ := integrableOn_Iθ_of_continuousOn hcont2
   have hmono : (∫ θ in Iθ, |eF m θ| * Real.cos θ)
@@ -250,7 +357,7 @@ private theorem l1_eFam_le_sqrt (m : ℕ) :
     have hintA : Integrable (fun θ => (1 / (2 * sA)) * (eF m θ ^ 2 * Real.cos θ))
         (volume.restrict Iθ) :=
       (integrableOn_Iθ_of_continuousOn
-        (((continuous_eFam m).continuousOn.pow 2).mul
+        (((continuous_eFam_prv m).continuousOn.pow 2).mul
           Real.continuous_cos.continuousOn)).const_mul _
     have hintB : Integrable (fun θ => (sA / 2) * Real.cos θ) (volume.restrict Iθ) :=
       (integrableOn_Iθ_of_continuousOn Real.continuous_cos.continuousOn).const_mul _
@@ -756,7 +863,7 @@ private theorem pairing_core {α : ℝ} {ψ : ℝ → ℝ} {Cψ' : ℝ} (hα : 0
   have hcont_g : ContinuousOn (cmdInt α ψ m) Iθ := by
     have hGB : ContinuousOn (fun θ => gamBar α θ) Iθ := continuousOn_gamBar (le_of_lt hα)
     have h : ContinuousOn (fun θ => (lamF m * ψ θ - gamBar α θ) * eF m θ * Real.cos θ) Iθ :=
-      (((continuousOn_const.mul hψ.cont).sub hGB).mul (continuous_eFam m).continuousOn).mul
+      (((continuousOn_const.mul hψ.cont).sub hGB).mul (continuous_eFam_prv m).continuousOn).mul
         Real.continuous_cos.continuousOn
     exact h
   have hint : IntervalIntegrable (cmdInt α ψ m) volume (0 : ℝ) (Real.pi / 2) := by
@@ -792,12 +899,12 @@ private theorem pairing_core {α : ℝ} {ψ : ℝ → ℝ} {Cψ' : ℝ} (hα : 0
     rw [hψ.bdry1] at h
     exact h.mono_left hlepi
   have heFlim0 : Tendsto (eF m) (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds 0) := by
-    have h : Tendsto (eF m) (nhds 0) (nhds (eF m 0)) := (continuous_eFam m).continuousAt
-    rw [eF_zero m] at h
+    have h : Tendsto (eF m) (nhds 0) (nhds (eF m 0)) := (continuous_eFam_prv m).continuousAt
+    rw [eF_zero_prv m] at h
     exact h.mono_left nhdsWithin_le_nhds
   have heFlimpi : Tendsto (eF m) (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
     have h : Tendsto (eF m) (nhds (Real.pi / 2)) (nhds (eF m (Real.pi / 2))) :=
-      (continuous_eFam m).continuousAt
+      (continuous_eFam_prv m).continuousAt
     rw [eF_pi_half m] at h
     exact h.mono_left nhdsWithin_le_nhds
   have hcos2 : Tendsto (fun θ : ℝ => Real.cos θ ^ 2 * deriv ψ θ)
@@ -820,13 +927,13 @@ private theorem pairing_core {α : ℝ} {ψ : ℝ → ℝ} {Cψ' : ℝ} (hα : 0
       volume (0 : ℝ) (Real.pi / 2) := by
     refine ContinuousOn.intervalIntegrable ?_
     rw [Set.uIcc_of_le (by positivity : (0 : ℝ) ≤ Real.pi / 2)]
-    exact continuousOn_const.mul ((hψ.cont.mul (continuous_eFam m).continuousOn).mul
+    exact continuousOn_const.mul ((hψ.cont.mul (continuous_eFam_prv m).continuousOn).mul
       Real.continuous_cos.continuousOn)
   have hint2 : IntervalIntegrable (fun θ : ℝ => gamBar α θ * eF m θ * Real.cos θ)
       volume (0 : ℝ) (Real.pi / 2) := by
     refine ContinuousOn.intervalIntegrable ?_
     rw [Set.uIcc_of_le (by positivity : (0 : ℝ) ≤ Real.pi / 2)]
-    exact ((continuousOn_gamBar (le_of_lt hα)).mul (continuous_eFam m).continuousOn).mul
+    exact ((continuousOn_gamBar (le_of_lt hα)).mul (continuous_eFam_prv m).continuousOn).mul
       Real.continuous_cos.continuousOn
   have hAB : (∫ θ in (0 : ℝ)..(Real.pi / 2), (lamF m * (ψ θ * eF m θ * Real.cos θ)
         - gamBar α θ * eF m θ * Real.cos θ))
@@ -893,9 +1000,9 @@ theorem CmodeDecay : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (ψ : ℝ → ℝ), 0
       rw [← MeasureTheory.integral_const_mul]
       have hint1 : IntegrableOn (fun θ => |gamBar α θ * eF m θ * Real.cos θ|) Iθ :=
         integrableOn_Iθ_of_continuousOn (((continuousOn_gamBar (le_of_lt hα)).mul
-          (continuous_eFam m).continuousOn).mul Real.continuous_cos.continuousOn).abs
+          (continuous_eFam_prv m).continuousOn).mul Real.continuous_cos.continuousOn).abs
       have hint2 : IntegrableOn (fun θ => (23 / 2) * (|eF m θ| * Real.cos θ)) Iθ :=
-        (integrableOn_Iθ_of_continuousOn (((continuous_eFam m).continuousOn.abs).mul
+        (integrableOn_Iθ_of_continuousOn (((continuous_eFam_prv m).continuousOn.abs).mul
           Real.continuous_cos.continuousOn)).const_mul _
       refine MeasureTheory.integral_mono_ae hint1 hint2 ?_
       filter_upwards [MeasureTheory.ae_restrict_mem (μ := volume) (s := Iθ) measurableSet_Icc]
@@ -940,3 +1047,5 @@ theorem CmodeDecay : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (ψ : ℝ → ℝ), 0
   exact habs.trans hfin
 
 end Work.FTS.PhiStar.Series
+end
+end

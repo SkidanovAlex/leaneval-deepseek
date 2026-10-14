@@ -1,12 +1,104 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllSol.PkgK5.tracesK5_sharp
-import Submission.Work.FTS.EllSol.PkgK5.VopcPth2TransferGen
-import Submission.Work.FTS.EllSol.PkgK5.VopcCore
-import Submission.Work.FTS.EllSol.PkgK5.residTracesK5
+import Submission.Work.FTS.EllExist.LevelK
 import Submission.Work.FTS.EllSol.PkgK5.VopcPth2Transfer
+import Submission.Work.FTS.EllSol.PkgK5.VopcPth2TransferGen
+import Submission.Work.FTS.EllSol.PkgK5.tracesK5_sharp
+import Submission.Work.FTS.EllipticEst.EllHyp_certificates
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.ClassC.RopGen.Transfer =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.ClassC
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option maxHeartbeats 3200000
+set_option linter.unusedVariables false
+
+/-! ## The definitional identification with the residual -/
+
+/-- `Construction.PhiTil α g Ψ = Elliptic.EllResid α g Ψ` (definitional). -/
+theorem phiTil_eq_EllResid_gen (α : ℝ) (g Ψ : Fn) :
+    Work.Construction.PhiTil α g Ψ = Work.Elliptic.EllResid α g Ψ := by
+  funext z θ
+  simp only [Work.Construction.PhiTil, Work.Elliptic.EllResid, Work.Construction.Theta,
+    Work.Construction.s2_eq]
+  rw [show Work.Elliptic.L12 g z = Work.Construction.L12 g z from rfl]
+
+/-! ## Smoothness on the open quadrant, at general solution level -/
+
+/-- `Ḡ(α,g)·sin 2θ` is `C^∞` on the open quadrant for every `g` of the class `C`
+(the level-parametric form of `smoothOpen_GbarSin_classC`, whose `7` was incidental). -/
+theorem smoothOpen_GbarSin_gen' {α : ℝ} (hα : 0 < α) {g : Fn} (hg : ClassC α g) :
+    Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => Work.Elliptic.Gbar α g z * Real.sin (2 * θ)) :=
+  Work.FTS.EllSol.PkgK5.smoothOpen_GbarSin_gen hα 7 hg.reg hg.fsm hg.mem
+
+/-- **The residual `PhiTil α g Ψ` is `C^∞` on the open quadrant** at *any* solution level
+(the level-`K` form of `smoothOpen_phiTil`; only `ClassC α g` and the open-quadrant smoothness
+carried by `EllClassOk K` are used). -/
+theorem smoothOpen_phiTil_gen {α : ℝ} {K : ℕ} {g Ψ : Fn} (hα : 0 < α) (hg : ClassC α g)
+    (h : Work.FTS.EllExist.EllClassOk K α g Ψ) :
+    Work.FTS.EllipticEst.SmoothOpen (Work.Construction.PhiTil α g Ψ) := by
+  have hSmW : Work.FTS.EllipticEst.SmoothOpen (Work.FTS.EllExist.shiftSing α g Ψ) :=
+    Work.FTS.EllipticEst.smoothOpen_of_forall
+      (Work.FTS.EllipticEst.TT.EllWeakPos.smooth h.2.2)
+  have hGnegSm : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (-(Work.Elliptic.Gbar α g z)) * Real.sin (2 * θ)) := by
+    have hL := smoothOpen_GbarSin_gen' hα hg
+    refine Work.FTS.EllipticEst.SmoothOpen.congr (hL.const_mul' (-1)) ?_
+    intro z' θ' _ _ _
+    ring
+  have hdecomp : Work.Construction.PhiTil α g Ψ
+      = fun z' θ' => Work.FTS.EllExist.shiftSing α g Ψ z' θ'
+          + (-(Work.Elliptic.Gbar α g z')) * Real.sin (2 * θ') := by
+    funext z' θ'
+    rw [phiTil_eq_EllResid_gen]
+    simp only [Work.Elliptic.EllResid, Work.FTS.EllExist.shiftSing_apply, Work.Elliptic.Gsing,
+      Work.Elliptic.Gstar]
+    ring
+  refine Work.FTS.EllipticEst.SmoothOpen.congr
+    (Work.FTS.EllipticEst.SmoothOpen.add hSmW hGnegSm) ?_
+  intro z' θ' _ _ _
+  exact (congrFun (congrFun hdecomp z') θ').symm
+
+
+
+
+
+/-! ## The two pieces of the transfer, and the transfer itself -/
+
+
+
+
+end Work.FTS.ClassC
+end
+end
+-- ===== merged: Submission.Work.FTS.EllSol.PkgK6.vopTransferKSharp =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -126,3 +218,5 @@ theorem vopTransferKSharp (k : ℕ) (hk : 2 ≤ k) : ∃ C : ℝ, 0 < C ∧
         linarith [hA0]
 
 end Work.FTS.EllSol.PkgK6
+end
+end

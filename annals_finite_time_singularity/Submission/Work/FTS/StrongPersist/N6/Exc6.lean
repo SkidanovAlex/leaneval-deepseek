@@ -1,32 +1,13 @@
-/-
-# `Work.FTS.StrongPersist.N6.Exc6`
-
-The two **exceptional terms** of the level-six product rule: the products `D_z⁵f · D_θg` and
-`D_θf · D_z⁵g` of the `(5,1)`-slot, whose `ℋ⁶`-integrand carries the full weight
-`W = w · sin(2θ)^{-γ/2}` on **both** factors while `D_z⁵f` (resp. `D_z⁵g`) is priced in the norm
-only by the *lighter* weight `sin(2θ)^{-η/2}`.
-
-This is the level-six shift of `Work.FTS.OpenPkg.ProdOpen.exc_bound`; the proof is the same
-argument, with the mean-term angular inequality `sob_theta_mean` applied to the slice
-`θ ↦ D_z⁵f(z,θ)` and the `q`-side factor `(D_θq)² sin(2·)^{-γ}` bounded uniformly in `z` by
-`sliceAng_le6` at the slot `(0,1)`.
-
-Both exceptional terms are the same estimate with the two functions interchanged, so it is
-proved once, for a general pair `(p,q)`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6.Slots
 import Submission.Work.FTS.StrongPersist.N6.PwOpen6
-import Submission.Work.FTS.StrongPersist.N6.sliceAng_le6
-import Submission.Work.FTS.OpenPkg.ProdOpen.exc_bound
-import Submission.Work.FTS.TransportS.SupDzAux.HalfLineWindow
+import Submission.Work.FTS.StrongPersist.N6.Slots
+import Submission.Work.FTS.StrongPersist.N6.sliceAvg_le6
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

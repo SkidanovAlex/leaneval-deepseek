@@ -5,35 +5,31 @@ import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.FstarI12H6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.l12_supAbs_open
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.ip6_dz_self
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12slotLe7
-import Submission.Work.FTS.StrongPersist.N6_L12H
-import Submission.Work.FTS.StrongPersist.N6_prod
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SmoothN0
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.N6Trans_exists
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3Row
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T4bRowSlot
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45aRow
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.row_l12_dz
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.slot_cs6
-import Submission.Work.FTS.StrongPersist.DthFstar_W6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.c2mDzFstar_W6
-import Submission.Work.FTS.EllipticEst.UopHk.L12_contDiffOn_reg
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.SmoothPieces
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45aRow
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T4bRowSlot
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPiecePtwAux
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
 import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0rowBndOwn
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.NA6sig
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0mem6Own
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0piecesMem6
 import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.RowAdz
 import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.ip4UnfoldSix
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.pgfHardyA
+import Submission.Work.FTS.StrongPersist.N6Trans_exists
+import Submission.Work.FTS.StrongPersist.N6_L12H
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.StrongPersist.hasDerivAt_wip_family
+import Submission.Work.FTS.TransportS.Defs
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -89,33 +85,12 @@ are bounded by Cauchy–Schwarz (`IP6_cs_coeffs`) after the `𝒲^{6,∞}`-price
 def N0F (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
   fun z θ => Work.Construction.Fstar α z θ + f z θ
 
-/-- The `I₁ + I₂` piece `N01 + N02` of `N₀` (quadratic in `F_*`). -/
-def N0P12 (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn := fun z θ =>
-  Work.Construction.N01 α (N0F α f) f z θ + Work.Construction.N02 α (N0F α f) f z θ
 
-/-- `I₃ = N03`. -/
-def N0P3 (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N03 α (N0F α f) f
 
-/-- `I₄ᵃ = N04a`. -/
-def N0P4a (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N04a α (N0F α f) f
 
-/-- `I₄ᵇ = N04b`. -/
-def N0P4b (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N04b α (N0F α f) f
 
-/-- `I₅ᵃ = N05a`. -/
-def N0P5a (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N05a α (N0F α f) f
 
-/-- `I₅ᵇ = N05b`. -/
-def N0P5b (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N05b α (N0F α f) f
 
-/-- `I₆ = N06`. -/
-def N0P6 (α : ℝ) (f : Work.FTS.Galerkin.Fn) : Work.FTS.Galerkin.Fn :=
-  Work.Construction.N06 α (N0F α f) f
 
 /-- The additivity of `∂_θ` along `F_* + f` on the open quadrant. -/
 theorem N0pair6_pth_add {α : ℝ} (f : Work.FTS.Galerkin.Fn)
@@ -157,26 +132,6 @@ theorem N0pair6_Dz_add {α : ℝ} (f : Work.FTS.Galerkin.Fn)
   simp only [Work.Spaces.Dz, hpz]
   ring
 
-/-- **The decomposition of `N₀ α (F_*+f) f` on the open quadrant.**  Only the open quadrant is
-used, because the two splits `N04 = N04a + N04b`, `N05 = N05a + N05b` need the additivity of
-`∂_θ` and `z∂_z` along `F = F_* + f`, which holds there; `IP6` and the slot pairings see only the
-open quadrant, so this is all the assembly needs. -/
-theorem N0pair6_decomp_Qd {α : ℝ} (f : Work.FTS.Galerkin.Fn)
-    (hf : Work.FTS.EllipticEst.SmoothOpen f) :
-    ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
-      Work.Construction.N0 α (N0F α f) f z θ
-        = ((((((N0P12 α f + N0P3 α f) + N0P4a α f) + N0P4b α f) + N0P5a α f)
-            + N0P5b α f) + N0P6 α f) z θ := by
-  intro z θ hQ
-  have hpth := N0pair6_pth_add (α := α) f hf z θ hQ
-  have hDz := N0pair6_Dz_add (α := α) f hf z θ hQ
-  simp only [Work.Construction.N0, Work.Construction.N01, Work.Construction.N02,
-    Work.Construction.N03, Work.Construction.N04, Work.Construction.N04a,
-    Work.Construction.N04b, Work.Construction.N05, Work.Construction.N05a,
-    Work.Construction.N05b, Work.Construction.N06, N0P12, N0P3, N0P4a, N0P4b, N0P5a,
-    N0P5b, N0P6, Pi.add_apply, Pi.sub_apply, N0F, Work.Construction.Fstar]
-  rw [hpth, hDz]
-  ring
 
 /-! ## From a per-slot row to the pairing
 
@@ -186,38 +141,6 @@ This lemma converts such a per-slot row into the bound on the whole pairing, thr
 unfolding `IP6 1…1 α = IPn α 5` and `ip4_unfold_bound` / `SlotSum_six_le` (28 slots · 3 leaf
 weights = 84). -/
 
-/-- **From a per-slot row to the pairing bound.**  If every leaf slot pairing of `g` against `f`
-is bounded by `B`, then `|IP6 1…1 α g f| ≤ 3⁵·10²²·84·B`. -/
-theorem N0pair6_row_pair_le {C α : ℝ} {g f : ℝ → ℝ → ℝ} (hα : 0 < α) (hC : 0 ≤ C)
-    (hsmg : Work.FTS.EllipticEst.SmoothOpen g) (hsmf : Work.FTS.EllipticEst.SmoothOpen f)
-    (hX0 : 0 ≤ Work.FTS.Nonlin.Xn α f) (hS0 : 0 ≤ Work.Spaces.HkSq α 6 f)
-    (hrow : ∀ (a b : ℕ) (ρ : ℝ → ℝ → ℝ), a + b ≤ 6 →
-      Work.FTS.TransportS.IsLeafW α a ρ →
-      |Work.FTS.TransportS.slotPairing ρ a b g f|
-        ≤ C * α ^ (-(3 : ℝ)) * (1 + Work.FTS.Nonlin.Xn α f) ^ 4
-            * (1 + Work.Spaces.HkSq α 6 f)) :
-    |Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α g f|
-      ≤ (3 : ℝ) ^ 5 * (10 : ℝ) ^ 22
-          * (84 * (C * α ^ (-(3 : ℝ)) * (1 + Work.FTS.Nonlin.Xn α f) ^ 4
-              * (1 + Work.Spaces.HkSq α 6 f))) := by
-  have hIP := Work.FTS.StrongPersist.IP6_one_eq_IPn_five α g f
-  have hunf := Work.FTS.TransportS.ip4_unfold_bound 5 α g f hsmg hsmf
-  rw [← hIP] at hunf
-  have hr0 : 0 ≤ α ^ (-(3 : ℝ)) := Real.rpow_nonneg hα.le _
-  have hB0 : 0 ≤ C * α ^ (-(3 : ℝ)) * (1 + Work.FTS.Nonlin.Xn α f) ^ 4
-      * (1 + Work.Spaces.HkSq α 6 f) :=
-    mul_nonneg (mul_nonneg (mul_nonneg hC hr0) (by positivity)) (by linarith)
-  have hsl := Work.FTS.StrongPersist.SlotSum_six_le α g f
-    (C * α ^ (-(3 : ℝ)) * (1 + Work.FTS.Nonlin.Xn α f) ^ 4 * (1 + Work.Spaces.HkSq α 6 f))
-    hB0 (fun a b ρ hab hρ => hrow a b ρ hab hρ)
-  have h220 : (0 : ℝ) ≤ (3 : ℝ) ^ 5 * (10 : ℝ) ^ 22 := by positivity
-  calc |Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α g f|
-      = |Work.FTS.TransportS.IPn α 5 g f| := by rw [hIP]
-    _ ≤ (3 : ℝ) ^ 5 * (10 : ℝ) ^ 22 * Work.FTS.TransportS.SlotSum α 6 g f := hunf
-    _ ≤ (3 : ℝ) ^ 5 * (10 : ℝ) ^ 22
-          * (84 * (C * α ^ (-(3 : ℝ)) * (1 + Work.FTS.Nonlin.Xn α f) ^ 4
-              * (1 + Work.Spaces.HkSq α 6 f))) :=
-        mul_le_mul_of_nonneg_left hsl h220
 
 /-- **The decomposition of `N₀ α (F_*+f) f` into the seven pieces of the row**, on the open
 quadrant, in the `NA`/`NP` shapes consumed by the row engines. -/

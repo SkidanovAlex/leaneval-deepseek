@@ -2,13 +2,12 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Work.FTS.TransportS.TvUniform.tv_uniform_bound
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.mixed_mul_le
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.t2SupF
 import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
-import Submission.Work.FTS.TransportS.T2SupB2.TvSub.tv_bound_subinterval
+import Submission.Work.FTS.TransportS.t2SupF
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.LWP.VorticityAPI
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -279,67 +278,5 @@ theorem slice_bound {α : ℝ} {f : ℝ → ℝ → ℝ} (hα : 0 < α) (hα1 : 
         add_le_add (mul_le_mul hcoef hΞint hXnn (by norm_num)) (by linarith)
     _ = 5 * (∫ θ' in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f z θ') := by ring
 
-theorem mixed_slice_theta_uniform :
-    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (f : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
-      ∀ (j i : ℕ), 1 ≤ i → i + j + 1 ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
-        (∫ z in Work.Spaces.Iz,
-            (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2)
-          ≤ C * Work.Spaces.HkSq α 4 f := by
-  refine ⟨5, by norm_num, ?_⟩
-  intro α f hα hα1 hF hmem j i hi hij θ hθ
-  have hθge : 0 ≤ θ := (Set.mem_Icc.mp hθ).1
-  have hθle : θ ≤ π / 2 := (Set.mem_Icc.mp hθ).2
-  by_cases hθ0 : θ = 0
-  · subst hθ0
-    have hzero : ∀ z : ℝ, Work.Spaces.mixed j i f z 0 = 0 := fun z =>
-      Work.Spaces.mixed_eq_zero_of_sin_eq_zero (H := f) (z := z) (θ := 0) (by simp) hi
-    have hfun : (fun z : ℝ => (Work.Spaces.mixed j i f z 0) ^ 2 * (Work.Spaces.w z) ^ 2)
-        = fun _ : ℝ => (0 : ℝ) := by
-      funext z; rw [hzero z]; ring
-    rw [hfun, MeasureTheory.integral_zero]
-    exact mul_nonneg (by norm_num) (Work.Spaces.HkSq_nonneg α 4 f)
-  · by_cases hθ2 : θ = π / 2
-    · subst hθ2
-      have hzero : ∀ z : ℝ, Work.Spaces.mixed j i f z (π / 2) = 0 := fun z =>
-        Work.Spaces.mixed_eq_zero_of_sin_eq_zero (H := f) (z := z) (θ := π / 2)
-          (by rw [show (2 : ℝ) * (π / 2) = π by ring, Real.sin_pi]) hi
-      have hfun : (fun z : ℝ => (Work.Spaces.mixed j i f z (π / 2)) ^ 2 * (Work.Spaces.w z) ^ 2)
-          = fun _ : ℝ => (0 : ℝ) := by
-        funext z; rw [hzero z]; ring
-      rw [hfun, MeasureTheory.integral_zero]
-      exact mul_nonneg (by norm_num) (Work.Spaces.HkSq_nonneg α 4 f)
-    · have hθint : θ ∈ Set.Ioo 0 (π / 2) :=
-        ⟨lt_of_le_of_ne hθge (Ne.symm hθ0), lt_of_le_of_ne hθle hθ2⟩
-      have hpt : ∀ z ∈ Work.Spaces.Iz,
-          (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            ≤ 5 * (∫ θ' in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f z θ') := by
-        intro z hz
-        have hzle : (0 : ℝ) ≤ z := hz
-        rcases eq_or_lt_of_le hzle with hz0 | hzpos
-        · rw [← hz0]
-          have hw0 : Work.Spaces.w 0 = 0 := by simp [Work.Spaces.w]
-          rw [hw0]
-          have hzero : (Work.Spaces.mixed j i f 0 θ) ^ 2 * (0 : ℝ) ^ 2 = 0 := by ring
-          rw [hzero]
-          exact mul_nonneg (by norm_num)
-            (integral_nonneg fun θ' => Work.Spaces.HkIntegrand_nonneg α 4 f 0 θ')
-        · exact slice_bound hα hα1 hF hmem hi hij hzpos hθint
-      have hInt : MeasureTheory.IntegrableOn (fun z : ℝ =>
-          5 * (∫ θ' in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f z θ'))
-          Work.Spaces.Iz := hmem.2.const_mul 5
-      have hmono := MeasureTheory.integral_mono_of_nonneg
-        (μ := MeasureTheory.volume.restrict Work.Spaces.Iz)
-        (f := fun z : ℝ => (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2)
-        (g := fun z : ℝ => 5 * (∫ θ' in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f z θ'))
-        (Eventually.of_forall fun z => by positivity) hInt
-        (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ici hpt)
-      calc (∫ z in Work.Spaces.Iz,
-              (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2)
-          ≤ ∫ z in Work.Spaces.Iz,
-              5 * (∫ θ' in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f z θ') := hmono
-        _ = 5 * Work.Spaces.HkSq α 4 f := by
-            rw [MeasureTheory.integral_const_mul]
-            rfl
 
 end Work.FTS.TransportS.T2SupB2

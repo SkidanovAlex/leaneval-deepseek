@@ -1,42 +1,16 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/Coer1Open.lean` — the level-one coercivity of `𝓛_Γ^T` on
-the **open** class, assembled from the four slot estimates
-
-`CoercivityFix/Coer1T/coer1_LGammaT.lean` proves the paper's Corollary
-`FirstDerivativeCoercivity` at level one,
-
-  `HkSq α 1 f ≤ H1IP α (𝓛_Γ^T f) f`   (`α ≤ 10⁻¹⁴`, `f ∈ CoerAdm α`),
-
-by assembling four *slot estimates* (`slotDz`, `slotEta`, `slotW`, `slotGam`) with the arithmetic
-ledger (`ledger`) and the two transfer-defect comparisons (`EDthW_le_EDth_Q`, `EL12z_le_Q`).
-
-This file performs the assembly on the open class `CoerAdmO`:
-
-* the ledger is `LedgerO.ledger_O` (proved; the only class-dependent input is
-  `StrongPersist.HkSq_one_eq_SO`);
-* the two defect comparisons are `EDthW_EL12z_open` (proved);
-* the four slot estimates are taken as **hypotheses** — so this lemma is the *assembly point* of
-  the open-class level-one coercivity, independent of the order in which the individual slot
-  ports (`slotDz_LGammaT_O`, `slotEta_LGammaT_O`, `slotW_LGammaT_O`, `slotGam_LGammaT_O`) land.
-  Their statements are exactly the four hypotheses of `LedgerO.ledger_O`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongEps.EpsE4Thr.LedgerO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.EDthW_EL12z_open
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
 import Submission.Work.FTS.StrongEps.EpsE4Thr.hardyHyp_of_coerAdmO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IntPkg_O
 import Submission.Work.FTS.StrongEps.EpsE4Thr.slotEta_LGammaT_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.slotW_LGammaT_O
 import Submission.Work.FTS.StrongEps.EpsE4Thr.slotGam_LGammaT_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.slotDz_LGammaT_O
-import Submission.Work.FTS.CoercivityFix.Coer1T.gammaL2Bnd_fts
-import Submission.Work.FTS.CoercivityFix.Coer1T.gammaPointwiseBnd_fts
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.JepsMarginalZero_zero
+import Submission.Work.FTS.StrongEps.epsWP_abs_le_on_compact
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.T2Sup.srestBound
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -89,24 +63,6 @@ theorem coer1_LGammaT_O_of_slots {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1 / 10
   obtain ⟨hED, hEL⟩ := EDthW_EL12z_open (α := α) hα hso hm2 hHH
   exact ledger_O α hα hα1 hso hm1 hED hEL hP hQ hR hS
 
-/-- **The level-one coercivity of `𝓛_Γ^T` on the open class, with only the `D_z`-slot estimate
-outstanding.**  The `η`-, `W`- and `γ`-slots are supplied by the proved open ports
-(`slotEta_LGammaT_O`, `slotW_LGammaT_O`, `slotGam_LGammaT_O`), the Hardy bundle by
-`hardyHyp_of_coerAdmO`, and the two `γ`-packages by `gammaL2Bnd_fts`/`gammaPointwiseBnd_fts`. -/
-theorem coer1_LGammaT_O_of_dzslot {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1 / 10 ^ 14)
-    {f : Fn} (hf : CoerAdmO α f) (hIP : IntPkgO α f)
-    (hP : (1 / 5) * Work.Coercivity.EDz f - 100 * Work.Coercivity.EfEta f
-        - 100 * Work.Coercivity.EDth α f - 10 ^ 12 * Work.Coercivity.Ef f
-      ≤ Work.Coercivity.wip
-          (fun z θ => Work.Spaces.w z ^ 2 * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta))
-          (Work.Spaces.Dz (Work.Coercivity.LGammaT α f)) (Work.Spaces.Dz f)) :
-    Work.Spaces.HkSq α 1 f ≤ Work.Coercivity.H1IP α (Work.Coercivity.LGammaT α f) f := by
-  have hHH : Work.Coercivity.HardyHyp f := hardyHyp_of_coerAdmO hα hα1 hf
-  exact coer1_LGammaT_O_of_slots hα hα1 hf hHH hP
-    (slotEta_LGammaT_O hα hα1 hf hIP hHH (Work.FTS.CoercivityFix.Coer1T.gammaL2Bnd_fts α hα hα1))
-    (slotW_LGammaT_O hα hα1 hf hIP hHH (Work.FTS.CoercivityFix.Coer1T.gammaL2Bnd_fts α hα hα1))
-    (slotGam_LGammaT_O hα hα1 hf hIP hHH
-      (Work.FTS.CoercivityFix.Coer1T.gammaPointwiseBnd_fts α hα))
 
 
 /-- **The level-one coercivity of `𝓛_Γ^T` on the open coercivity class** — the paper's Corollary

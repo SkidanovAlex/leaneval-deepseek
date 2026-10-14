@@ -1,35 +1,11 @@
-/-
-# `Work.FTS.StrongEps.E5Aux2.FK_JfamP_tendsto`
-
-The angular moment `𝔽K F z = ∫_θ F(z,θ) K(θ) dθ` (`K(θ) = 3 sinθ cos²θ`) of the
-`P₀`-projected, mollified approximating families `Ftau α (JfamP ρ (ε n) (G n)) s`
-converges, at every fixed `z > 0`, to the angular moment of the limit profile
-`Ftau α g s`.
-
-The `θ`-integration is over the compact interval `Iθ = [0,π/2]`, so this is the
-dominated convergence theorem for the measure `volume.restrict Iθ`:
-
-* the *pointwise* convergence of the `θ`-slices at every interior point
-  `(z,θ) ∈ (0,∞) × (0,π/2)` is the `(j,i) = (0,0)` slot of `mixed_JfamP_tendsto`;
-* the *domination* is supplied by the interface hypothesis `hDec` — its first
-  `SlotMaj` clause bounds the projected slice by `Maj` (and `Maj ≤ 1`) — together
-  with the elementary bound `|F_*(z,θ)| ≤ 20` on `θ ∈ Iθ` and `|K| ≤ 3`, giving
-  the constant majorant `63`;
-* the *a.e. strong measurability* of the integrands comes from the open-quadrant
-  smoothness of the slices (`ClassC.reg`, i.e. `SmoothOpen` of the `P₀`-projection)
-  and the explicit continuity of `F_*` on `(0,π/2)` (`Γ(θ) = (sinθ cos²θ)^{α/3}` is
-  there an `rpow` with positive base).
-
-Everything in this file is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Submission.Work.FTS.StrongEps.EpsMem
-import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.mixed_JfamP_tendsto
 import Submission.Work.FTS.StrongEps.EpsWPLim.Basic
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

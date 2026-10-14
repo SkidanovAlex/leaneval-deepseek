@@ -2,28 +2,25 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS_RegExport.RXT.CoeffJetsDefs
-import Submission.Work.FTS_RegExport.RXT.jc3
-import Submission.Work.FTS_RegExport.RXT.coeff_C2
-import Submission.Work.FTS_RegExport.RXT.datum_bound
-import Submission.Work.FTS_RegExport.RXT.velVanish2
-import Submission.Work.FTS_RegExport.RXA2w.lim_mixed_weighted_proved
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS_RegExport.RXB.l12_zero_lim_proved
-import Submission.Work.FTS_RegExport.RXT.Sys.weighted_integrated_mp
-import Submission.Work.FTS_RegExport.RXT.Sys.mixed_integral_identity
-import Submission.Work.FTS_RegExport.RXT.Sys.gdot_system
 import Submission.Work.FTS_RegExport.RXT.Sys.gdot_regular
-import Submission.Work.FTS_RegExport.RXT.Sys.forcing_bound
-import Submission.Work.FTS_RegExport.RXT.Sys.gdot_eq_profile
-import Submission.Work.FTS_RegExport.RXT.Sys.intervalIntegrable_mixed_gdot
-import Submission.Work.FTS_RegExport.RXT.Sys.intervalIntegrable_if_zero_add
-import Submission.Work.FTS_RegExport.RXT.Sys.intervalIntegral_if_zero
-import Submission.Work.FTS_RegExport.RXT.Sys.coeff_jets
-import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_z
+import Submission.Work.FTS_RegExport.RXT.Sys.gdot_system
 import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_theta
-import Submission.Work.FTS_RegExport.RXT.Sys.datum_jets
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_z
+import Submission.Work.FTS_RegExport.RXT.Sys.mixed_integral_identity
+import Submission.Work.FTS_RegExport.RXT.coeff_C2
+import Submission.Work.FTS_RegExport.RXT.st1_of_weighted
+import Submission.Work.FTS_RegExport.RXT.st1_stdata
+import Submission.Work.FTS_RegExport.RXT.st1_stdata2
+import Submission.Work.FTS_RegExport.RXT.velVanish2
+import Submission.Work.FTS_RegExport.RXT0.L12FtauTauLip
+import Submission.Work.FTS_RegExport.RXT0.RXJets.coeffJetsJointCont
+import Submission.Work.FTS_RegExport.RXT0.RXJets.coeffcR
+import Submission.Work.FTS_RegExport.RXVPMain
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

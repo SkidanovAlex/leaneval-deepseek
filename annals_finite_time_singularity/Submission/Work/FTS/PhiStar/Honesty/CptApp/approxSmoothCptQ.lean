@@ -1,22 +1,3 @@
-/-
-# `Work.FTS.PhiStar.Honesty.CptApp.approxSmoothCptQ`
-
-`SmoothCptQ (approx n F)` for `F` merely `C^∞` on the *open* quadrant and `2 ≤ n`.
-
-The two halves:
-
-* **compact support** — `approx n F = chiR n · (zetaR n · F - lam n F · rho)`: away from
-  `(1/n, 2n)` the radial cutoff `chiR n` vanishes, and away from
-  `(1/n, π/2 - 1/n) ∪ (1, 3/2)` both `zetaR n` and `rho` vanish, so the support lies in
-  `[1/n, 2n] × [1/n, max (3/2) (π/2 - 1/n)]`, a rectangle strictly inside the open quadrant.
-* **smoothness** — `chiR n`, `zetaR n`, `rho` are globally `C^∞`; the product
-  `chiR n z · zetaR n θ · F z θ` is globally `C^∞` because the multiplier
-  `(z,θ) ↦ chiR n z · zetaR n θ` has its topological support inside the open quadrant, where `F`
-  is `C^∞` (`contDiff_mul_of_tsupport_subset`, a locality lemma); and `z ↦ lam n F z` is `C^∞`
-  on a neighbourhood of `supp (chiR n)` (a truncated angular integral of a smooth integrand over
-  a compact interval strictly inside `(0,π/2)`), whence `fun z => chiR n z * lam n F z` is
-  globally `C^∞`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
@@ -24,9 +5,9 @@ import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongEps.EpsSlotAux
+import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

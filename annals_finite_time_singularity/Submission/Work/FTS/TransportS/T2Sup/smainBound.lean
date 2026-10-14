@@ -1,39 +1,154 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TransportS/T2Sup/smainBound`: the `Smain` summand of the per-slot transport pairing
-
-This module proves the estimate for the `Smain` summand of the Leibniz expansion of the
-transport pairing, i.e. for the pairing
-
-  `canonW q z θ · f z θ · D_z(mixed b a g) z θ · mixed b a g z θ`
-
-with `a + b ≤ 4` and `q ≤ η` (when `a = 0`) resp. `q ≤ γ`.  The estimate is
-`|∫_z ∫_θ ·| ≤ 2 Mf HkSq α 4 g`, together with the integrability of the radial marginal.
-
-## Route
-
-* `Smain f g a b z θ = f z θ · mixed (b+1) a g z θ`, so the pairing is
-  `canonW q · f · D_z(mixed b a g) · mixed b a g`.
-* When `a + b = 4` the `g`-slot `mixed b a g` has order `4` and its `D_z` has order `5`, so the
-  pointwise (Cauchy–Schwarz) route only gives `Mf · HkSq α 5 g`; the sharp estimate is the
-  radial integration by parts `Main.topSlotBound`, whose boundary terms come from
-  `BdryTraces α 4 g`.
-* When `a + b ≤ 3` both factors are honest `ℋ⁴`-slots, so the pointwise AM–GM
-  (`canonW |X||Y| ≤ (canonW X² + canonW Y²)/2 ≤ HkIntegrand α 4 g`) gives `Mf · HkSq α 4 g`.
-* The integrability of the radial marginal is proved in both cases by domination: the marginal
-  is bounded by `Mf · ∫_θ (HkIntegrand α k₁ g + HkIntegrand α k₂ g)` with
-  `(k₁,k₂) = (5,4)` (top slot) resp. `(4,4)` (easy case), and the `θ`-marginals of
-  `HkIntegrand` are integrable by `HkMem`.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.TransportS.T2Sup.FinalAux
-import Submission.Work.FTS.TransportS.T2Sup.Main
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.N6Trans.L6Core
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
 import Submission.Work.FTS.TransportS.SlotT2.Basic
 import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T2Sup.FinalAux
+import Submission.Work.FTS.TransportS.T3SlotAux.Pointwise
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6TP.termBound =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `Work.FTS.StrongPersist.N6TP.termBound`
+
+The *pointwise* per-summand estimate of the level-six `D_z`-transport Leibniz expansion
+(the pointwise companion of `Work.FTS.StrongPersist.N6TP.summandBound`).
+
+At a slot `(a,b)` of total order `≤ 6` and a Leibniz index `(a₁,b₁) ≠ (0,0)`, the summand
+
+`ρ · (D_z^{b₁}D_θ^{a₁} f) · (D_z^{b-b₁+1}D_θ^{a-a₁} g) · (D_z^bD_θ^a g)`
+
+of the expansion of `mixed b a (f · D_z g)` is dominated pointwise on the open quadrant by
+
+`(1000 |f|_{𝒲^{6,∞}} + Cf · CoefTh 5 f) · HkIntegrand α 6 g`.
+
+The two regimes:
+
+* `a₁ = 0` (so `b₁ ≥ 1`): the pure radial derivative `D_z^{b₁}f` is bounded by
+  `1000 |f|_{𝒲^{6,∞}}` (`dzIter_le_WlInf6`), and the leaf weight `ρ` paired with the two
+  `g`-slots is bounded by `HkIntegrand α 6 g` (`l6_summand_le_zero`, which runs the
+  two-factor AM–GM estimate `canonW_pair_le6` at the canonical exponent of the slot).
+* `1 ≤ a₁`: the caller's hypothesis supplies the *angular* gain
+  `|D_z^{b₁}D_θ^{a₁}f| ≤ Cf sin(2θ) · CoefTh 5 f`; the extra factor `sin(2θ)` turns the leaf
+  weight into `canonW (α/10)` (`sin_mul_leafW_le_canonW`), and the two *mixed* `g`-slots are
+  again absorbed by `canonW_pair_le6` — this time at the exponent `α/10`, which is `≤ η` and
+  `≤ γ`, so it is admissible in both slots.
+-/
+
+namespace Work.FTS.StrongPersist.N6TP
+
+
+
+
+end Work.FTS.StrongPersist.N6TP
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.T1SlotZ.Base2 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.N6Trans.T1SlotZ
+
+open Work.FTS.TransportS.SlotT2 (canonW canonW_nonneg canonW_eta_eq canonW_gam_eq)
+
+set_option autoImplicit false
+set_option maxHeartbeats 3200000
+
+/-! ## Joint continuity of `Wt` -/
+
+theorem continuousOn_Wt_Q0 (α : ℝ) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.Wt α p.1 p.2) Work.FTS.EllipticEst.Q0 := by
+  have hfun : (fun p : ℝ × ℝ => Work.Spaces.Wt α p.1 p.2)
+      = fun p : ℝ × ℝ => Work.Spaces.w p.1
+          * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.gam α / 2)) := by
+    funext p
+    simp only [Work.Spaces.Wt, Work.Spaces.wTheta]
+  rw [hfun]
+  refine ContinuousOn.mul ?_ ?_
+  · show ContinuousOn (fun p : ℝ × ℝ => (1 + p.1) ^ 2 / p.1 ^ 2) Work.FTS.EllipticEst.Q0
+    exact ContinuousOn.div ((continuousOn_const.add continuousOn_fst).pow 2)
+      (continuousOn_fst.pow 2) (fun p hp => pow_ne_zero 2 (ne_of_gt hp.1))
+  · refine ((Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn).rpow_const ?_
+    intro p hp
+    refine Or.inl (ne_of_gt ?_)
+    show 0 < Real.sin (2 * p.2)
+    apply Real.sin_pos_of_pos_of_lt_pi
+    · have h := hp.2.1; linarith
+    · have h := hp.2.2; linarith [Real.pi_pos]
+
+/-! ## An arithmetic monotonicity -/
+
+
+/-! ## A function dominated by the `ℋ⁶`-integrand is `L²` -/
+
+
+/-! ## The two-dimensional Cauchy–Schwarz -/
+
+
+end Work.FTS.StrongPersist.N6Trans.T1SlotZ
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.T2Sup.Final =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.TransportS.T2Sup
+
+set_option autoImplicit false
+
+open Work.FTS.TransportS.SlotT2
+
+
+/-- The three leaf weights are the canonical weights `canonW η`, `canonW 0` and `canonW γ`. -/
+theorem leafWeight_eq_canon : (Work.FTS.TransportS.leafEta = canonW Work.Spaces.eta) ∧
+    (Work.FTS.TransportS.leafOne = canonW 0) ∧
+    (∀ α : ℝ, Work.FTS.TransportS.leafGam α = canonW (Work.Spaces.gam α)) := by
+  refine ⟨rfl, ?_, fun α => rfl⟩
+  funext z θ
+  simp only [Work.FTS.TransportS.leafOne, canonW, neg_zero, Real.rpow_zero, mul_one]
+
+
+end Work.FTS.TransportS.T2Sup
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.T2Sup.smainBound =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -186,187 +301,13 @@ theorem smain_slice_abs_le {α q Mf : ℝ} (hMf : 0 ≤ Mf) {f g : ℝ → ℝ �
 
 /-! ## Integrability of the radial marginal -/
 
-/-- **The marginal of the `Smain` summand is integrable.**  The dominating function is
-`Mf · (∫_θ HkIntegrand α k₁ g + ∫_θ HkIntegrand α k₂ g)`, integrable by `HkMem`. -/
-theorem smain_marginal_integrable {α q Mf : ℝ} (hMf : 0 ≤ Mf) {f g : ℝ → ℝ → ℝ} {a b : ℕ}
-    {k₁ k₂ : ℕ}
-    (hFsm : Work.FTS.EllipticEst.SmoothOpen f)
-    (hGq : Work.FTS.LocData.SmoothQuad g)
-    (hm1 : Work.Spaces.HkMem α k₁ g) (hm2 : Work.Spaces.HkMem α k₂ g)
-    (hf : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 → |f z θ| ≤ Mf)
-    (hX : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-      canonW q z θ * (Work.Spaces.mixed (b + 1) a g z θ) ^ 2
-        ≤ Work.Spaces.HkIntegrand α k₁ g z θ)
-    (hY : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-      canonW q z θ * (Work.Spaces.mixed b a g z θ) ^ 2
-        ≤ Work.Spaces.HkIntegrand α k₂ g z θ) :
-    MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ,
-        canonW q z θ * f z θ * Work.Spaces.mixed (b + 1) a g z θ
-          * Work.Spaces.mixed b a g z θ) Work.Spaces.Iz := by
-  have hdom : MeasureTheory.Integrable
-      (fun z => Mf * ((∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α k₁ g z θ)
-          + (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α k₂ g z θ)))
-      (MeasureTheory.volume.restrict Work.Spaces.Iz) := (hm1.2.add hm2.2).const_mul Mf
-  have haesm : MeasureTheory.AEStronglyMeasurable
-      (fun z => ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-          * Work.Spaces.mixed (b + 1) a g z θ
-          * Work.Spaces.mixed b a g z θ) (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
-    MeasureTheory.AEStronglyMeasurable.integral_prod_right'
-      (Work.Spaces.aesm_of_continuousOn_Qd
-        (fun p : ℝ × ℝ => canonW q p.1 p.2 * f p.1 p.2
-          * Work.Spaces.mixed (b + 1) a g p.1 p.2 * Work.Spaces.mixed b a g p.1 p.2)
-        ((((continuousOn_canonW q).mul hFsm.continuousOn).mul
-          ((SmoothQuad.smoothOpen hGq).mixed (b + 1) a |>.continuousOn)).mul
-          ((SmoothQuad.smoothOpen hGq).mixed b a |>.continuousOn)))
-  refine MeasureTheory.Integrable.mono' hdom haesm ?_
-  refine ae_of_forall_Ioi (fun z hz => ?_)
-  have hslice := smain_slice_abs_le (α := α) (q := q) (Mf := Mf) hMf (z := z)
-    (hm1.1 z (le_of_lt hz)) (hm2.1 z (le_of_lt hz))
-    (fun θ hθ hθ2 => hf z θ hz hθ hθ2) (fun θ hθ hθ2 => hX z θ hz hθ hθ2)
-    (fun θ hθ hθ2 => hY z θ hz hθ hθ2)
-  simpa [Real.norm_eq_abs] using hslice
 
 /-! ## The easy case `a + b ≤ 3` -/
 
-/-- **The easy case.**  When `a + b ≤ 3` both `g`-factors are honest order-`≤ 4` slots, so the
-pointwise AM–GM bound gives the sharp constant `2 Mf` at order `4`. -/
-theorem smain_easy {α q Mf : ℝ} (hMf : 0 ≤ Mf) {f g : ℝ → ℝ → ℝ} {a b : ℕ}
-    (hFsm : Work.FTS.EllipticEst.SmoothOpen f) (hGq : Work.FTS.LocData.SmoothQuad g)
-    (hm4 : Work.Spaces.HkMem α 4 g)
-    (hf : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 → |f z θ| ≤ Mf)
-    (hX : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-      canonW q z θ * (Work.Spaces.mixed (b + 1) a g z θ) ^ 2
-        ≤ Work.Spaces.HkIntegrand α 4 g z θ)
-    (hY : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-      canonW q z θ * (Work.Spaces.mixed b a g z θ) ^ 2
-        ≤ Work.Spaces.HkIntegrand α 4 g z θ) :
-    MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-        * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ)
-        Work.Spaces.Iz ∧
-      |∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-          * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ|
-        ≤ 2 * Mf * Work.Spaces.HkSq α 4 g := by
-  refine ⟨smain_marginal_integrable (k₁ := 4) (k₂ := 4) hMf hFsm hGq hm4 hm4 hf hX hY, ?_⟩
-  have h1 : |∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-        * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ|
-      ≤ ∫ z in Work.Spaces.Iz, Mf * ((∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 g z θ)
-          + (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 g z θ)) := by
-    rw [← Real.norm_eq_abs]
-    refine le_trans (MeasureTheory.norm_integral_le_integral_norm _) ?_
-    refine MeasureTheory.integral_mono_of_nonneg (Filter.Eventually.of_forall fun z => norm_nonneg _)
-      ((hm4.2.add hm4.2).const_mul Mf) ?_
-    refine ae_of_forall_Ioi fun z hz => ?_
-    have hslice := smain_slice_abs_le (α := α) (q := q) (Mf := Mf) hMf (z := z)
-      (hm4.1 z (le_of_lt hz)) (hm4.1 z (le_of_lt hz))
-      (fun θ hθ hθ2 => hf z θ hz hθ hθ2) (fun θ hθ hθ2 => hX z θ hz hθ hθ2)
-      (fun θ hθ hθ2 => hY z θ hz hθ hθ2)
-    simpa [Real.norm_eq_abs] using hslice
-  refine le_trans h1 (le_of_eq ?_)
-  rw [MeasureTheory.integral_const_mul, MeasureTheory.integral_add hm4.2 hm4.2,
-    Work.Spaces.HkSq]
-  ring
 
 /-! ## The main statement -/
 
-theorem smainBound {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    {f g : ℝ → ℝ → ℝ} {a b : ℕ} {q Mf : ℝ} (hMf : 0 ≤ Mf)
-    (hFsm : Work.FTS.EllipticEst.SmoothOpen f) (hGq : Work.FTS.LocData.SmoothQuad g)
-    (hmg4 : Work.Spaces.HkMem α 4 g) (hmg5 : Work.Spaces.HkMem α 5 g)
-    (hbdry : Work.FTS.Nonlin.BdryTraces α 4 g)
-    (hab : a + b ≤ 4) (hq0 : a = 0 → q ≤ Work.Spaces.eta) (hqγ : q ≤ Work.Spaces.gam α)
-    (hf : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 → |f z θ| ≤ Mf)
-    (hDf : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 → |Work.Spaces.Dz f z θ| ≤ Mf) :
-    MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ,
-        Work.FTS.TransportS.SlotT2.canonW q z θ * Work.FTS.TransportS.T2Sup.Smain f g a b z θ
-          * Work.Spaces.mixed b a g z θ) Work.Spaces.Iz ∧
-      |∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ,
-          Work.FTS.TransportS.SlotT2.canonW q z θ * Work.FTS.TransportS.T2Sup.Smain f g a b z θ
-            * Work.Spaces.mixed b a g z θ| ≤ 2 * Mf * Work.Spaces.HkSq α 4 g := by
-  -- unfold `Smain` (up to the reassociation of the product)
-  have hInt : (fun z => ∫ θ in Work.Spaces.Iθ,
-        canonW q z θ * Smain f g a b z θ * Work.Spaces.mixed b a g z θ)
-      = fun z => ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-          * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ := by
-    funext z
-    refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun θ => ?_)
-    dsimp only
-    rw [show Smain f g a b z θ = f z θ * Work.Spaces.mixed (b + 1) a g z θ from rfl]
-    ring
-  rw [hInt]
-  rcases lt_or_eq_of_le hab with hlt | heq
-  · -- ## Case `a + b ≤ 3`
-    rcases eq_or_ne a 0 with ha0 | ha0
-    · -- `a = 0`, `b ≤ 3`: two pure `D_z`-slots
-      subst ha0
-      have hqη : q ≤ Work.Spaces.eta := hq0 rfl
-      refine smain_easy (α := α) (q := q) (Mf := Mf) hMf hFsm hGq hmg4 hf ?_ ?_
-      · intro z θ hz hθ0 hθ2
-        simpa only [Work.Spaces.mixed_zero_right] using
-          (canonW_mul_z_le_of_le (α := α) (q := q) 4 hqη (z := z) (θ := θ) hθ0 hθ2
-            (j := b + 1) (by omega))
-      · intro z θ hz hθ0 hθ2
-        simpa only [Work.Spaces.mixed_zero_right] using
-          (canonW_mul_z_le_of_le (α := α) (q := q) 4 hqη (z := z) (θ := θ) hθ0 hθ2
-            (j := b) (by omega))
-    · -- `a ≥ 1`, `a + b ≤ 3`: two mixed slots
-      have ha1 : 1 ≤ a := by omega
-      refine smain_easy (α := α) (q := q) (Mf := Mf) hMf hFsm hGq hmg4 hf ?_ ?_
-      · intro z θ hz hθ0 hθ2
-        exact canonW_mul_mixed_le_of_le (α := α) 4 hqγ hθ0 hθ2 (j := b + 1) (i := a)
-          ha1 (by omega)
-      · intro z θ hz hθ0 hθ2
-        exact canonW_mul_mixed_le_of_le (α := α) 4 hqγ hθ0 hθ2 (j := b) (i := a)
-          ha1 (by omega)
-  · -- ## Case `a + b = 4`: the top slot
-    have hsub : 4 - a = b := by omega
-    have hDzfun : Work.Spaces.Dz (Work.Spaces.mixed b a g) = Work.Spaces.mixed (b + 1) a g := by
-      funext z θ
-      simp only [Work.Spaces.mixed]
-      rw [Work.Spaces.DzIter_succ]
-    have hint : MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-        * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ)
-        Work.Spaces.Iz := by
-      rcases eq_or_ne a 0 with ha0 | ha0
-      · subst ha0
-        have hqη : q ≤ Work.Spaces.eta := hq0 rfl
-        refine smain_marginal_integrable (k₁ := 5) (k₂ := 4) hMf hFsm hGq hmg5 hmg4 hf ?_ ?_
-        · intro z θ hz hθ0 hθ2
-          simpa only [Work.Spaces.mixed_zero_right] using
-            (canonW_mul_z_le_of_le (α := α) (q := q) 5 hqη (z := z) (θ := θ) hθ0 hθ2
-              (j := b + 1) (by omega))
-        · intro z θ hz hθ0 hθ2
-          simpa only [Work.Spaces.mixed_zero_right] using
-            (canonW_mul_z_le_of_le (α := α) (q := q) 4 hqη (z := z) (θ := θ) hθ0 hθ2
-              (j := b) (by omega))
-      · have ha1 : 1 ≤ a := by omega
-        refine smain_marginal_integrable (k₁ := 5) (k₂ := 4) hMf hFsm hGq hmg5 hmg4 hf ?_ ?_
-        · intro z θ hz hθ0 hθ2
-          exact canonW_mul_mixed_le_of_le (α := α) 5 hqγ hθ0 hθ2 (j := b + 1) (i := a)
-            ha1 (by omega)
-        · intro z θ hz hθ0 hθ2
-          exact canonW_mul_mixed_le_of_le (α := α) 4 hqγ hθ0 hθ2 (j := b) (i := a)
-            ha1 (by omega)
-    refine ⟨hint, ?_⟩
-    -- the radial integration by parts in the top slot
-    have htr : ∀ θ ∈ Set.Ioo (0 : ℝ) (π / 2),
-        Filter.Tendsto (fun z => z * (Work.Spaces.mixed (4 - a) a g z θ * Work.Spaces.w z) ^ 2)
-          (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds 0) ∧
-        Filter.Tendsto (fun z => z * (Work.Spaces.mixed (4 - a) a g z θ * Work.Spaces.w z) ^ 2)
-          Filter.atTop (nhds 0) := by
-      intro θ hθ
-      have h := (hbdry a b hab).1 θ hθ
-      simpa only [hsub] using h
-    have hres := topSlotBound (α := α) (Mf := Mf) a (by omega) q hMf hq0 hqγ hFsm hGq
-      hmg4 hmg5 hf hDf htr
-    have hgoal_eq : (∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-          * Work.Spaces.mixed (b + 1) a g z θ * Work.Spaces.mixed b a g z θ)
-        = ∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ, canonW q z θ * f z θ
-          * Work.Spaces.Dz (Work.Spaces.mixed (4 - a) a g) z θ
-          * Work.Spaces.mixed (4 - a) a g z θ := by
-      refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
-      refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun θ => ?_)
-      rw [hsub, hDzfun]
-    rw [hgoal_eq]
-    exact hres
 
 end Work.FTS.TransportS.T2Sup
+end
+end

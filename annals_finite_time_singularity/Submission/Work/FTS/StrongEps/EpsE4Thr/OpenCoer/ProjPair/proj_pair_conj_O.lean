@@ -1,11 +1,161 @@
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Pieces.PsgEngine
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.PhiStar.Series.RemSetup
 import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenCoer.SlotWCommon
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IntPkgO
-import Submission.Work.FTS.CoercivityFix.Coer1T.slotW_LGammaT
-import Submission.Work.Coercivity.Defs
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.JepsMarginalZero_zero
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_EllLimOK.PkgJets.hkMemOfJConv
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKjet.L12
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.Prop.BSlotTop.Assembly =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Prop.BSlotTop
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- The one-dimensional angular estimate `OneD k` of `TT.ESW`, supplied by the proved
+`sliceAngGenFts`. -/
+theorem oneDFts (k : ℕ) (hk : 2 ≤ k) : Work.FTS.EllipticEst.TT.ESW.OneD k := by
+  obtain ⟨C, hCpos, hC⟩ := sliceAngGenFts k hk
+  refine ⟨C, hCpos, ?_⟩
+  intro γ u g hγ1 hγ2 hu hc h0 hpi hg hI1 hI2 hI3 hI4 hI5 hI6
+  exact hC γ u g hγ1 hγ2 hu hc h0 hpi hg hI1 hI2 hI3 hI4 hI5 hI6
+
+/-- **The `B`-half of the induction step of `prop:Hk`**: the top angular slot of `∂_θθΨ` is
+controlled by `|F|_k`. -/
+theorem B_slot_bound_fts (D : ℝ) (hD : 0 < D) :
+    ∀ k : ℕ, 3 ≤ k → ∃ C : ℝ, 0 < C ∧
+    ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
+      Work.FTS.EllipticEst.TT.EllWeakPos α k F Ψ →
+      α ^ 2 * Work.Spaces.HkNorm α (k - 1)
+            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+          + Work.Spaces.HkNorm α (k - 1) (Work.Spaces.pthIter 2 Ψ)
+        ≤ D * Work.Spaces.HkNorm α k F →
+      α ^ 2 * Work.Spaces.HkNorm α (k - 1)
+            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 (Work.Spaces.DzIter 1 Ψ) z θ)
+          + Work.Spaces.HkNorm α (k - 1) (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 1 Ψ))
+        ≤ D * Work.Spaces.HkNorm α k F →
+      Real.sqrt (Work.FTS.EllipticEst.remov.Step.Tk α k (Work.Spaces.pthIter 2 Ψ))
+        ≤ C * Work.Spaces.HkNorm α k F := by
+  intro k hk
+  obtain ⟨Cc, hCcpos, hchain⟩ :=
+    Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform k (by omega)
+  obtain ⟨CE, hCEpos, hE⟩ := Work.FTS.EllipticEst.TT.ESW.E_le_HkSq k (by omega)
+  obtain ⟨Cj, hCjpos, hJ⟩ :=
+    Work.FTS.EllipticEst.remov.high_slice_chain_slots D hD k (by omega)
+  obtain ⟨Cs, hCspos, hsrc⟩ := Gsum_bound_fts D hD k hk
+  obtain ⟨CU, hCUpos, hU⟩ :=
+    Work.FTS.EllipticEst.TT.ESW.U_le_of_1d D hD k hk (oneDFts k (by omega))
+  refine ⟨Real.sqrt (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2))) + 1,
+    by positivity, ?_⟩
+  intro α F Ψ hα hα4 hwk h1 h2
+  have hsm : Work.FTS.EllipticEst.SmoothOpen Ψ :=
+    Work.FTS.EllipticEst.smoothOpen_of_forall hwk.smooth
+  have hsmB : Work.FTS.EllipticEst.SmoothOpen (Work.Spaces.pthIter 2 Ψ) :=
+    (hsm.pth).pth
+  have memB : Work.Spaces.HkMem α k (Work.Spaces.pthIter 2 Ψ) := hwk.memB
+  have memB' : Work.Spaces.HkMem α (k - 1) (Work.Spaces.pthIter 2 Ψ) :=
+    Work.FTS.EllipticEst.TT.HkMem_descend_open (α := α) (k := k - 1) (l := k)
+      (by omega) (Work.FTS.EllipticEst.SmoothOpen.forall hsmB) memB
+  have hb : Work.Spaces.HkNorm α (k - 1) (Work.Spaces.pthIter 2 Ψ)
+      ≤ D * Work.Spaces.HkNorm α k F := by
+    have h0 : 0 ≤ α ^ 2 * Work.Spaces.HkNorm α (k - 1)
+        (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) :=
+      mul_nonneg (sq_nonneg α) (Work.Spaces.HkNorm_nonneg α (k - 1) _)
+    linarith [h1]
+  have hE' : EsumrC α k Ψ ≤ CE * Work.Spaces.HkSq α (k - 1) (Work.Spaces.pthIter 2 Ψ) :=
+    hE α Ψ hα hsm memB'
+  have hJ' : EjsumC α k Ψ ≤ Cj * Work.Spaces.HkSq α k F := hJ α F Ψ hα hα4 hwk hb h2
+  have hsrc' : GsumC α k F Ψ ≤ Cs * Work.Spaces.HkSq α k F := hsrc α F Ψ hα hα4 hwk h1 h2
+  have hη : EtaslC α Ψ ≤ Work.Spaces.HkSq α (k - 1) (Work.Spaces.pthIter 2 Ψ) :=
+    Work.FTS.EllipticEst.TT.ESW.eta_slot_le memB'
+  have hsplit : LoslC α Ψ ≤ 20 * EtaslC α Ψ :=
+    Work.FTS.EllipticEst.TT.ESW.low_order_split hwk
+  have hU' : UslC α k Ψ ≤ CU * (GsumC α k F Ψ + EjsumC α k Ψ + EtaslC α Ψ + LoslC α Ψ) := by
+    simp only [UslC, GsumC, EjsumC, EtaslC, LoslC]
+    have h := hU α F Ψ hα hα4 hwk h1 h2
+    linarith [h]
+  have hchain' : Work.FTS.EllipticEst.remov.Step.Tk α k (Work.Spaces.pthIter 2 Ψ) ≤
+      Cc * (EsumrC α k Ψ + UslC α k Ψ) := hchain α Ψ hsm memB
+  have hcase : Work.Spaces.HkSq α (k - 1) (Work.Spaces.pthIter 2 Ψ)
+      ≤ D ^ 2 * Work.Spaces.HkSq α k F := by
+    have hsq : Work.Spaces.HkSq α (k - 1) (Work.Spaces.pthIter 2 Ψ)
+        = (Work.Spaces.HkNorm α (k - 1) (Work.Spaces.pthIter 2 Ψ)) ^ 2 := by
+      rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α (k - 1) _)]
+    have hsq2 : Work.Spaces.HkSq α k F = (Work.Spaces.HkNorm α k F) ^ 2 := by
+      rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α k F)]
+    rw [hsq, hsq2]
+    calc (Work.Spaces.HkNorm α (k - 1) (Work.Spaces.pthIter 2 Ψ)) ^ 2
+        ≤ (D * Work.Spaces.HkNorm α k F) ^ 2 :=
+          pow_le_pow_left₀ (Work.Spaces.HkNorm_nonneg α (k - 1) _) hb 2
+      _ = D ^ 2 * (Work.Spaces.HkNorm α k F) ^ 2 := by ring
+  have hkey : Work.FTS.EllipticEst.remov.Step.Tk α k (Work.Spaces.pthIter 2 Ψ) ≤
+      (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2))) * Work.Spaces.HkSq α k F := by
+    have hE2 : EsumrC α k Ψ ≤ CE * (D ^ 2 * Work.Spaces.HkSq α k F) :=
+      le_trans hE' (mul_le_mul_of_nonneg_left hcase hCEpos.le)
+    have hU2 : UslC α k Ψ ≤ CU * (Cs * Work.Spaces.HkSq α k F
+        + Cj * Work.Spaces.HkSq α k F + 21 * (Work.Spaces.HkSq α (k - 1)
+            (Work.Spaces.pthIter 2 Ψ))) := by
+      refine le_trans hU' ?_
+      refine mul_le_mul_of_nonneg_left ?_ hCUpos.le
+      linarith [hsrc', hJ', hη, hsplit]
+    have hU3 : UslC α k Ψ ≤ CU * (Cs * Work.Spaces.HkSq α k F
+        + Cj * Work.Spaces.HkSq α k F + 21 * (D ^ 2 * Work.Spaces.HkSq α k F)) := by
+      refine le_trans hU2 ?_
+      refine mul_le_mul_of_nonneg_left ?_ hCUpos.le
+      linarith [hcase]
+    refine le_trans hchain' ?_
+    refine le_trans (mul_le_mul_of_nonneg_left (add_le_add hE2 hU3) hCcpos.le) (le_of_eq ?_)
+    ring
+  have hfin : Real.sqrt (Work.FTS.EllipticEst.remov.Step.Tk α k (Work.Spaces.pthIter 2 Ψ))
+      ≤ Real.sqrt (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2)))
+        * Work.Spaces.HkNorm α k F := by
+    rw [Work.Spaces.HkNorm]
+    refine le_trans (Real.sqrt_le_sqrt hkey) ?_
+    rw [Real.sqrt_mul (by positivity)]
+  have hnn : 0 ≤ Real.sqrt (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2))) :=
+    Real.sqrt_nonneg _
+  calc Real.sqrt (Work.FTS.EllipticEst.remov.Step.Tk α k (Work.Spaces.pthIter 2 Ψ))
+      ≤ Real.sqrt (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2)))
+        * Work.Spaces.HkNorm α k F := hfin
+    _ ≤ (Real.sqrt (Cc * (CE * D ^ 2 + CU * (Cs + Cj + D ^ 2 + 20 * D ^ 2))) + 1)
+        * Work.Spaces.HkNorm α k F := by
+        have := Work.Spaces.HkNorm_nonneg α k F
+        nlinarith [hnn, this]
+
+end Work.FTS.EllipticEst.Prop.BSlotTop
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.OpenCoer.ProjPair.proj_pair_conj_O =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -300,3 +450,5 @@ theorem proj_pair_conj_O {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {f : Work.F
   exact le_trans hbound hnum
 
 end Work.FTS.StrongEps.EpsE4Thr.OpenCoer.ProjPair
+end
+end

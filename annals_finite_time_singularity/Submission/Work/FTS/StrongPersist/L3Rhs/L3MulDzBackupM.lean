@@ -1,26 +1,175 @@
-/-
-# `L3MulDzBackupM` — the mixed-slot fallback for `L3MulDz`
-
-Self-contained (namespace-disjoint) fallback for the mixed slots of the product `h · D_z f`:
-`(D_z^J D_θ^I (h·D_z f) · Wt)² ≤ C |h|²_{𝒲^{4,∞}} GmajW α f`, `1 ≤ I`, `I+J ≤ 3`.
-
-The proof follows `Work.FTS.OpenPkg.WProdWin.mslot_le_winf` (whose private auxiliary
-`mslot_gside_le` is re-derived here as `gside_le_b`), with the `f`-side slots shifted by one
-radial derivative whenever a `θ`-derivative falls on the factor `D_z f`
-(`Work.FTS.StrongPersist.L3Rhs.mixed_Dz_eq`, `…dzIter_Dz_eq`).
--/
 import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.OpenPkg.WProdWin.Basic
-import Submission.Work.FTS.OpenPkg.WProdWin.dzIter_w_mean_le
-import Submission.Work.FTS.OpenPkg.DzIter_le_WlInf_open
-import Submission.Work.FTS.OpenPkg.Mixed_le_WlInf_open
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.zmollDzComm
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.Spaces.HProductRule_bad_term
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDzAux
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+-- ===== merged: Submission.Work.FTS.EllSol.EllPkgAux.MollDom.zmollDzEq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllSol.EllPkgAux.MollDom
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+open Work.FTS.EllSol.PkgK5.K5c
+open Work.Spaces (Dz pz)
+open Work.EllipticEst.Core
+
+local notation "Iθ" => Work.Spaces.Iθ
+
+set_option maxHeartbeats 4000000
+
+/-- **The engine applied to `G`**: the log-mollification commutes with `D_z`,
+`D_z (zmoll G δ ε) z θ = zmoll (D_z G) δ ε z θ` for `z > 0`, `θ ∈ Iθ`. -/
+theorem zmoll_dz_eq (G : ℝ → ℝ → ℝ) (hT : TraceClass G) (hF : FourInts G) (δ ε : ℝ)
+    (hP : Params δ ε) :
+    ∀ z : ℝ, 0 < z → ∀ θ ∈ Iθ,
+      Dz (zmoll G δ ε) z θ = zmoll (Dz G) δ ε z θ := by
+  obtain ⟨hsd1, hsd2, hsd3, hsd4, -, -, -⟩ := slice_data hT
+  obtain ⟨C, hCpos, hCint, hCb, hCint', hCb'⟩ := sliceL1_bound hT hF
+  have hCnn : (0 : ℝ) ≤ C := le_of_lt hCpos
+  have hdnn : ∀ w : ℝ, 0 ≤ dIntS G w := by
+    intro w
+    rw [dIntS]
+    exact mul_nonneg (sq_nonneg _) (MeasureTheory.setIntegral_nonneg
+      (by rw [Work.Spaces.Iθ]; exact measurableSet_Icc)
+      (fun θ hθ => mul_nonneg (sq_nonneg _) (Work.FTS.EllipticEst.thEta_nonneg hθ)))
+  set F₁ : ℝ → ℝ := fun w => C * MGf G w + C * (1 + dIntS G w) with hF₁def
+  have hF₁int : ∀ a b : ℝ, 0 < a → a ≤ b → IntegrableOn F₁ (Set.Icc a b) := by
+    intro a b ha hab
+    rw [hF₁def]
+    exact (hCint a b ha hab).add (hCint' a b ha hab)
+  have hF₁b : ∀ w : ℝ, 0 < w → ∫ s in Iθ, |G w s| ≤ F₁ w := by
+    intro w hw
+    rw [hF₁def]
+    exact (hCb w hw).trans (le_add_of_nonneg_right
+      (mul_nonneg hCnn (by linarith [hdnn w])))
+  have hF₁b' : ∀ w : ℝ, 0 < w → ∫ s in Iθ, |Dz G w s| ≤ F₁ w := by
+    intro w hw
+    rw [hF₁def]
+    have hmg : (0 : ℝ) ≤ C * MGf G w := by
+      rw [MGf]
+      exact mul_nonneg hCnn (by positivity)
+    exact (hCb' w hw).trans (le_add_of_nonneg_left hmg)
+  have hc := zmoll_dz_comm (u := G) (F := F₁) hP hT.2.1 hT.2.2.1 hsd1 hT.1.continuousOn
+    (fun w hw s hs => hT.1.hasDerivAt_slice hs hw) (hT.1.pz).continuousOn hF₁int hF₁b hF₁b'
+    (fun w hw => (hsd2 w hw).integrableOn_compact isCompact_Icc)
+  intro z hz θ hθ
+  rw [hc z hz θ hθ]
+  rw [show zmoll (Dz G) δ ε z θ
+      = ∫ t : ℝ, sKer δ (Real.log z - t) * thMoll (Dz G) ε (Real.exp t) θ from rfl]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)
+  show sKer δ (Real.log z - t)
+      * (∫ s in Iθ, Kern (sKer ε) θ s * Dz G (Real.exp t) s)
+    = sKer δ (Real.log z - t) * thMoll (Dz G) ε (Real.exp t) θ
+  rw [← thMoll_fold (u := Dz G) (z := Real.exp t) (θ' := θ) hP.1 hP.2.1
+    (hsd3 (Real.exp t)) (hsd4 (Real.exp t)) (hsd2 (Real.exp t) (Real.exp_pos t))
+    (by linarith [hθ.1, Real.pi_pos]) (by linarith [hθ.2])]
+
+end Work.FTS.EllSol.EllPkgAux.MollDom
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.AeI1Fts.slice_rate =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `AeI1Fts/slice_rate` — the slicewise rate of `U = z∂_zu` at the two endpoints
+
+For a datum `AeData α u G`, with the two `ℋ⁰`-honesties of the slots
+`U u = z ∂_z u` and `V u = z ∂_z∂_θu = ∂_θ(U u)` (Clairaut), the angular slice of `U` obeys,
+for almost every `z > 0`, the two endpoint rates
+
+* `|U(z,θ)| ≤ C (∫_{0<θ'<θ} V(z,θ')² σ(θ'))^{1/2} θ^{(1+η)/2}`,
+* `|U(z,θ)| ≤ C (∫_{θ<θ'<π/2} V(z,θ')² σ(θ'))^{1/2} (π/2-θ)^{(1+η)/2}`
+
+with `σ = sigE = sin(2θ)^{-η}` and a universal constant `C` (`C = √2` outright).
+
+## Proof
+
+`Work.EllipticEst.Core.sliceBoundaryLimit` (the sharp boundary-rate lemma of the `TT`
+workstream) gives, for a `C¹` slice `f` whose weighted derivative square `(f')²·thEta` is
+integrable on `(0,π/2)`, two endpoint constants `c₀`, `c₁` with
+
+`(f θ - c)² ≤ K θ^{1+η} ∫_{0<θ'<θ} (f')² thEta`,  resp. the `(π/2-θ)`-analogue, `K = 2`.
+
+The two constants vanish because the trace lemma
+`Work.FTS.EllipticEst.TT.AeI1.aeDzTraceHk` shows that `U u z ·` tends to `0` at both endpoints
+for a.e. `z > 0` (the hypothesis on `z * ∂_θ∂_zu` is transported from `HkMem α 0 (V u)` by
+Clairaut), so the two limits coincide with `0` by uniqueness.  Taking square roots
+(`√f ≤ √(c^{1+η}A) = c^{(1+η)/2}√A` because `∫ (sin 2θ')^{η} ≤ (2θ)^{1+η}/(1+η)`) and
+rewriting `∂_θ(U u z ·) = V u z ·` (Clairaut, on the open interval) and
+`thEta = sigE` finishes.
+
+-/
+
+namespace Work.FTS.EllipticEst.AeI1Fts
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+local notation "Iθo" => Set.Ioo (0 : ℝ) (Real.pi / 2)
+
+/-! ## The two angular weights agree -/
+
+
+/-! ## Transport of `HkMem` along equality on the open quadrant -/
+
+
+
+/-! ## Slice integrability of `V z θ' ² σ θ'` -/
+
+
+/-! ## Nonnegativity of the slice energy -/
+
+
+
+/-! ## From the squared rate to the square-root rate -/
+
+
+/-! ## The per-slice rate -/
+
+
+/-! ## The target -/
+
+
+end
+
+end Work.FTS.EllipticEst.AeI1Fts
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDzBackupM =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -401,3 +550,5 @@ theorem mslot_dz_le_b : ∃ C : ℝ, 0 < C ∧
                 * GmajW α f z θ := by ring
 
 end Work.FTS.StrongPersist.L3Rhs.L3MulDzBackupM
+end
+end

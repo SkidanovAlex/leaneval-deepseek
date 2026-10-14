@@ -2,11 +2,11 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsAngMassDefs
 import Submission.Work.FTS.StrongPersist.L3Rhs.VfsAngMassAux
 import Submission.Work.FTS.StrongPersist.L3Rhs.VfsJetMajMass
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsTriglJetBounds
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsA2JetBound
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsRadAux.aestronglyMeasurable_slotSum
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

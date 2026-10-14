@@ -1,17 +1,9 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `ProfRHSAux/StreamOps` — the operator identities for the total stream function
-
-`ℛ(Φ̃_tot) = ℛ(Φ̃_*) + ℛ(Φ̃_ell)` (and the same for `U` and `V`) at every interior point, where
-the total stream function is split into its star and elliptic parts along the additivity of `L₁₂`.
--/
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.EpsRLX.ProfRHSAux.StreamDefs
-import Submission.Work.FTS.StrongEps.EpsRLX.ProfRHSAux.OpAdd
-import Submission.Work.FTS.StrongEps.EpsRLX.ProfRHSAux.L12Add
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.classCSinRate
+import Submission.Work.Stability.ZcutSmoothCompact
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,36 +1,187 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Auxiliary estimates for `SpecialTransport`
-
-This file collects the analytic material needed by the proof of Elgindi's Proposition
-`SpecialTransport` (§`H2`, tex 1126):
-
-* the elementary `θ`-facts (`sin (2θ) ≥ (4/π) min (θ) (π/2 - θ)` on `Iθ`,
-  `intervalIntegrability` of `sin (2θ)^p` for `p > -1`);
-* the fundamental theorem of calculus in `θ` for the `θ`-slices of a function which is
-  smooth on the open strip and continuous on the closed quadrant (`ftc_pth`), which is
-  what turns `f` into `sin (2θ)` times a bounded function;
-* the pointwise bounds `ST_f_bounds` on `f`, its `D_z`-derivatives and on the derivatives
-  of `f / sin (2θ)`, all in terms of `|∂_θ f|_{𝒲^{4,∞}}`;
-* the one-dimensional integration by parts `ibp_lead` which removes the `θ`-derivative
-  from the second factor of the leading terms;
-* the `L²` product Cauchy–Schwarz estimate `L2Sq_prod_le` for iterated integrals.
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.H2.Defs
-import Submission.Work.Spaces.WlInf_terms
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.ProductTools
-import Submission.Work.Spaces.cs_integral
-import Submission.Work.Spaces.mixed_comm
-import Submission.Work.Spaces.pz_aux
-import Submission.Work.Spaces.mixed_mul_eq
-import Submission.Work.Spaces.sin_rpow_le_majorant
-import Submission.Work.Spaces.integrableOn_majorant_rpow
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
+-- ===== merged: Submission.Work.FTS.EllipticEst.Lop_iter_cos_eq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst
+
+/-! ## Elementary facts about `L = sin(2θ) ∂_θ` used below
+
+The operator `Work.Spaces.Lop` is the one-dimensional angular operator `L u θ = sin(2θ) u'(θ)`,
+whose iterates are `LopIter i u = (L^[i]) u`.  What the proof of `Lop_iter_cos_eq` needs is
+(i) that `L` is `ℝ`-homogeneous (unconditionally, via `deriv_const_mul_field`), so that its
+iterates are too, and (ii) the explicit value `L (2 cos 2θ) = -4 sin²(2θ)`. -/
+
+/-- `L = sin(2θ) ∂_θ` commutes with multiplication by a constant: this holds for *every*
+`f` (no differentiability needed), by the unconditional `deriv_const_mul_field`. -/
+theorem Lop_const_mul (c : ℝ) (f : ℝ → ℝ) :
+    Work.Spaces.Lop (fun θ : ℝ => c * f θ) = fun θ : ℝ => c * Work.Spaces.Lop f θ := by
+  funext θ
+  simp only [Work.Spaces.Lop]
+  rw [deriv_const_mul_field]
+  ring
+
+/-- The iterate `LopIter (j+1) = L^[j] ∘ L` (the successor step applied at the front rather
+than at the back, complementing `LopIter_succ`). -/
+theorem LopIter_succ_apply (j : ℕ) (u : ℝ → ℝ) :
+    LopIter (j + 1) u = LopIter j (Work.Spaces.Lop u) := by
+  simp only [LopIter, Function.iterate_succ_apply]
+
+/-- The iterates of `L` are `ℝ`-homogeneous. -/
+theorem LopIter_const_mul (i : ℕ) (c : ℝ) :
+    ∀ f : ℝ → ℝ, LopIter i (fun θ : ℝ => c * f θ) = fun θ : ℝ => c * LopIter i f θ := by
+  induction i with
+  | zero => intro f; rfl
+  | succ n ih =>
+      intro f
+      rw [LopIter_succ_apply, Lop_const_mul, ih, LopIter_succ_apply]
+
+/-- `L (2 cos 2θ) = -4 sin²(2θ)`: the first iterate of `2 cos(2θ)`. -/
+theorem Lop_two_cos :
+    Work.Spaces.Lop (fun θ : ℝ => 2 * Real.cos (2 * θ))
+      = fun θ : ℝ => -4 * (Real.sin (2 * θ)) ^ 2 := by
+  funext θ
+  simp only [Work.Spaces.Lop]
+  rw [deriv_const_mul_field]
+  rw [show (fun θ : ℝ => Real.cos (2 * θ)) = Real.cos ∘ (fun θ : ℝ => 2 * θ) from rfl]
+  rw [deriv_comp] <;> try fun_prop
+  rw [Real.deriv_cos]
+  have h2 : deriv (fun θ : ℝ => 2 * θ) θ = 2 := by
+    rw [deriv_const_mul_field]; simp
+  rw [h2]
+  ring
+
+/-- The iterates of `2 cos(2θ)` under `L = sin(2θ) ∂_θ` are the `L`-iterates of `sin(2θ)²`:
+`L^i (2 cos 2θ) = -4 · L^{i-1}(sin²(2θ))` for `i ≥ 1`.
+
+Proof route: `L (2 cos 2θ) = sin(2θ) · deriv (2 cos 2θ) = sin(2θ) · (-4 sin 2θ) = -4 sin²(2θ)`,
+and `L^{i} = L^{i-1} ∘ L` together with the linearity of the iterates of `L`
+(`L (fun θ => c * f θ) = fun θ => c * L f θ` by `deriv_const_mul_field`); a direct induction on
+`i` using `Function.iterate_succ_apply` is enough. -/
+theorem Lop_iter_cos_eq (i : ℕ) (hi : 1 ≤ i) :
+    Work.FTS.EllipticEst.LopIter i (fun θ : ℝ => 2 * Real.cos (2 * θ))
+      = fun θ : ℝ => -4 * Work.FTS.EllipticEst.LopIter (i - 1)
+          (fun θ : ℝ => (Real.sin (2 * θ)) ^ 2) θ := by
+  rcases Nat.exists_eq_succ_of_ne_zero (Nat.one_le_iff_ne_zero.mp hi) with ⟨j, rfl⟩
+  rw [LopIter_succ_apply]
+  simp only [Nat.succ_eq_add_one, Nat.add_sub_cancel]
+  rw [Lop_two_cos, LopIter_const_mul]
+
+end Work.FTS.EllipticEst
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.SgamBound.integrableOn_abs_of_sq_mul_sEta =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.SgamBound
+
+/-- The angular weight `sEta θ = sin(2θ)^{-η}` is at least `1` on the interior of `Iθ`
+(because `0 < sin(2θ) ≤ 1` and `η ≥ 0`). -/
+lemma one_le_sEta {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
+    1 ≤ Work.FTS.EllipticEst.sEta θ := by
+  have h0 : 0 < Real.sin (2 * θ) :=
+    Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
+  have hle1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
+  have h := Real.rpow_le_rpow_of_exponent_ge h0 hle1
+    (show -(Work.Spaces.eta) ≤ (0 : ℝ) by have := Work.Spaces.eta_pos; linarith)
+  simpa [Work.FTS.EllipticEst.sEta, Real.rpow_zero] using h
+
+/-- Integrability transfer on the angular slice: if `g` is continuous on the open interval
+`(0, π/2)` and `g²·sin(2θ)^{-η}` is integrable on `Iθ = [0, π/2]`, then `|g|` is integrable
+on `Iθ`.
+
+Since `η = 99/100 > 0` and `0 < sin(2θ) ≤ 1` on `(0,π/2)`, the weight satisfies `1 ≤ sEta`
+there (see `one_le_sEta`), so `g² ≤ g²·sEta` a.e. on `Iθ`; hence `g²` is integrable, and
+`|g| ≤ g² + 1` pointwise with `g² + 1` integrable on the finite measure space `Iθ`. -/
+theorem integrableOn_abs_of_sq_mul_sEta {g : ℝ → ℝ}
+    (hg : ContinuousOn g (Set.Ioo 0 (Real.pi / 2)))
+    (hint : MeasureTheory.IntegrableOn
+      (fun θ => (g θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) Work.Spaces.Iθ) :
+    MeasureTheory.IntegrableOn (fun θ => |g θ|) Work.Spaces.Iθ := by
+  -- ## Step 0: the two endpoints `{0, π/2}` are a null set, so `Iθ = [0,π/2]` agrees with the
+  -- open interval `(0, π/2)` almost everywhere, and the integrals coincide.
+  have hpair : MeasureTheory.volume ({(0 : ℝ), Real.pi / 2} : Set ℝ) = 0 :=
+    Set.Finite.measure_zero (by simp) MeasureTheory.volume
+  have hpairab : ∀ᵐ x : ℝ, x ∉ ({(0 : ℝ), Real.pi / 2} : Set ℝ) := by
+    rw [MeasureTheory.ae_iff]
+    simpa only [not_not, Set.ofPred_mem_eq] using hpair
+  have hst : Work.Spaces.Iθ =ᵐ[MeasureTheory.volume] Set.Ioo (0 : ℝ) (Real.pi / 2) := by
+    filter_upwards [hpairab] with x hx
+    refine propext ⟨?_, ?_⟩
+    · intro h
+      rw [Work.Spaces.Iθ, Set.mem_Icc] at h
+      rw [Set.mem_Ioo]
+      exact ⟨lt_of_le_of_ne h.1 (fun hc => hx (Or.inl hc.symm)),
+             lt_of_le_of_ne h.2 (fun hc => hx (Or.inr hc))⟩
+    · intro h
+      rw [Work.Spaces.Iθ, Set.mem_Icc]
+      rw [Set.mem_Ioo] at h
+      exact ⟨le_of_lt h.1, le_of_lt h.2⟩
+  have hms : MeasureTheory.volume.restrict Work.Spaces.Iθ
+      = MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+    MeasureTheory.Measure.restrict_congr_set hst
+  have hint' : MeasureTheory.Integrable
+      (fun θ : ℝ => (g θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)
+      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) := by
+    rw [← hms]; exact hint
+  -- ## Step 1: on `(0, π/2)` the weight satisfies `1 ≤ sEta`, so `g² ≤ g² · sEta` a.e.
+  have hsaesm : MeasureTheory.AEStronglyMeasurable g
+      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
+    hg.aestronglyMeasurable measurableSet_Ioo
+  have hsq_int : MeasureTheory.Integrable (fun θ : ℝ => (g θ) ^ 2)
+      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) := by
+    refine hint'.mono' (MeasureTheory.AEStronglyMeasurable.pow hsaesm 2) ?_
+    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioo] with θ hθ
+    have h1 : 1 ≤ Work.FTS.EllipticEst.sEta θ := one_le_sEta hθ
+    have hsq : 0 ≤ (g θ) ^ 2 := sq_nonneg _
+    rw [Real.norm_eq_abs, abs_of_nonneg hsq]
+    simpa using mul_le_mul_of_nonneg_left h1 hsq
+  -- ## Step 2: `|g| ≤ g² + 1` pointwise, and `g² + 1` is integrable (the slice has finite
+  -- measure), so `|g|` is integrable on `(0, π/2)`.
+  have habs_int : MeasureTheory.Integrable (fun θ : ℝ => |g θ|)
+      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) := by
+    have hmaj : MeasureTheory.Integrable (fun θ : ℝ => (g θ) ^ 2 + 1)
+        (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
+      hsq_int.add (MeasureTheory.integrable_const (1 : ℝ))
+    refine hmaj.mono' hsaesm.norm ?_
+    filter_upwards with θ
+    have h1 : |g θ| ≤ (g θ) ^ 2 + 1 := by
+      nlinarith [sq_nonneg (|g θ| - 1 / 2), sq_abs (g θ), abs_nonneg (g θ)]
+    simpa only [Real.norm_eq_abs, abs_abs] using h1
+  -- ## Step 3: transfer back to `Iθ`, which is `(0, π/2)` a.e.
+  change MeasureTheory.Integrable (fun θ : ℝ => |g θ|)
+    (MeasureTheory.volume.restrict Work.Spaces.Iθ)
+  rw [hms]; exact habs_int
+
+end Work.FTS.EllipticEst.SgamBound
+end
+-- ===== merged: Submission.Work.FTS.H2.STBasic =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -48,9 +199,6 @@ set_option autoImplicit false
 set_option maxHeartbeats 1000000
 
 /-! ## Elementary `θ`-facts -/
-
-theorem sin_two_nonneg_Iθ {θ : ℝ} (hθ : θ ∈ Spaces.Iθ) : 0 ≤ Real.sin (2 * θ) :=
-  Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
 
 theorem sin_two_pos_of_Ioo {θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (π / 2)) : 0 < Real.sin (2 * θ) :=
   Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
@@ -110,19 +258,6 @@ theorem intervalIntegrable_sin_rpow (p : ℝ) (hp : -1 < p) :
       have h4 := Work.Spaces.sin_rpow_le_majorant (-p) θ hq hθ
       simpa only [neg_neg] using h4
 
-/-- Any function dominated on `Iθ` by `C · sin (2θ)^p` with `p > -1` is interval integrable
-on `[0, π/2]`. -/
-theorem intervalIntegrable_of_sin_bound {f : ℝ → ℝ} {C p : ℝ} (hp : -1 < p)
-    (hmeas : AEStronglyMeasurable f (volume.restrict (Set.Icc 0 (π / 2))))
-    (h : ∀ θ ∈ Spaces.Iθ, |f θ| ≤ C * (Real.sin (2 * θ)) ^ p) :
-    IntervalIntegrable f volume 0 (π / 2) := by
-  rw [intervalIntegrable_iff_integrableOn_Icc_of_le (by linarith [Real.pi_pos] : (0:ℝ) ≤ π/2)]
-  have hmaj : MeasureTheory.IntegrableOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ p)
-      (Set.Icc 0 (π / 2)) :=
-    (intervalIntegrable_iff_integrableOn_Icc_of_le (by linarith [Real.pi_pos] : (0:ℝ) ≤ π/2)).mp
-      (intervalIntegrable_sin_rpow p hp)
-  exact MeasureTheory.Integrable.mono' (hmaj.const_mul C) hmeas
-    (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc h)
 
 /-- `sin (2θ)^p → 0` as `θ → 0` from the right, for `p > 0`. -/
 theorem tendsto_sin_rpow_zero_right (p : ℝ) (hp : 0 < p) :
@@ -184,3 +319,5 @@ theorem hasDerivAt_sin_rpow_neg (e θ : ℝ) (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
   hasDerivAt_sin_rpow (-e) θ hθ
 
 end Work.FTS.H2
+end
+end

@@ -1,28 +1,460 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Measurability of the source pairing for data given by `IsBslSol`
-
-The transfer `Work.Spaces.HkMem α 0 F → Work.Spaces.L2Mem (F · w)` and the integrability of the
-source pairing `z ↦ w z² ∫_θ |F z θ Φ z θ|` (the `hintG`/`hhint` hypothesis of the radial energy
-identity) both need *measurability* of `F`, which the data class of the chapter does **not**
-assume: the only hypothesis linking `F` to a smooth object is `IsBslSol α F Ψ`, i.e.
-`bslOp α Ψ = F` on the *open* quadrant.
-
-This module supplies it: `F` agrees with the smooth `bslOp α Ψ` off the boundary
-`{z = 0} ∪ {θ = 0} ∪ {θ = π/2} ∪ (Iz × Iθ)ᶜ`, a null set for the product of the restricted
-measures, so the two `AEStronglyMeasurable` statements follow from continuity of `bslOp α Ψ · Ψ`
-on the open quadrant (hypothesis `hcont`, supplied by
-`Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp`) and from
-`AEStronglyMeasurable.integral_prod_right'`.
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.Interval.Basic
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
+import Submission.Work.FTS_EllLimOK.Pinning.integrableOn_sq_rpow_of_HkMem
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.Stability.ZcutSmoothCompact
+-- ===== merged: Submission.Work.FTS.EllipticEst.AngClean.IPMem_F_Phi =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.AngClean
+
+set_option autoImplicit false
+
+/-! ## The measurability of the source pairing
+
+`F` is known only through `IsBslSol α F Ψ` (`bslOp α Ψ = F` on the *open* quadrant), so it is
+not a priori measurable; but off the null boundary `{z = 0} ∪ {θ = 0} ∪ {θ = π/2}` it agrees
+with the smooth `bslOp α Ψ`, which is enough for both the slicewise and the joint statement
+needed below.  Both facts are stated here in the general form (an arbitrary profile `g`
+continuous on the open quadrant), so that they apply verbatim to `g = ∂_θθΨ`. -/
+
+
+
+
+
+
+/-! ## The assembly -/
+
+
+/-- **Honesty of the mixed pairing from the two diagonal honesties.**
+
+Pointwise `|F g| ≤ F² + g²`, so the diagonal honesties `IPMem F F` and `IPMem g g` give both
+the slicewise integrability of `F g w²σ` and the domination of the `z`-integrand by the sum
+of the two honest diagonal `z`-integrands; the only missing ingredient is measurability, which
+is supplied as the two hypotheses `haesm_slice` and `haesm_prod` (for the elliptic source `F`
+these are `aesm_slice_F_mul` and `aesm_prod_F_mul`, the latter being the joint measurability
+used by Fubini `MeasureTheory.AEStronglyMeasurable.integral_prod_right'`). -/
+theorem IPMem_of_diag_aesm {F g : ℝ → ℝ → ℝ}
+    (hF : Work.FTS.EllipticEst.AngSecond.IPMem F F)
+    (hg : Work.FTS.EllipticEst.AngSecond.IPMem g g)
+    (haesm_slice : ∀ z ∈ Work.Spaces.Iz,
+      MeasureTheory.AEStronglyMeasurable
+        (fun θ => F z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+          * Work.FTS.EllipticEst.AngSecond.sig θ) (volume.restrict Work.Spaces.Iθ))
+    (haesm_prod : MeasureTheory.AEStronglyMeasurable
+      (fun p : ℝ × ℝ => F p.1 p.2 * g p.1 p.2 * Work.FTS.EllipticEst.AngSecond.w2 p.1
+        * Work.FTS.EllipticEst.AngSecond.sig p.2)
+      ((volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ))) :
+    Work.FTS.EllipticEst.AngSecond.IPMem F g := by
+  constructor
+  · intro z hz
+    refine ((hF.1 z hz).add (hg.1 z hz)).mono' (haesm_slice z hz) ?_
+    refine ae_restrict_of_forall_mem measurableSet_Icc (fun θ hθ => ?_)
+    rw [Real.norm_eq_abs]
+    have hw2 : 0 ≤ Work.FTS.EllipticEst.AngSecond.w2 z :=
+      Work.FTS.EllipticEst.AngSecond.w2_nonneg z
+    have hs : 0 ≤ Work.FTS.EllipticEst.AngSecond.sig θ :=
+      Work.FTS.EllipticEst.AngSecond.sig_nonneg hθ
+    have hkey : |F z θ| * |g z θ| ≤ F z θ * F z θ + g z θ * g z θ := by
+      nlinarith [sq_nonneg (|F z θ| - |g z θ|), sq_abs (F z θ), sq_abs (g z θ)]
+    rw [abs_mul, abs_mul, abs_mul, abs_of_nonneg hw2, abs_of_nonneg hs]
+    calc |F z θ| * |g z θ| * Work.FTS.EllipticEst.AngSecond.w2 z
+          * Work.FTS.EllipticEst.AngSecond.sig θ
+        ≤ (F z θ * F z θ + g z θ * g z θ) * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ :=
+          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hkey hw2) hs
+      _ = F z θ * F z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ
+          + g z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ := by ring
+  · refine ((hF.2).add (hg.2)).mono' haesm_prod.integral_prod_right' ?_
+    refine ae_restrict_of_forall_mem measurableSet_Ici (fun z hz => ?_)
+    rw [Real.norm_eq_abs]
+    have hsum_int : IntegrableOn
+        (fun θ => (F z θ * F z θ + g z θ * g z θ) * Work.FTS.EllipticEst.AngSecond.w2 z
+          * Work.FTS.EllipticEst.AngSecond.sig θ) Work.Spaces.Iθ :=
+      ((hF.1 z hz).add (hg.1 z hz)).congr
+        (Eventually.of_forall (fun θ => by simp only [Pi.add_apply]; ring))
+    have hmono : (∫ θ in Work.Spaces.Iθ,
+          |F z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ|)
+        ≤ ∫ θ in Work.Spaces.Iθ, (F z θ * F z θ + g z θ * g z θ)
+            * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ := by
+      refine integral_mono_of_nonneg (Eventually.of_forall (fun θ => abs_nonneg _))
+        hsum_int (ae_restrict_of_forall_mem measurableSet_Icc (fun θ hθ => ?_))
+      have hw2 : 0 ≤ Work.FTS.EllipticEst.AngSecond.w2 z :=
+        Work.FTS.EllipticEst.AngSecond.w2_nonneg z
+      have hs : 0 ≤ Work.FTS.EllipticEst.AngSecond.sig θ :=
+        Work.FTS.EllipticEst.AngSecond.sig_nonneg hθ
+      have hkey : |F z θ| * |g z θ| ≤ F z θ * F z θ + g z θ * g z θ := by
+        nlinarith [sq_nonneg (|F z θ| - |g z θ|), sq_abs (F z θ), sq_abs (g z θ)]
+      show |F z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ|
+          ≤ (F z θ * F z θ + g z θ * g z θ) * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ
+      rw [abs_mul, abs_mul, abs_mul, abs_of_nonneg hw2, abs_of_nonneg hs]
+      exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hkey hw2) hs
+    have hlin : (∫ θ in Work.Spaces.Iθ, (F z θ * F z θ + g z θ * g z θ)
+          * Work.FTS.EllipticEst.AngSecond.w2 z * Work.FTS.EllipticEst.AngSecond.sig θ)
+        = (∫ θ in Work.Spaces.Iθ, F z θ * F z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ)
+          + ∫ θ in Work.Spaces.Iθ, g z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ := by
+      rw [show (∫ θ in Work.Spaces.Iθ, (F z θ * F z θ + g z θ * g z θ)
+            * Work.FTS.EllipticEst.AngSecond.w2 z * Work.FTS.EllipticEst.AngSecond.sig θ)
+          = ∫ θ in Work.Spaces.Iθ, (F z θ * F z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+              * Work.FTS.EllipticEst.AngSecond.sig θ
+              + g z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+              * Work.FTS.EllipticEst.AngSecond.sig θ) from
+        setIntegral_congr_fun measurableSet_Icc (fun θ _ => by ring)]
+      exact integral_add (hF.1 z hz) (hg.1 z hz)
+    calc |∫ θ in Work.Spaces.Iθ, F z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ|
+        ≤ ∫ θ in Work.Spaces.Iθ, |F z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ| := abs_integral_le_integral_abs
+      _ ≤ ∫ θ in Work.Spaces.Iθ, (F z θ * F z θ + g z θ * g z θ)
+            * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ := hmono
+      _ = (∫ θ in Work.Spaces.Iθ, F z θ * F z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ)
+          + ∫ θ in Work.Spaces.Iθ, g z θ * g z θ * Work.FTS.EllipticEst.AngSecond.w2 z
+            * Work.FTS.EllipticEst.AngSecond.sig θ := hlin
+
+
+end Work.FTS.EllipticEst.AngClean
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Deleg.mixedTrunc.collarAe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Deleg.mixedTrunc
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+/-! ## Elementary facts -/
+
+/-- `wt z = w z ^ 2` is continuous on the open half-line. -/
+theorem continuousOn_wt : ContinuousOn Work.FTS.EllipticEst.AeColl.wt (Set.Ioi 0) := by
+  have hw : ContinuousOn (fun z : ℝ => (1 + z) ^ 2 / z ^ 2) (Set.Ioi 0) := by
+    refine ContinuousOn.div ?_ ?_ ?_
+    · exact ContinuousOn.pow ((continuous_const.add continuous_id).continuousOn) 2
+    · exact ContinuousOn.pow (continuous_id.continuousOn) 2
+    · intro z hz
+      exact pow_ne_zero 2 (ne_of_gt hz)
+  have h : Work.FTS.EllipticEst.AeColl.wt = fun z : ℝ => ((1 + z) ^ 2 / z ^ 2) ^ 2 := rfl
+  rw [h]
+  exact ContinuousOn.pow hw 2
+
+/-- `σ θ = sin(2θ)^{-η}` is continuous on the open interval `(0, π/2)`. -/
+theorem continuousOn_sigθ :
+    ContinuousOn Work.FTS.EllipticEst.AeColl.sigθ (Set.Ioo 0 (Real.pi / 2)) := by
+  have h : Work.FTS.EllipticEst.AeColl.sigθ
+      = fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := rfl
+  rw [h]
+  refine ContinuousOn.rpow_const ?_ ?_
+  · exact (Real.continuous_sin.comp (continuous_const.mul continuous_id)).continuousOn.mono
+      (Set.subset_univ _)
+  · intro θ hθ
+    left
+    exact ne_of_gt (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2]))
+
+/-- The two collar intervals are contained in `Iθ`. -/
+theorem Ioo_left_subset_Iθ {δ : ℝ} (hδ2 : 4 * δ ≤ Real.pi / 2) :
+    Set.Ioo 0 δ ⊆ Work.Spaces.Iθ := by
+  have hpi : δ ≤ Real.pi / 2 := by linarith [Real.pi_pos]
+  intro θ hθ
+  exact ⟨le_of_lt hθ.1, le_trans (le_of_lt hθ.2) hpi⟩
+
+theorem Ioo_right_subset_Iθ {δ : ℝ} (hδ2 : 4 * δ ≤ Real.pi / 2) :
+    Set.Ioo (Real.pi / 2 - δ) (Real.pi / 2) ⊆ Work.Spaces.Iθ := by
+  have hpi : δ ≤ Real.pi / 2 := by linarith [Real.pi_pos]
+  intro θ hθ
+  exact ⟨by linarith [hθ.1], le_of_lt hθ.2⟩
+
+/-! ## The sup of `χ_n · w²` on the support of the radial cut-off -/
+
+/-- An explicit bound for `χ_n z · w z ^ 2`. -/
+def wtC (n : ℕ) : ℝ := ((1 + 3 * ((n : ℝ) + 1)) ^ 2 * ((n : ℝ) + 1) ^ 2) ^ 2
+
+theorem wtC_nonneg (n : ℕ) : 0 ≤ wtC n := by rw [wtC]; positivity
+
+theorem wt_le_wtC {n : ℕ} {z : ℝ} (hc : Work.FTS.EllipticEst.cut n z ≠ 0) :
+    Work.FTS.EllipticEst.AeColl.wt z ≤ wtC n := by
+  have hn : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+  have hlo : 1 / ((n : ℝ) + 1) < z := by
+    by_contra h
+    push_neg at h
+    exact hc (Work.FTS.EllipticEst.cut_apply_zero_of_le n h)
+  have hhi : z < 3 * ((n : ℝ) + 1) := by
+    by_contra h
+    push_neg at h
+    exact hc (Work.FTS.EllipticEst.cut_apply_zero_of_ge n h)
+  have hzpos : 0 < z := lt_trans (div_pos one_pos hn) hlo
+  have hzp : (1 : ℝ) < ((n : ℝ) + 1) ^ 2 * z ^ 2 := by
+    have h1 : 1 < ((n : ℝ) + 1) * z := by
+      rw [div_lt_iff₀ hn] at hlo
+      linarith
+    nlinarith [h1, hn, hzpos]
+  have h1 : (1 + z) ^ 2 ≤ (1 + 3 * ((n : ℝ) + 1)) ^ 2 :=
+    pow_le_pow_left₀ (by linarith) (by linarith) 2
+  have hw : Work.Spaces.w z ≤ (1 + 3 * ((n : ℝ) + 1)) ^ 2 * ((n : ℝ) + 1) ^ 2 := by
+    rw [Work.Spaces.w, div_le_iff₀ (by positivity : (0 : ℝ) < z ^ 2)]
+    calc (1 + z) ^ 2 ≤ (1 + 3 * ((n : ℝ) + 1)) ^ 2 := h1
+      _ = (1 + 3 * ((n : ℝ) + 1)) ^ 2 * 1 := by ring
+      _ ≤ (1 + 3 * ((n : ℝ) + 1)) ^ 2 * (((n : ℝ) + 1) ^ 2 * z ^ 2) :=
+          mul_le_mul_of_nonneg_left (le_of_lt hzp) (sq_nonneg _)
+      _ = (1 + 3 * ((n : ℝ) + 1)) ^ 2 * ((n : ℝ) + 1) ^ 2 * z ^ 2 := by ring
+  rw [Work.FTS.EllipticEst.AeColl.wt, wtC]
+  exact pow_le_pow_left₀ (Work.FTS.EllipticEst.AngSecond.w_nonneg z) hw 2
+
+theorem cut_mul_wt_abs_le (n : ℕ) (z : ℝ) :
+    |Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z| ≤ wtC n := by
+  have hB0 := wtC_nonneg n
+  have hwt0 : 0 ≤ Work.FTS.EllipticEst.AeColl.wt z := Work.FTS.EllipticEst.AeColl.wt_nonneg z
+  rcases eq_or_ne (Work.FTS.EllipticEst.cut n z) 0 with h | h
+  · rw [h, zero_mul, abs_zero]; exact hB0
+  · have h1 := wt_le_wtC h
+    have h2 : 0 ≤ Work.FTS.EllipticEst.cut n z := Work.FTS.EllipticEst.cut_nonneg n z
+    have h3 : Work.FTS.EllipticEst.cut n z ≤ 1 := Work.FTS.EllipticEst.cut_le_one n z
+    rw [abs_of_nonneg (mul_nonneg h2 hwt0)]
+    calc Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z
+        ≤ 1 * Work.FTS.EllipticEst.AeColl.wt z := mul_le_mul_of_nonneg_right h3 hwt0
+      _ ≤ 1 * wtC n := mul_le_mul_of_nonneg_left h1 zero_le_one
+      _ = wtC n := one_mul _
+
+theorem cut_mul_wt_le (n : ℕ) (z : ℝ) :
+    Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z ≤ wtC n := by
+  have h := cut_mul_wt_abs_le n z
+  rwa [abs_of_nonneg (mul_nonneg (Work.FTS.EllipticEst.cut_nonneg n z)
+    (Work.FTS.EllipticEst.AeColl.wt_nonneg z))] at h
+
+/-! ## Strong measurability of the collar slices -/
+
+/-- The collar integral `z ↦ ∫_{S} σ · (z∂_z∂_θu)²` is a.e. strongly measurable on `(0,∞)`. -/
+theorem aesm_collar_Ioo (u : ℝ → ℝ → ℝ) {S : Set ℝ}
+    (hu : ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry u)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
+    (hS : MeasurableSet S) (hSI : S ⊆ Work.Spaces.Iθ) :
+    MeasureTheory.AEStronglyMeasurable (fun z => ∫ θ in S,
+        Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+      (MeasureTheory.volume.restrict (Set.Ioi 0)) := by
+  have hVz : ContinuousOn (fun p : ℝ × ℝ => Work.FTS.EllipticEst.AeColl.Vz u p.1 p.2) quad :=
+    continuousOn_Vz_quad hu
+  have hVz2 : ContinuousOn
+      (fun p : ℝ × ℝ => (Work.FTS.EllipticEst.AeColl.Vz u p.1 p.2) ^ 2) quad :=
+    ContinuousOn.pow hVz 2
+  have hsig : ContinuousOn (fun p : ℝ × ℝ => Work.FTS.EllipticEst.AeColl.sigθ p.2) quad :=
+    ContinuousOn.comp continuousOn_sigθ
+      (ContinuousOn.mono (continuous_snd.continuousOn) (Set.subset_univ _))
+      (fun p hp => hp.2)
+  have hcont : ContinuousOn (fun p : ℝ × ℝ => Work.FTS.EllipticEst.AeColl.sigθ p.2
+      * (Work.FTS.EllipticEst.AeColl.Vz u p.1 p.2) ^ 2) quad :=
+    ContinuousOn.mul hsig hVz2
+  exact aesm_thetaIntegral_Ioi hcont hS hSI
+
+/-! ## The outer integrability of one collar energy -/
+
+/-- If the `z`-marginal `G z = ∫_{Iθ} σ (z∂_z∂_θu)²` is integrable and the collar integral
+over `S` is dominated by it a.e., then the truncated collar energy `χ_n w² ∫_S σ V²` is
+integrable. -/
+theorem collar_outer_integrable (u : ℝ → ℝ → ℝ) (n : ℕ) {S : Set ℝ}
+    (hu : ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry u)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
+    (hS : MeasurableSet S) (hSI : S ⊆ Work.Spaces.Iθ)
+    (hSle : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      (∫ θ in S, Work.FTS.EllipticEst.AeColl.sigθ θ
+        * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+        ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+    (hGint : MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ,
+      Work.FTS.EllipticEst.AeColl.sigθ θ * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+      Work.Spaces.Iz) :
+    MeasureTheory.IntegrableOn (fun z => Work.FTS.EllipticEst.cut n z
+      * Work.FTS.EllipticEst.AeColl.wt z
+      * (∫ θ in S, Work.FTS.EllipticEst.AeColl.sigθ θ
+        * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)) (Set.Ioi 0) := by
+  have hGil : MeasureTheory.Integrable (fun z => ∫ θ in Work.Spaces.Iθ,
+      Work.FTS.EllipticEst.AeColl.sigθ θ * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+      (MeasureTheory.volume.restrict (Set.Ioi 0)) :=
+    hGint.mono_set Set.Ioi_subset_Ici_self
+  have hdom : MeasureTheory.Integrable (fun z => wtC n * (∫ θ in Work.Spaces.Iθ,
+      Work.FTS.EllipticEst.AeColl.sigθ θ * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2))
+      (MeasureTheory.volume.restrict (Set.Ioi 0)) := hGil.const_mul (wtC n)
+  have hcut : ContinuousOn (fun z : ℝ => Work.FTS.EllipticEst.cut n z) (Set.Ioi 0) :=
+    (Work.FTS.EllipticEst.cut_contDiff n).continuous.continuousOn
+  have hcwaesm : MeasureTheory.AEStronglyMeasurable
+      (fun z : ℝ => Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z)
+      (MeasureTheory.volume.restrict (Set.Ioi 0)) :=
+    ContinuousOn.aestronglyMeasurable (ContinuousOn.mul hcut continuousOn_wt) measurableSet_Ioi
+  have haesm : MeasureTheory.AEStronglyMeasurable (fun z => Work.FTS.EllipticEst.cut n z
+      * Work.FTS.EllipticEst.AeColl.wt z
+      * (∫ θ in S, Work.FTS.EllipticEst.AeColl.sigθ θ
+        * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2))
+      (MeasureTheory.volume.restrict (Set.Ioi 0)) :=
+    MeasureTheory.AEStronglyMeasurable.mul hcwaesm (aesm_collar_Ioo u hu hS hSI)
+  refine MeasureTheory.Integrable.mono' hdom haesm ?_
+  filter_upwards [hSle] with z hzle
+  have hSnn : 0 ≤ ∫ θ in S, Work.FTS.EllipticEst.AeColl.sigθ θ
+      * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 :=
+    MeasureTheory.setIntegral_nonneg hS (fun θ hθ =>
+      mul_nonneg (Work.FTS.EllipticEst.AeColl.sigθ_nonneg_of_mem (hSI hθ)) (sq_nonneg _))
+  have hGnn : 0 ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+      * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 :=
+    MeasureTheory.setIntegral_nonneg measurableSet_Icc (fun θ hθ =>
+      mul_nonneg (Work.FTS.EllipticEst.AeColl.sigθ_nonneg_of_mem hθ) (sq_nonneg _))
+  have hcw : 0 ≤ Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z :=
+    mul_nonneg (Work.FTS.EllipticEst.cut_nonneg n z) (Work.FTS.EllipticEst.AeColl.wt_nonneg z)
+  rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hcw hSnn)]
+  calc Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z
+        * (∫ θ in S, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+      ≤ Work.FTS.EllipticEst.cut n z * Work.FTS.EllipticEst.AeColl.wt z
+        * (∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2) :=
+        mul_le_mul_of_nonneg_left hzle hcw
+    _ ≤ wtC n * (∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2) :=
+        mul_le_mul_of_nonneg_right (cut_mul_wt_le n z) hGnn
+
+/-! ## The target -/
+
+theorem collarAe (u : ℝ → ℝ → ℝ) (n : ℕ) (δ : ℝ) (hδ : 0 < δ)
+    (hδ2 : 4 * δ ≤ Real.pi / 2)
+    (hu : ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry u)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
+    (hMixed : Work.FTS.EllipticEst.Deleg.MixedHon u) :
+    (∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      MeasureTheory.IntegrableOn
+        (fun θ => (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2
+          * Work.FTS.EllipticEst.AeColl.sigθ θ) (Set.Ioo 0 (Real.pi / 2)))
+    ∧ (∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+        (∫ θ in Set.Ioo 0 δ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+          ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+              * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+    ∧ (∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+        (∫ θ in Set.Ioo (Real.pi / 2 - δ) (Real.pi / 2),
+            Work.FTS.EllipticEst.AeColl.sigθ θ
+              * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+          ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+              * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+    ∧ MeasureTheory.IntegrableOn (fun z => Work.FTS.EllipticEst.cut n z
+        * Work.FTS.EllipticEst.AeColl.wt z
+        * (∫ θ in Set.Ioo 0 δ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)) (Set.Ioi 0)
+    ∧ MeasureTheory.IntegrableOn (fun z => Work.FTS.EllipticEst.cut n z
+        * Work.FTS.EllipticEst.AeColl.wt z
+        * (∫ θ in Set.Ioo (Real.pi / 2 - δ) (Real.pi / 2),
+            Work.FTS.EllipticEst.AeColl.sigθ θ
+              * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)) (Set.Ioi 0) := by
+  -- `(H1)` in the multiplication order of the statement
+  have hslice : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      MeasureTheory.IntegrableOn (fun θ => Work.FTS.EllipticEst.AeColl.sigθ θ
+        * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2) Work.Spaces.Iθ := by
+    filter_upwards [hMixed.1] with z hz
+    have h2 : (fun θ => Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+        = (fun θ => (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2
+            * Work.FTS.EllipticEst.AeColl.sigθ θ) := by
+      funext θ; ring
+    rw [h2]; exact hz
+  -- the two collar monotonicity inequalities
+  have hB : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      (∫ θ in Set.Ioo 0 δ, Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+        ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 := by
+    filter_upwards [hslice] with z hz
+    have hf_ae : ∀ᵐ θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+        0 ≤ Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 := by
+      filter_upwards [MeasureTheory.ae_restrict_mem (show MeasurableSet Work.Spaces.Iθ from
+        measurableSet_Icc)] with θ hθ
+      exact mul_nonneg (Work.FTS.EllipticEst.AeColl.sigθ_nonneg_of_mem hθ) (sq_nonneg _)
+    exact MeasureTheory.integral_mono_measure
+      (MeasureTheory.Measure.restrict_mono (Ioo_left_subset_Iθ hδ2) le_rfl) hf_ae hz
+  have hC : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      (∫ θ in Set.Ioo (Real.pi / 2 - δ) (Real.pi / 2),
+          Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+        ≤ ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+            * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 := by
+    filter_upwards [hslice] with z hz
+    have hf_ae : ∀ᵐ θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+        0 ≤ Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2 := by
+      filter_upwards [MeasureTheory.ae_restrict_mem (show MeasurableSet Work.Spaces.Iθ from
+        measurableSet_Icc)] with θ hθ
+      exact mul_nonneg (Work.FTS.EllipticEst.AeColl.sigθ_nonneg_of_mem hθ) (sq_nonneg _)
+    exact MeasureTheory.integral_mono_measure
+      (MeasureTheory.Measure.restrict_mono (Ioo_right_subset_Iθ hδ2) le_rfl) hf_ae hz
+  -- `(H2)`: the `z`-marginal of `V` is integrable
+  have hGint : MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ,
+      Work.FTS.EllipticEst.AeColl.sigθ θ * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+      Work.Spaces.Iz := by
+    have hfun : (fun z => ∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.AeColl.sigθ θ
+          * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2)
+        = (fun z => ∫ θ in Work.Spaces.Iθ,
+            (z * Work.Spaces.pz (Work.Spaces.pth u) z θ) ^ 2
+              * Work.FTS.EllipticEst.AngSecond.sig θ) := by
+      funext z
+      refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun θ => ?_)
+      show Work.FTS.EllipticEst.AeColl.sigθ θ * (Work.FTS.EllipticEst.AeColl.Vz u z θ) ^ 2
+        = (z * Work.Spaces.pz (Work.Spaces.pth u) z θ) ^ 2
+          * Work.FTS.EllipticEst.AngSecond.sig θ
+      have hV : Work.FTS.EllipticEst.AeColl.Vz u z θ
+          = z * Work.Spaces.pz (Work.Spaces.pth u) z θ := rfl
+      rw [hV, Work.FTS.EllipticEst.AeColl.sigθ_eq_sig]
+      ring
+    rw [hfun]
+    exact hMixed.2
+  refine ⟨?_, hB, hC, ?_, ?_⟩
+  · exact hMixed.1.mono fun z hz => hz.mono_set Set.Ioo_subset_Icc_self
+  · exact collar_outer_integrable u n hu measurableSet_Ioo (Ioo_left_subset_Iθ hδ2) hB hGint
+  · exact collar_outer_integrable u n hu measurableSet_Ioo (Ioo_right_subset_Iθ hδ2) hC hGint
+
+end Work.FTS.EllipticEst.Deleg.mixedTrunc
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Tools.aesm_Fpair_fts =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -45,133 +477,9 @@ theorem measurable_w_sq : Measurable (fun z : ℝ => (Work.Spaces.w z) ^ 2) := b
   exact (((measurable_const.add measurable_id).pow_const 2).div
     (measurable_id.pow_const 2)).pow_const 2
 
-/-- **The measurability input of the radial energy identity for a source `F` known only through
-`IsBslSol`.**  Off the (null) boundary of the quadrant `F` agrees with `bslOp α Ψ`, so `|F · Ψ|`
-is a.e. strongly measurable for the product of the restricted measures, and the angular integral
-`z ↦ w z² ∫_θ |F z θ Ψ z θ|` is a.e. strongly measurable for `(dz)|_{Iz}`. -/
-theorem aesm_abs_mul_and_w_sq_integral (α : ℝ) (F Ψ : ℝ → ℝ → ℝ)
-    (hcont : ContinuousOn (fun p : ℝ × ℝ => Work.Elliptic.bslOp α Ψ p.1 p.2 * Ψ p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)))
-    (hsol : Work.Elliptic.IsBslSol α F Ψ) :
-    MeasureTheory.AEStronglyMeasurable (fun p : ℝ × ℝ => |F p.1 p.2 * Ψ p.1 p.2|)
-        ((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
-          (MeasureTheory.volume.restrict Work.Spaces.Iθ))
-      ∧ MeasureTheory.AEStronglyMeasurable
-          (fun z => (Work.Spaces.w z) ^ 2 *
-            ∫ θ in Work.Spaces.Iθ, |F z θ * Ψ z θ|)
-          (MeasureTheory.volume.restrict Work.Spaces.Iz) := by
-  set μz := MeasureTheory.volume.restrict Work.Spaces.Iz with hμz
-  set μθ := MeasureTheory.volume.restrict Work.Spaces.Iθ with hμθ
-  have hIzm : MeasurableSet Work.Spaces.Iz := measurableSet_Ici
-  have hIθm : MeasurableSet Work.Spaces.Iθ := measurableSet_Icc
-  have hkey : ∀ p : ℝ × ℝ, p ∈ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ → p.1 ≠ 0 → p.2 ≠ 0 →
-      p.2 ≠ π / 2 → Work.Elliptic.bslOp α Ψ p.1 p.2 = F p.1 p.2 := by
-    rintro ⟨z, θ⟩ hp hz0 hθ0 hθπ
-    obtain ⟨hz, hθ⟩ := hp
-    exact hsol.1 z (lt_of_le_of_ne (Set.mem_Ici.mp hz) (Ne.symm hz0)) θ
-      (lt_of_le_of_ne (Set.mem_Icc.mp hθ).1 (Ne.symm hθ0))
-      (lt_of_le_of_ne (Set.mem_Icc.mp hθ).2 hθπ)
-  have hsub : {p : ℝ × ℝ | Work.Elliptic.bslOp α Ψ p.1 p.2 ≠ F p.1 p.2} ⊆
-      (({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0}) ∪ {p : ℝ × ℝ | p.2 = π / 2})
-        ∪ {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ} := by
-    rintro p hp
-    by_cases hpI : p ∈ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ
-    · by_cases h1 : p.1 = 0
-      · exact Or.inl (Or.inl (Or.inl h1))
-      · by_cases h2 : p.2 = 0
-        · exact Or.inl (Or.inl (Or.inr h2))
-        · by_cases h3 : p.2 = π / 2
-          · exact Or.inl (Or.inr h3)
-          · exact absurd (hkey p hpI h1 h2 h3) hp
-    · exact Or.inr hpI
-  have hz0 : μz {0} = 0 := by simp [hμz]
-  have hθ0 : μθ {0} = 0 := by simp [hμθ]
-  have hθπ : μθ {π / 2} = 0 := by simp [hμθ]
-  have hnull : μz.prod μθ ((({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0})
-      ∪ {p : ℝ × ℝ | p.2 = π / 2})
-      ∪ {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ}) = 0 := by
-    have hA : μz.prod μθ {p : ℝ × ℝ | p.1 = 0} = 0 := by
-      rw [show {p : ℝ × ℝ | p.1 = 0} = ({0} : Set ℝ) ×ˢ Set.univ from by ext p; simp,
-        MeasureTheory.Measure.prod_prod ({0} : Set ℝ) Set.univ, hz0, zero_mul]
-    have hB : μz.prod μθ {p : ℝ × ℝ | p.2 = 0} = 0 := by
-      rw [show {p : ℝ × ℝ | p.2 = 0} = Set.univ ×ˢ ({0} : Set ℝ) from by ext p; simp,
-        MeasureTheory.Measure.prod_prod Set.univ ({0} : Set ℝ), hθ0, mul_zero]
-    have hC : μz.prod μθ {p : ℝ × ℝ | p.2 = π / 2} = 0 := by
-      rw [show {p : ℝ × ℝ | p.2 = π / 2} = Set.univ ×ˢ ({π / 2} : Set ℝ) from by ext p; simp,
-        MeasureTheory.Measure.prod_prod Set.univ ({π / 2} : Set ℝ), hθπ, mul_zero]
-    have hAB : μz.prod μθ ({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0}) = 0 :=
-      le_antisymm (le_trans (measure_union_le _ _) (by rw [hA, hB, add_zero])) bot_le
-    have hD : μz.prod μθ {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ} = 0 := by
-      have hsub2 : {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ} ⊆
-          (Work.Spaces.Izᶜ ×ˢ Set.univ) ∪ (Set.univ ×ˢ Work.Spaces.Iθᶜ) := by
-        rintro ⟨z, θ⟩ hp
-        simp only [Set.mem_setOf_eq, Set.mem_prod, Set.mem_union, Set.mem_compl_iff,
-          Set.mem_univ, and_true, true_and] at hp ⊢
-        tauto
-      refine MeasureTheory.measure_mono_null hsub2 ?_
-      have hE : μz.prod μθ (Work.Spaces.Izᶜ ×ˢ Set.univ) = 0 := by
-        rw [MeasureTheory.Measure.prod_prod (Work.Spaces.Izᶜ) Set.univ, hμz,
-          MeasureTheory.Measure.restrict_apply hIzm.compl, Set.compl_inter_self, measure_empty,
-          zero_mul]
-      have hF : μz.prod μθ (Set.univ ×ˢ Work.Spaces.Iθᶜ) = 0 := by
-        rw [MeasureTheory.Measure.prod_prod Set.univ (Work.Spaces.Iθᶜ), hμθ,
-          MeasureTheory.Measure.restrict_apply hIθm.compl, Set.compl_inter_self, measure_empty,
-          mul_zero]
-      exact le_antisymm (le_trans (measure_union_le _ _) (by rw [hE, hF, add_zero])) bot_le
-    refine le_antisymm ?_ bot_le
-    calc μz.prod μθ ((({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0})
-        ∪ {p : ℝ × ℝ | p.2 = π / 2}) ∪ {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ})
-        ≤ μz.prod μθ (({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0})
-            ∪ {p : ℝ × ℝ | p.2 = π / 2})
-          + μz.prod μθ {p : ℝ × ℝ | p ∉ Work.Spaces.Iz ×ˢ Work.Spaces.Iθ} := measure_union_le _ _
-      _ ≤ (μz.prod μθ ({p : ℝ × ℝ | p.1 = 0} ∪ {p : ℝ × ℝ | p.2 = 0})
-            + μz.prod μθ {p : ℝ × ℝ | p.2 = π / 2}) + 0 := by
-          rw [hD]
-          exact add_le_add (measure_union_le _ _) le_rfl
-      _ = 0 := by rw [hAB, hC, add_zero, add_zero]
-  have hae : (fun p : ℝ × ℝ => Work.Elliptic.bslOp α Ψ p.1 p.2) =ᵐ[μz.prod μθ]
-      (fun p : ℝ × ℝ => F p.1 p.2) :=
-    MeasureTheory.ae_iff.2 (MeasureTheory.measure_mono_null hsub hnull)
-  have hAabs : MeasureTheory.AEStronglyMeasurable
-      (fun p : ℝ × ℝ => |Work.Elliptic.bslOp α Ψ p.1 p.2 * Ψ p.1 p.2|) (μz.prod μθ) :=
-    Work.Spaces.aesm_of_continuousOn_Qd
-      (fun p : ℝ × ℝ => |Work.Elliptic.bslOp α Ψ p.1 p.2 * Ψ p.1 p.2|) hcont.abs
-  have hAeq : (fun p : ℝ × ℝ => |Work.Elliptic.bslOp α Ψ p.1 p.2 * Ψ p.1 p.2|)
-      =ᵐ[μz.prod μθ] (fun p : ℝ × ℝ => |F p.1 p.2 * Ψ p.1 p.2|) :=
-    hae.mono fun p hp => congrArg (fun x => |x * Ψ p.1 p.2|) hp
-  have h1 : MeasureTheory.AEStronglyMeasurable
-      (fun p : ℝ × ℝ => |F p.1 p.2 * Ψ p.1 p.2|) (μz.prod μθ) := hAabs.congr hAeq
-  refine ⟨h1, ?_⟩
-  exact (measurable_w_sq.aestronglyMeasurable).mul h1.integral_prod_right'
 
-/-- Continuity of `bslOp α Ψ · Ψ` on the open quadrant, from `SmoothNbhd Ψ`: the hypothesis
-`hcont` of `aesm_abs_mul_and_w_sq_integral`. -/
-theorem continuousOn_bslOp_mul (α : ℝ) (Ψ : ℝ → ℝ → ℝ) (hΨ : Work.Spaces.SmoothNbhd Ψ) :
-    ContinuousOn (fun p : ℝ × ℝ => Work.Elliptic.bslOp α Ψ p.1 p.2 * Ψ p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-  have hb : Work.FTS.EllipticEst.SmoothOpen (Work.Elliptic.bslOp α Ψ) :=
-    Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp α Ψ hΨ
-  have hΨo : Work.FTS.EllipticEst.SmoothOpen Ψ :=
-    Work.FTS.EllipticEst.Cert.smoothNbhd_smoothOpen_bsl hΨ
-  exact ((hb.forall 0).continuousOn).mul ((hΨo.forall 0).continuousOn)
 
-/-- **The measurability input in the shape required by the field-extraction.**  This is the
-statement of the placeholder `tmp_aesmF` of
-`Submission/Work/FTS/EllipticEst/ellHyp_L2Mem_fields.lean`, with the continuity hypothesis
-discharged: replacing that placeholder by
-
-    exact Work.FTS.EllipticEst.aesm_abs_mul_and_w_sq_integral_uncond α F Ψ hsm hsol
-
-leaves the file sorry-free. -/
-theorem aesm_abs_mul_and_w_sq_integral_uncond (α : ℝ) (F Ψ : ℝ → ℝ → ℝ)
-    (hsm : Work.Spaces.SmoothNbhd Ψ) (hsol : Work.Elliptic.IsBslSol α F Ψ) :
-    MeasureTheory.AEStronglyMeasurable (fun p : ℝ × ℝ => |F p.1 p.2 * Ψ p.1 p.2|)
-        ((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
-          (MeasureTheory.volume.restrict Work.Spaces.Iθ))
-      ∧ MeasureTheory.AEStronglyMeasurable
-          (fun z => (Work.Spaces.w z) ^ 2 *
-            ∫ θ in Work.Spaces.Iθ, |F z θ * Ψ z θ|)
-          (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
-  aesm_abs_mul_and_w_sq_integral α F Ψ (continuousOn_bslOp_mul α Ψ hsm) hsol
 
 end Work.FTS.EllipticEst
+end
+end

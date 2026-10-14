@@ -1,9 +1,9 @@
 import Mathlib.Basic.Real.Basic
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.remov.EllEstUnifStepAux
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.ClassC.VopGen.coreASlot11Gen
 import Submission.Work.FTS.ClassC.VopGen.a11OfCore
+import Submission.Work.FTS.ClassC.VopGen.coreASlot11Gen
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

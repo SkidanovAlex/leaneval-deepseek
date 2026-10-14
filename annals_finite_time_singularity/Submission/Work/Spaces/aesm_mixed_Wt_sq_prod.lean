@@ -2,9 +2,9 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.H2.T2Aesm
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.mixed_comm
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

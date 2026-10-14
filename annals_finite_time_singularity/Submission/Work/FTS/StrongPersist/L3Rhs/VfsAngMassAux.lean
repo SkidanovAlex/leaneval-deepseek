@@ -1,35 +1,3 @@
-/-
-# `VfsAngMassAux` — the assembly of the angular mass bound for `VfsAngMaj`
-
-This module reduces `Work.FTS.StrongPersist.L3Rhs.VfsAngMass` to three estimates
-
-* the mass of the extended majorant `VfsJetMaj` of `Γ/c`,
-* the uniform bound on the `dthU`-jets of `c₂` (`∃ B`),
-* the Leibniz bound for the jets of the second angular factor `VfsA2`,
-
-and proves everything else: the `VfsA1` half of `angMaj` (whose jets are literally shifted
-jets of `Γ/c`, since `VfsA1 α = (3/2)·dthU (Γ/c)`), the pointwise domination of
-`VfsAngMaj α` by `VfsJetMaj α` on `(0,π/2)`, measurability, and the passage to the
-integral.
-
-Since `VfsAngMaj α = angMaj α (VfsA1 α) + angMaj α (VfsA2 α)` with
-
-`angMaj α C θ = (C θ)²T^{-η} + Σ_{1≤i≤3}(dthU^[i] C θ)²T^{-γ}`,  `T = sin 2θ`,
-
-the pointwise bound is obtained for each summand by expanding `angMaj` into its four terms.
-
-* **`VfsA1 α = (3/2) dthU X`** (`X = VfsGc α = Γ/c`): the four terms are
-  `(9/4)(dthU^[m] X θ)² T^{-e_m}` with `m = 1,2,3,4` and `e_1 = η`, `e_m = γ` for `m ≥ 2`;
-  comparing `T^{-η} ≤ T^{-γ}` and using `VfsJetMaj_ge_gam` gives `≤ 9 VfsJetMaj`.
-* **`VfsA2 α = -α c₂ X`**: the `η`-term is `α²(c₂θ)²(Xθ)²T^{-η} ≤ B² X²T^{-η} ≤ B² VfsJetMaj`;
-  each of the three `γ`-terms is controlled by the Leibniz bound, squared, and split with the
-  five-term Cauchy–Schwarz `sum_five_sq_le` into `VfsJetMaj_ge_alpha` (`m = 0`) and
-  `VfsJetMaj_ge_gam` (`1 ≤ m ≤ 4`), giving `≤ 25 C₂²B² VfsJetMaj` each.
-
-The endpoints `θ = 0`, `θ = π/2` are handled a.e.: the pointwise inequality is proved on the
-open interval `(0,π/2)` and extended a.e. to `Iθ`, whose complement is the two-point null set
-`{0, π/2}`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
@@ -37,10 +5,11 @@ import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsAngMassDefs
 import Submission.Work.FTS.PhiStar.Psi0Est.exists_ZClass
-import Submission.Work.FTS.CoercivityFix.Transfer.E1_blocks
+import Submission.Work.FTS.StrongPersist.L3Rhs.CoupledVfs
+import Submission.Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsRadAux.aestronglyMeasurable_slotSum
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -59,19 +28,8 @@ set_option linter.unusedVariables false
 
 /-! ## 0. Nonnegativity and smoothness -/
 
-/-- `angMaj` is nonnegative on `Iθ`. -/
-theorem angMaj_nonneg (α : ℝ) (C : ℝ → ℝ) {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
-    0 ≤ angMaj α C θ := by
-  have hs := sin_two_nonneg_Iθ hθ
-  rw [angMaj]
-  refine add_nonneg (mul_nonneg (sq_nonneg _) (Real.rpow_nonneg hs _)) ?_
-  exact Finset.sum_nonneg (fun i _ => by
-    split_ifs with h
-    · exact mul_nonneg (sq_nonneg _) (Real.rpow_nonneg hs _)
-    · exact le_refl 0)
-
 /-- `VfsAngMaj` is nonnegative on `Iθ`. -/
-theorem VfsAngMaj_nonneg (α : ℝ) {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
+theorem VfsAngMaj_nonneg_d8f28c (α : ℝ) {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
     0 ≤ VfsAngMaj α θ := by
   rw [VfsAngMaj]
   exact add_nonneg (angMaj_nonneg α (VfsA1 α) hθ) (angMaj_nonneg α (VfsA2 α) hθ)
@@ -412,7 +370,7 @@ theorem VfsAngMass_of_pieces
       lt_of_le_of_ne hIθ.2 hcon.2⟩)
   have hnn : ∀ᵐ θ ∂(volume.restrict Work.Spaces.Iθ), 0 ≤ VfsAngMaj α θ := by
     filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    exact VfsAngMaj_nonneg α hθ
+    exact VfsAngMaj_nonneg_d8f28c α hθ
   have hIntg : MeasureTheory.Integrable
       (fun θ => (10 + 100 * (B ^ 2 + C2 ^ 2 * B ^ 2)) * VfsJetMaj α θ)
       (volume.restrict Work.Spaces.Iθ) := hDint.const_mul _

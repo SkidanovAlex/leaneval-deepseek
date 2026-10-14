@@ -1,36 +1,16 @@
-/-
-# `Work.FTS.OpenPkg.prod_field` — the `ℋ⁴` product rule of Elgindi in the open-quadrant class
-
-The `prod` field of the frozen interface `Work.FTS.OpenPkg.N4Norm'`: for every `0 < α ≤ 1` and
-all `f g` in the open-quadrant class `HQo α 4 = SmoothOpen ∧ HkMem α 4` (interior `C^∞`, honest
-weighted integrals, **no** boundary vanishing and **no** decay),
-
-`|f g|²_{ℋ⁴} ≤ C (γ-1)⁻¹ |f|²_{ℋ⁴} |g|²_{ℋ⁴}`,  `γ - 1 = α/10`,
-
-which is the form in which the target theorem is stated.
-
-The analytic content is entirely in the two delivered inputs
-`Work.FTS.OpenPkg.ProdOpen.prod_majorant` (the pointwise majorant of the product integrand) and
-`Work.FTS.OpenPkg.ProdOpen.exc_bound` (the two exceptional `(3,1)`-terms); this file contains
-only the measure-theoretic assembly `HkSq_prod_bound_of` and the conversion from `HkSq` to the
-stated `Xn`-form, which is the same conversion as in
-`Submission/Work/FTS/Nonlinear/n4norm_exists.lean`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
 import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
 import Submission.Work.FTS.OpenPkg.ProdOpen.Tools1d
-import Submission.Work.FTS.OpenPkg.ProdOpen.SlicesOpen
-import Submission.Work.FTS.OpenPkg.ProdOpen.PwOpen
-import Submission.Work.Spaces.ProductTools
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Submission.Work.FTS.StrongPersist.N6.Slots
+import Submission.Work.FTS.StrongPersist.N6.sliceAvg_le6
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKjet.L12
 import Submission.Work.H2.T1Q.PwBdQ
-import Submission.Work.FTS.OpenPkg.ProdOpen.exc_bound
-import Submission.Work.FTS.OpenPkg.ProdOpen.prod_majorant
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

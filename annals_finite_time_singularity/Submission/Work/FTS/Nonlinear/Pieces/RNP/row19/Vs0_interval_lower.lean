@@ -1,23 +1,51 @@
-/-
-# Row 19 — `V₀ = V(Φ̃_*)(0,·)` does not vanish at an interior angle without staying bounded
-away from `0` on a whole interval
-
-The coefficient of row 19 is `V(Φ̃_*)(z,θ) = ∂_θΦ̃_* - tan θ · Φ̃_*`, and the frozen part of the
-estimate sees it only through its `z = 0` slice `V₀(θ) = V(Φ̃_*)(0,θ)`
-(`Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0`).  This file records that `V₀` is *locally bounded
-away from zero at every point where it is non-zero*: the defining expression is `C^∞` on the
-half strip `(-1,∞) × (0,π/2)` (`Vs_smoothQuad`, proved in `Vs_lipschitz.lean`), so its `z = 0`
-slice is continuous on `(0,π/2)`, and continuity plus `V₀(θ₀) ≠ 0` gives a whole interval
-`(a,b) ∋ θ₀` with `|V₀(θ)| ≥ c₀ > 0`.
-
-This is the standard "a continuous non-vanishing function is bounded away from zero locally"
-step; it is what allows the row-19 piece `N₃^{**} = -2α·V(Φ̃_*)·D_zF_*` to be treated as
-`sgn(V₀)·(nondegenerate)` on the support of the angular factor.
--/
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Split
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.Spaces.bt_integral_weight_id
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.Nonlinear.Pieces.RNP.row19
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- The **radial profile** `2z(1−z)/(1+z)³` of `D_zF_*/(αΓ/c)`. -/
+abbrev prof (z : ℝ) : ℝ := 2 * z * (1 - z) / (1 + z) ^ 3
+
+/-- The radial profile as a function of the two self-similar variables (constant in `θ`). -/
+abbrev proff : ℝ → ℝ → ℝ := fun z _ => 2 * z * (1 - z) / (1 + z) ^ 3
+
+/-- The **angular factor** `V(Φ̃_*)(0,θ)·αΓ(α,θ)/c α` of the row-19 coefficient. -/
+abbrev Ufun (α : ℝ) (Φs : Work.FTS.Galerkin.Fn) : ℝ → ℝ :=
+  fun θ => Vs0 α Φs θ * (α * Work.Spaces.Gam α θ / Work.Spaces.c α)
+
+/-- `D_zF_*(z,θ) = (αΓ(θ)/c)·prof(z)` for `z > -1`. -/
+theorem Gs_eq_prof {α : ℝ} (hα : 0 < α) {z θ : ℝ} (hz : -1 < z) :
+    Work.FTS.Nonlinear.Pieces.RNP.Gs α z θ
+      = (α * Work.Spaces.Gam α θ / Work.Spaces.c α) * prof z := by
+  rw [Work.FTS.Nonlinear.Pieces.RNP.Gs, Work.Construction.Dz_Fstar_eq hα hz, prof]
+  ring
+
+
+end Work.FTS.Nonlinear.Pieces.RNP.row19
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0_interval_lower =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -78,3 +106,4 @@ theorem Vs0_interval_lower {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0 <
   linarith
 
 end Work.FTS.Nonlinear.Pieces.RNP.row19
+end

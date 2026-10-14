@@ -1,8 +1,66 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.StrongGlobal.Defs
+import Submission.Work.FTS_EllLimOK.BoxDataH.clusterLimitH_aux2
+import Submission.Work.FTS_EllLimOK.FatouH
+import Submission.Work.FTS_EllLimOK.PkgJets.pinMid
 import Submission.Work.FTS_EllLimOK.ProducerH.pkgMemSqH_chain
+import Submission.Work.FTS_EllLimOK.UniqFatou
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS_EllLimOK.BoxDataH.ClusterLimitH =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS_EllLimOK.BoxDataH
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-- **The cluster limit under `HasPkgH`, in the form used by the box data**: a limit `Ψ` which is
+`C²` on every closed box, solves the law of the limit profile, carries the two `ℋ⁰`-memberships,
+and is the limit of the values along any sub-subsequence of the given `LimSeq4`. -/
+theorem clusterLimitH {α Ce : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
+    {E : Fn →ₗ[ℝ] Fn} (hE : Work.FTS_EllLimOK.HasPkgH α Ce E)
+    {fn : ℕ → Fn} {f : Fn} (hL : Work.FTS_EllLimOK.LimSeq4 α fn f) :
+    ∃ Ψ : Fn, Work.FTS_EllLimOK.BoxReg Ψ ∧
+      Work.FTS.StrongGlobal.IsBslSolPos α f Ψ ∧
+      Work.Spaces.HkMem α 0 Ψ ∧
+      Work.Spaces.HkMem α 0 (fun z θ => Ψ z θ / Real.cos θ) ∧
+      (∀ ns : ℕ → ℕ, Filter.Tendsto ns Filter.atTop Filter.atTop →
+        ∃ τ : ℕ → ℕ, ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
+          Filter.Tendsto (fun m => E (fn (ns (τ m))) z θ) Filter.atTop (nhds (Ψ z θ))) := by
+  obtain ⟨τ₀, -, Ψ₀, hbox₀, hsol₀, hHk₀, hHkc₀, -⟩ :=
+    clusterLimitH_aux2 (E := E) hα hα1 hE hL Filter.tendsto_id
+      (fun hU hconv => boxReg_of_boxUniform2 hU hconv)
+  refine ⟨Ψ₀, hbox₀, hsol₀, hHk₀, hHkc₀, fun ns hns => ?_⟩
+  obtain ⟨τ, -, Ψ', hbox', hsol', hHk', hHkc', hconv'⟩ :=
+    clusterLimitH_aux2 (E := E) hα hα1 hE hL hns
+      (fun hU hconv => boxReg_of_boxUniform2 hU hconv)
+  have heq : ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd → Ψ' z θ = Ψ₀ z θ :=
+    Work.FTS_EllLimOK.eqOn_of_same_law hα hsol' hsol₀ hbox' hbox₀ hHk' hHkc' hHk₀ hHkc₀
+      (Work.FTS_EllLimOK.HkMem_zero_diff hHk' hHk₀ hbox' hbox₀)
+  exact ⟨τ, fun z θ hzθ => by
+    simpa only [heq z θ hzθ] using hconv' z θ hzθ⟩
+
+end Work.FTS_EllLimOK.BoxDataH
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ProducerH.pkgMemSqH_of_ellClassOk =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -207,3 +265,5 @@ theorem pkgMemSqH_of_ellClassOk :
           (mul_le_mul_of_nonneg_right hle hc) (sq_nonneg _))⟩
 
 end Work.FTS_EllLimOK.ProducerH
+end
+end

@@ -1,40 +1,216 @@
-/-
-# The order-`5` angular slot bound for the profile `θ ↦ -sin²θ`
-
-This file proves `SinSqSlot5`: the fifth `D_θ`-iterate of the angular profile
-`a(θ) = -sin²θ` (extended to `(z,θ)` by ignoring `z`) is bounded by a constant times
-`sin(2θ)` on `Iθ`.  It is the order-`5` companion of
-`Work.FTS.Nonlinear.Pieces.RNP.RNP24.angProfile_sinSq`, which treats the orders `1 ≤ i ≤ 4`
-with the constant `192`.
-
-## Route
-
-Because the profile does not depend on `z`,
-`DthIter i a 0 θ = (Lop^[i] G) θ` where `G θ = -sin²θ` and
-`Lop u θ = sin(2θ)·u'(θ)` (`Work.Spaces.DthIter_eq_iterate_Lop`).  Writing `s = sin 2θ` and
-`c = cos 2θ`, a direct computation gives
-
-```
-Lop G            = -s²
-Lop(-s²)         = -4 s² c
-Lop(-4 s² c)     = -16 s²c² + 8 s⁴
-Lop(…)           = -64 s²c³ + 128 s⁴c
-Lop(-64 s²c³ + 128 s⁴c) = -256 s²c⁴ + 1408 s⁴c² - 256 s⁶.
-```
-
-On `Iθ` we have `0 ≤ s ≤ 1` and `|c| ≤ 1`, so every monomial `C s^a c^b` with `a ≥ 1`
-satisfies `|C s^a c^b| ≤ |C|·s`; summing the three coefficients
-`256 + 1408 + 256 = 1920` gives the bound `|Lop^[5] G θ| ≤ 1920·sin(2θ)`.
-
-Everything is `sorry`-free and uses only `propext`, `Classical.choice`, `Quot.sound`.
--/
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Basic.ENNReal.Basic
+import Mathlib.LinearAlgebra.Matrix.Defs
+import Mathlib.Order.Filter.Defs
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.angProfile_sinSq
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.dzdIter_FK_eq_qang
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Tools.FzFacts
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.ConstructionInstance.Maximality =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open FiniteTimeSingularity Set Gradient Matrix Filter Topology MeasureTheory
+open scoped Topology Matrix NNReal ENNReal
+
+namespace Work.ConstructionInstance
+
+/-! ## The maximality residual is a theorem -/
+
+/-- **Maximality from the four analytic inputs** (the chain
+`SelfSimNoLG → SelfSimBlowUp → SelfSimMaximal`). -/
+theorem selfSimMaximal_of_data {α : NNReal} (P : ProfileData α) (hlwp : Work.LWP.LWPInputs α)
+    (hv : SelfSimVorticityEquation α P) (hG : SelfSimLGClass α P) (hsm : SelfSimVortSmooth P) :
+    SelfSimMaximal P :=
+  selfSimMaximal_of_blowUp P hlwp hv hG hsm
+    (selfSimBlowUp_of_noLG P (selfSimNoLG_of_data P hlwp hv hG hsm))
+
+/-- **`tie` from the four analytic inputs alone** (no maximality hypothesis). -/
+theorem selfSimilarEulerSolution_of_data {α : NNReal} (P : ProfileData α)
+    (hlwp : Work.LWP.LWPInputs α) (hv : SelfSimVorticityEquation α P)
+    (hG : SelfSimLGClass α P) (hsm : SelfSimVortSmooth P) :
+    SelfSimilarEulerSolution α P.T P :=
+  selfSimilarEulerSolution_of P hlwp hv hG hsm (selfSimMaximal_of_data P hlwp hv hG hsm)
+
+/-! ## The minimal residual interface -/
+
+/-- **The residual interface of the construction, in its minimal form.**  There is no maximality
+field: it is derived (`selfSimMaximal_of_data`).  The five fields are the LWP chapter's analytic
+inputs (whose own residual list is `Work.LWP.NOTES.md`) and the four analytic outputs of the sibling
+chapters that this directory cannot prove:
+
+* `vortEq` — the ℝ³ vorticity equation for `u = BS ω` (`Work.Stability`'s `St0`–`St3` bootstrap);
+* `lgClass` — the spacetime Lichtenstein–Gunther class, `Work.LWP.SpaceTimeHolder` (`Work.LWP`);
+* `smooth` — `C¹` of the ansatz on the two-sided window (the construction's backward extension);
+* `timeHolderDeriv` — the time-Hölder regularity of `∂ₜω` on the strips, equivalently a
+  strip-uniform bound on `∂ₜ²ω` (finding (H); the `St1`/`St3` second-order estimate).
+
+Everything else is a theorem of this directory: `ProfileData` is inhabited
+(`profileData_inhabited`) and every field about the vorticity — including, by this module,
+maximality — is derived. -/
+structure CoreResiduals (α : NNReal) (P : ProfileData α) where
+  /-- the LWP chapter's analytic inputs -/
+  lwp : Work.LWP.LWPInputs α
+  /-- **residual 1**: the ℝ³ vorticity equation (`Work.Stability`'s bootstrap) -/
+  vortEq : SelfSimVorticityEquation α P
+  /-- **residual 2**: the spacetime Lichtenstein–Gunther class of `BS(ω(·,t))` (`Work.LWP`) -/
+  lgClass : SelfSimLGClass α P
+  /-- **residual 3**: `C¹` of the ansatz velocity on the two-sided window (backward extension) -/
+  smooth : SelfSimVortSmooth P
+  /-- **residual 4 (finding H)**: the time-Hölder regularity of `∂ₜω` on the strips -/
+  timeHolderDeriv : SelfSimTimeHolderDeriv P
+
+/-- **`tie` from the minimal residual interface.** -/
+theorem tie_of_coreResiduals {α : NNReal} {P : ProfileData α} (T : CoreResiduals α P) :
+    SelfSimilarEulerSolution α P.T P :=
+  selfSimilarEulerSolution_of_data P T.lwp T.vortEq T.lgClass T.smooth
+
+/-- **The patched input package from the minimal residual interface.** -/
+def constructionDataFixed_of_coreResiduals {α : NNReal} {P : ProfileData α}
+    (T : CoreResiduals α P) : ConstructionDataFixed α :=
+  { lwp := T.lwp
+    prof := P
+    tie := tie_of_coreResiduals T
+    hThDt := T.timeHolderDeriv }
+
+/-- **The constructed-solution package from the minimal residual interface.** -/
+def constructedSolutionFixed_of_coreResiduals {α : NNReal} {P : ProfileData α}
+    (T : CoreResiduals α P) : ConstructedSolutionFixed α :=
+  constructedSolutionFixed (constructionDataFixed_of_coreResiduals T)
+
+/-- The `maximal` field of `TieInputs` is redundant: dropping it gives `CoreResiduals`. -/
+def coreResidualsOfTieInputs {α : NNReal} {P : ProfileData α} (T : TieInputs α P) :
+    CoreResiduals α P :=
+  { lwp := T.lwp
+    vortEq := T.vortEq
+    lgClass := T.lgClass
+    smooth := T.smooth
+    timeHolderDeriv := T.timeHolderDeriv }
+
+
+/-! ## Certificates -/
+
+/-- **Certificate I — maximality is derived, not assumed.** -/
+example {α : NNReal} (P : ProfileData α) (hlwp : Work.LWP.LWPInputs α)
+    (hv : SelfSimVorticityEquation α P) (hG : SelfSimLGClass α P) (hsm : SelfSimVortSmooth P) :
+    SelfSimMaximal P :=
+  selfSimMaximal_of_data P hlwp hv hG hsm
+
+/-- **Certificate J — the minimal residual interface produces the whole package.** -/
+example {α : NNReal} {P : ProfileData α} (T : CoreResiduals α P) : ConstructedSolutionFixed α :=
+  constructedSolutionFixed_of_coreResiduals T
+
+/-- **Certificate K — `TieInputs` (with the maximality hypothesis) is equivalent to the minimal
+interface**: the hypothesis is redundant. -/
+example {α : NNReal} {P : ProfileData α} (T : TieInputs α P) :
+    SelfSimilarEulerSolution α P.T P :=
+  tie_of_coreResiduals (coreResidualsOfTieInputs T)
+
+end Work.ConstructionInstance
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row14 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+open scoped Real
+
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row16 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option linter.unusedVariables false
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row17 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option linter.unusedVariables false
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row18 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option linter.unusedVariables false
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row20 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option linter.unusedVariables false
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.H5.Atoms.SinSqSlot5 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -383,3 +559,5 @@ theorem SinSqSlot5 : ∃ B : ℝ, 0 < B ∧ ∀ θ ∈ Work.Spaces.Iθ,
   exact bound_L5 hθ
 
 end Work.FTS.StrongEps.H5.Atoms
+end
+end

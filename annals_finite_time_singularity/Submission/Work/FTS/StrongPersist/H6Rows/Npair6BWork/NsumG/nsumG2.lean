@@ -1,40 +1,17 @@
-/-
-# `Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG2`
-
-Piece bounds for the three "star coefficient × datum slot" pieces of the level-six `N`-row:
-`nsP1 = 2·Rop(PhiTs α Φs)·f`, `nsP5 = -2·(Uop(PhiTs α Φs)/s2)·D_θf`,
-`nsP9 = -2α·Vop(PhiTs α Φs)·D_zf`.
-
-## Route
-
-* `nsP1`, `nsP5`: the flat star-price rows `rowStarFam` (`A · f` and `A · D_θf`), with the
-  coefficient `A` a scalar multiple of one of the star fields of `StarPkg6`; `starDat` supplies
-  `SmoothOpen` and the pointwise price
-  `|D_z^jD_θ^iA| ≤ C·(Cs·α)·z/(1+z)·(α+σ)σ^{α/5}`, and scalar multiples are handled by
-  `mixed_const_mul`.
-* `nsP9`: the `D_z`-slot row `rowDzWlInfFlat` with the coefficient `A = -2α·Vop(PhiTs α Φs)`;
-  its hypotheses are `SmoothOpen` (from `starDat`), the `𝒲^{6,∞}`-membership and its bound
-  (`StarPkg6.VW6`, scaled by `WlInf_const_mul_le_abs`), and the three flat `∂_θA`-bounds
-  supplied by `StarPkgo.Vth : CoefThMem 3 (Vop (PhiTs α Φs))` together with `supAbsO_le_coefTh`.
-
-The datum data is `T6Coef.DatData α (slice g τ) M` from `L6Ctx` (`datData_of_H6Adm`), and the
-final `α^{-10}(1+|Ce|+|Cs|)^4(1+M)^4`-budget is the coarse form of the rows' `α^{-3}`/`α^{-4}`
-prices (`arith_fam`, `arith_dz` below).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.starDat
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowDzWlInfFlat
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.rowDthWlInf
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.rowMulCoef
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarFam
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0coefA4_WlInf6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.starDat
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.StrongPersist.SP6.EV6
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

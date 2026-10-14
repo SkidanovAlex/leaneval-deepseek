@@ -1,27 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `PT.L12limDiff` — the `z`-differentiability of `L₁₂` of the *limit* profile
-
-The pointwise convergence `prof_pt_tendsto` needs `DifferentiableAt ℝ (fun z' => L₁₂(F)(z')) z`
-for the **limit** profile `F = F_* + slice g s`: the identity
-
-  `pz (PhiTil α F Φ) z θ = pz Φ z θ − (1/(4α))·sin(2θ)·∂_z L₁₂(F)(z)`
-
-is an instance of `deriv_sub`, which needs differentiability of *both* summands.
-
-The hypotheses of the target do **not** give smoothness of the limit slice (it is only `C⁴` on
-the open quadrant, with an `ℋ⁶`-bound that need not be honest), so `Work.FTS.StrongPersist…L12add`
-(which needs `SmoothOpen` + `HkMem α 4`) is *not* applicable.  What *is* available is the
-approximating family: the projected slices `w n` are class-`C`, so `L₁₂(F_* + w n)` is
-differentiable with derivative `−L₁₂dens (F_* + w n)`, and the densities are uniformly bounded and
-uniformly Lipschitz (the `θ`-integral of a class-`C` profile).  Hence
-`RXR1.hasDerivAt_of_tendsto_deriv` applies: *pointwise* convergence of `L₁₂(F_* + w n)` (a
-hypothesis of the target, `hL12F`) plus locally uniform convergence of the derivatives (from the
-uniform Lipschitz bounds) gives differentiability of the limit.
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
@@ -29,12 +5,11 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongEps.E5Aux2.PT.Basic
+import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg_closed
 import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_deriv
 import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_fam_bounds
-import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_tendsto
-import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg_closed
-import Submission.Work.FTS_RegExport.RXR1.hasDerivAt_of_tendsto_deriv
+import Submission.Work.FTS.StrongEps.EpsHbdd
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -52,17 +27,8 @@ set_option autoImplicit false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 1600000
 
-/-- The perturbed full profile `F_* + w` of the modulation. -/
-def Fadd (α : ℝ) (w : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ :=
-  fun z θ => Work.Construction.Fstar α z θ + w z θ
 
-/-- The `L₁₂`-marginal of `F_* + w`. -/
-def L12F (α : ℝ) (w : ℝ → ℝ → ℝ) : ℝ → ℝ :=
-  fun x => Work.Construction.L12 (Fadd α w) x
 
-/-- The `L₁₂`-density of `F_* + w`. -/
-def densF (α : ℝ) (w : ℝ → ℝ → ℝ) : ℝ → ℝ :=
-  fun x => Work.Construction.L12dens (Fadd α w) x
 
 /-- The θ-slice of a function which is `C¹` on the open quadrant is a.e. strongly measurable for
 `volume.restrict Iθ`. -/

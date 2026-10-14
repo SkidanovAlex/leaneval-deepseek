@@ -1,37 +1,13 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.UniqFatou` — uniqueness of the order-`3` jet-cluster-limit (obligation 2)
-
-Two order-`3` jet-cluster-limits of the same operator along the same sequence both carry the
-Fatou package `Defs3.FatouPkg`: they solve the *same* elliptic law `IsBslSolPos α f ·`, are `C³`
-on the open quadrant, satisfy the `ℋ⁰`-memberships and the decay, and — after the box-regularity
-field added to the package — are jointly `C²` on every closed box `[a,b] × [0,π/2]`, `a > 0`.
-
-This module runs the chapter's `θ`-energy argument for the difference `δ = diff Ψ Ψ'`:
-
-1. `Fstar_zero`: the angular moment of `δ` vanishes on `(0,∞)` (its Euler-ODE modes are killed
-   by the weighted integrability `HkMem α 0 δ`);
-2. `EnergyGap`: the angular gap identity/inequality `0 ≤ α²z²Φ'' + α(5+α)zΦ'` for
-   `Φ = PhiD Ψ Ψ'`;
-3. `phi_eq_zero_of_euler_gap_weighted`: `Φ ≥ 0`, `Φ ∈ L¹(0,∞)`, `∫_0^1 Φ z^{-4} < ∞` and the
-   gap inequality force `Φ ≡ 0`;
-4. the slices being continuous on `Iθ`, `∫_θ (δ z ·)² = 0` gives `δ z · = 0` on `Iθ`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.bslOp_sub
 import Submission.Work.FTS.StrongGlobal.Defs
-import Submission.Work.FTS_EllLimOK.UniqDefs
-import Submission.Work.FTS_EllLimOK.UniqAux
-import Submission.Work.FTS_EllLimOK.BoxReg
-import Submission.Work.FTS_EllLimOK.phi_eq_zero_of_euler_gap_weighted
-import Submission.Work.FTS_EllLimOK.Fstar_zero
 import Submission.Work.FTS_EllLimOK.EnergyGap
+import Submission.Work.FTS_LocDatum3a.L12_Jeps_interchange_mine
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.one_le_mul_w
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

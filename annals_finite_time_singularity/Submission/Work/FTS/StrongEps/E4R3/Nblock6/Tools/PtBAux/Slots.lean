@@ -1,26 +1,19 @@
-/-
-# `ptBoundDz` tools: Leibniz expansions and the `D_z`-slots
-
-Part of the `ptBoundDz` development (see `Tools/ptBoundDz.lean` for the statement and the
-overall route).  Everything here lives in the sub-namespace `...Tools.PtB`.
--/
 import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
-import Submission.Work.FTS.H2.STSigma
 import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
 import Submission.Work.FTS.StrongPersist.N6.PwOpen6
-import Submission.Work.FTS.StrongPersist.N6.ProdDefs6
+import Submission.Work.FTS.StrongPersist.StarPkg6OfCore
 import Submission.Work.FTS.TransportS.sup_dz_le_hk
-import Submission.Work.FTS.StrongEps.H5.LevelShift
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Tools.PtBAux.Close
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

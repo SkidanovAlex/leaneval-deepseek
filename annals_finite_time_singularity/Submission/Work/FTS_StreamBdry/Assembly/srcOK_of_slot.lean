@@ -4,11 +4,11 @@ import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
 import Submission.Work.FTS_StreamBdry.Basic
-import Submission.Work.FTS_StreamBdry.Inputs.SliceTr
 import Submission.Work.FTS_StreamBdry.Inputs.ftau_cont
-import Submission.Work.FTS.RegPkgGal.Defs
-import Submission.Work.FTS.Regularity.Defs
+import Submission.Work.FTS_StreamBdry.SB4.l12_zero_plainE
+import Submission.Work.R1G.vecResid_eq_scalar_smul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

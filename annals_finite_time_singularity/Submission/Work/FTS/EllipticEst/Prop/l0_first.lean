@@ -1,10 +1,9 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.Trigonometric
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Prop.l0_bridge
-import Submission.Work.FTS.EllipticEst.remov.AeStep1FullHolds
+import Submission.Work.FTS.EpsEngine.mixed_logCoords
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

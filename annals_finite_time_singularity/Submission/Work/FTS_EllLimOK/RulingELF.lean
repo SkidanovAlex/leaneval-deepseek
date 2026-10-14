@@ -1,49 +1,17 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.RulingELF` — the installed ruling vocabulary (lead, 2026-10-11)
-
-Verbatim copy of the statements of `sources/ftsV2/fts_ellimok_ruling.lean` (namespace
-`Work.FTS_EllLimOK.RulingELF` there; not a workspace module, so the copy lives here), together with
-the proof of the proved helper `existsEllSolC8_of_threshold`.
-
-The ruling **denies** `ExistsEllSolCF` because `HasPkgF` is false:
-
-* `PkgMemSq` / `PkgSlice` fail by homogeneity (`HkSq` is quadratic in `g`, the bound linear) —
-  machine-checked in the ruling as `pkgMemSq_degenerate` / `not_hasPkgF_of_pos`;
-* `PkgDecay` is false (class `C` allows `z^{-s}` tails, `s ∈ (1/2,3/2)`, and `bslOp` is Euler in
-  `z`), so the `1/(1+z)` rate of `Defs3.LocalBound4` is retired as well;
-* `PkgStrip`/`PkgCorner` are false (`z^s`, `s ∈ (3/2,2)`; `θ^σ`, `σ < 1`).
-
-Kept: `HasPkg`, `PkgCos`, the minimal limit package `FatouPkgG` (the frozen `FatouPkg` is dead
-because of `ZDecay`), the uniqueness chain and `EllLimOK3`.  Replaced by the honest internal
-hypothesis
-
-```
-HasPkgH α Ce E := HasPkg α Ce E ∧ PkgCos α E ∧ PkgMemSqH α Ce E ∧ PkgBoxH α E
-```
-
-whose producers `L1` (`PkgCos`), `L2` (`PkgMemSqH`), `L3` (`PkgBoxH`) are bundled as `ProducerH`
-and are to be proved from route (b), i.e. from the level-8 existence class
-`∀ g ∈ ClassC, ∃ Ψ, EllClassOk 8 α g Ψ`.
-
-The frozen target's hypothesis also changed: `FinalV2.Producers.core1_1a3` now takes the route (b)
-input `hb`, and the wire passes `ClassC.ellClassOk_exists_of_classC`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_EllLimOK.FatouG
-import Submission.Work.FTS.EllipticEst.ScaleAPI
+import Submission.Work.FTS.ClassC.pth_Vop_EllResid_classC
 import Submission.Work.FTS.EllExist.LevelK
-import Submission.Work.FTS.EllSol.ellPkgConj_of_classOk
-import Submission.Work.FTS.EllSol.existsEllSolC_classC_noEst
-import Submission.Work.FTS.EllSol.existsEllSolC_classC_of
-import Submission.Work.FTS.ClassC.A6
-import Submission.Work.FTS.ClassC.ellClassOk_add_gen
-import Submission.Work.FTS.ClassC.ellClassOk_exists_of_classC
+import Submission.Work.FTS.EpsEngine.HkMemLimFam
+import Submission.Work.FTS.RegExportIface.Producers
+import Submission.Work.FTS.StrongEps.IsEpsSolP_eq_of_epsClass
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
+import Submission.Work.FTS_EllLimOK.FatouG
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -64,38 +32,7 @@ set_option autoImplicit false
 
 /-! ## (A) `PkgMemSq` is degenerate (homogeneity): `HkSq` is quadratic, `Xn6` linear. -/
 
-/-- Any linear `E` with `PkgMemSq` has `HkSq α 0 (E g) ≤ 0` on the whole class `C`,
-i.e. `E g = 0` in weighted `L²` — impossible for a solution operator.  Hence `HasPkgF` and
-`ExistsEllSolCF` are false as stated. -/
-theorem pkgMemSq_degenerate {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : PkgMemSq α Ce E)
-    {g : Fn} (hg : Work.FTS.ClassC.ClassC α g) : Work.Spaces.HkSq α 0 (E g) ≤ 0 := by
-  set S := Work.Spaces.HkSq α 0 (E g) with hSdef
-  set X := Work.FTS.StrongGlobal.Xn6 α g with hXdef
-  have key : ∀ t : ℝ, 0 < t → t ^ 2 * S ≤ Ce * (t * X) := by
-    intro t ht
-    have h1 := (h (t • g) (Work.FTS.ClassC.classC_smul t hg)).1.2.1
-    rw [map_smul, Work.FTS.EllipticEst.HkSq_smul] at h1
-    have h2 : Work.FTS.StrongGlobal.Xn6 α (t • g) = t * X := by
-      simp only [Work.FTS.StrongGlobal.Xn6, Work.FTS.EllipticEst.HkNorm_smul, abs_of_pos ht, hXdef]
-    rw [h2] at h1
-    exact h1
-  by_contra hS
-  rw [not_le] at hS
-  set t : ℝ := (|Ce| * |X| + 1) / S with htdef
-  have ht : 0 < t := by positivity
-  have htS : t * S = |Ce| * |X| + 1 := by rw [htdef]; field_simp
-  have h1 := key t ht
-  have h2 : t ^ 2 * S = t * (|Ce| * |X| + 1) := by rw [← htS]; ring
-  have h3 : Ce * (t * X) ≤ t * (|Ce| * |X|) := by
-    have : Ce * X ≤ |Ce| * |X| := by
-      rw [← abs_mul]; exact le_abs_self _
-    nlinarith
-  nlinarith
 
-theorem not_hasPkgF_of_pos {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} {g : Fn}
-    (hg : Work.FTS.ClassC.ClassC α g) (hpos : 0 < Work.Spaces.HkSq α 0 (E g)) :
-    ¬ HasPkgF α Ce E :=
-  fun h => absurd (pkgMemSq_degenerate h.memSq hg) (not_le.mpr hpos)
 
 /-! ## (B) Route (b) keeps `EllClassOk 8` (same proof as `existsEllSolC_of_threshold`). -/
 
@@ -142,9 +79,6 @@ theorem existsEllSolC8_of_threshold
   obtain ⟨E, hE⟩ := Work.FTS.ClassC.exists_linear_selector_classC hP0 hPlin hex
   exact ⟨E, hE⟩
 
-/-- The wire input: A2 gives `ExistsEllSolC8`. -/
-theorem existsEllSolC8_routeB : ExistsEllSolC8 :=
-  existsEllSolC8_of_threshold Work.FTS.ClassC.ellClassOk_exists_of_classC
 
 /-! ## (C) The honest replacement fields (producers L1–L3 are the open part). -/
 

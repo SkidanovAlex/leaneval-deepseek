@@ -1,7 +1,43 @@
+import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Basic.Real.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.AngAWeak.Basic
-import Submission.Work.FTS.EllipticEst.AngAWeak.aeUHk
+import Submission.Work.FTS.EllipticEst.Prop.cutEnergyProof
+import Submission.Work.FTS.EllipticEst.TT.psiDerivSq_lower
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.AngAWeak.step1Ae =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.AngAWeak
+
+open scoped Real Topology
+
+set_option autoImplicit false
+
+
+
+/-- **`HkMem α 0 (grad u)` for an `AeData` datum**, taken from the proved module
+`Work.FTS.EllipticEst.Dispatch.hkMem_gradUD` (the same statement as
+`Work.FTS.EllipticEst.H2W.Ae.hkMem_gradU`, on a self-contained import cone; it is the honesty
+clause of the radial Agmon–Nirenberg interpolation, which needs only `HkMem α 0 u` and
+`HkMem α 0 (z²∂_zz u)` — no norm bound, and no `z`-integration by parts). -/
+theorem hkMem_grad_of {α : ℝ} {u G : ℝ → ℝ → ℝ}
+    (h : Work.FTS.EllipticEst.H2W.Ae.AeData α u G) :
+    Work.Spaces.HkMem α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u) :=
+  Work.FTS.EllipticEst.Dispatch.hkMem_gradUD α u G h
+
+
+end Work.FTS.EllipticEst.AngAWeak
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_bnd =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -36,3 +72,4 @@ theorem aeUHk_bnd : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (u G : ℝ → ℝ →
   exact ⟨C, hC, fun α u G hA _ => (h α u G hA).2⟩
 
 end Work.FTS.EllipticEst.Cores.AeStep2Aux
+end

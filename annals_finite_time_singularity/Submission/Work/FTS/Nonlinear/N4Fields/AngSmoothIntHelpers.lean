@@ -1,33 +1,121 @@
-/-
-# Helpers: the `SmoothInt` (weak) hypotheses of the `angmul` interface field
-
-The interface field `Work.FTS.Nonlin.N4Norm.angmul` carries the hypothesis
-`Work.Spaces.SmoothInt (fun _ θ => a θ)` on the angular profile, i.e. `a` is `C^∞` on the
-*open* strip `(-1,∞) × (0,π/2)` together with `z`-smoothness down to `z = 0` at every angle.
-This is strictly weaker than the analyticity hypothesis `∀ θ, ContDiffAt ℝ ⊤ a θ` used by
-`Work.FTS.Nonlinear.N4Fields.angmul_field_smooth`; the facts collected here extract exactly
-the consequences of `SmoothInt` that the pointwise estimates consume:
-
-* `contDiffOn_snd_of_smoothInt` — the uncurried profile `p ↦ a p.2` is `C^∞` (genuine smooth
-  order `Work.Stability.smoothOrder`) on the open quadrant `Q0`;
-* `contDiffOn_ang_of_Q0` — conversely, `C^∞` on `Q0` of the uncurried profile gives `C^∞` of
-  `a` on the angular interval `(0,π/2)`;
-* `smoothInt_angDiv` — `SmoothInt` is preserved by dividing the profile by a constant (the
-  rescaling `a = B·a'` used by the proof);
-* `smoothOpen_angMul_On` — the `SmoothInt`-form of `smoothOpen_angMul`: multiplying a
-  `SmoothOpen` function by a `C^∞`-on-`Q0` angular profile preserves `SmoothOpen`;
-* `DthIter_angular_mul_expand_On` — the iterated Leibniz expansion
-  `D_θ^i (a·D_z^j f) = ∑_{m≤i} C(i,m) (L^m a) D_θ^{i-m}(D_z^j f)` with only the *open-interval*
-  smoothness of `a` (the proof of the analytic version
-  `Work.FTS.EllipticEst.Blocks.DthIter_angular_mul_expand` already restricts to `(0,π/2)`).
-
-Everything here is `sorry`-free.
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.Nonlinear.Interface
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Topology.GDelta.MetrizableSpace
 import Submission.Work.FTS.Nonlinear.N4Fields.angmul_field_smooth
+import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS.TransportS.sup_dz_le_hk
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_pth_poincare =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllSol.EllPkgAux.MollDom
+
+set_option maxHeartbeats 800000
+
+/-- The `θ`-derivative of the `θ`-slice of a function smooth on the open quadrant. -/
+private lemma hasDerivAt_slice_pth {F : ℝ → ℝ → ℝ} (hF : Work.FTS.EllipticEst.SmoothOpen F)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
+    HasDerivAt (fun θ' : ℝ => F z θ') (Work.Spaces.pth F z θ) θ := by
+  have hd : DifferentiableAt ℝ (fun θ' : ℝ => F z θ') θ :=
+    ((hF.curry_θ hz).differentiableOn
+      (by rw [Work.Stability.smoothOrder]; simp)).differentiableAt
+      (isOpen_Ioo.mem_nhds hθ)
+  exact hd.hasDerivAt
+
+
+end Work.FTS.EllSol.EllPkgAux.MollDom
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Dispatch.weightAlgChi =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Dispatch
+
+open Filter Set
+open scoped Topology
+
+/-- `iteratedDeriv 2 f` agrees with `deriv (deriv f)`. -/
+private lemma iteratedDeriv_two_eq (f : ℝ → ℝ) : iteratedDeriv 2 f = deriv (deriv f) := by
+  rw [iteratedDeriv_succ, iteratedDeriv_one]
+
+
+
+
+
+end Work.FTS.EllipticEst.Dispatch
+end
+-- ===== merged: Submission.Work.FTS.H2.OpenPort.coefTh3_mixed_gain =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real
+
+namespace Work.FTS.H2.OpenPort
+
+/-- **The `sin(2θ)`-gain of `CoefTh 3`.**  Every mixed derivative `D_z^b D_θ^a f` of a
+`C^∞`-datum `f` on the open quadrant with `a ≥ 1` and `a + b ≤ 4` picks up one factor
+`sin(2θ)` and is dominated by the flat angular coefficient norm `CoefTh 3 f`.
+
+This combines the σ-gain `Work.FTS.TransportS.flat_mixed_le` (which needs a *uniform* bound
+`K` on the mixed derivatives of `∂_θ f` of total order `≤ 3`) with the two facts relating
+`CoefThMem 3 f` to the norm `CoefTh 3 f`: a `CoefThMem`-bound is a bound by `supAbsO`
+(`Work.FTS.H2.le_supAbsO`), and each `supAbsO` occurring in `CoefTh` is dominated by the
+sum itself (`Work.FTS.TransportS.supAbsO_le_coefTh`).  Hence `K := CoefTh 3 f` is admissible
+and the conclusion follows. -/
+theorem coefTh3_mixed_gain :
+    ∃ C : ℝ, 0 < C ∧ ∀ (f : ℝ → ℝ → ℝ), Work.FTS.EllipticEst.SmoothOpen f →
+      Work.FTS.VocabO.CoefThMem 3 f →
+      ∀ (a b : ℕ), 1 ≤ a → a + b ≤ 4 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
+        |Work.Spaces.mixed b a f z θ| ≤ C * Real.sin (2 * θ) * Work.FTS.VocabO.CoefTh 3 f := by
+  obtain ⟨C, hCpos, hC⟩ := Work.FTS.TransportS.flat_mixed_le 3
+  refine ⟨C, hCpos, ?_⟩
+  intro f hsf hmem a b ha hab z θ hz hθ hθ1
+  refine hC f hsf (Work.FTS.VocabO.CoefTh 3 f)
+    (Work.FTS.TransportS.coefTh_nonneg 3 f) ?_ a b ha hab z θ hz hθ hθ1
+  intro b' i hbi z' θ' hz' hθ' hθ1'
+  obtain ⟨K, hK⟩ := hmem b' i hbi
+  exact le_trans (Work.FTS.H2.le_supAbsO hz' hθ' hθ1' hK)
+    (Work.FTS.TransportS.supAbsO_le_coefTh hbi)
+
+end Work.FTS.H2.OpenPort
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.N4Fields.AngSmoothIntHelpers =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -47,17 +135,6 @@ set_option maxHeartbeats 800000
 
 /-! ## Extracting the angular `C^∞`-data from `SmoothInt` -/
 
-/-- For a profile which is constant in `z`, `SmoothInt` gives that the uncurried profile
-`p ↦ a p.2` is `C^∞` (genuine smooth order) on the open quadrant `Q0 = (0,∞) × (0,π/2)`. -/
-theorem contDiffOn_snd_of_smoothInt {a : ℝ → ℝ}
-    (h : Work.Spaces.SmoothInt (fun _ (θ : ℝ) => a θ)) :
-    ContDiffOn ℝ Work.Stability.smoothOrder (fun p : ℝ × ℝ => a p.2)
-      Work.FTS.EllipticEst.Q0 := by
-  have h1 := h.1
-  refine (h1.mono ?_).of_le le_top
-  intro p hp
-  simp only [Work.FTS.EllipticEst.Q0, Set.mem_prod, Set.mem_Ioi, Set.mem_Ioo] at hp ⊢
-  exact ⟨by linarith [hp.1], hp.2⟩
 
 /-- If the uncurried angular profile is `C^∞` on the open quadrant, then the profile itself is
 `C^∞` on `(0,π/2)` (evaluate along the line `z = 1`). -/
@@ -77,16 +154,6 @@ theorem contDiffOn_ang_of_Q0 {a : ℝ → ℝ}
     fun_prop
   exact h1.comp θ h2
 
-/-- Dividing a `z`-independent `SmoothInt` profile by a constant preserves `SmoothInt`
-(the rescaling `a = B·a'` of the proof). -/
-theorem smoothInt_angDiv {a : ℝ → ℝ}
-    (h : Work.Spaces.SmoothInt (fun _ (θ : ℝ) => a θ)) (B : ℝ) :
-    Work.Spaces.SmoothInt (fun _ (θ : ℝ) => a θ / B) := by
-  constructor
-  · have h1 := h.1
-    exact h1.div_const B
-  · intro θ hθ
-    simpa only using (h.2 θ hθ).div_const B
 
 /-! ## `SmoothOpen` of an angular multiple -/
 
@@ -133,3 +200,5 @@ theorem DthIter_angular_mul_expand_On {a : ℝ → ℝ}
   ring
 
 end Work.FTS.Nonlinear.N4Fields
+end
+end

@@ -3,14 +3,14 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.leadPiece
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.dzSelfA2d
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPiecePtwIntegrable
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.intSlotLeHkSq
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.N0row_defs
-import Submission.Work.FTS.TransportS.GoodOpenBase
-import Submission.Work.Spaces.integrable_prod_of_iterated
-import Submission.Work.Spaces.PairIntegralLe
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -40,10 +40,6 @@ def rowA_piece (f A ρ : ℝ → ℝ → ℝ) (a b i j : ℕ) (p : ℝ × ℝ) :
   ρ p.1 p.2 * Work.Spaces.mixed j i A p.1 p.2 * Work.Spaces.mixed (b - j + 1) (a - i) f p.1 p.2
     * Work.Spaces.mixed b a f p.1 p.2
 
-/-- The mixed slot with an extra radial derivative is `z ∂_z` of the slot. -/
-theorem rowA_mixed_succ_eq (f : ℝ → ℝ → ℝ) (a b : ℕ) :
-    Work.Spaces.mixed (b + 1) a f
-      = fun z θ => z * Work.Spaces.pz (Work.Spaces.mixed b a f) z θ := rfl
 
 /-- `sin(2θ) > 0` on the open interval. -/
 theorem rowA_sin_two_pos {θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (π / 2)) :

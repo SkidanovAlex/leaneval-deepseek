@@ -1,33 +1,52 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/E5G/hWc_aux.lean` — the auxiliary estimates of `hWc_of_tower`
-
-Two elementary estimates used by the joint-continuity proof of `E5G.hWc_of_tower`:
-
-* `smoothOpen_sub` — the difference of two open-quadrant smooth profiles is open-quadrant
-  smooth (needed to give the `SmoothOpen` hypothesis of the pointwise ℋ⁴-bound
-  `EpsLocalPStar.pointwise_le_HkNorm` for the difference of two approximants);
-* **`hkNorm5_Wp_sub_le_fam`** — the *`ε`-free* `ℋ⁵`-bound for the projected-mollified difference:
-  `‖Wp ρ (ε k) u − Wp ρ (ε k) v‖_{ℋ⁵} ≤ C ‖u − v‖_{ℋ⁵}`, with a single constant `C` for all
-  `k` and all `ℋ⁶`-smooth `u, v`, where `ε k ∈ (0,1]` is a family of scales.  This is
-  `EpsRLX.Wp_sub_eq` (the difference of two projected mollifications is the projected
-  mollification of the difference) followed by the level-`5` projection bound
-  `hkNorm_Pz_le_five` and the mollifier bound `HkSq_Jeps_le`; the `ε`-loss `e^{Cε}` of the latter
-  is bounded by `e^C` because `ε ≤ 1`, so no factor of `ε` survives.  This uniformity is what
-  makes the `s`-Lipschitzity of the *approximants* `k ↦ epsWP …` uniform in `k`, hence passable
-  to the limit.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
-import Submission.Work.FTS.StrongEps.E5G.hkNorm_Pz_le_five
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
 import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
+import Submission.Work.FTS.StrongEps.L12_Jeps_sub_le4
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzSlot
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.starSlotShift
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.E5G
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## The repaired statement (per-slice regularity added) -/
+
+
+/-! ## The requested statement (kept verbatim; see the header for why its hypotheses are
+insufficient) -/
+
+
+end Work.FTS.StrongEps.E5G
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.hWc_aux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -125,3 +144,5 @@ theorem hkNorm5_Wp_sub_le_fam {α : ℝ} {ρ : ℝ × ℝ → ℝ}
     _ = A * Real.exp (Cj / 2) * Work.Spaces.HkNorm α 5 (fun z θ => u z θ - v z θ) := by ring
 
 end Work.FTS.StrongEps.E5G
+end
+end

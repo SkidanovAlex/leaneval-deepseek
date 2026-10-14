@@ -2,10 +2,10 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkAsm
 import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.FkTerms
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkFstarBlock
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkAsm
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS_MuLamOK.Rows.Rl0Open
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

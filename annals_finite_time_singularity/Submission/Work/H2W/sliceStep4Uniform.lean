@@ -3,22 +3,16 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.cs_integral
-import Submission.Work.FTS.EllipticEst.remov.slice_v_identities
-import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
-import Submission.Work.FTS.EllipticEst.remov.slice_gprime_v_ident
-import Submission.Work.FTS.EllipticEst.remov.slice_Q_pointwise
-import Submission.Work.FTS.EllipticEst.remov.sliceV2Uniform
-import Submission.Work.FTS.EllipticEst.remov.sliceUdivCosUniform
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.EllipticEst.remov.sliceG2Uniform
-import Submission.Work.FTS.EllipticEst.remov.sliceY2Uniform
-import Submission.Work.FTS.EllipticEst.remov.Step4.slice_step4_identity
-import Submission.Work.FTS.EllipticEst.remov.Step4.abs_integral_mul_sigma_le
-import Submission.Work.FTS.EllipticEst.remov.Step4.slice_Xt_sq_bound
-import Submission.Work.FTS.EllipticEst.remov.Step4.slice_Xt_T_bound
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

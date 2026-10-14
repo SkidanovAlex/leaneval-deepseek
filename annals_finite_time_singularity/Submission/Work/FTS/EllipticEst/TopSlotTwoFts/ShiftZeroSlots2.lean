@@ -1,36 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TopSlotTwoFts/ShiftZeroSlots2`: the level-`0` slots at the radial shifts `j ≤ 2`
-
-This is the `hZ` node of the level-`2` elliptic estimate: for a datum of the weak class
-`TT.EllWeakPos α 2 F Ψ` and every `j ≤ 2`, the two level-`0` slots of the `j`-fold radially
-shifted datum are bounded by `C·|F|²_{ℋ²}` — with a constant independent of `α`.
-
-The mathematical content is the *dilation difference quotient*: `bslOp α` is invariant under
-`z ↦ cz`, the class is defined by linear conditions (equation, Dirichlet data, the two angular
-moments, smoothness, the three `HkMem` fields), so the `j`-th difference-quotient datum
-`((dq c)^jF, (dq c)^jΨ)` is again a datum of the class (with *pointwise* vanishing moments), and
-`EllWeak0` applies to it; letting `c → 1⁺` (Fatou) gives the estimate at `D_z^j`.
-
-All of that is already assembled in
-`Work.FTS.EllipticEst.Cores.Pieces.TL2.shiftZeroSlots_aux`, which carries its two analytic inputs
-as explicit hypotheses `DilEstimate` (the mean-value bound for `dq c`) and `DqLimit` (the limit
-`(dq c)^j → D_z^j`).  Both inputs are available in a **clean** form:
-
-* `Work.FTS.EllipticEst.Cores.pPureShiftAux.HkMem_dq_and_HkSq_dq_le_self` (`DilEstimate`),
-* `Work.FTS.EllipticEst.Cores.Dil.dqIterTendsto` (`DqLimit`),
-
-so the statement below is obtained by instantiating `shiftZeroSlots_aux` — *without* passing
-through the sorried duplicate `Cores.Dil.HkMem_dq_le`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic.IntervalCases
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.TL2.shiftZeroSlots
+import Submission.Work.FTS.EllipticEst.Cores.PPureShiftRad.Basic
 import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.Basic
-import Submission.Work.FTS.EllipticEst.Cores.Dil.dqIterTendsto
+import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.MajEst
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

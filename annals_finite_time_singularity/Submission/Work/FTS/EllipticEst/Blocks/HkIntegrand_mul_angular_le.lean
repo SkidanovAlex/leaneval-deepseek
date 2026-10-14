@@ -4,20 +4,19 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.ThetaPoincareDefs
-import Submission.Work.FTS.EllipticEst.Lop_iter_mul
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.DzDthIterCommOn
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.EllipticEst.GbarSetup
-import Submission.Work.FTS.EllipticEst.sinIter_weight_bound
-import Submission.Work.FTS.EllipticEst.SliceDecompDefs
 import Submission.Work.FTS.EllipticEst.Blocks.DthIter_angular_mul_expand
 import Submission.Work.FTS.EllipticEst.Blocks.LopIter_sin_two_le
-import Submission.Work.FTS.EllipticEst.Blocks.LopIter_sin_sq_le
-import Submission.Work.FTS.EllipticEst.Blocks.angular_sq_mul_Wt_sq_le
-import Submission.Work.FTS.EllipticEst.Blocks.angular_sq_mul_Wt_sq_le_radial
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.SliceDecompDefs
+import Submission.Work.FTS.EllipticEst.ThetaSliceIdent
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

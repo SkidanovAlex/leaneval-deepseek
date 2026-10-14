@@ -1,34 +1,11 @@
-/-
-# `Work.FTS.PhiStar.Series.eFam_sup_le` — the uniform sup bound for the Gegenbauer family
-
-The angular Dirichlet basis `eFam m θ = cos θ · C^{(3/2)}_{2m+1}(sin θ)` of `Lzero` grows at most
-linearly in `m`, uniformly on `Iθ = [0, π/2]`:
-
-  `∃ C, 0 < C ∧ ∀ m θ ∈ Iθ, |eFam m θ| ≤ C (m+1)`   (here `C = 3`).
-
-**Route.**  Put `q = gC (2m+1) = C^{(3/2)}_{2m+1}`, `u(x) = (1-x²)·q(x)` and
-`N = Npsi m = (2m+2)(2m+3) = n(n+3)+2` for `n = 2m+1`.  The radial energy
-`E(x) = u'(x)² + N·u(x)²/(1-x²)` (written without denominators in
-`Work.FTS.PhiStar.Series.ene`) satisfies `E' = 2xN·q² ≥ 0` and `E(1) = (u'(1))² = N²`, whence
-
-  `u(x)² ≤ N(1-x²)`   for `0 ≤ x ≤ 1`   (`eFamSupAux.ug_bound`).
-
-Substituting `x = sin θ` gives `(cos²θ·q(sin θ))² ≤ N·cos²θ`, i.e.
-
-  `|eFam m θ| ≤ √N`   for `θ ∈ (0, π/2)`;
-
-at `θ = π/2` the function vanishes (`cos (π/2) = 0`), and the closed interval follows
-uniformly (the case `θ = 0` is included in the division formula since `cos 0 = 1 ≠ 0`).
-Finally `Npsi m = 4(m+1)(m+3/2) ≤ 9(m+1)²`, so `√(Npsi m) ≤ 3(m+1)`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_ode
-import Submission.Work.EllipticEst.ModalSolution.Lzero1_energy_cos_correct
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.PhiStar.Series.eFamSupDefs
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS.PhiStar.Series.eFamSupAux.ug_bound
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -4,9 +4,37 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.H2W.Fstar_DzIter_two_F
 import Submission.Work.FTS.EllipticEst.TT.Slot11.MomentChainAux
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.Slot01W.ASliceH =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.H2W
+
+set_option autoImplicit false
+
+end Work.FTS.EllipticEst.H2W
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.Slot01W.FstarDzIterFourAe =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -149,67 +177,6 @@ theorem fstar_DzIter_two_zsq_ae (α : ℝ) (F Ψ : ℝ → ℝ → ℝ)
     exact h'
   · exact absurd h' hz.ne'
 
-/-- The requested lemma. -/
-theorem FstarDzIterFourPsiAe : ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-    Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
-    ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      Work.Elliptic.Fstar (Work.Spaces.DzIter 4 Ψ) z = 0 := by
-  intro α F Ψ _ _ h
-  have hΨsm : Work.FTS.EllipticEst.SmoothOpen Ψ :=
-    Work.FTS.EllipticEst.smoothOpen_of_forall h.smooth
-  have hAsm : Work.FTS.EllipticEst.SmoothOpen
-      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) :=
-    MomentAe.smoothOpen_zsq hΨsm
-  have hAmem : Work.Spaces.HkMem α 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) :=
-    h.memA
-  have hBmem : Work.Spaces.HkMem α 2 (Work.Spaces.pthIter 2 Ψ) := h.memB
-  have hmom : ∀ j : ℕ, j ≤ 3 → ∀ z : ℝ, 0 < z →
-      Work.Elliptic.Fstar (Work.Spaces.DzIter j Ψ) z = 0 :=
-    MomentAe.Fstar_DzIter_le_Psi α F Ψ h
-  have hlev : ∀ i : ℕ, i ≤ 3 → ∀ u : ℝ, 0 < u →
-      MeasureTheory.IntegrableOn
-        (fun θ => Work.Spaces.DzIter i Ψ u θ * Work.Elliptic.sinCos2 θ) Work.Spaces.Iθ :=
-    fun i hi u hu => (MomentAe.level_bound hΨsm hAmem hBmem i hi).1 u hu
-  have hA2 := fstar_DzIter_two_zsq_ae α F Ψ h
-  rw [MeasureTheory.ae_restrict_iff' measurableSet_Ioi] at hA2
-  rw [MeasureTheory.ae_restrict_iff' measurableSet_Ioi]
-  filter_upwards [hA2] with z hA2imp
-  intro hzmem
-  have hz : 0 < z := hzmem
-  have hA2z : Work.Elliptic.Fstar (Work.Spaces.DzIter 2
-      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) z = 0 := hA2imp hzmem
-  have hI3 : MeasureTheory.IntegrableOn
-      (fun θ => Work.Spaces.DzIter 3 Ψ z θ * Work.Elliptic.sinCos2 θ) Work.Spaces.Iθ :=
-    hlev 3 (by norm_num) z hz
-  have hIA2 : MeasureTheory.IntegrableOn
-      (fun θ => Work.Spaces.DzIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-        * Work.Elliptic.sinCos2 θ) Work.Spaces.Iθ :=
-    Work.FTS.EllipticEst.Cert.GbarSin.integrableOn_DzIter_mul_sinCos2 α 2
-      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) hAsm hAmem le_rfl hz
-  have hcongr : (fun θ : ℝ => Work.Spaces.DzIter 4 Ψ z θ * Work.Elliptic.sinCos2 θ)
-      =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
-      (fun θ : ℝ => Work.Spaces.DzIter 3 Ψ z θ * Work.Elliptic.sinCos2 θ
-        + Work.Spaces.DzIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-            * Work.Elliptic.sinCos2 θ) := by
-    filter_upwards [MomentAe.ae_Ioo_mem] with θ hθ
-    have hid := MomentAe.DzIter_zsq_pzIter2_eq hΨsm 2 hz hθ
-    rw [hid]
-    ring
-  have hsplit : Work.Elliptic.Fstar (Work.Spaces.DzIter 4 Ψ) z
-      = Work.Elliptic.Fstar (Work.Spaces.DzIter 3 Ψ) z
-        + Work.Elliptic.Fstar (Work.Spaces.DzIter 2
-            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) z := by
-    rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar, Work.Elliptic.Fstar,
-      MeasureTheory.integral_congr_ae hcongr]
-    rw [show (∫ θ in Work.Spaces.Iθ, (Work.Spaces.DzIter 3 Ψ z θ
-            * Work.Elliptic.sinCos2 θ
-          + Work.Spaces.DzIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-              * Work.Elliptic.sinCos2 θ))
-        = (∫ θ in Work.Spaces.Iθ, Work.Spaces.DzIter 3 Ψ z θ * Work.Elliptic.sinCos2 θ)
-          + (∫ θ in Work.Spaces.Iθ, Work.Spaces.DzIter 2
-              (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-                * Work.Elliptic.sinCos2 θ)
-        from MeasureTheory.integral_add hI3 hIA2]
-  rw [hsplit, hmom 3 (by norm_num) z hz, hA2z, add_zero]
 
 end Work.H2W
+end

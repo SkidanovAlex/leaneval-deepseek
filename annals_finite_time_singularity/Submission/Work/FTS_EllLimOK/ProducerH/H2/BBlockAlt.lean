@@ -1,35 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.H2.BBlockAlt` — the `Bf`/`Mf`/`B2f` block of the box-`C²` clause
-
-The third block of the `H2` chapter's `clause1`: the closed-box continuity of the three
-boundary-corrected angular slopes
-
-* `Bf L0 L1 Ψ = (θ ↦ ∂_θΨ)` with the one-sided traces `L0`, `L1` at `θ = 0`, `π/2`;
-* `Mf N0 N1 Ψ = (θ ↦ ∂_θ∂_zΨ)` with the traces `N0`, `N1`;
-* `B2f Ψ = (θ ↦ ∂_θ²Ψ)`, vanishing at both endpoints;
-
-together with the two within-derivatives `∂_z Bf = Mf` (Clairaut at interior angles, the frozen
-trace derivatives of `LimitsAt` at the endpoints) and `∂_θ Bf = B2f` (the interior derivative
-with the vanishing traces of `∂_θ²Ψ` supplied by `ModWith`).
-
-The continuity statements are instances of the generic boundary-correction gluing lemma
-`continuousOn_glue`: an open-quadrant-`C^∞` function whose two one-sided angular traces are the
-continuous functions `A0`, `A1` with rates `D0 θ^β0` and `D1 (π/2-θ)^β1` glues to a continuous
-function on the closed box.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Clause1Aux
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.BoxC2
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Clause1Aux
+import Submission.Work.FTS_EllLimOK.SmallAssemblyH
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -48,8 +25,6 @@ set_option autoImplicit false
 def glue (A0 A1 : ℝ → ℝ) (f : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ :=
   fun z θ => if θ = 0 then A0 z else if θ = π / 2 then A1 z else f z θ
 
-theorem glue_eq_zero (A0 A1 : ℝ → ℝ) (f : ℝ → ℝ → ℝ) (z : ℝ) : glue A0 A1 f z 0 = A0 z := by
-  simp [glue]
 
 theorem glue_of_mem_Ioo {A0 A1 : ℝ → ℝ} {f : ℝ → ℝ → ℝ} {z θ : ℝ}
     (hθ : θ ∈ Set.Ioo 0 (π / 2)) : glue A0 A1 f z θ = f z θ := by

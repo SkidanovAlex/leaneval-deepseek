@@ -9,19 +9,15 @@ import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.offPlanes.IbpProd
 import Submission.Work.FTS.PressureOn.OffPlanes.offPlanes_ibp
 import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_hasFDerivAt
-import Submission.Work.FTS.PressureOn.integral_div_mul_of_differentiable_off_planes
 import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
-import Submission.Work.FTS.PressureOn.CurlGrad.div_crossVec_eq
-import Submission.Work.FTS.BSSwirl.CrossAux
-import Submission.Work.FTS.PressureOn.vorticity_cross_eq
-import Submission.Work.FTS.PressureOn.integrable_mul_div
-import Submission.Work.FTS.PressureOn.integrable_inner_gradient
-import Submission.Work.FTS.PressureOn.div_smul_eq
-import Submission.Work.FTS.PressureOn.ae_coord_ne_zero
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -74,13 +70,7 @@ theorem crossVec_crossVec_eq (a b c : R3) :
   fin_cases k <;>
     simp [crossVec, crossProduct, PiLp.inner_apply, WithLp.ofLp_toLp, Fin.sum_univ_three] <;> ring
 
-theorem crossVec_zero_right (a : R3) : crossVec a 0 = 0 := by
-  ext k
-  fin_cases k <;> simp [crossVec, crossProduct]
 
-theorem crossVec_zero_left (b : R3) : crossVec 0 b = 0 := by
-  ext k
-  fin_cases k <;> simp [crossVec, crossProduct]
 
 theorem div_sub_eq_local (A B : R3 → R3) (x : R3) (hA : DifferentiableAt ℝ A x)
     (hB : DifferentiableAt ℝ B x) : div (fun y => A y - B y) x = div A x - div B x := by

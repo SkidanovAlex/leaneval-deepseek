@@ -7,12 +7,12 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS_RegExport.RXT.C2Radial
+import Submission.Work.FTS_RegExport.RXT.Sys.abs_L12dens_Fstar_add_le
 import Submission.Work.FTS_RegExport.RXT.SysAux.FK_L12_aux
 import Submission.Work.FTS_RegExport.RXT.SysAux.FK_jet_pkg_uniform
 import Submission.Work.FTS_RegExport.RXT.SysAux.L12_tail_weight
-import Submission.Work.FTS_RegExport.RXT.L12Iter.Tower
-import Submission.Work.Construction.Basic
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -4,16 +4,16 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.supDzAvgLevel
-import Submission.Work.FTS.StrongPersist.N6.sliceAng_le6
-import Submission.Work.Spaces.ThetaAgmon.HardyWeightedInterval
-import Submission.Work.FTS.TransportS.sup_dz_le_hk
-import Submission.Work.FTS.H2.OscSqLe
 import Submission.Work.FTS.EllipticEst.SliceDecompDefs
+import Submission.Work.FTS.H2.Transport1Aux
+import Submission.Work.FTS.StrongPersist.N6.sliceAvg_le6
+import Submission.Work.FTS.TransportS.sup_dz_le_hk
 import Submission.Work.FTS_EllLimOK.SlotJets.slotPthSliceLe
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

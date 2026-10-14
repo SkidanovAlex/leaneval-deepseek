@@ -1,10 +1,10 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.PhiStar.ThetaTraces
-import Submission.Work.FTS.StrongEps.thetaTraces_Jeps_proof
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_MuLamOK.Defs
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

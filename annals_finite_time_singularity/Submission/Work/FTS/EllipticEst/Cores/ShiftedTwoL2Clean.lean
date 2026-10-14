@@ -1,24 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `ShiftedTwoL2Clean`: the level-`0` estimate for the twice radially shifted datum
-
-The level-`0` estimate `TT.EllWeak0` (Elgindi's Proposition `prop:L2` with the weights
-`w²/sin^{η}`) is applied to the *second* radial difference-quotient datum
-
-  `(dqq c F, dqq c Ψ)`,   `dqq c h = (dq c ∘ dq c) h`,   `dq c h = (h (c·) - h)/(c-1)`,
-
-which lies in the weak class for every `c > 1` (`pPureShiftAux.EllWeakPos_dqq`, the last
-`HkMem`-clause supplied here by `HkMem_diag_dqq`), and then passed to the limit along `c → 1⁺`
-by Fatou's lemma (`Dil.HkSq_zero_le_of_eventually_le`).  The slots of the difference-quotient
-datum are the second difference quotients of the slots of the original one
-(`pPureShiftAux.zsq_pzIter_two_dqq_eqOn`, `pPureShiftAux.pthIter_two_dqq_eqOn`), with limits
-`D_z²(z²∂_z²Ψ)`, `D_z²(∂_θ²Ψ)`, `D_z²F` (`Dil.tendsto_dqq_DzDz`).
-
-This gives, for `α ∈ (0,1/4]` and data of `EllWeakPos α 2 F Ψ`,
-
-  `α⁴ |D_z²(z²∂_z²Ψ)|²_{ℋ⁰} + |D_z²(∂_θ²Ψ)|²_{ℋ⁰} ≤ C |D_z²F|²_{ℋ⁰}`.
--/
 import Mathlib.Algebra.EuclideanDomain.Basic
 import Mathlib.Algebra.EuclideanDomain.Field
 import Mathlib.Algebra.Order.Star.Real
@@ -26,17 +5,16 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DilBasic
-import Submission.Work.FTS.EllipticEst.Cores.Dil.Tools
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DilMoments
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DqqHonest
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DqqTendsto
 import Submission.Work.FTS.EllipticEst.Cores.Dil.HkSqLimit
+import Submission.Work.FTS.EllipticEst.Cores.PPureShiftRad.Basic
 import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.Basic
-import Submission.Work.FTS.EllipticEst.TT.HkMem_descend_open
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
+import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.MajEst
+import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.pzIterSliceIntegrable
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.Physical.Ident.vorticity_psiField_scaled
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

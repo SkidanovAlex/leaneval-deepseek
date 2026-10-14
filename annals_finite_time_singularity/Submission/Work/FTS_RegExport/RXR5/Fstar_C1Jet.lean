@@ -1,54 +1,110 @@
-/-
-# `Work.FTS_RegExport.RXR5.Fstar_C1Jet` — the static-profile `C1Jet` slots of `R5Parts`
-
-The assembly `Work.FTS.RegPkgGal.Der.R5Parts_of_pieces` consumes three `C1Jet`-regularity slots
-of the **static profile** `F_* = Work.Construction.Fstar (pExp α)`:
-
-* `L₁₂(F_*)(z) = 2·pExp α/(1+z)` (radial, constant in `θ` and `τ`) — `Der.jet_L12_Fstar` plus
-  the explicit `z`-derivative;
-* `D_θF_* = sin(2θ)·∂_θF_*` — on the open quadrant this factors as
-  `(pExp α)²·(q(θ)Γ(θ)/c)·F̂(z)` (`rl1Tools.FzShape`), and both endpoints `θ = 0, π/2` are zeros
-  of the factorisation as well, so the factorisation is *global* on `Iθ`;
-* `D_zF_* = z·∂_zF_*` — on `z > -1` it factors as `pzCoeff α θ · (z·F̂'(z))`
-  (`rl1Tools.FzShape`), where `pzCoeff α θ = (pExp α)·(Γ(θ)/c)`.
-
-Each of the last two slots is a product `f θ · g z` of an angular factor and a radial factor, so
-the proof is packaged once and for all:
-
-* `jet_of_bound_modulus` — a pointwise bound `M` and a "modulus" `A|Δz| + B|Δθ|^α` give a `Jet`
-  with constant `max (2M) (A + B)` (the `2M` accounts for the modulus being applied to the
-  *difference*; the `max` is `Regularity.join_rpow_le`);
-* `c1jet_prod` — if in addition `z ↦ g z` is differentiable on `z > 0` with a uniform bound `Dg`
-  on its derivative, the product is a `C1Jet` with constant
-  `max (max (2·Mf·Mg) (Mf·Cg + Cf·Mg)) (Mf·Dg)`.
-
-The numerical data of the three slots:
-
-| slot | `Mf` | `Cf` | `Mg` | `Cg` | `Dg` | constant |
-|---|---|---|---|---|---|---|
-| `L₁₂F_*` | `2 pExp α` | `0` | `1` | `1` | `1` | `2 pExp α` |
-| `D_θF_*` | `40/3` | `60` | `1/2` | `2` | `2` | `170/3` |
-| `D_zF_*` | `10` | `30` | `1/2` | `8` | `8` | `95` |
-
-The angular moduli are `DthCoeff_holder` (`q Γ` is `6`-Hölder: `q` is `2`-Lipschitz and `Γ` is
-`3^α`-Hölder) and `pzCoeff_holder`; the radial data are `Moduli.fstarLip` (`2`-Lipschitz),
-`deriv_FM_Fstar_abs_le` (`|F̂'| ≤ 2`), and `hhat_lip`/`hhat_abs_le`/`hasDerivAt_hhat` for
-`z ↦ z·F̂'(z)` (`8`-Lipschitz, `≤ 1/2`, derivative `2(1-4z+z²)/(1+z)⁴`).
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegPkgGal.Der.Defs
-import Submission.Work.FTS.RegPkgGal.Der.C1JetFstar
-import Submission.Work.FTS.RegPkgGal.Der.jet_L12_Fstar
-import Submission.Work.FTS.Regularity.gammaFstarModuli
-import Submission.Work.FTS.Regularity.pzFstarModuli
-import Submission.Work.FTS.Regularity.regPkg_inhabited
-import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.Nonlinear.Pieces.rl1Tools.FzFacts
+import Submission.Work.FTS.RegPkgGal.R7d.support_strip
+import Submission.Work.FTS.RegPkgGal.St1Class
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Stability.CutFactorFderivZero
+-- ===== merged: Submission.Work.FTS.RegPkgGal.Der.R5Slot_of_parts =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.RegPkgGal.Der
+
+theorem R5Slot_of_parts {α S : ℝ} {g Φ : Work.FTS.RegPkgGal.Fam} {NJ NZ₁ NZ₂ NZ₃ NZ₄ : ℝ}
+    (hα : 0 < α) (hα13 : α ≤ 1 / 3) (hS : 0 < S)
+    (hsol : Work.FTS.Galerkin.IsDynEqOn (Work.FTS.Regularity.pExp α) Φ g)
+    (h0 : ∀ z θ : ℝ, 0 < z → (z, θ) ∈ Work.Construction.Qd →
+      HasDerivAt (fun s => g z θ s)
+        (Work.FTS.Galerkin.dynLin (Work.FTS.Regularity.pExp α) g 0 z θ
+          + Work.FTS.Galerkin.dynRHS (Work.FTS.Regularity.pExp α) Φ g 0 z θ) 0)
+    (hL : Work.FTS.Regularity.Jet α S NJ (fun z θ τ => -(Work.Coercivity.LGammaT
+      (Work.FTS.Regularity.pExp α) (Work.FTS.Regularity.gSlice g τ) z θ)))
+    (hN₀ : Work.FTS.Regularity.Jet α S NJ (fun z θ τ => Work.Construction.N0
+      (Work.FTS.Regularity.pExp α) (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+      (Work.FTS.Regularity.gSlice g τ) z θ))
+    (hN : Work.FTS.Regularity.Jet α S NJ (fun z θ τ => Work.Construction.N
+      (Work.FTS.Regularity.pExp α) (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+      (Work.FTS.Regularity.gSlice Φ τ) z θ))
+    (hNs : Work.FTS.Regularity.Jet α S NJ (fun z θ τ => Work.Construction.Nstar
+      (Work.FTS.Galerkin.muDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+      (Work.FTS.Galerkin.lamDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+      (Work.FTS.Regularity.gSlice g τ) z θ))
+    (hmb : ∃ M : ℝ, 0 ≤ M ∧ ∀ τ ∈ Set.Icc 0 S,
+      |Work.Construction.mubar
+        (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+          (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+          (Work.FTS.Regularity.gSlice g τ))
+        (Work.Construction.N (Work.FTS.Regularity.pExp α)
+          (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+          (Work.FTS.Regularity.gSlice Φ τ))| ≤ M)
+    (hmbh : ∃ M : ℝ, 0 ≤ M ∧ ∀ τ ∈ Set.Icc 0 S, ∀ τ' ∈ Set.Icc 0 S,
+      |Work.Construction.mubar
+          (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+            (Work.FTS.Regularity.gSlice g τ))
+          (Work.Construction.N (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+            (Work.FTS.Regularity.gSlice Φ τ))
+        - Work.Construction.mubar
+          (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ')
+            (Work.FTS.Regularity.gSlice g τ'))
+          (Work.Construction.N (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ')
+            (Work.FTS.Regularity.gSlice Φ τ'))| ≤ M * |τ - τ'| ^ α)
+    (hLz : ∀ τ ∈ Set.Icc 0 S, ∀ θ ∈ Work.Spaces.Iθ, ∀ z ∈ Set.Ioi (0:ℝ),
+      ∃ d : ℝ, HasDerivAt (fun z' => -(Work.Coercivity.LGammaT
+        (Work.FTS.Regularity.pExp α) (Work.FTS.Regularity.gSlice g τ) z' θ)) d z
+        ∧ |d| ≤ NZ₁)
+    (hN₀z : ∀ τ ∈ Set.Icc 0 S, ∀ θ ∈ Work.Spaces.Iθ, ∀ z ∈ Set.Ioi (0:ℝ),
+      ∃ d : ℝ, HasDerivAt (fun z' => Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice g τ) z' θ) d z ∧ |d| ≤ NZ₂)
+    (hNz : ∀ τ ∈ Set.Icc 0 S, ∀ θ ∈ Work.Spaces.Iθ, ∀ z ∈ Set.Ioi (0:ℝ),
+      ∃ d : ℝ, HasDerivAt (fun z' => Work.Construction.N (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice Φ τ) z' θ) d z ∧ |d| ≤ NZ₃)
+    (hNsz : ∀ τ ∈ Set.Icc 0 S, ∀ θ ∈ Work.Spaces.Iθ, ∀ z ∈ Set.Ioi (0:ℝ),
+      ∃ d : ℝ, HasDerivAt (fun z' => Work.Construction.Nstar
+        (Work.FTS.Galerkin.muDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+        (Work.FTS.Galerkin.lamDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+        (Work.FTS.Regularity.gSlice g τ) z' θ) d z ∧ |d| ≤ NZ₄)
+    (hRz0 : ∀ τ ∈ Set.Icc 0 S, ∀ θ ∈ Work.Spaces.Iθ,
+      Work.FTS.Galerkin.dynLin (Work.FTS.Regularity.pExp α) g τ 0 θ
+        + Work.FTS.Galerkin.dynRHS (Work.FTS.Regularity.pExp α) Φ g τ 0 θ = 0)
+    (hRθ0 : ∀ τ ∈ Set.Icc 0 S, ∀ z : ℝ,
+      Work.FTS.Galerkin.dynLin (Work.FTS.Regularity.pExp α) g τ z 0
+        + Work.FTS.Galerkin.dynRHS (Work.FTS.Regularity.pExp α) Φ g τ z 0 = 0)
+    (hRθπ : ∀ τ ∈ Set.Icc 0 S, ∀ z : ℝ,
+      Work.FTS.Galerkin.dynLin (Work.FTS.Regularity.pExp α) g τ z (Real.pi / 2)
+        + Work.FTS.Galerkin.dynRHS (Work.FTS.Regularity.pExp α) Φ g τ z (Real.pi / 2) = 0) :
+    ∃ NR : ℝ, Work.FTS.RegPkgGal.R5Slot α S g Φ NR := by
+  obtain ⟨NR, hRHS⟩ :=
+    rhs_jet_of_parts (α := α) (S := S) hα hα13 hS hL hN₀ hN hNs hmb hmbh
+  obtain ⟨N₁, hN₁0, hN₁⟩ :=
+    rhs_zderiv_of_parts (α := α) (S := S) hα hα13 hS hLz hN₀z hNz hNsz hmb
+  exact ⟨NR, hsol, h0, hRHS, ⟨N₁, hN₁0, hN₁⟩, hRz0, hRθ0, hRθπ⟩
+
+end Work.FTS.RegPkgGal.Der
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXR5.Fstar_C1Jet =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -546,3 +602,5 @@ theorem Fstar_C1Jet {α : ℝ} (hα : 0 < α) (hα13 : α ≤ 1 / 3) {S : ℝ} (
   exact ⟨N₉, N₁₀, N₁₁, hN₉0, hN₁₀0, hN₁₁0, hN₉, hN₁₀, hN₁₁⟩
 
 end Work.FTS_RegExport.RXR5
+end
+end

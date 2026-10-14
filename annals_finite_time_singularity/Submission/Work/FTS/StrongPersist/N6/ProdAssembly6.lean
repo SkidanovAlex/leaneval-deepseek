@@ -1,29 +1,12 @@
-/-
-# `Work.FTS.StrongPersist.N6.ProdAssembly6`
-
-The **measure-theoretic assembly** of the level-six product rule: the level-six shift of
-`Submission/Work/FTS/OpenPkg/prod_field.lean`.
-
-* `aesm_sliceIntegral6` — a.e. strong measurability of a partially integrated slice;
-* `HkSq_prod_bound_of6` — given the pointwise majorant of `HkIntegrand α 6 (f·g)` and the two
-  bounds on the exceptional `(5,1)`-terms, the product is in `ℋ⁶` and
-  `|f g|²_{ℋ⁶} ≤ C (γ-1)⁻¹ |f|²_{ℋ⁶}|g|²_{ℋ⁶}`;
-* `prod_field_of6` — the same, converted to the stated `Xn`-form with the `α^{-1/2}`-loss.
-
-`Submission/Work/FTS/StrongPersist/N6/Prod6.lean` instantiates the two analytic inputs with
-`prod_majorant6` and `exc_bound6` and concludes `prod_field6`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.StrongPersist.N6.Exc6
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
 import Submission.Work.FTS.OpenPkg.ProdOpen.Tools1d
-import Submission.Work.Spaces.ProductTools
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp
-import Submission.Work.H2.T1Q.PwBdQ
+import Submission.Work.FTS.StrongPersist.N6.Exc6
 import Submission.Work.FTS.VocabO
+import Submission.Work.H2.T1Q.PwBdQ
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

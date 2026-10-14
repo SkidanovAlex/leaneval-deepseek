@@ -2,17 +2,15 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
+import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
 import Submission.Work.FTS.StrongEps.E5G.Defs
-import Submission.Work.FTS.StrongEps.E5Aux2.epsWP_tendsto_of_muH
 import Submission.Work.FTS.StrongEps.E5G.muDyn_lamDyn_tendsto_tower
-import Submission.Work.FTS.StrongEps.E5G.HL12RawTower
-import Submission.Work.FTS.StrongEps.E5G.TowerFacts
+import Submission.Work.FTS.StrongEps.E5G.weak_slots_tendsto_open
+import Submission.Work.FTS.StrongEps.JfamP_norm
 import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
 import Submission.Work.FTS.StrongEps.smoothOpen_epsWP
-import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
-import Submission.Work.FTS.StrongEps.E5Asm.Defs
-import Submission.Work.FTS.StrongEps.mixed_JfamP_tendsto
-import Submission.Work.FTS.StrongEps.JfamP_norm
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

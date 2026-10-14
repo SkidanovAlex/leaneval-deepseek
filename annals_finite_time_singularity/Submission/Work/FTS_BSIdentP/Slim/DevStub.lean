@@ -1,14 +1,14 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS_BSIdentP.Slim.TendstoSliceQuotient
-import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
-import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddNegPi
-import Submission.Work.FTS_BSIdentP.Slim.PdZGammaZero
-import Submission.Work.FTS_BSIdentP.Slim.RhoMulRpowWeightLeTwo
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
 import Submission.Work.FTS_BSIdentP.Slim.MerPsiDecay
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddNegPi
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
+import Submission.Work.FTS_BSIdentP.Slim.TendstoSliceQuotient
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

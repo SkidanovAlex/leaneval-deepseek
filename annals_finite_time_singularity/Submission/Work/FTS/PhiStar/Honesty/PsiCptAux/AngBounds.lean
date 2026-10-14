@@ -1,27 +1,14 @@
-/-
-# `PsiCptAux.AngBounds` — the angular bounds used by `psiSeries_bslOp_of_cptQ`
-
-The auxiliary analytic facts for `Psi/psiSeries_bslOp_of_cptQ`: the angular sup bounds for the
-derivatives of the Dirichlet eigenfamily `eFam m` of `Lzero` (built from the radial energy bound
-`Work.FTS.PhiStar.Series.eFamSupAux.ug_bound` and the eigen-relation `eFam_Lzero`), plus the
-elementary comparison `pow_inv_le_majPow` against the majorant `majPow m = (m+1)^{-3/2}` and the
-assembling step `final_le`.
-
-Nothing here uses the `Deleg.psiAngDefs` cone (which clashes with the `ClassC`/`cmode_decay`
-cone because both declare `Work.FTS.PhiStar.Series.Deleg.gC_abs_bound`), so this file can be
-imported together with `Work.FTS.ClassC.deriv_series_general`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
-import Submission.Work.FTS.PhiStar.Series.eFamSupDefs
-import Submission.Work.FTS.PhiStar.Series.eFamSupAux.ug_bound
 import Submission.Work.FTS.PhiStar.Series.BslOp.Setup
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
+import Submission.Work.FTS.PhiStar.Series.eFamSupAux.ug_bound
+import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

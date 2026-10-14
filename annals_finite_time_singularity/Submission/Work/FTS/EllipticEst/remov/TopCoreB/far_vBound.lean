@@ -5,12 +5,11 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.remov.TopCoreB.FarReflect
-import Submission.Work.FTS.EllipticEst.remov.TopCoreB.sinDivDerivBounds
-import Submission.Work.FTS.EllipticEst.remov.hardyDiv_fin
-import Submission.Work.FTS.EllipticEst.remov.HardyFin.Basic
-import Submission.Work.FTS.EllipticEst.remov.HardyFin.TruncFin
-import Submission.Work.FTS.H2.DivQ.integrableOn_Ioc_of_trunc
+import Submission.Work.FTS.PhiStar.Honesty.rgG2_sq_div_z4_Ioo
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2W.PsiSlices.weakPos2_dilate
+import Submission.Work.Spaces.bt_prod_integrable
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -289,44 +288,6 @@ theorem rpow_x_le_sin_rpow {e : ℝ} (he : 0 ≤ e) {x : ℝ} (hx : x ∈ Set.Io
     _ ≤ Real.rpow (Real.sin (2 * x)) e :=
         Real.rpow_le_rpow_of_exponent_ge hsin0 hsin1 (by linarith)
 
-/-- **Weight comparison** for exponents in `[-5/4, 0]`: `x^{e+2} ≤ 2 sin(2x)^e`. -/
-theorem rpow_x_le_sin_rpow_neg {e : ℝ} (he5 : -(5 : ℝ) / 4 ≤ e) (he0 : e ≤ 0) {x : ℝ}
-    (hx : x ∈ Set.Ioc 0 xEnd) :
-    x ^ (e + 2) ≤ 2 * Real.rpow (Real.sin (2 * x)) e := by
-  have hx0 : 0 < x := hx.1
-  have hx1 : x ≤ 1 := le_trans hx.2 xEnd_le_one
-  have h2xpos : 0 < 2 * x := by linarith
-  have hsin0 : 0 < Real.sin (2 * x) := sin_two_pos_Ioc hx
-  have hsinle : Real.sin (2 * x) ≤ 2 * x := le_of_lt (Real.sin_lt h2xpos)
-  have hsplit : x ^ (e + 2) = x ^ e * x ^ (2 : ℝ) := by
-    rw [← Real.rpow_add hx0 e 2]
-  have hx2 : x ^ (2 : ℝ) ≤ 2 ^ (1 + e) := by
-    have h1 : x ^ (2 : ℝ) ≤ (1 / 4 : ℝ) := by
-      have h2 : x ^ (2 : ℝ) ≤ xEnd ^ (2 : ℝ) :=
-        Real.rpow_le_rpow (le_of_lt hx0) hx.2 (by norm_num)
-      have h3 : xEnd ^ (2 : ℝ) ≤ (1 / 4 : ℝ) := by
-        rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, xEnd]
-        nlinarith [Real.pi_pos, Real.pi_lt_four]
-      linarith
-    have h2 : (1 / 4 : ℝ) ≤ 2 ^ (1 + e) := by
-      have h3 : (2 : ℝ) ^ (-(1 : ℝ)) ≤ (2 : ℝ) ^ (-(1 / 4 : ℝ)) :=
-        Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
-      have h4 : (2 : ℝ) ^ (-(1 : ℝ)) = 1 / 2 := by norm_num [Real.rpow_neg_one]
-      have h5 : (1 / 4 : ℝ) ≤ (2 : ℝ) ^ (-(1 / 4 : ℝ)) := by linarith
-      have h6 : (2 : ℝ) ^ (-(1 / 4 : ℝ)) ≤ (2 : ℝ) ^ (1 + e) :=
-        Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
-      linarith
-    linarith
-  have hmono : (2 * x) ^ e ≤ Real.rpow (Real.sin (2 * x)) e := by
-    have h := Real.rpow_le_rpow (le_of_lt hsin0) hsinle (show (0 : ℝ) ≤ -e by linarith)
-    rw [Real.rpow_neg (le_of_lt hsin0) e, Real.rpow_neg h2xpos.le e] at h
-    exact (inv_le_inv₀ (Real.rpow_pos_of_pos hsin0 e)
-      (Real.rpow_pos_of_pos h2xpos e)).mp h
-  calc x ^ (e + 2) = x ^ e * x ^ (2 : ℝ) := hsplit
-    _ ≤ x ^ e * 2 ^ (1 + e) := mul_le_mul_of_nonneg_left hx2 (Real.rpow_nonneg (le_of_lt hx0) e)
-    _ = 2 * (2 ^ e * x ^ e) := by rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2) 1 e]; ring
-    _ = 2 * (2 * x) ^ e := by rw [Real.mul_rpow (by norm_num) (le_of_lt hx0)]
-    _ ≤ 2 * Real.rpow (Real.sin (2 * x)) e := mul_le_mul_of_nonneg_left hmono (by norm_num)
 
 /-- Weight comparison for the `η`-slot: `x^{2-γ} ≤ 2^η sin(2x)^{-η}`. -/
 theorem rpow_x_le_sin_rpow_eta {γ : ℝ} (hγ1 : 1 ≤ γ) (hγ2 : γ ≤ 5 / 4) {x : ℝ}
@@ -420,12 +381,6 @@ theorem integral_Ioc_mono {f g : ℝ → ℝ} (hf : ∀ x ∈ Set.Ioc 0 xEnd, 0 
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx; exact hf x hx
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx; exact h x hx
 
-/-- The same, in interval-integral form. -/
-theorem integral_interval_mono {f g : ℝ → ℝ} (hf : ∀ x ∈ Set.Ioc 0 xEnd, 0 ≤ f x)
-    (hg : IntegrableOn g (Set.Ioc 0 xEnd)) (h : ∀ x ∈ Set.Ioc 0 xEnd, f x ≤ g x) :
-    (∫ x in (0 : ℝ)..xEnd, f x) ≤ ∫ x in (0 : ℝ)..xEnd, g x := by
-  rw [intervalIntegral.integral_of_le xEnd_pos.le, intervalIntegral.integral_of_le xEnd_pos.le]
-  exact integral_Ioc_mono hf hg h
 
 /-- `fun y ↦ u (π/2 - y) / y` is `C^N` on `(0,xEnd)` when `u` is `C^{N+1}`. -/
 theorem contDiffOn_divX {N : ℕ} {u : ℝ → ℝ}

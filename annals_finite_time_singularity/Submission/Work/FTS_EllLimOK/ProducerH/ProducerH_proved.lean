@@ -1,30 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.ProducerH_proved` — the honest fields from route (b)
-
-The lead's ruling installs `RulingELF.ProducerH` — the bundle of the three producers `L1`, `L2`,
-`L3` from the level-`8` existence class:
-
-* `pkgCos_of_ellClassOk` (`L1`) — `PkgCos`: `PhiTil α g (E g)/cos θ ∈ ℋ⁰` (Hardy at `π/2`);
-* `pkgMemSqH_of_ellClassOk` (`L2`) — `PkgMemSqH`: the two `ℋ⁰`-memberships with the quadratic bound
-  `Ce·Xn6²` and the `z`-local slice bound;
-* `pkgBoxH_of_ellClassOk2` (`L3`) — `PkgBoxH`: closed-box `C²` with sup bounds `K·Xn6` and a
-  Hölder-`β` modulus of the second derivative (boundary Schauder at the angular edges).
-
-The three are bundled here, taking the minimum of the three `α`-thresholds and monotonicity of the
-frozen packages in `Ce` (`ClassC.A4.EllPkgGo_mono`, `ClassC.A4.EllPkgK_mono`) to pass to the common
-constant `max Ce Ce'`.
--/
 import Mathlib.Algebra.Module.LinearMap.Defs
 import Mathlib.Algebra.Module.Pi
 import Mathlib.Basic.Real.Basic
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.pkgCos_of_ellClassOk
-import Submission.Work.FTS_EllLimOK.ProducerH.pkgMemSqH_of_ellClassOk
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgMid
 import Submission.Work.FTS_EllLimOK.ProducerH.pkgBoxH_of_ellClassOk2
-import Submission.Work.FTS.ClassC.A4
+import Submission.Work.FTS_EllLimOK.ProducerH.pkgMemSqH_of_ellClassOk
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

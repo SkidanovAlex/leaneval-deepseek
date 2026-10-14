@@ -1,27 +1,12 @@
-/-
-# `Work.FTS.PhiStar.LinvI_solves` — the zero-moment Dirichlet inverse solves `L₀u = h`
-
-With `μ θ = sin²θ cos³θ`, `Linv h = -μ⁻¹ ∫_0^θ μ h / sin 2θ` and `LinvI h = ∫_0^θ Linv h`, the
-claim is `Lzero1 (sin 2θ · LinvI h) = h` on `(0, π/2)`.  On `(0, π/2)` the factor `sin 2θ`
-cancels one `sin`, so `μ h / sin 2θ = (sin θ cos²θ / 2) h` is bounded and the two fundamental
-theorems of calculus apply with only boundedness of `h` at `θ = 0⁺`.
-
-The proof is the direct computation (reducing it to the substitution identity of
-`lzero_sin_cos_mul`)
-
-  `Lzero1 (sin 2θ · v) = -sin 2θ · v'' + (6 - 10 cos²θ) · v'`
-
-together with the explicit derivatives `v' = Linv h`, `v'' = (Linv h)'`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Work.FTS.PhiStar.StarDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.H2.StarPkg.LzeroSubst.lzero_sin_cos_mul
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.StrongPersist.Vocab
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

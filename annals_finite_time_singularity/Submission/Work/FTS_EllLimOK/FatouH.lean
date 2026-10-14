@@ -1,42 +1,11 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.FatouH` — the limit data over the installed honest hypothesis `HasPkgH`
-
-The lead's ruling of 2026-10-11 (`sources/ftsV2/fts_ellimok_ruling.md`, review
-`fts_ellimok_ruling_REVIEW.md`) replaces the refuted `HasPkgF` by
-
-```
-HasPkgH α Ce E := HasPkg α Ce E ∧ PkgCos α E ∧ PkgMemSqH α Ce E ∧ PkgBoxH α E
-```
-
-(`RulingELF.lean`), whose producers `L1`/`L2`/`L3` are to be built from route (b)
-(`∀ g ∈ ClassC, ∃ Ψ, EllClassOk 8 α g Ψ`, the new hypothesis of `FinalV2.Producers.core1_1a3`).
-
-This module restates the three sequence-level predicates of the closure over `HasPkgH`:
-
-* **`LocalBoundH`** — the pointwise jet bounds, now with a **constant** right-hand side (the
-  `1/(1+z)` rate of `Defs3.LocalBound4` is false for class-`C` sources with `z^{-s}` tails,
-  `s ∈ (1/2,1)`).  Proved here from `HasPkg ∧ PkgCos` via `PkgJets.pkg_pointwise_jets` (whose only
-  extra input is the pinning datum, supplied by `Pinning.hpin_of_pkgCos`).
-* **`FatouDataH`** — the uniform `ℋ⁰`-memberships of `E (fn n)` and `E (fn n)/cos θ` with one
-  common `HkSq` bound and one common **`z`-local** (`C(1+1/z)`) `θ`-slice bound.  Proved here from
-  `PkgMemSqH`.
-* **`BoxDataH`** — the closed-box data: on every box `[a,b] × [0,π/2]` (`0 < a ≤ b`) the sequence
-  converges to a limit that is `C²` on the box and vanishes on the two angular boundary lines.
-  Produced from `PkgBoxH` (a *Hölder* equicontinuity argument, replacing the false
-  `PkgStrip`/`PkgCorner` pair); that producer is a separate module.
-* **`ClosedCompact3H`** — obligation 1 over `HasPkgH`; proved in
-  `ClosedCompact3H_of_bounds_fatou`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.PkgJets.pkg_pointwise_jets
-import Submission.Work.FTS_EllLimOK.Pinning.hpin_of_pkgCos
 import Submission.Work.FTS_EllLimOK.FatouG
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.FTS_RegExport.RXT.Sys.slice_contDiffOn_four
+import Submission.Work.FTS_StreamBdry.Inputs.ftau_Dz_cont
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -106,18 +75,9 @@ def ClosedCompact3H (α Ce : ℝ) : Prop :=
   ∀ E : Fn →ₗ[ℝ] Fn, HasPkgH α Ce E → ∀ (fn : ℕ → Fn) (f : Fn), LimSeq4 α fn f →
     ∃ Ψ : Fn, IsJetLimit3G α E fn f Ψ
 
-/-- **The small-`α` shapes.** -/
-def SmallLocalBoundH : Prop :=
-  ∃ α₁ : ℝ, 0 < α₁ ∧ ∀ α : ℝ, 0 < α → α ≤ α₁ → ∀ Ce : ℝ, LocalBoundH α Ce
 
-def SmallFatouDataH : Prop :=
-  ∃ α₁ : ℝ, 0 < α₁ ∧ ∀ α : ℝ, 0 < α → α ≤ α₁ → ∀ Ce : ℝ, FatouDataH α Ce
 
-def SmallBoxDataH : Prop :=
-  ∃ α₁ : ℝ, 0 < α₁ ∧ ∀ α : ℝ, 0 < α → α ≤ α₁ → ∀ Ce : ℝ, BoxDataH α Ce
 
-def SmallCompact3H : Prop :=
-  ∃ α₁ : ℝ, 0 < α₁ ∧ ∀ α : ℝ, 0 < α → α ≤ α₁ → ∀ Ce : ℝ, ClosedCompact3H α Ce
 
 /-! ## The two derivations that need no new analysis -/
 
@@ -143,8 +103,6 @@ theorem localBoundH_of_hasPkgH {α Ce : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) :
     (fun n z hz => Work.FTS_EllLimOK.Pinning.hpin_of_pkgCos hα hα1 hE.toHasPkg hE.cos
       (fn n) (hL.classC n) z hz)
 
-theorem smallLocalBoundH : SmallLocalBoundH :=
-  ⟨1, one_pos, fun α hα hα1 Ce => localBoundH_of_hasPkgH hα hα1⟩
 
 /-- **The sequence-level `ℋ⁰`/`θ`-slice data hold over `HasPkgH`**: `PkgMemSqH` gives the two
 memberships with `HkSq ≤ Ce·Xn6²` and the `z`-local slice bound `≤ Ce(1+1/z)·Xn6²`, and along a
@@ -204,7 +162,5 @@ theorem fatouDataH_of_hasPkgH {α Ce : ℝ} (hα : 0 < α) : FatouDataH α Ce :=
       (fun n z θ => E (fn n) z θ / Real.cos θ) (fun n => Or.inr rfl)
 
 
-theorem smallFatouDataH : SmallFatouDataH :=
-  ⟨1, one_pos, fun α hα _ Ce => fatouDataH_of_hasPkgH hα⟩
 
 end Work.FTS_EllLimOK

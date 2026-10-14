@@ -1,19 +1,18 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.MetricSpace.Holder
-import Submission.Work.FTS.Regularity.Defs
-import Submission.Work.FTS.Regularity.gCompHolderQuant
-import Submission.Work.FTS.Regularity.gComp_abs_le_quant
-import Submission.Work.FTS.Regularity.smulEThetaHolder
-import Submission.Work.ConstructionInstance.Basic
-import Submission.Work.ConstructionInstance.AuxOmegaStar
-import Submission.Work.ConstructionInstance.omegaStar_eq_Aom
-import Submission.Work.ConstructionInstance.holder_omegaStar
-import Submission.Work.Cyl
-import Submission.Work.FTS.RegPkgGal.Basic
-import Submission.Work.FTS.RegPkgGal.Consumer
-import Submission.Work.FTS.RegPkgGal.ConsumerRegPkg
-import Submission.Work.FTS.FireFix.Prime.PhysVortHolderAux
+import Submission.Work.FTS.FireFix.Prime.profFullHolder
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.RegPkgGal.R7d.chain_rule_along_curve
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS.StrongGlobal.Transfer
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.SolutionDelivery.DatumEuler
+import Submission.Work.SolutionDelivery.DatumOdd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,43 +1,8 @@
-/-
-# `Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs` — auxiliary vocabulary of `N0gCoupled`
-
-The coupled half of the `L3RhsN0gBlock` estimate is about the product
-
-  `Mf f · Bf α f = L₁₂(f)(z) · Bf α f z θ`,   `Bf α f = Vf α f + Vfs α`,
-
-with `Mf f = (z,θ) ↦ L₁₂(f)(z)` radial and
-
-  `Vf α f  = (1/α) f + (3/(2α)) sin 2θ ∂_θ f - c₂(θ) D_z f`,
-  `Vfs α   = (3/(2α)) sin 2θ ∂_θ F_* - c₂(θ) D_z F_*`.
-
-The second summand `Mf f · Vfs α` is *separated*: `Vfs α` is the sum of two products of an
-angular factor and a radial factor, and it is this separation which makes the estimate work
-(the radial profile is only `O(z)` at the axis, so `Vfs` does **not** lie in `ℋ³`; it is the
-product with the vanishing radial factor `L₁₂(f)` which lies in `ℋ³`).  This module fixes the
-two angular factors and their `ℋ³`-majorant:
-
-* `VfsRad z = 2z/(1+z)²` and `VfsRadZ z = (Zop VfsRad) z = z ∂_z VfsRad z` are the two radial
-  factors;
-* `VfsGc α θ = Γ(θ)/c(α)`;
-* `VfsA1 α θ = (3/2)·(dthU (VfsGc α)) θ`;
-* `VfsA2 α θ = -α·c₂(θ)·VfsGc α θ`;
-* `angMaj α C` is the angular majorant
-
-  `(C θ)² sin(2θ)^{-η} + Σ_{1 ≤ i ≤ 3} (dthU^i C θ)² sin(2θ)^{-γ(α)}`
-
-  of a single angular profile — exactly the angular factor produced by
-  `Work.FTS.StrongPersist.L3Aux.HkIntegrand_sep_le` at order three;
-* `VfsAngMaj α = angMaj α (VfsA1 α) + angMaj α (VfsA2 α)`.
-
-The separated identity `Vfs α z θ = VfsA1 α θ · VfsRad z + VfsA2 α θ · VfsRadZ z` and the
-bound `∫_θ VfsAngMaj α ≤ K` (both `α`-uniform, `0 < α ≤ 1`) are the two facts proved about
-this vocabulary.  Nothing here is a proof obligation.
--/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.L3Rhs.N0gDecomp
-import Submission.Work.Spaces.MixedMulDefs
-import Submission.Work.Spaces.GammaW_Prelim
-import Submission.Work.Construction.Defs
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.leibnizRem6
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.dthU_Gam
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

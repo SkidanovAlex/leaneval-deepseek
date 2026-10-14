@@ -1,65 +1,315 @@
-/-
-# `Work.FTS.PhiStar.Honesty.bslSolExists_moment_of_node_hyp`
-
-The **existence half *plus* the solution's moment**: from the node's hypotheses (source `F`
-`C^∞` on the open quadrant, `ℋ^k`, vanishing angular moment on `z > 0`, pointwise decay in `z`)
-there is a solution `Ψ` of `bslOp α Ψ = F` on the open quadrant, `C^∞` there, with the two
-Dirichlet values, decaying at `z → ∞`, **and with vanishing angular moment `F_*Ψ ≡ 0` on `z > 0`**.
-
-## Why the extra conjunct is not a consequence of `IsBslSol`
-
-`IsBslSol α F Ψ` is linear in `(F, Ψ)`, and the homogeneous problem has the decaying kernel
-directions `z^{-(2m+5)/α} e_m(θ)` (`e_0 ∝ sin 2θ`): adding `c·z^{-5/α} sin 2θ` to a solution
-changes its moment by `c·const·z^{-5/α}` while preserving every conjunct of `IsBslSol`.  Hence the
-moment has to be proved for **the witness one exhibits**, not deduced from the class.  The witness
-used here is the modal one (`ModalSol.Psi α (clampQ F)`, the limit of the partial sums of the mode
-series `Σ_m acoeff α m F z · eFam m θ`), for which the `m = 0` coefficient vanishes identically:
-the source's moment on `z > 0` is exactly `cmode 0 F ≡ 0` there, and `radGreen α 0` only integrates
-over `t > 0`, so `acoeff α 0 F ≡ 0`; every other mode is orthogonal to `sin θ cos²θ`.
-
-## Route
-
-1. `h0 : HkMem α 0 F` (descent from `HkMem α k F`, `OpenPkg.HkMem_mono_open`), the clamped source
-   `G := clampQ F` (`G = F` on `z > 0`, `G = 0` on `z ≤ 0`) with `HkMem α 0 G`
-   (`Cert.GbarSin.HkMem_congr_Q0`), global `OrthCond G` (`orthCond_clampQ`), `SmoothOpen G`,
-   `L²`-integrability of `G` on the quadrant, and `F_*G ≡ 0` on `z > 0`.
-2. The modal weak solution `Ψ := ModalSol.Psi α G` of `bslOp α Ψ = G`: locally integrable,
-   continuous on the quadrant, with the weak identity (`ModalSolR.psi_weak_identity`), the
-   Dirichlet values (`ModalSol.Psi_apply_zero/pi_half`), the decay, and a.e.-continuous angular
-   slices (`ModalSolR.Psi_slice_continuous`).  The continuity, the pointwise bound and the decay
-   are the clean reproofs `NodeAux.continuousOn_uncurry_Psi_mod` /
-   `NodeAux.Psi_bound_mod` / `NodeAux.Psi_tendsto_atTop_zero_mod`; the versions in
-   `FTS/H2/ModalSol/Basic.lean` rest on the statement-only `sorry` of
-   `ModalSol/TailBound/psiTrunc_tail.lean` (see the header of `NodeAux`).
-3. Interior regularity (`interiorSmoothQ0_fts`) gives `Φ`, `C^∞` on the quadrant and a.e. equal to
-   `Ψ` on `Q0`.  Since both are continuous on the open quadrant, the a.e.-equality is an equality
-   (`MeasureTheory.Measure.eqOn_open_of_ae_eq`), so the slices of `Φ` and `Ψ` agree pointwise,
-   whence `F_*Φ = F_*Ψ` on `z > 0`.  The weak identity also upgrades to the pointwise equation
-   `bslOp α Φ = G` on `Q0` (`Assembly.bslOp_eq_of_weak_of_smooth`), and the decay of `Ψ`
-   transfers to `Φ` (`PhiStarE5.smoothRep_decay`).
-4. On the quadrant, `Ψ = psiSeries α G` (both are limits of the same partial sums
-   `psiTrunc α G N z θ`: `psiTrunc_tendsto_Psi` and `psiTrunc_tendsto_psiSeries`), so
-   `F_*Ψ = F_*(psiSeries α G)`, and the latter vanishes on `z > 0` by
-   `Fstar_psiSeries_eq_zero_of_hkMem` (the `m = 0` coefficient of `psiSeries α G` is `0`).
-5. The final witness is `1_{θ ∈ (0,π/2)}·Φ` (the redefinition of `Φ` off the open quadrant forces
-   the two Dirichlet values); `SmoothOpen` and `IsBslSol α F` are then as in
-   `EllExistHalf.bslSolExists_of_node_hyp`, and `F_*Ψ = F_*Φ` on `z > 0` because the indicator
-   differs from `1` only on a null set of angles.
--/
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.PhiStar.EllExistHalf
-import Submission.Work.FTS.PhiStar.Honesty.Fstar_psiSeries_eq_zero_of_hkMem
+import Submission.Work.FTS.PhiStar.FlatWAux.Expansion
+import Submission.Work.FTS.PhiStar.FlatWAux.Fam2Diff.SummBounds
+import Submission.Work.FTS.PhiStar.FlatWAux.QmDerivBound
+import Submission.Work.FTS.PhiStar.FlatWAux.QmLopBound
+import Submission.Work.FTS.PhiStar.FlatWAux.RadGreenPhiAjFlat
 import Submission.Work.FTS.PhiStar.Honesty.psiTrunc_tendsto_psiSeries
-import Submission.Work.FTS.PhiStar.Honesty.NodeAux2
-import Submission.Work.FTS.EllipticEst.Final.InteriorSmoothQ0_fts
-import Submission.Work.EllipticEst.Assembly.bslOp_eq_of_weak_of_smooth
-import Submission.Work.FTS.H2.PhiStarE5.Decay
-import Submission.Work.FTS.H2.PhiStarE5.Locality
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PhiStar.Series.Deleg.psiExpansion
+import Submission.Work.FTS.PhiStar.Series.Deleg.psiRadFacts
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.PhiStar.Series.psiSeries_bslOp
+import Submission.Work.FTS.PhiStar.Series.psiSeries_solves_rem
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fstarDat
+import Submission.Work.FTS.StrongPersist.L3Aux.bcoefRadBound
+import Submission.Work.FTS.StrongPersist.N6Trans.HonestEasyMajorAsmA
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.H2W.PsiSlices.shiftedSourcePoleBound
+import Submission.Work.H2W.fstarDzIterFourAe
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.dthU_Gam
+-- ===== merged: Submission.Work.FTS.PhiStar.FlatWAux.Fam2DiffId =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology BigOperators
+open MeasureTheory Set Filter
+
+namespace Work.FTS.PhiStar.FlatWAux
+
+theorem Fam2DiffId (α : ℝ) (ψ : ℝ → ℝ) (z θ : ℝ)
+    (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2))
+    (hb0 : Work.FTS.PhiStar.Series.bmode 0 ψ = 0)
+    (hdec : ∃ C : ℝ, 0 < C ∧ ∀ m : ℕ, 1 ≤ m →
+      |Work.FTS.PhiStar.Series.bmode m ψ|
+        ≤ C / (Work.FTS.PhiStar.Gegenbauer.lam m * Real.sqrt (2 * (m : ℝ) + 1)))
+    (hgr : ∃ C : ℝ, 0 < C ∧ ∀ (m : ℕ) (θ' : ℝ), θ' ∈ Work.Spaces.Iθ →
+      |Work.FTS.PhiStar.Gegenbauer.eFam m θ'| ≤ C * (2 * (m : ℝ) + 1))
+    (hrb : ∃ C : ℝ, 0 < C ∧ ∀ m : ℕ, 1 ≤ m → ∀ k : ℕ, k ≤ 7 → ∀ z' : ℝ, 0 < z' →
+      |(z' + 1) ^ k * iteratedDeriv k (fun z'' => (z'' + 1) / z''
+          * Work.FTS.PhiStar.Radial.radGreen α m (Work.FTS.VocabO.phiA α) z'') z'|
+        ≤ C / Work.FTS.PhiStar.Gegenbauer.lam m)
+    (hrbJ : ∃ C : ℝ, 0 < C ∧ ∀ m : ℕ, 1 ≤ m → ∀ k : ℕ, k ≤ 7 → ∀ z' : ℝ, 0 < z' →
+      |(z' + 1) ^ k * iteratedDeriv k (fun z'' => (z'' + 1) / z''
+          * Work.FTS.PhiStar.Radial.radGreen α m
+              (Work.FTS.PhiStar.FlatWAux.Ajit α Work.FTS.PhiStar.FlatWAux.J
+                (Work.FTS.VocabO.phiA α)) z'') z'|
+        ≤ C / Work.FTS.PhiStar.Gegenbauer.lam m)
+    (hexp : ∀ m : ℕ, 1 ≤ m → ∀ z' : ℝ, 0 < z' →
+      Work.FTS.PhiStar.Radial.radGreen α m (Work.FTS.VocabO.phiA α) z'
+        = (∑ j ∈ Finset.range Work.FTS.PhiStar.FlatWAux.J,
+            (α ^ j / (Work.FTS.PhiStar.Radial.lamR m) ^ (j + 1))
+              * Work.FTS.PhiStar.FlatWAux.Ajit α j (Work.FTS.VocabO.phiA α) z')
+          + (α ^ Work.FTS.PhiStar.FlatWAux.J
+              / (Work.FTS.PhiStar.Radial.lamR m) ^ Work.FTS.PhiStar.FlatWAux.J)
+              * Work.FTS.PhiStar.Radial.radGreen α m
+                  (Work.FTS.PhiStar.FlatWAux.Ajit α Work.FTS.PhiStar.FlatWAux.J
+                    (Work.FTS.VocabO.phiA α)) z')
+    (hchiasm : ∀ j : ℕ, j ≤ Work.FTS.PhiStar.FlatWAux.J → ∀ n : ℕ,
+      ContDiffOn ℝ n (Work.FTS.PhiStar.FlatWAux.chia ψ j) (Set.Ioo 0 (Real.pi / 2)))
+    (hWtDeriv : ∀ j : ℕ, 1 ≤ j → j ≤ Work.FTS.PhiStar.FlatWAux.J → ∀ θ' : ℝ,
+      θ' ∈ Set.Ioo 0 (Real.pi / 2) →
+      deriv (Work.FTS.PhiStar.FlatWAux.Wt ψ j) θ'
+        = Work.FTS.PhiStar.Linv (Work.FTS.PhiStar.FlatWAux.chia ψ (j - 1)) θ') :
+    ∀ k i : ℕ, k + i + 1 ≤ 7 →
+      (z + 1) ^ k * Work.Spaces.pzIter k
+          (Work.Spaces.DthIter i (Work.Spaces.pth (fun z' θ' => (z' + 1) / z'
+            * (Work.FTS.PhiStar.Series.psiSeries α (Work.FTS.PhiStar.RemSource α ψ) z' θ'
+              / Work.Construction.s2 θ')))) z θ
+        = α ^ 2 * ((∑ j ∈ Finset.range Work.FTS.PhiStar.FlatWAux.J,
+              α ^ j * ((z + 1) ^ k * iteratedDeriv k (fun z'' => (z'' + 1) / z''
+                  * Work.FTS.PhiStar.FlatWAux.Ajit α j (Work.FTS.VocabO.phiA α) z'') z)
+                * ((Work.Spaces.Lop^[i]) (Work.FTS.PhiStar.Linv
+                    (Work.FTS.PhiStar.FlatWAux.chia ψ j)) θ))
+            + α ^ Work.FTS.PhiStar.FlatWAux.J
+              * (∑' m : ℕ, Work.FTS.PhiStar.Series.bmode m ψ
+                  * ((Work.FTS.PhiStar.Gegenbauer.lam m)⁻¹) ^ Work.FTS.PhiStar.FlatWAux.J
+                  * ((z + 1) ^ k * iteratedDeriv k (fun z'' => (z'' + 1) / z''
+                      * Work.FTS.PhiStar.Radial.radGreen α m
+                          (Work.FTS.PhiStar.FlatWAux.Ajit α Work.FTS.PhiStar.FlatWAux.J
+                            (Work.FTS.VocabO.phiA α)) z'') z)
+                  * ((Work.Spaces.Lop^[i]) (deriv (Work.FTS.PhiStar.FlatWAux.Qm m)) θ))) := by
+  intro k i hki
+  have hi6 : i ≤ 6 := by omega
+  -- the radial profiles and the angular numbers
+  let radj : ℕ → ℝ → ℝ := fun j z' => (z' + 1) / z' * Ajit α j (VocabO.phiA α) z'
+  let radJ : ℕ → ℝ → ℝ := fun m z' => (z' + 1) / z'
+      * Radial.radGreen α m (Ajit α J (VocabO.phiA α)) z'
+  let aa : ℕ → ℝ := fun j => (Work.Spaces.Lop^[i]) (Work.FTS.PhiStar.Linv (chia ψ j)) θ
+  let cc : ℕ → ℝ := fun m => (Work.Spaces.Lop^[i]) (deriv (Qm m)) θ
+  let Vsum : ℝ → ℝ := fun z' => ∑' m : ℕ,
+      (Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m) * radJ m z'
+  let Psi : ℝ → ℝ := fun z' => α ^ 2 * ((∑ j ∈ Finset.range J, α ^ j * aa j * radj j z')
+      + α ^ J * Vsum z')
+  have hz2 : 0 < z / 2 := by linarith
+  have hz2lt : z / 2 < 2 * z := by linarith
+  have hzmid : z ∈ Set.Ioo (z / 2) (2 * z) := ⟨by linarith, by linarith⟩
+  obtain ⟨CrJ, hCrJ0, hrbJ'⟩ := hrbJ
+  have hrbJ0 : ∃ C : ℝ, 0 < C ∧ ∀ m : ℕ, 1 ≤ m → ∀ k : ℕ, k ≤ 7 → ∀ z' : ℝ, 0 < z' →
+      |(z' + 1) ^ k * iteratedDeriv k (fun z'' => (z'' + 1) / z''
+          * Radial.radGreen α m (Ajit α J (VocabO.phiA α)) z'') z'|
+        ≤ C / Gegenbauer.lam m := ⟨CrJ, hCrJ0, hrbJ'⟩
+  -- a crude bound for the `m = 0` mode on the compact interval
+  have hK0 : ∃ K0 : ℝ, 0 ≤ K0 ∧ ∀ r : ℕ, r ≤ k → ∀ y : ℝ, y ∈ Set.Icc (z / 2) (2 * z) →
+      |iteratedDeriv r (radJ 0) y| ≤ K0 := by
+    have hcont : ∀ r : ℕ, ContinuousOn (fun y => iteratedDeriv r (radJ 0) y)
+        (Set.Icc (z / 2) (2 * z)) := by
+      intro r
+      have h1 : ContDiffOn ℝ 1 (iteratedDeriv r (radJ 0)) (Set.Ioi 0) := by
+        refine contDiffOn_iteratedDeriv isOpen_Ioi r 1 ?_
+        have : 1 + r = r + 1 := by omega
+        rw [this]
+        exact contDiffOn_radJ α 0 (r + 1)
+      exact h1.continuousOn.mono (fun y hy => lt_of_lt_of_le hz2 hy.1)
+    choose Kr hKr using fun r => IsCompact.exists_bound_of_continuousOn isCompact_Icc (hcont r)
+    refine ⟨∑ r ∈ Finset.range (k + 1), |Kr r|,
+      Finset.sum_nonneg (fun r _ => abs_nonneg _), fun r hr y hy => ?_⟩
+    have h1 : |Kr r| ≤ ∑ r' ∈ Finset.range (k + 1), |Kr r'| :=
+      Finset.single_le_sum (fun r' _ => abs_nonneg (Kr r'))
+        (Finset.mem_range.mpr (Nat.lt_succ_of_le hr))
+    exact le_trans (le_trans (hKr r y hy) (le_abs_self (Kr r))) h1
+  obtain ⟨K0, hK0nn, hK0⟩ := hK0
+  -- the `z`-side majorant (on the interval one has `(y+1)^r ≥ 1`)
+  let Bz : ℕ → ℝ := fun m => CrJ / Gegenbauer.lam m + (if m = 0 then K0 else 0)
+  have hBz0 : ∀ m : ℕ, 0 ≤ Bz m := by
+    intro m
+    change (0 : ℝ) ≤ CrJ / Gegenbauer.lam m + (if m = 0 then K0 else 0)
+    have h1 : (0 : ℝ) ≤ CrJ / Gegenbauer.lam m := div_nonneg hCrJ0.le (lam_nonneg m)
+    split_ifs with hm
+    · linarith
+    · linarith
+  have hBzbound : ∀ (m r : ℕ), r ≤ k → ∀ y : ℝ, y ∈ Set.Ioo (z / 2) (2 * z) →
+      |iteratedDeriv r (radJ m) y| ≤ Bz m := by
+    intro m r hr y hy
+    rcases Nat.eq_zero_or_pos m with rfl | hm
+    · change |iteratedDeriv r (radJ 0) y| ≤
+        CrJ / Gegenbauer.lam 0 + (if (0 : ℕ) = 0 then K0 else 0)
+      rw [if_pos rfl]
+      have h := hK0 r hr y ⟨le_of_lt hy.1, le_of_lt hy.2⟩
+      have h1 : (0 : ℝ) ≤ CrJ / Gegenbauer.lam 0 := div_nonneg hCrJ0.le (lam_nonneg 0)
+      linarith
+    · have hy0 : 0 < y := lt_of_lt_of_le hz2 hy.1.le
+      change |iteratedDeriv r (radJ m) y| ≤
+        CrJ / Gegenbauer.lam m + (if m = 0 then K0 else 0)
+      rw [if_neg (by omega : ¬ m = 0), add_zero]
+      have h1 : |(y + 1) ^ r * iteratedDeriv r (radJ m) y| ≤ CrJ / Gegenbauer.lam m := by
+        simpa using hrbJ' m hm r (by omega) y hy0
+      rw [abs_mul, abs_of_nonneg (pow_nonneg (by linarith : (0 : ℝ) ≤ y + 1) r)] at h1
+      have hy1 : (1 : ℝ) ≤ (y + 1) ^ r := one_le_pow₀ (by linarith)
+      have h2 : |iteratedDeriv r (radJ m) y|
+          ≤ (y + 1) ^ r * |iteratedDeriv r (radJ m) y| := by
+        nlinarith [abs_nonneg (iteratedDeriv r (radJ m) y), hy1]
+      linarith
+  -- summability of the `z`-side majorant
+  have hcBz : Summable (fun m : ℕ => |(Series.bmode m ψ
+      * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)| * Bz m) := by
+    have h2 := (Fam2Diff.SummBounds hi6 hz hθ hb0 hdec hrbJ0).2
+    have h2' : Summable (fun m : ℕ => CrJ *
+        (|Series.bmode m ψ| * ((Gegenbauer.lam m)⁻¹) ^ J * |cc m| / Gegenbauer.lam m)) :=
+      h2.mul_left _
+    refine Summable.of_nonneg_of_le (fun m => mul_nonneg (abs_nonneg _) (hBz0 m))
+      (fun m => ?_) h2'
+    rcases Nat.eq_zero_or_pos m with rfl | hm
+    · have hl0 : Gegenbauer.lam 0 = 0 := by simp [Gegenbauer.lam]
+      have hJ : J ≠ 0 := by norm_num [J]
+      change |(Series.bmode 0 ψ * ((Gegenbauer.lam 0)⁻¹) ^ J * cc 0)| * Bz 0 ≤ _
+      rw [hb0, hl0, inv_zero, zero_pow hJ]
+      simp
+    · have hlam : 0 < Gegenbauer.lam m := lam_pos hm
+      change |(Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)| *
+        (CrJ / Gegenbauer.lam m + (if m = 0 then K0 else 0)) ≤ _
+      rw [if_neg (by omega : ¬ m = 0), add_zero]
+      rw [abs_mul, abs_mul, abs_of_nonneg (pow_nonneg (inv_nonneg.mpr (lam_nonneg m)) J)]
+      field_simp
+      linarith
+  -- smoothness of the two pieces of `Psi`
+  have hUsm : ContDiffOn ℝ k (fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z')
+      (Set.Ioo (z / 2) (2 * z)) := by
+    refine ContDiffOn.sum (fun j _ => ?_)
+    exact contDiffOn_const.mul ((contDiffOn_radj α j k).mono (fun y hy =>
+      lt_trans hz2 hy.1))
+  have hUcd : ContDiffAt ℝ k (fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z') z :=
+    (hUsm.contDiffWithinAt hzmid).contDiffAt (isOpen_Ioo.mem_nhds hzmid)
+  have hVTA := Fam2Diff.TsumContDiff (k := k)
+    (c := fun m : ℕ => Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)
+    (q := radJ) (B := Bz) (a := z / 2) (b := 2 * z) hz2lt hBz0 hcBz
+    (fun m => (contDiffOn_radJ α m k).mono (fun y hy => lt_trans hz2 hy.1))
+    (fun m r hr y hy => by
+      change |iteratedDeriv r (radJ m) y| ≤ Bz m
+      exact hBzbound m r hr y hy)
+  have hVsm : ContDiffOn ℝ k Vsum (Set.Ioo (z / 2) (2 * z)) := hVTA.1
+  have hVcd : ContDiffAt ℝ k Vsum z :=
+    (hVsm.contDiffWithinAt hzmid).contDiffAt (isOpen_Ioo.mem_nhds hzmid)
+  have hVval : ∀ r : ℕ, r ≤ k → ∀ y ∈ Set.Ioo (z / 2) (2 * z),
+      iteratedDeriv r Vsum y = ∑' m : ℕ, (Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)
+        * iteratedDeriv r (radJ m) y := hVTA.2
+  -- the `z`-derivatives
+  have h1 : iteratedDeriv k Psi z = α ^ 2 *
+      (iteratedDeriv k (fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z') z
+        + α ^ J * iteratedDeriv k Vsum z) := by
+    show iteratedDeriv k (fun z' => α ^ 2 * ((∑ j ∈ Finset.range J, α ^ j * aa j * radj j z')
+      + α ^ J * Vsum z')) z = _
+    rw [iteratedDeriv_const_mul_field]
+    congr 1
+    show iteratedDeriv k ((fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z')
+      + fun z' => α ^ J * Vsum z') z = _
+    rw [iteratedDeriv_add hUcd (contDiffAt_const.mul hVcd), iteratedDeriv_const_mul (α ^ J) hVcd]
+  have hU_e : (fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z')
+      = ∑ j ∈ Finset.range J, (fun y : ℝ => α ^ j * aa j * radj j y) := by
+    funext y
+    show (∑ j ∈ Finset.range J, α ^ j * aa j * radj j y) = _
+    rw [Finset.sum_apply]
+  have h2 : iteratedDeriv k (fun z' => ∑ j ∈ Finset.range J, α ^ j * aa j * radj j z') z
+      = ∑ j ∈ Finset.range J, α ^ j * aa j * iteratedDeriv k (radj j) z := by
+    have hcd : ∀ j ∈ Finset.range J, ContDiffAt ℝ k
+        (fun y : ℝ => α ^ j * aa j * radj j y) z := by
+      intro j hj
+      exact (contDiffOn_const.mul (contDiffOn_radj α j k)).contDiffAt (isOpen_Ioi.mem_nhds hz)
+    have hsum := iteratedDeriv_sum (n := k) (x := z) (I := Finset.range J)
+      (f := fun j y => α ^ j * aa j * radj j y) hcd
+    rw [hU_e, hsum]
+    exact Finset.sum_congr rfl (fun j _ => by rw [iteratedDeriv_const_mul_field])
+  have h3 : iteratedDeriv k Vsum z = ∑' m : ℕ, (Series.bmode m ψ
+      * ((Gegenbauer.lam m)⁻¹) ^ J * cc m) * iteratedDeriv k (radJ m) z :=
+    hVval k le_rfl z hzmid
+  -- the `(z+1)^k` is distributed over the sums
+  have hS : (z + 1) ^ k * (∑ j ∈ Finset.range J, α ^ j * aa j * iteratedDeriv k (radj j) z)
+      = ∑ j ∈ Finset.range J, α ^ j * ((z + 1) ^ k * iteratedDeriv k (radj j) z) * aa j := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl (fun j _ => by ring)
+  have hT : (z + 1) ^ k * (∑' m : ℕ, (Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)
+        * iteratedDeriv k (radJ m) z)
+      = ∑' m : ℕ, Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J
+          * ((z + 1) ^ k * iteratedDeriv k (radJ m) z) * cc m := by
+    rw [← tsum_mul_left]
+    exact tsum_congr (fun m => by ring)
+  have hZ : (z + 1) ^ k * iteratedDeriv k Psi z
+      = α ^ 2 * ((∑ j ∈ Finset.range J,
+            α ^ j * ((z + 1) ^ k * iteratedDeriv k (radj j) z) * aa j)
+          + α ^ J * (∑' m : ℕ, Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J
+              * ((z + 1) ^ k * iteratedDeriv k (radJ m) z) * cc m)) := by
+    rw [h1, h2, h3]
+    rw [show (z + 1) ^ k * (α ^ 2 * ((∑ j ∈ Finset.range J,
+            α ^ j * aa j * iteratedDeriv k (radj j) z)
+          + α ^ J * (∑' m : ℕ, (Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)
+              * iteratedDeriv k (radJ m) z)))
+        = α ^ 2 * ((z + 1) ^ k * (∑ j ∈ Finset.range J,
+              α ^ j * aa j * iteratedDeriv k (radj j) z)
+          + α ^ J * ((z + 1) ^ k * (∑' m : ℕ,
+              (Series.bmode m ψ * ((Gegenbauer.lam m)⁻¹) ^ J * cc m)
+                * iteratedDeriv k (radJ m) z))) from by ring]
+    rw [hS, hT]
+  -- the identification of the left-hand side
+  have hLHS : (z + 1) ^ k * Work.Spaces.pzIter k
+        (Work.Spaces.DthIter i (Work.Spaces.pth (fun z' θ' => (z' + 1) / z'
+          * (Series.psiSeries α (RemSource α ψ) z' θ' / Work.Construction.s2 θ')))) z θ
+      = (z + 1) ^ k * iteratedDeriv k (fun z' => (Work.Spaces.Lop^[i])
+          (deriv (fun θ'' => (z' + 1) / z'
+            * (Series.psiSeries α (RemSource α ψ) z' θ'' / Work.Construction.s2 θ''))) θ) z := by
+    congr 1
+    rw [Work.Spaces.pzIter_eq_iteratedDeriv]
+    refine congrArg (fun g => iteratedDeriv k g z) ?_
+    funext z'
+    have h := congrFun (Work.Spaces.DthIter_eq_iterate_Lop i (Work.Spaces.pth (fun z' θ' =>
+      (z' + 1) / z' * (Series.psiSeries α (RemSource α ψ) z' θ' / Work.Construction.s2 θ'))) z') θ
+    have hfun : (fun θ' => Work.Spaces.pth (fun z' θ' => (z' + 1) / z'
+        * (Series.psiSeries α (RemSource α ψ) z' θ' / Work.Construction.s2 θ')) z' θ')
+        = deriv (fun θ'' => (z' + 1) / z' * (Series.psiSeries α (RemSource α ψ) z' θ''
+            / Work.Construction.s2 θ'')) := rfl
+    rw [h, hfun]
+  have hBridge : (fun z' => (Work.Spaces.Lop^[i]) (deriv (fun θ'' => (z' + 1) / z'
+        * (Series.psiSeries α (RemSource α ψ) z' θ'' / Work.Construction.s2 θ''))) θ)
+      =ᶠ[𝓝 z] Psi := by
+    filter_upwards [isOpen_Ioi.mem_nhds hz] with z' hz'
+    rw [Lop_angle_id α ψ θ i hi6 hθ hb0 hdec hgr hrb hrbJ0 hexp hchiasm hWtDeriv z' hz']
+    exact psi_alg α ψ θ i z'
+  rw [hLHS]
+  rw [Filter.EventuallyEq.iteratedDeriv_eq k hBridge]
+  exact hZ
+
+
+end Work.FTS.PhiStar.FlatWAux
+end
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.Honesty.bslSolExists_moment_of_node_hyp =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -94,144 +344,7 @@ private lemma ae_imp_eq_of_eqOn_Ioo {f g : ℝ → ℝ}
   exact (MeasureTheory.ae_restrict_iff' measurableSet_Ioo).mpr
     (Filter.Eventually.of_forall (fun x hx => h x hx))
 
-theorem bslSolExists_moment_of_node_hyp (k : ℕ) :
-    ∀ (α : ℝ) (F : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.SmoothOpen F → Work.Spaces.HkMem α k F →
-      (∀ z : ℝ, 0 < z → Work.Elliptic.Fstar F z = 0) →
-      (∀ θ ∈ Work.Spaces.Iθ, Filter.Tendsto (fun z => F z θ) Filter.atTop (nhds 0)) →
-      ∃ Ψ : ℝ → ℝ → ℝ,
-        Work.FTS.EllipticEst.SmoothOpen Ψ ∧ Work.Elliptic.IsBslSol α F Ψ ∧
-          (∀ z : ℝ, 0 < z → Work.Elliptic.Fstar Ψ z = 0) := by
-  intro α F hα hα4 hsm hk horth hdec
-  have hα1 : α ≤ 1 := by linarith
-  -- ## the clamped source `G = clampQ F` and its `ℋ^0`-data
-  have h0F : Work.Spaces.HkMem α 0 F :=
-    Work.FTS.OpenPkg.HkMem_mono_open hsm 0 (Nat.zero_le k) hk
-  have hsmG : Work.FTS.EllipticEst.SmoothOpen (clampQ F) := smoothOpen_clampQ hsm
-  have horthG : Work.Elliptic.OrthCond (clampQ F) := orthCond_clampQ horth
-  have h0G : Work.Spaces.HkMem α 0 (clampQ F) :=
-    Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0 α 0 h0F
-      (fun z hz θ hθ => by simp only [clampQ]; rw [if_pos (show (0 : ℝ) < z from hz)])
-  have hL2F : IntegrableOn (fun p : ℝ × ℝ => F p.1 p.2 ^ 2) Q0 :=
-    integrableOn_sq_Q0_of_HkMem h0F hsm
-  have hL2G : IntegrableOn (fun p : ℝ × ℝ => (clampQ F) p.1 p.2 ^ 2) Q0 := by
-    refine hL2F.congr_fun ?_ Work.FTS.EllipticEst.isOpen_Q0.measurableSet
-    intro p hp
-    obtain ⟨hz, -, -⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-    show (F p.1 p.2) ^ 2 = ((if 0 < p.1 then F p.1 p.2 else 0)) ^ 2
-    rw [if_pos hz]
-  have hfstG : ∀ z : ℝ, 0 < z → Work.Elliptic.Fstar (clampQ F) z = 0 := by
-    intro z hz
-    rw [fstar_clampQ, if_pos hz]
-    exact horth z hz
-  -- ## the modal weak solution `Ψ` and its properties (all clean statements)
-  have hcontΨ : ContinuousOn (Function.uncurry (Psis α (clampQ F))) Q0 :=
-    NodeAux.continuousOn_uncurry_Psi_mod α hα hα1 horthG hsmG hL2G
-  have hΨli : LocallyIntegrableOn (Function.uncurry (Psis α (clampQ F))) Q0 :=
-    hcontΨ.locallyIntegrableOn Work.FTS.EllipticEst.isOpen_Q0.measurableSet
-  have hΨdec : ∀ θ ∈ Iθ, Tendsto (fun z => Psis α (clampQ F) z θ) atTop (nhds 0) :=
-    NodeAux.Psi_tendsto_atTop_zero_mod α hα hα1 horthG hsmG hL2G
-  have hΨslice : ∀ᵐ z ∂(volume.restrict (Set.Ioi 0)),
-      ContinuousOn (fun θ => Psis α (clampQ F) z θ) (Set.Ioo 0 (π / 2)) := by
-    rw [MeasureTheory.ae_restrict_iff' measurableSet_Ioi]
-    exact Filter.Eventually.of_forall (fun z hz =>
-      Work.FTS.H2.ModalSolR.Psi_slice_continuous α hα hα1 horthG hsmG hL2G hz)
-  -- ## interior regularity: the smooth representative `Φ`
-  obtain ⟨Φ, hΦsm, hΦae⟩ :=
-    Work.EllipticEst.InteriorRegularity.Q0.interiorSmoothQ0_fts hα hsmG hΨli
-      (fun φ hφ hcφ hsub =>
-        Work.FTS.H2.ModalSolR.psi_weak_identity α hα hα1 horthG hsmG hL2G hφ hcφ hsub)
-  -- ## the pointwise equation for `Φ`
-  have hΦeq : ∀ z, 0 < z → ∀ θ, 0 < θ → θ < π / 2 →
-      Work.Elliptic.bslOp α Φ z θ = clampQ F z θ := by
-    refine Work.EllipticEst.Assembly.bslOp_eq_of_weak_of_smooth hα hΦsm hsmG ?_
-    intro φ hφ hcφ hsub
-    rw [← Work.FTS.H2.ModalSolR.psi_weak_identity α hα hα1 horthG hsmG hL2G hφ hcφ hsub]
-    refine MeasureTheory.setIntegral_congr_ae Work.FTS.EllipticEst.isOpen_Q0.measurableSet ?_
-    rw [← MeasureTheory.ae_restrict_iff' Work.FTS.EllipticEst.isOpen_Q0.measurableSet]
-    refine hΦae.symm.mono (fun p hp => ?_)
-    have hp' : Φ p.1 p.2 = Psis α (clampQ F) p.1 p.2 := hp
-    show Φ p.1 p.2 * (Work.Elliptic.bslOp α φ p.1 p.2) * (p.1 ^ ((5 - α) / α) * Real.cos p.2)
-       = Psis α (clampQ F) p.1 p.2 * (Work.Elliptic.bslOp α φ p.1 p.2)
-         * (p.1 ^ ((5 - α) / α) * Real.cos p.2)
-    rw [hp']
-  -- ## `Φ = Ψ` on the open quadrant (both continuous there, equal a.e.)
-  have hcontΦ : ContinuousOn (Function.uncurry Φ) Q0 := hΦsm.continuousOn
-  have hEqOn : Set.EqOn (Function.uncurry Φ) (Function.uncurry (Psis α (clampQ F))) Q0 :=
-    MeasureTheory.Measure.eqOn_open_of_ae_eq hΦae.symm Work.FTS.EllipticEst.isOpen_Q0
-      hcontΦ hcontΨ
-  have hΦΨ : ∀ z θ, 0 < z → 0 < θ → θ < π / 2 → Φ z θ = Psis α (clampQ F) z θ :=
-    fun z θ hz hθ hθ2 => hEqOn (Work.FTS.EllipticEst.mem_Q0.mpr ⟨hz, hθ, hθ2⟩)
-  -- ## the decay of `Φ`
-  have hΦdec : ∀ θ ∈ Set.Ioo 0 (π / 2), Tendsto (fun z => Φ z θ) atTop (nhds 0) :=
-    Work.FTS.H2.PhiStarE5.smoothRep_decay hΦsm hΦae.symm hΨslice hΨdec
-  -- ## on the quadrant, `Ψ` is the mode series of `G`
-  have hPsiSeries : ∀ z θ, 0 < z → θ ∈ Set.Ioo 0 (π / 2) →
-      Psis α (clampQ F) z θ = Work.FTS.PhiStar.Series.psiSeries α (clampQ F) z θ := by
-    intro z θ hz hθ
-    exact tendsto_nhds_unique
-      (Work.FTS.H2.ModalSolR.psiTrunc_tendsto_Psi α hα hα1 horthG hsmG hL2G hz hθ)
-      (psiTrunc_tendsto_psiSeries hα hα1 hfstG hsmG hL2G hz hθ)
-  -- ## the witness
-  refine ⟨fun z θ => if θ ∈ Set.Ioo 0 (π / 2) then Φ z θ else 0, ?_, ?_, ?_⟩
-  · -- `SmoothOpen`
-    refine Work.FTS.EllipticEst.smoothOpen_of_forall (fun n => ?_)
-    refine (hΦsm.forall n).congr (fun p hp => ?_)
-    obtain ⟨-, h1, h2⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-    show (if p.2 ∈ Set.Ioo 0 (π / 2) then Φ p.1 p.2 else 0) = Φ p.1 p.2
-    rw [if_pos ⟨h1, h2⟩]
-  · -- `IsBslSol α F`
-    refine ⟨?_, ?_, ?_, ?_⟩
-    · intro z hz θ hθ0 hθ2
-      have hev : ∀ᶠ q in 𝓝 (z, θ),
-          (if q.2 ∈ Set.Ioo 0 (π / 2) then Φ q.1 q.2 else 0) = Φ q.1 q.2 := by
-        have hnb : ((Set.univ : Set ℝ) ×ˢ Set.Ioo 0 (π / 2)) ∈ 𝓝 (z, θ) :=
-          (isOpen_univ.prod isOpen_Ioo).mem_nhds ⟨trivial, hθ0, hθ2⟩
-        exact Filter.mem_of_superset hnb (fun q hq => if_pos hq.2)
-      rw [Work.FTS.H2.PhiStarE5.bslOp_congr_of_eventuallyEq α hev, hΦeq z hz θ hθ0 hθ2]
-      show (if 0 < z then F z θ else 0) = F z θ
-      rw [if_pos hz]
-    · intro z; exact if_neg (by simp)
-    · intro z; exact if_neg (by simp [Real.pi_pos])
-    · intro θ hθ
-      rcases eq_or_lt_of_le hθ.1 with h | h
-      · subst h
-        have hz : (fun z : ℝ => (if (0 : ℝ) ∈ Set.Ioo 0 (π / 2) then Φ z 0 else 0))
-            = fun _ => 0 := by
-          funext z; exact if_neg (by simp)
-        rw [hz]; exact tendsto_const_nhds
-      · rcases eq_or_lt_of_le hθ.2 with h2 | h2
-        · subst h2
-          have hz : (fun z : ℝ =>
-                (if Real.pi / 2 ∈ Set.Ioo 0 (Real.pi / 2) then Φ z (π / 2) else 0))
-              = fun _ => 0 := by
-            funext z; exact if_neg (by simp [Real.pi_pos])
-          rw [hz]; exact tendsto_const_nhds
-        · have hif : ∀ z : ℝ, (if θ ∈ Set.Ioo 0 (π / 2) then Φ z θ else 0) = Φ z θ :=
-            fun z => if_pos ⟨h, h2⟩
-          exact Tendsto.congr' (Eventually.of_forall (fun z => (hif z).symm))
-            (hΦdec θ ⟨h, h2⟩)
-  · -- the angular moment of the witness
-    intro z hz
-    have h1 : Work.Elliptic.Fstar (fun z θ => if θ ∈ Set.Ioo 0 (π / 2) then Φ z θ else 0) z
-        = Work.Elliptic.Fstar Φ z := by
-      rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar]
-      refine MeasureTheory.setIntegral_congr_ae measurableSet_Icc ?_
-      refine ae_imp_eq_of_eqOn_Ioo (fun θ hθ => ?_)
-      rw [if_pos hθ]
-    have h2 : Work.Elliptic.Fstar Φ z = Work.Elliptic.Fstar (Psis α (clampQ F)) z := by
-      rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar]
-      refine MeasureTheory.setIntegral_congr_ae measurableSet_Icc ?_
-      refine ae_imp_eq_of_eqOn_Ioo (fun θ hθ => ?_)
-      rw [hΦΨ z θ hz hθ.1 hθ.2]
-    have h3 : Work.Elliptic.Fstar (Psis α (clampQ F)) z
-        = Work.Elliptic.Fstar (Work.FTS.PhiStar.Series.psiSeries α (clampQ F)) z := by
-      rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar]
-      refine MeasureTheory.setIntegral_congr_ae measurableSet_Icc ?_
-      refine ae_imp_eq_of_eqOn_Ioo (fun θ hθ => ?_)
-      rw [hPsiSeries z θ hz hθ]
-    have h4 : Work.Elliptic.Fstar (Work.FTS.PhiStar.Series.psiSeries α (clampQ F)) z = 0 :=
-      Fstar_psiSeries_eq_zero_of_hkMem hα hα4 hsmG h0G hfstG z hz
-    rw [h1, h2, h3, h4]
 
 end Work.FTS.PhiStar.Honesty
+end
+end

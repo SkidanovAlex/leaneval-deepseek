@@ -3,20 +3,17 @@ import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.intSlotLeHkSq
-import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1Small
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1ZeroSmall
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumGamSin
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumZ0
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumFlux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1ZeroSmall
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumB1Five
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1Small
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1Big
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

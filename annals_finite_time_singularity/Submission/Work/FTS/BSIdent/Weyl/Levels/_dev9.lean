@@ -1,11 +1,11 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Weyl.Levels._stub
 import Submission.Work.FTS.BSIdent.Weyl.Levels._dev5
 import Submission.Work.FTS.BSIdent.Weyl.Levels._dev8
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.FireFix.Firing
+import Submission.Work.FTS.MeridianDyn.Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

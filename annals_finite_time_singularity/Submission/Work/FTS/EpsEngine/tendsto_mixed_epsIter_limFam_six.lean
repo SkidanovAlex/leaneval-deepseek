@@ -5,7 +5,7 @@ import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Submission.Work.FTS.EpsEngine.tendsto_mixed_epsIter_limFam
-import Submission.Work.FTS.StrongEps.EpsE4Thr.mixed_sub_of_contDiffOn_six
+import Submission.Work.H2.T1Q.SliceIntQ
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

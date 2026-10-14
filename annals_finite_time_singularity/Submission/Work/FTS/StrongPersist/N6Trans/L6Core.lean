@@ -1,37 +1,191 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Level-six core slot lemmas for `Work.FTS.StrongPersist.N6Trans.slotT3Six`
-
-This file collects the elementary, `α`-polynomial facts the per-slot `D_z`-transport bound at
-level six (`slotT3Six`) consumes:
-
-* `bell_le_six` — the Bell-number bound `bell n ≤ 1000` for `n ≤ 6` (the coefficient mass of
-  the Stirling expansion `D_z^n = ∑_k S(n,k) z^k ∂_z^k`);
-* `zpz_le_WlInf6`, `dzIter_le_WlInf6` — `|z^j ∂_z^j f| ≤ |f|_{𝒲^{6,∞}}` and
-  `|D_z^b f| ≤ 1000 |f|_{𝒲^{6,∞}}` on the open quadrant (level-six instances of the proved
-  level-four lemmas `Work.Spaces.zpz_le_WlInf` / `Work.FTS.OpenPkg.DzIter_le_WlInf_open`);
-* `canonW_slot_le_Hk6` — a single canonical slot `canonW q · (D_z^jD_θ^i g)²` is dominated by
-  `HkIntegrand α 6 g`, for `q ≤ η` when `i = 0` and `q ≤ γ` always (dispatcher over the
-  proved `T1SixAux.canonW_mul_z_le6` / `canonW_mul_mixed_le6`);
-* `canonW_zero_slot_le_Hk6` — the degenerate case `q = 0`, i.e. `w²` (only valid at interior
-  angles, where the singular slot weights are `≥ 1`);
-* `canonW_pair_le6` — the two-factor AM–GM form.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Tactic.IntervalCases
-import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.Basic
-import Submission.Work.FTS.TransportS.HardDefs
-import Submission.Work.FTS.OpenPkg.DzIter_le_WlInf_open
-import Submission.Work.FTS.OpenPkg.Mixed_le_WlInf_open
-import Submission.Work.Spaces.WlInf_terms
-import Submission.Work.Spaces.ProductRuleInW
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.TransportS.T3BadAux.slot_prod_le
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.ExcBoundQ
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.ProductRuleInW
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.Hon.OpenTwins =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.N6Trans.Hon
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+
+/-! ## Joint continuity on the open quadrant -/
+
+/-- The uncurried mixed derivative of an open-smooth function is continuous on the open
+quadrant.  (Open twin of `continuousOn_mixed_Qd`.) -/
+theorem continuousOn_mixed_Qd_open {g : ℝ → ℝ → ℝ}
+    (hsg : Work.FTS.EllipticEst.SmoothOpen g) (j i : ℕ) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.mixed j i g p.1 p.2) Work.FTS.LocData.Qd :=
+  (hsg.mixed j i).continuousOn
+
+/-- The uncurried hard slot `Thard g k` is continuous on the open quadrant. -/
+theorem continuousOn_Thard_Qd_open {g : ℝ → ℝ → ℝ}
+    (hsg : Work.FTS.EllipticEst.SmoothOpen g) (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.FTS.H2.Thard g k p.1 p.2) Work.FTS.LocData.Qd := by
+  refine (continuousOn_mixed_Qd_open hsg (4 - k.val) k.val).congr fun p _ => ?_
+  simp only [Work.FTS.H2.Thard_eq_mixed]
+
+/-- The uncurried weighted slot `Xz α g k` is continuous on the open quadrant. -/
+theorem continuousOn_Xz_Qd_open {α : ℝ} {g : ℝ → ℝ → ℝ}
+    (hsg : Work.FTS.EllipticEst.SmoothOpen g) (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.FTS.TransportS.Xz α g k p.1 p.2)
+      Work.FTS.LocData.Qd := by
+  rcases eq_or_ne k.val 0 with hk | hk
+  · have hk' : k = 0 := Fin.ext hk
+    subst hk'
+    refine ((continuousOn_mixed_Qd_open hsg 4 0).mul
+      Work.FTS.TransportS.continuousOn_wdivsin_Qd).congr fun p _ => ?_
+    simp only [Work.FTS.TransportS.Xz_apply_zero, Work.Spaces.mixed_zero_right, Pi.mul_apply]
+  · refine ((continuousOn_mixed_Qd_open hsg (4 - k.val) k.val).mul
+      (Work.FTS.TransportS.continuousOn_Wt_Qd α)).congr fun p _ => ?_
+    simp only [Work.FTS.TransportS.Xz_apply_ne hk, Pi.mul_apply]
+
+/-- The uncurried weighted slot `Yz α g k` is continuous on the open quadrant. -/
+theorem continuousOn_Yz_Qd_open {α : ℝ} {g : ℝ → ℝ → ℝ}
+    (hsg : Work.FTS.EllipticEst.SmoothOpen g) (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.FTS.TransportS.Yz α g k p.1 p.2)
+      Work.FTS.LocData.Qd := by
+  rcases eq_or_ne k.val 0 with hk | hk
+  · have hk' : k = 0 := Fin.ext hk
+    subst hk'
+    refine ((continuousOn_mixed_Qd_open hsg 5 0).mul
+      Work.FTS.TransportS.continuousOn_wdivsin_Qd).congr fun p _ => ?_
+    simp only [Work.FTS.TransportS.Yz_apply_zero, Work.Spaces.mixed_zero_right, Pi.mul_apply]
+  · refine ((continuousOn_mixed_Qd_open hsg (5 - k.val) k.val).mul
+      (Work.FTS.TransportS.continuousOn_Wt_Qd α)).congr fun p _ => ?_
+    simp only [Work.FTS.TransportS.Yz_apply_ne hk, Pi.mul_apply]
+
+/-- The uncurried `k`-th hard summand `gK α f g k` is continuous on the open quadrant. -/
+theorem continuousOn_gK_Qd_open {α : ℝ} {f g : ℝ → ℝ → ℝ}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.FTS.TransportS.gK α f g k p.1 p.2)
+      Work.FTS.LocData.Qd := by
+  have hf : ContinuousOn (fun p : ℝ × ℝ => f p.1 p.2) Work.FTS.LocData.Qd :=
+    (hsf.continuousOn).mono fun p hp => hp
+  refine (hf.mul ((continuousOn_Xz_Qd_open (α := α) hsg k).mul
+    (continuousOn_Yz_Qd_open (α := α) hsg k))).congr fun p hp => ?_
+  have hp' := Set.mem_prod.mp hp
+  rw [Work.FTS.TransportS.gK_eq_mul α f g k p.1 p.2 ⟨le_of_lt hp'.2.1, le_of_lt hp'.2.2⟩]
+  simp only [Pi.mul_apply]
+
+/-- The uncurried integration-by-parts integrand `gK' α f g k` is continuous on the open
+quadrant. -/
+theorem continuousOn_gK'_Qd_open {α : ℝ} {f g : ℝ → ℝ → ℝ}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.FTS.TransportS.gK' α f g k p.1 p.2)
+      Work.FTS.LocData.Qd := by
+  have hf : ContinuousOn (fun p : ℝ × ℝ => f p.1 p.2) Work.FTS.LocData.Qd :=
+    (hsf.continuousOn).mono fun p hp => hp
+  have hpf : ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.pz f p.1 p.2) Work.FTS.LocData.Qd :=
+    (hsf.pz.continuousOn).mono fun p hp => hp
+  have hratio : ContinuousOn (fun p : ℝ × ℝ => (p.1 - 3) / (1 + p.1)) Work.FTS.LocData.Qd :=
+    ContinuousOn.div (continuousOn_fst.sub continuousOn_const)
+      (continuousOn_const.add continuousOn_fst) (fun p hp => by
+        have h1 : (0 : ℝ) < p.1 := (Set.mem_prod.mp hp).1
+        linarith)
+  refine ((((hpf.mul continuousOn_fst).mul Work.FTS.TransportS.continuousOn_w_sq_Qd).add
+    (hf.mul (Work.FTS.TransportS.continuousOn_w_sq_Qd.mul hratio))).mul
+      ((continuousOn_Thard_Qd_open hsg k).pow 2)).congr fun p _ => ?_
+  simp only [Work.FTS.TransportS.gK', Pi.mul_apply, Pi.add_apply, Pi.pow_apply]
+
+/-- The rewritten `H1`-slice integrand of the radial integration by parts is continuous on the
+open quadrant.  (Open twin of `T3BadAux.continuousOn_slotH1_Qd`.) -/
+theorem continuousOn_slotH1_Qd_open {f g : ℝ → ℝ → ℝ}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (k : Fin 5) :
+    ContinuousOn (fun p : ℝ × ℝ => f p.1 p.2 * Work.Spaces.mixed (5 - k.val) k.val g p.1 p.2
+      * (Work.Spaces.w p.1) ^ 2 * Work.FTS.H2.Thard g k p.1 p.2) Work.FTS.LocData.Qd :=
+  ((((hsf.continuousOn).mono fun p hp => hp).mul
+      (continuousOn_mixed_Qd_open hsg (5 - k.val) k.val)).mul
+    (Work.FTS.TransportS.continuousOn_w_sq_Qd.mul
+      (continuousOn_Thard_Qd_open hsg k))).congr fun p _ => by
+    simp only [Pi.mul_apply]
+    rw [show Function.uncurry f p = f p.1 p.2 from rfl]
+    ring
+
+/-! ## Product-integrability -/
+
+/-- The `ℋ^k`-integrand of `g` is product-integrable, and its product integral is
+`HkSq α k g`, for `g` smooth on the open quadrant.  (Open twin of
+`integrable_HkIntegrand_prod`.) -/
+theorem integrable_HkIntegrand_prod_open {α : ℝ} {k : ℕ} {g : ℝ → ℝ → ℝ}
+    (hg : Work.FTS.EllipticEst.SmoothOpen g) (hmem : Work.Spaces.HkMem α k g) :
+    MeasureTheory.Integrable
+        (fun p : ℝ × ℝ => Work.Spaces.HkIntegrand α k g p.1 p.2)
+        ((volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ))
+      ∧ (∫ p, Work.Spaces.HkIntegrand α k g p.1 p.2
+          ∂((volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ)))
+        = Work.Spaces.HkSq α k g := by
+  have h := Work.Spaces.integrable_prod_of_iterated
+    (μ := volume.restrict Work.Spaces.Iz) (ν := volume.restrict Work.Spaces.Iθ)
+    (G := fun z θ => Work.Spaces.HkIntegrand α k g z θ)
+    (fun z θ => Work.Spaces.HkIntegrand_nonneg α k g z θ)
+    (aesm_HkIntegrand_prod_open (k := k) hg)
+    ((MeasureTheory.ae_restrict_iff' (show MeasurableSet Work.Spaces.Iz from
+      measurableSet_Ici)).mpr (Filter.Eventually.of_forall fun z hz => hmem.1 z hz))
+    hmem.2
+  exact ⟨h.1, by rw [h.2]; rfl⟩
+
+/-- A single order-`4` weighted factor is a summand of `HkIntegrand α 4 g`, hence
+product-integrable, for `g` smooth on the open quadrant. -/
+theorem integrable_Xz_sq_open {α : ℝ} {g : ℝ → ℝ → ℝ}
+    (hsg : Work.FTS.EllipticEst.SmoothOpen g) (hmg4 : Work.Spaces.HkMem α 4 g) (k : Fin 5) :
+    MeasureTheory.Integrable
+      (fun p : ℝ × ℝ => (Work.FTS.TransportS.Xz α g k p.1 p.2) ^ 2)
+      ((volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ)) := by
+  refine MeasureTheory.Integrable.mono' (integrable_HkIntegrand_prod_open hsg hmg4).1
+    (Work.Spaces.aesm_of_continuousOn_Qd _ ((continuousOn_Xz_Qd_open hsg k).pow 2)) ?_
+  filter_upwards [Work.FTS.TransportS.ae_of_forall_Qd (P := fun p : ℝ × ℝ =>
+    (Work.FTS.TransportS.Xz α g k p.1 p.2) ^ 2 ≤ Work.Spaces.HkIntegrand α 4 g p.1 p.2)
+    fun z θ hz hθ hθ' => Work.FTS.TransportS.Xz_sq_le_HkIntegrand4 α g k z θ] with p hp
+  simpa only [Real.norm_of_nonneg (sq_nonneg _)] using hp
+
+/-- The `k`-th hard summand `gK α f g k` is product-integrable, for `g` smooth on the open
+quadrant and `g ∈ ℋ⁵`.  (Open twin of `integrable_gK`.) -/
+theorem integrable_gK_open {α Mf : ℝ} {f g : ℝ → ℝ → ℝ}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (hmg5 : Work.Spaces.HkMem α 5 g) (hMf : 0 ≤ Mf)
+    (hf : ∀ z θ, 0 < z → 0 < θ → θ < π / 2 → |f z θ| ≤ Mf) (k : Fin 5) :
+    MeasureTheory.Integrable (fun p : ℝ × ℝ => Work.FTS.TransportS.gK α f g k p.1 p.2)
+      ((volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ)) := by
+  refine MeasureTheory.Integrable.mono'
+    ((integrable_HkIntegrand_prod_open hsg hmg5).1.const_mul Mf)
+    (Work.Spaces.aesm_of_continuousOn_Qd _ (continuousOn_gK_Qd_open hsf hsg k)) ?_
+  filter_upwards [Work.FTS.TransportS.ae_of_forall_Qd (P := fun p : ℝ × ℝ =>
+    |Work.FTS.TransportS.gK α f g k p.1 p.2| ≤ Mf * Work.Spaces.HkIntegrand α 5 g p.1 p.2)
+    fun z θ hz hθ hθ' => Work.FTS.TransportS.abs_gK_le hMf hf k hz ⟨hθ, hθ'⟩] with p hp
+  simpa only [Real.norm_eq_abs, mul_comm] using hp
+
+end Work.FTS.StrongPersist.N6Trans.Hon
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.L6Core =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -121,60 +275,6 @@ theorem canonW_slot_le_Hk6 {α : ℝ} {g : ℝ → ℝ → ℝ} {q : ℝ} (hq0 :
   · exact Work.FTS.StrongPersist.N6Trans.T1SixAux.canonW_mul_mixed_le6 α g hq0 hqγ hθ j i
       (Nat.one_le_iff_ne_zero.mpr hine) hij
 
-/-- The degenerate case `q = 0` of the slot domination: `w²` times a slot square is dominated
-by `HkIntegrand α 6 g` at interior angles (where every singular slot weight is `≥ 1`). -/
-theorem canonW_zero_slot_le_Hk6 {α : ℝ} (hα : 0 < α) {g : ℝ → ℝ → ℝ} {j i : ℕ}
-    (hij : i + j ≤ 6) {z θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
-    (Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2
-      ≤ Work.Spaces.HkIntegrand α 6 g z θ := by
-  have hs0 : 0 ≤ Real.sin (2 * θ) :=
-    Real.sin_nonneg_of_mem_Icc ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩
-  rcases eq_or_ne i 0 with hi0 | hine
-  · subst hi0
-    rw [Work.Spaces.mixed_zero_right]
-    have hone : (1 : ℝ) ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
-      Work.FTS.TransportS.one_le_rpow_neg Work.Spaces.eta_nonneg hθ
-    have hstep : (Work.Spaces.w z) ^ 2 * (Work.Spaces.DzIter j g z θ) ^ 2
-        ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
-            * (Work.Spaces.DzIter j g z θ) ^ 2 := by
-      have h := mul_le_mul_of_nonneg_right hone
-        (mul_nonneg (sq_nonneg (Work.Spaces.w z)) (sq_nonneg (Work.Spaces.DzIter j g z θ)))
-      calc (Work.Spaces.w z) ^ 2 * (Work.Spaces.DzIter j g z θ) ^ 2
-          = 1 * ((Work.Spaces.w z) ^ 2 * (Work.Spaces.DzIter j g z θ) ^ 2) := by ring
-        _ ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
-              * ((Work.Spaces.w z) ^ 2 * (Work.Spaces.DzIter j g z θ) ^ 2) := h
-        _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
-              * (Work.Spaces.DzIter j g z θ) ^ 2 := by ring
-    calc (Work.Spaces.w z) ^ 2 * (Work.Spaces.DzIter j g z θ) ^ 2
-        ≤ _ := hstep
-      _ = (Work.Spaces.DzIter j g z θ
-            * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2 := by
-          rw [mul_pow, Work.FTS.TransportS.sq_div_rpow hs0 Work.Spaces.eta]
-          ring
-      _ ≤ Work.Spaces.HkIntegrand α 6 g z θ :=
-          Work.Spaces.sq_le_HkIntegrand_z α 6 g z θ j (by omega)
-  · have hone : (1 : ℝ) ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) :=
-      Work.FTS.TransportS.one_le_rpow_neg (le_of_lt (Work.Spaces.gam_pos hα)) hθ
-    have hstep : (Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2
-        ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
-            * (Work.Spaces.mixed j i g z θ) ^ 2 := by
-      have h := mul_le_mul_of_nonneg_right hone
-        (mul_nonneg (sq_nonneg (Work.Spaces.w z)) (sq_nonneg (Work.Spaces.mixed j i g z θ)))
-      calc (Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2
-          = 1 * ((Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2) := by ring
-        _ ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
-              * ((Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2) := h
-        _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
-              * (Work.Spaces.mixed j i g z θ) ^ 2 := by ring
-    calc (Work.Spaces.w z) ^ 2 * (Work.Spaces.mixed j i g z θ) ^ 2
-        ≤ _ := hstep
-      _ = (Work.Spaces.mixed j i g z θ * Work.Spaces.Wt α z θ) ^ 2 := by
-          rw [mul_pow, Work.Spaces.Wt, Work.Spaces.wTheta,
-            Work.FTS.TransportS.sq_mul_rpow_neg_half hs0 (Work.Spaces.gam α)]
-          ring
-      _ ≤ Work.Spaces.HkIntegrand α 6 g z θ :=
-          Work.Spaces.sq_le_HkIntegrand_mixed α 6 g z θ i j
-            (Nat.one_le_iff_ne_zero.mpr hine) hij
 
 /-! ## The two-factor AM–GM form -/
 
@@ -217,3 +317,5 @@ theorem canonW_pair_le6 {α : ℝ} {g : ℝ → ℝ → ℝ} {q : ℝ} (hq0 : 0 
     _ ≤ Work.Spaces.HkIntegrand α 6 g z θ := by linarith
 
 end Work.FTS.StrongPersist.N6Trans
+end
+end

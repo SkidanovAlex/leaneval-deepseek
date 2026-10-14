@@ -1,9 +1,6 @@
-/-
-# `bdata_blkNstar` — the `BData` of the linear-in-`w` block `-μ w - c D_z w`
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
-import Submission.Work.FTS.StrongEps.E4R3.RawE6Aux.EpsWPSemitameAux.Common
+import Submission.Work.FTS_StreamBdry.Inputs.slice_assy
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

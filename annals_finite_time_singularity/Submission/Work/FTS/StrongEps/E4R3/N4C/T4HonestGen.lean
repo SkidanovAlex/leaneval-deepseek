@@ -1,25 +1,51 @@
-/-
-# `E4R3/N4C/T4HonestGen` — the honest `t4` clause of the level-four pairing
-
-The `t4` clause of the honest N4 interface `Work.FTS.StrongEps.E4R3.N4C.N4ExtraH`: the transport
-estimate in which the derivative falls on the test function as `D_θ`, and the coefficient is
-measured only by the flat `D`-sup norm `WDp 4 f` (with `WDMem 4 f` its honesty).
-
-Route (the honest twin of `Work.FTS.StrongPersist.N6Trans.IP4T3Honest`, with the `D_θ` direction
-handled by the `T1Hon` engine instead of the `D_z` one):
-
-* the slot domination `Work.FTS.IPGen.ip4SlotDomGen` bounds `|IP4 c… α u g|` by
-  `K·leafSum α u g` for `u = f·D_θg` (`SlotDomIP 1 K (IP4 c…)`);
-* `T4Honest.T4LeafSumBound` bounds the leaf sum by `75·C·WDp 4 f·HkSq α 4 g`, by summing the
-  per-slot bound `T4Honest.T4SlotBound` over the fifteen slots and three leaf weights;
-* `HkSq α 4 g = (HkNorm α 4 g)²` and `1 ≤ α ^ (-(1/2))` for `α ∈ (0,1]` give the stated shape.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongEps.E4R3.N4C.T4Honest.T4Leaf
-import Submission.Work.FTS.IPGen.ip4SlotDomGen
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.IPGen.IP4Lin
+import Submission.Work.FTS.IPGen.N4ExtraQ
+import Submission.Work.FTS.IPGen.headline_IP4_of_errors
+import Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat
+import Submission.Work.FTS.StrongPersist.L3Aux.ZmulBound
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+-- ===== merged: Submission.Work.FTS.IPGen.Assembly =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.IPGen
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.Nonlin (Xn)
+
+set_option autoImplicit false
+
+
+
+set_option linter.defProp false
+
+
+end Work.FTS.IPGen
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.N4C.T4HonestGen =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -85,3 +111,4 @@ theorem T4HonestGen (c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ) (h₁ : 0 < c₁
                 * (Work.Spaces.HkNorm α 4 g) ^ 2 := by ring
 
 end Work.FTS.StrongEps.E4R3.N4C
+end

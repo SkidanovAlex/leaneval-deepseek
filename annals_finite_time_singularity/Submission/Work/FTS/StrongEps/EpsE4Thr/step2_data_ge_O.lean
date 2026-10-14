@@ -1,48 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `step2_data_ge_O` — the induction step of the corrected coercivity on the **open** class
-
-`Submission/Work/FTS/CoercivityFix/Assembly/step2_data.lean` proves the induction step of the
-corrected coercivity chain (`CoerData2 α n → CoerData2 α (n+1)`) on the frozen class
-`Work.FTS.Nonlin.RegQ`; its two halves are `cs_clause_succ` (the Cauchy–Schwarz clause, a
-three-slot chaining through the one-sided norm comparisons) and `coer_clause_succ` (the
-coercivity clause, the paper's Young/AM–GM absorption of the `Ê₂`-defect into the level-`n`
-coercivity slack).
-
-The level-four route of the chapter runs on the *open* class
-`RegQo α k = SmoothOpen f ∧ HkMem α k f ∧ BdryTraces α k f`, whose smoothness component only
-requires `C^∞` on the open quadrant `(0,∞) × (0,π/2)` (no flatness at `z = 0`; `SmoothQuad` is
-*false* for the projected mollified slices of the route).  This file is the open-class twin of
-`step2_data`, phrased in the vocabulary of `StepDataO.lean`:
-
-  `CoerData2O α n IP cc CC → CoerData2O α (n+1) (HkIPStep c₁ c₂ IP)
-      (cc·min 1 (min c₁ c₂)/(2D)) (3·max 1 (max c₁ c₂)·CC)`.
-
-Both clauses are ported verbatim; the only inputs that change are
-
-* the derivative ports `RegQ_dth`/`RegQ_dz` (which asked for `SmoothQuad`) — replaced by the
-  open-class port `regQo_dth_dz` (available for `0 < α`, the range of this statement);
-* the one-sided norm comparison of the three slots — `HkSq_mono_le` for `f`,
-  `Assembly.HkSq_Dth_le_ge` for `D_θ f` (valid for `α ≥ -1/10`) and the finite-order
-  open-quadrant shift `Transfer.HkSq_Dz_le_Q0Sm` for `D_z f`, whose smoothness input
-  `Q0Sm (n+1) f` is immediate from `SmoothOpen f`;
-* the regularity ports, which are now fields of `StepReg2O` (`mono2`, `dth1`, `dz1`, `dz2`,
-  `ldz`, `e2r`), and the algebraic inputs, which are fields of `Comm2O`
-  (`congr` — membership-free, `add`, `dthC`, `dzC` — guarded by `SmoothOpen`).
-
-The whole file is proved outright; it rests on `[propext, Classical.choice, Quot.sound]` only.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Submission.Work.FTS.StrongEps.EpsE4Thr.StepDataO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.StepCoerO
 import Submission.Work.FTS.CoercivityFix.Assembly.step2_data
-import Submission.Work.FTS.StrongEps.EpsE4Thr.regQo_dth_dz
-import Submission.Work.FTS.StrongEps.EpsE4Thr.E2hat_HkSq_le_uniform_O
-import Submission.Work.FTS.CoercivityFix.Assembly.HkSq_Dth_le_ge
-import Submission.Work.FTS.CoercivityFix.Transfer.HkSq_Dz_le_Q0Sm
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.StrongPersist.N6Trans.T1Hon.EasyLeibIntBound
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

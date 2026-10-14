@@ -1,49 +1,11 @@
-/-
-# `Work.FTS.MeridianDyn.DynEqF` — the dynamic profile equation `(E)` from the fake-time equation
-
-The fake-time equation of the modulation analysis (`Work.FTS.Galerkin.IsDynEqOn`, the paper's
-`∂_τ g + 𝓛_Γ^T(g) = -μ̄·AK + N₀ + N + N_*`) is, in the `(z,θ)` variables, **equivalent** to the
-profile equation for the *full* profile `F = F_* + g` at the `τ`-dependent rates
-`1+μ̄ = κ`, `1-μ̄ = κ·b`:
-
-  `(E)   ∂_τ F + (1+μ)F + (1-μ)·D_z F + UVR α F Φ = 0`     (`Work.FTS.MeridianDyn.DynEqF`),
-
-*up to an explicitly computed defect* proportional to the `L₁₂`-zero-mode of the transport term.
-
-## Sign status (since the ruling `FTS_MUFUN_SIGN.md` §5, option (a′))
-
-The dictionary between the two modulation constants is fixed by the *definitions* of
-`𝓛_Γ^T = 𝓛_Γ - 𝕡(Transport)` and of `MainLHS` (`Work.Construction.intermediate_geqn`):
-
-  `𝓛_Γ^T(g) = AK·(L₁₂(Transport g)(0) - 2αμ) + N₀ + N + N_*`,
-
-i.e. equating with the paper's `-μ̄·AK` gives `μ̄ = 2αμ - L₁₂(Transport g)(0)`, or
-`2αμ = μ̄ + L₁₂(Transport g)(0)`.  This is the relation assumed by
-`Work.Construction.gEquationFinal` (`hmu`) and stated in the module docstring of
-`Submission/Work/Construction/Equation.lean`.
-
-**After the sign fix** (`Construction.MufunS`, ruling §5 option (a′)) the delivered modulation
-constant `Work.FTS.Galerkin.muDyn` *is* `Construction.mufunS`, so it satisfies
-`2α·muDyn = μ̄ + L₁₂(Transport g)(0)` **by definition**
-(`Work.Construction.two_mul_mufunS`, `two_mul_muDyn` below).  Consequently
-
-* the defect of the pointwise derivation `dynEqF_pointwise` is *identically zero*
-  (`DynEqF_of_isDynEqOn`), and the `L₁₂`-zero-mode hypothesis `hL12` of the pre-fix statement is
-  **gone**: it was unprovable (`FTS_MUFUN_SIGN.md` §3 — `L₁₂(Transport g)(0) = 0` is false for the
-  solution, since this functional has a different kernel from the conserved class
-  `L₁₂(g)(0) = 0`);
-* `muDynStar` — the reference constant at which the defect vanishes by construction — now
-  coincides with `muDyn` for every `α ≠ 0` (`muDyn_eq_muDynStar`), so
-  `DynEqF_of_isDynEqOn_star` needs no hypothesis beyond the fake-time equation.
--/
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.MeridianDyn.Defs
-import Submission.Work.FTS.MeridianDyn.Bridge.gRHS_sub_gDynRHS
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
 import Submission.Work.FTS.MeridianDyn.Bridge.mainLHS_sub_N_eq
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
 import Submission.Work.Stability.MainLHSSubN
-import Submission.Work.Construction.MufunS
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,29 +24,7 @@ set_option autoImplicit false
 
 /-! ## The modulation constants -/
 
-/-- **The paper's modulation constant** `μ = (μ̄ + L₁₂(Transport g)(0))/(2α)`:
 
-  `muDynStar α Φ g τ = (L₁₂(N₀)(0) + L₁₂(N)(0) + L₁₂(Transport (g τ))(0)) / (2α)`.
-
-Since the sign fix it is *equal* to the delivered `Work.FTS.Galerkin.muDyn`
-(`muDyn_eq_muDynStar`, for `α ≠ 0`); the definition is kept as the reference form in which the
-defect of `(E)` vanishes by construction — the point is now that `muDyn` is that form. -/
-noncomputable def muDynStar (α : ℝ) (Φ g : Fam) (τ : ℝ) : ℝ :=
-  (Work.Construction.mubar
-      (Work.Construction.N0 α (Work.Construction.Ftau α g τ) (Galerkin.slice g τ))
-      (Work.Construction.N α (Work.Construction.Ftau α g τ) (Galerkin.slice Φ τ))
-    + Work.Construction.L12 (Work.Coercivity.Transport (Galerkin.slice g τ)) 0) / (2 * α)
-
-/-- **The defining relation of the corrected modulation constant**:
-`2α·muDynStar = μ̄ + L₁₂(Transport g)(0)`. -/
-theorem two_mul_muDynStar {α : ℝ} (hα : α ≠ 0) (Φ g : Fam) (τ : ℝ) :
-    2 * α * muDynStar α Φ g τ
-      = Work.Construction.mubar
-          (Work.Construction.N0 α (Work.Construction.Ftau α g τ) (Galerkin.slice g τ))
-          (Work.Construction.N α (Work.Construction.Ftau α g τ) (Galerkin.slice Φ τ))
-        + Work.Construction.L12 (Work.Coercivity.Transport (Galerkin.slice g τ)) 0 := by
-  rw [muDynStar]
-  field_simp
 
 /-- **The defining relation of the delivered modulation constant**
 `Work.FTS.Galerkin.muDyn = Construction.mufunS` (the sign fix of `FTS_MUFUN_SIGN.md` §5):
@@ -104,18 +44,6 @@ theorem two_mul_muDyn {α : ℝ} (hα : α ≠ 0) (Φ g : Fam) (τ : ℝ) :
   rw [h]
   exact Work.Construction.two_mul_mufunS α _ _ (Galerkin.slice g τ) hα
 
-/-- **The delivered modulation constant is the paper's**: `muDyn = muDynStar` for `α ≠ 0`, i.e.
-`2αμ = μ̄ + L₁₂(Transport g)(0)` holds by definition (both sides are
-`(μ̄ + L₁₂(Transport g)(0))/(2α)`).  Pre-fix this was an `↔` with
-`L₁₂(Transport g)(0) = 0`; the sign fix removes the `L₁₂`-zero-mode hypothesis from every
-consumer. -/
-theorem muDyn_eq_muDynStar {α : ℝ} (hα : α ≠ 0) (Φ g : Fam) (τ : ℝ) :
-    Galerkin.muDyn α Φ g τ = muDynStar α Φ g τ := by
-  have h1 := two_mul_muDyn hα Φ g τ
-  have h2 := two_mul_muDynStar hα Φ g τ
-  have h2α : 2 * α ≠ 0 := mul_ne_zero two_ne_zero hα
-  refine mul_left_cancel₀ h2α ?_
-  rw [h1, h2]
 
 /-! ## The pointwise derivation of `(E)` with its defect -/
 
@@ -288,15 +216,5 @@ theorem DynEqF_of_isDynEqOn_odd {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {Φ 
   DynEqF_congr_on_quadrant (fun _ θ _ hθ _ => (profFamOdd_of_nonneg (le_of_lt hθ)).symm)
     (DynEqF_of_isDynEqOn hα hα1 hD hEq hne)
 
-/-- **`(E)` at the paper's modulation constant `muDynStar`.**  The same as
-`DynEqF_of_isDynEqOn` but at the rate `muDynStar`; since the sign fix the two constants coincide
-(`muDyn_eq_muDynStar`), so no hypothesis beyond the fake-time equation is needed. -/
-theorem DynEqF_of_isDynEqOn_star {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {Φ g : Fam}
-    (hD : ProfDerivData α Φ g) (hEq : Galerkin.IsDynEqOn α Φ g)
-    (hne : ∀ τ : ℝ, 0 ≤ τ → 1 + Galerkin.muDyn α Φ g τ ≠ 0) :
-    DynEqF α (muDynStar α Φ g) (profFam α g) Φ := by
-  have hbase := DynEqF_of_isDynEqOn hα hα1 hD hEq hne
-  intro z θ τ hzθ hτ
-  simpa only [← muDyn_eq_muDynStar (ne_of_gt hα) Φ g τ] using hbase z θ τ hzθ hτ
 
 end Work.FTS.MeridianDyn

@@ -1,55 +1,15 @@
-/-
-# `Work.FTS.StrongPersist.N6_L12H` — the `l12H` clause of `N6Norm`
-
-`L₁₂(g)(z) = ∫_z^∞ ∫_θ K(θ)·g(r,θ)/r dθ dr` is the radial function of Elgindi's
-Prop. `L12H` (tex 1276): for a datum of the **open-quadrant** class
-`Work.FTS.VocabO.HQo α 6 g = SmoothOpen g ∧ HkMem α 6 g` with vanishing zero mode
-`L₁₂(g)(0) = 0`, the function `z ↦ L₁₂(g)(z)` (extended constantly in `θ`) lies in `ℋ⁶` and
-
-  `|L₁₂(g)|_{ℋ⁶} ≤ Xi · α^{-Cpow} · |g|_{ℋ⁶}`
-
-with a constant independent of `α > 0` and of `g`.  This is the level-six instance of the
-clause `N6Norm.l12H`, and the level-six analogue of the delivered `OpenPkg.l12H_field`
-(level four, `α ≤ 1`).
-
-The proof is the level-four argument with `4 → 6`.  `L₁₂(g)` is `θ`-independent, so only the
-pure `D_z`-summands of `HkIntegrand α 6 (z ↦ L₁₂(g)(z))` survive
-(`Work.Elliptic.HkIntegrand_rad`, `Work.Elliptic.HkSq_rad`, both stated for arbitrary `k`):
-
-  `|L₁₂(g)|²_{ℋ⁶} = (∑_{i=0}^{6} ∫_z (D_z^i L₁₂(g))² w²) · ∫_θ sin(2θ)^{-η}`,
-
-and the sum is estimated slot by slot: the `i = 0` slot is the weighted Hardy estimate
-`∫ (L₁₂ g)² w² ≤ 107 ∫ (Qang g 0)² w²` (`Work.FTS.H2.L12k0Q`, which uses `L₁₂(g)(0) = 0`),
-while for `1 ≤ i ≤ 6` the index-raising recursion `D_z^i L₁₂(g) = -Qang g (i-1)` (with
-`Qang g j z = ∫_θ Kθ(θ)·(D_z^j g)(z,θ) dθ` the `j`-th angular moment) turns the slot into
-`∫_z (Qang g (i-1))² w² ≤ (∫_θ K²)·HkSq α 6 g`, the level-six open-quadrant Cauchy–Schwarz
-bound `QangSq6` on the angular moments.  Hence
-
-  `HkSq α 6 (z ↦ L₁₂(g)(z)) ≤ 113·(∫_θ K²)·(∫_θ sin(2θ)^{-η})·HkSq α 6 g`
-
-and the norm bound holds with the `α`-independent constant
-`Xi = √(113·(∫_θ K²)·(∫_θ sin(2θ)^{-η})) + 1` and `Cpow = 0`.
-
-The two level-six inputs about the angular moments are the delegated modules
-`Submission.Work.FTS.StrongPersist.QangDiff6` (`z`-differentiation of `Qang g j`, `j ≤ 4`) and
-`Submission.Work.FTS.StrongPersist.QangSq6` (the weighted `L²`-bound for `Qang g i`, `i ≤ 5`);
-they are the level-six re-runs of the corresponding lemmas of
-`Submission/Work/FTS/OpenPkg/QangOpen.lean`.  The middle stage — the recursion from the
-`z`-derivative of the angular moments to the `D_z`-iterates of `L₁₂(g)` plus the Hardy slot — is
-`l12L6_bundle` below.  Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.StrongPersist.QangDiff6
-import Submission.Work.FTS.StrongPersist.QangSq6
-import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.H2.L12k0Q
 import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.H2.L12HQ
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

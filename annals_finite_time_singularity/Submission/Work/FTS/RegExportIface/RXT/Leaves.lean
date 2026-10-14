@@ -2,16 +2,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.RegExportIface.Defs
-import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
-import Submission.Work.FTS_RegExport.RXT.cone_max_aux
-import Submission.Work.FTS.RegExportIface.RXT.LeafAux.spatial_expand
-import Submission.Work.FTS.RegExportIface.RXT.LeafAux.logcoord_facts
-import Submission.Work.FTS.RegExportIface.RXT.LeafAux.landau_1d
-import Submission.Work.FTS.RegExportIface.RXT.LeafAux.loc_sup4
-import Submission.Work.FTS.RegExportIface.RXT.LeafAux.cone_induction
 import Submission.Work.FTS.RegExportIface.RXT.LeafAux.step_classical
-import Submission.Work.FTS.RegExportIface.RXT.LeafDefs
+import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
+import Submission.Work.FTS_RegExport.RXB.l12_aux
+import Submission.Work.FTS_RegExport.RXT.omega_facts
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -70,25 +65,6 @@ variable {α C₀ Ce Cs : ℝ} {Φs : Fn} {E : Fn →ₗ[ℝ] Fn}
 -- `Submission.Work.FTS.RegExportIface.RXT.LeafAux.step_classical` (imported above): the statement
 -- is byte-for-byte the leaf's, the proof is ported from the `Work.FTS_RegExport` mirror.
 
-/-- **T4** the integrated step (vector; coefficients only continuous in `τ`, sources only
-integrable): `q = p - ∫_τ^{τ+h}(a,b)(p,σ)dσ`. Used by St1. -/
-theorem step_integrated {n : ℕ} {φ φs φψ R : Fin n → ℝ → ℝ → ℝ → ℝ} {a b : ℝ → ℝ → ℝ → ℝ}
-    {T A C F : ℝ}
-    (hcont : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => φ k p.1 p.2.1 p.2.2) (univ ×ˢ univ ×ˢ Icc 0 T))
-    (hs : ∀ k s ψ, ∀ τ ∈ Icc (0:ℝ) T, HasDerivAt (fun s' => φ k s' ψ τ) (φs k s ψ τ) s)
-    (hψ : ∀ k s ψ, ∀ τ ∈ Icc (0:ℝ) T, HasDerivAt (fun ψ' => φ k s ψ' τ) (φψ k s ψ τ) ψ)
-    (hcs : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => φs k p.1 p.2.1 p.2.2) (univ ×ˢ univ ×ˢ Icc 0 T))
-    (hcψ : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => φψ k p.1 p.2.1 p.2.2)
-      (univ ×ˢ univ ×ˢ Icc 0 T))
-    (hab : ∀ s ψ, ContinuousOn (fun τ => a s ψ τ) (Icc 0 T) ∧ ContinuousOn (fun τ => b s ψ τ) (Icc 0 T))
-    (hA : ∀ s ψ τ, τ ∈ Icc (0:ℝ) T → |a s ψ τ| ≤ A ∧ |b s ψ τ| ≤ A)
-    (hRi : ∀ k s ψ, IntervalIntegrable (fun τ => R k s ψ τ) volume 0 T)
-    (hRb : ∀ k s ψ τ, τ ∈ Icc (0:ℝ) T → |R k s ψ τ| ≤ C * ∑ j, |φ j s ψ τ| + F)
-    (hId : ∀ k s ψ τ₁ τ₂, 0 ≤ τ₁ → τ₁ ≤ τ₂ → τ₂ ≤ T →
-      φ k s ψ τ₂ - φ k s ψ τ₁
-        = ∫ σ in τ₁..τ₂, (R k s ψ σ - (a s ψ σ * φs k s ψ σ + b s ψ σ * φψ k s ψ σ))) :
-    ConeStep n φ T A (n * C) F := by
-  sorry
 
 -- **T5a** (the log coordinates and the log-derivatives of the weight `ω = z²Γ/(1+z)²`) is
 -- declared in `Submission.Work.FTS.RegExportIface.RXT.LeafAux.logcoord_facts` (imported above):
@@ -96,28 +72,6 @@ theorem step_integrated {n : ℕ} {φ φs φψ R : Fin n → ℝ → ℝ → ℝ
 -- `Work.FTS_RegExport.RXT.logcoord_facts` and `Work.FTS_RegExport.RXT.omega_facts` (both proved,
 -- and both in modules that do **not** import `Leaves`).
 
-/-- **T5b** pull-back of the frozen RX-T data to `φ(s,ψ,τ) = u(eˢ, arctan eᵠ, τ)/ω`, in the form
-consumed by T3 (`a = Vz`, `b = 2Vθ/sin2θ`, `c' = cs + 2Vz/(1+z) + 2α·c2m·Vθ/sin2θ`, `f = σ/ω`). -/
-theorem transport_pullback {S M K₀ Kσ : ℝ} (hα : 0 < α) (hS : 0 < S)
-    {u Vz Vθ cs σ : ℝ → ℝ → ℝ → ℝ}
-    (hu : ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => u p.1 p.2.1 p.2.2)
-      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (π / 2) ×ˢ Set.Icc (0:ℝ) S))
-    (hEq : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → 0 < τ → τ ≤ S →
-      HasDerivAt (fun s => u z θ s)
-        (σ z θ τ - (Vz z θ τ * Work.Spaces.Dz (fun z θ => u z θ τ) z θ
-          + Vθ z θ τ * Work.Spaces.pth (fun z θ => u z θ τ) z θ + cs z θ τ * u z θ τ)) τ)
-    (hVz : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → 0 ≤ Vz z θ τ ∧ Vz z θ τ ≤ M)
-    (hVθ : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S →
-      |Vθ z θ τ| ≤ M * Real.sin (2 * θ))
-    (hcs : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → |cs z θ τ| ≤ M)
-    (hσ : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → |σ z θ τ| ≤ Kσ * ω α z θ)
-    (h0 : ∀ z θ, 0 < z → 0 < θ → θ < π / 2 → |u z θ 0| ≤ K₀ * ω α z θ) :
-    0 ≤ M ∧ 0 ≤ K₀ ∧ 0 ≤ Kσ ∧
-    ConeStep 1 (fun _ s ψ τ => u (Real.exp s) (Real.arctan (Real.exp ψ)) τ
-        / ω α (Real.exp s) (Real.arctan (Real.exp ψ))) S (2 * M) (M * (3 + 4 * α)) Kσ ∧
-    (∀ s ψ, ContinuousOn (fun τ => u (Real.exp s) (Real.arctan (Real.exp ψ)) τ
-        / ω α (Real.exp s) (Real.arctan (Real.exp ψ))) (Icc 0 S)) := by
-  sorry
 
 /-- **T5c** the weighted, vector, integrated maximum principle in `(z,θ)` (T4 + T1 after the
 pull-back of T5a). `wz = D_z w`, `wθ = D_θ w`, `b = Vθ/sin 2θ`. -/
@@ -149,28 +103,6 @@ theorem weighted_integrated_mp {n : ℕ} {w wz wθ R : Fin n → ℝ → ℝ →
       |w k z θ τ| ≤ K * ω α z θ := by
   sorry
 
-/-- **T6 = frozen RX-T** (`Producers.transport_weighted`, verbatim): T5b (with T3 inside) gives the
-`ConeStep` with `C = M(3+4α)`, `F = Kσ`; T1 with `K := 2M(3+4α)`, then monotonicity in `τ`
-(`M, Kσ ≥ 0` from T5b). `hlip` is unused. -/
-theorem transport_weighted' {S M K₀ Kσ : ℝ} (hα : 0 < α) (hS : 0 < S)
-    {u Vz Vθ cs σ : ℝ → ℝ → ℝ → ℝ}
-    (hu : ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => u p.1 p.2.1 p.2.2)
-      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (π / 2) ×ˢ Set.Icc (0:ℝ) S))
-    (hEq : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → 0 < τ → τ ≤ S →
-      HasDerivAt (fun s => u z θ s)
-        (σ z θ τ - (Vz z θ τ * Work.Spaces.Dz (fun z θ => u z θ τ) z θ
-          + Vθ z θ τ * Work.Spaces.pth (fun z θ => u z θ τ) z θ + cs z θ τ * u z θ τ)) τ)
-    (hVz : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → 0 ≤ Vz z θ τ ∧ Vz z θ τ ≤ M)
-    (hVθ : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S →
-      |Vθ z θ τ| ≤ M * Real.sin (2 * θ))
-    (hlip : ∀ τ ∈ Icc 0 S, ∀ L₁ > 0, ∃ K : NNReal, LipschitzOnWith K
-      (fun p : ℝ × ℝ => (Vz p.1 p.2 τ, Vθ p.1 p.2 τ)) (Set.Ioi L₁ ×ˢ Set.Ioo (0:ℝ) (π / 2)))
-    (hcs : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → |cs z θ τ| ≤ M)
-    (hσ : ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S → |σ z θ τ| ≤ Kσ * ω α z θ)
-    (h0 : ∀ z θ, 0 < z → 0 < θ → θ < π / 2 → |u z θ 0| ≤ K₀ * ω α z θ) :
-    ∃ K : ℝ, ∀ z θ τ, 0 < z → 0 < θ → θ < π / 2 → τ ∈ Icc 0 S →
-      |u z θ τ| ≤ Real.exp (K * S) * (K₀ + S * Kσ) * ω α z θ := by
-  sorry
 
 /-! ## Part S — RX-St1 -/
 
@@ -199,12 +131,6 @@ theorem velVanish2 (hα : 0 < α) (hα13 : α ≤ 1 / 3)
 -- `Submission.Work.FTS.RegExportIface.RXT.LeafAux.landau_1d` (imported above): the statement is
 -- byte-for-byte the leaf's, the proof is ported from the `Work.FTS_RegExport` mirror.
 
-/-- **S3a** `D_θ` commutes past `D_z^j` on `C⁴` slices (port of `Dth_DzIter_eqOn`). -/
-theorem Dth_mixed_C4 {f : ℝ → ℝ → ℝ}
-    (hf : ContDiffOn ℝ 4 (Function.uncurry f) Work.FTS.EllipticEst.Q0) (j i : ℕ) (hji : j + i ≤ 3)
-    {z θ : ℝ} (hz : 0 < z) (hθ : 0 < θ) (hθ' : θ < π / 2) :
-    Work.Spaces.Dth (Work.Spaces.mixed j i f) z θ = Work.Spaces.mixed j (i + 1) f z θ := by
-  exact Work.FTS_RegExport.C4.Dth_mixed_eq_C4 hf j i (by omega) hz ⟨hθ, hθ'⟩
 
 /-- **S3** joint continuity of the order-≤3 jets on the slab up to `τ = 0` (S1 + S2 + RX-A2). -/
 theorem jc3 (hα : 0 < α) (hα13 : α ≤ 1 / 3) {g : Fam} (hOK : DynOK' (pExp α) C₀ Φs E g)
@@ -326,18 +252,5 @@ theorem st1_of_weighted (hα : 0 < α) (hα13 : α ≤ 1 / 3) {g : Fam}
     St1Class α S (gS α (tauExt g)) := by
   sorry
 
-/-- **S10 = RX-St1, restated** (= `Producers.st1Export` as restated 10-10 with `hμ : ClockBd`). PROVED
-from S8 + S9. -/
-theorem st1Export' (hα : 0 < α) (hα13 : α ≤ 1 / 3)
-    (hEll : ∀ u : Fn, Work.FTS.ClassC.ClassC (pExp α) u →
-      Work.FTS.Final.EllPkgGo (pExp α) Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK (pExp α) 6 Ce u (E u))
-    (hEL3 : EllLimOK3 (pExp α) E) (hStar : Work.FTS.Final.StarPkgo2 (pExp α) Cs Φs)
-    {g : Fam} (hSol : Sol (pExp α) Φs E g) (hOK : DynOK' (pExp α) C₀ Φs E g)
-    (hdat : ∃ L β : ℝ, 1 ≤ L ∧ ∀ z θ, g z θ 0 = Work.FTS.LocData6.locG6 (pExp α) L β z θ)
-    (hμ : ClockBd α Φs E g) :
-    ∀ S > 0, St1Class α S (gS α (tauExt g)) := by
-  intro S hS
-  obtain ⟨K, hK⟩ := weighted_system hα hα13 hEll hEL3 hStar hSol hOK hdat hμ S hS
-  exact st1_of_weighted hα hα13 hOK.1.1 hS hK
 
 end Work.FTS.RegExportIface.RXT

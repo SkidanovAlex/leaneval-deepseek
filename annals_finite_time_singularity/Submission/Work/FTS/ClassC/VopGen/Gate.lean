@@ -1,11 +1,11 @@
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.Cores.levelTwo_fts
-import Submission.Work.FTS.EllipticEst.Cores.TSCAssembly
 import Submission.Work.FTS.EllipticEst.Cores.ShiftedTwoL2Clean
-import Submission.Work.FTS.EllipticEst.EllGap.ellWeak0Clean
-import Submission.Work.FTS.EllipticEst.HonGaps.estStepWeak
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
+import Submission.Work.FTS.EllipticEst.Cores.levelTwo_fts
+import Submission.Work.FTS.EllipticEst.Prop.aslotTwoShift
+import Submission.Work.FTS.GalFields.RHS.Fr_smooth_honest
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -76,43 +76,7 @@ def A11Hyp : Prop :=
         (Work.Spaces.DzIter 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
       ≤ C * Work.Spaces.HkSq α 2 F
 
-/-- **The six level-`2` `Tk`-slots from `A11Hyp`** (the tree's `Cores.TopSlotsTwoClean`). -/
-theorem topSlotsTwo_of_A11 (h : A11Hyp) : ∃ C : ℝ, 0 < C ∧
-    ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
-      (α ^ 4 * (Work.FTS.EllipticEst.remov.Step.Tk α 1
-            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + 3 * Work.FTS.EllipticEst.remov.Step.Tk α 1
-            (Work.Spaces.DzIter 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
-          + Work.FTS.EllipticEst.remov.Step.Tk α 2
-            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))
-        + (Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.pthIter 2 Ψ)
-          + 3 * Work.FTS.EllipticEst.remov.Step.Tk α 1
-            (Work.Spaces.DzIter 1 (Work.Spaces.pthIter 2 Ψ))
-          + Work.FTS.EllipticEst.remov.Step.Tk α 2 (Work.Spaces.pthIter 2 Ψ))
-        ≤ C * Work.Spaces.HkSq α 2 F := by
-  obtain ⟨C0, hC0pos, h0⟩ := Work.FTS.EllipticEst.EllGap.ellWeak0Clean
-  exact Work.FTS.EllipticEst.Cores.TopSlotsTwoClean_of h ⟨C0, hC0pos, h0⟩
 
-/-- **`prop:H2` from `A11Hyp`** (Elgindi's level-`2` elliptic estimate). -/
-theorem EllEstUnif_two_of_A11 (h : A11Hyp) :
-    ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif 2 C := by
-  obtain ⟨C0, hC0pos, h0⟩ := Work.FTS.EllipticEst.EllGap.ellWeak0Clean
-  exact Work.FTS.EllipticEst.Cores.levelTwo_of_pieces
-    (Work.FTS.EllipticEst.Cores.ShiftedTwoL2Clean ⟨C0, hC0pos, h0⟩)
-    (topSlotsTwo_of_A11 h)
-    ⟨C0, hC0pos, h0⟩
 
-/-- **`prop:Hk` at level `k` from `A11Hyp`**, for every `k ≥ 2`: the level-`2` estimate plus the
-clean induction step (`HonGaps.estStepWeak`, the paper's §"General `ℋ^k` Case"). -/
-theorem EllEstUnif_of_A11 (h : A11Hyp) (k : ℕ) (hk : 2 ≤ k) :
-    ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif k C := by
-  obtain ⟨C0, hC0pos, h0⟩ := Work.FTS.EllipticEst.EllGap.ellWeak0Clean
-  have hstep : ∀ k : ℕ, 3 ≤ k →
-      (∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif (k - 1) C) →
-      ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif k C :=
-    fun k hk3 => Work.FTS.EllipticEst.HonGaps.estStepWeak k hk3 ⟨C0, hC0pos, h0⟩
-  exact Work.FTS.EllipticEst.TT.propHk_core_of ⟨C0, hC0pos, h0⟩
-    (EllEstUnif_two_of_A11 h) hstep k hk
 
 end Work.FTS.ClassC.VopGen

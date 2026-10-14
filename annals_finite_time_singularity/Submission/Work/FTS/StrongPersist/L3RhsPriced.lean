@@ -1,57 +1,55 @@
-/-
-# `Work.FTS.StrongPersist.L3RhsPriced` — the `ℋ³`-estimate for the right-hand side (S6)
-
-The target is the `rhs` clause of the level-three operator package `L3Data` of the
-strong-solution route (`FTS/FTS_STRONG_ROUTE.md` §3, node S6), in the *priced* form of
-`Clauses.lean`: for `α ∈ (0, α₂]`, a star constant `Cs`, an elliptic perturbation constant `Ce`,
-a linear elliptic operator `E`, stream functions `Φs`, `Φ`, a profile `f` and modulation data
-`μ`, `lam`, `M` with
-
-* `Ell6Ctx α Ce Cs E Φs f Φ` (the star package `StarPkgo2`, the perturbation package
-  `EllPkgK α 6 Ce f (E f)` and the decomposition `Φ = Φs + E f`),
-* `H6Adm α f` (honest `ℋ⁶` + angular vanishing + axis vanishing + `L₁₂(f)(0) = 0`),
-* `Xn α f ≤ M`, `|μ| ≤ 1/2`, `|lam| ≤ 1`,
-
-the nonlinear right-hand side `rhsOf α μ lam (Ftot α f) Φ f` of the modulated `g`-equation lies
-in `ℋ³` with
-
-  `|rhsOf …|_{ℋ³} ≤ C3 (1+|Ce|+|Cs|)⁴ α^{-Cpow} (1+M)⁴ (1+|f|_{ℋ⁶})²`.
-
-## Route (and where the pieces live)
-
-`gRHS = -mubar(N₀,N)·AK α + N₀ + N + Nstar`, and `N₀`, `N` are split into the paper's rows
-(`L3Rhs.L3RhsSum`):
-
-* the `N₀`-split is `L3Rhs.Assembly.N0split`, the four-way split of `N` is
-  `NonlinRows.Rl1.splitOpen` (with `L₁₂`/`FK`-additivity from `L3Rhs.L3RhsL12add` /
-  `L3Rhs.L3RhsFKadd` and the differentiability of `z ↦ L₁₂(f)(z)` from
-  `L3Rhs.Assembly.L12_differentiableAt`);
-* the nine blocks are estimated by the delegated lemmas `L3Rhs.L3Rhs*` of this directory;
-* the summands are added with `L3Rhs.Pricing.HkNorm_add_le2`;
-* the modulation constant is priced by `L3Rhs.L3RhsL12zero` through `L3Rhs.Assembly.muAK_mem`;
-* `AK α` is `ℋ⁴`-honest (`NonlinRows.NAux3.HkMem_AK`) with a universal norm bound
-  (`Nonlinear.Pieces.rak_bound`).
--/
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.Defs
-import Submission.Work.FTS.StrongPersist.Basic
+import Submission.Work.FTS.StrongEps.TenOfEight.GainAll
 import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.Pricing
-import Submission.Work.FTS.StrongPersist.L3Rhs.Sum
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsN0FixBlock
 import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsN0gBlock
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNssBlock
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNsgBlock
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNgsBound
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNggBlock
 import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNfkBlock
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsL12zero
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsL12add
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsFKadd
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNsgBlock
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNssBlock
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS.StrongPersist.L3Rhs.Sum
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.hasDerivAt_wip_family
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_MuLamOK.Conversion
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+-- ===== merged: Submission.Work.FTS.StrongEps.HkMem_Jeps_ten_of_eight =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps
+
+/- **`J_ε : ℋ⁸ → ℋ¹⁰`** for every `ε > 0`: the two-order gain of the log-coordinate mollifier.
+
+This is the `m = 2`, `k = 8` instance of the *scale-free* gain
+`Work.FTS.StrongEps.TenOfEight.HkMem_Jeps_gain_pos`
+(`Submission/Work/FTS/StrongEps/TenOfEight/GainAll.lean`), which removes the restriction
+`ε ≤ 1` of `EpsE4Thr.HkMem_Jeps_gain` by replacing the routed density
+`LamFull ρ ε c M` (whose domination of the routed kernel derivatives needs `ε⁻¹^{a+b} ≤ ε⁻¹^M`,
+i.e. `ε ≤ 1`) by the scale-free density `LamAll ρ ε c M` with the kernel factor
+`max 1 (ε⁻¹^M)`.  The boundary-vanishing hypothesis of that theorem is never used
+(`J_ε f` only reads `f` on the open quadrant, and the gain is a pointwise estimate on
+`(0,∞) × (0,π/2)`), so it is not needed here. -/
+theorem HkMem_Jeps_ten_of_eight {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) {α : ℝ}
+    (hα : α ∈ Set.Ioc 0 1) {ε : ℝ} (hε : 0 < ε) {f : ℝ → ℝ → ℝ}
+    (hsm : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Quad)
+    (hmem : Work.Spaces.HkMem α 8 f) :
+    Work.Spaces.HkMem α 10 (Jeps ρ ε f) :=
+  Work.FTS.StrongEps.TenOfEight.HkMem_Jeps_gain_pos hρ α hα.1 hα.2 8 2 (by norm_num) ε hε f
+    hsm hmem
+
+end Work.FTS.StrongEps
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.L3RhsPriced =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -105,3 +103,5 @@ theorem L3RhsPriced : ∃ α₂ C3 Cpow : ℝ, 0 < α₂ ∧ 0 < C3 ∧ 0 ≤ Cp
     KAK hKAK (fun α hαIoc => hAKb (α := α) hαIoc.1 hαIoc.2)
 
 end Work.FTS.StrongPersist
+end
+end

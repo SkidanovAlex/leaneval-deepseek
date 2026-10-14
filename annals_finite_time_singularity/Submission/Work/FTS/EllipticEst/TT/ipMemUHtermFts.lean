@@ -1,46 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Honesty of the pairing `⟨z∂_z u, z∂_z∂_θθ u⟩` of the almost-everywhere Step-2 estimate
-
-The angular Step-2 estimate (`Work.FTS.EllipticEst.angular_second_order_est`, Step 2 of
-`prop:H2` of T. M. Elgindi, *Finite-time singularity formation for `C^{1,α}` solutions to the
-incompressible Euler equations on `ℝ³`*, Annals of Math. **194** (2021)) pairs the radial
-first-order term `Grad = z ∂_z u` against the second angular derivative `B = ∂_θθ u`, via the
-weighted pairing `AngSecond.IPMem`.  In the Cartesian decomposition of that step the second
-factor appears as the *mixed* radial derivative of `B`, i.e. as
-`z · ∂_z (∂_θθ u) = z ∂_z (pthIter 2 u)`.
-
-`IPMem g h` is honesty of the pairing `IP g h = ∫_z ∫_θ g z θ * h z θ * w z² * σ θ`: the
-integrand is integrable slicewise in `θ` and then in `z`.  This module proves that the pairing
-above is honest as soon as the two factors are honest in the weighted space `ℋ⁰`
-(`Work.Spaces.HkMem α 0`).
-
-## Route
-
-The class `AeData` makes `u` `C^∞` on the *open* quadrant, so that both profiles agree there
-with `C^∞` functions (themselves, in fact): `z ∂_z u` and `z ∂_z ∂_θθ u`.  Two `ℋ⁰`-honest
-profiles which are smooth on the open quadrant have an honest mixed pairing:
-
-* the two diagonal pairings `IPMem g g`, `IPMem h h` are `HkMem α 0 g`, `HkMem α 0 h`
-  (`AngClean.HkMem_zero_IPMem`);
-* the mixed pairing follows from the polarisation `|g h| ≤ g² + h²` together with the a.e.
-  strong measurability of the mixed integrand, supplied by the open-quadrant smoothness of the
-  two representatives (`AesmCross.aesmSliceCross`, `AesmCross.aesmProdCross`).
-
-`ipMem_of_HkMem_agreeOnQ_tt` is that general statement; it is the local copy of
-`Work.FTS.EllipticEst.Honest.IPMem_of_HkMem_agreeOnQ` (which lives behind the `EllHyp`
-re-scoping) and keeps this module independent of that re-scoping.
--/
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.AngSecond.Defs
-import Submission.Work.FTS.EllipticEst.AngClean.HkMem_zero_IPMem
-import Submission.Work.FTS.EllipticEst.AngClean.IPMem_F_Phi
-import Submission.Work.FTS.EllipticEst.Honest.AesmCross.aesmSliceCross
-import Submission.Work.FTS.EllipticEst.Honest.AesmCross.aesmProdCross
-import Submission.Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp
+import Submission.Work.FTS.EllipticEst.Tools.aesm_Fpair_fts
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

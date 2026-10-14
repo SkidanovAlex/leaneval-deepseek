@@ -1,31 +1,8 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `ThetaFromEpsLeafB/StripFacts.lean` — the measure theory behind `tendsto_EpsSq_strip`
-
-The strip energies
-
-    EpsSq α (stripLo φ g) = ∫_z ∫_θ (1_{θ ≤ φ} · g · epsW α)² ,
-    EpsSq α (stripHi φ g) = ∫_z ∫_θ (1_{π/2 - φ ≤ θ} · g · epsW α)²
-
-vanish as `φ → 0⁺` for every `g` with `EpsMem α g` (`g · epsW` square-integrable on the quarter
-plane).  This module collects the three ingredients of the *first* (lower) case:
-
-* `ae_snd_ne` — a.e. the angular coordinate differs from any fixed value (the half-plane
-  `{θ = c}` has measure zero);
-* `EpsSq_eq_setIntegral` — Fubini: the iterated integral defining `EpsSq` is the integral over
-  the product `Iz ×ˢ Iθ` as soon as the integrand is integrable there;
-* `tendsto_setIntegral_Iic` — the integral of an integrable `F` over the shrinking set
-  `{p.2 ≤ φ} ⊆ Iz ×ˢ Iθ` tends to `0` (dominated convergence, the limit set `{θ ≤ 0} ∩ Iθ`
-  being the null set `{θ = 0}`).
-
-The mirror images (`{θ ≥ π/2 - φ}`, limit set `{θ = π/2}`) are the `…Ici…` variants.
--/
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Topology.Separation.CompletelyRegular
-import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafA.StripDefs
 import Submission.Work.FTS.EpsEngine.ClassCStepEngine
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

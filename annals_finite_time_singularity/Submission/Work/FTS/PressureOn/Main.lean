@@ -1,34 +1,13 @@
-/-
-# `Work.FTS.PressureOn.Main` — the pressure reconstruction
-
-The main theorem of the area: `Work.FTS.PressureOn.PressureReconstructionOn α` (design §1 of
-`FTS_PHYS_BRIDGE.md`).  The pressure is the explicit field
-
-  `p := pressureOn ω = -‖u‖²/2 - q`,  `q := potOn ω = pressurePotential (lamb (physVel ω) ω · t)`,
-
-and the proof has three parts:
-
-* **(Step 4, the Weyl/Liouville step)** `Connect.hasFDerivAt_potOn_slice`: at every interior time the
-  space slice `q(·,t)` has Fréchet derivative `innerSL ℝ (∂_t u - u×ω)`, obtained by applying
-  `weyl_pair` to the pair `(q, ∂_t u - u×ω)` whose weak divergence and curl identities are supplied
-  by `Connect.weakDiv_pair` (from `weakDiv_timeDeriv` and `weakPoisson`) and by `weakCurl_pair`;
-* **(joint `C¹` of `p`)** `Connect.contDiffOn_potOn_uncurry_open` on the open strip and
-  `Connect.contDiffWithinAt_potOn_at_zero` at the boundary time `0`, together with the smoothness of
-  `-‖u‖²/2`, combine to the required `ContDiffOn ℝ 1 p.uncurry (univ ×ˢ Ico 0 T)`;
-* **(Step 5, the Euler equation)** `EulerAssembly.euler_eq_of_gradient` turns the gradient identity
-  into `∂_t u + (u·∇)u + ∇p = 0`.
--/
 import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.hasFDerivAt_potOn_slice
-import Submission.Work.FTS.PressureOn.Connect.contDiffOn_potOn_uncurry_open
 import Submission.Work.FTS.PressureOn.Connect.contDiffWithinAt_potOn_at_zero
-import Submission.Work.FTS.PressureOn.Connect.contDiff_slice_of_isContDiffHolderOn
-import Submission.Work.FTS.PressureOn.Connect.contDiffOn_prod_Ico_of_Icc
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsE4Thr.hardyHyp_of_coerAdmO
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

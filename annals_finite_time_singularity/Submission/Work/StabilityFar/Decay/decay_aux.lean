@@ -1,19 +1,3 @@
-/-
-# `Work.StabilityFar.Decay.decay_aux` — regularity boilerplate for the far-field
-second-derivative estimate
-
-The differentiability of `biotSavart ω` in the far field is obtained by differentiating under the
-Bochner integral (`hasFDerivAt_integral_of_dominated_loc_of_lip`).  That requires
-
-* continuity of `crossL` (the cross product as a map of the left argument) so that
-  `a ↦ crossL (ω a)` is ae-strongly-measurable whenever `ω` is;
-* measurability of `a ↦ kDerivCLM (x - a)` (the kernel derivative except at the single
-  singular point `a = x`);
-* continuity of the composition of continuous linear maps, so that the derivative integrand
-  `a ↦ crossL (ω a) ∘ kDerivCLM (x - a)` is ae-strongly-measurable.
-
-These are the content of this file.
--/
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
@@ -21,9 +5,9 @@ import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.MeasureTheory.Constructions.BorelSpace.ContinuousLinearMap
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.LWP.FarField
+import Submission.Work.LWP.Main
 import Submission.Work.StabilityFar.Decay.KernelDefs
-import Submission.Work.StabilityFar.Decay.norm_crossL_le
+import Submission.Work.StabilityFar.Decay.norm_kDerivCLM_sub_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

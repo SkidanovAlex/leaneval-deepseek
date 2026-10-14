@@ -1,48 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TT.weakAngularTermClean`: the angular first-order term `∂_θ(tan θ · Ψ)` in the weak class
-
-This is the *clean* (dependency-light) form of `TT.weakAngularTerm`: the conclusion
-
-  `HkMem α 0 (∂_θ(tan θ · Ψ))`  and
-  `√(HkSq α 0 (∂_θ(tan θ · Ψ))) ≤ C (√(HkSq α 0 F) + α √(HkSq α 0 (z ∂_zΨ)))`
-
-is obtained from the two hypothesis packages `hfirst`, `hsecond` using only the modules of the
-`Honest` chapter (`Honest.step3Defs`, `Honest.step3PsiBar`, `Honest.step3Angle`) together with
-the local `𝓗^k`-bookkeeping of `Work.FTS.LocData`, i.e. without the almost-everywhere machinery
-(`H2W.Ae`, `AngAWeak`) used by `TT.weakAngularTerm`.
-
-## Route
-
-With `u = uOf Ψ = ∂_θ(tan θ · Ψ)` and `P = POf Ψ = sin θ · ∂_θ(Ψ/cos θ)`:
-
-* on the open quadrant `u = Ψ + P` (`Honest.pth_tan_mul_eq_open`);
-* hence `√(HkSq α 0 u) ≤ √2 (√(HkSq α 0 Ψ) + √(HkSq α 0 P))`
-  (`Honest.sqrt_HkSq_uOf_le`), and `HkMem α 0 u` follows from the pointwise majorant
-  `HkIntegrand α 0 u ≤ 2 HkIntegrand α 0 Ψ + 2 HkIntegrand α 0 P`
-  (`Work.FTS.LocData.HkMem_of_majorant`);
-* `√(HkSq 0 0 P) ≤ C₃ (√(HkSq 0 0 Ψ) + √(HkSq 0 0 (∂_θθΨ)))` is Elgindi's `I₄`-positivity
-  (`Honest.step3PsiBar`, Step 2 of `prop:H2`), and the level-`0` integrand is `α`-free
-  (`HkIntegrand α 0 = HkIntegrand 0 0`), so the bound transfers to `α`;
-* `HkMem α 0 P` comes from the equation, rewritten on the open quadrant as
-  `P = α²(z²∂_zzΨ) + α(5+α)(z∂_zΨ) + ∂_θθΨ + F + 5Ψ`, each summand being honest by the
-  hypothesis packages (`wac_POf_eq`, `wac_hkMem_POf`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Honest.step3Defs
-import Submission.Work.FTS.EllipticEst.Honest.SliceMain
-import Submission.Work.FTS.EllipticEst.Honest.slicePsiMemAlt
-import Submission.Work.FTS.EllipticEst.Honest.psi_boundary_vanish
-import Submission.Work.FTS.EllipticEst.Honest.slice_ident_honest
-import Submission.Work.FTS.EllipticEst.Honest.Basic
 import Submission.Work.FTS.EllipticEst.Honest.step3Angle
-import Submission.Work.FTS.LocData.HkMem_of_majorant
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

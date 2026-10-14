@@ -1,60 +1,49 @@
-/-
-# `StrongEps/L12_Jeps_sub_le4_proof.lean` — the zero-mode mollifier error at level 4
-
-For every admissible smooth kernel `ρ` there is a universal constant `C` with
-
-  `|L₁₂(J_ε f)(0) - L₁₂(f)(0)| ≤ C ε ‖f‖_{ℋ⁴}`
-
-for all `α ∈ (0,1]`, all `f` smooth on the open quadrant with honest `ℋ⁴`-membership, and all
-`ε ∈ (0,1]`.
-
-The proof does **not** go through an `ℋ⁴`-estimate for `J_ε f - f` (which is false: the mollifier
-error loses one derivative, so only `‖J_ε f - f‖_{ℋ⁴} ≲ ε ‖f‖_{ℋ⁵}` holds).  Instead it uses that
-`L₁₂(·)(0)` is *one linear functional* whose kernel, in the log coordinates
-`(s,ζ) = (log z, log tan θ)`, is **independent of `s`**:
-
-  `L₁₂(h)(0) = ∫_s ∫_ζ Glw ζ · h (e^s) (arctan (e^ζ))`,   `Glw ζ = κ(ζ) K(arctan (e^ζ))`
-
-(`Work.FTS.StrongEps.L12Sub4.L12ZeroLog`).  The mollifier is the convolution with
-`Jker ρ ε = ε⁻¹^2 ρ(ε⁻¹ ·)` in these coordinates, so the whole `s`-dependence of the kernel
-integrates out and the error is a *difference of two weights in `ζ`*,
-
-  `L₁₂(J_ε f)(0) - L₁₂(f)(0) = ∫_x (∫_p Jker ρ ε p (Glw (x.2+p.2) - Glw x.2)) f̃(x)`,
-
-with `|∫_p Jker ρ ε p (Glw (ζ+p.2) - Glw ζ)| ≤ 8 e^8 ε Glw ζ`: on the support of the kernel
-`|p.2| ≤ ε`, and `Glw` oscillates by at most `8 e^8 |q| Glw` on the unit interval.  The remaining
-factor satisfies `∫_x Glw x.2 |f̃ x| ≤ 4 ‖f‖_{ℋ⁴}`
-(`Work.FTS.StrongEps.L12Sub4.QuadAbsLintegral`, the weighted `L¹` Cauchy–Schwarz bound with an
-`α`-independent constant).
-
-The pieces used here (all proved in `Submission/Work/FTS/StrongEps/L12Sub4/`):
-
-* `Defs` — `Glw`, `logF`, `Khat`, `L12_zero_eq_double`;
-* `GlwFacts` — continuity, positivity and the oscillation bounds for `Glw`;
-* `L12ZeroLog` — the log-coordinate form of `L₁₂(·)(0)`;
-* `LogSubstLintegral` — the same substitution in `lintegral` form;
-* `QuadAbsLintegral` — `∫⁻∫⁻ K(θ)|f|/z ≤ ofReal (4 ‖f‖_{ℋ⁴})`;
-* `KernelWeightSub`, `ConvDiffBound` — the `ε`-error of the kernel against a `ζ`-weight;
-* `ConvAdjDiff` — the (Fubini + translation invariance) adjointness identity.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.StrongEps.L12Sub4.Defs
-import Submission.Work.FTS.StrongEps.L12Sub4.GlwFacts
-import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
-import Submission.Work.FTS.StrongEps.L12Sub4.LogSubstLintegral
-import Submission.Work.FTS.StrongEps.L12Sub4.KernelWeightSub
-import Submission.Work.FTS.StrongEps.L12Sub4.QuadAbsLintegral
-import Submission.Work.FTS.StrongEps.L12Sub4.ConvAdjDiff
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.StrongEps.EpsE4Thr.mixed_slice_deriv
 import Submission.Work.FTS.StrongEps.L12Sub4.ConvDiffBound
-import Submission.Work.FTS.StrongEps.L12_Jeps_sub_le
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Construction.Defs
+import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSlotInt
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.MixedSliceDerivAt =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.L12_Jeps_sub_le4_proof =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -338,3 +327,5 @@ theorem L12_Jeps_sub_le4_proof (ρ : ℝ × ℝ → ℝ) (hρ : Work.FTS.StrongE
     _ = 32 * Real.exp 8 * ε * Work.Spaces.HkNorm α 4 f := by ring
 
 end Work.FTS.StrongEps
+end
+end

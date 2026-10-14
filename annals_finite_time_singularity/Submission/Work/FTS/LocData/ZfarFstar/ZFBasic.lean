@@ -1,49 +1,183 @@
-/-
-# `Work.FTS.LocData.ZfarFstar.ZFBasic` — ingredients for the far-part `𝓗⁴`-majorant
-
-The `ℋ⁴`-integrand of the *far part* `zfar L F_* = (1 - χ(z/L))·F_*` of the reference profile of
-the localisation chapter, together with the elementary facts needed to dominate it.
-
-The pointwise bound `HkIntegrand α 4 (zfar L F_*) z θ ≤ C·α²·angMaj α θ/(1+z)²` that the rest of
-the chapter needs cannot carry a *universal* constant `C` — the cut-off
-`χ = Real.smoothTransition (2 - ‖·‖)` has enormous fourth derivative in the middle of its
-transition annulus (`D_z⁴(1 - χ(·/L)) ≈ 1.8·10⁴` at `z/L = 1.8`), so the true constant is large
-but finite; see the discussion in `Submission/Work/FTS/LocData/HkIntegrand_zfar_Fstar_le.lean`.
-Accordingly every statement in this file is phrased with the *free* constant supplied by
-`Work.FTS.LocData.DzIter_oneSubChi_bound`.
-
-## Contents
-
-* `sin_two_nonneg_Iθ`, `DthIter_mul_left_z`, `DzIter_z_indep_succ`: elementary facts about the
-  operators on a factor that does not depend on the differentiating variable;
-* `contDiffOn_slice_oneSubChi`, `contDiffOn_slice_FM_Fstar`, `contDiffOn_slice_Fstar`,
-  `contDiffOn_slice_c_FM`: the `z`-slice smoothness needed for the Leibniz rules;
-* `Pf_abs_le`: a crude bound `|Pf i u α| ≤ 200` for `i ≤ 4`, `u ∈ [-1,1]`, `α ∈ [0,1]`
-  (the sharp constants `4/3, 2, 9.6, 35.8` of the sibling `Pf_bounds` are *not* needed here);
-* `DzIter_Fstar_w_le`, `mixed_Fstar_w_le`: the weighted derivative bounds for `F_*` and for the
-  mixed derivatives, from `Phi_w_le`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Tactic.IntervalCases
-import Submission.Work.FTS.LocData.Defs
-import Submission.Work.FTS.LocData.SmoothQuad_locG
-import Submission.Work.FTS.LocData.DzIter_mul_smoothQuad
-import Submission.Work.FTS.LocData.DthIter_mul_smoothQuad
-import Submission.Work.FTS.LocData.DzIter_oneSubChi_bound
-import Submission.Work.FTS.LocData.Phi_w_le
-import Submission.Work.FTS.LocData.PhiZ_eq
-import Submission.Work.FTS.LocData.Fstar_factor
-import Submission.Work.FTS.LocData.DthIter_Gam_Pf
-import Submission.Work.FTS.LocData.HkFstarDefs
-import Submission.Work.FTS.LocData.angMaj_mem
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.FTS.LocData.c_ge_three_fifths
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.CutFactorFderivZero
 import Submission.Work.Stability.HkSqZfar
+-- ===== merged: Submission.Work.ConstructionInstance.ConcreteData =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open FiniteTimeSingularity Set Gradient Matrix Filter Topology MeasureTheory
+open scoped Topology Matrix NNReal ENNReal
+
+namespace Work.ConstructionInstance
+
+/-- The zero perturbation of the profile. -/
+def gZero : ℝ → ℝ → ℝ := fun _ _ => 0
+
+/-- The modulation `λ̄(t) = (1-t)/2` of the inhabited `ModulatedData` instance (`T = 1`).
+(This is *not* the modulation of the `ProfileData` inhabitant, which is `λ̄(t) = 1 - t/2` with
+`T = 2`.) -/
+def lamZero : ℝ → ℝ := fun t => (1 - t) / 2
+
+
+
+@[simp] theorem gZero_apply (z θ : ℝ) : gZero z θ = 0 := rfl
+
+@[simp] theorem lamZero_apply (t : ℝ) : lamZero t = (1 - t) / 2 := rfl
+
+
+/-- `∂_z` of the zero perturbation vanishes. -/
+@[simp] theorem pz_gZero (z θ : ℝ) : Work.Spaces.pz gZero z θ = 0 := by
+  simp [Work.Spaces.pz, gZero]
+
+
+
+
+
+
+
+
+
+
+end Work.ConstructionInstance
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.remov.TopCoreB.SlotIntegrable =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `TopCoreB/slotIntegrable`: integrability of a single mixed slot
+
+For `f` of class `C^∞` on the open quadrant which is honestly in `ℋ^k`, every mixed slot
+`(D_z^j D_θ^i f · W)²` with `1 ≤ i` and `i + j ≤ k` is integrable on every angular slice
+`Iθ` (`z ∈ Iz`) and its `θ`-integral is integrable on `Iz`.
+
+The `z`-part is `Work.FTS.EllipticEst.H2W.Slot11Src.integrableOn_mixed_slot_sq`; the
+`θ`-slice part is proved here, by domination by the `ℋ^k`-integrand
+(`Work.Spaces.sq_le_HkIntegrand_mixed`) together with the a.e. strong measurability coming
+from the joint continuity of the slot on the open quadrant.
+-/
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.remov.TopCoreB
+
+set_option autoImplicit false
+
+/-- The weight `W = w·sin(2θ)^{-γ/2}` is continuous on the open quadrant. -/
+theorem continuousOn_Wt_Q0 (α : ℝ) :
+    ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.Wt α p.1 p.2)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := by
+  have hsinpos : ∀ p ∈ (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) : Set (ℝ × ℝ)),
+      0 < Real.sin (2 * p.2) := by
+    intro p hp
+    rw [Set.mem_prod] at hp
+    exact Real.sin_pos_of_pos_of_lt_pi (by linarith [hp.2.1])
+      (by linarith [hp.2.2, Real.pi_pos])
+  have hw : ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.w p.1)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := by
+    have hfun : (fun p : ℝ × ℝ => Work.Spaces.w p.1)
+        = fun p : ℝ × ℝ => (1 + p.1) ^ 2 / p.1 ^ 2 := by
+      funext p; rfl
+    rw [hfun]
+    refine ContinuousOn.div ((continuousOn_const.add continuousOn_fst).pow 2)
+      (continuousOn_fst.pow 2) (fun p hp => ?_)
+    rw [Set.mem_prod] at hp
+    exact pow_ne_zero 2 (ne_of_gt hp.1)
+  have hsin : ContinuousOn
+      (fun p : ℝ × ℝ => (Real.sin (2 * p.2)) ^ (-(Work.Spaces.gam α / 2)))
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
+    ((Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn).rpow_const
+      (fun p hp => Or.inl (ne_of_gt (hsinpos p hp)))
+  have hfun : (fun p : ℝ × ℝ => Work.Spaces.Wt α p.1 p.2)
+      = fun p : ℝ × ℝ =>
+          Work.Spaces.w p.1 * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.gam α / 2)) := by
+    funext p; rfl
+  rw [hfun]
+  exact hw.mul hsin
+
+/-- **Integrability of a single mixed slot.**  For `f` of class `C^∞` on the open quadrant
+and honestly in `ℋ^k`, and a slot with `1 ≤ i`, `i + j ≤ k`, the slot square
+`θ ↦ (D_z^j D_θ^i f · W)²` is integrable on `Iθ` for every `z ∈ Iz`, and its `θ`-integral is
+integrable on `Iz`. -/
+theorem slotIntegrable (α : ℝ) (k : ℕ) {f : ℝ → ℝ → ℝ}
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.HkMem α k f)
+    (j i : ℕ) (hi : 1 ≤ i) (hij : i + j ≤ k) :
+    (∀ z ∈ Work.Spaces.Iz, MeasureTheory.IntegrableOn
+        (fun θ => (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt α z θ) ^ 2)
+        Work.Spaces.Iθ)
+      ∧ MeasureTheory.IntegrableOn (fun z => ∫ θ in Work.Spaces.Iθ,
+          (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt α z θ) ^ 2) Work.Spaces.Iz := by
+  refine ⟨?_, Work.FTS.EllipticEst.H2W.Slot11Src.integrableOn_mixed_slot_sq α k hf hmem j i
+    hi hij⟩
+  intro z hz
+  rcases eq_or_lt_of_le (Set.mem_Ici.mp hz) with h0 | hz0
+  · -- at `z = 0` the radial weight vanishes and the slot is identically zero
+    have hzero : (fun θ : ℝ => (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt α z θ) ^ 2)
+        = fun _ : ℝ => (0 : ℝ) := by
+      funext θ
+      rw [← h0]
+      simp [Work.Spaces.Wt, Work.Spaces.w]
+    rw [hzero]
+    exact integrableOn_zero
+  · -- for `z > 0`: domination by the `ℋ^k`-integrand of `f`
+    have hcont : ContinuousOn
+        (fun p : ℝ × ℝ => (Work.Spaces.mixed j i f p.1 p.2 * Work.Spaces.Wt α p.1 p.2) ^ 2)
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
+      (((hf.mixed j i).continuousOn).mul (continuousOn_Wt_Q0 α)).pow 2
+    have haesm : AEStronglyMeasurable
+        (fun θ : ℝ => (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt α z θ) ^ 2)
+        (volume.restrict Work.Spaces.Iθ) :=
+      Work.Spaces.aesm_slice_of_continuousOn_Qd _ hcont hz0
+    refine Integrable.mono' (hmem.1 z hz) haesm ?_
+    rw [ae_restrict_iff' (show MeasurableSet Work.Spaces.Iθ from
+      by rw [Work.Spaces.Iθ]; exact measurableSet_Icc)]
+    exact Filter.Eventually.of_forall fun θ hθ => by
+      rw [Real.norm_of_nonneg (sq_nonneg _)]
+      exact Work.Spaces.sq_le_HkIntegrand_mixed α k f z θ i j hi hij
+
+end Work.FTS.EllipticEst.remov.TopCoreB
+end
+end
+-- ===== merged: Submission.Work.FTS.LocData.ZfarFstar.ZFBasic =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -85,17 +219,6 @@ theorem DthIter_mul_left_z (i : ℕ) (c : ℝ → ℝ) (g : ℝ → ℝ → ℝ)
 
 /-! ## 3. `D_z` of a factor independent of `z` -/
 
-/-- Every positive iterate of `D_z` kills a function of `θ` alone. -/
-theorem DzIter_z_indep_succ (a : ℕ) (K : ℝ → ℝ) :
-    Work.Spaces.DzIter (a + 1) (fun _ θ => K θ) = 0 := by
-  induction a with
-  | zero =>
-      funext z θ
-      simp [Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero, Work.Spaces.Dz, Work.Spaces.pz]
-  | succ a ih =>
-      rw [Work.Spaces.DzIter_succ, ih]
-      funext z θ
-      simp [Work.Spaces.Dz, Work.Spaces.pz]
 
 /-! ## 4. Smoothness of the `z`-slices -/
 
@@ -127,10 +250,6 @@ theorem contDiffOn_slice_Fstar (α : ℝ) (θ : ℝ) :
   refine h.congr (fun z _ => ?_)
   rw [Work.Construction.Fstar]
 
-theorem contDiffOn_slice_c_FM (L : ℝ) :
-    ContDiffOn ℝ Work.Stability.smoothOrder
-      (fun z : ℝ => (1 - Work.Stability.chi (z / L)) * Work.FM.Fstar z) (Set.Ioi (-1)) :=
-  (contDiffOn_slice_oneSubChi L).mul contDiffOn_slice_FM_Fstar
 
 /-! ## 5. A crude bound on the angular polynomials `Pf` -/
 
@@ -358,3 +477,5 @@ theorem mixed_Fstar_w_le (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) {a i : ℕ}
 
 end ZF
 end Work.FTS.LocData
+end
+end

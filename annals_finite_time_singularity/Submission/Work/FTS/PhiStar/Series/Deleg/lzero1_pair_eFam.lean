@@ -2,12 +2,12 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Series.RemSetup
-import Submission.Work.FTS.PhiStar.Series.Deleg.psiCmodeAux.Bnds
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_norm_fts
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.PhiStar.Series.Deleg.psiCmodeAux.Bnds
+import Submission.Work.FTS.PhiStar.Series.RemSetup
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.sq_mul_div_rpow
 import Submission.Work.Stability.Cutoff
 
 -- v435-port: begin

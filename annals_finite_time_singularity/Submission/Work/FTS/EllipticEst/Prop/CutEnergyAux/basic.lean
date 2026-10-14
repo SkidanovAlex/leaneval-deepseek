@@ -1,34 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Basic lemmas for the truncated `w²`-energy inequality in the a.e. class
-
-This module collects the elementary ingredients of the proof of
-`Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyProp` (the truncated `w²`-weighted energy
-inequality of Elgindi, Annals **194** (2021), Step 1 of `prop:H2`, in the almost-everywhere class
-`AeData`):
-
-* `aesm_massProfile` — a.e. strong measurability of the angular mass profile `z ↦ ∫_θ u(z,θ)²`;
-* `slice_sq_integrable` — the fibre-`θ` square integrability of `u`, `∂_zu`, `∂_z²u`, `G`;
-* `ae_slice_ineq` — the *a.e.-in-`z`* angular self-form inequality
-  `∫_θ (∂_θu)² ≤ ∫_θ (Lzero u)·u + 6∫_θ u²`, and the nonnegativity of the right-hand side;
-* `truncW2_le`, `truncW1_le` — the two pointwise weight bounds for the truncation error,
-  `(φw²z²)'' ≤ 2|φ'||(z²w²)'| + |φ''|z²w² + 6φw²` and `-(φw²z)' ≤ |φ'|(zw²) + 3φw²`;
-* `ae_slice_amgm` — the a.e.-in-`z` angular AM–GM `∫_θ G·u ≤ ½∫_θ G² + ½∫_θ u²`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Honest.HonEnergyTruncIneq2
-import Submission.Work.FTS.EllipticEst.Honest.LzeroSelfFormHon
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSliceSelfForm
-import Submission.Work.FTS.EllipticEst.Honest.hksq_eq_w2_sliceIntegral
-import Submission.Work.FTS.EllipticEst.H2W.AeW.aeTruncWHon
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemUD
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemGradUD
-import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.sliceFacts
-import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.lintegralConv
+import Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocDataExt.Final
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

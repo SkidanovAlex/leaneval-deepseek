@@ -2,27 +2,24 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Split
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19aux
-import Submission.Work.FTS.Nonlinear.FstarPkg.DzFstar_W
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0Defs
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.factor_prod_prof
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.FTS.LocData.SmoothQuad_hLoc
-import Submission.Work.Spaces.continuousOn_HkIntegrand_Qd
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
-import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.H2.STBasic
-import Submission.Work.Coercivity.HkIntegrand_endpoint_zero
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.FTS.LocDataExt.SepFactor
-import Submission.Work.FTS.H2.StarPkg.divZWlInf_le
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.dthIter_Vs_le_WlInf
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.dthIter_Gam_le
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Lop_iter_mul_of_contDiffOn
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocDataExt.Zfar5
 import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0_interval_lower
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.theta_majorant_integrable
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.factor_prod_prof
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.continuousOn_HkIntegrand_Qd
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -101,19 +98,6 @@ theorem contDiffOn_Vs0_theta {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0
   exact Work.FTS.LocData.SmoothQuad.curry_θ h
     (show (0 : ℝ) ∈ Set.Ioi (-1) by norm_num)
 
-/-- The angular factor `Ufun α Φs` is `C^∞` on `(0,π/2)`. -/
-theorem contDiffOn_Ufun {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0 < α)
-    (hs : Work.FTS.Nonlin.StarPkg α Cs Φs) :
-    ContDiffOn ℝ Work.Stability.smoothOrder (Ufun α Φs) (Set.Ioo 0 (Real.pi / 2)) := by
-  have hV := contDiffOn_Vs0_theta (α := α) (Cs := Cs) (Φs := Φs) hα hs
-  have hG := Work.FTS.LocData.contDiffOn_Gam_Ioo α
-  have hc : ContDiffOn ℝ Work.Stability.smoothOrder
-      (fun _ : ℝ => α / Work.Spaces.c α) (Set.Ioo 0 (Real.pi / 2)) := contDiffOn_const
-  have h := hV.mul (hc.mul hG)
-  refine h.congr ?_
-  intro θ _
-  simp only [Ufun]
-  ring
 
 /-- The factorised row-19 coefficient `proff·Ufun` is `SmoothQuad`. -/
 theorem smoothQuad_fFac {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0 < α)
@@ -145,51 +129,6 @@ theorem continuousOn_HkIntegrand_fFac {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn}
 
 /-! ## The open-interval `angmul` vanishing -/
 
-/-- If the angular profile `a` vanishes on the open interval `(0,π/2)`, then every
-`D_θ`-iterate of `a·f` vanishes on the closed interval `Iθ` (for `i ≥ 1`).  This is the
-open-interval form of `Work.FTS.Nonlinear.N4Fields.DthIter_angmul_eq_zero`, which is what the
-`Vs0`-case of the row needs (`Vs0` is only known to vanish on the *open* interval). -/
-theorem DthIter_angmul_eq_zero_open (a : ℝ → ℝ) (f : ℝ → ℝ → ℝ)
-    (ha0 : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), a θ = 0) :
-    ∀ i : ℕ, 1 ≤ i → ∀ z θ : ℝ, θ ∈ Work.Spaces.Iθ →
-      Work.Spaces.DthIter i (fun z θ => a θ * f z θ) z θ = 0 := by
-  -- the one-step statement on the open interval
-  have hstep : ∀ (G : ℝ → ℝ → ℝ),
-      (∀ z θ', θ' ∈ Set.Ioo 0 (Real.pi / 2) → G z θ' = 0) →
-      ∀ z θ : ℝ, θ ∈ Set.Ioo 0 (Real.pi / 2) → Work.Spaces.Dth G z θ = 0 := by
-    intro G hG z θ hθ
-    rw [Work.Spaces.Dth, Work.Spaces.pth]
-    have hnb : (fun θ' : ℝ => G z θ') =ᶠ[𝓝 θ] (fun _ => (0 : ℝ)) := by
-      filter_upwards [Ioo_mem_nhds hθ.1 hθ.2] with θ' hθ'
-      exact hG z θ' hθ'
-    rw [hnb.deriv_eq, deriv_const, mul_zero]
-  have hmain : ∀ i : ℕ, 1 ≤ i → ∀ z θ : ℝ, θ ∈ Set.Ioo 0 (Real.pi / 2) →
-      Work.Spaces.DthIter i (fun z θ => a θ * f z θ) z θ = 0 := by
-    intro i
-    induction i with
-    | zero => intro h; omega
-    | succ m ih =>
-        intro _ z θ hθ
-        rcases Nat.eq_zero_or_pos m with h0 | hpos
-        · subst h0
-          exact hstep (fun z θ => a θ * f z θ)
-            (fun z θ' hθ' => by rw [ha0 θ' hθ', zero_mul]) z θ hθ
-        · rw [Work.Spaces.DthIter_succ]
-          exact hstep (Work.Spaces.DthIter m (fun z θ => a θ * f z θ))
-            (fun z θ' hθ' => ih hpos z θ' hθ') z θ hθ
-  intro i hi z θ hθ
-  by_cases h : θ ∈ Set.Ioo 0 (Real.pi / 2)
-  · exact hmain i hi z θ h
-  · have hsin : Real.sin (2 * θ) = 0 := by
-      rcases eq_or_lt_of_le hθ.1 with h0 | h0
-      · rw [← h0]; simp
-      · have h1 : θ = Real.pi / 2 := by
-          rcases eq_or_lt_of_le hθ.2 with h2 | h2
-          · exact h2
-          · exact absurd ⟨h0, h2⟩ h
-        rw [h1, show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]
-    exact Work.Coercivity.DthIter_eq_zero_of_sin_eq_zero
-      (fun z θ => a θ * f z θ) i hi θ hsin z
 
 /-! ### Placeholders for lemmas proved in parallel by the fleet
 
@@ -905,111 +844,5 @@ theorem slice_lower_bound {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0 < 
 
 /-! ## The main dichotomy on the angular factor -/
 
-theorem HkSq_Vs0_mul_Gs_eq_zero {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn} (hα : 0 < α)
-    (hs : Work.FTS.Nonlin.StarPkg α Cs Φs) :
-    Work.Spaces.HkSq α 4 (fun z θ => Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0 α Φs θ
-        * Work.FTS.Nonlinear.Pieces.RNP.Gs α z θ) = 0 := by
-  -- reduce to the factorised form on the open quadrant
-  rw [Work.FTS.EllipticEst.HkSq_congr_open α 4
-    (fun z θ _ _ _ => Vs0_mul_Gs_eq_prof (α := α) (Φs := Φs) hα (by linarith : (-1 : ℝ) < z))]
-  by_cases hU : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), Ufun α Φs θ = 0
-  · -- ## Case A: the angular factor vanishes
-    have hzero : ∀ z θ : ℝ, θ ∈ Work.Spaces.Iθ →
-        Work.Spaces.HkIntegrand α 4 (fun z θ => proff z θ * Ufun α Φs θ) z θ = 0 := by
-      intro z θ hθ
-      by_cases hθo : θ ∈ Set.Ioo 0 (Real.pi / 2)
-      · have hLop : ∀ i : ℕ, i ≤ 4 → Work.Spaces.Lop^[i] (Ufun α Φs) θ = 0 := by
-          intro i hi
-          rcases Nat.eq_zero_or_pos i with h0 | hpos
-          · subst h0
-            simpa using hU θ hθo
-          · have h := DthIter_angmul_eq_zero_open (Ufun α Φs) (fun _ _ => (1 : ℝ)) hU i hpos
-              0 θ ⟨le_of_lt hθo.1, le_of_lt hθo.2⟩
-            have hfun : (fun z θ' => Ufun α Φs θ' * (1 : ℝ))
-                = fun (_ : ℝ) θ' => Ufun α Φs θ' := by
-              funext z θ'; rw [mul_one]
-            rw [hfun] at h
-            have heq : Work.Spaces.Lop^[i] (Ufun α Φs) θ
-                = Work.Spaces.DthIter i (fun (_ : ℝ) θ' => Ufun α Φs θ') 0 θ := by
-              simpa using (congrFun
-                (Work.Spaces.DthIter_eq_iterate_Lop i (fun (_ : ℝ) θ' => Ufun α Φs θ') 0) θ).symm
-            rw [heq, h]
-        rw [Work.Spaces.HkIntegrand]
-        have h1 : (∑ i ∈ Finset.range (4 + 1),
-            (Work.Spaces.DzIter i (fun z θ => proff z θ * Ufun α Φs θ) z θ
-              * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2) = 0 := by
-          refine Finset.sum_eq_zero fun i _ => ?_
-          rw [(factor_prod_prof (Ufun α Φs) i 0 z θ).1, hU θ hθo]
-          ring
-        have h2 : (∑ i ∈ Finset.range (4 + 1), ∑ j ∈ Finset.range (4 + 1),
-            if 1 ≤ i ∧ i + j ≤ 4 then
-              (Work.Spaces.mixed j i (fun z θ => proff z θ * Ufun α Φs θ) z θ
-                * Work.Spaces.Wt α z θ) ^ 2
-            else 0) = 0 := by
-          refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
-          split_ifs with hc
-          · rw [(factor_prod_prof (Ufun α Φs) i j z θ).2.2,
-              hLop i (by omega)]
-            ring
-          · rfl
-        rw [h1, h2, add_zero]
-      · have hsin : Real.sin (2 * θ) = 0 := by
-          rcases eq_or_lt_of_le hθ.1 with h0 | h0
-          · rw [← h0]; simp
-          · have h1 : θ = Real.pi / 2 := by
-              rcases eq_or_lt_of_le hθ.2 with h2 | h2
-              · exact h2
-              · exact absurd ⟨h0, h2⟩ hθo
-            rw [h1, show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]
-        exact Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α 4
-          (fun z θ => proff z θ * Ufun α Φs θ) z θ hsin
-    have hinner : ∀ z : ℝ,
-        (∫ θ in Work.Spaces.Iθ,
-          Work.Spaces.HkIntegrand α 4 (fun z θ => proff z θ * Ufun α Φs θ) z θ) = 0 := by
-      intro z
-      refine MeasureTheory.integral_eq_zero_of_ae ?_
-      exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun θ hθ => hzero z θ hθ)
-    rw [Work.Spaces.HkSq]
-    simp only [hinner, MeasureTheory.integral_zero]
-  · -- ## Case B: the angular factor is nonzero somewhere
-    push_neg at hU
-    obtain ⟨θ₀, hθ₀, hUne⟩ := hU
-    obtain ⟨c, hcpos, hclow⟩ := slice_lower_bound (α := α) (Cs := Cs) (Φs := Φs) hα hs hθ₀ hUne
-    have hnotint : ¬ MeasureTheory.IntegrableOn
-        (fun z => ∫ θ in Work.Spaces.Iθ,
-          Work.Spaces.HkIntegrand α 4 (fun z θ => proff z θ * Ufun α Φs θ) z θ)
-        Work.Spaces.Iz := by
-      intro hint
-      have h1 : MeasureTheory.IntegrableOn
-          (fun z => ∫ θ in Work.Spaces.Iθ,
-            Work.Spaces.HkIntegrand α 4 (fun z θ => proff z θ * Ufun α Φs θ) z θ)
-          (Set.Ioo 0 (1 / 2)) :=
-        hint.mono_set (fun z hz => le_of_lt hz.1)
-      have h2 : MeasureTheory.IntegrableOn (fun z : ℝ => c / z ^ 2) (Set.Ioo 0 (1 / 2)) := by
-        refine MeasureTheory.Integrable.mono' h1 ?_ ?_
-        · refine ContinuousOn.aestronglyMeasurable ?_ measurableSet_Ioo
-          exact continuousOn_const.div (continuousOn_id.pow 2)
-            (fun z hz => pow_ne_zero 2 (ne_of_gt hz.1))
-        · refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioo (fun z hz => ?_)
-          rw [Real.norm_of_nonneg (by positivity)]
-          exact hclow z hz.1 hz.2
-      have h3 : MeasureTheory.IntegrableOn (fun z : ℝ => z ^ (-(2 : ℝ)))
-          (Set.Ioo 0 (1 / 2)) := by
-        have h4 : MeasureTheory.IntegrableOn (fun z : ℝ => c⁻¹ * (c / z ^ 2))
-            (Set.Ioo 0 (1 / 2)) := h2.const_mul c⁻¹
-        refine h4.congr ?_
-        refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioo (fun z hz => ?_)
-        have hz2 : z ^ 2 ≠ 0 := pow_ne_zero 2 (ne_of_gt hz.1)
-        have hcz : c ≠ 0 := ne_of_gt hcpos
-        show c⁻¹ * (c / z ^ 2) = z ^ (-(2 : ℝ))
-        rw [Real.rpow_neg (le_of_lt hz.1) 2, Real.rpow_two, div_eq_mul_inv]
-        field_simp
-      have h5 : ¬ MeasureTheory.IntegrableOn (fun z : ℝ => z ^ (-(2 : ℝ)))
-          (Set.Ioo 0 (1 / 2)) := by
-        rw [intervalIntegral.integrableOn_Ioo_rpow_iff (by norm_num : (0 : ℝ) < 1 / 2)]
-        norm_num
-      exact h5 h3
-    rw [Work.Spaces.HkSq]
-    exact MeasureTheory.integral_undef hnotint
 
 end Work.FTS.Nonlinear.Pieces.RNP.row19

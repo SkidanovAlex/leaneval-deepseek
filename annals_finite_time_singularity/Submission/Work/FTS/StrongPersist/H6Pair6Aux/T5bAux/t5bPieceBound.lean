@@ -3,11 +3,11 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPiecePtwAux
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPiecePtwIntegrable
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.slotCrossLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.slotCrossLeGen
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPieceAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.t5bPiecePtw
+import Submission.Work.FTS.StrongPersist.SP6.EUz6
+import Submission.Work.FTS.StrongPersist.SP6.Flat6Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

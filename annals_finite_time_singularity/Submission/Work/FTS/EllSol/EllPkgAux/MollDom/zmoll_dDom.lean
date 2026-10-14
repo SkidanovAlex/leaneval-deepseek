@@ -2,19 +2,17 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllSol.EllPkgAux.MollBase
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelDefs
-import Submission.Work.FTS.EllSol.PkgK5.K5c.MollDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.kernelJensen
-import Submission.Work.FTS.EllSol.EllPkgAux.MollFatouAux
-import Submission.Work.FTS.EllSol.EllPkgAux.InterpDomAux
-import Submission.Work.EllipticEst.Core.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_continuousOn
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.sliceL1_bound
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.dzSliceHonest
+import Submission.Work.FTS.ClassCHon.CmodeDefs
 import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.zmollDDomDomIntegrable
 import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.zmollDzComm
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HProductRule_Badsummand
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,30 +1,214 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Prop.levelTopSlotsTwoAux`: verified pieces of `Prop.levelTopSlotsTwo`
-
-See `Submission/Work/FTS/EllipticEst/Prop/NOTES_levelTopSlotsTwo.md` for the route and the
-remaining gaps.  This file contains, `sorry`-free:
-
-* the weight algebra `(D_θ f · Wt α)² ≤ (∂_θ f)² w² sin(2θ)^{-η}` on `Iθ` and the resulting
-  reduction `Tk α 1 f ≤ ∫_z w² ∫_θ (∂_θf)² sin(2θ)^{-η}` of the top angular slot;
-* `HkSq α 0 g` in the two explicit forms used by the estimates;
-* **`bSlotTop_clean`**: the `B`-slot `√(Tk α 1 (∂_θ²Ψ)) ≤ C |F|_{ℋ²}` for a datum of the weak
-  class `TT.EllWeakPos α 2 F Ψ`, proved unconditionally from the proved `slot01Bound`
-  (`H2W.AngBW`) and the proved clean radial-shift level-`0` slots `ShiftZeroSlots2`.
--/
 import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.remov.EllEstUnifStepAux
-import Submission.Work.FTS.EllipticEst.TopSlotTwoFts.ShiftZeroSlots2
-import Submission.Work.FTS.EllipticEst.H2W.AngBW.slot01Bound
+import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS.EllipticEst.TT.slot11_le
-import Submission.Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo
-import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
+import Submission.Work.FTS.EllipticEst.TT.truncAux
+import Submission.Work.FTS.EllipticEst.TopSlotTwoFts.ShiftZeroSlots2
+import Submission.Work.FTS.EllipticEst.remov.weakSliceRegular
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Pieces.PsgEnv
+import Submission.Work.FTS.OpenPkg.Pieces4
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.SolutionDelivery.Scaling.vorticityDecay_rescaleDatum
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.Final.Rep.TopSlotTwoFts.AHalf =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.TopSlotTwoFts
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+noncomputable section
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-! ## The level-`0` integrand in factored form -/
+
+/-- At level `0` the `ℋ`-integrand factors as `g² sEta w²` (on the closed angular interval). -/
+theorem hkIntegrand_zero_eq_mul (α : ℝ) (g : ℝ → ℝ → ℝ) (z θ : ℝ)
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    Work.Spaces.HkIntegrand α 0 g z θ
+      = (g z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ * (Work.Spaces.w z) ^ 2 := by
+  rw [Work.FTS.EllipticEst.Cores.hkIntegrand_zero_eq]
+  have hsin : 0 ≤ Real.sin (2 * θ) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
+  by_cases hs : Real.sin (2 * θ) = 0
+  · rw [hs, Work.FTS.EllipticEst.sEta, hs]
+    have h1 : (0 : ℝ) ^ (Work.Spaces.eta / 2) = 0 :=
+      Real.zero_rpow (by rw [Work.Spaces.eta]; norm_num)
+    have h2 : (0 : ℝ) ^ (-(Work.Spaces.eta)) = 0 :=
+      Real.zero_rpow (by rw [Work.Spaces.eta]; norm_num)
+    rw [h1, h2]
+    ring
+  · have hspos : 0 < Real.sin (2 * θ) := lt_of_le_of_ne hsin (Ne.symm hs)
+    have hsq : Real.sin (2 * θ) ^ (Work.Spaces.eta)
+        = (Real.sin (2 * θ) ^ (Work.Spaces.eta / 2)) ^ 2 := by
+      rw [sq, ← Real.rpow_add hspos]
+      ring_nf
+    have hse : Work.FTS.EllipticEst.sEta θ
+        = ((Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))⁻¹) ^ 2 := by
+      rw [Work.FTS.EllipticEst.sEta, Real.rpow_neg hspos.le, hsq, inv_pow]
+    rw [hse, div_eq_mul_inv]
+    ring
+
+/-! ## The two weights are dominated by `sEta` -/
+
+theorem sig4_le_sEta {α θ : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4) (hθ : θ ∈ Work.Spaces.Iθ) :
+    Work.FTS.EllipticEst.Mine.sig4 (Work.Spaces.gam α) θ ≤ Work.FTS.EllipticEst.sEta θ := by
+  have hγ : Work.Spaces.gam α ≤ 3 / 2 := by rw [Work.Spaces.gam]; linarith
+  have h0 : 0 ≤ Real.sin (2 * θ) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
+  have h1 : (0 : ℝ) ≤ 4 - Work.Spaces.gam α := by rw [Work.Spaces.gam]; linarith
+  have h4 : (4 : ℝ) - Work.Spaces.gam α ≠ 0 := by rw [Work.Spaces.gam]; intro hc; linarith
+  rw [Work.FTS.EllipticEst.Mine.sig4]
+  rcases eq_or_lt_of_le h0 with hz | hpos
+  · have hz1 : Real.rpow (0 : ℝ) (4 - Work.Spaces.gam α) = 0 := Real.zero_rpow h4
+    rw [← hz, hz1]
+    exact Real.rpow_nonneg h0 _
+  · have h2 : Real.rpow (Real.sin (2 * θ)) (4 - Work.Spaces.gam α) ≤ 1 :=
+      Real.rpow_le_one h0 (Real.sin_le_one _) h1
+    have h3 : 1 ≤ Work.FTS.EllipticEst.sEta θ := by
+      rw [Work.FTS.EllipticEst.sEta, Real.rpow_neg hpos.le, ← Real.inv_rpow hpos.le]
+      exact Real.one_le_rpow (by rw [one_le_inv₀ hpos]; exact Real.sin_le_one _)
+        Work.Spaces.eta_nonneg
+    linarith
+
+theorem sig2_le_sEta {α θ : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4) (hθ : θ ∈ Work.Spaces.Iθ) :
+    Work.FTS.EllipticEst.Mine.sig2 (Work.Spaces.gam α) θ ≤ Work.FTS.EllipticEst.sEta θ := by
+  have hγ : Work.Spaces.gam α ≤ 3 / 2 := by rw [Work.Spaces.gam]; linarith
+  have h0 : 0 ≤ Real.sin (2 * θ) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
+  have h1 : (0 : ℝ) ≤ 2 - Work.Spaces.gam α := by rw [Work.Spaces.gam]; linarith
+  have h4 : (2 : ℝ) - Work.Spaces.gam α ≠ 0 := by rw [Work.Spaces.gam]; intro hc; linarith
+  rw [Work.FTS.EllipticEst.Mine.sig2]
+  rcases eq_or_lt_of_le h0 with hz | hpos
+  · have hz1 : Real.rpow (0 : ℝ) (2 - Work.Spaces.gam α) = 0 := Real.zero_rpow h4
+    rw [← hz, hz1]
+    exact Real.rpow_nonneg h0 _
+  · have h2 : Real.rpow (Real.sin (2 * θ)) (2 - Work.Spaces.gam α) ≤ 1 :=
+      Real.rpow_le_one h0 (Real.sin_le_one _) h1
+    have h3 : 1 ≤ Work.FTS.EllipticEst.sEta θ := by
+      rw [Work.FTS.EllipticEst.sEta, Real.rpow_neg hpos.le, ← Real.inv_rpow hpos.le]
+      exact Real.one_le_rpow (by rw [one_le_inv₀ hpos]; exact Real.sin_le_one _)
+        Work.Spaces.eta_nonneg
+    linarith
+
+/-- The level-`0` weight is nonnegative. -/
+theorem sEta_nonneg_Iθ {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
+    0 ≤ Work.FTS.EllipticEst.sEta θ := by
+  rw [Work.FTS.EllipticEst.sEta]
+  exact Real.rpow_nonneg
+    (Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1])
+      (by linarith [hθ.2, Real.pi_pos])) _
+
+/-! ## The pointwise bound -/
+
+/-- `∂_θ²(Aft Ψ) = ∂_θ²(D_z²Ψ) - ∂_θ²(D_zΨ)` on the open quadrant. -/
+theorem pthIter2_Aft_eq {Ψ : ℝ → ℝ → ℝ} (hsm : Work.FTS.EllipticEst.SmoothOpen Ψ)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+    Work.Spaces.pthIter 2 (Aft Ψ) z θ
+      = Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ) z θ
+        - Work.Spaces.pthIter 2 (Work.Spaces.DzIter 1 Ψ) z θ := by
+  simp only [Work.FTS.EllipticEst.Mine.pthIter_eq_iteratedDeriv]
+  have hfun : (fun t => Aft Ψ z t)
+      =ᶠ[𝓝 θ] ((fun t => Work.Spaces.DzIter 2 Ψ z t)
+        - (fun t => Work.Spaces.DzIter 1 Ψ z t)) := by
+    filter_upwards [isOpen_Ioo.mem_nhds hθ] with t ht
+    exact Work.FTS.EllipticEst.DzAmgm.Qop_eq_Dz2_sub_Dz hsm hz ht
+  have h2 : ContDiffAt ℝ (2 : ℕ∞) (fun t => Work.Spaces.DzIter 2 Ψ z t) θ :=
+    (Work.FTS.EllipticEst.DzAmgm.slice_θ_contDiffOn (smoothOpen_DzIter hsm 2) 2 hz).contDiffAt
+      (isOpen_Ioo.mem_nhds hθ)
+  have h1 : ContDiffAt ℝ (2 : ℕ∞) (fun t => Work.Spaces.DzIter 1 Ψ z t) θ :=
+    (Work.FTS.EllipticEst.DzAmgm.slice_θ_contDiffOn (smoothOpen_DzIter hsm 1) 2 hz).contDiffAt
+      (isOpen_Ioo.mem_nhds hθ)
+  rw [hfun.iteratedDeriv_eq 2, iteratedDeriv_sub h2 h1]
+
+/-- The pointwise bound with `sEta`-weights (hence by the level-`0` integrands of `A`). -/
+theorem Aft_pointwise (α : ℝ) (hα : 0 < α) (hα4 : α ≤ 1 / 4) {Ψ : ℝ → ℝ → ℝ}
+    (hsm : Work.FTS.EllipticEst.SmoothOpen Ψ) {z θ : ℝ} (hz : z ∈ Work.Spaces.Iz)
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    (Work.Spaces.DthIter 2 (Aft Ψ) z θ * Work.Spaces.Wt α z θ) ^ 2
+      ≤ 2 * Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 (Aft Ψ)) z θ
+        + 8 * Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 1 (Aft Ψ)) z θ := by
+  rcases eq_or_lt_of_le (show (0 : ℝ) ≤ z from hz) with h | h
+  · rw [← h]
+    have hw0 : Work.Spaces.Wt α 0 θ = 0 := by
+      rw [Work.Spaces.Wt, Work.Spaces.w]
+      norm_num
+    rw [hw0, mul_zero, zero_pow (by norm_num : (2 : ℕ) ≠ 0)]
+    have h1 := Work.Spaces.HkIntegrand_nonneg α 0 (Work.Spaces.pthIter 2 (Aft Ψ)) 0 θ
+    have h2 := Work.Spaces.HkIntegrand_nonneg α 0 (Work.Spaces.pthIter 1 (Aft Ψ)) 0 θ
+    linarith
+  · have h2 : ∀ θ' ∈ Set.Ioo 0 (Real.pi / 2),
+        DifferentiableAt ℝ (fun t => deriv (fun s => Aft Ψ z s) t) θ' := by
+      intro θ' hθ'
+      have hcd : ContDiffOn ℝ 2 (fun θ'' => Aft Ψ z θ'') (Set.Ioo 0 (Real.pi / 2)) :=
+        smoothOpen_slices (smoothOpen_Aft hsm) h 2
+      have h2' : ContDiffOn ℝ 1 (deriv (fun θ'' => Aft Ψ z θ'')) (Set.Ioo 0 (Real.pi / 2)) :=
+        hcd.deriv_of_isOpen isOpen_Ioo (by norm_num)
+      have h3 : DifferentiableOn ℝ (deriv (fun θ'' => Aft Ψ z θ''))
+          (Set.Ioo 0 (Real.pi / 2)) := h2'.differentiableOn (by norm_num)
+      exact (h3.differentiableAt (isOpen_Ioo.mem_nhds hθ')).hasDerivAt.differentiableAt
+    have hpt := Work.FTS.EllipticEst.Mine.Tk_pointwise_le_closed α hα hα4 (Aft Ψ) z θ hθ h2
+    have e4 : deriv (fun θ' => deriv (fun t => Aft Ψ z t) θ') θ
+        = Work.Spaces.pthIter 2 (Aft Ψ) z θ := rfl
+    have e3 : deriv (fun t => Aft Ψ z t) θ = Work.Spaces.pthIter 1 (Aft Ψ) z θ := rfl
+    rw [e4, e3] at hpt
+    have h4 : Work.FTS.EllipticEst.Mine.sig4 (Work.Spaces.gam α) θ
+        ≤ Work.FTS.EllipticEst.sEta θ := sig4_le_sEta hα hα4 hθ
+    have h2w : Work.FTS.EllipticEst.Mine.sig2 (Work.Spaces.gam α) θ
+        ≤ Work.FTS.EllipticEst.sEta θ := sig2_le_sEta hα hα4 hθ
+    have hw2 : (0 : ℝ) ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+    have hkey4 : 2 * (Work.Spaces.w z) ^ 2
+          * ((Work.Spaces.pthIter 2 (Aft Ψ) z θ) ^ 2
+            * Work.FTS.EllipticEst.Mine.sig4 (Work.Spaces.gam α) θ)
+        ≤ 2 * Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 (Aft Ψ)) z θ := by
+      have h4' : (Work.Spaces.pthIter 2 (Aft Ψ) z θ) ^ 2
+            * Work.FTS.EllipticEst.Mine.sig4 (Work.Spaces.gam α) θ
+          ≤ (Work.Spaces.pthIter 2 (Aft Ψ) z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ :=
+        mul_le_mul_of_nonneg_left h4 (sq_nonneg _)
+      have h5' := mul_le_mul_of_nonneg_right h4' hw2
+      rw [hkIntegrand_zero_eq_mul α _ z θ hθ]
+      linarith [h5']
+    have hkey2 : 8 * (Work.Spaces.w z) ^ 2
+          * ((Work.Spaces.pthIter 1 (Aft Ψ) z θ) ^ 2
+            * Work.FTS.EllipticEst.Mine.sig2 (Work.Spaces.gam α) θ)
+        ≤ 8 * Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 1 (Aft Ψ)) z θ := by
+      have h4' : (Work.Spaces.pthIter 1 (Aft Ψ) z θ) ^ 2
+            * Work.FTS.EllipticEst.Mine.sig2 (Work.Spaces.gam α) θ
+          ≤ (Work.Spaces.pthIter 1 (Aft Ψ) z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ :=
+        mul_le_mul_of_nonneg_left h2w (sq_nonneg _)
+      have h5' := mul_le_mul_of_nonneg_right h4' hw2
+      rw [hkIntegrand_zero_eq_mul α _ z θ hθ]
+      linarith [h5']
+    linarith [hpt, hkey4, hkey2]
+
+end
+
+end Work.FTS.EllipticEst.TopSlotTwoFts
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Prop.levelTopSlotsTwoAux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -70,214 +254,14 @@ theorem div_rpow_half_sq_Iθ {wv θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
     ring
   · exact div_rpow_half_sq h
 
-/-- `(σ · σ^{-γ/2})² = σ^{2-γ}` on the open interval. -/
-theorem sq_sin_mul_rpow {γ θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
-    (Real.sin (2 * θ) * Real.sin (2 * θ) ^ (-(γ / 2))) ^ 2
-      = Real.sin (2 * θ) ^ (2 - γ) := by
-  have hs := sin_two_pos_Ioo hθ
-  have h1 : (Real.sin (2 * θ) ^ (-(γ / 2))) ^ (2 : ℕ) = Real.sin (2 * θ) ^ (-γ) := by
-    rw [pow_two, ← Real.rpow_add hs,
-      show -(γ / 2) + -(γ / 2) = -γ from by ring]
-  rw [mul_pow, h1, ← Real.rpow_natCast (Real.sin (2 * θ)) 2, ← Real.rpow_add hs,
-    show ((2 : ℕ) : ℝ) + (-γ) = 2 - γ from by push_cast; ring]
-
-/-- `HkSq α 0 g` is the `L²`-square of `g` against `Zu = w/σ^{η/2}`. -/
-theorem HkSq_zero_eq_L2Sq_zu (α : ℝ) (g : ℝ → ℝ → ℝ) :
-    Work.Spaces.HkSq α 0 g
-      = Work.Spaces.L2Sq (fun z θ =>
-          g z θ * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) := by
-  rw [Work.Spaces.HkSq, Work.Spaces.L2Sq]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
-  refine integral_congr_ae (Filter.Eventually.of_forall fun θ => ?_)
-  simp [Work.Spaces.HkIntegrand]
-
-/-- `HkSq α 0 g` as an explicit integral against `sEta = sin(2θ)^{-η}`. -/
-theorem HkSq_zero_eq_int (α : ℝ) (g : ℝ → ℝ → ℝ) :
-    Work.Spaces.HkSq α 0 g
-      = ∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2
-          * (∫ θ in Work.Spaces.Iθ, (g z θ) ^ 2 * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) := by
-  rw [HkSq_zero_eq_L2Sq_zu α g, Work.Spaces.L2Sq]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
-  beta_reduce
-  rw [← MeasureTheory.integral_const_mul]
-  refine integral_congr_ae ?_
-  filter_upwards [MeasureTheory.ae_restrict_mem (show MeasurableSet Work.Spaces.Iθ from
-    measurableSet_Icc)] with θ hθ
-  rw [mul_pow, div_rpow_half_sq_Iθ hθ]
-  ring
-
-/-- The pointwise bound behind the reduction of the `A`-slot: on the open interval,
-`(D_θ f · Wt α)² ≤ (∂_θ f)² · w² · sEta`. -/
-theorem Dth_mul_Wt_sq_le {α : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)
-    (f : ℝ → ℝ → ℝ) {z θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
-    (Work.Spaces.Dth f z θ * Work.Spaces.Wt α z θ) ^ 2
-      ≤ (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-          * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta) := by
-  have hs := sin_two_pos_Ioo hθ
-  have hs1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
-  have hgam1 : 1 ≤ Work.Spaces.gam α := by rw [Work.Spaces.gam]; linarith
-  have hkey : (Work.Spaces.Dth f z θ * Work.Spaces.Wt α z θ) ^ 2
-      = (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-          * Real.sin (2 * θ) ^ (2 - Work.Spaces.gam α) := by
-    rw [Work.Spaces.Dth, Work.Spaces.Wt, Work.Spaces.wTheta]
-    rw [show (Real.sin (2*θ) * Work.Spaces.pth f z θ
-        * (Work.Spaces.w z * Real.sin (2*θ) ^ (-(Work.Spaces.gam α / 2)))) ^ 2
-      = (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-        * (Real.sin (2*θ) * Real.sin (2*θ) ^ (-(Work.Spaces.gam α / 2))) ^ 2 from by ring]
-    rw [sq_sin_mul_rpow hθ]
-  rw [hkey]
-  have hexp : -Work.Spaces.eta ≤ 2 - Work.Spaces.gam α := by
-    have h1 := Work.Spaces.eta_pos
-    rw [Work.Spaces.gam] at hgam1 ⊢
-    linarith
-  have hmono : Real.sin (2 * θ) ^ (2 - Work.Spaces.gam α)
-      ≤ Real.sin (2 * θ) ^ (-Work.Spaces.eta) :=
-    Real.rpow_le_rpow_of_exponent_ge hs hs1 hexp
-  exact mul_le_mul_of_nonneg_left hmono (mul_nonneg (sq_nonneg _) (sq_nonneg _))
-
-/-- The pointwise bound on all of `Iθ`. -/
-theorem Dth_mul_Wt_sq_le_Iθ {α : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)
-    (f : ℝ → ℝ → ℝ) {z θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
-    (Work.Spaces.Dth f z θ * Work.Spaces.Wt α z θ) ^ 2
-      ≤ (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-          * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta) := by
-  have hnneg : (0 : ℝ) ≤ Real.sin (2 * θ) ^ (-Work.Spaces.eta) :=
-    Real.rpow_nonneg (sin_two_nonneg_Iθ hθ) _
-  have hRHS : 0 ≤ (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-      * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta) :=
-    mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) hnneg
-  rcases eq_or_lt_of_le hθ.1 with h0 | h0
-  · subst h0
-    have hLHS : (Work.Spaces.Dth f z 0 * Work.Spaces.Wt α z 0) ^ 2 = 0 := by
-      rw [Work.Spaces.Dth, show Real.sin (2 * (0 : ℝ)) = 0 by norm_num [Real.sin_zero]]
-      ring
-    rw [hLHS]
-    exact hRHS
-  · rcases eq_or_lt_of_le hθ.2 with h1 | h1
-    · subst h1
-      have hLHS : (Work.Spaces.Dth f z (Real.pi / 2) * Work.Spaces.Wt α z (Real.pi / 2)) ^ 2 = 0 := by
-        rw [Work.Spaces.Dth, show Real.sin (2 * (Real.pi / 2)) = 0 by
-          rw [show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]]
-        ring
-      rw [hLHS]
-      exact hRHS
-    · exact Dth_mul_Wt_sq_le hα hα4 f ⟨h0, h1⟩
-
-/-- **Reduction of the `A`-top-slot to the `sEta`-slots of the slice.** -/
-theorem Tk_le_int {α : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4) (f : ℝ → ℝ → ℝ)
-    (hsl : ∀ z ∈ Work.Spaces.Iz, MeasureTheory.IntegrableOn (fun θ : ℝ =>
-      (Work.Spaces.pth f z θ) ^ 2 * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) Work.Spaces.Iθ)
-    (hint : MeasureTheory.IntegrableOn (fun z : ℝ => (Work.Spaces.w z) ^ 2
-      * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth f z θ) ^ 2
-          * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta))) Work.Spaces.Iz) :
-    Work.FTS.EllipticEst.remov.Step.Tk α 1 f
-      ≤ ∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2
-          * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth f z θ) ^ 2
-              * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) := by
-  have hinner : ∀ z ∈ Work.Spaces.Iz,
-      (∫ θ in Work.Spaces.Iθ, (Work.Spaces.mixed 0 1 f z θ * Work.Spaces.Wt α z θ) ^ 2)
-        ≤ (Work.Spaces.w z) ^ 2
-          * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth f z θ) ^ 2
-              * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) := by
-    intro z hz
-    have h1 : (∫ θ in Work.Spaces.Iθ, (Work.Spaces.mixed 0 1 f z θ * Work.Spaces.Wt α z θ) ^ 2)
-        ≤ ∫ θ in Work.Spaces.Iθ, (Work.Spaces.w z) ^ 2
-            * ((Work.Spaces.pth f z θ) ^ 2 * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) := by
-      refine MeasureTheory.integral_mono_of_nonneg
-        (Filter.Eventually.of_forall fun θ => sq_nonneg _)
-        ((hsl z hz).const_mul ((Work.Spaces.w z) ^ 2)) ?_
-      filter_upwards [MeasureTheory.ae_restrict_mem (show MeasurableSet Work.Spaces.Iθ from
-        measurableSet_Icc)] with θ hθ
-      have h := Dth_mul_Wt_sq_le_Iθ (z := z) hα hα4 f hθ
-      rw [show (Work.Spaces.pth f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)
-          = (Work.Spaces.w z) ^ 2 * ((Work.Spaces.pth f z θ) ^ 2
-            * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta)) from by ring] at h
-      simpa only [Work.Spaces.mixed_zero_left, Work.Spaces.DthIter_succ,
-        Work.Spaces.DthIter_zero] using h
-    rw [MeasureTheory.integral_const_mul] at h1
-    exact h1
-  rw [Work.FTS.EllipticEst.remov.Step.Tk]
-  refine MeasureTheory.integral_mono_of_nonneg
-    (Filter.Eventually.of_forall fun z => integral_nonneg fun θ => sq_nonneg _) hint ?_
-  exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ici hinner
 
 
-/-- **The `B`-slot `√(Tk α 1 (∂_θ²Ψ)) ≤ C |F|_{ℋ²}`**, unconditionally (from the proved
-`slot01Bound` and the proved clean radial-shift level-`0` slots `ShiftZeroSlots2`). -/
-theorem bSlotTop_clean :
-    (∃ C₀ : ℝ, 0 < C₀ ∧ Work.FTS.EllipticEst.TT.EllWeak0 C₀) →
-    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
-      Real.sqrt (Work.FTS.EllipticEst.remov.Step.Tk α 1 (Bb Ψ))
-        ≤ C * Work.Spaces.HkNorm α 2 F := by
-  intro h0
-  obtain ⟨CZ, hCZpos, hZ⟩ := Work.FTS.EllipticEst.TopSlotTwoFts.ShiftZeroSlots2 h0
-  obtain ⟨K, hKpos, hK⟩ := Work.FTS.EllipticEst.H2W.AngBW.slot01Bound
-  refine ⟨Real.sqrt K * Real.sqrt (3 * CZ + 1) + 1, by positivity, ?_⟩
-  intro α F Ψ hα hα4 h
-  have hN : (0 : ℝ) ≤ Work.Spaces.HkSq α 2 F := Work.Spaces.HkSq_nonneg α 2 F
-  have hmain := hK α F Ψ hα hα4 h
-  -- identify the sum of `L2Sq ... Zu` terms with the corresponding `HkSq α 0` terms
-  have hsum : (∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
-        Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ *
-          (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))))
-      ≤ 3 * (CZ * Work.Spaces.HkSq α 2 F) := by
-    have h1 : ∀ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ *
-            (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2)))
-        ≤ CZ * Work.Spaces.HkSq α 2 F := by
-      intro j hj
-      have hj2 : j ≤ 2 := by
-        have := Finset.mem_range.mp hj; omega
-      have hb := hZ α F Ψ hα hα4 h j hj2
-      have hnn : 0 ≤ α ^ 4 * Work.Spaces.HkSq α 0
-          (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 (Work.Spaces.DzIter j Ψ) z θ) :=
-        mul_nonneg (by positivity) (Work.Spaces.HkSq_nonneg α 0 _)
-      have h2 : Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ))
-          ≤ CZ * Work.Spaces.HkSq α 2 F := by linarith [hb, hnn]
-      rw [HkSq_zero_eq_L2Sq_zu α (Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ))] at h2
-      exact h2
-    calc (∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
-            Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ *
-              (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))))
-        ≤ ∑ j ∈ Finset.range 3, (CZ * Work.Spaces.HkSq α 2 F) := Finset.sum_le_sum h1
-      _ = 3 * (CZ * Work.Spaces.HkSq α 2 F) := by
-          rw [Finset.sum_const, Finset.card_range]; norm_num
-  -- rewrite the LHS of `slot01Bound` as the `Tk`-slot
-  have hTK : Work.FTS.EllipticEst.remov.Step.Tk α 1 (Bb Ψ)
-      = Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 1 (Work.Spaces.pthIter 2 Ψ) z θ * Work.Spaces.Wt α z θ) := rfl
-  rw [hTK]
-  -- square roots
-  have hstep : Work.Spaces.L2Sq (fun z θ =>
-        Work.Spaces.mixed 0 1 (Work.Spaces.pthIter 2 Ψ) z θ * Work.Spaces.Wt α z θ)
-      ≤ K * (3 * (CZ * Work.Spaces.HkSq α 2 F) + Work.Spaces.HkSq α 2 F) := by
-    calc _ ≤ K * ((∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
-              Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ *
-                (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))))
-            + Work.Spaces.HkSq α 2 F) := hmain
-      _ ≤ K * (3 * (CZ * Work.Spaces.HkSq α 2 F) + Work.Spaces.HkSq α 2 F) := by
-          refine mul_le_mul_of_nonneg_left ?_ hKpos.le
-          linarith [hsum]
-  have hKnn : (0 : ℝ) ≤ K := hKpos.le
-  have hfin : Work.Spaces.L2Sq (fun z θ =>
-        Work.Spaces.mixed 0 1 (Work.Spaces.pthIter 2 Ψ) z θ * Work.Spaces.Wt α z θ)
-      ≤ K * (3 * CZ + 1) * Work.Spaces.HkSq α 2 F := by
-    refine le_trans hstep ?_
-    rw [show K * (3 * (CZ * Work.Spaces.HkSq α 2 F) + Work.Spaces.HkSq α 2 F)
-        = K * (3 * CZ + 1) * Work.Spaces.HkSq α 2 F from by ring]
-  have hnn : (0 : ℝ) ≤ Work.Spaces.L2Sq (fun z θ =>
-      Work.Spaces.mixed 0 1 (Work.Spaces.pthIter 2 Ψ) z θ * Work.Spaces.Wt α z θ) :=
-    integral_nonneg fun _ => integral_nonneg fun _ => sq_nonneg _
-  calc Real.sqrt (Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 1 (Work.Spaces.pthIter 2 Ψ) z θ * Work.Spaces.Wt α z θ))
-      ≤ Real.sqrt (K * (3 * CZ + 1) * Work.Spaces.HkSq α 2 F) := Real.sqrt_le_sqrt hfin
-    _ = Real.sqrt K * Real.sqrt (3 * CZ + 1) * Work.Spaces.HkNorm α 2 F := by
-        rw [Work.Spaces.HkNorm, Real.sqrt_mul (by positivity), Real.sqrt_mul hKnn]
-    _ ≤ (Real.sqrt K * Real.sqrt (3 * CZ + 1) + 1) * Work.Spaces.HkNorm α 2 F := by
-        have h1 : (0 : ℝ) ≤ Real.sqrt K * Real.sqrt (3 * CZ + 1) := by positivity
-        have h2 : (0 : ℝ) ≤ Work.Spaces.HkNorm α 2 F := Work.Spaces.HkNorm_nonneg α 2 F
-        linarith [mul_nonneg h1 h2, h2]
+
+
+
+
+
 
 end Work.FTS.EllipticEst.Prop
+end
+end

@@ -1,32 +1,7 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# A.e.-measurability of the `ofReal` of the level-6 slots on a rectangle
-
-`level6Z α g z θ` is a finite sum of squares
-
-* `(D_z^{6-i} D_θ^i g · rho6 α i z θ)²`, `0 ≤ i ≤ 5`,
-
-and `level6T α g z θ` is the single square `(D_θ⁶ g · rho6 α 6 z θ)²`.  The levels of the
-weight `rho6`,
-
-* `rho6 α 0 z θ = w(z) / sin(2θ)^{η/2}` and
-* `rho6 α i z θ = Wt α z θ = w(z) · sin(2θ)^{-γ/2}` for `i ≠ 0`,
-
-are Borel measurable *functions of* `(z,θ)` alone: real powers are Borel measurable, and no
-positivity of `sin(2θ)` or of `z` is required.  Hence `p ↦ ofReal (level6Z α g p.1 p.2)`
-(resp. `level6T`) is a.e. measurable on a rectangle `[a,b] × [c,d]` as soon as each slot
-`D_z^j D_θ^i g` is `ContinuousOn` that rectangle, which is exactly the hypothesis `hslots`.
-
-The three hypotheses `0 < a`, `0 < c`, `d < π/2` are *not* used: they are what places the
-rectangle inside the open quadrant in the applications of this lemma, where the slots are
-known to be continuous.  (This is the level-6 companion of
-`aemeasurable_ofReal_HkIntegrand`; cf. also `aemeasurable_V6`.)
--/
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.LocUnif.V6Defs
-import Submission.Work.Spaces.Defs
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

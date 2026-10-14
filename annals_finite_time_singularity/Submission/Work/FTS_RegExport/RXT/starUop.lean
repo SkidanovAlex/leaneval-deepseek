@@ -1,18 +1,61 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.VocabO2
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row15aux.Uop_PhiTs_bounds
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.Nonlinear.Pieces.RNP.row15
-import Submission.Work.Spaces.WlInf_terms
-import Submission.Work.FTS.PhiStar.StarPkgo2Aux.FieldRegularity
-import Submission.Work.FTS.PhiStar.CoreAux.smoothOpen_PhiTs
-import Submission.Work.FTS.OpenPkg.WDp_le_WlInf
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
-import Submission.Work.FTS_EllLimOK.Locality
-import Submission.Work.FTS_RegExport.RXT.starUopAux.Afun_mixed_le
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.pgfAux
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.pgfHardyA
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_EllLimOK.ThetaJets.ClassC_le
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.WPQ.hardy_slice_Aang
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.pgfHardyB =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# pureGamFamSix — critical-weight slot (B): the slice bound
+-/
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.N6Trans.SixRoute
+
+set_option autoImplicit false
+set_option maxHeartbeats 3200000
+
+/-! ## The slice bound -/
+
+
+
+
+
+
+end Work.FTS.StrongPersist.N6Trans.SixRoute
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.starUop =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -229,3 +272,4 @@ theorem starUop {α Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn}
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hWle hC0nn) hmin
 
 end Work.FTS_RegExport.RXT
+end

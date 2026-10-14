@@ -1,29 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Hon/FluxOpen`: the exceptional slot term, open (`SmoothOpen`) and a.e.-trace form
-
-Verbatim adaptation of `Work.FTS.TransportS.T3SlotAux.flux_bound` / `flux_integrable` to the
-honest hypotheses:
-
-* `hsg : Work.FTS.EllipticEst.SmoothOpen g` in place of `Work.FTS.LocData.SmoothQuad g`;
-* the boundary traces of the slot `Thard g k` are asked only for almost every angle
-  `θ ∈ Iθ` (the form in which the honest chapter `StrongPersist.N6Trans.Hon` has them,
-  `Hon.TraceAe`), instead of for every interior `θ`.
-
-The only changes to the proof are the calls to the open twins
-(`Work.FTS.StrongPersist.N6Trans.Hon.slot_prod_le_open`, `integrable_Xz_sq_open`,
-`integrable_HkIntegrand_prod_open`, `integrable_gK_open`).
-
-All declarations are `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.OpenTwins
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.slot_prod_le_open
+import Submission.Work.FTS.StrongPersist.N6Trans.L6Core
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

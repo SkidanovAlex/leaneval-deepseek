@@ -2,16 +2,16 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.NonlinRows.Defs
-import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.NonlinRows.AkRhoJetBasic
+import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Pieces.Pgs
 import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
 import Submission.Work.FTS.Nonlinear.n4norm_exists
-import Submission.Work.FTS.OpenPkg.Good
-import Submission.Work.FTS.LocDataExt.Majorant5
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_theta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -142,39 +142,5 @@ theorem HkMem_AK (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
     norm_num
     ring
 
-theorem NAux3 (IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ) {α₂ Ci Ct Ce Cs : ℝ}
-    (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂) (hE : Work.FTS.OpenPkg.N4Extra' IP α₂ Ct) :
-    (∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
-      Work.FTS.NonlinRows.Ctx α₂ Ci Ct Ce Cs α g Φs Φg →
-      Work.Spaces.HkMem α 4 (Work.Construction.AK α) ∧
-        Work.FTS.Nonlin.Xn α (Work.Construction.AK α) ≤ K) ∧
-    (∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
-      Work.FTS.NonlinRows.Ctx α₂ Ci Ct Ce Cs α g Φs Φg →
-      |Work.Construction.L12 (Work.Construction.N0 α (Work.Construction.Ftot α g) g) 0|
-        ≤ K * (α ^ 2 + Real.sqrt α * Work.FTS.Nonlin.Xn α g
-            + α ^ (-(3 / 2 : ℝ)) * Work.FTS.Nonlin.Xn α g ^ 2)) ∧
-    (∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
-      Work.FTS.NonlinRows.Ctx α₂ Ci Ct Ce Cs α g Φs Φg →
-      |Work.Construction.L12 (fun z θ => 3 * Work.Spaces.Dth g z θ / (1 + z)) 0|
-        ≤ K * Work.FTS.Nonlin.Xn α g) := by
-  refine ⟨?_, ?_, ?_⟩
-  · -- `rak`
-    obtain ⟨K, hK0, hK⟩ := Work.FTS.Nonlinear.Pieces.rak_bound
-    exact ⟨K, hK0, fun {α} {g Φs Φg} hctx =>
-      ⟨HkMem_AK α hctx.1 hctx.2.1, hK hctx.1 hctx.2.1⟩⟩
-  · -- `rl0`
-    obtain ⟨K, hK0, hK⟩ := Work.FTS.Nonlinear.Pieces.rl0_bound
-    refine ⟨K, hK0, fun {α} {g Φs Φg} hctx => ?_⟩
-    obtain ⟨hα, hα1, hαα₂, hgal, _hs, _hell⟩ := hctx
-    have hα₂0 : 0 < α₂ := lt_of_lt_of_le hα hαα₂
-    obtain ⟨Ci', _hCi'0, hN'⟩ := Work.FTS.Nonlinear.n4norm_exists (α₂ := min α₂ 1)
-      (lt_min hα₂0 one_pos) (min_le_right _ _)
-    exact hK hα hα1 hN' (le_min hαα₂ hα1) hgal
-  · -- `rl2`
-    obtain ⟨K, hK0, hK⟩ := Work.FTS.Nonlinear.Pieces.rl2_bound
-    refine ⟨K, hK0, fun {α} {g Φs Φg} hctx => ?_⟩
-    obtain ⟨hα, hα1, _hαα₂, hgal, _hs, _hell⟩ := hctx
-    have hreg4 : Work.FTS.Nonlin.RegQ α 4 g := Work.FTS.Nonlin.galClass_regQ4 hgal
-    exact hK hα hα1 hreg4.1 hreg4.2.1
 
 end Work.FTS.NonlinRows

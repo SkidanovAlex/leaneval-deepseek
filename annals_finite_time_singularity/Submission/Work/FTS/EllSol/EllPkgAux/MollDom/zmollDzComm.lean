@@ -3,20 +3,20 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllSol.EllPkgAux.MollBase
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelAux
-import Submission.Work.FTS.EllSol.EllPkgAux.thMollSliceL2
-import Submission.Work.FTS.EllSol.EllPkgAux.thMollTransfer2
-import Submission.Work.FTS.EllSol.EllPkgAux.MollFatouAux
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDzAux.zmollKernel_hasDerivAt
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.sliceIbp
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.swapFubini
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.aeStronglyMeasurable_exp
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.thMoll_locInt
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.prod_integrable_of_slice_bound
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.integrableOn_exp_comp
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.EllipticEst.ZCuts.zHardy_compact
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.IBPsub.Slots
+import Submission.Work.FTS.PhiStar.Honesty.smoothCptQ_hkMem
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2W.PsiSlices.shiftedSourcePoleBound
+import Submission.Work.Spaces.HProductRule_bad_term
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

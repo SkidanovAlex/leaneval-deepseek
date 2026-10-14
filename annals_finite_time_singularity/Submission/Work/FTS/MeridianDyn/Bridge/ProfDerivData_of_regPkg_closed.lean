@@ -3,19 +3,17 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.MeridianDyn.Defs
-import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg
-import Submission.Work.FTS.Galerkin.Defs
-import Submission.Work.FTS.H2.L12densIntegrable
-import Submission.Work.FTS.H2.L12densSlice
-import Submission.Work.FTS.CoercivityFix.Coer1T.HardyAlt.l12dens_continuousAt
-import Submission.Work.FTS.LocData.SmoothQuad_Fstar
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.FTS.CoercivityFix.Assembly.RegQAux
-import Submission.Work.FTS.EllipticEst.thth.Pre
 import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.MeridianDyn.Bridge.mainLHS_sub_N_eq
+import Submission.Work.FTS.MeridianDyn.Defs
 import Submission.Work.FTS.OpenPkg.l12_open_bundle
-import Submission.Work.FTS.MeridianDyn.Bridge.Pieces.L12dens_Fstar_integrableOn
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.SolutionDelivery.DatumEuler
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Stability.CutFactorFderivZero
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -162,18 +160,5 @@ theorem continuousAt_L12dens_Fstar_add {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 
 
 end Facts
 
-theorem ProfDerivData_of_regPkg_closed {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    {Φ g : Work.FTS.MeridianDyn.Fam}
-    (hreg : Work.FTS.Galerkin.RegPkg α g)
-    (hΦ : ∀ τ : ℝ, 0 < τ → ContDiffOn ℝ 2 (fun q : ℝ × ℝ => Φ q.1 q.2 τ)
-      Work.Construction.Qd) :
-    Work.FTS.MeridianDyn.ProfDerivData α Φ g := by
-  refine Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg hα hα1 hreg hΦ ?_ ?_
-  · intro τ hτ
-    exact integrableOn_L12dens_Fstar_add hα hα1 (smoothOpen_slice_of_regPkg hreg hτ)
-      (hreg.mem4 τ hτ.le)
-  · intro τ z hτ hz
-    exact continuousAt_L12dens_Fstar_add hα hα1 (smoothOpen_slice_of_regPkg hreg hτ)
-      (hreg.mem4 τ hτ.le) hz
 
 end Work.FTS.MeridianDyn.Bridge

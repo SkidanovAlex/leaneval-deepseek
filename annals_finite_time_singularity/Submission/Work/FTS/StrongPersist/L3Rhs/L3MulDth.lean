@@ -1,57 +1,21 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Work.FTS.StrongPersist.L3Rhs.L3MulDth`
-
-The product rule `h · D_θ f ∈ ℋ³` with the `𝒲^{4,∞}`-price on `h`:
-
-```
-∃ C > 0, ∀ α ∈ (0,1], ∀ h f,
-  SmoothOpen h → WlInfMem α 4 h → SmoothOpen f → HkMem α 4 f →
-    HkMem α 3 (h · D_θ f) ∧ HkSq α 3 (h · D_θ f) ≤ C/(γ-1) · |h|²_{𝒲^{4,∞}} · HkSq α 4 f
-```
-
-(The factor `1/(γ-1)` is *not* needed for this particular product — every `D_θ`-slot of
-`D_θ f` is a genuine mixed slot of `f` of order `≤ 4`, so no Hardy loss occurs; the statement
-is the weaker one with the factor present, and `C` is chosen so that it holds.  The whole
-`(γ-1)`-bookkeeping of the general product rule is absent here.)
-
-The mathematical content is the pointwise bound
-
-`HkIntegrand α 3 (h·D_θ f) z θ ≤ (4·10^8 + 16·10^12) · |h|²_{𝒲^{4,∞}} · HkIntegrand α 4 f z θ`
-
-on the closed quadrant `Iz ×ˢ Iθ`, assembled from the two slot bounds
-(`L3MulDthAux.ZslotPt.zslot_le_pt`, `L3MulDthAux.MslotPt.mslot_le_pt`):
-
-* the pure `D_z`-slots of `HkIntegrand α 3 (h·D_θ f)`;
-* the (at most 25) mixed slots, of which the `1 ≤ i`, `i + j ≤ 3` ones are priced by
-  `mslot_le_pt` and the rest vanish;
-
-then `HkMem α 3 (h·D_θ f)` by domination (`HkMem_of_majorant`, the dominant being a multiple
-of the integrable `HkIntegrand α 4 f`) and `HkSq α 3 (h·D_θ f) ≤ C |h|²_𝒲 HkSq α 4 f` by
-integrating the pointwise bound twice.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.OpenPkg.WProdWin.Basic
-import Submission.Work.FTS.OpenPkg.DzIter_le_WlInf_open
-import Submission.Work.FTS.OpenPkg.Mixed_le_WlInf_open
-import Submission.Work.Spaces.H_le_Wt
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.LocData.HkMem_of_majorant
+import Submission.Work.FTS.FinalClock.PhysClock
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
-import Submission.Work.FTS.TransportS.GoodOpenBase
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_Dth_of_pth
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDthAux.ZslotPt
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDthAux.MslotPt
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

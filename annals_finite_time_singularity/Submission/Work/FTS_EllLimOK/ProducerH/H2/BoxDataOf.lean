@@ -1,30 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.H2.boxData_of_parts` — the endpoint data from its four parts
-
-`BoxData α Ce E a₀ b₀` bundles the four analytic inputs of the box-`C²` chapter.  This module
-assembles it from the four sibling lemmas that produce the parts:
-
-* `th2_rate`     — the uniform bound `|∂_θ²(E g)| ≤ K · Xn6 · min(θ,π/2-θ)^β`;
-* `bounds_rates` — the pointwise derivative bounds on the strip and the endpoint rates;
-* `eg_limits`    — the two one-sided angular limits of `∂_θ(E g)`, `∂_z∂_θ(E g)`;
-* `th2_holder`   — the two-point θ-Hölder modulus of `∂_θ²(E g)`.
-
-The assembly is purely definitional: each part *is* the corresponding field of `BoxData`.
--/
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Data
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.th2_rate
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.bounds_rates
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.eg_limits
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.th2_holder
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.th2_rate
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.pkgCos_le4
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

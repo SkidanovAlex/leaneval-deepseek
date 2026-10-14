@@ -2,8 +2,8 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.FinalV2.Producers
 import Submission.Work.FTS.Final.MeridianRed
+import Submission.Work.FTS.FinalV2.Producers
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

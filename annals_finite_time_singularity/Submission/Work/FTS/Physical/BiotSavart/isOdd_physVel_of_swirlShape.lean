@@ -1,8 +1,8 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Submission.Work.FTS.Physical.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+import Submission.Work.SolutionDelivery.DatumEuler
 import Submission.Work.SolutionDelivery.DatumOdd
-import Submission.Work.ConstructionInstance.isAxiNoSwirl_biotSavart
-import Submission.Work.ConstructionInstance.isOdd_biotSavart_solVort
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

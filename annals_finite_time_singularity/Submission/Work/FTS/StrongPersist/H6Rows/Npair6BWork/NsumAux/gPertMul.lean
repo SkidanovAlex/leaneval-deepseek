@@ -1,25 +1,61 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `NsumAux/gPertMul` — the pieces `nsP3 = 2·ℛ(Φ̃_f)·f` and `nsP7 = -2·(𝒰(Φ̃_f)/s2)·D_θf`
-
-Guard-compliant replacement for the corresponding conjuncts of `NsumG.nsumG3` (whose file
-exceeds the workspace `maxHeartbeats` limit and therefore cannot be imported by anything).
-
-Route: the rows `T6Coef.rowMulCoef` and `T6Coef.rowDthCoef` give
-`C α^{-3}((1+K0+K4)(1+HkSq α 6 f) + (K4+K6)(1+M)(1+HkNorm α 6 f))`, and
-`NsumG.arithNsumG3Mul` converts that into the target shape with the sharp prices of
-`NsumG.pertPricesNsumG3`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Defs
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.StrongPersist.H6Aux.E2Facts
+import Submission.Work.FTS.StrongPersist.H6Aux.RStep
+import Submission.Work.FTS.StrongPersist.H6Aux.base_R
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.rowMulCoef
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.rowDthCoef
+import Submission.Work.FTS.StrongPersist.H6Row6.Basic
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.pertPricesNsumG3
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.arithNsumG3Mul
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBound
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundCore
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Aux.Induction =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.H6Aux
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.IPGen (IPnG IPnG_zero IPnG_succ)
+open Work.FTS.CoercivityFix.Transfer (CommSm CSQ AddOKSm)
+
+set_option autoImplicit false
+
+/-- **The commutator induction.**  For every `n ≤ 5` there is a constant `r > 0` with
+`IPnG 1 1 α n (Lhat h) h ≥ -r · IPnG 1 1 α n h h` for every `h` of class `SmoothOpen` with
+honest `ℋ^{n+2}`-integral. -/
+theorem R_ind : ∀ n : ℕ, n ≤ 5 → ∃ r : ℝ, 0 < r ∧ ∀ α ∈ Set.Ioc 0 1, ∀ h : Fn,
+    Work.FTS.EllipticEst.SmoothOpen h → Work.Spaces.HkMem α (n + 2) h →
+      -r * IPnG 1 1 α n h h ≤ IPnG 1 1 α n (Work.FTS.CoercivityFix.Lhat h) h := by
+  intro n hn
+  induction n with
+  | zero =>
+      obtain ⟨r, hr, h⟩ := base_R
+      exact ⟨r, hr, fun α hα h' hs hm => by
+        simpa only [IPnG_zero] using h α hα h' hs hm⟩
+  | succ n ih =>
+      exact R_step n (by omega) (ih (by omega))
+
+end Work.FTS.StrongPersist.H6Aux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertMul =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -171,3 +207,5 @@ theorem nsP7Bound (Ce : ℝ) : ∃ C : ℝ, 0 < C ∧
           * (1 + |Ce| + |Cs|) ^ 4 * (1 + M) ^ 4 * (1 + Work.Spaces.HkSq α 6 f) := by ring
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux
+end
+end

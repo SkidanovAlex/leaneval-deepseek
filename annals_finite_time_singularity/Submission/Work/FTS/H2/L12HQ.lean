@@ -3,18 +3,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
 import Submission.Work.FTS.Vocab
-import Submission.Work.FTS.H2.Defs
-import Submission.Work.Elliptic.L12H
-import Submission.Work.Elliptic.L12Aux
-import Submission.Work.FTS.LocData.SmoothChain
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.HProductRule_Badsummand
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.SmoothStripDefs
 import Submission.Work.Spaces.sin_two_rpow
-import Submission.Work.FTS.H2.L12densIntegrable
-import Submission.Work.FTS.H2.L12k0Q
-import Submission.Work.FTS.H2.integrableOn_w_sq_mul_int_sqQ
-import Submission.Work.FTS.H2.Qang_sq_leQ
-import Submission.Work.FTS.H2.QangDiff
+import Submission.Work.StabilityFar.Decay.timeDeriv_eq_zero_of_notMem_closedBall
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -46,15 +46,6 @@ theorem constructionL12_eq_ellipticL12 (g : ℝ → ℝ → ℝ) :
   rw [Work.Elliptic.L12_eq_FM]
   show Work.FM.L12 Work.Spaces.K g z = Work.FM.L12 Work.FM.Kpaper g z
   rw [hKK]
-
-/-- A function continuous on `(0,∞)` is a.e. strongly measurable for the restriction of the
-Lebesgue measure to `Iz = [0,∞)` (the difference is the null set `{0}`). -/
-theorem aestronglyMeasurable_restrict_Iz {f : ℝ → ℝ} (hf : ContinuousOn f (Set.Ioi (0 : ℝ))) :
-    MeasureTheory.AEStronglyMeasurable f (MeasureTheory.volume.restrict Work.Spaces.Iz) := by
-  have h1 : MeasureTheory.AEStronglyMeasurable f
-      (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))) :=
-    hf.aestronglyMeasurable measurableSet_Ioi
-  rwa [Work.Elliptic.restrict_Ioi_eq_restrict_Iz] at h1
 
 /-- The `ℋ^k`-energy is nonnegative. -/
 theorem HkSq_nonneg (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) : 0 ≤ Work.Spaces.HkSq α k f := by

@@ -1,12 +1,104 @@
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.StrongEps.E5G.slice_lip_norm
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.PhiStar.Honesty.psiSeries_bslOp_of_cptQ
+import Submission.Work.FTS.PhiStar.Honesty.psiSeries_smooth_of_cptQ
+import Submission.Work.FTS.PhiStar.Honesty.smoothCptQ_hkMem
+import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.EpsSlotAux
 import Submission.Work.FTS.StrongEps.smoothOpen_slice_of_epsRHSP
-import Submission.Work.FTS.StrongEps.E5G.HkIntegrand_intervalIntegral_le
-import Submission.Work.FTS.StrongEps.E5G5.HkIntegrand_intervalIntegral_le_gen
-import Submission.Work.FTS.StrongEps.E5G5.mixed_intervalIntegral_eq_gen
+import Submission.Work.FTS.StrongPersist.H6Aux.E2Facts
+import Submission.Work.FTS.StrongPersist.H6Aux.RStep
+import Submission.Work.FTS.StrongPersist.H6Rows.NZzero6
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.LimExtract.limExtract_bounds10_const
+import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+-- ===== merged: Submission.Work.FTS.PhiStar.Honesty.ellWeakPos_psiSeries_of_cptQ =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.PhiStar.Honesty
+
+set_option autoImplicit false
+
+/-- **The elliptic node for a compactly supported `C^∞` source, at every level.** -/
+theorem ellWeakPos_psiSeries_of_cptQ (K : ℕ) {α : ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)
+    {G : ℝ → ℝ → ℝ} (hG : SmoothCptQ G)
+    (hFs : ∀ z : ℝ, 0 < z → Work.Elliptic.Fstar G z = 0) :
+    Work.FTS.EllipticEst.TT.EllWeakPos α K G (Work.FTS.PhiStar.Series.psiSeries α G) ∧
+      Work.Elliptic.IsBslSol α G (Work.FTS.PhiStar.Series.psiSeries α G) := by
+  have hγ : Work.Spaces.gam α ≤ 3 / 2 := by
+    simp only [Work.Spaces.gam]
+    linarith
+  obtain ⟨hσ, hV⟩ := slots_psiSeries_of_cptQ K hα hα4 hG hFs
+  refine ⟨ellWeakPos_K_psiSeries_of_level0 K hα hα4 hγ (smoothCptQ_hkMem hG K)
+    (psiSeries_smooth_of_cptQ hα hα4 hG)
+    (fun z hz θ hθ hθ2 => psiSeries_bslOp_of_cptQ hα hα4 hG hFs z hz θ hθ hθ2)
+    hFs (hcoef_psiSeries hα hα4 hG.smoothOpen (smoothCptQ_hkMem hG 0)) hσ hV, ?_⟩
+  exact isBslSol_psiSeries_of_cptQ hα hα4 hG hFs
+
+end Work.FTS.PhiStar.Honesty
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5Aux3.L12_slice_eq_zero_of_hkMem =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-- **`L₁₂(slice g τ)(0) = 0` along an ε-solution, from `ℋ⁴` data**. -/
+theorem L12_slice_eq_zero_of_hkMem {α ε T : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn}
+    {g₀ : Fn} {g : Fam} {B : ℝ}
+    (hα : α ∈ Set.Ioc 0 1) (hρ : IsSmoothKernel ρ) (hε : 0 < ε) (hT : 0 < T)
+    (hsol : IsEpsSolP α ρ ε T Φs E g₀ g)
+    (hc1 : ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => g p.1 p.2.1 p.2.2)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2) ×ˢ Set.Icc 0 T))
+    (hsm : ∀ τ ∈ Set.Icc 0 T, Work.FTS.EllipticEst.SmoothOpen (slice g τ))
+    (hmem : ∀ τ ∈ Set.Icc 0 T, Work.Spaces.HkMem α 4 (slice g τ))
+    (hRm : ∀ τ ∈ Set.Icc 0 T, Work.Spaces.HkMem α 4 (epsRHSP α ρ ε Φs E g τ) ∧
+      Work.Spaces.HkNorm α 4 (epsRHSP α ρ ε Φs E g τ) ≤ B)
+    (hWm : ∀ τ ∈ Set.Icc 0 T, Work.Spaces.HkMem α 4 (Jeps ρ ε (epsWP α ρ ε Φs E g τ)))
+    (h0 : Work.Construction.L12 g₀ 0 = 0) :
+    ∀ τ ∈ Set.Icc 0 T, Work.Construction.L12 (slice g τ) 0 = 0 :=
+  Work.FTS.StrongEps.E5Aux3.L12_slice_eq_zero_of_hkMem_proof hα hρ hε hT hsol hc1 hsm hmem hRm
+    hWm h0
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.slice_lip5_norm =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -316,3 +408,4 @@ theorem slice_lip5_norm {α T ε B : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Work.
     exact h
 
 end Work.FTS.StrongEps.E5G
+end

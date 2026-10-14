@@ -1,24 +1,141 @@
+import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.Nonlinear.Pieces.Ctx
-import Submission.Work.FTS.Nonlinear.Pieces.Basic
-import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row22
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row23
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.angProfile_sinSq
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.fk_contDiffOn_four
-import Submission.Work.FTS.Nonlinear.FstarPkg.FK_Fstar
-import Submission.Work.FTS.Nonlinear.FstarPkg.DthFstar_W
-import Submission.Work.FTS.LocData.DthIter_Gam_abs_le
 import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.LocData.SmoothQuad_hLoc
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.dzdIter_FK_eq_qang
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Tools.FzFacts
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Assembly6
+import Submission.Work.FTS.StrongPersist.L3Aux.ZmulBound
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.SolutionDelivery.DatumEuler
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row21 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## The factorisation of the piece -/
+
+/-- **`N₄^{g*}` is the product of the angular profile `A` and the radial function `FK g · hKer`.**
+Unconditional (no regularity hypothesis is used): it is the algebra
+`∂_θF_*(z,θ) = (α·F_*'(z)/c α)·Γ'(θ)`, `F_*'(z) = 2 hKer z`, `D_θΓ = sin(2θ)Γ'`. -/
+theorem N4gs_factor (α : ℝ) (g : Work.FTS.Galerkin.Fn) :
+    Work.FTS.Nonlin.N4gs α g = fun z θ =>
+      (-(α / Work.Spaces.c α) * Work.Spaces.dthU (fun t => Work.Spaces.Gam α t) θ)
+        * (Work.Construction.FK g z * Work.Spaces.hKer z) := by
+  funext z θ
+  rw [Work.FTS.Nonlin.N4gs, Work.Construction.s2]
+  have hpth : Work.Spaces.pth (Work.Construction.Fstar α) z θ
+      = (α * Work.FM.Fstar z / Work.Spaces.c α)
+          * deriv (fun t => Work.Spaces.Gam α t) θ := by
+    rw [Work.Spaces.pth]
+    rw [show (fun θ' => Work.Construction.Fstar α z θ')
+        = fun θ' => (α * Work.FM.Fstar z / Work.Spaces.c α) * Work.Spaces.Gam α θ' from by
+      funext θ'; rw [Work.Construction.Fstar]; ring]
+    rw [Work.Spaces.deriv_const_mul']
+  rw [hpth, Work.Spaces.dthU_apply, Work.Spaces.hKer_apply, Work.FM.Fstar]
+  ring
+
+/-! ## The angular profile `A = -(α/c)·D_θΓ` against a radial function -/
+
+
+/-! ## Auxiliary facts about the radial profile `hKer` -/
+
+
+
+
+
+
+/-! ## The Leibniz rule for the product `Qang g 0 · hKer` -/
+
+
+
+/-! ## The smoothness shift `f ↦ Dzd f` -/
+
+
+
+
+/-! ## The product bound -/
+
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row24 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.RNP
+
+set_option linter.unusedVariables false
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+/-! ### Helper 1: the integration step of the radial product estimate
+
+If the `ℋ⁴`-integrand of `R·h` is pointwise dominated (a.e. in `θ`, for every `z > 0`) by
+`C·(M·HkIntegrand h + (D_z⁴R)²w²·smE·Qg h)`, then integrating in `(θ,z)` gives
+`HkSq (R·h) ≤ C·(M + ∫_z (D_z⁴R)²w²)·HkSq h`. -/
+
+/-! ### Helper 2: the `angmul` interface applied to the scaled profile `c·(-sin²θ)` -/
+
+
+/-! ### Helper 3: the bound on the `D_z⁴`-slot of the radial factor -/
+
+
+
+/-! ### Helper 4: the uniform sup bound for the `D_z`-iterates of the radial factor -/
+
+
+/-! ### Helper 5: the main assembly (conditional on the two remaining interfaces) -/
+
+
+
+end Work.FTS.Nonlinear.Pieces.RNP
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row25 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -70,23 +187,6 @@ theorem contDiffOn_dzdIter_of {n : ℕ} {u : ℝ → ℝ} (hu : ContDiffOn ℝ n
 
 /-! ## Differentiability of the `D_z`-iterates of the angular moment `FK g` -/
 
-/-- **`DzdIter b (FK g)` is differentiable on `(0,∞)` for `b ≤ 3`.**  `FK g` is `C⁴` on `(0,∞)`
-when `g` is `SmoothQuad` with `HkMem α 6 g` (`fk_contDiffOn_four`), and the `D_z`-iterates up to
-order three only involve four derivatives. -/
-theorem fk_dzdIter_diff {α : ℝ} {g : ℝ → ℝ → ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    (hsm : Work.FTS.LocData.SmoothQuad g) (hmem : Work.Spaces.HkMem α 6 g)
-    (b : ℕ) (hb : b ≤ 3) :
-    ∀ z ∈ Set.Ioi (0 : ℝ),
-      DifferentiableAt ℝ (Work.Elliptic.DzdIter b (Work.Construction.FK g)) z := by
-  have h4 : ContDiffOn ℝ 4 (fun z => Work.Construction.FK g z) (Set.Ioi 0) :=
-    Work.FTS.Nonlinear.Pieces.RNP.RNP24.fk_contDiffOn_four hα hα1 hsm hmem
-  have hC : ContDiffOn ℝ (4 - b) (Work.Elliptic.DzdIter b (Work.Construction.FK g))
-      (Set.Ioi 0) := contDiffOn_dzdIter_of h4 b (le_trans hb (by norm_num))
-  have hne : ((4 - b : ℕ) : WithTop ℕ∞) ≠ 0 := by
-    have hpos : 0 < 4 - b := by omega
-    exact_mod_cast (ne_of_gt hpos)
-  intro z hz
-  exact (hC.differentiableOn hne).differentiableAt (isOpen_Ioi.mem_nhds hz)
 
 /-! ## The angular-profile bound `|D_θ^i(sin²θ·Γ(θ))| ≤ B·sin(2θ)^{α/5}` -/
 
@@ -279,368 +379,9 @@ theorem dthSinSqGam_le : ∃ B : ℝ, 0 < B ∧ ∀ α : ℝ, 0 < α → α ≤ 
 
 /-! ## `SmoothInt` for the two profiles of `N₅^{sg}` -/
 
-/-- `z ↦ c·hKer z` (extended to a function of `(z,θ)`) is `SmoothInt`: `hKer z = z/(1+z)²` is
-analytic on `(-1,∞)`. -/
-theorem smoothInt_const_hKer (c : ℝ) :
-    Work.Spaces.SmoothInt (fun z _ => c * Work.Spaces.hKer z) := by
-  have hbase : ContDiffOn ℝ ⊤ (fun z : ℝ => c * Work.Spaces.hKer z) (Set.Ioi (-1)) := by
-    have h1 : (fun z : ℝ => c * Work.Spaces.hKer z)
-        = fun z : ℝ => c * (z / (1 + z) ^ 2) := by
-      funext z; rw [Work.Spaces.hKer_apply]
-    rw [h1]
-    refine contDiffOn_const.mul (ContDiffOn.div contDiffOn_id
-      ((contDiffOn_const.add contDiffOn_id).pow 2) ?_)
-    intro z hz
-    have hz1 : (0 : ℝ) < 1 + z := by
-      have := Set.mem_Ioi.mp hz; linarith
-    exact pow_ne_zero 2 (ne_of_gt hz1)
-  refine ⟨?_, fun θ _ => hbase⟩
-  show ContDiffOn ℝ ⊤ (Function.uncurry (fun z (_ : ℝ) => c * Work.Spaces.hKer z))
-    (Set.Ioi (-1) ×ˢ Set.Ioo 0 (Real.pi / 2))
-  have hfun : Function.uncurry (fun z (_ : ℝ) => c * Work.Spaces.hKer z)
-      = fun p : ℝ × ℝ => c * Work.Spaces.hKer p.1 := rfl
-  rw [hfun]
-  exact hbase.comp contDiffOn_fst (fun p hp => hp.1)
 
-/-- `SmoothInt` is stable under multiplication by a constant. -/
-theorem smoothInt_const_mul {f : ℝ → ℝ → ℝ} {c : ℝ} (hf : Work.Spaces.SmoothInt f) :
-    Work.Spaces.SmoothInt (fun z θ => c * f z θ) := by
-  constructor
-  · have h1 : Function.uncurry (fun z θ => c * f z θ)
-        = fun p : ℝ × ℝ => c * Function.uncurry f p := rfl
-    rw [h1]
-    exact contDiffOn_const.mul hf.1
-  · intro θ hθ
-    exact contDiffOn_const.mul (hf.2 θ hθ)
 
-theorem row25 {α₂ Ci Ct Ce Cs : ℝ} (hN : Work.FTS.Nonlin.N4Norm Ci α₂) :
-    ∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
-      Work.FTS.Nonlin.GalClass α g → Work.FTS.Nonlin.StarPkg α Cs Φs →
-      Work.FTS.Nonlin.EllPkgG α Ce g Φg → 0 < α → α ≤ 1 → α ≤ α₂ →
-      Work.FTS.Nonlin.Xn α (Work.FTS.Nonlin.N5gs α g)
-        + Work.FTS.Nonlin.Xn α (Work.FTS.Nonlin.N5sg α g)
-        ≤ K * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) := by
-  obtain ⟨hCipos, -⟩ := hN.pos
-  obtain ⟨Bdth, hBdthpos, hdth⟩ := dthSinSqGam_le
-  obtain ⟨Bsin, hBsinpos, hSinSmooth, hSinLe, hSinDth⟩ :=
-    Work.FTS.Nonlinear.Pieces.RNP.RNP24.angProfile_sinSq
-  refine ⟨10 ^ 26 * (1 + Bdth) * (Ci + 1) + (10 ^ 6 * Bsin * Ci ^ 2 + 1) + 1,
-    by positivity, ?_⟩
-  intro α g Φs Φg hgal hstar hell hα hα1 hαα₂
-  have hIoc : α ∈ Set.Ioc 0 α₂ := ⟨hα, hαα₂⟩
-  have hreg4 : Work.FTS.Nonlin.RegQ α 4 g := Work.FTS.Nonlin.galClass_regQ4 hgal
-  have hreg6 : Work.FTS.Nonlin.RegQ α 6 g := hgal.reg
-  have hsm : Work.FTS.LocData.SmoothQuad g := hreg4.1
-  have hmem6 : Work.Spaces.HkMem α 6 g := hreg6.2.1
-  have hX0 : 0 ≤ Work.FTS.Nonlin.Xn α g := Work.Spaces.HkNorm_nonneg α 4 g
-  have hc1 : (1 : ℝ) / 10 ≤ Work.Spaces.c α := (Work.Spaces.c_bounds α hα hα1).1
-  have hcpos : 0 < Work.Spaces.c α := by linarith
-  obtain ⟨hFkmem, hFkle⟩ := hN.fkH α hIoc g hreg4 hgal.l12
-  have hSqrtPos : 0 < Real.sqrt α := Real.sqrt_pos.mpr hα
-  have hAlphaSqrt : α / Real.sqrt α = Real.sqrt α := by
-    rw [div_eq_iff (ne_of_gt hSqrtPos)]
-    simpa [pow_two] using (Real.sq_sqrt hα.le).symm
-  -- ## The angular moment is an `ℋ⁴`-function of controlled norm
-  have hRintint : MeasureTheory.IntegrableOn
-      (Work.FTS.Nonlinear.RadialProd.Rint (Work.Construction.FK g)) Work.Spaces.Iz :=
-    Work.FTS.Nonlinear.RadialProd.integrable_Rint α (Work.Construction.FK g) hFkmem
-  have hRr_le : (∫ z in Work.Spaces.Iz,
-        Work.FTS.Nonlinear.RadialProd.Rint (Work.Construction.FK g) z)
-      ≤ (Ci * Work.FTS.Nonlin.Xn α g) ^ 2 := by
-    have h2 : (∫ z in Work.Spaces.Iz, Work.FTS.Nonlinear.RadialProd.Rint
-        (Work.Construction.FK g) z)
-        ≤ Work.Spaces.HkSq α 4 (fun z _ => Work.Construction.FK g z) :=
-      Work.FTS.Nonlinear.RadialProd.Rr_le_HkSq α (Work.Construction.FK g)
-    have h3 : Work.Spaces.HkSq α 4 (fun z _ => Work.Construction.FK g z)
-        = (Work.FTS.Nonlin.Xn α (fun z _ => Work.Construction.FK g z)) ^ 2 := by
-      rw [Work.FTS.Nonlin.Xn, Work.Spaces.HkNorm,
-        Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 4 _)]
-    rw [h3] at h2
-    exact h2.trans (pow_le_pow_left₀ (Work.Spaces.HkNorm_nonneg α 4 _) hFkle 2)
-  have hRint_le : ∀ z ∈ Work.Spaces.Iz,
-      Work.FTS.Nonlinear.RadialProd.Rint (fun z => Work.FM.Fstar z * Work.Construction.FK g z) z
-        ≤ (6400 * 200000 ^ 2)
-          * Work.FTS.Nonlinear.RadialProd.Rint (Work.Construction.FK g) z := by
-    intro z hz
-    rcases eq_or_lt_of_le (show (0 : ℝ) ≤ z from hz) with h0 | hzpos
-    · subst h0
-      simp [Work.FTS.Nonlinear.RadialProd.Rint, Work.Spaces.w]
-    · exact Work.FTS.Nonlinear.Pieces.Rint_mul_le Work.FM.Fstar (Work.Construction.FK g)
-        (by norm_num)
-        (fun k hk z hz' =>
-          Work.FTS.Nonlinear.Pieces.dzdIter_Fstar_bound k (by omega) z (le_of_lt hz'))
-        (fun b hb z hz' => Work.FTS.Nonlinear.Pieces.differentiableAt_dzdIter_Fstar b hz')
-        (fun b hb z hz' => fk_dzdIter_diff hα hα1 hsm hmem6 b hb z hz') hzpos
-  -- ## The angular profile
-  set aG : ℝ → ℝ := fun θ => Real.sin θ ^ 2 * Work.Spaces.Gam α θ with haG
-  have haG0 : ∀ θ ∈ Work.Spaces.Iθ, |aG θ| ≤ 1 := by
-    intro θ hθ
-    have hG := Work.Spaces.Gam_bounds α θ hα hθ
-    have h1 : Real.sin θ ^ 2 ≤ 1 := by
-      calc Real.sin θ ^ 2 = |Real.sin θ| ^ 2 := by rw [sq_abs]
-        _ ≤ 1 ^ 2 := pow_le_pow_left₀ (abs_nonneg _) (Real.abs_sin_le_one θ) 2
-        _ = 1 := by norm_num
-    rw [haG, abs_of_nonneg (mul_nonneg (sq_nonneg _) hG.1)]
-    calc Real.sin θ ^ 2 * Work.Spaces.Gam α θ ≤ 1 * 1 :=
-          mul_le_mul h1 hG.2 hG.1 (by norm_num)
-      _ = 1 := by norm_num
-  have haG1 : ∀ i : ℕ, 1 ≤ i → i ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
-      |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => aG θ') 0 θ|
-        ≤ Bdth * (Real.sin (2 * θ)) ^ (α / 5) := by
-    intro i hi1 hi4 θ hθ
-    simpa only [haG] using hdth α hα hα1 i hi1 hi4 θ hθ
-  -- ## The pointwise integrand bound
-  have hpt : ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
-      Work.Spaces.HkIntegrand α 4
-          (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z)) z θ
-        ≤ (6400 * 200000 ^ 2) * Work.FTS.Nonlinear.RadialProd.Rint
-            (Work.Construction.FK g) z
-          * (1 ^ 2 * Work.FTS.Nonlinear.RadialProd.smE θ
-            + 4 * Bdth ^ 2 * (Real.sin (2 * θ)) ^ (2 * (α / 5) - Work.Spaces.gam α)) := by
-    intro z hz θ hθ
-    have h1 := Work.FTS.Nonlinear.Pieces.HkIntegrand_ang_rad_sin_le α aG
-      (fun z => Work.FM.Fstar z * Work.Construction.FK g z)
-      (B0 := 1) (B1 := Bdth) (κ := α / 5) (by norm_num) hBdthpos.le haG0 haG1 (z := z) hθ
-    refine h1.trans ?_
-    refine mul_le_mul_of_nonneg_right (hRint_le z hz) ?_
-    have hθI : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ.1, le_of_lt hθ.2⟩
-    have hsmE : 0 ≤ Work.FTS.Nonlinear.RadialProd.smE θ :=
-      Work.FTS.Nonlinear.RadialProd.smE_nonneg hθI
-    have hs : 0 ≤ Real.sin (2 * θ) :=
-      (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1])
-        (by linarith [hθ.2, Real.pi_pos])).le
-    have hr : 0 ≤ (Real.sin (2 * θ)) ^ (2 * (α / 5) - Work.Spaces.gam α) :=
-      Real.rpow_nonneg hs _
-    positivity
-  -- ## The angular exponents
-  have hexp1 : -1 < 2 * (α / 5) - Work.Spaces.gam α := by rw [Work.Spaces.gam]; linarith
-  have hexp2 : 2 * (α / 5) - Work.Spaces.gam α ≤ 0 := by rw [Work.Spaces.gam]; linarith
-  have hI1 : MeasureTheory.IntegrableOn
-      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (2 * (α / 5) - Work.Spaces.gam α))
-      Work.Spaces.Iθ := (Work.Spaces.sin_two_rpow _ hexp1 hexp2).1
-  have hm1 : ∫ θ in Work.Spaces.Iθ,
-      (Real.sin (2 * θ)) ^ (2 * (α / 5) - Work.Spaces.gam α) ≤ 1000 / (3 * α) := by
-    have h := (Work.Spaces.sin_two_rpow _ hexp1 hexp2).2
-    have hden : 2 * (α / 5) - Work.Spaces.gam α + 1 = 3 * α / 10 := by
-      rw [Work.Spaces.gam]; ring
-    rw [hden] at h
-    have h2 : (100 : ℝ) / (3 * α / 10) = 1000 / (3 * α) := by
-      field_simp
-      ring
-    linarith [h, le_of_eq h2]
-  have hsq := Work.FTS.Nonlinear.Pieces.HkSq_ang_rad_of_le α hα aG
-    (fun z θ => Work.FM.Fstar z * Work.Construction.FK g z) (Work.Construction.FK g)
-    (B0 := 1) (B1 := Bdth) (κ := α / 5) (M1 := 1000 / (3 * α)) (C := 6400 * 200000 ^ 2)
-    (by norm_num) hBdthpos.le (by positivity) (by norm_num) hpt hI1 hm1 hRintint
-  -- ## The `N₅^{gs}` estimate
-  have hXar : Work.FTS.Nonlin.Xn α
-      (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z))
-      ≤ (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth))
-          * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α) := by
-    set D : ℝ := 10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth) with hD
-    have hDpos : 0 < D := by rw [hD]; positivity
-    have hsqb : Work.Spaces.HkSq α 4
-        (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z))
-        ≤ (D * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α)) ^ 2 := by
-      have hCpos : (0 : ℝ) < 6400 * 200000 ^ 2 := by norm_num
-      have hstep : Work.Spaces.HkSq α 4
-          (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z))
-          ≤ (6400 * 200000 ^ 2) * (1 ^ 2 * 10000
-              + 4 * Bdth ^ 2 * (1000 / (3 * α))) * ((Ci * Work.FTS.Nonlin.Xn α g) ^ 2) := by
-        refine hsq.trans ?_
-        exact mul_le_mul_of_nonneg_left hRr_le (by positivity)
-      refine hstep.trans ?_
-      have hfac : (D * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α)) ^ 2
-          = D ^ 2 * (Ci * Work.FTS.Nonlin.Xn α g) ^ 2 / α := by
-        rw [mul_pow, div_pow, Real.sq_sqrt hα.le]
-        ring
-      rw [hfac, hD]
-      have hkey : 1 ^ 2 * 10000 + 4 * Bdth ^ 2 * (1000 / (3 * α))
-          ≤ (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) ^ 2 / α
-            / (6400 * 200000 ^ 2) := by
-        have hcore : 10 ^ 4 * α + 4000 * Bdth ^ 2 / 3
-            ≤ 10 ^ 18 * (6400 * 200000 ^ 2) * (1 + Bdth) ^ 2 := by
-          have h1 : Bdth ^ 2 ≤ (1 + Bdth) ^ 2 := by nlinarith [hBdthpos.le]
-          have h2 : (1 : ℝ) ≤ (1 + Bdth) ^ 2 := by nlinarith [hBdthpos.le]
-          nlinarith [h1, h2, hBdthpos.le, hα1, hα]
-        rw [le_div_iff₀ hCpos, le_div_iff₀ hα]
-        have he : (1 ^ 2 * 10000 + 4 * Bdth ^ 2 * (1000 / (3 * α)))
-              * (6400 * 200000 ^ 2) * α
-            = (6400 * 200000 ^ 2) * (10 ^ 4 * α + 4000 * Bdth ^ 2 / 3) := by
-          field_simp
-          try ring
-        rw [he]
-        have he2 : (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) ^ 2
-            = (6400 * 200000 ^ 2)
-              * (10 ^ 18 * (6400 * 200000 ^ 2) * (1 + Bdth) ^ 2) := by
-          ring
-        rw [he2]
-        exact mul_le_mul_of_nonneg_left hcore (by norm_num)
-      calc (6400 * 200000 ^ 2) * (1 ^ 2 * 10000 + 4 * Bdth ^ 2 * (1000 / (3 * α)))
-            * (Ci * Work.FTS.Nonlin.Xn α g) ^ 2
-          ≤ (6400 * 200000 ^ 2)
-              * ((10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) ^ 2 / α
-                / (6400 * 200000 ^ 2)) * (Ci * Work.FTS.Nonlin.Xn α g) ^ 2 :=
-            mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hkey hCpos.le) (by positivity)
-        _ = (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) ^ 2
-              * (Ci * Work.FTS.Nonlin.Xn α g) ^ 2 / α := by
-            field_simp
-            try ring
-    calc Work.FTS.Nonlin.Xn α (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z))
-        = Real.sqrt (Work.Spaces.HkSq α 4
-            (fun z θ => aG θ * (Work.FM.Fstar z * Work.Construction.FK g z))) := rfl
-      _ ≤ Real.sqrt ((D * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α)) ^ 2) :=
-          Real.sqrt_le_sqrt hsqb
-      _ = D * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α) :=
-          Real.sqrt_sq (by positivity)
-  have hgs_eq : Work.FTS.Nonlin.N5gs α g = fun z θ =>
-      -(α / Work.Spaces.c α) * (aG θ * (Work.FM.Fstar z * Work.Construction.FK g z)) := by
-    funext z θ
-    rw [Work.FTS.Nonlin.N5gs, Work.Construction.Fstar, haG, Work.FM.Fstar]
-    field_simp
-    try ring
-  have hA : Work.FTS.Nonlin.Xn α (Work.FTS.Nonlin.N5gs α g)
-      ≤ 10 ^ 26 * (1 + Bdth) * (Ci + 1) * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) := by
-    rw [hgs_eq, Work.FTS.Nonlinear.Pieces.RowsN0Aux.Xn_const_mul]
-    have hAc : |-(α / Work.Spaces.c α)| ≤ 10 * α := by
-      rw [abs_neg, abs_of_nonneg (div_nonneg hα.le hcpos.le), div_le_iff₀ hcpos]
-      nlinarith [hc1, hα]
-    refine (mul_le_mul hAc hXar (Work.Spaces.HkNorm_nonneg α 4 _) (by positivity)).trans ?_
-    have hstep : (10 * α) * ((10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth))
-          * (Ci * Work.FTS.Nonlin.Xn α g / Real.sqrt α))
-        = (10 * (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) * Ci
-            * (α / Real.sqrt α)) * Work.FTS.Nonlin.Xn α g := by ring
-    rw [hstep, hAlphaSqrt]
-    have hcoef : 10 * (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) * Ci
-        ≤ 10 ^ 26 * (1 + Bdth) * (Ci + 1) := by
-      nlinarith [hBdthpos.le, hCipos]
-    calc (10 * (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) * Ci * Real.sqrt α)
-          * Work.FTS.Nonlin.Xn α g
-        = (10 * (10 ^ 9 * (6400 * 200000 ^ 2) * (1 + Bdth)) * Ci)
-            * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) := by ring
-      _ ≤ (10 ^ 26 * (1 + Bdth) * (Ci + 1))
-            * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) :=
-          mul_le_mul_of_nonneg_right hcoef (by positivity)
-  -- ## The `N₅^{sg}` estimate
-  set lam : ℝ := Ci / (2 * Bsin) with hlam
-  set cco : ℝ := 4 * Bsin * α / Ci with hcco
-  set asq : ℝ → ℝ := fun θ => lam * (-(Real.sin θ ^ 2)) with hasq
-  set hh : ℝ → ℝ → ℝ := fun z _ => cco * Work.Spaces.hKer z with hhh
-  have hlam_pos : 0 < lam := by rw [hlam]; positivity
-  have hSIA : Work.Spaces.SmoothInt (fun _ (θ : ℝ) => asq θ) := by
-    have h := smoothInt_const_mul (c := lam) hSinSmooth
-    have heq : (fun _ (θ : ℝ) => asq θ)
-        = fun (z : ℝ) (θ : ℝ) => lam * (-(Real.sin θ ^ 2)) := by
-      funext z θ; rw [hasq]
-    rw [heq]; exact h
-  have hSIH : Work.Spaces.SmoothInt hh := by
-    have heq : hh = fun z (_ : ℝ) => cco * Work.Spaces.hKer z := by
-      funext z θ; rw [hhh]
-    rw [heq]; exact smoothInt_const_hKer cco
-  have hAS0 : ∀ θ ∈ Work.Spaces.Iθ, |asq θ| ≤ Ci := by
-    intro θ hθ
-    have h2 : |-(Real.sin θ ^ 2)| ≤ Bsin := by
-      simpa using hSinLe θ hθ
-    have h3 : lam * Bsin = Ci / 2 := by rw [hlam]; field_simp
-    rw [hasq, abs_mul, abs_of_nonneg hlam_pos.le]
-    calc lam * |-(Real.sin θ ^ 2)| ≤ lam * Bsin :=
-          mul_le_mul_of_nonneg_left h2 hlam_pos.le
-      _ = Ci / 2 := h3
-      _ ≤ Ci := by linarith [hCipos]
-  have hAS1 : ∀ i : ℕ, 1 ≤ i → i ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
-      |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => asq θ') 0 θ| ≤ Ci * Real.sin (2 * θ) := by
-    intro i hi1 hi4 θ hθ
-    have h1 : Work.Spaces.DthIter i (fun _ (θ' : ℝ) => asq θ')
-        = fun z (θ' : ℝ) => lam * (Work.Spaces.DthIter i
-            (fun _ (θ' : ℝ) => -(Real.sin θ' ^ 2)) z θ') := by
-      rw [hasq]
-      exact Work.FTS.Nonlinear.Pieces.RowsN0Aux.DthIter_const_mul i lam
-        (fun _ (θ' : ℝ) => -(Real.sin θ' ^ 2))
-    rw [h1, abs_mul, abs_of_nonneg hlam_pos.le]
-    have h2 := hSinDth i hi1 hi4 θ hθ
-    have hsnn : 0 ≤ Real.sin (2 * θ) :=
-      Work.FTS.Nonlinear.RadialProd.sin_two_nonneg_of_mem_Iθ hθ
-    calc lam * |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => -(Real.sin θ' ^ 2)) 0 θ|
-        ≤ lam * (Bsin * Real.sin (2 * θ)) := mul_le_mul_of_nonneg_left h2 hlam_pos.le
-      _ = Ci / 2 * Real.sin (2 * θ) := by rw [hlam]; field_simp; try ring
-      _ ≤ Ci * Real.sin (2 * θ) := by nlinarith [hCipos, hsnn]
-  have hHmem : Work.Spaces.WlInfMem α 4 hh := by
-    have heq : hh = fun z (_ : ℝ) => cco * Work.Spaces.hKer z := by
-      funext z θ; rw [hhh]
-    rw [heq]
-    exact (Work.FTS.Nonlinear.Pieces.RNP.hKerConstWlInf α cco).1
-  have hwang := hN.wang α hIoc asq hh hSIA hSIH hAS0 hAS1 hHmem
-  have hFle : Work.Spaces.WlInf α 4 (fun z (θ : ℝ) => asq θ * hh z θ)
-      ≤ 800 * Bsin * Ci * α := by
-    have hWh : Work.Spaces.WlInf α 4 hh ≤ 200 * |cco| := by
-      have heq : hh = fun z (_ : ℝ) => cco * Work.Spaces.hKer z := by
-        funext z θ; rw [hhh]
-      rw [heq]
-      exact (Work.FTS.Nonlinear.Pieces.RNP.hKerConstWlInf α cco).2
-    have h1 : Ci * Ci * Work.Spaces.WlInf α 4 hh ≤ Ci * Ci * (200 * |cco|) :=
-      mul_le_mul_of_nonneg_left hWh (by positivity)
-    have h2 : Ci * Ci * (200 * |cco|) = 800 * Bsin * Ci * α := by
-      rw [hcco, abs_of_nonneg (by positivity : (0 : ℝ) ≤ 4 * Bsin * α / Ci)]
-      field_simp
-      try ring
-    linarith [hwang.2, h1, le_of_eq h2]
-  have hFsm : Work.FTS.LocData.SmoothQuad (fun z (θ : ℝ) => asq θ * hh z θ) := by
-    refine Work.FTS.LocData.smoothQuad_mul ?_ ?_
-    · refine Work.FTS.LocData.smoothQuad_of_snd ?_
-      exact contDiffOn_const.mul
-        (((Real.contDiff_sin (n := Work.Stability.smoothOrder)).pow 2).neg.contDiffOn)
-    · have heq : hh = fun z (_ : ℝ) => cco * Work.Spaces.hKer z := by
-        funext z θ; rw [hhh]
-      rw [heq]
-      have heq2 : (fun z (_ : ℝ) => cco * Work.Spaces.hKer z)
-          = fun z (_ : ℝ) => (cco / 2) * Work.FM.Fstar z := by
-        funext z θ; rw [Work.Spaces.hKer_apply, Work.FM.Fstar]; ring
-      rw [heq2]
-      show ContDiffOn ℝ Work.Stability.smoothOrder
-        (Function.uncurry (fun z (_ : ℝ) => (cco / 2) * Work.FM.Fstar z))
-        (Set.Ioi (-1) ×ˢ Set.Ioo 0 (Real.pi / 2))
-      have hun : Function.uncurry (fun z (_ : ℝ) => (cco / 2) * Work.FM.Fstar z)
-          = fun p : ℝ × ℝ => (cco / 2)
-              * Function.uncurry (fun z (_ : ℝ) => Work.FM.Fstar z) p := rfl
-      rw [hun]
-      exact contDiffOn_const.mul Work.FTS.Nonlinear.Pieces.smoothQuad_Fstar
-  have hwprod := hN.wprod α hIoc (fun z (θ : ℝ) => asq θ * hh z θ) g hFsm hwang.1 hreg4
-  have hsg_eq : Work.FTS.Nonlin.N5sg α g
-      = fun z θ => (asq θ * hh z θ) * g z θ := by
-    funext z θ
-    simp only [Work.FTS.Nonlin.N5sg, Work.FTS.Nonlinear.FstarPkg.FK_Fstar hα hα1,
-      hasq, hhh, hlam, hcco, Work.Spaces.hKer_apply]
-    field_simp
-    try ring
-  have hB : Work.FTS.Nonlin.Xn α (Work.FTS.Nonlin.N5sg α g)
-      ≤ (10 ^ 6 * Bsin * Ci ^ 2 + 1) * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) := by
-    rw [hsg_eq]
-    refine hwprod.2.trans ?_
-    have h2 : Ci * α ^ (-(1 / 2 : ℝ)) * Work.Spaces.WlInf α 4
-          (fun z (θ : ℝ) => asq θ * hh z θ) * Work.FTS.Nonlin.Xn α g
-        ≤ Ci * α ^ (-(1 / 2 : ℝ)) * (800 * Bsin * Ci * α)
-          * Work.FTS.Nonlin.Xn α g :=
-      mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_left hFle (mul_nonneg hCipos.le
-          (Real.rpow_nonneg hα.le _))) hX0
-    refine h2.trans ?_
-    have hpow : α ^ (-(1 / 2 : ℝ)) * α = Real.sqrt α := by
-      rw [Real.sqrt_eq_rpow]
-      have h := Real.rpow_add hα (-(1 / 2 : ℝ)) (1 : ℝ)
-      rw [show -(1 / 2 : ℝ) + 1 = 1 / 2 by norm_num, Real.rpow_one] at h
-      exact h.symm
-    have hstep : Ci * α ^ (-(1 / 2 : ℝ)) * (800 * Bsin * Ci * α)
-          * Work.FTS.Nonlin.Xn α g
-        = (Ci * (800 * Bsin * Ci) * (α ^ (-(1 / 2 : ℝ)) * α))
-          * Work.FTS.Nonlin.Xn α g := by ring
-    rw [hstep, hpow]
-    have hcoef : Ci * (800 * Bsin * Ci) ≤ 10 ^ 6 * Bsin * Ci ^ 2 + 1 := by
-      nlinarith [hCipos, hBsinpos.le]
-    calc (Ci * (800 * Bsin * Ci) * Real.sqrt α) * Work.FTS.Nonlin.Xn α g
-        = (Ci * (800 * Bsin * Ci)) * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) := by ring
-      _ ≤ (10 ^ 6 * Bsin * Ci ^ 2 + 1) * (Real.sqrt α * Work.FTS.Nonlin.Xn α g) :=
-          mul_le_mul_of_nonneg_right hcoef (by positivity)
-  have hnn : 0 ≤ Real.sqrt α * Work.FTS.Nonlin.Xn α g := by positivity
-  linarith [hA, hB, hnn]
 
 end Work.FTS.Nonlinear.Pieces.RNP
+end
+end

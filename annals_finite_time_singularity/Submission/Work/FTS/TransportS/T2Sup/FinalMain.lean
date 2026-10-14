@@ -1,35 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TransportS/T2Sup/FinalMain`: the weighted per-slot estimate (assembly)
-
-This module assembles the weighted per-slot estimate `SlotAbsProp` (`Final.SlotAbsProp`, the
-input of the reduction `Final.T2Slot_of_slotAbs` to the frozen `T2Slot`) from
-
-* the Leibniz expansion `FinalAux.Ssum_eq_leibniz` and the three-way split
-  `FinalAux.Ssum_eq_Smain_Srest_Sdel`;
-* `smainBound` (the `f · D_z(mixed b a g) · mixed b a g` summand: the radial integration by
-  parts `topSlotBound` when `a + b = 4`, the pointwise slot domination otherwise);
-* `srestBound` (the remaining Leibniz summands, pointwise dominated by `Maj1`);
-* `hDel : DelicateProp` for the `(0,3)` summand at the slot `(1,3)`, `q = γ`.
-
-All declarations here rest on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.TransportS.T2Sup.Final
 import Submission.Work.FTS.TransportS.T2Sup.FinalAux
-import Submission.Work.FTS.TransportS.T2Sup.PairBnd
 import Submission.Work.FTS.TransportS.T2Sup.GenSlot
-import Submission.Work.FTS.TransportS.T2Sup.absIntegralAddLe
-import Submission.Work.FTS.TransportS.T2Sup.integrableOnSliceDelicate
-import Submission.Work.FTS.TransportS.T2Sup.delicateMargInt
-import Submission.Work.FTS.TransportS.T2Sup.delicateBound
-import Submission.Work.FTS.TransportS.T2Sup.Main
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
 import Submission.Work.FTS.TransportS.T2Sup.smainBound
 import Submission.Work.FTS.TransportS.T2Sup.srestBound
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
 import Submission.Work.FTS.TransportS.t2SupF
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -48,71 +28,11 @@ set_option maxHeartbeats 4000000
 
 open Work.FTS.TransportS.SlotT2
 
-/-- The delicate marginal: the `θ`-integral of `canonW q · |Sdel| · |Y|`. -/
-def DelMarg (f g : ℝ → ℝ → ℝ) (a b : ℕ) (q : ℝ) (z : ℝ) : ℝ :=
-  ∫ θ in Work.Spaces.Iθ, canonW q z θ * |Sdel f g a b z θ| * |Work.Spaces.mixed b a g z θ|
 
-/-- The majorant of the `(Srest + Sdel)` marginal. -/
-def Marg (α : ℝ) (f g : ℝ → ℝ → ℝ) (a b : ℕ) (q Mf MK Mg : ℝ) (z : ℝ) : ℝ :=
-  6400 * (∫ θ in Work.Spaces.Iθ, Maj1 α f g Mf MK Mg z θ) + DelMarg f g a b q z
 
-theorem Marg_nonneg {α Mf MK Mg : ℝ} {f g : ℝ → ℝ → ℝ} {a b : ℕ} {q : ℝ} {z : ℝ}
-    (hM : 0 ≤ Mf + MK) (hMg : 0 ≤ Mg) : 0 ≤ Marg α f g a b q Mf MK Mg z := by
-  rw [Marg, DelMarg]
-  refine add_nonneg (mul_nonneg (by norm_num) ?_) ?_
-  · exact MeasureTheory.setIntegral_nonneg measurableSet_Icc fun θ hθ =>
-      Maj1_nonneg hM hMg z θ
-  · exact MeasureTheory.setIntegral_nonneg measurableSet_Icc fun θ hθ =>
-      mul_nonneg (mul_nonneg (canonW_nonneg hθ) (abs_nonneg _)) (abs_nonneg _)
 
 /-! ## The pointwise sup data -/
 
-theorem supData {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    {f g : ℝ → ℝ → ℝ} (hsf : Work.FTS.TransportS.T2SF α f) (hsg : Work.FTS.TransportS.T2SG α g)
-    {Cs Cl Cg : ℝ}
-    (hsupdz : ∀ (α : ℝ) (f : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
-      ∀ b : ℕ, b ≤ 2 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.DzIter b f z θ| ≤ Cs / Real.sqrt (Work.Spaces.gam α - 1)
-          * Work.FTS.Nonlin.Xn α f)
-    (hflat : ∀ (f : ℝ → ℝ → ℝ), Work.FTS.EllipticEst.SmoothOpen f → ∀ (K : ℝ), 0 ≤ K →
-      (∀ b i : ℕ, b + i ≤ 1 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed b i (Work.Spaces.pth f) z θ| ≤ K) →
-      ∀ a b : ℕ, 1 ≤ a → a + b ≤ 2 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed b a f z θ| ≤ Cl * Real.sin (2 * θ) * K)
-    (hsupQ : ∀ (α : ℝ) (f : ℝ → ℝ → ℝ) (b a : ℕ), 0 < α → α ≤ 1 → a + b ≤ 2 →
-      Work.FTS.LocData.SmoothQuad f → Work.Spaces.DecayAll 4 f → Work.Spaces.HkMem α 4 f →
-      ∀ z ∈ Set.Ioi 0, ∀ θ ∈ Set.Ioo 0 (π / 2),
-        |Work.Spaces.mixed b a f z θ| ≤ Cg / Real.sqrt (Work.Spaces.gam α - 1)
-          * Work.Spaces.HkNorm α 4 f) :
-    (∀ j : ℕ, j ≤ 2 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.DzIter j f z θ|
-          ≤ Cs / Real.sqrt (Work.Spaces.gam α - 1) * Work.FTS.Nonlin.Xn α f) ∧
-    (∀ j i : ℕ, 1 ≤ i → i + j ≤ 2 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed j i f z θ|
-          ≤ (Cl * Work.FTS.VocabO.CoefTh 1 f) * Real.sin (2 * θ)) ∧
-    (∀ j i : ℕ, i + j ≤ 2 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed j i g z θ|
-          ≤ Cg / Real.sqrt (Work.Spaces.gam α - 1) * Work.FTS.Nonlin.Xn α g) := by
-  have hFsm : Work.FTS.EllipticEst.SmoothOpen f := hsf.1
-  have hmf : Work.Spaces.HkMem α 4 f := hsf.2.1
-  have hGq : Work.FTS.LocData.SmoothQuad g := hsg.1.1
-  have hmg : Work.Spaces.HkMem α 4 g := hsg.1.2.1
-  have hmg5 : Work.Spaces.HkMem α 5 g := hsg.2.1
-  have hdec : Work.Spaces.DecayAll 4 g := hsg.2.2
-  refine ⟨fun j hj z θ hz hθ hθ2 => hsupdz α f hα hα1 hFsm hmf j hj z θ hz hθ hθ2,
-    ?_, ?_⟩
-  · intro j i hi hij z θ hz hθ hθ2
-    have hK : ∀ b i' : ℕ, b + i' ≤ 1 → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed b i' (Work.Spaces.pth f) z θ| ≤ Work.FTS.VocabO.CoefTh 1 f :=
-      fun b i' hbi z θ hz hθ hθ2 => Work.FTS.TransportS.t2SupF_pth_le_coefTh hsf hbi hz hθ hθ2
-    have h := hflat f hFsm (Work.FTS.VocabO.CoefTh 1 f) (coefTh_nonneg 1 f) hK i j hi hij
-      z θ hz hθ hθ2
-    calc |Work.Spaces.mixed j i f z θ|
-        ≤ Cl * Real.sin (2 * θ) * Work.FTS.VocabO.CoefTh 1 f := h
-      _ = (Cl * Work.FTS.VocabO.CoefTh 1 f) * Real.sin (2 * θ) := by ring
-  · intro j i hij z θ hz hθ hθ2
-    exact hsupQ α g j i hα hα1 hij hGq hdec hmg z hz θ ⟨hθ, hθ2⟩
 
 
 

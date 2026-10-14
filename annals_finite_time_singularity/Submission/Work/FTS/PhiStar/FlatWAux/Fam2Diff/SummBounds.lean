@@ -3,14 +3,13 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.PSeries
-import Submission.Work.FTS.PhiStar.Defs
-import Submission.Work.FTS.PhiStar.FlatWAux.Defs
 import Submission.Work.FTS.PhiStar.FlatWAux.Expansion
 import Submission.Work.FTS.PhiStar.FlatWAux.QmLopBound
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Radial.Defs
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
 import Submission.Work.FTS.VocabO
-import Submission.Work.Spaces.DthIter_mul
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.Spaces.dthU_Gam
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

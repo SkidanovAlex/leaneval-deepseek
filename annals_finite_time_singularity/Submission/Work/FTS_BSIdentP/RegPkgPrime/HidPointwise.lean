@@ -1,18 +1,3 @@
-/-
-# `Work.FTS.BSIdentP.hid_of_pointwise'` — route C with the corrected package `RegPkg'`
-
-Port of `Work.FTS.BSIdent.hid_of_pointwise` (the assembly of route C: Weyl applied to the
-difference `physVel (−physOmega) − v`, with the weak divergence and curl equations reduced to
-pointwise identities off the two coordinate planes) to the corrected regularity package
-`Work.FTS.RegPkgGal.RegPkg'`.
-
-The only mathematical input that changes is the analytic half of the `physVel` side: the four
-quantitative data of the negated vorticity slice now come from the `FireFix.Prime` vorticity
-lemmas, i.e. from `Work.FTS.BSIdentP.physVel_neg_physOmega_slice'`.  The rest of the proof is the
-original one; the ancillary lemmas of `BSIdent.hid_of_pointwise`
-(`isOpen_Uax`, `mem_Uax_of_coord`, `div_sub_field`, `crossR3_sub_right`, `vorticity_sub_field`)
-and `BSIdent.hid_of_weyl` are imported rather than restated.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -20,7 +5,7 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Trace
 import Submission.Work.FTS.BSIdent.hid_of_pointwise
-import Submission.Work.FTS_BSIdentP.RegPkgPrime.PhysVelNegSlice
+import Submission.Work.FTS_LocDatum3a.Basic
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

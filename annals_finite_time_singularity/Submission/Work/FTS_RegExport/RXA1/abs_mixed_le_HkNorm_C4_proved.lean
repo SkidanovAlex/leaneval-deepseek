@@ -1,52 +1,351 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `RX-A1` — the interior `L^∞`–`ℋ⁴` trade-off for a `C⁴` datum
-
-This is the proof of `Work.FTS_RegExport.abs_mixed_le_HkNorm_C4_proved`, the `C⁴` form of
-Elgindi's Corollary `SecondDerivativesBounded` (tex 1094):
-
-    |D_z^b D_θ^a f (z,θ)| ≤ 10 / √(γ-1) · |f|_{ℋ⁴}      (a + b ≤ 2, z > 0, 0 < θ < π/2),
-
-for a datum which is only `C⁴` on the *open* quadrant (`ContDiffOn ℝ 4 (uncurry f) Q0`) and
-honestly in `ℋ⁴` (`HkMem β 4 f`), with the boundary traces `BdryTraces β 4 f`.
-
-The chain is the one of `Work.FTS.RegPkgGal.Der.mixed_le_ten_sqrt_gam` /
-`Work.FTS.StrongEps.SupPort.mixedSup_pt_le_of_smoothOpen`, re-run with every occurrence of the
-`C^∞`-on-the-open-quadrant class `SmoothOpen` replaced by the finite-order hypothesis
-`ContDiffOn ℝ 4 (Function.uncurry f) Q0`:
-
-1. the angular Hardy inequality `Work.FTS_RegExport.C4.hardyTheta_slice_C1` at the `θ`-slice of
-   the slot `D_z^bD_θ^af` (its `θ → 0⁺` boundary value vanishes by `BdryTraces`, and the Hardy
-   integrand is `θ`-integrable by
-   `Work.FTS_RegExport.RXA1.integrableOn_pth_mixed_sq_sin_C4`);
-2. the identity `sin(2θ)·∂_θ(D_z^bD_θ^af) = D_z^bD_θ^{a+1}f` (`Dth_mixed_eq_C4`) rewrites the
-   Hardy integral as the `γ`-weighted angular slice of the next slot;
-3. the radial Hardy inequality `Work.FTS.H2.HQ.HardyZQ` on a.e. angular slice, whose a.e.
-   integrability is `Work.FTS_RegExport.C4.ae_integrableOn_mixed_sq_w_C4` and whose decay at
-   `z → ∞` is the radial clause of `BdryTraces`;
-4. Tonelli for the `ℋ⁴`-integrand (`HkSqSwap_C4`) bounds the resulting double integral by
-   `HkSq β 4 f` (`Work.FTS_RegExport.RXA1.mixed_T_le_HkSq_C4`);
-5. taking square roots (`Real.sqrt_sq_eq_abs`, `Real.sqrt_mul`) gives the stated constant.
-
-Everything here is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Comp
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.CategoryTheory.Abelian.Ext
+import Mathlib.MeasureTheory.Function.SpecialFunctions.Arctan
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Order.Group.Lattice
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS_RegExport.C4.HkSqSwap_C4
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.StrongEps.LocUnif.LocExtract
+import Submission.Work.FTS.StrongEps.LocUnif.mixed_rect_L2_bounds
+import Submission.Work.FTS.StrongEps.smoothOpen_slice_of_epsRHSP
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
 import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
-import Submission.Work.FTS_RegExport.C4.ae_integrableOn_mixed_sq_w_C4
-import Submission.Work.FTS_RegExport.C4.hardyTheta_slice_C1
-import Submission.Work.FTS_RegExport.RXA1.integrableOn_pth_mixed_sq_sin_C4
-import Submission.Work.FTS_RegExport.RXA1.mixed_T_le_HkSq_C4
-import Submission.Work.FTS.H2.SupMixedLeH4
-import Submission.Work.FTS.H2.HQ.HardyZQ
-import Submission.Work.FTS.H2.STMeas
-import Submission.Work.FTS.StrongEps.HkMem_of_tendsto
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.H2W.asliceMomentEq
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.XBallIterExistsAux.MajorantX =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.XBallIterExistsAux
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+
+/-! ## Measurability of the angular shift -/
+
+/-- `Real.tan` is measurable (it is `sin / cos`, so that Lean's totalised division gives a
+genuine value everywhere). -/
+theorem measurable_tan : Measurable Real.tan := by
+  rw [show Real.tan = fun x : ℝ => Real.sin x / Real.cos x from
+    funext Real.tan_eq_sin_div_cos]
+  exact Real.measurable_sin.div Real.measurable_cos
+
+/-- The angular shift `x ↦ thShift x.1 x.2` is (Borel) measurable. -/
+theorem measurable_thShift :
+    Measurable (fun x : ℝ × ℝ => Work.FTS.StrongEps.thShift x.1 x.2) := by
+  have hfun : (fun x : ℝ × ℝ => Work.FTS.StrongEps.thShift x.1 x.2)
+      = fun x : ℝ × ℝ => Real.arctan (Real.tan x.1 * Real.exp (-x.2)) := rfl
+  rw [hfun]
+  exact Real.measurable_arctan.comp
+    ((measurable_tan.comp measurable_fst).mul (Real.measurable_exp.comp measurable_snd.neg))
+
+/-- The angular shift with the second coordinate fixed is measurable. -/
+theorem measurable_thShift_right (p₂ : ℝ) :
+    Measurable (fun θ : ℝ => Work.FTS.StrongEps.thShift θ p₂) := by
+  have hfun : (fun θ : ℝ => Work.FTS.StrongEps.thShift θ p₂)
+      = fun θ : ℝ => Real.arctan (Real.tan θ * Real.exp (-p₂)) := rfl
+  rw [hfun]
+  exact Real.measurable_arctan.comp (measurable_tan.mul measurable_const)
+
+/-! ## The pushforward of `Jmu ε` under the angular shift is absolutely continuous -/
+
+/-- **Preimages of null sets under the angular shift are null.**  For fixed `p₂` the substitution
+bound `lintegral_thShift_le` applied to the indicator of `Z` gives
+`(volume.restrict Iθ) {θ | thShift θ p₂ ∈ Z} ≤ e^{3|p₂|} · volume Z = 0`; Fubini in the swapped
+order (angle inner, shift outer) then yields the statement. -/
+theorem thShift_preimage_null {ε : ℝ} {Z : Set ℝ} (hZ : MeasurableSet Z)
+    (hZ0 : (MeasureTheory.volume : MeasureTheory.Measure ℝ) Z = 0) :
+    Jmu ε {x : ℝ × ℝ | Work.FTS.StrongEps.thShift x.1 x.2 ∈ Z} = 0 := by
+  set A : Set (ℝ × ℝ) := {x | Work.FTS.StrongEps.thShift x.1 x.2 ∈ Z} with hA
+  have hAmeas : MeasurableSet A := hZ.preimage measurable_thShift
+  have hθmeas : ∀ p₂ : ℝ, MeasurableSet {θ : ℝ | Work.FTS.StrongEps.thShift θ p₂ ∈ Z} :=
+    fun p₂ => hZ.preimage (measurable_thShift_right p₂)
+  -- swap the product integral into the angle-inner order
+  have hswap : Jmu ε A = ∫⁻ p₂, (MeasureTheory.volume.restrict Work.Spaces.Iθ)
+      {θ : ℝ | Work.FTS.StrongEps.thShift θ p₂ ∈ Z}
+      ∂(MeasureTheory.volume.restrict (Set.Icc (-ε) ε)) := by
+    rw [Jmu]
+    rw [← MeasureTheory.lintegral_indicator_one
+      (μ := (MeasureTheory.volume.restrict Work.Spaces.Iθ).prod
+        (MeasureTheory.volume.restrict (Set.Icc (-ε) ε))) hAmeas]
+    rw [MeasureTheory.lintegral_prod_symm'
+      (μ := MeasureTheory.volume.restrict Work.Spaces.Iθ)
+      (ν := MeasureTheory.volume.restrict (Set.Icc (-ε) ε))
+      (f := A.indicator (1 : ℝ × ℝ → ENNReal))
+      (measurable_const.indicator hAmeas)]
+    refine MeasureTheory.lintegral_congr fun p₂ => ?_
+    rw [← MeasureTheory.lintegral_indicator_one
+      (μ := MeasureTheory.volume.restrict Work.Spaces.Iθ) (hθmeas p₂)]
+    refine MeasureTheory.lintegral_congr fun θ => ?_
+    by_cases h : Work.FTS.StrongEps.thShift θ p₂ ∈ Z <;>
+      simp [Set.indicator_of_mem, Set.indicator_of_notMem, hA, h]
+  -- each inner integral vanishes
+  have hzero : ∀ p₂ : ℝ, (MeasureTheory.volume.restrict Work.Spaces.Iθ)
+      {θ : ℝ | Work.FTS.StrongEps.thShift θ p₂ ∈ Z} = 0 := by
+    intro p₂
+    refine le_antisymm ?_ zero_le
+    calc (MeasureTheory.volume.restrict Work.Spaces.Iθ)
+          {θ : ℝ | Work.FTS.StrongEps.thShift θ p₂ ∈ Z}
+        = ∫⁻ θ, Set.indicator {θ : ℝ | Work.FTS.StrongEps.thShift θ p₂ ∈ Z}
+            (1 : ℝ → ENNReal) θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
+          (MeasureTheory.lintegral_indicator_one (hθmeas p₂)).symm
+      _ ≤ ∫⁻ θ, Set.indicator Z (1 : ℝ → ENNReal) (Work.FTS.StrongEps.thShift θ p₂)
+            ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
+          refine MeasureTheory.lintegral_mono fun θ => ?_
+          by_cases h : Work.FTS.StrongEps.thShift θ p₂ ∈ Z <;>
+            simp [Set.indicator_of_mem, Set.indicator_of_notMem, h]
+      _ ≤ ENNReal.ofReal (Real.exp (3 * |p₂|))
+            * ∫⁻ θ, Set.indicator Z (1 : ℝ → ENNReal) θ
+                ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
+          Work.FTS.StrongEps.JepsHkMem.lintegral_thShift_le
+            (fun φ => Set.indicator Z (1 : ℝ → ENNReal) φ) p₂
+      _ = 0 := by
+          have h2 : ∫⁻ θ, Set.indicator Z (1 : ℝ → ENNReal) θ
+              ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) = 0 := by
+            rw [MeasureTheory.lintegral_indicator_one
+              (μ := MeasureTheory.volume.restrict Work.Spaces.Iθ) hZ]
+            rw [MeasureTheory.Measure.restrict_apply hZ]
+            exact measure_mono_null Set.inter_subset_left hZ0
+          rw [h2, mul_zero]
+  rw [hswap]
+  simp only [hzero, lintegral_zero]
+
+/-- The complement of the open interval is null for the angular measure. -/
+theorem measure_compl_Ioo_Jmu {ε : ℝ} :
+    Jmu ε {x : ℝ × ℝ | x.1 ∉ Set.Ioo 0 (Real.pi / 2)} = 0 :=
+  MeasureTheory.ae_iff.mp ae_mem_Ioo_Jmu
+
+/-- The pushforward of `Jmu ε` under the angular shift is absolutely continuous with respect to
+the angular measure on `(0,π/2)`. -/
+theorem map_thShift_absolutelyContinuous {ε : ℝ} :
+    (MeasureTheory.Measure.map (fun x : ℝ × ℝ => Work.FTS.StrongEps.thShift x.1 x.2) (Jmu ε))
+      ≪ (MeasureTheory.volume.restrict (Set.Ioo 0 (Real.pi / 2))) := by
+  refine MeasureTheory.Measure.AbsolutelyContinuous.mk fun s hs hs0 => ?_
+  rw [MeasureTheory.Measure.map_apply measurable_thShift hs]
+  have hnull : (MeasureTheory.volume : MeasureTheory.Measure ℝ) (s ∩ Set.Ioo 0 (Real.pi / 2))
+      = 0 := by
+    rw [← MeasureTheory.Measure.restrict_apply hs]
+    exact hs0
+  refine measure_mono_null ?_ (measure_union_null
+    (thShift_preimage_null (Z := s ∩ Set.Ioo 0 (Real.pi / 2))
+      (MeasurableSet.inter hs measurableSet_Ioo) hnull)
+    measure_compl_Ioo_Jmu)
+  intro x hx
+  by_cases hx1 : x.1 ∈ Set.Ioo 0 (Real.pi / 2)
+  · exact Or.inl ⟨hx, Work.FTS.StrongEps.thShift_mem hx1⟩
+  · exact Or.inr hx1
+
+/-- The angular shift is quasi-measure-preserving, from `Jmu ε` to the angular measure. -/
+theorem quasiMeasurePreserving_thShift {ε : ℝ} :
+    MeasureTheory.Measure.QuasiMeasurePreserving
+      (fun x : ℝ × ℝ => Work.FTS.StrongEps.thShift x.1 x.2) (Jmu ε)
+      (MeasureTheory.volume.restrict (Set.Ioo 0 (Real.pi / 2))) :=
+  MeasureTheory.Measure.QuasiMeasurePreserving.mk measurable_thShift
+    map_thShift_absolutelyContinuous
+
+/-! ## The majorant is integrable -/
+
+/-- An `IntegrableOn` function on `(0,π/2)` has a measurable representative agreeing with it
+a.e. -/
+theorem exists_measurable_rep_of_integrableOn {G : ℝ → ℝ}
+    (hG : MeasureTheory.IntegrableOn G (Set.Ioo 0 (Real.pi / 2))) :
+    ∃ G' : ℝ → ℝ, Measurable G' ∧
+      G =ᵐ[MeasureTheory.volume.restrict (Set.Ioo 0 (Real.pi / 2))] G' :=
+  ⟨AEMeasurable.mk G hG.aemeasurable, AEMeasurable.measurable_mk _,
+    AEMeasurable.ae_eq_mk _⟩
+
+/-- The `ℋ¹`-majorant composed with the angular shift is integrable: after Tonelli (angle inner,
+shift outer) the substitution bound controls the angle integral by `e^{3|p₂|}` times the
+`L¹`-mass of the representative, and the outer integral is over the compact interval `[-ε,ε]`. -/
+theorem integrable_shift_of_integrableOn {G : ℝ → ℝ} {ε : ℝ}
+    (hG : MeasureTheory.IntegrableOn G (Set.Ioo 0 (Real.pi / 2))) :
+    MeasureTheory.Integrable
+      (fun x : ℝ × ℝ => G (Work.FTS.StrongEps.thShift x.1 x.2)) (Jmu ε) := by
+  obtain ⟨G', hG'meas, hG'ae⟩ := exists_measurable_rep_of_integrableOn hG
+  have hG'int : MeasureTheory.IntegrableOn G' (Set.Ioo 0 (Real.pi / 2)) := hG.congr hG'ae
+  -- finiteness of the `lintegral` of the measurable representative composed with the shift
+  have hfinite : ∫⁻ x : ℝ × ℝ, ENNReal.ofReal ‖G' (Work.FTS.StrongEps.thShift x.1 x.2)‖
+      ∂(Jmu ε) < ⊤ := by
+    rw [MeasureTheory.lintegral_congr fun x => by rw [Real.norm_eq_abs]]
+    have hprod : ∫⁻ x : ℝ × ℝ, ENNReal.ofReal |G' (Work.FTS.StrongEps.thShift x.1 x.2)|
+          ∂(Jmu ε)
+        = ∫⁻ p₂ in Set.Icc (-ε) ε, ∫⁻ θ in Work.Spaces.Iθ,
+            ENNReal.ofReal |G' (Work.FTS.StrongEps.thShift θ p₂)| := by
+      rw [Jmu]
+      exact MeasureTheory.lintegral_prod_symm'
+        (μ := MeasureTheory.volume.restrict Work.Spaces.Iθ)
+        (ν := MeasureTheory.volume.restrict (Set.Icc (-ε) ε)) _
+        (Measurable.ennreal_ofReal (hG'meas.comp measurable_thShift).abs)
+    rw [hprod]
+    set K : ENNReal := ∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |G' θ| with hK
+    have hKfin : K < ⊤ := by
+      rw [hK]
+      rw [show (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |G' θ|)
+          = ∫⁻ θ in Set.Ioo 0 (Real.pi / 2), ENNReal.ofReal |G' θ| from by
+        rw [show (MeasureTheory.volume.restrict Work.Spaces.Iθ : MeasureTheory.Measure ℝ)
+            = MeasureTheory.volume.restrict (Set.Ioo 0 (Real.pi / 2)) from
+          (MeasureTheory.Measure.restrict_congr_set MeasureTheory.Ioo_ae_eq_Icc).symm]]
+      rw [← MeasureTheory.ofReal_integral_eq_lintegral_ofReal hG'int.abs
+        (Filter.Eventually.of_forall fun θ => abs_nonneg _)]
+      exact ENNReal.ofReal_lt_top
+    have hinner : ∀ᵐ p₂ ∂(MeasureTheory.volume.restrict (Set.Icc (-ε) ε)),
+        (∫⁻ θ in Work.Spaces.Iθ,
+          ENNReal.ofReal |G' (Work.FTS.StrongEps.thShift θ p₂)|)
+          ≤ ENNReal.ofReal (Real.exp (3 * ε)) * K := by
+      filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with p₂ hp
+      have habs : |p₂| ≤ ε := abs_le.mpr hp
+      calc (∫⁻ θ in Work.Spaces.Iθ,
+            ENNReal.ofReal |G' (Work.FTS.StrongEps.thShift θ p₂)|)
+          ≤ ENNReal.ofReal (Real.exp (3 * |p₂|)) * K :=
+            Work.FTS.StrongEps.JepsHkMem.lintegral_thShift_le
+              (fun φ => ENNReal.ofReal |G' φ|) p₂
+        _ ≤ ENNReal.ofReal (Real.exp (3 * ε)) * K :=
+            mul_le_mul_of_nonneg_right
+              (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.mpr (by linarith))) zero_le
+    calc ∫⁻ p₂ in Set.Icc (-ε) ε, (∫⁻ θ in Work.Spaces.Iθ,
+            ENNReal.ofReal |G' (Work.FTS.StrongEps.thShift θ p₂)|)
+        ≤ ∫⁻ p₂ in Set.Icc (-ε) ε, ENNReal.ofReal (Real.exp (3 * ε)) * K :=
+          MeasureTheory.lintegral_mono_ae hinner
+      _ = ENNReal.ofReal (Real.exp (3 * ε)) * K * ENNReal.ofReal (2 * ε) := by
+          rw [MeasureTheory.lintegral_const, MeasureTheory.Measure.restrict_apply_univ,
+            Real.volume_Icc, show ε - (-ε) = 2 * ε by ring]
+      _ < ⊤ := ENNReal.mul_lt_top
+          (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hKfin) ENNReal.ofReal_lt_top
+  have hInt' : MeasureTheory.Integrable
+      (fun x : ℝ × ℝ => G' (Work.FTS.StrongEps.thShift x.1 x.2)) (Jmu ε) := by
+    refine ⟨(hG'meas.comp measurable_thShift).aestronglyMeasurable, ?_⟩
+    rw [MeasureTheory.hasFiniteIntegral_iff_norm]
+    simpa only [Real.norm_eq_abs] using hfinite
+  refine hInt'.congr ?_
+  exact MeasureTheory.ae_eq_comp measurable_thShift.aemeasurable
+    (map_thShift_absolutelyContinuous.ae_eq hG'ae.symm)
+
+/-- **The majorant is integrable.** -/
+theorem integrable_sinCos2_mul_shift_of_integrableOn {G : ℝ → ℝ} {ε : ℝ}
+    (hG : MeasureTheory.IntegrableOn G (Set.Ioo 0 (Real.pi / 2))) :
+    MeasureTheory.Integrable
+      (fun x : ℝ × ℝ => Work.Elliptic.sinCos2 x.1
+        * G (Work.FTS.StrongEps.thShift x.1 x.2)) (Jmu ε) := by
+  refine MeasureTheory.Integrable.mono' ((integrable_shift_of_integrableOn hG).norm) ?_ ?_
+  · have hcomp : AEMeasurable (fun x : ℝ × ℝ => G (Work.FTS.StrongEps.thShift x.1 x.2))
+        (Jmu ε) :=
+      AEMeasurable.comp_quasiMeasurePreserving hG.aemeasurable quasiMeasurePreserving_thShift
+    have hsin : Continuous (fun x : ℝ × ℝ => Work.Elliptic.sinCos2 x.1) := by
+      rw [show (fun x : ℝ × ℝ => Work.Elliptic.sinCos2 x.1)
+          = fun x : ℝ × ℝ => Real.sin x.1 * Real.cos x.1 ^ 2 from rfl]
+      fun_prop
+    exact (hsin.measurable.aemeasurable.mul hcomp).aestronglyMeasurable
+  · filter_upwards with x
+    rw [Real.norm_eq_abs, abs_mul]
+    have hsin : |Work.Elliptic.sinCos2 x.1| ≤ 1 := by
+      rw [Work.Elliptic.sinCos2, abs_mul]
+      calc |Real.sin x.1| * |Real.cos x.1 ^ 2| ≤ 1 * 1 :=
+            mul_le_mul (Real.abs_sin_le_one _)
+              (by rw [abs_of_nonneg (sq_nonneg _)]; exact Real.cos_sq_le_one x.1)
+              (abs_nonneg _) zero_le_one
+        _ = 1 := mul_one 1
+    calc |Work.Elliptic.sinCos2 x.1| * |G (Work.FTS.StrongEps.thShift x.1 x.2)|
+        ≤ 1 * |G (Work.FTS.StrongEps.thShift x.1 x.2)| :=
+          mul_le_mul_of_nonneg_right hsin (abs_nonneg _)
+      _ = ‖G (Work.FTS.StrongEps.thShift x.1 x.2)‖ := by
+          rw [one_mul, Real.norm_eq_abs]
+
+end Work.FTS.StrongEps.EpsE4Thr.XBallIterExistsAux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.LocUnif.exists_subseq_deriv4_of_uniform_H6 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# The `C⁴`-extraction of `Work.FTS.StrongEps.LocUnif.exists_subseq_deriv4_of_uniform_H6`
+
+This is the final assembly of the extraction: the four analytic inputs live in the sibling files
+of this directory (`mixed_rect_L2_bounds`, `mixed_morrey_step`, `sup_bound_of_holder_L2`,
+`exists_subseq_tendstoLocallyUniformlyOn_fin`), collected into the structure
+`Work.FTS.StrongEps.LocUnif.Inputs`; the extraction itself and the structural theorems
+(`limData_of_conv`, `contDiffOn_four_of_LimData`, `identify`) are in `LocExtract` / `LocTower`.
+-/
+
+noncomputable section
+
+open scoped Real Topology ContDiff
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.LocUnif
+
+set_option autoImplicit false
+
+/-- The four analytic inputs of the extraction, assembled from the sibling files of this
+directory. -/
+theorem inputs_of_children {α : ℝ} (hα : 0 < α) : Inputs α := by
+  refine { L2 := ?_, Mor := ?_, Sup := ?_, Ext := ?_ }
+  · intro a b c d ha hab hc hd
+    obtain ⟨C, hCpos, hCb⟩ := mixed_rect_L2_bounds ha hab hc hd
+    exact ⟨C, hCpos, fun F hF hmem j i hji => hCb α hα F hF hmem j i hji⟩
+  · intro χ F C C₀ M Km a b c d a' b' c' d' hmor hKmnn hα' hC₀nn hCpos hχC2 hχcs hχnn hχle1
+      hχone hχzero hMfd1 hMfd2 hsub hFsm hFmem hFbd hrect
+    exact mixed_morrey_step hmor hKmnn hα' hC₀nn hCpos hχC2 hχcs hχnn hχle1 hχone hχzero
+      hMfd1 hMfd2 hsub hFsm hFmem hFbd hrect
+  · intro M a b c d C₁ C₂ hab hcd hC₁ hC₂ hcont hholder hL2
+    exact sup_bound_of_holder_L2 (M := M) hab hcd hC₁ hC₂ hcont hholder hL2
+  · intro k U hU F hbdd heqc
+    exact exists_subseq_tendstoLocallyUniformlyOn_fin hU hbdd heqc
+
+theorem exists_subseq_deriv4_of_uniform_H6 {α B : ℝ} (hα : 0 < α)
+    {G : ℕ → ℝ → ℝ → ℝ}
+    (hsm : ∀ n : ℕ, ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry (G n))
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)))
+    (hmem : ∀ n : ℕ, Work.Spaces.HkMem α 6 (G n))
+    (hb : ∀ n : ℕ, Work.Spaces.HkNorm α 6 (G n) ≤ B) :
+    ∃ φ : ℕ → ℕ, StrictMono φ ∧ ∃ f : ℝ → ℝ → ℝ,
+      (∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2) →
+        TendstoUniformlyOn (fun n (p : ℝ × ℝ) => G (φ n) p.1 p.2) (fun p => f p.1 p.2)
+          Filter.atTop K) ∧
+      ContDiffOn ℝ 4 (Function.uncurry f) (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) ∧
+      ∀ (j i : ℕ), j + i ≤ 4 → ∀ K : Set (ℝ × ℝ), IsCompact K →
+        K ⊆ Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2) →
+        TendstoUniformlyOn (fun n (p : ℝ × ℝ) => Work.Spaces.mixed j i (G (φ n)) p.1 p.2)
+          (fun p => Work.Spaces.mixed j i f p.1 p.2) Filter.atTop K := by
+  have hsm' : ∀ n : ℕ, Work.FTS.EllipticEst.SmoothOpen (G n) := fun n =>
+    Work.FTS.EllipticEst.smoothOpen_of_forall (hsm n)
+  obtain ⟨φ, hφ, F, hF⟩ := exists_limData hα hsm' hmem hb (inputs_of_children hα)
+  obtain ⟨h1, h2, h3⟩ := conclusion_of_limData hsm' hF
+  exact ⟨φ, hφ, F 0 0, h1, h2, h3⟩
+
+end Work.FTS.StrongEps.LocUnif
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXA1.abs_mixed_le_HkNorm_C4_proved =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -65,175 +364,14 @@ set_option maxHeartbeats 800000
 
 /-! ## Finite-order slices of an open-quadrant datum -/
 
-/-- `sin (2θ) ≥ 0` on `Iθ`. -/
-private theorem sin_two_nonneg_Iθ_C4 {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
-    0 ≤ Real.sin (2 * θ) :=
-  Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
 
-/-- The `z`-slice of a finite-order `ContDiffOn` datum on a product set. -/
-private theorem contDiffOn_slice_z_fin_RXA1 {G : ℝ → ℝ → ℝ} {n : ℕ} {s t : Set ℝ}
-    (hG : ContDiffOn ℝ n (Function.uncurry G) (s ×ˢ t)) {θ : ℝ} (hθ : θ ∈ t) :
-    ContDiffOn ℝ n (fun z => G z θ) s :=
-  (hG.comp (((contDiffOn_id : ContDiffOn ℝ n (fun z : ℝ => z) s)).prodMk
-    (contDiffOn_const (c := θ))) (fun z hz => ⟨hz, hθ⟩)).congr (fun z _ => rfl)
 
-/-- The `θ`-slice of a finite-order `ContDiffOn` datum on a product set. -/
-private theorem contDiffOn_slice_θ_fin_RXA1 {G : ℝ → ℝ → ℝ} {n : ℕ} {s t : Set ℝ}
-    (hG : ContDiffOn ℝ n (Function.uncurry G) (s ×ˢ t)) {z : ℝ} (hz : z ∈ s) :
-    ContDiffOn ℝ n (fun θ => G z θ) t :=
-  (hG.comp ((contDiffOn_const (c := z)).prodMk
-    ((contDiffOn_id : ContDiffOn ℝ n (fun θ : ℝ => θ) t)))
-    (fun θ hθ => ⟨hz, hθ⟩)).congr (fun θ _ => rfl)
 
-/-- **The slot and its `θ`-derivative at the finite order `4`.**  For a datum `C⁴` on the open
-quadrant and `a + b ≤ 2`, the uncurried slot `D_z^bD_θ^af` is `C²` and its `θ`-derivative is
-`C¹` on the open quadrant.  (`a + b + 2 ≤ 4` is exactly the order consumed.) -/
-private theorem contDiffOn_mixed_C4 {f : ℝ → ℝ → ℝ}
-    (h4 : ContDiffOn ℝ 4 (Function.uncurry f) Work.FTS.EllipticEst.Q0) {b a : ℕ}
-    (hab : a + b ≤ 2) :
-    ContDiffOn ℝ 2 (Function.uncurry (Work.Spaces.mixed b a f)) Work.FTS.EllipticEst.Q0 ∧
-      ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.pth (Work.Spaces.mixed b a f)))
-        Work.FTS.EllipticEst.Q0 := by
-  have h1 : ContDiffOn ℝ (2 + b + a) (Function.uncurry f) Work.FTS.EllipticEst.Q0 :=
-    h4.of_le (by exact_mod_cast (by omega : 2 + b + a ≤ 4))
-  have h2 : ContDiffOn ℝ (2 + b) (Function.uncurry (Work.Spaces.DthIter a f))
-      Work.FTS.EllipticEst.Q0 :=
-    Work.FTS.StrongEps.contDiffOn_uncurry_DthIter_shift
-      Work.FTS.EllipticEst.isOpen_Q0 a (2 + b) h1
-  have h3 : ContDiffOn ℝ 2 (Function.uncurry (Work.Spaces.mixed b a f))
-      Work.FTS.EllipticEst.Q0 :=
-    Work.FTS.StrongEps.contDiffOn_uncurry_DzIter_shift
-      Work.FTS.EllipticEst.isOpen_Q0 b 2 h2
-  exact ⟨h3, Work.FTS.StrongEps.contDiffOn_uncurry_pth_fin
-    Work.FTS.EllipticEst.isOpen_Q0 h3⟩
 
-/-- **The radial slice of the next slot.**  For a datum `C⁴` on the open quadrant and
-`a + b ≤ 2`, the `z`-slice `z ↦ D_z^bD_θ^{a+1}f (z,σ)` at an interior angle is `C¹` on
-`(0,∞)` — the regularity needed by the radial Hardy inequality. -/
-private theorem contDiffOn_slice_succ_C4 {f : ℝ → ℝ → ℝ}
-    (h4 : ContDiffOn ℝ 4 (Function.uncurry f) Work.FTS.EllipticEst.Q0) {b a : ℕ}
-    (hab : a + b ≤ 2) {σ : ℝ} (hσ : σ ∈ Set.Ioo 0 (π / 2)) :
-    ContDiffOn ℝ 1 (fun z' => Work.Spaces.mixed b (a + 1) f z' σ) (Set.Ioi 0) := by
-  have h1 : ContDiffOn ℝ (1 + b + (a + 1)) (Function.uncurry f) Work.FTS.EllipticEst.Q0 :=
-    h4.of_le (by exact_mod_cast (by omega : 1 + b + (a + 1) ≤ 4))
-  have h2 : ContDiffOn ℝ (1 + b) (Function.uncurry (Work.Spaces.DthIter (a + 1) f))
-      Work.FTS.EllipticEst.Q0 :=
-    Work.FTS.StrongEps.contDiffOn_uncurry_DthIter_shift
-      Work.FTS.EllipticEst.isOpen_Q0 (a + 1) (1 + b) h1
-  have h3 : ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.mixed b (a + 1) f))
-      Work.FTS.EllipticEst.Q0 :=
-    Work.FTS.StrongEps.contDiffOn_uncurry_DzIter_shift
-      Work.FTS.EllipticEst.isOpen_Q0 b 1 h2
-  exact contDiffOn_slice_z_fin_RXA1 h3 hσ
 
 /-! ## The target -/
 
-theorem abs_mixed_le_HkNorm_C4_proved {β : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
-    {f : Work.FTS.Galerkin.Fn}
-    (h4 : ContDiffOn ℝ 4 (Function.uncurry f) Work.FTS.EllipticEst.Q0)
-    (hmem : Work.Spaces.HkMem β 4 f) (htr : Work.FTS.Nonlin.BdryTraces β 4 f)
-    (b a : ℕ) (hab : a + b ≤ 2) {z θ : ℝ} (hz : 0 < z) (hθ : 0 < θ) (hθ' : θ < Real.pi / 2) :
-    |Work.Spaces.mixed b a f z θ| ≤ 10 / Real.sqrt (Work.Spaces.gam β - 1) *
-      Work.Spaces.HkNorm β 4 f := by
-  have hγ1 : 0 < Work.Spaces.gam β - 1 := by rw [Work.Spaces.gam_sub_one]; linarith
-  -- finite-order regularity of the slot and of its `θ`-derivative on the open quadrant
-  obtain ⟨hg2, hpg1⟩ := contDiffOn_mixed_C4 h4 hab
-  have hzI : z ∈ Set.Ioi (0 : ℝ) := Set.mem_Ioi.mpr hz
-  have hθI : θ ∈ Set.Ioo 0 (Real.pi / 2) := ⟨hθ, hθ'⟩
-  -- the two `θ`-slices required by the `C¹` angular Hardy inequality
-  have hslice : ContDiffOn ℝ 1 (fun θ' => Work.Spaces.mixed b a f z θ')
-      (Set.Ioo 0 (π / 2)) :=
-    (contDiffOn_slice_θ_fin_RXA1 hg2 hzI).of_le (by norm_num)
-  have hpth : ContDiffOn ℝ 1 (fun θ' => Work.Spaces.pth (Work.Spaces.mixed b a f) z θ')
-      (Set.Ioo 0 (π / 2)) := contDiffOn_slice_θ_fin_RXA1 hpg1 hzI
-  -- the vanishing of the slice at `θ = 0⁺`, from the angular clause of `BdryTraces`
-  have h0 : Filter.Tendsto (fun θ' => Work.Spaces.mixed b a f z θ')
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
-    Work.FTS.H2.tendsto_nhdsGT_zero_of_traces β hβ
-      ((htr a b (by omega)).2 z hzI |>.1)
-  -- `θ`-integrability of the Hardy integrand, at the fixed `z`
-  have hAint : MeasureTheory.IntegrableOn (fun σ =>
-      (Work.Spaces.pth (Work.Spaces.mixed b a f) z σ) ^ 2
-        * (Real.sin (2 * σ)) ^ (2 - Work.Spaces.gam β)) Work.Spaces.Iθ :=
-    integrableOn_pth_mixed_sq_sin_C4 (α := β) hβ hβ1 h4 hmem b a hab hz
-  -- the angular Hardy inequality at `(z,θ)`
-  have hHT := Work.FTS_RegExport.C4.hardyTheta_slice_C1 (α := β) hβ hβ1
-    (g := Work.Spaces.mixed b a f) (z := z) hz hslice hpth h0 hAint θ hθI
-  set A : ℝ := ∫ σ in Work.Spaces.Iθ, (Work.Spaces.pth (Work.Spaces.mixed b a f) z σ) ^ 2
-    * (Real.sin (2 * σ)) ^ (2 - Work.Spaces.gam β) with hAdef
-  set B : ℝ → ℝ := fun σ => ∫ s in Work.Spaces.Iz,
-    (Work.Spaces.mixed (b + 1) (a + 1) f s σ) ^ 2 * (Work.Spaces.w s) ^ 2 with hBdef
-  set T : ℝ := ∫ σ in Work.Spaces.Iθ, (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β)) * B σ
-    with hTdef
-  -- the Hardy integrand is the `γ`-weighted square of the next slot, a.e. in `σ`
-  have hAeq : A = ∫ σ in Work.Spaces.Iθ, (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β))
-      * (Work.Spaces.mixed b (a + 1) f z σ) ^ 2 := by
-    rw [hAdef]
-    refine MeasureTheory.integral_congr_ae ?_
-    filter_upwards [Work.FTS.H2.ae_mem_Ioo_Iθ] with σ hσ
-    rw [Work.FTS.H2.pth_sq_mul_sin_eq β hβ hβ1 (Work.Spaces.mixed b a f) z σ
-      ⟨hσ.1.le, hσ.2.le⟩]
-    rw [Work.FTS_RegExport.C4.Dth_mixed_eq_C4 h4 b a (by omega) hz hσ]
-    ring
-  -- the radial Hardy inequality, a.e. in `σ`
-  have hHardyZ : ∀ᵐ σ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
-      (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β)) * (Work.Spaces.mixed b (a + 1) f z σ) ^ 2
-        ≤ (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β)) * B σ := by
-    filter_upwards [Work.FTS_RegExport.C4.ae_integrableOn_mixed_sq_w_C4 hβ h4 hmem
-        (b + 1) (a + 1) (by omega) (by omega), Work.FTS.H2.ae_mem_Ioo_Iθ] with σ hintσ hσ
-    have hint' : MeasureTheory.IntegrableOn
-        (fun s => (s * deriv (fun z' => Work.Spaces.mixed b (a + 1) f z' σ) s) ^ 2
-          * (Work.Spaces.w s) ^ 2) Work.Spaces.Iz :=
-      hintσ.congr (Filter.Eventually.of_forall fun s => by rfl)
-    have hcd : ContDiffOn ℝ 1 (fun z' => Work.Spaces.mixed b (a + 1) f z' σ)
-        (Set.Ioi 0) := contDiffOn_slice_succ_C4 h4 hab hσ
-    have hdec : Filter.Tendsto (fun z' => Work.Spaces.mixed b (a + 1) f z' σ) Filter.atTop
-        (nhds 0) :=
-      Work.FTS.H2.tendsto_atTop_zero_of_traces ((htr (a + 1) b (by omega)).1 σ hσ |>.2)
-    have hZQ := Work.FTS.H2.HQ.HardyZQ (fun z' => Work.Spaces.mixed b (a + 1) f z' σ)
-      hcd hdec hint' z (Set.mem_Ioi.mpr hz)
-    rw [hBdef]
-    exact mul_le_mul_of_nonneg_left hZQ
-      (Real.rpow_nonneg (sin_two_nonneg_Iθ_C4 ⟨hσ.1.le, hσ.2.le⟩) _)
-  -- Tonelli for the `ℋ⁴`-integrand: the radial-slice energy of the next slot is bounded by
-  -- `HkSq β 4 f`
-  have hTint : MeasureTheory.IntegrableOn (fun σ => (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β))
-      * B σ) Work.Spaces.Iθ :=
-    (Work.FTS_RegExport.RXA1.mixed_T_le_HkSq_C4 (α := β) hβ h4 hmem b a hab).1
-  have hTle : T ≤ Work.Spaces.HkSq β 4 f :=
-    (Work.FTS_RegExport.RXA1.mixed_T_le_HkSq_C4 (α := β) hβ h4 hmem b a hab).2
-  have hmono : (∫ σ in Work.Spaces.Iθ, (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam β))
-      * (Work.Spaces.mixed b (a + 1) f z σ) ^ 2) ≤ T := by
-    rw [hTdef]
-    refine MeasureTheory.integral_mono_of_nonneg ?_ hTint ?_
-    · refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun σ hσ => ?_)
-      exact mul_nonneg
-        (Real.rpow_nonneg (sin_two_nonneg_Iθ_C4 hσ) _) (sq_nonneg _)
-    · exact hHardyZ
-  have hc : (0 : ℝ) ≤ 100 / (Work.Spaces.gam β - 1) := div_nonneg (by norm_num) hγ1.le
-  have h1 : (Work.Spaces.mixed b a f z θ) ^ 2
-      ≤ (100 / (Work.Spaces.gam β - 1)) * Work.Spaces.HkSq β 4 f := by
-    calc (Work.Spaces.mixed b a f z θ) ^ 2
-        ≤ (100 / (Work.Spaces.gam β - 1)) * A := hHT
-      _ ≤ (100 / (Work.Spaces.gam β - 1)) * T :=
-          mul_le_mul_of_nonneg_left (hAeq.trans_le hmono) hc
-      _ ≤ (100 / (Work.Spaces.gam β - 1)) * Work.Spaces.HkSq β 4 f :=
-          mul_le_mul_of_nonneg_left hTle hc
-  have h2 : |Work.Spaces.mixed b a f z θ| ≤ Real.sqrt ((100 / (Work.Spaces.gam β - 1))
-      * Work.Spaces.HkSq β 4 f) := by
-    rw [← Real.sqrt_sq_eq_abs]
-    exact Real.sqrt_le_sqrt h1
-  have h3 : Real.sqrt ((100 / (Work.Spaces.gam β - 1)) * Work.Spaces.HkSq β 4 f)
-      = 10 / Real.sqrt (Work.Spaces.gam β - 1) * Work.Spaces.HkNorm β 4 f := by
-    rw [Real.sqrt_mul hc]
-    simp only [Work.Spaces.HkNorm]
-    congr 1
-    have h10 : (0 : ℝ) ≤ 10 / Real.sqrt (Work.Spaces.gam β - 1) :=
-      div_nonneg (by norm_num) (Real.sqrt_nonneg _)
-    rw [← Real.sqrt_sq h10]
-    congr 1
-    rw [div_pow, Real.sq_sqrt hγ1.le]
-    norm_num
-  exact le_trans h2 (le_of_eq h3)
 
 end Work.FTS_RegExport.RXA1
+end
+end

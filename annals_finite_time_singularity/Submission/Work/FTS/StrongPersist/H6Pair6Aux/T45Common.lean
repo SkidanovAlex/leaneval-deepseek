@@ -3,17 +3,17 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Defs
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45AslotLe
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Aux
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Aux2
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45AslotLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45AbndInts
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12slotLe7
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.leibniz_radial_mul
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3RowAux
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.Spaces.WlInf_terms
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMul6Cont
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.FkJets
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

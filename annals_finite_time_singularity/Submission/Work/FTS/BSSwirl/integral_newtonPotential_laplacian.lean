@@ -1,37 +1,3 @@
-/-
-# `∫ ⟪A ω, ΔΨ⟫ = -∫ ⟪ω, Ψ⟫` — the pairing identity for the vector Newtonian potential
-
-For a bounded, a.e. strongly measurable vorticity `ω` supported in `closedBall 0 R` and a smooth
-compactly supported test field `Ψ`, the vector Newtonian potential
-`A ω x = (4π)⁻¹ ∫ ‖x - y‖⁻¹ • ω y dy` of `Defs.lean` satisfies
-
-  `∫ x, ⟪A ω x, ΔΨ x⟫ = - ∫ x, ⟪ω x, Ψ x⟫`,
-
-i.e. `Δ(A ω) = -ω` in the weak (distributional) sense.  This is the second of the two inputs of
-the weak identity `∫ ⟪∇ × (∇ × A ω), Ψ⟫ = ∫ ⟪ω, Ψ⟫` used to prove the Biot–Savart law for swirl
-vorticity (see `NOTES.md`).
-
-## Proof
-
-The argument is the classical Fubini computation.
-
-* **Pointwise** (`integral_newtonPotential_inner_laplacian_dev`): for every `x`,
-  `⟪A ω x, ΔΨ x⟫ = (4π)⁻¹ ∫ y, ‖x - y‖⁻¹ · ⟪ΔΨ x, ω y⟫`, because the continuous linear map
-  `innerSL ℝ (ΔΨ x)` may be moved inside the Bochner integral defining `A ω x`.
-* **Fubini** (`integrable_prod_inv_norm_mul_laplacian_inner`): the joint integrand is dominated by
-  `M · sup ‖ΔΨ‖ · ‖x - y‖⁻¹` on the product of the compact support of `ΔΨ` with `closedBall 0 R`,
-  so it is `L¹(volume.prod volume)` by the Newtonian-kernel lemma `integrable_prod_inv_norm_mul`.
-* **Inner integral** (`integral_sub_inv_norm_mul_laplacian_inner`): for fixed `y`, translating
-  `x = y + z` turns `∫ x, ‖x - y‖⁻¹ · ⟪ΔΨ x, v⟫` into `∫ z, ‖z‖⁻¹ · Δ(inner-product of Ψ) z`,
-  which is `-4π ⟪Ψ y, v⟫` by the fundamental solution `∫ ‖z‖⁻¹ Δψ = -4π ψ(0)`
-  (`integral_inv_norm_mul_laplacian`).
-
-Adding the two sign conventions up gives the result.
-
-The lemmas about translation invariance of the Laplacian (`laplacian_comp_add_left`,
-`laplacian_inner_comp_add_left`) and of compact support and of the Lebesgue integral
-(`hasCompactSupport_comp_add_left`, `integral_inv_norm_sub_mul_shift`) are the bookkeeping.
--/
 import Mathlib.Analysis.InnerProductSpace.Laplacian
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.Inner
@@ -39,10 +5,10 @@ import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Work.FTS.BSSwirl.Defs
-import Submission.Work.FTS.BSSwirl.integral_inv_norm_mul_laplacian
 import Submission.Work.FTS.BSSwirl.integrable_prod_inv_norm_mul
-import Submission.Work.FTS.BSSwirl.integrable_inv_norm_smul
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -93,14 +59,6 @@ theorem laplacian_inner_comp_add_left {Ψ : R3 → R3} (hΨ : ∀ n : ℕ, ContD
   simp only [Function.comp_apply]
   rw [innerSL_apply_apply, real_inner_comm]
 
-/-- Compact support is preserved by translation of the argument. -/
-theorem hasCompactSupport_comp_add_left {Ψ : R3 → R3} (hΨ : HasCompactSupport Ψ) (y : R3) :
-    HasCompactSupport (fun w => Ψ (y + w)) := by
-  refine HasCompactSupport.of_support_subset_isCompact
-    (K := (fun w : R3 => w - y) '' tsupport Ψ)
-    (hΨ.isCompact.image (continuous_id.sub continuous_const)) ?_
-  intro w hw
-  exact ⟨y + w, subset_tsupport _ (Function.mem_support.mpr hw), by abel⟩
 
 /-- Translation invariance of the (Lebesgue) integral against the singular kernel `‖x - y‖⁻¹`. -/
 theorem integral_inv_norm_sub_mul_shift (y : R3) (F : R3 → ℝ) :

@@ -3,11 +3,10 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.bounds_rates_aux
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.slice_package_bounds
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

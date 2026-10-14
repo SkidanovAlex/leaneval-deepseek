@@ -1,17 +1,14 @@
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.RXR5.Basic
 import Submission.Work.FTS_RegExport.RXR5.R5PiecesF
-import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
-import Submission.Work.FTS_RegExport.RXT.weighted_system
-import Submission.Work.FTS_RegExport.RXR5L.Ftau_C1Jet
-import Submission.Work.FTS_RegExport.RXR5L.DthFtau_C1Jet
-import Submission.Work.FTS_RegExport.RXR5L.DzFtau_C1Jet
 import Submission.Work.FTS_RegExport.RXR5L.ProdAuxC
-import Submission.Work.FTS_RegExport.RXR5L.factor_gam_bounds
-import Submission.Work.FTS_RegExport.RXR5L.coef_bounds
 import Submission.Work.FTS_RegExport.RXR5L.coef_tau_lip
-import Submission.Work.FTS_RegExport.RXR5L.coef_diff
+import Submission.Work.FTS_RegExport.RXR5L.factor_gam_bounds
+import Submission.Work.FTS_RegExport.RXT.weighted_system
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
+import Submission.Work.FTS_StreamBdry.Inputs.ftau_Dz_cont
+import Submission.Work.FTS_StreamBdry.Inputs.ftau_cont
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_majorant
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

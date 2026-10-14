@@ -1,27 +1,13 @@
-/-
-# `RowDth.perTermDthMine` — the per-term bound of the `D_θ` row, assembled
-
-The five slot cases
-
-* `caseLe2Mine` (`i + j ≤ 2`), `caseTo4Mine` (`3 ≤ i + j ≤ 4`) — both in this directory;
-* `caseGe5` (`5 ≤ i + j`, not the exceptional weight), `caseExc` (the exceptional slot
-  `D_z⁵A · D_θ²f · D_z⁵D_θf` with the `γ`-leaf weight) — the siblings' lemmas;
-
-with the constant `C₁ + C₂ + C₃ + C₄ + 1` and the exceptional case reduced to
-`caseExc` by the forced slot identity `(a,b,i,j) = (1,5,0,5)`.
--/
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.Wgt
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.Wgt2
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.Integ
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.perTermLow
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.perTermMid
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.caseGe5Mine
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.caseExcMine
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SmainHon
+import Submission.Work.FTS.StrongPersist.SP6.EVz6
+import Submission.Work.FTS_MuLamOK.Conversion
+import Submission.Work.FTS_MuLamOK.RowReduction
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

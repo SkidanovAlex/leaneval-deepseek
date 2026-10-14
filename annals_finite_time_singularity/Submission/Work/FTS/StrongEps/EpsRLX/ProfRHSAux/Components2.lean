@@ -1,20 +1,424 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `ProfRHSAux/Components2` — the vanishing of `N₀`, `N`, `gRHS` and `profRHS`
-
-Continues `ProfRHSAux/Components`:
-
-* `tendsto_N0`: the six summands of `N₀ α (F_* + W) W` each carry a mixed derivative of `F_*`,
-  of `W` or of `F = F_* + W` (all of which vanish at the endpoint) or the factor `Γ`;
-* `tendsto_N`: the five summands of `N α (F_* + W) (Φs + Φg)` are bounded by the pointwise bounds
-  of `ProfRHSAux/Bounds` against a vanishing factor (`F`, `D_θF` or `D_zF`);
-* `tendsto_gRHS`, `tendsto_profRHS`: the assembly.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.Nonlinear.Open.Main
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.StrongEps.EpsRLX.LGTDiffClassC
 import Submission.Work.FTS.StrongEps.EpsRLX.ProfRHSAux.Components
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.bump_mixed_EpsSq_le
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.smoothOpen_epsWP
+import Submission.Work.FTS.StrongPersist.H6Row6.Basic
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_MuLamOK.RowReduction
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N_aux.ztrunc_classC =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N_aux
+
+open Work.FTS.Galerkin (Fn)
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+
+/-!
+# `N_aux.ZTruncClassC` — `ClassC` is invariant under the truncation `ztrunc`
+
+`ztrunc w z θ = if 0 < z then w z θ else 0` agrees with `w` everywhere on the half-plane
+`z > 0`, i.e. on the open set `Ioi 0 ×ˢ univ`.  Every field of `ClassC α w` is
+
+* an open-quadrant value (`reg : SmoothOpen`, and the values of `w`, of its `z`-slices
+  (`fsm`), of the ratio `w z θ / z` near `z = 0⁺` (`axis`), or of the nonlocal operator
+  `L₁₂` (`l12`), whose defining integral runs over `s > z ≥ 0`),
+* `HkMem α k` (integrals over `Iz = [0,∞)`, whose weight `w(z) = (1+z)²/z²` vanishes at
+  `z = 0`), or
+* a one-sided trace/limit (`BdryTraces`, `ThetaTraces`, taken at `z > 0`, as `z → 0⁺`,
+  as `z → ∞`, or as `θ → 0⁺`, `θ → π/2⁻`),
+
+and none of these sees the values of `w` at `z ≤ 0`.  The `norm` field is the exception in a
+different way: it is the only field that needs the *weak* vanishing hypothesis `hz` on `w`
+(for `θ ∉ (0,π/2)` and `z > 0`), since `ztrunc` does not modify the values at `z > 0`.
+
+The `θ`-part of the traces is free: `hw.norm` already gives `w z 0 = w z (π/2) = 0` for every
+`z`, and `ztrunc` agrees with `w` there.
+-/
+
+/-! ## The slots of `ztrunc` on the open half-plane -/
+
+/-- The mixed slots of `ztrunc w` and `w` agree at every point of the open half-plane
+`z > 0` (with no smoothness hypothesis: the derivative operators are local). -/
+theorem ztrunc_mixed_eq {w : Fn} (b a : ℕ) {z θ : ℝ} (hz : 0 < z) :
+    Work.Spaces.mixed b a (ztrunc w) z θ = Work.Spaces.mixed b a w z θ := by
+  have hV : IsOpen (Set.Ioi (0 : ℝ) ×ˢ (Set.univ : Set ℝ)) := isOpen_Ioi.prod isOpen_univ
+  have h : Set.EqOn (Function.uncurry (ztrunc w)) (Function.uncurry w)
+      (Set.Ioi (0 : ℝ) ×ˢ Set.univ) := fun p hp => ztrunc_of_pos hp.1
+  exact Work.FTS.RegPkgGal.mixed_congr_of_isOpen hV h b a (x := (z, θ))
+    ⟨by simpa using hz, trivial⟩
+
+/-! ## The boundary traces -/
+
+/-- Composition with `z ↦ z * (· * w z)²` preserves eventual equality (`w` the radial
+weight of `Work.Spaces`). -/
+private theorem eeq_mul_w_sq {l : Filter ℝ} {u v : ℝ → ℝ} (h : u =ᶠ[l] v) :
+    (fun z => z * (u z * Work.Spaces.w z) ^ 2) =ᶠ[l]
+      (fun z => z * (v z * Work.Spaces.w z) ^ 2) := by
+  filter_upwards [h] with z hz
+  rw [hz]
+
+/-- Composition with `θ ↦ sin(2θ)^{1-γ} * (·)²` preserves eventual equality. -/
+private theorem eeq_sin_gam_sq {α : ℝ} {l : Filter ℝ} {u v : ℝ → ℝ} (h : u =ᶠ[l] v) :
+    (fun θ => Real.sin (2 * θ) ^ (1 - Work.Spaces.gam α) * (u θ) ^ 2) =ᶠ[l]
+      (fun θ => Real.sin (2 * θ) ^ (1 - Work.Spaces.gam α) * (v θ) ^ 2) := by
+  filter_upwards [h] with θ hθ
+  rw [hθ]
+
+/-- `BdryTraces` is invariant under `ztrunc`: the four boundary directions only see the
+germ of the mixed slots along `z > 0`. -/
+theorem ztrunc_bdryTraces {α : ℝ} {k : ℕ} {w : Fn}
+    (h : Work.FTS.Nonlin.BdryTraces α k w) :
+    Work.FTS.Nonlin.BdryTraces α k (ztrunc w) := by
+  intro a b hab
+  obtain ⟨hA, hB⟩ := h a b hab
+  refine ⟨fun θ hθ => ⟨?_, ?_⟩, fun z hz0 => ⟨?_, ?_⟩⟩
+  · refine (Filter.tendsto_congr' (eeq_mul_w_sq ?_)).mpr (hA θ hθ).1
+    filter_upwards [self_mem_nhdsWithin] with z hz
+    rw [ztrunc_mixed_eq b a hz]
+  · refine (Filter.tendsto_congr' (eeq_mul_w_sq ?_)).mpr (hA θ hθ).2
+    filter_upwards [eventually_gt_atTop (0 : ℝ)] with z hz
+    rw [ztrunc_mixed_eq b a hz]
+  · refine (Filter.tendsto_congr' (eeq_sin_gam_sq ?_)).mpr (hB z hz0).1
+    filter_upwards [self_mem_nhdsWithin] with θ hθ
+    rw [ztrunc_mixed_eq b a hz0]
+  · refine (Filter.tendsto_congr' (eeq_sin_gam_sq ?_)).mpr (hB z hz0).2
+    filter_upwards [self_mem_nhdsWithin] with θ hθ
+    rw [ztrunc_mixed_eq b a hz0]
+
+/-- `ThetaTraces` is invariant under `ztrunc` (the `θ`-traces are taken at `z > 0`). -/
+theorem ztrunc_thetaTraces {α : ℝ} {k : ℕ} {w : Fn}
+    (h : Work.FTS.PhiStar.ThetaTraces α k w) :
+    Work.FTS.PhiStar.ThetaTraces α k (ztrunc w) := by
+  intro s hs z hz
+  obtain ⟨h1, h2⟩ := h s hs z hz
+  refine ⟨?_, ?_⟩
+  · refine (Filter.tendsto_congr' (eeq_sin_gam_sq ?_)).mpr h1
+    filter_upwards [self_mem_nhdsWithin] with θ hθ
+    rw [ztrunc_mixed_eq s 0 hz]
+  · refine (Filter.tendsto_congr' (eeq_sin_gam_sq ?_)).mpr h2
+    filter_upwards [self_mem_nhdsWithin] with θ hθ
+    rw [ztrunc_mixed_eq s 0 hz]
+
+/-! ## The angular moment, the normalisation, the axis condition and `L₁₂` -/
+
+/-- The angular moment `F_*(z) = ∫_θ w z θ sin θ cos²θ` of `ztrunc w` equals that of `w` for
+every `z > 0`. -/
+theorem ztrunc_Fstar {w : Fn} {z : ℝ} (hz : 0 < z) :
+    Work.Elliptic.Fstar (ztrunc w) z = Work.Elliptic.Fstar w z := by
+  rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar]
+  refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc ?_
+  intro θ hθ
+  simp only [ztrunc_of_pos hz]
+
+/-- `ztrunc w` is angularly normalised as soon as `w` vanishes off the open quadrant for
+`z > 0`. -/
+theorem ztrunc_normTh {w : Fn}
+    (hz : ∀ z θ : ℝ, 0 < z → θ ∉ Set.Ioo 0 (Real.pi / 2) → w z θ = 0) :
+    Work.FTS.ClassC.normTh (ztrunc w) = ztrunc w := by
+  funext z θ
+  by_cases hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)
+  · simp [Work.FTS.ClassC.normTh, hθ]
+  · rw [Work.FTS.ClassC.normTh_apply_of_not_mem hθ]
+    by_cases hzpos : 0 < z
+    · rw [ztrunc_of_pos hzpos, hz z θ hzpos hθ]
+    · exact (ztrunc_of_nonpos hzpos).symm
+
+/-- The axis condition transfers to `ztrunc`. -/
+theorem ztrunc_axis {w : Fn}
+    (h : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2),
+      Tendsto (fun z => w z θ / z) (𝓝[>] 0) (𝓝 0)) :
+    ∀ θ ∈ Set.Ioo 0 (Real.pi / 2),
+      Tendsto (fun z => ztrunc w z θ / z) (𝓝[>] 0) (𝓝 0) := by
+  intro θ hθ
+  refine (Filter.tendsto_congr' ?_).mpr (h θ hθ)
+  filter_upwards [self_mem_nhdsWithin] with z hz
+  rw [ztrunc_of_pos hz]
+
+/-- The zero mode of `L₁₂` is unchanged by the truncation: its defining integral runs over
+`s > z ≥ 0`, where `ztrunc w = w`. -/
+theorem ztrunc_L12 (w : Fn) {z : ℝ} (hz : 0 ≤ z) :
+    Work.Construction.L12 (ztrunc w) z = Work.Construction.L12 w z :=
+  Work.FTS.GalFields.RHS.L12f_congr_of_agreeOnQ hz
+    (fun _ _ hz' _ _ => ztrunc_of_pos hz')
+
+/-! ## The target -/
+
+/-- **`ClassC` is invariant under the truncation `ztrunc`.**
+
+`ztrunc w z θ = if 0 < z then w z θ else 0` agrees with `w` on the whole half-plane `z > 0`, and
+every field of `ClassC α w` is either an open-quadrant value (`reg : SmoothOpen`, `norm`,
+`fsm`, `axis`, `l12`), an integral over `Iz = [0,∞)` whose integrand vanishes at `z = 0`
+(`mem`, `mem8`, `mem10`), or a one-sided trace/limit taken at `z ∈ Ioi 0` or as `z → 0⁺`, `z → ∞`,
+`θ → 0⁺`, `θ → π/2⁻` (`tr`, `tr7`, `thTr`).  Note `hw.norm : normTh w = w` already gives
+`w z 0 = w z (π/2) = 0` for every `z`, so the `θ`-part of the fields is free. -/
+theorem ztrunc_classC {α : ℝ} {w : Work.FTS.Galerkin.Fn}
+    (hw : Work.FTS.ClassC.ClassC α w)
+    (hz : ∀ z θ : ℝ, 0 < z → θ ∉ Set.Ioo 0 (Real.pi / 2) → w z θ = 0) :
+    Work.FTS.ClassC.ClassC α
+      (Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N_aux.ztrunc w) := by
+  refine { norm := ztrunc_normTh hz, reg := smoothOpen_ztrunc hw.reg,
+           mem := HkMem_ztrunc hw.mem, mem8 := HkMem_ztrunc hw.mem8,
+           mem10 := HkMem_ztrunc hw.mem10,
+           tr := ztrunc_bdryTraces hw.tr, tr7 := ztrunc_bdryTraces hw.tr7,
+           fsm := ?_, axis := ztrunc_axis hw.axis,
+           l12 := by rw [ztrunc_L12 w le_rfl, hw.l12],
+           thTr := ztrunc_thetaTraces hw.thTr }
+  intro m
+  exact (hw.fsm m).congr (fun z hz' => ztrunc_Fstar hz')
+
+end Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N_aux
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.N4C.rowsNT =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.E4R3.N4C
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-- **The honest §8 row table, rows 8–26** (the `NRows2` obligation of the level-four
+nonlinear estimate), in the class-`C` context `CtxT`. -/
+theorem rowsNT (IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ)
+    {α₂ Ci Ct Ce Cs : ℝ} (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂)
+    (hE : Work.FTS.StrongEps.E4R3.N4C.N4ExtraH IP α₂ Ct) :
+    ∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
+      Work.FTS.StrongEps.E4R3.N4C.CtxT Cs Ce α₂ α g Φs Φg →
+      Work.FTS.VocabO2.NRows2 IP α K g Φs Φg := by
+  obtain ⟨K1, hK1, h1⟩ := rows.rowsN1 IP hN hE
+  obtain ⟨K2, hK2, h2⟩ := rows.rowsN2a IP hN hE
+  obtain ⟨K3, hK3, h3⟩ := rows.rowsN2b IP hN hE
+  obtain ⟨K4, hK4, h4⟩ := rows.rowsN3a IP hN hE
+  obtain ⟨K5, hK5, h5⟩ := rows.rowsN3b IP hN hE
+  obtain ⟨K6, hK6, h6⟩ := rows.rowsN4a IP hN hE
+  obtain ⟨K7, hK7, h7⟩ := rows.rowsN4b IP hN hE
+  obtain ⟨K8, hK8, h8⟩ := rows.rowsN5a IP hN hE
+  obtain ⟨K9, hK9, h9⟩ := rows.rowsN5b IP hN hE
+  set K : ℝ := K1 + K2 + K3 + K4 + K5 + K6 + K7 + K8 + K9 + 1 with hKdef
+  have hKpos : 0 < K := by rw [hKdef]; linarith
+  have hle1 : K1 ≤ K := by rw [hKdef]; linarith
+  have hle2 : K2 ≤ K := by rw [hKdef]; linarith
+  have hle3 : K3 ≤ K := by rw [hKdef]; linarith
+  have hle4 : K4 ≤ K := by rw [hKdef]; linarith
+  have hle5 : K5 ≤ K := by rw [hKdef]; linarith
+  have hle6 : K6 ≤ K := by rw [hKdef]; linarith
+  have hle7 : K7 ≤ K := by rw [hKdef]; linarith
+  have hle8 : K8 ≤ K := by rw [hKdef]; linarith
+  have hle9 : K9 ≤ K := by rw [hKdef]; linarith
+  refine ⟨K, hKpos, ?_⟩
+  intro α g Φs Φg hctx
+  obtain ⟨hr8, hr9, hr10, hr11⟩ := h1 hctx
+  obtain ⟨hr12, hr13⟩ := h2 hctx
+  obtain ⟨hr14, hr15⟩ := h3 hctx
+  obtain ⟨hr16, hr17⟩ := h4 hctx
+  obtain ⟨hr18, hr19⟩ := h5 hctx
+  obtain ⟨hr20, hr21⟩ := h6 hctx
+  obtain ⟨hr22, hr23⟩ := h7 hctx
+  have hr24 := h8 hctx
+  obtain ⟨hr25, hr26⟩ := h9 hctx
+  -- the four elementary factors occurring on the right-hand sides
+  have hX0 : 0 ≤ Work.FTS.Nonlin.Xn α g := Work.Spaces.HkNorm_nonneg α 4 g
+  have hA : 0 ≤ α ^ (-(1 / 2 : ℝ)) := Real.rpow_nonneg hctx.hα.le _
+  have hB : 0 ≤ α ^ (3 / 2 : ℝ) := Real.rpow_nonneg hctx.hα.le _
+  have hS : 0 ≤ Real.sqrt α := Real.sqrt_nonneg α
+  have hP : 0 ≤ α ^ 2 := pow_nonneg hctx.hα.le 2
+  have hQ : 0 ≤ α ^ 3 := pow_nonneg hctx.hα.le 3
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact hr8.trans (mul_le_mul_of_nonneg_right hle1 (mul_nonneg hA (pow_nonneg hX0 2)))
+  · exact hr9.trans (mul_le_mul_of_nonneg_right hle1 (mul_nonneg hS hX0))
+  · exact hr10.trans (mul_le_mul_of_nonneg_right hle1 (mul_nonneg hS hX0))
+  · exact hr11.trans (mul_le_mul_of_nonneg_right hle1 hP)
+  · exact hr12.trans (mul_le_mul_of_nonneg_right hle2 (mul_nonneg hA (pow_nonneg hX0 3)))
+  · exact hr13.trans (mul_le_mul_of_nonneg_right hle2 (mul_nonneg hB hX0))
+  · exact hr14.trans (mul_le_mul_of_nonneg_right hle3 (mul_nonneg hS (pow_nonneg hX0 2)))
+  · exact hr15.trans (mul_le_mul_of_nonneg_right hle3 hP)
+  · exact hr16.trans (mul_le_mul_of_nonneg_right hle4 (pow_nonneg hX0 3))
+  · exact hr17.trans (mul_le_mul_of_nonneg_right hle4 (mul_nonneg hB hX0))
+  · exact hr18.trans (mul_le_mul_of_nonneg_right hle5 (mul_nonneg hB (pow_nonneg hX0 2)))
+  · exact hr19.trans (mul_le_mul_of_nonneg_right hle5 hQ)
+  · exact hr20.trans (mul_le_mul_of_nonneg_right hle6 (mul_nonneg hA (pow_nonneg hX0 3)))
+  · exact hr21.trans (mul_le_mul_of_nonneg_right hle6 (mul_nonneg hB hX0))
+  · exact hr22.trans (mul_le_mul_of_nonneg_right hle7 (mul_nonneg hS (pow_nonneg hX0 2)))
+  · exact hr23.trans (mul_le_mul_of_nonneg_right hle7 hQ)
+  · exact hr24.trans (mul_le_mul_of_nonneg_right hle8 (pow_nonneg hX0 2))
+  · exact hr25.trans (mul_le_mul_of_nonneg_right hle9 (mul_nonneg hS hX0))
+  · exact hr26.trans (mul_le_mul_of_nonneg_right hle9 hP)
+
+end Work.FTS.StrongEps.E4R3.N4C
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsRHSPSup =====
+section
+
+set_option synthInstance.maxHeartbeats 400000 -- v435-synth
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 2000000
+
+/-- **A common `L₁₂`-zero-mode bound of the mollified right-hand side, in family form.** -/
+theorem epsWP_corr_le_fam {α T KW : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn}
+    {G : ℕ → Fam} {ε : ℕ → ℝ}
+    (hρ : IsSmoothKernel ρ) (hα : α ∈ Set.Ioc 0 1) (hε : ∀ n : ℕ, ε n ∈ Set.Ioc 0 1)
+    (hsm : ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T,
+      Work.FTS.EllipticEst.SmoothOpen (epsWP α ρ (ε n) Φs E (G n) s))
+    (hKW : ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T,
+      Work.Spaces.HkMem α 4 (epsWP α ρ (ε n) Φs E (G n) s) ∧
+        Work.FTS.Nonlin.Xn α (epsWP α ρ (ε n) Φs E (G n) s) ≤ KW) :
+    ∃ Cc : ℝ, 0 ≤ Cc ∧ ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T,
+      |Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0| ≤ Cc := by
+  obtain ⟨C, hC0, hZ⟩ := Work.FTS.OpenPkg.l12zero_field
+  obtain ⟨CJ, hCJ0, hSqJ⟩ := HkSq_Jeps_le ρ hρ.moll
+  refine ⟨C * Real.exp (CJ / 2) * max KW 0 + 1, by positivity, ?_⟩
+  intro n s hs
+  have hεn : 0 < ε n := (hε n).1
+  have hεn1 : ε n ≤ 1 := (hε n).2
+  have hexp1 : Real.exp (CJ * ε n / 2) ≤ Real.exp (CJ / 2) := by
+    refine Real.exp_le_exp.mpr ?_
+    nlinarith [hCJ0, hεn1]
+  obtain ⟨hmem, hbnd⟩ := hKW n s hs
+  have hsm' : ∀ m : ℕ, ContDiffOn ℝ m (Function.uncurry (epsWP α ρ (ε n) Φs E (G n) s)) Quad :=
+    (Work.FTS.EllipticEst.smoothOpen_iff_forall _).mp (hsm n s hs)
+  have hWmem : Work.Spaces.HkMem α 4 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) :=
+    HkMem_Jeps hρ.moll hα hεn hsm' hmem
+  have hWsm : Work.FTS.EllipticEst.SmoothOpen (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) :=
+    smoothOpen_Jeps ρ hρ hεn hsm'
+  have h1 := hZ α hα.1 hα.2 _ ⟨hWsm, hWmem⟩
+  have hKW0 : 0 ≤ KW := le_trans (Work.Spaces.HkNorm_nonneg α 4 _) hbnd
+  have hsqW : Work.Spaces.HkSq α 4 (epsWP α ρ (ε n) Φs E (G n) s) ≤ KW ^ 2 := by
+    have h : Work.Spaces.HkSq α 4 (epsWP α ρ (ε n) Φs E (G n) s)
+        = (Work.FTS.Nonlin.Xn α (epsWP α ρ (ε n) Φs E (G n) s)) ^ 2 := by
+      rw [Work.FTS.Nonlin.Xn, Work.Spaces.HkNorm,
+        Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 4 _)]
+    rw [h]
+    exact pow_le_pow_left₀ (Work.Spaces.HkNorm_nonneg α 4 _) hbnd 2
+  have hXnJ : Work.FTS.Nonlin.Xn α (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s))
+      ≤ Real.exp (CJ / 2) * max KW 0 := by
+    have hsq := hSqJ α hα 4 (ε n) hεn hεn1 _ hsm' hmem hWmem
+    have hkey : Work.Spaces.HkSq α 4 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s))
+        ≤ Real.exp (CJ * ε n) * KW ^ 2 :=
+      le_trans hsq (mul_le_mul_of_nonneg_left hsqW (Real.exp_pos _).le)
+    rw [Work.FTS.Nonlin.Xn, Work.Spaces.HkNorm]
+    calc Real.sqrt (Work.Spaces.HkSq α 4 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)))
+        ≤ Real.sqrt (Real.exp (CJ * ε n) * KW ^ 2) := Real.sqrt_le_sqrt hkey
+      _ = Real.exp (CJ * ε n / 2) * KW := by
+          rw [Real.sqrt_mul (Real.exp_pos _).le, Real.sqrt_sq hKW0, ← Real.exp_half]
+      _ ≤ Real.exp (CJ / 2) * max KW 0 :=
+          mul_le_mul hexp1 (le_max_left _ _) hKW0 (Real.exp_pos _).le
+  have h2 : |Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0|
+      ≤ C * (Real.exp (CJ / 2) * max KW 0) :=
+    le_trans h1 (mul_le_mul_of_nonneg_left hXnJ hC0.le)
+  have h3 : 0 ≤ C * (Real.exp (CJ / 2) * max KW 0) :=
+    mul_nonneg hC0.le (mul_nonneg (Real.exp_pos _).le (le_max_right _ _))
+  linarith [h2]
+
+/-- **A common sup bound for `epsRHSP` on a compact, in family form.** -/
+theorem epsRHSP_sup_le_fam {α C₀ Ce Cs T B Cc : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn}
+    {G : ℕ → Fam} {ε : ℕ → ℝ}
+    (hρ : IsSmoothKernel ρ) (hε : ∀ n : ℕ, ε n ∈ Set.Ioc 0 1)
+    {K K' : Set (ℝ × ℝ)} (hKc : IsCompact K) (hKQ : K ⊆ Work.FTS.EllipticEst.Q0)
+    (hKK' : K ⊆ K')
+    (hshift : ∀ n : ℕ, ∀ p ∈ K, ∀ q : ℝ × ℝ, |q.1| ≤ ε n → |q.2| ≤ ε n →
+      (zShift p.1 q.1, thShift p.2 q.2) ∈ K')
+    (hB0 : 0 ≤ B)
+    (hwp : ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T, ∀ p ∈ K',
+      |epsWP α ρ (ε n) Φs E (G n) s p.1 p.2| ≤ B)
+    (hCc0 : 0 ≤ Cc)
+    (hcorr : ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T,
+      |Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0| ≤ Cc) :
+    ∃ B' : ℝ, 0 < B' ∧ ∀ n : ℕ, ∀ s ∈ Set.Icc 0 T, ∀ p : ℝ × ℝ, p ∈ K →
+      |epsRHSP α ρ (ε n) Φs E (G n) s p.1 p.2| ≤ B' := by
+  obtain ⟨Cb, hCb0, hbump⟩ := exists_bound_mixed_bump K hKc
+  have hpz : 0 < pzNorm := PZeroAux.pzNorm_pos
+  refine ⟨B + (Cc / pzNorm) * Cb + 1, by positivity, ?_⟩
+  intro n s hs p hp
+  obtain ⟨hz, hθ0, hθ1⟩ := Work.FTS.EllipticEst.mem_Q0.mp (hKQ hp)
+  have hsplit : epsRHSP α ρ (ε n) Φs E (G n) s p.1 p.2
+      = Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+          * bump p.1 p.2 := by
+    rw [epsRHSP_eq_Pz_Jeps_epsWP, Pz_apply]
+  have hJ : |Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2| ≤ B :=
+    abs_Jeps_le_sup ρ hρ.moll (hε n).1 hz ⟨hθ0, hθ1⟩
+      (fun q hq1 hq2 => hwp n s hs (zShift p.1 q.1, thShift p.2 q.2) (hshift n p hp q hq1 hq2)) hB0
+  have hbu : |bump p.1 p.2| ≤ Cb := by
+    have h := hbump 0 0 (by norm_num) p hp
+    simpa [Work.Spaces.mixed, Work.Spaces.DzIter_zero, Work.Spaces.DthIter_zero] using h
+  have hcor : |(Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+      * bump p.1 p.2| ≤ (Cc / pzNorm) * Cb := by
+    rw [abs_mul]
+    have hL := hcorr n s hs
+    have hc : |Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm|
+        ≤ Cc / pzNorm := by
+      rw [abs_div, abs_of_pos hpz]
+      exact div_le_div_of_nonneg_right hL hpz.le
+    exact mul_le_mul hc hbu (abs_nonneg _) (div_nonneg hCc0 hpz.le)
+  rw [hsplit]
+  have htri : |Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+          * bump p.1 p.2|
+      ≤ |Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2|
+        + |(Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+          * bump p.1 p.2| := by
+    have h := abs_add_le (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2)
+      (-((Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+        * bump p.1 p.2))
+    simpa only [sub_eq_add_neg, abs_neg] using h
+  calc |Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+          * bump p.1 p.2|
+      ≤ |Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s) p.1 p.2|
+        + |(Work.Construction.L12 (Jeps ρ (ε n) (epsWP α ρ (ε n) Φs E (G n) s)) 0 / pzNorm)
+          * bump p.1 p.2| := htri
+    _ ≤ B + (Cc / pzNorm) * Cb := add_le_add hJ hcor
+    _ ≤ B + (Cc / pzNorm) * Cb + 1 := by linarith
+
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsRLX.ProfRHSAux.Components2 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -282,3 +686,5 @@ theorem tendsto_profRHS {α Ce Cs : ℝ} (hα : α ∈ Set.Ioc 0 1) {Φs W : Fn}
   simpa using h1.add h2
 
 end Work.FTS.StrongEps.EpsRLX.ProfRHSAux
+end
+end

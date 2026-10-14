@@ -1,15 +1,15 @@
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.GalBasis.cc.L12_add_of_HkMem
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.EllipticEst.UopHk.EllResid_slice_data
-import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
-import Submission.Work.FTS.LocData.L12_add_mul
-import Submission.Work.FM.Core2
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg_closed
-import Submission.Work.FTS.MeridianDyn.Bridge.Pieces.L12dens_Fstar_integrableOn
+import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,57 +1,183 @@
-/-
-# `Work.FTS.MeridianDyn.Defs` — the dynamic meridian bridge: vocabulary
-
-This directory (`Submission/Work/FTS/MeridianDyn/`, namespace `Work.FTS.MeridianDyn`) is the
-**dynamic meridian bridge** of the Elgindi finite-time-singularity project: it carries the passage
-from the *fake-time* (dynamically rescaled) profile equation of the modulation analysis to the
-**meridian scalar equation** in the physical variables `(r, z, t)`,
-
-  `∂ₜW + (∂_zψ)·∂_rW + ( -(ψ/r) - ∂_rψ )·∂_zW = ((∂_zψ)/r)·W`   (`r > 0`),
-
-whose residual is `Work.CoreResiduals.meridianResid`.  It generalises the *constant-rate* chain-rule
-reduction `Work.CoreResiduals.meridianEq_of_dynEqConst` / `meridianResid_algebra` to the
-*dynamically rescaled* ansatz of node N5/N7:
-
-  `W(r,z,t) = a(t)·F(ρ(r,z)^p / b(t), Θ(r,z), σ(t))`,   `ψ(r,z,t) = ρ(r,z)²·a(t)·Φ(…, σ(t))`,
-
-where `ρ = √(r²+z²)`, `Θ = arctan(z/r)`, `a` is the amplitude (`a = A_v⁻¹`), `b` the space scale
-(`b = B`), and `σ` the fake-time clock (in the reconstruction, `σ = clockInv C`).
-
-## The two equations
-
-* the **meridian equation** (`Work.CoreResiduals.MeridianEq`, recovered here on a time window as
-  `MeridianEqOn`);
-* the **dynamic profile equation** `DynEqF α μ F Φ`, i.e. the paper's modulation equation in the
-  `(z,θ,τ)` variables at the *τ-dependent* rate `μ` (written `(E)` in the design
-  `Submission/Work/FTS/FTS_PHYS_BRIDGE.md` §3, item 9):
-
-  `∂_τ F + (1+μ(τ))·F + (1-μ(τ))·D_z F + UVR α F Φ = 0`   on the open quadrant, `τ > 0`.
-
-The passage from the fake-time `g`-equation `Galerkin.IsDynEqOn` to `(E)` is `dynEqF_of_isDynEqOn`
-(module `DynEqF`); the passage from `(E)` to the meridian equation is `meridianEq_of_dynEq`
-(module `Main`), through the pointwise chain-rule identity `meridianResid_dyn` (module `ResidDyn`).
-
-## Conventions (pinned here, once)
-
-* `p` is the **profile exponent** `ρ^p` of the self-similar ansatz; in the reconstruction
-  `p = Work.FTS.Regularity.pExp α = 3α` (`Work.ConstructionInstance.profExp`).  The same symbol is
-  the exponent parameter of `Work.Construction.UVR` (the paper's `α`-slot), so all statements below
-  take a *single* exponent, always called `α` in the `UVR`/`MainLHS`/`LΓ^T` slot and `p` in the
-  `ρ^p` slot; they coincide in every application.
-* the factor `2` of the clock: the physical amplitude is `A_v = A` with `A' = -(1+μ)A`, and the
-  clock satisfies `σ' = 1/C.A`, `C.A = 2·A_v` (correction 1 of the design §0/§3).  With these two
-  normalisations the meridian identity reads `resid = a·σ'·(E)` (module `ResidDyn`).
-* the *sign* convention of correction 1: the physical vorticity is `ω = −physOmega`, i.e. the
-  meridian profile is `−merProfile`; every statement of this directory is stated for the
-  `physOmega` sign and transported by linearity (`MeridianEqOn.neg_left`).
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
+import Mathlib.Topology.Separation.CompletelyRegular
 import Submission.Work.CoreResiduals.SelfSimReduction
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.Galerkin.Defs
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS.Physical.Meridian
-import Submission.Work.FTS.Physical.Clock.clockInv
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.CutFactorFderivZero
+-- ===== merged: Submission.Work.FTS.BSIdent.Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open FiniteTimeSingularity Set MeasureTheory
+open scoped Topology
+
+namespace Work.FTS.BSIdent
+
+set_option autoImplicit false
+
+/-- `ℝ³`, definitionally `Work.Cyl.R3`, `Work.LWP.R3` and `Work.FTS.Physical.R3`. -/
+abbrev R3 : Type := EuclideanSpace ℝ (Fin 3)
+
+/-- A family of self-similar profiles `(z,θ,τ) ↦ Φ z θ τ`. -/
+abbrev Fam : Type := ℝ → ℝ → ℝ → ℝ
+
+/-! ## The domain `Uax` of the identification -/
+
+/-- **The domain of the identification**: the complement of the axis `r = 0` and of the plane
+`x₃ = 0`.  On it the polar coordinates `(ρ,θ)` are differentiable, `θ ≠ 0` (so the odd extension
+of the profile is in its smooth branch) and `ρ > 0` (so `z = ρ^p/B > 0` lies in the open quadrant
+of the elliptic law). -/
+def Uax : Set R3 := {x | x 2 ≠ 0 ∧ x 0 ^ 2 + x 1 ^ 2 ≠ 0}
+
+
+/-- The polar radius is positive on `Uax`. -/
+theorem radial_pos_of_mem_Uax {x : R3} (h : x ∈ Uax) : 0 < Work.Cyl.radial x := by
+  rw [Work.Cyl.radial_pos_iff]
+  by_contra hcon
+  push_neg at hcon
+  exact h.2 (by rw [hcon.1, hcon.2]; norm_num)
+
+/-- The axial coordinate is nonzero on `Uax`. -/
+theorem axial_ne_zero_of_mem_Uax {x : R3} (h : x ∈ Uax) : Work.Cyl.axial x ≠ 0 := h.1
+
+/-- On `Uax`, `θ(x) ≠ 0`. -/
+theorem theta_ne_zero_of_mem_Uax {x : R3} (h : x ∈ Uax) : Work.Cyl.theta x ≠ 0 := by
+  have hr : 0 < Work.Cyl.radial x := radial_pos_of_mem_Uax h
+  have hdiv : Work.Cyl.axial x / Work.Cyl.radial x ≠ 0 := div_ne_zero h.1 (ne_of_gt hr)
+  intro hθ
+  exact hdiv (Real.arctan_eq_zero_iff.mp hθ)
+
+
+/-- On `Uax` the polar radius `ρ(x) = ‖x‖` is positive. -/
+theorem rho_pos_of_mem_Uax {x : R3} (h : x ∈ Uax) : 0 < Work.Cyl.rho x := by
+  rw [Work.Cyl.rho, Real.sqrt_pos]
+  have := radial_pos_of_mem_Uax h
+  have hsq := Work.Cyl.radial_sq x
+  nlinarith [sq_nonneg (Work.Cyl.axial x)]
+
+
+/-- **Every coordinate hyperplane of `ℝ³` is Lebesgue-null.** -/
+theorem volume_coord_eq_zero (i : Fin 3) (c : ℝ) :
+    volume {x : R3 | x i = c} = 0 := by
+  have hmap : Measure.map (WithLp.toLp 2 : (Fin 3 → ℝ) → R3) volume = volume :=
+    (PiLp.volume_preserving_toLp (Fin 3)).map_eq
+  rw [← hmap, MeasureTheory.Measure.map_apply (by fun_prop) (by measurability)]
+  have h : (WithLp.toLp 2 : (Fin 3 → ℝ) → R3) ⁻¹' {x : R3 | x i = c}
+      = {v : Fin 3 → ℝ | v i = c} := by
+    ext v; simp
+  rw [h, MeasureTheory.volume_pi]
+  exact MeasureTheory.Measure.pi_hyperplane (fun _ : Fin 3 => (volume : Measure ℝ)) i c
+
+/-- The complement of `Uax` (the axis together with the plane `x₃ = 0`) is Lebesgue-null. -/
+theorem volume_Uax_compl : volume (Uaxᶜ : Set R3) = 0 := by
+  have hsub : (Uaxᶜ : Set R3) ⊆ {x : R3 | x 2 = 0} ∪ {x : R3 | x 0 = 0} := by
+    intro x hx
+    by_cases h1 : x 2 = 0
+    · exact Or.inl h1
+    · right
+      have h2 : x 0 ^ 2 + x 1 ^ 2 = 0 := not_not.mp (fun hc => hx ⟨h1, hc⟩)
+      have hA : x 0 ^ 2 = 0 := by nlinarith [sq_nonneg (x 1)]
+      simpa using (sq_eq_zero_iff.mp hA)
+  exact measure_mono_null hsub
+    (measure_union_null (volume_coord_eq_zero 2 0) (volume_coord_eq_zero 0 0))
+
+/-- Almost every point of `ℝ³` lies in `Uax`. -/
+theorem ae_mem_Uax : ∀ᵐ x ∂(volume : Measure R3), x ∈ Uax := by
+  rw [MeasureTheory.ae_iff]
+  exact volume_Uax_compl
+
+/-! ## The polar dictionary at a point -/
+
+/-- `ρ` in the point coordinates is `rhoP` in the meridian coordinates. -/
+theorem rhoP_radial_axial (x : R3) :
+    Work.Cyl.rhoP (Work.Cyl.radial x) (Work.Cyl.axial x) = Work.Cyl.rho x := by
+  rw [Work.Cyl.rhoP, Work.Cyl.rho, Work.Cyl.radial_sq]
+
+/-- `θ` is `thetaP` in the meridian coordinates. -/
+theorem thetaP_radial_axial (x : R3) :
+    Work.Cyl.thetaP (Work.Cyl.radial x) (Work.Cyl.axial x) = Work.Cyl.theta x := rfl
+
+/-! ## The odd extension in `θ` -/
+
+/-- **The odd extension in `θ`** of a family `Φ`: `Φ̂(z,θ,τ) = Φ(z,θ,τ)` for `θ ≥ 0` and
+`Φ̂(z,θ,τ) = −Φ(z,−θ,τ)` for `θ < 0`.  This is the extension for which the physical vorticity
+profile of `Work.ConstructionInstance` (`profile p g`, the odd extension of `F_* + g`) is the
+source, and it is the `Φ̂` of the design's `merPsi`. -/
+def PhiOdd (Φ : Fam) : Fam := fun z θ τ => if 0 ≤ θ then Φ z θ τ else -(Φ z (-θ) τ)
+
+theorem PhiOdd_of_nonneg {Φ : Fam} {z θ τ : ℝ} (h : 0 ≤ θ) :
+    PhiOdd Φ z θ τ = Φ z θ τ := ite_eq_left h
+
+theorem PhiOdd_of_neg {Φ : Fam} {z θ τ : ℝ} (h : ¬ 0 ≤ θ) :
+    PhiOdd Φ z θ τ = -(Φ z (-θ) τ) := ite_eq_right h
+
+/-- **The odd extension is odd in `θ`.** -/
+theorem PhiOdd_neg_theta {Φ : Fam} (h0 : ∀ z τ, Φ z 0 τ = 0) (z θ τ : ℝ) :
+    PhiOdd Φ z (-θ) τ = -(PhiOdd Φ z θ τ) := by
+  by_cases h : 0 ≤ θ
+  · by_cases h' : 0 ≤ -θ
+    · have hθ0 : θ = 0 := le_antisymm (by linarith) h
+      subst hθ0
+      simp [PhiOdd_of_nonneg le_rfl, h0 z τ]
+    · rw [PhiOdd_of_neg h', PhiOdd_of_nonneg h, neg_neg]
+  · have hpos : 0 ≤ -θ := by linarith
+    rw [PhiOdd_of_neg h, PhiOdd_of_nonneg hpos, neg_neg]
+
+
+/-! ## The self-similar and the meridian stream function -/
+
+/-- **The self-similar stream function** at fake time `τ`: `w θ ↦ A(τ)⁻¹ · Φ̂(w,θ,τ)`.  This is
+the function whose `bslOp p` is (up to the odd extension) the profile `F(·,·,τ)`, by the elliptic
+law. -/
+noncomputable def ssPsi (A : ℝ → ℝ) (Φ : Fam) (τ : ℝ) : ℝ → ℝ → ℝ :=
+  fun w θ => (A τ)⁻¹ * PhiOdd Φ w θ τ
+
+
+/-- **The meridian stream function of the reconstruction** (the design's `merPsi`):
+
+  `merPsi α A B Φ C r z t = ρ(r,z)² · A(τ(t))⁻¹ · Φ̂(ρ(r,z)^{3α}/B(τ(t)), θ(r,z), τ(t))`,
+
+with `τ(t) = clockInv C t`, `ρ(r,z) = √(r²+z²)`, `θ(r,z) = arctan(z/r)` and `Φ̂` the odd
+extension in `θ` of `Φ`.  It is the stream function of the reconstructed velocity field
+`psiField (merPsi … · t)`: `vorticity (psiField (merPsi … · t)) = −physOmega α A B g C · t` (this
+is `Work.FTS.BSIdent.vorticity_psiField_merPsi`), whence `physVel (−physOmega …) = psiField …`
+by Biot–Savart inversion. -/
+noncomputable def merPsi (α : ℝ) (A B : ℝ → ℝ) (Φ : Fam) (C : Physical.PhysClock) :
+    ℝ → ℝ → ℝ → ℝ :=
+  fun r z t => Work.Cyl.rhoP r z ^ 2 * (A (Physical.clockInv C t))⁻¹
+    * PhiOdd Φ (Work.Cyl.rhoP r z ^ Work.FTS.Regularity.pExp α / B (Physical.clockInv C t))
+        (Work.Cyl.thetaP r z) (Physical.clockInv C t)
+
+theorem merPsi_apply (α : ℝ) (A B : ℝ → ℝ) (Φ : Fam) (C : Physical.PhysClock) (r z t : ℝ) :
+    merPsi α A B Φ C r z t = Work.Cyl.rhoP r z ^ 2 * (A (Physical.clockInv C t))⁻¹
+      * PhiOdd Φ (Work.Cyl.rhoP r z ^ Work.FTS.Regularity.pExp α / B (Physical.clockInv C t))
+          (Work.Cyl.thetaP r z) (Physical.clockInv C t) := rfl
+
+
+
+
+end Work.FTS.BSIdent
+end
+end
+-- ===== merged: Submission.Work.FTS.MeridianDyn.Defs =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -237,9 +363,6 @@ theorem merProfileDyn_eq (α : ℝ) (A B : ℝ → ℝ) (g : Fam)
     (C : Work.FTS.Physical.PhysClock) :
     merProfileDyn α A B g C = Work.FTS.Physical.merProfile α A B g C := rfl
 
-theorem merProfileDyn_apply (α : ℝ) (A B : ℝ → ℝ) (g : Fam)
-    (C : Work.FTS.Physical.PhysClock) (r z t : ℝ) :
-    merProfileDyn α A B g C r z t = Work.FTS.Physical.merProfile α A B g C r z t := rfl
 
 /-- `merProfileDyn` is the general ansatz at the profile `profFamOdd`. -/
 theorem merProfileDyn_apply' (α : ℝ) (A B : ℝ → ℝ) (g : Fam)
@@ -251,16 +374,6 @@ theorem merProfileDyn_apply' (α : ℝ) (A B : ℝ → ℝ) (g : Fam)
               / B (Work.FTS.Physical.clockInv C t))
             (Work.Cyl.thetaP r z) (Work.FTS.Physical.clockInv C t) := rfl
 
-/-- On the positive-angle branch the profile of `merProfileDyn` is the full profile `F_* + g`. -/
-theorem merProfileDyn_of_nonneg (α : ℝ) (A B : ℝ → ℝ) (g : Fam)
-    (C : Work.FTS.Physical.PhysClock) {r z t : ℝ} (hθ : 0 ≤ Work.Cyl.thetaP r z) :
-    merProfileDyn α A B g C r z t
-      = (A (Work.FTS.Physical.clockInv C t))⁻¹
-        * profFam (Work.FTS.Regularity.pExp α) g
-            (Work.Cyl.rhoP r z ^ Work.FTS.Regularity.pExp α
-              / B (Work.FTS.Physical.clockInv C t))
-            (Work.Cyl.thetaP r z) (Work.FTS.Physical.clockInv C t) := by
-  rw [merProfileDyn_apply', profFamOdd_of_nonneg hθ]
 
 /-! ## The vorticity equation, sliced in time -/
 
@@ -285,13 +398,6 @@ the form in which the reconstruction consumes it (it is the `VorticityEquation` 
 def VorticityEquationOn (W Ψ : ℝ → ℝ → ℝ → ℝ) (T : ℝ) : Prop :=
   ∀ t : ℝ, t ∈ Set.Ioo 0 T → VorticityEquationAt W Ψ t
 
-/-- The sliced predicate over all times is exactly `Work.LWP.VorticityEquation`. -/
-theorem vorticityEquation_iff_forall_at (W Ψ : ℝ → ℝ → ℝ → ℝ) :
-    Work.LWP.VorticityEquation (fun x t => Work.Cyl.psiField (fun r z => Ψ r z t) x)
-        (fun x t => W (Work.Cyl.radial x) (Work.Cyl.axial x) t • Work.Cyl.eTheta x)
-      ↔ ∀ t : ℝ, VorticityEquationAt W Ψ t := by
-  simp only [Work.LWP.VorticityEquation, VorticityEquationAt]
-  exact ⟨fun h t x => h x t, fun h x t => h t x⟩
 
 /-- `VorticityEquationOn` is monotone in the window. -/
 theorem VorticityEquationOn.mono {W Ψ : ℝ → ℝ → ℝ → ℝ} {T T' : ℝ}
@@ -344,12 +450,11 @@ structure ProfDerivData (α : ℝ) (Φ g : Fam) : Prop where
       = Work.Construction.L12 (Work.Construction.Fstar α) z
         + Work.Construction.L12 (Work.FTS.Galerkin.slice g τ) z
 
-/-- The `τ`-slice of the family of full profiles `profFam α g` is `Construction.Ftau α g τ`. -/
-theorem slice_profFam (α : ℝ) (g : Fam) (τ : ℝ) :
-    slice (profFam α g) τ = Work.Construction.Ftau α g τ := rfl
 
 /-- The `τ`-slice of `profFam α g` at `(z,θ)`. -/
 @[simp] theorem slice_profFam_apply (α : ℝ) (g : Fam) (τ z θ : ℝ) :
     slice (profFam α g) τ z θ = Work.Construction.Ftau α g τ z θ := rfl
 
 end Work.FTS.MeridianDyn
+end
+end

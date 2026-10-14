@@ -1,34 +1,136 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/EnergyDiagAssembly.lean` — the `H1IP`-energy derivative
-from the `L²`-data of the slot families
-
-This is the assembly that turns the `L²`-route derivative of the weighted square,
-`hasDerivAt_integral_diag_var`, into the energy identity consumed by the recursion
-(`WordEnergy`/`WordTransfer`):
-
-  `EnergyDeriv (H1IP α) u u̇ τ`   for `u̇ = u̇ τ` the (time-dependent) slot derivative family.
-
-The data needed per (weight, slot family) is bundled as `DiagCurve`: the two diagonal
-integrabilities, the joint a.e. strong measurability of the family and of its derivative, the
-pointwise Newton–Leibniz derivative, the a.e. continuity in the fake time, the uniform `L²` bound on
-the derivative family, its **`L²`-continuity at `τ`** (the honest substitute for the pointwise
-envelope that the constant-`udot` product rule needs and which `ℋ`-bounds cannot supply — see
-`NOTES_EpsE4Thr_session4.md` §0.4), and the crossed integrability at `τ`.
-
-`H1IP` is the sum of four weighted pairings (`H1IP_unfold`): `ρ_η` on `D_z u`, `ρ_η` on `u`,
-`ρ_W` on `u` and `ρ_γ` on `D_θ u`; accordingly four `DiagCurve`s are consumed.
-
-Everything here is `sorry`-free.
--/
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.HkMem_add_of_contDiffOn_four
 import Submission.Work.FTS.StrongEps.EpsE4Thr.WipEqIntegral
-import Submission.Work.FTS.StrongEps.EpsE4Thr.hasDerivAt_integral_diag_var
-import Submission.Work.FTS.StrongEps.EpsE4Thr.AesmRestrict
+import Submission.Work.FTS.StrongEps.EpsZero.ClassCHk.SlotSumRadAOpen
+import Submission.Work.FTS.StrongEps.mixed_Jeps
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAux
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSlotInt
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.L3Rhs.N0gLocal
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBound
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundCore
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.StrongPersist.N6Trans.slotT2Six
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.VocabO
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.GalFields.Norm.Xn_LGammaT_le =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.GalFields.Norm
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+/-! ## The two one-dimensional objects of the separated product -/
+
+/-- The level-four radial slot sum `Σ_{j<5}(D_z^j B)²w²` of a `z`-only profile `B`. -/
+def slot5 (B : ℝ → ℝ) (z : ℝ) : ℝ :=
+  ∑ j ∈ Finset.range 5, (Work.Elliptic.DzdIter j B z) ^ 2 * (Work.Spaces.w z) ^ 2
+
+theorem slot5_nonneg (B : ℝ → ℝ) (z : ℝ) : 0 ≤ slot5 B z :=
+  Finset.sum_nonneg fun _ _ => mul_nonneg (sq_nonneg _) (sq_nonneg _)
+
+/-- The angular factor of the level-four separated product `Γ(θ)·r(z)`: the light weight
+`smE θ = sin(2θ)^{-η}` plus the heavy slot with the sharp `α²`-coefficient and the combined
+exponent `2α/5 - γ = 3α/10 - 1 ∈ (-1,0)`. -/
+def afac4 (α : ℝ) (θ : ℝ) : ℝ :=
+  Work.FTS.Nonlinear.RadialProd.smE θ
+    + 4 * (100000 * α) ^ 2
+      * (Real.sin (2 * θ)) ^ (2 * (α / 5) - Work.Spaces.gam α)
+
+/-! ## The pointwise separation of `Corr α g = Γ(θ)·radA α g z` -/
+
+/-- **The pointwise `ℋ⁴`-integrand bound for the transfer correction.**  For `θ ∈ Iθ` the
+`ℋ⁴`-integrand of `Corr α g = Γ(θ)·radA α g z` is dominated by the product of the level-four
+radial slot sum of `radA α g` and the angular factor `afac4 α`.
+
+Proof: `E2norm.HkIntegrand_ang_rad_le_n` at `n = 4`, with angular profile `a = Γ`, `B0 = 1`
+(`Γ ≤ 1`), `B1 = 10⁵α`, `G θ = sin(2θ)^{α/5}`: `|D_θ^iΓ| ≤ 10⁵α·Γ` for `1 ≤ i ≤ 4`
+(`E2norm.DthIter_Gam_abs_le_alpha`) and `Γ ≤ sin(2θ)^{α/5}` (`LocData.Gam_le_sin_two_rpow`);
+the heavy slot is then folded with `(sin(2θ)^{α/5})²·smG = sin(2θ)^{2α/5-γ}`
+(`E2norm.rpow_sq_smG_eq`). -/
+theorem HkIntegrand_Corr_le {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (g : Fn) {z θ : ℝ}
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    Work.Spaces.HkIntegrand α 4 (Work.FTS.CoercivityFix.Corr α g) z θ
+      ≤ slot5 (Work.FTS.CoercivityFix.Transfer.radA α g) z * afac4 α θ := by
+  have ha0 : ∀ θ ∈ Work.Spaces.Iθ, |Work.Spaces.Gam α θ| ≤ (1 : ℝ) := fun θ hθ => by
+    obtain ⟨h1, h2⟩ := Work.Spaces.Gam_bounds α θ hα hθ
+    rwa [abs_of_nonneg h1]
+  have hB1pos : (0 : ℝ) < 100000 * α := by positivity
+  have ha1 : ∀ i : ℕ, 1 ≤ i → i ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
+      |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => Work.Spaces.Gam α θ') 0 θ|
+        ≤ (100000 * α) * (fun θ' => (Real.sin (2 * θ')) ^ (α / 5)) θ := by
+    intro i hi hi4 θ hθ
+    refine (Work.FTS.CoercivityFix.Transfer.E2norm.DthIter_Gam_abs_le_alpha i hi hi4 α hα
+      hα1 hθ).trans ?_
+    exact mul_le_mul_of_nonneg_left (Work.FTS.LocData.Gam_le_sin_two_rpow α hα hθ) hB1pos.le
+  have hfun : Work.FTS.CoercivityFix.Corr α g
+      = fun z θ => Work.Spaces.Gam α θ * Work.FTS.CoercivityFix.Transfer.radA α g z := by
+    funext z θ
+    exact Work.FTS.CoercivityFix.Transfer.Corr_eq_radA α g z θ
+  rw [hfun]
+  have hsep := Work.FTS.CoercivityFix.Transfer.E2norm.HkIntegrand_ang_rad_le_n (n := 4) (le_refl 4)
+    (α := α) (a := fun θ => Work.Spaces.Gam α θ)
+    (r := fun z => Work.FTS.CoercivityFix.Transfer.radA α g z)
+    (G := fun θ => (Real.sin (2 * θ)) ^ (α / 5)) (B0 := 1) (B1 := 100000 * α)
+    (z := z) (θ := θ) ha0 ha1 hθ
+  refine hsep.trans (le_of_eq ?_)
+  have hang : (1 : ℝ) ^ 2 * Work.FTS.Nonlinear.RadialProd.smE θ
+      + 4 * (100000 * α) ^ 2 * ((Real.sin (2 * θ)) ^ (α / 5)) ^ 2
+        * Work.FTS.Nonlinear.RadialProd.smG α θ = afac4 α θ := by
+    rw [one_pow, one_mul]
+    rw [show (4 : ℝ) * (100000 * α) ^ 2 * ((Real.sin (2 * θ)) ^ (α / 5)) ^ 2
+          * Work.FTS.Nonlinear.RadialProd.smG α θ
+        = 4 * (100000 * α) ^ 2
+          * (((Real.sin (2 * θ)) ^ (α / 5)) ^ 2 * Work.FTS.Nonlinear.RadialProd.smG α θ)
+        from by ring]
+    rw [Work.FTS.CoercivityFix.Transfer.E2norm.rpow_sq_smG_eq α hα hα1 hθ]
+    rfl
+  rw [hang]
+  rfl
+
+/-! ## The `ℋ⁴`-bound for the transfer correction -/
+
+
+/-! ## The main theorem -/
+
+
+end Work.FTS.GalFields.Norm
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.EnergyDiagAssembly =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -71,48 +173,9 @@ structure DiagCurve (ρ : ℝ → ℝ → ℝ) (u udot : ℝ → Fn) (τ T : ℝ
   int_cross : MeasureTheory.Integrable
     (fun p : ℝ × ℝ => udot τ p.1 p.2 * u τ p.1 p.2 * ρ p.1 p.2) mup
 
-/-- The `L²`-route derivative of the weighted square, straight from the bundle. -/
-theorem DiagCurve.hasDerivAt_integral {ρ : ℝ → ℝ → ℝ} {u udot : ℝ → Fn} {τ T : ℝ}
-    (h : DiagCurve ρ u udot τ T) (hT : 0 ≤ T) (hτ : τ ∈ Set.Ioo 0 T) :
-    HasDerivAt (fun s : ℝ => ∫ p : ℝ × ℝ, u s p.1 p.2 * u s p.1 p.2 * ρ p.1 p.2 ∂mup)
-      (2 * ∫ p : ℝ × ℝ, udot τ p.1 p.2 * u τ p.1 p.2 * ρ p.1 p.2 ∂mup) τ :=
-  hasDerivAt_integral_diag_var_restricted hT hτ h.ρmeas h.ρnn h.int_diag h.int_diagd h.aesm h.aesmd
-    h.deriv h.cont h.bdd h.contU
 
-/-- **The `wip`-pairing derivative from the `L²`-data bundle.**  This is the shape of the
-conclusion of `hasDerivAt_wip_of_slot_var`, obtained *without* the pointwise envelope. -/
-theorem DiagCurve.hasDerivAt_wip {ρ : ℝ → ℝ → ℝ} {u udot : ℝ → Fn} {τ T : ℝ}
-    (h : DiagCurve ρ u udot τ T) (hT : 0 ≤ T) (hτ : τ ∈ Set.Ioo 0 T) :
-    HasDerivAt (fun s => Work.Coercivity.wip ρ (u s) (u s))
-      (2 * Work.Coercivity.wip ρ (udot τ) (u τ)) τ := by
-  have hmain := h.hasDerivAt_integral hT hτ
-  have hfun : (fun s : ℝ => ∫ p : ℝ × ℝ, u s p.1 p.2 * u s p.1 p.2 * ρ p.1 p.2 ∂mup)
-      =ᶠ[nhds τ] fun s => Work.Coercivity.wip ρ (u s) (u s) := by
-    filter_upwards [Icc_mem_nhds hτ.1 hτ.2] with s hs
-    have hinter : MeasureTheory.Integrable
-        (fun p : ℝ × ℝ => u s p.1 p.2 * u s p.1 p.2 * ρ p.1 p.2) mup :=
-      (h.int_diag s hs).congr (Filter.Eventually.of_forall fun p => by ring)
-    exact (wip_self_eq_integral_prod hinter).symm
-  have hval : 2 * (∫ p : ℝ × ℝ, udot τ p.1 p.2 * u τ p.1 p.2 * ρ p.1 p.2 ∂mup)
-      = 2 * Work.Coercivity.wip ρ (udot τ) (u τ) := by
-    rw [wip_eq_integral_prod h.int_cross]
-  rw [hval] at hmain
-  exact hmain.congr_of_eventuallyEq hfun.symm
 
-/-- **The `H1IP`-energy derivative of a family from the four `L²`-data bundles.**  With `u̇` the
-value at `τ` of the derivative family (`EnergyDeriv`'s `udot` is the derivative at `τ` only), the
-four weighted pairings of `H1IP_unfold` are handled at the slots `u`, `D_z u`, `D_θ u`. -/
-theorem EnergyDeriv_H1IP_of_diag_data {α : ℝ} {u udot : ℝ → Fn} {τ T : ℝ}
-    (hT : 0 ≤ T) (hτ : τ ∈ Set.Ioo 0 T)
-    (hη : DiagCurve Work.FTS.StrongPersist.rhoEta u udot τ T)
-    (hW : DiagCurve Work.FTS.StrongPersist.rhoW u udot τ T)
-    (hηz : DiagCurve Work.FTS.StrongPersist.rhoEta
-      (fun s => Work.Spaces.Dz (u s)) (fun s => Work.Spaces.Dz (udot s)) τ T)
-    (hγt : DiagCurve (Work.FTS.StrongPersist.rhoGam α)
-      (fun s => Work.Spaces.Dth (u s)) (fun s => Work.Spaces.Dth (udot s)) τ T) :
-    Work.FTS.StrongPersist.EnergyDeriv (Work.Coercivity.H1IP α) u (udot τ) τ :=
-  Work.FTS.StrongPersist.energyDeriv_H1IP α
-    (hη.hasDerivAt_wip hT hτ) (hηz.hasDerivAt_wip hT hτ)
-    (hW.hasDerivAt_wip hT hτ) (hγt.hasDerivAt_wip hT hτ)
 
 end Work.FTS.StrongEps.EpsE4Thr
+end
+end

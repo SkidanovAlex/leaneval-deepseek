@@ -1,53 +1,159 @@
-/-
-# `Work.FTS.StrongPersist.L3Rhs.L3RhsNssBlock` — the pure-star block of the right-hand side
-
-The block `NSsSum α Φs = N₁^{**} + N₂^{**} + N₃^{**} + N₄^{**} + N₅^{**}` of
-`Submission/Work/FTS/StrongPersist/L3Rhs/Defs.lean` consists of the five terms of the paper's
-table in which both the elliptic residual and the transported profile are the *star* quantities
-(`Φ̃_*` and `F_*`).  Nothing in it depends on the modulation `g` or on the perturbation residual
-`Φ̃_g`; the only datum is the star package `StarPkgo2 α Cs Φs`.
-
-This file proves the priced statement of the block: for `0 < α ≤ α₂` and every star datum, the
-block is `C³` on the open quadrant, in `ℋ³`, and
-
-  `|NSsSum α Φs|_{ℋ³} ≤ C · (1 + |Cs|) ^ 4 · α ^ (-Cpow)`
-
-with `C`, `Cpow` **uniform in the data** (`α₂ = 1/2`, `Cpow = 0`).  The uniformity in `Cs` is
-what distinguishes this from the per-row statements of `FTS/NonlinRows`, whose constants are
-existential in `Cs`; it is obtained by pricing each row directly (the five sibling modules
-`N1ssPriced … N5ssPriced`):
-
-* `N₁^{**}`, `N₂^{**}`, `N₃^{**}` are the star-coefficient rows 11, 15, 19, bounded by
-  `Cᵢ (1 + |Cs|) α^{pᵢ}` with `pᵢ = 2, 2, 3` (fields `RW`, `UszW`, `VzW` of `StarPkgo2`);
-* `N₄^{**}`, `N₅^{**}` are the explicit profile rows 23, 26, bounded by `Cᵢ α^{pᵢ}` with
-  `pᵢ = 3, 2` and no dependence on the data at all;
-
-the five smoothness facts (all finite orders on the open quadrant) come from `PieceSmooth`.
-
-The assembly only uses that `ℋ³`-membership descends from `ℋ⁴`
-(`OpenPkg.HkMem_mono_open`), that `HkNorm α 3 ≤ HkNorm α 4` on `ℋ⁴`-data
-(`StrongLWP.HkNorm_mono_of_mem`), and the triangle inequality `HkNorm_add_le`; the five partial
-sums are combined with the crude constant `16 = 2⁴ ⊇ (√2)⁴`.
-
-Everything is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.N1ssPriced
-import Submission.Work.FTS.StrongPersist.L3Rhs.N2ssPriced
-import Submission.Work.FTS.StrongPersist.L3Rhs.N3ssPriced
-import Submission.Work.FTS.StrongPersist.L3Rhs.N4ssPriced
-import Submission.Work.FTS.StrongPersist.L3Rhs.N5ssPriced
-import Submission.Work.FTS.StrongPersist.L3Rhs.PieceSmooth
-import Submission.Work.FTS.EllipticEst.HkNorm_add_le
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.OpenPkg.HkMem_add_of_contDiffOn_four
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.StrongLWP.Basic
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.L3Rhs.CoupledVfs
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.N3ssPriced
+import Submission.Work.FTS.StrongPersist.L3Rhs.PieceSmooth
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SmainHon
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_MuLamOK.Conversion
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.SolutionDelivery.DatumOdd
+-- ===== merged: Submission.Work.FTS.StrongEps.TenOfEight.GainPtAll =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+open Work.FTS.StrongEps.EpsE4Thr
+
+namespace Work.FTS.StrongEps.TenOfEight
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+
+theorem HkIntegrand_Jeps_gain_pt_all {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
+    {ε α c : ℝ} (hε : 0 < ε) (hc : 0 ≤ c) {M k : ℕ} (hk : 1 ≤ k)
+    {f : ℝ → ℝ → ℝ}
+    (hf : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Work.FTS.StrongEps.Quad)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2))
+    (hWη : ∀ p : ℝ × ℝ, Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2)
+      ≤ Real.exp (c * (|p.1| + |p.2|))
+        * (Work.Spaces.w (Work.FTS.StrongEps.zShift z p.1)
+            / (Real.sin (2 * Work.FTS.StrongEps.thShift θ p.2)) ^ (Work.Spaces.eta / 2)))
+    (hWγ : ∀ p : ℝ × ℝ, Work.Spaces.Wt α z θ ≤ Real.exp (c * (|p.1| + |p.2|))
+      * Work.Spaces.Wt α (Work.FTS.StrongEps.zShift z p.1) (Work.FTS.StrongEps.thShift θ p.2)) :
+    ENNReal.ofReal (Work.Spaces.HkIntegrand α M (Work.FTS.StrongEps.Jeps ρ ε f) z θ)
+      ≤ ENNReal.ofReal (Cgain ρ ε M)
+        * ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (LamAll ρ ε c M p)
+            * ENNReal.ofReal (Work.Spaces.HkIntegrand α k f
+                (Work.FTS.StrongEps.zShift z p.1) (Work.FTS.StrongEps.thShift θ p.2)) := by
+  set J : ℝ≥0∞ := ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (LamAll ρ ε c M p)
+      * ENNReal.ofReal (Work.Spaces.HkIntegrand α k f
+          (Work.FTS.StrongEps.zShift z p.1) (Work.FTS.StrongEps.thShift θ p.2)) with hJdef
+  set Kg : ℝ≥0∞ := ENNReal.ofReal (KgainBig ρ ε M) with hKgdef
+  set A : ℝ := ∑ a ∈ Finset.range (M + 1),
+    (Work.Spaces.DzIter a (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+      * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2 with hAdef
+  set B : ℝ := ∑ i ∈ Finset.range (M + 1), ∑ j ∈ Finset.range (M + 1),
+    (if 1 ≤ i ∧ i + j ≤ M then
+      (Work.Spaces.mixed j i (Work.FTS.StrongEps.Jeps ρ ε f) z θ * Work.Spaces.Wt α z θ) ^ 2
+      else 0) with hBdef
+  have hA0 : 0 ≤ A := by
+    rw [hAdef]
+    exact Finset.sum_nonneg fun a _ => sq_nonneg _
+  have hB0 : 0 ≤ B := by
+    rw [hBdef]
+    exact Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by
+      split_ifs with h <;> simp [sq_nonneg]
+  have hsplit : Work.Spaces.HkIntegrand α M (Work.FTS.StrongEps.Jeps ρ ε f) z θ = A + B := by
+    simp only [Work.Spaces.HkIntegrand]
+    rw [← hAdef, ← hBdef]
+  -- the per-slot bounds, and the two finite sums
+  have hslotA : ∀ a ∈ Finset.range (M + 1),
+      ENNReal.ofReal ((Work.Spaces.DzIter a (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+        * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2) ≤ Kg * J := by
+    intro a ha
+    have haM : a ≤ M := Nat.lt_succ_iff.mp (Finset.mem_range.mp ha)
+    simpa only [hJdef, hKgdef] using
+      zslot_le_gain_all hρ hε hc hf hz hθ hWη haM
+  have hslotB : ∀ i ∈ Finset.range (M + 1), ∀ j ∈ Finset.range (M + 1),
+      ENNReal.ofReal (if 1 ≤ i ∧ i + j ≤ M then
+        (Work.Spaces.mixed j i (Work.FTS.StrongEps.Jeps ρ ε f) z θ * Work.Spaces.Wt α z θ) ^ 2
+        else 0) ≤ Kg * J := by
+    intro i _ j _
+    by_cases hc' : 1 ≤ i ∧ i + j ≤ M
+    · rw [if_pos hc']
+      simpa only [hJdef, hKgdef] using
+        mslot_le_gain_all hρ hε hc hk hf hz hθ hWγ hc'.1 hc'.2
+    · rw [if_neg hc']
+      simp only [ENNReal.ofReal_zero]
+      exact zero_le
+  have hA_le : (∑ a ∈ Finset.range (M + 1),
+      ENNReal.ofReal ((Work.Spaces.DzIter a (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+        * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2))
+      ≤ ((M + 1 : ℕ) : ℝ≥0∞) * (Kg * J) := by
+    refine (Finset.sum_le_card_nsmul (Finset.range (M + 1)) _ (Kg * J) hslotA).trans ?_
+    rw [Finset.card_range]
+    exact Work.FTS.StrongEps.StepFacts.nsmul_le_natCast_mul (M + 1) (Kg * J)
+  have hB_le : (∑ i ∈ Finset.range (M + 1), ∑ j ∈ Finset.range (M + 1),
+      ENNReal.ofReal (if 1 ≤ i ∧ i + j ≤ M then
+        (Work.Spaces.mixed j i (Work.FTS.StrongEps.Jeps ρ ε f) z θ * Work.Spaces.Wt α z θ) ^ 2
+        else 0)) ≤ (((M + 1) * (M + 1) : ℕ) : ℝ≥0∞) * (Kg * J) := by
+    have hinner : ∀ i ∈ Finset.range (M + 1),
+        (∑ j ∈ Finset.range (M + 1), ENNReal.ofReal (if 1 ≤ i ∧ i + j ≤ M then
+          (Work.Spaces.mixed j i (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+            * Work.Spaces.Wt α z θ) ^ 2 else 0))
+          ≤ ((M + 1 : ℕ) : ℝ≥0∞) * (Kg * J) := fun i hi =>
+      (Finset.sum_le_card_nsmul (Finset.range (M + 1)) _ (Kg * J)
+        (fun j hj => hslotB i hi j hj)).trans (by
+          rw [Finset.card_range]
+          exact Work.FTS.StrongEps.StepFacts.nsmul_le_natCast_mul (M + 1) (Kg * J))
+    refine (Finset.sum_le_card_nsmul (Finset.range (M + 1)) _ _ hinner).trans ?_
+    rw [Finset.card_range, nsmul_eq_mul, Nat.cast_mul, mul_assoc]
+  -- the `ofReal` split and the numerical bookkeeping
+  have hpt : ENNReal.ofReal (Work.Spaces.HkIntegrand α M (Work.FTS.StrongEps.Jeps ρ ε f) z θ)
+      = ENNReal.ofReal A + ENNReal.ofReal B := by
+    rw [hsplit, ENNReal.ofReal_add hA0 hB0]
+  have h1 : ENNReal.ofReal A = ∑ a ∈ Finset.range (M + 1),
+      ENNReal.ofReal ((Work.Spaces.DzIter a (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+        * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2) := by
+    rw [hAdef, ENNReal.ofReal_sum_of_nonneg]
+    exact fun a _ => sq_nonneg _
+  have h2 : ENNReal.ofReal B = ∑ i ∈ Finset.range (M + 1), ∑ j ∈ Finset.range (M + 1),
+      ENNReal.ofReal (if 1 ≤ i ∧ i + j ≤ M then
+        (Work.Spaces.mixed j i (Work.FTS.StrongEps.Jeps ρ ε f) z θ
+          * Work.Spaces.Wt α z θ) ^ 2 else 0) := by
+    rw [hBdef, ENNReal.ofReal_sum_of_nonneg]
+    · refine Finset.sum_congr rfl fun i _ => ?_
+      rw [ENNReal.ofReal_sum_of_nonneg]
+      exact fun j _ => by split_ifs with h <;> simp [sq_nonneg]
+    · exact fun i _ => Finset.sum_nonneg fun j _ => by
+        split_ifs with h <;> simp [sq_nonneg]
+  have hAB : ENNReal.ofReal A + ENNReal.ofReal B
+      ≤ ((((M + 1) + (M + 1) * (M + 1) : ℕ)) : ℝ≥0∞) * (Kg * J) := by
+    rw [h1, h2]
+    refine (add_le_add hA_le hB_le).trans (le_of_eq ?_)
+    rw [← add_mul, ← Nat.cast_add]
+  have hC : ENNReal.ofReal (Cgain ρ ε M) * J
+      = ((((M + 1) + (M + 1) * (M + 1) : ℕ)) : ℝ≥0∞) * (Kg * J) := by
+    rw [Cgain, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_natCast, ← hKgdef]
+    rw [pow_two, mul_assoc]
+  rw [hpt]
+  exact hAB.trans (le_of_eq hC.symm)
+
+end Work.FTS.StrongEps.TenOfEight
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNssBlock =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -287,3 +393,5 @@ theorem L3RhsNssBlock : ∃ C Cpow α₂ : ℝ, 0 < C ∧ 0 ≤ Cpow ∧ 0 < α�
     nlinarith [hquad]
 
 end Work.FTS.StrongPersist.L3Rhs
+end
+end

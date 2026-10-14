@@ -1,36 +1,3 @@
-/-
-# Symmetry of the trace-of-Hessian pairing
-
-`Work.FTS.PressureOn.Green.integral_mul_laplaceTrace_comm`:
-
-  `∫ x, f x * laplaceTrace u x = ∫ x, laplaceTrace f x * u x`
-
-for `f, u : ℝ³ → ℝ` of class `C²` with `u` compactly supported.  This is the
-integration-by-parts (Green) symmetry of the Laplacian, written with the trace of the Hessian
-`laplaceTrace`; it is the entry that lets a Newtonian potential be paired against a test
-function in either order.
-
-## The route
-
-The difference of the two integrands is a divergence.  With
-`G := f • ∇u − u • ∇f` (both `f` and `u` are `C²`),
-
-  `div G = f · Δu + ⟪∇f, ∇u⟫ − (u · Δf + ⟪∇u, ∇f⟫) = f · Δu − u · Δf`,
-
-because `div (a • ∇v) = a · div (∇v) + (fderiv a) (∇v)` (product rule for the trace of the
-derivative), `div (∇v) = laplaceTrace v` (the definition of the trace in the standard basis),
-and `(fderiv f x) (∇u x) = ⟪∇f x, ∇u x⟫ = ⟪∇u x, ∇f x⟫`.
-
-`G` is `C¹`, and it is supported on `tsupport u` (`u ≡ 0` on the open set `(tsupport u)ᶜ`,
-hence `∇u ≡ 0` there as well), so it is compactly supported, continuous and its divergence is
-integrable.  The divergence theorem for compactly supported `C¹` fields,
-`Work.FTS.PressureOn.integral_div_eq_zero_of_hasFDerivAt`, then gives `∫ div G = 0`, i.e.
-
-  `∫ x, (f x * Δu x − Δf x * u x) = 0`,
-
-and since both `f · Δu` and `Δf · u` are continuous with support in the compact set
-`tsupport u`, they are integrable and the linearity of the integral finishes the proof.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.FDeriv.Mul
@@ -47,8 +14,8 @@ import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Work.FTS.PressureOn.Defs
 import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_hasFDerivAt
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

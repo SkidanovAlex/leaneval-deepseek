@@ -3,9 +3,9 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.H2.T2Aesm
-import Submission.Work.Spaces.MixedMulDefs
-import Submission.Work.Spaces.CurrySmooth
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.factor_bound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

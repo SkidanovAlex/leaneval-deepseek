@@ -1,23 +1,256 @@
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkStarPieces
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.L3Aux.acoef_gamCoef_slots_le
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
 import Submission.Work.FTS_EllLimOK.Closed
-import Submission.Work.FTS_EllLimOK.Defs
-import Submission.Work.FTS_EllLimOK.LimDefs
-import Submission.Work.FTS_EllLimOK.AssemblyAux
 import Submission.Work.FTS_EllLimOK.LimExtract_bounds
-import Submission.Work.FTS_EllLimOK.LimTower_dz
-import Submission.Work.FTS_EllLimOK.SmoothOpen_tower
-import Submission.Work.FTS_EllLimOK.LimTower_identify
-import Submission.Work.FTS_EllLimOK.LimTower_c2
-import Submission.Work.FTS_EllLimOK.BslOp_tower
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongEps.LocUnif.exists_subseq_tendstoLocallyUniformlyOn_fin
+import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_EllLimOK.wt_bddAbove_of_compact
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSinSqMulSliceLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `fkSinSqMulSliceLe` — the `θ`-integrated, level-six, `σ²`-weighted matched majorant
+
+This is the exact analogue of `FkAux.fkMulHkSqSliceLe` with the datum `f` replaced by
+`σ²·f` (`σ = sin 2θ`) inside the product with the radial factor `FK f`:
+
+for every `α ∈ (0,1]`, every datum `DatData α f M` and almost every `z ∈ Iz`,
+
+`∫_θ HkIntegrand α 6 (fun z θ => sin²θ · FK f z · f z θ) z θ
+   ≤ C · Σ_{b ≤ 6} (D_z^b(FK f)(z,0))² · ∫_θ HkIntegrand α (6-b) f z θ`,
+
+with `C` universal.
+
+## Route
+
+* `radialMatchedMajorant` with `r := FK f`, `g := σ²·f` (the Leibniz hypotheses are
+  `leibniz_rad_Dz_cd6` / `leibniz_rad_mixed_cd6`; `FK f` is `C⁶` on `Q0` by `contDiffOn6_FK`
+  and `σ²·f` is `C⁶` because `f` is `SmoothOpen` and `θ ↦ sin²θ` is `C^∞`) gives the pointwise
+  matched majorant, whose right-hand side carries `HkIntegrand α (6-b) (σ²·f)`.
+* The angular multiplier is then absorbed at each level `m = 6 - b ≤ 6` by
+  `Work.Blocks.HkMul_ang_le` (proved): `HkIntegrand α m (σ²·f) ≤ C_m · HkIntegrand α m f`
+  pointwise on `Iz × Iθ`; the seven constants are replaced by their sum `CaF`, so that the
+  final constant is independent of `b`.
+* Finally the pointwise (a.e. in `θ`) comparison is integrated in `θ`, the finite sum is
+  interchanged with the integral, and the radial iterates are identified with the one-variable
+  `DzdIter` (evaluated at `θ = 0`) by `Work.Elliptic.DzIter_rad`.
+
+The passage from "for every `z > 0`" to "for a.e. `z ∈ Iz`" costs the single point `z = 0`,
+which is null for `volume.restrict Iz`. -/
+
+namespace Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+set_option maxHeartbeats 1600000
+
+/-- The angular `σ²`-multiplier comparison of `Work.Blocks.HkMul_ang_le`, repackaged: for every
+level `k` there is a constant `C > 0` with
+`HkIntegrand α k (σ²·g) ≤ C · HkIntegrand α k g` pointwise on the closed quadrant, for every
+`SmoothOpen g` and every `α ∈ (0,1]`. -/
+private theorem sinSq_ang_le (k : ℕ) : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (g : ℝ → ℝ → ℝ),
+    0 < α → α ≤ 1 → Work.FTS.EllipticEst.SmoothOpen g →
+    ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
+      Work.Spaces.HkIntegrand α k (fun z θ => Real.sin θ ^ 2 * g z θ) z θ
+        ≤ C * Work.Spaces.HkIntegrand α k g z θ := by
+  obtain ⟨C, hCpos, hrest⟩ := Work.Blocks.HkMul_ang_le k
+  exact ⟨C, hCpos, fun α g hα hα1 hg => (hrest α g hα hα1 hg).2.1⟩
+
+/-- `C⁶`-smoothness on the open quadrant of the angular multiple `σ²·f` of a smooth datum. -/
+private theorem contDiffOn_six_sinSq_mul {f : ℝ → ℝ → ℝ}
+    (hsm : Work.FTS.EllipticEst.SmoothOpen f) :
+    ContDiffOn ℝ 6 (Function.uncurry (fun z θ => Real.sin θ ^ 2 * f z θ))
+      Work.FTS.EllipticEst.Q0 := by
+  have hcd6 : ContDiffOn ℝ 6 (Function.uncurry f) Work.FTS.EllipticEst.Q0 := hsm.forall 6
+  have hsin2 : ContDiffOn ℝ 6 (fun p : ℝ × ℝ => Real.sin p.2 ^ 2) Work.FTS.EllipticEst.Q0 :=
+    (((Real.contDiff_sin (n := (6 : ℕ∞))).comp contDiff_snd).pow 2).contDiffOn
+  refine (hsin2.mul hcd6).congr fun p _ => ?_
+  rfl
+
+theorem fkSinSqMulSliceLe : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1,
+    ∀ (f : Work.FTS.Galerkin.Fn) (M : ℝ),
+      Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.DatData α f M →
+      ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 6
+            (fun z θ => Real.sin θ ^ 2 * Work.Construction.FK f z * f z θ) z θ)
+          ≤ C * ∑ b ∈ Finset.range 7,
+              (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+                * (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α (6 - b) f z θ) := by
+  obtain ⟨C1, hC1pos, hC1⟩ := radialMatchedMajorant
+  -- one angular constant per level, then their sum (so that the constant is `b`-independent)
+  have hang : ∀ k : ℕ, ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (g : ℝ → ℝ → ℝ),
+      0 < α → α ≤ 1 → Work.FTS.EllipticEst.SmoothOpen g →
+      ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
+        Work.Spaces.HkIntegrand α k (fun z θ => Real.sin θ ^ 2 * g z θ) z θ
+          ≤ C * Work.Spaces.HkIntegrand α k g z θ := fun k => sinSq_ang_le k
+  choose Ca hCa using hang
+  set CaF : ℝ := ∑ k ∈ Finset.range 7, Ca k with hCaFdef
+  have hCaFpos : 0 < CaF := by
+    rw [hCaFdef]
+    exact Finset.sum_pos (fun k _ => (hCa k).1) ⟨0, Finset.mem_range.mpr (by norm_num)⟩
+  have hCaFle : ∀ k : ℕ, k ≤ 6 → Ca k ≤ CaF := by
+    intro k hk
+    rw [hCaFdef]
+    exact Finset.single_le_sum (fun i _ => le_of_lt ((hCa i).1))
+      (Finset.mem_range.mpr (by omega))
+  refine ⟨C1 * CaF, mul_pos hC1pos hCaFpos, ?_⟩
+  intro α hα f M hD
+  obtain ⟨hα0, hα1⟩ := Set.mem_Ioc.mp hα
+  have hsm : Work.FTS.EllipticEst.SmoothOpen f := hD.sm
+  have hcd6 : ContDiffOn ℝ 6 (Function.uncurry f) Work.FTS.EllipticEst.Q0 := hsm.forall 6
+  have hcdR : ContDiffOn ℝ 6
+      (Function.uncurry (fun z (_ : ℝ) => Work.Construction.FK f z))
+      Work.FTS.EllipticEst.Q0 := contDiffOn6_FK α hα f M hD
+  have hcdS : ContDiffOn ℝ 6 (Function.uncurry (fun z θ => Real.sin θ ^ 2 * f z θ))
+      Work.FTS.EllipticEst.Q0 := contDiffOn_six_sinSq_mul hsm
+  have hmem6 : Work.Spaces.HkMem α 6 f := hD.h6
+  -- the only non-positive `z` in `Iz` is `z = 0`, which is null
+  have haepos : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz), (0 : ℝ) < z := by
+    rw [MeasureTheory.ae_iff]
+    have hmeas : MeasurableSet {z : ℝ | ¬ (0 : ℝ) < z} := by
+      have h : {z : ℝ | ¬ (0 : ℝ) < z} = Set.Iic (0 : ℝ) := by ext z; simp [not_lt]
+      rw [h]; exact measurableSet_Iic
+    rw [MeasureTheory.Measure.restrict_apply hmeas]
+    have hsub : {z : ℝ | ¬ (0 : ℝ) < z} ∩ Work.Spaces.Iz ⊆ ({0} : Set ℝ) := by
+      intro z hz
+      simp only [Set.mem_inter_iff, Set.mem_ofPred_eq] at hz
+      simp only [Set.mem_singleton_iff]
+      exact le_antisymm (not_lt.mp hz.1) hz.2
+    exact MeasureTheory.measure_mono_null hsub (by simp)
+  filter_upwards [haepos] with z hz
+  have hzIz : z ∈ Work.Spaces.Iz := le_of_lt hz
+  -- the pointwise (in `θ`) matched majorant, with the `σ²`-multiplier absorbed
+  have hpt : ∀ᵐ θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+      Work.Spaces.HkIntegrand α 6
+          (fun z θ => Real.sin θ ^ 2 * Work.Construction.FK f z * f z θ) z θ
+        ≤ (C1 * CaF) * ∑ b ∈ Finset.range 7,
+            (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b) f z θ := by
+    refine Work.Spaces.Slots.ae_restrict_Iθ_of_Ioo ?_
+    intro θ hθ0 hθ1
+    have hθIθ : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ0, le_of_lt hθ1⟩
+    -- rewrite the product into the exact shape `FK f z · (σ²·f)`
+    have hL : (fun z' θ' : ℝ => Real.sin θ' ^ 2 * Work.Construction.FK f z' * f z' θ')
+        = fun z' θ' : ℝ => Work.Construction.FK f z' * (Real.sin θ' ^ 2 * f z' θ') := by
+      funext z' θ'; ring
+    rw [hL]
+    have h := hC1 (α := α) (r := fun z => Work.Construction.FK f z)
+      (g := fun z θ => Real.sin θ ^ 2 * f z θ)
+      (fun z' θ' hz' hθ0' hθ1' j hj =>
+        Work.FTS.StrongPersist.H6Rows.Npair6SupAux.RadAux.leibniz_rad_Dz_cd6
+          (r := fun z => Work.Construction.FK f z)
+          (g := fun z θ => Real.sin θ ^ 2 * f z θ) hcdR hcdS hj z' θ' hz' hθ0' hθ1')
+      (fun z' θ' hz' hθ0' hθ1' j i hi hij =>
+        Work.FTS.StrongPersist.H6Rows.Npair6SupAux.RadAux.leibniz_rad_mixed_cd6
+          (r := fun z => Work.Construction.FK f z)
+          (g := fun z θ => Real.sin θ ^ 2 * f z θ) hcdR hcdS hi hij z' θ' hz' hθ0' hθ1')
+      hz hθ0 hθ1
+    -- absorb the angular multiplier termwise, at every level `6 - b`
+    have hS : (∑ b ∈ Finset.range 7,
+          (Work.Elliptic.DzdIter b (fun z => Work.Construction.FK f z) z) ^ 2
+            * Work.Spaces.HkIntegrand α (6 - b)
+                (fun z θ => Real.sin θ ^ 2 * f z θ) z θ)
+        ≤ CaF * ∑ b ∈ Finset.range 7,
+            (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b) f z θ := by
+      rw [Finset.mul_sum]
+      refine Finset.sum_le_sum fun b hb => ?_
+      have hb6 : 6 - b ≤ 6 := by
+        have := Finset.mem_range.mp hb
+        omega
+      have hbnd : Work.Spaces.HkIntegrand α (6 - b)
+            (fun z θ => Real.sin θ ^ 2 * f z θ) z θ
+          ≤ CaF * Work.Spaces.HkIntegrand α (6 - b) f z θ :=
+        le_trans ((hCa (6 - b)).2 α f hα0 hα1 hsm z hzIz θ hθIθ)
+          (mul_le_mul_of_nonneg_right (hCaFle (6 - b) hb6)
+            (Work.Spaces.HkIntegrand_nonneg α (6 - b) f z θ))
+      calc (Work.Elliptic.DzdIter b (fun z => Work.Construction.FK f z) z) ^ 2
+            * Work.Spaces.HkIntegrand α (6 - b)
+                (fun z θ => Real.sin θ ^ 2 * f z θ) z θ
+          ≤ (Work.Elliptic.DzdIter b (fun z => Work.Construction.FK f z) z) ^ 2
+              * (CaF * Work.Spaces.HkIntegrand α (6 - b) f z θ) :=
+            mul_le_mul_of_nonneg_left hbnd (sq_nonneg _)
+        _ = CaF * ((Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b) f z θ) := by
+            rw [← Work.Elliptic.DzIter_rad (fun z => Work.Construction.FK f z) b z 0]
+            ring
+    calc Work.Spaces.HkIntegrand α 6
+          (fun z θ => Work.Construction.FK f z * (Real.sin θ ^ 2 * f z θ)) z θ
+        ≤ C1 * ∑ b ∈ Finset.range 7,
+            (Work.Elliptic.DzdIter b (fun z => Work.Construction.FK f z) z) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b)
+                  (fun z θ => Real.sin θ ^ 2 * f z θ) z θ := h
+      _ ≤ C1 * (CaF * ∑ b ∈ Finset.range 7,
+            (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b) f z θ) :=
+          mul_le_mul_of_nonneg_left hS (le_of_lt hC1pos)
+      _ = (C1 * CaF) * ∑ b ∈ Finset.range 7,
+            (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+              * Work.Spaces.HkIntegrand α (6 - b) f z θ := by ring
+  -- `θ`-integrability of every summand of the majorant, from `HkMem α (6-b) f`
+  have hintb : ∀ b ∈ Finset.range 7, MeasureTheory.Integrable (fun θ : ℝ =>
+      (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+        * Work.Spaces.HkIntegrand α (6 - b) f z θ)
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
+    intro b hb
+    have hb6 : 6 - b ≤ 6 := by
+      have := Finset.mem_range.mp hb; omega
+    exact MeasureTheory.Integrable.const_mul
+      ((Work.FTS.StrongPersist.H6Pair6Aux.HkMem_of_le (k := 6 - b) (k' := 6) hb6
+        hsm hmem6).1 z hzIz) _
+  have hint : MeasureTheory.Integrable (fun θ : ℝ => (C1 * CaF) * ∑ b ∈ Finset.range 7,
+      (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+        * Work.Spaces.HkIntegrand α (6 - b) f z θ)
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
+    (MeasureTheory.integrable_finsetSum (Finset.range 7) (fun b hb => hintb b hb)).const_mul _
+  -- integrate the pointwise bound in `θ`
+  have hmono := MeasureTheory.integral_mono_of_nonneg
+    (Filter.Eventually.of_forall fun θ => Work.Spaces.HkIntegrand_nonneg α 6 _ z θ) hint hpt
+  -- the `θ`-integral of the majorant is the matched sum of `θ`-integrals
+  have hval : (∫ θ in Work.Spaces.Iθ, (C1 * CaF) * ∑ b ∈ Finset.range 7,
+        (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+          * Work.Spaces.HkIntegrand α (6 - b) f z θ)
+      = (C1 * CaF) * ∑ b ∈ Finset.range 7,
+          (Work.Spaces.DzIter b (fun z _ => Work.Construction.FK f z) z 0) ^ 2
+            * (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α (6 - b) f z θ) := by
+    rw [MeasureTheory.integral_const_mul]
+    rw [MeasureTheory.integral_finsetSum (Finset.range 7) (fun b hb => hintb b hb)]
+    rw [Finset.sum_congr rfl (fun b _ => MeasureTheory.integral_const_mul _ _)]
+  exact hmono.trans (le_of_eq hval)
+
+end Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.Assembly =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -98,161 +331,11 @@ lemma bslOp_eq_of_convergence (H : LimInputs) {α : ℝ} {E : Fn → Fn} {fn : �
 
 /-! ## The jets converge to those of the limit -/
 
-lemma jconv_of_data {α : ℝ} {E : Fn → Fn} {fn : ℕ → Fn} {φ : ℕ → ℕ}
-    {F : ℕ → ℕ → ℝ → ℝ → ℝ} {Ψ : ℝ → ℝ → ℝ}
-    (hconv : ∀ (c d : ℕ), c + d ≤ 2 → TendstoLocallyUniformlyOn
-      (fun n p => Work.Spaces.mixed c d (E (fn (φ n))) p.1 p.2)
-      (fun p => F c d p.1 p.2) Filter.atTop Work.FTS.EllipticEst.Q0)
-    (hident : ∀ (c d : ℕ), c + d ≤ 2 → ∀ z θ : ℝ, (z, θ) ∈ Work.FTS.EllipticEst.Q0 →
-      F c d z θ = Work.Spaces.mixed c d (F 0 0) z θ)
-    (hΨeq : Set.EqOn (Function.uncurry Ψ) (Function.uncurry (F 0 0))
-      Work.FTS.EllipticEst.Q0) :
-    JConv (fun n => E (fn (φ n))) Ψ := by
-  intro j i hji z θ hzθ
-  have h1 : Tendsto (fun n => Work.Spaces.mixed j i (E (fn (φ n))) z θ) Filter.atTop
-      (𝓝 (F j i z θ)) := (hconv j i hji).tendsto_at hzθ
-  have h2 : Work.Spaces.mixed j i Ψ z θ = F j i z θ := by
-    have hloc := mixed_congrOn_Q0 Work.FTS.EllipticEst.isOpen_Q0 hΨeq j i hzθ
-    simp only [Function.uncurry] at hloc
-    rw [hloc, hident j i hji z θ hzθ]
-  rw [h2]
-  exact h1
 
 /-! ## The assembly -/
 
-theorem closedCompact_of_inputs {α Ce : ℝ} (H : LimInputs) (h : LocalBound α Ce) :
-    ClosedCompact α Ce := by
-  intro E hE fn f hL
-  classical
-  obtain ⟨C₀, hC₀pos, hC₀⟩ := h E hE fn f hL
-  have hsm : ∀ n : ℕ, Work.FTS.EllipticEst.SmoothOpen (E (fn n)) :=
-    fun n => (hE (fn n) (hL.classC n)).2.smooth
-  have hsol : ∀ n : ℕ, Work.FTS.StrongGlobal.IsBslSolPos α (fn n) (E (fn n)) :=
-    fun n => (hE (fn n) (hL.classC n)).2.sol
-  -- the pointwise bound of `LocalBound`, in the form `wt`
-  have hbnd : ∀ (n : ℕ) (j i : ℕ), j + i ≤ 3 → ∀ z θ : ℝ,
-      (z, θ) ∈ Work.FTS.EllipticEst.Q0 →
-      |Work.Spaces.mixed j i (E (fn n)) z θ| ≤ C₀ * wt z θ := by
-    intro n j i hji z θ hzθ
-    have h' := hC₀ n j i hji z θ hzθ
-    rw [mul_div_assoc] at h'
-    simpa only [wt] using h'
-  -- the Arzelà–Ascoli extraction
-  obtain ⟨hbdd, heqc⟩ := H.extract hsm hbnd
-  obtain ⟨φ, hφ, g, hgl⟩ :=
-    Work.FTS.StrongEps.LocUnif.exists_subseq_tendstoLocallyUniformlyOn_fin
-      (U := Work.FTS.EllipticEst.Q0) Work.FTS.EllipticEst.isOpen_Q0
-      (F := fun n p => fam6 (fun k => E (fn k)) n p) hbdd heqc
-  -- the limit of each of the six families
-  let F : ℕ → ℕ → ℝ → ℝ → ℝ := fun c d z θ => g (z, θ) (idx6 c d)
-  have hconv : ∀ (c d : ℕ), c + d ≤ 2 → TendstoLocallyUniformlyOn
-      (fun n p => Work.Spaces.mixed c d (E (fn (φ n))) p.1 p.2)
-      (fun p => F c d p.1 p.2) Filter.atTop Work.FTS.EllipticEst.Q0 := by
-    intro c d hcd
-    have h1 : TendstoLocallyUniformlyOn
-        (fun n p => fam6 (fun k => E (fn k)) (φ n) p (idx6 c d))
-        (fun p => g p (idx6 c d)) Filter.atTop Work.FTS.EllipticEst.Q0 := by
-      rw [tendstoLocallyUniformlyOn_iff_forall_isCompact Work.FTS.EllipticEst.isOpen_Q0]
-      intro K hKQ hK
-      have h2 := Metric.tendstoUniformlyOn_iff.mp
-        ((tendstoLocallyUniformlyOn_iff_forall_isCompact
-          Work.FTS.EllipticEst.isOpen_Q0).mp hgl K hKQ hK)
-      rw [Metric.tendstoUniformlyOn_iff]
-      intro ε hε
-      filter_upwards [h2 ε hε] with n hn p hp
-      exact lt_of_le_of_lt (dist_le_pi_dist (g p)
-        (fam6 (fun k => E (fn k)) (φ n) p) (idx6 c d)) (hn p hp)
-    have h2 : (fun n p => fam6 (fun k => E (fn k)) (φ n) p (idx6 c d))
-        = fun n p => Work.Spaces.mixed c d (E (fn (φ n))) p.1 p.2 := by
-      funext n p
-      simp only [fam6, idx6_spec hcd]
-    have h3 : (fun p : ℝ × ℝ => g p (idx6 c d)) = fun p => F c d p.1 p.2 := by
-      funext p
-      obtain ⟨a, b⟩ := p
-      rfl
-    rwa [h2, h3] at h1
-  -- continuity of the limits
-  have hcont : ∀ (c d : ℕ), c + d ≤ 2 →
-      ContinuousOn (fun p : ℝ × ℝ => F c d p.1 p.2) Work.FTS.EllipticEst.Q0 := by
-    intro c d hcd
-    refine (hconv c d hcd).continuousOn (Frequently.of_forall fun n => ?_)
-    exact ((hsm (φ n)).mixed c d).continuousOn
-  -- the tower relations and their consequences
-  obtain ⟨hdz, hdth⟩ := H.tower hsm hconv
-  have hident := H.identify hdz hdth
-  have hc2 := H.c2 hcont hdz hdth
-  -- the limit function
-  let Ψ : ℝ → ℝ → ℝ := fun z θ => if θ ∈ Set.Ioo (0 : ℝ) (π / 2) then F 0 0 z θ else 0
-  have hΨeq : Set.EqOn (Function.uncurry Ψ) (Function.uncurry (F 0 0))
-      Work.FTS.EllipticEst.Q0 := by
-    rintro ⟨z, θ⟩ hzθ
-    obtain ⟨-, hθ0, hθ1⟩ := Work.FTS.EllipticEst.mem_Q0.mp hzθ
-    simp only [Function.uncurry, Ψ]
-    rw [if_pos (show θ ∈ Set.Ioo (0 : ℝ) (π / 2) from ⟨hθ0, hθ1⟩)]
-  have hΨfun : ∀ z θ : ℝ, (z, θ) ∈ Work.FTS.EllipticEst.Q0 → Ψ z θ = F 0 0 z θ := by
-    intro z θ hzθ
-    exact hΨeq hzθ
-  have hΨc2 : ContDiffOn ℝ 2 (Function.uncurry Ψ) Work.FTS.EllipticEst.Q0 :=
-    hc2.congr hΨeq
-  -- the two Dirichlet conditions
-  have hDir0 : ∀ z : ℝ, 0 ≤ z → Ψ z 0 = 0 := by
-    intro z _
-    have h : (0 : ℝ) ∉ Set.Ioo (0 : ℝ) (π / 2) := fun hh => absurd hh.1 (lt_irrefl 0)
-    simp only [Ψ, if_neg h]
-  have hDir1 : ∀ z : ℝ, 0 ≤ z → Ψ z (π / 2) = 0 := by
-    intro z _
-    have h : (π / 2) ∉ Set.Ioo (0 : ℝ) (π / 2) := fun hh => absurd hh.2 (lt_irrefl _)
-    simp only [Ψ, if_neg h]
-  -- the decay
-  have hdecay : ∀ θ ∈ Work.Spaces.Iθ, Tendsto (fun z => Ψ z θ) Filter.atTop (𝓝 0) := by
-    intro θ hθ
-    rcases eq_or_lt_of_le hθ.1 with h0 | h0
-    · subst h0
-      have hfun : (fun z : ℝ => Ψ z 0) = fun _ : ℝ => (0 : ℝ) := by
-        funext z
-        have h : (0 : ℝ) ∉ Set.Ioo (0 : ℝ) (π / 2) := fun hh => absurd hh.1 (lt_irrefl 0)
-        simp only [Ψ, if_neg h]
-      rw [hfun]
-      exact tendsto_const_nhds
-    · rcases eq_or_lt_of_le hθ.2 with h1 | h1
-      · subst h1
-        have hfun : (fun z : ℝ => Ψ z (π / 2)) = fun _ : ℝ => (0 : ℝ) := by
-          funext z
-          have h : (π / 2) ∉ Set.Ioo (0 : ℝ) (π / 2) := fun hh => absurd hh.2 (lt_irrefl _)
-          simp only [Ψ, if_neg h]
-        rw [hfun]
-        exact tendsto_const_nhds
-      · have hθIoo : θ ∈ Set.Ioo (0 : ℝ) (π / 2) := ⟨h0, h1⟩
-        refine decay_of_wt_bound hC₀pos.le h0 h1 fun z hz => ?_
-        have hzθ : (z, θ) ∈ Work.FTS.EllipticEst.Q0 :=
-          Work.FTS.EllipticEst.mem_Q0.mpr ⟨hz, h0, h1⟩
-        have hΨz : Ψ z θ = F 0 0 z θ := by simp only [Ψ, if_pos hθIoo]
-        rw [hΨz]
-        have hlim : Tendsto (fun n => |Work.Spaces.mixed 0 0 (E (fn (φ n))) z θ|)
-            Filter.atTop (𝓝 |F 0 0 z θ|) :=
-          ((hconv 0 0 (show 0 + 0 ≤ 2 by norm_num)).tendsto_at hzθ).abs
-        have hle : ∀ n : ℕ,
-            |Work.Spaces.mixed 0 0 (E (fn (φ n))) z θ| ≤ C₀ * wt z θ :=
-          fun n => hbnd (φ n) 0 0 (by norm_num) z θ hzθ
-        exact le_of_tendsto_of_tendsto' hlim tendsto_const_nhds hle
-  -- the source converges to `f`
-  have hfsrc : ∀ z θ : ℝ, (z, θ) ∈ Work.FTS.EllipticEst.Q0 →
-      Tendsto (fun n => fn (φ n) z θ) Filter.atTop (𝓝 (f z θ)) := by
-    intro z θ hzθ
-    exact (hL.conv 0 0 (by norm_num) z θ hzθ).comp hφ.tendsto_atTop
-  -- the equation and the jet convergence
-  have heq : ∀ z θ : ℝ, (z, θ) ∈ Work.FTS.EllipticEst.Q0 →
-      Work.Elliptic.bslOp α Ψ z θ = f z θ :=
-    fun z θ hzθ => bslOp_eq_of_convergence H hsm hsol hconv hdz hdth hΨfun hfsrc hzθ
-  have hJ : JConv (fun n => E (fn (φ n))) Ψ := jconv_of_data (α := α) hconv hident hΨeq
-  exact ⟨Ψ, ⟨fun z hz θ hθ0 hθ1 => heq z θ ⟨hz, hθ0, hθ1⟩, hDir0, hDir1, hdecay⟩, hΨc2,
-    ⟨φ, hφ.tendsto_atTop, hJ⟩⟩
 
-/-- **The compactness obligation from the local growth bound**, with the six inputs instantiated
-by the sibling modules of this directory. -/
-theorem closedCompact_of_children {α Ce : ℝ} (h : LocalBound α Ce) : ClosedCompact α Ce :=
-  closedCompact_of_inputs
-    ⟨LimExtract_bounds, LimTower_dz, SmoothOpen_tower, LimTower_identify, LimTower_c2,
-      BslOp_tower⟩ h
 
 end Work.FTS_EllLimOK
+end
+end

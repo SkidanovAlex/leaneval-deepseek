@@ -5,20 +5,20 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.eg_limit_family
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.deriv_pz_pth_bound
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.BoxC2
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Eg_modulus
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_deriv_bound
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.second_theta_deriv_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDerivDz.second_theta_deriv_DzIter_le_Xn6
-import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
-import Submission.Work.FTS_EllLimOK.ProducerH.ThetaZero.tendsto_of_deriv_bounded
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.mixed_comm
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.FTS_EllLimOK.SmallAssemblyH
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

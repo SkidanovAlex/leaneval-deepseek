@@ -1,33 +1,15 @@
-/-
-# `Work.FTS.PhiStar.FlatWAux.Expansion` — the `1/λ_m`-expansion of the radial Green function
-
-The radial mode solution `radGreen α m c` of `-α²z²a'' - α(5+α)za' + λ_m a = c` satisfies the
-resolvent identity `λ_m·radGreen α m c = c + α·𝒜(radGreen α m c)` with
-`𝒜 = αz²∂² + (5+α)z∂`, and `𝒜` commutes with `radGreen α m` (`RadGreenActA`).  Hence
-
-`λ_m·radGreen α m c = c + α·radGreen α m (𝒜 c)`,
-
-and iterating `J` times:
-
-`radGreen α m c = Σ_{j<J} (α^j/λ_m^{j+1})·(𝒜^j c) + (α^J/λ_m^J)·radGreen α m (𝒜^J c)`.
-
-This file contains the iterates `Ajit α j c = 𝒜^j c` (`Ajit α j (phiA α) = phiAj (j+1) α`), the
-one-step identity `radGreen_step` (from `Series.radGreen_resolvent` and `RadGreenActA`) and the
-purely algebraic `radGreen_expansion`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.PhiStar.Defs
-import Submission.Work.FTS.PhiStar.StarDefs
-import Submission.Work.FTS.PhiStar.Radial.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
 import Submission.Work.FTS.PhiStar.Series.RemSetup
-import Submission.Work.FTS.PhiStar.Radial.radGreen_solves
-import Submission.Work.FTS.PhiStar.RadGreenActA
-import Submission.Work.FTS.PhiStar.Series.ResolventSetup
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.Vocab
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_EllLimOK.PkgJets.cosTailB
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

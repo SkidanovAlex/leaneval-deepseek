@@ -2,14 +2,14 @@ import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
-import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
-import Submission.Work.Coercivity.contDiffOn_infty_integral_Itheta
 import Submission.Work.FTS.PhiStar.Gegenbauer.FamNormValue
-import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
-import Submission.Work.FTS.PhiStar.Honesty.CmodeZero.cmode_zero_abs_le_of_cptQ
-import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.cmode_hasDerivAt_pz
 import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.pzIter_smoothCptQ
+import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
+import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
+import Submission.Work.FTS.StrongPersist.hasDerivAt_wip_family
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

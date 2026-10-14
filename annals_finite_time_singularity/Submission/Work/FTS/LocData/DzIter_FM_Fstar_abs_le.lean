@@ -1,50 +1,152 @@
-/-
-# `Work.FTS.LocData.DzIter_FM_Fstar_abs_le`
-
-The first four iterates of `D_z = z ∂_z` applied to the fundamental-model profile
-`F_* (z) = 2z/(1+z)²` (`Work.FM.Fstar`) decay like `1/z` at infinity:
-
-`|D_z^j F_* (z)| ≤ C/z` for `z ≥ 1`, `j ≤ 4`.
-
-This is the `z`-part of the `ℋ⁴`-estimate of the localised data: the angular weight
-`w = (1+z)²/z²` of `Work.Spaces` blows up like `z²` at `z = ∞` while the *bare* `D_z`-iterates
-of `F_*` decay like `1/z`, which is what makes the far part `zfar L F_*` of the profile
-integrable against the weight.
-
-## The argument
-
-* The `θ`-variable is a dummy in `fun z _ => F_* z`, so
-  `DzIter j (fun z _ => F_* z) z θ = (T1F^[j]) F_* z`, where `T1F u z = z ∂_z u z`
-  (`DzIter_Fstar_eq_T1`).
-
-* The plain derivatives of `F_*` have the closed form
-  `deriv^[k] F_* z = Gker k z = 2·(-1)^k·k!·(z-k)/(1+z)^(k+2)`
-  (`Submission.Work.FTS.LocData.hasDerivAt_Gker` gives `deriv (Gker k) = Gker (k+1)` off
-  `z = -1`).
-
-* Expanding `T1F^[j]` for `j ≤ 4` in terms of `deriv^[k] F_*` (`T1_iter_Fstar_*` below) and
-  bounding each term by `10·k!/z` for `z ≥ 1`
-  (`Submission.Work.FTS.LocData.abs_zpow_mul_Gker_le`) gives the estimate with `C = 1000`.
-
-## Traps
-
-`T1F` is `z ∂_z`, not `∂_z`; the factors `z^k` produced by the iteration have to be carried
-along, which is why the expansion coefficients are the Stirling numbers `1, 1, 3, 1, 7, 6, 1`
-and not binomial coefficients.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Order.Interval.Basic
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Tactic.NormNum.NatFactorial
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.LocData.Defs
-import Submission.Work.FTS.LocData.FstarAux
-import Submission.Work.FTS.LocData.hasDerivAt_Gker
-import Submission.Work.FTS.LocData.abs_zpow_mul_Gker_le
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Stability.CutFactorFderivZero
+-- ===== merged: Submission.Work.FTS.FinalClock.Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+set_option autoImplicit false
+
+noncomputable section
+
+open Filter MeasureTheory Set
+open scoped Topology Interval
+
+namespace Work.FTS.FinalClock
+
+/-! ## Elementary tools -/
+
+/-- **Fundamental theorem of calculus for the primitive.**  If `f` is continuous then
+`t ↦ ∫₀^t f` has derivative `f t` everywhere. -/
+theorem hasDerivAt_intervalIntegral {f : ℝ → ℝ} (hf : Continuous f) (t : ℝ) :
+    HasDerivAt (fun u : ℝ => ∫ s in (0 : ℝ)..u, f s) (f t) t :=
+  (hf.integral_hasStrictDerivAt 0 t).hasDerivAt
+
+
+/-! ## The two amplitudes of the dynamic rescaling -/
+
+/-- **The vorticity amplitude of the dynamic rescaling.**
+`Avort m τ = exp (-∫₀^τ (1 + m s) ds)` solves `A' = -(1 + m) A`, `A 0 = 1`.  In the physical
+reconstruction the vorticity is `ω = A_v⁻¹ F e_θ` and the clock's amplitude is `C.A = 2·A_v`
+(correction 2 of the design). -/
+def Avort (m : ℝ → ℝ) (τ : ℝ) : ℝ := Real.exp (-∫ s in (0 : ℝ)..τ, (1 + m s))
+
+/-- **The second amplitude of the dynamic rescaling.**
+`Bdyn m τ = exp (-∫₀^τ (1 - m s) ds)` solves `B' = -(1 - m) B`, `B 0 = 1`.  It is the amplitude
+`B(τ)` of the self-similar variable `z = ρ^{3α}/B(τ)` of `meridianEq_of_dynEq` (design §3:
+`b'/b = -(1-μ)σ'`). -/
+def Bdyn (m : ℝ → ℝ) (τ : ℝ) : ℝ := Real.exp (-∫ s in (0 : ℝ)..τ, (1 - m s))
+
+
+
+/-- The *modulation bound* `|μ(τ)| ≤ 1/2` for every fake time: the hypothesis under which the
+clock exists (`PhysClock.hmu_lo`, `PhysClock.hmu_hi` follow by elementary arithmetic) and the
+paper's standing assumption in §`Modulation`. -/
+def MuBound (m : ℝ → ℝ) : Prop := ∀ τ : ℝ, |m τ| ≤ 1 / 2
+
+theorem MuBound.le {m : ℝ → ℝ} (hm : MuBound m) (τ : ℝ) : m τ ≤ 1 / 2 := (abs_le.mp (hm τ)).2
+
+theorem MuBound.ge {m : ℝ → ℝ} (hm : MuBound m) (τ : ℝ) : -(1 / 2) ≤ m τ :=
+  (abs_le.mp (hm τ)).1
+
+
+
+/-! ## The `max`-extension of a modulation continuous on `[0,∞)`
+
+`μ` is only known to be continuous on `[0,∞)` (it is `muDyn`, a functional of the fake-time
+solution, which is only posed there).  The clock's amplitude, on the other hand, must be
+differentiable at `τ = 0` *two-sidedly* (`PhysClock.hAderiv`), so the modulation has to be
+extended to all of `ℝ`; the extension `s ↦ μ (max s 0)` is automatically continuous and agrees
+with `μ` on `[0,∞)`, which is all the clock sees. -/
+
+/-- The `max`-extension of a modulation continuous on `[0,∞)` is continuous on `ℝ`. -/
+theorem continuous_maxExt {m : ℝ → ℝ} (hm : ContinuousOn m (Set.Ici 0)) :
+    Continuous (fun s : ℝ => m (max s 0)) :=
+  hm.comp_continuous (continuous_id.max continuous_const) (fun s => le_max_right s 0)
+
+
+/-- The `max`-extension inherits the modulation bound. -/
+theorem maxExt_bound {m : ℝ → ℝ} (h : ∀ τ : ℝ, 0 ≤ τ → |m τ| ≤ 1 / 2) :
+    MuBound (fun s : ℝ => m (max s 0)) :=
+  fun s => h (max s 0) (le_max_right s 0)
+
+/-! ## Positivity and the value at `0` -/
+
+theorem Avort_pos (m : ℝ → ℝ) (τ : ℝ) : 0 < Avort m τ := Real.exp_pos _
+
+theorem Bdyn_pos (m : ℝ → ℝ) (τ : ℝ) : 0 < Bdyn m τ := Real.exp_pos _
+
+
+
+
+
+@[simp] theorem Avort_zero (m : ℝ → ℝ) : Avort m 0 = 1 := by simp [Avort]
+
+@[simp] theorem Bdyn_zero (m : ℝ → ℝ) : Bdyn m 0 = 1 := by simp [Bdyn]
+
+/-! ## Derivatives and continuity -/
+
+/-- `Avort m` solves the modulated amplitude equation `A' = -(1 + m) A`. -/
+theorem Avort_hasDerivAt {m : ℝ → ℝ} (hc : Continuous m) (t : ℝ) :
+    HasDerivAt (Avort m) (-(1 + m t) * Avort m t) t := by
+  have h1 : HasDerivAt (fun u : ℝ => ∫ s in (0 : ℝ)..u, (1 + m s)) (1 + m t) t :=
+    hasDerivAt_intervalIntegral (continuous_const.add hc) t
+  have h2 : HasDerivAt (fun u : ℝ => -(∫ s in (0 : ℝ)..u, (1 + m s))) (-(1 + m t)) t := h1.neg
+  have h3 : HasDerivAt (fun u : ℝ => Real.exp (-(∫ s in (0 : ℝ)..u, (1 + m s))))
+      (Real.exp (-(∫ s in (0 : ℝ)..t, (1 + m s))) * (-(1 + m t))) t := h2.exp
+  have h4 : (fun u : ℝ => Real.exp (-(∫ s in (0 : ℝ)..u, (1 + m s)))) = Avort m := rfl
+  rw [h4] at h3
+  have hval : Real.exp (-(∫ s in (0 : ℝ)..t, (1 + m s))) * (-(1 + m t))
+      = -(1 + m t) * Avort m t := by
+    rw [show Real.exp (-(∫ s in (0 : ℝ)..t, (1 + m s))) = Avort m t from rfl]
+    ring
+  rwa [hval] at h3
+
+/-- `Bdyn m` solves `B' = -(1 - m) B`. -/
+theorem Bdyn_hasDerivAt {m : ℝ → ℝ} (hc : Continuous m) (t : ℝ) :
+    HasDerivAt (Bdyn m) (-(1 - m t) * Bdyn m t) t := by
+  have h1 : HasDerivAt (fun u : ℝ => ∫ s in (0 : ℝ)..u, (1 - m s)) (1 - m t) t :=
+    hasDerivAt_intervalIntegral (continuous_const.sub hc) t
+  have h2 : HasDerivAt (fun u : ℝ => -(∫ s in (0 : ℝ)..u, (1 - m s))) (-(1 - m t)) t := h1.neg
+  have h3 : HasDerivAt (fun u : ℝ => Real.exp (-(∫ s in (0 : ℝ)..u, (1 - m s))))
+      (Real.exp (-(∫ s in (0 : ℝ)..t, (1 - m s))) * (-(1 - m t))) t := h2.exp
+  have h4 : (fun u : ℝ => Real.exp (-(∫ s in (0 : ℝ)..u, (1 - m s)))) = Bdyn m := rfl
+  rw [h4] at h3
+  have hval : Real.exp (-(∫ s in (0 : ℝ)..t, (1 - m s))) * (-(1 - m t))
+      = -(1 - m t) * Bdyn m t := by
+    rw [show Real.exp (-(∫ s in (0 : ℝ)..t, (1 - m s))) = Bdyn m t from rfl]
+    ring
+  rwa [hval] at h3
+
+theorem Avort_continuous {m : ℝ → ℝ} (hc : Continuous m) : Continuous (Avort m) :=
+  continuous_iff_continuousAt.mpr fun t => (Avort_hasDerivAt hc t).continuousAt
+
+
+
+
+end Work.FTS.FinalClock
+end
+end
+-- ===== merged: Submission.Work.FTS.LocData.DzIter_FM_Fstar_abs_le =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,252 +164,19 @@ set_option autoImplicit false
 
 /-! ## `D_z^j` of the profile as an iterate of the one-variable operator `T1F` -/
 
-/-- The `θ`-variable is a dummy in `fun z _ => F_* z`, so the iterated `D_z` on the profile is
-the iterate of the one-variable operator `T1F u z = z ∂_z u z`. -/
-theorem DzIter_Fstar_eq_T1 (j : ℕ) (θ z : ℝ) :
-    Work.Spaces.DzIter j (fun z _ => Work.FM.Fstar z) z θ = (T1F^[j]) Work.FM.Fstar z := by
-  induction j generalizing z with
-  | zero => rfl
-  | succ j ih =>
-      rw [Work.Spaces.DzIter_succ, Function.iterate_succ_apply']
-      have hfun : (fun z' : ℝ => Work.Spaces.DzIter j (fun z _ => Work.FM.Fstar z) z' θ)
-          = (T1F^[j]) Work.FM.Fstar := funext fun z' => ih z'
-      show z * deriv (fun z' : ℝ => Work.Spaces.DzIter j (fun z _ => Work.FM.Fstar z) z' θ) z
-          = T1F ((T1F^[j]) Work.FM.Fstar) z
-      rw [hfun]
-      rfl
 
 /-! ## The closed forms of the iterated derivatives -/
 
-/-- `deriv (Gker k) z = Gker (k+1) z` for `z > 1/2` (where `1 + z ≠ 0`). -/
-theorem deriv_Gker_eq (k : ℕ) {z : ℝ} (hz : z ∈ Set.Ioi (1 / 2)) :
-    deriv (Gker k) z = Gker (k + 1) z := by
-  have hlt : (1 : ℝ) / 2 < z := hz
-  exact (hasDerivAt_Gker k z (by linarith)).deriv
 
-/-- The `z`-derivative of `z^k · Gker k` as a `HasDerivAt`: the product rule with the recursion
-`deriv (Gker k) = Gker (k+1)`. -/
-theorem hasDerivAt_zpow_mul_Gker (j k : ℕ) {z : ℝ} (hz : 1 + z ≠ 0) :
-    HasDerivAt (fun w : ℝ => w ^ j * Gker k w)
-      ((j : ℝ) * z ^ (j - 1) * Gker k z + z ^ j * Gker (k + 1) z) z := by
-  have h := (hasDerivAt_pow j z).mul (hasDerivAt_Gker k z hz)
-  have hfun : ((fun x : ℝ => x ^ j) * Gker k) = (fun w : ℝ => w ^ j * Gker k w) := by
-    funext w; rfl
-  rwa [hfun] at h
 
-/-- `T1F^[0] F_* = F_* = Gker 0`. -/
-theorem T1_iter_Fstar_0 :
-    Set.EqOn (T1F^[0] Work.FM.Fstar) (Gker 0) (Set.Ioi (1 / 2)) := by
-  intro z _
-  show Work.FM.Fstar z = Gker 0 z
-  rw [Gker_zero]
 
-/-- `T1F^[1] F_* (z) = z·F_*'(z) = z·Gker 1 z`. -/
-theorem T1_iter_Fstar_1 :
-    Set.EqOn (T1F^[1] Work.FM.Fstar) (fun z => z ^ 1 * Gker 1 z) (Set.Ioi (1 / 2)) := by
-  intro z hz
-  have hlt : (1 : ℝ) / 2 < z := hz
-  have hz0 : 1 + z ≠ 0 := by linarith
-  show T1F Work.FM.Fstar z = z ^ 1 * Gker 1 z
-  rw [T1_apply]
-  have hd : deriv Work.FM.Fstar z = Gker 1 z := by
-    rw [show Work.FM.Fstar = Gker 0 from funext fun w => (Gker_zero w).symm]
-    exact (hasDerivAt_Gker 0 z hz0).deriv
-  rw [hd]
-  ring
 
-/-- `T1F^[2] F_* (z) = z·Gker 1 z + z²·Gker 2 z`. -/
-theorem T1_iter_Fstar_2 :
-    Set.EqOn (T1F^[2] Work.FM.Fstar)
-      (fun z => z ^ 1 * Gker 1 z + z ^ 2 * Gker 2 z) (Set.Ioi (1 / 2)) := by
-  intro z hz
-  have hlt : (1 : ℝ) / 2 < z := hz
-  have hz0 : 1 + z ≠ 0 := by linarith
-  have hiter : (T1F^[2]) Work.FM.Fstar = T1F ((T1F^[1]) Work.FM.Fstar) := rfl
-  rw [hiter, T1_apply]
-  have hd1 : deriv ((T1F^[1]) Work.FM.Fstar) z
-      = deriv (fun w : ℝ => w ^ 1 * Gker 1 w) z :=
-    (T1_iter_Fstar_1.deriv isOpen_Ioi) hz
-  rw [hd1]
-  have hd : deriv (fun w : ℝ => w ^ 1 * Gker 1 w) z = Gker 1 z + z * Gker 2 z := by
-    have h := (hasDerivAt_zpow_mul_Gker 1 1 hz0).deriv
-    convert h using 1 <;> (push_cast; ring_nf)
-  rw [hd]
-  ring
 
-/-- `T1F^[3] F_* (z) = z·Gker 1 z + 3z²·Gker 2 z + z³·Gker 3 z`. -/
-theorem T1_iter_Fstar_3 :
-    Set.EqOn (T1F^[3] Work.FM.Fstar)
-      (fun z => z ^ 1 * Gker 1 z + 3 * (z ^ 2 * Gker 2 z) + z ^ 3 * Gker 3 z)
-      (Set.Ioi (1 / 2)) := by
-  intro z hz
-  have hlt : (1 : ℝ) / 2 < z := hz
-  have hz0 : 1 + z ≠ 0 := by linarith
-  have hiter : (T1F^[3]) Work.FM.Fstar = T1F ((T1F^[2]) Work.FM.Fstar) := rfl
-  rw [hiter, T1_apply]
-  have hd1 : deriv ((T1F^[2]) Work.FM.Fstar) z
-      = deriv (fun w : ℝ => w ^ 1 * Gker 1 w + w ^ 2 * Gker 2 w) z :=
-    (T1_iter_Fstar_2.deriv isOpen_Ioi) hz
-  rw [hd1]
-  have hd : deriv (fun w : ℝ => w ^ 1 * Gker 1 w + w ^ 2 * Gker 2 w) z
-      = Gker 1 z + 3 * z * Gker 2 z + z ^ 2 * Gker 3 z := by
-    have h := ((hasDerivAt_zpow_mul_Gker 1 1 hz0).add
-      (hasDerivAt_zpow_mul_Gker 2 2 hz0)).deriv
-    rw [show ((fun w : ℝ => w ^ 1 * Gker 1 w) + (fun w : ℝ => w ^ 2 * Gker 2 w))
-        = (fun w : ℝ => w ^ 1 * Gker 1 w + w ^ 2 * Gker 2 w) from by
-      funext w; rfl] at h
-    convert h using 1 <;> (push_cast; ring_nf)
-  rw [hd]
-  ring
 
-/-- `T1F^[4] F_* (z) = z·Gker 1 z + 7z²·Gker 2 z + 6z³·Gker 3 z + z⁴·Gker 4 z`. -/
-theorem T1_iter_Fstar_4 :
-    Set.EqOn (T1F^[4] Work.FM.Fstar)
-      (fun z => z ^ 1 * Gker 1 z + 7 * (z ^ 2 * Gker 2 z) + 6 * (z ^ 3 * Gker 3 z)
-        + z ^ 4 * Gker 4 z) (Set.Ioi (1 / 2)) := by
-  intro z hz
-  have hlt : (1 : ℝ) / 2 < z := hz
-  have hz0 : 1 + z ≠ 0 := by linarith
-  have hiter : (T1F^[4]) Work.FM.Fstar = T1F ((T1F^[3]) Work.FM.Fstar) := rfl
-  rw [hiter, T1_apply]
-  have hd1 : deriv ((T1F^[3]) Work.FM.Fstar) z
-      = deriv (fun w : ℝ => w ^ 1 * Gker 1 w + 3 * (w ^ 2 * Gker 2 w)
-          + w ^ 3 * Gker 3 w) z :=
-    (T1_iter_Fstar_3.deriv isOpen_Ioi) hz
-  rw [hd1]
-  have hd : deriv (fun w : ℝ => w ^ 1 * Gker 1 w + 3 * (w ^ 2 * Gker 2 w)
-        + w ^ 3 * Gker 3 w) z
-      = Gker 1 z + 7 * z * Gker 2 z + 6 * z ^ 2 * Gker 3 z + z ^ 3 * Gker 4 z := by
-    have h := (((hasDerivAt_zpow_mul_Gker 1 1 hz0).add
-        ((hasDerivAt_zpow_mul_Gker 2 2 hz0).const_mul 3)).add
-      (hasDerivAt_zpow_mul_Gker 3 3 hz0)).deriv
-    rw [show (((fun w : ℝ => w ^ 1 * Gker 1 w)
-          + (fun w : ℝ => 3 * (w ^ 2 * Gker 2 w)))
-          + (fun w : ℝ => w ^ 3 * Gker 3 w))
-        = (fun w : ℝ => w ^ 1 * Gker 1 w + 3 * (w ^ 2 * Gker 2 w)
-          + w ^ 3 * Gker 3 w) from by
-      funext w; rfl] at h
-    convert h using 1 <;> (push_cast; ring_nf)
-  rw [hd]
-  ring
 
 /-! ## The estimate -/
 
-/-- **The first four `D_z`-iterates of the profile decay like `1/z`.** -/
-theorem DzIter_FM_Fstar_abs_le :
-    ∃ C : ℝ, ∀ j : ℕ, j ≤ 4 → ∀ z : ℝ, 1 ≤ z → ∀ θ : ℝ,
-      |Work.Spaces.DzIter j (fun z _ => Work.FM.Fstar z) z θ| ≤ C / z := by
-  refine ⟨1000, ?_⟩
-  intro j hj z hz θ
-  have hz' : z ∈ Set.Ioi (1 / 2) := by
-    rw [Set.mem_Ioi]; linarith
-  have hzpos : (0 : ℝ) < z := by linarith
-  rw [DzIter_Fstar_eq_T1 j θ z]
-  interval_cases j
-  · rw [T1_iter_Fstar_0 hz']
-    have h1 : |Gker 0 z| ≤ 10 / z := by
-      have h := abs_zpow_mul_Gker_le 0 (by norm_num) hz
-      rw [show ((0 : ℕ).factorial : ℝ) = 1 by norm_num, pow_zero, one_mul, mul_one] at h
-      exact h
-    calc |Gker 0 z| ≤ 10 / z := h1
-      _ ≤ 1000 / z := div_le_div_of_nonneg_right (by norm_num) hzpos.le
-  · rw [T1_iter_Fstar_1 hz']
-    have h1 : |z ^ 1 * Gker 1 z| ≤ 10 / z := by
-      have h := abs_zpow_mul_Gker_le 1 (by norm_num) hz
-      rw [show ((1 : ℕ).factorial : ℝ) = 1 by norm_num, mul_one] at h
-      exact h
-    calc |z ^ 1 * Gker 1 z| ≤ 10 / z := h1
-      _ ≤ 1000 / z := div_le_div_of_nonneg_right (by norm_num) hzpos.le
-  · rw [T1_iter_Fstar_2 hz']
-    have h1 : |z ^ 1 * Gker 1 z| ≤ 10 / z := by
-      have h := abs_zpow_mul_Gker_le 1 (by norm_num) hz
-      rw [show ((1 : ℕ).factorial : ℝ) = 1 by norm_num, mul_one] at h
-      exact h
-    have h2 : |z ^ 2 * Gker 2 z| ≤ 20 / z := by
-      have h := abs_zpow_mul_Gker_le 2 (by norm_num) hz
-      rw [show ((2 : ℕ).factorial : ℝ) = 2 by norm_num] at h
-      have h20 : (10 : ℝ) * 2 / z = 20 / z := by norm_num
-      rwa [h20] at h
-    calc |z ^ 1 * Gker 1 z + z ^ 2 * Gker 2 z|
-        ≤ |z ^ 1 * Gker 1 z| + |z ^ 2 * Gker 2 z| := abs_add_le _ _
-      _ ≤ 10 / z + 20 / z := add_le_add h1 h2
-      _ ≤ 1000 / z := by
-          rw [show (10 : ℝ) / z + 20 / z = 30 / z by rw [← add_div]; norm_num]
-          exact div_le_div_of_nonneg_right (by norm_num) hzpos.le
-  · rw [T1_iter_Fstar_3 hz']
-    have h1 : |z ^ 1 * Gker 1 z| ≤ 10 / z := by
-      have h := abs_zpow_mul_Gker_le 1 (by norm_num) hz
-      rw [show ((1 : ℕ).factorial : ℝ) = 1 by norm_num, mul_one] at h
-      exact h
-    have h2 : |z ^ 2 * Gker 2 z| ≤ 20 / z := by
-      have h := abs_zpow_mul_Gker_le 2 (by norm_num) hz
-      rw [show ((2 : ℕ).factorial : ℝ) = 2 by norm_num] at h
-      have h20 : (10 : ℝ) * 2 / z = 20 / z := by norm_num
-      rwa [h20] at h
-    have h3 : |z ^ 3 * Gker 3 z| ≤ 60 / z := by
-      have h := abs_zpow_mul_Gker_le 3 (by norm_num) hz
-      rw [show ((3 : ℕ).factorial : ℝ) = 6 by norm_num] at h
-      have h60 : (10 : ℝ) * 6 / z = 60 / z := by norm_num
-      rwa [h60] at h
-    have hB : |(3 : ℝ) * (z ^ 2 * Gker 2 z)| ≤ 60 / z := by
-      rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 3)]
-      calc (3 : ℝ) * |z ^ 2 * Gker 2 z| ≤ 3 * (20 / z) :=
-            mul_le_mul_of_nonneg_left h2 (by norm_num)
-        _ = 60 / z := by rw [mul_div_assoc']; norm_num
-    calc |z ^ 1 * Gker 1 z + 3 * (z ^ 2 * Gker 2 z) + z ^ 3 * Gker 3 z|
-        ≤ |z ^ 1 * Gker 1 z + 3 * (z ^ 2 * Gker 2 z)| + |z ^ 3 * Gker 3 z| := abs_add_le _ _
-      _ ≤ (|z ^ 1 * Gker 1 z| + |(3 : ℝ) * (z ^ 2 * Gker 2 z)|) + |z ^ 3 * Gker 3 z| :=
-            add_le_add (abs_add_le _ _) le_rfl
-      _ ≤ (10 / z + 60 / z) + 60 / z := add_le_add (add_le_add h1 hB) h3
-      _ ≤ 1000 / z := by
-          rw [show (10 : ℝ) / z + 60 / z + 60 / z = 130 / z by
-            rw [← add_div, ← add_div]; norm_num]
-          exact div_le_div_of_nonneg_right (by norm_num) hzpos.le
-  · rw [T1_iter_Fstar_4 hz']
-    have h1 : |z ^ 1 * Gker 1 z| ≤ 10 / z := by
-      have h := abs_zpow_mul_Gker_le 1 (by norm_num) hz
-      rw [show ((1 : ℕ).factorial : ℝ) = 1 by norm_num, mul_one] at h
-      exact h
-    have h2 : |z ^ 2 * Gker 2 z| ≤ 20 / z := by
-      have h := abs_zpow_mul_Gker_le 2 (by norm_num) hz
-      rw [show ((2 : ℕ).factorial : ℝ) = 2 by norm_num] at h
-      have h20 : (10 : ℝ) * 2 / z = 20 / z := by norm_num
-      rwa [h20] at h
-    have h3 : |z ^ 3 * Gker 3 z| ≤ 60 / z := by
-      have h := abs_zpow_mul_Gker_le 3 (by norm_num) hz
-      rw [show ((3 : ℕ).factorial : ℝ) = 6 by norm_num] at h
-      have h60 : (10 : ℝ) * 6 / z = 60 / z := by norm_num
-      rwa [h60] at h
-    have h4 : |z ^ 4 * Gker 4 z| ≤ 240 / z := by
-      have h := abs_zpow_mul_Gker_le 4 (by norm_num) hz
-      rw [show ((4 : ℕ).factorial : ℝ) = 24 by norm_num] at h
-      have h240 : (10 : ℝ) * 24 / z = 240 / z := by norm_num
-      rwa [h240] at h
-    have hB : |(7 : ℝ) * (z ^ 2 * Gker 2 z)| ≤ 140 / z := by
-      rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 7)]
-      calc (7 : ℝ) * |z ^ 2 * Gker 2 z| ≤ 7 * (20 / z) :=
-            mul_le_mul_of_nonneg_left h2 (by norm_num)
-        _ = 140 / z := by rw [mul_div_assoc']; norm_num
-    have hC : |(6 : ℝ) * (z ^ 3 * Gker 3 z)| ≤ 360 / z := by
-      rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 6)]
-      calc (6 : ℝ) * |z ^ 3 * Gker 3 z| ≤ 6 * (60 / z) :=
-            mul_le_mul_of_nonneg_left h3 (by norm_num)
-        _ = 360 / z := by rw [mul_div_assoc']; norm_num
-    calc |z ^ 1 * Gker 1 z + 7 * (z ^ 2 * Gker 2 z) + 6 * (z ^ 3 * Gker 3 z)
-          + z ^ 4 * Gker 4 z|
-        ≤ |z ^ 1 * Gker 1 z + 7 * (z ^ 2 * Gker 2 z) + 6 * (z ^ 3 * Gker 3 z)|
-            + |z ^ 4 * Gker 4 z| := abs_add_le _ _
-      _ ≤ (|z ^ 1 * Gker 1 z + 7 * (z ^ 2 * Gker 2 z)|
-            + |(6 : ℝ) * (z ^ 3 * Gker 3 z)|) + |z ^ 4 * Gker 4 z| :=
-            add_le_add (abs_add_le _ _) le_rfl
-      _ ≤ ((|z ^ 1 * Gker 1 z| + |(7 : ℝ) * (z ^ 2 * Gker 2 z)|)
-            + |(6 : ℝ) * (z ^ 3 * Gker 3 z)|) + |z ^ 4 * Gker 4 z| :=
-            add_le_add (add_le_add (abs_add_le _ _) le_rfl) le_rfl
-      _ ≤ ((10 / z + 140 / z) + 360 / z) + 240 / z :=
-            add_le_add (add_le_add (add_le_add h1 hB) hC) h4
-      _ ≤ 1000 / z := by
-          rw [show (10 : ℝ) / z + 140 / z + 360 / z + 240 / z = 750 / z by
-            rw [← add_div, ← add_div, ← add_div]; norm_num]
-          exact div_le_div_of_nonneg_right (by norm_num) hzpos.le
 
 end Work.FTS.LocData
+end
+end

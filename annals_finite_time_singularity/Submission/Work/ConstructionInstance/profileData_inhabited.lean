@@ -7,9 +7,9 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.ConstructionInstance.ProfileData
-import Submission.Work.ConstructionInstance.hasDerivAt_profile_zero
-import Submission.Work.ConstructionInstance.ConcreteData
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBasic
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.R1G.DecayInZ_gA
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -117,34 +117,12 @@ theorem smoothNbhd_zeroF : Work.Spaces.SmoothNbhd (fun _ _ : ℝ => (0 : ℝ)) :
 
 /-! ## The same facts for the concrete zero perturbation `gZero` -/
 
-theorem pzIter_gZero (j : ℕ) : Work.Spaces.pzIter j gZero = fun _ _ => 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact pzIter_zeroF j
 
-theorem pthIter_gZero (i : ℕ) : Work.Spaces.pthIter i gZero = fun _ _ => 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact pthIter_zeroF i
 
-theorem DzIter_gZero (i : ℕ) : Work.Spaces.DzIter i gZero = fun _ _ => 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact DzIter_zeroF i
 
-theorem DthIter_gZero (i : ℕ) : Work.Spaces.DthIter i gZero = fun _ _ => 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact DthIter_zeroF i
 
-theorem mixed_gZero (j i : ℕ) : Work.Spaces.mixed j i gZero = fun _ _ => 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact mixed_zeroF j i
 
-theorem HkIntegrand_gZero (α : ℝ) (k : ℕ) (z θ : ℝ) :
-    Work.Spaces.HkIntegrand α k gZero z θ = 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact HkIntegrand_zeroF α k z θ
 
-theorem HkSq_gZero (α : ℝ) (k : ℕ) : Work.Spaces.HkSq α k gZero = 0 := by
-  have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl
-  rw [h]; exact HkSq_zeroF α k
 
 theorem HkNorm_gZero (α : ℝ) (k : ℕ) : Work.Spaces.HkNorm α k gZero = 0 := by
   have h : gZero = (fun _ _ : ℝ => (0 : ℝ)) := rfl

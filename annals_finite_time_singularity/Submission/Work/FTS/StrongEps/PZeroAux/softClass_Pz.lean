@@ -1,11 +1,74 @@
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Submission.Work.FTS.StrongEps.PZero
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
 import Submission.Work.FTS.StrongEps.MolClassC
-import Submission.Work.FTS.ClassC.A1
-import Submission.Work.FTS.EllipticEst.HkMem_add_smoothOpen
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.LocData.HkMem_of_majorant
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.Stability.CutFactorFderivZero
+-- ===== merged: Submission.Work.FTS.StrongEps.PZeroAux.classC_Pz =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.PZeroAux
+
+/-! ## Elementary facts about the correction profile `bump` -/
+
+
+/-- `bump` is supported in the box `[1/2,1] × [π/8,3π/8]`, strictly inside the open quadrant. -/
+theorem classC_Pz_suppIn_bump : Work.FTS.GalBasis.SuppIn bump (1 / 2) 1 (π / 8) := by
+  intro z θ h
+  by_contra hne
+  have hne' : bump z θ ≠ 0 := hne
+  rw [bump_ne_zero_iff] at hne'
+  obtain ⟨hz, hth⟩ := hne'
+  rcases h with h | h
+  · exact h ⟨le_of_lt hz.1, le_of_lt hz.2⟩
+  · refine h ⟨?_, ?_⟩
+    · linarith [hth.1, Real.pi_pos]
+    · linarith [hth.2]
+
+/-- `bump` is `C^∞` on the open quadrant `z > -1`, `0 < θ < π/2` (it is `C^∞` everywhere). -/
+theorem classC_Pz_smoothQuad_bump : Work.FTS.LocData.SmoothQuad bump :=
+  contDiffOn_iff_forall_nat_le.mpr (fun m _ => (contDiff_bump m).contDiffOn)
+
+/-- **`bump ∈ ℋᵏ`** for every `α` and every `k`, by the box support of `bump`. -/
+theorem classC_Pz_hkMem_bump (α : ℝ) (k : ℕ) : Work.Spaces.HkMem α k bump :=
+  Work.FTS.GalLimit.Closure.hkMem_of_suppIn α k (by norm_num) (by norm_num)
+    (by linarith [Real.pi_pos]) classC_Pz_smoothQuad_bump classC_Pz_suppIn_bump
+
+
+
+
+
+/-! ## The main theorem -/
+
+
+end Work.FTS.StrongEps.PZeroAux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.PZeroAux.softClass_Pz =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -36,18 +99,7 @@ theorem smoothOpen_const_mul (c : ℝ) {f : ℝ → ℝ → ℝ}
   rw [hfun]
   exact contDiffOn_const.mul h
 
-/-- `bump` vanishes when `z < 1/2`. -/
-theorem bump_eq_zero_of_lt_half {z θ : ℝ} (hz : z < 1 / 2) :
-    Work.FTS.StrongEps.bump z θ = 0 :=
-  Work.FTS.StrongEps.bump_eq_zero_iff.mpr (Or.inl (le_of_lt hz))
 
-/-- `bump` vanishes when `θ ∉ (0, π/2)`. -/
-theorem bump_eq_zero_of_not_mem_Ioo {z θ : ℝ} (hθ : θ ∉ Set.Ioo 0 (π / 2)) :
-    Work.FTS.StrongEps.bump z θ = 0 := by
-  rw [Work.FTS.StrongEps.bump_eq_zero_iff]
-  rcases not_and_or.mp hθ with h | h
-  · exact Or.inr (Or.inr (Or.inl (by push_neg at h; linarith [h, Real.pi_pos])))
-  · exact Or.inr (Or.inr (Or.inr (by push_neg at h; linarith [h, Real.pi_pos])))
 
 /-- The bump profile lies in `ℋ^k` for every `k`: it is smooth on the open quadrant and
 supported in the compact box `[1/2,1] × [π/4,3π/8]`, so its `ℋ^k`-integrand is dominated by
@@ -94,89 +146,10 @@ theorem HkMem_bump (α : ℝ) (k : ℕ) : Work.Spaces.HkMem α k Work.FTS.Strong
     · rw [Work.FTS.StrongEps.HkIntegrand_bump_eq_zero_of_not_mem α k (Or.inr (Or.inl hz1))]
       exact mul_nonneg (mul_nonneg (by norm_num) hM0nn) (Real.rpow_nonneg (by linarith) _)
 
-/-- The bump profile satisfies the boundary-trace conditions of order `k`: it vanishes off its
-support box, hence so do all its mixed derivatives, so every trace is the trace of `0`. -/
-theorem bdryTraces_bump (α : ℝ) (k : ℕ) :
-    Work.FTS.Nonlin.BdryTraces α k Work.FTS.StrongEps.bump := by
-  intro a b hab
-  refine ⟨fun θ hθ => ⟨?_, ?_⟩, fun z hz => ⟨?_, ?_⟩⟩
-  · refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
-    filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 / 2 by norm_num)] with z hz'
-    have h0 : Work.Spaces.mixed b a Work.FTS.StrongEps.bump z θ = 0 := by
-      simpa only [Work.Spaces.mixed] using
-        Work.FTS.StrongEps.bump_iter_eq_zero_of_not_mem (Or.inl hz'.2) b a
-    rw [h0]; ring
-  · refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
-    filter_upwards [Ioi_mem_atTop (1 : ℝ)] with z hz'
-    have h0 : Work.Spaces.mixed b a Work.FTS.StrongEps.bump z θ = 0 := by
-      simpa only [Work.Spaces.mixed] using
-        Work.FTS.StrongEps.bump_iter_eq_zero_of_not_mem (Or.inr (Or.inl hz')) b a
-    rw [h0]; ring
-  · refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
-    filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < Real.pi / 4 by linarith [Real.pi_pos])]
-      with θ hθ'
-    have h0 : Work.Spaces.mixed b a Work.FTS.StrongEps.bump z θ = 0 := by
-      simpa only [Work.Spaces.mixed] using
-        Work.FTS.StrongEps.bump_iter_eq_zero_of_not_mem
-          (Or.inr (Or.inr (Or.inl hθ'.2))) b a
-    rw [h0]; ring
-  · refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
-    filter_upwards [Ioo_mem_nhdsLT (show 3 * Real.pi / 8 < Real.pi / 2 by
-      linarith [Real.pi_pos])] with θ hθ'
-    have h0 : Work.Spaces.mixed b a Work.FTS.StrongEps.bump z θ = 0 := by
-      simpa only [Work.Spaces.mixed] using
-        Work.FTS.StrongEps.bump_iter_eq_zero_of_not_mem
-          (Or.inr (Or.inr (Or.inr hθ'.1))) b a
-    rw [h0]; ring
 
 /-! ## The projection preserves the mollifier class -/
 
-theorem softClass_Pz {α : ℝ} (hα : 0 < α) {f : ℝ → ℝ → ℝ}
-    (hf : Work.FTS.StrongEps.SoftClass α f) : Work.FTS.StrongEps.SoftClass α (Work.FTS.StrongEps.Pz f) := by
-  set c : ℝ := Work.Construction.L12 f 0 / Work.FTS.StrongEps.pzNorm with hc
-  have hPz : Work.FTS.StrongEps.Pz f
-      = fun z θ => f z θ + (-c) * Work.FTS.StrongEps.bump z θ := by
-    funext z θ
-    rw [Work.FTS.StrongEps.Pz_apply, ← hc]
-    ring
-  have hgsm : Work.FTS.EllipticEst.SmoothOpen (fun z θ => (-c) * Work.FTS.StrongEps.bump z θ) :=
-    smoothOpen_const_mul (-c) Work.FTS.StrongEps.smoothOpen_bump
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · -- the angular normalisation is a no-op
-    funext z θ
-    by_cases hθ : θ ∈ Set.Ioo 0 (π / 2)
-    · simp only [Work.FTS.EllSol.normTh, if_pos hθ]
-    · have hf0 : f z θ = 0 := by
-        have h := congrFun (congrFun hf.norm z) θ
-        simp only [Work.FTS.EllSol.normTh, if_neg hθ] at h
-        exact h.symm
-      simp only [Work.FTS.EllSol.normTh, if_neg hθ, Work.FTS.StrongEps.Pz_apply,
-        hf0, bump_eq_zero_of_not_mem_Ioo hθ, mul_zero, sub_zero]
-  · -- smooth on the open quadrant
-    rw [hPz]
-    exact Work.FTS.EllipticEst.smoothOpen_add hf.reg hgsm
-  · -- `ℋ⁸`-membership
-    rw [hPz]
-    exact Work.FTS.EllipticEst.HkMem_add_smoothOpen α 8 hα hf.reg hgsm hf.mem8
-      (Work.FTS.LocData.HkMem_const_mul α 8 (-c) (HkMem_bump α 8))
-  · -- `ℋ¹⁰`-membership (lead install 2026-10-11)
-    rw [hPz]
-    exact Work.FTS.EllipticEst.HkMem_add_smoothOpen α 10 hα hf.reg hgsm hf.mem10
-      (Work.FTS.LocData.HkMem_const_mul α 10 (-c) (HkMem_bump α 10))
-  · -- the boundary traces up to order `7`
-    rw [hPz]
-    refine Work.FTS.ClassC.bdryTraces_add hf.reg hgsm hf.tr7 ?_
-    convert Work.FTS.ClassC.bdryTraces_smul (bdryTraces_bump α 7) (-c) using 1
-  · -- the axis condition
-    intro θ hθ
-    refine Filter.Tendsto.congr' ?_ (hf.axis θ hθ)
-    filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 / 2 by norm_num)] with z hz
-    rw [Work.FTS.StrongEps.Pz_apply, bump_eq_zero_of_lt_half hz.2]
-    ring
-  · -- the θ-traces up to order `10` (lead install R6, 2026-10-11)
-    rw [hPz]
-    refine Work.FTS.ClassC.thetaTraces_add hf.reg hgsm hf.thTr ?_
-    convert Work.FTS.PhiStar.thetaTraces_of_bdryTraces
-      (Work.FTS.ClassC.bdryTraces_smul (bdryTraces_bump α 10) (-c)) using 1
 
 end Work.FTS.StrongEps.PZeroAux
+end
+end

@@ -1,27 +1,13 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `N6Trans/Hon/ClauseHon`: the honest level-4 `T2` clause, and the target `IP4T2Honest`
-
-This is the honest (`SmoothOpen`-based) form of `VocabO.T2Clause` for the concrete coercive
-inner product `Assembly.IP4 1 1 1 1 1 1` of the `ℋ⁴` chapter.  The assembly is the frozen one
-(`TransportS.ClauseBridge.T2Clause_of_slot` + `IPGen.ip4SlotDomGen`): the `75` leaves of the
-unfolding of `IP4` are bounded by the per-slot estimates `T2SlotHon` (`Hon/SlotHon`) and summed.
-
-The final theorem `IP4T2Honest_of_pieces` has exactly the shape of the assigned target
-`Work.FTS.StrongPersist.N6Trans.IP4T2Honest`, with the two `Prop`s `TopSlotHonProp` /
-`DelicateHonProp` (the honest radial integration by parts and the delicate term) as hypotheses.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.Defs
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SlotHon
+import Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat
 import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SlotAbsHon
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SlotHon
 import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.TransportS.ClauseBridge
-import Submission.Work.FTS.IPGen.ip4SlotDomGen
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -124,18 +110,5 @@ theorem T2ClauseHon_of_slot {IP : ℝ → Fn → Fn → ℝ} {α₂ K C : ℝ} (
 
 /-! ## The target, from the two honest pieces -/
 
-/-- **The level-four `T2` clause for `IP4` in the honest class**, from the honest radial
-integration by parts and the honest delicate bound.  This is the assigned target
-`Work.FTS.StrongPersist.N6Trans.IP4T2Honest` with precisely those two inputs. -/
-theorem IP4T2Honest_of_pieces (hTop : TopSlotHonProp) (hDel : DelicateHonProp) :
-    ∃ Ct α₂ : ℝ, 0 < Ct ∧ 0 < α₂ ∧
-      T2ClauseHon (Work.FTS.CoercivityFix.Assembly.IP4 1 1 1 1 1 1) α₂ Ct := by
-  obtain ⟨C, hC, hS⟩ := T2SlotHon_of_slotAbs hTop hDel
-  have hD := Work.FTS.IPGen.ip4SlotDomGen (c₁ := 1) (c₂ := 1) (c₁' := 1) (c₂' := 1)
-    (c₁'' := 1) (c₂'' := 1) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-    (by norm_num) (by norm_num)
-  refine ⟨(max 1 (max 1 (max 1 (max 1 (max 1 (max 1 1))))) ^ 3 * 3 ^ 3 * 10 ^ 22) * 75 * C,
-    1, mul_pos (mul_pos hD.1 (by norm_num)) hC, one_pos, ?_⟩
-  exact T2ClauseHon_of_slot (le_of_lt hC) le_rfl hS hD
 
 end Work.FTS.StrongPersist.N6Trans.Hon

@@ -1,20 +1,478 @@
-/-
-# `Work.FTS.StrongPersist.Clauses` — the clause packages of the strong route (S2/S6)
-
-The interface structures consumed by the persistence argument (S2) and by the level-three
-estimate (S6): `N6Norm`, `N6Trans`, `H6Coer`, `H6Lin`, `EllPkgK`, `Ell6Ctx`, `H6Split`,
-`L6Ctx`, `H6Pair`, `H6EnergyDeriv` and `L3Data`.  They are the k = 6 restatements of the
-level-four clauses `OpenPkg.N4Norm'`, `VocabO.T2Clause`/`T3Clause` and `CoercivityStep.IsHkIP`,
-in the corrected `HQo`-based form of the strong route; the vocabulary they are built on lives
-in `Submission.Work.FTS.StrongPersist.Vocab`.
--/
-
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Order.Interval.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.StrongPersist.Vocab
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.NonlinRows.Rl1.FaStep =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.NonlinRows.Rl1
+
+set_option autoImplicit false
+
+/-- The angular integral of a pointwise bound that is constant in `θ`:
+`∫⁻_θ ∈ Iθ, ofReal d ≤ ofReal d · volume Iθ`. -/
+theorem lintegral_const_le_ofReal {d : ℝ} (_hd : 0 ≤ d) :
+    (∫⁻ _θ in Work.Spaces.Iθ, ENNReal.ofReal d)
+      = ENNReal.ofReal d * ENNReal.ofReal (π / 2) := by
+  rw [MeasureTheory.setLIntegral_const, Work.Spaces.Iθ, Real.volume_Icc, sub_zero]
+
+/-- **The `r`-step with an explicit profile.**  If `|K θ · N r θ| ≤ c r · M r` pointwise on
+the open quadrant, `(M r)² ≤ C · Ψ r` on `r > 0`, `c` is nonnegative, `r ↦ r⁻¹c r` is
+square-integrable and `Ψ` is integrable (and nonnegative), then
+
+  `Fa N ≤ ofReal ((π/2) · √C · (∫Ψ)^{1/2} · (∫(r⁻¹c)²)^{1/2})`.
+
+The factor `π/2` is the angular volume; it is kept explicit so that the caller can choose
+its own (harmless) numerical over-estimate. -/
+theorem Fa_le_of_profile {N : ℝ → ℝ → ℝ} {c M Ψ : ℝ → ℝ} {C : ℝ}
+    (hC : 0 ≤ C)
+    (hc : ∀ r, 0 < r → 0 ≤ c r)
+    (hMnn : ∀ r, 0 ≤ M r) (hΨnn : ∀ r, 0 ≤ Ψ r)
+    (hΨmeas : AEMeasurable Ψ (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))))
+    (hΨint : MeasureTheory.IntegrableOn Ψ (Set.Ioi (0 : ℝ)))
+    (hcmeas : AEMeasurable (fun r => r⁻¹ * c r)
+      (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))))
+    (hcint : MeasureTheory.IntegrableOn (fun r => (r⁻¹ * c r) ^ 2) (Set.Ioi (0 : ℝ)))
+    (hMle : ∀ r, 0 < r → (M r) ^ 2 ≤ C * Ψ r)
+    (hpt : ∀ r, 0 < r → ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
+      |Work.Spaces.K θ * N r θ| ≤ c r * M r) :
+    Work.FTS.Nonlinear.Pieces.Fa N
+      ≤ ENNReal.ofReal (Real.pi / 2 * (Real.sqrt C
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), Ψ r)
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), (r⁻¹ * c r) ^ 2))) := by
+  -- ### the θ-step: the pointwise bound is constant in θ
+  have hinner : ∀ r ∈ Set.Ioi (0 : ℝ),
+      (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |Work.Spaces.K θ * N r θ|)
+        ≤ ENNReal.ofReal (c r * M r) * ENNReal.ofReal (π / 2) := by
+    intro r hr
+    have hr0 : 0 < r := hr
+    have hcm : 0 ≤ c r * M r := mul_nonneg (hc r hr0) (hMnn r)
+    have hae : ∀ᵐ θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+        ENNReal.ofReal |Work.Spaces.K θ * N r θ| ≤ ENNReal.ofReal (c r * M r) :=
+      Work.FTS.Nonlinear.Pieces.rl1Pieces.ae_Iθ_of_forall_Ioo
+        (fun θ hθ => ENNReal.ofReal_le_ofReal (hpt r hr0 θ hθ))
+    calc (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |Work.Spaces.K θ * N r θ|)
+        ≤ ∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal (c r * M r) :=
+          MeasureTheory.lintegral_mono_ae hae
+      _ = ENNReal.ofReal (c r * M r) * ENNReal.ofReal (π / 2) :=
+          lintegral_const_le_ofReal hcm
+  -- ### the extension of `r ↦ r⁻¹c r` to all of `ℝ`, used by `outer_gen`
+  set θw : ℝ → ℝ := (Set.Ioi (0 : ℝ)).indicator (fun r => r⁻¹ * c r) with hθwdef
+  have hθwmem : ∀ r ∈ Set.Ioi (0 : ℝ), θw r = r⁻¹ * c r := by
+    intro r hr
+    rw [hθwdef, Set.indicator_of_mem hr]
+  have hwnn : ∀ r, 0 ≤ θw r := by
+    intro r
+    by_cases hr : r ∈ Set.Ioi (0 : ℝ)
+    · rw [hθwmem r hr]
+      exact mul_nonneg (inv_nonneg.mpr (le_of_lt hr)) (hc r hr)
+    · rw [hθwdef, Set.indicator_of_notMem hr]
+  have hwmeas : AEMeasurable θw (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))) :=
+    hcmeas.congr (by
+      filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with r hr
+      exact (hθwmem r hr).symm)
+  have hwint : MeasureTheory.IntegrableOn (fun r => (θw r) ^ 2) (Set.Ioi (0 : ℝ)) :=
+    MeasureTheory.IntegrableOn.congr_fun hcint
+      (fun r hr => by rw [hθwmem r hr]) measurableSet_Ioi
+  have hMle' : ∀ᵐ r ∂(MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))),
+      (M r) ^ 2 ≤ C * Ψ r := by
+    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with r hr
+    exact hMle r hr
+  have houter := outer_gen hC hwnn hMnn hΨnn hwmeas hΨmeas hwint hΨint hMle'
+  rw [Work.FTS.Nonlinear.Pieces.Fa]
+  -- ### the chain
+  have h1 : (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal r⁻¹
+        * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |Work.Spaces.K θ * N r θ|))
+      ≤ ∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal r⁻¹
+          * (ENNReal.ofReal (c r * M r) * ENNReal.ofReal (π / 2)) := by
+    refine MeasureTheory.lintegral_mono_ae ?_
+    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with r hr
+    exact mul_le_mul_right (hinner r hr) _
+  have h2 : (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal r⁻¹
+        * (ENNReal.ofReal (c r * M r) * ENNReal.ofReal (π / 2)))
+      = ∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (π / 2)
+          * (ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r)) := by
+    refine MeasureTheory.lintegral_congr_ae ?_
+    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with r hr
+    have hr0 : 0 < r := hr
+    have hcr : 0 ≤ c r := hc r hr0
+    have hinv : 0 ≤ r⁻¹ := inv_nonneg.mpr hr0.le
+    rw [ENNReal.ofReal_mul hcr]
+    calc ENNReal.ofReal r⁻¹
+          * (ENNReal.ofReal (c r) * ENNReal.ofReal (M r) * ENNReal.ofReal (π / 2))
+        = (ENNReal.ofReal r⁻¹ * ENNReal.ofReal (c r))
+            * (ENNReal.ofReal (M r) * ENNReal.ofReal (π / 2)) := by ring
+      _ = ENNReal.ofReal (r⁻¹ * c r)
+            * (ENNReal.ofReal (M r) * ENNReal.ofReal (π / 2)) := by
+            rw [ENNReal.ofReal_mul hinv]
+      _ = ENNReal.ofReal (π / 2)
+            * (ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r)) := by ring
+  have h3 : (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (π / 2)
+        * (ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r)))
+      = ENNReal.ofReal (π / 2) * ∫⁻ r in Set.Ioi (0 : ℝ),
+          ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r) :=
+    MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+  have h4 : (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r))
+      ≤ ENNReal.ofReal (Real.sqrt C * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), Ψ r)
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), (r⁻¹ * c r) ^ 2)) := by
+    have hcong : (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (θw r) * ENNReal.ofReal (M r))
+        = ∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r) := by
+      refine MeasureTheory.lintegral_congr_ae ?_
+      filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with r hr
+      rw [hθwmem r hr]
+    have hsq : (∫ r in Set.Ioi (0 : ℝ), (θw r) ^ 2)
+        = ∫ r in Set.Ioi (0 : ℝ), (r⁻¹ * c r) ^ 2 := by
+      refine MeasureTheory.setIntegral_congr_fun measurableSet_Ioi ?_
+      intro r hr
+      exact congrArg (fun x => x ^ 2) (hθwmem r hr)
+    rw [← hcong, ← hsq]
+    exact houter
+  calc (∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal r⁻¹
+        * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal |Work.Spaces.K θ * N r θ|))
+      ≤ ∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal r⁻¹
+          * (ENNReal.ofReal (c r * M r) * ENNReal.ofReal (π / 2)) := h1
+    _ = ∫⁻ r in Set.Ioi (0 : ℝ), ENNReal.ofReal (π / 2)
+          * (ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r)) := h2
+    _ = ENNReal.ofReal (π / 2) * ∫⁻ r in Set.Ioi (0 : ℝ),
+          ENNReal.ofReal (r⁻¹ * c r) * ENNReal.ofReal (M r) := h3
+    _ ≤ ENNReal.ofReal (π / 2) * ENNReal.ofReal (Real.sqrt C
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), Ψ r)
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), (r⁻¹ * c r) ^ 2)) :=
+        mul_le_mul_right h4 _
+    _ = ENNReal.ofReal (Real.pi / 2 * (Real.sqrt C
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), Ψ r)
+          * Real.sqrt (∫ r in Set.Ioi (0 : ℝ), (r⁻¹ * c r) ^ 2))) := by
+        rw [← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ Real.pi / 2)]
+
+end Work.FTS.NonlinRows.Rl1
+end
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.LinvFlat.Linv_abs_le =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `Work.FTS.PhiStar.LinvFlat.Linv_abs_le`
+
+`Linv h` is the `σ`-normalised zero-moment Dirichlet inverse of `L₀`: with `μ = sin²θ cos³θ`,
+
+  `Linv h θ = -μ(θ)⁻¹ ∫_0^θ μ(θ') h(θ') / sin 2θ' dθ'`.
+
+On `(0, π/2)` the quotient inside the integral is `sin θ' cos²θ' / 2 · h θ'` (both sides vanish
+where `sin 2θ' = 0`), so
+
+  `|Linv h θ| = |N(θ)| / (2 sin²θ cos³θ)`,  `N(θ) = ∫_0^θ h · sinCos2`.
+
+Two estimates bound `N`: directly, `|N(θ)| ≤ K ∫_0^θ sinCos2 = K (1 - cos³θ) / 3`; and, using the
+zero-moment hypothesis `∫_0^{π/2} h · sinCos2 = 0` together with the additivity of the interval
+integral, `|N(θ)| ≤ K ∫_θ^{π/2} sinCos2 = K cos³θ / 3`.  Splitting at `θ = π/4` and using
+`cos θ ≥ 1/2` there (`cos θ ≥ 1 - 2θ/π`) resp. `sin θ ≥ 1/2` for `θ ≥ π/4` (`sin θ ≥ 2θ/π`) gives
+`|Linv h θ| ≤ 4K` for every `θ ∈ (0, π/2)`.
+
+(The declaration `Submission.Work.FTS.PhiStar.LinvI_solves` is not imported: it is currently
+mid-edit by its owner and does not build.  Nothing of it is used here.)
+-/
+
+noncomputable section
+
+open scoped Real Topology Interval
+open MeasureTheory Set Filter
+
+namespace Work.FTS.PhiStar.LinvFlat
+
+set_option maxHeartbeats 800000
+
+/-! ## Elementary facts -/
+
+/-- `sinCos2` is nonnegative on the open quadrant. -/
+private lemma sinCos2_nonneg {t : ℝ} (ht : t ∈ Set.Ioo 0 (π/2)) :
+    0 ≤ Work.Elliptic.sinCos2 t := by
+  rw [Work.Elliptic.sinCos2]
+  exact mul_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi ht.1.le (by linarith [ht.2, Real.pi_pos]))
+    (sq_nonneg _)
+
+/-- The integrand of `Linv` is `sin θ cos²θ / 2 · h θ` (identically: both sides vanish at the
+endpoints, where `sin 2θ = 0`). -/
+private lemma integrand_eq (h : ℝ → ℝ) (t : ℝ) :
+    Real.sin t ^ 2 * Real.cos t ^ 3 * h t / Work.Construction.s2 t
+      = (1 / 2) * (h t * Work.Elliptic.sinCos2 t) := by
+  rw [Work.Elliptic.sinCos2, Work.Construction.s2_eq, Real.sin_two_mul]
+  by_cases hs : Real.sin t = 0
+  · simp [hs]
+  · by_cases hc : Real.cos t = 0
+    · simp [hc]
+    · field_simp
+
+/-- Unfolding of `Linv` in terms of the (finite) integral `∫_0^θ h · sinCos2`. -/
+private lemma Linv_eq (h : ℝ → ℝ) (θ : ℝ) :
+    Work.FTS.PhiStar.Linv h θ
+      = -((Real.sin θ ^ 2 * Real.cos θ ^ 3)⁻¹ *
+          ((1 / 2) * ∫ t in (0 : ℝ)..θ, h t * Work.Elliptic.sinCos2 t)) := by
+  have hint : (∫ θ' in (0 : ℝ)..θ,
+        Real.sin θ' ^ 2 * Real.cos θ' ^ 3 * h θ' / Work.Construction.s2 θ')
+      = (1 / 2) * ∫ t in (0 : ℝ)..θ, h t * Work.Elliptic.sinCos2 t := by
+    rw [intervalIntegral.integral_congr (fun t _ => integrand_eq h t),
+        intervalIntegral.integral_const_mul]
+  simp only [Work.FTS.PhiStar.Linv]
+  rw [hint]
+
+/-! ## Integrability and the pointwise vs. weight comparison -/
+
+/-- The moment integrand is interval integrable on every subinterval of `[0, π/2]`. -/
+private lemma intervalIntegrable_moment {h : ℝ → ℝ}
+    (hint : IntegrableOn (fun θ => h θ * Work.Elliptic.sinCos2 θ) Work.Spaces.Iθ)
+    {a b : ℝ} (ha : 0 ≤ a) (hb : b ≤ π/2) (hab : a ≤ b) :
+    IntervalIntegrable (fun t => h t * Work.Elliptic.sinCos2 t) volume a b := by
+  rw [intervalIntegrable_iff_integrableOn_Ioc_of_le hab]
+  refine hint.mono_set ?_
+  intro t ht
+  exact ⟨le_trans ha ht.1.le, le_trans ht.2 hb⟩
+
+/-- The key comparison: on any subinterval of `[0, π/2]`, `|∫ h · sinCos2| ≤ K ∫ sinCos2`. -/
+private lemma interval_bound {h : ℝ → ℝ} {K : ℝ}
+    (hbd : ∀ θ : ℝ, θ ∈ Set.Ioo 0 (π/2) → |h θ| ≤ K)
+    (hint : IntegrableOn (fun θ => h θ * Work.Elliptic.sinCos2 θ) Work.Spaces.Iθ)
+    {a b : ℝ} (ha : 0 ≤ a) (hb : b ≤ π/2) (hab : a ≤ b) :
+    |∫ t in a..b, h t * Work.Elliptic.sinCos2 t| ≤ K * ∫ t in a..b, Work.Elliptic.sinCos2 t := by
+  have hf : IntervalIntegrable (fun t => |h t * Work.Elliptic.sinCos2 t|) volume a b :=
+    (intervalIntegrable_moment hint ha hb hab).abs
+  have hg : IntervalIntegrable (fun t => K * Work.Elliptic.sinCos2 t) volume a b :=
+    (continuous_const.mul (by unfold Work.Elliptic.sinCos2; fun_prop)).intervalIntegrable a b
+  have hpoint : ∀ x ∈ Set.Ioo a b,
+      |h x * Work.Elliptic.sinCos2 x| ≤ K * Work.Elliptic.sinCos2 x := by
+    intro x hx
+    have hx' : x ∈ Set.Ioo 0 (π/2) := ⟨lt_of_le_of_lt ha hx.1, lt_of_lt_of_le hx.2 hb⟩
+    have hnn : 0 ≤ Work.Elliptic.sinCos2 x := sinCos2_nonneg hx'
+    rw [abs_mul, abs_of_nonneg hnn]
+    exact mul_le_mul_of_nonneg_right (hbd x hx') hnn
+  calc |∫ t in a..b, h t * Work.Elliptic.sinCos2 t|
+      ≤ ∫ t in a..b, |h t * Work.Elliptic.sinCos2 t| :=
+        intervalIntegral.abs_integral_le_integral_abs hab
+    _ ≤ ∫ t in a..b, K * Work.Elliptic.sinCos2 t :=
+        intervalIntegral.integral_mono_on_of_le_Ioo hab hf hg hpoint
+    _ = K * ∫ t in a..b, Work.Elliptic.sinCos2 t := intervalIntegral.integral_const_mul K _
+
+/-! ## The weight integral -/
+
+private lemma hasDerivAt_prim (y : ℝ) :
+    HasDerivAt (fun x => -(Real.cos x ^ 3) / 3) (Real.sin y * Real.cos y ^ 2) y := by
+  have h1 := (Real.hasDerivAt_cos y).pow 3
+  have h2 := h1.const_mul (-(1 / 3) : ℝ)
+  convert h2 using 1
+  · funext x; simp only [Pi.pow_apply]; ring
+  · ring_nf
+
+/-- `∫_a^b sin t cos²t dt = (cos³a - cos³b)/3`. -/
+private lemma integral_sinCos2 (a b : ℝ) :
+    ∫ t in a..b, Work.Elliptic.sinCos2 t = (Real.cos a ^ 3 - Real.cos b ^ 3) / 3 := by
+  have hcont : IntervalIntegrable (fun t => Real.sin t * Real.cos t ^ 2) volume a b :=
+    (Real.continuous_sin.mul (Real.continuous_cos.pow 2)).intervalIntegrable a b
+  have h := intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (f := fun x => -(Real.cos x ^ 3) / 3)
+    (f' := fun x => Real.sin x * Real.cos x ^ 2)
+    (fun x _ => hasDerivAt_prim x) hcont
+  change ∫ t in a..b, Real.sin t * Real.cos t ^ 2 = _
+  rw [h]
+  ring
+
+/-- The zero-moment hypothesis, transported to the interval `0..π/2`. -/
+private lemma moment_zero {h : ℝ → ℝ}
+    (hmom : (∫ θ in Work.Spaces.Iθ, h θ * Work.Elliptic.sinCos2 θ) = 0) :
+    ∫ t in (0 : ℝ)..(π/2), h t * Work.Elliptic.sinCos2 t = 0 := by
+  rw [Work.Spaces.Iθ, MeasureTheory.integral_Icc_eq_integral_Ioc,
+      ← intervalIntegral.integral_of_le (by positivity : (0 : ℝ) ≤ π/2)] at hmom
+  exact hmom
+
+/-! ## The bound -/
+
+
+end Work.FTS.PhiStar.LinvFlat
+end
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.RadialWAux.Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.PhiStar.RadialWAux
+
+set_option autoImplicit false
+
+/-- The growing indicial exponent `p = 2m/α`. -/
+def radP (α : ℝ) (m : ℕ) : ℝ := 2 * (m : ℝ) / α
+
+/-- The (positive) decaying indicial exponent `q = (2m+5)/α`, i.e. `s⁻ = -q`. -/
+def radQ (α : ℝ) (m : ℕ) : ℝ := (2 * (m : ℝ) + 5) / α
+
+/-- The normalising constant `K = 1/(α(4m+5))` of the Green function. -/
+def radK (α : ℝ) (m : ℕ) : ℝ := 1 / (α * (4 * (m : ℝ) + 5))
+
+/-- The "inner" part of the Green function, in rescaled form:
+`Φ z = ∫₀¹ c(zu)·u^{q-1} du`. -/
+def radPhi (α : ℝ) (m : ℕ) (c : ℝ → ℝ) : ℝ → ℝ :=
+  fun z => ∫ u in (0 : ℝ)..1, c (z * u) * u ^ (radQ α m - 1)
+
+/-- The "outer" part of the Green function, in rescaled form:
+`Ψ z = ∫_{u>1} c(zu)·u^{-p-1} du`. -/
+def radPsi (α : ℝ) (m : ℕ) (c : ℝ → ℝ) : ℝ → ℝ :=
+  fun z => ∫ u in Set.Ioi 1, c (z * u) * u ^ (-(radP α m) - 1)
+
+
+/-! ### Elementary side facts -/
+
+theorem radP_pos {α : ℝ} (hα : 0 < α) {m : ℕ} (hm : 1 ≤ m) : 0 < radP α m := by
+  have h : (0 : ℝ) < 2 * (m : ℝ) := by
+    have : (0 : ℝ) < (m : ℝ) := by exact_mod_cast hm
+    linarith
+  simp only [radP]; exact div_pos h hα
+
+theorem radQ_pos {α : ℝ} (hα : 0 < α) (m : ℕ) : 0 < radQ α m := by
+  have h : (0 : ℝ) < 2 * (m : ℝ) + 5 := by positivity
+  simp only [radQ]; exact div_pos h hα
+
+/-- `p = 2m/α ≥ 10` for `α ≤ 1/5`, `m ≥ 1`. -/
+theorem ten_le_radP {α : ℝ} (hα : 0 < α) (hα5 : α ≤ 1 / 5) {m : ℕ} (hm : 1 ≤ m) :
+    10 ≤ radP α m := by
+  have hmr : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  simp only [radP]
+  rw [le_div_iff₀ hα]
+  nlinarith [hα5, hmr]
+
+/-- `q = (2m+5)/α ≥ 35` for `α ≤ 1/5`, `m ≥ 1`. -/
+theorem thirtyfive_le_radQ {α : ℝ} (hα : 0 < α) (hα5 : α ≤ 1 / 5) {m : ℕ} (hm : 1 ≤ m) :
+    35 ≤ radQ α m := by
+  have hmr : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  simp only [radQ]
+  rw [le_div_iff₀ hα]
+  nlinarith [hα5, hmr]
+
+/-- `(4m+5)/α = p + q`, the total indicial gap. -/
+theorem radP_add_radQ {α : ℝ} (hα : 0 < α) (m : ℕ) :
+    radP α m + radQ α m = (4 * (m : ℝ) + 5) / α := by
+  simp only [radP, radQ]; field_simp; ring
+
+
+theorem radK_pos {α : ℝ} (hα : 0 < α) (m : ℕ) : 0 < radK α m := by
+  simp only [radK]; positivity
+
+
+end Work.FTS.PhiStar.RadialWAux
+end
+end
+-- ===== merged: Submission.Work.FTS.PhiStar.phiAj_smooth2 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped ContDiff
+
+namespace Work.FTS.PhiStar
+
+set_option autoImplicit false
+
+/-! ## General order bookkeeping -/
+
+/-- The derivative of a `C^∞` function is `C^∞`. -/
+theorem contDiffAt_infty_deriv {f : ℝ → ℝ} {z : ℝ} (h : ContDiffAt ℝ ∞ f z) :
+    ContDiffAt ℝ ∞ (deriv f) z :=
+  h.derivWithin (m := ∞) (by simp)
+
+/-- A `C^∞` function has `C^∞` iterated derivatives. -/
+theorem contDiffAt_infty_iteratedDeriv {f : ℝ → ℝ} {z : ℝ} (k : ℕ)
+    (h : ContDiffAt ℝ ∞ f z) : ContDiffAt ℝ ∞ (iteratedDeriv k f) z := by
+  induction k with
+  | zero => simpa [iteratedDeriv_zero] using h
+  | succ k ih =>
+    rw [iteratedDeriv_succ]
+    exact contDiffAt_infty_deriv ih
+
+/-! ## The first iterate `𝒜φ = phiA α` -/
+
+/-- **`𝒜φ` is `C^n` at every `z > 0`, for every order `n`** (in particular `C^∞`).  Proof: the
+explicit rational form `Basic.phiA_eq` is a sum of two quotients whose denominators `(1+z)^4`,
+`(1+z)^3` are nonvanishing for `z > 0`. -/
+theorem contDiffAt_phiA_of (α : ℝ) (n : ℕ∞ω) {z : ℝ} (hz : 0 < z) :
+    ContDiffAt ℝ n (Work.FTS.VocabO.phiA α) z := by
+  have hz1 : z ≠ -1 := by linarith
+  have hF : ContDiffAt ℝ n (fun z : ℝ =>
+      4 * α * z ^ 2 * (z - 2) / (1 + z) ^ 4
+        + 2 * (5 + α) * z * (1 - z) / (1 + z) ^ 3) z := by
+    have hden : (1 + z) ^ 4 ≠ 0 := by
+      have : 1 + z ≠ 0 := by linarith
+      positivity
+    have hden3 : (1 + z) ^ 3 ≠ 0 := by
+      have : 1 + z ≠ 0 := by linarith
+      positivity
+    refine (ContDiffAt.div ?_ (((contDiffAt_const (c := (1 : ℝ))).add contDiffAt_id).pow 4)
+      hden).add (ContDiffAt.div ?_ (((contDiffAt_const (c := (1 : ℝ))).add
+        contDiffAt_id).pow 3) hden3)
+    · exact (((contDiffAt_const (c := (4 * α))).mul (contDiffAt_id.pow 2)).mul
+        (contDiffAt_id.sub contDiffAt_const))
+    · exact (((contDiffAt_const (c := (2 * (5 + α)))).mul contDiffAt_id).mul
+        (contDiffAt_const.sub contDiffAt_id))
+  refine hF.congr_of_eventuallyEq ?_
+  filter_upwards [isOpen_Ioi.mem_nhds hz] with y hy
+  have hy1 : y ≠ -1 := by
+    simp only [Set.mem_Ioi] at hy
+    linarith
+  exact Work.FTS.PhiStar.phiA_eq α y hy1
+
+/-- `𝒜φ` is `C^∞` at every `z > 0`. -/
+theorem contDiffAt_phiA (α : ℝ) {z : ℝ} (hz : 0 < z) :
+    ContDiffAt ℝ ∞ (Work.FTS.VocabO.phiA α) z :=
+  contDiffAt_phiA_of α ∞ hz
+
+/-! ## The second iterate `𝒜²φ = phiAj 2 α` -/
+
+
+/-! ## The requested statement -/
+
+
+end Work.FTS.PhiStar
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.Clauses =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -428,18 +886,8 @@ structure L3Data (α₂ Ce C3 Cpow : ℝ) : Prop where
     HkNorm α 3 (rhsOf α μ lam (Work.Construction.Ftot α f) Φ f)
       ≤ C3 * (1 + |Ce| + |Cs|) ^ 4 * α ^ (-Cpow) * (1 + M) ^ 4 * (1 + Xn6 α f) ^ 2
 
-theorem L3Data.linPart_bound {α₂ Ce C3 Cpow : ℝ} (h : L3Data α₂ Ce C3 Cpow) {α : ℝ} (hα : α ∈ Set.Ioc 0 α₂)
-    {f : Fn} (hf : H6Adm α f) :
-    HkMem α 3 (linPart α f) ∧ HkNorm α 3 (linPart α f) ≤ C3 * (1 + Xn α f) ^ 4 :=
-  h.lin α hα f hf
 
-theorem L3Data.rhsOf_bound {α₂ Ce C3 Cpow : ℝ} (h : L3Data α₂ Ce C3 Cpow) {α : ℝ} (hα : α ∈ Set.Ioc 0 α₂)
-    {E : Fn → Fn} {Φs Φ f : Fn} {Cs μ lam M : ℝ} (hell : Ell6Ctx α Ce Cs E Φs f Φ)
-    (hf : H6Adm α f) (hM : Xn α f ≤ M) (hμ : |μ| ≤ 1 / 2) (hlam : |lam| ≤ 1) :
-    HkMem α 3 (rhsOf α μ lam (Work.Construction.Ftot α f) Φ f) ∧
-      HkNorm α 3 (rhsOf α μ lam (Work.Construction.Ftot α f) Φ f)
-        ≤ C3 * (1 + |Ce| + |Cs|) ^ 4 * α ^ (-Cpow) * (1 + M) ^ 4 * (1 + Xn6 α f) ^ 2 :=
-  h.rhs α hα E Φs Φ f Cs μ lam M hell hf hM hμ hlam
 
 end Work.FTS.StrongPersist
-
+end
+end

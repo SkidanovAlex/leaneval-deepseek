@@ -1,17 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The truncated `w²`-energy inequality in the a.e. class: the profile bounds
-
-The auxiliary bounds needed by the final assembly `aeCutEnergyProp`:
-
-* the cut-off derivative bounds `hC1`, `hC2` for a compactly supported `C²` function vanishing
-  near `0`;
-* the a.e. continuity of the angular slices on `[0,π/2]`, from the two endpoint limits;
-* the a.e. angular square-integrability of `∂_θu`;
-* the finiteness of the untruncated `w²`-mass, of the truncated radial slot and of the truncated
-  source slot.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.Deriv.Support
@@ -19,11 +5,11 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.main
-import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.lzeroProfInt
-import Submission.Work.FTS.EllipticEst.AeS1.aeSliceConds
 import Submission.Work.FTS.EllipticEst.H2W.Ae.AngSliceBound
-import Submission.Work.FTS.EllipticEst.Dispatch.ceAux
+import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.main
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Gmaj6
+import Submission.Work.H2.T1Q.ExcBoundQ
+import Submission.Work.H2.T1Q.SlotPtQ
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

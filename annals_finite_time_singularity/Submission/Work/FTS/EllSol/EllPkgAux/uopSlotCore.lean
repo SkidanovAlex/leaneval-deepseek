@@ -1,52 +1,30 @@
-/-
-# `Work.FTS.EllSol.EllPkgAux.uopSlotCore` — the level-`4` `U/sin 2θ` slot, modulo the elliptic closure
-
-For `X := ellShift α g Ψ`, `Ξ := PhiTil α g Ψ = EllResid α g Ψ`, `Ḡ := Gbar α g`, `F_* := Fstar g`
-and `σ := sin 2θ`, the exact identity on the open quadrant
-
-  `Uop α Ξ / σ = -3·(X/σ) - α·(D_zX/σ) - (2Ḡ + (3/4)F_*)`
-
-(`Work.FTS.EllSol.EllPkgAux.uopPointwiseId`) reduces the slot to the open-class DivisionBySin at `X` and at `D_zX`
-(`PkgK5.divSinK5`), the `ℋ⁴`-wall of the trace-class §7 interpolation at `X`
-(`PkgK5.wall_of_interp 4`, hypothesis `hwall`), the Poincaré/Agmon package
-(`PkgK5.uopDzIter2Bound 4`) and the radial layer (`Gbar_Hk_le_open`, `Fstar_Hk_le_open`,
-`PkgK5.radialHkNorm_le_sinMul`).
-
-This module proves the resulting estimate with the right-hand side
-`α²‖z²∂²_zX‖₄ + ‖∂²_θX‖₄ + ‖g‖₄` (the elliptic closure to `C‖g‖₄` is done in `uopSlotLe4.lean`).
-The traces of `X` for `j ≤ 5`, the level-`4` weak class `EllWeakPos α 4 (orthSource g) X` and the
-two honesty inputs of the wall all come from the level-`7` class `EllClassOk 7 α g Ψ`
-(`PkgK5.tracesK5`, `ClassC.ellWeakPos_descend`, `TT.HkMem_descend_open`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllSol.EllPkgAux.uopSlotAux
-import Submission.Work.FTS.EllSol.PkgK5.wall_of_interp
-import Submission.Work.FTS.EllSol.PkgK5.divSinK5
-import Submission.Work.FTS.EllSol.PkgK5.tracesK5
-import Submission.Work.FTS.EllSol.PkgK5.uopDzIter2Bound
-import Submission.Work.FTS.EllSol.PkgK5.radialHkNorm_le_sinMul
-import Submission.Work.FTS.EllSol.PkgK5.uopRadialSinMulTransfer
-import Submission.Work.FTS.EllSol.PkgK5.residTracesK5
-import Submission.Work.FTS.EllipticEst.Gbar_Hk_le_open
-import Submission.Work.FTS.EllipticEst.Fstar_Hk_le_open
-import Submission.Work.FTS.EllipticEst.HkNorm_add_le
-import Submission.Work.FTS.EllipticEst.HkNorm_const_mul
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.EllHyp_certificates
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_Gbar_sin
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_Fstar_sin
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.EllipticEst.RPFresh.DivSinOpen.Defs
-import Submission.Work.FTS.EllipticEst.TT.HkMem_descend_open
-import Submission.Work.FTS.ClassC.removingL12_classC_aux
-import Submission.Work.FTS.EllExist.ClassCInputs
 import Submission.Work.FTS.EllExist.LevelK
-import Submission.Work.FTS.LocData.HkMem_const_mul
+import Submission.Work.FTS.EllSol.PkgK5.tracesK5
+import Submission.Work.FTS.EllipticEst.EllHyp_certificates
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EpsEngine.PerzTools.mixed_intervalIntegral_eq_gen_restricted
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyRight
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.StrongPersist.SupOpenH2Z
+import Submission.Work.FTS.TransportS.t2SlotGuarded
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXB.l12dens_weighted_bound
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.H2W.asliceMomentEq
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.SolutionDelivery.DatumOdd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

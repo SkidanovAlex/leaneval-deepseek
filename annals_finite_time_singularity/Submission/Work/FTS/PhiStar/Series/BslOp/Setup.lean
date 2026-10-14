@@ -5,31 +5,22 @@ import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.PhiStar.Series.RemSetup
-import Submission.Work.FTS.PhiStar.Series.psiTrunc_solves
-import Submission.Work.FTS.PhiStar.Series.eFam_zero_moment
-import Submission.Work.FTS.PhiStar.Series.acoeff_zero_of_fstar
-import Submission.Work.FTS.PhiStar.Series.radGreenI_differentiableAt
-import Submission.Work.FTS.PhiStar.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.PhiStar.Basic
-import Submission.Work.FTS.PhiStar.phiAj_smooth2
-import Submission.Work.FTS.PhiStar.StarDefs
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.PhiStar.Gegenbauer.FamNormValue
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_orthogonal
 import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_complete
-import Submission.Work.FTS.PhiStar.Radial.Defs
-import Submission.Work.FTS.PhiStar.Radial.radGreen_solves
-import Submission.Work.FTS.PhiStar.Radial.radGreenIntended
-import Submission.Work.FTS.PhiStar.RadialWAux.Defs
-import Submission.Work.FTS.PhiStar.RadialWAux.radGreen_eq_rescaled
-import Submission.Work.FTS.PhiStar.RadialWAux.radPhi_iteratedDeriv
-import Submission.Work.FTS.PhiStar.RadialWAux.radPsi_integral_bound
-import Submission.Work.FTS.PhiStar.RadialWAux.radPsi_iteratedDeriv
 import Submission.Work.FTS.PhiStar.RadialWAux.radPsi_contDiffOn
+import Submission.Work.FTS.PhiStar.RadialWAux.radPsi_iteratedDeriv
+import Submission.Work.FTS.PhiStar.Series.RemSetup
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.PhiStar.Series.psiTrunc_solves
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.Vocab
 import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -217,13 +208,6 @@ theorem iteratedDeriv_two_apply (f : ℝ → ℝ) (x : ℝ) :
     simpa using h
   rw [h2, h1]
 
-/-- Linearity of `tsum` over five summable families, with the association used below. -/
-theorem tsum_five (f1 f2 f3 f4 f5 : ℕ → ℝ) (h1 : Summable f1) (h2 : Summable f2)
-    (h3 : Summable f3) (h4 : Summable f4) (h5 : Summable f5) :
-    (∑' m, f1 m) + (∑' m, f2 m) + ((∑' m, f3 m) + (∑' m, f4 m) + (∑' m, f5 m))
-      = ∑' m, (f1 m + f2 m + (f3 m + f4 m + f5 m)) := by
-  rw [tsum_add' h1 h2, tsum_add' h3 h4, tsum_add' (h3.add h4) h5,
-    tsum_add' (h1.add h2) ((h3.add h4).add h5)]
 
 /-- Linearity of `tsum` over five summable families with constant coefficients. -/
 theorem tsum_lincomb5 (c1 c2 c3 c4 c5 : ℝ) (f1 f2 f3 f4 f5 : ℕ → ℝ)

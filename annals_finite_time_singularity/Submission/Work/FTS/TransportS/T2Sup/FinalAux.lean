@@ -1,36 +1,8 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TransportS/T2Sup/FinalAux`: the parts of the Leibniz sum and their pointwise bounds
-
-The Leibniz expansion `mixed_mul_Dz_open` of the transport pairing with a slot `(a,b)`
-
-  `mixed b a (f · D_z g) = ∑_{a1 ≤ a} ∑_{b1 ≤ b} C(a,a1)C(b,b1) · mixed b1 a1 f · mixed (b+1-b1) (a-a1) g`
-
-is split into three parts:
-
-* `Smain` — the `(a1,b1) = (0,0)` summand `f · D_z(mixed b a g)`:
-  this is the *only* summand whose second `g`-factor has order `5` at a slot with `a + b = 4`,
-  and it is handled by the radial integration by parts `T2Sup.topSlotBound`;
-* `Sdel` — the `(a1,b1) = (0,3)` summand `C(b,3) · D_z³f · mixed (b-2) a g`:
-  at the slot `(a,b) = (1,3)` with `q = γ` this is precisely the "delicate" summand whose bound
-  is the delegated `T2Sup.delicateBound`;
-* `Srest` — all the other summands, each of them pointwise dominated by the majorant
-  `Maj1 = (Mf + MK)·HkIntegrand α 4 g + Mg·√(HkIntegrand α 4 f)·√(HkIntegrand α 4 g)`
-  (`termPair_nd'`).
-
-The file records the definitions, the pointwise identity `Ssum = Smain + (Srest + Sdel)` (proved
-by splitting each summand into its `(0,0)`, `(0,3)` and remaining parts and using
-`Finset.sum_add_distrib`), the closed forms of the two exceptional sums, and the pointwise bound
-on `Srest`.
-
-All declarations here rest on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Submission.Work.FTS.TransportS.Slots
 import Submission.Work.FTS.TransportS.T2Sup.PairBnd
-import Submission.Work.FTS.TransportS.GoodOpenBase
-import Submission.Work.FTS.TransportS.T2Sup.Assembly
+import Submission.Work.FTS.TransportS.t3SlotGuarded
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

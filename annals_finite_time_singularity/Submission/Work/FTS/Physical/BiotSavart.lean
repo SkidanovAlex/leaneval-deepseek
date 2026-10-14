@@ -1,29 +1,12 @@
-/-
-# `Work.FTS.Physical.BiotSavart` — the physical velocity `u = BS ω`
-
-The velocity of the reconstructed solution is the Biot–Savart field of the physical vorticity,
-`physVel ω x t = BS (ω(·,t)) x`.  This module collects the properties of `physVel` that the
-reconstruction consumes:
-
-* joint `C^{1,α}` regularity on the strips `ℝ³ × [0,S]`, `S < T`, from the space-time Schauder
-  estimate `Work.CoreResiduals.BiotSavartSpaceTime` (proved in the workspace as
-  `biotSavartSpaceTime_holds`);
-* the same on the half-open strip `ℝ³ × [0,T)` demanded by `IsLocalEulerEquationSolution`;
-* oddness, from the reflection equivariance of Biot–Savart (`Work.LWP.biotSavart_reflZ`) together
-  with axisymmetry without swirl;
-* the identification of the vorticity `L^∞`-norm with the sup-norm of the physical vorticity
-  (the left-hand side of the `c/(T-t)` lower bound);
-* the decay clause of the initial datum, which is trivial for compactly supported vorticity.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Submission.Work.FTS.Physical.Defs
 import Submission.Work.CoreResiduals.BiotSavart.biotSavartSpaceTime_holds
-import Submission.Work.SolutionDelivery.DatumOdd
-import Submission.Work.FTS.Physical.BiotSavart.contDiffOn_uncurry_ico
-import Submission.Work.FTS.Physical.BiotSavart.vorticityDecay_of_support
-import Submission.Work.FTS.Physical.BiotSavart.isOdd_physVel_of_swirlShape
 import Submission.Work.FTS.Physical.BiotSavart.bsAdmissibleStripFull_comp_clock
+import Submission.Work.FTS.Physical.BiotSavart.contDiffOn_uncurry_ico
+import Submission.Work.FTS.Physical.BiotSavart.isOdd_physVel_of_swirlShape
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+import Submission.Work.SolutionDelivery.DatumOdd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -49,24 +32,7 @@ theorem isContDiffHolderOn_physVel {α : ℝ≥0} (hα : 0 < (α : ℝ)) (hα1 :
   have h := (Work.CoreResiduals.BiotSavart.biotSavartSpaceTime_holds (α := α) hα hα1).2.2 ω R S hS hbun
   exact h
 
-/-- **Joint `C¹` on the half-open strip.**  `IsLocalEulerEquationSolution` demands regularity on
-`ℝ³ × [0,T)`; it follows from the strip versions because every `t < T` lies in the interior of some
-`[0,S]`, `S < T`. -/
-theorem contDiffOn_uncurry_ico {α : ℝ≥0} (hα : 0 < (α : ℝ)) (hα1 : (α : ℝ) < 1)
-    {ω : R3 → ℝ → R3} {R T : ℝ} (hT : 0 < T)
-    (hbun : ∀ S ∈ Set.Ioo 0 T, Work.CoreResiduals.BSAdmissibleStripFull α ω R S) :
-    ContDiffOn ℝ 1 (physVel ω).uncurry (Set.univ ×ˢ Set.Ico (0 : ℝ) T) :=
-  Work.FTS.Physical.BiotSavart.contDiffOn_uncurry_ico hα hα1 hT hbun
 
-/-- **Oddness of the reconstructed velocity.**  The vorticity of an odd field is in the reflection
-parity class `IsOddVorticity`; if in addition the Biot–Savart velocity is axisymmetric without
-swirl (as it is for a `(ρ,θ)`-swirl vorticity), then the velocity is odd. -/
-theorem isOdd_physVel {ω : R3 → ℝ → R3} {t : ℝ}
-    (hω : Work.LWP.IsOddVorticity (fun y => ω y t))
-    (hax : Work.Cyl.IsAxiNoSwirl (Work.LWP.biotSavart (fun y => ω y t))) :
-    IsOdd ((physVel ω) · t) := by
-  have h := Work.SolutionDelivery.isOdd_biotSavart_of_axiNoSwirl hω hax
-  simpa [physVel] using h
 
 /-- **Oddness of the reconstructed velocity from the swirl shape of its vorticity.**  If the slice
 `ω(·,t)` is the `(ρ,θ)`-swirl field `W(ρ(x),θ(x))·e_θ(x)` with `W` odd in the angle, then

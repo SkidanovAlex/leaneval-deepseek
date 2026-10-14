@@ -1,27 +1,42 @@
-/-
-# `Work.FTS.Top.Main` — the challenge statement from a `BlowupAt` at time `1`
-
-This is the wiring point of node N0: from
-
-* `hα : 0 < α` and
-* `B : Work.FTS.Top.BlowupAt α 1` (the audit's interface: an Euler solution of the class of the
-  paper's Theorem 1 on `ℝ³ × [0,1)`, whose vorticity blows up at least like `c/(1-t)`),
-
-the *verbatim* conclusion of the challenge statement follows.  The whole proof is the
-identification of the fields (`u₀ = B.u · 0`, `p = B.p`, `u = B.u`) and of the last clause with
-`Work.FTS.Top.BlowupAt.bkm_divergence_one`, which is literally
-`Work.StabilityFar.bkm_divergence_at_one` (fed by the `lower` field and by
-`Work.FTS.Top.intervalIntegrable_vortLInf`), i.e. the route of audit §4 (N0).  `Check.lean`
-verifies that the conclusion produced here is the challenge's conclusion up to definitional
-equality.
-
-The remaining mathematical content of the problem is therefore *exactly* the construction of an
-inhabitant of `BlowupAt α 1` (nodes N1–N9 of the audit) together with the rescaling
-`Work.FTS.Top.blowupAt_one_of_blowupAt` (node N0, proved).
--/
+import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.Top.BKM
-import Submission.Work.FTS.Top.Rescale.Blowup
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.SolutionDelivery.Assembly
+import Submission.Work.Spaces.bt_f_bound
+import Submission.Work.Stability.CutFactorFderivZero
+-- ===== merged: Submission.Work.FTS.LocData.HkMem_zfar_Fstar =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.LocData
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+
+/-! ## The far part `zfar L F_*` is `C^∞` on the quadrant -/
+
+
+/-! ## Integrability of the angular majorant times the radial weight -/
+
+
+/-! ## The target -/
+
+
+end Work.FTS.LocData
+end
+end
+-- ===== merged: Submission.Work.FTS.Top.Main =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -56,18 +71,6 @@ theorem theorem_1_of_blowupAt {α : ℝ≥0} (hα : 0 < (α : ℝ)) (B : BlowupA
   exact ⟨α, hα', (B.u · 0), B.div0, B.odd 0 ⟨le_rfl, B.hT⟩, B.cdh0, B.decay0,
     B.p, B.u, B.odd, B.sol, B.strip, B.bkm_divergence_one⟩
 
-/-- **The challenge statement from a blow-up at an arbitrary time `T > 0`.**  The time rescaling
-`Work.FTS.Top.blowupAt_one_of_blowupAt` is applied first. -/
-theorem theorem_1_of_blowupAt' {α : ℝ≥0} {T : ℝ} (hα : 0 < (α : ℝ)) (B : BlowupAt α T) :
-    ∃ β > 0, ∃ u₀ : R3 → R3, div u₀ = 0 ∧ IsOdd u₀ ∧ IsContDiffHolder ℝ β u₀ ∧
-      (∃ C : ℝ, 0 < C ∧ ∀ x : R3, ‖vorticity u₀ x‖ ≤ C / (‖x‖ ^ (β : ℝ) + 1)) ∧
-        ∃ p : R3 → ℝ → ℝ, ∃ u : R3 → ℝ → R3,
-            (∀ t ∈ Set.Ico 0 1, IsOdd (u · t)) ∧
-            IsLocalEulerEquationSolution p u₀ 1 u ∧
-              (∀ T' ∈ Set.Ioo 0 1,
-                IsContDiffHolderOn ℝ β u.uncurry (Set.univ ×ˢ Set.Icc 0 T')) ∧
-                Filter.Tendsto (fun t => ∫ s in 0..t, ⨆ x, ‖vorticity (fun y => u y s) x‖)
-                  (𝓝[<] 1) Filter.atTop :=
-  theorem_1_of_blowupAt hα (blowupAt_one_of_blowupAt B)
 
 end Work.FTS.Top
+end

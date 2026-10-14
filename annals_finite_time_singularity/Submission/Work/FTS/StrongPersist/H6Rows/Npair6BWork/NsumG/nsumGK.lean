@@ -2,18 +2,18 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG2
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fstarDat
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.ksDat
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.ksMixed
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.rowDthWlInf
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarFam
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarP
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG2
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0coefA4_WlInf6
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

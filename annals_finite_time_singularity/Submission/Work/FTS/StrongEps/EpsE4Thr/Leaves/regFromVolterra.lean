@@ -1,12 +1,388 @@
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.RingTheory.Finiteness.Prod
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.VolterraAux.Iter
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS_RegExport.RXT0.SlabFlat
-import Submission.Work.FTS.StrongEps.EpsE4Thr.RegSlab.continuousOn_intervalIntegral_slab_normed
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6Trans.HonestHardSlotLem
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS_RegExport.RXA1.abs_mixed_le_HkNorm_C4_proved
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.EpsEngine.IterContMeas =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+open Work.FTS.Galerkin (Fn Fam slice)
+open Work.FTS.StrongEps
+open Work.FTS.StrongEps.EpsLocalPStar
+open Classical
+
+namespace Work.FTS.EpsEngine
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+set_option linter.style.haveILetI false
+set_option linter.unusedVariables false
+
+/-- The open quadrant `(0,∞) × (0,π/2)`, in the shape in which the Carathéodory lemma states it. -/
+private abbrev Qd : Set (ℝ × ℝ) := Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)
+
+/-! ## The three steps of the induction -/
+
+/-- **Carathéodory step**: continuity in the fake time of the level-`n` curve yields the joint
+measurability of its `F`-image on the horizon. -/
+theorem aesm_of_contIter {α δ : ℝ} {F : Fn → Fn} {h₀ : Fn} {P : Fn → Prop} (n : ℕ)
+    (hcontP : ∀ u : Fn, P u → ContinuousOn (fun q : ℝ × ℝ => F u q.1 q.2) Qd)
+    (hzeroP : ∀ u : Fn, P u → ∀ q : ℝ × ℝ, q ∉ Qd → F u q.1 q.2 = 0)
+    (hPn : ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ n) τ))
+    (hcont : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ)) :
+    AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ n) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod volume) := by
+  refine aesm_uncurry_restricted (A := Set.Icc 0 δ)
+    (g := fun s z θ => F (slice (iter F h₀ n) s) z θ) measurableSet_Icc ?_ ?_ ?_
+  · intro s hs
+    exact hcontP _ (hPn s hs)
+  · intro s hs q hq
+    exact hzeroP _ (hPn s hs) q hq
+  · intro q
+    by_cases hq : q ∈ Qd
+    · exact (hcont q.1 q.2 hq.1 hq.2.1 hq.2.2).aestronglyMeasurable measurableSet_Icc
+    · exact (continuousOn_const.congr
+        (fun s hs => hzeroP _ (hPn s hs) q hq)).aestronglyMeasurable measurableSet_Icc
+
+/-- **Minkowski step** (the time-Lipschitz bound of the curves): the increment of the `(n+1)`-st
+Picard iterate over `(a,b] ⊆ [0,δ]` is the parametric integral of the level-`n` curve, whose
+weighted `L²`-size is bounded by `L` a.e.; `EpsSq_intervalIntegral_le_gen` then gives the bound
+`(b−a)²·L`. -/
+theorem EpsSq_integral_iter_le {α L δ : ℝ} {F : Fn → Fn} {h₀ : Fn} {P : Fn → Prop} (n : ℕ)
+    (hL : 0 ≤ L)
+    (hPn : ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ n) τ))
+    (hbd : ∀ u : Fn, P u → EpsMem α (F u) ∧ EpsSq α (F u) ≤ L)
+    (haesm : AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ n) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod volume)) :
+    ∀ a ∈ Set.Icc 0 δ, ∀ b ∈ Set.Icc 0 δ, a ≤ b →
+      EpsSq α (fun z' θ' => ∫ t in a..b, F (slice (iter F h₀ n) t) z' θ')
+        ≤ (b - a) * ((b - a) * L) := by
+  intro a ha b hb hab
+  have hm0 : AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ n) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.uIoc a b)).prod volume) := by
+    refine haesm.mono_measure ?_
+    refine Measure.prod_mono ?_ le_rfl
+    refine Measure.restrict_mono ?_ le_rfl
+    rw [Set.uIoc_of_le hab]
+    exact fun x hx => ⟨le_trans ha.1 (le_of_lt hx.1), le_trans hx.2 hb.2⟩
+  have hm := aesm_weighted_prod_restricted (α := α)
+    (Φ := fun t => F (slice (iter F h₀ n) t)) hm0
+  have hbdd : ∀ᵐ t ∂(volume.restrict (Set.uIoc a b)),
+      epsL2 α (F (slice (iter F h₀ n) t)) ≤ ENNReal.ofReal L := by
+    refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_uIoc ?_
+    intro t ht
+    have htIcc : t ∈ Set.Icc 0 δ := by
+      rw [Set.uIoc_of_le hab] at ht
+      exact ⟨le_trans ha.1 (le_of_lt ht.1), le_trans ht.2 hb.2⟩
+    exact epsL2_le_ofReal_of_mem (hbd _ (hPn t htIcc)).1 (hbd _ (hPn t htIcc)).2
+  exact (EpsSq_intervalIntegral_le_gen hab hL hm hbdd).2
+
+/-- **One Picard step**: from the continuity in the fake time at level `n` (and the class data at
+levels `n` and `n+1`) one gets both conclusions at level `n+1`. -/
+theorem cont_iter_succ {α Cpt L δ : ℝ} {F : Fn → Fn} {h₀ : Fn} {P : Fn → Prop} (n : ℕ)
+    (hL : 0 ≤ L) (hCpt : 0 ≤ Cpt)
+    (hcontP : ∀ u : Fn, P u → ContinuousOn (fun q : ℝ × ℝ => F u q.1 q.2) Qd)
+    (hzeroP : ∀ u : Fn, P u → ∀ q : ℝ × ℝ, q ∉ Qd → F u q.1 q.2 = 0)
+    (hbd : ∀ u : Fn, P u → EpsMem α (F u) ∧ EpsSq α (F u) ≤ L)
+    (hpt : ∀ u v : Fn, P u → P v → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      |F u z θ - F v z θ| ≤ Cpt * Real.sqrt (EpsSq α (fun z θ => u z θ - v z θ)))
+    (hPn : ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ n) τ))
+    (hPn1 : ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ (n + 1)) τ))
+    (hcont_n : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ)) :
+    (∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ (n + 1)) s) z θ) (Set.Icc 0 δ)) ∧
+    AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ (n + 1)) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod volume) := by
+  have haesm_n := aesm_of_contIter (α := α) (δ := δ) (F := F) (h₀ := h₀) (P := P) n
+    hcontP hzeroP hPn hcont_n
+  have hbound := EpsSq_integral_iter_le (α := α) (L := L) (δ := δ) (F := F) (h₀ := h₀) (P := P)
+    n hL hPn hbd haesm_n
+  have hcont_succ : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ (n + 1)) s) z θ) (Set.Icc 0 δ) := by
+    intro z θ hz hθ0 hθ1
+    -- the `(n+1)`-st iterate is `h₀` plus the parametric integral of the level-`n` curve
+    have hiter : ∀ τ z' θ' : ℝ, slice (iter F h₀ (n + 1)) τ z' θ'
+        = h₀ z' θ' + ∫ t in (0 : ℝ)..τ, F (slice (iter F h₀ n) t) z' θ' := by
+      intro τ z' θ'
+      rw [iter_succ F h₀ n]
+      simp only [Work.FTS.Galerkin.slice_apply]
+    -- the Lipschitz bound for the `(n+1)`-st curve
+    have key : ∀ a ∈ Set.Icc 0 δ, ∀ b ∈ Set.Icc 0 δ, a ≤ b →
+        dist (F (slice (iter F h₀ (n + 1)) a) z θ)
+             (F (slice (iter F h₀ (n + 1)) b) z θ)
+          ≤ (Cpt * Real.sqrt L) * dist a b := by
+      intro a ha b hb hab
+      have hdiff : ∀ᵐ p ∂DomM,
+          (fun z' θ' => slice (iter F h₀ (n + 1)) a z' θ'
+            - slice (iter F h₀ (n + 1)) b z' θ') p.1 p.2
+            = (fun z' θ' => -∫ t in a..b, F (slice (iter F h₀ n) t) z' θ') p.1 p.2 := by
+        filter_upwards [ae_open_DomM] with p hp
+        obtain ⟨hz', hθ'0, hθ'1⟩ := hp
+        have hc : ContinuousOn (fun t : ℝ => F (slice (iter F h₀ n) t) p.1 p.2)
+            (Set.Icc 0 δ) := hcont_n p.1 p.2 hz' hθ'0 hθ'1
+        rw [hiter a p.1 p.2, hiter b p.1 p.2]
+        have h1 : IntervalIntegrable (fun t : ℝ => F (slice (iter F h₀ n) t) p.1 p.2) volume 0 a :=
+          ContinuousOn.intervalIntegrable_of_Icc ha.1 (hc.mono (Set.Icc_subset_Icc_right ha.2))
+        have h2 : IntervalIntegrable (fun t : ℝ => F (slice (iter F h₀ n) t) p.1 p.2) volume a b :=
+          ContinuousOn.intervalIntegrable_of_Icc hab
+            (hc.mono (fun x hx => ⟨le_trans ha.1 hx.1, le_trans hx.2 hb.2⟩))
+        have hadj := (intervalIntegral.integral_add_adjacent_intervals h1 h2).symm
+        rw [hadj]
+        ring
+      have heps : EpsSq α (fun z' θ' => slice (iter F h₀ (n + 1)) a z' θ'
+            - slice (iter F h₀ (n + 1)) b z' θ') ≤ (b - a) * ((b - a) * L) := by
+        have h0 := EpsSq_congr_ae (α := α)
+          (f := fun z' θ' => slice (iter F h₀ (n + 1)) a z' θ'
+            - slice (iter F h₀ (n + 1)) b z' θ')
+          (g := fun z' θ' => -∫ t in a..b, F (slice (iter F h₀ n) t) z' θ') hdiff
+        rw [h0, EpsSq_neg2]
+        exact hbound a ha b hb hab
+      have hmain := hpt (slice (iter F h₀ (n + 1)) a) (slice (iter F h₀ (n + 1)) b)
+        (hPn1 a ha) (hPn1 b hb) z θ hz hθ0 hθ1
+      calc dist (F (slice (iter F h₀ (n + 1)) a) z θ)
+            (F (slice (iter F h₀ (n + 1)) b) z θ)
+          = |F (slice (iter F h₀ (n + 1)) a) z θ
+              - F (slice (iter F h₀ (n + 1)) b) z θ| := Real.dist_eq _ _
+        _ ≤ Cpt * Real.sqrt (EpsSq α (fun z' θ' => slice (iter F h₀ (n + 1)) a z' θ'
+              - slice (iter F h₀ (n + 1)) b z' θ')) := hmain
+        _ ≤ Cpt * Real.sqrt ((b - a) * ((b - a) * L)) :=
+            mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt heps) hCpt
+        _ = (Cpt * Real.sqrt L) * (b - a) := by
+            rw [show (b - a) * ((b - a) * L) = (b - a) ^ 2 * L by ring,
+              Real.sqrt_mul (sq_nonneg (b - a)), Real.sqrt_sq_eq_abs,
+              abs_of_nonneg (sub_nonneg.mpr hab)]
+            ring
+        _ = (Cpt * Real.sqrt L) * dist a b := by
+            rw [Real.dist_eq, abs_of_nonpos (sub_nonpos.mpr hab)]
+            ring
+    have hlip : LipschitzOnWith ⟨Cpt * Real.sqrt L, mul_nonneg hCpt (Real.sqrt_nonneg L)⟩
+        (fun s : ℝ => F (slice (iter F h₀ (n + 1)) s) z θ) (Set.Icc 0 δ) :=
+      LipschitzOnWith.of_dist_le_mul (fun s hs s₀ hs₀ => by
+        rcases le_total s₀ s with hle | hle
+        · rw [dist_comm (F (slice (iter F h₀ (n + 1)) s) z θ)
+              (F (slice (iter F h₀ (n + 1)) s₀) z θ), dist_comm s s₀]
+          exact key s₀ hs₀ s hs hle
+        · exact key s hs s₀ hs₀ hle)
+    exact hlip.continuousOn
+  exact ⟨hcont_succ, aesm_of_contIter (α := α) (δ := δ) (F := F) (h₀ := h₀) (P := P) (n + 1)
+    hcontP hzeroP hPn1 hcont_succ⟩
+
+/-! ## The main theorems -/
+
+/-- **Continuity in the fake time and joint measurability of the Picard curves, from the class
+data** (all iterate levels).  See the module docstring for the induction and for why the measure is
+horizon-restricted. -/
+theorem iter_cont_meas {α Cpt L δ : ℝ} {F : Fn → Fn} {h₀ : Fn} {P : Fn → Prop}
+    (hδ : 0 < δ) (hL : 0 ≤ L) (hCpt : 0 ≤ Cpt)
+    (hP : ∀ n : ℕ, ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ n) τ))
+    (hcontP : ∀ u : Fn, P u → ContinuousOn (fun q : ℝ × ℝ => F u q.1 q.2) Qd)
+    (hzeroP : ∀ u : Fn, P u → ∀ q : ℝ × ℝ, q ∉ Qd → F u q.1 q.2 = 0)
+    (hbd : ∀ u : Fn, P u → EpsMem α (F u) ∧ EpsSq α (F u) ≤ L)
+    (hpt : ∀ u v : Fn, P u → P v → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      |F u z θ - F v z θ| ≤ Cpt * Real.sqrt (EpsSq α (fun z θ => u z θ - v z θ))) :
+    (∀ n : ℕ, ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ)) ∧
+    (∀ n : ℕ, AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ n) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod volume)) := by
+  have hcontAll : ∀ n : ℕ, ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ) := by
+    intro n
+    induction n with
+    | zero =>
+      intro z θ _ _ _
+      have hfun : (fun s : ℝ => F (slice (iter F h₀ 0) s) z θ) = fun _ : ℝ => F h₀ z θ := by
+        funext s; rfl
+      rw [hfun]; exact continuousOn_const
+    | succ n ih =>
+      exact (cont_iter_succ (δ := δ) (F := F) (h₀ := h₀) (P := P) n hL hCpt hcontP hzeroP
+        hbd hpt (hP n) (hP (n + 1)) ih).1
+  exact ⟨hcontAll, fun n => aesm_of_contIter (α := α) (δ := δ) (F := F) (h₀ := h₀) (P := P) n
+    hcontP hzeroP (hP n) (hcontAll n)⟩
+
+/-- **The prefix form** (the lead's ruling on finding (XXIII)): the class hypothesis is needed only
+up to the level `N`, and the conclusion is drawn only up to `N`.  This is what the *inductive*
+production of `hkeepIter` needs (`EpsEngine/SmoothOpenIter.lean`): at level `n` one only knows the
+class data of the levels `≤ n`. -/
+theorem iter_cont_meas_prefix {α Cpt L δ : ℝ} {F : Fn → Fn} {h₀ : Fn} {P : Fn → Prop} (N : ℕ)
+    (hδ : 0 < δ) (hL : 0 ≤ L) (hCpt : 0 ≤ Cpt)
+    (hP : ∀ n : ℕ, n ≤ N → ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → P (slice (iter F h₀ n) τ))
+    (hcontP : ∀ u : Fn, P u → ContinuousOn (fun q : ℝ × ℝ => F u q.1 q.2) Qd)
+    (hzeroP : ∀ u : Fn, P u → ∀ q : ℝ × ℝ, q ∉ Qd → F u q.1 q.2 = 0)
+    (hbd : ∀ u : Fn, P u → EpsMem α (F u) ∧ EpsSq α (F u) ≤ L)
+    (hpt : ∀ u v : Fn, P u → P v → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      |F u z θ - F v z θ| ≤ Cpt * Real.sqrt (EpsSq α (fun z θ => u z θ - v z θ))) :
+    (∀ n : ℕ, n ≤ N → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ)) ∧
+    (∀ n : ℕ, n ≤ N → AEStronglyMeasurable
+      (fun p : ℝ × ℝ × ℝ => F (slice (iter F h₀ n) p.1) p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod volume)) := by
+  have hcontAll : ∀ n : ℕ, n ≤ N → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ContinuousOn (fun s : ℝ => F (slice (iter F h₀ n) s) z θ) (Set.Icc 0 δ) := by
+    intro n hn
+    induction n with
+    | zero =>
+      intro z θ _ _ _
+      have hfun : (fun s : ℝ => F (slice (iter F h₀ 0) s) z θ) = fun _ : ℝ => F h₀ z θ := by
+        funext s; rfl
+      rw [hfun]; exact continuousOn_const
+    | succ k ih =>
+      exact (cont_iter_succ (δ := δ) (F := F) (h₀ := h₀) (P := P) k hL hCpt hcontP hzeroP
+        hbd hpt (hP k (by omega)) (hP (k + 1) hn) (ih (by omega))).1
+  exact ⟨hcontAll, fun n hn => aesm_of_contIter (α := α) (δ := δ) (F := F) (h₀ := h₀) (P := P) n
+    hcontP hzeroP (hP n hn) (hcontAll n hn)⟩
+
+end Work.FTS.EpsEngine
+
+/-! ## Measure bookkeeping: from the horizon `Icc 0 δ` to the integration interval `(0,τ]` -/
+
+namespace Work.FTS.EpsEngine
+
+/-- The fake-time measures of the shrinking intervals `(0,τ]`, `τ ∈ [0,δ]`, are subordinate to the
+horizon measure on `[0,δ]`. -/
+theorem restrict_uIoc_le_Icc {δ τ : ℝ} (hτ : τ ∈ Set.Icc 0 δ) :
+    (volume.restrict (Set.uIoc 0 τ)) ≤ (volume.restrict (Set.Icc 0 δ)) := by
+  refine Measure.restrict_mono (s := Set.uIoc 0 τ) (s' := Set.Icc 0 δ) ?_ le_rfl
+  rw [Set.uIoc_of_le hτ.1]
+  exact fun x hx => ⟨le_of_lt hx.1, le_trans hx.2 hτ.2⟩
+
+/-- An a.e.-strongly-measurable family on the horizon is a.e.-strongly measurable for the
+integration measure of any `(0,τ] ⊆ [0,δ]`. -/
+theorem aesm_uIoc_of_restrict {δ τ : ℝ} (hτ : τ ∈ Set.Icc 0 δ) {Φ : ℝ → Fn}
+    (h : AEStronglyMeasurable (fun p : ℝ × ℝ × ℝ => Φ p.1 p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod (volume : Measure (ℝ × ℝ)))) :
+    AEStronglyMeasurable (fun p : ℝ × ℝ × ℝ => Φ p.1 p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.uIoc 0 τ)).prod (volume : Measure (ℝ × ℝ))) :=
+  h.mono_measure (Measure.prod_mono (restrict_uIoc_le_Icc hτ) le_rfl)
+
+/-- The weighted version of `aesm_uIoc_of_restrict` — the form in which the Minkowski bound
+`EpsSq_intervalIntegral_le_gen` consumes the joint measurability. -/
+theorem aesm_weighted_uIoc_of_restrict {α δ τ : ℝ} (hτ : τ ∈ Set.Icc 0 δ) {Φ : ℝ → Fn}
+    (h : AEStronglyMeasurable (fun p : ℝ × ℝ × ℝ => Φ p.1 p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.Icc 0 δ)).prod (volume : Measure (ℝ × ℝ)))) :
+    AEStronglyMeasurable (fun p : ℝ × ℝ × ℝ => Φ p.1 p.2.1 p.2.2 * epsW α p.2.1 p.2.2)
+      (((volume : Measure ℝ).restrict (Set.uIoc 0 τ)).prod DomM) :=
+  aesm_weighted_prod_restricted (aesm_uIoc_of_restrict hτ h)
+
+end Work.FTS.EpsEngine
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsConvSubseq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+theorem EpsConvSubseq {α B : ℝ} (hα : 0 < α) {G : ℕ → Work.FTS.Galerkin.Fn}
+    (hsm : ∀ n : ℕ, ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry (G n))
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
+    (hmem : ∀ n : ℕ, Work.Spaces.HkMem α 6 (G n))
+    (hb : ∀ n : ℕ, Work.Spaces.HkNorm α 6 (G n) ≤ B) :
+    ∃ (φ : ℕ → ℕ) (f : Work.FTS.Galerkin.Fn), StrictMono φ ∧
+      Work.FTS.StrongEps.ConvLocUnifH6 α B (fun n => G (φ n)) f := by
+  classical
+  -- the `C⁴`-extraction, with the slot convergence at levels `≤ 4`
+  obtain ⟨φ, hφ, f, hconv0, hf4, hconv4⟩ :=
+    LocUnif.exists_subseq_deriv4_of_uniform_H6 hα hsm hmem hb
+  -- the a.e. level-`5` extraction, needed for the energy bound
+  obtain ⟨ψ, hψ, hconv5⟩ :=
+    LocUnif.exists_subseq_deriv5_ae hα hφ hsm hmem hb hconv0 hconv4 hf4
+  let Φ : ℕ → ℕ := fun n => φ (ψ n)
+  have hΦmono : StrictMono Φ := fun a b hab => hφ (hψ hab)
+  -- the a.e. level-`5` convergence along the composed subsequence, in the quantifier order that
+  -- `LocUnif.HkSq_le` consumes
+  have hconv5' : ∀ᵐ p ∂(MeasureTheory.volume.restrict (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2))),
+      ∀ (j i : ℕ), j + i = 5 →
+        Filter.Tendsto (fun n => Work.Spaces.mixed j i (G (Φ n)) p.1 p.2) Filter.atTop
+          (nhds (Work.Spaces.mixed j i f p.1 p.2)) := by
+    have hfin : ∀ᵐ p ∂(MeasureTheory.volume.restrict (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2))),
+        ∀ t : Fin 6, Filter.Tendsto
+          (fun n => Work.Spaces.mixed (5 - (t : ℕ)) (t : ℕ) (G (Φ n)) p.1 p.2)
+          Filter.atTop (nhds (Work.Spaces.mixed (5 - (t : ℕ)) (t : ℕ) f p.1 p.2)) := by
+      rw [Filter.eventually_all]
+      intro t
+      have h := hconv5 (5 - (t : ℕ)) (t : ℕ) (by have := t.isLt; omega)
+      simpa only [Φ] using h
+    filter_upwards [hfin] with p hp j i hji
+    have hi : i < 6 := by omega
+    have hj : j = 5 - i := by omega
+    subst hj
+    exact hp ⟨i, hi⟩
+  -- the slot convergence at levels `≤ 4` along the composed subsequence
+  have hconv4' : ∀ (j i : ℕ), j + i ≤ 4 → ∀ K : Set (ℝ × ℝ), IsCompact K →
+      K ⊆ Work.FTS.EllipticEst.Q0 →
+      TendstoUniformlyOn (fun n (p : ℝ × ℝ) => Work.Spaces.mixed j i (G (Φ n)) p.1 p.2)
+        (fun p => Work.Spaces.mixed j i f p.1 p.2) Filter.atTop K := by
+    intro j i hji K hK hKQ
+    have h := hconv4 j i hji K hK hKQ
+    simpa only [Φ] using tendstoUniformlyOn_comp_strictMono h hψ
+  -- the hypotheses of `LocUnif.HkSq_le` for the composed subsequence
+  have hmem' : ∀ n : ℕ, Work.Spaces.HkMem α 6 (G (Φ n)) := fun n => hmem _
+  have hbsq' : ∀ n : ℕ, Work.Spaces.HkSq α 6 (G (Φ n)) ≤ B ^ 2 := by
+    intro n
+    have hn := hb (Φ n)
+    have hknn : 0 ≤ Work.Spaces.HkSq α 6 (G (Φ n)) :=
+      integral_nonneg fun z => integral_nonneg fun θ =>
+        Work.Spaces.HkIntegrand_nonneg α 6 (G (Φ n)) z θ
+    rw [Work.Spaces.HkNorm] at hn
+    calc Work.Spaces.HkSq α 6 (G (Φ n))
+        = (Real.sqrt (Work.Spaces.HkSq α 6 (G (Φ n)))) ^ 2 :=
+          (Real.sq_sqrt hknn).symm
+      _ ≤ B ^ 2 := pow_le_pow_left₀ (Real.sqrt_nonneg _) hn 2
+  have hSq : Work.Spaces.HkSq α 6 f ≤ B ^ 2 :=
+    LocUnif.HkSq_le (α := α) (B := B) (G := G) (Φ := Φ) (f := f)
+      hsm hconv4' hconv5' hmem' hbsq'
+  have hBnn : 0 ≤ B := le_trans (Real.sqrt_nonneg _) (hb 0)
+  have hNorm : Work.Spaces.HkNorm α 6 f ≤ B := by
+    rw [Work.Spaces.HkNorm]
+    exact (Real.sqrt_le_left hBnn).mpr hSq
+  -- the package `ConvLocUnifH6` lists the compact sets before the slot indices
+  refine ⟨Φ, f, hΦmono, ?_, hf4, hNorm⟩
+  intro K hK hKQ j i hji
+  exact hconv4' j i hji K hK hKQ
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.Leaves.regFromVolterra =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -272,3 +648,5 @@ theorem regFromVolterra {F : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn} {h�
   simpa only [slabF, slabA] using hvol p.1 p.2.1 p.2.2 hz ⟨hθ, hθ2⟩ ⟨hτ0, hτδ⟩
 
 end Work.FTS.StrongEps.EpsE4Thr.Leaves
+end
+end

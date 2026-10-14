@@ -1,34 +1,10 @@
-/-
-# `exists_cptQ_approx` — the estimate, definitions of the majorants
-
-This module fixes the vocabulary of the estimate for `Work.FTS.PhiStar.Honesty.exists_cptQ_approx`.
-
-For a source `F` and a scale `n`, the approximation is
-
-  `approx n F z θ = chiR n z · (zetaR n θ · F z θ − lam n F z · rho θ)`
-
-and the error is `err n F = approx n F − F = (χζ − 1)·F − (χλ)·ρ` (`err_eq`).
-
-The `ℋᵏ`-integrand of `err n F` is estimated pointwise by `C · Good α k n F z θ`, where
-
-* the `(χζ − 1)`, `(D_z^b χ)` and `(D_θ^a ζ)` coefficients are supported in the shrinking
-  region `Ω_n` (`thShrink` is its angular part), giving the first term;
-* the terms in which *all* angular derivatives fall on `ζ` leave a pure radial derivative
-  `D_z^s F` against the *mixed* weight `sin(2θ)^{−γ}`, which is not integrable at the
-  angular endpoints; they give the second term, and are handled downstream by the localised
-  angular Hardy inequality on `(0, 2/n)` and `(π/2 − 2/n, π/2)`;
-* the moment correction gives the third term, with the angular profile `rhoProf` (a fixed
-  finite quantity for a fixed `k`).
-
-All of `Good α k n F`, `thShrink n`, `rhoProf α k` are nonnegative.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
 import Submission.Work.FTS.PhiStar.Honesty.CptApp.approxSmoothCptQ
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 import Submission.Work.Spaces.HkSq_terms
 
 -- v435-port: begin
@@ -103,9 +79,6 @@ theorem thShrink_nonneg (n : ℕ) (θ : ℝ) : 0 ≤ thShrink n θ := by
   unfold thShrink
   split_ifs <;> norm_num
 
-theorem thShrink_le_one (n : ℕ) (θ : ℝ) : thShrink n θ ≤ 1 := by
-  unfold thShrink
-  split_ifs <;> norm_num
 
 /-- `thShrink n θ = 1` exactly on the angular part of `Ω_n`. -/
 theorem thShrink_eq_one_iff {n : ℕ} {θ : ℝ} :
@@ -121,16 +94,6 @@ theorem thShrink_eq_zero_or_one (n : ℕ) (θ : ℝ) :
   unfold thShrink
   split_ifs <;> simp
 
-theorem mem_Omega_of_thShrink_ne_zero {n : ℕ} {z θ : ℝ} (h : thShrink n θ ≠ 0) :
-    (z, θ) ∈ Omega n := by
-  have h1 : thShrink n θ = 1 := by
-    rcases thShrink_eq_zero_or_one n θ with h0 | h1
-    · exact absurd h0 h
-    · exact h1
-  rw [thShrink_eq_one_iff] at h1
-  rcases h1 with h1 | h1
-  · exact Or.inr (Or.inr (Or.inl h1))
-  · exact Or.inr (Or.inr (Or.inr h1))
 
 theorem mem_Omega_of_lt_z {n : ℕ} {z θ : ℝ} (h : z < 2 / (n : ℝ)) : (z, θ) ∈ Omega n :=
   Or.inl h
@@ -174,13 +137,6 @@ theorem omegaPart_le_HkIntegrand (α : ℝ) (k : ℕ) (n : ℕ) (F : ℝ → ℝ
   · exact le_refl _
   · exact Work.Spaces.HkIntegrand_nonneg α k F z θ
 
-/-- `thShrink` is bounded by the `Ω_n`-indicator. -/
-theorem thShrink_le_omegaInd (n : ℕ) (z θ : ℝ) :
-    thShrink n θ ≤ omegaInd n z θ := by
-  by_cases h : thShrink n θ = 0
-  · rw [h]; exact omegaInd_nonneg n z θ
-  · rw [omegaInd_eq_one_iff.mpr (mem_Omega_of_thShrink_ne_zero h)]
-    exact thShrink_le_one n θ
 
 /-! ## The two cut-offs: elementary value facts -/
 
@@ -270,32 +226,7 @@ theorem zetaR_eq_one {n : ℕ} (hn : 2 ≤ n) {θ : ℝ} (h1 : 2 / (n : ℝ) ≤
   rw [Real.smoothTransition.one_of_one_le ha, Real.smoothTransition.one_of_one_le hb]
   norm_num
 
-/-- `zetaR n` vanishes to the left of `1/n` (`n ≥ 1`). -/
-theorem zetaR_eq_zero_of_le' {n : ℕ} (hn : 1 ≤ n) {θ : ℝ} (h : θ ≤ 1 / (n : ℝ)) :
-    zetaR n θ = 0 := by
-  have hnpos : (0 : ℝ) < (n : ℝ) := by
-    have : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-    linarith
-  have h1 : (n : ℝ) * θ ≤ 1 := by
-    calc (n : ℝ) * θ ≤ (n : ℝ) * (1 / (n : ℝ)) := mul_le_mul_of_nonneg_left h hnpos.le
-      _ = 1 := by rw [mul_one_div, div_self (ne_of_gt hnpos)]
-  simp only [zetaR, cut01]
-  rw [Real.smoothTransition.zero_of_nonpos (by linarith : (n : ℝ) * θ - 1 ≤ 0)]
-  ring
 
-/-- `zetaR n` vanishes to the right of `π/2 − 1/n` (`n ≥ 1`). -/
-theorem zetaR_eq_zero_of_ge' {n : ℕ} (hn : 1 ≤ n) {θ : ℝ}
-    (h : Real.pi / 2 - 1 / (n : ℝ) ≤ θ) : zetaR n θ = 0 := by
-  have hnpos : (0 : ℝ) < (n : ℝ) := by
-    have : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-    linarith
-  have h2 : (n : ℝ) * (Real.pi / 2 - θ) ≤ 1 := by
-    calc (n : ℝ) * (Real.pi / 2 - θ) ≤ (n : ℝ) * (1 / (n : ℝ)) :=
-          mul_le_mul_of_nonneg_left (by linarith) hnpos.le
-      _ = 1 := by rw [mul_one_div, div_self (ne_of_gt hnpos)]
-  simp only [zetaR, cut01]
-  rw [Real.smoothTransition.zero_of_nonpos (by linarith : (n : ℝ) * (Real.pi / 2 - θ) - 1 ≤ 0)]
-  ring
 
 /-- The product of the two cut-offs is `1` on the plateau, hence `(χζ − 1)² ≤ 1_{Ω_n}`. -/
 theorem chiR_zetaR_sub_one_sq_le {n : ℕ} (hn : 2 ≤ n) (z θ : ℝ) :

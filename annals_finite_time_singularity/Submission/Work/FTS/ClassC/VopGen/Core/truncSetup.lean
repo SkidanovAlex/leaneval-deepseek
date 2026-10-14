@@ -4,10 +4,10 @@ import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.ClassC.VopGen.CoreSplit
-import Submission.Work.FTS.ClassC.VopGen.truncSlots
-import Submission.Work.FTS.ClassC.VopGen.truncHonest
+import Submission.Work.FTS.ClassC.VopGen.a11OfCore
 import Submission.Work.FTS.ClassC.VopGen.truncFacts
+import Submission.Work.FTS.ClassC.VopGen.truncHonest
+import Submission.Work.FTS.ClassC.VopGen.truncSlots
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -242,19 +242,6 @@ theorem pairOuterIntegrable {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (hα : 0 < �
     rw [prod_restrict_eq_rect]; exact pairIntegrable hα hα4 h)
   exact h.integral_prod_left
 
-/-- A.e. slice integrability of the majorant of the pairing. -/
-theorem sliceMajorant {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)
-    (h : Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ) :
-    ∀ᵐ z ∂(volume.restrict Iz),
-      IntegrableOn (fun θ => (w z) ^ 2 * ((XX Ψ z θ) ^ 2
-        + (Work.Spaces.Dz (YY Ψ) z θ) ^ 2) * sgm α θ) Iθ := by
-  have hα1 : α ≤ 1 := by linarith
-  obtain ⟨slX, _, _, _⟩ := slotFacts_pure hα1 hα hα4 h 1 (by norm_num)
-  filter_upwards [slX, clairautSlice hα hα4 h] with z hzX hzZ
-  refine MeasureTheory.Integrable.congr (hzX.add hzZ) ?_
-  filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ _
-  simp only [Pi.add_apply, XX, Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero]
-  ring
 
 /-- Outer integrability of the majorant of the pairing. -/
 theorem outerMajorant {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)

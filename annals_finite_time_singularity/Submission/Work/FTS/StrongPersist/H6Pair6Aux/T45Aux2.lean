@@ -2,13 +2,12 @@ import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Defs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3RowAux
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Aux
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.Spaces.WlInf_terms
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Aux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Aux
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMul6Cont
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

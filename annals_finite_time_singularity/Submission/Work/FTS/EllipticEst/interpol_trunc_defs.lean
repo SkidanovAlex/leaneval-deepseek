@@ -1,30 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Vocabulary for the truncation argument of `interpol_mixed_weighted_of_compact`
-
-This module collects the definitions used to reduce the mixed weighted interpolation
-estimate to its compactly supported case:
-
-* `sig θ = sin(2θ)^{-η}` (`η = 99/100`) is the angular weight of the estimate;
-* `cut n` is the `n`-th radial cut-off: a smooth function of `z` with
-  `cut n = 0` for `z ≤ 1/(n+1)`, `cut n = 0` for `z ≥ 3(n+1)`, and `cut n = 1` on
-  `[2/(n+1), 2(n+1)]`; the functions `z ↦ z (cut n)'(z)` and
-  `z ↦ z (z (cut n)')'(z)` are uniformly bounded in `n` (they are what appears when the
-  scale-invariant derivative `D_z = z ∂_z` acts on `G · cut n`);
-* `trunc G n = G · cut n` is the truncation of `G`, supported in `[1/(n+1), 3(n+1)]`.
-
-The estimates are all stated through the weight `sig` so that they can be rewritten
-into the four functionals `mixInt`, `ddInt`, `ttInt`, `dInt` of
-`Submission/Work/FTS/EllipticEst/interpol_defs.lean`.
--/
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.interpol_defs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
 import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 import Submission.Work.Stability.Cutoff
 
 -- v435-port: begin
@@ -75,9 +55,6 @@ theorem one_le_sig {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) (h0 : θ ≠ 0) (h�
     (Real.sin_pos_of_pos_of_lt_pi h2θ0 h2θπ) (Real.sin_le_one _)
     (by rw [neg_nonpos]; exact le_of_lt Work.Spaces.eta_pos)
 
-theorem sig_measurable : Measurable sig := by
-  show Measurable (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
-  exact (Real.measurable_sin.comp (measurable_const.mul measurable_id)).pow_const _
 
 theorem sig_continuousOn : ContinuousOn sig (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
   show ContinuousOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
@@ -88,23 +65,7 @@ theorem sig_continuousOn : ContinuousOn sig (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
     exact Or.inl (ne_of_gt (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1])
       (by linarith [hθ.2, Real.pi_pos])))
 
-theorem integrable_sig : IntegrableOn sig Work.Spaces.Iθ := by
-  have h := (Work.Spaces.sin_two_rpow (-(Work.Spaces.eta))
-    (by linarith [Work.Spaces.eta_lt_one]) (by linarith [Work.Spaces.eta_pos])).1
-  rw [show sig = fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) by
-    funext θ; rw [sig_apply]]
-  exact h
 
-theorem integral_sig_le : (∫ θ in Work.Spaces.Iθ, sig θ) ≤ 10000 := by
-  have h := (Work.Spaces.sin_two_rpow (-(Work.Spaces.eta))
-    (by linarith [Work.Spaces.eta_lt_one]) (by linarith [Work.Spaces.eta_pos])).2
-  have h' : (∫ θ in Work.Spaces.Iθ, sig θ)
-      = ∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by
-    rw [show sig = fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) by
-      funext θ; rw [sig_apply]]
-  rw [h']
-  refine le_trans h (le_of_eq ?_)
-  norm_num [Work.Spaces.eta]
 
 /-! ## The radial cut-offs `cut n` and the truncation `trunc G n` -/
 
@@ -165,21 +126,6 @@ theorem cut_contDiff (n : ℕ) : ContDiff ℝ Work.Stability.smoothOrder (cut n)
     * (1 - Real.smoothTransition (z / (n + 1 : ℝ) - 2)))
   exact (hρ.comp h1).mul (contDiff_const.sub (hρ.comp h2))
 
-/-- The cut-off is strictly positive on the open slab `1/(n+1) < z < 3(n+1)`. -/
-theorem cut_pos_of_mem (n : ℕ) {z : ℝ} (h1 : 1 / (n + 1 : ℝ) < z)
-    (h2 : z < 3 * (n + 1 : ℝ)) : 0 < cut n z := by
-  have hn : (0 : ℝ) < (n + 1 : ℝ) := by positivity
-  have hz1 : 0 < (n + 1 : ℝ) * z - 1 := by
-    have := (div_lt_iff₀ hn).mp h1
-    linarith
-  have hz2 : z / (n + 1 : ℝ) - 2 < 1 := by
-    have h3 : z / (n + 1 : ℝ) < 3 := by
-      rw [div_lt_iff₀ hn]
-      linarith
-    linarith
-  rw [cut]
-  exact mul_pos (Real.smoothTransition.pos_of_pos hz1)
-    (by linarith [Real.smoothTransition.lt_one_of_lt_one hz2])
 
 theorem cut_eq_one_of_mem (n : ℕ) {z : ℝ} (h1 : 2 / (n + 1) ≤ z) (h2 : z ≤ 2 * (n + 1)) :
     cut n z = 1 := by
@@ -193,18 +139,6 @@ theorem cut_eq_one_of_mem (n : ℕ) {z : ℝ} (h1 : 2 / (n + 1) ≤ z) (h2 : z �
   rw [cut, Real.smoothTransition.one_of_one_le hz1, Real.smoothTransition.zero_of_nonpos hz2]
   ring
 
-theorem trunc_apply (G : ℝ → ℝ → ℝ) (n : ℕ) (z θ : ℝ) : trunc G n z θ = G z θ * cut n z := rfl
 
-/-- `trunc G n` is supported in `z ∈ [1/(n+1), 3(n+1)]`. -/
-theorem trunc_eq_zero_of_notMem (G : ℝ → ℝ → ℝ) (n : ℕ) {z : ℝ}
-    (h : z ∉ Set.Icc (1 / (n + 1 : ℝ)) (3 * (n + 1 : ℝ))) (θ : ℝ) : trunc G n z θ = 0 := by
-  rw [trunc_apply]
-  rcases le_or_gt z (1 / (n + 1 : ℝ)) with h1 | h1
-  · rw [cut_apply_zero_of_le n h1, mul_zero]
-  · have h2 : 3 * (n + 1 : ℝ) ≤ z := by
-      by_contra hc
-      push_neg at hc
-      exact h ⟨le_of_lt h1, le_of_lt hc⟩
-    rw [cut_apply_zero_of_ge n h2, mul_zero]
 
 end Work.FTS.EllipticEst

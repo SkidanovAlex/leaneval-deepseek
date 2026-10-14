@@ -1,15 +1,93 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.EllipticEst.OpenQDefs
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.PmdbAux.SlotPriceAux
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundE
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux2 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+set_option linter.unusedVariables false
+
+/-- **The Leibniz expansion of `D_z^bD_θ^a(c₂ₘ·L₁₂(f)·D_z f)`** on the open quadrant. -/
+theorem t5bExpand {f : ℝ → ℝ → ℝ} {a b : ℕ}
+    (hso : Work.FTS.EllipticEst.SmoothOpen f)
+    (hCsm : Work.FTS.EllipticEst.SmoothOpen (fun _ θ : ℝ => Work.Construction.c2m θ))
+    (hXsm : ContDiffOn ℝ 6 (fun z => Work.Construction.L12 f z) (Set.Ioi 0))
+    (hab : a + b ≤ 6) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      Work.Spaces.mixed b a (fun z θ => Work.Construction.c2m θ * Work.Construction.L12 f z
+        * Work.Spaces.Dz f z θ) z θ
+        = ∑ k ∈ Finset.range (b + 1), ∑ i ∈ Finset.range (a + 1),
+            ((b.choose k : ℝ) * (a.choose i : ℝ))
+              * (Work.Elliptic.DzdIter k (fun z => Work.Construction.L12 f z) z
+                  * (Work.Spaces.DthIter i (fun _ θ : ℝ => Work.Construction.c2m θ) z θ
+                      * Work.Spaces.mixed (b - k + 1) (a - i) f z θ)) := by
+  intro z θ hz hθ0 hθ1
+  have hb : b ≤ 6 := by omega
+  have hbase := Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.mixedRadialThetaMul
+    (X := fun z => Work.Construction.L12 f z) (γ := Work.Construction.c2m)
+    (f := Work.Spaces.Dz f) hXsm hCsm hso.Dz b a hb z θ hz hθ0 hθ1
+  have hfun : (fun z θ : ℝ => Work.Construction.c2m θ * Work.Construction.L12 f z
+        * Work.Spaces.Dz f z θ)
+      = fun z θ : ℝ => Work.Construction.L12 f z
+          * (Work.Construction.c2m θ * Work.Spaces.Dz f z θ) := by
+    funext z θ
+    ring
+  rw [hfun, hbase]
+  refine Finset.sum_congr rfl fun k hk => Finset.sum_congr rfl fun i hi => ?_
+  rw [mixedDzShift hso (b - k) (a - i) hz hθ0 hθ1]
+
+/-- **The paired form of the expansion**: the integrand of the slot pairing of the row, as the
+finite sum of the `t5bPiece` summands. -/
+theorem t5bPairExpand {f : ℝ → ℝ → ℝ} {a b : ℕ} {ρ : ℝ → ℝ → ℝ}
+    (hso : Work.FTS.EllipticEst.SmoothOpen f)
+    (hCsm : Work.FTS.EllipticEst.SmoothOpen (fun _ θ : ℝ => Work.Construction.c2m θ))
+    (hXsm : ContDiffOn ℝ 6 (fun z => Work.Construction.L12 f z) (Set.Ioi 0))
+    (hab : a + b ≤ 6) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      ρ z θ * Work.Spaces.mixed b a (fun z θ => Work.Construction.c2m θ
+          * Work.Construction.L12 f z * Work.Spaces.Dz f z θ) z θ
+        * Work.Spaces.mixed b a f z θ
+        = ∑ k ∈ Finset.range (b + 1), ∑ i ∈ Finset.range (a + 1),
+            ((b.choose k : ℝ) * (a.choose i : ℝ)) * t5bPiece f ρ a b k i (z, θ) := by
+  intro z θ hz hθ0 hθ1
+  rw [t5bExpand hso hCsm hXsm hab z θ hz hθ0 hθ1, Finset.mul_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun k hk => ?_
+  rw [Finset.mul_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  simp only [t5bPiece]
+  ring
+
+end Work.FTS.StrongPersist.H6Pair6Aux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.leafSlotSliceIntegrable =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -145,63 +223,10 @@ theorem continuousOn_sin_two_rpow_neg (q : ℝ) :
   exact ne_of_gt (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1])
     (by linarith [hθ.2, Real.pi_pos]))
 
-/-- The `θ`-slice of a leaf weight is continuous on the open interval. -/
-theorem continuousOn_leafW_slice {α : ℝ} {a : ℕ} {ρ : ℝ → ℝ → ℝ}
-    (hρ : Work.FTS.TransportS.IsLeafW α a ρ) (z : ℝ) :
-    ContinuousOn (fun θ : ℝ => ρ z θ) (Set.Ioo (0 : ℝ) (π / 2)) := by
-  rcases hρ with rfl | rfl | ⟨_, rfl⟩
-  · change ContinuousOn
-      (fun θ : ℝ => (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-Work.Spaces.eta))
-      (Set.Ioo (0 : ℝ) (π / 2))
-    exact continuousOn_const.mul (continuousOn_sin_two_rpow_neg Work.Spaces.eta)
-  · change ContinuousOn (fun _ : ℝ => (Work.Spaces.w z) ^ 2) (Set.Ioo (0 : ℝ) (π / 2))
-    exact continuousOn_const
-  · change ContinuousOn
-      (fun θ : ℝ => (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)))
-      (Set.Ioo (0 : ℝ) (π / 2))
-    exact continuousOn_const.mul (continuousOn_sin_two_rpow_neg (Work.Spaces.gam α))
 
 /-! ## The requested slice integrability -/
 
-theorem leafSlotSliceIntegrable :
-    ∀ α ∈ Set.Ioc 0 1, ∀ (f : ℝ → ℝ → ℝ) (a b : ℕ) (ρ : ℝ → ℝ → ℝ),
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 6 f →
-      a + b ≤ 6 → Work.FTS.TransportS.IsLeafW α a ρ →
-      ∀ z ∈ Work.Spaces.Iz, MeasureTheory.IntegrableOn
-        (fun θ => ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2) Work.Spaces.Iθ := by
-  intro α hα f a b ρ hf hmem hab hρ z hz
-  rcases eq_or_lt_of_le (show (0 : ℝ) ≤ z from hz) with hz0 | hzpos
-  · -- at `z = 0` every leaf weight vanishes because `w 0 = 0`
-    subst hz0
-    have hw0 : Work.Spaces.w 0 = 0 := by norm_num [Work.Spaces.w]
-    have hzero : (fun θ : ℝ => ρ 0 θ * (Work.Spaces.mixed b a f 0 θ) ^ 2)
-        = fun _ : ℝ => (0 : ℝ) := by
-      funext θ
-      rcases hρ with rfl | rfl | ⟨_, rfl⟩ <;>
-        simp [Work.FTS.TransportS.leafEta, Work.FTS.TransportS.leafOne,
-          Work.FTS.TransportS.leafGam, hw0]
-    rw [hzero]
-    exact MeasureTheory.integrableOn_zero
-  · have hαpos : 0 < α := hα.1
-    -- the two endpoints are null, so we may work on the open interval
-    have hmeas : volume.restrict Work.Spaces.Iθ
-        = volume.restrict (Set.Ioo (0 : ℝ) (π / 2)) :=
-      Measure.restrict_congr_set (MeasureTheory.Ioo_ae_eq_Icc (μ := volume)).symm
-    -- a.e. strong measurability of the slice integrand
-    have hcont_slice : ContinuousOn
-        (fun θ : ℝ => ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2)
-        (Set.Ioo (0 : ℝ) (π / 2)) :=
-      (continuousOn_leafW_slice hρ z).mul
-        (((hf.mixed b a).curry_θ hzpos).continuousOn.pow 2)
-    have haesm : AEStronglyMeasurable
-        (fun θ : ℝ => ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2)
-        (volume.restrict Work.Spaces.Iθ) := by
-      rw [hmeas]
-      exact hcont_slice.aestronglyMeasurable measurableSet_Ioo
-    refine MeasureTheory.Integrable.mono' (hmem.1 z hz) haesm ?_
-    filter_upwards [ae_mem_Ioo_Iθ] with θ hθ
-    have hθI : θ ∈ Work.Spaces.Iθ := ⟨hθ.1.le, hθ.2.le⟩
-    rw [Real.norm_of_nonneg (mul_nonneg (leaf_nonneg hρ z hz θ hθI) (sq_nonneg _))]
-    exact leaf_dom_gen hαpos hab hρ hθ
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+end
+end

@@ -1,32 +1,17 @@
-/-
-# The a priori bounds for the slots of the approximating class data, from the sources
-
-`EllEstUnif` at level `k+1` (Elgindi's `prop:Hk`) bounds `α²|z²∂_z²Ψ|_{ℋ^{k+1}} + |∂_θθΨ|_{ℋ^{k+1}}`
-by `C|G|_{ℋ^{k+1}}`; applied to the data `(G n, psiSeries α (G n))` and to their differences
-(the class is closed under differences, `ellWeakPos_sub`) it gives the uniform bound and the Cauchy
-property of the first two slots, while the third slot `z∂_z∂_θθΨ` is `D_z` of the second and is
-dominated at level `k` by the level-`(k+1)` norm of the second
-(`StrongPersist.hkSq_dz_le_open`).
-
-The *only* quantitative input about the sources that the argument uses is a uniform bound on
-`HkSq α (k+1) (G n)` and the Cauchy property of `HkSq α (k+1) (G n - G m)`; the statement below
-therefore takes exactly those as hypotheses (`slot_aPriori_smooth` derives them from convergence
-to a *smooth* limit `F`, which is what the consumer `hkMem_slots_of_approx` has).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Defs
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.SlotsArith
-import Submission.Work.FTS.PhiStar.Honesty.ellEstUnif_diff
-import Submission.Work.FTS.PhiStar.Honesty.ellWeakPos_sub
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.CoercivityStep.Norm.HkSq_mono_le
-import Submission.Work.FTS.EllipticEst.Cert.SmoothOpen_bslOp
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.StrongPersist.IP6_cs_coeffs
-import Submission.Work.FTS.GalBasis.FamEAux.Basic
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.PhiStar.Honesty.EllEstUnifAllClean
+import Submission.Work.FTS.PhiStar.Honesty.ellEstUnif_diff
+import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenCoer.SlotWCommon
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

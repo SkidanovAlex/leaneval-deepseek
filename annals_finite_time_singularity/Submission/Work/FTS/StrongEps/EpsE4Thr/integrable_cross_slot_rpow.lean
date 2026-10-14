@@ -1,37 +1,179 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Integrability of the crossed slot pairing against a single `sin(2θ)^c` weight
-
-`Work.FTS.StrongEps.EpsE4Thr.integrable_cross_slot_rpow` is the `c`-parameterised companion of
-`integrable_wip_slot_cross`: for two functions `f`, `h` which are smooth on the open quadrant and
-honestly in `ℋ⁴`, and for a mixed slot `D_z^a D_θ^b` of order `a + b ≤ 4`, the pairing
-
-  `∫∫ D_z^a D_θ^b f · D_z^a D_θ^b h · (w² σ^c)`,   `σ = sin(2θ)`,
-
-is finite for the product measure `mup` against **every** exponent `c ≥ -η` (not merely the three
-weights `-η`, `0`, `-γ(α)` of the energy recursion).
-
-The proof is a direct application of the already-proved general assembly
-`Work.FTS.StrongEps.EpsE4Thr.integrable_mixed_pairing` (AM–GM on the open quadrant against the
-`ℋ⁴`-integrands); the only work is the two pointwise slot dominations
-
-  `crossWt c z θ · (D_z^a D_θ^b g z θ)² ≤ HkIntegrand α 4 g z θ`   (`g = f, h`):
-
-* for `b = 0` (a pure `D_z`-slot) the exponent needed is `c ≥ -η`, which is exactly the
-  hypothesis — this is `SlotWt.dzSlot_weight_le_HkIntegrand4`;
-* for `b ≥ 1` (a mixed slot) the exponent needed is `c ≥ -γ(α)`, which follows from `c ≥ -η`
-  because `η < 1 < γ(α)` — this is `SlotWt.mixedSlot_weight_le_HkIntegrand4`.
-
-A.e. strong measurability of the integrand is `SlotWt.aesm_mixed_pair_weight` (continuity on the
-open quadrant, which is co-null for `mup`).
-
-Everything in this file is `sorry`-free.
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Function.L1Space.Integrable
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsE4Thr.integrable_wip_slot_cross
+import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS.StrongEps.EpsE4Thr.JepsJoint.Jeps_fam_continuous
+import Submission.Work.FTS.StrongEps.EpsE4Thr.SlotWt.mixedSlot_weight_le_HkIntegrand4
 import Submission.Work.FTS.StrongEps.EpsE4Thr.WipEqIntegral
+import Submission.Work.FTS.StrongEps.EpsE4Thr.integrable_wip_slot_cross
+import Submission.Work.FTS.StrongEps.Jeps_contDiffOn
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.mixed_Jeps
+import Submission.Work.R1G.DecayInZ_gA
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.AesmJfamP =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-! ## Linearity of `mixed` under a constant multiple
+
+(The unconditional version: `deriv_const_mul_field` is `deriv (fun y => u * v y) x = u * deriv v x`
+for any `v : ℝ → ℝ`, no differentiability hypothesis needed.) -/
+
+private theorem DthIter_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) (i : ℕ) :
+    Work.Spaces.DthIter i (fun z θ : ℝ => c * f z θ)
+      = fun z θ : ℝ => c * Work.Spaces.DthIter i f z θ := by
+  induction i with
+  | zero => rfl
+  | succ i ih =>
+      rw [Work.Spaces.DthIter_succ, ih, Work.Spaces.DthIter_succ]
+      funext z θ
+      simp only [Work.Spaces.Dth, Work.Spaces.pth, deriv_const_mul_field]
+      ring
+
+private theorem DzIter_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) (j : ℕ) :
+    Work.Spaces.DzIter j (fun z θ : ℝ => c * f z θ)
+      = fun z θ : ℝ => c * Work.Spaces.DzIter j f z θ := by
+  induction j with
+  | zero => rfl
+  | succ j ih =>
+      rw [Work.Spaces.DzIter_succ, ih, Work.Spaces.DzIter_succ]
+      funext z θ
+      simp only [Work.Spaces.Dz, Work.Spaces.pz, deriv_const_mul_field]
+      ring
+
+private theorem mixed_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) (j i : ℕ) :
+    Work.Spaces.mixed j i (fun z θ : ℝ => c * f z θ)
+      = fun z θ : ℝ => c * Work.Spaces.mixed j i f z θ := by
+  rw [Work.Spaces.mixed, DthIter_const_mul c f i]
+  exact DzIter_const_mul c (Work.Spaces.DthIter i f) j
+
+/-! ## The `Pz`-correction of a slot -/
+
+/-- **A mixed slot of the projection `Pz w = w − (L₁₂ w 0 / pzNorm) • bump`.**  Both `w` and
+`bump` are smooth on the open quadrant, so the sum splits
+(`Work.FTS.CoercivityFix.Transfer.E2pkg.mixed_add_of_contDiffOn` + the constant-multiple rule). -/
+theorem mixed_Pz_eq {a b n : ℕ} {w : ℝ → ℝ → ℝ}
+    (hw : ContDiffOn ℝ n (Function.uncurry w) Work.FTS.StrongEps.Quad) (hab : a + b ≤ n)
+    {z θ : ℝ} (hzθ : (z, θ) ∈ Work.FTS.StrongEps.Quad) :
+    Work.Spaces.mixed a b (Pz w) z θ
+      = Work.Spaces.mixed a b w z θ
+        - (Work.Construction.L12 w 0 / pzNorm) * Work.Spaces.mixed a b bump z θ := by
+  have hbump : ContDiffOn ℝ n (Function.uncurry (fun z θ : ℝ => bump z θ))
+      Work.FTS.StrongEps.Quad := by
+    have hfun : Function.uncurry (fun z θ : ℝ => bump z θ)
+        = fun p : ℝ × ℝ => bump p.1 p.2 := by
+      funext p; rcases p with ⟨z, θ⟩; rfl
+    rw [hfun]
+    exact (Work.FTS.StrongEps.contDiff_bump n).contDiffOn
+  have hsplit : ContDiffOn ℝ n
+      (Function.uncurry (fun z θ : ℝ => -(Work.Construction.L12 w 0 / pzNorm) * bump z θ))
+      Work.FTS.StrongEps.Quad := by
+    have hfun : Function.uncurry
+        (fun z θ : ℝ => -(Work.Construction.L12 w 0 / pzNorm) * bump z θ)
+        = fun p : ℝ × ℝ => -(Work.Construction.L12 w 0 / pzNorm) * bump p.1 p.2 := by
+      funext p; rcases p with ⟨z, θ⟩; rfl
+    rw [hfun]
+    exact contDiffOn_const.mul hbump
+  have hfun : Pz w = w + fun z θ : ℝ => -(Work.Construction.L12 w 0 / pzNorm) * bump z θ := by
+    funext z θ
+    rw [Pz_apply]
+    simp only [Pi.add_apply]
+    ring
+  rw [hfun]
+  rw [Work.FTS.CoercivityFix.Transfer.E2pkg.mixed_add_of_contDiffOn
+    (V := Work.FTS.StrongEps.Quad) Work.FTS.StrongEps.isOpen_Quad hw hsplit b a (by omega)
+    (z, θ) hzθ, mixed_const_mul]
+  simp only [Prod.fst, Prod.snd]
+  ring
+
+/-! ## The joint a.e. strong measurability of the `J_ε`-mollified slots -/
+
+
+/-! ## The projected slot -/
+
+
+/-! ## The same for the scheme's right-hand side `xdot = Pz (J_ε (epsRHSP …))` -/
+
+
+/-! ## Consequence of the joint smoothness of the flow on the closed slab -/
+
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.SlotHkGen.integral_slot_sq_rpow_le_HkSq_gen =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.SlotHkGen
+
+set_option autoImplicit false
+
+/-! ## A single pure `D_z`-slot of the strong weight, in `ℋ^k` -/
+
+
+/-! ## A single mixed slot of the strong weight, in `ℋ^k` -/
+
+
+/-! ## The target -/
+
+
+end Work.FTS.StrongEps.EpsE4Thr.SlotHkGen
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.SlotL2LeHkSq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+set_option autoImplicit false
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.integrable_cross_slot_rpow =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -45,43 +187,7 @@ namespace Work.FTS.StrongEps.EpsE4Thr
 
 set_option autoImplicit false
 
-/-- **The pointwise slot domination for the `c`-parameterised weight.**
-For `c ≥ -η` and any slot `(a,b)` with `a + b ≤ 4`, the weighted square
-`w²·sin(2θ)^c·(D_z^a D_θ^b g)²` is bounded pointwise by `HkIntegrand α 4 g` on the open
-quadrant.  The `b = 0` slot is a `D_z`-slot (`c ≥ -η` suffices) and the `b ≥ 1` slots are mixed
-slots (`c ≥ -γ(α)` suffices, and `-γ(α) ≤ -η`). -/
-theorem crossWt_mixed_sq_le_HkIntegrand {α c : ℝ} {a b : ℕ} {g : ℝ → ℝ → ℝ}
-    (hα : 0 < α) (hc : -(Work.Spaces.eta) ≤ c) (hab : a + b ≤ 4) {z θ : ℝ}
-    (hθ : 0 < θ) (hθ2 : θ < π / 2) :
-    crossWt c z θ * (Work.Spaces.mixed a b g z θ) ^ 2 ≤ Work.Spaces.HkIntegrand α 4 g z θ := by
-  have heta_gam : Work.Spaces.eta ≤ Work.Spaces.gam α := by
-    have h1 : 1 < Work.Spaces.gam α := Work.Spaces.one_lt_gam hα
-    have h2 : Work.Spaces.eta < 1 := Work.Spaces.eta_lt_one
-    linarith
-  by_cases hb : b = 0
-  · subst hb
-    have h4 : a ≤ 4 := by omega
-    simpa only [Work.Spaces.mixed_zero_right, crossWt] using
-      Work.FTS.StrongEps.EpsE4Thr.SlotWt.dzSlot_weight_le_HkIntegrand4
-        (α := α) (c := c) (g := g) (m := a) hc h4 ⟨hθ, hθ2⟩
-  · have hb1 : 1 ≤ b := by omega
-    have hcg : -(Work.Spaces.gam α) ≤ c := by linarith
-    exact Work.FTS.StrongEps.EpsE4Thr.SlotWt.mixedSlot_weight_le_HkIntegrand4
-      (α := α) (c := c) (g := g) (a := b) (b := a) hα hcg hb1 (by omega) ⟨hθ, hθ2⟩
 
-theorem integrable_cross_slot_rpow {α c : ℝ} {a b : ℕ} {f h : ℝ → ℝ → ℝ}
-    (hα : 0 < α) (hc : -(Work.Spaces.eta) ≤ c) (hab : a + b ≤ 4)
-    (hsmf : Work.FTS.EllipticEst.SmoothOpen f) (hsmh : Work.FTS.EllipticEst.SmoothOpen h)
-    (hmemf : Work.Spaces.HkMem α 4 f) (hmemh : Work.Spaces.HkMem α 4 h) :
-    MeasureTheory.Integrable
-      (fun p : ℝ × ℝ => Work.Spaces.mixed a b f p.1 p.2 * Work.Spaces.mixed a b h p.1 p.2
-        * (Work.Spaces.w p.1 ^ 2 * Real.sin (2 * p.2) ^ c))
-      Work.FTS.StrongEps.EpsE4Thr.mup := by
-  have hmain := integrable_mixed_pairing (α := α) (c := c) (f := f) (h := h) (j := a) (i := b)
-    hsmf hsmh hmemf hmemh
-    (fun z θ _ hθ hθ2 => crossWt_mixed_sq_le_HkIntegrand (g := f) hα hc hab hθ hθ2)
-    (fun z θ _ hθ hθ2 => crossWt_mixed_sq_le_HkIntegrand (g := h) hα hc hab hθ hθ2)
-    (Work.FTS.StrongEps.EpsE4Thr.SlotWt.aesm_mixed_pair_weight (c := c) hsmf hsmh)
-  simpa only [Work.FTS.StrongEps.EpsE4Thr.mup, crossWt] using hmain
 
 end Work.FTS.StrongEps.EpsE4Thr
+end

@@ -2,11 +2,11 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45Defs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3RowAux
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.Spaces.WlInf_terms
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMul6Cont
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -43,20 +43,6 @@ theorem w_nonneg (z : ℝ) : 0 ≤ Work.Spaces.w z := by
 theorem w_pos_of_pos {z : ℝ} (hz : 0 < z) : 0 < Work.Spaces.w z := by
   rw [Work.Spaces.w]; positivity
 
-/-- Every leaf weight of the slot `a` factors as `w(z)²·σ(θ)` with `σ` nonnegative on `Iθ`. -/
-theorem leaf_eq_w_sq_mul {α : ℝ} {a : ℕ} {ρ : ℝ → ℝ → ℝ}
-    (hleaf : Work.FTS.TransportS.IsLeafW α a ρ) :
-    ∃ σ : ℝ → ℝ, (∀ θ ∈ Work.Spaces.Iθ, 0 ≤ σ θ) ∧
-      ∀ z θ : ℝ, ρ z θ = (Work.Spaces.w z) ^ 2 * σ θ := by
-  rcases hleaf with rfl | rfl | ⟨-, rfl⟩
-  · refine ⟨fun θ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)),
-      fun θ hθ => Real.rpow_nonneg (Real.sin_nonneg_of_mem_Icc
-        ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩) _, fun z θ => rfl⟩
-  · exact ⟨fun _ => 1, fun θ hθ => zero_le_one,
-      fun z θ => by simp [Work.FTS.TransportS.leafOne]⟩
-  · refine ⟨fun θ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)),
-      fun θ hθ => Real.rpow_nonneg (Real.sin_nonneg_of_mem_Icc
-        ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩) _, fun z θ => rfl⟩
 
 /-- The angular factor `Abnd` is continuous on the open quadrant. -/
 theorem continuousOn_Abnd (α : ℝ) (a : ℕ) :

@@ -4,14 +4,13 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
-import Submission.Work.FTS.PhiStar.Honesty.abs_cmode_le_lzero_iter_fix
-import Submission.Work.FTS.PhiStar.Series.Defs
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
 import Submission.Work.FTS.PhiStar.Gegenbauer.FamNormValue
 import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
-import Submission.Work.FTS.ClassCHon.CmodeIter
-import Submission.Work.FTS.ClassCHon.Lop_good
-import Submission.Work.FTS.PhiStar.FamDerivDivLinv
+import Submission.Work.FTS.StrongPersist.H6Rows.NZaux.L12AddFstar
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sin_two_rpow
 import Submission.Work.Stability.ZcutSmoothCompact
 
 -- v435-port: begin

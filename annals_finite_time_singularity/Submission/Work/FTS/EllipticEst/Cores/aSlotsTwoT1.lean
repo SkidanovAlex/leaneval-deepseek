@@ -1,42 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Cores/aSlotsTwoT1` — the level-`1` `A`-slot `α⁴ Tk α 1 (z²∂_z²Ψ) ≤ C |F|²_{ℋ²}`
-
-Target (unchanged, at the bottom):
-
-```
-theorem aSlotsTwoT1 (h0 : ∃ C, 0 < C ∧ TT.EllWeak0 C) :
-  ∃ C > 0, ∀ α F Ψ, 0 < α → α ≤ 1/4 → TT.EllWeakPos α 2 F Ψ →
-    α⁴ · Tk α 1 (z²∂_z²Ψ) ≤ C · HkSq α 2 F
-```
-
-## The route
-
-Write `A := z²∂_z²Ψ`.  The slot is `Tk α 1 A = L2Sq (D_θ A · Wt α)`, i.e. the
-`(i,j) = (1,0)` mixed slot of `A`.
-
-* **Angular reduction (slicewise Agmon).**  `H2W.angularAgmon` gives, for every slice
-  `u = A z ·`,
-  `∫_θ (D_θ u)² σ_γ ≤ C (∫_θ (u'')² σ_η + ∫_θ u² σ_η)`,
-  and `H2W.esl_lhs_bound` (`H2W/ESV/easySlotsAssembly.lean`) integrates it against the radial
-  weight `w²`, producing
-  `L2Sq (D_θ A · Wt) + L2Sq (D_θ² A · Wt) ≤ Cl (HkSq α 0 A + HkSq α 0 (∂_θ² A))`.
-  This is the only place where the angular (Step 4) estimate enters; it needs the two
-  pointwise companions of `angularAgmon` (`pivotBound`/`deriv_sq_mul_sEta_le`,
-  `eslDth2Bound`) and the honesty `HkMem α 0 (∂_θ²A)` (`H2W.eslHkMemPthTwoZsq`).
-* **The level-`0` slots of `A`** (`aSlotsTwoT1_l0A`, `aSlotsTwoT1_l0pA`): `α⁴ HkSq α 0 A` is the
-  `A`-half of `TT.EllWeak0` (the hypothesis `h0`, with the class descended from level `2` to
-  level `0`), and `α⁴ HkSq α 0 (∂_θ² A)` is reduced, through the two Clairaut identities
-  `∂_θ² A = z²∂_z²(∂_θ²Ψ)` and `z²∂_z² g = D_z² g - D_z g`, to the level-`0` angular slots
-  `HkSq α 0 (∂_θ² (D_z^j Ψ))`, `j ≤ 2`, of the *radially shifted* data — which are exactly the
-  proved statements `Cores.HkSq_zero_pthIter_two_DzIter_{one,two}_le` (the `Ψ`-halves of the
-  level-`0` estimate at the shifted data, available from `h0`).
-
-Every ingredient used here is a proved theorem, and the target rests on the three standard
-axioms `[propext, Classical.choice, Quot.sound]` only; in particular no `Ae.Step2` /
-`level0Ae` input is needed.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
@@ -44,9 +5,9 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.EllipticEst.Cores.aSlotsTwo
-import Submission.Work.FTS.EllipticEst.Mine.AgmonThetaSup
-import Submission.Work.FTS.EllipticEst.H2W.ESV.easySlotsAe
+import Submission.Work.H2.T1Q.SliceIntQ
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

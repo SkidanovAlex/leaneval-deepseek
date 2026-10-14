@@ -1,34 +1,257 @@
-/-
-# `Npair6BWork/rowAux` — the shared engines for the `A·D_z f` row
-
-Self-contained tools for `Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowDzFlatTight`:
-
-* the product measure `PM = (volume|Iz).prod (volume|Iθ)` and its a.e. open-quadrant facts;
-* the leaf weights expressed as canonical weights (`leafEta = canonW η`, `leafOne = canonW 0`,
-  `leafGam = canonW γ`) and the resulting comparisons `ρ ≤ canonW γ`, `ρ ≤ canonW η` (for
-  `a = 0`), `0 ≤ ρ`;
-* a.e. strong measurability of `SmoothOpen` fields, their slots, `canonW` and the leaf weights;
-* the two engines `val_le_HkSq` (weighted `L²`-value of a dominated slot) and
-  `rowSummand_core` (sup on the middle factor + weighted `L²`-values of the two outer factors);
-* the pointwise Leibniz majorant of `D_z^bD_θ^a (A · D_z f)`;
-* `slotPairing` as a product-measure integral (Fubini);
-* monotonicity of `HkIntegrand`/`HkMem` in the order;
-* the flat coefficient bound `CoefTh 1 A ≤ K1` as a pointwise bound.
--/
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.TransportS.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.TransportS.GoodOpenBase
-import Submission.Work.FTS.TransportS.SlotT2.Basic
-import Submission.Work.FTS.TransportS.T2Sup.smainBound
-import Submission.Work.FTS.H2.RegQDefs
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.RowAdzBase
+import Submission.Work.FTS.TransportS.Defs
+import Submission.Work.FTS.TransportS.SlotT2.Basic
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T2Sup.smainBound
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.RowAdzSlots =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongPersist.H6Rows.N0pair6Aux
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+noncomputable section
+
+/-! ## The pointwise bounds of the slots of the Leibniz expansion -/
+
+/-- The `(0,0)`-slot, dominated by the level-seven integrand. -/
+theorem rowA_slot_dom_00 {α K : ℝ} (hα : 0 < α) (hK : 0 ≤ K)
+    {f A : ℝ → ℝ → ℝ} {a b : ℕ} {ρ : ℝ → ℝ → ℝ}
+    (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
+    (hAbd : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → ∀ j i : ℕ, i + j ≤ 6 →
+      |Work.Spaces.mixed j i A z θ| ≤ K * (if i = 0 then 1 else Real.sin (2 * θ)))
+    (hab : a + b ≤ 6)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+    |rowA_piece f A ρ a b 0 0 (z, θ)| ≤ K * Work.Spaces.HkIntegrand α 7 f z θ := by
+  have hρnn : 0 ≤ ρ z θ := (Work.FTS.TransportS.IsLeafW_le α hα hρ).1 z θ hz hθ.1 hθ.2
+  have hA : |A z θ| ≤ K := by
+    have h := hAbd z θ hz hθ.1 hθ.2 0 0 (by norm_num)
+    simpa using h
+  have hG : ρ z θ * (Work.Spaces.mixed (b + 1) a f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 7 f z θ :=
+    Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα hρ (b' := b + 1) (n := 7) hθ (by omega)
+  have hH : ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 7 f z θ :=
+    (Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα hρ (b' := b) (n := 6) hθ hab).trans
+      (Work.FTS.StrongPersist.H6Pair6Aux.HkIntegrand_mono α (by norm_num) f z θ)
+  show |ρ z θ * Work.Spaces.mixed 0 0 A z θ * Work.Spaces.mixed (b - 0 + 1) (a - 0) f z θ
+      * Work.Spaces.mixed b a f z θ| ≤ K * Work.Spaces.HkIntegrand α 7 f z θ
+  rw [Nat.sub_zero, Nat.sub_zero, Work.Spaces.mixed_zero_left, Work.Spaces.DthIter_zero]
+  rw [abs_mul, abs_mul, abs_mul, abs_of_nonneg hρnn]
+  calc ρ z θ * |A z θ| * |Work.Spaces.mixed (b + 1) a f z θ| * |Work.Spaces.mixed b a f z θ|
+      ≤ ρ z θ * K * |Work.Spaces.mixed (b + 1) a f z θ| * |Work.Spaces.mixed b a f z θ| :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hA hρnn) (abs_nonneg _))
+          (abs_nonneg _)
+    _ = K * (ρ z θ * (|Work.Spaces.mixed (b + 1) a f z θ|
+          * |Work.Spaces.mixed b a f z θ|)) := by ring
+    _ ≤ K * (ρ z θ * ((Work.Spaces.mixed (b + 1) a f z θ) ^ 2
+          + (Work.Spaces.mixed b a f z θ) ^ 2) / 2) :=
+        mul_le_mul_of_nonneg_left (rowA_mul_abs_le hρnn) hK
+    _ = K * ((ρ z θ * (Work.Spaces.mixed (b + 1) a f z θ) ^ 2
+          + ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2) / 2) := by ring
+    _ ≤ K * ((Work.Spaces.HkIntegrand α 7 f z θ + Work.Spaces.HkIntegrand α 7 f z θ) / 2) := by
+        refine mul_le_mul_of_nonneg_left ?_ hK
+        linarith [hG, hH]
+    _ = K * Work.Spaces.HkIntegrand α 7 f z θ := by ring
+
+/-- The `(0,j)`-slot with `j ≥ 1`. -/
+theorem rowA_slot_dom_i0pos {α K : ℝ} (hα : 0 < α) (hK : 0 ≤ K)
+    {f A : ℝ → ℝ → ℝ} {a b j : ℕ} {ρ : ℝ → ℝ → ℝ}
+    (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
+    (hAbd : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → ∀ j i : ℕ, i + j ≤ 6 →
+      |Work.Spaces.mixed j i A z θ| ≤ K * (if i = 0 then 1 else Real.sin (2 * θ)))
+    (hab : a + b ≤ 6) (hjb : j ≤ b) (hj : 1 ≤ j)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+    |rowA_piece f A ρ a b 0 j (z, θ)| ≤ K * Work.Spaces.HkIntegrand α 6 f z θ := by
+  have hρnn : 0 ≤ ρ z θ := (Work.FTS.TransportS.IsLeafW_le α hα hρ).1 z θ hz hθ.1 hθ.2
+  have hX : |Work.Spaces.mixed j 0 A z θ| ≤ K := by
+    have h := hAbd z θ hz hθ.1 hθ.2 j 0 (by omega)
+    simpa using h
+  have hG : ρ z θ * (Work.Spaces.mixed (b - j + 1) a f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 6 f z θ :=
+    Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα hρ (b' := b - j + 1) (n := 6) hθ (by omega)
+  have hH : ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 6 f z θ :=
+    Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα hρ (b' := b) (n := 6) hθ hab
+  show |ρ z θ * Work.Spaces.mixed j 0 A z θ * Work.Spaces.mixed (b - j + 1) (a - 0) f z θ
+      * Work.Spaces.mixed b a f z θ| ≤ K * Work.Spaces.HkIntegrand α 6 f z θ
+  rw [Nat.sub_zero, Work.Spaces.mixed_zero_right]
+  rw [abs_mul, abs_mul, abs_mul, abs_of_nonneg hρnn]
+  calc ρ z θ * |Work.Spaces.mixed j 0 A z θ|
+        * |Work.Spaces.mixed (b - j + 1) a f z θ| * |Work.Spaces.mixed b a f z θ|
+      ≤ ρ z θ * K * |Work.Spaces.mixed (b - j + 1) a f z θ| * |Work.Spaces.mixed b a f z θ| :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hX hρnn) (abs_nonneg _))
+          (abs_nonneg _)
+    _ = K * (ρ z θ * (|Work.Spaces.mixed (b - j + 1) a f z θ|
+          * |Work.Spaces.mixed b a f z θ|)) := by ring
+    _ ≤ K * (ρ z θ * ((Work.Spaces.mixed (b - j + 1) a f z θ) ^ 2
+          + (Work.Spaces.mixed b a f z θ) ^ 2) / 2) :=
+        mul_le_mul_of_nonneg_left (rowA_mul_abs_le hρnn) hK
+    _ = K * ((ρ z θ * (Work.Spaces.mixed (b - j + 1) a f z θ) ^ 2
+          + ρ z θ * (Work.Spaces.mixed b a f z θ) ^ 2) / 2) := by ring
+    _ ≤ K * ((Work.Spaces.HkIntegrand α 6 f z θ + Work.Spaces.HkIntegrand α 6 f z θ) / 2) := by
+        refine mul_le_mul_of_nonneg_left ?_ hK
+        linarith [hG, hH]
+    _ = K * Work.Spaces.HkIntegrand α 6 f z θ := by ring
+
+/-- The `(i,j)`-slot with `i ≥ 1`. -/
+theorem rowA_slot_dom_ipos {α K : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (hK : 0 ≤ K)
+    {f A : ℝ → ℝ → ℝ} {a b i j : ℕ} {ρ : ℝ → ℝ → ℝ}
+    (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
+    (hAbd : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → ∀ j i : ℕ, i + j ≤ 6 →
+      |Work.Spaces.mixed j i A z θ| ≤ K * (if i = 0 then 1 else Real.sin (2 * θ)))
+    (hab : a + b ≤ 6) (hia : i ≤ a) (hjb : j ≤ b) (hi : 1 ≤ i)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+    |rowA_piece f A ρ a b i j (z, θ)| ≤ K * Work.Spaces.HkIntegrand α 6 f z θ := by
+  have hij6 : i + j ≤ 6 := by omega
+  have ha1 : 1 ≤ a := le_trans hi hia
+  have hρnn : 0 ≤ ρ z θ := (Work.FTS.TransportS.IsLeafW_le α hα hρ).1 z θ hz hθ.1 hθ.2
+  have hX : |Work.Spaces.mixed j i A z θ| ≤ K * Real.sin (2 * θ) := by
+    have h := hAbd z θ hz hθ.1 hθ.2 j i hij6
+    rwa [if_neg (by omega : i ≠ 0)] at h
+  have hσpos : 0 < Real.sin (2 * θ) := rowA_sin_two_pos hθ
+  have hσle1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
+  have hρη : ρ z θ * Real.sin (2 * θ)
+      ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by
+    have h1 := Work.FTS.StrongPersist.H6Pair6Aux.sigma_mul_leaf_le (z := z) hα hρ hθ
+    have h2 : (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α - 1))
+        ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by
+      refine mul_le_mul_of_nonneg_left ?_ (sq_nonneg _)
+      refine Real.rpow_le_rpow_of_exponent_ge hσpos hσle1 ?_
+      have hge : Work.Spaces.gam α - 1 ≤ Work.Spaces.eta := by
+        rw [Work.Spaces.gam, Work.Spaces.eta]; linarith
+      linarith
+    calc ρ z θ * Real.sin (2 * θ) = Real.sin (2 * θ) * ρ z θ := by ring
+      _ ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α - 1)) := h1
+      _ ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := h2
+  have hG : (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+      * (Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 6 f z θ := by
+    by_cases hai : a - i = 0
+    · have h : Work.FTS.TransportS.leafEta z θ
+            * (Work.Spaces.mixed (b - j + 1) 0 f z θ) ^ 2
+            ≤ Work.Spaces.HkIntegrand α 6 f z θ :=
+        Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα
+          (hleaf := (Or.inl rfl : Work.FTS.TransportS.IsLeafW α 0
+            Work.FTS.TransportS.leafEta))
+          (b' := b - j + 1) (n := 6) hθ (by omega)
+      rw [hai]
+      simpa only [Work.FTS.TransportS.leafEta] using h
+    · have hai1 : 1 ≤ a - i := by omega
+      have hle : (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+          ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) :=
+        rowA_sin_rpow_eta_le_gam hα hθ
+      have h1 : (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+            * (Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2
+          ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2 :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_left hle (sq_nonneg _)) (sq_nonneg _)
+      refine h1.trans ?_
+      have h : Work.FTS.TransportS.leafGam α z θ
+            * (Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2
+            ≤ Work.Spaces.HkIntegrand α 6 f z θ :=
+        Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα
+          (hleaf := (Or.inr (Or.inr ⟨hai1, rfl⟩) : Work.FTS.TransportS.IsLeafW α (a - i)
+            (Work.FTS.TransportS.leafGam α)))
+          (b' := b - j + 1) (n := 6) hθ (by omega)
+      simpa only [Work.FTS.TransportS.leafGam] using h
+  have hH : (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+      * (Work.Spaces.mixed b a f z θ) ^ 2
+      ≤ Work.Spaces.HkIntegrand α 6 f z θ := by
+    have hle : (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+        ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := rowA_sin_rpow_eta_le_gam hα hθ
+    have h1 : (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+          * (Work.Spaces.mixed b a f z θ) ^ 2
+        ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+          * (Work.Spaces.mixed b a f z θ) ^ 2 :=
+      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hle (sq_nonneg _)) (sq_nonneg _)
+    refine h1.trans ?_
+    have h : Work.FTS.TransportS.leafGam α z θ
+          * (Work.Spaces.mixed b a f z θ) ^ 2 ≤ Work.Spaces.HkIntegrand α 6 f z θ :=
+      Work.FTS.StrongPersist.H6Pair6Aux.domLeaf_all hα
+        (hleaf := (Or.inr (Or.inr ⟨ha1, rfl⟩) : Work.FTS.TransportS.IsLeafW α a
+          (Work.FTS.TransportS.leafGam α))) (b' := b) (n := 6) hθ hab
+    simpa only [Work.FTS.TransportS.leafGam] using h
+  have hx0 : 0 ≤ (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
+    mul_nonneg (sq_nonneg _) (Real.rpow_nonneg (le_of_lt hσpos) _)
+  show |ρ z θ * Work.Spaces.mixed j i A z θ * Work.Spaces.mixed (b - j + 1) (a - i) f z θ
+      * Work.Spaces.mixed b a f z θ| ≤ K * Work.Spaces.HkIntegrand α 6 f z θ
+  rw [abs_mul, abs_mul, abs_mul, abs_of_nonneg hρnn]
+  calc ρ z θ * |Work.Spaces.mixed j i A z θ|
+        * |Work.Spaces.mixed (b - j + 1) (a - i) f z θ| * |Work.Spaces.mixed b a f z θ|
+      ≤ ρ z θ * (K * Real.sin (2 * θ))
+        * |Work.Spaces.mixed (b - j + 1) (a - i) f z θ| * |Work.Spaces.mixed b a f z θ| :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hX hρnn) (abs_nonneg _))
+          (abs_nonneg _)
+    _ = K * ((ρ z θ * Real.sin (2 * θ))
+          * (|Work.Spaces.mixed (b - j + 1) (a - i) f z θ|
+            * |Work.Spaces.mixed b a f z θ|)) := by ring
+    _ ≤ K * (((Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+          * (|Work.Spaces.mixed (b - j + 1) (a - i) f z θ|
+            * |Work.Spaces.mixed b a f z θ|)) := by
+        refine mul_le_mul_of_nonneg_left ?_ hK
+        exact mul_le_mul_of_nonneg_right hρη (by positivity)
+    _ ≤ K * (((Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+          * ((Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2
+            + (Work.Spaces.mixed b a f z θ) ^ 2) / 2) := by
+        refine mul_le_mul_of_nonneg_left ?_ hK
+        exact rowA_mul_abs_le hx0
+    _ = K * (((Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+            * (Work.Spaces.mixed (b - j + 1) (a - i) f z θ) ^ 2
+          + (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+            * (Work.Spaces.mixed b a f z θ) ^ 2) / 2) := by ring
+    _ ≤ K * ((Work.Spaces.HkIntegrand α 6 f z θ + Work.Spaces.HkIntegrand α 6 f z θ) / 2) := by
+        refine mul_le_mul_of_nonneg_left ?_ hK
+        linarith [hG, hH]
+    _ = K * Work.Spaces.HkIntegrand α 6 f z θ := by ring
+
+/-- The uniform pointwise slot domination for the slots with `(i,j) ≠ (0,0)`. -/
+theorem rowA_slot_dom {α K : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (hK : 0 ≤ K)
+    {f A : ℝ → ℝ → ℝ} {a b i j : ℕ} {ρ : ℝ → ℝ → ℝ}
+    (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
+    (hAbd : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → ∀ j i : ℕ, i + j ≤ 6 →
+      |Work.Spaces.mixed j i A z θ| ≤ K * (if i = 0 then 1 else Real.sin (2 * θ)))
+    (hab : a + b ≤ 6) (hia : i ≤ a) (hjb : j ≤ b) (hij : 1 ≤ i + j)
+    {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+    |rowA_piece f A ρ a b i j (z, θ)| ≤ K * Work.Spaces.HkIntegrand α 6 f z θ := by
+  rcases Nat.eq_zero_or_pos i with hi0 | hipos
+  · subst hi0
+    have hj1 : 1 ≤ j := by omega
+    exact rowA_slot_dom_i0pos hα hK hρ hAbd hab hjb hj1 hz hθ
+  · exact rowA_slot_dom_ipos hα hα1 hK hρ hAbd hab hia hjb hipos hz hθ
+
+end
+
+end Work.FTS.StrongPersist.H6Rows.N0pair6Aux
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -353,70 +576,6 @@ theorem rowSummand_core {α KY AX AZ : ℝ} {f X Y Z ρv ρ₁ ρ₂ : ℝ → �
 
 /-! ## The pointwise Leibniz majorant -/
 
-/-- Pointwise triangle inequality on the Leibniz expansion of `D_z^bD_θ^a (A · D_z f)`. -/
-theorem abs_mixed_Dz_le_sum {A f ρv : ℝ → ℝ → ℝ}
-    (hA : Work.FTS.EllipticEst.SmoothOpen A) (hf : Work.FTS.EllipticEst.SmoothOpen f)
-    (a b : ℕ) {z θ : ℝ} (hz : 0 < z) (hθ0 : 0 < θ) (hθ1 : θ < Real.pi / 2)
-    (hρ : 0 ≤ ρv z θ) :
-    ρv z θ * |Work.Spaces.mixed b a (fun z θ => A z θ * Work.Spaces.Dz f z θ) z θ
-        * Work.Spaces.mixed b a f z θ|
-      ≤ ∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-          ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-            * (ρv z θ * |Work.Spaces.mixed b₁ a₁ A z θ
-                * Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ|
-                * |Work.Spaces.mixed b a f z θ|) := by
-  have hX := Work.FTS.TransportS.mixed_mul_Dz_open b a A f hA hf z θ hz hθ0 hθ1
-  have habs : |Work.Spaces.mixed b a (fun z θ => A z θ * Work.Spaces.Dz f z θ) z θ|
-      ≤ ∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-          ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-            * (|Work.Spaces.mixed b₁ a₁ A z θ|
-                * |Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ|) := by
-    rw [hX]
-    calc |∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-            ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-              * (Work.Spaces.mixed b₁ a₁ A z θ
-                  * Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ)|
-        ≤ ∑ a₁ ∈ Finset.range (a + 1),
-            |∑ b₁ ∈ Finset.range (b + 1),
-              ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-                * (Work.Spaces.mixed b₁ a₁ A z θ
-                    * Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ)| :=
-          Finset.abs_sum_le_sum_abs _ _
-      _ ≤ ∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-            |((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-              * (Work.Spaces.mixed b₁ a₁ A z θ
-                  * Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ)| :=
-          Finset.sum_le_sum fun a₁ _ => Finset.abs_sum_le_sum_abs _ _
-      _ = ∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-            ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-              * (|Work.Spaces.mixed b₁ a₁ A z θ|
-                  * |Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ|) := by
-          refine Finset.sum_congr rfl fun a₁ _ => Finset.sum_congr rfl fun b₁ _ => ?_
-          rw [abs_mul, abs_mul, abs_mul,
-            abs_of_nonneg (by positivity : (0 : ℝ) ≤ (a.choose a₁ : ℝ)),
-            abs_of_nonneg (by positivity : (0 : ℝ) ≤ (b.choose b₁ : ℝ))]
-          try ring
-  calc ρv z θ * |Work.Spaces.mixed b a (fun z θ => A z θ * Work.Spaces.Dz f z θ) z θ
-        * Work.Spaces.mixed b a f z θ|
-      = ρv z θ * |Work.Spaces.mixed b a (fun z θ => A z θ * Work.Spaces.Dz f z θ) z θ|
-        * |Work.Spaces.mixed b a f z θ| := by rw [abs_mul]; ring
-    _ ≤ ρv z θ * (∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-          ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-            * (|Work.Spaces.mixed b₁ a₁ A z θ|
-                * |Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ|))
-        * |Work.Spaces.mixed b a f z θ| :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left habs hρ) (abs_nonneg _)
-    _ = ∑ a₁ ∈ Finset.range (a + 1), ∑ b₁ ∈ Finset.range (b + 1),
-          ((a.choose a₁ : ℝ) * (b.choose b₁ : ℝ))
-            * (ρv z θ * |Work.Spaces.mixed b₁ a₁ A z θ
-                * Work.Spaces.mixed (b - b₁ + 1) (a - a₁) f z θ|
-                * |Work.Spaces.mixed b a f z θ|) := by
-        rw [Finset.mul_sum, Finset.sum_mul]
-        refine Finset.sum_congr rfl fun a₁ _ => ?_
-        rw [Finset.mul_sum, Finset.sum_mul]
-        refine Finset.sum_congr rfl fun b₁ _ => ?_
-        rw [abs_mul]
-        ring
 
 /-! ## Monotonicity of `HkIntegrand` and `HkMem` in the order -/
 
@@ -503,3 +662,5 @@ theorem coefTh_pointwise {A : ℝ → ℝ → ℝ} {K1 : ℝ}
     (le_trans (supAbsO_pth_le_CoefTh hbi) hle)
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork
+end
+end

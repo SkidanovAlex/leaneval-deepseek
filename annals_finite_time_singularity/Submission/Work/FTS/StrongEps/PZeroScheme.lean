@@ -1,40 +1,69 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/PZeroScheme.lean` — the `P₀`-corrected `ε`-scheme
-
-The lead's design (`FTS_HARD_DESIGN.md`, §(B)) specifies the scheme
-
-  `∂_τ g = P₀ J_ε [𝓛 + 𝓡] (P₀ J_ε g)`,   `P₀ f = f − L₁₂(f)(0) · b`.
-
-The statement file `FTS_HARD_STMTS.lean.txt` omits `P₀`; without it the class-`C` clause
-`L₁₂(g)(0) = 0` — which `EpsDatum`, `StrongPersist.H6Adm`/`L6Ctx`, `hEll`, `EllLimOK` and
-`MuLamOK` all consume — is **false** along the scheme (the log-coordinate mollifier `J_ε` is a
-two-dimensional convolution whose angular half shifts `tan θ`, and the angular weight `K(θ)dθ` of
-`L₁₂` is not invariant under that shift; see `NOTES_Pzero.md` §1).
-
-This module records the corrected scheme in the vocabulary of
-`Submission/Work/FTS/StrongEps/PZero.lean`:
-
-* `JfamP ρ ε g := fun z θ τ => Pz (Jeps ρ ε (slice g τ)) z θ` — the *inner* projection, which keeps
-  the profile that the elliptic solution operator `E` is applied to inside the class `ClassC` at
-  every fake time **by construction**;
-* `IsEpsSolP … g₀ g` — the design's scheme: the fake-time derivative of `g` is the *projection* of
-  the mollified right-hand side evaluated at the projected family;
-* `epsWP`/`epsRHSP` — the pre-mollified right-hand side and the right-hand side of the projected
-  scheme, with the definitional identity `epsRHSP = Pz (J_ε (epsWP))`.
-
-Everything here is `sorry`-free: the module only *fixes vocabulary* (definitions and `rfl`-lemmas).
-The E2–E5 chain is to be restated against these objects; see `NOTES_Pzero.md` §3 for the plan and
-the five already-delegated analytic lemmas about `Pz`.
--/
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Defs
+import Mathlib.Tactic.NormNum.Ineq
+import Mathlib.Tactic.NormNum.Pow
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.StrongEps.PZero
-import Submission.Work.FTS.StrongEps.Basic
+import Submission.Work.FTS.LocData6.zfarR_jet_le6_of_jets
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_EllLimOK.SlotJets.slotPthSliceLe
+-- ===== merged: Submission.Work.FTS.LocData6.RegQ6 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.LocData6
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- The squared angular bound `(D_θ^i Γ)² ≤ 10¹⁰·Γ²` on `Iθ` for `i ≤ 6`, obtained by squaring
+the order-`6` jet bound `LocData6.DthIter_Gam_abs_le6`. -/
+theorem hGam6 (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) {i : ℕ} (hi : i ≤ 6) {θ : ℝ}
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    (Work.Spaces.DthIter i (fun _ θ' => Work.Spaces.Gam α θ') 0 θ) ^ 2
+      ≤ (10 : ℝ) ^ 10 * (Work.Spaces.Gam α θ) ^ 2 := by
+  have h := DthIter_Gam_abs_le6 i hi α hα hα1 hθ
+  have h2 := pow_le_pow_left₀ (abs_nonneg _) h 2
+  rw [sq_abs, mul_pow] at h2
+  have h10 : ((100000 : ℝ)) ^ 2 = (10 : ℝ) ^ 10 := by norm_num
+  calc (Work.Spaces.DthIter i (fun _ θ' => Work.Spaces.Gam α θ') 0 θ) ^ 2
+      ≤ (100000 : ℝ) ^ 2 * (Work.Spaces.Gam α θ) ^ 2 := h2
+    _ = (10 : ℝ) ^ 10 * (Work.Spaces.Gam α θ) ^ 2 := by rw [h10]
+
+/-- **The localised datum lies in `RegQ α 6`** — unconditionally, for `0 < α ≤ 1`, `L ≥ 1` and
+every `β`.  This is the order-`6` form of the design's `N9-ext` obligation: `SmoothQuad`,
+`HkMem α 6` and the vanishing boundary traces `BdryTraces α 6`. -/
+theorem regQ_locG6_uncond (α L β : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (hL : 1 ≤ L) :
+    Work.FTS.Nonlin.RegQ α 6 (locG6 α L β) := by
+  obtain ⟨A, hA, hAz⟩ := zfarR_jet_le6_clean
+  obtain ⟨CF, hCF, hF⟩ := FM_Fstar_jet_le6
+  obtain ⟨Kb, hKb0, hKb⟩ := hLoc_majorant6 α hα hα1
+    (fun i hi θ hθ => hGam6 α hα hα1 hi hθ)
+  refine regQ_locG6_of_jets α L β hα hα1 hL (le_of_lt hA) (by norm_num)
+    (fun j hj z hz θ => hAz L hL j hj z hz θ)
+    (fun i hi θ hθ => hGam6 α hα hα1 hi hθ)
+    (fun i hi θ hθ => DthIter_Gam_abs_le6 i hi α hα hα1 hθ)
+    hKb0 hKb (le_of_lt hCF) hF
+
+end Work.FTS.LocData6
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.PZeroScheme =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -64,21 +93,11 @@ the un-projected `Jfam` cannot provide. -/
 noncomputable def JfamP (ρ : ℝ × ℝ → ℝ) (ε : ℝ) (g : Fam) : Fam :=
   fun z θ τ => Pz (Jeps ρ ε (slice g τ)) z θ
 
-/-- The definitional identity of the projected family. -/
-theorem JfamP_apply (ρ : ℝ × ℝ → ℝ) (ε : ℝ) (g : Fam) (z θ τ : ℝ) :
-    JfamP ρ ε g z θ τ = Pz (Jeps ρ ε (slice g τ)) z θ := rfl
 
 /-- The projected family has the projected profile at every fake time. -/
 theorem slice_JfamP (ρ : ℝ × ℝ → ℝ) (ε : ℝ) (g : Fam) (τ : ℝ) :
     slice (JfamP ρ ε g) τ = Pz (Jeps ρ ε (slice g τ)) := rfl
 
-/-- The projection is invisible on a family whose slices already have vanishing zero mode. -/
-theorem JfamP_eq_Jfam_of_l12 {ρ : ℝ × ℝ → ℝ} {ε : ℝ} {g : Fam}
-    (h : ∀ τ, Work.Construction.L12 (Jeps ρ ε (slice g τ)) 0 = 0) :
-    JfamP ρ ε g = Jfam ρ ε g := by
-  funext z θ τ
-  show Pz (Jeps ρ ε (slice g τ)) z θ = Jeps ρ ε (slice g τ) z θ
-  rw [Pz_self_of_l12 (h τ)]
 
 /-! ## The projected scheme -/
 
@@ -129,3 +148,5 @@ theorem IsEpsSolP.eq {α : ℝ} {ρ : ℝ × ℝ → ℝ} {ε T : ℝ} {Φs : Fn
   h.2 z θ τ hz hθ hτ
 
 end Work.FTS.StrongEps
+end
+end

@@ -1,27 +1,8 @@
-/-
-# `Work.FTS.StrongPersist.H6Aux.Assembly` — the one-sided level-six linear bound
-
-This is the capstone: the level-six one-sided bound `H6Lin` for the concrete pairing
-`IP6 1 1 … 1`, i.e. the existence of `α₂, CL > 0` with
-
-  `IP6 1 … 1 α (linPart α f) f ≤ CL · |f|²_{ℋ⁶}`
-
-for every `α ∈ (0,α₂]` and every `f` of the class `H6Adm α` with order-seven honesty
-`HkMem α 7 f`.
-
-The proof splits the operator `𝓛_Γ^T = Lhat + Corr` (`LGammaT_eq_Lhat_add_Corr`):
-
-* the clean part is priced by the commutator induction `R_ind`
-  (`IP6 (Lhat f) f ≥ -r·IP6 f f`), and the diagonal `IP6 f f` by Cauchy–Schwarz at level six
-  (`IP6 f f ≤ CC·|f|²_{ℋ⁶}`);
-* the nonlocal part `Corr α f` is priced by Cauchy–Schwarz with the norm bound `Corr_HkSq6`
-  (`|Corr α f|_{ℋ⁶} ≤ √Cc·|f|_{ℋ⁶}`).
--/
 import Mathlib.Algebra.Order.Star.Real
-import Submission.Work.FTS.StrongPersist.H6Aux.Induction
-import Submission.Work.FTS.StrongPersist.H6Aux.Corr_HkSq6
-import Submission.Work.FTS.StrongPersist.H6Aux.q0Sm_Corr
-import Submission.Work.FTS.StrongPersist.IP6Clauses
+import Submission.Work.FTS.StrongPersist.H6Aux.RStep
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSlotInt
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertMul
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.leibnizRem6
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

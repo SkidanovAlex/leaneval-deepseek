@@ -1,29 +1,46 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `IPGen/IP4Lin.lean` — the `IPLinHQo` package for the coercive `IP4`
-
-This is the assembly of the four clauses of `IPGen.IPLinHQo` (design §4, "IP linearity on the
-open class") for the concrete inner product `Assembly.IP4 c₁ … c₂''`:
-
-* `add` — `IPGen.ip4_add_HQo` (the `Comm2o` induction of `IPGen/IP4Add.lean`);
-* `smul` — `IPGen.ip4_smul` (unconditional homogeneity, `IPGen/IP4Smul.lean`);
-* `congr` on `Qd` — `IPGen.ip4_congr_Qd` (the membership-free `Comm2` congruence of
-  `Assembly.Comm2_levels`);
-* Cauchy–Schwarz against `|·|_{ℋ⁴}` on the open class — `ip4_cs_HQo` below, from the slot
-  domination `ip4SlotDomGen` and the leaf bound `leafSum_le` (which is the summation over the
-  `75` leaves of `IPGen.slotPairing_abs_le`).
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.IPGen.Defs
-import Submission.Work.FTS.IPGen.IP4Add
-import Submission.Work.FTS.IPGen.IP4Smul
-import Submission.Work.FTS.IPGen.ip4SlotDomGen
-import Submission.Work.FTS.IPGen.slotPairing_abs_le
+import Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat
+import Submission.Work.FTS.StrongPersist.L3Aux.ZmulBound
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.DelicateHon
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS.Vocab
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+-- ===== merged: Submission.Work.FTS.CoercivityFix.Assembly.Main =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.CoercivityFix.Assembly
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.Nonlin (RegQ CoerAdm UnifIP Xn)
+
+set_option autoImplicit false
+
+
+
+
+end Work.FTS.CoercivityFix.Assembly
+end
+end
+-- ===== merged: Submission.Work.FTS.IPGen.IP4Lin =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -106,23 +123,7 @@ theorem ip4_cs_HQo {c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ} (h₁ : 0 ≤ c�
 
 /-! ## The `IPLinHQo` package -/
 
-/-- **The linearity/Cauchy–Schwarz/congruence package for the coercive `IP4` on the open
-class `HQo α 4`** (design §4, consumed by `weakDetermines'_of`). -/
-theorem ip4_IPLinHQo {c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ} (h₁ : 0 ≤ c₁) (h₂ : 0 ≤ c₂)
-    (h₁' : 0 ≤ c₁') (h₂' : 0 ≤ c₂') (h₁'' : 0 ≤ c₁'') (h₂'' : 0 ≤ c₂'') :
-    ∃ α₂ Ct : ℝ, 0 < α₂ ∧ 0 < Ct ∧
-      IPLinHQo (Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'') α₂ Ct := by
-  obtain ⟨Ct, α₂cs, hCt, hα₂cs, hcs⟩ := ip4_cs_HQo h₁ h₂ h₁' h₂' h₁'' h₂''
-  obtain ⟨α₂, hα₂, hadd⟩ := ip4_add_HQo (c₁ := c₁) (c₂ := c₂) (c₁' := c₁') (c₂' := c₂')
-    (c₁'' := c₁'') (c₂'' := c₂'')
-  refine ⟨min α₂cs α₂, Ct, lt_min hα₂cs hα₂, hCt, ?_⟩
-  intro α hα f₁ f₂ g hf₁ hf₂ hg
-  have hαcs : α ≤ α₂cs := le_trans hα.2 (min_le_left _ _)
-  have hαα₂ : α ≤ α₂ := le_trans hα.2 (min_le_right _ _)
-  exact ⟨hadd α ⟨hα.1, hαα₂⟩ f₁ f₂ g hf₁ hf₂ hg,
-    fun c => ip4_smul c₁ c₂ c₁' c₂' c₁'' c₂'' c α f₁ g,
-    hcs α ⟨hα.1, hαcs⟩ f₁ g hf₁ hg,
-    fun f' h => ip4_congr_Qd (c₁ := c₁) (c₂ := c₂) (c₁' := c₁') (c₂' := c₂')
-      (c₁'' := c₁'') (c₂'' := c₂'') hα.1 h⟩
 
 end Work.FTS.IPGen
+end
+end

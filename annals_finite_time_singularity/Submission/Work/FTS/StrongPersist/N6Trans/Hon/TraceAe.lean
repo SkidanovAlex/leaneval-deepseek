@@ -1,32 +1,14 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `N6Trans/Hon/TraceAe`: the a.e. boundary traces from the honest bundle
-
-The honest transport clauses replace `BdryTraces α 4 g` by `SmoothOpen g`, `HkMem α 4 g`,
-`HkMem α 5 g` (and `DecayAll 4 g`).  This file proves that those hypotheses force the
-*radial* traces `z (Thard g k z θ · w z)² → 0` at `0⁺` and `+∞` — for almost every angle `θ`,
-which is all any consumer (an integral over `θ`) needs.
-
-The route: `HkMem α K g` gives the product-integrability of the `ℋ^K`-integrand
-(`Hon/HkProdOpen.lean`), hence, for a.e. `θ`, the `z`-integrability of the `θ`-slice of
-`HkIntegrand α K g`.  Every order-`4`/order-`5` slot of `g` weighted by `w²` is pointwise
-dominated by `HkIntegrand` (`w_sq_le_wdivsin_sq`, `sq_le_HkIntegrand_z`,
-`sq_le_HkIntegrand_mixed`, `H_le_Wt`), so for a.e. `θ` both `∫ w² (Thard g k z θ)² dz` and
-`∫ w² (D_z(Thard g k) z θ)² dz` are finite on `(0,1)` and on `(1,∞)`.  The one-dimensional
-`H¹`-lemma `Hon/TraceBase.trace_of_weights` then yields the two traces.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.TraceDefs
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.TraceBase
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
 import Submission.Work.FTS.TransportS.T3BadAux.slot_prod_le
-import Submission.Work.Spaces.H_le_Wt
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,33 +1,12 @@
-/-
-# `K5c/FamBrick` — the trace-class family interpolation from the trace brick
-
-This module assembles the workspace's *proved* single-function interpolation brick
-`Work.FTS.EllSol.PkgK5.TraceEngine.traceBrick` into the **family** bound consumed by the
-`α D_z∂_θ`-interpolation (`Work.FTS.EllSol.PkgK5.WallK5`):
-
-  `α² ∑_{r ≤ k} ∫_z mixIntS (D_z^r V) z
-     ≤ C (α⁴ HkSq α k (D_z²V) + HkSq α k (∂_θ²V) + α² HkSq α k (D_zV))`
-
-for data `V` smooth on the open quadrant, vanishing at the two boundary lines, with vanishing
-angular traces of `D_z^j V` up to order `k+1`, and with the four memberships
-`HkMem α k (D_zV)`, `HkMem α k (D_z²V)`, `HkMem α k (∂_θ²V)` and `HkMem α k (D_z∂_θV)`.
-
-The fourth membership is exactly the `(k+1, 1)`-slot which the workspace notes
-(`PkgK5/TraceEngine/NOTES_STATE.md`) identify as the missing input for the `r = k` summand: it
-supplies, through `slotAux_slotZ_prod` applied to `∂_θV`, the product integrability of the
-`X`-slot at `r = k`.  Every other ingredient of the assembly (`traceBrick`, `slotBounds`,
-`slotAux_slotZ_prod`) is a `sorry`-free theorem of `PkgK5/TraceEngine`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.EllSol.PkgK5.TraceEngine.traceBrick
-import Submission.Work.FTS.EllSol.PkgK5.TraceEngine.slotBounds
-import Submission.Work.FTS.EllSol.PkgK5.WallDefs
-import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceAux.pth_DzIter_eqOn_of_isOpen
 import Submission.Work.FTS.ClassC.VopGen.truncAux
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS_RegExport.RXB.l12dens_weighted_bound
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2W.PsiSlices.shiftedSourcePoleBound
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.H2.STSigma
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

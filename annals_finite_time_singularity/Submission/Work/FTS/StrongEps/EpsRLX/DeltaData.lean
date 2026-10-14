@@ -1,27 +1,110 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsRLX.Defs
-import Submission.Work.FTS.StrongEps.EpsRLX.JepsSubApply
-import Submission.Work.FTS.StrongEps.EpsRLX.ProfileFacts
-import Submission.Work.FTS.StrongEps.EpsRLX.DeltaSlotEpsSq
-import Submission.Work.FTS.StrongEps.EpsSqTools.HkSq_JepsPz_le
-import Submission.Work.FTS.StrongEps.EpsSq_Jeps_le
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsMemOfClassCJeps
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSq_le_HkSq_ClassC
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSq_Pz_sub_le
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSq_mixed_Jeps_le
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSqIter_mixed_Jeps_le6
-import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
-import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
-import Submission.Work.FTS.StrongEps.EComparison.Reduction
+import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS.GalBasis.exists_cc_of_honClass
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.EpsE4Thr.regQo_const_mul
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsMemOfClassCJeps
+import Submission.Work.FTS.StrongEps.EpsRLX.DeltaSlotEpsSq
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
+import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.H6Aux.RStep
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkDzdIterSharp
+import Submission.Work.FTS.StrongPersist.H6Rows.H6Pair_of_rows_C6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumZ0
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SP6.EH6
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
+import Submission.Work.FTS.StrongPersist.StarPkg6Fields
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
+import Submission.Work.FTS_LocDatum3a.Assembly
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_theta_sup_uniform
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.LevelPkgInstO =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.TransO
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.StrongEps.EpsE4Thr (CoerAdmO)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## The two defects as finite-order classes -/
+
+/-- `E1 α f` is `Q0Sm n` for `CoerAdmO α f` and `n ≤ 3`. -/
+theorem Q0Sm_E1_O (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) {f : Fn}
+    (hf : CoerAdmO α f) (n : ℕ) (hn : n ≤ 3) :
+    Work.FTS.CoercivityFix.Transfer.Q0Sm n (Work.FTS.CoercivityFix.Transfer.E1 α f) :=
+  (ContDiffOn_E1_O α hα hα1 hf).of_le (m := (((n : ℕ)) : WithTop ℕ∞))
+    (by exact_mod_cast hn)
+
+/-- `E2 α f` is `Q0Sm n` for `CoerAdmO α f` and `n ≤ 3`. -/
+theorem Q0Sm_E2_O (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) {f : Fn}
+    (hf : CoerAdmO α f) (n : ℕ) (hn : n ≤ 3) :
+    Work.FTS.CoercivityFix.Transfer.Q0Sm n (Work.FTS.CoercivityFix.Transfer.E2 α f) :=
+  (ContDiffOn_E2_O α hα hα1 hf).of_le (m := (((n : ℕ)) : WithTop ℕ∞))
+    (by exact_mod_cast hn)
+
+/-! ## The two `AddOKSm` triples -/
+
+/-- **The `AddOKSm` half of `LevelPkgO`**, from the regularity of the two defects. -/
+theorem AddOKSm_of_O (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (n : ℕ) (hn : n ≤ 3) {f : Fn}
+    (hf : CoerAdmO α f) :
+    Work.FTS.CoercivityFix.Transfer.AddOKSm α n
+        (Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dth f))
+        (Work.FTS.CoercivityFix.Transfer.E1 α f) (Work.Spaces.Dth f)
+      ∧ Work.FTS.CoercivityFix.Transfer.AddOKSm α n
+          (Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dz f))
+          (Work.FTS.CoercivityFix.Transfer.E2 α f) (Work.Spaces.Dz f) := by
+  obtain ⟨hsLth, hsLdz, hsdth, hsdz⟩ := HkMem_slots_O α hα hn hf
+  obtain ⟨hqLth, hqLdz⟩ := Q0Sm_Lhat_slots_O hf.1.1 n
+  obtain ⟨hqdth, hqdz⟩ := Q0Sm_Dth_Dz_O hf.1.1 n
+  exact
+    ⟨⟨hqLth, Q0Sm_E1_O α hα hα1 hf n hn, hqdth,
+        hsLth, HkMem_E1_O α hα hα1 hf n hn, hsdth⟩,
+      ⟨hqLdz, Q0Sm_E2_O α hα hα1 hf n hn, hqdz,
+        hsLdz, HkMem_E2_O α hα hα1 hf n hn, hsdz⟩⟩
+
+/-- **`LevelPkgO` of a concrete level**, from the algebraic and Cauchy–Schwarz packages. -/
+theorem levelPkg_of_O (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (n : ℕ) (hn : n ≤ 3)
+    {IP : Fn → Fn → ℝ} {CC : ℝ} (hcomm : Work.FTS.CoercivityFix.Transfer.CommSm α n IP)
+    (hCS : Work.FTS.CoercivityFix.Transfer.CSQ α n IP CC) :
+    LevelPkgO α n IP CC := by
+  refine ⟨hcomm, fun f hf => ?_⟩
+  obtain ⟨hAdd1, hAdd2⟩ := AddOKSm_of_O α hα hα1 n hn hf
+  obtain ⟨hLdth, hLdz, hdth, hdz⟩ := HkMem_slots_O α hα hn hf
+  obtain ⟨hqdth, hqdz⟩ := Q0Sm_Dth_Dz_O hf.1.1 n
+  exact ⟨hAdd1, hAdd2,
+    hCS (Work.FTS.CoercivityFix.Transfer.E1 α f) (Work.Spaces.Dth f)
+      (Q0Sm_E1_O α hα hα1 hf n hn) hqdth (HkMem_E1_O α hα hα1 hf n hn) hdth,
+    hCS (Work.FTS.CoercivityFix.Transfer.E2 α f) (Work.Spaces.Dz f)
+      (Q0Sm_E2_O α hα hα1 hf n hn) hqdz (HkMem_E2_O α hα hα1 hf n hn) hdz⟩
+
+end Work.FTS.StrongEps.EpsE4Thr.TransO
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsRLX.DeltaData =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -327,3 +410,4 @@ theorem DeltaData {α C₀ B ε : ℝ} {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS
       (Work.FTS.StrongEps.EpsSq_nonneg α hd) (by norm_num))
 
 end Work.FTS.StrongEps.EpsRLX
+end

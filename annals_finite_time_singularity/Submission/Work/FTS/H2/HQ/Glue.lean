@@ -1,52 +1,169 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The interior toolbox for the product rule `HProdQ`
-
-Elgindi's `HProductRule` (tex 1068) is proved in `Submission/Work/Spaces/HProductRule.lean`
-for the class `Spaces.SmoothNbhd` (analyticity on a neighbourhood of the closed quadrant),
-which is *false* for `F_*`, for the stream functions and for the perturbation of the
-bootstrap.  The interior replacement is `Work.FTS.Nonlin.RegQ α 4 f = SmoothQuad f ∧
-HkMem α 4 f ∧ BdryTraces α 4 f`.
-
-This file collects the `SmoothQuad`-level glue that the `RegQ` product rule needs and that
-is *independent* of the one-dimensional Hardy inequalities:
-
-* the Leibniz rules `DzIter_mul_quad`, `DthIter_mul_quad`, `mixed_mul_eq_quad` on the open
-  quadrant (from the derivation-like structures of `Work.Coercivity.CommutZQuadQDerivLike`
-  and the one-dimensional rules of `Work.FTS.LocData`);
-* the weight algebra `Wt_sq_quad` and the continuity of the weights on the open quadrant;
-* the almost-everywhere strong measurability of the squared weighted mixed slots
-  (`aesm_mixed_Wt_sq_prod_quad`, `aesm_slice_mixed_Wt_sq`) and of the squared light-weighted
-  pure `D_z`-slots (`aesm_light_prod`, `aesm_light_slice`);
-* the integrability of the angular slice of a weighted mixed slot
-  (`integrableOn_slice_mixed_Wt_sq`), the product-measure integrability with its value
-  (`bt_prod_integrable_quad`), and `L2Mem` for the pure `D_z`-slots (`L2Mem_light_quad`);
-* the structure `PwBd` recording the pointwise `L^∞`-bound of order `≤ 2` on the open
-  quadrant (Corollary `SecondDerivativesBounded`), together with its derivation from the
-  `supAbsO`-form of the interior Corollary (`pwBd_of_supAbsO`).
-
-Everything here holds in the open quadrant only: `RegQ` does not constrain the values on
-`θ = 0`, `θ = π/2`, and the weights `w` and `wTheta` vanish at the boundary lines (in the
-case of `w` at `z = 0`), so every consumer works almost everywhere.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.Order.Interval.Basic
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.Vocab
-import Submission.Work.FTS.H2.RegQDefs
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.FTS.LocData.DzIter_mul_smoothQuad
-import Submission.Work.FTS.LocData.DthIter_mul_smoothQuad
-import Submission.Work.Coercivity.CommutZQuadQDerivLike
-import Submission.Work.Spaces.mixed_mul_eq
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
-import Submission.Work.Spaces.integrable_prod_of_iterated
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+-- ===== merged: Submission.Work.FTS.EllipticEst.RegQ =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology Interval
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst
+
+open Work.FTS.Nonlin
+
+set_option autoImplicit false
+set_option linter.unusedSimpArgs false
+
+/-! ## The data class in the interior vocabulary -/
+
+/-- **The data class of the elliptic chapter, in the lead's interior vocabulary.**  This is
+`EllHyp` with `Work.FTS.LocData.SmoothQuad` (genuine `C^∞` on the open quadrant) and
+`Work.FTS.Nonlin.RegQ` (which bundles `HkMem` and the boundary traces) in place of the
+analyticity requirement `Work.Spaces.SmoothNbhd`. -/
+structure EllHypQ (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) : Prop where
+  /-- genuine `C^∞` on the open quadrant -/
+  quadF : Work.FTS.LocData.SmoothQuad F
+  quadPsi : Work.FTS.LocData.SmoothQuad Ψ
+  /-- the solution of (PolarBSL) with source `F`, Dirichlet data and decay -/
+  sol : Work.Elliptic.IsBslSol α F Ψ
+  /-- the interior class of the source -/
+  regF : RegQ α k F
+  /-- the interior class of the solution and of the quantities the estimates bound -/
+  regPsi : RegQ α k Ψ
+  regDth : RegQ α k (Work.Spaces.pth Ψ)
+  regDth2 : RegQ α k (Work.Spaces.pthIter 2 Ψ)
+  regZ2 : RegQ α k (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+  regDivCos : RegQ α k (fun z θ => Ψ z θ / Real.cos θ)
+  /-- honesty of the unweighted `L²`-integrals of the `L²`-level estimate -/
+  l2Psi : Work.Spaces.L2Mem Ψ
+  l2Dth : Work.Spaces.L2Mem (Work.Spaces.pth Ψ)
+  l2Dth2 : Work.Spaces.L2Mem (Work.Spaces.pthIter 2 Ψ)
+  l2Z2 : Work.Spaces.L2Mem (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+  l2DivCos : Work.Spaces.L2Mem (fun z θ => Ψ z θ / Real.cos θ)
+  l2DthDivCos : Work.Spaces.L2Mem (Work.Spaces.pth (fun z θ => Ψ z θ / Real.cos θ))
+  l2F : Work.Spaces.L2Mem F
+
+
+
+
+/-! ## The restated targets (interior class) and the `EllPkgG` assembly -/
+
+/-- The straightened stream function `Φ̃ = Φ - Θ(α,F)` of `Work.Construction.PhiTil` is the
+`EllResid` of this chapter. -/
+theorem PhiTil_eq_EllResid (α : ℝ) (F Φ : ℝ → ℝ → ℝ) :
+    Work.Construction.PhiTil α F Φ = Work.Elliptic.EllResid α F Φ := by
+  funext z θ
+  simp only [Work.Construction.PhiTil, Work.Construction.Theta, Work.Elliptic.EllResid,
+    Work.Construction.s2, Work.Elliptic.L12_eq_FM, Work.FM.L12]
+  rfl
+
+
+theorem Uop_PhiTil_eq (α : ℝ) (g Φg : ℝ → ℝ → ℝ) :
+    Work.Construction.Uop α (Work.Construction.PhiTil α g Φg)
+      = Uop α (Work.Elliptic.EllResid α g Φg) := by
+  rw [PhiTil_eq_EllResid]
+  rfl
+
+theorem Vop_PhiTil_eq (α : ℝ) (g Φg : ℝ → ℝ → ℝ) :
+    Work.Construction.Vop (Work.Construction.PhiTil α g Φg)
+      = Vop α (Work.Elliptic.EllResid α g Φg) := by
+  rw [PhiTil_eq_EllResid]
+  funext z θ
+  rfl
+
+theorem Uop_eq (α : ℝ) (Φ : ℝ → ℝ → ℝ) : Work.Construction.Uop α Φ = Uop α Φ := rfl
+theorem Vop_eq (α : ℝ) (Φ : ℝ → ℝ → ℝ) : Work.Construction.Vop Φ = Vop α Φ := by
+  funext z θ; rfl
+
+
+/-! ## The consumable package: `EllPkgG` with the trace-free interior class
+
+The frozen `EllPkgG` asks for `RegQ` of the three operator outputs; as `NOTES.md` §A4 records,
+the `BdryTraces` conjunct of `RegQ` is *not* implied for those outputs (they do not vanish at the
+angular endpoints in general), so the provable bounds deliver `SmoothQuad ∧ HkMem ∧ bound`
+instead.  `EllPkgQ` is the corresponding package — everything `EllPkgG` has, with `RegQ`
+replaced by the pair `(SmoothQuad, HkMem)` on the three operator fields. -/
+structure EllPkgQ (α Ce : ℝ) (g Φg : ℝ → ℝ → ℝ) : Prop where
+  sol : Work.Elliptic.IsBslSol α g Φg
+  smooth : Work.FTS.LocData.SmoothQuad Φg
+  R : Work.FTS.LocData.SmoothQuad (Work.Construction.Rop α (Work.Construction.PhiTil α g Φg)) ∧
+      Work.Spaces.HkMem α 4 (Work.Construction.Rop α (Work.Construction.PhiTil α g Φg)) ∧
+      Xn α (Work.Construction.Rop α (Work.Construction.PhiTil α g Φg)) ≤ Ce * Xn α g
+  U : Work.FTS.LocData.SmoothQuad (fun z θ =>
+        Work.Construction.Uop α (Work.Construction.PhiTil α g Φg) z θ
+          / Work.Construction.s2 θ) ∧
+      Work.Spaces.HkMem α 4 (fun z θ =>
+        Work.Construction.Uop α (Work.Construction.PhiTil α g Φg) z θ
+          / Work.Construction.s2 θ) ∧
+      Xn α (fun z θ => Work.Construction.Uop α (Work.Construction.PhiTil α g Φg) z θ
+          / Work.Construction.s2 θ) ≤ Ce * Xn α g
+  V : Work.FTS.LocData.SmoothQuad (Work.Construction.Vop
+        (Work.Construction.PhiTil α g Φg)) ∧
+      Work.Spaces.HkMem α 4 (Work.Construction.Vop (Work.Construction.PhiTil α g Φg)) ∧
+      Xn α (Work.Construction.Vop (Work.Construction.PhiTil α g Φg)) ≤ Ce * Xn α g
+  vanishU : Work.Spaces.VanishTheta (Work.Construction.Uop α (Work.Construction.PhiTil α g Φg))
+
+
+
+/-! ## The trace-free data class `EllHypT`
+
+`BdryTraces` (inside `RegQ`) demands, in its `(a,b) = (0,0)` slot, that the function itself
+vanish at both angular endpoints — true for the perturbation `g` (`VanishTheta`) but *not* for the
+derived quantities `∂_θΨ`, `∂_θ²Ψ`, `Ψ/cos θ` of a solution of (PolarBSL), whose boundary values
+are free.  `EllHypT` keeps, for those derived quantities, only the honesty of the weighted
+integrals (`HkMem`/`L2Mem`), and keeps the boundary decay in `z` in the form of this chapter's
+`ZDecay` (which is what the integrations by parts in `z` use).  It is the natural trace-free
+analogue of `EllHyp` with `SmoothQuad` in place of the analyticity requirement `SmoothNbhd`. -/
+structure EllHypT (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) : Prop where
+  quadF : Work.FTS.LocData.SmoothQuad F
+  quadPsi : Work.FTS.LocData.SmoothQuad Ψ
+  sol : Work.Elliptic.IsBslSol α F Ψ
+  regF : RegQ α k F
+  memPsi : Work.Spaces.HkMem α k Ψ
+  memDth : Work.Spaces.HkMem α k (Work.Spaces.pth Ψ)
+  memDth2 : Work.Spaces.HkMem α k (Work.Spaces.pthIter 2 Ψ)
+  memZ2 : Work.Spaces.HkMem α k (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+  memDivCos : Work.Spaces.HkMem α k (fun z θ => Ψ z θ / Real.cos θ)
+  l2Psi : Work.Spaces.L2Mem Ψ
+  l2Dth : Work.Spaces.L2Mem (Work.Spaces.pth Ψ)
+  l2Dth2 : Work.Spaces.L2Mem (Work.Spaces.pthIter 2 Ψ)
+  l2Z2 : Work.Spaces.L2Mem (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+  l2DivCos : Work.Spaces.L2Mem (fun z θ => Ψ z θ / Real.cos θ)
+  l2DthDivCos : Work.Spaces.L2Mem (Work.Spaces.pth (fun z θ => Ψ z θ / Real.cos θ))
+  l2F : Work.Spaces.L2Mem F
+  zdecay : ZDecay Ψ
+
+
+
+end Work.FTS.EllipticEst
+end
+end
+-- ===== merged: Submission.Work.FTS.H2.HQ.Glue =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -223,17 +340,6 @@ theorem DzIter_mul_quad (j : ℕ) (f g : ℝ → ℝ → ℝ) (hf : SmoothQuad f
   intro z hz θ hθ
   exact Work.FTS.LocData.DzIter_mul_smoothQuad j f g hz (hf.curry_z hθ) (hg.curry_z hθ)
 
-/-- **The Leibniz rule for `D_θ^i` in the interior class.** -/
-theorem DthIter_mul_quad (i : ℕ) (f g : ℝ → ℝ → ℝ) (hf : SmoothQuad f) (hg : SmoothQuad g) :
-    ∀ z ∈ Iz, ∀ θ ∈ Set.Ioo 0 (π / 2),
-      DthIter i (fun z θ => f z θ * g z θ) z θ =
-        ∑ a ∈ Finset.range (i + 1),
-          (i.choose a : ℝ) * (DthIter a f z θ * DthIter (i - a) g z θ) := by
-  intro z hz θ hθ
-  have hz1 : z ∈ Set.Ioi (-1) := by
-    rw [Iz, Set.mem_Ici] at hz
-    exact Set.mem_Ioi.mpr (by linarith)
-  exact Work.FTS.LocData.DthIter_mul_smoothQuad i f g hθ (hf.curry_θ hz1) (hg.curry_θ hz1)
 
 /-- **The Leibniz rule for `D_z^j D_θ^i` in the interior class `SmoothQuad`** (the
 two-operator rule of `Work.Spaces.DerivLike.twoOp_iterate_mul`, on the open quadrant).
@@ -305,21 +411,6 @@ theorem Wt_sq_quad (α z θ : ℝ) (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
     ring
   rw [Wt, wTheta, mul_pow, h1]
 
-/-- `θ ↦ Wt α z θ` is continuous on the open interval `(0,π/2)`. -/
-theorem continuousOn_Wt_slice_quad (α z : ℝ) :
-    ContinuousOn (fun θ => Wt α z θ) (Set.Ioo 0 (π / 2)) := by
-  have hsin : ContinuousOn (fun θ : ℝ => Real.sin (2 * θ)) (Set.Ioo 0 (π / 2)) :=
-    (Real.continuous_sin.comp (continuous_const.mul continuous_id)).continuousOn
-  have hne : ∀ θ ∈ Set.Ioo (0 : ℝ) (π / 2), Real.sin (2 * θ) ≠ 0 := fun θ hθ =>
-    ne_of_gt (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1])
-      (by linarith [hθ.2, Real.pi_pos]))
-  have hrp : ContinuousOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(gam α / 2)))
-      (Set.Ioo 0 (π / 2)) := hsin.rpow_const (fun θ hθ => Or.inl (hne θ hθ))
-  have hmul := hrp.const_mul (w z)
-  have heq : (fun θ : ℝ => Wt α z θ)
-      = fun θ : ℝ => w z * (Real.sin (2 * θ)) ^ (-(gam α / 2)) := rfl
-  rw [heq]
-  exact hmul
 
 /-- The product weight is continuous on the open quadrant. -/
 theorem continuousOn_Wt_quad (α : ℝ) :
@@ -714,3 +805,5 @@ theorem aesm_sq_prod_quad (α : ℝ) {A B : ℝ → ℝ → ℝ} (hA : SmoothQua
 
 end HQ
 end Work.FTS.H2
+end
+end

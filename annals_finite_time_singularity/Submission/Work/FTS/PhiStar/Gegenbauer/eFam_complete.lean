@@ -1,43 +1,13 @@
-/-
-# `Work.FTS.PhiStar.Gegenbauer.eFam_complete` — completeness of the Dirichlet eigenbasis
-
-The Dirichlet eigenfunctions of `Work.Elliptic.Lzero` on `(0, π/2)` are
-
-  `eFam m θ = cos θ · C^{(3/2)}_{2m+1}(sin θ)`   (`= cos θ · gC (2m+1) (sin θ)`),
-
-with eigenvalues `lam m = 2m(2m+5)` (`eFam_Lzero`); they are mutually orthogonal with respect
-to the self-adjoint weight `cos θ dθ` (`eFam_orthogonal`).  This file proves that they are also
-*complete*: a function `g` which is orthogonal to every `eFam m` (and which is square-integrable
-against `cos θ dθ`) vanishes a.e. on `Iθ = [0, π/2]`.
-
-**Route.**  Write `ψ := g · cos`.  Since `e_m = cos · gC(2m+1)(sin)`, the hypothesis is exactly
-`∫_{Iθ} ψ · e_m = 0`.  The function `ψ` is a.e. strongly measurable and in `L²(Iθ)` (because
-`ψ² = g²cos² ≤ g²cos` on `Iθ`).  Now
-
-* the span of `{e_m : m ≤ k}` equals the span of `{gen j = cos · sin^{2j+1} : j ≤ k}`
-  (triangular change of basis, `gC_span_eq`: `Y k` lies in the span of `B 0, …, B k`), so all
-  the moments `∫_{Iθ} ψ · gen j` vanish;
-* the recurrence `sin (2(x+1)θ) = 2 cos(2θ) sin(2xθ) − sin(2(x−1)θ)` shows (by induction on the
-  level) that each `sin (2(m+1)θ)` lies in the span of `{gen j : j ≤ m}`, hence all the sine
-  moments of `ψ` vanish;
-* the (already proved) completeness of the Dirichlet sine system
-  `Work.FTS.EllipticEst.sin_system_complete` gives `ψ =ᵐ 0`, and since `cos θ ≠ 0` a.e. on `Iθ`
-  this yields `g =ᵐ 0`.
-
-Everything is phrased in terms of the "vanishing weighted integral" submodule `vanSub φ T` of
-functions `f` with `∫_{Iθ} φ · T f = 0`, which makes both triangularity steps a single
-`Submodule.span_le` application.
--/
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_ode
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_span_eq
-import Submission.Work.FTS.PhiStar.Gegenbauer.odd_powers_complete_fixed
-import Submission.Work.Spaces.Defs
 import Submission.Work.FTS.EllipticEst.sin2_parseval_aesm
+import Submission.Work.FTS.PhiStar.Gegenbauer.odd_powers_complete_fixed
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.LWP.BiotSavart.nearField_bound
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -72,7 +42,6 @@ def sinOp : (ℝ → ℝ) →ₗ[ℝ] (ℝ → ℝ) where
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
-lemma sinOp_apply (f : ℝ → ℝ) (θ : ℝ) : sinOp f θ = Real.cos θ * f (Real.sin θ) := rfl
 
 /-- The operator `f ↦ cos (2·) · f`. -/
 def cos2Op : (ℝ → ℝ) →ₗ[ℝ] (ℝ → ℝ) where

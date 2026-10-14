@@ -1,6 +1,6 @@
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongPersist.QangAe6
 import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.TransportS.t3SlotGuarded
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

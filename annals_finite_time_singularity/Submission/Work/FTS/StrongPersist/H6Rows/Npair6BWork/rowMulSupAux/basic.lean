@@ -2,22 +2,22 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.Cd6.mixedMul_cd6
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.Cd6.mixed_le_WlInf6_cd6
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.Cd6.dzIter_le_WlInf6_cd6
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.PmdbAux.SlotPriceAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.summand_le_easy
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.qDzLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.intSlotLeHkSq
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.summand_le_easy
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.PmdbAux.SlotPriceAux
+import Submission.Work.FTS.StrongPersist.L3Aux.bcoefRadBound
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.TransportS.Slots
 import Submission.Work.FTS.TransportS.T2Sup.GenSlot
-import Submission.Work.FTS.TransportS.HardDefs
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.ExcBoundQ
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -105,46 +105,6 @@ lemma mixedMul_ae' {A f : ℝ → ℝ → ℝ} {a b : ℕ}
   rw [Work.FTS.StrongPersist.H6Rows.N0pair6bWork.Cd6.mixedMul_cd6 hA hf b a (by omega) z θ
     hz hθ1 hθ2]
 
-/-- **The guard Leibniz summand.**  If the first `f`-slot carries an angular derivative
-(`1 ≤ a - j`) or the leaf weight is `η` or σ-free, then the summand is integrable and bounded
-by `C · KA · (1 + HkSq α 6 f)`: the `A`-slot is pointwise bounded by `2000 · KA`
-(`slotPrice_of_WlInf`) and the two `f`-slots are each dominated by `HkIntegrand α 6 f` under
-the leaf weight, so the AM–GM inequality closes. -/
-lemma guardSummand : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1,
-    ∀ (A f : ℝ → ℝ → ℝ) (KA : ℝ) (i j a b : ℕ) (ρ : ℝ → ℝ → ℝ),
-      Work.FTS.EllipticEst.SmoothOpen A → Work.Spaces.WlInfMem α 6 A →
-      Work.Spaces.WlInf α 6 A ≤ KA →
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 6 f →
-      a + b ≤ 6 → j ≤ a → i ≤ b → Work.FTS.TransportS.IsLeafW α a ρ →
-      (1 ≤ a - j ∨ ρ = Work.FTS.TransportS.leafEta
-        ∨ ρ = Work.FTS.TransportS.leafOne) →
-      Integrable (fun p : ℝ × ℝ => ρ p.1 p.2 * Work.Spaces.mixed i j A p.1 p.2
-          * Work.Spaces.mixed (b - i) (a - j) f p.1 p.2
-          * Work.Spaces.mixed b a f p.1 p.2) mu ∧
-      |∫ p, ρ p.1 p.2 * Work.Spaces.mixed i j A p.1 p.2
-          * Work.Spaces.mixed (b - i) (a - j) f p.1 p.2
-          * Work.Spaces.mixed b a f p.1 p.2 ∂mu|
-        ≤ C * KA * (1 + Work.Spaces.HkSq α 6 f) := by
-  obtain ⟨Ce, hCepos, heasy⟩ := Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.summand_le_easy
-  refine ⟨2000 * Ce + 1, by positivity, ?_⟩
-  intro α hα A f KA i j a b ρ hA hAm hAb hfsm hfm hab hja hib hleaf hgj
-  obtain ⟨hα0, hα1⟩ := hα
-  have hαmem : α ∈ Set.Ioc 0 1 := ⟨hα0, hα1⟩
-  have hprice : Work.FTS.StrongPersist.H6Rows.Npair6SupAux.PmdbAux.SlotPrice (2000 * KA) A :=
-    Work.FTS.StrongPersist.H6Rows.Npair6SupAux.PmdbAux.slotPrice_of_WlInf hα0 hα1
-      (hA.forall 6) hAm hAb
-  have hKA0 : 0 ≤ KA := le_trans (Work.Spaces.WlInf_nonneg α 6 A hAm) hAb
-  have hSq0 : 0 ≤ Work.Spaces.HkSq α 6 f := Work.Spaces.HkSq_nonneg α 6 f
-  obtain ⟨hint, hbd⟩ := heasy α hαmem (fun z θ => Work.Spaces.mixed i j A z θ) f (a - j) (b - i)
-    a b ρ (2000 * KA) (hA.mixed i j) (by positivity)
-    (fun z θ hz hθ hθ2 => hprice i j (by omega) z θ hz hθ hθ2)
-    hfsm hfm (by omega) hab hleaf hgj
-  refine ⟨hint, ?_⟩
-  refine hbd.trans ?_
-  have hkey : Ce * (2000 * KA) * Work.Spaces.HkSq α 6 f
-      ≤ (2000 * Ce + 1) * KA * (1 + Work.Spaces.HkSq α 6 f) := by
-    nlinarith [hCepos, hKA0, hSq0]
-  linarith [hkey]
 
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowMulSupAux

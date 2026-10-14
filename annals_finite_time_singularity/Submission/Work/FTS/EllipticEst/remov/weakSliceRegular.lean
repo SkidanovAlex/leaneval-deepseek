@@ -4,27 +4,23 @@ import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.sliceLimitLeftExists
-import Submission.Work.Elliptic.LzeroAdj_sinCos2
-import Submission.Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo
-import Submission.Work.FTS.EllipticEst.moment_relation
-import Submission.Work.FTS.EllipticEst.boxIntegrable_DzIter
-import Submission.Work.FTS.EllipticEst.integrable_prod_sq_restrict_open
-import Submission.Work.FTS.EllipticEst.abs_mul_sinCos2_le_weighted
-import Submission.Work.FTS.EllipticEst.aesm_uncurry_restrict_open
-import Submission.Work.FTS.EllipticEst.integrable_prod_ae
-import Submission.Work.EllipticEst.H2W.pthIter2_DzIter_comm
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.remov.wsSliceRight
-import Submission.Work.FTS.EllipticEst.remov.wsSliceLeft
-import Submission.Work.FTS.EllipticEst.remov.wsMomentChain
-import Submission.Work.FTS.EllipticEst.remov.wsPzBounds
 import Submission.Work.FTS.EllipticEst.remov.wsBoxIntegrable
 import Submission.Work.FTS.EllipticEst.remov.wsMomentId
+import Submission.Work.FTS.EllipticEst.remov.wsPzBounds
+import Submission.Work.FTS.EllipticEst.remov.wsSliceRight
+import Submission.Work.FTS.H2.Transport1Aux
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.OpenPkg.ProdOpen.Tools1d
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

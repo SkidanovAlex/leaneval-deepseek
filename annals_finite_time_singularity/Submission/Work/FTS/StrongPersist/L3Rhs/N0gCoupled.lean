@@ -1,53 +1,21 @@
-/-
-# `Work.FTS.StrongPersist.L3Rhs.N0gCoupled` — the coupled half of the block `N0gSum`
-
-This is the `(L₁₂(f) · Bf α f)`-half of the `ℋ³`-estimate for the `g`-dependent block
-`N0gSum α f = Mf f · Bf α f - Wf α f` of the level-three right-hand side
-(`Work.FTS.StrongPersist.L3Rhs.N0gDecomp`), with
-
-  `Mf f = (z,θ) ↦ L₁₂(f)(z)`,   `Bf α f = Vf α f + Vfs α`,
-  `Vf α f = (1/α) f + (3/(2α)) sin 2θ ∂_θ f - c₂(θ) D_z f`,
-  `Vfs α = (3/(2α)) sin 2θ ∂_θ F_* - c₂(θ) D_z F_*`.
-
-**Route.**  Write `Bf = Vf + Vfs` and estimate the two products separately.
-
-* For the `Vf`-part: by `CoupledVf.P1_integrand_le` the algebraic multiplier estimate
-  `zmul_pt` turns the product into `HkIntegrand α 3 (Vf α f)`, whose pointwise bound by
-  `C (1/α)² HkIntegrand α 6 f` is `CoupledVf.Vf_integrand_le`; the multiplier estimate needs a
-  uniform-in-`z` bound `K = C · |f|_{ℋ⁴}` on the `Zop`-jets of `L₁₂(f)`, which is
-  `L12fJetUniform` (a consequence of the radial Sobolev inequality with a fixed window,
-  `sob_z_mean`, and of the radial slot bound `L12f_slot_le`).
-* For the `Vfs`-part: `Vfs α` is *separated* (`VfsSep`,
-  `Vfs α z θ = VfsA1 α θ · VfsRad z + VfsA2 α θ · VfsRadZ z`), so the separated majorant
-  estimate `HkIntegrand_sep_le` applies (`CoupledVfs.P2_integrand_le`), and the two integrals
-  are the angular mass bound `VfsAngMass` and the radial slot bound `VfsRadSlotBound`
-  (`B = VfsRad`, `VfsRadZ`, whose `Zop`-jets are bounded by `zslot_supBound`).
-
-Both halves are integrated against the same majorant, which gives the `ℋ³`-membership
-(`HkMem_of_majorant`) and the bound.  The final constant carries `α^{-1}`: the `1/α` factors
-of `Vf` are absorbed into the free exponent `Cpow = 1`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]` (no unproved goal, no new axiom).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.StrongPersist.L3Rhs.N0gDecomp
-import Submission.Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.EpsE4Thr.JepsJoint.Jeps_fam_continuous
 import Submission.Work.FTS.StrongPersist.L3Rhs.CoupledVf
 import Submission.Work.FTS.StrongPersist.L3Rhs.CoupledVfs
-import Submission.Work.FTS.StrongPersist.L3Rhs.L12fJetUniform
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsSep
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.N0gAuxDefs
 import Submission.Work.FTS.StrongPersist.L3Rhs.VfsAngMass
-import Submission.Work.FTS.StrongPersist.L3Rhs.VfsRadSlotBound
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.StrongLWP.Basic
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.EllipticEst.Cores.DiagEstEllT.VMem
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsSep
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.leibnizRem6
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,48 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Cores/levelTwo_fts` — the level-`2` elliptic estimate from the level-`0` estimate
-
-Target (statement fixed, unchanged):
-
-```
-Work.FTS.EllipticEst.Cores.levelTwo_fts :
-  (∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C) →
-    ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif 2 C
-```
-
-i.e. Elgindi's Proposition `prop:H2` (Annals 194 (3) 2021, tex 835–980) conditional on the
-level-`0` estimate `prop:L2` (packaged here as `TT.EllWeak0`), in the weak hypothesis class
-`TT.EllWeakPos` of `TT/WeakDefs.lean`.
-
-## The reduction carried out here
-
-`HkSq_step_le` applied twice (at `k = 2` and at `k = 1`, to `f` and to `D_z f`) splits the
-level-`2` squared norm of `A := z²∂_zzΨ` and of `B := ∂_θθΨ` into
-
-* the level-`0` slots of `A, B, D_zA, D_zB, D_z²A, D_z²B`, and
-* the six angular slots `Tk α 1 A`, `Tk α 1 (D_zA)`, `Tk α 2 A`, `Tk α 1 B`, `Tk α 1 (D_zB)`,
-  `Tk α 2 B`.
-
-The level-`0` slots of `(A, B)` and of `(D_zA, D_zB)` are bounded by `C₀·|F|_{ℋ²}` directly with
-`EllWeak0` (the second pair via the class shift `ShiftOfTwoLe`, a clean copy of the shift proved
-in `remov/EllWeakPos_DzIter_one_shift.lean`), the
-level-`0` slots of the *twice* shifted data by the sibling estimate `shiftedTwoL2`, and the six
-angular slots by the sibling estimate `topSlotsTwo`.  `levelTwo_of_pieces` below is that
-assembly, stated with the two siblings as explicit hypotheses so that it is independent of the
-order in which they land.
-
-## Shape of the two siblings
-
-* `ShiftedTwoL2Clean` (`Cores/ShiftedTwoL2Clean.lean`): the level-`0` estimate for the twice
-  radially shifted datum `(D_z²F, D_z²Ψ)`, i.e.
-  `α⁴|z²∂_zz(D_z²Ψ)|²_{ℋ⁰} + |∂_θθ(D_z²Ψ)|²_{ℋ⁰} ≤ C|D_z²F|²_{ℋ⁰}`;
-* `TopSlotsTwoClean` (`Cores/TopSlotsTwoClean.lean`): the six angular (`Tk`) slots at level `2`,
-  i.e. Elgindi's Steps 4–5 lifted to the square `(z,θ)`;
-* and the class shift `ShiftOfTwoLe` (`Cores/ShiftOfTwoLe.lean`), a self-contained copy of
-  `remov.EllWeakPos_DzIter_one_shift_of_two_le` (whose module cannot be built in the current
-  tree).
--/
 import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
@@ -50,17 +5,17 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.TT.HkMem_descend_open
-import Submission.Work.FTS.EllipticEst.remov.HkSq_step_le
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.remov.smoothOpen_slices_weak
-import Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.EllipticEst.Cores.ShiftOfTwoLe
-import Submission.Work.Spaces.HkSq_terms
 import Submission.Work.FTS.EllipticEst.Cores.ShiftedTwoL2Clean
 import Submission.Work.FTS.EllipticEst.Cores.TopSlotsTwoClean
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -413,11 +368,5 @@ theorem levelTwo_of_pieces
         nlinarith [Real.sqrt_nonneg (2 * (12 * C0 + 6 * C2 + C3)),
           Real.sqrt_nonneg (Work.Spaces.HkSq α 2 F)]
 
-/-- **The requested lemma**: Elgindi's `prop:H2` in the weak class, from the level-`0`
-estimate, via the two siblings. -/
-theorem levelTwo_fts : (∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C) →
-    ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllEstUnif 2 C := by
-  intro h0
-  exact levelTwo_of_pieces (ShiftedTwoL2Clean h0) (TopSlotsTwoClean h0) h0
 
 end Work.FTS.EllipticEst.Cores

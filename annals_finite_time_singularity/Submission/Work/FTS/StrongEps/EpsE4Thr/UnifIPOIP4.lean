@@ -1,58 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/UnifIPOIP4.lean` — the reduction of the open-class
-coercivity interface to **four** clauses
-
-`OpenClass.UnifIPO` is the open-class analogue of the frozen `Nonlin.UnifIP`: the interface the
-level-four barrier can be run against (`OpenBarrier.apriori_fourth_of_barrier_open`), because the
-projected mollified slice `Pz (J_ε (slice g τ))` *does* lie in `CoerAdmO` along the route
-(`OpenBarrier.coerAdmO_slice_JfamP`), while it does **not** lie in the frozen `CoerAdm`
-(`CoerAdmSlice.coerAdm_slice_JfamP` reduces the latter to the unavailable `SmoothQuad`).
-
-This module shows that for the concrete pairing of the paper,
-`IP4 c₁ c₂ c₁' c₂' c₁'' c₂''` (`CoercivityFix.Assembly.IP4`), all the algebraic clauses of
-`UnifIPO` are *already proved* on the open class:
-
-* `symm` — `Assembly.vc_symm` above the unconditional base
-  `CoercivityStep.Base.H1IP_comm`;
-* `add_fst` — the `Comm2o` induction `IPGen.Comm2o_three` (used here without an `α`-range: it only
-  needs `α > 0`), on `SmoothOpen` plus `HkMem α 4`;
-* `smul_fst` — `IPGen.ip4_smul`, with no regularity at all;
-* `congr_qd` — `IPGen.ip4_congr_Qd`, with no membership at all;
-* `nonneg` — the three-fold `Assembly.vc_nonneg` above `Coercivity.H1IP_nonneg` (no regularity:
-  each leaf of the recursion is a nonnegative-weighted square, and a non-integrable leaf
-  integrates to the junk value `0`);
-* `cs` — `IPGen.ip4_cs_HQo`, on `SmoothOpen` plus `HkMem α 4`.
-
-Consequently `UnifIPO (IP4 …)` follows from exactly **four** clauses on the open class
-`CoerAdmO`:
-
-  `lo`  `clo·|f|²_{ℋ⁴} ≤ IP4 α f f`,
-  `up`  `IP4 α f f ≤ Cup·|f|²_{ℋ⁴}`,
-  `coer`  `cc·|f|²_{ℋ⁴} ≤ IP4 α (𝓛_Γ^T f) f`   (the coercivity of the linearised operator),
-  `Dz_self`  `|IP4 α (D_z f) f| ≤ Cdz·|f|²_{ℋ⁴}`.
-
-These four are the *only* analytic work that a re-run of the coercivity chapter against the open
-class has to deliver; the shape of the corresponding frozen statements is `V_bounds.lo_four`,
-`up_four`, `dz_four` and `Coer1.coer1_LGammaT` (all stated on the frozen `RegQ`/`CoerAdm`).
-
-*Confluence note.*  This module deliberately uses the `IPGen`/`CoercivityFix` originals of the
-algebraic clauses rather than the `StrongEps.IP4_*` wrappers of `IP4_Jeps_comm.lean`: the latter
-imports `IP6_Jeps_comm`, which redeclares `Work.FTS.StrongEps.smoothOpen_Jeps` and therefore cannot
-be combined with the `JepsSmoothOpen` cone in which the level-four chain lives.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
-import Submission.Work.FTS.IPGen.Assembly
-import Submission.Work.FTS.CoercivityFix.Assembly.V_core
-import Submission.Work.Coercivity.H1IP_nonneg
 import Submission.Work.FTS.CoercivityStep.Base.H1IP_add_snd
-import Submission.Work.FTS.CoercivityFix.Transfer.H1IP_cs_of_mem
-import Submission.Work.FTS.StrongPersist.IP6_cs_coeffs
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.StrongEps.E4R3.N4C.T4HonestGen
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.H2.T1Q.SliceIntQ
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

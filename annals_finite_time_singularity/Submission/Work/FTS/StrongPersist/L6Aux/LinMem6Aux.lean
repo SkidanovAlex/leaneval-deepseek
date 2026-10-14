@@ -1,30 +1,22 @@
-/-
-# `Work.FTS.StrongPersist.L6Aux.LinMem6Aux` — helpers for the `ℋ⁶`-membership of `-𝓛_Γ^T f`
-
-Smoothness helpers for the open quadrant, the angular majorant `Mth6` of the nonlocal term
-(together with its integrability), the radial slot sum `SlotSum` of a `z`-only profile, and the
-finite-smoothness multiplier estimate `zmul_finite6` at level six.  Consumers:
-`L6Aux.LinMem6LocOp`, `L6Aux.LinMem6Acf` and `H6LinMem6`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.Defs
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.StrongPersist.L3_lin_mem
-import Submission.Work.FTS.StrongPersist.HkAddFin
-import Submission.Work.FTS.StrongPersist.N6_L12H
-import Submission.Work.FTS.StrongPersist.L3Aux.HkIntegrand_mixed_shift
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongEps.mixed_Jeps
 import Submission.Work.FTS.StrongPersist.L3Aux.ZmulBound
-import Submission.Work.FTS.StrongPersist.L3Aux.GamJetBounds
-import Submission.Work.FTS.LocData.HkIntegrand_neg
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.EllipticEst.Cores.AlphaRateEstEllT.PthIter2VftsAux
-import Submission.Work.Coercivity.dthIterAng_sq_integrable
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.StrongPersist.L3Aux.ZmulCore
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6_L12H
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.SmoothStripDefs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

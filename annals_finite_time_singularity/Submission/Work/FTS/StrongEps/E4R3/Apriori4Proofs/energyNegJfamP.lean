@@ -1,15 +1,15 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
-import Submission.Work.FTS.Apriori.Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.HnegCore
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IP_perturb
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.Defs
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logPlane_transfer_deriv
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.slot_transfer_deriv
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.IP4_transfer_deriv
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.jfamP_core_le
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.jfamP_defect_bound
+import Submission.Work.FTS.StrongEps.E4R3.n4Pair_classC
+import Submission.Work.FTS.StrongEps.E5G.epsRHSP_hkMem5_bnd_fam
+import Submission.Work.FTS.StrongEps.EpsE4Thr.HnegCore
+import Submission.Work.FTS.StrongEps.EpsE4Thr.L12JepsAux.Basic
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -19,27 +19,6 @@ set_option backward.isDefEq.respectTransparency.types false
 
 namespace Work.FTS.StrongEps.E4R3.Apriori4Proofs
 
-/-- **The level-four transfer estimate, unconditional.**  The mollification defect of `IP4` is
-`O(ε)`, with one derivative charged on the *second* argument: composing the plane estimate
-`TransferDeriv.logPlane_transfer_deriv` (`: PlaneTransferDeriv`) with the slot estimate
-`TransferDeriv.slot_transfer_deriv` and the recursion `TransferDeriv.IP4_transfer_deriv`. -/
-theorem level4Transfer {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    (c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ α ∈ Set.Ioc (0 : ℝ) 1, ∀ ε ∈ Set.Ioc (0 : ℝ) 1,
-      ∀ f h : Work.FTS.Galerkin.Fn, Work.FTS.VocabO.HQo α 4 f → Work.FTS.VocabO.HQo α 5 h →
-      |Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'' α
-          (Work.FTS.StrongEps.Jeps ρ ε f) h
-        - Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'' α f
-            (Work.FTS.StrongEps.Jeps ρ ε h)|
-        ≤ C * ε * (Work.Spaces.HkNorm α 4 f) * (Work.Spaces.HkNorm α 4 h
-            + Work.Spaces.HkNorm α 5 h) := by
-  obtain ⟨K, hK0, hslot⟩ :=
-    Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.slot_transfer_deriv hρ
-      Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logPlane_transfer_deriv
-  obtain ⟨C, hC0, hC⟩ :=
-    Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.IP4_transfer_deriv hρ
-      c₁ c₂ c₁' c₂' c₁'' c₂'' hK0 hslot
-  exact ⟨C, hC0, hC⟩
 
 theorem energyNegJfamP {ρ : ℝ × ℝ → ℝ} (c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ)
     (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)

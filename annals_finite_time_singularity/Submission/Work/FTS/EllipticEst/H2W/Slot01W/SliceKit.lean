@@ -1,16 +1,15 @@
 import Mathlib.Tactic.MinImports
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_F
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.TT.bslOp_DzIter_eq
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.H2W.weakSliceLimits
-import Submission.Work.FTS.EllipticEst.remov.SourceBound.sliceTendstoZeroOfMoment
-import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.remov.SourceBound.weakSliceSlots
-import Submission.Work.FTS.EllipticEst.H2W.Slot01W.SliceBounds
 import Submission.Work.FTS.EllipticEst.TT.Slot11.MomentChainAux
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.SmoothOpen_bslOp_of_smoothOpen
+import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.excMeanSide6
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.QDefs
 import Submission.Work.H2W.weakSliceContinuousKit
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

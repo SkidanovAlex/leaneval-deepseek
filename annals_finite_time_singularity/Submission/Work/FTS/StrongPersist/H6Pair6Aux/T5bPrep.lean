@@ -1,32 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `H6Pair6Aux/T5bPrep` — the analytic inputs of the row `T5bRow`
-
-This file collects the elementary lemmas that the assembly of `T5bRow` (the level-six transport
-row with the coefficient `c₂ₘ(θ)·L₁₂(f)(z)·D_z f`) needs:
-
-* the monotonicity of the `ℋ^k`-integrand in `k` (`HkIntegrand_mono`, `HkSq_mono`,
-  `HkMem_of_le`) — the row runs at level six but consumes the level-four slot bound and the
-  level-seven slot integrability;
-* the `σ`-gain of the leaf weights (`sigma_mul_leaf_le`) and its consequence
-  (`gm1_le_slotW`): the weight `w²·sin(2θ)^{-(γ-1)}` is dominated by the slot weight of *every*
-  slot.  This is what turns the `θ`-derivatives of `c₂ₘ` (which are divisible by `sin 2θ`) into
-  a gain on the weight, and it is the only reason the row can be closed;
-* the pointwise slot dominations `slotW α a·(D_z^{b'}D_θ^a f)² ≤ HkIntegrand α n f` at the
-  levels `n = 4, 6, 7`, and their `ρ`-weighted and `sin(2θ)^{-(γ-1)}`-weighted versions;
-* the shift identity `D_z^bD_θ^a(D_z f) = D_z^{b+1}D_θ^a f` on the open quadrant;
-* the integrability of the individual Leibniz summands of `D_z^bD_θ^a(c₂ₘ·L₁₂(f)·D_z f)`
-  against the leaf weight.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.Ip6DzAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup4
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotProd
 import Submission.Work.FTS.H2.STEasyId
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.Ip6DzAux
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -369,14 +347,6 @@ theorem slotW_dom {α : ℝ} (hα : 0 < α) {f : ℝ → ℝ → ℝ} {a b' n : 
     rw [mul_pow, WtSq α z θ hs] at h1
     simpa only [mul_comm] using h1
 
-/-- The `ρ`-weighted slot domination at level `n`, for a leaf weight of the slot `a`. -/
-theorem domLeaf {α : ℝ} (hα : 0 < α) {a : ℕ} {ρ : ℝ → ℝ → ℝ}
-    (hleaf : Work.FTS.TransportS.IsLeafW α a ρ) {f : ℝ → ℝ → ℝ} {b' n : ℕ} {z θ : ℝ}
-    (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2)) (h : a + b' ≤ n) :
-    ρ z θ * (Work.Spaces.mixed b' a f z θ) ^ 2 ≤ Work.Spaces.HkIntegrand α n f z θ := by
-  have hle : ρ z θ ≤ Work.FTS.TransportS.slotW α a z θ :=
-    (Work.FTS.TransportS.IsLeafW_le α hα hleaf).2 z θ hz hθ.1 hθ.2
-  exact (mul_le_mul_of_nonneg_right hle (sq_nonneg _)).trans (slotW_dom hα hθ h)
 
 /-- The `sin(2θ)^{-(γ-1)}`-weighted slot domination at level `n`. -/
 theorem domGm1 {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {f : ℝ → ℝ → ℝ} {a' b' n : ℕ} {z θ : ℝ}

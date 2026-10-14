@@ -1,54 +1,14 @@
-/-
-Work module for the Elgindi finite-time singularity project.
-
-# Uniform bounds for the angular `L₁₂`-density of the family `F_* + wₙ`
-
-The density of the model operator is the angular integral
-
-  `L12dens f x = ∫_θ K(θ) f(x,θ) / x`   (`θ` over `Iθ = [0,π/2]`),
-
-with `K(θ) = 3 sin θ cos²θ`.  Here `f = F_* + wₙ`, where `F_* = Construction.Fstar α` is the
-fixed profile and `wₙ` is a *family* of profiles that are `C^∞` on the open quadrant
-(`EllipticEst.SmoothOpen`) and uniformly bounded there together with their `D_z`-slots.
-
-The statement proved here is the two *uniform in `n`* bounds
-
-* `|L12dens (F_* + wₙ) x| ≤ M (1 + 1/x)`,
-* `|∂_x (L12dens (F_* + wₙ)) x| ≤ L (1 + 1/x²)`,
-
-with constants `M, L > 0` depending only on `α, C₁, C₂`.
-
-## Mathematics
-
-Every estimate is a bound for an angular integral against the weight `K`, and the two inputs
-are
-
-* the *pointwise* bounds on the open quadrant `Qd`: `|F_*| ≤ 20α/(1+z)` and
-  `|∂_zF_*| ≤ 20α/z` (from `FstarSlotPt.Fstar_abs_le`, `DzFstar_abs_le`), while
-  `|wₙ| ≤ C₁` and `|∂_zwₙ| ≤ C₂/z` (`|∂_zwₙ| = |D_z wₙ|/z`, hypothesis `hbd1`);
-* the *weight* inequalities `K θ ≤ 3 cos θ` and `∫_θ cos θ = 1` on `Iθ`, which turn the
-  pointwise bound `|g θ| ≤ B` on `(0,π/2)` into `|∫_θ K θ g θ| ≤ 3B` (the endpoints
-  `θ = 0, π/2` are harmless since `K` vanishes there, even though the hypotheses on `wₙ` are
-  only available on the *open* quadrant).
-
-The derivative is obtained from the quotient rule applied to `L12dens f x = A(x)/x`,
-`A(x) = ∫_θ K θ f(x,θ)`, where `∂_xA = ∫_θ K θ ∂_zf` is the differentiation under the angular
-integral (`L12FKaux.hasDerivAt_integral_Itheta_K`); its hypotheses (bounds on an open strip
-around `x`) are supplied from the pointwise bounds above.
-
-Axioms: `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.OpenPkg.Pieces4
 import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_deriv
-import Submission.Work.FTS.StrongEps.E5Aux2.MuHGlue
-import Submission.Work.FTS_RegExport.RXR7.Support.FstarPartCont
+import Submission.Work.FTS.StrongPersist.Star6
 import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.NZeroAux.FstarSlotPt
-import Submission.Work.FTS.NonlinRows.Rl1.splitOpen
+import Submission.Work.FTS_RegExport.RXT.SysAux.bR_decomp
+import Submission.Work.FTS_RegExport.RXVP.thLip
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

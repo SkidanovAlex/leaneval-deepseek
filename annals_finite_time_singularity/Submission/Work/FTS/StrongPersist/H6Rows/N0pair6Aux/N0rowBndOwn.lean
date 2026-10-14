@@ -1,33 +1,11 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `N0pair6Aux/N0rowBndOwn` — the per-slot bound for the `N₀`-row at the bare-`f` interface
-
-This is `H6Pair6Aux.H6N0Aux.N0row_bounds` re-proved at the interface of
-`Work.FTS.StrongPersist.H6Rows.N0pair6` (bare `f`, `H6Adm α f` + `HkMem α 7 f`).  Two changes
-are needed there:
-
-* the individual pieces of `N₀` are only known to be `C⁶` on the open quadrant (their
-  coefficient `L₁₂(f)` is `ContDiffOn ℝ 7 (·) (Ioi 0)` by `UopHk.contDiffOn_L12_k`, and
-  `SmoothOpen (fun z _ => L₁₂ f z)` is *not* available), so the pairing splits use
-  `SlotPairingSplit6` (finite-order smoothness) and the scaling rule
-  `slotPairing_const_mul_free` (which needs no smoothness at all);
-* the `A·D_z f` slot row takes the σ-decay hypothesis of `N0pair6Aux.RowAdz` (satisfied by
-  `c₂ₘ(θ)·L₁₂(F_*)(z)`, `N0pair6Aux.NA6sig`), instead of the too-weak pointwise bound of
-  `H6Pair6Aux.H6N0Aux.row_A_dz`.
-
-Everything else — the seven pieces of `N0row_defs`, the row `T3Row`/`T4bRowSlot`/`T45aRow`/
-`row_l12_dz`, the `𝒲^{6,∞}`-data of `NA4`/`NA5`, and the arithmetic `inv_three`/`W_three`/
-`inv_W_three`/`majorant_rpow`/`abs_sum7_le` of `N0row_defs` — is reused verbatim.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.N0row_defs
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.SlotPairingSplit6
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS.StrongPersist.Clauses
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45AslotLe
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.SlotPairingSplit6
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

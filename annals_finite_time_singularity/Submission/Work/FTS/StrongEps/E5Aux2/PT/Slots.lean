@@ -1,25 +1,11 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `PT.Slots` — the slot identities used by the assembly of `prof_pt_tendsto`
-
-* `pz_PhiTil_eq_of_contDiffOn_one` / `pth_PhiTil_eq_of_contDiffOn_one`: the `z`- and `θ`-splitting
-  of `PhiTil α F Ψ` under the **weak** hypotheses available at the call site (`Ψ` only `C¹` on the
-  open quadrant, and — for the `z`-direction — differentiability of `z ↦ L₁₂(F)(z)` at the point).
-  The sibling `Work.FTS.StrongEps.EComparison.pz_PhiTil_eq` asks for `SmoothOpen Ψ`, which the
-  limit `Φs + E (slice g s)` does not have;
-* `N0_tendsto_Ioi`: `Work.FTS.StrongEps.N0_tendsto` with the `L₁₂`-convergence hypothesis asked
-  only at the point `z` of the conclusion (the interface gives `z ∈ Ioi 0` only);
-* `Transport_tendsto`: the third block, which is pure slot `(0,1)`-convergence.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.StrongEps.E5Aux2.PT.Basic
-import Submission.Work.FTS.StrongEps.N0_tendsto
+import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_deriv
+import Submission.Work.Stability.ZcutSmoothCompact
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

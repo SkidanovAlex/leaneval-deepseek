@@ -1,55 +1,14 @@
-/-
-# `Work.FTS.BSIdent.Curl` — the curl identity of the reconstructed stream function
-
-This module proves the **curl identity** at the heart of the identification (audit §5 item 4): the
-stream-function field of the reconstruction has vorticity exactly the re-signed physical vorticity.
-
-For a self-similar stream function `F` (the `τ`-slice of `Φ`) and a profile perturbation `G`
-satisfying the paper's elliptic law on the open quadrant,
-
-  `bslOp p F w θ = F_*(p) w θ + G w θ`   (`0 < w`, `0 < θ < π/2`),
-
-the meridian stream function of the reconstruction
-
-  `ψ(r,z) = ρ(r,z)²·a⁻¹·F̂(ρ(r,z)^p/b, θ(r,z))`
-
-(the `B`-rescaled, `A`-normalised ansatz of the design, with `F̂` the odd extension in `θ`) has
-
-  `vorticity (psiField ψ) x = −(a⁻¹·profile p G (ρ(x)^p/b) (θ(x))) • e_θ(x)`   (`x ∈ Uax`),
-
-where `profile p G` is the odd extension of `F_* + G` (`Work.ConstructionInstance.profile`).
-
-## Structure of the proof
-
-* `Work.FTS.Physical.Ident.vorticity_psiField_scaled` (built on `Work.R1G.vorticity_psiField_bslOp`
-  and `Work.R1G3.bslOp_scale`) computes the curl of a stream-function field of the self-similar
-  polar form `ρ²·Ψ(ρ^p/b)`, for the *unscaled* `Ψ`.  Feeding it `Ψ = a⁻¹·F̂` handles both the
-  self-similar rescaling and the `A`-normalisation in one step;
-* the odd extension is handled by the two branch lemmas of `Work.FTS.BSIdent.OddExt`
-  (`bslOp_PhiOdd_of_pos` for `θ > 0`, `bslOp_PhiOdd_of_neg` for `θ < 0`), and it is there that the
-  *sign* of the design's correction 1 is fixed: the vorticity of `psiField (ρ²·a⁻¹F̂(ρ^p/b,·))` is
-  `−(a⁻¹·profile)` times `e_θ`, i.e. `−physOmega`, so the reconstructed velocity
-  `physVel (−physOmega)` is the stream-function field `psiField (merPsi …)` — not its negative.
-  The branch point `θ = 0` (the plane `x₃ = 0`) is excluded by `Uax`, where the odd extension is
-  smooth in `θ`.
-
-The statement is given in the abstract form `vorticity_psiField_PhiOddSlice` (in the variables
-`p, a, b`, `F`, `G`) and then specialised in `vorticity_psiField_merPsi`, whose right-hand side is
-`−physOmega` (`vorticity_psiField_merPsi_eq_neg_physOmega`).
--/
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.OddExt.bslOp_PhiOdd_of_pos
-import Submission.Work.FTS.BSIdent.OddExt.bslOp_PhiOdd_of_neg
-import Submission.Work.FTS.BSIdent.OddExt.bslOp_const_mul
-import Submission.Work.Cyl.Parity
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS.Physical.Ident.vorticity_psiField_scaled
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
 import Submission.Work.R1G.vorticity_psiField_bslOp
 import Submission.Work.R1G3.bslOp_scale
-import Submission.Work.ConstructionInstance.Defs
-import Submission.Work.FTS.Regularity.Defs
-import Submission.Work.FTS.Physical.Ident.vorticity_psiField_scaled
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -85,9 +44,6 @@ theorem PhiOddSlice_of_neg {F : ℝ → ℝ → ℝ} {z θ : ℝ} (h : ¬ 0 ≤ 
 theorem PhiOdd_eq_PhiOddSlice (Φ : Fam) (z θ τ : ℝ) :
     PhiOdd Φ z θ τ = PhiOddSlice (fun z θ => Φ z θ τ) z θ := rfl
 
-/-- The odd extension of a slice is the `PhiOdd` of the constant family. -/
-theorem PhiOddSlice_eq_PhiOdd (F : ℝ → ℝ → ℝ) (z θ : ℝ) :
-    PhiOddSlice F z θ = PhiOdd (fun z θ _ => F z θ) z θ 0 := rfl
 
 /-! ## Smoothness of the odd-extended slice at `θ ≠ 0` -/
 

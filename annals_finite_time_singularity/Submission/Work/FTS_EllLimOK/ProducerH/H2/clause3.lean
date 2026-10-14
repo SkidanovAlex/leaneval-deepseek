@@ -10,17 +10,14 @@ import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.TotallySplit
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Data
-import Submission.Work.FTS_EllLimOK.BoxDataH.WithinVec
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.jet_fderiv_partial_bound
 import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
-import Submission.Work.Spaces.mixed_comm
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Support.extend_holder_from_interior
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Support.fderiv_fderiv_uncurry_eq
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Support.jet2_sub_le
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Support.pzIter_three_bound
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.pkgCos_le4
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

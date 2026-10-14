@@ -1,45 +1,14 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `EpsE4Thr/TransO/CoerTransferO.lean` — the `coer` clause of `UnifIPO (IP4 …)`
-
-This is the end of the open-class transfer chapter: it discharges the four inputs of
-`TransO.stepPair_O`-based `TransO.transfer_level4_O`
-
-* the level-`1` clean data `hCD₁` (`CoerData2O α 1 (H1IP α) 2 CC₁`) — from the proved
-  `Coer1LhatO.coerData2_one_H1IP_O`;
-* the three level packages `hok₁/₂/₃ : LevelPkgO …` — from `TransO.levelPkg_of_O` with the
-  algebraic inputs `CommSm_L1` / `CommSm_succ` and the Cauchy–Schwarz inputs `CSQ_one_unif` /
-  `CSQ_succ` (the constant `CC₁ = max CC_Q CC_M` is chosen exactly as in
-  `Transfer/Instantiate.ok_data`),
-
-so that `transfer_level4_O` produces
-
-  `∃ c…, ∃ α₂ cc, ∀ α ∈ Ioc 0 α₂, ∀ f, CoerAdmO α f → cc·|f|²_{ℋ⁴} ≤ IP4 c… α (𝓛_Γ^T f) f`
-
-— **the `coer` clause**, and then `UnifIPO (IP4 …)` via the (already proved)
-`unifIPO_IP4_of_coer_only`, which supplies `lo`, `up`, `Dz_self`, the algebraic clauses and
-Cauchy–Schwarz on the open class.
-
-This is the open-class replacement of `Transfer/Instantiate.headline_from_norms`: no
-`SmoothQuad` occurs anywhere, so the level-four small-ball half of `AprioriP` can be run at the
-projected mollified slices `Pz (J_ε (slice g τ))` of the route.
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.L4MainO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.LevelPkgInstO
 import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1LhatO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.E1_norm_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.E2_norm_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.UnifIPOOfCoerFinal
-import Submission.Work.FTS.CoercivityFix.Transfer.CommSm_L1
-import Submission.Work.FTS.CoercivityFix.Transfer.CommSm_succ
-import Submission.Work.FTS.CoercivityFix.Transfer.CSQ_one_unif
-import Submission.Work.FTS.CoercivityFix.Transfer.CSQ_succ
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.L4MainO
+import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
+import Submission.Work.FTS.StrongPersist.H6Row6.row6PertData
+import Submission.Work.FTS.StrongPersist.SP6.EH6
+import Submission.Work.FTS_LocDatum3a.Assembly
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

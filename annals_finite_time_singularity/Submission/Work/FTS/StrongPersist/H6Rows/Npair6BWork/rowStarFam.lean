@@ -1,52 +1,17 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `rowStarFam` — the star-family row of the level-six `N`-pairing
-
-The two per-slot estimates
-
-* `|slotPairing ρ a b (A · f) f|` and
-* `|slotPairing ρ a b (A · D_θ f) f|`
-
-for a coefficient `A` carrying the **flat (star) price**
-
-```
-|D_z^jD_θ^i A z θ| ≤ KA · z/(1+z) · (if 1 ≤ i then (α + sin 2θ) · sin(2θ)^(α/5) else 1)
-```
-
-against a datum `f` with `DatData α f M`.
-
-## Route
-
-Both rows are the Leibniz expansion of `mixed b a (A · P)` (`P ∈ {f, D_θ f}`) against the top
-slot `mixed b a f`, with the three engines
-
-* `T6Gen.summand_le_easy` for every summand in which the middle `f`-slot carries an angular
-  derivative (the coefficient slot is pointwise bounded by `2·KA`, because `z/(1+z) ≤ 1` and
-  `(α+σ)σ^{α/5} ≤ 2`);
-* `mismatchSummandPt` for the single remaining configuration `ρ = leafGam α`, `j = a` (all
-  angular derivatives on `A`, the middle `f`-slot pure `D_z`), where the flat gain `σ^{α/5}`
-  supplies the `σ^{3α/10}` factor that makes the `γ`-weighted pure-`z` `f`-slot integrable;
-* `Npair6Aux.zeroTerm_canon` for the `(0,0)` transport summand
-  `A·D_θ(mixed b a f)·mixed b a f` of the second row (`rowStarDth`).
-
-The `A · D_θ f` row lives in the module `rowStarDth`; this file contains the `A · f` row and the
-final assembly.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowMulSupAux.basic
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.summand_le_easy
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.mismatchSummandPt
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarDth
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowMulSupAux.basic
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarP
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

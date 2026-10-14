@@ -1,15 +1,13 @@
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Measure.Haar.Unique
-import Submission.Work.CoreResiduals.BiotSavart.DerivDefs
-import Submission.Work.CoreResiduals.BiotSavart.IntegrandDefs
-import Submission.Work.CoreResiduals.BiotSavart.TaylorDefs
-import Submission.Work.CoreResiduals.BiotSavart.bsField_sub
-import Submission.Work.CoreResiduals.BiotSavart.integral_kf_sub_left
-import Submission.Work.CoreResiduals.BiotSavart.kf_ball_integral
-import Submission.Work.CoreResiduals.BiotSavart.norm_taylor_error_le
-import Submission.Work.CoreResiduals.BiotSavart.radial_rpow_integral
-import Submission.Work.StabilityFar.Decay.norm_crossL_le
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.dzSelf2dW
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.dzSelf2d
+import Submission.Work.StabilityFar.Decay.hasDerivAt_biotSavart
+import Submission.Work.StabilityFar.Decay.hasDerivAt_bsK
+import Submission.Work.StabilityFar.Decay.norm_kDerivCLM_sub_le
+import Submission.Work.StabilityFar.Decay.timeDeriv_eq_zero_of_notMem_closedBall
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

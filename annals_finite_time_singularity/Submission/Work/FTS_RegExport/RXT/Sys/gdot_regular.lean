@@ -4,12 +4,11 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.CoeffJetsDefs
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.OpFacts
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.RHSDefs
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.RHSSmooth
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.LeibBound
 import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.RHSBound
+import Submission.Work.FTS_RegExport.RXT.Sys.mixed_integral_identity
+import Submission.Work.FTS_RegExport.RXT.coeff_C2
+import Submission.Work.FTS_RegExport.RXT0.RXJets.jetBasic
+import Submission.Work.FTS_RegExport.THL.Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

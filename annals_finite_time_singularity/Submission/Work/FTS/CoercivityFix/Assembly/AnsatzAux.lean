@@ -1,22 +1,3 @@
-/-
-# `Assembly/AnsatzAux.lean` — regularity, support and integrability of the ansatz
-
-The concrete bumps `psiA z = χ(z - 5/2)` and `hA δ θ = χ((θ - 1/2)/δ)` of the
-`RegQ`-counterexample live in the *interior* of the quadrant:
-
-* `vzIter j psiA` is `C^∞` and supported in `[1/2, 9/2]`,
-* `vthIter i (hA δ)` is `C^∞` and supported in `[θ₀ - 2δ, θ₀ + 2δ] ⊂ (0, π/2)` for `δ ≤ 1/8`.
-
-Consequently every slot integrand of the `ℋ^k`-integrand of the ansatz is continuous and
-compactly supported inside a region where the weights `w` and `sin(2θ)^{-η}`,
-`sin(2θ)^{-γ}` are bounded, hence integrable; this module records exactly those facts
-(`integrableOn_vzIter_sq`, `integrableOn_vthIter_sq`), which are the side conditions of the
-slot evaluations of the counterexample.
-
-The support induction runs through `support_deriv_subset` (`support (deriv f) ⊆ tsupport f`):
-`D_z = z ∂_z` and `D_θ = sin(2θ) ∂_θ` only multiply the derivative by a factor, so they do
-not enlarge the closure of the support.
--/
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
@@ -42,17 +23,7 @@ set_option autoImplicit false
 
 /-! ## Smoothness of the bumps -/
 
-theorem contDiff_psiA : ContDiff ℝ Work.Stability.smoothOrder psiA := by
-  have h : ContDiff ℝ Work.Stability.smoothOrder (fun z : ℝ => z - 5 / 2) :=
-    contDiff_id.sub contDiff_const
-  have h2 : ContDiff ℝ Work.Stability.smoothOrder
-      (fun z : ℝ => Work.Stability.chi (z - 5 / 2)) :=
-    Work.Stability.chi_contDiff.comp h
-  exact h2
 
-theorem contDiff_vzIter_psiA (j : ℕ) :
-    ContDiff ℝ Work.Stability.smoothOrder (vzIter j psiA) :=
-  contDiff_vzIter psiA contDiff_psiA j
 
 theorem contDiff_hA (δ : ℝ) : ContDiff ℝ Work.Stability.smoothOrder (hA δ) := by
   have h : ContDiff ℝ Work.Stability.smoothOrder (fun θ : ℝ => (θ - th0) / δ) :=
@@ -68,41 +39,8 @@ theorem contDiff_vthIter_hA (δ : ℝ) (i : ℕ) :
 
 /-! ## The supports -/
 
-theorem support_psiA : Function.support psiA ⊆ Set.Icc (1 / 2 : ℝ) (9 / 2) := by
-  intro z hz
-  by_contra hcon
-  rw [Set.mem_Icc, not_and_or] at hcon
-  have hz' : z < 1 / 2 ∨ 9 / 2 < z := hcon.imp not_le.mp not_le.mp
-  have hlt : 2 ≤ |z - 5 / 2| := by
-    rcases hz' with h | h
-    · rw [abs_of_nonpos (by linarith)]; linarith
-    · rw [abs_of_nonneg (by linarith)]; linarith
-  have h0 : psiA z = 0 := by rw [psiA, Work.Stability.chi_eq_zero hlt]
-  exact hz h0
 
-/-- The iterated `D_z`-derivatives of `psiA` are supported in `[1/2, 9/2]`.  (Only the
-*closed* support is inherited: `D_z = z ∂_z` differentiates, so the support can grow to the
-closure of the old one, which is what the induction below tracks.) -/
-theorem support_vzIter_psiA (j : ℕ) :
-    Function.support (vzIter j psiA) ⊆ Set.Icc (1 / 2 : ℝ) (9 / 2) := by
-  induction j with
-  | zero => simpa [vzIter_zero] using support_psiA
-  | succ j ih =>
-      intro z hz
-      have hz' : z ∈ Function.support (vz (vzIter j psiA)) := by
-        simpa [vzIter_succ] using hz
-      have hd : deriv (vzIter j psiA) z ≠ 0 := by
-        intro h0
-        exact hz' (by simp [vz, h0])
-      have h2 : z ∈ tsupport (vzIter j psiA) := support_deriv_subset hd
-      have h4 : closure (Function.support (vzIter j psiA))
-          ⊆ closure (Set.Icc (1 / 2 : ℝ) (9 / 2)) := closure_mono ih
-      have h5 : z ∈ closure (Set.Icc (1 / 2 : ℝ) (9 / 2)) := h4 h2
-      rwa [closure_Icc] at h5
 
-theorem vzIter_psiA_eq_zero {j : ℕ} {z : ℝ} (hz : z ∉ Set.Icc (1 / 2 : ℝ) (9 / 2)) :
-    vzIter j psiA z = 0 :=
-  Function.notMem_support.mp fun h => hz (support_vzIter_psiA j h)
 
 theorem support_hA {δ : ℝ} (hδ : 0 < δ) :
     Function.support (hA δ) ⊆ Set.Icc (th0 - 2 * δ) (th0 + 2 * δ) := by
@@ -143,37 +81,6 @@ theorem vthIter_hA_eq_zero {δ : ℝ} (hδ : 0 < δ) {i : ℕ} {θ : ℝ}
 
 /-! ## The two slot integrability facts -/
 
-/-- `Z_j = ∫_z (D_z^j ψ · w)²` is an honest integral: the integrand is continuous and
-supported in the compact `[1/2, 9/2]`, on which `w` is continuous. -/
-theorem integrableOn_vzIter_sq (j : ℕ) :
-    IntegrableOn (fun z => (vzIter j psiA z * Work.Spaces.w z) ^ 2) Work.Spaces.Iz := by
-  have hw : ContinuousOn (fun z : ℝ => Work.Spaces.w z) (Set.Icc (1 / 2 : ℝ) (9 / 2)) := by
-    rw [show (fun z : ℝ => Work.Spaces.w z) = fun z => (1 + z) ^ 2 / z ^ 2 from rfl]
-    refine ContinuousOn.div ((continuousOn_const.add continuousOn_id).pow 2)
-      (continuousOn_id.pow 2) (fun z hz => ?_)
-    rcases hz with ⟨h1, h2⟩
-    exact pow_ne_zero 2 (by linarith)
-  have hcont : ContinuousOn (fun z => (vzIter j psiA z * Work.Spaces.w z) ^ 2)
-      (Set.Icc (1 / 2 : ℝ) (9 / 2)) :=
-    (((contDiff_vzIter_psiA j).continuous.continuousOn).mul hw).pow 2
-  have hInt : IntegrableOn (fun z => (vzIter j psiA z * Work.Spaces.w z) ^ 2)
-      (Set.Icc (1 / 2 : ℝ) (9 / 2)) := hcont.integrableOn_compact isCompact_Icc
-  have hzero : ∀ z, z ∉ Set.Icc (1 / 2 : ℝ) (9 / 2) →
-      (vzIter j psiA z * Work.Spaces.w z) ^ 2 = 0 := by
-    intro z hz
-    rw [vzIter_psiA_eq_zero hz]
-    simp
-  have hglob : Integrable
-      (fun z => (vzIter j psiA z * Work.Spaces.w z) ^ 2) (volume : Measure ℝ) := by
-    have h1 : Integrable ((Set.Icc (1 / 2 : ℝ) (9 / 2)).indicator
-        (fun z => (vzIter j psiA z * Work.Spaces.w z) ^ 2)) (volume : Measure ℝ) :=
-      (integrable_indicator_iff measurableSet_Icc).mpr hInt
-    refine h1.congr ?_
-    filter_upwards with z
-    by_cases hz : z ∈ Set.Icc (1 / 2 : ℝ) (9 / 2)
-    · rw [Set.indicator_of_mem hz]
-    · rw [Set.indicator_of_notMem hz, hzero z hz]
-  exact hglob.integrableOn
 
 /-- `S^i_q = ∫_θ (D_θ^i h)² sin(2θ)^{-q}` is an honest integral for every real `q`: the
 integrand is supported in `[θ₀ - 2δ, θ₀ + 2δ] ⊂ (0, π/2)` where `sin(2θ) > 0`. -/

@@ -2,11 +2,11 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroModeDefs
-import Submission.Work.FTS.StrongEps.EComparison.AngCutSupportFacts
-import Submission.Work.FTS.StrongEps.EComparison.EFamAngularFacts
-import Submission.Work.FTS.StrongEps.EComparison.Lzero1_mul_sub
 import Submission.Work.FTS.StrongEps.EComparison.AngCutDerivFacts
+import Submission.Work.FTS.StrongEps.EComparison.AngCutSupportFacts
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroModeDefs
+import Submission.Work.FTS_EllLimOK.PkgJets.cosWeightTail_le
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

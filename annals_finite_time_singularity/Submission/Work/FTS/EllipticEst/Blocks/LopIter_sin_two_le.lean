@@ -1,10 +1,10 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllipticEst.ThetaPoincareDefs
-import Submission.Work.FTS.EllipticEst.GbarSetup
-import Submission.Work.FTS.EllipticEst.sinIter_weight_bound
-import Submission.Work.FTS.EllipticEst.sd_lop_iter_sin_bound
-import Submission.Work.Spaces.DthIter_mul
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_f_bound
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

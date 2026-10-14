@@ -2,10 +2,10 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.Defs
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.slot_prod_le_open
 import Submission.Work.FTS.StrongPersist.N6Trans.Hon.TraceAe
-import Submission.Work.FTS.TransportS.T2Sup.Main
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

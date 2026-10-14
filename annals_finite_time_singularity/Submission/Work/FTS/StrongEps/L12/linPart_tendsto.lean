@@ -1,30 +1,123 @@
-/-
-# `linPart_tendsto`: local uniform convergence of `f n → g` gives convergence of `linPart`
-
-`linPart α f = -𝓛_Γ^T f` decomposes as (all identities definitional)
-
-  `linPart α f z θ = -(f + D_z f - 2f/(1+z)
-      - (2zΓ(θ)/(c(1+z)²))·L₁₂(f)(z)
-      - (3 D_θ f/(1+z) - (Γ(θ)/c)(2z²/(1+z)³)·L₁₂(Transport f)(0)))`.
-
-At a point `p = (z,θ)` of the open quadrant every ingredient is one of
-
-* a value of `mixed j i (f n)` with `j + i ≤ 1` (namely `(0,0)`, `(1,0)`, `(0,1)` for
-  `f`, `D_z f`, `D_θ f`) — pointwise convergence comes from the hypothesis `hconv`
-  (local uniform convergence on the compacts of `Q0`, and `p` lies in the compact box
-  `[z/2, z+1] × [θ/2, (θ+π/2)/2] ⊆ Q0`);
-* `L₁₂(f n)(z)` — convergence is `L12_tendsto_locUnif` (the `ε`-decomposition proof, using
-  the uniform `ℋ⁴`-bound `B`);
-* `L₁₂(Transport (f n))(0)` — this is exactly the hypothesis `hK0`.
-
-Since all coefficients are constants in `n`, the conclusion follows from the continuity of
-the arithmetic operations.
--/
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.L12.L12_tendsto_locUnif
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.StrongEps.EpsE4Thr.L12Aux.sq_two_Qz_le
+import Submission.Work.FTS.StrongEps.LocUnif.D5.rounds
+import Submission.Work.FTS.StrongEps.SupPort.classC_sup_le
 import Submission.Work.FTS.StrongPersist.Vocab
-import Submission.Work.FTS.StrongEps.L12.L12_z_lipschitz
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.L12Aux.Qang_small_z =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.EpsE4Thr.L12Aux
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- **The angular moment of a `ClassC` profile vanishes faster than `z^{1/2}` at `z = 0`.**
+
+`Work.Elliptic.Qang x k z = ∫_{Iθ} K(θ)·D_z^k x(z,θ) dθ` (`K = 3 sin θ cos²θ`).
+
+This is the analytic heart of `RegQo α 4 (𝓛_Γ^T x)` from `ClassC α x`: the traces of the
+nonlocal term `(2zΓ/(c(1+z)²))·L₁₂(x)(z)` at `z → 0⁺` require `D_z^k L₁₂(x) = O(z^{3/2})`,
+i.e. `Qang x k = O(z^{3/2})`.
+
+Route (all inputs are in the tree).  Put `P_k(z) = ∫_θ (D_z^k x(z,θ))² sin(2θ)^{-η}dθ`,
+`η = 99/100`, `R_k = sqrt(P_k)`.
+* `∫_{Iz} w(z)² P_k(z) dz < ∞` for `k ≤ 4` (`w = (1+z)²/z²`): the first sum of
+  `HkIntegrand α 10 x` contains the slot `(D_z^k x · w · sin(2θ)^{-η/2})²`, and `HkMem α 10 x`
+  is a field of `ClassC`; since `w(z)² ≥ z^{-4}` on `(0,1)`, this gives
+  `∫_0^1 P_k z^{-4} < ∞`.
+* `z P_k'(z) = 2 ∫_θ (D_z^k x)(D_z^{k+1} x)·sin(2θ)^{-η}dθ` (differentiation under the angular
+  integral; the dominating function is `2·M_k·M_{k+1}/z₀·sin(2θ)^{-η}`, integrable, with the
+  *uniform* pointwise bounds `M_k` supplied by
+  `Work.FTS.StrongEps.classC_mixed_sup_le_four`).  Cauchy–Schwarz gives
+  `|z P_k'| ≤ 2 sqrt(P_k P_{k+1})`, i.e. `(z R_k')² ≤ P_{k+1}`.
+* Local Poincaré inside a dyadic window: for `z ∈ (0,1)` and `I = (z/2, z)`, one gets
+  `R_k(z)² ≤ z³(J_2 + 4J_0)` with `J_0 = ∫_0^1 P_k z^{-4}`, `J_2 = ∫_0^1 (R_k')² z^{-2} ≤ ∫_0^1 P_{k+1} z^{-4}`.
+* Cauchy–Schwarz in θ: `|Qang x k z| ≤ (∫_{Iθ} K² sin(2θ)^{η})^{1/2}·R_k(z)`.
+
+Note the last step needs `k` and `k+1` slots only, so `k ≤ 3` (i.e. `k+1 ≤ 4`) is the
+admissible range. -/
+theorem Qang_small_z {α : ℝ} (hα : α ∈ Set.Ioc 0 1) {x : Work.FTS.Galerkin.Fn}
+    (hx : Work.FTS.ClassC.ClassC α x) {k : ℕ} (hk : k ≤ 3) :
+    ∃ C : ℝ, 0 < C ∧ ∀ z : ℝ, 0 < z → z < 1 →
+      |Work.Elliptic.Qang x k z| ≤ C * z ^ ((3 : ℝ) / 2) := by
+  have hk4 : k + 1 ≤ 4 := by omega
+  -- the three constants of the bound
+  set KK : ℝ := ∫ θ in Work.Spaces.Iθ,
+    (Work.Elliptic.Ktheta θ) ^ 2 * (Real.sin (2 * θ)) ^ (Work.Spaces.eta) with hKK
+  set J0 : ℝ := ∫ t in Set.Ioo (0 : ℝ) 1, Pz x k t / t ^ 4 with hJ0def
+  set J1 : ℝ := ∫ t in Set.Ioo (0 : ℝ) 1, Pz x (k + 1) t / t ^ 4 with hJ1def
+  refine ⟨Real.sqrt KK * Real.sqrt (4 * J0 + J1) + 1, by positivity, ?_⟩
+  intro z hz0 hz1
+  -- Cauchy–Schwarz in θ (the last bullet)
+  have hE : |Work.Elliptic.Qang x k z| ≤ Real.sqrt KK * Real.sqrt (Pz x k z) := by
+    rw [hKK]
+    exact abs_Qang_le hα hx hk z hz0
+  -- the derivative and the Cauchy–Schwarz bound (the second bullet)
+  have hd : ∀ t ∈ Set.Ioo (0 : ℝ) 1,
+      HasDerivAt (Pz x k) ((fun t => 2 / t * Qz x k t) t) t :=
+    fun t ht => hasDerivAt_Pz hα hx hk ht.1
+  have hbnd : ∀ t ∈ Set.Ioo (0 : ℝ) 1,
+      (t * (2 / t * Qz x k t)) ^ 2 ≤ 4 * Pz x k t * Pz x (k + 1) t := by
+    intro t ht
+    have hq : t * (2 / t * Qz x k t) = 2 * Qz x k t := by
+      have ht0 : t ≠ 0 := ne_of_gt ht.1
+      field_simp
+    rw [hq]
+    exact sq_two_Qz_le hα hx hk ht.1
+  -- the local Poincaré bound of the route (third bullet)
+  have hA : Pz x k z ≤ z ^ 3 * (4 * J0 + J1) :=
+    Work.Analysis.WeightedPoincare.le_cube_mul_of_deriv_bound
+      (P := Pz x k) (Pd := fun t => 2 / t * Qz x k t) (P1 := Pz x (k + 1))
+      (J0 := J0) (J1 := J1) hz0 hz1 hd
+      (fun t _ => Pz_nonneg x k t) (fun t _ => Pz_nonneg x (k + 1) t) hbnd
+      (by exact integrableOn_Pz_div_pow hx (by omega))
+      (by exact integrableOn_Pz_div_pow hx hk4)
+      (le_of_eq hJ0def.symm) (le_of_eq hJ1def.symm)
+  -- assemble
+  have hsq : Real.sqrt (Pz x k z) ≤ Real.sqrt (z ^ 3 * (4 * J0 + J1)) :=
+    Real.sqrt_le_sqrt hA
+  have hsplit : Real.sqrt (z ^ 3 * (4 * J0 + J1))
+      = Real.sqrt (z ^ 3) * Real.sqrt (4 * J0 + J1) :=
+    Real.sqrt_mul (by positivity) _
+  have hz32 : Real.sqrt (z ^ 3) = z ^ ((3 : ℝ) / 2) := by
+    rw [Real.sqrt_eq_rpow, ← Real.rpow_natCast z 3, ← Real.rpow_mul (le_of_lt hz0)]
+    norm_num
+  calc |Work.Elliptic.Qang x k z| ≤ Real.sqrt KK * Real.sqrt (Pz x k z) := hE
+    _ ≤ Real.sqrt KK * Real.sqrt (z ^ 3 * (4 * J0 + J1)) :=
+        mul_le_mul_of_nonneg_left hsq (Real.sqrt_nonneg _)
+    _ = Real.sqrt KK * Real.sqrt (4 * J0 + J1) * z ^ ((3 : ℝ) / 2) := by
+        rw [hsplit, hz32]; ring
+    _ ≤ (Real.sqrt KK * Real.sqrt (4 * J0 + J1) + 1) * z ^ ((3 : ℝ) / 2) := by
+        have h1 : 0 ≤ Real.sqrt KK * Real.sqrt (4 * J0 + J1) :=
+          mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
+        have h2 : 0 ≤ z ^ ((3 : ℝ) / 2) := Real.rpow_nonneg (le_of_lt hz0) _
+        nlinarith
+
+end Work.FTS.StrongEps.EpsE4Thr.L12Aux
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.L12.linPart_tendsto =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -42,124 +135,9 @@ namespace Work.FTS.StrongEps.L12
 set_option autoImplicit false
 set_option maxHeartbeats 1000000
 
-/-- Pointwise convergence out of uniform convergence on a set: if `F n → f` uniformly on `s`
-and `x ∈ s`, then `F n x → f x`. -/
-private lemma tendsto_at_of_tendstoUniformlyOn {ι β : Type*} {F : ι → β → ℝ} {f : β → ℝ}
-    {l : Filter ι} {s : Set β} {x : β} (hx : x ∈ s) (h : TendstoUniformlyOn F f l s) :
-    Tendsto (fun n => F n x) l (nhds (f x)) := by
-  rw [Metric.tendstoUniformlyOn_iff] at h
-  rw [Metric.tendsto_nhds]
-  intro ε hε
-  filter_upwards [h ε hε] with n hn
-  rw [dist_comm]
-  exact hn x hx
 
-/-- The pointwise unfolding of `linPart α f = -𝓛_Γ^T f` into the five values that the
-convergence argument needs.  Purely definitional. -/
-private lemma linPart_apply (α : ℝ) (f : Work.FTS.Galerkin.Fn) (z θ : ℝ) :
-    Work.FTS.StrongPersist.linPart α f z θ
-      = -( f z θ + Work.Spaces.Dz f z θ - 2 * f z θ / (1 + z)
-           - (2 * z * Work.Spaces.Gam α θ / (Work.Spaces.c α * (1 + z) ^ 2))
-              * Work.Coercivity.L12f f z
-           - (3 * Work.Spaces.Dth f z θ / (1 + z)
-              - (Work.Spaces.Gam α θ / Work.Spaces.c α) * (2 * z ^ 2 / (1 + z) ^ 3)
-                 * Work.Coercivity.L12f (Work.Coercivity.Transport f) 0)) := by
-  simp only [Work.FTS.StrongPersist.linPart, Work.Coercivity.LGammaT, Work.Coercivity.LGamma,
-    Work.Coercivity.L, Work.Coercivity.Proj, Work.Coercivity.Transport]
 
-theorem linPart_tendsto {α B : ℝ} {f : ℕ → Work.FTS.Galerkin.Fn} {g : Work.FTS.Galerkin.Fn}
-    (hα : 0 < α) (hα1 : α ≤ 1)
-    (hmem : ∀ n : ℕ, Work.FTS.VocabO.HQo α 4 (f n))
-    (hb : ∀ n : ℕ, Work.Spaces.HkNorm α 4 (f n) ≤ B)
-    (hmemg : Work.FTS.VocabO.HQo α 4 g) (hbg : Work.Spaces.HkNorm α 4 g ≤ B)
-    (hconv : ∀ Km : Set (ℝ × ℝ), IsCompact Km → Km ⊆ Work.FTS.EllipticEst.Q0 →
-      ∀ j i : ℕ, j + i ≤ 1 →
-        TendstoUniformlyOn (fun n p => Work.Spaces.mixed j i (f n) p.1 p.2)
-          (fun p => Work.Spaces.mixed j i g p.1 p.2) Filter.atTop Km)
-    (hK0 : Filter.Tendsto
-      (fun n : ℕ => Work.Coercivity.L12f (Work.Coercivity.Transport (f n)) 0) Filter.atTop
-      (nhds (Work.Coercivity.L12f (Work.Coercivity.Transport g) 0))) :
-    ∀ p : ℝ × ℝ, p ∈ Work.FTS.EllipticEst.Q0 →
-      Filter.Tendsto (fun n : ℕ => Work.FTS.StrongPersist.linPart α (f n) p.1 p.2)
-        Filter.atTop (nhds (Work.FTS.StrongPersist.linPart α g p.1 p.2)) := by
-  intro p hp
-  obtain ⟨hz, hθ0, hθ2⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-  -- a compact box around `p` contained in the open quadrant
-  set K : Set (ℝ × ℝ) :=
-    Set.Icc (p.1 / 2) (p.1 + 1) ×ˢ Set.Icc (p.2 / 2) ((p.2 + Real.pi / 2) / 2) with hK
-  have hpK : p ∈ K := by
-    rw [hK]
-    exact ⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith⟩⟩
-  have hKcomp : IsCompact K := by
-    rw [hK]; exact isCompact_Icc.prod isCompact_Icc
-  have hKsub : K ⊆ Work.FTS.EllipticEst.Q0 := by
-    intro q hq
-    rw [hK] at hq
-    obtain ⟨hq1, hq2⟩ := hq
-    rw [Work.FTS.EllipticEst.mem_Q0]
-    exact ⟨by linarith [hq1.1], by linarith [hq2.1], by linarith [hq2.2]⟩
-  -- pointwise convergence of every `mixed j i` with `j + i ≤ 1` at `p`
-  have hpt : ∀ j i : ℕ, j + i ≤ 1 →
-      Tendsto (fun n => Work.Spaces.mixed j i (f n) p.1 p.2) Filter.atTop
-        (nhds (Work.Spaces.mixed j i g p.1 p.2)) :=
-    fun j i hji =>
-      tendsto_at_of_tendstoUniformlyOn (β := ℝ × ℝ) hpK (hconv K hKcomp hKsub j i hji)
-  have hf0 : Tendsto (fun n => f n p.1 p.2) Filter.atTop (nhds (g p.1 p.2)) := by
-    simpa using hpt 0 0 (by norm_num)
-  have hDz : Tendsto (fun n => Work.Spaces.Dz (f n) p.1 p.2) Filter.atTop
-      (nhds (Work.Spaces.Dz g p.1 p.2)) := by
-    simpa using hpt 1 0 (by norm_num)
-  have hDth : Tendsto (fun n => Work.Spaces.Dth (f n) p.1 p.2) Filter.atTop
-      (nhds (Work.Spaces.Dth g p.1 p.2)) := by
-    simpa using hpt 0 1 (by norm_num)
-  -- the `L₁₂` of the datum, via `L12_tendsto_locUnif`
-  have hb' : ∀ n, Work.FTS.Nonlin.Xn α (f n) ≤ B := fun n => hb n
-  have hbg' : Work.FTS.Nonlin.Xn α g ≤ B := hbg
-  have hconv' : ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
-      TendstoUniformlyOn (fun n zθ => f n zθ.1 zθ.2) (fun zθ => g zθ.1 zθ.2)
-        Filter.atTop K := by
-    intro Kc hKc hKQ
-    simpa only [Work.Spaces.mixed, Work.Spaces.DzIter_zero, Work.Spaces.DthIter_zero]
-      using hconv Kc hKc hKQ 0 0 (by norm_num)
-  have hL12 : Tendsto (fun n => Work.Coercivity.L12f (f n) p.1) Filter.atTop
-      (nhds (Work.Coercivity.L12f g p.1)) := by
-    have h := Work.FTS.StrongEps.L12.L12_tendsto_locUnif α hα f g B hmem hb' hmemg hbg'
-      hconv' p.1 (le_of_lt hz)
-    simpa only [Work.Coercivity.L12f, Work.Construction.L12] using h
-  -- the two `(z,θ)`-coefficients are constants in `n`
-  set A : ℝ := 2 * p.1 * Work.Spaces.Gam α p.2 / (Work.Spaces.c α * (1 + p.1) ^ 2) with hA
-  set Bc : ℝ := (Work.Spaces.Gam α p.2 / Work.Spaces.c α)
-    * (2 * p.1 ^ 2 / (1 + p.1) ^ 3) with hBc
-  have hinner : Tendsto (fun n => f n p.1 p.2 + Work.Spaces.Dz (f n) p.1 p.2
-        - 2 * f n p.1 p.2 / (1 + p.1)
-        - A * Work.Coercivity.L12f (f n) p.1
-        - (3 * Work.Spaces.Dth (f n) p.1 p.2 / (1 + p.1)
-            - Bc * Work.Coercivity.L12f (Work.Coercivity.Transport (f n)) 0))
-      Filter.atTop (nhds (g p.1 p.2 + Work.Spaces.Dz g p.1 p.2
-        - 2 * g p.1 p.2 / (1 + p.1)
-        - A * Work.Coercivity.L12f g p.1
-        - (3 * Work.Spaces.Dth g p.1 p.2 / (1 + p.1)
-            - Bc * Work.Coercivity.L12f (Work.Coercivity.Transport g) 0))) := by
-    refine ((((hf0.add hDz).sub ((hf0.const_mul 2).div_const (1 + p.1))).sub
-      (hL12.const_mul A)).sub (((hDth.const_mul 3).div_const (1 + p.1)).sub
-        (hK0.const_mul Bc)))
-  have hfinal := hinner.neg
-  have hfun : (fun n => Work.FTS.StrongPersist.linPart α (f n) p.1 p.2)
-      = fun n => -(f n p.1 p.2 + Work.Spaces.Dz (f n) p.1 p.2
-        - 2 * f n p.1 p.2 / (1 + p.1)
-        - A * Work.Coercivity.L12f (f n) p.1
-        - (3 * Work.Spaces.Dth (f n) p.1 p.2 / (1 + p.1)
-            - Bc * Work.Coercivity.L12f (Work.Coercivity.Transport (f n)) 0)) := by
-    funext n
-    rw [linPart_apply α (f n) p.1 p.2, hA, hBc]
-  have hlim : Work.FTS.StrongPersist.linPart α g p.1 p.2
-      = -(g p.1 p.2 + Work.Spaces.Dz g p.1 p.2
-        - 2 * g p.1 p.2 / (1 + p.1)
-        - A * Work.Coercivity.L12f g p.1
-        - (3 * Work.Spaces.Dth g p.1 p.2 / (1 + p.1)
-            - Bc * Work.Coercivity.L12f (Work.Coercivity.Transport g) 0)) := by
-    rw [linPart_apply α g p.1 p.2, hA, hBc]
-  rw [hfun, hlim]
-  exact hfinal
 
 end Work.FTS.StrongEps.L12
+end
+end

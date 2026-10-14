@@ -1,31 +1,16 @@
-/-
-# `FTS/StrongPersist/StarPkg6Aux.lean` — locality, vanishing and constant-raising lemmas
-
-Support for `StarPkg6OfCore`.  Three groups of elementary facts:
-
-* **Locality on the open quadrant**: `FlatW` only ever looks at `Q0 = (0,∞) × (0,π/2)`, so two
-  functions agreeing there have the same `FlatW`-bounds.  (`FlatW_congr`.)
-* **Vanishing on the complement of `Q0`** in the disjunctive form produced by
-  `Work.FTS.PhiStar.CoreAux.fields_vanish` gives the shape consumed by the
-  `WlInf`-transfer (`zeroOff_of_vanish`).
-* **Monotonicity in the star constant**: all the quantitative fields of `StarPkgo` /
-  `StarPkgo2` are of the form `T ≤ Cs * α`, so they are preserved when `Cs` is enlarged
-  (`StarPkgo_raise_Cs`, `StarPkgo2_raise_Cs`).  This is what lets the order-six star package
-  be assembled from the order-four one proved in `FTS/PhiStar` at a possibly smaller constant.
--/
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.PhiStar.CoreAux.Defs
-import Submission.Work.FTS.PhiStar.CoreAux.FieldsDefs
-import Submission.Work.FTS.PhiStar.CoreAux.Fb_basic
-import Submission.Work.FTS.PhiStar.CoreAux.Fb_mul_theta_free
 import Submission.Work.FTS.H2.STFacts
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_RegExport.RXT.starVop
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -134,20 +119,12 @@ theorem Fb_congr_Q0 {n : ℕ} {K : ℝ} {f g : ℝ → ℝ → ℝ}
 
 /-! ## `pth` of functions of one variable -/
 
-/-- `∂_θ` of a `z`-only function vanishes. -/
-theorem pth_z_only (c : ℝ → ℝ) :
-    Work.Spaces.pth (fun z _ : ℝ => c z) = fun _ _ => 0 := by
-  funext z θ
-  exact deriv_const θ (c z)
 
 /-- `∂_θ` of a constant function vanishes. -/
 theorem pth_const (c : ℝ) : Work.Spaces.pth (fun _ _ : ℝ => c) = fun _ _ => 0 := by
   funext z θ
   exact deriv_const θ c
 
-/-- `∂_θ` of a `θ`-only function is its `ℝ`-derivative. -/
-theorem pth_theta_only (c : ℝ → ℝ) :
-    Work.Spaces.pth (fun _ θ : ℝ => c θ) = fun _ θ => deriv c θ := rfl
 
 /-! ## Elementary `F0` facts -/
 
@@ -173,18 +150,6 @@ theorem F0_zero (n : ℕ) : Work.FTS.PhiStar.F0 n 0 (fun _ _ : ℝ => 0) := by
   rw [hD i, hP k]
   simp
 
-/-- **The `D_θ`-shift**: `F0 n` of `D_θ g` follows from `F0 (n+1)` of `g`. -/
-theorem F0_Dth_shift {n : ℕ} {K : ℝ} {g : ℝ → ℝ → ℝ}
-    (h : Work.FTS.PhiStar.F0 (n + 1) K g) : Work.FTS.PhiStar.F0 n K (Work.Spaces.Dth g) := by
-  have key : ∀ i : ℕ, Work.Spaces.DthIter i (Work.Spaces.Dth g)
-      = Work.Spaces.DthIter (i + 1) g := by
-    intro i
-    induction i with
-    | zero => rfl
-    | succ i ih => rw [Work.Spaces.DthIter_succ, ih]; rfl
-  intro k i hki x y hx hy hy'
-  rw [key i]
-  exact h k (i + 1) (by omega) x y hx hy hy'
 
 /-- `SmoothOpen` of a constant function. -/
 theorem smoothOpen_const (c : ℝ) :
@@ -247,25 +212,6 @@ theorem deriv_sin_sq : deriv (fun θ : ℝ => Real.sin θ ^ 2) = fun θ => Real.
   have : 2 * Real.sin θ ^ (2 - 1) * Real.cos θ = 2 * Real.sin θ * Real.cos θ := by norm_num
   rw [this, ← Real.sin_two_mul]
 
-theorem deriv_cos_sq_sub_two_sin_sq :
-    deriv (fun θ : ℝ => Real.cos θ ^ 2 - 2 * Real.sin θ ^ 2)
-      = fun θ => -3 * Real.sin (2 * θ) := by
-  funext θ
-  have h1 : HasDerivAt (fun θ : ℝ => Real.cos θ ^ 2)
-      (2 * Real.cos θ ^ (2 - 1) * (-Real.sin θ)) θ := (Real.hasDerivAt_cos θ).pow 2
-  have h2 : HasDerivAt (fun θ : ℝ => 2 * Real.sin θ ^ 2)
-      (2 * (2 * Real.sin θ ^ (2 - 1) * Real.cos θ)) θ :=
-    ((Real.hasDerivAt_sin θ).pow 2).const_mul 2
-  have h := h1.sub h2
-  have hd : deriv (fun θ : ℝ => Real.cos θ ^ 2 - 2 * Real.sin θ ^ 2) θ
-      = 2 * Real.cos θ ^ (2 - 1) * -Real.sin θ
-        - 2 * (2 * Real.sin θ ^ (2 - 1) * Real.cos θ) := by
-    convert h.deriv using 1
-  rw [hd]
-  have hkey : 2 * Real.cos θ ^ (2 - 1) * -Real.sin θ
-      - 2 * (2 * Real.sin θ ^ (2 - 1) * Real.cos θ)
-      = -3 * (2 * Real.sin θ * Real.cos θ) := by norm_num; ring
-  rw [hkey, ← Real.sin_two_mul]
 
 theorem deriv_sin_two :
     deriv (fun θ : ℝ => Real.sin (2 * θ)) = fun θ => 2 * Real.cos (2 * θ) :=
@@ -278,49 +224,9 @@ theorem deriv_cos_two :
   ring
 
 
-/-- `SmoothOpen` of the `θ`-derivative of the four angular coefficients of the star fields,
-in the shape in which the product rules produce them. -/
-theorem smoothOpen_pth_sin_sq :
-    Work.FTS.EllipticEst.SmoothOpen
-      (Work.Spaces.pth (fun _ θ : ℝ => Real.sin θ ^ 2)) := by
-  have heq : Work.Spaces.pth (fun _ θ : ℝ => Real.sin θ ^ 2)
-      = fun _ θ : ℝ => Real.sin (2 * θ) := by
-    rw [pth_theta_only, deriv_sin_sq]
-  rw [heq]
-  exact smoothOpen_theta_only (Real.contDiff_sin.comp (contDiff_const.mul contDiff_id))
 
-/-- The `θ`-derivative of `cos²θ - 2sin²θ` is smooth. -/
-theorem smoothOpen_pth_cos_sq_sub :
-    Work.FTS.EllipticEst.SmoothOpen
-      (Work.Spaces.pth (fun _ θ : ℝ => Real.cos θ ^ 2 - 2 * Real.sin θ ^ 2)) := by
-  have heq : Work.Spaces.pth (fun _ θ : ℝ => Real.cos θ ^ 2 - 2 * Real.sin θ ^ 2)
-      = fun _ θ : ℝ => -3 * Real.sin (2 * θ) := by
-    rw [pth_theta_only, deriv_cos_sq_sub_two_sin_sq]
-  rw [heq]
-  exact smoothOpen_theta_only
-    (contDiff_const.mul (Real.contDiff_sin.comp (contDiff_const.mul contDiff_id)))
 
-/-- The `θ`-derivative of `sin 2θ` is smooth. -/
-theorem smoothOpen_pth_sin_two :
-    Work.FTS.EllipticEst.SmoothOpen
-      (Work.Spaces.pth (fun _ θ : ℝ => Real.sin (2 * θ))) := by
-  have heq : Work.Spaces.pth (fun _ θ : ℝ => Real.sin (2 * θ))
-      = fun _ θ : ℝ => 2 * Real.cos (2 * θ) := by
-    rw [pth_theta_only, deriv_sin_two]
-  rw [heq]
-  exact smoothOpen_theta_only
-    (contDiff_const.mul (Real.contDiff_cos.comp (contDiff_const.mul contDiff_id)))
 
-/-- The `θ`-derivative of `cos 2θ` is smooth. -/
-theorem smoothOpen_pth_cos_two :
-    Work.FTS.EllipticEst.SmoothOpen
-      (Work.Spaces.pth (fun _ θ : ℝ => Real.cos (2 * θ))) := by
-  have heq : Work.Spaces.pth (fun _ θ : ℝ => Real.cos (2 * θ))
-      = fun _ θ : ℝ => -2 * Real.sin (2 * θ) := by
-    rw [pth_theta_only, deriv_cos_two]
-  rw [heq]
-  exact smoothOpen_theta_only
-    (contDiff_const.mul (Real.contDiff_sin.comp (contDiff_const.mul contDiff_id)))
 
 /-- Multiplication of an `F0`-bound by a constant. -/
 theorem F0_const_mul {n : ℕ} {K : ℝ} {f : ℝ → ℝ → ℝ} (h : Work.FTS.PhiStar.F0 n K f)
@@ -346,10 +252,6 @@ theorem Fb_const_mul {n : ℕ} {K : ℝ} {f : ℝ → ℝ → ℝ} (h : Work.FTS
     (abs_nonneg c) hsm (smoothOpen_const c) h hc hcd
   exact Fb_congr_Q0 (fun z θ _ _ _ => by ring) h1
 
-/-- `FlatW n f K` and `FlatW n f K'` are the same statement at the same order when the
-constants agree. -/
-theorem FlatW_mono' {l : ℕ} {f : ℝ → ℝ → ℝ} {K K' : ℝ} (h : Work.FTS.VocabO2.FlatW l f K)
-    (hle : K ≤ K') : Work.FTS.VocabO2.FlatW l f K' := FlatW_mono h hle
 
 /-- **`FlatW 6` from the two `F0` components**: the radial clause is the `i = 0` slot of
 `F0 6`, and the angular clause is exactly `F0 5` of `∂_θ f`. -/

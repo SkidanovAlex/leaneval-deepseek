@@ -1,14 +1,3 @@
-/-
-# `Work.FTS.EllSol.PkgK5` — the *sharp* (`k+2`) honesty level for the `sEta`-energies
-
-This module is the `k+2`-honesty analogue of `PkgK5.tracesK5Aux.slotEnergy_dzIter`: with
-`HkMem α (k+2) (z²∂_z²X)` (one level *less* than the sibling used in `tracesK5`) the
-`sEta`-energy of every radial iterate `D_z^b X`, `b ≤ k+4`, is still integrable.
-
-The only place the honesty level enters the proof is the recursion step
-`D_z^b X = D_z^{b-2}(z²∂_z²X) + D_z^{b-1}X` for `b ≥ 2`, where the `A`-slot `D_z^{b-2}A` needs
-honesty at level `b-2 ≤ k+2` — exactly what `HkMem α (k+2) A` supplies.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn

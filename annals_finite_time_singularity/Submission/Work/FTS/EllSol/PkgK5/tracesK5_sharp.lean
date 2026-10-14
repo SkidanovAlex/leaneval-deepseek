@@ -1,35 +1,13 @@
-/-
-# `Work.FTS.EllSol.PkgK5.tracesK5_sharp`
-
-The **sharp** (`k+2`) honesty-level version of `PkgK5.tracesK5`: the vanishing of the angular
-endpoint traces of the radial iterates of the straightened unknown `X := ellShift α g Φg`,
-under the *weaker* `A`-honesty `HkMem α (k+2) (z²∂_z²X)` (where `tracesK5` assumed
-`HkMem α (k+3)`).
-
-The proof is an assembly of the pieces already proved at the sharp level:
-
-* `PkgK5.SharpAux.slotEnergy_dzIter_sharp` — the `sEta`-energies of the radial iterates `D_z^bX`
-  for `b ≤ k+4`;
-* `PkgK5.Fstar_DzIter_le_sharp` (delegated) — the vanishing of the radial moments
-  `F_*(D_z^i X)`, `i ≤ k+3`; its *source* counterpart `fstar_dzIter_source_eq_zero` already
-  lives at the matching source level `HkMem α (k+2) F`;
-* `PkgK5.lzero1_energy_dzIter_sharp` / `PkgK5.lzero1_moment_dzIter_sharp` (delegated) — the
-  `sEta`-energy and the angular moment of `Lzero1 (D_z^j X(z,·))` at radial level `j ≤ k+1`.
-
-The two one-sided limits are then `remov.wsSliceLeft` and `remov.sliceTendstoRight_fts` exactly
-as in `traces_of_honest`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllSol.PkgK5.tracesK5
 import Submission.Work.FTS.EllSol.ClassC
 import Submission.Work.FTS.EllSol.PkgK5.SharpAux
-import Submission.Work.FTS.EllSol.PkgK5.Fstar_DzIter_le_sharp
-import Submission.Work.FTS.EllSol.PkgK5.lzero1_energy_dzIter_sharp
 import Submission.Work.FTS.EllSol.PkgK5.lzero1_moment_dzIter_sharp
+import Submission.Work.FTS.EllSol.PkgK5.tracesK5
+import Submission.Work.FTS.StrongGlobal.Transfer
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

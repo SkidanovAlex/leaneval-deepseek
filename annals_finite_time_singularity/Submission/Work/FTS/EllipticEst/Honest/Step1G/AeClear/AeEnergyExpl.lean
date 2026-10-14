@@ -3,15 +3,15 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.interpol_trunc_defs
-import Submission.Work.FTS.EllipticEst.Honest.hksq_eq_w2_sliceIntegral
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
 import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeCutEnergyV2
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.FnLintegralLeHkSq
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeCutErr
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.interpol_trunc_defs
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocDataExt.Defs
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -66,20 +66,6 @@ theorem cut_mono (n : ℕ) (z : ℝ) :
     rw [hnc]
     exact Work.FTS.EllipticEst.cut_nonneg _ _
 
-theorem cut_tendsto_one {z : ℝ} (hz : 0 < z) :
-    Filter.Tendsto (fun n : ℕ => Work.FTS.EllipticEst.cut n z) Filter.atTop (nhds 1) := by
-  refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
-  refine Filter.eventually_atTop.mpr ⟨Nat.ceil (2 / z) + Nat.ceil z, fun n hn => ?_⟩
-  have hnc : (Nat.ceil (2 / z) : ℝ) ≤ (n : ℝ) := by exact_mod_cast le_trans (Nat.le_add_right _ _) hn
-  have hzc : (Nat.ceil z : ℝ) ≤ (n : ℝ) := by exact_mod_cast le_trans (Nat.le_add_left _ _) hn
-  have h2z : 2 / z ≤ (n : ℝ) := le_trans (Nat.le_ceil _) hnc
-  have hz2 : z ≤ (n : ℝ) := le_trans (Nat.le_ceil _) hzc
-  have h2n : 2 ≤ (n : ℝ) * z := by rw [div_le_iff₀ hz] at h2z; linarith
-  have hA : 2 / ((n : ℝ) + 1) ≤ z := by
-    rw [div_le_iff₀ (by positivity : (0:ℝ) < (n:ℝ)+1)]
-    nlinarith
-  have hB : z ≤ 2 * ((n : ℝ) + 1) := by nlinarith
-  exact (Work.FTS.EllipticEst.cut_eq_one_of_mem n hA hB).symm
 
 /-- **The sup over the cut-off family**: for a nonnegative a.e.-measurable `g` on `Iz`,
 `⨆_n ∫⁻_z ofReal (cut n z) * g z = ∫⁻_z g z`. -/
@@ -139,11 +125,6 @@ namespace Work.FTS.EllipticEst.H2W.AeProof
 set_option autoImplicit false
 set_option linter.unusedVariables false
 
-theorem iSup_le_of_eventually {u : ℕ → ℝ≥0∞} {c : ℝ≥0∞} (hmono : Monotone u)
-    (h : ∀ᶠ n in Filter.atTop, u n ≤ c) : (⨆ n, u n) ≤ c := by
-  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1 h
-  refine iSup_le fun n => ?_
-  exact le_trans (hmono (Nat.le_add_right n N)) (hN (n + N) (Nat.le_add_left N n))
 
 theorem cut_hasCompactSupport (n : ℕ) : HasCompactSupport (Work.FTS.EllipticEst.cut n) := by
   have hsub : Function.support (Work.FTS.EllipticEst.cut n) ⊆

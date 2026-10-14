@@ -6,8 +6,8 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.Spaces.GammaW_Prelim
-import Submission.Work.Spaces.Defs
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

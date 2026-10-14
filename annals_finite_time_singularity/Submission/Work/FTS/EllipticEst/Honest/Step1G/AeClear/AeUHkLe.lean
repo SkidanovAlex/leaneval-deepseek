@@ -1,15 +1,74 @@
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemUD
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemGradUD
-import Submission.Work.FTS.EllipticEst.Dispatch.aeLeftLimitD
+import Mathlib.MeasureTheory.Order.Group.Lattice
+import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeGapSlices
-import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeEnergyWAux
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.ae_hksq_le_of_energy
+import Submission.Work.FTS.EllipticEst.H2W.AngBW.Step3.HkMemGradU
 import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeW2Energy
+import Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc
+import Submission.Work.FTS.EllipticEst.remov.SourceBound.sliceMomentIdentity
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Majorant6
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.H2W.momentChainAe
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Stability.ZcutSmoothCompact
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.Pieces.AeW2Energy =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Cores.Pieces
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-!
+# `AeW2Energy` — the plain-`w²` angular energy of the a.e. class
+
+The estimate `∫_z ∫_θ (∂_θu)² w(z)² ≤ C (|G|²_{ℋ⁰} + α² |D_z u|²_{ℋ⁰})` for a datum
+`AeData α u G` of the almost-everywhere class of the level-`0` elliptic estimate of
+T. M. Elgindi, *Finite-time singularity formation for `C^{1,α}` solutions to the incompressible
+Euler equations on `ℝ³`*, Annals of Math. **194** (2021) (Step 1 of Proposition `prop:H2`).
+
+The proof runs the proved truncated radial energy *identity*
+`Work.FTS.EllipticEst.H2W.AeW.aeTruncWHon` for the cut-off family `cut n` and then passes to
+the limit `n → ∞`.
+-/
+
+/-! ## Elementary radial weight facts on a compact sub-interval of `(0,∞)` -/
+
+/-! ## The domination of the truncation error integrands on the support of the cut-off -/
+
+/-! ## Two elementary slice-integrability transfer lemmas -/
+
+/-! ## The truncated `w²`-weighted energy inequality -/
+
+end Work.FTS.EllipticEst.Cores.Pieces
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeUHkLe =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -117,37 +176,7 @@ theorem integrableOn_wSq_sgY {α : ℝ} {u G : ℝ → ℝ → ℝ}
   rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (sq_nonneg _) hnn)]
   exact hz
 
-theorem AeUHkLe : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ),
-    Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
-      Work.Spaces.HkSq α 0 u
-        ≤ C * (Work.Spaces.HkSq α 0 G
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u)) := by
-  obtain ⟨C₁, hC₁pos, hC₁⟩ := ae_hksq_le_of_energy
-  obtain ⟨C₂, hC₂pos, hC₂⟩ := AeW2Energy
-  refine ⟨C₁ * C₂, mul_pos hC₁pos hC₂pos, fun α u G h => ?_⟩
-  have hYmem : MeasureTheory.IntegrableOn
-      (fun z => (Work.Spaces.w z) ^ 2
-        * ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ) ^ 2) Work.Spaces.Iz :=
-    integrableOn_wSq_sgY h
-  have hup := hC₁ α u G h hYmem
-  have hen : (∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2
-        * ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ) ^ 2)
-      ≤ C₂ * (Work.Spaces.HkSq α 0 G
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u)) := by
-    have h2 := hC₂ α u G h
-    rwa [show (∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ,
-          (Work.Spaces.pth u z θ) ^ 2 * (Work.Spaces.w z) ^ 2)
-        = ∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2
-            * ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ) ^ 2 from ?_] at h2
-    refine MeasureTheory.setIntegral_congr_fun measurableSet_Ici (fun z _ => ?_)
-    rw [MeasureTheory.integral_mul_const, mul_comm]
-  calc Work.Spaces.HkSq α 0 u
-      ≤ C₁ * (∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2
-          * ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ) ^ 2) := hup
-    _ ≤ C₁ * (C₂ * (Work.Spaces.HkSq α 0 G
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u))) :=
-        mul_le_mul_of_nonneg_left hen (le_of_lt hC₁pos)
-    _ = (C₁ * C₂) * (Work.Spaces.HkSq α 0 G
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u)) := by ring
 
 end Work.FTS.EllipticEst.Cores.Pieces
+end
+end

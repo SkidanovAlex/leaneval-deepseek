@@ -1,16 +1,96 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.MeasureTheory.Function.LocallyIntegrable
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.StrongEps.Jeps_contDiffOn
+import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS.StrongEps.PZeroScheme
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.starDat
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkMomentJetSq
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fstarDat
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.wlInf_divz_slotsB
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingHkSq
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowStarP
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingConstMul
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.starDat
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.wlInf_divz_slotsB
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SP6.EUz6
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_LocDatum3a.Defs
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongEps.SliceWrapP =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+
+/-- **The slicewise weighted bound, projected form**: a single constant `C` (depending only on the
+mollifier) with `|JfamP ρ ε g(τ)|_{ℋ^k}² ≤ C·|g(τ)|_{ℋ⁶}²` for every `α ∈ (0,1]`, `k ≤ 6`,
+`0 < ε ≤ 1`. -/
+theorem HkSq_JfamP_le (ρ : ℝ × ℝ → ℝ) (hρ : IsSmoothKernel ρ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1, ∀ k : ℕ, k ≤ 6 → ∀ ε : ℝ, 0 < ε → ε ≤ 1 →
+      ∀ g : Fam, ∀ τ : ℝ,
+        (∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry (slice g τ)) Quad) →
+        MeasureTheory.LocallyIntegrable (logPull (slice g τ)) volume →
+        Work.Spaces.HkMem α 6 (slice g τ) →
+        Work.Spaces.HkSq α k (slice (JfamP ρ ε g) τ)
+          ≤ C * Work.Spaces.HkSq α 6 (slice g τ) := by
+  obtain ⟨CJ, hCJpos, hCJ⟩ := HkSq_Jeps_le ρ hρ.moll
+  obtain ⟨A, hApos, hA⟩ := PZeroAux.hkNorm_Pz_le
+  refine ⟨A ^ 2 * Real.exp CJ, by positivity, ?_⟩
+  intro α hα k hk ε hε hε1 g τ hsm hloc hmem6
+  have hmem6J : Work.Spaces.HkMem α 6 (Jeps ρ ε (slice g τ)) :=
+    HkMem_Jeps hρ.moll hα hε hsm hmem6
+  -- the `P₀`-distortion at level `k`
+  have hP := hA α hα k hk (Jeps ρ ε (slice g τ))
+    ((Work.FTS.EllipticEst.smoothOpen_iff_forall _).mpr (Jeps_contDiffOn ρ hρ hε hloc)) hmem6J
+  -- the `E1` bound at level `6`
+  have hJ := hCJ α hα 6 ε hε hε1 (slice g τ) hsm hmem6 hmem6J
+  have hsq : Work.Spaces.HkSq α k (slice (JfamP ρ ε g) τ)
+      = (Work.Spaces.HkNorm α k (slice (JfamP ρ ε g) τ)) ^ 2 := by
+    rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α k _)]
+  have hPz : slice (JfamP ρ ε g) τ = Pz (Jeps ρ ε (slice g τ)) := slice_JfamP ρ ε g τ
+  rw [hsq, hPz]
+  calc (Work.Spaces.HkNorm α k (Pz (Jeps ρ ε (slice g τ)))) ^ 2
+      ≤ (A * Work.Spaces.HkNorm α 6 (Jeps ρ ε (slice g τ))) ^ 2 :=
+        pow_le_pow_left₀ (Work.Spaces.HkNorm_nonneg _ _ _) hP 2
+    _ = A ^ 2 * (Work.Spaces.HkNorm α 6 (Jeps ρ ε (slice g τ))) ^ 2 := by ring
+    _ = A ^ 2 * Work.Spaces.HkSq α 6 (Jeps ρ ε (slice g τ)) := by
+        rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 6 _)]
+    _ ≤ A ^ 2 * (Real.exp (CJ * ε) * Work.Spaces.HkSq α 6 (slice g τ)) :=
+        mul_le_mul_of_nonneg_left hJ (by positivity)
+    _ ≤ A ^ 2 * Real.exp CJ * Work.Spaces.HkSq α 6 (slice g τ) := by
+        have hexp : Real.exp (CJ * ε) ≤ Real.exp CJ :=
+          Real.exp_le_exp.mpr (by nlinarith [hCJpos, hε1])
+        have h1 : A ^ 2 * Real.exp (CJ * ε) ≤ A ^ 2 * Real.exp CJ :=
+          mul_le_mul_of_nonneg_left hexp (by positivity)
+        calc A ^ 2 * (Real.exp (CJ * ε) * Work.Spaces.HkSq α 6 (slice g τ))
+            = A ^ 2 * Real.exp (CJ * ε) * Work.Spaces.HkSq α 6 (slice g τ) := by ring
+          _ ≤ A ^ 2 * Real.exp CJ * Work.Spaces.HkSq α 6 (slice g τ) :=
+              mul_le_mul_of_nonneg_right h1 (Work.Spaces.HkSq_nonneg α 6 _)
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG1 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -287,3 +367,4 @@ theorem nsumG1 (Ce : ℝ) : ∃ C : ℝ, 0 < C ∧
       (Or.inr (Or.inr rfl)) (Or.inr (Or.inr rfl)) a b ρ hab hleaf
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG
+end

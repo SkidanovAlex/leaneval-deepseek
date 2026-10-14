@@ -1,64 +1,25 @@
-/-
-# Joint `C¹` of the reconstructed potential at the boundary time `t = 0`
-
-`Work.FTS.PressureOn.Connect.contDiffWithinAt_potOn_at_zero`: the uncurried reconstructed
-potential `(x,t) ↦ potOn ω x t` is `C¹` *within the closed half strip* `ℝ³ × [0,T)` at every
-boundary point `(x,0)`.
-
-## The route
-
-The strip data are one sided, so the relevant "time derivative at `0`" is the *right* derivative,
-which is not Mathlib's two sided `deriv` (`timeDeriv`) — the latter is the junk value `0` when the
-left and right derivatives differ, and the values of `ω` at negative times are unconstrained by the
-hypotheses.  The objects `Connect/BoundaryTime.lean` therefore provides are
-
-* `tblock ω T x` — the right time derivative of the velocity slice at `0`;
-* `dtLamb ω T y` — the right time derivative of the Lamb vector at `0`;
-* `lambExt ω T` — the Lamb vector retracted in time (affine with slope `dtLamb` on `(-∞,0]` and
-  equal to `lamb` on `[0,∞)`), so that its two sided `timeDeriv` at `0` *is* `dtLamb`;
-* `potTDerivExt ω T`, `potGradExt ω T` — the time and space derivatives of the potential extended
-  to the boundary, and `potFDerivExt ω T` the resulting candidate derivative.
-
-The pieces are proved in the modules `BoundaryTime/ExtData`, `BoundaryTime/ExtDeriv`,
-`BoundaryTime/BdryAbstract` and `BoundaryTime/BdryDeriv` imported below; the present file only
-assembles them: `contDiffOn_succ_iff_hasFDerivWithinAt` gives `ContDiffOn ℝ 1` on the box
-`bbox x T` from the interior and boundary derivatives, and `contDiffWithinAt_iff_contDiffOn_nhds`
-converts that into the requested `ContDiffWithinAt`.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.Deriv
-import Submission.Work.FTS.PressureOn.Connect.hasFDerivAt_potOn_slice
-import Submission.Work.FTS.PressureOn.Connect.contDiffWithinAt_one_of_hasFDerivAt
-import Submission.Work.FTS.PressureOn.Connect.contDiffOn_potOn_uncurry_open
-import Submission.Work.FTS.PressureOn.Connect.hasFDerivAt_uncurry_of_partials_corrected
-import Submission.Work.FTS.PressureOn.hasDerivAt_pressurePotential_time_of_continuous
-import Submission.Work.FTS.PressureOn.continuous_timeDeriv_pressurePotential
-import Submission.Work.FTS.PressureOn.Connect.Clamp
-import Submission.Work.FTS.PressureOn.Connect.Data
-import Submission.Work.FTS.PressureOn.Connect.lipschitz_extendTime
-import Submission.Work.FTS.PressureOn.Connect.lamb_lipschitz_near
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_physVel_time
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_lamb_time
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_of_hasDerivWithinAt_Ici
-import Submission.Work.FTS.PressureOn.Connect.biotSavart_uniform_bound
-import Submission.Work.FTS.PressureOn.tendsto_lamb_decay
-import Submission.Work.FTS.PressureOn.pressurePotential_basic
-import Submission.Work.FTS.PressureOn.lipschitz_time_lamb_strips
-import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
-import Submission.Work.FTS.PressureOn.continuousOn_time_omega_of_strips
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Basic
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Grad
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotOnTime
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotTDeriv
-import Submission.Work.FTS.PressureOn.Connect.omega_strip_continuousOn
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtData
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtDeriv
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.BdryDeriv
+import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotTDeriv
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradIntegral
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.normSlopePhysVelLe
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS.PressureOn.tendsto_lamb_decay
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.PressureOn.weakDiv_timeDeriv
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1LhatO
+import Submission.Work.FTS.StrongEps.EpsE4Thr.hardyHyp_of_coerAdmO
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
+import Submission.Work.FTS_FinalLeaves.profDerivData_min_proved
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

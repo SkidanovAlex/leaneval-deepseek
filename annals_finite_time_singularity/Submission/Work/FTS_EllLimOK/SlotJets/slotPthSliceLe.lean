@@ -1,9 +1,96 @@
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Basic.Real.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongPersist.N6.sliceAng_le6
+import Mathlib.Order.Filter.Defs
 import Submission.Work.FTS.EllipticEst.SliceDecompDefs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.LocDataExt.Final
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.N6.sliceAvg_le6
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS.Vocab
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.HkSqZfar
+-- ===== merged: Submission.Work.FTS.EllipticEst.AeSlotOneAe.Interp.TkA_cross_ids =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.AeSlotOneAe.Interp
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+set_option linter.unusedVariables false
+
+/-! ## The angular unfolding of the `Tk`-slot -/
+
+
+
+/-! ## The three operator identities on the open quadrant -/
+
+
+
+
+end Work.FTS.EllipticEst.AeSlotOneAe.Interp
+end
+end
+-- ===== merged: Submission.Work.FTS.LocData6.Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.LocData6
+
+set_option autoImplicit false
+
+/-- Functions of the self-similar variables `(z,θ)`, curried. -/
+abbrev Fn : Type := ℝ → ℝ → ℝ
+
+/-- The `ℋ⁶`-size `Xn₆(g) = |g|_{ℋ⁶} = Work.Spaces.HkNorm α 6 g` — the order-`6` companion of
+the frozen `Work.FTS.Nonlin.Xn α g = |g|_{ℋ⁴}`. -/
+abbrev Xn6 (α : ℝ) (g : Fn) : ℝ := Work.Spaces.HkNorm α 6 g
+
+/-- The localised perturbation `g = locData α L β (hLoc α) - F_*` at the concrete bump of N9 —
+the datum of the strong-solution route, abbreviated so that the statements of this chapter read
+at the parameters of `LocData`. -/
+abbrev locG6 (α L β : ℝ) : Fn := Work.FTS.LocData.locG α L β (Work.FTS.LocData.hLoc α)
+
+theorem locG6_eq (α L β : ℝ) :
+    locG6 α L β = Work.FTS.LocData.locG α L β (Work.FTS.LocData.hLoc α) := rfl
+
+end Work.FTS.LocData6
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.SlotJets.slotPthSliceLe =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -81,3 +168,4 @@ theorem slotPthSliceLe : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (f : ℝ → ℝ 
         hC₀ α f b (a+1) hα hα1 hF hmem (by omega) (by omega) z hz
 
 end Work.FTS_EllLimOK.SlotJets
+end

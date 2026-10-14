@@ -1,20 +1,9 @@
-/-
-# `SmoothOpen` for the pieces of the error
-
-The error `err n F = (chiR n · zetaR n − 1)·F − (chiR n · lam n F)·rho` is `C^∞` on the open
-quadrant as soon as `F` is (`SmoothOpen F`) and `n ≥ 1`: the first factor is globally `C^∞`,
-and the moment `lam n F` is `C^∞` on `(0,∞)` by `LamEst.lamContDiffOn`.
-
-These facts are what makes the two Leibniz-expansions of the error (the additivity lemmas
-`Work.FTS.EllipticEst.SmoothOpen.DzIter_add` / `mixed_add`, the `z`-only multiplier rule
-`Work.FTS.FinalClock.DzIter_mul_of_contDiffOn`) applicable.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.PhiStar.Honesty.CptApp.EstDefs
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.LamEst.lamContDiffOn
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
+import Submission.Work.FTS.StrongEps.LocUnif.D5.deriv_slot_lintegral_bounds
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

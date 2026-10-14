@@ -4,14 +4,13 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.TransferAux
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.LogInt
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.KernelFacts
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.continuous_logW_leaf
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces3.continuousOn_leafW
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logW_fderiv_integral_le
 import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
-import Submission.Work.FTS.StrongEps.HkSqAux.lintegral_quad_log_subst
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

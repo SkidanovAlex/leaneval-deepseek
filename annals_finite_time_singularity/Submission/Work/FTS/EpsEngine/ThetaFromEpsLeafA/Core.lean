@@ -4,8 +4,8 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.EpsEngine.ClassCStepEngine
-import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafA.subst_kernel_iter
-import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafA.mixed_routed_sq_le
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.bump_mixed_EpsSq_le
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

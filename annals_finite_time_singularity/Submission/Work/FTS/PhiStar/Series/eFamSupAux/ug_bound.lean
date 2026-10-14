@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import Submission.Work.FTS.PhiStar.Series.eFamSupDefs
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

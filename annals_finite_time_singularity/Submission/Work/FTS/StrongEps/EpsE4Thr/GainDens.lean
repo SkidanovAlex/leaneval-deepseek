@@ -1,20 +1,49 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/GainDens.lean`
-
-The facts about the routed density
-`LamFull ρ ε c M = Jker (ε⁻¹^M · e^{4cε} · Σ_{a,b≤M}|∂₁^a∂₂^b ρ|) ε`
-that the integrated membership step (`GainMem/HkMem_Jeps_of_pointwise_gain`) consumes:
-nonnegativity, continuity, support in the closed ball of radius `ε`, and the two measurability
-statements (slice at fixed `z > 0`, and joint in `(z,θ,p)`).
--/
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.Nonlinear.FstarPkgAll
+import Submission.Work.FTS.Nonlinear.Open.Row25Aux
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.row25
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.Defs
 import Submission.Work.FTS.StrongEps.EpsE4Thr.GainDefs
-import Submission.Work.FTS.StrongEps.JepsHkMem.aemeasurable_pair_slice
-import Submission.Work.FTS.StrongEps.HkSqAux.aemeasurable_shift_pair
-import Submission.Work.FTS.StrongEps.HkSqAux.continuousOn_HkIntegrand_Quad
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_theta
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+-- ===== merged: Submission.Work.FTS.Nonlinear.Open.Row25 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.Nonlinear.Open
+
+open Work.FTS.Galerkin (Fn)
+
+set_option linter.unusedVariables false
+
+/-! ## Small `SmoothOpen` helpers on the open quadrant -/
+
+
+
+end Work.FTS.Nonlinear.Open
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.GainDens =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -94,3 +123,5 @@ theorem LamFull_aemeasurable_joint {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKern
   simp only [hLam]
 
 end Work.FTS.StrongEps.EpsE4Thr
+end
+end

@@ -2,18 +2,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Work.FTS.H2.hard_sq_prod_z
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.MismatchSummand
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
-import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
-import Submission.Work.FTS.StrongPersist.IP6_cs_coeffs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.intSlotLeHkSq
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.summand_le_easy
-import Submission.Work.FTS.StrongPersist.N6Trans_exists
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumBounds
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumData
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.pairing_le_of_slotBoundB
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.N6Trans_exists
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS_EllLimOK.ThetaJets.Theta_jets_le
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

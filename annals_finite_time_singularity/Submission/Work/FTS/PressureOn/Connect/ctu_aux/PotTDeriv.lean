@@ -1,35 +1,23 @@
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Basic
-
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.TangentCone.Prod
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.Deriv
-import Submission.Work.FTS.PressureOn.Connect.contDiffWithinAt_one_of_hasFDerivAt
-import Submission.Work.FTS.PressureOn.Connect.hasFDerivAt_uncurry_of_partials_corrected
-import Submission.Work.FTS.PressureOn.hasDerivAt_pressurePotential_time_of_continuous
-import Submission.Work.FTS.PressureOn.continuous_timeDeriv_pressurePotential
-import Submission.Work.FTS.PressureOn.Connect.Clamp
-import Submission.Work.FTS.PressureOn.Connect.Data
-import Submission.Work.FTS.PressureOn.Connect.lipschitz_extendTime
-import Submission.Work.FTS.PressureOn.Connect.lamb_lipschitz_near
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_physVel_time
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_lamb_time
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_of_hasDerivWithinAt_Ici
-import Submission.Work.FTS.PressureOn.Connect.biotSavart_uniform_bound
-import Submission.Work.FTS.PressureOn.Connect.omega_uniform_bound
-import Submission.Work.FTS.PressureOn.tendsto_lamb_decay
-import Submission.Work.FTS.PressureOn.pressurePotential_basic
-import Submission.Work.FTS.PressureOn.lipschitz_time_lamb_strips
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradIntegral
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.normSlopePhysVelLe
 import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
-import Submission.Work.FTS.PressureOn.continuousOn_time_omega_of_strips
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_slice_of_hasFDerivAt_uncurry
-import Submission.Work.FTS.BSSwirl.CrossAux
-import Submission.Work.FTS.Physical.Defs
+import Submission.Work.FTS.PressureOn.tendsto_lamb_decay
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.PressureOn.weakDiv_timeDeriv
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

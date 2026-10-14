@@ -1,34 +1,13 @@
-/-
-# `HkMem` is monotone in the order `k`
-
-`Work.Spaces.HkMem α k f` says that the `H^k`-integrand of `f` has honest iterated
-integrals: every angular slice `θ ↦ HkIntegrand α k f z θ` is integrable on `Iθ`
-(for `z ∈ Iz`) and `z ↦ ∫_θ HkIntegrand α k f z θ` is integrable on `Iz`.
-
-Since `HkIntegrand α (k+1) f` is obtained from `HkIntegrand α k f` by adding the extra
-(summands of the) finitely many new weighted derivatives — all of them *squares* of
-real numbers — the integrand is pointwise monotone in `k`
-(`Work.Spaces.HkIntegrand_mono`).  Hence the integrability of the `k+1`-integrand
-implies that of the `k`-integrand: the domination argument needs only the a.e. strong
-measurability of the smaller integrand, which holds because the integrand of a
-`SmoothNbhd` function is continuous on the open quadrant `(0,∞) × (0,π/2)`; the closed
-quadrant `[0,∞) × [0,π/2]` differs from the open one by null segments, and on the single
-slice `z = 0` the integrand vanishes identically (the radial weight `w` does).
-
-This is the elementary monotonicity that lets every statement proved for `ℋ^{k+1}`
-be used at level `k`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.Coercivity.Defs
-import Submission.Work.Coercivity.Basic
-import Submission.Work.Coercivity.HkSq_mono
-import Submission.Work.Spaces.MixedMulDefs
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.Spaces.aesm_HkIntegrand_quad
 import Submission.Work.Spaces.continuousOn_HkIntegrand_Qd
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,46 +1,16 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `pPureShiftAux/Basic` — the radial difference-quotient datum of a weak datum
-
-The level-`0` estimate `TT.EllWeak0` applies to data of the weak class `TT.EllWeakPos`.  To get
-the *twice radially differentiated* datum `(D_z²F, D_z²Ψ)` into that class one cannot simply
-shift (the pointwise moment condition `F_*(D_z²F) ≡ 0` is only available *a.e.*,
-`H2W.Fstar_DzIter_two_F_ae`).  The way out is the radial **difference quotient**
-
-  `dq c h = (h (c·) - h)/(c-1)`,   `c > 1`,
-
-which commutes with `bslOp` (`Dil.bslOp_dq`), with the slot operators `z²∂_z²` and `∂_θ²`
-(`Dil.zsq_pzIter_two_dq`, `Dil.pthIter_two_dq`) and with the angular moments (linearity of the
-`θ`-integral), so that
-
-  `(dq c X, dq c Y)` is in the class whenever `(X, Y)` is,
-
-and which tends to the radial derivative `D_z` as `c → 1⁺`.
-
-This module contains
-
-* `HkSq_zero_DzIter_two_le'`, `lhs_eq_HkSq'` — the level-`0` bookkeeping;
-* `HkMem_dq_and_HkSq_dq_le_self` — the mean-value engine (`|dq c g| ≲ D_z g` in the
-  `ℋ⁰`-norm), the single analytic input;
-* `ae_mem_Q0` — `Q0` is conull for the quadrant measure;
-* `EllWeakPos_dq` — the class membership of the difference-quotient datum.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DilBasic
-import Submission.Work.FTS.EllipticEst.Cores.Dil.Tools
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DilMoments
-import Submission.Work.FTS.EllipticEst.Cores.Dil.DqqTendsto
 import Submission.Work.FTS.EllipticEst.Cores.Dil.HkSqLimit
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.EllipticEst.TT.HkMem_descend_open
-import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.FTS.EllipticEst.Cores.PPureShiftRad.Basic
 import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.MajEst
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.Physical.Ident.vorticity_psiField_scaled
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,9 +32,6 @@ set_option maxHeartbeats 4000000
 abbrev dqq (c : ℝ) (g : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ :=
   Work.FTS.EllipticEst.Cores.Dil.dq c (Work.FTS.EllipticEst.Cores.Dil.dq c g)
 
-theorem dqq_apply (c : ℝ) (g : ℝ → ℝ → ℝ) (z θ : ℝ) :
-    dqq c g z θ = Work.FTS.EllipticEst.Cores.Dil.dq c
-      (Work.FTS.EllipticEst.Cores.Dil.dq c g) z θ := rfl
 
 /-! ## The mean-value engine -/
 
@@ -129,41 +96,8 @@ theorem HkSq_zero_eq_L2Sq (α : ℝ) (g : ℝ → ℝ → ℝ) :
   refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => ?_)
   exact HkIntegrand_zero_eq' α g z θ
 
-/-- **`HkSq α 0 (D_z²f) ≤ HkSq α 2 f`**: the level-`0` norm of the twice radially differentiated
-function is the `i = 2` pure slot of the level-`2` norm. -/
-theorem HkSq_zero_DzIter_two_le' (α : ℝ) (g : ℝ → ℝ → ℝ) (hmem : Work.Spaces.HkMem α 2 g) :
-    Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 g) ≤ Work.Spaces.HkSq α 2 g := by
-  rw [HkSq_zero_eq_L2Sq]
-  exact Work.Spaces.L2Sq_DzIter_le_HkSq α 2 g hmem 2 le_rfl
 
-/-- On `Iθ` (where `sin(2θ) ≥ 0`) the level-`0` slot squares to `g² · sin(2θ)^{-η} · w²`. -/
-theorem weight_sq_eq' (g : ℝ → ℝ → ℝ) (z θ : ℝ) (hθ : θ ∈ Work.Spaces.Iθ) :
-    (g z θ * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2
-      = (g z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ * (Work.Spaces.w z) ^ 2 := by
-  have hs : 0 ≤ Real.sin (2 * θ) := by
-    refine Real.sin_nonneg_of_mem_Icc ⟨by linarith [hθ.1], ?_⟩
-    linarith [hθ.2, Real.pi_pos]
-  have hsq : (Real.sin (2 * θ) ^ (Work.Spaces.eta / 2)) ^ (2 : ℕ)
-      = Real.sin (2 * θ) ^ Work.Spaces.eta := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hs]
-    norm_num
-  rw [Work.FTS.EllipticEst.sEta, mul_pow, div_pow, hsq, Real.rpow_neg hs]
-  ring
 
-/-- **The left-hand side of the target is `HkSq α 0 (∂_θ²(D_z²Ψ))`.** -/
-theorem lhs_eq_HkSq' (α : ℝ) (Ψ : ℝ → ℝ → ℝ) :
-    (∫ z in Work.Spaces.Iz, (Work.Spaces.w z) ^ 2 *
-        (∫ θ in Work.Spaces.Iθ,
-          (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ) z θ) ^ 2 *
-            Work.FTS.EllipticEst.sEta θ))
-      = Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ)) := by
-  rw [HkSq_zero_eq_L2Sq, Work.Spaces.L2Sq]
-  refine MeasureTheory.setIntegral_congr_fun measurableSet_Ici (fun z _ => ?_)
-  rw [show Work.Spaces.Iθ = Set.Icc 0 (Real.pi / 2) from rfl]
-  rw [MeasureTheory.setIntegral_congr_fun measurableSet_Icc
-    (fun θ hθ => weight_sq_eq' _ z θ hθ)]
-  rw [MeasureTheory.integral_mul_const]
-  ring
 
 /-! ## `Q0` is conull -/
 
@@ -326,30 +260,6 @@ theorem pthIter_two_dqq_eqOn {c : ℝ} {f : ℝ → ℝ → ℝ}
     (Work.FTS.EllipticEst.Cores.Dil.dq_congr_of_pos (lt_trans zero_lt_one hc) hcongr hz).symm
   rw [h1, h2]
 
-/-- **The second radial derivative of `∂_θ²Ψ` is `∂_θ²(D_z²Ψ)`** on the open quadrant: the two
-`D_z`'s commute with the two `θ`-derivatives. -/
-theorem DzDz_pthIter_two_AgreeOnQ {Ψ : ℝ → ℝ → ℝ} (hΨ : Work.FTS.EllipticEst.SmoothOpen Ψ) :
-    ∀ (z θ : ℝ), 0 < z → θ ∈ Set.Ioo 0 (Real.pi / 2) →
-      Work.Spaces.Dz (Work.Spaces.Dz (Work.Spaces.pthIter 2 Ψ)) z θ
-        = Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ) z θ := by
-  intro z θ hz hθ
-  have hB : Work.Spaces.pthIter 2 Ψ = Work.Spaces.pthIter 2 Ψ := rfl
-  have hev : (fun z' : ℝ => Work.Spaces.pthIter 2 (Work.Spaces.Dz Ψ) z' θ)
-      =ᶠ[𝓝 z] (fun z' : ℝ => Work.Spaces.Dz (Work.Spaces.pthIter 2 Ψ) z' θ) := by
-    filter_upwards [isOpen_Ioi.mem_nhds hz] with z' hz'
-    exact Work.FTS.EllipticEst.Cores.Dil.pthIter_two_Dz_AgreeOnQ hΨ z' θ hz' hθ.1 hθ.2
-  have hderiv : deriv (fun z' : ℝ => Work.Spaces.Dz (Work.Spaces.pthIter 2 Ψ) z' θ) z
-      = deriv (fun z' : ℝ => Work.Spaces.pthIter 2 (Work.Spaces.Dz Ψ) z' θ) z :=
-    hev.deriv_eq.symm
-  calc Work.Spaces.Dz (Work.Spaces.Dz (Work.Spaces.pthIter 2 Ψ)) z θ
-      = z * deriv (fun z' : ℝ => Work.Spaces.Dz (Work.Spaces.pthIter 2 Ψ) z' θ) z := rfl
-    _ = z * deriv (fun z' : ℝ => Work.Spaces.pthIter 2 (Work.Spaces.Dz Ψ) z' θ) z := by
-        rw [hderiv]
-    _ = Work.Spaces.Dz (Work.Spaces.pthIter 2 (Work.Spaces.Dz Ψ)) z θ := rfl
-    _ = Work.Spaces.pthIter 2 (Work.Spaces.Dz (Work.Spaces.Dz Ψ)) z θ :=
-        (Work.FTS.EllipticEst.Cores.Dil.pthIter_two_Dz_AgreeOnQ hΨ.Dz z θ hz hθ.1 hθ.2).symm
-    _ = Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ) z θ := by
-        rw [Work.Spaces.DzIter_succ, Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero]
 
 /-! ## The class membership of the second difference-quotient datum -/
 

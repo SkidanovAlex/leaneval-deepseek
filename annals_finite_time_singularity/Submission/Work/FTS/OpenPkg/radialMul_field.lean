@@ -1,49 +1,15 @@
-/-
-# `Submission/Work/FTS/OpenPkg/radialMul_field.lean`
-
-The **open-quadrant** (interior) form of the lossless radial product `radial_prod`.
-
-`Work.FTS.Nonlinear.RadialProd.radial_prod` proves the lossless radial product in the
-`SmoothQuad` class (genuine `C^∞` through `z = 0`), which is not inhabited by the real objects
-of the route.  The present module re-proves it in the class actually available —
-`Work.FTS.EllipticEst.SmoothOpen` (`C^∞` on the open quadrant `(0,∞) × (0,π/2)`, no boundary
-vanishing, no smoothness at `z = 0`) — which is the `radialMul` field of the primed interface
-`Work.FTS.OpenPkg.N4Norm'`.
-
-## Route
-
-Write `Rint r z = Σ_{i≤4}(D_z^i r z)² w(z)²`, `Rr r = ∫_z Rint r z`, `Qg g θ = ∫_z (D_z g)² w²`,
-`σ θ = sin(2θ)^{-η}`.  The whole estimate is a *pointwise* majorant for `HkIntegrand α 4 (r·g)`
-followed by one integration over `z`:
-
-* `hkIntegrand_prod_le_open` (from the already-proved
-  `Work.FTS.Nonlinear.Pieces.RNP.RNP24.hkIntegrand_prod_le_rad_uniform`):
-  `HkIntegrand α 4 (r·g) z θ ≤ K [Rr r · HkIntegrand α 4 g z θ
-    + (D_z^4r z)² w(z)² σ θ · Qg g θ]`
-  for a universal constant `K`; the radial slots `b ≤ 3` are controlled by the radial
-  Hardy inequality (`Rr r`) and the single slot `b = 4` by the radial Hardy inequality for `g`
-  (`Qg g θ`).
-* `HkSq_prod_le_open`: integrate over `z`, use `∫_z (D_z^4r)²w² ≤ Rr r` and
-  `∫_θ σ θ Qg g θ ≤ HkSq α 4 g` (`integrable_smE_Qg_le_open`, proved via the Tonelli identity
-  `sda_HkSqSwap_open` for the open class).
-* `hkMem_prod_open`: the honesty `HkMem α 4 (r·g)` follows from the integrability of the same
-  majorant.
-
-`radialMul_field` reads off the `Xn`-bound, the two constants `K` collapsing into the single
-universal constant `2K + 1`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.OpenPkg.Defs
 import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS.OpenPkg.Defs
 import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.hkIntegrand_prod_le_rad_uniform
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

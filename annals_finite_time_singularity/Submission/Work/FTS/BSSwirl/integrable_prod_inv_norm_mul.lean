@@ -1,36 +1,10 @@
-/-
-# `Work.FTS.BSSwirl.integrable_prod_inv_norm_mul`
-
-The Newtonian kernel `‖x - y‖⁻¹` is locally integrable in `ℝ³` (`∫_{B(0,R)} ‖z‖⁻¹ dz = 2πR²`,
-the exponent `-1` being above the threshold `-3` of dimension `3`), so multiplying it by a
-*measurable, bounded, compactly supported* function on `ℝ³ × ℝ³` keeps us inside `L¹`:
-
-`p ↦ ‖p.1 - p.2‖⁻¹ * g p` is `Integrable (volume.prod volume)` whenever `g` is a.e. strongly
-measurable, bounded by `C`, and supported in `K × L` with `K`, `L` compact.
-
-## Proof
-
-Let `κ p = ‖p.1 - p.2‖⁻¹ · 1_K p.1 · 1_L p.2`.  Two facts give the result:
-
-* `κ` is integrable.  It is measurable, and its `lintegral` is finite: since the indicators are
-  `0/1`-valued, `ofReal κ` is the product of the three `ofReal`s, so Tonelli computes the
-  integral as an iterated one; for `x ∈ K` the inner integral is bounded by `2π (R_L + R_K + 1)²`
-  (the ball `B(0, R_L)` sits inside `B(x, R_L + R_K + 1)`; translate it to the origin and
-  integrate the radial power `‖z‖⁻¹ = ‖z‖ ^ (-1)` there) — that one-variable estimate is the
-  separate lemma `Work.FTS.BSSwirl.lintegral_inv_norm_mul_ball_indicator_le` — and the outer
-  integral is that constant times `volume K < ⊤`.
-* `p ↦ ‖p.1 - p.2‖⁻¹ * g p` agrees pointwise with `κ p * g p`: where `g p ≠ 0` the support
-  hypothesis forces `p ∈ K × L`, hence the indicators equal `1`; where `g p = 0` both sides
-  vanish.  The claim then follows from `Integrable.bdd_mul` (integrating `κ` against the bounded
-  a.e. strongly measurable `g`).
--/
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Function.L1Space.Integrable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.BSSwirl.Defs
-import Submission.Work.FTS.BSSwirl.lintegral_inv_norm_mul_ball_indicator_le
-import Submission.Work.CoreResiduals.BiotSavart.lintegral_ball_norm_rpow
 import Submission.Work.CoreResiduals.BiotSavart.setIntegral_norm_sub_rpow_le
+import Submission.Work.FTS.BSSwirl.lintegral_inv_norm_mul_ball_indicator_le
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

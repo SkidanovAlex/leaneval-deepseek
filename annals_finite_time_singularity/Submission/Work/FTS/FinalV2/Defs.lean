@@ -1,7 +1,7 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Submission.Work.FTS.Final.Assembly
-import Submission.Work.FTS.Final.ExtG.dynOK_extG
+import Submission.Work.FTS.Final.Small
 import Submission.Work.FTS.FinalV2.Sanitize
 
 -- v435-port: begin

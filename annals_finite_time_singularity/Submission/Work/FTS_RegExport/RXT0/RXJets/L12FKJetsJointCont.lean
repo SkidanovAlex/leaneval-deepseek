@@ -6,16 +6,14 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS.FinalV2.Defs
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS_RegExport.RXT.Sys.L12FK_family_jets
-import Submission.Work.FTS_RegExport.RXT.jc3
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKjet.Jets
-import Submission.Work.FTS_RegExport.RXT.SysAux.L12_jet_pkg_uniform
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKjet.L12
 import Submission.Work.FTS_RegExport.RXT.SysAux.FK_jet_pkg_uniform
-import Submission.Work.FTS_RegExport.RXT0.QlimTauLipW
+import Submission.Work.FTS_RegExport.RXT.SysAux.L12_jet_pkg_uniform
+import Submission.Work.FTS_RegExport.RXT.st1_of_weighted
 import Submission.Work.FTS_RegExport.RXT0.QlimZLipBox
-import Submission.Work.FTS_RegExport.RXT0.L12densFtauIntegrable
 import Submission.Work.FTS_RegExport.RXT0.slotJetsJointCont
 
 -- v435-port: begin

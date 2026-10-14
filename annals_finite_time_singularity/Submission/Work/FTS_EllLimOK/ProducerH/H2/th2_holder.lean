@@ -1,60 +1,25 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.H2.th2_holder` — the two-point θ-Hölder modulus of `∂_θ²(E g)`
-
-This is the `HolMod` producer of the box-`C²` chapter (`ProducerH/H2/Data.lean`).
-
-## Route
-
-Write `S = E g` and `G = Work.Elliptic.Lzero (E g) z` on a fixed slice `z`.  The slice solves
-
-  `S'' = tan θ · S' + (cos θ)⁻² S − 6 S − G`   on `(0,π/2)`,
-
-and the key object is the combination
-
-  `W := S'' + 4S + G = tan θ · S' + ((cos θ)⁻² − 2) · S`,
-
-which has the closed form (`BoxAux.th2Ident`)  `W(θ) = (cos θ)⁻³ ∫_θ^{π/2} sin t cos²t G(t) dt`.
-
-On the open quadrant `G = g + α²D_z²S + 5α D_zS` (the elliptic law plus
-`z²∂_z² = D_z² − D_z`), so `G` inherits the class rate
-
-  `|G| ≤ K·Xn6·min(θ,π/2−θ)^β₀`,   `β₀ = (γ−1)/2 = α/20`     (`BoxAux.lzero_rate`),
-
-and the sibling `wRateModulusUnif` converts the `π/2`-rate of `G` — through the integral formula
-above — into the two-point modulus `|W(θ) − W(θ')| ≤ C·Xn6·|θ−θ'|^β₀`.  The two remaining terms of
-
-  `S''(θ) − S''(θ') = (W(θ) − W(θ')) − 4(S(θ) − S(θ')) − (G(θ) − G(θ'))`
-
-are Lipschitz in `θ` with constant `C·Xn6`: `S` by the sibling `sliceDzMod` (`a = 0`), and `G`
-once more through `G = g + α²D_z²S + 5α D_zS`, with the source part `g` at its class rate
-`α/20` (`BoxAux.classCThetaHolder`) and the radial parts `D_zS`, `D_z²S` by `sliceDzMod`
-(`a = 1, 2`).  Since `θ, θ' ∈ (0,π/2)` gives `|θ − θ'| ≤ π/2`, a Lipschitz bound is a
-Hölder-`β₀` bound.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Eg_modulus
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Ident
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.classCSinRate
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.classCThetaHolder
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_deriv_bound
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.sliceDzMod
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.second_theta_deriv_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.slice_package_bounds
-import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.ClassC.Defs
-import Submission.Work.FTS.EllExist.Defs
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.sliceDzMod
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.wRateModulusUnif
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,54 +1,23 @@
-/-
-# `H6Row6/fkFacts7` — the six facts about the angular moment `FK f` at level `6`
-
-The angular moment of the datum,
-`FK f z = ∫_θ f(z,θ) K(θ) dθ` (`Work.Construction.FK`, `K(θ) = 3 sin θ cos²θ`), is a *radial*
-function of `z`.  This module collects the six facts about it that the level-six `N`-row needs,
-from the honest open-quadrant hypotheses `HQo α 6 f` (`C^∞` on the open quadrant plus honest
-`ℋ⁶`), the extra honesty `ℋ⁷` and the vanishing zero mode `L₁₂ f 0 = 0`:
-
-1. **regularity**: `z ↦ FK f z` is `C⁶` on the open quadrant (this is the finite-order
-   smoothness that `SmoothOpen (FK f)` would fail to capture — see
-   `H6Rows/Npair6BWork/NOTES_coefData_FK_FALSE.md`); the level `7` hypothesis is used here, via
-   `FK f = 3 F_*(f)` and the downward induction of
-   `EllipticEst.UopHk.contDiffOn_Fstar_of_smoothOpen_Hk`;
-2. **level-four membership** and **level-four norm bound** `|FK f|_{ℋ⁴} ≤ C |f|_{ℋ⁴}` — the
-   clause `fkH` of the level-four norm interface (`OpenPkg.fkH_field`), which needs only
-   `HQo α 4 f` (obtained from `HQo α 6 f` by monotonicity of the honesty order);
-3. **level-six membership** (`H6Rows.Npair6BWork.fk_hkMem`, the angular Cauchy–Schwarz
-   `QangSq6Full` summed over `i ≤ 6`);
-4. **level-six norm bound** `|FK f|_{ℋ⁶} ≤ Ξ α^{-Cpow} |f|_{ℋ⁶}` (`fkH6_norm_le`, the sharp
-   homogeneous form of the level-six estimate; the witness has `Cpow = 0`);
-5. **the pointwise bound** `|FK f z| ≤ C α^{-1/2} |f|_{ℋ⁴}` for `z > 0`: Cauchy–Schwarz in `θ`
-   (`n5_FK_abs_le`, constant `4`) against the *uniform in `z`* angular slice bound
-   `∫_θ (f z θ)² ≤ 3 |f|²_{ℋ⁴}` (`TransportS.SupDzAux.sup_dz_avg_le`), and `1 ≤ α^{-1/2}`.
-
-The `θ`-dependence of the pointwise clause is vacuous (`FK f z` does not depend on `θ`), but the
-statement is kept in the requested form.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.Dispatch.truncRadialIbpTheta
+import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.SupPort.classC_sup_le
 import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkSmooth
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSupO
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsJetMajMass
 import Submission.Work.FTS.StrongPersist.N6_fkH
 import Submission.Work.FTS.StrongPersist.SupOpenH2
-import Submission.Work.FTS.StrongPersist.H6Rows.piecesC6
-import Submission.Work.FTS.OpenPkg.fkH_field
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.StrongLWP.Basic
-import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.Basic
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkSmooth
-import Submission.Work.FTS.Nonlinear.Pieces.Rl1.n5Bound
-import Submission.Work.FTS.TransportS.SupDzAux.sup_dz_avg_le
-import Submission.Work.FTS.EllipticEst.Dispatch.RadAux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fk_hkMem
-import Submission.Work.FTS.StrongPersist.H6Rows.NZaux.Slots
-import Submission.Work.FTS.StrongPersist.H6Row6.fkH6_norm_le
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.SolutionDelivery.Scaling.vorticityDecay_rescaleDatum
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,37 +1,12 @@
-/-
-# `SharpAux/Defs` — the twenty terms of the pointwise difference of `N`
-
-This file fixes the *vocabulary* of the difference `N α (F_*+g) (Φ_s+EllSol g) - N α (F_*+g')
-(Φ_s+EllSol g')` along a Galerkin difference `h = g - g'`, together with two product rules
-(the `ℋ⁴`-product and the `𝒲^{4,∞}`-product) in the exact shape consumed by the term bounds of
-`SharpAux/` and by the assembly in `RHS/sharp_N_diff`.
-
-The algebraic identity proved in `SharpAux/Core` is
-
-`N g - N g' = TRA + TRB + TRC + TRD + TUA + TUB + TUC + TUD + TVA + TVB + TVC + TVD
-                 + TDA + TDB + TDC + TDD + TEA + TEB + TEC + TED`   (on the open quadrant `Qd`),
-
-coming from the telescoping `P(g) - P(g') = P(g')(h) + P(Δ)(g)` of each of the five summands of
-`N`, where `Δ = PhiTil α h (EllSol h)` is the difference of the two straightened stream
-functions and `h = g - g'`.
-
-The `𝒲^{4,∞}`-priced first factors are `StarH α Φs = ((z+1)/z) Rop α (PhiTs α Φs)`,
-`UsPhi α Φs = Uop α (PhiTs α Φs)/s2`, `Vstar α Φs = Vop (PhiTs α Φs)`, `Fstar α`,
-`DthFstar α`, `DzFstar α` and `hKerA α = FK (Fstar α) = α·hKer`; the honest (`HQo α 4`) factors
-are the `g`, `g'`, `h`-derived atoms of the terms.
-
-Everything here is a definition or an elementary norm product rule; nothing is proved about the
-identity itself.  All declarations are `sorry`-free.
--/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.GalFields.Defs
 import Submission.Work.FTS.GalFields.RHS.HkSum
-import Submission.Work.FTS.GalFields.Norm.Basic
-import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.VocabO2
 import Submission.Work.FTS.Nonlinear.Open.Main
-import Submission.Work.Spaces.GammaW_Prelim
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.VocabO2
+import Submission.Work.Spaces.HkSq_terms
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

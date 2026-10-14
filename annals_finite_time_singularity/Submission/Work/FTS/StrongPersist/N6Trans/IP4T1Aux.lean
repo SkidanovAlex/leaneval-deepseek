@@ -1,10 +1,70 @@
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Submission.Work.FTS.H2.WPQ.Interior
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
 import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.IPGen.ip4SlotDomGen
-import Submission.Work.FTS.StrongPersist.N6Trans.HonestSupMixed
+import Submission.Work.FTS_EllLimOK.ThetaJets.ClassC_le
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.thD_reindex
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.RNP.row15aux.row15_notGood =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# Row 15: the "first bad angular jet" of `𝒰(Φ̃_*)`
+
+Row 15 of the nonlinear estimates (`N₂^{ss}`) is an `ℋ⁴`-estimate which, at those `z > 0` where
+the angular derivatives of `𝒰(Φ̃_*)` vanish at `θ → 0⁺`, is supplied by the pointwise bound of
+`Uop_PhiTs_bounds`; at the remaining `z` one instead needs the *lower* bound of `row15_bad`.  The
+present lemma is the logical bookkeeping that separates the two cases:
+
+> if all the iterated `z`-derivatives `∂_z^k 𝒰(Φ̃_*)` (`k ≤ 5`) have a limit at `θ → 0⁺`, and
+> not all of `D_z^b 𝒰(Φ̃_*)` (`b ≤ 4`) tend to `0`, then there is a **first** index `k ≤ 4` at
+> which `∂_z^k 𝒰(Φ̃_*)` fails to tend to `0`, and there it is *bounded away from zero*.
+
+The mathematics is a triangular change of coordinates.  Since `𝒰(Φ̃_*)` is `C^∞` on the open
+quadrant (`StarPkg.smooth`), its `z`-slices at interior angles are `C^∞`, and the Stirling
+expansion of the operator `D_z = z∂_z` (`Work.FTS.H2.WPQ.DzIter_eq_sum_scoef_smooth`) reads
+
+  `D_z^b 𝒰 = ∑_{k ≤ b} S(b,k)·z^k·∂_z^k 𝒰`     (`S = scoef`, Stirling numbers of the second kind)
+
+in a neighbourhood of `θ = 0` inside `θ > 0` — a *triangular* linear combination of the jets
+`∂_z^k 𝒰`, whose diagonal coefficient is `S(b,b) = 1`.  Hence passing to the limit `θ → 0⁺`
+(which exists for `∂_z^k 𝒰`, `k ≤ 5`, by hypothesis, and is preserved by finite sums),
+
+  `lim D_z^b 𝒰 = ∑_{k ≤ b} S(b,k) z^k · lim ∂_z^k 𝒰`,
+
+so if every limit `L_k` (`k ≤ 4`) vanished then every `D_z^b 𝒰` (`b ≤ 4`) would tend to `0`,
+against `hnotgood`.  Taking `k` minimal with `L_k ≠ 0`, every `L_j` (`j < k`) vanishes by
+triangularity, and `L_k ≠ 0` makes `∂_z^k 𝒰` eventually bounded away from `0`.
+-/
+
+namespace Work.FTS.Nonlinear.Pieces.RNP.row15aux
+
+open scoped Real Topology
+open Filter Set MeasureTheory
+
+set_option autoImplicit false
+
+
+
+end Work.FTS.Nonlinear.Pieces.RNP.row15aux
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.IP4T1Aux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -31,77 +91,7 @@ theorem SmoothOpen_mul {F G : ℝ → ℝ → ℝ} (hF : Work.FTS.EllipticEst.Sm
   rw [hfun]
   exact h1.mul h2
 
-/-- The `IP4`-slot domination with unit coefficients: for `u`, `g` smooth on the open quadrant,
-`|IP4 1 1 1 1 1 1 α u g| ≤ (3^3·10^22)·leafSum α u g`. -/
-theorem IP4_le_leafSum (α : ℝ) (u g : Work.FTS.Galerkin.Fn) (hα : 0 < α) (hα1 : α ≤ 1)
-    (hu : Work.FTS.EllipticEst.SmoothOpen u) (hg : Work.FTS.EllipticEst.SmoothOpen g) :
-    |Work.FTS.CoercivityFix.Assembly.IP4 1 1 1 1 1 1 α u g|
-      ≤ (3 ^ 3 * 10 ^ 22) * Work.FTS.TransportS.leafSum α u g := by
-  obtain ⟨_, hD⟩ := Work.FTS.IPGen.ip4SlotDomGen (c₁ := 1) (c₂ := 1) (c₁' := 1) (c₂' := 1)
-    (c₁'' := 1) (c₂'' := 1) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-    (by norm_num) (by norm_num)
-  have h := hD α ⟨hα, hα1⟩ u g hu hg
-  simpa only [max_self, one_pow, one_mul] using h
 
-/-- **The reduction of `IP4T1Honest` to the honest `leafSum` bound.**
-
-If the honest-class `leafSum` of the product `f·D_θg` against `g` is bounded by
-`Cb/√(γ-1)·|f|_{ℋ⁴}·|g|²_{ℋ⁴}`, then the transport clause holds.  The only inputs are the slot
-domination `IP4_le_leafSum` (with `3^3·10^22 = K`) and `1/√(γ-1) = √10/√α ≤ √10·α^{-1/2}`. -/
-theorem IP4T1Honest_of_leafSumBound
-    (h : ∃ Cb : ℝ, 0 < Cb ∧ ∀ (α : ℝ) (f g : Work.FTS.Galerkin.Fn), 0 < α → α ≤ 1 →
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
-      Work.FTS.EllipticEst.SmoothOpen g → Work.Spaces.HkMem α 4 g →
-      Work.Spaces.DecayAll 4 g →
-      Work.FTS.TransportS.leafSum α (fun z θ => f z θ * Work.Spaces.Dth g z θ) g
-        ≤ Cb / Real.sqrt (Work.Spaces.gam α - 1) * Work.Spaces.HkNorm α 4 f
-            * Work.Spaces.HkSq α 4 g) :
-    ∃ Ct α₂ : ℝ, 0 < Ct ∧ 0 < α₂ ∧
-      ∀ α ∈ Set.Ioc 0 α₂, ∀ f g : Work.FTS.Galerkin.Fn,
-        Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
-        Work.FTS.EllipticEst.SmoothOpen g → Work.Spaces.HkMem α 4 g →
-          Work.Spaces.DecayAll 4 g →
-        |Work.FTS.CoercivityFix.Assembly.IP4 1 1 1 1 1 1 α
-            (fun z θ => f z θ * Work.Spaces.Dth g z θ) g|
-          ≤ Ct * α ^ (-(1 / 2 : ℝ)) * Work.Spaces.HkNorm α 4 f
-              * (Work.Spaces.HkNorm α 4 g) ^ 2 := by
-  obtain ⟨Cb, hCbpos, hCb⟩ := h
-  refine ⟨(3 ^ 3 * 10 ^ 22) * Cb * Real.sqrt 10, 1, ?_, one_pos, ?_⟩
-  · positivity
-  · intro α hα f g hf hmemf hg hmemg hdecg
-    have hα1 : α ≤ 1 := hα.2
-    have hαpos : 0 < α := hα.1
-    have hγ : 0 < Work.Spaces.gam α - 1 := by rw [Work.Spaces.gam_sub_one]; linarith
-    have hs : 0 < Real.sqrt (Work.Spaces.gam α - 1) := Real.sqrt_pos.mpr hγ
-    -- `1/√(γ-1) = √10·α^{-1/2}` exactly
-    have hgam : Work.Spaces.gam α - 1 = α / 10 := Work.Spaces.gam_sub_one α
-    have hsqrt : 1 / Real.sqrt (Work.Spaces.gam α - 1)
-        = Real.sqrt 10 * α ^ (-(1 / 2 : ℝ)) := by
-      rw [hgam, Real.sqrt_div hαpos.le 10, Real.sqrt_eq_rpow, Real.sqrt_eq_rpow,
-        Real.rpow_neg hαpos.le]
-      field_simp
-    have hle := hCb α f g hαpos hα1 hf hmemf hg hmemg hdecg
-    have hK := IP4_le_leafSum α (fun z θ => f z θ * Work.Spaces.Dth g z θ) g hαpos hα1
-      (SmoothOpen_mul hf (hg.Dth)) hg
-    have hmod : Work.Spaces.HkSq α 4 g = (Work.Spaces.HkNorm α 4 g) ^ 2 := by
-      rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 4 g)]
-    have hXn : 0 ≤ Work.Spaces.HkNorm α 4 f := Work.Spaces.HkNorm_nonneg α 4 f
-    have hgnn : 0 ≤ Work.Spaces.HkSq α 4 g := Work.Spaces.HkSq_nonneg α 4 g
-    have hstep : (3 ^ 3 * 10 ^ 22)
-          * Work.FTS.TransportS.leafSum α (fun z θ => f z θ * Work.Spaces.Dth g z θ) g
-        ≤ (3 ^ 3 * 10 ^ 22) * (Cb / Real.sqrt (Work.Spaces.gam α - 1)
-            * Work.Spaces.HkNorm α 4 f * Work.Spaces.HkSq α 4 g) :=
-      mul_le_mul_of_nonneg_left hle (by norm_num)
-    have hstep2 : (3 ^ 3 * 10 ^ 22) * (Cb / Real.sqrt (Work.Spaces.gam α - 1)
-          * Work.Spaces.HkNorm α 4 f * Work.Spaces.HkSq α 4 g)
-        = (3 ^ 3 * 10 ^ 22) * Cb * Real.sqrt 10 * α ^ (-(1 / 2 : ℝ))
-            * Work.Spaces.HkNorm α 4 f * (Work.Spaces.HkNorm α 4 g) ^ 2 := by
-      rw [show Cb / Real.sqrt (Work.Spaces.gam α - 1) * Work.Spaces.HkNorm α 4 f
-            * Work.Spaces.HkSq α 4 g
-          = Cb * (1 / Real.sqrt (Work.Spaces.gam α - 1)) * Work.Spaces.HkNorm α 4 f
-              * Work.Spaces.HkSq α 4 g by ring]
-      rw [hmod, hsqrt]
-      ring
-    linarith [hK, hstep, hstep2]
 
 end Work.FTS.StrongPersist.N6Trans
+end

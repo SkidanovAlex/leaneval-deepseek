@@ -5,11 +5,11 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.Algebra.Module.ModuleTopology
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.CoeffJetsDefs
 import Submission.Work.FTS_RegExport.RXT.C2Radial
-import Submission.Work.FTS_RegExport.RXT.SysAux.Theta_ops
 import Submission.Work.FTS_RegExport.RXT.SysAux.L12_FK_Ftau_split
-import Submission.Work.FTS_RegExport.RXT.SysAux.SigR_eq_reduced
+import Submission.Work.FTS_RegExport.RXT.SysAux.bR_decomp
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.R1G.DecayInZ_gA
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

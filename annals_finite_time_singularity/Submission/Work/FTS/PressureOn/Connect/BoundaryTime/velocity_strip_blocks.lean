@@ -1,36 +1,10 @@
-/-
-# `Work.FTS.PressureOn.Connect.BoundaryTime.velocity_strip_blocks`
-
-The three block facts about the *time* block of the velocity on a closed strip `ℝ³ × [0,S]`,
-for a physical solution whose velocity `u = physVel ω` is jointly `C^{1,α}` on the strips
-`ℝ³ × [0,S']`, `S' < T`:
-
-* the time block `p ↦ fderivWithin ℝ u.uncurry (univ ×ˢ Icc 0 S) p (0,1)` of the within
-  derivative is **continuous on the closed strip** `univ ×ˢ Icc 0 S` — this is the strip
-  regularity (`IsContDiffHolderOn` unfolds to `ContDiffOn ℝ 1`) together with
-  `ContDiffOn.continuousOn_fderivWithin` and the evaluation of a continuous field of continuous
-  linear maps at the fixed vector `(0,1)`;
-* at **interior times** `t ∈ (0,S)` the within derivative along `(0,1)` is the two sided
-  `timeDeriv`: the strip is a neighbourhood of `(x,t)`, so `fderivWithin` is `fderiv`, and the
-  latter evaluated at `(0,1)` is the derivative of the time slice
-  (`hasDerivAt_slice_of_hasFDerivAt_uncurry`);
-* at the **boundary time** `t = 0` the same within derivative is the **right** derivative of
-  the slice within `Ici 0`.  This is the chain rule for within derivatives,
-  `HasFDerivWithinAt.comp_of_tendsto`, applied to the `C¹`-within-strip function and the curve
-  `s ↦ (x,s)`, whose image lies in the strip for all small nonnegative times; the resulting
-  `HasDerivWithinAt` is on `Ici 0` because `Icc 0 S ∈ 𝓝[Ici 0] 0` (`0 < S`).
-
-The last clause is exactly the one sided hypothesis `huc` consumed by
-`Connect.BoundaryTime.lambExt_timeDeriv_strip`; the middle one is the bridge between the
-boundary-based and the interior-based descriptions of `∂ₜu`.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.TangentCone.Prod
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Basic
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_slice_of_hasFDerivAt_uncurry
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

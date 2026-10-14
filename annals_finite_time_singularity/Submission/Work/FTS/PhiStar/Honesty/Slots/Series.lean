@@ -2,13 +2,13 @@ import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.PSeries
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PhiStar.Honesty.Slots.Wt
 import Submission.Work.FTS.PhiStar.Honesty.acoeff_DzIter_le
-import Submission.Work.FTS.PhiStar.Series.eFam_iteratedDeriv_le
 import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
-import Submission.Work.FTS.PhiStar.FlatWAux.ModeRescaledSmooth
-import Submission.Work.FTS.ClassCHon.CmpSupp.cmode_facts
-import Submission.Work.FTS.PhiStar.Series.acoeff_zero_of_fstar
+import Submission.Work.FTS.PhiStar.Series.DecayRem
+import Submission.Work.FTS.PhiStar.Series.eFam_iteratedDeriv_le
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

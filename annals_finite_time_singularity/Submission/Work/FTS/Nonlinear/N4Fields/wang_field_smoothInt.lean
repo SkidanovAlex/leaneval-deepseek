@@ -1,12 +1,273 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.Nonlinear.Interface
-import Submission.Work.FTS.Nonlinear.N4Fields.wlInf_of_pointwise_bounds
-import Submission.Work.FTS.H2.prodW_interior_bound
-import Submission.Work.FTS.Nonlinear.N4Fields.wang_field_smooth
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.L12HQ
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.H2.T1Q.T1EasyContQ
 import Submission.Work.Spaces.ProductRuleInW
+import Submission.Work.Spaces.dthU_Gam
+-- ===== merged: Submission.Work.FTS.FinalClock.PhiZopBound =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+set_option autoImplicit false
+
+noncomputable section
+
+open Set Filter
+
+namespace Work.FTS.FinalClock
+
+/-! ## `Zop` on a negated or shifted function -/
+
+/-- `Zop` commutes with pointwise negation: this is `deriv_const_sub` with the constant `0`,
+since `-h z = 0 - h z`. -/
+lemma Zop_neg_fun (h : ℝ → ℝ) :
+    Work.Spaces.Zop (fun z => - h z) = fun z => - Work.Spaces.Zop h z := by
+  have h' : (fun z : ℝ => - h z) = fun z => (0 : ℝ) - h z := by
+    funext z
+    ring
+  rw [h']
+  funext z
+  simp only [Work.Spaces.Zop]
+  rw [deriv_const_sub]
+  ring
+
+/-- `Zop` of a constant minus a function is minus `Zop` of the function. -/
+lemma Zop_const_sub_fun (c : ℝ) (h : ℝ → ℝ) :
+    Work.Spaces.Zop (fun z => c - h z) = fun z => - Work.Spaces.Zop h z := by
+  funext z
+  simp only [Work.Spaces.Zop]
+  rw [deriv_const_sub]
+  ring
+
+/-- The same at the level of the iterates, for order `≥ 1` (the order `0` iterate is the
+function itself, for which the identity fails). -/
+lemma Zop_iter_const_sub_fun (c : ℝ) (h : ℝ → ℝ) (b : ℕ) (hb : 1 ≤ b) :
+    Work.Spaces.Zop^[b] (fun z => c - h z) = fun z => - Work.Spaces.Zop^[b] h z := by
+  induction b with
+  | zero => exact absurd hb (by omega)
+  | succ k ih =>
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · rw [hk0]
+        simpa using Zop_const_sub_fun c h
+      · have ihk : Work.Spaces.Zop^[k] (fun z => c - h z)
+            = fun z => - Work.Spaces.Zop^[k] h z := ih hkpos
+        calc Work.Spaces.Zop^[k + 1] (fun z => c - h z)
+            = Work.Spaces.Zop (Work.Spaces.Zop^[k] (fun z => c - h z)) :=
+                Function.iterate_succ_apply' _ k _
+          _ = Work.Spaces.Zop (fun z => - Work.Spaces.Zop^[k] h z) := by rw [ihk]
+          _ = fun z => - Work.Spaces.Zop (Work.Spaces.Zop^[k] h) z := Zop_neg_fun _
+          _ = fun z => - Work.Spaces.Zop^[k + 1] h z := by
+                rw [Function.iterate_succ_apply' Work.Spaces.Zop k h]
+
+/-! ## The relation between the iterates of `3/(1+z)` and of `z/(1+z)` -/
+
+/-- For order `b ≥ 1` and `z > -1` (where `1/(1+z) = 1 - z/(1+z)`), the `b`-th `Zop`-iterate
+of `3/(1+z)` is `-3` times the `b`-th iterate of `z/(1+z)`. -/
+lemma Zop_iter_three_div_eq (b : ℕ) (hb : 1 ≤ b) {z : ℝ} (hz : -1 < z) :
+    Work.Spaces.Zop^[b] (fun z : ℝ => 3 / (1 + z)) z
+      = -3 * Work.Spaces.Zop^[b] (fun z : ℝ => z / (1 + z)) z := by
+  have hconst : (fun z : ℝ => 3 / (1 + z)) = fun z => 3 * (1 / (1 + z)) := by
+    funext z
+    rw [div_eq_mul_inv, one_div]
+  have hcongr : Work.Spaces.Zop^[b] (fun z : ℝ => 1 / (1 + z)) z
+      = Work.Spaces.Zop^[b] (fun z : ℝ => 1 - z / (1 + z)) z :=
+    Work.FTS.CoercivityFix.E2Bound.SlotMul.Zop_iterate_eqOn_of_eqOn b isOpen_Ioi
+      (fun w hw => by
+        have hw1 : (1 : ℝ) + w ≠ 0 := by
+          have := Set.mem_Ioi.mp hw
+          linarith
+        field_simp
+        ring)
+      hz
+  have hstep := Zop_iter_const_sub_fun (1 : ℝ) (fun z : ℝ => z / (1 + z)) b hb
+  have hcm : Work.Spaces.Zop^[b] (fun z : ℝ => 3 * (1 / (1 + z))) z
+      = 3 * Work.Spaces.Zop^[b] (fun z : ℝ => 1 / (1 + z)) z := by
+    rw [Work.FTS.CoercivityFix.Transfer.E2pkg.Zop_iter_const_mul]
+  calc Work.Spaces.Zop^[b] (fun z : ℝ => 3 / (1 + z)) z
+      = Work.Spaces.Zop^[b] (fun z : ℝ => 3 * (1 / (1 + z))) z := by rw [hconst]
+    _ = 3 * Work.Spaces.Zop^[b] (fun z : ℝ => 1 / (1 + z)) z := hcm
+    _ = 3 * Work.Spaces.Zop^[b] (fun z : ℝ => 1 - z / (1 + z)) z := by rw [hcongr]
+    _ = 3 * (- Work.Spaces.Zop^[b] (fun z : ℝ => z / (1 + z)) z) := by rw [hstep]
+    _ = -3 * Work.Spaces.Zop^[b] (fun z : ℝ => z / (1 + z)) z := by ring
+
+/-! ## The bound -/
+
+theorem PhiZopBound : ∀ (b : ℕ) (hb : b ≤ 4) (z : ℝ), 0 ≤ z →
+    |Work.Spaces.Zop^[b] (fun z => 3 / (1 + z)) z| ≤ 100 := by
+  intro b hb z hz
+  rcases Nat.eq_zero_or_pos b with hb0 | hbpos
+  · subst hb0
+    have h1 : (0 : ℝ) < 1 + z := by linarith
+    have h2 : 3 / (1 + z) ≤ 3 := by
+      rw [div_le_iff₀ h1]
+      linarith
+    have h3 : 0 ≤ 3 / (1 + z) := by positivity
+    rw [Function.iterate_zero_apply, abs_of_nonneg h3]
+    linarith
+  · rw [Zop_iter_three_div_eq b hbpos (by linarith)]
+    have hbnd : |Work.Spaces.Zop^[b] (fun z : ℝ => z / (1 + z)) z| ≤ 1 := by
+      rw [← Work.FTS.CoercivityFix.Transfer.E2pkg.DzdIter_eq_Zop_iter b
+        (fun z : ℝ => z / (1 + z))]
+      exact Work.FTS.NonlinRows.NRow10aux.phiSelf_DzdIter_bound b hb z hz
+    rw [abs_mul, show |(-3 : ℝ)| = 3 by norm_num]
+    nlinarith [abs_nonneg (Work.Spaces.Zop^[b] (fun z : ℝ => z / (1 + z)) z)]
+
+end Work.FTS.FinalClock
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.N4Fields.fk_field =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.Nonlinear.N4Fields
+
+set_option autoImplicit false
+
+theorem fk_field {α₂ : ℝ} (hα₂ : 0 < α₂) (hα₂1 : α₂ ≤ 1) : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 α₂, ∀ g : Work.FTS.Galerkin.Fn, Work.FTS.Nonlin.RegQ α 4 g → Work.Construction.L12 g 0 = 0 → Work.Spaces.HkMem α 4 (fun z _ => Work.Construction.FK g z) ∧ Work.FTS.Nonlin.Xn α (fun z _ => Work.Construction.FK g z) ≤ C * Work.FTS.Nonlin.Xn α g := by
+  -- the two universal constants: `∫_θ K(θ)²` and `∫_θ sin(2θ)^{-η}`
+  set AK : ℝ := ∫ θ in Work.Spaces.Iθ, Work.Elliptic.Ktheta θ ^ 2 with hAKdef
+  set Cθ : ℝ := ∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) with hCθdef
+  have hAKnn : 0 ≤ AK := by
+    rw [hAKdef]
+    exact setIntegral_nonneg measurableSet_Icc (fun θ _ => sq_nonneg _)
+  have hCθnn : 0 ≤ Cθ := by
+    rw [hCθdef]
+    exact setIntegral_nonneg measurableSet_Icc
+      (fun θ hθ => Real.rpow_nonneg (Work.Elliptic.sin_two_nonneg_of_mem hθ) _)
+  refine ⟨Real.sqrt (5 * AK * Cθ) + 1, ?_, ?_⟩
+  · have h := Real.sqrt_nonneg (5 * AK * Cθ)
+    linarith
+  intro α hαIoc g hreg _
+  obtain ⟨hαpos, hαα₂⟩ := Set.mem_Ioc.mp hαIoc
+  have hα1 : α ≤ 1 := le_trans hαα₂ hα₂1
+  obtain ⟨hsm, hmem, -⟩ := hreg
+  set u : ℝ → ℝ := fun z => Work.Elliptic.Qang g 0 z with hudef
+  -- ## the a.e. identity `D_z^i (FK g) = Qang g i` for `i ≤ 4`
+  have hae : ∀ᵐ z ∂(MeasureTheory.volume), z ∈ Work.Spaces.Iz → ∀ i ∈ Finset.range 5,
+      Work.Elliptic.DzdIter i u z = Work.Elliptic.Qang g i z := by
+    filter_upwards [DzdIter_Qang_ae hsm hmem, MeasureTheory.Measure.ae_ne volume (0 : ℝ)]
+      with z hz hne hzI
+    exact hz (lt_of_le_of_ne hzI (Ne.symm hne))
+  have htransfer : ∀ i : ℕ, i ≤ 4 → ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+      (Work.Elliptic.Qang g i z) ^ 2 * (Work.Spaces.w z) ^ 2
+        = (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2 := by
+    intro i hi
+    rw [MeasureTheory.ae_restrict_iff' (s := Work.Spaces.Iz) measurableSet_Ici]
+    filter_upwards [hae] with z hz hzI
+    rw [← hz hzI i (Finset.mem_range.mpr (by omega : i < 5))]
+  -- ## the per-slot integrability and bound
+  have hInt : ∀ i : ℕ, i ≤ 4 → MeasureTheory.IntegrableOn
+      (fun z => (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2) Work.Spaces.Iz := by
+    intro i hi
+    exact (Qang_sq_w_sq_integral hαpos hα1 hsm hmem hi).1.congr (htransfer i hi)
+  have hBnd : ∀ i : ℕ, i ≤ 4 → (∫ z in Work.Spaces.Iz,
+      (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2)
+        ≤ AK * Work.Spaces.HkSq α 4 g := by
+    intro i hi
+    rw [hAKdef, ← MeasureTheory.integral_congr_ae (htransfer i hi)]
+    exact (Qang_sq_w_sq_integral hαpos hα1 hsm hmem hi).2
+  have hsum_int : ∀ i ∈ Finset.range 5, MeasureTheory.IntegrableOn
+      (fun z => (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2) Work.Spaces.Iz :=
+    fun i hi => hInt i (Nat.le_of_lt_succ (Finset.mem_range.mp hi))
+  have hsum_le : (∫ z in Work.Spaces.Iz, ∑ i ∈ Finset.range 5,
+        (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2)
+      ≤ 5 * (AK * Work.Spaces.HkSq α 4 g) := by
+    rw [MeasureTheory.integral_finsetSum (Finset.range 5) hsum_int]
+    calc ∑ i ∈ Finset.range 5, (∫ z in Work.Spaces.Iz,
+            (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2)
+        ≤ ∑ _i ∈ Finset.range 5, (AK * Work.Spaces.HkSq α 4 g) :=
+          Finset.sum_le_sum fun i hi => hBnd i (Nat.le_of_lt_succ (Finset.mem_range.mp hi))
+      _ = 5 * (AK * Work.Spaces.HkSq α 4 g) := by
+          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+          norm_num
+  -- ## the `ℋ⁴`-energy and the norm bound
+  have hHkSq : Work.Spaces.HkSq α 4 (fun z θ => u z) = (∫ z in Work.Spaces.Iz,
+        ∑ i ∈ Finset.range 5, (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2) * Cθ := by
+    rw [Work.Elliptic.HkSq_rad, hCθdef]
+  have hbound : Work.Spaces.HkSq α 4 (fun z θ => u z) ≤ (5 * AK * Cθ) * Work.Spaces.HkSq α 4 g := by
+    rw [hHkSq]
+    refine le_trans (mul_le_mul_of_nonneg_right hsum_le hCθnn) (le_of_eq ?_)
+    ring
+  have hXng : 0 ≤ Work.FTS.Nonlin.Xn α g := Real.sqrt_nonneg _
+  have hXn : Work.FTS.Nonlin.Xn α (fun z θ => u z)
+      ≤ Real.sqrt (5 * AK * Cθ) * Work.FTS.Nonlin.Xn α g := by
+    have h5 : 0 ≤ 5 * AK * Cθ := by nlinarith
+    calc Work.FTS.Nonlin.Xn α (fun z θ => u z)
+        = Real.sqrt (Work.Spaces.HkSq α 4 (fun z θ => u z)) := rfl
+      _ ≤ Real.sqrt ((5 * AK * Cθ) * Work.Spaces.HkSq α 4 g) := Real.sqrt_le_sqrt hbound
+      _ = Real.sqrt (5 * AK * Cθ) * Work.FTS.Nonlin.Xn α g := by
+          rw [Real.sqrt_mul h5]
+          rfl
+  -- ## membership in `ℋ⁴`
+  have hsinI : MeasureTheory.IntegrableOn
+      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))) Work.Spaces.Iθ :=
+    (Work.Spaces.sin_two_rpow (-(Work.Spaces.eta)) (by rw [Work.Spaces.eta]; norm_num)
+      (by rw [Work.Spaces.eta]; norm_num)).1
+  have hHkMem : Work.Spaces.HkMem α 4 (fun z θ => u z) := by
+    constructor
+    · intro z hz
+      refine MeasureTheory.Integrable.congr (f := fun θ =>
+        (∑ i ∈ Finset.range 5, (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2)
+          * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))) ?_ ?_
+      · exact hsinI.const_mul _
+      · exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc
+          (fun θ hθ => (Work.FTS.H2.HkIntegrand_rad' α 4 u z hθ).symm)
+    · refine MeasureTheory.Integrable.congr (f := fun z =>
+        (∑ i ∈ Finset.range 5, (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2) * Cθ) ?_ ?_
+      · exact (MeasureTheory.integrable_finsetSum (Finset.range 5) hsum_int).mul_const Cθ
+      · refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ici (fun z _ => ?_)
+        simp only [Work.Spaces.Iθ, hCθdef]
+        rw [setIntegral_congr_fun (f := fun θ => Work.Spaces.HkIntegrand α 4 (fun z θ => u z) z θ)
+          (g := fun θ => (∑ i ∈ Finset.range 5,
+              (Work.Elliptic.DzdIter i u z) ^ 2 * (Work.Spaces.w z) ^ 2)
+              * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+          measurableSet_Icc (fun θ hθ => Work.FTS.H2.HkIntegrand_rad' α 4 u z hθ)]
+        rw [MeasureTheory.integral_const_mul]
+  -- ## `FK g` is the radial function `u`
+  have hfun : (fun z (_ : ℝ) => Work.Construction.FK g z) = (fun z (_ : ℝ) => u z) := by
+    funext z θ
+    rw [hudef]
+    simp only [Work.Construction.FK, Work.Elliptic.Qang, Work.Spaces.DzIter_zero]
+    rw [← Work.Elliptic.Ktheta_eq_K]
+    exact setIntegral_congr_fun measurableSet_Icc (fun θ _ => mul_comm _ _)
+  refine ⟨?_, ?_⟩
+  · rw [hfun]
+    exact hHkMem
+  · rw [hfun]
+    exact le_trans hXn
+      (mul_le_mul_of_nonneg_right (le_add_of_nonneg_right zero_le_one) hXng)
+
+end Work.FTS.Nonlinear.N4Fields
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.N4Fields.wang_field_smoothInt =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -26,8 +287,6 @@ set_option maxHeartbeats 1600000
 `z`-smoothness conjunct; `SmoothQuad f` is `C^∞` (genuine smooth order
 `Work.Stability.smoothOrder = ∞ ≤ ⊤`) on the same strip, so the projection is immediate. -/
 
-theorem smoothQuad_of_smoothInt {f : ℝ → ℝ → ℝ} (h : Work.Spaces.SmoothInt f) :
-    Work.FTS.LocData.SmoothQuad f := h.1.of_le le_top
 
 /-! ## The mixed-derivative pointwise bound, with `SmoothQuad` in place of pointwise smoothness
 
@@ -36,251 +295,9 @@ This is `Work.FTS.Nonlinear.N4Fields.wang_mixed_bound` with its hypothesis
 only to produce `SmoothQuad (fun _ θ => a θ)` (see `hfq` below), which is exactly the data the
 `θ`-Leibniz expansion `sqm_pz_DthIter_mul_le_4` consumes. -/
 
-/-- The angular mixed-derivative pointwise bound: for an angular profile `a` which is `C^∞` on
-the open quadrant, bounded by `B` on `Iθ = [0,π/2]`, with all its `D_θ`-iterates (orders `1..4`)
-bounded by `B·sin(2θ)`, and a `SmoothQuad` function `h` in `𝒲^{4,∞}`, the mixed derivatives of
-the product `a·h` are bounded by `1285 · B · |h|_𝒲` on the open quadrant. -/
-theorem wang_mixed_bound_quad {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (a : ℝ → ℝ) (B : ℝ)
-    (h : ℝ → ℝ → ℝ) (hB : 0 ≤ B)
-    (hfq : Work.FTS.LocData.SmoothQuad (fun _ θ : ℝ => a θ))
-    (haB : ∀ θ ∈ Work.Spaces.Iθ, |a θ| ≤ B)
-    (haIt : ∀ i : ℕ, 1 ≤ i → i ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
-      |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => a θ') 0 θ| ≤ B * Real.sin (2 * θ))
-    (hh : Work.FTS.LocData.SmoothQuad h) (hmem : Work.Spaces.WlInfMem α 4 h) :
-    ∀ j k : ℕ, 1 ≤ j → k + j ≤ 4 → ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Set.Ioo 0 (π / 2),
-      |(z + 1) ^ k * Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ
-        * (Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))|
-      ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-  intro j k hj hkj z hz θ hθ
-  have hz0 : (0:ℝ) ≤ z := hz
-  have hk4 : k ≤ 4 := by omega
-  have hj4 : j ≤ 4 := by omega
-  have hθI : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ.1, le_of_lt hθ.2⟩
-  have hs0 : 0 ≤ Real.sin (2 * θ) :=
-    Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2])
-  have hsle1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
-  have hspos : 0 < α + Real.sin (2 * θ) := by linarith
-  have hWnn : 0 ≤ Work.Spaces.WlInf α 4 h := Work.FTS.H2.sqm_WlInf_nonneg α 4 h hmem
-  have hp : 0 ≤ (z + 1) ^ k := pow_nonneg (by linarith) k
-  have hZnn : 0 ≤ (Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)) :=
-    div_nonneg (Real.rpow_nonneg hs0 _) hspos.le
-  have hψnn : 0 ≤ (α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5) :=
-    mul_nonneg (by linarith) (Real.rpow_nonneg hs0 _)
-  have hBWnn : 0 ≤ B * Work.Spaces.WlInf α 4 h := mul_nonneg hB hWnn
-  -- the Leibniz expansion of the product
-  have hleib := Work.FTS.H2.sqm_pz_DthIter_mul_le_4 k j hk4 hj4
-      (fun _ θ : ℝ => a θ) h hfq hh z hz θ hθ
-  -- the double sum collapses onto the `c = 0` column
-  have hcollapse : (∑ c ∈ Finset.range (k+1), ∑ m ∈ Finset.range (j+1),
-        |Work.Spaces.pzIter c (Work.Spaces.DthIter m (fun _ θ : ℝ => a θ)) z θ|
-          * |Work.Spaces.pzIter (k - c) (Work.Spaces.DthIter (j - m) h) z θ|)
-      = ∑ m ∈ Finset.range (j+1),
-          |Work.Spaces.Lop^[m] a θ| * |Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ| := by
-    refine (Finset.sum_eq_single 0 ?_ ?_).trans ?_
-    · intro c hc hc0
-      refine Finset.sum_eq_zero fun m _ => ?_
-      rw [pzIter_DthIter_const_snd c m a z θ, ite_eq_right hc0]
-      simp
-    · intro h0
-      exact absurd (Finset.mem_range.mpr (Nat.succ_pos k)) h0
-    · refine Finset.sum_congr rfl fun m _ => ?_
-      rw [pzIter_DthIter_const_snd 0 m a z θ, ite_eq_left rfl, Nat.sub_zero]
-  -- termwise bound of the collapsed sum
-  have hterm : ∀ m ∈ Finset.range (j + 1),
-      (z + 1) ^ k * (|Work.Spaces.Lop^[m] a θ|
-          * |Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|)
-        * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-        ≤ B * Work.Spaces.WlInf α 4 h := by
-    intro m hm
-    have hmj : m ≤ j := Nat.le_of_lt_succ (Finset.mem_range.mp hm)
-    have hfb := Work.Spaces.factor_bound α hα h hmem k (j - m) hk4 (fun h1 => by omega) z θ hz hθI
-    have hAZ : (z + 1) ^ k * (|Work.Spaces.Lop^[m] a θ|
-          * |Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|)
-        * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-        = |Work.Spaces.Lop^[m] a θ|
-          * |(z + 1) ^ k * Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|
-          * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) := by
-      rw [abs_mul, abs_of_nonneg hp]; ring
-    rw [hAZ]
-    have hstep : |Work.Spaces.Lop^[m] a θ|
-          * |(z + 1) ^ k * Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|
-          * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-        ≤ |Work.Spaces.Lop^[m] a θ|
-          * (Work.Spaces.WlInf α 4 h * (if j - m = 0 then (1:ℝ)
-              else (α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5)))
-          * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) :=
-      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hfb (abs_nonneg _)) hZnn
-    refine le_trans hstep ?_
-    rcases Nat.eq_zero_or_pos m with hm0 | hmpos
-    · -- `m = 0`: the profile factor is bounded by `haB`
-      subst hm0
-      simp only [Function.iterate_zero_apply, Nat.sub_zero]
-      rw [ite_eq_right (by omega : ¬ (j = 0))]
-      calc |a θ| * (Work.Spaces.WlInf α 4 h * ((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5)))
-              * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-          ≤ B * (Work.Spaces.WlInf α 4 h * ((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5)))
-              * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) :=
-            mul_le_mul_of_nonneg_right
-              (mul_le_mul_of_nonneg_right (haB θ hθI) (mul_nonneg hWnn hψnn)) hZnn
-        _ = (B * Work.Spaces.WlInf α 4 h)
-              * (((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5))
-                * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))) := by ring
-        _ ≤ (B * Work.Spaces.WlInf α 4 h) * 1 :=
-            mul_le_mul_of_nonneg_left (weight_mul_div_le_one hα hs0) hBWnn
-        _ = B * Work.Spaces.WlInf α 4 h := by ring
-    · -- `m ≥ 1`: the profile factor is bounded by `haIt`
-      have hm4 : m ≤ 4 := by omega
-      have hLa : |Work.Spaces.Lop^[m] a θ| ≤ B * Real.sin (2 * θ) := by
-        have h1 := haIt m hmpos (by omega) θ hθI
-        rwa [DthIter_const_snd_apply m a 0 θ] at h1
-      by_cases hjm : j - m = 0
-      · -- the `h`-factor is radial: use `s·s^{-α/5}/(α+s) ≤ 1`
-        rw [ite_eq_left hjm]
-        calc |Work.Spaces.Lop^[m] a θ| * (Work.Spaces.WlInf α 4 h * 1)
-                * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-            ≤ (B * Real.sin (2 * θ)) * (Work.Spaces.WlInf α 4 h * 1)
-                * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) :=
-              mul_le_mul_of_nonneg_right
-                (mul_le_mul_of_nonneg_right hLa (mul_nonneg hWnn (by norm_num))) hZnn
-          _ = (B * Work.Spaces.WlInf α 4 h)
-                * (Real.sin (2 * θ)
-                  * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))) := by ring
-          _ ≤ (B * Work.Spaces.WlInf α 4 h) * 1 :=
-              mul_le_mul_of_nonneg_left (sin_mul_rpow_neg_div_le_one hα.le (by linarith) hs0) hBWnn
-          _ = B * Work.Spaces.WlInf α 4 h := by ring
-      · -- both factors angular: `s^{α/5}·s^{-α/5} ≤ 1` and `s ≤ 1`
-        rw [ite_eq_right hjm]
-        calc |Work.Spaces.Lop^[m] a θ|
-                * (Work.Spaces.WlInf α 4 h * ((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5)))
-                * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-            ≤ (B * Real.sin (2 * θ))
-                * (Work.Spaces.WlInf α 4 h * ((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5)))
-                * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) :=
-              mul_le_mul_of_nonneg_right
-                (mul_le_mul_of_nonneg_right hLa (mul_nonneg hWnn hψnn)) hZnn
-          _ = (B * Work.Spaces.WlInf α 4 h) * (Real.sin (2 * θ)
-                * (((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5))
-                  * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))))) := by ring
-          _ ≤ (B * Work.Spaces.WlInf α 4 h) * (Real.sin (2 * θ) * 1) :=
-              mul_le_mul_of_nonneg_left
-                (mul_le_mul_of_nonneg_left (weight_mul_div_le_one hα hs0) hs0) hBWnn
-          _ ≤ (B * Work.Spaces.WlInf α 4 h) * 1 :=
-              mul_le_mul_of_nonneg_left (by linarith [hs0, hsle1]) hBWnn
-          _ = B * Work.Spaces.WlInf α 4 h := by ring
-  -- assemble: `257` summands, each at most `B |h|_𝒲`
-  have hmain : (z + 1) ^ k
-        * |Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ|
-        * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-      ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-    have h5 : ((j + 1 : ℕ) : ℝ) ≤ 5 := by exact_mod_cast (show j + 1 ≤ 5 by omega)
-    calc (z + 1) ^ k * |Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ|
-          * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))
-        ≤ (z + 1) ^ k * (257 * (∑ c ∈ Finset.range (k+1), ∑ m ∈ Finset.range (j+1),
-              |Work.Spaces.pzIter c (Work.Spaces.DthIter m (fun _ θ : ℝ => a θ)) z θ|
-                * |Work.Spaces.pzIter (k - c) (Work.Spaces.DthIter (j - m) h) z θ|))
-            * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) :=
-          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hleib hp) hZnn
-      _ = 257 * ((z + 1) ^ k * (∑ m ∈ Finset.range (j+1),
-              |Work.Spaces.Lop^[m] a θ| * |Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|)
-            * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))) := by
-          rw [hcollapse]; ring
-      _ = 257 * (∑ m ∈ Finset.range (j+1), (z + 1) ^ k
-              * (|Work.Spaces.Lop^[m] a θ| * |Work.Spaces.pzIter k (Work.Spaces.DthIter (j - m) h) z θ|)
-            * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ)))) := by
-          congr 1
-          rw [Finset.mul_sum, Finset.sum_mul]
-      _ ≤ 257 * (∑ _m ∈ Finset.range (j+1), B * Work.Spaces.WlInf α 4 h) :=
-          mul_le_mul_of_nonneg_left (Finset.sum_le_sum hterm) (by norm_num)
-      _ = 257 * (((j + 1 : ℕ) : ℝ) * (B * Work.Spaces.WlInf α 4 h)) := by
-          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
-      _ ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-          nlinarith [h5, hBWnn]
-  have hLHS : |(z + 1) ^ k * Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ
-        * (Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))|
-      = (z + 1) ^ k * |Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ|
-        * ((Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))) := by
-    rw [abs_div, abs_mul, abs_mul, abs_of_nonneg hp,
-      abs_of_nonneg (Real.rpow_nonneg hs0 _), abs_of_pos hspos]
-    ring
-  rw [hLHS]
-  exact hmain
 
 /-! ## The field lemma -/
 
-/-- **The `wang` field of the repaired `N4Norm`, in the exact form of the interface.**
-
-The interface (revision of 07:49) requires `a` and `h` to be *honestly* regular —
-`Work.Spaces.SmoothInt (fun _ θ => a θ)` and `Work.Spaces.SmoothInt h` — which is exactly what
-the Leibniz expansions need (`DthIter_angular_mul_expand` in `θ`, the `z`-Leibniz rule in `z`),
-and what rules out the rational/irrational counterexample of `N4Fields/wang_field_refuted.lean`.
-
-Cheap route (as the reviews of the sibling files record): `SmoothInt f → SmoothQuad f` by the
-`.1` projection (both are `ContDiffOn` on the same open strip, and `⊤ ≥ smoothOrder`), so the
-already-proved `Work.FTS.Nonlinear.N4Fields.wang_field_smooth` applies verbatim once one
-observes that its only use of `(∀ θ, ContDiffAt ℝ ⊤ a θ)` is to produce
-`SmoothQuad (fun _ θ => a θ)`.  Alternatively redo the interior pointwise bound of
-`Work.FTS.H2.prodW_interior_bound` (`Work.Spaces.psi_mw_le`, `Work.Spaces.factor_bound`,
-`Work.Spaces.WlInf_z_bound`) and pass to `supAbs` on the closed quadrant exactly as
-`N4Fields/wmul_field.lean` does (the mixed weight vanishes at `θ = 0, π/2`, where no
-information about the product is needed). -/
-theorem wang_field_smoothInt {α₂ : ℝ} (hα₂ : 0 < α₂) (hα₂1 : α₂ ≤ 1) :
-    ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 α₂, ∀ (a : ℝ → ℝ) (B : ℝ) (h : Work.FTS.Galerkin.Fn),
-      0 ≤ B →
-      Work.Spaces.SmoothInt (fun _ (θ : ℝ) => a θ) → Work.Spaces.SmoothInt h →
-      (∀ θ ∈ Work.Spaces.Iθ, |a θ| ≤ B) →
-      (∀ i : ℕ, 1 ≤ i → i ≤ 4 → ∀ θ ∈ Work.Spaces.Iθ,
-        |Work.Spaces.DthIter i (fun _ (θ' : ℝ) => a θ') 0 θ| ≤ B * Real.sin (2 * θ)) →
-      Work.Spaces.WlInfMem α 4 h →
-      Work.Spaces.WlInfMem α 4 (fun z θ => a θ * h z θ) ∧
-      Work.Spaces.WlInf α 4 (fun z θ => a θ * h z θ)
-        ≤ C * B * Work.Spaces.WlInf α 4 h := by
-  refine ⟨30 * 1285 + 1, by norm_num, ?_⟩
-  intro α hα a B h hB haInt hInt haB haIt hmem
-  have hα1 : α ≤ 1 := le_trans hα.2 hα₂1
-  have hfq : Work.FTS.LocData.SmoothQuad (fun _ θ : ℝ => a θ) := smoothQuad_of_smoothInt haInt
-  have hh : Work.FTS.LocData.SmoothQuad h := smoothQuad_of_smoothInt hInt
-  have hWnn : 0 ≤ Work.Spaces.WlInf α 4 h := Work.FTS.H2.sqm_WlInf_nonneg α 4 h hmem
-  have hBWnn : 0 ≤ B * Work.Spaces.WlInf α 4 h := mul_nonneg hB hWnn
-  have hB' : 0 ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := mul_nonneg (by norm_num) hBWnn
-  have hrad := wang_radial_bound hα.1 a B h hB haB hmem
-  have hmix := wang_mixed_bound_quad hα.1 hα1 a B h hB hfq haB haIt hh hmem
-  -- the radial summands on the closed quadrant
-  have hr : ∀ k : ℕ, k ≤ 4 → ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
-      |(z + 1) ^ k * Work.Spaces.pzIter k (fun z θ => a θ * h z θ) z θ|
-        ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-    intro k hk z hz θ hθ
-    have h1 := hrad k hk z hz θ hθ
-    have h2 : B * Work.Spaces.WlInf α 4 h ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-      nlinarith [hBWnn]
-    linarith
-  -- the mixed summands on the closed quadrant (the angular weight vanishes at `θ = 0, π/2`)
-  have ht : ∀ j k : ℕ, 1 ≤ j → k + j ≤ 4 → ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
-      |(z + 1) ^ k * Work.Spaces.pzIter k (Work.Spaces.DthIter j (fun z θ => a θ * h z θ)) z θ
-        * (Real.sin (2 * θ)) ^ (-(α / 5)) / (α + Real.sin (2 * θ))|
-        ≤ 1285 * (B * Work.Spaces.WlInf α 4 h) := by
-    intro j k hj hkj z hz θ hθ
-    have hαpos : 0 < α := hα.1
-    have hne : (-(α / 5) : ℝ) ≠ 0 := by
-      have h5 : (0:ℝ) < α / 5 := by linarith
-      linarith
-    rcases eq_or_lt_of_le hθ.1 with h0 | h0
-    · subst h0
-      rw [show Real.sin (2 * (0:ℝ)) = 0 by
-            rw [show (2:ℝ) * 0 = 0 by ring, Real.sin_zero], Real.zero_rpow hne]
-      simp
-      exact hBWnn
-    · rcases lt_or_eq_of_le hθ.2 with hpi | hpi
-      · exact hmix j k hj hkj z hz θ ⟨h0, hpi⟩
-      · subst hpi
-        rw [show Real.sin (2 * (π / 2)) = 0 by
-              rw [show (2:ℝ) * (π / 2) = π by ring, Real.sin_pi], Real.zero_rpow hne]
-        simp
-        exact hBWnn
-  have hcount := wlInf_of_pointwise_bounds (α := α)
-    (B := 1285 * (B * Work.Spaces.WlInf α 4 h)) hB' hr ht
-  refine ⟨hcount.1, ?_⟩
-  calc Work.Spaces.WlInf α 4 (fun z θ => a θ * h z θ)
-      ≤ 30 * (1285 * (B * Work.Spaces.WlInf α 4 h)) := hcount.2
-    _ ≤ (30 * 1285 + 1) * B * Work.Spaces.WlInf α 4 h := by nlinarith [hBWnn]
 
 end Work.FTS.Nonlinear.N4Fields
+end

@@ -1,60 +1,36 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/E5G/hapx_of_tower.lean` — the `hapx` supply clause of the
-per-horizon E5 assembly, along the tower
-
-`Work.FTS.StrongEps.E5G.hapx_of_tower` is the G2 approximation clause (`LimApproxOn`) of the
-per-horizon assembly `E5G.EpsLimPkg_of_horizon_of_decay`: from the tower data at the horizon
-`Tn n` (together with the extraction `k ↦ ι n k` and its convergence package `hconv`) it
-produces the class-`C` approximants of the clamped limit `clampQ Fc g₀` on every sub-horizon
-`T' ≤ T`: the projected, mollified families `JfamP ρ (e (ι n k)) (G n (ι n k))`.
-
-The three non-local inputs are proved in separate modules:
-
-* `Work.FTS.StrongEps.EpsRHSPBdd_unif` — the `ε`-uniform `ℋ⁴`-bound `R4` on the scheme's
-  right-hand side `epsRHSP` along the tower (the constant of `EpsRHSPBdd` does not see `ε`);
-* `Work.FTS.StrongEps.EpsRHSP_slotSup_val` — the slot bounds of `epsRHSP` on compacts
-  (uniform in the fake time), from a *value* bound on the pre-mollified right-hand side;
-* `Work.FTS.StrongEps.E5G.Xn_JfamP_lip_fam` — the `ℋ⁴`-Lipschitzity in the fake time of the
-  projected families, with a modulus uniform in the extraction index.
-
-Everything here is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.StrongEps.E5G.slice_lip_norm
-import Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip
+import Submission.Work.FTS.EllipticEst.EllHyp_certificates
+import Submission.Work.FTS.GalBasis.hk_sq_api
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
+import Submission.Work.FTS.StrongEps.E5G.Defs
 import Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip_fam
-import Submission.Work.FTS.StrongEps.E5G.TowerDecay
-import Submission.Work.FTS.StrongEps.E5G.Coherence
+import Submission.Work.FTS.StrongEps.E5G.hWc_aux
+import Submission.Work.FTS.StrongEps.E5G.morrey_five_slots
 import Submission.Work.FTS.StrongEps.E5G.muDyn_lamDyn_tendsto_tower
-import Submission.Work.FTS.StrongEps.E5G.HL12RawTower
-import Submission.Work.FTS.StrongEps.mixed_JfamP_tendsto
-import Submission.Work.FTS.StrongEps.LimApproxSE
-import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
-import Submission.Work.FTS.StrongEps.epsWP_sup_le_fam
-import Submission.Work.FTS.StrongEps.smoothOpen_epsRHSP
+import Submission.Work.FTS.StrongEps.E5G.weak_slots_tendsto_open
 import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
+import Submission.Work.FTS.StrongEps.EpsRHSPBdd_unif
 import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
 import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup_val
-import Submission.Work.FTS.StrongEps.EpsRHSPBdd_unif
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.E5G.hkNorm_Pz_le_four
-import Submission.Work.FTS.StrongEps.E5Clamp
 import Submission.Work.FTS.StrongEps.RhsCont
-import Submission.Work.FTS.StrongEps.E5Asm.Defs
-import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
-import Submission.Work.FTS.StrongEps.exists_shift_window_compact
-import Submission.Work.FTS.EllipticEst.EllHyp_certificates
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.GalBasis.hk_sq_api
-import Submission.Work.FTS.GalBasis.FamEAux.Basic
-import Submission.Work.FTS.EllipticEst.TT.Slot11.ZsqAux
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
+import Submission.Work.FTS.StrongPersist.H6Rows.NZzero6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzSlot
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.ProducerH.pzIterTwo_shiftSing_eq_PhiTil_add
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_RegExport.RXVP.thLip
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

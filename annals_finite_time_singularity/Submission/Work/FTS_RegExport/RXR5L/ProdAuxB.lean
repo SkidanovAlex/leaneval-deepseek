@@ -1,9 +1,3 @@
-/-
-# `Work.FTS_RegExport.RXR5L.ProdAuxB` — the `θ`-modulus of the product lemma
-
-Second half of `ProdAux`: the `θ`-modulus of a product slot (`Q` with `vanish0`-type data times a
-`Γ`-shaped `C1Jet` factor `R`), and the two `C1Jet` clauses for the product.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds

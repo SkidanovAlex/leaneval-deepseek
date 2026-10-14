@@ -1,26 +1,56 @@
-/-
-# The `F_*`-slot: `z/(1+z)·F_* = α·AK α`
-
-`Work.Construction.AK α = (Γ(θ)/c α)·2z²/(1+z)³` is the separated form of the shifted star
-slot, `z/(1+z)·F_* = α·AK α`.  The sharp pointwise bound of `Work.FTS.StrongPersist.AK6`
-(`AK_integrand_le6`) together with `HkIntegrand_const_mul` gives the corresponding bound for
-`α·AK α`, whence the honesty (`LocData.HkMem_const_mul`) and the norm bound
-(`AK6.hkSq_le_of_integrand_le6`).
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.StrongEps.EpsE4Thr.ZeroOrder
+import Submission.Work.FTS.StrongEps.TenOfEight.GainAll
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.AK_Mem6
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.Nonlinear.Pieces.Basic
-import Submission.Work.FTS.OpenPkg.Good
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.N0SlotSplitAux
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.Congr
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_theta
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.R1G.DecayInZ_gA
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.ZeroOrderFlow =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-- The pre-mollified right-hand side of the projected scheme at the family `g` is `profRHS`
+evaluated at the projected slice `slice (JfamP ρ ε g) τ`.  This is the family-level form of
+`EpsLocalPStar.epsRHPSlice_eq_profRHS`, and it is definitional. -/
+theorem epsWP_eq_profRHS (α : ℝ) (ρ : ℝ × ℝ → ℝ) (ε : ℝ) (Φs : Fn) (E : Fn → Fn)
+    (g : Fam) (τ : ℝ) :
+    Work.FTS.StrongEps.epsWP α ρ ε Φs E g τ
+      = Work.FTS.StrongEps.EpsLocalPStar.profRHS α Φs E (slice (JfamP ρ ε g) τ) :=
+  rfl
+
+
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.AKSlot =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -137,3 +167,4 @@ theorem starSlotA : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1,
 end
 
 end Work.FTS.StrongPersist.H6Rows.Npair6SupAux
+end

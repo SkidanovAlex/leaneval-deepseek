@@ -1,52 +1,166 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/mixed_Jeps.lean` — `J_ε` commutes with every `D_z^j D_θ^i`
-
-This is the iterated form of **E1** of the design (`FTS_HARD_DESIGN.md`, section *(B)*).  The two
-base cases are proved elsewhere:
-
-* `Dz_Jeps` (`Submission/Work/FTS/StrongEps/Commute.lean`): `D_z (J_ε g) = J_ε (D_z g)` on the
-  open quadrant, for `g` of class `C¹` there with continuous `pz g`;
-* `Dth_Jeps` (`Submission/Work/FTS/StrongEps/Dth_Jeps.lean`): `D_θ (J_ε g) = J_ε (D_θ g)` on the
-  open quadrant, for `g` of class `C¹` there with continuous `pth g`.
-
-Iterating them gives the target `mixed_Jeps`:
-
-`D_z^j D_θ^i (J_ε f) = J_ε (D_z^j D_θ^i f)`   on the open quadrant `Quad = (0,∞) × (0,π/2)`,
-
-for any profile `f` which is `C^n` on `Quad` for every `n`.
-
-## The proof, and why the intermediate profiles are smooth
-
-The outer operator `D_z^j` and the inner operator `D_θ^i` are iterated *separately*:
-
-* (`DthIter_mixed_Jeps`) `D_θ^i (J_ε f) = J_ε (D_θ^i f)` on `Quad`, by induction on `i`.  The
-  induction step replaces `D_θ (D_θ^i (J_ε f))` first by `D_θ (J_ε (D_θ^i f))` — legitimate
-  because the two functions *agree on the open quadrant*, so their `θ`-slices have the same
-  derivative there (`Dth_congrOn`) — and then applies `Dth_Jeps` to the profile `D_θ^i f`.
-  This is where the smoothness of `D_θ^i f` is needed: `Dth_Jeps` requires that profile to be
-  `C¹` on `Quad` with continuous `θ`-derivative.  The hypothesis `∀ n, ContDiffOn ℝ n f Quad`
-  is exactly the statement that `f` is `C^∞` on `Quad` (`contDiffOn_infty`), and `pz`, `pth`,
-  `DzIter`, `DthIter` preserve `C^∞`-smoothness on an open set
-  (`Work.FTS.LocData.contDiffOn_pz`, …, `contDiffOn_mixed`);
-* (`DzIter_Jeps_of_smooth`) `D_z^j (J_ε g) = J_ε (D_z^j g)` on `Quad` for any `g` smooth on
-  `Quad`, by induction on `j`, using `Dz_Jeps` and the same congruence argument (`Dz_congrOn`);
-* the target follows by composing the congruence `DzIter_congrOn` of the first identity with the
-  second one applied to `g = D_θ^i f`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]` (the imported helper lemmas were
-checked to have exactly these axioms).
--/
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.StrongEps.Commute
-import Submission.Work.FTS.StrongEps.Dth_Jeps
-import Submission.Work.FTS.LocData.SmoothChain
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.RPFresh.straight_transfers
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.HQ.Glue
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Pieces.PsgEngine
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.HkMem_add_of_contDiffOn_four
+import Submission.Work.FTS.OpenPkg.Pieces4
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EpsE4Thr.JepsJoint.Jeps_fam_continuous
+import Submission.Work.FTS.StrongEps.JepsHkMem.continuousOn_Jeps
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.TransportS.Defs
+import Submission.Work.FTS.TransportS.GalSide
 import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.AlphaRateEstEllT.PthIter2VftsAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Cores.AlphaRateEstEllT
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-!
+# Auxiliary lemmas for `PthIter2Vfts_le_honest`
+
+This module collects the auxiliary results used by the `∂_θθ`-transfer of the trace-free class
+`EllHypT` (`Submission/Work/FTS/EllipticEst/Cores/AlphaRateEstEllT/PthIter2Vfts_le_honest.lean`):
+
+* the finite-smoothness closure of `ℋ^k` (`HkIntegrand_add_le_domain`,
+  `HkMem_add_of_contDiffOn_le`), for summands that are only `C^k` on the open quadrant;
+* the pointwise `∂_θθ`-identities of the straightening
+  (`pthIter2_EllResid_eq_fts`, `pthIter2_Vfts_eq_fts`);
+* the honest membership `∂_θθΞ ∈ ℋ^k` under the orthogonality condition
+  (`HkMem_pthIter2_EllResid_fts`), from `Gsing α F = -(15/4) F_*(Ψ)`.
+-/
+
+/-! ## The finite-smoothness closure of `ℋ^k` -/
+
+/-- **Subadditivity of the `ℋ^k`-integrand at every point of the domain**, for summands that are
+`C^k` on the open quadrant.
+
+`Work.FTS.EllipticEst.Cores.DiagEstEllT.HkIntegrand_add_le_of_contDiffOn` gives the inequality at
+interior points; on the two boundary lines `z = 0` and `sin 2θ = 0` the integrand of *every*
+function vanishes, so the inequality holds there trivially. -/
+theorem HkIntegrand_add_le_domain (α : ℝ) (k : ℕ) {f g : ℝ → ℝ → ℝ}
+    (hf : ContDiffOn ℝ k (Function.uncurry f) Work.FTS.EllipticEst.Q0)
+    (hg : ContDiffOn ℝ k (Function.uncurry g) Work.FTS.EllipticEst.Q0) :
+    ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
+      Work.Spaces.HkIntegrand α k (fun z θ => f z θ + g z θ) z θ
+        ≤ 2 * Work.Spaces.HkIntegrand α k f z θ + 2 * Work.Spaces.HkIntegrand α k g z θ := by
+  intro z hz θ hθ
+  have hz0 : (0 : ℝ) ≤ z := hz
+  have hθ0 : (0 : ℝ) ≤ θ := hθ.1
+  have hθ1 : θ ≤ Real.pi / 2 := hθ.2
+  rcases lt_or_eq_of_le hz0 with hz' | hz'
+  · rcases lt_or_eq_of_le hθ0 with hθ' | hθ'
+    · rcases lt_or_eq_of_le hθ1 with hθ'' | hθ''
+      · exact Work.FTS.EllipticEst.Cores.DiagEstEllT.HkIntegrand_add_le_of_contDiffOn α k hf hg
+          z θ hz' hθ' hθ''
+      · subst hθ''
+        rw [Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k
+            (fun z θ => f z θ + g z θ) z (Real.pi / 2)
+            (by rw [show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]),
+          Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k f z (Real.pi / 2)
+            (by rw [show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]),
+          Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k g z (Real.pi / 2)
+            (by rw [show 2 * (Real.pi / 2) = Real.pi by ring, Real.sin_pi])]
+        norm_num
+    · subst hθ'
+      rw [Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k
+          (fun z θ => f z θ + g z θ) z 0 (by simp),
+        Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k f z 0 (by simp),
+        Work.Coercivity.HkIntegrand_eq_zero_of_sin_eq_zero α k g z 0 (by simp)]
+      norm_num
+  · subst hz'
+    rw [Work.Spaces.HkIntegrand_zero_z, Work.Spaces.HkIntegrand_zero_z,
+      Work.Spaces.HkIntegrand_zero_z]
+    norm_num
+
+/-- **`ℋ^k` is closed under addition** for data that are `C^k` on the open quadrant. -/
+theorem HkMem_add_of_contDiffOn_le (α : ℝ) (k : ℕ) {f g : ℝ → ℝ → ℝ}
+    (hf : ContDiffOn ℝ k (Function.uncurry f) Work.FTS.EllipticEst.Q0)
+    (hg : ContDiffOn ℝ k (Function.uncurry g) Work.FTS.EllipticEst.Q0)
+    (hmf : Work.Spaces.HkMem α k f) (hmg : Work.Spaces.HkMem α k g) :
+    Work.Spaces.HkMem α k (fun z θ => f z θ + g z θ) := by
+  have hsum : ContDiffOn ℝ k (Function.uncurry (fun z θ => f z θ + g z θ))
+      Work.FTS.EllipticEst.Q0 :=
+    (hf.add hg).congr (fun p _ => rfl)
+  refine Work.FTS.EllipticEst.Cores.DiagEstEllT.HkMem_of_add_dominated_cont α k
+    (Work.FTS.EllipticEst.Cores.DiagEstEllT.continuousOn_HkIntegrand_of_contDiffOn hsum α)
+    hmf hmg ?_
+  intro z hz
+  filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
+  exact HkIntegrand_add_le_domain α k hf hg z hz θ hθ
+
+/-- Subadditivity of the square root. -/
+theorem sqrt_add_le_honest {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    Real.sqrt (x + y) ≤ Real.sqrt x + Real.sqrt y := by
+  rw [Real.sqrt_le_iff]
+  refine ⟨add_nonneg (Real.sqrt_nonneg x) (Real.sqrt_nonneg y), ?_⟩
+  have h1 := Real.sq_sqrt hx
+  have h2 := Real.sq_sqrt hy
+  nlinarith [Real.sqrt_nonneg x, Real.sqrt_nonneg y]
+
+/-! ## The `θ`-calculus of the straightening -/
+
+
+
+
+
+end Work.FTS.EllipticEst.Cores.AlphaRateEstEllT
+end
+end
+-- ===== merged: Submission.Work.FTS.Nonlinear.Pieces.Rl1.L12densIntegralLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Nonlinear.Pieces.Rl1
+
+open MeasureTheory Set
+open scoped Real
+
+
+end Work.FTS.Nonlinear.Pieces.Rl1
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.mixed_Jeps =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -169,3 +283,5 @@ theorem mixed_Jeps (ρ : ℝ × ℝ → ℝ) (hρ : IsMollKernel ρ) {ε : ℝ} 
   exact (h1 hp).trans (h2 hp)
 
 end Work.FTS.StrongEps
+end
+end

@@ -1,11 +1,259 @@
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Gradient.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Weyl.Levels._dev5
-import Submission.Work.FTS.BSIdent.Weyl.Levels._dev6
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.MeasureTheory.Function.L1Space.Integrable
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.SimpleRing.Principal
+import Submission.Work.FTS.BSIdent.Curl
 import Submission.Work.FTS.BSIdent.Weyl.Levels._dev11
-import Submission.Work.FTS.BSIdent.Weyl.Levels.rho_mul_rpow_weight_le_two
+import Submission.Work.FTS.BSIdent.Weyl.Levels._dev5
+import Submission.Work.FTS.BSIdent.Weyl.Levels._dev7
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
+-- ===== merged: Submission.Work.FTS.BSIdent.Curl.bslOp_eq_of_vorticity_eq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real
+
+namespace Work.FTS.BSIdent.Curl
+
+
+
+end Work.FTS.BSIdent.Curl
+end
+-- ===== merged: Submission.Work.FTS.BSIdent.Ident =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open FiniteTimeSingularity Set MeasureTheory
+open scoped Topology Real
+
+namespace Work.FTS.BSIdent
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## Parity of the meridian stream function -/
+
+
+
+variable {α : ℝ} {A B : ℝ → ℝ} {Φ : Fam} {C : Physical.PhysClock} {g : ℝ → ℝ → ℝ → ℝ} {t : ℝ}
+
+/-- **The vorticity of the ansatz field is the re-signed physical vorticity**, on `Uax`, under the
+hypotheses of `vorticity_psiField_merPsi`. -/
+theorem vorticity_psiField_merPsi_apply (hA : 0 < A (Physical.clockInv C t))
+    (hB : 0 < B (Physical.clockInv C t))
+    (hlaw : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
+      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp α)
+          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
+        = Work.Construction.Fstar (Work.FTS.Regularity.pExp α) w θ
+          + g w θ (Physical.clockInv C t))
+    (hsm : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 → ContDiffAt ℝ 2
+      (fun p : ℝ × ℝ => Φ p.1 p.2 (Physical.clockInv C t)) (w, θ))
+    {x : R3} (hx : x ∈ Uax) :
+    vorticity (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)) x
+      = -(Physical.physOmega α A B g C x t) := by
+  have h := vorticity_psiField_merPsi (α := α) (A := A) (B := B) (Φ := Φ) (C := C) (g := g)
+    (t := t) hA hB hlaw hsm (x := x) hx
+  rw [h]
+  exact vorticity_psiField_merPsi_eq_neg_physOmega α A B C g t
+
+/-- The a.e. equality of the vorticity of the ansatz field with `−physOmega`, as an `EventuallyEq`
+over Lebesgue measure on `ℝ³`. -/
+theorem vorticity_psiField_merPsi_ae (hA : 0 < A (Physical.clockInv C t))
+    (hB : 0 < B (Physical.clockInv C t))
+    (hlaw : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
+      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp α)
+          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
+        = Work.Construction.Fstar (Work.FTS.Regularity.pExp α) w θ
+          + g w θ (Physical.clockInv C t))
+    (hsm : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 → ContDiffAt ℝ 2
+      (fun p : ℝ × ℝ => Φ p.1 p.2 (Physical.clockInv C t)) (w, θ)) :
+    (fun x : R3 => vorticity (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)) x)
+      =ᵐ[(MeasureTheory.volume : MeasureTheory.Measure R3)]
+      (fun x : R3 => -(Physical.physOmega α A B g C x t)) := by
+  rw [Filter.EventuallyEq, MeasureTheory.ae_iff]
+  refine measure_mono_null (fun x hx => ?_) volume_Uax_compl
+  simp only [Set.mem_setOf_eq] at hx
+  intro hxu
+  exact hx (vorticity_psiField_merPsi_apply hA hB hlaw hsm hxu)
+
+/-- The vorticity of the ansatz field is integrable as soon as the reconstructed vorticity slice
+is: the two agree off the null set `Uaxᶜ`. -/
+theorem integrable_vorticity_psiField_merPsi (hA : 0 < A (Physical.clockInv C t))
+    (hB : 0 < B (Physical.clockInv C t))
+    (hlaw : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
+      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp α)
+          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
+        = Work.Construction.Fstar (Work.FTS.Regularity.pExp α) w θ
+          + g w θ (Physical.clockInv C t))
+    (hsm : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 → ContDiffAt ℝ 2
+      (fun p : ℝ × ℝ => Φ p.1 p.2 (Physical.clockInv C t)) (w, θ))
+    (hint : Integrable (fun x : R3 => -(Physical.physOmega α A B g C x t))) :
+    Integrable (fun x : R3 =>
+      vorticity (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)) x) :=
+  hint.congr (vorticity_psiField_merPsi_ae hA hB hlaw hsm).symm
+
+/-! ## The identification -/
+
+/-- **THE IDENTIFICATION (audit §5 item 4), from the inverse Biot–Savart law.**  On `Uax` the
+reconstructed physical velocity is the stream-function field of the fake-time solution:
+
+  `physVel (−physOmega α A B g C) x t = psiField (merPsi α A B Φ C · · t) x`.
+
+The hypotheses are the clock and elliptic data (`hA`, `hB`, `hlaw`, `hsm`), the inverse Biot–Savart
+law `hInv`, the integrability of the reconstructed vorticity slice (`hint`) and the geometric
+bundle of the ansatz field: `C¹` (`hC1`), decay `1/‖x‖` (`hdec`) and the off-axis slice smoothness
+of the meridian stream function (`hsm2`, used only for the divergence-freeness of the field). -/
+theorem hid_of_biotSavartInverse (hInv : Work.LWP.BiotSavartInverse)
+    (hA : 0 < A (Physical.clockInv C t)) (hB : 0 < B (Physical.clockInv C t))
+    (hlaw : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
+      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp α)
+          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
+        = Work.Construction.Fstar (Work.FTS.Regularity.pExp α) w θ
+          + g w θ (Physical.clockInv C t))
+    (hsm : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 → ContDiffAt ℝ 2
+      (fun p : ℝ × ℝ => Φ p.1 p.2 (Physical.clockInv C t)) (w, θ))
+    (hsm2 : ∀ r z, 0 < r → z ≠ 0 → ContDiffAt ℝ 2
+      (fun p : ℝ × ℝ => merPsi α A B Φ C p.1 p.2 t) (r, z))
+    (hC1 : ContDiff ℝ 1 (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)))
+    (hdec : ∃ D : ℝ, ∀ x : R3,
+      ‖Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t) x‖ ≤ D / (1 + ‖x‖))
+    (hint : Integrable (fun x : R3 => -(Physical.physOmega α A B g C x t))) :
+    ∀ x ∈ Uax, Physical.physVel (-(Physical.physOmega α A B g C)) x t
+      = Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t) x := by
+  intro x hx
+  -- the field is divergence-free and its vorticity is integrable
+  have hdiv : FiniteTimeSingularity.div
+      (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)) = 0 :=
+    Cyl.div_psiField_merPsi α A B Φ C t hC1 hsm2
+  have hint' := integrable_vorticity_psiField_merPsi (g := g) hA hB hlaw hsm hint
+  -- the inverse Biot–Savart law at the ansatz field
+  have hself := hInv _ hC1 (fun y => congrFun hdiv y) hint' hdec x
+  -- transport the a.e. equality into the Biot–Savart integral
+  have hae : (fun y : R3 => vorticity (Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t)) y)
+      =ᵐ[(MeasureTheory.volume : MeasureTheory.Measure R3)]
+      (fun y : R3 => -(Physical.physOmega α A B g C y t)) :=
+    vorticity_psiField_merPsi_ae hA hB hlaw hsm
+  have hcongr := Liouville.biotSavart_congr_ae hae x
+  change Work.LWP.biotSavart (fun y : R3 => -(Physical.physOmega α A B g C y t)) x
+      = Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t) x
+  rw [← hcongr]
+  exact hself
+
+
+end Work.FTS.BSIdent
+end
+end
+-- ===== merged: Submission.Work.FTS.BSIdent.Weyl =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open FiniteTimeSingularity Set MeasureTheory Gradient
+open scoped Topology Real NNReal
+
+namespace Work.FTS.BSIdent
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- **The Weyl/Liouville pair lemma as a named input** (the statement of
+`Work.FTS.PressureOn.weyl_pair`, whose proof is still in progress in that area): a continuous field
+`Φ` and a continuous scalar `q`, both tending to `0` at infinity, whose divergence and curl vanish
+weakly, satisfy `Φ = ∇q` pointwise. -/
+def WeylPairPrinciple : Prop :=
+  ∀ (q : R3 → ℝ) (Φ : R3 → R3), Continuous q → Continuous Φ →
+    Filter.Tendsto q (Filter.cocompact R3) (nhds 0) → Filter.Tendsto Φ (Filter.cocompact R3) (nhds 0) →
+    (∀ φ : R3 → ℝ, (∀ n : ℕ, ContDiff ℝ n φ) → HasCompactSupport φ →
+      ∫ x, inner ℝ (Φ x) (gradient φ x) = -∫ x, q x * Work.FTS.PressureOn.laplaceTrace φ x) →
+    (∀ ψ : R3 → R3, (∀ n : ℕ, ContDiff ℝ n ψ) → HasCompactSupport ψ →
+      ∫ x, inner ℝ (Φ x) (FiniteTimeSingularity.vorticity ψ x) = 0) →
+    ∀ x, HasFDerivAt q (innerSL ℝ (Φ x)) x
+
+/-- A field whose `HasFDerivAt 0` datum is `innerSL ℝ (D x)` is zero at `x`. -/
+theorem eq_zero_of_hasFDerivAt_zero {D : R3 → R3} {x : R3}
+    (h : HasFDerivAt (fun _ : R3 => (0 : ℝ)) (innerSL ℝ (D x)) x) : D x = 0 := by
+  have h2 : innerSL ℝ (D x) = 0 := by
+    rw [← h.fderiv]
+    simp
+  have h3 : inner ℝ (D x) (D x) = 0 := by
+    have h4 := congrArg (fun (L : R3 →L[ℝ] ℝ) => L (D x)) h2
+    simpa [innerSL_apply_apply] using h4
+  exact inner_self_eq_zero.mp h3
+
+/-- **THE IDENTIFICATION BY WEYL (route C).**  Let `v` be the (corrected) stream-function field of
+the reconstruction at time `t`, agreeing with `Cyl.psiField (merPsi … · t)` on `Uax`.  If the
+difference `D = physVel (−physOmega …) · t − v` is continuous, tends to `0` at infinity, and its
+divergence and curl vanish weakly, then the Weyl principle (with `q := 0`) makes `D ≡ 0`, and the
+identification follows on `Uax`. -/
+theorem hid_of_weyl (hweyl : WeylPairPrinciple) {α : ℝ} {A B : ℝ → ℝ}
+    {g : ℝ → ℝ → ℝ → ℝ} {C : Physical.PhysClock} {Φ : Fam} {t : ℝ} {v : R3 → R3}
+    (hv : ∀ x ∈ Uax, v x
+      = Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t) x)
+    (hcont : Continuous (fun x => Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x))
+    (hdec : Filter.Tendsto (fun x => Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x)
+      (Filter.cocompact R3) (nhds 0))
+    (hdiv : ∀ φ : R3 → ℝ, (∀ n : ℕ, ContDiff ℝ n φ) → HasCompactSupport φ →
+      ∫ x, inner ℝ (Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x)
+        (gradient φ x) = 0)
+    (hcurl : ∀ ψ : R3 → R3, (∀ n : ℕ, ContDiff ℝ n ψ) → HasCompactSupport ψ →
+      ∫ x, inner ℝ (Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x)
+        (FiniteTimeSingularity.vorticity ψ x) = 0) :
+    ∀ x ∈ Uax, Physical.physVel (-(Physical.physOmega α A B g C)) x t
+      = Work.Cyl.psiField (fun r z => merPsi α A B Φ C r z t) x := by
+  have hdiv' : ∀ φ : R3 → ℝ, (∀ n : ℕ, ContDiff ℝ n φ) → HasCompactSupport φ →
+      ∫ x, inner ℝ (Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x)
+        (gradient φ x)
+        = -∫ x, (0 : ℝ) * Work.FTS.PressureOn.laplaceTrace φ x := by
+    intro φ h1 h2
+    rw [hdiv φ h1 h2]
+    simp
+  have h := hweyl 0 (fun x => Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x)
+    continuous_const hcont tendsto_const_nhds hdec hdiv' hcurl
+  intro x hx
+  have h0 : Physical.physVel (-(Physical.physOmega α A B g C)) x t - v x = 0 :=
+    eq_zero_of_hasFDerivAt_zero (D := fun y => Physical.physVel (-(Physical.physOmega α A B g C)) y t - v y) (h x)
+  rw [sub_eq_zero] at h0
+  rw [h0, hv x hx]
+
+
+end Work.FTS.BSIdent
+end
+end
+-- ===== merged: Submission.Work.FTS.BSIdent.Weyl.Levels.merPsiT_origin_aux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -210,3 +458,4 @@ theorem abs_div_merPsiT_le {α : ℝ} {A B : ℝ → ℝ} {Φ : Work.FTS.BSIdent
     _ = |(A (Physical.clockInv C t))⁻¹| * C₀ * (Real.pi / 2) * Work.Cyl.rhoP r z := by ring
 
 end Work.FTS.BSIdent.Weyl.Levels
+end

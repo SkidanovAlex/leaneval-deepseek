@@ -5,15 +5,15 @@ import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Order.Interval.Basic
 import Mathlib.Tactic.Have
-import Submission.Work.FTS.Vocab
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Gsing_ode
-import Submission.Work.Elliptic.GsingFuncs
 import Submission.Work.FTS.EllipticEst.HkMem_FstarSin_open
-import Submission.Work.FTS.EllipticEst.GbarSin.FstarDzIter_chain_open
-import Submission.Work.FTS.EllipticEst.GbarSin.Fstar_local_integrableOn
-import Submission.Work.FTS.EllipticEst.Gsing_deriv_rel
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS.Vocab
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -348,127 +348,12 @@ theorem contDiffOn_L12_of_smoothOpen_Hk (α : ℝ) (k : ℕ) (F : ℝ → ℝ �
 
 /-! ## The primitive `Jfun` of `Gbar` -/
 
-/-- **The primitive `z ↦ ∫_0^z s^{(5-α)/α}F_*(s) ds` is `C^{k-1}` and its derivative is the
-integrand.**  The interval integrability on `(0,z]` is supplied by the local integrability of
-`F_*` and the bound `|F_*(s)| ≤ √(π/2)√(A_0(s))·s²/(1+s)²`. -/
-theorem contDiffOn_Jfun_of_smoothOpen_Hk (α : ℝ) (k : ℕ) (F : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα1 : α ≤ 1) (hF : Work.FTS.EllipticEst.SmoothOpen F) (hmem : Work.Spaces.HkMem α k F)
-    (hk : 2 ≤ k) :
-    ContDiffOn ℝ (k - 1)
-        (fun z : ℝ => ∫ s in (0 : ℝ)..z, s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s)
-        (Set.Ioi 0) ∧
-      ∀ z ∈ Set.Ioi (0 : ℝ),
-        HasDerivAt (fun z' : ℝ => ∫ s in (0 : ℝ)..z',
-            s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s)
-          (z ^ ((5 - α) / α) * Work.Elliptic.Fstar F z) z := by
-  have hk1 : 1 ≤ k := by omega
-  have hFstar := contDiffOn_Fstar_of_smoothOpen_Hk α k F hF hmem hk1
-  -- the integrand is `C^{k-1}`
-  have hsm : ContDiffOn ℝ (k - 1)
-      (fun s : ℝ => s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s) (Set.Ioi 0) :=
-    (ContDiffOn.rpow_const_of_ne contDiffOn_id (fun x hx => ne_of_gt hx)).mul hFstar
-  -- interval integrability on `(0,z]` at every `z > 0`
-  have hI : ∀ z ∈ Set.Ioi (0 : ℝ),
-      IntervalIntegrable (fun s : ℝ => s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s)
-        volume 0 z := by
-    intro z hz
-    have hloc := (Work.FTS.EllipticEst.GbarSin.Fstar_local_integrableOn α k F hα hα1 hF hmem
-      0 (Nat.zero_le k)).2 z hz
-    refine hloc.congr ?_
-    intro s hs
-    have hpexp : s ^ ((5 - α) / α) = s ^ (5 / α - 1) := by
-      rw [show (5 - α) / α = 5 / α - 1 by field_simp]
-    show s ^ (5 / α - 1) * Work.Elliptic.Fstar F s
-        = s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s
-    rw [hpexp]
-  have hprim : ∀ z ∈ Set.Ioi (0 : ℝ),
-      HasDerivAt (fun z' : ℝ => ∫ s in (0 : ℝ)..z',
-          s ^ ((5 - α) / α) * Work.Elliptic.Fstar F s)
-        (z ^ ((5 - α) / α) * Work.Elliptic.Fstar F z) z := by
-    intro z hz
-    exact intervalIntegral.integral_hasDerivAt_right (hI z hz)
-      (hsm.continuousOn.stronglyMeasurableAtFilter isOpen_Ioi z hz)
-      (hsm.continuousOn.continuousAt (isOpen_Ioi.mem_nhds hz))
-  refine ⟨?_, hprim⟩
-  -- `C^{k-1}`: the primitive gains one order over `C^{k-2}`
-  have hm2 : ((k - 2 : ℕ) : ℕ∞ω) ≤ ((k - 1 : ℕ) : ℕ∞ω) := by
-    exact_mod_cast (by omega : k - 2 ≤ k - 1)
-  have h := contDiffOn_succ_of_hasDerivAt hprim (hsm.of_le hm2)
-  have heq : ((k - 2 : ℕ) : ℕ∞ω) + 1 = ((k - 1 : ℕ) : ℕ∞ω) := by
-    exact_mod_cast (by omega : k - 2 + 1 = k - 1)
-  rw [heq] at h
-  exact h
 
 /-! ## Smoothness of `Ḡ` and `Gsing` -/
 
-/-- **`Ḡ = Abar · Jfun` is `C^{k-1}` on `(0,∞)`.** -/
-theorem contDiffOn_Gbar_of_smoothOpen_Hk (α : ℝ) (k : ℕ) (F : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα1 : α ≤ 1) (hF : Work.FTS.EllipticEst.SmoothOpen F) (hmem : Work.Spaces.HkMem α k F)
-    (hk : 2 ≤ k) :
-    ContDiffOn ℝ (k - 1) (Work.Elliptic.Gbar α F) (Set.Ioi 0) := by
-  have hJ := (contDiffOn_Jfun_of_smoothOpen_Hk α k F hα hα1 hF hmem hk).1
-  have hA : ContDiffOn ℝ (k - 1) (Work.Elliptic.Abar α) (Set.Ioi 0) := by
-    have h : ContDiffOn ℝ (k - 1) (fun z : ℝ => z ^ (-(5 / α))) (Set.Ioi 0) :=
-      ContDiffOn.rpow_const_of_ne contDiffOn_id fun x hx => ne_of_gt hx
-    exact contDiffOn_const.mul h
-  have hfun : (Work.Elliptic.Gbar α F)
-      = fun z => Work.Elliptic.Abar α z * Work.Elliptic.Jfun α F z := rfl
-  rw [hfun]
-  exact hA.mul hJ
 
-/-- **`Gsing = Gstar + Ḡ` is `C^{k-1}` on `(0,∞)`.** -/
-theorem contDiffOn_Gsing_of_smoothOpen_Hk (α : ℝ) (k : ℕ) (F : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα1 : α ≤ 1) (hF : Work.FTS.EllipticEst.SmoothOpen F) (hmem : Work.Spaces.HkMem α k F)
-    (hk : 2 ≤ k) :
-    ContDiffOn ℝ (k - 1) (Work.Elliptic.Gsing α F) (Set.Ioi 0) := by
-  have hL12 := (contDiffOn_L12_of_smoothOpen_Hk α k F hF hmem hk).1
-  have hgs : ContDiffOn ℝ (k - 1) (Work.Elliptic.Gstar α F) (Set.Ioi 0) := by
-    have hfun : (Work.Elliptic.Gstar α F) = fun z => -(1 / (4 * α)) * Work.Elliptic.L12 F z :=
-      rfl
-    rw [hfun]
-    exact contDiffOn_const.mul hL12
-  have hgb := contDiffOn_Gbar_of_smoothOpen_Hk α k F hα hα1 hF hmem hk
-  have hfun : (Work.Elliptic.Gsing α F)
-      = fun z => Work.Elliptic.Gstar α F z + Work.Elliptic.Gbar α F z := rfl
-  rw [hfun]
-  exact hgs.add hgb
 
 /-! ## The target -/
 
-theorem GsingFactsInterior (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ)
-    (hα : 0 < α) (hα4 : α ≤ 1 / 4) (hk : 2 ≤ k)
-    (hF : Work.FTS.Nonlin.RegQ α k F) (hΨ : Work.FTS.Nonlin.RegQ α k Ψ)
-    (hsol : Work.Elliptic.IsBslSol α F Ψ) :
-    ContDiffOn ℝ (k - 1) (Work.Elliptic.Fstar F) (Set.Ioi 0) ∧
-      ContDiffOn ℝ (k - 1) (Work.Elliptic.Gsing α F) (Set.Ioi 0) ∧
-      ContDiffOn ℝ (k - 1) (Work.Elliptic.Gbar α F) (Set.Ioi 0) ∧
-      (∀ z ∈ Set.Ioi (0 : ℝ),
-        α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z) ∧
-      (∀ z ∈ Set.Ioi (0 : ℝ),
-        α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α F) z') z
-          + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α F) z
-        = (15 / 4) * Work.Elliptic.Fstar F z) := by
-  have hα1 : α ≤ 1 := by linarith
-  have hFopen : Work.FTS.EllipticEst.SmoothOpen F := smoothOpen_of_smoothQuad hF.1
-  have hmem : Work.Spaces.HkMem α k F := hF.2.1
-  obtain ⟨-, hL12diff⟩ := contDiffOn_L12_of_smoothOpen_Hk α k F hFopen hmem hk
-  have hFstar := contDiffOn_Fstar_of_smoothOpen_Hk α k F hFopen hmem (by omega)
-  -- the derivative data of `F_*`
-  have hFc : ∀ z ∈ Set.Ioi (0 : ℝ),
-      HasDerivAt (Work.Elliptic.Fstar F) (deriv (Work.Elliptic.Fstar F) z) z := by
-    intro z hz
-    have h1 : ContDiffOn ℝ (1 : ℕ) (Work.Elliptic.Fstar F) (Set.Ioi 0) := by
-      have hle : ((1 : ℕ) : ℕ∞ω) ≤ ((k - 1 : ℕ) : ℕ∞ω) := by
-        exact_mod_cast (by omega : 1 ≤ k - 1)
-      exact hFstar.of_le hle
-    exact ((h1.differentiableOn (by simp)).differentiableAt
-      (isOpen_Ioi.mem_nhds hz)).hasDerivAt
-  have hJ := (contDiffOn_Jfun_of_smoothOpen_Hk α k F hα hα1 hFopen hmem hk).2
-  refine ⟨hFstar, contDiffOn_Gsing_of_smoothOpen_Hk α k F hα hα1 hFopen hmem hk,
-    contDiffOn_Gbar_of_smoothOpen_Hk α k F hα hα1 hFopen hmem hk, ?_, ?_⟩
-  · intro z hz
-    exact Work.FTS.EllipticEst.Gsing_deriv_rel α F hα hL12diff hFc hJ z hz
-  · intro z hz
-    exact Work.Elliptic.Gsing_ode α F hα hL12diff hFc hJ z hz
 
 end Work.FTS.EllipticEst.UopHk

@@ -3,31 +3,26 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
-import Submission.Work.FTS.StrongEps.E5G.epsWP_hkMem5_bnd_fam
 import Submission.Work.FTS.StrongEps.E5G.epsRHSP_hkMem5_bnd_fam
-import Submission.Work.FTS.StrongEps.E5G.morrey_four
-import Submission.Work.FTS.StrongEps.E5G.Jeps_tendsto_of_modulus
-import Submission.Work.FTS.StrongEps.EpsHlim4
-import Submission.Work.FTS.StrongEps.mixed_Jeps
-import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
-import Submission.Work.FTS.StrongEps.E5Aux2.epsWP_tendsto_of_muH
 import Submission.Work.FTS.StrongEps.E5G.hWc_of_tower
--- pieces built for this proof
+import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
 import Submission.Work.FTS.StrongEps.E5G.morrey_five_slots
-import Submission.Work.FTS.StrongEps.E5G.exists_tendsto_of_equiholder_of_weak
-import Submission.Work.FTS.StrongEps.E5G.pointwise_bound_of_tendsto_of_equiholder
 import Submission.Work.FTS.StrongEps.E5G.weak_slots_tendsto_open
-import Submission.Work.FTS.StrongEps.E5G.slots_eq_of_convergent_jets
--- support material
-import Submission.Work.FTS.StrongEps.epsWP_sup_le_fam
-import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
-import Submission.Work.FTS.StrongEps.JepsBasic
-import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
-import Submission.Work.FTS.StrongEps.exists_shift_window_compact
 import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
-import Submission.Work.FTS.StrongEps.PZero
-import Submission.Work.FTS.StrongEps.PZeroAux.PzJepsHkMem
+import Submission.Work.FTS.StrongEps.EpsHbdd
+import Submission.Work.FTS.StrongEps.EpsHlim4
+import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
+import Submission.Work.FTS.StrongEps.PZeroAux.bumpHkNormBound
+import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
+import Submission.Work.FTS.StrongEps.mixed_Jeps
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS_EllLimOK.ProducerH.pzIterTwo_shiftSing_eq_PhiTil_add
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXVP.thLip
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
 
 set_option synthInstance.maxHeartbeats 400000 -- v435-synth
 

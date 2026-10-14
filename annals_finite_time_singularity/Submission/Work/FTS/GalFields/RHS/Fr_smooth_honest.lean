@@ -1,14 +1,256 @@
+import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.GalFields.Defs
-import Submission.Work.FTS.GalFields.RHS.smoothOpen_atoms_of_gal
-import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS.EllipticEst.Cores.aSlotsTwoInterp
+import Submission.Work.FTS.EllipticEst.Cores.aSlotsTwoT1
+import Submission.Work.FTS.EllipticEst.Final.Rep.TopSlotTwoFts.AHalfFinal
+import Submission.Work.FTS.EllipticEst.Final.Rep.TopSlotTwoFts.BHalf
+import Submission.Work.FTS.EllipticEst.H2W.lzeroSliceL1Ae
+import Submission.Work.FTS.EllipticEst.TT.slot11_le
+import Submission.Work.FTS.EllipticEst.TT.truncAux
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
 import Submission.Work.FTS.Nonlinear.Open.Main
-import Submission.Work.FTS.EllSol.Assembly
-import Submission.Work.FTS.GalFields.Norm.Xn_LGammaT_le
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.Pieces4
+import Submission.Work.FTS.StrongEps.EpsE4Thr.EnergyDiagAssembly
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.VocabO2
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.TSCAssembly =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Cores
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+noncomputable section
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+
+/-- The `A`-profile `z²∂_z²Ψ`. -/
+private abbrev Ab (Ψ : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ := fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ
+
+/-- The `B`-profile `∂_θ²Ψ`. -/
+private abbrev Bb (Ψ : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ := Work.Spaces.pthIter 2 Ψ
+
+/-- `Tk α k f` is `L2Sq` of the `k`-th weighted angular slot (definitional). -/
+private theorem Tk_eq_L2Sq (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.FTS.EllipticEst.remov.Step.Tk α k f
+      = Work.Spaces.L2Sq (fun z θ => Work.Spaces.mixed 0 k f z θ
+          * Work.Spaces.Wt α z θ) := rfl
+
+/-- The level-`0` `ℋ`-square is the weighted `L²`-square. -/
+private theorem HkSq_zero_eq_L2Sq_aux (α : ℝ) (g : ℝ → ℝ → ℝ) :
+    Work.Spaces.HkSq α 0 g = Work.Spaces.L2Sq (fun z θ => g z θ
+      * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) :=
+  Work.FTS.EllipticEst.TT.HkSq_zero_eq_L2Sq α g
+
+/-- **The `(1,1)`-slot of a `D_z`-shifted profile in the `Tk`-form** (a self-contained copy of
+`Cores.Tk_one_Dz_eq_mixed11'`): `Tk α 1 (D_z Y) = L2Sq (mixed 1 1 Y · Wt α)`. -/
+private theorem Tk_one_Dz_eq_mixed11_aux (α : ℝ) (hα : 0 < α) {Y : ℝ → ℝ → ℝ}
+    (hY : Work.FTS.EllipticEst.SmoothOpen Y) :
+    Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.DzIter 1 Y)
+      = Work.Spaces.L2Sq (fun z θ => Work.Spaces.mixed 1 1 Y z θ
+          * Work.Spaces.Wt α z θ) := by
+  have hpt : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      Work.Spaces.mixed 0 1 (Work.Spaces.DzIter 1 Y) z θ
+        = Work.Spaces.mixed 1 1 Y z θ := by
+    intro z θ hz hθ hlt
+    have hpq : ((z, θ) : ℝ × ℝ) ∈ Work.FTS.EllipticEst.Q0 :=
+      Work.FTS.EllipticEst.mem_Q0.mpr ⟨hz, hθ, hlt⟩
+    have hcm := Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
+      Work.FTS.EllipticEst.isOpen_Q0
+      (fun n => (Work.FTS.EllipticEst.smoothOpen_iff_forall Y).mp hY n) 1 1 hpq
+    rw [Work.Spaces.mixed_zero_left]
+    exact hcm
+  rw [Tk_eq_L2Sq]
+  exact l2sq_congr_q hα hpt
+
+/-- **The sum of the three shifted level-`0` `B`-slots is dominated by `|F|²_{ℋ²}`** (the
+paper's Step 3 at the `j ≤ 2` radially shifted data, `Cores.shiftZeroSlots_clean`). -/
+theorem sigma_le (h0 : ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C) :
+    ∃ CS : ℝ, 0 < CS ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
+      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
+      (∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+          Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+            * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+        ≤ CS * Work.Spaces.HkSq α 2 F := by
+  obtain ⟨C0, hC0, hz0⟩ := shiftZeroSlots_clean 2 0 (by norm_num)
+  obtain ⟨C1, hC1, hz1⟩ := shiftZeroSlots_clean 2 1 (by norm_num)
+  obtain ⟨C2, hC2, hz2⟩ := shiftZeroSlots_clean 2 2 le_rfl
+  refine ⟨C0 + C1 + C2 + 1, by positivity, ?_⟩
+  intro α F Ψ hα hα4 h
+  have hN : 0 ≤ Work.Spaces.HkSq α 2 F := Work.Spaces.HkSq_nonneg α 2 F
+  have e0 := hz0 α F Ψ hα hα4 h h0
+  have e1 := hz1 α F Ψ hα hα4 h h0
+  have e2 := hz2 α F Ψ hα hα4 h h0
+  have n0 : 0 ≤ α ^ 4 * Work.Spaces.HkSq α 0
+      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 (Work.Spaces.DzIter 0 Ψ) z θ) :=
+    mul_nonneg (by positivity) (Work.Spaces.HkSq_nonneg _ _ _)
+  have n1 : 0 ≤ α ^ 4 * Work.Spaces.HkSq α 0
+      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 (Work.Spaces.DzIter 1 Ψ) z θ) :=
+    mul_nonneg (by positivity) (Work.Spaces.HkSq_nonneg _ _ _)
+  have n2 : 0 ≤ α ^ 4 * Work.Spaces.HkSq α 0
+      (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 (Work.Spaces.DzIter 2 Ψ) z θ) :=
+    mul_nonneg (by positivity) (Work.Spaces.HkSq_nonneg _ _ _)
+  have b0 : Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 0 Ψ))
+      ≤ C0 * Work.Spaces.HkSq α 2 F := by linarith
+  have b1 : Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 1 Ψ))
+      ≤ C1 * Work.Spaces.HkSq α 2 F := by linarith
+  have b2 : Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ))
+      ≤ C2 * Work.Spaces.HkSq α 2 F := by linarith
+  have hsum : (∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+        Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+          * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+      = Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 0 Ψ))
+        + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 1 Ψ))
+        + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ)) := by
+    rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one]
+    rw [← HkSq_zero_eq_L2Sq_aux α (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 0 Ψ)),
+      ← HkSq_zero_eq_L2Sq_aux α (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 1 Ψ)),
+      ← HkSq_zero_eq_L2Sq_aux α (Work.Spaces.pthIter 2 (Work.Spaces.DzIter 2 Ψ))]
+  rw [hsum]
+  nlinarith [b0, b1, b2, hN, hC0, hC1, hC2]
+
+/-- **The assembly.**  Given the `(1,1)`-slot bound of `A` and the level-`0` estimate, the six
+`Tk`-slots of the target are bounded by `C|F|²_{ℋ²}`. -/
+theorem TopSlotsTwoClean_of
+    (hA11 : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
+      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
+      α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 1
+          (Work.Spaces.DzIter 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
+        ≤ C * Work.Spaces.HkSq α 2 F)
+    (h0 : ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
+      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
+      (α ^ 4 * (Work.FTS.EllipticEst.remov.Step.Tk α 1
+            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
+          + 3 * Work.FTS.EllipticEst.remov.Step.Tk α 1
+            (Work.Spaces.DzIter 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
+          + Work.FTS.EllipticEst.remov.Step.Tk α 2
+            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))
+        + (Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.pthIter 2 Ψ)
+          + 3 * Work.FTS.EllipticEst.remov.Step.Tk α 1
+            (Work.Spaces.DzIter 1 (Work.Spaces.pthIter 2 Ψ))
+          + Work.FTS.EllipticEst.remov.Step.Tk α 2 (Work.Spaces.pthIter 2 Ψ))
+        ≤ C * Work.Spaces.HkSq α 2 F := by
+  obtain ⟨C1, hC1, h1⟩ := aSlotsTwoT1 h0
+  obtain ⟨C3, hC3, h3⟩ := Work.FTS.EllipticEst.TopSlotTwoFts.Tk_A_le h0
+  obtain ⟨KA, hKA, hA⟩ := Work.FTS.EllipticEst.H2W.AngBW.slot01Bound
+  obtain ⟨KB, hKB, hB⟩ := Work.FTS.EllipticEst.TT.slot11_le
+  obtain ⟨KC, hKC, hC⟩ := Work.FTS.EllipticEst.TopSlotTwoFts.Tk_B_le h0
+  obtain ⟨CS, hCS, hS⟩ := sigma_le h0
+  obtain ⟨C2, hC2, h2⟩ := hA11
+  refine ⟨C1 + 3 * C2 + C3 + KA * (CS + 1) + 3 * (KB * (CS + 1 + C2)) + KC + 1,
+    by positivity, ?_⟩
+  intro α F Ψ hα hα4 h
+  have hN : 0 ≤ Work.Spaces.HkSq α 2 F := Work.Spaces.HkSq_nonneg α 2 F
+  have hα1 : α ≤ 1 := by linarith
+  have hα4le : α ^ 4 ≤ 1 := pow_le_one₀ hα.le hα1
+  have hAb : Work.FTS.EllipticEst.SmoothOpen (Ab Ψ) :=
+    Work.FTS.EllipticEst.AeMom.Repair.SmoothOpen.zsq_mul
+      (Work.FTS.EllipticEst.SmoothOpen.pzIter (Work.FTS.EllipticEst.smoothOpen_of_forall h.smooth) 2)
+  have hBsm : Work.FTS.EllipticEst.SmoothOpen (Bb Ψ) :=
+    (Work.FTS.EllipticEst.smoothOpen_of_forall h.smooth).pth.pth
+  -- the three direct `A`-slots
+  have s1 : α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 1 (Ab Ψ)
+      ≤ C1 * Work.Spaces.HkSq α 2 F := h1 α F Ψ hα hα4 h
+  have s2 : α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 1
+      (Work.Spaces.DzIter 1 (Ab Ψ)) ≤ C2 * Work.Spaces.HkSq α 2 F := h2 α F Ψ hα hα4 h
+  have s3 : α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ)
+      ≤ C3 * Work.Spaces.HkSq α 2 F := by
+    have hTk : Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ)
+        ≤ C3 * Work.Spaces.HkSq α 2 F := h3 α F Ψ hα hα4 h
+    have hnn : 0 ≤ Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ) :=
+      Work.FTS.EllipticEst.remov.Step.Tk_nonneg α 2 _
+    calc α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ)
+        ≤ 1 * Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ) :=
+          mul_le_mul_of_nonneg_right hα4le hnn
+      _ = Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ) := one_mul _
+      _ ≤ C3 * Work.Spaces.HkSq α 2 F := hTk
+  -- the shifted `ℋ⁰`-slots
+  have hSig := hS α F Ψ hα hα4 h
+  -- the three `B`-slots
+  have hB1 : Work.FTS.EllipticEst.remov.Step.Tk α 1 (Bb Ψ)
+      ≤ KA * ((∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+            Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+              * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+          + Work.Spaces.HkSq α 2 F) := by
+    rw [Tk_eq_L2Sq]
+    exact hA α F Ψ hα hα4 h
+  have hB2 : Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.DzIter 1 (Bb Ψ))
+      ≤ KB * ((∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+            Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+              * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+          + Work.Spaces.HkSq α 2 F
+          + α ^ 4 * Work.Spaces.L2Sq (fun z θ =>
+              Work.Spaces.mixed 1 1 (Ab Ψ) z θ * Work.Spaces.Wt α z θ)) := by
+    rw [Tk_one_Dz_eq_mixed11_aux α hα hBsm]
+    exact hB α F Ψ hα hα4 h
+  have hB3 : Work.FTS.EllipticEst.remov.Step.Tk α 2 (Bb Ψ)
+      ≤ KC * Work.Spaces.HkSq α 2 F := hC α F Ψ hα hα4 h
+  -- the `(1,1)`-slot of `A` in the `mixed`-form
+  have s2' : α ^ 4 * Work.Spaces.L2Sq (fun z θ =>
+      Work.Spaces.mixed 1 1 (Ab Ψ) z θ * Work.Spaces.Wt α z θ)
+      ≤ C2 * Work.Spaces.HkSq α 2 F := by
+    rw [← Tk_one_Dz_eq_mixed11_aux α hα hAb]
+    exact s2
+  have hshape : α ^ 4 * (Work.FTS.EllipticEst.remov.Step.Tk α 1 (Ab Ψ)
+        + 3 * Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.DzIter 1 (Ab Ψ))
+        + Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ))
+      = α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 1 (Ab Ψ)
+        + 3 * (α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 1
+            (Work.Spaces.DzIter 1 (Ab Ψ)))
+        + α ^ 4 * Work.FTS.EllipticEst.remov.Step.Tk α 2 (Ab Ψ) := by ring
+  rw [hshape]
+  have hA' : (∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+        Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+          * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+      ≤ CS * Work.Spaces.HkSq α 2 F := hSig
+  have hB1' : Work.FTS.EllipticEst.remov.Step.Tk α 1 (Bb Ψ)
+      ≤ KA * (CS + 1) * Work.Spaces.HkSq α 2 F := by
+    have hKA0 : 0 ≤ KA := le_of_lt hKA
+    have : KA * ((∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+        Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+          * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+        + Work.Spaces.HkSq α 2 F) ≤ KA * (CS + 1) * Work.Spaces.HkSq α 2 F := by
+      nlinarith [hA', hN]
+    linarith [hB1]
+  have hB2' : Work.FTS.EllipticEst.remov.Step.Tk α 1 (Work.Spaces.DzIter 1 (Bb Ψ))
+      ≤ KB * (CS + 1 + C2) * Work.Spaces.HkSq α 2 F := by
+    have hKB0 : 0 ≤ KB := le_of_lt hKB
+    have : KB * ((∑ j ∈ Finset.range 3, Work.Spaces.L2Sq (fun z θ =>
+        Work.Spaces.pthIter 2 (Work.Spaces.DzIter j Ψ) z θ
+          * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))))
+        + Work.Spaces.HkSq α 2 F
+        + α ^ 4 * Work.Spaces.L2Sq (fun z θ =>
+            Work.Spaces.mixed 1 1 (Ab Ψ) z θ * Work.Spaces.Wt α z θ))
+        ≤ KB * (CS + 1 + C2) * Work.Spaces.HkSq α 2 F := by
+      nlinarith [hA', hN, s2']
+    linarith [hB2]
+  nlinarith [s1, s2, s3, hB1', hB2', hB3, hN]
+
+end
+
+end Work.FTS.EllipticEst.Cores
+end
+-- ===== merged: Submission.Work.FTS.GalFields.RHS.Fr_smooth_honest =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -54,130 +296,8 @@ open MeasureTheory Set Filter
 
 set_option maxHeartbeats 1600000
 
-/-- The modulation constant `μ` of `Fr`, as a function of the data.  This is a pure
-abbreviation (it is `Work.Construction.mufunS` applied to the blocks of the right-hand
-side); it is introduced only to keep the statements below readable. -/
-private noncomputable def MuN (α : ℝ) (Φs : Work.FTS.Galerkin.Fn)
-    (EllSol : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn) (g : Work.FTS.Galerkin.Fn) : ℝ :=
-  Work.Construction.mufunS α (Work.Construction.N0 α (Work.Construction.Ftot α g) g)
-    (Work.Construction.N α (Work.Construction.Ftot α g)
-      (fun z θ => Φs z θ + EllSol g z θ)) g
 
-/-- **The conjunction of the first three conjuncts of `Fr_smooth_honest`**, for an arbitrary
-profile `g` of the Galerkin class: `Fr α Φs EllSol g` is `C^∞` on the open quadrant and
-honest in `ℋ⁴`.  (The statement of `Fr` unfolds definitionally to the five summands listed
-in the module docstring.) -/
-private lemma Fr_open_honest {α α₂ Ci Ct Ce Cs : ℝ}
-    {IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ}
-    {Φs : Work.FTS.Galerkin.Fn} {EllSol : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
-    (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂) (hE : Work.FTS.OpenPkg.N4Extra' IP α₂ Ct)
-    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs)
-    (hell : ∀ g : Work.FTS.Galerkin.Fn, Work.FTS.Nonlin.GalClass α g →
-      Work.FTS.VocabO.EllPkgGo α Ce g (EllSol g))
-    (hα : 0 < α) (hα1 : α ≤ 1) (hαα₂ : α ≤ α₂)
-    {g : Work.FTS.Galerkin.Fn} (hgal : Work.FTS.Nonlin.GalClass α g) :
-    Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.Fr α Φs EllSol g) ∧
-      Work.Spaces.HkMem α 4 (Work.FTS.GalFields.Fr α Φs EllSol g) := by
-  have hsq : Work.FTS.LocData.SmoothQuad g := hgal.reg.1
-  have hgS : Work.FTS.EllipticEst.SmoothOpen g :=
-    Work.FTS.OpenPkg.smoothOpen_of_smoothQuad hsq
-  have hmem6 : Work.Spaces.HkMem α 6 g := hgal.reg.2.1
-  have hg4 : Work.Spaces.HkMem α 4 g :=
-    Work.FTS.StrongPersist.HkMem_of_le_of_smoothOpen α (by norm_num) hgS hmem6
-  have hΦsS : Work.FTS.EllipticEst.SmoothOpen Φs := hstar.smooth
-  have hΦgS : Work.FTS.EllipticEst.SmoothOpen (EllSol g) := (hell g hgal).smooth
-  -- the twelve `SmoothOpen`-atoms of the right-hand side
-  obtain ⟨hL12, hFK, hRopG, hUopG, hVopG, hRopS, hVopS, hLG, hAKs, hN0s, hNs_, hNstars⟩ :=
-    smoothOpen_atoms_of_gal hα hα1 hgal hgS hΦsS hΦgS (hell g hgal) hstar
-  -- the `ℋ⁴`-honesty table of the §8 chunks
-  have hpk : Work.FTS.OpenPkg.PiecesHk α g Φs (EllSol g) :=
-    Work.FTS.Nonlinear.Open.PiecesHkOpen IP hN hE hα hα1 hαα₂ hgal hstar (hell g hgal)
-  -- `HkMem α 4` of the linear part
-  obtain ⟨K, hKpos, hKL⟩ :=
-    Work.FTS.GalFields.Norm.Xn_LGammaT_le (Ce := Ce) (Cs := Cs) hN hE
-  have hLGT : Work.Spaces.HkMem α 4 (Work.Coercivity.LGammaT α g) :=
-    (hKL hα hα1 hαα₂ hgal).1
-  -- the two coefficients of the right-hand side
-  set mb : ℝ := Work.Construction.mubar (Work.Construction.N0 α (Work.Construction.Ftot α g) g)
-      (Work.Construction.N α (Work.Construction.Ftot α g)
-        (fun z θ => Φs z θ + EllSol g z θ)) with hmb
-  -- `HkMem α 4 (N_* μ (lamfun μ) g)`: a linear combination of `g` and `D_z g`
-  have hNs_mem : Work.Spaces.HkMem α 4 (Work.Construction.Nstar (MuN α Φs EllSol g)
-      (Work.Construction.lamfun (MuN α Φs EllSol g)) g) := by
-    have hμ : Work.Spaces.HkMem α 4 (fun z θ => (-(MuN α Φs EllSol g)) * g z θ) :=
-      Work.FTS.LocData.HkMem_const_mul α 4 (-(MuN α Φs EllSol g)) hg4
-    have hκ : Work.Spaces.HkMem α 4 (fun z θ =>
-        (-(MuN α Φs EllSol g + Work.Construction.lamfun (MuN α Φs EllSol g)
-          + MuN α Φs EllSol g * Work.Construction.lamfun (MuN α Φs EllSol g)))
-        * Work.Spaces.Dz g z θ) :=
-      Work.FTS.LocData.HkMem_const_mul α 4
-        (-(MuN α Φs EllSol g + Work.Construction.lamfun (MuN α Φs EllSol g)
-          + MuN α Φs EllSol g * Work.Construction.lamfun (MuN α Φs EllSol g))) hpk.pDz
-    have hμs : Work.FTS.EllipticEst.SmoothOpen (fun z θ => (-(MuN α Φs EllSol g)) * g z θ) :=
-      Work.FTS.NonlinRows.smoothOpen_const_mul (-(MuN α Φs EllSol g)) hgS
-    have hκs : Work.FTS.EllipticEst.SmoothOpen (fun z θ =>
-        (-(MuN α Φs EllSol g + Work.Construction.lamfun (MuN α Φs EllSol g)
-          + MuN α Φs EllSol g * Work.Construction.lamfun (MuN α Φs EllSol g)))
-        * Work.Spaces.Dz g z θ) :=
-      Work.FTS.NonlinRows.smoothOpen_const_mul _ hgS.Dz
-    have hall := Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 hμs hκs hμ hκ
-    refine Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0 α 4 hall ?_
-    intro z hz θ hθ
-    simp only [Work.Construction.Nstar]
-    ring
-  -- the smoothness chain
-  have s1 : Work.FTS.EllipticEst.SmoothOpen (fun z θ => -(Work.Coercivity.LGammaT α g z θ)) :=
-    hLG.neg
-  have s2 : Work.FTS.EllipticEst.SmoothOpen
-      (fun z θ => (-mb) * Work.Construction.AK α z θ) :=
-    Work.FTS.NonlinRows.smoothOpen_const_mul (-mb) hAKs
-  have s3 : Work.FTS.EllipticEst.SmoothOpen
-      (Work.Construction.N0 α (Work.Construction.Ftot α g) g) := hN0s
-  have s4 : Work.FTS.EllipticEst.SmoothOpen (Work.Construction.N α (Work.Construction.Ftot α g)
-      (fun z θ => Φs z θ + EllSol g z θ)) := hNs_
-  have s5 : Work.FTS.EllipticEst.SmoothOpen (Work.Construction.Nstar (MuN α Φs EllSol g)
-      (Work.Construction.lamfun (MuN α Φs EllSol g)) g) := hNstars
-  have s23 := Work.FTS.EllipticEst.smoothOpen_add s2 s3
-  have s234 := Work.FTS.EllipticEst.smoothOpen_add s23 s4
-  have s2345 := Work.FTS.EllipticEst.smoothOpen_add s234 s5
-  have stot := Work.FTS.EllipticEst.smoothOpen_add s1 s2345
-  -- the honesty chain
-  have h1 : Work.Spaces.HkMem α 4 (fun z θ => -(Work.Coercivity.LGammaT α g z θ)) :=
-    Work.FTS.NonlinRows.HkMem_neg' α 4 hLGT
-  have h2 : Work.Spaces.HkMem α 4 (fun z θ => (-mb) * Work.Construction.AK α z θ) :=
-    Work.FTS.LocData.HkMem_const_mul α 4 (-mb) hpk.pAK
-  have h3 : Work.Spaces.HkMem α 4 (Work.Construction.N0 α (Work.Construction.Ftot α g) g) :=
-    hpk.pN0
-  have h4 : Work.Spaces.HkMem α 4 (Work.Construction.N α (Work.Construction.Ftot α g)
-      (fun z θ => Φs z θ + EllSol g z θ)) := hpk.pN
-  have h23 := Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 s2 s3 h2 h3
-  have h234 := Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 s23 s4 h23 h4
-  have h2345 := Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 s234 s5 h234 hNs_mem
-  have htot := Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 s1 s2345 h1 h2345
-  exact ⟨stot, htot⟩
 
-theorem Fr_smooth_honest {α α₂ Ci Ct Ce Cs : ℝ} {IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ}
-    {Φs : Work.FTS.Galerkin.Fn} {EllSol : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
-    (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂) (hE : Work.FTS.OpenPkg.N4Extra' IP α₂ Ct)
-    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs)
-    (hell : ∀ g : Work.FTS.Galerkin.Fn, Work.FTS.Nonlin.GalClass α g →
-      Work.FTS.VocabO.EllPkgGo α Ce g (EllSol g))
-    (hα : 0 < α) (hα1 : α ≤ 1) (hαα₂ : α ≤ α₂)
-    {g : Work.FTS.Galerkin.Fn} (hgal : Work.FTS.Nonlin.GalClass α g) :
-    Work.FTS.Nonlin.GalClass α (0 : Work.FTS.Galerkin.Fn) ∧
-    Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.Fr α Φs EllSol g) ∧
-    Work.Spaces.HkMem α 4 (Work.FTS.GalFields.Fr α Φs EllSol g) ∧
-    Work.FTS.EllipticEst.SmoothOpen
-      (fun z θ => Work.FTS.GalFields.Fr α Φs EllSol g z θ
-        - Work.FTS.GalFields.Fr α Φs EllSol 0 z θ) ∧
-    Work.Spaces.HkMem α 4 (fun z θ => Work.FTS.GalFields.Fr α Φs EllSol g z θ
-        - Work.FTS.GalFields.Fr α Φs EllSol 0 z θ) := by
-  have hg := Fr_open_honest hN hE hstar hell hα hα1 hαα₂ hgal
-  have h0 := Fr_open_honest hN hE hstar hell hα hα1 hαα₂ (g := 0)
-    (Work.FTS.EllSol.galClass_zero α)
-  refine ⟨Work.FTS.EllSol.galClass_zero α, hg.1, hg.2, ?_, ?_⟩
-  · exact Work.FTS.EllipticEst.smoothOpen_sub hg.1 h0.1
-  · exact Work.FTS.CoercivityFix.Assembly.HkMem_add_open α 4 hg.1 h0.1.neg hg.2
-      (Work.FTS.NonlinRows.HkMem_neg' α 4 h0.2)
 
 end Work.FTS.GalFields.RHS
+end

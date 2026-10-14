@@ -1,39 +1,3 @@
-/-
-# `Work.FTS.BSIdent.hid_of_pointwise` — route C of the identification (design §5 item 4)
-
-The lead's route C (`FTS_HARD_DESIGN.md` §(C), message of 2026-10-08 01:30) for the identification
-`hid` of `blowupAtTop_of_regPkg'` reverses the field `D := physVel (−physOmega) − v` and applies the
-Weyl/Liouville principle with `q := 0`:
-
-  `D` continuous, `D → 0` at infinity, `div D = 0` and `curl D = 0` in the sense of distributions
-  ⟹ (Weyl) `D = ∇0 = 0` ⟹ `physVel (−physOmega) = v` on `Uax`.
-
-It needs neither `Work.LWP.BiotSavartInverse` nor `Physical.DivCurlLiouville`, and — crucially — no
-`C¹`-regularity of the ansatz field at the axis (which is *false* for the Lean field
-`Cyl.psiField`, see `Weyl/Corrected.lean`).
-
-This module assembles route C.  Everything except the geometric bundle of the corrected field `v`
-is proved here from `RegPkg`:
-
-* the Weyl principle is `Work.FTS.BSIdent.Weyl.weylPairPrinciple`, discharged from
-  `Work.FTS.PressureOn.weyl_pair`;
-* the two weak equations of `D` are reduced to *pointwise* identities off the two coordinate
-  planes `x₀ = 0`, `x₂ = 0` (a Lebesgue-null set) by
-  `Work.FTS.BSIdent.Weyl.weakGrad_zero_of_pointwise_div` and
-  `Work.FTS.BSIdent.Weyl.weakCurl_zero_of_pointwise_curl`;
-* the pointwise identities for `D` are those of its two summands, both proved elsewhere:
-  * `physVel (−physOmega)`: `Work.FTS.BSIdent.Weyl.physVel_neg_physOmega_slice` (curl `= −physOmega`,
-    divergence `= 0`, `C¹`, decay) — the Biot–Savart inversion for the compactly supported Hölder
-    swirl field `−physVort`;
-  * the ansatz field `v`: on `Uax` it coincides with `Cyl.psiField (merPsi … · t)`, whose curl is
-    `−physOmega` by the elliptic law (`Work.FTS.BSIdent.vorticity_psiField_merPsi`) and whose
-    divergence vanishes (`Work.Cyl.div_psiField`).
-
-The **only** genuinely analytic hypothesis is the geometric bundle of `v`: continuity, decay and
-the agreement with `Cyl.psiField (merPsi … · t)` on `Uax`.  For the canonical choice
-`v t := psiFieldCorr (merPsi … · t) L` this bundle is the content of
-`Work.FTS.BSIdent.Weyl.merPsi_corrected_bundle`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -41,16 +5,166 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.Topology.GDelta.MetrizableSpace
-import Submission.Work.FTS.BSIdent.Weyl
-import Submission.Work.FTS.BSIdent.Weyl.weylPairPrinciple
-import Submission.Work.FTS.BSIdent.Weyl.weakGrad_zero_of_pointwise_div
-import Submission.Work.FTS.BSIdent.Weyl.weakCurl_zero_of_pointwise_curl
-import Submission.Work.FTS.BSIdent.Weyl.physVel_neg_physOmega_slice
 import Submission.Work.FTS.BSIdent.Curl
-import Submission.Work.FTS.BSIdent.Defs.contDiffAt_Phi_of_merPsi
-import Submission.Work.FTS.BSIdent.Defs.contDiffAt_psiField_merPsi_of_mem_Uax
-import Submission.Work.Cyl.div_psiField
-import Submission.Work.FTS.BSSwirl.CrossAux
+import Submission.Work.FTS.BSIdent.Weyl.Levels._dev12
+import Submission.Work.FTS.BSIdent.Weyl.Levels._dev9
+import Submission.Work.FTS.BSIdent.Weyl.Levels.merPsiT_origin_aux
+import Submission.Work.FTS.BSIdent.Weyl.weylPairPrinciple
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+-- ===== merged: Submission.Work.FTS.BSIdent.Weyl.Levels.tendsto_psiField_axis =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.BSIdent.Weyl.Levels
+
+open Filter Set
+open scoped Topology
+
+/-! ## Elementary facts about the axis point `z₀ • e₂` and the cylindrical frame -/
+
+/-- The axis point `z • e₂` has vanishing cylindrical radius. -/
+theorem radial_smul_e_two (z : ℝ) : Work.Cyl.radial (z • FiniteTimeSingularity.e 2) = 0 := by
+  rw [Work.Cyl.radial, Work.Cyl.radSq]
+  simp [FiniteTimeSingularity.e]
+
+/-- The axis point `z • e₂` has axial coordinate `z`. -/
+theorem axial_smul_e_two (z : ℝ) : Work.Cyl.axial (z • FiniteTimeSingularity.e 2) = z := by
+  rw [Work.Cyl.axial]
+  simp [FiniteTimeSingularity.e]
+
+/-- The cylindrical radius is continuous on `ℝ³`. -/
+theorem continuous_radial : Continuous (fun x : Work.FTS.BSIdent.R3 => Work.Cyl.radial x) := by
+  have h : (fun x : Work.FTS.BSIdent.R3 => Work.Cyl.radial x)
+      = fun x => Real.sqrt (x 0 ^ 2 + x 1 ^ 2) := by funext x; rfl
+  rw [h]; fun_prop
+
+/-- The axial coordinate is continuous on `ℝ³`. -/
+theorem continuous_axial : Continuous (fun x : Work.FTS.BSIdent.R3 => Work.Cyl.axial x) := by
+  have h : (fun x : Work.FTS.BSIdent.R3 => Work.Cyl.axial x) = fun x => x 2 := by
+    funext x; rfl
+  rw [h]; fun_prop
+
+/-- The radial component `(a / r) • radialVec x` of `psiField` has norm exactly `|a|` off the
+axis (and norm `0 ≤ |a|` on it), because `‖radialVec x‖ = radial x`. -/
+theorem norm_div_smul_radialVec_le (a : ℝ) (x : Work.FTS.BSIdent.R3) :
+    ‖(a / Work.Cyl.radial x) • Work.Cyl.radialVec x‖ ≤ |a| := by
+  rw [norm_smul, Work.FTS.BSIdent.Cyl.norm_radialVec_eq, Real.norm_eq_abs, abs_div,
+    abs_of_nonneg (Work.Cyl.radial_nonneg x)]
+  rcases eq_or_lt_of_le (Work.Cyl.radial_nonneg x) with h | h
+  · rw [← h]; simp
+  · exact le_of_eq (div_mul_cancel₀ _ (ne_of_gt h))
+
+/-- The `(e_r, e_z)` decomposition of `psiField ψ` in the cylindrical frame. -/
+theorem psiField_eq_axis_decomp (ψ : ℝ → ℝ → ℝ) (x : Work.FTS.BSIdent.R3) :
+    Work.Cyl.psiField ψ x
+      = (Work.Cyl.pdZ ψ (Work.Cyl.radial x) (Work.Cyl.axial x) / Work.Cyl.radial x)
+          • Work.Cyl.radialVec x
+        + (-(ψ (Work.Cyl.radial x) (Work.Cyl.axial x) / Work.Cyl.radial x)
+            - Work.Cyl.pdR ψ (Work.Cyl.radial x) (Work.Cyl.axial x)) • Work.Cyl.eZ := rfl
+
+/-- **The axis limit, abstractly.**  If the three meridian limits `ψ/r → L`, `∂_rψ → L`,
+`∂_zψ → 0` hold along the axis, then `psiField ψ` tends to `−2L • e_z`.  The radial component
+`(∂_zψ/r) • radialVec` tends to `0` because its *norm* is `|∂_zψ|`, whatever the direction of
+`radialVec` does. -/
+theorem tendsto_psiField_of_axis_limits (ψ : ℝ → ℝ → ℝ) (L z₀ : ℝ)
+    (H : Tendsto (fun x : Work.FTS.BSIdent.R3 => (Work.Cyl.radial x, Work.Cyl.axial x))
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2))
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] (0, z₀)))
+    (h1 : Tendsto (fun p : ℝ × ℝ => ψ p.1 p.2 / p.1)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] (0, z₀)) (𝓝 L))
+    (h2 : Tendsto (fun p : ℝ × ℝ => Work.Cyl.pdR ψ p.1 p.2)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] (0, z₀)) (𝓝 L))
+    (h3 : Tendsto (fun p : ℝ × ℝ => Work.Cyl.pdZ ψ p.1 p.2)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] (0, z₀)) (𝓝 0)) :
+    Tendsto (fun x : Work.FTS.BSIdent.R3 => Work.Cyl.psiField ψ x)
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2))
+      (𝓝 ((-(2 * L)) • Work.Cyl.eZ)) := by
+  have H1 : Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+      ψ (Work.Cyl.radial x) (Work.Cyl.axial x) / Work.Cyl.radial x) _ (𝓝 L) := h1.comp H
+  have H2 : Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+      Work.Cyl.pdR ψ (Work.Cyl.radial x) (Work.Cyl.axial x)) _ (𝓝 L) := h2.comp H
+  have H3 : Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+      Work.Cyl.pdZ ψ (Work.Cyl.radial x) (Work.Cyl.axial x)) _ (𝓝 0) := h3.comp H
+  -- the radial part, dominated by `|∂_zψ|`
+  have hz1 : Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+      (Work.Cyl.pdZ ψ (Work.Cyl.radial x) (Work.Cyl.axial x) / Work.Cyl.radial x)
+        • Work.Cyl.radialVec x)
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2)) (𝓝 0) := by
+    rw [tendsto_zero_iff_norm_tendsto_zero]
+    refine tendsto_of_tendsto_of_tendsto_of_le_of_le (g := fun _ => (0 : ℝ))
+      (h := fun x : Work.FTS.BSIdent.R3 =>
+        |Work.Cyl.pdZ ψ (Work.Cyl.radial x) (Work.Cyl.axial x)|)
+      tendsto_const_nhds ?_ ?_ ?_
+    · have h := H3.abs
+      rwa [abs_zero] at h
+    · exact fun x => norm_nonneg _
+    · exact fun x => norm_div_smul_radialVec_le _ x
+  -- the axial part
+  have hz2 : Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+      (-(ψ (Work.Cyl.radial x) (Work.Cyl.axial x) / Work.Cyl.radial x)
+        - Work.Cyl.pdR ψ (Work.Cyl.radial x) (Work.Cyl.axial x)) • Work.Cyl.eZ)
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2)) (𝓝 ((-(2 * L)) • Work.Cyl.eZ)) := by
+    have h := (H1.neg.sub H2).smul_const (Work.Cyl.eZ)
+    have hL : (-L - L : ℝ) = -(2 * L) := by ring
+    rwa [hL] at h
+  have hsum := hz1.add hz2
+  rw [zero_add] at hsum
+  refine hsum.congr' ?_
+  filter_upwards with x
+  exact (psiField_eq_axis_decomp ψ x).symm
+
+theorem tendsto_psiField_axis {α : ℝ} {A B : ℝ → ℝ} {Φ : Work.FTS.BSIdent.Fam}
+    {C : Physical.PhysClock} {t : ℝ} {τ z₀ : ℝ}
+    (h1 : Filter.Tendsto (fun p : ℝ × ℝ =>
+        Work.FTS.BSIdent.Cyl.merPsiT α A B Φ C t p.1 p.2 / p.1)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] ((0:ℝ), z₀))
+      (𝓝 (Work.FTS.BSIdent.Weyl.Dev12.axisLevel α A B Φ τ z₀)))
+    (h2 : Filter.Tendsto (fun p : ℝ × ℝ =>
+        Work.Cyl.pdR (Work.FTS.BSIdent.Cyl.merPsiT α A B Φ C t) p.1 p.2)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] ((0:ℝ), z₀))
+      (𝓝 (Work.FTS.BSIdent.Weyl.Dev12.axisLevel α A B Φ τ z₀)))
+    (h3 : Filter.Tendsto (fun p : ℝ × ℝ =>
+        Work.Cyl.pdZ (Work.FTS.BSIdent.Cyl.merPsiT α A B Φ C t) p.1 p.2)
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] ((0:ℝ), z₀)) (𝓝 0)) :
+    Filter.Tendsto (fun x : Work.FTS.BSIdent.R3 =>
+        Work.Cyl.psiField (Work.FTS.BSIdent.Cyl.merPsiT α A B Φ C t) x)
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2))
+      (𝓝 ((-(2 * Work.FTS.BSIdent.Weyl.Dev12.axisLevel α A B Φ τ z₀)) • Work.Cyl.eZ)) := by
+  -- transport the three meridian limits to `ℝ³` along the cylindrical map
+  have hmap : Tendsto (fun x : Work.FTS.BSIdent.R3 => (Work.Cyl.radial x, Work.Cyl.axial x))
+      (𝓝[{x : Work.FTS.BSIdent.R3 | Work.Cyl.radial x ≠ 0}]
+        (z₀ • FiniteTimeSingularity.e 2))
+      (𝓝[{p : ℝ × ℝ | 0 < p.1}] (0, z₀)) := by
+    rw [tendsto_nhdsWithin_iff]
+    refine ⟨?_, ?_⟩
+    · have hcont : ContinuousAt (fun x : Work.FTS.BSIdent.R3 =>
+          (Work.Cyl.radial x, Work.Cyl.axial x)) (z₀ • FiniteTimeSingularity.e 2) :=
+        continuous_radial.continuousAt.prodMk continuous_axial.continuousAt
+      have h := hcont.tendsto
+      rw [radial_smul_e_two, axial_smul_e_two] at h
+      exact h.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with x hx
+      exact lt_of_le_of_ne (Work.Cyl.radial_nonneg x) (Ne.symm hx)
+  exact tendsto_psiField_of_axis_limits _ _ _ hmap h1 h2 h3
+
+end Work.FTS.BSIdent.Weyl.Levels
+end
+-- ===== merged: Submission.Work.FTS.BSIdent.hid_of_pointwise =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -114,176 +228,12 @@ section
 variable {α : ℝ≥0} {A B : ℝ → ℝ} {g : ℝ → ℝ → ℝ → ℝ} {C : Physical.PhysClock} {Φ : Fam}
   {v : ℝ → R3 → R3}
 
-/-- **The route-C geometric bundle of the ansatz field.**  A field `v` with a meridian stream
-function `ψ` is *Weyl-admissible* for `ψ` if it is continuous, tends to `0` at infinity and agrees
-with `Cyl.psiField ψ` on `Uax`.  These are exactly the three hypotheses of `hid_of_pointwise` on the
-field; for `v = psiFieldCorr ψ L` they are produced by `Weyl.merPsi_corrected_bundle` +
-`psiFieldCorr_eq_psiField_of_mem_Uax`. -/
-def AnsatzBundleWeyl (v : R3 → R3) (ψ : ℝ → ℝ → ℝ) : Prop :=
-  Continuous v ∧ (∀ x ∈ Uax, v x = Work.Cyl.psiField ψ x) ∧
-    Filter.Tendsto v (Filter.cocompact R3) (nhds 0)
 
-/-- **THE IDENTIFICATION BY ROUTE C.**  Let `v t` be a field that agrees with the ansatz field
-`Cyl.psiField (merPsi … · t)` on `Uax`, is continuous and tends to `0` at infinity.  Then, for every
-`t ∈ (0,T)`, the reconstructed physical velocity `physVel (−physOmega α A B g C) · t` coincides
-with the ansatz field on `Uax`.
 
-The remaining hypotheses are the elliptic law `hlaw` (which makes the curl of the ansatz field equal
-to `−physOmega`) and the off-axis `C²`-regularity `hΨ` of the meridian stream function. -/
-theorem hid_of_pointwise
-    (hreg : ∀ S : ℝ, 0 < S → Work.FTS.Regularity.RegPkg (α : ℝ) S A B g)
-    (hlaw : ∀ t ∈ Set.Ioo 0 C.T, ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
-      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp (α : ℝ))
-          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
-        = Work.Construction.Fstar (Work.FTS.Regularity.pExp (α : ℝ)) w θ
-          + g w θ (Physical.clockInv C t))
-    (hΨ : ∀ t ∈ Set.Ioo 0 C.T, ∀ r z, 0 < r → z ≠ 0 → ContDiffAt ℝ 2
-      (fun p : ℝ × ℝ => merPsi (α : ℝ) A B Φ C p.1 p.2 t) (r, z))
-    (hv : ∀ t ∈ Set.Ioo 0 C.T, ∀ x ∈ Uax, v t x
-      = Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x)
-    (hvcont : ∀ t ∈ Set.Ioo 0 C.T, Continuous (v t))
-    (hvdec : ∀ t ∈ Set.Ioo 0 C.T, Filter.Tendsto (v t) (Filter.cocompact R3) (nhds 0)) :
-    ∀ t ∈ Set.Ioo 0 C.T, ∀ x ∈ Uax,
-      Physical.physVel (-(Physical.physOmega (α : ℝ) A B g C)) x t
-        = Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x := by
-  intro t ht
-  -- ## the clock data, from `RegPkg` on the strip `[0, clockInv C t + 1]`
-  have htIco : t ∈ Set.Ico (0 : ℝ) C.T := ⟨ht.1.le, ht.2⟩
-  have hτnn : 0 ≤ Physical.clockInv C t := Physical.clockInv_nonneg C htIco
-  have hτmem : Physical.clockInv C t ∈ Set.Icc (0 : ℝ) (Physical.clockInv C t + 1) :=
-    ⟨hτnn, by linarith⟩
-  have hP := hreg (Physical.clockInv C t + 1) (by linarith)
-  have hA : 0 < A (Physical.clockInv C t) := hP.hA _ hτmem
-  have hB : 0 < B (Physical.clockInv C t) := hP.hB _ hτmem
-  have hα : 0 < (α : ℝ) := hP.hα
-  -- the interior `C²`-regularity of `Φ` (needed for the curl identity of the ansatz field)
-  have hsm : ∀ w θ, 0 < w → 0 < θ → θ < π / 2 → ContDiffAt ℝ 2
-      (fun p : ℝ × ℝ => Φ p.1 p.2 (Physical.clockInv C t)) (w, θ) :=
-    fun w θ hw hθ hθ2 =>
-      Defs.contDiffAt_Phi_of_merPsi (α : ℝ) A B Φ C t hα (ne_of_gt hA) hB (hΨ t ht) hw hθ hθ2
-  -- ## the `physVel` side
-  obtain ⟨hC1U, hvortU, hdivU, hdecU⟩ := Weyl.physVel_neg_physOmega_slice hP hτmem
-  -- ## the difference
-  let W : R3 → R3 := fun x => Physical.physVel (-(Physical.physOmega (α : ℝ) A B g C)) x t
-  have hWHD : ∀ x : R3, HasFDerivAt W (fderiv ℝ W x) x :=
-    fun x => ((hC1U.differentiable (by norm_num)) x).hasFDerivAt
-  -- the ansatz field and its `C¹`-regularity off the axis
-  have hψC1 : ∀ x ∈ Uax, ContDiffAt ℝ 1
-      (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x :=
-    fun x hx => Defs.contDiffAt_psiField_merPsi_of_mem_Uax (α : ℝ) A B Φ C t hB hsm hx
-  -- the `v`-side is `C¹` off the two planes
-  have hVHD : ∀ x : R3, x 0 ≠ 0 → x 2 ≠ 0 →
-      HasFDerivAt (v t)
-        (fderiv ℝ (v t) x) x := by
-    intro x hx0 hx2
-    have hxU : x ∈ Uax := mem_Uax_of_coord x hx0 hx2
-    have hψ : HasFDerivAt (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t))
-        (fderiv ℝ (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x) x :=
-      ((hψC1 x hxU).differentiableAt (by norm_num)).hasFDerivAt
-    have hveq : v t =ᶠ[𝓝 x]
-        (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) := by
-      filter_upwards [isOpen_Uax.mem_nhds hxU] with y hy
-      exact hv t ht y hy
-    have h1 : HasFDerivAt (v t)
-        (fderiv ℝ (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x) x :=
-      hψ.congr_of_eventuallyEq hveq
-    rwa [← hveq.fderiv_eq] at h1
-  -- the derivative of the fact that `v t = psiField` near every point of `Uax`
-  have hfderiv_eq : ∀ x ∈ Uax, fderiv ℝ (v t) x
-      = fderiv ℝ (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x := by
-    intro x hxU
-    have hveq : v t =ᶠ[𝓝 x]
-        (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) := by
-      filter_upwards [isOpen_Uax.mem_nhds hxU] with y hy
-      exact hv t ht y hy
-    exact hveq.fderiv_eq
-  -- ## the two pointwise identities for `D = W − v t` off the planes
-  have hDdiff : ∀ x : R3, x 0 ≠ 0 → x 2 ≠ 0 →
-      HasFDerivAt (fun y => W y - v t y) (fderiv ℝ (fun y => W y - v t y) x) x := by
-    intro x hx0 hx2
-    have h : fderiv ℝ (fun y => W y - v t y) x = fderiv ℝ W x - fderiv ℝ (v t) x :=
-      (hWHD x).sub (hVHD x hx0 hx2) |>.fderiv
-    rw [h]
-    exact (hWHD x).sub (hVHD x hx0 hx2)
-  have hdiv0 : ∀ x : R3, x 0 ≠ 0 → x 2 ≠ 0 → div (fun y => W y - v t y) x = 0 := by
-    intro x hx0 hx2
-    have hxU : x ∈ Uax := mem_Uax_of_coord x hx0 hx2
-    have hr : 0 < Work.Cyl.radial x := by
-      rw [Work.Cyl.radial, Work.Cyl.radSq]
-      exact Real.sqrt_pos.mpr (by nlinarith [sq_pos_of_ne_zero hx0])
-    have hz : Work.Cyl.axial x ≠ 0 := by simpa [Work.Cyl.axial] using hx2
-    have hC2 := hΨ t ht (Work.Cyl.radial x) (Work.Cyl.axial x) hr hz
-    have hdv : div (v t) x
-        = div (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x := by
-      rw [FiniteTimeSingularity.div, FiniteTimeSingularity.div, hfderiv_eq x hxU]
-    rw [div_sub_field W (v t) (hWHD x).differentiableAt (hVHD x hx0 hx2).differentiableAt,
-      hdivU x, hdv,
-      Work.Cyl.div_psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x hC2 hr]
-    ring
-  have hcurl0 : ∀ x : R3, x 0 ≠ 0 → x 2 ≠ 0 → vorticity (fun y => W y - v t y) x = 0 := by
-    intro x hx0 hx2
-    have hxU : x ∈ Uax := mem_Uax_of_coord x hx0 hx2
-    have hWv : vorticity W x = -(Physical.physOmega (α : ℝ) A B g C x t) := hvortU x
-    have hVv : vorticity (v t) x = -(Physical.physOmega (α : ℝ) A B g C x t) := by
-      have hvt : vorticity (v t) x
-          = vorticity (Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t)) x := by
-        rw [FiniteTimeSingularity.vorticity, FiniteTimeSingularity.vorticity, hfderiv_eq x hxU]
-      rw [hvt, vorticity_psiField_merPsi (α : ℝ) A B Φ C g t hA hB (hlaw t ht) hsm hxU,
-        vorticity_psiField_merPsi_eq_neg_physOmega (α : ℝ) A B C g t]
-    rw [vorticity_sub_field W (v t) (hWHD x).differentiableAt (hVHD x hx0 hx2).differentiableAt,
-      hWv, hVv, sub_self]
-  -- ## Weyl on the difference
-  have hdecD : Filter.Tendsto (fun y => W y - v t y) (Filter.cocompact R3) (nhds 0) := by
-    have h := hdecU.sub (hvdec t ht)
-    simpa using h
-  refine hid_of_weyl (v := v t) (t := t) Weyl.weylPairPrinciple (hv t ht)
-    (hC1U.continuous.sub (hvcont t ht)) hdecD ?_ ?_
-  · intro φ hφ hφcs
-    exact Weyl.weakGrad_zero_of_pointwise_div (D := fun y => W y - v t y)
-      (hC1U.continuous.sub (hvcont t ht)) hDdiff hdiv0 (hφ 1) hφcs
-  · intro Ψ hΨ' hΨcs
-    exact Weyl.weakCurl_zero_of_pointwise_curl (D := fun y => W y - v t y)
-      (hC1U.continuous.sub (hvcont t ht)) hDdiff hcurl0 hΨ' hΨcs
 
-/-- **THE IDENTIFICATION BY ROUTE C, in bundle form.**  The same statement as `hid_of_pointwise`,
-with the three hypotheses on the field `v` collected in `AnsatzBundleWeyl`. -/
-theorem hid_of_ansatzBundleWeyl
-    (hreg : ∀ S : ℝ, 0 < S → Work.FTS.Regularity.RegPkg (α : ℝ) S A B g)
-    (hlaw : ∀ t ∈ Set.Ioo 0 C.T, ∀ w θ, 0 < w → 0 < θ → θ < π / 2 →
-      Work.Elliptic.bslOp (Work.FTS.Regularity.pExp (α : ℝ))
-          (fun z θ' => Φ z θ' (Physical.clockInv C t)) w θ
-        = Work.Construction.Fstar (Work.FTS.Regularity.pExp (α : ℝ)) w θ
-          + g w θ (Physical.clockInv C t))
-    (hΨ : ∀ t ∈ Set.Ioo 0 C.T, ∀ r z, 0 < r → z ≠ 0 → ContDiffAt ℝ 2
-      (fun p : ℝ × ℝ => merPsi (α : ℝ) A B Φ C p.1 p.2 t) (r, z))
-    (hbun : ∀ t ∈ Set.Ioo 0 C.T, AnsatzBundleWeyl (v t)
-      (fun r z => merPsi (α : ℝ) A B Φ C r z t)) :
-    ∀ t ∈ Set.Ioo 0 C.T, ∀ x ∈ Uax,
-      Physical.physVel (-(Physical.physOmega (α : ℝ) A B g C)) x t
-        = Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x :=
-  hid_of_pointwise hreg hlaw hΨ (fun t ht => (hbun t ht).2.1)
-    (fun t ht => (hbun t ht).1) (fun t ht => (hbun t ht).2.2)
-
-/-- **THE IDENTIFICATION BY ROUTE C, from the `IsBslSol` interface.**  The same as
-`hid_of_pointwise` with the elliptic law in the paper's (PolarBSL) form, exactly as node
-N1/Open2 delivers it. -/
-theorem hid_of_pointwise_of_IsBslSol
-    (hreg : ∀ S : ℝ, 0 < S → Work.FTS.Regularity.RegPkg (α : ℝ) S A B g)
-    (hsol : ∀ t ∈ Set.Ioo 0 C.T, Work.Elliptic.IsBslSol (Work.FTS.Regularity.pExp (α : ℝ))
-      (Work.Construction.Ftau (Work.FTS.Regularity.pExp (α : ℝ)) g (Physical.clockInv C t))
-      (fun z θ => Φ z θ (Physical.clockInv C t)))
-    (hΨ : ∀ t ∈ Set.Ioo 0 C.T, ∀ r z, 0 < r → z ≠ 0 → ContDiffAt ℝ 2
-      (fun p : ℝ × ℝ => merPsi (α : ℝ) A B Φ C p.1 p.2 t) (r, z))
-    (hv : ∀ t ∈ Set.Ioo 0 C.T, ∀ x ∈ Uax, v t x
-      = Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x)
-    (hvcont : ∀ t ∈ Set.Ioo 0 C.T, Continuous (v t))
-    (hvdec : ∀ t ∈ Set.Ioo 0 C.T, Filter.Tendsto (v t) (Filter.cocompact R3) (nhds 0)) :
-    ∀ t ∈ Set.Ioo 0 C.T, ∀ x ∈ Uax,
-      Physical.physVel (-(Physical.physOmega (α : ℝ) A B g C)) x t
-        = Work.Cyl.psiField (fun r z => merPsi (α : ℝ) A B Φ C r z t) x :=
-  hid_of_pointwise hreg
-    (fun t ht w θ hw hθ hθ2 => (hsol t ht).1 w hw θ hθ hθ2) hΨ hv hvcont hvdec
 
 end
 
 end Work.FTS.BSIdent
+end
+end

@@ -1,7 +1,7 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.N6Trans.IP4T2Honest
+import Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat
 import Submission.Work.FTS.StrongPersist.N6Trans.Hon.ClauseHon
-import Submission.Work.FTS.IPGen.ip4SlotDomGen
+import Submission.Work.FTS.StrongPersist.N6Trans.IP4T2Honest
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

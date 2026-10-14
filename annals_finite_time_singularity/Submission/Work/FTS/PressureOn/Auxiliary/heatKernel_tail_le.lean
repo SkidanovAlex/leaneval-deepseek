@@ -2,8 +2,8 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PressureOn.Auxiliary.HeatKernel
-import Submission.Work.FTS.PressureOn.Auxiliary.integral_heatKernel
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

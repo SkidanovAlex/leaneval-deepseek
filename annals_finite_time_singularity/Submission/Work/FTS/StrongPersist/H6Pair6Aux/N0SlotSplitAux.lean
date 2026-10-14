@@ -1,29 +1,29 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Prod
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingSplit
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SmoothN0
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.assembly_core
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.N6_L12H
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingSplit
 import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
 import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Gmaj6
 import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Majorant6
-import Submission.Work.FTS.StrongPersist.Fstar_W6
-import Submission.Work.FTS.StrongPersist.DthFstar_W6
-import Submission.Work.FTS.StrongPersist.DzFstar_W6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.c2mDzFstar_W6
-import Submission.Work.FTS.StrongPersist.angmul6
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.Blocks.HalfInfra
-import Submission.Work.FTS.CoercivityStep.Base.H1IP_congr_qd
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.c2mJets
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.pgfHardyA
+import Submission.Work.FTS.StrongPersist.N6_L12H
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.wt_bddAbove_of_compact
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_z
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -278,64 +278,6 @@ theorem HkMem_mul_of_WlInf6 {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
 
 /-! ## Splitting a slot pairing over seven summands -/
 
-/-- **The seven-fold splitting of the elementary slot pairing** (left-associated). -/
-theorem slotPairing_split7 {α : ℝ} (hα : 0 < α) {a b : ℕ} (hab : a + b ≤ 6)
-    {ρ : ℝ → ℝ → ℝ} (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
-    {P₁ P₂ P₃ P₄ P₅ P₆ P₇ f : ℝ → ℝ → ℝ}
-    (h1s : SmoothOpen P₁) (h2s : SmoothOpen P₂) (h3s : SmoothOpen P₃)
-    (h4s : SmoothOpen P₄) (h5s : SmoothOpen P₅) (h6s : SmoothOpen P₆)
-    (h7s : SmoothOpen P₇) (hfs : SmoothOpen f)
-    (h1m : Work.Spaces.HkMem α 6 P₁) (h2m : Work.Spaces.HkMem α 6 P₂)
-    (h3m : Work.Spaces.HkMem α 6 P₃) (h4m : Work.Spaces.HkMem α 6 P₄)
-    (h5m : Work.Spaces.HkMem α 6 P₅) (h6m : Work.Spaces.HkMem α 6 P₆)
-    (h7m : Work.Spaces.HkMem α 6 P₇) (hfm : Work.Spaces.HkMem α 6 f) :
-    Work.FTS.TransportS.slotPairing ρ a b
-        (fun z θ => P₁ z θ + P₂ z θ + P₃ z θ + P₄ z θ + P₅ z θ + P₆ z θ + P₇ z θ) f
-      = Work.FTS.TransportS.slotPairing ρ a b P₁ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₂ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₃ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₄ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₅ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₆ f
-          + Work.FTS.TransportS.slotPairing ρ a b P₇ f := by
-  have h12s : SmoothOpen (fun z θ => P₁ z θ + P₂ z θ) := so_add h1s h2s
-  have h12m : Work.Spaces.HkMem α 6 (fun z θ => P₁ z θ + P₂ z θ) :=
-    HkMem_add_of_HkMem α 6 h1s h2s h1m h2m
-  have h123s : SmoothOpen (fun z θ => (P₁ z θ + P₂ z θ) + P₃ z θ) := so_add h12s h3s
-  have h123m : Work.Spaces.HkMem α 6 (fun z θ => (P₁ z θ + P₂ z θ) + P₃ z θ) :=
-    HkMem_add_of_HkMem α 6 h12s h3s h12m h3m
-  have h1234s : SmoothOpen (fun z θ => ((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) :=
-    so_add h123s h4s
-  have h1234m : Work.Spaces.HkMem α 6 (fun z θ => ((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) :=
-    HkMem_add_of_HkMem α 6 h123s h4s h123m h4m
-  have h12345s : SmoothOpen (fun z θ => (((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ) :=
-    so_add h1234s h5s
-  have h12345m : Work.Spaces.HkMem α 6
-      (fun z θ => (((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ) :=
-    HkMem_add_of_HkMem α 6 h1234s h5s h1234m h5m
-  have h123456s : SmoothOpen
-      (fun z θ => ((((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ) + P₆ z θ) :=
-    so_add h12345s h6s
-  have h123456m : Work.Spaces.HkMem α 6
-      (fun z θ => ((((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ) + P₆ z θ) :=
-    HkMem_add_of_HkMem α 6 h12345s h6s h12345m h6m
-  rw [SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := fun z θ => ((((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ) + P₆ z θ)
-        (u₂ := P₇) (f := f) h123456s h7s hfs h123456m h7m hfm,
-    SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := fun z θ => (((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ) + P₅ z θ)
-        (u₂ := P₆) (f := f) h12345s h6s hfs h12345m h6m hfm,
-    SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := fun z θ => ((P₁ z θ + P₂ z θ) + P₃ z θ) + P₄ z θ)
-        (u₂ := P₅) (f := f) h1234s h5s hfs h1234m h5m hfm,
-    SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := fun z θ => (P₁ z θ + P₂ z θ) + P₃ z θ)
-        (u₂ := P₄) (f := f) h123s h4s hfs h123m h4m hfm,
-    SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := fun z θ => P₁ z θ + P₂ z θ)
-        (u₂ := P₃) (f := f) h12s h3s hfs h12m h3m hfm,
-    SlotPairingSplit (α := α) (a := a) (b := b) (ρ := ρ) hα hab hρ
-        (u₁ := P₁) (u₂ := P₂) (f := f) h1s h2s hfs h1m h2m hfm]
 
 
 end Work.FTS.StrongPersist.H6Pair6Aux

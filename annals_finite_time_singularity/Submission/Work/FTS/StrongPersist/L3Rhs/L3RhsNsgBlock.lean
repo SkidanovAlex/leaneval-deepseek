@@ -3,19 +3,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.Nonlinear.Pieces.rl1Pieces.PsgEngine
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
 import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.NonlinRows.NRow10aux.starH_smoothOpen
-import Submission.Work.FTS.PhiStar.StarPkgo2Aux.FieldRegularity
-import Submission.Work.FTS.StrongPersist.HkAddFin
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.LocData.HkSq_const_mul
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
 import Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDth
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3MulDz
-import Submission.Work.FTS.StrongPersist.L3Rhs.L3Nsg1
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_MuLamOK.Conversion
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -38,18 +37,6 @@ set_option maxHeartbeats 1600000
 
 /-! ## The three summands on the open quadrant -/
 
-/-- `N₁^{sg} = 2ℛ(Φ̃_*)·f = 2·((z+1)/z·ℛ(Φ̃_*))·(z/(1+z)·f)` on the open quadrant. -/
-private theorem nsg_alg1 (α : ℝ) (Φs f : Fn) :
-    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
-      Work.FTS.Nonlin.N1sg α Φs f z θ
-        = 2 * ((z + 1) / z * Work.Construction.Rop α (Work.FTS.Nonlin.PhiTs α Φs) z θ)
-            * (z / (1 + z) * f z θ) := by
-  intro z θ hz hθ hθ2
-  have hz0 : z ≠ 0 := ne_of_gt hz
-  have h1z : (1 : ℝ) + z ≠ 0 := by positivity
-  simp only [Work.FTS.Nonlin.N1sg]
-  field_simp
-  ring
 
 /-- `N₂^{sg} = -2𝒰(Φ̃_*)·∂_θf = -2·(𝒰(Φ̃_*)/sin 2θ)·D_θf` on the open quadrant. -/
 private theorem nsg_alg2 (α : ℝ) (Φs f : Fn) :

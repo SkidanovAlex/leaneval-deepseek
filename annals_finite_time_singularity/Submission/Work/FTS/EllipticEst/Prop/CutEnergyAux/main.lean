@@ -1,13 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The real-variable truncated energy inequality in the a.e. class
-
-`Work.FTS.EllipticEst.Prop.CutEnergyAux.aeCutEnergy_real` is the real-variable form of the
-truncated `w²`-energy inequality of Step 1 of Elgindi's `prop:H2` in the almost-everywhere class
-`AeData`.  It is assembled from the truncated energy identity, the a.e. angular self-form
-inequality, the source AM–GM and the two pointwise weight bounds of the truncation error.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic

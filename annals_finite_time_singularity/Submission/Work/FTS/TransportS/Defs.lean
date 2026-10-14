@@ -1,40 +1,119 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/TransportS/`: the transport replacements `T2S`, `T3S_Dz`
-
-This is the interface chapter of the subproject `TransportS` (the transport replacements
-`T2S`/`T3S_Dz` of `Submission/Work/FTS/ELL_H2_LEAD.md` §B2–B3, plus the per-slot `IP4`
-transport facts).  The design document is `Submission/Work/FTS/ELL_H2_LEAD.md`; the
-statements are frozen in `Submission/Work/FTS/ELL_H2_STATEMENTS.lean.txt` and the vocabulary
-(`CoefTh`, `CoefThMem`, `T2Clause`, `T3Clause`, `HQo`, `WDp`, …) in
-`Submission/Work/FTS/VocabO.lean`.
-
-## What this file contains
-
-* `slotW α a`: the angular weight of a slot `(a,b)` of the flat `ℋ⁴`-pairing, i.e. of the
-  corresponding summand of `HkIntegrand α 4`: `(Whz)² = w² sin(2θ)^{-η}` for the `D_z`-only
-  slots (`a = 0`) and `(Wm)² = w² sin(2θ)^{-γ}` for the slots carrying a `θ`-derivative
-  (`a ≥ 1`).  Every slot of `H4Pair`/`HkIntegrand` is `slotW α a` times the square of its
-  `D`-derivative, and every leaf of the unfolding of the coercive `IP4`
-  (`Work.FTS.CoercivityStep.IP4`) carries a weight `ρ` with `0 ≤ ρ ≤ slotW α a` for its slot.
-* the elementary API of the *flat angular coefficient norm* `CoefTh l f`
-  (`VocabO.CoefTh`) and of its honesty companion `CoefThMem l f`: nonnegativity,
-  domination of every single `supAbsO` occurring in the sum, and the passage from explicit
-  sup bounds to `CoefThMem` and back.
-
-The analytic content of the chapter (the σ-gain `flat_mixed_le`, the sup bounds for a
-`CoefThMem`-datum, the easy/hard parts of `T2S` and the mismatch bound of `T3S_Dz`) lives in
-the sibling modules of this directory.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.H2.Defs
-import Submission.Work.FTS.H2.HeasyBlocksId
-import Submission.Work.FTS.H2.RegQDefs
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.H2.HQ.Glue
 import Submission.Work.FTS.H2.STEasyId
+import Submission.Work.FTS.H2.T2Qaux.SupAux
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.VocabO
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.UopHk.L12_contDiffOn_reg =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ContDiff
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.UopHk
+
+set_option autoImplicit false
+
+/-- **`L₁₂(F)` is `C^k` on `(0,∞)`** for `F` smooth on the open quadrant with `HkMem α k F`,
+`k ≥ 2`, `0 < α`.  (`GsingFactsInterior` supplies the `C^{k-1}` statement together with the
+derivative `-3F_*(F)(z)/z`, which is `C^{k-1}`; one order is gained.) -/
+theorem contDiffOn_L12_k (α : ℝ) (k : ℕ) (F : ℝ → ℝ → ℝ) (hα : 0 < α) (hα1 : α ≤ 1)
+    (hF : Work.FTS.EllipticEst.SmoothOpen F) (hmem : Work.Spaces.HkMem α k F) (hk : 2 ≤ k) :
+    ContDiffOn ℝ k (Work.Elliptic.L12 F) (Set.Ioi 0) := by
+  obtain ⟨_, hderiv⟩ := contDiffOn_L12_of_smoothOpen_Hk α k F hF hmem hk
+  have hFstar : ContDiffOn ℝ (k - 1) (Work.Elliptic.Fstar F) (Set.Ioi 0) :=
+    contDiffOn_Fstar_of_smoothOpen_Hk α k F hF hmem (by omega)
+  have hg : ContDiffOn ℝ (k - 1) (fun z : ℝ => -(3 * Work.Elliptic.Fstar F z / z))
+      (Set.Ioi 0) :=
+    ((contDiffOn_const.mul hFstar).div contDiffOn_id fun z hz => ne_of_gt hz).neg
+  have h := contDiffOn_succ_of_hasDerivAt
+    (f := Work.Elliptic.L12 F) (g := fun z : ℝ => -(3 * Work.Elliptic.Fstar F z / z))
+    (m := k - 1)
+    (fun z hz => by
+      have hz' : z ∈ Set.Ioi (0 : ℝ) := hz
+      have h1 := hderiv z hz'
+      refine h1.congr_deriv ?_
+      ring)
+    hg
+  have hcast : ((k - 1 : ℕ) : ℕ∞ω) + 1 = ((k : ℕ) : ℕ∞ω) := by
+    calc ((k - 1 : ℕ) : ℕ∞ω) + 1 = ((k - 1 + 1 : ℕ) : ℕ∞ω) := by
+          rw [Nat.cast_add, Nat.cast_one]
+      _ = ((k : ℕ) : ℕ∞ω) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ k)]
+  simpa only [hcast] using h
+
+
+end Work.FTS.EllipticEst.UopHk
+end
+end
+-- ===== merged: Submission.Work.FTS.H2.AesmSlicesQ =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+open Work.FTS.LocData (Qd SmoothQuad)
+
+namespace Work.FTS.H2
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+
+/-! ## Continuity of the mixed derivatives of a `SmoothQuad` function -/
+
+
+
+
+
+/-- `D_z` of a `SmoothQuad` function is `SmoothQuad`. -/
+private lemma smoothQuad_Dz {G : ℝ → ℝ → ℝ} (hG : SmoothQuad G) :
+    SmoothQuad (Work.Spaces.Dz G) :=
+  Work.FTS.LocData.contDiffOn_Dz Work.FTS.LocData.isOpen_quadU hG
+
+/-! ## Joint continuity of `H4PairInt` on the open square -/
+
+
+/-! ## Joint continuity of `Hhard` on the open square -/
+
+
+
+
+/-! ## The a.e. strong measurability statements -/
+
+
+end Work.FTS.H2
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.Defs =====
+section
 
 set_option synthInstance.maxHeartbeats 400000 -- v435-synth
 
@@ -93,13 +172,6 @@ theorem slotW_of_pos_eq (α : ℝ) {a : ℕ} (ha : 1 ≤ a) {z θ : ℝ}
   rw [slotW_of_pos' α ha]
   exact Work.FTS.H2.hbi_Wm_sq α z θ hs
 
-/-- The `D_z`-only slot weight is dominated by the mixed one on the open quadrant
-(`sin(2θ)^{-η} ≤ sin(2θ)^{-γ}` since `η ≤ γ`). -/
-theorem slotW_zero_le (α : ℝ) (hα : 0 < α) {z θ : ℝ}
-    (hθ : θ ∈ Set.Ioo (0 : ℝ) (π / 2)) : slotW α 0 z θ ≤ slotW α 1 z θ := by
-  have hs := Work.FTS.H2.rpow_eta_le_gam hα ⟨le_of_lt hθ.1, le_of_lt hθ.2⟩
-  rw [slotW_zero_eq α hθ, slotW_of_pos_eq α (le_refl 1) hθ]
-  exact mul_le_mul_of_nonneg_left hs (sq_nonneg _)
 
 /-! ## The slot decomposition of the flat `ℋ⁴`-pairing
 
@@ -108,41 +180,8 @@ theorem slotW_zero_le (α : ℝ) (hα : 0 < α) {z θ : ℝ}
 `b = a`).  The lemma below records this identification, the algebraic input of every
 `IP4`-slot reduction. -/
 
-/-- `H4PairInt` as a sum of slot products, with the slot weights `slotW α a`. -/
-theorem H4PairInt_eq_slot_sum (α : ℝ) (u v : ℝ → ℝ → ℝ) (z θ : ℝ) :
-    Work.FTS.H2.H4PairInt α u v z θ
-      = (∑ i ∈ Finset.range 5, slotW α 0 z θ * Work.Spaces.DzIter i u z θ
-            * Work.Spaces.DzIter i v z θ)
-        + ∑ i ∈ Finset.range 5, ∑ j ∈ Finset.range 5,
-            (if 1 ≤ i ∧ i + j ≤ 4 then
-              slotW α i z θ * Work.Spaces.mixed j i u z θ * Work.Spaces.mixed j i v z θ
-            else 0) := by
-  unfold Work.FTS.H2.H4PairInt
-  congr 1
-  · refine Finset.sum_congr rfl fun i _ => ?_
-    simp only [Work.FTS.H2.Whz, slotW, if_pos rfl, ↓reduceIte]
-    ring
-  · refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-    by_cases h : 1 ≤ i ∧ i + j ≤ 4
-    · rw [if_pos h, if_pos h, slotW_of_pos' α h.1]
-      simp only [Work.FTS.H2.Wm]
-      ring
-    · rw [if_neg h, if_neg h]
 
-/-- The `D_z`-only slot of `HkIntegrand α 4 f` is `slotW α 0` times the square of `D_z^i f`. -/
-theorem HkIntegrand_z_slot_eq (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) (i : ℕ) (z θ : ℝ) :
-    (Work.Spaces.DzIter i f z θ * Work.FTS.H2.Whz z θ) ^ 2
-      = slotW α 0 z θ * (Work.Spaces.DzIter i f z θ) ^ 2 := by
-  rw [slotW_zero α]
-  ring
 
-/-- The mixed slot of `HkIntegrand α 4 f` is `slotW α i` times the square of `D_z^jD_θ^i f`. -/
-theorem HkIntegrand_m_slot_eq (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) (i j : ℕ) (hi : 1 ≤ i)
-    (z θ : ℝ) :
-    (Work.Spaces.mixed j i f z θ * Work.FTS.H2.Wm α z θ) ^ 2
-      = slotW α i z θ * (Work.Spaces.mixed j i f z θ) ^ 2 := by
-  rw [slotW_of_pos' α hi]
-  ring
 
 /-! ## The API of the flat angular coefficient norm `CoefTh`
 
@@ -162,11 +201,6 @@ theorem supAbsO_nonneg (g : ℝ → ℝ → ℝ) : 0 ≤ Work.FTS.H2.supAbsO g :
   · exact le_trans (abs_nonneg _) (le_csSup hb hmem)
   · rw [Work.FTS.H2.supAbsO, Real.sSup_def, dif_neg (fun h => hb h.2)]
 
-/-- `supAbsO g ≤ K` as soon as `|g| ≤ K` on the open quadrant. -/
-theorem supAbsO_le' (g : ℝ → ℝ → ℝ) {K : ℝ}
-    (h : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 → |g z θ| ≤ K) :
-    Work.FTS.H2.supAbsO g ≤ K :=
-  Work.FTS.H2.supAbsO_le h
 
 /-- `CoefTh l f` is a sum of nonnegative terms, hence nonnegative. -/
 theorem coefTh_nonneg (l : ℕ) (f : ℝ → ℝ → ℝ) : 0 ≤ Work.FTS.VocabO.CoefTh l f := by
@@ -255,17 +289,8 @@ theorem supAbsO_le_coefTh {l : ℕ} {f : ℝ → ℝ → ℝ} {b i : ℕ} (hbi :
   unfold Work.FTS.VocabO.CoefTh
   exact le_trans hinner hsingle
 
-/-- `CoefThMem` is monotone in the order. -/
-theorem coefThMem_mono {l l' : ℕ} (hl : l ≤ l') {f : ℝ → ℝ → ℝ}
-    (h : Work.FTS.VocabO.CoefThMem l' f) : Work.FTS.VocabO.CoefThMem l f :=
-  fun b i hbi => h b i (le_trans hbi hl)
 
-/-- `CoefThMem` is exactly the statement that each of the finitely many constituents of
-`CoefTh` is bounded on the open quadrant (i.e. that the summands of `CoefTh` are not junk). -/
-theorem coefThMem_iff {l : ℕ} {f : ℝ → ℝ → ℝ} :
-    Work.FTS.VocabO.CoefThMem l f ↔
-      ∀ b i : ℕ, b + i ≤ l → ∃ K : ℝ, ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
-        |Work.Spaces.mixed b i (Work.Spaces.pth f) z θ| ≤ K :=
-  Iff.rfl
 
 end Work.FTS.TransportS
+end
+end

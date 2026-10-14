@@ -1,39 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsWPLim/Basic.lean`
-
-Tools for the pointwise limit of the scheme's pre-mollified right-hand side
-`epsWP α ρ ε Φs E g s` (the `E5` identification step): the extraction of the pointwise slot
-convergence at a point `p` of the open quadrant from the local uniform convergence hypothesis
-`hconv` of `epsWP_tendsto`, the `F_*`-additivity of the mixed slots and of the angular moment
-`FK`, and the pointwise limit of `Construction.N` from the slot convergence of `PhiTil`.
-
-* `tendsto_mixed_at` — local uniform convergence on the compacts of `Q0` gives, at any
-  `p ∈ Q0`, the pointwise convergence of every `mixed j i`, `j + i ≤ 1` (the compact tube
-  around `p` is the one used by `L12/linPart_tendsto`).
-* `mixed_Fstar_add` / `FK_Fstar_add_of_SmoothOpen_HkMem` — the identification lemmas for the
-  raw slice `w` and the profile `Ftau α g s = F_* + w`: `mixed j i (F_* + w) = mixed j i F_* +
-  mixed j i w` (from `SmoothOpen.mixed_add`) and `FK (F_* + w) = FK F_* + FK w` (from
-  `GalFields.Tail.FK_Fstar_add`, whose only hypothesis is the integrability of the `θ`-slice of
-  `w`, supplied by `GalBasis.cc.integrableOn_slice_of_SmoothOpen_HkMem` from
-  `HQo α 4 w = SmoothOpen w ∧ HkMem α 4 w`).
-* `N_tendsto_of_PhiTil` — the pointwise limit of `Construction.N`, stated with the slot
-  convergence of `PhiTil α F Φ` itself (the repaired form of `N_tendsto`, avoiding the
-  differentiability gap of `deriv_sub`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.N_tendsto
+import Submission.Work.FTS.GalFields.Tail.FK_Fstar_add
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.StrongEps.EpsLimitDefs
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.GalFields.Tail.FK_Fstar_add
-import Submission.Work.FTS.GalBasis.cc.L12_add_of_HkMem
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
-import Submission.Work.FTS.LocData.SmoothQuad_Fstar
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Stability.ZcutSmoothCompact
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -54,47 +30,7 @@ set_option autoImplicit false
 
 /-! ## Pointwise convergence of the slots at a point of the open quadrant -/
 
-/-- Uniform convergence on a set gives pointwise convergence at every point of the set. -/
-theorem tendsto_at_of_tendstoUniformlyOn {ι β : Type*} {F : ι → β → ℝ} {f : β → ℝ}
-    {l : Filter ι} {s : Set β} {x : β} (hx : x ∈ s) (h : TendstoUniformlyOn F f l s) :
-    Tendsto (fun n => F n x) l (nhds (f x)) := by
-  rw [Metric.tendstoUniformlyOn_iff] at h
-  rw [Metric.tendsto_nhds]
-  intro ε hε
-  filter_upwards [h ε hε] with n hn
-  rw [dist_comm]
-  exact hn x hx
 
-/-- **Pointwise slot convergence from local uniform convergence.**  If the slots
-`mixed j i (f n)`, `j + i ≤ 1`, converge uniformly to those of `fl` on every compact subset of
-the open quadrant, then at every `p ∈ Q0` the values at `p` converge.  (The compact tube around
-`p` is the one used by `L12/linPart_tendsto`.) -/
-theorem tendsto_mixed_at {f : ℕ → Fn} {fl : Fn} {p : ℝ × ℝ}
-    (hp : p ∈ Work.FTS.EllipticEst.Q0)
-    (hconv : ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
-      ∀ j i : ℕ, j + i ≤ 1 →
-        TendstoUniformlyOn (fun n : ℕ => fun p : ℝ × ℝ =>
-            Work.Spaces.mixed j i (f n) p.1 p.2)
-          (fun p : ℝ × ℝ => Work.Spaces.mixed j i fl p.1 p.2) Filter.atTop K)
-    (j i : ℕ) (hji : j + i ≤ 1) :
-    Tendsto (fun n : ℕ => Work.Spaces.mixed j i (f n) p.1 p.2) Filter.atTop
-      (nhds (Work.Spaces.mixed j i fl p.1 p.2)) := by
-  obtain ⟨hz, hθ0, hθ2⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-  set K : Set (ℝ × ℝ) :=
-    Set.Icc (p.1 / 2) (p.1 + 1) ×ˢ Set.Icc (p.2 / 2) ((p.2 + Real.pi / 2) / 2) with hK
-  have hpK : p ∈ K := by
-    rw [hK]
-    exact ⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith⟩⟩
-  have hKcomp : IsCompact K := by
-    rw [hK]; exact isCompact_Icc.prod isCompact_Icc
-  have hKsub : K ⊆ Work.FTS.EllipticEst.Q0 := by
-    intro q hq
-    rw [hK] at hq
-    obtain ⟨hq1, hq2⟩ := hq
-    rw [Work.FTS.EllipticEst.mem_Q0]
-    exact ⟨by linarith [hq1.1], by linarith [hq2.1], by linarith [hq2.2]⟩
-  exact tendsto_at_of_tendstoUniformlyOn (β := ℝ × ℝ) (s := K) (x := p) hpK
-    (hconv K hKcomp hKsub j i hji)
 
 /-! ## The `F_*`-shift: mixed slots and the angular moment -/
 
@@ -111,14 +47,6 @@ theorem smoothOpen_add {f g : ℝ → ℝ → ℝ} (hf : Work.FTS.EllipticEst.Sm
   intro n
   exact (hf n).add (hg n)
 
-/-- `Ftau α g τ = F_* + slice g τ` is `C^∞` on the open quadrant when the slice is. -/
-theorem smoothOpen_Ftau {α : ℝ} {g : Fam} {τ : ℝ}
-    (hg : Work.FTS.EllipticEst.SmoothOpen (slice g τ)) :
-    Work.FTS.EllipticEst.SmoothOpen (Work.Construction.Ftau α g τ) := by
-  have h : Work.Construction.Ftau α g τ
-      = fun z θ => Work.Construction.Fstar α z θ + slice g τ z θ := rfl
-  rw [h]
-  exact smoothOpen_add (smoothOpen_Fstar α) hg
 
 /-- **`F_*`-additivity of the mixed slots**: on the open quadrant, the mixed operators of the
 profile `F = F_* + w` split into those of `F_*` and those of `w`. -/

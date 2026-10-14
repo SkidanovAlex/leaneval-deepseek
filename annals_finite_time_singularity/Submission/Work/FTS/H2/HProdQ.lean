@@ -1,51 +1,21 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Elgindi's `HProductRule` (tex 1068) in the interior class `RegQ`
-
-This file proves `Work.FTS.H2.HProdQ`: for `f, g ∈ ℋ⁴` in the *interior* class
-`Work.FTS.Nonlin.RegQ α 4` (`= LocData.SmoothQuad ∧ Spaces.HkMem α 4 ∧ Nonlin.BdryTraces α 4`,
-i.e. genuine `C^∞` on the open quadrant with honest integral norms and the boundary limits from
-inside), the product is again in `ℋ⁴` and
-`|f g|²_{ℋ⁴} ≤ C/(γ-1)·|f|²_{ℋ⁴}·|g|²_{ℋ⁴}` with `C` universal.
-
-This is the design document's `HProdQ` (§3.3 L-N4.5), the `RegQ` version of the proved
-`Work.Spaces.HProductRule`, whose class `Spaces.SmoothNbhd` is `ContDiffOn ℝ ⊤` on a
-neighbourhood of the closed quadrant, i.e. *analyticity*, which is false for `F_*`, for the
-stream functions and for the cut-off `χ`; and it does *not* assume `VanishTheta` on either
-factor, which is false for the radial functions (`L₁₂(g)`, `FK(g)`) that the N4 rows multiply
-by the perturbation.
-
-The proof follows `Work.Spaces.HProductRule`: the `ℋ⁴`-norm of `f g` is split into its finitely
-many weighted summands, each is expanded by Leibniz and bounded.  The pieces are
-* `Work.FTS.H2.HQ.LinfQpt`: the interior Corollary `SecondDerivativesBounded`, giving the
-  pointwise `L^∞`-bound of order `≤ 2` (packaged as `Work.FTS.H2.HQ.PwBd`);
-* `Work.FTS.H2.HQ.ZsummandQ`, `Work.FTS.H2.HQ.MsummandQ`, `Work.FTS.H2.HQ.BadsummandQ`: the
-  three families of summands, with the exceptional `(3,1)` slot handled by
-  `Work.FTS.H2.HQ.BadPackageQ` (whose two Hardy inputs are `bt_f_bound_quad` and
-  `bt_g_bound_quad` below, from `Work.FTS.H2.HQ.HardyThetaQ`/`HardyZQ`);
-* the assembly `HProdQ_asm` below (the measure-theoretic bookkeeping, copied from
-  `Work.Spaces.HProductRule`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.Vocab
-import Submission.Work.FTS.H2.Defs
-import Submission.Work.FTS.H2.RegQDefs
-import Submission.Work.FTS.H2.HQ.Glue
-import Submission.Work.FTS.H2.HQ.HardyThetaQ
-import Submission.Work.FTS.H2.HQ.HardyZQ
-import Submission.Work.FTS.H2.HQ.DthDzIterComm
-import Submission.Work.FTS.H2.HQ.LinfQpt
-import Submission.Work.FTS.H2.HQ.ZsummandQ
-import Submission.Work.FTS.H2.HQ.MsummandQ
-import Submission.Work.FTS.H2.HQ.BadPackageQ
 import Submission.Work.FTS.H2.HQ.BadsummandQ
-import Submission.Work.Spaces.ProductTools
+import Submission.Work.FTS.H2.HQ.Glue
+import Submission.Work.FTS.Nonlinear.RadialProd.radial_prod
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS.Vocab
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,7 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.MeasureTheory.Integral.DivergenceTheorem
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
-import Submission.Work.FTS.PressureOn.Defs
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

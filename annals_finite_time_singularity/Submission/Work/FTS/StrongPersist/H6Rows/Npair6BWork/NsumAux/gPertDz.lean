@@ -1,24 +1,11 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `NsumAux/gPertDz` — the piece `nsP11 = -2α·𝒱(Φ̃_f)·D_zf`
-
-Guard-compliant replacement for the corresponding conjunct of `NsumG.nsumG3` (whose file
-exceeds the workspace `maxHeartbeats` limit and therefore cannot be imported by anything).
-
-Route: the row `rowDzFlatTight` gives
-`C α^{-4}((1+K0+K4+K1)(1+M)(1+HkSq α 6 f) + (K4+K6)(1+M)(1+HkNorm α 6 f))`, and
-`NsumG.arithNsumG3Dz` converts that into the target shape with the sharp prices of
-`NsumG.pertPricesNsumG3` (which also supplies `CoefThMem 1` and `CoefTh 1 ≤ C1(1+|Ce|)(1+M)`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowDzFlatTight
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.pertPricesNsumG3
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.arithNsumG3Dz
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowDzFlatTight
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

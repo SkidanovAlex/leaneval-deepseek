@@ -1,13 +1,78 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyA
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.ClassCHon.CmodeDefs
+import Submission.Work.FTS.EllipticEst.TT.psiDerivSq_lower
 import Submission.Work.FTS.H2.STFacts
-import Submission.Work.FTS.EllSol.WeakSlice.sliceV_DzIter_smoothOpen
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyA
 import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyDefs
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
+import Submission.Work.FTS.TransportS.SupDzWeighted.supDz_weighted_avg_le
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.RPFresh.I0FamilyBound =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# The `i0`-family of the mixed-derivative interpolation, `α`-uniform on `(0,1]`
+
+For `V` smooth on a neighbourhood of the closed quadrant which vanishes on the two angular
+boundaries, the sum over `r ≤ k` of the radial functionals `∫_z mixIntS (D_z^r V) z` is bounded
+by the `ℋ^k`-squares of `z²∂_z²V`, `∂_θ²V` and `D_zV`:
+
+`α² ∑_{r≤k} ∫_z mixIntS (D_z^r V) z ≤ C (α⁴ HkSq(z²∂_z²V) + HkSq(∂_θ²V) + α² HkSq(D_zV))`.
+
+The single-function interpolation estimate (`Work.EllipticEst.Core.i0Aux.interpS_theta`, the
+paper's §7 estimate, which holds for `α' ≤ 1/4` and for functions smooth on the strip
+`(0,∞) × (-1, π/2+1)`) is applied to each `h = D_z^r V`; the three right-hand slots are then
+bounded by the corresponding `ℋ^k`-slots (`ttIntS_integral_le_HkSq`, `dIntS_integral_le_HkSq`
+and the `ddIntS`-slot lemma `DdIntSlotBound`, which replaces the `D_z²V`-slot by the `z²∂_z²V`-slot
+via the Euler identity `D_z²V = z²∂_z²V + D_zV`).  Finally the estimate at the auxiliary exponent
+`α' = min α (1/4)` is transferred to `α ∈ (0,1]` (the functionals do not depend on `α`), at the
+cost of the factor `16`.
+
+The proof rests only on the permitted axioms `propext`, `Classical.choice`, `Quot.sound`.
+-/
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.RPFresh
+
+set_option autoImplicit false
+
+/-! ## The Euler identity `z²∂_z²V = D_z²V - D_zV` -/
+
+
+
+/-! ## Helper: nonnegativity of the slice functionals -/
+
+
+/-! ## The main family bound -/
+
+
+end Work.FTS.EllipticEst.RPFresh
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.sliceThetaHardy =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -138,3 +203,4 @@ theorem sliceThetaHardy : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1, ∀ (f 
   simpa only [hgapp] using hmain
 
 end Work.FTS.StrongPersist.H6Pair6Aux.T6Gen
+end

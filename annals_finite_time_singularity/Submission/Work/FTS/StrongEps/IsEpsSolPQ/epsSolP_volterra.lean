@@ -1,51 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/IsEpsSolPQ/epsSolP_volterra.lean`
-
-**The Volterra identity of the projected `ε`-scheme** (node D1 of the `IsEpsSolP_eq_of_epsClass`
-chain).  Two `P₀`-solutions `g`, `g'` of the projected scheme
-
-  `∂_τ g = P₀ J_ε [𝓛 + 𝓡] (P₀ J_ε g)`   (`StrongEps.IsEpsSolP`, `StrongEps.epsRHSP`)
-
-with the same datum `g₀`, whose families are jointly `C¹` on the half-open strip
-`(0,∞) × (0,π/2) × [0,T]`, satisfy
-
-* the pointwise Volterra identity `g - g' = ∫₀^τ (Feps (slice g s) - Feps (slice g' s)) ds`
-  on the open quadrant (`Feps` is the τ-free form of the scheme's right-hand side, by
-  `EpsEngine.epsRHSP_eq_Feps_slice`), and
-* the two weighted curves `s ↦ (…)*epsW α` are a.e. strongly measurable for
-  `(volume↾uIoc 0 τ) ×ₚ DomM` — the measurability input of Cauchy–Schwarz
-  (`EpsSq_intervalIntegral_le_sqrt`) in the uniqueness argument.
-
-## The two analytic ingredients
-
-* **The strip is `UniqueDiffOn`.**  `Dset T = Ioi 0 ×ˢ (Ioo 0 (π/2) ×ˢ Icc 0 T)` is a product of
-  intervals, so `UniqueDiffOn ℝ (Dset T)` follows from
-  `uniqueDiffOn_Ioi.prod (… .prod (uniqueDiffOn_Icc hT))`.  Hence
-  `ContDiffOn.continuousOn_fderivWithin` makes `fderivWithin ℝ G (Dset T)` continuous on the
-  *closed* strip — this is what controls the fake-time derivative uniformly up to `τ = T`, where
-  `Ioc 0 τ` reaches the endpoint `T` (interval integrability, and the conullness of the strip
-  `Sset T`).
-* **The fake-time derivative is a `derivWithin`.**  `IsEpsSolP` gives, for every `s ∈ Icc 0 T`, a
-  `HasDerivWithinAt` of `s' ↦ g z θ s'` on `Icc 0 T`; the same curve is the composition of
-  `s' ↦ (z,(θ,s'))` with the joint family, so uniqueness of `derivWithin`
-  (`uniqueDiffOn_Icc hT`) identifies the scheme's right-hand side with the third partial derivative
-  of the joint family.  Consequently `s ↦ Feps α ρ ε Φs E (slice g s) z θ` is
-  `ContinuousOn (Icc 0 T)`, which gives both the fundamental theorem of calculus and the
-  measurability bookkeeping.
-
-Everything in this module is `sorry`-free.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EpsEngine.EpsClass
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.EpsEngine.VolterraV4Main
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSq_le_HkSq_ClassC
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.RowDth.zeroTermDth
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

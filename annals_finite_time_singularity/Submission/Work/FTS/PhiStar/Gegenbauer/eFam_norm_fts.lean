@@ -1,45 +1,11 @@
-/-
-# `Work.FTS.PhiStar.Gegenbauer.eFam_norm_fts` — the `L²(Iθ, cos θ dθ)` norm of `eFam`
-
-`eFam m θ = cos θ · gC (2m+1) (sin θ)` is the `m`-th Dirichlet eigenfunction of
-`Work.Elliptic.Lzero` (`Gegenbauer/Defs.lean`), and this file computes its norm in the
-self-adjoint weight `cos θ dθ`:
-
-  `∫_{Iθ} eFam m θ ^ 2 · cos θ dθ = ((2m+2)(2m+3)) / (4m+5)`.
-
-**Route.**  The substitution `u = sin θ` (`eFam_norm_subst`) turns the integral into the
-half-interval Gegenbauer norm
-
-  `Mhalf k = ∫_0^1 (1 - x²) gC k x ² dx`,   `k = 2m+1`,
-
-and the classical norm computation gives `Mhalf k = (k+1)(k+2)/(2k+3)`:
-
-* specialising the three-term recurrence `gC_rec` at index `j` to `x · gC (j+1) x` and
-  integrating against `(1-x²) gC (j+2)` yields, after dropping the term
-  `∫ (1-x²) gC j · gC (j+2)` (orthogonality of equal-parity `gC`'s, `gC_orthogonal_half`),
-
-    `(j+2) Mhalf (j+2) = (2j+5) ∫_0^1 (1-x²) x gC (j+1) gC (j+2)`,
-
-  and expanding the second factor with the recurrence at index `j+1` (again discarding the
-  orthogonal term `∫ (1-x²) gC (j+1) gC (j+3)`) gives the recursion
-
-    `Mhalf (j+2) = ((2j+5)(j+4) / ((j+2)(2j+7))) · Mhalf (j+1)`   (`Mhalf_rec_of`);
-
-* with the two base values `Mhalf 0 = 2/3`, `Mhalf 1 = 6/5` a two-step induction
-  (`Mhalf_closed_of`) produces the closed form
-
-    `Mhalf k = (k+1)(k+2)/(2k+3)`,
-
-  which at `k = 2m+1` is `(2m+2)(2m+3)/(4m+5)`.
--/
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_ode
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_span_eq
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_orthogonal
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_orthogonal_half
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_norm_subst
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.LWP.BiotSavart.nearField_bound
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

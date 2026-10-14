@@ -2,15 +2,14 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.AngAWeak.Basic
-import Submission.Work.FTS.EllipticEst.AngAWeak.step1Ae
-import Submission.Work.FTS.EllipticEst.Cores.step2Ae_fts
-import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_mem
 import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_bnd
-import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeI4_open
-import Submission.Work.FTS.EllipticEst.remov.AeI1PaperDefs
 import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.i1Paper_weakMixed
+import Submission.Work.FTS.EllipticEst.Cores.step2Ae_fts
+import Submission.Work.FTS.EllipticEst.TT.psiDerivSq_lower
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -73,30 +72,6 @@ namespace Work.FTS.EllipticEst.Dispatch
 
 open Work.FTS.EllipticEst
 
-/-- **The paper-shaped `I₁` bound implies the bare one** (`remov.AeI1Paper → AngAWeak.AeI1`):
-the positive term `((1-η)/(1+η))·α²·‖∂_θ(z∂_zu)‖²_ρ` is nonnegative (`0 < η < 1`, `α² ≥ 0`,
-`HkSq ≥ 0`), so it may be dropped. -/
-theorem aeI1_of_paper (h : Work.FTS.EllipticEst.remov.AeI1Paper) :
-    Work.FTS.EllipticEst.AngAWeak.AeI1 := by
-  obtain ⟨C, hC, h'⟩ := h
-  refine ⟨C, hC, ?_⟩
-  intro α u G hA hU
-  have hmain := h' α u G hA hU
-  have hpp : 0 ≤ ((1 - Work.Spaces.eta) / (1 + Work.Spaces.eta))
-      * (α ^ 2 * Work.Spaces.HkSq α 0
-          (Work.Spaces.pth (Work.FTS.EllipticEst.H2W.Ae.grad u))) := by
-    refine mul_nonneg (div_nonneg (by linarith [Work.Spaces.eta_lt_one]) (by
-      linarith [Work.Spaces.eta_nonneg])) ?_
-    exact mul_nonneg (sq_nonneg α) (Work.Spaces.HkSq_nonneg α 0 _)
-  change -C * α ^ 2 * (Work.FTS.EllipticEst.AngSecond.IP
-        (Work.FTS.EllipticEst.H2W.Ae.grad u) (Work.FTS.EllipticEst.H2W.Ae.grad u)
-      + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP
-            (Work.FTS.EllipticEst.H2W.Ae.grad u) (Work.FTS.EllipticEst.H2W.Ae.grad u))
-        * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP
-            (Work.Spaces.pthIter 2 u) (Work.Spaces.pthIter 2 u)))
-    ≤ α ^ 2 * Work.FTS.EllipticEst.AngSecond.IP
-        (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ) (Work.Spaces.pthIter 2 u)
-  linarith [hmain, hpp]
 
 /-- **The `I₁` coercivity of Step 2 in the class `AeData`.**
 

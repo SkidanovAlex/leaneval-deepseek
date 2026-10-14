@@ -2,12 +2,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffCore
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffSmooth
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffBnd
 import Submission.Work.FTS_RegExport.RXT.Sys.L12FK_family_jets
-import Submission.Work.FTS_RegExport.RXT.Sys.slot_tau_cont_alpha
-import Submission.Work.FTS_RegExport.RXT.SysAux.Theta_ops
+import Submission.Work.FTS_RegExport.RXT.coeff_C2
+import Submission.Work.FTS_RegExport.RXT0.RXJets.coeffcR
+import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetLipschitzApprox
+import Submission.Work.R1G.DecayInZ_gA
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

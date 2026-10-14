@@ -1,35 +1,12 @@
-/-
-# `pzIter_smoothCptQ` — the iterated `z`-partials of a `CptQ` source are again `CptQ`
-
-`Work.FTS.PhiStar.Honesty.SmoothCptQ G` says that `G` is `C^n` on all of `ℝ²` for every
-`n : ℕ` (these are the *finite* orders: the order `↑n : ℕ∞ω` with `n : ℕ`), and that `G` is
-supported in a rectangle `[a,b] × [c,d]` with `0 < a < b`, `0 < c < d < π/2` (all in the
-*open* quadrant).  The statement proved here is that the iterated plain `z`-partial
-`∂_z^j G = Work.Spaces.pzIter j G` has the same property.
-
-Both halves are immediate from facts already in the workspace:
-
-* **Smoothness.**  `∂_z^k` costs `k` orders of differentiability, so
-  `ContDiff ℝ (n+j) (uncurry G)` gives `ContDiff ℝ n (uncurry (∂_z^j G))` — the finite-order
-  chain rule `contDiffOn_uncurry_pzIter_le` below, which is `fderiv_of_isOpen` iterated.
-* **Support.**  Off the rectangle the source vanishes on an *open* neighbourhood of each
-  point (either the whole `θ`-line is zero, when `θ ∉ [c,d]`, or the whole `z`-line is zero
-  in a neighbourhood of `z`, when `z ∉ [a,b]`); by `Work.Stability.pzIter_eq_zero_of_vanishOn`
-  all `z`-derivatives vanish there.
-
-This is the "honest-for-free" package of `Honesty/ellWeakPos_psiSeries_of_cptQ`: it lets the
-whole compactly-supported machinery be run for the `z`-iterates of a source (as needed for
-example in `cmode_iteratedDeriv_facts`).
--/
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
 import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
-import Submission.Work.Spaces.pz_aux
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
 import Submission.Work.Stability.ZcutSmoothCompact
-import Submission.Work.Spaces.CurrySmooth
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

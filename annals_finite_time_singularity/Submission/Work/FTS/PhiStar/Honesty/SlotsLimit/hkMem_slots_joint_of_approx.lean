@@ -3,19 +3,16 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Defs
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.weighted_le_of_limit
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.slot_aPriori_smooth
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.IBP_subSlot
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.HkActivePairs_spec
 import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.mixed_sub_eqOn
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.term_integral_le_HkSq
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Joint.termWeight_pos_and_continuousOn_Q0
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Joint.tendsto_term_integral_of_tendsto_HkSq
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Joint.tonelli_slices_of_integrableOn_Q0
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.slot_aPriori_smooth
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.weighted_le_of_limit
 import Submission.Work.FTS.PhiStar.Honesty.ellEstUnif_diff
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
+import Submission.Work.FTS.PhiStar.Honesty.psiTrunc_tendsto_psiSeries
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.SolutionDelivery.DatumEuler
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

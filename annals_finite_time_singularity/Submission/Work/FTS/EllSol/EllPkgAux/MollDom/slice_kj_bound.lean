@@ -3,15 +3,15 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.EllipticEst.Core.Defs
-import Submission.Work.EllipticEst.Core.i0Aux.InterpDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelAux
-import Submission.Work.FTS.EllSol.EllPkgAux.MollAux.integralAbsLeSqrtWeighted
-import Submission.Work.FTS.EllSol.EllPkgAux.mollSliceBound
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
+import Submission.Work.FTS.ClassCHon.CmodeDefs
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.EllipticEst.ZCuts.zHardy_compact
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

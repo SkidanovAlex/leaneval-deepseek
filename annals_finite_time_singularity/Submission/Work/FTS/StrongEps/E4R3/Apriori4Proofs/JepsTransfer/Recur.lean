@@ -1,16 +1,38 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.WordCongr
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
+import Mathlib.Tactic.MinImports
+import Submission.Work.FTS.EllipticEst.TT.psiDerivSq_lower
+import Submission.Work.FTS.StrongEps.EpsE4Thr.JepsJoint.Jeps_fam_continuous
+import Submission.Work.FTS.StrongEps.JepsHkMem.continuousOn_Jeps
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
 import Submission.Work.FTS.StrongEps.mixed_Jeps
-import Submission.Work.FTS.StrongEps.Dth_Jeps
-import Submission.Work.FTS.StrongEps.Commute
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.TransportS.IPFixDefs
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.N6Trans.slotT2Six
 import Submission.Work.FTS.StrongPersist.N6TransPriced
-import Submission.Work.FTS.StrongPersist.IP6_cs_coeffs
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.SlotT2.Basic
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.H2W.PsiSlices.weakPos2_dilate
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.Spaces.HProductRule_Badsummand
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.AeI1Fts.I1PaperWeakMixed =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Recur =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -148,3 +170,5 @@ theorem IPn_succ_Jeps (ρ : ℝ × ℝ → ℝ) (hρ : IsSmoothKernel ρ) {ε α
   ring
 
 end Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer
+end
+end

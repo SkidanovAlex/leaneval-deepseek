@@ -1,45 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `DzV_amgm_clean` -- Agmon--Nirenberg interpolation for `D_z = z∂_z` in the weighted `H^k`-norm
-
-The target lemma is `Work.Blocks.DzV_amgm_clean`: there is a universal `C > 0` such that for
-every `0 < α ≤ 1/4`, every `f` smooth (`C^∞`) on the open quadrant whose `z`-slices lie in `ℋ^k`
-and whose second radial derivative `z²∂_z²f` also lies in `ℋ^k`,
-
-  `α · |D_z f| ≤ C (|f| + α² |z²∂_z²f|)`,   and `D_z f ∈ ℋ^k`,
-
-the norms being the weighted `H^k`-norms of the paper.
-
-## Structure of this file
-
-Everything is proved here, in the fresh namespace `Work.Blocks.DzVamgm` (nothing is declared in
-the shared `Work.FTS.EllipticEst.*` namespaces, so this file cannot clash with the work of
-colleagues).
-
-* **The one-dimensional analytic core** (`DzAgmon1D_clean`): the weighted Agmon--Nirenberg
-  inequality `α² ∫⁻ ρ (zh')² ≤ C² (α⁴ ∫⁻ ρ (z²h'')² + ∫⁻ ρ h²)` for `ρ = (w z)²`, in
-  unconditional `lintegral` form, for `C^∞` data `h` on `(0,∞)`.  It is assembled from three
-  independent, separately proved inputs (see `Submission/Work/EllipticEst/NOTES_AgmonCutoff.md`):
-  `Work.Blocks.DzV1_chi_second_deriv` (`|z²(logChi n)''| ≤ K/log(n+2)`),
-  `Work.EllipticEst.agmon_cutoff_estimate_mine` (the `χ`-weighted cut-off estimate) and
-  `Work.Blocks.DzV3_logChi_iSup` (monotone convergence along the cut-off family).
-  The assembly (`logChiPos`, the trivial `⊤`-cases, the `ofReal`/Bochner bridges, the
-  monotonicity in `n` and the final `⨆`) is the one written in
-  `Submission/Work/EllipticEst/DzAgmonSmooth_mine.lean`.
-* **The `θ`-integration** (`hgen_of_agmon`): `Work.FTS.EllipticEst.Blocks.TermAgmon` applies the
-  one-dimensional inequality to every angular slice.
-* **The term-by-term assembly** (`TZ_termwise`, `TM_termwise`, `LkSq_Dz_le`, `HkNorm_Dz_le_of`):
-  applied to the summands `D_z^m f` and `D_z^mD_θ^i f` of the `ℋ^k`-integrand, using
-  `z²∂_z²(D_z^jD_θ^if) = D_z^jD_θ^i(z²∂_z²f)`.
-* **The honesty certificate** (`HkMem_Dz_slices`, `integrableOn_sliceIntegral_of_LkSq_lt_top`):
-  the `θ`-slice of every summand of `HkIntegrand α k (D_z f)` is finite, via the Taylor
-  identity `Work.FTS.EllipticEst.Blocks.SliceZDeriv_finite` (Taylor's formula with integral
-  remainder plus Cauchy--Schwarz).
-* **The final theorem** `DzV_amgm_clean` (the `α ≤ 1/4` instance of the `α ≤ 1` statement).
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -51,27 +9,20 @@ import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Order.Group.Lattice
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.AgmonSlice.Blocks
-import Submission.Work.FTS.EllipticEst.AgmonSlice.zsq_pzIter2_mixed_open
-import Submission.Work.Coercivity.HkMem_congr_Ioi
-import Submission.Work.FTS.EllipticEst.DzAmgm.Defs
-import Submission.Work.FTS.EllipticEst.DzAmgmScratchSect
-import Submission.Work.FTS.EllipticEst.Blocks.TermAgmon
-import Submission.Work.FTS.EllipticEst.Blocks.SliceZDeriv_finite
-import Submission.Work.FTS.EllipticEst.Blocks.DzAgmonDefs
-import Submission.Work.FTS.EllipticEst.Blocks.AgmonIBP
-import Submission.Work.FTS.EllipticEst.Blocks.AgmonDerivVanishing
-import Submission.Work.FTS.EllipticEst.Blocks.AgmonArith
-import Submission.Work.FTS.EllipticEst.Blocks.AgmonSmallness
-import Submission.Work.FTS.EllipticEst.Blocks.logChiFamily
-import Submission.Work.FTS.EllipticEst.TT.logCutDefs
+import Submission.Work.FTS.EllipticEst.H2W.Ae.TruncIdentAe
+import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.PsiBox
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.SolutionDelivery.Slices
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.Stability.CutFactorFderivZero
 import Submission.Work.Stability.Cutoff
-import Submission.Work.EllipticEst.logChi_second_deriv_le
-import Submission.Work.EllipticEst.agmon_cutoff_estimate
-import Submission.Work.EllipticEst.logChi_iSup_lintegral
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -1301,20 +1252,5 @@ theorem HkNorm_Dz_amgm (k : ℕ) : ∃ C : ℝ, 0 < C ∧
 
 end DzVamgm
 
-/-- **Agmon--Nirenberg (interpolation) for `D_z = z∂_z` in the weighted `H^k`-norm**, for
-`0 < α ≤ 1/4` (a special case of the `α ≤ 1` statement `DzVamgm.HkNorm_Dz_amgm` proved above). -/
-theorem DzV_amgm_clean (k : ℕ) (hk : 1 ≤ k) : ∃ C : ℝ, 0 < C ∧
-    ∀ (α : ℝ) (f : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      (∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2))) →
-      Work.Spaces.HkMem α k f →
-      Work.Spaces.HkMem α k (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 f z θ) →
-      Work.Spaces.HkMem α k (Work.Spaces.Dz f) ∧
-      α * Work.Spaces.HkNorm α k (Work.Spaces.Dz f)
-        ≤ C * (Work.Spaces.HkNorm α k f
-            + α ^ 2 * Work.Spaces.HkNorm α k (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 f z θ)) := by
-  obtain ⟨C, hC, hgen⟩ := DzVamgm.HkNorm_Dz_amgm k
-  refine ⟨C, hC, ?_⟩
-  intro α f hα hα1 hf hmf hmQ
-  exact hgen α f hα (le_trans hα1 (by norm_num)) hf hmf hmQ
 
 end Work.BlocksSect

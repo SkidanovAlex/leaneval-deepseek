@@ -1,50 +1,14 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Prop.l0_grad` — the radial first-order half of Step 1 of `prop:H2`
-
-Target (unchanged): for the weak hypothesis class `TT.EllWeakPos α 0 F Ψ` of
-`TT/WeakDefs.lean`, with `0 < α ≤ 1/4` and a universal `C`,
-
-  `HkMem α 0 (z ∂_zΨ)  ∧  α · √(HkSq α 0 (z ∂_zΨ)) ≤ C · √(HkSq α 0 F)`.
-
-This is the `z∂_z`-slot of the paper's Step 1 (`prop:L2`, `prop:H2` of
-T. M. Elgindi, *Finite-time singularity formation for `C^{1,α}` solutions to the incompressible
-Euler equations on `ℝ³`*, Annals of Math. **194** (2021)).
-
-## Route
-
-Everything is done in the almost-everywhere class `H2W.Ae.AeData` (`H2W/Ae/Defs.lean`), of which
-`TT.EllWeakPos` is an instance (`aeData_of_ellWeakPos`, `Prop/l0_bridge.lean`).  For a datum
-`AeData α u G` with `u := Ψ`, `G := F`:
-
-* **the `u`-mass** `nrm α u ≤ C_m nrm α G` is obtained from the `w²`-weighted radial energy
-  inequality of Step 1 (`Cores.Pieces.AeGradRho.aeEnergyOfCutEnergy`, which removes the cutoff
-  from the truncated inequality `AeCutEnergyProp` of
-  `Cores/Pieces/AeGradRho/AeCutEnergyClean.lean`) together with the constrained slice gap
-  `9∫u² ≤ ∫(∂_θu)²` and the `σ`-Poincaré upgrade `AeSigmaUpgradeU_all`, in the assembly
-  `Cores.Pieces.AeGradRho.ae_mass_bound_of`;
-* **the `σ`-weighted radial energy inequality**
-  `α² HkSq α 0 (grad u) ≤ C_σ (HkSq α 0 G + HkSq α 0 u)` is `Prop.sigmaEnergy`
-  (the per-`θ` radial integration by parts of the (PolarBSL) equation against the `σ`-weight,
-  plus the `σ`-coercivity of `Lzero1`);
-* **the honesty** `HkMem α 0 (z ∂_zu)` is the radial Agmon–Nirenberg certificate
-  `Dispatch.hkMem_gradUD`;
-* the final arithmetic is the one of `AeGradRho/Assembly.lean`:
-  `α² HkSq α 0 (grad u) ≤ C_σ (1 + C_m²) HkSq α 0 G`, and taking square roots (both sides
-  nonnegative, `(nrm α g)² = HkSq α 0 g`) gives `α nrm α (grad u) ≤ √(C_σ(1+C_m²)) nrm α G`.
--/
 import Mathlib.Analysis.Real.Sqrt
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.Prop.l0_bridge
+import Submission.Work.FTS.EllipticEst.Honest.FOH.psiRho
 import Submission.Work.FTS.EllipticEst.Prop.cutEnergyProof
 import Submission.Work.FTS.EllipticEst.Prop.sigmaEnergy
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.aeEnergyOfCutEnergy
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.MassBound
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigma.AeHkMemU
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemGradUD
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -8,7 +8,7 @@ import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS_RegExport.RXT.SysAux.FK_L12_aux
-import Submission.Work.FTS_RegExport.RXT.SysAux.FK_L12_slice_facts
+import Submission.Work.FTS_RegExport.RXT.SysAux.L12_tail_weight
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,70 +1,29 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/XBallIterExists.lean` — the `X`-ball invariant of the
-# Picard iterates of the projected `ε`-scheme
-
-The local step of the projected `ε`-scheme (`E4R3.LocalStepChapter3`) runs the Volterra–Picard
-engine of `Submission/Work/FTS/EpsEngine/` at the **`X`-ball** invariant (`EpsEngine.XBall`):
-
-    XBall α ρ ε R C₀ u  :=  SmoothOpen u ∧ EpsMem α u ∧ EpsSq α u ≤ R
-                              ∧ ClassC α (Pz (J_ε u)) ∧ Xn α (Pz (J_ε u)) ≤ C₀ α² .
-
-The engine's class-preservation hypothesis `hkeepIter` (`EpsEngine.exists_volterra_v4`,
-`exists_sol_of_engine_xball`) requires that each Picard slice
-`slice (iter (Feps …) h₀ (n+1)) τ = h₀ + ∫₀^τ Feps (slice (iter … h₀ n) s) ds` lies again in the
-ball, on the whole horizon `[0,δ]`, with the *same* ball radius `R` and the class radius `2 C₀`.
-
-This module proves exactly that, for the class of data the local step has, **and** the two metric
-clauses (`EpsMem α h₀` and `EpsSq α h₀ ≤ R`) of the datum, i.e. it is the propositional skeleton of
-the `hkeepIter`/datum half of the invariant.  The proof is a prefix induction on the Picard index
-(each level needed only up to the current one), assembling the in-tree per-clause machinery:
-
-* **`SmoothOpen`** — `EpsEngine.smoothOpen_iter_succ_XBall_prefix` (the lead's Fubini/mollified-form
-  ruling), with the two inputs `hEq`/`hFint` produced internally by `IterContMeas` and
-  `EpsSq_iter_sub_sq_le`;
-* **`HkMem α 4`** — `EpsEngine.HkMem_iter_succ_of_data` with the per-curve `RHSData` supplied by
-  `EpsEngine.exists_RHSData_feps_noTraces`;
-* **the metric clauses** `EpsMem`/`EpsSq` — `EpsEngine.EpsMem_EpsSq_add_intervalIntegral_le`, whose
-  increment bound is `VolterraAux.EpsMem_and_EpsSq_intervalIntegral_le` along the curve (the a.e.
-  `epsL2`-bound comes from the *size half* of the gate `EpsLocalPStar.ConjOneSq`);
-* **`ClassC α (Pz (J_ε ·))`** — `ThetaFromEps.classC_Pz_Jeps_of_epsMem` (the lead's ruling of
-  2026-10-12: the uniform-flatness residual is free from `EpsMem`), with the last residual `fsm`
-  supplied by `contDiffOn_fstar_PzJeps` below (the angular moment of the *mollifier*, whose
-  smoothness in the radial variable comes from pushing the derivatives onto the compactly
-  supported kernel: `XBallIterExistsAux.FstarJepsSmooth`);
-* **the ball clause** `Xn α (Pz (J_ε ·)) ≤ 2 C₀ α²` — `EpsEngine.exists_Xn_PzJeps_sub_le_sqrt_EpsSq`
-  (the one-step transfer in the scheme's energy) from the datum's `Xn α (Pz (J_ε h₀)) ≤ C₀ α²`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.StrongEps.EpsE4Thr.XStep
-import Submission.Work.FTS.EpsEngine.H4Feps
-import Submission.Work.FTS.EpsEngine.SmoothOpenIterProd
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.EpsEngine.ClassCStepSlice
-import Submission.Work.FTS.EpsEngine.BallLimFam
-import Submission.Work.FTS.EpsEngine.HkeepMetric
-import Submission.Work.FTS.EpsEngine.HkMemIterAll
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsMemOfClassCJeps
-import Submission.Work.FTS.StrongEps.EpsE4Thr.XBallIterExistsAux.FstarJepsSmooth
-import Submission.Work.FTS.StrongEps.EpsE4Thr.JepsMulSinCos2Integrable
-import Submission.Work.FTS.StrongEps.PZero
-import Submission.Work.FTS.StrongEps.BumpDefs
-import Submission.Work.Elliptic.Defs
+import Submission.Work.FTS.EpsEngine.LocalStepXBall
 import Submission.Work.FTS.EpsEngine.ThetaFromEps
-import Submission.Work.FTS.EpsEngine.IterContMeas
-import Submission.Work.FTS.EpsEngine.HkMem_iter_succ
-import Submission.Work.FTS.EpsEngine.RHSDataFepsNoTraces
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsRHSPLipX_Sq
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le_Sq
-import Submission.Work.FTS.EpsEngine.EpsClass
+import Submission.Work.FTS.RegExportIface.Producers
+import Submission.Work.FTS.StrongEps.E5G.ExistsLimG_assembly
+import Submission.Work.FTS.StrongEps.EpsE4Thr.Leaves.FlowBits.hkSqFepsSub_le
+import Submission.Work.FTS.StrongEps.EpsE4Thr.Leaves.regFromVolterra
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsMemOfClassCJeps
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le
 import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.StrongLWP.Basic
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.bump_mixed_EpsSq_le
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_RegExport.RXVP.NoHdat.velPkgEasy_noHdat
+import Submission.Work.FTS_RegExport.RXVP.velPkg_proved
+import Submission.Work.FTS_RegExport.RXVP3.velPkgOpen_of_vopLower
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

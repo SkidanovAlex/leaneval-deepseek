@@ -1,19 +1,17 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.FTS.StrongPersist.N6.PwOpen6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.midSlotSupLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.qDzLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.tracePi4_six
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.cs_sqrt_int
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1fiveAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1fiveCore
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1fiveArith
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.xProdIntLe
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.zProdIntLe
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.sigmaDivisibility
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.qDzLe
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
+import Submission.Work.FTS.StrongPersist.H6Row6Gam.b1gRad
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

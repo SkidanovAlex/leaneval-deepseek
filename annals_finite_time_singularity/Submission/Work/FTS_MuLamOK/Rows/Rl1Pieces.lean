@@ -1,35 +1,13 @@
-/-
-# `Submission/Work/FTS_MuLamOK/Rows/Rl1Pieces.lean` — the twenty per-piece `Fa`-bounds of the
-open-class `rl1` estimate, against the tight envelope
-
-`∀ k : Fin 20, Fa (pv α f Φs Ξg k) ≤ K·Env α f` under `SmoothOpen f`, `HkMem α 4 f`,
-`StarPkgo α Cs Φs`, `EllPkgGo α Ce f Ξg`, with a single `K` depending only on `Ce` and `Cs`.
-
-The twenty pieces are grouped as
-
-* `N₁^{gg}, N₂^{gg}, N₃^{gg}` — the delivered row block `GgRowsEnv`;
-* `N₁^{gs}, N₂^{gs}, N₃^{gs}` — the tight primed rows `Rl1.row1gs`, `Rl1.gsRow2`, `Rl1.gsRow3`
-  (`α^{1/2}·|f|_{ℋ⁴} ≤ Env α f`);
-* `N₁^{sg}, N₂^{sg}, N₃^{sg}` — `SgRowsEnv`;
-* `N₁^{ss} … N₅^{ss}` — `SsRowsEnv`;
-* `N₄^{gg}, N₅^{gg}` — `RowMuAux.gg_fk_open_rows`;
-* `N₄^{gs}, N₅^{gs}` — `RowMuAux.gs_open_rows`;
-* `N₄^{sg}, N₅^{sg}` — `RowMuAux.sg_fk_open_rows`.
-
-All the pieces whose row lemma is directly in `Env`-form are handled by the conversion
-`conv`, the three `gs`-rows by `convgs` (`α^{1/2}·X = √α·X ≤ Env α f`); the order of the
-`Fin 20`-cases is the order of the definition `rl1Tools.pv`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_MuLamOK.Rows.GgRowsEnv
+import Submission.Work.FTS.StrongPersist.L3Rhs.N0gLocal
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsRadAux.aestronglyMeasurable_slotSum
 import Submission.Work.FTS_MuLamOK.Rows.SgRowsEnv
-import Submission.Work.FTS_MuLamOK.Rows.SsRowsEnv
-import Submission.Work.FTS.NonlinRows.Rl1.gsBounds
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.gs_open_rows
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.sg_fk_open_rows
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.fk_open
+import Submission.Work.FTS_MuLipC.RowN.PvAesmOpen
+import Submission.Work.FTS_RegExport.RX0.sup2_extG_ext_hIS
+import Submission.Work.FTS_RegExport.RXR5L.L12fAux.C1Jet_L12f_of_support
+import Submission.Work.FTS_RegExport.RXT.st1_fb_theta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

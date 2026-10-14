@@ -1,12 +1,12 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.Lop_iter_mul
-import Submission.Work.FTS.EllipticEst.ThetaPoincareDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.DthIter_mul
-import Submission.Work.FTS.LocData.DthIter_mul_smoothQuad
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

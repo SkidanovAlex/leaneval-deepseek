@@ -1,15 +1,14 @@
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsConv
-import Submission.Work.FTS.StrongEps.EpsMem
-import Submission.Work.FTS.StrongEps.EpsLimitDefs
-import Submission.Work.FTS.StrongEps.E5Law
-import Submission.Work.FTS.StrongEps.E5Aux2.MuHGlue
-import Submission.Work.FTS.StrongEps.E5Aux2.MuHDens
-import Submission.Work.FTS.StrongEps.E5Aux2.prof_cont
+import Submission.Work.FTS.StrongEps.E5Aux2.l12Transport_JfamP_tendsto
 import Submission.Work.FTS.StrongEps.E5Aux2.prof_pt_tendsto
-import Submission.Work.FTS.StrongEps.E5Aux2.L12_Ftau_marginal
+import Submission.Work.FTS.StrongEps.EpsHbdd
+import Submission.Work.FTS.StrongEps.EpsLimitDefs
+import Submission.Work.FTS.StrongEps.EpsMem
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXVP.thLip
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

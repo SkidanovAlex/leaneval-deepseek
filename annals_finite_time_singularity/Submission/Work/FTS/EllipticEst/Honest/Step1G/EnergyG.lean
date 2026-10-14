@@ -1,8 +1,78 @@
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.SmoothTransition
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.StraightDefs
+import Mathlib.Order.CompletePartialOrder
+import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeCutEnergyV2
 import Submission.Work.FTS.EllipticEst.Honest.HR2.HonToAe
 import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeEnergyExpl
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.interpol_trunc_defs
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocDataExt.Defs
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.AeProof.AeEnergyExpl =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+noncomputable section
+open scoped Real Topology BigOperators ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+
+namespace Work.FTS.EllipticEst.H2W.AeProof
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+end Work.FTS.EllipticEst.H2W.AeProof
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.Step1G.EnergyG =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -49,18 +119,6 @@ the one remaining analytic crux, handled by a `C^∞` cut-off with a controlled 
 the a.e. left-endpoint vanishing and the slice Lipschitz bound).
 -/
 
-theorem EnergyG : ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), Work.FTS.EllipticEst.Honest.Hon α F Ψ →
-      ENNReal.ofReal (α ^ 2) * (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
-          * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz Ψ z θ) ^ 2)))
-        + (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
-          * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)))
-      ≤ ENNReal.ofReal (13 / 2 + (3 * α ^ 2 + (3 / 2) * α * (5 + α)))
-          * (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
-            * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2)))
-        + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 F) := by
-  intro α F Ψ h
-  obtain ⟨hC, hL0, hLπ⟩ := Work.FTS.EllipticEst.Honest.HR2.hon_ae_hyps h
-  exact Work.FTS.EllipticEst.H2W.AeProof.AeEnergyExpl α Ψ F
-    (Work.FTS.EllipticEst.Honest.HR2.hon_to_ae h) hC hL0 hLπ
 
 end Work.FTS.EllipticEst.Honest.Step1G
+end

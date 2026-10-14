@@ -1,31 +1,9 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.Decay.decay_of_hkMem0_jetBound`
-
-`Work.Spaces.HkMem α 0 Ψ` is the honest `ℋ⁰`-membership: the weighted integrand
-`(Ψ·w/sin(2θ)^{η/2})²` is integrable on the domain `[0,∞) × [0,π/2]`.  Together with the
-pointwise jet bounds `|Ψ|`, `|D_zΨ|`, `|D_θΨ| ≤ C` on the open quadrant (and the closed-box
-regularity `BoxReg`, which makes the slices differentiable), it forces the *pointwise* decay
-`Ψ z θ → 0` as `z → +∞` at every interior angle `θ ∈ (0,π/2)`.
-
-The proof is a contradiction argument.  If `|Ψ z θ₀| ≥ ε` happened infinitely often, then — since
-`|z ∂_zΨ| ≤ C` forbids a tall spike of width `o(z)` — the weighted angular energy
-`∫_θ HkIntegrand α 0 Ψ z' θ` would stay `≥ c > 0` on every window `[z, z+1]`, and
-`∫_t HkIntegrand α 0 Ψ` would be non-integrable in `t`, contradicting `HkMem`.
-
-The localised lower bound on the angular energy is
-`Work.FTS.EllLimOK.Decay.local_energy_lower_bound`; the Lipschitz bounds on the slices and the
-collapse of the `k = 0` integrand are in `Work.FTS.EllLimOK.Decay.DecayTools`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
-import Submission.Work.FTS_EllLimOK.BoxReg
-import Submission.Work.FTS_EllLimOK.Defs3
 import Submission.Work.FTS_EllLimOK.Decay.DecayTools
-import Submission.Work.FTS_EllLimOK.Decay.local_energy_lower_bound
+import Submission.Work.FTS_EllLimOK.Defs3
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,19 +1,17 @@
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.Deriv
-import Submission.Work.FTS.PressureOn.Connect.hasFDerivAt_uncurry_of_partials_corrected
-import Submission.Work.FTS.PressureOn.Connect.contDiffWithinAt_one_of_hasFDerivAt
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Basic
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Grad
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotOnTime
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotTDeriv
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtData
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.lambExt_timeDeriv_strip
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.continuousOn_timeDeriv_strip
+import Submission.Work.FTS.PressureOn.Connect.ctu_aux.PotTDeriv
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS_FinalLeaves.profDerivData_min_proved
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

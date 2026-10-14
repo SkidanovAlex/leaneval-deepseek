@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Complex.Trigonometric
+import Submission.Work.Spaces.SmoothCompact_HkMem
 import Submission.Work.Stability.Defs
-import Submission.Work.Construction.Equation
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -2,13 +2,13 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.Defs
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.IP4Prep
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.IP4Slots
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.IP4Leaf
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logW_fderiv_integral_le
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.slot_transfer_deriv
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logPlane_transfer_deriv
-import Submission.Work.FTS.StrongEps.EpsE4Thr.WordCongr
+import Submission.Work.FTS.StrongEps.EpsE4Thr.L12JepsAux.Basic
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS_LocDatum3a.Basic
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

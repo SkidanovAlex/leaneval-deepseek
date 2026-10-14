@@ -1,12 +1,148 @@
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchCaseLt
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchCaseGe
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchCaseHard
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMul6Cont
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12FieldsAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+
+/-- `SmoothOpen` is closed under negation. -/
+theorem so_neg {g : ℝ → ℝ → ℝ}
+    (hg : Work.FTS.EllipticEst.SmoothOpen g) :
+    Work.FTS.EllipticEst.SmoothOpen (fun z θ => - g z θ) := by
+  rw [Work.FTS.EllipticEst.SmoothOpen] at hg ⊢
+  have h : Function.uncurry (fun z θ => - g z θ) = - Function.uncurry g := by
+    funext p; rcases p with ⟨z, θ⟩; rfl
+  rw [h]
+  exact hg.neg
+
+
+
+end Work.FTS.StrongPersist.H6Pair6Aux
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.SepMem6Local =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- Integrability on `Iθ` of `sin(2θ)^p` for every `p > -1` (not just `p ≤ 0`). -/
+theorem integrableOn_sin_two_rpow {p : ℝ} (hp : -1 < p) :
+    MeasureTheory.IntegrableOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ p) Work.Spaces.Iθ := by
+  by_cases h : p ≤ 0
+  · exact (Work.Spaces.sin_two_rpow p hp h).1
+  · push_neg at h
+    have hne : MeasureTheory.volume Work.Spaces.Iθ ≠ ⊤ := by
+      rw [show Work.Spaces.Iθ = Set.Icc 0 (Real.pi / 2) from rfl, Real.volume_Icc]
+      exact ENNReal.ofReal_ne_top
+    refine MeasureTheory.Integrable.mono'
+      (integrableOn_const (s := Work.Spaces.Iθ) (C := (1 : ℝ)) hne)
+      (((Real.measurable_sin.comp (measurable_const.mul measurable_id)).pow_const p)
+        |>.aestronglyMeasurable) ?_
+    refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun θ hθ => ?_)
+    have h0 : 0 ≤ Real.sin (2 * θ) :=
+      Real.sin_nonneg_of_mem_Icc ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩
+    rw [Real.norm_of_nonneg (Real.rpow_nonneg h0 p)]
+    exact Real.rpow_le_one h0 (Real.sin_le_one _) h.le
+
+/-- `D_z`-iterates of a radial function: `DzIter j (fun z _ => ρ z) z θ = DzdIter j ρ z`. -/
+theorem DzIter_z_only (ρ : ℝ → ℝ) (j : ℕ) (z θ : ℝ) :
+    Work.Spaces.DzIter j (fun z _ => ρ z) z θ = Work.Elliptic.DzdIter j ρ z := by
+  induction j generalizing z with
+  | zero => rfl
+  | succ n ih =>
+      rw [Work.Spaces.DzIter_succ, Work.Elliptic.DzdIter_succ]
+      show z * deriv (fun z' => Work.Spaces.DzIter n (fun z _ => ρ z) z' θ) z
+        = z * deriv (Work.Elliptic.DzdIter n ρ) z
+      have h : (fun z' => Work.Spaces.DzIter n (fun z _ => ρ z) z' θ)
+          = fun z' => Work.Elliptic.DzdIter n ρ z' := by
+        funext z'; exact ih z'
+      rw [h]
+
+
+end Work.FTS.StrongPersist.H6Pair6Aux
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3RowGroup =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+
+end Work.FTS.StrongPersist.H6Pair6Aux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchCoefCase =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -95,3 +231,4 @@ theorem mismatchCoefCase : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc (0 : ℝ) 1
         (le_trans (le_max_left C2 C3) (le_max_right C1 (max C2 C3))))⟩
 
 end Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux
+end

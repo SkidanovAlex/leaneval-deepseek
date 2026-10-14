@@ -1,49 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Continuity of the mode coefficients `cmode m F` on `(0,∞)`
-
-`Work.FTS.PhiStar.Series.cmode m F z` is the `e_m`-coefficient of the angular slice `F z ·`
-in the self-adjoint weight `cos θ dθ`:
-
-  `cmode m F z = (∫_θ F z θ · e_m θ · cos θ) / (∫_θ e_m θ² cos θ)`,
-
-and the aim of this file is `Work.FTS.PhiStar.Honesty.continuousOn_cmode_of_hkMem_one`: the
-continuity of `z ↦ cmode m F z` on `(0,∞)` from the *open-quadrant* smoothness `SmoothOpen F`
-and the honest weighted first-order membership `HkMem α 1 F`.
-
-**Why this is not immediate.**  `SmoothOpen F` only controls `F` on the *open* quadrant, so no
-uniform domination of the angular slices is available; and `HkMem α 1 F` is an *integrated*
-condition (`z ↦ ∫_θ HkIntegrand α 1 F z θ` is `L¹`), which by itself gives no pointwise bound
-on a slice.  The argument below converts the integrated bound into a *slicewise* bound and then
-into a bound on the *difference quotients*:
-
-* the fundamental theorem of calculus in `z` gives, for `θ ∈ (0,π/2)` and `x, y > 0`,
-  `|F x θ - F y θ| ≤ ∫_{uIoc y x} |∂_z F t θ| dt`;
-* the `θ`-integral of `|∂_z F t ·|` is controlled by `∫_θ HkIntegrand α 1 F t θ` through
-  AM–GM (`2|a|s^{η/2} ≤ a²s^{-η} + s^{η}`) and the fact that `w(t) ≥ 1`;
-* the resulting double integral is exchanged by Fubini/Tonelli
-  (`Work.Spaces.integrable_prod_of_iterated`), after which the shrinking `z`-interval makes the
-  bound tend to `0` by continuity of the primitive of an `L¹` function.
-
-The proof rests on the four lemmas requested in parallel (`slice_abs_integrable`,
-`slice_abs_integral_le`, `aesm_uncurry_abs_pzF`, `slice_abs_diff_le_uIoc`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.integrable_prod_of_iterated
 import Submission.Work.FTS.PhiStar.Gegenbauer.FamNormValue
-import Submission.Work.FTS.PhiStar.Honesty.exists_bound_eFam_mul_cos
-import Submission.Work.FTS.PhiStar.Honesty.slice_abs_integrable
-import Submission.Work.FTS.PhiStar.Honesty.aesm_uncurry_abs_pzF
-import Submission.Work.FTS.PhiStar.Honesty.slice_abs_diff_le_uIoc
-import Submission.Work.FTS.PhiStar.Honesty.slice_abs_integral_le
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

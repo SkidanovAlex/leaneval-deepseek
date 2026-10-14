@@ -4,22 +4,20 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Order.Interval.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.Elliptic.Gsing_ode
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.EllipticEst.Gsing_ode_of_sol
-import Submission.Work.FTS.EllipticEst.Gsing_deriv_rel
-import Submission.Work.FTS.EllipticEst.HasDerivAt_L12_of_Fstar_facts
+import Submission.Work.FTS.EllipticEst.H2W.Ae.TruncIdentAe
 import Submission.Work.FTS.EllipticEst.HkNorm_Dz_le_open
-import Submission.Work.FTS.EllipticEst.Cert.FstarDivIntegrableOfSolHk
-import Submission.Work.FTS.EllipticEst.Cert.Jfun_hasDerivAt_of_Fstar
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_Gbar_sin
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_Fstar_sin
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Decay.hasDerivAt_bsK
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -48,18 +46,6 @@ stated for `SmoothOpen` (i.e. `C^∞` *on the open quadrant*), which is what the
 (`Work.FTS.Galerkin.Hilbert.HkMem_add`) needs the much stronger `SmoothNbhd`
 (`C^ω` on a neighbourhood of the closed quadrant). -/
 
-/-- A function which is `C^ω` on a neighbourhood of the closed quadrant is `C^∞` on the open
-quadrant. -/
-theorem SmoothNbhd_smoothOpen (h : Work.Spaces.SmoothNbhd Ψ) : SmoothOpen Ψ := by
-  change ContDiffOn ℝ Work.Stability.smoothOrder (Function.uncurry Ψ) Q0
-  have hsub : Q0 ⊆ Set.Ioi (-1 : ℝ) ×ˢ Set.Ioo (-1) (π / 2 + 1) := by
-    intro p hp
-    obtain ⟨hz, hθ0, hθ1⟩ := mem_Q0.mp (show (p.1, p.2) ∈ Q0 from hp)
-    refine ⟨?_, ?_, ?_⟩
-    · show (-1 : ℝ) < p.1; linarith
-    · show (-1 : ℝ) < p.2; linarith
-    · show p.2 < π / 2 + 1; linarith [Real.pi_pos]
-  exact (h.mono hsub).of_le le_top
 
 /-- The product of a radial function which is `C^∞` on `(0,∞)` with a function of `θ` which is
 `C^∞` everywhere is `C^∞` on the open quadrant. -/
@@ -305,68 +291,12 @@ moment `F_*` and of the singular term `Gsing`, the two relations they satisfy, t
 `D_zΨ ∈ ℋ^k` (the weighted Hardy/AM-GM estimate), and the `ℋ^k`-membership of `F_*·sin 2θ`
 and of `Ḡ·sin 2θ`. -/
 
-/-- The angular moment `F_*(F)` is `C^∞` on `(0,∞)` for the data of `EllHyp`. -/
-theorem Fstar_contDiffOn_Ioi_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Fstar F) (Set.Ioi 0) :=
-  (Work.FTS.EllipticEst.Gsing_ode_of_sol α k F Ψ hα (by linarith) hHyp.smoothNbhd hHyp.sol
-    hHyp.memF).1
 
-/-- The singular term `Gsing α F` is `C^∞` on `(0,∞)` for the data of `EllHyp`. -/
-theorem Gsing_contDiffOn_Ioi_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Gsing α F) (Set.Ioi 0) :=
-  (Work.FTS.EllipticEst.Gsing_ode_of_sol α k F Ψ hα (by linarith) hHyp.smoothNbhd hHyp.sol
-    hHyp.memF).2.1
 
-/-- The first-order relation of the singular term: `α z ∂_z Gsing = -5 Ḡ`. -/
-theorem Gsing_first_order_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    ∀ z ∈ Set.Ioi (0 : ℝ),
-      α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z := by
-  have hFsm := Fstar_contDiffOn_Ioi_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hFint : MeasureTheory.IntegrableOn (fun r : ℝ => Work.Elliptic.Fstar F r / r)
-      (Set.Ioi 0) :=
-    Cert.FstarDivIntegrableOfSolHk α k F Ψ hα hHyp.smoothNbhd hHyp.sol hHyp.memF
-  have hL12 := Work.FTS.EllipticEst.HasDerivAt_L12_of_Fstar_facts F hFsm hFint
-  have hFc : ∀ z ∈ Set.Ioi (0 : ℝ),
-      HasDerivAt (Work.Elliptic.Fstar F) (deriv (Work.Elliptic.Fstar F) z) z := by
-    intro z hz
-    exact (((hFsm 1).contDiffAt (isOpen_Ioi.mem_nhds hz)).differentiableAt
-      (by norm_num)).hasDerivAt
-  have hJ := Cert.Jfun_hasDerivAt_of_Fstar α F hFsm hFint hα (by linarith)
-  exact Work.FTS.EllipticEst.Gsing_deriv_rel α F hα hL12 hFc hJ
 
-/-- The second-order ODE of the singular term:
-`α²z²G'' + α(5+α)zG' = (15/4)F_*`. -/
-theorem Gsing_second_order_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    ∀ z ∈ Set.Ioi (0 : ℝ),
-      α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α F) z') z
-        + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α F) z
-      = (15 / 4) * Work.Elliptic.Fstar F z :=
-  (Work.FTS.EllipticEst.Gsing_ode_of_sol α k F Ψ hα (by linarith) hHyp.smoothNbhd hHyp.sol
-    hHyp.memF).2.2
 
-/-- `D_z Ψ ∈ ℋ^k` for the data of `EllHyp` (the weighted radial Hardy/AM-GM estimate). -/
-theorem HkMem_Dz_psi_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    Work.Spaces.HkMem α k (Work.Spaces.Dz Ψ) := by
-  obtain ⟨C, hC, h⟩ := Work.FTS.EllipticEst.HkNorm_Dz_le_open k
-  exact (h α Ψ hα (by linarith)
-    (fun n => (SmoothNbhd_smoothOpen hHyp.smoothNbhd).forall n) hHyp.memPsi hHyp.memZ2).1
 
-/-- `F_*·sin 2θ ∈ ℋ^k` for the data of `EllHyp`. -/
-theorem HkMem_Fstar_sin_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    Work.Spaces.HkMem α k (fun z θ => Work.Elliptic.Fstar F z * Real.sin (2 * θ)) :=
-  Cert.HkMem_Fstar_sin α k F Ψ hα hα4 hHyp
 
-/-- `Ḡ·sin 2θ ∈ ℋ^k` for the data of `EllHyp` (Lemma `HardyInequality4` of the paper). -/
-theorem HkMem_Gbar_sin_of_EllHyp (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hα4 : α ≤ 1 / 4) (hHyp : EllHyp α k F Ψ) :
-    Work.Spaces.HkMem α k (fun z θ => Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) :=
-  Cert.HkMem_Gbar_sin α k F Ψ hα hα4 hHyp
 
 /-! ## 2b. More `SmoothOpen` closure properties -/
 
@@ -409,127 +339,15 @@ theorem deriv_mul_const' (c : ℝ) (g : ℝ → ℝ) (z : ℝ) :
   rw [hfun, deriv_const_mul_field]
   ring
 
-/-- `∂_z` of a radial multiple of `sin 2θ`: `∂_z (g(z)·sin 2θ) = ∂_z g·sin 2θ`. -/
-theorem pz_radialSin (g : ℝ → ℝ) :
-    Work.Spaces.pz (fun z θ => g z * Real.sin (2 * θ))
-      = fun z θ => deriv g z * Real.sin (2 * θ) := by
-  funext z θ
-  simp only [Work.Spaces.pz]
-  exact deriv_mul_const' (Real.sin (2 * θ)) g z
 
-/-- `D_z (g(z)·sin 2θ) = (z ∂_zg)·sin 2θ`, as a function of `(z,θ)`. -/
-theorem Dz_radialSin (g : ℝ → ℝ) :
-    Work.Spaces.Dz (fun z θ => g z * Real.sin (2 * θ))
-      = fun z θ => z * deriv g z * Real.sin (2 * θ) := by
-  funext z θ
-  simp only [Work.Spaces.Dz, pz_radialSin]
-  ring
 
-/-- `D_z²(g(z)·sin 2θ) = (z ∂_zg + z²∂_zzg)·sin 2θ`. -/
-theorem DzIter2_radialSin (g : ℝ → ℝ) {z θ : ℝ}
-    (hd : DifferentiableAt ℝ (fun z' => deriv g z') z) :
-    Work.Spaces.DzIter 2 (fun z θ => g z * Real.sin (2 * θ)) z θ
-      = (z * deriv g z + z ^ 2 * deriv (fun z' => deriv g z') z) * Real.sin (2 * θ) := by
-  have hfun : Work.Spaces.Dz (fun z θ => g z * Real.sin (2 * θ))
-      = fun z θ => z * deriv g z * Real.sin (2 * θ) := Dz_radialSin g
-  rw [Work.Spaces.DzIter_succ, Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero, hfun]
-  have hderiv : deriv (fun z' : ℝ => z' * deriv g z' * Real.sin (2 * θ)) z
-      = (deriv g z + z * deriv (fun z' => deriv g z') z) * Real.sin (2 * θ) := by
-    have hA : HasDerivAt (fun z' : ℝ => deriv g z') (deriv (fun z' => deriv g z') z) z :=
-      hd.hasDerivAt
-    have hB : HasDerivAt (fun z' : ℝ => z' * deriv g z')
-        (1 * deriv g z + z * deriv (fun z' => deriv g z') z) z :=
-      (hasDerivAt_id z).mul hA
-    have hC := hB.mul_const (Real.sin (2 * θ))
-    rw [hC.deriv]
-    ring
-  simp only [Work.Spaces.Dz, Work.Spaces.pz]
-  rw [hderiv]
-  ring
 
 /-! ## 4. The identities expressing the elliptic combination -/
 
-/-- **The identity for `α²D_z²` of the radial multiple.**  Writing `G = Gsing α F`, the ODE
-`α²z²G'' + α(5+α)zG' = (15/4)F_*` and the first-order relation `α z G' = -5Ḡ` give
 
-  `α²D_z²(G(z)·sin 2θ) = (15/4)·(sin 2θ · F_*) + 25·(Ḡ · sin 2θ)`. -/
-theorem alphaDzIter2_GsingSin_eq (α : ℝ) (F : ℝ → ℝ → ℝ) (hα : 0 < α) {z θ : ℝ}
-    (hd : DifferentiableAt ℝ (fun z' => deriv (Work.Elliptic.Gsing α F) z') z)
-    (hode : α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α F) z') z
-        + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α F) z
-      = (15 / 4) * Work.Elliptic.Fstar F z)
-    (hrel : α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z) :
-    α ^ 2 * Work.Spaces.DzIter 2
-        (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-      = (15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)
-        + 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) := by
-  rw [DzIter2_radialSin (Work.Elliptic.Gsing α F) hd]
-  have hX : α ^ 2 * (z * deriv (Work.Elliptic.Gsing α F) z
-        + z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α F) z') z)
-      = (15 / 4) * Work.Elliptic.Fstar F z + 25 * Work.Elliptic.Gbar α F z := by
-    nlinarith [hode, hrel]
-  linear_combination (Real.sin (2 * θ)) * hX
 
-/-- **The identity for `5αD_z` of the radial multiple.**  The first-order relation
-`α z G' = -5Ḡ` gives `5αD_z(G(z)·sin 2θ) = -25·(Ḡ·sin 2θ)`. -/
-theorem alphaDz_GsingSin_eq (α : ℝ) (F : ℝ → ℝ → ℝ) {z θ : ℝ}
-    (hrel : α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z) :
-    5 * α * Work.Spaces.Dz
-        (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-      = -25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) := by
-  rw [Dz_radialSin]
-  linear_combination (5 * Real.sin (2 * θ)) * hrel
 
-/-- **The identity for `α²D_z²` of the straightened solution `Ψ̂ = Ψ + Gsing α F·sin 2θ`.** -/
-theorem alphaDzIter2_straight_eq (α : ℝ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α) {z θ : ℝ}
-    (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2))
-    (hΨ : SmoothOpen Ψ)
-    (hG : SmoothOpen (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)))
-    (hd : DifferentiableAt ℝ (fun z' => deriv (Work.Elliptic.Gsing α F) z') z)
-    (hode : α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α F) z') z
-        + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α F) z
-      = (15 / 4) * Work.Elliptic.Fstar F z)
-    (hrel : α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z) :
-    α ^ 2 * Work.Spaces.DzIter 2
-        (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-      = α ^ 2 * Work.Spaces.DzIter 2 Ψ z θ
-        + ((15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)
-          + 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))) := by
-  rw [SmoothOpen.DzIter_add hΨ hG 2 z θ hz hθ.1 hθ.2, mul_add,
-    alphaDzIter2_GsingSin_eq α F hα hd hode hrel]
 
-/-- **The identity for `5αD_z` of the straightened solution.** -/
-theorem alphaDz_straight_eq (α : ℝ) (F Ψ : ℝ → ℝ → ℝ) {z θ : ℝ}
-    (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2))
-    (hΨ : SmoothOpen Ψ)
-    (hG : SmoothOpen (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)))
-    (hrel : α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z) :
-    5 * α * Work.Spaces.Dz
-        (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-      = 5 * α * Work.Spaces.Dz Ψ z θ
-        - 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) := by
-  rw [show Work.Spaces.Dz (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ))
-      = Work.Spaces.DzIter 1 (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ))
-      from rfl,
-    SmoothOpen.DzIter_add hΨ hG 1 z θ hz hθ.1 hθ.2, mul_add]
-  rw [show Work.Spaces.DzIter 1 (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ))
-      = Work.Spaces.Dz (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ))
-      from rfl]
-  rw [show Work.Spaces.DzIter 1 Ψ = Work.Spaces.Dz Ψ from rfl]
-  rw [alphaDz_GsingSin_eq α F hrel]
-  ring
-
-/-- `D_z²Ψ = z²∂_zzΨ + D_zΨ` on the open quadrant. -/
-theorem DzIter2_eq_zsq_pzIter2_add_Dz (Ψ : ℝ → ℝ → ℝ) (hΨ : SmoothOpen Ψ) {z θ : ℝ}
-    (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
-    Work.Spaces.DzIter 2 Ψ z θ
-      = z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ + Work.Spaces.Dz Ψ z θ := by
-  have hd1 : DifferentiableAt ℝ (fun z' => Ψ z' θ) z :=
-    (hΨ.hasDerivAt_slice hθ hz).differentiableAt
-  have hd2 : DifferentiableAt ℝ (fun z' => Work.Spaces.pz Ψ z' θ) z :=
-    (hΨ.pz.hasDerivAt_slice hθ hz).differentiableAt
-  have h := zsq_pzIter2_eq Ψ hd1 hd2
-  linarith [h]
 
 /-- The product of a radial function which is `C^∞` on `(0,∞)` with a function of `θ` which is
 `C^∞` everywhere, in the opposite order. -/
@@ -541,175 +359,6 @@ theorem SmoothOpen.sep_mul_swap {g χ : ℝ → ℝ}
 
 /-! ## 2c. The smoothness of `Ḡ·sin 2θ`, derived from the first-order relation -/
 
-/-- **`Ḡ·sin 2θ` is `C^∞` on the open quadrant** for the data of `EllHyp`.  This is *derived*
-from the first-order relation `α z ∂_zG = -5Ḡ` (the child `Gsing` need not be smooth): on the
-open quadrant `25·(Ḡ·sin 2θ) = 5α D_zΨ - 5α D_z Ψ̂` with `Ψ̂ = Ψ + G·sin 2θ` is a difference of
-two `SmoothOpen` functions. -/
-theorem SmoothOpen_GbarSin (α : ℝ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α)
-    (hgs : ∀ z ∈ Set.Ioi (0 : ℝ),
-      α * z * deriv (Work.Elliptic.Gsing α F) z = -5 * Work.Elliptic.Gbar α F z)
-    (hGsm : ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Gsing α F) (Set.Ioi 0))
-    (hΨso : SmoothOpen Ψ)
-    (hSso : SmoothOpen (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ))) :
-    SmoothOpen (fun z θ => Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) := by
-  have hsin2 : ContDiff ℝ ⊤ (fun θ : ℝ => Real.sin (2 * θ)) := by fun_prop
-  have hGso : SmoothOpen (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) :=
-    SmoothOpen.sep_mul hGsm hsin2
-  have h25 : SmoothOpen (fun z θ => 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))) := by
-    refine (smoothOpen_sub (hΨso.Dz.const_mul' (5 * α))
-      (hSso.Dz.const_mul' (5 * α))).congr ?_
-    intro z θ hz hθ hlt
-    have h := alphaDz_straight_eq α F Ψ hz ⟨hθ, hlt⟩ hΨso hGso (hgs z hz)
-    linarith [h]
-  have h1 : SmoothOpen (fun z θ => (1 / 25) * (25 * (Work.Elliptic.Gbar α F z
-      * Real.sin (2 * θ)))) := h25.const_mul' (1 / 25)
-  exact h1.congr fun z θ _ _ _ => by ring
 
-theorem EllHyp_certificates (α : ℝ) (k : ℕ) (F Ψ : ℝ → ℝ → ℝ) (hα : 0 < α) (hα4 : α ≤ 1 / 4)
-    (hHyp : Work.FTS.EllipticEst.EllHyp α k F Ψ) :
-    (∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry (Work.Spaces.DzIter 2
-        (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ))))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2))) ∧
-      (∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry (Work.Spaces.Dz
-        (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ))))
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2))) ∧
-      (∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2))) ∧
-      (∀ n : ℕ, ContDiffOn ℝ n
-        (Function.uncurry (fun z θ => Real.sin (2 * θ) * Work.Elliptic.Fstar F z))
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2))) ∧
-      Work.Spaces.HkMem α k (fun z θ => α ^ 2 * Work.Spaces.DzIter 2
-          (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ) ∧
-      Work.Spaces.HkMem α k (fun z θ => 5 * α * Work.Spaces.Dz
-          (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ) ∧
-      Work.Spaces.HkMem α k (fun z θ => -(α ^ 2) * (z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) ∧
-      Work.Spaces.HkMem α k
-        (fun z θ => (3 * α / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) ∧
-      Work.Spaces.HkMem α k (fun z θ => α ^ 2 * Work.Spaces.DzIter 2
-            (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-          + 5 * α * Work.Spaces.Dz
-            (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ) ∧
-      Work.Spaces.HkMem α k (fun z θ => -(α ^ 2) * (z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + (3 * α / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) := by
-  -- the analytic inputs
-  have hFsm : ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Fstar F) (Set.Ioi 0) :=
-    Fstar_contDiffOn_Ioi_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hGsm : ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Gsing α F) (Set.Ioi 0) :=
-    Gsing_contDiffOn_Ioi_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hrel := Gsing_first_order_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hode := Gsing_second_order_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hsin2 : ContDiff ℝ ⊤ (fun θ : ℝ => Real.sin (2 * θ)) := by fun_prop
-  -- smoothness of the pieces
-  have hΨso : SmoothOpen Ψ := SmoothNbhd_smoothOpen hHyp.smoothNbhd
-  have hAso : SmoothOpen (fun z θ => Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) :=
-    SmoothOpen.sep_mul hGsm hsin2
-  have hSso : SmoothOpen (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) :=
-    smoothOpen_add hΨso hAso
-  have hFsso : SmoothOpen (fun z θ => Work.Elliptic.Fstar F z * Real.sin (2 * θ)) :=
-    SmoothOpen.sep_mul hFsm hsin2
-  have hGsinso : SmoothOpen (fun z θ => Real.sin (2 * θ) * Work.Elliptic.Fstar F z) :=
-    SmoothOpen.sep_mul_swap hFsm hsin2
-  have hGbso : SmoothOpen (fun z θ => Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) :=
-    SmoothOpen_GbarSin α F Ψ hα hrel hGsm hΨso hSso
-  have hGderiv : ∀ z ∈ Set.Ioi (0 : ℝ),
-      DifferentiableAt ℝ (fun z' => deriv (Work.Elliptic.Gsing α F) z') z := by
-    intro z hz
-    have hd : ContDiffOn ℝ (1 : WithTop ℕ∞) (deriv (Work.Elliptic.Gsing α F)) (Set.Ioi 0) :=
-      (hGsm 2).deriv_of_isOpen isOpen_Ioi (by norm_num)
-    exact (hd.differentiableOn (by norm_num)).differentiableAt (isOpen_Ioi.mem_nhds hz)
-  -- the atomic memberships
-  have hmemDz : Work.Spaces.HkMem α k (Work.Spaces.Dz Ψ) :=
-    HkMem_Dz_psi_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hmemFs : Work.Spaces.HkMem α k (fun z θ => Work.Elliptic.Fstar F z * Real.sin (2 * θ)) :=
-    HkMem_Fstar_sin_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hmemGb : Work.Spaces.HkMem α k (fun z θ => Work.Elliptic.Gbar α F z * Real.sin (2 * θ)) :=
-    HkMem_Gbar_sin_of_EllHyp α k F Ψ hα hα4 hHyp
-  have hmemDzIter2 : Work.Spaces.HkMem α k (Work.Spaces.DzIter 2 Ψ) := by
-    have hcomb : Work.Spaces.HkMem α k (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ
-        + Work.Spaces.Dz Ψ z θ) :=
-      HkMem_add_open ((hΨso.pzIter 2).zsq_mul) hΨso.Dz hHyp.memZ2 hmemDz
-    refine HkMem_agreeOnQ (hΨso.DzIter 2) ?_ hcomb
-    intro z θ hz hθ hlt
-    exact (DzIter2_eq_zsq_pzIter2_add_Dz Ψ hΨso hz ⟨hθ, hlt⟩).symm
-  -- the scaled pieces
-  have hs1 : SmoothOpen (fun z θ => α ^ 2 * Work.Spaces.DzIter 2 Ψ z θ) :=
-    (hΨso.DzIter 2).const_mul' (α ^ 2)
-  have hm1 : Work.Spaces.HkMem α k (fun z θ => α ^ 2 * Work.Spaces.DzIter 2 Ψ z θ) :=
-    Work.FTS.LocData.HkMem_const_mul α k (α ^ 2) hmemDzIter2
-  have hs2 : SmoothOpen (fun z θ => 5 * α * Work.Spaces.Dz Ψ z θ) :=
-    hΨso.Dz.const_mul' (5 * α)
-  have hm2 : Work.Spaces.HkMem α k (fun z θ => 5 * α * Work.Spaces.Dz Ψ z θ) :=
-    Work.FTS.LocData.HkMem_const_mul α k (5 * α) hmemDz
-  have hs3 : SmoothOpen (fun z θ => (15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) :=
-    hGsinso.const_mul' (15 / 4)
-  have hm3 : Work.Spaces.HkMem α k
-      (fun z θ => (15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) := by
-    have h := Work.FTS.LocData.HkMem_const_mul α k (15 / 4) hmemFs
-    rwa [show (fun z θ => (15 / 4) * (Work.Elliptic.Fstar F z * Real.sin (2 * θ)))
-        = fun z θ => (15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z) from by
-      funext z θ; ring] at h
-  have hs4 : SmoothOpen (fun z θ => 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))) :=
-    hGbso.const_mul' 25
-  have hm4 : Work.Spaces.HkMem α k
-      (fun z θ => 25 * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))) :=
-    Work.FTS.LocData.HkMem_const_mul α k 25 hmemGb
-  have hs7 : SmoothOpen (fun z θ => -(α ^ 2) * (z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) :=
-    ((hΨso.pzIter 2).zsq_mul).const_mul' (-(α ^ 2))
-  have hm7 : Work.Spaces.HkMem α k
-      (fun z θ => -(α ^ 2) * (z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) :=
-    Work.FTS.LocData.HkMem_const_mul α k (-(α ^ 2)) hHyp.memZ2
-  have hs8 : SmoothOpen
-      (fun z θ => (3 * α / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) :=
-    hGsinso.const_mul' (3 * α / 4)
-  have hm8 : Work.Spaces.HkMem α k
-      (fun z θ => (3 * α / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z)) := by
-    have h := Work.FTS.LocData.HkMem_const_mul α k (3 * α / 4) hmemFs
-    rwa [show (fun z θ => (3 * α / 4) * (Work.Elliptic.Fstar F z * Real.sin (2 * θ)))
-        = fun z θ => (3 * α / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z) from by
-      funext z θ; ring] at h
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro n
-    exact (hSso.DzIter 2).forall n
-  · intro n
-    exact (hSso.Dz).forall n
-  · intro n
-    exact ((hΨso.pzIter 2).zsq_mul).forall n
-  · intro n
-    exact hGsinso.forall n
-  · refine HkMem_agreeOnQ ((hSso.DzIter 2).const_mul' (α ^ 2)) ?_
-      (HkMem_add_open hs1 (smoothOpen_add hs3 hs4) hm1 (HkMem_add_open hs3 hs4 hm3 hm4))
-    intro z θ hz hθ hlt
-    exact (alphaDzIter2_straight_eq α F Ψ hα hz ⟨hθ, hlt⟩ hΨso hAso (hGderiv z hz)
-      (hode z hz) (hrel z hz)).symm
-  · have hmain : Work.Spaces.HkMem α k (fun z θ => 5 * α * Work.Spaces.Dz Ψ z θ
-        + (-25) * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))) :=
-      HkMem_add_open hs2 (hGbso.const_mul' (-25)) hm2
-        (Work.FTS.LocData.HkMem_const_mul α k (-25) hmemGb)
-    refine HkMem_agreeOnQ ((hSso.Dz).const_mul' (5 * α)) ?_ hmain
-    intro z θ hz hθ hlt
-    have h := alphaDz_straight_eq α F Ψ hz ⟨hθ, hlt⟩ hΨso hAso (hrel z hz)
-    show 5 * α * Work.Spaces.Dz Ψ z θ + (-25) * (Work.Elliptic.Gbar α F z * Real.sin (2 * θ))
-      = 5 * α * Work.Spaces.Dz
-          (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-    rw [h]
-    ring
-  · exact hm7
-  · exact hm8
-  · refine HkMem_agreeOnQ
-      (smoothOpen_add ((hSso.DzIter 2).const_mul' (α ^ 2)) ((hSso.Dz).const_mul' (5 * α))) ?_
-      (HkMem_add_open hs1 (smoothOpen_add hs2 hs3) hm1 (HkMem_add_open hs2 hs3 hm2 hm3))
-    intro z θ hz hθ hlt
-    have h1 := alphaDzIter2_straight_eq α F Ψ hα hz ⟨hθ, hlt⟩ hΨso hAso (hGderiv z hz)
-      (hode z hz) (hrel z hz)
-    have h2 := alphaDz_straight_eq α F Ψ hz ⟨hθ, hlt⟩ hΨso hAso (hrel z hz)
-    show α ^ 2 * Work.Spaces.DzIter 2 Ψ z θ + (5 * α * Work.Spaces.Dz Ψ z θ
-        + (15 / 4) * (Real.sin (2 * θ) * Work.Elliptic.Fstar F z))
-      = α ^ 2 * Work.Spaces.DzIter 2
-          (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-        + 5 * α * Work.Spaces.Dz
-          (fun z θ => Ψ z θ + Work.Elliptic.Gsing α F z * Real.sin (2 * θ)) z θ
-    rw [h1, h2]
-    ring
-  · exact HkMem_add_open hs7 hs8 hm7 hm8
 
 end Work.FTS.EllipticEst

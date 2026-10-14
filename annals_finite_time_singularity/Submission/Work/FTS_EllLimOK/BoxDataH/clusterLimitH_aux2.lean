@@ -3,22 +3,22 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS_EllLimOK.Assembly
 import Submission.Work.FTS_EllLimOK.BoxDataH.BoxUniform
+import Submission.Work.FTS_EllLimOK.ClosedCompact3H_of_bounds_fatou
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.Decay.decay_of_hkMem0_jetBound
+import Submission.Work.FTS_EllLimOK.Defs3
 import Submission.Work.FTS_EllLimOK.FatouH
 import Submission.Work.FTS_EllLimOK.LimExtract.limExtract_bounds10_const
-import Submission.Work.FTS_EllLimOK.LimTower_dz3
 import Submission.Work.FTS_EllLimOK.LimTower_identify3
-import Submission.Work.FTS_EllLimOK.LimDefs10
-import Submission.Work.FTS_EllLimOK.Defs3
-import Submission.Work.FTS_EllLimOK.Assembly
-import Submission.Work.FTS_EllLimOK.Decay.decay_of_hkMem0_jetBound
-import Submission.Work.FTS_EllLimOK.Fatou.HkMem_fatou_z
-import Submission.Work.FTS_EllLimOK.UniqFatou
-import Submission.Work.FTS_EllLimOK.HkMem_zero_diff
 import Submission.Work.FTS_EllLimOK.PkgJets.clusterExtract
-import Submission.Work.FTS_EllLimOK.ClosedCompact3H_of_bounds_fatou
-import Submission.Work.FTS_EllLimOK.BoxDataH.boxUniform2_of_pkgBoxH
-import Submission.Work.FTS_EllLimOK.BoxDataH.tendsto_values_on_cbox
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.UniqFatou
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.H2W.asliceMomentEq
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.SmoothStripDefs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

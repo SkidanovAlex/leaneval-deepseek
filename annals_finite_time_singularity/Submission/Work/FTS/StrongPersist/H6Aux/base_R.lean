@@ -1,14 +1,14 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Coercivity.Defs
-import Submission.Work.Coercivity.H1IP_nonneg
-import Submission.Work.FTS.CoercivityFix.Basic
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.StrongPersist.IP6_lo_coeffs
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.StrongPersist.H6Aux.R.SlotHigh
-import Submission.Work.FTS.StrongPersist.H6Aux.R.SlotLow
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.VocabO
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

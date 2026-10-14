@@ -1,46 +1,138 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The per-slot `IP4` transport facts
-
-The coercive inner product `Work.FTS.CoercivityStep.IP4 α = HkIPStep 1 1 (HkIPStep 1 1
-(HkIPStep 1 1 (H1IP α)))` is a positive combination of *elementary slot pairings*
-`slotPairing ρ a b u v = ∫_z ∫_θ ρ · (D_z^bD_θ^a u) · (D_z^bD_θ^a v)`, where `(a,b)` ranges
-over the slots with `a + b ≤ 4` and the weight `ρ` is one of the three *leaf weights* of
-`H1IP`: `w² sin(2θ)^{-η}`, `w²` and `w² sin(2θ)^{-γ}`.  Each of them is smooth in `z` and
-pointwise dominated by the slot weight `slotW α a` of the corresponding slot of
-`HkIntegrand α 4` (`IsLeafW_le`).
-
-This is the N3 → N2 seam: N4's `IP4_unfold` sums the per-slot transport estimates over the
-leaves of `IP4`'s unfolding.  This module provides
-
-* the definition `slotPairing`, the leaf weights `leafW`, `IsLeafW`, the leaf sum `leafSum`,
-  and their elementary API (all proved);
-* `T2Slot C`, `T3Slot C`: the per-slot transport bounds, i.e. the frozen statements
-  `T2S`/`T3S_Dz` *one slot at a time*, for the leaf weights;
-* `SlotDomIP α₂ K IP`: the purely algebraic statement that `IP` is dominated by `leafSum`
-  (this is exactly what the unfolding of `IP4` produces).
-
-**Important repair, 2026-10-04.**  An earlier version of `T2Slot` quantified over *arbitrary*
-weights `ρ` with only the pointwise sandwich `0 ≤ ρ ≤ slotW α a`.  That form is **false**: with
-a *discontinuous* weight `ρ = slotW α a · 1_E` the indicator carves the positive part out of an
-oscillating integrand and the jumps of `z ρ f T²` in the radial integration by parts that
-handles the five top slots (`a + b = 4`) contribute an unbounded factor.  The refutation
-(explicit oscillating-bump family, `LHS/RHS ≍ N → ∞`, numerically verified) and its analysis
-are in `Submission/Work/FTS/TransportS/NOTES_t2Slot_FALSE.md`.  The definitions below are
-therefore restricted to the three leaf weights, all of which are smooth in `z` with
-`z ∂_z(ρ)/ρ = (z-3)/(1+z)` bounded.
-
-Everything is stated with the frozen hypothesis bundles `T2SF`/`T2SG` (`T2S.lean`) and
-`T3SF`/`T3SG` (`T3S.lean`).
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.H2.STEasyId
+import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
 import Submission.Work.FTS.TransportS.Defs
 import Submission.Work.FTS.TransportS.T2S
 import Submission.Work.FTS.TransportS.T3S
-import Submission.Work.FTS.H2.STEasyId
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+-- ===== merged: Submission.Work.FTS.TransportS.GoodOpenBase =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.TransportS
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-! ## The two smoothness bridges -/
+
+/-- `SmoothQuad` implies `SmoothOpen` (`Q0 ⊆ quadU`). -/
+theorem smoothOpen_of_smoothQuad {F : ℝ → ℝ → ℝ} (h : Work.FTS.LocData.SmoothQuad F) :
+    Work.FTS.EllipticEst.SmoothOpen F :=
+  h.mono fun p hp =>
+    ⟨show (-1 : ℝ) < p.1 by linarith [show (0 : ℝ) < p.1 from hp.1], hp.2⟩
+
+/-- `SmoothOpen` implies the finite-order form `∀ n, C^n` on the open quadrant, which is the
+hypothesis shape of the open-set commutation lemmas. -/
+theorem smoothOpen_forall_nat {F : ℝ → ℝ → ℝ} (h : Work.FTS.EllipticEst.SmoothOpen F) :
+    ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry F) Work.FTS.EllipticEst.Q0 :=
+  (Work.FTS.EllipticEst.smoothOpen_iff_forall F).mp h
+
+/-- `D_z` preserves `SmoothOpen`. -/
+theorem smoothOpen_Dz {F : ℝ → ℝ → ℝ} (h : Work.FTS.EllipticEst.SmoothOpen F) :
+    Work.FTS.EllipticEst.SmoothOpen (Work.Spaces.Dz F) :=
+  Work.FTS.LocData.contDiffOn_Dz Work.FTS.EllipticEst.isOpen_Q0 h
+
+/-! ## The multiplier bound in the open class -/
+
+/-- **The `f`-side bound for mixed derivatives in the open class.**  Every mixed derivative
+`D_z^bD_θ^a f` of total order at most `4` of a `SmoothOpen` function `f` of class
+`𝒲^{4,∞}` is bounded at every interior point by `200 |f|_{𝒲^{4,∞}}`.
+
+This is the `SmoothOpen` analogue of `Work.FTS.H2.T3Q.abs_mixed_le_WlInf_Q` (whose constant
+is `30`); the constant is larger here because the open-quadrant estimates give
+`100|f|_𝒲 · (α + sin 2θ)sin(2θ)^{α/5}` and only `(α + sin 2θ)sin(2θ)^{α/5} ≤ 2` is available
+for `0 < α ≤ 1`. -/
+theorem abs_mixed_le_WlInf_open {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {f : ℝ → ℝ → ℝ}
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.WlInfMem α 4 f)
+    {a b : ℕ} (hab : a + b ≤ 4) {z θ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
+    |Work.Spaces.mixed b a f z θ| ≤ 200 * Work.Spaces.WlInf α 4 f := by
+  have hW : 0 ≤ Work.Spaces.WlInf α 4 f := Work.FTS.H2.WPQ.WlInf_nonneg' hmem
+  have hθI : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ.1, le_of_lt hθ.2⟩
+  rcases Nat.eq_zero_or_pos a with ha | ha
+  · subst ha
+    simp only [Work.Spaces.mixed_zero_right]
+    calc |Work.Spaces.DzIter b f z θ| ≤ 100 * Work.Spaces.WlInf α 4 f :=
+          Work.FTS.OpenPkg.DzIter_le_WlInf_open hf hmem (by omega) hz hθ
+      _ ≤ 200 * Work.Spaces.WlInf α 4 f := by linarith
+  · have hs0 : 0 ≤ Real.sin (2 * θ) := Work.FTS.H2.sin_two_nonneg_of_mem_Iθ hθI
+    have hs1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
+    have hα5 : 0 ≤ α / 5 := by linarith
+    have hΦ1 : (Real.sin (2 * θ)) ^ (α / 5) ≤ 1 := Real.rpow_le_one hs0 hs1 hα5
+    have hΦ2 : (α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5) ≤ 2 := by
+      have h1 : α + Real.sin (2 * θ) ≤ 2 := by linarith
+      nlinarith [hΦ1, Real.rpow_nonneg hs0 (α / 5), hs0, hα]
+    calc |Work.Spaces.mixed b a f z θ|
+        ≤ 100 * (Work.Spaces.WlInf α 4 f
+            * ((α + Real.sin (2 * θ)) * (Real.sin (2 * θ)) ^ (α / 5))) :=
+          Work.FTS.OpenPkg.Mixed_le_WlInf_open hα hf hmem ha (by omega) hz hθ
+      _ ≤ 100 * (Work.Spaces.WlInf α 4 f * 2) := by
+          refine mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hΦ2 hW) (by norm_num)
+      _ = 200 * Work.Spaces.WlInf α 4 f := by ring
+
+/-! ## The two Leibniz rules for the factor `D_z g` -/
+
+
+/-- **`D_θ^n (D_z g) = D_z (D_θ^n g)`, hence `D_z^mD_θ^n (D_z g) = D_z^{m+1}D_θ^n g` on the
+open quadrant**, for `g` of class `SmoothOpen`. -/
+theorem mixed_Dz_eq_open {g : ℝ → ℝ → ℝ} (hg : Work.FTS.EllipticEst.SmoothOpen g)
+    (m n : ℕ) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
+      Work.Spaces.mixed m n (Work.Spaces.Dz g) z θ = Work.Spaces.mixed (m + 1) n g z θ := by
+  intro z θ hz hθ0 hθ1
+  have hy : (z, θ) ∈ Work.FTS.EllipticEst.Q0 := ⟨hz, hθ0, hθ1⟩
+  have hcomm : Set.EqOn
+      (Function.uncurry (Work.Spaces.DthIter n (Work.Spaces.Dz g)))
+      (Function.uncurry (Work.Spaces.Dz (Work.Spaces.DthIter n g)))
+      Work.FTS.EllipticEst.Q0 := by
+    have h := Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
+      Work.FTS.EllipticEst.isOpen_Q0 (smoothOpen_forall_nat hg) 1 n
+    simpa only [Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero, Work.Spaces.mixed] using h
+  have hc := Work.FTS.H2.DzIter_congr_of_isOpen Work.FTS.EllipticEst.isOpen_Q0 hcomm m hy
+  show Work.Spaces.DzIter m (Work.Spaces.DthIter n (Work.Spaces.Dz g)) z θ
+      = Work.Spaces.DzIter (m + 1) (Work.Spaces.DthIter n g) z θ
+  rw [show Work.Spaces.DzIter m (Work.Spaces.DthIter n (Work.Spaces.Dz g)) z θ
+        = Work.Spaces.DzIter m (Work.Spaces.Dz (Work.Spaces.DthIter n g)) z θ from hc]
+  exact congrFun (congrFun
+    (Work.FTS.H2.Transport3Aux.Z3.DzIter_Dz m (Work.Spaces.DthIter n g)) z) θ
+
+/-- **Leibniz expansion of `D_z^jD_θ^i (f · D_zg)` in the open class.** -/
+theorem mixed_mul_Dz_open (j i : ℕ) (f g : ℝ → ℝ → ℝ)
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hg : Work.FTS.EllipticEst.SmoothOpen g) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
+      Work.Spaces.mixed j i (fun z θ => f z θ * Work.Spaces.Dz g z θ) z θ
+        = ∑ a ∈ Finset.range (i + 1), ∑ b ∈ Finset.range (j + 1),
+            ((i.choose a : ℝ) * (j.choose b : ℝ))
+              * (Work.Spaces.mixed b a f z θ
+                  * Work.Spaces.mixed (j - b + 1) (i - a) g z θ) := by
+  intro z θ hz hθ0 hθ1
+  rw [Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed j i f (Work.Spaces.Dz g) hf
+    (smoothOpen_Dz hg) z θ hz hθ0 hθ1]
+  refine Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => ?_
+  rw [mixed_Dz_eq_open hg (j - b) (i - a) z θ hz hθ0 hθ1]
+
+end Work.FTS.TransportS
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.Slots =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -67,13 +159,6 @@ def slotPairing (ρ : ℝ → ℝ → ℝ) (a b : ℕ) (u v : Fn) : ℝ :=
   ∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ,
     ρ z θ * Work.Spaces.mixed b a u z θ * Work.Spaces.mixed b a v z θ
 
-/-- The slot pairing is symmetric in its two function arguments. -/
-theorem slotPairing_comm (ρ : ℝ → ℝ → ℝ) (a b : ℕ) (u v : Fn) :
-    slotPairing ρ a b u v = slotPairing ρ a b v u := by
-  unfold slotPairing
-  refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
-  refine integral_congr_ae (Filter.Eventually.of_forall fun θ => ?_)
-  ring
 
 /-! ## The leaf weights of `IP4` -/
 
@@ -188,42 +273,10 @@ def leafSum (α : ℝ) (u v : Fn) : ℝ :=
         + (if 1 ≤ a then |slotPairing (leafGam α) a b u v| else 0)
     else 0)
 
-/-- The leaf sum is nonnegative. -/
-theorem leafSum_nonneg (α : ℝ) (u v : Fn) : 0 ≤ leafSum α u v := by
-  unfold leafSum
-  refine Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_
-  by_cases hab : a + b ≤ 4
-  · rw [if_pos hab]
-    refine add_nonneg (add_nonneg (abs_nonneg _) (abs_nonneg _)) ?_
-    by_cases ha : 1 ≤ a
-    · rw [if_pos ha]; exact abs_nonneg _
-    · rw [if_neg ha]
-  · rw [if_neg hab]
 
 /-! ## The per-slot transport bounds -/
 
-/-- **The per-slot `D_z` transport bound with an `ℋ⁴` coefficient** (the slot-by-slot form of
-the frozen `T2S`): for every slot `(a,b)` of the flat pairing (`a + b ≤ 4`), every *leaf* weight
-`ρ`, and the coefficient `f·D_z g`,
 
-`|slotPairing ρ a b (f·D_z g) g| ≤ C·α^{-1/2}·(|f|_{ℋ⁴} + CoefTh 1 f)·|g|²_{ℋ⁴}`. -/
-def T2Slot (C : ℝ) : Prop :=
-  ∀ (α : ℝ) (f g : Fn), 0 < α → α ≤ 1 → T2SF α f → T2SG α g →
-    ∀ (a b : ℕ) (ρ : ℝ → ℝ → ℝ), a + b ≤ 4 → IsLeafW α a ρ →
-      |slotPairing ρ a b (fun z θ => f z θ * Work.Spaces.Dz g z θ) g|
-        ≤ C * α ^ (-(1 / 2 : ℝ))
-            * (Work.FTS.Nonlin.Xn α f + Work.FTS.VocabO.CoefTh 1 f)
-            * Work.FTS.Nonlin.Xn α g ^ 2
-
-/-- **The per-slot `D_z` transport bound with a `𝒲^{4,∞}` coefficient** (the slot-by-slot form
-of the frozen `T3S_Dz`). -/
-def T3Slot (C : ℝ) : Prop :=
-  ∀ (α : ℝ) (f g : Fn), 0 < α → α ≤ 1 → T3SF α f → T3SG α g →
-    ∀ (a b : ℕ) (ρ : ℝ → ℝ → ℝ), a + b ≤ 4 → IsLeafW α a ρ →
-      |slotPairing ρ a b (fun z θ => f z θ * Work.Spaces.Dz g z θ) g|
-        ≤ C * α ^ (-(1 / 2 : ℝ))
-            * (Work.Spaces.WlInf α 4 f + Work.FTS.VocabO.CoefTh 3 f)
-            * Work.FTS.Nonlin.Xn α g ^ 2
 
 /-! ## The slot domination of the concrete `IP4` -/
 
@@ -240,3 +293,5 @@ def SlotDomIP (α₂ K : ℝ) (IP : ℝ → Fn → Fn → ℝ) : Prop :=
     |IP α u v| ≤ K * leafSum α u v
 
 end Work.FTS.TransportS
+end
+end

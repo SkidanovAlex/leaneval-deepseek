@@ -1,41 +1,16 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The final energy bound `HkNorm α 6 f ≤ B`
-
-This module assembles the pieces that bound `HkSq α 6 f = ∫_z∈Iz ∫_θ∈Iθ HkIntegrand α 6 f z θ`
-by `B ^ 2` for the limit `f` of a locally uniformly convergent subsequence `G (Φ n)` with
-`HkNorm α 6 (G n) ≤ B`.
-
-The strategy (see `NOTES_assembly_final.md`):
-
-* On a box `[a,b] × [c,d] ⊆ (0,∞) × (0,π/2)` the slots of order `≤ 5` are handled by Fatou,
-  the seven slots of order `6` through the measurable majorants `V6z`, `V6t` built from
-  backward difference quotients of the level-5 slots;
-* the resulting box bound is then exhausted (`setLIntegral_iUnion_of_directed`, the boundary of
-  the box being null) to the whole open quadrant;
-* finally the iterated lintegral is compared with the iterated Bochner integral defining `HkSq`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongEps.LocUnif.V5Defs
-import Submission.Work.FTS.StrongEps.LocUnif.V6Defs
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_backwardDiffQuot_majorant_le_liminf_z
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_backwardDiffQuot_majorant_le_liminf_theta
-import Submission.Work.FTS.StrongEps.LocUnif.ofReal_HkIntegrand_six_le
-import Submission.Work.FTS.StrongEps.LocUnif.level6_identities
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_V5_le_liminf
-import Submission.Work.FTS.StrongEps.LocUnif.V5_eq_ae
-import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_ofReal_HkIntegrand
-import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_V6
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_subbox_eq_iSup
-import Submission.Work.FTS.StrongEps.LocUnif.iUnion_subbox
-import Submission.Work.FTS.StrongEps.LocUnif.volume_box_sdiff_openBox
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS_EllLimOK.PkgJets.cosTailB
+import Submission.Work.FTS_EllLimOK.PkgJets.cosWeightTail_le
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

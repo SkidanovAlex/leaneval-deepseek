@@ -1,13 +1,13 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
 import Submission.Work.FTS.PhiStar.Honesty.smoothCptQ_hkMem
-import Submission.Work.FTS.ClassCHon.Zpz.cmode_Dz
-import Submission.Work.FTS.EllExist.Honesty.RadGreenDzuDefs
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.PhiStar.Honesty.DzIterCpt.DzIter_contDiff_of_forall
-import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.cmode_hasDerivAt_pz
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.NfkSmooth
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

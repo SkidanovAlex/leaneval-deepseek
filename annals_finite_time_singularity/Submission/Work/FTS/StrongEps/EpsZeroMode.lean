@@ -1,51 +1,14 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsZeroMode.lean` — the `L₁₂` zero mode of the scheme's RHS
-
-The paper's `L₁₂`-zero-mode identity (`L-N5.8` of the design,
-`Submission/Work/FTS/Apriori/ZeroMode.lean`)
-
-  `L₁₂(dynLin + dynRHS)(0) = (1 - μ)·L₁₂(slice g τ)(0)`
-
-specialised to the **projected** `ε`-scheme (`Submission/Work/FTS/StrongEps/PZeroScheme.lean`).
-The scheme's right-hand side is evaluated at the projected, mollified family `JfamP ρ ε g`, whose
-slice is `Pz (J_ε (slice g τ))` — hence of vanishing zero mode by construction
-(`PZeroAux.Pz_l12`).  With `muDyn α Ψ G τ ≠ -1` (`MuLamOK` gives `|muDyn| ≤ 1/2`) the identity
-therefore gives
-
-  `L₁₂(epsWP α ρ ε Φs E g τ)(0) = (1 - μ)·0 = 0`,
-
-the `h0` input of `EpsCorrTendsto.EpsCorr_tendsto_zero` (the `P₀`-half of `G4`).
-
-## The three obligations of the zero-mode identity
-
-In the vocabulary of `Submission/Work/FTS/StrongEps/EpsZero/Pieces.lean`, with
-`f = slice (JfamP ρ ε g) τ` (a class-`C` profile vanishing off the open quadrant — `hzero` below),
-`Ψ = Φs + E f`, `F = F_* + f` and `μ = muDyn … τ`:
-
-* `hlin` — `L₁₂(-𝓛_Γ^T f)(0) = L₁₂(f)(0)`: the paper's `(L12L)` at `z = 0`
-  (`EpsZero.LGammaT_zero_classC`) and `L₁₂(-h)(0) = -L₁₂(h)(0)`;
-* `hstar` — `L₁₂(N_*)(0) = -μ L₁₂(f)(0)`: `μ + λ + μλ = -μ` at `λ = lamfun μ`, the elementary
-  `L₁₂(D_z f)(0) = 0` and linearity (`EpsZero.Nstar_zero_classC`);
-* `hadd` — additivity of `L₁₂(·)(0)` over the five summands
-  `-𝓛_Γ^T f, -μ̄·AK, N₀, N, N_*` (`EpsZero.Hadd`), whose integrability certificates are
-  `EpsZero.RhsDensIntegrable`.
-
-Those three live in the sibling files of this directory (proved by colleagues); the `μ ≠ -1` side
-condition and the assembly are proved here.
--/
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.EpsStructP
-import Submission.Work.FTS.Apriori.ZeroMode
-import Submission.Work.FTS.StrongEps.EpsZero.Pieces
-import Submission.Work.FTS.StrongEps.EpsZero.Hadd
-import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
 import Submission.Work.FTS.StrongEps.EpsZero.LGammaT_zero_classC
+import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
 import Submission.Work.FTS.StrongEps.EpsZero.RhsDensIntegrable
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

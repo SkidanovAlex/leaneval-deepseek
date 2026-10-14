@@ -1,19 +1,363 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Complex.Exponential
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Defs
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.BaseCase
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.logPair_conv_transfer_iter
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.leaf_logW_shift_uniform
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.integrable_prod_of_lintegral_iterated
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.mixed_Jeps
+import Submission.Work.FTS.EllipticEst.RPFresh.straight_transfers
+import Submission.Work.FTS.GalFields.RHS.HkSum
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logW_fderiv_integral_le
 import Submission.Work.FTS.StrongEps.JepsHkMem.continuousOn_Jeps
+import Submission.Work.FTS.StrongEps.PZeroAux.softClass_Pz
+import Submission.Work.FTS.StrongEps.mixed_Jeps
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumGamSin
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.leibnizRem6
 import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS_LocDatum3a.Defs
+import Submission.Work.FTS_LocDatum3a.L12_Jeps_interchange_mine
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_RegExport.THL.theta_holder_of_HkMem
+import Submission.Work.FTS_StreamBdry.SB4.slice_L12_c2
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.Defs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.E4R3.Apriori4Proofs
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-!
+# Vocabulary of the semi-tame estimate of `epsWP`
+
+The projected right-hand side `epsWP α ρ ε Φs E g τ` is, definitionally, a function of the
+projected slice `w = slice (JfamP ρ ε g) τ`, the elliptic profile `Φg = E w` and the two
+modulation constants `μ, lam` alone (`Ftau α (JfamP ρ ε g) τ = Ftot α w`,
+`slice (PsiCan Φs E (JfamP ρ ε g)) τ = Φs + Φg`, and `muDyn = muBlk`, `lamDyn = lamfun muBlk`).
+
+It is the signed sum of five blocks, `-𝓛_Γ^T w`, `-μ̄·AK`, `N₀`, `N` and `N_*`; `BData` records
+what each block must supply for the semi-tame estimate: open-quadrant smoothness, `ℋ⁶`-honesty,
+a level-`4` energy bound priced by the `ℋ⁵`-energy of the slice, and a level-`6` energy bound
+with the top order entering *linearly* through `ℋ⁷` and a quadratic remainder in `ℋ⁶`.
+-/
+
+/-- The projected right-hand side, written in terms of the projected slice `w`, the elliptic
+profile `Φg = E w` and the two modulation constants `μ, lam`. -/
+noncomputable def epsWBlk (α : ℝ) (Φs w Φg : Fn) (μ lam : ℝ) : Fn :=
+  fun z θ => -Work.Coercivity.LGammaT α w z θ
+    + Work.Construction.gRHS α μ lam (Work.Construction.Ftot α w)
+        (fun z θ => Φs z θ + Φg z θ) w z θ
+
+/-- The modulation constant `μ` of `epsWP` at the projected slice. -/
+noncomputable def muBlk (α : ℝ) (Φs w Φg : Fn) : ℝ :=
+  Work.Construction.mufunS α (Work.Construction.N0 α (Work.Construction.Ftot α w) w)
+    (Work.Construction.N α (Work.Construction.Ftot α w) (fun z θ => Φs z θ + Φg z θ)) w
+
+/-- **The decomposition of `epsWP`**: with `w = slice (JfamP ρ ε g) τ` and `Φg = E w`, the
+projected right-hand side is the block form `epsWBlk` at the modulation constant `muBlk`. -/
+theorem epsWP_eq_epsWBlk (α : ℝ) (ρ : ℝ × ℝ → ℝ) (ε : ℝ) (Φs : Fn) (E : Fn → Fn)
+    (g : Fam) (τ : ℝ) :
+    Work.FTS.StrongEps.epsWP α ρ ε Φs E g τ
+      = epsWBlk α Φs (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ)
+          (E (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ))
+          (muBlk α Φs (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ)
+            (E (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ)))
+          (Work.Construction.lamfun (muBlk α Φs (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ)
+            (E (slice (Work.FTS.StrongEps.JfamP ρ ε g) τ)))) := rfl
+
+/-- The modulation constant is the one `MuLamOK` controls. -/
+theorem muDyn_const_eq (α : ℝ) (Φs : Fn) (E : Fn → Fn) (w : Fn) :
+    Work.FTS.Galerkin.muDyn α (Work.FTS.Nonlin.PsiCan Φs E fun z θ _ => w z θ)
+        (fun z θ _ => w z θ) 0 = muBlk α Φs w (E w) := rfl
+
+theorem lamDyn_const_eq (α : ℝ) (Φs : Fn) (E : Fn → Fn) (w : Fn) :
+    Work.FTS.Galerkin.lamDyn α (Work.FTS.Nonlin.PsiCan Φs E fun z θ _ => w z θ)
+        (fun z θ _ => w z θ) 0 = Work.Construction.lamfun (muBlk α Φs w (E w)) := by
+  rw [Work.FTS.Galerkin.lamDyn, muDyn_const_eq]
+
+/-! ## The blocks -/
+
+noncomputable def blkLin (α : ℝ) (w : Fn) : Fn := Work.Coercivity.LGammaT α w
+
+noncomputable def blkMu (α : ℝ) (Φs w Φg : Fn) : Fn :=
+  fun z θ => Work.Construction.mubar (Work.Construction.N0 α (Work.Construction.Ftot α w) w)
+      (Work.Construction.N α (Work.Construction.Ftot α w) (fun z θ => Φs z θ + Φg z θ))
+    * Work.Construction.AK α z θ
+
+noncomputable def blkN0 (α : ℝ) (w : Fn) : Fn :=
+  Work.Construction.N0 α (Work.Construction.Ftot α w) w
+
+noncomputable def blkN (α : ℝ) (Φs w Φg : Fn) : Fn :=
+  Work.Construction.N α (Work.Construction.Ftot α w) (fun z θ => Φs z θ + Φg z θ)
+
+noncomputable def blkNstar (w : Fn) (μ lam : ℝ) : Fn := Work.Construction.Nstar μ lam w
+
+/-- A smart constructor for the five-fold signed sum. -/
+noncomputable def sum5 (a b c d e : Fn) : Fn :=
+  fun z θ => a z θ + (b z θ + (c z θ + (d z θ + e z θ)))
+
+/-- **`epsWBlk` is the signed sum of the five blocks.** -/
+theorem epsWBlk_eq_sum5 (α : ℝ) (Φs w Φg : Fn) (μ lam : ℝ) :
+    epsWBlk α Φs w Φg μ lam
+      = sum5 (fun z θ => - blkLin α w z θ) (fun z θ => - blkMu α Φs w Φg z θ)
+          (blkN0 α w) (blkN α Φs w Φg) (blkNstar w μ lam) := by
+  funext z θ
+  simp only [epsWBlk, sum5, blkLin, blkMu, blkN0, blkN, blkNstar, Work.Construction.gRHS]
+  ring
+
+/-! ## The block data -/
+
+/-- The data every block of `epsWBlk` must supply: open-quadrant smoothness, `ℋ⁶`-honesty, and
+the two semi-tame size bounds. -/
+structure BData (α : ℝ) (w : Fn) (K : ℝ) (B : Fn) : Prop where
+  sm : Work.FTS.EllipticEst.SmoothOpen B
+  hm : Work.Spaces.HkMem α 6 B
+  b4 : Work.Spaces.HkSq α 4 B ≤ K * (1 + Work.Spaces.HkSq α 5 w)
+  b6 : Work.Spaces.HkSq α 6 B ≤ K * (1 + Work.Spaces.HkSq α 7 w)
+        + K * (1 + Work.Spaces.HkSq α 6 w) ^ 2
+
+/-! ## Elementary invariance and additivity helpers -/
+
+theorem smoothOpen_add {f g : ℝ → ℝ → ℝ} (hf : Work.FTS.EllipticEst.SmoothOpen f)
+    (hg : Work.FTS.EllipticEst.SmoothOpen g) :
+    Work.FTS.EllipticEst.SmoothOpen (fun z θ => f z θ + g z θ) :=
+  Work.FTS.EllipticEst.smoothOpen_of_forall (fun n =>
+    ((Work.FTS.EllipticEst.smoothOpen_iff_forall f).1 hf n).add
+      ((Work.FTS.EllipticEst.smoothOpen_iff_forall g).1 hg n))
+
+theorem smoothOpen_neg {f : ℝ → ℝ → ℝ} (hf : Work.FTS.EllipticEst.SmoothOpen f) :
+    Work.FTS.EllipticEst.SmoothOpen (fun z θ => -f z θ) :=
+  Work.FTS.EllipticEst.smoothOpen_of_forall (fun n =>
+    ((Work.FTS.EllipticEst.smoothOpen_iff_forall f).1 hf n).neg)
+
+theorem hkSq_neg (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.HkSq α k (fun z θ => -f z θ) = Work.Spaces.HkSq α k f := by
+  rw [Work.Spaces.HkSq, Work.Spaces.HkSq]
+  refine MeasureTheory.setIntegral_congr_fun measurableSet_Ici (fun z _ => ?_)
+  refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => ?_)
+  exact congrFun (congrFun (Work.FTS.EllipticEst.HkIntegrand_neg α k f) z) θ
+
+theorem hkMem_neg {α : ℝ} {k : ℕ} {f : ℝ → ℝ → ℝ}
+    (hm : Work.Spaces.HkMem α k f) : Work.Spaces.HkMem α k (fun z θ => -f z θ) := by
+  rw [Work.Spaces.HkMem] at hm ⊢
+  constructor
+  · intro z hz
+    refine (hm.1 z hz).congr ?_
+    filter_upwards with θ
+    exact (congrFun (congrFun (Work.FTS.EllipticEst.HkIntegrand_neg α k f) z) θ).symm
+  · refine hm.2.congr ?_
+    filter_upwards with z
+    refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => ?_)
+    exact (congrFun (congrFun (Work.FTS.EllipticEst.HkIntegrand_neg α k f) z) θ).symm
+
+/-- `BData` is invariant under negation of the block. -/
+theorem BData.neg {α : ℝ} {w : Fn} {K : ℝ} {B : Fn} (d : BData α w K B) :
+    BData α w K (fun z θ => -B z θ) where
+  sm := smoothOpen_neg d.sm
+  hm := hkMem_neg d.hm
+  b4 := by rw [hkSq_neg]; exact d.b4
+  b6 := by rw [hkSq_neg]; exact d.b6
+
+theorem smoothOpen_sum5 {a b c d e : ℝ → ℝ → ℝ}
+    (ha : Work.FTS.EllipticEst.SmoothOpen a) (hb : Work.FTS.EllipticEst.SmoothOpen b)
+    (hc : Work.FTS.EllipticEst.SmoothOpen c) (hd : Work.FTS.EllipticEst.SmoothOpen d)
+    (he : Work.FTS.EllipticEst.SmoothOpen e) :
+    Work.FTS.EllipticEst.SmoothOpen (sum5 a b c d e) :=
+  smoothOpen_add ha (smoothOpen_add hb (smoothOpen_add hc (smoothOpen_add hd he)))
+
+theorem hkMem_sum5 {α : ℝ} {k : ℕ} {a b c d e : ℝ → ℝ → ℝ}
+    (ha : Work.FTS.EllipticEst.SmoothOpen a) (hb : Work.FTS.EllipticEst.SmoothOpen b)
+    (hc : Work.FTS.EllipticEst.SmoothOpen c) (hd : Work.FTS.EllipticEst.SmoothOpen d)
+    (he : Work.FTS.EllipticEst.SmoothOpen e)
+    (ma : Work.Spaces.HkMem α k a) (mb : Work.Spaces.HkMem α k b) (mc : Work.Spaces.HkMem α k c)
+    (md : Work.Spaces.HkMem α k d) (me : Work.Spaces.HkMem α k e) :
+    Work.Spaces.HkMem α k (sum5 a b c d e) := by
+  have hsE := smoothOpen_add hd he
+  have hmE := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hd he md me
+  have hsC := smoothOpen_add hc hsE
+  have hmC := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hc hsE mc hmE
+  have hsB := smoothOpen_add hb hsC
+  have hmB := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hb hsC mb hmC
+  exact Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k ha hsB ma hmB
+
+/-- **`HkSq` of the five-fold sum**: four applications of `HkSq_add_le_open`. -/
+theorem hkSq_sum5 {α : ℝ} (hα : 0 < α) {k : ℕ} {a b c d e : ℝ → ℝ → ℝ}
+    (ha : Work.FTS.EllipticEst.SmoothOpen a) (hb : Work.FTS.EllipticEst.SmoothOpen b)
+    (hc : Work.FTS.EllipticEst.SmoothOpen c) (hd : Work.FTS.EllipticEst.SmoothOpen d)
+    (he : Work.FTS.EllipticEst.SmoothOpen e)
+    (ma : Work.Spaces.HkMem α k a) (mb : Work.Spaces.HkMem α k b) (mc : Work.Spaces.HkMem α k c)
+    (md : Work.Spaces.HkMem α k d) (me : Work.Spaces.HkMem α k e) :
+    Work.Spaces.HkSq α k (sum5 a b c d e)
+      ≤ 16 * (Work.Spaces.HkSq α k a + Work.Spaces.HkSq α k b + Work.Spaces.HkSq α k c
+          + Work.Spaces.HkSq α k d + Work.Spaces.HkSq α k e) := by
+  have hsE := smoothOpen_add hd he
+  have hmE := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hd he md me
+  have hsC := smoothOpen_add hc hsE
+  have hmC := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hc hsE mc hmE
+  have hsB := smoothOpen_add hb hsC
+  have hmB := Work.FTS.EllipticEst.RPFresh.HkMem_add_open α k hb hsC mb hmC
+  have h1 := Work.FTS.GalFields.RHS.HkSq_add_le_open α k hα hd he md me
+  have h2 := Work.FTS.GalFields.RHS.HkSq_add_le_open α k hα hc hsE mc hmE
+  have h3 := Work.FTS.GalFields.RHS.HkSq_add_le_open α k hα hb hsC mb hmC
+  have h4 := Work.FTS.GalFields.RHS.HkSq_add_le_open α k hα ha hsB ma hmB
+  have hnn : ∀ f : ℝ → ℝ → ℝ, 0 ≤ Work.Spaces.HkSq α k f := fun f =>
+    Work.Spaces.HkSq_nonneg α k f
+  have hA : Work.Spaces.HkSq α k (sum5 a b c d e)
+      ≤ 2 * (Work.Spaces.HkSq α k a
+          + 2 * (Work.Spaces.HkSq α k b
+            + 2 * (Work.Spaces.HkSq α k c + 2 * (Work.Spaces.HkSq α k d + Work.Spaces.HkSq α k e)))) := by
+    refine le_trans h4 ?_
+    have h2' : Work.Spaces.HkSq α k (fun z θ => c z θ + (d z θ + e z θ))
+        ≤ 2 * (Work.Spaces.HkSq α k c + 2 * (Work.Spaces.HkSq α k d + Work.Spaces.HkSq α k e)) := by
+      refine le_trans h2 ?_
+      linarith [h1, hnn c, hnn d, hnn e]
+    have h3' : Work.Spaces.HkSq α k (fun z θ => b z θ + (c z θ + (d z θ + e z θ)))
+        ≤ 2 * (Work.Spaces.HkSq α k b
+            + 2 * (Work.Spaces.HkSq α k c + 2 * (Work.Spaces.HkSq α k d + Work.Spaces.HkSq α k e))) := by
+      refine le_trans h3 ?_
+      linarith [h2', hnn b, hnn c, hnn d, hnn e]
+    linarith [h3', hnn a, hnn b, hnn c, hnn d, hnn e]
+  refine le_trans hA ?_
+  linarith [hnn a, hnn b, hnn c, hnn d, hnn e]
+
+end Work.FTS.StrongEps.E4R3.Apriori4Proofs
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.RawE6Aux.Basic =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `E4R3/Apriori4Proofs/RawE6Aux/Basic.lean` — the bilinearity bookkeeping of `IP6o`
+
+`IP6` is symmetric (`IP6_symm`) and additive/homogeneous in its **first** argument on the honest
+class (`IP6_add`, `IP6_smul`); the lemmas here move that to the second argument, which is what
+turns the rank-one projection `Pz h = h − (L₁₂ h 0 / pzNorm) • bump` into a *correction* of the
+pairing.  They are used by `RawE6Aux/Main.lean` (the repaired leaf L-A) and by the assigned file
+`rawE6_ineq_proof.lean`.
+-/
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.E4R3.Apriori4Proofs.RawE6Aux
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- shorthand for the route's level-six pairing. -/
+abbrev IP6o := Work.FTS.StrongEps.EpsE4Thr.E4R4.IP6o
+
+/-- `IP6o` is additive in its second argument on the honest class. -/
+theorem IP6o_add_right (α : ℝ) (hα : 0 < α) {u u₁ u₂ : Fn}
+    (hu : Work.FTS.EllipticEst.SmoothOpen u) (h₁ : Work.FTS.EllipticEst.SmoothOpen u₁)
+    (h₂ : Work.FTS.EllipticEst.SmoothOpen u₂) (mu : Work.Spaces.HkMem α 6 u)
+    (m₁ : Work.Spaces.HkMem α 6 u₁) (m₂ : Work.Spaces.HkMem α 6 u₂) :
+    IP6o α u (fun z θ => u₁ z θ + u₂ z θ) = IP6o α u u₁ + IP6o α u u₂ := by
+  have hsymm : ∀ a b : Fn, IP6o α a b = IP6o α b a := fun a b =>
+    Work.FTS.StrongPersist.IP6_symm 1 1 1 1 1 1 1 1 1 1 α a b
+  have hadd : IP6o α (fun z θ => u₁ z θ + u₂ z θ) u = IP6o α u₁ u + IP6o α u₂ u :=
+    Work.FTS.StrongPersist.IP6_add 1 1 1 1 1 1 1 1 1 1 α hα h₁ h₂ hu m₁ m₂ mu
+  rw [hsymm u (fun z θ => u₁ z θ + u₂ z θ), hadd, hsymm u₁ u, hsymm u₂ u]
+
+/-- `IP6o` is homogeneous in its second argument. -/
+theorem IP6o_const_mul_right (α : ℝ) (c : ℝ) (u v : Fn) :
+    IP6o α u (fun z θ => c * v z θ) = c * IP6o α u v := by
+  show Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α u (fun z θ => c * v z θ)
+    = c * Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α u v
+  rw [Work.FTS.StrongPersist.IP6_symm 1 1 1 1 1 1 1 1 1 1 α u (fun z θ => c * v z θ),
+    Work.FTS.StrongPersist.IP6_smul 1 1 1 1 1 1 1 1 1 1 α c v u,
+    Work.FTS.StrongPersist.IP6_symm 1 1 1 1 1 1 1 1 1 1 α v u]
+
+
+/-- The `P₀`-correction of the pairing in its **first** argument: pairing `v − c • bump`
+against `u`. -/
+theorem IP6o_sub_smul_bump_left (α : ℝ) (hα : 0 < α) {v u : Fn} (c : ℝ)
+    (hv : Work.FTS.EllipticEst.SmoothOpen v) (hu : Work.FTS.EllipticEst.SmoothOpen u)
+    (mv : Work.Spaces.HkMem α 6 v) (mu : Work.Spaces.HkMem α 6 u) :
+    IP6o α (fun z θ => v z θ - c * Work.FTS.StrongEps.bump z θ) u
+      = IP6o α v u - c * IP6o α Work.FTS.StrongEps.bump u := by
+  have hb : Work.FTS.EllipticEst.SmoothOpen Work.FTS.StrongEps.bump :=
+    Work.FTS.StrongEps.smoothOpen_bump
+  have hbm : Work.Spaces.HkMem α 6 Work.FTS.StrongEps.bump :=
+    Work.FTS.StrongEps.PZeroAux.HkMem_bump α 6
+  have hcm : Work.Spaces.HkMem α 6 (fun z θ => (-c) * Work.FTS.StrongEps.bump z θ) :=
+    Work.FTS.StrongEps.PZeroAux.HkMem_const_mul_gen (-c) hbm
+  have hcs : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (-c) * Work.FTS.StrongEps.bump z θ) :=
+    Work.FTS.StrongEps.PZeroAux.smoothOpen_const_mul_gen (-c) hb
+  have hfun : (fun z θ => v z θ - c * Work.FTS.StrongEps.bump z θ)
+      = fun z θ => v z θ + (-c) * Work.FTS.StrongEps.bump z θ := by
+    funext z θ; ring
+  rw [hfun]
+  show Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α
+      (fun z θ => v z θ + (-c) * Work.FTS.StrongEps.bump z θ) u
+    = Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α v u
+      - c * Work.FTS.StrongPersist.IP6 1 1 1 1 1 1 1 1 1 1 α Work.FTS.StrongEps.bump u
+  rw [Work.FTS.StrongPersist.IP6_add 1 1 1 1 1 1 1 1 1 1 α hα hv hcs hu mv hcm mu,
+    Work.FTS.StrongPersist.IP6_smul 1 1 1 1 1 1 1 1 1 1 α (-c) Work.FTS.StrongEps.bump u]
+  ring
+
+
+/-- `√(exp x) = exp (x/2)`. -/
+theorem sqrt_exp_eq (x : ℝ) : Real.sqrt (Real.exp x) = Real.exp (x / 2) := by
+  have h : (Real.exp (x / 2)) ^ 2 = Real.exp x := by
+    rw [sq, ← Real.exp_add]
+    congr 1
+    ring
+  rw [← h, Real.sqrt_sq (Real.exp_pos _).le]
+
+end Work.FTS.StrongEps.E4R3.Apriori4Proofs.RawE6Aux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Decay3Aux.SlotMaj =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.E4R3
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1000000
+
+
+end Work.FTS.StrongEps.E4R3
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.RawE6Aux.Jeps_IP6_transfer_aux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -294,3 +638,5 @@ theorem Jeps_IP6_transfer_aux {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEp
     Work.FTS.StrongPersist.N6TPPriced.IP6_one_eq_IPn_five] using hb
 
 end Work.FTS.StrongEps.E4R3.RawE6Aux
+end
+end

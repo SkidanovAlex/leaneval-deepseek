@@ -1,10 +1,3 @@
-/-
-# `Work.FTS_RegExport.RXR5L.ProdAuxC` — the product lemma of `EllProd_C1JetFull`
-
-Final part of the product lemma: the `Jet` clause (uniform bound + joint `α`-modulus) and the
-`z`-derivative clause of the product of a `vanish0`-type coefficient with a `Γ`-shaped `C1Jet`
-factor.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic

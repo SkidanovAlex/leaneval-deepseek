@@ -1,24 +1,52 @@
-/-
-# `Work.FTS_RegExport.RXT.st1_of_weighted` — RX-St1, leaf S9
-
-`St1Class α S (gS α (tauExt g))` from the weighted bound
-`|D_z^jD_θ^i g(·,·,τ)| ≤ K·ω` on the six slots
-`(j,i) ∈ {(0,0),(1,0),(0,1),(2,0),(1,1),(0,2)}` (`RXT.idx`).
-
-The four fields are proved in the sibling modules of this directory:
-
-* `st1_stdata.st1_dthvan`, `st1_stdata.st1_quad` — the pointwise data (`dthvan`, `quad`);
-* `st1_stdata2.st1_quad2` — the second `z`-derivative at the origin (`quad2`);
-* `st1_angle.st1_hhθ`, `st1_angle.st1_hhθp` — the two `α`-Hölder angular moduli.
-
-This file only assembles them (the constant `K` is first seen to be nonnegative, `st1_K_nonneg`).
--/
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.FinalV2.Defs
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.st1_prelim
 import Submission.Work.FTS_RegExport.RXT.st1_stdata
 import Submission.Work.FTS_RegExport.RXT.st1_stdata2
-import Submission.Work.FTS_RegExport.RXT.st1_angle
+import Submission.Work.FTS_RegExport.RXVPMain
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.FTS_StreamBdry.SB4.lim_mixed_plainE
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.jc3 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open Set Filter
+
+namespace Work.FTS_RegExport.RXT
+
+theorem jc3 {α C₀ : ℝ} {Φs : Work.FTS.Galerkin.Fn}
+    {E : Work.FTS.Galerkin.Fn →ₗ[ℝ] Work.FTS.Galerkin.Fn}
+    (hα : 0 < α) (hα13 : α ≤ 1 / 3) {g : Work.FTS.Galerkin.Fam}
+    (hOK : Work.FTS.FinalV2.DynOK' (Work.FTS.Regularity.pExp α) C₀ Φs E g)
+    (T : ℝ) (hT : 0 < T) :
+    ∀ j i : ℕ, j + i ≤ 3 →
+      ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        Work.Spaces.mixed j i (Work.FTS.Galerkin.slice g p.2.2) p.1 p.2.1)
+        (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) T) :=
+  jc3_of_pieces hOK T hT
+    (fun {a b c d} ha hab hc hcd hd => slice_space_lip hα hα13 hOK T hT ha hab hc hcd hd)
+    (lim_mixed_lip (Work.FTS.Regularity.pExp_pos hα) (Work.FTS.Regularity.pExp_le_one hα13)
+      hOK.2 T hT)
+    (fun {V W} {x₀ δc L K} hδc hL hK hV hcont hW hderiv =>
+      tau_lip_sqrt_of_primitive_self hδc hL hK hV hcont hW hderiv)
+
+end Work.FTS_RegExport.RXT
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.st1_of_weighted =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -49,3 +77,5 @@ theorem st1_of_weighted {α : ℝ} (hα : 0 < α) (hα13 : α ≤ 1 / 3) {g : Wo
     st1_hhθp (α := α) (g := g) (S := S) (K := K) hα hα13 hmin hS hK0 hw⟩
 
 end Work.FTS_RegExport.RXT
+end
+end

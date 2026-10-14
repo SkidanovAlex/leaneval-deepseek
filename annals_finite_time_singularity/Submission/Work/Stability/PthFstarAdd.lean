@@ -28,20 +28,5 @@ theorem differentiableAt_Fstar_slice_theta (α z θ : ℝ) (hθ : 0 < θ ∧ θ 
   have h := ((hGam.div_const (Work.Spaces.c α)).const_mul α).mul_const (Work.FM.Fstar z)
   simpa [Work.Construction.Fstar] using h
 
-/-- The `θ`-derivative of the full profile `F = F_* + g` splits:
-`∂_θ(F_* + g) = ∂_θF_* + ∂_θg` whenever the slice of `g` is differentiable in `θ` at `θ`.
-(`0 < θ < π/2` is exactly the differentiability range of the angular profile
-`(sinθ cos²θ)^{α/3}`; on the open quadrant `Qd` it holds automatically.)  This discharges the
-`hpth`-field of `Work.Stability.GDerivData`. -/
-theorem PthFstarAdd {α : ℝ} {g : F3} {z θ s : ℝ} (hθ : 0 < θ ∧ θ < π / 2)
-    (hg : DifferentiableAt ℝ (fun θ' => g z θ' s) θ) :
-    Work.Spaces.pth (fun z' θ' => Ftot α g s z' θ') z θ
-      = Work.Spaces.pth (Work.Construction.Fstar α) z θ + Work.Spaces.pth (slice g s) z θ := by
-  have hF : DifferentiableAt ℝ (fun θ' => Work.Construction.Fstar α z θ') θ :=
-    differentiableAt_Fstar_slice_theta α z θ hθ
-  have hsum : (fun θ' => Work.Construction.Fstar α z θ' + g z θ' s)
-      = (fun θ' => Work.Construction.Fstar α z θ') + (fun θ' => g z θ' s) := rfl
-  simp only [Work.Spaces.pth, Ftot, slice]
-  rw [hsum, deriv_add hF hg]
 
 end Work.Stability

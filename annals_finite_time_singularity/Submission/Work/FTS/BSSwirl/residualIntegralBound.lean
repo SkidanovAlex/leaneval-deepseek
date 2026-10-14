@@ -1,21 +1,9 @@
-/-
-# `Work.FTS.BSSwirl.residualIntegralBound` — the integral estimate for the Newtonian residual
-
-The core measure-theoretic estimate of `Work.FTS.BSSwirl.hasFDerivAt_newtonPotential`:
-
-  `‖∫ y, K(h,y) • ω y‖ ≤ M (34π‖h‖² + 80000π√(|R|+‖x‖+1)‖h‖^{3/2})`
-
-for `K(h,y) = ‖(x+h)-y‖⁻¹ - ‖x-y‖⁻¹ + ‖x-y‖⁻³⟪x-y,h⟫`, `ω` bounded by `M`, supported in
-`B(0,R)` and ae-strongly-measurable.  The residual is bounded crudely on `{‖x-y‖ < 2‖h‖}` and by
-the Taylor estimate `10000‖h‖^{3/2}‖x-y‖^{-5/2}` on the complement; the two pieces are integrated
-with the shifted ball integrals `ball_lintegral_rpow_sub_le`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.BSSwirl.NewtonPotentialAux
-import Submission.Work.FTS.BSSwirl.ball_lintegral_rpow_sub_le
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
