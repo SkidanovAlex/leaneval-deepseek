@@ -2,9 +2,9 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
 import Submission.Work.FTS.StrongPersist.Clauses
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingSplit
-import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

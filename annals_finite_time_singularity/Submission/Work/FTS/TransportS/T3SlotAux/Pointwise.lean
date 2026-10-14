@@ -1,30 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `T3SlotAux/Pointwise`: the pointwise inputs of the per-slot transport bound
-
-This module collects the pointwise estimates needed by the proof of
-`Work.FTS.TransportS.T3Slot` (the `t3SlotGuarded` task):
-
-* `qOf α a` — the angular exponent of the *canonical* slot weight `canonW q` of the slot with
-  `a` angular derivatives: `η` for the pure `D_z` slot (`a = 0`), `γ` for the mixed slots;
-* `IsLeafW.nonneg`, `IsLeafW.le_canonW` — the three leaf weights of `IP4` are nonnegative on
-  `Iθ` and dominated by the canonical weight of their slot;
-* `dzIter_le_WlInf_open` — `|D_z^b f| ≤ 100 |f|_{𝒲^{4,∞}}` on the open quadrant, for
-  `SmoothOpen f` (`b ≤ 4`), by the Stirling expansion `D_z^b = ∑_k S(b,k) z^k ∂_z^k`;
-* `canonW_pair_le` — the two-factor `ℋ⁴` AM–GM estimate: the canonical slot weight times two
-  `ℋ⁴`-slots (of the *same* weight compatibility class) is dominated by `HkIntegrand α 4 g`.
-
-All declarations are `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.Nonlinear.N4Fields.AngSmoothIntHelpers
 import Submission.Work.FTS.TransportS.SlotT2.Basic
-import Submission.Work.FTS.TransportS.GoodOpenBase
+import Submission.Work.FTS.TransportS.Slots
 import Submission.Work.FTS.TransportS.T3BadAux.slot_prod_le
-import Submission.Work.FTS.H2.OpenPort.coefTh3_mixed_gain
-import Submission.Work.FTS.OpenPkg.ScoefOpen
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

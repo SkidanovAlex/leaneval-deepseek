@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.coefData_pertSharp
 import Submission.Work.FTS.StrongPersist.H6Row6.row6PertData
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

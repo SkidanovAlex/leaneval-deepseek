@@ -1,16 +1,16 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS.StrongEps.Assembly
-import Submission.Work.FTS.StrongEps.GlobalStrong2Prime
-import Submission.Work.FTS.ClassC.Defs
 import Submission.Work.FTS.EllExist.LevelK
+import Submission.Work.FTS.FinalV2.Defs
 import Submission.Work.FTS.RegExportIface.Producers
-import Submission.Work.FTS.StreamBdryIface.Producers
-import Submission.Work.FTS_StreamBdry.hid9_of_parts_proved
-import Submission.Work.FTS_FinalLeaves.All
-import Submission.Work.FTS_MuLipC.Main
+import Submission.Work.FTS.StrongEps.GlobalStrong2Prime
+import Submission.Work.FTS.StrongEps.exists_limG
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
 import Submission.Work.FTS_EllLimOK.MainHFinal
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_aux
+import Submission.Work.FTS_RegExport.VPDefs
+import Submission.Work.FTS_StreamBdry.SB4.near0Aux
+import Submission.Work.FTS_StreamBdry.hid9_of_parts_proved
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,10 +62,6 @@ set_option autoImplicit false
 
 variable {α C₀ Ce Cs : ℝ} {Φs : Fn} {E : Fn →ₗ[ℝ] Fn}
 
-/-- **(0) producer**: a smooth mollifier kernel (`ContDiffBump.normed` on `ℝ×ℝ`, outer radius
-`≤ 1/√2` for the Euclidean support clause; REVIEW §5). Research none. -/
-theorem kernel_exists : ∃ ρ : ℝ × ℝ → ℝ, Work.FTS.StrongEps.IsSmoothKernel ρ := by
-  exact Work.FTS_FinalLeaves.kernel_exists_proved
 
 /-- **(1)+(1a′) producer**: `FTS_EllLimOK.core1_1a_of_compact_uniq` with `EllLimOK` strengthened
 to the order-3 `EllLimOK3` (`LocalBound` to order 4, `ClosedE` to order 3, `ClosedCompact`/
@@ -93,28 +89,7 @@ theorem muLipC_pExp {C₀ Ce Cs : ℝ} (hC₀ : 0 < C₀) :
   Work.FTS_MuLipC.muLipC_pExp (Ce := Ce) (Cs := Cs) hC₀  -- curric-46 lead 10-10: delivered by FTS_MuLipC
 
 
-/-- (4′) producer: `global_strong2` with the enriched output (owner StrongEps).
-curric-46 lead install 2026-10-11 (C1–C5 ruling, `cbc/fts_strongeps_c1c5_ruling.md` §7 item 6,
-review F2/F5): hypothesis (1a) is now `EllLimOK3` itself (no `toEllLimOK` weakening), α₂ is chosen
-after `C₀, Ce, Cs`, and the body is `StrongEps.global_strong2'_proved` = E6
-(`global_strong2_of_limG`, proved) from the E5 leaf `StrongEps.exists_limG`. -/
-theorem global_strong2' {C₀ Ce Cs : ℝ} : ∃ α₂ : ℝ, 0 < α₂ ∧ ∀ αG ∈ Set.Ioc 0 α₂,
-    ∀ {K : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn →ₗ[ℝ] Fn} {g₀ : Fn},
-    Work.FTS.StrongEps.IsSmoothKernel ρ →
-    (∀ u : Fn, Work.FTS.ClassC.ClassC αG u →
-      Work.FTS.VocabO.EllPkgGo αG Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK αG 6 Ce u (E u)) →
-    EllLimOK3 αG E → StarPkgo2 αG Cs Φs →
-    Work.FTS.StrongEps.MuLamOK αG C₀ Φs E →
-    Work.FTS.StrongEps.EpsUniformMem αG ρ Φs E g₀ C₀ K →
-      ∃ g : Fam, Sol αG Φs E g ∧ (∀ z θ, g z θ 0 = g₀ z θ) ∧ DynOK' αG C₀ Φs E g :=
-  Work.FTS.StrongEps.global_strong2'_proved
 
-/-- (5′) feed: the interior `ℋ⁴ → sup` bound on the class C (port of `H2.mixed_supAbsO_le`
-from `SmoothQuad` to `ClassC`). Owner: Final (new leaf), research-low. -/
-theorem classC_sup_le (hα : 0 < α) (hα1 : α ≤ 1) :
-    ∀ f : Fn, Work.FTS.ClassC.ClassC α f → ∀ z θ, (z, θ) ∈ Work.Construction.Qd →
-      |f z θ| ≤ 10 / Real.sqrt (Work.Spaces.gam α - 1) * Work.FTS.Nonlin.Xn α f := by
-  sorry
 
 /-- (5′) producer from `classC_sup_le` + `LimApprox` + `RegPkgMin.vanish` (+ `extG = 0` on `z ≤ 0`).
 Research-none. -/

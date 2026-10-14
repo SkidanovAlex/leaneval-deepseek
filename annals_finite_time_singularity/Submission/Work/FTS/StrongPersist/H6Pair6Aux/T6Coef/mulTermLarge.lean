@@ -2,24 +2,23 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.leaf_slot_le4
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.leaf_slot_le6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.FTS.TransportS.sup_dz_le_hk
-import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
-import Submission.Work.FTS.StrongPersist.N6.PwOpen6
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.OpenTwins
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.Blocks.IMC.cs_integral_mul_le
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.mulTermLargeAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.slotPairCS
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.midSlotSupLe
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Submission.Work.FTS.StrongPersist.N6Trans.L6Core
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
+import Submission.Work.FTS.StrongPersist.SP6.Flat6Defs
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS.TransportS.sup_dz_le_hk
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

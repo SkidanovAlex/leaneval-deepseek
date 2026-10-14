@@ -7,9 +7,9 @@ import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_hasFDerivAt
 import Submission.Work.FTS.PressureOn.Green.integral_mul_laplaceTrace_comm
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_hasFDerivAt
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

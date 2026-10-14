@@ -1,17 +1,227 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_RegExport.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS_RegExport.RXT.Defs
-import Submission.Work.FTS_RegExport.RXT.Pullback
-import Submission.Work.FTS_RegExport.RXT.Continuity
-import Submission.Work.FTS_RegExport.RXT.Bounds
-import Submission.Work.FTS_RegExport.RXT.cone_max_principle
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS_RegExport.RXB.l12_zero_lim_proved
+import Submission.Work.FTS_RegExport.RXT.Sys.PullDefs
+import Submission.Work.FTS_RegExport.RXT.Sys.pw_identity_mine
+import Submission.Work.FTS_RegExport.RXT.cone_induction
+import Submission.Work.FTS_RegExport.VPDefs
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.Sys.pw_regularity =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-! Joint continuity of `pw`, `pws`, `pwψ` on the pulled-back slab and the two partial
+derivatives of `pw` in the logarithmic coordinates, from the T5c hypotheses (continuity of
+`w`, `wz`, `wθ` and the two partial-derivative relations `D_z w = wz/z`,
+`D_θ w = wθ/sin 2θ`).
+
+The derivative computations are the chain rule plus the two `ω`-identities of
+`RXT.omega_facts`:
+* `∂_s (w ∘ cz) = (wz/z)·cz = wz` and `∂_s om = om·2/(1+cz)`, whence
+  `∂_sφ = wz/om − 2φ/(1+cz) = pws`;
+* `∂_ψ (w ∘ cth) = (wθ/sin 2θ)·(sin 2θ/2) = wθ/2` and
+  `∂_ψ om = om·(2α·c2m/sin 2θ)·(sin 2θ/2) = om·α·c2m`, whence
+  `∂_ψφ = wθ/(2om) − α·c2m·φ = pwψ`. -/
+
+noncomputable section
+open scoped Real Topology
+open Set Filter MeasureTheory
+namespace Work.FTS_RegExport.RXT.Sys
+
+set_option maxHeartbeats 1000000
+
+theorem pw_regularity {n : ℕ} {w wz wθ : Fin n → ℝ → ℝ → ℝ → ℝ} {S α : ℝ} (hα : 0 < α)
+    (hcont : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => w k p.1 p.2.1 p.2.2)
+      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) S))
+    (hz : ∀ k z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc (0:ℝ) S →
+      HasDerivAt (fun z' => w k z' θ τ) (wz k z θ τ / z) z)
+    (hθ : ∀ k z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc (0:ℝ) S →
+      HasDerivAt (fun θ' => w k z θ' τ) (wθ k z θ τ / Real.sin (2 * θ)) θ)
+    (hcz : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => wz k p.1 p.2.1 p.2.2)
+      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) S))
+    (hcθ : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => wθ k p.1 p.2.1 p.2.2)
+      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) S)) :
+    (∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => pw α (w k) p.1 p.2.1 p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S)) ∧
+    (∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => pws α (wz k) (w k) p.1 p.2.1 p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S)) ∧
+    (∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => pwψ α (wθ k) (w k) p.1 p.2.1 p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S)) ∧
+    (∀ k s ψ τ, τ ∈ Set.Icc (0:ℝ) S →
+      HasDerivAt (fun s' => pw α (w k) s' ψ τ) (pws α (wz k) (w k) s ψ τ) s) ∧
+    (∀ k s ψ τ, τ ∈ Set.Icc (0:ℝ) S →
+      HasDerivAt (fun ψ' => pw α (w k) s ψ' τ) (pwψ α (wθ k) (w k) s ψ τ) ψ) := by
+  have hcoord : ContinuousOn (fun p : ℝ × ℝ × ℝ => (cz p.1, (cth p.2.1, p.2.2)))
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+    Work.FTS_RegExport.RXT.continuousOn_coords (S := S)
+  have hmap : Set.MapsTo (fun p : ℝ × ℝ × ℝ => (cz p.1, (cth p.2.1, p.2.2)))
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S)
+      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) S) :=
+    Work.FTS_RegExport.RXT.mapsTo_coords (S := S)
+  have homc : ContinuousOn (fun p : ℝ × ℝ × ℝ => om α p.1 p.2.1)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+    Work.FTS_RegExport.RXT.continuousOn_om (S := S) hα
+  have homne : ∀ p : ℝ × ℝ × ℝ, om α p.1 p.2.1 ≠ 0 :=
+    fun p => ne_of_gt (Work.FTS_RegExport.RXT.om_pos (α := α) hα)
+  have huc : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => w k (cz p.1) (cth p.2.1) p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+    fun k => (hcont k).comp hcoord hmap
+  have hzc : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => wz k (cz p.1) (cth p.2.1) p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+    fun k => (hcz k).comp hcoord hmap
+  have hθc : ∀ k, ContinuousOn (fun p : ℝ × ℝ × ℝ => wθ k (cz p.1) (cth p.2.1) p.2.2)
+      (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+    fun k => (hcθ k).comp hcoord hmap
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · intro k
+    have h : ContinuousOn (fun p : ℝ × ℝ × ℝ => w k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1)
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+      (huc k).div homc (fun p _ => homne p)
+    exact h
+  · intro k
+    have h1 : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        wz k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1)
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+      (hzc k).div homc (fun p _ => homne p)
+    have h2 : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        2 * (w k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1) / (1 + cz p.1))
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+      (continuousOn_const.mul ((huc k).div homc (fun p _ => homne p))).div
+        (continuousOn_const.add (Work.FTS_RegExport.RXT.continuousOn_cz (S := S)))
+        (fun p _ => by
+          have hp := Work.FTS_RegExport.RXT.cz_pos p.1
+          positivity)
+    have h : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        wz k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1
+          - 2 * (w k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1) / (1 + cz p.1))
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) := h1.sub h2
+    exact h
+  · intro k
+    have h1 : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        wθ k (cz p.1) (cth p.2.1) p.2.2 / (2 * om α p.1 p.2.1))
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+      (hθc k).div (continuousOn_const.mul homc) (fun p _ => by
+        have hp := homne p
+        positivity)
+    have h2 : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        (w k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1)
+          * (α * Work.Construction.c2m (cth p.2.1)))
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) :=
+      ((huc k).div homc (fun p _ => homne p)).mul
+        (continuousOn_const.mul (Work.FTS_RegExport.RXT.continuousOn_c2m_comp (S := S)))
+    have h : ContinuousOn (fun p : ℝ × ℝ × ℝ =>
+        wθ k (cz p.1) (cth p.2.1) p.2.2 / (2 * om α p.1 p.2.1)
+          - (w k (cz p.1) (cth p.2.1) p.2.2 / om α p.1 p.2.1)
+            * (α * Work.Construction.c2m (cth p.2.1)))
+        (Set.univ ×ˢ Set.univ ×ˢ Set.Icc (0:ℝ) S) := h1.sub h2
+    exact h
+  · intro k s ψ τ hτ
+    have hC : cz s ≠ 0 := ne_of_gt (Work.FTS_RegExport.RXT.cz_pos s)
+    have hD : (1 + cz s) ≠ 0 := by
+      have hp := Work.FTS_RegExport.RXT.cz_pos s
+      positivity
+    have hO : om α s ψ ≠ 0 := ne_of_gt (Work.FTS_RegExport.RXT.om_pos (α := α) hα)
+    have hz1 : HasDerivAt (fun s' : ℝ => w k (cz s') (cth ψ) τ) (wz k (cz s) (cth ψ) τ) s := by
+      have h1 := (hz k (cz s) (cth ψ) τ (Work.FTS_RegExport.RXT.cz_pos s)
+        (Work.FTS_RegExport.RXT.cth_pos ψ) (Work.FTS_RegExport.RXT.cth_lt ψ) hτ).comp s
+        (Work.FTS_RegExport.RXT.hasDerivAt_cz s)
+      refine h1.congr_deriv ?_
+      field_simp
+    have hom1 : HasDerivAt (fun s' : ℝ => om α s' ψ)
+        (om α s ψ * (2 / (cz s * (1 + cz s))) * cz s) s := by
+      have h1 := (Work.FTS_RegExport.RXT.hasDerivAt_omega_z α (cz s) (cth ψ)
+        (Work.FTS_RegExport.RXT.cz_pos s)).comp s (Work.FTS_RegExport.RXT.hasDerivAt_cz s)
+      simpa only [om, Function.comp_def] using h1
+    have hq := hz1.div hom1 hO
+    refine hq.congr_deriv ?_
+    simp only [pws, pw]
+    field_simp
+  · intro k s ψ τ hτ
+    have hS2 : Real.sin (2 * cth ψ) ≠ 0 :=
+      ne_of_gt (Work.FTS_RegExport.RXT.cth_sin_two_pos ψ)
+    have hO : om α s ψ ≠ 0 := ne_of_gt (Work.FTS_RegExport.RXT.om_pos (α := α) hα)
+    have hθ1 : HasDerivAt (fun ψ' : ℝ => w k (cz s) (cth ψ') τ) (wθ k (cz s) (cth ψ) τ / 2) ψ := by
+      have h1 := (hθ k (cz s) (cth ψ) τ (Work.FTS_RegExport.RXT.cz_pos s)
+        (Work.FTS_RegExport.RXT.cth_pos ψ) (Work.FTS_RegExport.RXT.cth_lt ψ) hτ).comp ψ
+        (Work.FTS_RegExport.RXT.hasDerivAt_cth ψ)
+      refine h1.congr_deriv ?_
+      field_simp
+    have hom1 : HasDerivAt (fun ψ' : ℝ => om α s ψ')
+        (om α s ψ * (2 * α * Work.Construction.c2m (cth ψ) / Real.sin (2 * cth ψ))
+          * (Real.sin (2 * cth ψ) / 2)) ψ := by
+      have h1 := (Work.FTS_RegExport.RXT.hasDerivAt_omega_theta α (cz s) (cth ψ) hα
+        (Work.FTS_RegExport.RXT.cth_pos ψ)
+        (Work.FTS_RegExport.RXT.cth_lt ψ)).comp ψ (Work.FTS_RegExport.RXT.hasDerivAt_cth ψ)
+      simpa only [om, Function.comp_def] using h1
+    have hq := hθ1.div hom1 hO
+    refine hq.congr_deriv ?_
+    simp only [pwψ, pw]
+    field_simp
+
+end Work.FTS_RegExport.RXT.Sys
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.step_integrated_fix =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# The corrected leaf T4: `step_integrated_nonneg`
+
+`Work.FTS_RegExport.RXT.step_integrated` (this directory) is **false** as stated: its
+conclusion `ConeStep n φ T A (n * C) F` fails for `C < 0` because the endpoint bound `B` of
+`ConeStep` is universally quantified (see the refutation `step_integrated_false` in
+`Submission/Work/FTS_RegExport/RXT/step_integrated.lean`).  The missing hypothesis is `0 ≤ C`;
+this file proves the statement with that hypothesis added, nothing else changed:
+
+```
+theorem step_integrated_nonneg ... (hC : 0 ≤ C) (hcont) (hs) (hψ) (hcs) (hcψ) (hab) (hA)
+    (hRi) (hRb) (hId) : ConeStep n φ T A (n * C) F
+```
+
+The proof is the discrete one-step argument of the RX-T plan; see the module docstring of
+`step_integrated.lean` for the outline.  All constants are the naive ones (no optimality is
+claimed):
+`ε` is split as `3ε/4 + ε/4` into `η_s = ε/(4(A+1))` (uniform continuity of `∂_sφ`, `∂_ψφ`)
+and `η_G = ε/(4(nC+1))` (closeness of `∑_j |φ_j(s,ψ,σ)|` to its value at `τ+h`).
+-/
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+namespace Work.FTS_RegExport.RXT
+
+set_option autoImplicit false
+set_option maxHeartbeats 4000000
+
+/-! ## The corrected statement -/
+
+
+end Work.FTS_RegExport.RXT
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXT.transport_weighted_proved =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -50,100 +260,7 @@ namespace Work.FTS_RegExport.RXT
 
 set_option autoImplicit false
 
-set_option linter.unusedVariables false in
-theorem transport_weighted_proved {α S M K₀ Kσ : ℝ} (hα : 0 < α) (hS : 0 < S)
-    {u Vz Vθ cs σ : ℝ → ℝ → ℝ → ℝ}
-    (hu : ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => u p.1 p.2.1 p.2.2)
-      (Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2) ×ˢ Set.Icc (0:ℝ) S))
-    (hEq : ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S →
-      HasDerivAt (fun s => u z θ s)
-        (σ z θ τ - (Vz z θ τ * Work.Spaces.Dz (fun z θ => u z θ τ) z θ
-          + Vθ z θ τ * Work.Spaces.pth (fun z θ => u z θ τ) z θ + cs z θ τ * u z θ τ)) τ)
-    (hVz : ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc 0 S →
-      0 ≤ Vz z θ τ ∧ Vz z θ τ ≤ M)
-    (hVθ : ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc 0 S →
-      |Vθ z θ τ| ≤ M * Real.sin (2 * θ))
-    (hlip : ∀ τ ∈ Set.Icc 0 S, ∀ L₁ > 0, ∃ K : NNReal, LipschitzOnWith K
-      (fun p : ℝ × ℝ => (Vz p.1 p.2 τ, Vθ p.1 p.2 τ)) (Set.Ioi L₁ ×ˢ Set.Ioo (0:ℝ) (Real.pi / 2)))
-    (hcs : ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc 0 S → |cs z θ τ| ≤ M)
-    (hσ : ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc 0 S →
-      |σ z θ τ| ≤ Kσ * Work.FTS.RegExportIface.ω α z θ)
-    (h0 : ∀ z θ, 0 < z → 0 < θ → θ < Real.pi / 2 →
-      |u z θ 0| ≤ K₀ * Work.FTS.RegExportIface.ω α z θ) :
-    ∃ K : ℝ, ∀ z θ τ, 0 < z → 0 < θ → θ < Real.pi / 2 → τ ∈ Set.Icc 0 S →
-      |u z θ τ| ≤ Real.exp (K * S) * (K₀ + S * Kσ) * Work.FTS.RegExportIface.ω α z θ := by
-  -- ## the parameters are non-negative
-  have hπ4 : (0:ℝ) < Real.pi / 4 := by linarith [Real.pi_pos]
-  have hπ4' : Real.pi / 4 < Real.pi / 2 := by linarith [Real.pi_pos]
-  have hτ0 : (0:ℝ) ∈ Set.Icc (0:ℝ) S := ⟨le_rfl, hS.le⟩
-  have hω1 : 0 < Work.FTS.RegExportIface.ω α 1 (Real.pi / 4) :=
-    (omega_facts α hα).1 1 (Real.pi / 4) one_pos hπ4 hπ4'
-  have hvz1 := hVz 1 (Real.pi / 4) 0 one_pos hπ4 hπ4' hτ0
-  have hM : 0 ≤ M := le_trans hvz1.1 hvz1.2
-  have hK₀ : 0 ≤ K₀ := by
-    have h := h0 1 (Real.pi / 4) one_pos hπ4 hπ4'
-    have h2 : 0 ≤ K₀ * Work.FTS.RegExportIface.ω α 1 (Real.pi / 4) := le_trans (abs_nonneg _) h
-    nlinarith [h2, hω1]
-  have hKσ : 0 ≤ Kσ := by
-    have h := hσ 1 (Real.pi / 4) 0 one_pos hπ4 hπ4' hτ0
-    have h2 : 0 ≤ Kσ * Work.FTS.RegExportIface.ω α 1 (Real.pi / 4) := le_trans (abs_nonneg _) h
-    nlinarith [h2, hω1]
-  have hC0 : 0 ≤ M * (3 + 4 * α) := mul_nonneg hM (by linarith [hα.le])
-  have hA0 : 0 ≤ 2 * M := by linarith
-  -- ## the cone maximum principle on the pulled-back unknown
-  refine ⟨2 * M * (3 + 4 * α), ?_⟩
-  intro z θ τ hz hθ0 hθπ hτmem
-  obtain ⟨s, hs⟩ := exists_exp z hz
-  have hsz : cz s = z := hs
-  obtain ⟨ψ, hψ⟩ := exists_arctan_exp θ hθ0 hθπ
-  have hψθ : cth ψ = θ := hψ
-  have hcone := cone_max_principle (φ := phi α u) (φs := dphi_s α u) (φψ := dphi_ψ α u)
-    (a := trA Vz) (b := trB Vθ) (c := trC α Vz Vθ cs) (f := trF α σ)
-    (T := S) (A := 2 * M) (C := M * (3 + 4 * α)) (F := Kσ) (K₀ := K₀)
-    hS hA0 hC0 hKσ hK₀
-    (phi_continuous hα hu) (dphi_s_continuous hα hS hu) (dphi_ψ_continuous hα hS hu)
-    (fun s ψ τ hτ => phi_hasDerivAt_s hα hu s ψ τ hτ)
-    (fun s ψ τ hτ => phi_hasDerivAt_ψ hα hu s ψ τ hτ)
-    (fun s ψ τ hτ0' hτS => phi_hasDerivAt_τ hα hEq s ψ τ hτ0' hτS)
-    (fun s ψ τ hτ0' hτS => le_trans (trA_bound hVz s ψ τ hτ0' hτS) (by linarith [hM]))
-    (fun s ψ τ hτ0' hτS => trB_bound hVθ s ψ τ hτ0' hτS)
-    (fun s ψ τ hτ0' hτS => trC_bound hα hVz hVθ hcs s ψ τ hτ0' hτS)
-    (fun s ψ τ hτ0' hτS => trF_bound hα hσ s ψ τ hτ0' hτS)
-    (phi_zero_bound hα h0)
-  have hb := hcone s ψ τ hτmem
-  -- ## pull the estimate back to `(z,θ,τ)`
-  have hom : 0 < om α s ψ := om_pos hα
-  have hphi : |phi α u s ψ τ| = |u (cz s) (cth ψ) τ| / om α s ψ := by
-    rw [phi, abs_div, abs_of_pos hom]
-  rw [hphi, div_le_iff₀ hom] at hb
-  have hωeq : om α s ψ = Work.FTS.RegExportIface.ω α z θ := by
-    show Work.FTS.RegExportIface.ω α (cz s) (cth ψ) = Work.FTS.RegExportIface.ω α z θ
-    rw [hsz, hψθ]
-  have hu'' : |u z θ τ| ≤ Work.FTS.RegExportIface.ω α z θ
-      * (Real.exp (2 * (M * (3 + 4 * α)) * τ) * (K₀ + τ * Kσ)) := by
-    rw [mul_comm] at hb
-    rw [hωeq, hsz, hψθ] at hb
-    exact hb
-  -- ## monotonicity in `τ`
-  have hω0 : 0 ≤ Work.FTS.RegExportIface.ω α z θ := by
-    have h := (omega_facts α hα).1 z θ hz hθ0 hθπ
-    exact h.le
-  have hexp_le : Real.exp (2 * (M * (3 + 4 * α)) * τ)
-      ≤ Real.exp ((2 * M * (3 + 4 * α)) * S) := by
-    apply Real.exp_le_exp.mpr
-    nlinarith [hτmem.2, hM, hα.le]
-  have hsum_le : K₀ + τ * Kσ ≤ K₀ + S * Kσ := by nlinarith [hτmem.2, hKσ]
-  have hsum0 : 0 ≤ K₀ + τ * Kσ := by nlinarith [hτmem.1, hK₀, hKσ]
-  have hcoef : Real.exp (2 * (M * (3 + 4 * α)) * τ) * (K₀ + τ * Kσ)
-      ≤ Real.exp ((2 * M * (3 + 4 * α)) * S) * (K₀ + S * Kσ) :=
-    mul_le_mul hexp_le hsum_le hsum0 (Real.exp_pos _).le
-  refine le_trans hu'' ?_
-  calc Work.FTS.RegExportIface.ω α z θ
-        * (Real.exp (2 * (M * (3 + 4 * α)) * τ) * (K₀ + τ * Kσ))
-      ≤ Work.FTS.RegExportIface.ω α z θ
-        * (Real.exp ((2 * M * (3 + 4 * α)) * S) * (K₀ + S * Kσ)) :=
-        mul_le_mul_of_nonneg_left hcoef hω0
-    _ = Real.exp ((2 * M * (3 + 4 * α)) * S) * (K₀ + S * Kσ)
-        * Work.FTS.RegExportIface.ω α z θ := by ring
 
 end Work.FTS_RegExport.RXT
+end
+end

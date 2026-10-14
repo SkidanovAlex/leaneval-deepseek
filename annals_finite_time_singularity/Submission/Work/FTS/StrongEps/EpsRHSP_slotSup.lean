@@ -1,41 +1,19 @@
-/-
-# `Submission/Work/FTS/StrongEps/EpsRHSP_slotSup.lean` — sup-bounds for the projected right-hand side
-
-The statement proved here is `Work.FTS.StrongEps.EpsRHSP_slotSup`: if the pre-mollified
-right-hand side `epsWP` is bounded together with all its mixed derivatives `D_z^j D_θ^i`
-(`j + i ≤ 4`) on a compact `K' ⊆ Q0` containing the `ε`-shifts of a compact `K ⊆ Q0`, and if
-`HkNorm α 4 (epsWP s) ≤ KW` uniformly in `s ∈ [0,T]`, then the *projected, mollified* right-hand
-side `epsRHSP s = Pz (J_ε (epsWP s))` has the same uniform bound on `K`.
-
-The proof uses the definitional identity `epsRHSP s = J_ε (epsWP s) − (L₁₂(J_ε (epsWP s))(0) /
-pzNorm) · bump` and bounds the two terms separately:
-
-* **main term.**  `D_z^jD_θ^i (J_ε Ψ) = J_ε (D_z^jD_θ^i Ψ)` on the open quadrant (`mixed_Jeps`),
-  and `J_ε` is the nonnegative-kernel average of the shifted values (`abs_Jeps_le_sup`); the
-  shifted points lie in `K'` by hypothesis, so the main term is `≤ C`;
-* **correction term.**  The fixed profile `bump` has uniformly bounded mixed derivatives on the
-  compact `K` (`exists_bound_mixed_bump` below), and the scalar is controlled by
-  `|L₁₂(J_ε Ψ)(0)| ≤ CL · |J_ε Ψ|_{ℋ⁴} ≤ CL · e^{Cε/2}|Ψ|_{ℋ⁴} ≤ CL · e^{C/2} · KW`
-  (`abs_L12_Jeps_le` below, from `OpenPkg.l12zero_field`, `HkSq_Jeps_le` and `HkMem_Jeps`).
-
-Everything here is complete (no placeholders).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.Jeps_absCompactBound
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
 import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
 import Submission.Work.FTS.StrongEps.mixed_Jeps
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.PZeroAux.pzNorm_pos
-import Submission.Work.FTS.StrongEps.BumpDefs
-import Submission.Work.FTS.StrongEps.L12AbsLe
-import Submission.Work.FTS.OpenPkg.l12zero_field
-import Submission.Work.FTS.GalBasis.FamEAux.Basic
+import Submission.Work.FTS.StrongEps.wtZ_shift_le
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.StarPkg6Assembly
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.R1G.DecayInZ_gA
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -217,93 +195,5 @@ theorem abs_L12_Jeps_le {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) :
 
 /-! ## The target -/
 
-theorem EpsRHSP_slotSup {α T ε : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Work.FTS.Galerkin.Fn}
-    {E : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn} {g : Work.FTS.Galerkin.Fam}
-    (hα : α ∈ Set.Ioc 0 1) (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    (hε : ε ∈ Set.Ioc 0 1)
-    (hreg : ∀ s ∈ Set.Icc 0 T,
-      Work.FTS.EllipticEst.SmoothOpen (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s))
-    {K : Set (ℝ × ℝ)} (hK : IsCompact K) (hKQ : K ⊆ Work.FTS.EllipticEst.Q0)
-    (hsup : ∃ K' : Set (ℝ × ℝ), IsCompact K' ∧ K' ⊆ Work.FTS.EllipticEst.Q0 ∧ K ⊆ K' ∧
-      (∀ p ∈ K, ∀ q : ℝ × ℝ, |q.1| ≤ ε → |q.2| ≤ ε →
-        (Work.FTS.StrongEps.zShift p.1 q.1, Work.FTS.StrongEps.thShift p.2 q.2) ∈ K') ∧
-      ∃ C : ℝ, 0 ≤ C ∧ ∀ (j i : ℕ), j + i ≤ 4 → ∀ s ∈ Set.Icc 0 T, ∀ p ∈ K',
-        |Work.Spaces.mixed j i (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s) p.1 p.2| ≤ C)
-    (hnorm : ∃ KW : ℝ, 0 ≤ KW ∧ ∀ s ∈ Set.Icc 0 T,
-      Work.Spaces.HkMem α 4 (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s) ∧
-      Work.Spaces.HkNorm α 4 (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s) ≤ KW) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ (j i : ℕ), j + i ≤ 4 → ∀ s ∈ Set.Icc 0 T, ∀ p ∈ K,
-      |Work.Spaces.mixed j i (Work.FTS.StrongEps.epsRHSP α ρ ε Φs E g s) p.1 p.2| ≤ C := by
-  obtain ⟨K', hK'c, hK'Q, hKK', hshift, C₀, hC₀, hbdd⟩ := hsup
-  obtain ⟨KW, hKW, hnorm'⟩ := hnorm
-  obtain ⟨Cb, hCb0, hbump⟩ := exists_bound_mixed_bump K hK
-  obtain ⟨CL, hCL0, hCL⟩ := abs_L12_Jeps_le (ρ := ρ) hρ
-  have hpzpos : 0 < Work.FTS.StrongEps.pzNorm := Work.FTS.StrongEps.PZeroAux.pzNorm_pos
-  refine ⟨C₀ + (CL * KW / Work.FTS.StrongEps.pzNorm) * Cb, ?_, ?_⟩
-  · exact add_nonneg hC₀ (mul_nonneg (div_nonneg (mul_nonneg hCL0 hKW) hpzpos.le) hCb0)
-  · intro j i hji s hs p hp
-    obtain ⟨hmems, hnormbs⟩ := hnorm' s hs
-    have hpQ := Work.FTS.EllipticEst.mem_Q0.mp (hKQ hp)
-    have hz : 0 < p.1 := hpQ.1
-    have hθ : p.2 ∈ Set.Ioo 0 (π / 2) := ⟨hpQ.2.1, hpQ.2.2⟩
-    have hsm : ∀ n : ℕ, ContDiffOn ℝ n
-        (Function.uncurry (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s))
-        Work.FTS.StrongEps.Quad := (hreg s hs).forall
-    have hmain : |Work.Spaces.mixed j i
-        (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) p.1 p.2|
-        ≤ C₀ := by
-      rw [Work.FTS.StrongEps.mixed_Jeps ρ hρ.moll hε.1 hsm hz hθ j i]
-      refine Work.FTS.StrongEps.abs_Jeps_le_sup ρ hρ.moll hε.1 hz hθ ?_ hC₀
-      intro q hq1 hq2
-      exact hbdd j i hji s hs (Work.FTS.StrongEps.zShift p.1 q.1,
-        Work.FTS.StrongEps.thShift p.2 q.2) (hshift p hp q hq1 hq2)
-    have hcorr : |(Work.Construction.L12
-          (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-            / Work.FTS.StrongEps.pzNorm) * Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2|
-        ≤ (CL * KW / Work.FTS.StrongEps.pzNorm) * Cb := by
-      rw [abs_mul]
-      have hL : |Work.Construction.L12
-          (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0|
-          ≤ CL * KW := hCL hα hε.1 hε.2 hKW hsm hmems hnormbs
-      have hal : |Work.Construction.L12
-          (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-            / Work.FTS.StrongEps.pzNorm| ≤ CL * KW / Work.FTS.StrongEps.pzNorm := by
-        rw [abs_div, abs_of_pos hpzpos]
-        exact div_le_div_of_nonneg_right hL hpzpos.le
-      have hb : |Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2| ≤ Cb :=
-        hbump j i hji p hp
-      exact mul_le_mul hal hb (abs_nonneg _)
-        (div_nonneg (mul_nonneg hCL0 hKW) hpzpos.le)
-    have hsplit : Work.Spaces.mixed j i (Work.FTS.StrongEps.epsRHSP α ρ ε Φs E g s) p.1 p.2
-        = Work.Spaces.mixed j i
-            (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) p.1 p.2
-          - (Work.Construction.L12
-              (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-                / Work.FTS.StrongEps.pzNorm)
-            * Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2 := by
-      rw [Work.FTS.StrongEps.epsRHSP_eq_Pz_Jeps_epsWP,
-        Work.FTS.StrongEps.PZeroAux.mixed_Pz
-          (Work.FTS.StrongEps.smoothOpen_Jeps ρ hρ hε.1 hsm) hz hθ j i]
-    rw [hsplit]
-    calc |Work.Spaces.mixed j i
-            (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) p.1 p.2
-          - (Work.Construction.L12
-              (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-                / Work.FTS.StrongEps.pzNorm)
-            * Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2|
-        ≤ |Work.Spaces.mixed j i
-              (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) p.1 p.2|
-          + |(Work.Construction.L12
-              (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-                / Work.FTS.StrongEps.pzNorm)
-            * Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2| := by
-          have h := abs_add_le (Work.Spaces.mixed j i
-              (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) p.1 p.2)
-            (-((Work.Construction.L12
-                (Work.FTS.StrongEps.Jeps ρ ε (Work.FTS.StrongEps.epsWP α ρ ε Φs E g s)) 0
-                  / Work.FTS.StrongEps.pzNorm)
-                * Work.Spaces.mixed j i Work.FTS.StrongEps.bump p.1 p.2))
-          simpa only [sub_eq_add_neg, abs_neg] using h
-      _ ≤ C₀ + (CL * KW / Work.FTS.StrongEps.pzNorm) * Cb := add_le_add hmain hcorr
 
 end Work.FTS.StrongEps

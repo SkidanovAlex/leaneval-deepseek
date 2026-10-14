@@ -1,22 +1,8 @@
-/-
-# `Assembly/AnsatzAsymB.lean` — the angular asymptotics of the counterexample, part 2
-
-The lower bound on the *difference* of the two `i = 1` slots:
-
-`Sc (hA δ) 1 η - Sc (hA δ) 1 γ ≥ C₁/δ`,
-
-obtained from `D_θ h_δ = sin(2θ)·χ'((·-θ₀)/δ)/δ`:
-
-* on the sub-interval `[θ₀+δ, θ₀+2δ]` the factor `sin(2θ)² ≥ sin(1)²` is bounded below, and
-  the substitution `θ = θ₀ + δu` turns the integral of `(χ')²` into `δ·∫_1^2 (χ')² ≥ δ`,
-* the weight gap `sin(2θ)^{-η} - sin(2θ)^{-γ}` is bounded below by its value at `sin(3/2)`
-  on the whole support (by `rpow_sub_mono`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.CoercivityFix.Assembly.AnsatzAsym
+import Submission.Work.FTS_EllLimOK.ZDecay_of_decay_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

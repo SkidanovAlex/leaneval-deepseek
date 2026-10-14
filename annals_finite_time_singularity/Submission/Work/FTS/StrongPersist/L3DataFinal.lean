@@ -1,33 +1,69 @@
-/-
-# `Work.FTS.StrongPersist.L3DataFinal` — S6's package `L3Data`, uniformly in the elliptic constant
-
-Both analytic halves of the level-three package `L3Data` are proved:
-
-* the **linear** half `L3Data.lin` — `L3_lin_mem` (`L3_lin_mem.lean`);
-* the **nonlinear** half `L3Data.rhs` — `L3RhsPriced` (`L3RhsPriced.lean`), whose statement
-  quantifies the elliptic perturbation constant `Ce` *inside* the `∀ α` and produces the
-  constants `(α₂, C3, Cpow)` outside it.
-
-Because the two halves are stated in that shape, the package is inhabited **uniformly in `Ce`**:
-
-```
-∃ α₂ C3 Cpow > 0, 0 ≤ Cpow ∧ ∀ Ce, L3Data α₂ Ce C3 Cpow.
-```
-
-This uniformity is what S6 needs: `Dbd.dbd_of_eq` takes `L3Data α₂ Ce C3 Cpow` for the *same*
-`Ce` that occurs in the caller's elliptic context `Ell6Ctx α Ce Cs E Φs f Φ` (the constant of
-the level-six perturbation package `EllPkgK α 6 Ce f (E f)`), and a caller cannot be asked to
-change `Ce` to match an existentially produced one.
-
-The proof is the merge of `L3DataExists.L3Data_exists_of` (min of the `α₂`'s, max of the `C3`'s)
-run *after* the `∀ Ce` binder.  Everything rests on
-`[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.Defs
-import Submission.Work.FTS.StrongPersist.Basic
-import Submission.Work.FTS.StrongPersist.L3_lin_mem
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
 import Submission.Work.FTS.StrongPersist.L3RhsPriced
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongEps.Mem10Obligations =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `StrongEps/Mem10Obligations` — the `ℋ¹⁰` obligation of the mollifier part of `ClassC`
+
+Lead install, 2026-10-11 (`cbc/fts_phistar_REVIEW.md` §3, `cbc/fts_mem10_install.md`).
+
+`ClassC` gained the field `mem10 : HkMem α 10 g` (the repaired elliptic node
+`PhiStar.bslOp_sol_exists_pp 8` needs two orders of slack).  Every `ClassC` element that the
+tree produces is a log-mollified profile `J_ε f` (possibly corrected by `Pz`), and `SoftClass`
+(the mollifier part of `ClassC`, `MolClassC.lean`) gained the matching field `mem10`, supplied
+in `softClass_Jeps` by
+
+  `Work.FTS.StrongEps.HkMem_Jeps_ten_of_eight` — `J_ε : ℋ⁸ → ℋ¹⁰`, for **every** `ε > 0`.
+
+**Status: DISCHARGED.**  The declaration now lives in
+`Submission/Work/FTS/StrongEps/HkMem_Jeps_ten_of_eight.lean` (module
+`Submission.Work.FTS.StrongEps.HkMem_Jeps_ten_of_eight`), which this file imports; the proof goes
+through the scale-free two-order gain `TenOfEight.HkMem_Jeps_gain_pos`
+(`Submission/Work/FTS/StrongEps/TenOfEight/GainAll.lean`), which removes the `ε ≤ 1` restriction of
+`EpsE4Thr.HkMem_Jeps_gain` by replacing the routed density `LamFull ρ ε c M` with a scale-free one
+(the kernel factor `max 1 (ε⁻¹^M)`).  The boundary-vanishing hypothesis of the `EpsE4Thr` form is
+*unused* there (`J_ε f` reads `f` only on the open quadrant), so it does not appear in the
+delivered statement.
+
+The statement, byte-for-byte as installed:
+
+```lean
+theorem HkMem_Jeps_ten_of_eight {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) {α : ℝ}
+    (hα : α ∈ Set.Ioc 0 1) {ε : ℝ} (hε : 0 < ε) {f : ℝ → ℝ → ℝ}
+    (hsm : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Quad)
+    (hmem : Work.Spaces.HkMem α 8 f) :
+    Work.Spaces.HkMem α 10 (Jeps ρ ε f)
+```
+-/
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+set_option autoImplicit false
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.L3DataFinal =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -90,3 +126,5 @@ theorem L3Data_exists : ∃ α₂ C3 Cpow : ℝ, 0 < α₂ ∧ 0 < C3 ∧ 0 ≤ 
     exact mul_le_mul_of_nonneg_right h3 hY
 
 end Work.FTS.StrongPersist
+end
+end

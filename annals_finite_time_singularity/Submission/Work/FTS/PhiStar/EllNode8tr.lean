@@ -1,10 +1,10 @@
 import Mathlib.Topology.MetricSpace.Pseudo.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.PhiStar.ThetaTraces
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.PhiStar.RouteB.EllNode8trBody
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

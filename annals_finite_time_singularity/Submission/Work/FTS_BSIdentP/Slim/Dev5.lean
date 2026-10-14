@@ -2,9 +2,8 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Defs.contDiffAt_psiField_merPsi_of_mem_Uax
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
 import Submission.Work.FTS_BSIdentP.Slim.DevStub
 
 -- v435-port: begin

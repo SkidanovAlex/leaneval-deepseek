@@ -1,18 +1,484 @@
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.FDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_RegExport.RXR1.mixed_abs_le_weighted
-import Submission.Work.FTS.EllipticEst.TT.Slot11.ZsqAux
-import Submission.Work.FTS_RegExport.RXR1.classC_sub_hyp
-import Submission.Work.FTS.StrongEps.EComparison.Reduction
 import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS_RegExport.RXR1.SliceDiffAux
-import Submission.Work.FTS_RegExport.RXR1.hasDerivAt_of_tendsto_deriv
+import Submission.Work.FTS.GalFields.RHS.SharpAux.HonTerms.Base
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.Pieces4
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.StrongEps.EpsE4Thr.regQo_const_mul
+import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.NZeroAux.L12add
+import Submission.Work.FTS_RegExport.RXR1.classC_sub_hyp
+import Submission.Work.FTS_RegExport.RXR1.mixed_abs_le_weighted
 import Submission.Work.FTS_RegExport.RXR1.pzIter_bound_weighted
-import Submission.Work.FTS_RegExport.RXR1.pthIter_le_of_weighted
+import Submission.Work.FTS_StreamBdry.SB4.lim_mixed_plainE
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS_MuLipC.Poly0.n0_poly =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real
+
+namespace Work.FTS_MuLipC.Poly0
+
+/-- **Additivity of `L₁₂` on the open class.**  For two data that are `C^∞` on the open quadrant
+and honest in `ℋ⁴`, the integral operator `L₁₂` is additive at every `z ≥ 0`.  This is
+`Work.FTS.LocData.L12_add_mul` with its four integrability inputs supplied by the `ℋ⁴`-honesty
+(`Work.FTS.GalBasis.cc.integrableOn_slice_of_SmoothOpen_HkMem`,
+`Work.FTS.GalBasis.cc.integrableOn_L12dens_of_SmoothOpen_HkMem`). -/
+theorem L12_add_of_SmoothOpen_HkMem {α : ℝ} {a b : Work.FTS.Galerkin.Fn}
+    (ha : Work.FTS.EllipticEst.SmoothOpen a) (hb : Work.FTS.EllipticEst.SmoothOpen b)
+    (hma : Work.Spaces.HkMem α 4 a) (hmb : Work.Spaces.HkMem α 4 b) :
+    ∀ z : ℝ, 0 ≤ z →
+      Work.Construction.L12 (fun z θ => a z θ + b z θ) z
+        = Work.Construction.L12 a z + Work.Construction.L12 b z := by
+  intro z hz
+  refine (Work.FTS.LocData.L12_add_mul (c := 0) (a := a) (b := b) (z := z) ?_ ?_ ?_ ?_).1
+  · exact fun s hs => Work.FTS.GalBasis.cc.integrableOn_slice_of_SmoothOpen_HkMem ha hma
+      (lt_of_le_of_lt hz hs)
+  · exact fun s hs => Work.FTS.GalBasis.cc.integrableOn_slice_of_SmoothOpen_HkMem hb hmb
+      (lt_of_le_of_lt hz hs)
+  · exact (Work.FTS.GalBasis.cc.integrableOn_L12dens_of_SmoothOpen_HkMem ha hma).mono_set
+      (Set.Ioi_subset_Ioi hz)
+  · exact (Work.FTS.GalBasis.cc.integrableOn_L12dens_of_SmoothOpen_HkMem hb hmb).mono_set
+      (Set.Ioi_subset_Ioi hz)
+
+
+end Work.FTS_MuLipC.Poly0
+end
+-- ===== merged: Submission.Work.FTS_MuLipC.RowN.L12Ae =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS_MuLipC.RowN
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-- The angular density of a difference is the difference of the angular densities, a.e. in `s`:
+at every `s` where both θ-slices are integrable the two integrands differ pointwise, so
+`MeasureTheory.integral_sub` applies. -/
+theorem L12dens_sub_ae {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ) :
+    (fun s => Work.Construction.L12dens (fun z θ => a z θ - b z θ) s)
+      =ᵐ[MeasureTheory.volume.restrict (Set.Ioi z)]
+        (fun s => Work.Construction.L12dens a s - Work.Construction.L12dens b s) := by
+  filter_upwards [h1, h2] with s hs1 hs2
+  have hpt : (fun θ => Work.Spaces.K θ * (a s θ - b s θ) / s)
+      = fun θ => Work.Spaces.K θ * a s θ / s - Work.Spaces.K θ * b s θ / s := by
+    funext θ
+    ring
+  simp only [Work.Construction.L12dens, Work.FM.L12dens, Work.Spaces.Iθ]
+  rw [hpt]
+  exact MeasureTheory.integral_sub hs1 hs2
+
+/-- The `L₁₂`-density of a difference is integrable as soon as the two densities are integrable
+and the two θ-slices are a.e. integrable. -/
+theorem integrableOn_L12dens_sub {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ)
+    (h3 : MeasureTheory.IntegrableOn (Work.Construction.L12dens a) (Set.Ioi z))
+    (h4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    MeasureTheory.IntegrableOn
+      (fun s => Work.Construction.L12dens (fun z θ => a z θ - b z θ) s) (Set.Ioi z) :=
+  (h3.sub h4).congr (L12dens_sub_ae h1 h2).symm
+
+/-- **`L₁₂` is additive on a difference of fields**, in the a.e. form: if the θ-slices of `a`
+and `b` are a.e. integrable on `Ioi z` and the densities of `a - b` and `b` are integrable,
+then `L₁₂ a z = L₁₂ (a - b) z + L₁₂ b z`.  This is
+`Work.FTS.LocData.L12_add_mul` with its (pointwise) slice hypothesis weakened to an a.e. one:
+the outer integral only sees a.e. values. -/
+theorem L12_ae_sub {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ)
+    (h3 : MeasureTheory.IntegrableOn
+      (fun s => Work.Construction.L12dens (fun z θ => a z θ - b z θ) s) (Set.Ioi z))
+    (h4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    Work.Construction.L12 a z
+      = Work.Construction.L12 (fun z θ => a z θ - b z θ) z + Work.Construction.L12 b z := by
+  have hkey : (fun s => Work.Construction.L12dens a s)
+      =ᵐ[MeasureTheory.volume.restrict (Set.Ioi z)]
+        (fun s => Work.Construction.L12dens (fun z θ => a z θ - b z θ) s
+          + Work.Construction.L12dens b s) := by
+    filter_upwards [L12dens_sub_ae h1 h2] with s hs
+    rw [hs]
+    ring
+  have hkey' : ∀ᵐ s ∂(MeasureTheory.volume : Measure ℝ), s ∈ Set.Ioi z →
+      Work.FM.L12dens Work.Spaces.K a s
+        = Work.FM.L12dens Work.Spaces.K (fun z θ => a z θ - b z θ) s
+          + Work.FM.L12dens Work.Spaces.K b s :=
+    (MeasureTheory.ae_restrict_iff' measurableSet_Ioi).mp hkey
+  simp only [Work.Construction.L12, Work.FM.L12]
+  rw [MeasureTheory.setIntegral_congr_ae measurableSet_Ioi hkey']
+  exact MeasureTheory.integral_add h3 h4
+
+/-- **Homogeneity of `L₁₂` in a constant**, with no hypothesis at all (both sides are the
+integral of pointwise equal integrands, and `MeasureTheory.integral_const_mul` is
+unconditional). -/
+theorem L12_const_mul (c : ℝ) (a : Fn) (z : ℝ) :
+    Work.Construction.L12 (fun z θ => c * a z θ) z = c * Work.Construction.L12 a z := by
+  simp only [Work.Construction.L12, Work.FM.L12]
+  rw [MeasureTheory.setIntegral_congr_fun measurableSet_Ioi
+    (fun s _ => Work.FTS.LocData.L12dens_const_mul Work.Spaces.K c a s)]
+  exact MeasureTheory.integral_const_mul c _
+
+/-- **`L₁₂` only sees the values on the open quadrant** (`Work.FTS.GalFields.RHS.L12f_congr_of_agreeOnQ`,
+transported to `Work.Construction.L12`). -/
+theorem L12_congrQd {a b : Fn} {z : ℝ} (hz : 0 ≤ z)
+    (h : ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → a z θ = b z θ) :
+    Work.Construction.L12 a z = Work.Construction.L12 b z :=
+  Work.FTS.GalFields.RHS.L12f_congr_of_agreeOnQ hz h
+
+/-! ## Congruence and combinations of the slices -/
+
+/-- The angular density only sees the pointwise values of the field. -/
+theorem L12dens_congr {X Y : Fn} (h : ∀ z θ : ℝ, X z θ = Y z θ) :
+    Work.Construction.L12dens X = Work.Construction.L12dens Y := by
+  funext s
+  simp only [Work.Construction.L12dens, Work.FM.L12dens, Work.Spaces.Iθ]
+  exact MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => by rw [h s θ])
+
+/-- A.e. slice integrability of a difference. -/
+theorem slices_sub {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ) :
+    ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * (fun z θ => a z θ - b z θ) s θ / s) Work.Spaces.Iθ := by
+  filter_upwards [h1, h2] with s hs1 hs2
+  have hpt : (fun θ => Work.Spaces.K θ * (a s θ - b s θ) / s)
+      = fun θ => Work.Spaces.K θ * a s θ / s - Work.Spaces.K θ * b s θ / s := by
+    funext θ
+    ring
+  rw [hpt]
+  exact hs1.sub hs2
+
+
+/-! ## The linearity statements used by the difference row -/
+
+/-- **`L₁₂` is additive on a difference**, with the density hypotheses carried by the two
+fields themselves (the density of the difference is then integrable by
+`integrableOn_L12dens_sub`). -/
+theorem L12_ae_sub_of_dens {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ)
+    (h3 : MeasureTheory.IntegrableOn (Work.Construction.L12dens a) (Set.Ioi z))
+    (h4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    Work.Construction.L12 a z
+      = Work.Construction.L12 (fun z θ => a z θ - b z θ) z + Work.Construction.L12 b z :=
+  L12_ae_sub h1 h2 (integrableOn_L12dens_sub h1 h2 h3 h4) h4
+
+/-- The subtraction form of the a.e. additivity. -/
+theorem L12_sub_eq {a b : Fn} {z : ℝ}
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ)
+    (h3 : MeasureTheory.IntegrableOn (Work.Construction.L12dens a) (Set.Ioi z))
+    (h4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    Work.Construction.L12 a z - Work.Construction.L12 b z
+      = Work.Construction.L12 (fun z θ => a z θ - b z θ) z := by
+  have h := L12_ae_sub_of_dens h1 h2 h3 h4
+  rw [h]
+  ring
+
+
+/-- The angular density of the negative is the negative of the density (unconditional). -/
+theorem L12dens_neg (b : Fn) :
+    Work.Construction.L12dens (fun z θ => -b z θ)
+      = fun s => - Work.Construction.L12dens b s := by
+  have h1 : (fun z θ => -b z θ) = fun z θ => (-1 : ℝ) * b z θ := by
+    funext z θ
+    ring
+  funext s
+  rw [show Work.Construction.L12dens (fun z θ => -b z θ) s
+      = Work.FM.L12dens Work.Spaces.K (fun z θ => -b z θ) s from rfl, h1,
+    Work.FTS.LocData.L12dens_const_mul Work.Spaces.K (-1) b s, neg_one_mul]
+  rfl
+
+/-- A.e. slice integrability of the negative. -/
+theorem slices_neg {b : Fn} {z : ℝ}
+    (h : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ) :
+    ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * (fun z θ => -b z θ) s θ / s) Work.Spaces.Iθ := by
+  filter_upwards [h] with s hs
+  have hpt : (fun θ => Work.Spaces.K θ * (-b s θ) / s)
+      = fun θ => - (Work.Spaces.K θ * b s θ / s) := by
+    funext θ
+    ring
+  rw [hpt]
+  exact hs.neg
+
+/-- The density of the negative field is integrable. -/
+theorem integrableOn_L12dens_neg {b : Fn} {z : ℝ}
+    (h : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    MeasureTheory.IntegrableOn (Work.Construction.L12dens (fun z θ => -b z θ))
+      (Set.Ioi z) :=
+  (L12dens_neg b).symm ▸ h.neg
+
+/-- The addition form of the a.e. additivity. -/
+theorem L12_add_eq {a b : Fn} {z : ℝ} (hz : 0 ≤ z)
+    (h1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * a s θ / s) Work.Spaces.Iθ)
+    (h2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * b s θ / s) Work.Spaces.Iθ)
+    (h3 : MeasureTheory.IntegrableOn (Work.Construction.L12dens a) (Set.Ioi z))
+    (h4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens b) (Set.Ioi z)) :
+    Work.Construction.L12 (fun z θ => a z θ + b z θ) z
+      = Work.Construction.L12 a z + Work.Construction.L12 b z := by
+  have hsl_neg := slices_neg (z := z) h2
+  have hden_neg : MeasureTheory.IntegrableOn
+      (Work.Construction.L12dens (fun z θ => -b z θ)) (Set.Ioi z) :=
+    integrableOn_L12dens_neg h4
+  have hmain := L12_ae_sub h1 hsl_neg (integrableOn_L12dens_sub h1 hsl_neg h3 hden_neg) hden_neg
+  have hneg : Work.Construction.L12 (fun z θ => -b z θ) z
+      = - Work.Construction.L12 b z := by
+    have h1' : (fun z θ => -b z θ) = fun z θ => (-1 : ℝ) * b z θ := by
+      funext z θ
+      ring
+    rw [h1', L12_const_mul]
+    ring
+  have hbridge : Work.Construction.L12 (fun z θ => a z θ + b z θ) z
+      = Work.Construction.L12 (fun z θ => a z θ - (-b z θ)) z :=
+    L12_congrQd hz (fun z θ _ _ _ => by ring)
+  rw [hbridge, hmain, hneg]
+  ring
+
+/-- **`L₁₂` on an alternating four-term sum of fields**: all that the polarization of the
+difference row needs. -/
+theorem L12_alt4 {A1 A2 A3 A4 : Fn} {z : ℝ} (hz : 0 ≤ z)
+    (hs1 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * A1 s θ / s) Work.Spaces.Iθ)
+    (hs2 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * A2 s θ / s) Work.Spaces.Iθ)
+    (hs3 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * A3 s θ / s) Work.Spaces.Iθ)
+    (hs4 : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Set.Ioi z)), MeasureTheory.IntegrableOn
+      (fun θ => Work.Spaces.K θ * A4 s θ / s) Work.Spaces.Iθ)
+    (hd1 : MeasureTheory.IntegrableOn (Work.Construction.L12dens A1) (Set.Ioi z))
+    (hd2 : MeasureTheory.IntegrableOn (Work.Construction.L12dens A2) (Set.Ioi z))
+    (hd3 : MeasureTheory.IntegrableOn (Work.Construction.L12dens A3) (Set.Ioi z))
+    (hd4 : MeasureTheory.IntegrableOn (Work.Construction.L12dens A4) (Set.Ioi z)) :
+    Work.Construction.L12 (fun z θ => A1 z θ - A2 z θ + A3 z θ - A4 z θ) z
+      = Work.Construction.L12 A1 z - Work.Construction.L12 A2 z
+        + Work.Construction.L12 A3 z - Work.Construction.L12 A4 z := by
+  have hsub12 : Work.Construction.L12 A1 z - Work.Construction.L12 A2 z
+      = Work.Construction.L12 (fun z θ => A1 z θ - A2 z θ) z := L12_sub_eq hs1 hs2 hd1 hd2
+  have hsub34 : Work.Construction.L12 A3 z - Work.Construction.L12 A4 z
+      = Work.Construction.L12 (fun z θ => A3 z θ - A4 z θ) z := L12_sub_eq hs3 hs4 hd3 hd4
+  have hden12 : MeasureTheory.IntegrableOn
+      (Work.Construction.L12dens (fun z θ => A1 z θ - A2 z θ)) (Set.Ioi z) :=
+    integrableOn_L12dens_sub hs1 hs2 hd1 hd2
+  have hden34 : MeasureTheory.IntegrableOn
+      (Work.Construction.L12dens (fun z θ => A3 z θ - A4 z θ)) (Set.Ioi z) :=
+    integrableOn_L12dens_sub hs3 hs4 hd3 hd4
+  have hsl12 := slices_sub hs1 hs2
+  have hsl34 := slices_sub hs3 hs4
+  have hadd := L12_add_eq hz hsl12 hsl34 hden12 hden34
+  have hbridge : Work.Construction.L12 (fun z θ => A1 z θ - A2 z θ + A3 z θ - A4 z θ) z
+      = Work.Construction.L12
+          (fun z θ => (fun z θ => A1 z θ - A2 z θ) z θ
+            + (fun z θ => A3 z θ - A4 z θ) z θ) z :=
+    L12_congrQd hz (fun z θ _ _ _ => by ring)
+  rw [hbridge, hadd, ← hsub12, ← hsub34]
+  ring
+
+end Work.FTS_MuLipC.RowN
+end
+end
+-- ===== merged: Submission.Work.FTS_MuLipC.RowN0.DiffExpand =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS_MuLipC.RowN0
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+local notation "N0" => Work.Construction.N0
+local notation "L12" => Work.Construction.L12
+local notation "Fstar" => Work.Construction.Fstar
+local notation "Ftot" => Work.Construction.Ftot
+local notation "Dz" => Work.Spaces.Dz
+local notation "Dth" => Work.Spaces.Dth
+local notation "c2m" => Work.Construction.c2m
+local notation "Sn0" => Work.FTS_MuLipC.Sn0
+local notation "Hk" => Work.Spaces.HkIntegrand
+
+/-! ## The pointwise telescoping of the difference -/
+
+/-- **The pointwise telescoping of `Sn0` along the difference `d = f - f'`.**  On the open
+quadrant the difference of the two fields splits into three groups of three terms each:
+`D₁ = L₁₂(f)(z)·E₁/α`, `D₂ = L₁₂(d)(z)·E₂/α` and `D₃ = L₁₂(d)(z)·E₃/α − c₂·L₁₂(F_*)(z)·D_zd`,
+where `E₁ = d + (3/2)D_θd − αc₂D_zd` and `E₂`, `E₃` are the analogues for `f'` and `F_*`. -/
+theorem Sn0_sub_expand {α : ℝ} {f f' d : Fn}
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hf' : Work.FTS.EllipticEst.SmoothOpen f')
+    (hd : Work.FTS.EllipticEst.SmoothOpen d)
+    (hmf : Work.Spaces.HkMem α 4 f) (hmf' : Work.Spaces.HkMem α 4 f')
+    (hmd : Work.Spaces.HkMem α 4 d)
+    (hddef : ∀ z θ, d z θ = f z θ - f' z θ) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < π / 2 →
+      Sn0 α f z θ - Sn0 α f' z θ
+        = (L12 f z) * (d z θ / α + (3 / (2 * α)) * Dth d z θ - c2m θ * Dz d z θ)
+          + (L12 d z) * (f' z θ / α + (3 / (2 * α)) * Dth f' z θ - c2m θ * Dz f' z θ)
+          + (L12 d z) * ((3 / (2 * α)) * Dth (Fstar α) z θ - c2m θ * Dz (Fstar α) z θ)
+          - c2m θ * (L12 (Fstar α) z) * Dz d z θ := by
+  intro z θ hz h1 h2
+  have hF : Work.FTS.EllipticEst.SmoothOpen (Fstar α) :=
+    Work.FTS.OpenPkg.smoothOpen_of_smoothQuad (Work.FTS.LocData.SmoothQuad_Fstar α)
+  have hL : L12 f z = L12 d z + L12 f' z :=
+    Work.FTS.GalFields.RHS.Sharp.L12_sub_ge0 hf hf' hd hmf hmf' hmd hddef hz.le
+  have hpth : Work.Spaces.pth (Ftot α f) z θ
+      = Work.Spaces.pth (Fstar α) z θ + Work.Spaces.pth f z θ :=
+    Work.FTS.NonlinRows.Rl1.openSlice_pth_add hF hf hz ⟨h1, h2⟩
+  have hpth' : Work.Spaces.pth (Ftot α f') z θ
+      = Work.Spaces.pth (Fstar α) z θ + Work.Spaces.pth f' z θ :=
+    Work.FTS.NonlinRows.Rl1.openSlice_pth_add hF hf' hz ⟨h1, h2⟩
+  have hDz : Dz (Ftot α f) z θ = Dz (Fstar α) z θ + Dz f z θ :=
+    Work.FTS.Nonlinear.Pieces.Dz_add_of_diff
+      (Work.FTS.NonlinRows.Rl1.openSlice_pz_add hF hf hz ⟨h1, h2⟩)
+  have hDz' : Dz (Ftot α f') z θ = Dz (Fstar α) z θ + Dz f' z θ :=
+    Work.FTS.Nonlinear.Pieces.Dz_add_of_diff
+      (Work.FTS.NonlinRows.Rl1.openSlice_pz_add hF hf' hz ⟨h1, h2⟩)
+  have hpthd : Work.Spaces.pth d z θ = Work.Spaces.pth f z θ - Work.Spaces.pth f' z θ := by
+    rw [Work.FTS.PhiStar.CoreAux.pth_congr_Q0 (f := d) (g := fun z θ => f z θ - f' z θ)
+      (fun z θ _ _ _ => hddef z θ) z θ hz h1 h2]
+    exact Work.FTS.StrongEps.EComparison.pth_sub hf hf' hz h1 h2
+  have hpzd : Work.Spaces.pz d z θ = Work.Spaces.pz f z θ - Work.Spaces.pz f' z θ := by
+    rw [Work.FTS.GalFields.RHS.Sharp.pz_congr_Q0 (f := d) (g := fun z θ => f z θ - f' z θ)
+      (fun z θ _ _ _ => hddef z θ) z θ hz h1 h2]
+    exact Work.FTS.StrongEps.EComparison.pz_sub hf hf' hz h1 h2
+  have hDzd : Dz d z θ = Dz f z θ - Dz f' z θ := by
+    simp only [Work.Spaces.Dz]
+    rw [hpzd]
+    ring
+  simp only [Work.FTS_MuLipC.Sn0, Work.Construction.N0, Work.Construction.Ftot,
+    Work.Construction.s2, Work.Spaces.Dth]
+  rw [hpth, hpth', hDz, hDz', hL, hpthd, hDzd, hddef z θ]
+  ring
+
+/-! ## Elementary bounds -/
+
+/-- The identity `(r/(1+r)²)²·w(r) = (1/(1+r))²` for `r > 0`. -/
+theorem sq_div_shape_eq {r : ℝ} (hr : 0 < r) :
+    (r / (1 + r) ^ 2) ^ 2 * Work.Spaces.w r = (1 / (1 + r)) ^ 2 := by
+  rw [Work.Spaces.w]
+  field_simp
+
+/-- `w(r) ≥ 1` for `r > 0`. -/
+theorem one_le_w {r : ℝ} (hr : 0 < r) : 1 ≤ Work.Spaces.w r := by
+  rw [Work.Spaces.w, one_le_div (by positivity)]
+  nlinarith
+
+/-- `w(r) > 0` for `r > 0`. -/
+theorem w_pos {r : ℝ} (hr : 0 < r) : 0 < Work.Spaces.w r :=
+  lt_of_lt_of_le one_pos (one_le_w hr)
+
+/-- `|cos 2θ - sin²θ| ≤ 2`. -/
+theorem abs_c2m_le (θ : ℝ) : |c2m θ| ≤ 2 := by
+  have hs1 : Real.sin θ ^ 2 ≤ 1 := by
+    nlinarith [Real.sin_le_one θ, Real.neg_one_le_sin θ, sq_nonneg (Real.sin θ)]
+  rw [Work.Construction.c2m, abs_le]
+  constructor
+  · nlinarith [Real.neg_one_le_cos (2 * θ), hs1]
+  · nlinarith [Real.cos_le_one (2 * θ), sq_nonneg (Real.sin θ)]
+
+/-- `|K θ| ≤ 3` on `Iθ`. -/
+theorem abs_K_le (θ : ℝ) : |Work.Spaces.K θ| ≤ 3 := by
+  have h1 : |Real.sin θ| ≤ 1 := abs_le.mpr ⟨Real.neg_one_le_sin θ, Real.sin_le_one θ⟩
+  have h2 : |Real.cos θ| ≤ 1 := abs_le.mpr ⟨Real.neg_one_le_cos θ, Real.cos_le_one θ⟩
+  have h3 : |Real.cos θ * Real.cos θ| ≤ 1 := by
+    nlinarith [h2, abs_nonneg (Real.cos θ), abs_mul (Real.cos θ) (Real.cos θ)]
+  have hK : Work.Spaces.K θ = 3 * Real.sin θ * (Real.cos θ * Real.cos θ) := by
+    rw [Work.Spaces.K]; ring
+  rw [hK, abs_mul, abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 3)]
+  nlinarith [h1, h3, abs_nonneg (Real.sin θ), abs_nonneg (Real.cos θ * Real.cos θ)]
+
+/-- The `θ`-slices of the `L₁₂`-density of a square-integrable slice are integrable. -/
+theorem integrableOn_K_mul_div {X : Fn} {r : ℝ} (hr : 0 < r)
+    (haesm : MeasureTheory.AEStronglyMeasurable (fun θ => X r θ)
+      (MeasureTheory.volume.restrict Work.Spaces.Iθ))
+    (hsq : MeasureTheory.IntegrableOn (fun θ => (X r θ) ^ 2) Work.Spaces.Iθ) :
+    MeasureTheory.IntegrableOn (fun θ => Work.Spaces.K θ * X r θ / r) Work.Spaces.Iθ := by
+  have hK : Continuous (fun θ : ℝ => Work.Spaces.K θ) := by
+    change Continuous fun θ : ℝ => 3 * Real.sin θ * Real.cos θ ^ 2
+    fun_prop
+  have haesm2 : MeasureTheory.AEStronglyMeasurable
+      (fun θ => Work.Spaces.K θ * X r θ / r) (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
+    ((((hK.aemeasurable).mul haesm.aemeasurable)).div_const r).aestronglyMeasurable
+  have hgint : MeasureTheory.IntegrableOn
+      (fun θ => (3 / (2 * r)) * ((X r θ) ^ 2 + 1)) Work.Spaces.Iθ := by
+    refine (hsq.add (MeasureTheory.integrableOn_const ?_)).const_mul ((3 : ℝ) / (2 * r))
+    rw [Work.Spaces.Iθ, Real.volume_Icc]
+    exact ENNReal.ofReal_ne_top
+  refine MeasureTheory.Integrable.mono' hgint haesm2 ?_
+  filter_upwards with θ
+  rw [Real.norm_eq_abs]
+  have hK3 := abs_K_le θ
+  have h2 : |X r θ| ≤ ((X r θ) ^ 2 + 1) / 2 := by
+    nlinarith [abs_nonneg (X r θ), sq_abs (X r θ), sq_nonneg (|X r θ| - 1)]
+  have h1 : |Work.Spaces.K θ| * |X r θ| ≤ 3 * (((X r θ) ^ 2 + 1) / 2) :=
+    mul_le_mul hK3 h2 (abs_nonneg _) (by norm_num)
+  have h3 : (3 / (2 * r)) * ((X r θ) ^ 2 + 1) = 3 * (((X r θ) ^ 2 + 1) / 2) / r := by
+    field_simp
+  rw [abs_div, abs_mul, abs_of_pos hr, h3]
+  exact div_le_div_of_nonneg_right h1 hr.le
+
+end Work.FTS_MuLipC.RowN0
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXR1.slice_diff_weighted =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -408,3 +874,5 @@ theorem slice_diff_weighted {β C₀ : ℝ} {Φs : Work.FTS.Galerkin.Fn}
     exact hLamBd.trans (le_of_eq (by ring))
 
 end Work.FTS_RegExport.RXR1
+end
+end

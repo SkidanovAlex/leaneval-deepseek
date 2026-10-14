@@ -1,50 +1,18 @@
-/-
-# `Work.FTS.EllSol.ellPkgK6_of_classC` — the level-`6` elliptic package on the class `C`
-
-The `ℋ⁶`-package `EllPkgK α 6 Ce g Ψ` for a source `g` of the linear class `ClassC α g`
-(open-quadrant smooth, `ℋ⁷`-honest) and a stream function `Ψ` of the solution class
-`EllClassOk 8 α g Ψ` (the equation `bslOp α Ψ = g`, the Dirichlet data, `C^∞` on the open
-quadrant, and the *straightened* unknown `ellShift α g Ψ = Ψ + Ḡ α g·sin 2θ` an element of the
-weak hypothesis class of the level-`8` estimate).
-
-## The proof (assembly — the analytic content is in the sibling modules)
-
-Write `X := ellShift α g Ψ`, `Ξ := PhiTil α g Ψ = EllResid α g Ψ`, and let `Cest` be the
-constant of the level-`6` estimate `TT.EllEstUnif 6`, `Csrc` that of the source comparison
-`|orthSource g|_{ℋ⁶} ≤ Csrc|g|_{ℋ⁶}` (`EllPkgAux.orthSourceHkNormClassC`, on `ClassC`).
-
-* The weak class *descends* in the level (`PkgK5.EllWeakPos_descend`), so `EllClassOk 8` gives
-  `EllWeakPos α 6 (orthSource g) X`; its `memA`/`memF` fields are the `ℋ⁸`-pins `HkMem α 8
-  (z²∂_z²X)`, `HkMem α 8 (orthSource g)` that the two *sharp* level-`6` transfers consume (they
-  need `k + 2 = 8`, one order less than their `K5` ancestors — that is exactly why the solution
-  class of the statement is `EllClassOk 8`); `ClassC.mem : HkMem α 7 g` descends to `HkMem α 6 g`.
-* Elgindi's Proposition `prop:Hk` at level `6` then gives
-  `α²|z²∂_z²X|_{ℋ⁶} + |∂_θ²X|_{ℋ⁶} ≤ Cest·Csrc·|g|_{ℋ⁶}`.
-* The three operator slots are the transfers: `PkgK6.uopTransferKSharp 6` (`U/sin 2θ`),
-  `PkgK6.vopTransferKSharp 6` (`V`), and the `ℛ`-slot `ropTransferSharp 6`, which is the
-  bookkeeping `ℛ(Ξ) = −2 sin²θ·(U(Ξ)/sin 2θ) + V(Ξ)` of the two siblings (the pinned level range
-  `k ≤ 6` is the honest one: the level-`7` budget of `ClassC` dominates).
-
-Each slot is bounded by `C·(α²|z²∂_z²X| + |∂_θ²X| + |g|)`, hence by `C(Cest·Csrc + 1)|g|`
-using the elliptic bound; the constant of the package is the sum
-`Ce = (CR + CU + CV)·(Cest·Csrc + 1)` and `α₀ = 1/4` absorbs the caps of the transfers.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllSol.ClassC
 import Submission.Work.FTS.EllExist.LevelK
-import Submission.Work.FTS.EllSol.PkgK6.vopTransferKSharp
-import Submission.Work.FTS.EllSol.PkgK6.uopTransferKSharp
-import Submission.Work.FTS.EllSol.EllPkgAux.orthSourceHkNormClassC
+import Submission.Work.FTS.EllSol.ClassC
 import Submission.Work.FTS.EllSol.PkgK5.ropTransferK5c
-import Submission.Work.Blocks.HkMul_ang_le
-import Submission.Work.FTS.EllipticEst.HkNorm_add_le
-import Submission.Work.FTS.EllipticEst.HkNorm_const_mul
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
+import Submission.Work.FTS.EllSol.PkgK6.uopTransferKSharp
+import Submission.Work.FTS.EllSol.PkgK6.vopTransferKSharp
 import Submission.Work.FTS.EllipticEst.EllHyp_certificates
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.EllSol.ropBasic
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkStarPieces
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.SolutionDelivery.DatumOdd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

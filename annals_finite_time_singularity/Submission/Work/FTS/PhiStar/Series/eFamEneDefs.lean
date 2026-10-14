@@ -1,36 +1,11 @@
-/-
-# `Work.FTS.PhiStar.Series.eFamEneDefs` — the `θ`-energy of the Gegenbauer family `eFam`
-
-The Dirichlet eigenfunction `eFam m θ = cos θ · C^{(3/2)}_{2m+1}(sin θ)` of `Lzero`
-(`Gegenbauer/Defs.lean`) satisfies, in the `θ` variable, the singular Sturm–Liouville equation
-
-  `(cos θ · f')' = (1/cos θ - M · cos θ) · f`,   `M = (2m+2)(2m+3) = (n+1)(n+2)`,  `n = 2m+1`,
-
-on `(0, π/2)` (`fΓ_ode` below; `M = n(n+3) + 2`).  With
-
-  `eEne m θ = cos θ · f'(θ)² - sin θ · f(θ) f'(θ) + (M cos θ - 1/(2 cos θ)) · f(θ)²`
-
-one computes `eEne m' = -(3 sin θ / (2 cos²θ)) · f(θ)² ≤ 0` on `(0, π/2)`: the energy is
-*non-increasing*.  Moreover `eEne` is a sum of squares,
-
-  `eEne m θ = cos θ (f' - (tan θ/2) f)² + ((4M+1) cos²θ - 3)/(4 cos θ) · f²`,
-
-and at a critical point of `f` (`f' = 0`)
-
-  `eEne m θ = (M cos θ - 1/(2 cos θ)) · f² = (2M cos²θ - 1)/(2 cos θ) · f²`.
-
-Since every interior extremum of `f` sits where `cos²θ ≥ 1/M` (the second derivative test), this
-last identity bounds `|f|` pointwise by `√2 · |f'(0)|`; `f'(0) = gC (2m+1)'(0) = (2m+3) gC (2m)(0)`
-and `(gC (2j)(0))² ≤ 4j+3`, which gives the `O(m^{3/2})` growth of `eFam_growth`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.gC_ode
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -49,14 +24,7 @@ set_option autoImplicit false
 `θ`-equation of `eFam m`. -/
 def eM (m : ℕ) : ℝ := (2 * (m : ℝ) + 2) * (2 * (m : ℝ) + 3)
 
-lemma eM_pos (m : ℕ) : 0 < eM m := by
-  unfold eM
-  positivity
 
-lemma eM_ge_one (m : ℕ) : 1 ≤ eM m := by
-  unfold eM
-  have hm : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
-  nlinarith [hm]
 
 /-- The energy of `eFam m`:
 `eEne m θ = cos θ f'² - sin θ f f' + (M cos θ - 1/(2 cos θ)) f²`, `f = eFam m`. -/

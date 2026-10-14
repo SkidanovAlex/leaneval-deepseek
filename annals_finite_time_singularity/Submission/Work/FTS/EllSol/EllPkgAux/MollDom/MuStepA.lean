@@ -2,7 +2,7 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.MuDefs
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -3,10 +3,10 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.excDz5Dth2Six
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Tools.PtBdDefs
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Tools.shiftProdDth
+import Submission.Work.FTS.StrongPersist.H6Aux.RStep
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,36 +1,21 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Auxiliary slice machinery for `remov.weakSliceRegular`
-
-This module collects the `θ`-slice facts needed to *differentiate the angular moment*
-`F_*(z) = ∫_θ Ψ(z,θ) sinθcos²θ dθ` of a datum of the weak class `EllWeakPos` — i.e. to prove
-`F_*(D_z^j Ψ) ≡ 0` for `j = 1, 2` from the solvability condition `F_* Ψ ≡ 0`.  The only
-hypotheses available about `Ψ` are: smooth on the open quadrant, and
-`HkMem α k (∂_θθΨ)`, `HkMem α k (z²∂_zzΨ)`, `HkMem α k F`, for `k ≥ 1`.
-
-The lemmas here are used by `remov.weakSliceRegular`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo
-import Submission.Work.FTS.EllipticEst.abs_mul_sinCos2_le_weighted
-import Submission.Work.FTS.EllipticEst.aesm_uncurry_restrict_open
-import Submission.Work.FTS.EllipticEst.integrable_prod_sq_restrict_open
-import Submission.Work.FTS.EllipticEst.moment_relation
-import Submission.Work.FTS.EllipticEst.boxIntegrable_DzIter
-import Submission.Work.FTS.EllipticEst.remov.interval_integral_sq_le_mul
-import Submission.Work.EllipticEst.H2W.pthIter2_DzIter_comm
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.H2.STBasic
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.H2.Transport1Aux
+import Submission.Work.FTS.OpenPkg.ProdOpen.Tools1d
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -58,11 +43,6 @@ theorem ws_sEta_nonneg {θ : ℝ} (hθ : θ ∈ Iθ) : 0 ≤ SS θ := by
   show 0 ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
   exact Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _
 
-theorem ws_sEta_pos {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) : 0 < SS θ := by
-  have hs : 0 < Real.sin (2 * θ) :=
-    Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
-  show 0 < (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
-  exact Real.rpow_pos_of_pos hs _
 
 theorem ws_eta_nonneg : (0 : ℝ) ≤ Work.Spaces.eta := by norm_num [Work.Spaces.eta]
 
@@ -74,12 +54,6 @@ theorem ws_one_le_sEta {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2))
   rw [Real.one_rpow] at h
   exact h
 
-theorem ws_inv_sEta_le_one {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
-    (SS θ)⁻¹ ≤ 1 := by
-  have hpos : 0 < SS θ := ws_sEta_pos hθ
-  have h1 : 1 ≤ SS θ := ws_one_le_sEta hθ
-  have h := (inv_le_inv₀ hpos zero_lt_one).mpr (by simpa using h1)
-  simpa using h
 
 theorem ws_sEta_integrableOn : MeasureTheory.IntegrableOn (fun θ => SS θ) Iθ :=
   (Work.Spaces.sin_two_rpow (-(Work.Spaces.eta)) (by norm_num [Work.Spaces.eta])
@@ -608,33 +582,5 @@ theorem ws_slice_pointwise_le {v : ℝ → ℝ}
 
 /-! ## The affine bound for the `θ`-energy of `Ψ` -/
 
-/-- The `θ`-energy of `Ψ` is bounded affinely by the `θ`-energy of `∂_θθΨ`, uniformly on
-`[a,b]`, with the constants that `ws_slice_pointwise_le` produces. -/
-theorem ws_thetaE_self_le {Ψ : ℝ → ℝ → ℝ} {s A B : ℝ}
-    (h2 : ContDiffOn ℝ 2 (fun θ => Ψ s θ) (Set.Ioo 0 (Real.pi / 2)))
-    (hE : MeasureTheory.IntegrableOn
-      (fun θ => (Work.Spaces.pthIter 2 Ψ s θ) ^ 2 * SS θ) Iθ)
-    (hA : (Ψ s (Real.pi / 4)) ^ 2 ≤ A)
-    (hB : (deriv (fun θ => Ψ s θ) (Real.pi / 4)) ^ 2 ≤ B) :
-    thetaE Ψ s ≤ (2 * A + 4 * Real.pi ^ 2 * (1 + (∫ s' in Iθ, SS s'))
-        * (1 + B + thetaE (Work.Spaces.pthIter 2 Ψ) s)) * (∫ s' in Iθ, SS s') := by
-  have hpt := ws_slice_pointwise_le h2 hE
-  have h3 : thetaE (Work.Spaces.pthIter 2 Ψ) s
-      = ∫ s' in Iθ, (deriv (fun t => deriv (fun θ' => Ψ s θ') t) s') ^ 2 * SS s' := rfl
-  have hS0 : 0 ≤ ∫ s' in Iθ, SS s' := ws_sEta_integral_nonneg
-  have h4 : ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
-      (Ψ s θ) ^ 2 ≤ 2 * A + 4 * Real.pi ^ 2 * (1 + (∫ s' in Iθ, SS s'))
-        * (1 + B + thetaE (Work.Spaces.pthIter 2 Ψ) s) := by
-    intro θ hθ
-    have h5 := hpt θ hθ
-    rw [← h3] at h5
-    have h7 : 0 ≤ 4 * Real.pi ^ 2 * (1 + (∫ s' in Iθ, SS s')) := by
-      have h8 : (0 : ℝ) ≤ 1 + (∫ s' in Iθ, SS s') := by linarith
-      positivity
-    have h6 : (deriv (fun θ' => Ψ s θ') (Real.pi / 4)) ^ 2
-        + thetaE (Work.Spaces.pthIter 2 Ψ) s
-        ≤ B + thetaE (Work.Spaces.pthIter 2 Ψ) s := by linarith
-    nlinarith [h5, h6, h7, hA]
-  exact thetaE_le_const h4
 
 end Work.FTS.EllipticEst.remov

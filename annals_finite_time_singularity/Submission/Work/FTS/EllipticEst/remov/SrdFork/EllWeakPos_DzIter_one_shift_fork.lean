@@ -1,41 +1,290 @@
--- FORK of `remov.EllWeakPos_DzIter_one_shift` (agent of `slice_rhs_domination`, 2026-10-04).
---
--- Copy of Submission/Work/FTS/EllipticEst/remov/EllWeakPos_DzIter_one_shift.lean with two
--- changes, both aimed at removing the fragile subsystem
---   EllHyp_certificates -> propHk_fts -> Prop.{Level0,Step,bSlotTop} -> Cert.HkMem_{Fstar,Gbar}_sin
--- (a live construction site: import cycles and mid-refactor type errors) from the dependency
--- cone of `remov.slice_rhs_domination`:
---   1. the import of `…EllipticEst.EllHyp_certificates` is dropped (that module is the fragile one);
---   2. the two declarations of `EllHyp_certificates` that the body uses -- `SmoothOpen.zsq_mul`
---      and `HkMem_of_majorant_ae` -- are taken instead from the *green* repair copy
---      `…EllipticEst.AeMom.Repair.ShiftAeRepair`, which reproduces their statements verbatim
---      under the fresh namespace `Work.FTS.EllipticEst.AeMom.Repair` (written by another agent
---      for exactly this reason); the two occurrences in the body are redirected accordingly.
--- Declaration names and namespaces are otherwise unchanged, so the copied proof is verbatim.
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.remov.EllEstUnifStepAux
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.TT.SliceDatum
-import Submission.Work.FTS.EllipticEst.TT.bslOp_DzIter_eq
-import Submission.Work.FTS.EllipticEst.TT.HkMem_descend_open
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.EllipticEst.DzAmgm.ZsqPz2Comm
-import Submission.Work.FTS.EllipticEst.DzAmgm.DthIterDzCommOpen
-import Submission.Work.FTS.EllipticEst.AeMom.Repair.ShiftAeRepair
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.Spaces.mixed_comm
-import Submission.Work.Spaces.DzDthIterCommOn
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_F
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_F_ge_two
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_Psi
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Tactic.MinImports
+import Submission.Work.FTS.EllipticEst.H2W.Slot01W.Zsq
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities
 import Submission.Work.FTS.EllipticEst.remov.SmoothOpen_bslOp_of_smoothOpen
+import Submission.Work.FTS.EllipticEst.remov.TopCoreB.CleanBase
+import Submission.Work.FTS.H2.T2Qaux.SupAux
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.PhiStar.Honesty.rgG2_sq_div_z4_Ioo
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
+-- ===== merged: Submission.Work.FTS.EllSol.EllPkgAux.MollDom.zSchurWindowDefs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllSol.EllPkgAux.MollDom
+
+set_option autoImplicit false
+
+/-! ## The angular weight `σ_η` at the two endpoints -/
+
+theorem thEta_zero : Work.FTS.EllipticEst.thEta 0 = 0 := by
+  rw [Work.FTS.EllipticEst.thEta, show (2 : ℝ) * 0 = 0 by norm_num, Real.sin_zero]
+  exact Real.zero_rpow (by norm_num [Work.Spaces.eta])
+
+theorem thEta_pi_half : Work.FTS.EllipticEst.thEta (Real.pi / 2) = 0 := by
+  rw [Work.FTS.EllipticEst.thEta, show (2 : ℝ) * (Real.pi / 2) = Real.pi by ring, Real.sin_pi]
+  exact Real.zero_rpow (by norm_num [Work.Spaces.eta])
+
+theorem measurable_thEta : Measurable Work.FTS.EllipticEst.thEta :=
+  Measurable.pow_const (Real.measurable_sin.comp (measurable_const.mul measurable_id))
+    (-(Work.Spaces.eta))
+
+/-! ## The pointwise majorant of the angular derivative of a slice -/
+
+/-- **The pointwise majorant of `∂_θG(z, ·)`.**  For a trace-class datum `G` and `z > 0`, the
+angular derivative of the slice satisfies
+
+  `|∂_θG(z,s)| ≤ |∂_θG(z,π/4)| + √(∫_{Iθ} (∂_θ²G(z,θ))² σ_η θ) · √(π/4)`
+
+for every `s ∈ (0, π/2)` (fundamental theorem of calculus from the landmark angle `π/4`
+together with the interval Cauchy–Schwarz bound); `thSliceMajorant G z` is the square of that
+bound.  The proofs are `pth_slice_sq_le_majorant` (the pointwise bound) and
+`win_majorant_integrable` (its integrability along the logarithmic window). -/
+def thSliceMajorant (G : ℝ → ℝ → ℝ) (z : ℝ) : ℝ :=
+  (|Work.Spaces.pth G z (Real.pi / 4)|
+    + Real.sqrt (∫ θ in Work.Spaces.Iθ,
+        (Work.Spaces.pth (Work.Spaces.pth G) z θ) ^ 2 * Work.FTS.EllipticEst.thEta θ)
+      * Real.sqrt (Real.pi / 4)) ^ 2
+
+theorem thSliceMajorant_nonneg (G : ℝ → ℝ → ℝ) (z : ℝ) : 0 ≤ thSliceMajorant G z :=
+  sq_nonneg _
+
+/-! ## The kernel `sKerd δ` is bounded and supported in `[-δ, δ]` -/
+
+/-- **Bound and support of the derivative kernel.**  For `δ > 0` the continuous kernel
+`sKerd δ = deriv (sKer δ)` (whose support is contained in `(-δ, δ)`) is bounded on all of `ℝ`
+by some `M ≥ 0`. -/
+theorem exists_sKerd_bound {δ : ℝ} (hδ : 0 < δ) :
+    ∃ M : ℝ, 0 ≤ M ∧ (∀ u : ℝ, |Work.FTS.EllSol.EllPkgAux.sKerd δ u| ≤ M) ∧
+      (∀ u : ℝ, δ < |u| → Work.FTS.EllSol.EllPkgAux.sKerd δ u = 0) := by
+  obtain ⟨C, hC⟩ := (isCompact_Icc (a := -δ) (b := δ)).exists_bound_of_continuousOn
+    (Work.FTS.EllSol.EllPkgAux.MollDzAux.continuous_sKerd δ).continuousOn
+  refine ⟨max C 0, le_max_right _ _, ?_, ?_⟩
+  · intro u
+    by_cases hu : u ∈ Set.Icc (-δ) δ
+    · have h := hC u hu
+      rw [Real.norm_eq_abs] at h
+      exact le_trans h (le_max_left _ _)
+    · have hlt : δ < |u| := by
+        rw [Set.mem_Icc, not_and_or] at hu
+        rcases hu with h | h
+        · rw [abs_of_neg (by linarith)]; linarith
+        · rw [abs_of_pos (by linarith)]; linarith
+      have hz : Work.FTS.EllSol.EllPkgAux.sKerd δ u = 0 :=
+        Work.FTS.EllSol.PkgK5.i0TraceMoll.AuxDz.sKerd_eq_zero_of_le_abs hδ (le_of_lt hlt)
+      rw [hz, abs_zero]
+      exact le_max_right _ _
+  · intro u hu
+    exact Work.FTS.EllSol.PkgK5.i0TraceMoll.AuxDz.sKerd_eq_zero_of_le_abs hδ (le_of_lt hu)
+
+end Work.FTS.EllSol.EllPkgAux.MollDom
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.AngAWeak.aeSigmaUpgradeRho =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.AngAWeak
+
+set_option autoImplicit false
+
+local notation "Iθ" => Work.Spaces.Iθ
+local notation "Iz" => Work.Spaces.Iz
+
+/-! ## Elementary facts about the two `θ`-integrals and the two radial domains -/
+
+
+/-- `Iz = [0,∞)` and `Ioi 0` carry the same measure (`{0}` is null). -/
+private theorem restrict_Iz_eq_restrict_Ioi_prv :
+    MeasureTheory.volume.restrict Iz = MeasureTheory.volume.restrict (Set.Ioi 0) := by
+  rw [Work.Spaces.Iz]
+  rw [MeasureTheory.Measure.restrict_congr_set
+    (MeasureTheory.Ioi_ae_eq_Ici (μ := MeasureTheory.volume) (a := 0))]
+
+
+/-! ## The per-slice honesty of `∂_θu` -/
+
+/-- **For `z > 0` the angular slice of `∂_θu` is square-integrable.**  The `HkMem`-honesty of
+`∂_θθu` (which `AeData` supplies) makes `(∂_θθu(z,·))²σ` integrable, hence `∂_θθu(z,·) ∈ L¹`
+by Cauchy–Schwarz against `σ^{-1} = sin(2θ)^{η} ∈ L¹`; then `∂_θu(z,·)` has finite endpoint
+limits and is bounded (`SliceBddSqSigma`), and a bounded function on `Iθ` is square
+integrable. -/
+private theorem slice_pth_sq_integrable {α : ℝ} {u G : ℝ → ℝ → ℝ}
+    (h : Work.FTS.EllipticEst.H2W.Ae.AeData α u G) {z : ℝ} (hz : 0 < z) :
+    MeasureTheory.IntegrableOn (fun θ => (Work.Spaces.pth u z θ) ^ 2) Iθ := by
+  have hsm2 : ContDiffOn ℝ 2 (fun θ => u z θ) (Set.Ioo 0 (Real.pi / 2)) :=
+    Work.FTS.EllipticEst.Honest.contDiffOn_slice u hz (h.smooth 2)
+  have h2 : MeasureTheory.IntegrableOn
+      (fun θ => (deriv (fun t : ℝ => deriv (fun θ' => u z θ') t) θ) ^ 2
+        * Work.FTS.EllipticEst.sEta θ) Iθ := by
+    have h0 := Work.FTS.EllipticEst.Honest.HkMemSliceSqSigma h.memAng2 hz
+    simpa only [Work.Spaces.pth, Work.Spaces.pthIter_succ, Work.Spaces.pthIter_zero,
+      Nat.reduceAdd] using h0
+  obtain ⟨C, _hCpos, hC⟩ := Work.FTS.EllipticEst.Honest.SliceBddSqSigma hsm2 h2
+  have hvol : (MeasureTheory.volume : Measure ℝ) Iθ < ⊤ := by
+    rw [Work.Spaces.Iθ, Real.volume_Icc]; exact ENNReal.ofReal_lt_top
+  refine MeasureTheory.IntegrableOn.of_bound hvol
+    ((measurable_deriv (fun t : ℝ => u z t)).aestronglyMeasurable.pow 2) (C ^ 2) ?_
+  refine Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo fun θ hθ => ?_
+  rw [Real.norm_of_nonneg (sq_nonneg _)]
+  calc (deriv (fun t : ℝ => u z t) θ) ^ 2
+      = |deriv (fun t : ℝ => u z t) θ| ^ 2 := by rw [sq_abs]
+    _ ≤ C ^ 2 := pow_le_pow_left₀ (abs_nonneg _) (hC θ hθ).1 2
+
+/-! ## The `L2Mem` hypothesis of `aeSigmaUp` from the weak integral hypothesis -/
+
+
+/-! ## The target -/
+
+
+end Work.FTS.EllipticEst.AngAWeak
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.Pieces.TopSlotAux.lowSlots =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `lowSlots`: the three low angular slots of the elliptic `ℋ^k` estimate
+
+The target is the low-order angular part of Elgindi's `ℋ^k` elliptic estimate: for a datum
+`EllWeakPos α k F Ψ` of the weak class with `k ≥ 3` and under the single level-`(k-1)` norm bound
+
+  `α²|z²∂_z²Ψ|_{ℋ^{k-1}} + |∂_θθΨ|_{ℋ^{k-1}} ≤ D |F|_{ℋ^k}`,
+
+the three slots `∫∫ w²(∂_θθΨ)²σ`, `∫∫ w²(∂_θΨ)²` and `∫∫ w²Ψ²` (the `η`-term and the two
+`L²`-bounded slots of `TopSlotRhsDom`) are bounded by `C·|F|²_{ℋ^k}`, with `C` depending on `D`
+and `k` only.
+
+The proof has two parts.
+
+* The `η`-slot `∫∫ w²(∂_θθΨ)² σ` is a single summand of the `ℋ^{k-1}`-integrand of
+  `∂_θθΨ` (the `i = 0` slot, `σ = sin(2θ)^{-η}`), so it is at most
+  `HkSq α (k-1) (∂_θθΨ) ≤ D²·HkSq α k F` — the second inequality being the square of the
+  hypothesis (via `HkSq_eq_HkNorm_sq`).  The level-`(k-1)` honesty of `∂_θθΨ` is
+  `HkMem_descend_open` applied to `EllWeakPos.memB`.
+
+* The two `L²`-slots are handled *slicewise* by the proved all-order slice bound
+  `TT.ESW.low_order_le`:  for `z > 0` the slice `u = Ψ z ·` is `C²` on `(0,π/2)` with vanishing
+  angular moment, right endpoint limit `0` and `∫(u'')²σ < ∞`, and the first-order slice bound
+  `∫(u')² + ∫u² ≤ 20∫(u'')²σ` holds (`TT.ESW.slice_low_order`).  Integrating the resulting
+  pointwise (in `z`) bounds `∫(∂_θΨ)² ≤ 20∫(∂_θθΨ)²σ` and `∫Ψ² ≤ 20∫(∂_θθΨ)²σ` against `w²`
+  needs only the honest integrability of `z ↦ w(z)²∫(∂_θθΨ)²σ`, which is the
+  `i = 0`-slot of `HkMem α k (∂_θθΨ)` (`TT.ESW.integrable_w_sq_thetaEnergy`); the two
+  `L²`-integrands themselves need not be integrable thanks to `integral_mono_of_nonneg`.
+
+Constants are existential, so all losses are absorbed into `C = 41 D² + 1`.
+-/
+
+namespace Work.FTS.EllipticEst.Cores.Pieces.TopSlotAux
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option maxHeartbeats 1000000
+
+/-- **The `i = 0` slot of the `ℋ^k`-integrand dominates the `η`-weighted square of the centre.**
+For `f` with honest `ℋ^k`-integrand and `z ∈ Iz`,
+`w(z)²·∫_θ (f z θ)² σ(θ) ≤ ∫_θ HkIntegrand α k f z θ`.  This is the per-`z` comparison behind
+`Work.Spaces.L2Sq_DzIter_le_HkSq` at `i = 0`. -/
+private theorem slot_le_HkIntegrand {α : ℝ} {k : ℕ} {g : ℝ → ℝ → ℝ}
+    (hmem : Work.Spaces.HkMem α k g) {z : ℝ} (hz : z ∈ Work.Spaces.Iz) :
+    (Work.Spaces.w z) ^ 2 *
+        (∫ θ in Work.Spaces.Iθ, (g z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)
+      ≤ ∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α k g z θ := by
+  rw [← MeasureTheory.integral_const_mul]
+  refine MeasureTheory.integral_mono_of_nonneg ?_ (hmem.1 z hz) ?_
+  · refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc fun θ hθ =>
+      mul_nonneg (sq_nonneg _)
+        (mul_nonneg (sq_nonneg _) (Work.FTS.EllipticEst.Honest.sEta_nonneg hθ))
+  · refine Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo fun θ hθ => ?_
+    have h1 := Work.Spaces.sq_le_HkIntegrand_z α k g z θ 0 (Nat.zero_le k)
+    simp only [Work.Spaces.DzIter_zero] at h1
+    have h2 := Work.FTS.EllipticEst.mul_w_sin_rpow_sq (g z θ) (Work.Spaces.w z)
+      (show θ ∈ Work.Spaces.Iθ from ⟨le_of_lt hθ.1, le_of_lt hθ.2⟩)
+    simp only [Work.FTS.EllipticEst.sEta] at h1 ⊢
+    calc (Work.Spaces.w z) ^ 2 * ((g z θ) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+        = (g z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+            * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by ring
+      _ = (g z θ * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2 :=
+          h2.symm
+      _ ≤ Work.Spaces.HkIntegrand α k g z θ := h1
+
+
+
+
+end Work.FTS.EllipticEst.Cores.Pieces.TopSlotAux
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.Slot01W.DzSliceIdent =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+-- DECLARATION THINNING: this module was byte-identical (modulo imports) to
+-- `Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities` (same namespaces), so importing both was a duplicate-declaration error.
+-- The names stay available to every consumer through the import above.
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.remov.SrdFork.EllWeakPos_DzIter_one_shift_fork =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -168,35 +417,6 @@ theorem HkIntegrand_Dz_shift_le (α : ℝ) {k : ℕ} (hk : 1 ≤ k) (f : ℝ →
   have hnn : 0 ≤ Step.Zsum k f z θ + Step.Msum α k f z θ :=
     Work.Spaces.HkIntegrand_nonneg α k f z θ
   nlinarith [hZ, hM, hnn]
-
-/-- **Membership form of the `D_z`-shift**: if `f` is `C^∞` on the open quadrant and in
-`ℋ^k` (`k ≥ 1`), then `D_z f ∈ ℋ^{k-1}`.  This is the domination lemma
-`Work.FTS.LocData.HkMem_of_majorant` applied to the pointwise bound
-`HkIntegrand_Dz_shift_le`. -/
-theorem HkMem_Dz_shift {α : ℝ} {k : ℕ} (hk : 1 ≤ k) {f : ℝ → ℝ → ℝ}
-    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.HkMem α k f) :
-    Work.Spaces.HkMem α (k - 1) (Work.Spaces.Dz f) := by
-  refine Work.FTS.EllipticEst.AeMom.Repair.HkMem_of_majorant_ae α (k - 1) (f := Work.Spaces.Dz f)
-    (M := fun z θ => ((k : ℝ) + (k : ℝ) * (k : ℝ)) * Work.Spaces.HkIntegrand α k f z θ)
-    ?_ ?_ ?_ ?_
-  · exact (Work.FTS.EllipticEst.SmoothOpen.Dz hf).continuousOn_HkIntegrand α (k - 1)
-  · intro z hz
-    exact (hmem.1 z hz).const_mul _
-  · show MeasureTheory.Integrable
-      (fun z => ∫ θ in Work.Spaces.Iθ,
-        ((k : ℝ) + (k : ℝ) * (k : ℝ)) * Work.Spaces.HkIntegrand α k f z θ)
-      (MeasureTheory.volume.restrict Work.Spaces.Iz)
-    simpa only [MeasureTheory.integral_const_mul] using hmem.2.const_mul _
-  · intro z hz
-    rcases eq_or_lt_of_le (Set.mem_Ici.mp hz) with h0 | hz0
-    · subst h0
-      rw [MeasureTheory.ae_restrict_iff' measurableSet_Ioo]
-      exact Filter.Eventually.of_forall fun θ _ => by
-        rw [Work.FTS.LocData.HkIntegrand_zero_fst α (k - 1) (Work.Spaces.Dz f) θ,
-          Work.FTS.LocData.HkIntegrand_zero_fst α k f θ, mul_zero]
-    · rw [MeasureTheory.ae_restrict_iff' measurableSet_Ioo]
-      exact Filter.Eventually.of_forall fun θ hθ =>
-        HkIntegrand_Dz_shift_le α hk f hz0 hθ hf
 
 /-- **`∂_z` commutes with `∂_θ²` on the open quadrant**: Clairaut's theorem applied twice
 (the first step with `∂_θ Ψ` as the function, the second by congruence on the open set). -/
@@ -351,27 +571,6 @@ theorem EllWeakPos_DzIter_one_shift_of_moments {α : ℝ} {k : ℕ} (hk : 1 ≤ 
     rw [hpe]
     rfl
 
-/-- **The radially differentiated data are again of the weak class, one level down.**
-
-`EllWeakPos α (k-1) (D_z F) (D_z Ψ)` is exactly the hypothesis needed to apply the induction
-hypothesis `EllEstUnif (k-1)` to the *sliced* data: the equation is preserved because `bslOp`
-commutes with `D_z` (`Work.FTS.EllipticEst.TT.bslOp_DzIter_eq`), the Dirichlet data are preserved
-(`Work.FTS.EllipticEst.TT.DzIter_zero_at_zero`, `..._pi_half`), the smoothness is preserved
-(`SmoothOpen.DzIter`), the `ℋ`-membership of the three fields follows from the pointwise
-domination `HkIntegrand α (k-1) (D_z g) ≤ ((k:ℝ)+(k:ℝ)*(k:ℝ)) * HkIntegrand α k g`
-(`Work.FTS.EllipticEst.remov.Step.HkIntegrand_shift_le`, via
-`Work.FTS.LocData.HkMem_of_majorant`) for `g ∈ {F, z²∂_zzΨ, ∂_θθΨ}`, and the two moment
-conditions are the sibling `Work.FTS.EllipticEst.remov.Fstar_DzIter_one_eq_zero` (add
-`import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_eq_zero`, once it is proved; it
-may also be re-proved directly).
-The auxiliary identities needed are `pthIter 2 (D_z Ψ) = D_z (pthIter 2 Ψ)` and
-`z² ∂_zz(D_z Ψ) = D_z (z² ∂_zzΨ)` (both pointwise on the open quadrant). -/
-theorem EllWeakPos_DzIter_one_shift {α : ℝ} {k : ℕ} (hk : 1 ≤ k) {F Ψ : ℝ → ℝ → ℝ}
-    (h : Work.FTS.EllipticEst.TT.EllWeakPos α k F Ψ) :
-    Work.FTS.EllipticEst.TT.EllWeakPos α (k - 1)
-      (Work.Spaces.DzIter 1 F) (Work.Spaces.DzIter 1 Ψ) :=
-  EllWeakPos_DzIter_one_shift_of_moments hk h (Fstar_DzIter_one_F hk h)
-    (Fstar_DzIter_one_Psi hk h)
 
 /-- **The shift, for `2 ≤ k`.**  This is the instance of `EllWeakPos_DzIter_one_shift` which is
 needed by the induction step of `prop:Hk` (the shifted data are consumed at level `k-1 ≥ 2`) and
@@ -387,3 +586,5 @@ theorem EllWeakPos_DzIter_one_shift_of_two_le {α : ℝ} {k : ℕ} (hk : 2 ≤ k
     (Fstar_DzIter_one_F_ge_two hk h) (Fstar_DzIter_one_Psi (by omega) h)
 
 end Work.FTS.EllipticEst.remov
+end
+end

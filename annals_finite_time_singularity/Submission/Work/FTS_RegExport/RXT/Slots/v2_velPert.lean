@@ -4,22 +4,21 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS.StrongEps.SupPort.classC_sup_le
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_hkMem_pointwise_min
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_SlotJetsTendsto
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_paramC2
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_thetaJetsTendsto
-import Submission.Work.FTS_RegExport.RXT.C2Assemble
-import Submission.Work.FTS_RegExport.RXT.C2Radial
-import Submission.Work.FTS_RegExport.RXT.C2Final
-import Submission.Work.FTS_RegExport.RXA1w.abs_mixed_le_HkNorm_C4_w_proved
-import Submission.Work.FTS.ClassC.Defs
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.StrongEps.mixed_sub_of_contDiffOn_four
+import Submission.Work.FTS.FinalV2.Defs
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS.StrongEps.SupPort.classC_sup_le
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.C2Radial
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_paramC2
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_theta_sup_uniform
+import Submission.Work.FTS_RegExport.RXT.SysAux.bR_decomp
+import Submission.Work.FTS_RegExport.RXT.st1_stdata
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.FTS_RegExport.THL.angular_L2_noTrace
+import Submission.Work.R1G.DecayInZ_gA
 
 set_option synthInstance.maxHeartbeats 400000 -- v435-synth
 

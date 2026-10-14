@@ -1,35 +1,68 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/CoerDataTO.lean` — the base of the *transfer* induction on
-the open class
-
-`CoercivityFix/Transfer/CoerDataT.lean` defines the data of the transfer induction
-(`CoerDataT`: Cauchy–Schwarz at level `n` on `RegQ`, coercivity of `𝓛_Γ^T` at level `n` on
-`CoerAdm`) and its base case `coerDataT_one`, which uses the paper's Corollary
-`FirstDerivativeCoercivity` (`Coer1T.coer1_LGammaT`) together with `Assembly.H1IP_cs_Q`.
-
-This file ports the base to the open class `CoerDataTO` (defined in `StepDataO.lean`):
-
-* the Cauchy–Schwarz half comes from `Transfer.H1IP_cs_of_mem`, which needs only
-  `HkMem α 1 f` and `HkMem α 1 g` — so the bound holds *verbatim* on `RegQo α 1` (the `RegQ`-stated
-  `Assembly.H1IP_cs_Q` is not needed at all);
-* the coercivity half is the open-class level-one `FirstDerivativeCoercivity`,
-  `Coer1Open.coer1_LGammaT_O` (proved this session), with the integrability bundle `IntPkgO α f`
-  obtained from `IntPkg_O` and `regQo_mono`.
-
-This is the base of the final route to the level-four `coer` clause of the `IP4` interface: the
-route runs `Transfer/L4Main.transfer_level4`, whose level-`1` transfer data is exactly this base.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.StrongEps.EpsE4Thr.StepDataO
+import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
 import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1Open
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IntPkg_O
-import Submission.Work.FTS.CoercivityFix.Transfer.H1IP_cs_of_mem
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.JepsMarginalZero_zero
+import Submission.Work.FTS_MuLamOK.Rows.Rl0Open
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Open
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.H2.T1Q.SliceIntQ
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.N4C.rowsAuxT =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.E4R3.N4C
+
+theorem rowsAuxT (IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ)
+    {α₂ Ci Ct Ce Cs : ℝ} (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂)
+    (hE : Work.FTS.StrongEps.E4R3.N4C.N4ExtraH IP α₂ Ct) :
+    ∃ K : ℝ, 0 < K ∧ ∀ {α : ℝ} {g Φs Φg : Work.FTS.Galerkin.Fn},
+      Work.FTS.StrongEps.E4R3.N4C.CtxT Cs Ce α₂ α g Φs Φg →
+      Work.FTS.Nonlinear.Pieces.AuxRows IP α K g Φs Φg := by
+  obtain ⟨K1, hK1pos, hK1⟩ := Work.FTS.Nonlinear.Pieces.rak_bound
+  obtain ⟨K2, hK2pos, hK2⟩ := Work.FTS_MuLamOK.Rows.Rl0Open
+  obtain ⟨K3, hK3pos, hK3⟩ := Work.FTS_MuLamOK.Rows.Rl1Open Ce Cs
+  obtain ⟨K4, hK4pos, hK4⟩ := Work.FTS_MuLamOK.Rows.Rl2Open
+  refine ⟨K1 + K2 + K3 + K4 + 1, by linarith, ?_⟩
+  intro α g Φs Φg hctx
+  have hα : 0 < α := hctx.hα
+  have hα1 : α ≤ 1 := hctx.hα1
+  -- the fragment of `ClassC` consumed by the four rows
+  have hso : Work.FTS.EllipticEst.SmoothOpen g := hctx.hg.reg
+  have hmem : Work.Spaces.HkMem α 4 g :=
+    Work.FTS.OpenPkg.HkMem_mono_open hso 4 (by norm_num) hctx.hg.mem
+  have hs : Work.FTS.VocabO.StarPkgo α Cs Φs := hctx.hs.toStarPkgo
+  have hell : Work.FTS.VocabO.EllPkgGo α Ce g Φg := hctx.hell
+  have hX : 0 ≤ Work.FTS.Nonlin.Xn α g := Work.Spaces.HkNorm_nonneg α 4 g
+  have hB : 0 ≤ α ^ 2 + Real.sqrt α * Work.FTS.Nonlin.Xn α g
+      + α ^ (-(3 / 2 : ℝ)) * Work.FTS.Nonlin.Xn α g ^ 2 := by
+    have h1 : (0 : ℝ) ≤ α ^ 2 := sq_nonneg α
+    have h2 : (0 : ℝ) ≤ Real.sqrt α * Work.FTS.Nonlin.Xn α g :=
+      mul_nonneg (Real.sqrt_nonneg α) hX
+    have h3 : (0 : ℝ) ≤ α ^ (-(3 / 2 : ℝ)) * Work.FTS.Nonlin.Xn α g ^ 2 :=
+      mul_nonneg (Real.rpow_nonneg hα.le _) (sq_nonneg _)
+    linarith
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact (hK1 hα hα1).trans (by linarith)
+  · exact (hK2 hα hα1 hso hmem).trans (mul_le_mul_of_nonneg_right (by linarith) hB)
+  · exact (hK3 hα hα1 hso hmem hs hell).trans (mul_le_mul_of_nonneg_right (by linarith) hB)
+  · exact (hK4 hα hα1 hso hmem).trans (mul_le_mul_of_nonneg_right (by linarith) hX)
+
+end Work.FTS.StrongEps.E4R3.N4C
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.CoerDataTO =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -58,21 +91,7 @@ theorem H1IP_cs_Q_O : ∃ C : ℝ, 0 < C ∧ ∀ α : ℝ, 0 < α → ∀ f g : 
   ⟨10 ^ 22, by norm_num, fun α hα f g hf hg =>
     Work.FTS.CoercivityFix.Transfer.H1IP_cs_of_mem α hα f g hf.2.1 hg.2.1⟩
 
-/-- **The base of the transfer induction on the open class**: the level-one `CoerDataTO` for
-`H1IP`, with coercivity constant `1` (as in `Coer1T.ledger`) and the Cauchy–Schwarz constant
-`10²²`. -/
-theorem coerDataT_one_O :
-    ∃ CC : ℝ, 0 < CC ∧ ∀ α : ℝ, α ∈ Set.Ioc 0 (1 / 10 ^ 14) →
-      CoerDataTO α 1 (Work.Coercivity.H1IP α) 1 CC := by
-  obtain ⟨C, hC, hcs⟩ := H1IP_cs_Q_O
-  refine ⟨C, hC, fun α hα => ?_⟩
-  refine
-    { hcc := one_pos
-      hCC := hC
-      cs := fun f g hf hg => hcs α hα.1 f g hf hg
-      coer := fun f hf => ?_ }
-  have hreg : RegQo α 2 f := regQo_mono (by norm_num) hf.1
-  have h := coer1_LGammaT_O hα.1 hα.2 hf (IntPkg_O hα.1 hreg)
-  simpa using h
 
 end Work.FTS.StrongEps.EpsE4Thr
+end
+end

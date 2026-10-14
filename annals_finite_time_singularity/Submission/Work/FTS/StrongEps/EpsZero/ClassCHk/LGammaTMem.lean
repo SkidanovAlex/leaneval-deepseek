@@ -1,18 +1,83 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.ClassC.Defs
-import Submission.Work.Coercivity.Defs
-import Submission.Work.FTS.StrongPersist.H6Aux.LhatFacts
-import Submission.Work.FTS.GalFields.Norm.Xn_LGammaT_le
-import Submission.Work.FTS.GalFields.Norm.radA_Corr_contDiffOn_four
-import Submission.Work.FTS.OpenPkg.l12_open_bundle
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.OpenPkg.HkMem_add_of_contDiffOn_four
-import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.OpenPkg.l12_open_bundle
+import Submission.Work.FTS.StrongEps.EpsE4Thr.EnergyDiagAssembly
 import Submission.Work.FTS.StrongEps.EpsZero.ClassCHk.SlotSumRadAOpen
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBound
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.EnergyDiagAssemblyIoo =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-- Differentiability at every interior point gives continuity on the open interval. -/
+theorem continuousOn_Ioo_of_hasDerivAt_Ioo {φ ψ : ℝ → ℝ} {T : ℝ}
+    (h : ∀ s ∈ Set.Ioo (0 : ℝ) T, HasDerivAt φ (ψ s) s) :
+    ContinuousOn φ (Set.Ioo (0 : ℝ) T) :=
+  fun s hs => (h s hs).continuousAt.continuousWithinAt
+
+/-- **The `L²`-route data of a curve and its derivative family with *interior* continuity.** -/
+structure DiagCurveI (ρ : ℝ → ℝ → ℝ) (u udot : ℝ → Fn) (τ T : ℝ) : Prop where
+  ρmeas : AEMeasurable (Function.uncurry ρ) mup
+  ρnn : ∀ᵐ p ∂mup, 0 ≤ ρ p.1 p.2
+  int_diag : ∀ s ∈ Set.Icc (0 : ℝ) T,
+    MeasureTheory.Integrable (fun p : ℝ × ℝ => (u s p.1 p.2) ^ 2 * ρ p.1 p.2) mup
+  int_diagd : ∀ s ∈ Set.Icc (0 : ℝ) T,
+    MeasureTheory.Integrable (fun p : ℝ × ℝ => (udot s p.1 p.2) ^ 2 * ρ p.1 p.2) mup
+  aesm : MeasureTheory.AEStronglyMeasurable
+    (fun q : ℝ × (ℝ × ℝ) => u q.1 q.2.1 q.2.2)
+    ((MeasureTheory.volume.restrict (Set.Icc (0 : ℝ) T)).prod mup)
+  aesmd : MeasureTheory.AEStronglyMeasurable
+    (fun q : ℝ × (ℝ × ℝ) => udot q.1 q.2.1 q.2.2)
+    ((MeasureTheory.volume.restrict (Set.Icc (0 : ℝ) T)).prod mup)
+  deriv : ∀ᵐ p ∂mup, ∀ s ∈ Set.Ioo (0 : ℝ) T,
+    HasDerivAt (fun t : ℝ => u t p.1 p.2) (udot s p.1 p.2) s
+  bdd : ∃ K : ℝ, 0 ≤ K ∧ ∀ σ ∈ Set.Icc (0 : ℝ) T,
+    ∫ p : ℝ × ℝ, (udot σ p.1 p.2) ^ 2 * ρ p.1 p.2 ∂mup ≤ K
+  contU : Filter.Tendsto (fun σ : ℝ => ∫ p : ℝ × ℝ,
+    (udot σ p.1 p.2 - udot τ p.1 p.2) ^ 2 * ρ p.1 p.2 ∂mup) (nhds τ) (nhds 0)
+  int_cross : MeasureTheory.Integrable
+    (fun p : ℝ × ℝ => udot τ p.1 p.2 * u τ p.1 p.2 * ρ p.1 p.2) mup
+
+
+/-- The `Ioo`-continuity is *free* from `deriv`. -/
+theorem DiagCurveI.cont {ρ : ℝ → ℝ → ℝ} {u udot : ℝ → Fn} {τ T : ℝ}
+    (h : DiagCurveI ρ u udot τ T) :
+    ∀ᵐ p ∂mup, ContinuousOn (fun s : ℝ => u s p.1 p.2) (Set.Ioo (0 : ℝ) T) :=
+  h.deriv.mono fun _ hp => continuousOn_Ioo_of_hasDerivAt_Ioo hp
+
+
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsZero.ClassCHk.LGammaTMem =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -185,3 +250,5 @@ theorem LGammaTMem {α Ce : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
   exact hsum
 
 end Work.FTS.StrongEps.EpsZero.ClassCHk
+end
+end

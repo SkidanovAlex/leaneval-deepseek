@@ -2,11 +2,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.Spaces.Defs
 import Submission.Work.FTS.EllipticEst.SliceDecompDefs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
-import Submission.Work.FTS.EllipticEst.DzCalc
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.mixed_sq_integrableOn
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

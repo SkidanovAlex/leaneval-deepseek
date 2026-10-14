@@ -2,17 +2,12 @@ import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.Basic
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.StrongEps.mixed_Jeps
-import Submission.Work.Spaces.mixed_comm
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.FTS.StrongEps.KernAux.integral_mul_partFst_eq_neg
-import Submission.Work.FTS.StrongEps.KernAux.integral_mul_partSnd_eq_neg
-import Submission.Work.FTS.StrongEps.KernAux.deriv_shift_fst
-import Submission.Work.FTS.StrongEps.KernAux.deriv_shift_snd
-import Submission.Work.FTS.StrongEps.KernAux.contDiff_partFst_partSnd
-import Submission.Work.FTS.StrongEps.KernAux.hasCompactSupport_partFst_partSnd
-import Submission.Work.FTS.StrongEps.KernAux.contDiff_shift
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

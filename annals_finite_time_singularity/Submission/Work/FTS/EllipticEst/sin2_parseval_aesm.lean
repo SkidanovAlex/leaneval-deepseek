@@ -1,8 +1,154 @@
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Function.L2Space
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.FTS.EllipticEst.sin_complete_Ioc
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
+-- ===== merged: Submission.Work.FTS.EllSol.WCLayer =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllSol
+
+local notation "σ" => Work.FTS.EllipticEst.thEta
+local notation "η" => Work.Spaces.eta
+
+set_option autoImplicit false
+
+lemma eta_lt_one : η < 1 := by norm_num [Work.Spaces.eta]
+
+lemma eta_nonneg : 0 ≤ η := Work.Spaces.eta_nonneg
+
+lemma one_sub_eta_pos : 0 < 1 - η := by norm_num [Work.Spaces.eta]
+
+lemma one_sub_eta_ne : (1 : ℝ) - η ≠ 0 := ne_of_gt one_sub_eta_pos
+
+lemma measurable_thEta : Measurable σ := by
+  show Measurable (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+  exact Measurable.pow_const (Real.measurable_sin.comp (measurable_const.mul measurable_id)) _
+
+/-- Jordan's inequality in the form needed here: on `(0, π/4]`,
+`sin(2θ)^{-η} ≤ (π/4)^η θ^{-η}`. -/
+lemma thEta_le_rpow {θ : ℝ} (h0 : 0 < θ) (h4 : θ ≤ Real.pi / 4) :
+    σ θ ≤ (Real.pi / 4) ^ η * θ ^ (-η) := by
+  have h2θ0 : 0 ≤ 2 * θ := by linarith
+  have h2θ1 : 2 * θ ≤ Real.pi / 2 := by linarith [Real.pi_pos]
+  have hj := Real.mul_le_sin h2θ0 h2θ1
+  have hle : 4 * θ / Real.pi ≤ Real.sin (2 * θ) := by
+    have e : (2 : ℝ) / Real.pi * (2 * θ) = 4 * θ / Real.pi := by ring
+    rwa [e] at hj
+  have hpos : 0 < 4 * θ / Real.pi := by positivity
+  have h1 := Real.rpow_le_rpow_of_nonpos hpos hle (neg_nonpos.mpr eta_nonneg)
+  have h2 : 4 * θ / Real.pi = (Real.pi / 4)⁻¹ * θ := by rw [inv_div]; ring
+  rw [h2, Real.mul_rpow (inv_nonneg.mpr (by positivity : (0 : ℝ) ≤ Real.pi / 4)) h0.le,
+    Real.inv_rpow (by positivity : (0 : ℝ) ≤ Real.pi / 4),
+    ← Real.rpow_neg (by positivity : (0 : ℝ) ≤ Real.pi / 4), neg_neg] at h1
+  exact h1
+
+lemma integral_thEta_zero_a {a : ℝ} (ha : 0 < a) (ha4 : a ≤ Real.pi / 4) :
+    (∫ θ in (0 : ℝ)..a, σ θ) ≤ (Real.pi / 4) ^ η * a ^ (1 - η) / (1 - η) := by
+  have h0a : (0 : ℝ) ≤ a := ha.le
+  have hint1 : IntervalIntegrable σ volume 0 a := by
+    rw [intervalIntegrable_iff]
+    refine (Work.FTS.EllipticEst.integrableOn_thEta.1).mono_set ?_
+    intro θ hθ
+    rw [Set.uIoc_of_le ha.le] at hθ
+    exact ⟨le_of_lt hθ.1, by linarith [hθ.2, ha4, Real.pi_pos]⟩
+  have hint2 : IntervalIntegrable (fun θ : ℝ => (Real.pi / 4) ^ η * θ ^ (-η)) volume 0 a :=
+    (intervalIntegral.intervalIntegrable_rpow' (by linarith [eta_lt_one] : -1 < -η)).const_mul _
+  have hpt : ∀ θ ∈ Set.Ioo (0 : ℝ) a, σ θ ≤ (Real.pi / 4) ^ η * θ ^ (-η) :=
+    fun θ hθ => thEta_le_rpow hθ.1 (by linarith [hθ.2, ha4])
+  have hmono := intervalIntegral.integral_mono_on_of_le_Ioo h0a hint1 hint2 hpt
+  have hval : (∫ θ in (0 : ℝ)..a, (Real.pi / 4) ^ η * θ ^ (-η))
+      = (Real.pi / 4) ^ η * (a ^ (1 - η) / (1 - η)) := by
+    rw [intervalIntegral.integral_const_mul,
+      integral_rpow (Or.inl (by linarith [eta_lt_one] : -1 < -η))]
+    rw [show -η + 1 = 1 - η by ring, Real.zero_rpow (x := 1 - η) one_sub_eta_ne]
+    ring
+  calc (∫ θ in (0 : ℝ)..a, σ θ)
+      ≤ ∫ θ in (0 : ℝ)..a, (Real.pi / 4) ^ η * θ ^ (-η) := hmono
+    _ = (Real.pi / 4) ^ η * (a ^ (1 - η) / (1 - η)) := hval
+    _ = (Real.pi / 4) ^ η * a ^ (1 - η) / (1 - η) := by ring
+
+
+/-- `σ` is invariant under the reflection `θ ↦ π/2 - θ`. -/
+lemma integrand_sub_pi_div_two (x : ℝ) : σ (Real.pi / 2 - x) = σ x := by
+  simp only [Work.FTS.EllipticEst.thEta]
+  rw [show 2 * (Real.pi / 2 - x) = Real.pi - 2 * x by ring, Real.sin_pi_sub]
+
+lemma integral_thEta_right_layer {a : ℝ} (ha : 0 < a) (ha4 : a ≤ Real.pi / 4) :
+    (∫ θ in (Real.pi / 2 - a)..(Real.pi / 2), σ θ)
+      ≤ (Real.pi / 4) ^ η * a ^ (1 - η) / (1 - η) := by
+  have h := intervalIntegral.integral_comp_sub_left (a := Real.pi / 2 - a) (b := Real.pi / 2)
+    (fun θ : ℝ => σ θ) (Real.pi / 2)
+  rw [show Real.pi / 2 - (Real.pi / 2 - a) = a by ring,
+    show Real.pi / 2 - Real.pi / 2 = (0 : ℝ) by ring] at h
+  rw [show (fun x : ℝ => σ (Real.pi / 2 - x)) = σ from funext integrand_sub_pi_div_two] at h
+  rw [h]
+  exact integral_thEta_zero_a ha ha4
+
+
+/-! ## The generic two-layer bound -/
+
+
+
+/-! ## Integrability of `σ F²` -/
+
+
+end Work.FTS.EllSol
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.LopIterSinDefs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+
+namespace Work.FTS.EllipticEst
+
+set_option autoImplicit false
+
+/-- The coefficient recursion attached to `L = sin(2θ) ∂_θ` and the special function
+`sin(2θ)`:  `hfun 0 = 1` and
+`hfun (i+1) θ = 2 cos(2θ) hfun i θ + sin(2θ) · deriv (hfun i) θ`, so that (see
+`LopIter_sin_factor`) one has `L^i (sin(2θ)) = fun θ => sin(2θ) · hfun i θ`. -/
+noncomputable def hfun : ℕ → ℝ → ℝ
+  | 0 => fun _ => 1
+  | (n + 1) => fun θ => 2 * Real.cos (2 * θ) * hfun n θ
+      + Real.sin (2 * θ) * deriv (hfun n) θ
+
+@[simp] theorem hfun_zero : hfun 0 = fun _ : ℝ => 1 := rfl
+
+@[simp] theorem hfun_succ (n : ℕ) :
+    hfun (n + 1) = fun θ => 2 * Real.cos (2 * θ) * hfun n θ
+      + Real.sin (2 * θ) * deriv (hfun n) θ := rfl
+
+end Work.FTS.EllipticEst
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.sin2_parseval_aesm =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -14,77 +160,7 @@ namespace Work.FTS.EllipticEst
 
 open MeasureTheory
 
-/-- `∫_0^{π/2} cos (c θ) dθ`, with the degenerate case `c = 0` isolated. -/
-theorem integral_cos_mul_Iθ (c : ℝ) :
-    ∫ θ in (0:ℝ)..(Real.pi/2), Real.cos (c * θ)
-      = if c = 0 then Real.pi/2 else Real.sin (c * Real.pi/2) / c := by
-  by_cases hc : c = 0
-  · subst hc
-    rw [if_pos rfl]
-    rw [show (∫ θ in (0:ℝ)..(Real.pi/2), Real.cos (0 * θ))
-        = ∫ _θ in (0:ℝ)..(Real.pi/2), (1:ℝ) from
-      intervalIntegral.integral_congr (fun θ _ => by rw [zero_mul, Real.cos_zero])]
-    rw [intervalIntegral.integral_const]
-    simp
-  · rw [if_neg hc, intervalIntegral.integral_comp_mul_left (fun x : ℝ => Real.cos x) hc]
-    rw [show c * 0 = 0 by ring, integral_cos, Real.sin_zero, sub_zero,
-      show c * (Real.pi / 2) = c * Real.pi / 2 by ring]
-    simp only [smul_eq_mul]
-    ring
 
-/-- Orthogonality and normalisation of the Dirichlet sine system on `Iθ = [0, π/2]`:
-`∫_{Iθ} sin (2(n+1)θ) sin (2(m+1)θ) dθ = (π/4) δ_{nm}`. -/
-theorem sin_sin_int (n m : ℕ) :
-    ∫ θ in Work.Spaces.Iθ, Real.sin (2 * (n + 1) * θ) * Real.sin (2 * (m + 1) * θ)
-      = if n = m then Real.pi / 4 else 0 := by
-  rw [show Work.Spaces.Iθ = Set.Icc (0:ℝ) (Real.pi/2) from rfl]
-  rw [MeasureTheory.integral_Icc_eq_integral_Ioc,
-    ← intervalIntegral.integral_of_le (by positivity : (0:ℝ) ≤ Real.pi/2)]
-  set a : ℝ := 2 * ((n:ℝ)+1) with ha
-  set b : ℝ := 2 * ((m:ℝ)+1) with hb
-  have hpt : ∀ θ : ℝ, Real.sin (2 * (n + 1) * θ) * Real.sin (2 * (m + 1) * θ)
-      = (1/2) * Real.cos ((a - b) * θ) - (1/2) * Real.cos ((a + b) * θ) := by
-    intro θ
-    have e1 : Real.sin (2 * (n + 1) * θ) = Real.sin (a * θ) := by rw [ha]
-    have e2 : Real.sin (2 * (m + 1) * θ) = Real.sin (b * θ) := by rw [hb]
-    have e3 : (a - b) * θ = a * θ - b * θ := by ring
-    have e4 : (a + b) * θ = a * θ + b * θ := by ring
-    rw [e1, e2, e3, e4]
-    have key : Real.cos (a * θ - b * θ) - Real.cos (a * θ + b * θ)
-        = 2 * (Real.sin (a * θ) * Real.sin (b * θ)) := by
-      rw [Real.cos_sub, Real.cos_add]; ring
-    linarith
-  rw [intervalIntegral.integral_congr (fun θ _ => hpt θ)]
-  have hi1 : IntervalIntegrable (fun θ : ℝ => (1/2:ℝ) * Real.cos ((a - b) * θ)) volume 0 (Real.pi/2) :=
-    (by fun_prop : Continuous fun θ : ℝ => (1/2:ℝ) * Real.cos ((a - b) * θ)).intervalIntegrable _ _
-  have hi2 : IntervalIntegrable (fun θ : ℝ => (1/2:ℝ) * Real.cos ((a + b) * θ)) volume 0 (Real.pi/2) :=
-    (by fun_prop : Continuous fun θ : ℝ => (1/2:ℝ) * Real.cos ((a + b) * θ)).intervalIntegrable _ _
-  rw [intervalIntegral.integral_sub hi1 hi2,
-    intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
-    integral_cos_mul_Iθ (a - b), integral_cos_mul_Iθ (a + b)]
-  have hab : (0:ℝ) < a + b := by rw [ha, hb]; positivity
-  have hB : Real.sin ((a + b) * Real.pi / 2) = 0 := by
-    rw [Real.sin_eq_zero_iff]
-    exact ⟨(n:ℤ) + (m:ℤ) + 2, by rw [ha, hb]; push_cast; ring⟩
-  rw [if_neg (ne_of_gt hab), hB, zero_div, mul_zero, sub_zero]
-  have hab' : a - b = 0 ↔ n = m := by
-    rw [ha, hb]
-    constructor
-    · intro h
-      have h' : ((n:ℝ)+1) = ((m:ℝ)+1) := by linarith
-      have h2 : (n:ℝ) = (m:ℝ) := by linarith
-      exact Nat.cast_injective h2
-    · intro h; subst h; ring
-  by_cases hnm : n = m
-  · rw [if_pos (hab'.mpr hnm), if_pos hnm]
-    ring
-  · rw [if_neg (fun h => hnm (hab'.mp h))]
-    rw [if_neg hnm]
-    have hA : Real.sin ((a - b) * Real.pi / 2) = 0 := by
-      rw [Real.sin_eq_zero_iff]
-      exact ⟨(n:ℤ) - (m:ℤ), by rw [ha, hb]; push_cast; ring⟩
-    rw [hA, zero_div]
-    ring
 
 /-- **Completeness of the Dirichlet sine system on `Iθ = [0, π/2]`**: a square integrable
 function of which every even sine coefficient vanishes is zero a.e. -/
@@ -121,110 +197,6 @@ theorem sin_system_complete {f : ℝ → ℝ}
   have hfin := sin_complete_Ioc hL hmem' h'
   rwa [hmeas] at hfin
 
-theorem sin2_parseval_aesm {f : ℝ → ℝ} (hf : MeasureTheory.IntegrableOn (fun θ => (f θ) ^ 2) Work.Spaces.Iθ)
-    (hfm : MeasureTheory.AEStronglyMeasurable f (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :
-    ∫ θ in Work.Spaces.Iθ, (f θ) ^ 2
-      = (Real.pi / 4) * ∑' n : ℕ,
-          ((4 / Real.pi) * ∫ θ in Work.Spaces.Iθ, f θ * Real.sin (2 * (n + 1) * θ)) ^ 2 := by
-  have hIθ : Work.Spaces.Iθ = Set.Icc (0:ℝ) (Real.pi/2) := rfl
-  haveI hfin : MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
-    rw [hIθ, MeasureTheory.isFiniteMeasure_restrict, Real.volume_Icc]
-    exact ENNReal.ofReal_ne_top
-  have hmem : MeasureTheory.MemLp f 2 (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
-    (MeasureTheory.memLp_two_iff_integrable_sq hfm).mpr hf
-  let c : ℝ := 2 / Real.sqrt Real.pi
-  have hc : c * c = 4 / Real.pi := by
-    have hπ : Real.sqrt Real.pi * Real.sqrt Real.pi = Real.pi := by
-      rw [← sq, Real.sq_sqrt Real.pi_pos.le]
-    simp only [c]
-    rw [div_mul_div_comm, hπ]
-    norm_num
-  have hg_mem : ∀ n : ℕ, MeasureTheory.MemLp (fun θ : ℝ => c * Real.sin (2*(n+1)*θ)) 2 (MeasureTheory.volume.restrict Work.Spaces.Iθ) := fun n =>
-    MeasureTheory.MemLp.of_bound ((continuous_const.mul (Real.continuous_sin.comp (by fun_prop))).aestronglyMeasurable) |c|
-      (by filter_upwards with x; rw [Real.norm_eq_abs, abs_mul]
-          simpa using mul_le_mul_of_nonneg_left (Real.abs_sin_le_one (2*((n:ℝ)+1)*x)) (abs_nonneg c))
-  let e : ℕ → MeasureTheory.Lp ℝ 2 (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
-    fun n => MeasureTheory.MemLp.toLp (fun θ : ℝ => c * Real.sin (2*(n+1)*θ)) (hg_mem n)
-  have he_coe : ∀ n, ((e n : ℝ → ℝ)) =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ] (fun θ => c * Real.sin (2*(n+1)*θ)) :=
-    fun n => MeasureTheory.MemLp.coeFn_toLp _
-  have he_orth : Orthonormal ℝ e := by
-    rw [orthonormal_iff_ite]
-    intro n m
-    rw [MeasureTheory.L2.inner_def]
-    have hpt : (fun a => inner ℝ (((e n : ℝ → ℝ)) a) (((e m : ℝ → ℝ)) a))
-        =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
-        (fun a => (c * Real.sin (2*(n+1)*a)) * (c * Real.sin (2*(m+1)*a))) := by
-      filter_upwards [he_coe n, he_coe m] with a h1 h2
-      rw [h1, h2, Real.inner_apply]
-    rw [MeasureTheory.integral_congr_ae hpt]
-    have hsplit : ∫ a, (c * Real.sin (2*(n+1)*a)) * (c * Real.sin (2*(m+1)*a)) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ)
-        = c * c * ∫ θ in Work.Spaces.Iθ, Real.sin (2*(n+1)*θ) * Real.sin (2*(m+1)*θ) := by
-      rw [show (∫ a, (c * Real.sin (2*(n+1)*a)) * (c * Real.sin (2*(m+1)*a)) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ))
-            = ∫ a, c * (c * (Real.sin (2*(n+1)*a) * Real.sin (2*(m+1)*a))) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) from by
-            apply MeasureTheory.integral_congr_ae; filter_upwards with a; ring]
-      rw [MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]
-      ring
-    rw [hsplit, sin_sin_int n m, hc]
-    split_ifs with h
-    · field_simp
-    · ring
-  have hspan : (Submodule.span ℝ (Set.range e))ᗮ = ⊥ := by
-    rw [Submodule.eq_bot_iff]
-    intro y hy
-    rw [MeasureTheory.Lp.eq_zero_iff_ae_eq_zero]
-    refine sin_system_complete (MeasureTheory.Lp.memLp y) ?_
-    intro n
-    have h0 : inner ℝ (e n) y = 0 := by
-      rw [Submodule.mem_orthogonal] at hy
-      exact hy (e n) (Submodule.subset_span ⟨n, rfl⟩)
-    rw [MeasureTheory.L2.inner_def] at h0
-    have h1 : ∫ a, c * (Real.sin (2*(n+1)*a) * (y : ℝ → ℝ) a) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) = 0 := by
-      rw [← h0]
-      apply MeasureTheory.integral_congr_ae
-      filter_upwards [he_coe n] with a ha
-      rw [ha, Real.inner_apply]
-      ring
-    rw [MeasureTheory.integral_const_mul] at h1
-    have hc0 : c ≠ 0 := by
-      simp only [c]
-      positivity
-    have h2 : ∫ a, Real.sin (2*(n+1)*a) * (y : ℝ → ℝ) a ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) = 0 := by
-      rcases mul_eq_zero.mp h1 with h | h
-      · exact absurd h hc0
-      · exact h
-    rw [← h2]
-    apply MeasureTheory.integral_congr_ae
-    filter_upwards with a
-    ring
-  let x : MeasureTheory.Lp ℝ 2 (MeasureTheory.volume.restrict Work.Spaces.Iθ) := hmem.toLp f
-  have hx_coe : (x : ℝ → ℝ) =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ] f := MeasureTheory.MemLp.coeFn_toLp hmem
-  have hxx : inner ℝ x x = ∫ θ in Work.Spaces.Iθ, (f θ)^2 := by
-    rw [MeasureTheory.L2.inner_def]
-    apply MeasureTheory.integral_congr_ae
-    filter_upwards [hx_coe] with a ha
-    rw [ha, Real.inner_apply, sq]
-  have hterm : ∀ n : ℕ, inner ℝ x (e n) * inner ℝ (e n) x
-      = (4 / Real.pi) * (∫ θ in Work.Spaces.Iθ, f θ * Real.sin (2*(n+1)*θ))^2 := by
-    intro n
-    have h1 : inner ℝ x (e n) = c * ∫ θ in Work.Spaces.Iθ, f θ * Real.sin (2*(n+1)*θ) := by
-      rw [MeasureTheory.L2.inner_def]
-      rw [show (∫ a, inner ℝ ((x : ℝ → ℝ) a) (((e n : ℝ → ℝ)) a) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ))
-          = ∫ a, c * (f a * Real.sin (2*(n+1)*a)) ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ) from by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards [hx_coe, he_coe n] with a ha hb
-          rw [ha, hb, Real.inner_apply]; ring]
-      rw [MeasureTheory.integral_const_mul]
-    have h2 : inner ℝ (e n) x = c * ∫ θ in Work.Spaces.Iθ, f θ * Real.sin (2*(n+1)*θ) := by
-      rw [real_inner_comm]; exact h1
-    rw [h1, h2, ← hc]
-    ring
-  have key := (HilbertBasis.mkOfOrthogonalEqBot he_orth hspan).tsum_inner_mul_inner x x
-  simp only [HilbertBasis.coe_mkOfOrthogonalEqBot] at key
-  rw [← hxx, ← key]
-  rw [tsum_congr hterm]
-  rw [← tsum_mul_left]
-  apply tsum_congr
-  intro n
-  field_simp
 
 end Work.FTS.EllipticEst
+end

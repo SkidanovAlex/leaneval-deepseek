@@ -6,14 +6,14 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_RegExport.RXT.MixedUniform
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS_RegExport.RXT.jc3_aux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.FstarJet7
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.Spaces.c_bounds
-import Submission.Work.FTS.H2.STSigma
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

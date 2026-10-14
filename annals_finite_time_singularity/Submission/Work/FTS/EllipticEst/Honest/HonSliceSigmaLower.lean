@@ -4,17 +4,13 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.Honest.SliceSetup
-import Submission.Work.FTS.EllipticEst.hardy_shift_two_same_weight
-import Submission.Work.FTS.EllipticEst.Honest.SliceIbpDefs
-import Submission.Work.FTS.EllipticEst.Honest.SliceWeightDeriv
-import Submission.Work.FTS.EllipticEst.Honest.SliceBoundary
-import Submission.Work.Elliptic.contDiffOn_one_bounds
-import Submission.Work.FTS.EllipticEst.Honest.HonPrimitiveTendsto
-import Submission.Work.FTS.EllipticEst.Honest.HonAuxIntegrable
-import Submission.Work.FTS.EllipticEst.Honest.HonFullWeightIntegrable
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.H2.STFacts
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -4,12 +4,12 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.PkgJets.L12_classC_facts
-import Submission.Work.FTS_EllLimOK.PkgJets.FK_w_sq_bound
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS_EllLimOK.PkgJets.thetaBound
-import Submission.Work.Analysis.WeightedPoincare.sq_le_two_div_mul_integral_sq_add_integral_abs_mul
-import Submission.Work.Coercivity.pz_mul_w
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Open
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.Spaces.mixed_mul_le
 import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin

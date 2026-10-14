@@ -1,44 +1,163 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Auxiliaries for the weighted angular `∂_θ D_z^b` bound `sup_dz_ang_le`
-
-This module collects the five ingredients of the proof of
-`Work.FTS.TransportS.SupDzAux.sup_dz_ang_le`
-(`Submission/Work/FTS/TransportS/SupDzAux/sup_dz_ang_le.lean`):
-
-* `sda_DzIter_const_mul_th` — `D_z^j (c(θ) · g) = c(θ) · D_z^j g` (a multiplier depending on
-  the angle only passes through the radial iterates);
-* `sda_mixed_one_eq_sin_pth` — on the open quadrant and for an open-class `C^∞` datum,
-  `D_z^j D_θ f = sin(2θ) · ∂_θ (D_z^j f)`: the identity that turns the angular derivative of the
-  radial iterate into the mixed slot of the `ℋ⁴`-integrand.  It is
-  `Work.Blocks.pth_DzIter_eqOn_Q0` (`∂_θ` commutes with `D_z^j` on the quadrant) together with
-  `D_θ f = sin(2θ) ∂_θ f`;
-* `sda_ang_slice_le`, `sda_ang_slice_le_w` — the two pointwise domination statements that make
-  the window inequality of `Work.FTS.TransportS.half_line_window_bound` fit the weight
-  `sin(2θ)^{2-γ}`.  Both are the pure algebra of `Work.Spaces.bt_mixed_weight_gen` followed by a
-  single slot bound `Work.Spaces.sq_le_HkIntegrand_mixed`;
-* `sda_HkSqSwap_open` — Tonelli for the `ℋ⁴`-integrand of an **open-class** datum: the iterated
-  integral `∫_θ ∫_z HkIntegrand α 4 f` is `HkSq α 4 f`, its partially integrated function is
-  integrable, and for almost every angle the radial slice is integrable.  This is the
-  `SmoothOpen`-version of `Work.FTS.H2.HkSqSwap` (whose hypothesis is the stronger, analytic
-  `SmoothNbhd`); the a.e. strong measurability comes from
-  `Work.Spaces.aesm_of_continuousOn_Qd` applied to
-  `Work.FTS.EllipticEst.SmoothOpen.continuousOn_HkIntegrand`.
-
-All declarations are `sorry`-free and rest on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.bt_aux
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.SupDzAux.HalfLineWindow
-import Submission.Work.FTS.H2.HkSqSwap
-import Submission.Work.Blocks.alphaDz_pth_core_clean
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.continuousAt_Qang_of_bounds
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.DynGEquation
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.HonEnergyAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Honest
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+set_option linter.unusedVariables false
+
+/-! ## Elementary bounds on the two weights -/
+
+/-- `1 ≤ (w z)²` for `z > 0`. -/
+theorem one_le_w_sq {z : ℝ} (hz : 0 < z) : 1 ≤ (Work.Spaces.w z) ^ 2 := by
+  have hz' : (1 : ℝ) ≤ (1 + z) / z := by
+    rw [le_div_iff₀ hz]; linarith
+  have hw : Work.Spaces.w z = ((1 + z) / z) ^ 2 := by rw [Work.Spaces.w, div_pow]
+  rw [hw]
+  exact one_le_pow₀ (one_le_pow₀ hz')
+
+/-- `w z ≠ 0` for `z > 0`. -/
+theorem w_ne_zero {z : ℝ} (hz : 0 < z) : Work.Spaces.w z ≠ 0 := by
+  have h : Work.Spaces.w z = ((1 + z) / z) ^ 2 := by rw [Work.Spaces.w, div_pow]
+  rw [h]
+  exact pow_ne_zero 2 (div_ne_zero (by linarith) (ne_of_gt hz))
+
+/-- `1 ≤ σ θ` on the open interval. -/
+theorem one_le_sEta {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
+    1 ≤ Work.FTS.EllipticEst.sEta θ :=
+  Work.FTS.EllipticEst.sliceLim_one_le_sEta hθ
+
+/-- `0 ≤ σ θ` on `Iθ`. -/
+theorem sEta_nonneg {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
+    0 ≤ Work.FTS.EllipticEst.sEta θ := by
+  rw [Work.FTS.EllipticEst.sEta]
+  exact Real.rpow_nonneg (sin_two_nonneg_of_mem_Iθ hθ) _
+
+/-- `σ` is integrable on `Iθ` (the `p = -η` case of `sin_two_rpow`). -/
+theorem sEta_integrableOn :
+    IntegrableOn (fun θ : ℝ => Work.FTS.EllipticEst.sEta θ) Work.Spaces.Iθ :=
+  (Work.Spaces.sin_two_rpow (-(Work.Spaces.eta)) (by norm_num [Work.Spaces.eta])
+    (by norm_num [Work.Spaces.eta])).1
+
+
+/-- `volume.restrict Iθ = volume.restrict (0,π/2)`: the two endpoints are a null set. -/
+theorem restrict_Iθ_eq_Ioo :
+    volume.restrict Work.Spaces.Iθ = volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
+  rw [Work.Spaces.Iθ]
+  exact Measure.restrict_congr_set MeasureTheory.Ioo_ae_eq_Icc.symm
+
+
+/-! ## The level-`0` integrand in product form -/
+
+/-- **The level-`0` `Hk`-integrand as a product**: on `Iθ`,
+`HkIntegrand α 0 g z θ = w(z)² · (g z θ² · σ θ)`. -/
+theorem HkIntegrand_zero_eq' {α : ℝ} {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) (g : ℝ → ℝ → ℝ)
+    (z : ℝ) :
+    Work.Spaces.HkIntegrand α 0 g z θ
+      = (Work.Spaces.w z) ^ 2 * ((g z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) := by
+  rw [HkIntegrand_zero_eq, sq_profile_eq g z θ (sin_two_nonneg_of_mem_Iθ hθ),
+    Work.FTS.EllipticEst.sEta]
+  ring
+
+/-- The same identity almost everywhere on `Iθ`. -/
+theorem HkIntegrand_zero_eq_ae (α : ℝ) (g : ℝ → ℝ → ℝ) (z : ℝ) :
+    (fun θ => Work.Spaces.HkIntegrand α 0 g z θ)
+      =ᵐ[volume.restrict Work.Spaces.Iθ]
+      (fun θ => (Work.Spaces.w z) ^ 2 * ((g z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)) := by
+  rw [Filter.EventuallyEq, Work.Spaces.Iθ, MeasureTheory.ae_restrict_iff' measurableSet_Icc]
+  filter_upwards with θ hθ
+  exact HkIntegrand_zero_eq' hθ g z
+
+/-! ## Slicewise integrability provided by the honesty of the class -/
+
+/-- **The `θ`-slice of `∂_θθΨ` is `σ`-square integrable**, for every `z > 0`: this is the first
+component of `memB`. -/
+theorem hon_memB_sigma {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    IntegrableOn (fun θ => (Work.Spaces.pthIter 2 Ψ z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)
+      Work.Spaces.Iθ := by
+  have h2 := (h.memB.1 z (le_of_lt hz)).congr
+    (HkIntegrand_zero_eq_ae α (Work.Spaces.pthIter 2 Ψ) z)
+  have h4 := h2.const_mul (1 / (Work.Spaces.w z) ^ 2)
+  have h3 : (fun θ => (1 / (Work.Spaces.w z) ^ 2)
+        * ((Work.Spaces.w z) ^ 2 * ((Work.Spaces.pthIter 2 Ψ z θ) ^ 2
+            * Work.FTS.EllipticEst.sEta θ)))
+      = fun θ => (Work.Spaces.pthIter 2 Ψ z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ := by
+    funext θ
+    rw [← mul_assoc, one_div, inv_mul_cancel₀ (pow_ne_zero 2 (w_ne_zero hz)), one_mul]
+  rw [h3] at h4
+  exact h4
+
+
+/-- **The `θ`-slice of `F` is `σ`-square integrable**, for every `z > 0`: this is the first component
+of `memF`. -/
+theorem hon_memF_sigma {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    IntegrableOn (fun θ => (F z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) Work.Spaces.Iθ := by
+  have h2 := (h.memF.1 z (le_of_lt hz)).congr (HkIntegrand_zero_eq_ae α F z)
+  have h4 := h2.const_mul (1 / (Work.Spaces.w z) ^ 2)
+  have h3 : (fun θ => (1 / (Work.Spaces.w z) ^ 2)
+        * ((Work.Spaces.w z) ^ 2 * ((F z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)))
+      = fun θ => (F z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ := by
+    funext θ
+    rw [← mul_assoc, one_div, inv_mul_cancel₀ (pow_ne_zero 2 (w_ne_zero hz)), one_mul]
+  rw [h3] at h4
+  exact h4
+
+/-- **Unweighted transfer**: a slice that is a.e. strongly measurable and `σ`-square integrable is
+square integrable (because `σ ≥ 1` a.e. on `Iθ`). -/
+theorem integrableOn_sq_of_sigma {g : ℝ → ℝ}
+    (haesm : AEStronglyMeasurable g (volume.restrict Work.Spaces.Iθ))
+    (h : IntegrableOn (fun θ => (g θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) Work.Spaces.Iθ) :
+    IntegrableOn (fun θ => (g θ) ^ 2) Work.Spaces.Iθ := by
+  refine Integrable.mono' (μ := volume.restrict Work.Spaces.Iθ) h (haesm.pow 2) ?_
+  rw [Work.Spaces.Iθ, MeasureTheory.ae_restrict_iff' measurableSet_Icc]
+  have h0 : ∀ᵐ θ ∂(volume : Measure ℝ), θ ≠ 0 := by
+    rw [MeasureTheory.ae_iff]; simp
+  have h1 : ∀ᵐ θ ∂(volume : Measure ℝ), θ ≠ Real.pi / 2 := by
+    rw [MeasureTheory.ae_iff]; simp
+  filter_upwards [h0, h1] with θ hθ0 hθ1 hθ
+  rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
+  have hioo : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2) :=
+    ⟨lt_of_le_of_ne hθ.1 (Ne.symm hθ0), lt_of_le_of_ne hθ.2 hθ1⟩
+  have hs : (1 : ℝ) ≤ Work.FTS.EllipticEst.sEta θ := one_le_sEta hioo
+  nlinarith [hs, sq_nonneg (g θ)]
+
+end Work.FTS.EllipticEst.Honest
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.SupDzAux.SdaAux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -173,3 +292,5 @@ theorem sda_HkSqSwap_open (α : ℝ) (f : ℝ → ℝ → ℝ) (hF : Work.FTS.El
   exact ⟨by rw [Work.Spaces.HkSq]; exact h1, h2, h3⟩
 
 end Work.FTS.TransportS.SupDzAux
+end
+end

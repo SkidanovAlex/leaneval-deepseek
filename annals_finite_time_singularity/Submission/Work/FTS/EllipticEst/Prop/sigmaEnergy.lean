@@ -1,38 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Prop.sigmaEnergy` — the `σ`-weighted radial energy inequality in the `AeData` class
-
-This module proves
-
-`∃ C > 0, ∀ α u G, AeData α u G → α² · HkSq α 0 (z ∂_z u) ≤ C · (HkSq α 0 G + HkSq α 0 u)`
-
-(Elgindi, Annals **194** (2021), Step 1 of Proposition `prop:H2`, in the almost-everywhere class
-`Work.FTS.EllipticEst.H2W.Ae.AeData`).
-
-## Route
-
-For the cut-off family `χ n = Work.FTS.EllipticEst.cut n` (vanishing for `z ≤ 1/(n+1)` and for
-`z ≥ 3(n+1)`, equal to `1` on `[2/(n+1), 2(n+1)]`) the `σ`-weighted *truncated radial energy
-identity*
-
-  `∫ χ w² (G·u) σ = α² ∫ χ w² z² (∂_zu)² σ + ∫ χ w² (L₀u·u) σ
-      − (α²/2) ∫ (χ w² z²)'' (u²σ) + (α(5+α)/2) ∫ (χ w² z)' (u²σ)`
-
-is the proved `Dispatch.sigTruncIdentD` (with the five joint-integrability hypotheses supplied by
-the proved `Dispatch.sigJointD`).  The four terms are then bounded by:
-
-* `G·u` pairing: AM–GM in `θ` ⟹ `(1/2)(‖G‖² + ‖u‖²)`;
-* `L₀u·u` pairing: the a.e. slice coercivity `Frontier.aeSigmaSliceLowerFts`
-  ⟹ `−∫ χ w² (L₀u·u) σ ≤ K ‖u‖²`;
-* the two cut-off error terms: the uniform weighted derivative bounds `cutWeightBounds`
-  ⟹ `≤ C₀ ‖u‖²` each.
-
-Letting `n → ∞` by dominated convergence (`tendsto_radial_energy`, with the weight
-`χ n w² → w²` pointwise and the dominating function `w² (z ∂_zu)²σ ∈ L¹` supplied by the
-honesty `Dispatch.hkMem_gradUD`) and rewriting `HkSq α 0` in weighted-slice form
-(`Honest.hksq_eq_w2_sliceIntegral`) gives the claim.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -44,19 +9,18 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Dispatch.sigJointD
-import Submission.Work.FTS.EllipticEst.Frontier.aeSigmaSliceLowerFts
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemUD
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemGradUD
+import Submission.Work.FTS.EllipticEst.Prop.Ang2.Sig2
+import Submission.Work.FTS.EllipticEst.Prop.levelTopSlotsTwoAux
 import Submission.Work.FTS.EllipticEst.interpol_trunc_defs
-import Submission.Work.FTS.EllipticEst.AngSecond.cut_deriv_uniform
-import Submission.Work.FTS.EllipticEst.AngularW.cutZ2Deriv2
-import Submission.Work.FTS.EllipticEst.weight_algebra_fts
-import Submission.Work.FTS.EllipticEst.Honest.hksq_eq_w2_sliceIntegral
-import Submission.Work.FTS.EllipticEst.Dispatch.aeFirstEnergyDTools
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.ZcutSmoothCompact
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -81,9 +45,6 @@ local notation "σw" => Work.FTS.EllipticEst.sEta
 local notation "Lz" => Work.Elliptic.Lzero
 
 /-! ## Elementary facts about the weights -/
-
-theorem sin_two_nonneg_Iθ {θ : ℝ} (hθ : θ ∈ Iθ) : 0 ≤ Real.sin (2 * θ) :=
-  Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
 
 theorem sEta_nonneg_Iθ {θ : ℝ} (hθ : θ ∈ Iθ) : 0 ≤ σw θ :=
   Work.FTS.EllipticEst.Dispatch.sEta_nonneg_Iθ_D hθ

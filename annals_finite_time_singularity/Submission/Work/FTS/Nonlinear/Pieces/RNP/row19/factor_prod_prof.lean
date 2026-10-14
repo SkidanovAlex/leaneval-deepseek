@@ -1,9 +1,9 @@
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.DthIter_mul
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.row19.Vs0_interval_lower
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -6,25 +6,24 @@ import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Mine.SlotDefs
-import Submission.Work.H2W.sliceStep4Uniform
 import Submission.Work.FTS.EllipticEst.H2W.Slot01W.SliceKit
-import Submission.Work.FTS.EllipticEst.H2W.slot11_aux
-import Submission.Work.FTS.EllipticEst.H2W.Fstar_DzIter_le_Psi
-import Submission.Work.FTS.EllipticEst.H2W.sliceWirtinger
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.remov.SourceBound.weakSliceSlots
-import Submission.Work.FTS.EllipticEst.TT.Slot11.Sig2SliceAux
-import Submission.Work.FTS.EllipticEst.TT.SliceDatum
-import Submission.Work.FTS.EllipticEst.Mine.SlicePoincare
-import Submission.Work.FTS.EllipticEst.Mine.FSlotsTwoD
+import Submission.Work.FTS.EllipticEst.remov.wsMomentId
+import Submission.Work.FTS.LocDataExt.Final
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2W.sliceStep4Uniform
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.mixed_comm
-import Submission.Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo
-import Submission.Work.FTS.EllipticEst.TT.Slot11.shiftThirdInt
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

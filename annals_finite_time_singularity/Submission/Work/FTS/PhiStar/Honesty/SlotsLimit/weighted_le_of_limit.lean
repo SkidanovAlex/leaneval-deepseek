@@ -1,17 +1,10 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
 import Mathlib.RingTheory.Finiteness.Prod
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Defs
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.exists_subseq_ae_tendsto
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrable_sq_mul_le_of_tendsto_ae
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.tendsto_sq_sub_of_cauchy_of_ae
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.cs_limit_tendsto
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.integrable_mul_of_sq
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.integrable_mul_of_sq_sub_bounded
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.integrable_sq_mul_sub
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.locallyIntegrableOn_sub
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.test_mul_continuousOn
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.WeightedLimitAux.test_weight_facts
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

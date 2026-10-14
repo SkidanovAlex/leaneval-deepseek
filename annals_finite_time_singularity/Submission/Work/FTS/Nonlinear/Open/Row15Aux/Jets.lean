@@ -1,63 +1,21 @@
-/-
-# Row 15 of the §8 table, in the `StarPkgo2` vocabulary (open quadrant)
-
-Elgindi §8: the piece `N₂^{**} = -2 U(Φ̃_*) ∂_θF_*` comes with the `ℋ⁴`-honesty of `N₂^{**}`
-and the norm bound `|N₂^{**}|_{ℋ⁴} ≤ C α²`.
-
-The design (`FTS/STARPKG_T2_LEAD.md` §1.1, row 15) writes the whole row as a *product of a
-weighted star coefficient and an angular⊗radial profile*.  With
-
-* `G15 α Φs = ((z+1)/z)·(U(Φ̃_*)/sin 2θ)` — the weighted star coefficient priced by the field
-  `StarPkgo2.UszW` (`WlInfMem α 4`, with `WlInf ≤ Cs·α`);
-* `C15 α θ = -2(α/c(α))·D_θΓ(θ)` — the angular coefficient, `Γ = (sinθcos²θ)^{α/3}`;
-* `ψ(z) = z²/(1+z)³` — the radial factor,
-
-one has, on the open quadrant `Q0`,
-
-  `N₂^{**}(z,θ) = ψ(z)·(2·C15 α θ·G15 α Φs z θ)`,
-
-i.e. a product of a `z`-only factor, a `θ`-only factor and the `𝒲^{4,∞}`-coefficient `G15`
-(`NRow15T2Aux.Defs`, here re-derived as `N2ss_open_eq`).
-
-The row is then assembled exactly along the route of `wtoHQ_of_pointwise_open`: the two
-pointwise families
-
-* `|(1+z)w(z)z^m·∂_z^m N₂^{**}| ≤ 200000·W`, `m ≤ 4`,
-* `|(1+z)w(z)z^l·∂_z^l D_θ^i N₂^{**}| ≤ 200000·W·(α+sin2θ)sin(2θ)^{α/5}`, `1 ≤ i`, `l+i ≤ 4`,
-
-with `W = CW·α·Λ`, `Λ = |G15|_{𝒲^{4,∞}}`.  They are obtained from the Leibniz rule
-`sqm_pz_DthIter_mul_le_4_open` applied to `ψ·(A·G)` and the three jet estimates
-
-* `|∂_z^c ψ|` (`Jets.pzIter_psi15_le`): `(1+z)w z^m|∂_z^c ψ| ≤ Cψ(1+z)^{m-c}`;
-* `|D_θ^a (2C15)| ≤ KA·α²` (`dthU_iter_A15_flat_le`);
-* `|D_θ^a (2C15)| ≤ KB·α·(α+sin2θ)sin(2θ)^{α/5}` (`dthU_iter_A15_weight_le`);
-
-the powers of `(1+z)` cancel against the `(z+1)^{-k}`-decay of the `G15`-jets
-(`pzIter_AG_le'`, `pzIter_DthIter_AG_le'`), which is what makes the constants universal.
-
-Everything is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.VocabO2
-import Submission.Work.FTS.Nonlinear.Defs
-import Submission.Work.FTS.Nonlinear.Pieces.Rows
-import Submission.Work.FTS.NonlinRows.NRow15T2Aux.Defs
-import Submission.Work.FTS.NonlinRows.NRow15T2Aux.Jets
-import Submission.Work.FTS.NonlinRows.sqm_pz_DthIter_mul_le_4_open
-import Submission.Work.FTS.NonlinRows.wtoHQ_of_pointwise_open
 import Submission.Work.FTS.EllipticEst.H2W.lzeroSliceL1Ae
 import Submission.Work.FTS.H2.STFacts
-import Submission.Work.FTS.H2.STBounds
-import Submission.Work.Spaces.Gam_mul_weight_le
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.Spaces.c_bounds
-import Submission.Work.Spaces.WlInf_terms
 import Submission.Work.FTS.Nonlinear.Open.Row15Aux.Defs
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sup_mixed_le_H4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

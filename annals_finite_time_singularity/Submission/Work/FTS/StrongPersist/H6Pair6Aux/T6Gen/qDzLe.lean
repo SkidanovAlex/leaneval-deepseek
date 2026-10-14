@@ -2,20 +2,19 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.hardyAngL2Integrable
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.sliceThetaHardy
 import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyA
 import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.tracePi4_six
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.Spaces.integrable_prod_of_iterated
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.sliceThetaHardy
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.thetaAngIntegrable
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.tracePi4Five
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.hardyAngL2Integrable
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.mixedSlotL2
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

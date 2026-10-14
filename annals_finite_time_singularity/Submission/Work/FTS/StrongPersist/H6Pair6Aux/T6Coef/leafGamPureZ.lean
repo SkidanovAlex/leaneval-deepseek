@@ -1,16 +1,15 @@
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1five
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
 import Submission.Work.FTS.StrongPersist.N6.PwOpen6
 import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyA
 import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.FTS.TransportS.HardDefs
-import Submission.Work.FTS.OpenPkg.Basic
-
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1five
+import Submission.Work.FTS.StrongPersist.SP6.PthEVzR
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.H2.T1Q.ExcBoundQ
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

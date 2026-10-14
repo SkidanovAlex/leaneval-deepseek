@@ -2,17 +2,17 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.Blocks.interpol_mixed_box_proof
-import Submission.Work.Blocks.interp_lin_of_box
-import Submission.Work.FTS.EllipticEst.interpol_defs
-import Submission.Work.FTS.EllipticEst.hardy_shift_two_same_weight
-import Submission.Work.FTS.EllipticEst.TT.interpGammaDefs
-import Submission.Work.FTS.EllipticEst.TT.interpGamma_slots
 import Submission.Work.FTS.EllipticEst.TT.interpGamma_core
+import Submission.Work.FTS.EllipticEst.ZCuts.zHardy_compact
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -99,204 +99,7 @@ requires the quantitative use of `TTint = ∫σf₂ < ∞` (the dichotomy "`f₂
 true with `K ≈ 1.4`.
 -/
 
-/-- `HkSq α 0 (DzIter 1 G)` is the explicit `σ_η`-slot of `Dz G`: the identity that lets any
-core stated with `∫ z in Iz, ∫ θ in Iθ, (Dz G z θ)^2 (w z)^2 sin(2θ)^{-η}` on its right-hand
-side (e.g. `Work.FTS.EllipticEst.Cores.interpGammaBrick`) be consumed by `interpGamma_of_core`
-below. -/
-theorem HkSq_DzIter_one_eq (α : ℝ) (G : ℝ → ℝ → ℝ) :
-    Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)
-      = ∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ,
-          (Work.Spaces.Dz G z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by
-  rw [Work.FTS.EllipticEst.TT.HkSq_zero_eq_integral]
-  simp only [Work.Spaces.DzIter_succ, Work.Spaces.DzIter_zero, Nat.zero_add]
 
-/-- **Assembly.** `interpGamma` follows from the analytic core `hcore` and the slot comparison
-`hslot` by elementary arithmetic in `α`. -/
-theorem interpGamma_of_core
-    (hcore : ∃ C : ℝ, 0 < C ∧
-      ∀ (α : ℝ) (G : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-        Work.FTS.EllipticEst.SmoothOpen G →
-        (∀ z : ℝ, G z 0 = 0) → (∀ z : ℝ, G z (Real.pi / 2) = 0) →
-        Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 2 G) →
-        Work.Spaces.HkMem α 0 (Work.Spaces.pthIter 2 G) →
-        Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 1 G) →
-        MeasureTheory.IntegrableOn (fun z : ℝ => ∫ θ in Work.Spaces.Iθ,
-          (Work.Spaces.Dz (Work.Spaces.pth G) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)) Work.Spaces.Iz →
-        Work.FTS.EllipticEst.TT.Xint α G
-          ≤ C * (Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-                * Work.FTS.EllipticEst.TT.TTint α G)
-              + Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)))
-    (hslot : ∀ (α : ℝ) (G : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
-      Work.FTS.EllipticEst.SmoothOpen G →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.pthIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 1 G) →
-      Work.FTS.EllipticEst.TT.TTint α G ≤ Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-        ∧ Work.FTS.EllipticEst.TT.DDint α G
-            ≤ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-              + 18 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) :
-    ∃ C : ℝ, 0 < C ∧
-    ∀ (α : ℝ) (G : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.SmoothOpen G →
-      (∀ z : ℝ, G z 0 = 0) → (∀ z : ℝ, G z (Real.pi / 2) = 0) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.pthIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 1 G) →
-      MeasureTheory.IntegrableOn (fun z : ℝ => ∫ θ in Work.Spaces.Iθ,
-        (Work.Spaces.Dz (Work.Spaces.pth G) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-          * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)) Work.Spaces.Iz →
-      α ^ 4 * Work.Spaces.L2Sq (fun z θ => Work.Spaces.Dz (Work.Spaces.pth G) z θ
-            * (Real.sin (2 * θ)) ^ ((2 - Work.Spaces.gam α) / 2) * Work.Spaces.w z)
-        ≤ C * α ^ 2 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by
-  obtain ⟨C₀, hC₀pos, hcore'⟩ := hcore
-  refine ⟨10 * C₀, by positivity, ?_⟩
-  intro α G hα hα4 hS h0 h1 h2 h3 h4 h5
-  have hα1 : α ≤ 1 := by linarith
-  have hc := hcore' α G hα hα4 hS h0 h1 h2 h3 h4 h5
-  obtain ⟨hTT, hDD⟩ := hslot α G hα hα1 hS h2 h3 h4
-  -- nonnegativity of the three heavy-weight slots
-  have hA0 : 0 ≤ Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G) :=
-    Work.Spaces.HkSq_nonneg α 0 (Work.Spaces.DzIter 2 G)
-  have hA1 : 0 ≤ Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G) :=
-    Work.Spaces.HkSq_nonneg α 0 (Work.Spaces.pthIter 2 G)
-  have hA2 : 0 ≤ Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G) :=
-    Work.Spaces.HkSq_nonneg α 0 (Work.Spaces.DzIter 1 G)
-  -- nonnegativity of the two light-weight slots
-  have hTT0 : 0 ≤ Work.FTS.EllipticEst.TT.TTint α G := by
-    rw [Work.FTS.EllipticEst.TT.TTint]
-    refine MeasureTheory.integral_nonneg_of_ae ?_
-    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ici] with z _
-    refine MeasureTheory.integral_nonneg_of_ae ?_
-    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    exact mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _))
-      (Work.FTS.EllipticEst.TT.sigA_nonneg α θ hθ)
-  have hDD0 : 0 ≤ Work.FTS.EllipticEst.TT.DDint α G := by
-    rw [Work.FTS.EllipticEst.TT.DDint]
-    refine MeasureTheory.integral_nonneg_of_ae ?_
-    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ici] with z _
-    refine MeasureTheory.integral_nonneg_of_ae ?_
-    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    exact mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _))
-      (Work.FTS.EllipticEst.TT.sigA_nonneg α θ hθ)
-  have hα2nn : (0 : ℝ) ≤ α ^ 2 := by positivity
-  have hα4nn : (0 : ℝ) ≤ α ^ 4 := by positivity
-  have hα2le1 : α ^ 2 ≤ 1 := by nlinarith
-  have hα4le2 : α ^ 4 ≤ α ^ 2 := by
-    nlinarith [mul_le_mul_of_nonneg_right hα2le1 hα2nn]
-  -- AM–GM in `α`: `α² √(DD·TT) = √(α⁴DD)·√(TT) ≤ (α⁴DD + TT)/2`.
-  have hAM : α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-      * Work.FTS.EllipticEst.TT.TTint α G)
-      ≤ (α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G
-          + Work.FTS.EllipticEst.TT.TTint α G) / 2 := by
-    have hx : (0 : ℝ) ≤ α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G :=
-      mul_nonneg hα4nn hDD0
-    have hsq : α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-          * Work.FTS.EllipticEst.TT.TTint α G)
-        = Real.sqrt (α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G)
-          * Real.sqrt (Work.FTS.EllipticEst.TT.TTint α G) := by
-      rw [Real.sqrt_mul hDD0]
-      rw [show α ^ 4 = (α ^ 2) ^ 2 by ring]
-      rw [Real.sqrt_mul (show (0 : ℝ) ≤ (α ^ 2) ^ 2 by positivity), Real.sqrt_sq hα2nn]
-      ring
-    rw [hsq]
-    nlinarith [sq_nonneg (Real.sqrt (α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G)
-        - Real.sqrt (Work.FTS.EllipticEst.TT.TTint α G)),
-      Real.sq_sqrt hx, Real.sq_sqrt hTT0,
-      Real.sqrt_nonneg (α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G),
-      Real.sqrt_nonneg (Work.FTS.EllipticEst.TT.TTint α G)]
-  -- combine the AM–GM with the two slot bounds
-  have hAM2 : α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-        * Work.FTS.EllipticEst.TT.TTint α G)
-      ≤ (α ^ 4 * (2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + 18 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G))
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)) / 2 := by
-    have h2 : α ^ 4 * Work.FTS.EllipticEst.TT.DDint α G
-        ≤ α ^ 4 * (2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + 18 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) :=
-      mul_le_mul_of_nonneg_left hDD hα4nn
-    linarith [hAM, h2, hTT]
-  -- the key numerical inequality
-  have hkey : α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-        * Work.FTS.EllipticEst.TT.TTint α G)
-        + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)
-      ≤ 10 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by
-    have hp : 0 ≤ 9 * (α ^ 2 - α ^ 4) * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G) :=
-      mul_nonneg (mul_nonneg (by norm_num) (by linarith)) hA2
-    have hSbound : α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-          * Work.FTS.EllipticEst.TT.TTint α G)
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)
-        ≤ α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-          + 9 * α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G) / 2
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G) := by
-      have h := hAM2
-      have h9 : α ^ 4 * (2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + 18 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G))
-          = 2 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G))
-            + 18 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by ring
-      rw [h9] at h
-      linarith [h]
-    nlinarith [hSbound, hp, hA0, hA1]
-  -- the chain, ending with `α² Xint`
-  have hmain : α ^ 2 * Work.FTS.EllipticEst.TT.Xint α G
-      ≤ 10 * C₀ * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by
-    have h1 : α ^ 2 * Work.FTS.EllipticEst.TT.Xint α G
-        ≤ C₀ * (α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-              * Work.FTS.EllipticEst.TT.TTint α G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by
-      calc α ^ 2 * Work.FTS.EllipticEst.TT.Xint α G
-          ≤ α ^ 2 * (C₀ * (Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-                * Work.FTS.EllipticEst.TT.TTint α G)
-              + Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G))) :=
-            mul_le_mul_of_nonneg_left hc hα2nn
-        _ = C₀ * (α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-                * Work.FTS.EllipticEst.TT.TTint α G)
-              + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by ring
-    have h2 := mul_le_mul_of_nonneg_left hkey hC₀pos.le
-    calc α ^ 2 * Work.FTS.EllipticEst.TT.Xint α G
-        ≤ C₀ * (α ^ 2 * Real.sqrt (Work.FTS.EllipticEst.TT.DDint α G
-              * Work.FTS.EllipticEst.TT.TTint α G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := h1
-      _ ≤ C₀ * (10 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G))) := h2
-      _ = 10 * C₀ * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by ring
-  rw [Work.FTS.EllipticEst.TT.L2Sq_eq_Xint]
-  calc α ^ 4 * Work.FTS.EllipticEst.TT.Xint α G
-      = α ^ 2 * (α ^ 2 * Work.FTS.EllipticEst.TT.Xint α G) := by ring
-    _ ≤ α ^ 2 * (10 * C₀ * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G))) :=
-        mul_le_mul_of_nonneg_left hmain hα2nn
-    _ = 10 * C₀ * α ^ 2 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-          + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-          + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) := by ring
 
-theorem interpGamma : ∃ C : ℝ, 0 < C ∧
-    ∀ (α : ℝ) (G : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.SmoothOpen G →
-      (∀ z : ℝ, G z 0 = 0) → (∀ z : ℝ, G z (Real.pi / 2) = 0) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.pthIter 2 G) →
-      Work.Spaces.HkMem α 0 (Work.Spaces.DzIter 1 G) →
-      MeasureTheory.IntegrableOn (fun z : ℝ => ∫ θ in Work.Spaces.Iθ,
-        (Work.Spaces.Dz (Work.Spaces.pth G) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-          * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)) Work.Spaces.Iz →
-      α ^ 4 * Work.Spaces.L2Sq (fun z θ => Work.Spaces.Dz (Work.Spaces.pth G) z θ
-            * (Real.sin (2 * θ)) ^ ((2 - Work.Spaces.gam α) / 2) * Work.Spaces.w z)
-        ≤ C * α ^ 2 * (α ^ 4 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 2 G)
-            + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 G)
-            + α ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.DzIter 1 G)) :=
-  interpGamma_of_core interpGamma_core interpGamma_slots
 
 end Work.FTS.EllipticEst.TT

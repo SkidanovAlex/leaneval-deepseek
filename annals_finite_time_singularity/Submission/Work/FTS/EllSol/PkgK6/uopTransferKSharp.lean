@@ -3,23 +3,22 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.EllSol.PkgK5.WallDefs
-import Submission.Work.FTS.EllSol.PkgK5.tracesK5
-import Submission.Work.FTS.EllSol.PkgK5.divSinK5
-import Submission.Work.FTS.EllSol.PkgK5.CexK5
-import Submission.Work.FTS.EllSol.PkgK5.radialHkNorm_le_sinMul
-import Submission.Work.FTS.EllSol.PkgK5.residTracesK5
-import Submission.Work.FTS.EllSol.VopAux.thetaPoincareOpenTrace
-import Submission.Work.FTS.EllipticEst.HkNorm_Dz_le_open
-import Submission.Work.FTS.EllipticEst.Gbar_Hk_le_open
-import Submission.Work.FTS.EllipticEst.Fstar_Hk_le_open
-import Submission.Work.FTS.EllSol.PkgK5.uopRadialSinMulTransfer
-import Submission.Work.FTS.EllSol.PkgK5.uopDzIter2Bound
-import Submission.Work.FTS.EllSol.PkgK5.uopPointwiseIdentityRefute
-import Submission.Work.FTS.EllSol.PkgK5.tracesK5_sharp
 import Submission.Work.FTS.EllSol.PkgK5.K5c.WallBrick
-import Submission.Work.FTS.EllSol.PkgK5.uopTransferK5c_of_wall
+import Submission.Work.FTS.EllSol.PkgK5.tracesK5
+import Submission.Work.FTS.EllSol.PkgK5.tracesK5_sharp
 import Submission.Work.FTS.EllSol.PkgK6.vopTransferKSharp
+import Submission.Work.FTS.EllipticEst.HkNorm_Dz_le_open
+import Submission.Work.FTS.EpsEngine.PerzTools.mixed_intervalIntegral_eq_gen_restricted
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.bump_mixed_EpsSq_le
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.KsAux
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.thetaHardyRight
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.StrongPersist.SupOpenH2Z
+import Submission.Work.FTS.TransportS.t2SlotGuarded
+import Submission.Work.FTS_RegExport.RXB.l12dens_weighted_bound
+import Submission.Work.H2W.asliceMomentEq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

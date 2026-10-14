@@ -1,46 +1,104 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsMem.lean` — the *honest* uniform `ε`-interface
-
-The verbatim interface `EpsUniform` of the design (`Submission/Work/FTS/StrongEps/Basic.lean`) says
-that for every `T > 0` and all small `ε` the scheme has a solution whose **weighted `L²`-sizes**
-`Xn α (slice (Jfam ρ ε g) τ)` and `Xn6 α (slice g τ)` are bounded.
-
-In Mathlib the weighted `L²`-size is a Bochner integral, so for an integrand which is *not*
-integrable it is the junk value `0`; a *bound* on it therefore carries no information about
-integrability.  Two items of E5 genuinely need the integrability (`HkMem`), not only the bound:
-
-* the interior Arzelà–Ascoli extraction `exists_locUnif_subseq_of_uniform_H6` consumes
-  `HkMem α 6 (slice g k τ)` (`hmem`), because its first step turns the *bound* `HkNorm α 6 ≤ B`
-  into local `L²`-bounds for the plane derivatives;
-* the `dbd` clause of the limit package needs the honest membership of the mollified slices for the
-  level-three estimate `S6`/`L3Data`.
-
-This module therefore records the **stronger** interface `EpsUniformMem`, which adds the two
-membership clauses to the conclusion of `EpsUniform`.  It is the interface that the *provable*
-route uses (`EpsUniformMem.exists_lim` in `Submission/Work/FTS/StrongEps/EpsLimit.lean`), and it
-*does not* imply the verbatim one: after the `P₀` repair the two interfaces are stated for
-*different* schemes (`IsEpsSolP` vs `IsEpsSol`), so the former transfer
-`EpsUniformBd.to_uniform`/`EpsUniformMem.to_uniform` no longer exists (it was removed from
-`EpsBd.lean`).  The verbatim `EpsUniform` survives only in the statement file; the proof path is
-`EpsUniformMem`.
-
-*Design note for the lead.*  `EpsUniformMem` is not a cosmetic strengthening: `EpsUniform` alone
-does **not** give the extraction (its bounds can hold vacuously on junk integrals), and no argument
-in the current scheme recovers `HkMem` from a bound.  The pipeline is therefore: data +
-elliptic layer → `EpsUniform_of_data` producing `EpsUniformMem` → `EpsUniformMem.exists_lim` →
-`Assembly.global_strong2_mem`.  The verbatim `global_strong2` (with `EpsUniform`) is retained for
-the statement file, and its skeleton `EpsUniform.exists_lim` is exactly the missing link
-(`EpsUniform → EpsUniformMem` would have to come from the scheme's own construction).
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.Basic
+import Submission.Work.FTS.LocData6.zfarR_jet_le6_of_jets
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.ClassC.Defs
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_EllLimOK.SlotJets.slotPthSliceLe
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+-- ===== merged: Submission.Work.FTS.LocData6.Small6 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.LocData6
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- **The far part `zfar L F_*` lies in `ℋ⁶`** for `L ≥ 1`, from the order-`6` jet bound of
+`zfarR L` and the angular bound. -/
+theorem HkMem_zfar_Fstar6 (α L : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (hL : 1 ≤ L) {A Rθ : ℝ}
+    (hA : 0 ≤ A) (hRθ : 0 ≤ Rθ)
+    (hAz : ∀ j ≤ 6, ∀ z ∈ Set.Ici L, ∀ θ : ℝ,
+      |Work.Spaces.DzIter j (fun z _ => Work.FTS.LocDataExt.zfarR L z) z θ| ≤ A / z)
+    (hΓ : ∀ i ≤ 6, ∀ θ ∈ Work.Spaces.Iθ,
+      (Work.Spaces.DthIter i (fun _ θ' => Work.Spaces.Gam α θ') 0 θ) ^ 2
+        ≤ Rθ * (Work.Spaces.Gam α θ) ^ 2) :
+    Work.Spaces.HkMem α 6 (Work.Stability.zfar L (Work.Construction.Fstar α)) := by
+  obtain ⟨K, _hK, hmaj⟩ := HkIntegrand_zfar6_le α L hα hL hA hRθ hAz hΓ
+  have hmaj' : ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ,
+      Work.Spaces.HkIntegrand α 6 (Work.Stability.zfar L (Work.Construction.Fstar α)) z θ
+        ≤ K * Work.FTS.LocData.angMaj α θ / (1 + z) ^ 2 := by
+    intro z hz θ hθ
+    have h1 : Work.Spaces.HkIntegrand α 6
+        (fun z θ => -(Work.Stability.zfar L (Work.Construction.Fstar α)) z θ) z θ
+        ≤ K * Work.FTS.LocData.angMaj α θ / (1 + z) ^ 2 := by
+      refine le_trans (le_of_eq ?_) (hmaj z hz θ hθ)
+      rw [show (fun z θ => -(Work.Stability.zfar L (Work.Construction.Fstar α)) z θ)
+          = fun z θ => (-(α / Work.Spaces.c α) * Work.FTS.LocDataExt.zfarR L z)
+              * Work.Spaces.Gam α θ from by
+        funext z' θ'
+        rw [Work.FTS.LocDataExt.zfar_Fstar_eq α L]
+        ring]
+    rwa [Work.FTS.LocData.HkIntegrand_neg α 6
+      (Work.Stability.zfar L (Work.Construction.Fstar α)) z θ] at h1
+  refine Work.FTS.LocData.HkMem_of_majorant
+    (f := Work.Stability.zfar L (Work.Construction.Fstar α))
+    (M := fun z θ => K * Work.FTS.LocData.angMaj α θ / (1 + z) ^ 2) α 6 ?_ ?_ ?_ ?_
+  · exact Work.FTS.LocData.continuousOn_HkIntegrand_smoothQuad α 6 _
+      (Work.FTS.LocData.SmoothQuad_zfar_Fstar α L)
+  · exact (Work.FTS.LocData.integrableOn_angMaj_majorant α K hα hα1).1
+  · exact (Work.FTS.LocData.integrableOn_angMaj_majorant α K hα hα1).2
+  · exact hmaj'
+
+/-- **THE ORDER-`6` SMALLNESS OF THE LOCALISED DATUM.**  For every `ε > 0` there is `L₀` such
+that for every `L ≥ L₀` there is a scalar `β` with `|β| ≤ ε`, `L₁₂(locG α L β (hLoc α))(0) = 0`
+and `Xn₆(locG α L β (hLoc α)) ≤ ε`. -/
+theorem locG6_small (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
+    ∀ ε > 0, ∃ L₀ : ℝ, ∀ L ≥ L₀, ∃ β : ℝ,
+      |β| ≤ ε ∧
+        Work.Construction.L12 (locG6 α L β) 0 = 0 ∧
+        Xn6 α (locG6 α L β) ≤ ε := by
+  intro ε hε
+  obtain ⟨Kb, hKb0, hKb⟩ := hLoc_majorant6 α hα hα1
+    (fun i hi θ hθ => hGam6 α hα hα1 hi hθ)
+  obtain ⟨A, hA, hAz⟩ := zfarR_jet_le6_clean
+  have hΓ : ∀ i ≤ 6, ∀ θ ∈ Work.Spaces.Iθ,
+      (Work.Spaces.DthIter i (fun _ θ' => Work.Spaces.Gam α θ') 0 θ) ^ 2
+        ≤ (10 : ℝ) ^ 10 * (Work.Spaces.Gam α θ) ^ 2 :=
+    fun i hi θ hθ => hGam6 α hα hα1 hi hθ
+  obtain ⟨Cz, _hCz0, hCz⟩ := HkSq_zfar_Fstar_le6 α hα hα1 (le_of_lt hA) (by norm_num)
+    (fun L hL j hj z hz θ => hAz L hL j hj z hz θ) hΓ
+  obtain ⟨L₀, hL₀⟩ := locData6_small_aux α hα hα1
+    (Work.FTS.LocData.SmoothQuad_hLoc α)
+    (fun z hz θ hθ => by
+      rw [Real.sq_sqrt hKb0]
+      exact hKb z hz θ hθ)
+    (Work.FTS.LocData.L12_hLoc α hα hα1).2
+    (fun L β hL => Work.FTS.LocData.L12_locG α L β hα hα1 hL)
+    ⟨Cz, fun L hL => hCz L hL⟩
+    (fun L hL => HkMem_zfar_Fstar6 α L hα hα1 hL (le_of_lt hA) (by norm_num)
+      (fun j hj z hz θ => hAz L hL j hj z hz θ) hΓ)
+    ε hε
+  exact ⟨L₀, fun L hL => hL₀ L hL⟩
+
+end Work.FTS.LocData6
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsMem =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -150,3 +208,5 @@ theorem EpsUniformMem.mono {α : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : 
     (hb τ hτ).2.2.2.2.2.2.1, (hb τ hτ).2.2.2.2.2.2.2⟩
 
 end Work.FTS.StrongEps
+end
+end

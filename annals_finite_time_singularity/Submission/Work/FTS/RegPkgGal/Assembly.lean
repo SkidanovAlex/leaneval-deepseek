@@ -1,53 +1,17 @@
-/-
-# `Work.FTS.RegPkgGal.Assembly` — the assembly of `RegPkg'` (design §4, item 10)
-
-**THE MAIN RESULT OF THIS AREA:**
-
-  `regPkg_of_galerkin`: from the input bundle `GalHyp` (`GalHyp.lean` — the lead's `RegPkgMin`, the
-  class data `StData` of `g̃`, the angular endpoint continuity, the sup/Lipschitz data, the R1
-  joint-limit data, the R7 transport data, and the modulation data of design §2) together with the
-  single remaining slot — the fake-time jet `hgdoth` of R5 (`R5c.jet_dtg`, under proof) — the
-  corrected regularity package
-
-    `RegPkg' α S (Avort m) (Bdyn m) (extG g)`
-
-  holds; `forall_regPkg_of_galerkin` is the same for an `S`-indexed bundle, i.e. the promised shape
-  `∀ S > 0, RegPkg' α S (Avort m) (Bdyn m) (extG g)`.
-
-Every field of `RegPkg'` is *derived*:
-
-* the ten clock clauses — `R6.clock_fields` (design §2);
-* `hvt`, `hquad0`, `hquad` — `R1.lean` (`extG` is `0` on `z ≤ 0`, so its `z`-derivative at `0`
-  is `0`) and `R1.extG_hvt` + `RegPkgMin.vanish`;
-* `htay` — `R2c.tay_clauses` (the Hölder form of design correction 5);
-* `hg`, `hpz` — `R3b.jet_g`;
-* `hvan` — `R4d.van_global` (the *applicable* version: `C¹` on the open quadrant plus continuity
-  at the angular endpoints, since the genuine profile is continuous but not `C¹` there);
-* `hH4` — `R8.mem4_extG`;
-* `hcont` — `R1b.extG_cont` (the `C¹`-gluing across `z = 0` and `τ = 0`, with the *joint* limits);
-* `hsupp` — `R7d.support_strip` (finite speed of propagation) plus the two angular endpoint values.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegPkgGal.Defs
-import Submission.Work.FTS.RegPkgGal.Basic
-import Submission.Work.FTS.RegPkgGal.RVocab
-import Submission.Work.FTS.RegPkgGal.GalHyp
-import Submission.Work.FTS.RegPkgGal.R5Slot
-import Submission.Work.FTS.RegPkgGal.R5f.jet_dtg_of_rhs
-import Submission.Work.FTS.RegPkgGal.R1
-import Submission.Work.FTS.RegPkgGal.R1b.extG_cont
-import Submission.Work.FTS.RegPkgGal.R1c.extG_cont
-import Submission.Work.FTS.RegPkgGal.R2c.tay_clauses
-import Submission.Work.FTS.RegPkgGal.R3d.jet_g
-import Submission.Work.FTS.RegPkgGal.R4d.van_global
-import Submission.Work.FTS.RegPkgGal.R6.clock_fields
 import Submission.Work.FTS.RegPkgGal.R7d.support_strip
-import Submission.Work.FTS.RegPkgGal.R7e.support_strip_zL
-import Submission.Work.FTS.RegPkgGal.R8
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.RegPkgGal.St1Class
+import Submission.Work.FTS.StrongEps.EpsODE
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.FTS_RegExport.RX0.sup2_extG_ext_hIS
+import Submission.Work.FTS_RegExport.RXR5L.L12fAux.C1Jet_L12f_of_support
+import Submission.Work.R1G.vecResid_eq_scalar_smul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -179,18 +143,5 @@ theorem regPkg_of_galerkin {α S : ℝ} {g Φ : Fam} {m : ℝ → ℝ} {Vz Vθ c
       hH4 := mem4_extG hmin
       hcont := hcont }
 
-/-- **THE DELIVERABLE'S SHAPE.**  If the input bundle and the R5 slot are available at every strip
-size `S > 0`, then so is the package: `∀ S > 0, RegPkg' α S (Avort m) (Bdyn m) (extG g)`. -/
-theorem forall_regPkg_of_galerkin {α : ℝ} {g Φ : Fam} {m : ℝ → ℝ}
-    {Vz Vθ cs : ℝ → ℝ → ℝ → ℝ} {a b c : ℝ}
-    (hα : 0 < α) (hα13 : α ≤ 1 / 3)
-    (H : ∀ S > 0, ∃ Lz7 M Lz Lθ Lt Nz Nθ Nt : ℝ,
-      GalHyp α S g m Vz Vθ cs a b c Lz7 M Lz Lθ Lt Nz Nθ Nt)
-    (H5 : ∀ S > 0, ∃ N0 : ℝ, R5Slot α S g Φ N0) :
-    ∀ S > 0, RegPkg' α S (Avort m) (Bdyn m) (extG g) := by
-  intro S hS
-  obtain ⟨Lz7, M, Lz, Lθ, Lt, Nz, Nθ, Nt, hH⟩ := H S hS
-  obtain ⟨N0, h5⟩ := H5 S hS
-  exact regPkg_of_galerkin hH h5
 
 end Work.FTS.RegPkgGal

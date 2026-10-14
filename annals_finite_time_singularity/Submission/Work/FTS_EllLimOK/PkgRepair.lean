@@ -1,69 +1,467 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.PkgRepair` — RETIRED fields (the lead's ruling of 2026-10-11)
-
-**STATUS.**  Of the six fields of `HasPkgE` below, only `PkgCos` survived the ruling: the other five
-are **false** and are kept here only as the record of the failed repair.
-
-* `PkgMemSq` / `PkgSlice` — false by **homogeneity**: `HkSq` is quadratic in `g` while the bound
-  `Ce·Xn6 α g` is linear (`RulingELF.pkgMemSq_degenerate`, `not_hasPkgF_of_pos`, machine-checked).
-  Replaced by `RulingELF.PkgMemSqH` (bound `Ce·Xn6²`, `z`-local slice bound).
-* `PkgDecay` — false: class `C` allows `z^{-s}` tails, `s ∈ (1/2,3/2)`, and `bslOp` is Euler in `z`,
-  so `E g` inherits a `z^{-s}` tail and no `1/(1+z)` rate holds.  (`Defs3.LocalBound4`'s rate is
-  false for the same reason.)
-* `PkgStrip` — false: `g = χ(z)·z^s·φ(θ)`, `s ∈ (3/2,2)`, is in class `C` and `E g ~ z^s` is not
-  `C²` at `z = 0`.
-* `PkgCorner` — false: same `z^s` source makes `∂_z²E g ~ z^{s-2}` unbounded; and `g ~ θ^σ`,
-  `σ ∈ (α/20, 1)`, is in class `C` with `∂_θ³E g ~ θ^{σ-1}`.
-
-Replaced by the installed `RulingELF.HasPkgH := HasPkg ∧ PkgCos ∧ PkgMemSqH ∧ PkgBoxH`; the
-consumers of the *false* fields (`LocalBound4D`, `SmallLocalBound4D`, `HasPkgD`, `HasPkgE` and the
-`FatouG`/`ClosedCompact3G_of_bounds_fatou`/`SmallAssemblyG`/`MainG` chain) are superseded by
-`FatouH`, `ClosedCompact3H_of_bounds_fatou`, `SmallAssemblyH`, `MainH`.
-
-## The original header (kept for the record)
-
-# `FTS_EllLimOK.PkgRepair` — the two fields that the packages provably lack
-
-Obligation 1 of this area is `SmallLocalBound4 ∧ SmallFatouData` **from** `HasPkg α Ce E`.  The
-mathematical half of it is proved (`PkgJets/pkg_pointwise_jets`: from `HasPkg` + `LimSeq4` + one
-boundary datum, one constant bounds every order-`≤ 4` jet of `E (fn n)` uniformly in `n, z, θ`).
-The two remaining data are provably **not** in `HasPkg`:
-
-* **pinning — GAP A.**  `KernelObstruction/hasPkg_add_cex` shows that for every `E` with `HasPkg`
-  and every linear `ℓ ≠ 0` on the class, the sibling `E' g = E g + ℓ g • cex α` again has `HasPkg`,
-  where `cex α z θ = if θ = 0 then 0 else z^{-(3/α)}/cos θ` is an exact solution of the law
-  (`StrongEps.EComparison.ScrRef5.cex_bslOp`) and of all three *linear* coefficient equations
-  (`Uop_mode`/`Vop_mode`/`Rop_mode`).  So the packages see `E` only up to a one-dimensional kernel,
-  and the reconstruction `Ψ = -(1/cos θ)∫_θ^{π/2} cos s·(Vop Ψ)(z,s) ds` — hence every pointwise
-  bound on the jets of `E g` — needs one more datum: the *value* `lim_{θ→π/2} cos θ·Φ̃(z,θ) = 0`.
-  **Field `PkgCos` below states exactly that datum.**  (The membership is stated for `PhiTil`, not
-  for `E g`: `PhiTil α g (E g) = E g - Theta α g` and `Theta α g/cos θ = (1/2α) sin θ·L₁₂ g` is
-  *not* `ℋ⁰` for a general class-`C` source, so the field has to be imposed on `PhiTil`.)
-* **far-field rate — GAP B.**  The `ℋ`-weight is `w(z) = (1+z)²/z² → 1` at `z = ∞`, so no weighted
-  `L²`-bound in `HasPkg` forces a *rate*, while `LocalBound4` (and `FatouData`'s decay clause) need
-  one (`ClosedCompact3_of_bounds_fatou` uses it for the limit's `z → ∞` clause, Arzelà–Ascoli
-  converging only on compacta).  **Field `PkgDecay` below states exactly that rate**, in the
-  relative form `≤ K·Xn6 α g` that makes it uniform along a `LimSeq4`
-  (`LimSeq4.bound : Xn6 α (fn n) ≤ B`).
-
-`HasPkgD` is their conjunction with `HasPkg`.  It is the hypothesis under which this area derives
-`Defs3.LocalBound4` and `Defs3.FatouData` (see `PkgJets/`), i.e. it is the *repair* of the frozen
-`Work.FTS.VocabO.EllPkgGo` / `Work.FTS.ClassC.EllPkgK`; appending the two fields keeps every
-existing projection of the packages intact (the `BoxReg` repair of the previous stretch used the
-same device).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_EllLimOK.Defs
-import Submission.Work.FTS_EllLimOK.Defs3
-import Submission.Work.Construction.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.SmoothStripDefs
+import Mathlib.Topology.Instances.Nat
+import Mathlib.Topology.Metrizable.Uniformity
+import Submission.Work.FTS.CoercivityFix.PsiMul.PsiZop
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.H2.STBasic
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
 import Submission.Work.FTS.StrongGlobal.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBound
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundCore
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_EllLimOK.Closed
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.Defs3
+import Submission.Work.FTS_EllLimOK.UniqFatou
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.StepReg2_all_O =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1600000
+
+/-! ## Elementary closure of the three components of `RegQo` -/
+
+/-- The radial factor `ψ(z) = 1/(1+z)` is `C^∞` on the positive half-line. -/
+private theorem contDiffOn_oneDiv_fts :
+    ∀ n : ℕ, ContDiffOn ℝ n (fun z : ℝ => 1 / (1 + z)) (Set.Ioi 0) := by
+  intro n
+  refine ContDiffOn.div contDiffOn_const (contDiffOn_const.add contDiffOn_id) ?_
+  intro z hz
+  have hz0 : (0 : ℝ) < z := hz
+  positivity
+
+/-- `SmoothOpen` is closed under negation. -/
+private theorem smoothOpen_neg_fts {f : ℝ → ℝ → ℝ}
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) :
+    Work.FTS.EllipticEst.SmoothOpen (fun z θ => - f z θ) := by
+  show ContDiffOn ℝ Work.Stability.smoothOrder
+    (Function.uncurry (fun z θ : ℝ => - f z θ)) Work.FTS.EllipticEst.Q0
+  have hfun : Function.uncurry (fun z θ : ℝ => - f z θ)
+      = fun p : ℝ × ℝ => - (Function.uncurry f p) := rfl
+  rw [hfun]
+  exact ContDiffOn.neg hf
+
+/-- `BdryTraces` is additive, in the pointwise shape used below. -/
+private theorem bdryTraces_add_fts {α : ℝ} {k : ℕ} {f g : Fn}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (hf : Work.FTS.Nonlin.BdryTraces α k f) (hg : Work.FTS.Nonlin.BdryTraces α k g) :
+    Work.FTS.Nonlin.BdryTraces α k (fun z θ => f z θ + g z θ) :=
+  Work.FTS.ClassC.bdryTraces_add hsf hsg hf hg
+
+/-- `BdryTraces` is closed under multiplication by a constant, in the pointwise shape used
+below. -/
+private theorem bdryTraces_const_mul_fts {α : ℝ} {k : ℕ} (c : ℝ) {f : Fn}
+    (hf : Work.FTS.Nonlin.BdryTraces α k f) :
+    Work.FTS.Nonlin.BdryTraces α k (fun z θ => c * f z θ) :=
+  Work.FTS.ClassC.bdryTraces_smul (α := α) (k := k) hf c
+
+/-- `BdryTraces` is closed under negation. -/
+private theorem bdryTraces_neg_fts {α : ℝ} {k : ℕ} {f : Fn}
+    (hf : Work.FTS.Nonlin.BdryTraces α k f) :
+    Work.FTS.Nonlin.BdryTraces α k (fun z θ => - f z θ) := by
+  have heq : (fun z θ => - f z θ) = ((-1 : ℝ) • f) := by
+    funext z θ; simp [Pi.smul_apply]
+  rw [heq]
+  exact Work.FTS.ClassC.bdryTraces_smul (α := α) (k := k) hf (-1)
+
+/-- `BdryTraces` is closed under subtraction, in the pointwise shape used below (the two
+summands must be `C^∞` on the open quadrant, which is how `ClassC.bdryTraces_add` is stated). -/
+private theorem bdryTraces_sub_fts {α : ℝ} {k : ℕ} {f g : Fn}
+    (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g)
+    (hf : Work.FTS.Nonlin.BdryTraces α k f) (hg : Work.FTS.Nonlin.BdryTraces α k g) :
+    Work.FTS.Nonlin.BdryTraces α k (fun z θ => f z θ - g z θ) := by
+  have heq : (fun z θ => f z θ - g z θ) = (f + fun z θ => - g z θ) := by
+    funext z θ; rfl
+  rw [heq]
+  exact bdryTraces_add_fts hsf (smoothOpen_neg_fts hsg) hf
+    (bdryTraces_neg_fts (α := α) (k := k) hg)
+
+/-! ## The open-class port of `𝓛̂` -/
+
+/-- **`RegQo α (m+1) ⟹ RegQo α m (𝓛̂ ·)`**, the open-class twin of
+`CoercivityFix.Assembly.Lhat_RegQ`.
+
+`𝓛̂f = f + D_z f − 2f/(1+z) − 3D_θf/(1+z)`: smoothness and `ℋ^m`-membership come from
+`H6Aux.smoothOpen_Lhat` / `H6Aux.Lhat_mem`, and the boundary traces are assembled from the
+pieces `f`, `D_z f` (`regQo_dth_dz`), the two radial multiples with `ψ = 1/(1+z)`
+(`TracesAux.BdryTraces_psi_mul_open` + `PsiMul.zop_psi_bound`) and
+`ClassC.bdryTraces_add` / `bdryTraces_smul`. -/
+private theorem Lhat_RegQo_aux (α : ℝ) (hα : 0 < α) (m : ℕ) {f : Fn}
+    (hf : Work.FTS.StrongEps.EpsE4Thr.RegQo α (m + 1) f) :
+    Work.FTS.StrongEps.EpsE4Thr.RegQo α m (Work.FTS.CoercivityFix.Lhat f) := by
+  have hsm : Work.FTS.EllipticEst.SmoothOpen f := hf.1
+  have hmem : Work.Spaces.HkMem α (m + 1) f := hf.2.1
+  have htr : Work.FTS.Nonlin.BdryTraces α (m + 1) f := hf.2.2
+  obtain ⟨hdth, hdz⟩ := Work.FTS.StrongEps.EpsE4Thr.regQo_dth_dz hα (n := m) hf
+  have htr_f : Work.FTS.Nonlin.BdryTraces α m f := fun a b hab => htr a b (by omega)
+  have htr_dz : Work.FTS.Nonlin.BdryTraces α m (Work.Spaces.Dz f) := hdz.2.2
+  have htr_dth : Work.FTS.Nonlin.BdryTraces α m (Work.Spaces.Dth f) := hdth.2.2
+  -- the radial multiplier `ψ(z) = 1/(1+z)`
+  obtain ⟨K, hK0, hKb⟩ := Work.FTS.CoercivityFix.PsiMul.zop_psi_bound m
+  have hψ : ∀ n : ℕ, ContDiffOn ℝ n (fun z : ℝ => 1 / (1 + z)) (Set.Ioi 0) :=
+    contDiffOn_oneDiv_fts
+  have hsmψf : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (1 / (1 + z)) * f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hψ) hsm
+  have hsmψdth : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (1 / (1 + z)) * Work.Spaces.Dth f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hψ) hdth.1
+  have hpsi_f : Work.FTS.Nonlin.BdryTraces α m (fun z θ => (1 / (1 + z)) * f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open m hK0 hKb hψ hsm htr_f
+  have hpsi_dth : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => (1 / (1 + z)) * Work.Spaces.Dth f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open m hK0 hKb hψ hdth.1 htr_dth
+  -- the four summands, and their combination
+  have hA : Work.FTS.Nonlin.BdryTraces α m (fun z θ => f z θ + Work.Spaces.Dz f z θ) :=
+    bdryTraces_add_fts hsm hsm.Dz htr_f htr_dz
+  have hB : Work.FTS.Nonlin.BdryTraces α m (fun z θ => 2 * ((1 / (1 + z)) * f z θ)) :=
+    bdryTraces_const_mul_fts 2 hpsi_f
+  have hC : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => 3 * ((1 / (1 + z)) * Work.Spaces.Dth f z θ)) :=
+    bdryTraces_const_mul_fts 3 hpsi_dth
+  have hAB : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => (f z θ + Work.Spaces.Dz f z θ) - 2 * ((1 / (1 + z)) * f z θ)) :=
+    bdryTraces_sub_fts (Work.FTS.EllipticEst.smoothOpen_add hsm hsm.Dz)
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 2 hsmψf) hA hB
+  have hABC : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => ((f z θ + Work.Spaces.Dz f z θ) - 2 * ((1 / (1 + z)) * f z θ))
+        - 3 * ((1 / (1 + z)) * Work.Spaces.Dth f z θ)) :=
+    bdryTraces_sub_fts
+      (Work.FTS.EllipticEst.smoothOpen_add
+        (Work.FTS.EllipticEst.smoothOpen_add hsm hsm.Dz)
+        (smoothOpen_neg_fts
+          (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 2 hsmψf)))
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 3 hsmψdth) hAB hC
+  refine ⟨Work.FTS.StrongPersist.H6Aux.smoothOpen_Lhat hsm,
+    Work.FTS.StrongPersist.H6Aux.Lhat_mem α hα m hsm hmem, ?_⟩
+  rw [show Work.FTS.CoercivityFix.Lhat f
+      = fun z θ => ((f z θ + Work.Spaces.Dz f z θ) - 2 * ((1 / (1 + z)) * f z θ))
+          - 3 * ((1 / (1 + z)) * Work.Spaces.Dth f z θ) from by
+    funext z θ
+    rw [Work.FTS.CoercivityFix.Lhat_eq]
+    ring]
+  exact hABC
+
+/-! ## The open-class port of the defect `Ê₂` -/
+
+/-- **Extension of a pointwise integrand domination from the open quadrant to the closed
+domain `Iz × Iθ`.**  Both `HkIntegrand`-terms vanish on the two boundary lines `z = 0` and
+`sin(2θ) = 0`, so a bound valid on the open quadrant and with a nonnegative right-hand side
+extends.  (This is `H6Aux.HkIntegrand_le_Izθ_of_Ioo` with a general majorant `M`.) -/
+private theorem HkIntegrand_le_Izθ_of_Ioo_fts {α : ℝ} (hα : 0 < α) {m : ℕ} {X : ℝ → ℝ → ℝ}
+    {M : ℝ → ℝ → ℝ} (hMnn : ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ, 0 ≤ M z θ)
+    (h : ∀ z ∈ Set.Ioi (0 : ℝ), ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
+      Work.Spaces.HkIntegrand α m X z θ ≤ M z θ) :
+    ∀ z ∈ Work.Spaces.Iz, ∀ θ ∈ Work.Spaces.Iθ, Work.Spaces.HkIntegrand α m X z θ ≤ M z θ := by
+  intro z hz θ hθ
+  rcases eq_or_lt_of_le (show (0 : ℝ) ≤ z from hz) with hz0 | hzpos
+  · rw [← hz0, Work.FTS.LocData.HkIntegrand_zero_fst]
+    exact hMnn 0 (Set.mem_Ici.mpr le_rfl) θ hθ
+  · by_cases hsin : Real.sin (2 * θ) = 0
+    · rw [Work.FTS.StrongPersist.HkIntegrand_eq_zero_of_sin_zero hα hsin]
+      exact hMnn z hz θ hθ
+    · have hsinpos : 0 < Real.sin (2 * θ) :=
+        lt_of_le_of_ne (Work.Elliptic.sin_two_nonneg_of_mem hθ) (Ne.symm hsin)
+      have hθ' : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2) :=
+        Work.FTS.CoercivityFix.Coer1.mem_Ioo_of_mem_Iθ_of_sin_pos hθ hsinpos
+      exact h z hzpos θ hθ'
+
+/-- **`RegQo α (m+1) ⟹ RegQo α m (Ê₂ ·)`**, the open-class twin of
+`CoercivityFix.Assembly.E2hat_RegQ`.
+
+`Ê₂ f = 2(φ·f) + 3(φ·D_θ f)` with `φ(z) = z/(1+z)²`: smoothness is the closure of `SmoothOpen`
+under the `z`-only multiplier `φ` and under sums; the `ℋ^m`-membership is the α-uniform pointwise
+domination `E2hatOAux.E2hat_HkIntegrand_le_uniform_pt`, promoted by the majorant criterion; and the
+boundary traces come from `TracesAux.BdryTraces_psi_mul_open` with `ψ = φ`
+(`E2Bound.SlotMul.Zop_iterate_phiZ_bound`). -/
+private theorem E2hat_RegQo_aux (α : ℝ) (hα : 0 < α) (m : ℕ) {f : Fn}
+    (hf : Work.FTS.StrongEps.EpsE4Thr.RegQo α (m + 1) f) :
+    Work.FTS.StrongEps.EpsE4Thr.RegQo α m (Work.FTS.CoercivityFix.E2hat f) := by
+  have hsm : Work.FTS.EllipticEst.SmoothOpen f := hf.1
+  have hmem : Work.Spaces.HkMem α (m + 1) f := hf.2.1
+  have htr : Work.FTS.Nonlin.BdryTraces α (m + 1) f := hf.2.2
+  obtain ⟨hdth, _⟩ := Work.FTS.StrongEps.EpsE4Thr.regQo_dth_dz hα (n := m) hf
+  have hmf : Work.Spaces.HkMem α m f :=
+    Work.FTS.OpenPkg.HkMem_mono_open hsm m (Nat.le_succ m) hmem
+  have hmth : Work.Spaces.HkMem α m (Work.Spaces.Dth f) :=
+    Work.FTS.IPGen.HkMem_Dth_le (α := α) (k := m) (by linarith : -(1 / 10 : ℝ) ≤ α) hsm hmem
+  obtain ⟨Cn, hCnpos, hpt⟩ :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.E2hat_HkIntegrand_le_uniform_pt m
+  -- smoothness of `Ê₂ f`
+  have hφ : ∀ n : ℕ, ContDiffOn ℝ n (fun z : ℝ => z / (1 + z) ^ 2) (Set.Ioi 0) :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.phiZ_contDiffOn
+  have hsmE2 : Work.FTS.EllipticEst.SmoothOpen (Work.FTS.CoercivityFix.E2hat f) := by
+    rw [Work.FTS.CoercivityFix.E2Bound.E2hat_eq_zmul f]
+    exact Work.FTS.EllipticEst.smoothOpen_add
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 2
+        (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+          (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hφ) hsm))
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 3
+        (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+          (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hφ) hdth.1))
+  -- the `ℋ^m`-membership
+  have hmemE2 : Work.Spaces.HkMem α m (Work.FTS.CoercivityFix.E2hat f) := by
+    refine Work.FTS.LocData.HkMem_of_majorant α m
+      (f := Work.FTS.CoercivityFix.E2hat f)
+      (M := fun z θ => Cn * Work.Spaces.HkIntegrand α m f z θ
+        + Cn * Work.Spaces.HkIntegrand α m (Work.Spaces.Dth f) z θ)
+      (hsmE2.continuousOn_HkIntegrand α m) ?_ ?_ ?_
+    · intro z hz
+      exact ((hmf.1 z hz).const_mul Cn).add ((hmth.1 z hz).const_mul Cn)
+    · refine ((hmf.2.const_mul Cn).add (hmth.2.const_mul Cn)).congr ?_
+      filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ici] with z hz
+      simp only [Pi.add_apply]
+      rw [MeasureTheory.integral_add ((hmf.1 z hz).const_mul Cn) ((hmth.1 z hz).const_mul Cn),
+        MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]
+    · refine HkIntegrand_le_Izθ_of_Ioo_fts hα (X := Work.FTS.CoercivityFix.E2hat f)
+        (fun z _ θ _ => add_nonneg
+          (mul_nonneg hCnpos.le (Work.Spaces.HkIntegrand_nonneg α m f z θ))
+          (mul_nonneg hCnpos.le
+            (Work.Spaces.HkIntegrand_nonneg α m (Work.Spaces.Dth f) z θ))) ?_
+      intro z hzpos θ hθ
+      have h1 := hpt α f hα hsm z hzpos θ hθ
+      have h2 : Cn * (Work.Spaces.HkIntegrand α m f z θ
+            + Work.Spaces.HkIntegrand α m (Work.Spaces.Dth f) z θ)
+          = Cn * Work.Spaces.HkIntegrand α m f z θ
+            + Cn * Work.Spaces.HkIntegrand α m (Work.Spaces.Dth f) z θ := by ring
+      rwa [h2] at h1
+  -- the boundary traces
+  have htr_f : Work.FTS.Nonlin.BdryTraces α m f := fun a b hab => htr a b (by omega)
+  have htr_dth : Work.FTS.Nonlin.BdryTraces α m (Work.Spaces.Dth f) := hdth.2.2
+  obtain ⟨K, hK0, hKb⟩ :=
+    Work.FTS.CoercivityFix.E2Bound.SlotMul.Zop_iterate_phiZ_bound m
+  have hsmφf : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (z / (1 + z) ^ 2) * f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hφ) hsm
+  have hsmφdth : Work.FTS.EllipticEst.SmoothOpen
+      (fun z θ => (z / (1 + z) ^ 2) * Work.Spaces.Dth f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_mul
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_zOnly hφ) hdth.1
+  have h1 : Work.FTS.Nonlin.BdryTraces α m (fun z θ => (z / (1 + z) ^ 2) * f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open m hK0 hKb hφ hsm htr_f
+  have h2 : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => (z / (1 + z) ^ 2) * Work.Spaces.Dth f z θ) :=
+    Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open m hK0 hKb hφ hdth.1 htr_dth
+  have h3 : Work.FTS.Nonlin.BdryTraces α m (fun z θ => 2 * ((z / (1 + z) ^ 2) * f z θ)) :=
+    bdryTraces_const_mul_fts 2 h1
+  have h4 : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => 3 * ((z / (1 + z) ^ 2) * Work.Spaces.Dth f z θ)) :=
+    bdryTraces_const_mul_fts 3 h2
+  have h34 : Work.FTS.Nonlin.BdryTraces α m
+      (fun z θ => 2 * ((z / (1 + z) ^ 2) * f z θ)
+        + 3 * ((z / (1 + z) ^ 2) * Work.Spaces.Dth f z θ)) :=
+    bdryTraces_add_fts
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 2 hsmφf)
+      (Work.FTS.StrongEps.EpsE4Thr.E2hatOAux.smoothOpen_const_mul 3 hsmφdth) h3 h4
+  refine ⟨hsmE2, hmemE2, ?_⟩
+  rw [Work.FTS.CoercivityFix.E2Bound.E2hat_eq_zmul f]
+  exact h34
+
+/-! ## The bundle -/
+
+theorem StepReg2_all_O (α : ℝ) (hα : 0 < α) (n : ℕ) :
+    Work.FTS.StrongEps.EpsE4Thr.StepReg2O α n := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `RegQo α (n+2) f → RegQo α n f`
+    intro f hf
+    exact regQo_mono (k := n) (l := n + 2) (by omega) hf
+  · -- `RegQo α (n+2) f → RegQo α (n+1) f`
+    intro f hf
+    exact regQo_mono (k := n + 1) (l := n + 2) (by omega) hf
+  · -- `RegQo α (n+2) f → RegQo α (n+1) (D_θ f)`
+    intro f hf
+    exact (regQo_dth_dz hα (n := n + 1) hf).1
+  · -- `RegQo α (n+2) f → RegQo α (n+1) (D_z f)`
+    intro f hf
+    exact (regQo_dth_dz hα (n := n + 1) hf).2
+  · -- `RegQo α (n+2) f → RegQo α n (D_θ f)`
+    intro f hf
+    exact regQo_mono (k := n) (l := n + 1) (by omega)
+      ((regQo_dth_dz hα (n := n + 1) hf).1)
+  · -- `RegQo α (n+2) f → RegQo α n (D_z f)`
+    intro f hf
+    exact regQo_mono (k := n) (l := n + 1) (by omega)
+      ((regQo_dth_dz hα (n := n + 1) hf).2)
+  · -- `RegQo α (n+2) f → RegQo α n (𝓛̂ (D_z f))`
+    intro f hf
+    exact Lhat_RegQo_aux α hα n ((regQo_dth_dz hα (n := n + 1) hf).2)
+  · -- `RegQo α (n+1) f → RegQo α n (Ê₂ f)`
+    intro f hf
+    exact E2hat_RegQo_aux α hα n hf
+  · -- the one-sided comparison of the `ℋⁿ`-norms of the three slots with `|f|_{n+1}`
+    intro f hf
+    obtain ⟨hsm, hm, _⟩ := hf
+    have hm1 : Work.Spaces.HkMem α (n + 1) f :=
+      Work.FTS.OpenPkg.HkMem_mono_open hsm (n + 1) (by omega) hm
+    exact ⟨Work.FTS.CoercivityStep.Norm.HkSq_mono_le α (Nat.le_succ n) hm1,
+      Work.FTS.CoercivityStep.Norm.HkSq_Dth_le α hα n hm1,
+      Work.FTS.CoercivityFix.Transfer.HkSq_Dz_le_Q0Sm α n
+        (Work.FTS.StrongPersist.q0Sm_of_smoothOpen hsm (n + 1)) hm1⟩
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.Closed3 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS_EllLimOK
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+
+
+end Work.FTS_EllLimOK
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ClosedUniq3_small =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS_EllLimOK
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-! ## The level-`0` membership integrand of a difference -/
+
+/-- At level `0` the `HkIntegrand` is a single square,
+`(g z θ · w z / sin(2θ)^{η/2})²` (the mixed sum is empty). -/
+theorem hkIntegrand_zero_eq' (α : ℝ) (g : ℝ → ℝ → ℝ) (z θ : ℝ) :
+    Work.Spaces.HkIntegrand α 0 g z θ
+      = (g z θ * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) ^ 2 := by
+  rw [Work.Spaces.HkIntegrand]
+  simp
+
+
+
+
+
+/-! ## The obstruction: the level-`0` memberships cannot control the `θ = 0` traces
+
+Every `HkMem` of `FatouPkg` is a **level-`0`** membership, and (as `hkIntegrand_zero_eq'` above
+records) `HkIntegrand α 0 f` carries the single angular weight `sin(2θ)^{-η/2}`, i.e.
+`sin(2θ)^{-η}` after squaring, with `η = 99/100 < 1`.  That weight is **integrable at `θ = 0`**
+(`weight_integrableOn` below), and the mixed slots carrying the *non*-integrable weight
+`sin(2θ)^{-γ}` (`γ = 1 + α/10 > 1`) occur in `HkIntegrand α k` only for `k ≥ 1`, which
+`FatouPkg` never uses.
+
+The lemmas below make the consequence formal: a *radial* profile lies in `ℋ⁰` as soon as its
+`z`-mass `(g·w)²` is integrable, **whatever its angular trace at `θ = 0` is**
+(`HkMem_zero_radial`), and consequently `HkMem α 0` (resp. `HkMem α 0 (pth ·)`) is satisfied by a
+profile whose value (resp. derivative) trace at `θ = 0⁺` is the nonzero constant `1`
+(`HkMem_zero_trace_not_forced`, `HkMem_zero_deriv_trace_not_forced`).
+
+This is exactly the deficiency that blocks the port of `EllipticEst.bslSol_unique_fts`: the
+angular rigidity against `sin θ cos²θ`, the `θ`-energy identity, the `F_*`-ODE and the
+decoupling of the `θ`-eigen-expansion *all* carry a boundary term at `θ = 0` of the form
+`-μ(0)∫Jg + (1/2)μ'(0)∫J²` with `J(z) = lim_{θ→0⁺}Ψ z θ-Ψ' z θ`, `g(z) = lim ∂_θ(Ψ-Ψ')`, and the
+theorem `EllipticEst.bslSol_unique_fts` consumes `EllHypN`, which needs `SmoothNbhd`,
+`IsBslSol` on *all* `z ≥ 0` **and** the extra membership `HkMem α 0 (∂_θ²(z ∂_z·))` --- none of
+which follows from `FatouPkg`.  The tree's own precedent (`FTS/StrongEps/EComparison/
+HomClsZeroRefute.lean`, `NOTES_HomClsZero_FALSE.md`) refutes an analogous class-based uniqueness
+statement by precisely this loophole, with the documented repair being an angular trace
+condition.  See `NOTES_closedUniq3.md` §7 and `NOTES_theta0_trace.md`. -/
+
+/-- The angular weight of the level-`0` integrand, `sin(2θ)^{-η}` (`η = 99/100 < 1`), is
+integrable on `[0, π/2]`. -/
+theorem eta_lt_one : Work.Spaces.eta < 1 := by
+  unfold Work.Spaces.eta; norm_num
+
+
+
+
+
+
+
+
+
+/-! ## The target
+
+**Status: PROVED** (the theorem below is `sorry`-free, axioms
+`[propext, Classical.choice, Quot.sound]`), *after* the interface repair of the previous stretch.
+The obstruction recorded in the section above is real: `FatouPkg`'s memberships are all at level `0`
+with the weight `sin(2θ)^{-η}` (`η = 99/100`, integrable at `θ = 0`) and cannot constrain the
+`θ = 0` traces that every step of the uniqueness argument needs — that is what
+`HkMem_zero_trace_not_forced` / `HkMem_zero_deriv_trace_not_forced` / `weight_integrableOn` above
+machine-check.  The repair that was installed (see `Defs3.FatouPkg` and `NOTES.md` §0bis) is the
+conjunct **`BoxReg Ψ`** — `Ψ` is jointly `C²` on every closed box `[a,b] × [0,π/2]`, `0 < a ≤ b` —
+together with its sequence-level producer `Defs3.BoxData` in `FatouData` (whose bridge from
+primitive estimates is `FTS_EllLimOK.BoxReg_of_uniform`).  With it, the port of
+`EllipticEst.bslSol_unique_fts` goes through: `UniqFatou.eqOn_of_same_law` (the θ-energy chain
+`Fstar_zero`, `EnergyGap`, `phi_eq_zero_of_euler_gap_weighted`) plus
+`Locality.mixed_congr_of_eqOn_isOpen`.  `NOTES_theta0_trace.md` has the analysis of the
+obstruction; `NOTES_STATUS_closedUniq3.md` the state of the proof. -/
+
+
+end Work.FTS_EllLimOK
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.PkgRepair =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -136,10 +534,6 @@ theorem HasPkgD.decay {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkgD α Ce E
 theorem HasPkgD.strip {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkgD α Ce E) :
     PkgStrip α E := h.2.2.2
 
-/-- `HasPkg` alone is the first component (the round trip used by the consumers). -/
-theorem hasPkgD_of_parts {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkg α Ce E)
-    (hc : PkgCos α E) (hd : PkgDecay α E) (hs : PkgStrip α E) : HasPkgD α Ce E :=
-  ⟨h, hc, hd, hs⟩
 
 /-! ## The `LocalBound4` reduction under the repaired hypothesis
 
@@ -151,59 +545,6 @@ be stated on the jets of `E g` (not on the slots): `Theta α g = (1/4α) sin 2θ
 fast as the *source* does, and class `C` only gives `g = o(z^{-1/2})`
 (`ClassC.tr : BdryTraces α 6 g`, `ClassC.mem : HkMem α 7 g`), so no field on the slots can make the
 `Theta`-part decay like `1/(1+z)`. -/
-theorem localBound4_of_hasPkgD {α Ce : ℝ} (_hα : 0 < α) :
-    ∀ E : Fn →ₗ[ℝ] Fn, HasPkgD α Ce E → ∀ (fn : ℕ → Fn) (f : Fn), LimSeq4 α fn f →
-      ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, ∀ j i : ℕ, j + i ≤ 4 → ∀ z θ : ℝ,
-        (z, θ) ∈ Work.Construction.Qd →
-        |Work.Spaces.mixed j i (E (fn n)) z θ|
-          ≤ C * (1 + 1 / z + 1 / (θ * (π / 2 - θ))) / (1 + z) := by
-  intro E hE fn f hL
-  obtain ⟨K, hKpos, hKD⟩ := hE.decay
-  obtain ⟨B, hB⟩ := hL.bound
-  refine ⟨K * max B 0 + 1, by positivity, ?_⟩
-  intro n j i hji z θ hzθ
-  have hz : 0 < z := hzθ.1
-  have hθ : 0 < θ := hzθ.2.1
-  have hθ2 : θ < π / 2 := hzθ.2.2
-  have hδ : 0 < π / 2 - θ := by linarith
-  have hBle : Work.FTS.StrongGlobal.Xn6 α (fn n) ≤ max B 0 :=
-    le_trans (hB n) (le_max_left _ _)
-  have hXnn : 0 ≤ Work.FTS.StrongGlobal.Xn6 α (fn n) := Work.Spaces.HkNorm_nonneg α 6 (fn n)
-  have hmaxnn : 0 ≤ max B 0 := le_max_right _ _
-  have h1 := hKD (fn n) (hL.classC n) j i hji z θ hzθ
-  have hz1 : 0 < 1 + z := by linarith
-  have hsp : (1 : ℝ) ≤ (1 + z) ^ ((1 : ℝ) / 2) :=
-    Real.one_le_rpow (by linarith) (by norm_num)
-  have hrw : (1 + z) ^ (3 / 2 : ℝ) = (1 + z) * (1 + z) ^ ((1 : ℝ) / 2) := by
-    rw [show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add (by linarith), Real.rpow_one]
-  have h2 : (1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ| ≤ K * max B 0 := by
-    have hmono : (1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ|
-        ≤ (1 + z) ^ (3 / 2 : ℝ) * |Work.Spaces.mixed j i (E (fn n)) z θ| := by
-      rw [hrw]
-      have hnn : (0 : ℝ) ≤ |Work.Spaces.mixed j i (E (fn n)) z θ| := abs_nonneg _
-      calc (1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ|
-          = 1 * ((1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ|) := by ring
-        _ ≤ (1 + z) ^ ((1 : ℝ) / 2)
-              * ((1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ|) :=
-            mul_le_mul_of_nonneg_right hsp (mul_nonneg hz1.le hnn)
-        _ = ((1 + z) * (1 + z) ^ ((1 : ℝ) / 2))
-              * |Work.Spaces.mixed j i (E (fn n)) z θ| := by ring
-    exact le_trans hmono (le_trans h1 (mul_le_mul_of_nonneg_left hBle hKpos.le))
-  have h3 : |Work.Spaces.mixed j i (E (fn n)) z θ| ≤ K * max B 0 / (1 + z) := by
-    rw [le_div_iff₀ hz1]
-    calc |Work.Spaces.mixed j i (E (fn n)) z θ| * (1 + z)
-        = (1 + z) * |Work.Spaces.mixed j i (E (fn n)) z θ| := by ring
-      _ ≤ K * max B 0 := h2
-  have hone : (1 : ℝ) ≤ 1 + 1 / z + 1 / (θ * (π / 2 - θ)) := by
-    have hz' : 0 < 1 / z := by positivity
-    have hθ' : 0 < 1 / (θ * (π / 2 - θ)) := by positivity
-    linarith
-  have hKB : 0 ≤ K * max B 0 := mul_nonneg hKpos.le hmaxnn
-  calc |Work.Spaces.mixed j i (E (fn n)) z θ|
-      ≤ K * max B 0 / (1 + z) := h3
-    _ ≤ (K * max B 0 + 1) * (1 + 1 / z + 1 / (θ * (π / 2 - θ))) / (1 + z) := by
-        rw [div_le_div_iff_of_pos_right hz1]
-        nlinarith [hone, hKB]
 
 /-! ## The obligation shapes over the repaired hypothesis
 
@@ -212,48 +553,10 @@ linear `E` carrying `HasPkg`*.  The `HasPkgD`-analogues below ask the same of ev
 **repaired** packages; those are what the lead's field edit turns into the original shapes, and
 they are what this area proves. -/
 
-/-- **Obligation 1's first half over the repaired packages**: local growth bounds of order `≤ 4`
-with the far-field rate `1/(1+z)`, along every `LimSeq4`, for every operator carrying `HasPkgD`. -/
-def LocalBound4D (α Ce : ℝ) : Prop :=
-  ∀ E : Fn →ₗ[ℝ] Fn, HasPkgD α Ce E → ∀ (fn : ℕ → Fn) (f : Fn), LimSeq4 α fn f →
-    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, ∀ j i : ℕ, j + i ≤ 4 → ∀ z θ : ℝ,
-      (z, θ) ∈ Work.Construction.Qd →
-      |Work.Spaces.mixed j i (E (fn n)) z θ|
-        ≤ C * (1 + 1 / z + 1 / (θ * (π / 2 - θ))) / (1 + z)
 
-/-- `LocalBound4D` is the `HasPkgD` form of the body of `Defs3.LocalBound4`. -/
-theorem localBound4D_of_localBound4 {α Ce : ℝ} (h : LocalBound4 α Ce) : LocalBound4D α Ce :=
-  fun E hE => h E hE.toHasPkg
 
-/-- **The small-`α` obligation shape over the repaired packages.** -/
-def SmallLocalBound4D : Prop :=
-  ∃ α₁ : ℝ, 0 < α₁ ∧ ∀ α : ℝ, 0 < α → α ≤ α₁ → ∀ Ce : ℝ, LocalBound4D α Ce
 
-/-- **`SmallLocalBound4D` holds** — this is the reduction `PkgRepair.localBound4_of_hasPkgD`,
-packaged in the small-`α` shape (the obligation is only expected below a threshold, as for the
-original `SmallLocalBound4`). -/
-theorem smallLocalBound4D : SmallLocalBound4D :=
-  ⟨1, one_pos, fun α hα _ Ce => localBound4_of_hasPkgD hα⟩
 
-/-- **The decay clause of `Defs3.FatouData` over the repaired packages.**  This is the clause the
-`PkgDecay` field is designed for: the relative form `≤ K·Xn6 α g` makes it uniform along a
-`LimSeq4` (`LimSeq4.bound : Xn6 α (fn n) ≤ B`), so a single constant works for all `n`. -/
-theorem fatouDecay_of_hasPkgD {α Ce : ℝ} (hα : 0 < α) :
-    ∀ E : Fn →ₗ[ℝ] Fn, HasPkgD α Ce E → ∀ (fn : ℕ → Fn) (f : Fn), LimSeq4 α fn f →
-      ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, ∀ j i : ℕ, j + i ≤ 2 → ∀ z θ : ℝ,
-        (z, θ) ∈ Work.Construction.Qd →
-        (1 + z) ^ (3 / 2 : ℝ) * |Work.Spaces.mixed j i (E (fn n)) z θ| ≤ C := by
-  intro E hE fn f hL
-  obtain ⟨K, hKpos, hKD⟩ := hE.decay
-  obtain ⟨B, hB⟩ := hL.bound
-  refine ⟨K * max B 0 + 1, by positivity, ?_⟩
-  intro n j i hji z θ hzθ
-  have hji4 : j + i ≤ 4 := by omega
-  have hBle : Work.FTS.StrongGlobal.Xn6 α (fn n) ≤ max B 0 := le_trans (hB n) (le_max_left _ _)
-  have h1 := hKD (fn n) (hL.classC n) j i hji4 z θ hzθ
-  have h2 : (1 + z) ^ (3 / 2 : ℝ) * |Work.Spaces.mixed j i (E (fn n)) z θ| ≤ K * max B 0 :=
-    le_trans h1 (mul_le_mul_of_nonneg_left hBle hKpos.le)
-  linarith [h2]
 
 /-! ## The two further primitive fields (the last two derivations)
 
@@ -311,42 +614,13 @@ def PkgSlice (α Ce : ℝ) (E : Fn →ₗ[ℝ] Fn) : Prop :=
 def HasPkgE (α Ce : ℝ) (E : Fn →ₗ[ℝ] Fn) : Prop :=
   HasPkgD α Ce E ∧ PkgCorner α Ce E ∧ PkgSlice α Ce E
 
-theorem HasPkgE.toHasPkgD {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkgE α Ce E) :
-    HasPkgD α Ce E := h.1
 
-theorem HasPkgE.corner {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkgE α Ce E) :
-    PkgCorner α Ce E := h.2.1
 
 theorem HasPkgE.slice {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} (h : HasPkgE α Ce E) :
     PkgSlice α Ce E := h.2.2
 
-/-- **The last two obligation shapes over the fully repaired packages**, for the two remaining
-derivations of `FatouData` (`ThetaBundle` and `BoxData`). -/
-def ThetaBundleD (α Ce : ℝ) : Prop :=
-  ∀ E : Fn →ₗ[ℝ] Fn, HasPkgE α Ce E → ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
-    ∃ C : ℝ, 0 < C ∧
-      (∀ z ∈ Work.Spaces.Iz,
-        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (Work.Construction.PhiTil α g (E g)) z θ) ≤ C) ∧
-      (∀ z ∈ Work.Spaces.Iz,
-        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (Work.Spaces.pth (Work.Construction.PhiTil α g (E g))) z θ) ≤ C) ∧
-      (∀ z ∈ Work.Spaces.Iz,
-        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (Work.Spaces.mixed 0 2 (Work.Construction.PhiTil α g (E g))) z θ) ≤ C) ∧
-      (∀ z ∈ Work.Spaces.Iz,
-        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0 (fun z θ => z ^ 2
-          * Work.Spaces.pzIter 2 (Work.Construction.PhiTil α g (E g)) z θ) z θ) ≤ C) ∧
-      (∀ z ∈ Work.Spaces.Iz,
-        (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (fun z θ => Work.Construction.PhiTil α g (E g) z θ / Real.cos θ) z θ) ≤ C)
 
-def BoxDataD (α Ce : ℝ) : Prop :=
-  ∀ E : Fn →ₗ[ℝ] Fn, HasPkgE α Ce E → ∀ (fn : ℕ → Fn) (f : Fn), LimSeq4 α fn f →
-    ∀ a b : ℝ, 0 < a → a ≤ b → ∃ G : Fn,
-      ContDiffOn ℝ 2 (Function.uncurry G) (cbox a b) ∧
-      (∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Icc 0 (π / 2),
-        Filter.Tendsto (fun n => E (fn n) z θ) Filter.atTop (𝓝 (G z θ))) ∧
-      (∀ z ∈ Set.Icc a b, G z 0 = 0 ∧ G z (π / 2) = 0)
 
 end Work.FTS_EllLimOK
+end
+end

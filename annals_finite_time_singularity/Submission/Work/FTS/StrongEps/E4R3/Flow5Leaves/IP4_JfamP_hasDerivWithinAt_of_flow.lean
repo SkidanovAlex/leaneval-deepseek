@@ -5,9 +5,9 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.StrongEps.E4R3.Flow5
-import Submission.Work.FTS.StrongEps.E4R3.Flow5Leaves.PzJepsCalc
-import Submission.Work.FTS.StrongEps.E4R3.Flow5Leaves.IP4Algebra
+import Submission.Work.FTS.StrongEps.IsEpsSolPQ.EpsSq_intervalIntegral_le_sqrt
+import Submission.Work.FTS_StreamBdry.Inputs.residual_slot_jetsB
+import Submission.Work.FTS_StreamBdry.Inputs.slice_assy
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -6,21 +6,18 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Assembly
-import Submission.Work.FTS.EllipticEst.Honest.Gap9Open
-import Submission.Work.FTS.EllipticEst.Honest.SigmaPoincare
-import Submission.Work.FTS.EllipticEst.Honest.LzeroSelfFormHon
-import Submission.Work.FTS.EllipticEst.Honest.HonSliceSelfForm
 import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeGapSlices
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigmaUpgradeU
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSliceRightTendsto
-import Submission.Work.FTS.EllipticEst.Honest.sliceBarSq2
-import Submission.Work.FTS.EllipticEst.Honest.sliceInterp
-import Submission.Work.FTS.EllipticEst.Honest.divCos_tendsto_of_tendsto_deriv
-import Submission.Work.FTS.EllipticEst.Honest.barLimSlices
+import Submission.Work.FTS.EllipticEst.Honest.I4UpperHonest
 import Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc
-import Submission.Work.FTS.EllipticEst.Honest.aemeasurable_sliceSigmaLin
-import Submission.Work.FTS.EllipticEst.sliceLimitLeftExists
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

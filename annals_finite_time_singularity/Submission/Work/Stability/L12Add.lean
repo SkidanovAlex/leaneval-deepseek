@@ -1,7 +1,7 @@
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.Stability.Defs
-import Submission.Work.FM.Core
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

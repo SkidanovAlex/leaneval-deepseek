@@ -5,19 +5,14 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongEps.LocUnif.V5Defs
-import Submission.Work.FTS.StrongEps.LocUnif.V6Defs
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_backwardDiffQuot_majorant_le_liminf_z
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_backwardDiffQuot_majorant_le_liminf_theta
-import Submission.Work.FTS.StrongEps.LocUnif.ofReal_HkIntegrand_six_le
-import Submission.Work.FTS.StrongEps.LocUnif.level6_identities
-import Submission.Work.FTS.StrongEps.LocUnif.lintegral_V5_le_liminf
-import Submission.Work.FTS.StrongEps.LocUnif.V5_eq_ae
-import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_ofReal_HkIntegrand
-import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_V6
-import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_ofReal_level6
 import Submission.Work.FTS.StrongEps.LocUnif.FinalAssembly
+import Submission.Work.FTS.StrongEps.LocUnif.aemeasurable_ofReal_level6
+import Submission.Work.FTS_EllLimOK.PkgJets.cosTailB
+import Submission.Work.FTS_EllLimOK.PkgJets.cosWeightTail_le
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
+import Submission.Work.Spaces.ThetaAgmon.agmon_interval
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

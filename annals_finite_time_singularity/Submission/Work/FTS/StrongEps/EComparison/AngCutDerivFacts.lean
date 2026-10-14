@@ -4,8 +4,8 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroModeDefs
-import Submission.Work.FTS.EllipticEst.AngAWeak.FluxAux.deriv2SmoothTransition_flat
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -294,7 +294,7 @@ private lemma deriv2_angCut_apply (n : ℕ) (θ : ℝ) :
 
 /-! ## Part 5: elementary numerical facts -/
 
-private lemma delta_pos (n : ℕ) : 0 < delta n := by
+private lemma delta_pos_prv (n : ℕ) : 0 < delta n := by
   rw [delta]; positivity
 
 private lemma abs_div_neg_one {a : ℝ} (ha : 0 < a) : |(-1) / a| = 1 / a := by
@@ -339,7 +339,7 @@ theorem AngCutDerivFacts :
   refine ⟨max (max (2 * C1) (2 * C2 + 2 * C1 ^ 2)) 1, ?_, ?_⟩
   · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
   intro n θ
-  have ha : (0 : ℝ) < delta n := delta_pos n
+  have ha : (0 : ℝ) < delta n := delta_pos_prv n
   have hainv : 0 < 1 / delta n := one_div_pos.mpr ha
   have hK1 : 2 * C1 ≤ max (max (2 * C1) (2 * C2 + 2 * C1 ^ 2)) 1 :=
     le_trans (le_max_left _ _) (le_max_left _ _)

@@ -1,10 +1,454 @@
+import Mathlib.Algebra.EuclideanDomain.Basic
+import Mathlib.Algebra.EuclideanDomain.Field
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Order.Lattice
+import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.ConstructionInstance.profileData_inhabited
+import Submission.Work.CoreResiduals.meridianEq_of_dynEqConst
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.R1G.DecayInZ_gA
 import Submission.Work.R1G.Defs
-import Submission.Work.Elliptic.cylOp_polar
-import Submission.Work.Cyl.vorticity_psiField
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.SolutionDelivery.Scaling.vorticityDecay_rescaleDatum
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Stability.DynGEquation
+import Submission.Work.Stability.L12Add
+-- ===== merged: Submission.Work.R1G.L12densFstar_integrableOn =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+/-- For `α > 0`, `F_*(s)/s = 2 (1+s)^{-2}` — the elementary form of the model density. -/
+private theorem Fstar_div_self_eq (s : ℝ) (hs : 0 < s) :
+    Work.FM.Fstar s / s = 2 * (s + 1) ^ (-2 : ℝ) := by
+  have hs1 : (0 : ℝ) < s + 1 := by linarith
+  have h2 : (s + 1) ^ (-2 : ℝ) = 1 / (s + 1) ^ 2 := by
+    simp only [Real.rpow_neg (le_of_lt hs1), Real.rpow_ofNat, one_div]
+  rw [h2]
+  unfold Work.FM.Fstar
+  field_simp
+  ring
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.L12densFtot_add =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+/-!
+# Additivity of the angular density `L₁₂dens` over `F = F_* + g`
+
+`Work.Construction.L12dens f r` is the *angular* density of the operator `L₁₂`, i.e. the integral
+
+  `L₁₂dens f r = ∫_0^{π/2} K(θ)·f(r,θ)/r dθ`   (`K(θ) = 3 sinθ cos²θ`),
+
+`Work.FM.L12dens Work.Spaces.K f r`.  Additivity in `f` is therefore additivity of the angular
+integral, and it requires only that the two θ-slices be integrable on the compact interval
+`Iθ = [0,π/2]`: for the reference profile this is `Work.Stability.integrableOn_slice_Fstar`
+(`K` bounded, `Γ` continuous), and for the perturbation it follows from the smoothness
+`ProfileData.hsmooth` of `g` on a neighbourhood of the closed quadrant.  The hypothesis `0 < r`
+of the statement is then not needed for the algebra (only, through `g`'s slice continuity, the
+weaker `-1 < r` entering `SmoothNbhd`).
+
+This is the `hL`-splitting of the derivation bundle `GDerivData`/`GDerivDataQd`, read at a fixed
+value of `z` (`z = r > 0`, where the `L₁₂`-operator is regular).
+-/
+
+variable {α : NNReal}
+
+
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.L12densFtot_continuousAt =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.L12dens_g_integrableOn =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.cutDeficit_eq_zero_of_rho_lt =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.cutDeficit_eq_zero_of_two_mul_lt_rho =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open Filter Set
+open scoped Topology
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.exists_chiRad_ne_zero_of_annulus =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+/-!
+# The cut-off's radial logarithmic derivative is nonzero inside the annulus `(L, 2L)`
+
+`Work.Stability.chi` is the `ContDiffBump 0` with `rIn = 1`, `rOut = 2`: `chi = 1` on `[-1,1]`
+and `chi = 0` for `|x| ≥ 2`.  Hence `chi 1 = 1 ≠ 0 = chi 2`, and by the mean value theorem the
+derivative of `chi` does not vanish identically on `(1,2)`.  Scaling back, the radial logarithmic
+derivative `chiRad P r z = deriv chi (ρ(r,z)/L)/L` of the cut-off `χ(ρ/L)` is nonzero somewhere in
+the annulus `L < ρ < 2L` — i.e. the cut-off deficit `cutDeficit` is a genuinely non-trivial object
+on that annulus.
+-/
+
+
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.exists_cutDeficit_ne_zero =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+open Set
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.exists_profileData_g_ne_zero =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology NNReal ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.R1G
+
+/-! ## Scalar homogeneity of the weighted `H^k` operators
+
+These elementary normalisations of `Work.Spaces.HkIntegrand` under `f ↦ c·f` are used to transfer
+the estimates for `gA` to the amplitude-scaled perturbation `λ·gA`. -/
+
+theorem pz_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.pz (fun z θ => c * f z θ) = fun z θ => c * Work.Spaces.pz f z θ := by
+  funext z θ
+  rw [Work.Spaces.pz, Work.Spaces.pz]
+  exact deriv_const_mul_field c
+
+theorem pth_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.pth (fun z θ => c * f z θ) = fun z θ => c * Work.Spaces.pth f z θ := by
+  funext z θ
+  rw [Work.Spaces.pth, Work.Spaces.pth]
+  exact deriv_const_mul_field c
+
+theorem Dz_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.Dz (fun z θ => c * f z θ) = fun z θ => c * Work.Spaces.Dz f z θ := by
+  funext z θ
+  rw [Work.Spaces.Dz, Work.Spaces.Dz, pz_const_mul]
+  ring
+
+theorem Dth_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.Dth (fun z θ => c * f z θ) = fun z θ => c * Work.Spaces.Dth f z θ := by
+  funext z θ
+  rw [Work.Spaces.Dth, Work.Spaces.Dth, pth_const_mul]
+  ring
+
+theorem pzIter_const_mul (c : ℝ) (j : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.pzIter j (fun z θ => c * f z θ)
+      = fun z θ => c * Work.Spaces.pzIter j f z θ := by
+  induction j with
+  | zero => rfl
+  | succ n ih =>
+    rw [Work.Spaces.pzIter_succ, ih, pz_const_mul, Work.Spaces.pzIter_succ]
+
+theorem pthIter_const_mul (c : ℝ) (i : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.pthIter i (fun z θ => c * f z θ)
+      = fun z θ => c * Work.Spaces.pthIter i f z θ := by
+  induction i with
+  | zero => rfl
+  | succ n ih =>
+    rw [Work.Spaces.pthIter_succ, ih, pth_const_mul, Work.Spaces.pthIter_succ]
+
+theorem DzIter_const_mul (c : ℝ) (j : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.DzIter j (fun z θ => c * f z θ)
+      = fun z θ => c * Work.Spaces.DzIter j f z θ := by
+  induction j with
+  | zero => rfl
+  | succ n ih =>
+    rw [Work.Spaces.DzIter_succ, ih, Dz_const_mul, Work.Spaces.DzIter_succ]
+
+theorem DthIter_const_mul (c : ℝ) (i : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.DthIter i (fun z θ => c * f z θ)
+      = fun z θ => c * Work.Spaces.DthIter i f z θ := by
+  induction i with
+  | zero => rfl
+  | succ n ih =>
+    rw [Work.Spaces.DthIter_succ, ih, Dth_const_mul, Work.Spaces.DthIter_succ]
+
+theorem mixed_const_mul (c : ℝ) (j i : ℕ) (f : ℝ → ℝ → ℝ) :
+    Work.Spaces.mixed j i (fun z θ => c * f z θ)
+      = fun z θ => c * Work.Spaces.mixed j i f z θ := by
+  rw [Work.Spaces.mixed, Work.Spaces.mixed, DthIter_const_mul, DzIter_const_mul]
+
+theorem HkIntegrand_const_mul (A c : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) (z θ : ℝ) :
+    Work.Spaces.HkIntegrand A k (fun z θ => c * f z θ) z θ
+      = c ^ 2 * Work.Spaces.HkIntegrand A k f z θ := by
+  rw [Work.Spaces.HkIntegrand, Work.Spaces.HkIntegrand]
+  have h1 : (∑ i ∈ Finset.range (k + 1),
+        (Work.Spaces.DzIter i (fun z θ => c * f z θ) z θ
+          * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) ^ 2)
+      = c ^ 2 * ∑ i ∈ Finset.range (k + 1),
+        (Work.Spaces.DzIter i f z θ
+          * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) ^ 2 := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [DzIter_const_mul]
+    ring
+  have h2 : (∑ i ∈ Finset.range (k + 1), ∑ j ∈ Finset.range (k + 1),
+        if 1 ≤ i ∧ i + j ≤ k
+          then (Work.Spaces.mixed j i (fun z θ => c * f z θ) z θ * Work.Spaces.Wt A z θ) ^ 2
+          else 0)
+      = c ^ 2 * ∑ i ∈ Finset.range (k + 1), ∑ j ∈ Finset.range (k + 1),
+        if 1 ≤ i ∧ i + j ≤ k
+          then (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt A z θ) ^ 2 else 0 := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    by_cases h : 1 ≤ i ∧ i + j ≤ k
+    · rw [ite_eq_left h, ite_eq_left h, mixed_const_mul]
+      ring
+    · rw [ite_eq_right h, ite_eq_right h, mul_zero]
+  rw [h1, h2]
+  ring
+
+/-! ## Continuity of the perturbation -/
+
+
+
+/-! ## The main theorem -/
+
+
+
+end Work.R1G
+end
+end
+-- ===== merged: Submission.Work.R1G.exists_profileData_g_visible =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.meridianResid_cut =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+set_option autoImplicit false
+
+namespace Work.R1G
+
+/-! ## Derivatives of `ρ` and of the cut-off `χ(ρ/L)` -/
+
+/-- `r' ↦ ρ(r',z) = √(r'²+z²)` has radial derivative `r/ρ` at `r > 0` (the radial counterpart of
+`Work.Cyl.hasDerivAt_rhoP_snd`). -/
+lemma hasDerivAt_rhoP_fst' (r z : ℝ) (hr : 0 < r) :
+    HasDerivAt (fun r' : ℝ => Work.Cyl.rhoP r' z) (r / Work.Cyl.rhoP r z) r := by
+  have hsq : HasDerivAt (fun r' : ℝ => r' ^ 2 + z ^ 2) (2 * r) r := by
+    have h : HasDerivAt (fun r' : ℝ => r' ^ 2) (2 * r) r := by
+      simpa using (hasDerivAt_pow 2 r)
+    simpa using h.const_add (z ^ 2)
+  have hne : r ^ 2 + z ^ 2 ≠ 0 := by positivity
+  have h := hsq.sqrt hne
+  have hfun : (fun r' : ℝ => Work.Cyl.rhoP r' z) = fun r' => Real.sqrt (r' ^ 2 + z ^ 2) := by
+    funext r'; rw [Work.Cyl.rhoP]
+  rw [hfun]
+  convert h using 1
+  rw [Work.Cyl.rhoP]
+  field_simp
+
+
+
+
+
+/-! ## The product rule for the curried partials -/
+
+
+
+/-! ## The meridian residual of a cut field -/
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.meridianResid_ssVort_eq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.profileResid_eq_gEqResidual =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+open Work.Construction Work.Coercivity Work.Spaces
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.vortEqWithDeficit_iff_meridian =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.vortEqWithDeficit_iff_meridian_field =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.R1G
+
+
+end Work.R1G
+end
+-- ===== merged: Submission.Work.R1G.vorticity_psiField_bslOp =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -158,3 +602,4 @@ theorem vorticity_psiField_bslOp (p : ℝ) (Ψ : ℝ → ℝ → ℝ) (x : R3)
     hρ, thetaP_radial_axial x]
 
 end Work.R1G
+end

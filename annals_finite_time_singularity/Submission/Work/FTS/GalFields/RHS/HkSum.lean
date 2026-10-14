@@ -1,37 +1,12 @@
-/-
-# `FTS/GalFields/RHS/HkSum` — finite-sum subadditivity of the `ℋ^k` energy
-
-The `ℋ^k`-integrand `HkIntegrand α k f` is a sum of squares of *linear* slot expressions
-(`D_z^i f · w σ^{-η/2}` and `D_z^j D_θ^i f · w σ^{-γ/2}`), so for a finite sum
-`f = ∑_{i ∈ s} f_i` the elementary inequality `(a+b)² ≤ 2(a²+b²)` gives
-
-  `HkIntegrand α k (∑ f_i) z θ ≤ (2·|s|) · ∑_{i ∈ s} HkIntegrand α k (f_i) z θ`
-  (`z ∈ Iz`, `θ ∈ Iθ`),
-
-provided the slot operators are additive — which holds on the open quadrant `Q0` for data that
-are `C^∞` there (`Work.FTS.EllipticEst.SmoothOpen.DzIter_add`, `.mixed_add`, in
-`Submission/Work/FTS/EllipticEst/SmoothOpenAdd.lean`).  On the two boundary lines (`z = 0` and
-`sin 2θ = 0`) both sides of the inequality have integrand `0`, because the weights `w z` and
-`Wt α z θ` carry a positive power of the vanishing factor.
-
-Integrating gives the two consequences consumed by the `RHSData` discharge:
-
-* `HkSq α k (∑ f_i) ≤ (2|s|) ∑ HkSq α k (f_i)`,
-* `HkNorm α k (∑ f_i) ≤ √(2|s|) · ∑ HkNorm α k (f_i)`.
-
-These are the replacements, for the *open* class, of the closed-class lemmas
-`Work.FTS.LocData.HkIntegrand_add_le` / `Work.FTS.Galerkin.Hilbert.HkIntegrand_add_le`
-(which need `SmoothQuad`/`SmoothNbhd`) and of `Work.FTS.EllipticEst.HkNorm_add_le`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.SmoothOpenAdd
-import Submission.Work.FTS.EllipticEst.Vop_bound_reg
-import Submission.Work.FTS.LocData.HkIntegrand_add_le
+import Submission.Work.FTS.H2.HQ.BadsummandQ
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -108,55 +83,7 @@ theorem HkIntegrand_zero_fun (α : ℝ) (k : ℕ) (z θ : ℝ) :
 
 /-! ## Additivity of the slot operators for finite sums -/
 
-/-- **The iterated `D_z`-operator is additive for finite sums** of functions smooth on the open
-quadrant (on the open quadrant). -/
-theorem SmoothOpen.DzIter_finset_sum {ι : Type*} (s : Finset ι) {f : ι → ℝ → ℝ → ℝ}
-    (hf : ∀ i ∈ s, SmoothOpen (f i)) (j : ℕ) :
-    ∀ z θ, 0 < z → 0 < θ → θ < π / 2 →
-      Work.Spaces.DzIter j (fun z θ => ∑ i ∈ s, f i z θ) z θ
-        = ∑ i ∈ s, Work.Spaces.DzIter j (f i) z θ := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-      intro z θ hz h1 h2
-      rw [show (fun z θ : ℝ => ∑ i ∈ (∅ : Finset ι), f i z θ) = fun _ _ => (0 : ℝ) from by
-        funext z θ; simp, DzIter_zero_fun]
-      simp
-  | insert a s ha ih =>
-      intro z θ hz h1 h2
-      have hsum : (fun z θ : ℝ => ∑ i ∈ insert a s, f i z θ)
-          = fun z θ => f a z θ + ∑ i ∈ s, f i z θ := by
-        funext z θ; rw [Finset.sum_insert ha]
-      rw [hsum, Work.FTS.EllipticEst.SmoothOpen.DzIter_add
-          (hf a (Finset.mem_insert_self a s))
-          (smoothOpen_finset_sum s (fun i hi => hf i (Finset.mem_insert_of_mem hi))) j z θ hz h1 h2,
-        ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) z θ hz h1 h2,
-        Finset.sum_insert ha]
 
-/-- **The mixed operators `D_z^j D_θ^i` are additive for finite sums** of functions smooth on the
-open quadrant (on the open quadrant). -/
-theorem SmoothOpen.mixed_finset_sum {ι : Type*} (s : Finset ι) {f : ι → ℝ → ℝ → ℝ}
-    (hf : ∀ i ∈ s, SmoothOpen (f i)) (j i : ℕ) :
-    ∀ z θ, 0 < z → 0 < θ → θ < π / 2 →
-      Work.Spaces.mixed j i (fun z θ => ∑ k ∈ s, f k z θ) z θ
-        = ∑ k ∈ s, Work.Spaces.mixed j i (f k) z θ := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-      intro z θ hz h1 h2
-      rw [show (fun z θ : ℝ => ∑ k ∈ (∅ : Finset ι), f k z θ) = fun _ _ => (0 : ℝ) from by
-        funext z θ; simp, mixed_zero_fun]
-      simp
-  | insert a s ha ih =>
-      intro z θ hz h1 h2
-      have hsum : (fun z θ : ℝ => ∑ k ∈ insert a s, f k z θ)
-          = fun z θ => f a z θ + ∑ k ∈ s, f k z θ := by
-        funext z θ; rw [Finset.sum_insert ha]
-      rw [hsum, Work.FTS.EllipticEst.SmoothOpen.mixed_add
-          (hf a (Finset.mem_insert_self a s))
-          (smoothOpen_finset_sum s (fun k hk => hf k (Finset.mem_insert_of_mem hk))) j i z θ hz h1 h2,
-        ih (fun k hk => hf k (Finset.mem_insert_of_mem hk)) z θ hz h1 h2,
-        Finset.sum_insert ha]
 
 /-! ## The pointwise subadditivity (two terms) -/
 

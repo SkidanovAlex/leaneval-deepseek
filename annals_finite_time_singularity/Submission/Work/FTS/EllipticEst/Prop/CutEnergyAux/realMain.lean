@@ -1,22 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The truncated `w²`-energy inequality in the a.e. class: the real-variable derivation
-
-This module proves the real-variable core of
-`Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyProp`: given the truncated energy identity
-of `Work.FTS.EllipticEst.H2W.AeW.aeTruncWHon`, the a.e. angular self-form inequality of
-`basic.lean`, the pointwise weight bounds `(φw²z²)'' ≤ …` and `-(φw²z)' ≤ …`, the AM–GM inequality
-and the finiteness of the profiles involved, one obtains
-
-`α²·TruncA + TruncB ≤ K·TruncP + ½·TruncF + TruncErr`,  `K = 13/2 + 3α² + (3/2)α(5+α)`,
-
-where `TruncA`, `TruncB`, `TruncP`, `TruncF` are the `φw²`-weighted `(∂_zu)²`, `(∂_θu)²`, `u²` and
-`G²σ` integrals and `TruncErr` is the explicit truncation error.  All the comparison steps are
-"junk-friendly": the pointwise bound holds a.e., the dominating function is nonnegative a.e. and
-integrable, so the comparison of the iterated integrals is valid whether or not the bounded side
-is integrable (`Work.FTS.EllipticEst.Honest.setIntegral_le_of_ae_le_of_nonneg`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.FDeriv.Measurable

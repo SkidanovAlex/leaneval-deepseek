@@ -1,10 +1,10 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Weyl.Corrected
-import Submission.Work.FTS.BSIdent.Weyl.Levels.merPsiT_decay_bounds_ne
 import Submission.Work.FTS.BSIdent.Weyl.Levels._dev12
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS_BSIdentP.Slim.MerPsiDecay
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

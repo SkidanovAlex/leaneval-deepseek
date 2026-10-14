@@ -1,18 +1,9 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The truncated `w²`-energy inequality in the a.e. class: the final assembly
-
-This module proves the `Prop` `Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyProp`, i.e.
-the truncated `w²`-weighted energy inequality of Step 1 of Elgindi's `prop:H2` in the
-almost-everywhere class `AeData`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Submission.Work.FTS.EllipticEst.Prop.CutEnergyAux.profiles
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyClean
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

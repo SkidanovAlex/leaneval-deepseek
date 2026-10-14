@@ -1,23 +1,418 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Comp
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Tactic.Have
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.Honest.HonSliceFinite
-import Submission.Work.FTS.EllipticEst.Honest.HonSliceAeYc
-import Submission.Work.FTS.EllipticEst.Honest.Gap9Open
-import Submission.Work.FTS.EllipticEst.Honest.SigmaPoincare
-import Submission.Work.FTS.EllipticEst.Honest.HR2.Prep
-import Submission.Work.FTS.EllipticEst.Honest.HR2.HkMemU
 import Submission.Work.FTS.EllipticEst.Honest.HR2.HonToAe
-import Submission.Work.FTS.EllipticEst.Honest.hksq_eq_w2_sliceIntegral
-import Submission.Work.FTS.EllipticEst.Honest.honSliceIntFacts
-import Submission.Work.FTS.EllipticEst.Honest.honLintegralSliceBridge
-import Submission.Work.FTS.EllipticEst.Honest.FOH.bridge
+import Submission.Work.FTS.EllipticEst.Honest.HR2.Prep
+import Submission.Work.FTS.EllipticEst.Honest.HonSliceFinite
 import Submission.Work.FTS.EllipticEst.Honest.Step1G.EnergyG
+import Submission.Work.FTS.EllipticEst.Honest.honSliceIntFacts
+import Submission.Work.FTS.EllipticEst.Honest.honYcBound
+import Submission.Work.FTS.EllipticEst.remov.SourceBound.sliceMomentIdentity
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.H2W.momentChainAe
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.aeEnergyOfCutEnergy =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Cores.Pieces.AeGradRho
+
+open scoped Real Topology BigOperators ENNReal
+open MeasureTheory Set Filter
+open Work.FTS.EllipticEst.H2W.AeProof
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- **Removing the cutoff from the truncated `w²`-energy inequality.**
+
+Given the truncated inequality `AeCutEnergyProp` (Step 1 of `prop:H2` with a `C²` cutoff vanishing
+near `z = 0`), the untruncated inequality of Step 1 follows in the class `AeData`: the cutoff
+family `Work.FTS.EllipticEst.cut n` is monotone, tends to `1` pointwise off `z = 0`, the two
+`∫⁻`-sides converge by monotone convergence, and the truncation error `AeCutErr` tends to `0`
+because the `θ`-profile `P z = ∫_θ u z θ²` is `z`-integrable (`HkMem α 0 u`) and
+`w²P`-integrable (`HkMem α 0 G`). -/
+theorem aeEnergyOfCutEnergy
+    (hcut : ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ),
+      Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyProp α u G) :
+    ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ),
+      Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
+        ENNReal.ofReal (α ^ 2) * (∫⁻ z in Work.Spaces.Iz,
+            ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz u z θ) ^ 2)))
+          + (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2)))
+        ≤ ENNReal.ofReal (13 / 2 + (3 * α ^ 2 + (3 / 2) * α * (5 + α)))
+            * (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2)))
+          + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 G) := by
+  intro α u G h
+  have hL0 : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      Filter.Tendsto (fun θ => u z θ) (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds 0) :=
+    Work.FTS.EllipticEst.H2W.AeLeftClean.sliceLeftTendstoClean α u G h
+  have hLπ : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+      Filter.Tendsto (fun θ => u z θ) (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)))
+        (nhds 0) := by
+    filter_upwards [MeasureTheory.self_mem_ae_restrict measurableSet_Ioi] with z hz
+    exact Work.FTS.EllipticEst.H2W.Ae.AeSliceRightTendsto α u G h z hz
+  set Kn : ℝ := 13 / 2 + (3 * α ^ 2 + (3 / 2) * α * (5 + α)) with hKn
+  have hKpos : 0 < Kn := by rw [hKn]; nlinarith [sq_nonneg α, h.1, h.2.1]
+  set Mc : ℝ≥0∞ := ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+      * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2)) with hMc
+  set Ac : ℝ≥0∞ := ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+      * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz u z θ) ^ 2)) with hAc
+  set Bc : ℝ≥0∞ := ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+      * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2)) with hBc
+  have hgoal : ENNReal.ofReal (α ^ 2) * Ac + Bc
+      ≤ ENNReal.ofReal Kn * Mc
+        + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 G) := by
+    by_cases hMtop : Mc = ⊤
+    · have hR : ENNReal.ofReal Kn * Mc
+          + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 G) = ⊤ := by
+        rw [hMtop, ENNReal.mul_top (ENNReal.ofReal_ne_zero_iff.mpr hKpos), top_add]
+      rw [hR]; exact le_top
+    · have hMlt : Mc < ⊤ := lt_top_iff_ne_top.mpr hMtop
+      -- the θ-profile `P`
+      set P : ℝ → ℝ := fun z => ∫ θ in Work.Spaces.Iθ, (u z θ) ^ 2 with hPdef
+      -- the sup identities
+      have hptA : ∀ (n : ℕ) (z : ℝ), ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+            * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))
+          = ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+            * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz u z θ) ^ 2))) := by
+        intro n z
+        have h1 : ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+            = ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+              * ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * ENNReal.ofReal (z ^ 2) := by
+          rw [show Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2
+              = Work.FTS.EllipticEst.cut n z * ((Work.Spaces.w z) ^ 2 * z ^ 2) from by ring]
+          rw [ENNReal.ofReal_mul (Work.FTS.EllipticEst.cut_nonneg n z),
+            ENNReal.ofReal_mul (sq_nonneg (Work.Spaces.w z))]
+          ring
+        have h2 : ENNReal.ofReal (z ^ 2) * (∫⁻ θ in Work.Spaces.Iθ,
+              ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))
+            = ∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz u z θ) ^ 2) := by
+          rw [← MeasureTheory.lintegral_const_mul' (ENNReal.ofReal (z ^ 2))
+            (fun θ => ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2)) ENNReal.ofReal_ne_top]
+          refine lintegral_congr fun θ => ?_
+          rw [← ENNReal.ofReal_mul (sq_nonneg z)]
+          congr 1
+          ring
+        rw [h1]
+        rw [show ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+              * ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * ENNReal.ofReal (z ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))
+            = ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+              * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+                * (ENNReal.ofReal (z ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))))
+            from by ring]
+        rw [h2]
+      have hAsup : (⨆ n : ℕ, ∫⁻ z in Work.Spaces.Iz,
+            ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))) = Ac := by
+        have hcongr : (fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+              ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+                * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2)))
+            = fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+                  * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+                    * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((z * Work.Spaces.pz u z θ) ^ 2))) := by
+          funext n
+          exact lintegral_congr fun z => hptA n z
+        rw [hcongr, iSup_cut_mul (gA_aemeasurable h), hAc]
+      have hptB : ∀ (n : ℕ) (z : ℝ), ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+            * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2))
+          = ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+            * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2))) := by
+        intro n z
+        rw [ENNReal.ofReal_mul (Work.FTS.EllipticEst.cut_nonneg n z)]
+        ring
+      have hBsup : (⨆ n : ℕ, ∫⁻ z in Work.Spaces.Iz,
+            ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2))) = Bc := by
+        have hcongr : (fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+              ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2)))
+            = fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)
+                  * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2)
+                    * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2))) := by
+          funext n
+          exact lintegral_congr fun z => hptB n z
+        rw [hcongr, iSup_cut_mul (gB_aemeasurable h), hBc]
+      -- the monotonicity
+      have hcutmono : Monotone (fun n : ℕ => fun z : ℝ => ENNReal.ofReal (Work.FTS.EllipticEst.cut n z)) :=
+        fun m n hmn z => ENNReal.ofReal_le_ofReal
+          (Nat.le_induction le_rfl (fun k _ hk => le_trans hk (cut_mono k z)) n hmn)
+      have hAmono : Monotone (fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+            ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2))) := by
+        intro m n hmn
+        refine lintegral_mono fun z => ?_
+        rw [hptA n z, hptA m z]
+        exact mul_le_mul_of_nonneg_right (hcutmono hmn z) (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+      have hBmono : Monotone (fun n : ℕ => ∫⁻ z in Work.Spaces.Iz,
+            ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+              * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2))) := by
+        intro m n hmn
+        refine lintegral_mono fun z => ?_
+        rw [hptB n z, hptB m z]
+        exact mul_le_mul_of_nonneg_right (hcutmono hmn z) (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+      -- the crux for each `n`
+      have hcrux : ∀ n : ℕ,
+          ENNReal.ofReal (α ^ 2) * (∫⁻ z in Work.Spaces.Iz,
+              ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2 * z ^ 2)
+                * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pz u z θ) ^ 2)))
+            + (∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2)))
+          ≤ ENNReal.ofReal Kn * (∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2)))
+            + ENNReal.ofReal (1 / 2) * (∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ,
+                      ENNReal.ofReal ((G z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)))
+            + ENNReal.ofReal ((α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+                  (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                      * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                    + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                      * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+                + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                    |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z)) := by
+        intro n
+        have hMcut : (∫⁻ z in Work.Spaces.Iz,
+              ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2))) ≠ ⊤ := by
+          refine ne_top_of_le_ne_top hMtop (lintegral_mono fun z => ?_)
+          refine mul_le_mul_of_nonneg_right ?_ (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+          exact ENNReal.ofReal_le_ofReal (by
+            have h1 := Work.FTS.EllipticEst.cut_le_one n z
+            have h2 : (0:ℝ) ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+            nlinarith)
+        have hcutδ : ∃ δ : ℝ, 0 < δ ∧ ∀ z : ℝ, z ≤ δ → Work.FTS.EllipticEst.cut n z = 0 :=
+          ⟨1 / ((n : ℝ) + 1), by
+            have h : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+            exact div_pos one_pos h,
+            fun z hz => Work.FTS.EllipticEst.cut_apply_zero_of_le n hz⟩
+        have hres := hcut α u G h hL0 hLπ (Work.FTS.EllipticEst.cut n)
+          (cut_contDiff_two n) (cut_hasCompactSupport n) (fun z hz => cut_zero_of_nonpos n hz)
+          (Work.FTS.EllipticEst.cut_nonneg n) (Work.FTS.EllipticEst.cut_le_one n) hcutδ hMcut
+        rw [hKn]
+        exact hres
+      -- ### the properties of `P`
+      have hE0P : ∀ z : ℝ, 0 ≤ P z := by
+        intro z; rw [hPdef]; exact MeasureTheory.integral_nonneg fun θ => sq_nonneg _
+      have hslice_ae : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+          MeasureTheory.AEStronglyMeasurable (fun θ => (u z θ) ^ 2)
+            (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
+        rw [restrict_Iz_eq_Ioi']
+        refine (MeasureTheory.ae_restrict_iff' measurableSet_Ioi).mpr
+          (Filter.Eventually.of_forall fun z hz => ?_)
+        have hSO : Work.FTS.EllipticEst.SmoothOpen u :=
+          Work.FTS.EllipticEst.smoothOpen_of_forall h.smooth
+        have h1 : ContinuousOn (fun θ => (u z θ) ^ 2) (Set.Ioo 0 (Real.pi / 2)) :=
+          ((Work.FTS.EllipticEst.SmoothOpen.curry_θ hSO hz).continuousOn).pow 2
+        have h2 : MeasureTheory.AEStronglyMeasurable (fun θ => (u z θ) ^ 2)
+            (MeasureTheory.volume.restrict (Set.Ioo 0 (Real.pi / 2))) :=
+          h1.aestronglyMeasurable measurableSet_Ioo
+        rw [Work.Spaces.Iθ, ← MeasureTheory.Measure.restrict_congr_set
+          (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume) (a := 0) (b := Real.pi / 2))]
+        exact h2
+      have hcmp : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+          ENNReal.ofReal (P z) ≤ ∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2) := by
+        filter_upwards [hslice_ae] with z hz
+        rw [hPdef]
+        exact ofReal_integral_le_lintegral hz (fun θ => sq_nonneg _)
+      have hw2P : (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * P z)) ≠ ⊤ := by
+        have h1 : (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * P z))
+            = ∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * ENNReal.ofReal (P z) := by
+          refine lintegral_congr fun z => ?_
+          rw [ENNReal.ofReal_mul (sq_nonneg _)]
+        rw [h1]
+        refine ne_top_of_le_ne_top hMtop ?_
+        rw [hMc]
+        refine lintegral_mono_ae ?_
+        filter_upwards [hcmp] with z hz
+        exact mul_le_mul_of_nonneg_left hz (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+      have hPmeas : MeasureTheory.AEStronglyMeasurable (fun z => (Work.Spaces.w z) ^ 2 * P z)
+          (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
+        (w_sq_measurable'.aestronglyMeasurable).mul (P_aesm h)
+      have hE2 : MeasureTheory.IntegrableOn (fun z => (Work.Spaces.w z) ^ 2 * P z)
+          Work.Spaces.Iz :=
+        (MeasureTheory.lintegral_ofReal_ne_top_iff_integrable hPmeas
+          (Filter.Eventually.of_forall fun z => mul_nonneg (sq_nonneg _) (hE0P z))).mp hw2P
+      have hE1 : MeasureTheory.IntegrableOn P Work.Spaces.Iz := by
+        refine (MeasureTheory.lintegral_ofReal_ne_top_iff_integrable (P_aesm h)
+          (Filter.Eventually.of_forall hE0P)).mp ?_
+        refine ne_top_of_le_ne_top hw2P (lintegral_mono_ae ?_)
+        have h0 : ∀ᵐ z ∂(MeasureTheory.volume : Measure ℝ), z ≠ 0 := by
+          rw [MeasureTheory.ae_iff]; simp
+        rw [Work.Spaces.Iz, MeasureTheory.ae_restrict_iff' measurableSet_Ici]
+        filter_upwards [h0] with z hz hzI
+        have hz0 : (0:ℝ) < z := lt_of_le_of_ne hzI (Ne.symm hz)
+        rw [ENNReal.ofReal_le_ofReal_iff (mul_nonneg (sq_nonneg _) (hE0P z))]
+        have hw : (1:ℝ) ≤ (Work.Spaces.w z) ^ 2 := by
+          rw [Work.Spaces.w, div_pow, le_div_iff₀ (by positivity : (0:ℝ) < (z^2)^2)]
+          have h1 : (0:ℝ) ≤ 1 + z := by linarith
+          have h2 : z ^ 2 ≤ (1 + z) ^ 2 := by nlinarith [h1]
+          calc (1:ℝ) * (z ^ 2) ^ 2 = (z ^ 2) ^ 2 := by ring
+            _ ≤ ((1 + z) ^ 2) ^ 2 := pow_le_pow_left₀ (sq_nonneg z) h2 2
+        nlinarith [hE0P z, hw]
+      -- the nonnegativity of the two error integrals
+      have hErrA0 : ∀ n : ℕ, 0 ≤ (∫ z in Work.Spaces.Iz,
+            (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+              + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z) := by
+        intro n
+        exact MeasureTheory.setIntegral_nonneg measurableSet_Ici fun z _ => by
+          have hPz := hE0P z
+          have h1 : (0:ℝ) ≤ 2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+              * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+              + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                * (z ^ 2 * (Work.Spaces.w z) ^ 2) := by positivity
+          exact mul_nonneg h1 hPz
+      have hErrB0 : ∀ n : ℕ, 0 ≤ (∫ z in Work.Spaces.Iz,
+            |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z) := by
+        intro n
+        exact MeasureTheory.setIntegral_nonneg measurableSet_Ici fun z hz => by
+          have hPz := hE0P z
+          exact mul_nonneg (mul_nonneg (abs_nonneg _)
+            (mul_nonneg hz (sq_nonneg _))) hPz
+      -- the error convergence
+      have herr : Filter.Tendsto (fun n : ℕ => (α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+              (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                  * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                  * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+            + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z))
+          Filter.atTop (nhds 0) := by
+        have hsum := AeCutErr P hE0P (P_aesm h) hE1 hE2
+        set Cst : ℝ := max (α ^ 2 / 2) (α * (5 + α) / 2) with hCst
+        have hCst0 : 0 ≤ Cst := by rw [hCst]; exact le_max_of_le_left (by positivity)
+        have hg : Filter.Tendsto (fun n : ℕ => Cst * ((∫ z in Work.Spaces.Iz,
+              (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                  * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                  * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+            + (∫ z in Work.Spaces.Iz,
+                |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z)))
+            Filter.atTop (nhds 0) := by
+          have := hsum.const_mul Cst
+          simpa using this
+        refine squeeze_zero (f := fun n : ℕ => (α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+              (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                  * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                  * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+            + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z))
+          (g := fun n : ℕ => Cst * ((∫ z in Work.Spaces.Iz,
+              (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                  * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                  * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+            + (∫ z in Work.Spaces.Iz,
+                |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z)))
+          (fun n => ?_)
+          (fun n => ?_) hg
+        · have h1 := hErrA0 n
+          have h2 := hErrB0 n
+          have h3 : (0:ℝ) ≤ α ^ 2 / 2 := by positivity
+          have h4 : (0:ℝ) ≤ α * (5 + α) / 2 := by nlinarith [h.1, h.2.1]
+          nlinarith [mul_nonneg h3 h1, mul_nonneg h4 h2]
+        · have h1 := hErrA0 n
+          have h2 := hErrB0 n
+          have h3 : (0:ℝ) ≤ α ^ 2 / 2 := by positivity
+          have h4 : (0:ℝ) ≤ α * (5 + α) / 2 := by nlinarith [h.1, h.2.1]
+          have h5 : α ^ 2 / 2 ≤ Cst := by rw [hCst]; exact le_max_left _ _
+          have h6 : α * (5 + α) / 2 ≤ Cst := by rw [hCst]; exact le_max_right _ _
+          nlinarith [mul_le_mul_of_nonneg_right h5 h1, mul_le_mul_of_nonneg_right h6 h2,
+            mul_nonneg hCst0 h1, mul_nonneg hCst0 h2]
+      have he0 : ∀ n : ℕ, 0 ≤ (α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+              (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                  * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                  * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+            + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z) := by
+        intro n
+        have h1 := hErrA0 n
+        have h2 := hErrB0 n
+        have h3 : (0:ℝ) ≤ α ^ 2 / 2 := by positivity
+        have h4 : (0:ℝ) ≤ α * (5 + α) / 2 := by nlinarith [h.1, h.2.1]
+        nlinarith [mul_nonneg h3 h1, mul_nonneg h4 h2]
+      -- the RHS bound
+      have hRHS : ∀ n : ℕ,
+          ENNReal.ofReal Kn * (∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((u z θ) ^ 2)))
+            + ENNReal.ofReal (1 / 2) * (∫⁻ z in Work.Spaces.Iz,
+                ENNReal.ofReal (Work.FTS.EllipticEst.cut n z * (Work.Spaces.w z) ^ 2)
+                  * (∫⁻ θ in Work.Spaces.Iθ,
+                      ENNReal.ofReal ((G z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)))
+            + ENNReal.ofReal ((α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+                  (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                      * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                    + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                      * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+                + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                    |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z))
+          ≤ ENNReal.ofReal Kn * Mc
+            + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 G)
+            + ENNReal.ofReal ((α ^ 2 / 2) * (∫ z in Work.Spaces.Iz,
+                  (2 * |deriv (Work.FTS.EllipticEst.cut n) z|
+                      * |deriv (fun z => z ^ 2 * (Work.Spaces.w z) ^ 2) z|
+                    + |deriv (deriv (Work.FTS.EllipticEst.cut n)) z|
+                      * (z ^ 2 * (Work.Spaces.w z) ^ 2)) * P z)
+                + (α * (5 + α) / 2) * (∫ z in Work.Spaces.Iz,
+                    |deriv (Work.FTS.EllipticEst.cut n) z| * (z * (Work.Spaces.w z) ^ 2) * P z)) := by
+        intro n
+        refine add_le_add (add_le_add ?_ ?_) le_rfl
+        · refine mul_le_mul_of_nonneg_left ?_ (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+          rw [hMc]
+          refine lintegral_mono fun z => ?_
+          refine mul_le_mul_of_nonneg_right ?_ (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+          exact ENNReal.ofReal_le_ofReal (by
+            have h1 := Work.FTS.EllipticEst.cut_le_one n z
+            have h2 : (0:ℝ) ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+            nlinarith)
+        · refine mul_le_mul_of_nonneg_left ?_ (bot_le : (⊥ : ℝ≥0∞) ≤ _)
+          exact FnLintegralLeHkSq h.memG (Work.FTS.EllipticEst.cut n)
+            (Work.FTS.EllipticEst.cut_nonneg n) (Work.FTS.EllipticEst.cut_le_one n)
+      refine final_step (a := α ^ 2) hAmono hBmono hAsup hBsup ?_ herr he0
+      intro n
+      exact le_trans (hcrux n) (hRHS n)
+  rwa [hAc, hBc, hMc, hKn] at hgoal
+
+end Work.FTS.EllipticEst.Cores.Pieces.AeGradRho
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.FOH.psiRho =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -43,10 +438,6 @@ noncomputable def Mu (Ψ : ℝ → ℝ → ℝ) : ℝ≥0∞ :=
   ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
     (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2))
 
-/-- The unweighted-in-`θ` angular-gradient functional `∫⁻_z w² ∫⁻_θ (∂_θΨ)²`. -/
-noncomputable def Gu (Ψ : ℝ → ℝ → ℝ) : ℝ≥0∞ :=
-  ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-    (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2))
 
 /-- The `σ`-weighted mass functional `∫⁻_z w² ∫⁻_θ Ψ² σ`. -/
 noncomputable def Ys (Ψ : ℝ → ℝ → ℝ) : ℝ≥0∞ :=
@@ -70,307 +461,23 @@ theorem ae_pos_Iz : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz), 
 
 /-! ## The unweighted constrained gap, integrated against `w²` -/
 
-/-- **The constrained slice gap `9∫u² ≤ ∫(u')²` (`Gap9Open`), integrated against `w²`.** -/
-theorem gapMu (h : Hon α F Ψ) : (9 : ℝ≥0∞) * Mu Ψ ≤ Gu Ψ := by
-  have hae := HonSliceAeYc α F Ψ h
-  have hkeyIoi : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      9 * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2))
-        ≤ (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-    filter_upwards [hae, MeasureTheory.ae_restrict_mem measurableSet_Ioi] with z hz hzpos
-    simp only [Work.Spaces.pth]
-    obtain ⟨hl0, hlπ, hint⟩ := hz
-    have hcd : ContDiffOn ℝ 2 (fun θ : ℝ => Ψ z θ) (Set.Ioo 0 (Real.pi / 2)) :=
-      slice_contDiffOn h hzpos
-    have hcont : ContinuousOn (fun θ : ℝ => Ψ z θ) (Set.Icc 0 (Real.pi / 2)) :=
-      HR2.continuousOn_Icc_of_limits (by positivity) hcd (h.d0 z) (h.dπ z) hl0 hlπ
-    have hLI : MeasureTheory.IntegrableOn
-        (fun θ : ℝ => ((fun θ : ℝ => Ψ z θ) θ) ^ 2) Work.Spaces.Iθ :=
-      (hcont.pow 2).integrableOn_compact isCompact_Icc
-    have horth : (∫ θ in Work.Spaces.Iθ,
-        (fun θ : ℝ => Ψ z θ) θ * Work.Elliptic.sinCos2 θ) = 0 := by
-      simpa only [Work.Elliptic.Fstar] using h.orthΨ z
-    have hgap := Gap9Open (fun θ : ℝ => Ψ z θ) hcd hcont (h.d0 z) (h.dπ z) hint horth
-    rw [← MeasureTheory.ofReal_integral_eq_lintegral_ofReal hLI
-        (Eventually.of_forall fun θ => sq_nonneg _),
-      ← MeasureTheory.ofReal_integral_eq_lintegral_ofReal hint
-        (Eventually.of_forall fun θ => sq_nonneg _)]
-    rw [show (9 : ℝ≥0∞) = ENNReal.ofReal (9 : ℝ) from by norm_num,
-      ← ENNReal.ofReal_mul (by norm_num : (0 : ℝ) ≤ 9)]
-    exact ENNReal.ofReal_le_ofReal (by simpa only [Work.Spaces.pth] using hgap)
-  have hkey : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
-      9 * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2))
-        ≤ (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-    rw [HR2.restrict_Iz_eq_restrict_Ioi]
-    exact hkeyIoi
-  calc (9 : ℝ≥0∞) * Mu Ψ
-      = ∫⁻ z in Work.Spaces.Iz, 9 * (ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2))) := by
-        rw [Mu]
-        exact (MeasureTheory.lintegral_const_mul' 9 _ (by norm_num)).symm
-    _ = ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (9 * (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Ψ z θ) ^ 2))) := by
-        refine MeasureTheory.lintegral_congr fun z => by ring
-    _ ≤ ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-        refine MeasureTheory.lintegral_mono_ae ?_
-        filter_upwards [hkey] with z hz
-        exact mul_le_mul' le_rfl hz
-    _ = Gu Ψ := rfl
 
 /-! ## The `σ`-weighted mass is controlled by the unweighted angular gradient -/
 
-/-- **The `σ`-weighted `θ`-Poincaré inequality, integrated against `w²`**: from the *slicewise*
-`σ`-Poincaré inequality (as supplied by `SigmaPoincare`) one gets `Ys Ψ ≤ ofReal Cσ · Gu Ψ`. -/
-theorem Ys_le_Gu_of {Cσ : ℝ}
-    (hsl : ∀ f : ℝ → ℝ, ContDiffOn ℝ 1 f (Set.Ioo 0 (Real.pi / 2)) →
-      MeasureTheory.IntegrableOn (fun θ => f θ * (Real.sin θ * Real.cos θ ^ 2)) Work.Spaces.Iθ →
-      (∫ θ in Work.Spaces.Iθ, f θ * Real.sin θ * Real.cos θ ^ 2) = 0 →
-      (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal
-          ((f θ) ^ 2 * Work.FTS.EllipticEst.sEta θ))
-        ≤ ENNReal.ofReal Cσ *
-          (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((deriv f θ) ^ 2)))
-    (h : Hon α F Ψ) : Ys Ψ ≤ ENNReal.ofReal Cσ * Gu Ψ := by
-  have hae := HonSliceAeYc α F Ψ h
-  have hkeyIoi : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal
-        ((Ψ z θ) ^ 2 * Work.FTS.EllipticEst.AngSecond.sig θ))
-        ≤ ENNReal.ofReal Cσ *
-          (∫⁻ θ in Work.Spaces.Iθ,
-            ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-    filter_upwards [hae, MeasureTheory.ae_restrict_mem measurableSet_Ioi] with z hz hzpos
-    obtain ⟨hl0, hlπ, _⟩ := hz
-    have hcd2 : ContDiffOn ℝ 2 (fun θ : ℝ => Ψ z θ) (Set.Ioo 0 (Real.pi / 2)) :=
-      slice_contDiffOn h hzpos
-    have hcd1 : ContDiffOn ℝ 1 (fun θ : ℝ => Ψ z θ) (Set.Ioo 0 (Real.pi / 2)) :=
-      hcd2.of_le (by norm_num)
-    have hcont : ContinuousOn (fun θ : ℝ => Ψ z θ) (Set.Icc 0 (Real.pi / 2)) :=
-      HR2.continuousOn_Icc_of_limits (by positivity) hcd2 (h.d0 z) (h.dπ z) hl0 hlπ
-    have hint2 : MeasureTheory.IntegrableOn
-        (fun θ : ℝ => (fun θ : ℝ => Ψ z θ) θ * (Real.sin θ * Real.cos θ ^ 2))
-        Work.Spaces.Iθ := by
-      have hc : ContinuousOn
-          (fun θ : ℝ => (fun θ : ℝ => Ψ z θ) θ * (Real.sin θ * Real.cos θ ^ 2))
-          Work.Spaces.Iθ := hcont.mul (by fun_prop)
-      exact hc.integrableOn_compact isCompact_Icc
-    have horth : (∫ θ in Work.Spaces.Iθ,
-        (fun θ : ℝ => Ψ z θ) θ * (Real.sin θ * Real.cos θ ^ 2)) = 0 := by
-      simpa only [Work.Elliptic.Fstar, Work.Elliptic.sinCos2] using h.orthΨ z
-    have horth' : (∫ θ in Work.Spaces.Iθ,
-        (fun θ : ℝ => Ψ z θ) θ * Real.sin θ * Real.cos θ ^ 2) = 0 := by
-      simpa only [mul_assoc] using horth
-    have hres := hsl (fun θ : ℝ => Ψ z θ) hcd1 hint2 horth'
-    simpa only [Work.Spaces.pth, Work.FTS.EllipticEst.sEta,
-      Work.FTS.EllipticEst.AngSecond.sig] using hres
-  have hkey : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
-      (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal
-        ((Ψ z θ) ^ 2 * Work.FTS.EllipticEst.AngSecond.sig θ))
-        ≤ ENNReal.ofReal Cσ *
-          (∫⁻ θ in Work.Spaces.Iθ,
-            ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-    rw [HR2.restrict_Iz_eq_restrict_Ioi]
-    exact hkeyIoi
-  calc Ys Ψ
-      = ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal
-            ((Ψ z θ) ^ 2 * Work.FTS.EllipticEst.AngSecond.sig θ)) := rfl
-    _ ≤ ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (ENNReal.ofReal Cσ * (∫⁻ θ in Work.Spaces.Iθ,
-            ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2))) := by
-        refine MeasureTheory.lintegral_mono_ae ?_
-        filter_upwards [hkey] with z hz
-        exact mul_le_mul' le_rfl hz
-    _ = ENNReal.ofReal Cσ * ∫⁻ z in Work.Spaces.Iz,
-          ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-          (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal ((Work.Spaces.pth Ψ z θ) ^ 2)) := by
-        rw [← MeasureTheory.lintegral_const_mul' (ENNReal.ofReal Cσ) _
-          ENNReal.ofReal_ne_top]
-        refine MeasureTheory.lintegral_congr fun z => by ring
-    _ = ENNReal.ofReal Cσ * Gu Ψ := rfl
 
 /-! ## The unweighted angular gradient is bounded by `HkSq α 0 F` -/
 
 /-- The coefficient `K(α) = 13/2 + 3α² + (3/2)α(5+α)` of the radial weight transfer. -/
 noncomputable def Kcoef (α : ℝ) : ℝ := 13 / 2 + (3 * α ^ 2 + (3 / 2) * α * (5 + α))
 
-theorem Kcoef_le (hα : 0 < α) (hα4 : α ≤ 1 / 4) : Kcoef α ≤ 26 / 3 := by
-  rw [Kcoef]
-  nlinarith [hα, hα4, sq_nonneg α]
 
-theorem Kcoef_nonneg (hα : 0 < α) : (0 : ℝ) ≤ Kcoef α := by
-  rw [Kcoef]; nlinarith [hα, sq_nonneg α]
 
-/-- **The honesty of `Ψ` and the finiteness of the unweighted mass.** -/
-theorem hkMem_of_hon (h : Hon α F Ψ) : Work.Spaces.HkMem α 0 Ψ :=
-  Work.FTS.EllipticEst.H2W.Ae.hr2_hkMem_u α Ψ F (HR2.hon_to_ae h)
 
-theorem Ys_eq (h : Hon α F Ψ) :
-    Ys Ψ = ENNReal.ofReal (Work.Spaces.HkSq α 0 Ψ) := by
-  rw [Ys]
-  exact lintegral_sig_eq_ofReal_HkSq (hkMem_of_hon h)
 
-theorem Mu_le (h : Hon α F Ψ) : Mu Ψ ≤ Ys Ψ := by
-  refine MeasureTheory.lintegral_mono_ae ?_
-  refine Eventually.of_forall fun z => mul_le_mul' le_rfl ?_
-  refine MeasureTheory.lintegral_mono_ae ?_
-  filter_upwards [ae_mem_Ioo_Iθ'] with θ hθ
-  refine ENNReal.ofReal_le_ofReal ?_
-  have h1 : 1 ≤ Work.FTS.EllipticEst.sEta θ := one_le_sEta_Ioo hθ
-  have h2 : (0 : ℝ) ≤ (Ψ z θ) ^ 2 := sq_nonneg _
-  calc (Ψ z θ) ^ 2 = 1 * (Ψ z θ) ^ 2 := (one_mul _).symm
-    _ ≤ Work.FTS.EllipticEst.sEta θ * (Ψ z θ) ^ 2 :=
-        mul_le_mul_of_nonneg_right h1 h2
-    _ = (Ψ z θ) ^ 2 * Work.FTS.EllipticEst.AngSecond.sig θ := mul_comm _ _
 
-/-- **The unweighted angular gradient is bounded by `HkSq α 0 F`.**  The explicit energy
-inequality `Step1G.EnergyG` plus the constrained gap `9∫Ψ² ≤ ∫(∂_θΨ)²` (the constant
-`26/3 < 9` leaves the room `1/27`). -/
-theorem Gu_le (h : Hon α F Ψ) :
-    Gu Ψ ≤ ENNReal.ofReal (234 * Work.Spaces.HkSq α 0 F) := by
-  have hmem : Work.Spaces.HkMem α 0 Ψ := hkMem_of_hon h
-  have hYseq := Ys_eq h
-  have hMu := Mu_le h
-  have h0le : (0 : ℝ) ≤ Work.Spaces.HkSq α 0 F := HkSq_zero_nonneg α F
-  -- the source mass `Mu` is finite
-  have hMutop : Mu Ψ ≠ ⊤ := by
-    refine ne_top_of_le_ne_top ?_ hMu
-    rw [hYseq]
-    exact ENNReal.ofReal_ne_top
-  -- the energy inequality, with the LHS's extra `α²`-term dropped
-  have hen := Step1G.EnergyG α F Ψ h
-  have hGu_le : Gu Ψ ≤ ENNReal.ofReal (Kcoef α) *
-      (Mu Ψ + ENNReal.ofReal (Work.Spaces.HkSq α 0 F)) := by
-    have h1 : Gu Ψ ≤ ENNReal.ofReal (Kcoef α) * Mu Ψ
-        + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 F) := by
-      have h0 : Gu Ψ ≤ (ENNReal.ofReal (α ^ 2) *
-            (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) *
-              (∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal
-                ((z * Work.Spaces.pz Ψ z θ) ^ 2)))) + Gu Ψ :=
-        le_add_of_nonneg_left bot_le
-      refine le_trans h0 ?_
-      rw [Kcoef]
-      exact hen
-    have h12 : ENNReal.ofReal (1 / 2 : ℝ) ≤ ENNReal.ofReal (Kcoef α) :=
-      ENNReal.ofReal_le_ofReal (by rw [Kcoef]; nlinarith [h.hα, sq_nonneg α])
-    have hb : ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 F)
-        ≤ ENNReal.ofReal (Kcoef α) * ENNReal.ofReal (Work.Spaces.HkSq α 0 F) :=
-      mul_le_mul' h12 le_rfl
-    have hgoal : ENNReal.ofReal (Kcoef α) * Mu Ψ
-          + ENNReal.ofReal (1 / 2) * ENNReal.ofReal (Work.Spaces.HkSq α 0 F)
-        ≤ ENNReal.ofReal (Kcoef α) *
-          (Mu Ψ + ENNReal.ofReal (Work.Spaces.HkSq α 0 F)) := by
-      rw [mul_add]
-      exact add_le_add le_rfl hb
-    exact le_trans h1 hgoal
-  have hGutop : Gu Ψ ≠ ⊤ := by
-    refine ne_top_of_le_ne_top ?_ hGu_le
-    exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top
-      (ENNReal.add_ne_top.mpr ⟨hMutop, ENNReal.ofReal_ne_top⟩)
-  -- the gap gives `Mu ≤ (9)⁻¹ Gu`
-  have hgap := gapMu h
-  have hMu_le : Mu Ψ ≤ (9 : ℝ≥0∞)⁻¹ * Gu Ψ := by
-    have h9 : (9 : ℝ≥0∞) * Mu Ψ ≤ Gu Ψ := hgap
-    calc Mu Ψ = 1 * Mu Ψ := (one_mul _).symm
-      _ = ((9 : ℝ≥0∞)⁻¹ * 9) * Mu Ψ := by
-          rw [ENNReal.inv_mul_cancel (by norm_num) (by norm_num)]
-      _ = (9 : ℝ≥0∞)⁻¹ * (9 * Mu Ψ) := by rw [mul_assoc]
-      _ ≤ (9 : ℝ≥0∞)⁻¹ * Gu Ψ := mul_le_mul_of_nonneg_left h9 bot_le
-  -- the coefficient `c = K/9 < 1`
-  set c : ℝ≥0∞ := ENNReal.ofReal (Kcoef α / 9) with hc
-  have hc1 : c < 1 := by
-    rw [hc, ← ENNReal.ofReal_one]
-    rw [ENNReal.ofReal_lt_ofReal_iff (by norm_num : (0 : ℝ) < 1)]
-    have hK := Kcoef_le h.hα h.hα4
-    linarith
-  have hKnn : (0 : ℝ) ≤ Kcoef α := by
-    rw [Kcoef]; nlinarith [h.hα, sq_nonneg α]
-  -- the additive constant
-  have hstep : Gu Ψ ≤ c * Gu Ψ +
-      ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) := by
-    have h1 : ENNReal.ofReal (Kcoef α) *
-        (Mu Ψ + ENNReal.ofReal (Work.Spaces.HkSq α 0 F))
-        ≤ ENNReal.ofReal (Kcoef α) *
-          ((9 : ℝ≥0∞)⁻¹ * Gu Ψ + ENNReal.ofReal (Work.Spaces.HkSq α 0 F)) :=
-      mul_le_mul' le_rfl (add_le_add hMu_le le_rfl)
-    refine le_trans hGu_le (le_trans h1 ?_)
-    have h9 : (9 : ℝ≥0∞)⁻¹ = ENNReal.ofReal ((9 : ℝ)⁻¹) := by
-      rw [ENNReal.ofReal_inv_of_pos (by norm_num : (0 : ℝ) < 9)]
-      norm_num
-    have hc9 : ENNReal.ofReal (Kcoef α) * ENNReal.ofReal ((9 : ℝ)⁻¹) = c := by
-      rw [hc]
-      exact (ENNReal.ofReal_mul hKnn).symm
-    rw [mul_add, ← mul_assoc, h9, hc9, ← ENNReal.ofReal_mul hKnn]
-  -- solve for `Gu`
-  have hcGutop : c * Gu Ψ ≠ ⊤ :=
-    ENNReal.mul_ne_top (ne_top_of_lt (lt_of_lt_of_le hc1 le_top)) hGutop
-  have h1 : Gu Ψ * (1 - c) ≤ ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) := by
-    have hEeq : Gu Ψ = Gu Ψ * (1 - c) + c * Gu Ψ := by
-      rw [mul_comm c (Gu Ψ), ← mul_add, tsub_add_cancel_of_le (le_of_lt hc1), mul_one]
-    have h5 : Gu Ψ * (1 - c) + c * Gu Ψ ≤
-        ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) + c * Gu Ψ := by
-      calc Gu Ψ * (1 - c) + c * Gu Ψ = Gu Ψ := hEeq.symm
-        _ ≤ c * Gu Ψ + ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) := hstep
-        _ = ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) + c * Gu Ψ := by rw [add_comm]
-    exact (ENNReal.add_le_add_iff_right hcGutop).mp h5
-  have h27 : (27 : ℝ≥0∞)⁻¹ ≤ 1 - c := by
-    rw [hc]
-    rw [show (1 : ℝ≥0∞) = ENNReal.ofReal 1 from ENNReal.ofReal_one.symm]
-    rw [show ENNReal.ofReal 1 - ENNReal.ofReal (Kcoef α / 9)
-        = ENNReal.ofReal (1 - Kcoef α / 9) from
-      (ENNReal.ofReal_sub (p := 1) (q := Kcoef α / 9)
-        (hq := div_nonneg (Kcoef_nonneg h.hα) (by norm_num))).symm]
-    rw [show ((27 : ℝ≥0∞))⁻¹ = ENNReal.ofReal ((27 : ℝ)⁻¹) from by
-      rw [ENNReal.ofReal_inv_of_pos (by norm_num : (0 : ℝ) < 27)]
-      norm_num]
-    refine ENNReal.ofReal_le_ofReal ?_
-    have hK := Kcoef_le h.hα h.hα4
-    linarith
-  have hEmul : Gu Ψ ≤ ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) * 27 := by
-    have h2 : Gu Ψ * (27 : ℝ≥0∞)⁻¹ ≤
-        ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) :=
-      le_trans (mul_le_mul_of_nonneg_left h27 bot_le) h1
-    calc Gu Ψ = Gu Ψ * (27 : ℝ≥0∞)⁻¹ * 27 := by
-          rw [mul_assoc, ENNReal.inv_mul_cancel (by norm_num) (by norm_num), mul_one]
-      _ ≤ ENNReal.ofReal (Kcoef α * Work.Spaces.HkSq α 0 F) * 27 :=
-          mul_le_mul_of_nonneg_right h2 bot_le
-  refine le_trans hEmul ?_
-  rw [show (27 : ℝ≥0∞) = ENNReal.ofReal (27 : ℝ) from by norm_num]
-  rw [← ENNReal.ofReal_mul
-    (mul_nonneg (Kcoef_nonneg h.hα) h0le)]
-  refine ENNReal.ofReal_le_ofReal ?_
-  have hK := Kcoef_le h.hα h.hα4
-  nlinarith [h0le, hK]
 
 /-! ## The `ρ`-norm of `Ψ` -/
 
-/-- **The `ρ`-norm of the solution is bounded by the `ρ`-norm of the source**
-(the `Ψ`-half of Step 1 of `prop:H2` in the honest class). -/
-theorem psiRhoBound :
-    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), Hon α F Ψ →
-      Work.Spaces.HkMem α 0 Ψ ∧ Work.Spaces.HkSq α 0 Ψ ≤ C * Work.Spaces.HkSq α 0 F := by
-  obtain ⟨Cσ, hCσpos, hCσ⟩ := SigmaPoincare
-  refine ⟨Cσ * 234 + 1, by positivity, ?_⟩
-  intro α F Ψ h
-  have hmem : Work.Spaces.HkMem α 0 Ψ := hkMem_of_hon h
-  have hYs : Ys Ψ ≤ ENNReal.ofReal Cσ * Gu Ψ := Ys_le_Gu_of hCσ h
-  have hGu : Gu Ψ ≤ ENNReal.ofReal (234 * Work.Spaces.HkSq α 0 F) := Gu_le h
-  have hfin : Ys Ψ ≤ ENNReal.ofReal (Cσ * (234 * Work.Spaces.HkSq α 0 F)) := by
-    calc Ys Ψ ≤ ENNReal.ofReal Cσ * Gu Ψ := hYs
-      _ ≤ ENNReal.ofReal Cσ * ENNReal.ofReal (234 * Work.Spaces.HkSq α 0 F) :=
-          mul_le_mul' le_rfl hGu
-      _ = ENNReal.ofReal (Cσ * (234 * Work.Spaces.HkSq α 0 F)) := by
-          rw [ENNReal.ofReal_mul hCσpos.le]
-  refine ⟨hmem, ?_⟩
-  have h2 : Work.Spaces.HkSq α 0 Ψ ≤ Cσ * (234 * Work.Spaces.HkSq α 0 F) := by
-    have h3 : ENNReal.ofReal (Work.Spaces.HkSq α 0 Ψ)
-        ≤ ENNReal.ofReal (Cσ * (234 * Work.Spaces.HkSq α 0 F)) := by
-      rw [← Ys_eq h]
-      exact hfin
-    rw [ENNReal.ofReal_le_ofReal_iff
-      (mul_nonneg hCσpos.le (mul_nonneg (by norm_num) (HkSq_zero_nonneg α F)))] at h3
-    exact h3
-  calc Work.Spaces.HkSq α 0 Ψ ≤ Cσ * (234 * Work.Spaces.HkSq α 0 F) := h2
-    _ = (Cσ * 234) * Work.Spaces.HkSq α 0 F := by ring
-    _ ≤ (Cσ * 234 + 1) * Work.Spaces.HkSq α 0 F :=
-        mul_le_mul_of_nonneg_right (by linarith) (HkSq_zero_nonneg α F)
 
 end Work.FTS.EllipticEst.Honest.FOH
+end

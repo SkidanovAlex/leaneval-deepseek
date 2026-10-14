@@ -1,54 +1,19 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS.EllExist.LevelK` — the existence node at an arbitrary weak-class level
-
-The lead design of 2026-10-08 (`FTS/FTS_HARD_DESIGN.md`, §(A) item **A2**) needs the corrected
-existence node of this area **at the weak-class level `EllWeakPos α 7`** (the `U`-slot of the
-estimates is one order short at level `4`), with its inputs supplied by the new linear class
-`ClassC` (`Submission/Work/FTS/FTS_HARD_STMTS.lean.txt`): `SmoothOpen g`, `HkMem α 7 g`, F_* ∈
-C^∞(0,∞), the axis condition as a limit, `L₁₂(g)(0) = 0`.
-
-This module therefore carries the two statements of `Main.lean`/`Exists.lean`/`ExistsFstar.lean`
-at a *general* level `k`:
-
-* `EllClassOk k α g Ψ` — `EllClassO` with `TT.EllWeakPos α k` in place of `α 4`;
-* `ellClassOk_of_bslOp_node k` — the assembly (unconditional);
-* `ellClassOk_exists_of_inputs k` — the corrected existence node, from the elliptic node
-  `bslOp_sol_exists k` applied to `orthSource g` plus the explicit analytic inputs;
-* `ellClassOk_exists_of_Fstar_smooth k` — the same with the three `Gsing` facts *derived* from
-  three natural hypotheses on the angular moment (`F_* ∈ C^∞(0,∞)`, `F_*(r)/r ∈ L¹`, `g ∈ L²`).
-
-The instantiation `k = 7` is `Work.FTS.EllExist.ellClassOk_exists_of_Fstar_smooth 7`; the consumer
-supplies
-
-* `SmoothOpen (orthSource g)` and `HkMem α 7 (orthSource g)` — from `ClassC.reg` and
-  `ClassC.fsm` (`orthSource g = g - (15/4) sin 2θ · F_*(g)`, so `SmoothOpen` comes from
-  `ClassC.reg` + `ClassC.fsm` and the honesty from `HkMem` plus a `Ly`-type majorant);
-* the decay of `orthSource g` — from the pointwise decay of `g` and `F_*`;
-* `F_* ∈ C^∞(0,∞)` (directly) and `IntegrableOn (F_*(r)/r) (Ioi 0)`, `L2Mem g`.
-
-All the algebra of the shift is in `FTS/EllExist/Shift.lean` (`bslOp_shiftSing`,
-`bslOp_shiftSing_of_ode`, `bslOp_eq_of_shiftSing_of_ode`, `Fstar_shiftSing`,
-`Fstar_orthSource_zero`, `smoothOpen_shiftSing`, `tendsto_shiftSing`).
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.PhiStar.bslOp_sol_exists
-import Submission.Work.FTS.PhiStar.bslOp_sol_exists_pp
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.hard_sq_prod_z
 import Submission.Work.FTS.PhiStar.EllNode8tr
-import Submission.Work.FTS.EllipticEst.Gsing_contDiffOn_ode_of_Fstar_facts
-import Submission.Work.FTS.EllipticEst.HasDerivAt_L12_of_Fstar_facts
-import Submission.Work.FTS.EllipticEst.Gsing_tendsto_atTop_zero
-import Submission.Work.FTS.EllExist.Defs
-import Submission.Work.FTS.EllExist.Shift
-import Submission.Work.FTS.EllExist.Main
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -77,9 +42,6 @@ def EllClassOk (k : ℕ) (α : ℝ) (g Ψ : Fn) : Prop :=
   Work.Elliptic.IsBslSol α g Ψ ∧ Work.FTS.EllipticEst.SmoothOpen Ψ ∧
   Work.FTS.EllipticEst.TT.EllWeakPos α k (Work.Elliptic.orthSource g) (shiftSing α g Ψ)
 
-/-- `EllClassO` is the case `k = 4`. -/
-theorem ellClassO_iff_ellClassOk_four (α : ℝ) (g Ψ : Fn) :
-    EllClassO α g Ψ ↔ EllClassOk 4 α g Ψ := Iff.rfl
 
 /-- **The assembly at level `k`**: from the elliptic node for the orthogonalised source and the
 three singular-term facts about `Gsing α g`, the unshifted function `unshift α g Ψ'` is an element
@@ -126,50 +88,7 @@ theorem ellClassOk_of_bslOp_node (k : ℕ) {α : ℝ} {g : Fn}
     rw [shiftSing_unshift α g Ψ']
     exact hWeak
 
-/-- **The corrected existence node at level `k`.**  Every `g` whose orthogonalised source lies in
-the weak class of the `ℋ^k` estimate and whose angular moment satisfies the three analytic inputs
-has a stream function in `EllClassOk k α g`. -/
-theorem ellClassOk_exists_of_inputs (k : ℕ) : ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ α : ℝ, 0 < α → α ≤ α₀ →
-    ∀ g : Fn,
-      Work.FTS.EllipticEst.SmoothOpen (Work.Elliptic.orthSource g) →
-      Work.Spaces.HkMem α k (Work.Elliptic.orthSource g) →
-      (∀ θ ∈ Work.Spaces.Iθ,
-        Tendsto (fun z => Work.Elliptic.orthSource g z θ) atTop (𝓝 0)) →
-      (∀ n : ℕ, ContDiffOn ℝ (n : WithTop ℕ∞) (Work.Elliptic.Gsing α g) (Set.Ioi 0)) →
-      (∀ z ∈ Set.Ioi (0 : ℝ),
-        α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α g) z') z
-          + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α g) z
-        = (15 / 4) * Work.Elliptic.Fstar g z) →
-      Tendsto (fun z => Work.Elliptic.Gsing α g z) atTop (𝓝 0) →
-      ∃ Ψ : Fn, EllClassOk k α g Ψ := by
-  refine ⟨1 / 4, by norm_num, ?_⟩
-  intro α hα hα4 g hSm hHk hDec hGsm hGode hGdec
-  refine ellClassOk_of_bslOp_node k ?_ hGsm hGode hGdec
-  exact Work.FTS.PhiStar.bslOp_sol_exists k α (Work.Elliptic.orthSource g) hα hα4 hSm hHk
-    (fun z _ => Fstar_orthSource_zero g z) hDec
 
-/-- **The corrected existence node at level `k`, repaired input level `k+2`** (lead install
-2026-10-11, `cbc/fts_phistar_REVIEW.md`).  Identical to `ellClassOk_exists_of_inputs` except that
-the orthogonalised source is assumed in `ℋ^{k+2}` and the node is the repaired
-`PhiStar.bslOp_sol_exists_pp k` (the original node is false). -/
-theorem ellClassOk_exists_of_inputs_pp (k : ℕ) : ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ α : ℝ, 0 < α → α ≤ α₀ →
-    ∀ g : Fn,
-      Work.FTS.EllipticEst.SmoothOpen (Work.Elliptic.orthSource g) →
-      Work.Spaces.HkMem α (k + 2) (Work.Elliptic.orthSource g) →
-      (∀ θ ∈ Work.Spaces.Iθ,
-        Tendsto (fun z => Work.Elliptic.orthSource g z θ) atTop (𝓝 0)) →
-      (∀ n : ℕ, ContDiffOn ℝ (n : WithTop ℕ∞) (Work.Elliptic.Gsing α g) (Set.Ioi 0)) →
-      (∀ z ∈ Set.Ioi (0 : ℝ),
-        α ^ 2 * z ^ 2 * deriv (fun z' => deriv (Work.Elliptic.Gsing α g) z') z
-          + α * (5 + α) * z * deriv (Work.Elliptic.Gsing α g) z
-        = (15 / 4) * Work.Elliptic.Fstar g z) →
-      Tendsto (fun z => Work.Elliptic.Gsing α g z) atTop (𝓝 0) →
-      ∃ Ψ : Fn, EllClassOk k α g Ψ := by
-  refine ⟨1 / 4, by norm_num, ?_⟩
-  intro α hα hα4 g hSm hHk hDec hGsm hGode hGdec
-  refine ellClassOk_of_bslOp_node k ?_ hGsm hGode hGdec
-  exact Work.FTS.PhiStar.bslOp_sol_exists_pp k α (Work.Elliptic.orthSource g) hα hα4 hSm hHk
-    (fun z _ => Fstar_orthSource_zero g z) hDec
 
 /-- **The existence node at level `8` from the trace-strengthened node** (lead install R6,
 2026-10-11, `cbc/fts_ellnode_ruling.md` §4.4(1)).  As `ellClassOk_exists_of_inputs_pp 8`, with the
@@ -195,28 +114,5 @@ theorem ellClassOk_exists_of_inputs_tr : ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ α :
   exact Work.FTS.PhiStar.EllNode8tr_holds α (Work.Elliptic.orthSource g) hα hα4 hSm hHk hTr
     (fun z _ => Fstar_orthSource_zero g z) hDec
 
-/-- **The corrected existence node at level `k`, in terms of the angular moment.**  The three
-`Gsing` facts are derived from `F_* ∈ C^∞(0,∞)`, `IntegrableOn (F_*(r)/r) (Ioi 0)` and `L2Mem g`
-via `Gsing_contDiffOn_ode_of_Fstar_facts`, `HasDerivAt_L12_of_Fstar_facts` and
-`Gsing_tendsto_atTop_zero`. -/
-theorem ellClassOk_exists_of_Fstar_smooth (k : ℕ) : ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ α : ℝ, 0 < α → α ≤ α₀ →
-    ∀ g : Fn,
-      Work.FTS.EllipticEst.SmoothOpen (Work.Elliptic.orthSource g) →
-      Work.Spaces.HkMem α k (Work.Elliptic.orthSource g) →
-      (∀ θ ∈ Work.Spaces.Iθ,
-        Tendsto (fun z => Work.Elliptic.orthSource g z θ) atTop (𝓝 0)) →
-      (∀ m : ℕ, ContDiffOn ℝ (m : WithTop ℕ∞) (Work.Elliptic.Fstar g) (Set.Ioi 0)) →
-      MeasureTheory.IntegrableOn (fun r : ℝ => Work.Elliptic.Fstar g r / r) (Set.Ioi 0) →
-      Work.Spaces.L2Mem g →
-      ∃ Ψ : Fn, EllClassOk k α g Ψ := by
-  obtain ⟨α₀, hα₀, hmain⟩ := ellClassOk_exists_of_inputs k
-  refine ⟨α₀, hα₀, fun α hα hα4 g hSm hHk hDec hFstSm hFint hL2 => ?_⟩
-  have hL12 : ∀ z ∈ Set.Ioi (0 : ℝ),
-      HasDerivAt (Work.Elliptic.L12 g) (-(3 * Work.Elliptic.Fstar g z / z)) z :=
-    Work.FTS.EllipticEst.HasDerivAt_L12_of_Fstar_facts g hFstSm hFint
-  obtain ⟨hGsm, hGode⟩ :=
-    Work.FTS.EllipticEst.Gsing_contDiffOn_ode_of_Fstar_facts α g hα hFstSm hFint hL12
-  exact hmain α hα hα4 g hSm hHk hDec hGsm hGode
-    (Work.FTS.EllipticEst.Gsing_tendsto_atTop_zero α g hα hL2)
 
 end Work.FTS.EllExist

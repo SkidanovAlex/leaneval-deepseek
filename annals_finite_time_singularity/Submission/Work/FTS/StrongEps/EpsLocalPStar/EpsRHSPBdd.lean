@@ -3,24 +3,22 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsLocalPSmall
-import Submission.Work.FTS.StrongEps.EpsGdotThird
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_step_le
-import Submission.Work.FTS.StrongEps.EpsE4Thr.HkMem_Jeps_gain
-import Submission.Work.FTS.StrongEps.PZeroAux.PzHkNormFour
-import Submission.Work.FTS.StrongEps.PZeroAux.classC_Pz
-import Submission.Work.FTS.StrongEps.JfamP_norm
-import Submission.Work.FTS.StrongEps.ClassCRHS.SmoothOpenRHS
-import Submission.Work.FTS.StrongEps.ClassCRHS.HkMemXnN0
-import Submission.Work.FTS.StrongEps.ClassCRHS.HkMemXnN
-import Submission.Work.FTS.StrongEps.ClassCRHS.HkMemXnLGammaT
-import Submission.Work.FTS.GalFields.RHS.HkSum
-import Submission.Work.FTS.GalFields.Norm.Basic
-import Submission.Work.FTS.OpenPkg.l12zero_field
-import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
-import Submission.Work.FTS.NonlinRows.NAux3
-import Submission.Work.FTS.StrongPersist.H6Rows.AK6Row
 import Submission.Work.FTS.CoercivityFix.Transfer.HkMem_descent_Q0Sm
+import Submission.Work.FTS.GalFields.RHS.HkSum
+import Submission.Work.FTS.NonlinRows.NAux3
+import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
+import Submission.Work.FTS.StrongEps.ClassCRHS.HkMemXnN0
+import Submission.Work.FTS.StrongEps.EpsE4Thr.DiagCurveIRho
+import Submission.Work.FTS.StrongEps.JfamP_norm
+import Submission.Work.FTS.StrongEps.PZeroAux.bumpHkNormBound
+import Submission.Work.FTS.StrongEps.PZeroAux.softClass_Pz
+import Submission.Work.FTS.StrongEps.TenOfEight.GainAll
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_LocDatum3a.Defs
+import Submission.Work.FTS_RegExport.THL.cs7_rop_split
+import Submission.Work.FTS_RegExport.THL.vopPert_theta_holder
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

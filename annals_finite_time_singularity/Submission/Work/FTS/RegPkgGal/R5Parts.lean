@@ -1,33 +1,11 @@
-/-
-# `Work.FTS.RegPkgGal.R5Parts` — R5 at the primitive level (the reviewer's ask)
-
-`Der.R5Slot_of_parts` derives `R5Slot` from the *constituents* of the right-hand side of the
-fake-time equation.  This file packages those constituents into the single `Prop` `R5Parts α S g Φ`,
-so that the deliverable can be stated with a **primitive** R5 hypothesis instead of the composite
-`R5Slot` (whose `hRHS` field was the R5 conclusion itself):
-
-    `R5Parts` =  the two equation fields (`IsDynEqOn` and the two-sided `τ = 0` equation)
-              ∧  the `Jet`s of the four constituents
-                 `𝓛_Γ^T(g)(τ)`, `N₀ α F(τ) g(τ)`, `N α F(τ) Φ(τ)`, `N_* μ(τ) λ(τ) g(τ)`
-              ∧  the bound and the `τ`-modulus of `mubar`
-              ∧  the four constituents' `z`-differentiability with uniform bounds
-              ∧  the three boundary values of the right-hand side
-
-Each item is a quantity of the paper (and of the elliptic packages: `N`'s terms are the
-`Rop`, `Uop·∂_θF`, `Vop`, `FK` slots — see `NOTES_RegPkgGal.md` §15.1.2 for the correction that the
-`Uop`-slot must be the *product* with `∂_θF`, not `Uop/sin2θ`).
-
-`Work.FTS.RegPkgGal.R5Slot_of_parts` below is the one-line bridge back to the composite interface, and
-`PartsAssembly.forall_regPkg_of_parts` is the deliverable with this primitive R5 hypothesis.
--/
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegPkgGal.Defs
-import Submission.Work.FTS.RegPkgGal.R5Slot
-import Submission.Work.FTS.RegPkgGal.Der.R5Slot_of_parts
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_RegExport.RXR5.Fstar_C1Jet
+import Submission.Work.R1G.vecResid_eq_scalar_smul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

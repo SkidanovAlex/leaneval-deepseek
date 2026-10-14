@@ -1,23 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TopSlotTwoFts/AHalfFinal`: the A-slot estimate, assembly
-
-Last part of the `A`-half:
-
-* endpoint limits from continuity on the closed angular interval;
-* the slice Poincaré for the slices `θ ↦ A z θ`, a.e. in `z`;
-* the reduction `Tk α 2 A ≤ (2 + 8C) · HkSq α 0 (∂_θ²A)`;
-* `HkSq α 0 (∂_θ²A) ≤ 2 HkSq α 0 (∂_θ²(D_z²Ψ)) + 2 HkSq α 0 (∂_θ²(D_zΨ))`;
-* the final theorem `Tk_A_le`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.Final.Rep.TopSlotTwoFts.AHalfMain
+import Submission.Work.FTS.EllipticEst.Prop.levelTopSlotsTwoPlumb
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

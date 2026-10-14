@@ -1,8 +1,108 @@
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.Alpha4.Assembly
+import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceDefs
+import Submission.Work.FTS.TransportS.SupDzWeighted.supDz_weighted_avg_le
+import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
+import Submission.Work.SolutionDelivery.Scaling.vorticityDecay_rescaleDatum
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
+-- ===== merged: Submission.Work.Blocks.InterpTruncDefs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.Blocks.InterpTrunc
+
+set_option autoImplicit false
+
+/-! ## The basic objects -/
+
+/-- The half-strip `(0,∞) × (-1, π/2+1)` on which the data are `C^∞`. -/
+abbrev strip : Set (ℝ × ℝ) := Set.Ioi (0 : ℝ) ×ˢ Set.Ioo (-1 : ℝ) (Real.pi / 2 + 1)
+
+
+/-- The logarithmic cut-off `ζ_k = zc φ k` of the workspace, as a function of `z` alone. -/
+abbrev zeta (φ : ℝ → ℝ) (k : ℕ) : ℝ → ℝ := Work.FTS.EllipticEst.Alpha4.zc φ k
+
+/-- The truncated function `ζ_k · G`. -/
+def cut (φ : ℝ → ℝ) (k : ℕ) (G : ℝ → ℝ → ℝ) : ℝ → ℝ → ℝ :=
+  fun z θ => zeta φ k z * G z θ
+
+
+
+/-- The weighted angular slice integral `∫_θ (F z θ)² σ θ`, `σ = sin(2θ)^{-η}`. -/
+def inn (F : ℝ → ℝ → ℝ) (z : ℝ) : ℝ :=
+  ∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2 * Work.FTS.EllipticEst.thEta θ
+
+/-- The `z`-integrand `w(z)² ∫_θ (F z θ)² σ θ` of the four functionals. -/
+def sl (F : ℝ → ℝ → ℝ) (z : ℝ) : ℝ := (Work.Spaces.w z) ^ 2 * inn F z
+
+/-! ## The four functionals as integrals of the slice functions -/
+
+
+
+
+
+
+
+/-! ## Nonnegativity of the slice integrals -/
+
+
+
+
+
+
+
+/-! ## Support and value facts for `ζ_k` -/
+
+
+
+
+
+
+
+
+theorem smoothOrder_ne_zero : Work.FTS.EllipticEst.smoothOrder ≠ 0 := by
+  simp [Work.FTS.EllipticEst.smoothOrder]
+
+theorem one_le_smoothOrder : (1 : WithTop ℕ∞) ≤ Work.FTS.EllipticEst.smoothOrder := by
+  simp [Work.FTS.EllipticEst.smoothOrder]
+
+
+
+
+
+
+
+
+/-! ## The Leibniz rules for `ζ_k · G` -/
+
+
+
+
+
+
+end Work.Blocks.InterpTrunc
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Alpha4.integrable_slice_pthDz_sigma =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -28,13 +128,6 @@ The only technical point is that `θ ↦ (F z θ)² · thEta θ` is not *continu
 `Iθ` (the weight blows up at the endpoints), so almost-everywhere strong measurability is
 obtained on the co-null open sub-interval `(0,π/2)`. -/
 
-/-- The open interval `(0,π/2)` and the closed interval `Iθ` carry the same restriction of
-Lebesgue measure, since they differ by the two null points `0` and `π/2`. -/
-theorem restrict_Ioo_eq_restrict_Iθ_alpha4 :
-    MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))
-      = MeasureTheory.volume.restrict Work.Spaces.Iθ :=
-  Measure.restrict_congr_set
-    (by rw [Work.Spaces.Iθ]; exact MeasureTheory.Ioo_ae_eq_Icc)
 
 /-- The angular weight `thEta` is continuous on the *open* interval `(0,π/2)`
 (where `sin(2θ) > 0`, so the `rpow` branch is continuous). -/
@@ -46,47 +139,8 @@ theorem continuousOn_thEta_Ioo :
     (Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos]))))
   simpa only [Work.FTS.EllipticEst.thEta] using h
 
-/-- **Single-slice integrability.**  If a one-dimensional slice `f` is continuous on the
-closed angular interval, then `θ ↦ f(θ)² · sin(2θ)^{-η}` is integrable against
-`volume.restrict Iθ`. -/
-theorem integrable_slice_sq_mul_thEta {f : ℝ → ℝ} (hf : ContinuousOn f Work.Spaces.Iθ) :
-    MeasureTheory.Integrable
-      (fun θ => (f θ) ^ 2 * Work.FTS.EllipticEst.thEta θ)
-      (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
-  obtain ⟨M, hM⟩ := isCompact_Icc.exists_bound_of_continuousOn hf
-  have hdom : MeasureTheory.Integrable
-      (fun θ => M ^ 2 * Work.FTS.EllipticEst.thEta θ)
-      (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
-    Work.FTS.EllipticEst.integrableOn_thEta.1.const_mul (M ^ 2)
-  have hcont : ContinuousOn
-      (fun θ => (f θ) ^ 2 * Work.FTS.EllipticEst.thEta θ) (Set.Ioo 0 (Real.pi / 2)) :=
-    ((hf.mono (fun θ hθ => ⟨hθ.1.le, hθ.2.le⟩)).pow 2).mul continuousOn_thEta_Ioo
-  have haesm : MeasureTheory.AEStronglyMeasurable
-      (fun θ => (f θ) ^ 2 * Work.FTS.EllipticEst.thEta θ)
-      (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
-    rw [← restrict_Ioo_eq_restrict_Iθ_alpha4]
-    exact hcont.aestronglyMeasurable measurableSet_Ioo
-  refine MeasureTheory.Integrable.mono' hdom haesm ?_
-  filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-  have hθ' : |f θ| ≤ M := by
-    simpa [Real.norm_eq_abs] using hM θ hθ
-  have hsq : (f θ) ^ 2 ≤ M ^ 2 := by
-    rw [← sq_abs]
-    exact pow_le_pow_left₀ (abs_nonneg _) hθ' 2
-  have hσ : 0 ≤ Work.FTS.EllipticEst.thEta θ := Work.FTS.EllipticEst.thEta_nonneg hθ
-  have hnn : 0 ≤ (f θ) ^ 2 * Work.FTS.EllipticEst.thEta θ := mul_nonneg (sq_nonneg _) hσ
-  rw [Real.norm_eq_abs, abs_of_nonneg hnn]
-  exact mul_le_mul_of_nonneg_right hsq hσ
 
-theorem integrable_slice_pthDz_sigma {G : ℝ → ℝ → ℝ}
-    (hG : Work.FTS.EllipticEst.ThetaU.SmoothOpenθ G) (j i : ℕ) :
-    ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
-      MeasureTheory.Integrable (fun θ => (Work.Spaces.DzIter j (Work.Spaces.pthIter i G) z θ) ^ 2
-        * Work.FTS.EllipticEst.thEta θ) (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
-  rw [show Work.Spaces.Iz = Set.Ici (0 : ℝ) from rfl]
-  rw [← MeasureTheory.Measure.restrict_congr_set
-    (MeasureTheory.Ioi_ae_eq_Ici (μ := MeasureTheory.volume) (a := (0 : ℝ)))]
-  filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with z hz
-  exact integrable_slice_sq_mul_thEta ((hG.pthIter i).continuousOn_slice_DzIter j hz)
 
 end Work.FTS.EllipticEst.Alpha4
+end
+end

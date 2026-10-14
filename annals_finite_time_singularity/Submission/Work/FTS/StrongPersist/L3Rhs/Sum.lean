@@ -1,33 +1,13 @@
-/-
-# `Work.FTS.StrongPersist.L3Rhs.Sum` — the nine-block assembly of the level-three estimate
-
-The main lemma `L3RhsSum` of this file assembles the estimate of `L3RhsPriced` from the nine
-block estimates (`N0fix`, `N0gSum`, the five blocks of `N`, `Nstar` and the `μ̄·AK` term) which
-are supplied as hypotheses in `∀`-form.  The route:
-
-* each summand is `C³` on the open quadrant and honest in `ℋ³`, with a bound whose factor
-  structure is dominated by the single `pricedR α Cpow M (|f|_{ℋ⁶}) Ce Cs`;
-* the summands are added with `L3Rhs.Pricing.HkNorm_add_le2`, the finite-order binary
-  additivity (`C³` suffices — the profile `L₁₂(f)` is only `C⁵`, so the `C^∞`-based additivity
-  lemmas do not apply);
-* the two-way split `N0split` and the four-way split `NonlinRows.Rl1.splitOpen` identify
-  `gRHS` with the sum on the open quadrant, so the membership and the norm transfer by
-  `HkMem_congr_Q0` / `HkSq_congr_open`.
-
-The `μ̄·AK` summand is priced with `L3Rhs.Assembly.muAK_mem`, whose inputs are the `ℋ³`-norms of
-`N₀` and `N` (obtained from the chains below) and the zero-mode bound `L3Rhs.L3RhsL12zero`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.StrongPersist.Defs
-import Submission.Work.FTS.StrongPersist.Basic
 import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.Pricing
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

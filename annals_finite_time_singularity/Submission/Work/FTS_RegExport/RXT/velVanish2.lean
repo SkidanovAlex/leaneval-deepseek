@@ -2,20 +2,18 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS_RegExport.RXT.velVanish2Star
-import Submission.Work.FTS_RegExport.RXT.velVanish2Aux
-import Submission.Work.FTS_RegExport.RXT.C2Assemble
-import Submission.Work.FTS_RegExport.RXT.C2Psi
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
 import Submission.Work.FTS_RegExport.RXT.C2Radial
-import Submission.Work.FTS_RegExport.RXT.C2Final
 import Submission.Work.FTS_RegExport.RXT.Ftau_bounds
-import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
-import Submission.Work.FTS.PhiStar.CoreAux.fields_smooth
-import Submission.Work.FTS_RegExport.RXT.starVop
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_starUop
 import Submission.Work.FTS_RegExport.RXT.Slots.v2_velPert
+import Submission.Work.FTS_RegExport.RXT.SysAux.bR_decomp
+import Submission.Work.FTS_RegExport.RXT.contDiffOn_two_integral_Itheta
+import Submission.Work.FTS_RegExport.RXT.starVop
+import Submission.Work.FTS_RegExport.RXT.velVanish2Aux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_RegExport.THL.Defs
 
 set_option synthInstance.maxHeartbeats 400000 -- v435-synth
 

@@ -3,14 +3,12 @@ import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.MetricSpace.Holder
-import Submission.Work.CoreResiduals.BiotSavart.fderiv_slice_ext_eq
-import Submission.Work.CoreResiduals.BiotSavart.fderiv_time_ext_eq
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_farStrip_holder_pos
-import Submission.Work.CoreResiduals.BiotSavart.windowExt_windowBundle
-import Submission.Work.CoreResiduals.BiotSavart.timeDeriv_xHolderOn_general
-import Submission.Work.CoreResiduals.BiotSavart.biotSavartSpacetimeC1_dtContinuous
-import Submission.Work.CoreResiduals.BiotSavart.WindowExtDefs
-import Submission.Work.CoreResiduals.BiotSavart.continuousOn_farStrip_blocks
+import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.radGreen_general_bound
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS_RegExport.RX0.sup2_extG_ext_hIS
+import Submission.Work.FTS_RegExport.RXR5L.L12fAux.C1Jet_L12f_of_support
+import Submission.Work.FTS_RegExport.RXT.st1_fb_theta
+import Submission.Work.R1G.vecResid_eq_scalar_smul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

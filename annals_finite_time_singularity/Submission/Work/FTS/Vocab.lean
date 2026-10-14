@@ -1,11 +1,9 @@
-/- FTS/Vocab.lean — LEAD-OWNED, FROZEN 2026-10-03 (curric-46). Shared vocabulary for N4/N5 and the interface fixes: RegQ REPLACES SmoothNbhd (which is real-analyticity); UnifIP is N2s corrected obligation. Design: FTS/N45_DESIGN_LEAD.md §3.1. -/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.Galerkin.Defs
-import Submission.Work.FTS.CoercivityStep.Assembly
-import Submission.Work.FTS.LocData.Defs
-import Submission.Work.Construction.Apriori
-import Submission.Work.Construction.Terms
-import Submission.Work.Construction.L12_Fstar_eq
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.LocDataExt.Defs
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Stability.CutFactorFderivZero
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

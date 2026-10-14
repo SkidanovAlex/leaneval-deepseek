@@ -1,61 +1,19 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `TopSlotTwoFts/BHalf`: the level-`2` `B`-slot of the elliptic estimate
-
-Target of this file:
-
-```
-∃ C, 0 < C ∧ ∀ α F Ψ, 0 < α → α ≤ 1/4 → TT.EllWeakPos α 2 F Ψ →
-  Tk α 2 (∂_θθΨ) ≤ C · HkSq α 2 F
-```
-
-i.e. the *top angular slot* `∫∫(D_θ²(∂_θθΨ)·W)²` of the second angular derivative of `Ψ` is
-controlled by the level-`2` energy of the source `F` (Elgindi, Annals **194** (2021), Steps 4–5
-of the proof of `prop:H2`).
-
-## Route
-
-* the pointwise weight decomposition `Tk_pointwise_le_closed` (`Mine/TopSlotTwo.lean`, proved)
-  gives `Tk α 2 B ≤ ∫_z ∫_θ (s20F4 α Ψ + s20F3 α Ψ)`, where `s20F4 = 2w²(∂_θ⁴Ψ)²σ₄` and
-  `s20F3 = 8w²(∂_θ³Ψ)²σ₂` are exactly the slice Step-5 (`∂_θ⁴Ψ`, weight `σ₄`) and slice
-  Step-4 (`∂_θ³Ψ`, weight `σ₂`) integrands; both are *honest* by `H2W.Step5.s20_honesty`
-  (inner integrability for every `z ∈ Iz` and outer integrability in `z`), so the two
-  integrations may be performed with `integral_mono_of_nonneg`;
-* the Step-5 slot `s20M4 α Ψ = ∫_z∫_θ s20F4` is bounded by `C(s20J2 + s20M3 + A₂+A₁+A₀)` by the
-  proved `Cores.topSlotB_two_step5`; `Cores.topSlotB_two_of_pieces` converts that into
-  `∫_z w²∫_θ(∂_θ⁴Ψ)²σ₄ ≤ C HkSq α 2 F` once the following three inputs are supplied:
-  * `s20_source` (`H2W.Step5.s20_source`, proved): the source and lower-order slots;
-  * the Step-4 slot bound `s20M3 ≤ C(pPure + HkSq α 2 F)` (from the proved `H2W.slot01Weak`);
-  * `pPure Ψ ≤ C HkSq α 2 F` (from `Cores.pPure_le_of_pure_two` with the `j = 2` shifted slot
-    `ShiftZeroSlots2`);
-* finally `s20M4 = 2 ∫_z w²∫_θ(∂_θ⁴Ψ)²σ₄` and `s20M3 = 8 ∫_z w²∫_θ(∂_θ³Ψ)²σ₂`, so
-  `Tk α 2 B ≤ s20M4 + s20M3 ≤ C HkSq α 2 F`.
-
-## Note on the `H2W.Az` name clash
-
-`Work.FTS.EllipticEst.H2W.Az` is declared twice in the tree (`H2W/slot20A.lean` and
-`Cores/SumW/AzSlot.lean`), so no file may import both sides.  This file stays on the
-`H2W/slot20A` side (`Cores.topSlotB_two_step5`, `H2W.Step5.s20_source`, `H2W.Step5.s20_honesty`
-all pull it in) and therefore re-proves the `hsum` half of `Cores.topSlotB_two_sum` from
-`H2W.Step5.s20_source` rather than importing `Cores/SumW/Source`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.remov.EllEstUnifStepAux
+import Submission.Work.FTS.EllipticEst.TT.truncAux
 import Submission.Work.FTS.EllipticEst.TopSlotTwoFts.ShiftZeroSlots2
-import Submission.Work.FTS.EllipticEst.Final.Rep.Cores.topSlotB_two_step5
-import Submission.Work.FTS.EllipticEst.Final.Rep.Cores.topSlotB_two
-import Submission.Work.FTS.EllipticEst.Final.Rep.H2W.Step5.s20_source
-import Submission.Work.FTS.EllipticEst.H2W.slot01Weak
-import Submission.Work.FTS.EllipticEst.Final.Rep.H2W.Step5.s20_honesty
-import Submission.Work.FTS.EllipticEst.Final.Rep.Mine.TopSlotTwo
 import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.L3Aux.bcoefRadBound
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

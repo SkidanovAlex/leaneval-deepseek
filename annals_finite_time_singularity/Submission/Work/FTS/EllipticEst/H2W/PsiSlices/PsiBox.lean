@@ -1,41 +1,295 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `H2W.PsiSlices.PsiBox`: the angular slices of `D_z^i Ψ` and the box integrability
-
-This module produces, for a datum of the weak elliptic class (`Ψ` smooth on the open quadrant,
-`∂_θ²Ψ` honestly in `ℋ²`), the two analytic inputs of the *integrated* moment chain for `Ψ`:
-
-* `slice_bound`: for `i ≤ 2` and `u > 0`,
-  `∫_θ |D_z^i Ψ(u,θ)| sinθcos²θ ≤ Bnd Ψ i u`, where `Bnd` is an explicit majorant built from the
-  values at the interior angle `π/4` and from the `ℋ²`-slot of `∂_θ²Ψ`
-  (`Work.FTS.EllipticEst.Mine.SliceMomentTaylor` supplies the estimate
-  `∫|g| sinθcos²θ ≤ 3|g(π/4)| + 9|g'(π/4)| + 9√(∫(g'')²sin(2θ)^{-η})` for a `C²` slice `g`);
-
-* `Bnd_integrableOn`: `Bnd Ψ i` is integrable on every `(a,b] ⊂ (0,∞)`;
-
-* `integrable_uncurry_div_of_fibre_bound`: Tonelli from a fibre bound, giving the box
-  integrability of a function of the shape `(r,θ) ↦ f r θ / r`.
-
-The route for the box integrability is the fibre bound: the `θ`-fibre of `D_z^i Ψ` is
-integrable at every `r ∈ (s,z]` with an `r`-integrable bound (`Bnd`).
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.Interval.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.EllipticEst.H2W.Norms
-import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.AeBasic
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.OpenQAux
-import Submission.Work.EllipticEst.H2W.pthIter2_DzIter_comm
-import Submission.Work.FTS.EllipticEst.AgmonSlice.zsq_pzIter2_mixed_open
-import Submission.Work.FTS.EllipticEst.integrable_prod_sq_restrict_open
-import Submission.Work.FTS.EllipticEst.Mine.SliceMomentTaylor
-import Submission.Work.FTS.EllipticEst.aesm_uncurry_restrict_open
-import Submission.Work.Spaces.integrable_prod_of_iterated
+import Submission.Work.FTS.EllipticEst.H2W.Ae.TruncIdentAe
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.SliceDecompDefs
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.wsSliceRight
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.bt_prod_integrable
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.Cutoff
+-- ===== merged: Submission.Work.FTS.EllipticEst.AgmonSlice.Blocks =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst
+
+set_option autoImplicit false
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+/-! ## The angular weight and its nonnegativity on `[0,π/2]` -/
+
+/-- On the angular interval the argument of the weights lies in `[0,π]`. -/
+theorem sin_two_nonneg_of_mem_Iθ {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
+    0 ≤ Real.sin (2 * θ) := by
+  rw [Work.Spaces.Iθ, Set.mem_Icc] at hθ
+  exact Real.sin_nonneg_of_mem_Icc ⟨by linarith, by linarith [hθ.2, Real.pi_pos]⟩
+
+/-- The angular weight of the `i`-th family: `sEta θ = sin(2θ)^{-η}` for `i = 0` (the pure
+radial summands), `sGam α θ = sin(2θ)^{-γ}` for `i ≥ 1` (the mixed summands). -/
+def angw (α : ℝ) (i : ℕ) (θ : ℝ) : ℝ := if i = 0 then sEta θ else sGam α θ
+
+theorem angw_nonneg (α : ℝ) (i : ℕ) {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) : 0 ≤ angw α i θ := by
+  unfold angw
+  split
+  · exact Real.rpow_nonneg (sin_two_nonneg_of_mem_Iθ hθ) _
+  · exact Real.rpow_nonneg (sin_two_nonneg_of_mem_Iθ hθ) _
+
+/-! ## The blocks -/
+
+/-- The `(i,m)`-block of the `ℋ^k`-pattern of `φ`: the radial square `(D_z^m D_θ^i φ)² w²`
+multiplied by the angular weight of the family, and `0` outside the index set `i + m ≤ k`. -/
+def hblk (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ) (p : ℕ × ℕ) (z θ : ℝ) : ℝ :=
+  if p.1 + p.2 ≤ k then
+    (Work.Spaces.DzIter p.2 (Work.Spaces.DthIter p.1 φ) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+      * angw α p.1 θ
+  else 0
+
+theorem hblk_nonneg (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ) (p : ℕ × ℕ) (z θ : ℝ)
+    (hθ : θ ∈ Work.Spaces.Iθ) : 0 ≤ hblk α k φ p z θ := by
+  unfold hblk
+  split
+  · exact mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (angw_nonneg α p.1 hθ)
+  · exact le_rfl
+
+/-- The radial part of the `(i,m)`-block: `(D_z^m D_θ^i φ)² w(z)²`, as a function of `z`. -/
+def hblkR (φ : ℝ → ℝ → ℝ) (p : ℕ × ℕ) (z θ : ℝ) : ℝ :=
+  (Work.Spaces.DzIter p.2 (Work.Spaces.DthIter p.1 φ) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+
+
+/-- Outside the index set the block vanishes. -/
+theorem hblk_eq_zero (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ) (p : ℕ × ℕ) (z θ : ℝ)
+    (h : ¬ p.1 + p.2 ≤ k) : hblk α k φ p z θ = 0 := by
+  unfold hblk
+  exact if_neg h
+
+/-- Inside the index set the block is the radial part times the angular weight. -/
+theorem hblk_eq (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ) (p : ℕ × ℕ) (z θ : ℝ)
+    (h : p.1 + p.2 ≤ k) :
+    hblk α k φ p z θ = hblkR φ p z θ * angw α p.1 θ := by
+  unfold hblk hblkR
+  exact if_pos h
+
+/-! ## The decomposition of the `ℋ^k`-integrand -/
+
+/-- **The block decomposition of the `ℋ^k`-integrand.**  On the angular interval the integrand is
+the sum over the pairs `(i,m)` with `i, m ≤ k` and `i + m ≤ k` of the blocks `hblk (i,m)`: the
+pure radial summands `(D_z^mφ)² w² sin(2θ)^{-η}` are the `i = 0` row and the mixed summands
+`(D_z^m D_θ^i φ)² w² sin(2θ)^{-γ}` (with `1 ≤ i`) are the rows `i ≥ 1`, re-indexed. -/
+theorem HkIntegrand_eq_hblk (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ) {z θ : ℝ}
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    Work.Spaces.HkIntegrand α k φ z θ
+      = ∑ i ∈ Finset.range (k + 1), ∑ m ∈ Finset.range (k + 1), hblk α k φ (i, m) z θ := by
+  rw [Work.Spaces.HkIntegrand]
+  -- the `i = 0` row is the pure radial family
+  have hA : (∑ m ∈ Finset.range (k + 1), hblk α k φ (0, m) z θ)
+      = ∑ m ∈ Finset.range (k + 1),
+          (Work.Spaces.DzIter m φ z θ
+            * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2 := by
+    refine Finset.sum_congr rfl (fun m hm => ?_)
+    rw [Finset.mem_range] at hm
+    rw [hblk_eq α k φ (0, m) z θ (by omega)]
+    have hD : Work.Spaces.DthIter 0 φ = φ := Work.Spaces.DthIter_zero φ
+    have hA0 : angw α 0 θ = sEta θ := by simp [angw]
+    rw [hA0]
+    simp only [hblkR]
+    rw [hD, rad_term_eq hθ z (Work.Spaces.DzIter m φ z θ)]
+    ring
+  -- the rows `i ≥ 1` are the mixed family
+  have hB : (∑ i ∈ Finset.range k, ∑ m ∈ Finset.range (k + 1), hblk α k φ (i + 1, m) z θ)
+      = ∑ i ∈ Finset.range (k + 1), ∑ j ∈ Finset.range (k + 1),
+          (if 1 ≤ i ∧ i + j ≤ k then
+            (Work.Spaces.mixed j i φ z θ * Work.Spaces.Wt α z θ) ^ 2 else 0) := by
+    rw [Finset.sum_range_succ']
+    have hzero : (∑ j ∈ Finset.range (k + 1),
+        (if 1 ≤ (0 : ℕ) ∧ 0 + j ≤ k then
+          (Work.Spaces.mixed j 0 φ z θ * Work.Spaces.Wt α z θ) ^ 2 else 0)) = 0 := by
+      refine Finset.sum_eq_zero (fun j _ => ?_)
+      rw [if_neg (by omega)]
+    rw [hzero, add_zero]
+    refine Finset.sum_congr rfl (fun i hi => ?_)
+    rw [Finset.mem_range] at hi
+    refine Finset.sum_congr rfl (fun j hj => ?_)
+    by_cases hc : i + 1 + j ≤ k
+    · rw [if_pos (show 1 ≤ i + 1 ∧ i + 1 + j ≤ k from ⟨by omega, hc⟩)]
+      rw [hblk_eq α k φ (i + 1, j) z θ (by omega)]
+      have hg : angw α (i + 1) θ = sGam α θ := by
+        simp only [angw]; rw [if_neg (by omega)]
+      rw [hg]
+      simp only [hblkR]
+      rw [mix_term_eq hθ α z (Work.Spaces.mixed j (i + 1) φ z θ)]
+      simp only [Work.Spaces.mixed]
+      ring
+    · rw [if_neg (show ¬ (1 ≤ i + 1 ∧ i + 1 + j ≤ k) from by omega)]
+      exact hblk_eq_zero α k φ (i + 1, j) z θ (by omega)
+  -- assemble
+  have hS : (∑ i ∈ Finset.range (k + 1), ∑ m ∈ Finset.range (k + 1), hblk α k φ (i, m) z θ)
+      = (∑ i ∈ Finset.range (k + 1),
+            (Work.Spaces.DzIter i φ z θ
+              * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2)
+        + ∑ i ∈ Finset.range (k + 1), ∑ j ∈ Finset.range (k + 1),
+            (if 1 ≤ i ∧ i + j ≤ k then
+              (Work.Spaces.mixed j i φ z θ * Work.Spaces.Wt α z θ) ^ 2 else 0) := by
+    rw [Finset.sum_range_succ', hB, hA, add_comm]
+  exact hS.symm
+
+/-! ## The blocks are continuous on the open quadrant -/
+
+theorem continuousOn_w_Q0 : ContinuousOn (fun q : ℝ × ℝ => Work.Spaces.w q.1) Q0 := by
+  have hfun : (fun q : ℝ × ℝ => Work.Spaces.w q.1)
+      = fun q : ℝ × ℝ => (1 + q.1) ^ 2 / q.1 ^ 2 := by funext q; rfl
+  rw [hfun]
+  refine ContinuousOn.div ((continuousOn_const.add continuousOn_fst).pow 2)
+    (continuousOn_fst.pow 2) (fun q hq => ?_)
+  exact pow_ne_zero 2 (ne_of_gt (mem_Q0.mp hq).1)
+
+theorem continuousOn_sinQ0 : ContinuousOn (fun q : ℝ × ℝ => Real.sin (2 * q.2)) Q0 :=
+  (Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn
+
+theorem sin_two_pos_Q0 {q : ℝ × ℝ} (hq : q ∈ Q0) : 0 < Real.sin (2 * q.2) := by
+  obtain ⟨-, h0, h1⟩ := mem_Q0.mp hq
+  exact Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [Real.pi_pos])
+
+theorem continuousOn_angw_Q0 (α : ℝ) (i : ℕ) :
+    ContinuousOn (fun q : ℝ × ℝ => angw α i q.2) Q0 := by
+  have hs : ContinuousOn (fun q : ℝ × ℝ => (Real.sin (2 * q.2)) ^ (-(Work.Spaces.eta))) Q0 :=
+    continuousOn_sinQ0.rpow_const (fun q hq => Or.inl (ne_of_gt (sin_two_pos_Q0 hq)))
+  have hg : ContinuousOn (fun q : ℝ × ℝ => (Real.sin (2 * q.2)) ^ (-(Work.Spaces.gam α))) Q0 :=
+    continuousOn_sinQ0.rpow_const (fun q hq => Or.inl (ne_of_gt (sin_two_pos_Q0 hq)))
+  unfold angw
+  split
+  · simpa only [sEta] using hs
+  · simpa only [sGam] using hg
+
+/-- The `(i,m)`-block of a function smooth on the open quadrant is continuous there. -/
+theorem continuousOn_hblk_Q0 (α : ℝ) (k : ℕ) (φ : ℝ → ℝ → ℝ)
+    (hφ : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry φ)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2))) (i m : ℕ) :
+    ContinuousOn (fun q : ℝ × ℝ => hblk α k φ (i, m) q.1 q.2) Q0 := by
+  have hsm : SmoothOpen φ := smoothOpen_of_forall hφ
+  by_cases h : i + m ≤ k
+  · have hfun : (fun q : ℝ × ℝ => hblk α k φ (i, m) q.1 q.2)
+        = fun q : ℝ × ℝ => (Work.Spaces.DzIter m (Work.Spaces.DthIter i φ) q.1 q.2) ^ 2
+            * (Work.Spaces.w q.1) ^ 2 * angw α i q.2 := by
+      funext q
+      exact hblk_eq α k φ (i, m) q.1 q.2 h
+    rw [hfun]
+    have hD : ContinuousOn (fun q : ℝ × ℝ =>
+        Work.Spaces.DzIter m (Work.Spaces.DthIter i φ) q.1 q.2) Q0 :=
+      (hsm.mixed m i).continuousOn
+    exact ((hD.pow 2).mul (continuousOn_w_Q0.pow 2)).mul (continuousOn_angw_Q0 α i)
+  · have hfun : (fun q : ℝ × ℝ => hblk α k φ (i, m) q.1 q.2)
+        = fun _ : ℝ × ℝ => (0 : ℝ) := by
+      funext q
+      exact hblk_eq_zero α k φ (i, m) q.1 q.2 h
+    rw [hfun]
+    exact continuousOn_const
+
+
+
+/-! ## The block functionals -/
+
+
+
+
+
+/-- The second coordinate is a.e. in `Iθ`. -/
+theorem ae_snd_mem_Iθ :
+    ∀ᵐ p ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+      (MeasureTheory.volume.restrict Work.Spaces.Iθ)), p.2 ∈ Work.Spaces.Iθ := by
+  rw [MeasureTheory.Measure.prod_restrict]
+  filter_upwards [MeasureTheory.ae_restrict_mem
+    (measurableSet_Ici.prod measurableSet_Icc)] with p hp
+  exact hp.2
+
+
+/-! ## The product `lintegral` of a single block -/
+
+
+
+/-! ## Measurability of the angular weights and of the block functionals -/
+
+
+/-- A function of `z` continuous on `(0,∞)` is a.e. strongly measurable for `Iz`. -/
+theorem aesm_slice_z {g : ℝ → ℝ} (hg : ContinuousOn g (Set.Ioi (0 : ℝ))) :
+    AEStronglyMeasurable g (MeasureTheory.volume.restrict Work.Spaces.Iz) := by
+  rw [Work.Spaces.Iz, ← MeasureTheory.restrict_Ioi_eq_restrict_Ici (a := (0 : ℝ))]
+  exact hg.aestronglyMeasurable measurableSet_Ioi
+
+
+
+
+
+/-! ## The two one-dimensional interfaces -/
+
+
+
+/-! ## The bridges between `HkSq` and the product `lintegral` -/
+
+
+
+/-! ## Auxiliary: continuity of the slices, and `lintegral`/integral bridges -/
+
+theorem continuousOn_w_Ioi : ContinuousOn (fun z : ℝ => Work.Spaces.w z) (Set.Ioi (0 : ℝ)) := by
+  have hfun : (fun z : ℝ => Work.Spaces.w z) = fun z : ℝ => (1 + z) ^ 2 / z ^ 2 := by
+    funext z; rfl
+  rw [hfun]
+  exact ((continuousOn_const.add continuousOn_id).pow 2).div (continuousOn_id.pow 2)
+    (fun z hz => pow_ne_zero 2 (ne_of_gt hz))
+
+
+
+/-- The `lintegral` of `ofReal` of a continuous nonnegative function on `(0,∞)`, in terms of the
+Bochner integral (when finite). -/
+theorem ofReal_integral_eq_lintegral_Iz {g : ℝ → ℝ} (hg : ContinuousOn g (Set.Ioi 0))
+    (hnn : ∀ z, 0 ≤ g z) (hne : (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal (g z)) ≠ ⊤) :
+    ENNReal.ofReal (∫ z in Work.Spaces.Iz, g z) = ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal (g z) := by
+  have haesm : AEStronglyMeasurable g (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
+    aesm_slice_z hg
+  have hint : MeasureTheory.IntegrableOn g Work.Spaces.Iz :=
+    (MeasureTheory.lintegral_ofReal_ne_top_iff_integrable haesm
+      (Filter.Eventually.of_forall hnn)).mp hne
+  exact MeasureTheory.ofReal_integral_eq_lintegral_ofReal hint
+    (Filter.Eventually.of_forall hnn)
+
+/-! ## The integration step: from the per-angle inequality to the blocks -/
+
+
+/-! ## The per-block Agmon inequality -/
+
+
+
+
+
+/-! ## The assembly of the `ℋ^k` estimate from the per-block inequality -/
+
+
+end
+
+end Work.FTS.EllipticEst
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.PsiSlices.PsiBox =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -334,3 +588,5 @@ theorem integrable_uncurry_div_of_fibre_bound {f : ℝ → ℝ → ℝ} {B : ℝ
     simp only [Function.uncurry, Real.norm_eq_abs])
 
 end Work.FTS.EllipticEst.H2W.PsiSlices
+end
+end

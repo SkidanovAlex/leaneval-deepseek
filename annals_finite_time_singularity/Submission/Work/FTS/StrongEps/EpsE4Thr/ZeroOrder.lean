@@ -1,49 +1,250 @@
-/-
-# `EpsE4Thr/ZeroOrder.lean` — the leading order of the `ε`-scheme's right-hand side at `z = 0`
-
-**Purpose.**  `Submission/Work/FTS/StrongEps/EpsLocalPStar/NOTES_EpsLocalPStar_FALSE.md` argues
-that the projected `ε`-scheme's right-hand side at the zero profile has a *nonvanishing linear*
-behaviour at `z = 0`,
-
-  `profRHS α Φs E 0 z θ / z → -4α Γ(θ)/c ≠ 0`,
-
-and concludes that the scheme's flow leaves the class `C` immediately, so that `EpsLocalPStar`
-(=`LocalStepP`) — and with it `EpsUniformMem` — is unachievable.
-
-**That evaluation is wrong.**  Its displayed identity
-
-  `profRHS α Φs E 0 z θ = -2 F_*(z,θ) + 2α(1-μ) AK(z,θ) - UVR α F_* Φ z θ`
-
-is correct (it is `profRHS_eq_neg_dynLHS` at `w = 0` together with `MainLHSSubN`), but the
-`O(αz)` term `-2F_*` **cancels** against the `+(1/α) L₁₂(F_*) F_*` piece of `-UVR` — the piece
-that the note describes as `O(Cs α² z)` (it is not: `UVR α F_* Φ = [Θ] - (N₁+N₂+N₃)` and
-`[Θ] = -(1/α)L₁₂(F_*)F_* - N₀₁ - N₀₂ + N₄ + N₅` is `O(αz)`).  After the cancellation the whole
-expression is `O(z²)`: the `z`-linear terms combine, via the paper's own identity
-`N₀₁ + N₀₂ = 8α² c2m(θ) z² Γ(θ)/(c(1+z)⁴)` (`Work.Construction.N0_first_two_eq'`), into the
-`O(α²z²)` function `sep6`, and the elliptic-residual terms are `O(z²)` because the star package
-bounds `((z+1)/z)·R(Φ̃_*)`, `((z+1)/z)·(U(Φ̃_*)/s2)` and `((z+1)/z)·V(Φ̃_*)`.
-
-The precise form of the identity proved here is
-
-  `profRHS α Φs E 0 z θ = -2αμ AK α z θ + sep6 α z θ + N α (Fstar α) Φ z θ`,
-
-i.e. the scheme's right-hand side is **minus the stationary residual, whose leading part is the
-`O(z²)` function `sep6`** — exactly the source term of the modulation equation
-(`L_Γ^T(g) = -μ̄ AK + N₀ + N + N_*`), not a `z`-linear drift.  Consequently the flow from the zero
-profile moves `W(τ) = O(τ z²)`, and `W(τ)(z,θ)/z = O(τz) → 0`, so the class-`C` axis condition
-is *not* violated at the leading order.
-
-Everything here is `sorry`-free.
--/
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Complex.Trigonometric
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Tactic.LinearCombination
 import Submission.Work.FTS.StrongEps.EpsLocalPStar.StatResidual
-import Submission.Work.FTS.StrongPersist.H6Rows.FstarI12H6
+import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
+import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
 import Submission.Work.Stability.MainLHSSubN
-import Submission.Work.Construction.Terms
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.Spaces.c_bounds
+-- ===== merged: Submission.Work.FTS.StrongEps.ConvLocUnifH6_JfamP =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+/-- **The convergence package of the projected family.**  From
+
+* the slot-wise locally uniform convergence of the mollified family
+  `J_ε (slice (G n) τ) → slice g τ` (the `hJ` hypothesis, supplied by
+  `E5Aux.mixed_Jeps_tendstoUniformlyOn`),
+* the vanishing of the correction scalars `L₁₂ (J_ε (slice (G n) τ)) 0 → 0` (`hl12`),
+* the all-order smoothness of the profiles `slice (G n) τ` on the open quadrant (`hsm`), and
+* the data of `ConvLocUnifH6` for the *unprojected* family (`hconv`),
+
+the projected family `slice (JfamP ρ (ε n) (G n)) τ` satisfies the same `ConvLocUnifH6` package
+with the same limit `slice g τ` and the same constant `B`. -/
+theorem ConvLocUnifH6_JfamP {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ)
+    {α B : ℝ} {G : ℕ → Fam} {g : Fam} {ε : ℕ → ℝ} {τ : ℝ}
+    (hsm : ∀ n : ℕ, ∀ k : ℕ,
+      ContDiffOn ℝ k (Function.uncurry (slice (G n) τ)) Quad)
+    (hconv : ConvLocUnifH6 α B (fun n => slice (G n) τ) (slice g τ))
+    (hεpos : ∀ n : ℕ, 0 < ε n)
+    (hJ : ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
+      ∀ (j i : ℕ), j + i ≤ 4 →
+        TendstoUniformlyOn
+          (fun n : ℕ => fun p : ℝ × ℝ => Work.Spaces.mixed j i
+            (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2)
+          (fun p : ℝ × ℝ => Work.Spaces.mixed j i (slice g τ) p.1 p.2) Filter.atTop K)
+    (hl12 : Filter.Tendsto
+      (fun n : ℕ => Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0)
+      Filter.atTop (nhds 0)) :
+    ConvLocUnifH6 α B (fun n => slice (JfamP ρ (ε n) (G n)) τ) (slice g τ) := by
+  refine ⟨?_, hconv.contDiffOn, hconv.hkNorm_le⟩
+  intro K hK hKQ j i hji
+  rw [Metric.tendstoUniformlyOn_iff]
+  intro d hdpos
+  obtain ⟨Cb, hCb0, hbump⟩ := exists_bound_mixed_bump K hK
+  have hCb1 : (0 : ℝ) < Cb + 1 := by linarith
+  -- the correction scalars tend to `0`
+  have hc0 : Filter.Tendsto
+      (fun n : ℕ => Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+      Filter.atTop (nhds 0) := by
+    have := hl12.div_const pzNorm
+    simpa using this
+  have hcev : ∀ᶠ n : ℕ in Filter.atTop,
+      |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm| * (Cb + 1)
+        < d / 2 := by
+    have h1 : Filter.Tendsto
+        (fun n : ℕ => |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm|
+          * (Cb + 1)) Filter.atTop (nhds (|(0 : ℝ)| * (Cb + 1))) :=
+      hc0.abs.mul_const (Cb + 1)
+    have h2 : |(0 : ℝ)| * (Cb + 1) = 0 := by simp
+    rw [h2] at h1
+    simpa [Real.dist_eq, abs_of_pos hCb1] using Metric.tendsto_nhds.mp h1 (d / 2) (by linarith)
+  -- the slots of the mollified family converge uniformly on `K`
+  have hjev : ∀ᶠ n : ℕ in Filter.atTop, ∀ p ∈ K,
+      dist (Work.Spaces.mixed j i (slice g τ) p.1 p.2)
+        (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2) < d / 2 :=
+    Metric.tendstoUniformlyOn_iff.mp (hJ K hK hKQ j i hji) (d / 2) (by linarith)
+  filter_upwards [hcev, hjev] with n hcn hjn
+  intro p hp
+  have hpQ := Work.FTS.EllipticEst.mem_Q0.mp (hKQ hp)
+  have hz : 0 < p.1 := hpQ.1
+  have hθ : p.2 ∈ Set.Ioo (0 : ℝ) (π / 2) := ⟨hpQ.2.1, hpQ.2.2⟩
+  -- the pointwise identity of the projected slot
+  have hsplit : Work.Spaces.mixed j i (slice (JfamP ρ (ε n) (G n)) τ) p.1 p.2
+      = Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+          * Work.Spaces.mixed j i bump p.1 p.2 := by
+    rw [slice_JfamP]
+    exact PZeroAux.mixed_Pz (smoothOpen_Jeps ρ hρ (hεpos n) (hsm n)) hz hθ j i
+  rw [hsplit, dist_comm]
+  -- `dist (X - t) Y ≤ |t| + dist X Y`
+  have htri : dist (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+          * Work.Spaces.mixed j i bump p.1 p.2)
+      (Work.Spaces.mixed j i (slice g τ) p.1 p.2)
+      ≤ |(Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+          * Work.Spaces.mixed j i bump p.1 p.2|
+        + dist (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2)
+            (Work.Spaces.mixed j i (slice g τ) p.1 p.2) := by
+    have h := dist_triangle
+      (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+        - (Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+          * Work.Spaces.mixed j i bump p.1 p.2)
+      (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2)
+      (Work.Spaces.mixed j i (slice g τ) p.1 p.2)
+    have hd : dist (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+          - (Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+            * Work.Spaces.mixed j i bump p.1 p.2)
+        (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2)
+        = |(Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+            * Work.Spaces.mixed j i bump p.1 p.2| := by
+      rw [Real.dist_eq,
+        show Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+            - (Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+              * Work.Spaces.mixed j i bump p.1 p.2
+            - Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2
+          = -((Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+              * Work.Spaces.mixed j i bump p.1 p.2) from by ring, abs_neg]
+    rw [hd] at h
+    exact h
+  refine lt_of_le_of_lt htri ?_
+  have hb : |(Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm)
+      * Work.Spaces.mixed j i bump p.1 p.2| < d / 2 := by
+    rw [abs_mul]
+    have h1 : |Work.Spaces.mixed j i bump p.1 p.2| ≤ Cb := hbump j i hji p hp
+    have h2 : |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm| * Cb
+        ≤ |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm| * (Cb + 1) := by
+      apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
+      linarith
+    calc |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm|
+          * |Work.Spaces.mixed j i bump p.1 p.2|
+        ≤ |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm| * Cb :=
+          mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
+      _ ≤ |Work.Construction.L12 (Jeps ρ (ε n) (slice (G n) τ)) 0 / pzNorm| * (Cb + 1) := h2
+      _ < d / 2 := hcn
+  have hd2 : dist (Work.Spaces.mixed j i (Jeps ρ (ε n) (slice (G n) τ)) p.1 p.2)
+      (Work.Spaces.mixed j i (slice g τ) p.1 p.2) < d / 2 := by
+    rw [dist_comm]
+    exact hjn p hp
+  linarith
+
+/-! ## The `bd4` clause of `EpsLimPkg` for the *projected* family -/
+
+/-- **`bd4` along the projected family.**  Once the extraction has produced the slot-wise locally
+uniform convergence of `slice (G (φ n)) τ` (`hconv`), the slot convergence of the mollified family
+(`hJ`), the vanishing of the correction scalars (`hl12`) and the interface's `ℋ⁴`-clauses for the
+projected slices (`hmem`, `hb`), the `ℋ⁴`-bound of the limit follows at the *same* constant `C₀ α²`
+(`E5_bd4` applied along `slice (JfamP ρ (ε (φ n)) (G (φ n))) τ`, whose convergence package is
+`ConvLocUnifH6_JfamP`). -/
+theorem E5_bd4_JfamP {α B C₀ T : ℝ} {ρ : ℝ × ℝ → ℝ} {g₀ : Fn} {G : ℕ → Fam} {φ : ℕ → ℕ}
+    {ε : ℕ → ℝ} {F : ℝ → Fn}
+    (hρ : IsSmoothKernel ρ)
+    (hsm : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ, ∀ k : ℕ,
+      ContDiffOn ℝ k (Function.uncurry (slice (G (φ n)) τ)) Quad)
+    (hconv : ∀ τ ∈ Set.Icc 0 T,
+      ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) (F τ))
+    (hεpos : ∀ n : ℕ, 0 < ε n)
+    (hJ : ∀ τ ∈ Set.Icc 0 T, ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
+      ∀ (j i : ℕ), j + i ≤ 4 →
+        TendstoUniformlyOn
+          (fun n : ℕ => fun p : ℝ × ℝ => Work.Spaces.mixed j i
+            (Jeps ρ (ε (φ n)) (slice (G (φ n)) τ)) p.1 p.2)
+          (fun p : ℝ × ℝ => Work.Spaces.mixed j i (F τ) p.1 p.2) Filter.atTop K)
+    (hl12 : ∀ τ ∈ Set.Icc 0 T, Filter.Tendsto
+      (fun n : ℕ => Work.Construction.L12 (Jeps ρ (ε (φ n)) (slice (G (φ n)) τ)) 0)
+      Filter.atTop (nhds 0))
+    (hmem : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ,
+      Work.Spaces.HkMem α 4 (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ))
+    (hb : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ,
+      Work.FTS.Nonlin.Xn α (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ) ≤ C₀ * α ^ 2) :
+    ∀ τ ∈ Set.Icc 0 T, Work.FTS.Nonlin.Xn α (slice (clampQ F g₀) τ) ≤ C₀ * α ^ 2 :=
+  fun τ hτ => E5_bd4 (g₀ := g₀) (G := fun n => JfamP ρ (ε (φ n)) (G (φ n))) (φ := id) (F := F)
+    (fun σ hσ => ConvLocUnifH6_JfamP (hρ := hρ) (G := fun n => G (φ n))
+      (g := fun z θ _ => F σ z θ) (τ := σ)
+      (hsm := hsm σ hσ) (hconv := hconv σ hσ)
+      (hεpos := fun n => hεpos (φ n)) (hJ := hJ σ hσ) (hl12 := hl12 σ hσ))
+    (fun σ hσ n => hmem σ hσ n) (fun σ hσ n => hb σ hσ n) τ hτ
+
+
+/-! ## The `mem4` clause of `EpsLimPkg` for the *projected* family -/
+
+/-- **`mem4` along the projected family.**  The honest `ℋ⁴`-membership of the limit slice, from
+`EpsLimMem4` (`E5_mem4`), applied along the projected family — whose convergence package is
+`ConvLocUnifH6_JfamP`.
+
+The per-`z` bound `hz` is *not* removable: `HkMem` is a per-`z` condition and Fatou gives it only
+a.e. in `z` (`NOTES_session14.md` §3 (G-A)).  Its production is the open interface question of the
+area; here it is an explicit hypothesis of the assembly. -/
+theorem E5_mem4_JfamP {α B T : ℝ} {ρ : ℝ × ℝ → ℝ} {g₀ : Fn} {G : ℕ → Fam} {φ : ℕ → ℕ}
+    {ε : ℕ → ℝ} {F : ℝ → Fn}
+    (hρ : IsSmoothKernel ρ)
+    (hsmG : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ, ∀ k : ℕ,
+      ContDiffOn ℝ k (Function.uncurry (slice (G (φ n)) τ)) Quad)
+    (hconv : ∀ τ ∈ Set.Icc 0 T,
+      ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) (F τ))
+    (hεpos : ∀ n : ℕ, 0 < ε n)
+    (hJ : ∀ τ ∈ Set.Icc 0 T, ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
+      ∀ (j i : ℕ), j + i ≤ 4 →
+        TendstoUniformlyOn
+          (fun n : ℕ => fun p : ℝ × ℝ => Work.Spaces.mixed j i
+            (Jeps ρ (ε (φ n)) (slice (G (φ n)) τ)) p.1 p.2)
+          (fun p : ℝ × ℝ => Work.Spaces.mixed j i (F τ) p.1 p.2) Filter.atTop K)
+    (hl12 : ∀ τ ∈ Set.Icc 0 T, Filter.Tendsto
+      (fun n : ℕ => Work.Construction.L12 (Jeps ρ (ε (φ n)) (slice (G (φ n)) τ)) 0)
+      Filter.atTop (nhds 0))
+    (hsmJ : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ, ∀ k : ℕ,
+      ContDiffOn ℝ k (Function.uncurry (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ))
+        Work.FTS.EllipticEst.Q0)
+    (hmem : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ,
+      Work.Spaces.HkMem α 6 (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ))
+    (hb : ∀ τ ∈ Set.Icc 0 T, ∀ n : ℕ,
+      Work.FTS.StrongGlobal.Xn6 α (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ) ≤ B)
+    (hz : ∀ τ ∈ Set.Icc 0 T, ∀ z ∈ Work.Spaces.Iz, ∃ Bz : ℝ, ∀ n : ℕ,
+      (∫ θ in Work.Spaces.Iθ,
+        Work.Spaces.HkIntegrand α 4 (slice (JfamP ρ (ε (φ n)) (G (φ n))) τ) z θ) ≤ Bz) :
+    ∀ τ ∈ Set.Icc 0 T, Work.Spaces.HkMem α 4 (slice (clampQ F g₀) τ) ∧
+      Work.FTS.Nonlin.Xn α (slice (clampQ F g₀) τ) ≤ B := by
+  intro τ hτ
+  have hconvP : ConvLocUnifH6 α B
+      (fun n => slice (JfamP ρ (ε (φ n)) (G (φ n))) τ) (F τ) :=
+    ConvLocUnifH6_JfamP (hρ := hρ) (G := fun n => G (φ n)) (g := fun z θ _ => F τ z θ) (τ := τ)
+      (hsm := hsmG τ hτ) (hconv := hconv τ hτ) (hεpos := fun n => hεpos (φ n))
+      (hJ := hJ τ hτ) (hl12 := hl12 τ hτ)
+  exact E5_mem4 (g₀ := g₀) hconvP (hsmJ τ hτ) (hmem τ hτ) (hb τ hτ) (hz τ hτ)
+
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.ZeroOrder =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -61,121 +262,11 @@ open Work.FTS.Galerkin (Fn Fam slice)
 
 set_option autoImplicit false
 
-/-- **(L1) The stationary-residual form of the `I^{N₀}_1 + I^{N₀}_2` combination.**
-
-`MainLHS α μ (lamfun μ) F_* = 2αμ·AK - sep6`: the `z`-linear parts of
-`(1+μ)F_* + (1-μ)z∂_zF_*`, of `-(1/α)L₁₂(F_*)F_*` and of
-`-(3/(2α))s2 L₁₂(F_*)∂_θF_* + c2m L₁₂(F_*)z∂_zF_*` cancel by the fundamental-model identities
-`F_* + z∂_zF_* = (1/α)L₁₂(F_*)F_*`, `F_* - z∂_zF_* = 2αAK` and the paper's
-`N₀₁ + N₀₂ = 8α² c2m z²Γ/(c(1+z)⁴)`.  Consequently the left-hand side is `O(z²)` at `z = 0`
-and `-MainLHS α μ (lamfun μ) F_*` has **no** `z`-linear term. -/
-theorem MainLHS_fstar_sep6 {α μ : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (hμ : 1 + μ ≠ 0)
-    {z θ : ℝ} (hz : 0 ≤ z) (hθ : θ ∈ Work.Spaces.Iθ) :
-    Work.Construction.MainLHS α μ (Work.Construction.lamfun μ)
-        (Work.Construction.Fstar α) z θ
-      = 2 * α * μ * Work.Construction.AK α z θ
-        - Work.FTS.StrongPersist.H6Rows.sep6 α z θ := by
-  have hzm1 : -1 < z := by linarith
-  have hstat : Work.Construction.Fstar α z θ
-      + Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-      - 1 / α * Work.Construction.L12 (Work.Construction.Fstar α) z
-        * Work.Construction.Fstar α z θ = 0 :=
-    Work.Construction.Fstar_stationary_identity (α := α) (z := z) (θ := θ) hα hα1 hz
-  have hsub : Work.Construction.Fstar α z θ
-      - Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-      = 2 * α * Work.Construction.AK α z θ :=
-    Work.Construction.Fstar_sub_DzFstar (α := α) (z := z) (θ := θ) hα hzm1
-  have hsep : Work.FTS.StrongPersist.H6Rows.sep6 α z θ
-      = (3 / (2 * α)) * Work.Construction.s2 θ
-          * Work.Construction.L12 (Work.Construction.Fstar α) z
-          * Work.Spaces.pth (Work.Construction.Fstar α) z θ
-        - Work.Construction.c2m θ * Work.Construction.L12 (Work.Construction.Fstar α) z
-          * Work.Spaces.Dz (Work.Construction.Fstar α) z θ := by
-    rw [Work.FTS.StrongPersist.H6Rows.sep6_eq_N012 (α := α) hα hα1 hz hθ]
-    simp only [Work.FTS.StrongPersist.H6Rows.N012]
-  have hlam : (1 + μ) * (1 + Work.Construction.lamfun μ) = 1 - μ := by
-    simp only [Work.Construction.lamfun]
-    field_simp
-    ring
-  have hkey : (1 + μ) * Work.Construction.Fstar α z θ
-      + (1 - μ) * Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-      - (1 / α) * Work.Construction.L12 (Work.Construction.Fstar α) z
-        * Work.Construction.Fstar α z θ = 2 * α * μ * Work.Construction.AK α z θ := by
-    linear_combination hstat + μ * hsub
-  simp only [Work.Construction.MainLHS]
-  rw [hlam, hsep]
-  linarith [hkey]
 
 /-! ## The two `O(z²)` source terms -/
 
-/-- `AK α z θ = (Γ(θ)/c)·2z²/(1+z)³` is `O(z²)` on the unit radial interval: `Γ ≤ 1` and
-`c ≥ 1/10` give `|Γ/c| ≤ 10`, and `2z²/(1+z)³ ≤ 2z²`. -/
-theorem AK_bound {α z θ : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (hz : 0 ≤ z) (hz1 : z ≤ 1)
-    (hθ : θ ∈ Work.Spaces.Iθ) :
-    |Work.Construction.AK α z θ| ≤ 20 * z ^ 2 := by
-  have hc := Work.Spaces.c_bounds α hα hα1
-  have hcpos : 0 < Work.Spaces.c α := lt_of_lt_of_le (by norm_num) hc.1
-  have hG := Work.Spaces.Gam_bounds α θ hα hθ
-  rw [Work.Construction.AK, abs_mul]
-  have h1 : |Work.Spaces.Gam α θ / Work.Spaces.c α| ≤ 10 := by
-    rw [abs_of_nonneg (div_nonneg hG.1 hcpos.le), div_le_iff₀ hcpos]
-    nlinarith [hG.2, hc.1]
-  have h2 : |2 * z ^ 2 / (1 + z) ^ 3| ≤ 2 * z ^ 2 := by
-    have hnum : (0 : ℝ) ≤ 2 * z ^ 2 := by positivity
-    have h3 : (1 : ℝ) ≤ (1 + z) ^ 3 := one_le_pow₀ (by linarith : (1 : ℝ) ≤ 1 + z)
-    rw [abs_of_nonneg (div_nonneg hnum (by positivity)), div_le_iff₀ (by positivity)]
-    nlinarith [hnum, h3, sq_nonneg z]
-  calc |Work.Spaces.Gam α θ / Work.Spaces.c α| * |2 * z ^ 2 / (1 + z) ^ 3|
-      ≤ 10 * (2 * z ^ 2) := mul_le_mul h1 h2 (abs_nonneg _) (by norm_num)
-    _ = 20 * z ^ 2 := by ring
 
-/-- `sep6 α z θ = 8α²c2m(θ)z²Γ(θ)/(c(1+z)⁴)` is `O(α²z²)`: `|c2m| ≤ 2`, `Γ ≤ 1`,
-`c(1+z)⁴ ≥ 1/10` and `(1+z)⁴ ≥ 1`. -/
-theorem sep6_bound {α z θ : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) (hz : 0 ≤ z) (hz1 : z ≤ 1)
-    (hθ : θ ∈ Work.Spaces.Iθ) :
-    |Work.FTS.StrongPersist.H6Rows.sep6 α z θ| ≤ 160 * α ^ 2 * z ^ 2 := by
-  have hc := Work.Spaces.c_bounds α hα hα1
-  have hcpos : 0 < Work.Spaces.c α := lt_of_lt_of_le (by norm_num) hc.1
-  have hG := Work.Spaces.Gam_bounds α θ hα hθ
-  have hc2m : |Work.Construction.c2m θ| ≤ 2 := by
-    have h1 : |Real.cos (2 * θ)| ≤ 1 := Real.abs_cos_le_one _
-    have h2 : |Real.sin θ ^ 2| ≤ 1 := by
-      rw [abs_of_nonneg (sq_nonneg _), ← sq_abs]
-      exact pow_le_one₀ (abs_nonneg _) (Real.abs_sin_le_one θ)
-    rw [Work.Construction.c2m]
-    calc |Real.cos (2 * θ) - Real.sin θ ^ 2|
-        ≤ |Real.cos (2 * θ)| + |Real.sin θ ^ 2| := abs_sub _ _
-      _ ≤ 1 + 1 := add_le_add h1 h2
-      _ = 2 := by norm_num
-  have hc2mup : Work.Construction.c2m θ ≤ 2 := le_trans (le_abs_self _) hc2m
-  have hc2mlow : -2 ≤ Work.Construction.c2m θ := by
-    have := neg_le_abs (Work.Construction.c2m θ); linarith
-  have h1z : (1 : ℝ) ≤ (1 + z) ^ 4 := one_le_pow₀ (by linarith : (1 : ℝ) ≤ 1 + z)
-  have hcz : (1 : ℝ) / 10 ≤ Work.Spaces.c α * (1 + z) ^ 4 := by nlinarith [hc.1, h1z]
-  have hGcz : Work.Spaces.Gam α θ ≤ 10 * (Work.Spaces.c α * (1 + z) ^ 4) := by
-    nlinarith [hG.2, hcz]
-  have hQlo : -(2:ℝ) ≤ Work.Construction.c2m θ * Work.Spaces.Gam α θ := by
-    nlinarith [hc2mlow, hG.1, hG.2]
-  have hQhi : Work.Construction.c2m θ * Work.Spaces.Gam α θ ≤ 2 := by
-    nlinarith [hc2mup, hG.1, hG.2]
-  have hQabs : |Work.Construction.c2m θ * Work.Spaces.Gam α θ| ≤ 2 :=
-    abs_le.mpr ⟨hQlo, hQhi⟩
-  have hP : (0:ℝ) ≤ α ^ 2 * z ^ 2 := by positivity
-  rw [Work.FTS.StrongPersist.H6Rows.sep6_eq_close6]
-  have hfac : Work.FTS.StrongPersist.H6Rows.close6 α z θ
-      = (8 * (α ^ 2 * z ^ 2) * (Work.Construction.c2m θ * Work.Spaces.Gam α θ))
-        / (Work.Spaces.c α * (1 + z) ^ 4) := by
-    simp only [Work.FTS.StrongPersist.H6Rows.close6]; ring
-  have hden : (0:ℝ) < Work.Spaces.c α * (1 + z) ^ 4 := by positivity
-  have hnum : |8 * (α ^ 2 * z ^ 2) * (Work.Construction.c2m θ * Work.Spaces.Gam α θ)|
-      = 8 * (α ^ 2 * z ^ 2) * |Work.Construction.c2m θ * Work.Spaces.Gam α θ| := by
-    rw [abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ 8 * (α ^ 2 * z ^ 2))]
-  rw [hfac, abs_div, abs_of_pos hden, hnum, div_le_iff₀ hden]
-  have hs1 : 8 * (α ^ 2 * z ^ 2) * |Work.Construction.c2m θ * Work.Spaces.Gam α θ|
-      ≤ 16 * (α ^ 2 * z ^ 2) := by nlinarith [hQabs, hP]
-  have hs2 : 16 * (α ^ 2 * z ^ 2)
-      ≤ 160 * α ^ 2 * z ^ 2 * (Work.Spaces.c α * (1 + z) ^ 4) := by
-    nlinarith [hP, hcz]
-  linarith [hs1, hs2]
 
 end Work.FTS.StrongEps.EpsE4Thr
+end
+end

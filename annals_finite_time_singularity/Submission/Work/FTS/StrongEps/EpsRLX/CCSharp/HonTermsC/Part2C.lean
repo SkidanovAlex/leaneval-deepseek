@@ -1,24 +1,15 @@
-/-
-# `CCSharp/HonTermsC/Part2C` — the five `h`-side terms at the `ClassC` level
-
-The `ClassC`-port of `Work.FTS.GalFields.RHS.SharpAux.HonTerms.part2`: the five monomials
-`TRD, TUD, TVD, TDD, TED` of `CCSharp.HonestTermsBoundC`, in each of which the `|h|`-carrying
-factor is written first, with the three `GalClass` hypotheses replaced by `ClassC` (and the
-`SmoothQuad`/`RegQ`-extraction replaced by the open-quadrant extraction lemmas of
-`CCSharp/Base.lean`).  The proof is the original one verbatim apart from the extraction block.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongEps.EpsRLX.CCSharp.HonTermsC.Part1C
 import Submission.Work.FTS.GalFields.RHS.SharpAux.HonTerms.Base
-import Submission.Work.FTS.StrongEps.EpsRLX.CCSharp.Base
-import Submission.Work.FTS.GalFields.Norm.Basic
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.StrongPersist.L3Rhs.c2m_mul_HkSq_le
-import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.angProfile_sinSq
+import Submission.Work.FTS.LocData.zero_slice_locG
 import Submission.Work.FTS.Nonlinear.Open.Row25Aux
-import Submission.Work.FTS.Nonlinear.Pieces.Basic
-import Submission.Work.FTS.EllipticEst.Defs
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.RNP24.dzdIter_FK_eq_qang
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.StrongEps.EpsRLX.LGTDiffClassC
+import Submission.Work.FTS.StrongEps.H5.Nb5Core
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.T2Sup.GenSlot
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

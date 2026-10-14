@@ -1,53 +1,17 @@
-/-
-# `FkAux/fkRowDthShiftLow` — the shifted `D_θ`-row of the angular moment `FK f`
-
-The level-six `FK f`-rows pair the `D_z`-jets of the angular moment `FK f`
-(`FK f z = ∫_θ f z θ K θ dθ`) with two slots of the datum `f`.  In the *unshifted* form
-(`T6Coef.FkTileAux.fkPairingSup`) the two slots share the angular index:
-`∫∫ ρ · D_z^{b₁}(FK f) · (D_z^{b-b₁}D_θ^a f) · (D_z^bD_θ^a f)`.  Here the two slots are
-**shifted against each other**: the pairing is
-
-  `∫∫ ρ p.1 p.2 · D_z^{b₁}(FK f) p.1 · (D_z^{6-b₁}D_θ f) p · (D_z^6 f) p`,   `1 ≤ b₁ ≤ 3`,
-
-i.e. one angular derivative has been moved from the second slot (order `6`) onto the first
-one (`(6-b₁, 1)`), and the second factor is the pure radial slot `(6,0)`.  The leaf weight
-`ρ` is one of `IsLeafW α 0 ρ` (the `η`-weight `w²σ^{-η}` or the `σ`-free weight `w²`).
-
-## Why it is true
-
-The multiplier `A := D_z^{b₁}(FK f)` is bounded *almost everywhere in `z`* by `C·M`: the
-`D_z`-jet of the angular moment is the angular moment of the `D_z`-jet
-(`DzIter_FK_eq_ae`, hence `fkQangAe`), and the sibling `fkDzdIterSharp` bounds it by
-`C·√(HkSq α (b₁+1) f)`; since `b₁ + 1 ≤ 4`, the a-priori bound `Xn α f ≤ M` of `DatData`
-turns the square root into `M` (`HkSq_le_Msq`).  With that, the whole estimate is the
-AM–GM pairing of the two slots against the leaf weight, both of which are honest `ℋ⁶`-slots:
-
-* `ρ·(D_z^{6-b₁}D_θ f)²` has order `1 + (6 - b₁) ≤ 6` (here `1 ≤ b₁` is used),
-* `ρ·(D_z^6 f)²` has order `6`,
-
-so each has product-measure integral at most `HkSq α 6 f` (`T6Coef.FkTileAux.fkSlotSqInt`),
-and `2|X||Y| ≤ X² + Y²` gives `|∫∫ ρ A X Y| ≤ C·M·HkSq α 6 f`.
-
-The leaf weight `IsLeafW α 0 ρ` is a leaf weight of *every* slot
-(`fkRowDthShiftLow_leafW_slot_mono`: the `η`- and `σ`-free weights qualify at every angular
-index, and the `γ`-weight cannot occur at the angular slot `0` by definition).
-
-All declarations here are hole-free and rest on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSliceSup
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkSlotSqInt
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkDzdIterSharp
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkDzdIterSharp
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkPairingSup
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowsAux
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBound
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Open
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

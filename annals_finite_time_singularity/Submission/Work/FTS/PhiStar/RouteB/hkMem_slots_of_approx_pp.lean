@@ -2,7 +2,7 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.hkMem_slots_joint_of_approx
-import Submission.Work.FTS.ClassCHon.SliceMassUpgrade.HkMem_of_outer
+import Submission.Work.H2W.fstarDzIterFourAe
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

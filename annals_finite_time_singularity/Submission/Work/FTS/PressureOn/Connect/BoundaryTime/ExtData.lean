@@ -1,37 +1,18 @@
-/-
-# The pieces of `q = potOn ω` on the strip `ℝ³ × [0,T/2]`
-
-This module collects the (easy) continuity statements on the strip used by the boundary `C¹`
-analysis of `Connect.contDiffWithinAt_potOn_at_zero`:
-
-* `bstripO` — the half open strip `ℝ³ × [0,T/2)`, and `bbox` — the closed box
-  `B(x₀,1) × [0,T/2)`;
-* `lambExt_eq_lamb_on_strip`, `potTDerivExt_eq_potTDeriv` — the identifications of the retracted
-  objects of `Connect/BoundaryTime.lean` with the original ones at nonnegative times;
-* `velocity_timeblock_continuousOn_strip` — continuity of the `(0,1)` block of the within
-  derivative of the velocity on the half open strip (at interior times it is the two sided
-  `timeDeriv`, at the boundary time `0` it is the right derivative `tblock`);
-* `potGradExt_continuousOn_strip` — the continuity of the space gradient `∂ₜu - u×ω` up to the
-  boundary time;
-* `potOn_uncurry_continuousOn_strip` — the joint continuity of the potential itself on the closed
-  strip, from the Newtonian potential of the time-clamped Lamb vector.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.Deriv
-import Submission.Work.FTS.PressureOn.Connect.Clamp
-import Submission.Work.FTS.PressureOn.Connect.Data
-import Submission.Work.FTS.PressureOn.continuous_timeDeriv_pressurePotential
-import Submission.Work.FTS.PressureOn.Connect.ctu_aux.Basic
-import Submission.Work.FTS.PressureOn.Connect.omega_strip_continuousOn
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.velocity_strip_blocks
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS_BSIdentP.Slim.TendstoPhiOddPi
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -58,8 +39,6 @@ def bbox (x₀ : R3) (T : ℝ) : Set (R3 × ℝ) := Metric.ball x₀ 1 ×ˢ Set.
 theorem bstripO_subset_bstrip (T : ℝ) : bstripO T ⊆ bstrip T :=
   Set.prod_mono (subset_refl _) fun _ hx => ⟨hx.1, hx.2.le⟩
 
-theorem bbox_subset_bstripO (x₀ : R3) (T : ℝ) : bbox x₀ T ⊆ bstripO T :=
-  Set.prod_mono (Set.subset_univ _) (subset_refl _)
 
 /-! ## Elementary identifications -/
 

@@ -1,9 +1,9 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.Defs
 import Submission.Work.FTS.EllipticEst.DzV_amgm_clean_sect
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -5,22 +5,19 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegExportIface.Defs
 import Submission.Work.FTS.FinalV2.Defs
 import Submission.Work.FTS.RegPkgGal.R5Parts
-import Submission.Work.FTS.RegPkgGal.Der.R5Slot_of_parts
 import Submission.Work.FTS.StrongEps.SupPort.classC_sup_le
-import Submission.Work.FTS_RegExport.RXR1.mixed_abs_le_weighted
-import Submission.Work.FTS_RegExport.RXR1.contDiffOn_one_of_equiC1
+import Submission.Work.FTS_RegExport.RXB.l12_aux
 import Submission.Work.FTS_RegExport.RXR1.classC_sub_hyp
-import Submission.Work.FTS_RegExport.RXR1.slice_diff_bound
+import Submission.Work.FTS_RegExport.RXR1.mixed_abs_le_weighted
 import Submission.Work.FTS_RegExport.RXR1.slice_deriv_equi
+import Submission.Work.FTS_RegExport.RXR1.slice_diff_bound
 import Submission.Work.FTS_RegExport.RXR1.slice_diff_weighted
-import Submission.Work.FTS_RegExport.RXR1.hj_cluster
-import Submission.Work.FTS_RegExport.RXR1.tau_cluster
-import Submission.Work.FTS_RegExport.RXR1.hbase_gS
-import Submission.Work.FTS_RegExport.RXR1.hd1z_limit
-import Submission.Work.FTS_RegExport.RXR1.hd1z2_limit
+import Submission.Work.FTS_RegExport.RXR5.Fstar_C1Jet
+import Submission.Work.FTS_RegExport.RXT.omega_facts
+import Submission.Work.FTS_RegExport.VPOpen
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

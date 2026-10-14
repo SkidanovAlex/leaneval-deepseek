@@ -5,18 +5,15 @@ import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.Horizon
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.FKDeriv
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.L12Deriv
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.FKJets
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.Standing
-import Submission.Work.Construction.Basic
 import Submission.Work.FTS.FinalV2.Defs
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT0.QlimTauLipW
-import Submission.Work.FTS_RegExport.RXT0.QlimZLipBox
-import Submission.Work.FTS_RegExport.RXT0.L12densFtauIntegrable
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.L12_limit_bound
 import Submission.Work.FTS_RegExport.RXT0.L12FtauTauLip
+import Submission.Work.FTS_RegExport.RXT0.QlimZLipBox
+import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetContinuousOn
+import Submission.Work.FTS_RegExport.RXVP3.velPert_unif
+import Submission.Work.FTS_RegExport.RXVP3.velVanish2_unif
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

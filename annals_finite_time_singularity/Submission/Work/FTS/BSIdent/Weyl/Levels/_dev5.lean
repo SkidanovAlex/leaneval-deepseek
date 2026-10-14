@@ -2,10 +2,9 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Defs.contDiffAt_psiField_merPsi_of_mem_Uax
-import Submission.Work.FTS.BSIdent.Weyl.Levels._stub
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.FireFix.Firing
+import Submission.Work.FTS.MeridianDyn.Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

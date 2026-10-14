@@ -1,35 +1,470 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/L12JepsAux/Basic.lean`
-
-Helper lemmas for the target `Work.FTS.StrongEps.EpsE4Thr.L12JepsDeriv`
-(`Submission/Work/FTS/StrongEps/EpsE4Thr/L12JepsDeriv.lean`), which asks for the fake-time
-derivative of the `L₁₂`-zero mode of the mollified family:
-
-  `∂_τ L₁₂ (J_ε (slice g τ)) 0 = L₁₂ (J_ε (epsRHSP … g τ)) 0`.
-
-The analytic content is the *two-level* differentiation (the outer `r`-integral, the inner
-`θ`-integral) together with the one genuinely non-elementary input: the **measurability in `θ`**
-of `θ ↦ J_ε f r θ`, which the hypotheses of the target do *not* state directly and which has to be
-produced from the all-`(r,θ)` integrability hypothesis `hint` (it forces the slice to be a.e.
-measurable on the quadrant, hence — in the log coordinates where `J_ε` is a convolution — the slice
-function is a.e. measurable).
-
-This file collects the elementary parts: the existence of a point where `Jker ρ ε > 0`, the
-transport of `hint` to the log coordinates, and the integrability of the two `θ`-integrands.
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.PolarCoord
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Order.Group.Lattice
+import Submission.Work.FTS.StrongEps.L12Sub4.ConvDiffBound
+import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.StrongEps.Jker_integral_eq_one
-import Submission.Work.FTS.StrongEps.JepsBasic
-import Submission.Work.FTS.StrongEps.EpsE4Thr.hasDerivWithinAt_Jeps_slice_repair
-import Submission.Work.FTS.StrongEps.EpsE4Thr.Repair.aestronglyMeasurable_Jker_mul_epsRHSP
-import Submission.Work.FTS.StrongEps.EpsE4Thr.L12JepsAux.aesm_of_integrable_mul_shift
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logPlane_transfer_deriv =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `logPlane_transfer_deriv` — the derivative-priced plane transfer estimate
+
+This file proves `PlaneTransferDeriv` (see `TransferDeriv/Defs.lean`) from scratch.
+
+Write `A p = ∫ Q y G₁ (y−p) G₂ y`, `B p = ∫ Q y G₁ y G₂ (y+p)`, `C p = ∫ Q y G₁ y G₂ (y−p)`.
+Fubini turns the defect `D = ∫ Q (k*G₁) G₂ − ∫ Q G₁ (k*G₂)` into `∫ p k p (A p − C p)`, which
+splits as `∫ p k p (A p − B p) + ∫ p k p (B p − C p)`:
+
+* the **weight-difference** piece obeys the one-sided log-Lipschitz estimate
+  (`Pieces.dabsIntLe`), giving `O(ε)` with the norm `√(∫ Q G₂²)` of the second slot;
+* the **shift-difference** piece is bounded by Cauchy–Schwarz (`shift_pair_bound`) against
+  `√(∫ Q (G₂(·+p) − G₂(·−p))²)`, and the weighted second moment of the two-sided shift is
+  `4‖p‖² e^{Cw|p|₁} ∫ Q ‖fderiv G₂‖²` (`shift_sq_bound`) — the derivative price.
+
+Summing over `p` against `∫ |k| ≤ 1` and using `|p|₁ ≤ 2ε` gives the stated constant.
+-/
+
+noncomputable section
+
+open MeasureTheory
+
+namespace Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv
+
+/-- Fubini for the pairing of a convolution: if the joint integrand `H y * (k p * G (y − p))` is
+integrable on the product then the single integral is the iterated integral. -/
+theorem conv_fubini_pair {k G H : ℝ × ℝ → ℝ}
+    (hint : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => H y * (k p * G (y - p)))) :
+    (∫ y : ℝ × ℝ, H y * (∫ p : ℝ × ℝ, k p * G (y - p)))
+      = ∫ p : ℝ × ℝ, ∫ y : ℝ × ℝ, H y * (k p * G (y - p)) := by
+  rw [← MeasureTheory.integral_integral_swap hint]
+  exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y =>
+    (MeasureTheory.integral_const_mul (H y) (fun p : ℝ × ℝ => k p * G (y - p))).symm)
+
+theorem logPlane_transfer_deriv : PlaneTransferDeriv := by
+  intro k Q ε Cw hε0 hε1 hCw hkm hkint hmass hksupp hQ0 hQm hQsh hQsh' G₁ G₂ hG1m hG2m hG2d
+    hconv1 hconv2 hI1 hI2 hI3
+  -- ### abbreviations
+  set A : ℝ × ℝ → ℝ := fun p => ∫ y : ℝ × ℝ, Q y * G₁ (y - p) * G₂ y with hA
+  set B : ℝ × ℝ → ℝ := fun p => ∫ y : ℝ × ℝ, Q y * G₁ y * G₂ (y + p) with hB
+  set C : ℝ × ℝ → ℝ := fun p => ∫ y : ℝ × ℝ, Q y * G₁ y * G₂ (y - p) with hC
+  -- ### Step 1: joint integrability of the three pairings, for the signed kernel
+  have hkabs : MeasureTheory.Integrable (fun p : ℝ × ℝ => |k p|) := hkint.abs
+  have hkabssupp : ∀ p : ℝ × ℝ, |k p| ≠ 0 → |p.1| + |p.2| ≤ 2 * ε := fun p hp =>
+    hksupp p (by simpa [abs_eq_zero] using hp)
+  have hI1a : MeasureTheory.Integrable (fun y : ℝ × ℝ => Q y * |G₁ y| ^ 2) :=
+    hI1.congr (Filter.Eventually.of_forall fun y => by simp only [sq_abs])
+  have hI2a : MeasureTheory.Integrable (fun y : ℝ × ℝ => Q y * |G₂ y| ^ 2) :=
+    hI2.congr (Filter.Eventually.of_forall fun y => by simp only [sq_abs])
+  have hJab := Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces2.conv_joint_integrable
+    (k := fun p : ℝ × ℝ => |k p|) (Q := Q) (G₁ := fun y : ℝ × ℝ => |G₁ y|)
+    (G₂ := fun y : ℝ × ℝ => |G₂ y|) (Cw := Cw) (ε := ε)
+    hCw hkabs (fun p => abs_nonneg _) hkabssupp hQ0 hQm hQsh hG1m.abs hG2m.abs hI1a hI2a
+  have hJba := Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces2.conv_joint_integrable
+    (k := fun p : ℝ × ℝ => |k p|) (Q := Q) (G₁ := fun y : ℝ × ℝ => |G₂ y|)
+    (G₂ := fun y : ℝ × ℝ => |G₁ y|) (Cw := Cw) (ε := ε)
+    hCw hkabs (fun p => abs_nonneg _) hkabssupp hQ0 hQm hQsh hG2m.abs hG1m.abs hI2a hI1a
+  have hJ1 : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => k p * Q y * G₁ (y - p) * G₂ y) := by
+    refine hJab.1.mono' ?_ ?_
+    · exact (((hkm.comp measurable_snd).mul (hQm.comp measurable_fst)).mul
+        (hG1m.comp (measurable_fst.sub measurable_snd))).mul
+        (hG2m.comp measurable_fst) |>.aestronglyMeasurable
+    · filter_upwards with z
+      obtain ⟨y, p⟩ := z
+      have h : ‖k p * Q y * G₁ (y - p) * G₂ y‖ = |k p| * Q y * |G₁ (y - p)| * |G₂ y| := by
+        rw [Real.norm_eq_abs, abs_mul, abs_mul, abs_mul, abs_of_nonneg (hQ0 y)]
+      rw [Function.uncurry_apply_pair, Function.uncurry_apply_pair, h]
+  have hJ2 : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => k p * Q y * G₁ y * G₂ (y + p)) := by
+    refine hJab.2.mono' ?_ ?_
+    · exact (((hkm.comp measurable_snd).mul (hQm.comp measurable_fst)).mul
+        (hG1m.comp measurable_fst)).mul
+        (hG2m.comp (measurable_fst.add measurable_snd)) |>.aestronglyMeasurable
+    · filter_upwards with z
+      obtain ⟨y, p⟩ := z
+      have h : ‖k p * Q y * G₁ y * G₂ (y + p)‖ = |k p| * Q y * |G₁ y| * |G₂ (y + p)| := by
+        rw [Real.norm_eq_abs, abs_mul, abs_mul, abs_mul, abs_of_nonneg (hQ0 y)]
+      rw [Function.uncurry_apply_pair, Function.uncurry_apply_pair, h]
+  have hJ3 : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => k p * Q y * G₁ y * G₂ (y - p)) := by
+    refine hJba.1.mono' ?_ ?_
+    · exact (((hkm.comp measurable_snd).mul (hQm.comp measurable_fst)).mul
+        (hG1m.comp measurable_fst)).mul
+        (hG2m.comp (measurable_fst.sub measurable_snd)) |>.aestronglyMeasurable
+    · filter_upwards with z
+      obtain ⟨y, p⟩ := z
+      have h : ‖k p * Q y * G₁ y * G₂ (y - p)‖ = |k p| * Q y * |G₁ y| * |G₂ (y - p)| := by
+        rw [Real.norm_eq_abs, abs_mul, abs_mul, abs_mul, abs_of_nonneg (hQ0 y)]
+      rw [Function.uncurry_apply_pair, Function.uncurry_apply_pair, h]
+      exact le_of_eq (by ring)
+  -- ### Step 2: the fibre integrals `p ↦ k p * A p`, `k p * B p`, `k p * C p` are integrable
+  have hKA : MeasureTheory.Integrable (fun p : ℝ × ℝ => k p * A p) := by
+    refine (MeasureTheory.Integrable.integral_prod_right (μ := volume) (ν := volume) hJ1).congr
+      (Filter.Eventually.of_forall fun p => ?_)
+    simp only [Function.uncurry_apply_pair]
+    rw [hA]
+    rw [show (∫ y : ℝ × ℝ, k p * Q y * G₁ (y - p) * G₂ y)
+        = ∫ y : ℝ × ℝ, k p * (Q y * G₁ (y - p) * G₂ y) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [MeasureTheory.integral_const_mul]
+  have hKB : MeasureTheory.Integrable (fun p : ℝ × ℝ => k p * B p) := by
+    refine (MeasureTheory.Integrable.integral_prod_right (μ := volume) (ν := volume) hJ2).congr
+      (Filter.Eventually.of_forall fun p => ?_)
+    simp only [Function.uncurry_apply_pair]
+    rw [hB]
+    rw [show (∫ y : ℝ × ℝ, k p * Q y * G₁ y * G₂ (y + p))
+        = ∫ y : ℝ × ℝ, k p * (Q y * G₁ y * G₂ (y + p)) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [MeasureTheory.integral_const_mul]
+  have hKC : MeasureTheory.Integrable (fun p : ℝ × ℝ => k p * C p) := by
+    refine (MeasureTheory.Integrable.integral_prod_right (μ := volume) (ν := volume) hJ3).congr
+      (Filter.Eventually.of_forall fun p => ?_)
+    simp only [Function.uncurry_apply_pair]
+    rw [hC]
+    rw [show (∫ y : ℝ × ℝ, k p * Q y * G₁ y * G₂ (y - p))
+        = ∫ y : ℝ × ℝ, k p * (Q y * G₁ y * G₂ (y - p)) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [MeasureTheory.integral_const_mul]
+  -- ### Step 3: Fubini for the two single integrals
+  have hintA : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => (Q y * G₂ y) * (k p * G₁ (y - p))) :=
+    hJ1.congr (Filter.Eventually.of_forall fun z => by
+      obtain ⟨y, p⟩ := z
+      simp only [Function.uncurry_apply_pair]
+      ring)
+  have hI₁ : (∫ y : ℝ × ℝ, Q y * (∫ p : ℝ × ℝ, k p * G₁ (y - p)) * G₂ y)
+      = ∫ p : ℝ × ℝ, k p * A p := by
+    rw [show (∫ y : ℝ × ℝ, Q y * (∫ p : ℝ × ℝ, k p * G₁ (y - p)) * G₂ y)
+        = ∫ y : ℝ × ℝ, (Q y * G₂ y) * (∫ p : ℝ × ℝ, k p * G₁ (y - p)) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [conv_fubini_pair hintA]
+    refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+    show (∫ y : ℝ × ℝ, Q y * G₂ y * (k p * G₁ (y - p))) = k p * A p
+    rw [hA]
+    rw [show (∫ y : ℝ × ℝ, (Q y * G₂ y) * (k p * G₁ (y - p)))
+        = ∫ y : ℝ × ℝ, k p * (Q y * G₁ (y - p) * G₂ y) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [MeasureTheory.integral_const_mul]
+  have hintC : MeasureTheory.Integrable
+      (Function.uncurry fun (y p : ℝ × ℝ) => (Q y * G₁ y) * (k p * G₂ (y - p))) :=
+    hJ3.congr (Filter.Eventually.of_forall fun z => by
+      obtain ⟨y, p⟩ := z
+      simp only [Function.uncurry_apply_pair]
+      ring)
+  have hI₂ : (∫ y : ℝ × ℝ, Q y * G₁ y * (∫ p : ℝ × ℝ, k p * G₂ (y - p)))
+      = ∫ p : ℝ × ℝ, k p * C p := by
+    rw [conv_fubini_pair hintC]
+    refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+    show (∫ y : ℝ × ℝ, Q y * G₁ y * (k p * G₂ (y - p))) = k p * C p
+    rw [hC]
+    rw [show (∫ y : ℝ × ℝ, (Q y * G₁ y) * (k p * G₂ (y - p)))
+        = ∫ y : ℝ × ℝ, k p * (Q y * G₁ y * G₂ (y - p)) from
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)]
+    rw [MeasureTheory.integral_const_mul]
+  -- ### Step 4: the defect as two pieces
+  have hAsub : (∫ p : ℝ × ℝ, k p * A p) - (∫ p : ℝ × ℝ, k p * B p)
+      = ∫ p : ℝ × ℝ, k p * (A p - B p) := by
+    rw [← MeasureTheory.integral_sub hKA hKB]
+    exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => by ring)
+  have hBsub : (∫ p : ℝ × ℝ, k p * B p) - (∫ p : ℝ × ℝ, k p * C p)
+      = ∫ p : ℝ × ℝ, k p * (B p - C p) := by
+    rw [← MeasureTheory.integral_sub hKB hKC]
+    exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => by ring)
+  have hDI : (∫ y : ℝ × ℝ, Q y * (∫ p : ℝ × ℝ, k p * G₁ (y - p)) * G₂ y)
+        - (∫ y : ℝ × ℝ, Q y * G₁ y * (∫ p : ℝ × ℝ, k p * G₂ (y - p)))
+      = (∫ p : ℝ × ℝ, k p * (A p - B p)) + (∫ p : ℝ × ℝ, k p * (B p - C p)) := by
+    rw [hI₁, hI₂]
+    rw [show (∫ p : ℝ × ℝ, k p * A p) - (∫ p : ℝ × ℝ, k p * C p)
+        = ((∫ p : ℝ × ℝ, k p * A p) - (∫ p : ℝ × ℝ, k p * B p))
+          + ((∫ p : ℝ × ℝ, k p * B p) - (∫ p : ℝ × ℝ, k p * C p)) from by ring]
+    rw [hAsub, hBsub]
+  -- ### Step 5: the pointwise bound for the weight difference
+  have keyAB : ∀ p : ℝ × ℝ, |A p - B p|
+      ≤ (Real.exp (Cw * (|p.1| + |p.2|)) - 1) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) := by
+    intro p
+    have hmix := Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces.integrable_mixed_pair
+      (Q := Q) (G₁ := G₁) (G₂ := G₂) (Cw := Cw) hCw hQ0 hQm hQsh hQsh' hG1m hG2m hI1 hI2 p
+    have hBtrans : B p = ∫ y : ℝ × ℝ, Q (y - p) * G₁ (y - p) * G₂ y := by
+      have key : (∫ y : ℝ × ℝ, Q (y - p) * G₁ (y - p) * G₂ y)
+          = ∫ u : ℝ × ℝ, Q u * G₁ u * G₂ (u + p) := by
+        rw [show (∫ y : ℝ × ℝ, Q (y - p) * G₁ (y - p) * G₂ y)
+            = ∫ y : ℝ × ℝ, (fun u : ℝ × ℝ => Q u * G₁ u * G₂ (u + p)) (y - p) from
+          MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by
+            simp only [sub_add_cancel])]
+        exact MeasureTheory.integral_sub_right_eq_self
+          (fun u : ℝ × ℝ => Q u * G₁ u * G₂ (u + p)) p
+      rw [hB]
+      exact key.symm
+    have hsub : A p - B p = ∫ y : ℝ × ℝ, (Q y - Q (y - p)) * G₁ (y - p) * G₂ y := by
+      rw [hA, hBtrans, ← MeasureTheory.integral_sub hmix.1 hmix.2.1]
+      exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)
+    rw [hsub]
+    exact Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces.dabsIntLe
+      (Q := Q) (G₁ := G₁) (G₂ := G₂) (Cw := Cw) hCw hQ0 hQm hQsh hQsh' hG1m hG2m hI1 hI2 p
+  -- ### Step 6: the pointwise bound for the shift difference
+  have keyBC : ∀ p : ℝ × ℝ, |B p - C p|
+      ≤ 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by
+    intro p
+    have hsq := shift_sq_bound (Q := Q) (G₂ := G₂) (Cw := Cw) hCw hQ0 hQm hQsh' hG2d hI3 p
+    have hmix := Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Pieces.integrable_mixed_pair
+      (Q := Q) (G₁ := G₁) (G₂ := G₂) (Cw := Cw) hCw hQ0 hQm hQsh hQsh' hG1m hG2m hI1 hI2 p
+    have hpair := shift_pair_bound (Q := Q) (G₁ := G₁) (G₂ := G₂) (p := p)
+      hQ0 hQm hG1m hG2m hI1 hsq.1 hmix.2.2.1 hmix.2.2.2
+    have hDv0 : 0 ≤ ∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2 :=
+      MeasureTheory.integral_nonneg fun y => mul_nonneg (hQ0 y) (sq_nonneg _)
+    have hY0 : 0 ≤ 2 * ‖p‖ * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+        * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by positivity
+    have hY2 : (2 * ‖p‖ * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) ^ 2
+        = 4 * ‖p‖ ^ 2 * Real.exp (Cw * (|p.1| + |p.2|))
+          * ∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2 := by
+      have hθ : Real.exp (Cw * (|p.1| + |p.2|) / 2) ^ 2
+          = Real.exp (Cw * (|p.1| + |p.2|)) := by
+        rw [sq, ← Real.exp_add]
+        congr 1
+        ring
+      simp only [mul_pow, hθ, Real.sq_sqrt hDv0]
+      ring
+    have hsqrtX : Real.sqrt (∫ y : ℝ × ℝ, Q y * (G₂ (y + p) - G₂ (y - p)) ^ 2)
+        ≤ 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by
+      have hnorm : ‖p‖ ≤ |p.1| + |p.2| := by
+        rw [Prod.norm_def]
+        exact max_le (le_add_of_nonneg_right (abs_nonneg _))
+          (le_add_of_nonneg_left (abs_nonneg _))
+      have hexp0 : 0 ≤ Real.exp (Cw * (|p.1| + |p.2|) / 2) := Real.exp_nonneg _
+      have hsd : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := Real.sqrt_nonneg _
+      calc Real.sqrt (∫ y : ℝ × ℝ, Q y * (G₂ (y + p) - G₂ (y - p)) ^ 2)
+          ≤ Real.sqrt ((2 * ‖p‖ * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+              * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) ^ 2) :=
+            Real.sqrt_le_sqrt (by rw [hY2]; exact hsq.2)
+        _ = 2 * ‖p‖ * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+              * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := Real.sqrt_sq hY0
+        _ ≤ 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+              * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by
+            have h3 : 2 * ‖p‖ ≤ 2 * (|p.1| + |p.2|) := by linarith
+            calc 2 * ‖p‖ * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                  * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)
+                = (2 * ‖p‖) * (Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                    * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) := by ring
+              _ ≤ (2 * (|p.1| + |p.2|)) * (Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                    * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) :=
+                  mul_le_mul_of_nonneg_right h3 (mul_nonneg hexp0 hsd)
+              _ = 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                    * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by ring
+    calc |B p - C p|
+        = |(∫ y : ℝ × ℝ, Q y * G₁ y * G₂ (y + p))
+            - (∫ y : ℝ × ℝ, Q y * G₁ y * G₂ (y - p))| := by rw [hB, hC]
+      _ ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+            * Real.sqrt (∫ y : ℝ × ℝ, Q y * (G₂ (y + p) - G₂ (y - p)) ^ 2) := hpair
+      _ ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+            * (2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+              * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) :=
+          mul_le_mul_of_nonneg_left hsqrtX (Real.sqrt_nonneg _)
+      _ = 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+            * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+            * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by ring
+  -- ### Step 7: integrate the two pointwise bounds against the kernel
+  set K₁ : ℝ := (Real.exp (2 * Cw * ε) - 1) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+      * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) with hK₁
+  set K₂ : ℝ := 2 * (2 * ε) * Real.exp (Cw * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+      * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) with hK₂
+  have hK₁0 : 0 ≤ K₁ := by
+    rw [hK₁]
+    have h1 : 0 ≤ Real.exp (2 * Cw * ε) - 1 := by
+      have := Real.one_le_exp (show (0 : ℝ) ≤ 2 * Cw * ε by positivity)
+      linarith
+    exact mul_nonneg (mul_nonneg h1 (Real.sqrt_nonneg _)) (Real.sqrt_nonneg _)
+  have hbound1 : |∫ p : ℝ × ℝ, k p * (A p - B p)| ≤ K₁ := by
+    have hpt : ∀ p : ℝ × ℝ, |k p| * |A p - B p| ≤ K₁ * |k p| := by
+      intro p
+      by_cases hp : k p = 0
+      · simp [hp]
+      · have hθ : Cw * (|p.1| + |p.2|) ≤ 2 * Cw * ε := by
+          have hs := hksupp p hp
+          nlinarith [hCw, hs]
+        have he1 : Real.exp (Cw * (|p.1| + |p.2|)) - 1 ≤ Real.exp (2 * Cw * ε) - 1 := by
+          have h := Real.exp_le_exp.mpr hθ
+          linarith
+        have hS1 : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2) := Real.sqrt_nonneg _
+        have hS2 : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) := Real.sqrt_nonneg _
+        have h1 : |A p - B p| ≤ K₁ := by
+          rw [hK₁]
+          calc |A p - B p| ≤ (Real.exp (Cw * (|p.1| + |p.2|)) - 1)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) := keyAB p
+            _ ≤ (Real.exp (2 * Cw * ε) - 1) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) :=
+                mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right he1 hS1) hS2
+        calc |k p| * |A p - B p| ≤ |k p| * K₁ := mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
+          _ = K₁ * |k p| := by ring
+    have hInt : MeasureTheory.Integrable (fun p : ℝ × ℝ => K₁ * |k p|) := hkabs.const_mul K₁
+    calc |∫ p : ℝ × ℝ, k p * (A p - B p)|
+        ≤ ∫ p : ℝ × ℝ, |k p * (A p - B p)| := MeasureTheory.abs_integral_le_integral_abs
+      _ = ∫ p : ℝ × ℝ, |k p| * |A p - B p| := by
+          refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+          show |k p * (A p - B p)| = |k p| * |A p - B p|
+          rw [abs_mul]
+      _ ≤ ∫ p : ℝ × ℝ, K₁ * |k p| := by
+          refine MeasureTheory.integral_mono_of_nonneg
+            (Filter.Eventually.of_forall fun p => mul_nonneg (abs_nonneg _) (abs_nonneg _)) hInt
+            (Filter.Eventually.of_forall hpt)
+      _ = K₁ * ∫ p : ℝ × ℝ, |k p| := by rw [MeasureTheory.integral_const_mul]
+      _ ≤ K₁ * 1 := mul_le_mul_of_nonneg_left hmass hK₁0
+      _ = K₁ := by ring
+  have hK₂0 : 0 ≤ K₂ := by
+    rw [hK₂]
+    positivity
+  have hbound2 : |∫ p : ℝ × ℝ, k p * (B p - C p)| ≤ K₂ := by
+    have hpt : ∀ p : ℝ × ℝ, |k p| * |B p - C p| ≤ K₂ * |k p| := by
+      intro p
+      by_cases hp : k p = 0
+      · simp [hp]
+      · have hs := hksupp p hp
+        have hθ : Cw * (|p.1| + |p.2|) / 2 ≤ Cw * ε := by nlinarith [hCw, hs]
+        have he : Real.exp (Cw * (|p.1| + |p.2|) / 2) ≤ Real.exp (Cw * ε) :=
+          Real.exp_le_exp.mpr hθ
+        have hsu : 2 * (|p.1| + |p.2|) ≤ 2 * (2 * ε) := by linarith
+        have hS1 : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2) := Real.sqrt_nonneg _
+        have hSd : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) :=
+          Real.sqrt_nonneg _
+        have h1 : |B p - C p| ≤ K₂ := by
+          rw [hK₂]
+          have hstep : 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)
+              ≤ 2 * (2 * ε) * Real.exp (Cw * ε)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by
+            calc 2 * (|p.1| + |p.2|) * Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                  * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                  * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)
+                = (2 * (|p.1| + |p.2|)) * (Real.exp (Cw * (|p.1| + |p.2|) / 2)
+                    * (Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                      * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2))) := by ring
+              _ ≤ (2 * (2 * ε)) * (Real.exp (Cw * ε)
+                    * (Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                      * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2))) := by
+                  refine mul_le_mul hsu ?_ (by positivity) (by positivity)
+                  exact mul_le_mul_of_nonneg_right he (mul_nonneg hS1 hSd)
+              _ = 2 * (2 * ε) * Real.exp (Cw * ε)
+                    * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+                    * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := by ring
+          exact le_trans (keyBC p) hstep
+        calc |k p| * |B p - C p| ≤ |k p| * K₂ := mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
+          _ = K₂ * |k p| := by ring
+    have hInt : MeasureTheory.Integrable (fun p : ℝ × ℝ => K₂ * |k p|) := hkabs.const_mul K₂
+    calc |∫ p : ℝ × ℝ, k p * (B p - C p)|
+        ≤ ∫ p : ℝ × ℝ, |k p * (B p - C p)| := MeasureTheory.abs_integral_le_integral_abs
+      _ = ∫ p : ℝ × ℝ, |k p| * |B p - C p| := by
+          refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+          show |k p * (B p - C p)| = |k p| * |B p - C p|
+          rw [abs_mul]
+      _ ≤ ∫ p : ℝ × ℝ, K₂ * |k p| := by
+          refine MeasureTheory.integral_mono_of_nonneg
+            (Filter.Eventually.of_forall fun p => mul_nonneg (abs_nonneg _) (abs_nonneg _)) hInt
+            (Filter.Eventually.of_forall hpt)
+      _ = K₂ * ∫ p : ℝ × ℝ, |k p| := by rw [MeasureTheory.integral_const_mul]
+      _ ≤ K₂ * 1 := mul_le_mul_of_nonneg_left hmass hK₂0
+      _ = K₂ := by ring
+  have hmain : |(∫ y : ℝ × ℝ, Q y * (∫ p : ℝ × ℝ, k p * G₁ (y - p)) * G₂ y)
+        - (∫ y : ℝ × ℝ, Q y * G₁ y * (∫ p : ℝ × ℝ, k p * G₂ (y - p)))| ≤ K₁ + K₂ := by
+    rw [hDI]
+    exact le_trans (abs_add_le _ _) (add_le_add hbound1 hbound2)
+  -- ### Step 8: the numerical bounds on the two constants
+  have hce₁ : Real.exp (2 * Cw * ε) - 1 ≤ 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by
+    have h0 : 0 ≤ 2 * Cw * ε := by positivity
+    have hexp_le : Real.exp (2 * Cw * ε) - 1 ≤ (2 * Cw * ε) * Real.exp (2 * Cw * ε) := by
+      have h1 : (1 : ℝ) - Real.exp (-(2 * Cw * ε)) ≤ 2 * Cw * ε := by
+        have := Real.add_one_le_exp (-(2 * Cw * ε))
+        linarith
+      have h2 : Real.exp (2 * Cw * ε) - 1
+          = Real.exp (2 * Cw * ε) * (1 - Real.exp (-(2 * Cw * ε))) := by
+        rw [Real.exp_neg, mul_sub, mul_one, mul_inv_cancel₀ (Real.exp_ne_zero _)]
+      rw [h2]
+      calc Real.exp (2 * Cw * ε) * (1 - Real.exp (-(2 * Cw * ε)))
+          ≤ Real.exp (2 * Cw * ε) * (2 * Cw * ε) :=
+            mul_le_mul_of_nonneg_left h1 (Real.exp_nonneg _)
+        _ = (2 * Cw * ε) * Real.exp (2 * Cw * ε) := by ring
+    have h2 : (2 * Cw * ε) * Real.exp (2 * Cw * ε) ≤ (2 * Cw * ε) * Real.exp (4 * Cw) := by
+      refine mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) h0
+      nlinarith [hCw, hε0.le, hε1]
+    have h3 : (2 * Cw * ε) * Real.exp (4 * Cw)
+        ≤ 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by
+      have h4 : 2 * Cw * ε ≤ 100 * (Cw + 1) * ε := by nlinarith [hCw, hε0.le]
+      calc (2 * Cw * ε) * Real.exp (4 * Cw)
+          ≤ (100 * (Cw + 1) * ε) * Real.exp (4 * Cw) :=
+            mul_le_mul_of_nonneg_right h4 (Real.exp_nonneg _)
+        _ = 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by ring
+    exact le_trans hexp_le (le_trans h2 h3)
+  have hce₂ : 2 * (2 * ε) * Real.exp (Cw * ε) ≤ 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by
+    have h1 : Real.exp (Cw * ε) ≤ Real.exp (4 * Cw) :=
+      Real.exp_le_exp.mpr (by nlinarith [hCw, hε0.le, hε1])
+    have h2 : 2 * (2 * ε) * Real.exp (Cw * ε) ≤ 2 * (2 * ε) * Real.exp (4 * Cw) :=
+      mul_le_mul_of_nonneg_left h1 (by positivity)
+    have h3 : 2 * (2 * ε) * Real.exp (4 * Cw) ≤ 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by
+      have h4 : (4 : ℝ) * ε ≤ 100 * (Cw + 1) * ε := by nlinarith [hCw, hε0.le]
+      calc 2 * (2 * ε) * Real.exp (4 * Cw) = (4 * ε) * Real.exp (4 * Cw) := by ring
+        _ ≤ (100 * (Cw + 1) * ε) * Real.exp (4 * Cw) :=
+              mul_le_mul_of_nonneg_right h4 (Real.exp_nonneg _)
+        _ = 100 * (Cw + 1) * Real.exp (4 * Cw) * ε := by ring
+    exact le_trans h2 h3
+  refine le_trans hmain ?_
+  rw [hK₁, hK₂]
+  have hS1 : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2) := Real.sqrt_nonneg _
+  have hS2 : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) := Real.sqrt_nonneg _
+  have hSd : 0 ≤ Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := Real.sqrt_nonneg _
+  have hB1 : (Real.exp (2 * Cw * ε) - 1) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+        * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2)
+      ≤ (100 * (Cw + 1) * Real.exp (4 * Cw) * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+        * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2) :=
+    mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hce₁ hS1) hS2
+  have hB2 : 2 * (2 * ε) * Real.exp (Cw * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+        * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)
+      ≤ (100 * (Cw + 1) * Real.exp (4 * Cw) * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+        * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) :=
+    mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hce₂ hS1) hSd
+  calc (Real.exp (2 * Cw * ε) - 1) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2)
+        + 2 * (2 * ε) * Real.exp (Cw * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)
+      ≤ (100 * (Cw + 1) * Real.exp (4 * Cw) * ε) * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2)
+        + (100 * (Cw + 1) * Real.exp (4 * Cw) * ε)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2) := add_le_add hB1 hB2
+    _ = 100 * (Cw + 1) * Real.exp (4 * Cw) * ε * Real.sqrt (∫ y : ℝ × ℝ, Q y * G₁ y ^ 2)
+          * (Real.sqrt (∫ y : ℝ × ℝ, Q y * G₂ y ^ 2)
+            + Real.sqrt (∫ y : ℝ × ℝ, Q y * ‖fderiv ℝ G₂ y‖ ^ 2)) := by ring
+
+end Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.L12JepsAux.Basic =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -50,120 +485,16 @@ set_option autoImplicit false
 
 /-! ## The kernel has a point of strict positivity -/
 
-theorem exists_pos_Jker {ρ : ℝ × ℝ → ℝ} (hρ : IsMollKernel ρ) {ε : ℝ} (hε : 0 < ε) :
-    ∃ p : ℝ × ℝ, 0 < Jker ρ ε p := by
-  by_contra h
-  simp only [not_exists, not_lt] at h
-  have hρ0 : ∀ q : ℝ × ℝ, ρ q = 0 := by
-    intro q
-    have h1 : Jker ρ ε (ε • q) ≤ 0 := h (ε • q)
-    have heq : Jker ρ ε (ε • q) = ε⁻¹ ^ 2 * ρ q := by
-      simp only [Jker, smul_smul, inv_mul_cancel₀ hε.ne', one_smul]
-    rw [heq] at h1
-    have h2 : ρ q ≤ 0 := by
-      by_contra hlt
-      push_neg at hlt
-      have : 0 < ε⁻¹ ^ 2 * ρ q := mul_pos (by positivity) hlt
-      linarith
-    exact le_antisymm h2 (hρ.nonneg q)
-  have hzero : (∫ p : ℝ × ℝ, ρ p) = 0 := by
-    rw [show (fun p : ℝ × ℝ => ρ p) = fun _ => (0 : ℝ) from funext hρ0, integral_zero]
-  rw [hρ.mass] at hzero
-  norm_num at hzero
 
 /-! ## The transport of `hint` to the log coordinates -/
 
-/-- The integrability hypothesis `hint` of the target, transported to the log coordinates: for
-every shift vector `x` of the plane the log-pull of the slice is integrable against the shifted
-kernel.  This is the hypothesis of `aesm_of_integrable_mul_shift`. -/
-theorem integrable_shift_logPull_of_hint {ρ : ℝ × ℝ → ℝ} {ε T : ℝ} {g : Fam}
-    (hint : ∀ r θ : ℝ, 0 < r → θ ∈ Set.Ioo 0 (Real.pi / 2) → ∀ s ∈ Set.Icc 0 T,
-      MeasureTheory.Integrable (fun p : ℝ × ℝ => Jker ρ ε p *
-        (slice g s) (zShift r p.1) (thShift θ p.2)) MeasureTheory.volume) :
-    ∀ s ∈ Set.Icc 0 T, ∀ x : ℝ × ℝ,
-      MeasureTheory.Integrable (fun p : ℝ × ℝ => Jker ρ ε p *
-        logPull (slice g s) (x - p)) MeasureTheory.volume := by
-  intro s hs x
-  have hr : 0 < Real.exp x.1 := Real.exp_pos x.1
-  have hθ : Real.arctan (Real.exp x.2) ∈ Set.Ioo 0 (Real.pi / 2) :=
-    ⟨(Real.arctan_pos).2 (Real.exp_pos x.2), Real.arctan_lt_pi_div_two _⟩
-  refine (hint (Real.exp x.1) (Real.arctan (Real.exp x.2)) hr hθ s hs).congr ?_
-  refine Eventually.of_forall fun p => ?_
-  show Jker ρ ε p * slice g s (zShift (Real.exp x.1) p.1)
-      (thShift (Real.arctan (Real.exp x.2)) p.2)
-    = Jker ρ ε p * logPull (slice g s) (x - p)
-  have hp : x - p
-      = (sOf (Real.exp x.1) - p.1, zetaOf (Real.arctan (Real.exp x.2)) - p.2) := by
-    ext <;> simp only [Prod.fst_sub, Prod.snd_sub, sOf, zetaOf, Real.log_exp, Real.tan_arctan]
-  rw [hp, logPull_shift (slice g s) hr hθ]
 
-/-- **The log-pull of a slice is a.e. strongly measurable**, from the all-`(r,θ)` integrability
-hypothesis `hint` of the target: the kernel has a point of strict positivity, so the shift family
-of integrable products forces measurability of the log-pull. -/
-theorem aesm_logPull_slice_of_hint {ρ : ℝ × ℝ → ℝ} {ε T : ℝ} {g : Fam}
-    (hρ : IsMollKernel ρ) (hε : 0 < ε)
-    (hint : ∀ r θ : ℝ, 0 < r → θ ∈ Set.Ioo 0 (Real.pi / 2) → ∀ s ∈ Set.Icc 0 T,
-      MeasureTheory.Integrable (fun p : ℝ × ℝ => Jker ρ ε p *
-        (slice g s) (zShift r p.1) (thShift θ p.2)) MeasureTheory.volume) :
-    ∀ s ∈ Set.Icc 0 T, MeasureTheory.AEStronglyMeasurable (logPull (slice g s))
-      MeasureTheory.volume := by
-  intro s hs
-  exact aesm_of_integrable_mul_shift (Jker_continuous hρ ε) (exists_pos_Jker hρ hε)
-    (integrable_shift_logPull_of_hint hint s hs)
 
-/-- Componentwise bounds give the product norm bound (the norm on `ℝ × ℝ` is the sup norm). -/
-lemma norm_le_of_abs_le {p : ℝ × ℝ} {ε : ℝ} (h1 : |p.1| ≤ ε) (h2 : |p.2| ≤ ε) :
-    ‖p‖ ≤ ε := by
-  rw [Prod.norm_def, max_le_iff]
-  exact ⟨by simpa [Real.norm_eq_abs] using h1, by simpa [Real.norm_eq_abs] using h2⟩
 
 /-! ## Integrability of the two `θ`-integrands -/
 
-/-- **Integrability of the `p`-integrand of the right-hand-side profile**: a uniform bound on the
-profile over the shifted points (the `‖p‖ ≤ ε`-cone carrying the support of `Jker ρ ε`) plus
-a.e.-strong measurability of the product make it integrable against `C · ‖Jker ρ ε‖`. -/
-theorem integrable_Jker_mul_of_bound {ρ : ℝ × ℝ → ℝ} {ε r C : ℝ} {f : Fn}
-    (hρ : IsMollKernel ρ) (hε : 0 < ε) (hC : 0 ≤ C)
-    (hmeas : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), MeasureTheory.AEStronglyMeasurable
-      (fun p : ℝ × ℝ => Jker ρ ε p * f (zShift r p.1) (thShift θ p.2)) MeasureTheory.volume)
-    (hb : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), ∀ p : ℝ × ℝ, ‖p‖ ≤ ε →
-      |f (zShift r p.1) (thShift θ p.2)| ≤ C) :
-    ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), MeasureTheory.Integrable
-      (fun p : ℝ × ℝ => Jker ρ ε p * f (zShift r p.1) (thShift θ p.2)) MeasureTheory.volume := by
-  intro θ hθ
-  refine MeasureTheory.Integrable.mono' ((Jker_integrable hρ hε).norm.const_mul C)
-    (hmeas θ hθ) ?_
-  refine Eventually.of_forall fun p => ?_
-  by_cases hp : ‖p‖ ≤ ε
-  · show ‖Jker ρ ε p * f (zShift r p.1) (thShift θ p.2)‖ ≤ C * ‖Jker ρ ε p‖
-    rw [norm_mul, Real.norm_eq_abs]
-    calc ‖Jker ρ ε p‖ * |f (zShift r p.1) (thShift θ p.2)|
-        ≤ ‖Jker ρ ε p‖ * C := mul_le_mul_of_nonneg_left (hb θ hθ p hp) (norm_nonneg _)
-      _ = C * ‖Jker ρ ε p‖ := by ring
-  · have hz : Jker ρ ε p = 0 :=
-      Jker_eq_zero_of_not_mem hρ hε (by
-        rw [Metric.mem_closedBall, dist_zero_right]; exact hp)
-    calc ‖Jker ρ ε p * f (zShift r p.1) (thShift θ p.2)‖ = 0 := by rw [hz, zero_mul, norm_zero]
-      _ ≤ C * ‖Jker ρ ε p‖ := mul_nonneg hC (norm_nonneg _)
 
-/-- **Integrability of the `θ`-integrand of a slice on `[0, π/2]`**: a.e.-strong measurability in
-`θ` plus the sup-bound of `J_ε` over the shifted region (`abs_Jeps_le_sup`). -/
-theorem integrable_Jeps_slice_Icc_of_bound {ρ : ℝ × ℝ → ℝ} {ε r C : ℝ} {f : Fn}
-    (hρ : IsMollKernel ρ) (hε : 0 < ε) (hr : 0 < r) (hC : 0 ≤ C)
-    (hmeas : MeasureTheory.AEStronglyMeasurable (fun θ : ℝ => Jeps ρ ε f r θ)
-      (MeasureTheory.volume.restrict (Set.Icc 0 (Real.pi / 2))))
-    (hb : ∀ θ ∈ Set.Ioo 0 (Real.pi / 2), ∀ p : ℝ × ℝ, ‖p‖ ≤ ε →
-      |f (zShift r p.1) (thShift θ p.2)| ≤ C) :
-    MeasureTheory.Integrable (fun θ : ℝ => Jeps ρ ε f r θ)
-      (MeasureTheory.volume.restrict (Set.Icc 0 (Real.pi / 2))) := by
-  refine MeasureTheory.Integrable.of_bound hmeas C (Eventually.of_forall fun θ => ?_)
-  by_cases hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)
-  · have hle : |Jeps ρ ε f r θ| ≤ C :=
-      abs_Jeps_le_sup ρ hρ hε hr hθ
-        (fun p hp1 hp2 => hb θ hθ p (norm_le_of_abs_le hp1 hp2))
-        hC
-    rwa [Real.norm_eq_abs]
-  · rw [Jeps_eq_zero ρ ε f (fun hc => hθ hc.2), norm_zero]
-    exact hC
 
 end Work.FTS.StrongEps.EpsE4Thr.L12JepsAux
+end
+end

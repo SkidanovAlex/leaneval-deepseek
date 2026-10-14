@@ -3,10 +3,10 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.OpenPkg.QangOpen
-import Submission.Work.FTS.EllipticEst.UopHk.L12_w_sq_integrable
 import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
-import Submission.Work.FTS.H2.L12k0Q
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.SupZ.swap_abs
+import Submission.Work.FTS.TransportS.sup_dz_le_hk
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

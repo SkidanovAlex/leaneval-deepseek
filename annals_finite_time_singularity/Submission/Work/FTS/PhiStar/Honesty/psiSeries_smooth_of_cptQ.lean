@@ -4,16 +4,14 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.StarDefs
-import Submission.Work.FTS.PhiStar.Radial.Defs
-import Submission.Work.FTS.PhiStar.Series.SmoothAux.SeriesAux.Basic
-import Submission.Work.FTS.PhiStar.Series.SmoothAux.contDiffOn_of_families_nat
 import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.cmode_iteratedDeriv_facts
 import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.radGreen_general_bound
-import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.eFam_growth_clean
+import Submission.Work.FTS.PhiStar.Honesty.radGreen_near_limits_of_le_rpow
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongPersist.Vocab
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -263,11 +261,6 @@ theorem pscA_hasDerivAt {α : ℝ} (hα : 0 < α) (hα2 : α < 2) {G : ℝ → �
 def pscRect (z θ : ℝ) : Set (ℝ × ℝ) :=
   Set.Ioo (z / 2) (2 * z) ×ˢ Set.Ioo (θ / 2) ((θ + Real.pi / 2) / 2)
 
-theorem pscRect_subset_Q0 {z θ : ℝ} (hz : 0 < z) (hθ : 0 < θ) (hθ2 : θ < Real.pi / 2)
-    {q : ℝ × ℝ} (hq : q ∈ pscRect z θ) : (q.1, q.2) ∈ Work.FTS.EllipticEst.Q0 := by
-  rw [Work.FTS.EllipticEst.mem_Q0]
-  exact ⟨by linarith [hq.1.1, hz], by linarith [hq.2.1, hθ],
-    by linarith [hq.2.2, hθ2, Real.pi_pos]⟩
 
 theorem pscRect_mem_nhds {z θ : ℝ} (hz : 0 < z) (hθ : 0 < θ) (hθ2 : θ < Real.pi / 2) :
     pscRect z θ ∈ 𝓝 (z, θ) := by

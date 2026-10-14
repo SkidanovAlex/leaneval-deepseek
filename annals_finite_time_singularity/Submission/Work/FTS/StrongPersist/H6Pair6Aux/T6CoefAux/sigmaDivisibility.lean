@@ -2,13 +2,289 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchAux
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.qDzLe
-import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.StrongPersist.N6.Slots
 import Submission.Work.FTS.TransportS.SlotT2.Basic
 import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.HkSq_terms
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.vSliceSupLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+
+/-- **The angular-slice bound for the lowest mixed slot `D_θf`.**
+
+For a datum `f` which is `C^∞` on the open quadrant and honestly in `ℋ⁴`, and for every `z > 0`,
+the angular slice at `z` of the mixed slot `mixed 0 1 f = D_θ f`, weighted by `sin(2θ)^{-γ}`, is
+dominated by twice the `ℋ⁴`-square of `f`:
+
+  `∫_θ sin(2θ)^{-γ} (D_θ f z θ)² dθ ≤ 2 |f|²_{ℋ⁴}`.
+
+The two ingredients are the one-dimensional weighted radial Agmon inequality
+(`SixAux.zslice6_hardy`, applied at the fixed angle `θ` to the radial slice `z ↦ sin(2θ)^{-γ/2}
+D_θf(z,θ)`) and the Tonelli identity `SdaAux.sda_HkSqSwap_open` for the `ℋ⁴`-integrand of an
+open-class datum, which supplies the radial integrability of the slices for almost every angle.
+The equality case of the constant `2` is the Agmon constant: the two radial `L²`-integrals
+`∫ (D_θf)² Wt²` and `∫ (D_zD_θf)² Wt²` are the two summands `(i,j) = (1,0)` resp. `(1,1)` of
+`HkIntegrand α 4 f`, and each is at most `HkSq α 4 f`. -/
+theorem vSliceSupLe : ∀ (α : ℝ) (f : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
+    Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
+    ∀ z : ℝ, 0 < z →
+      (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+          * (Work.Spaces.mixed 0 1 f z θ) ^ 2)
+        ≤ 2 * Work.Spaces.HkSq α 4 f := by
+  intro α f hα hα1 hF hmem z hz
+  obtain ⟨hswap, hGint, hGslice⟩ :=
+    Work.FTS.TransportS.SupDzAux.sda_HkSqSwap_open α f hF hmem
+  -- the pointwise (in `θ`) slice bound, dominated by the `ℋ⁴`-integrand of `f`
+  have hleG : (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * (Work.Spaces.mixed 0 1 f z θ) ^ 2)
+      ≤ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
+      fun θ => 2 * (∫ s in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f s θ) := by
+    filter_upwards [hGslice, Work.FTS.OpenPkg.ProdOpen.ae_mem_Ioo_Iθ] with θ hθint hθ
+    obtain ⟨h1, h2⟩ :=
+      Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.vSliceAux.slotRadialIntegrable α f θ hθ hF hθint
+    have hA :=
+      Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.vSliceAux.sliceZAgmon α f z θ hz hθ hF h1 h2
+    have hsin : 0 < Real.sin (2 * θ) :=
+      Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
+    -- the `(1,1)`-summand of `HkIntegrand` dominates the Agmon right-hand side
+    have hmono : (∫ s in Work.Spaces.Iz, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * (Work.Spaces.mixed 1 1 f s θ) ^ 2 * (Work.Spaces.w s) ^ 2)
+        ≤ ∫ s in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f s θ := by
+      refine MeasureTheory.setIntegral_mono_of_nonneg (fun s _ => ?_) (fun s _ => ?_) hθint
+      · exact mul_nonneg (mul_nonneg (Real.rpow_nonneg hsin.le _) (sq_nonneg _))
+          (sq_nonneg _)
+      · have hkey : (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 1 1 f s θ) ^ 2 * (Work.Spaces.w s) ^ 2
+            = (Work.Spaces.mixed 1 1 f s θ * Work.Spaces.Wt α s θ) ^ 2 := by
+          rw [mul_pow, Work.H2.T1Q.Wt_sq_eq α s θ hsin]
+          ring
+        rw [hkey]
+        exact Work.Spaces.sq_le_HkIntegrand_mixed α 4 f s θ 1 1 le_rfl (by norm_num)
+    calc (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) * (Work.Spaces.mixed 0 1 f z θ) ^ 2
+        ≤ 2 * ∫ s in Work.Spaces.Iz, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 1 1 f s θ) ^ 2 * (Work.Spaces.w s) ^ 2 := hA
+      _ ≤ 2 * ∫ s in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f s θ := by
+          linarith
+  have hnn : 0 ≤ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
+      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * (Work.Spaces.mixed 0 1 f z θ) ^ 2) :=
+    MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun θ hθ =>
+      mul_nonneg (Real.rpow_nonneg
+        (Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1])
+          (by linarith [hθ.2, Real.pi_pos])) _) (sq_nonneg _))
+  calc (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * (Work.Spaces.mixed 0 1 f z θ) ^ 2)
+      ≤ ∫ θ in Work.Spaces.Iθ,
+          2 * (∫ s in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f s θ) :=
+        MeasureTheory.integral_mono_of_nonneg hnn (hGint.const_mul 2) hleG
+    _ = 2 * Work.Spaces.HkSq α 4 f := by
+        rw [MeasureTheory.integral_const_mul, hswap]
+
+end Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.xSliceAgmon5 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option maxHeartbeats 1600000
+
+/-! ## The `∂_θ`-form of the second angular integral
+
+The slice Agmon inequality `Work.H2.T1Q.SliceSupOpen` is stated with the plain derivative
+`(∂_θ u)² · sin(2θ)^{2-γ}`; the weight used in the level-six pairing is the `D_θ`-normalised
+one, `sin(2θ)^{-γ}·(D_z^5D_θA)²`.  Since `D_θ = sin(2θ)·∂_θ` and `D_z^bD_θA = sin(2θ)·∂_θ(D_z^bA)`
+on the open quadrant (`Work.FTS.TransportS.SlotT2.supOpen_mixed_eq_sin_pth`), the two integrals
+coincide: `sin(2θ)^{-γ}·(sin(2θ)·∂_θu)² = (∂_θu)²·sin(2θ)^{2-γ}`. -/
+
+/-- The second angular integral of the slice Agmon estimate, rewritten from the plain
+`∂_θ`-form into the weighted `D_z^5D_θA`-form. -/
+theorem xSliceAgmon5_secondInt {α : ℝ} {A : ℝ → ℝ → ℝ}
+    (hF : Work.FTS.EllipticEst.SmoothOpen A) {z : ℝ} (hz : 0 < z) :
+    (∫ θ' in Work.Spaces.Iθ,
+        (deriv (fun θ'' => Work.Spaces.DzIter 5 A z θ'') θ') ^ 2
+          * (Real.sin (2 * θ')) ^ (2 - Work.Spaces.gam α))
+      = ∫ θ' in Work.Spaces.Iθ,
+          (Real.sin (2 * θ')) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 5 1 A z θ') ^ 2 := by
+  rw [MeasureTheory.setIntegral_congr_set Work.FTS.TransportS.SlotT2.supOpen_Iθ_ae_eq]
+  rw [MeasureTheory.setIntegral_congr_set Work.FTS.TransportS.SlotT2.supOpen_Iθ_ae_eq]
+  refine MeasureTheory.setIntegral_congr_fun
+    (measurableSet_Ioo : MeasurableSet (Set.Ioo (0 : ℝ) (Real.pi / 2)))
+    (fun θ' hθ' => ?_)
+  have hsin : 0 < Real.sin (2 * θ') :=
+    Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ'.1]) (by linarith [hθ'.2, Real.pi_pos])
+  have hmix : Work.Spaces.mixed 5 1 A z θ'
+      = Real.sin (2 * θ') * deriv (fun θ'' => Work.Spaces.DzIter 5 A z θ'') θ' :=
+    Work.FTS.TransportS.SlotT2.supOpen_mixed_eq_sin_pth hF 5 hz hθ'
+  have hkey : (Real.sin (2 * θ')) ^ (-(Work.Spaces.gam α))
+        * (Real.sin (2 * θ')) ^ 2
+      = (Real.sin (2 * θ')) ^ (2 - Work.Spaces.gam α) := by
+    have h2 : (Real.sin (2 * θ')) ^ 2 = (Real.sin (2 * θ')) ^ (2 : ℝ) :=
+      (Real.rpow_natCast _ 2).symm
+    rw [h2, ← Real.rpow_add hsin]
+    ring_nf
+  rw [hmix, mul_pow, ← hkey]
+  ring
+
+/-- **The slice Agmon inequality at order five.**
+
+For `A` smooth on the open quadrant with honest `ℋ⁶`-membership and every `z > 0`,
+`θ ∈ (0,π/2)`:
+`(D_z^5A(z,θ))² ≤ (4/π)·∫_{Iθ}(D_z^5A(z,·))² + (200/(γ-1))·∫_{Iθ} sin(2·)^{-γ}·(D_z^5D_θA(z,·))²`.
+
+This is the `b = 5` instantiation of the open-interval slice estimate
+`Work.H2.T1Q.SliceSupOpen` at the slice `θ' ↦ D_z^5A(z,θ')`: the differentiability is
+`SmoothOpen.DzIter` restricted to the open interval, the two integrability hypotheses are
+`SixAux.integrableOn_sq6` (the mean term) and `SixAux.integrableOn_pth_weight6` (the
+Dirichlet term, at `b = 5 ≤ 5`), and the second integral is recast in the `D_θ`-normalised
+weight by `xSliceAgmon5_secondInt`. -/
+theorem xSliceAgmon5 : ∀ (α : ℝ) (A : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
+    Work.FTS.EllipticEst.SmoothOpen A → Work.Spaces.HkMem α 6 A →
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      (Work.Spaces.DzIter 5 A z θ) ^ 2
+        ≤ (4 / Real.pi) * (∫ θ' in Work.Spaces.Iθ, (Work.Spaces.DzIter 5 A z θ') ^ 2)
+          + (200 / (Work.Spaces.gam α - 1))
+            * (∫ θ' in Work.Spaces.Iθ,
+                (Real.sin (2 * θ')) ^ (-(Work.Spaces.gam α))
+                  * (Work.Spaces.mixed 5 1 A z θ') ^ 2) := by
+  intro α A hα hα1 hF hmem z θ hz hθ0 hθπ
+  have hslice : ContDiffOn ℝ 1 (fun θ' => Work.Spaces.DzIter 5 A z θ')
+      (Set.Ioo 0 (Real.pi / 2)) :=
+    ((hF.DzIter 5).curry_θ hz).of_le (by simp [Work.Stability.smoothOrder])
+  have hint2 := Work.FTS.StrongPersist.N6Trans.SixAux.integrableOn_sq6 (α := α) (f := A)
+    hα hF hmem (b := 5) (by norm_num) (z := z) hz
+  have hintp := Work.FTS.StrongPersist.N6Trans.SixAux.integrableOn_pth_weight6 (α := α) (f := A)
+    hα hα1 hF hmem (b := 5) (by norm_num) (z := z) hz
+  have hmain := Work.H2.T1Q.SliceSupOpen α (fun θ' => Work.Spaces.DzIter 5 A z θ')
+    hα hα1 hslice hint2 hintp θ ⟨hθ0, hθπ⟩
+  rw [xSliceAgmon5_secondInt hF hz] at hmain
+  exact hmain
+
+end Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.zProdIntLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+
+noncomputable section
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+/-- `sin (2θ) ≥ 0` for `θ ∈ Iθ = [0,π/2]`. -/
+private lemma sin_two_nonneg_Iθ' {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) : 0 ≤ Real.sin (2 * θ) :=
+  Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1])
+    (by linarith [hθ.2, Real.pi_pos])
+
+/-- The square of the mixed weight `Wt α z θ = w z · sin(2θ)^{-γ/2}` is
+`w z² · sin(2θ)^{-γ}`, for nonnegative `sin(2θ)`. -/
+private lemma Wt_sq_eq' (α z θ : ℝ) (hs : 0 ≤ Real.sin (2 * θ)) :
+    (Work.Spaces.Wt α z θ) ^ 2
+      = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
+  rw [Work.Spaces.Wt, Work.Spaces.wTheta, mul_pow]
+  rw [show ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ 2
+        = ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ ((2 : ℝ)) from
+      (Real.rpow_natCast ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) 2).symm]
+  rw [← Real.rpow_mul hs]
+  rw [show (-(Work.Spaces.gam α / 2)) * (2 : ℝ) = -(Work.Spaces.gam α) by ring]
+
+/-- The squared weighted mixed slot, in the unfolded `w² s^{-γ} (D_z⁵D_θf)²` form of the
+statement (valid where `sin(2θ) ≥ 0`). -/
+private lemma slot_sq_eq' (α : ℝ) (f : ℝ → ℝ → ℝ) (z θ : ℝ)
+    (hs : 0 ≤ Real.sin (2 * θ)) :
+    (Work.Spaces.mixed 5 1 f z θ * Work.Spaces.Wt α z θ) ^ 2
+      = (Work.Spaces.w z) ^ 2
+        * ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 5 1 f z θ) ^ 2) := by
+  rw [mul_pow, Wt_sq_eq' α z θ hs]
+  ring
+
+theorem zProdIntLe : ∀ (α : ℝ) (f : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 →
+    Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 6 f →
+    MeasureTheory.Integrable (fun z : ℝ => (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 5 1 f z θ) ^ 2))
+      (MeasureTheory.volume.restrict Work.Spaces.Iz) ∧
+    (∫ z, (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 5 1 f z θ) ^ 2)
+      ∂(MeasureTheory.volume.restrict Work.Spaces.Iz))
+      ≤ Work.Spaces.HkSq α 6 f := by
+  intro α f hα hα1 hsm hmem
+  -- The weighted slot `j = 5` of `HkIntegrand α 6 f`: integrability and value bound.
+  obtain ⟨hint, hle⟩ :=
+    Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.mixedSlotL2 α ⟨hα, hα1⟩ f 5 hsm hmem le_rfl
+  -- The pointwise unfolding `(D_z⁵D_θf · Wt)² = w² · (s^{-γ} · (D_z⁵D_θf)²)` of the slot.
+  have hident : ∀ z : ℝ,
+      (∫ θ in Work.Spaces.Iθ,
+          (Work.Spaces.mixed 5 1 f z θ * Work.Spaces.Wt α z θ) ^ 2)
+        = (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+              * (Work.Spaces.mixed 5 1 f z θ) ^ 2) := by
+    intro z
+    rw [MeasureTheory.integral_congr_ae (MeasureTheory.ae_restrict_of_forall_mem
+      (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)
+      (fun θ hθ => slot_sq_eq' α f z θ (sin_two_nonneg_Iθ' hθ)))]
+    rw [MeasureTheory.integral_const_mul]
+  refine ⟨hint.congr (Filter.Eventually.of_forall hident), ?_⟩
+  calc (∫ z, (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * (Work.Spaces.mixed 5 1 f z θ) ^ 2)
+        ∂(MeasureTheory.volume.restrict Work.Spaces.Iz))
+      = ∫ z, (∫ θ in Work.Spaces.Iθ,
+            (Work.Spaces.mixed 5 1 f z θ * Work.Spaces.Wt α z θ) ^ 2)
+          ∂(MeasureTheory.volume.restrict Work.Spaces.Iz) :=
+        MeasureTheory.integral_congr_ae
+          (Filter.Eventually.of_forall fun z => (hident z).symm)
+    _ = ∫ z in Work.Spaces.Iz, ∫ θ in Work.Spaces.Iθ,
+            (Work.Spaces.mixed 5 1 f z θ * Work.Spaces.Wt α z θ) ^ 2 := rfl
+    _ ≤ Work.Spaces.HkSq α 6 f := hle
+
+end
+
+end Work.FTS.StrongPersist.H6Pair6Aux.T6Coef
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.sigmaDivisibility =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -50,16 +326,6 @@ noncomputable section
 
 set_option maxHeartbeats 1600000
 
-/-- `Wt α z θ = w z · sin(2θ)^{-γ/2}`, so its square is the γ-weight `w²σ^{-γ}`. -/
-theorem Wt_sq_eq_Iθ {α z θ : ℝ} {hσ : 0 < Real.sin (2 * θ)} :
-    (Work.Spaces.Wt α z θ) ^ 2
-      = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
-  rw [Work.Spaces.Wt, Work.Spaces.wTheta, mul_pow]
-  rw [show ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ 2
-        = ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ ((2 : ℝ)) from
-      (Real.rpow_natCast ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) 2).symm]
-  rw [← Real.rpow_mul (le_of_lt hσ)]
-  rw [show (-(Work.Spaces.gam α / 2)) * (2 : ℝ) = -(Work.Spaces.gam α) by ring]
 
 /-! ## § 1. The pointwise σ-divisibility identities -/
 
@@ -87,61 +353,8 @@ theorem leafGam_mul_Dth_eq {α z θ : ℝ} (hσ : 0 < Real.sin (2 * θ)) (A : �
     _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (1 - Work.Spaces.gam α)
           * Work.Spaces.pth A z θ := by rw [h1]
 
-/-- **The σ-divisibility identity (four factors).**  For `σ = sin 2θ > 0`,
-`leafGam α · D_θ A · Y · D_θ Y = w²·σ^{2-γ}·∂_θA · Y · ∂_θY`, the weight `σ^{2-γ}` being
-bounded by `1` on the angular interval. -/
-theorem leafGam_four_eq {α z θ : ℝ} (hσ : 0 < Real.sin (2 * θ)) (A Y : ℝ → ℝ → ℝ) :
-    Work.FTS.TransportS.leafGam α z θ * Work.Spaces.Dth A z θ * Y z θ * Work.Spaces.Dth Y z θ
-      = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-        * Work.Spaces.pth A z θ * Y z θ * Work.Spaces.pth Y z θ := by
-  have h1 : (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) * Real.sin (2 * θ)
-      = (Real.sin (2 * θ)) ^ (1 - Work.Spaces.gam α) := by
-    have h := Real.rpow_add hσ (-(Work.Spaces.gam α)) (1 : ℝ)
-    rw [Real.rpow_one] at h
-    rw [← h]
-    congr 1
-    ring
-  have h2 : (Real.sin (2 * θ)) ^ (1 - Work.Spaces.gam α) * Real.sin (2 * θ)
-      = (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α) := by
-    have h := Real.rpow_add hσ (1 - Work.Spaces.gam α) (1 : ℝ)
-    rw [Real.rpow_one] at h
-    rw [← h]
-    congr 1
-    ring
-  have hfun : Work.Spaces.Dth A z θ = Real.sin (2 * θ) * Work.Spaces.pth A z θ := rfl
-  have hfunY : Work.Spaces.Dth Y z θ = Real.sin (2 * θ) * Work.Spaces.pth Y z θ := rfl
-  have hlf : Work.FTS.TransportS.leafGam α z θ
-      = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := rfl
-  rw [hfun, hfunY, hlf]
-  calc (Work.Spaces.w z) ^ 2 * Real.sin (2 * θ) ^ (-(Work.Spaces.gam α))
-        * (Real.sin (2 * θ) * Work.Spaces.pth A z θ) * Y z θ
-        * (Real.sin (2 * θ) * Work.Spaces.pth Y z θ)
-      = (Work.Spaces.w z) ^ 2 * ((Real.sin (2 * θ) ^ (-(Work.Spaces.gam α))
-          * Real.sin (2 * θ)) * Real.sin (2 * θ)) * Work.Spaces.pth A z θ * Y z θ
-        * Work.Spaces.pth Y z θ := by ring
-    _ = (Work.Spaces.w z) ^ 2 * ((Real.sin (2 * θ)) ^ (1 - Work.Spaces.gam α)
-          * Real.sin (2 * θ)) * Work.Spaces.pth A z θ * Y z θ
-        * Work.Spaces.pth Y z θ := by rw [h1]
-    _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-          * Work.Spaces.pth A z θ * Y z θ * Work.Spaces.pth Y z θ := by rw [h2]
 
-/-- `leafGam α` is a.e. nonnegative for the product measure. -/
-theorem leafGam_nonneg_ae (α : ℝ) :
-    ∀ᵐ p ∂pm, 0 ≤ Work.FTS.TransportS.leafGam α p.1 p.2 := by
-  refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-  exact Work.FTS.TransportS.leafGam_nonneg α
-    (le_of_lt (Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [Real.pi_pos])))
 
-/-- The a.e. form of the four-factor identity on the product measure. -/
-theorem pairing_Dth_eq_canon (α : ℝ) (A Y : ℝ → ℝ → ℝ) :
-    (fun p : ℝ × ℝ => Work.FTS.TransportS.leafGam α p.1 p.2 * Work.Spaces.Dth A p.1 p.2
-        * Y p.1 p.2 * Work.Spaces.Dth Y p.1 p.2)
-      =ᵐ[pm] (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * Work.Spaces.pth A p.1 p.2 * Y p.1 p.2 * Work.Spaces.pth Y p.1 p.2) := by
-  refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-  exact leafGam_four_eq (Real.sin_pos_of_pos_of_lt_pi (by linarith)
-    (by linarith [Real.pi_pos])) A Y
 
 /-! ## § 2. The bounded weight `σ^{2-γ}` -/
 
@@ -149,164 +362,14 @@ theorem canonW_nonneg {α θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
     0 ≤ (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α) :=
   Real.rpow_nonneg (Work.FTS.H2.sin_two_nonneg_of_mem_Iθ hθ) _
 
-theorem canonW_le_one {α θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) (hα : α ≤ 1) :
-    (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α) ≤ 1 := by
-  refine Real.rpow_le_one (Work.FTS.H2.sin_two_nonneg_of_mem_Iθ hθ) (Real.sin_le_one _) ?_
-  rw [Work.Spaces.gam]
-  linarith
 
-/-- On the **open** interval `σ^{2-γ} ≤ σ^{-(1-α/10)}`: the bounded weight is dominated by the
-critical weight (which is what `qDzLe` prices). -/
-theorem canonW_le_crit {α θ : ℝ} (hα0 : 0 < α) (hα1 : α ≤ 1)
-    (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
-    (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-      ≤ (Real.sin (2 * θ)) ^ (-(1 - α / 10)) := by
-  have hσ : 0 < Real.sin (2 * θ) :=
-    Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1]) (by linarith [hθ.2, Real.pi_pos])
-  have hσ1 : Real.sin (2 * θ) ≤ 1 := Real.sin_le_one _
-  refine Real.rpow_le_rpow_of_exponent_ge hσ hσ1 ?_
-  rw [Work.Spaces.gam]
-  linarith
 
 /-! ## § 3. The three `L²`-bounds at the bounded weight -/
 
-/-- **The `A`-factor.**  `∫∫ w²σ^{2-γ}(∂_θA)² ≤ |A|²_{ℋ⁴} ≤ K4²` — the `(0,1)`-slot of `A`. -/
-theorem canon_A_slot {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {A : ℝ → ℝ → ℝ}
-    (hAsm : Work.FTS.EllipticEst.SmoothOpen A) (hA4 : Work.Spaces.HkMem α 4 A) :
-    MeasureTheory.Integrable (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.pth A p.1 p.2) ^ 2) pm ∧
-      (∫ p, (Work.Spaces.w p.1) ^ 2 * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.pth A p.1 p.2) ^ 2 ∂pm) ≤ Work.Spaces.HkSq α 4 A := by
-  have hslot := mixed_slot_le (α := α) 4 hAsm hA4 (i := 1) (j := 0) le_rfl (by norm_num)
-  have hae : (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.pth A p.1 p.2) ^ 2)
-      =ᵐ[pm] (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.gam α))
-        * (Work.Spaces.mixed 0 1 A p.1 p.2) ^ 2) := by
-    refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-    have hθI : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ0, le_of_lt hθ1⟩
-    have hAC : Work.Spaces.mixed 0 1 A z θ
-        = Real.sin (2 * θ) * Work.Spaces.pth A z θ := by
-      have h := Work.FTS.TransportS.SlotT2.supOpen_mixed_eq_sin_pth hAsm 0 hz ⟨hθ0, hθ1⟩
-      simpa only [Work.Spaces.DzIter_zero] using h
-    have hkey := Work.Spaces.bt_mixed_weight_gen α z θ hα hα1 hθI
-      (Work.Spaces.pth A z θ) (Work.Spaces.mixed 0 1 A z θ) hAC
-    have hσpos : 0 < Real.sin (2 * θ) :=
-      Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [Real.pi_pos])
-    have hWt := Wt_sq_eq_Iθ (α := α) (z := z) (θ := θ) (hσ := hσpos)
-    calc (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.pth A z θ) ^ 2
-        = (Work.Spaces.pth A z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α) := by ring
-      _ = (Work.Spaces.mixed 0 1 A z θ * Work.Spaces.Wt α z θ) ^ 2 := hkey
-      _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
-            * (Work.Spaces.mixed 0 1 A z θ) ^ 2 := by
-          rw [mul_pow, hWt]; ring
-  refine ⟨hslot.1.congr hae.symm, ?_⟩
-  rw [MeasureTheory.integral_congr_ae hae]
-  exact hslot.2
 
-/-- **The `Z`-factor.**  `∫∫ w²σ^{2-γ}(∂_θ(D_z^bf))² ≤ |f|²_{ℋ⁶}` for `b ≤ 5` — the
-`(b,1)`-slot of `f`. -/
-theorem canon_Z_slot {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {f : ℝ → ℝ → ℝ} {b : ℕ}
-    (hfsm : Work.FTS.EllipticEst.SmoothOpen f) (hf6 : Work.Spaces.HkMem α 6 f) (hb : b ≤ 5) :
-    MeasureTheory.Integrable (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.pth (Work.Spaces.DzIter b f) p.1 p.2) ^ 2) pm ∧
-      (∫ p, (Work.Spaces.w p.1) ^ 2 * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.pth (Work.Spaces.DzIter b f) p.1 p.2) ^ 2 ∂pm)
-        ≤ Work.Spaces.HkSq α 6 f := by
-  have hslot := mixed_slot_le (α := α) 6 hfsm hf6 (i := 1) (j := b) le_rfl (by omega)
-  have hae : (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.pth (Work.Spaces.DzIter b f) p.1 p.2) ^ 2)
-      =ᵐ[pm] (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.gam α))
-        * (Work.Spaces.mixed b 1 f p.1 p.2) ^ 2) := by
-    refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-    have hθI : θ ∈ Work.Spaces.Iθ := ⟨le_of_lt hθ0, le_of_lt hθ1⟩
-    have hkey := Work.FTS.TransportS.SlotT2.supOpen_pth_weight hfsm hα hα1 b hz ⟨hθ0, hθ1⟩
-    have hσpos : 0 < Real.sin (2 * θ) :=
-      Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [Real.pi_pos])
-    have hWt := Wt_sq_eq_Iθ (α := α) (z := z) (θ := θ) (hσ := hσpos)
-    calc (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.pth (Work.Spaces.DzIter b f) z θ) ^ 2
-        = (Work.Spaces.pth (Work.Spaces.DzIter b f) z θ) ^ 2 * (Work.Spaces.w z) ^ 2
-            * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α) := by ring
-      _ = (Work.Spaces.mixed b 1 f z θ * Work.Spaces.Wt α z θ) ^ 2 := hkey
-      _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
-            * (Work.Spaces.mixed b 1 f z θ) ^ 2 := by
-          rw [mul_pow, hWt]; ring
-  refine ⟨hslot.1.congr hae.symm, ?_⟩
-  rw [MeasureTheory.integral_congr_ae hae]
-  exact hslot.2
 
-/-- **The middle factor.**  `∫∫ w²σ^{2-γ}(D_z^bf)² ≤ Cα^{-2}(1+|f|²_{ℋ⁶})` for `b ≤ 5`: the
-bounded weight `σ^{2-γ}` is dominated by the critical weight `σ^{-(1-α/10)}`, which is exactly
-what `thetaHardyApp`/`qDzLe` prices for pure `D_z`-slots up to order `5`. -/
-theorem canon_mid_slot : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc (0 : ℝ) 1,
-    ∀ (f : ℝ → ℝ → ℝ) (b : ℕ),
-      Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 6 f → b ≤ 5 →
-      MeasureTheory.Integrable (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-          * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.DzIter b f p.1 p.2) ^ 2) pm ∧
-        (∫ p, (Work.Spaces.w p.1) ^ 2 * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-              * (Work.Spaces.DzIter b f p.1 p.2) ^ 2 ∂pm)
-          ≤ C * α ^ (-(2 : ℝ)) * (1 + Work.Spaces.HkSq α 6 f) := by
-  obtain ⟨Cd, hCdpos, hCd⟩ := Work.FTS.StrongPersist.H6Pair6Aux.T6Gen.qDzLe
-  refine ⟨Cd, hCdpos, ?_⟩
-  intro α hα f b hfsm hf6 hb
-  have hcrit := hCd α hα f b hfsm hf6 hb
-  obtain ⟨hα0, hα1⟩ := hα
-  have hle : ∀ᵐ p ∂pm, (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.DzIter b f p.1 p.2) ^ 2
-      ≤ (Work.Spaces.w p.1) ^ 2 * (Real.sin (2 * p.2)) ^ (-(1 - α / 10))
-        * (Work.Spaces.DzIter b f p.1 p.2) ^ 2 := by
-    refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-    have hw : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
-    have hsq : 0 ≤ (Work.Spaces.DzIter b f z θ) ^ 2 := sq_nonneg _
-    have h2 := canonW_le_crit hα0 hα1 ⟨hθ0, hθ1⟩
-    calc (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-          * (Work.Spaces.DzIter b f z θ) ^ 2
-        = (Work.Spaces.w z) ^ 2 * ((Real.sin (2 * θ)) ^ (2 - Work.Spaces.gam α)
-            * (Work.Spaces.DzIter b f z θ) ^ 2) := by ring
-      _ ≤ (Work.Spaces.w z) ^ 2 * ((Real.sin (2 * θ)) ^ (-(1 - α / 10))
-            * (Work.Spaces.DzIter b f z θ) ^ 2) :=
-          mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h2 hsq) hw
-      _ = (Work.Spaces.w z) ^ 2 * (Real.sin (2 * θ)) ^ (-(1 - α / 10))
-            * (Work.Spaces.DzIter b f z θ) ^ 2 := by ring
-  have hnn : ∀ᵐ p ∂pm, 0 ≤ (Work.Spaces.w p.1) ^ 2
-        * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.DzIter b f p.1 p.2) ^ 2 := by
-    refine Work.FTS.TransportS.ae_of_forall_Qd (fun z θ hz hθ0 hθ1 => ?_)
-    exact mul_nonneg (mul_nonneg (sq_nonneg _)
-      (canonW_nonneg ⟨le_of_lt hθ0, le_of_lt hθ1⟩)) (sq_nonneg _)
-  have haesm : MeasureTheory.AEStronglyMeasurable (fun p : ℝ × ℝ =>
-      (Work.Spaces.w p.1) ^ 2 * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-        * (Work.Spaces.DzIter b f p.1 p.2) ^ 2) pm := by
-    refine Work.Spaces.aesm_of_continuousOn_Qd _ ?_
-    have h1 : ContinuousOn (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2)
-        Work.FTS.EllipticEst.Q0 := contOn_w
-    have h2 : ContinuousOn (fun p : ℝ × ℝ => (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α))
-        Work.FTS.EllipticEst.Q0 := by
-      have hs : ContinuousOn (fun p : ℝ × ℝ => Real.sin (2 * p.2))
-          Work.FTS.EllipticEst.Q0 := by fun_prop
-      refine hs.rpow_const (fun p hp => Or.inl (ne_of_gt ?_))
-      exact Real.sin_pos_of_pos_of_lt_pi (by linarith [hp.2.1])
-        (by linarith [hp.2.2, Real.pi_pos])
-    exact (h1.mul h2).mul ((hfsm.DzIter b).continuousOn.pow 2)
-  have hint : MeasureTheory.Integrable (fun p : ℝ × ℝ => (Work.Spaces.w p.1) ^ 2
-      * (Real.sin (2 * p.2)) ^ (2 - Work.Spaces.gam α)
-      * (Work.Spaces.DzIter b f p.1 p.2) ^ 2) pm := by
-    refine hcrit.1.mono' haesm ?_
-    filter_upwards [hle, hnn] with p hp hn
-    rw [Real.norm_eq_abs, abs_of_nonneg hn]
-    exact hp
-  exact ⟨hint, le_trans (MeasureTheory.integral_mono_ae hint hcrit.1 hle) hcrit.2⟩
 
 end
 
 end Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux
+end

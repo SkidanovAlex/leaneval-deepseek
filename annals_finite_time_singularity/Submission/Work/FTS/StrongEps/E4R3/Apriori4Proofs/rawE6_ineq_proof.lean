@@ -3,19 +3,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Defs
-import Submission.Work.FTS.StrongPersist.H6Aux.Assembly
-import Submission.Work.FTS.StrongEps.SliceWrapP
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_step_le
-import Submission.Work.FTS.EpsEngine.HkSq_JepsPz_le8Bump
-import Submission.Work.FTS.OpenPkg.l12zero_field
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.RawE6Aux.Basic
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.RawE6Aux.Main
 import Submission.Work.FTS.StrongEps.E4R3.RawE6Aux.Jeps_IP6_transfer_aux
-import Submission.Work.FTS.StrongEps.E4R3.RawE6Aux.L6Ctx_JfamP_aux
-import Submission.Work.FTS.StrongEps.EpsE4Thr.EpsRHSPBdd_generalRadius
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.rawSlice_L12_zero_proof
+import Submission.Work.FTS.StrongEps.EpsRHSPBdd_unif
+import Submission.Work.FTS.StrongPersist.H6Aux.Assembly
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG1
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_LocDatum3a.Basic
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
+import Submission.Work.FTS_RegExport.RXR5L.mubarData
+import Submission.Work.FTS_StreamBdry.Inputs.slice_assy
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -70,24 +69,6 @@ abbrev IP6o := Work.FTS.StrongEps.EpsE4Thr.E4R4.IP6o
 /-- shorthand for the raw level-six energy. -/
 abbrev rawE6 := Work.FTS.StrongEps.EpsE4Thr.E4R4.rawE6
 
-theorem rawE6_ineq_proof {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    (hρs : ∀ p : ℝ × ℝ, ρ (-p) = ρ p)
-    {α₂ Ce Cp : ℝ}
-    (hpair : Work.FTS.StrongPersist.H6Pair (Work.FTS.StrongEps.EpsE4Thr.E4R4.IP6o) α₂ Ce Cp) :
-    ∀ C₀ Cs : ℝ, ∃ α₀ : ℝ, 0 < α₀ ∧ ∀ α ∈ Set.Ioc 0 α₀, ∃ Λ C₁ : ℝ, 0 ≤ Λ ∧ 0 ≤ C₁ ∧
-    ∀ {K : ℝ} {Φs : Work.FTS.Galerkin.Fn} {E : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
-      {g₀ : Work.FTS.Galerkin.Fn},
-    Work.FTS.StrongEps.EpsE4Thr.E4Data α C₀ K Ce Cs ρ Φs E g₀ →
-      Work.FTS.StrongPersist.StarPkg6 α Cs Φs →
-    ∀ ε ∈ Set.Ioc (0 : ℝ) 1, ∀ T : ℝ, 0 < T → ∀ g : Work.FTS.Galerkin.Fam,
-      Work.FTS.StrongEps.IsEpsSolP α ρ ε T Φs E g₀ g → Work.FTS.StrongEps.EpsRegP α ρ ε T g →
-      (∀ τ ∈ Set.Icc 0 T, Work.FTS.Nonlin.Xn α (Work.FTS.Galerkin.slice (Work.FTS.StrongEps.JfamP ρ ε g) τ) ≤ C₀ * α ^ 2) →
-      ∀ τ ∈ Set.Ioo 0 T,
-        2 * Work.FTS.StrongEps.EpsE4Thr.E4R4.IP6o α
-          (Work.FTS.StrongEps.epsRHSP α ρ ε Φs E g τ) (Work.FTS.Galerkin.slice g τ)
-          ≤ Λ * (1 + Work.FTS.StrongEps.EpsE4Thr.E4R4.rawE6 α g τ)
-            + ε * C₁ * (1 + Work.FTS.StrongEps.EpsE4Thr.E4R4.rawE6 α g τ) ^ 2 := by
-  sorry
 
 /-! ## Leaf L-A, repaired: the uniform-`ℋ⁶`-datum form -/
 

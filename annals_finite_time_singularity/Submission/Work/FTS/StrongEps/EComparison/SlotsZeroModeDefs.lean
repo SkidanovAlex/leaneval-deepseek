@@ -1,28 +1,13 @@
-/-
-# `SlotsZeroModeDefs` — the vocabulary of the zero-mode ODE of a homogeneous `bslOp`-solution
-
-The target statement `Work.FTS.StrongEps.EComparison.SlotsZeroModeODE` projects a solution `Φ`
-of the homogeneous elliptic equation `bslOp α Φ = 0` (on the open quadrant, `C^∞` there, with
-the value condition `Φ z 0 = 0` and the weighted membership `HkMem α 6 (Φ / sin 2θ)`) onto the
-angular Dirichlet eigenfunctions `eFam m` of `Lzero`:
-
-  `modeCoeff Φ m z = ∫_θ Φ(z,θ) · e_m(θ) · cos θ dθ`
-
-is shown to solve the radial Euler (indicial) equation `λ_m ρ = α²z²ρ'' + α(5+α)zρ'` in the
-weak sense, with the self-adjoint weight `z^{(5-α)/α}`.
-
-This file collects the definitions shared by the pieces of that proof.
--/
 import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Elliptic.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_orthogonal
-import Submission.Work.FTS.PhiStar.Basic
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -54,15 +39,7 @@ def rootWeight (θ : ℝ) : ℝ := (Real.sin (2 * θ)) ^ (-(2 + Work.Spaces.eta)
 def sliceEnergy (Φ : ℝ → ℝ → ℝ) (z : ℝ) : ℝ :=
   ∫ θ in Work.Spaces.Iθ, Φ z θ ^ 2 * rootWeight θ
 
-/-- The weighted `z`-slice energy, i.e. the quantity controlled by the `i = 0` summand of
-`HkIntegrand`. -/
-def sliceEnergyW (Φ : ℝ → ℝ → ℝ) (z : ℝ) : ℝ :=
-  ∫ θ in Work.Spaces.Iθ, Φ z θ ^ 2 * (Work.Spaces.w z) ^ 2 * rootWeight θ
 
-lemma sliceEnergyW_eq (Φ : ℝ → ℝ → ℝ) (z : ℝ) :
-    sliceEnergyW Φ z = (Work.Spaces.w z) ^ 2 * sliceEnergy Φ z := by
-  rw [sliceEnergyW, sliceEnergy, ← MeasureTheory.integral_const_mul]
-  exact setIntegral_congr_fun measurableSet_Icc (fun θ _ => by ring)
 
 /-- The radial part of `bslOp` applied to a pure `z`-function (the Euler operator). -/
 def radOp (α : ℝ) (ρ : ℝ → ℝ) (z : ℝ) : ℝ :=

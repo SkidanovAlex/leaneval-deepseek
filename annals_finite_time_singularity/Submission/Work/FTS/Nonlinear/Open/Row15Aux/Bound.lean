@@ -1,44 +1,21 @@
-/-
-# Row 15: the two pointwise families for `N₂^{**} = -2U(Φ̃_*)∂_θF_*`
-
-This module proves the two pointwise inputs of `wtoHQ_of_pointwise_open` for the row-15 piece
-`Work.FTS.Nonlin.N2ss α Φs`, in terms of the factorisation `N₂^{**} = ψ·(A·G)` of
-`Row15Aux/Defs`:
-
-* `|(1+z)·w(z)·z^m·∂_z^m N₂^{**}(z,θ)| ≤ 200000·W`, `m ≤ 4`;
-* `|(1+z)·w(z)·z^l·∂_z^l D_θ^i N₂^{**}(z,θ)| ≤ 200000·W·(α+sin 2θ)sin(2θ)^{α/5}`, `i ≥ 1`;
-
-with `W = (10⁷·Cψ·(KA+KB+1) + 1)·α·Λ`, `Λ = |G15 α Φs|_{𝒲^{4,∞}}`.  The constants `Cψ`, `KA`,
-`KB` are those of the three jet estimates
-
-* `(1+z)w(z)z^m|∂_z^c ψ| ≤ Cψ·(1+z)^{m-c}` (`Jets.pzIter_psi15_le`),
-* `|D_θ^a (A15 α)| ≤ KA·α²`,  `|D_θ^a (A15 α)| ≤ KB·α·(α+sin 2θ)sin(2θ)^{α/5}`,
-
-and the `G15`-jets decay like `(z+1)^{-k}` (`pzIter_AG_le'`, `pzIter_DthIter_AG_le'`), so that
-the powers of `(1+z)` cancel term by term in the Leibniz expansion
-`sqm_pz_DthIter_mul_le_4_open l i (ψ) (AG15)`.  All constants are universal.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.VocabO2
-import Submission.Work.FTS.Nonlinear.Defs
-import Submission.Work.FTS.Nonlinear.Pieces.Rows
-import Submission.Work.FTS.NonlinRows.NRow15T2Aux.Defs
-import Submission.Work.FTS.NonlinRows.NRow15T2Aux.Jets
-import Submission.Work.FTS.NonlinRows.sqm_pz_DthIter_mul_le_4_open
 import Submission.Work.FTS.EllipticEst.H2W.lzeroSliceL1Ae
 import Submission.Work.FTS.H2.STFacts
-import Submission.Work.FTS.H2.STBounds
-import Submission.Work.Spaces.Gam_mul_weight_le
-import Submission.Work.Spaces.Gam_bounds
-import Submission.Work.Spaces.c_bounds
-import Submission.Work.Spaces.WlInf_terms
 import Submission.Work.FTS.Nonlinear.Open.Row15Aux.Defs
 import Submission.Work.FTS.Nonlinear.Open.Row15Aux.Jets
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sup_mixed_le_H4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

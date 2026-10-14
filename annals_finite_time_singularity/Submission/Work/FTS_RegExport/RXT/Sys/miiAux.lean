@@ -5,9 +5,9 @@ import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Submission.Work.FTS.Nonlinear.n4norm_exists
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS_RegExport.RXT.jc3_aux
-import Submission.Work.FTS.CoercivityFix.Transfer.E2_blocks
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

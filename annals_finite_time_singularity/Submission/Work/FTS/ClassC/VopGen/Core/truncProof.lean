@@ -3,11 +3,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.ClassC.VopGen.CoreSplit
-import Submission.Work.FTS.ClassC.VopGen.Core.truncSetup
 import Submission.Work.FTS.ClassC.VopGen.Core.truncBound
-import Submission.Work.FTS.ClassC.VopGen.Core.cutoffTendsto
-import Submission.Work.FTS.EllipticEst.Mine.Auxiliary.cutoffFamilyMonoSmooth
+import Submission.Work.FTS.ClassC.VopGen.Core.truncSetup
+import Submission.Work.FTS.ClassC.VopGen.a11OfCore
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

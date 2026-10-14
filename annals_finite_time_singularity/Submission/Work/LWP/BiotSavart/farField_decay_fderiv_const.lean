@@ -1,34 +1,72 @@
-/-
-# `Work.LWP.BiotSavart.farField_decay_fderiv_const` — far-field decay of `D (biotSavart ω)`
-with the explicit constant `2^20`
-
-For a vorticity `ω` bounded by `M` and supported in the closed ball of radius `R` about the
-origin, the derivative of the Newtonian-potential Biot–Savart field decays like `‖x‖⁻³`, with
-the *explicit* constant `2^20`:
-
-  `‖fderiv ℝ (biotSavart ω) x‖ ≤ 2^20 · M · R³ / ‖x‖³`   whenever `2R ≤ ‖x‖`.
-
-This is the constant-explicit form of `Work.LWP.BiotSavart.farField_decay_fderiv` (which only
-asserts the existence of *some* positive constant); it is the shape the LWP/BKM assembly
-consumes.
-
-The proof has the same two branches as `farField_decay_fderiv`.
-
-* If `ω` is ae strongly measurable, then on `ball x (‖x‖/4)` the map `z ↦ biotSavart ω z` is
-  Lipschitz with constant exactly `2^20 · M R³/‖x‖³` (see `biotSavart_lipschitzOn_far`), so that
-  `‖fderiv ℝ (biotSavart ω) x‖` is bounded by that constant, and vanishes at non-differentiability
-  points.
-* If `ω` is *not* ae strongly measurable, two independent cross-product directions determine `ω`
-  (`crossMeasDichotomy`), so `biotSavart ω` vanishes off a single point and its whole Fréchet
-  derivative is `0` (`fderiv_eq_zero_of_eq_zero_off_single`); the bound holds trivially because the
-  right-hand side is nonnegative.
--/
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.FDeriv.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.LWP.Defs
-import Submission.Work.LWP.BiotSavart.farField_decay_fderiv
+import Submission.Work.LWP.BiotSavart.nearField_bound
+import Submission.Work.Spaces.mixed_sq_integrableOn
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.LWP.BiotSavart.exists_decay_of_compactSupport =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.LWP.BiotSavart
+
+theorem exists_decay_of_compactSupport {ω : R3 → R3} {R M : ℝ} (hR : 0 ≤ R) (hM : 0 ≤ M)
+    (hω : ∀ y, ‖ω y‖ ≤ M) (hsupp : ∀ y, ω y ≠ 0 → y ∈ Metric.closedBall 0 R) :
+    ∃ C : ℝ, ∀ x : R3, ‖biotSavart ω x‖ ≤ C / (1 + ‖x‖) := by
+  refine ⟨3 * M * R * (1 + 2 * R), ?_⟩
+  intro x
+  -- the proposed constant is nonnegative
+  have hC : (0 : ℝ) ≤ 3 * M * R * (1 + 2 * R) :=
+    mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hM) hR) (by linarith)
+  have hn0 : (0 : ℝ) < 1 + ‖x‖ := by positivity
+  rcases lt_or_ge (2 * R) ‖x‖ with hx | hx
+  · -- **far field**: `2R ≤ ‖x‖`
+    have hx' : 2 * R ≤ ‖x‖ := le_of_lt hx
+    have hb := farField_decay_const hR hM hω hsupp x hx'
+    -- the elementary inequality `(4/3) R² (1+n) ≤ 3 (1+2R) n²` for `n ≥ 2R ≥ 0`
+    have hbr : (4 / 3) * R ^ 2 * (1 + ‖x‖) ≤ 3 * (1 + 2 * R) * ‖x‖ ^ 2 := by
+      set s := ‖x‖ - 2 * R with hsdef
+      have hs : 0 ≤ s := by linarith
+      have hn : ‖x‖ = 2 * R + s := by linarith
+      rw [hn]
+      nlinarith [hs, hR, mul_nonneg hR hs, mul_nonneg (mul_nonneg hR hR) hs,
+        mul_nonneg hR (sq_nonneg s), sq_nonneg s]
+    have hMR : 0 ≤ M * R := mul_nonneg hM hR
+    -- multiply by `M R ≥ 0`
+    have harith : (4 / 3) * M * R ^ 3 * (1 + ‖x‖)
+        ≤ 3 * M * R * (1 + 2 * R) * ‖x‖ ^ 2 := by
+      calc (4 / 3) * M * R ^ 3 * (1 + ‖x‖)
+          = (M * R) * ((4 / 3) * R ^ 2 * (1 + ‖x‖)) := by ring
+        _ ≤ (M * R) * (3 * (1 + 2 * R) * ‖x‖ ^ 2) := mul_le_mul_of_nonneg_left hbr hMR
+        _ = 3 * M * R * (1 + 2 * R) * ‖x‖ ^ 2 := by ring
+    have key : (4 / 3) * M * R ^ 3 / ‖x‖ ^ 2
+        ≤ 3 * M * R * (1 + 2 * R) / (1 + ‖x‖) := by
+      rcases eq_or_lt_of_le (norm_nonneg x) with h0 | hnpos
+      · -- `‖x‖ = 0` forces `R = 0` (and Lean's `a/0 = 0`); the bound is trivial
+        rw [← h0]; simpa using hC
+      · refine (le_div_iff₀ hn0).mpr ?_
+        rw [div_mul_eq_mul_div, div_le_iff₀ (pow_pos hnpos 2)]
+        exact harith
+    exact hb.trans key
+  · -- **near field**: `‖x‖ ≤ 2R`
+    have hb := norm_biotSavart_near hR hM hω hsupp hx
+    have key : 3 * M * R ≤ 3 * M * R * (1 + 2 * R) / (1 + ‖x‖) := by
+      rw [le_div_iff₀ hn0]
+      nlinarith [mul_le_mul_of_nonneg_left hx (show (0 : ℝ) ≤ 3 * M * R by positivity)]
+    exact hb.trans key
+
+end Work.LWP.BiotSavart
+end
+-- ===== merged: Submission.Work.LWP.BiotSavart.farField_decay_fderiv_const =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -84,3 +122,4 @@ theorem farField_decay_fderiv_const {ω : R3 → R3} {R M : ℝ} (hR : 0 < R) (h
     positivity
 
 end Work.LWP.BiotSavart
+end

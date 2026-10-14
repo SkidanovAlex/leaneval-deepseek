@@ -1,21 +1,3 @@
-/-
-# `Transfer/E2pkg/FinCalc.lean` — finite-order calculus for the `E2`-package
-
-The `Comm2w`-wiring of the transfer needs, for a function `G` that is only `C^k` on the open
-quadrant (the defects `E1 α f`, `E2 α f` are built from `L₁₂ f`, which is smooth on `(0,∞)` but
-not through `z = 0`),
-
-* continuity of every mixed block `D_z^b D_θ^a G`, `a + b ≤ k`, on the open quadrant
-  (`Assembly.BlocksCont k G`);
-* additivity of the blocks on a sum `G + H` of two such functions
-  (`Assembly.BlocksAdd k G H`).
-
-The existing `Work.FTS.LocData.SmoothChain` provides the same calculus at the *infinite* order
-`smoothOrder` (`SmoothQuad`); here everything is at a finite order `n : ℕ`, which is what the
-defects satisfy.
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -25,10 +7,10 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.Nonlinear.FstarPkgAll
 import Submission.Work.Spaces.SmoothStripDefs
-import Submission.Work.FTS.CoercivityFix.Assembly.Comm2w
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -253,13 +235,6 @@ private lemma Dz_congr_of_eqOn {V : Set (ℝ × ℝ)} {f g : ℝ → ℝ → ℝ
   simp only [Work.Spaces.Dz, Work.Spaces.pz]
   rw [hmem.deriv_eq]
 
-/-- Two functions agreeing on an open set have the same `D_θ`-iterates there. -/
-private lemma DthIter_congr_of_eqOn {V : Set (ℝ × ℝ)} {f g : ℝ → ℝ → ℝ} (hV : IsOpen V)
-    (h : ∀ p ∈ V, f p.1 p.2 = g p.1 p.2) (i : ℕ) :
-    ∀ p ∈ V, Work.Spaces.DthIter i f p.1 p.2 = Work.Spaces.DthIter i g p.1 p.2 := by
-  induction i with
-  | zero => exact h
-  | succ i ih => exact Dth_congr_of_eqOn hV ih
 
 /-- Two functions agreeing on an open set have the same `D_z`-iterates there. -/
 private lemma DzIter_congr_of_eqOn {V : Set (ℝ × ℝ)} {f g : ℝ → ℝ → ℝ} (hV : IsOpen V)
@@ -408,13 +383,6 @@ theorem mixed_add_of_contDiffOn {n : ℕ} {f₁ f₂ : ℝ → ℝ → ℝ} {V :
     (contDiffOn_uncurry_DthIter_le hV a b hab h₁)
     (contDiffOn_uncurry_DthIter_le hV a b hab h₂) b le_rfl p hp
 
-/-- **Block additivity of two `C^n` functions on the open quadrant**, in the form consumed by
-`Assembly.Comm2w`. -/
-theorem blocksAdd_of_contDiffOn {n : ℕ} {f₁ f₂ : Fn}
-    (h₁ : ContDiffOn ℝ n (Function.uncurry f₁) Qd)
-    (h₂ : ContDiffOn ℝ n (Function.uncurry f₂) Qd) :
-    Work.FTS.CoercivityFix.Assembly.BlocksAdd n f₁ f₂ :=
-  fun a b hab z θ hzθ => mixed_add_of_contDiffOn isOpen_Qd h₁ h₂ a b hab (z, θ) hzθ
 
 /-! ## Subadditivity of the integrand in finite order -/
 

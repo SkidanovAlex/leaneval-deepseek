@@ -1,23 +1,11 @@
-/-
-# `slot_aPriori` with the missing smoothness hypothesis on the limiting source
-
-The requested `Work.FTS.PhiStar.Honesty.SlotsLimit.slot_aPriori` assumes only `HkMem α (k+1) F`
-(no smoothness of `F`) together with `HkSq α (k+1) (G n - F) → 0`; as explained in
-`../_refute/NOTES_slot_aPriori_FALSE.md` that statement is false, and the missing hypothesis is
-`smoothness of F` — which the consumer `hkMem_slots_of_approx` does carry.
-
-Under `SmoothOpen F` the missing step (the uniform bound and the Cauchy property of the *sources*)
-follows from the subadditivity `HkSq α l (u - v) ≤ 2(HkSq α l u + HkSq α l v)`
-(`HkSq_sub_le_open`), and `slot_aPriori_of_source` gives the conclusion.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.Defs
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.slot_aPriori_of_source
-import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.HkSq_sub_le_open
-import Submission.Work.FTS.PhiStar.Honesty.ellEstUnif_diff
-import Submission.Work.FTS.PhiStar.Honesty.ellWeakPos_sub
 import Submission.Work.FTS.GalFields.RHS.HkSum
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.slot_aPriori_of_source
+import Submission.Work.FTS.PhiStar.Honesty.ellEstUnif_diff
+import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenCoer.SlotWCommon
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.H2W.FstarDzIterFourPsiAe
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

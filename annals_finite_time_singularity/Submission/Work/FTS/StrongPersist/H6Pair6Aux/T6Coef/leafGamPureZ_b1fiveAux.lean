@@ -1,24 +1,16 @@
-/-
-# `T6Coef/leafGamPureZ_b1fiveAux` — the analytic infrastructure of the `b₁ = 5` crux case
-
-Reusable helpers for the `(a,b,a₁,b₁) = (1,5,0,5)` case of `T6Coef.leafGamPureZ`: continuity of
-the leaf weight and of the `σ^{-γ}`-weighted mixed slots on the open quadrant, the weight identity
-`Wt² = w²σ^{-γ}`, the a.e. strong measurability of the angular slice integrals and of the radial
-weight, and the slicewise integrability of the weighted mixed slots of an `ℋ⁶`-datum.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.slotCS_z
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
 import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.Spaces.integrable_prod_of_iterated
 import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -229,18 +221,6 @@ theorem ae_mem_Q0_prod :
   rw [MeasureTheory.Measure.prod_restrict, MeasureTheory.Measure.restrict_congr_set hprod]
   exact MeasureTheory.ae_restrict_mem Work.FTS.EllipticEst.isOpen_Q0.measurableSet
 
-/-- The level-one mixed slot `D_θf` is a.e. bounded by `C·Xn α f`. -/
-theorem ae_abs_mixed01_le_Xn : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (f : ℝ → ℝ → ℝ),
-    α ∈ Set.Ioc 0 1 → Work.FTS.EllipticEst.SmoothOpen f → Work.Spaces.HkMem α 4 f →
-    ∀ᵐ p ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
-        (MeasureTheory.volume.restrict Work.Spaces.Iθ)),
-      |Work.Spaces.mixed 0 1 f p.1 p.2| ≤ C * Work.FTS.Nonlin.Xn α f := by
-  obtain ⟨C, hCpos, hC⟩ := Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
-  refine ⟨C, hCpos, ?_⟩
-  intro α f hα hsm h4
-  filter_upwards [ae_mem_Q0_prod] with p hp
-  obtain ⟨hz, hθ0, hθ1⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-  exact hC α f hα.1 hα.2 hsm h4 0 1 (by norm_num) (by norm_num) p.1 p.2 hz hθ0 hθ1
 
 /-- Unfolding of the slice functional `b1fiveMX`. -/
 theorem b1fiveMX_apply (α : ℝ) (A : ℝ → ℝ → ℝ) (z : ℝ) :

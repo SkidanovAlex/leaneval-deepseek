@@ -3,22 +3,19 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.IntervalCases
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Row6.Pieces
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.glue
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumData
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fk_hkMem
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertDz
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertMul
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertSup
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG1
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG2
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertSup
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertS6
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertS10
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertMul
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumAux.gPertDz
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumGK
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG5E
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumG5H
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.NsumG.nsumGK
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumData
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowCoefSup
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_EllLimOK.ThetaJets.Theta_jets_le
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -2,14 +2,13 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Honest.sliceBarSq2
-import Submission.Work.FTS.EllipticEst.Honest.sliceInterp
-import Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc
-import Submission.Work.FTS.EllipticEst.Honest.aemeasurable_sliceSigmaLin
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSliceRightTendsto
-import Submission.Work.FTS.EllipticEst.sliceLimitLeftExists
 import Submission.Work.FTS.EllipticEst.H2W.AeProof.BarAux.BarSliceTools
+import Submission.Work.FTS.EllipticEst.Honest.I4UpperHonest
+import Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

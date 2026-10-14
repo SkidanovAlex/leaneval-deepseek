@@ -1,23 +1,15 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.Stability.holderWith_of_dist_le
-import Submission.Work.FTS.Regularity.Defs
-import Submission.Work.FTS.FireFix.Prime.physVort_support
-import Submission.Work.FTS.FireFix.Prime.physVort_bound
 import Submission.Work.FTS.FireFix.Prime.PhysVortHolderSlice
-import Submission.Work.FTS.FireFix.Prime.physVort_holder_time
-import Submission.Work.FTS.FireFix.Prime.physVort_hasDerivAt_and_bound
+import Submission.Work.FTS.FireFix.Prime.PvbPartA
 import Submission.Work.FTS.FireFix.Prime.physVort_timeDeriv_aesm
 import Submission.Work.FTS.FireFix.Prime.profFullHolder
-import Submission.Work.FTS.FireFix.Prime.profFullBounds
-import Submission.Work.FTS.FireFix.Prime.dzProfFullUniform
-import Submission.Work.FTS.FireFix.Prime.dzProfFullZero
-import Submission.Work.FTS.FireFix.Prime.dtgZero
-import Submission.Work.FTS.FireFix.Prime.clockBounds
-import Submission.Work.FTS.FireFix.Prime.clockLipschitz
-import Submission.Work.FTS.RegPkgGal.Basic
-import Submission.Work.FTS.FireFix.Prime.PvbPartA
+import Submission.Work.FTS.PhiStar.LinvFlatAux.linv_abs_le_four
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.Stability.holderWith_of_dist_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

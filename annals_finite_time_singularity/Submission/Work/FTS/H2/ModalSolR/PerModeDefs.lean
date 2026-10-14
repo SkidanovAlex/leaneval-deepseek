@@ -3,12 +3,11 @@ import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.H2.ModalSolR.PerModeBasic
 import Submission.Work.FTS.H2.ModalSolR.thetaMomentSmooth
-import Submission.Work.FTS.H2.ModalSolR.thetaMomentCompactSupport
-import Submission.Work.FTS.H2.ModalSolR.angularEigenIdentity
-import Submission.Work.FTS.H2.ModalSolR.radGreenWeakOdeMeas
-import Submission.Work.FTS.H2.ModalSolR.radGreenContinuousOn
-import Submission.Work.FTS.H2.ModalSol.Auxiliary.integrableOn_mul_of_sq_integrable
-import Submission.Work.FTS.H2.ModalSol.ModeIdent.Defs
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.PhiStar.Honesty.rgG2_sq_div_z4_Ioo
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -69,25 +68,6 @@ theorem Lzero_eq_zero_of_theta_not_mem {φ : ℝ → ℝ → ℝ} {a b c d z θ 
   rw [hL, hpt 2, htan, hev.self_of_nhds]
   ring
 
-/-- `bslOp α φ z θ = 0` when the angle lies outside the closed support box of `φ`. -/
-theorem bslOp_eq_zero_of_theta_not_mem {φ : ℝ → ℝ → ℝ} {a b c d z θ : ℝ} {α : ℝ}
-    (hbox : ∀ p : ℝ × ℝ, p ∉ Set.Ioo a b ×ˢ Set.Ioo c d → φ p.1 p.2 = 0)
-    (hθ : θ ∉ Set.Icc c d) : Work.Elliptic.bslOp α φ z θ = 0 := by
-  rcases lt_or_ge θ c with h | h
-  · have hmem : Set.univ ×ˢ Set.Iio c ∈ 𝓝 (z, θ) :=
-      (isOpen_univ.prod isOpen_Iio).mem_nhds ⟨trivial, h⟩
-    refine Work.EllipticEst.ModalSolution.bslOp_eq_zero_of_eventually_zero α
-      (Filter.mem_of_superset hmem ?_)
-    rintro ⟨q1, q2⟩ ⟨-, hq2⟩
-    exact test_vanishes_off_theta hbox (fun hm => absurd hm.1 (not_lt.mpr hq2.le))
-  · rcases lt_or_ge d θ with h2 | h2
-    · have hmem : Set.univ ×ˢ Set.Ioi d ∈ 𝓝 (z, θ) :=
-        (isOpen_univ.prod isOpen_Ioi).mem_nhds ⟨trivial, h2⟩
-      refine Work.EllipticEst.ModalSolution.bslOp_eq_zero_of_eventually_zero α
-        (Filter.mem_of_superset hmem ?_)
-      rintro ⟨q1, q2⟩ ⟨-, hq2⟩
-      exact test_vanishes_off_theta hbox (fun hm => absurd hm.2 (not_lt.mpr hq2.le))
-    · exact absurd ⟨h, h2⟩ hθ
 
 /-! ## Set-integral conversions -/
 

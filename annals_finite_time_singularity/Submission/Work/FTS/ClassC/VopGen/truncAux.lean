@@ -3,7 +3,7 @@ import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.ClassC.VopGen.truncSlots
-import Submission.Work.FTS.ClassC.aslotAux.bslOpPth.Basic
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

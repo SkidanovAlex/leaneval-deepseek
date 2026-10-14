@@ -1,36 +1,71 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/MolClassC.lean` — the `ClassC` clauses provided by `J_ε`
-
-The lead's request of 09:50: the elliptic layer's source class
-`Work.FTS.EllSol.ClassC α g` now also requires `HkMem α 8 g` and `BdryTraces α 7 g`, and the
-`E1` clause "the output lies in `ClassC`" must supply them.  This module assembles, in one place,
-the clauses of `ClassC` that the *mollifier* provides for `J_ε f`:
-
-* `norm` (`normTh` is a no-op on `J_ε f`, which already vanishes off the open quadrant),
-* `reg` (`C^∞` on the open quadrant, from `Jeps_contDiffOn`),
-* `mem` (`HkMem α 8`, from `HkMem_Jeps`),
-* `tr` (`BdryTraces α 7`, from `BdryTraces_Jeps`),
-* `axis` (`J_ε f = o(z)`, from `axis_Jeps`).
-
-The two remaining clauses of `ClassC` — `fsm` (all-order smoothness of the angular moment
-`F_* g`) and `l12` (the zero-mode normalisation `L₁₂ g 0 = 0`) — are *not* properties of `J_ε`
-and must be supplied by the caller; `SoftClass` below records exactly the mollifier part, and
-`softClass_Jeps` produces it.
--/
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.StrongEps.Jeps_contDiffOn
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.BdryTraces_Jeps
-import Submission.Work.FTS.StrongEps.axis_Jeps
-import Submission.Work.FTS.StrongEps.Mem10Obligations
-import Submission.Work.FTS.StrongEps.thetaTraces_Jeps
+import Mathlib.Topology.Algebra.Module.ModuleTopology
 import Submission.Work.FTS.EllSol.ClassC
+import Submission.Work.FTS.StrongEps.EpsLimitDefs
+import Submission.Work.FTS.StrongEps.Jeps_contDiffOn
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.thetaTraces_Jeps
+import Submission.Work.FTS.StrongPersist.L3DataFinal
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_LocDatum3a.L12_Jeps_locG6
+import Submission.Work.FTS_MuLamOK.Rows.Rl0Open
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsLimDbdFixed =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+set_option linter.unusedVariables false
+
+/-! ## The mechanism at the right endpoint -/
+
+
+/-! ## The core estimate
+
+The whole analytic content of `EpsLimDbd` is here: it needs the equation *only* through the
+identification `gdot g τ = rhsFun α Φs E g τ` on the open quadrant, at the fake times `τ` for
+which the conclusion is asserted. -/
+
+
+/-! ## Replacement 1 — honest derivative at every `τ > 0` (hypothesis within `Set.Ici 0`) -/
+
+
+/-! ## Replacement 2 — the given hypothesis, conclusion for `τ < T` -/
+
+
+/-! ## Replacement 3 — the given hypotheses plus the *missing* endpoint identity
+
+This isolates exactly the ingredient that the requested statement is missing: the identification
+`gdot g T = rhsFun α Φs E g T` on the open quadrant, at the single right endpoint `τ = T` (which
+`heqT`'s within-`Set.Icc 0 T` derivative fails to provide — see
+`deriv_eq_of_hasDerivWithinAt_rightEndpoint`).  If the caller obtains that identity from the
+construction of the limit family (e.g. as the `τ → T⁻` limit of the equation along the pieces, or
+from honest differentiability at `T`), the requested conclusion — including `τ = T` — follows. -/
+
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.MolClassC =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -113,3 +148,5 @@ theorem softClass_Jeps {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) {α :
     thTr := thetaTraces_Jeps hρ hα hε hsm ht0 ht1 }
 
 end Work.FTS.StrongEps
+end
+end

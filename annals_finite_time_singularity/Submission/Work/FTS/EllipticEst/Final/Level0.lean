@@ -1,45 +1,276 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Final.Level0` — the level-`0` (`η`-weighted) elliptic estimate, `TT.EllWeak0`
-
-Target: `∃ C > 0, Work.FTS.EllipticEst.TT.EllWeak0 C`, i.e. for every `0 < α ≤ 1/4` and every
-datum `(F, Ψ)` of the weak class `TT.EllWeakPos α 0 F Ψ`,
-
-  `α⁴ HkSq α 0 (z² ∂_zz Ψ) + HkSq α 0 (∂_θθ Ψ) ≤ C HkSq α 0 F`
-
-(Elgindi, Annals **194** (2021), `prop:L2` together with Steps 1–2 of `prop:H2`).
-
-## The route (all inputs proved and axiom-clean)
-
-The almost-everywhere class `H2W.Ae.AeData` carries the whole elliptic machinery.  With
-
-* `hE := AeS1.unwEnergyD` — the **unweighted** first-order energy inequality
-  `α²‖z∂_zu‖²_{w²} + ‖∂_θu‖²_{w²} ≤ C‖G‖²_ρ` (plus the two `L2Mem` conjuncts);
-* `hU := Final.aeSigmaUpD` — the `σ`-Poincaré upgrade `HkSq α 0 u ≤ C L2Sq (∂_θu · w)`;
-* `hD := Dispatch.aeSigmaEnergyD` — the `σ`-weighted radial inequality
-  `α²‖z∂_zu‖²_ρ ≤ C(‖G‖²_ρ + ‖u‖²_ρ)`;
-* `h2 := Dispatch.step2AeD` — Step 2, `‖∂_θθu‖_ρ ≤ C(‖G‖_ρ + α‖z∂_zu‖_ρ)`;
-* `AeS1.step1_of hE hU hD` — Step 1 in the joined form `H2W.Ae.Step1`;
-* `Dispatch.step3AeD` — Step 3, the radial second-order recovery `α²‖z²∂_zzu‖_ρ ≤ C(…)`,
-
-the proved assembly `H2W.Ae.level0Ae_of` produces the estimate in the class `AeData`, and
-`Final.aeData_of_ellWeakPos'` transfers it to `TT.EllWeakPos` (`Dispatch.ellWeak0_of_steps`
-does exactly this; it is reproduced below so that the import cone of this module stays free of
-the mutually inconsistent copies that `Dispatch/cores_level_zero.lean` drags in).
--/
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.Basic.ENNReal.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Assembly
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigmaUpgradeU
 import Submission.Work.FTS.EllipticEst.AeS1.Assembly
 import Submission.Work.FTS.EllipticEst.AeS1.unwEnergyD
-import Submission.Work.FTS.EllipticEst.Dispatch.aeSigmaEnergyD
 import Submission.Work.FTS.EllipticEst.Dispatch.step2AeD
-import Submission.Work.FTS.EllipticEst.Dispatch.step3AeD
-import Submission.Work.FTS.EllipticEst.Final.AeSigmaUpD
+import Submission.Work.FTS.EllipticEst.H2W.Ae.hkMem_u
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Assembly6
+import Submission.Work.FTS.StrongPersist.N6.Swap6
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.mixed_mul_le
+-- ===== merged: Submission.Work.FTS.EllipticEst.Dispatch.cores_level_zero =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Dispatch
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+/-- `EllWeakPos` is `AeData` (the pointwise moments imply the a.e. ones; the classes are
+otherwise identical). -/
+theorem aeData_of_ellWeakPos' {α : ℝ} {F Ψ : ℝ → ℝ → ℝ} (hα : 0 < α) (hα4 : α ≤ 1 / 4)
+    (h : Work.FTS.EllipticEst.TT.EllWeakPos α 0 F Ψ) :
+    Work.FTS.EllipticEst.H2W.Ae.AeData α Ψ F :=
+  ⟨hα, hα4, h.eq, h.zero, h.pi_half, h.smooth, h.memF, h.memA, h.memB,
+    (by filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with z hz
+        exact h.orthPsi z hz),
+    (by filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioi] with z hz
+        exact h.orthF z hz)⟩
+
+/-- **The `σ`-upgrade of the `u`-norm in the a.e. class** (Step 1, the `u`-half): for a datum
+`u` of the almost-everywhere class, `HkSq α 0 u ≤ C · L2Sq (∂_θu · w)`.
+
+This is the statement `aeSigmaUp` of `H2W/Ae/aeSigmaUp.lean`.  It is proved here from the
+*already proved* slicewise σ-Poincaré upgrade `AeProof.AeSigmaUpgradeU_all` (an inequality of
+`∫⁻`-integrals, `AeSigmaUpgradeU_all`), by translating the `∫⁻`-statement into the Bochner
+statement `HkSq`/`L2Sq` with `MeasureTheory.integral_eq_lintegral_of_nonneg_ae`. -/
+theorem aeSigmaUpD : ∃ C : ℝ, 0 < C ∧
+    ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ), Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
+      Work.Spaces.L2Mem (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z) →
+      Work.Spaces.HkSq α 0 u
+        ≤ C * Work.Spaces.L2Sq (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z) := by
+  obtain ⟨C₀, hC₀pos, hC₀⟩ := Work.FTS.EllipticEst.H2W.AeProof.AeSigmaUpgradeU_all
+  refine ⟨C₀, hC₀pos, ?_⟩
+  intro α u G hA hL2
+  -- ## abbreviations
+  set Asl : ℝ → ℝ := fun z => ∫ θ in Work.Spaces.Iθ, (u z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ
+    with hAsl
+  set Bsl : ℝ → ℝ := fun z => ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ) ^ 2 with hBsl
+  set Apr : ℝ → ℝ≥0∞ := fun z => ∫⁻ θ in Work.Spaces.Iθ,
+    ENNReal.ofReal ((u z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) with hApr
+  set Bpr : ℝ → ℝ≥0∞ := fun z => ∫⁻ θ in Work.Spaces.Iθ,
+    ENNReal.ofReal ((Work.Spaces.pth u z θ) ^ 2) with hBpr
+  -- ## elementary facts
+  have hsEta_nn : ∀ θ ∈ Work.Spaces.Iθ, 0 ≤ Work.FTS.EllipticEst.sEta θ := by
+    intro θ hθ
+    show 0 ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
+    exact Real.rpow_nonneg (Work.FTS.EllipticEst.Honest.sin_two_nonneg_of_mem_Iθ hθ) _
+  have hAsl_nn : ∀ z, 0 ≤ Asl z := by
+    intro z
+    rw [hAsl]
+    exact setIntegral_nonneg measurableSet_Icc
+      (fun θ hθ => mul_nonneg (sq_nonneg _) (hsEta_nn θ hθ))
+  have hBsl_nn : ∀ z, 0 ≤ Bsl z := by
+    intro z
+    rw [hBsl]
+    exact setIntegral_nonneg measurableSet_Icc (fun θ _ => sq_nonneg _)
+  -- ## the level-`0` integrand is `w²·(u²σ)`
+  have hptid : ∀ z θ, θ ∈ Work.Spaces.Iθ →
+      Work.Spaces.HkIntegrand α 0 u z θ
+        = (Work.Spaces.w z) ^ 2 * ((u z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ) := by
+    intro z θ hθ
+    rw [Work.FTS.EllipticEst.Honest.HkIntegrand_zero_eq, mul_pow,
+      Work.FTS.EllipticEst.Honest.sq_weight_eq (Work.FTS.EllipticEst.Honest.sin_two_nonneg_of_mem_Iθ hθ)]
+    simp only [Work.FTS.EllipticEst.sEta]
+    ring
+  have hslice : ∀ z, (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0 u z θ)
+      = (Work.Spaces.w z) ^ 2 * Asl z := by
+    intro z
+    rw [← MeasureTheory.integral_const_mul]
+    refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ hθ => ?_)
+    exact hptid z θ hθ
+  -- ## `HkSq` as a `toReal` of a `lintegral`
+  have hHk : Work.Spaces.HkSq α 0 u
+      = (∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Asl z)).toReal := by
+    rw [Work.FTS.EllipticEst.HkSq_eq_lintegral α 0 u hA.smooth]
+    congr 1
+    exact MeasureTheory.lintegral_congr fun z => by rw [hslice z]
+  -- ## `L2Sq` as a `toReal` of a `lintegral`
+  have hL2pt : (fun z => ∫ θ in Work.Spaces.Iθ,
+      (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2)
+      = fun z => (Work.Spaces.w z) ^ 2 * Bsl z := by
+    funext z
+    rw [← MeasureTheory.integral_const_mul]
+    refine MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => ?_)
+    ring
+  have hL2mem : MeasureTheory.IntegrableOn
+      (fun z => (Work.Spaces.w z) ^ 2 * Bsl z) Work.Spaces.Iz :=
+    hL2.2.congr_fun (fun z _ => congr_fun hL2pt z) measurableSet_Ici
+  have hL2l : Work.Spaces.L2Sq (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z)
+      = (∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Bsl z)).toReal := by
+    rw [Work.Spaces.L2Sq, hL2pt]
+    exact MeasureTheory.integral_eq_lintegral_of_nonneg_ae
+      (Filter.Eventually.of_forall fun z => mul_nonneg (sq_nonneg _) (hBsl_nn z))
+      hL2mem.aestronglyMeasurable
+  -- ## the slicewise measurability of `u²σ`
+  have hslice_smooth : ∀ z, 0 < z →
+      ContDiffOn ℝ 1 (fun θ => u z θ) (Set.Ioo 0 (Real.pi / 2)) := by
+    intro z hz
+    have hmap : MapsTo (fun θ : ℝ => (z, θ)) (Set.Ioo 0 (Real.pi / 2))
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := fun θ hθ => ⟨hz, hθ⟩
+    exact (hA.smooth 1).comp (by fun_prop) hmap
+  have haesm_slice : ∀ z, 0 < z → AEStronglyMeasurable
+      (fun θ => (u z θ) ^ 2 * Work.FTS.EllipticEst.sEta θ)
+      (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
+    intro z hz
+    exact ((Work.FTS.EllipticEst.Honest.aesm_of_contDiffOn_Ioo (hslice_smooth z hz)).pow 2).mul
+      (Work.FTS.EllipticEst.H2W.Ae.measurable_sEta.aestronglyMeasurable)
+  -- ## the slicewise identity `Asl z = (∫⁻ ...).toReal`
+  have hAsl_eq : ∀ z, 0 < z → Asl z = (Apr z).toReal := by
+    intro z hz
+    rw [hAsl, hApr]
+    refine MeasureTheory.integral_eq_lintegral_of_nonneg_ae ?_ (haesm_slice z hz)
+    exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc
+      (fun θ hθ => mul_nonneg (sq_nonneg _) (hsEta_nn θ hθ))
+  -- ## pointwise domination, a.e. in `z`
+  have hdom_ae : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Asl z)
+        ≤ ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Apr z := by
+    rw [Work.Spaces.Iz, MeasureTheory.ae_restrict_iff' measurableSet_Ici]
+    have hne : ∀ᵐ z ∂(MeasureTheory.volume : Measure ℝ), z ≠ 0 := by
+      rw [MeasureTheory.ae_iff]
+      simp
+    filter_upwards [hne] with z hz hzI
+    have hzpos : 0 < z := lt_of_le_of_ne hzI (Ne.symm hz)
+    rw [ENNReal.ofReal_mul (sq_nonneg (Work.Spaces.w z))]
+    refine mul_le_mul_of_nonneg_left ?_ bot_le
+    rw [hAsl_eq z hzpos]
+    exact ENNReal.ofReal_toReal_le
+  have hstepA : (∫⁻ z in Work.Spaces.Iz,
+        ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Asl z))
+      ≤ ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Apr z :=
+    MeasureTheory.lintegral_mono_ae hdom_ae
+  -- ## the proved slicewise upgrade
+  have hup : (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Apr z)
+      ≤ ENNReal.ofReal C₀ * (∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z) :=
+    hC₀ α u G hA
+  -- ## the two `∫⁻`-expressions agree with the Bochner ones
+  have hint2 : ∀ z, 0 < z → MeasureTheory.IntegrableOn
+      (fun θ => (Work.Spaces.pth u z θ) ^ 2) Work.Spaces.Iθ := by
+    intro z hz
+    have hwz : Work.Spaces.w z ≠ 0 := by
+      rw [Work.Spaces.w]; positivity
+    have hint : MeasureTheory.Integrable
+        (fun θ => (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2)
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ) := hL2.1 z (le_of_lt hz)
+    have hdiv : MeasureTheory.Integrable
+        (fun θ => (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2 / (Work.Spaces.w z) ^ 2)
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ) := hint.div_const _
+    have haeeq : (fun θ => (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2
+          / (Work.Spaces.w z) ^ 2) =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
+        (fun θ => (Work.Spaces.pth u z θ) ^ 2) := by
+      refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun θ _ => ?_)
+      field_simp
+    exact hdiv.congr haeeq
+  have hBsl_eq : ∀ z, 0 < z → Bsl z = (Bpr z).toReal := by
+    intro z hz
+    rw [hBsl, hBpr]
+    refine MeasureTheory.integral_eq_lintegral_of_nonneg_ae
+      (Filter.Eventually.of_forall fun θ => sq_nonneg _) (hint2 z hz).aestronglyMeasurable
+  have hBpr_ne : ∀ z, 0 < z → Bpr z ≠ ⊤ := by
+    intro z hz
+    rw [hBpr]
+    exact (MeasureTheory.lintegral_ofReal_ne_top_iff_integrable (hint2 z hz).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun θ => sq_nonneg _)).mpr (hint2 z hz)
+  have hCeq_ae : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z
+        = ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Bsl z) := by
+    rw [Work.Spaces.Iz, MeasureTheory.ae_restrict_iff' measurableSet_Ici]
+    have hne : ∀ᵐ z ∂(MeasureTheory.volume : Measure ℝ), z ≠ 0 := by
+      rw [MeasureTheory.ae_iff]
+      simp
+    filter_upwards [hne] with z hz hzI
+    have hzpos : 0 < z := lt_of_le_of_ne hzI (Ne.symm hz)
+    rw [hBsl_eq z hzpos, ENNReal.ofReal_mul (sq_nonneg (Work.Spaces.w z)),
+      ENNReal.ofReal_toReal (hBpr_ne z hzpos)]
+  have hstepC : (∫⁻ z in Work.Spaces.Iz,
+        ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z)
+      = ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Bsl z) :=
+    MeasureTheory.lintegral_congr_ae hCeq_ae
+  -- ## finiteness of the right-hand side
+  have hYne : (∫⁻ z in Work.Spaces.Iz,
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Bsl z)) ≠ ⊤ := by
+    refine (MeasureTheory.lintegral_ofReal_ne_top_iff_integrable
+      hL2mem.aestronglyMeasurable
+      (Filter.Eventually.of_forall fun z => mul_nonneg (sq_nonneg _) (hBsl_nn z))).mpr hL2mem
+  have hBne : (∫⁻ z in Work.Spaces.Iz,
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z) ≠ ⊤ := by
+    rw [hstepC]; exact hYne
+  have hBne' : ENNReal.ofReal C₀ * (∫⁻ z in Work.Spaces.Iz,
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z) ≠ ⊤ := by
+    rw [hstepC]
+    exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top hYne
+  have hAne : (∫⁻ z in Work.Spaces.Iz,
+      ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Apr z) ≠ ⊤ :=
+    ne_top_of_le_ne_top hBne' hup
+  -- ## assembly
+  calc Work.Spaces.HkSq α 0 u
+      = (∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal ((Work.Spaces.w z) ^ 2 * Asl z)).toReal := hHk
+    _ ≤ (∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Apr z).toReal :=
+        ENNReal.toReal_mono hAne hstepA
+    _ ≤ (ENNReal.ofReal C₀ * ∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z).toReal :=
+        ENNReal.toReal_mono hBne' hup
+    _ = C₀ * (∫⁻ z in Work.Spaces.Iz,
+          ENNReal.ofReal ((Work.Spaces.w z) ^ 2) * Bpr z).toReal := by
+        rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal hC₀pos.le]
+    _ = C₀ * Work.Spaces.L2Sq (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z) := by
+        rw [hstepC, ← hL2l]
+
+
+
+/-- **The level-`0` estimate in the weak class from the three steps** of `prop:H2`. -/
+theorem ellWeak0_of_steps (h1 : Work.FTS.EllipticEst.H2W.Ae.Step1)
+    (h2 : Work.FTS.EllipticEst.H2W.Ae.Step2) (h3 : Work.FTS.EllipticEst.H2W.Ae.Step3) :
+    ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C := by
+  obtain ⟨C, hC, hmain⟩ := Work.FTS.EllipticEst.H2W.Ae.level0Ae_of h1 h2 h3
+  refine ⟨C, hC, ?_⟩
+  intro α F Ψ hα hα4 hW
+  exact hmain α Ψ F (aeData_of_ellWeakPos' hα hα4 hW)
+
+/-- **The level-`0` (`η`-weighted) estimate `TT.EllWeak0`** — the paper's `prop:L2` together with
+Steps 1--2 of `prop:H2`, assembled from the already proved analytic inputs of the Dispatch route:
+
+* Step 1 (`H2W.Ae.Step1`) from `AeS1.step1_of` with the *proved* unweighted energy inequality
+  `AeS1.unwEnergyD`, the `σ`-Poincaré upgrade `aeSigmaUpD` of this file, and the `σ`-weighted
+  radial inequality `Dispatch.aeSigmaEnergyD`;
+* Step 2 from `Dispatch.step2AeD`;
+* Step 3 from `Dispatch.step3AeD`.
+
+The assembly `H2W.Ae.level0Ae_of` (proved, `sorry`-free) turns the three into the estimate for
+the a.e. class `AeData`, and `ellWeak0_of_steps` converts that into `TT.EllWeak0` through
+`aeData_of_ellWeakPos'`. -/
+theorem cores_level_zero : ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C :=
+  ellWeak0_of_steps
+    (Work.FTS.EllipticEst.AeS1.step1_of Work.FTS.EllipticEst.AeS1.unwEnergyD aeSigmaUpD
+      aeSigmaEnergyD)
+    step2AeD step3AeD
+
+end Work.FTS.EllipticEst.Dispatch
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Final.Level0 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -65,12 +296,7 @@ theorem ellWeak0_of_steps (h1 : Work.FTS.EllipticEst.H2W.Ae.Step1)
   intro α F Ψ hα hα4 hW
   exact hmain α Ψ F (aeData_of_ellWeakPos' hα hα4 hW)
 
-/-- **The level-`0` estimate** `∃ C > 0, TT.EllWeak0 C`. -/
-theorem EllWeak0_exists : ∃ C : ℝ, 0 < C ∧ Work.FTS.EllipticEst.TT.EllWeak0 C :=
-  ellWeak0_of_steps
-    (Work.FTS.EllipticEst.AeS1.step1_of Work.FTS.EllipticEst.AeS1.unwEnergyD aeSigmaUpD
-      Work.FTS.EllipticEst.Dispatch.aeSigmaEnergyD)
-    Work.FTS.EllipticEst.Dispatch.step2AeD
-    Work.FTS.EllipticEst.Dispatch.step3AeD
 
 end Work.FTS.EllipticEst.Final
+end
+end

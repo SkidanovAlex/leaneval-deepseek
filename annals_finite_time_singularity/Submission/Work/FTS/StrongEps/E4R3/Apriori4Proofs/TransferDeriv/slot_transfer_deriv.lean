@@ -3,17 +3,14 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.Defs
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.TransferAux
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.JepsQuadSq
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.PairingTransferDeriv
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logW_fderiv_integral_le
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.BaseCase
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.leaf_logW_shift_uniform
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.integrable_pairing_Jeps
-import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
-import Submission.Work.FTS.StrongEps.EpsE4Thr.WordCongr
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.logW_fderiv_integral_le
+import Submission.Work.FTS.StrongPersist.H6Aux.RadialAsm
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

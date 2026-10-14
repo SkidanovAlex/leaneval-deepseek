@@ -1,26 +1,8 @@
-/-
-# `FTS_MuLamOK/Rows/SgRowsEnv` — the three `sg`-rows of `N` in the honest envelope
-
-The three pieces `N₁^{sg} = 2ℛ(Φ̃_*)·f`, `N₂^{sg} = -2𝒰(Φ̃_*)·∂_θf`, `N₃^{sg} = -2α𝒱(Φ̃_*)·D_zf`
-of `N α (F_*+f) (Φ_*+Φg)` are bounded by a uniform multiple of the `rl¹`-envelope
-
-  `Env α f = α² + √α·|f|_{ℋ⁴} + α^{-3/2}·|f|²_{ℋ⁴}`
-
-for every datum `f` which is `C^∞` on the **open** quadrant (`SmoothOpen f`) with honest
-`ℋ⁴`-integrand (`HkMem α 4 f`) and every star-package `StarPkgo α Cs Φs`.
-
-The pointwise row estimates are `row1sg_open`, `row2sg_open`, `row3sg_open`
-(`Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.sg_open`), which deliver the `α`-linear
-envelopes `6·max Cs 0·α·√(π/2)·|f|`, `3·(CU·max Cs 0·α)·√(π/2)·|f|` resp.
-`6·max Cs 0·α²·√(π/2)·|f|`, with `CU` the constant of `starUopBound`.  The assembly below
-(same arithmetic as `Work.FTS.NonlinRows.Rl1.sgBounds`) absorbs `α·|f|` and `α²·|f|` into
-`Env α f` using `α² ≤ α ≤ √α` and `√α·|f| ≤ Env α f`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.sg_open
-import Submission.Work.FTS.NonlinRows.Rl1.tools
-import Submission.Work.FTS.NonlinRows.Rl1.sgBounds
+import Submission.Work.FTS.StrongPersist.Vocab
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

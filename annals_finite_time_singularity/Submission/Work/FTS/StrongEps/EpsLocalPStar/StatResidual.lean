@@ -1,62 +1,234 @@
-/-
-# CORRECTION (session 21) — the refutation below is INVALID
-Read `StrongEps/NOTES_session21.md` §2 first.  The claimed mechanism (`-2F_*/z → -4αΓ(θ)/c ≠ 0`)
-is wrong on two counts: `UVR α F_* (Theta α F_*)` contains `-2F_*/(1+z)` (from
-`Construction.UVR_sub` + `L12_Fstar_eq`), which cancels the `-2F_*` down to `O(αz²)`; and the
-`Theta`-part of the `UVR` term is `O(αz)`, not `O(Csα²z)`.  The *machine-proved* computation is
-`Work.FTS.StrongEps.EpsLocalPStar.MainLHS_zero_Fstar`
-(`EpsLocalPStar/MainLHS_zero_Fstar.lean`): `MainLHS α 0 0 F_* = -8α²(Γ/c)c2m·z²/(1+z)⁴`, so the
-model residual has NO `z`-linear part.  With `profRHS = -StatEqF` and `UVR_sub` one then gets
-`profRHS α Φs E 0 z θ = -MainLHS α 0 0 F_* - 2αμ·AK - UVR α F_* Φt - ½s2·FK(F_*)·pthF_* -
-sin²θ·FK(F_*)·F_*` (`Φt = PhiTil α F_* (Φs + E 0)`), in which every piece is flat at the axis
-provided `SmoothOpen (PhiTil α F_* Φs)` and `PhiTil α F_* Φs (0,·) = 0` — the `StarCore.zeroOff`
-data.  So at the zero profile `profRHS(0)/z → 0`, the `axis` clause is preserved, and `E2a`/`E4`
-are NOT refuted by this mechanism; what remains open is the class-`C` invariance along the flow for
-general class data (the `EpsEngine.profRHS_le_zsq_of_radial` route).  Do not cite this file as a
-refutation.
-
-# `StatResidual.lean` — the scheme's right-hand side is minus the stationary residual
-
-**The identity** (`profRHS_eq_neg_dynLHS`):
-
-  `profRHS α Φs E w z θ = -((1+μ)·F + (1+μ)(1+λ)·D_zF + UVR α F Φ)`,
-
-where `F = Ftot α w = F_* + w`, `Φ = Φs + E w`, `μ = muDyn …`, `λ = lamDyn … = lamfun μ`.
-
-Equivalently: `epsWP = dynLin + dynRHS = profRHS` is **minus the left-hand side of the
-paper's stationary equation** `StatEqF α μ λ F Φ` (tex 1330).  The right-hand side of the
-`ε`-scheme `∂_τ g = P₀ J_ε [𝓛+𝓡](P₀ J_ε g)` is therefore the *negative stationary residual*,
-which is exactly what `Work.Construction.gEquationFinal` says (the `g`-equation `LGammaT g =
-gRHS` is equivalent to `StatEqF`).
-
-**Why it matters** (`Submission/Work/FTS/StrongEps/EpsLocalPStar/NOTES_EpsLocalPStar_FALSE.md`).
-At `w = 0` the identity gives
-
-  `profRHS α Φs E 0 z θ = -2·F_*(z,θ) + 2α(1-μ)·AK(z,θ) - UVR α F_* Φ(z,θ)`,
-
-(stationarity of `F_*`: `F_* + D_zF_* = 2F_* - 2αAK`, `Fstar_sub_DzFstar`), and `-2F_*/z →
--4αΓ(θ)/c ≠ 0` while the other two terms are `O(α z²)` and `O(Csα²z)`.  Hence the flow of the
-`ε`-scheme from *any* datum whose projected-mollified profile vanishes at `z = 0` immediately
-leaves the class `C` (`axis` and `HkMem α 7` fail at `z = 0`), so `EpsRegP` — hence the target
-`EpsLocalPStar` — is unachievable.  This is the formal core of that refutation.
-
-The statement is stated with the side conditions that the (`rfl`-level) decompositions used by
-`Work.Construction.MainLHS_explicit` / `Work.Stability.MainLHSSubN` supply: linearity of `D_z`,
-`D_θ` and `L₁₂` (`hDz`, `hpth`, `hL`), the evaluation `L₁₂(F_*) = 2α/(1+z)` (`hLstar`), the
-stationarity of `F_*` (`hstat`), the `Φ = Φ̃ + Θ` derivatives (`h2`, `h3`, `h5`, `h6`) and
-`μ ≠ -1`.  All are available for `SmoothOpen` + `HkMem`-type profiles.  `hμ1` holds on the
-class-`C` small ball by `MuLamOK`.
-
-`#print axioms` gives `[propext, Classical.choice, Quot.sound]`.
--/
-
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Complex.Trigonometric
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Tactic.LinearCombination
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.StrongEps.E5Extract
 import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsRHSXrhs
-import Submission.Work.Construction.Equation
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
 import Submission.Work.Stability.MainLHSSubN
-import Submission.Work.Construction.MufunS
-import Submission.Work.Construction.Basic
+-- ===== merged: Submission.Work.FTS.StrongEps.E5Clauses =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## The two boundary clauses -/
+
+/-- **`init`.**  The clamp attains the datum at `τ = 0`, because the *approximants* do: at
+`τ = 0` every `slice (G k) 0` is the datum (`IsEpsSolP.init`), so the limit `F 0` agrees with
+`g₀` on the open quadrant, and the clamp agrees with the datum off it. -/
+theorem E5_init {α B T : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn} {g₀ : Fn}
+    {ε : ℕ → ℝ} {G : ℕ → Fam} {φ : ℕ → ℕ} {F : ℝ → Fn}
+    (hsol : ∀ k : ℕ, IsEpsSolP α ρ (ε k) T Φs E g₀ (G k))
+    (hconv0 : ConvLocUnifH6 α B (fun n => slice (G (φ n)) 0) (F 0)) :
+    ∀ z θ, clampQ F g₀ z θ 0 = g₀ z θ := by
+  refine clampQ_init ?_
+  intro z θ hz hθ
+  have hK : ({(z, θ)} : Set (ℝ × ℝ)) ⊆ Work.FTS.EllipticEst.Q0 := by
+    intro p hp
+    rw [Set.mem_singleton_iff] at hp
+    subst hp
+    exact Work.FTS.EllipticEst.mem_Q0.mpr ⟨hz, hθ.1, hθ.2⟩
+  have hpt : Filter.Tendsto (fun n : ℕ => slice (G (φ n)) 0 z θ) Filter.atTop
+      (𝓝 (F 0 z θ)) := by
+    have h1 := (hconv0.conv {(z, θ)} isCompact_singleton hK 0 0 (by norm_num)).tendsto_at
+      (Set.mem_singleton _)
+    simpa only [Work.Spaces.mixed_zero_right, Work.Spaces.DzIter_zero,
+      Work.FTS.Galerkin.slice_apply] using h1
+  have hconst : (fun n : ℕ => slice (G (φ n)) 0 z θ) = fun _ : ℕ => g₀ z θ := by
+    funext n
+    exact (hsol (φ n)).1 z θ
+  rw [hconst] at hpt
+  exact tendsto_nhds_unique hpt tendsto_const_nhds
+
+/-- **`vanish`.**  The clamp vanishes on the two angular boundary lines for `z ≥ 0` as soon as
+the datum does — which is the first conjunct of `EpsUniformMem` (and a *necessary* condition,
+`EpsLimNecessary.ExistsLimH.datum_vanish`). -/
+theorem E5_vanish {F : ℝ → Fn} {g₀ : Fn}
+    (hvan : ∀ z, 0 ≤ z → g₀ z 0 = 0 ∧ g₀ z (π / 2) = 0) :
+    ∀ τ z, 0 ≤ z → clampQ F g₀ z 0 τ = 0 ∧ clampQ F g₀ z (π / 2) τ = 0 :=
+  clampQ_vanish hvan
+
+/-! ## The space-regularity clause -/
+
+/-- **`c4`.**  The clamped limit family is `C⁴` in space at every `τ ∈ Icc 0 T`. -/
+theorem E5_c4 {α B T : ℝ} {g₀ : Fn} {G : ℕ → Fam} {φ : ℕ → ℕ} {F : ℝ → Fn}
+    (hconv : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) (F τ)) :
+    ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ContDiffOn ℝ 4 (Function.uncurry (slice (clampQ F g₀) τ))
+        Work.FTS.EllipticEst.Q0 :=
+  fun τ hτ => clampQ_contDiffOn (hconv τ hτ).contDiffOn
+
+/-! ## The two norm clauses -/
+
+/-- **`bd6`.**  The uniform `ℋ⁶`-bound of the limit is the one carried by the extraction; nothing
+is re-derived on the limit slice. -/
+theorem E5_bd6 {α B T : ℝ} {g₀ : Fn} {G : ℕ → Fam} {φ : ℕ → ℕ} {F : ℝ → Fn}
+    (hconvL : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ConvLev0H6 α B (fun n => slice (G (φ n)) τ) (F τ)) :
+    ∃ B' : ℝ, ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      Work.FTS.StrongGlobal.Xn6 α (slice (clampQ F g₀) τ) ≤ B' := by
+  refine ⟨B, fun τ hτ => ?_⟩
+  have h := clampQ_hkNorm α 6 F g₀ τ
+  show Work.Spaces.HkNorm α 6 (slice (clampQ F g₀) τ) ≤ B
+  rw [h]
+  exact (hconvL τ hτ).hkNorm_le
+
+/-- **`bd4`.**  The uniform `ℋ⁴`-bound of the limit, by lower semicontinuity of the `ℋ⁴`-energy
+along the slotwise local uniform convergence (`Xn_le_of_convLocUnif`).  The input is the uniform
+`ℋ⁴`-bound and membership of the **converging** sequence — this is the clause that the `P₀`
+projection perturbs (see `NOTES_session13.md` §2). -/
+theorem E5_bd4 {α B C₀ T : ℝ} {g₀ : Fn} {G : ℕ → Fam} {φ : ℕ → ℕ} {F : ℝ → Fn}
+    (hconv : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) (F τ))
+    (hmem : ∀ τ ∈ Set.Icc (0 : ℝ) T, ∀ n : ℕ,
+      Work.Spaces.HkMem α 4 (slice (G (φ n)) τ))
+    (hb : ∀ τ ∈ Set.Icc (0 : ℝ) T, ∀ n : ℕ,
+      Work.FTS.Nonlin.Xn α (slice (G (φ n)) τ) ≤ C₀ * α ^ 2) :
+    ∀ τ ∈ Set.Icc (0 : ℝ) T, Work.FTS.Nonlin.Xn α (slice (clampQ F g₀) τ) ≤ C₀ * α ^ 2 := by
+  intro τ hτ
+  have h := clampQ_hkNorm α 4 F g₀ τ
+  show Work.Spaces.HkNorm α 4 (slice (clampQ F g₀) τ) ≤ C₀ * α ^ 2
+  rw [h]
+  exact EpsLimBd4 (hconv τ hτ) (hmem τ hτ) (hb τ hτ)
+
+/-- **`mem4`.**  The honest `ℋ⁴`-membership of the limit slice, from the proved `EpsLimMem4`
+(whose per-`z` bound is *not* removable — `HkMem` is a per-`z` condition while Fatou gives it only
+a.e. in `z`). -/
+theorem E5_mem4 {α B : ℝ} (g₀ : Fn) {G : ℕ → Fn} {F : ℝ → Fn} {τ : ℝ}
+    (hconv : ConvLocUnifH6 α B G (F τ))
+    (hsm : ∀ n : ℕ, ∀ k : ℕ, ContDiffOn ℝ k (Function.uncurry (G n)) Work.FTS.EllipticEst.Q0)
+    (hmem : ∀ n : ℕ, Work.Spaces.HkMem α 6 (G n))
+    (hb : ∀ n : ℕ, Work.Spaces.HkNorm α 6 (G n) ≤ B)
+    (hz : ∀ z ∈ Work.Spaces.Iz, ∃ Bz : ℝ, ∀ n : ℕ,
+      (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 (G n) z θ) ≤ Bz) :
+    Work.Spaces.HkMem α 4 (slice (clampQ F g₀) τ) ∧
+      Work.Spaces.HkNorm α 4 (slice (clampQ F g₀) τ) ≤ B := by
+  obtain ⟨hm, hb'⟩ := EpsLimMem4 hconv hsm hmem hb hz
+  have h := clampQ_hkNorm α 4 F g₀ τ
+  refine ⟨clampQ_hkMem α 4 hm, ?_⟩
+  show Work.Spaces.HkNorm α 4 (slice (clampQ F g₀) τ) ≤ B
+  rw [h]; exact hb'
+
+/-! ## The fake-time continuity of the limit family -/
+
+/-- **`cont`.**  Continuity in the fake time, at every point of the open quadrant: the
+τ-Lipschitz property of the approximants passes to the limit (`EpsLimCont`), and the clamp is
+constant off the open angular interval. -/
+theorem E5_cont {α B T : ℝ} {g₀ : Fn} {G : ℕ → Fam} {F : ℝ → Fn}
+    (hconvL : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ConvLev0H6 α B (fun n => slice (G n) τ) (F τ))
+    (hlip : ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
+      ∃ C : ℝ, 0 ≤ C ∧ ∀ n : ℕ, ∀ p ∈ K, ∀ τ ∈ Set.Icc (0 : ℝ) T,
+        ∀ τ' ∈ Set.Icc (0 : ℝ) T,
+          |slice (G n) τ p.1 p.2 - slice (G n) τ' p.1 p.2| ≤ C * |τ - τ'|) :
+    ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
+      ContinuousOn (fun τ => clampQ F g₀ z θ τ) (Set.Icc (0 : ℝ) T) := by
+  intro z θ hzθ
+  exact clampQ_continuousOn hzθ.1 ⟨hzθ.2.1, hzθ.2.2⟩ (EpsLimCont hconvL hlip z θ hzθ)
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5ExtractHbdd =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- **The extraction, from the value bound of `epsRHSP`.**  Same conclusion as `E5Extract`, with
+`hequi` produced by `EpsProfileLip` instead of `E5Equi`. -/
+theorem E5Extract_of_hbdd {α B T : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn} {g₀ : Fn}
+    {ε : ℕ → ℝ} {G : ℕ → Fam}
+    (hα : α ∈ Set.Ioc 0 1) (hρ : IsSmoothKernel ρ)
+    (hε : ∀ k : ℕ, ε k ∈ Set.Ioc 0 1)
+    (hsol : ∀ k : ℕ, IsEpsSolP α ρ (ε k) T Φs E g₀ (G k))
+    (hsm : ∀ k : ℕ, ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      Work.FTS.EllipticEst.SmoothOpen (slice (G k) τ))
+    (hmem6 : ∀ k : ℕ, ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      Work.Spaces.HkMem α 6 (slice (G k) τ))
+    (hb6 : ∀ k : ℕ, ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      Work.FTS.StrongGlobal.Xn6 α (slice (G k) τ) ≤ B)
+    (hcont : ∀ k : ℕ, ∀ p : ℝ × ℝ, p ∈ Work.FTS.EllipticEst.Q0 →
+      ContinuousOn (fun s : ℝ => epsRHSP α ρ (ε k) Φs E (G k) s p.1 p.2) (Set.Icc 0 T))
+    (hbdd : ∀ K : Set (ℝ × ℝ), IsCompact K → K ⊆ Work.FTS.EllipticEst.Q0 →
+      ∃ C : ℝ, 0 ≤ C ∧ ∀ n : ℕ, ∀ s ∈ Set.Icc (0 : ℝ) T, ∀ p ∈ K,
+        |epsRHSP α ρ (ε n) Φs E (G n) s p.1 p.2| ≤ C) :
+    ∃ (φ : ℕ → ℕ) (F : ℝ → Fn), StrictMono φ ∧
+      ∀ τ ∈ Set.Icc (0 : ℝ) T,
+        ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) (F τ) := by
+  -- the raw `ContDiffOn` form of the smoothness clause, as `EpsConvRat` asks for it
+  have hsm' : ∀ n : ℕ, ∀ τ ∈ Set.Icc (0 : ℝ) T, ∀ k : ℕ,
+      ContDiffOn ℝ k (Function.uncurry (slice (G n) τ))
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
+    fun n τ hτ k => (hsm n τ hτ).forall k
+  -- **Step 1.** the diagonal extraction over the rational times
+  obtain ⟨φ, F, hφ, hconvR⟩ := EpsConvRat (α := α) (B := B) (T := T) hα.1
+    (G := G) hsm' hmem6 hb6
+  -- the level-`0` Lipschitz property of the profiles, from the *value* bound only
+  have hequi := EpsProfileLip (α := α) (T := T) (ρ := ρ) (Φs := Φs) (E := E) (g₀ := g₀)
+    (ε := ε) (G := G) hsol hcont hbdd
+  -- **Step 2.** the limit at the given `τ` (a fresh extraction, coherent via Cauchy)
+  have hAll : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ∃ f : Fn, ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) f :=
+    fun τ hτ => EpsConvAllTau (α := α) (B := B) (T := T) hα.1 (G := G) (F := F) (φ := φ) hφ
+      hsm' hmem6 hb6 (fun σ hσ => (hconvR σ hσ).toLev0) hequi τ hτ
+  -- **Step 3.** the two pieces, as a total function of `τ`
+  have htot : ∀ τ : ℝ, ∃ f : Fn,
+      τ ∈ Set.Icc (0 : ℝ) T → ConvLocUnifH6 α B (fun n => slice (G (φ n)) τ) f := by
+    intro τ
+    by_cases hT : τ ∈ Set.Icc (0 : ℝ) T
+    · by_cases hq : τ ∈ Set.range (fun q : ℚ => (q : ℝ))
+      · exact ⟨F τ, fun _ => hconvR τ ⟨hT, hq⟩⟩
+      · obtain ⟨f, hf⟩ := hAll τ hT
+        exact ⟨f, fun _ => hf⟩
+    · exact ⟨F τ, fun h => absurd h hT⟩
+  refine ⟨φ, fun τ => Classical.choose (htot τ), hφ, fun τ hτ => ?_⟩
+  exact Classical.choose_spec (htot τ) hτ
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsLocalPStar.StatResidual =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -71,119 +243,6 @@ open Work.FTS.Galerkin (Fn Fam slice famOf)
 set_option autoImplicit false
 set_option maxHeartbeats 1600000
 
-/-- **The scheme's right-hand side is minus the stationary residual.**
-`profRHS α Φs E w = -((1+μ)F + (1+μ)(1+lv)D_zF + UVR α F Φ)`, `F = F_* + w`,
-`Φ = Φs + E w`, `μ = muDyn`, `lv = lamDyn = lamfun μ`. -/
-theorem profRHS_eq_neg_dynLHS {α : ℝ} (hα : 0 < α) (Φs : Fn) (E : Fn → Fn) (w : Fn)
-    (z θ : ℝ)
-    (h1z : (1 : ℝ) + z ≠ 0) (hzm1 : -1 < z) (hcos : Real.cos θ ≠ 0)
-    (hDz : Work.Spaces.Dz (Work.Construction.Ftot α w) z θ
-      = Work.Spaces.Dz (Work.Construction.Fstar α) z θ + Work.Spaces.Dz w z θ)
-    (hpth : Work.Spaces.pth (Work.Construction.Ftot α w) z θ
-      = Work.Spaces.pth (Work.Construction.Fstar α) z θ + Work.Spaces.pth w z θ)
-    (hL : Work.Construction.L12 (Work.Construction.Ftot α w) z
-      = Work.Construction.L12 (Work.Construction.Fstar α) z + Work.Construction.L12 w z)
-    (hLstar : Work.Construction.L12 (Work.Construction.Fstar α) z = 2 * α / (1 + z))
-    (hstat : Work.Construction.Fstar α z θ + Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-      - 1 / α * Work.Construction.L12 (Work.Construction.Fstar α) z
-        * Work.Construction.Fstar α z θ = 0)
-    (h2 : Work.Spaces.pz (fun z θ => Φs z θ + E w z θ) z θ
-      = Work.Spaces.pz (Work.Construction.PhiTil α (Work.Construction.Ftot α w)
-            (fun z θ => Φs z θ + E w z θ)) z θ
-        + Work.Spaces.pz (Work.Construction.Theta α (Work.Construction.Ftot α w)) z θ)
-    (h3 : Work.Spaces.pth (fun z θ => Φs z θ + E w z θ) z θ
-      = Work.Spaces.pth (Work.Construction.PhiTil α (Work.Construction.Ftot α w)
-            (fun z θ => Φs z θ + E w z θ)) z θ
-        + Work.Spaces.pth (Work.Construction.Theta α (Work.Construction.Ftot α w)) z θ)
-    (h5 : z * Work.Spaces.pz (Work.Construction.Theta α (Work.Construction.Ftot α w)) z θ
-      = -(1 / (4 * α)) * Work.Construction.s2 θ
-        * Work.Construction.FK (Work.Construction.Ftot α w) z)
-    (h6 : Work.Spaces.pth (Work.Construction.Theta α (Work.Construction.Ftot α w)) z θ
-      = 1 / (2 * α) * Real.cos (2 * θ)
-        * Work.Construction.L12 (Work.Construction.Ftot α w) z)
-    (hμ1 : Work.FTS.Galerkin.muDyn α
-        (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0 ≠ -1) :
-    profRHS α Φs E w z θ
-      = -((1 + Work.FTS.Galerkin.muDyn α
-              (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0)
-            * Work.Construction.Ftot α w z θ
-          + (1 + Work.FTS.Galerkin.muDyn α
-              (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0)
-            * (1 + Work.FTS.Galerkin.lamDyn α
-              (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0)
-            * Work.Spaces.Dz (Work.Construction.Ftot α w) z θ
-          + Work.Construction.UVR α (Work.Construction.Ftot α w)
-              (fun z θ => Φs z θ + E w z θ) z θ) := by
-  classical
-  set F : ℝ → ℝ → ℝ := Work.Construction.Ftot α w with hF
-  set Φ : ℝ → ℝ → ℝ := fun z θ => Φs z θ + E w z θ with hΦ
-  set μ : ℝ := Work.FTS.Galerkin.muDyn α
-    (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0 with hμ
-  set lv : ℝ := Work.FTS.Galerkin.lamDyn α
-    (Work.FTS.Nonlin.PsiCan Φs E (famOf (fun _ => w))) (famOf (fun _ => w)) 0 with hlv
-  have hlveq : lv = Work.Construction.lamfun μ := by rw [hlv, hμ]; rfl
-  have hμ1' : (1 : ℝ) + μ ≠ 0 := fun h => hμ1 (by rw [hμ]; linarith)
-  have hlam1 : μ + lv + μ * lv = -μ := by
-    rw [hlveq, Work.Construction.lamfun]
-    field_simp
-    ring
-  -- the definitional shape of `profRHS`
-  have hW : profRHS α Φs E w z θ
-      = -(Work.Coercivity.LGammaT α w z θ)
-        + Work.Construction.gRHS α μ lv F Φ w z θ := by
-    simp only [profRHS, Work.FTS.StrongPersist.linPart, Work.FTS.StrongPersist.rhsOf,
-      hF, hΦ, ← hμ, ← hlv]
-  -- the two structural inputs
-  have hT_eq := Work.Construction.LGammaT_eq α w z θ
-  have hsplit : Φ z θ = Work.Construction.PhiTil α F Φ z θ
-      + Work.Construction.Theta α F z θ := by
-    simp only [Work.Construction.PhiTil]; ring
-  have hsub := Work.Stability.MainLHSSubN (α := α) (μ := μ) (lam := lv) hα (F := F) (Φ := Φ) z θ
-    hcos hsplit h2 h3 h5 h6
-  have hexp := Work.Construction.MainLHS_explicit (α := α) (μ := μ) (lam := lv) hα
-    (F := F) (g := w) z θ h1z rfl hDz hpth hL hLstar hstat
-  have h2αμ := Work.Construction.two_mul_mufunS α (Work.Construction.N0 α F w)
-    (Work.Construction.N α F Φ) w hα.ne'
-  have hsubstar : Work.Construction.Fstar α z θ - Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-      = 2 * α * Work.Construction.AK α z θ := Work.Construction.Fstar_sub_DzFstar hα hzm1
-  -- the assembly
-  simp only [Work.Construction.gRHS, Work.Construction.Nstar] at hW
-  rw [hT_eq] at hW
-  -- all the pieces are now equations between the same scalars
-  have hTp : 3 / (2 * α) * Work.Construction.s2 θ
-        * Work.Construction.L12 (Work.Construction.Fstar α) z
-        * Work.Spaces.pth w z θ
-      = Work.Coercivity.Transport w z θ := by
-    rw [Work.Construction.Transport_eq, hLstar]
-    field_simp
-  have key : Work.Coercivity.LGamma α w z θ - Work.Coercivity.Transport w z θ
-      = Work.Construction.MainLHS α μ lv F z θ - μ * Work.Construction.Fstar α z θ
-        - (μ + lv + μ * lv) * Work.Spaces.Dz (Work.Construction.Fstar α) z θ
-        - μ * w z θ - (μ + lv + μ * lv) * Work.Spaces.Dz w z θ
-        + Work.Construction.N0 α F w z θ := by linarith [hexp, hTp]
-  rw [key] at hW
-  have hN : Work.Construction.N α F Φ z θ
-      = Work.Construction.MainLHS α μ lv F z θ
-        - ((1 + μ) * F z θ + (1 + μ) * (1 + lv) * Work.Spaces.Dz F z θ
-          + Work.Construction.UVR α F Φ z θ) := by linarith [hsub]
-  rw [hN] at hW
-  have harg : μ * (Work.Construction.Fstar α z θ - Work.Spaces.Dz (Work.Construction.Fstar α) z θ)
-      = 2 * α * μ * Work.Construction.AK α z θ := by rw [hsubstar]; ring
-  rw [hlam1] at hW
-  have hμS : μ = Work.Construction.mufunS α (Work.Construction.N0 α F w)
-      (Work.Construction.N α F Φ) w := by
-    rw [hμ]; rfl
-  have hsplit2 : Work.Construction.mubar (Work.Construction.N0 α F w) (Work.Construction.N α F Φ)
-      = 2 * α * μ - Work.Construction.L12 (Work.Coercivity.Transport w) 0 := by
-    rw [← hμS] at h2αμ
-    linarith [h2αμ]
-  rw [hsplit2] at hW
-  rw [hW]
-  ring_nf
-  have harg3 : μ * Work.Construction.AK α z θ * α * 2
-      = μ * (Work.Construction.Fstar α z θ - Work.Spaces.Dz (Work.Construction.Fstar α) z θ) := by
-    linear_combination -harg
-  rw [harg3]
-  ring
 
 end Work.FTS.StrongEps.EpsLocalPStar
+end

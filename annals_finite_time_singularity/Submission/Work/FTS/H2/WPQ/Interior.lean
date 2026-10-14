@@ -1,35 +1,11 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The `f`-side pointwise bounds in the interior class `SmoothQuad`
-
-For a function `f` which is `C^∞` on the open quadrant (`Work.FTS.LocData.SmoothQuad`) and of
-class `𝒲^{4,∞}` (`Work.Spaces.WlInfMem α 4 f`) we need, inside the quadrant,
-
-* `|D_z^b f| ≤ 15 |f|_𝒲` for `b ≤ 4`, and
-* `|D_z^b D_θ^a f| ≤ 15 |f|_𝒲 · (α + sin 2θ) sin(2θ)^{α/5}` for `1 ≤ a`, `a + b ≤ 4`.
-
-These are the interior counterparts of `Work.Spaces.DzIter_le_WlInf` /
-`Work.Spaces.mixed_le_WlInf`, whose hypothesis is `SmoothInt`: smoothness of the `z`-slices on
-`(-1,∞)` at *every* `θ ∈ Iθ`, including the two boundary angles `θ = 0, π/2`.  In the interior
-class only `θ ∈ (0,π/2)` is available, and indeed the corresponding statement at `θ = 0, π/2`
-is in general false (the `z`-slices of a `SmoothQuad` function need not even be differentiable
-at `z = 0`).
-
-The engine is the Stirling expansion `D_z^n = ∑_{k≤n} S(n,k) z^k ∂_z^k`
-(`Work.Spaces.scoef`, `Work.Spaces.scoef_sum_shift`), which
-`Work.Spaces.DzIter_eq_sum_scoef` proves in the *analytic* order `⊤`; here it is redone in the
-genuine `C^∞` order `Work.Stability.smoothOrder`, the order in which `SmoothQuad` is stated.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.Deriv.ZPow
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.IntervalCases
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.Spaces.WProductRule
-import Submission.Work.Spaces.DzIter_le_of_pzIter
-import Submission.Work.FTS.LocData.SmoothChain
-import Submission.Work.FTS.LocData.DthIter_mul_smoothQuad
+import Submission.Work.Spaces.dthU_Gam
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

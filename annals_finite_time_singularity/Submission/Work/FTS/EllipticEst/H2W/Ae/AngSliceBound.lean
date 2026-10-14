@@ -1,27 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `H2W/Ae/AngSliceBound` — the angular first-order bound from the second-order one
-
-In the almost-everywhere class `AeData` the *second* angular derivative `∂_θθ u` is honest
-(`AeData.memAng2`), while the first one is not directly controlled.  This module proves that the
-first one follows from the second by the elementary one-dimensional chain
-
-  `f'(θ) = f'(θ₀) + ∫_{θ₀}^{θ} f''`   (Rolle: `f'(θ₀) = 0` since `f(0) = f(π/2) = 0`),
-  `(f'(θ))² ≤ (∫_{Iθ} |f''|)² ≤ (∫_{Iθ} (f'')² σ) · (∫_{Iθ} σ^{-1})`  (Cauchy–Schwarz),
-
-with `σ = sin(2θ)^{-η}` and `∫_{Iθ} σ^{-1} = ∫_{Iθ} sin(2θ)^η ≤ π/2`.  Hence, uniformly on the
-fibre, `(f')² ≤ (π/2)² ∫_{Iθ} (f'')² σ`, and integrating against `w(z)²` in `z`,
-
-```
-L2Mem (fun z θ => pth u z θ * w z) ∧
-L2Sq (fun z θ => pth u z θ * w z) ≤ (π/2)^2 * HkSq α 0 (pthIter 2 u).
-```
-
-This replaces the `|∂_θΨ w| ≤ |F w|` step of the paper's Step 1 (`prop:H2`): the angular half of
-Step 1 is reduced to the *single* statement `HkSq α 0 (∂_θθ u) ≤ C HkSq α 0 G`, with no
-truncated energy identity involved.
--/
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.LocalExtr.Rolle
@@ -29,18 +5,17 @@ import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.ProductTools
-import Submission.Work.Spaces.cs_integral
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.ThetaPoincareDefs
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Endpt.sliceBdd_of_hmB
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
-import Submission.Work.FTS.H2.Transport3Aux.num_int_1d_aux
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.RPFresh.slice_sq_le
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -67,128 +42,6 @@ private lemma rpow_sq_of_pos (x a : ℝ) (hx : 0 < x) : (x ^ a) ^ 2 = x ^ (2 * a
   rw [← Real.rpow_mul_natCast hx.le a 2]
   ring_nf
 
-/-- **The weighted Cauchy–Schwarz of `slice_cs_weighted`, with the continuity hypothesis on the
-open interval only.**  For `g` continuous on `(0, π/2)` whose `σ`-weighted square is integrable,
-
-`(∫_{Iθ} |g|)² ≤ (∫_{Iθ} g² σ) · (∫_{Iθ} σ^{-1})`,   `σ^{-1} = sin(2θ)^η`. -/
-theorem cs_weighted_open {g : ℝ → ℝ}
-    (hg : ContinuousOn g (Set.Ioo 0 (Real.pi / 2)))
-    (hint : IntegrableOn (fun θ => (g θ) ^ 2 * sEta θ) Work.Spaces.Iθ) :
-    (∫ θ in Work.Spaces.Iθ, |g θ|) ^ 2
-      ≤ (∫ θ in Work.Spaces.Iθ, (g θ) ^ 2 * sEta θ)
-        * (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (Work.Spaces.eta)) := by
-  have hIoomeas : MeasurableSet (Set.Ioo (0 : ℝ) (Real.pi / 2)) := measurableSet_Ioo
-  have hsub : Set.Ioo (0 : ℝ) (Real.pi / 2) ⊆ Work.Spaces.Iθ := by
-    intro x hx
-    rw [Work.Spaces.Iθ, Set.mem_Icc]
-    exact ⟨le_of_lt hx.1, le_of_lt hx.2⟩
-  have hsinpos : ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2), 0 < Real.sin (2 * θ) :=
-    fun θ hθ => Real.sin_pos_of_pos_of_lt_pi (by linarith [hθ.1])
-      (by linarith [hθ.2, Real.pi_pos])
-  have hsincont : ContinuousOn (fun θ : ℝ => Real.sin (2 * θ))
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-    Real.continuous_sin.comp_continuousOn ((continuous_const.mul continuous_id).continuousOn)
-  have hwcont : ContinuousOn
-      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2)))
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-    hsincont.rpow_const (fun θ hθ => Or.inl (ne_of_gt (hsinpos θ hθ)))
-  have hvcont : ContinuousOn
-      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-    hsincont.rpow_const (fun θ hθ => Or.inr (by rw [Work.Spaces.eta]; norm_num))
-  have hucont : ContinuousOn
-      (fun θ : ℝ => |g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2)))
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) := hg.abs.mul hwcont
-  have huaesm : AEStronglyMeasurable
-      (fun θ : ℝ => |g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2)))
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    hucont.aestronglyMeasurable hIoomeas
-  have hvaesm : AEStronglyMeasurable
-      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    hvcont.aestronglyMeasurable hIoomeas
-  have hEq1 : Set.EqOn (fun θ : ℝ => (g θ) ^ 2 * sEta θ)
-      (fun θ : ℝ => (|g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2))) ^ 2)
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-    intro θ hθ
-    have hx : 0 < Real.sin (2 * θ) := hsinpos θ hθ
-    show (g θ) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))
-      = (|g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2))) ^ 2
-    rw [mul_pow, sq_abs, rpow_sq_of_pos _ _ hx,
-      show 2 * (-(Work.Spaces.eta / 2)) = -(Work.Spaces.eta) by ring]
-  have hEq2 : Set.EqOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ (Work.Spaces.eta))
-      (fun θ : ℝ => ((Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2)) ^ 2)
-      (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-    intro θ hθ
-    show (Real.sin (2 * θ)) ^ (Work.Spaces.eta)
-      = ((Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2)) ^ 2
-    rw [rpow_sq_of_pos _ _ (hsinpos θ hθ),
-      show 2 * (Work.Spaces.eta / 2) = Work.Spaces.eta by ring]
-  have hu2int : MeasureTheory.Integrable
-      (fun θ : ℝ => (|g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2))) ^ 2)
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    (hint.mono_set hsub).congr_fun hEq1 hIoomeas
-  have hv2int : MeasureTheory.Integrable
-      (fun θ : ℝ => ((Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2)) ^ 2)
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    ((Work.FTS.EllipticEst.integrableOn_sin_two_rpow
-      Work.Spaces.eta_nonneg).1.mono_set hsub).congr_fun hEq2 hIoomeas
-  have humem : MeasureTheory.MemLp
-      (fun θ : ℝ => |g θ| * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta / 2))) 2
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    (MeasureTheory.memLp_two_iff_integrable_sq huaesm).mpr hu2int
-  have hvmems : MeasureTheory.MemLp
-      (fun θ : ℝ => (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2)) 2
-      (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-    (MeasureTheory.memLp_two_iff_integrable_sq hvaesm).mpr hv2int
-  have hcs := Work.Spaces.cs_integral humem hvmems
-  have e1 : (∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2),
-        (|g x| * (Real.sin (2 * x)) ^ (-(Work.Spaces.eta / 2)))
-          * (Real.sin (2 * x)) ^ (Work.Spaces.eta / 2))
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), |g x| := by
-    refine MeasureTheory.setIntegral_congr_fun hIoomeas ?_
-    intro x hx
-    have hx' : 0 < Real.sin (2 * x) := hsinpos x hx
-    show (|g x| * (Real.sin (2 * x)) ^ (-(Work.Spaces.eta / 2)))
-        * (Real.sin (2 * x)) ^ (Work.Spaces.eta / 2) = |g x|
-    rw [mul_assoc, ← Real.rpow_add hx',
-      show -(Work.Spaces.eta / 2) + Work.Spaces.eta / 2 = 0 by ring, Real.rpow_zero,
-      mul_one]
-  have e2 : (∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2),
-        (|g x| * (Real.sin (2 * x)) ^ (-(Work.Spaces.eta / 2))) ^ 2)
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), (g x) ^ 2 * sEta x := by
-    refine MeasureTheory.setIntegral_congr_fun hIoomeas ?_
-    intro x hx
-    have hx' : 0 < Real.sin (2 * x) := hsinpos x hx
-    show (|g x| * (Real.sin (2 * x)) ^ (-(Work.Spaces.eta / 2))) ^ 2
-      = (g x) ^ 2 * (Real.sin (2 * x)) ^ (-(Work.Spaces.eta))
-    rw [mul_pow, sq_abs, rpow_sq_of_pos _ _ hx',
-      show 2 * (-(Work.Spaces.eta / 2)) = -(Work.Spaces.eta) by ring]
-  have e3 : (∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2),
-        ((Real.sin (2 * x)) ^ (Work.Spaces.eta / 2)) ^ 2)
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), (Real.sin (2 * x)) ^ (Work.Spaces.eta) := by
-    refine MeasureTheory.setIntegral_congr_fun hIoomeas ?_
-    intro x hx
-    show ((Real.sin (2 * x)) ^ (Work.Spaces.eta / 2)) ^ 2
-      = (Real.sin (2 * x)) ^ (Work.Spaces.eta)
-    rw [rpow_sq_of_pos _ _ (hsinpos x hx),
-      show 2 * (Work.Spaces.eta / 2) = Work.Spaces.eta by ring]
-  rw [e1, e2, e3] at hcs
-  -- transfer the three integrals from `Ioo 0 (π/2)` to `Iθ`
-  have ht1 : (∫ x in Work.Spaces.Iθ, |g x|)
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), |g x| :=
-    MeasureTheory.setIntegral_congr_set
-      (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume)).symm
-  have ht2 : (∫ x in Work.Spaces.Iθ, (g x) ^ 2 * sEta x)
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), (g x) ^ 2 * sEta x :=
-    MeasureTheory.setIntegral_congr_set
-      (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume)).symm
-  have ht3 : (∫ x in Work.Spaces.Iθ, (Real.sin (2 * x)) ^ (Work.Spaces.eta))
-      = ∫ x in Set.Ioo (0 : ℝ) (Real.pi / 2), (Real.sin (2 * x)) ^ (Work.Spaces.eta) :=
-    MeasureTheory.setIntegral_congr_set
-      (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume)).symm
-  rw [ht1, ht2, ht3]
-  exact hcs
 
 
 /-! ## The one-dimensional slice bound -/
@@ -477,145 +330,8 @@ theorem aeData_ang_slice_bound (α : ℝ) (u G : ℝ → ℝ → ℝ) (h : AeDat
 
 /-! ## The global estimate -/
 
-/-- **The angular half of Step 1 in the weak class.**  For `AeData α u G` whose angular fibres
-are continuous on `[0, π/2]` for a.e. `z`,
-
-`L2Sq (∂_θu · w) ≤ (π/2)² · HkSq α 0 (∂_θθu)`. -/
-theorem L2Sq_pth_w_le (α : ℝ) (u G : ℝ → ℝ → ℝ) (h : AeData α u G)
-    (hC : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      ContinuousOn (fun θ => u z θ) (Set.Icc 0 (Real.pi / 2))) :
-    Work.Spaces.L2Sq (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z)
-      ≤ (Real.pi / 2) ^ 2 * Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 u) := by
-  have hbase := aeData_ang_slice_bound α u G h hC
-  -- transfer the a.e. statement from `Ioi 0` to `Iz = Ici 0`
-  have hIz : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
-      (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2)
-        ≤ (Real.pi / 2) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-            Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 u) z θ) := by
-    change ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ici 0)), _
-    rw [MeasureTheory.Measure.restrict_congr_set
-      (MeasureTheory.Ioi_ae_eq_Ici (μ := MeasureTheory.volume) (a := 0)).symm]
-    exact hbase
-  have hRHS : Integrable (fun z => (Real.pi / 2) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-        Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 u) z θ))
-      (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
-    Integrable.const_mul h.memAng2.2 ((Real.pi / 2) ^ 2)
-  have hnn : 0 ≤ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iz]
-      (fun z => ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2) :=
-    Filter.Eventually.of_forall fun z => integral_nonneg fun θ => sq_nonneg _
-  have hmain := MeasureTheory.integral_mono_of_nonneg
-    (μ := MeasureTheory.volume.restrict Work.Spaces.Iz) hnn hRHS hIz
-  rw [MeasureTheory.integral_const_mul] at hmain
-  exact hmain
 
 /-! ## The `L²`-membership of `∂_θu · w` -/
 
-/-- **`L2Mem` for the angular first derivative.**  Together with `L2Sq_pth_w_le` this is the
-whole angular content of `aeFirstEnergy` (and the hypothesis `aeSigmaUp` consumes).  The
-a.e.-continuity hypothesis on the fibres is the one supplied in tree by
-`AeProof/AeSliceLeftTendstoAe` + `AeProof/AeGapSlices.ae_continuousOn_slice`. -/
-theorem L2Mem_pth_w (α : ℝ) (u G : ℝ → ℝ → ℝ) (h : AeData α u G)
-    (hC : ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      ContinuousOn (fun θ => u z θ) (Set.Icc 0 (Real.pi / 2))) :
-    Work.Spaces.L2Mem (fun z θ => Work.Spaces.pth u z θ * Work.Spaces.w z) := by
-  have hso : Work.FTS.EllipticEst.SmoothOpen u :=
-    Work.FTS.EllipticEst.smoothOpen_of_forall h.smooth
-  -- the joint a.e.-strong measurability of the uncurried integrand
-  have hwcont : ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.w p.1)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := by
-    have hw : ContinuousOn Work.Spaces.w (Set.Ioi (0 : ℝ)) := by
-      have h : Work.Spaces.w = fun z : ℝ => (1 + z) ^ 2 / z ^ 2 := rfl
-      rw [h]
-      refine ContinuousOn.div (by fun_prop) (by fun_prop) fun z hz => ?_
-      exact pow_ne_zero 2 (ne_of_gt hz)
-    exact hw.comp continuous_fst.continuousOn fun p hp => hp.1
-  have haesm : AEStronglyMeasurable
-      (Function.uncurry (fun z θ => (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2))
-      ((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
-        (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :=
-    Work.Spaces.aesm_of_continuousOn_Qd _
-      (ContinuousOn.pow ((Work.FTS.EllipticEst.SmoothOpen.pth hso).continuousOn.mul hwcont) 2)
-  refine ⟨fun z hz => ?_, ?_⟩
-  · -- slicewise integrability
-    rcases eq_or_lt_of_le (Set.mem_Ici.mp hz) with hz0 | hzpos
-    · subst hz0
-      have hw0 : Work.Spaces.w 0 = 0 := by
-        show (1 + (0 : ℝ)) ^ 2 / (0 : ℝ) ^ 2 = 0
-        norm_num
-      have hzero : (fun θ => (Work.Spaces.pth u 0 θ * Work.Spaces.w 0) ^ 2)
-          = fun _ => (0 : ℝ) := by
-        funext θ
-        rw [hw0]
-        ring
-      rw [hzero]
-      exact MeasureTheory.integrableOn_zero
-    · -- `z > 0`: the slice of `∂_θu` is bounded
-      obtain ⟨C, hCpos, hCbdd⟩ :=
-        Work.FTS.EllipticEst.Endpt.sliceBdd_of_hmB (α := α) h.smooth h.memAng2 hzpos
-      haveI : IsFiniteMeasure (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
-        ⟨by rw [MeasureTheory.Measure.restrict_apply_univ]
-            exact isCompact_Icc.measure_lt_top⟩
-      have hIoo : IsOpen (Set.Ioo (0 : ℝ) (Real.pi / 2)) := isOpen_Ioo
-      have hcd1 : ContDiffOn ℝ 1 (fun θ => u z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-        have h1 : ContDiffOn ℝ 1 (Function.uncurry u)
-            (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := h.smooth 1
-        have h2 := h1.comp (contDiff_prodMk_right z).contDiffOn (fun θ hθ => ⟨hzpos, hθ⟩)
-        simpa [Function.comp_def] using h2
-      have hcont : ContinuousOn (fun θ => deriv (fun θ' => u z θ') θ)
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        hcd1.continuousOn_deriv_of_isOpen hIoo (le_refl 1)
-      have hmeas : AEStronglyMeasurable
-          (fun θ => (Work.Spaces.pth u z θ) ^ 2) (MeasureTheory.volume.restrict Work.Spaces.Iθ) := by
-        have h1 : AEStronglyMeasurable (fun θ => (deriv (fun θ' => u z θ') θ) ^ 2)
-            (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))) :=
-          (hcont.pow 2).aestronglyMeasurable measurableSet_Ioo
-        rw [show MeasureTheory.volume.restrict Work.Spaces.Iθ
-            = MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2)) from
-          (MeasureTheory.Measure.restrict_congr_set
-            (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume))).symm]
-        exact h1
-      have hbdd : ∀ᵐ θ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
-          ‖(Work.Spaces.pth u z θ) ^ 2‖ ≤ C ^ 2 := by
-        have h1 : ∀ᵐ θ ∂(MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2))),
-            ‖(Work.Spaces.pth u z θ) ^ 2‖ ≤ C ^ 2 :=
-          by
-            filter_upwards [MeasureTheory.self_mem_ae_restrict measurableSet_Ioo] with θ hθ
-            rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
-            simpa only [Work.Spaces.pth, sq_abs] using
-              pow_le_pow_left₀ (abs_nonneg _) (hCbdd θ hθ).2 2
-        rw [show MeasureTheory.volume.restrict Work.Spaces.Iθ
-            = MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) (Real.pi / 2)) from
-          (MeasureTheory.Measure.restrict_congr_set
-            (MeasureTheory.Ioo_ae_eq_Icc (μ := MeasureTheory.volume))).symm]
-        exact h1
-      have hunit : Integrable (fun θ => (Work.Spaces.pth u z θ) ^ 2)
-          (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
-        (MeasureTheory.MemLp.of_bound (p := 1) hmeas (C ^ 2) hbdd).integrable le_rfl
-      have hwz : (fun θ => (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2)
-          = fun θ => (Work.Spaces.w z) ^ 2 * (Work.Spaces.pth u z θ) ^ 2 := by
-        funext θ; ring
-      rw [hwz]
-      exact hunit.const_mul _
-  · -- the `z`-integral
-    have hdom : Integrable (fun z => (Real.pi / 2) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-          Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 u) z θ))
-        (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
-      Integrable.const_mul h.memAng2.2 _
-    have haesm2 : AEStronglyMeasurable
-        (fun z => ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2)
-        (MeasureTheory.volume.restrict Work.Spaces.Iz) :=
-      haesm.integral_prod_right'
-    have hb : ∀ᵐ z ∂(MeasureTheory.volume.restrict Work.Spaces.Iz),
-        ‖∫ θ in Work.Spaces.Iθ, (Work.Spaces.pth u z θ * Work.Spaces.w z) ^ 2‖
-          ≤ (Real.pi / 2) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-              Work.Spaces.HkIntegrand α 0 (Work.Spaces.pthIter 2 u) z θ) := by
-      have hbase := aeData_ang_slice_bound α u G h hC
-      change ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ici 0)), _
-      rw [MeasureTheory.Measure.restrict_congr_set
-        (MeasureTheory.Ioi_ae_eq_Ici (μ := MeasureTheory.volume) (a := 0)).symm]
-      filter_upwards [hbase] with z hz
-      rw [Real.norm_eq_abs, abs_of_nonneg (integral_nonneg fun θ => sq_nonneg _)]
-      exact hz
-    exact MeasureTheory.Integrable.mono' hdom haesm2 hb
 
 end Work.FTS.EllipticEst.H2W.Ae

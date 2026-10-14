@@ -3,11 +3,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.StrongEps.E5Aux2.MuHGlue
-import Submission.Work.FTS.StrongEps.E5Aux2.PT.Basic
-import Submission.Work.FTS.StrongEps.E5Aux2.PT.Slots
+import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12densFstar_deriv
 import Submission.Work.FTS.StrongEps.E5Aux2.PT.L12limDiff
+import Submission.Work.FTS.StrongEps.E5Aux2.PT.Slots
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.NZeroAux.L12add
+import Submission.Work.FTS_RegExport.RXVP.thLip
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

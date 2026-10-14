@@ -3,13 +3,13 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.JfamPDefectAlg
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.JfamPDefectTransfer
-import Submission.Work.FTS.StrongEps.epsWP_hkMem4_KW_unif
-import Submission.Work.FTS.StrongEps.L12_Jeps_sub_le4
+import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
 import Submission.Work.FTS.StrongEps.EpsZeroMode
 import Submission.Work.FTS.StrongEps.JfamP_norm
-import Submission.Work.FTS.StrongEps.EpsApprox.HkNorm_Jeps_sub_le
+import Submission.Work.FTS.StrongEps.L12_Jeps_sub_le4
+import Submission.Work.FTS.StrongEps.epsWP_hkMem4_KW_unif
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

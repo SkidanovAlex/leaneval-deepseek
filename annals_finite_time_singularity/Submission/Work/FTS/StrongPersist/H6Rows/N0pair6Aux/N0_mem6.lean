@@ -4,33 +4,33 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.OpenPkg.Pieces4
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.FstarI12H6
-import Submission.Work.FTS.StrongPersist.N6_L12H
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.assembly_core
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SmoothN0
-import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12Sup6
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.N0SlotSplitAux
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMaj6
 import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.radialMul6Cont
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.N0coefA6_WlInf6
-import Submission.Work.FTS.StrongPersist.angmul6
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.c2mJets
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.Construction.GammaTermAux
-import Submission.Work.Spaces.Gamma_WlInf
-import Submission.Work.FTS.EllipticEst.UopHk.GsingFactsInterior
-import Submission.Work.FTS.NonlinRows.Rl1.splitOpen
-import Submission.Work.FTS.Nonlinear.Pieces.Basic
-import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
-import Submission.Work.FTS.EllipticEst.HkIntegrand_add_le_open
-import Submission.Work.FTS.EllipticEst.HkMem_add_smoothOpen
-import Submission.Work.FTS.Nonlinear.Open.Row23
-import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6Aux.ScaleClose6.HkMem_X_close6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundCore
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundE
+import Submission.Work.FTS.StrongPersist.N6_L12H
+import Submission.Work.FTS.StrongPersist.N6_prod
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -93,7 +93,7 @@ private lemma contDiffOn_six_radial_mul {X : ℝ → ℝ} {ψ : ℝ → ℝ → 
 /-- **The radial multiplier**: a radial factor `X` which is `C⁶` on `(0,∞)` with all its
 `D_z`-jets up to order six bounded by `B`, times a datum `ψ` which is smooth on the open
 quadrant and honest in `ℋ⁶`, is again in `ℋ⁶`. -/
-private theorem HkMem_radial_mul6 {α B : ℝ} {X : ℝ → ℝ} {ψ : ℝ → ℝ → ℝ}
+private theorem HkMem_radial_mul6_prv {α B : ℝ} {X : ℝ → ℝ} {ψ : ℝ → ℝ → ℝ}
     (hB : 0 ≤ B) (hX : ContDiffOn ℝ 6 X (Set.Ioi 0))
     (hb : ∀ j : ℕ, j ≤ 6 → ∀ z : ℝ, 0 < z → |Work.Elliptic.DzdIter j X z| ≤ B)
     (hψsm : Work.FTS.EllipticEst.SmoothOpen ψ) (hψmem : Work.Spaces.HkMem α 6 ψ) :
@@ -189,26 +189,6 @@ private theorem smoothOpen_PsiB {f : ℝ → ℝ → ℝ} (hf : Work.FTS.Ellipti
       (Work.FTS.StrongPersist.H6Pair6Aux.so_snd Work.FTS.StrongPersist.H6Pair6Aux.contDiff_c2m)
       hf.Dz)
 
-private theorem HkMem_PsiB {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    {f : ℝ → ℝ → ℝ} (hfsm : Work.FTS.EllipticEst.SmoothOpen f)
-    (hm7 : Work.Spaces.HkMem α 7 f) : Work.Spaces.HkMem α 6 (PsiB f) := by
-  obtain ⟨Cc2, hCc2pos, hc2sm, hc2b, hc2jet⟩ :=
-    Work.FTS.StrongPersist.H6Pair6Aux.T5bAux.c2mJets
-  obtain ⟨CA6, hCA6, hangfun⟩ := Work.FTS.StrongPersist.angmul6
-  have hDzmem : Work.Spaces.HkMem α 6 (Work.Spaces.Dz f) :=
-    Work.FTS.IPGen.HkMem_Dz_le (α := α) (k := 6) hfsm hm7
-  have hang : Work.Spaces.HkMem α 6
-      (fun z θ => Work.Construction.c2m θ * Work.Spaces.Dz f z θ) :=
-    (hangfun α hα hα1 (fun θ => Work.Construction.c2m θ) (Work.Spaces.Dz f) Cc2 hc2sm
-      (fun θ hθ => hc2b θ hθ)
-      (fun i hi hi6 θ hθ => hc2jet i hi (le_trans hi6 (by norm_num)) 0 θ hθ)
-      hfsm.Dz hDzmem).1
-  rw [PsiB_eq]
-  have heq : (fun z θ => -(Work.Construction.c2m θ * Work.Spaces.Dz f z θ))
-      = fun z θ => (-1 : ℝ) * (Work.Construction.c2m θ * Work.Spaces.Dz f z θ) := by
-    funext z θ; ring
-  rw [heq]
-  exact Work.FTS.LocData.HkMem_const_mul α 6 (-1) hang
 
 private theorem smoothOpen_PsiF {α : ℝ} {f : ℝ → ℝ → ℝ}
     (hfsm : Work.FTS.EllipticEst.SmoothOpen f) :
@@ -311,10 +291,6 @@ private theorem smoothOpen_Kfac_rhoR (α : ℝ) :
     simpa only [Work.Construction.rhoR] using h3
   exact contDiffOn_const.mul h4
 
-private theorem smoothOpen_sep6 (α : ℝ) :
-    Work.FTS.EllipticEst.SmoothOpen (Work.FTS.StrongPersist.H6Rows.sep6 α) := by
-  unfold Work.FTS.StrongPersist.H6Rows.sep6 Work.Construction.sepF
-  exact Work.FTS.StrongPersist.H6Pair6Aux.so_mul (smoothOpen_Kfac_rhoR α) (smoothOpen_psiA α)
 
 private theorem smoothOpen_Aexp (α : ℝ) : Work.FTS.EllipticEst.SmoothOpen (Aexp α) := by
   have heq : Aexp α = fun z θ => (1 + z) * (2 * α)⁻¹
@@ -389,7 +365,7 @@ theorem N0_mem6 : ∃ α₂ : ℝ, 0 < α₂ ∧ α₂ ≤ 1 ∧
     Work.FTS.StrongPersist.H6Pair6Aux.so_add hAexpsm hPsism
   have hL2 : Work.Spaces.HkMem α 6
       (fun z θ => Work.Construction.L12 f z * (Aexp α z θ + PsiF α f z θ)) :=
-    HkMem_radial_mul6 hB0 hL12cd hL12b hfieldsm hfield
+    HkMem_radial_mul6_prv hB0 hL12cd hL12b hfieldsm hfield
   have hL2cd : ContDiffOn ℝ 6
       (Function.uncurry (fun z θ => Work.Construction.L12 f z * (Aexp α z θ + PsiF α f z θ)))
       Work.Construction.Qd :=

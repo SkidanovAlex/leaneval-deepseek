@@ -1,48 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/OpenBarrier.lean` — the level-four barrier in the *open*
-class, with its coercivity hypothesis **proved** from the solution's regularity
-
-`apriori_fourth_of_barrier` (session 2) consumes
-
-  `hcoer : ∀ τ ∈ Icc 0 T', Nonlin.CoerAdm α (slice (JfamP ρ ε g) τ)`,
-
-and `CoerAdm` contains `RegQ α 5`, i.e. `LocData.SmoothQuad x` — `C^∞` of the projected slice on
-the *strip* `z > -1`.  Along the route this is **not** available: `J_ε f` is defined to be `0` off
-the open quadrant, so `SmoothQuad (J_ε f)` demands flatness of all `z`-derivatives at `z = 0⁺`,
-which the honest data class does not supply (`EpsE4Thr/CoerAdmSlice.lean`; the class-`C` clause of
-`EpsDatumP` gives `SmoothOpen`, never `SmoothQuad`).  Hence the frozen barrier cannot be applied on
-the route.
-
-This file supplies the repair:
-
-* `coerAdmO_slice_JfamP` — the **open** class `CoerAdmO` of the projected mollified slice, proved
-  from `EpsRegP` alone (the class-`C` clause of `EpsDatumP` supplies `SmoothOpen`, `HkMem α 5` and
-  `BdryTraces α 5`; the angular and axis clauses come from the defining `if` of `Jeps` and from the
-  vanishing of `bump`, exactly as in `CoerAdmSlice.lean`).  No `SmoothQuad` anywhere;
-* `apriori_fourth_of_barrier_open` — the barrier with `UnifIPO` in place of the frozen `UnifIP`
-  and with the coercivity class **produced** internally, so that the two hypotheses of the original
-  (`hcoer`) are gone and only the honest regularity `EpsRegP` remains.
-
-The single analytic obligation that is left is therefore
-`UnifIPO (IP4 …) …` — the coercivity of the level-four pairing on the open-quadrant class, which
-*is* satisfiable on the route (unlike the frozen `UnifIP`).
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
 import Submission.Work.FTS.StrongEps.EpsE4Thr.CoerAdmSlice
-import Submission.Work.FTS.StrongEps.EpsStructP
 import Submission.Work.FTS.StrongEps.PZeroScheme
-import Submission.Work.FTS.StrongEps.EpsGdotThird
-import Submission.Work.FTS.Apriori.Barrier
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_LocDatum3a.Defs
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -140,47 +107,5 @@ theorem coerAdmO_slice_JfamP {α : ℝ} {ρ : ℝ × ℝ → ℝ} {ε T : ℝ} {
 
 /-! ## The level-four barrier in the open class -/
 
-/-- **The level-four barrier of the a-priori estimate, run against the open class.**
-
-The energy `E s = IP α (slice s) (slice s)` starts strictly below the barrier level `Y` and has a
-strictly negative within-derivative whenever it meets `Y`; the barrier lemma keeps it below `Y`,
-and the *open* comparability clause `UnifIPO.lo` — applicable because `CoerAdmO` is **proved** for
-the projected slice by `coerAdmO_slice_JfamP` — turns this into the small-ball bound
-`Xn α (slice (JfamP ρ ε g) τ) ≤ C₀ α²`.
-
-Compared with `apriori_fourth_of_barrier` the hypothesis `hcoer`
-(`∀ τ, Nonlin.CoerAdm α (slice (JfamP ρ ε g) τ)`, unavailable on the route) is replaced by the
-solution's own regularity `EpsRegP`, and `UnifIP` by `UnifIPO`. -/
-theorem apriori_fourth_of_barrier_open {α C₀ Y cc clo Cup Ccs α₂ : ℝ}
-    {IP : ℝ → Fn → Fn → ℝ}
-    {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn} {g₀ : Fn}
-    {ε T T' : ℝ} {g : Fam} {E4' : ℝ → ℝ}
-    (hIP : UnifIPO IP α₂ cc clo Cup Ccs) (hα : α ∈ Set.Ioc 0 α₂)
-    (hC₀ : 0 < C₀) (hY0 : 0 < Y) (hY : Y ≤ clo * (C₀ * α ^ 2) ^ 2)
-    (hreg : Work.FTS.StrongEps.EpsRegP α ρ ε T' g)
-    (hcont : ContinuousOn
-      (fun s => IP α (slice (JfamP ρ ε g) s) (slice (JfamP ρ ε g) s)) (Set.Icc 0 T'))
-    (h0 : IP α (slice (JfamP ρ ε g) 0) (slice (JfamP ρ ε g) 0) < Y)
-    (hderiv : ∀ τ ∈ Set.Ico 0 T', HasDerivWithinAt
-      (fun s => IP α (slice (JfamP ρ ε g) s) (slice (JfamP ρ ε g) s)) (E4' τ) (Set.Icc 0 T') τ)
-    (hneg : ∀ τ ∈ Set.Ico 0 T', IP α (slice (JfamP ρ ε g) τ) (slice (JfamP ρ ε g) τ) = Y →
-      E4' τ < 0) :
-    ∀ τ ∈ Set.Icc 0 T',
-      Work.FTS.Nonlin.Xn α (slice (JfamP ρ ε g) τ) ≤ C₀ * α ^ 2 := by
-  have hcoer : ∀ τ ∈ Set.Icc 0 T', CoerAdmO α (slice (JfamP ρ ε g) τ) :=
-    coerAdmO_slice_JfamP hreg
-  intro τ hτ
-  have hbar : IP α (slice (JfamP ρ ε g) τ) (slice (JfamP ρ ε g) τ) ≤ Y :=
-    Work.FTS.Apriori.barrier_within
-      (E := fun s => IP α (slice (JfamP ρ ε g) s) (slice (JfamP ρ ε g) s))
-      (E' := E4') hcont h0 hderiv hneg τ hτ
-  have hSq : Work.Spaces.HkSq α 4 (slice (JfamP ρ ε g) τ) ≤ (C₀ * α ^ 2) ^ 2 :=
-    le_of_mul_le_mul_left (le_trans (le_trans (hIP.lo α hα _ (hcoer τ hτ)) hbar) hY)
-      hIP.pos.2.2.1
-  have hZnn : 0 ≤ C₀ * α ^ 2 := by positivity
-  have hnorm : Real.sqrt (Work.Spaces.HkSq α 4 (slice (JfamP ρ ε g) τ)) ≤ C₀ * α ^ 2 := by
-    have h1 := Real.sqrt_le_sqrt hSq
-    rwa [Real.sqrt_sq hZnn] at h1
-  simpa [Work.Spaces.HkNorm, Work.FTS.Nonlin.Xn] using hnorm
 
 end Work.FTS.StrongEps.EpsE4Thr

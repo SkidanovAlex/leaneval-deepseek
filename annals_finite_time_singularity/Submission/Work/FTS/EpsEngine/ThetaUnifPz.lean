@@ -1,41 +1,9 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/EpsEngine/ThetaUnifPz.lean` — the `Pz`/`bump` legs of the uniform
-# angular-flatness route
-
-`Work.FTS.EpsEngine.ThetaUnif` is the *uniform* (`ε`-`δ`, uniformly in `z`) angular flatness of a
-profile; it is the hypothesis under which the mollifier preserves the angular boundary traces
-(`ThetaUnifJeps`), sums of profiles preserve them (`ThetaUnifAdd`) and fake-time integrals preserve
-them (`ThetaUnifInterval`).  The missing legs of that route are the **projection** `Pz` (which
-subtracts a multiple of the bump) and the **bump** itself:
-
-* `thetaUnif_bump` — `bump` vanishes in a whole `θ`-neighbourhood of both ends of the quadrant, so
-  every one of its mixed derivatives vanishes there (`StrongEps.bump_iter_eq_zero_of_not_mem`,
-  proved in `StrongEps/BumpDefs.lean`), hence `ThetaUnif α k bump`;
-* `thetaUnif_const_mul`, `thetaUnif_neg`, `thetaUnif_sub` — closure of `ThetaUnif` under the
-  elementary algebraic operations (the `mixed`-operators are linear on the open quadrant, which is
-  the only place where `ThetaUnif` is stated);
-* `thetaUnif_Pz` — `ThetaUnif α k f ⟹ ThetaUnif α k (Pz f)`, from `PZeroAux.mixed_Pz`
-  (`D_z^jD_θ^i (Pz f) = D_z^jD_θ^i f − c·D_z^jD_θ^i bump` on the open quadrant);
-* `thetaUnif_Pz_Jeps` and **`tauTraces_Pz_Jeps_of_thetaUnif`** — the composition with the
-  mollifier (`ThetaUnifJeps`), i.e. the pointwise angular half `TauTraces` of the *projected
-  mollified* profile from the uniform angular flatness of the raw profile.  This is the leg that
-  the class-`C` invariance of the local step needs: the pointwise `TauTraces` of a raw profile does
-  *not* transfer through `J_ε` (the travelling-spike counterexample of
-  `EpsEngine/NOTES_HtrUnused.md` §4 — it is the *rate*, not the limit, that is lost), so the
-  uniform form is the only route.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.EpsEngine.ThetaUnifInterval
-import Submission.Work.FTS.EpsEngine.ThetaUnifJeps
-import Submission.Work.FTS.EpsEngine.ThetaUnifAdd
 import Submission.Work.FTS.StrongEps.PZeroAux.mixed_Pz
+import Submission.Work.FTS_RegExport.Vz7Eslot
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -188,51 +156,7 @@ theorem thetaUnif_Pz {α : ℝ} {k : ℕ} {f : Fn}
     rw [Work.FTS.StrongEps.Pz_apply]
   rwa [hfun] at hsub
 
-/-- **The smoothness data of the projected mollified profile.** -/
-theorem contDiffOn_Pz_Jeps {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    {ε : ℝ} (hε : 0 < ε) {f : Fn} (hsm : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Qu) :
-    ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry (Work.FTS.StrongEps.Pz
-      (Work.FTS.StrongEps.Jeps ρ ε f))) Qu := by
-  have hJ : Work.FTS.EllipticEst.SmoothOpen (Work.FTS.StrongEps.Jeps ρ ε f) :=
-    Work.FTS.StrongEps.smoothOpen_Jeps ρ hρ hε hsm
-  have h1 : Work.FTS.EllipticEst.SmoothOpen (fun z θ =>
-      Work.Construction.L12 (Work.FTS.StrongEps.Jeps ρ ε f) 0 / Work.FTS.StrongEps.pzNorm
-        * Work.FTS.StrongEps.bump z θ) :=
-    (Work.FTS.EllipticEst.smoothOpen_iff_forall _).mpr
-      (fun n => contDiffOn_const.mul (bump_contDiffOn n))
-  have h2 : Work.FTS.EllipticEst.SmoothOpen (fun z θ =>
-      Work.FTS.StrongEps.Jeps ρ ε f z θ
-        - Work.Construction.L12 (Work.FTS.StrongEps.Jeps ρ ε f) 0 / Work.FTS.StrongEps.pzNorm
-          * Work.FTS.StrongEps.bump z θ) :=
-    hJ.sub h1
-  have hfun : (fun z θ => Work.FTS.StrongEps.Jeps ρ ε f z θ
-      - Work.Construction.L12 (Work.FTS.StrongEps.Jeps ρ ε f) 0 / Work.FTS.StrongEps.pzNorm
-        * Work.FTS.StrongEps.bump z θ) = Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε f) := by
-    funext z θ
-    rw [Work.FTS.StrongEps.Pz_apply]
-  rw [hfun] at h2
-  exact (Work.FTS.EllipticEst.smoothOpen_iff_forall _).mp h2
 
-/-- **`ThetaUnif` of the projected mollified profile.**  The mollifier preserves the uniform
-angular flatness (`ThetaUnifJeps`), the projection too (`thetaUnif_Pz`). -/
-theorem thetaUnif_Pz_Jeps {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    {α : ℝ} (hα : α ∈ Set.Ioc 0 1) {k : ℕ} {ε : ℝ} (hε : 0 < ε) {f : Fn}
-    (hsm : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Qu)
-    (hf : ThetaUnif α k f) :
-    ThetaUnif α k (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε f)) :=
-  thetaUnif_Pz
-    ((Work.FTS.EllipticEst.smoothOpen_iff_forall _).mp
-      (Work.FTS.StrongEps.smoothOpen_Jeps ρ hρ hε hsm))
-    (ThetaUnifJeps hρ hα hε hsm hf)
 
-/-- **The angular half of the boundary traces of the projected mollified profile, from the uniform
-angular flatness of the raw profile.**  This is the leg consumed by the class-`C` invariance of the
-local step. -/
-theorem tauTraces_Pz_Jeps_of_thetaUnif {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    {α : ℝ} (hα : α ∈ Set.Ioc 0 1) {k : ℕ} {ε : ℝ} (hε : 0 < ε) {f : Fn}
-    (hsm : ∀ n : ℕ, ContDiffOn ℝ n (Function.uncurry f) Qu)
-    (hf : ThetaUnif α k f) :
-    TauTraces α k (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε f)) :=
-  (thetaUnif_Pz_Jeps hρ hα hε hsm hf).tauTraces
 
 end Work.FTS.EpsEngine

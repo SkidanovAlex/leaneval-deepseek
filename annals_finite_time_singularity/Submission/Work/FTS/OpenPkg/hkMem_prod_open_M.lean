@@ -1,17 +1,3 @@
-/-
-# `Submission/Work/FTS/OpenPkg/hkMem_prod_open_M.lean`
-
-The honesty (`HkMem`) of the radial product `r · g` in the **open-quadrant** class, with the
-majorant of the radial slots `b ≤ 3` supplied by the *caller* as a plain constant `M` rather
-than by the radial Hardy quantity `Rr r` of `radialMul_field.lean`.
-
-The proof is the one-quantity swap of `Work.FTS.OpenPkg.hkMem_prod_open`: the pointwise
-`ℋ⁴`-integrand bound `prodK_bound` (the `Classical.choose_spec` of
-`Work.FTS.Nonlinear.Pieces.RNP.RNP24.hkIntegrand_prod_le_rad_uniform`) only ever consumes
-`(D_z^b r z)² ≤ M` for `b ≤ 3`; the constancy of `M` in `z` removes the need for the radial
-Hardy step `dzdIter_sq_le_Rr_open`, and the only remaining input beyond `hgm` is the
-integrability of the single radial slot `(D_z^4 r)²w²` (from `hrm`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Prod

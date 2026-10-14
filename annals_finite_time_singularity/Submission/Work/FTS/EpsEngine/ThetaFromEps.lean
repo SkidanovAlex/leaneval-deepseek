@@ -2,7 +2,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Submission.Work.FTS.EpsEngine.ClassCStepEngine
-import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafA.sinpow_mixed_Jeps_le_strip
+import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafB.StripPlumb
 import Submission.Work.FTS.EpsEngine.ThetaFromEpsLeafB.tendsto_EpsSq_strip
 
 -- v435-port: begin
@@ -186,58 +186,6 @@ theorem classC_Pz_Jeps_of_epsMem {ρ : ℝ × ℝ → ℝ} (hρ : Work.FTS.Stron
     (tauTraces_Pz_Jeps_of_epsMem hρ hα hε hε1
       ((Work.FTS.EllipticEst.smoothOpen_iff_forall u).mp hsu) hme 10) hfsm
 
-/-- **Drop-in replacement for `classC_Pz_Jeps_add_of_increment`**: no `ThetaUnif` hypothesis. -/
-theorem classC_Pz_Jeps_add_of_increment' {ρ : ℝ × ℝ → ℝ}
-    (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
-    {α : ℝ} (hα : α ∈ Set.Ioc 0 1) (hα1 : α ≤ 1) {ε : ℝ} (hε : 0 < ε) (hε1 : ε ≤ 1)
-    {g₀ I : Fn}
-    (hC : Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε g₀)))
-    (hgsm : Work.FTS.EllipticEst.SmoothOpen g₀)
-    (hIsm : Work.FTS.EllipticEst.SmoothOpen I)
-    (hgmem : Work.Spaces.HkMem α 4 g₀) (hImem : Work.Spaces.HkMem α 4 I)
-    (hIEps : Work.FTS.StrongEps.EpsMem α I)
-    (hIfsm : ∀ m : ℕ, ContDiffOn ℝ m
-      (Work.Elliptic.Fstar (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε I)))
-      (Set.Ioi 0)) :
-    Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε
-      (fun z θ => g₀ z θ + I z θ))) := by
-  have hCI : Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε I)) :=
-    classC_Pz_Jeps_of_epsMem hρ hα hα1 hε hε1 hIsm hImem hIEps hIfsm
-  have hadd : Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε g₀)
-      + Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε I)) :=
-    Work.FTS.ClassC.classC_add hC hCI
-  have hsum : Work.FTS.EllipticEst.SmoothOpen (fun z θ => g₀ z θ + I z θ) := hgsm.add hIsm
-  have hmemSum : Work.Spaces.HkMem α 4 (fun z θ => g₀ z θ + I z θ) :=
-    Work.FTS.EllipticEst.HkMem_add_open hgsm hIsm hgmem hImem
-  have hsub := Work.FTS.EpsEngine.Pz_Jeps_sub_eq (α := α) (ρ := ρ) (ε := ε)
-    (u := fun z θ => g₀ z θ + I z θ) (v := g₀) hρ hα hε hsum hgsm hmemSum hgmem
-  have hfun : (fun z θ : ℝ => (g₀ z θ + I z θ) - g₀ z θ) = I := by
-    funext z θ; ring
-  rw [hfun] at hsub
-  have hgoal : Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε (fun z θ => g₀ z θ + I z θ))
-      = Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε g₀)
-        + Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε I) := by
-    rw [hsub]; abel
-  rw [hgoal]
-  exact hadd
 
-/-- **Drop-in replacement for `classC_step_of_flat`** (the engine's `hkeepIter` class-`C` clause):
-the four flatness gates `hflat`/`hsmF`/`hmeasF`/`hsupF` are gone; `hIEps` was already an input. -/
-theorem classC_step_of_epsMem {α : ℝ} {ρ : ℝ × ℝ → ℝ} {ε : ℝ} {Φs : Fn} {E : Fn → Fn} {g₀ : Fn}
-    {τ : ℝ} {n : ℕ}
-    (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ) (hα : α ∈ Set.Ioc 0 1) (hα1 : α ≤ 1)
-    (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hC₀ : Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε g₀)))
-    (hgsm : Work.FTS.EllipticEst.SmoothOpen g₀) (hgmem : Work.Spaces.HkMem α 4 g₀)
-    (hIsm : Work.FTS.EllipticEst.SmoothOpen (epsInc α ρ ε Φs E g₀ n τ))
-    (hImem : Work.Spaces.HkMem α 4 (epsInc α ρ ε Φs E g₀ n τ))
-    (hIEps : Work.FTS.StrongEps.EpsMem α (epsInc α ρ ε Φs E g₀ n τ))
-    (hIfsm : ∀ m : ℕ, ContDiffOn ℝ m
-      (Work.Elliptic.Fstar (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε
-        (epsInc α ρ ε Φs E g₀ n τ)))) (Set.Ioi 0)) :
-    Work.FTS.ClassC.ClassC α (Work.FTS.StrongEps.Pz (Work.FTS.StrongEps.Jeps ρ ε
-      (slice (epsIter α ρ ε Φs E g₀ (n + 1)) τ))) := by
-  rw [slice_epsIter_succ_eq]
-  exact classC_Pz_Jeps_add_of_increment' hρ hα hα1 hε hε1 hC₀ hgsm hIsm hgmem hImem hIEps hIfsm
 
 end Work.FTS.EpsEngine.ThetaFromEps

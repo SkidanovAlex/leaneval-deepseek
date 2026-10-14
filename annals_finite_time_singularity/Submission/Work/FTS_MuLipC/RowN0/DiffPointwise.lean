@@ -1,15 +1,8 @@
-/-
-# `Submission/Work/FTS_MuLipC/RowN0/DiffPointwise.lean` — the pointwise bound for the difference
-
-The three group estimates and the pointwise domination
-`(Sn0 α f - Sn0 α f')²·w ≤ DiffMaj α C₀ Xd d f'` of the difference row; see `diffRow0.lean`
-for the route.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_MuLipC.RowN0.DiffExpand
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.l12_supAbs_open
 import Submission.Work.FTS.Nonlinear.Pieces.rowsAux
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_RegExport.RXR1.slice_diff_weighted
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

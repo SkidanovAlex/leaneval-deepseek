@@ -2,15 +2,15 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.EllSol.EllPkgAux.MollBase
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.MollAux.integralAbsLeSqrtWeighted
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.aeStronglyMeasurable_exp
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.integrableOn_exp_comp
+import Submission.Work.FTS.ClassCHon.CmodeDefs
 import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_kj_bound
-import Submission.Work.FTS.EllSol.K5cAux.thWeightAux
-import Submission.Work.FTS.EllSol.EllPkgAux.mollSliceBound
-import Submission.Work.EllipticEst.Core.Defs
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.bt_f_bound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

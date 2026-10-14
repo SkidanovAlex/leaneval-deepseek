@@ -1,14 +1,13 @@
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS_BSIdentP.Slim.DevStub
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
 import Submission.Work.FTS_BSIdentP.Slim.Dev5
-import Submission.Work.FTS_BSIdentP.Slim.Dev6
 import Submission.Work.FTS_BSIdentP.Slim.Dev7
 import Submission.Work.FTS_BSIdentP.Slim.Dev8
 import Submission.Work.FTS_BSIdentP.Slim.Dev9
+import Submission.Work.FTS_BSIdentP.Slim.DevStub
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,20 +1,114 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The "easy" part of the `SpecialTransport` pairing
-
-This file contains the pointwise estimates for `EasyF = H4PairInt α (f ∂_θ g) g - HardF`,
-where `HardF` is the (f-form) collection of the five order-five terms.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.H2.STSigma
-import Submission.Work.FTS.H2.STDefs
+import Mathlib.MeasureTheory.Function.L1Space.Integrable
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.PhiStar.Gegenbauer.odd_powers_complete_fixed
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_l12fstar
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.mixed_mul_eq
-import Submission.Work.Spaces.WlInf_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.StabilityFar.Holder.holderOnWith_of_norm_le
+-- ===== merged: Submission.Work.FTS.BSSwirl.integrable_inv_cube_inner_smul =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.BSSwirl
+
+open MeasureTheory
+
+/-- The pointwise arithmetic behind the domination of the Biot--Savart-type weight
+`‖x-y‖⁻³ · ⟪y-x,v⟫` by the integrable weight `‖x-y‖⁻²`: the extra factor `‖x-y‖` is
+absorbed by the extra inverse power.  (The identity holds for all real `a`, with the
+convention `0⁻¹ = 0`.) -/
+private lemma inv_cube_mul_self_eq_prv (a : ℝ) : (a ^ (3 : ℕ))⁻¹ * a = (a ^ (2 : ℕ))⁻¹ := by
+  rcases eq_or_ne a 0 with h | h
+  · rw [h]; norm_num
+  · field_simp
+
+/-- **The vector-valued Biot--Savart kernel against a fixed vector is `L¹`.**  For a
+vorticity `ω` that is a.e.-strongly-measurable, bounded by `M` and supported in the closed ball
+`B(0,R)`, the integrand
+
+  `y ↦ ‖x-y‖⁻³ • (⟪y-x,v⟫ • ω y)`
+
+is Bochner-integrable, for every `x` and `v` — including at the singular point `y = x`.
+
+Indeed `⟪y-x,v⟫` is `O(‖y-x‖)`, so the integrand is dominated by `M‖v‖·‖x-y‖⁻²` on the support
+ball, which is integrable in `ℝ³` (`Work.StabilityFar.Decay.integrable_indicator_inv_sq`), and it
+vanishes identically off that ball. -/
+theorem integrable_inv_cube_inner_smul {ω : Work.FTS.BSSwirl.R3 → Work.FTS.BSSwirl.R3} {M R : ℝ}
+    (hM : 0 ≤ M) (hbdd : ∀ y, ‖ω y‖ ≤ M)
+    (hsupp : ∀ y, ω y ≠ 0 → y ∈ Metric.closedBall 0 R)
+    (hmeas : MeasureTheory.AEStronglyMeasurable ω MeasureTheory.volume)
+    (x : Work.FTS.BSSwirl.R3) (v : Work.FTS.BSSwirl.R3) :
+    MeasureTheory.Integrable
+      (fun y : Work.FTS.BSSwirl.R3 =>
+        ((‖x - y‖ ^ (3 : ℕ))⁻¹ : ℝ) • (inner ℝ (y - x) v • ω y))
+      MeasureTheory.volume := by
+  classical
+  -- a.e.-strong-measurability: the scalar weight `‖x-y‖⁻³ · ⟪y-x,v⟫` is measurable, and the
+  -- pointwise product of a measurable scalar with an a.e.-strongly-measurable vector field is
+  -- a.e.-strongly-measurable.
+  have haesm : AEStronglyMeasurable
+      (fun y : R3 => ((‖x - y‖ ^ (3 : ℕ))⁻¹ : ℝ) • (inner ℝ (y - x) v • ω y)) volume := by
+    have hd : AEStronglyMeasurable (fun y : R3 => inner ℝ (y - x) v) volume := by
+      have hc : Continuous (fun y : R3 => inner ℝ (y - x) v) := by fun_prop
+      exact hc.aestronglyMeasurable
+    have hinner : AEStronglyMeasurable (fun y : R3 => inner ℝ (y - x) v • ω y) volume :=
+      hd.smul hmeas
+    have hcc : AEStronglyMeasurable (fun y : R3 => ((‖x - y‖ ^ (3 : ℕ))⁻¹ : ℝ)) volume := by
+      have hm : Measurable (fun y : R3 => ‖x - y‖ ^ (3 : ℕ)) := by fun_prop
+      exact (Measurable.inv hm).aestronglyMeasurable
+    exact (hcc.smul hinner).congr (Filter.Eventually.of_forall fun y => rfl)
+  -- the dominating function: `M‖v‖·‖x-y‖⁻²` on the support ball `B(0,R)`, else `0`.
+  have hC : (0 : ℝ) ≤ M * ‖v‖ := mul_nonneg hM (norm_nonneg v)
+  refine Integrable.mono' (g := fun y : R3 => (Metric.closedBall (0 : R3) R).indicator
+      (fun y => M * ‖v‖ * ((‖x - y‖ ^ (2 : ℕ))⁻¹)) y)
+    (Work.StabilityFar.Decay.integrable_indicator_inv_sq x hC) haesm ?_
+  -- the pointwise domination, valid everywhere (not merely a.e.)
+  filter_upwards with y
+  by_cases hy : y ∈ Metric.closedBall (0 : R3) R
+  · rw [Set.indicator_of_mem hy]
+    have hA : ∀ z : R3, ‖((‖x - y‖ ^ (3 : ℕ))⁻¹ : ℝ) • z‖
+        = (‖x - y‖ ^ (3 : ℕ))⁻¹ * ‖z‖ := by
+      intro z
+      rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+    have hB : ‖inner ℝ (y - x) v • ω y‖ = |inner ℝ (y - x) v| * ‖ω y‖ := by
+      rw [norm_smul, Real.norm_eq_abs]
+    have hcore : (‖x - y‖ ^ (3 : ℕ))⁻¹ * ‖x - y‖ ≤ (‖x - y‖ ^ (2 : ℕ))⁻¹ :=
+      le_of_eq (inv_cube_mul_self_eq_prv _)
+    calc ‖((‖x - y‖ ^ (3 : ℕ))⁻¹ : ℝ) • (inner ℝ (y - x) v • ω y)‖
+        = (‖x - y‖ ^ (3 : ℕ))⁻¹ * ‖inner ℝ (y - x) v • ω y‖ := hA _
+      _ = (‖x - y‖ ^ (3 : ℕ))⁻¹ * (|inner ℝ (y - x) v| * ‖ω y‖) := by rw [hB]
+      _ ≤ (‖x - y‖ ^ (3 : ℕ))⁻¹ * (‖y - x‖ * ‖v‖ * M) := by
+            apply mul_le_mul_of_nonneg_left _ (by positivity)
+            exact mul_le_mul (abs_real_inner_le_norm _ _) (hbdd y) (norm_nonneg _)
+              (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+      _ = (‖x - y‖ ^ (3 : ℕ))⁻¹ * ‖x - y‖ * (M * ‖v‖) := by
+            rw [norm_sub_rev y x]; ring
+      _ ≤ (‖x - y‖ ^ (2 : ℕ))⁻¹ * (M * ‖v‖) :=
+            mul_le_mul_of_nonneg_right hcore (mul_nonneg hM (norm_nonneg v))
+      _ = M * ‖v‖ * (‖x - y‖ ^ (2 : ℕ))⁻¹ := by ring
+  · have hω0 : ω y = 0 := by
+      by_contra h
+      exact hy (hsupp y h)
+    rw [Set.indicator_of_notMem hy]
+    simp [hω0]
+
+end Work.FTS.BSSwirl
+end
+-- ===== merged: Submission.Work.FTS.H2.STEasy =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -33,59 +127,10 @@ set_option maxHeartbeats 4000000
 
 /-! ## The unified `f`-bound -/
 
-/-- `|D_z^b D_θ^a f| ≤ 4·10^5 · sin(2θ) · |∂_θ f|_𝒲` for `1 ≤ a+b ≤ 4`, `z > 0`. -/
-theorem abs_mixed_f_le' {α : ℝ} {f : ℝ → ℝ → ℝ}
-    (hsm : Work.Spaces.SmoothInt f)
-    (hcont : ContinuousOn (Function.uncurry f) (Work.Spaces.Iz ×ˢ Work.Spaces.Iθ))
-    (hvt : Work.Spaces.VanishTheta f) (hα : 0 < α) (hα1 : α ≤ 1)
-    (hW : Work.Spaces.WlInfMem α 4 (Work.Spaces.pth f)) :
-    ∀ a b : ℕ, 1 ≤ a + b → a + b ≤ 4 → ∀ z ∈ Set.Ioi (0 : ℝ), ∀ θ ∈ Set.Ioo 0 (π / 2),
-      |Work.Spaces.mixed b a f z θ|
-        ≤ 400000 * Real.sin (2 * θ) * Work.Spaces.WlInf α 4 (Work.Spaces.pth f) := by
-  intro a b hab hab4 z hz θ hθ
-  rcases Nat.eq_zero_or_pos a with h0 | hpos
-  · subst h0
-    have hθI : θ ∈ Work.Spaces.Iθ := ⟨hθ.1.le, hθ.2.le⟩
-    have h1 := abs_DzIter_f_le hsm hcont hvt hW b (by omega) z hz θ hθI
-    have hWnn : 0 ≤ Work.Spaces.WlInf α 4 (Work.Spaces.pth f) := WlInf_nonneg hW
-    have hS : 0 ≤ Real.sin (2 * θ) := sin_two_nonneg_Iθ hθI
-    calc |Work.Spaces.mixed b 0 f z θ| = |Work.Spaces.DzIter b f z θ| := rfl
-      _ ≤ 10000 * Real.sin (2 * θ) * Work.Spaces.WlInf α 4 (Work.Spaces.pth f) := h1
-      _ ≤ 400000 * Real.sin (2 * θ) * Work.Spaces.WlInf α 4 (Work.Spaces.pth f) := by
-          nlinarith [mul_nonneg hS hWnn]
-  · exact abs_mixed_f_le hsm hα hα1 hW a b hpos hab4 z hz θ hθ
 
 /-! ## `∂_θ` commutes with `D_z^j` -/
 
-theorem pth_dzIter_comm {X : ℝ → ℝ → ℝ} {V : Set (ℝ × ℝ)} (hV : IsOpen V)
-    (hX : ContDiffOn ℝ ⊤ (Function.uncurry X) V) :
-    ∀ j : ℕ, Set.EqOn (Function.uncurry (Work.Spaces.pth (Work.Spaces.DzIter j X)))
-      (Function.uncurry (Work.Spaces.DzIter j (Work.Spaces.pth X))) V := by
-  intro j
-  induction j with
-  | zero => intro p hp; rfl
-  | succ j ih =>
-    intro p hp
-    show Work.Spaces.pth (Work.Spaces.Dz (Work.Spaces.DzIter j X)) p.1 p.2
-        = p.1 * Work.Spaces.pz (Work.Spaces.DzIter j (Work.Spaces.pth X)) p.1 p.2
-    show deriv (fun θ' => p.1 * Work.Spaces.pz (Work.Spaces.DzIter j X) p.1 θ') p.2
-        = p.1 * Work.Spaces.pz (Work.Spaces.DzIter j (Work.Spaces.pth X)) p.1 p.2
-    rw [deriv_const_mul_field p.1]
-    congr 1
-    have hsmj : ContDiffOn ℝ ⊤ (Function.uncurry (Work.Spaces.DzIter j X)) V :=
-      Work.Spaces.DzIterSmoothOn hV hX j
-    have h2 : ContDiffAt ℝ 2 (Function.uncurry (Work.Spaces.DzIter j X)) p :=
-      (hsmj.contDiffAt (hV.mem_nhds hp)).of_le (by norm_num)
-    change Work.Spaces.pth (Work.Spaces.pz (Work.Spaces.DzIter j X)) p.1 p.2
-        = Work.Spaces.pz (Work.Spaces.DzIter j (Work.Spaces.pth X)) p.1 p.2
-    rw [← Work.Spaces.pz_pth_comm h2]
-    exact Work.Spaces.pz_congr_of_isOpen hV ih hp
 
-/-- `∂_θ (D_z^j g) = D_z^j (∂_θ g)` on `nbhU`. -/
-theorem pth_dzIter_eq (g : ℝ → ℝ → ℝ) (hg : Work.Spaces.SmoothNbhd g) (j : ℕ) :
-    Set.EqOn (Function.uncurry (Work.Spaces.DzIter j (Work.Spaces.pth g)))
-      (Function.uncurry (Work.Spaces.pth (Work.Spaces.DzIter j g))) Work.Spaces.nbhU :=
-  (pth_dzIter_comm Work.Spaces.isOpen_nbhU hg j).symm
 
 /-! ## The exact `sin(2θ)·∂_θ(D_z^jD_θ^ig) = D_z^jD_θ^{i+1}g` -/
 
@@ -105,69 +150,7 @@ theorem sin_mul_pth_mixed (g : ℝ → ℝ → ℝ) (hg : Work.Spaces.SmoothNbhd
 
 /-! ## The commutator bound -/
 
-/-- `sin(2θ)·(∂_θ D_z^jD_θ^ig - D_z^jD_θ^i(∂_θg))` is bounded by the lower slots. -/
-theorem comm_bound (g : ℝ → ℝ → ℝ) (hg : Work.Spaces.SmoothNbhd g) (j i : ℕ) (hi : i ≤ 4)
-    {z θ : ℝ} (hstrp : (z, θ) ∈ Work.Spaces.nbhU) (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
-    |Real.sin (2 * θ) * (Work.Spaces.mixed j i (Work.Spaces.pth g) z θ
-        - Work.Spaces.pth (Work.Spaces.mixed j i g) z θ)|
-      ≤ (∑ r ∈ Finset.range i, ((i.choose (r + 1) : ℝ) * Asin (r + 1) * Bz (i - (r + 1))))
-        * ∑ m ∈ Finset.Icc 1 i, |Work.Spaces.mixed j m g z θ| := by
-  have hθI : θ ∈ Work.Spaces.Iθ := ⟨hθ.1.le, hθ.2.le⟩
-  have hS : 0 ≤ Real.sin (2 * θ) := sin_two_nonneg_Iθ hθI
-  have hexp := mixed_succ_expansion g hg i j hstrp
-  have hpth := sin_mul_pth_mixed g hg j i hstrp
-  have hkey : Real.sin (2 * θ) * (Work.Spaces.mixed j i (Work.Spaces.pth g) z θ
-        - Work.Spaces.pth (Work.Spaces.mixed j i g) z θ)
-      = -(∑ r ∈ Finset.range i,
-          ((i.choose (r + 1) : ℝ) * Work.Spaces.DthIter (r + 1) Sfun 0 θ)
-            * Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ) := by
-    rw [mul_sub, hpth]
-    linarith [hexp]
-  set T : ℝ := ∑ m ∈ Finset.Icc 1 i, |Work.Spaces.mixed j m g z θ| with hT
-  have hTnn : 0 ≤ T := Finset.sum_nonneg fun m _ => abs_nonneg _
-  have hterm : ∀ r ∈ Finset.range i,
-      |((i.choose (r + 1) : ℝ) * Work.Spaces.DthIter (r + 1) Sfun 0 θ)
-          * Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ|
-        ≤ ((i.choose (r + 1) : ℝ) * Asin (r + 1) * Bz (i - (r + 1))) * T := by
-    intro r hr
-    simp only [Finset.mem_range] at hr
-    have hrle : r + 1 ≤ 4 := by omega
-    have hlt : i - (r + 1) ≤ 3 := by omega
-    have hAs := abs_DthIter_Sfun_le (r + 1) (by omega) 0 hθI
-    have hCnn : (0 : ℝ) ≤ (i.choose (r + 1) : ℝ) := Nat.cast_nonneg _
-    have hsig := sigma_z_bound g hg (i - (r + 1)) hlt j z θ hstrp hθ
-    have hsub : Finset.Icc 1 (i - (r + 1) + 1) ⊆ Finset.Icc 1 i := by
-      intro m hm
-      simp only [Finset.mem_Icc] at hm ⊢
-      omega
-    have hTle : (∑ m ∈ Finset.Icc 1 (i - (r + 1) + 1), |Work.Spaces.mixed j m g z θ|) ≤ T := by
-      rw [hT]
-      exact Finset.sum_le_sum_of_subset_of_nonneg
-        (f := fun m => |Work.Spaces.mixed j m g z θ|) hsub (fun m _ _ => abs_nonneg _)
-    rw [abs_mul, abs_mul, abs_of_nonneg hCnn]
-    calc (i.choose (r + 1) : ℝ) * |Work.Spaces.DthIter (r + 1) Sfun 0 θ|
-          * |Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ|
-        ≤ (i.choose (r + 1) : ℝ) * (Asin (r + 1) * Real.sin (2 * θ))
-          * |Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ| := by
-          refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)
-          exact mul_le_mul_of_nonneg_left hAs hCnn
-      _ = ((i.choose (r + 1) : ℝ) * Asin (r + 1))
-          * (Real.sin (2 * θ)
-              * |Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ|) := by ring
-      _ ≤ ((i.choose (r + 1) : ℝ) * Asin (r + 1)) * (Bz (i - (r + 1)) * T) :=
-          mul_le_mul_of_nonneg_left
-            (le_trans hsig (mul_le_mul_of_nonneg_left hTle (Bz_nonneg _)))
-            (mul_nonneg (Nat.cast_nonneg _) (Asin_pos _).le)
-      _ = ((i.choose (r + 1) : ℝ) * Asin (r + 1) * Bz (i - (r + 1))) * T := by ring
-  have hsumabs : |-(∑ r ∈ Finset.range i,
-        ((i.choose (r + 1) : ℝ) * Work.Spaces.DthIter (r + 1) Sfun 0 θ)
-          * Work.Spaces.mixed j (i - (r + 1)) (Work.Spaces.pth g) z θ)|
-      ≤ ∑ r ∈ Finset.range i,
-          ((i.choose (r + 1) : ℝ) * Asin (r + 1) * Bz (i - (r + 1))) * T := by
-    rw [abs_neg]
-    exact le_trans (Finset.abs_sum_le_sum_abs _ _) (Finset.sum_le_sum hterm)
-  rw [hkey]
-  refine le_trans hsumabs ?_
-  rw [Finset.sum_mul]
 
 end Work.FTS.H2
+end
+end

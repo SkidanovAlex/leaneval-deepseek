@@ -1,11 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Helpers for the truncated energy inequality in the a.e. class
-
-Joint continuity of the profiles on the open quadrant, and the domination of the truncated
-`φw²`-weighted profiles by their untruncated `σ`-weighted counterparts.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
@@ -78,32 +70,6 @@ theorem continuousOn_Lzero_mul (α : ℝ) (u G : ℝ → ℝ → ℝ)
       (((continuousOn_fst.const_mul (α * (5 + α))).mul hpz))
   exact (hLc.mul hu).congr (fun p _ => rfl)
 
-/-- If the untruncated `σ`-weighted profile is integrable, so is the `φw²`-truncated plain one,
-provided `0 ≤ φ ≤ 1` and `∫_θ f² ≤ ∫_θ f²σ` on the fibres. -/
-theorem integrableOn_prof_of_sigma {f : ℝ → ℝ → ℝ} {φ : ℝ → ℝ} (hφm : Measurable φ)
-    (hφ0 : ∀ z : ℝ, 0 ≤ φ z) (hφ1 : ∀ z : ℝ, φ z ≤ 1)
-    (h2aesm : AEStronglyMeasurable (fun z => ∫ θ in Iθ, (f z θ) ^ 2)
-      (MeasureTheory.volume.restrict Iz))
-    (hle : ∀ z : ℝ, (∫ θ in Iθ, (f z θ) ^ 2) ≤ ∫ θ in Iθ, (f z θ) ^ 2 * sg θ)
-    (hdom : MeasureTheory.IntegrableOn (fun z => (Work.Spaces.w z) ^ 2
-      * (∫ θ in Iθ, (f z θ) ^ 2 * sg θ)) Iz) :
-    MeasureTheory.IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
-      * (∫ θ in Iθ, (f z θ) ^ 2)) Iz := by
-  have haesm : AEStronglyMeasurable (fun z => φ z * (Work.Spaces.w z) ^ 2
-      * (∫ θ in Iθ, (f z θ) ^ 2)) (MeasureTheory.volume.restrict Iz) :=
-    ((hφm.mul Work.FTS.EllipticEst.Honest.measurable_wSq).aestronglyMeasurable).mul h2aesm
-  refine hdom.mono' haesm ?_
-  filter_upwards with z
-  have hw2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
-  have h2 : 0 ≤ ∫ θ in Iθ, (f z θ) ^ 2 := integral_nonneg fun θ => sq_nonneg _
-  rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (mul_nonneg (hφ0 z) hw2) h2)]
-  calc φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Iθ, (f z θ) ^ 2)
-      = φ z * ((Work.Spaces.w z) ^ 2 * (∫ θ in Iθ, (f z θ) ^ 2)) := by ring
-    _ ≤ 1 * ((Work.Spaces.w z) ^ 2 * (∫ θ in Iθ, (f z θ) ^ 2)) :=
-        mul_le_mul_of_nonneg_right (hφ1 z) (mul_nonneg hw2 h2)
-    _ = (Work.Spaces.w z) ^ 2 * (∫ θ in Iθ, (f z θ) ^ 2) := one_mul _
-    _ ≤ (Work.Spaces.w z) ^ 2 * (∫ θ in Iθ, (f z θ) ^ 2 * sg θ) :=
-        mul_le_mul_of_nonneg_left (hle z) hw2
 
 /-- Fibrewise domination: `∫_θ f² ≤ ∫_θ f²σ` (from `σ ≥ 1` a.e. on `Iθ`). -/
 theorem slice_sq_le_sigma {α : ℝ} {f : ℝ → ℝ → ℝ}

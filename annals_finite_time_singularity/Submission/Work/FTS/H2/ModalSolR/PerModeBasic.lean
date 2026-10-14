@@ -1,25 +1,9 @@
-/-
-# `ModalSolR/PerModeBasic` — elementary facts for the modal weak solution
-
-This module collects the elementary facts used by the per-mode weak identity
-(`ModalSolR/PerMode.lean`) and by the final assembly (`ModalSolR/weakSolExists_slice.lean`):
-
-* `bslOp_eq_zero_off_box`: the operator applied to a test function vanishes off any closed box
-  containing the (open) support box of the test function;
-* `test_vanishes_off_theta` / `test_vanishes_off_z`: the test function vanishes off the box;
-* `setIntegral_Q0_eq_box`: an integral over the open quadrant equals the integral over the closed
-  box when the integrand vanishes on the difference;
-* `acoeff_zero_of_orth`: the `m = 0` mode coefficient vanishes under the solvability condition
-  `OrthCond F`, because `eFam 0 = 3 sin θ cos θ`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.H2.ModalSol.Defs
-import Submission.Work.EllipticEst.ModalSolution.bslOp_ibp
-import Submission.Work.EllipticEst.ModalSolution.box_of_compactSupport
 import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_norm_fts
-import Submission.Work.Elliptic.Defs
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

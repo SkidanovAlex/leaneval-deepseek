@@ -1,38 +1,12 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Work.FTS_EllLimOK.LimExtract_bounds`
-
-The two hypotheses that the Arzelà–Ascoli extraction
-(`Work.FTS.StrongEps.LocUnif.exists_subseq_tendstoLocallyUniformlyOn_fin`) needs of the family
-`fam6 G n` of the six mixed jets `D_z^j D_θ^i (G n)`, `j + i ≤ 2`, follow from *pointwise*
-growth bounds `|D_z^j D_θ^i (G n)| ≤ C · wt` of order `j + i ≤ 3` on the open quadrant `Q0`:
-
-* **local uniform boundedness** on every compact `K ⊆ Q0` of the `order ≤ 2` jets (the weight
-  `wt` is continuous on the open quadrant, hence bounded on `K`);
-* **local uniform equicontinuity**: the `order ≤ 3` bounds control the first derivatives of the
-  `order ≤ 2` jets — `∂_z D_z^jD_θ^i = D_z^{j+1}D_θ^i / z` and
-  `∂_θ D_z^jD_θ^i = D_z^jD_θ^{i+1} / sin 2θ` (`mixed_partials_of_smoothOpen`) — and on a closed
-  box `[a,b] × [c,d] ⊆ Q0` containing `K` the two factors `1/z`, `1/sin 2θ` and the weight `wt`
-  are bounded, so every member of the family is Lipschitz on `K` with one constant.
-
-A compact `K ⊆ Q0` is contained in such a box (`box_of_compact_inside_Q0`), the weight and the
-gradient weight `wt·(1/z + 1/sin 2θ)` are bounded on it (`wt_bddAbove_of_compact`), and bounded
-partials on a box give the Lipschitz bound by the mean value theorem, applied once in each
-variable (`abs_sub_le_of_box_bounds`).
-
-Everything here is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.LimDefs
 import Submission.Work.FTS.StrongEps.LocUnif.mixed_partials_of_smoothOpen
-import Submission.Work.FTS_EllLimOK.abs_sub_le_of_box_bounds
-import Submission.Work.FTS_EllLimOK.box_of_compact_inside_Q0
 import Submission.Work.FTS_EllLimOK.wt_bddAbove_of_compact
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.one_le_mul_w
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

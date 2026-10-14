@@ -1,30 +1,10 @@
-/-
-# `Work.FTS_RegExport.RXR5L.ProdAux` — the product lemma of `EllProd_C1JetFull`
-
-`EllProd_C1JetFull` asks for `C1Jet`-regularity of the three product slots
-`P₁ = Rop Φ̃·F_τ`, `P₂ = (Uop Φ̃/sin 2θ)·D_θF_τ`, `P₃ = Vop Φ̃·D_zF_τ` (see `ProdDefs`).
-The coefficients alone are *not* continuous at `θ = π/2` (their `psiR`-junk value is `0` while the
-one-sided limit is not), but each slot is the product of
-
-* a **coefficient** `Q` with the `vanish0`-type data `|Q|, |D_zQ|, |D_θQ| ≤ A·min z 1`,
-  `Q(0,·,·) = 0`, `τ`-Lipschitz constant `A`, and differentiable slices,
-* a **factor** `R` which is a `C1Jet` *and* `Γ`-shaped: `|R| ≤ B·Γ(θ)`,
-  `Γ(θ) = (sinθcos²θ)^α = Gmp α θ`.
-
-Then the product is a `C1Jet`: the `Γ`-vanishing of the factor absorbs the `1/sin 2θ` of the
-coefficient, and the endpoint values of the product are `0`.
-
-This file proves the general statement `prod_C1Jet_of_vanish`, together with the two elementary
-one-variable facts it needs:
-`Γ(θ) ≤ dang θ ^ α` and `sin 2θ ≥ (4/π)·dang θ`, where `dang θ = min θ (π/2 − θ)`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS_RegExport.RXR5L.ProdDefs
 import Submission.Work.FTS.H2.STBasic
-import Submission.Work.FTS.RegPkgGal.Der.Defs
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -60,10 +40,6 @@ theorem dang_eq_self_of_le {θ : ℝ} (h : θ ≤ π / 4) : dang θ = θ :=
 theorem dang_eq_half_of_le {θ : ℝ} (h : π / 4 ≤ θ) : dang θ = π / 2 - θ :=
   min_eq_right (by linarith [Real.pi_gt_three])
 
-theorem dang_le_one_of_mem {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) : dang θ ≤ 1 := by
-  rcases le_total θ (π / 4) with h | h
-  · have := dang_le_self θ; linarith [Real.pi_lt_four]
-  · have := dang_le_half θ; linarith [Real.pi_lt_four]
 
 /-- `dang` has no interior minimum below the endpoints' values: on the segment between `a` and
 `b`, `dang x ≥ min (dang a) (dang b)`. -/
@@ -257,27 +233,6 @@ theorem abs_z_sub_le {α S A B : ℝ} {Q R : ℝ → ℝ → ℝ → ℝ} (h : P
   rw [h3, h2] at h4
   exact h4
 
-/-- The sharper bound `|Q z θ τ·R z θ τ| ≤ A·B·z` for `z > 0` and `θ` in the open interval. -/
-theorem prod_le_mul {α S A B : ℝ} {Q R : ℝ → ℝ → ℝ → ℝ} (hα : 0 < α)
-    (h : ProdData α S A B Q R) {z θ τ : ℝ} (hz : 0 < z) (hθ : θ ∈ Set.Ioo 0 (π / 2))
-    (hτ : τ ∈ Set.Icc 0 S) :
-    |Q z θ τ * R z θ τ| ≤ A * B * z := by
-  have hθI : θ ∈ Work.Spaces.Iθ := ⟨hθ.1.le, hθ.2.le⟩
-  have hQb := h.Qb z θ τ hz hθ.1 hθ.2 hτ
-  have hRb := h.RGam z θ τ hz.le hθI hτ
-  have hG1 : Gmp α θ ≤ 1 := Gmp_le_one (le_of_lt hα) hθI
-  have hG0 : 0 ≤ Gmp α θ := Gmp_nonneg hθI
-  have hmin : min z 1 ≤ z := min_le_left _ _
-  have hAz : 0 ≤ A * min z 1 := mul_nonneg h.A_nonneg (le_min hz.le zero_le_one)
-  have hBz : 0 ≤ B * Gmp α θ := mul_nonneg h.B_nonneg hG0
-  have h1 : |Q z θ τ| * |R z θ τ| ≤ (A * min z 1) * (B * Gmp α θ) :=
-    mul_le_mul hQb hRb (abs_nonneg _) hAz
-  have h2 : (A * min z 1) * (B * Gmp α θ) ≤ (A * z) * (B * 1) :=
-    mul_le_mul (mul_le_mul_of_nonneg_left hmin h.A_nonneg)
-      (mul_le_mul_of_nonneg_left hG1 h.B_nonneg) hBz (mul_nonneg h.A_nonneg hz.le)
-  rw [abs_mul]
-  calc |Q z θ τ| * |R z θ τ| ≤ (A * z) * (B * 1) := le_trans h1 h2
-    _ = A * B * z := by ring
 
 /-! ## §4 Two elementary inequalities -/
 

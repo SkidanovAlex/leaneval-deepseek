@@ -2,14 +2,13 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Gradient.Basic
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.PoissonAux.Defs
-import Submission.Work.FTS.PressureOn.PoissonAux.Ibp
-import Submission.Work.FTS.PressureOn.PoissonAux.Ibp2
-import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradIntegral
-import Submission.Work.FTS.PressureOn.PoissonAux.integrable_lambVector_kernel
-import Submission.Work.FTS.PressureOn.PoissonAux.integrable_smul_newtonGrad
 import Submission.Work.FTS.PressureOn.Green.integral_mul_laplaceTrace_comm
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradIntegral
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS.PressureOn.weakCurl.int2_integrable
+import Submission.Work.FTS.PressureOn.weakDiv_timeDeriv
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

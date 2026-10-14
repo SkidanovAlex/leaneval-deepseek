@@ -1,11 +1,94 @@
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Prod
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Mathlib.Topology.MetricSpace.Holder
 import Submission.Work.FTS.RegPkgGal.RVocab
-import Submission.Work.FTS.StrongGlobal.junction_fderiv_eq
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.SolutionDelivery.DatumEuler
+-- ===== merged: Submission.Work.FTS.RegPkgGal.ConsumerRegPkg =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open Set Metric
+open scoped Topology NNReal Real
+
+namespace Work.FTS.RegPkgGal
+
+open Work.FTS.Regularity
+
+set_option autoImplicit false
+
+variable {α S : ℝ} {A B : ℝ → ℝ} {g : ℝ → ℝ → ℝ → ℝ}
+
+/-- `|θ(x)| ∈ Iθ`. -/
+lemma abs_theta_mem_Iθ (x : R3) : |Work.Cyl.theta x| ∈ Work.Spaces.Iθ := by
+  refine ⟨abs_nonneg _, ?_⟩
+  rw [Work.Cyl.theta]
+  exact abs_le.mpr ⟨le_of_lt (Real.neg_pi_div_two_lt_arctan _),
+    le_of_lt (Real.arctan_lt_pi_div_two _)⟩
+
+
+
+/-! ## The conjunction shape of the composite transfer -/
+
+
+/-! ## The vanishing-rate transfer -/
+
+/-- `(r/ρ)^{2α} ≤ r^α` for `0 ≤ r ≤ ρ²` (copy of the `private` helper of
+`Work.ConstructionInstance.gComp_abs_le`). -/
+private lemma rpow_two_mul_le_of_le_sq {α r ρ : ℝ} (hα : 0 < α) (hr : 0 ≤ r) (hρ : 0 < ρ)
+    (h : r ≤ ρ ^ 2) : (r / ρ) ^ (2 * α) ≤ r ^ α := by
+  have hs0 : 0 ≤ r / ρ := div_nonneg hr hρ.le
+  have hsρ : r / ρ ≤ ρ := by
+    rw [div_le_iff₀ hρ]; nlinarith
+  have h1 : (r / ρ) ^ α ≤ ρ ^ α := Real.rpow_le_rpow hs0 hsρ hα.le
+  have h2 : (r / ρ) ^ (2 * α) = (r / ρ) ^ α * (r / ρ) ^ α := by
+    rw [show 2 * α = α + α from by ring, Real.rpow_add' hs0 (by positivity)]
+  rw [h2]
+  calc (r / ρ) ^ α * (r / ρ) ^ α ≤ (r / ρ) ^ α * ρ ^ α :=
+        mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg hs0 α)
+    _ = (r / ρ * ρ) ^ α := (Real.mul_rpow hs0 hρ.le).symm
+    _ = r ^ α := by rw [div_mul_cancel₀ r hρ.ne']
+
+/-- `ρ^{3α} ≤ r^α` for `0 < ρ ≤ 1` and `ρ² < r` (copy of the `private` helper of
+`Work.ConstructionInstance.gComp_abs_le`). -/
+private lemma rpow_three_mul_le_of_sq_lt {α r ρ : ℝ} (hα : 0 < α) (hr : 0 ≤ r) (hρ : 0 < ρ)
+    (hρ1 : ρ ≤ 1) (h : ρ ^ 2 < r) : ρ ^ (3 * α) ≤ r ^ α := by
+  have h1 : ρ ^ (3 * α) ≤ ρ ^ (2 * α) :=
+    Real.rpow_le_rpow_of_exponent_ge hρ hρ1 (by linarith)
+  have h2 : ρ ^ (2 * α) = (ρ ^ 2) ^ α := by
+    rw [Real.rpow_mul hρ.le (2:ℝ) α, Real.rpow_two]
+  calc ρ ^ (3 * α) ≤ ρ ^ (2 * α) := h1
+    _ = (ρ ^ 2) ^ α := h2
+    _ ≤ r ^ α := Real.rpow_le_rpow (sq_nonneg ρ) h.le hα.le
+
+
+
+/-! ## The uniform-in-`τ` consumers of `RegPkg'` -/
+
+
+
+end Work.FTS.RegPkgGal
+end
+end
+-- ===== merged: Submission.Work.FTS.RegPkgGal.R7d.chain_rule_along_curve =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -79,3 +162,4 @@ theorem chain_rule_along_curve {F : ℝ → ℝ → ℝ → ℝ} {Vz Vθ cs : �
   exact (hcomp.congr_deriv hval).congr_of_eventuallyEq (Filter.EventuallyEq.of_eq rfl)
 
 end Work.FTS.RegPkgGal.R7d
+end

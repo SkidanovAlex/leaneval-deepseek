@@ -2,12 +2,12 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.RXR5.Basic
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.L12_Fstar_add_c4
-import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS_EllLimOK.Locality
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS.FinalV2.Defs
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_L12DzIterTendsto
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_majorant
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

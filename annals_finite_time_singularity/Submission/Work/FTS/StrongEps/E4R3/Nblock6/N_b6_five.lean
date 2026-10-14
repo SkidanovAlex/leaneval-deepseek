@@ -1,21 +1,97 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Basic.Real.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Route
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.Defs
-import Submission.Work.FTS.StrongEps.ClassCRHS.HkMemXnNDefs
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N_aux.N_b4
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSinSqHkSq
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkStarPieces
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.ksDat
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.blocks.N0Aux.N04aN05aParts.sep_HkSq_le
-import Submission.Work.FTS.StrongEps.EpsGdotThird
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Auxiliary.Fstar_jet_rel
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Auxiliary.angBlk_sinSqGam
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.epsWP_semitame_proof
 import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Auxiliary.mul_WlInf6_HkSq
-import Submission.Work.FTS.StrongEps.E4R3.Nblock6.auxiliary.SlotSum_Fstar_sq_le
+import Submission.Work.FTS.StrongEps.E4R3.Nblock6.Stmts
+import Submission.Work.FTS.StrongEps.E4R3.RawE6Aux.Jeps_IP6_transfer_aux
+import Submission.Work.FTS.StrongEps.EpsWPBounds
+import Submission.Work.FTS.StrongPersist.H6Aux.E2Facts
+import Submission.Work.FTS.StrongPersist.H6Rows.H6Pair_of_rows_C6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkStarPieces
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumData
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS_EllLimOK.PkgJets.hkMemOfJConv
+import Submission.Work.FTS_LocDatum3a.Defs
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Leaves.EpsWPSemitame =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `E4R3/Apriori4Leaves/EpsWPSemitame.lean` — OPEN LEAF S2 (research **mid**, ~2–4K lines; RISK)
+
+curric-46 install 2026-10-12 (`cbc/fts_apriori6_ruling.md` §3 S2; REVIEW fix F4).
+This is the whole level-6 algebra of the right-hand side (all four pieces + `μ` + the linear part)
+plus the `HQo 6` honesty of `epsWP` — the `EpsWPBounds` header records it is missing.
+**The tame structure is essential**: top order must enter LINEARLY with an `ℋ⁴`-priced
+coefficient.  A coefficient like `C(|x|₆)·|x|₇` leaves no `ε` (`ε|x|₇ ≲ |g|₆`) and breaks the
+Grönwall.  In the Leibniz terms `D^jA·D^{7−j}x`:
+* `j = 0, 1`: sup of the coefficient priced by `M` (`EllPkgGo` + Agmon);
+* `2 ≤ j ≤ 3`: Agmon on `A` gives `|A|₅ ≤ Ce|x|₆`;
+* `j ≥ 4`: Agmon on `x` gives a quadratic term.
+Reuse `H6Row6.pcs` / `NSplit6` / `nsum_split6`, `RowNAgmon`, `coefDataSharp`, `muBdd_of_zeroModes`,
+`SupOpenH2` / `ResidPtOfGo` (top-order coefficient).
+-/
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.E4R4
+
+open Work.FTS.Galerkin (Fn Fam slice)
+open Work.FTS.StrongEps
+
+set_option autoImplicit false
+
+
+end Work.FTS.StrongEps.EpsE4Thr.E4R4
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.N4C.pairingBoundT =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.E4R3.N4C
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 4000000
+
+theorem pairingBoundT (IP : ℝ → Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn → ℝ)
+    {α₂ Ct Ce Cs : ℝ} (hCs : 0 < Cs) (hCe : 0 < Ce)
+    (hE : Work.FTS.StrongEps.E4R3.N4C.N4ExtraH IP α₂ Ct)
+    (hR : Work.FTS.StrongEps.E4R3.N4C.RowsT IP α₂ Ce Cs) :
+    ∃ CcN α₄ : ℝ, 0 < CcN ∧ 0 < α₄ ∧ α₄ ≤ α₂ ∧
+      ∀ α ∈ Set.Ioc 0 α₄, ∀ {g Φs Φg : Work.FTS.Galerkin.Fn},
+        Work.FTS.StrongEps.E4R3.N4C.CtxT Cs Ce α₂ α g Φs Φg →
+        Work.FTS.Nonlin.Xn α g ≤ α ^ (7 / 4 : ℝ) →
+        |Work.FTS.Apriori.rhsPair IP α g (fun z θ => Φs z θ + Φg z θ)|
+          ≤ CcN * Work.FTS.Nonlin.Pbd α (Work.FTS.Nonlin.Xn α g) :=
+  pairing_bound_of_rowsT IP hCs hCe hE hR
+
+end Work.FTS.StrongEps.E4R3.N4C
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Nblock6.N_b6_five =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -210,3 +286,4 @@ theorem N_b6_five : ∀ C₀ Ce Cs : ℝ, ∀ α ∈ Set.Ioc (0 : ℝ) 1, ∃ K 
   · exact finish 19 K19 1 hK19nn hK19le hone (by simpa using key19)
 
 end Work.FTS.StrongEps.E4R3.Nblock6
+end

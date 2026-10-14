@@ -4,10 +4,10 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllSol.PkgK5.SlotDefs
-import Submission.Work.FTS.EllipticEst.Dth1IterTwoCosBoundN
-import Submission.Work.FTS.H2.DivSinQR.mixedSlotFull
-import Submission.Work.FTS.EllSol.PkgK5.dthRecOpen
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.StrongPersist.H6Aux.R.DthIbp
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.H6N0Aux.dzSelfA2d
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

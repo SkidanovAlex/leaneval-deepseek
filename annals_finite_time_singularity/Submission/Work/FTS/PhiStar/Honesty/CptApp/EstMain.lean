@@ -1,25 +1,11 @@
-/-
-# `exists_cptQ_approx` — the main estimate for the error
-
-This module instantiates the abstract `θ`-integral estimate `EstCrux.err_theta_lintegral_le`
-with the three proved inputs
-
-* `Est.err_dzSlot_le` (Block₁),
-* `Est.err_mixedSlot_le` (Block₂),
-* `Est.hardyShrink_slice` (the localised angular Hardy inequality),
-
-and records the finiteness of the resulting right-hand side (used for the `ℋᵏ`-membership of
-the error).
--/
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.EstCrux
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.err_dzSlot_le
 import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.err_mixedSlot_le
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.hardyShrink_slice
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.LamEst.lamContDiffOn
-import Submission.Work.FTS.PhiStar.ThetaTraces
+import Submission.Work.FTS.PhiStar.Honesty.CptApp.EstCrux
+import Submission.Work.FTS.StrongEps.LocUnif.D5.deriv_slot_lintegral_bounds
+import Submission.Work.H2W.weakSliceZContinuousAe
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

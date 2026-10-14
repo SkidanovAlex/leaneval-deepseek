@@ -5,21 +5,106 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.E5G.PkgOfHlim
+import Submission.Work.FTS.StrongEps.E5G.hWc_of_tower
+import Submission.Work.FTS.StrongEps.E5G.hapx_of_tower
 import Submission.Work.FTS.StrongEps.E5G.hcontR_of_tower
-import Submission.Work.FTS.StrongEps.EpsLimVolterraP
-import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
+import Submission.Work.FTS.StrongEps.E5G.morrey_five_slots
 import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
-import Submission.Work.FTS.StrongEps.EpsRHSPBdd_unif
-import Submission.Work.FTS.StrongEps.E5G.Coherence
-import Submission.Work.FTS.StrongEps.EpsStructP
 import Submission.Work.FTS.StrongEps.EpsHbdd
+import Submission.Work.FTS.StrongEps.EpsRHSPBdd_unif
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
 import Submission.Work.FTS.StrongEps.RhsCont
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.StrongLWP.Basic
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
-import Submission.Work.FTS.EllipticEst.Cert.GbarSin.HkMem_congr_Q0
-import Submission.Work.FTS.StrongEps.E5G.HkIntegrand_three_perz_le
-import Submission.Work.FTS.StrongEps.E5G.hkMem_three_of_slot_tendsto
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.H2W.fstarDzIterFourAe
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.EpsLimPkg_of_horizon_full =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real
+
+namespace Work.FTS.StrongEps.E5G
+
+theorem EpsLimPkg_of_horizon_full {α₂ α₄ α C₀ K Ce Cs Cs6 C3 Cpow T : ℝ} {K' : ℕ → ℝ} {ρ : ℝ × ℝ → ℝ}
+    {Φs : Work.FTS.Galerkin.Fn} {E : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
+    {g₀ : Work.FTS.Galerkin.Fn} {e : ℕ → ℝ} {G : ℕ → ℕ → Work.FTS.Galerkin.Fam}
+    {Maj : ℕ → ℝ → ℝ} {ι : ℕ → ℕ → ℕ} {Fc : ℝ → Work.FTS.Galerkin.Fn}
+    (n : ℕ) (hα₄ : 0 < α₄) (hα₄1 : α₄ ≤ 1) (hα : α ∈ Set.Ioc (0 : ℝ) α₄)
+    (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ)
+    (hL3 : Work.FTS.StrongPersist.L3Data α₂ Ce C3 Cpow) (hα₂ : α ∈ Set.Ioc (0 : ℝ) α₂)
+    (hvan : ∀ z : ℝ, 0 ≤ z → g₀ z 0 = 0 ∧ g₀ z (π / 2) = 0)
+    (hc₁ : 1 / 10 ≤ Work.Spaces.c α) (hc₂ : Work.Spaces.c α ≤ 10)
+    (hEll : ∀ u : Work.FTS.Galerkin.Fn, Work.FTS.ClassC.ClassC α u →
+      Work.FTS.VocabO.EllPkgGo α Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK α 6 Ce u (E u))
+    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs)
+    (hstar6 : Work.FTS.StrongPersist.StarPkg6 α Cs6 Φs)
+    (hml : Work.FTS.StrongEps.MuLamOK α C₀ Φs E)
+    (hELL3 : Work.FTS.StrongEps.EllLimOK3 α E)
+    (hsmΦ : ContDiffOn ℝ 1 (Function.uncurry Φs) Work.FTS.EllipticEst.Q0)
+    (hL12g₀ : Work.Construction.L12 g₀ 0 = 0)
+    (hεe : ∀ k : ℕ, e k ∈ Set.Ioc (0 : ℝ) 1)
+    (hε0 : Filter.Tendsto e Filter.atTop (nhds 0))
+    (hTower : ∀ n k : ℕ, n ≤ k → Work.FTS.StrongEps.E5G.TowerAt α C₀ ρ Φs E g₀ n (e k) (K' n) (G n k))
+    (hMaj : ∀ n : ℕ, MeasureTheory.IntegrableOn (fun z => Maj n z / z) (Set.Ioi 0))
+    (hDec : ∀ k : ℕ, n ≤ k → ∀ τ ∈ Set.Icc (0 : ℝ) (Work.FTS.StrongEps.E5G.Tn n),
+      Work.FTS.StrongEps.EpsDecay α ρ Φs E (e k) τ (G n k) (Maj n))
+    (hι : StrictMono (ι n)) (hadm : ∀ k : ℕ, n ≤ ι n k)
+    (hconv : ∀ τ ∈ Set.Icc (0 : ℝ) (Work.FTS.StrongEps.E5G.Tn n),
+      Work.FTS.StrongEps.ConvLocUnifH6 α (K' n) (fun k => Work.FTS.Galerkin.slice (G n (ι n k)) τ) (Fc τ))
+    (hT : 0 < T) (hTT : T ≤ Work.FTS.StrongEps.E5G.Tn n)
+    (hdbd : ∃ Cd : ℝ, 0 < Cd ∧ ∀ τ : ℝ, 0 < τ → τ < T →
+      Work.Spaces.HkMem α 3 (Work.FTS.Galerkin.gdot (Work.FTS.StrongEps.clampQ Fc g₀) τ) ∧
+        Work.Spaces.HkNorm α 3 (Work.FTS.Galerkin.gdot (Work.FTS.StrongEps.clampQ Fc g₀) τ) ≤ Cd) :
+    ∃ Cd' : ℝ, 0 < Cd' ∧
+      Work.FTS.StrongEps.EpsLimPkg α C₀ K Cd' T Φs E g₀ (Work.FTS.StrongEps.clampQ Fc g₀) := by
+  classical
+  -- the honest parameter range of the limit-side chapters
+  have hα1 : α ∈ Set.Ioc (0 : ℝ) 1 := ⟨hα.1, le_trans hα.2 hα₄1⟩
+  -- ## the four limit-side clauses, derived from the tower data and the decay majorant
+  have hcontR := hcontR_of_tower (n := n) (hα₄ := hα₄) (hα₄1 := hα₄1) (hα := hα) (hρ := hρ)
+    (hc₁ := hc₁) (hc₂ := hc₂) (hEll := hEll) (hstar := hstar) (hstar6 := hstar6) (hml := hml)
+    (hELL3 := hELL3) (hsmΦ := hsmΦ) (hL12g₀ := hL12g₀) (hεe := hεe) (hε0 := hε0)
+    (hTower := hTower) (hMaj := hMaj) (hDec := hDec) (hι := hι) (hadm := hadm)
+    (hconv := hconv) (hT := hT) (hTT := hTT)
+  have hWc := hWc_of_tower (n := n) (hα₄ := hα₄) (hα₄1 := hα₄1) (hα := hα) (hρ := hρ)
+    (hc₁ := hc₁) (hc₂ := hc₂) (hEll := hEll) (hstar := hstar) (hstar6 := hstar6) (hml := hml)
+    (hELL3 := hELL3) (hsmΦ := hsmΦ) (hL12g₀ := hL12g₀) (hεe := hεe) (hε0 := hε0)
+    (hTower := hTower) (hMaj := hMaj) (hDec := hDec) (hι := hι) (hadm := hadm)
+    (hconv := hconv) (hT := hT) (hTT := hTT)
+  have hapx := hapx_of_tower (n := n) (hα := hα1) (hρ := hρ)
+    (hc₁ := hc₁) (hc₂ := hc₂) (hEll := hEll) (hstar := hstar) (hml := hml)
+    (hELL3 := hELL3) (hsmΦ := hsmΦ) (hL12g₀ := hL12g₀) (hεe := hεe) (hε0 := hε0)
+    (hTower := hTower) (hMaj := hMaj) (hDec := hDec) (hι := hι) (hadm := hadm)
+    (hconv := hconv) (hT := hT) (hTT := hTT)
+  have hlim := hlim_of_tower (n := n) (hα := hα1) (hρ := hρ)
+    (hc₁ := hc₁) (hc₂ := hc₂) (hEll := hEll) (hstar := hstar) (hml := hml)
+    (hELL3 := hELL3) (hsmΦ := hsmΦ) (hL12g₀ := hL12g₀) (hεe := hεe) (hε0 := hε0)
+    (hTower := hTower) (hMaj := hMaj) (hDec := hDec) (hι := hι) (hadm := hadm)
+    (hconv := hconv) (hT := hT) (hTT := hTT)
+  -- ## the assembly
+  exact EpsLimPkg_of_horizon_of_hlim (n := n) (F := fun _ : ℕ => Fc) (K := K)
+    (hα := hα1) (hρ := hρ) (hc₁ := hc₁) (hc₂ := hc₂) (hEll := hEll) (hstar := hstar)
+    (hml := hml) (hELL3 := hELL3) (hvan := hvan) (hL12g₀ := hL12g₀) (hεe := hεe)
+    (hε0 := hε0) (hTower := hTower) (hι := hι) (hadm := hadm) (hconv := hconv)
+    (hT := hT) (hTT := hTT) (hcontR := hcontR) (hWc := hWc) (hdbd := hdbd)
+    (hapx := hapx) (hlim := hlim)
+
+end Work.FTS.StrongEps.E5G
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.hdbd_of_tower =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -257,3 +342,4 @@ theorem hdbd_of_tower {α₂ α₄ α C₀ Ce Cs Cs6 C3 Cpow T : ℝ} {K' : ℕ 
     exact hNormLim
 
 end Work.FTS.StrongEps.E5G
+end

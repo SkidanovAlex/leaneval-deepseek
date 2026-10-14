@@ -1,37 +1,15 @@
-/-
-# `Work.FTS.StrongPersist.L3Rhs.L3RhsN0gBlock` — the `g`-dependent block of `N₀`
-
-The target of this file: the `ℋ³`-estimate for the block
-
-  `N0gSum α f = N03g + N04aF + N04bF + N05aF + N05bF + N06F`
-
-(rows 2–7 of the `N₀`-table of §8 of Elgindi's paper) at the profile `F = F_* + f`.
-
-The structure of the block is recorded (and its `C³`-regularity proved) in
-`Work.FTS.StrongPersist.L3Rhs.N0gDecomp`:
-
-  `N0gSum α f = L₁₂(f)·Bf α f - Wf α f`,
-
-and the estimate is assembled from the two halves
-
-* (`N0gCoupled`) `HkMem α 3 (Mf f · Bf α f)` and its `ℋ³`-bound;
-* (`N0gLocal`) `HkMem α 3 (Wf α f)` and its `ℋ³`-bound,
-
-together with the subadditivity of `HkSq`/`HkNorm` on the open-quadrant class
-(`hkMem_hkSq_sub_le`, `hkNorm_sub_le` below, from `L3Aux.HkMem_HkSq_add3_le`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.NormNum.RealSqrt
-import Submission.Work.FTS.StrongPersist.L3Rhs.N0gDecomp
+import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
 import Submission.Work.FTS.StrongPersist.L3Rhs.N0gCoupled
 import Submission.Work.FTS.StrongPersist.L3Rhs.N0gLocal
-import Submission.Work.FTS.StrongPersist.L3Aux.HkMem_HkSq_add3_le
-import Submission.Work.FTS.Galerkin.Inhabit
-import Submission.Work.FTS.Galerkin.Inhabit.regPkg_zero
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.leibnizRem6
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

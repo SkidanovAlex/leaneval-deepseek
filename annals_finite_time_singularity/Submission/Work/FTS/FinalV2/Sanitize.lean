@@ -2,7 +2,7 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Submission.Work.FTS.Final.Assembly
-import Submission.Work.FTS.Final.ExtG.dynOK_extG
+import Submission.Work.FTS.Final.Small
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

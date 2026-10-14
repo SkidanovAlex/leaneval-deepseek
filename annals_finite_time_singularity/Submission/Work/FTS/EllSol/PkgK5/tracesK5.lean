@@ -1,47 +1,18 @@
-/-
-# `Work.FTS.EllSol.PkgK5.tracesK5`
-
-The angular endpoint traces of the radial iterates of the straightened unknown
-`X := ellShift α g Φg`, in the *repaired* honesty class: `EllWeakPos α k F X`, one extra level
-`HkMem α (k+3) (z²∂_z²X)` of `A`-honesty and one extra level `HkMem α (k+2) F` of source honesty
-give the vanishing of `θ ↦ D_z^j X(z,θ)` at both angular endpoints for every `j ≤ k+1` and every
-`z > 0`.
-
-## Route
-
-Write `A := z²∂_z²X`, `F := orthSource g`, `u_j := θ ↦ D_z^j X(z,·)`.  For every `j ≤ k+1`:
-
-* `u_j` is `C²` on `(0,π/2)` (`SmoothOpen X`);
-* `(u_j'')²·sEta ∈ L¹` (`EllWeakPos.memB` for `j ≤ k`, the diagonal slot `memZPth2` for `j = k+1`);
-* `∫ u_j² < ∞` (from boundedness: `abs_le_of_sq_mul_sEta`);
-* `(Lzero1 u_j)²·sEta ∈ L¹`: the slice equation
-  `Lzero1 u_j = D_z^j F + α²D_z^jA + α(5+α)D_z^{j+1}X` plus the three slot energies
-  (`HkMem α (k+2) F`, `HkMem α (k+3) A`, and the recursion `D_z^{b+2}X = D_z^bA + D_z^{b+1}X`
-  down to `Ϝ_1 = ∫(z∂_zX)²sEta`, which is `ws_pz_energy_integrable`);
-* the moment `∫ Lzero1 u_j·sinθcos²θ = 0`: integrating the slice equation against `sinθcos²θ`
-  turns it into `N_j + α²(M_{j+2} - M_{j+1}) + α(5+α)M_{j+1}`, where
-  `M_i = F_*(D_z^iX)`, `N_i = F_*(D_z^iF)`; the source moments `N_i` (`i ≤ k+1`) come from the
-  radial moment tower `Cert.radIter_bmom_hasDerivAt` applied to `HkMem α (k+2) F`, and the
-  solution moments `M_i` (`i ≤ k+3`) are the content of the delegated
-  `Work.FTS.EllSol.PkgK5.Fstar_DzIter_le_honest`.
-
-Then `remov.wsSliceLeft` and `remov.sliceTendstoRight_fts` give the two one-sided limits.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.EllSol.ClassC
-import Submission.Work.FTS.EllipticEst.remov.weakSliceRegular
-import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.H2W.Fstar_DzIter_le_Psi
-import Submission.Work.FTS.EllipticEst.Cert.radIter_Bmom_ae
-import Submission.Work.FTS.EllipticEst.TT.bslOp_DzIter_eq
-import Submission.Work.FTS.EllipticEst.Cores.Repair.DzShift
 import Submission.Work.FTS.EllSol.PkgK5.tracesK5Aux
 import Submission.Work.FTS.EllSol.PkgK5.tracesK5Aux2
-import Submission.Work.FTS.EllSol.PkgK5.Fstar_DzIter_le_honest
+import Submission.Work.FTS.EllipticEst.remov.SmoothOpen_bslOp_of_smoothOpen
+import Submission.Work.FTS.EllipticEst.remov.weakSliceRegular
+import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.EllipticEst.remov.wsMomentId
+import Submission.Work.FTS.GalBasis.hk_sq_api
+import Submission.Work.FTS.LocData.HkIntegrand_zfar_Fstar_le
+import Submission.Work.FTS.StrongGlobal.Global
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

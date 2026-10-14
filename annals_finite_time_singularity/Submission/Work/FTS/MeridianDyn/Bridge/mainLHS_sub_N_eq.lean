@@ -1,10 +1,44 @@
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.MeridianDyn.Bridge.Pieces.Dzg_pthg_split
 import Submission.Work.FTS.MeridianDyn.Defs
-import Submission.Work.Stability.Defs
-import Submission.Work.Stability.MainLHSSubN
-import Submission.Work.Construction.Equation
-import Submission.Work.FTS.Galerkin.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 import Submission.Work.R1G.profileResid_eq_gEqResidual_qd
+import Submission.Work.R1G.vorticity_psiField_bslOp
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Stability.CutFactorFderivZero
+import Submission.Work.Stability.Defs
+import Submission.Work.Stability.L12Add
+import Submission.Work.Stability.MainLHSSubN
+-- ===== merged: Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.MeridianDyn.Bridge
+
+open scoped Real Topology
+
+/-! ## The `τ`-slice of the joint regularity of `RegPkg` -/
+
+
+/-! ## The static derivation data of the `St2` chain, from the regularity package -/
+
+
+end Work.FTS.MeridianDyn.Bridge
+end
+-- ===== merged: Submission.Work.FTS.MeridianDyn.Bridge.mainLHS_sub_N_eq =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -95,3 +129,4 @@ theorem mainLHS_sub_N_eq {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {g Φ : Wor
   ring
 
 end Work.FTS.MeridianDyn.Bridge
+end

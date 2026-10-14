@@ -1,41 +1,15 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `EpsRLX/ConjTwo.lean` — the Lipschitz half of the RHS gate
-
-For the parameters of the projected `ε`-scheme this module produces a constant `L₂ > 0` such that
-for any two admissible data `u`, `v` and every `τ`
-
-`EpsSq α (epsRHPSlice … u − epsRHPSlice … v) ≤ L₂ · EpsSq α (u − v)`.
-
-Writing `W_u := Wp ρ ε u = Pz (J_ε u)`, `Φ_u := profRHS α Φs E W_u` and
-`Δ := Φ_u − Φ_v`, `d := W_u − W_v`, the chain is
-
-1. `epsRHPSlice … u − epsRHPSlice … v = Pz (J_ε Φ_u) − Pz (J_ε Φ_v)`
-   (`epsRHPSlice_eq_profRHS`), and hence
-   `EpsSq α (…) ≤ C_P · EpsSq α (J_ε Φ_u − J_ε Φ_v)` (`EpsSq_Pz_sub_le`);
-2. `J_ε Φ_u − J_ε Φ_v = J_ε Δ` (`Jeps_sub_eq`) and
-   `EpsSq α (J_ε Δ) ≤ e^{C_J ε} · EpsSq α Δ` (`EpsSq_Jeps_le`);
-3. `EpsMem α Δ ∧ EpsSq α Δ ≤ C_T/(γ−1)² · HkSq α 1 Δ` (`TraceToEpsMem`, whose two trace
-   hypotheses are `DiffTraces`, and whose `SmoothOpen`/`HkMem α 1` hypotheses come from
-   `DeltaXnBound`), and `HkSq α 1 Δ ≤ (Xn α Δ)²` by monotonicity;
-4. `Xn α Δ ≤ K₁ (1 + |W_u|_{ℋ⁵} + |W_v|_{ℋ⁵})² |d|_{ℋ⁵}` (`DeltaXnBound`) and
-   `|d|_{ℋ⁵}² ≤ C_D (C_D/ε)¹² EpsSq α (u − v)` (`DeltaData`);
-5. the profile factor is uniform: `|W_u|_{ℋ⁵} ≤ C_W/(γ−1) (C_W/ε)⁶ B` (`WpUniformBound`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsRLX.BasicFacts
-import Submission.Work.FTS.StrongEps.EpsRLX.XDataClean
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsRHSXrhs
+import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
 import Submission.Work.FTS.StrongEps.EpsRLX.DeltaXnBound
 import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
-import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsRHSXrhs
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.TraceToEpsMem
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSq_Pz_sub_le
-import Submission.Work.FTS.StrongEps.EpsSqTools.EpsSqIter_mixed_Jeps_le6
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
+import Submission.Work.FTS.StrongEps.H5.HkMemXnN5
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkDzdIterSharp
+import Submission.Work.FTS.StrongPersist.H6Rows.H6Pair_of_rows_C6
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS_RegExport.THL.cs7_theta_holder
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

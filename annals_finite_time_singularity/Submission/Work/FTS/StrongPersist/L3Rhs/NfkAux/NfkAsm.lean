@@ -1,10 +1,3 @@
-/-
-# `Submission/Work/FTS/StrongPersist/L3Rhs/NfkAux/NfkAsm.lean`
-
-The **assembly** of the `NFkSum` block estimate
-(`Work.FTS.StrongPersist.L3Rhs.L3RhsNfkBlock`) from its five pieces.  See
-`NfkAux/NfkSmooth.lean` for the `C³`-regularity of the six summands.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations

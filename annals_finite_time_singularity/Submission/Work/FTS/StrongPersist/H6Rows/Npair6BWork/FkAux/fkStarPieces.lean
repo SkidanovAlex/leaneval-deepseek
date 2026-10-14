@@ -1,20 +1,217 @@
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Construction.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongPersist.N6_fkH
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.FKstarSlotPiece
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.fk_hkMem
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.hknorm_mul_of_WlInf6_cd6
-import Submission.Work.FTS.StrongPersist.H6Row6.fkH6_norm_le
-import Submission.Work.FTS.StrongPersist.Fstar_W6
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Basic.Real.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Order.Filter.Defs
+import Mathlib.Tactic.Ring.RingNF
+import Submission.Work.FTS.EllSol.ClassC
+import Submission.Work.FTS.EllipticEst.EllHyp_certificates
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.GalBasis.exists_cc_of_honClass
+import Submission.Work.FTS.GalBasis.hk_sq_api
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS.StrongEps.EpsE4Thr.regQo_const_mul
+import Submission.Work.FTS.StrongEps.EpsZero.Nstar_zero_classC
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.FKstarSlotPiece
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.L3Aux.acoef_gamCoef_slots_le
+import Submission.Work.FTS.StrongPersist.L3Rhs.VfsJetMajMass
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.SolutionDelivery.DatumOdd
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllSol.EllPkgAux.orthSourceHkNormClassC =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllSol.EllPkgAux
+
+open Work.FTS.Galerkin (Fn)
+
+theorem orthSourceHkNormClassC (k : ℕ) (hk7 : k ≤ 7) : ∃ C : ℝ, 0 < C ∧
+    ∀ (α : ℝ) (g : Work.FTS.Galerkin.Fn), 0 < α → α ≤ 1 → Work.FTS.EllSol.ClassC α g →
+      Work.Spaces.HkNorm α k (Work.Elliptic.orthSource g) ≤ C * Work.Spaces.HkNorm α k g := by
+  obtain ⟨Cf, hCfpos, hCf⟩ := Work.FTS.EllipticEst.Fstar_Hk_le_open k
+  refine ⟨Real.sqrt 2 * (1 + (15 / 4) * Cf), ?_, ?_⟩
+  · have h2 : (0 : ℝ) < 1 + (15 / 4) * Cf := by
+      have := mul_pos (by norm_num : (0 : ℝ) < 15 / 4) hCfpos
+      linarith
+    exact mul_pos (Real.sqrt_pos.mpr (by norm_num)) h2
+  · intro α g hα hα1 hg
+    have hgsm : Work.FTS.EllipticEst.SmoothOpen g := hg.reg
+    have hgraw : ∀ n : ℕ, ContDiffOn ℝ (↑n) (Function.uncurry g)
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) :=
+      (Work.FTS.EllipticEst.smoothOpen_iff_forall g).mp hgsm
+    have hmem : Work.Spaces.HkMem α k g :=
+      Work.FTS.EllipticEst.TT.HkMem_descend_open hk7 hgraw hg.mem
+    have hFsm : ∀ m : ℕ, ContDiffOn ℝ m (Work.Elliptic.Fstar g) (Set.Ioi 0) := hg.fsm
+    have hsin : ContDiff ℝ ⊤ (fun θ : ℝ => Real.sin (2 * θ)) := by fun_prop
+    have hPHIsm : Work.FTS.EllipticEst.SmoothOpen
+        (fun z θ => Work.Elliptic.Fstar g z * Real.sin (2 * θ)) :=
+      Work.FTS.EllipticEst.SmoothOpen.sep_mul hFsm hsin
+    have hPHIraw : ∀ n : ℕ, ContDiffOn ℝ (↑n)
+        (Function.uncurry (fun z θ => Work.Elliptic.Fstar g z * Real.sin (2 * θ)))
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) :=
+      (Work.FTS.EllipticEst.smoothOpen_iff_forall _).mp hPHIsm
+    have hPHImem : Work.Spaces.HkMem α k
+        (fun z θ => Work.Elliptic.Fstar g z * Real.sin (2 * θ)) := by
+      have h :=
+        Work.FTS.EllipticEst.Cert.HkMem_bmom_sin_of_smoothOpen α k g hα hα1 hgsm hmem
+      simpa only [Work.FTS.EllipticEst.Bmom_zero] using h
+    have hSsm : Work.FTS.EllipticEst.SmoothOpen
+        (fun z θ => (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ))) :=
+      hPHIsm.const_mul' (-(15 / 4))
+    have hSraw : ∀ n : ℕ, ContDiffOn ℝ (↑n)
+        (Function.uncurry
+          (fun z θ => (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ))))
+        (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) :=
+      (Work.FTS.EllipticEst.smoothOpen_iff_forall _).mp hSsm
+    have hSmem : Work.Spaces.HkMem α k
+        (fun z θ => (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ))) :=
+      Work.FTS.LocData.HkMem_const_mul α k (-(15 / 4)) hPHImem
+    have horth : Work.Elliptic.orthSource g
+        = fun z θ => g z θ + (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ)) := by
+      funext z θ
+      simp only [Work.Elliptic.orthSource]
+      ring
+    have hsum := Work.FTS.EllipticEst.HkNorm_add_le α k hgraw hSraw hmem hSmem
+    have hcm := Work.FTS.EllipticEst.HkNorm_const_mul α k (-(15 / 4)) hPHIraw
+    have hPhi := hCf α g hα hα1 hgraw hmem
+    rw [horth]
+    calc Work.Spaces.HkNorm α k
+          (fun z θ => g z θ + (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ)))
+        ≤ Real.sqrt 2 * (Work.Spaces.HkNorm α k g
+            + Work.Spaces.HkNorm α k
+              (fun z θ => (-(15 / 4)) * (Work.Elliptic.Fstar g z * Real.sin (2 * θ)))) :=
+          hsum
+      _ = Real.sqrt 2 * (Work.Spaces.HkNorm α k g
+            + (15 / 4) * Work.Spaces.HkNorm α k
+              (fun z θ => Work.Elliptic.Fstar g z * Real.sin (2 * θ))) := by
+          rw [hcm, abs_neg, abs_of_pos (by norm_num : (0 : ℝ) < 15 / 4)]
+      _ ≤ Real.sqrt 2 * (Work.Spaces.HkNorm α k g
+            + (15 / 4) * (Cf * Work.Spaces.HkNorm α k g)) := by
+          have h1 : (15 / 4) * Work.Spaces.HkNorm α k
+                (fun z θ => Work.Elliptic.Fstar g z * Real.sin (2 * θ))
+              ≤ (15 / 4) * (Cf * Work.Spaces.HkNorm α k g) :=
+            mul_le_mul_of_nonneg_left hPhi (by norm_num)
+          exact mul_le_mul_of_nonneg_left (by linarith) (Real.sqrt_nonneg 2)
+      _ = Real.sqrt 2 * (1 + (15 / 4) * Cf) * Work.Spaces.HkNorm α k g := by ring
+
+end Work.FTS.EllSol.EllPkgAux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.RegQoClosure =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-! ## `BdryTraces` and `SmoothOpen` for the pieces of a difference -/
+
+
+
+/-! ## The closure of `RegQo` -/
+
+
+
+
+
+end Work.FTS.StrongEps.EpsE4Thr
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkMulHkSqSliceLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `fkMulHkSqSliceLe` — the level-six integrand of `(FK f) · f`, integrated over `θ`
+
+The radial factor `z ↦ FK f z` multiplies the datum `f`, and the level-six weighted integrand of
+the product is dominated at each *point* `(z,θ)` of the open quadrant by the matched radial sum
+`∑_{b ≤ 6} (D_z^b (FK f)(z))² · HkIntegrand α (6-b) f z θ` (`radialMatchedMajorant`, proved in
+this directory).  Here the pointwise domination is *integrated* over `θ ∈ Iθ`, the finite sum is
+interchanged with the `θ`-integral, and the result is turned into an a.e.-in-`z` statement in the
+shape in which the consumers (`fkPsi6TermBound`, `fkMulHkSqLe`) use it.
+
+The three ingredients are all available in the tree:
+
+* `radialMatchedMajorant` — the pointwise matched majorant (constant valid for every `α`);
+* the two Leibniz rules `leibniz_rad_Dz_cd6`, `leibniz_rad_mixed_cd6`, whose hypotheses are
+  `ContDiffOn ℝ 6` of the uncurried radial factor (`contDiffOn6_FK`, from `DatData` and the
+  `ℋ⁷`-honesty of the datum) and of the datum (`SmoothOpen.forall`);
+* `HkMem_of_le` (`T5bPrep`) to descend the `ℋ⁶`-honesty of the datum to the matched levels
+  `6 - b`, giving the `θ`-integrability of every summand.
+
+The passage from "for every `z > 0`" to "for a.e. `z ∈ Iz`" costs the single point `z = 0`, which
+is a null set for `volume.restrict Iz`.
+-/
+
+namespace Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+set_option maxHeartbeats 1600000
+
+
+end Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkStarPieces =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -244,3 +441,4 @@ theorem fkStarPieces : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1,
   exact ⟨hconj1, hconj2, hconj3, hconj4⟩
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux
+end

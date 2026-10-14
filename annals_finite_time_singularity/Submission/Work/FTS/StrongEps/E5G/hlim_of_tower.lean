@@ -1,22 +1,19 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E5G.Jeps_tendsto_of_modulus
-import Submission.Work.FTS.StrongEps.E5G.morrey_four
-import Submission.Work.FTS.StrongEps.E5G.epsWP_equicont_tower
+import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
+import Submission.Work.FTS.StrongEps.E5G.Defs
+import Submission.Work.FTS.StrongEps.E5G.epsWP_tendsto_tower
 import Submission.Work.FTS.StrongEps.E5G.muDyn_lamDyn_tendsto_tower
-import Submission.Work.FTS.StrongEps.E5G.TowerFacts
-import Submission.Work.FTS.StrongEps.E5G.HL12RawTower
-import Submission.Work.FTS.StrongEps.E5Aux2.epsWP_tendsto_of_muH
+import Submission.Work.FTS.StrongEps.E5G.weak_slots_tendsto_open
 import Submission.Work.FTS.StrongEps.EpsHlim4
 import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
 import Submission.Work.FTS.StrongEps.smoothOpen_epsWP
-import Submission.Work.FTS.StrongEps.E5Aux3.L12_Jeps_slice_tendsto_of_zero
-import Submission.Work.FTS.StrongEps.E5Asm.Defs
-import Submission.Work.FTS.StrongEps.E5Aux3.contDiffOn_two_E_of_EllLimOK3
-import Submission.Work.FTS.StrongEps.E5G.epsWP_tendsto_tower
-import Submission.Work.FTS.StrongEps.E5G.L12_Jeps_epsWP_tendsto_tower
-import Submission.Work.FTS.StrongEps.E5G.shift_modulus_of_holder
+import Submission.Work.FTS.StrongPersist.H6Aux.E2Facts
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS_EllLimOK.ProducerH.pzIterTwo_shiftSing_eq_PhiTil_add
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

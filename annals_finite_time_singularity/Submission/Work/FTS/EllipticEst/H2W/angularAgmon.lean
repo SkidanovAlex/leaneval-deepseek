@@ -3,15 +3,15 @@ import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.DivSinDefs
-import Submission.Work.FTS.EllipticEst.ThetaPoincareDefs
-import Submission.Work.FTS.EllipticEst.sliceLimitLeftExists
-import Submission.Work.Spaces.cs_integral
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.Spaces.bt_integral_weight_id
 import Submission.Work.Spaces.sin_two_rpow
-import Submission.Work.FTS.EllipticEst.ae_restrict_Icc_of_forall_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -34,10 +34,6 @@ theorem sin_two_nonneg_of_mem_Iθ {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
     0 ≤ Real.sin (2 * θ) :=
   Real.sin_nonneg_of_mem_Icc ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩
 
-theorem sEta_nonneg_of_mem_Iθ {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
-    0 ≤ Work.FTS.EllipticEst.sEta θ :=
-  Real.rpow_nonneg (sin_two_nonneg_of_mem_Iθ hθ) _
-
 /-- On the open interval the weight `sEta θ = sin(2θ)^{-η}` is at least `1`. -/
 theorem one_le_sEta_of_mem {θ : ℝ} (hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) :
     1 ≤ Work.FTS.EllipticEst.sEta θ := by
@@ -54,15 +50,7 @@ theorem integrableOn_sEta : IntegrableOn Work.FTS.EllipticEst.sEta Work.Spaces.I
 theorem integral_sEta_le : (∫ θ in Work.Spaces.Iθ, Work.FTS.EllipticEst.sEta θ) ≤ 10000 :=
   Work.FTS.EllipticEst.integrableOn_thEta.2
 
-theorem integrableOn_sin_pow_eta :
-    IntegrableOn (fun θ : ℝ => (Real.sin (2 * θ)) ^ Work.Spaces.eta) Work.Spaces.Iθ :=
-  (Work.FTS.EllipticEst.integrableOn_sin_two_rpow (p := Work.Spaces.eta)
-    (by rw [Work.Spaces.eta]; norm_num)).1
 
-theorem integral_sin_pow_eta_le :
-    (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ Work.Spaces.eta) ≤ Real.pi / 2 :=
-  (Work.FTS.EllipticEst.integrableOn_sin_two_rpow (p := Work.Spaces.eta)
-    (by rw [Work.Spaces.eta]; norm_num)).2
 
 /-- The restricted measures of `Iθ` and of the open interval agree (they differ by the two
 endpoints). -/

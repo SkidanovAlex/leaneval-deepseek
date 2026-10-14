@@ -1,8 +1,91 @@
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.GalFields.RHS.SharpAux.Core
-import Submission.Work.FTS.Nonlinear.FstarPkg.FK_Fstar
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.GalFields.RHS.SharpAux.HonTerms.Base
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS.TransportS.GalSide
+-- ===== merged: Submission.Work.FTS.GalFields.RHS.SharpAux.HonTerms.Part1 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.GalFields.RHS.SharpAux.HonTerms
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+
+end Work.FTS.GalFields.RHS.SharpAux.HonTerms
+end
+end
+-- ===== merged: Submission.Work.FTS.GalFields.RHS.SharpAux.HonTerms.Part2 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.GalFields.RHS.SharpAux.HonTerms
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+
+end Work.FTS.GalFields.RHS.SharpAux.HonTerms
+end
+end
+-- ===== merged: Submission.Work.FTS.GalFields.RHS.SharpAux.Identity =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.GalFields.RHS.Sharp
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 3200000
+set_option pp.deepTerms true
+
+
+end Work.FTS.GalFields.RHS.Sharp
+end
+end
+-- ===== merged: Submission.Work.FTS.GalFields.Tail.FK_Fstar_add =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -64,3 +147,4 @@ theorem FK_Fstar_add {α : ℝ} {u : ℝ → ℝ → ℝ}
   exact MeasureTheory.integral_add hstar hu
 
 end Work.FTS.GalFields.Tail
+end

@@ -1,52 +1,24 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ClosedCompact3H_of_bounds_fatou` — obligation 1 over `HasPkgH`
-
-The order-`3` compactness obligation `ClosedCompact3H α Ce` follows from the three sequence-level
-hypotheses of `FatouH`:
-
-* `LocalBoundH α Ce` — the pointwise jet bounds of order `≤ 4` with a **constant** right-hand side
-  (the `1/(1+z)` rate of `Defs3.LocalBound4` is false: class `C` allows `z^{-s}` tails,
-  `s ∈ (1/2,3/2)`, and `bslOp` is Euler in `z`);
-* `FatouDataH α Ce` — the uniform `ℋ⁰`-memberships of `E (fn n)` and `E (fn n)/cos θ` with one
-  common `HkSq` bound and one common `z`-local `θ`-slice bound `C(1+1/z)`;
-* `BoxDataH α Ce` — the closed-box data.
-
-The far-field decay of the limit (needed for the `IsBslSolPos` clause of the limit package, which
-the uniqueness argument and hence the target `EllLimOK3` consume) is **not** obtained from a rate:
-it comes from `Decay.decay_of_hkMem0_jetBound` — the weighted `ℋ⁰`-membership of the limit plus the
-constant bounds on `D_zΨ`, `D_θΨ` and `Ψ` (which the limit inherits from the members' bounds).
-
-The extraction/tower/identification part is the argument of the frozen
-`ClosedCompact3_of_bounds_fatou`; the Fatou step is the `z`-local version
-`Fatou.HkMem_fatou_z`; the Arzelà–Ascoli input is
-`LimExtract.limExtract_bounds10_const`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_EllLimOK.FatouH
-import Submission.Work.FTS_EllLimOK.Fatou.HkMem_fatou_z
-import Submission.Work.FTS_EllLimOK.LimExtract.limExtract_bounds10_const
+import Submission.Work.FTS_EllLimOK.Assembly
 import Submission.Work.FTS_EllLimOK.Decay.decay_of_hkMem0_jetBound
 import Submission.Work.FTS_EllLimOK.Defs3
-import Submission.Work.FTS_EllLimOK.ClosedCompact3_of_bounds_fatou
-import Submission.Work.FTS_EllLimOK.HkSq_le_of_JConv
-import Submission.Work.FTS_EllLimOK.Assembly
-import Submission.Work.FTS_EllLimOK.AssemblyAux
-import Submission.Work.FTS_EllLimOK.DecayAux
-import Submission.Work.FTS_EllLimOK.LimDefs10
-import Submission.Work.FTS_EllLimOK.LimExtract_bounds10
-import Submission.Work.FTS_EllLimOK.LimTower_dz3
-import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_EllLimOK.FatouH
+import Submission.Work.FTS_EllLimOK.LimExtract.limExtract_bounds10_const
 import Submission.Work.FTS_EllLimOK.LimTower_identify3
-import Submission.Work.FTS_EllLimOK.HkMem_fatou
-import Submission.Work.FTS_EllLimOK.continuousOn_HkIntegrand
-import Submission.Work.FTS_EllLimOK.aemeasurable_uncurry_of_tendsto_Q0
-import Submission.Work.FTS.StrongEps.LocUnif.exists_subseq_tendstoLocallyUniformlyOn_fin
+import Submission.Work.FTS_EllLimOK.exists_ellLimOK3_of_closed
+import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_EllLimOK.wt_bddAbove_of_compact
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.H2W.asliceMomentEq
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

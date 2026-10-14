@@ -1,26 +1,11 @@
-/-
-# `Work.FTS.PhiStar.FlatWAux.QmDerivBound`
-
-The growth bound for the divided angular modes
-`Qm m θ = gC (2m+1) (sin θ)/(2 sin θ)` used by the resummation in `FlatW_psiSeries`:
-
-  `∃ C : ℕ → ℝ, (∀ l, 0 ≤ C l) ∧ ∀ m ≥ 1, ∀ l ≤ 8, ∀ θ ∈ (0, π/2),
-     |iteratedDeriv l (Qm m) θ| ≤ C l * (2m+1)^(2l+2)`.
-
-The mathematical content and the proof route are documented in
-`Submission/Work/FTS/PhiStar/FlatWAux/QmDeriv/{Basic,Trig,Expansion,Sup}.lean`, which this file
-aggregates; the two input facts are the trigonometric form of the Gegenbauer polynomial
-(`gC_eq_famTrig`) and the Schur–Gegenbauer energy identity (`psiAngDefs`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.PhiStar.FlatWAux.Defs
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.FlatWAux.QmDeriv.Expansion
-import Submission.Work.FTS.PhiStar.FlatWAux.QmDeriv.Sup
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.PhiStar.Series.eFam_iteratedDeriv_le
+import Submission.Work.H2W.FstarDzIterFourPsiAe
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

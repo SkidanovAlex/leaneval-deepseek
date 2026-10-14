@@ -1,65 +1,20 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `classC_mixed_sup_le` — the interior `L^∞`–`ℋ⁴` trade-off on the class `ClassC`
-
-Elgindi's Corollary `SecondDerivativesBounded` (tex 1094) bounds every mixed derivative
-`D_z^b D_θ^a f` of order `a + b ≤ 2` pointwise inside the quadrant by
-
-  `10 / √(γ-1) · |f|_{ℋ⁴}`.
-
-The existing statements of that trade-off in the tree are stated for classes that constrain
-`f` on a *neighbourhood* of the quadrant: `Work.FTS.RegPkgGal.Der.abs_mixed_le_HkNorm_RegQ`
-asks `Work.FTS.Nonlin.RegQ α 4 f = SmoothQuad f ∧ HkMem α 4 f ∧ BdryTraces α 4 f`, and
-`SmoothQuad` requires smoothness of `f` on the strip `(-1,∞) × (0,π/2)`, i.e. **across**
-`z = 0`.  The class `Work.FTS.ClassC.ClassC` of the elliptic solution operator constrains
-`f` only on the *open* quadrant (`SmoothOpen f`), together with the honesty `HkMem α 7 f`
-and the boundary traces `BdryTraces α 6 f`.  Since the conclusion of the corollary is a
-pointwise statement at points `(z,θ)` with `z > 0`, `0 < θ < π/2`, it is the open-quadrant
-statement that is needed here.
-
-This module supplies it, by re-running the proof of `abs_mixed_le_HkNorm_RegQ` in the open
-class:
-
-* `mixedSup_Dth_eq`: the commutation identity `D_θ(D_z^bD_θ^a f) = D_z^bD_θ^{a+1} f` on the
-  open quadrant, which turns the angular Hardy integrand of `D_z^bD_θ^a f` into the mixed
-  slot `D_z^bD_θ^{a+1}f` (from `Work.Blocks.pth_DzIter_eqOn_Q0` — `∂_θ` commutes with the
-  radial iterates — and `sda_DzIter_const_mul_th`);
-* `mixedSup_pt_le_of_smoothOpen`: the chain
-
-  `(D_z^bD_θ^a f(z,θ))²
-     ≤ (100/(γ-1)) ∫_θ (∂_θD_z^bD_θ^a f)² σ^{2-γ}`      (angular Hardy, `HardyThetaOpen`)
-   `= (100/(γ-1)) ∫_θ σ^{-γ} (D_z^bD_θ^{a+1}f)²`
-   `≤ (100/(γ-1)) ∫_θ σ^{-γ} ∫_z (D_z^{b+1}D_θ^{a+1}f)² w²`  (radial Hardy, `HardyZQ`)
-   `≤ (100/(γ-1)) |f|²_{ℋ⁴}`,
-
-  the last step being Tonelli for the `ℋ⁴`-integrand (`sda_HkSqSwap_open`); the four
-  ingredients are the sibling lemmas `HardyThetaOpen`, `integrableOn_pth_mixed_sq_sin`
-  (integrability of the angular Hardy integrand), `ae_integrableOn_mixed_sq_w` (the a.e.
-  radial-slice integrability needed by `HardyZQ`) and `mixed_T_le_HkSq` (the angular
-  integral of the radial-slice energy, and its `ℋ⁴`-bound);
-* `classC_mixed_sup_le`: the target, reading the open-class data off the fields of
-  `ClassC` (`reg`, `mem` at level `7` ⟹ level `4`, and `tr` at level `6` ⟹ level `4`).
-
-Everything is `sorry`-free and rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.ClassC.Defs
-import Submission.Work.FTS.RegPkgGal.Der.abs_mixed_le_HkNorm_RegQ
-import Submission.Work.FTS.H2.LinfQ
-import Submission.Work.FTS.H2.HQ.HardyZQ
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
-import Submission.Work.FTS.StrongEps.SupPort.ae_integrableOn_mixed_sq_w
-import Submission.Work.FTS.StrongEps.SupPort.integrableOn_pth_mixed_sq_sin
-import Submission.Work.FTS.StrongEps.SupPort.mixed_T_le_HkSq
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.mixedSupSix
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
+import Submission.Work.FTS.TransportS.SupDzAux.sup_dz_ang_le
+import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

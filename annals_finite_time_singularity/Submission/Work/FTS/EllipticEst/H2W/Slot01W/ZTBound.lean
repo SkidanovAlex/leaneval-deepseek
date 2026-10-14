@@ -1,41 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Work.H2W.slot01ZTBound` — the two `Z`-slots of the `(0,1)`-pair, in the weak class
-
-The target
-
-```
-∃ C > 0, ∀ α F Ψ, 0 < α → α ≤ 1/4 → TT.EllWeakPos α 2 F Ψ →
-  ∀ᵐ z ∂(volume.restrict Iz), 0 < z →
-    (∫_θ (∂_θ (z²∂_zzΨ))² · sin(2θ)^{2-γ}  ≤ C·(∫_θ (∂_θ²(D_zΨ))²·sEta + ∫_θ (∂_θ²(D_z²Ψ))²·sEta))
-  ∧ (∫_θ (∂_θ (D_zΨ))² · sin(2θ)^{2-γ} ≤ C·∫_θ (∂_θ²(D_zΨ))²·sEta)
-```
-
-bounds the two `Z`-slots of the `(0,1)`-pair (the first-derivative-in-`θ` slots of `z²∂_zzΨ` and of
-`D_zΨ`) by the *second* `θ`-derivatives of `D_zΨ` and `D_z²Ψ`, weighted by `sEta = sin(2θ)^{-η}`.
-Both conjuncts are the weak form of the first-order angular estimate of §H2
-(`FTS.EllipticEst.H2W.weakFirstIter`):
-
-for a slice `u` which is `C^∞` on `(0,π/2)`, continuous on `[0,π/2]`, vanishes at both endpoints and
-has `(u'')²·sEta` integrable,
-
-  `∫_θ (u')² sin(2θ)^{2-γ} ≤ C ∫_θ (u'')² sEta`      (`weakFirstIter`, `D_θu = sin 2θ · u'`).
-
-* Second conjunct: `u := D_zΨ z ·` — continuity of the slice on `Iθ` is
-  `weakSliceContinuousKit`, the endpoint values are `dz_zero_at_zero`/`dz_zero_at_pi_half`, and
-  `(u'')² sEta = (∂_θ²(D_zΨ))² sEta` is honest by `dzpsi_second_sq`.
-* First conjunct: `u := z²∂_zzΨ z ·` — on the open quadrant `z²∂_zzΨ = D_z²Ψ - D_zΨ`, so
-  `u'' = ∂_θ²(D_z²Ψ) - ∂_θ²(D_zΨ)` there, and `(u'')² sEta` is honest by `H2W.aSliceHonest`.
-  The slice is continuous on `Iθ` **almost everywhere in `z`** (this is the honest strength of the
-  weak class: the pointwise statement needs one more level of `ℋ^k`-honesty); this is exactly why
-  the target is an `a.e.`-in-`z` statement, and the `a.e.` continuity is proved here as
-  `aeSliceContASelf` (from the `a.e.` vanishing of the two moments `F_*(D_z²F)`, `F_*(D_z⁴Ψ)`
-  and the `Lzero1`-moment identity of the `z²∂_zzΨ`-slice).
-
-The two right-hand-side slots `(∂_θ²(D_z^iΨ))²·sEta` (`i = 1, 2`) are honest for every `z > 0`
-(`pth2_DzIter_one_sq`, `pth2_DzIter_two_sq`), so the `a.e.` inequality is non-vacuous.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
@@ -43,13 +5,12 @@ import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.H2W.Slot01W.SliceKit
-import Submission.Work.FTS.EllipticEst.H2W.weakFirstIter
-import Submission.Work.FTS.EllipticEst.H2W.Slot01W.ASliceH
 import Submission.Work.FTS.EllipticEst.H2W.Slot01W.BslZsq
 import Submission.Work.FTS.EllipticEst.H2W.Slot01W.FstarDzIterFourAe
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_F_ge_two
+import Submission.Work.FTS.EllipticEst.H2W.Slot01W.SliceKit
+import Submission.Work.FTS.H2.STFacts
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

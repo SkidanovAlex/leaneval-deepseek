@@ -1,40 +1,3 @@
-/-
-# `Work.FTS.Regularity.physVort_timeDeriv_aesm` — the `τ`-derivative slices of the physical
-vorticity are ae-strongly measurable
-
-Node N7 of the audit needs, besides the boundedness of `∂_τ ω`, the **measurability** of the
-`τ`-derivative slices: for every `τ` in the strip `[0,S]`, the field
-
-  `y ↦ ∂_τ ω(y,τ) = timeDeriv (physVort α A B g) y τ`
-
-must be ae-strongly measurable for Lebesgue measure on `ℝ³` (this is the clause
-`TimeDerivStrip` of the bundle `Work.CoreResiduals.BSAdmissibleStripFull`).
-
-The proof is a *difference-quotient* argument and never needs a formula for the derivative:
-
-* `∂_τ ω(y,τ)` is the pointwise limit of the difference quotients
-  `(t n)⁻¹ • (ω(y, τ + t n) - ω(y, τ))`, where `t n = c/(n+1)` is a sequence of *non-zero*
-  shifts converging to `0` chosen so that **every** shifted time `τ + t n` stays inside the
-  strip `[0,S]`: for `τ ≤ S/2` shift right by `S/2`, for `τ > S/2` shift left by `S/2`, so that
-  `τ + c·s ∈ [0,S]` for all `s ∈ [0,1]` (both endpoints lie in the interval, which is convex).
-  Staying inside the strip matters: `RegPkg'` controls the profile only for `τ ∈ [0,S]`.
-* each difference quotient is measurable as a function of `y` because the vorticity slices on the
-  strip are measurable (`physVort_slice_measurable_of_holder`), and scalar multiplication and
-  subtraction preserve measurability;
-* a pointwise limit of measurable functions is measurable (`measurable_of_tendsto_metrizable`),
-  and a measurable function into `ℝ³` is ae-strongly measurable
-  (`Measurable.aestronglyMeasurable`).
-
-The two analytic inputs are
-
-* `physVort_slice_measurable_of_holder`: each vorticity slice on the strip is `α`-Hölder in `x`
-  with a constant uniform on the strip (`physVort_holder_slice` of the sibling module), hence
-  Borel measurable;
-* `physVort_differentiableAt_time`: each slice `s ↦ ω(y,s)` is differentiable at every
-  `τ ∈ [0,S]` — the chain rule along the rescaled curve `s ↦ (ρ(y)^{3α}/B(s), s)`.
-
-The assembly of the two into the statement is `physVort_timeDeriv_aesm_of`.
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.Calculus.Deriv.Prod
@@ -44,10 +7,10 @@ import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.Regularity.Defs
-import Submission.Work.FTS.FireFix.Prime.physVort_bound
 import Submission.Work.FTS.FireFix.Prime.PhysVortHolderSlice
-import Submission.Work.FTS.RegPkgGal.Basic
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

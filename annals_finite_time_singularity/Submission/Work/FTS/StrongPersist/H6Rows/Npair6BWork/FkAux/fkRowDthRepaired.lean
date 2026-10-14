@@ -3,19 +3,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowsAux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSliceSup
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkThetaEnd
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowF
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkPsi6TermBound
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowF
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowsAux
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkShiftHigh_shiftF
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NSplit6
 import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.StrongPersist.H6Row6.RowFKfCore2
-import Submission.Work.FTS.StrongPersist.H6Row6.RowFKfAux
-import Submission.Work.FTS.StrongPersist.H6Row6.RowFKfAux2
 import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Open
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

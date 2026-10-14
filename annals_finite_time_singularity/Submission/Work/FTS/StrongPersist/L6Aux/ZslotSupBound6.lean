@@ -1,32 +1,51 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-The radial `z`-slot of the coefficient function of the fundamental model at order
-six: `D_z^b (2z/(1+z)²)` is uniformly bounded on `[0,∞) × [0,π/2]` for `b ≤ 6`.
-
-The function `z ↦ 2z/(1+z)²` is `θ`-independent, so only the radial variable is
-involved.  The proof is the level-six instance of the same mechanism as the proved
-level-four statements `Work.FTS.StrongPersist.L3Aux.zslot_supBound` and
-`Work.FTS.StrongPersist.L3Aux.acoef_zslot_bound`:
-
-* the weighted one-dimensional bounds `|z^j ∂_z^j (2z/(1+z)²)(z)| ≤ 2 · j! · (j+1)`
-  for `z ≥ 0` (`Work.FTS.StrongPersist.L3Aux.zpow_pzIter_two_z_div_le`), which at
-  level six give the uniform constant `2 · 6! · 7 = 10080`;
-* the Stirling expansion `D_z^b = ∑_k S(b,k) z^k ∂_z^k`
-  (`Work.Spaces.DzIter_eq_sum_scoef`) together with the coefficient-mass bound
-  `|∑_k S(b,k) x_k| ≤ bell b · M` (`Work.Spaces.abs_sum_scoef_mul_le`).  The Bell
-  numbers of the rows `b ≤ 6` are `1,1,2,5,15,52,203`, all `≤ 1000`
-  (`bell_row_six_le`), whence `|D_z^b (2z/(1+z)²)| ≤ 1000 · 10080`.
-
-That is exactly `dzIter_le_of_pzIter_six`, the level-six analogue of the proved
-`Work.Spaces.DzIter_le_of_pzIter` (which stops at `b ≤ 4` and uses `bell b ≤ 100`).
--/
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Tactic.NormNum.NatFactorial
+import Submission.Work.FTS.Nonlinear.N4Fields.wang_field_smoothInt
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
 import Submission.Work.FTS.StrongPersist.L3Aux.acoef_gamCoef_slots_le
-import Submission.Work.FTS.FinalClock.PhiZopBound
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.ProductRuleInW
+-- ===== merged: Submission.Work.FTS.Nonlinear.N4Fields.wrad_field_smoothInt =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open scoped Real
+
+namespace Work.FTS.Nonlinear.N4Fields
+
+set_option maxHeartbeats 1600000
+
+/-! ## Two elementary facts about radial (`z`-only) functions
+
+Both are specialisations of the junk-free parts of the `D_θ`-calculus: `D_θ` carries the factor
+`sin(2θ)`, so it kills every function of `z` alone, and `∂_z` kills the zero function. -/
+
+
+
+
+/-! ## The pointwise bound
+
+`Work.Spaces.pz_DthIter_mul_eq` expands `∂_z^k D_θ^j (φ·h)` binomially in both variables; the
+`a ≥ 1` terms of the angular expansion are killed by the radiality of `φ`, and each of the
+surviving `a = 0` terms is bounded by `Work.Spaces.WlInf_z_bound` (for `φ`) and
+`Work.Spaces.factor_bound` (for `h`).  The resulting `2^k` summands are then summed with
+`Nat.sum_range_choose`. -/
+
+
+
+end Work.FTS.Nonlinear.N4Fields
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.L6Aux.ZslotSupBound6 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -90,3 +109,4 @@ theorem ZslotSupBound6 : ∃ K : ℝ, 0 < K ∧ ∀ b ≤ 6, ∀ z ∈ Work.Spac
   linarith
 
 end Work.FTS.StrongPersist.L6Aux
+end

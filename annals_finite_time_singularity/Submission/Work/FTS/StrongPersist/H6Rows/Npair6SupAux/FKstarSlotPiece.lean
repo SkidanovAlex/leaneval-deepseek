@@ -1,42 +1,18 @@
-/-
-# `FKstarSlotPiece` — the two `FK f × star-slot` pieces of the `N`-row
-
-The `N`-row of the level-`6` nonlinear estimate contains the two terms
-`FK F · D_θF_*` and `sin²θ · FK F · F_*` (`Work.Construction.N`), where
-`FK F z = ∫_θ F z θ K θ` is the angular moment and `F_* = Fstar α` the star profile.
-This module proves that both are honest `ℋ⁶`-functions with an explicit bound, *priced by the
-`ℋ⁶`-norm of `FK f` alone* (the star slots are priced by their `𝒲^{6,∞}`-data, which is
-`O(α)` uniformly in `α ∈ (0,1]`).
-
-The route is the `C^6` `𝒲^{6,∞}`-priced product rule (`hknorm_mul_of_WlInf6_cd6`, applied at
-the honest range `0 < α ≤ 1` as `hknorm_mul_WlInf6_cd6'`).  The second piece uses it twice:
-
-* `F_* · FK f`: the star slot `F_*` is `𝒲^{6,∞}` with `|F_*| ≤ C_F α` (`Fstar_W6`), and
-  `FK f` is `C^6` + `ℋ⁶` with norm `≤ Kf`;
-* `sin²θ · (F_* · FK f)`: the angular factor `sin²θ` is a function of `θ` alone, so its
-  `𝒲^{6,∞}`-data is the level-`6` `θ`-only reduction (`WlInf_theta_only_level6`) fed with the
-  weighted bounds for `D_θ^j(sin²θ)` (`dthU_sinSq_weight`).
-
-The first piece is one product rule with the star slot `D_θF_*` (`DthFstar_W6`, whose
-`𝒲^{6,∞}`-norm is `O(α²)`) and `FK f`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.StrongPersist.N6_fkH
-import Submission.Work.FTS.NonlinRows.NRow10aux.hkmem_of_majorant
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SmoothN0
-import Submission.Work.FTS.StrongPersist.DthFstar_W6
-import Submission.Work.FTS.StrongPersist.Fstar_W6
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.GalBasis.exists_cc_of_honClass
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.hknorm_mul_of_WlInf6_cd6
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.WlInf_theta_only_level6
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.dthU_sinSq_weight
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXR1.HJ.AKBounds
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

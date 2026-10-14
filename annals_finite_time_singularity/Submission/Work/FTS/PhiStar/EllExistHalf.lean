@@ -1,40 +1,12 @@
-/-
-# `Work.FTS.PhiStar` — the *existence half* of the elliptic node `bslOp_sol_exists`
-
-The frozen node (`Submission/Work/FTS/PhiStar/bslOp_sol_exists.lean`) asks for `Ψ` with the
-`WeakPos` package of the paper: the equation `bslOp α Ψ = F` on the open quadrant, the two
-Dirichlet values, the decay in `z`, the two moments, `C^∞` on the open quadrant **and** the
-*honesty* (`HkMem`) of the three second-order slots `z²∂_z²Ψ`, `∂_θ²Ψ`, `z∂_z∂_θ²Ψ`.
-
-This module delivers the **existence half**: from the node's hypothesis list there is `Ψ` with
-`SmoothOpen Ψ` and `IsBslSol α F Ψ`.  (The honesty half — the finiteness part of the paper's
-`prop:H2`/`prop:Hk` — is a separate node; see `DELIVERY.md`.)
-
-The two mismatches between the node's hypotheses and the standing existence theorem
-`Work.FTS.EllipticEst.Final.bslSolExistence_fts` are handled here:
-
-* the node asks for the moment condition only for `z > 0`, the existence theorem for every real
-  `z`; the **clamped source** `clampQ F` (equal to `F` on `{z > 0}`, `0` elsewhere) agrees with
-  `F` on the open quadrant and satisfies the global condition;
-* the node carries `HkMem α k F`, the existence theorem an explicit `L²`-integrability of `F` on
-  the quadrant; `HkMem α 0 F` implies it, via the product-measure integrability of the `ℋ⁰`
-  density.
-
-Main results (namespace `Work.FTS.PhiStar`):
-
-* `clampQ`, `clampQ_eqOn_Q0`, `smoothOpen_clampQ`, `fstar_clampQ`, `orthCond_clampQ`,
-  `tendsto_clampQ`, `integrableOn_sq_Q0_of_HkMem`;
-* **`bslSolExists_of_node_hyp`** — the existence half, in exactly the shape of the node.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.Final.bslSolExistence_fts
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.EllipticEst.Cores.InterpBrickAux.hkDensity_prod_integrable
-import Submission.Work.Elliptic.Defs
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.H2W.dzPsiSliceLimits
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -94,14 +66,6 @@ theorem orthCond_clampQ {F : ℝ → ℝ → ℝ}
   · rw [if_pos hz]; exact h z hz
   · rw [if_neg hz]
 
-/-- The clamped source decays at `z → ∞` wherever `F` does. -/
-theorem tendsto_clampQ {F : ℝ → ℝ → ℝ}
-    (h : ∀ θ ∈ Work.Spaces.Iθ, Tendsto (fun z => F z θ) atTop (nhds 0))
-    {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) :
-    Tendsto (fun z => clampQ F z θ) atTop (nhds 0) := by
-  refine Tendsto.congr' ?_ (h θ hθ)
-  filter_upwards [eventually_gt_atTop (0 : ℝ)] with z hz
-  simp only [clampQ, if_pos hz]
 
 /-- **The `ℋ⁰`-membership of the source makes the unweighted square `F²` integrable on the open
 quadrant.**  The `ℋ⁰` density is `(F z θ)² · w(z)² · sin(2θ)^{-η}`; on `Q0` both weights are
@@ -171,35 +135,5 @@ theorem integrableOn_sq_Q0_of_HkMem {α : ℝ} {F : ℝ → ℝ → ℝ}
     _ = (F p.1 p.2) ^ 2 * (Work.Spaces.w p.1) ^ 2
           * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)) := by ring
 
-/-- **The existence half of `bslOp_sol_exists`.**  Under exactly the node's hypotheses (with the
-moment condition only for `z > 0`, as there), there is a solution `Ψ` of `bslOp α Ψ = F` on the
-open quadrant with the Dirichlet values, the decay, and `C^∞` on the open quadrant. -/
-theorem bslSolExists_of_node_hyp (k : ℕ) :
-    ∀ (α : ℝ) (F : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.SmoothOpen F → Work.Spaces.HkMem α k F →
-      (∀ z, 0 < z → Work.Elliptic.Fstar F z = 0) →
-      (∀ θ ∈ Work.Spaces.Iθ, Filter.Tendsto (fun z => F z θ) Filter.atTop (nhds 0)) →
-      ∃ Ψ : ℝ → ℝ → ℝ,
-        Work.FTS.EllipticEst.SmoothOpen Ψ ∧ Work.Elliptic.IsBslSol α F Ψ := by
-  intro α F hα hα4 hsm hk horth hdec
-  -- the `ℋ⁰`-membership, and the `L²`-integrability of the source on the quadrant
-  have h0 : Work.Spaces.HkMem α 0 F :=
-    Work.FTS.OpenPkg.HkMem_mono_open hsm 0 (Nat.zero_le k) hk
-  have hL2 : IntegrableOn (fun p : ℝ × ℝ => (clampQ F p.1 p.2) ^ 2)
-      Work.FTS.EllipticEst.Q0 := by
-    refine (integrableOn_sq_Q0_of_HkMem h0 hsm).congr_fun ?_
-      Work.FTS.EllipticEst.isOpen_Q0.measurableSet
-    intro p hp
-    obtain ⟨hz, -, -⟩ := Work.FTS.EllipticEst.mem_Q0.mp hp
-    show (F p.1 p.2) ^ 2 = (if 0 < p.1 then F p.1 p.2 else 0) ^ 2
-    rw [if_pos hz]
-  obtain ⟨Ψ, hΨsm, hΨsol⟩ :=
-    Work.FTS.EllipticEst.Final.bslSolExistence_fts α (clampQ F) hα (by linarith)
-      (orthCond_clampQ horth) (smoothOpen_clampQ hsm) hL2 (fun θ hθ => tendsto_clampQ hdec hθ)
-  refine ⟨Ψ, hΨsm, ?_, hΨsol.2.1, hΨsol.2.2.1, hΨsol.2.2.2⟩
-  intro z hz θ hθ0 hθ1
-  rw [hΨsol.1 z hz θ hθ0 hθ1]
-  show (if 0 < z then F z θ else 0) = F z θ
-  rw [if_pos hz]
 
 end Work.FTS.PhiStar

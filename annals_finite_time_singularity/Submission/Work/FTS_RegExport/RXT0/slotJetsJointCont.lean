@@ -1,18 +1,16 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_velPert
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_SlotJetsTendsto
-import Submission.Work.FTS_RegExport.RXT.SysAux.pertSlot_lip_approx
-import Submission.Work.FTS_RegExport.RXT.SysAux.pertSlot_tendsto
-import Submission.Work.FTS_RegExport.RXT.SysAux.pertSlot_contDiffOn
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
 import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetsTendsto
-import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetLipschitzApprox
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS_RegExport.RXT.Slots.v2_velPert
+import Submission.Work.FTS_RegExport.RXT.SysAux.pertSlot_contDiffOn
+import Submission.Work.FTS_RegExport.RXT.SysAux.pertSlot_lip_approx
+import Submission.Work.FTS_RegExport.RXT.st1_stdata
+import Submission.Work.FTS_RegExport.RXT.velPert
 import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetContinuousOn
-import Submission.Work.FTS_RegExport.RXT.Sys.pert_tilde_contDiffOn
-import Submission.Work.FTS_RegExport.RXT.Sys.slot_tau_cont_alpha
+import Submission.Work.FTS_RegExport.RXT0.SJC.slotJetLipschitzApprox
+import Submission.Work.FTS_RegExport.THL.vopPert_theta_holder
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

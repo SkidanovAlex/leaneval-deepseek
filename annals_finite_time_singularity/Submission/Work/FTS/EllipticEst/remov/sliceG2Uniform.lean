@@ -6,10 +6,9 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.MeanValue
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Order.Interval.Basic
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.remov.SliceG2Defs
-import Submission.Work.Spaces.cs_integral
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -375,25 +374,6 @@ end TripleBound
 
 section PointBounds
 
-/-- `σ` is bounded below on the compact `[π/8, 3π/8]`. -/
-private lemma sigG_ge_on_K (γ : ℝ) (hγ1 : 1 ≤ γ) (hγ2 : γ ≤ 3 / 2) :
-    ∃ c : ℝ, 0 < c ∧ ∀ θ ∈ Set.Icc (Real.pi / 8) (3 * Real.pi / 8), c ≤ sigG γ θ := by
-  have hmem : ∀ θ ∈ Set.Icc (Real.pi / 8) (3 * Real.pi / 8), θ ∈ Set.Ioo 0 (Real.pi / 2) := by
-    intro θ hθ
-    rw [Set.mem_Icc] at hθ
-    exact ⟨by linarith [hθ.1, Real.pi_pos], by linarith [hθ.2, Real.pi_pos]⟩
-  have hKsub : Set.Icc (Real.pi / 8) (3 * Real.pi / 8) ⊆ Set.Icc 0 (Real.pi / 2) :=
-    fun x hx => ⟨le_of_lt (hmem x hx).1, le_of_lt (hmem x hx).2⟩
-  have hcont : ContinuousOn (fun θ => (sigG γ θ)⁻¹) (Set.Icc (Real.pi / 8) (3 * Real.pi / 8)) :=
-    ((sigG_continuousOn γ hγ1 hγ2).mono hKsub).inv₀
-      (fun θ hθ => ne_of_gt (sigG_pos γ hγ1 hγ2 θ (hmem θ hθ)))
-  obtain ⟨M, hM⟩ := (isCompact_Icc (a := Real.pi / 8) (b := 3 * Real.pi / 8)).bddAbove_image
-    hcont
-  refine ⟨(max M 1)⁻¹, inv_pos.mpr (lt_max_of_lt_right zero_lt_one), fun θ hθ => ?_⟩
-  have hM1 : 0 < max M 1 := lt_max_of_lt_right zero_lt_one
-  have hpos : 0 < sigG γ θ := sigG_pos γ hγ1 hγ2 θ (hmem θ hθ)
-  refine (inv_le_comm₀ hpos hM1).mp ?_
-  exact le_trans (hM ⟨θ, hθ, rfl⟩) (le_max_left _ _)
 
 
 /-- **Uniform** lower bound for `σ = sigG γ` on the fixed compact `[π/8, 3π/8]`: the constant

@@ -1,40 +1,18 @@
-/-
-# `Submission/Work/FTS/StrongPersist/L3Rhs/NfkAux/FkTerms.lean`
-
-The two terms of the `NFkSum` block in which the angular moment `FK f` multiplies a function of
-`f`:
-
-* `N₄^{gg} = -(1/2)·FK f·D_θ f`  (`N4gg_mem`),
-* `N₅^{gg} = -sin²θ·FK f·f`      (`N5gg_mem`),
-
-both honest in `ℋ³` with a bound of the shape `C α^{-Cpow} (1 + |FK f|²_{ℋ⁴}) |f|²_{ℋ⁴}`.
-
-## Route
-
-The `z`-jets of `FK f` are bounded pointwise by its own `ℋ⁴`-norm (`NfkAux.FK_jets`, via the
-radial Agmon inequality `NfkAux.RadSupZ` and the slot bound `NfkAux.FK_slot_le`); the product with
-the general factor `D_θ f` resp. `sin²θ·f` is the radial-multiplier estimate `NfkAux.ProdRadSupO`
-at `k = 3`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Submission.Work.FTS.FinalClock.HkIntegrandMulDthSmooth
+import Submission.Work.FTS.Nonlinear.n4norm_exists
 import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.Basic
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.FkSlots
 import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.FkJets
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.FkSlots
 import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
 import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSupO
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.RadSupZ
-import Submission.Work.FTS.FinalClock.HkIntegrandMulDthSmooth
-import Submission.Work.FTS.CoercivityFix.Transfer.E2_blocks
-import Submission.Work.FTS.LocData.hLoc_hk
+import Submission.Work.FTS.StrongPersist.hasDerivAt_wip_family
 import Submission.Work.H2.T1Q.PwBdQ
+import Submission.Work.R1G.DecayInZ_gA
 import Submission.Work.Spaces.HkSq_terms
 
 -- v435-port: begin
@@ -54,18 +32,6 @@ set_option autoImplicit false
 set_option linter.unusedVariables false
 set_option maxHeartbeats 1600000
 
-/-- The `θ`-independent function `z ↦ FK f z` is `C³` on the open quadrant. -/
-theorem FK_contDiffOn_Q0 {α : ℝ} (hα : 0 < α) (hα1 : α ≤ 1) {f : ℝ → ℝ → ℝ}
-    (hsm : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.HkMem α 6 f) :
-    ContDiffOn ℝ 3 (Function.uncurry (fun z (_ : ℝ) => Work.Construction.FK f z))
-      Work.FTS.EllipticEst.Q0 := by
-  have h := contDiffOn_FK hα hα1 hsm hmem 3 (by norm_num)
-  have hfst : ContDiffOn ℝ 3 (fun p : ℝ × ℝ => p.1) Work.FTS.EllipticEst.Q0 := contDiffOn_fst
-  have hcomp := h.comp hfst (fun p hp => (Work.FTS.EllipticEst.mem_Q0.mp hp).1)
-  have hfun : (fun p : ℝ × ℝ => Work.Construction.FK f p.1)
-      = Function.uncurry (fun z (_ : ℝ) => Work.Construction.FK f z) := rfl
-  rw [← hfun]
-  exact hcomp
 
 /-! ## `N₄^{gg} = -(1/2)·FK f·D_θ f` -/
 

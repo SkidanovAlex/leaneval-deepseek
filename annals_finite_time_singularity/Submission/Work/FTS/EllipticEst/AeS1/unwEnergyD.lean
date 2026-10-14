@@ -1,11 +1,11 @@
 import Mathlib.Basic.Real.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.EllipticEst.AeS1.unwAux
-import Submission.Work.FTS.EllipticEst.AeS1.unwMain
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.AeCutEnergyMine
-import Submission.Work.FTS.EllipticEst.Cores.Pieces.AeGradRho.aeEnergyOfCutEnergy
+import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeCutEnergyV2
+import Submission.Work.FTS.EllipticEst.Honest.FOH.psiRho
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Gmaj6
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

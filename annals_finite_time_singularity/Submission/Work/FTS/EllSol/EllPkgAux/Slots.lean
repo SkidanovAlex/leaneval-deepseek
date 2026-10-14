@@ -1,27 +1,11 @@
-/-
-# `Work.FTS.EllSol.EllPkgAux.Slots` — the four slots of the level-`4` package `EllPkgGo`
-
-The level-`4` package `Work.FTS.VocabO.EllPkgGo α Ce g Ψ` for a datum of the linear class
-`Work.FTS.EllSol.ClassC α g` and a level-`7` solution `Work.FTS.EllExist.EllClassOk 7 α g Ψ`
-is the conjunction of
-
-* the equation clause and the open-quadrant smoothness (straight from the class);
-* the three operator slots `ℛ`, `U/sin 2θ`, `V` at level `4` with `‖·‖_{ℋ⁴} ≤ Ce ‖g‖_{ℋ⁴}`;
-* the trace clause `vanishU` (from the Dirichlet data, not a hypothesis);
-* the sup-slot `V^{th}` with the `α^{-1/2}` gain.
-
-This module records the four slots as `Prop`s (in the flavour of the class and level actually
-consumed: `Work.FTS.EllSol.ClassC` + `EllClassOk 7`) and performs the final packaging
-`ellPkgGoOfClassOk_of`, so that the slot estimates can be proved independently.
--/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS.EllSol.ClassC
-import Submission.Work.FTS.EllSol.Defs
 import Submission.Work.FTS.EllExist.LevelK
+import Submission.Work.FTS.EllSol.ClassC
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.H2.HQ.Glue
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
 import Submission.Work.FTS.VocabO
-import Submission.Work.FTS.ClassC.A4
-import Submission.Work.FTS.EllipticEst.RegQ
-import Submission.Work.Construction.Defs
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgMid
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

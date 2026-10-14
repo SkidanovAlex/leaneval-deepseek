@@ -1,14 +1,85 @@
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.VPOpen
-import Submission.Work.FTS_RegExport.RXVP3.velPkgEasy
+import Submission.Work.FTS.EpsEngine.LocalStepXBall
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le
+import Submission.Work.FTS_EllLimOK.PkgJets.L12jets_classC
 import Submission.Work.FTS_RegExport.RXT.velVanish2
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffBnd
-import Submission.Work.FTS_RegExport.RXVP3.cont_open
+import Submission.Work.FTS_RegExport.RXT0.RXJets.coeffcR
+import Submission.Work.FTS_RegExport.RXVP.NoHdat.velPkgEasy_noHdat
 import Submission.Work.FTS_RegExport.RXVP3.bnd_open
+import Submission.Work.FTS_RegExport.RXVP3.cont_open
+import Submission.Work.FTS_RegExport.RXVP3.velPkgEasy
 import Submission.Work.FTS_RegExport.RXVP3.vz0_of_vopLower
+import Submission.Work.FTS_RegExport.VPOpen
+import Submission.Work.FTS_StreamBdry.SB4.slice_L12_c2
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.XStep =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.XStep
+
+open Work.FTS.Galerkin (Fn Fam slice)
+open Work.FTS.EpsEngine (XBall Feps)
+open Work.FTS.StrongEps.EpsLocalPStar (iter limFam)
+
+set_option autoImplicit false
+
+/-- **The residual bundle of the local-step chapter on the `X`-ball route.**
+
+For every `α ∈ (0,1]`, every `ε ∈ (0,1]`, every admissible `(Φs, E)` (the elliptic/star packages)
+*with the class radius `2 C₀`* and every `ℋ⁶`-size bound `M'` there are a positive horizon `δ` and a
+positive ball radius `R` such that, for every datum `h₀` of the class
+
+  `SmoothOpen h₀ ∧ HkMem α 6 h₀ ∧ HkSq α 6 h₀ ≤ M' ∧ ClassC α (P_z (J_ε h₀)) ∧ Xn α (P_z (J_ε h₀)) ≤ C₀ α²`
+
+the datum is honest (`EpsMem α h₀`) with `EpsSq α h₀ ≤ R`, every Picard iterate's slice and the
+limit family's slice lie in `XBall α ρ ε R (2 C₀)`, the limit family is jointly `C¹` on the slab
+`(0,∞) × (0,π/2) × [0,δ]`, and every limit slice is an `EpsDatumP`.
+
+The two numbers `M'` (the *datum's* `ℋ⁶`-size, which is what the local step's datum hypothesis gives)
+and `R` (the *invariant* `X`-ball, chosen after `M'`) are deliberately different: this is exactly the
+room that the `ℋ⁶`-ball invariant `E4R3.EngineResiduals` lacks. -/
+def XStepInvariant (Ce Cs C₀ : ℝ) (ρ : ℝ × ℝ → ℝ) : Prop :=
+  ∀ α : ℝ, α ∈ Set.Ioc 0 1 → ∀ ε : ℝ, ε ∈ Set.Ioc 0 1 → ∀ {Φs : Fn} {E : Fn → Fn},
+    (∀ u : Fn, Work.FTS.ClassC.ClassC α u →
+      Work.FTS.VocabO.EllPkgGo α Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK α 6 Ce u (E u)) →
+    Work.FTS.VocabO2.StarPkgo2 α Cs Φs →
+    MuLamOK α (2 * C₀) Φs E →
+    ∀ M' : ℝ, 0 ≤ M' → ∃ δ : ℝ, 0 < δ ∧ ∃ R : ℝ, 0 < R ∧
+      ∀ h₀ : Fn,
+        Work.FTS.EllipticEst.SmoothOpen h₀ → Work.Spaces.HkMem α 6 h₀ →
+        Work.Spaces.HkSq α 6 h₀ ≤ M' →
+        Work.FTS.ClassC.ClassC α (Pz (Jeps ρ ε h₀)) →
+        Work.FTS.Nonlin.Xn α (Pz (Jeps ρ ε h₀)) ≤ C₀ * α ^ 2 →
+        EpsMem α h₀ ∧ EpsSq α h₀ ≤ R ∧
+        (∀ n : ℕ, ∀ τ : ℝ, τ ∈ Set.Icc 0 δ →
+          XBall α ρ ε R (2 * C₀) (slice (iter (Feps α ρ ε Φs E) h₀ (n + 1)) τ)) ∧
+        (∀ τ : ℝ, τ ∈ Set.Icc 0 δ →
+          XBall α ρ ε R (2 * C₀) (slice (limFam (Feps α ρ ε Φs E) h₀) τ)) ∧
+        (ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => limFam (Feps α ρ ε Φs E) h₀ p.1 p.2.1 p.2.2)
+          (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2) ×ˢ Set.Icc 0 δ)) ∧
+        (∀ τ : ℝ, τ ∈ Set.Icc 0 δ →
+          EpsDatumP α ρ ε (slice (limFam (Feps α ρ ε Φs E) h₀) τ))
+
+
+
+end Work.FTS.StrongEps.EpsE4Thr.XStep
+end
+end
+-- ===== merged: Submission.Work.FTS_RegExport.RXVP3.velPkgOpen_of_vopLower =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -128,3 +199,5 @@ theorem velPkgOpen_of_vopLower (hα : 0 < α) (hα13 : α ≤ 1 / 3)
     exact hE1 S hS
 
 end Work.FTS_RegExport.RXVP3
+end
+end

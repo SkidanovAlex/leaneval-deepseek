@@ -3,17 +3,15 @@ import Mathlib.Analysis.Calculus.TangentCone.Prod
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.LinearAlgebra.CrossProduct
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.EulerAssembly
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtData
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.velocity_strip_blocks
-import Submission.Work.FTS.PressureOn.Connect.timeDeriv_physVel_continuousOn_strip
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_omega_slice_at
-import Submission.Work.FTS.PressureOn.Connect.hasDerivAt_lamb_time
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.lamb_derivWithinAt_zero
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.lambExt_timeDeriv_zero
-import Submission.Work.FTS.BSSwirl.CrossAux
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.FTS_RegExport.RXT.SysAux.explicit_piece_bounds
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,8 +1,60 @@
+import Mathlib.Algebra.Module.LinearMap.Defs
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
-import Submission.Work.FTS_StreamBdry.Inputs.SliceTr
-import Submission.Work.FTS.RegPkgGal.Basic
 import Submission.Work.FTS.FinalV2.Defs
-import Submission.Work.Spaces.CurrySmooth
+import Submission.Work.FTS.RegPkgGal.St1Class
+import Submission.Work.FTS.StrongPersist.SP6.WlInf6OfFlatW
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.FTS_RegExport.RXR5.Fstar_C1Jet
+import Submission.Work.FTS_RegExport.RXT.Sys.slice_contDiffOn_four
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_majorant
+import Submission.Work.FTS_StreamBdry.SB4.l12_zero_plainE
+import Submission.Work.Spaces.factor_bound
+-- ===== merged: Submission.Work.FTS_RegExport.RXR5L.Ftau_C1Jet =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS_RegExport.RXR5L
+
+theorem Ftau_C1Jet {α C₀ : ℝ} {Φs : Work.FTS.Galerkin.Fn}
+    {E : Work.FTS.Galerkin.Fn →ₗ[ℝ] Work.FTS.Galerkin.Fn} {g : Work.FTS.Galerkin.Fam}
+    (hα : 0 < α) (hα13 : α ≤ 1 / 3)
+    (hOK : Work.FTS.FinalV2.DynOK' (Work.FTS.Regularity.pExp α) C₀ Φs E g)
+    {S : ℝ} (hS : 0 < S)
+    (hSt1 : Work.FTS.RegPkgGal.St1Class α S
+      (Work.FTS.FinalV2.gS α (Work.FTS.FinalV2.tauExt g)))
+    (hO1 : ∃ N₂ N₃ : ℝ, 0 ≤ N₂ ∧ 0 ≤ N₃ ∧
+      Work.FTS.RegPkgGal.C1Jet α S N₂
+        (fun z θ τ => Work.Spaces.Dz (fun z θ => Work.FTS_RegExport.RXR5.SG α g z θ τ) z θ) ∧
+      Work.FTS.RegPkgGal.C1Jet α S N₃
+        (fun z θ τ => Work.Spaces.Dth (fun z θ => Work.FTS_RegExport.RXR5.SG α g z θ τ) z θ)) :
+    ∃ N₄ : ℝ, 0 ≤ N₄ ∧
+      Work.FTS.RegPkgGal.C1Jet α S N₄
+        (fun z θ τ => Work.Construction.Ftau (Work.FTS.Regularity.pExp α)
+          (Work.FTS.FinalV2.gS α (Work.FTS.FinalV2.tauExt g)) τ z θ) := by
+  obtain ⟨N₁, _hN₁0, hN₁⟩ := SG_C1Jet (S := S) hα hα13 hOK hS hSt1
+  have hF : Work.FTS.RegPkgGal.C1Jet α S (100 + 20 * Work.FTS.Regularity.pExp α)
+      (fun z θ (_ : ℝ) => Work.Construction.Fstar (Work.FTS.Regularity.pExp α) z θ) :=
+    Work.FTS.RegPkgGal.Der.C1JetFstar (S := S) hα hα13
+  have hsum : Work.FTS.RegPkgGal.C1Jet α S
+      ((100 + 20 * Work.FTS.Regularity.pExp α) + N₁)
+      (fun z θ τ =>
+        Work.Construction.Fstar (Work.FTS.Regularity.pExp α) z θ
+          + Work.FTS_RegExport.RXR5.SG α g z θ τ) :=
+    Work.FTS.RegPkgGal.C1Jet.add hF hN₁
+  exact ⟨100 + 20 * Work.FTS.Regularity.pExp α + N₁,
+    by have hp := Work.FTS.Regularity.pExp_pos hα; linarith, hsum⟩
+
+end Work.FTS_RegExport.RXR5L
+end
+-- ===== merged: Submission.Work.FTS_StreamBdry.Inputs.ftau_cont =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -135,26 +187,7 @@ theorem continuousOn_extG_slice {a τ : ℝ} {G : ℝ → ℝ → ℝ → ℝ} {
         rw [mul_div_assoc', div_lt_iff₀ hCpos]
         nlinarith [hε, hLg0, hLθ0]
 
-theorem ftau_cont {a : ℝ} (ha : 0 < a) (ha13 : a ≤ 1 / 3)
-    {Φs : Work.FTS.Galerkin.Fn} {E : Work.FTS.Galerkin.Fn →ₗ[ℝ] Work.FTS.Galerkin.Fn}
-    {C₀ : ℝ} {g G : Work.FTS.Galerkin.Fam} {A B : ℝ → ℝ}
-    (hOK : Work.FTS.FinalV2.DynOK' (Work.FTS.Regularity.pExp a) C₀ Φs E g)
-    (hreg : ∀ S : ℝ, 0 < S → Work.FTS.RegPkgGal.RegPkg' a S A B (Work.FTS.RegPkgGal.extG G))
-    (hG : ∀ z θ τ, 0 < z → θ ∈ Work.Spaces.Iθ → 0 ≤ τ → G z θ τ = g z θ τ) :
-    ∀ τ : ℝ, 0 ≤ τ →
-      ContinuousOn (Function.uncurry (Work.Construction.Ftau (Work.FTS.Regularity.pExp a) g τ))
-        (Set.Ioi 0 ×ˢ Work.Spaces.Iθ) := by
-  intro τ hτ
-  -- the full profile of the *extended* family is continuous on the half-strip
-  have hprof : ContinuousOn
-      (fun p : ℝ × ℝ => Work.FTS.Regularity.profFull a (Work.FTS.RegPkgGal.extG G) p.1 p.2 τ)
-      (Set.Ioi 0 ×ˢ Work.Spaces.Iθ) := by
-    have hsum := (continuousOn_Fstar_ftau ha).add (continuousOn_extG_slice hreg hτ)
-    refine hsum.congr (fun p _ => ?_)
-    simp only [Work.FTS.Regularity.profFull, Pi.add_apply]
-  -- and it agrees with `F(τ)` on the half-strip
-  refine hprof.congr (fun p hp => ?_)
-  obtain ⟨hpz, hpθ⟩ := hp
-  exact Ftau_eq_profFull hτ hG hpz hpθ
 
 end Work.FTS_StreamBdry.Inputs
+end
+end

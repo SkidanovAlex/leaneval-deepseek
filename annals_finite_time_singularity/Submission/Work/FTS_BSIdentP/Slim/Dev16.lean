@@ -2,15 +2,15 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS_BSIdentP.Slim.DevStub
-import Submission.Work.FTS_BSIdentP.Slim.Dev5
-import Submission.Work.FTS_BSIdentP.Slim.Dev2
-import Submission.Work.FTS_BSIdentP.Slim.Dev6
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
 import Submission.Work.FTS_BSIdentP.Slim.Dev11
-import Submission.Work.FTS_BSIdentP.Slim.Dev14
-import Submission.Work.FTS_BSIdentP.Slim.Dev15
+import Submission.Work.FTS_BSIdentP.Slim.Dev5
+import Submission.Work.FTS_BSIdentP.Slim.Dev7
+import Submission.Work.FTS_BSIdentP.Slim.DevStub
+import Submission.Work.FTS_BSIdentP.Slim.MerPsiOriginProfiles
+import Submission.Work.FTS_BSIdentP.Slim.PsiFieldCorrCocompact
+import Submission.Work.FTS_BSIdentP.Slim.TendstoSliceQuotient
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

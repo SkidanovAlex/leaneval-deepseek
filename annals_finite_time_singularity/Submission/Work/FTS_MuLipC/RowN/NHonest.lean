@@ -1,57 +1,17 @@
-/-
-# `Submission/Work/FTS_MuLipC/RowN/NHonest.lean` — honesty of the `N`-field
-
-`Work.FTS_MuLipC.RowN.NHonest` records that the bilinear field of the `N`-row,
-`N α (F_*+g) (Φ_s + Ξ_g)`, is *honest* for the `L₁₂`-machinery:
-
-* its `Fa`-functional is finite (`Fa` is the `L¹(r⁻¹dr)`-density functional that dominates
-  `|L₁₂(f)(0)|`, `Work.FTS.Nonlinear.Pieces.ofReal_L12_le`);
-* it is jointly a.e. strongly measurable on the open quadrant;
-* for a.e. radius the density integrand `θ ↦ K θ · N(r,θ)/r` is `θ`-integrable;
-* its `L₁₂`-density `r ↦ L₁₂dens N r` is integrable on `(0,∞)`.
-
-These are exactly the hypotheses under which the *fields* `Sn α Φs E x` may be added and
-subtracted inside `L₁₂` (`Work.FTS.LocData.L12_add_mul`, in the a.e. form
-`Work.FTS_MuLipC.RowN.L12_ae_sub` of the sibling `L12Ae.lean`), which is what the polarization
-of the difference row (`diffRow1.lean`) needs.
-
-## Route
-
-* the twenty-piece split `N = ∑_k pv α g Φ_s Ξ_g k` on the open quadrant is
-  `Work.FTS.NonlinRows.Rl1.splitOpen`, with the additivity of `L₁₂` and of the angular moment
-  `FK` supplied by `NZeroAux.L12add` and `Rl1Defs.FKaddOpen`;
-* `Fa N ≤ ∑_k Fa (pv k)` is `rl1Tools.FaSumAE` (with the a.e. measurability of the pieces from
-  `RowMuAux.meas_open`), and each piece is bounded by `ofReal (K * Env α g)`
-  (`FTS_MuLamOK.Rows.piecesEnv`); hence `Fa N < ⊤`;
-* the joint a.e. strong measurability of `N` follows from that of the twenty pieces
-  (`PvAesmOpen.lean`, the twenty-case argument of `RowMuAux.meas_open`) and the a.e. equality
-  `N = ∑_k pv k` on the open quadrant;
-* `FaN < ⊤` together with the joint measurability gives the a.e. slice integrability
-  (`FaSlice.lean`) and the integrability of the density (`FaDens.lean`, whose measurability
-  input is `aesm_L12dens_of_aem_uncurry`).
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
-
-*Note on the import list.*  The sibling `RowN/Defs.lean` is deliberately **not** imported: it
-pulls in `FTS_MuLipC.Defs → FTS.FinalV2.Defs → FTS.Final.Assembly → FTS.Final.Psi`, i.e. the
-whole top-level assembly, whereas nothing of `RowN/Defs.lean` (the atoms `AtF`, …, `PhiTilg`)
-is used here.  The statement below is unchanged; a consumer that needs `RowN/Defs.lean` must
-import it itself.
--/
 import Mathlib.Analysis.Calculus.FDeriv.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_MuLipC.RowN.PvAesmOpen
-import Submission.Work.FTS_MuLipC.RowN.FaSlice
-import Submission.Work.FTS_MuLipC.RowN.FaDens
-import Submission.Work.FTS.NonlinRows.Rl1.splitOpen
-import Submission.Work.FTS_MuLamOK.Rows.Rl1Pieces
-import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
-import Submission.Work.FTS.Nonlinear.Pieces.rl1Tools.FaSumAE
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.RowMuAux.meas_open
+import Submission.Work.FTS.OpenPkg.Pieces4
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.NZeroAux.L12add
-import Submission.Work.FTS.Nonlinear.Pieces.rl1Bound
-import Submission.Work.FTS.Nonlinear.Pieces.Rl1.l12densMeasAux
+import Submission.Work.FTS.StrongPersist.N6Trans.T1Hon.EasyLeibIntBound
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Pieces
+import Submission.Work.FTS_MuLamOK.Rows.Rl2Open
+import Submission.Work.FTS_MuLipC.RowN.FaDens
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.FTS_MuLipC.RowN.PvAesmOpen
+import Submission.Work.H2.T1Q.SupAbsThOAesm
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

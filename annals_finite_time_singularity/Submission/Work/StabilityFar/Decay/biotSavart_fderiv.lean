@@ -1,26 +1,9 @@
-/-
-# `Work.StabilityFar.Decay.biotSavart_fderiv` — differentiability of the Biot–Savart field in the
-far field, with the explicit derivative
-
-For a vorticity `ω` that is ae-strongly-measurable, bounded by `M` and supported in the closed
-ball `B(0,R)`, the field `biotSavart ω` is differentiable at every point `x` with `‖x‖ ≥ 2R`,
-with derivative the Bochner integral of the derivatives of the Biot–Savart integrand:
-
-  `fderiv ℝ (biotSavart ω) x = bsDeriv ω x = (4π)⁻¹ • ∫ a, crossL (ω a) ∘ kDerivCLM (x - a)`,
-  `Integrable (fun a ↦ crossL (ω a) ∘ kDerivCLM (x - a))`.
-
-This is proved by differentiating under the integral sign
-(`hasFDerivAt_integral_of_dominated_loc_of_lip`): the integrand `y ↦ ‖y - a‖⁻³ (ω a × (y - a))` is
-Lipschitz in `y` on a ball around `x` uniformly in `a` (the far-field estimate `bsK_diff_le`, whose
-constant is integrable after restricting to the (finite-measure) support ball), and its derivative
-in `y` is the explicit kernel `crossL (ω a) ∘ kDerivCLM (x - a)`.
--/
 import Mathlib.Analysis.Calculus.ParametricIntegral
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.LinearAlgebra.CrossProduct
-import Submission.Work.LWP.BiotSavart.farField_decay_fderiv
+import Submission.Work.LWP.BiotSavart.nearField_bound
 import Submission.Work.StabilityFar.Decay.decay_aux
-import Submission.Work.StabilityFar.Decay.kf_hasFDerivAt
+import Submission.Work.StabilityFar.Decay.norm_kDerivCLM_sub_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

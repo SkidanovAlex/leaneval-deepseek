@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.MixedSlotMoment
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.Pieces.cutCoeff_omegaInd
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.Pieces.cutCoeff_thShrink
-import Submission.Work.FTS.PhiStar.Honesty.CptApp.Est.Pieces.err_expansion
+import Submission.Work.FTS.PhiStar.Honesty.CptApp.EstCrux
+import Submission.Work.FTS.PhiStar.Honesty.CptApp.lamDzDeriv
+import Submission.Work.FTS.StrongEps.LocUnif.mixed_rect_L2_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

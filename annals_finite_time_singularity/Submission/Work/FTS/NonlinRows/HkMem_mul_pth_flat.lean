@@ -1,51 +1,186 @@
-/-
-# `ℋ⁴`-membership of `f · ∂_θ g` for a *flat* coefficient `f`
-
-Let `f` be `C^∞` on the open quadrant `(0,∞) × (0,π/2)` and suppose that all its mixed
-`D`-derivatives of total order `≤ 4` are bounded by `K · sin(2θ)` on the open quadrant
-(`hflat`), and let `g` be a Galerkin-class datum (`Work.FTS.Nonlin.GalClass α g`, hence
-`g ∈ ℋ⁶`, `SmoothQuad g`).  Then
-
-`Work.Spaces.HkMem α 4 (fun z θ => f z θ * Work.Spaces.pth g z θ)`,
-
-i.e. the product of the flat coefficient by the angular derivative of `g` is in the weighted
-space `ℋ⁴`.
-
-The point of the flatness hypothesis is that it supplies exactly one factor `sin(2θ)` per
-`f`-derivative, which cancels the `1/sin(2θ)` hidden in `∂_θ = D_θ / sin(2θ)`; the resulting
-slots are all summands of `HkIntegrand α 6 g`.
-
-The proof is by the pointwise majorant `HkIntegrand α 4 (f·∂_θ g) ≤ C·K²·HkIntegrand α 6 g`
-on the open quadrant (the boundary of the quadrant is harmless: the integrand carries the
-weight `w z = 0` at `z = 0` and `sin(2θ)^(-·) = 0` at `θ = 0, π/2`), assembled from
-
-* the pure `D_z`-slots (`pure_slot_mul_pth_le`),
-* the mixed slots (`mixed_slot_mul_pth_le`), which consume
-* the triangular estimate `sin(2θ)·D_z^cD_θ^r(∂_θ G)` is dominated by `Σ_{m≤r+1}|D_z^cD_θ^m G|`
-  (`sin_mul_mixed_pth_le`),
-
-and then the majorant criterion `Work.FTS.LocData.HkMem_of_majorant`.
--/
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.Nonlinear.Defs
-import Submission.Work.FTS.Vocab
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Mathlib.Order.Filter.Defs
 import Submission.Work.FTS.H2.STFacts
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
-import Submission.Work.FTS.TransportS.flat_mixed_le
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
 import Submission.Work.FTS.NonlinRows.pure_slot_mul_pth_le
-import Submission.Work.FTS.NonlinRows.mixed_slot_mul_pth_le
-import Submission.Work.FTS.NonlinRows.sin_mul_mixed_pth_le
+import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_Dz
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongPersist.L3Aux.ZmulBound
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS.TransportS.sup_dz_le_hk
+import Submission.Work.FTS.Vocab
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_EllLimOK.Pinning.integrableOn_sq_rpow_of_HkMem
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.IPGen.ip4SlotDomGen =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.IPGen
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.TransportS
+
+set_option autoImplicit false
+
+/-! ## One step of the recursion, with bounded coefficients -/
+
+/-- **One step of the coercive recursion at a fixed level.**  If `IP` is dominated at level `n`
+by `K · SlotSum α n` on the open-quadrant smooth class, and the two step coefficients are
+dominated by a single constant `C ≥ 1`, then `HkIPStep c₁ c₂ IP` is dominated at level `n + 1`
+by `3 C K · SlotSum α (n+1)`: the `D_θ`- and `D_z`-shifts are each dominated by the level
+`n + 1` slot sum (`SlotSum_dth_le`, `SlotSum_dz_le`), and the unsplit term by the level-`n`
+one (`SlotSum_mono`). -/
+theorem HkIPStep_slot_bound {c₁ c₂ C K : ℝ} (hC : 1 ≤ C) (hc₁ : |c₁| ≤ C) (hc₂ : |c₂| ≤ C)
+    (hK : 0 ≤ K) {α : ℝ} {n : ℕ} {IP : Fn → Fn → ℝ}
+    (hIP : ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u →
+      Work.FTS.EllipticEst.SmoothOpen v → |IP u v| ≤ K * SlotSum α n u v) :
+    ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u → Work.FTS.EllipticEst.SmoothOpen v →
+      |Work.Coercivity.HkIPStep c₁ c₂ IP u v|
+        ≤ 3 * C * K * SlotSum α (n + 1) u v := by
+  intro u v hu hv
+  have hC0 : 0 ≤ C := le_trans zero_le_one hC
+  have h0 := hIP u v hu hv
+  have h1 := hIP (Work.Spaces.Dth u) (Work.Spaces.Dth v) hu.Dth hv.Dth
+  have h2 := hIP (Work.Spaces.Dz u) (Work.Spaces.Dz v) hu.Dz hv.Dz
+  have hT : 0 ≤ SlotSum α (n + 1) u v := SlotSum_nonneg α (n + 1) u v
+  have hd := SlotSum_dth_le α n hu hv
+  have hz := SlotSum_dz_le α n hu hv
+  have hm := SlotSum_mono (α := α) (u := u) (v := v) (n := n) (m := n + 1) (by omega)
+  -- the triangle inequality for the three terms of `HkIPStep`
+  have htri : |IP u v + c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v)
+        + c₂ * IP (Work.Spaces.Dz u) (Work.Spaces.Dz v)|
+      ≤ |IP u v| + |c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v)|
+        + |c₂ * IP (Work.Spaces.Dz u) (Work.Spaces.Dz v)| := by
+    have h := abs_add_le (IP u v + c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v))
+      (c₂ * IP (Work.Spaces.Dz u) (Work.Spaces.Dz v))
+    have h' := abs_add_le (IP u v) (c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v))
+    linarith
+  have hb1 : |c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v)|
+      ≤ C * (K * SlotSum α n (Work.Spaces.Dth u) (Work.Spaces.Dth v)) := by
+    rw [abs_mul]
+    exact mul_le_mul hc₁ h1 (abs_nonneg _) hC0
+  have hb2 : |c₂ * IP (Work.Spaces.Dz u) (Work.Spaces.Dz v)|
+      ≤ C * (K * SlotSum α n (Work.Spaces.Dz u) (Work.Spaces.Dz v)) := by
+    rw [abs_mul]
+    exact mul_le_mul hc₂ h2 (abs_nonneg _) hC0
+  -- the three slot sums at level `n` are dominated by the ones at level `n + 1`
+  have hS0 : K * SlotSum α n u v ≤ C * (K * SlotSum α (n + 1) u v) := by
+    have ha : K * SlotSum α n u v ≤ K * SlotSum α (n + 1) u v :=
+      mul_le_mul_of_nonneg_left hm hK
+    have hb : K * SlotSum α (n + 1) u v ≤ C * (K * SlotSum α (n + 1) u v) :=
+      le_mul_of_one_le_left (mul_nonneg hK hT) hC
+    linarith
+  have hS1 : C * (K * SlotSum α n (Work.Spaces.Dth u) (Work.Spaces.Dth v))
+      ≤ C * (K * SlotSum α (n + 1) u v) :=
+    mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hd hK) hC0
+  have hS2 : C * (K * SlotSum α n (Work.Spaces.Dz u) (Work.Spaces.Dz v))
+      ≤ C * (K * SlotSum α (n + 1) u v) :=
+    mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hz hK) hC0
+  have hfin : 3 * C * K * SlotSum α (n + 1) u v
+      = 3 * (C * (K * SlotSum α (n + 1) u v)) := by ring
+  rw [hfin]
+  have hexp : Work.Coercivity.HkIPStep c₁ c₂ IP u v
+      = IP u v + c₁ * IP (Work.Spaces.Dth u) (Work.Spaces.Dth v)
+        + c₂ * IP (Work.Spaces.Dz u) (Work.Spaces.Dz v) := rfl
+  rw [hexp]
+  linarith [htri, h0, hb1, hb2, hS0, hS1, hS2]
+
+/-! ## The slot domination of `IP4` with arbitrary nonnegative step coefficients -/
+
+/-- **The slot domination of the concrete `IP4` with *general* step coefficients.**  For
+nonnegative coefficients the constant `CoefMax c₁ … c₂'' = max 1 (max c₁ (… (max c₁'' c₂'')))`
+dominates all six of them, so three applications of `HkIPStep_slot_bound` starting from
+`H1IP α` produce the bound `CoefMax³ · 3³ · 10^22 · leafSum α u v`.
+
+This is the coefficient-free form of `ip4SlotDomFixed` (which covers only the unit coefficients
+of `CoercivityStep.IP4`). -/
+theorem ip4SlotDomGen {c₁ c₂ c₁' c₂' c₁'' c₂'' : ℝ} (h₁ : 0 ≤ c₁) (h₂ : 0 ≤ c₂)
+    (h₁' : 0 ≤ c₁') (h₂' : 0 ≤ c₂') (h₁'' : 0 ≤ c₁'') (h₂'' : 0 ≤ c₂'') :
+    Work.FTS.TransportS.SlotDomIP 1
+      (max 1 (max c₁ (max c₂ (max c₁' (max c₂' (max c₁'' c₂''))))) ^ 3 * 3 ^ 3 * 10 ^ 22)
+      (Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'') := by
+  change Work.FTS.TransportS.SlotDomIP 1
+    (CoefMax c₁ c₂ c₁' c₂' c₁'' c₂'' ^ 3 * 3 ^ 3 * 10 ^ 22)
+    (Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'')
+  set C := CoefMax c₁ c₂ c₁' c₂' c₁'' c₂'' with hCdef
+  have hC1 : (1 : ℝ) ≤ C := by rw [hCdef]; exact one_le_coefMax c₁ c₂ c₁' c₂' c₁'' c₂''
+  have hc₁ : |c₁| ≤ C := by rw [abs_of_nonneg h₁, hCdef]; exact le_coefMax₁
+  have hc₂ : |c₂| ≤ C := by rw [abs_of_nonneg h₂, hCdef]; exact le_coefMax₂
+  have hc₁' : |c₁'| ≤ C := by rw [abs_of_nonneg h₁', hCdef]; exact le_coefMax₁'
+  have hc₂' : |c₂'| ≤ C := by rw [abs_of_nonneg h₂', hCdef]; exact le_coefMax₂'
+  have hc₁'' : |c₁''| ≤ C := by rw [abs_of_nonneg h₁'', hCdef]; exact le_coefMax₁''
+  have hc₂'' : |c₂''| ≤ C := by rw [abs_of_nonneg h₂'', hCdef]; exact le_coefMax₂''
+  refine ⟨?_, ?_⟩
+  · have hCpos : 0 < C := lt_of_lt_of_le one_pos hC1
+    positivity
+  · intro α hα u v hu hv
+    -- the level-`1` base: `H1IP α` is dominated by `10^22 · SlotSum α 1`
+    have hIP0 : ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u →
+        Work.FTS.EllipticEst.SmoothOpen v →
+        |Work.Coercivity.H1IP α u v| ≤ (10 : ℝ) ^ 22 * SlotSum α 1 u v :=
+      fun u v _ _ => H1IP_le_SlotSum_one α u v
+    -- step 1: level `2`, constant `3 C 10^22`
+    have hIP1 : ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u →
+        Work.FTS.EllipticEst.SmoothOpen v →
+        |IPnG c₁ c₂ α 1 u v| ≤ (3 * C * (10 : ℝ) ^ 22) * SlotSum α 2 u v :=
+      fun u v hu hv =>
+        HkIPStep_slot_bound (c₁ := c₁) (c₂ := c₂) (C := C) (K := (10 : ℝ) ^ 22)
+          hC1 hc₁ hc₂ (by norm_num) (α := α) (n := 1) (IP := Work.Coercivity.H1IP α)
+          hIP0 u v hu hv
+    -- step 2: level `3`, constant `3 C (3 C 10^22)`
+    have hIP2 : ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u →
+        Work.FTS.EllipticEst.SmoothOpen v →
+        |Work.Coercivity.HkIPStep c₁' c₂' (IPnG c₁ c₂ α 1) u v|
+          ≤ (3 * C * (3 * C * (10 : ℝ) ^ 22)) * SlotSum α 3 u v :=
+      fun u v hu hv =>
+        HkIPStep_slot_bound (c₁ := c₁') (c₂ := c₂') (C := C)
+          (K := 3 * C * (10 : ℝ) ^ 22) hC1 hc₁' hc₂'
+          (mul_nonneg (mul_nonneg (by norm_num) (le_trans zero_le_one hC1)) (by norm_num))
+          (α := α) (n := 2) (IP := IPnG c₁ c₂ α 1) hIP1 u v hu hv
+    -- step 3: level `4`, constant `3 C (3 C (3 C 10^22))`
+    have hIP3 : ∀ u v : Fn, Work.FTS.EllipticEst.SmoothOpen u →
+        Work.FTS.EllipticEst.SmoothOpen v →
+        |Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'' α u v|
+          ≤ (3 * C * (3 * C * (3 * C * (10 : ℝ) ^ 22))) * SlotSum α 4 u v :=
+      fun u v hu hv =>
+        HkIPStep_slot_bound (c₁ := c₁'') (c₂ := c₂'') (C := C)
+          (K := 3 * C * (3 * C * (10 : ℝ) ^ 22)) hC1 hc₁'' hc₂''
+          (mul_nonneg (mul_nonneg (by norm_num) (le_trans zero_le_one hC1))
+            (mul_nonneg (mul_nonneg (by norm_num) (le_trans zero_le_one hC1)) (by norm_num)))
+          (α := α) (n := 3)
+          (IP := Work.Coercivity.HkIPStep c₁' c₂' (IPnG c₁ c₂ α 1)) hIP2 u v hu hv
+    have h3 := hIP3 u v hu hv
+    calc |Work.FTS.CoercivityFix.Assembly.IP4 c₁ c₂ c₁' c₂' c₁'' c₂'' α u v|
+        ≤ (3 * C * (3 * C * (3 * C * (10 : ℝ) ^ 22))) * SlotSum α 4 u v := h3
+      _ = C ^ 3 * 3 ^ 3 * 10 ^ 22 * Work.FTS.TransportS.leafSum α u v := by
+          rw [leafSum_eq_SlotSum_four]; ring
+
+end Work.FTS.IPGen
+end
+end
+-- ===== merged: Submission.Work.FTS.NonlinRows.HkMem_mul_pth_flat =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -65,172 +200,11 @@ set_option maxHeartbeats 1600000
 
 /-! ## Auxiliary facts -/
 
-/-- `SmoothOpen` is preserved by `f ↦ f · ∂_θ g` (`Work.Spaces.pth g` is smooth on the open
-quadrant whenever `g` is). -/
-theorem smoothOpen_mul_pth {f g : ℝ → ℝ → ℝ} (hf : Work.FTS.EllipticEst.SmoothOpen f)
-    (hg : Work.FTS.EllipticEst.SmoothOpen g) :
-    Work.FTS.EllipticEst.SmoothOpen (fun z θ => f z θ * Work.Spaces.pth g z θ) := by
-  show ContDiffOn ℝ Work.Stability.smoothOrder
-    (Function.uncurry (fun z θ => f z θ * Work.Spaces.pth g z θ)) Work.FTS.EllipticEst.Q0
-  have h1 : Function.uncurry (fun z θ => f z θ * Work.Spaces.pth g z θ)
-      = Function.uncurry f * Function.uncurry (Work.Spaces.pth g) := rfl
-  rw [h1]
-  exact hf.mul hg.pth
 
-/-- The `ℋ^k`-integrand vanishes at the angular endpoints `θ = 0, π/2` (every term carries a
-weight `sin(2θ)^(-c)` with `c ≠ 0`). -/
-theorem HkIntegrand_sin_two_eq_zero {α : ℝ} (hα : 0 < α) {k : ℕ} {F : ℝ → ℝ → ℝ} {z θ : ℝ}
-    (h : Real.sin (2 * θ) = 0) : Work.Spaces.HkIntegrand α k F z θ = 0 :=
-  Work.Construction.HkIntegrand_eq_zero_of_sin_two_eq_zero hα h
 
 /-! ## The target -/
 
-theorem HkMem_mul_pth_flat {α : ℝ} {f g : Work.FTS.Galerkin.Fn}
-    (hα : 0 < α) (hα1 : α ≤ 1)
-    (hf : Work.FTS.EllipticEst.SmoothOpen f)
-    (hflat : ∃ K : ℝ, 0 < K ∧ ∀ z : ℝ, 0 < z → ∀ θ ∈ Set.Ioo 0 (π / 2),
-      ∀ b a : ℕ, a + b ≤ 4 → |Work.Spaces.mixed b a f z θ| ≤ K * Real.sin (2 * θ))
-    (hg : Work.FTS.Nonlin.GalClass α g) :
-    Work.Spaces.HkMem α 4 (fun z θ => f z θ * Work.Spaces.pth g z θ) := by
-  classical
-  obtain ⟨K, hKpos, hflatK⟩ := hflat
-  have hgSO : Work.FTS.EllipticEst.SmoothOpen g :=
-    Work.FTS.OpenPkg.smoothOpen_of_smoothQuad hg.reg.1
-  have hgmem : Work.Spaces.HkMem α 6 g := hg.reg.2.1
-  have hhSO : Work.FTS.EllipticEst.SmoothOpen (fun z θ => f z θ * Work.Spaces.pth g z θ) :=
-    smoothOpen_mul_pth hf hgSO
-  obtain ⟨CB, hCBpos, hB⟩ := pure_slot_mul_pth_le
-  obtain ⟨CM, hCMpos, hM⟩ := mixed_slot_mul_pth_le
-  -- a single constant dominating all the angular shifts with `r ≤ 4`
-  obtain ⟨C0, hC0pos, hC0⟩ := sin_mul_mixed_pth_le 0 (by norm_num)
-  obtain ⟨C1, hC1pos, hC1⟩ := sin_mul_mixed_pth_le 1 (by norm_num)
-  obtain ⟨C2, hC2pos, hC2⟩ := sin_mul_mixed_pth_le 2 (by norm_num)
-  obtain ⟨C3, hC3pos, hC3⟩ := sin_mul_mixed_pth_le 3 (by norm_num)
-  obtain ⟨C4, hC4pos, hC4⟩ := sin_mul_mixed_pth_le 4 (by norm_num)
-  set Psi : ℝ := max (max (max C0 C1) (max C2 C3)) C4 with hPsid
-  have hPsi0 : C0 ≤ Psi := by
-    rw [hPsid]
-    have h1 := le_max_left C0 C1
-    have h2 := le_max_left (max C0 C1) (max C2 C3)
-    have h3 := le_max_left (max (max C0 C1) (max C2 C3)) C4
-    linarith
-  have hPsi1 : C1 ≤ Psi := by
-    rw [hPsid]
-    have h1 := le_max_right C0 C1
-    have h2 := le_max_left (max C0 C1) (max C2 C3)
-    have h3 := le_max_left (max (max C0 C1) (max C2 C3)) C4
-    linarith
-  have hPsi2 : C2 ≤ Psi := by
-    rw [hPsid]
-    have h1 := le_max_left C2 C3
-    have h2 := le_max_right (max C0 C1) (max C2 C3)
-    have h3 := le_max_left (max (max C0 C1) (max C2 C3)) C4
-    linarith
-  have hPsi3 : C3 ≤ Psi := by
-    rw [hPsid]
-    have h1 := le_max_right C2 C3
-    have h2 := le_max_right (max C0 C1) (max C2 C3)
-    have h3 := le_max_left (max (max C0 C1) (max C2 C3)) C4
-    linarith
-  have hPsi4 : C4 ≤ Psi := by
-    rw [hPsid]
-    exact le_max_right _ _
-  have hPsipos : 0 < Psi := lt_of_lt_of_le hC0pos hPsi0
-  have hPsi : ∀ (c r : ℕ), r ≤ 4 → ∀ (z : ℝ) (θ : ℝ), 0 < z →
-      θ ∈ Set.Ioo 0 (Real.pi / 2) →
-      |Real.sin (2 * θ) * Work.Spaces.mixed c r (Work.Spaces.pth g) z θ|
-        ≤ Psi * ∑ m ∈ Finset.Icc 1 (r + 1), |Work.Spaces.mixed c m g z θ| := by
-    intro c r hr z θ hz hθ
-    have hsum : 0 ≤ ∑ m ∈ Finset.Icc 1 (r + 1), |Work.Spaces.mixed c m g z θ| :=
-      Finset.sum_nonneg fun m _ => abs_nonneg _
-    rcases (by omega : r = 0 ∨ r = 1 ∨ r = 2 ∨ r = 3 ∨ r = 4) with h | h | h | h | h <;>
-      subst h
-    · exact le_trans (hC0 g hgSO c z θ hz hθ) (mul_le_mul_of_nonneg_right hPsi0 hsum)
-    · exact le_trans (hC1 g hgSO c z θ hz hθ) (mul_le_mul_of_nonneg_right hPsi1 hsum)
-    · exact le_trans (hC2 g hgSO c z θ hz hθ) (mul_le_mul_of_nonneg_right hPsi2 hsum)
-    · exact le_trans (hC3 g hgSO c z θ hz hθ) (mul_le_mul_of_nonneg_right hPsi3 hsum)
-    · exact le_trans (hC4 g hgSO c z θ hz hθ) (mul_le_mul_of_nonneg_right hPsi4 hsum)
-  -- the two families of slots
-  set Ctot : ℝ := 5 * CB + 25 * CM * (max Psi 1) ^ 2 with hCtotd
-  have hCtotpos : 0 < Ctot := by
-    rw [hCtotd]
-    have h1 := sq_nonneg (max Psi 1)
-    nlinarith [hCBpos, hCMpos, hPsipos]
-  have hkey : ∀ (z θ : ℝ), 0 < z → θ ∈ Set.Ioo 0 (Real.pi / 2) →
-      Work.Spaces.HkIntegrand α 4 (fun z θ => f z θ * Work.Spaces.pth g z θ) z θ
-        ≤ Ctot * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ := by
-    intro z θ hz hθ
-    have hHknn : 0 ≤ Work.Spaces.HkIntegrand α 6 g z θ :=
-      Work.Spaces.HkIntegrand_nonneg α 6 g z θ
-    have hbnd : 0 ≤ CM * (max Psi 1) ^ 2 * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ :=
-      mul_nonneg (mul_nonneg (mul_nonneg hCMpos.le (sq_nonneg _)) (sq_nonneg K)) hHknn
-    have hZ : (∑ i ∈ Finset.range (4 + 1),
-          (Work.Spaces.DzIter i (fun z θ => f z θ * Work.Spaces.pth g z θ) z θ
-            * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) ^ 2)
-        ≤ 5 * (CB * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-      calc (∑ i ∈ Finset.range (4 + 1),
-            (Work.Spaces.DzIter i (fun z θ => f z θ * Work.Spaces.pth g z θ) z θ
-              * (Work.Spaces.w z / Real.sin (2 * θ) ^ (Work.Spaces.eta / 2))) ^ 2)
-          ≤ ∑ _i ∈ Finset.range (4 + 1),
-              (CB * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-            refine Finset.sum_le_sum fun i hi => ?_
-            exact hB α hα f g hf hgSO K hKpos hflatK i
-              (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) z θ hz hθ
-        _ = 5 * (CB * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-            rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
-            norm_num
-    have hX : (∑ i ∈ Finset.range (4 + 1), ∑ j ∈ Finset.range (4 + 1),
-          (if 1 ≤ i ∧ i + j ≤ 4 then
-            (Work.Spaces.mixed j i (fun z θ => f z θ * Work.Spaces.pth g z θ) z θ
-              * Work.Spaces.Wt α z θ) ^ 2 else 0))
-        ≤ 25 * (CM * (max Psi 1) ^ 2 * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-      calc (∑ i ∈ Finset.range (4 + 1), ∑ j ∈ Finset.range (4 + 1),
-            (if 1 ≤ i ∧ i + j ≤ 4 then
-              (Work.Spaces.mixed j i (fun z θ => f z θ * Work.Spaces.pth g z θ) z θ
-                * Work.Spaces.Wt α z θ) ^ 2 else 0))
-          ≤ ∑ _i ∈ Finset.range (4 + 1), ∑ _j ∈ Finset.range (4 + 1),
-              (CM * (max Psi 1) ^ 2 * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-            refine Finset.sum_le_sum fun i hi => Finset.sum_le_sum fun j hj => ?_
-            by_cases hc : 1 ≤ i ∧ i + j ≤ 4
-            · rw [if_pos hc]
-              exact hM α hα f g hf hgSO K hKpos hflatK Psi hPsipos hPsi j i hc.1 hc.2
-                z θ hz hθ
-            · rw [if_neg hc]
-              exact hbnd
-        _ = 25 * (CM * (max Psi 1) ^ 2 * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ) := by
-            rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, Finset.sum_const,
-              Finset.card_range, nsmul_eq_mul]
-            push_cast
-            ring
-    rw [Work.Spaces.HkIntegrand]
-    refine le_trans (add_le_add hZ hX) (le_of_eq ?_)
-    rw [hCtotd]
-    ring
-  refine Work.FTS.LocData.HkMem_of_majorant α 4
-    (f := fun z θ => f z θ * Work.Spaces.pth g z θ)
-    (M := fun z θ => Ctot * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ)
-    (hhSO.continuousOn_HkIntegrand α 4) ?_ ?_ ?_
-  · intro z hz
-    exact (hgmem.1 z hz).const_mul (Ctot * K ^ 2)
-  · have h := hgmem.2.const_mul (Ctot * K ^ 2)
-    have hfun : (fun z => ∫ θ in Work.Spaces.Iθ,
-          Ctot * K ^ 2 * Work.Spaces.HkIntegrand α 6 g z θ)
-        = fun z => Ctot * K ^ 2 * ∫ θ in Work.Spaces.Iθ,
-            Work.Spaces.HkIntegrand α 6 g z θ := by
-      funext z
-      rw [MeasureTheory.integral_const_mul]
-    rw [hfun]
-    exact h
-  · intro z hz θ hθ
-    rcases eq_or_lt_of_le (show (0 : ℝ) ≤ z from hz) with hz0 | hzpos
-    · subst hz0
-      rw [Work.Spaces.HkIntegrand_zero_z]
-      exact mul_nonneg (mul_nonneg hCtotpos.le (sq_nonneg K))
-        (Work.Spaces.HkIntegrand_nonneg α 6 g 0 θ)
-    · by_cases hθi : θ ∈ Set.Ioo 0 (Real.pi / 2)
-      · exact hkey z θ hzpos hθi
-      · rw [HkIntegrand_sin_two_eq_zero hα (Work.Spaces.sin_two_eq_zero_of_not_Ioo hθ hθi)]
-        exact mul_nonneg (mul_nonneg hCtotpos.le (sq_nonneg K))
-          (Work.Spaces.HkIntegrand_nonneg α 6 g z θ)
 
 end Work.FTS.NonlinRows
+end
+end

@@ -2,11 +2,11 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.IntervalCases
-import Submission.Work.Spaces.Gamma_WlInf
-import Submission.Work.Construction.L12_Fstar_eq
-import Submission.Work.FTS.Nonlinear.FstarPkg.c2mInv_radial
-import Submission.Work.FTS.Nonlinear.FstarPkg.dthU_c2m_bound
-import Submission.Work.FTS.Nonlinear.FstarPkg.sinWeight_le_one
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

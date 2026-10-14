@@ -1,38 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The pointwise slice bound `σ cos θ (v''² + v'²) ≤ C·(weighted norms)`
-
-Target: `Work.FTS.EllipticEst.remov.slice_bd_ptwise`.
-
-With `v = u / cos θ` on the slice, `σ = sin(2θ)^{2-γ}` (`1 ≤ γ ≤ 3/2`), `Lzero1 u = g` and
-`Iθ = [0, π/2]`, the bound
-
-  `σ θ · cos θ · (v''(θ)² + v'(θ)²) ≤ C (∫(g')²σ + ∫(u'')²sEta + ∫(u')² + ∫u² + ∫g²σ)`
-
-is proved for `θ ∈ [π/4, π/2]`.  This is the *boundary-term control* of Elgindi's `§H2` Step 5
-in the one-dimensional slice form: the weight `σ cos θ` vanishes at the endpoint `π/2`, and the
-pointwise values of `v'` and `v''` there are controlled by the weighted `L²` data.
-
-## Structure of the argument
-
-The two auxiliary quantities
-
-* `Ψ₁ := cos³θ · v'`,
-* `Ψ₂ := cos⁴θ · v''`
-
-satisfy (on `(0,π/2)`)
-
-* `(Ψ₁)' = -(4u+g)·cos²θ`,
-* `(Ψ₂)' = -cos³θ·g' - cos⁴θ·v' + 4 sinθcos³θ·v`.
-
-The point of the normalisation by `cos³`, resp. `cos⁴`, is that `Ψ₁` (resp. `Ψ₂`) has a finite
-*vanishing* limit at `π/2`: the pointwise values of `Ψ₁` and `Ψ₂` at `θ` are bounded by the
-tail integrals of their derivatives (see `abs_le_tail_integral_of_primitive` and
-`abs_le_tail_integral_of_double_primitive`), which are controlled by the weighted data via
-Cauchy–Schwarz against `σ`, the elementary weight bounds of `slice_bd_weights` and the
-pointwise bounds `|u'| ≲ √(∫(u'')²sEta) + √(∫(u')²)`, `|u| ≤ (π/2-θ)|u'|`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -40,17 +5,14 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.cs_integral
-import Submission.Work.FTS.EllipticEst.remov.cosBarIdents
-import Submission.Work.FTS.EllipticEst.remov.slice_v_identities
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
-import Submission.Work.FTS.EllipticEst.remov.slice_gprime_v_ident
-import Submission.Work.FTS.EllipticEst.remov.abs_le_tail_of_bounded_double_primitive
-import Submission.Work.FTS.EllipticEst.remov.slice_bd_sup_bounds
-import Submission.Work.FTS.EllipticEst.remov.slice_bd_tail_g
-import Submission.Work.FTS.EllipticEst.remov.slice_bd_tail_gprime
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -71,14 +33,14 @@ set_option maxHeartbeats 1000000
 /-! ### Elementary facts on the open slice -/
 
 /-- `cos` is positive on the open slice. -/
-private lemma cos_pos_of_mem_Ioo {θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
+private lemma cos_pos_of_mem_Ioo_prv {θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
     0 < Real.cos θ :=
   Real.cos_pos_of_mem_Ioo ⟨by linarith [hθ.1, Real.pi_pos], hθ.2⟩
 
 /-- `cos` does not vanish on the open slice. -/
 private lemma cos_ne_of_mem_Ioo {θ : ℝ} (hθ : θ ∈ Set.Ioo 0 (Real.pi / 2)) :
     Real.cos θ ≠ 0 :=
-  ne_of_gt (cos_pos_of_mem_Ioo hθ)
+  ne_of_gt (cos_pos_of_mem_Ioo_prv hθ)
 
 /-- `v = u/cos θ` is `C³` on the open slice. -/
 private lemma slice_contDiffOn (u : ℝ → ℝ) (hu : ContDiffOn ℝ 3 u (Set.Ioo 0 (Real.pi / 2))) :
@@ -188,11 +150,6 @@ private lemma sigma_nonneg (γ : ℝ) {θ : ℝ} (h0 : 0 ≤ θ) (h2 : θ ≤ Re
     0 ≤ Real.rpow (Real.sin (2 * θ)) (2 - γ) :=
   Real.rpow_nonneg (sin_two_nonneg h0 h2) _
 
-/-- The restriction to `Ioc a b` is the restriction to `Ioo a b` (they differ by a point). -/
-private lemma restrict_Ioc_eq_restrict_Ioo (a b : ℝ) :
-    MeasureTheory.volume.restrict (Set.Ioc a b) = MeasureTheory.volume.restrict (Set.Ioo a b) :=
-  MeasureTheory.Measure.restrict_congr_set
-    (MeasureTheory.Ioo_ae_eq_Ioc (a := a) (b := b)).symm
 
 /-- A function bounded on a finite-measure set is integrable there. -/
 private lemma integrableOn_of_bound {s : Set ℝ} (hsm : MeasurableSet s)
@@ -248,14 +205,6 @@ private lemma setIntegral_Ioo_const {a b c : ℝ} (hab : a ≤ b) :
     Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith)]
   ring
 
-/-- A pointwise bound on `Ioc a b` gives an integral bound. -/
-private lemma setIntegral_Ioc_le_of_le {a b M : ℝ} (hab : a ≤ b) {f : ℝ → ℝ}
-    (hf : MeasureTheory.IntegrableOn f (Set.Ioc a b))
-    (hg : MeasureTheory.IntegrableOn (fun _ : ℝ => M) (Set.Ioc a b))
-    (h : ∀ t ∈ Set.Ioc a b, f t ≤ M) :
-    ∫ t in Set.Ioc a b, f t ≤ M * (b - a) := by
-  have h1 := MeasureTheory.setIntegral_mono_on hf hg measurableSet_Ioc h
-  rwa [setIntegral_Ioc_const hab] at h1
 
 /-! ### Tail estimates -/
 
@@ -2268,7 +2217,7 @@ theorem sliceBdPtwiseUniform :
     set Kq : ℝ := Cs * (Real.sqrt B2 + Real.sqrt A1) with hKqdef
     have hεpos' : 0 < ε := by rw [hεdef]; exact hεpos
     have hKqnn' : 0 ≤ Kq := by rw [hKqdef]; exact hKqnn
-    have hcospos : 0 < Real.cos θ := cos_pos_of_mem_Ioo ⟨by linarith [hθ.1, Real.pi_pos], hlt⟩
+    have hcospos : 0 < Real.cos θ := cos_pos_of_mem_Ioo_prv ⟨by linarith [hθ.1, Real.pi_pos], hlt⟩
     have hcosne : Real.cos θ ≠ 0 := ne_of_gt hcospos
     -- rewrite `v'` and `v''` through `Ψ₁`, `Ψ₂`
     have hv1 : deriv (fun t => u t / Real.cos t) θ

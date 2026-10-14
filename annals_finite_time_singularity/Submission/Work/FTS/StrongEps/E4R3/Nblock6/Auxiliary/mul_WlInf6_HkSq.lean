@@ -1,55 +1,87 @@
-/-
-# Buildable copy of `Work.FTS.StrongEps.E4R3.Nblock6.aux.mul_WlInf6_HkSq`
-
-The assigned file lives at
-`Submission/Work/FTS/StrongEps/E4R3/Nblock6/aux/mul_WlInf6_HkSq.lean`, whose module name
-`Submission.Work.FTS.StrongEps.E4R3.Nblock6.aux.mul_WlInf6_HkSq` contains the component `aux`,
-a file name reserved on some operating systems (`CON`, `PRN`, **`AUX`**, `NUL`, …).  Lean 4.34
-rejects such module names in `Lean.checkModuleNamePortability`, *before* elaboration, so that
-module can never be built from sources and nothing can `import` it
-(`lake build Submission.Work.FTS.StrongEps.E4R3.Nblock6.aux.mul_WlInf6_HkSq` fails with
-`'aux' is a reserved file name on some operating systems`).
-
-This file is the rehomed copy: it lives under `Nblock6/Auxiliary/`, so its module name is
-portable and it can be built and imported, while declaring **the same** theorem name
-`Work.FTS.StrongEps.E4R3.Nblock6.aux.mul_WlInf6_HkSq` (the namespace is unchanged).  Import
-this module, not the `aux/` one.  The mathematical content is identical to the assigned file
-(the four lines of imports and the body are the same).
-
-## `mul_WlInf6_HkSq` — the `𝒲^{6,∞}`-priced product rule, in `HkSq` form
-
-`Submission/Work/FTS/StrongPersist/H6Rows/Npair6SupAux/hknorm_mul_of_WlInf6_cd6.lean` proves
-the product rule for a `C^∞` coefficient `f` on the open quadrant which is of class `𝒲^{6,∞}`:
-
-  `HkMem α 6 (f·g) ∧ |f·g|_{ℋ⁶} ≤ C α^{-1/2} |f|_{𝒲^{6,∞}} · |g|_{ℋ⁶}`.
-
-The consumers of the level-six rows price things by the *square* `HkSq` of the `ℋ⁶`-norm
-(rather than by the norm itself), and they only know a bound `|Y|_{𝒲^{6,∞}} ≤ CY·α` for the
-coefficient.  This file provides that shape:
-
-  `HkSq α 6 (Y·w) ≤ C · CY² · α · HkSq α 6 w`
-
-for `α ∈ (0,1]`, `Y` smooth on the open quadrant and of class `𝒲^{6,∞}`, `w` smooth on the
-open quadrant and of class `ℋ⁶`, and `CY ≥ 0` with `|Y|_{𝒲^{6,∞}} ≤ CY·α`.  The constant is
-the square of the constant of `hknorm_mul_aux6` (hence universal, and explicitly
-`(7 Cz + 49 Cm)·42701` in terms of the slot constants); the `α`-powers are
-`(α^{-1/2})² = α^{-1}` and `α^{-1}·(CY·α)² = CY²·α`.
-
-The price `α^{-1/2}` of the norm form is one of the two reasons for the hypothesis
-`|Y|_{𝒲^{6,∞}} ≤ CY·α`: it cancels against the `𝒲^{6,∞}`-size, leaving the `α`-linear price
-above.  (The other reason is that the raw product rule is only available for `α ≤ 1`; the
-underlying slot lemmas `Cd6.zslot_le_winf6_cd6`, `Cd6.dzIter_w_mean_le6_cd6`,
-`Cd6.mslot_le_winf6_cd6` all carry `0 < α → α ≤ 1 → …` explicitly, so no unspecified
-`α₂`-threshold gets in the way.)
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.hknorm_mul_of_WlInf6_cd6
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS.StrongPersist.H6Aux.R.SlotHigh
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.radialSupMul_cd6
+import Submission.Work.FTS.StrongPersist.N6Trans.LeibMajor.EasyLeib_le_EasyMajor
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.Vocab
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+-- ===== merged: Submission.Work.FTS.CoercivityFix.Transfer.main =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.CoercivityFix.Transfer
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.Nonlin (RegQ CoerAdm UnifIP Xn)
+
+set_option autoImplicit false
+
+
+
+
+end Work.FTS.CoercivityFix.Transfer
+end
+end
+-- ===== merged: Submission.Work.FTS.EpsEngine.limFam_EpsMem =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+open Work.FTS.Galerkin (Fn Fam slice)
+
+namespace Work.FTS.EpsEngine
+
+open Work.FTS.StrongEps
+open Work.FTS.StrongEps.EpsLocalPStar
+
+set_option autoImplicit false
+
+/-- **The metric clause of `hlimP`**: the limit slice of a Picard sequence which stays in the
+weighted `X`-ball of radius `R` is itself in that ball. -/
+theorem limFam_EpsMem {α R δ : ℝ} {F : Fn → Fn} {h₀ : Fn} (hR : 0 ≤ R)
+    (hconv : ∀ τ : ℝ, τ ∈ Set.Icc 0 δ → ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      Filter.Tendsto (fun N : ℕ => slice (iter F h₀ N) τ z θ) Filter.atTop
+        (nhds (slice (limFam F h₀) τ z θ)))
+    (hP : ∀ (n : ℕ) (τ : ℝ), τ ∈ Set.Icc 0 δ →
+      EpsMem α (slice (iter F h₀ n) τ) ∧ EpsSq α (slice (iter F h₀ n) τ) ≤ R) :
+    ∀ τ : ℝ, τ ∈ Set.Icc 0 δ →
+      EpsMem α (slice (limFam F h₀) τ) ∧ EpsSq α (slice (limFam F h₀) τ) ≤ R := by
+  intro τ hτ
+  refine EpsMem_and_EpsSq_le_of_ae_tendsto_mem (α := α) (B := R) hR
+    (A := fun n : ℕ => slice (iter F h₀ n) τ)
+    (Alim := slice (limFam F h₀) τ)
+    (fun n => (hP n τ hτ).1) (fun n => (hP n τ hτ).2) ?_
+  exact ae_of_forall_open (fun z hz θ hθ0 hθ1 => hconv τ hτ z θ hz hθ0 hθ1)
+
+end Work.FTS.EpsEngine
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Nblock6.Auxiliary.mul_WlInf6_HkSq =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -132,3 +164,4 @@ theorem mul_WlInf6_HkSq : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc (0 : ℝ) 1,
         rw [Work.Spaces.HkNorm, Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 6 w)]
 
 end Work.FTS.StrongEps.E4R3.Nblock6.aux
+end

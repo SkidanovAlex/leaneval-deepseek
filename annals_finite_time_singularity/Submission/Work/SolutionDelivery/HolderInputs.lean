@@ -1,20 +1,38 @@
-/-
-# `Work.SolutionDelivery.HolderInputs` — the two time-Hölder constants `H`, `H₁`
-
-`Work.StabilityFar.AssemblyInputs` asks for the time-`α`-Hölder constants of `ω` and `∂ₜω` on the
-support ball — the two inputs of the far-field `α`-Hölder estimate `St4`.  Both are derived here
-from the *single* hypothesis `ConstructedSolution.hωcore` (the core `C^{1,α}` regularity of `ω` on
-`coreRegion (R+1) × extWindow T`):
-
-* `H` from the mean value inequality in `t` (a Lipschitz bound, which for `α ≤ 1` is `α`-Hölder);
-* `H₁` from the `α`-Hölder bound on the derivative, evaluated on the time block `(0,1)`.
--/
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.Basic.ENNReal.Basic
 import Mathlib.LinearAlgebra.Matrix.Defs
+import Mathlib.MeasureTheory.Function.L1Space.Integrable
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.Filter.Defs
 import Submission.Work.SolutionDelivery.Slices
-import Submission.Work.SolutionDelivery.Holder.timeHolderOnBall_of_isContDiffHolderOn
-import Submission.Work.SolutionDelivery.Holder.timeHolderOnBall_timeDeriv_of_isContDiffHolderOn
+import Submission.Work.Stability.holderWith_of_dist_le
+-- ===== merged: Submission.Work.SolutionDelivery.DatumCut.datumData_of_cut =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.SolutionDelivery.DatumCut
+
+open FiniteTimeSingularity MeasureTheory
+
+/-! ## The `C^{0,α}` class of the cut-off datum
+
+`cutDatum L ω = chi(ρ/L) • ω` is supported in the ball of radius `2L`, so although `ω` itself
+need not be bounded (only its derivative is), the cut-off datum is.  Being `C^{1,α}` with
+bounded derivative it is Lipschitz, and a bounded Lipschitz function is `α`-Hölder for `α ≤ 1`
+(`Work.Stability.HolderOfBoundedLipschitz`). -/
+
+
+
+end Work.SolutionDelivery.DatumCut
+end
+-- ===== merged: Submission.Work.SolutionDelivery.HolderInputs =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -35,19 +53,10 @@ namespace ConstructedSolution
 
 variable (C : ConstructedSolution α)
 
-/-- **The time-Hölder constant `H` of `AssemblyInputs`.** -/
-theorem exists_timeHolder (hα1 : (α : ℝ) ≤ 1) :
-    ∃ H : ℝ, 0 ≤ H ∧ Work.StabilityFar.TimeHolderOnBall (α : ℝ) C.ω C.R C.T H :=
-  Holder.timeHolderOnBall_of_isContDiffHolderOn (ρ := C.R + 1) (R := C.R) (T := C.T)
-    (lt_add_one C.R) hα1 C.hωcore
 
-/-- **The time-Hölder constant `H₁` of `AssemblyInputs`.** -/
-theorem exists_timeHolder_timeDeriv :
-    ∃ H₁ : ℝ, 0 ≤ H₁ ∧
-      Work.StabilityFar.TimeHolderOnBall (α : ℝ) (timeDeriv C.ω) C.R C.T H₁ :=
-  Holder.timeHolderOnBall_timeDeriv_of_isContDiffHolderOn (ρ := C.R + 1) (R := C.R) (T := C.T)
-    (lt_add_one C.R) C.hωcore
 
 end ConstructedSolution
 
 end Work.SolutionDelivery
+end
+end

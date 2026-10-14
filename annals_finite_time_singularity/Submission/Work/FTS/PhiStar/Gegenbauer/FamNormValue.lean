@@ -1,7 +1,7 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.PhiStar.Gegenbauer.Defs
-import Submission.Work.FTS.PhiStar.StarDefs
 import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_norm_fts
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongPersist.Vocab
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

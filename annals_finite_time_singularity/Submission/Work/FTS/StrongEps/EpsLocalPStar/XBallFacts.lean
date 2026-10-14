@@ -1,46 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsLocalPStar/XBallFacts.lean`
-
-**The `X = (EpsMem, EpsSq)`-ball interface of the projected `ε`-scheme.**
-
-The two gates of this directory (`EpsRHSPLipX`, `EpsRHSPLipX_Sq`) quantify over an *admissible
-datum* and over the projected-mollified profile
-
-  `W_u := Wp ρ ε u = Pz (Jeps ρ ε u)`.
-
-The older gate `EpsRHSPLipX` assumes the strong `ℋ⁶`-data of the datum (`HkMem α 6 u` and
-`HkNorm α 6 u ≤ B`) and reads off everything it needs about `W_u` from `WpSixBound`.  The
-`X`-gate `EpsRHSPLipX_Sq` assumes instead the *ball* data
-
-  `SmoothOpen u`, `EpsMem α u`, `EpsSq α u ≤ R`, `ClassC α W_u`, `Xn α W_u ≤ C₀ α²`,
-
-which is what the Picard iteration of `EpsLocalPStar` can maintain; the `ℋ`-information about the
-profile must then be manufactured from `HkSq_JepsPz_le` and from the class data.  This module
-collects exactly those manufactured facts, so that the two halves of the `X`-gate reduce to the
-(two) adaptations of `EpsRLX.ConjOne` / `EpsRLX.ConjTwo`:
-
-* `exists_Wp_bound_of_EpsMem` — the *uniform* `ℋᵏ`-size (`k ≤ 6`) of `Wp ρ ε f` from
-  `SmoothOpen f`, `EpsMem α f` and `EpsSq α f ≤ R` (via `HkSq_JepsPz_le`, whose hypotheses are
-  precisely these);
-* `HkMem_Jeps_of_ClassC_Wp` — the *reverse* of `PZeroAux.PzJepsHkMem`: since
-  `Wp ρ ε u = Jeps ρ ε u - (L₁₂(J_ε u)(0)/pzNorm)·bump` and `ClassC` carries `HkMem α 8` of the
-  profile, the *unprojected* mollified datum `Jeps ρ ε u` is again of honest `ℋ⁴`;
-* `Wp_sub_eq_of_ClassC` — **the structural identity** `W_u - W_v = W_{u-v}` in the *weak*
-  setting: `J_ε` is additive on the open quadrant (`Jeps_sub_eq`) and `P₀` is affine as soon as
-  `L₁₂` splits, which `L12_sub_HkMem` gives from the `ℋ⁴`-membership produced by the previous
-  item.  This is the identity that `EpsRLX.Wp_sub_eq` proves under `HkMem α 6` of the two data;
-* `HkSq_Wp_sub_le_of_ClassC` — its consequence: the level-`5` `ℋ`-size of the profile difference
-  is controlled by the `X`-size of the datum difference, with the mollifier cost `(C/ε)^12`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
-import Submission.Work.FTS.StrongEps.PZeroAux.PzJepsHkMem
-import Submission.Work.FTS.StrongEps.EpsSqTools.HkSq_JepsPz_le
+import Submission.Work.FTS.StrongEps.PZeroAux.bumpHkNormBound
+import Submission.Work.FTS_LocDatum3a.Assembly
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

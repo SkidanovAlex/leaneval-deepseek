@@ -1,65 +1,201 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Pointwise bounds on the mixed slots of order `≤ 2` by the `ℋ⁴`-norm
-
-For a datum `f` which is `C^∞` on the open quadrant (`Work.FTS.EllipticEst.SmoothOpen`) and
-honestly in `ℋ⁴` (`Work.Spaces.HkMem α 4 f`), every mixed derivative `D_z^j D_θ^i f` with
-`1 ≤ i`, `i + j ≤ 2` is bounded pointwise on the open quadrant by a universal multiple of
-`Xn α f = |f|_{ℋ⁴}`:
-
-  `|D_z^j D_θ^i f(z,θ)| ≤ C · |f|_{ℋ⁴}`   (`z > 0`, `0 < θ < π/2`),
-
-with a constant `C` independent of `α ∈ (0,1]`, of `f` and of `(z,θ)`.  This is item **(P)**
-of `Submission/Work/FTS/TransportS/NOTES_t2SupF_b2_analysis.md`; it is the `α`-uniform
-pointwise bound that the transport rows consume.
-
-## Route (radial Hardy window at fixed angle + the angular total-variation bound)
-
-Fix the angle `θ ∈ (0,π/2)`, put `h(x) := D_z^jD_θ^i f(x,θ)` and `R := max z 2`.  The window
-form of the radial Hardy inequality (`Work.FTS.TransportS.half_line_window_bound`) says, for
-`z ≤ R`,
-
-  `h(z)² ≤ 2 ∫_z^{2R} (x h'(x) w(x))² dx + (2/R) ∫_R^{2R} h(x)² dx`,
-
-and the identity `x · ∂_x(D_z^jD_θ^i f) = D_z^{j+1}D_θ^i f` makes the first integrand the
-`(j+1,i)` mixed slot weighted by `w`.  Both integrands are then dominated *pointwise in `x`*
-by the angular slice of the `ℋ⁴`-integrand, by the angular total-variation bound
-`Work.FTS.TransportS.T2SupB2.slice_bound`:
-
-  `(D_z^jD_θ^if(x,θ))² w(x)² ≤ 5 ∫_{Iθ} HkIntegrand α 4 f x θ'`     (`1 ≤ i`, `i+j+1 ≤ 4`),
-
-proved from the equality `D_θ^{i+1}f = sin(2θ)·∂_θ(D_θ^if)` and an angular Cauchy–Schwarz; the
-admissible exponents are `γ ≥ 1` for *both* slots of the mixed chain, which is exactly why the
-mixed slots (and not the pure ones, `i = 0`) are `α`-uniform.  The hypothesis `i + j ≤ 2` is
-what makes the slot `(j+1,i)` — of total order `i+j+1 ≤ 3 ≤ 4` — legal.
-
-Integrating this domination in `x` and using `HkMem α 4 f` (finiteness of `∫_z ∫_θ` of the
-integrand) bounds both window terms by `5 · HkSq α 4 f`, so
-
-  `(D_z^jD_θ^if(z,θ))² ≤ 15 · HkSq α 4 f`,  hence  `|D_z^jD_θ^if(z,θ)| ≤ √15 · |f|_{ℋ⁴}`,
-
-uniformly in `α`, `f` and `(z,θ)`.
-
-§1–§2 contain the ingredients of an independent *angular Agmon* route to the same statement:
-the angular shift identity for mixed slots, the `θ`-integrability of a slot with its own
-weight and the corresponding integral identity.  Feeding a one-dimensional `sup`-inequality
-for the `C¹`-slice `v := D_z^jD_θ^i f(z,·)` with the two single-slot bounds of
-`Work.FTS.TransportS.T2SupB2.mixed_slice_z_uniform` (device **(Z)**) into the same assembly
-yields the claim with the constant `√(40·3)` as well.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.T2SupB2.mixed_slice_theta_uniform
-import Submission.Work.FTS.TransportS.SupDzAux.HalfLineWindow
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.Prod
 import Submission.Work.FTS.EllipticEst.SliceDecompDefs
+import Submission.Work.FTS.LocData6.zfarR_jet_le6_of_jets
+import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
+import Submission.Work.FTS.TransportS.T2SupB2.mixed_slice_theta_uniform
 import Submission.Work.FTS.TransportS.sup_dz_le_hk
 import Submission.Work.FTS.Vocab
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongEps.SupPort.mixed_T_le_HkSq =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.StrongEps.SupPort
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- `sin (2θ) ≥ 0` for `θ ∈ Iθ`. -/
+theorem sin_two_nonneg_Iθ_fts {θ : ℝ} (hθ : θ ∈ Work.Spaces.Iθ) : 0 ≤ Real.sin (2 * θ) :=
+  Real.sin_nonneg_of_nonneg_of_le_pi (by linarith [hθ.1])
+    (by linarith [hθ.2, Real.pi_pos])
+
+/-- The pointwise identity behind the mixed-slot energy: on `Iθ`, the square of the weighted
+mixed slot is the angular weight `sin(2θ)^{-γ}` times the square of the unweighted mixed slot
+against `w²`. -/
+theorem mixed_Wt_sq_eq_fts (α : ℝ) (f : ℝ → ℝ → ℝ) (j i : ℕ) {s θ : ℝ}
+    (hθ : θ ∈ Work.Spaces.Iθ) :
+    (Work.Spaces.mixed j i f s θ * Work.Spaces.Wt α s θ) ^ 2
+      = (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * ((Work.Spaces.mixed j i f s θ) ^ 2 * (Work.Spaces.w s) ^ 2) := by
+  have hsq : ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ 2
+      = (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
+    rw [← Real.rpow_natCast ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) 2]
+    simp only [Nat.cast_ofNat]
+    rw [← Real.rpow_mul (sin_two_nonneg_Iθ_fts hθ) (-(Work.Spaces.gam α / 2)) 2]
+    congr 1
+    ring
+  rw [Work.Spaces.Wt, Work.Spaces.wTheta, mul_pow, mul_pow, hsq]
+  ring
+
+theorem mixed_T_le_HkSq {α : ℝ} (hα : 0 < α) {f : ℝ → ℝ → ℝ}
+    (hF : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.HkMem α 4 f)
+    (b a : ℕ) (hab : a + b ≤ 2) :
+    MeasureTheory.IntegrableOn (fun σ => (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam α))
+        * ∫ s in Work.Spaces.Iz,
+            (Work.Spaces.mixed (b + 1) (a + 1) f s σ) ^ 2 * (Work.Spaces.w s) ^ 2)
+      Work.Spaces.Iθ
+    ∧ (∫ σ in Work.Spaces.Iθ, (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam α))
+        * ∫ s in Work.Spaces.Iz,
+            (Work.Spaces.mixed (b + 1) (a + 1) f s σ) ^ 2 * (Work.Spaces.w s) ^ 2)
+      ≤ Work.Spaces.HkSq α 4 f := by
+  have hi : 1 ≤ a + 1 := by omega
+  have hij : (a + 1) + (b + 1) ≤ 4 := by omega
+  -- The weighted mixed slot, as a function of `(z,θ)`, is product-integrable.
+  have hΦint : MeasureTheory.Integrable
+      (fun p : ℝ × ℝ =>
+        (Work.Spaces.mixed (b + 1) (a + 1) f p.1 p.2 * Work.Spaces.Wt α p.1 p.2) ^ 2)
+      ((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :=
+    Work.FTS.EllipticEst.AeSlotOneAe.Interp.integrable_uncurry_slot_mixed
+      hF hmem (b + 1) (a + 1) hi hij
+  -- Tonelli for the `ℋ⁴`-integrand of an open-class datum.
+  obtain ⟨hswap, hGint, hGslice⟩ :=
+    Work.FTS.TransportS.SupDzAux.sda_HkSqSwap_open α f hF hmem
+  -- The angular partial integral of the slot is integrable.
+  have hΦθ : MeasureTheory.Integrable
+      (fun θ : ℝ => ∫ z in Work.Spaces.Iz,
+        (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2)
+      (MeasureTheory.volume.restrict Work.Spaces.Iθ) :=
+    hΦint.integral_prod_right
+  -- Pointwise domination and monotonicity of the inner integral.
+  have hmono : (∫ θ in Work.Spaces.Iθ, (∫ z in Work.Spaces.Iz,
+        (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2))
+      ≤ ∫ θ in Work.Spaces.Iθ,
+          (∫ z in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f z θ) := by
+    refine MeasureTheory.integral_mono_of_nonneg
+      (Filter.Eventually.of_forall fun θ => MeasureTheory.integral_nonneg fun z => sq_nonneg _)
+      hGint ?_
+    filter_upwards [hGslice] with θ hθint
+    exact MeasureTheory.integral_mono_of_nonneg
+      (Filter.Eventually.of_forall fun z => sq_nonneg _) hθint
+      (Filter.Eventually.of_forall fun z =>
+        Work.Spaces.sq_le_HkIntegrand_mixed α 4 f z θ (a + 1) (b + 1) hi hij)
+  -- The two descriptions of the angular integrand agree on `Iθ`.
+  have hae : (fun σ : ℝ => (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam α))
+        * ∫ s in Work.Spaces.Iz,
+            (Work.Spaces.mixed (b + 1) (a + 1) f s σ) ^ 2 * (Work.Spaces.w s) ^ 2)
+      =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
+      (fun θ : ℝ => ∫ z in Work.Spaces.Iz,
+        (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2) := by
+    refine MeasureTheory.ae_restrict_of_forall_mem
+      (show MeasurableSet Work.Spaces.Iθ from by
+        rw [Work.Spaces.Iθ]; exact measurableSet_Icc) fun θ hθ => ?_
+    show (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+        * (∫ s in Work.Spaces.Iz,
+            (Work.Spaces.mixed (b + 1) (a + 1) f s θ) ^ 2 * (Work.Spaces.w s) ^ 2)
+      = ∫ z in Work.Spaces.Iz,
+          (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2
+    have hcast : (∫ z in Work.Spaces.Iz,
+          (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2)
+        = ∫ z in Work.Spaces.Iz, (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))
+            * ((Work.Spaces.mixed (b + 1) (a + 1) f z θ) ^ 2 * (Work.Spaces.w z) ^ 2) :=
+      MeasureTheory.integral_congr_ae
+        (Filter.Eventually.of_forall fun z => mixed_Wt_sq_eq_fts α f (b + 1) (a + 1) hθ)
+    rw [hcast, MeasureTheory.integral_const_mul]
+  refine ⟨hΦθ.congr hae.symm, ?_⟩
+  calc (∫ σ in Work.Spaces.Iθ, (Real.sin (2 * σ)) ^ (-(Work.Spaces.gam α))
+        * ∫ s in Work.Spaces.Iz,
+            (Work.Spaces.mixed (b + 1) (a + 1) f s σ) ^ 2 * (Work.Spaces.w s) ^ 2)
+      = ∫ θ in Work.Spaces.Iθ, (∫ z in Work.Spaces.Iz,
+          (Work.Spaces.mixed (b + 1) (a + 1) f z θ * Work.Spaces.Wt α z θ) ^ 2) :=
+        MeasureTheory.integral_congr_ae hae
+    _ ≤ ∫ θ in Work.Spaces.Iθ,
+          (∫ z in Work.Spaces.Iz, Work.Spaces.HkIntegrand α 4 f z θ) := hmono
+    _ = Work.Spaces.HkSq α 4 f := hswap
+
+end Work.FTS.StrongEps.SupPort
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.sliceBoundSix =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.N6Trans.T1SixAux
+
+/-- The mixed slot with a general angular weight and a general order `k`:
+for `c ≤ γ`, `1 ≤ i` and `i + j ≤ k`,
+`(D_z^jD_θ^i f z θ)² · w(z)² · sin(2θ)^{-c} ≤ HkIntegrand α k f z θ`.
+
+This is the level-`k` generalisation of `Work.FTS.TransportS.mixed_sq_w_rpow_le_HkIntegrand`
+(which is stated at `k = 4`); the proof is verbatim the same, since
+`Work.Spaces.sq_le_HkIntegrand_mixed` is already available at an arbitrary order `k`. -/
+theorem mixed_sq_w_rpow_le_HkIntegrand_gen (α : ℝ) (k : ℕ) (f : ℝ → ℝ → ℝ) {z θ c : ℝ}
+    (hsin : 0 < Real.sin (2 * θ)) (hc : c ≤ Work.Spaces.gam α) (i j : ℕ) (hi : 1 ≤ i)
+    (hij : i + j ≤ k) :
+    (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+        * (Real.sin (2 * θ)) ^ (-c) ≤ Work.Spaces.HkIntegrand α k f z θ := by
+  have h1 : (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) ≤ Work.Spaces.HkIntegrand α k f z θ := by
+    have h := Work.Spaces.sq_le_HkIntegrand_mixed α k f z θ i j hi hij
+    have h2 : (Work.Spaces.mixed j i f z θ * Work.Spaces.Wt α z θ) ^ 2
+        = (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+          * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
+      have hw : Work.Spaces.Wt α z θ
+          = Work.Spaces.w z * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2)) := rfl
+      have hs2 : ((Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α / 2))) ^ 2
+          = (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
+        rw [sq, ← Real.rpow_add hsin,
+          show -(Work.Spaces.gam α / 2) + -(Work.Spaces.gam α / 2)
+            = -(Work.Spaces.gam α) by ring]
+      rw [hw, mul_pow, mul_pow, hs2]
+      ring
+    rwa [h2] at h
+  have h3 : (Real.sin (2 * θ)) ^ (-c) ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) := by
+    have hs1 : Real.sin (2 * θ) ^ Work.Spaces.gam α ≤ Real.sin (2 * θ) ^ c :=
+      Real.rpow_le_rpow_of_exponent_ge hsin (Real.sin_le_one (2 * θ)) hc
+    rw [Real.rpow_neg (le_of_lt hsin) c, Real.rpow_neg (le_of_lt hsin) (Work.Spaces.gam α),
+      ← one_div, ← one_div]
+    exact one_div_le_one_div_of_le (Real.rpow_pos_of_pos hsin (Work.Spaces.gam α)) hs1
+  calc (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+        * (Real.sin (2 * θ)) ^ (-c)
+      ≤ (Work.Spaces.mixed j i f z θ) ^ 2 * (Work.Spaces.w z) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) :=
+        mul_le_mul_of_nonneg_left h3 (by positivity)
+    _ ≤ Work.Spaces.HkIntegrand α k f z θ := h1
+
+
+end Work.FTS.StrongPersist.N6Trans.T1SixAux
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -370,3 +506,5 @@ theorem mixed_pointwise_le_Xn :
         rw [Work.FTS.Nonlin.Xn, Work.Spaces.HkNorm]
 
 end Work.FTS.TransportS.T2SupB2
+end
+end

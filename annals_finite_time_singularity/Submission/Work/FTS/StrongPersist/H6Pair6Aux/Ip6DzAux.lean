@@ -1,40 +1,77 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `H6Pair6Aux/Ip6DzAux` — auxiliary lemmas for `ip6_dz_self`
-
-The target `Work.FTS.StrongPersist.H6Pair6Aux.ip6_dz_self` bounds the `ℋ⁶`-pairing of a
-profile against one of its `D_z`-derivatives,
-
-`|IP6 1 … 1 α (D_z f) f| ≤ C |f|_{ℋ⁶}²`.
-
-The route is: the unfolding `TransportS.ip4_unfold_bound` bounds the pairing by `3^5·10^22`
-times the *slot sum* `SlotSum α 6 (D_z f) f`, whose terms are the elementary pairings
-
-`slotPairing ρ a b (D_z f) f = ∫_z ∫_θ ρ · D_z^bD_θ^a(D_z f) · D_z^bD_θ^a f`
-
-over the slots `a + b ≤ 6` and the three leaf weights `ρ ∈ {w²sin(2θ)^{-η}, w²,
-w²sin(2θ)^{-γ}}`.  On the open quadrant `D_z^bD_θ^a(D_z f) = D_z^{b+1}D_θ^a f`, so each slot
-term is `∫_z∫_θ (w)²θ_w·(D_zV)·V` with `V = D_z^bD_θ^a f`; the radial integration by parts
-(`dzSelf2d`, with the level-one form `dzSelf1d`) bounds it by `2∫_z∫_θ (w)²θ_w·V²` — and
-`∫_z∫_θ (w)²θ_w V² ≤ HkSq α 6 f` by the domination of the slot weights by the summands of
-`HkIntegrand α 6 f` (`intSlotLeHkSq`); for the slots with `a + b ≤ 5` the AM–GM inequality
-suffices.
-
-This file collects the auxiliary lemmas of that assembly.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Comp
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.TransportS.ip4SlotDomFixed
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.Spaces.sq_mul_div_rpow
-import Submission.Work.Spaces.bt_aux
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
 import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.PhiStar.CoreAux.Fb_add =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.PhiStar.CoreAux
+
+set_option autoImplicit false
+
+/-! ## The `θ`-derivative of a sum -/
+
+/-- **`∂_θ(f + g) = ∂_θ f + ∂_θ g` on the open quadrant** for `C^∞` data: the `θ`-slices are
+differentiable at every interior angle, so `deriv_add` applies. -/
+private theorem pth_add_Q0_prv {f g : ℝ → ℝ → ℝ}
+    (hf : Work.FTS.EllipticEst.SmoothOpen f) (hg : Work.FTS.EllipticEst.SmoothOpen g) :
+    ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+      Work.Spaces.pth (fun z θ => f z θ + g z θ) z θ
+        = Work.Spaces.pth f z θ + Work.Spaces.pth g z θ := by
+  intro z θ hz h1 h2
+  have hθ : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2) := ⟨h1, h2⟩
+  have hd1 : DifferentiableAt ℝ (fun θ' : ℝ => f z θ') θ :=
+    ((hf.curry_θ hz).differentiableOn (by simp)).differentiableAt
+      (isOpen_Ioo.mem_nhds hθ)
+  have hd2 : DifferentiableAt ℝ (fun θ' : ℝ => g z θ') θ :=
+    ((hg.curry_θ hz).differentiableOn (by simp)).differentiableAt
+      (isOpen_Ioo.mem_nhds hθ)
+  have hff : (fun θ' : ℝ => f z θ' + g z θ')
+      = (fun θ' : ℝ => f z θ') + (fun θ' : ℝ => g z θ') := by
+    funext θ'; rfl
+  simp only [Work.Spaces.pth]
+  rw [hff]
+  exact deriv_add hd1 hd2
+
+/-! ## The main theorem -/
+
+theorem Fb_add {n : ℕ} {K K' : ℝ} {f g : ℝ → ℝ → ℝ} (hsf : Work.FTS.EllipticEst.SmoothOpen f) (hsg : Work.FTS.EllipticEst.SmoothOpen g) (hf : Work.FTS.PhiStar.Fb n K f) (hg : Work.FTS.PhiStar.Fb n K' g) : Work.FTS.PhiStar.Fb n (K + K') (fun z θ => f z θ + g z θ) := by
+  refine ⟨F0_add hsf hsg hf.f0 hg.f0, ?_⟩
+  -- the `∂_θ`-part: `∂_θ(f + g)` agrees on `Q0` with the `SmoothOpen` sum `∂_θ f + ∂_θ g`
+  have hsum : Work.FTS.PhiStar.F0 n (K + K')
+      (fun z θ => Work.Spaces.pth f z θ + Work.Spaces.pth g z θ) :=
+    F0_add hsf.pth hsg.pth hf.fd hg.fd
+  exact F0_congr (pth_add_Q0_prv hsf hsg) hsum
+
+end Work.FTS.PhiStar.CoreAux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.Ip6DzAux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -337,3 +374,5 @@ theorem slotAMGM {α : ℝ} {f : ℝ → ℝ → ℝ} {X Y : ℝ → ℝ → ℝ
   linarith
 
 end Work.FTS.StrongPersist.H6Pair6Aux
+end
+end

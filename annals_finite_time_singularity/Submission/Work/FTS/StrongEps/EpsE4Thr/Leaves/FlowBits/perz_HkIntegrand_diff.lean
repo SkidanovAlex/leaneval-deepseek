@@ -3,11 +3,11 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
 import Submission.Work.FTS.EllipticEst.EllHyp_certificates
-import Submission.Work.FTS.StrongEps.EpsE4Thr.mixed_sub_of_contDiffOn_six
-import Submission.Work.FTS.StrongEps.EpsE4Thr.Leaves.FlowBits.HkIntegrand_sub_le
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

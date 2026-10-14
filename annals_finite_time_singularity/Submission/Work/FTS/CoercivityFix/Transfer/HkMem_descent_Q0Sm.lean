@@ -1,53 +1,14 @@
-/-
-# `Work.FTS.CoercivityFix.Transfer.HkMem_descent_Q0Sm`
-
-The **`ℋ`-membership descent** for the finite-order class `Q0Sm` of the open quadrant
-`Qd = (0,∞) × (0,π/2)`:
-
-  `Q0Sm (m+1) X → HkMem α (m+1) X → HkMem α m X ∧ HkMem α m (D_θ X) ∧ HkMem α m (D_z X)`.
-
-This is the `hdown` obligation of the `Comm2w` rewiring: the level-`n` inner products
-need the `ℋⁿ`-membership of the three functions `f`, `D_θ f`, `D_z f`, and the only
-hypothesis available on the transfer side is a *finite* order of differentiability on
-the open quadrant (`Q0Sm`, `Transfer/Q0Sm.lean`) together with the `ℋ^{n+1}`-membership
-of `f`.  The analytic class `Work.Spaces.SmoothNbhd` — under which the paper's
-statements `Work.Coercivity.HkMem_dth` / `QuadPorts.HkMem_Dz_quad` are proved — is not
-available for the transfer's functions.
-
-The proof is the familiar domination of the `ℋ^m`-integrand of the differentiated
-function by the `ℋ^{m+1}`-integrand of `f` (`Work.FTS.LocData.HkMem_of_majorant`):
-
-* `HkMem α m X ≤ HkMem α (m+1) X` is pure monotonicity of the integrand in the level
-  (`Work.Coercivity.HkIntegrand_le_succ`);
-* `D_θ` is *free*: `D_z^i(D_θ f) = D_z^i D_θ f` and `D_z^j D_θ^i(D_θ f) = D_z^j D_θ^{i+1} f`
-  are definitional, and the pure weight `w/√sin(2θ)^η` is dominated by the mixed weight
-  `W` because `η < γ` — this is `Work.Coercivity.HkIntegrand_Dth_le`, which needs no
-  smoothness at all;
-* `D_z` needs the index shift `mixed j i (D_z f) = mixed (j+1) i f`, i.e. the commutation
-  of `D_θ^i` with `D_z`.  That is Clairaut for the *curvilinear* derivatives, and at
-  finite order it is available exactly where it is needed: at the points of `Qd` and for
-  angular order `i ≤ m`, because `D_θ^i X` is then `C²` (the hypothesis `Q0Sm (m+1) X`
-  gives `C^{m+1}`, and `i + 2 ≤ m + 1`).
-
-The boundary of the closed quadrant costs nothing: at `z = 0` the radial weight `w`
-vanishes (`Work.FTS.LocData.HkIntegrand_zero_fst`), and at the angular endpoints
-`sin(2θ) = 0` makes *both* weights (`w/sin^{η/2}` and `W = w · sin(2θ)^{-γ/2}`) vanish,
-so both integrands are `0` there and the domination is trivial.  Hence the pointwise
-comparison inside the open quadrant is the only mathematical content.
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.CoercivityFix.Transfer.Q0Sm
-import Submission.Work.Coercivity.HkIntegrand_le_succ
-import Submission.Work.Coercivity.HkMem_dth
-import Submission.Work.FTS.LocData.HkMem_of_majorant
-import Submission.Work.Coercivity.SumShiftZ_le
+import Submission.Work.Coercivity.slice_ibp_eta
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongPersist.L3Aux.bcoefRadBound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -78,7 +39,7 @@ private lemma SumSuccRange_le (k : ℕ) (F : ℕ → ℝ) (hF : ∀ a, 0 ≤ F a
   linarith [hF 0]
 
 /-- `D_z^i(D_z X) = D_z^{i+1} X` (definitional, from `D_z^{i+1} = D_z^i ∘ D_z`). -/
-private lemma DzIter_Dz_eq (i : ℕ) (X : Fn) :
+private lemma DzIter_Dz_eq_prv (i : ℕ) (X : Fn) :
     Work.Spaces.DzIter i (Work.Spaces.Dz X) = Work.Spaces.DzIter (i + 1) X := by
   rw [Work.Spaces.DzIter_add_right]
   rfl
@@ -236,7 +197,7 @@ private lemma HkIntegrand_Dz_le_succ_Qd (α : ℝ) (m : ℕ) {X : Fn} (h : Q0Sm 
       ≤ ∑ a ∈ Finset.range (m + 2), (Work.Spaces.DzIter a X z θ * H) ^ 2 := by
     refine le_trans (le_of_eq ?_) (SumSuccRange_le m
       (fun a => (Work.Spaces.DzIter a X z θ * H) ^ 2) (fun a => sq_nonneg _))
-    exact Finset.sum_congr rfl (fun i _ => by rw [DzIter_Dz_eq i X])
+    exact Finset.sum_congr rfl (fun i _ => by rw [DzIter_Dz_eq_prv i X])
   have h2 : (∑ i ∈ Finset.range (m + 1), ∑ j ∈ Finset.range (m + 1),
               (if 1 ≤ i ∧ i + j ≤ m
                 then (Work.Spaces.mixed j i (Work.Spaces.Dz X) z θ * W) ^ 2 else 0))

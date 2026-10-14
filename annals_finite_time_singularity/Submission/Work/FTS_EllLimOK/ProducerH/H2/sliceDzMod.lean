@@ -1,45 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.H2.sliceDzMod` — the `θ`-Lipschitz modulus of `D_z^a (E g)`, `a ≤ 2`
-
-For every linear `E` carrying the level-`8` existence class plus the two frozen packages on the
-source class `ClassC α` (i.e. `Ctx α Ce E`), every `a ≤ 2`, every `0 < a₀ ≤ b₀`, there is a
-constant `K > 0` with
-
-  `|D_z^a (E g)(z,θ) − D_z^a (E g)(z,θ')| ≤ K · Xn₆ α g · |θ − θ'|`
-  (`g ∈ ClassC α`, `z ∈ [a₀,b₀]`, `θ, θ' ∈ (0,π/2)`).
-
-This is the `D_z^a`-shifted angular modulus that the "clause 2"/`PkgDecay` half of the producer
-`pkgBoxH_of_ellClassOk` needs: it is *uniform in `g`* (the constant is proportional to the
-`ℋ⁶`-norm `Xn₆ α g`) and it does not degrade as `θ, θ'` approach the endpoints.
-
-## The argument
-
-Write `f := fun t => D_z^a (E g)(z,t)` for the angular slice of `Ψ = E g` at a fixed `z > 0`.
-Two *pointwise interior* bounds on `f` are available in the tree, both proportional to
-`Xn₆ α g` and both uniform in `z ∈ [a₀,b₀]` and in `θ ∈ (0,π/2)`:
-
-* the value bound `|f t| ≤ K₁·Xn₆ α g`, which is the mixed-jet bound
-  `ProducerH.MixedJets.mixed_jets_le_Xn6` at `(j,i) = (a,0)` (`mixed a 0 = D_z^a`,
-  `a + 0 ≤ 4`), valid on the open quadrant;
-* the second angular derivative bound
-  `|(deriv (deriv f)) t| ≤ K₂·Xn₆ α g`, which is
-  `ProducerH.SecondDerivDz.second_theta_deriv_DzIter_le_Xn6` (`a ≤ 2`), obtained from the slice
-  ODE `S'' = tan θ·S' + (cos θ)⁻²·S − 6S − G` with the sharp constant `6`.
-
-A bounded function with a bounded *second* derivative on a bounded interval is Lipschitz: near a
-point `t ∈ (0,π/2)` the mean value theorem gives an interior point `ξ` at distance ≤ `π/8` with
-`|f' ξ| ≤ 2A/(π/8)`, and the mean value bound applied to `f'` moves the estimate from `ξ` to
-`t` at the cost `B·(π/8)`.  So `|f'| ≤ 16A/π + Bπ/8` on all of `(0,π/2)`, and one more mean value
-step gives the two-point bound with the constant `K = 2K₁/(π/8) + K₂·(π/8)`.
-
-The two generic real-analysis facts used are `deriv_le_of_value_and_second_le` (proved below for
-self-containment; an identical sibling lives in
-`Submission/Work/FTS_EllLimOK/ProducerH/H2/deriv_le_of_value_and_second_le.lean`) and
-`abs_sub_le_of_deriv_abs_le` (imported from the sibling module
-`Submission.Work.FTS_EllLimOK.ProducerH.H2.abs_sub_le_of_deriv_abs_le`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
@@ -52,16 +10,16 @@ import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.TotallySplit
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgMid
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Eg_modulus
+import Submission.Work.FTS_EllLimOK.PkgJets.L12jets_classC
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgMid
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_deriv_bound
 import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDerivDz.second_theta_deriv_DzIter_le_Xn6
-import Submission.Work.FTS_EllLimOK.PkgJets.L12jets_classC
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.abs_sub_le_of_deriv_abs_le
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

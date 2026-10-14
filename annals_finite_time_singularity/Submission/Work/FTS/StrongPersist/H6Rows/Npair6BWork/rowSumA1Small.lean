@@ -1,14 +1,45 @@
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowAux
-import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.Base
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumGamSin
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowA1SmallPair
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.Base
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T2SupB2.mixed_pointwise_le_Xn
+import Submission.Work.FTS_RegExport.RXT.starVop
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux.fkPairingAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux
+
+open Work.FTS.StrongPersist.H6Rows.Npair6BWork (PM aesm_mixed aesm_leafW val_le_HkSq)
+
+set_option autoImplicit false
+set_option maxHeartbeats 3200000
+
+
+
+
+end Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.FkTileAux
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumA1Small =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -178,3 +209,4 @@ theorem rowSumA1Small : ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1,
     _ = (Cx + 4) * α ^ (-(4 : ℝ)) * T := by ring
 
 end Work.FTS.StrongPersist.H6Rows.Npair6BWork
+end

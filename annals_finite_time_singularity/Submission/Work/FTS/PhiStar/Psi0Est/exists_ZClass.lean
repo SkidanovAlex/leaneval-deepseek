@@ -1,40 +1,13 @@
-/-
-# `Work.FTS.PhiStar.Psi0Est.exists_ZClass`
-
-The `Z`-class estimate for the explicit angular model `P = Pfun α`:
-
-`|D_θ^j P| ≤ κ_j · α · sin²θ · cos^{2α/3}θ + ℓ_j · sin 2θ`   (`1 ≤ j ≤ 5`),
-
-with constants `κ_j`, `ℓ_j` independent of `α ∈ (0, 1/4]`.
-
-**Route.**  `P = G₀/(2 cos³θ)` with `G₀ = ∫_θ^{π/2} sin t cos²t Γ̄`, `Γ̄ = Γ/c − (5/4) sin 2θ`,
-`Γ = (sin θ cos²θ)^{α/3}`.  Differentiating gives the *exact* identity
-
-  `D_θ P = 6 sin²θ · P − sin²θ · Γ̄`.
-
-(i) the *base* estimate `|D_θ P| ≤ 40 α sin²θ cos^{2α/3}θ + 200 sin 2θ` is proved by splitting at
-`θ = π/4`: on `(0,π/4]` the crude bounds `|P| ≤ 20`, `|Γ̄| ≤ 45/4` suffice, while on
-`(π/4,π/2)` the decomposition `6P − Γ̄ = (1/c)·H₁ + H₂` with `H₁ = 3Ψ_Γ/cos³θ − Γ` and
-`H₂ = (5/4) sin 2θ − 15Ψ_S/(2cos³θ)` is used; the imported lemmas `H1_bound`, `H2_bound`
-give `|H₁| ≤ 3α cos^{2α/3}θ`, `|H₂| ≤ 10 sin 2θ` on `(π/4,π/2)`;
-
-(ii) the *recursion* `Z_{j+1} = Σ_{i≤j} C(j,i)·(6 D_θ^i(sin²θ)·Z_{j-i} − D_θ^i(sin²θ)·D_θ^{j-i}Γ̄)`
-(`dthU_iter_Z1_eqOn`) turns the class hypothesis `ElemClass` on `D_θ^i sin²θ` and `HClass` on
-`D_θ^j Γ̄` into the coefficients `κ_j`, `ℓ_j`, defined by the triangular recursion
-`κ_m = Σ_{i<m-1} C(m-1,i)(6 b_i κ_{m-1-i} + b_i cc_{m-1-i}) + b_{m-1} κ_1`
-(and the same with `(κ, cc) ↦ (ℓ, dd)`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.PhiStar.Psi0Classes
-import Submission.Work.FTS.PhiStar.Psi0Defs
-import Submission.Work.FTS.PhiStar.Psi0Aux.cos_sq_Gam_div_sin_bounds
-import Submission.Work.Spaces.DthIter_mul
-import Submission.Work.Spaces.c_bounds
-import Submission.Work.FTS.PhiStar.Psi0Est.H1_bound
-import Submission.Work.FTS.PhiStar.Psi0Est.H2_bound
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.StrongPersist.DthFstar_W6
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKjet.L12
+import Submission.Work.FTS_RegExport.RXT.Sys.hasDerivAt_mixed_z
+import Submission.Work.Spaces.dthU_Gam
+import Submission.Work.Spaces.factor_bound
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

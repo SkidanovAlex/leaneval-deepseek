@@ -3,22 +3,20 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXT.CoeffJetsDefs
-import Submission.Work.FTS_RegExport.RXT.loc_sup4
-import Submission.Work.FTS_RegExport.RXT.MixedUniform
-import Submission.Work.FTS_RegExport.RXT.slice_space_lip
-import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
-import Submission.Work.FTS_RegExport.RXT.jc3_aux
-import Submission.Work.FTS.RegPkgGal.Sup.DthIter_DzIter_comm_fin
-import Submission.Work.FTS_RegExport.RXT.C2Psi
-import Submission.Work.FTS_RegExport.RXT.Ftau_bounds
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.FstarJet7
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.mixed_mul_fin
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.LeibBound
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.RHSSmooth
-import Submission.Work.FTS_RegExport.RXT.Sys.JetCalc.FtauBound
+import Submission.Work.FTS.RegExportIface.RXT.Leaves
+import Submission.Work.FTS_EllLimOK.LimExtract.limExtract_bounds10_const
+import Submission.Work.FTS_RegExport.C4.Dth_mixed_eq_C4
+import Submission.Work.FTS_RegExport.RXT.C2Radial
+import Submission.Work.FTS_RegExport.RXT.Ftau_bounds
+import Submission.Work.FTS_RegExport.RXT.Sys.gdot_system
+import Submission.Work.FTS_RegExport.RXT.Sys.mixed_integral_identity
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.st1_stdata2
+import Submission.Work.FTS_RegExport.RXT0.RXJets.jetBasic
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

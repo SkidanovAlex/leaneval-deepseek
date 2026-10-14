@@ -1,33 +1,11 @@
-/-
-# `H6Pair6Aux/RowMuAux/SlotDataOpen` — the angular slot data of an open-quadrant datum
-
-The `rl¹`-pieces of `N` are bounded in `Fa` against the angular energies of the three slots
-`B ∈ {f, D_θf, D_zf}` of the perturbation datum `f`.  At level four the corresponding data
-(`Work.FTS.NonlinRows.Rl1.slot0/1/2`) were derived for the *closed*-quadrant class
-`SmoothQuad` (which the honest slices of this route do **not** satisfy); here they are derived
-from the honest class
-
-  `SmoothOpen f`  (`f` is `C^∞` on the open quadrant)  and  `HkMem α 4 f`,
-
-which is exactly what `H6Adm α f` (via `H6Adm.reg`) and the order-seven honesty of `L6Ctx`
-supply.
-
-Everything rests on the three pointwise Hardy comparisons of
-`Work.FTS.Nonlinear.Pieces.rl1Pieces.PsgAux`
-
-  `slot_g/slot_dth/slot_dz :  w r · (B r θ)² ≤ HkIntegrand α 4 f r θ`  (`r > 0`, `θ ∈ (0,π/2)`),
-
-the integrability of the slices being read off from `HkMem α 4 f` and the `r`-a.e. strong
-measurability of the energies from the continuity of the slices on the open quadrant.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.LocData.ZfarFstar.ZFBase
+import Submission.Work.FTS.PhiStar.RadialWAux.radPsi_contDiffOn
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.NonlinRows.Rl1.tools
-import Submission.Work.FTS.NonlinRows.Rl1.ggBounds
-import Submission.Work.FTS.GalBasis.cc.L12_add_of_HkMem
+import Submission.Work.FTS.StrongPersist.Vocab
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,14 +40,7 @@ theorem HkEner_integrableOn {α : ℝ} {f : ℝ → ℝ → ℝ} (hmem : Work.Sp
       Work.Spaces.HkIntegrand α 4 f r θ) (Set.Ioi (0 : ℝ)) :=
   hmem.2.mono_set Set.Ioi_subset_Ici_self
 
-theorem HkEner_aemeasurable {α : ℝ} {f : ℝ → ℝ → ℝ} (hmem : Work.Spaces.HkMem α 4 f) :
-    AEMeasurable (fun r => ∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f r θ)
-      (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))) :=
-  (HkEner_integrableOn hmem).aemeasurable
 
-theorem HkEner_nonneg {α : ℝ} {f : ℝ → ℝ → ℝ} (r : ℝ) :
-    0 ≤ ∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 4 f r θ :=
-  MeasureTheory.integral_nonneg fun θ => Work.Spaces.HkIntegrand_nonneg α 4 f r θ
 
 /-- `Iθ`-integrability of the square of a slot. -/
 theorem slot_sq_integrableOn {α : ℝ} {f B : ℝ → ℝ → ℝ} {r : ℝ} (hmem : Work.Spaces.HkMem α 4 f)

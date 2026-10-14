@@ -2,17 +2,15 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.NDefs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowsAux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowDthTopRow
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkMomentJetSq
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowDthRepaired
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkSinSqHkSq
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowDthTopRow
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkRowsAux
 import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingHkSq
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingConstMul
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.nsumData
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

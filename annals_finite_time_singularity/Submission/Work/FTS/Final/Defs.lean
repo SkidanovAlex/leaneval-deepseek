@@ -1,46 +1,16 @@
-/-
-# `Work.FTS.Final.Defs` — the vocabulary of the end-to-end assembly
-
-This is the vocabulary module of the **FTS/Final** area: the interfaces through which the
-end-to-end wiring `Work.FTS.Final.exists_blowupAt_of_inputs` reads.
-
-## What lives here
-
-* the re-exported names of the physical bridge (`Fam`, `Uax`, `BiotSavartSwirl`,
-  `PressureReconstructionOn`, `MeridianEqOn`, `RegPkg'`, `IsBslSolPos`), so that the statements of
-  this area read exactly like the design's;
-* the two definitions of the *new* strong route (`FTS_HARD_STMTS.lean.txt`, lead 01:30), copied
-  verbatim from that statement file because the area that owns them (`FTS/StrongEps`) is still
-  being built: the log-coordinate mollifier `Jeps`/`Jfam`, the `ε`-scheme `IsEpsSol`, its uniform
-  bound `EpsUniform`, and the *statement* `GlobalStrong2` of `global_strong2` (whose proof is the
-  `StrongEps` area's deliverable).  When `Submission/Work/FTS/StrongEps/` lands, a rename of the
-  four names `Jeps`, `Jfam`, `IsEpsSol`, `EpsUniform` is all that is needed;
-* the elliptic input `Work.FTS.EllSol.ExistsEllSolC` (the lead's class-C linear solution operator,
-  already on disk in `Submission/Work/FTS/EllSol/ClassC.lean`) — re-exported, not copied.
-
-## Conventions (do not change without changing every consumer)
-
-* the *challenge* exponent is `α` (a `ℝ≥0` in the final statement); the *profile* exponent is
-  `pExp α = 3α`;
-* the physical vorticity of the reconstruction is `ω := −physOmega α A B g C` (design correction 1);
-* the clock amplitude is `C.A = 2 * A` (design correction 2), with `A = Avort m`, `B = Bdyn m`;
-* the stream function of the reconstruction is `merPsi (pExp α) A B Φ C`
-  (`Work.FTS.MeridianDyn.merPsi`).
--/
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.EpsODE
-import Submission.Work.FTS.VocabO2
-import Submission.Work.FTS.StrongGlobal.Main
 import Submission.Work.FTS.EllSol.ClassC
-import Submission.Work.FTS.ClassC.Defs
-import Submission.Work.FTS.FireFix.Firing
 import Submission.Work.FTS.FinalClock.PhysClock
-import Submission.Work.FTS.Top.Main
-import Submission.Work.FTS.LocData6.Main
+import Submission.Work.FTS.FireFix.Firing
 import Submission.Work.FTS.MeridianDyn.All
+import Submission.Work.FTS.Physical.BiotSavart.bsAdmissibleStripFull_comp_clock
+import Submission.Work.FTS.StrongEps.EpsODE
+import Submission.Work.FTS.StrongGlobal.Main
+import Submission.Work.FTS.Top.Main
+import Submission.Work.FTS.VocabO2
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -120,10 +90,6 @@ abbrev N4Norm' (Ci α₂ : ℝ) : Prop := Work.FTS.OpenPkg.N4Norm' Ci α₂
 /-- The primed `IP`-level contract `N4Extra'` (owner `NonlinRows`). -/
 abbrev N4Extra' (IP : ℝ → Fn → Fn → ℝ) (α₂ Ct : ℝ) : Prop := Work.FTS.OpenPkg.N4Extra' IP α₂ Ct
 
-/-- The elliptic input of the class-C layer: a **linear** solution operator `E` with the two
-packages `EllPkgGo` and `EllPkgK 6` (owner `EllSol`, `Work.FTS.EllSol.ExistsEllSolC`, verbatim from
-`FTS_HARD_STMTS.lean.txt`). -/
-abbrev ExistsEllSolC : Prop := Work.FTS.ClassC.ExistsEllSolC
 
 /-! ## The `ε`-scheme of the strong route (re-exported from `FTS/StrongEps`)
 
@@ -144,30 +110,7 @@ abbrev Jfam : (ℝ × ℝ → ℝ) → ℝ → Fam → Fam := Work.FTS.StrongEps
 abbrev IsEpsSol : ℝ → (ℝ × ℝ → ℝ) → ℝ → ℝ → Fn → (Fn → Fn) → Fn → Fam → Prop :=
   Work.FTS.StrongEps.IsEpsSol
 
-/-- **The uniform `ε`-bounds on every `[0,T]`.** -/
-abbrev EpsUniform : ℝ → (ℝ × ℝ → ℝ) → Fn → (Fn → Fn) → Fn → ℝ → ℝ → Prop :=
-  Work.FTS.StrongEps.EpsUniform
 
-/-- **`GlobalStrong2`** — the *statement* of `Work.FTS.StrongEps.global_strong2` (verbatim from
-`FTS_HARD_STMTS.lean.txt`, as a `Prop`): from the uniform `ε`-bounds, the global strong solution of
-the dynamic modulated equation, with the positivised law `IsBslSolPos`, the canonical stream
-function `PsiCan Φs E g`, the regularity package `RegPkgMin` and the uniform `C₀α²` bound.
-
-This is the *dynamic-solution input* of the assembly (conjunct (4) of `Inputs`); its proof (E1–E6
-of the design) is the `StrongEps` area's deliverable.  Until that area's `Assembly.lean` lands, the
-statement is recorded here. -/
-def GlobalStrong2 : Prop :=
-  ∃ α₂ : ℝ, 0 < α₂ ∧ ∀ α ∈ Set.Ioc 0 α₂,
-    ∀ {C₀ K Ce Cs : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn →ₗ[ℝ] Fn} {g₀ : Fn},
-    Work.FTS.StrongEps.IsSmoothKernel ρ →
-    (∀ u : Fn, Work.FTS.ClassC.ClassC α u →
-      Work.FTS.VocabO.EllPkgGo α Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK α 6 Ce u (E u)) →
-    Work.FTS.StrongEps.EllLimOK α E → Work.FTS.VocabO2.StarPkgo2 α Cs Φs →
-    Work.FTS.StrongEps.MuLamOK α C₀ Φs E →
-    Work.FTS.StrongEps.EpsUniformMem α ρ Φs E g₀ C₀ K →
-      ∃ g : Fam, IsDynGSolWith (IsBslSolPos α) α (PsiCan Φs E g) g ∧
-        (∀ z θ, g z θ 0 = g₀ z θ) ∧ RegPkgMin α g ∧
-        ∀ τ, 0 ≤ τ → Work.FTS.Nonlin.Xn α (slice g τ) ≤ C₀ * α ^ 2
 
 /-! ## The clock of the dynamic modulation -/
 

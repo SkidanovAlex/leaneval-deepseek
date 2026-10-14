@@ -1,8 +1,104 @@
+import Mathlib.Basic.Real.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.Reductions
+import Submission.Work.FTS.EllipticEst.Cores.Dil.HkSqLimit
+import Submission.Work.FTS.EllipticEst.Cores.PPureShiftRad.Basic
+import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.Basic
+import Submission.Work.FTS.EllipticEst.Cores.pPureShiftAux.MajEst
 import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.CascadeRecursion
-import Submission.Work.FTS.EllipticEst.H2W.PsiSlices.SlotReduction
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.Physical.Ident.vorticity_psiField_scaled
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.Dil.DqqHonest =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Cores.Dil
+
+
+end Work.FTS.EllipticEst.Cores.Dil
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.pPureShiftTwoAlpha4 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Cores
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+
+/-!
+# `Cores/pPureShiftTwoAlpha4` — the `α⁴`-weighted pure `∂_θ²` slot of the twice shifted datum
+
+The target is
+
+```
+(h0 : ∃ C, 0 < C ∧ TT.EllWeak0 C) →
+∃ C, 0 < C ∧ ∀ α F Ψ, 0 < α → α ≤ 1/4 → TT.EllWeakPos α 2 F Ψ →
+  α⁴ · ∫_z w² ∫_θ (∂_θ²(D_z²Ψ))² · sin(2θ)^{-η}  ≤  C · HkSq α 2 F,
+```
+
+i.e. the pure angular slot `|∂_θ²(D_z²Ψ)|²_{ℋ⁰}` of the twice radially shifted solution,
+weighted by `α⁴`.
+
+## The route
+
+1. `lhs_eq_HkSq'` (`Cores.pPureShiftAux.Basic`, proved) identifies the left-hand side with
+   `α⁴ · HkSq α 0 (pthIter 2 (DzIter 2 Ψ))`.
+2. `Pieces.TL2.shiftZeroSlots_bound` (proved, and *parameterised* by its only analytic input
+   `DilEstimate`) applied with `k = j = 2` gives the two level-`0` slots of the twice radially
+   shifted solution:
+
+     `α⁴ |z²∂_z²(D_z²Ψ)|²_{ℋ⁰} + |∂_θ²(D_z²Ψ)|²_{ℋ⁰} ≤ C |F|²_{ℋ²}`,
+
+   with a constant `C` uniform in `α`.  Its proof is the dilation difference-quotient argument:
+   the twice-iterated difference-quotient datum `(dqq c F, dqq c Ψ)` is again a datum of the
+   weak class (`EllWeakPos_dqq`, whose moments are the difference quotients of the vanishing
+   moments of the datum), `EllWeak0` is applied to it, and the limit `c → 1⁺` is taken by Fatou
+   (`Dil.HkSq_zero_le_of_eventually_le`) using the slot identities
+   `∂_θ²(dqq c Ψ) = dqq c (∂_θ²Ψ)` and `z²∂_z²(dqq c Ψ) = dqq c (z²∂_z²Ψ)`.
+3. The analytic input `DilEstimate` — the difference-quotient engine
+   `HkMem α 0 (dq c g) ∧ HkSq α 0 (dq c g) ≤ c³ HkSq α 0 (D_z g)` for `g` smooth on the open
+   quadrant with `D_z g ∈ ℋ⁰` — is supplied here as `dilEstimate_fts`, from the proved lemma
+   `Cores.pPureShiftAux.HkMem_dq_and_HkSq_dq_le_self`.
+4. Since `α ≤ 1/4` gives `α⁴ ≤ 1` and the slot is nonnegative, the `α⁴`-weighted form follows
+   from the unweighted one: **the target holds with `α⁴` replaced by `1`.**
+-/
+
+/-- **The difference-quotient engine** (`DilEstimate`), supplied from the proved lemma
+`Cores.pPureShiftAux.HkMem_dq_and_HkSq_dq_le_self`: for `g` of class `C^∞` on the open quadrant
+whose radial derivative `D_z g` is honestly in `ℋ⁰`, and `c > 1`, the radial difference
+quotient `dq c g` is again in `ℋ⁰` and its squared `ℋ⁰`-norm is at most `c³` times that of
+`D_z g`. -/
+theorem dilEstimate_fts : Pieces.TL2.DilEstimate := by
+  intro α c g hg hgmem hc
+  exact pPureShiftAux.HkMem_dq_and_HkSq_dq_le_self hg hgmem hc
+
+
+
+end
+
+end Work.FTS.EllipticEst.Cores
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.PsiSlices.pzIterSliceIntegrable =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -62,13 +158,7 @@ radial spectral threshold to the `θ`-mode bound: a Mellin / generalized-eigenfu
 `z` together with the indicial expansion of the slices at `θ = π/2`. -/
 
 
-theorem pzIterSliceIntegrable : ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-    Work.FTS.EllipticEst.WeakPos2 α F Ψ →
-    ∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
-      ∀ m : ℕ, m ≤ 4 →
-        MeasureTheory.IntegrableOn
-          (fun θ : ℝ => Work.Spaces.pzIter m Ψ z θ * Work.Elliptic.sinCos2 θ)
-          Work.Spaces.Iθ := by sorry
 
 end
 end Work.FTS.EllipticEst.H2W.PsiSlices
+end

@@ -1,35 +1,129 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/epsWP_hkMem4_bnd_fam.lean` — the family form of
-# `epsWP_hkMem4_bnd`: one constant, uniform in `n`
-
-The sibling `epsWP_hkMem4_bnd` bounds the `ℋ⁴`-size of the projected scheme's right-hand side
-`epsWP α ρ ε Φs E g s` *for a single family* `g` and a single scale `ε`, producing a constant `KW`
-through existentials.  The present module turns it into the *uniform* statement needed by the
-covering/compactness arguments: a single `KW > 0` that dominates `Xn α (epsWP …)` for every `n` and
-every fake time `s ∈ Icc 0 T`, simultaneously.
-
-The mechanism is the honest one: the constancy of `KW` in `(g, ε)` is *proved*, not extracted from
-the shape of a `Classical.choose`.  The body of `epsWP_hkMem4_bnd` is reorganised into the
-strengthened statement
-
-  `∃ KW, 0 < KW ∧ ∀ (g : Fam) (ε : ℝ), (interface hypotheses on the slices of `JfamP ρ ε g`) →
-     ∀ s ∈ Icc 0 T, HkMem α 4 (epsWP α ρ ε Φs E g s) ∧ Xn α (epsWP …) ≤ KW`
-
-which is *literally* the same proof: every constant produced by the five block estimates
-(`ClassCRHS.HkMemXnLGammaT`, `ClassCRHS.HkMemXnN0`, `ClassCRHS.HkMemXnN`, `epsWP_mubar_bound`,
-`Nonlinear.Pieces.rak_bound`, plus the two assembled constants `Lam`, `Kst`) depends only on
-`α, C₀, Ce, Cs` (and `Φs, E`) — never on `g`, `ε`, `T` or `s`.  Only the last block of the proof
-uses the slice itself, so generalising `g`, `ε` to universally quantified variables costs nothing.
-
-The family statement is then the immediate instantiation `g := G n`, `ε := ε n`.
--/
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Basic.Real.Basic
 import Mathlib.Order.Filter.Defs
-import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd
+import Mathlib.Tactic.Linarith.Frontend
+import Submission.Work.FTS.StrongEps.EpsRLX.CCSharp.HonTermsC.Part2C
+import Submission.Work.FTS.StrongEps.EpsRLX.LGTDiffClassC
+import Submission.Work.FTS.StrongEps.H5.Nb5Core
 import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS_RegExport.RXT.Sys.pth_vop_slot_bd
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsRLX.CCSharp.HonestTermsBoundC =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsRLX.CCSharp
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+theorem HonestTermsBoundC {α α₂ Ci Ce Cs : ℝ} {Φs : Work.FTS.Galerkin.Fn}
+    {E : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
+    (hN : Work.FTS.OpenPkg.N4Norm' Ci α₂)
+    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs)
+    (hEll : ∀ u : Work.FTS.Galerkin.Fn, Work.FTS.ClassC.ClassC α u →
+      Work.FTS.VocabO.EllPkgGo α Ce u (E u))
+    (hα : 0 < α) (hαα₂ : α ≤ α₂) :
+    ∃ K : ℝ, 0 < K ∧ ∀ {W₁ W₂ : Work.FTS.Galerkin.Fn},
+      Work.FTS.ClassC.ClassC α W₁ → Work.FTS.ClassC.ClassC α W₂ → α ≤ 1 →
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TRB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TRB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TRB α E W₂ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TUB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TUB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TUB α E W₂ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TVB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TVB α E W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TVB α E W₂ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TDB α W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TDB α W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TDB α W₂ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TEB α W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TEB α W₂ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TEB α W₂ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TRD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TRD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TRD α E W₁ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TUD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TUD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TUD α E W₁ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TVD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TVD α E W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TVD α E W₁ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TDD α W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TDD α W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TDD α W₁ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ)) ∧
+      (Work.FTS.EllipticEst.SmoothOpen (Work.FTS.GalFields.RHS.Sharp.TED α W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.Spaces.HkMem α 4 (Work.FTS.GalFields.RHS.Sharp.TED α W₁ (fun z θ => W₁ z θ - W₂ z θ)) ∧
+        Work.FTS.Nonlin.Xn α (Work.FTS.GalFields.RHS.Sharp.TED α W₁ (fun z θ => W₁ z θ - W₂ z θ))
+          ≤ K * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂) * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ))
+      := by
+  obtain ⟨K1, hK1pos, h1⟩ := HonTermsC.Part1C hN hstar hEll hα hαα₂
+  obtain ⟨K2, hK2pos, h2⟩ := HonTermsC.Part2C hN hstar hEll hα hαα₂
+  have hK12 : 0 < K1 + K2 := by linarith
+  refine ⟨K1 + K2, hK12, ?_⟩
+  intro W₁ W₂ hW₁ hW₂ hα1
+  have hsub : Work.FTS.ClassC.ClassC α (fun z θ => W₁ z θ - W₂ z θ) := sub_classC hW₁ hW₂
+  obtain ⟨a1, a2, a3, a4, a5⟩ := h1 hW₁ hW₂ hsub hα1
+  obtain ⟨b1, b2, b3, b4, b5⟩ := h2 hW₁ hW₂ hsub hα1
+  have hS0 : (0 : ℝ) ≤ 1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂ := by
+    have hW1 := Work.Spaces.HkNorm_nonneg α 5 W₁
+    have hW2 := Work.Spaces.HkNorm_nonneg α 5 W₂
+    linarith
+  have hnh : (0 : ℝ) ≤ Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ) :=
+    Work.Spaces.HkNorm_nonneg α 5 (fun z θ => W₁ z θ - W₂ z θ)
+  have up1 : ∀ {T : Fn},
+      Work.FTS.EllipticEst.SmoothOpen T ∧ Work.Spaces.HkMem α 4 T ∧
+        Work.FTS.Nonlin.Xn α T
+          ≤ K1 * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂)
+              * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ) →
+      Work.FTS.EllipticEst.SmoothOpen T ∧ Work.Spaces.HkMem α 4 T ∧
+        Work.FTS.Nonlin.Xn α T
+          ≤ (K1 + K2) * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂)
+              * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ) := by
+    rintro T ⟨hS, hM, hX⟩
+    exact ⟨hS, hM, le_trans hX (mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_right (by linarith) hS0) hnh)⟩
+  have up2 : ∀ {T : Fn},
+      Work.FTS.EllipticEst.SmoothOpen T ∧ Work.Spaces.HkMem α 4 T ∧
+        Work.FTS.Nonlin.Xn α T
+          ≤ K2 * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂)
+              * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ) →
+      Work.FTS.EllipticEst.SmoothOpen T ∧ Work.Spaces.HkMem α 4 T ∧
+        Work.FTS.Nonlin.Xn α T
+          ≤ (K1 + K2) * (1 + Work.FTS.GalFields.Xn5 α W₁ + Work.FTS.GalFields.Xn5 α W₂)
+              * Work.FTS.GalFields.Xn5 α (fun z θ => W₁ z θ - W₂ z θ) := by
+    rintro T ⟨hS, hM, hX⟩
+    exact ⟨hS, hM, le_trans hX (mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_right (by linarith) hS0) hnh)⟩
+  exact ⟨up1 a1, up1 a2, up1 a3, up1 a4, up1 a5,
+    up2 b1, up2 b2, up2 b3, up2 b4, up2 b5⟩
+
+end Work.FTS.StrongEps.EpsRLX.CCSharp
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -316,3 +410,5 @@ theorem epsWP_hkMem4_bnd_fam {α C₀ Ce Cs T : ℝ} {ρ : ℝ × ℝ → ℝ}
       (fun s hs => hb6 n s hs) s hs⟩
 
 end Work.FTS.StrongEps
+end
+end

@@ -2,11 +2,11 @@ import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Submission.Work.FTS_RegExport.RXT.SysAux.PieceDefs
-import Submission.Work.FTS_RegExport.RXT.SysAux.PieceCalc
-import Submission.Work.FTS_RegExport.RXT.SysAux.FK_L12_slice_facts
-import Submission.Work.FTS.EllipticEst.OpenQDefs
 import Submission.Work.FTS.CoercivityFix.Transfer.E2pkg.FinCalc
+import Submission.Work.FTS_RegExport.RXT.SysAux.L12_tail_weight
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.StabilityFar.Profile.exists_Fstar_add_ge
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -89,27 +89,11 @@ def al2f (β : ℝ) : ℝ → ℝ → ℝ :=
 
 /-! ## §2  The definitions unfold to the literal expressions of `SysAux.piece_bounds` -/
 
-theorem Ef_eq (μ β : ℝ) : Ef μ β = fun z θ : ℝ =>
-    ((1 - μ) + Work.Construction.c2m θ * (2 * β / (1 + z))) * (2 * z * (1 - z) / (1 + z) ^ 3)
-    + (-(3 / (1 + z)) + β * (2 * z / (1 + z) ^ 2) / 2)
-      * ((2 * β / 3) * Work.Construction.c2m θ * (2 * z / (1 + z) ^ 2))
-    + ((1 + μ) - 2 / (1 + z) + β * Real.sin θ ^ 2 * (2 * z / (1 + z) ^ 2))
-      * (2 * z / (1 + z) ^ 2) := rfl
 
-theorem al1f_eq (β : ℝ) : al1f β = fun z θ : ℝ => Work.Construction.c2m θ
-    * (2 * z * (1 - z) / (1 + z) ^ 3 - 2 * z / (1 + z) ^ 2)
-    - (1 / β) * (2 * z / (1 + z) ^ 2) := rfl
 
-theorem al2f_eq (β : ℝ) : al2f β = fun z θ : ℝ =>
-    ((2 * β / 3) * Work.Construction.c2m θ * (2 * z / (1 + z) ^ 2)) / 2
-    + Real.sin θ ^ 2 * (2 * z / (1 + z) ^ 2) := rfl
 
-theorem A1f_eq : A1f = fun z _ : ℝ => 2 * z * (1 - z) / (1 + z) ^ 3 := rfl
 
-theorem Fhf_eq : Fhf = fun z _ : ℝ => 2 * z / (1 + z) ^ 2 := rfl
 
-theorem B1f_eq (β : ℝ) : B1f β = fun z θ : ℝ =>
-    (2 * β / 3) * Work.Construction.c2m θ * (2 * z / (1 + z) ^ 2) := rfl
 
 /-! ## §3  Smoothness on the open quadrant -/
 
@@ -156,10 +140,6 @@ theorem contDiffOn_sinsq {n : ℕ} : ContDiffOn ℝ n (fun θ : ℝ => Real.sin 
 theorem contDiffOn_add_one {n : ℕ} : ContDiffOn ℝ n (fun z : ℝ => 1 + z) (Set.Ioi 0) := by
   fun_prop
 
-theorem contDiffOn_one_div {n : ℕ} : ContDiffOn ℝ n (fun z : ℝ => 1 / (1 + z)) (Set.Ioi 0) :=
-  (contDiffOn_const (c := (1:ℝ))).div contDiffOn_add_one (fun z hz => by
-    have hz0 : (0:ℝ) < z := hz
-    exact ne_of_gt (by linarith only [hz0] : (0:ℝ) < 1 + z))
 
 theorem contDiffOn_two_div {n : ℕ} : ContDiffOn ℝ n (fun z : ℝ => 2 / (1 + z)) (Set.Ioi 0) :=
   (contDiffOn_const (c := (2:ℝ))).div contDiffOn_add_one (fun z hz => by
@@ -301,10 +281,6 @@ theorem DzIter_zero_fun (j : ℕ) :
       show z * deriv (fun z' : ℝ => (0 : ℝ)) z = 0
       simp
 
-/-- Every `mixed` jet of the zero function vanishes. -/
-theorem mixed_zero (a b : ℕ) :
-    Work.Spaces.mixed b a (fun _ _ : ℝ => (0 : ℝ)) = fun _ _ => 0 := by
-  rw [Work.Spaces.mixed, DthIter_zero_fun a, DzIter_zero_fun b]
 
 theorem DthIter_const_mul (c : ℝ) (f : ℝ → ℝ → ℝ) (i : ℕ) :
     Work.Spaces.DthIter i (fun z θ => c * f z θ)
@@ -372,46 +348,5 @@ theorem mixed_z_only_zero_apply (h : ℝ → ℝ) (b : ℕ) (z θ : ℝ) :
   rw [Work.Spaces.mixed, Work.Spaces.DthIter_zero]
   exact Work.Elliptic.DzIter_rad h b z θ
 
-/-- `mixed` is additive over a finite sum of functions that are jointly `C^n` on the open
-quadrant, and the sum itself is jointly `C^n`. -/
-theorem contDiffOn_mixed_finset_sum {n : ℕ} {ι : Type*} [DecidableEq ι] (s : Finset ι)
-    (P : ι → ℝ → ℝ → ℝ)
-    (hP : ∀ k ∈ s, ContDiffOn ℝ n (Function.uncurry (P k)) Work.FTS.EllipticEst.Q0) :
-    ContDiffOn ℝ n (Function.uncurry (fun z θ => ∑ k ∈ s, P k z θ)) Work.FTS.EllipticEst.Q0 ∧
-    ∀ a b : ℕ, a + b ≤ n → ∀ z θ : ℝ, (z, θ) ∈ Work.FTS.EllipticEst.Q0 →
-      Work.Spaces.mixed b a (fun z θ => ∑ k ∈ s, P k z θ) z θ
-        = ∑ k ∈ s, Work.Spaces.mixed b a (P k) z θ := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-      refine ⟨?_, ?_⟩
-      · have h : (fun z θ : ℝ => ∑ k ∈ (∅ : Finset ι), P k z θ) = fun _ _ => 0 := by
-          funext z θ; simp
-        rw [h]
-        exact contDiffOn_const
-      · intro a b hab z θ hzθ
-        have h : (fun z θ : ℝ => ∑ k ∈ (∅ : Finset ι), P k z θ) = fun _ _ => 0 := by
-          funext z θ; simp
-        rw [h, mixed_zero, Finset.sum_empty]
-  | insert k t hk ih =>
-      have hmem : k ∈ insert k t := Finset.mem_insert_self k t
-      have hPt : ∀ j ∈ t, ContDiffOn ℝ n (Function.uncurry (P j)) Work.FTS.EllipticEst.Q0 :=
-        fun j hj => hP j (Finset.mem_insert_of_mem hj)
-      obtain ⟨hsm, hmix⟩ := ih hPt
-      have hsplit : (fun z θ : ℝ => ∑ j ∈ insert k t, P j z θ)
-          = P k + fun z θ => ∑ j ∈ t, P j z θ := by
-        funext z θ
-        rw [Finset.sum_insert hk]
-        rfl
-      have hsmk : ContDiffOn ℝ n (Function.uncurry (P k)) Work.FTS.EllipticEst.Q0 := hP k hmem
-      refine ⟨?_, ?_⟩
-      · rw [hsplit]
-        exact hsmk.add hsm
-      · intro a b hab z θ hzθ
-        rw [hsplit]
-        rw [Work.FTS.CoercivityFix.Transfer.E2pkg.mixed_add_of_contDiffOn
-          (V := Work.FTS.EllipticEst.Q0) Work.FTS.EllipticEst.isOpen_Q0 hsmk hsm a b hab
-          (z, θ) hzθ]
-        rw [hmix a b hab z θ hzθ, Finset.sum_insert hk]
 
 end Work.FTS_RegExport.RXT.Sys

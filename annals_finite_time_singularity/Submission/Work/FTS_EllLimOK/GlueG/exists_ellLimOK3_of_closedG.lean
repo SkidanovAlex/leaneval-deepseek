@@ -1,45 +1,9 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.GlueG.exists_ellLimOK3_of_closedG` — the order-3 glue over the repaired package
-
-This is the `FatouPkgG`/`ClosedE3G` analogue of
-`Work.FTS_EllLimOK.exists_ellLimOK3_of_closed` (`exists_ellLimOK3_of_closed.lean`): a linear `E`
-that solves the elliptic law on the class `C`, is `C³` on `Qd` there, and is order-`3` closed in
-the *repaired* sense (`ClosedE3G`, i.e. the cluster limit only carries the minimal package
-`FatouPkgG`: the law, `C³`-regularity, the two `ℋ⁰`-memberships and the box regularity), can be
-modified **off the class `C`** into a linear operator satisfying the order-`3` limit closure
-(1a′) `EllLimOK3 α E'`.
-
-The conclusion `EllLimOK3` is the *frozen* predicate of `Defs3.lean`; its body reads only
-* the law `IsBslSolPos α f (E f)`,
-* `ContDiffOn ℝ 3 (Function.uncurry (E f)) Qd`,
-* the convergence of the `C³`-jets,
-
-so the weaker package `FatouPkgG` is exactly enough: the extra clauses of the frozen `FatouPkg`
-(the naive `∂_θ`-, `∂_θ²`-memberships, the `L²`-memberships, `ZDecay`) are consumed by nothing in
-this chain (see the header of `FatouG.lean`).
-
-The proof is a verbatim transcription of the order-`3` argument, with two changes:
-
-* `jconv3G_transfer` — the `ClosedE3G` form of `Glue3.jconv3_transfer` (interleave the two
-  sequences, apply `ClosedE3G` to the interleaved `LimSeq4` and read off the even/odd
-  subsequences);
-* the graph used is still `graphG3 α E hsm` — its carrier asks the *limit* component only for
-  `IsBslSolPos` and `ContDiffOn ℝ 3`, which `FatouPkgG` supplies through `sol`/`smooth`; the
-  `∃ fn, LimSeq4 α fn p.1 ∧ JConv3 …` clause is what the closure hypothesis produces.
-
-Everything else (`exists_section_extend`, `limSeq4_add`, `limSeq4_smul`, `limSeq4_const`,
-`mixed_add_Qd`, `limSeq4_ilv`, `jconv3_add`, `jconv3_smul`, `classCSub`, `graphG3`,
-`IsBslSolPos_add`, `isBslSolPos_smul'`, `isBslSolPos_zero`) is imported from `Glue.lean`,
-`ExistsEllSolC` and `exists_ellLimOK3_of_closed.lean`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Submission.Work.FTS_EllLimOK.FatouG
-import Submission.Work.FTS_EllLimOK.exists_ellLimOK3_of_closed
 import Submission.Work.FTS_EllLimOK.Glue
+import Submission.Work.FTS_EllLimOK.exists_ellLimOK3_of_closed
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

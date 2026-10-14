@@ -3,12 +3,9 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Submission.Work.FTS_StreamBdry.Basic
-import Submission.Work.FTS_StreamBdry.SB25.Defs
-import Submission.Work.FTS_StreamBdry.SB25.Sb5CmpAux
-import Submission.Work.FTS_StreamBdry.SB25.Lgs_barrier
-import Submission.Work.FTS_StreamBdry.SB25.Lgs_sub
-import Submission.Work.FTS_StreamBdry.SB25.Lgs_le_zero_of_max
-import Submission.Work.FTS_StreamBdry.SB25.exists_phi_ge_near_ends
+import Submission.Work.FTS_StreamBdry.SB6.UprimeAux.OdeFacts
+import Submission.Work.FTS_StreamBdry.SBpsiP.SelfUprime
+import Submission.Work.FTS_StreamBdry.sb5_barrier_proved
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

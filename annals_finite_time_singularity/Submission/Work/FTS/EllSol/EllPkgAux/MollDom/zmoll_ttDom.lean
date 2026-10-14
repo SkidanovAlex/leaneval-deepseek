@@ -2,19 +2,17 @@ import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.Interval.Basic
-import Submission.Work.FTS.EllSol.EllPkgAux.MollBase
-import Submission.Work.FTS.EllSol.EllPkgAux.KernelDefs
-import Submission.Work.FTS.EllSol.PkgK5.K5c.MollDefs
-import Submission.Work.FTS.EllSol.EllPkgAux.kernelJensen
-import Submission.Work.FTS.EllSol.EllPkgAux.thMollSliceL2
-import Submission.Work.FTS.EllSol.EllPkgAux.mollSliceBound
-import Submission.Work.FTS.EllSol.EllPkgAux.mollHdom
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.ZmollTTB3
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_continuousOn
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_deriv_bdd
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_deriv2_integrableOn
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.slice_deriv2_weighted_integrableOn
-import Submission.Work.FTS.EllSol.EllPkgAux.MollDom.localIntegrable_sqrtE2s
+import Submission.Work.FTS.EllipticEst.TT.ESW.Tk_B_le_chain_uniform
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.IBPsub.Slots
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2W.PsiSlices.shiftedSourcePoleBound
+import Submission.Work.Spaces.HProductRule_Badsummand
+import Submission.Work.Spaces.HProductRule_bad_term
+import Submission.Work.Spaces.pz_mixed_mul_le_4
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

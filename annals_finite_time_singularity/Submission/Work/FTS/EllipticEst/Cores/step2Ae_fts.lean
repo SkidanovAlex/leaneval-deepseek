@@ -1,63 +1,16 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Cores/step2Ae_fts` — Step 2 of Elgindi's `prop:H2` in the almost-everywhere class
-
-Target (`Work.FTS.EllipticEst.Cores.step2Ae_fts`):
-
-```
-∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ),
-  Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
-    Work.FTS.EllipticEst.H2W.Ae.nrm α (Work.FTS.EllipticEst.H2W.Ae.ang2 u)
-      ≤ C * (Work.FTS.EllipticEst.H2W.Ae.nrm α G
-        + α * Work.FTS.EllipticEst.H2W.Ae.nrm α (Work.FTS.EllipticEst.H2W.Ae.grad u))
-```
-
-i.e. `‖∂_θθu‖_ρ ≤ C (‖G‖_ρ + α ‖z∂_zu‖_ρ)` with `‖f‖_ρ = √(HkSq α 0 f)`, in the
-almost-everywhere class `AeData` of `H2W/Ae/Defs.lean` (the equation `bslOp α u = G` only on the
-open quadrant, the Dirichlet data as values, `C^∞` on the open quadrant, `HkMem α 0` of `G`,
-`z²∂_zzu` and `∂_θθu`, and the two solvability conditions `F_*u = F_*G = 0` for **a.e.** `z > 0`).
-
-## The route taken here
-
-Pair the equation against `∂_θθu` in the weight `ρ = w²σ` (`σ = sin(2θ)^{-η}`); the identity is
-`Work.FTS.EllipticEst.AngAWeak.I_identity_weak` (**proved**):
-
-  `α²⟨Q,B⟩ + α(5+α)⟨U,B⟩ + ⟨B,B⟩ − ⟨∂_θ(tan θ·u),B⟩ + 6⟨u,B⟩ = −⟨G,B⟩`
-
-with `B = ∂_θθu`, `Q = z²∂_zzu`, `U = z∂_zu` and `⟨f,g⟩ = IP f g`.  Solving for `X² := ⟨B,B⟩`
-and bounding the five right-hand pieces gives the estimate; the ingredients are
-
-* `AeI1` (**delegated**, `Cores/AeStep2Aux/aeI1_fts`) — the `I₁` lower bound
-  `−Cα²(⟨U,U⟩ + √⟨U,U⟩·√⟨B,B⟩) ≤ α²⟨Q,B⟩`; this is the deep coercivity input;
-* the `I₄` bound `⟨∂_θ(tan θ·u),B⟩ ≤ ⟨u,B⟩ + C⟨u,u⟩` (**delegated**,
-  `Cores/AeStep2Aux/aeI4_open`), which is `H2W.I4Open` (proved) instantiated in the `AeData`
-  class — this is the *paper's* `I₄` analysis, and it deliberately avoids the `‖u/cos θ‖`-form of
-  `AngAWeak.AeI4`: that form needs the `Ψ̄ = u/cos θ` first-order estimate, which in this tree is
-  obtainable only from the *strong* form of Step 2 itself (a cycle), whereas `I4Open` needs only
-  the two `Ψ̄`-slice integrabilities;
-* `nrm α u ≤ C ‖G‖_ρ` (**delegated**, `Cores/AeStep2Aux/aeUHk_bnd`) — the `u`-half of Step 1;
-* `HkMem α 0 u` (**delegated**, `Cores/AeStep2Aux/aeUHk_mem`), `HkMem α 0 (z∂_zu)`
-  (`AngAWeak.hkMem_grad_of`, proved), and the six `IPMem`s of the identity
-  (`remov.AeIPMemsSlim`, proved).
-
-Everything else — the Cauchy–Schwarz bounds of `I₂`, `I₅`, `⟨G,B⟩`, the `HkSq`/`IP`
-identifications and the quadratic solve — is in `step2Ae_core` below.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.Analysis.Normed.Field.Basic
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.AngAWeak.Basic
-import Submission.Work.FTS.EllipticEst.AngAWeak.step1Ae
-import Submission.Work.FTS.EllipticEst.AngClean.HkMem_zero_IPMem
-import Submission.Work.FTS.EllipticEst.Honest.Basic
-import Submission.Work.FTS.EllipticEst.remov.AeIPMemsSlim
-import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_mem
-import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_bnd
-import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeI4_open
 import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeI1_fts
+import Submission.Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_bnd
+import Submission.Work.FTS.EllipticEst.TT.psiDerivSq_lower
+import Submission.Work.FTS.Nonlinear.Pieces.RNP.GamSharpAux
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -294,31 +247,5 @@ theorem step2Ae_core
     _ = (C1 + C4 * Cb ^ 2 + (C1 + 21 / 4 + Cb + 6 * Cb + 1) + 1)
         * (nrm α G + α * nrm α (grad u)) := by rw [hNdef, hfdef, hbdef, hUdef]; rfl
 
-theorem step2Ae_fts : ∃ C : ℝ, 0 < C ∧
-    ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ), Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
-      Work.FTS.EllipticEst.H2W.Ae.nrm α (Work.FTS.EllipticEst.H2W.Ae.ang2 u)
-        ≤ C * (Work.FTS.EllipticEst.H2W.Ae.nrm α G
-          + α * Work.FTS.EllipticEst.H2W.Ae.nrm α (Work.FTS.EllipticEst.H2W.Ae.grad u)) :=
-  step2Ae_core
-    (fun α u G h => Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_mem α u G h)
-    (fun α u G h _ => Work.FTS.EllipticEst.AngAWeak.hkMem_grad_of h)
-    Work.FTS.EllipticEst.Cores.AeStep2Aux.aeUHk_bnd
-    (by
-      -- The bare `I₁` lower bound (`Work.FTS.EllipticEst.AngAWeak.AeI1`), i.e.
-      --   `-C α²(⟨U,U⟩_ρ + √⟨U,U⟩_ρ·√⟨B,B⟩_ρ) ≤ α²⟨z²∂_zzu, B⟩_ρ`,  `U = z∂_zu`.
-      -- This is the project's single open crux and the only gap of this file: the assembly
-      -- `step2Ae_core` above is proved and axiom-clean, and the other three inputs are proved
-      -- and wired in.  Two chains in the tree reach it; both rest on the same open mixed-slot
-      -- crux `∫⁻_z∫⁻_θ (z∂_z∂_θu)²ρ < ⊤` (`Prop/Ang2/aePpFinite`, `H2W/AngBW/Chain/aePpFinite`,
-      -- `I1Ae/*`, `TT/AeI1/*`):
-      --  * `Cores/AeStep2Aux.aeI1_fts` = `remov.AeI1Paper` from `i1Paper_weakMixed` (a.e.-mixed
-      --    slot) followed by the proved `H2W.AngBW.i1Bare_of_paper` — cited below;
-      --  * the reviewed honest-case chain: [a.e.-mixed slot + `w²`-weighted outer integrability]
-      --    ⟹ `remov.AeDzTraceHkAe` (proved: the endpoint traces of `U`'s slices)
-      --    ⟹ `remov.AeI1PaperOfHonest` ⟹ `AeI1Paper` ⟹ `i1Bare_of_paper` ⟹ `AeI1`.
-      -- See `NOTES_last_slot.md`, `NOTES_for_aeI1.md`, `NOTES_mixed_slot.md`,
-      -- `NOTES_i1Paper_weakMixed.md`, `NOTES_aeI1_bare_hardTermRoute.md`.
-      exact Work.FTS.EllipticEst.Cores.AeStep2Aux.aeI1_fts)
-    Work.FTS.EllipticEst.Cores.AeStep2Aux.aeI4_open
 
 end Work.FTS.EllipticEst.Cores

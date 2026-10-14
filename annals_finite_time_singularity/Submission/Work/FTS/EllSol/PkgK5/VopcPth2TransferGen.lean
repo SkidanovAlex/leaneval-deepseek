@@ -2,9 +2,9 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Submission.Work.FTS.EllSol.PkgK5.VopcPth2Transfer
-import Submission.Work.FTS.EllSol.Defs
-import Submission.Work.FTS.EllipticEst.FstarDivOpen.fstar_div_integrable_of_smoothOpen
-import Submission.Work.FTS.EllipticEst.Cert.HkMem_pthIter2_EllResid
+import Submission.Work.FTS.StrongEps.Jeps_contDiffOn
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

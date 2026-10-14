@@ -1,31 +1,11 @@
-/-
-# The boundary derivative: the abstract `ε`-estimate
-
-This module isolates the analytic content of `hasFDerivWithinAt_potOn_uncurry_boundary` from the
-concrete potential: for *abstract* data
-
-* `F : ℝ³ × ℝ → ℝ`, `A : ℝ³ × ℝ → ℝ³`, `c : ℝ³ × ℝ → ℝ`,
-* `F` and `c` continuous on the closed strip `bstrip T = ℝ³ × [0,T/2]`, `A` continuous on the half
-  open strip `bstripO T = ℝ³ × [0,T/2)`,
-* the spatial partial derivative of the slice `F (·,σ)` at positive times `σ` is `innerSL ℝ (A (·,σ))`,
-* the time derivative of the slice `s ↦ F (y₀,s)` is `c (y₀,·)` at positive times,
-
-the uncurried `F` has within derivative `innerSL ℝ (A (y₀,0)) ∘ fst + c (y₀,0) • snd` at `(y₀,0)`
-within the closed box `B(x₀,1) × [0,T/2)`.
-
-The estimate is: the spatial part by the convex mean value inequality applied to the slices
-`F (·,σ)` (with a limiting argument for the degenerate slice `σ = 0`), the time part by the one
-dimensional mean value estimate `rightDeriv_zero_of_hasDerivAt_Ioo` applied to `s ↦ F (y₀,s)`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Submission.Work.FTS.PressureOn.Defs
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime
 import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtData
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.rightDeriv_zero_of_hasDerivAt_Ioo
-import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.norm_sub_fderiv_le_of_convex
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

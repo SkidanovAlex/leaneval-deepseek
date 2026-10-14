@@ -1,7 +1,196 @@
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Inv
+import Mathlib.Analysis.Calculus.Deriv.Pow
+import Mathlib.Analysis.Calculus.Deriv.Shift
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS_EllLimOK.UniqDefs
-import Submission.Work.Spaces.Defs
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Mathlib.Order.Interval.Basic
+import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.Cyl.fderiv_rho_theta_eZ =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# The axial derivative of `x ↦ F(ρ(x), θ(x))`: the `e₃` direction
+
+For a two-variable function `F` and a point `x` off the symmetry axis (`0 < radial x`),
+
+`fderiv ℝ (fun y ↦ F (rho y) (theta y)) x eZ
+   = sin θ · ∂_ρ F(ρ,θ) + (cos θ / ρ) · ∂_θ F(ρ,θ)`,
+
+with `(ρ, θ) = (rho x, theta x)`.  Geometrically: along the vertical line `x + t e₃` the point
+`(rho, theta)` moves as `(ρ(x₃), θ(x₃))` with `∂_{x₃}ρ = x₃/ρ = sin θ` and
+`∂_{x₃}θ = radial/ρ² = cos θ/ρ`, and `e₃` is the coordinate direction `∂_{x₃}`.
+-/
+
+set_option autoImplicit false
+set_option linter.unusedSimpArgs false
+
+open scoped Matrix
+open Work.Cyl
+
+namespace Work.Cyl
+
+/-! ## The dictionary between `(rho, theta)` on `ℝ³` and `(rhoP, thetaP)` on the half plane
+
+`rho y = rhoP (radial y) (axial y)` and `theta y = thetaP (radial y) (axial y)`, so on the
+vertical line through `x` we have `rho (x + t e₃) = rhoP (radial x) (axial x + t)` and likewise
+for `theta`. -/
+
+private lemma rho_eq_rhoP (y : R3) : rho y = rhoP (radial y) (axial y) := by
+  rw [rho, rhoP, radial_sq]
+
+private lemma theta_eq_thetaP (y : R3) : theta y = thetaP (radial y) (axial y) := rfl
+
+/-! ## The axial chain rule along a vertical line in the `(r, x₃)` half plane -/
+
+private lemma deriv_rhoP_thetaP_shift (F : ℝ → ℝ → ℝ) (r z : ℝ) (hr : 0 < r)
+    (hF : DiffAt2 F (rhoP r z) (thetaP r z)) :
+    deriv (fun t : ℝ => F (rhoP r (z + t)) (thetaP r (z + t))) 0 =
+      Real.sin (thetaP r z) * pdR F (rhoP r z) (thetaP r z)
+        + Real.cos (thetaP r z) / rhoP r z * pdZ F (rhoP r z) (thetaP r z) := by
+  rw [deriv_comp_const_add (fun u : ℝ => F (rhoP r u) (thetaP r u)) z 0, add_zero]
+  rw [show deriv (fun u : ℝ => F (rhoP r u) (thetaP r u)) z
+      = pdZ (fun r' z' => F (rhoP r' z') (thetaP r' z')) r z from rfl]
+  exact pdZ_comp_polar_rho F r z hr hF
+
+theorem fderiv_rho_theta_eZ (F : ℝ → ℝ → ℝ) (x : Work.Cyl.R3)
+    (hF : Work.Cyl.DiffAt2 F (Work.Cyl.rho x) (Work.Cyl.theta x)) (hr : 0 < Work.Cyl.radial x) :
+    fderiv ℝ (fun y : Work.Cyl.R3 => F (Work.Cyl.rho y) (Work.Cyl.theta y)) x Work.Cyl.eZ =
+      Real.sin (Work.Cyl.theta x) * Work.Cyl.pdR F (Work.Cyl.rho x) (Work.Cyl.theta x)
+        + Real.cos (Work.Cyl.theta x) / Work.Cyl.rho x *
+          Work.Cyl.pdZ F (Work.Cyl.rho x) (Work.Cyl.theta x) := by
+  have hrho : rho x = rhoP (radial x) (axial x) := rho_eq_rhoP x
+  have htheta : theta x = thetaP (radial x) (axial x) := theta_eq_thetaP x
+  have hF' : DiffAt2 F (rhoP (radial x) (axial x)) (thetaP (radial x) (axial x)) := by
+    rw [← hrho, ← htheta]; exact hF
+  rw [fderiv_apply_eq_deriv_line _ _ _ (differentiableAt_rho_theta_comp F x hF hr)]
+  have hfun : (fun t : ℝ => F (rho (x + t • eZ)) (theta (x + t • eZ))) =
+      fun t : ℝ =>
+        F (rhoP (radial x) (axial x + t)) (thetaP (radial x) (axial x + t)) := by
+    funext t
+    rw [rho_eq_rhoP (x + t • eZ), theta_eq_thetaP (x + t • eZ), radial_add_smul_eZ,
+      axial_add_smul_eZ]
+  rw [hfun, deriv_rhoP_thetaP_shift F (radial x) (axial x) hr hF']
+  rw [← hrho, ← htheta]
+
+end Work.Cyl
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.LevelOneAsm.eigE_span_orthogonal_eq_bot =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.LevelOneAsm
+
+local notation "Iθ" => Work.Spaces.Iθ
+
+
+
+end Work.FTS.EllipticEst.LevelOneAsm
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.zHardyDefs =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology Interval
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst
+
+set_option autoImplicit false
+
+/-! ## The auxiliary functions -/
+
+/-- The function `a(z) = (z-3)/(2(1+z))` of the completion of squares. -/
+def zA (z : ℝ) : ℝ := (z - 3) / (2 * (1 + z))
+
+/-- The derivative of the radial weight `w(z) = (1+z)²/z²`. -/
+def zDw (z : ℝ) : ℝ := 2 * (1 + z) / z ^ 2 - 2 * (1 + z) ^ 2 / z ^ 3
+
+/-- The derivative of `zA`. -/
+def zDA (z : ℝ) : ℝ := 2 / (1 + z) ^ 2
+
+
+
+/-! ## The derivatives of `zA` and of the weight `w` -/
+
+theorem hasDerivAt_zA {z : ℝ} (hz : 0 < z) : HasDerivAt zA (zDA z) z := by
+  have hid : HasDerivAt (fun y : ℝ => y) (1 : ℝ) z := hasDerivAt_id z
+  have hnum : HasDerivAt (fun y : ℝ => y - 3) 1 z := hid.sub_const 3
+  have hden : HasDerivAt (fun y : ℝ => 2 * (1 + y)) 2 z := by
+    have h := (hid.const_add (1 : ℝ)).const_mul (2 : ℝ)
+    exact h.congr_deriv (by ring)
+  have h := hnum.div hden (by positivity)
+  change HasDerivAt (fun y : ℝ => (y - 3) / (2 * (1 + y))) (zDA z) z
+  refine h.congr_deriv ?_
+  rw [zDA]
+  have h2 : (1 : ℝ) + z ≠ 0 := by linarith
+  field_simp
+  try ring
+
+theorem hasDerivAt_w {z : ℝ} (hz : 0 < z) : HasDerivAt Work.Spaces.w (zDw z) z := by
+  have hid : HasDerivAt (fun y : ℝ => y) (1 : ℝ) z := hasDerivAt_id z
+  have hnum : HasDerivAt (fun y : ℝ => (1 + y) ^ 2) (2 * (1 + z)) z := by
+    have h := (hid.const_add (1 : ℝ)).pow 2
+    exact h.congr_deriv (by ring)
+  have hden : HasDerivAt (fun y : ℝ => y ^ 2) (2 * z) z := by
+    have h := hid.pow 2
+    exact h.congr_deriv (by ring)
+  have h := hnum.div hden (by positivity)
+  change HasDerivAt (fun y : ℝ => (1 + y) ^ 2 / y ^ 2) (zDw z) z
+  refine h.congr_deriv ?_
+  rw [zDw]
+  have h2 : z ≠ 0 := ne_of_gt hz
+  field_simp
+  try ring
+
+/-! ## The algebraic identity of the completion of squares -/
+
+
+/-! ## The pointwise inequality -/
+
+
+
+end Work.FTS.EllipticEst
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.EGap.integrableOn_PhiD =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -290,3 +479,5 @@ theorem integrableOn_PhiD {α : ℝ} {Ψ Ψ' : ℝ → ℝ → ℝ}
             + (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0 Ψ' z θ)) := by ring
 
 end Work.FTS_EllLimOK.EGap
+end
+end

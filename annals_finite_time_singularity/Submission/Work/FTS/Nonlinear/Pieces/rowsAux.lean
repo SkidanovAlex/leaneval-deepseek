@@ -4,25 +4,22 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.Nonlinear.Pieces.Rl1.rl1Main
-import Submission.Work.FTS.Nonlinear.Pieces.Rows
-import Submission.Work.FTS.Nonlinear.Pieces.Basic
-import Submission.Work.FTS.Nonlinear.Pieces.L12_zero_le_weak
-import Submission.Work.FTS.H2.L12ZeroQ
-import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.H2.WProdQ
-import Submission.Work.FTS.H2.WtoHQ
-import Submission.Work.FTS.Nonlinear.FstarPkgAll
-import Submission.Work.Blocks.HkMul_ang_le
-import Submission.Work.Spaces.ProductRuleInW
-import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
-import Submission.Work.FTS.Nonlinear.Pieces.L12FK_add_ge0
-import Submission.Work.Construction.GammaN0
 import Submission.Work.Construction.H4N_GammaTerm_le
-import Submission.Work.Spaces.Gamma_WlInf
-import Submission.Work.FTS.LocData.angMaj_mem
-import Submission.Work.FTS.LocDataExt.SepFactor
-import Submission.Work.FTS.Nonlinear.Pieces.AuxSep
+import Submission.Work.FTS.H2.L12HQ
+import Submission.Work.FTS.LocData.bumpZ_eq_zero_of_notMem_Icc
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.Nonlinear.FstarPkgAll
+import Submission.Work.FTS.Nonlinear.Pieces.splitsDiff
+import Submission.Work.FTS.StrongEps.SupPort.HardyThetaOpen
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.Base
+import Submission.Work.FTS.StrongPersist.QangSq6
+import Submission.Work.FTS.VocabO
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.Spaces.ProductRuleInW
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -44,141 +41,6 @@ set_option maxHeartbeats 8000000
 This is `Work.FTS.H2.L12ZeroQ` with the `RegQ` hypothesis weakened to its two usable halves
 (`SmoothQuad` and `HkMem α 4`); the `BdryTraces` component of `RegQ` is never used in that
 proof.  It is the form in which the L₁₂-estimates of `rak`/`rl0`/`rl1`/`rl2` are consumed. -/
-theorem L12_zero_le_HkNorm {α : ℝ} {f : ℝ → ℝ → ℝ} (hα : 0 < α) (hα1 : α ≤ 1)
-    (hsm : Work.FTS.LocData.SmoothQuad f) (hmem : Work.Spaces.HkMem α 4 f) :
-    |Work.Construction.L12 f 0| ≤ 3 * Work.FTS.Nonlin.Xn α f := by
-  set μ : MeasureTheory.Measure ℝ := MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ)) with hμdef
-  have hslice : ∀ z : ℝ, 0 < z →
-      MeasureTheory.IntegrableOn (fun θ : ℝ => (f z θ) ^ 2) Work.Spaces.Iθ :=
-    fun z hz => Work.FTS.H2.l12q_slice_sq_integrableOn α f hsm hmem hz
-  have hdens : ∀ r : ℝ, 0 < r → |Work.Elliptic.L12dens f r|
-      ≤ Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) / r :=
-    fun r hr => Work.FTS.H2.l12q_l12dens_slice f hr (hslice r hr)
-  have hPhiw_le := Work.FTS.H2.l12q_phiWeight_le α f hmem
-  have hPhiw_int := Work.FTS.H2.l12q_phiWeight_integrable α f hsm hmem
-  have hPhi_aesm := Work.FTS.H2.l12q_aesm f hsm
-  have hPhi0 : ∀ r : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2 := fun r =>
-    MeasureTheory.integral_nonneg_of_ae (Filter.Eventually.of_forall fun θ => sq_nonneg _)
-  set A : ℝ → ℝ := fun r => Real.sqrt (3 * ((∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2)
-      * ((1 + r) / r) ^ 2)) with hAdef
-  set B : ℝ → ℝ := fun r => 1 / (1 + r) with hBdef
-  have hAe0 : ∀ᵐ r ∂μ, 0 ≤ A r := by
-    filter_upwards [MeasureTheory.ae_restrict_mem (μ := MeasureTheory.volume) measurableSet_Ioi]
-      with r hr
-    rw [hAdef]
-    exact Real.sqrt_nonneg _
-  have hBe0 : ∀ᵐ r ∂μ, 0 ≤ B r := by
-    filter_upwards [MeasureTheory.ae_restrict_mem (μ := MeasureTheory.volume) measurableSet_Ioi]
-      with r hr
-    rw [hBdef]
-    have hr' : (0 : ℝ) < r := Set.mem_Ioi.mp hr
-    exact div_nonneg zero_le_one (by linarith)
-  have hAmeas : MeasureTheory.AEStronglyMeasurable A μ := by
-    rw [hμdef, hAdef]
-    exact Real.continuous_sqrt.comp_aestronglyMeasurable
-      ((aestronglyMeasurable_const.mul hPhi_aesm))
-  have hpt : ∀ r : ℝ,
-      A r ^ 2 = 3 * ((∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * ((1 + r) / r) ^ 2) := by
-    intro r
-    rw [hAdef]
-    exact Real.sq_sqrt (mul_nonneg (by norm_num)
-      (mul_nonneg (hPhi0 r) (sq_nonneg _)))
-  have h33 : MeasureTheory.Integrable
-      (fun r : ℝ => 3 * ((∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * ((1 + r) / r) ^ 2)) μ := by
-    rw [hμdef]
-    exact hPhiw_int.const_mul 3
-  have hAint : MeasureTheory.Integrable (fun r => A r ^ 2) μ := by
-    refine h33.congr ?_
-    filter_upwards with r
-    exact (hpt r).symm
-  have hmemA : MeasureTheory.MemLp A 2 μ :=
-    (MeasureTheory.memLp_two_iff_integrable_sq hAmeas).mpr hAint
-  obtain ⟨hB_int, hB_le⟩ := Work.FTS.H2.InvOneAddSq
-  have hBmeas : MeasureTheory.AEStronglyMeasurable B μ := by
-    rw [hμdef, hBdef]
-    have h2 : MeasureTheory.AEStronglyMeasurable (fun r : ℝ => 1 / (1 + r))
-        (MeasureTheory.volume.restrict (Set.Ioi (0 : ℝ))) :=
-      (ContinuousOn.div continuousOn_const (continuousOn_const.add continuousOn_id)
-        (fun r hr => by
-          have hr' : (0 : ℝ) < r := Set.mem_Ioi.mp hr
-          exact ne_of_gt (by show (0 : ℝ) < 1 + r; linarith))).aestronglyMeasurable
-        measurableSet_Ioi
-    simpa only using h2
-  have hBint : MeasureTheory.Integrable (fun r => B r ^ 2) μ := by
-    rw [hμdef, hBdef]
-    exact hB_int
-  have hmemB : MeasureTheory.MemLp B 2 μ :=
-    (MeasureTheory.memLp_two_iff_integrable_sq hBmeas).mpr hBint
-  have hbd : ∀ᵐ r ∂μ, |Work.Elliptic.L12dens f r| ≤ A r * B r := by
-    filter_upwards [MeasureTheory.ae_restrict_mem (μ := MeasureTheory.volume) measurableSet_Ioi]
-      with r hr
-    have h5 := hdens r (Set.mem_Ioi.mp hr)
-    have hr1 : 1 + r ≠ 0 := by have h := Set.mem_Ioi.mp hr; linarith
-    have h5' : |Work.Elliptic.L12dens f r|
-        ≤ Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * r⁻¹ := by
-      simpa only [div_eq_mul_inv] using h5
-    have hkey : ((1 + r) / r) * (1 / (1 + r)) = r⁻¹ := by
-      field_simp
-    have hAval : A r = Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2)
-        * ((1 + r) / r) := by
-      have hr' : (0 : ℝ) < r := Set.mem_Ioi.mp hr
-      have hy : (0 : ℝ) ≤ (1 + r) / r := div_nonneg (by linarith) (le_of_lt hr')
-      rw [hAdef]
-      dsimp only
-      rw [Real.sqrt_mul (show (0 : ℝ) ≤ 3 from by norm_num),
-        Real.sqrt_mul (hPhi0 r) (((1 + r) / r) ^ 2), Real.sqrt_sq hy]
-      ring
-    rw [hAval, hBdef]
-    calc |Work.Elliptic.L12dens f r|
-        ≤ Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * r⁻¹ := h5'
-      _ = Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2)
-            * (((1 + r) / r) * (1 / (1 + r))) := by rw [hkey]
-      _ = Real.sqrt 3 * Real.sqrt (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2)
-            * ((1 + r) / r) * (1 / (1 + r)) := by ring
-  have hcs := Work.FTS.H2.CS1D (μ := μ) (g := fun r => Work.Elliptic.L12dens f r)
-    hmemA hmemB hAe0 hBe0 hbd
-  have hA2le : ∫ r, A r ^ 2 ∂μ ≤ 3 * Work.Spaces.HkSq α 4 f := by
-    rw [hμdef]
-    have hpt' : ∀ r ∈ Set.Ioi (0 : ℝ),
-        A r ^ 2 = 3 * ((∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * ((1 + r) / r) ^ 2) :=
-      fun r _ => hpt r
-    calc ∫ r in Set.Ioi (0 : ℝ), A r ^ 2
-        = ∫ r in Set.Ioi (0 : ℝ),
-            3 * ((∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * ((1 + r) / r) ^ 2) :=
-          MeasureTheory.setIntegral_congr_fun measurableSet_Ioi hpt'
-      _ = 3 * ∫ r in Set.Ioi (0 : ℝ),
-            (∫ θ in Work.Spaces.Iθ, (f r θ) ^ 2) * ((1 + r) / r) ^ 2 :=
-          MeasureTheory.integral_const_mul 3 _
-      _ ≤ 3 * Work.Spaces.HkSq α 4 f := mul_le_mul_of_nonneg_left hPhiw_le (by norm_num)
-  have hB2le : ∫ r, B r ^ 2 ∂μ ≤ 2 := by
-    rw [hμdef]
-    have hfun : (fun r : ℝ => B r ^ 2) = fun r : ℝ => (1 / (1 + r)) ^ 2 := by
-      funext r
-      rw [hBdef]
-    rw [hfun]
-    exact hB_le
-  have hfinal : |Work.Elliptic.L12 f 0| ≤ Real.sqrt (3 * Work.Spaces.HkSq α 4 f) * Real.sqrt 2 := by
-    have h1 : (∫ r, Work.Elliptic.L12dens f r ∂μ) = Work.Elliptic.L12 f 0 := rfl
-    rw [← h1]
-    refine hcs.trans ?_
-    exact mul_le_mul (Real.sqrt_le_sqrt hA2le) (Real.sqrt_le_sqrt hB2le)
-      (Real.sqrt_nonneg (∫ r, B r ^ 2 ∂μ)) (Real.sqrt_nonneg _)
-  have hsqrt : Real.sqrt (3 * Work.Spaces.HkSq α 4 f) * Real.sqrt 2
-      = Real.sqrt 6 * Work.Spaces.HkNorm α 4 f := by
-    rw [Real.sqrt_mul (show (0 : ℝ) ≤ 3 by norm_num) (Work.Spaces.HkSq α 4 f),
-      Work.Spaces.HkNorm]
-    rw [show Real.sqrt 3 * Real.sqrt (Work.Spaces.HkSq α 4 f) * Real.sqrt 2
-        = (Real.sqrt 3 * Real.sqrt 2) * Real.sqrt (Work.Spaces.HkSq α 4 f) from by ring]
-    rw [show Real.sqrt 3 * Real.sqrt 2 = Real.sqrt 6 from by
-      rw [← Real.sqrt_mul (show (0 : ℝ) ≤ 3 by norm_num) (2 : ℝ)]
-      norm_num]
-  have h6le : Real.sqrt 6 ≤ 3 := by
-    nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 6 by norm_num), Real.sqrt_nonneg 6]
-  calc |Work.Elliptic.L12 f 0| ≤ Real.sqrt (3 * Work.Spaces.HkSq α 4 f) * Real.sqrt 2 := hfinal
-    _ = Real.sqrt 6 * Work.Spaces.HkNorm α 4 f := hsqrt
-    _ ≤ 3 * Work.Spaces.HkNorm α 4 f :=
-        mul_le_mul_of_nonneg_right h6le (Work.Spaces.HkNorm_nonneg α 4 f)
-    _ = 3 * Work.FTS.Nonlin.Xn α f := rfl
 
 /-! ## Two measure-theoretic wrappers
 
@@ -873,10 +735,6 @@ theorem supAbs_L12_le {α : ℝ} {g : ℝ → ℝ → ℝ} (hα : 0 < α) (hα1 
         mul_le_mul_of_nonneg_right h6le (Work.Spaces.HkNorm_nonneg α 4 g)
     _ = 3 * Work.FTS.Nonlin.Xn α g := rfl
 
-private lemma abs_mul_le_mul' {a c b d : ℝ} (h1 : |a| ≤ b) (h2 : |c| ≤ d) (hb : 0 ≤ b)
-    (hd : 0 ≤ d) : |a * c| ≤ b * d := by
-  rw [abs_mul]
-  exact mul_le_mul h1 h2 (abs_nonneg _) hb
 
 /-! ## Continuity of the factors of `N₀` on the open quadrant
 
@@ -924,49 +782,6 @@ theorem continuousOn_uncurry_pz {f : ℝ → ℝ → ℝ} (h : Work.FTS.LocData.
   ((Work.FTS.LocData.contDiffOn_pz Work.FTS.LocData.isOpen_quadU h).continuousOn).mono
     Ioi_prod_Ioo_subset_quadU
 
-/-- **Joint continuity of the first two terms of `N₀`** (the `F_*`-quadratic part),
-with `L₁₂(F_*)` replaced by its explicit value `2α/(1+z)`. -/
-theorem continuousOn_uncurry_N0fix {α : ℝ} :
-    ContinuousOn (fun p : ℝ × ℝ =>
-      (3 / (2 * α)) * Work.Construction.s2 p.2
-          * (2 * α / (1 + p.1)) * Work.Spaces.pth (Work.Construction.Fstar α) p.1 p.2
-        - Work.Construction.c2m p.2 * (2 * α / (1 + p.1))
-          * Work.Spaces.Dz (Work.Construction.Fstar α) p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-  have hFsq : Work.FTS.LocData.SmoothQuad (Work.Construction.Fstar α) :=
-    Work.FTS.LocData.Fstar_smoothQuad α
-  have hpthF : ContinuousOn (Function.uncurry (Work.Spaces.pth (Work.Construction.Fstar α)))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := continuousOn_uncurry_pth hFsq
-  have hpzF : ContinuousOn (Function.uncurry (Work.Spaces.pz (Work.Construction.Fstar α)))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := continuousOn_uncurry_pz hFsq
-  have hsin : ContinuousOn (fun p : ℝ × ℝ => Work.Construction.s2 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-    simp only [Work.Construction.s2]
-    exact (Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn
-  have hc2m : ContinuousOn (fun p : ℝ × ℝ => Work.Construction.c2m p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-    simp only [Work.Construction.c2m]
-    exact (((Real.continuous_cos.comp (continuous_const.mul continuous_snd)).sub
-      ((Real.continuous_sin.comp continuous_snd).pow 2))).continuousOn
-  have hz : ContinuousOn (fun p : ℝ × ℝ => 2 * α / (1 + p.1))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) :=
-    continuousOn_const.div (continuousOn_const.add continuousOn_fst) (fun p hp => by
-      have h := Set.mem_Ioi.mp hp.1; linarith)
-  have h1 : ContinuousOn (fun p : ℝ × ℝ =>
-      (3 / (2 * α)) * Work.Construction.s2 p.2 * (2 * α / (1 + p.1))
-        * Work.Spaces.pth (Work.Construction.Fstar α) p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-    refine ((((continuousOn_const : ContinuousOn (fun _ : ℝ × ℝ => (3 / (2 * α)))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2))).mul hsin).mul hz).mul hpthF).congr ?_
-    intro p hp; simp only [Function.uncurry, Pi.mul_apply]
-  have h2 : ContinuousOn (fun p : ℝ × ℝ =>
-      Work.Construction.c2m p.2 * (2 * α / (1 + p.1))
-        * Work.Spaces.Dz (Work.Construction.Fstar α) p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π / 2)) := by
-    refine ((hc2m.mul hz).mul (continuousOn_fst.mul hpzF)).congr ?_
-    intro p hp; simp only [Function.uncurry, Work.Spaces.Dz, Pi.mul_apply]
-  refine (h1.sub h2).congr ?_
-  intro p hp; simp only [Pi.sub_apply]
 
 /-- **Joint continuity of `N₀`** on the open quadrant, for `SmoothQuad g` with `HkMem α 4 g`. -/
 theorem continuousOn_uncurry_N0 {Ci α₂ α : ℝ} {g : ℝ → ℝ → ℝ}
@@ -2174,43 +1989,7 @@ private theorem gamJet_sq_le (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (i : �
   rw [sq_abs, mul_pow, mul_pow] at h3
   simpa only [mul_pow] using h3
 
-private theorem gam_sq_eta_int_le (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
-    (∫ θ in Work.Spaces.Iθ, (Work.Spaces.Gam α θ) ^ 2
-        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta))) ≤ 10000 := by
-  obtain ⟨hint, hbd⟩ := Work.Spaces.sin_two_rpow (-(Work.Spaces.eta))
-    (by rw [Work.Spaces.eta]; norm_num) (by rw [Work.Spaces.eta]; norm_num)
-  have hbd' : (∫ θ in Work.Spaces.Iθ, (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
-      ≤ 10000 := by
-    refine le_trans hbd ?_
-    rw [Work.Spaces.eta]
-    norm_num
-  refine le_trans (MeasureTheory.integral_mono_of_nonneg ?_ hint ?_) hbd'
-  · filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    exact mul_nonneg (sq_nonneg _) (Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _)
-  · filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    have hG := Work.Spaces.Gam_bounds α θ hα hθ
-    have hsin : 0 ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
-      Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _
-    have hle : (Work.Spaces.Gam α θ) ^ 2 ≤ 1 := by nlinarith [hG.1, hG.2]
-    nlinarith [hle, hsin]
 
-private theorem gam_sq_gam_int_le (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
-    (∫ θ in Work.Spaces.Iθ, (Work.Spaces.Gam α θ) ^ 2
-        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α))) ≤ 1000 / (3 * α) + 10001 := by
-  obtain ⟨hint, hbd⟩ := Work.FTS.LocData.angMaj_mem α hα hα1
-  refine le_trans (MeasureTheory.integral_mono_of_nonneg ?_ hint ?_) hbd
-  · filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    exact mul_nonneg (sq_nonneg _) (Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _)
-  · filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Icc] with θ hθ
-    have hsin : 0 ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.gam α)) :=
-      Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _
-    have hsinE : 0 ≤ (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
-      Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _
-    have hG0 : 0 ≤ (Work.Spaces.Gam α θ) ^ 2 := sq_nonneg _
-    have h1 : 0 ≤ (Work.Spaces.Gam α θ) ^ 2 * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
-      mul_nonneg hG0 hsinE
-    simp only [Work.FTS.LocData.angMaj]
-    linarith [mul_nonneg hG0 hsin, h1]
 
 private theorem sepGam_split (α : ℝ) (hα : 0 < α) (k : ℕ) {ρ : ℝ → ℝ} {R Rθ : ℝ}
     (hR : 0 ≤ R) (hRθ : 0 ≤ Rθ)

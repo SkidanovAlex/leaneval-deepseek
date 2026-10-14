@@ -3,17 +3,16 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.remov.slice_step4
-import Submission.Work.FTS.EllipticEst.Mine.SlotDefs
-import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities
-import Submission.Work.FTS.EllipticEst.ThetaU.OpenSliceAux.DthIter_DzIter_eqOn_of_isOpen
-import Submission.Work.EllipticEst.H2W.pthIter2_DzIter_comm
-import Submission.Work.FTS.EllipticEst.integrable_prod_sq_restrict_open
-import Submission.Work.Spaces.HkSq_terms
 import Submission.Work.FTS.EllipticEst.TT.Slot11.sliceStep4Shift
-import Submission.Work.FTS.EllipticEst.TT.Slot11.srcBound
+import Submission.Work.FTS.EllipticEst.remov.Dz_slice_identities
+import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.OpenPkg.WDp_le_of_pointwise
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.StabilityFar.Decay.timeDeriv_eq_zero_of_notMem_closedBall
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,52 +1,204 @@
-/-
-# `FTS/StrongPersist/StarPkg6Fields.lean` — the order-six flat bounds of the five star fields
-
-This module proves `Work.FTS.StrongPersist.FlatW6Fields_self`, the flat-calculus input of
-`StarPkg6OfCore`: from the flat data of `Ŷ`,
-
-* `SmoothOpen Y`, `FlatW 7 Y K`,
-* `Fb 6 KY Y` (i.e. `F0 6` of `Y` and of `∂_θY`),
-* `F0 6 KD (Yblk Y)`,  `Yblk Y = z ∂_z Y`,
-
-the five fields `EH α Y`, `EVz Y`, `EV Y`, `EUz α Y`, `EU α Y` (the `Ŷ`-expressions of the
-transport coefficients `ℛ, 𝒱, 𝒰` of `Work.Construction`) satisfy `FlatW 6` at the constant
-`C·(α+1)·(K + KY + KD)`.
-
-The pricing is the corrected one: `EU α Y = -(z/(z+1))·Wone α Y` with
-`Wone α Y = 3Y + α(Y/(z+1) + Yblk Y)` grows *linearly* in `α`, so the constant carries the
-factor `(α+1)` for **all five** fields (the `(α+1)` is a weakening on the two `α`-free fields
-`EVz`, `EV`).
-
-The proof is the order-six lift of `CoreAux/Assembly`'s flat calculus:
-
-* every field is a combination of the *blocks* `Y`, `Yblk Y = z∂_z Y`, `Tblk Y = sin 2θ·∂_θ Y`
-  and `Y/(z+1)` with the smooth coefficients `sin²θ`, `cos²θ-2sin²θ`, `sin 2θ`, `cos 2θ`,
-  `z/(z+1)`, `(1+z)⁻¹`;
-* `F0` is closed under products (`F0_mul`), sums (`F0_add`), multiplication by `z∂_z` with an
-  order shift (`F0_zpz`) and by constants; the `D_θ`-shift `F0 n (D_θ g) ← F0 (n+1) g` handles
-  the `Tblk`-block;
-* the `FlatW 6` conclusion is `F0 6` (radial clause) together with `F0 5 ∘ ∂_θ` (angular
-  clause), and the second is obtained by the `Fb`-route (`Fb_add`, `Fb_mul_theta_free` on
-  blocks and coefficients, `Fb.const_mul`).
-
-All constants are explicit and are finally dominated by `2^48·(Ac+Az+1)^40 + 8`.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.MeasureTheory.Function.L1Space.Integrable
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.H2.STFacts
+import Submission.Work.FTS.StrongEps.EpsSqTools.Pointwise
+import Submission.Work.FTS.StrongEps.EpsSqTools.Shift
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongEps.epsWP_abs_le_on_compact
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.Ip6DzAux
+import Submission.Work.FTS.StrongPersist.SP6.F0SixYblk
+import Submission.Work.FTS.StrongPersist.SP6.RadialSlot6
 import Submission.Work.FTS.StrongPersist.StarPkg6Aux
-import Submission.Work.FTS.H2.STFacts
-import Submission.Work.FTS.PhiStar.CoreAux.F0_mul
-import Submission.Work.FTS.PhiStar.CoreAux.F0_add
-import Submission.Work.FTS.PhiStar.CoreAux.F0_zpz
-import Submission.Work.FTS.PhiStar.CoreAux.F0_theta_coefs
-import Submission.Work.FTS.PhiStar.CoreAux.F0_z_coefs
-import Submission.Work.FTS.PhiStar.CoreAux.Fb_add
-import Submission.Work.FTS.PhiStar.CoreAux.Fb_mul_theta_free
-import Submission.Work.FTS.PhiStar.CoreAux.Fb_EU_bound
-import Submission.Work.FTS.PhiStar.CoreAux.LopIter_continuousOn_of_contDiff
-import Submission.Work.FTS.PhiStar.CoreAux.FieldsDefs
-import Submission.Work.FTS.H2.STFacts
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.starVop
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsSq_Jeps_le =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+
+/-- **The iterated set integral over `Iz × Iθ` is the product-measure integral.** -/
+theorem setIntegral_prod_eq (F : ℝ → ℝ → ENNReal)
+    (hF : AEMeasurable (fun q : ℝ × ℝ => F q.1 q.2)
+      (MeasureTheory.volume.restrict (Work.Spaces.Iz ×ˢ Work.Spaces.Iθ))) :
+    (∫⁻ z in Work.Spaces.Iz, ∫⁻ θ in Work.Spaces.Iθ, F z θ)
+      = ∫⁻ q : ℝ × ℝ, F q.1 q.2
+          ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+            (MeasureTheory.volume.restrict Work.Spaces.Iθ)) := by
+  rw [← MeasureTheory.setLIntegral_prod (μ := MeasureTheory.volume)
+      (ν := MeasureTheory.volume) (s := Work.Spaces.Iz) (t := Work.Spaces.Iθ)
+      (fun q : ℝ × ℝ => F q.1 q.2) hF,
+    ← Measure.prod_restrict (μ := MeasureTheory.volume) (ν := MeasureTheory.volume)
+      Work.Spaces.Iz Work.Spaces.Iθ]
+
+/-- **The product-measure integral is at most the iterated integral** (no measurability needed). -/
+theorem prod_integral_le_setIntegral (F : ℝ → ℝ → ENNReal) :
+    (∫⁻ q : ℝ × ℝ, F q.1 q.2
+        ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+          (MeasureTheory.volume.restrict Work.Spaces.Iθ)))
+      ≤ ∫⁻ z in Work.Spaces.Iz, ∫⁻ θ in Work.Spaces.Iθ, F z θ :=
+  MeasureTheory.lintegral_prod_le (μ := MeasureTheory.volume.restrict Work.Spaces.Iz)
+    (ν := MeasureTheory.volume.restrict Work.Spaces.Iθ) (fun q : ℝ × ℝ => F q.1 q.2)
+
+theorem EpsSq_Jeps_le (ρ : ℝ × ℝ → ℝ) (hρ : IsMollKernel ρ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ α ∈ Set.Ioc 0 1, ∀ ε : ℝ, 0 < ε → ε ≤ 1 →
+      ∀ f : ℝ → ℝ → ℝ,
+        EpsMem α f → EpsMem α (Jeps ρ ε f) →
+        EpsSq α (Jeps ρ ε f) ≤ Real.exp (C * ε) * EpsSq α f := by
+  obtain ⟨c, hcpos, hWc⟩ := HkSqAux.Wt_shift_le
+  obtain ⟨δ, hδpos, hJac0⟩ := HkSqAux.logJac_shift_le
+  refine ⟨4 * c + 2 * δ, by positivity, ?_⟩
+  intro α hα ε hε hε1 f hf hJf
+  have hc0 : 0 ≤ c := hcpos.le
+  have hWshift : ∀ z θ : ℝ, 0 < z → θ ∈ Set.Ioo 0 (π / 2) → ∀ p : ℝ × ℝ,
+      Work.Spaces.Wt α z θ ≤ Real.exp (c * (|p.1| + |p.2|))
+        * Work.Spaces.Wt α (zShift z p.1) (thShift θ p.2) :=
+    fun z θ hz hθ p => hWc α hα z θ p.1 p.2 hz hθ
+  have hGmeas : AEMeasurable (fun q : ℝ × ℝ =>
+      ENNReal.ofReal (((Jeps ρ ε f) q.1 q.2 * epsW α q.1 q.2) ^ 2))
+      (MeasureTheory.volume.restrict (Work.Spaces.Iz ×ˢ Work.Spaces.Iθ)) :=
+    ENNReal.measurable_ofReal.comp_aemeasurable hJf.aestronglyMeasurable.aemeasurable
+  have hKmeas : AEMeasurable (Function.uncurry (fun q p : ℝ × ℝ =>
+      ENNReal.ofReal (Jker ρ ε p) * ENNReal.ofReal ((f (zShift q.1 p.1) (thShift q.2 p.2)
+        * epsW α (zShift q.1 p.1) (thShift q.2 p.2)) ^ 2)))
+      (((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+        (MeasureTheory.volume.restrict Work.Spaces.Iθ)).prod MeasureTheory.volume) := by
+    have hFmeas : AEMeasurable (fun q : ℝ × ℝ =>
+        ENNReal.ofReal ((f q.1 q.2 * epsW α q.1 q.2) ^ 2))
+        (MeasureTheory.volume.restrict (Work.Spaces.Iz ×ˢ Work.Spaces.Iθ)) :=
+      ENNReal.measurable_ofReal.comp_aemeasurable hf.aestronglyMeasurable.aemeasurable
+    have hGmeas' := EpsSqTools.aemeasurable_shift_comp' hFmeas
+    have hJmeas : AEMeasurable (fun z : (ℝ × ℝ) × (ℝ × ℝ) => ENNReal.ofReal (Jker ρ ε z.2))
+        (((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+          (MeasureTheory.volume.restrict Work.Spaces.Iθ)).prod MeasureTheory.volume) :=
+      (ENNReal.measurable_ofReal.comp
+        ((Jker_continuous hρ ε).measurable.comp measurable_snd)).aemeasurable
+    convert hJmeas.mul hGmeas' using 1
+    ext z
+    simp only [Function.uncurry, Pi.mul_apply]
+  have hmain : ENNReal.ofReal (EpsSq α (Jeps ρ ε f))
+      ≤ ENNReal.ofReal (Real.exp ((4 * c + 2 * δ) * ε) * EpsSq α f) := by
+    have h1 : ENNReal.ofReal (EpsSq α (Jeps ρ ε f))
+        = ∫⁻ q : ℝ × ℝ, ENNReal.ofReal (((Jeps ρ ε f) q.1 q.2 * epsW α q.1 q.2) ^ 2)
+            ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+              (MeasureTheory.volume.restrict Work.Spaces.Iθ)) := by
+      rw [Work.FTS.StrongEps.EpsSrc.ofReal_EpsSq_eq_lintegral hJf,
+        setIntegral_prod_eq (F := fun z θ =>
+          ENNReal.ofReal (((Jeps ρ ε f) z θ * epsW α z θ) ^ 2)) hGmeas]
+    calc ENNReal.ofReal (EpsSq α (Jeps ρ ε f))
+        = ∫⁻ q : ℝ × ℝ, ENNReal.ofReal (((Jeps ρ ε f) q.1 q.2 * epsW α q.1 q.2) ^ 2)
+            ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+              (MeasureTheory.volume.restrict Work.Spaces.Iθ)) := h1
+      _ ≤ ∫⁻ q : ℝ × ℝ, ENNReal.ofReal (Real.exp (4 * c * ε))
+            * (∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * ENNReal.ofReal ((f (zShift q.1 p.1) (thShift q.2 p.2)
+                    * epsW α (zShift q.1 p.1) (thShift q.2 p.2)) ^ 2)
+                ∂MeasureTheory.volume)
+            ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+              (MeasureTheory.volume.restrict Work.Spaces.Iθ)) := by
+          refine MeasureTheory.lintegral_mono (fun q => ?_)
+          by_cases hq : q.1 ∈ Work.Spaces.Iz ∧ q.2 ∈ Work.Spaces.Iθ
+          · exact EpsSqTools.pointwise_le (ρ := ρ) (c := c) hρ hε hc0 hα hWshift hq.1 hq.2
+          · have hz0 : ¬(0 < q.1 ∧ q.2 ∈ Set.Ioo 0 (π / 2)) := fun h =>
+              hq ⟨h.1.le, ⟨h.2.1.le, h.2.2.le⟩⟩
+            rw [Jeps_eq_zero ρ ε f hz0, zero_mul, zero_pow (by norm_num : (2 : ℕ) ≠ 0),
+              ENNReal.ofReal_zero]
+            exact zero_le
+      _ = ENNReal.ofReal (Real.exp (4 * c * ε))
+            * ∫⁻ q : ℝ × ℝ, (∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * ENNReal.ofReal ((f (zShift q.1 p.1) (thShift q.2 p.2)
+                    * epsW α (zShift q.1 p.1) (thShift q.2 p.2)) ^ 2)
+                ∂MeasureTheory.volume)
+            ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+              (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :=
+          MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+      _ = ENNReal.ofReal (Real.exp (4 * c * ε))
+            * ∫⁻ p : ℝ × ℝ, (∫⁻ q : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * ENNReal.ofReal ((f (zShift q.1 p.1) (thShift q.2 p.2)
+                    * epsW α (zShift q.1 p.1) (thShift q.2 p.2)) ^ 2)
+                ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+                  (MeasureTheory.volume.restrict Work.Spaces.Iθ)))
+            ∂MeasureTheory.volume := by
+          congr 1
+          exact MeasureTheory.lintegral_lintegral_swap (μ := (MeasureTheory.volume.restrict
+            Work.Spaces.Iz).prod (MeasureTheory.volume.restrict Work.Spaces.Iθ))
+            (ν := MeasureTheory.volume) hKmeas
+      _ = ENNReal.ofReal (Real.exp (4 * c * ε))
+            * ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * (∫⁻ q : ℝ × ℝ, ENNReal.ofReal ((f (zShift q.1 p.1) (thShift q.2 p.2)
+                    * epsW α (zShift q.1 p.1) (thShift q.2 p.2)) ^ 2)
+                    ∂((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
+                      (MeasureTheory.volume.restrict Work.Spaces.Iθ)))
+            ∂MeasureTheory.volume := by
+          congr 1
+          refine MeasureTheory.lintegral_congr (fun p => ?_)
+          exact MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+      _ ≤ ENNReal.ofReal (Real.exp (4 * c * ε))
+            * ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * (ENNReal.ofReal (Real.exp (δ * (|p.1| + |p.2|)))
+                    * ENNReal.ofReal (EpsSq α f))
+            ∂MeasureTheory.volume := by
+          refine mul_le_mul_of_nonneg_left (lintegral_mono (fun p => ?_)) zero_le
+          refine mul_le_mul_of_nonneg_left ?_ zero_le
+          refine le_trans (prod_integral_le_setIntegral (fun z θ => ENNReal.ofReal
+            ((f (zShift z p.1) (thShift θ p.2) * epsW α (zShift z p.1) (thShift θ p.2)) ^ 2))) ?_
+          exact EpsSqTools.shift_step hf hJac0 p
+      _ = ENNReal.ofReal (Real.exp (4 * c * ε)) * ENNReal.ofReal (EpsSq α f)
+            * (∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * ENNReal.ofReal (Real.exp (δ * (|p.1| + |p.2|)))
+                ∂MeasureTheory.volume) := by
+          rw [show (∫⁻ p : ℝ × ℝ, ENNReal.ofReal (Jker ρ ε p)
+                * (ENNReal.ofReal (Real.exp (δ * (|p.1| + |p.2|)))
+                    * ENNReal.ofReal (EpsSq α f)) ∂MeasureTheory.volume)
+              = ∫⁻ p : ℝ × ℝ, (ENNReal.ofReal (Jker ρ ε p)
+                  * ENNReal.ofReal (Real.exp (δ * (|p.1| + |p.2|))))
+                  * ENNReal.ofReal (EpsSq α f) ∂MeasureTheory.volume from
+              lintegral_congr (fun p => by ring)]
+          rw [MeasureTheory.lintegral_mul_const' _ _ ENNReal.ofReal_ne_top]
+          ring
+      _ ≤ ENNReal.ofReal (Real.exp (4 * c * ε)) * ENNReal.ofReal (EpsSq α f)
+            * ENNReal.ofReal (Real.exp (2 * δ * ε)) := by
+          refine mul_le_mul_of_nonneg_left ?_ zero_le
+          simpa using HkSqAux.Jker_exp_integral_le hρ hε (c := 0) (δ := δ) (le_refl 0) hδpos.le
+      _ = ENNReal.ofReal (Real.exp ((4 * c + 2 * δ) * ε) * EpsSq α f) := by
+          rw [show Real.exp ((4 * c + 2 * δ) * ε)
+                = Real.exp (4 * c * ε) * Real.exp (2 * δ * ε) from by
+              rw [← Real.exp_add]
+              congr 1
+              ring]
+          rw [ENNReal.ofReal_mul
+              (by positivity : (0 : ℝ) ≤ Real.exp (4 * c * ε) * Real.exp (2 * δ * ε)),
+            ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ Real.exp (4 * c * ε))]
+          ring
+  exact (ENNReal.ofReal_le_ofReal_iff
+    (mul_nonneg (Real.exp_pos _).le (EpsSq_nonneg α f))).mp hmain
+
+end Work.FTS.StrongEps
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.StarPkg6Fields =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -67,47 +219,7 @@ open Work.FTS.PhiStar (F0 Fb)
 
 /-! ## The master constants -/
 
-/-- A monomial of degree `≤ 39` in `M` and a factor `z ≤ M` is dominated by `2^45·M^40`. -/
-theorem monomial_le_big {M : ℝ} (hM : 1 ≤ M) {j : ℕ} (hj : j ≤ 45) {y z : ℝ}
-    (hy0 : 0 ≤ y) (hyM : y ≤ M) (hz0 : 0 ≤ z) (hzM : z ≤ M) {c : ℕ} (hc : c ≤ 38) :
-    (2 : ℝ) ^ j * y * z * M ^ c ≤ 2 ^ 45 * M ^ 40 := by
-  have h2 : (2 : ℝ) ^ j ≤ 2 ^ 45 := pow_le_pow_right₀ (by norm_num) hj
-  have hy : y ≤ M := hyM
-  have hz : z ≤ M := hzM
-  have hc' : M ^ c ≤ M ^ 38 := pow_le_pow_right₀ hM (by omega)
-  have hM0 : 0 ≤ M := by linarith
-  have h1 : (2 : ℝ) ^ j * y * z ≤ 2 ^ 45 * M * M := by
-    have h21 : (2 : ℝ) ^ j * y ≤ 2 ^ 45 * M :=
-      mul_le_mul h2 hy hy0 (by positivity)
-    calc (2 : ℝ) ^ j * y * z ≤ (2 ^ 45 * M) * M :=
-          mul_le_mul h21 hz hz0 (mul_nonneg (by positivity) hM0)
-      _ = 2 ^ 45 * M * M := rfl
-  calc (2 : ℝ) ^ j * y * z * M ^ c ≤ (2 ^ 45 * M * M) * M ^ 38 :=
-        mul_le_mul h1 hc' (by positivity) (by positivity)
-    _ = 2 ^ 45 * M ^ 40 := by ring
 
-/-- A sum of at most eight such monomials is dominated by the final constant. -/
-theorem bound_le_final {M B C S α : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ α)
-    (hB : B ≤ 8 * (2 ^ 45 * M ^ 40)) (hC : C ≤ 8 * (2 ^ 45 * M ^ 40)) :
-    (B + α * C) * S ≤ (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by
-  have hM0 : 0 ≤ M := by linarith
-  have hbig : 0 ≤ 2 ^ 45 * M ^ 40 := by positivity
-  have h1 : B + α * C ≤ 8 * (2 ^ 45 * M ^ 40) * (α + 1) := by
-    have h2 : α * C ≤ α * (8 * (2 ^ 45 * M ^ 40)) :=
-      mul_le_mul_of_nonneg_left hC hα
-    nlinarith [h2, hbig, hα]
-  have h3 : 8 * (2 ^ 45 * M ^ 40) * (α + 1) ≤ (2 ^ 48 * M ^ 40 + 8) * (α + 1) := by
-    have h4 : (8 : ℝ) * (2 ^ 45 * M ^ 40) ≤ 2 ^ 48 * M ^ 40 + 8 := by
-      have : (2 : ℝ) ^ 48 = 8 * 2 ^ 45 := by norm_num
-      nlinarith [hbig, this]
-    exact mul_le_mul_of_nonneg_right h4 (by linarith)
-  have hfinal : (2 ^ 48 * M ^ 40 + 8) * (α + 1) ≥ 0 :=
-    mul_nonneg (by positivity) (by linarith)
-  calc (B + α * C) * S ≤ (8 * (2 ^ 45 * M ^ 40) * (α + 1)) * S :=
-        mul_le_mul_of_nonneg_right h1 hS
-    _ ≤ ((2 ^ 48 * M ^ 40 + 8) * (α + 1)) * S :=
-        mul_le_mul_of_nonneg_right h3 hS
-    _ = (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by ring
 
 /-! ## Monomial absorption -/
 
@@ -131,51 +243,8 @@ theorem mono3_le_big {M : ℝ} (hM : 1 ≤ M) {j : ℕ} (hj : j ≤ 45) {c : ℕ
         mul_le_mul hleft hc' (by positivity) (by positivity)
     _ = 2 ^ 45 * M ^ 40 := by ring
 
-/-- A monomial (α-free) is dominated by the final constant. -/
-theorem mono_final {M S α : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ α)
-    {j : ℕ} (hj : j ≤ 45) {c : ℕ} (hc : c ≤ 37) {u v w : ℝ}
-    (hu0 : 0 ≤ u) (huM : u ≤ M) (hv0 : 0 ≤ v) (hvM : v ≤ M) (hw0 : 0 ≤ w) (hwM : w ≤ M) :
-    (2 : ℝ) ^ j * u * v * w * M ^ c * S ≤ (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by
-  have h1 : (2 : ℝ) ^ j * u * v * w * M ^ c ≤ 2 ^ 45 * M ^ 40 :=
-    mono3_le_big hM hj hc hu0 huM hv0 hvM hw0 hwM
-  have hbig : 0 ≤ 2 ^ 45 * M ^ 40 := by positivity
-  have hS1 : S ≤ (α + 1) * S := by nlinarith
-  have h3 : (2 : ℝ) ^ 45 * M ^ 40 ≤ 2 ^ 48 * M ^ 40 + 8 := by
-    have he : (2 : ℝ) ^ 48 = 8 * 2 ^ 45 := by norm_num
-    nlinarith [hbig, he]
-  calc (2 : ℝ) ^ j * u * v * w * M ^ c * S ≤ (2 ^ 45 * M ^ 40) * S :=
-        mul_le_mul_of_nonneg_right h1 hS
-    _ ≤ (2 ^ 45 * M ^ 40) * ((α + 1) * S) := mul_le_mul_of_nonneg_left hS1 hbig
-    _ ≤ (2 ^ 48 * M ^ 40 + 8) * ((α + 1) * S) :=
-        mul_le_mul_of_nonneg_right h3 (by nlinarith)
-    _ = (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by ring
 
-/-- A monomial carrying one factor of `α` is dominated by the final constant. -/
-theorem mono_final_alpha {M S α : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ α)
-    {j : ℕ} (hj : j ≤ 45) {c : ℕ} (hc : c ≤ 37) {u v w : ℝ}
-    (hu0 : 0 ≤ u) (huM : u ≤ M) (hv0 : 0 ≤ v) (hvM : v ≤ M) (hw0 : 0 ≤ w) (hwM : w ≤ M) :
-    (2 : ℝ) ^ j * u * v * w * M ^ c * α * S ≤ (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by
-  have h1 : (2 : ℝ) ^ j * u * v * w * M ^ c ≤ 2 ^ 45 * M ^ 40 :=
-    mono3_le_big hM hj hc hu0 huM hv0 hvM hw0 hwM
-  have hbig : 0 ≤ 2 ^ 45 * M ^ 40 := by positivity
-  have hαS : α * S ≤ (α + 1) * S := by nlinarith
-  have h3 : (2 : ℝ) ^ 45 * M ^ 40 ≤ 2 ^ 48 * M ^ 40 + 8 := by
-    have he : (2 : ℝ) ^ 48 = 8 * 2 ^ 45 := by norm_num
-    nlinarith [hbig, he]
-  calc (2 : ℝ) ^ j * u * v * w * M ^ c * α * S
-      = ((2 : ℝ) ^ j * u * v * w * M ^ c) * (α * S) := by ring
-    _ ≤ (2 ^ 45 * M ^ 40) * ((α + 1) * S) :=
-        mul_le_mul h1 hαS (by positivity) hbig
-    _ ≤ (2 ^ 48 * M ^ 40 + 8) * ((α + 1) * S) :=
-        mul_le_mul_of_nonneg_right h3 (by nlinarith)
-    _ = (2 ^ 48 * M ^ 40 + 8) * (α + 1) * S := by ring
 
-/-- The final shape of the per-field comparison. -/
-theorem sum_le_final {M S α Z : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ α)
-    (hZ : Z ≤ 6 * ((2 ^ 48 * M ^ 40 + 8) * (α + 1) * S)) :
-    Z ≤ 8 * ((2 ^ 48 * M ^ 40 + 8) * (α + 1) * S) := by
-  nlinarith [hZ, mul_nonneg (by positivity : (0:ℝ) ≤ 2 ^ 48 * M ^ 40 + 8)
-    (by nlinarith : (0:ℝ) ≤ (α + 1) * S)]
 
 /-- A monomial is dominated by the unit budget. -/
 theorem mono_le_unit {M S α : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ α)
@@ -225,3 +294,5 @@ theorem eight_unit_le {M S α : ℝ} (hM : 1 ≤ M) (hS : 0 ≤ S) (hα : 0 ≤ 
 
 
 end Work.FTS.StrongPersist
+end
+end

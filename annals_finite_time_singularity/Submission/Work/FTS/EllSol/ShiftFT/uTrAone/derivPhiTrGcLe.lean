@@ -1,39 +1,10 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project (area `FTS.EllSol`).
-
-# The cutoff-derivative piece of the `Aone` slot
-
-`Work.FTS.EllSol.ShiftFT.uTr_Aone` estimates
-`(L_b (uTr N b u))^2 = (∂_t (phiTr N · Gc) - b · (phiTr N · Gc))^2` and splits it, in the
-product rule, into the piece `deriv (phiTr N) · Gc` (controlled here) and the piece
-`phiTr N · (L_b Gc)` (controlled elsewhere).
-
-`derivPhiTrGcLe` states that the `L²`-mass of the first piece against the angular weight
-`wE θ = sin(2θ)^{-η}` is bounded by `K^2` times the `L²`-mass of the shifted slot `L_b u`,
-where `K` bounds `|deriv tk|`.
-
-The mathematical content is entirely elementary:
-
-* `deriv (phiTr N) t = deriv tk (t / (4096 N)) / (4096 N)`, so
-  `|deriv (phiTr N) t| ≤ K / (4096 N)` and `deriv (phiTr N) t = 0` unless
-  `4096 N ≤ |t| ≤ 8192 N` — in particular it vanishes on `[-2N, 2N]`;
-* on the support, `|Gc N b u t θ| ≤ ∫_{-2N}^{2N} |L_b u(s,θ)| ds` (hypothesis `hbd`), and
-  Cauchy–Schwarz on the interval of length `4N` gives
-  `(∫_{-2N}^{2N} |L_b u|)^2 ≤ 4N ∫_{-2N}^{2N} (L_b u)^2`;
-* the support has `t`-measure `2 · 8192 N`, so the total gains a factor
-  `(K / (4096 N))^2 · (2 · 8192 N) · 4N = K^2 / 256 ≤ K^2`.
-
-The proof is organised through `lintegral`s (`ℝ≥0∞`), so that no integrability is needed until
-the very end, where it is *obtained* from the estimate.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.EllSol.ShiftFT.ShiftPrimDefs
 import Submission.Work.FTS.EllSol.Trunc.PassAux2
-import Submission.Work.FTS.EllSol.Trunc.chiDeriv2
-import Submission.Work.FTS.EllSol.Trunc.WindowBase
-import Submission.Work.FTS.StrongEps.LocUnif.DiffQuotFacts
+import Submission.Work.FTS.PhiStar.Honesty.rgG2_sq_div_z4_Ioo
+import Submission.Work.FTS.StrongEps.blocks.L12_Fstar_add_open
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

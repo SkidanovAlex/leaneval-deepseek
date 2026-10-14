@@ -2,15 +2,15 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
 import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T4bRowSlot
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
 import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T3Row
-import Submission.Work.FTS.CoercivityFix.Assembly.H1IP_core_Q
-import Submission.Work.Coercivity.wip_add_of_PairHonest
-import Submission.Work.FTS.CoercivityFix.StepAssembly.H1IP_congr_qd
-import Submission.Work.FTS.IPGen.OpenBasic
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.IbpCutoff
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.H2.Whz_Wm_sq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -203,33 +203,5 @@ private theorem PairHonest_leaf {α : ℝ} (hα : 0 < α) {a b : ℕ} (hab : a +
 
 /-! ## The target -/
 
-theorem SlotPairingSplit {α : ℝ} (hα : 0 < α) {a b : ℕ} (hab : a + b ≤ 6)
-      {ρ : ℝ → ℝ → ℝ} (hρ : Work.FTS.TransportS.IsLeafW α a ρ)
-      {u₁ u₂ f : ℝ → ℝ → ℝ} (h₁ : Work.FTS.EllipticEst.SmoothOpen u₁)
-      (h₂ : Work.FTS.EllipticEst.SmoothOpen u₂) (hf : Work.FTS.EllipticEst.SmoothOpen f)
-      (m₁ : Work.Spaces.HkMem α 6 u₁) (m₂ : Work.Spaces.HkMem α 6 u₂)
-      (mf : Work.Spaces.HkMem α 6 f) :
-      Work.FTS.TransportS.slotPairing ρ a b (fun z θ => u₁ z θ + u₂ z θ) f
-        = Work.FTS.TransportS.slotPairing ρ a b u₁ f
-          + Work.FTS.TransportS.slotPairing ρ a b u₂ f := by
-  -- the slot of `u₁ + u₂` splits on the open quadrant
-  have hmix : ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
-      Work.Spaces.mixed b a (fun z θ => u₁ z θ + u₂ z θ) z θ
-        = Work.Spaces.mixed b a u₁ z θ + Work.Spaces.mixed b a u₂ z θ := by
-    intro z θ hzθ
-    have hfe : (fun z θ : ℝ => u₁ z θ + u₂ z θ) = (u₁ + u₂) := by funext z θ; rfl
-    rw [hfe]
-    exact (Work.FTS.IPGen.BlocksAdd_of_smoothOpen (k := 6) h₁ h₂) a b hab z θ hzθ
-  rw [slotPairing_eq_wip ρ a b (fun z θ => u₁ z θ + u₂ z θ) f,
-    slotPairing_eq_wip ρ a b u₁ f,
-    slotPairing_eq_wip ρ a b u₂ f,
-    Work.FTS.CoercivityFix.StepAssembly.wip_congr_Qd (ρ := ρ)
-      (A := Work.Spaces.mixed b a (fun z θ => u₁ z θ + u₂ z θ))
-      (A' := Work.Spaces.mixed b a u₁ + Work.Spaces.mixed b a u₂)
-      (B := Work.Spaces.mixed b a f) hmix]
-  exact Work.Coercivity.wip_add_of_PairHonest ρ (Work.Spaces.mixed b a u₁)
-    (Work.Spaces.mixed b a u₂) (Work.Spaces.mixed b a f)
-    (PairHonest_leaf hα hab hρ h₁ hf m₁ mf)
-    (PairHonest_leaf hα hab hρ h₂ hf m₂ mf)
 
 end Work.FTS.StrongPersist.H6Pair6Aux

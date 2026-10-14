@@ -1,30 +1,15 @@
-/-
-# `Submission/Work/FTS/StrongPersist/L3Rhs/NfkAux/FkSlots.lean`
-
-The weighted-`L²` slots of a *radial* function, and their relation to the `ℋ⁴`-integrand of its
-radial extension.  These are the quantitative inputs of the pointwise jet bounds of the angular
-moment `FK f` (`NfkAux.FkTerms`).
-
-* `restrict_Ioi_eq_Iz` — the two radial intervals agree up to a null set;
-* `contDiffOn_radial_Q0`, `contDiffOn_DzdIter_of_radial`, `continuousOn_DzdIter_of_radial` —
-  finite-order smoothness of the radial function and of its `D_z`-iterates on `(0,∞)`;
-* `slot_le_integrand`, `FK_slot_le` — the `a`-th slot
-  `∫_z (D_z^a r z)² w(z)² dz` is integrable and bounded by `(4/π)·|r|²_{ℋ⁴}`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
-import Submission.Work.FTS.StrongPersist.L3Rhs.Assembly
-import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.Basic
 import Submission.Work.FTS.FinalClock.HkIntegrandMulDthSmooth
-import Submission.Work.FTS.CoercivityFix.Transfer.E2_blocks
-import Submission.Work.FTS.LocData.hLoc_hk
+import Submission.Work.FTS.Nonlinear.n4norm_exists
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSup
+import Submission.Work.FTS.StrongPersist.L3Rhs.NfkAux.ProdRadSupO
 import Submission.Work.H2.T1Q.PwBdQ
+import Submission.Work.R1G.DecayInZ_gA
 import Submission.Work.Spaces.HkSq_terms
 
 -- v435-port: begin

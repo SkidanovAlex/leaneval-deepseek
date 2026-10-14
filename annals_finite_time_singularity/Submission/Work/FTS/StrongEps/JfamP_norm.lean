@@ -1,39 +1,14 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/JfamP_norm.lean` — the `ℋ⁶`-size of the projected family
-
-The projected family `JfamP ρ ε g = P₀ ∘ J_ε (slice g ·)` of the `P₀`-corrected scheme
-(`PZeroScheme.lean`) is the family at which the elliptic layer (`hEll`), the modulation bounds
-(`MuLamOK`) and the level-four bound (`hb4`) are evaluated.  The `G7` sup-bound chain
-(`epsWP_blocks_bnd`) needs its `ℋ⁶`-size, and this module supplies it:
-
-  `HkNorm_JfamP_le : ∃ A ≥ 0, ∀ α ∈ (0,1], ∀ ε ∈ (0,1], ∀ g s,
-      SmoothOpen (slice g s) → HkMem α 6 (slice g s) →
-        HkMem α 6 (slice (JfamP ρ ε g) s) ∧
-        Xn6 α (slice (JfamP ρ ε g) s) ≤ A · Xn6 α (slice g s)`,
-
-i.e. the projection is bounded on `ℋ⁶` **uniformly in `ε ≤ 1`** — the price of the two factors
-`e^{Cε/2}` (`HkSq_Jeps_le`) and `A'` (`hkNorm_Pz_le`) is absorbed into the single constant `A`.
-
-The chain is
-`slice (JfamP ρ ε g) s = P₀ (J_ε (slice g s))` (definitional) ⟹
-`HkNorm α 6 (J_ε f) ≤ e^{Cε/2} HkNorm α 6 f` (`HkSq_Jeps_le`, with the two membership clauses
-`HkMem_Jeps` / `smoothOpen_Jeps`) ⟹ `HkNorm α 6 (P₀ X) ≤ A' HkNorm α 6 X`
-(`PZeroAux.hkNorm_Pz_le`, which needs `SmoothOpen X` and `HkMem α 6 X`), and the membership
-`HkMem α 6 (P₀ (J_ε f))` is `PZeroAux.PzJepsHkMem`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
-import Submission.Work.FTS.StrongEps.PZeroScheme
 import Submission.Work.FTS.StrongEps.EpsLimitDefs
-import Submission.Work.FTS.StrongEps.PZeroAux.hkNorm_Pz_le
-import Submission.Work.FTS.StrongEps.PZeroAux.PzJepsHkMem
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
+import Submission.Work.FTS.StrongEps.PZeroAux.bumpHkNormBound
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS_LocDatum3a.Defs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

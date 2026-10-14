@@ -1,19 +1,642 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.FDeriv.Measurable
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Order.Group.Lattice
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.Honest.Basic
 import Submission.Work.FTS.EllipticEst.Honest.HonSliceFinite
-import Submission.Work.FTS.EllipticEst.Honest.HonEnergyAux
--- `Blocks.PzIterTwoContinuousOn` is needed for `contDiffOn_uncurry_pz_succ` /
--- `PzIterTwoContinuousOn` (the `z`-regularity of `pzIter 2 Ψ`); it is in the
--- `HonDifQuotBound`/`HonFirstMoment` cone, so importing it is safe.
--- `StraightDefs`, `sliceLimitLeftExists` and `Spaces.CurrySmooth` are already in the
--- transitive closure of the three modules above and are therefore not imported explicitly.
-import Submission.Work.FTS.EllipticEst.Blocks.PzIterTwoContinuousOn
+import Submission.Work.FTS.EllipticEst.interpol_trunc_defs
+import Submission.Work.FTS.PhiStar.Honesty.SlotsLimit.integrableOn_term
+import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.uncurry_partial_c1
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.HonEnergyTruncIneq2 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Honest
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+set_option autoImplicit false
+
+/-! ## Junk-friendly comparison lemmas for the integrals over `Iz`
+
+The Bochner integral of a non-integrable function is `0` (`MeasureTheory.integral_undef`), so a
+pointwise comparison `f ≤ g` does **not** imply `∫f ≤ ∫g` unless one knows that the dominating
+function `g` is integrable.  The two lemmas below exploit exactly that: the hypotheses are
+`g` integrable, `g ≥ 0` (a.e.) and `f ≤ g` (a.e.); the conclusion holds both when `f` is
+integrable (monotonicity of the integral) and when it is not (then `∫f = 0` and the claim reduces
+to the nonnegativity of `∫g`). -/
+
+theorem setIntegral_le_of_ae_le_of_nonneg {f g : ℝ → ℝ}
+    (hle : f ≤ᵐ[volume.restrict Work.Spaces.Iz] g)
+    (hg0 : 0 ≤ᵐ[volume.restrict Work.Spaces.Iz] g)
+    (hg : IntegrableOn g Work.Spaces.Iz) :
+    (∫ z in Work.Spaces.Iz, f z) ≤ ∫ z in Work.Spaces.Iz, g z := by
+  by_cases hf : Integrable f (volume.restrict Work.Spaces.Iz)
+  · exact integral_mono_ae hf hg hle
+  · rw [integral_undef hf]
+    exact integral_nonneg_of_ae hg0
+
+theorem neg_setIntegral_le_of_ae_le {f G : ℝ → ℝ}
+    (hle : ∀ᵐ z ∂(volume.restrict Work.Spaces.Iz), -G z ≤ f z)
+    (hG0 : ∀ᵐ z ∂(volume.restrict Work.Spaces.Iz), 0 ≤ G z)
+    (hG : IntegrableOn G Work.Spaces.Iz) :
+    -(∫ z in Work.Spaces.Iz, f z) ≤ ∫ z in Work.Spaces.Iz, G z := by
+  by_cases hf : Integrable f (volume.restrict Work.Spaces.Iz)
+  · have h2 := integral_mono_ae hf.neg hG (hle.mono fun z hz => by
+      simp only [Pi.neg_apply]; linarith)
+    have h3 : (∫ x in Work.Spaces.Iz, (-f) x) = -(∫ x in Work.Spaces.Iz, f x) := by
+      simp only [Pi.neg_apply]
+      rw [integral_neg]
+    rw [h3] at h2
+    exact h2
+  · rw [integral_undef hf]
+    have h0 := integral_nonneg_of_ae hG0
+    linarith
+
+/-- The set `{0}` is null inside `Iz`, so a.e. statements on `Iz` may always assume `z > 0`. -/
+theorem ae_pos_of_mem_Iz : ∀ᵐ z ∂(volume.restrict Work.Spaces.Iz), 0 < z := by
+  rw [Work.Spaces.Iz, MeasureTheory.ae_restrict_iff' measurableSet_Ici]
+  rw [MeasureTheory.ae_iff]
+  refine measure_mono_null (t := ({0} : Set ℝ)) ?_ (measure_singleton 0)
+  intro z hz
+  simp only [Set.mem_setOf_eq, not_imp, Set.mem_Ici, Set.mem_singleton_iff] at hz
+  exact le_antisymm (le_of_not_gt hz.2) hz.1
+
+/-- The a.e. form (for the ambient measure) of `ae_pos_of_mem_Iz`, suited to
+`MeasureTheory.setIntegral_congr_ae`. -/
+theorem ae_pos_of_mem_Iz_vol : ∀ᵐ z ∂(volume : Measure ℝ), z ∈ Work.Spaces.Iz → 0 < z := by
+  refine (MeasureTheory.ae_restrict_iff' (μ := volume) (s := Work.Spaces.Iz)
+    (p := fun z => 0 < z) measurableSet_Ici).mp ?_
+  exact ae_pos_of_mem_Iz
+
+/-- The a.e. form (for the ambient measure) of `ae_mem_Ioo_Iθ'`, suited to
+`MeasureTheory.setIntegral_congr_ae`. -/
+theorem ae_mem_Ioo_of_mem_Iθ_vol :
+    ∀ᵐ θ ∂(volume : Measure ℝ), θ ∈ Work.Spaces.Iθ → θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2) := by
+  refine (MeasureTheory.ae_restrict_iff' (μ := volume) (s := Work.Spaces.Iθ)
+    (p := fun θ => θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2)) measurableSet_Icc).mp ?_
+  exact ae_mem_Ioo_Iθ'
+
+/-! ## Elementary bounds for the radial weights -/
+
+/-- `|(z w²)'| ≤ 3 w²` for `z > 0`. -/
+theorem deriv_zwSq_abs_le (z : ℝ) (hz : 0 < z) :
+    |deriv (fun x : ℝ => x * (Work.Spaces.w x) ^ 2) z| ≤ 3 * (Work.Spaces.w z) ^ 2 := by
+  obtain ⟨-, -, -, h4, -⟩ := Work.FTS.EllipticEst.weight_algebra_fts
+  rw [h4 z (ne_of_gt hz)]
+  have hw : (Work.Spaces.w z) ^ 2 = (1 + z) ^ 4 / z ^ 4 := by
+    rw [Work.Spaces.w, div_pow]; ring
+  rw [hw]
+  have hz4 : (0:ℝ) < z^4 := by positivity
+  have h1z : (0:ℝ) < (1+z)^3 := by positivity
+  rw [abs_div, abs_of_pos hz4, abs_mul, abs_of_pos h1z]
+  rw [div_le_iff₀ hz4]
+  have h : |z - 3| ≤ 3 * (1 + z) := by
+    rw [abs_le]; constructor <;> nlinarith
+  calc |z - 3| * (1 + z) ^ 3 ≤ (3 * (1 + z)) * (1 + z) ^ 3 :=
+        mul_le_mul_of_nonneg_right h (le_of_lt h1z)
+    _ = 3 * ((1 + z) ^ 4 / z ^ 4) * z ^ 4 := by field_simp
+
+/-- `|(z² w²)'| ≤ 2 z w²` for `z > 0`. -/
+theorem deriv_zsqwSq_abs_le (z : ℝ) (hz : 0 < z) :
+    |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z| ≤ 2 * z * (Work.Spaces.w z) ^ 2 := by
+  obtain ⟨-, -, h3, -, -⟩ := Work.FTS.EllipticEst.weight_algebra_fts
+  rw [h3 z (ne_of_gt hz)]
+  have hw : (Work.Spaces.w z) ^ 2 = (1 + z) ^ 4 / z ^ 4 := by
+    rw [Work.Spaces.w, div_pow]; ring
+  rw [hw]
+  have hz3 : (0:ℝ) < z^3 := by positivity
+  have h1z : (0:ℝ) < (1+z)^3 := by positivity
+  rw [abs_div, abs_of_pos hz3, abs_mul, abs_mul,
+    abs_of_pos (by norm_num : (0:ℝ) < 2), abs_of_pos h1z]
+  rw [div_le_iff₀ hz3]
+  have h : |z - 1| ≤ 1 + z := by
+    rw [abs_le]; constructor <;> linarith
+  calc 2 * |z - 1| * (1 + z) ^ 3 ≤ 2 * (1 + z) * (1 + z) ^ 3 := by
+        nlinarith [h, h1z]
+    _ = 2 * z * ((1 + z) ^ 4 / z ^ 4) * z ^ 3 := by field_simp
+
+/-- `(w)²` is `C^∞` near every `z > 0`. -/
+theorem contDiffAt_w_sq {z : ℝ} (hz : 0 < z) (n : ℕ) :
+    ContDiffAt ℝ n (fun x : ℝ => (Work.Spaces.w x) ^ 2) z := by
+  have hw : ContDiffAt ℝ n (fun x : ℝ => (1 + x) ^ 2 / x ^ 2) z :=
+    ((contDiffAt_const.add contDiffAt_id).pow 2).div (contDiffAt_id.pow 2)
+      (by positivity)
+  simpa only [Work.Spaces.w] using hw.pow 2
+
+/-- `iteratedDeriv 2 f = deriv (deriv f)`. -/
+theorem iteratedDeriv_two_eq (f : ℝ → ℝ) : iteratedDeriv 2 f = deriv (deriv f) := by
+  rw [iteratedDeriv_eq_iterate]
+  simp only [Function.iterate_succ, Function.iterate_zero, Function.comp_apply]
+  rfl
+
+/-! ## The two product rules for the truncated radial weights -/
+
+/-- First-order product rule for `φ · w² · z`. -/
+theorem TruncCutDerivOne (φ : ℝ → ℝ) (hφ : ContDiff ℝ 2 φ) (z : ℝ) (hz : 0 < z) :
+    deriv (fun x : ℝ => φ x * (Work.Spaces.w x) ^ 2 * x) z
+      = deriv φ z * (z * (Work.Spaces.w z) ^ 2)
+        + φ z * deriv (fun x : ℝ => x * (Work.Spaces.w x) ^ 2) z := by
+  have hφd : DifferentiableAt ℝ φ z := (hφ.contDiffAt).differentiableAt (by norm_num)
+  have hWd : DifferentiableAt ℝ (fun x : ℝ => x * (Work.Spaces.w x) ^ 2) z :=
+    (contDiffAt_id.mul (contDiffAt_w_sq hz 1)).differentiableAt (by norm_num)
+  have hfun : (fun x : ℝ => φ x * (Work.Spaces.w x) ^ 2 * x)
+      = fun x : ℝ => φ x * (x * (Work.Spaces.w x) ^ 2) := by funext x; ring
+  rw [hfun, deriv_fun_mul hφd hWd]
+
+/-- Second-order product rule for `φ · w² · z²`. -/
+theorem TruncCutDerivTwo (φ : ℝ → ℝ) (hφ : ContDiff ℝ 2 φ) (z : ℝ) (hz : 0 < z) :
+    deriv (deriv (fun x : ℝ => φ x * (Work.Spaces.w x) ^ 2 * x ^ 2)) z
+      = deriv (deriv φ) z * (z ^ 2 * (Work.Spaces.w z) ^ 2)
+        + 2 * deriv φ z * deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z
+        + φ z * deriv (deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2)) z := by
+  have hφ2 : ContDiffAt ℝ 2 φ z := hφ.contDiffAt
+  have hW2 : ContDiffAt ℝ 2 (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z :=
+    (contDiffAt_id.pow 2).mul (contDiffAt_w_sq hz 2)
+  have hfun : (fun x : ℝ => φ x * (Work.Spaces.w x) ^ 2 * x ^ 2)
+      = fun x : ℝ => φ x * (x ^ 2 * (Work.Spaces.w x) ^ 2) := by funext x; ring
+  rw [hfun]
+  have hleib := iteratedDeriv_fun_mul (n := 2) (x := z) hφ2 hW2
+  rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_succ,
+    Finset.sum_range_zero, zero_add] at hleib
+  have hLHS : deriv (deriv (fun x : ℝ => φ x * (x ^ 2 * (Work.Spaces.w x) ^ 2))) z
+      = iteratedDeriv 2 (fun x : ℝ => φ x * (x ^ 2 * (Work.Spaces.w x) ^ 2)) z := by
+    rw [iteratedDeriv_two_eq]
+  rw [hLHS, hleib]
+  simp only [Nat.choose_zero_right, Nat.choose_one_right, Nat.choose_self, Nat.cast_one,
+    Nat.cast_ofNat, one_mul, iteratedDeriv_zero, iteratedDeriv_one, Nat.sub_zero, Nat.sub_self,
+    Nat.reduceSub, iteratedDeriv_two_eq]
+  ring
+
+/-! ## The two cutoff-derivative bounds of the truncation error -/
+
+
+/-! ## Slicewise honesty of the source `F` and the angular AM–GM
+
+These are the ingredients that turn the pointwise (in `θ`) AM–GM `F·Ψ ≤ (F²+Ψ²)/2` into a
+comparison of the iterated integrals. -/
+
+variable {α : ℝ} {F Ψ : ℝ → ℝ → ℝ}
+
+/-- The `θ`-slice of `∂_θθΨ` is a.e. strongly measurable. -/
+theorem aesm_pthIter2_slice (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    AEStronglyMeasurable (fun θ => Work.Spaces.pthIter 2 Ψ z θ)
+      (volume.restrict Work.Spaces.Iθ) := by
+  rw [restrict_Iθ_eq_Ioo]
+  exact (continuousOn_pthIter2' h hz).aestronglyMeasurable measurableSet_Ioo
+
+/-- The `θ`-slice of `bslOp α Ψ` is a.e. strongly measurable, for `z > 0`. -/
+theorem aesm_bslOp_slice (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    AEStronglyMeasurable (fun θ => Work.Elliptic.bslOp α Ψ z θ)
+      (volume.restrict Work.Spaces.Iθ) := by
+  have hS := smoothOpen_of_forall h.sm
+  have h1 : AEStronglyMeasurable (fun θ => Work.Spaces.pzIter 2 Ψ z θ)
+      (volume.restrict Work.Spaces.Iθ) := SmoothOpen.aesm_slice_pzIter hS 2 hz
+  have h2 : AEStronglyMeasurable (fun θ => Work.Spaces.pz Ψ z θ)
+      (volume.restrict Work.Spaces.Iθ) := SmoothOpen.aesm_slice_pzIter hS 1 hz
+  have h3 : AEStronglyMeasurable (fun θ => Ψ z θ) (volume.restrict Work.Spaces.Iθ) :=
+    SmoothOpen.aesm_slice_pzIter hS 0 hz
+  have h4 := aesm_pthIter2_slice h hz
+  have h5 := aesm_pth_tan_mul h hz
+  have hgoal : (fun θ => Work.Elliptic.bslOp α Ψ z θ)
+      = fun θ => (-(α ^ 2 * z ^ 2)) * Work.Spaces.pzIter 2 Ψ z θ
+          - (α * (5 + α) * z) * Work.Spaces.pz Ψ z θ
+          + (-(Work.Spaces.pthIter 2 Ψ z θ)
+            + Work.Spaces.pth (fun z θ => Real.tan θ * Ψ z θ) z θ - 6 * Ψ z θ) := by
+    funext θ
+    rw [Work.Elliptic.bslOp_apply, Work.Elliptic.Lzero]
+  rw [hgoal]
+  exact (((h1.const_mul _).sub (h2.const_mul _)).add
+    (((h4.neg).add h5).sub (h3.const_mul 6)))
+
+/-- The `θ`-slice of the source `F` is a.e. strongly measurable, for `z > 0`. -/
+theorem aesm_F_slice (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    AEStronglyMeasurable (fun θ => F z θ) (volume.restrict Work.Spaces.Iθ) := by
+  refine (aesm_bslOp_slice h hz).congr ?_
+  filter_upwards [ae_mem_Ioo_Iθ'] with θ hθ
+  exact h.eq z hz θ hθ.1 hθ.2
+
+/-- `(F z ·)²` is integrable on the angular interval, for `z > 0` (honesty of the source). -/
+theorem hon_F_slice_sq_integrable (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    IntegrableOn (fun θ => (F z θ) ^ 2) Work.Spaces.Iθ :=
+  integrableOn_sq_of_sigma (aesm_F_slice h hz) (hon_memF_sigma h hz)
+
+/-- `F z · · Ψ z ·` is integrable on the angular interval, for `z > 0`. -/
+theorem hon_F_mul_psi_slice_integrable (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    IntegrableOn (fun θ => F z θ * Ψ z θ) Work.Spaces.Iθ := by
+  have hF2 := hon_F_slice_sq_integrable h hz
+  have hP2 := integrableOn_sq_psi' h hz
+  have hmaj : IntegrableOn (fun θ => (1/2) * ((F z θ)^2 + (Ψ z θ)^2)) Work.Spaces.Iθ :=
+    (hF2.add hP2).const_mul (1/2)
+  refine hmaj.mono' ((aesm_F_slice h hz).mul (aesm_psi_slice h hz)) ?_
+  filter_upwards with θ
+  rw [Real.norm_eq_abs, abs_mul]
+  have hsq := sq_nonneg (|F z θ| - |Ψ z θ|)
+  have h1 : (F z θ)^2 = |F z θ|^2 := (sq_abs _).symm
+  have h2 : (Ψ z θ)^2 = |Ψ z θ|^2 := (sq_abs _).symm
+  rw [h1, h2]
+  nlinarith [hsq, abs_nonneg (F z θ), abs_nonneg (Ψ z θ)]
+
+/-- **The slicewise AM–GM**: for `z > 0`, `∫_θ FΨ ≤ (1/2)∫_θ F² + (1/2)∫_θ Ψ²`. -/
+theorem hon_slice_amgm (h : Hon α F Ψ) {z : ℝ} (hz : 0 < z) :
+    (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ)
+      ≤ (1/2) * (∫ θ in Work.Spaces.Iθ, (F z θ)^2)
+        + (1/2) * (∫ θ in Work.Spaces.Iθ, (Ψ z θ)^2) := by
+  have hFP := hon_F_mul_psi_slice_integrable h hz
+  have hF2 := hon_F_slice_sq_integrable h hz
+  have hP2 := integrableOn_sq_psi' h hz
+  have hmaj : IntegrableOn (fun θ => (1/2) * ((F z θ)^2 + (Ψ z θ)^2)) Work.Spaces.Iθ :=
+    (hF2.add hP2).const_mul (1/2)
+  have hle : (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ)
+      ≤ ∫ θ in Work.Spaces.Iθ, (1/2) * ((F z θ)^2 + (Ψ z θ)^2) :=
+    integral_mono_ae hFP hmaj (Filter.Eventually.of_forall fun θ => by
+      have hsq := sq_nonneg (F z θ - Ψ z θ)
+      nlinarith [hsq])
+  rw [integral_const_mul, integral_add hF2 hP2] at hle
+  linarith
+
+/-- **Strong measurability of the slice mass `z ↦ ∫_θ Ψ(z,θ)²`.** -/
+theorem aesm_P2 (h : Hon α F Ψ) :
+    AEStronglyMeasurable (fun z => ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)
+      (volume.restrict Work.Spaces.Iz) := by
+  have hcont : ContinuousOn (fun p : ℝ × ℝ => (Ψ p.1 p.2) ^ 2)
+      (Set.Ioi 0 ×ˢ Set.Ioo 0 (π/2)) :=
+    ((h.sm 0).continuousOn).pow 2
+  have h2 := (Work.Spaces.aesm_of_continuousOn_Qd _ hcont).integral_prod_right'
+  simpa using h2
+
+/-- The weight `(w)²` is measurable. -/
+theorem measurable_wSq : Measurable (fun z : ℝ => (Work.Spaces.w z) ^ 2) := by
+  have : (fun z : ℝ => (Work.Spaces.w z) ^ 2) = fun z : ℝ => ((1 + z) ^ 2 / z ^ 2) ^ 2 := by
+    funext z; simp only [Work.Spaces.w]
+  rw [this]
+  exact (((measurable_const.add measurable_id).pow_const 2).div
+    (measurable_id.pow_const 2)).pow_const 2
+
+/-- **`φ w² · P2` is integrable** as soon as `w² · P2` is, for `0 ≤ φ ≤ 1`. -/
+theorem integrableOn_phi_wSq_P2 {φ : ℝ → ℝ} (hφ0 : ∀ z : ℝ, 0 ≤ φ z)
+    (hφ1 : ∀ z : ℝ, φ z ≤ 1) (hφc : Continuous φ) (h : Hon α F Ψ)
+    (hP : IntegrableOn (fun z => (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz) :
+    IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz := by
+  have hP2nn : ∀ z : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+    fun z => integral_nonneg fun θ => sq_nonneg _
+  have haesm : AEStronglyMeasurable (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) (volume.restrict Work.Spaces.Iz) :=
+    ((hφc.measurable.aestronglyMeasurable).mul measurable_wSq.aestronglyMeasurable).mul (aesm_P2 h)
+  refine hP.mono' haesm ?_
+  filter_upwards with z
+  rw [Real.norm_eq_abs, abs_of_nonneg
+    (mul_nonneg (mul_nonneg (hφ0 z) (sq_nonneg _)) (hP2nn z))]
+  calc φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)
+      ≤ 1 * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (hφ1 z) (sq_nonneg _)) (hP2nn z)
+    _ = (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) := by ring
+
+/-! ## The two truncation-error integrals are honest -/
+
+/-- The second truncation-error integral (the `φ'`-term against `z w²`) is integrable. -/
+theorem integrableOn_truncErr_E2 (h : Hon α F Ψ) (φ : ℝ → ℝ)
+    (hC1 : ∃ C : ℝ, ∀ z : ℝ, |deriv φ z| * z ≤ C)
+    (hP : IntegrableOn (fun z => (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz) :
+    IntegrableOn (fun z => |deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz := by
+  obtain ⟨C, hC⟩ := hC1
+  have hP2nn : ∀ z : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+    fun z => integral_nonneg fun θ => sq_nonneg _
+  have haesm : AEStronglyMeasurable (fun z => |deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) (volume.restrict Work.Spaces.Iz) :=
+    (((measurable_deriv φ).abs.aestronglyMeasurable).mul
+      ((measurable_id.mul measurable_wSq).aestronglyMeasurable)).mul (aesm_P2 h)
+  refine (hP.const_mul (max C 0)).mono' haesm ?_
+  filter_upwards [ae_pos_of_mem_Iz] with z hz
+  have hCz : |deriv φ z| * z ≤ C := hC z
+  have hCmax : |deriv φ z| * z ≤ max C 0 := le_trans hCz (le_max_left _ _)
+  have hw2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+  have hW1 : 0 ≤ z * (Work.Spaces.w z) ^ 2 := mul_nonneg (le_of_lt hz) hw2
+  rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+  calc |deriv φ z| * (z * (Work.Spaces.w z) ^ 2) * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)
+      = (|deriv φ z| * z) * ((Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by ring
+    _ ≤ max C 0 * ((Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) :=
+        mul_le_mul_of_nonneg_right hCmax (mul_nonneg hw2 (hP2nn z))
+
+/-- The first truncation-error integral (the `φ'`- and `φ''`-terms against `z² w²` and `w²`) is
+integrable. -/
+theorem integrableOn_truncErr_E1 (h : Hon α F Ψ) (φ : ℝ → ℝ)
+    (hC1 : ∃ C : ℝ, ∀ z : ℝ, |deriv φ z| * z ≤ C)
+    (hC2 : ∃ C : ℝ, ∀ z : ℝ, |deriv (deriv φ) z| * z ^ 2 ≤ C)
+    (hP : IntegrableOn (fun z => (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz) :
+    IntegrableOn (fun z => (2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz := by
+  obtain ⟨C₁, hC₁⟩ := hC1
+  obtain ⟨C₂, hC₂⟩ := hC2
+  have hP2nn : ∀ z : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+    fun z => integral_nonneg fun θ => sq_nonneg _
+  have haesm : AEStronglyMeasurable (fun z => (2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) (volume.restrict Work.Spaces.Iz) := by
+    have hA : AEStronglyMeasurable (fun z => 2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|)
+        (volume.restrict Work.Spaces.Iz) :=
+      (((measurable_deriv φ).abs.const_mul 2).aestronglyMeasurable).mul
+        ((measurable_deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2)).abs.aestronglyMeasurable)
+    have hB : AEStronglyMeasurable (fun z => |deriv (deriv φ) z|
+        * (z ^ 2 * (Work.Spaces.w z) ^ 2)) (volume.restrict Work.Spaces.Iz) :=
+      ((measurable_deriv (deriv φ)).abs.aestronglyMeasurable).mul
+        (((measurable_id.pow_const 2).mul measurable_wSq).aestronglyMeasurable)
+    exact (hA.add hB).mul (aesm_P2 h)
+  refine (hP.const_mul (max (4 * C₁ + C₂) 0)).mono' haesm ?_
+  filter_upwards [ae_pos_of_mem_Iz] with z hz
+  have hW2' := deriv_zsqwSq_abs_le z hz
+  have hC₁z : |deriv φ z| * z ≤ C₁ := hC₁ z
+  have hC₂z : |deriv (deriv φ) z| * z ^ 2 ≤ C₂ := hC₂ z
+  have hw2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+  have hznn : 0 ≤ z := le_of_lt hz
+  have hcoef : (2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+      + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      ≤ max (4 * C₁ + C₂) 0 * (Work.Spaces.w z) ^ 2 := by
+    have h1 : 2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        ≤ 4 * (|deriv φ z| * z) * (Work.Spaces.w z) ^ 2 := by
+      calc 2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          ≤ 2 * |deriv φ z| * (2 * z * (Work.Spaces.w z) ^ 2) := by
+            exact mul_le_mul_of_nonneg_left hW2' (by positivity)
+        _ = 4 * (|deriv φ z| * z) * (Work.Spaces.w z) ^ 2 := by ring
+    have h2 : |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2)
+        ≤ C₂ * (Work.Spaces.w z) ^ 2 := by
+      calc |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2)
+          = (|deriv (deriv φ) z| * z ^ 2) * (Work.Spaces.w z) ^ 2 := by ring
+        _ ≤ C₂ * (Work.Spaces.w z) ^ 2 := mul_le_mul_of_nonneg_right hC₂z hw2
+    have h3 : 4 * (|deriv φ z| * z) * (Work.Spaces.w z) ^ 2 ≤ 4 * C₁ * (Work.Spaces.w z) ^ 2 :=
+      mul_le_mul_of_nonneg_right (by linarith) hw2
+    have h4 : (4 * C₁ + C₂) * (Work.Spaces.w z) ^ 2 ≤ max (4 * C₁ + C₂) 0 * (Work.Spaces.w z) ^ 2 :=
+      mul_le_mul_of_nonneg_right (le_max_left _ _) hw2
+    linarith
+  rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+  calc (2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)
+      ≤ (max (4 * C₁ + C₂) 0 * (Work.Spaces.w z) ^ 2)
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+        mul_le_mul_of_nonneg_right hcoef (hP2nn z)
+    _ = max (4 * C₁ + C₂) 0 * ((Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by ring
+
+/-! ## The three truncation bounds
+
+Each is of the "junk-friendly" shape: the pointwise bound holds a.e., the dominating function is
+nonnegative a.e. and integrable, so the comparison of the iterated integrals follows whether or not
+the bounded side is integrable. -/
+
+/-- The source pairing `∫_z φ w² ∫_θ FΨ` obeys the angular AM–GM. -/
+theorem trunc_A_le (h : Hon α F Ψ) {φ : ℝ → ℝ} (hφ0 : ∀ z : ℝ, 0 ≤ φ z)
+    (hPc : IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz)
+    (hS : IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2)) Work.Spaces.Iz) :
+    (∫ z in Work.Spaces.Iz, φ z * (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ))
+      ≤ (1 / 2) * (∫ z in Work.Spaces.Iz, φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2))
+        + (1 / 2) * (∫ z in Work.Spaces.Iz, φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by
+  have hgint : IntegrableOn (fun z => (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2))
+      + (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) Work.Spaces.Iz :=
+    (hS.const_mul (1 / 2)).add (hPc.const_mul (1 / 2))
+  have hg0 : 0 ≤ᵐ[volume.restrict Work.Spaces.Iz] (fun z => (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2))
+      + (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) :=
+    Filter.Eventually.of_forall fun z => by
+      have h1 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+      have h2 : 0 ≤ ∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2 :=
+        integral_nonneg fun θ => sq_nonneg _
+      have h3 : 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+        integral_nonneg fun θ => sq_nonneg _
+      have h4 : 0 ≤ φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2) :=
+        mul_nonneg (mul_nonneg (hφ0 z) h1) h2
+      have h5 : 0 ≤ φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+        mul_nonneg (mul_nonneg (hφ0 z) h1) h3
+      first | simp only [Pi.zero_apply] | skip
+      linarith
+  have hle : (fun z => φ z * (Work.Spaces.w z) ^ 2
+        * (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ))
+      ≤ᵐ[volume.restrict Work.Spaces.Iz]
+      (fun z => (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2))
+        + (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) := by
+    filter_upwards [ae_pos_of_mem_Iz] with z hz
+    have hamgm := hon_slice_amgm h hz
+    have hw : 0 ≤ φ z * (Work.Spaces.w z) ^ 2 := mul_nonneg (hφ0 z) (sq_nonneg _)
+    calc φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ)
+        = (φ z * (Work.Spaces.w z) ^ 2) * (∫ θ in Work.Spaces.Iθ, F z θ * Ψ z θ) := by ring
+      _ ≤ (φ z * (Work.Spaces.w z) ^ 2)
+            * ((1 / 2) * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2)
+              + (1 / 2) * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) :=
+          mul_le_mul_of_nonneg_left hamgm hw
+      _ = (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2))
+          + (1 / 2) * (φ z * (Work.Spaces.w z) ^ 2
+            * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by ring
+  have hmain := setIntegral_le_of_ae_le_of_nonneg hle hg0 hgint
+  rw [integral_add (hS.const_mul (1 / 2)) (hPc.const_mul (1 / 2)),
+    integral_const_mul, integral_const_mul] at hmain
+  exact hmain
+
+/-- The second-order truncation term obeys the paper's pointwise weight bound. -/
+theorem trunc_B2_le (h : Hon α F Ψ) {φ : ℝ → ℝ} (hφ0 : ∀ z : ℝ, 0 ≤ φ z)
+    (hφ2 : ContDiff ℝ 2 φ)
+    (hE1 : IntegrableOn (fun z => (2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz)
+    (hPc : IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz) :
+    (∫ z in Work.Spaces.Iz,
+        deriv (deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z ^ 2)) z
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      ≤ (∫ z in Work.Spaces.Iz, (2 * |deriv φ z|
+          * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+        + 6 * (∫ z in Work.Spaces.Iz, φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by
+  have hP2nn : ∀ z : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+    fun z => integral_nonneg fun θ => sq_nonneg _
+  have hgint : IntegrableOn (fun z => ((2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      + 6 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)))
+      Work.Spaces.Iz :=
+    hE1.add (hPc.const_mul 6)
+  have hg0 : 0 ≤ᵐ[volume.restrict Work.Spaces.Iz] (fun z => ((2 * |deriv φ z|
+        * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+        + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      + 6 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) :=
+    Filter.Eventually.of_forall fun z => by
+      have h1 : 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+        integral_nonneg fun θ => sq_nonneg _
+      have h2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+      have h3 : 0 ≤ 2 * |deriv φ z|
+          * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2) :=
+        add_nonneg (mul_nonneg (by positivity) (abs_nonneg _))
+          (mul_nonneg (abs_nonneg _) (mul_nonneg (sq_nonneg _) h2))
+      have h4 : 0 ≤ (2 * |deriv φ z|
+          * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) := mul_nonneg h3 h1
+      have h5 : 0 ≤ φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+        mul_nonneg (mul_nonneg (hφ0 z) h2) h1
+      first | simp only [Pi.zero_apply] | skip
+      linarith
+  have hle : (fun z => deriv (deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z ^ 2)) z
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      ≤ᵐ[volume.restrict Work.Spaces.Iz]
+      (fun z => ((2 * |deriv φ z|
+          * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+        + 6 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) := by
+    filter_upwards [ae_pos_of_mem_Iz] with z hz
+    obtain ⟨-, -, -, -, -, hW2le, -, -, -, -, -⟩ :=
+      Work.FTS.EllipticEst.weight_algebra_fts
+    have hW2 := hW2le z hz
+    have hderiv := TruncCutDerivTwo φ hφ2 z hz
+    have hP2 := hP2nn z
+    have hw2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+    have hw2z : 0 ≤ z ^ 2 * (Work.Spaces.w z) ^ 2 := mul_nonneg (sq_nonneg _) hw2
+    have hb1 : deriv (deriv φ) z * (z ^ 2 * (Work.Spaces.w z) ^ 2)
+        ≤ |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2) :=
+      mul_le_mul_of_nonneg_right (le_abs_self _) hw2z
+    have hb2 : 2 * deriv φ z * deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z
+        ≤ 2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z| := by
+      have h0 : deriv φ z * deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z
+          ≤ |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z| := by
+        rw [← abs_mul]
+        exact le_abs_self _
+      linarith [h0]
+    have hb3 : φ z * deriv (deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2)) z
+        ≤ 6 * (φ z * (Work.Spaces.w z) ^ 2) := by
+      have hh := mul_le_mul_of_nonneg_left hW2 (hφ0 z)
+      linarith [hh]
+    have hsum : deriv (deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z ^ 2)) z
+        ≤ (2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+          + 6 * (φ z * (Work.Spaces.w z) ^ 2) := by
+      rw [hderiv]
+      linarith [hb1, hb2, hb3]
+    calc deriv (deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z ^ 2)) z
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)
+        ≤ ((2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+          + 6 * (φ z * (Work.Spaces.w z) ^ 2)) * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+          mul_le_mul_of_nonneg_right hsum hP2
+      _ = ((2 * |deriv φ z| * |deriv (fun x : ℝ => x ^ 2 * (Work.Spaces.w x) ^ 2) z|
+          + |deriv (deriv φ) z| * (z ^ 2 * (Work.Spaces.w z) ^ 2))
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+        + 6 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by ring
+  have hmain := setIntegral_le_of_ae_le_of_nonneg hle hg0 hgint
+  rw [integral_add hE1 (hPc.const_mul 6), integral_const_mul] at hmain
+  exact hmain
+
+/-- The first-order truncation term obeys the paper's pointwise weight bound. -/
+theorem trunc_B1_le (h : Hon α F Ψ) {φ : ℝ → ℝ} (hφ0 : ∀ z : ℝ, 0 ≤ φ z)
+    (hφ2 : ContDiff ℝ 2 φ)
+    (hE2 : IntegrableOn (fun z => |deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz)
+    (hPc : IntegrableOn (fun z => φ z * (Work.Spaces.w z) ^ 2
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) Work.Spaces.Iz) :
+    -(∫ z in Work.Spaces.Iz,
+        deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z) z
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      ≤ (∫ z in Work.Spaces.Iz, |deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+        + 3 * (∫ z in Work.Spaces.Iz, φ z * (Work.Spaces.w z) ^ 2
+          * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)) := by
+  have hP2nn : ∀ z : ℝ, 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+    fun z => integral_nonneg fun θ => sq_nonneg _
+  have hgint : IntegrableOn (fun z => (|deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+      * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      + 3 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)))
+      Work.Spaces.Iz :=
+    hE2.add (hPc.const_mul 3)
+  have hg0 : 0 ≤ᵐ[volume.restrict Work.Spaces.Iz] (fun z => (|deriv φ z|
+      * (z * (Work.Spaces.w z) ^ 2) * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+      + 3 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))) := by
+    filter_upwards [ae_pos_of_mem_Iz] with z hz
+    have h1 : 0 ≤ ∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2 :=
+      integral_nonneg fun θ => sq_nonneg _
+    have h2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+    have h3 : 0 ≤ z * (Work.Spaces.w z) ^ 2 := mul_nonneg (le_of_lt hz) h2
+    have h4 : 0 ≤ |deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+      mul_nonneg (mul_nonneg (abs_nonneg _) h3) h1
+    have h5 : 0 ≤ φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) :=
+      mul_nonneg (mul_nonneg (hφ0 z) h2) h1
+    first | simp only [Pi.zero_apply] | skip
+    linarith
+  -- the pointwise lower bound
+  have hle : ∀ᵐ z ∂(volume.restrict Work.Spaces.Iz),
+      -((|deriv φ z| * (z * (Work.Spaces.w z) ^ 2)
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2))
+        + 3 * (φ z * (Work.Spaces.w z) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2)))
+      ≤ deriv (fun z => φ z * (Work.Spaces.w z) ^ 2 * z) z
+        * (∫ θ in Work.Spaces.Iθ, (Ψ z θ) ^ 2) := by
+    filter_upwards [ae_pos_of_mem_Iz] with z hz
+    obtain ⟨-, -, -, -, -, -, hW1le, -, -, -, -⟩ :=
+      Work.FTS.EllipticEst.weight_algebra_fts
+    have hW1 := hW1le z hz
+    have hderiv := TruncCutDerivOne φ hφ2 z hz
+    have hP2 := hP2nn z
+    have hw2 : 0 ≤ (Work.Spaces.w z) ^ 2 := sq_nonneg _
+    have hz1 : 0 ≤ z * (Work.Spaces.w z) ^ 2 := mul_nonneg (le_of_lt hz) hw2
+    -- the two nonnegative contributions to `deriv (φ w² z) z + |deriv φ z| (z w²) + 3 φ w²`
+    have hA : 0 ≤ (deriv φ z + |deriv φ z|) * (z * (Work.Spaces.w z) ^ 2) :=
+      mul_nonneg (by linarith [neg_le_abs (deriv φ z)]) hz1
+    have hB : 0 ≤ φ z
+        * (deriv (fun z => z * (Work.Spaces.w z) ^ 2) z + 3 * (Work.Spaces.w z) ^ 2) :=
+      mul_nonneg (hφ0 z) (by linarith [hW1])
+    rw [hderiv]
+    nlinarith [hA, hB, hP2, mul_nonneg (add_nonneg hA hB) hP2]
+  have hmain := neg_setIntegral_le_of_ae_le hle hg0 hgint
+  rw [integral_add hE2 (hPc.const_mul 3), integral_const_mul] at hmain
+  exact hmain
+
+
+/-! ## The general form of the truncated inequality, and the main statement -/
+
+
+
+end Work.FTS.EllipticEst.Honest
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.Yc.HonSliceRightTendstoYc =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -578,25 +1201,6 @@ theorem two_mul_abs_le_sq_add_inv (g σ : ℝ) (hσ : 0 < σ) :
     field_simp
   nlinarith [h, h1, h2, h3]
 
-/-- `∫_a^b σ^{-1} ≤ π/2` when `[a,b] ⊆ Iθ`. -/
-theorem intervalIntegral_inv_sEta_le {a b : ℝ} (hab : a ≤ b) (hsub : Set.Ioc a b ⊆ Work.Spaces.Iθ) :
-    (∫ θ in a..b, (Work.FTS.EllipticEst.sEta θ)⁻¹) ≤ Real.pi / 2 := by
-  rw [intervalIntegral.integral_of_le hab]
-  refine le_trans (setIntegral_le_toReal_lintegral (Set.Ioc a b)
-    (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioc (fun θ hθ =>
-      inv_nonneg.mpr (sEta_nonneg (hsub hθ))))) ?_
-  have h2 : (∫⁻ θ in Set.Ioc a b, ENNReal.ofReal ((Work.FTS.EllipticEst.sEta θ)⁻¹))
-      ≤ ∫⁻ θ in Work.Spaces.Iθ, (1 : ℝ≥0∞) := by
-    refine le_trans (MeasureTheory.lintegral_mono_ae
-      (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioc (fun θ hθ => ?_)))
-      (MeasureTheory.lintegral_mono_set hsub)
-    rw [← ENNReal.ofReal_one]
-    exact (ENNReal.ofReal_le_ofReal_iff zero_le_one).mpr (inv_sEta_le_one (hsub hθ))
-  have h3 : (∫⁻ θ in Work.Spaces.Iθ, (1 : ℝ≥0∞)) = ENNReal.ofReal (Real.pi / 2) := by
-    rw [MeasureTheory.lintegral_const, Work.Spaces.Iθ, one_mul, Measure.restrict_apply_univ,
-      Real.volume_Icc, sub_zero]
-  refine le_trans (ENNReal.toReal_mono (by finiteness) (le_trans h2 (le_of_eq h3))) ?_
-  rw [ENNReal.toReal_ofReal (by linarith [Real.pi_pos])]
 
 /-- **The `θ`-`L¹` bound of a slice**: `∫_a^b |g| ≤ (1/2)(∫_{Iθ} g²σ + π/2)`. -/
 theorem Ioc_abs_le_half {g : ℝ → ℝ} {a b : ℝ} (ha : 0 < a) (hb : b < Real.pi / 2) (hab : a ≤ b)
@@ -691,838 +1295,7 @@ set_option autoImplicit false
 set_option linter.unusedSimpArgs false
 set_option linter.unusedVariables false
 
-/-- **The `θ → (π/2)⁻` endpoint limit of an honest slice vanishes (for every `z > 0`).**  For
-`h : Hon α F Ψ` (the honest class of `Submission/Work/FTS/EllipticEst/Honest/Basic.lean`) and every
-`z > 0`, the slice `u = Ψ z ·` has limit `0` at `(π/2)⁻`.
-
-CONE WARNING (important).  A sorry-free proof of this very statement already exists as
-`Work.FTS.EllipticEst.Honest.HonSliceRightTendsto`
-(`Submission/Work/FTS/EllipticEst/Honest/HonSliceRightTendsto.lean`), but that module DEFINES
-`Work.FTS.EllipticEst.Honest.contDiffOn_slice`, a name that is *also* defined (with a different
-type) by `Honest/HonDifQuotBound.lean`; consequently no module can import both, and the consumers
-of the present statement need the `HonDifQuotBound`/`HonFirstMoment` cone.  So do NOT import
-`Honest.HonSliceRightTendsto`, `Honest.HonSliceBdd`, `Honest.HonDifQuotBound`,
-`Honest.HonFirstMoment` or `Honest.I4UpperHonest`; a direct proof in the cone
-`{Basic, HonSliceFinite, HonEnergyAux}` is wanted (porting the existing proof into this cone is
-acceptable if done without those imports).
-
-ROUTE (corrected).  Put `g θ := Real.tan θ * u θ` with `u := Ψ z ·`, and `σ θ = sin(2θ)^{-η}`
-(`η = 99/100`).  Rearranging `bslOp α Ψ = F` (`Hon.eq_solve`) on the open interval gives
-
-`g' = F z · + α²z²·(∂_zzΨ(z,·)) + (∂_θθΨ(z,·)) + α(5+α)z·(∂_zΨ(z,·)) + 6·Ψ(z,·)`,
-
-and each of the five terms has square-integrable product with `σ` over `Iθ`:
-`Hon.memF`, `hon_memA_sigma` (for `z²∂_zzΨ`), `hon_memB_sigma` (for `∂_θθΨ`),
-`HonSliceFinite.integrableOn_zpz_sigma'` (for `z∂_zΨ`) and `HonSliceFinite.integrableOn_sq_sEta_psi`
-(for `Ψ`).  Hence `∫_θ (g')² σ < ∞`.
-
-For `0 < a < b < π/2`, Cauchy–Schwarz in the form `(∫_a^b g')² ≤ (∫_a^b (g')²σ)(∫_a^b σ^{-1})` and
-the bound `σ^{-1} = sin(2θ)^η ≤ 2^η (b-a)^η` on `[a,b]` give
-`|g b - g a| ≤ √A · 2^{η/2} (b-a)^{(1+η)/2}`: `g` is Hölder of exponent `(1+η)/2 > 0` on
-`(0, π/2)`, hence `g` is Cauchy along `𝓝[<] (π/2)` and therefore has a *finite* limit there
-(`ℝ` is complete).  Finally `u = g · (cos θ / sin θ)` with `cos θ → 0` and `sin θ → 1` as
-`θ → (π/2)⁻`, so `u → 0`. -/
-theorem HonSliceRightTendstoYc (α : ℝ) (F Ψ : ℝ → ℝ → ℝ)
-    (h : Work.FTS.EllipticEst.Honest.Hon α F Ψ) :
-    ∀ z : ℝ, 0 < z →
-      Filter.Tendsto (fun θ : ℝ => Ψ z θ)
-        (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-  intro z hz
-  -- the base point `a` of the `θ`-integration
-  set a : ℝ := Real.pi / 4 with hadef
-  have ha_pos : 0 < a := by rw [hadef]; linarith [Real.pi_pos]
-  have ha_lt : a < Real.pi / 2 := by rw [hadef]; linarith [Real.pi_pos]
-  have hz1 : 0 < z + 1 := by linarith
-  -- slicewise `L²(σ)`-integrability of `∂_θθΨ` at every `s > 0` (from `memB`)
-  have hth : ∀ s : ℝ, 0 < s → MeasureTheory.IntegrableOn
-      (fun θ => (deriv (fun t => deriv (fun θ' => Ψ s θ') t) θ) ^ 2
-        * sEta θ) Work.Spaces.Iθ := by
-    intro s hs
-    have h0 := HkMemSliceSqSigma h.memB hs
-    refine h0.congr_fun (fun θ _ => ?_) measurableSet_Icc
-    have h1 : Work.Spaces.pthIter 2 Ψ s θ
-        = deriv (fun t => deriv (fun θ' => Ψ s θ') t) θ := by
-      simp only [show (2 : ℕ) = 1 + 1 from rfl, Work.Spaces.pthIter_succ,
-        Work.Spaces.pthIter_zero, Work.Spaces.pth]
-    show (Work.Spaces.pthIter 2 Ψ s θ) ^ 2 * sEta θ
-      = (deriv (fun t => deriv (fun θ' => Ψ s θ') t) θ) ^ 2 * sEta θ
-    rw [h1]
-  -- boundedness of the slices and of their `θ`-derivatives at `z` and at `z + 1`
-  obtain ⟨M, hMpos, hMb⟩ :=
-    SliceBddSqSigma (contDiffOn_slice Ψ hz (h.sm 2)) (hth z hz)
-  obtain ⟨M₁, hM₁pos, hM₁b⟩ :=
-    SliceBddSqSigma (contDiffOn_slice Ψ hz1 (h.sm 2)) (hth (z + 1) hz1)
-  -- the `σ`-weighted square of the `z`-slice of `∂_z²Ψ` (from `memA`, divided by `z⁴`)
-  have hp_int : MeasureTheory.IntegrableOn
-      (fun θ => (Work.Spaces.pzIter 2 Ψ z θ) ^ 2 * sEta θ) Work.Spaces.Iθ := by
-    have h0 := HkMemSliceSqSigma h.memA hz
-    have hz2 : (z ^ 2) ≠ 0 := by positivity
-    have h1 := h0.const_mul ((z ^ 2) ^ 2)⁻¹
-    refine MeasureTheory.IntegrableOn.congr_fun h1 (fun θ _ => ?_) measurableSet_Icc
-    field_simp
-  -- the `σ`-weighted square of the `F`-slice
-  have hF_int : MeasureTheory.IntegrableOn
-      (fun θ => (F z θ) ^ 2 * sEta θ) Work.Spaces.Iθ := HkMemSliceSqSigma h.memF hz
-  -- a.e. measurability of the `σ`-weighted slice norm of `∂_z²Ψ` (from the honest `z`-integral
-  -- `h.memA.2`, after dividing by the measurable weight `w s²·s⁴`)
-  have hγaem : AEMeasurable
-      (fun s => ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-      (volume.restrict Work.Spaces.Iz) := by
-    have hG : ∀ s, (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (fun s θ => s ^ 2 * Work.Spaces.pzIter 2 Ψ s θ) s θ)
-        = (Work.Spaces.w s) ^ 2 * (s ^ 4)
-          * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-      intro s
-      rw [← MeasureTheory.integral_const_mul]
-      exact MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ hθ => by
-        rw [HkIntegrand_zero_eq_Iθ α (fun s θ => s ^ 2 * Work.Spaces.pzIter 2 Ψ s θ) hθ]
-        ring)
-    have hm : AEMeasurable (fun s => (Work.Spaces.w s) ^ 2 * (s ^ 4)
-        * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ))
-        (volume.restrict Work.Spaces.Iz) :=
-      (h.memA.2.congr_fun (fun s _ => hG s) measurableSet_Ici).aestronglyMeasurable.aemeasurable
-    have hden : AEMeasurable (fun s : ℝ => (Work.Spaces.w s) ^ 2 * s ^ 4)
-        (volume.restrict Work.Spaces.Iz) := by
-      refine Measurable.aemeasurable ?_
-      have hw : Measurable fun s : ℝ => Work.Spaces.w s := by
-        show Measurable fun s : ℝ => (1 + s) ^ 2 / s ^ 2
-        fun_prop
-      exact (hw.pow_const 2).mul (measurable_id.pow_const 4)
-    refine (hm.div hden).congr ?_
-    have h0 : ∀ᵐ s ∂(volume : Measure ℝ), s ≠ 0 := by
-      rw [MeasureTheory.ae_iff]; simpa using MeasureTheory.measure_singleton (0 : ℝ)
-    have h0' : ∀ᵐ s ∂(volume.restrict Work.Spaces.Iz), s ∈ Set.Ioi (0 : ℝ) := by
-      rw [Work.Spaces.Iz, MeasureTheory.ae_restrict_iff' measurableSet_Ici]
-      filter_upwards [h0] with s hs hmem
-      exact lt_of_le_of_ne hmem (Ne.symm hs)
-    filter_upwards [h0'] with s hs
-    have hw : (Work.Spaces.w s) ^ 2 * s ^ 4 ≠ 0 := by
-      have h1 : Work.Spaces.w s ≠ 0 := by
-        show (1 + s) ^ 2 / s ^ 2 ≠ 0
-        have hs' : s ≠ 0 := ne_of_gt hs
-        have h1' : (1 : ℝ) + s ≠ 0 := by
-          have hs0 : (0 : ℝ) < s := hs
-          have : (0 : ℝ) < 1 + s := by linarith
-          exact ne_of_gt this
-        exact div_ne_zero (pow_ne_zero 2 h1') (pow_ne_zero 2 hs')
-      exact mul_ne_zero (pow_ne_zero 2 h1) (pow_ne_zero 4 (ne_of_gt hs))
-    exact mul_div_cancel_left₀ _ hw
-  -- `γ` written with the `s⁴`-weight of `memA` (the form `HkMemSliceGammaLinTop` bounds)
-  have hγw : ∀ s, (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-      = (s ^ 2) ^ 2 * (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-    intro s
-    rw [← MeasureTheory.integral_const_mul]
-    exact MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ hθ => by ring)
-  -- a.e. measurability of the *weighted* slice norm, on `Icc z (z+1)`
-  have hγw_aem : AEMeasurable (fun s => ENNReal.ofReal
-      (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ))
-      (volume.restrict (Set.Icc z (z + 1))) := by
-    have hG : ∀ s, (∫ θ in Work.Spaces.Iθ, Work.Spaces.HkIntegrand α 0
-          (fun s θ => s ^ 2 * Work.Spaces.pzIter 2 Ψ s θ) s θ)
-        = (Work.Spaces.w s) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-            ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-      intro s
-      rw [← MeasureTheory.integral_const_mul]
-      exact MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ hθ => by
-        rw [HkIntegrand_zero_eq_Iθ α (fun s θ => s ^ 2 * Work.Spaces.pzIter 2 Ψ s θ) hθ]
-        ring)
-    have h1 : AEMeasurable (fun s => (Work.Spaces.w s) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-        ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)) (volume.restrict Work.Spaces.Iz) :=
-      (h.memA.2.congr_fun (fun s _ => hG s) measurableSet_Ici).aestronglyMeasurable.aemeasurable
-    -- remove the weight `w s²` (multiply the *unweighted* norm, whose measurability is `hγaem`,
-    -- by the measurable factor `(s²)²`)
-    have h2 : AEMeasurable (fun s => ∫ θ in Work.Spaces.Iθ,
-        ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        (volume.restrict Work.Spaces.Iz) := by
-      refine (hγaem.mul ((measurable_id.pow_const 2).pow_const 2).aemeasurable).congr ?_
-      refine Filter.Eventually.of_forall fun s => ?_
-      show (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) * (s ^ 2) ^ 2
-        = ∫ θ in Work.Spaces.Iθ, (s ^ 2 * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ
-      rw [mul_comm, (hγw s).symm]
-    exact (h2.ennreal_ofReal).mono_measure
-      (Measure.restrict_mono (fun s hs => Set.mem_Ici.mpr (le_trans (le_of_lt hz) hs.1)) le_rfl)
-  -- the weighted version is exactly `HkMemSliceGammaLinTop`
-  have hγw_lin : ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-      (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) < ⊤ := by
-    refine lt_of_eq_of_lt ?_ (HkMemSliceGammaLinTop h.memA hz)
-    exact MeasureTheory.lintegral_congr fun s => by rw [hγw s]
-  -- the unweighted lintegral, via the pointwise scaling `γ s ≤ (z⁴)⁻¹ · γ_w s` on `Icc z (z+1)`
-  have hgamma : ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-      (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) < ⊤ := by
-    have hpt : ∀ s ∈ Set.Icc z (z + 1), ENNReal.ofReal
-        (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        ≤ ENNReal.ofReal ((z ^ 4)⁻¹) * ENNReal.ofReal
-            (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-      intro s hs
-      have hs0 : 0 < s := lt_of_lt_of_le hz hs.1
-      have hs4 : 0 < s ^ 4 := pow_pos hs0 4
-      have hle : (s ^ 4)⁻¹ ≤ (z ^ 4)⁻¹ :=
-        inv_anti₀ (pow_pos hz 4) (pow_le_pow_left₀ (le_of_lt hz) hs.1 4)
-      have h1 : (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-          ≤ ((z ^ 4)⁻¹) * (∫ θ in Work.Spaces.Iθ,
-              ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-        rw [hγw s]
-        have heq : (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-            = (s ^ 4)⁻¹ * ((s ^ 2) ^ 2 * (∫ θ in Work.Spaces.Iθ,
-                (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)) := by
-          rw [show (s ^ 2) ^ 2 = s ^ 4 from by ring, ← mul_assoc,
-            inv_mul_cancel₀ (ne_of_gt hs4), one_mul]
-        conv_lhs => rw [heq]
-        refine mul_le_mul_of_nonneg_right hle (mul_nonneg (sq_nonneg (s ^ 2)) ?_)
-        exact MeasureTheory.setIntegral_nonneg measurableSet_Icc
-          (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ))
-      calc ENNReal.ofReal (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-          ≤ ENNReal.ofReal (((z ^ 4)⁻¹) * (∫ θ in Work.Spaces.Iθ,
-              ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)) :=
-            (ENNReal.ofReal_le_ofReal_iff (mul_nonneg (by positivity)
-              (MeasureTheory.setIntegral_nonneg measurableSet_Icc
-                (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ))))).mpr h1
-        _ = ENNReal.ofReal ((z ^ 4)⁻¹) * ENNReal.ofReal (∫ θ in Work.Spaces.Iθ,
-              ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) := by
-            rw [ENNReal.ofReal_mul (by positivity)]
-    calc ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-          (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        ≤ ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal ((z ^ 4)⁻¹) * ENNReal.ofReal
-            (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) :=
-          MeasureTheory.lintegral_mono_ae
-            (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc hpt)
-      _ = ENNReal.ofReal ((z ^ 4)⁻¹) * ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-            (∫ θ in Work.Spaces.Iθ, ((s ^ 2) * Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) :=
-          MeasureTheory.lintegral_const_mul'' _ hγw_aem
-      _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hγw_lin
-  -- a.e. measurability of `ofReal γ` on `Icc z (z+1)` (transfer from `hγaem`)
-  have hγaemK : AEMeasurable (fun s => ENNReal.ofReal
-      (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ))
-      (volume.restrict (Set.Icc z (z + 1))) :=
-    (hγaem.ennreal_ofReal).mono_measure (Measure.restrict_mono_set volume
-      (fun s hs => Set.mem_Ici.mpr (le_trans (le_of_lt hz) hs.1)))
-  -- the lintegral of `(1/2)(γ + π/2)` is finite (this is the constant `c` below)
-  have hb_lin : ∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-      ((1 / 2) * ((∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        + Real.pi / 2)) < ⊤ := by
-    -- it suffices to bound the *decomposed* integrand `ofReal γ + ofReal (π/2)`, since
-    -- `(1/2)(γ + π/2) ≤ γ + π/2`; this avoids pulling out the constant `ofReal (1/2)`
-    have hsum : ∫⁻ s in Set.Icc z (z + 1), (ENNReal.ofReal
-        (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        + ENNReal.ofReal (Real.pi / 2)) < ⊤ := by
-      rw [MeasureTheory.lintegral_add_left' hγaemK]
-      refine ENNReal.add_lt_top.mpr ⟨hgamma, ?_⟩
-      rw [MeasureTheory.lintegral_const, Measure.restrict_apply_univ, Real.volume_Icc]
-      exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top
-    refine lt_of_le_of_lt ?_ hsum
-    refine MeasureTheory.lintegral_mono_ae
-      (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun s _ => ?_))
-    have hγnn : 0 ≤ ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ :=
-      MeasureTheory.setIntegral_nonneg measurableSet_Icc
-        (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ))
-    have hle : (1 / 2) * ((∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        + Real.pi / 2) ≤ (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        + Real.pi / 2 := by linarith [Real.pi_pos]
-    calc ENNReal.ofReal ((1 / 2) * ((∫ θ in Work.Spaces.Iθ,
-          (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) + Real.pi / 2))
-        ≤ ENNReal.ofReal ((∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-            + Real.pi / 2) := (ENNReal.ofReal_le_ofReal_iff (by linarith [Real.pi_pos])).mpr hle
-      _ = ENNReal.ofReal (∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-            + ENNReal.ofReal (Real.pi / 2) := by
-          rw [ENNReal.ofReal_add hγnn (by linarith [Real.pi_pos])]
-  -- the `b`-independent constant bounding `|P_b(z)|`
-  set c : ℝ := ENNReal.toReal (∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-      ((1 / 2) * ((∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ)
-        + Real.pi / 2))) with hcdef
-  have hcnonneg : 0 ≤ c := by rw [hcdef]; exact ENNReal.toReal_nonneg
-  -- joint continuity of `pz Ψ` on the open quadrant (finite order: `∂_z` of a `C¹` function)
-  have hpz_cont : ContinuousOn (fun p : ℝ × ℝ => Work.Spaces.pz Ψ p.1 p.2)
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := by
-    have hU : IsOpen (Set.Ioi (0 : ℝ) ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-      isOpen_Ioi.prod isOpen_Ioo
-    have hfd : ContinuousOn (fun p : ℝ × ℝ => fderiv ℝ (Function.uncurry Ψ) p)
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) := by
-      have h1 : ContDiffOn ℝ 0 (fun p : ℝ × ℝ => fderivWithin ℝ (Function.uncurry Ψ)
-          (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) p)
-          (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-        (h.sm 1).fderivWithin (m := 0) hU.uniqueDiffOn (by norm_num)
-      refine (contDiffOn_zero.mp h1).congr (fun p hp => ?_)
-      show fderiv ℝ (Function.uncurry Ψ) p
-        = fderivWithin ℝ (Function.uncurry Ψ) (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) p
-      rw [fderivWithin_of_isOpen hU hp]
-    have h2 : ContinuousOn (fun p : ℝ × ℝ => fderiv ℝ (Function.uncurry Ψ) p (1, 0))
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-      hfd.clm_apply (continuousOn_const : ContinuousOn (fun _ : ℝ × ℝ => ((1 : ℝ), (0 : ℝ)))
-        (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
-    refine h2.congr (fun p hp => ?_)
-    show Work.Spaces.pz Ψ p.1 p.2 = fderiv ℝ (Function.uncurry Ψ) p (1, 0)
-    exact Work.Spaces.pz_eq_fderiv
-      (((h.sm 1).differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hp))
-  -- **first application**: `∂_z ∫_a^b Ψ s θ dθ = ∫_a^b pz Ψ s θ dθ` for `s ∈ [z, z+1]`
-  have hZderiv : ∀ b ∈ Set.Ioo a (Real.pi / 2), ∀ s ∈ Set.Icc z (z + 1), HasDerivAt
-      (fun t => ∫ θ in a..b, Ψ t θ) (∫ θ in a..b, Work.Spaces.pz Ψ s θ) s := by
-    intro b hb s hs
-    have hU : IsOpen (Set.Ioi (0 : ℝ) ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-      isOpen_Ioi.prod isOpen_Ioo
-    have hsub : Set.Icc (s / 2) (2 * s) ×ˢ Set.Icc a b
-        ⊆ Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b := by
-      intro p hp
-      exact ⟨⟨by linarith [hp.1.1, hs.1], by linarith [hp.1.2, hs.2]⟩, hp.2⟩
-    have hrect : Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b
-        ⊆ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) := by
-      intro p hp
-      exact ⟨lt_of_lt_of_le (by linarith [hz]) hp.1.1,
-        ⟨lt_of_lt_of_le ha_pos hp.2.1, lt_of_le_of_lt hp.2.2 hb.2⟩⟩
-    refine hasDerivAt_sliceIntegral (le_of_lt hb.1) ha_pos hb.2 (lt_of_lt_of_le hz hs.1)
-      ?_ ?_ ?_
-    · exact ((h.sm 0).continuousOn.mono hrect).mono hsub
-    · exact (hpz_cont.mono hrect).mono hsub
-    · intro t ht x hx
-      have hxU : (x, t) ∈ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) :=
-        ⟨lt_trans (by linarith [hz, hs.1] : (0 : ℝ) < s / 2) hx.1,
-          lt_of_lt_of_le ha_pos ht.1, lt_of_le_of_lt ht.2 hb.2⟩
-      exact (Work.Spaces.differentiableAt_curry_left
-        (((h.sm 1).differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hxU))).hasDerivAt
-  -- *** Stage A ***
-  -- `F` is smooth on the open quadrant (it *is* `bslOp α Ψ` there), so each of its `θ`-slices
-  -- is continuous on `(0, π/2)`; in particular `F z ·` is a genuine interval integral on `[a,b]`.
-  have hFcont : ContinuousOn (fun θ => F z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-    have hU : IsOpen Qd := isOpen_Qd
-    have hpz1 : ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.pz Ψ)) Qd :=
-      Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ hU (n := 1) (h.sm 2)
-    have hpz2 : ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.pzIter 2 Ψ)) Qd := by
-      have h2 : ContDiffOn ℝ (2 : WithTop ℕ∞) (Function.uncurry (Work.Spaces.pz Ψ)) Qd :=
-        Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ hU (n := 2) (h.sm 3)
-      have h1 := Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ hU (n := 1) h2
-      rw [pzIter_two_eq Ψ]
-      exact h1
-    have hp2 : ContinuousOn (fun θ => Work.Spaces.pzIter 2 Ψ z θ)
-        (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      (contDiffOn_slice (Work.Spaces.pzIter 2 Ψ) hz hpz2).continuousOn
-    have hp1 : ContinuousOn (fun θ => Work.Spaces.pz Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      (contDiffOn_slice (Work.Spaces.pz Ψ) hz hpz1).continuousOn
-    have hpsi : ContinuousOn (fun θ => Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      (contDiffOn_slice Ψ hz (h.sm 0)).continuousOn
-    have hslice2 : ContDiffOn ℝ 2 (fun θ => Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      contDiffOn_slice Ψ hz (h.sm 2)
-    have hpth2 : ContinuousOn (fun θ => Work.Spaces.pthIter 2 Ψ z θ)
-        (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-      have h1 : ContDiffOn ℝ 1 (deriv (fun θ' => Ψ z θ')) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        hslice2.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      have h2 : ContDiffOn ℝ 0 (deriv (fun θ' => deriv (fun θ'' => Ψ z θ'') θ'))
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) := h1.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      rw [pthIter_two_eq Ψ z]
-      exact h2.continuousOn
-    have htan : ContDiffOn ℝ 2 Real.tan (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-      have h : ContDiffOn ℝ (2 : WithTop ℕ∞) (fun θ => Real.sin θ / Real.cos θ)
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        ContDiffOn.div (Real.contDiff_sin.contDiffOn) (Real.contDiff_cos.contDiffOn)
-          (fun θ hθ => ne_of_gt (Real.cos_pos_of_mem_Ioo
-            ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩))
-      have htanfun : Real.tan = fun θ : ℝ => Real.sin θ / Real.cos θ :=
-        funext Real.tan_eq_sin_div_cos
-      rw [htanfun]
-      exact h
-    have hpthtan : ContinuousOn (fun θ => Work.Spaces.pth (fun z θ => Real.tan θ * Ψ z θ) z θ)
-        (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-      have htw : ContDiffOn ℝ 2 (fun θ => Real.tan θ * Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        htan.mul hslice2
-      have h1 : ContDiffOn ℝ 1 (deriv (fun θ => Real.tan θ * Ψ z θ))
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) := htw.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      have hfun : (fun θ => Work.Spaces.pth (fun z θ => Real.tan θ * Ψ z θ) z θ)
-          = deriv (fun θ => Real.tan θ * Ψ z θ) := rfl
-      rw [hfun]
-      exact h1.continuousOn
-    have hcomb : ContinuousOn (fun θ => -(α ^ 2 * z ^ 2) * Work.Spaces.pzIter 2 Ψ z θ
-        - (α * (5 + α) * z) * Work.Spaces.pz Ψ z θ
-        + (-Work.Spaces.pthIter 2 Ψ z θ + Work.Spaces.pth (fun z θ => Real.tan θ * Ψ z θ) z θ
-            - 6 * Ψ z θ)) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      ((hp2.const_mul (-(α ^ 2 * z ^ 2))).sub (hp1.const_mul (α * (5 + α) * z))).add
-        ((hpth2.neg.add hpthtan).sub (hpsi.const_mul 6))
-    refine hcomb.congr (fun θ hθ => ?_)
-    simpa only [Work.Elliptic.bslOp_apply, Work.Elliptic.Lzero]
-      using (h.eq z hz θ hθ.1 hθ.2).symm
-  -- the `σ`-weighted square of the `∂_z²Ψ`-slice, for every `s > 0`
-  have hps_int : ∀ s : ℝ, 0 < s → MeasureTheory.IntegrableOn
-      (fun θ => (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) Work.Spaces.Iθ := by
-    intro s hs
-    have h0 := HkMemSliceSqSigma h.memA hs
-    have h2 : (s ^ 2) ≠ 0 := by positivity
-    have h1 := h0.const_mul ((s ^ 2) ^ 2)⁻¹
-    refine MeasureTheory.IntegrableOn.congr_fun h1 (fun θ _ => ?_) measurableSet_Icc
-    field_simp
-  -- joint continuity of `pz Ψ` on the open quadrant
-  have hUq : IsOpen (Set.Ioi (0 : ℝ) ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-    isOpen_Ioi.prod isOpen_Ioo
-  have hpz1c : ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.pz Ψ))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-    Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ hUq (n := 1) (h.sm 2)
-  have hpz2c : ContinuousOn (Function.uncurry (Work.Spaces.pzIter 2 Ψ))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)) :=
-    Work.FTS.EllipticEst.Blocks.PzIterTwoContinuousOn hUq (h.sm 2)
-  -- **second application**: `∂_z ∫_a^b pz Ψ s θ dθ = ∫_a^b pzIter 2 Ψ s θ dθ`
-  have hPderiv : ∀ b ∈ Set.Ioo a (Real.pi / 2), ∀ s ∈ Set.Icc z (z + 1), HasDerivAt
-      (fun t => ∫ θ in a..b, Work.Spaces.pz Ψ t θ) (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ)
-      s := by
-    intro b hb s hs
-    have hsub : Set.Icc (s / 2) (2 * s) ×ˢ Set.Icc a b
-        ⊆ Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b := by
-      intro p hp
-      exact ⟨⟨by linarith [hp.1.1, hs.1], by linarith [hp.1.2, hs.2]⟩, hp.2⟩
-    have hrect : Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b
-        ⊆ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) := by
-      intro p hp
-      exact ⟨lt_of_lt_of_le (by linarith [hz]) hp.1.1,
-        ⟨lt_of_lt_of_le ha_pos hp.2.1, lt_of_le_of_lt hp.2.2 hb.2⟩⟩
-    refine hasDerivAt_sliceIntegral (le_of_lt hb.1) ha_pos hb.2 (lt_of_lt_of_le hz hs.1) ?_ ?_ ?_
-    · exact (hpz_cont.mono hrect).mono hsub
-    · exact (hpz2c.mono hrect).mono hsub
-    · intro t ht x hx
-      have hxU : (x, t) ∈ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) :=
-        ⟨lt_trans (by linarith [hz, hs.1] : (0 : ℝ) < s / 2) hx.1,
-          lt_of_lt_of_le ha_pos ht.1, lt_of_le_of_lt ht.2 hb.2⟩
-      have h := hasDerivAt_slice_of_contDiffOn_open hUq hpz1c hxU
-      simpa only [show (2 : ℕ) = 1 + 1 from rfl, Work.Spaces.pzIter_succ,
-        show (1 : ℕ) = 0 + 1 from rfl, Work.Spaces.pzIter_zero] using h
-  -- *** Stage B ***
-  -- the two `b`-independent `σ`-weighted slice norms
-  set QP : ℝ := ∫ θ in Work.Spaces.Iθ, (Work.Spaces.pzIter 2 Ψ z θ) ^ 2 * sEta θ with hQPdef
-  set QF : ℝ := ∫ θ in Work.Spaces.Iθ, (F z θ) ^ 2 * sEta θ with hQFdef
-  have hQPnn : 0 ≤ QP := by
-    rw [hQPdef]
-    exact MeasureTheory.setIntegral_nonneg measurableSet_Icc
-      (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ))
-  have hQFnn : 0 ≤ QF := by
-    rw [hQFdef]
-    exact MeasureTheory.setIntegral_nonneg measurableSet_Icc
-      (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ))
-  -- the third application: `Q_b` is differentiable, hence continuous
-  have hpz2cd : ContDiffOn ℝ 2 (Function.uncurry (Work.Spaces.pzIter 2 Ψ)) Qd := by
-    have h1 : ContDiffOn ℝ (4 : WithTop ℕ∞) (Function.uncurry Ψ) Qd := h.sm 4
-    have h2 : ContDiffOn ℝ (3 : WithTop ℕ∞) (Function.uncurry (Work.Spaces.pz Ψ)) Qd :=
-      Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ isOpen_Qd (n := 3) h1
-    have h3 := Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ isOpen_Qd (n := 2) h2
-    rw [pzIter_two_eq Ψ]
-    exact h3
-  have hpz3cd : ContDiffOn ℝ 1 (Function.uncurry (Work.Spaces.pzIter 3 Ψ)) Qd := by
-    have h4 := Work.FTS.EllipticEst.Blocks.contDiffOn_uncurry_pz_succ isOpen_Qd (n := 1) hpz2cd
-    have h5 : Work.Spaces.pzIter 3 Ψ = Work.Spaces.pz (Work.Spaces.pzIter 2 Ψ) := rfl
-    rw [h5]
-    exact h4
-  have hQderiv : ∀ b ∈ Set.Ioo a (Real.pi / 2), ∀ s ∈ Set.Icc z (z + 1), HasDerivAt
-      (fun t => ∫ θ in a..b, Work.Spaces.pzIter 2 Ψ t θ)
-      (∫ θ in a..b, Work.Spaces.pzIter 3 Ψ s θ) s := by
-    intro b hb s hs
-    have hsub : Set.Icc (s / 2) (2 * s) ×ˢ Set.Icc a b
-        ⊆ Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b := by
-      intro p hp
-      exact ⟨⟨by linarith [hp.1.1, hs.1], by linarith [hp.1.2, hs.2]⟩, hp.2⟩
-    have hrect : Set.Icc (z / 2) (2 * (z + 1)) ×ˢ Set.Icc a b
-        ⊆ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) := by
-      intro p hp
-      exact ⟨lt_of_lt_of_le (by linarith [hz]) hp.1.1,
-        ⟨lt_of_lt_of_le ha_pos hp.2.1, lt_of_le_of_lt hp.2.2 hb.2⟩⟩
-    refine hasDerivAt_sliceIntegral (le_of_lt hb.1) ha_pos hb.2 (lt_of_lt_of_le hz hs.1) ?_ ?_ ?_
-    · exact (hpz2c.mono hrect).mono hsub
-    · exact ((hpz3cd.continuousOn).mono hrect).mono hsub
-    · intro t ht x hx
-      have hxU : (x, t) ∈ Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) :=
-        ⟨lt_trans (by linarith [hz, hs.1] : (0 : ℝ) < s / 2) hx.1,
-          lt_of_lt_of_le ha_pos ht.1, lt_of_le_of_lt ht.2 hb.2⟩
-      exact hasDerivAt_slice_of_contDiffOn_open hUq (hpz2cd.of_le (by norm_num)) hxU
-  -- **the bound on `P_b(z)`** — the only place where the `z`-dependence of the data is used
-  have hPb : ∀ b ∈ Set.Ioo a (Real.pi / 2),
-      |∫ θ in a..b, Work.Spaces.pz Ψ z θ| ≤ (Real.pi / 2) * (M + M₁) + c := by
-    intro b hb
-    have hZder := hZderiv b hb
-    have hPder := hPderiv b hb
-    have hQder := hQderiv b hb
-    have hcontP : ContinuousOn (fun s => ∫ θ in a..b, Work.Spaces.pz Ψ s θ)
-        (Set.Icc z (z + 1)) := fun s hs => (hPder s hs).continuousAt.continuousWithinAt
-    have hcontQ : ContinuousOn (fun s => ∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ)
-        (Set.Icc z (z + 1)) := fun s hs => (hQder s hs).continuousAt.continuousWithinAt
-    have hceq : Set.uIcc z (z + 1) = Set.Icc z (z + 1) := Set.uIcc_of_le (by linarith)
-    have hcontPu : ContinuousOn (fun s => ∫ θ in a..b, Work.Spaces.pz Ψ s θ)
-        (Set.uIcc z (z + 1)) := by rw [hceq]; exact hcontP
-    -- first fundamental-theorem step: `∫_z^{z+1} P_b = Z(z+1) - Z(z)`
-    have h1 : (∫ t in z..(z + 1), (∫ θ in a..b, Work.Spaces.pz Ψ t θ))
-        = (∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ) := by
-      refine intervalIntegral.integral_eq_sub_of_hasDerivAt
-        (f := fun t => ∫ θ in a..b, Ψ t θ)
-        (f' := fun s => ∫ θ in a..b, Work.Spaces.pz Ψ s θ) ?_ hcontPu.intervalIntegrable
-      intro s hs
-      rw [hceq] at hs
-      exact hZder s hs
-    -- second step: `P_b(t) - P_b(z) = ∫_z^t Q_b`
-    have h2 : ∀ t ∈ Set.Icc z (z + 1),
-        (∫ θ in a..b, Work.Spaces.pz Ψ t θ) - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)
-          = ∫ s in z..t, (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ) := by
-      intro t ht
-      have hle : z ≤ t := ht.1
-      have hsub : Set.uIcc z t ⊆ Set.Icc z (z + 1) := by
-        rw [Set.uIcc_of_le hle]
-        exact Set.Icc_subset_Icc le_rfl ht.2
-      have hint : IntervalIntegrable (fun s => ∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ)
-          volume z t := (hcontQ.mono hsub).intervalIntegrable
-      exact (intervalIntegral.integral_eq_sub_of_hasDerivAt
-        (fun s hs => hPder s (hsub hs)) hint).symm
-    -- the algebraic consequence
-    have h3 : (∫ θ in a..b, Work.Spaces.pz Ψ z θ)
-        = ((∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ))
-          - ∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-              - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)) := by
-      have hsub2 : (∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-            - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)))
-          = (∫ t in z..(z + 1), (∫ θ in a..b, Work.Spaces.pz Ψ t θ))
-            - ∫ t in z..(z + 1), (∫ θ in a..b, Work.Spaces.pz Ψ z θ) :=
-        intervalIntegral.integral_sub hcontPu.intervalIntegrable intervalIntegrable_const
-      rw [hsub2, h1, intervalIntegral.integral_const]
-      ring
-    -- the uniform bound on the subtracted term
-    have hB : ∀ t ∈ Set.Icc z (z + 1),
-        |(∫ θ in a..b, Work.Spaces.pz Ψ t θ) - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)| ≤ c := by
-      intro t ht
-      rcases eq_or_lt_of_le ht.1 with hzt | hzt
-      · rw [← hzt, sub_self, abs_zero]; exact hcnonneg
-      · rw [h2 t ht]
-        have hQint : IntegrableOn (fun s => ∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ)
-            (Set.Icc z (z + 1)) := hcontQ.integrableOn_Icc
-        have hQabs : IntegrableOn (fun s => |∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ|)
-            (Set.Icc z (z + 1)) := by
-          simpa only [Real.norm_eq_abs, MeasureTheory.IntegrableOn] using hQint.norm
-        have hstep : |∫ s in z..t, (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ)|
-            ≤ ∫ s in Set.Icc z (z + 1), |∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ| := by
-          refine le_trans (intervalIntegral.abs_integral_le_integral_abs hzt.le) ?_
-          rw [intervalIntegral.integral_of_le hzt.le]
-          refine MeasureTheory.setIntegral_mono_set hQabs
-            (Filter.Eventually.of_forall (fun s => abs_nonneg _))
-            (Filter.Eventually.of_forall (fun s hs => ?_))
-          exact ⟨le_of_lt hs.1, le_trans hs.2 ht.2⟩
-        refine le_trans hstep ?_
-        calc (∫ s in Set.Icc z (z + 1), |∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ|)
-              ≤ ENNReal.toReal (∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-                  |∫ θ in a..b, Work.Spaces.pzIter 2 Ψ s θ|) :=
-                setIntegral_le_toReal_lintegral _
-                  (Filter.Eventually.of_forall (fun s => abs_nonneg _))
-            _ ≤ ENNReal.toReal (∫⁻ s in Set.Icc z (z + 1), ENNReal.ofReal
-                  ((1 / 2) * ((∫ θ in Work.Spaces.Iθ,
-                      (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) + Real.pi / 2))) := by
-                refine ENNReal.toReal_mono (ne_of_lt hb_lin) (MeasureTheory.lintegral_mono_ae ?_)
-                refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun s hs => ?_)
-                have hs0 : 0 < s := lt_of_lt_of_le hz hs.1
-                have hQb := le_trans
-                  (intervalIntegral.abs_integral_le_integral_abs (le_of_lt hb.1))
-                  (Ioc_abs_le_half ha_pos hb.2 (le_of_lt hb.1) (hps_int s hs0))
-                have hnn : 0 ≤ (1 / 2) * ((∫ θ in Work.Spaces.Iθ,
-                    (Work.Spaces.pzIter 2 Ψ s θ) ^ 2 * sEta θ) + Real.pi / 2) :=
-                  mul_nonneg (by norm_num) (add_nonneg
-                    (MeasureTheory.setIntegral_nonneg measurableSet_Icc
-                      (fun θ hθ => mul_nonneg (sq_nonneg _) (sEta_nonneg hθ)))
-                    (by linarith [Real.pi_pos]))
-                exact (ENNReal.ofReal_le_ofReal_iff hnn).mpr hQb
-            _ = c := rfl
-    -- the two slice integrals at `z` and `z + 1`
-    have hZc : ∀ C : ℝ, 0 ≤ C → (∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2), |Ψ z θ| ≤ C) →
-        |∫ θ in a..b, Ψ z θ| ≤ C * (Real.pi / 2) := by
-      intro C hC hbnd
-      have hmain : |∫ θ in a..b, Ψ z θ| ≤ C * |b - a| := by
-        have h := intervalIntegral.norm_integral_le_of_norm_le_const
-          (f := fun θ => Ψ z θ) (a := a) (b := b) (C := C) (fun θ hθ => by
-            rw [Real.norm_eq_abs]
-            rw [Set.uIoc_of_le (le_of_lt hb.1)] at hθ
-            exact hbnd θ ⟨lt_of_lt_of_le ha_pos (le_of_lt hθ.1), lt_of_le_of_lt hθ.2 hb.2⟩)
-        simpa only [Real.norm_eq_abs] using h
-      refine le_trans hmain (mul_le_mul_of_nonneg_left ?_ hC)
-      rw [abs_of_nonneg (by linarith [hb.1])]
-      linarith [hb.2, Real.pi_pos]
-    have hZc1 : ∀ C : ℝ, 0 ≤ C → (∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2), |Ψ (z + 1) θ| ≤ C) →
-        |∫ θ in a..b, Ψ (z + 1) θ| ≤ C * (Real.pi / 2) := by
-      intro C hC hbnd
-      have hmain : |∫ θ in a..b, Ψ (z + 1) θ| ≤ C * |b - a| := by
-        have h := intervalIntegral.norm_integral_le_of_norm_le_const
-          (f := fun θ => Ψ (z + 1) θ) (a := a) (b := b) (C := C) (fun θ hθ => by
-            rw [Real.norm_eq_abs]
-            rw [Set.uIoc_of_le (le_of_lt hb.1)] at hθ
-            exact hbnd θ ⟨lt_of_lt_of_le ha_pos (le_of_lt hθ.1), lt_of_le_of_lt hθ.2 hb.2⟩)
-        simpa only [Real.norm_eq_abs] using h
-      refine le_trans hmain (mul_le_mul_of_nonneg_left ?_ hC)
-      rw [abs_of_nonneg (by linarith [hb.1])]
-      linarith [hb.2, Real.pi_pos]
-    have hZ1 := hZc1 M₁ hM₁pos.le (fun θ hθ => (hM₁b θ hθ).2)
-    have hZ0 := hZc M hMpos.le (fun θ hθ => (hMb θ hθ).2)
-    calc |∫ θ in a..b, Work.Spaces.pz Ψ z θ|
-        = |((∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ))
-            - ∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-                - (∫ θ in a..b, Work.Spaces.pz Ψ z θ))| := by
-          conv_lhs => rw [h3]
-      _ ≤ |(∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ)|
-            + |∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-                - (∫ θ in a..b, Work.Spaces.pz Ψ z θ))| := by
-          have := abs_sub_le ((∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ))
-            (0 : ℝ) (∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-                - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)))
-          simpa using this
-      _ ≤ (M₁ * (Real.pi / 2) + M * (Real.pi / 2)) + c := by
-          refine add_le_add ?_ ?_
-          · calc |(∫ θ in a..b, Ψ (z + 1) θ) - (∫ θ in a..b, Ψ z θ)|
-                ≤ |∫ θ in a..b, Ψ (z + 1) θ| + |∫ θ in a..b, Ψ z θ| := by
-                  simpa using abs_sub_le (∫ θ in a..b, Ψ (z + 1) θ) (0 : ℝ) (∫ θ in a..b, Ψ z θ)
-              _ ≤ M₁ * (Real.pi / 2) + M * (Real.pi / 2) := add_le_add hZ1 hZ0
-          · have hmain : |∫ t in z..(z + 1), ((∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-                - (∫ θ in a..b, Work.Spaces.pz Ψ z θ))| ≤ c := by
-              have h := intervalIntegral.norm_integral_le_of_norm_le_const
-                (f := fun t => (∫ θ in a..b, Work.Spaces.pz Ψ t θ)
-                  - (∫ θ in a..b, Work.Spaces.pz Ψ z θ)) (a := z) (b := z + 1) (C := c)
-                (fun t ht => by
-                  rw [Real.norm_eq_abs]
-                  rw [Set.uIoc_of_le (by linarith : z ≤ z + 1)] at ht
-                  exact hB t ⟨le_of_lt ht.1, ht.2⟩)
-              simpa only [Real.norm_eq_abs, show (z + 1) - z = 1 from by ring, abs_one,
-                mul_one] using h
-            exact hmain
-      _ = (Real.pi / 2) * (M + M₁) + c := by ring
-  -- the per-`b` bound
-  set K : ℝ := |Real.tan a * Ψ z a| + (α * (5 + α) * z) * ((Real.pi / 2) * (M + M₁) + c)
-      + (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2)) + (1 / 2) * (QF + Real.pi / 2)
-      + 2 * M + 6 * (M * (Real.pi / 2)) with hKdef
-  have key : ∀ b ∈ Set.Ioo a (Real.pi / 2), |Real.tan b * Ψ z b| ≤ K := by
-    intro b hb
-    rw [hKdef]
-    have hab' : Set.uIcc a b ⊆ Set.Ioo (0 : ℝ) (Real.pi / 2) := by
-      intro θ hθ
-      rw [Set.uIcc_of_le (le_of_lt hb.1)] at hθ
-      exact ⟨lt_of_lt_of_le ha_pos hθ.1, lt_of_le_of_lt hθ.2 hb.2⟩
-    have hFint : IntervalIntegrable (fun θ => F z θ) volume a b :=
-      (hFcont.mono hab').intervalIntegrable
-    have hcontp : ContinuousOn (fun θ => Work.Spaces.pzIter 2 Ψ z θ) (Set.uIcc a b) := by
-      have h2 : ContDiffOn ℝ 1 (fun θ => Work.Spaces.pzIter 2 Ψ z θ)
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        contDiffOn_slice (Work.Spaces.pzIter 2 Ψ) hz (n := 1) (hpz2cd.of_le (by norm_num))
-      exact h2.continuousOn.mono hab'
-    have hpI : IntervalIntegrable (fun θ => Work.Spaces.pzIter 2 Ψ z θ) volume a b :=
-      hcontp.intervalIntegrable
-    have hcontq : ContinuousOn (fun θ => Work.Spaces.pz Ψ z θ) (Set.uIcc a b) := by
-      have h2 : ContDiffOn ℝ 1 (fun θ => Work.Spaces.pz Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        contDiffOn_slice (Work.Spaces.pz Ψ) hz (n := 1) hpz1c
-      exact h2.continuousOn.mono hab'
-    have hqI : IntervalIntegrable (fun θ => Work.Spaces.pz Ψ z θ) volume a b :=
-      hcontq.intervalIntegrable
-    have hcontψ : ContinuousOn (fun θ => Ψ z θ) (Set.uIcc a b) := by
-      have h2 : ContDiffOn ℝ 0 (fun θ => Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        contDiffOn_slice Ψ hz (n := 0) (h.sm 0)
-      exact h2.continuousOn.mono hab'
-    have hψI : IntervalIntegrable (fun θ => Ψ z θ) volume a b := hcontψ.intervalIntegrable
-    have hslice1 : ContDiffOn ℝ 1 (fun θ => Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      contDiffOn_slice Ψ hz (n := 1) (h.sm 1)
-    have hslice2 : ContDiffOn ℝ 2 (fun θ => Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      contDiffOn_slice Ψ hz (n := 2) (h.sm 2)
-    have hcontp2 : ContinuousOn (fun θ => deriv (fun t => deriv (fun θ' => Ψ z θ') t) θ)
-        (Set.uIcc a b) := by
-      have h1 : ContDiffOn ℝ 1 (deriv (fun θ' => Ψ z θ')) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        hslice2.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      have h2 : ContDiffOn ℝ 0 (fun θ => deriv (fun t => deriv (fun θ' => Ψ z θ') t) θ)
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) := h1.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      exact h2.continuousOn.mono hab'
-    have hp2I : IntervalIntegrable (fun θ => deriv (fun t => deriv (fun θ' => Ψ z θ') t) θ)
-        volume a b := hcontp2.intervalIntegrable
-    have htansm : ContDiffOn ℝ 2 Real.tan (Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
-      have h : ContDiffOn ℝ (2 : WithTop ℕ∞) (fun θ => Real.sin θ / Real.cos θ)
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        ContDiffOn.div (Real.contDiff_sin.contDiffOn) (Real.contDiff_cos.contDiffOn)
-          (fun θ hθ => ne_of_gt (Real.cos_pos_of_mem_Ioo
-            ⟨by linarith [hθ.1], by linarith [hθ.2, Real.pi_pos]⟩))
-      have htanfun : Real.tan = fun θ : ℝ => Real.sin θ / Real.cos θ :=
-        funext Real.tan_eq_sin_div_cos
-      rw [htanfun]
-      exact h
-    have htw : ContDiffOn ℝ 2 (fun θ => Real.tan θ * Ψ z θ) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-      htansm.mul hslice2
-    have hconttw : ContinuousOn (deriv (fun θ => Real.tan θ * Ψ z θ)) (Set.uIcc a b) := by
-      have h1 : ContDiffOn ℝ 1 (deriv (fun θ => Real.tan θ * Ψ z θ))
-          (Set.Ioo (0 : ℝ) (Real.pi / 2)) := htw.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      exact h1.continuousOn.mono hab'
-    have htwI : IntervalIntegrable (deriv (fun θ => Real.tan θ * Ψ z θ)) volume a b :=
-      hconttw.intervalIntegrable
-    -- the derivative facts for the three functions of `TanSliceFTC`
-    have hdu : ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2), DifferentiableAt ℝ (fun θ' => Ψ z θ') θ :=
-      fun θ hθ => (hslice1.contDiffAt (isOpen_Ioo.mem_nhds hθ)).differentiableAt (by norm_num)
-    have hdu1 : ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
-        DifferentiableAt ℝ (deriv (fun θ' => Ψ z θ')) θ := by
-      intro θ hθ
-      have h1 : ContDiffOn ℝ 1 (deriv (fun θ' => Ψ z θ')) (Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
-        hslice2.deriv_of_isOpen isOpen_Ioo (by norm_num)
-      exact (h1.contDiffAt (isOpen_Ioo.mem_nhds hθ)).differentiableAt (by norm_num)
-    have hdtw : ∀ θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2),
-        DifferentiableAt ℝ (fun θ' => Real.tan θ' * Ψ z θ') θ :=
-      fun θ hθ => (htw.contDiffAt (isOpen_Ioo.mem_nhds hθ)).differentiableAt (by norm_num)
-    -- the amplitude `A` of the `tan`-identity, and its `(a,b)`-integral
-    set A : ℝ → ℝ := fun θ => α ^ 2 * z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ
-      + α * (5 + α) * z * Work.Spaces.pz Ψ z θ + F z θ with hAdef
-    have hAI : IntervalIntegrable A volume a b := by
-      rw [hAdef]
-      exact ((hpI.const_mul (α ^ 2 * z ^ 2)).add (hqI.const_mul (α * (5 + α) * z))).add hFint
-    have hsplit : (∫ θ in a..b, A θ)
-        = (α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)
-          + (α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)
-          + (∫ θ in a..b, F z θ) := by
-      rw [hAdef]
-      rw [intervalIntegral.integral_add
-        ((hpI.const_mul (α ^ 2 * z ^ 2)).add (hqI.const_mul (α * (5 + α) * z))) hFint]
-      rw [intervalIntegral.integral_add (hpI.const_mul (α ^ 2 * z ^ 2))
-        (hqI.const_mul (α * (5 + α) * z))]
-      rw [intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
-    -- the `tan`-identity
-    have heq : ∀ θ ∈ Set.Ioo a b, deriv (fun t => Real.tan t * Ψ z t) θ
-        = A θ + deriv (fun t => deriv (fun θ' => Ψ z θ') t) θ + 6 * Ψ z θ := by
-      intro θ hθ
-      have hθo : θ ∈ Set.Ioo (0 : ℝ) (Real.pi / 2) :=
-        ⟨by linarith [hθ.1, ha_pos], by linarith [hθ.2, hb.2]⟩
-      have hb' := h.eq z hz θ hθo.1 hθo.2
-      rw [Work.Elliptic.bslOp_apply, Work.Elliptic.Lzero] at hb'
-      rw [hAdef]
-      simp only [pthIter_two_eq_fun Ψ, Work.Spaces.pth] at hb' ⊢
-      linear_combination (norm := ring_nf) hb'
-    have hid := TanSliceFTC (u := fun θ => Ψ z θ) (A := A) (a := a) (b := b) (le_of_lt hb.1)
-      (fun θ hθ => (hdu θ (hab' hθ)).hasDerivAt)
-      (fun θ hθ => (hdu1 θ (hab' hθ)).hasDerivAt)
-      (fun θ hθ => (hdtw θ (hab' hθ)).hasDerivAt)
-      hp2I htwI hAI hψI heq
-    -- the individual bounds
-    have htanb : |(α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)|
-        ≤ (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2)) := by
-      rw [abs_mul, abs_of_nonneg (by positivity)]
-      refine mul_le_mul_of_nonneg_left ?_ (by positivity)
-      exact le_trans (intervalIntegral.abs_integral_le_integral_abs (le_of_lt hb.1))
-        (Ioc_abs_le_half ha_pos hb.2 (le_of_lt hb.1) hp_int)
-    have hqbound : |∫ θ in a..b, Work.Spaces.pz Ψ z θ| ≤ (Real.pi / 2) * (M + M₁) + c :=
-      hPb b hb
-    have htanF : |∫ θ in a..b, F z θ| ≤ (1 / 2) * (QF + Real.pi / 2) :=
-      le_trans (intervalIntegral.abs_integral_le_integral_abs (le_of_lt hb.1))
-        (Ioc_abs_le_half ha_pos hb.2 (le_of_lt hb.1) hF_int)
-    have hψbd : |∫ θ in a..b, Ψ z θ| ≤ M * (Real.pi / 2) := by
-      have hmain : |∫ θ in a..b, Ψ z θ| ≤ M * |b - a| := by
-        have h := intervalIntegral.norm_integral_le_of_norm_le_const
-          (f := fun θ => Ψ z θ) (a := a) (b := b) (C := M) (fun θ hθ => by
-            rw [Real.norm_eq_abs]
-            rw [Set.uIoc_of_le (le_of_lt hb.1)] at hθ
-            exact (hMb θ ⟨lt_of_lt_of_le ha_pos (le_of_lt hθ.1), lt_of_le_of_lt hθ.2 hb.2⟩).2)
-        simpa only [Real.norm_eq_abs] using h
-      refine le_trans hmain (mul_le_mul_of_nonneg_left ?_ hMpos.le)
-      rw [abs_of_nonneg (by linarith [hb.1])]
-      linarith [hb.2, Real.pi_pos]
-    have hderivbd : |deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a| ≤ 2 * M := by
-      have h1 : |deriv (fun θ => Ψ z θ) b| ≤ M :=
-        (hMb b ⟨lt_trans ha_pos hb.1, hb.2⟩).1
-      have h2 : |deriv (fun θ => Ψ z θ) a| ≤ M :=
-        (hMb a ⟨ha_pos, ha_lt⟩).1
-      have htri : |deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a|
-          ≤ |deriv (fun θ => Ψ z θ) b| + |deriv (fun θ => Ψ z θ) a| := by
-        have := abs_sub_le (deriv (fun θ => Ψ z θ) b) 0 (deriv (fun θ => Ψ z θ) a)
-        simpa using this
-      linarith
-    -- the `tan`-identity solved for the left-hand side
-    have hid' : Real.tan b * Ψ z b
-        = Real.tan a * Ψ z a + (∫ θ in a..b, A θ)
-          + (deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a)
-          + 6 * ∫ θ in a..b, Ψ z θ := by linarith [hid]
-    -- the `(a,b)`-integral of the amplitude
-    have hAbound : |∫ θ in a..b, A θ| ≤ (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2))
-        + (α * (5 + α) * z) * ((Real.pi / 2) * (M + M₁) + c)
-        + (1 / 2) * (QF + Real.pi / 2) := by
-      rw [hsplit]
-      have htri : |(α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)
-          + (α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)
-          + (∫ θ in a..b, F z θ)|
-          ≤ |(α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)|
-            + |(α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)|
-            + |∫ θ in a..b, F z θ| := by
-        have h2 := abs_add_le ((α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)
-          + (α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)) (∫ θ in a..b, F z θ)
-        have h1 := abs_add_le ((α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ))
-          ((α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ))
-        linarith
-      have hbd : |(α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)|
-            + |(α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)|
-            + |∫ θ in a..b, F z θ| ≤ (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2))
-              + (α * (5 + α) * z) * ((Real.pi / 2) * (M + M₁) + c)
-              + (1 / 2) * (QF + Real.pi / 2) := by
-        have h1 : |(α ^ 2 * z ^ 2) * (∫ θ in a..b, Work.Spaces.pzIter 2 Ψ z θ)|
-            ≤ (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2)) := by
-          rw [abs_mul, abs_of_nonneg (by positivity)]
-          exact mul_le_mul_of_nonneg_left (le_trans
-            (intervalIntegral.abs_integral_le_integral_abs (le_of_lt hb.1))
-            (Ioc_abs_le_half (g := fun θ => Work.Spaces.pzIter 2 Ψ z θ) ha_pos hb.2
-              (le_of_lt hb.1) hp_int)) (by positivity)
-        have h2 : |(α * (5 + α) * z) * (∫ θ in a..b, Work.Spaces.pz Ψ z θ)|
-            ≤ (α * (5 + α) * z) * ((Real.pi / 2) * (M + M₁) + c) := by
-          have hc2 : 0 ≤ α * (5 + α) * z :=
-            mul_nonneg (mul_nonneg h.hα.le (by linarith [h.hα])) hz.le
-          rw [abs_mul, abs_of_nonneg hc2]
-          exact mul_le_mul_of_nonneg_left (hPb b hb) hc2
-        have h3 : |∫ θ in a..b, F z θ| ≤ (1 / 2) * (QF + Real.pi / 2) :=
-          le_trans (intervalIntegral.abs_integral_le_integral_abs (le_of_lt hb.1))
-            (Ioc_abs_le_half (g := fun θ => F z θ) ha_pos hb.2 (le_of_lt hb.1) hF_int)
-        linarith
-      linarith
-    rw [hid']
-    have htri : |Real.tan a * Ψ z a + (∫ θ in a..b, A θ)
-        + (deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a)
-        + 6 * ∫ θ in a..b, Ψ z θ|
-        ≤ |Real.tan a * Ψ z a| + |∫ θ in a..b, A θ|
-          + |deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a|
-          + |6 * ∫ θ in a..b, Ψ z θ| := by
-      have h1 := abs_add_le (Real.tan a * Ψ z a) (∫ θ in a..b, A θ)
-      have h2 := abs_add_le (Real.tan a * Ψ z a + (∫ θ in a..b, A θ))
-        (deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a)
-      have h3 := abs_add_le (Real.tan a * Ψ z a + (∫ θ in a..b, A θ)
-        + (deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a))
-        (6 * ∫ θ in a..b, Ψ z θ)
-      exact le_trans h3 (le_trans (add_le_add h2 le_rfl)
-        (add_le_add (add_le_add h1 le_rfl) le_rfl))
-    have hfin : |Real.tan a * Ψ z a| + |∫ θ in a..b, A θ|
-          + |deriv (fun θ => Ψ z θ) b - deriv (fun θ => Ψ z θ) a|
-          + |6 * ∫ θ in a..b, Ψ z θ|
-        ≤ |Real.tan a * Ψ z a|
-          + (α * (5 + α) * z) * ((Real.pi / 2) * (M + M₁) + c)
-          + (α ^ 2 * z ^ 2) * ((1 / 2) * (QP + Real.pi / 2))
-          + (1 / 2) * (QF + Real.pi / 2) + 2 * M + 6 * (M * (Real.pi / 2)) := by
-      have h6 : |6 * ∫ θ in a..b, Ψ z θ| = 6 * |∫ θ in a..b, Ψ z θ| := by
-        rw [abs_mul]; norm_num
-      have h6b : 6 * |∫ θ in a..b, Ψ z θ| ≤ 6 * (M * (Real.pi / 2)) :=
-        mul_le_mul_of_nonneg_left hψbd (by norm_num)
-      rw [h6]
-      linarith [hAbound, hderivbd, h6b]
-    linarith
-  -- the squeeze
-  have hKlim : Tendsto (fun θ => K / Real.tan θ)
-      (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-    have hcos : Tendsto Real.cos (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-      have h := (Real.continuous_cos.continuousAt (x := Real.pi / 2)).tendsto
-      have h' : nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)) ≤ 𝓝 (Real.pi / 2) := inf_le_left
-      simpa [Real.cos_pi_div_two] using h.mono_left h'
-    have hsin : Tendsto Real.sin (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 1) := by
-      have h := (Real.continuous_sin.continuousAt (x := Real.pi / 2)).tendsto
-      have h' : nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)) ≤ 𝓝 (Real.pi / 2) := inf_le_left
-      simpa [Real.sin_pi_div_two] using h.mono_left h'
-    have h2 : Tendsto (fun θ => K * Real.cos θ / Real.sin θ)
-        (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-      have h1 : Tendsto (fun θ => K * Real.cos θ)
-          (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-        simpa using (tendsto_const_nhds.mul hcos)
-      have := h1.div hsin one_ne_zero
-      rw [show (0 : ℝ) / 1 = 0 from by norm_num] at this
-      exact this
-    refine Tendsto.congr' ?_ h2
-    filter_upwards [Ioo_mem_nhdsLT ha_lt] with θ hθ
-    have hs : Real.sin θ ≠ 0 := ne_of_gt (Real.sin_pos_of_pos_of_lt_pi
-      (by linarith [ha_pos, hθ.1]) (by linarith [hθ.2, Real.pi_pos]))
-    have hc : Real.cos θ ≠ 0 := ne_of_gt (Real.cos_pos_of_mem_Ioo
-      ⟨by linarith [ha_pos, hθ.1], by linarith [hθ.2, Real.pi_pos]⟩)
-    rw [Real.tan_eq_sin_div_cos]
-    field_simp
-  refine tendsto_zero_iff_norm_tendsto_zero.mpr ?_
-  refine squeeze_zero' (Filter.Eventually.of_forall (fun θ => norm_nonneg _)) ?_ hKlim
-  filter_upwards [Ioo_mem_nhdsLT ha_lt] with θ hθ
-  have htanpos : 0 < Real.tan θ :=
-    Real.tan_pos_of_pos_of_lt_pi_div_two (by linarith [ha_pos, hθ.1]) hθ.2
-  rw [le_div_iff₀ htanpos]
-  calc ‖Ψ z θ‖ * Real.tan θ = |Real.tan θ * Ψ z θ| := by
-        rw [Real.norm_eq_abs, abs_mul, abs_of_pos htanpos, mul_comm]
-    _ ≤ K := key θ hθ
 
 end Work.FTS.EllipticEst.Honest.Yc
+end
+end

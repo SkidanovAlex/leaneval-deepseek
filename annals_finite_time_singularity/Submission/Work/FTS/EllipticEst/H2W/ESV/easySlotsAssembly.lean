@@ -3,18 +3,17 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Elliptic.Defs
-import Submission.Work.FTS.EllipticEst.StraightDefs
 import Submission.Work.FTS.EllipticEst.H2W.angularAgmon
-import Submission.Work.FTS.EllipticEst.H2W.aSliceData
-import Submission.Work.FTS.EllipticEst.H2W.ESV.aSliceHonest
-import Submission.Work.FTS.EllipticEst.H2W.Norms
-import Submission.Work.FTS.EllipticEst.H2W.level0SlicesBridge
-import Submission.Work.FTS.EllipticEst.H2W.ESV.HkMem_zero_sliceData
-import Submission.Work.FTS.EllipticEst.H2W.eslDth2Bound
-import Submission.Work.FTS.EllipticEst.H2W.ESV.eslHkMemPthTwoZsq
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.EllipticEst.remov.wsSliceRight
+import Submission.Work.FTS.LocDataExt.Zfar5
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.tracePi4
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -177,31 +176,6 @@ theorem eslHkSqZero_le_of_pointwise (α : ℝ) (C : ℝ) (hC : 0 ≤ C) {F g : �
         ((hF.1 z hz).const_mul C) (Eventually.of_forall fun θ => h z θ)
     rwa [MeasureTheory.integral_const_mul] at hin
 
-/-- `HkSq α 0` of the difference `D_z²F - D_zF` is bounded by `4 HkSq α 2 F`. -/
-theorem eslHkSqZero_sub_le (α : ℝ) (F : ℝ → ℝ → ℝ) (hF : Work.Spaces.HkMem α 2 F) :
-    Work.Spaces.HkSq α 0 (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ)
-      ≤ 4 * Work.Spaces.HkSq α 2 F := by
-  refine eslHkSqZero_le_of_pointwise α 4 (by norm_num) hF fun z θ => ?_
-  rw [Work.FTS.EllipticEst.H2W.AeDataAofAux.HkIntegrand_zero_eq]
-  obtain ⟨h1, h2⟩ : (Work.Spaces.DzIter 2 F z θ
-        * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2
-      ≤ Work.Spaces.HkIntegrand α 2 F z θ
-      ∧ (Work.Spaces.DzIter 1 F z θ
-        * (Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2))) ^ 2
-      ≤ Work.Spaces.HkIntegrand α 2 F z θ :=
-    ⟨Work.Spaces.sq_le_HkIntegrand_z α 2 F z θ 2 (by norm_num),
-      Work.Spaces.sq_le_HkIntegrand_z α 2 F z θ 1 (by norm_num)⟩
-  set W := Work.Spaces.w z / (Real.sin (2 * θ)) ^ (Work.Spaces.eta / 2) with hW
-  set a := Work.Spaces.DzIter 2 F z θ with ha
-  set b := Work.Spaces.DzIter 1 F z θ with hb
-  set Hk := Work.Spaces.HkIntegrand α 2 F z θ with hHk
-  have hsq : (a - b) ^ 2 ≤ 2 * a ^ 2 + 2 * b ^ 2 := by nlinarith [sq_nonneg (a + b)]
-  calc ((a - b) * W) ^ 2 = ((a - b) ^ 2) * W ^ 2 := by ring
-    _ ≤ (2 * a ^ 2 + 2 * b ^ 2) * W ^ 2 :=
-        mul_le_mul_of_nonneg_right hsq (sq_nonneg W)
-    _ = 2 * (a * W) ^ 2 + 2 * (b * W) ^ 2 := by ring
-    _ ≤ 2 * Hk + 2 * Hk := by linarith
-    _ = 4 * Hk := by ring
 
 /-- Positivity of the `θ`-integrand of `eslE`. -/
 theorem eslE_nonneg {i : ℕ} {A : ℝ → ℝ → ℝ} {z : ℝ} {θ : ℝ}
@@ -487,110 +461,6 @@ theorem esl_lhs_bound
           + Work.Spaces.HkSq α 0 (Work.Spaces.pthIter 2 (eslA Ψ)))
   linarith
 
-theorem easySlotsAssembly
-    (hL0 : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
-        α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
-        ≤ C * Work.Spaces.HkSq α 0
-              (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ)) :
-    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (F Ψ : ℝ → ℝ → ℝ), 0 < α → α ≤ 1 / 4 →
-      Work.FTS.EllipticEst.TT.EllWeakPos α 2 F Ψ →
-        α ^ 4 * (Work.Spaces.L2Sq (fun z θ =>
-            Work.Spaces.mixed 0 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-              * Work.Spaces.Wt α z θ)
-          + Work.Spaces.L2Sq (fun z θ =>
-            Work.Spaces.mixed 0 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-              * Work.Spaces.Wt α z θ))
-        ≤ C * Work.Spaces.HkSq α 2 F := by
-  obtain ⟨C₀, hC₀pos, hL0'⟩ := hL0
-  obtain ⟨Cag, hCagpos, hag₀⟩ := Work.FTS.EllipticEst.H2W.angularAgmon
-  obtain ⟨Cp, hCppos, hpiv⟩ := Work.FTS.EllipticEst.H2W.pivotBound
-  have hC1nn : (0 : ℝ) ≤ 20000 * Cp + 10000 * Real.pi + 1 := by positivity
-  obtain ⟨C, hCpos, hCbd⟩ := esl_lhs_bound Cag (20000 * Cp + 10000 * Real.pi + 1)
-    (le_of_lt hCagpos) hC1nn hag₀
-    (Work.FTS.EllipticEst.H2W.deriv_sq_mul_sEta_le Cp hCppos hpiv)
-    (fun α u hα hα4 hu => Work.FTS.EllipticEst.H2W.eslDth2Bound α hα hα4 u hu)
-    (fun α F Ψ hh => Work.FTS.EllipticEst.H2W.eslHkMemPthTwoZsq α hh)
-  refine ⟨C * C₀ * 4, by positivity, ?_⟩
-  intro α F Ψ hα hα4 h
-  have h1 := hCbd α F Ψ hα hα4 h
-  have h2 : α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-      + Work.Spaces.HkSq α 0
-          (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
-      ≤ C₀ * Work.Spaces.HkSq α 0
-          (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ) :=
-    hL0' α F Ψ hα hα4 h
-  have h3 := eslHkSqZero_sub_le α F h.memF
-  have hCnn : 0 ≤ C := le_of_lt hCpos
-  have hC₀nn : 0 ≤ C₀ := le_of_lt hC₀pos
-  have hα4le : α ^ 4 ≤ 1 := pow_le_one₀ (le_of_lt hα) (by linarith)
-  have hAnnn : 0 ≤ Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) :=
-    setIntegral_nonneg measurableSet_Ici fun z _ =>
-      setIntegral_nonneg measurableSet_Icc fun θ _ => Work.Spaces.HkIntegrand_nonneg α 0 _ z θ
-  have hWnn : 0 ≤ Work.Spaces.HkSq α 0
-      (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) :=
-    setIntegral_nonneg measurableSet_Ici fun z _ =>
-      setIntegral_nonneg measurableSet_Icc fun θ _ => Work.Spaces.HkIntegrand_nonneg α 0 _ z θ
-  have hstep1 : α ^ 4 * (Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-            * Work.Spaces.Wt α z θ)
-        + Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-            * Work.Spaces.Wt α z θ))
-      ≤ α ^ 4 * (C * (Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))) :=
-    mul_le_mul_of_nonneg_left h1 (by positivity)
-  have hstep2 : α ^ 4 * (C * (Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))))
-      = C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + α ^ 4 * Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))) := by
-    ring
-  have hstep3 : C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + α ^ 4 * Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))
-      ≤ C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))) := by
-    have hWW : α ^ 4 * Work.Spaces.HkSq α 0
-          (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))
-        ≤ Work.Spaces.HkSq α 0
-            (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)) := by
-      nlinarith [hα4le, hWnn]
-    nlinarith [hCnn, hWW]
-  have hstep4 : C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))
-      ≤ C * (C₀ * Work.Spaces.HkSq α 0
-          (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ)) :=
-    mul_le_mul_of_nonneg_left h2 hCnn
-  have hstep5 : C * (C₀ * Work.Spaces.HkSq α 0
-          (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ))
-      ≤ C * (C₀ * (4 * Work.Spaces.HkSq α 2 F)) :=
-    mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h3 hC₀nn) hCnn
-  calc α ^ 4 * (Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 1 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-            * Work.Spaces.Wt α z θ)
-        + Work.Spaces.L2Sq (fun z θ =>
-          Work.Spaces.mixed 0 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ) z θ
-            * Work.Spaces.Wt α z θ))
-      ≤ α ^ 4 * (C * (Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)))) := hstep1
-    _ = C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + α ^ 4 * Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))) := hstep2
-    _ ≤ C * (α ^ 4 * Work.Spaces.HkSq α 0 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ)
-          + Work.Spaces.HkSq α 0
-              (Work.Spaces.pthIter 2 (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 Ψ z θ))) := hstep3
-    _ ≤ C * (C₀ * Work.Spaces.HkSq α 0
-          (fun z θ => Work.Spaces.DzIter 2 F z θ - Work.Spaces.DzIter 1 F z θ)) := hstep4
-    _ ≤ C * (C₀ * (4 * Work.Spaces.HkSq α 2 F)) := hstep5
-    _ = C * C₀ * 4 * Work.Spaces.HkSq α 2 F := by ring
 
 end
 

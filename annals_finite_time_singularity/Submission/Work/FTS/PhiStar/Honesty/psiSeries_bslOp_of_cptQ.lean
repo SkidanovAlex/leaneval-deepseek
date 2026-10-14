@@ -1,56 +1,22 @@
-/-
-# `Honesty.psiSeries_bslOp_of_cptQ` — the mode series solves `bslOp α Ψ = G`
-
-For `G` a `C^∞` source whose support is a compact subset of the open quadrant `(0,∞) × (0,π/2)`
-and whose angular moment `F_* G` vanishes identically on `z > 0`,
-
-  `bslOp α (psiSeries α G) z θ = G z θ`  for `z > 0`, `0 < θ < π/2`, `0 < α ≤ 1/4`.
-
-`psiSeries α G = Σ_m radGreen α m (cmode m G)(z) · e_m(θ)` is the modal solution of the
-axi-symmetric Biot--Savart operator in the self-similar variables.
-
-**Proof.**  Everything is reduced to the "crux estimates" of
-`Work.FTS.ClassC.deriv_series_general` (the general termwise differentiation of the mode
-series, under six pointwise majorant bounds `hB0..hB5`):
-
-* the mode coefficients `cmode m G` are supported in the `z`-box `[z₁,z₂]` of `G` and decay
-  rapidly in `m`: `|cmode m G t| ≤ Cdec/(m+1)^5` for `m ≥ 1`
-  (`Honesty.cmode_decay_of_cptQ`) — this gives **strong** decay of
-  `acoeff α m G = radGreen α m (cmode m G)`;
-* `Honesty.radGreenI_deriv_bounds_cpt` bounds `radGreen` and its two `z`-derivatives by
-  `C·(Cdec/(m+1)^5)`, uniformly in `z`, because the source is supported away from `0` and `∞`;
-* the angular slots `hB3`–`hB5` combine that with the angular bounds
-  `|∂_θ^k(eFam m)| ≤ C(m+1)^{k+1}/cos^k` proved in `PsiCptAux.AngBounds` from the radial energy
-  bound `Series.eFamSupAux.ug_bound` and the eigen-relation `eFam_Lzero`;
-* the resulting `bslOp`-series is identified modewise with `cmode m G z·e_m(θ)` by
-  `radGreen_solves` + the eigen-relation, and the result is summed via `tsum_lincomb5`;
-* finally `Σ_m cmode m G z·e_m(θ) = G z θ` on `(0,π/2)`, which is the pointwise eigen-expansion
-  of the slice: `Honesty.tsum_bmode_eFam_eq_of_continuous` applied to `ψ := G z ·` (continuous,
-  with vanishing moment by `hFs`, and rapid coefficient decay by `cmode_decay_of_cptQ`).
-
-The `m = 0` mode is harmless: `F_* G ≡ 0` forces `cmode 0 G ≡ 0` (`acoeff_zero_of_fstar`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.PhiStar.Honesty.CptDefs
 import Submission.Work.FTS.PhiStar.Honesty.PsiCptAux.AngBounds
-import Submission.Work.FTS.PhiStar.Honesty.tsum_bmode_eFam_eq_of_continuous
-import Submission.Work.FTS.PhiStar.Honesty.radGreenI_deriv_bounds_cpt
-import Submission.Work.FTS.PhiStar.Series.Defs
-import Submission.Work.FTS.PhiStar.Series.RemSetup
-import Submission.Work.FTS.PhiStar.Series.acoeff_zero_of_fstar
-import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
-import Submission.Work.FTS.PhiStar.Series.radGreenI_differentiableAt
-import Submission.Work.FTS.PhiStar.Radial.radGreen_solves
-import Submission.Work.FTS.PhiStar.Series.BslOp.Setup
-import Submission.Work.FTS.PhiStar.Series.Deleg.rpowMajorant
 import Submission.Work.FTS.PhiStar.Honesty.cmode_decay_of_cptQ
 import Submission.Work.FTS.PhiStar.Honesty.continuousOn_cmode_of_hkMem_one
 import Submission.Work.FTS.PhiStar.Honesty.smoothCptQ_hkMem
-import Submission.Work.FTS.ClassC.deriv_series_general
-import Submission.Work.FTS.PhiStar.Gegenbauer.eFam_Lzero
+import Submission.Work.FTS.PhiStar.Series.BslOp.Setup
+import Submission.Work.FTS.PhiStar.Series.RemSetup
+import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.MainBoundR
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.radial_noDecay_le
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

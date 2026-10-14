@@ -1,36 +1,153 @@
-/-
-# `Work.StabilityFar.Decay.norm_kDerivCLM_sub_le`
-
-The Biot–Savart kernel calculus `b ↦ kf b = b/‖b‖³` has second derivative `D²kf = D(kDerivCLM)`,
-which away from the origin is homogeneous of degree `-4`.  This file proves the resulting
-Lipschitz bound for the *derivative* of the kernel, uniformly on the exterior of the ball of
-radius `m`:
-
-  `‖kDerivCLM b - kDerivCLM c‖ ≤ 64/m⁴ ‖b - c‖`   whenever  `m ≤ ‖b‖`, `m ≤ ‖c‖`.
-
-The constant `64` is not sharp (the argument actually gives `24`), but the bound is the
-`O(m⁻⁴)` Lipschitz estimate needed for the far-field `C^{1,1}` step of `St4`.
-
-The structure of the proof is the standard one for such homogeneous kernels.  Writing
-
-  `kDerivCLM b = (‖b‖³)⁻¹ • angK (‖b‖⁻¹ • b)`,
-  `angK u = id - 3 • dirProj u`,  `dirProj u = v ↦ ⟪u, v⟫ • u`,
-
-one splits the difference with the *normalised* arguments `u = b/‖b‖`, `v = c/‖c‖`, which are
-unit vectors:
-
-  `kDerivCLM b - kDerivCLM c
-     = (‖b‖³)⁻¹ • (angK u - angK v) + ((‖b‖³)⁻¹ - (‖c‖³)⁻¹) • angK v`.
-
-The first summand is bounded using that `angK` is `6`-Lipschitz on the unit sphere and that the
-normalisation map `b ↦ b/‖b‖` is `2/‖b‖`-Lipschitz; the second using the elementary scalar bound
-`|a⁻³ - b⁻³| ≤ 3 m⁻⁴ |a - b|` on `[m,∞)` and `‖angK v‖ ≤ 4`.  Both contribute at most
-`12/m⁴ ‖b - c‖`, giving `24/m⁴ ‖b - c‖ ≤ 64/m⁴ ‖b - c‖`.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
+import Mathlib.Geometry.Euclidean.Angle.Unoriented.CrossProduct
 import Submission.Work.StabilityFar.Decay.KernelDefs
+-- ===== merged: Submission.Work.StabilityFar.Decay.kf_hasFDerivAt =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.StabilityFar.Decay
+
+open Work.LWP
+
+/-- Scalar multiplication of a **scalar-valued** continuous linear map commutes with
+`smulRight`: `(a • L).smulRight x = a • L.smulRight x`. -/
+private lemma smulRight_smul_scalar (a : ℝ) (L : R3 →L[ℝ] ℝ) (x : R3) :
+    (a • L).smulRight x = a • L.smulRight x := by
+  ext v
+  simp only [ContinuousLinearMap.smulRight_apply, smul_apply]
+  simp [smul_eq_mul, mul_comm, mul_left_comm]
+
+theorem kf_hasFDerivAt (b : Work.LWP.R3) (hb : b ≠ 0) :
+    HasFDerivAt Work.StabilityFar.Decay.kf (Work.StabilityFar.Decay.kDerivCLM b) b := by
+  -- The scalar identity `(-3/2) * (‖b‖²)^(-3/2 - 1) * 2 = -(3 * (‖b‖⁵)⁻¹)`.
+  have hscalar : ((-3 / 2 : ℝ) * (‖b‖ ^ 2) ^ ((-3 / 2 : ℝ) - 1) * 2)
+      = -(3 * (‖b‖ ^ 5)⁻¹) := by
+    rw [show (-3 / 2 : ℝ) - 1 = -5 / 2 by norm_num]
+    rw [← Real.rpow_natCast_mul (norm_nonneg b) 2 (-5 / 2)]
+    rw [show ((2 : ℕ) : ℝ) * (-5 / 2 : ℝ) = -5 by norm_num]
+    rw [Real.rpow_neg (norm_nonneg b) (5 : ℝ)]
+    simp
+    ring
+  -- Differentiate `x ↦ ‖x‖²` and compose with `(·)^(-3/2)`.
+  have hcp : HasFDerivAt (fun x : R3 => (‖x‖ ^ 2) ^ (-3 / 2 : ℝ))
+      (((-3 / 2 : ℝ) * (‖b‖ ^ 2) ^ ((-3 / 2 : ℝ) - 1)) • ((2 : ℕ) • innerSL ℝ b)) b :=
+    (hasStrictFDerivAt_norm_sq b).hasFDerivAt.rpow_const (Or.inl (by positivity))
+  -- `(‖x‖²)^(-3/2) = (‖x‖³)⁻¹`.
+  have hc : HasFDerivAt (fun x : R3 => (‖x‖ ^ (3 : ℕ))⁻¹)
+      (((-3 / 2 : ℝ) * (‖b‖ ^ 2) ^ ((-3 / 2 : ℝ) - 1)) • ((2 : ℕ) • innerSL ℝ b)) b := by
+    refine hcp.congr_of_eventuallyEq (Filter.Eventually.of_forall (fun x => ?_))
+    show (‖x‖ ^ (3 : ℕ))⁻¹ = (‖x‖ ^ 2) ^ (-3 / 2 : ℝ)
+    rw [← Real.rpow_natCast_mul (norm_nonneg x) 2 (-3 / 2)]
+    rw [show ((2 : ℕ) : ℝ) * (-3 / 2 : ℝ) = -3 by norm_num]
+    rw [Real.rpow_neg (norm_nonneg x) (3 : ℝ)]
+    simp
+  -- Put the derivative of the scalar factor into its final shape.
+  have hc' : HasFDerivAt (fun x : R3 => (‖x‖ ^ (3 : ℕ))⁻¹)
+      (-(3 * (‖b‖ ^ 5)⁻¹) • innerSL ℝ b) b := by
+    refine hc.congr_fderiv ?_
+    rw [← hscalar]
+    rw [← Nat.cast_smul_eq_nsmul (R := ℝ) 2 (innerSL ℝ b)]
+    rw [smul_smul]
+    norm_num
+  -- Product rule with the identity.
+  have hsmul := hc'.smul (hasFDerivAt_id b)
+  have h1 : HasFDerivAt Work.StabilityFar.Decay.kf
+      ((‖b‖ ^ (3 : ℕ))⁻¹ • (1 : R3 →L[ℝ] R3)
+        + (-(3 * (‖b‖ ^ 5)⁻¹) • innerSL ℝ b).smulRight b) b :=
+    hsmul.congr_of_eventuallyEq (Filter.Eventually.of_forall (fun x => rfl))
+  exact h1.congr_fderiv (by
+    rw [Work.StabilityFar.Decay.kDerivCLM]
+    rw [smulRight_smul_scalar]
+    rw [ContinuousLinearMap.one_def]
+    rw [show ((-(3 * (‖b‖ ^ 5)⁻¹)) • ((innerSL ℝ b).smulRight b))
+          = -((3 * (‖b‖ ^ 5)⁻¹) • ((innerSL ℝ b).smulRight b)) from neg_smul _ _]
+    rw [sub_eq_add_neg])
+
+end Work.StabilityFar.Decay
+end
+-- ===== merged: Submission.Work.StabilityFar.Decay.norm_crossL_le =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.StabilityFar.Decay
+
+/-- The operator norm of the continuous linear map `v ↦ u × v` is at most `‖u‖`.
+
+This is the vector identity `‖u × v‖ = ‖u‖ ‖v‖ sin θ ≤ ‖u‖ ‖v‖` fed into the operator-norm
+characterization `‖f‖ ≤ M ↔ ∀ v, ‖f v‖ ≤ M ‖v‖`. -/
+theorem norm_crossL_le (u : Work.LWP.R3) : ‖Work.StabilityFar.Decay.crossL u‖ ≤ ‖u‖ := by
+  refine ContinuousLinearMap.opNorm_le_bound (crossL u) (norm_nonneg _) (fun v => ?_)
+  rw [crossL_apply, InnerProductGeometry.norm_ofLp_crossProduct]
+  exact mul_le_of_le_one_right (by positivity) (Real.sin_le_one _)
+
+end Work.StabilityFar.Decay
+end
+-- ===== merged: Submission.Work.StabilityFar.Decay.norm_kDerivCLM_le =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.StabilityFar.Decay
+
+/-- Pointwise bound for the derivative kernel `kDerivCLM b`: for every `v`,
+`‖kDerivCLM b v‖ ≤ (4 / ‖b‖³) ‖v‖`, since
+`kDerivCLM b v = ‖b‖⁻³ v - 3 ‖b‖⁻⁵ (b·v) b`. -/
+private theorem norm_kDerivCLM_apply_le (b v : Work.LWP.R3) (hb : 0 < ‖b‖) :
+    ‖Work.StabilityFar.Decay.kDerivCLM b v‖ ≤ (4 / ‖b‖ ^ 3) * ‖v‖ := by
+  have hE : Work.StabilityFar.Decay.kDerivCLM b v =
+      (‖b‖ ^ (3 : ℕ))⁻¹ • v - (3 * (‖b‖ ^ (5 : ℕ))⁻¹) • ((inner ℝ b v) • b) := by
+    simp only [Work.StabilityFar.Decay.kDerivCLM, sub_apply, smul_apply,
+      ContinuousLinearMap.id_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]
+  calc ‖Work.StabilityFar.Decay.kDerivCLM b v‖
+      = ‖(‖b‖ ^ (3 : ℕ))⁻¹ • v - (3 * (‖b‖ ^ (5 : ℕ))⁻¹) • ((inner ℝ b v) • b)‖ := by
+        rw [hE]
+    _ ≤ ‖(‖b‖ ^ (3 : ℕ))⁻¹ • v‖ + ‖(3 * (‖b‖ ^ (5 : ℕ))⁻¹) • ((inner ℝ b v) • b)‖ :=
+        norm_sub_le _ _
+    _ = (‖b‖ ^ (3 : ℕ))⁻¹ * ‖v‖ + 3 * (‖b‖ ^ (5 : ℕ))⁻¹ * (‖inner ℝ b v‖ * ‖b‖) := by
+        rw [norm_smul, norm_smul, norm_smul, Real.norm_of_nonneg (by positivity),
+          Real.norm_of_nonneg (by positivity)]
+    _ ≤ (‖b‖ ^ (3 : ℕ))⁻¹ * ‖v‖ + 3 * (‖b‖ ^ (5 : ℕ))⁻¹ * ((‖b‖ * ‖v‖) * ‖b‖) := by
+        gcongr
+        exact norm_inner_le_norm b v
+    _ = (4 / ‖b‖ ^ 3) * ‖v‖ := by
+        field_simp
+        ring
+
+theorem norm_kDerivCLM_le (b : Work.LWP.R3) (m : ℝ) (hm : 0 < m) (hb : m ≤ ‖b‖) :
+    ‖Work.StabilityFar.Decay.kDerivCLM b‖ ≤ 4 / m ^ 3 := by
+  have hr : 0 < ‖b‖ := lt_of_lt_of_le hm hb
+  have hmain : ∀ v : Work.LWP.R3,
+      ‖Work.StabilityFar.Decay.kDerivCLM b v‖ ≤ (4 / ‖b‖ ^ 3) * ‖v‖ :=
+    fun v => norm_kDerivCLM_apply_le b v hr
+  have hbnd : ‖Work.StabilityFar.Decay.kDerivCLM b‖ ≤ 4 / ‖b‖ ^ 3 :=
+    ContinuousLinearMap.opNorm_le_bound _ (by positivity) hmain
+  have hmono : 4 / ‖b‖ ^ 3 ≤ 4 / m ^ 3 := by
+    apply div_le_div_of_nonneg_left (by norm_num) (by positivity)
+    exact pow_le_pow_left₀ (le_of_lt hm) hb 3
+  linarith
+
+end Work.StabilityFar.Decay
+end
+-- ===== merged: Submission.Work.StabilityFar.Decay.norm_kDerivCLM_sub_le =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -239,3 +356,4 @@ theorem norm_kDerivCLM_sub_le (b c : Work.LWP.R3) (m : ℝ) (hm : 0 < m)
         apply div_le_div_of_nonneg_right (by norm_num) (by positivity)
 
 end Work.StabilityFar.Decay
+end

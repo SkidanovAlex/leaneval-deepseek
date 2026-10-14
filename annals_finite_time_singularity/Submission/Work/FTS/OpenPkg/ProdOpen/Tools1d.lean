@@ -1,31 +1,434 @@
-/-
-# `Work.FTS.OpenPkg.ProdOpen.Tools1d`
-
-The two one-dimensional inequalities behind the open-quadrant product rule
-`Work.FTS.OpenPkg.prod_field`.
-
-In the class `Work.FTS.VocabO.HQo` (`SmoothOpen` + `HkMem`) there is *no* decay and *no*
-boundary vanishing available, so neither of the two classical Hardy inequalities
-(`Work.Spaces.HardyZ`, `Work.Spaces.HardyTheta`) can be applied.  What replaces them is the
-**mean term** form: the boundary/decay defect is paid for by an average over a *fixed*
-window, which is itself an `L²`-quantity and hence controlled by the `ℋ⁴`-norm.
-
-* `sob_z_mean`: for a function `h` which is differentiable on `(0,∞)` with `h'` continuous,
-  `h(z)² ≤ 2 (∫_{[1,2]} h² + ∫_0^∞ (z h'(z) w(z))² dz)`.
-  (`z h'` is `D_z h`, and `∫_0^∞ (·)² w²` is the radial slot of the `ℋ⁴`-norm.)
-* `sob_theta_mean`: for `h` differentiable on `(0,π/2)` with `deriv h` continuous,
-  `h(θ)² ≤ 204 (∫_{Iθ} h² + (γ-1)⁻¹ ∫_{Iθ} (h')² sin(2·)^{2-γ})`.
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Submission.Work.Spaces.HardyZ
-import Submission.Work.FTS.H2.OscSqLe
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Mathlib.MeasureTheory.Integral.Prod
+import Submission.Work.FTS.H2.Transport1Aux
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.sin_two_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.boxIntegrable_DzIter =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+namespace Work.FTS.EllipticEst
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+set_option linter.unusedVariables false
+
+/-- The planar Lebesgue measure restricted to a box is the product of the restrictions of
+the Lebesgue measure to the two sides. -/
+theorem volume_restrict_box (a b : ℝ) :
+    (volume : Measure (ℝ × ℝ)).restrict (Set.Icc a b ×ˢ Work.Spaces.Iθ)
+      = (volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ) :=
+  (Measure.prod_restrict (Set.Icc a b) Work.Spaces.Iθ).symm
+
+/-- **Box integrability from the angular slices.**  If `g` is continuous on the open quadrant,
+nonnegative on the box `[a,b] ×ˢ Iθ` (`0 < a`), has integrable angular slices and an integrable
+iterated `θ`-integral over `[a,b]`, then its uncurried version is integrable on the box.
+
+This is the `0 < a`-form of `integrableOn_box_of_slice`, with nonnegativity required only on
+the box (which is what the weighted integrands of the elliptic estimates satisfy: the
+`sin(2θ)^{-η}` factor is only nonnegative for `θ ∈ Iθ`). -/
+theorem integrableOn_box_of_slice_of_nonneg {g : ℝ → ℝ → ℝ} {a b : ℝ}
+    (ha : 0 < a) (hab : a < b)
+    (hg : ContinuousOn (fun p : ℝ × ℝ => g p.1 p.2) Q0)
+    (hnn : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Work.Spaces.Iθ, 0 ≤ g z θ)
+    (hsl : ∀ s ∈ Set.Icc a b, Integrable (fun θ => g s θ) (volume.restrict Work.Spaces.Iθ))
+    (hint : Integrable (fun s => ∫ θ in Work.Spaces.Iθ, g s θ)
+      (volume.restrict (Set.Icc a b))) :
+    IntegrableOn (Function.uncurry g) (Set.Icc a b ×ˢ Work.Spaces.Iθ) := by
+  have hsub : Set.Icc a b ⊆ Work.Spaces.Iz :=
+    fun x hx => Set.mem_Ici.mpr (le_trans (le_of_lt ha) hx.1)
+  -- Strong measurability on the box, from continuity on the open quadrant.
+  have hle : (volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)
+      ≤ (volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ) :=
+    Measure.prod_mono (Measure.restrict_mono hsub le_rfl) le_rfl
+  have hAE : AEStronglyMeasurable (Function.uncurry g)
+      ((volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)) :=
+    (Work.Spaces.aesm_of_continuousOn_Qd (fun p : ℝ × ℝ => g p.1 p.2) hg).mono_measure hle
+  -- Nonnegativity on the box, in the a.e. form needed for the product integral.
+  have hnn' : ∀ᵐ x ∂(volume.restrict (Set.Icc a b)),
+      ∀ᵐ y ∂(volume.restrict Work.Spaces.Iθ), 0 ≤ g x y := by
+    filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
+    filter_upwards [ae_restrict_mem
+      (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)] with y hy
+    exact hnn x hx y hy
+  have hsl' : ∀ᵐ s ∂(volume.restrict (Set.Icc a b)),
+      Integrable (fun θ => g s θ) (volume.restrict Work.Spaces.Iθ) := by
+    filter_upwards [ae_restrict_mem measurableSet_Icc] with s hs
+    exact hsl s hs
+  -- Fubini for the product measure, then the identification of the restricted planar
+  -- measure on the box with that product.
+  have hbox : Integrable (Function.uncurry g)
+      ((volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)) :=
+    Work.FTS.EllipticEst.integrable_prod_ae hnn' hAE hsl' hint
+  show Integrable (Function.uncurry g) (volume.restrict (Set.Icc a b ×ˢ Work.Spaces.Iθ))
+  rw [volume_restrict_box]
+  exact hbox
+
+theorem boxIntegrable_DzIter (α : ℝ) (k : ℕ) {F : ℝ → ℝ → ℝ} (hF : Work.FTS.EllipticEst.SmoothOpen F)
+    (hmem : Work.Spaces.HkMem α k F) (j : ℕ) (hj : j + 1 ≤ k) :
+    ∀ a b : ℝ, 0 < a → a < b →
+      MeasureTheory.IntegrableOn (Function.uncurry (fun s θ : ℝ =>
+        (Work.Spaces.pz (Work.Spaces.DzIter j F) s θ) ^ 2
+          * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))) (Set.Icc a b ×ˢ Work.Spaces.Iθ) := by
+  intro a b ha hab
+  have hsub : Set.Icc a b ⊆ Work.Spaces.Iz :=
+    fun x hx => Set.mem_Ici.mpr (le_trans (le_of_lt ha) hx.1)
+  -- The integrand is continuous on the open quadrant: `∂_z D_z^j F` is `C^∞` there and
+  -- `sin(2θ) > 0` on the quadrant, so its negative power is continuous.
+  have hsinpos : ∀ p ∈ Q0, 0 < Real.sin (2 * p.2) := by
+    intro p hp
+    obtain ⟨-, hθ0, hθ1⟩ := mem_Q0.mp hp
+    exact Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [Real.pi_pos])
+  have hg : ContinuousOn (fun p : ℝ × ℝ =>
+      (Work.Spaces.pz (Work.Spaces.DzIter j F) p.1 p.2) ^ 2
+        * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) Q0 := by
+    refine ContinuousOn.mul ?_ ?_
+    · exact ((hF.DzIter j).pz.continuousOn).pow 2
+    · exact ((Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn).rpow_const
+        (fun p hp => Or.inl (ne_of_gt (hsinpos p hp)))
+  -- Nonnegativity on the box.
+  have hnn : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Work.Spaces.Iθ,
+      0 ≤ (Work.Spaces.pz (Work.Spaces.DzIter j F) z θ) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) :=
+    fun z _ θ hθ => mul_nonneg (sq_nonneg _)
+      (Real.rpow_nonneg (Work.Spaces.sin_two_nonneg_of_Iθ hθ) _)
+  -- Angular slices: dominate by the `i = j+1` slot of the `ℋ^k`-integrand.
+  have hsl : ∀ s ∈ Set.Icc a b, Integrable (fun θ : ℝ =>
+      (Work.Spaces.pz (Work.Spaces.DzIter j F) s θ) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+      (volume.restrict Work.Spaces.Iθ) := by
+    intro s hs
+    have hspos : 0 < s := lt_of_lt_of_le ha hs.1
+    have hsz : s ∈ Work.Spaces.Iz := hsub hs
+    refine Integrable.mono' (hmem.1 s hsz) ?_ ?_
+    · exact Work.Spaces.aesm_slice_of_continuousOn_Qd
+        (fun p : ℝ × ℝ => (Work.Spaces.pz (Work.Spaces.DzIter j F) p.1 p.2) ^ 2
+          * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) hg hspos
+    · filter_upwards [ae_restrict_mem
+        (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)] with θ hθ
+      rw [Real.norm_of_nonneg (hnn s hs θ hθ)]
+      exact le_trans (Work.FTS.EllipticEst.pz_DzIter_sq_mul_sin_le_term j hspos hθ)
+        (Work.Spaces.sq_le_HkIntegrand_z α k F s θ (j + 1) hj)
+  -- The iterated `θ`-integral over `[a,b]`: the `θ`-integral of the summand is bounded
+  -- pointwise by that of `HkIntegrand α k F`, whose `z`-integral is finite by `hmem`.
+  have hint : Integrable (fun s : ℝ => ∫ θ in Work.Spaces.Iθ,
+      (Work.Spaces.pz (Work.Spaces.DzIter j F) s θ) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))
+      (volume.restrict (Set.Icc a b)) := by
+    have hbase : Integrable (fun s : ℝ => ∫ θ in Work.Spaces.Iθ,
+        Work.Spaces.HkIntegrand α k F s θ) (volume.restrict (Set.Icc a b)) :=
+      hmem.2.mono_set hsub
+    refine Integrable.mono' hbase ?_ ?_
+    · -- Measurability of the iterated integral, by Fubini.
+      have hle : (volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)
+          ≤ (volume.restrict Work.Spaces.Iz).prod (volume.restrict Work.Spaces.Iθ) :=
+        Measure.prod_mono (Measure.restrict_mono hsub le_rfl) le_rfl
+      have hAEj : AEStronglyMeasurable (fun p : ℝ × ℝ =>
+          (Work.Spaces.pz (Work.Spaces.DzIter j F) p.1 p.2) ^ 2
+            * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)))
+          ((volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)) :=
+        (Work.Spaces.aesm_of_continuousOn_Qd _ hg).mono_measure hle
+      have h2 := hAEj.integral_prod_right' (μ := volume.restrict (Set.Icc a b))
+        (ν := volume.restrict Work.Spaces.Iθ)
+      simpa only using h2
+    · filter_upwards [ae_restrict_mem
+        (show MeasurableSet (Set.Icc a b) from measurableSet_Icc)] with s hs
+      have hspos : 0 < s := lt_of_lt_of_le ha hs.1
+      have hsz : s ∈ Work.Spaces.Iz := hsub hs
+      have hnonneg : 0 ≤ ∫ θ in Work.Spaces.Iθ,
+          (Work.Spaces.pz (Work.Spaces.DzIter j F) s θ) ^ 2
+            * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)) := by
+        refine MeasureTheory.integral_nonneg_of_ae ?_
+        filter_upwards [ae_restrict_mem
+          (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)] with θ hθ
+        exact hnn s hs θ hθ
+      rw [Real.norm_of_nonneg hnonneg]
+      refine MeasureTheory.integral_mono_of_nonneg ?_ (hmem.1 s hsz) ?_
+      · filter_upwards [ae_restrict_mem
+          (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)] with θ hθ
+        exact hnn s hs θ hθ
+      · filter_upwards [ae_restrict_mem
+          (show MeasurableSet Work.Spaces.Iθ from measurableSet_Icc)] with θ hθ
+        exact le_trans (Work.FTS.EllipticEst.pz_DzIter_sq_mul_sin_le_term j hspos hθ)
+          (Work.Spaces.sq_le_HkIntegrand_z α k F s θ (j + 1) hj)
+  exact integrableOn_box_of_slice_of_nonneg ha hab hg hnn hsl hint
+
+end Work.FTS.EllipticEst
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.moment_relation =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst
+
+set_option maxHeartbeats 800000
+
+/-! ## Elementary facts about the weight `η` and the angular kernel `sinθcos²θ` -/
+
+private theorem eta_pos : 0 < Work.Spaces.eta := by
+  rw [Work.Spaces.eta]
+  norm_num
+
+private theorem sinCos2_zero : Work.Elliptic.sinCos2 0 = 0 := by
+  rw [Work.Elliptic.sinCos2]
+  norm_num
+
+private theorem sinCos2_pi_div_two : Work.Elliptic.sinCos2 (π / 2) = 0 := by
+  rw [Work.Elliptic.sinCos2, Real.sin_pi_div_two, Real.cos_pi_div_two]
+  norm_num
+
+/-! ## Integrability of `∂_z u · sinθcos²θ` on a bounded box
+
+The weighted square `(∂_z u)² · sin(2θ)^{-η}` dominates `|∂_z u · sinθcos²θ|` on the open
+quadrant (`|sinθcos²θ| ≤ 1` and `sin(2θ)^{-η} ≥ 1` there), so the domination hypothesis
+`hbox` gives integrability of the product. -/
+
+theorem integrableOn_pz_mul_sinCos2 (u : ℝ → ℝ → ℝ) (hu : SmoothOpen u)
+    (hbox : ∀ a b : ℝ, 0 < a → a < b →
+      MeasureTheory.IntegrableOn (Function.uncurry (fun s θ : ℝ => (Work.Spaces.pz u s θ) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))) (Set.Icc a b ×ˢ Work.Spaces.Iθ))
+    {a b : ℝ} (ha : 0 < a) (hab : a < b) :
+    MeasureTheory.IntegrableOn (Function.uncurry (fun s θ : ℝ =>
+      Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ)) (Set.Icc a b ×ˢ Work.Spaces.Iθ) := by
+  set box : Set (ℝ × ℝ) := Set.Icc a b ×ˢ Work.Spaces.Iθ with hboxdef
+  set S : Set (ℝ × ℝ) := box ∩ Q0 with hSdef
+  -- ## measurability and finiteness of the box
+  have hSmeas : MeasurableSet S := by
+    rw [hSdef, hboxdef, Q0]
+    exact (measurableSet_Icc.prod (by rw [Work.Spaces.Iθ]; exact measurableSet_Icc)).inter
+      (measurableSet_Ioi.prod measurableSet_Ioo)
+  have hboxfin : (volume : Measure (ℝ × ℝ)) box ≠ ⊤ := by
+    rw [hboxdef, Measure.volume_eq_prod ℝ ℝ, Measure.prod_prod, Work.Spaces.Iθ,
+      Real.volume_Icc, Real.volume_Icc]
+    exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top
+  have hSfin : (volume : Measure (ℝ × ℝ)) S ≠ ⊤ :=
+    ne_top_of_le_ne_top hboxfin (measure_mono (by rw [hSdef]; exact Set.inter_subset_left))
+  -- ## the dominating function
+  have hg : IntegrableOn (fun p : ℝ × ℝ => (Work.Spaces.pz u p.1 p.2) ^ 2
+      * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) box := by
+    have h := hbox a b ha hab
+    rw [MeasureTheory.IntegrableOn] at h ⊢
+    simpa only [Function.uncurry_def] using h
+  have h1 : IntegrableOn (fun p : ℝ × ℝ => (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2
+      * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)))) S := by
+    have hmono : IntegrableOn (fun p : ℝ × ℝ => (Work.Spaces.pz u p.1 p.2) ^ 2
+        * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) S :=
+      hg.mono_set (by rw [hSdef]; exact Set.inter_subset_left)
+    exact MeasureTheory.Integrable.const_mul hmono (1 / 2)
+  have h2 : IntegrableOn (fun _ : ℝ × ℝ => (1 / 2 : ℝ)) S :=
+    MeasureTheory.integrableOn_const (C := (1 / 2 : ℝ)) hSfin
+  have hdom : IntegrableOn (fun p : ℝ × ℝ => (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2
+      * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) + 1 / 2) S :=
+    MeasureTheory.IntegrableOn.add h1 h2
+  -- ## continuity of the integrand on `S`
+  have hsinCos2_cont : Continuous (fun p : ℝ × ℝ => Work.Elliptic.sinCos2 p.2) := by
+    have hfun : (fun p : ℝ × ℝ => Work.Elliptic.sinCos2 p.2)
+        = fun p : ℝ × ℝ => Real.sin p.2 * Real.cos p.2 ^ 2 := rfl
+    rw [hfun]
+    exact (Real.continuous_sin.comp continuous_snd).mul
+      ((Real.continuous_cos.comp continuous_snd).pow 2)
+  have hsinOn : ContinuousOn (fun p : ℝ × ℝ => Work.Elliptic.sinCos2 p.2) Q0 :=
+    hsinCos2_cont.continuousOn
+  have hcont : ContinuousOn (fun p : ℝ × ℝ =>
+      Work.Spaces.pz u p.1 p.2 * Work.Elliptic.sinCos2 p.2) S :=
+    ((hu.pz).continuousOn.mono (by rw [hSdef]; exact Set.inter_subset_right)).mul
+      (hsinOn.mono (by rw [hSdef]; exact Set.inter_subset_right))
+  have hmeas : AEStronglyMeasurable (fun p : ℝ × ℝ =>
+      Work.Spaces.pz u p.1 p.2 * Work.Elliptic.sinCos2 p.2) (volume.restrict S) :=
+    hcont.aestronglyMeasurable hSmeas
+  -- ## the pointwise domination
+  have hbound : ∀ᵐ p ∂(volume.restrict S),
+      ‖Work.Spaces.pz u p.1 p.2 * Work.Elliptic.sinCos2 p.2‖
+        ≤ (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2
+            * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) + 1 / 2 := by
+    filter_upwards [MeasureTheory.ae_restrict_mem hSmeas] with p hp
+    have hQ : p ∈ Q0 := hp.2
+    rw [Q0, Set.mem_prod, Set.mem_Ioi, Set.mem_Ioo] at hQ
+    have hspos : 0 < Real.sin (2 * p.2) :=
+      Real.sin_pos_of_pos_of_lt_pi (by linarith [hQ.2.1]) (by linarith [hQ.2.2, Real.pi_pos])
+    have hsle : Real.sin (2 * p.2) ≤ 1 := Real.sin_le_one _
+    have hpow1 : 1 ≤ (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)) :=
+      Real.one_le_rpow_of_pos_of_le_one_of_nonpos hspos hsle (by linarith [eta_pos])
+    have hsq : (Work.Spaces.pz u p.1 p.2) ^ 2 ≤ (Work.Spaces.pz u p.1 p.2) ^ 2
+        * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)) := by
+      calc (Work.Spaces.pz u p.1 p.2) ^ 2 = (Work.Spaces.pz u p.1 p.2) ^ 2 * 1 := by ring
+        _ ≤ (Work.Spaces.pz u p.1 p.2) ^ 2
+              * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)) :=
+            mul_le_mul_of_nonneg_left hpow1 (sq_nonneg _)
+    have hsincos : |Work.Elliptic.sinCos2 p.2| ≤ 1 := by
+      rw [Work.Elliptic.sinCos2, abs_mul, abs_pow]
+      calc |Real.sin p.2| * |Real.cos p.2| ^ 2 ≤ 1 * 1 :=
+            mul_le_mul (Real.abs_sin_le_one p.2)
+              (by nlinarith [Real.abs_cos_le_one p.2, abs_nonneg (Real.cos p.2)])
+              (by positivity) (by norm_num)
+        _ = 1 := by ring
+    calc ‖Work.Spaces.pz u p.1 p.2 * Work.Elliptic.sinCos2 p.2‖
+        = |Work.Spaces.pz u p.1 p.2| * |Work.Elliptic.sinCos2 p.2| := by
+          rw [Real.norm_eq_abs, abs_mul]
+      _ ≤ |Work.Spaces.pz u p.1 p.2| * 1 := mul_le_mul_of_nonneg_left hsincos (abs_nonneg _)
+      _ = |Work.Spaces.pz u p.1 p.2| := mul_one _
+      _ ≤ (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2 + 1) := by
+          nlinarith [sq_abs (Work.Spaces.pz u p.1 p.2),
+            sq_nonneg (|Work.Spaces.pz u p.1 p.2| - 1)]
+      _ ≤ (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2
+            * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta)) + 1) := by linarith
+      _ = (1 / 2) * ((Work.Spaces.pz u p.1 p.2) ^ 2
+            * (Real.sin (2 * p.2)) ^ (-(Work.Spaces.eta))) + 1 / 2 := by ring
+  -- ## the box differs from `S` by a null set
+  have hnull : (volume : Measure (ℝ × ℝ)) (Set.univ ×ˢ ({(0 : ℝ), π / 2} : Set ℝ)) = 0 := by
+    have hN : (volume : Measure ℝ) ({(0 : ℝ), π / 2} : Set ℝ) = 0 :=
+      Set.Finite.measure_zero (by simp) volume
+    rw [Measure.volume_eq_prod ℝ ℝ, Measure.prod_prod, hN, mul_zero]
+  have hae : box =ᵐ[(volume : Measure (ℝ × ℝ))] S := by
+    filter_upwards [MeasureTheory.measure_eq_zero_iff_ae_notMem.mp hnull] with p hp
+    apply propext
+    rw [hSdef]
+    refine ⟨?_, ?_⟩
+    · intro hpbox
+      rw [hboxdef, Work.Spaces.Iθ] at hpbox
+      refine ⟨hpbox, ?_⟩
+      have hp1 : 0 < p.1 := lt_of_lt_of_le ha hpbox.1.1
+      have hp2 : 0 < p.2 := by
+        rcases lt_or_eq_of_le hpbox.2.1 with h | h
+        · exact h
+        · exact absurd ⟨Set.mem_univ _, by simp [h]⟩ hp
+      have hp3 : p.2 < π / 2 := by
+        rcases lt_or_eq_of_le hpbox.2.2 with h | h
+        · exact h
+        · exact absurd ⟨Set.mem_univ _, by simp [h]⟩ hp
+      rw [Q0, Set.mem_prod, Set.mem_Ioi, Set.mem_Ioo]
+      exact ⟨hp1, hp2, hp3⟩
+    · intro hpS
+      exact hpS.1
+  -- ## conclusion
+  have hFint : IntegrableOn (fun p : ℝ × ℝ =>
+      Work.Spaces.pz u p.1 p.2 * Work.Elliptic.sinCos2 p.2) S :=
+    MeasureTheory.Integrable.mono' hdom hmeas hbound
+  have hres := MeasureTheory.IntegrableOn.congr_set_ae hFint hae
+  simpa only [Function.uncurry_def] using hres
+
+/-! ## The fundamental theorem of calculus for the `z`-slice
+
+For every interior angle `θ ∈ (0,π/2)` the slice `z ↦ u z θ` is differentiable on `(0,∞)` with
+derivative `pz u · θ`, so on `[a,b]` (with `0 < a < b`) the fundamental theorem of calculus
+applies; at the two boundary angles `sinθcos²θ` vanishes. -/
+
+theorem ae_integral_slice_eq (u : ℝ → ℝ → ℝ) (hu : SmoothOpen u)
+    {a b : ℝ} (ha : 0 < a) (hab : a < b) :
+    (fun θ : ℝ => ∫ s in Set.Icc a b, Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ)
+      =ᵐ[MeasureTheory.volume.restrict Work.Spaces.Iθ]
+    (fun θ : ℝ => (u b θ - u a θ) * Work.Elliptic.sinCos2 θ) := by
+  have hIθ : MeasurableSet Work.Spaces.Iθ := by
+    rw [Work.Spaces.Iθ]
+    exact measurableSet_Icc
+  filter_upwards [MeasureTheory.ae_restrict_mem hIθ] with θ hθ
+  rw [Work.Spaces.Iθ, Set.mem_Icc] at hθ
+  rcases lt_or_eq_of_le hθ.1 with h0 | h0
+  · rcases lt_or_eq_of_le hθ.2 with h2 | h2
+    · -- interior angle: the fundamental theorem of calculus
+      have hIoo : θ ∈ Set.Ioo (0 : ℝ) (π / 2) := ⟨h0, h2⟩
+      have hderiv : ∀ x ∈ Set.uIcc a b,
+          HasDerivAt (fun z : ℝ => u z θ * Work.Elliptic.sinCos2 θ)
+            (Work.Spaces.pz u x θ * Work.Elliptic.sinCos2 θ) x := by
+        intro x hx
+        rw [Set.uIcc_of_le hab.le] at hx
+        exact (hu.hasDerivAt_slice hIoo (lt_of_lt_of_le ha hx.1)).mul_const _
+      have hcont : ContinuousOn (fun s : ℝ =>
+          Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ) (Set.uIcc a b) := by
+        rw [Set.uIcc_of_le hab.le]
+        exact (((hu.pz).curry_z hIoo).continuousOn.mono
+          (fun x hx => lt_of_lt_of_le ha hx.1)).mul continuousOn_const
+      have h := intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hcont.intervalIntegrable
+      rw [intervalIntegral.integral_of_le hab.le] at h
+      have hIocIcc : (∫ s in Set.Ioc a b,
+            Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ)
+          = ∫ s in Set.Icc a b, Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ :=
+        setIntegral_congr_set (MeasureTheory.Ioc_ae_eq_Icc (μ := volume))
+      rw [← hIocIcc, h]
+      ring
+    · -- right endpoint: `sinθcos²θ = 0`
+      rw [h2, sinCos2_pi_div_two]
+      simp
+  · -- left endpoint: `sinθcos²θ = 0`
+    rw [← h0, sinCos2_zero]
+    simp
+
+/-! ## The angular moment relation -/
+
+theorem moment_relation (u : ℝ → ℝ → ℝ)
+    (hu : Work.FTS.EllipticEst.SmoothOpen u)
+    (hbox : ∀ a b : ℝ, 0 < a → a < b →
+      MeasureTheory.IntegrableOn (Function.uncurry (fun s θ : ℝ => (Work.Spaces.pz u s θ) ^ 2
+        * (Real.sin (2 * θ)) ^ (-(Work.Spaces.eta)))) (Set.Icc a b ×ˢ Work.Spaces.Iθ))
+    (hsl : ∀ z : ℝ, 0 < z → MeasureTheory.IntegrableOn (fun θ : ℝ => u z θ * Work.Elliptic.sinCos2 θ)
+      Work.Spaces.Iθ)
+    {a b : ℝ} (ha : 0 < a) (hab : a < b) :
+    Work.Elliptic.Fstar u b = Work.Elliptic.Fstar u a
+      + ∫ s in Set.Icc a b, (∫ θ in Work.Spaces.Iθ,
+          Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ) := by
+  have hb : 0 < b := lt_trans ha hab
+  -- ## Fubini for the box `[a,b] × Iθ`
+  have hInt : Integrable (Function.uncurry (fun s θ : ℝ =>
+      Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ))
+      ((volume.restrict (Set.Icc a b)).prod (volume.restrict Work.Spaces.Iθ)) := by
+    have h := integrableOn_pz_mul_sinCos2 u hu hbox ha hab
+    rw [MeasureTheory.IntegrableOn, Measure.volume_eq_prod ℝ ℝ, ← Measure.prod_restrict] at h
+    exact h
+  have hswap : (∫ s in Set.Icc a b, ∫ θ in Work.Spaces.Iθ,
+        Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ)
+      = ∫ θ in Work.Spaces.Iθ, ∫ s in Set.Icc a b,
+        Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ :=
+    MeasureTheory.integral_integral_swap hInt
+  -- ## the inner integral on the angular slices
+  have hstep : (∫ θ in Work.Spaces.Iθ, ∫ s in Set.Icc a b,
+        Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ)
+      = ∫ θ in Work.Spaces.Iθ, (u b θ - u a θ) * Work.Elliptic.sinCos2 θ :=
+    MeasureTheory.integral_congr_ae (ae_integral_slice_eq u hu ha hab)
+  -- ## the angular moment of the difference
+  have hsplit : (∫ θ in Work.Spaces.Iθ, (u b θ - u a θ) * Work.Elliptic.sinCos2 θ)
+      = Work.Elliptic.Fstar u b - Work.Elliptic.Fstar u a := by
+    have h1 : (∫ θ in Work.Spaces.Iθ, (u b θ - u a θ) * Work.Elliptic.sinCos2 θ)
+        = ∫ θ in Work.Spaces.Iθ,
+          (u b θ * Work.Elliptic.sinCos2 θ - u a θ * Work.Elliptic.sinCos2 θ) :=
+      MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall (fun θ => by ring))
+    rw [h1, Work.Elliptic.Fstar, Work.Elliptic.Fstar,
+      MeasureTheory.integral_sub (hsl b hb) (hsl a ha)]
+  have hmain : Work.Elliptic.Fstar u b - Work.Elliptic.Fstar u a
+      = ∫ s in Set.Icc a b, (∫ θ in Work.Spaces.Iθ,
+          Work.Spaces.pz u s θ * Work.Elliptic.sinCos2 θ) := by
+    rw [← hsplit, ← hstep, ← hswap]
+  rw [← hmain]
+  ring
+
+end Work.FTS.EllipticEst
+end
+end
+-- ===== merged: Submission.Work.FTS.OpenPkg.ProdOpen.Tools1d =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -288,3 +691,5 @@ theorem sob_theta_mean :
   nlinarith [h1, h2, h3, h4, h5]
 
 end Work.FTS.OpenPkg.ProdOpen
+end
+end

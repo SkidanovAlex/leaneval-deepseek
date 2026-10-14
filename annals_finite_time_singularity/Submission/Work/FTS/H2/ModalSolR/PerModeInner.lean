@@ -1,6 +1,3 @@
-/-
-# `ModalSolR/PerModeInner` — the inner `θ`-integral of the mode-`m` operator
--/
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Set

@@ -2,9 +2,9 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.RXT.Sys.GdotCore
-import Submission.Work.FTS_RegExport.RXT.Sys.GdotExp
-import Submission.Work.FTS_RegExport.RXT.Sys.GdotAux.mixed_Dz_shift
+import Submission.Work.FTS_RegExport.RXT.SysAux.bR_decomp
+import Submission.Work.FTS_RegExport.RXT.coeff_C2
+import Submission.Work.H2W.weakSliceZContinuousAe
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

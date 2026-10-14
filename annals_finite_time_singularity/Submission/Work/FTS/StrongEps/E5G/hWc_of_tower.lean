@@ -2,27 +2,25 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
-import Submission.Work.FTS.StrongEps.E5G.hapx_of_tower
-import Submission.Work.FTS.StrongEps.E5G.rhsFun_lipschitz_H4
-import Submission.Work.FTS.StrongEps.E5G.epsWP_hkMem5_bnd_fam
-import Submission.Work.FTS.StrongEps.E5G.slice_lip5_norm
-import Submission.Work.FTS.StrongEps.E5G.slice_lip_norm
-import Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip
-import Submission.Work.FTS.StrongEps.E5G.morrey_four
-import Submission.Work.FTS.StrongEps.E5G.Jeps_tendsto_of_modulus
-import Submission.Work.FTS.StrongEps.E5G.epsWP_equicont_tower
-import Submission.Work.FTS.StrongEps.E5G.hkNorm_Pz_le_five
-import Submission.Work.FTS.StrongEps.E5G.EpsRHSP_slotSup_val5
 import Submission.Work.FTS.StrongEps.E5G.epsRHSP_hkMem5_bnd_fam
-import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le
-import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
-import Submission.Work.FTS.StrongEps.exists_shift_window_compact
-import Submission.Work.FTS.StrongEps.epsWP_sup_le_fam
-import Submission.Work.FTS.StrongEps.E5Clamp
-import Submission.Work.FTS.StrongEps.E5G.Coherence
 import Submission.Work.FTS.StrongEps.E5G.hWc_aux
+import Submission.Work.FTS.StrongEps.E5G.hapx_of_tower
+import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
+import Submission.Work.FTS.StrongEps.E5G.morrey_five_slots
+import Submission.Work.FTS.StrongEps.E5G.slice_lip5_norm
+import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
+import Submission.Work.FTS.StrongEps.EpsHbdd
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le
 import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
+import Submission.Work.FTS.StrongPersist.H6Rows.NZzero6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.starSlotShift
+import Submission.Work.FTS_EllLimOK.ProducerH.pzIterTwo_shiftSing_eq_PhiTil_add
+import Submission.Work.FTS_RegExport.RXR5L.coef_tau_lip
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.velVanish2Star
+import Submission.Work.FTS_RegExport.RXVP.thLip
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

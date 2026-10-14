@@ -2,7 +2,7 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
-import Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip
+import Submission.Work.FTS.StrongEps.E5G.hWc_aux
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,16 +1,15 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Submission.Work.FTS.BSIdent.Weyl.Corrected
-import Submission.Work.FTS.BSIdent.Defs
-import Submission.Work.FTS.BSIdent.Cyl.DecayAux.Basic
-import Submission.Work.FTS.BSIdent.Weyl.continuous_psiFieldCorr
-import Submission.Work.FTS.BSIdent.Weyl.Levels._dev9
-import Submission.Work.FTS.BSIdent.Weyl.Levels._dev13
 import Submission.Work.FTS.BSIdent.Weyl.Levels._dev17
-import Submission.Work.FTS.BSIdent.Weyl.Levels.continuous_axisLevel
-import Submission.Work.FTS.BSIdent.Weyl.Levels.tendsto_psiField_axis
+import Submission.Work.FTS.BSIdent.Weyl.Levels._dev9
+import Submission.Work.FTS.BSIdent.Weyl.Levels.merPsiT_origin_aux2
 import Submission.Work.FTS.BSIdent.Weyl.Levels.merPsiT_origin_profiles
 import Submission.Work.FTS.BSIdent.Weyl.Levels.psiFieldCorr_cocompact
+import Submission.Work.FTS.BSIdent.Weyl.weylPairPrinciple
+import Submission.Work.FTS.BSIdent.hid_of_pointwise
+import Submission.Work.FTS.FireFix.Clauses.psiField_contDiffAt_two
+import Submission.Work.FTS.MeridianDyn.Defs
+import Submission.Work.FTS_FinalLeaves.Min.SliceTheta
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

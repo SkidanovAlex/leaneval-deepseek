@@ -3,25 +3,25 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Construction.Defs
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.FKstarSlotPiece
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.radialMatchedMajorant
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.slotEnergyLeHkSq
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.SlotPairingHkSq
-import Submission.Work.FTS.StrongPersist.N6Trans.SixAux.supDz_zslice6
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkThetaEnd
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkThetaAux
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
-import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkArith
-import Submission.Work.FTS.OpenPkg.Basic
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T5bPrep
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkMomentJetSq
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkThetaAux
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.FKstarSlotPiece
+import Submission.Work.FTS.StrongPersist.L3Aux.acoef_gamCoef_slots_le
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Open
+import Submission.Work.FTS_RegExport.RXT.StarVopWlInf
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -121,10 +121,6 @@ theorem mixed_Dth_one (j i : ℕ) (f : ℝ → ℝ → ℝ) :
     = Work.Spaces.DzIter j (Work.Spaces.DthIter (i + 1) f)
   rw [show Work.Spaces.Dth f = Work.Spaces.DthIter 1 f from rfl, ← DthIter_add i 1]
 
-/-- `HkSq α m g ≤ HkSq α 6 g` for `m ≤ 6`. -/
-theorem HkSq_le_S {α : ℝ} {g : ℝ → ℝ → ℝ} (hmem : Work.Spaces.HkMem α 6 g)
-    {m : ℕ} (hm : m ≤ 6) : Work.Spaces.HkSq α m g ≤ Work.Spaces.HkSq α 6 g :=
-  HkSq_mono hm hmem
 
 /-- **The `ℋ⁴`-norm bound in terms of `M`.**  `Xn α f = √(HkSq α 4 f)` is definitionally
 `HkNorm α 4 f`, so `Xn α f ≤ M` gives `HkSq α m f ≤ M^2` for every `m ≤ 4`. -/
@@ -171,94 +167,7 @@ theorem leibniz_rad_any {r : ℝ → ℝ} {g : ℝ → ℝ → ℝ}
   · exact Work.FTS.StrongPersist.H6Rows.Npair6SupAux.RadAux.leibniz_rad_mixed_cd6
       (r := r) (g := g) hr hg hipos hij z θ hz hθ hθ2
 
-/-- The `θ`-integral of a finite sum with `z`-only coefficients. -/
-theorem integral_sum_coeff_finset {ι : Type*} (s : Finset ι) (c : ι → ℝ)
-    {g : ι → ℝ → ℝ} {z : ℝ} (hg : ∀ i ∈ s, MeasureTheory.Integrable (g i)
-      (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :
-    (∫ θ in Work.Spaces.Iθ, ∑ i ∈ s, c i * g i θ) = ∑ i ∈ s, c i * ∫ θ in Work.Spaces.Iθ, g i θ := by
-  rw [MeasureTheory.integral_finset_sum _ (fun i hi => (hg i hi).const_mul _)]
-  exact Finset.sum_congr rfl fun i _ => MeasureTheory.integral_const_mul _ _
 
-/-- **The pointwise `AM–GM`/Cauchy–Schwarz bound for the radial Leibniz expansion.**  Together
-with the pointwise pricing of the individual slots this dominates the pairing integrand by a
-constant multiple of a sum of `HkIntegrand` slots. -/
-theorem mixed_radial_mul_le {r : ℝ → ℝ} {X X' V : ℝ → ℝ → ℝ} {a A b : ℕ} {ρ : ℝ → ℝ → ℝ}
-    {z θ : ℝ} (hρ : 0 ≤ ρ z θ) {Cb : ℕ → ℝ}
-    (hDz : Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ
-      = ∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ)
-          * (Work.Elliptic.DzdIter b₁ r z * Work.Spaces.mixed (b - b₁) A X' z θ))
-    (hCb : ∀ b₁ ∈ Finset.range (b + 1), (Work.Elliptic.DzdIter b₁ r z) ^ 2 ≤ Cb b₁) :
-    ρ z θ * |Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ| * |V z θ|
-      ≤ ((b : ℝ) + 1) * (∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ) ^ 2 * Cb b₁
-            * (ρ z θ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)) / 2
-          + ρ z θ * (V z θ) ^ 2 / 2 := by
-  have hcs : (∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ)
-        * (Work.Elliptic.DzdIter b₁ r z * Work.Spaces.mixed (b - b₁) A X' z θ)) ^ 2
-      ≤ ((b : ℝ) + 1) * ∑ b₁ ∈ Finset.range (b + 1), ((b.choose b₁ : ℝ)
-        * (Work.Elliptic.DzdIter b₁ r z
-            * Work.Spaces.mixed (b - b₁) A X' z θ)) ^ 2 := by
-    have h := Finset.sum_mul_sq_le_sq_mul_sq (Finset.range (b + 1)) (fun _ : ℕ => (1 : ℝ))
-      (fun b₁ => (b.choose b₁ : ℝ)
-        * (Work.Elliptic.DzdIter b₁ r z * Work.Spaces.mixed (b - b₁) A X' z θ))
-    have hcard : (∑ _i ∈ Finset.range (b + 1), (1 : ℝ)) = (b : ℝ) + 1 := by
-      have hgen : ∀ n : ℕ, (∑ _i ∈ Finset.range n, (1 : ℝ)) = (n : ℝ) := by
-        intro n
-        induction n with
-        | zero => simp
-        | succ n ih => rw [Finset.sum_range_succ, ih]; push_cast; ring
-      rw [hgen (b + 1)]
-      push_cast
-      ring
-    simpa only [one_mul, one_pow, hcard] using h
-  have hper : ∑ b₁ ∈ Finset.range (b + 1), ((b.choose b₁ : ℝ)
-        * (Work.Elliptic.DzdIter b₁ r z * Work.Spaces.mixed (b - b₁) A X' z θ)) ^ 2
-      ≤ ∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ) ^ 2 * Cb b₁
-          * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2 := by
-    refine Finset.sum_le_sum fun b₁ hb₁ => ?_
-    calc ((b.choose b₁ : ℝ)
-          * (Work.Elliptic.DzdIter b₁ r z * Work.Spaces.mixed (b - b₁) A X' z θ)) ^ 2
-        = ((b.choose b₁ : ℝ) ^ 2 * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)
-            * (Work.Elliptic.DzdIter b₁ r z) ^ 2 := by ring
-      _ ≤ ((b.choose b₁ : ℝ) ^ 2 * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2) * Cb b₁ :=
-          mul_le_mul_of_nonneg_left (hCb b₁ hb₁) (mul_nonneg (sq_nonneg _) (sq_nonneg _))
-      _ = (b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2 := by ring
-  have hmixed : (Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) ^ 2
-      ≤ ((b : ℝ) + 1) * ∑ b₁ ∈ Finset.range (b + 1),
-          (b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2 := by
-    rw [hDz]
-    exact le_trans hcs (mul_le_mul_of_nonneg_left hper (by positivity))
-  have hmixed' : ρ z θ * (Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) ^ 2
-      ≤ ((b : ℝ) + 1) * (∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ) ^ 2 * Cb b₁
-            * (ρ z θ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)) := by
-    have h := mul_le_mul_of_nonneg_left hmixed hρ
-    have h2 : ρ z θ * (∑ b₁ ∈ Finset.range (b + 1),
-          (b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)
-        = ∑ b₁ ∈ Finset.range (b + 1), ρ z θ
-            * ((b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2) := by
-      rw [Finset.mul_sum]
-    have h3 : ∑ b₁ ∈ Finset.range (b + 1), ρ z θ
-          * ((b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)
-        = ∑ b₁ ∈ Finset.range (b + 1), (b.choose b₁ : ℝ) ^ 2 * Cb b₁
-            * (ρ z θ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2) := by
-      refine Finset.sum_congr rfl fun b₁ _ => by ring
-    have h1 : ρ z θ * (((b : ℝ) + 1) * (∑ b₁ ∈ Finset.range (b + 1),
-          (b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2))
-        = ((b : ℝ) + 1) * (ρ z θ * (∑ b₁ ∈ Finset.range (b + 1),
-          (b.choose b₁ : ℝ) ^ 2 * Cb b₁ * (Work.Spaces.mixed (b - b₁) A X' z θ) ^ 2)) := by ring
-    rw [h1, h2, h3] at h
-    exact h
-  have hAM : ρ z θ * |Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ| * |V z θ|
-      ≤ (ρ z θ * (Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) ^ 2
-          + ρ z θ * (V z θ) ^ 2) / 2 := by
-    have h2 := Work.Spaces.abs_mul_abs_le_half_add_sq
-      (Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) (V z θ)
-    calc ρ z θ * |Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ| * |V z θ|
-        = ρ z θ * (|Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ| * |V z θ|) := by ring
-      _ ≤ ρ z θ * (((Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) ^ 2
-            + (V z θ) ^ 2) / 2) := mul_le_mul_of_nonneg_left h2 hρ
-      _ = (ρ z θ * (Work.Spaces.mixed b a (fun z θ => r z * X z θ) z θ) ^ 2
-            + ρ z θ * (V z θ) ^ 2) / 2 := by ring
-  linarith [hAM, hmixed']
 
 /-- **The absolute-value pairing bound.**  For a leaf weight `ρ` that is nonnegative on `Iθ`,
 the slot pairing is dominated by the iterated integral of `ρ|U||V|` (the latter being assumed

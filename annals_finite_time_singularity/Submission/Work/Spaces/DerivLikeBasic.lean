@@ -1,17 +1,6 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# Basic calculus of derivation-like operators
-
-Consequences of the structures `FunClass` and `DerivLike` of
-`Submission.Work.Spaces.DerivLikeDefs`: preservation of `P` by iterates,
-additivity and `smul`-commutation of iterates, linearity of iterates over
-`Finset.range` sums, `EqOn`-congruence of iterates, and the single-operator
-iterated Leibniz rule.
--/
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Basic.Real.Basic
-import Submission.Work.Spaces.DerivLikeDefs
+import Submission.Work.Spaces.scoef_sum_shift
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

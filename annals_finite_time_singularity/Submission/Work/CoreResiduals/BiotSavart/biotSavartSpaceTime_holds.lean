@@ -6,26 +6,21 @@ import Mathlib.Analysis.Normed.Operator.Prod
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.MetricSpace.Holder
-import Submission.Work.CoreResiduals.Defs
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_contDiff_one
-import Submission.Work.StabilityFar.Decay.hasDerivAt_biotSavart
-import Submission.Work.CoreResiduals.BiotSavart.bundleSliceFderiv_holder
 import Submission.Work.CoreResiduals.BiotSavart.fderiv_extField_eq_farBlock
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_farStrip_holder_pos
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_contDiffOn_strip
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_fderiv_timeHolder_of_bundle
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_holder_le_sup
-import Submission.Work.CoreResiduals.BiotSavart.norm_bsDerivCLM_le_of_bdd_holder
-import Submission.Work.CoreResiduals.BiotSavart.biotSavart_norm_le_of_bounded_supported
-import Submission.Work.CoreResiduals.BiotSavart.slicesSupportedStrip_timeDeriv
-import Submission.Work.CoreResiduals.BiotSavart.hasFDerivAt_biotSavart_slice
-import Submission.Work.CoreResiduals.BiotSavart.windowExt_windowBundle
-import Submission.Work.CoreResiduals.BiotSavart.timeDeriv_xHolderOn_general
-import Submission.Work.CoreResiduals.BiotSavart.continuousOn_farStrip_blocks
-import Submission.Work.CoreResiduals.BiotSavart.WindowExtDefs
-import Submission.Work.StabilityFar.St4.isContDiffHolderOn_glue
+import Submission.Work.CoreResiduals.BiotSavart.setIntegral_norm_sub_rpow_le
+import Submission.Work.FTS.PhiStar.Honesty.CptQSmooth.radGreen_general_bound
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.FTS_MuLipC.RowN.FaSlice
+import Submission.Work.FTS_RegExport.RX0.sup2_extG_ext_hIS
+import Submission.Work.FTS_RegExport.RXT.st1_fb_theta
+import Submission.Work.H2.T1Q.QDefs
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.StabilityFar.Decay.hasDerivAt_biotSavart
 import Submission.Work.StabilityFar.Holder.holderOnWith_of_norm_le
-import Submission.Work.StabilityFar.Decay.biotSavart_sub
+import Submission.Work.StabilityFar.St5
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -2,13 +2,13 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.EpsRLX.Defs
-import Submission.Work.FTS.StrongEps.EpsRLX.MuBlockClassC
-import Submission.Work.FTS.StrongEps.EpsRLX.LGTDiffClassC
-import Submission.Work.FTS.StrongEps.EpsRLX.N0DiffClassC
-import Submission.Work.FTS.StrongEps.EpsRLX.NDiffClassC
-import Submission.Work.FTS.StrongEps.EpsRLX.MuBlockDiffSmoothMem
 import Submission.Work.FTS.StrongEps.EpsLocalPStar.EpsRHSXrhs
+import Submission.Work.FTS.StrongEps.EpsRLX.LGTDiffClassC
+import Submission.Work.FTS.StrongEps.EpsRLX.MuBlockClassC
+import Submission.Work.FTS.StrongEps.EpsRLX.N0DiffClassC
+import Submission.Work.FTS.StrongEps.H5.Asm
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.rowSumZ0
+import Submission.Work.FTS_LocDatum3a.Assembly
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

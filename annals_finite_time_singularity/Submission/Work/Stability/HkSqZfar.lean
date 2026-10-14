@@ -1,25 +1,3 @@
-/-
-# The `ℋ^k` far-tail bound (St1, second half)
-
-This module proves `Work.Stability.HkSqZfar`, the `ℋ^k` half of St1 of
-`NOTES_LEAD_Stability.md`: if the `θ`-integrated `ℋ^k`-integrand of the far part
-`zfar Z f = (1 - chi(z/Z))·f` is dominated by `M²/z²` on `z ≥ Z` (`FarTailDom`), then
-`|zfar Z f|²_{ℋ^k} ≤ M²/Z`.
-
-The mathematical content is entirely elementary.  The far part vanishes identically on
-`0 ≤ z ≤ Z` — with all its derivatives, since it is *locally* zero there — so the
-`z`-integral collapses onto `z ≥ Z`, where the hypothesis `FarTailDom` applies, and
-`∫_Z^∞ M² dz/z² = M²/Z` (the `Z^{-1/2}`-decay of the design).
-
-The only mildly technical point is the derivative statement: `D_z` and `D_θ` are
-iterated *derivatives* of a function of the two self-similar variables, so "the far part
-vanishes for `z ≤ Z`" has to be upgraded to "all the weighted derivatives occurring in
-`HkIntegrand` vanish there".  That is what the local-vanishing calculus `LocZero` below
-provides: a function which vanishes on a neighbourhood of `(z,θ)` has all its iterated
-plain partial derivatives vanishing there, and the `D`-operators are built from partial
-derivatives by multiplication with functions (`z`, `sin 2θ`), which preserves local
-vanishing.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Topology.Separation.CompletelyRegular

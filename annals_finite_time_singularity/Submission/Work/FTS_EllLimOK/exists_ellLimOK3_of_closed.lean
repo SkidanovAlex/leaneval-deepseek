@@ -1,33 +1,174 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.exists_ellLimOK3_of_closed` — the order-3 glue
-
-This is the order-`3` analogue of `Work.FTS_EllLimOK.exists_ellLimOK_of_closed` (`Glue.lean`):
-a linear `E` that solves the elliptic law on the class `C`, is `C³` on `Qd` there, and is
-*order-`3` closed* (`ClosedE3`), can be modified **off the class `C`** into a linear operator
-satisfying the order-`3` limit closure (1a′) `EllLimOK3 α E'`.
-
-The proof is the same abstract linear-algebra argument as at order `2`
-(`exists_section_extend` applied to the graph of the limit process), the only changes being
-
-* the graph submodule `graphG3` carries `C³`-regularity instead of `C²`, and its witness of
-  convergence is `JConv3` (all mixed jets of total order `≤ 3`) instead of `JConv`;
-* the jet limit of `E` along a `LimSeq4` is independent of the sequence (`jconv3_transfer`,
-  the order-`3` form of `Glue.jconv_transfer`, proved by interleaving the two sequences and
-  applying `ClosedE3`).
-
-The remaining ingredients (`exists_section_extend`, `limSeq4_add`, `limSeq4_smul`,
-`limSeq4_const`, `mixed_add_Qd`, `IsBslSolPos_add`, `isBslSolPos_smul'`, `isBslSolPos_zero`)
-are imported verbatim from `Glue.lean`.
--/
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.StrongEps.EpsE4Thr.step2_data_ge_O
+import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkDzdIterSqLe
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.hkMem_fk_mul
+import Submission.Work.FTS_EllLimOK.Assembly
 import Submission.Work.FTS_EllLimOK.Defs3
-import Submission.Work.FTS_EllLimOK.Closed3
 import Submission.Work.FTS_EllLimOK.Glue
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_EllLimOK.PkgRepair
+import Submission.Work.FTS_EllLimOK.ZDecay_of_decay_bounds
+import Submission.Work.FTS_EllLimOK.tower_jet_identities
+import Submission.Work.FTS_EllLimOK.wt_bddAbove_of_compact
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.H2W.asliceMomentEq
+import Submission.Work.H6Pair6Aux.T6Fix.mixed_sinGain_of_pthFlat
+import Submission.Work.R1G.DecayInZ_gA
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.StepPairO =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.TransO
+
+open Work.FTS.Galerkin (Fn)
+open Work.FTS.StrongEps.EpsE4Thr (CoerAdmO CoerData2O CoerDataTO RegQo StepReg2O Comm2O
+  hnormD_all_O)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 4000000
+
+/-- **The joint induction, one step, on the open class.**  From the level-`n` clean data and the
+level-`n` transfer data of the same `IP` with the *same* Cauchy–Schwarz constant `CC`, one obtains
+the level-`(n+1)` versions, provided the smallness conditions of `step2_data_ge_O` and of
+`stepT_O` hold. -/
+theorem stepPair_O (α : ℝ) (n : ℕ) (hα : 0 < α) (hn : n ≤ 3) (hn1 : 1 ≤ n)
+    {IP : Fn → Fn → ℝ} {cc CC ccT : ℝ}
+    (hcl : CoerData2O α n IP cc CC)
+    (ht : CoerDataTO α n IP ccT CC)
+    (hc : Comm2O α n IP)
+    (hcw : Work.FTS.CoercivityFix.Transfer.CommSm α n IP)
+    (hcs1 : ∀ f : Fn, CoerAdmO α f →
+      |IP (Work.FTS.CoercivityFix.Transfer.E1 α f) (Work.Spaces.Dth f)|
+        ≤ CC * Work.Spaces.HkNorm α n (Work.FTS.CoercivityFix.Transfer.E1 α f)
+            * Work.Spaces.HkNorm α n (Work.Spaces.Dth f))
+    (hcs2 : ∀ f : Fn, CoerAdmO α f →
+      |IP (Work.FTS.CoercivityFix.Transfer.E2 α f) (Work.Spaces.Dz f)|
+        ≤ CC * Work.Spaces.HkNorm α n (Work.FTS.CoercivityFix.Transfer.E2 α f)
+            * Work.Spaces.HkNorm α n (Work.Spaces.Dz f))
+    (hreg : StepReg2O α n)
+    {κE κ₁ κ₂ J : ℝ} (hκE : 0 ≤ κE) (hκ₁ : 0 ≤ κ₁) (hκ₂ : 0 ≤ κ₂)
+    (hJ : 0 < J)
+    (hÊ : ∀ f : Fn, RegQo α (n + 1) f →
+      Work.Spaces.HkNorm α n (Work.FTS.CoercivityFix.E2hat f)
+        ≤ κE * (Work.Spaces.HkNorm α n f + Work.Spaces.HkNorm α n (Work.Spaces.Dth f)))
+    (hid1 : ∀ f : Fn, CoerAdmO α f → ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
+      Work.Spaces.Dth (Work.Coercivity.LGammaT α f) z θ
+        = Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dth f) z θ
+          + Work.FTS.CoercivityFix.Transfer.E1 α f z θ)
+    (hid2 : ∀ f : Fn, CoerAdmO α f → ∀ z θ : ℝ, (z, θ) ∈ Work.Construction.Qd →
+      Work.Spaces.Dz (Work.Coercivity.LGammaT α f) z θ
+        = Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dz f) z θ
+          + Work.FTS.CoercivityFix.Transfer.E2 α f z θ)
+    (hbk1 : ∀ f : Fn, CoerAdmO α f →
+      Work.FTS.CoercivityFix.Transfer.AddOKSm α n
+        (Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dth f))
+        (Work.FTS.CoercivityFix.Transfer.E1 α f) (Work.Spaces.Dth f))
+    (hbk2 : ∀ f : Fn, CoerAdmO α f →
+      Work.FTS.CoercivityFix.Transfer.AddOKSm α n
+        (Work.FTS.CoercivityFix.Lhat (Work.Spaces.Dz f))
+        (Work.FTS.CoercivityFix.Transfer.E2 α f) (Work.Spaces.Dz f))
+    (hnA : ∀ f : Fn, CoerAdmO α f →
+      Work.Spaces.HkNorm α n (Work.FTS.CoercivityFix.Transfer.E1 α f)
+        ≤ α * κ₁ * (Work.Spaces.HkNorm α n f + Work.Spaces.HkNorm α n (Work.Spaces.Dth f)))
+    (hnB : ∀ f : Fn, CoerAdmO α f →
+      Work.Spaces.HkNorm α n (Work.FTS.CoercivityFix.Transfer.E2 α f)
+        ≤ κ₂ * (Work.Spaces.HkNorm α n f + Work.Spaces.HkNorm α n (Work.Spaces.Dth f)))
+    (hsmall : Work.FTS.CoercivityFix.StepSmall cc CC κE 1 J)
+    (hs3 : J * (16 * (CC * κ₂) ^ 2) ≤ ccT * cc)
+    (hs4 : J * (16 * (CC * κ₂) ^ 2) ≤ 1 * cc ^ 2)
+    (hs1 : 1 * (16 * (CC * α * κ₁) ^ 2) ≤ ccT * cc)
+    (hs2 : CC * α * κ₁ ≤ cc / 8) :
+    0 < cc * min 1 (min 1 J) / (2 * 1) ∧
+      0 < min (3 * ccT / 4) (min (5 * 1 * cc / 8) (3 * J * cc / 4)) / 1 ∧
+      CoerData2O α (n + 1)
+        (Work.Coercivity.HkIPStep 1 J IP) (cc * min 1 (min 1 J) / (2 * 1))
+        (3 * max 1 (max 1 J) * CC) ∧
+      CoerDataTO α (n + 1) (Work.Coercivity.HkIPStep 1 J IP)
+        (min (3 * ccT / 4) (min (5 * 1 * cc / 8) (3 * J * cc / 4)) / 1)
+        (3 * max 1 (max 1 J) * CC) := by
+  have hD : (0 : ℝ) < 1 := one_pos
+  have hnormD : ∀ f : Fn, RegQo α (n + 1) f →
+      Work.Spaces.HkSq α (n + 1) f
+        ≤ 1 * (Work.Spaces.HkSq α n f + Work.Spaces.HkSq α n (Work.Spaces.Dth f)
+            + Work.Spaces.HkSq α n (Work.Spaces.Dz f)) :=
+    hnormD_all_O α hα hn1
+  have hnormDT : ∀ f : Fn, CoerAdmO α f →
+      Work.Spaces.HkSq α (n + 1) f
+        ≤ 1 * (Work.Spaces.HkSq α n f + Work.Spaces.HkSq α n (Work.Spaces.Dth f)
+            + Work.Spaces.HkSq α n (Work.Spaces.Dz f)) :=
+    fun f hf => hnormD f (regQo_mono (k := n + 1) (l := 5) (by omega) hf.1)
+  have hclean := Work.FTS.StrongEps.EpsE4Thr.step2_data_ge_O α n hα hcl hκE one_pos hJ hD
+    hsmall hreg hc hÊ hnormD
+  have htrans := stepT_O α n hα hn (ht := ht) (hcl := hcl) (hc := hcw) (hreg := hreg)
+    (hid1 := hid1) (hid2 := hid2) (hbk1 := hbk1) (hbk2 := hbk2)
+    (hcs1 := hcs1) (hcs2 := hcs2)
+    (hn1 := hnA) (hn2 := hnB)
+    (hκ₁ := hκ₁) (hκ₂ := hκ₂) (hc₁ := one_pos) (hc₂ := hJ) (hD := hD)
+    (hs1 := hs1) (hs2 := hs2) (hs3 := hs3) (hs4 := hs4) (hnormD := hnormDT)
+  refine ⟨hclean.hcc, htrans.hcc, ?_, ?_⟩
+  · simpa only [one_mul] using hclean
+  · simpa only [one_mul] using htrans
+
+end Work.FTS.StrongEps.EpsE4Thr.TransO
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ClosedCompact3_of_bounds_fatou =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS_EllLimOK
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+set_option maxHeartbeats 4000000
+
+/-! ## The `ℋ⁰`-Fatou step, in the shape used below -/
+
+
+/-! ## The main theorem -/
+
+
+end Work.FTS_EllLimOK
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.exists_ellLimOK3_of_closed =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -74,33 +215,9 @@ theorem jconv3_smul (c : ℝ) {Ψn : ℕ → Fn} {Ψ : Fn} (hΨ : JConv3 Ψn Ψ)
   simp only [Work.FTS.EllipticEst.mixed_smul, Pi.smul_apply, smul_eq_mul]
   exact (hΨ j i hji z θ hz).const_mul c
 
-/-- `JConv3` holds for the constant zero sequence. -/
-theorem jconv3_zero : JConv3 (fun _ : ℕ => (0 : Fn)) (0 : Fn) := by
-  intro j i _ z θ _
-  exact tendsto_const_nhds
 
 /-! ## The order-`3` jet limit does not depend on the sequence -/
 
-/-- **The `C³`-jet limit does not depend on the sequence**: under `ClosedE3`, if the jets of
-`E (fn n)` converge to those of `Ψ` along one `LimSeq4` to `f`, they do so along every `LimSeq4`
-to `f`.  (The order-`3` form of `Glue.jconv_transfer`; the interleaved sequence is a `LimSeq4`
-again — `limSeq4_ilv` — and `ClosedE3` supplies its jet limit, to which the even and the odd
-subsequence both converge.) -/
-theorem jconv3_transfer {α : ℝ} {E : Fn → Fn} (hcl : ClosedE3 α E) {fn hn : ℕ → Fn} {f Ψ : Fn}
-    (hf : LimSeq4 α fn f) (hh : LimSeq4 α hn f) (hΨ : JConv3 (fun n => E (fn n)) Ψ) :
-    JConv3 (fun n => E (hn n)) Ψ := by
-  obtain ⟨Ψ', -, hJ'⟩ := hcl _ f (limSeq4_ilv hf hh)
-  intro j i hji z θ hz
-  have hlim := hJ' j i hji z θ hz
-  have hev : Tendsto (fun n => Work.Spaces.mixed j i (E (fn n)) z θ) atTop
-      (𝓝 (Work.Spaces.mixed j i Ψ' z θ)) :=
-    Tendsto.congr (fun n => by simp only [Function.comp, ilv_even]) (hlim.comp tendsto_two_mul)
-  have hod : Tendsto (fun n => Work.Spaces.mixed j i (E (hn n)) z θ) atTop
-      (𝓝 (Work.Spaces.mixed j i Ψ' z θ)) :=
-    Tendsto.congr (fun n => by simp only [Function.comp, ilv_odd])
-      (hlim.comp tendsto_two_mul_add_one)
-  rw [tendsto_nhds_unique (hΨ j i hji z θ hz) hev]
-  exact hod
 
 /-! ## The order-`3` graph submodule -/
 
@@ -142,29 +259,7 @@ def graphG3 (α : ℝ) (E : Fn →ₗ[ℝ] Fn)
 
 /-! ## The main theorem -/
 
-theorem exists_ellLimOK3_of_closed {α : ℝ} (E : Work.FTS.Galerkin.Fn →ₗ[ℝ] Work.FTS.Galerkin.Fn)
-    (hsol : ∀ g, Work.FTS.ClassC.ClassC α g → Work.FTS.StrongGlobal.IsBslSolPos α g (E g))
-    (hsm : ∀ g, Work.FTS.ClassC.ClassC α g →
-      ContDiffOn ℝ 3 (Function.uncurry (E g)) Work.Construction.Qd)
-    (hcl : Work.FTS_EllLimOK.ClosedE3 α E) :
-    ∃ E' : Work.FTS.Galerkin.Fn →ₗ[ℝ] Work.FTS.Galerkin.Fn,
-      (∀ g, Work.FTS.ClassC.ClassC α g → E' g = E g) ∧ Work.FTS_EllLimOK.EllLimOK3 α E' := by
-  have hC : ∀ g ∈ classCSub α, (g, E g) ∈ graphG3 α E hsm := by
-    intro g hg
-    exact ⟨⟨fun _ => g, limSeq4_const hg, fun _ _ _ _ _ _ => tendsto_const_nhds⟩, hsol g hg,
-      hsm g hg⟩
-  obtain ⟨E', hE'C, hE'G⟩ := exists_section_extend (classCSub α) (graphG3 α E hsm) E hC
-  refine ⟨E', fun g hg => hE'C g hg, ?_⟩
-  intro fn f B h1 h2 h4 h3
-  have hL : LimSeq4 α fn f := ⟨h1, ⟨B, h2⟩, h4, h3⟩
-  obtain ⟨Ψ, hfat, hJ⟩ := hcl fn f hL
-  have hfL : f ∈ (graphG3 α E hsm).map (LinearMap.fst ℝ Fn Fn) :=
-    Submodule.mem_map.mpr
-      ⟨(f, Ψ), ⟨⟨fn, hL, hJ⟩, hfat.sol, hfat.contDiffOn⟩, rfl⟩
-  obtain ⟨⟨kn, hkn, hJk⟩, hlaw, hsmooth⟩ := hE'G f hfL
-  refine ⟨hlaw, hsmooth, fun j i hji z θ hz => ?_⟩
-  have := jconv3_transfer hcl hkn hL hJk j i hji z θ hz
-  refine Tendsto.congr (fun n => ?_) this
-  simp only [hE'C (fn n) (h1 n)]
 
 end Work.FTS_EllLimOK
+end
+end

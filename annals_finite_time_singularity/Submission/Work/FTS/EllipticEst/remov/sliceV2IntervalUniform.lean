@@ -1,18 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# The `(v'')²σ` coercivity bound on a bounded interval
-
-`Work.FTS.EllipticEst.remov.slice_v2_interval`: with `v = u/cos θ`, `σ = sin(2θ)^{2-γ}`,
-`1 ≤ γ ≤ 3/2`, `g = Lzero1 u` on `(0, π/2)`, `u 0 = u (π/2) = 0` and the four integrability
-hypotheses of the statement,
-
-`∫_{π/4}^{b} (v'')²σ ≤ C (∫(g')²σ + ∫(u'')²sEta + ∫(u')² + ∫u²)` for every `b ∈ (π/4, π/2)`.
-
-The proof applies the weighted integration-by-parts identity `slice_ibp_w` on `[π/4, b]` and
-bounds the four resulting terms by Cauchy–Schwarz, using the pointwise boundary bound
-`slice_bd_ptwise` for the two boundary terms.
--/
 import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
@@ -20,18 +5,16 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.Order.Interval.Basic
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.Spaces.Defs
-import Submission.Work.Spaces.cs_integral
-import Submission.Work.FTS.EllipticEst.remov.slice_ibp_w
-import Submission.Work.FTS.EllipticEst.remov.slice_Y2_le
-import Submission.Work.FTS.EllipticEst.remov.slice_G2_le
-import Submission.Work.FTS.EllipticEst.remov.slice_u_div_cos_sq_le
-import Submission.Work.FTS.EllipticEst.remov.slice_bd_ptwise
-import Submission.Work.FTS.EllipticEst.remov.sliceY2Uniform
-import Submission.Work.FTS.EllipticEst.remov.sliceG2Uniform
-import Submission.Work.FTS.EllipticEst.remov.sliceUdivCosUniform
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
 import Submission.Work.FTS.EllipticEst.remov.sliceBdPtwiseUniform
+import Submission.Work.FTS.EllipticEst.remov.sliceG2Uniform
+import Submission.Work.FTS.EllipticEst.remov.slice_bd_ptwise
+import Submission.Work.FTS.EllipticEst.remov.wsSliceRight
+import Submission.Work.FTS.PhiStar.RadGreenSupport.ibp_upper
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

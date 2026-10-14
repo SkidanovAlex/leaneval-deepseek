@@ -1,36 +1,20 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `EpsE4Thr/TransO/L4MainO.lean` — the joint induction to level `4`, on the **open** class
-
-`CoercivityFix/Transfer/L4Main.transfer_level4` runs the clean and the transfer inductions side
-by side with the coefficients `c₁ = c₁' = c₁'' = 1` and `c₂, c₂', c₂''` chosen small, producing
-the level-`4` data of the concrete `IP4` for both the clean operator and `𝓛_Γ^T`.  This module
-is the open-class twin (`CoerDataT → CoerDataTO`, `CoerAdm → CoerAdmO`, `RegQ → RegQo`,
-`LevelPkg → LevelPkgO`, `stepPair → stepPair_O`, and the level-one transfer base replaced by the
-proved open-class `coer1_LGammaT_O`), i.e. the `coer` clause of `UnifIPO (IP4 …)` reached without
-`SmoothQuad`.
-
-Everything here rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.StepPairO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.DefsO
+import Submission.Work.FTS.CoercivityFix.Transfer.L4Step
+import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1LhatO
 import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1Open
 import Submission.Work.FTS.StrongEps.EpsE4Thr.CoerData2FourO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1LhatO
 import Submission.Work.FTS.StrongEps.EpsE4Thr.CoerDataTO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IntPkg_O
 import Submission.Work.FTS.StrongEps.EpsE4Thr.hardyHyp_of_coerAdmO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.Dth_LGammaT_eq_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.TransO.Dz_LGammaT_eq_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.E1_norm_O
-import Submission.Work.FTS.CoercivityFix.Transfer.L4Step
-import Submission.Work.FTS.CoercivityFix.Transfer.Profiles
-import Submission.Work.FTS.CoercivityFix.Assembly.Defs
-import Submission.Work.FTS.CoercivityFix.Assembly.Instantiate
+import Submission.Work.FTS.StrongEps.EpsLocalPStar.JepsMarginalZero_zero
+import Submission.Work.FTS.StrongEps.L12Sub4.L12ZeroLog
+import Submission.Work.FTS.StrongPersist.L3Aux.bcoefRadBound
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.DelicateHon
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS_EllLimOK.exists_ellLimOK3_of_closed
+import Submission.Work.FTS_LocDatum3a.Assembly
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

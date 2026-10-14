@@ -1,13 +1,80 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.Endpt.sliceBdd_of_hmB
-import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeW2Energy
-import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeW2SliceBundle
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeGapSlices
+import Submission.Work.FTS.EllipticEst.H2W.AngBW.Step3.HkMemGradU
 import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeUHkLe
-import Submission.Work.Spaces.integrable_prod_of_iterated
+import Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeW2Energy
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.LocDataExt.oneSubChi_jet_le5
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6.Gmaj6
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.H2.T1Q.SlotOpen
+import Submission.Work.H2.T1Q.SlotPtQ
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cores.Pieces.AeUHkLe =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology ENNReal
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.Cores.Pieces
+
+set_option autoImplicit false
+
+/-!
+# `AeUHkLe` — the `u`-half of Step 1 of `prop:H2` in the almost-everywhere class
+
+The estimate
+
+`HkSq α 0 u ≤ C · (HkSq α 0 G + α² HkSq α 0 (z ∂_z u))`
+
+for a datum `AeData α u G` of the weak (almost-everywhere) class of the level-`0` elliptic
+estimate of T. M. Elgindi, *Finite-time singularity formation for `C^{1,α}` solutions to the
+incompressible Euler equations on `ℝ³`*, Annals of Math. **194** (2021) (Step 1 of
+Proposition `prop:H2`), for a universal constant `C`.
+
+## Route
+
+Two already-proved estimates are combined.
+
+* the **`σ`-upgrade** `Work.FTS.EllipticEst.Cores.Pieces.ae_hksq_le_of_energy`: the
+  `σ`-weighted mass `HkSq α 0 u = ∫_z w z² ∫_θ u² σ` (with `σ = sin(2θ)^{-η}`) is controlled by
+  the *unweighted* angular energy `∫_z w z² ∫_θ (∂_θu)²`, at the price of a universal constant —
+  provided that the angular energy is honest;
+* the **`w²`-weighted angular energy estimate** `Work.FTS.EllipticEst.Cores.Pieces.AeW2Energy`:
+  `∫_z ∫_θ (∂_θu)² w z² ≤ C (HkSq α 0 G + α² HkSq α 0 (z∂_zu))`.
+
+The only ingredient not contained in those two statements is the *honesty* of the unweighted
+angular energy `z ↦ w z² ∫_θ (∂_θu(z,θ))²`, i.e. that the Bochner integral appearing in
+`AeW2Energy` is the honest one (otherwise its left-hand side would be the junk value `0`, and the
+two estimates could not be combined).  It is obtained here from the a.e. slice bound
+`AngAWeak.ae_sgY_le` (`sgY u z ≤ dBnd α u G z + 6 sgU u z`, i.e. the constrained slice Poincaré
+gap `9 ∫_θ u² ≤ ∫_θ (∂_θu)²` combined with the slice self-form of `Lzero` and the `AM–GM` bound
+on the source pairing): its majorant is `w²`-integrable because `dBnd` is built from the
+`ℋ⁰`-integrands of `G`, `z²∂_zzu`, `z∂_zu` (fields of `AeData`) and `sgU` is `w²`-integrable by
+`Work.Spaces.HkMem α 0 u` (the `u`-half of Step 1, already in the tree as
+`Dispatch.hkMem_uM`).
+-/
+
+end Work.FTS.EllipticEst.Cores.Pieces
+end
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.Honest.Step1G.AeClear.AeCutEnergyV2 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -47,7 +114,7 @@ set_option maxHeartbeats 1000000
 
 /-- `ofReal` of the Bochner integral of a function is dominated by the lintegral of its
 `ofReal`-lift. -/
-private theorem ofReal_integral_le_lintegral {s : Set ℝ} {f : ℝ → ℝ} :
+private theorem ofReal_integral_le_lintegral_prv {s : Set ℝ} {f : ℝ → ℝ} :
     ENNReal.ofReal (∫ x in s, f x) ≤ ∫⁻ x in s, ENNReal.ofReal (f x) := by
   by_cases hg : MeasureTheory.IntegrableOn f s
   · have hg' : MeasureTheory.IntegrableOn (fun x => max (f x) 0) s := hg.pos_part
@@ -79,9 +146,9 @@ private theorem ofReal_integral_le_lintegral_weight (W : ℝ → ℝ) (f : ℝ �
         refine MeasureTheory.setIntegral_congr_fun measurableSet_Ici (fun z _ => ?_)
         rw [MeasureTheory.integral_const_mul]
     _ ≤ ∫⁻ z in Work.Spaces.Iz, ENNReal.ofReal (∫ θ in Work.Spaces.Iθ, W z * f z θ) :=
-        ofReal_integral_le_lintegral
+        ofReal_integral_le_lintegral_prv
     _ ≤ ∫⁻ z in Work.Spaces.Iz, ∫⁻ θ in Work.Spaces.Iθ, ENNReal.ofReal (W z * f z θ) :=
-        MeasureTheory.lintegral_mono (fun z => ofReal_integral_le_lintegral)
+        MeasureTheory.lintegral_mono (fun z => ofReal_integral_le_lintegral_prv)
     _ = ∫⁻ z in Work.Spaces.Iz, ∫⁻ θ in Work.Spaces.Iθ,
           ENNReal.ofReal (W z) * ENNReal.ofReal (f z θ) := by
         refine lintegral_congr (fun z => lintegral_congr (fun θ => ?_))
@@ -206,15 +273,6 @@ private theorem ae_slice_pz_sq (α : ℝ) (u G : ℝ → ℝ → ℝ)
 
 /-! ## Bridges from the Bochner form of `cut_ineq` to the `∫⁻`-form of the statement -/
 
-/-- Joint strong measurability of a level-`0` weighted product, from continuity on the open
-quadrant. -/
-private theorem aesm_quadrant_weight (W : ℝ → ℝ) (f : ℝ → ℝ → ℝ)
-    (hWc : ContinuousOn (fun p : ℝ × ℝ => W p.1) (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2)))
-    (hfc : ContinuousOn (fun p : ℝ × ℝ => f p.1 p.2) (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2))) :
-    MeasureTheory.AEStronglyMeasurable (fun p : ℝ × ℝ => W p.1 * f p.1 p.2)
-      ((MeasureTheory.volume.restrict Work.Spaces.Iz).prod
-        (MeasureTheory.volume.restrict Work.Spaces.Iθ)) :=
-  Work.Spaces.aesm_of_continuousOn_Qd _ (hWc.mul hfc)
 
 /-- Bridge for the radial term: `∫⁻_z ofReal (φw²z²)·(∫⁻_θ ofReal ((∂_zu)²))` is `ofReal` of
 the Bochner integral `∫_z φw²z² (∫_θ (∂_zu)²)`. -/
@@ -546,3 +604,5 @@ theorem AeCutEnergyV2 (α : ℝ) (u G : ℝ → ℝ → ℝ)
   exact le_trans (le_of_eq hstep1) (le_trans hstep2 (le_trans hstep3 (le_trans hstep4 hstep5)))
 
 end Work.FTS.EllipticEst.H2W.AeProof
+end
+end

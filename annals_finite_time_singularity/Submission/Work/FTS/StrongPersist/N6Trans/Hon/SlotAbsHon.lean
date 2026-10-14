@@ -1,48 +1,22 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `N6Trans/Hon/SlotAbsHon`: the honest per-slot transport engine
-
-The honest (`SmoothOpen`-based) copy of `Submission/Work/FTS/TransportS/T2Sup/slotAbsBound.lean`.
-The frozen engine takes `T2SF α f` and `T2SG α g = RegQ α 4 g ∧ HkMem α 5 g ∧ DecayAll 4 g`; here
-the `g`-side is the honest bundle `SmoothOpen g ∧ HkMem α 4 g ∧ HkMem α 5 g ∧ DecayAll 4 g`.  All
-the machinery the frozen file itself introduces (`integrableOn_Maj1_slice_fts`,
-`Maj1_integral_le_fts`, `sdel_integral_le_of_eta`, `canonW_mul_z_le_of_le`,
-`canonW_mul_mixed_le_of_le`, `srestBound`, `Smain`, `Srest`, `Sdel`, `Ssum_eq_leibniz`,
-`Ssum_eq_Smain_Srest_Sdel`, `integrableOnSliceDelicate`) is hypothesis-explicit and therefore
-reused verbatim.  The three places where the frozen bundle was really consumed are:
-
-* `supQ_T2Q` (order-`≤ 2` sup bounds of `g`, needing `SmoothQuad g` and `DecayAll`): replaced by
-  `pwAny_sup` (`OpenPkg.ProdOpen.PwAny`), which needs only `SmoothOpen g ∧ HkMem α 4 g`;
-* `smainBound` (the top slot `a + b = 4`, whose boundary term came from `BdryTraces`): replaced
-  by the honest `smainBound_hon` (which consumes `TopSlotHonProp`);
-* `delicateBound`/`delicateMargInt`/`sdel_integral_le_of_gam`: replaced by their honest copies.
-
-The final arithmetic is `slot_arith_hon` (`Hon/SlotArithHon`), the honest form of the frozen
-`slot_arith` with the honest `Smain` constant `Csm` in place of `2`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.Defs
 import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SmainHon
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SdelGamHon
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.SlotArithHon
+import Submission.Work.FTS.TransportS.Slots
 import Submission.Work.FTS.TransportS.T2Sup.FinalAux
-import Submission.Work.FTS.TransportS.T2Sup.PairBnd
-import Submission.Work.FTS.TransportS.T2Sup.GenSlot
-import Submission.Work.FTS.TransportS.T2Sup.absIntegralAddLe
-import Submission.Work.FTS.TransportS.T2Sup.integrableOnSliceDelicate
-import Submission.Work.FTS.TransportS.T2Sup.delicateBound
-import Submission.Work.FTS.TransportS.T2Sup.Main
 import Submission.Work.FTS.TransportS.T2Sup.FinalMain
+import Submission.Work.FTS.TransportS.T2Sup.GenSlot
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T2Sup.slotAbsBound
 import Submission.Work.FTS.TransportS.T2Sup.smainBound
 import Submission.Work.FTS.TransportS.T2Sup.srestBound
-import Submission.Work.FTS.TransportS.T2Sup.slotAbsBound
-import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_theta
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

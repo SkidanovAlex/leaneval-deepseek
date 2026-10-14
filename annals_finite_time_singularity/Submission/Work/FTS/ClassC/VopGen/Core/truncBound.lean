@@ -3,7 +3,7 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.Prod
 import Submission.Work.FTS.ClassC.VopGen.Core.truncPoint
-import Submission.Work.FTS.EllipticEst.Prop.zIbpTwoD
+import Submission.Work.H2.T1Q.IbpCutoff
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

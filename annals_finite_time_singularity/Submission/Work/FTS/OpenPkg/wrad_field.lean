@@ -1,22 +1,10 @@
-/-
-# `OpenPkg/wrad_field` — multiplication by a function of `z` alone, in the `D`-sup norms
-
-This is the `wrad` field of `Work.FTS.OpenPkg.N4Norm'` for the *`D`-sup* norms
-`WDp 4`/`WDMem 4`: the `C^∞` product rule of the open quadrant
-(`Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed`) collapses for a factor which is constant in `θ`
-(all terms with at least one angular derivative on that factor vanish), and the remaining single
-sum is bounded by the product of the two `D`-sup norms.
-
-The migrated analogue of `Work.FTS.Nonlinear.N4Fields.wrad_field_smoothInt` (which is stated in
-`WlInf`/`SmoothInt`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.OpenPkg.Defs
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.OpenPkg.MulHelpers
 import Submission.Work.FTS.OpenPkg.WDp_le_of_pointwise
-import Submission.Work.FTS.OpenPkg.ProdOpen.leibniz_open_mixed
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongGlobal.Global
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

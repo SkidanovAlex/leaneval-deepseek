@@ -3,14 +3,322 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Lp.MeasurableSpace
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Function.LocallyIntegrable
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS.RegPkgGal.RVocab
-import Submission.Work.FTS.RegPkgGal.R7d.exp_ode_const
-import Submission.Work.FTS.RegPkgGal.R7d.ode_box_existence
+import Mathlib.Topology.MetricSpace.Holder
+import Submission.Work.FTS.BSSwirl.lintegral_inv_norm_mul_ball_indicator_le
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.PhiStar.RadGreenSupport.radGreen_ode_weak
+import Submission.Work.FTS.PressureOn.omegaSliceRegularPos
 import Submission.Work.FTS.RegPkgGal.R7d.chain_rule_along_curve
-import Submission.Work.FTS.RegPkgGal.R7d.Vth_barrier
-import Submission.Work.FTS.RegPkgGal.R7d.trajectory_bounds
+import Submission.Work.FTS.RegPkgGal.RVocab
+import Submission.Work.FTS.Regularity.profFullBounds
+import Submission.Work.FTS.StrongEps.EComparison.SlotsZeroSliceInt
+import Submission.Work.FTS.StrongEps.EpsODEDefs
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
+import Submission.Work.FTS.StrongPersist.Star6
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.H2W.PsiSlices.weakPos2_dilate
+import Submission.Work.LWP.VorticityAPI
+import Submission.Work.R1G.vecResid_eq_scalar_smul
+import Submission.Work.SolutionDelivery.Scaling.Main
+import Submission.Work.Spaces.pz_mixed_mul_le_4
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Stability.CutFactorFderivZero
+import Submission.Work.Stability.mul_rpow_le
+-- ===== merged: Submission.Work.FTS.BSSwirl.Main =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open FiniteTimeSingularity Set Gradient Matrix Filter Topology MeasureTheory
+open scoped Topology Matrix NNReal ENNReal
+
+set_option autoImplicit false
+
+namespace Work.FTS.BSSwirl
+
+noncomputable section
+
+/-- **The inner product of a continuous field with a compactly supported one is integrable.** -/
+theorem integrable_inner_of_hasCompactSupport {V Ψ : R3 → R3} (hV : Continuous V)
+    (hΨ : Continuous Ψ) (hΨc : HasCompactSupport Ψ) :
+    Integrable (fun x => inner ℝ (V x) (Ψ x)) := by
+  refine (hV.inner hΨ).integrable_of_hasCompactSupport ?_
+  refine hΨc.isCompact.of_isClosed_subset (isClosed_tsupport _) (closure_mono ?_)
+  intro y hy
+  contrapose! hy
+  rw [Function.mem_support, not_not] at hy ⊢
+  rw [hy, inner_zero_right]
+
+/-- **The pointwise Biot–Savart law for a weakly divergence-free vorticity.**  For a bounded,
+compactly supported, `α`-Hölder vorticity whose distributional divergence vanishes,
+`∇ × (BS ω) = ω` everywhere. -/
+theorem vorticity_biotSavart_of_weakDivFree {ω : R3 → R3} {R M α C : ℝ}
+    (hR : 0 < R) (hM : 0 ≤ M) (hα : 0 < α) (hC : 0 ≤ C)
+    (hbdd : ∀ y, ‖ω y‖ ≤ M) (hsupp : ∀ y, ω y ≠ 0 → y ∈ Metric.closedBall 0 R)
+    (hmeas : AEStronglyMeasurable ω volume)
+    (hholder : ∀ a b : R3, ‖ω a - ω b‖ ≤ C * ‖a - b‖ ^ α)
+    (hdiv : WeakDivFree ω) :
+    ∀ x, vorticity (Work.LWP.biotSavart ω) x = ω x := by
+  have hBS : ContDiff ℝ 1 (Work.LWP.biotSavart ω) :=
+    Work.CoreResiduals.BiotSavart.biotSavart_contDiff_one hR hM hα hbdd hsupp hmeas hholder
+  have hωc : Continuous ω := continuous_of_holder_pointwise hα hholder
+  have hdA : ∀ x, HasFDerivAt (newtonPotential ω) (potDeriv ω x) x :=
+    fun x => hasFDerivAt_newtonPotential hR.le hM hbdd hsupp hmeas x
+  have hCA : ContDiff ℝ 1 (newtonPotential ω) :=
+    contDiff_one_newtonPotential hR.le hM hbdd hsupp hmeas hdA
+  have hweak : ∀ Ψ : R3 → R3, (∀ n : ℕ, ContDiff ℝ n Ψ) → HasCompactSupport Ψ →
+      ∫ x, inner ℝ (vorticity (Work.LWP.biotSavart ω) x) (Ψ x) = ∫ x, inner ℝ (ω x) (Ψ x) :=
+    integral_vorticity_biotSavart_eq hR hM hα hC hbdd hsupp hmeas hholder hdiv hdA hCA
+  have hmain : ∀ x, (fun y => vorticity (Work.LWP.biotSavart ω) y - ω y) x = 0 := by
+    refine eq_zero_of_forall_inner_test ((continuous_vorticity hBS).sub hωc) ?_
+    intro Ψ hΨ hΨc
+    have h1 := hweak Ψ hΨ hΨc
+    have hΨcont : Continuous Ψ := (hΨ 1).continuous
+    have h2 : (fun x => inner ℝ (vorticity (Work.LWP.biotSavart ω) x - ω x) (Ψ x))
+        = fun x => inner ℝ (vorticity (Work.LWP.biotSavart ω) x) (Ψ x)
+            - inner ℝ (ω x) (Ψ x) := by
+      funext x
+      rw [inner_sub_left]
+    rw [h2, integral_sub]
+    · rw [h1, sub_self]
+    · exact integrable_inner_of_hasCompactSupport (continuous_vorticity hBS) hΨcont hΨc
+    · exact integrable_inner_of_hasCompactSupport hωc hΨcont hΨc
+  intro x
+  simpa [sub_eq_zero] using hmain x
+
+/-- **Item 7a of the lead's design: the Biot–Savart law for a compactly supported `α`-Hölder swirl
+field.**  For every compactly supported `α`-Hölder swirl vorticity `ω = f(r,z) • e_θ` with
+`0 < α < 1`, the Biot–Savart velocity inverts the curl and is divergence-free everywhere. -/
+theorem biotSavartSwirl : BiotSavartSwirl := by
+  intro f C α R hα0 hα1 ω hholder hsupp
+  have hstep : ∀ {R' : ℝ}, 0 < R' → (∀ x, swirlField f x ≠ 0 → ‖x‖ ≤ R') →
+      (∀ x, vorticity (Work.LWP.biotSavart (swirlField f)) x = swirlField f x) ∧
+        ∀ x, div (Work.LWP.biotSavart (swirlField f)) x = 0 := by
+    intro R' hR' hsupp'
+    obtain ⟨M, hM0, hbdd⟩ := exists_bound_of_holderWith_support hα0 hholder hsupp'
+    have hmeas : AEStronglyMeasurable (swirlField f) volume :=
+      aestronglyMeasurable_of_holderWith hholder hα0
+    have hpoint : ∀ a b : R3, ‖swirlField f a - swirlField f b‖ ≤
+        (C : ℝ) * ‖a - b‖ ^ ((α : ℝ≥0) : ℝ) := fun a b => holderWith_dist_le hholder a b
+    have hsuppB : ∀ x, swirlField f x ≠ 0 → x ∈ Metric.closedBall (0 : R3) R' := fun x hx =>
+      Metric.mem_closedBall.mpr (by rw [dist_zero_right]; exact hsupp' x hx)
+    have hdiv : WeakDivFree (swirlField f) :=
+      weakDivFree_swirlField hM0 hR'.le hbdd hmeas hsuppB
+    exact ⟨vorticity_biotSavart_of_weakDivFree hR' hM0 hα0 (NNReal.coe_nonneg C) hbdd hsuppB
+        hmeas hpoint hdiv,
+      div_biotSavart_eq_zero hR' hM0 hα0 (NNReal.coe_nonneg C) hbdd hsuppB hmeas hpoint⟩
+  by_cases hR : 0 < R
+  · exact hstep hR hsupp
+  · have hR0 : R ≤ 0 := le_of_not_gt hR
+    have hzero : ∀ x, swirlField f x = 0 := eq_zero_of_holderWith_support_le hα0 hholder hsupp hR0
+    have hsupp1 : ∀ x, swirlField f x ≠ 0 → ‖x‖ ≤ (1 : ℝ) := by
+      intro x hx
+      rw [hzero x] at hx
+      exact absurd rfl hx
+    exact hstep one_pos hsupp1
+
+end
+
+end Work.FTS.BSSwirl
+end
+-- ===== merged: Submission.Work.FTS.Physical.RegPkg.integrable_physVort_slice =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.Physical.RegPkg
+
+open MeasureTheory
+
+/-- **A bounded, ae-strongly-measurable function of compact (ball) support on `ℝ³` is
+integrable.**  This is the general principle behind integrability of the physical vorticity slice:
+integrability on the ball comes from the finite measure of the ball
+(`IntegrableOn.of_bound`), and it upgrades to integrability on all of `ℝ³` because the function
+vanishes off the ball (`integrableOn_iff_integrable_of_support_subset`). -/
+theorem integrable_of_bounded_of_support_subset_closedBall {E : Type*} [NormedAddCommGroup E]
+    {f : Work.FTS.Regularity.R3 → E} {R M : ℝ}
+    (hmeas : AEStronglyMeasurable f volume)
+    (hbdd : ∀ x, ‖f x‖ ≤ M)
+    (hsupp : Function.support f ⊆ Metric.closedBall (0 : Work.FTS.Regularity.R3) R) :
+    MeasureTheory.Integrable f := by
+  have hIntOn : IntegrableOn f (Metric.closedBall (0 : Work.FTS.Regularity.R3) R) volume :=
+    IntegrableOn.of_bound measure_closedBall_lt_top hmeas.restrict M
+      (Filter.Eventually.of_forall hbdd)
+  exact (integrableOn_iff_integrable_of_support_subset hsupp).mp hIntOn
+
+/-- **The physical vorticity slice is bounded and integrable.** -/
+theorem integrable_physVort_slice {α S : ℝ} {A B : ℝ → ℝ} {g : ℝ → ℝ → ℝ → ℝ}
+    (h : Work.FTS.Regularity.RegPkg α S A B g) {τ : ℝ} (hτ : τ ∈ Set.Icc (0 : ℝ) S) :
+    MeasureTheory.Integrable (fun x : Work.FTS.Regularity.R3 =>
+      Work.FTS.Regularity.physVort α A B g x τ) ∧
+    IsBoundedFun (fun x : Work.FTS.Regularity.R3 =>
+      Work.FTS.Regularity.physVort α A B g x τ) := by
+  obtain ⟨M, -, hM⟩ := Work.FTS.Regularity.physVort_bound h
+  obtain ⟨R, -, hR⟩ := Work.FTS.Regularity.physVort_support h
+  have hint : MeasureTheory.Integrable (fun x : Work.FTS.Regularity.R3 =>
+      Work.FTS.Regularity.physVort α A B g x τ) :=
+    integrable_of_bounded_of_support_subset_closedBall (R := R) (M := M)
+      (Work.FTS.Regularity.physVort_slice_aesm h τ hτ)
+      (fun x => hM τ hτ x)
+      (fun x hx => hR τ hτ x (Function.mem_support.mp hx))
+  refine ⟨hint, ?_⟩
+  exact isBounded_iff_forall_norm_le.mpr ⟨M, fun y hy => by
+    obtain ⟨x, -, rfl⟩ := hy
+    exact hM τ hτ x⟩
+
+end Work.FTS.Physical.RegPkg
+end
+-- ===== merged: Submission.Work.FTS.RegPkgGal.Der.rhs_jet_of_parts =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `Work.FTS.RegPkgGal.Der.rhs_jet_of_parts`
+
+The right-hand side of the fake-time equation,
+
+  `∂_τ g = -𝓛_Γ^T(g) + gRHS(μ̄(τ), λ(τ), F_*+g(τ), Φ(τ), g(τ))`
+
+is the sum of five pieces: the linear term `-𝓛_Γ^T(g)`, the three nonlinear terms `N₀`, `N`, `N_*`
+and the coercivity correction `- μ̄(τ)·AK`, where `μ̄(τ) = mubar (N₀(τ)) (N(τ))` is the scalar zero
+mode.  This file proves that if each of the four `τ`-families is a `Jet` (bounded and jointly
+`α`-Hölder on the strip `[0,S]`) and the scalar `μ̄` is bounded and `α`-Hölder in `τ`, then so is
+the whole right-hand side.
+
+The analytic ingredients are `AK α z θ = (Γ(θ)/c)·2z²/(1+z)³` (a function of `(z,θ)` alone, with
+both factors bounded and `α`-Hölder) and the `Jet`-closure API; both live in the auxiliary module
+`Submission.Work.FTS.RegPkgGal.Der.rhs_jet_aux` (`rhsJet_ak_bounds`, `rhsJet_add`, `rhsJet_mul`,
+…).
+-/
+
+namespace Work.FTS.RegPkgGal.Der
+
+open scoped Real Topology
+open Set Filter MeasureTheory
+
+set_option autoImplicit false
+
+theorem rhs_jet_of_parts {α S : ℝ} {g Φ : Work.FTS.RegPkgGal.Fam} {N₁ N₂ N₃ N₄ : ℝ}
+    (hα : 0 < α) (hα13 : α ≤ 1 / 3) (hS : 0 < S)
+    (hL : Work.FTS.Regularity.Jet α S N₁
+      (fun z θ τ => -(Work.Coercivity.LGammaT (Work.FTS.Regularity.pExp α)
+        (Work.FTS.Regularity.gSlice g τ) z θ)))
+    (hN₀ : Work.FTS.Regularity.Jet α S N₂
+      (fun z θ τ => Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice g τ) z θ))
+    (hN : Work.FTS.Regularity.Jet α S N₃
+      (fun z θ τ => Work.Construction.N (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice Φ τ) z θ))
+    (hNs : Work.FTS.Regularity.Jet α S N₄
+      (fun z θ τ => Work.Construction.Nstar
+        (Work.FTS.Galerkin.muDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+        (Work.FTS.Galerkin.lamDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+        (Work.FTS.Regularity.gSlice g τ) z θ))
+    (hmb : ∃ M : ℝ, 0 ≤ M ∧ ∀ τ ∈ Set.Icc 0 S,
+      |Work.Construction.mubar
+        (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+          (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+          (Work.FTS.Regularity.gSlice g τ))
+        (Work.Construction.N (Work.FTS.Regularity.pExp α)
+          (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+          (Work.FTS.Regularity.gSlice Φ τ))| ≤ M)
+    (hmbh : ∃ M : ℝ, 0 ≤ M ∧ ∀ τ ∈ Set.Icc 0 S, ∀ τ' ∈ Set.Icc 0 S,
+      |Work.Construction.mubar
+          (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+            (Work.FTS.Regularity.gSlice g τ))
+          (Work.Construction.N (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+            (Work.FTS.Regularity.gSlice Φ τ))
+        - Work.Construction.mubar
+          (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ')
+            (Work.FTS.Regularity.gSlice g τ'))
+          (Work.Construction.N (Work.FTS.Regularity.pExp α)
+            (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ')
+            (Work.FTS.Regularity.gSlice Φ τ'))| ≤ M * |τ - τ'| ^ α) :
+    ∃ Nc : ℝ, Work.FTS.Regularity.Jet α S Nc
+      (fun z θ τ => Work.FTS.Galerkin.dynLin (Work.FTS.Regularity.pExp α) g τ z θ
+        + Work.FTS.Galerkin.dynRHS (Work.FTS.Regularity.pExp α) Φ g τ z θ) := by
+  obtain ⟨M₁, hM₁0, hM₁⟩ := hmb
+  obtain ⟨M₂, -, hM₂⟩ := hmbh
+  set M := max M₁ M₂ with hMdef
+  have hM0 : 0 ≤ M := le_trans hM₁0 (le_max_left M₁ M₂)
+  -- the scalar zero mode `μ̄(τ)`, together with its two moduli
+  set m : ℝ → ℝ := fun τ => Work.Construction.mubar
+      (Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice g τ))
+      (Work.Construction.N (Work.FTS.Regularity.pExp α)
+        (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+        (Work.FTS.Regularity.gSlice Φ τ)) with hmdef
+  have hm : ∀ τ ∈ Set.Icc 0 S, |m τ| ≤ M := by
+    intro τ hτ
+    rw [hmdef]
+    exact le_trans (hM₁ τ hτ) (le_max_left M₁ M₂)
+  have hmh : ∀ τ ∈ Set.Icc 0 S, ∀ τ' ∈ Set.Icc 0 S, |m τ - m τ'| ≤ M * |τ - τ'| ^ α := by
+    intro τ hτ τ' hτ'
+    have h := hM₂ τ hτ τ' hτ'
+    have hle : M₂ ≤ M := le_max_right M₁ M₂
+    calc |m τ - m τ'| ≤ M₂ * |τ - τ'| ^ α := h
+      _ ≤ M * |τ - τ'| ^ α := mul_le_mul_of_nonneg_right hle (Real.rpow_nonneg (abs_nonneg _) _)
+  obtain ⟨hAKbdd, hAKh⟩ := rhsJet_ak_bounds hα hα13
+  have hprod : Work.FTS.Regularity.Jet α S (M * 10 + M * 100)
+      (fun z θ τ => -(m τ * Work.Construction.AK (Work.FTS.Regularity.pExp α) z θ)) :=
+    rhsJet_neg (rhsJet_mul hα hM0 (by norm_num) (by norm_num) hm hmh hAKbdd hAKh)
+  -- the five pieces, added left-to-right: `-𝓛_Γ^T(g) + N₀ + N + N_* + (-μ̄·AK)`
+  have hsum : Work.FTS.Regularity.Jet α S (((N₁ + N₂) + N₃ + N₄) + (M * 10 + M * 100))
+      (fun z θ τ => -(Work.Coercivity.LGammaT (Work.FTS.Regularity.pExp α)
+            (Work.FTS.Regularity.gSlice g τ) z θ)
+          + Work.Construction.N0 (Work.FTS.Regularity.pExp α)
+              (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+              (Work.FTS.Regularity.gSlice g τ) z θ
+          + Work.Construction.N (Work.FTS.Regularity.pExp α)
+              (Work.Construction.Ftau (Work.FTS.Regularity.pExp α) g τ)
+              (Work.FTS.Regularity.gSlice Φ τ) z θ
+          + Work.Construction.Nstar
+              (Work.FTS.Galerkin.muDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+              (Work.FTS.Galerkin.lamDyn (Work.FTS.Regularity.pExp α) Φ g τ)
+              (Work.FTS.Regularity.gSlice g τ) z θ
+          + -(m τ * Work.Construction.AK (Work.FTS.Regularity.pExp α) z θ)) := by
+    have h12 := rhsJet_add hL hN₀
+    have h123 := rhsJet_add h12 hN
+    have h1234 := rhsJet_add h123 hNs
+    exact rhsJet_add h1234 hprod
+  refine ⟨((N₁ + N₂) + N₃ + N₄) + (M * 10 + M * 100), ?_⟩
+  refine rhsJet_congr (fun z θ τ => ?_) hsum
+  simp only [Work.FTS.Galerkin.dynLin, Work.FTS.Galerkin.dynRHS, Work.Construction.gRHS, hmdef]
+  rw [show Work.FTS.Galerkin.slice g τ = Work.FTS.Regularity.gSlice g τ from rfl,
+    show Work.FTS.Galerkin.slice Φ τ = Work.FTS.Regularity.gSlice Φ τ from rfl]
+  ring_nf
+
+end Work.FTS.RegPkgGal.Der
+end
+-- ===== merged: Submission.Work.FTS.RegPkgGal.R7d.support_strip =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -28,438 +336,7 @@ set_option maxHeartbeats 1600000
 namespace Work.FTS.RegPkgGal.R7d
 
 
-theorem support_strip {S a b c L : ℝ} (hS : 0 < S) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
-    (hL : 0 ≤ L)
-    {F : ℝ → ℝ → ℝ → ℝ} {Vz Vθ cs : ℝ → ℝ → ℝ → ℝ}
-    (hFjoint : ContDiffOn ℝ 1 (fun p : ℝ × ℝ × ℝ => F p.1 p.2.1 p.2.2)
-      (Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Ioo (0:ℝ) (Real.pi / 2)) (Set.Icc (0:ℝ) S))))
-    (hVjoint : ContinuousOn (fun p : ℝ × ℝ × ℝ => (Vz p.1 p.2.1 p.2.2, Vθ p.1 p.2.1 p.2.2))
-      (Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Icc (0:ℝ) (Real.pi / 2)) (Set.Icc (0:ℝ) S))))
-    (hVlipU : ∃ K : NNReal, ∀ τ ∈ Set.Icc 0 S, LipschitzOnWith K
-      (fun p : ℝ × ℝ => (Vz p.1 p.2 τ, Vθ p.1 p.2 τ))
-      (Set.prod (Set.Ioi (0:ℝ)) (Set.Ioo (0:ℝ) (Real.pi / 2))))
-    (hcscont : ContinuousOn (fun p : ℝ × ℝ × ℝ => cs p.1 p.2.1 p.2.2)
-      (Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Icc (0:ℝ) (Real.pi / 2)) (Set.Icc (0:ℝ) S))))
-    (hEq : ∀ z θ τ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S →
-      HasDerivAt (fun s => F z θ s)
-        (-(Vz z θ τ * Work.Spaces.Dz (fun z θ => F z θ τ) z θ
-          + Vθ z θ τ * Work.Spaces.pth (fun z θ => F z θ τ) z θ
-          + cs z θ τ * F z θ τ)) τ)
-    (hVz0 : ∀ z θ τ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S → 0 ≤ Vz z θ τ)
-    (hVza : ∀ z θ τ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S → Vz z θ τ ≤ a)
-    (hVθb : ∀ z θ τ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S → |Vθ z θ τ| ≤ b)
-    (hVθ0 : ∀ z τ : ℝ, 0 < z → 0 < τ → τ ≤ S → Vθ z 0 τ = 0)
-    (hVθπ : ∀ z τ : ℝ, 0 < z → 0 < τ → τ ≤ S → Vθ z (Real.pi / 2) τ = 0)
-    (hcsc : ∀ z θ τ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 → 0 < τ → τ ≤ S → |cs z θ τ| ≤ c)
-    (hInit : ∀ z θ : ℝ, L < z → 0 < θ → θ < Real.pi / 2 → F z θ 0 = 0) :
-    ∀ τ ∈ Set.Icc 0 S, ∀ z θ : ℝ, L * Real.exp (a * S) < z → 0 < θ → θ < Real.pi / 2 →
-      F z θ τ = 0 := by
-  intro τ hτ z θ hz hθ0 hθπ
-  obtain ⟨hτ0, hτS⟩ := hτ
-  have hexp1 : (1:ℝ) ≤ Real.exp (a * S) := Real.one_le_exp (by positivity)
-  have hzL : L < z := by nlinarith [hL, hexp1, hz]
-  have hzpos : 0 < z := lt_of_le_of_lt (by nlinarith [hL, hexp1]) hz
-  rcases eq_or_lt_of_le hτ0 with h0 | hpos
-  · rw [← h0]
-    exact hInit z θ hzL hθ0 hθπ
-  obtain ⟨K, hK⟩ := hVlipU
-  have hK0 : (0:ℝ) ≤ (K:ℝ) := K.2
-  -- barrier bound for the angular field
-  have hbar : ∀ z' θ' τ' : ℝ, 0 < z' → 0 < θ' → θ' < Real.pi / 2 → 0 ≤ τ' → τ' ≤ S →
-      |Vθ z' θ' τ'| ≤ (K:ℝ) * θ' ∧ |Vθ z' θ' τ'| ≤ (K:ℝ) * (Real.pi / 2 - θ') :=
-    Vth_barrier hS hK0 hK hVjoint hVθ0 hVθπ
-  -- the a priori box of the trajectory
-  set zm : ℝ := z * Real.exp (-(a * τ)) with hzm
-  set θm : ℝ := θ * Real.exp (-((K:ℝ) * τ)) with hθm
-  set θM : ℝ := Real.pi / 2 - (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * τ)) with hθM
-  have hexpa : Real.exp (-(a * τ)) ≤ 1 := by
-    rw [Real.exp_le_one_iff]; nlinarith [ha, le_of_lt hpos]
-  have hexpK : Real.exp (-((K:ℝ) * τ)) ≤ 1 := by
-    rw [Real.exp_le_one_iff]; nlinarith [hK0, le_of_lt hpos]
-  have hzm_pos : 0 < zm := by rw [hzm]; positivity
-  have hθm_pos : 0 < θm := by rw [hθm]; positivity
-  have hθM_lt : θM < Real.pi / 2 := by
-    rw [hθM]
-    have h1 : 0 < (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * τ)) :=
-      mul_pos (by linarith) (Real.exp_pos _)
-    linarith
-  have hzm_le_z : zm ≤ z := by
-    rw [hzm]
-    calc z * Real.exp (-(a * τ)) ≤ z * 1 :=
-          mul_le_mul_of_nonneg_left hexpa (le_of_lt hzpos)
-      _ = z := by ring
-  have hθm_le_θ : θm ≤ θ := by
-    rw [hθm]
-    calc θ * Real.exp (-((K:ℝ) * τ)) ≤ θ * 1 :=
-          mul_le_mul_of_nonneg_left hexpK (le_of_lt hθ0)
-      _ = θ := by ring
-  have hθ_le_θM : θ ≤ θM := by
-    rw [hθM]
-    have h1 : (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * τ)) ≤ (Real.pi / 2 - θ) * 1 :=
-      mul_le_mul_of_nonneg_left hexpK (by linarith)
-    linarith
-  have hθm_le_θM : θm ≤ θM := le_trans hθm_le_θ hθ_le_θM
-  -- the outer box
-  have hzm2 : 0 < zm / 2 := by linarith
-  have hθm2 : 0 < θm / 2 := by linarith
-  have hθhi_lt : (θM + Real.pi / 2) / 2 < Real.pi / 2 := by linarith
-  have hbox_nonempty : zm / 2 ≤ z + 1 := by linarith
-  have hθbox_nonempty : θm / 2 ≤ (θM + Real.pi / 2) / 2 := by linarith
-  have houter_sub : Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2) ⊆
-      Set.Ioi (0:ℝ) ×ˢ Set.Ioo (0:ℝ) (Real.pi/2) := by
-    intro p hp
-    obtain ⟨hp1, hp2⟩ := Set.mem_prod.mp hp
-    exact Set.mem_prod.mpr
-      ⟨lt_of_lt_of_le hzm2 hp1.1, lt_of_lt_of_le hθm2 hp2.1, lt_of_le_of_lt hp2.2 hθhi_lt⟩
-  -- bound at fake time `0`
-  have hcont0 : ContinuousOn (fun x : ℝ × ℝ => (Vz x.1 x.2 0, Vθ x.1 x.2 0))
-      (Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2)) := by
-    have hψ : ContinuousOn (fun x : ℝ × ℝ => (x.1, x.2, (0:ℝ)))
-        (Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2)) := by fun_prop
-    have hmap : MapsTo (fun x : ℝ × ℝ => (x.1, x.2, (0:ℝ)))
-        (Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2))
-        (Set.Ioi (0:ℝ) ×ˢ (Set.Icc (0:ℝ) (Real.pi/2) ×ˢ Set.Icc (0:ℝ) S)) := by
-      intro x hx
-      obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-      exact Set.mem_prod.mpr
-        ⟨lt_of_lt_of_le hzm2 hx1.1,
-          ⟨le_of_lt (lt_of_lt_of_le hθm2 hx2.1), le_of_lt (lt_of_le_of_lt hx2.2 hθhi_lt)⟩,
-          ⟨le_rfl, le_of_lt hS⟩⟩
-    simpa [Function.comp_def] using hVjoint.comp hψ hmap
-  obtain ⟨C, hC⟩ := (isCompact_Icc.prod isCompact_Icc).exists_bound_of_continuousOn hcont0
-  have hC0 : 0 ≤ C := by
-    have hm : (zm/2, θm/2) ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2) :=
-      Set.mem_prod.mpr ⟨⟨le_rfl, hbox_nonempty⟩, ⟨le_rfl, hθbox_nonempty⟩⟩
-    exact le_trans (norm_nonneg _) (hC _ hm)
-  -- the constants for the existence theorem
-  set Mvz : ℝ := C + a with hMvz
-  set Mvθ : ℝ := C + b with hMvθ
-  set Zb : ℝ := zm/2 + (z+1) with hZb
-  set Lb : ℝ := Zb * Mvz + Mvθ + 1 with hLb
-  set Klip : ℝ := Mvz + Zb * (K:ℝ) + (K:ℝ) + 1 with hKlip
-  have hMvz0 : 0 ≤ Mvz := by rw [hMvz]; linarith
-  have hMvθ0 : 0 ≤ Mvθ := by rw [hMvθ]; linarith
-  have hZb0 : 0 ≤ Zb := by rw [hZb]; linarith
-  have hLb0 : 0 < Lb := by rw [hLb]; nlinarith
-  have hKlip0 : 0 ≤ Klip := by rw [hKlip]; nlinarith
-  -- bounds on the two fields over the outer box
-  have hVzb : ∀ σ ∈ Set.Icc (0:ℝ) S, ∀ x ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2),
-      |Vz x.1 x.2 σ| ≤ Mvz := by
-    intro σ hσ x hx
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    have hx1' : 0 < x.1 := lt_of_lt_of_le hzm2 hx1.1
-    have hx2a : 0 < x.2 := lt_of_lt_of_le hθm2 hx2.1
-    have hx2b : x.2 < Real.pi / 2 := lt_of_le_of_lt hx2.2 hθhi_lt
-    rcases eq_or_lt_of_le hσ.1 with hs | hs
-    · rw [← hs, hMvz]
-      have h2 := hC x (Set.mem_prod.mpr ⟨hx1, hx2⟩)
-      rw [Prod.norm_def] at h2
-      have h3 : |Vz x.1 x.2 0| ≤ max |Vz x.1 x.2 0| |Vθ x.1 x.2 0| := le_max_left _ _
-      have h4 : max |Vz x.1 x.2 0| |Vθ x.1 x.2 0| ≤ C := by simpa [Real.norm_eq_abs] using h2
-      linarith
-    · have h1 : Vz x.1 x.2 σ ≤ a := hVza _ _ _ hx1' hx2a hx2b hs hσ.2
-      have h2 : 0 ≤ Vz x.1 x.2 σ := hVz0 _ _ _ hx1' hx2a hx2b hs hσ.2
-      rw [hMvz]
-      rw [abs_le]
-      constructor <;> linarith
-  have hVθb' : ∀ σ ∈ Set.Icc (0:ℝ) S, ∀ x ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2),
-      |Vθ x.1 x.2 σ| ≤ Mvθ := by
-    intro σ hσ x hx
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    have hx1' : 0 < x.1 := lt_of_lt_of_le hzm2 hx1.1
-    have hx2a : 0 < x.2 := lt_of_lt_of_le hθm2 hx2.1
-    have hx2b : x.2 < Real.pi / 2 := lt_of_le_of_lt hx2.2 hθhi_lt
-    rcases eq_or_lt_of_le hσ.1 with hs | hs
-    · rw [← hs, hMvθ]
-      have h2 := hC x (Set.mem_prod.mpr ⟨hx1, hx2⟩)
-      rw [Prod.norm_def] at h2
-      have h3 : |Vθ x.1 x.2 0| ≤ max |Vz x.1 x.2 0| |Vθ x.1 x.2 0| := le_max_right _ _
-      have h4 : max |Vz x.1 x.2 0| |Vθ x.1 x.2 0| ≤ C := by simpa [Real.norm_eq_abs] using h2
-      linarith
-    · have h1 : |Vθ x.1 x.2 σ| ≤ b := hVθb _ _ _ hx1' hx2a hx2b hs hσ.2
-      rw [hMvθ]
-      linarith
-  -- the data of the existence theorem
-  have hx1_le_Zb : ∀ x ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2),
-      |x.1| ≤ Zb := by
-    intro x hx
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    rw [hZb, abs_le]
-    constructor <;> linarith [hx1.1, hx1.2]
-  have hlipbox : ∀ t ∈ Set.Icc (0:ℝ) τ, LipschitzOnWith ⟨Klip, hKlip0⟩
-      (fun x : ℝ × ℝ => (-(x.1 * Vz x.1 x.2 (τ - t)), -(Vθ x.1 x.2 (τ - t))))
-      (Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2)) := by
-    intro t ht
-    refine LipschitzOnWith.of_dist_le_mul fun x hx y hy => ?_
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    obtain ⟨hy1, hy2⟩ := Set.mem_prod.mp hy
-    have hσ : τ - t ∈ Set.Icc (0:ℝ) S := ⟨by linarith [ht.2], by linarith [ht.1, hτS]⟩
-    have hxmem : (x.1, x.2) ∈ Set.prod (Set.Ioi (0:ℝ)) (Set.Ioo (0:ℝ) (Real.pi/2)) :=
-      Set.mem_prod.mpr ⟨lt_of_lt_of_le hzm2 hx1.1, lt_of_lt_of_le hθm2 hx2.1,
-        lt_of_le_of_lt hx2.2 hθhi_lt⟩
-    have hymem : (y.1, y.2) ∈ Set.prod (Set.Ioi (0:ℝ)) (Set.Ioo (0:ℝ) (Real.pi/2)) :=
-      Set.mem_prod.mpr ⟨lt_of_lt_of_le hzm2 hy1.1, lt_of_lt_of_le hθm2 hy2.1,
-        lt_of_le_of_lt hy2.2 hθhi_lt⟩
-    have hLip := hK (τ - t) hσ
-    have hVθdiff : |Vθ x.1 x.2 (τ - t) - Vθ y.1 y.2 (τ - t)| ≤ (K:ℝ) * dist x y := by
-      have h2 := hLip.dist_le_mul _ hxmem _ hymem
-      rw [Prod.dist_eq] at h2
-      have h3 : dist (Vθ x.1 x.2 (τ - t)) (Vθ y.1 y.2 (τ - t)) ≤ (K:ℝ) * dist x y :=
-        le_trans (le_max_right _ _) h2
-      simpa [Real.dist_eq] using h3
-    have hVzdiff : |Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t)| ≤ (K:ℝ) * dist x y := by
-      have h2 := hLip.dist_le_mul _ hxmem _ hymem
-      rw [Prod.dist_eq] at h2
-      have h3 : dist (Vz x.1 x.2 (τ - t)) (Vz y.1 y.2 (τ - t)) ≤ (K:ℝ) * dist x y :=
-        le_trans (le_max_left _ _) h2
-      simpa [Real.dist_eq] using h3
-    have hdist : |x.1 - y.1| ≤ dist x y := by
-      rw [Prod.dist_eq, Real.dist_eq]
-      exact le_max_left _ _
-    have hsecond : dist (-(x.1 * Vz x.1 x.2 (τ - t))) (-(y.1 * Vz y.1 y.2 (τ - t)))
-        ≤ Klip * dist x y := by
-      have hdecomp : x.1 * Vz x.1 x.2 (τ - t) - y.1 * Vz y.1 y.2 (τ - t)
-          = x.1 * (Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t))
-            + (x.1 - y.1) * Vz y.1 y.2 (τ - t) := by ring
-      have h1 : |x.1 * Vz x.1 x.2 (τ - t) - y.1 * Vz y.1 y.2 (τ - t)|
-          ≤ Zb * ((K:ℝ) * dist x y) + dist x y * Mvz := by
-        calc |x.1 * Vz x.1 x.2 (τ - t) - y.1 * Vz y.1 y.2 (τ - t)|
-            = |x.1 * (Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t))
-                + (x.1 - y.1) * Vz y.1 y.2 (τ - t)| := by rw [hdecomp]
-          _ ≤ |x.1 * (Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t))|
-                + |(x.1 - y.1) * Vz y.1 y.2 (τ - t)| := abs_add_le _ _
-          _ = |x.1| * |Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t)|
-                + |x.1 - y.1| * |Vz y.1 y.2 (τ - t)| := by rw [abs_mul, abs_mul]
-          _ ≤ Zb * ((K:ℝ) * dist x y) + dist x y * Mvz := by
-              have hA : |x.1| * |Vz x.1 x.2 (τ - t) - Vz y.1 y.2 (τ - t)|
-                  ≤ Zb * ((K:ℝ) * dist x y) := by
-                exact mul_le_mul (hx1_le_Zb x (Set.mem_prod.mpr ⟨hx1, hx2⟩)) hVzdiff
-                  (abs_nonneg _) hZb0
-              have hB : |x.1 - y.1| * |Vz y.1 y.2 (τ - t)| ≤ dist x y * Mvz := by
-                exact mul_le_mul hdist (hVzb _ hσ y (Set.mem_prod.mpr ⟨hy1, hy2⟩))
-                  (abs_nonneg _) dist_nonneg
-              linarith
-      have h2 : dist (-(x.1 * Vz x.1 x.2 (τ - t))) (-(y.1 * Vz y.1 y.2 (τ - t)))
-          = |x.1 * Vz x.1 x.2 (τ - t) - y.1 * Vz y.1 y.2 (τ - t)| := by
-        rw [Real.dist_eq, abs_sub_comm]
-        congr 1
-        ring
-      rw [h2]
-      have h3 : Zb * ((K:ℝ) * dist x y) + dist x y * Mvz
-          = (Zb * (K:ℝ) + Mvz) * dist x y := by ring
-      rw [h3] at h1
-      refine le_trans h1 (mul_le_mul_of_nonneg_right ?_ dist_nonneg)
-      rw [hKlip]
-      linarith [hMvz0, mul_nonneg hZb0 hK0]
-    have hfirst : dist (-(Vθ x.1 x.2 (τ - t))) (-(Vθ y.1 y.2 (τ - t))) ≤ Klip * dist x y := by
-      have h2 : dist (-(Vθ x.1 x.2 (τ - t))) (-(Vθ y.1 y.2 (τ - t)))
-          = |Vθ x.1 x.2 (τ - t) - Vθ y.1 y.2 (τ - t)| := by
-        rw [Real.dist_eq, abs_sub_comm]
-        congr 1
-        ring
-      rw [h2]
-      refine le_trans hVθdiff (mul_le_mul_of_nonneg_right ?_ dist_nonneg)
-      rw [hKlip]
-      linarith [hMvz0, mul_nonneg hZb0 hK0]
-    rw [Prod.dist_eq]
-    exact max_le hsecond hfirst
-  have hbddbox : ∀ t ∈ Set.Icc (0:ℝ) τ, ∀ x ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2),
-      ‖(-(x.1 * Vz x.1 x.2 (τ - t)), -(Vθ x.1 x.2 (τ - t)))‖ ≤ Lb := by
-    intro t ht x hx
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    have hσ : τ - t ∈ Set.Icc (0:ℝ) S := ⟨by linarith [ht.2], by linarith [ht.1, hτS]⟩
-    rw [Prod.norm_def]
-    refine max_le ?_ ?_
-    · rw [Real.norm_eq_abs, abs_neg, abs_mul]
-      calc |x.1| * |Vz x.1 x.2 (τ - t)| ≤ Zb * Mvz :=
-            mul_le_mul (hx1_le_Zb x (Set.mem_prod.mpr ⟨hx1, hx2⟩))
-              (hVzb _ hσ x (Set.mem_prod.mpr ⟨hx1, hx2⟩)) (abs_nonneg _) hZb0
-        _ ≤ Lb := by rw [hLb]; linarith [hMvθ0]
-    · rw [Real.norm_eq_abs, abs_neg]
-      calc |Vθ x.1 x.2 (τ - t)| ≤ Mvθ := hVθb' _ hσ x (Set.mem_prod.mpr ⟨hx1, hx2⟩)
-        _ ≤ Lb := by rw [hLb]; nlinarith [hZb0, hMvz0]
-  have htcontbox : ∀ x ∈ Set.Icc (zm/2) (z+1) ×ˢ Set.Icc (θm/2) ((θM + Real.pi/2)/2),
-      ContinuousOn (fun t : ℝ => (-(x.1 * Vz x.1 x.2 (τ - t)), -(Vθ x.1 x.2 (τ - t))))
-        (Set.Icc (0:ℝ) τ) := by
-    intro x hx
-    obtain ⟨hx1, hx2⟩ := Set.mem_prod.mp hx
-    have hx1' : 0 < x.1 := lt_of_lt_of_le hzm2 hx1.1
-    have hx2' : 0 < x.2 := lt_of_lt_of_le hθm2 hx2.1
-    have hx2'' : x.2 < Real.pi / 2 := lt_of_le_of_lt hx2.2 hθhi_lt
-    have hslice : ContinuousOn (fun s : ℝ => (Vz x.1 x.2 s, Vθ x.1 x.2 s)) (Set.Icc (0:ℝ) S) := by
-      have hψ : ContinuousOn (fun s : ℝ => (x.1, x.2, s)) (Set.Icc (0:ℝ) S) := by fun_prop
-      have hmap : MapsTo (fun s : ℝ => (x.1, x.2, s)) (Set.Icc (0:ℝ) S)
-          (Set.Ioi (0:ℝ) ×ˢ (Set.Icc (0:ℝ) (Real.pi/2) ×ˢ Set.Icc (0:ℝ) S)) := by
-        intro s hs
-        exact Set.mem_prod.mpr ⟨hx1', ⟨le_of_lt hx2', le_of_lt hx2''⟩, hs⟩
-      simpa [Function.comp_def] using hVjoint.comp hψ hmap
-    have hsub : ContinuousOn (fun t : ℝ => τ - t) (Set.Icc (0:ℝ) τ) := by fun_prop
-    have hmap2 : MapsTo (fun t : ℝ => τ - t) (Set.Icc (0:ℝ) τ) (Set.Icc (0:ℝ) S) := by
-      intro t ht
-      exact ⟨by linarith [ht.2], by linarith [ht.1, hτS]⟩
-    have hcomp : ContinuousOn (fun t : ℝ => (Vz x.1 x.2 (τ - t), Vθ x.1 x.2 (τ - t)))
-        (Set.Icc (0:ℝ) τ) := hslice.comp hsub hmap2
-    have h1 : ContinuousOn (fun t : ℝ => Vz x.1 x.2 (τ - t)) (Set.Icc (0:ℝ) τ) :=
-      continuous_fst.comp_continuousOn hcomp
-    have h2 : ContinuousOn (fun t : ℝ => Vθ x.1 x.2 (τ - t)) (Set.Icc (0:ℝ) τ) :=
-      continuous_snd.comp_continuousOn hcomp
-    have h3 : ContinuousOn (fun t : ℝ => x.1 * Vz x.1 x.2 (τ - t)) (Set.Icc (0:ℝ) τ) :=
-      continuousOn_const.mul h1
-    exact h3.neg.prodMk h2.neg
-  -- the a priori estimate
-  have htrajg : ∀ T' ∈ Set.Icc (0:ℝ) τ, ∀ α : ℝ → ℝ × ℝ, α 0 = (z, θ) →
-      (∀ t ∈ Set.Icc (0:ℝ) T', HasDerivWithinAt α
-        (-((α t).1 * Vz (α t).1 (α t).2 (τ - t)), -(Vθ (α t).1 (α t).2 (τ - t)))
-        (Set.Icc (0:ℝ) T') t) →
-      ∀ t ∈ Set.Icc (0:ℝ) T', (α t).1 ∈ Set.Icc zm z ∧ (α t).2 ∈ Set.Icc θm θM := by
-    intro T' hT' α hα0' hode t ht
-    have hVθl : ∀ z' θ' τ' : ℝ, 0 < z' → 0 < θ' → θ' < Real.pi / 2 → 0 < τ' → τ' ≤ S →
-        |Vθ z' θ' τ'| ≤ (K:ℝ) * θ' := fun z' θ' τ' h1 h2 h3 h4 h5 =>
-      (hbar z' θ' τ' h1 h2 h3 (le_of_lt h4) h5).1
-    have hVθu : ∀ z' θ' τ' : ℝ, 0 < z' → 0 < θ' → θ' < Real.pi / 2 → 0 < τ' → τ' ≤ S →
-        |Vθ z' θ' τ'| ≤ (K:ℝ) * (Real.pi / 2 - θ') := fun z' θ' τ' h1 h2 h3 h4 h5 =>
-      (hbar z' θ' τ' h1 h2 h3 (le_of_lt h4) h5).2
-    have hb : z * Real.exp (-(a * t)) ≤ (α t).1 ∧ (α t).1 ≤ z ∧
-        θ * Real.exp (-((K:ℝ) * t)) ≤ (α t).2 ∧
-        (α t).2 ≤ Real.pi / 2 - (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * t)) :=
-      trajectory_bounds (Vz := Vz) (Vθ := Vθ) (a := a) (K := (K:ℝ)) (S := S) (τ₀ := τ)
-        (T := T') (z₀ := z) (θ₀ := θ) (α := α) hT'.1 hT'.2 hτS hzpos hθ0 hθπ ha hK0 hα0'
-        hode hVz0 hVza hVθl hVθu t ht
-    obtain ⟨hb1, hb2, hb3, hb4⟩ := hb
-    refine ⟨⟨?_, hb2⟩, ?_, ?_⟩
-    · rw [hzm]
-      calc z * Real.exp (-(a * τ)) ≤ z * Real.exp (-(a * t)) := by
-            refine mul_le_mul_of_nonneg_left ?_ (le_of_lt hzpos)
-            have hle : a * t ≤ a * τ :=
-              mul_le_mul_of_nonneg_left (le_trans ht.2 hT'.2) ha
-            exact Real.exp_le_exp.mpr (neg_le_neg hle)
-        _ ≤ (α t).1 := hb1
-    · rw [hθm]
-      calc θ * Real.exp (-((K:ℝ) * τ)) ≤ θ * Real.exp (-((K:ℝ) * t)) := by
-            refine mul_le_mul_of_nonneg_left ?_ (le_of_lt hθ0)
-            have hle : (K:ℝ) * t ≤ (K:ℝ) * τ :=
-              mul_le_mul_of_nonneg_left (le_trans ht.2 hT'.2) hK0
-            exact Real.exp_le_exp.mpr (neg_le_neg hle)
-        _ ≤ (α t).2 := hb3
-    · rw [hθM]
-      have hle : (K:ℝ) * t ≤ (K:ℝ) * τ :=
-        mul_le_mul_of_nonneg_left (le_trans ht.2 hT'.2) hK0
-      have h5 : Real.exp (-((K:ℝ) * τ)) ≤ Real.exp (-((K:ℝ) * t)) :=
-        Real.exp_le_exp.mpr (neg_le_neg hle)
-      have h6 : (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * τ))
-          ≤ (Real.pi / 2 - θ) * Real.exp (-((K:ℝ) * t)) :=
-        mul_le_mul_of_nonneg_left h5 (by linarith [hθπ])
-      have h7 := sub_le_sub_left h6 (Real.pi / 2)
-      linarith [hb4, h7]
-  -- existence of the trajectory
-  have hexists : ∃ α : ℝ → ℝ × ℝ, α 0 = (z, θ) ∧
-      ∀ t ∈ Set.Icc (0:ℝ) τ, HasDerivWithinAt α
-        (-((α t).1 * Vz (α t).1 (α t).2 (τ - t)), -(Vθ (α t).1 (α t).2 (τ - t)))
-        (Set.Icc (0:ℝ) τ) t :=
-    ode_box_existence (fun (t : ℝ) (x : ℝ × ℝ) =>
-        (-(x.1 * Vz x.1 x.2 (τ - t)), -(Vθ x.1 x.2 (τ - t))))
-      (z, θ) (T := τ) (L := Lb) (Klip := Klip)
-      (zlo := zm) (zhi := z) (θlo := θm) (θhi := θM)
-      (zlo' := zm/2) (zhi' := z+1) (θlo' := θm/2) (θhi' := (θM + Real.pi/2)/2)
-      (le_of_lt hpos) hLb0 hKlip0
-      ⟨⟨hzm_le_z, le_rfl⟩, hθm_le_θ, hθ_le_θM⟩
-      (by linarith) (by linarith) (by linarith) (by linarith)
-      hlipbox hbddbox htcontbox htrajg
-  obtain ⟨α, hα0', hαode⟩ := hexists
-  have hbox : ∀ t ∈ Set.Icc (0:ℝ) τ, (α t).1 ∈ Set.Icc zm z ∧ (α t).2 ∈ Set.Icc θm θM :=
-    htrajg τ ⟨le_of_lt hpos, le_rfl⟩ α hα0' hαode
-  -- the composite and its exponential-factor equation
-  set G : ℝ → ℝ := fun s => F (α s).1 (α s).2 (τ - s) with hG
-  set csG : ℝ → ℝ := fun s => cs (α s).1 (α s).2 (τ - s) with hcsG
-  have hderiv : ∀ t ∈ Set.Ioo 0 τ, HasDerivAt G (csG t * G t) t := by
-    intro t ht
-    obtain ⟨hb1, hb2⟩ := hbox t ⟨le_of_lt ht.1, le_of_lt ht.2⟩
-    have hz_t : 0 < (α t).1 := lt_of_lt_of_le hzm_pos hb1.1
-    have hθ_t : 0 < (α t).2 := lt_of_lt_of_le hθm_pos hb2.1
-    have hθ_t' : (α t).2 < Real.pi / 2 := lt_of_le_of_lt hb2.2 hθM_lt
-    have hτt : 0 < τ - t := by linarith [ht.2]
-    have hτtS : τ - t ≤ S := by linarith [ht.1, hτS]
-    have hτtS' : τ - t < S := by linarith [ht.1, hτS]
-    have hFd : DifferentiableAt ℝ (fun p : ℝ × ℝ × ℝ => F p.1 p.2.1 p.2.2)
-        ((α t).1, (α t).2, τ - t) := by
-      have hmem : ((α t).1, (α t).2, τ - t) ∈
-          Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Ioo (0:ℝ) (Real.pi/2)) (Set.Icc (0:ℝ) S)) :=
-        Set.mem_prod.mpr ⟨hz_t,
-          Set.mem_prod.mpr ⟨⟨hθ_t, hθ_t'⟩, ⟨le_of_lt hτt, hτtS⟩⟩⟩
-      have hnhds : Set.prod (Set.Ioi (0:ℝ))
-          (Set.prod (Set.Ioo (0:ℝ) (Real.pi/2)) (Set.Icc (0:ℝ) S)) ∈
-          𝓝 ((α t).1, (α t).2, τ - t) :=
-        prod_mem_nhds (isOpen_Ioi.mem_nhds hz_t)
-          (prod_mem_nhds (isOpen_Ioo.mem_nhds ⟨hθ_t, hθ_t'⟩) (Icc_mem_nhds hτt hτtS'))
-      exact (hFjoint.differentiableOn (by norm_num)).differentiableAt hnhds
-    have hEq' : HasDerivAt (fun s => F (α t).1 (α t).2 s)
-        (-(Vz (α t).1 (α t).2 (τ - t) * Work.Spaces.Dz (fun z θ => F z θ (τ - t)) (α t).1 (α t).2
-          + Vθ (α t).1 (α t).2 (τ - t) * Work.Spaces.pth (fun z θ => F z θ (τ - t)) (α t).1 (α t).2
-          + cs (α t).1 (α t).2 (τ - t) * F (α t).1 (α t).2 (τ - t))) (τ - t) :=
-      hEq (α t).1 (α t).2 (τ - t) hz_t hθ_t hθ_t' hτt hτtS
-    have hα' : HasDerivAt α
-        (-((α t).1 * Vz (α t).1 (α t).2 (τ - t)), -(Vθ (α t).1 (α t).2 (τ - t))) t :=
-      (hαode t ⟨le_of_lt ht.1, le_of_lt ht.2⟩).hasDerivAt (Icc_mem_nhds ht.1 ht.2)
-    have hcr := chain_rule_along_curve (Vz := Vz) (Vθ := Vθ) (cs := cs) (α := α) (τ₀ := τ) (t := t)
-      hFd hα' hEq'
-    simpa [hG, hcsG] using hcr
-  have hGcont : ContinuousOn G (Set.Icc (0:ℝ) τ) := by
-    have hαcont : ContinuousOn α (Set.Icc (0:ℝ) τ) := fun t ht => (hαode t ht).continuousWithinAt
-    have hγ : ContinuousOn (fun s : ℝ => ((α s).1, (α s).2, τ - s)) (Set.Icc (0:ℝ) τ) :=
-      ((continuous_fst.comp_continuousOn hαcont).prodMk
-        ((continuous_snd.comp_continuousOn hαcont).prodMk
-          (continuousOn_const.sub continuousOn_id)))
-    have hmap : MapsTo (fun s : ℝ => ((α s).1, (α s).2, τ - s)) (Set.Icc (0:ℝ) τ)
-        (Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Ioo (0:ℝ) (Real.pi/2)) (Set.Icc (0:ℝ) S))) := by
-      intro s hs
-      obtain ⟨hb1, hb2⟩ := hbox s hs
-      have hz_s : 0 < (α s).1 := lt_of_lt_of_le hzm_pos hb1.1
-      have hθ_s : 0 < (α s).2 := lt_of_lt_of_le hθm_pos hb2.1
-      have hθ_s' : (α s).2 < Real.pi / 2 := lt_of_le_of_lt hb2.2 hθM_lt
-      exact Set.mem_prod.mpr ⟨hz_s, Set.mem_prod.mpr ⟨⟨hθ_s, hθ_s'⟩,
-        ⟨by linarith [hs.2], by linarith [hs.1, hτS]⟩⟩⟩
-    have := hFjoint.continuousOn.comp hγ hmap
-    simpa [hG, Function.comp_def] using this
-  have hcsGcont : ContinuousOn csG (Set.Icc (0:ℝ) τ) := by
-    have hαcont : ContinuousOn α (Set.Icc (0:ℝ) τ) := fun t ht => (hαode t ht).continuousWithinAt
-    have hγ : ContinuousOn (fun s : ℝ => ((α s).1, (α s).2, τ - s)) (Set.Icc (0:ℝ) τ) :=
-      ((continuous_fst.comp_continuousOn hαcont).prodMk
-        ((continuous_snd.comp_continuousOn hαcont).prodMk
-          (continuousOn_const.sub continuousOn_id)))
-    have hmap : MapsTo (fun s : ℝ => ((α s).1, (α s).2, τ - s)) (Set.Icc (0:ℝ) τ)
-        (Set.prod (Set.Ioi (0:ℝ)) (Set.prod (Set.Icc (0:ℝ) (Real.pi/2)) (Set.Icc (0:ℝ) S))) := by
-      intro s hs
-      obtain ⟨hb1, hb2⟩ := hbox s hs
-      have hz_s : 0 < (α s).1 := lt_of_lt_of_le hzm_pos hb1.1
-      have hθ_s : 0 < (α s).2 := lt_of_lt_of_le hθm_pos hb2.1
-      have hθ_s' : (α s).2 < Real.pi / 2 := lt_of_le_of_lt hb2.2 hθM_lt
-      exact Set.mem_prod.mpr ⟨hz_s, Set.mem_prod.mpr ⟨⟨le_of_lt hθ_s, le_of_lt hθ_s'⟩,
-        ⟨by linarith [hs.2], by linarith [hs.1, hτS]⟩⟩⟩
-    have := hcscont.comp hγ hmap
-    simpa [hcsG, Function.comp_def] using this
-  have hGτ : G τ = 0 := by
-    obtain ⟨hb1, hb2⟩ := hbox τ ⟨le_of_lt hpos, le_rfl⟩
-    have hzτ : L < (α τ).1 := by
-      have h1 : z * Real.exp (-(a * τ)) ≤ (α τ).1 := hb1.1
-      have h2 : L * Real.exp (a * S) * Real.exp (-(a * τ)) < z * Real.exp (-(a * τ)) :=
-        mul_lt_mul_of_pos_right hz (Real.exp_pos _)
-      have hexp3 : Real.exp (a * S) * Real.exp (-(a * τ)) = Real.exp (a * (S - τ)) := by
-        rw [← Real.exp_add]
-        congr 1
-        ring
-      have h3 : L * Real.exp (a * S) * Real.exp (-(a * τ)) = L * Real.exp (a * (S - τ)) := by
-        rw [mul_assoc, hexp3]
-      have h4 : L ≤ L * Real.exp (a * (S - τ)) := by
-        have h5 : (1:ℝ) ≤ Real.exp (a * (S - τ)) := Real.one_le_exp (by nlinarith [ha, hτS])
-        nlinarith [hL, h5]
-      linarith
-    have hθτ : 0 < (α τ).2 := lt_of_lt_of_le hθm_pos hb2.1
-    have hθτ' : (α τ).2 < Real.pi / 2 := lt_of_le_of_lt hb2.2 hθM_lt
-    have hsub : τ - τ = 0 := by ring
-    show F (α τ).1 (α τ).2 (τ - τ) = 0
-    rw [hsub]
-    exact hInit _ _ hzτ hθτ hθτ'
-  have hfinal := exp_ode_const hpos hderiv hGcont hcsGcont hGτ
-  simpa [hG, hcsG, hα0'] using hfinal
 
 end Work.FTS.RegPkgGal.R7d
+end
+end

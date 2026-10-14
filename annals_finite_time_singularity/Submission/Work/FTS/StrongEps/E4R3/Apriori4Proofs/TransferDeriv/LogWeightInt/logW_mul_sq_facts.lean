@@ -1,12 +1,153 @@
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.Defs
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.HarOp_pointwise_sq
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.LogInt
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.JepsTransfer.integral_quad_log_subst
-import Submission.Work.FTS.StrongEps.HkSqAux.lintegral_quad_log_subst
-import Submission.Work.FTS.CoercivityStep.Base.H1IP_congr_qd
-import Submission.Work.Coercivity.Defs
-import Submission.Work.FTS.StrongEps.Basic
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.wprod6
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_EllLimOK.Pinning.integrableOn_sq_rpow_of_HkMem
+import Submission.Work.FTS_RegExport.RXB.sup_bound_all_alpha
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.H2.WPQ.m_term_le_smoothQuad
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.SmoothStripDefs
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Stability.ZcutSmoothCompact
+-- ===== merged: Submission.Work.FTS.EllipticEst.Deleg.i1Paper_weakMixedAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Deleg
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+noncomputable section
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- **The final assembly of the cut-off chain**, given its three analytic pieces: the collar bound,
+the per-`(χ_n, ψ_δ)` inequality and the `ψ_δ ↓ 0` limit.  The rate constant is produced by
+`I1Wk.aeGradTrace0` from the two mixed-honesty hypotheses, and the identification
+`HkSq α 0 (∂_θ(grad u)) = Vfull u` is `AeColl.Vfull_eq_HkSq`. -/
+theorem i1Paper_weakMixed_of
+    (hcol : ∃ Cw : ℝ, 0 < Cw ∧ CollarBound Cw)
+    (hpair : ∀ Cw : ℝ, 0 < Cw → CollarBound Cw → TruncPairLe Cw)
+    (hplim : ∀ Cw : ℝ, 0 < Cw → PairLimit Cw) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (u G : ℝ → ℝ → ℝ),
+    Work.FTS.EllipticEst.H2W.Ae.AeData α u G →
+      Work.Spaces.HkMem α 0 (Work.FTS.EllipticEst.H2W.Ae.grad u) →
+      (∀ᵐ z ∂(MeasureTheory.volume.restrict (Set.Ioi 0)),
+        MeasureTheory.IntegrableOn
+          (fun θ => (z * Work.Spaces.pz (Work.Spaces.pth u) z θ) ^ 2
+            * Work.FTS.EllipticEst.AngSecond.sig θ) Work.Spaces.Iθ) →
+      MeasureTheory.IntegrableOn
+        (fun z => ∫ θ in Work.Spaces.Iθ, (z * Work.Spaces.pz (Work.Spaces.pth u) z θ) ^ 2
+            * Work.FTS.EllipticEst.AngSecond.sig θ) Work.Spaces.Iz →
+      ((1 - Work.Spaces.eta) / (1 + Work.Spaces.eta)) *
+          (α ^ 2 * Work.Spaces.HkSq α 0
+            (Work.Spaces.pth (Work.FTS.EllipticEst.H2W.Ae.grad u)))
+        - C * α ^ 2 * (Work.FTS.EllipticEst.AngSecond.IP
+              (Work.FTS.EllipticEst.H2W.Ae.grad u) (Work.FTS.EllipticEst.H2W.Ae.grad u)
+            + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP
+                (Work.FTS.EllipticEst.H2W.Ae.grad u) (Work.FTS.EllipticEst.H2W.Ae.grad u))
+              * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP
+                  (Work.Spaces.pthIter 2 u) (Work.Spaces.pthIter 2 u)))
+      ≤ α ^ 2 * Work.FTS.EllipticEst.AngSecond.IP
+          (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ) (Work.Spaces.pthIter 2 u) := by
+  obtain ⟨Cw, hCw, hC⟩ := hcol
+  obtain ⟨C1, hC1, hbound⟩ := mixedLimitBound
+  refine ⟨C1, hC1, ?_⟩
+  intro α u G hAe hU h1 h2
+  have hmix : MixedHon u := ⟨h1, h2⟩
+  -- the endpoint rate of the slices of `U`, from the two mixed-honesty hypotheses
+  obtain ⟨K, hK, hrate0⟩ :=
+    Work.FTS.EllipticEst.Cores.AeStep2Aux.I1Wk.aeGradTrace0 α u G hAe hU h1 h2
+  have hrate : SliceRate K u := by
+    filter_upwards [hrate0] with z hz
+    exact ⟨hz.2.2.2.1, hz.2.2.2.2⟩
+  have hcut : ∀ n : ℕ,
+      kap * Work.FTS.EllipticEst.AeColl.Pcut u n
+        ≤ Work.FTS.EllipticEst.AeColl.Dcut u n + Work.FTS.EllipticEst.AeColl.Trcut u n
+          - 2 * Work.Spaces.eta * Work.FTS.EllipticEst.AeColl.Acut u n :=
+    hplim Cw hCw α u G hAe hU hmix K hK hrate
+      (hpair Cw hCw hC α u G hAe hU hmix K hK hrate)
+  have hmain := hbound α u G hAe hU hcut
+  -- rewrite the `Az`/`Uz` aliases into the target's expressions
+  have hmain' : kap * Work.FTS.EllipticEst.AeColl.Vfull u
+      ≤ Work.FTS.EllipticEst.AngSecond.IP (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ)
+            (Work.Spaces.pthIter 2 u)
+        + C1 * (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                (Work.FTS.EllipticEst.H2W.Ae.grad u)
+              + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                    (Work.FTS.EllipticEst.H2W.Ae.grad u))
+                * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.Spaces.pthIter 2 u)
+                    (Work.Spaces.pthIter 2 u))) := by
+    have h1 : Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.AeColl.Az u)
+        (Work.Spaces.pthIter 2 u)
+        = Work.FTS.EllipticEst.AngSecond.IP (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ)
+            (Work.Spaces.pthIter 2 u) := rfl
+    have h2 : Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.AeColl.Uz u)
+        (Work.FTS.EllipticEst.AeColl.Uz u)
+        = Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+            (Work.FTS.EllipticEst.H2W.Ae.grad u) := rfl
+    rw [h1, h2] at hmain
+    exact hmain
+  -- identify `HkSq α 0 (∂_θ(z∂_zu))` with `Vfull u`
+  have hV := Work.FTS.EllipticEst.AeColl.Vfull_eq_HkSq α u
+    (Work.FTS.EllipticEst.H2W.Ae.AeData.smooth hAe)
+  have hα2 : (0 : ℝ) ≤ α ^ 2 := sq_nonneg α
+  have hstep := mul_le_mul_of_nonneg_left hmain' hα2
+  have hgoal : kap * (α ^ 2 * Work.FTS.EllipticEst.AeColl.Vfull u)
+      - C1 * α ^ 2 * (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+            (Work.FTS.EllipticEst.H2W.Ae.grad u)
+          + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                (Work.FTS.EllipticEst.H2W.Ae.grad u))
+            * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.Spaces.pthIter 2 u)
+                (Work.Spaces.pthIter 2 u)))
+      ≤ α ^ 2 * Work.FTS.EllipticEst.AngSecond.IP (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ)
+          (Work.Spaces.pthIter 2 u) := by
+    have e1 : α ^ 2 * (kap * Work.FTS.EllipticEst.AeColl.Vfull u)
+        = kap * (α ^ 2 * Work.FTS.EllipticEst.AeColl.Vfull u) := by ring
+    have e2 : α ^ 2 * (Work.FTS.EllipticEst.AngSecond.IP
+              (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ) (Work.Spaces.pthIter 2 u)
+          + C1 * (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                (Work.FTS.EllipticEst.H2W.Ae.grad u)
+              + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                    (Work.FTS.EllipticEst.H2W.Ae.grad u))
+                * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.Spaces.pthIter 2 u)
+                    (Work.Spaces.pthIter 2 u))))
+        = α ^ 2 * Work.FTS.EllipticEst.AngSecond.IP
+            (fun z θ => z ^ 2 * Work.Spaces.pzIter 2 u z θ) (Work.Spaces.pthIter 2 u)
+          + C1 * α ^ 2 * (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                (Work.FTS.EllipticEst.H2W.Ae.grad u)
+              + Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.FTS.EllipticEst.H2W.Ae.grad u)
+                    (Work.FTS.EllipticEst.H2W.Ae.grad u))
+                * Real.sqrt (Work.FTS.EllipticEst.AngSecond.IP (Work.Spaces.pthIter 2 u)
+                    (Work.Spaces.pthIter 2 u))) := by ring
+    rw [e1, e2] at hstep
+    linarith [hstep]
+  rw [hV]
+  simpa only [kap] using hgoal
+
+end
+
+end Work.FTS.EllipticEst.Deleg
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.LogWeightInt.logW_mul_sq_facts =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -148,3 +289,5 @@ theorem logW_mul_sq_facts {w : ℝ → ℝ → ℝ} {F : ℝ → ℝ → ℝ}
   exact hfub.trans (hquad.symm.trans hwip.symm)
 
 end Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.LogWeightInt
+end
+end

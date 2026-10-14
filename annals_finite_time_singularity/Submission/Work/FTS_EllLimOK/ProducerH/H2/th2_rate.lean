@@ -2,21 +2,18 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Eg_modulus
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2Ident
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.cos_inv_cube_mul_integral_le
-import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.classCSinRate
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.Trace
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.classCSinRate
+import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgRate
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_deriv_bound
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.second_theta_deriv_le_Xn6
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.slice_package_bounds
 import Submission.Work.FTS_EllLimOK.ProducerH.SecondDerivDz.second_theta_deriv_DzIter_le_Xn6
-import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.mixed_jets_le_Xn6
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_data
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.slice_deriv_bound
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Dev.end_rate_pi_half
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

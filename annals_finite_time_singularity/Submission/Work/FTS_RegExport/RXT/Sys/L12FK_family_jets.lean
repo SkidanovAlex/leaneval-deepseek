@@ -4,21 +4,18 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
 import Submission.Work.FTS.FinalV2.Defs
 import Submission.Work.FTS.RegExportIface.RXT.Leaves
-import Submission.Work.FTS_RegExport.RXA2w.lim_mixed_weighted_proved
-import Submission.Work.FTS_RegExport.RXB.l12_zero_lim_proved
-import Submission.Work.FTS_RegExport.RXT.Sys.slice_tau_modulus_weighted2
-import Submission.Work.FTS.GalBasis.cc.integral_abs_L12dens_le_Ioi
-import Submission.Work.FTS.GalBasis.cc.abs_L12_le_HkNorm
-import Submission.Work.FTS_RegExport.RXT.Ftau_bounds
-import Submission.Work.Construction.Basic
-import Submission.Work.FM.Core
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.L12Deriv
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.L12_limit_bound
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.Horizon
-import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.QlimSelf
 import Submission.Work.FTS.StrongEps.SupPort.classC_mixed_sup_le
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXB.l12_zero_lim_proved
+import Submission.Work.FTS_RegExport.RXT.Ftau_bounds
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.L12_limit_bound
+import Submission.Work.FTS_RegExport.RXT.cone_induction
+import Submission.Work.FTS_RegExport.RXT.st1_stdata
+import Submission.Work.FTS_RegExport.RXT0.QlimZLipBox
+import Submission.Work.Spaces.bt_integral_weight_id
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -4,13 +4,13 @@ import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Submission.Work.FTS_RegExport.RXR5L.ProdDefs
-import Submission.Work.FTS_RegExport.RXT.weighted_system
-import Submission.Work.FTS_RegExport.RXR5.Basic
 import Submission.Work.FTS_RegExport.RXR5.Fstar_C1Jet
-import Submission.Work.FTS_RegExport.RXR5L.DthFtau_C1Jet
-import Submission.Work.FTS_RegExport.RXT.st1_prelim
-import Submission.Work.FTS.Regularity.pzFstarModuli
+import Submission.Work.FTS_RegExport.RXT.weighted_system
+import Submission.Work.FTS_RegExport.THL.Defs
+import Submission.Work.FTS_RegExport.THL.L.DzDthSG_C1Jet_of_inputs
+import Submission.Work.FTS_StreamBdry.Inputs.ftau_Dz_cont
+import Submission.Work.FTS_StreamBdry.Inputs.theta_part_alt_majorant
+import Submission.Work.R1G.vecResid_eq_scalar_smul
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -318,19 +318,7 @@ theorem Dz_SG_gam_le {α S K : ℝ} {g : Fam} (hK0 : 0 ≤ K)
 
 /-! ## §5 The `z = 0` and `θ ∈ {0, π/2}` slices of `F_τ` -/
 
-/-- `F_τ(0,θ) = 0` for every `θ`. -/
-theorem Fp_zero_z {α τ θ : ℝ} {g : Fam} : Fp α g τ 0 θ = 0 := by
-  show Work.Construction.Fstar (pExp α) 0 θ + SG α g 0 θ τ = 0
-  rw [show Work.Construction.Fstar (pExp α) 0 θ = 0 by
-        rw [Work.Construction.Fstar, Work.FTS.Regularity.fmFstar_zero]; ring,
-      SG_apply_of_nonpos le_rfl, add_zero]
 
-/-- `D_θF_τ(0,θ) = 0` for every `θ`. -/
-theorem FpDth_zero_z {α τ θ : ℝ} {g : Fam} : Work.Spaces.Dth (Fp α g τ) 0 θ = 0 := by
-  rw [show Work.Spaces.Dth (Fp α g τ) 0 θ
-        = Real.sin (2 * θ) * deriv (fun θ' => Fp α g τ 0 θ') θ from rfl]
-  have hzero : (fun θ' => Fp α g τ 0 θ') = fun _ => (0 : ℝ) := funext (fun θ' => Fp_zero_z)
-  rw [hzero, deriv_const, mul_zero]
 
 /-- `D_zF_τ(z,0) = 0` for every `z`. -/
 theorem FpDz_zero_left {α τ z : ℝ} {g : Fam} (hα : 0 < α)

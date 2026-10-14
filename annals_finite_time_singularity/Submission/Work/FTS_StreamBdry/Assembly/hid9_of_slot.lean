@@ -1,26 +1,61 @@
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Defs
+import Submission.Work.FTS.StrongEps.E4R3.Nblock6.N_b6_five
+import Submission.Work.FTS_BSIdentP.Producers
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXB.l12_aux
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
+import Submission.Work.FTS_StreamBdry.Assembly.srcOK_of_slot
 import Submission.Work.FTS_StreamBdry.Basic
-import Submission.Work.FTS_StreamBdry.sb0_psiField_proved
-import Submission.Work.FTS_StreamBdry.sb1_gauge_proved
+import Submission.Work.FTS_StreamBdry.Inputs.slice_assy
+import Submission.Work.FTS_StreamBdry.Inputs.slice_slots
+import Submission.Work.FTS_StreamBdry.SB4.Thetapart_dz_bound
+import Submission.Work.FTS_StreamBdry.SB4.near0Core
+import Submission.Work.FTS_StreamBdry.SB5.sb5_decay
+import Submission.Work.FTS_StreamBdry.SB6.UprimeAux.OdeFacts
+import Submission.Work.FTS_StreamBdry.SB6.clauses3
 import Submission.Work.FTS_StreamBdry.sb2_c2_proved
 import Submission.Work.FTS_StreamBdry.sb2_dthDV_proved
+import Submission.Work.FTS_StreamBdry.sb5_barrier_proved
 import Submission.Work.FTS_StreamBdry.sb6_rates_proved
-import Submission.Work.FTS_StreamBdry.SB5.sb5_decay
-import Submission.Work.FTS_StreamBdry.Inputs.slice_inputs_of_slot
-import Submission.Work.FTS_StreamBdry.SB3.psiP_c2
-import Submission.Work.FTS_StreamBdry.SB3.psiP_DzLe
-import Submission.Work.FTS_StreamBdry.SB3.psiP_D3_le
-import Submission.Work.FTS_StreamBdry.SB3.law_psiP
-import Submission.Work.FTS_StreamBdry.SB25.gaugeMode_facts
-import Submission.Work.FTS_StreamBdry.SB25.bslOp_lincombQd
-import Submission.Work.FTS_StreamBdry.SB25.oddPerS_pieces
-import Submission.Work.FTS_StreamBdry.Assembly.srcOK_of_slot
-import Submission.Work.FTS_StreamBdry.Assembly.near0_of_slot
-import Submission.Work.FTS_BSIdentP.Producers
-import Submission.Work.FTS_FinalLeaves.psiCan_C3_proved
-import Submission.Work.FTS.H2.PhiStarE5.Locality
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Sixth4 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `E4R3/Sixth4.lean` — OPEN LEAF H6, the `ℋ⁶`-half of `AprioriChapter4` (low: assembly)
+
+curric-46 install 2026-10-12 (`cbc/fts_apriori6_ruling.md` §3 H6; REVIEW F1).
+From L-A in the form `rawE6_ineq_ones3` (pairing = PROVED `H6Pair_ones3`; NOT `H6Pair6`), L-C
+`gronwall_absorb`, S4 `rawE6_deriv`; `E0 ≤ CC(Kα²)²` via `IP6_cs_coeffs`; `E₁(T)` is chosen before
+`ε₆(T)` so the quadratic defect is absorbed.  NOTE: S4 carries an explicit uniform-in-`τ` bound
+`hbdd6` (risk R2) that `EpsRegP` does not supply; `rawE6_ineq_ones3` needs `0 < Ce`.
+-/
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.E4R4
+
+open Work.FTS.StrongEps
+
+set_option autoImplicit false
+
+
+end Work.FTS.StrongEps.EpsE4Thr.E4R4
+end
+end
+-- ===== merged: Submission.Work.FTS_StreamBdry.Assembly.hid9_of_slot =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -404,3 +439,4 @@ theorem hid9_of_slot {a C₀ Ce Cs : ℝ} (ha : 0 < a) (ha13 : a ≤ 1 / 3)
             (Work.FTS.FinalV2.psiFire Φs E g) C r z t) x := hSB0'.symm
 
 end Work.FTS_StreamBdry.Assembly
+end

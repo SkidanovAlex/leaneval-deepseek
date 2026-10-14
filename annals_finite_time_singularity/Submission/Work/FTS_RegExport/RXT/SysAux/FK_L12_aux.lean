@@ -3,13 +3,11 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS_RegExport.RXT.C2Radial
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.one_le_mul_w
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sin_two_rpow
 import Submission.Work.Spaces.uncurry_partial_c1
-import Submission.Work.FTS_RegExport.RXT.hasDerivAt_integral_Itheta_of_bound
-import Submission.Work.FTS_RegExport.RXT.continuousAt_integral_Itheta_of_bound
-import Submission.Work.FTS_RegExport.RXT.SysAux.abs_setIntegral_Itheta_mul_K_le
-import Submission.Work.FTS_RegExport.RXT.SysAux.DzIter_two_pt_open
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

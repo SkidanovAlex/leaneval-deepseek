@@ -3,9 +3,9 @@ import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.StrongEps.EpsE4Thr.GainDefs
 import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
 import Submission.Work.FTS.StrongEps.mixed_Jeps_kernel_partial
-import Submission.Work.FTS.StrongEps.EpsE4Thr.GainDefs
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

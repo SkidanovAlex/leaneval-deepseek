@@ -1,43 +1,89 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/Coer1LhatO.lean` — the level-one coercivity of `𝓛̂` on
-the **open** class
-
-`CoercivityFix/Coer1/coer1_Lhat.lean` proves `2·|f|²_{ℋ¹} ≤ H1IP α (𝓛̂ f) f` on `RegQ α 2 f` by
-assembling the four estimates `est_A`, `est_B`, `est_C`, `est_D` with the arithmetic `assembly`
-and the domination `EDthW_le_En_gam`.
-
-This file performs the same assembly on the open class:
-
-* the four estimates are the fleet's open ports `OClass.est_A_O`, `est_B_O`, `est_C_O`, `est_D_O`
-  (all stated with `RegQo α 2` + `IntPkgO`);
-* `assembly` and `EDthW_le_En_gam` are *class-free* (the former takes the `ℋ¹`-identity and the
-  four slot bounds as hypotheses, the latter takes the two integrability facts), so the frozen
-  statements apply verbatim;
-* the `ℋ¹`-identity comes from `StrongPersist.HkSq_one_eq_SO` (the open analogue of
-  `HkSq_one_eq`) and the `En`-identifications of `Coer1.Defs`.
-
-This is the base of the *clean* (`𝓛̂`) induction route that feeds `Transfer/CoerDataT`'s step; it
-is the open-class analogue of the theorem whose `CoerAdm`-version `coer1_Lhat` is consumed by
-`Assembly.coerData2_one_H1IP`.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OpenClass
-import Submission.Work.FTS.StrongEps.EpsE4Thr.IntPkgO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OClass.est_A_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OClass.est_B_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OClass.est_C_O
-import Submission.Work.FTS.StrongEps.EpsE4Thr.OClass.est_D_O
-import Submission.Work.FTS.CoercivityFix.Coer1.Assembly
-import Submission.Work.FTS.CoercivityFix.Coer1.Estimates
-import Submission.Work.FTS.StrongPersist.IP6_lo_coeffs
+import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.BdryAbstract
+import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtData
+import Submission.Work.FTS.PressureOn.Connect.BoundaryTime.ExtDeriv
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelGradAux2
+import Submission.Work.FTS.PressureOn.PoissonAux.kernelIntegral
+import Submission.Work.FTS.PressureOn.integral_div_eq_zero_of_offPlanes
+import Submission.Work.FTS.StrongEps.E4R3.Apriori4Proofs.TransferDeriv.conv_shift_sq_integral_le
 import Submission.Work.FTS.StrongEps.EpsE4Thr.CoerDataTO
-import Submission.Work.FTS.StrongEps.EpsE4Thr.StepDataO
+import Submission.Work.FTS.StrongEps.EpsE4Thr.OClass.est_D_O
+import Submission.Work.FTS.StrongEps.EpsRLX.WpUniformBound
+import Submission.Work.FTS.StrongPersist.N6Trans.Hon.DelicateHon
+import Submission.Work.FTS.StrongPersist.N6Trans.T1Hon.SlotData
+import Submission.Work.FTS.StrongPersist.N6_fkH
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_FinalLeaves.profDerivData_min_proved
+import Submission.Work.FTS_MuLamOK.Rows.Rl1Defs
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.H2.T1Q.SliceIntQ
+import Submission.Work.H2W.FstarDzIterFourPsiAe
+-- ===== merged: Submission.Work.FTS.PressureOn.Connect.BoundaryTime.BdryDeriv =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open FiniteTimeSingularity Set MeasureTheory Filter
+open Work.FTS.Physical (physVel)
+open scoped Topology NNReal ENNReal
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+
+namespace Work.FTS.PressureOn.Connect
+
+noncomputable section
+
+variable {α : NNReal} {ω : R3 → ℝ → R3} {T : ℝ}
+
+theorem hasFDerivWithinAt_potOn_uncurry_boundary (hT : 0 < T)
+    (hstrips : ∀ S ∈ Set.Ioo 0 T, IsContDiffHolderOn ℝ α
+      (physVel ω).uncurry (Set.univ ×ˢ Set.Icc 0 S))
+    (hcurl : ∀ t ∈ Set.Ico 0 T, ∀ x, vorticity (fun z => physVel ω z t) x = ω x t)
+    (hsupp : ∀ S ∈ Set.Ioo 0 T, ∃ R, ∀ t ∈ Set.Icc 0 S, ∀ x, ω x t ≠ 0 → ‖x‖ ≤ R)
+    (hcontDt : ContinuousOn (fun q : R3 × ℝ => timeDeriv ω q.1 q.2) (Set.univ ×ˢ Set.Ico 0 T))
+    (hderiv : ∀ x, ∀ t ∈ Set.Ico 0 T,
+      HasDerivWithinAt (ω x) (timeDeriv ω x t) (Set.Ici t) t)
+    (hgq : ∀ t ∈ Set.Ioo 0 T, ∀ x, HasFDerivAt (potOn ω · t) (potGradCLM ω x t) x) :
+    ∀ x₀ : R3, ∀ y₀ ∈ Metric.ball x₀ 1,
+      HasFDerivWithinAt (fun p : R3 × ℝ => potOn ω p.1 p.2)
+        (potFDerivExt ω T (y₀, 0)) (bbox x₀ T) (y₀, 0) := by
+  have hT2T : T / 2 ≤ T := by linarith
+  intro x₀ y₀ hy₀
+  have hmain := hasFDerivWithinAt_of_boundary_data
+    (F := fun p : R3 × ℝ => potOn ω p.1 p.2)
+    (A := potGradExt ω T) (c := fun p : R3 × ℝ => potTDerivExt ω T p.1 p.2)
+    hT hy₀
+    (potOn_uncurry_continuousOn_strip (α := α) hT hstrips hcurl hsupp)
+    (potGradExt_continuousOn_strip (α := α) hT hstrips hcurl)
+    (potTDerivExt_continuousOn_strip (α := α) hT hstrips hcurl hsupp hcontDt hderiv)
+    (fun σ hσ z => by
+      have hpg : potGradExt ω T (z, σ) = timeDeriv (physVel ω) z σ
+          - crossVec (physVel ω z σ) (ω z σ) := by
+        simp only [potGradExt, if_neg (ne_of_gt hσ.1)]
+      rw [hpg]
+      simpa only [potGradCLM] using hgq σ ⟨hσ.1, lt_of_lt_of_le hσ.2 hT2T⟩ z)
+    (fun σ hσ => by
+      rw [potTDerivExt_eq_potTDeriv ω T y₀ hσ.1]
+      exact hasDerivAt_potOn_time_aux hstrips hcurl hsupp hcontDt hderiv y₀
+        ⟨hσ.1, lt_of_lt_of_le hσ.2 hT2T⟩)
+  simpa only [bbox, potFDerivExt] using hmain
+
+end
+
+end Work.FTS.PressureOn.Connect
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.Coer1LhatO =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -133,3 +179,5 @@ theorem coerData2_one_H1IP_O :
 
 
 end Work.FTS.StrongEps.EpsE4Thr
+end
+end

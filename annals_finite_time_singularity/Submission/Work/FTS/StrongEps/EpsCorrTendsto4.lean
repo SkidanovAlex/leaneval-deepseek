@@ -1,15 +1,7 @@
-/-
-# `StrongEps/EpsCorrTendsto4.lean` — `EpsCorr_tendsto_zero` at level 4 (PROVED modulo the leaf
-`L12_Jeps_sub_le4`)
-
-curric-46 lead install (2026-10-11), `cbc/fts_strongeps_c1c5_ruling.md` §3: Gap 2 re-routed to
-level 4.  `h4`/`hb` are the proved `epsWP_hkMem4_bnd_unif`; this replaces the `h5`/`hb5` inputs of
-`EpsHlim.epsRHSP_slot_tendsto` (the `epsRHSP_slot_tendsto4` switch is the owner's, mechanical).
--/
 import Mathlib.Analysis.Normed.Group.Continuity
 import Mathlib.Analysis.Normed.Ring.Basic
-import Submission.Work.FTS.StrongEps.EpsCorrTendsto
 import Submission.Work.FTS.StrongEps.L12_Jeps_sub_le4
+import Submission.Work.FTS.StrongPersist.H6Aux.E2Facts
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

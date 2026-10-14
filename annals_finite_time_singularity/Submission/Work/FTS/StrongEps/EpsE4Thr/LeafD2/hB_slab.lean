@@ -1,8 +1,8 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.StrongEps.EpsE4Thr.XStep
-import Submission.Work.FTS.StrongEps.EpsE4Thr.LeafD2.continuousOn_slab_of_lipschitz
-import Submission.Work.FTS.StrongEps.EpsE4Thr.LeafD2.fderivFeps_sub_le
+import Submission.Work.FTS.StrongEps.EpsE4Thr.Leaves.FlowBits.epsSqLip_of_xball
+import Submission.Work.FTS_RegExport.RXVP3.velPkgOpen_of_vopLower
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -248,33 +248,5 @@ the Picard iterate data that supply it — as input).  See `NOTES_hB_plan.md` an
 `NOTES_limEpsSq_lip_hvol_verdict.md`; the consuming route with the correct hypothesis list is
 `EpsE4Thr/RegDataWired.lean`. -/
 
-theorem hB_slab {α C₀ Ce Cs R ε δ : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Work.FTS.Galerkin.Fn} {E : Work.FTS.Galerkin.Fn → Work.FTS.Galerkin.Fn}
-    {h₀ : Work.FTS.Galerkin.Fn}
-    (hα : α ∈ Set.Ioc (0 : ℝ) 1) (hρ : Work.FTS.StrongEps.IsSmoothKernel ρ) (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hC₀ : 0 < C₀)
-    (hEll : ∀ u : Work.FTS.Galerkin.Fn, Work.FTS.ClassC.ClassC α u →
-      Work.FTS.VocabO.EllPkgGo α Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK α 6 Ce u (E u))
-    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs) (hml : Work.FTS.StrongEps.MuLamOK α (2 * C₀) Φs E)
-    (hδ : 0 < δ) (hR : 0 < R) (hsm0 : Work.FTS.EllipticEst.SmoothOpen h₀)
-    (hlim : ∀ τ ∈ Set.Icc 0 δ, Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀)
-      (Work.FTS.Galerkin.slice (Work.FTS.StrongEps.EpsLocalPStar.limFam (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀) τ))
-    (hvol : ∀ z θ τ : ℝ, 0 < z → θ ∈ Set.Ioo 0 (Real.pi / 2) → τ ∈ Set.Icc 0 δ →
-      Work.FTS.StrongEps.EpsLocalPStar.limFam (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀ z θ τ
-        = h₀ z θ + ∫ s in (0 : ℝ)..τ,
-            Work.FTS.EpsEngine.Feps α ρ ε Φs E
-              (Work.FTS.Galerkin.slice (Work.FTS.StrongEps.EpsLocalPStar.limFam (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀) s) z θ) :
-    ContinuousOn (fun p : ℝ × ℝ × ℝ =>
-        fderiv ℝ (Function.uncurry
-          (Work.FTS.EpsEngine.Feps α ρ ε Φs E
-            (Work.FTS.Galerkin.slice (Work.FTS.StrongEps.EpsLocalPStar.limFam (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀) p.2.2)))
-          (p.1, p.2.1))
-      (Set.Ioi 0 ×ˢ Set.Ioo 0 (Real.pi / 2) ×ˢ Set.Icc 0 δ) := by
-  -- NOT DERIVABLE from `hlim` + `hvol`: the missing hypothesis is the fake-time `EpsSq`-Lipschitz
-  -- bundle of the limit curve (equivalently the joint a.e. strong measurability of the right-hand
-  -- side along it, which the tree produces only from the Picard iterate data).  The full
-  -- argument, the candidate route and its obstruction are in `NOTES_hB_plan.md` and
-  -- `NOTES_limEpsSq_lip_hvol_verdict.md`; the proved conditional assembly is
-  -- `hB_slab_of_lipschitz_bundle` in this file.
-  sorry
 
 end Work.FTS.StrongEps.EpsE4Thr.LeafD2

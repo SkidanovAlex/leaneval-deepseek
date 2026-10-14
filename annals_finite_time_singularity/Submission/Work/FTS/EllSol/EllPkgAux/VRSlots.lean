@@ -1,40 +1,19 @@
-/-
-# `Work.FTS.EllSol.EllPkgAux.VRSlots` — the `V`- and `ℛ`-slots, clash-free
-
-The `V`- and `ℛ`-slot estimates of the level-`4` package, re-derived here with a *clash-free*
-import cone.
-
-Why a second copy: the workspace contains two modules that declare the same constant
-`Work.EllipticEst.Core.i0Aux.rho`
-(`Submission/Work/EllipticEst/Core/i0Aux/interpS_openOfStrip.lean` and
-`Submission/Work/EllipticEst/Core/i0Aux/SliceAgmonOpen/Defs.lean`), so no Lean environment may
-contain both.  The trace-class interpolation `Work.FTS.EllSol.EllPkgAux.interpOpenTrace` reaches
-the first of them, while the sibling slot files `EllPkgAux.vopSlotLe4` / `EllPkgAux.ropSlotLe4`
-reach the second (the former only through an *unused* import of
-`FTS/ClassC/NormPieces/transfer_Dz_pth_shift_classC`, the latter through
-`FTS/EllSol/PkgK5/ropTransferK5c`, needed there only for the pointwise identity
-`Rop = -2 sin²θ·(Uop/s2) + Vop`).
-
-The proofs below are the proofs of the sibling files verbatim, with the pointwise identity
-reproved locally and the offending import dropped.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.EllSol.EllPkgAux.Slots
-import Submission.Work.FTS.EllSol.PkgK5.vopTransferK5c
-import Submission.Work.FTS.EllSol.PkgK5.Fstar_DzIter_le_honest
-import Submission.Work.FTS.EllSol.VthAuxC.certC
-import Submission.Work.FTS.StrongGlobal.Defs
-import Submission.Work.FTS.EllSol.ropBasic
-import Submission.Work.Blocks.HkMul_ang_le
-import Submission.Work.FTS.EllipticEst.HkNorm_add_le
-import Submission.Work.FTS.EllipticEst.HkNorm_const_mul
-import Submission.Work.FTS.EllipticEst.HkSq_congr_open
 import Submission.Work.FTS.EllipticEst.EllHyp_certificates
-import Submission.Work.FTS.LocData.HkMem_const_mul
-import Submission.Work.Construction.Defs
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.StrongEps.RhsCont
+import Submission.Work.FTS.StrongGlobal.Defs
+import Submission.Work.FTS.StrongGlobal.Global
+import Submission.Work.FTS.StrongPersist.H6Rows.N0pair6bWork.HkMem_mul_of_WlInf6_cd6
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.SolutionDelivery.DatumOdd
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

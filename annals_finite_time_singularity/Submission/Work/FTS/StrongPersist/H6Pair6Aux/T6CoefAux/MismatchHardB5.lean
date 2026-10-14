@@ -3,23 +3,22 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.slotAmgm
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.slotArith
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.cs_sqrt_int
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.sigmaDivisibility
-import Submission.Work.FTS.StrongPersist.N6.PwOpen6
-import Submission.Work.FTS.OpenPkg.Basic
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.zProdIntLe
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.FTS.TransportS.ip4SlotDomFixed
-import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
-import Submission.Work.FTS.TransportS.T2SupB2.mixed_slice_z_uniform
-import Submission.Work.H2.T1Q.SliceSupOpen
-import Submission.Work.Spaces.integrable_prod_of_iterated
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
 import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.leafGamPureZ_b1fiveAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.MismatchHardAux
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.MismatchHardSlice
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.sigmaDivisibility
+import Submission.Work.FTS.StrongPersist.L3Rhs.Defs
+import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Submission.Work.FTS.StrongPersist.SP6.EV6
+import Submission.Work.FTS.StrongPersist.SP6.PthEVzR
+import Submission.Work.FTS.TransportS.SlotT2.supThetaIntOpen
+import Submission.Work.FTS.TransportS.T2Sup.PairBnd
+import Submission.Work.FTS.TransportS.T3BadAux.slot_slice_le
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS.TransportS.ip4SlotDomFixed
+import Submission.Work.FTS.TransportS.t3SlotGuarded
+import Submission.Work.H2.T1Q.SupAbsThOAesm
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Stability.mul_rpow_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

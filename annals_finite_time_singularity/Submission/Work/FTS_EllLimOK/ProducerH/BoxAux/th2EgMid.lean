@@ -1,15 +1,131 @@
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.EllExist.LevelK
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongGlobal.Global
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_EllLimOK.PkgJets.L12jets_classC
 import Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgBasic
 import Submission.Work.FTS_EllLimOK.SlotSup.slot_jets_sup_le
-import Submission.Work.FTS_EllLimOK.PkgJets.L12jets_classC
-import Submission.Work.FTS.StrongLWP.Basic
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+-- ===== merged: Submission.Work.FTS.ClassC.A4 =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.ClassC
+
+open Work.FTS.Galerkin (Fn)
+
+set_option autoImplicit false
+
+/-! ## Monotonicity of the solution class in the level -/
+
+
+/-! ## The trace clause of the `U`-slot, from the Dirichlet data -/
+
+/-- `EllResid α g Ψ` vanishes identically at `θ = 0` when `Ψ` does. -/
+theorem EllResid_at_zero {α : ℝ} {g Ψ : Fn} (h : ∀ z, Ψ z 0 = 0) (z : ℝ) :
+    Work.Elliptic.EllResid α g Ψ z 0 = 0 := by
+  rw [Work.Elliptic.EllResid]
+  simp [h z]
+
+/-- `EllResid α g Ψ` vanishes identically at `θ = π/2` when `Ψ` does. -/
+theorem EllResid_at_pi_half {α : ℝ} {g Ψ : Fn} (h : ∀ z, Ψ z (π / 2) = 0) (z : ℝ) :
+    Work.Elliptic.EllResid α g Ψ z (π / 2) = 0 := by
+  rw [Work.Elliptic.EllResid]
+  simp only [show (2 : ℝ) * (π / 2) = π by ring, Real.sin_pi]
+  simp [h z]
+
+/-- `∂_z` of a function vanishing identically at an angle vanishes there. -/
+theorem pz_eq_zero_of_forall_eq_zero {f : Fn} {θ₀ : ℝ} (h : ∀ z, f z θ₀ = 0) (z : ℝ) :
+    Work.Spaces.pz f z θ₀ = 0 := by
+  have hfun : (fun z' : ℝ => f z' θ₀) = fun _ => (0 : ℝ) := funext h
+  simp only [Work.Spaces.pz, hfun]
+  exact deriv_const z (0 : ℝ)
+
+/-- **The `vanishU` clause of `EllPkgGo` holds for every level-`7` solution** (no trace
+hypothesis is needed: it comes from the two Dirichlet values of `Ψ`). -/
+theorem vanishU_of_classOk {α : ℝ} {g Ψ : Fn} (h : Work.FTS.EllExist.EllClassOk 7 α g Ψ) :
+    Work.Spaces.VanishTheta
+      (Work.Construction.Uop α (Work.Construction.PhiTil α g Ψ)) := by
+  rw [Work.FTS.EllipticEst.Uop_PhiTil_eq]
+  have h0 : ∀ z, Work.Elliptic.EllResid α g Ψ z 0 = 0 := fun z => EllResid_at_zero h.1.2.1 z
+  have hπ : ∀ z, Work.Elliptic.EllResid α g Ψ z (π / 2) = 0 :=
+    fun z => EllResid_at_pi_half h.1.2.2.1 z
+  constructor
+  · intro z
+    have h1 := pz_eq_zero_of_forall_eq_zero h0 z
+    simp only [Work.FTS.EllipticEst.Uop, h0 z, h1]
+    ring
+  · intro z
+    have h1 := pz_eq_zero_of_forall_eq_zero hπ z
+    simp only [Work.FTS.EllipticEst.Uop, hπ z, h1]
+    ring
+
+/-! ## The four slot estimates, at a fixed constant -/
+
+
+
+
+
+
+
+
+
+/-! ## The two packages -/
+
+
+
+
+
+/-! ## Monotonicity of the packages in the constant -/
+
+/-- `EllPkgK` is monotone in the constant. -/
+theorem EllPkgK_mono {α : ℝ} {k : ℕ} {Ce Ce' : ℝ} {g Φg : Fn}
+    (h : EllPkgK α k Ce g Φg) (hle : Ce ≤ Ce') : EllPkgK α k Ce' g Φg := by
+  obtain ⟨h1, h2, ⟨hRm, hRb⟩, ⟨hUm, hUb⟩, ⟨hVm, hVb⟩⟩ := h
+  have hgnn : 0 ≤ Work.Spaces.HkNorm α k g := Work.Spaces.HkNorm_nonneg α k g
+  have hmon : ∀ X : ℝ, X ≤ Ce * Work.Spaces.HkNorm α k g →
+      X ≤ Ce' * Work.Spaces.HkNorm α k g :=
+    fun X hX => le_trans hX (mul_le_mul_of_nonneg_right hle hgnn)
+  exact ⟨h1, h2, ⟨hRm, hmon _ hRb⟩, ⟨hUm, hmon _ hUb⟩, ⟨hVm, hmon _ hVb⟩⟩
+
+/-- `EllPkgGo` is monotone in the constant (`0 < α` is needed only to keep the
+`α^{-1/2}`-factor nonnegative). -/
+theorem EllPkgGo_mono {α Ce Ce' : ℝ} {g Φg : Fn} (hα : 0 < α)
+    (h : Work.FTS.VocabO.EllPkgGo α Ce g Φg) (hle : Ce ≤ Ce') :
+    Work.FTS.VocabO.EllPkgGo α Ce' g Φg := by
+  obtain ⟨h1, h2, ⟨hRm, hRb⟩, ⟨hUm, hUb⟩, ⟨hVm, hVb⟩, hv, ⟨hTm, hTb⟩⟩ := h
+  have hgnn : 0 ≤ Work.FTS.Nonlin.Xn α g := Work.Spaces.HkNorm_nonneg α 4 g
+  have hαp : 0 ≤ α ^ (-(1 / 2 : ℝ)) := Real.rpow_nonneg hα.le _
+  refine ⟨h1, h2, ⟨hRm, ?_⟩, ⟨hUm, ?_⟩, ⟨hVm, ?_⟩, hv, ⟨hTm, ?_⟩⟩
+  · exact le_trans hRb (mul_le_mul_of_nonneg_right hle hgnn)
+  · exact le_trans hUb (mul_le_mul_of_nonneg_right hle hgnn)
+  · exact le_trans hVb (mul_le_mul_of_nonneg_right hle hgnn)
+  · refine le_trans hTb ?_
+    exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hle hαp) hgnn
+
+end Work.FTS.ClassC
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ProducerH.BoxAux.th2EgMid =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -151,3 +267,5 @@ theorem dzIter_add_const_mul_aux {A F : ℝ → ℝ → ℝ}
 
 
 end Work.FTS_EllLimOK.ProducerH.BoxAux
+end
+end

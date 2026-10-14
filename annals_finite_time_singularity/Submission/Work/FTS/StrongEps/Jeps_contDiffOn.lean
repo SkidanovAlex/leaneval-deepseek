@@ -1,37 +1,191 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/Jeps_contDiffOn.lean` — E1: `J_ε` smooths
-
-The target of this file is `Jeps_contDiffOn`: the log-coordinate mollifier `J_ε` of
-`Submission/Work/FTS/StrongEps/Basic.lean` sends *any* locally integrable profile to a profile
-which is `C^n` on the open quadrant `Quad` `(0,∞) × (0,π/2)`, for every `n`.
-
-The proof is the standard convolution argument, carried out in the log coordinates
-`s = log z`, `ζ = log tan θ`:
-
-* on `Quad`, `J_ε f` equals the convolution `Jker ρ ε ⋆ logPull f` evaluated at `(s, ζ)`
-  (`Jeps_eq_conv`); this is `logPull_shift`, the statement that the two shifts `zShift`/`thShift`
-  of the kernel are the translations `s ↦ s - p₁`, `ζ ↦ ζ - p₂`;
-* `Jker ρ ε = ε⁻² · ρ (ε⁻¹ • ·)` is `C^n` (`contDiff_Jker`) and compactly supported
-  (`hasCompactSupport_Jker`, from the support condition in `IsSmoothKernel`), while `logPull f`
-  is locally integrable by hypothesis; hence the convolution is `C^n`
-  (`HasCompactSupport.contDiff_convolution_left`);
-* the log-coordinate map `p ↦ (log p.1, log (tan p.2))` is `C^∞` on `Quad`
-  (`contDiffOn_logMap`), so the composite is `C^n` on `Quad`.
-
-This is the smoothing half of **E1** of the design; the weight bounds (the fact that the same
-construction is bounded on the weighted norms, uniformly in `ε`) live in the `E1`-modules
-`wt*_shift_le.lean`.
--/
+import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Convolution
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Analysis.SpecialFunctions.PolarCoord
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Haar.Unique
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Tactic.Have
 import Mathlib.Topology.UniformSpace.Uniformizable
-import Submission.Work.FTS.StrongEps.Basic
+import Submission.Work.FTS.EllipticEst.H2W.Ae.TruncIdentAe
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.RPFresh.straight_transfers
+import Submission.Work.FTS.EllipticEst.TT.Shim.EllHyp_certificates
+import Submission.Work.FTS.EllipticEst.TT.Shim.HkMem_pthIter2_EllResid
+import Submission.Work.FTS.EllipticEst.integrableOn_Bmom_div
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.slice_gprime_ident
+import Submission.Work.FTS.H2.hard_sq_prod_z
+import Submission.Work.FTS.LocData.zero_slice_locG
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
+import Submission.Work.FTS.StrongEps.EpsE4Thr.TracesAux.BdryTraces_psi_mul_open
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.Sys.continuousAt_Qang_of_bounds
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.WPQ.hardy_slice_Aang
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.Spaces.uncurry_partial_c1
+import Submission.Work.StabilityFar.Decay.KernelDefs
+import Submission.Work.StabilityFar.Decay.hasDerivAt_bsK
+-- ===== merged: Submission.Work.FTS.EllipticEst.Cert.HkMem_pthIter2_EllResid =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllipticEst.Cert
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+set_option maxHeartbeats 1000000
+
+noncomputable section
+
+open scoped Real Topology ContDiff
+open MeasureTheory Set Filter
+
+/-! ## Auxiliary calculus
+
+`F_*(g) = ∫_θ g(z,θ) sinθcos²θ dθ` is `C^∞` on `(0,∞)` for every `g` smooth on a
+neighbourhood of the closed quadrant (the parametric integral of a smooth integrand over the
+compact angular interval); and a function of one variable whose derivative is a prescribed
+`C^∞` function is itself `C^∞` (the primitive lemma needed for `L₁₂` and `Ḡ`). -/
+
+end
+
+end Work.FTS.EllipticEst.Cert
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.TT.Straight_aux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.EllipticEst.TT
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-! ## Integrability of the square of the angular moment -/
+
+/-- On the domain `(0,∞)` the radial weight satisfies `1 ≤ w`. -/
+theorem one_le_w {z : ℝ} (hz : 0 < z) : 1 ≤ Work.Spaces.w z := by
+  have h : Work.Spaces.w z = (1 + 1 / z) ^ 2 := by
+    rw [Work.Spaces.w]
+    field_simp
+    ring
+  rw [h]
+  nlinarith [one_div_pos.mpr hz]
+
+
+
+
+
+
+/-! ## Smoothness of the two radial functions used in the ODE argument -/
+
+
+
+/-! ## `F_*(D_zΨ)²` for the data of `EllHyp` -/
+
+/-- `z² F_*(∂_z²Ψ)(z) = F_*(z² ∂_z²Ψ)(z)`: the radial factor is constant in `θ`. -/
+theorem zsq_mul_Fstar {g : ℝ → ℝ → ℝ} (z : ℝ) :
+    z ^ 2 * Work.Elliptic.Fstar g z
+      = Work.Elliptic.Fstar (fun z' θ => z ^ 2 * g z' θ) z := by
+  rw [Work.Elliptic.Fstar, Work.Elliptic.Fstar, ← MeasureTheory.integral_const_mul]
+  exact MeasureTheory.setIntegral_congr_fun measurableSet_Icc (fun θ _ => by ring)
+
+
+
+/-! ## The moment identity -/
+
+
+
+
+/-! ## Weighted integrability of the angular moments
+
+The estimates below are the *weighted* (`w²`) versions of `Fstar_sq_integrable`; they are what the
+membership statements `R·sin 2θ ∈ ℋ^k` need, since the `ℋ^k`-integrand of a separated function
+`R(z)·sin 2θ` is dominated by `w(z)²·Σ_{j≤k}(D_z^jR)(z)²` times an angular profile. -/
+
+/-- `z ↦ w(z)²` is continuous on `(0,∞)`. -/
+theorem continuousOn_w_sq : ContinuousOn (fun z : ℝ => (Work.Spaces.w z) ^ 2) (Set.Ioi 0) := by
+  have hfun : (fun z : ℝ => (Work.Spaces.w z) ^ 2) = fun z : ℝ => (1 + z) ^ 4 / z ^ 4 := by
+    funext z
+    rw [Work.Spaces.w]
+    field_simp
+  rw [hfun]
+  refine ContinuousOn.div (by fun_prop) (by fun_prop) (fun z hz => ?_)
+  exact pow_ne_zero 4 (ne_of_gt (Set.mem_Ioi.mp hz))
+
+
+
+/-! ## Weighted moment bounds for the radial iterates of the straightened pieces
+
+These are the inputs of the membership statements `R·sin 2θ ∈ ℋ^k`: the sharp form of
+`Work.FTS.EllipticEst.Cert.HkMem_radialSin_of_bound` needs the integrability of the weighted
+radial iterates of `R`, and for the radial pieces `R` occurring here (`F_*(F)`,
+`F_*(D_z^jΨ)`, …) that integrability comes from the weighted moment bounds above. -/
+
+/-- `D_z^jΨ` is smooth on a neighbourhood of the closed quadrant. -/
+theorem smoothNbhd_DzIter {Ψ : ℝ → ℝ → ℝ} (h : Work.Spaces.SmoothNbhd Ψ) (j : ℕ) :
+    Work.Spaces.SmoothNbhd (Work.Spaces.DzIter j Ψ) := by
+  induction j with
+  | zero => simpa using h
+  | succ j ih =>
+      rw [Work.Spaces.DzIter_succ]
+      exact Work.FTS.EllipticEst.Cert.smoothNbhd_mul' Work.FTS.EllipticEst.Cert.smoothNbhd_fst
+        (Work.Spaces.smoothNbhd_pzIter ih 1)
+
+
+
+
+
+
+
+end Work.FTS.EllipticEst.TT
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.EpsE4Thr.JepsJoint.aemeasurable_L12_fam =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+open MeasureTheory Set
+open scoped Real
+
+namespace Work.FTS.StrongEps.EpsE4Thr.JepsJoint
+
+
+end Work.FTS.StrongEps.EpsE4Thr.JepsJoint
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.Jeps_contDiffOn =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -151,3 +305,5 @@ theorem Jeps_contDiffOn (ρ : ℝ × ℝ → ℝ) (hρ : IsSmoothKernel ρ) {ε 
   exact Jeps_eq_conv ρ ε f hp.1 hp.2
 
 end Work.FTS.StrongEps
+end
+end

@@ -2,44 +2,67 @@ import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
+import Submission.Work.FTS.GalBasis.hk_sq_api
+import Submission.Work.FTS.OpenPkg.WtohWin.Assembly
+import Submission.Work.FTS.StrongEps.E5G.PkgOfHlim
+import Submission.Work.FTS.StrongEps.E5G.hWc_aux
 import Submission.Work.FTS.StrongEps.E5G.hapx_of_tower
-import Submission.Work.FTS.StrongEps.E5G.rhsFun_lipschitz_H4
-import Submission.Work.FTS.StrongEps.E5G.epsWP_hkMem5_bnd_fam
+import Submission.Work.FTS.StrongEps.E5G.hlim_of_tower
 import Submission.Work.FTS.StrongEps.E5G.slice_lip5_norm
-import Submission.Work.FTS.StrongEps.E5G.slice_lip_norm
-import Submission.Work.FTS.StrongEps.E5G.Xn_JfamP_lip
-import Submission.Work.FTS.StrongEps.E5G.morrey_four
-import Submission.Work.FTS.StrongEps.E5G.Jeps_tendsto_of_modulus
-import Submission.Work.FTS.StrongEps.E5G.epsWP_equicont_tower
-import Submission.Work.FTS.StrongEps.HkSq_Jeps_le
-import Submission.Work.FTS.StrongEps.Xn_le_of_convLocUnif
-import Submission.Work.FTS.StrongEps.E5G.PzJeps_abs_le_unif
-import Submission.Work.FTS.StrongEps.E5G.EpsRHSP_slotSup_val5
-import Submission.Work.FTS.StrongEps.E5G.hkNorm_PzJeps_le_gen
+import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
+import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
+import Submission.Work.FTS.StrongEps.EpsHbdd
 import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup
 import Submission.Work.FTS.StrongEps.EpsRHSP_slotSup_val
-import Submission.Work.FTS.StrongEps.EpsE4Thr.epsRHSP_hkMem_fam
-import Submission.Work.FTS.StrongEps.epsWP_sup_le_fam
-import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
-import Submission.Work.FTS.StrongEps.exists_shift_window_compact
 import Submission.Work.FTS.StrongEps.EpsRLX.DeltaData
-import Submission.Work.FTS.StrongEps.EComparison.L12_sub_HkMem
-import Submission.Work.FTS.StrongEps.JfamP_norm
-import Submission.Work.FTS.StrongEps.smoothOpen_epsWP
-import Submission.Work.FTS.StrongEps.RhsCont
-import Submission.Work.FTS.GalBasis.hk_sq_api
-import Submission.Work.FTS.OpenPkg.Basic
+import Submission.Work.FTS.StrongEps.EpsRLX.N0DiffClassC
 import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartArith
-import Submission.Work.FTS_RegExport.RXT.Slots.v2_hkMem_pointwise_min
-import Submission.Work.FTS.StrongEps.Jker_integral_eq_one
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.OpenPkg.l12zero_field
-import Submission.Work.FTS.StrongEps.HkMem_Jeps
-import Submission.Work.FTS.StrongEps.JepsSmoothOpen
-import Submission.Work.FTS.StrongEps.PZeroAux.pzNorm_pos
-import Submission.Work.FTS.StrongEps.PZero
-import Submission.Work.FTS.StrongEps.EpsSqTools.BumpEpsSqBound
+import Submission.Work.FTS.StrongEps.EpsSqTools.LinAux.LinPartAux
+import Submission.Work.FTS.StrongEps.EpsSqTools.Shift
+import Submission.Work.FTS.StrongEps.JfamP_norm
+import Submission.Work.FTS.StrongEps.RhsCont
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongEps.Weights
+import Submission.Work.FTS.StrongEps.epsWP_hkMem4_bnd_fam
+import Submission.Work.FTS.StrongEps.smoothOpen_epsWP
+import Submission.Work.FTS.StrongEps.wtZ_shift_le
+import Submission.Work.FTS.StrongPersist.H6Rows.NZzero6
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.StarSlotPcs.DzdIterBound
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6SupAux.starSlotShift
+import Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.AuxProof
+import Submission.Work.FTS.StrongPersist.SupOpenH2
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_EllLimOK.ProducerH.pzIterTwo_shiftSing_eq_PhiTil_add
+import Submission.Work.FTS_RegExport.RXR5L.coef_tau_lip
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXVP.thLip
+import Submission.Work.FTS_RegExport.THL.angular_L2_noTrace
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.AsmPkg =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.E5G
+
+open Work.FTS.Galerkin (Fn Fam slice)
+
+set_option autoImplicit false
+
+
+end Work.FTS.StrongEps.E5G
+end
+end
+-- ===== merged: Submission.Work.FTS.StrongEps.E5G.hcontR_of_tower =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -457,3 +480,4 @@ theorem hcontR_of_tower {α₄ α C₀ Ce Cs Cs6 T : ℝ} {K' : ℕ → ℝ} {ρ
   exact hLipR s hs s' hs'
 
 end Work.FTS.StrongEps.E5G
+end

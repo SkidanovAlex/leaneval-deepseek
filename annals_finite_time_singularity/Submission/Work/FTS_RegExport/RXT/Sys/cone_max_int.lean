@@ -2,7 +2,7 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Submission.Work.FTS_RegExport.RXT.cone_induction
-import Submission.Work.FTS_RegExport.RXT.step_integrated_fix
+import Submission.Work.FTS_RegExport.RXT.transport_weighted_proved
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

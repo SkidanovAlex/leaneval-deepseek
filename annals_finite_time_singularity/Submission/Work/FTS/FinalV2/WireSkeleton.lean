@@ -2,22 +2,22 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.FTS.FinalV2.Adapter
-import Submission.Work.FTS.FinalV2.Mer8
-import Submission.Work.FTS.EllSol.existsEllSolC_of_threshold
-import Submission.Work.FTS.ClassC.A2
-import Submission.Work.FTS.PressureOn.Main
-import Submission.Work.FTS_MuLamOK.Main
-import Submission.Work.FTS.PhiStar.StarPkgo2Inhabitant
-import Submission.Work.FTS.StrongEps.EpsODE
-import Submission.Work.FTS.StrongEps.EpsE4R
-import Submission.Work.FTS_LocDatum3a.Assembly
+import Submission.Work.FTS.ClassC.pth_Vop_EllResid_classC
 import Submission.Work.FTS.FinalV2.ESlot
-import Submission.Work.FTS.StrongEps.E5G.exists_limG_core
+import Submission.Work.FTS.FinalV2.Mer8
 import Submission.Work.FTS.PhiStar.StarCoreInhabitant
-import Submission.Work.FTS.PhiStar.StarPkgo2OfCore
+import Submission.Work.FTS.PressureOn.Main
+import Submission.Work.FTS.StrongEps.E5G.ExistsLimG_assembly
+import Submission.Work.FTS.StrongEps.EpsE4R
+import Submission.Work.FTS.StrongEps.EpsHlim4
+import Submission.Work.FTS.StrongEps.EpsODE
+import Submission.Work.FTS.StrongPersist.SP6.EUz6
 import Submission.Work.FTS.StrongPersist.StarPkg6OfCore
-import Submission.Work.FTS.StrongEps.E4R3.Apriori4Defs
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Slice
+import Submission.Work.FTS_LocDatum3a.Assembly
+import Submission.Work.FTS_MuLamOK.Main
+import Submission.Work.FTS_RegExport.RXB.l12_zero_lim_proved
+import Submission.Work.FTS_RegExport.RXR5L.Auxiliary.Tlim_bounds
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -52,29 +52,10 @@ open Work.FTS.Regularity (pExp)
 
 set_option autoImplicit false
 
-/-- **(1)-feed, route (b)**: `ExistsEllSolC` from A2. Open leaf = A2's (`PhiStar.bslOp_sol_exists`). -/
-theorem existsEllSolC_routeB : Work.FTS.ClassC.ExistsEllSolC :=
-  Work.FTS.EllSol.existsEllSolC_of_threshold Work.FTS.ClassC.ellClassOk_exists_of_classC
 
 /-- The sup-bound constant of `sup5'` at `αG = pExp α`. -/
 def CgOf (α : ℝ) : ℝ := 10 / Real.sqrt (Work.Spaces.gam (pExp α) - 1)
 
-/-- **The threshold arithmetic** (REVIEW FIX-1): `α·(600·Cg·C₀) ≤ 1` at `C₀ = 1`, `α ≤ 8e-9`. -/
-theorem scale_ok {α : ℝ} (hα : 0 < α) (hα8 : α ≤ 8 / 10 ^ 9) :
-    α * (600 * CgOf α * 1) ≤ 1 := by
-  have hg : Work.Spaces.gam (pExp α) - 1 = 3 * α / 10 := by
-    rw [Work.FTS.Regularity.pExp_eq]; simp only [Work.Spaces.gam]; ring
-  set s : ℝ := Real.sqrt (3 * α / 10) with hs
-  have hs0 : 0 < s := Real.sqrt_pos.mpr (by positivity)
-  have hkey : 6000 * α ≤ s := by
-    have h1 : (6000 * α) ^ 2 ≤ 3 * α / 10 := by nlinarith
-    calc 6000 * α = Real.sqrt ((6000 * α) ^ 2) := (Real.sqrt_sq (by positivity)).symm
-      _ ≤ s := Real.sqrt_le_sqrt h1
-  have hC : CgOf α = 10 / s := by rw [CgOf, hg]
-  rw [hC]
-  have : α * (600 * (10 / s) * 1) = 6000 * α / s := by field_simp; ring
-  rw [this, div_le_one hs0]
-  exact hkey
 
 theorem CgOf_nonneg (α : ℝ) : 0 ≤ CgOf α := div_nonneg (by norm_num) (Real.sqrt_nonneg _)
 
@@ -253,9 +234,6 @@ theorem fts_inputs' : ∃ α : ℝ, Inputs' α := by
     intro g A B C _hSol hOK hClock
     exact merPsi_C3 (psiCan_C3 hEL3 hStar hOK) (fun τ hτ => hClock.2.2.2.2 τ hτ)
 
-/-- The blow-up through the corrected bundle. -/
-theorem blowup_v2 : ∃ α : ℝ≥0, 0 < (α : ℝ) ∧ Nonempty (Work.FTS.Top.BlowupAt α 1) :=
-  exists_blowupAt_of_inputs' fts_inputs'
 
 open FiniteTimeSingularity Gradient Matrix MeasureTheory in
 /-- **The challenge statement through the corrected bundle** (reach-walk target). -/

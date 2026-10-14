@@ -1,39 +1,24 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `fkThetaAux` — the two-dimensional inputs of the `(FK f)·D_θf` piece
-
-Auxiliary lemmas of `Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.fkThetaIbpPiece`
-(see `fkThetaEnd` for the estimate, `fkThetaIbpPiece` for the assembled statement):
-
-* `fk_cont_FK` — continuity of `z ↦ (FK f)(z)` on `(0,∞)` for an interior-class datum;
-* `fkTheta_ae_pos` — `z > 0` almost everywhere on `Iz = [0,∞)`;
-* `fk_ibp_integrable` — the three `IntegrableOn (Iz ×ˢ Iθ)` hypotheses of the angular
-  integration by parts `Work.FTS.StrongPersist.H6Aux.wip_Dth_ibp` for an arbitrary bounded
-  radial multiplier `g`, together with the outer and the a.e. slice integrability of the bare
-  leaf-weighted slot.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Prod
-import Submission.Work.FTS.CoercivityFix.Coer1.thetaIBP
-import Submission.Work.FTS.StrongPersist.Clauses
-import Submission.Work.FTS.TransportS.Slots
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6Coef.Defs
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.L12ShiftThetaAux
-import Submission.Work.FTS.StrongPersist.H6Aux.wip_Dth_ibp
-import Submission.Work.FTS.StrongPersist.H6Pair6Aux.leaf_slot_le6
-import Submission.Work.FTS.StrongPersist.N6Trans.Hon.HkProdOpen
-import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg_closed
-import Submission.Work.Construction.Basic
-import Submission.Work.FTS.TransportS.SupDzAux.sup_dz_avg_le
-import Submission.Work.FTS.Nonlinear.Pieces.Rl1.n5Bound
-import Submission.Work.Spaces.aesm_slice_of_continuousOn_Qd
-import Submission.Work.FTS.IPGen.OpenBasic
-import Submission.Work.FTS.CoercivityStep.Norm.HkSq_mono_le
 import Submission.Work.FTS.H2.L12HQ
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS.MeridianDyn.Bridge.ProfDerivData_of_regPkg_closed
+import Submission.Work.FTS.OpenPkg.Defs
+import Submission.Work.FTS.StrongPersist.Clauses
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T45AslotLe
+import Submission.Work.FTS.StrongPersist.H6Pair6Aux.T6CoefAux.mismatchCaseHard
+import Submission.Work.FTS.StrongPersist.N6Trans.SixRoute.sixExpansion
+import Submission.Work.FTS.TransportS.Slots
+import Submission.Work.FTS.TransportS.T3SlotAux.Flux
+import Submission.Work.FTS.TransportS.T3SlotAux.Remainder
+import Submission.Work.FTS_StreamBdry.SB4.DzEpartEq
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.PhiStar.Honesty.sqrt_weight_mul_eq_of_mem_Ioo
+import Submission.Work.SolutionDelivery.Scaling.vorticityDecay_rescaleDatum
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.bt_integral_weight_id
+import Submission.Work.Spaces.pz_DthIter_mul_eq
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

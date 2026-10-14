@@ -4,7 +4,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Normed.Group.Tannery
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Submission.Work.FTS.PhiStar.Series.eFam_sup_le
-import Submission.Work.FTS.PhiStar.Series.Defs
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -61,88 +61,12 @@ private lemma eFam_apply_pi_div_two (m : ℕ) :
   simp only [Work.FTS.PhiStar.Gegenbauer.eFam, Real.cos_pi_div_two, zero_mul]
 
 /-- `eFam m` is continuous (it is `cos θ · gC (2m+1) (sin θ)`). -/
-private lemma continuous_eFam (m : ℕ) : Continuous (Work.FTS.PhiStar.Gegenbauer.eFam m) := by
+private lemma continuous_eFam_prv (m : ℕ) : Continuous (Work.FTS.PhiStar.Gegenbauer.eFam m) := by
   unfold Work.FTS.PhiStar.Gegenbauer.eFam
   exact Real.continuous_cos.mul
     (((Work.FTS.PhiStar.Gegenbauer.contDiff_gC (2 * m + 1)).continuous).comp
       Real.continuous_sin)
 
-/-- **Tannery's theorem for the mode series**, in the form used for both endpoints: if every
-summand `θ ↦ acoeff α m F z · eFam m θ` tends to `0` along `𝓕` and if `θ ∈ Iθ` eventually
-(so that the uniform bound `|eFam m θ| ≤ 3 (m+1)` applies), then the whole series tends to `0`. -/
-private lemma tendsto_psiSeries_of {𝓕 : Filter ℝ} {α z : ℝ} {F : ℝ → ℝ → ℝ}
-    (hsum : Summable (fun m : ℕ => ((m : ℝ) + 1) * |Work.FTS.PhiStar.Series.acoeff α m F z|))
-    (hlim : ∀ m : ℕ, Tendsto (fun θ => Work.FTS.PhiStar.Series.acoeff α m F z *
-      Work.FTS.PhiStar.Gegenbauer.eFam m θ) 𝓕 (nhds 0))
-    (hmem : ∀ᶠ θ in 𝓕, θ ∈ Work.Spaces.Iθ) :
-    Tendsto (fun θ => Work.FTS.PhiStar.Series.psiSeries α F z θ) 𝓕 (nhds 0) := by
-  have hb : Summable (fun m : ℕ =>
-      3 * (((m : ℝ) + 1) * |Work.FTS.PhiStar.Series.acoeff α m F z|)) := hsum.mul_left 3
-  have hmain := tendsto_tsum_of_dominated_convergence (𝓕 := 𝓕)
-    (f := fun θ m => Work.FTS.PhiStar.Series.acoeff α m F z *
-      Work.FTS.PhiStar.Gegenbauer.eFam m θ)
-    (g := fun _ : ℕ => (0 : ℝ))
-    (bound := fun m : ℕ => 3 * (((m : ℝ) + 1) * |Work.FTS.PhiStar.Series.acoeff α m F z|))
-    hb hlim ?_
-  · simpa only [tsum_zero, Work.FTS.PhiStar.Series.psiSeries] using hmain
-  · filter_upwards [hmem] with θ hθ
-    intro m
-    have h1 : |Work.FTS.PhiStar.Gegenbauer.eFam m θ| ≤ 3 * ((m : ℝ) + 1) :=
-      le_trans (Work.FTS.PhiStar.Series.abs_eFam_le_sqrt_Npsi m hθ)
-        (Work.FTS.PhiStar.Series.sqrt_Npsi_le_three m)
-    rw [Real.norm_eq_abs, abs_mul]
-    calc |Work.FTS.PhiStar.Series.acoeff α m F z| *
-            |Work.FTS.PhiStar.Gegenbauer.eFam m θ|
-        ≤ |Work.FTS.PhiStar.Series.acoeff α m F z| * (3 * ((m : ℝ) + 1)) :=
-          mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
-      _ = 3 * (((m : ℝ) + 1) * |Work.FTS.PhiStar.Series.acoeff α m F z|) := by ring
 
-theorem psiSeries_slice_tendsto {α : ℝ} {F : ℝ → ℝ → ℝ} {z : ℝ}
-    (hsum : Summable (fun m : ℕ => ((m : ℝ) + 1) * |Work.FTS.PhiStar.Series.acoeff α m F z|)) :
-    Filter.Tendsto (fun θ => Work.FTS.PhiStar.Series.psiSeries α F z θ)
-        (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds 0) ∧
-      Filter.Tendsto (fun θ => Work.FTS.PhiStar.Series.psiSeries α F z θ)
-        (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-  have hlim0 : ∀ m : ℕ, Tendsto (fun θ => Work.FTS.PhiStar.Series.acoeff α m F z *
-      Work.FTS.PhiStar.Gegenbauer.eFam m θ) (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds 0) := by
-    intro m
-    have h : Tendsto (Work.FTS.PhiStar.Gegenbauer.eFam m)
-        (nhdsWithin (0 : ℝ) (Set.Ioi 0))
-        (nhds (Work.FTS.PhiStar.Gegenbauer.eFam m 0)) :=
-      (continuous_eFam m).continuousAt.tendsto.mono_left nhdsWithin_le_nhds
-    rw [eFam_apply_zero m] at h
-    simpa using h.const_mul (Work.FTS.PhiStar.Series.acoeff α m F z)
-  have hmem0 : ∀ᶠ θ in nhdsWithin (0 : ℝ) (Set.Ioi 0), θ ∈ Work.Spaces.Iθ := by
-    have hlt : ∀ᶠ θ in 𝓝 (0 : ℝ), θ < Real.pi / 2 :=
-      eventually_lt_nhds (by linarith [Real.pi_pos])
-    have h1 : ∀ᶠ θ in nhdsWithin (0 : ℝ) (Set.Ioi 0), θ < Real.pi / 2 :=
-      hlt.filter_mono nhdsWithin_le_nhds
-    have h2 : ∀ᶠ θ in nhdsWithin (0 : ℝ) (Set.Ioi 0), θ ∈ Set.Ioi (0 : ℝ) :=
-      self_mem_nhdsWithin
-    filter_upwards [h1, h2] with θ hθ1 hθ2
-    exact ⟨le_of_lt hθ2, le_of_lt hθ1⟩
-  have hlim1 : ∀ m : ℕ, Tendsto (fun θ => Work.FTS.PhiStar.Series.acoeff α m F z *
-      Work.FTS.PhiStar.Gegenbauer.eFam m θ)
-      (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2))) (nhds 0) := by
-    intro m
-    have h : Tendsto (Work.FTS.PhiStar.Gegenbauer.eFam m)
-        (nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)))
-        (nhds (Work.FTS.PhiStar.Gegenbauer.eFam m (Real.pi / 2))) :=
-      (continuous_eFam m).continuousAt.tendsto.mono_left nhdsWithin_le_nhds
-    rw [eFam_apply_pi_div_two m] at h
-    simpa using h.const_mul (Work.FTS.PhiStar.Series.acoeff α m F z)
-  have hmem1 : ∀ᶠ θ in nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)),
-      θ ∈ Work.Spaces.Iθ := by
-    have hgt : ∀ᶠ θ in 𝓝 (Real.pi / 2), (0 : ℝ) < θ :=
-      eventually_gt_nhds (by linarith [Real.pi_pos])
-    have h1 : ∀ᶠ θ in nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)),
-        (0 : ℝ) < θ :=
-      hgt.filter_mono nhdsWithin_le_nhds
-    have h2 : ∀ᶠ θ in nhdsWithin (Real.pi / 2) (Set.Iio (Real.pi / 2)),
-        θ ∈ Set.Iio (Real.pi / 2) :=
-      self_mem_nhdsWithin
-    filter_upwards [h1, h2] with θ hθ1 hθ2
-    exact ⟨le_of_lt hθ1, le_of_lt hθ2⟩
-  exact ⟨tendsto_psiSeries_of hsum hlim0 hmem0, tendsto_psiSeries_of hsum hlim1 hmem1⟩
 
 end Work.FTS.PhiStar.Honesty

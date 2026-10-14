@@ -1,13 +1,13 @@
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Submission.Work.FTS_EllLimOK.RulingELF
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Data
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Assembly
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.BoxDataOf
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Clause1Aux
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.clause1
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.clause2
 import Submission.Work.FTS_EllLimOK.ProducerH.H2.clause3
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.pkgCos_le4
+import Submission.Work.FTS_EllLimOK.ProducerH.SecondDeriv.slice_package_bounds
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

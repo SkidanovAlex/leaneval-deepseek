@@ -4,18 +4,16 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS_RegExport.VPOpen
-import Submission.Work.FTS_RegExport.RXVP3.velPkgEasy
+import Submission.Work.FTS_RegExport.RXT.SysAux.L12_tail_weight
+import Submission.Work.FTS_RegExport.RXT.coeff_C2
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
 import Submission.Work.FTS_RegExport.RXT.velVanish2
-import Submission.Work.FTS_RegExport.RXT.Sys.explicit_pieces_coeff
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffBounds
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffBnd
-import Submission.Work.FTS_RegExport.RXT.SysAux.FK_L12_slice_facts
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffSmooth
-import Submission.Work.FTS_RegExport.RXT.Sys.CoeffCore
-import Submission.Work.FTS_RegExport.RXT.Sys.L12_FK_jets_of_datum
+import Submission.Work.FTS_RegExport.RXT0.RXJets.CJShared
+import Submission.Work.FTS_RegExport.RXT0.RXJets.coeffcR
+import Submission.Work.FTS_RegExport.RXT0.RXJets.jetBasic
+import Submission.Work.FTS_RegExport.RXVP3.velPkgEasy
 import Submission.Work.FTS_RegExport.RXVP3.velVanish2_unif
-import Submission.Work.FTS_RegExport.RXVP3.Ftau_datum_unif
+import Submission.Work.FTS_RegExport.VPOpen
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

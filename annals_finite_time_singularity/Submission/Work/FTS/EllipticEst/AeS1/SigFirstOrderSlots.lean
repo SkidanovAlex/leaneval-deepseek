@@ -1,25 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `AeS1/SigFirstOrderSlots` — the two `σ`-weighted first-order slots of Step 1
-
-The two slot estimates of the `σ`-weighted first-order energy inequality in the
-almost-everywhere class `AeData`:
-
-* `zSlotBound` : `α² HkSq α 0 (z ∂_z u) ≤ C (HkSq α 0 G + HkSq α 0 u)`;
-* `cSlotBound` : `HkSq α 0 (u / cos θ) ≤ C (HkSq α 0 G + HkSq α 0 u)`.
-
-Both are obtained from the `σ`-weighted truncated radial integration by parts
-(`ThetaU.Pieces.AeDzParts.truncRadialIbpSig`, for the radial weights `ω n = w² χ n` of the
-cut-off family `Mine.zcutFam`), the `σ`-weighted slice inequality `sliceBarSigmaUpperAe` (for the
-`Lzero1`-pairing and the `sec²θ`-slot), the AM–GM bound for the source pairing, the uniform
-`ω`-derivative bounds `Honest.omegaW_deriv_bounds` and, for the `u/cos θ` slot, Fatou's lemma in
-the cut-off parameter followed by the `∫⁻`-to-Bochner conversion (the template of
-`AngAWeak.aeBarHkMemOf`, with the mass bound replaced by the direct bound `HkSq α 0 u`).
-
-All constants are existential; the numerical values (`1/32`, `21/32`) come from
-`α ≤ 1/4`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -30,12 +8,12 @@ import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Order.CompletePartialOrder
 import Submission.Work.FTS.EllipticEst.AeS1.SigFirstOrderDefs
-import Submission.Work.FTS.EllipticEst.AeS1.SigFirstOrderAux1
+import Submission.Work.FTS.EllipticEst.OpenFTC.absFtcLeIntegralAbsDeriv
+import Submission.Work.FTS.EllipticEst.ThetaU.Pieces.AeDzParts.sigTruncId
 import Submission.Work.FTS.EllipticEst.ThetaU.Pieces.AeDzParts.truncRadialIbpSig
-import Submission.Work.FTS.EllipticEst.Dispatch.hkMemGradUD
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigma.AeHkMemU
-import Submission.Work.FTS.EllipticEst.Mine.zcutFam
-import Submission.Work.FTS.EllipticEst.Honest.omegaW_deriv_bounds
+import Submission.Work.FTS.LocDataExt.LocG5
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.Spaces.SmoothCompact_HkMem
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

@@ -1,29 +1,16 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/StepFacts/StepPointwise.lean`
-
-The **pointwise one-order smoothing step** `step_pointwise`: the level-`m` integrand of `J_ε u`
-is dominated by `ε⁻¹`-priced averages of the level-`m-1` integrand of `u`, in exactly the shape
-required by the chain lemma `HkSq_step_of_pointwise`.
-
-It combines the slots of order `≤ m-1` (`low_le`, Jensen with the probability kernel `Jker ρ ε`,
-no price), the three routed top slots (`SlotBounds`) and the splitting
-`HkIntegrand α m f ≤ HkIntegrand α (m-1) f + TopSq α m f` (`TopSq`).
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.Kernel
-import Submission.Work.FTS.StrongEps.HkSqAux.Chain
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
+import Submission.Work.FTS.StrongPersist.L3Rhs.L3RhsNstarBlock
+import Submission.Work.FTS.StrongPersist.L3Rhs.N3ssPriced
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.FTS_RegExport.RXT.Slots.JetCalc.Expand
+import Submission.Work.FTS_RegExport.RXT.jc3_aux
+import Submission.Work.FTS_RegExport.RXT.starVop
 import Submission.Work.Spaces.HkSq_terms
-import Submission.Work.FTS.StrongEps.StepFacts.OfRealTools
-import Submission.Work.FTS.StrongEps.StepFacts.TopSq
-import Submission.Work.FTS.StrongEps.StepFacts.KernelFacts
-import Submission.Work.FTS.StrongEps.StepFacts.PointwiseStep
-import Submission.Work.FTS.StrongEps.StepFacts.SlotBounds
+import Submission.Work.Spaces.sin_two_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false

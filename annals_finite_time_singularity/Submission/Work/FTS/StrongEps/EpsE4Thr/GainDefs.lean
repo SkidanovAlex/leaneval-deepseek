@@ -1,29 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `Submission/Work/FTS/StrongEps/EpsE4Thr/GainDefs.lean`
-
-The definitions used by the **`m`-order gain** of the log-coordinate mollifier `J_ε`
-(`Work.FTS.StrongEps.EpsE4Thr.HkMem_Jeps_gain`): the routed kernel derivatives
-`∂₁^a ∂₂^b (Jker ρ ε)` of the fully routed identity
-`Work.FTS.StrongEps.mixed_Jeps_kernel_partial`, and the single density
-
-  `LamFull ρ ε c M p = ε⁻¹^M · e^{4cε} · Jker (Σ_{a,b ≤ M} |∂₁^a ∂₂^b ρ|) ε p`
-
-which dominates *every* routed kernel derivative up to order `M`, weight shift included.
-
-The point of the definitions is that all the smoothing constants can be pushed into
-
-* the **level** of the kernel derivative (here: a sum of the first `M` partials of `ρ`,
-  rescaled by `ε⁻¹^M`), and
-* one finiteness constant `KgainBig ρ ε M` (the mass of the routed densities, times `2^{2M}`
-  for the `θ`-routing).
-
-Everything in this file is elementary: continuity/support of the partials of `ρ` (which are
-supported in the closed unit ball, since `ρ` is), the scaling identity
-`∂₁^a∂₂^b (Jker ρ ε) = ε⁻¹^{a+b} Jker (∂₁^a∂₂^b ρ) ε`, and the resulting pointwise domination
-by `LamFull`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -33,10 +7,10 @@ import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongEps.Basic
-import Submission.Work.FTS.StrongEps.Kernel
+import Submission.Work.FTS.StrongEps.SmoothOpen_Jeps
 import Submission.Work.FTS.StrongEps.mixed_Jeps_kernel_partial
-import Submission.Work.Spaces.Defs
+import Submission.Work.FTS_EllLimOK.IsBslSolPos_add
+import Submission.Work.Spaces.sq_mul_div_rpow
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -239,11 +213,6 @@ theorem mem_tsupport_of_partSnd_ne_zero {F : ℝ × ℝ → ℝ} {q : ℝ × ℝ
     hcont.tendsto.eventually h0
   rw [hg.deriv_eq, deriv_const]
 
-/-- The topological support of an admissible kernel sits in the closed unit ball. -/
-theorem tsupport_rho_subset_ball {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) :
-    tsupport ρ ⊆ {q : ℝ × ℝ | q.1 ^ 2 + q.2 ^ 2 ≤ 1} :=
-  closure_minimal (fun q hq => hρ.moll.support q hq)
-    (isClosed_le (by continuity) continuous_const)
 
 /-- Every `∂₂`-iterate of an admissible kernel vanishes outside the closed unit ball. -/
 theorem Kdr_zero_support {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) (b : ℕ) :
@@ -347,9 +316,6 @@ theorem LamK_nonneg {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) {ε : �
   simp only [LamK, Work.FTS.StrongEps.Jker]
   exact mul_nonneg (by positivity) (sigKd_nonneg ρ M _)
 
-theorem LamK_continuous {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) (ε : ℝ) (M : ℕ) :
-    Continuous (LamK ρ ε M) :=
-  continuous_const.mul ((sigKd_continuous hρ M).comp (continuous_const_smul ε⁻¹))
 
 theorem LamFull_nonneg {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) {ε : ℝ} (hε : 0 < ε)
     {c : ℝ} (M : ℕ) (p : ℝ × ℝ) : 0 ≤ LamFull ρ ε c M p := by
@@ -408,9 +374,6 @@ theorem KgainBig_nonneg {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) (ε 
     0 ≤ KgainBig ρ ε M :=
   mul_nonneg (Ksm_nonneg hρ ε M) (by positivity)
 
-theorem Cgain_nonneg {ρ : ℝ × ℝ → ℝ} (hρ : IsSmoothKernel ρ) (ε : ℝ) (M : ℕ) :
-    0 ≤ Cgain ρ ε M :=
-  mul_nonneg (by positivity) (KgainBig_nonneg hρ ε M)
 
 /-- **The pointwise domination of every routed kernel derivative by `LamFull`**: for
 `a + b ≤ M`, the weight-shifted routed kernel is dominated by the single density `LamFull`. -/

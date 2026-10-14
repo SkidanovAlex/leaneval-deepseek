@@ -1,40 +1,3 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `weakSliceContinuousKit`: slice continuity for the weak elliptic class
-
-For a datum `h : TT.EllWeakPos α 2 F Ψ` of the weak elliptic class (with `0 < α ≤ 1/4`) and every
-radial value `z > 0`, the two angular slices
-
-  `θ ↦ Ψ z θ`  and  `θ ↦ D_z Ψ z θ`
-
-are *continuous on the closed* angular interval `[0, π/2]`.  This is the "kit" form of the endpoint
-continuity of `remov.weakSliceRegular` (its conjunct 1, together with the `D_z`-analogue).
-
-## Route
-
-For a slice `u` of a weak datum (here of `Ψ` itself, and of `D_zΨ`) the three ingredients are
-
-* `u` is `C^n` on the open interval and vanishes at both endpoints (`h.smooth`, `h.zero`,
-  `h.pi_half`; for `D_zΨ` the vanishing uses that `Ψ · 0` and `Ψ · (π/2)` are identically zero, so
-  their `z`-derivatives vanish);
-* `(u'')²·sEta` and `(Lzero1 u)²·sEta` are integrable on `Iθ`, where the second follows from the
-  slice form of the equation `Lzero1 (Φ z ·) = G z · + α²z²∂_z²Φ(z,·) + α(5+α)D_zΦ(z,·)`
-  (for `(G,Φ) = (F,Ψ)` this is the definition of `bslOp`; for `(G,Φ) = (D_zF, D_zΨ)` it is
-  `TT.bslOp_DzIter_eq`); each summand is one of the `HkMem`-slots of `weakSliceSlots`;
-* the angular moment `∫_{Iθ} Lzero1 u · sinθcos²θ` vanishes: the equation converts it into the
-  moments of the source and of the radial derivatives, and those vanish by the moment chain
-  (`H2W.MomentAe.Fstar_DzIter_le_Psi` for `Ψ`, `j ≤ 3`, and `remov.Fstar_DzIter_one_of_two_le`
-  for `F`).
-
-The left endpoint is then `SourceBound.sliceTendstoZeroOfMoment`, the right endpoint is the third
-conjunct of `H2W.weakSliceLimits`, and the two one-sided limits are glued into `ContinuousOn` on
-`Icc 0 (π/2)` by `continuousOn_Icc_of_limits`.
-
-`H2W/momentChainAe.lean` (imported below) contains the moment chain `F_*(D_z^j Ψ) ≡ 0`, `j ≤ 3`,
-with the base case of the induction phrased so that it is immune to whether the two moment fields
-of `TT.EllWeakPos` are pointwise or only `a.e.` in `z`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
@@ -43,17 +6,16 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Order.CompletePartialOrder
-import Submission.Work.FTS.EllipticEst.TT.WeakDefs
-import Submission.Work.FTS.EllipticEst.TT.bslOp_DzIter_eq
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.H2W.weakSliceLimits
-import Submission.Work.FTS.EllipticEst.remov.SourceBound.sliceTendstoZeroOfMoment
-import Submission.Work.FTS.EllipticEst.remov.wsAux
-import Submission.Work.FTS.EllipticEst.remov.SourceBound.weakSliceSlots
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.SmoothOpen_bslOp_of_smoothOpen
 import Submission.Work.FTS.EllipticEst.remov.SourceBound.weakSliceBounds
-import Submission.Work.FTS.EllipticEst.remov.Fstar_DzIter_one_F
+import Submission.Work.FTS.EllipticEst.remov.wsAux
+import Submission.Work.FTS.StrongEps.EpsZero.slice_facts_of_classC
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.QDefs
 import Submission.Work.H2W.momentChainAe
+import Submission.Work.Spaces.SmoothCompact_HkMem
+import Submission.Work.Spaces.mixed_mul_le
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -138,10 +100,6 @@ theorem sq_add_le_two (x y : ℝ) : (x + y) ^ 2 ≤ 2 * (x ^ 2 + y ^ 2) := by
 theorem sEta_nonneg_Iθ {θ : ℝ} (hθ : θ ∈ Iθ) : 0 ≤ sEta θ :=
   Work.FTS.EllipticEst.remov.ws_sEta_nonneg hθ
 
-theorem sEta_integral_nonneg : 0 ≤ ∫ s in Iθ, sEta s :=
-  integral_nonneg_of_ae (by
-    filter_upwards [Work.FTS.EllipticEst.remov.ws_ae_mem_Ioo] with s hs
-    exact sEta_nonneg_Iθ (Set.mem_Icc.mpr ⟨le_of_lt hs.1, le_of_lt hs.2⟩))
 
 /-- **`v²` is integrable** for a slice bounded pointwise on the closed interval. -/
 theorem slice_sq_integrableOn_of_bound {v : ℝ → ℝ} {M : ℝ} (hM : 0 ≤ M)
@@ -204,17 +162,6 @@ theorem Lzero1_slice_eq {G Φ : ℝ → ℝ → ℝ} {z θ : ℝ}
 
 /-! ## 5. Moment conditions in the shape needed for the identity -/
 
-/-- From `F_*(D_z f) = 0` conclude `∫_θ ∂_z f(z,θ) sinθcos²θ dθ = 0`. -/
-theorem moment_pz_of_moment_Dz {f : ℝ → ℝ → ℝ} {z : ℝ} (hz : 0 < z)
-    (h : Work.Elliptic.Fstar (Work.Spaces.DzIter 1 f) z = 0) :
-    (∫ θ in Iθ, Work.Spaces.pz f z θ * sg θ) = 0 := by
-  have h1 : Work.Elliptic.Fstar (Work.Spaces.DzIter 1 f) z
-      = z * Work.Elliptic.Fstar (Work.Spaces.pz f) z := by
-    rw [show Work.Spaces.DzIter 1 f = Work.Spaces.Dz f from rfl]
-    exact Work.H2W.MomentAe.Fstar_Dz_eq f z
-  rw [h1] at h
-  have h2 := (mul_eq_zero.mp h).resolve_left hz.ne'
-  simpa only [Work.Elliptic.Fstar] using h2
 
 /-- From `F_*(D_z f) = F_*(D_z²f) = 0` conclude `∫_θ ∂_z²f(z,θ) sinθcos²θ dθ = 0`
 (using `z²∂_z²f = D_z²f - D_zf` on the open quadrant). -/

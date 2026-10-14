@@ -1,40 +1,296 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `FTS_EllLimOK.ProducerH.H2.Clause1Aux` — vocabulary for the box-`C²` clause
-
-The supporting vocabulary of the chapter `H2/clause1`: the closed-box `C²`-regularity of the
-stream function `E g` from the endpoint data `BoxData`.
-
-* `Bf L0 L1 Ψ` — the boundary-corrected θ-slope of `Ψ`: `∂_θΨ` in the open strip, the one-sided
-  limit `L0 z` (resp. `L1 z`) at `θ = 0` (resp. `θ = π/2`);
-* `Mf N0 N1 Ψ` — the boundary-corrected mixed slope `∂_θ∂_zΨ`, with the one-sided limits
-  `N0 z`, `N1 z` at the two endpoints;
-* `B2f Ψ` — the boundary-corrected `∂_θ²Ψ`, vanishing at both endpoints;
-* `LimitsAt Ψ X C a b L0 N0 L1 N1` — the `Limits` data of `Data.lean` with the witnesses and the
-  rate constant frozen, one angular endpoint at a time.
-
-The generic analysis lemmas (`interior_lipschitz_of_deriv_bound`, `theta_modulus_of_data`,
-`continuousOn_zslice_of_smoothOpen`, `hasDerivWithinAt_Icc_left/right`,
-`continuousWithinAt_Icc_left/right`, `continuousOn_thetaSlice_of_traces`) are the elementary
-one-variable facts that convert the rates of `BoxData` into a uniform angular modulus and the
-within-derivatives at the endpoints.
-
-Everything here is `sorry`-free.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.FDeriv.Extend
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.TotallySplit
 import Mathlib.Topology.Algebra.Module.ModuleTopology
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Basic
-import Submission.Work.FTS_EllLimOK.ProducerH.H2.Data
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS_EllLimOK.ProducerH.H2.Slice
+import Submission.Work.FTS_EllLimOK.ProducerH.MixedJets.pkgCos_le4
+import Submission.Work.FTS_EllLimOK.ProducerH.slotBd_phiTil
+import Submission.Work.FTS_EllLimOK.RulingELF
+import Submission.Work.FTS_RegExport.RXVP3.velPkgOpen_of_vopLower
+import Submission.Work.FTS_StreamBdry.Inputs.residual_slot_jetsB
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+-- ===== merged: Submission.Work.FTS.StrongEps.E4R3.Flow5Local =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+/-!
+# `E4R3/Flow5Local.lean` — the flow-carrying local step (PROVED from LEAF-A + `XStepInvariant`)
+
+curric-46 install 2026-10-12 (`cbc/fts_regularity_interface.lean` §6).  `localStepPF_of_XStepInvariant`
+and `localStepChapter5_of_XStepInvariant` are copies of `XStep.localStepP_of_XStepInvariant` /
+`localStepChapter3_of_XStepInvariant` whose solution also carries `EpsFlowP` (via LEAF-A
+`epsFlowP_of_xball`, `E4R3/Flow5Leaves/FlowOfXBall.lean`).
+-/
+
+noncomputable section
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.EpsE4Thr.E4R5
+
+open Work.FTS.Galerkin (Fn Fam slice)
+open Work.FTS.StrongGlobal (Xn6 concat)
+open Work.FTS.VocabO (HQo)
+open Work.FTS.StrongEps
+open Work.FTS.StrongEps.EpsE4Thr
+open Work.FTS.StrongEps.EpsE4Thr.E4R4 (rawE6 IP6o)
+
+set_option autoImplicit false
+set_option linter.unusedVariables false
+
+/-- **The flow-carrying local step from the `X`-ball residual bundle** (PROVED from LEAF-A; the
+copy of `XStep.localStepP_of_XStepInvariant`, which already has the limit slices in
+`XBall α ρ ε R (2 C₀)`). -/
+theorem localStepPF_of_XStepInvariant {α C₀ Ce Cs : ℝ} {ρ : ℝ × ℝ → ℝ} {Φs : Fn} {E : Fn → Fn}
+    {ε : ℝ} (hα : α ∈ Ioc 0 1) (hρ : IsSmoothKernel ρ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+    (hEll : ∀ u : Fn, Work.FTS.ClassC.ClassC α u →
+      Work.FTS.VocabO.EllPkgGo α Ce u (E u) ∧ Work.FTS.ClassC.EllPkgK α 6 Ce u (E u))
+    (hstar : Work.FTS.VocabO2.StarPkgo2 α Cs Φs)
+    (hml : MuLamOK α (2 * C₀) Φs E) (hC₀ : 0 ≤ C₀)
+    (hX : XStep.XStepInvariant Ce Cs C₀ ρ) :
+    LocalStepPF α ρ ε Φs E C₀ := by
+  intro M' hM'
+  obtain ⟨δ, hδpos, R, hRpos, hdat⟩ := hX α hα ε ⟨hε, hε1⟩ hEll hstar hml (M' ^ 2) (sq_nonneg M')
+  obtain ⟨L, hLpos, hLmem, hLlip⟩ :=
+    Work.FTS.StrongEps.EpsLocalPStar.EpsRHSPLipX_Sq (α := α) (C₀ := 2 * C₀) (Ce := Ce) (Cs := Cs)
+      (R := R) (ρ := ρ) (Φs := Φs) (E := E) (ε := ε) hα hρ hε hε1 hEll hstar hml hRpos.le
+  obtain ⟨Cpt, hCptpos, hCpt⟩ :=
+    Work.FTS.StrongEps.EpsLocalPStar.profRHS_sub_sup_le_Sq (α := α) (C₀ := 2 * C₀) (Ce := Ce)
+      (Cs := Cs) (R := R) (ρ := ρ) (Φs := Φs) (E := E) (ε := ε) hα hρ hε hε1 hEll hstar hml
+      hRpos.le
+  have hCpt0 : 0 ≤ Cpt := hCptpos.le
+  set δ' : ℝ := min δ (1 / (1 + Real.sqrt L)) with hδ'def
+  have hden : 0 < 1 + Real.sqrt L := by positivity
+  have hδ'pos : 0 < δ' := lt_min hδpos (by positivity)
+  have hδ'le : δ' ≤ δ := min_le_left _ _
+  have hsL : 0 ≤ Real.sqrt L := Real.sqrt_nonneg L
+  have hδ'L : δ' * Real.sqrt L < 1 := by
+    have hle : δ' ≤ 1 / (1 + Real.sqrt L) := min_le_right _ _
+    have h1 : (1 / (1 + Real.sqrt L)) * Real.sqrt L < 1 := by
+      rw [div_mul_eq_mul_div, div_lt_one hden]
+      linarith
+    exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right hle hsL) h1
+  have hIcc : Icc (0 : ℝ) δ' ⊆ Icc (0 : ℝ) δ := Icc_subset_Icc le_rfl hδ'le
+  refine ⟨δ', hδ'pos, ?_⟩
+  intro h₀ hd hball h6
+  have hsm : Work.FTS.EllipticEst.SmoothOpen h₀ := hd.1
+  have hmem6 : Work.Spaces.HkMem α 6 h₀ := hd.2.1
+  have hcl : Work.FTS.ClassC.ClassC α (Pz (Jeps ρ ε h₀)) := hd.2.2
+  have hXn : Work.FTS.Nonlin.Xn α (Pz (Jeps ρ ε h₀)) ≤ C₀ * α ^ 2 := hball
+  have hM6 : Work.Spaces.HkSq α 6 h₀ ≤ M' ^ 2 := by
+    have h1 : Xn6 α h₀ ≤ M' := h6
+    have h2 : Real.sqrt (Work.Spaces.HkSq α 6 h₀) ≤ M' := h1
+    have h3 : Real.sqrt (Work.Spaces.HkSq α 6 h₀) ^ 2 ≤ M' ^ 2 :=
+      pow_le_pow_left₀ (Real.sqrt_nonneg _) h2 2
+    rwa [Real.sq_sqrt (Work.Spaces.HkSq_nonneg α 6 h₀)] at h3
+  obtain ⟨hmem₀, hsq₀, hkeep, hlim, hreg, hdP⟩ := hdat h₀ hsm hmem6 hM6 hcl hXn
+  have hα2 : 0 ≤ α ^ 2 := sq_nonneg α
+  have hP₀ : Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) h₀ :=
+    ⟨hsm, hmem₀, hsq₀, hcl, le_trans hXn (mul_le_mul_of_nonneg_right (by linarith) hα2)⟩
+  have hbd : ∀ u : Fn, Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) u →
+      EpsMem α (Work.FTS.EpsEngine.Feps α ρ ε Φs E u) ∧
+        EpsSq α (Work.FTS.EpsEngine.Feps α ρ ε Φs E u) ≤ L := by
+    intro u hu
+    obtain ⟨hm, hb⟩ := hLmem u hu.smoothOpen hu.mem hu.sq_le hu.classC hu.ball
+    rw [← Work.FTS.EpsEngine.Feps_eq_epsRHPSlice α ρ ε Φs E 0 u] at hm hb
+    exact ⟨hm, hb⟩
+  have hlip : ∀ u v : Fn, Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) u →
+      Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) v →
+      EpsMem α (fun z θ => u z θ - v z θ) →
+      EpsSq α (fun z θ => Work.FTS.EpsEngine.Feps α ρ ε Φs E u z θ
+          - Work.FTS.EpsEngine.Feps α ρ ε Φs E v z θ)
+        ≤ L * EpsSq α (fun z θ => u z θ - v z θ) := by
+    intro u v hu hv huv
+    have h := hLlip u v hu.smoothOpen hv.smoothOpen hu.mem hu.sq_le hu.classC hu.ball
+      hv.mem hv.sq_le hv.classC hv.ball huv
+    rwa [← Work.FTS.EpsEngine.Feps_eq_epsRHPSlice α ρ ε Φs E 0 u,
+      ← Work.FTS.EpsEngine.Feps_eq_epsRHPSlice α ρ ε Φs E 0 v] at h
+  have hpt : ∀ u v : Fn, Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) u →
+      Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) v →
+      ∀ z θ : ℝ, 0 < z → 0 < θ → θ < Real.pi / 2 →
+        |Work.FTS.EpsEngine.Feps α ρ ε Φs E u z θ - Work.FTS.EpsEngine.Feps α ρ ε Φs E v z θ|
+          ≤ Cpt * Real.sqrt (EpsSq α (fun z θ => u z θ - v z θ)) := by
+    intro u v hu hv z θ hz hθ0 hθ2
+    have h := hCpt hu.smoothOpen hv.smoothOpen hu.mem hu.sq_le hv.mem hv.sq_le hu.classC hv.classC
+      hu.ball hv.ball z θ hz hθ0 hθ2
+    rwa [← Work.FTS.EpsEngine.Feps_eq_epsRHPSlice α ρ ε Φs E 0 u,
+      ← Work.FTS.EpsEngine.Feps_eq_epsRHPSlice α ρ ε Φs E 0 v] at h
+  obtain ⟨hsolL, hregL⟩ :
+      IsEpsSolP α ρ ε δ' Φs E h₀ (Work.FTS.StrongEps.EpsLocalPStar.limFam
+          (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀) ∧
+        EpsRegP α ρ ε δ' (Work.FTS.StrongEps.EpsLocalPStar.limFam
+          (Work.FTS.EpsEngine.Feps α ρ ε Φs E) h₀) := by
+    obtain ⟨h0, hder⟩ :=
+      Work.FTS.EpsEngine.exists_volterra_v4 (α := α) (F := Work.FTS.EpsEngine.Feps α ρ ε Φs E)
+        (h₀ := h₀) (P := fun u => Work.FTS.EpsEngine.XBall α ρ ε R (2 * C₀) u)
+        (Cpt := Cpt) (L := L) (δ := δ') hδ'pos hLpos hδ'L hCpt0 hP₀ hbd hlip hpt
+        (fun u hu => (Work.FTS.EpsEngine.continuousOn_Feps_of_XBall (Ce := Ce) (Cs := Cs)
+          hα hρ hε hEll hstar hu).1)
+        (fun u hu => (Work.FTS.EpsEngine.continuousOn_Feps_of_XBall (Ce := Ce) (Cs := Cs)
+          hα hρ hε hEll hstar hu).2)
+        (fun n τ hτ => hkeep n τ (hIcc hτ)) (fun τ hτ => hlim τ (hIcc hτ))
+    exact ⟨Work.FTS.EpsEngine.IsEpsSolP_of_v4 h0 hder,
+      hreg.mono fun p hp => ⟨hp.1, hp.2.1, hIcc hp.2.2⟩, fun τ hτ => hdP τ (hIcc hτ)⟩
+  exact ⟨_, hsolL, hregL, epsFlowP_of_xball (C₁ := 2 * C₀) (Ce := Ce) (Cs := Cs) hα hρ hε hε1
+    hRpos.le hEll hstar hml hδ'pos hsolL hregL (fun τ hτ => hlim τ (hIcc hτ))⟩
+
+/-- **The flow-carrying local-step chapter from the `X`-ball residual bundle** (PROVED; copy of
+`XStep.localStepChapter3_of_XStepInvariant`). -/
+theorem localStepChapter5_of_XStepInvariant {Ce Cs : ℝ} {ρ : ℝ × ℝ → ℝ}
+    (hρ : IsSmoothKernel ρ)
+    (hX : ∀ C₀ : ℝ, 2 ≤ C₀ → ∃ α₀ : ℝ, 0 < α₀ ∧ α₀ ≤ 1 ∧
+      ∀ α ∈ Ioc 0 α₀, XStep.XStepInvariant Ce Cs C₀ ρ) :
+    ∃ C : ℝ, ∀ C₀ : ℝ, C ≤ C₀ → LocalStepChapter5 Ce Cs C₀ ρ := by
+  refine ⟨2, fun C₀ hC₀ => ?_⟩
+  have hC₀0 : 0 ≤ C₀ := le_trans (by norm_num) hC₀
+  obtain ⟨α₀, hα₀0, hα₀1, hres⟩ := hX C₀ hC₀
+  obtain ⟨α₁, hα₁0, hml'⟩ :=
+    MuLamOK_of_hEll_hstar (Ce := Ce) (Cs := Cs) (K := 2 * C₀) (by linarith)
+  refine ⟨min α₀ α₁, lt_min hα₀0 hα₁0, le_trans (min_le_left _ _) hα₀1, ?_⟩
+  intro α hα K Φs E g₀ hdata ε hε
+  have hα0 : α ∈ Ioc 0 α₀ := ⟨hα.1, le_trans hα.2 (min_le_left _ _)⟩
+  have hα1 : α ∈ Ioc 0 α₁ := ⟨hα.1, le_trans hα.2 (min_le_right _ _)⟩
+  have hαIoc : α ∈ Ioc 0 1 := ⟨hα.1, le_trans hα.2 (le_trans (min_le_left _ _) hα₀1)⟩
+  have hEll := hdata.2.2.1
+  have hstar := hdata.2.2.2.1
+  have hml : MuLamOK α (2 * C₀) Φs E := hml' α hα1 hEll hstar
+  exact localStepPF_of_XStepInvariant hαIoc hρ hε.1 hε.2 hEll hstar hml hC₀0 (hres α hα0)
+
+end Work.FTS.StrongEps.EpsE4Thr.E4R5
+end
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ProducerH.H2.Assembly =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS_EllLimOK.ProducerH
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+open Work.FTS.Galerkin (Fn)
+
+/-- **The assembly of `PkgBoxH` from the box data and the three clauses.**
+
+The three clauses of `RulingELF.PkgBoxH` are taken as hypotheses (they are produced by the H2
+chapter from the endpooint data `H2.BoxData`); the content of this lemma is the box quantifier
+bookkeeping: the non-degenerate box `a < b` is handled by the clauses, while the degenerate box
+`a = b = {a} × [0,π/2]` carries only the `ContDiffOn` clause, which is obtained by monotonicity
+from the non-degenerate box `cbox a (a+1) ⊇ cbox a a`. -/
+theorem pkgBoxH_of_data {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn}
+    (hboxdata : ∀ a b : ℝ, 0 < a → a ≤ b → H2.BoxData α Ce E a b)
+    (hclause1 : ∀ a b : ℝ, 0 < a → a < b → H2.BoxData α Ce E a b →
+      ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ContDiffOn ℝ 2 (Function.uncurry (E g)) (Work.FTS_EllLimOK.cbox a b))
+    (hclause2 : ∀ a b : ℝ, 0 < a → a < b → H2.BoxData α Ce E a b →
+      (∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ContDiffOn ℝ 2 (Function.uncurry (E g)) (Work.FTS_EllLimOK.cbox a b)) →
+      ∃ K : ℝ, 0 < K ∧ ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ∀ k : ℕ, k ≤ 2 → ∀ p ∈ Work.FTS_EllLimOK.cbox a b,
+          ‖iteratedFDerivWithin ℝ k (Function.uncurry (E g))
+            (Work.FTS_EllLimOK.cbox a b) p‖
+            ≤ K * Work.FTS.StrongGlobal.Xn6 α g)
+    (hclause3 : ∀ a b : ℝ, 0 < a → a < b → H2.BoxData α Ce E a b →
+      (∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ContDiffOn ℝ 2 (Function.uncurry (E g)) (Work.FTS_EllLimOK.cbox a b)) →
+      ∃ K : ℝ, 0 < K ∧ ∃ β : ℝ, 0 < β ∧ ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ∀ p ∈ Work.FTS_EllLimOK.cbox a b, ∀ q ∈ Work.FTS_EllLimOK.cbox a b,
+          ‖iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+              (Work.FTS_EllLimOK.cbox a b) p
+            - iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+              (Work.FTS_EllLimOK.cbox a b) q‖
+            ≤ K * Work.FTS.StrongGlobal.Xn6 α g * ‖p - q‖ ^ β) :
+    Work.FTS_EllLimOK.RulingELF.PkgBoxH α E := by
+  intro a b ha hab
+  by_cases hab' : a < b
+  · -- ## the non-degenerate box: the three clauses
+    obtain ⟨hdata, hc1, hc2, hc3⟩ :
+        H2.BoxData α Ce E a b ∧
+        (∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+          ContDiffOn ℝ 2 (Function.uncurry (E g)) (Work.FTS_EllLimOK.cbox a b)) ∧
+        (∃ K : ℝ, 0 < K ∧ ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+          ∀ k : ℕ, k ≤ 2 → ∀ p ∈ Work.FTS_EllLimOK.cbox a b,
+            ‖iteratedFDerivWithin ℝ k (Function.uncurry (E g))
+              (Work.FTS_EllLimOK.cbox a b) p‖
+              ≤ K * Work.FTS.StrongGlobal.Xn6 α g) ∧
+        (∃ K : ℝ, 0 < K ∧ ∃ β : ℝ, 0 < β ∧ ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+          ∀ p ∈ Work.FTS_EllLimOK.cbox a b, ∀ q ∈ Work.FTS_EllLimOK.cbox a b,
+            ‖iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+                (Work.FTS_EllLimOK.cbox a b) p
+              - iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+                (Work.FTS_EllLimOK.cbox a b) q‖
+              ≤ K * Work.FTS.StrongGlobal.Xn6 α g * ‖p - q‖ ^ β) :=
+      ⟨hboxdata a b ha hab, hclause1 a b ha hab' (hboxdata a b ha hab),
+        hclause2 a b ha hab' (hboxdata a b ha hab)
+          (hclause1 a b ha hab' (hboxdata a b ha hab)),
+        hclause3 a b ha hab' (hboxdata a b ha hab)
+          (hclause1 a b ha hab' (hboxdata a b ha hab))⟩
+    obtain ⟨K₂, hK₂, hc2'⟩ := hc2
+    obtain ⟨K₃, hK₃, β₃, hβ₃, hc3'⟩ := hc3
+    refine ⟨max K₂ K₃ + 1, β₃, by positivity, hβ₃, ?_⟩
+    intro g hg
+    refine ⟨hc1 g hg, fun _ => ?_, fun _ => ?_⟩
+    · intro k hk p hp
+      have h := hc2' g hg k hk p hp
+      have hX : (0 : ℝ) ≤ Work.FTS.StrongGlobal.Xn6 α g := H2.Xn6_nonneg α g
+      calc ‖iteratedFDerivWithin ℝ k (Function.uncurry (E g))
+            (Work.FTS_EllLimOK.cbox a b) p‖
+          ≤ K₂ * Work.FTS.StrongGlobal.Xn6 α g := h
+        _ ≤ (max K₂ K₃ + 1) * Work.FTS.StrongGlobal.Xn6 α g :=
+            mul_le_mul_of_nonneg_right (by linarith [le_max_left K₂ K₃]) hX
+    · intro p hp q hq
+      have h := hc3' g hg p hp q hq
+      have hX : (0 : ℝ) ≤ Work.FTS.StrongGlobal.Xn6 α g := H2.Xn6_nonneg α g
+      have hr : (0 : ℝ) ≤ ‖p - q‖ ^ β₃ := Real.rpow_nonneg (norm_nonneg _) _
+      calc ‖iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+              (Work.FTS_EllLimOK.cbox a b) p
+            - iteratedFDerivWithin ℝ 2 (Function.uncurry (E g))
+              (Work.FTS_EllLimOK.cbox a b) q‖
+          ≤ K₃ * Work.FTS.StrongGlobal.Xn6 α g * ‖p - q‖ ^ β₃ := h
+        _ ≤ (max K₂ K₃ + 1) * Work.FTS.StrongGlobal.Xn6 α g * ‖p - q‖ ^ β₃ :=
+            mul_le_mul_of_nonneg_right
+              (mul_le_mul_of_nonneg_right (by linarith [le_max_right K₂ K₃]) hX) hr
+  · -- ## the degenerate box `a = b`: only the first clause is asked for, and the box sits
+    -- inside the non-degenerate box `cbox a (a+1)`
+    have hba : b = a := le_antisymm (not_lt.mp hab') hab
+    rw [hba]
+    have hdata : H2.BoxData α Ce E a (a + 1) := hboxdata a (a + 1) ha (by linarith)
+    have hc1 : ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
+        ContDiffOn ℝ 2 (Function.uncurry (E g)) (Work.FTS_EllLimOK.cbox a (a + 1)) :=
+      hclause1 a (a + 1) ha (by linarith) hdata
+    refine ⟨1, 1, one_pos, one_pos, ?_⟩
+    intro g hg
+    refine ⟨?_, ?_, ?_⟩
+    · exact (hc1 g hg).mono (fun p hp => by
+        rw [Work.FTS_EllLimOK.mem_cbox] at hp ⊢
+        exact ⟨⟨hp.1.1, by linarith [hp.1.2]⟩, hp.2⟩)
+    · intro hcon
+      exact absurd hcon (by linarith)
+    · intro hcon
+      exact absurd hcon (by linarith)
+
+end Work.FTS_EllLimOK.ProducerH
+end
+-- ===== merged: Submission.Work.FTS_EllLimOK.ProducerH.H2.Clause1Aux =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -140,220 +396,16 @@ def LimitsAt (Ψ : ℝ → ℝ → ℝ) (X C a b : ℝ) (L0 N0 L1 N1 : ℝ → �
   (∀ z ∈ Set.Icc a b, HasDerivWithinAt L0 (N0 z) (Set.Icc a b) z) ∧
   (∀ z ∈ Set.Icc a b, HasDerivWithinAt L1 (N1 z) (Set.Icc a b) z)
 
-/-- The `Limits` component of `BoxData`, with the witnesses and the constant still existential
-(inside the `∀ g`). -/
-theorem limitsAt_of_boxData {α Ce : ℝ} {E : Fn →ₗ[ℝ] Fn} {a b : ℝ}
-    (h : BoxData α Ce E a b) :
-    ∃ C : ℝ, 0 < C ∧ ∀ g : Fn, Work.FTS.ClassC.ClassC α g →
-      ∃ L0 N0 L1 N1 : ℝ → ℝ,
-        LimitsAt (E g) (Work.FTS.StrongGlobal.Xn6 α g) C a b L0 N0 L1 N1 :=
-  h.limits
 
 /-! ## Generic one-variable analysis lemmas -/
 
-/-- **Continuity of the `z`-slice of a function `C^∞` on the open quadrant.** -/
-theorem continuousOn_zslice_of_smoothOpen {F : ℝ → ℝ → ℝ}
-    (hF : Work.FTS.EllipticEst.SmoothOpen F) {a b θ : ℝ} (ha : 0 < a)
-    (hθ : θ ∈ Set.Ioo 0 (π / 2)) :
-    ContinuousOn (fun z => F z θ) (Set.Icc a b) :=
-  ((hF.curry_z hθ).continuousOn).mono (fun z hz => lt_of_lt_of_le ha hz.1)
 
-/-- **The interior Lipschitz modulus of the angular slice from a bound on its derivative.** -/
-theorem interior_lipschitz_of_deriv_bound {F : ℝ → ℝ → ℝ} {C : ℝ}
-    (hdiff : ∀ z : ℝ, ∀ θ ∈ Set.Ioo 0 (π / 2), DifferentiableAt ℝ (fun θ' => F z θ') θ)
-    (hbd : ∀ z : ℝ, ∀ θ ∈ Set.Ioo 0 (π / 2), |deriv (fun θ' => F z θ') θ| ≤ C) :
-    ∀ z : ℝ, ∀ θ ∈ Set.Ioo 0 (π / 2), ∀ θ' ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| := by
-  intro z θ hθ θ' hθ'
-  have h := Convex.norm_image_sub_le_of_norm_deriv_le (f := fun θ' => F z θ')
-    (s := Set.Ioo 0 (π / 2)) (x := θ') (y := θ) (C := C)
-    (fun x hx => hdiff z x hx)
-    (fun x hx => by rw [Real.norm_eq_abs]; exact hbd z x hx)
-    (convex_Ioo 0 (π / 2)) hθ' hθ
-  rwa [Real.norm_eq_abs, Real.norm_eq_abs] at h
 
-/-- **The interior Lipschitz modulus of one angular slice from a bound on its derivative** (the
-`z`-restricted form of `interior_lipschitz_of_deriv_bound`, which is the usable one: the
-θ-slices of `E g` are only known to be differentiable for `z > 0`). -/
-theorem interior_lipschitz_at {F : ℝ → ℝ → ℝ} {C z : ℝ}
-    (hdiff : ∀ θ ∈ Set.Ioo 0 (π / 2), DifferentiableAt ℝ (fun θ' => F z θ') θ)
-    (hbd : ∀ θ ∈ Set.Ioo 0 (π / 2), |deriv (fun θ' => F z θ') θ| ≤ C) :
-    ∀ θ ∈ Set.Ioo 0 (π / 2), ∀ θ' ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| := by
-  intro θ hθ θ' hθ'
-  have h := Convex.norm_image_sub_le_of_norm_deriv_le (f := fun θ' => F z θ')
-    (s := Set.Ioo 0 (π / 2)) (x := θ') (y := θ) (C := C)
-    (fun x hx => hdiff x hx)
-    (fun x hx => by rw [Real.norm_eq_abs]; exact hbd x hx)
-    (convex_Ioo 0 (π / 2)) hθ' hθ
-  rwa [Real.norm_eq_abs, Real.norm_eq_abs] at h
 
-/-- **The uniform angular modulus on the box from the interior modulus and the endpoint rates**
-(the `z ∈ [a,b]`-restricted form of `theta_modulus_of_data`). -/
-theorem theta_modulus_on {F : ℝ → ℝ → ℝ} {C β a b : ℝ} (hβ : 0 < β)
-    (hint : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Ioo 0 (π / 2), ∀ θ' ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| ^ β)
-    (h0 : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Icc 0 (π / 2), |F z θ - F z 0| ≤ C * θ ^ β)
-    (hpi : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Icc 0 (π / 2),
-      |F z θ - F z (π / 2)| ≤ C * (π / 2 - θ) ^ β) :
-    ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Icc 0 (π / 2), ∀ θ' ∈ Set.Icc 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| ^ β := by
-  intro z hz θ hθ θ' hθ'
-  have h0' : ∀ t ∈ Set.Icc (0 : ℝ) (π / 2), |t - 0| ^ β = t ^ β :=
-    fun t ht => by rw [sub_zero, abs_of_nonneg ht.1]
-  have hpi' : ∀ t ∈ Set.Icc (0 : ℝ) (π / 2), |(π : ℝ) / 2 - t| ^ β = ((π : ℝ) / 2 - t) ^ β :=
-    fun t ht => by rw [abs_of_nonneg (show (0 : ℝ) ≤ π / 2 - t by linarith [ht.2])]
-  rcases eq_or_lt_of_le hθ.1 with h | h
-  · subst h
-    rw [abs_sub_comm (0 : ℝ) θ', h0' θ' hθ', abs_sub_comm (F z 0) (F z θ')]
-    exact h0 z hz θ' hθ'
-  rcases eq_or_lt_of_le hθ.2 with hp | hp
-  · subst hp
-    rw [hpi' θ' hθ', abs_sub_comm (F z (π / 2)) (F z θ')]
-    exact hpi z hz θ' hθ'
-  rcases eq_or_lt_of_le hθ'.1 with h' | h'
-  · subst h'
-    rw [h0' θ hθ]
-    exact h0 z hz θ hθ
-  rcases eq_or_lt_of_le hθ'.2 with hp' | hp'
-  · subst hp'
-    rw [abs_sub_comm θ ((π : ℝ) / 2), hpi' θ hθ]
-    exact hpi z hz θ hθ
-  exact hint z hz θ ⟨h, hp⟩ θ' ⟨h', hp'⟩
 
-/-- **The min-rate dominates `θ ^ β`** on `[0,π/2]` for `0 < β ≤ 1`. -/
-theorem min_le_rpow_theta {β θ : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
-    (hθ : θ ∈ Set.Icc (0 : ℝ) (π / 2)) : min θ (π / 2 - θ) ≤ θ ^ β := by
-  rcases eq_or_lt_of_le hθ.1 with h0 | h0
-  · subst h0
-    rw [sub_zero, min_eq_left (show (0 : ℝ) ≤ π / 2 by positivity), Real.zero_rpow hβ.ne']
-  · rcases lt_or_ge θ 1 with h1 | h1
-    · have h2 := Real.rpow_le_rpow_of_exponent_ge h0 h1.le hβ1
-      rw [Real.rpow_one] at h2
-      exact (min_le_left _ _).trans h2
-    · have hge : (1 : ℝ) ≤ θ ^ β := Real.one_le_rpow h1 hβ.le
-      have hlt : π / 2 - θ < 1 := by linarith [hθ.2, Real.pi_lt_four]
-      exact (min_le_right _ _).trans (hlt.le.trans hge)
 
-/-- **The min-rate dominates `(π/2 - θ) ^ β`** on `[0,π/2]` for `0 < β ≤ 1`. -/
-theorem min_le_rpow_pi_sub {β θ : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
-    (hθ : θ ∈ Set.Icc (0 : ℝ) (π / 2)) : min θ (π / 2 - θ) ≤ (π / 2 - θ) ^ β := by
-  have h' : (π / 2 - θ) ∈ Set.Icc (0 : ℝ) (π / 2) := ⟨by linarith [hθ.2], by linarith [hθ.1]⟩
-  have h := min_le_rpow_theta (θ := π / 2 - θ) hβ hβ1 h'
-  have h2 : (π / 2 - (π / 2 - θ)) = θ := by ring
-  rw [h2, min_comm] at h
-  exact h
 
-/-- **The uniform Lipschitz angular modulus on `[a,b]` from the interior modulus and the two
-one-sided endpoint rates** (the endpoint values being *different*: the case `(0,π/2)` is settled
-by passing through `π/4`). -/
-theorem theta_modulus_Icc_of_endpoints {F : ℝ → ℝ → ℝ} {C a b : ℝ}
-    (hint : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Ioo 0 (π / 2), ∀ θ' ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'|)
-    (h0 : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Ioo 0 (π / 2), |F z θ - F z 0| ≤ C * θ)
-    (hpi : ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z (π / 2)| ≤ C * (π / 2 - θ)) :
-    ∀ z ∈ Set.Icc a b, ∀ θ ∈ Set.Icc 0 (π / 2), ∀ θ' ∈ Set.Icc 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| := by
-  have hq : (π / 4 : ℝ) ∈ Set.Ioo 0 (π / 2) :=
-    ⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩
-  have hhalf : (0 : ℝ) < π / 2 := by positivity
-  intro z hz
-  have h0' : |F z 0 - F z (π / 2)| ≤ C * |(0 : ℝ) - π / 2| := by
-    have h1 := h0 z hz (π / 4) hq
-    have h2 : |F z (π / 4) - F z (π / 2)| ≤ C * (π / 4) := by
-      have h2' := hpi z hz (π / 4) hq
-      rwa [show (π : ℝ) / 2 - π / 4 = π / 4 from by ring] at h2'
-    have h3 : |F z 0 - F z (π / 4)| ≤ C * (π / 4) := by
-      rw [abs_sub_comm]; exact h1
-    calc |F z 0 - F z (π / 2)|
-        ≤ |F z 0 - F z (π / 4)| + |F z (π / 4) - F z (π / 2)| := by
-          rw [show F z 0 - F z (π / 2)
-            = (F z 0 - F z (π / 4)) + (F z (π / 4) - F z (π / 2)) from by ring]
-          exact abs_add_le _ _
-      _ ≤ C * (π / 4) + C * (π / 4) := add_le_add h3 h2
-      _ = C * |(0 : ℝ) - π / 2| := by
-          rw [zero_sub, abs_neg, abs_of_pos hhalf]; ring
-  intro θ hθ θ' hθ'
-  rcases eq_or_lt_of_le hθ.1 with h0θ | h0θ
-  · subst h0θ
-    rcases eq_or_lt_of_le hθ'.2 with hpi' | hpi'
-    · subst hpi'
-      exact h0'
-    · rcases eq_or_lt_of_le hθ'.1 with h0' | h0'
-      · subst h0'
-        have h1 : |F z 0 - F z 0| = 0 := by rw [sub_self, abs_zero]
-        have h2 : C * |(0 : ℝ) - 0| = 0 := by rw [sub_self, abs_zero, mul_zero]
-        exact le_of_eq (by rw [h1, h2])
-      · have h1 := h0 z hz θ' ⟨h0', hpi'⟩
-        have h2 : |F z 0 - F z θ'| = |F z θ' - F z 0| := abs_sub_comm _ _
-        have h3 : |(0 : ℝ) - θ'| = θ' := by rw [zero_sub, abs_neg, abs_of_pos h0']
-        rw [h2, h3]
-        exact h1
-  · rcases eq_or_lt_of_le hθ.2 with hpiθ | hpiθ
-    · subst hpiθ
-      rcases eq_or_lt_of_le hθ'.1 with h0' | h0'
-      · subst h0'
-        have h1 : |F z (π / 2) - F z 0| = |F z 0 - F z (π / 2)| := abs_sub_comm _ _
-        have h2 : |(π : ℝ) / 2 - 0| = |(0 : ℝ) - π / 2| := by
-          rw [sub_zero, abs_sub_comm, sub_zero]
-        rw [h1, h2]
-        exact h0'
-      · rcases eq_or_lt_of_le hθ'.2 with hpi' | hpi'
-        · subst hpi'
-          have h1 : |F z (π / 2) - F z (π / 2)| = 0 := by rw [sub_self, abs_zero]
-          have h2 : C * |(π : ℝ) / 2 - π / 2| = 0 := by rw [sub_self, abs_zero, mul_zero]
-          exact le_of_eq (by rw [h1, h2])
-        · have h1 := hpi z hz θ' ⟨h0', hpi'⟩
-          have h2 : |F z (π / 2) - F z θ'| = |F z θ' - F z (π / 2)| := abs_sub_comm _ _
-          have h3 : |(π : ℝ) / 2 - θ'| = π / 2 - θ' := abs_of_nonneg (by linarith [hθ'.2])
-          rw [h2, h3]
-          exact h1
-    · rcases eq_or_lt_of_le hθ'.1 with h0' | h0'
-      · subst h0'
-        have h1 := h0 z hz θ ⟨h0θ, hpiθ⟩
-        have h3 : |θ - (0 : ℝ)| = θ := by rw [sub_zero, abs_of_nonneg hθ.1]
-        rw [h3]
-        exact h1
-      · rcases eq_or_lt_of_le hθ'.2 with hpi' | hpi'
-        · subst hpi'
-          have h1 := hpi z hz θ ⟨h0θ, hpiθ⟩
-          have h3 : |θ - (π : ℝ) / 2| = π / 2 - θ := by
-            rw [abs_of_nonpos (by linarith [hθ.2]), neg_sub]
-          rw [h3]
-          exact h1
-        · exact hint z hz θ ⟨h0θ, hpiθ⟩ θ' ⟨h0', hpi'⟩
 
-/-- **The uniform angular modulus from the interior modulus and the endpoint rates.** -/
-theorem theta_modulus_of_data {F : ℝ → ℝ → ℝ} {C β : ℝ} (hβ : 0 < β)
-    (hint : ∀ z : ℝ, ∀ θ ∈ Set.Ioo 0 (π / 2), ∀ θ' ∈ Set.Ioo 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| ^ β)
-    (h0 : ∀ z : ℝ, ∀ θ ∈ Set.Icc 0 (π / 2), |F z θ - F z 0| ≤ C * θ ^ β)
-    (hpi : ∀ z : ℝ, ∀ θ ∈ Set.Icc 0 (π / 2), |F z θ - F z (π / 2)| ≤ C * (π / 2 - θ) ^ β) :
-    ∀ z : ℝ, ∀ θ ∈ Set.Icc 0 (π / 2), ∀ θ' ∈ Set.Icc 0 (π / 2),
-      |F z θ - F z θ'| ≤ C * |θ - θ'| ^ β := by
-  intro z θ hθ θ' hθ'
-  have h0' : ∀ t ∈ Set.Icc (0 : ℝ) (π / 2), |t - 0| ^ β = t ^ β :=
-    fun t ht => by rw [sub_zero, abs_of_nonneg ht.1]
-  have hpi' : ∀ t ∈ Set.Icc (0 : ℝ) (π / 2), |(π : ℝ) / 2 - t| ^ β = ((π : ℝ) / 2 - t) ^ β :=
-    fun t ht => by rw [abs_of_nonneg (show (0 : ℝ) ≤ π / 2 - t by linarith [ht.2])]
-  rcases eq_or_lt_of_le hθ.1 with h | h
-  · subst h
-    rw [abs_sub_comm (0 : ℝ) θ', h0' θ' hθ', abs_sub_comm (F z 0) (F z θ')]
-    exact h0 z θ' hθ'
-  rcases eq_or_lt_of_le hθ.2 with hp | hp
-  · subst hp
-    rw [hpi' θ' hθ', abs_sub_comm (F z (π / 2)) (F z θ')]
-    exact hpi z θ' hθ'
-  rcases eq_or_lt_of_le hθ'.1 with h' | h'
-  · subst h'
-    rw [h0' θ hθ]
-    exact h0 z θ hθ
-  rcases eq_or_lt_of_le hθ'.2 with hp' | hp'
-  · subst hp'
-    rw [abs_sub_comm θ ((π : ℝ) / 2), hpi' θ hθ]
-    exact hpi z θ hθ
-  exact hint z θ ⟨h, hp⟩ θ' ⟨h', hp'⟩
 
 /-- **Right-continuity on `[0,T]` from the right limit and the value at `0`.** -/
 theorem continuousWithinAt_Icc_left {f : ℝ → ℝ} {T L : ℝ} (hT : 0 < T)
@@ -431,76 +483,9 @@ theorem continuousOn_thetaSlice_of_interior {f : ℝ → ℝ} {T : ℝ} (hT : 0 
     exact continuousWithinAt_Icc_right hT hT' rfl
   · exact (hint θ ⟨h, hp⟩).continuousWithinAt
 
-/-- **`θ ^ β → 0` at `0⁺`, squeezed form.** -/
-theorem tendsto_zero_of_abs_le_rpow {f : ℝ → ℝ} {C β : ℝ} (hβ : 0 < β)
-    (h : ∀ θ : ℝ, 0 < θ → |f θ| ≤ C * θ ^ β) :
-    Filter.Tendsto f (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  rw [Metric.tendsto_nhdsWithin_nhds]
-  intro ε hε
-  by_cases hC : C ≤ 0
-  · refine ⟨1, one_pos, fun θ hθ _ => ?_⟩
-    have h1 : |f θ| ≤ 0 :=
-      le_trans (h θ hθ) (mul_nonpos_of_nonpos_of_nonneg hC (Real.rpow_nonneg hθ.le _))
-    have h2 : f θ = 0 := abs_eq_zero.mp (le_antisymm h1 (abs_nonneg _))
-    rw [h2, Real.dist_eq, sub_zero, abs_zero]
-    exact hε
-  · have hCpos : 0 < C := not_le.mp hC
-    have hbase : 0 < (ε / 2) / C := by positivity
-    refine ⟨min 1 (((ε / 2) / C) ^ (1 / β)), lt_min one_pos (Real.rpow_pos_of_pos hbase _),
-      fun θ hθ hδ => ?_⟩
-    have hθpos : (0 : ℝ) < θ := hθ
-    have hlt : θ < min 1 (((ε / 2) / C) ^ (1 / β)) := by
-      have h1 := hδ
-      rw [Real.dist_eq, sub_zero, abs_of_pos hθpos] at h1
-      exact h1
-    have hδ' : θ ≤ (((ε / 2) / C) ^ (1 / β)) := (lt_min_iff.mp hlt).2.le
-    have hpow : θ ^ β ≤ (ε / 2) / C := by
-      calc θ ^ β ≤ ((((ε / 2) / C) ^ (1 / β))) ^ β :=
-            Real.rpow_le_rpow hθpos.le hδ' hβ.le
-        _ = (ε / 2) / C := by
-            rw [← Real.rpow_mul hbase.le, one_div_mul_cancel hβ.ne', Real.rpow_one]
-    have h1 : |f θ| ≤ C * ((ε / 2) / C) :=
-      le_trans (h θ hθpos) (mul_le_mul_of_nonneg_left hpow hCpos.le)
-    have h2 : C * ((ε / 2) / C) = ε / 2 := by field_simp
-    rw [Real.dist_eq, sub_zero]
-    linarith [h1, h2]
 
-/-- **`(π/2 - θ) ^ β → 0` at `(π/2)⁻`, squeezed form.** -/
-theorem tendsto_zero_of_abs_le_rpow_pi_sub {f : ℝ → ℝ} {C β : ℝ} (hβ : 0 < β)
-    (h : ∀ θ : ℝ, θ < π / 2 → |f θ| ≤ C * (π / 2 - θ) ^ β) :
-    Filter.Tendsto f (nhdsWithin (π / 2) (Set.Iio (π / 2))) (nhds 0) := by
-  have hT : (0 : ℝ) < π / 2 := by positivity
-  have hcomp : Filter.Tendsto (fun θ : ℝ => f (π / 2 - θ)) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-    refine tendsto_zero_of_abs_le_rpow hβ (C := C) (fun t ht => ?_)
-    have h1 : |f (π / 2 - t)| ≤ C * (π / 2 - (π / 2 - t)) ^ β := h (π / 2 - t) (by linarith)
-    have h2 : (π / 2 - (π / 2 - t)) = t := by ring
-    simpa [h2] using h1
-  have hshift : Filter.Tendsto (fun θ : ℝ => π / 2 - θ) (nhdsWithin (π / 2) (Set.Iio (π / 2)))
-      (nhdsWithin 0 (Set.Ioi 0)) := by
-    rw [tendsto_nhdsWithin_iff]
-    refine ⟨?_, ?_⟩
-    · have h1 : Filter.Tendsto (fun θ : ℝ => π / 2 - θ) (nhdsWithin (π / 2) (Set.Iio (π / 2)))
-          (nhds (π / 2 - π / 2)) :=
-        (tendsto_const_nhds.sub tendsto_id).mono_left nhdsWithin_le_nhds
-      simpa using h1
-    · filter_upwards [Ioo_mem_nhdsLT hT] with θ hθ
-      exact sub_pos.mpr hθ.2
-  have h1 : Filter.Tendsto (fun θ : ℝ => f (π / 2 - (π / 2 - θ)))
-      (nhdsWithin (π / 2) (Set.Iio (π / 2))) (nhds 0) := hcomp.comp hshift
-  refine Filter.Tendsto.congr' (Filter.Eventually.of_forall ?_) h1
-  intro θ
-  congr 1
-  ring
 
-/-- **Continuity of the angular slice on the closed interval** from the two traces. -/
-theorem continuousOn_thetaSlice_of_traces {F : ℝ → ℝ → ℝ} {z : ℝ}
-    (hsm : Work.FTS.EllipticEst.SmoothOpen F) (hz : 0 < z)
-    (h0 : Filter.Tendsto (fun θ => F z θ) (nhdsWithin 0 (Set.Ioi 0)) (nhds (F z 0)))
-    (hπ : Filter.Tendsto (fun θ => F z θ) (nhdsWithin (π / 2) (Set.Iio (π / 2)))
-      (nhds (F z (π / 2)))) :
-    ContinuousOn (fun θ => F z θ) (Set.Icc 0 (π / 2)) :=
-  continuousOn_thetaSlice_of_interior (by positivity)
-    (fun θ hθ => ((hsm.curry_θ hz).contDiffAt (isOpen_Ioo.mem_nhds hθ)).continuousAt)
-    h0 hπ
 
 end Work.FTS_EllLimOK.ProducerH.H2
+end
+end

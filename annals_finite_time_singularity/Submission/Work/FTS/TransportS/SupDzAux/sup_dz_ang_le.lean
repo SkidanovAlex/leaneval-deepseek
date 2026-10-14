@@ -2,15 +2,73 @@ import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.OpenQDefs
-import Submission.Work.FTS.TransportS.SupDzAux.HalfLineWindow
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Submission.Work.FTS.EllipticEst.SliceDecompDefs
 import Submission.Work.FTS.TransportS.SupDzAux.SdaAux
-import Submission.Work.FTS.H2.HkSqSwap
-import Submission.Work.FTS.H2.SupMixedNB
-import Submission.Work.Spaces.aesm_of_continuousOn_Qd
-import Submission.Work.Blocks.alphaDz_pth_core_clean
+import Submission.Work.FTS_EllLimOK.Decay.DecayTools
+import Submission.Work.FTS_RegExport.RXT.Sys.continuousAt_Qang_of_bounds
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.H2.T1Q.IbpCutoff
+import Submission.Work.Spaces.HkSq_terms
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+import Submission.Work.StabilityFar.Decay.timeDeriv_eq_zero_of_notMem_closedBall
+-- ===== merged: Submission.Work.FTS.StrongEps.SupPort.ae_integrableOn_mixed_sq_w =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.StrongEps.SupPort
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+set_option linter.unusedVariables false
+
+/-- **A.e. radial-slice integrability of a mixed slot against the plain weight `w²`.**
+
+For `f` of class `C^∞` on the open quadrant and in `ℋ⁴`, and for every mixed slot
+`D_z^j D_θ^i f` with `1 ≤ i` and `i + j ≤ 4`, the radial function
+`s ↦ (D_z^j D_θ^i f(s,σ))² · w(s)²` is integrable on `Iz = [0,∞)` for almost every
+`σ ∈ Iθ`. -/
+theorem ae_integrableOn_mixed_sq_w {α : ℝ} (hα : 0 < α) {f : ℝ → ℝ → ℝ}
+    (hF : Work.FTS.EllipticEst.SmoothOpen f) (hmem : Work.Spaces.HkMem α 4 f)
+    (j i : ℕ) (hi : 1 ≤ i) (hij : i + j ≤ 4) :
+    ∀ᵐ σ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+      MeasureTheory.IntegrableOn
+        (fun s => (Work.Spaces.mixed j i f s σ) ^ 2 * (Work.Spaces.w s) ^ 2) Work.Spaces.Iz := by
+  -- Tonelli for the `ℋ⁴`-integrand: a.e. angle has an integrable radial `ℋ⁴`-slice.
+  obtain ⟨-, -, hsliceHK⟩ := Work.FTS.TransportS.SupDzAux.sda_HkSqSwap_open α f hF hmem
+  -- Almost every angle of `Iθ` is interior.
+  have hIoo : ∀ᵐ σ ∂(MeasureTheory.volume.restrict Work.Spaces.Iθ),
+      σ ∈ Set.Ioo (0 : ℝ) (π / 2) := by
+    rw [Work.FTS.EllipticEst.restrict_Iθ_eq_restrict_Ioo]
+    exact MeasureTheory.ae_restrict_mem measurableSet_Ioo
+  filter_upwards [hsliceHK, hIoo] with σ hInt hσ
+  -- At such an angle the weighted mixed square is bounded pointwise in `s` by the
+  -- (integrable) radial `ℋ⁴`-slice, and it is a.e. strongly measurable.
+  refine MeasureTheory.Integrable.mono' hInt
+    (Work.FTS.StrongEps.SupPort.AuxMixSq.aesm_zslice_mixed_sq_w hF j i hσ) ?_
+  exact Filter.Eventually.of_forall fun s => by
+    rw [Real.norm_of_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _))]
+    exact Work.FTS.StrongEps.SupPort.AuxMixSq.mixed_sq_w_le_HkIntegrand hα j i hi hij hσ
+
+end Work.FTS.StrongEps.SupPort
+end
+end
+-- ===== merged: Submission.Work.FTS.TransportS.SupDzAux.sup_dz_ang_le =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -283,3 +341,5 @@ theorem sup_dz_ang_le : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (f : ℝ → ℝ �
       _ ≤ 3 * Work.Spaces.HkSq α 4 f + ε := by linarith
 
 end Work.FTS.TransportS.SupDzAux
+end
+end

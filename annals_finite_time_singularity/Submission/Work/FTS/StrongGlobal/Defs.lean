@@ -1,96 +1,14 @@
-/-
-# `Work.FTS.StrongGlobal.Defs` — the vocabulary of the S4/S5 assembly (the strong-solution route)
-
-This directory (`Submission/Work/FTS/StrongGlobal/`, namespace `Work.FTS.StrongGlobal`) is the
-*assembly* layer of the strong-solution route of `Submission/Work/FTS/FTS_STRONG_ROUTE.md`:
-the two items
-
-* **S4 `apriori_strong`** — a strong solution whose datum has `Xn₄(g₀) ≤ α²` obeys
-  `Xn₄(g(τ)) ≤ C₀·α²` on its whole interval (the `Pₙ = id` version of the Galerkin energy
-  bootstrap, `Work.FTS.OpenPkg.AprioriOpen.galerkin_bound_explicit`);
-* **S5 `global_strong`** — the continuation from S1 (uniform local existence), S2 (persistence of
-  `ℋ⁶`), S4 (the a-priori bound) and S6 (`H³` control of `∂_τ g`) produces a **global** strong
-  solution together with the *regularity package* `RegPkgMin` that `Work.FTS.RegPkgGal` consumes.
-
-Everything here is stated for the *dynamic modulated equation* of `Work.FTS.Galerkin`
-(`dynLin`, `dynRHS`, `IsDynEqOn`) with the elliptic law
-
-  `IsBslSolPos α F Ψ` — the paper's elliptic boundary problem on the *open* quadrant, with the
-  Dirichlet conditions imposed only for `z ≥ 0`,
-
-which is the `Law` of the design (`FTS_ELL_GALERKIN.md` §4: "`Law := IsBslSolPos`: the boundary
-conditions only for `z ≥ 0`").
-
-## The three predicates of a strong solution
-
-A strong solution is *never* an object of this file's own making: the equation is
-`Work.FTS.Galerkin.dynLin + dynRHS`, the stream function is the canonical
-`PsiCan Φs EllSol g z θ τ = Φs z θ + EllSol (slice g τ) z θ` (so that the stream function is a
-*function of the slice* — this is what makes the continuation of S5 glue without any uniqueness
-assumption on the elliptic problem), and the regularity class is the frozen `GalClass` of
-`Submission/Work/FTS/Vocab.lean`.
-
-* `IsDynEqOnIcc α a b Φs EllSol g` — the equation holds on the **closed interval** `[a,b]` of fake
-  time, with the *within*-derivative on `Set.Icc a b`.  This is the honest local form of
-  `Work.FTS.Galerkin.IsDynEqOn` (which is the half-line form, the within-derivative being taken on
-  `Set.Ici 0`); the local existence theorem S1 must be stated on an interval, and only this form
-  can be glued.
-* `IsDynGSolOnIcc α a b Φs EllSol g` — the same together with the elliptic law at every `τ ∈ [a,b]`.
-* `StrongSolOn α Φs EllSol a b g` — the *class* in which S2/S4/S6 are stated: the solution on
-  `[a,b]`, in `GalClass` at every time, jointly `C¹` on the open slab `(0,∞)×(0,π/2)×(a,b)`, with
-  the two right-hand sides `dynLin`, `dynRHS` themselves in `RegQ 4` (the structural inputs of the
-  energy algebra).
-
-## The hypotheses S1, S2, S3, S6
-
-Per the design, these four are *stated here as hypotheses* until their own subprojects land:
-
-* `LWPStrong α Φs EllSol α₀ K δ` — **S1** (`lwp_H6`), in the *uniform* form needed by the
-  continuation: there is a time step `δ = δ(K) > 0` such that from **any** datum at **any** time
-  `τ₀ ≥ 0` with `RegQ α 6 g₀` and `Xn₆(g₀) ≤ K·α²` one finds a strong solution on `[τ₀, τ₀+δ]`.
-  (`Xn₆(g₀) ≤ K·α²` is not a restriction: `RegQ α 6` is a *membership* predicate, while the local
-  existence theorem of the design – IP₆-Galerkin plus Gronwall on a short interval – necessarily
-  needs a *numerical* bound on the datum and gives a time step depending on it.)
-* `PersistStrong α Φs EllSol C₀ K K₆` — **S2** (`persist_H6`): for a strong solution on `[0,T]`
-  whose `ℋ⁴`-size stays below `C₀α²` and whose datum has `Xn₆ ≤ Kα²`, the `ℋ⁶`-size stays below
-  `K₆α²` on `[0,T]` (the same bound independently of `T`).  This is the input that lets the
-  continuation restart: the datum at the end of each step has the *same* `ℋ⁶`-bound as the initial
-  one, so the *same* step `δ = δ(K₆)` can be used at every step.
-* `SobolevC4 α` — **S3** (`sobolev_C4`): `HkMem α 6 f ⇒ ContDiffOn ℝ 4 f Q0` (the interior Sobolev
-  embedding that turns the `ℋ⁶`-bound of the existence theorem into the `c4` field of `RegPkgMin`).
-* `DbDStrong α Φs EllSol C₀ Cd` — **S6** (`dbd_of_eq`): `‖∂_τ g‖_{ℋ³} ≤ Cd` for a strong solution
-  with `ℋ⁴`-size `≤ C₀α²` (the `dbd` field of `RegPkgMin`, and the `R5` input of `RegPkgGal`).
-
-## The two inputs of S4
-
-For the *abstract* inner product `IP` the two facts the bootstrap needs beyond `UnifIP` are:
-
-* `EnergyId IP α Φs EllSol` — the **exact energy identity for the strong solution**,
-  `d/dτ IP(g(τ),g(τ)) = 2 IP(∂_τg(τ),g(τ))`, in the within-`[0,T]` form (it is *not* a
-  consequence of `UnifIP`, which carries no formula for `IP`; for the paper's concrete inner
-  product it is the "differentiate under the integral sign" statement, the analogue of the exact
-  Galerkin energy identity `Work.FTS.OpenPkg.AprioriOpen.energy_deriv_within`);
-* `PairBndStrong IP α CcN Φs EllSol` — N4's pairing estimate `|IP(dynRHS,g)| ≤ CcN·Pbd α Xn`
-  along the strong solution (it is *derived* from `Open2.PairData2` by `pairBndStrong_of_pairData2`
-  in `Work.FTS.StrongGlobal.PairBnd`, so it is not a new mathematical assumption).
-
-## Conventions
-
-`Fn = ℝ → ℝ → ℝ`, `Fam = ℝ → ℝ → ℝ → ℝ`, `g z θ τ` (curried), the domain is
-`Qd = (0,∞) × (0,π/2)` with the measure `dz dθ`, and the *slab* of fake time is written
-`quadSlab` (for `τ ∈ (0,∞)`) or `slab a b` (for `τ ∈ (a,b)`).
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Algebra.Module.ModuleTopology
+import Submission.Work.FTS.GalBasis.hk_sq_api
+import Submission.Work.FTS.StrongPersist.N6Trans.OpenTwins.bt_prod_integrable_open
 import Submission.Work.FTS.Vocab
-import Submission.Work.FTS.Apriori.Defs
-import Submission.Work.FTS.Apriori.Arith
-import Submission.Work.FTS.Apriori.RegQApi
-import Submission.Work.FTS.EllipticEst.OpenQDefs
+import Submission.Work.FTS.VocabO
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -128,30 +46,18 @@ def uncurry3 (g : Fam) : P3 → ℝ := fun p => g p.1 p.2.1 p.2.2
 
 @[simp] theorem uncurry3_apply (g : Fam) (z θ τ : ℝ) : uncurry3 g (z, θ, τ) = g z θ τ := rfl
 
-/-- The *quadrant slab* `(0,∞) × (0,π/2) × (0,∞)`: the domain of the joint `C¹`-clause of
-`RegPkgMin`. -/
-def quadSlab : Set P3 := Set.Ioi (0 : ℝ) ×ˢ Set.Ioo (0 : ℝ) (π / 2) ×ˢ Set.Ioi (0 : ℝ)
 
 /-- The *slab* `(0,∞) × (0,π/2) × (a,b)` of fake time: the domain of the joint `C¹`-clause of a
 local strong solution on `[a,b]`. -/
 def slab (a b : ℝ) : Set P3 := Set.Ioi (0 : ℝ) ×ˢ Set.Ioo (0 : ℝ) (π / 2) ×ˢ Set.Ioo a b
 
-theorem isOpen_quadSlab : IsOpen quadSlab := isOpen_Ioi.prod (isOpen_Ioo.prod isOpen_Ioi)
 
-theorem isOpen_slab (a b : ℝ) : IsOpen (slab a b) := isOpen_Ioi.prod (isOpen_Ioo.prod isOpen_Ioo)
 
-theorem mem_quadSlab {z θ τ : ℝ} :
-    (z, θ, τ) ∈ quadSlab ↔ 0 < z ∧ 0 < θ ∧ θ < π / 2 ∧ 0 < τ := by
-  simp [quadSlab, and_assoc]
 
 theorem mem_slab {z θ τ a b : ℝ} :
     (z, θ, τ) ∈ slab a b ↔ 0 < z ∧ 0 < θ ∧ θ < π / 2 ∧ a < τ ∧ τ < b := by
   simp [slab, and_assoc]
 
-theorem slab_subset_quadSlab {a b : ℝ} (ha : 0 ≤ a) : slab a b ⊆ quadSlab := by
-  intro p hp
-  obtain ⟨h1, h2, h3, h4, h5⟩ := mem_slab.mp hp
-  exact mem_quadSlab.mpr ⟨h1, h2, h3, lt_of_le_of_lt ha h4⟩
 
 /-! ## The concatenation of two families, and the slice-congruence of the equation
 
@@ -177,52 +83,10 @@ theorem slice_concat_of_gt {G H : Fam} {τ₀ τ : ℝ} (hτ : τ₀ < τ) :
     slice (concat G H τ₀) τ = slice H τ := by
   funext z θ; exact concat_apply_of_gt hτ
 
-/-- At the junction the concatenation agrees with the *right* piece, provided the two agree
-there. -/
-theorem slice_concat_self {G H : Fam} {τ₀ : ℝ} (h : ∀ z θ, G z θ τ₀ = H z θ τ₀) :
-    slice (concat G H τ₀) τ₀ = slice H τ₀ := by
-  rw [slice_concat_of_le (le_refl τ₀)]
-  funext z θ; exact h z θ
 
-/-- At the junction the concatenation agrees with the *left* piece. -/
-theorem slice_concat_self_left (G H : Fam) (τ₀ : ℝ) :
-    slice (concat G H τ₀) τ₀ = slice G τ₀ :=
-  slice_concat_of_le (le_refl τ₀)
 
-theorem eqOn_concat_left {G H : Fam} {τ₀ : ℝ} :
-    Set.EqOn (fun p : ℝ × ℝ × ℝ => concat G H τ₀ p.1 p.2.1 p.2.2)
-      (fun p : ℝ × ℝ × ℝ => G p.1 p.2.1 p.2.2)
-      {p : ℝ × ℝ × ℝ | p.2.2 ≤ τ₀} :=
-  fun p hp => by
-    change concat G H τ₀ p.1 p.2.1 p.2.2 = G p.1 p.2.1 p.2.2
-    change (if p.2.2 ≤ τ₀ then G p.1 p.2.1 p.2.2 else H p.1 p.2.1 p.2.2) = G p.1 p.2.1 p.2.2
-    exact if_pos hp
 
-theorem eqOn_concat_right {G H : Fam} {τ₀ : ℝ} :
-    Set.EqOn (fun p : ℝ × ℝ × ℝ => concat G H τ₀ p.1 p.2.1 p.2.2)
-      (fun p : ℝ × ℝ × ℝ => H p.1 p.2.1 p.2.2)
-      {p : ℝ × ℝ × ℝ | τ₀ < p.2.2} :=
-  fun p hp => by
-    change concat G H τ₀ p.1 p.2.1 p.2.2 = H p.1 p.2.1 p.2.2
-    change (if p.2.2 ≤ τ₀ then G p.1 p.2.1 p.2.2 else H p.1 p.2.1 p.2.2)
-      = H p.1 p.2.1 p.2.2
-    exact if_neg (not_le.mpr hp)
 
-/-- On the closed half slab `{τ₀ ≤ τ}` the concatenation agrees with `H`, *provided* the two
-families agree on the whole hyperplane `{τ = τ₀}`. -/
-theorem eqOn_concat_right' {G H : Fam} {τ₀ : ℝ} (h : ∀ z θ, G z θ τ₀ = H z θ τ₀) :
-    Set.EqOn (fun p : ℝ × ℝ × ℝ => concat G H τ₀ p.1 p.2.1 p.2.2)
-      (fun p : ℝ × ℝ × ℝ => H p.1 p.2.1 p.2.2)
-      {p : ℝ × ℝ × ℝ | τ₀ ≤ p.2.2} := by
-  intro p hp
-  rcases lt_or_eq_of_le (show τ₀ ≤ p.2.2 from hp) with hlt | heq
-  · exact if_neg (not_le.mpr hlt)
-  · have hpτ : p.2.2 = τ₀ := heq.symm
-    change concat G H τ₀ p.1 p.2.1 p.2.2 = H p.1 p.2.1 p.2.2
-    rw [hpτ]
-    change (if τ₀ ≤ τ₀ then G p.1 p.2.1 τ₀ else H p.1 p.2.1 τ₀) = H p.1 p.2.1 τ₀
-    rw [if_pos le_rfl]
-    exact h p.1 p.2.1
 
 /-- `dynLin` depends on a family only through its slice. -/
 theorem dynLin_congr {α : ℝ} {g g' : Fam} {τ : ℝ} (h : slice g τ = slice g' τ) :
@@ -288,10 +152,6 @@ def IsDynEqOnIcc (α : ℝ) (a b : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (g : Fam
     HasDerivWithinAt (fun s => g z θ s)
       (dynLin α g τ z θ + dynRHS α (PsiCan Φs EllSol g) g τ z θ) (Set.Icc a b) τ
 
-/-- The interval form of a solution of the dynamic modulated problem with the law `IsBslSolPos`. -/
-def IsDynGSolOnIcc (α : ℝ) (a b : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (g : Fam) : Prop :=
-  (∀ τ ∈ Set.Icc a b, IsBslSolPos α (Work.Construction.Ftau α g τ)
-      (slice (PsiCan Φs EllSol g) τ)) ∧ IsDynEqOnIcc α a b Φs EllSol g
 
 /-- The half-line form (`τ ≥ 0`): the canonical stream function solves the elliptic problem at
 every `τ ≥ 0` and the equation holds in the within-`Ici 0` sense.  This is exactly
@@ -299,11 +159,6 @@ every `τ ≥ 0` and the equation holds in the within-`Ici 0` sense.  This is ex
 def IsDynGSolHalf (α : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (g : Fam) : Prop :=
   IsDynGSolWith (IsBslSolPos α) α (PsiCan Φs EllSol g) g
 
-theorem isDynGSolHalf_iff (α : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (g : Fam) :
-    IsDynGSolHalf α Φs EllSol g ↔
-      ((∀ τ, 0 ≤ τ → IsBslSolPos α (Work.Construction.Ftau α g τ)
-          (slice (PsiCan Φs EllSol g) τ)) ∧ IsDynEqOn α (PsiCan Φs EllSol g) g) :=
-  Iff.rfl
 
 theorem IsDynGSolHalf.law {α : ℝ} {Φs : Fn} {EllSol : Fn → Fn} {g : Fam}
     (h : IsDynGSolHalf α Φs EllSol g) :
@@ -344,10 +199,6 @@ structure StrongSolOn (α : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (a b : ℝ) (g 
   regLin : ∀ τ ∈ Set.Icc a b, RegQ α 4 (dynLin α g τ)
   regRHS : ∀ τ ∈ Set.Icc a b, RegQ α 4 (dynRHS α (PsiCan Φs EllSol g) g τ)
 
-/-- The interval form of a strong solution is a solution of the dynamic problem. -/
-theorem StrongSolOn.toSol {α : ℝ} {Φs : Fn} {EllSol : Fn → Fn} {a b : ℝ} {g : Fam}
-    (h : StrongSolOn α Φs EllSol a b g) : IsDynGSolOnIcc α a b Φs EllSol g :=
-  ⟨h.law, h.eq⟩
 
 /-- `StrongSolOn` gives `RegQ α 6` of every slice (via `GalClass`). -/
 theorem StrongSolOn.reg6 {α : ℝ} {Φs : Fn} {EllSol : Fn → Fn} {a b : ℝ} {g : Fam}
@@ -411,11 +262,6 @@ theorem StrongSolOn.mono {α : ℝ} {Φs : Fn} {EllSol : Fn → Fn} {a b a' b' :
   · exact fun τ hτ => h.regLin τ (hsub hτ)
   · exact fun τ hτ => h.regRHS τ (hsub hτ)
 
-/-- A strong solution on `[a,b]` restricts to the subinterval `[0,T]` of `[0,T']` (`T ≤ T'`). -/
-theorem StrongSolOn.mono_zero {α : ℝ} {Φs : Fn} {EllSol : Fn → Fn} {T T' : ℝ} {g : Fam}
-    (h : StrongSolOn α Φs EllSol 0 T' g) (hT : 0 ≤ T) (hTT' : T ≤ T') :
-    StrongSolOn α Φs EllSol 0 T g :=
-  h.mono le_rfl hTT' hT
 
 /-! ## The regularity package `RegPkgMin` (design §1, verbatim) -/
 
@@ -446,12 +292,6 @@ def DbdLoc (α : ℝ) (g : Fam) : Prop :=
   ∀ S, 0 < S → ∃ Cd, ∀ τ, 0 < τ → τ < S →
     Work.Spaces.HkMem α 3 (gdot g τ) ∧ Work.Spaces.HkNorm α 3 (gdot g τ) ≤ Cd
 
-/-- A bound uniform on the whole half-line gives the horizon-local one. -/
-theorem DbdLoc.of_uniform {α : ℝ} {g : Fam}
-    (h : ∃ Cd, ∀ τ, 0 < τ → Work.Spaces.HkMem α 3 (gdot g τ) ∧
-      Work.Spaces.HkNorm α 3 (gdot g τ) ≤ Cd) : DbdLoc α g := by
-  obtain ⟨Cd, hCd⟩ := h
-  exact fun S _ => ⟨Cd, fun τ hτ _ => hCd τ hτ⟩
 
 /-- Gluing: agreement on `(0,S)` with a piece carrying a bound for `0 < τ < S`, for every `S`. -/
 theorem DbdLoc.of_local {α : ℝ} {G : Fam}
@@ -505,23 +345,7 @@ def PersistStrong (α : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (C₀ K : ℝ) : Pr
     Xn6 α (slice g 0) ≤ K * α ^ 2 →
       ∀ τ ∈ Set.Icc 0 T, Xn6 α (slice g τ) ≤ K * α ^ 2
 
-/-- **S3 (`sobolev_C4`) — the interior Sobolev embedding**: honest `ℋ⁶`-membership implies `C⁴` on
-the *open* quadrant (no boundary regularity is asserted; this is the only content of the design's
-S3).  It is what turns the `ℋ⁶`-bound of the existence theorem into the `c4` clause of
-`RegPkgMin`. -/
-def SobolevC4 (α : ℝ) : Prop :=
-  ∀ f : Fn, Work.Spaces.HkMem α 6 f →
-    ContDiffOn ℝ 4 (Function.uncurry f) Work.FTS.EllipticEst.Q0
 
-/-- **S6 (`dbd_of_eq`) — `H³`-control of the fake-time derivative**: along a strong solution whose
-`ℋ⁴`-size stays below `C₀α²`, `∂_τ g` is in `ℋ³` uniformly with a constant `Cd` depending only on
-the constants of the input (the design's `‖dynLin + dynRHS‖_{ℋ³} ≤ C(Xn₄)`).  This is the `dbd`
-clause of `RegPkgMin` (its `∀ τ > 0` form follows by instantiating at any `T ≥ τ`). -/
-def DbDStrong (α : ℝ) (Φs : Fn) (EllSol : Fn → Fn) (C₀ Cd : ℝ) : Prop :=
-  ∀ (g : Fam) (T : ℝ), 0 ≤ T → StrongSolOn α Φs EllSol 0 T g →
-    (∀ τ ∈ Set.Icc 0 T, Xn α (slice g τ) ≤ C₀ * α ^ 2) →
-      ∀ τ ∈ Set.Icc 0 T,
-        Work.Spaces.HkMem α 3 (gdot g τ) ∧ Work.Spaces.HkNorm α 3 (gdot g τ) ≤ Cd
 
 /-! ## The two inputs of the energy bootstrap S4 -/
 

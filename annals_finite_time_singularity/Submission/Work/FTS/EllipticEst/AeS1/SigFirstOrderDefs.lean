@@ -1,36 +1,144 @@
-/-
-Copyright: work module for the Elgindi finite-time singularity project.
-
-# `AeS1/SigFirstOrderDefs` — the σ-weighted first-order vocabulary
-
-This module collects, in the namespace `Work.FTS.EllipticEst.AeS1`, the `θ`-slice functionals and
-the elementary bookkeeping lemmas needed by the `σ`-weighted first-order energy estimates
-(`sigFirstOrderD`).  Everything here is proved; the file is a self-contained copy of the
-corresponding lemmas of `Submission.Work.FTS.EllipticEst.AeStepOneAux.aeDzNormSig` (whose module
-cannot be imported, since one of its imports is temporarily broken) together with the
-`Cslice`/`aesm_Cslice` material of `Submission.Work.FTS.EllipticEst.AngAWeak.aeBarHkMemOf`.
-
-The `θ`-slice functionals (`z ↦ ℝ`) are
-
-* `Rslice u z = ∫_θ σ θ u z θ²`,
-* `Zslice u z = ∫_θ σ θ (z ∂_z u z θ)²`,
-* `Gslice G z = ∫_θ σ θ G z θ²`,
-* `Sslice G u z = ∫_θ σ θ G z θ u z θ`,
-* `Pslice α u z = ∫_θ σ θ ((α²z²∂_z²u + α(5+α)z∂_zu) z θ · u z θ)`,
-* `Lslice u z = ∫_θ Lzero1 (u z ·) θ · u z θ · σ θ`,
-* `Cslice u z = ∫_θ (u z θ / cos θ)² σ θ`,
-
-and `HkSq α 0 f = ∫_z w z² ∫_θ f z θ² σ θ = ∫_z w z² (Rslice-type slice)`.
--/
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Submission.Work.Spaces.Defs
-import Submission.Work.FTS.EllipticEst.StraightDefs
-import Submission.Work.FTS.EllipticEst.H2W.Ae.Defs
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigma.AeHkMemU
-import Submission.Work.FTS.EllipticEst.H2W.AeProof.AeSigma.AeSliceFacts
+import Submission.Work.FTS.EllipticEst.H2W.AngBW.Step3.HkMemGradU
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.StrongPersist.QangSq6Full
+import Submission.Work.FTS.TransportS.GalSide
+import Submission.Work.FTS_EllLimOK.LimTower_identify3
+import Submission.Work.FTS_RegExport.RXT.Sys.L12FKaux.hasDerivAt_integral_Itheta_K
+import Submission.Work.Spaces.factor_bound
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.pz_DthIter_mul_eq
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllSol.Trunc.PassAux =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+namespace Work.FTS.EllSol.Trunc
+
+open MeasureTheory Set Filter
+open scoped Real Topology
+
+noncomputable section
+
+set_option autoImplicit false
+
+/-! ## The weights at the endpoints of `Iθ` -/
+
+theorem sin_two_zero : Real.sin (2 * (0 : ℝ)) = 0 := by simp
+
+theorem sin_two_pi_div_two : Real.sin (2 * (Real.pi / 2)) = 0 := by
+  rw [show 2 * (Real.pi / 2) = Real.pi from by ring, Real.sin_pi]
+
+theorem neg_eta_ne_zero : -(Work.Spaces.eta) ≠ 0 := by
+  rw [Work.Spaces.eta]; norm_num
+
+theorem wE_zero : FlatFT.wE 0 = 0 := by
+  rw [FlatFT.wE_def, sin_two_zero]
+  exact Real.zero_rpow neg_eta_ne_zero
+
+theorem wE_pi_div_two : FlatFT.wE (Real.pi / 2) = 0 := by
+  rw [FlatFT.wE_def, sin_two_pi_div_two]
+  exact Real.zero_rpow neg_eta_ne_zero
+
+
+
+
+/-! ## The strip `univ ×ˢ Ioo 0 (π/2)` -/
+
+theorem isOpen_strip : IsOpen ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+  isOpen_univ.prod isOpen_Ioo
+
+
+/-! ## Almost everywhere strong measurability of strip-continuous functions -/
+
+/-- A function continuous on the open strip `ℝ × (0,π/2)` is a.e. strongly measurable for the
+restriction of Lebesgue measure to `univ ×ˢ Iθ` (the strip and that set differ by a null set). -/
+theorem aesm_strip {h : ℝ × ℝ → ℝ}
+    (hh : ContinuousOn h ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2))) :
+    AEStronglyMeasurable h (volume.restrict (Set.univ ×ˢ Work.Spaces.Iθ)) := by
+  have hθ : Work.Spaces.Iθ =ᵐ[volume] Set.Ioo (0 : ℝ) (Real.pi / 2) :=
+    (MeasureTheory.Ioo_ae_eq_Icc (μ := volume) (a := 0) (b := Real.pi / 2)).symm
+  have hprod : (Set.univ ×ˢ Work.Spaces.Iθ : Set (ℝ × ℝ))
+      =ᵐ[volume] (Set.univ ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
+    rw [MeasureTheory.Measure.volume_eq_prod ℝ ℝ]
+    exact MeasureTheory.Measure.set_prod_ae_eq EventuallyEq.rfl hθ
+  have hmeas := MeasureTheory.Measure.restrict_congr_set hprod
+  exact hmeas ▸ hh.aestronglyMeasurable (MeasurableSet.univ.prod measurableSet_Ioo)
+
+
+theorem continuousOn_uncurry_pth_pth {g : ℝ → ℝ → ℝ}
+    (hg : ContDiffOn ℝ 2 (Function.uncurry g)
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2))) :
+    ContinuousOn (Function.uncurry (Work.Spaces.pth (Work.Spaces.pth g)))
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+  (Work.FTS.GalBasis.famAux_contDiffOn_uncurry_pth_le isOpen_strip 0
+    (Work.FTS.GalBasis.famAux_contDiffOn_uncurry_pth_le isOpen_strip 1 hg)).continuousOn
+
+
+theorem continuousOn_uncurry_pz {g : ℝ → ℝ → ℝ}
+    (hg : ContDiffOn ℝ 2 (Function.uncurry g)
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2))) :
+    ContinuousOn (Function.uncurry (Work.Spaces.pz g))
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+  (Work.FTS.GalBasis.famAux_contDiffOn_uncurry_pz_le isOpen_strip 1 hg).continuousOn
+
+theorem continuousOn_uncurry_pth {g : ℝ → ℝ → ℝ}
+    (hg : ContDiffOn ℝ 2 (Function.uncurry g)
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2))) :
+    ContinuousOn (Function.uncurry (Work.Spaces.pth g))
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+  (Work.FTS.GalBasis.famAux_contDiffOn_uncurry_pth_le isOpen_strip 1 hg).continuousOn
+
+/-! ## Continuity of the angular weights on the strip -/
+
+theorem continuousOn_sin_two :
+    ContinuousOn (fun p : ℝ × ℝ => Real.sin (2 * p.2))
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) :=
+  (Real.continuous_sin.comp (continuous_const.mul continuous_snd)).continuousOn
+
+theorem sin_two_ne_zero_of_mem_strip {p : ℝ × ℝ}
+    (hp : p ∈ ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2))) :
+    Real.sin (2 * p.2) ≠ 0 := by
+  have h2 : 0 < 2 * p.2 := by linarith [hp.2.1]
+  have h3 : 2 * p.2 < Real.pi := by linarith [hp.2.2]
+  exact ne_of_gt (Real.sin_pos_of_pos_of_lt_pi h2 h3)
+
+theorem continuousOn_wE_comp :
+    ContinuousOn (fun p : ℝ × ℝ => FlatFT.wE p.2)
+      ((Set.univ : Set ℝ) ×ˢ Set.Ioo (0 : ℝ) (Real.pi / 2)) := by
+  have h := continuousOn_sin_two.rpow_const (p := -(Work.Spaces.eta))
+    (fun p hp => Or.inl (sin_two_ne_zero_of_mem_strip hp))
+  simpa only [FlatFT.wE_def] using h
+
+
+/-! ## The bridge between iterated and product integrals -/
+
+theorem setIntegral_univ_prod_Iθ_eq_iterated {f : ℝ → ℝ → ℝ}
+    (hf : IntegrableOn (fun p : ℝ × ℝ => f p.1 p.2) (Set.univ ×ˢ Work.Spaces.Iθ)) :
+    (∫ p in Set.univ ×ˢ Work.Spaces.Iθ, f p.1 p.2)
+      = ∫ t in Set.univ, ∫ θ in Work.Spaces.Iθ, f t θ := by
+  rw [MeasureTheory.Measure.volume_eq_prod ℝ ℝ]
+  exact MeasureTheory.setIntegral_prod _ hf
+
+/-! ## `NiceFlat` for the cutoff multiples -/
+
+
+end
+
+end Work.FTS.EllSol.Trunc
+end
+-- ===== merged: Submission.Work.FTS.EllipticEst.AeS1.SigFirstOrderDefs =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -460,3 +568,5 @@ theorem Lslice_eq_Pslice_add_Sslice {α : ℝ} {u G : ℝ → ℝ → ℝ}
   exact MeasureTheory.integral_add (integrableOn_Pslice h hz) (integrableOn_Sslice h hz)
 
 end Work.FTS.EllipticEst.AeS1
+end
+end

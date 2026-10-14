@@ -1,34 +1,46 @@
-/-
-# `Work.FTS.StrongPersist.N6Trans.T1SixAux.excMeanSide6`
-
-The **mean-side bound for the top radial slot** `D_z⁵`: for `f` with `SmoothOpen f` and
-honest `HkMem α 6 f`, the `θ`-slice `θ ↦ D_z⁵f(z,θ)` obeys the angular Agmon-type inequality
-
-  `(D_z⁵f(z,θ))² ≤ C (∫_θ (D_z⁵f(z,·))² + (γ-1)⁻¹ ∫_θ (D_z⁵D_θf(z,·))² sin(2·)^{-γ})`
-
-at every interior angle `θ ∈ (0,π/2)` and every `z > 0`, with `C` a universal constant.
-
-The proof is `Work.FTS.OpenPkg.ProdOpen.sob_theta_mean` (constant `204`) applied to the slice
-`h := θ ↦ D_z⁵f(z,θ)`:
-
-* `sob_theta_mean` needs `h` differentiable on `(0,π/2)` with continuous derivative — provided
-  by `SmoothOpen.curry_θ` of `DzIter 5 f` (the slice of a `C^∞` function on the open quadrant);
-* its derivative term `∫ (∂_θh)² sin(2·)^{2-γ}` is the mixed slot `∫ (mixed 5 1 f)² sin(2·)^{-γ}`
-  by `deriv_mixed_weight` (this is where the weight shifts `sin^{2-γ} ↦ sin^{-γ}`);
-* the two integrability hypotheses are `integrableOn_dzIter5_sq` and
-  `integrableOn_slice_neg_gam6` (slot `(b,a) = (5,1)`).
-
-Everything rests on `[propext, Classical.choice, Quot.sound]`.
--/
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Mathlib.Tactic.MinImports
+import Submission.Work.FTS.EllipticEst.TT.Slot11.MomentChainAux
+import Submission.Work.FTS.EllipticEst.integrableOn_HkIntegrand_terms
+import Submission.Work.FTS.EllipticEst.remov.SourceBound.weakSliceBounds
+import Submission.Work.FTS.PhiStar.Series.Weil.integrableOn_prod_mul
 import Submission.Work.FTS.StrongPersist.N6.Exc6
-import Submission.Work.FTS.OpenPkg.ProdOpen.PwOpen
+import Submission.Work.FTS.StrongPersist.N6.PwOpen6
+import Submission.Work.FTS.StrongPersist.N6.sliceAvg_le6
+import Submission.Work.GalerkinFix.RegQ.HkMem_mono_Q
+import Submission.Work.Spaces.mixed_mul_le
+import Submission.Work.Spaces.sin_two_rpow
+import Submission.Work.Spaces.sq_mul_div_rpow
+-- ===== merged: Submission.Work.FTS.EllipticEst.H2W.Slot01W.SliceBounds =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+/-!
+# `H2W/Slot01W/SliceBounds` — thin re-export
+
+The `D_z`-slot slice extractor `Work.FTS.EllipticEst.H2W.slot_slice_integrableOn` (whose earlier
+home `H2W/Fstar_DzIter_le_Psi.lean` was temporarily unbuildable when this module was written) and
+the whole `Work.FTS.EllipticEst.remov.SourceBound` block are now available from their canonical
+homes — `H2W/Fstar_DzIter_le_Psi.lean` and `remov/SourceBound/weakSliceBounds.lean` both build
+again — so this module is reduced to the corresponding import.
+
+History: this file used to *re-declare* `endVals` and the rest of the `remov.SourceBound`
+namespace, which made any module importing both it and `remov/SourceBound/weakSliceBounds`
+(`FTS/EllipticEst/Prop/level2`, via `RPFresh/excess_finite`) fail with
+"environment already contains `Work.FTS.EllipticEst.remov.SourceBound.endVals`".
+-/
+end
+-- ===== merged: Submission.Work.FTS.StrongPersist.N6Trans.T1SixAux.excMeanSide6 =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -93,3 +105,5 @@ theorem excMeanSide6 : ∃ C : ℝ, 0 < C ∧ ∀ (α : ℝ) (f : ℝ → ℝ �
   rwa [hBeq] at hmain
 
 end Work.FTS.StrongPersist.N6Trans.T1SixAux
+end
+end

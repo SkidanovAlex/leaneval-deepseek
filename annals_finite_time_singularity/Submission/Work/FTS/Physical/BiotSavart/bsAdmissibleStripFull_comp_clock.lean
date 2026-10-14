@@ -1,36 +1,100 @@
-/-
-# `Work.FTS.Physical.BiotSavart.bsAdmissibleStripFull_comp_clock` — transporting a strip bundle
-
-The regularity transfer of node N7 (`Work.FTS.Regularity.physVort_bundle`) produces the strip
-bundle `BSAdmissibleStripFull α ω R S` for the physical vorticity *in fake time* `τ ∈ [0,S]`.
-The reconstruction of node N8 consumes the same bundle in *physical* time `t ∈ [0,T]`, for the
-reparametrised field `ωc x t = ω x (τ(t))` where `τ = τ(t)` is the inverse clock.
-
-This module proves that the reparametrisation preserves admissibility: if `τ` maps `[0,T]` into
-`[0,S]`, is differentiable with derivative `d`, is Lipschitz, and if `d` is bounded and
-`α`-Hölder, then `BSAdmissibleStripFull α ω R S` implies `BSAdmissibleStripFull α (ω ∘ τ) R T`.
-
-Every clause is transported separately:
-
-* the support, the uniform bound, the `x`-Hölder slices and the measurability of the slices pass
-  to the slice `τ(t)`;
-* the time-Hölder of `ω ∘ τ` follows from the time-Hölder of `ω` and the Lipschitz bound on `τ`;
-* the `t`-differentiability is the chain rule `∂ₜ(ω y ∘ τ) = d(t) • (∂_τω)(y, τ(t))`
-  (`HasDerivAt.scomp`);
-* the uniform bound on `∂ₜ(ω ∘ τ)` combines the bound on `∂_τω` with the bound on `d`;
-* the time-Hölder of `∂ₜ(ω ∘ τ)` is the Leibniz split
-  `(∂ω(τt) - ∂ω(τt'))d(t) + ∂ω(τt')(d(t) - d(t'))`,
-  bounded by the time-Hölder of `∂_τω` (composed with the Lipschitz `τ`), the bound on `d` and the
-  Hölder bound on `d`.
--/
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.MetricSpace.Holder
-import Submission.Work.FTS.Physical.Defs
-import Submission.Work.CoreResiduals.Defs
+import Submission.Work.FTS.LocData6.zfarR_jet_le6_of_jets
+import Submission.Work.FTS.StrongEps.EpsMem
+import Submission.Work.FTS.StrongEps.PZeroScheme
+import Submission.Work.FTS.StrongPersist.H6Rows.Npair6BWork.FkAux.FKdzIter_sq_le
+import Submission.Work.FTS_EllLimOK.SlotJets.slotPthSliceLe
+import Submission.Work.FTS_MuLamOK.Rows.rl0_final
+-- ===== merged: Submission.Work.FTS.LocData6.Main =====
+section
+
+-- v435-port: begin
+set_option backward.isDefEq.respectTransparency false
+set_option backward.isDefEq.respectTransparency.instanceSearchTypes false
+set_option backward.isDefEq.respectTransparency.types false
+-- v435-port: end
+
+noncomputable section
+
+open scoped Real Topology
+open MeasureTheory Set Filter
+
+namespace Work.FTS.LocData6
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+
+/-- **THE ORDER-`6` LOCALISED DATUM** (without the `GalClass` conjunct).  For every `0 < α ≤ 1`
+and every `K > 0` there is `L₀ > 0` such that for every `L ≥ L₀` there is `β` with
+
+* `|β| ≤ K·α²`;
+* `DataAdm α (locG α L β (hLoc α))` (N9's datum class);
+* `RegQ α 6 (locG α L β (hLoc α))` (the interior regularity class of `LWPStrong`);
+* `L₁₂(locG α L β (hLoc α))(0) = 0` (the orthogonality of N9);
+* `Xn α (locG α L β (hLoc α)) ≤ α²` (the order-`4` smallness);
+* `Xn₆(locG α L β (hLoc α)) ≤ K·α²` (the order-`6` smallness). -/
+theorem locG6_data_min (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (K : ℝ) (hK : 0 < K) :
+    ∃ L₀ : ℝ, 0 < L₀ ∧ ∀ L : ℝ, L₀ ≤ L → ∃ β : ℝ,
+      |β| ≤ K * α ^ 2 ∧
+      Work.FTS.LocData.DataAdm α (locG6 α L β) ∧
+      Work.FTS.Nonlin.RegQ α 6 (locG6 α L β) ∧
+      Work.Construction.L12 (locG6 α L β) 0 = 0 ∧
+      Work.FTS.Nonlin.Xn α (locG6 α L β) ≤ α ^ 2 ∧
+      Xn6 α (locG6 α L β) ≤ K * α ^ 2 := by
+  have hα2 : 0 < α ^ 2 := by positivity
+  obtain ⟨L4, h4⟩ := Work.FTS.LocData.locData_small α hα hα1 (α ^ 2) hα2
+  obtain ⟨L6, h6⟩ := locG6_small α hα hα1 (K * α ^ 2) (by positivity)
+  refine ⟨max 1 (max L4 L6), lt_of_lt_of_le zero_lt_one (le_max_left _ _),
+    fun L hL => ?_⟩
+  have hL1 : 1 ≤ L := le_trans (le_max_left _ _) hL
+  have hL4 : L4 ≤ L := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hL
+  have hL6 : L6 ≤ L := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hL
+  obtain ⟨b4, _hb4, h12a, hnorm4, hadm⟩ := h4 L hL4
+  obtain ⟨b6, hb6, h12b, hnorm6⟩ := h6 L hL6
+  -- the two scalars coincide: `L₁₂(locG α L · (hLoc α))(0) = 0` determines `β`
+  have hDpos : 0 < Work.Construction.L12 (Work.FTS.LocData.hLoc α) 0 :=
+    (Work.FTS.LocData.L12_hLoc α hα hα1).2
+  have hkey4 := Work.FTS.LocData.L12_locG α L b4 hα hα1 hL1
+  have hkey6 := Work.FTS.LocData.L12_locG α L b6 hα hα1 hL1
+  have hbeq : b4 = b6 := by
+    have h : b4 * Work.Construction.L12 (Work.FTS.LocData.hLoc α) 0
+        = b6 * Work.Construction.L12 (Work.FTS.LocData.hLoc α) 0 := by linarith
+    exact mul_right_cancel₀ (ne_of_gt hDpos) h
+  rw [← hbeq] at hb6 hnorm6
+  exact ⟨b4, hb6, hadm, regQ_locG6_uncond α L b4 hα hα1 hL1, h12a, hnorm4, hnorm6⟩
+
+/-- **THE ORDER-`6` LOCALISED DATUM**: `locG6_data_min` together with the class `GalClass α`
+(assembled by `LocData6.galClass_locG6_of` from the decay clause `LocData6.decayAll_locG6`). -/
+theorem locG6_data (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) (K : ℝ) (hK : 0 < K) :
+    ∃ L₀ : ℝ, 0 < L₀ ∧ ∀ L : ℝ, L₀ ≤ L → ∃ β : ℝ,
+      |β| ≤ K * α ^ 2 ∧
+      Work.FTS.LocData.DataAdm α (locG6 α L β) ∧
+      Work.FTS.Nonlin.RegQ α 6 (locG6 α L β) ∧
+      Work.FTS.Nonlin.GalClass α (locG6 α L β) ∧
+      Work.Construction.L12 (locG6 α L β) 0 = 0 ∧
+      Work.FTS.Nonlin.Xn α (locG6 α L β) ≤ α ^ 2 ∧
+      Xn6 α (locG6 α L β) ≤ K * α ^ 2 := by
+  obtain ⟨L₀, hL₀, h⟩ := locG6_data_min α hα hα1 K hK
+  refine ⟨max L₀ 1, lt_of_lt_of_le zero_lt_one (le_max_right _ _), fun L hL => ?_⟩
+  obtain ⟨β, hβ, hadm, hreg, h12, hX4, hX6⟩ := h L (le_trans (le_max_left _ _) hL)
+  have hL1 : 1 ≤ L := le_trans (le_max_right _ _) hL
+  exact ⟨β, hβ, hadm, hreg,
+    galClass_locG6_of α L β hα hα1 hL1 hreg (decayAll_locG6 α L β hL1) h12,
+    h12, hX4, hX6⟩
+
+
+
+end Work.FTS.LocData6
+end
+end
+-- ===== merged: Submission.Work.FTS.Physical.BiotSavart.bsAdmissibleStripFull_comp_clock =====
+section
 
 -- v435-port: begin
 set_option backward.isDefEq.respectTransparency false
@@ -228,3 +292,4 @@ theorem bsAdmissibleStripFull_comp_clock {α : NNReal}
             mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg (abs_nonneg _) _)
 
 end Work.FTS.Physical.BiotSavart
+end
