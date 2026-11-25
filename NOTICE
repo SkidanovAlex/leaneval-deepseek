@@ -1,0 +1,54 @@
+leaneval-deepseek
+Copyright 2026 The leaneval-deepseek contributors
+
+This repository is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+It includes third-party material, all of it also licensed under the Apache License,
+Version 2.0. The original copyright headers are kept in every included file. The
+notices below apply only to the parts named, not to the whole repository.
+
+------------------------------------------------------------------------------
+odd-order (Feit–Thompson theorem)
+  Source:    https://github.com/yawara/odd-order (main @ 7a412ea)
+  Copyright: Copyright 2026 odd-order contributors; Copyright (c) 2026 Yawara Ishida;
+             Copyright (c) 2026 The Odd Order Project
+  Where:     gorenstein_walter/Submission/OddOrder/
+             bender_suzuki/Submission/OddOrder/
+  Changes:   ported from Lean v4.34.1 to Lean v4.35.0-rc3; modules re-rooted from
+             OddOrder.* to Submission.OddOrder.*; option blocks marked
+             "ftport:v435-opts" added. Details in each directory's
+             ODD-ORDER-PORT-NOTES.md. The upstream license is kept as LICENSE-odd-order.
+
+------------------------------------------------------------------------------
+lean-pool (Riemann mapping theorem)
+  Source:    https://github.com/Vilin97/lean-pool
+  Copyright: Copyright (c) 2026 Vincent Beffara
+  Where:     annals_rectangular_peg_problem/Submission/Work/RPB/Port/RMT/
+  Changes:   files copied into this tree (the package is a dependency declared by the
+             problem itself); module paths adapted to this layout.
+
+------------------------------------------------------------------------------
+openai/math (Tarski–Seidenberg / semialgebraic projection library)
+  Source:    https://github.com/openai/math (lean/OAI/Analysis/SymmetricDomains/)
+  Copyright: the openai/math contributors
+  Where:     annals_wilkies_conjecture/Submission/Work/WilLibTS/
+  Changes:   ported from Lean v4.34.1 / Mathlib d13f23b7 to Lean v4.35.0-rc3 /
+             Mathlib 5e0c4e52; modules moved under Submission.Work.WilLibTS.TS.*
+             (see the header of WilLibTS/All.lean).
+
+------------------------------------------------------------------------------
+Tau Ceti
+  Source:    https://github.com/TauCetiProject/TauCeti
+  Copyright: Copyright (c) 2026 The Tau Ceti contributors
+  Where:     annals_wilkies_conjecture/Submission/Vendor/TauCeti/
+  Changes:   four files vendored into this tree.
+
+------------------------------------------------------------------------------
+LeanEval problem statements
+  Source:    https://github.com/leanprover/lean-eval
+  Copyright: Copyright 2026 Lean FRO, LLC, and the statement authors named in the file
+             headers (among them David Ledvinka, Thomas Browning, Justus Springer,
+             Katerina Hristova and Christian Merten)
+  Where:     each problem's challenge statement and statement dependencies
+             (Submission.lean statements, ChallengeDeps.lean and similar files)
+  Changes:   none to the statements; proofs were added.
